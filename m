@@ -2,56 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AEDDE40D
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2019 15:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0BEE3EC
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2019 15:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728280AbfD2N4P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Apr 2019 09:56:15 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:48586 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725838AbfD2N4P (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 29 Apr 2019 09:56:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=t8uYriH1Ulb8wHNzLAO92cq2lN3geSiBkvBoqlgIHcI=; b=DBZci4iiASJElu0xP4RzoM3YHQ
-        3+dZlUMYrsdk+RP71wzV3bOk1RwxqIj7Vg8WN+4Ri9+YPti79D2PO9py/g40G5hnfKJsxM9FHn7vN
-        KcEFTmUM5rpX1SrpMPDyaIGBl6+fYrpXnitYvLElfXd+P6rlTCNPHYe6CYZe6lu/090I=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.89)
-        (envelope-from <andrew@lunn.ch>)
-        id 1hL6lH-0001Pp-Jx; Mon, 29 Apr 2019 15:56:03 +0200
-Date:   Mon, 29 Apr 2019 15:56:03 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        id S1727555AbfD2NrB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Apr 2019 09:47:01 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:48282 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725838AbfD2NrB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 29 Apr 2019 09:47:01 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id A366693F2C37064144E6;
+        Mon, 29 Apr 2019 21:46:57 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 29 Apr 2019 21:46:47 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>,
         Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ethernet: ti: cpsw: Fix inconsistent
- IS_ERR and PTR_ERR in cpsw_probe()
-Message-ID: <20190429135603.GI10772@lunn.ch>
-References: <20190429135650.72794-1-yuehaibing@huawei.com>
+        Andrew Lunn <andrew@lunn.ch>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-omap@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] net: ethernet: ti: cpsw: Fix inconsistent IS_ERR and PTR_ERR in cpsw_probe()
+Date:   Mon, 29 Apr 2019 13:56:50 +0000
+Message-ID: <20190429135650.72794-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190429135650.72794-1-yuehaibing@huawei.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Apr 29, 2019 at 01:56:50PM +0000, YueHaibing wrote:
-> Change the call to PTR_ERR to access the value just tested by IS_ERR.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Change the call to PTR_ERR to access the value just tested by IS_ERR.
 
-Please could you add a Fixes: tag.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/ethernet/ti/cpsw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index c3cba46fac9d..e37680654a13 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -2381,7 +2381,7 @@ static int cpsw_probe(struct platform_device *pdev)
+ 
+ 	clk = devm_clk_get(dev, "fck");
+ 	if (IS_ERR(clk)) {
+-		ret = PTR_ERR(mode);
++		ret = PTR_ERR(clk);
+ 		dev_err(dev, "fck is not found %d\n", ret);
+ 		return ret;
+ 	}
 
-    Andrew
+
+
+
+
