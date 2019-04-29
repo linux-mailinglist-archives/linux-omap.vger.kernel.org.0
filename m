@@ -2,88 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61811DE33
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2019 10:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6DDEE0C9
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2019 12:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727512AbfD2Io3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Apr 2019 04:44:29 -0400
-Received: from kirsty.vergenet.net ([202.4.237.240]:34596 "EHLO
-        kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727480AbfD2Io3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Apr 2019 04:44:29 -0400
-Received: from reginn.horms.nl (watermunt.horms.nl [80.127.179.77])
-        by kirsty.vergenet.net (Postfix) with ESMTPA id 50EED25B775;
-        Mon, 29 Apr 2019 18:44:27 +1000 (AEST)
-Received: by reginn.horms.nl (Postfix, from userid 7100)
-        id 46033940376; Mon, 29 Apr 2019 10:44:25 +0200 (CEST)
-Date:   Mon, 29 Apr 2019 10:44:25 +0200
-From:   Simon Horman <horms@verge.net.au>
-To:     Olof Johansson <olof@lixom.net>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>, arm@kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [GIT PULL] defconfig refresh for multi_v7_defconfig for v5.1
-Message-ID: <20190429084424.jadc7oa23qcrj4nx@verge.net.au>
-References: <pull-1555425463-418342@atomide.com>
- <20190429061714.3qcj72efkblqhjw3@localhost>
- <20190429075904.a4qhqkhn4argt6b2@verge.net.au>
+        id S1727973AbfD2Kpu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Apr 2019 06:45:50 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:36568 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727918AbfD2Kpu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Apr 2019 06:45:50 -0400
+Received: by mail-vs1-f68.google.com with SMTP id x78so3170823vsc.3
+        for <linux-omap@vger.kernel.org>; Mon, 29 Apr 2019 03:45:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=et/npkNIorgdGot5d1HzokiqbJQ8Gh0K1joI75MNIac=;
+        b=Ve1WNkIDse3QBHPps/fmIJd/CV4T/lN9ZDCLtrDRz2/FYapa1OSvfd+q1Ab83gaBGC
+         tlEW+igfO+o6mPm8YpQJ0yXbyaLebs9DrjAvAn2FNqIVG5Igf8P3hAKC69MhVyLABIia
+         urCSnsmNn6IFB8lzcOMdodV+X3/51W3zP8TgU7B4A2WWr/eHKIYBgpAjh/jwmB7BMPrE
+         6w2shdOKowd7Tq7MXLxFs0UqfxFhvOqWpvx0mLqU/QwD+YFIelM5nSlLa6H392Un9sOu
+         kswbsj3IxaYpdBHjkfvojMFKtcNYXojheCI3mD0lv3gjj8mfT7wtmHjCjTNrn1HvqFYj
+         uQDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=et/npkNIorgdGot5d1HzokiqbJQ8Gh0K1joI75MNIac=;
+        b=TWeDGpXjNDjUCM7lqu8lK94v5Nt4gcf2u1bhvQ7BthicbMMK7Esgq+aK+gRO+8vJsy
+         f05zGunI81GbgnUD73nxaOzh+Yr4LWg4VrdMSnYAMshJiSTFPocqHDYwlhEXBDJMxfvj
+         boQWPVr9enLN0xRvDjMrTJoiT2XWuJlGDATrPLmGHebtwVxh0j8YAb03DQMDXqCR78M4
+         jEC5cekg/hjcnkc0KkavBY9D/ZSpd6idHTbKHcRpqjX8p4Jb/cslJMaB3yP6Mlhn7dxO
+         cgrXoTkhwdri4XYQ32+qu5Kd3qyaSGoipHMjIGxrQWBVPeVmoAU4LPDMQSfSHtpSzgVW
+         nzhQ==
+X-Gm-Message-State: APjAAAVNNsm41Yg7Ivg0A4v4j7D17Q+dCmq29ynMQbSMXn++wg1OglAA
+        XNv9SfIONluy+nz5Z5+VGe3OE8Rb5P6AyWI7CVlFwA==
+X-Google-Smtp-Source: APXvYqwr48nNxbRl4UcxozHPOr0f1masNE7VzrVR1EAH7p0Q7CQLtQ3Fjw8j31KkI9cyZtQG8CHoAh8DWG47/0o986Q=
+X-Received: by 2002:a67:ec03:: with SMTP id d3mr32154639vso.165.1556534749192;
+ Mon, 29 Apr 2019 03:45:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190429075904.a4qhqkhn4argt6b2@verge.net.au>
-Organisation: Horms Solutions BV
-User-Agent: NeoMutt/20170113 (1.7.2)
+References: <20190423075020.173734-1-wangkefeng.wang@huawei.com> <20190423075020.173734-18-wangkefeng.wang@huawei.com>
+In-Reply-To: <20190423075020.173734-18-wangkefeng.wang@huawei.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 29 Apr 2019 12:45:13 +0200
+Message-ID: <CAPDyKFoQ07RF00aKc+G8OTtvwP+ret8XFRa6d5kEQKbDbzwEHQ@mail.gmail.com>
+Subject: Re: [PATCH next 17/25] mmc: omap_hsmmc: Use dev_get_drvdata()
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Sorry, I accidently sent an empty response.
-I have no idea how that happened, please ignore.
+On Tue, 23 Apr 2019 at 09:40, Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+>
+> Using dev_get_drvdata directly.
+>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: linux-mmc@vger.kernel.org
+> Cc: linux-omap@vger.kernel.org
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-On Mon, Apr 29, 2019 at 09:59:04AM +0200, Simon Horman wrote:
-> On Sun, Apr 28, 2019 at 11:17:14PM -0700, Olof Johansson wrote:
-> > On Tue, Apr 16, 2019 at 09:13:37AM -0700, Tony Lindgren wrote:
-> > > From: "Tony Lindgren" <tony@atomide.com>
-> > > 
-> > > The following changes since commit 9e98c678c2d6ae3a17cb2de55d17f69dddaa231b:
-> > > 
-> > >   Linux 5.1-rc1 (2019-03-17 14:22:26 -0700)
-> > > 
-> > > are available in the Git repository at:
-> > > 
-> > >   git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/multi-v7-defconfig-for-v5.2-signed
-> > > 
-> > > for you to fetch changes up to 35f8e2e29e74bb7197419d7cd80df5584e2a6311:
-> > > 
-> > >   ARM: multi_v7_defconfig: Update for moved options (2019-04-16 07:05:07 -0700)
-> > > 
-> > > ----------------------------------------------------------------
-> > > Update multi_v7_defconfig for dropped and moved options
-> > > 
-> > > This series of two patches first updates multi_v7_defconfig for
-> > > dropped options, and then updates it for moved options. We want to
-> > > do this on regular basis to make it easier to patch multi_v7_defconfig
-> > > without introducing errors and merge conflicts. We update the defconfig
-> > > in two patches to make sure we're not accidentally losing any needed
-> > > options.
-> > > 
-> > > After this, updating multi_v7_defconfig will become trivial, and most
-> > > likely only a small follow-up patches are needed after the merge window
-> > > to update it again for moved options.
-> > 
-> > Merged, thanks.
-> > 
-> > 
-> > 
-> > -Olof
-> > 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
+Applied for next, thanks!
+
+Kind regards
+Uffe
+
+
+> ---
+>  drivers/mmc/host/omap_hsmmc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+> index 29a1ddaa7466..952fa4063ff8 100644
+> --- a/drivers/mmc/host/omap_hsmmc.c
+> +++ b/drivers/mmc/host/omap_hsmmc.c
+> @@ -2077,7 +2077,7 @@ static int omap_hsmmc_runtime_suspend(struct device *dev)
+>         unsigned long flags;
+>         int ret = 0;
+>
+> -       host = platform_get_drvdata(to_platform_device(dev));
+> +       host = dev_get_drvdata(dev);
+>         omap_hsmmc_context_save(host);
+>         dev_dbg(dev, "disabled\n");
+>
+> @@ -2118,7 +2118,7 @@ static int omap_hsmmc_runtime_resume(struct device *dev)
+>         struct omap_hsmmc_host *host;
+>         unsigned long flags;
+>
+> -       host = platform_get_drvdata(to_platform_device(dev));
+> +       host = dev_get_drvdata(dev);
+>         omap_hsmmc_context_restore(host);
+>         dev_dbg(dev, "enabled\n");
+>
+> --
+> 2.20.1
+>
