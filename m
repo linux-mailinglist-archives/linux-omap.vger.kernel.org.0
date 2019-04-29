@@ -2,77 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 297F7DB34
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2019 06:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1D34DC40
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2019 08:55:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726014AbfD2EoU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Apr 2019 00:44:20 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:58150 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725790AbfD2EoU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Apr 2019 00:44:20 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x3T4iEcw127625;
-        Sun, 28 Apr 2019 23:44:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1556513054;
-        bh=W9+4g9I6aP23vKVz+oN4Rt8eSQ2ZaITln10ptQSSBM8=;
-        h=From:To:CC:Subject:Date;
-        b=KwjJsNBM6ieTxitWuCxdmaBU2WnTt0mAARzYVCsuSmN466k3CmPfPQVANXvSpFt7e
-         WhRpm8OqIdKA3RH674//g264sCBil6iBMkZ3CYsbjCRfYygeA/m5Oi9/9wtj8U+Lch
-         RO4N9LBue1KfcvHdaMo1UEcjEyZf2kggDDHWFNF4=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x3T4iExx023005
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 28 Apr 2019 23:44:14 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Sun, 28
- Apr 2019 23:44:13 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Sun, 28 Apr 2019 23:44:13 -0500
-Received: from a0393675ula.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x3T4iBrZ019531;
-        Sun, 28 Apr 2019 23:44:11 -0500
-From:   Keerthy <j-keerthy@ti.com>
-To:     <ssantosh@kernel.org>, <tony@atomide.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <j-keerthy@ti.com>, <d-gerlach@ti.com>, <t-kristo@ti.com>
-Subject: [PATCH] soc: ti: pm33xx: Add a print while entering RTC only mode with DDR in self-refresh
-Date:   Mon, 29 Apr 2019 10:14:35 +0530
-Message-ID: <20190429044435.19315-1-j-keerthy@ti.com>
-X-Mailer: git-send-email 2.17.1
+        id S1727246AbfD2GzR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Apr 2019 02:55:17 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:33140 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727173AbfD2GzR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Apr 2019 02:55:17 -0400
+Received: by mail-lf1-f65.google.com with SMTP id j11so7110899lfm.0
+        for <linux-omap@vger.kernel.org>; Sun, 28 Apr 2019 23:55:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lixom-net.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=ViXw/lf4TfCaqZAJA/ayscALfbBnnynlxB3s2q++euI=;
+        b=w/r4dGlVy/3p3S5Hf8IIJ5/BicdNfPr0uxEiP2F4BP0Duud2oMc4gpEBnRVm6E8arH
+         QCSSvwxeaNKd03GHLDTgEfP0WGxhRBefeW+qZpMLyHD7O+Wpz1Wmlp7theKmkdkAxTuj
+         PAF1SPhLDZQ9pMjYmV0zYcYtKFNh0vBIpIdg4J4+0eZ5Zz+hhflbMOP08ojUWs803z6t
+         wiUBlJPwPg/AXntVwR5khON/SYe3hbWiuc1GYrbr0x94ehSBPkfeLGOL9+D2Cag3Vme0
+         IyKJ2vf1P6x3BUrZKr6czurBxWuw9EZiCX24riKTxpFy8yUGyq9v8M9xmxgIinPmSc+X
+         7Ewg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ViXw/lf4TfCaqZAJA/ayscALfbBnnynlxB3s2q++euI=;
+        b=bN2ZfTCK5/dokocvpK+ocmp8oLFbp20OQbpxuJOQ+tmOfCAz2vE1pQD+F/96nPbMI4
+         M4eLZw7hJG++MT0HqJKQCwF2KlqecKK4Vl5FZkHL+LNrRBNG3glpyANaVIgTEiT4zAJk
+         8uyBLDEyFg8BUv93zHDkCIZhHsjAOTOUW6ixcqnDicLDnBEGp1f3U+krUWBXhoY0KZnF
+         DdVggC5O22bVXahAR7ICsKXnnbgTTqj/Zr/BwafU0Fu2I+tPuBfEGVoXClDFjWetPtz5
+         IL7DIcWbxaa7O7BVwqCG3qsxSSQOxTGAVhmYeSomqd5Uc6gRswsv8+Pn+gkXFISPfHMK
+         bWEg==
+X-Gm-Message-State: APjAAAWi/Cp0ZgJJtzj0COcePOu2w99pN+V9MpMwl64L1C6ksOEDHHH6
+        vj4oxikmsvJ10LK6RP4UTF5peQ==
+X-Google-Smtp-Source: APXvYqwpGjKZmuvRiMk+BcHWxPQnvC03XUy3SCqS56zU/T9W2waRywWBysHx2euCS7YqwCqQE6HPpQ==
+X-Received: by 2002:a19:428c:: with SMTP id p134mr32928239lfa.108.1556520915728;
+        Sun, 28 Apr 2019 23:55:15 -0700 (PDT)
+Received: from localhost (h85-30-9-151.cust.a3fiber.se. [85.30.9.151])
+        by smtp.gmail.com with ESMTPSA id q12sm7125567lfa.37.2019.04.28.23.55.14
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 28 Apr 2019 23:55:14 -0700 (PDT)
+Date:   Sun, 28 Apr 2019 23:03:07 -0700
+From:   Olof Johansson <olof@lixom.net>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [GIT PULL 1/3] soc changes for omaps for v5.2
+Message-ID: <20190429060307.5mb35baxsi5iqlcw@localhost>
+References: <pull-1555087688-487222@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <pull-1555087688-487222@atomide.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Currently there is no way to distinguish if the SoC entered DS0
-mode or the RTC only mode. Hence add a print before entering
-the RTC only mode.
+On Fri, Apr 12, 2019 at 10:02:05AM -0700, Tony Lindgren wrote:
+> From: "Tony Lindgren" <tony@atomide.com>
+> 
+> The following changes since commit 9e98c678c2d6ae3a17cb2de55d17f69dddaa231b:
+> 
+>   Linux 5.1-rc1 (2019-03-17 14:22:26 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.2/soc-signed
+> 
+> for you to fetch changes up to 72aff4ecf1cb85a3c6e6b42ccbda0bc631b090b3:
+> 
+>   ARM: OMAP2+: pm33xx-core: Do not Turn OFF CEFUSE as PPA may be using it (2019-04-09 08:05:17 -0700)
+> 
+> ----------------------------------------------------------------
+> SoC changes for omap variants for v5.2 merge window
+> 
+> This series of changes mostly consists of ti-sysc interconnect driver
+> related preparation work. With these changes and the related ti-sysc
+> driver changes, we can start dropping legacy omap_hwmod_*data.c platform
+> data for many devices.
+> 
+> There are also two am335x and am437x related PM changes for secure
+> devices that have ROM handling some parts and needs EFUSE power domain
+> active.
 
-Signed-off-by: Keerthy <j-keerthy@ti.com>
----
- drivers/soc/ti/pm33xx.c | 1 +
- 1 file changed, 1 insertion(+)
+Merged, thanks!
 
-diff --git a/drivers/soc/ti/pm33xx.c b/drivers/soc/ti/pm33xx.c
-index fc5802ccb1c0..bb77c220b6f8 100644
---- a/drivers/soc/ti/pm33xx.c
-+++ b/drivers/soc/ti/pm33xx.c
-@@ -178,6 +178,7 @@ static int am33xx_pm_suspend(suspend_state_t suspend_state)
- 					  suspend_wfi_flags);
- 
- 		suspend_wfi_flags &= ~WFI_FLAG_RTC_ONLY;
-+		dev_info(pm33xx_dev, "Entering RTC Only mode with DDR in self-refresh\n");
- 
- 		if (!ret) {
- 			clk_restore_context();
--- 
-2.17.1
 
+-Olof
