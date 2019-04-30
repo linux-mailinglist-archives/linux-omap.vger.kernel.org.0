@@ -2,53 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92FB2EA52
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Apr 2019 20:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 597DCEE71
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Apr 2019 03:33:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729176AbfD2Smt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Apr 2019 14:42:49 -0400
-Received: from muru.com ([72.249.23.125]:47616 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729118AbfD2Sms (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 29 Apr 2019 14:42:48 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 8280B80E4;
-        Mon, 29 Apr 2019 18:43:05 +0000 (UTC)
-Date:   Mon, 29 Apr 2019 11:42:45 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     "santosh.shilimkar@oracle.com" <santosh.shilimkar@oracle.com>
-Cc:     Keerthy <j-keerthy@ti.com>, ssantosh@kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        d-gerlach@ti.com, t-kristo@ti.com
-Subject: Re: [PATCH] soc: ti: pm33xx: Add a print while entering RTC only
- mode with DDR in self-refresh
-Message-ID: <20190429184245.GG8007@atomide.com>
-References: <20190429044435.19315-1-j-keerthy@ti.com>
- <b862e2c4-781c-ced9-3a6f-b0095562732a@oracle.com>
+        id S1729755AbfD3BdX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Apr 2019 21:33:23 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:35608 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729745AbfD3BdX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 29 Apr 2019 21:33:23 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 68AAA797134B1A9AA658;
+        Tue, 30 Apr 2019 09:33:19 +0800 (CST)
+Received: from [127.0.0.1] (10.177.31.96) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Tue, 30 Apr 2019
+ 09:33:17 +0800
+Subject: Re: [PATCH v2 net-next] net: ethernet: ti: cpsw: Fix inconsistent
+ IS_ERR and PTR_ERR in cpsw_probe()
+To:     Julia Lawall <julia.lawall@lip6.fr>
+References: <20190429135650.72794-1-yuehaibing@huawei.com>
+ <20190429143157.79035-1-yuehaibing@huawei.com>
+ <alpine.DEB.2.21.1904291228000.2444@hadrien>
+CC:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+From:   YueHaibing <yuehaibing@huawei.com>
+Message-ID: <a2766de6-d0cd-d840-2546-33ce0b388585@huawei.com>
+Date:   Tue, 30 Apr 2019 09:33:16 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b862e2c4-781c-ced9-3a6f-b0095562732a@oracle.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <alpine.DEB.2.21.1904291228000.2444@hadrien>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.31.96]
+X-CFilter-Loop: Reflected
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* santosh.shilimkar@oracle.com <santosh.shilimkar@oracle.com> [190429 18:40]:
-> On 4/28/19 9:44 PM, Keerthy wrote:
-> > Currently there is no way to distinguish if the SoC entered DS0
-> > mode or the RTC only mode. Hence add a print before entering
-> > the RTC only mode.
-> > 
-> > Signed-off-by: Keerthy <j-keerthy@ti.com>
-> > ---
-> Acked-by: Santosh Shilimkar <ssantosh@kernel.org>
+On 2019/4/30 0:30, Julia Lawall wrote:
 > 
-> Tony, Am assuming you will queue this up ?
+> 
+> On Mon, 29 Apr 2019, YueHaibing wrote:
+> 
+>> Change the call to PTR_ERR to access the value just tested by IS_ERR.
+> 
+> I assume you didn't find the problem just looking through the code by
+> hand.  If you used a tool, it would be really good to acknowledge the tool
+> that was used.  The tools don't come for free, and you don't pay for them.
+> The only payment that you can offer is to acknowledge that the tool was
+> used, which helps justify that the tool is useful and what it is useful
+> for.
 
-OK yeah I'll queue it.
+Sorry, I forgot edit the commit log and add this info.
 
-Thanks,
+It was detected by Coccinelle, I will add this and resend.
 
-Tony
+> 
+> julia
+> 
+>>
+>> Fixes: 83a8471ba255 ("net: ethernet: ti: cpsw: refactor probe to group common hw initialization")
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>> ---
+>> v2: add Fixes tag
+>> ---
+>>  drivers/net/ethernet/ti/cpsw.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+>> index c3cba46fac9d..e37680654a13 100644
+>> --- a/drivers/net/ethernet/ti/cpsw.c
+>> +++ b/drivers/net/ethernet/ti/cpsw.c
+>> @@ -2381,7 +2381,7 @@ static int cpsw_probe(struct platform_device *pdev)
+>>
+>>  	clk = devm_clk_get(dev, "fck");
+>>  	if (IS_ERR(clk)) {
+>> -		ret = PTR_ERR(mode);
+>> +		ret = PTR_ERR(clk);
+>>  		dev_err(dev, "fck is not found %d\n", ret);
+>>  		return ret;
+>>  	}
+>>
+>>
+>>
+>>
+> 
+> .
+> 
+
