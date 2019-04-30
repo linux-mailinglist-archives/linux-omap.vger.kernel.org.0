@@ -2,132 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C988F04F
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Apr 2019 08:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45D6DF937
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Apr 2019 14:47:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726213AbfD3GIy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Apr 2019 02:08:54 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:56208 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725554AbfD3GIy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Apr 2019 02:08:54 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x3U68lEM082009;
-        Tue, 30 Apr 2019 01:08:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1556604527;
-        bh=0M6lmMeJhzkU5LkeOUDGBKw3p7Z/SmATqnBWzbczRYU=;
-        h=From:To:CC:Subject:Date;
-        b=gtwmZLRyHDje9QfMHsnlB9wYrdnuA3gNOtVC1grL7ismRfVDVKlYMgpJdte4AHMyU
-         MnLzAdHNVH5oV5l0pT2ZyUtEHYsEJJbZaOhsnnCgSYadMkvkoj6UH1ScJdCrk5bekV
-         HbJFfFitgSA3W74xTwSTWOtDISZvMdUoBWN5ONgo=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x3U68lom099365
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 30 Apr 2019 01:08:47 -0500
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 30
- Apr 2019 01:08:47 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 30 Apr 2019 01:08:47 -0500
-Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x3U68iK1119094;
-        Tue, 30 Apr 2019 01:08:45 -0500
-From:   Faiz Abbas <faiz_abbas@ti.com>
-To:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>
-CC:     <mark.rutland@arm.com>, <robh+dt@kernel.org>, <tony@atomide.com>,
-        <bcousson@baylibre.com>, <faiz_abbas@ti.com>
-Subject: [PATCH] ARM: dts: dra76x: Update MMC2_HS200_MANUAL1 iodelay values
-Date:   Tue, 30 Apr 2019 11:38:56 +0530
-Message-ID: <20190430060856.18445-1-faiz_abbas@ti.com>
-X-Mailer: git-send-email 2.19.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S1726388AbfD3Mrz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Apr 2019 08:47:55 -0400
+Received: from mail-it1-f195.google.com ([209.85.166.195]:37406 "EHLO
+        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726166AbfD3Mrz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Apr 2019 08:47:55 -0400
+Received: by mail-it1-f195.google.com with SMTP id r85so4484186itc.2
+        for <linux-omap@vger.kernel.org>; Tue, 30 Apr 2019 05:47:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=dtls0qIaFVOJY4443eSxeMpTBwWF/L6mgrEa0OcpqD8=;
+        b=oJA/8/5F3LwUkUBiMiFkd2TpqtsSJ6uk+AxQB9HQRKn3IAOwOEm3Et4bQg8GCW+X0+
+         IhHFjxPBxTq3PVYxTCc9gXtvoZJQoAOOELYbqicnVY6locMzHkiCAStCpN1MCZuivfgP
+         otWuaA1rhKybSpRZEWBiRse5UxufQ8jlWYSMmlmUo0fkrooOXvh1wiJAmVKYh/PTvbp8
+         xwu0B/zJn18XU6j27owU75bJEszJnTDsMSH/3QwOFG0XtyNCoXFJjkmXou4pPB1iFr1A
+         4L+OEPauwxPGQmlZWNWUqtHWDqdso3H0QUQWqMjyGzIGVY61MSv4/wRcyWTUEG1d/yY+
+         njzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=dtls0qIaFVOJY4443eSxeMpTBwWF/L6mgrEa0OcpqD8=;
+        b=TI3zV6qgRdozwgQpOaud2QhWu9meoPalXjYJtid+2h4tPrRJ0J5Bo+UQPl4RfUjSya
+         jpxxQg73BULEVVPDwvB0xJQLeAiA+zbFnB6KycgofeDeE8rdA4SwT1QNONjtrDc/gwI4
+         Yi3HaWldZv7XrKx7AiYiD3vzlQ24zy71xHG/cIfnmmU7xtxPz5D2T4sxqCadZLVLArmH
+         cEuH5YRMAcI0PHBRuuWdy6WBvx7vydulWaOwyYXjG0NDUNy1Cbvp/dtsTCeFs3vTtUXp
+         SJuLtdjPfP2oA3s8kMRk+jvbbvLdIW1BS1D6zerxgGjSCP9myNld5/hCYU8W1KL0ZOF5
+         7nVw==
+X-Gm-Message-State: APjAAAXPHY9Kx00eiU4EfNCWxXEJmHHjQawYN1nOFVi1ba/80E3Cs4XZ
+        PtZE5hAVWWdd65tjxpdE8syGs1MV
+X-Google-Smtp-Source: APXvYqw47tizUsVFi5fVfOXzgEQVsLGjNqqOCfPc40VVkdc9yxbwqt+u+GG2wsmCqMyTN7AYWj4lJA==
+X-Received: by 2002:a24:9d96:: with SMTP id f144mr3159417itd.167.1556628473404;
+        Tue, 30 Apr 2019 05:47:53 -0700 (PDT)
+Received: from aford-OptiPlex-7050.logicpd.com ([174.46.170.158])
+        by smtp.gmail.com with ESMTPSA id 2sm10577214ioz.77.2019.04.30.05.47.52
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 30 Apr 2019 05:47:52 -0700 (PDT)
+From:   Adam Ford <aford173@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>
+Subject: [PATCH] ARM: dts: logicpd-som-lv: Fix MMC1 card detect
+Date:   Tue, 30 Apr 2019 07:47:44 -0500
+Message-Id: <20190430124744.18993-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Update the MMC2_HS200_MANUAL1 iodelay values to match with the latest
-dra76x data manual[1].
+The card detect pin was incorrectly using IRQ_TYPE_LEVEL_LOW
+instead of GPIO_ACTIVE_LOW when reading the state of the CD pin.
 
-Also this particular pinctrl-array is using spaces instead of tabs for
-spacing between the values and the comments. Fix this as well.
+This was previosly fixed on Torpedo, but missed on the SOM-LV
 
-[1] http://www.ti.com/lit/ds/symlink/dra76p.pdf
+Fixes: 5cb8b0fa55a9 ("ARM: dts: Move most of
+logicpd-som-lv-37xx-devkit.dts to logicpd-som-lv-baseboard.dtsi")
 
-Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
----
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-Tested on dra76x-evm and am574x-idk.
-
- arch/arm/boot/dts/dra76x-mmc-iodelay.dtsi | 40 +++++++++++------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
-
-diff --git a/arch/arm/boot/dts/dra76x-mmc-iodelay.dtsi b/arch/arm/boot/dts/dra76x-mmc-iodelay.dtsi
-index baba7b00eca7..fdca48186916 100644
---- a/arch/arm/boot/dts/dra76x-mmc-iodelay.dtsi
-+++ b/arch/arm/boot/dts/dra76x-mmc-iodelay.dtsi
-@@ -22,7 +22,7 @@
-  *
-  * Datamanual Revisions:
-  *
-- * DRA76x Silicon Revision 1.0: SPRS993A, Revised July 2017
-+ * DRA76x Silicon Revision 1.0: SPRS993E, Revised December 2018
-  *
-  */
- 
-@@ -169,25 +169,25 @@
- 	/* Corresponds to MMC2_HS200_MANUAL1 in datamanual */
- 	mmc2_iodelay_hs200_conf: mmc2_iodelay_hs200_conf {
- 		pinctrl-pin-array = <
--			0x190 A_DELAY_PS(384) G_DELAY_PS(0)       /* CFG_GPMC_A19_OEN */
--			0x194 A_DELAY_PS(0) G_DELAY_PS(174)       /* CFG_GPMC_A19_OUT */
--			0x1a8 A_DELAY_PS(410) G_DELAY_PS(0)       /* CFG_GPMC_A20_OEN */
--			0x1ac A_DELAY_PS(85) G_DELAY_PS(0)        /* CFG_GPMC_A20_OUT */
--			0x1b4 A_DELAY_PS(468) G_DELAY_PS(0)       /* CFG_GPMC_A21_OEN */
--			0x1b8 A_DELAY_PS(139) G_DELAY_PS(0)       /* CFG_GPMC_A21_OUT */
--			0x1c0 A_DELAY_PS(676) G_DELAY_PS(0)       /* CFG_GPMC_A22_OEN */
--			0x1c4 A_DELAY_PS(69) G_DELAY_PS(0)        /* CFG_GPMC_A22_OUT */
--			0x1d0 A_DELAY_PS(1062) G_DELAY_PS(154)	  /* CFG_GPMC_A23_OUT */
--			0x1d8 A_DELAY_PS(640) G_DELAY_PS(0)       /* CFG_GPMC_A24_OEN */
--			0x1dc A_DELAY_PS(0) G_DELAY_PS(0)         /* CFG_GPMC_A24_OUT */
--			0x1e4 A_DELAY_PS(356) G_DELAY_PS(0)       /* CFG_GPMC_A25_OEN */
--			0x1e8 A_DELAY_PS(0) G_DELAY_PS(0)         /* CFG_GPMC_A25_OUT */
--			0x1f0 A_DELAY_PS(579) G_DELAY_PS(0)       /* CFG_GPMC_A26_OEN */
--			0x1f4 A_DELAY_PS(0) G_DELAY_PS(0)         /* CFG_GPMC_A26_OUT */
--			0x1fc A_DELAY_PS(435) G_DELAY_PS(0)       /* CFG_GPMC_A27_OEN */
--			0x200 A_DELAY_PS(36) G_DELAY_PS(0)        /* CFG_GPMC_A27_OUT */
--			0x364 A_DELAY_PS(759) G_DELAY_PS(0)       /* CFG_GPMC_CS1_OEN */
--			0x368 A_DELAY_PS(72) G_DELAY_PS(0)        /* CFG_GPMC_CS1_OUT */
-+			0x190 A_DELAY_PS(384) G_DELAY_PS(0)	/* CFG_GPMC_A19_OEN */
-+			0x194 A_DELAY_PS(350) G_DELAY_PS(174)	/* CFG_GPMC_A19_OUT */
-+			0x1a8 A_DELAY_PS(410) G_DELAY_PS(0)	/* CFG_GPMC_A20_OEN */
-+			0x1ac A_DELAY_PS(335) G_DELAY_PS(0)	/* CFG_GPMC_A20_OUT */
-+			0x1b4 A_DELAY_PS(468) G_DELAY_PS(0)	/* CFG_GPMC_A21_OEN */
-+			0x1b8 A_DELAY_PS(339) G_DELAY_PS(0)	/* CFG_GPMC_A21_OUT */
-+			0x1c0 A_DELAY_PS(676) G_DELAY_PS(0)	/* CFG_GPMC_A22_OEN */
-+			0x1c4 A_DELAY_PS(219) G_DELAY_PS(0)	/* CFG_GPMC_A22_OUT */
-+			0x1d0 A_DELAY_PS(1062) G_DELAY_PS(154)	/* CFG_GPMC_A23_OUT */
-+			0x1d8 A_DELAY_PS(640) G_DELAY_PS(0)	/* CFG_GPMC_A24_OEN */
-+			0x1dc A_DELAY_PS(150) G_DELAY_PS(0)	/* CFG_GPMC_A24_OUT */
-+			0x1e4 A_DELAY_PS(356) G_DELAY_PS(0)	/* CFG_GPMC_A25_OEN */
-+			0x1e8 A_DELAY_PS(150) G_DELAY_PS(0)	/* CFG_GPMC_A25_OUT */
-+			0x1f0 A_DELAY_PS(579) G_DELAY_PS(0)	/* CFG_GPMC_A26_OEN */
-+			0x1f4 A_DELAY_PS(200) G_DELAY_PS(0)	/* CFG_GPMC_A26_OUT */
-+			0x1fc A_DELAY_PS(435) G_DELAY_PS(0)	/* CFG_GPMC_A27_OEN */
-+			0x200 A_DELAY_PS(236) G_DELAY_PS(0)	/* CFG_GPMC_A27_OUT */
-+			0x364 A_DELAY_PS(759) G_DELAY_PS(0)	/* CFG_GPMC_CS1_OEN */
-+			0x368 A_DELAY_PS(372) G_DELAY_PS(0)	/* CFG_GPMC_CS1_OUT */
- 	      >;
- 	};
- 
+diff --git a/arch/arm/boot/dts/logicpd-som-lv-baseboard.dtsi b/arch/arm/boot/dts/logicpd-som-lv-baseboard.dtsi
+index 4990ed90dcea..3e39b9a1f35d 100644
+--- a/arch/arm/boot/dts/logicpd-som-lv-baseboard.dtsi
++++ b/arch/arm/boot/dts/logicpd-som-lv-baseboard.dtsi
+@@ -153,7 +153,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc1_pins>;
+ 	wp-gpios = <&gpio4 30 GPIO_ACTIVE_HIGH>;		/* gpio_126 */
+-	cd-gpios = <&gpio4 14 IRQ_TYPE_LEVEL_LOW>;		/* gpio_110 */
++	cd-gpios = <&gpio4 14 GPIO_ACTIVE_LOW>;			/* gpio_110 */
+ 	vmmc-supply = <&vmmc1>;
+ 	bus-width = <4>;
+ 	cap-power-off-card;
 -- 
-2.19.2
+2.17.1
 
