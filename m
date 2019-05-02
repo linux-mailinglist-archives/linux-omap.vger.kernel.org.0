@@ -2,67 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3232311B90
-	for <lists+linux-omap@lfdr.de>; Thu,  2 May 2019 16:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0694711BBF
+	for <lists+linux-omap@lfdr.de>; Thu,  2 May 2019 16:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726203AbfEBOfa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 May 2019 10:35:30 -0400
-Received: from muru.com ([72.249.23.125]:47968 "EHLO muru.com"
+        id S1726413AbfEBOsk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 May 2019 10:48:40 -0400
+Received: from muru.com ([72.249.23.125]:47986 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726197AbfEBOf3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 2 May 2019 10:35:29 -0400
+        id S1726197AbfEBOsk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 2 May 2019 10:48:40 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 501FD809B;
-        Thu,  2 May 2019 14:35:46 +0000 (UTC)
-Date:   Thu, 2 May 2019 07:35:25 -0700
+        by muru.com (Postfix) with ESMTPS id 08967809B;
+        Thu,  2 May 2019 14:48:56 +0000 (UTC)
+Date:   Thu, 2 May 2019 07:48:36 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Faiz Abbas <a0230074@ti.com>
-Cc:     Faiz Abbas <faiz_abbas@ti.com>, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
-        mark.rutland@arm.com, robh+dt@kernel.org, bcousson@baylibre.com,
-        ulf.hansson@linaro.org, adrian.hunter@intel.com
-Subject: Re: [PATCH] ARM: dts: am57xx-idk: Remove support for voltage
- switching for SD card
-Message-ID: <20190502143525.GP8007@atomide.com>
-References: <20190502084748.22518-1-faiz_abbas@ti.com>
- <20190502142016.GO8007@atomide.com>
- <50559611-a501-4331-c88b-5d05f6e756e9@ti.com>
+To:     Faiz Abbas <faiz_abbas@ti.com>
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, mark.rutland@arm.com,
+        robh+dt@kernel.org, bcousson@baylibre.com
+Subject: Re: [PATCH] ARM: dts: dra76x: Update MMC2_HS200_MANUAL1 iodelay
+ values
+Message-ID: <20190502144836.GQ8007@atomide.com>
+References: <20190430060856.18445-1-faiz_abbas@ti.com>
+ <20190430155415.GI8007@atomide.com>
+ <9e32440f-cdab-eb79-2abb-9b0596701743@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <50559611-a501-4331-c88b-5d05f6e756e9@ti.com>
+In-Reply-To: <9e32440f-cdab-eb79-2abb-9b0596701743@ti.com>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Faiz Abbas <a0230074@ti.com> [190502 14:30]:
+* Faiz Abbas <faiz_abbas@ti.com> [190502 06:28]:
 > Hi Tony,
 > 
-> On 02/05/19 7:50 PM, Tony Lindgren wrote:
-> > * Faiz Abbas <faiz_abbas@ti.com> [190502 01:48]:
-> >> If UHS speed modes are enabled, a compatible SD card switches down to
-> >> 1.8V during enumeration. If after this a software reboot/crash takes
-> >> place and on-chip ROM tries to enumerate the SD card, the difference in
-> >> IO voltages (host @ 3.3V and card @ 1.8V) may end up damaging the card.
-> >>
-> >> The fix for this is to have support for power cycling the card in
-> >> hardware (with a PORz/soft-reset line causing a power cycle of the
-> >> card). Since am571x-, am572x- and am574x-idk don't have this
-> >> capability, disable voltage switching for these boards.
-> >>
-> >> The major effect of this is that the maximum supported speed
-> >> mode is now high speed(50 MHz) down from SDR104(200 MHz).
+> On 30/04/19 9:24 PM, Tony Lindgren wrote:
+> > Hi,
 > > 
-> > This sounds a bit urgent, does it also need a stable tag or is
-> > it safe to apply against any earlier kernels?
+> > * Faiz Abbas <faiz_abbas@ti.com> [190429 23:09]:
+> >> Update the MMC2_HS200_MANUAL1 iodelay values to match with the latest
+> >> dra76x data manual[1].
+> >>
+> >> Also this particular pinctrl-array is using spaces instead of tabs for
+> >> spacing between the values and the comments. Fix this as well.
+> > 
+> > Is this needed as a fix or can this wait?
 > > 
 > 
-> This should be good to apply on any previous releases.
+> This is a fix. The new iodelay values will have better marginality and
+> should prevent issues in corner cases.
 
-OK applying both your MMC patches into fixes today.
+OK thanks tagging this one with cc stable as well.
 
-Thanks,
+Regards,
 
 Tony
