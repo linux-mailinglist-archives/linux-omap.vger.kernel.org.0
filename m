@@ -2,66 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9738C12C04
-	for <lists+linux-omap@lfdr.de>; Fri,  3 May 2019 13:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C507E13057
+	for <lists+linux-omap@lfdr.de>; Fri,  3 May 2019 16:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726468AbfECLJU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 May 2019 07:09:20 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:58076 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726396AbfECLJT (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 3 May 2019 07:09:19 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 12FD75CB04A129E301F5;
-        Fri,  3 May 2019 19:09:17 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 3 May 2019 19:09:10 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        id S1728160AbfECOfS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 May 2019 10:35:18 -0400
+Received: from smtp-out.xnet.cz ([178.217.244.18]:17091 "EHLO smtp-out.xnet.cz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728018AbfECOfR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 3 May 2019 10:35:17 -0400
+Received: from meh.true.cz (meh.true.cz [108.61.167.218])
+        (Authenticated sender: petr@true.cz)
+        by smtp-out.xnet.cz (Postfix) with ESMTPSA id 8BAAE4ACD;
+        Fri,  3 May 2019 16:27:33 +0200 (CEST)
+Received: by meh.true.cz (OpenSMTPD) with ESMTP id fc19d9f1;
+        Fri, 3 May 2019 16:27:32 +0200 (CEST)
+From:   =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
+To:     netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Andrew Lunn <andrew@lunn.ch>,
-        Sekhar Nori <nsekhar@ti.com>, Fugang Duan <fugang.duan@nxp.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-omap@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] drivers: net: davinci_mdio: fix return value check in davinci_mdio_probe()
-Date:   Fri, 3 May 2019 11:18:59 +0000
-Message-ID: <20190503111859.1023-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 04/10] net: davinci: support of_get_mac_address new ERR_PTR error
+Date:   Fri,  3 May 2019 16:27:09 +0200
+Message-Id: <1556893635-18549-5-git-send-email-ynezz@true.cz>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1556893635-18549-1-git-send-email-ynezz@true.cz>
+References: <1556893635-18549-1-git-send-email-ynezz@true.cz>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In case of error, the function devm_ioremap() returns NULL pointer not
-ERR_PTR(). The IS_ERR() test in the return value check should be
-replaced with NULL test.
+There was NVMEM support added directly to of_get_mac_address, and it uses
+nvmem_get_mac_address under the hood, so we can remove it. As
+of_get_mac_address can now return ERR_PTR encoded error values, adjust to
+that as well.
 
-Fixes: 03f66f067560 ("net: ethernet: ti: davinci_mdio: use devm_ioremap()")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Petr Štetiar <ynezz@true.cz>
 ---
- drivers/net/ethernet/ti/davinci_mdio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
-index 11642721c123..38b7f6d35759 100644
---- a/drivers/net/ethernet/ti/davinci_mdio.c
-+++ b/drivers/net/ethernet/ti/davinci_mdio.c
-@@ -398,8 +398,8 @@ static int davinci_mdio_probe(struct platform_device *pdev)
+ Changes since v2:
+
+  * ERR_PTR handling
+
+ Changes since v3:
+
+  * IS_ERR_OR_NULL -> IS_ERR
+
+ drivers/net/ethernet/ti/davinci_emac.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
+index 57450b1..c117a8f 100644
+--- a/drivers/net/ethernet/ti/davinci_emac.c
++++ b/drivers/net/ethernet/ti/davinci_emac.c
+@@ -1714,7 +1714,7 @@ static struct net_device_stats *emac_dev_getnetstats(struct net_device *ndev)
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	data->regs = devm_ioremap(dev, res->start, resource_size(res));
--	if (IS_ERR(data->regs))
--		return PTR_ERR(data->regs);
-+	if (!data->regs)
-+		return -ENOMEM;
+ 	if (!is_valid_ether_addr(pdata->mac_addr)) {
+ 		mac_addr = of_get_mac_address(np);
+-		if (mac_addr)
++		if (!IS_ERR(mac_addr))
+ 			ether_addr_copy(pdata->mac_addr, mac_addr);
+ 	}
  
- 	davinci_mdio_init_clk(data);
-
-
+@@ -1912,15 +1912,11 @@ static int davinci_emac_probe(struct platform_device *pdev)
+ 		ether_addr_copy(ndev->dev_addr, priv->mac_addr);
+ 
+ 	if (!is_valid_ether_addr(priv->mac_addr)) {
+-		/* Try nvmem if MAC wasn't passed over pdata or DT. */
+-		rc = nvmem_get_mac_address(&pdev->dev, priv->mac_addr);
+-		if (rc) {
+-			/* Use random MAC if still none obtained. */
+-			eth_hw_addr_random(ndev);
+-			memcpy(priv->mac_addr, ndev->dev_addr, ndev->addr_len);
+-			dev_warn(&pdev->dev, "using random MAC addr: %pM\n",
+-				 priv->mac_addr);
+-		}
++		/* Use random MAC if still none obtained. */
++		eth_hw_addr_random(ndev);
++		memcpy(priv->mac_addr, ndev->dev_addr, ndev->addr_len);
++		dev_warn(&pdev->dev, "using random MAC addr: %pM\n",
++			 priv->mac_addr);
+ 	}
+ 
+ 	ndev->netdev_ops = &emac_netdev_ops;
+-- 
+1.9.1
 
