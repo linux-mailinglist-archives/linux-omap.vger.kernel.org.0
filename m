@@ -2,51 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 565511415B
-	for <lists+linux-omap@lfdr.de>; Sun,  5 May 2019 19:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BA6B1420F
+	for <lists+linux-omap@lfdr.de>; Sun,  5 May 2019 21:14:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727343AbfEERRt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 5 May 2019 13:17:49 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:52732 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726905AbfEERRt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 May 2019 13:17:49 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id B284014D9FAD1;
-        Sun,  5 May 2019 10:17:48 -0700 (PDT)
-Date:   Sun, 05 May 2019 10:17:48 -0700 (PDT)
-Message-Id: <20190505.101748.916918403855488072.davem@davemloft.net>
-To:     weiyongjun1@huawei.com
-Cc:     grygorii.strashko@ti.com, f.fainelli@gmail.com, arnd@arndb.de,
-        andrew@lunn.ch, nsekhar@ti.com, fugang.duan@nxp.com,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] drivers: net: davinci_mdio: fix return value
- check in davinci_mdio_probe()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190503111859.1023-1-weiyongjun1@huawei.com>
-References: <20190503111859.1023-1-weiyongjun1@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 05 May 2019 10:17:49 -0700 (PDT)
+        id S1727343AbfEETON (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 May 2019 15:14:13 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:46698 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726636AbfEETON (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 May 2019 15:14:13 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id 1C53A803EE; Sun,  5 May 2019 21:14:02 +0200 (CEST)
+Date:   Sun, 5 May 2019 21:14:12 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 2/7] power: supply: cpcap-battery: Fix low battery check
+Message-ID: <20190505191412.GA4050@amd>
+References: <20190407181254.64537-1-tony@atomide.com>
+ <20190407181254.64537-3-tony@atomide.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="DocE+STaALJfprDB"
+Content-Disposition: inline
+In-Reply-To: <20190407181254.64537-3-tony@atomide.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Fri, 3 May 2019 11:18:59 +0000
 
-> In case of error, the function devm_ioremap() returns NULL pointer not
-> ERR_PTR(). The IS_ERR() test in the return value check should be
-> replaced with NULL test.
-> 
-> Fixes: 03f66f067560 ("net: ethernet: ti: davinci_mdio: use devm_ioremap()")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+--DocE+STaALJfprDB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied.
+On Sun 2019-04-07 11:12:49, Tony Lindgren wrote:
+> We need to check current instead of the charge counter to see if
+> a charger is connected. The charge counter shows the cumulated value
+> instead of the current charge current and can be negative or positive.
+>=20
+
+Acked-by: Pavel Machek <pavel@ucw.cz>
+
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+
+
+> ---
+>  drivers/power/supply/cpcap-battery.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/=
+cpcap-battery.c
+> --- a/drivers/power/supply/cpcap-battery.c
+> +++ b/drivers/power/supply/cpcap-battery.c
+> @@ -562,11 +562,11 @@ static irqreturn_t cpcap_battery_irq_thread(int irq=
+, void *data)
+> =20
+>  	switch (d->action) {
+>  	case CPCAP_BATTERY_IRQ_ACTION_BATTERY_LOW:
+> -		if (latest->counter_uah >=3D 0)
+> +		if (latest->current_ua >=3D 0)
+>  			dev_warn(ddata->dev, "Battery low at 3.3V!\n");
+>  		break;
+>  	case CPCAP_BATTERY_IRQ_ACTION_POWEROFF:
+> -		if (latest->counter_uah >=3D 0) {
+> +		if (latest->current_ua >=3D 0) {
+>  			dev_emerg(ddata->dev,
+>  				  "Battery empty at 3.1V, powering off\n");
+>  			orderly_poweroff(true);
+
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--DocE+STaALJfprDB
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAlzPNgQACgkQMOfwapXb+vJkoACfa+jKGnMxD78TLrJv6xTQhYU9
+CbYAnRwmWa7RdzyUAExv8D+lmgIAMz8K
+=xE1L
+-----END PGP SIGNATURE-----
+
+--DocE+STaALJfprDB--
