@@ -2,77 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD07C15541
-	for <lists+linux-omap@lfdr.de>; Mon,  6 May 2019 23:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F206715548
+	for <lists+linux-omap@lfdr.de>; Mon,  6 May 2019 23:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726338AbfEFVJF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 May 2019 17:09:05 -0400
-Received: from muru.com ([72.249.23.125]:48062 "EHLO muru.com"
+        id S1726190AbfEFVLZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 May 2019 17:11:25 -0400
+Received: from muru.com ([72.249.23.125]:48076 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726322AbfEFVJF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 6 May 2019 17:09:05 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id D199280DB;
-        Mon,  6 May 2019 21:09:22 +0000 (UTC)
+        id S1726118AbfEFVLZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 6 May 2019 17:11:25 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 7E3B580DB;
+        Mon,  6 May 2019 21:11:41 +0000 (UTC)
+Date:   Mon, 6 May 2019 14:11:20 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Tero Kristo <t-kristo@ti.com>
-Cc:     devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH] clk: ti: clkctrl: Fix clkdm_clk handling
-Date:   Mon,  6 May 2019 14:08:54 -0700
-Message-Id: <20190506210854.24300-1-tony@atomide.com>
-X-Mailer: git-send-email 2.21.0
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        linux-kbuild@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Alexey Gladkov <gladkov.alexey@gmail.com>,
+        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        linux-omap@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] Remove MODULE_ALIAS() calls that take undefined macro
+Message-ID: <20190506211120.GR8007@atomide.com>
+References: <1557163697-17882-1-git-send-email-yamada.masahiro@socionext.com>
+ <6d8e2880-0cc0-a7d8-1d42-4401e15e3ac9@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6d8e2880-0cc0-a7d8-1d42-4401e15e3ac9@linaro.org>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We need to always call clkdm_clk_enable() and clkdm_clk_disable() even
-the clkctrl clock(s) enabled for the domain do not have any gate register
-bits. Otherwise clockdomains may never get enabled except when devices get
-probed with the legacy "ti,hwmods" devicetree property.
+* Daniel Lezcano <daniel.lezcano@linaro.org> [190506 17:40]:
+> On 06/05/2019 19:28, Masahiro Yamada wrote:
+> > These files do not define (USBHS_)DRIVER_NAME. Yet, they can be
+> > successfully compiled because they are never built as a module by
+> > anyone, i.e, the MODULE_ALIAS() calls are always no-op.
+> > 
+> > A problem showed up when a patch "moduleparam: Save information about
+> > built-in modules in separate file" is applied. With this new feature,
+> > MODULE_*() are populated even if the callers are built-in.
+> > 
+> > To avoid the build errors, the lines referencing to the undefined
+> > macro must be removed.
+> > 
+> > The complete fix is to remove all MODULE_* and #include <linux/module.h>
+> > like many "make ... explicitly non-modular" commits did.
+> > 
+> > For now, I am touching the offending lines.
+> > 
+> > Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> > Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> > ---
+> 
+> Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-Fixes: 88a172526c32 ("clk: ti: add support for clkctrl clocks")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/clk/ti/clkctrl.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks, please feel free to merge together with your series:
 
-diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
---- a/drivers/clk/ti/clkctrl.c
-+++ b/drivers/clk/ti/clkctrl.c
-@@ -137,9 +137,6 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
- 	int ret;
- 	union omap4_timeout timeout = { 0 };
- 
--	if (!clk->enable_bit)
--		return 0;
--
- 	if (clk->clkdm) {
- 		ret = ti_clk_ll_ops->clkdm_clk_enable(clk->clkdm, hw->clk);
- 		if (ret) {
-@@ -151,6 +148,9 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
- 		}
- 	}
- 
-+	if (!clk->enable_bit)
-+		return 0;
-+
- 	val = ti_clk_ll_ops->clk_readl(&clk->enable_reg);
- 
- 	val &= ~OMAP4_MODULEMODE_MASK;
-@@ -179,7 +179,7 @@ static void _omap4_clkctrl_clk_disable(struct clk_hw *hw)
- 	union omap4_timeout timeout = { 0 };
- 
- 	if (!clk->enable_bit)
--		return;
-+		goto exit;
- 
- 	val = ti_clk_ll_ops->clk_readl(&clk->enable_reg);
- 
--- 
-2.21.0
+Acked-by: Tony Lindgren <tony@atomide.com>
+
+Or if you want me to queue it separately, please let me know.
+
+Regards,
+
+Tony
