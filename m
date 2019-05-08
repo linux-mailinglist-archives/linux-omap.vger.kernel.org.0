@@ -2,111 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E47917875
-	for <lists+linux-omap@lfdr.de>; Wed,  8 May 2019 13:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B33E17957
+	for <lists+linux-omap@lfdr.de>; Wed,  8 May 2019 14:22:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727579AbfEHLiB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 May 2019 07:38:01 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:35987 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727622AbfEHLh5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 May 2019 07:37:57 -0400
-Received: by mail-wr1-f67.google.com with SMTP id o4so26773261wra.3
-        for <linux-omap@vger.kernel.org>; Wed, 08 May 2019 04:37:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=eeVbE/nScJBLag5J/5uF3rhFiymQVd2Zd14j7hKs2Go=;
-        b=KECUZFNIH3rYUOtX1dlvmyFlTibofR3dC0G3z4LgOfu7EL81dRHDuGbinISBewHici
-         WTfqWBaOrepKmaPbAJab2EMLu2RaWGJ3wa3iyM7/eXcAHCDp5t34zDdlfgGdq0D77Q2m
-         19eRcJDyjmG6ZEfwbWO1ftM7r8fq7DFqfF87Xum9x1AHnDmhoEGCPc2qdIJTf0RaHSXT
-         7X1Xhk/AAoKKgjvae0fAl3bsa/jHjgZjWZIY8xlwyONYNTtN5rfYlsNhST6bqwbRRVyt
-         PgB1Vf9FG6amQy47sGdXd/Bv9PGr92BaUTNcWL+kwxvOM0Elm9FVE9p9IMpDMO+bFXs8
-         5Hmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=eeVbE/nScJBLag5J/5uF3rhFiymQVd2Zd14j7hKs2Go=;
-        b=Qfe7txBMtq4uroou/JcgAtfqNYmC4hnhmi1lK0mKnF66y0+8NIseY3cOntu709e1vY
-         iVrl+CeiiIunwNfcdPC0QTMHJHmDLVZGy51I+qNrk6cYMCB+lqUU/v9H4DMwnlloQ8e+
-         Y4VeFBihz9tyPw2qPG0w6DId8g7FQw0gp0p1DwhRjzxNcFqZK5i+RRDdrE8NYiktAHEt
-         qp8cjYgmuoOL4yXOgAHhYE1nSMx8nH1vfWJVt7Op/BRdhq7xXou5Y0oso3UDcJs3Xbmy
-         dVjesoq1Wm+LwYJm083gLmYS6M6w/sqRdYDtVF1VS7b+TcErXmoA0UENRsLoDbm8x+G+
-         kJlQ==
-X-Gm-Message-State: APjAAAXzo5znH8TQVI2PH3Kt5qUCVZ8TvzIwR0Wai4xA6NuE5csX+sTz
-        lY9xdQkEuVZf6WIftouUkpRlSw==
-X-Google-Smtp-Source: APXvYqylJd9JgQDs4no8oS1ib+tuQIB3A9RO89mbhrVWeCUcsCxdG1V6qUglLUHQmf1jJlbVfEJ7/g==
-X-Received: by 2002:adf:eb8e:: with SMTP id t14mr5248477wrn.113.1557315475173;
-        Wed, 08 May 2019 04:37:55 -0700 (PDT)
-Received: from dell ([2.27.167.43])
-        by smtp.gmail.com with ESMTPSA id l21sm1379871wmh.35.2019.05.08.04.37.54
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 08 May 2019 04:37:54 -0700 (PDT)
-Date:   Wed, 8 May 2019 12:37:52 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     linux-kbuild@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Alexey Gladkov <gladkov.alexey@gmail.com>,
-        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-omap@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        id S1728455AbfEHMWH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 May 2019 08:22:07 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:46886 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726751AbfEHMWG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 May 2019 08:22:06 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x48CJBEV086953;
+        Wed, 8 May 2019 12:20:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=Vy0vJPC+R/qK4BTy9W8k2EK+1DkuBwwYmX4Im7RV/1I=;
+ b=rwrtMH5vFY76MnriFuwWJRty7cv6d48ndLvoH9qa0iSpe18cQhaRn84K+EEAZ1el4f/y
+ JYXzNPHiRG6Um3c2LeXmrh0vIUgokB68rrApoaQDWIhQiq3xdWk5gSEBW5t2CsNm+NQD
+ vMj6o0elaMb6F0MU58KC4FWtRSn89CRe22TBfRL7zCGITD8/HSnJoDvmL6xh8b//HGVN
+ 0/+i+9yb5Er16ot7xGaUWYdgVLnSKYTBDh5U+VgaaiAGanyy3YqtlO3+pRPaxxQxAHqK
+ Taf9LSC6aD/fmeyve7zi016PT3fCR2HgfwqDVjH/4iBaBbfLBHPj+ptzQwZZXQN8uHEa Qg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2130.oracle.com with ESMTP id 2s94b63etg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 May 2019 12:20:31 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x48CJL8V107697;
+        Wed, 8 May 2019 12:20:30 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2s94ag20en-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 May 2019 12:20:30 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x48CKNew007185;
+        Wed, 8 May 2019 12:20:24 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 08 May 2019 05:20:22 -0700
+Date:   Wed, 8 May 2019 15:20:10 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
         linux-arm-kernel@lists.infradead.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: Re: [PATCH] Remove MODULE_ALIAS() calls that take undefined macro
-Message-ID: <20190508113752.GE31645@dell>
-References: <1557163697-17882-1-git-send-email-yamada.masahiro@socionext.com>
+        linux-rockchip@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-gpio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-tegra@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-usb@vger.kernel.org, kvm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-mtd@lists.infradead.org,
+        cgroups@vger.kernel.org, linux-mm@kvack.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, alsa-devel@alsa-project.org,
+        gregkh@linuxfoundation.org, andriy.shevchenko@linux.intel.com
+Subject: Re: [PATCH 09/16] mmc: sdhci-xenon: use new match_string()
+ helper/macro
+Message-ID: <20190508122010.GC21059@kadam>
+References: <20190508112842.11654-1-alexandru.ardelean@analog.com>
+ <20190508112842.11654-11-alexandru.ardelean@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1557163697-17882-1-git-send-email-yamada.masahiro@socionext.com>
+In-Reply-To: <20190508112842.11654-11-alexandru.ardelean@analog.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=644
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905080079
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=665 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905080079
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 07 May 2019, Masahiro Yamada wrote:
+On Wed, May 08, 2019 at 02:28:35PM +0300, Alexandru Ardelean wrote:
+> -static const char * const phy_types[] = {
+> -	"emmc 5.0 phy",
+> -	"emmc 5.1 phy"
+> -};
+> -
+>  enum xenon_phy_type_enum {
+>  	EMMC_5_0_PHY,
+>  	EMMC_5_1_PHY,
+>  	NR_PHY_TYPES
 
-> These files do not define (USBHS_)DRIVER_NAME. Yet, they can be
-> successfully compiled because they are never built as a module by
-> anyone, i.e, the MODULE_ALIAS() calls are always no-op.
-> 
-> A problem showed up when a patch "moduleparam: Save information about
-> built-in modules in separate file" is applied. With this new feature,
-> MODULE_*() are populated even if the callers are built-in.
-> 
-> To avoid the build errors, the lines referencing to the undefined
-> macro must be removed.
-> 
-> The complete fix is to remove all MODULE_* and #include <linux/module.h>
-> like many "make ... explicitly non-modular" commits did.
-> 
-> For now, I am touching the offending lines.
-> 
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
-> 
-> I will insert this commit before
-> "moduleparam: Save information about built-in modules in separate file"
-> 
-> 
->  arch/arm/plat-omap/dma.c          | 1 -
->  drivers/clocksource/timer-ti-dm.c | 1 -
->  drivers/mfd/omap-usb-tll.c        | 1 -
+There is no need for NR_PHY_TYPES now so you could remove that as well.
 
-For my own reference:
-  Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+regards,
+dan carpenter
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
