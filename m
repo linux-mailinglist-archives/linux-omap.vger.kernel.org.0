@@ -2,352 +2,163 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D0B519AC2
-	for <lists+linux-omap@lfdr.de>; Fri, 10 May 2019 11:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0852119E30
+	for <lists+linux-omap@lfdr.de>; Fri, 10 May 2019 15:29:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727419AbfEJJgD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 May 2019 05:36:03 -0400
-Received: from smtp-out.xnet.cz ([178.217.244.18]:33296 "EHLO smtp-out.xnet.cz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727298AbfEJJfz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 10 May 2019 05:35:55 -0400
-Received: from meh.true.cz (meh.true.cz [108.61.167.218])
-        (Authenticated sender: petr@true.cz)
-        by smtp-out.xnet.cz (Postfix) with ESMTPSA id D8024434D;
-        Fri, 10 May 2019 11:35:50 +0200 (CEST)
-Received: by meh.true.cz (OpenSMTPD) with ESMTP id 0141c5c7;
-        Fri, 10 May 2019 11:35:49 +0200 (CEST)
-From:   =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>
-To:     netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>,
-        =?UTF-8?q?Petr=20=C5=A0tetiar?= <ynezz@true.cz>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-renesas-soc@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH net 4/5] net: ethernet: fix similar warning reported by kbuild test robot
-Date:   Fri, 10 May 2019 11:35:17 +0200
-Message-Id: <1557480918-9627-5-git-send-email-ynezz@true.cz>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1557480918-9627-1-git-send-email-ynezz@true.cz>
-References: <1557480918-9627-1-git-send-email-ynezz@true.cz>
+        id S1727606AbfEJN3F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 May 2019 09:29:05 -0400
+Received: from mail-it1-f196.google.com ([209.85.166.196]:35803 "EHLO
+        mail-it1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727247AbfEJN3E (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 May 2019 09:29:04 -0400
+Received: by mail-it1-f196.google.com with SMTP id u186so9175446ith.0;
+        Fri, 10 May 2019 06:29:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=tEI9sf8s6CbiYTZhinc6UaZKY3nXguWNObTRgvPsffM=;
+        b=MKLC6fFeMMNFlxLJm1qDPzi/olxy7mWKyhC4XwwLqyBjXhuidBs38mAWHI8UFRB9BB
+         Z5KsEEUaF5Gbi4PMSAVYNllV+134u3zlYqmoXWHzcmItQmy/JD/9ep9FwkHWJbOvvSO/
+         js2Lxdtum8wIalNl0T17XkQcCt9Ha+NGcHa6rF/yptT0Ekt46+laq0nY48yJ59bDS5dw
+         bzDu1uUrblxcrBAB2IcZsojYCTUTIo+lsNEthY79ocauJ2Vv3DseLum1nKYNuvN6E6aB
+         VrzIxBHGTz4FjB9f+Te4Be4cY7mVDwltqP1ija8h8IS+t1q4MYELIK1acjaTzcrf2id8
+         Hiow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=tEI9sf8s6CbiYTZhinc6UaZKY3nXguWNObTRgvPsffM=;
+        b=PZYmET0GXzFaRg8MB3SGGVm3gtNu6jfdnVFF5soJLC7mQAc75fa8SBAT5/nKPMolWQ
+         qNT75nNBeN9JpKvHvxtm2G5KXKBFQHe69qOkJd42UpaSLV0ww8tfp7xp0rS1gSzvxyAo
+         azU3vtOfeFVVKBykLFvZVLG1wPjWN05cWdHmmStIZvHr98N4iOhhIMUYidodk4gE239q
+         AlUCd4fQTtuqDCslQwBQ+GkMymUTT1/mxTJR5TQLufpJTe4k4MmUH1EcQixSHYVpcVfs
+         pZT2H3p9+fJ1nGYSBHQ5Fg2/j6SP0f8WPFHAFpH5bZrg+r3V2RNzfHtSd2aBnBaGaplL
+         MsWw==
+X-Gm-Message-State: APjAAAVOTzG6o2PjOxkSHCVRttb6hCNOsiONLK9B7jC34Oeei2Fpdd+m
+        rMd9+6XlrzXO54MhpdoaBFHEn/2V0LjNAIWYsDw=
+X-Google-Smtp-Source: APXvYqwfD517a0sqCt8zRC0swAkSFTZ4O5J/Aykr/0rp0fbxJ/7CpCNvGVWvAwLspNf49q3MF5lLhY/ndxNGki3BYCA=
+X-Received: by 2002:a24:4415:: with SMTP id o21mr2980847ita.143.1557494943235;
+ Fri, 10 May 2019 06:29:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20181221011752.25627-1-sre@kernel.org> <4f47f7f2-3abb-856c-4db5-675caf8057c7@xs4all.nl>
+ <20190319133154.7tbfafy7pguzw2tk@earth.universe> <CAHCN7xLZFLs=ed539bwuT6s-n6SDof-um7B3AeErQ2ChztC26A@mail.gmail.com>
+ <CAHCN7xLQ=h3bfwS=uTfjSpOtv9qWbic0=_51WJz9KmX7v8+vmw@mail.gmail.com> <FCCA9B3E-80AD-416E-B6E4-85E90721881E@holtmann.org>
+In-Reply-To: <FCCA9B3E-80AD-416E-B6E4-85E90721881E@holtmann.org>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 10 May 2019 08:28:51 -0500
+Message-ID: <CAHCN7x+2t++EifqQ17kyzW0=NnnQ4A1HeFvE4pEzJ02cXwy+LA@mail.gmail.com>
+Subject: Re: [PATCH 00/14] Add support for FM radio in hcill and kill TI_ST
+To:     Marcel Holtmann <marcel@holtmann.org>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Hans Verkuil <hverkuil@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
+        linux-media@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This patch fixes following (similar) warning reported by kbuild test robot:
+On Wed, May 8, 2019 at 3:58 PM Marcel Holtmann <marcel@holtmann.org> wrote:
+>
+> Hi Adam,
+>
+> >>>>> This moves all remaining users of the legacy TI_ST driver to hcill =
+(patches
+> >>>>> 1-3). Then patches 4-7 convert wl128x-radio driver to a standard pl=
+atform
+> >>>>> device driver with support for multiple instances. Patch 7 will res=
+ult in
+> >>>>> (userless) TI_ST driver no longer supporting radio at runtime. Patc=
+h 8-11 do
+> >>>>> some cleanups in the wl128x-radio driver. Finally patch 12 removes =
+the TI_ST
+> >>>>> specific parts from wl128x-radio and adds the required infrastructu=
+re to use it
+> >>>>> with the serdev hcill driver instead. The remaining patches 13 and =
+14 remove
+> >>>>> the old TI_ST code.
+> >>>>>
+> >>>>> The new code has been tested on the Motorola Droid 4. For testing t=
+he audio
+> >>>>> should be configured to route Ext to Speaker or Headphone. Then you=
+ need to
+> >>>>> plug headphone, since its cable is used as antenna. For testing the=
+re is a
+> >>>>> 'radio' utility packages in Debian. When you start the utility you =
+need to
+> >>>>> specify a frequency, since initial get_frequency returns an error:
+> >>>>
+> >>>> What is the status of this series?
+> >>>>
+> >>>> Based on some of the replies (from Adam Ford in particular) it appea=
+rs that
+> >>>> this isn't ready to be merged, so is a v2 planned?
+> >>>
+> >>> Yes, a v2 is planned, but I'm super busy at the moment. I don't
+> >>> expect to send something for this merge window. Neither LogicPD
+> >>> nor IGEP use FM radio, so I can just remove FM support from the
+> >>> TI_ST framework. Converting those platforms to hci_ll can be done
+> >>> in a different patchset.
+> >>>
+> >>> If that was the only issue there would be a v2 already. But Marcel
+> >>> Holtmann suggested to pass the custom packet data through the BT
+> >>> subsystem, which is non-trivial (at least for me) :)
+> >>
+> >> I am running some tests today on the wl1283-st on the Logic PD Torpedo
+> >> board.  Tony had suggested a few options, so I'm going to try those.
+> >> Looking at those today.  If/when you have a V2, please CC me on it. If
+> >> it's been posted, can you send me a link?  I would really like to see
+> >> the st-kim driver go away so I'd like to resolve the issues with the
+> >> torpedo board.
+> >
+> > I have run a bunch of tests on the 5.1 kernel.  I am able to get the
+> > firmware to load now and the hci0 goes up.  I was able to establish a
+> > BLE connection to a TI Sensor Tag and read and write data to it with
+> > good success on the wl1283.
+> >
+> > Unfortunately, when I tried to do some more extensive testing over
+> > classic Bluetooth, I got an error that repeats itself at seemingly
+> > random intervals:
+> >      Bluetooth: hci0: Frame reassembly failed (-84)
+> >
+> > I can still scan and pair, but these Frame reassembly failed errors
+> > appear to come and go.
+>
+> there are only 3 places in h4_recv_buf that return EILSEQ. Just add an ex=
+tra printk to these to figure out which one it is. Maybe it is just extra p=
+acket types that we need to handle. If it is not the packet type one, print=
+ what packet we have that is causing this.
+>
 
- In function ‘memcpy’,
-  inlined from ‘smsc75xx_init_mac_address’ at drivers/net/usb/smsc75xx.c:778:3,
-  inlined from ‘smsc75xx_bind’ at drivers/net/usb/smsc75xx.c:1501:2:
-  ./include/linux/string.h:355:9: warning: argument 2 null where non-null expected [-Wnonnull]
-  return __builtin_memcpy(p, q, size);
-         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/usb/smsc75xx.c: In function ‘smsc75xx_bind’:
-  ./include/linux/string.h:355:9: note: in a call to built-in function ‘__builtin_memcpy’
+I added some code around
 
-I've replaced the offending memcpy with ether_addr_copy, because I'm
-100% sure, that of_get_mac_address can't return NULL as it returns valid
-pointer or ERR_PTR encoded value, nothing else.
+/* Check for invalid packet type */
+    if (!skb) {
+     printk("Check for invalid packet type %x\n", (unsigned int)
+(&pkts[i])->type);
+     return ERR_PTR(-EILSEQ);
+}
 
-I'm hesitant to just change IS_ERR into IS_ERR_OR_NULL check, as this
-would make the warning disappear also, but it would be confusing to
-check for impossible return value just to make a compiler happy.
+I don't know if I did it right or I am reading the packet type
+correctly, but the frame reassembly errors are being caught here.
 
-I'm now changing all occurencies of memcpy to ether_addr_copy after the
-of_get_mac_address call, as it's very likely, that we're going to get
-similar reports from kbuild test robot in the future.
+[  408.519165] Check for invalid packet type ff
+[  408.523559] Bluetooth: hci0: Frame reassembly failed (-84)
 
-Fixes: a51645f70f63 ("net: ethernet: support of_get_mac_address new ERR_PTR error")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Petr Štetiar <ynezz@true.cz>
----
- drivers/net/ethernet/allwinner/sun4i-emac.c           | 2 +-
- drivers/net/ethernet/arc/emac_main.c                  | 2 +-
- drivers/net/ethernet/cavium/octeon/octeon_mgmt.c      | 2 +-
- drivers/net/ethernet/davicom/dm9000.c                 | 2 +-
- drivers/net/ethernet/freescale/fec_mpc52xx.c          | 2 +-
- drivers/net/ethernet/freescale/fman/mac.c             | 2 +-
- drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 2 +-
- drivers/net/ethernet/freescale/gianfar.c              | 2 +-
- drivers/net/ethernet/freescale/ucc_geth.c             | 2 +-
- drivers/net/ethernet/marvell/mv643xx_eth.c            | 2 +-
- drivers/net/ethernet/marvell/mvneta.c                 | 2 +-
- drivers/net/ethernet/marvell/sky2.c                   | 2 +-
- drivers/net/ethernet/micrel/ks8851.c                  | 2 +-
- drivers/net/ethernet/micrel/ks8851_mll.c              | 2 +-
- drivers/net/ethernet/nxp/lpc_eth.c                    | 2 +-
- drivers/net/ethernet/renesas/sh_eth.c                 | 2 +-
- drivers/net/ethernet/ti/cpsw.c                        | 2 +-
- drivers/net/ethernet/xilinx/ll_temac_main.c           | 2 +-
- drivers/net/ethernet/xilinx/xilinx_emaclite.c         | 2 +-
- 19 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/allwinner/sun4i-emac.c b/drivers/net/ethernet/allwinner/sun4i-emac.c
-index 37ebd890ef51..9e06dff619c3 100644
---- a/drivers/net/ethernet/allwinner/sun4i-emac.c
-+++ b/drivers/net/ethernet/allwinner/sun4i-emac.c
-@@ -871,7 +871,7 @@ static int emac_probe(struct platform_device *pdev)
- 	/* Read MAC-address from DT */
- 	mac_addr = of_get_mac_address(np);
- 	if (!IS_ERR(mac_addr))
--		memcpy(ndev->dev_addr, mac_addr, ETH_ALEN);
-+		ether_addr_copy(ndev->dev_addr, mac_addr);
- 
- 	/* Check if the MAC address is valid, if not get a random one */
- 	if (!is_valid_ether_addr(ndev->dev_addr)) {
-diff --git a/drivers/net/ethernet/arc/emac_main.c b/drivers/net/ethernet/arc/emac_main.c
-index 7f89ad5c336d..13a1d99b29c6 100644
---- a/drivers/net/ethernet/arc/emac_main.c
-+++ b/drivers/net/ethernet/arc/emac_main.c
-@@ -961,7 +961,7 @@ int arc_emac_probe(struct net_device *ndev, int interface)
- 	mac_addr = of_get_mac_address(dev->of_node);
- 
- 	if (!IS_ERR(mac_addr))
--		memcpy(ndev->dev_addr, mac_addr, ETH_ALEN);
-+		ether_addr_copy(ndev->dev_addr, mac_addr);
- 	else
- 		eth_hw_addr_random(ndev);
- 
-diff --git a/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c b/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
-index 15b1130aa4ae..0e5de88fd6e8 100644
---- a/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
-+++ b/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
-@@ -1504,7 +1504,7 @@ static int octeon_mgmt_probe(struct platform_device *pdev)
- 	mac = of_get_mac_address(pdev->dev.of_node);
- 
- 	if (!IS_ERR(mac))
--		memcpy(netdev->dev_addr, mac, ETH_ALEN);
-+		ether_addr_copy(netdev->dev_addr, mac);
- 	else
- 		eth_hw_addr_random(netdev);
- 
-diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
-index 953ee5616801..5e1aff9a5fd6 100644
---- a/drivers/net/ethernet/davicom/dm9000.c
-+++ b/drivers/net/ethernet/davicom/dm9000.c
-@@ -1413,7 +1413,7 @@ static struct dm9000_plat_data *dm9000_parse_dt(struct device *dev)
- 
- 	mac_addr = of_get_mac_address(np);
- 	if (!IS_ERR(mac_addr))
--		memcpy(pdata->dev_addr, mac_addr, sizeof(pdata->dev_addr));
-+		ether_addr_copy(pdata->dev_addr, mac_addr);
- 
- 	return pdata;
- }
-diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx.c b/drivers/net/ethernet/freescale/fec_mpc52xx.c
-index 7b7e526869a7..30cdb246d020 100644
---- a/drivers/net/ethernet/freescale/fec_mpc52xx.c
-+++ b/drivers/net/ethernet/freescale/fec_mpc52xx.c
-@@ -903,7 +903,7 @@ static int mpc52xx_fec_probe(struct platform_device *op)
- 	 */
- 	mac_addr = of_get_mac_address(np);
- 	if (!IS_ERR(mac_addr)) {
--		memcpy(ndev->dev_addr, mac_addr, ETH_ALEN);
-+		ether_addr_copy(ndev->dev_addr, mac_addr);
- 	} else {
- 		struct mpc52xx_fec __iomem *fec = priv->fec;
- 
-diff --git a/drivers/net/ethernet/freescale/fman/mac.c b/drivers/net/ethernet/freescale/fman/mac.c
-index 9cd2c28d17df..7ab8095db192 100644
---- a/drivers/net/ethernet/freescale/fman/mac.c
-+++ b/drivers/net/ethernet/freescale/fman/mac.c
-@@ -729,7 +729,7 @@ static int mac_probe(struct platform_device *_of_dev)
- 		err = -EINVAL;
- 		goto _return_of_get_parent;
- 	}
--	memcpy(mac_dev->addr, mac_addr, sizeof(mac_dev->addr));
-+	ether_addr_copy(mac_dev->addr, mac_addr);
- 
- 	/* Get the port handles */
- 	nph = of_count_phandle_with_args(mac_node, "fsl,fman-ports", NULL);
-diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-index 90ea7a115d0f..5fad73b2e123 100644
---- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-@@ -1015,7 +1015,7 @@ static int fs_enet_probe(struct platform_device *ofdev)
- 
- 	mac_addr = of_get_mac_address(ofdev->dev.of_node);
- 	if (!IS_ERR(mac_addr))
--		memcpy(ndev->dev_addr, mac_addr, ETH_ALEN);
-+		ether_addr_copy(ndev->dev_addr, mac_addr);
- 
- 	ret = fep->ops->allocate_bd(ndev);
- 	if (ret)
-diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/ethernet/freescale/gianfar.c
-index df13c693b038..e670cd293dba 100644
---- a/drivers/net/ethernet/freescale/gianfar.c
-+++ b/drivers/net/ethernet/freescale/gianfar.c
-@@ -873,7 +873,7 @@ static int gfar_of_init(struct platform_device *ofdev, struct net_device **pdev)
- 	mac_addr = of_get_mac_address(np);
- 
- 	if (!IS_ERR(mac_addr))
--		memcpy(dev->dev_addr, mac_addr, ETH_ALEN);
-+		ether_addr_copy(dev->dev_addr, mac_addr);
- 
- 	if (model && !strcasecmp(model, "TSEC"))
- 		priv->device_flags |= FSL_GIANFAR_DEV_HAS_GIGABIT |
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 216e99af2b5a..4d6892d2f0a4 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -3911,7 +3911,7 @@ static int ucc_geth_probe(struct platform_device* ofdev)
- 
- 	mac_addr = of_get_mac_address(np);
- 	if (!IS_ERR(mac_addr))
--		memcpy(dev->dev_addr, mac_addr, ETH_ALEN);
-+		ether_addr_copy(dev->dev_addr, mac_addr);
- 
- 	ugeth->ug_info = ug_info;
- 	ugeth->dev = device;
-diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
-index 07e254fc96ef..409b69fd4374 100644
---- a/drivers/net/ethernet/marvell/mv643xx_eth.c
-+++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
-@@ -2750,7 +2750,7 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
- 
- 	mac_addr = of_get_mac_address(pnp);
- 	if (!IS_ERR(mac_addr))
--		memcpy(ppd.mac_addr, mac_addr, ETH_ALEN);
-+		ether_addr_copy(ppd.mac_addr, mac_addr);
- 
- 	mv643xx_eth_property(pnp, "tx-queue-size", ppd.tx_queue_size);
- 	mv643xx_eth_property(pnp, "tx-sram-addr", ppd.tx_sram_addr);
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index 8186135883ed..e758650b2c26 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -4565,7 +4565,7 @@ static int mvneta_probe(struct platform_device *pdev)
- 	dt_mac_addr = of_get_mac_address(dn);
- 	if (!IS_ERR(dt_mac_addr)) {
- 		mac_from = "device tree";
--		memcpy(dev->dev_addr, dt_mac_addr, ETH_ALEN);
-+		ether_addr_copy(dev->dev_addr, dt_mac_addr);
- 	} else {
- 		mvneta_get_mac_addr(pp, hw_mac_addr);
- 		if (is_valid_ether_addr(hw_mac_addr)) {
-diff --git a/drivers/net/ethernet/marvell/sky2.c b/drivers/net/ethernet/marvell/sky2.c
-index 9d070cca3e9e..5adf307fbbfd 100644
---- a/drivers/net/ethernet/marvell/sky2.c
-+++ b/drivers/net/ethernet/marvell/sky2.c
-@@ -4805,7 +4805,7 @@ static struct net_device *sky2_init_netdev(struct sky2_hw *hw, unsigned port,
- 	 */
- 	iap = of_get_mac_address(hw->pdev->dev.of_node);
- 	if (!IS_ERR(iap))
--		memcpy(dev->dev_addr, iap, ETH_ALEN);
-+		ether_addr_copy(dev->dev_addr, iap);
- 	else
- 		memcpy_fromio(dev->dev_addr, hw->regs + B2_MAC_1 + port * 8,
- 			      ETH_ALEN);
-diff --git a/drivers/net/ethernet/micrel/ks8851.c b/drivers/net/ethernet/micrel/ks8851.c
-index b44172a901ed..ba4fdf1b0dea 100644
---- a/drivers/net/ethernet/micrel/ks8851.c
-+++ b/drivers/net/ethernet/micrel/ks8851.c
-@@ -426,7 +426,7 @@ static void ks8851_init_mac(struct ks8851_net *ks)
- 
- 	mac_addr = of_get_mac_address(ks->spidev->dev.of_node);
- 	if (!IS_ERR(mac_addr)) {
--		memcpy(dev->dev_addr, mac_addr, ETH_ALEN);
-+		ether_addr_copy(dev->dev_addr, mac_addr);
- 		ks8851_write_mac_addr(dev);
- 		return;
- 	}
-diff --git a/drivers/net/ethernet/micrel/ks8851_mll.c b/drivers/net/ethernet/micrel/ks8851_mll.c
-index dc76b0d15234..e5c8412c08c1 100644
---- a/drivers/net/ethernet/micrel/ks8851_mll.c
-+++ b/drivers/net/ethernet/micrel/ks8851_mll.c
-@@ -1328,7 +1328,7 @@ static int ks8851_probe(struct platform_device *pdev)
- 	if (pdev->dev.of_node) {
- 		mac = of_get_mac_address(pdev->dev.of_node);
- 		if (!IS_ERR(mac))
--			memcpy(ks->mac_addr, mac, ETH_ALEN);
-+			ether_addr_copy(ks->mac_addr, mac);
- 	} else {
- 		struct ks8851_mll_platform_data *pdata;
- 
-diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
-index da138edddd32..fec604c4c0d3 100644
---- a/drivers/net/ethernet/nxp/lpc_eth.c
-+++ b/drivers/net/ethernet/nxp/lpc_eth.c
-@@ -1369,7 +1369,7 @@ static int lpc_eth_drv_probe(struct platform_device *pdev)
- 	if (!is_valid_ether_addr(ndev->dev_addr)) {
- 		const char *macaddr = of_get_mac_address(np);
- 		if (!IS_ERR(macaddr))
--			memcpy(ndev->dev_addr, macaddr, ETH_ALEN);
-+			ether_addr_copy(ndev->dev_addr, macaddr);
- 	}
- 	if (!is_valid_ether_addr(ndev->dev_addr))
- 		eth_hw_addr_random(ndev);
-diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
-index 7c4e282242d5..6354f19a31eb 100644
---- a/drivers/net/ethernet/renesas/sh_eth.c
-+++ b/drivers/net/ethernet/renesas/sh_eth.c
-@@ -3193,7 +3193,7 @@ static struct sh_eth_plat_data *sh_eth_parse_dt(struct device *dev)
- 
- 	mac_addr = of_get_mac_address(np);
- 	if (!IS_ERR(mac_addr))
--		memcpy(pdata->mac_addr, mac_addr, ETH_ALEN);
-+		ether_addr_copy(pdata->mac_addr, mac_addr);
- 
- 	pdata->no_ether_link =
- 		of_property_read_bool(np, "renesas,no-ether-link");
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index b18eeb05b993..634fc484a0b3 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -2233,7 +2233,7 @@ static int cpsw_probe_dt(struct cpsw_platform_data *data,
- no_phy_slave:
- 		mac_addr = of_get_mac_address(slave_node);
- 		if (!IS_ERR(mac_addr)) {
--			memcpy(slave_data->mac_addr, mac_addr, ETH_ALEN);
-+			ether_addr_copy(slave_data->mac_addr, mac_addr);
- 		} else {
- 			ret = ti_cm_get_macid(&pdev->dev, i,
- 					      slave_data->mac_addr);
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
-index 997475c209c0..47c45152132e 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -361,7 +361,7 @@ static void temac_do_set_mac_address(struct net_device *ndev)
- 
- static int temac_init_mac_address(struct net_device *ndev, const void *address)
- {
--	memcpy(ndev->dev_addr, address, ETH_ALEN);
-+	ether_addr_copy(ndev->dev_addr, address);
- 	if (!is_valid_ether_addr(ndev->dev_addr))
- 		eth_hw_addr_random(ndev);
- 	temac_do_set_mac_address(ndev);
-diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-index 691170753563..6886270da695 100644
---- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-@@ -1167,7 +1167,7 @@ static int xemaclite_of_probe(struct platform_device *ofdev)
- 
- 	if (!IS_ERR(mac_address)) {
- 		/* Set the MAC address. */
--		memcpy(ndev->dev_addr, mac_address, ETH_ALEN);
-+		ether_addr_copy(ndev->dev_addr, mac_address);
- 	} else {
- 		dev_warn(dev, "No MAC address found, using random\n");
- 		eth_hw_addr_random(ndev);
--- 
-1.9.1
+adam
 
+> Regards
+>
+> Marcel
+>
