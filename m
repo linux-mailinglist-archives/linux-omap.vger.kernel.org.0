@@ -2,142 +2,177 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 124FF1A054
-	for <lists+linux-omap@lfdr.de>; Fri, 10 May 2019 17:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A2C81A376
+	for <lists+linux-omap@lfdr.de>; Fri, 10 May 2019 21:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727469AbfEJPiv convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Fri, 10 May 2019 11:38:51 -0400
-Received: from coyote.holtmann.net ([212.227.132.17]:39092 "EHLO
-        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727346AbfEJPiv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 May 2019 11:38:51 -0400
-Received: from marcel-macpro.fritz.box (p4FF9FD9B.dip0.t-ipconnect.de [79.249.253.155])
-        by mail.holtmann.org (Postfix) with ESMTPSA id 5207FCF182;
-        Fri, 10 May 2019 17:47:04 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.8\))
-Subject: Re: [PATCH 00/14] Add support for FM radio in hcill and kill TI_ST
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <CAHCN7x+2t++EifqQ17kyzW0=NnnQ4A1HeFvE4pEzJ02cXwy+LA@mail.gmail.com>
-Date:   Fri, 10 May 2019 17:38:48 +0200
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        id S1727670AbfEJTmt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 May 2019 15:42:49 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:38168 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727638AbfEJTmt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 May 2019 15:42:49 -0400
+Received: by mail-io1-f66.google.com with SMTP id y6so5427796ior.5;
+        Fri, 10 May 2019 12:42:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=YO5aV9RNmEsHE9amrXyCgHA1u0E4O0knkwps7WnuFv0=;
+        b=BCDPaaEqvrLXcSGRWr5S3MZNdOouK+RphRlWHZ5/MqyPJSq1/rPiTHnFk5GulaQEYW
+         9ZrqoezOIM8sO+Oo/+S/zlh28o8gSbW66OlRlIM/argXlA3WQx10wZtdOpEM6Qp52bRM
+         EZq/+WrL1PR4EM+D2SAXqa3DpEuELlep0Gx0zLQa/N9OohVwJ+bY2J0dBMxyXvYWBhSH
+         XvXtqFssBfQw5o7/5tHjkfl+bxC3Md0PWk5wHdZZUv+Wqx65XFIXoATFvlqqbGfuVsnq
+         z2utpcJsI+XxLd1wiEtgIQI+CcPVT0hRStWY4FYKktl1IxFQLqY7W4VugQaawX/kYfHz
+         1tdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=YO5aV9RNmEsHE9amrXyCgHA1u0E4O0knkwps7WnuFv0=;
+        b=b+DH1O1adtAfQ4OqPtAB40y0G3cfDzTHIbF1Fi5nx/9NM7wJ+9ftDSGc8mtrUc6+VR
+         XKNIn1ByQ7Mpjc0P4nVAbq0CQ6d9w+MtnWfS6kmtN3AgzGULuYkPz6p7tsLEJvf9xV/V
+         70ElBwRMxPOBN4+Gm8XoZPvnvAnFzOfzD1lmAajhSy4kEMRxQHtchlnI4BB29te0PosB
+         eS7zK9tHLpNlayWIkhtn7VZF2F72+/ekYJjy0ghjGyZCm6l+a3XEjOfdbbfY9NGn8+G7
+         4hM+a6fRABnSNHld25WrRo1UcLNTimjVj/pehadQHV+C7PaW1K+6TyG5qhjlh+vPVHpl
+         bMAw==
+X-Gm-Message-State: APjAAAUN8MKFFrO4J6PMsQjEDrMFDaTC3r2VKNHs+TK+gB5PF4CLFeI1
+        lFNSZjhlM8PA8qwcK68xcwJkyVYfRDt6Sw==
+X-Google-Smtp-Source: APXvYqx5kbQ9jaDVLMe+fwt230a/4Euni6CMHlf+lRjuzrr3etdu9O2C4gXTKyCTCM8O97vANKQlUw==
+X-Received: by 2002:a6b:5b0f:: with SMTP id v15mr8502059ioh.82.1557517368203;
+        Fri, 10 May 2019 12:42:48 -0700 (PDT)
+Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
+        by smtp.gmail.com with ESMTPSA id p184sm2845331itb.2.2019.05.10.12.42.46
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 10 May 2019 12:42:47 -0700 (PDT)
+From:   Adam Ford <aford173@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
-        linux-media@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <4C83753E-205B-42CE-AF85-74674B311151@holtmann.org>
-References: <20181221011752.25627-1-sre@kernel.org>
- <4f47f7f2-3abb-856c-4db5-675caf8057c7@xs4all.nl>
- <20190319133154.7tbfafy7pguzw2tk@earth.universe>
- <CAHCN7xLZFLs=ed539bwuT6s-n6SDof-um7B3AeErQ2ChztC26A@mail.gmail.com>
- <CAHCN7xLQ=h3bfwS=uTfjSpOtv9qWbic0=_51WJz9KmX7v8+vmw@mail.gmail.com>
- <FCCA9B3E-80AD-416E-B6E4-85E90721881E@holtmann.org>
- <CAHCN7x+2t++EifqQ17kyzW0=NnnQ4A1HeFvE4pEzJ02cXwy+LA@mail.gmail.com>
-To:     Adam Ford <aford173@gmail.com>
-X-Mailer: Apple Mail (2.3445.104.8)
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to dts
+Date:   Fri, 10 May 2019 14:42:29 -0500
+Message-Id: <20190510194229.20628-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Adam,
+Currently the source code is compiled using hard-coded values
+from CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK.  This patch allows this
+clock divider value to be moved to the device tree and be changed
+without having to recompile the kernel.
 
->>>>>>> This moves all remaining users of the legacy TI_ST driver to hcill (patches
->>>>>>> 1-3). Then patches 4-7 convert wl128x-radio driver to a standard platform
->>>>>>> device driver with support for multiple instances. Patch 7 will result in
->>>>>>> (userless) TI_ST driver no longer supporting radio at runtime. Patch 8-11 do
->>>>>>> some cleanups in the wl128x-radio driver. Finally patch 12 removes the TI_ST
->>>>>>> specific parts from wl128x-radio and adds the required infrastructure to use it
->>>>>>> with the serdev hcill driver instead. The remaining patches 13 and 14 remove
->>>>>>> the old TI_ST code.
->>>>>>> 
->>>>>>> The new code has been tested on the Motorola Droid 4. For testing the audio
->>>>>>> should be configured to route Ext to Speaker or Headphone. Then you need to
->>>>>>> plug headphone, since its cable is used as antenna. For testing there is a
->>>>>>> 'radio' utility packages in Debian. When you start the utility you need to
->>>>>>> specify a frequency, since initial get_frequency returns an error:
->>>>>> 
->>>>>> What is the status of this series?
->>>>>> 
->>>>>> Based on some of the replies (from Adam Ford in particular) it appears that
->>>>>> this isn't ready to be merged, so is a v2 planned?
->>>>> 
->>>>> Yes, a v2 is planned, but I'm super busy at the moment. I don't
->>>>> expect to send something for this merge window. Neither LogicPD
->>>>> nor IGEP use FM radio, so I can just remove FM support from the
->>>>> TI_ST framework. Converting those platforms to hci_ll can be done
->>>>> in a different patchset.
->>>>> 
->>>>> If that was the only issue there would be a v2 already. But Marcel
->>>>> Holtmann suggested to pass the custom packet data through the BT
->>>>> subsystem, which is non-trivial (at least for me) :)
->>>> 
->>>> I am running some tests today on the wl1283-st on the Logic PD Torpedo
->>>> board.  Tony had suggested a few options, so I'm going to try those.
->>>> Looking at those today.  If/when you have a V2, please CC me on it. If
->>>> it's been posted, can you send me a link?  I would really like to see
->>>> the st-kim driver go away so I'd like to resolve the issues with the
->>>> torpedo board.
->>> 
->>> I have run a bunch of tests on the 5.1 kernel.  I am able to get the
->>> firmware to load now and the hci0 goes up.  I was able to establish a
->>> BLE connection to a TI Sensor Tag and read and write data to it with
->>> good success on the wl1283.
->>> 
->>> Unfortunately, when I tried to do some more extensive testing over
->>> classic Bluetooth, I got an error that repeats itself at seemingly
->>> random intervals:
->>>     Bluetooth: hci0: Frame reassembly failed (-84)
->>> 
->>> I can still scan and pair, but these Frame reassembly failed errors
->>> appear to come and go.
->> 
->> there are only 3 places in h4_recv_buf that return EILSEQ. Just add an extra printk to these to figure out which one it is. Maybe it is just extra packet types that we need to handle. If it is not the packet type one, print what packet we have that is causing this.
->> 
-> 
-> I added some code around
-> 
-> /* Check for invalid packet type */
->    if (!skb) {
->     printk("Check for invalid packet type %x\n", (unsigned int)
-> (&pkts[i])->type);
->     return ERR_PTR(-EILSEQ);
-> }
-> 
-> I don't know if I did it right or I am reading the packet type
-> correctly, but the frame reassembly errors are being caught here.
-> 
-> [  408.519165] Check for invalid packet type ff
-> [  408.523559] Bluetooth: hci0: Frame reassembly failed (-84)
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-so now we need to figure our on how to handle HCI_VENDOR_PKT.
-
-#define LL_RECV_VENDOR \
-	.type = HCI_VENDOR_PKT, \
-	.hlen = aaa, \
-	.loff = bbb, \
-	.lsize = ccc, \
-	.maxlen = ddd
-
-static const struct h4_recv_pkt ll_recv_pkts[] = {
-	...
-	{ LL_RECV_WAKE_ACK,  .recv = ll_recv_frame  },
-	{ LL_RECV_VENDOR,    .recv = hci_recv_diag  },
-};
-
-Can you hexdump the data inside the skb and we can figure out what it uses for the header and size.
-
-In hci_bcm.c there are a few examples of fixed size packets and bpa10x.c contains one where it follows an actual header definition. Also hci_nokia.c contains a few for their packets.
-
-Regards
-
-Marcel
+diff --git a/Documentation/devicetree/bindings/display/ti/ti,omap3-dss.txt b/Documentation/devicetree/bindings/display/ti/ti,omap3-dss.txt
+index cd02516a40b6..42449d07c47e 100644
+--- a/Documentation/devicetree/bindings/display/ti/ti,omap3-dss.txt
++++ b/Documentation/devicetree/bindings/display/ti/ti,omap3-dss.txt
+@@ -40,7 +40,7 @@ Required properties:
+ Optional properties:
+ - max-memory-bandwidth: Input memory (from main memory to dispc) bandwidth limit
+ 			in bytes per second
+-
++- min-fck-pck-ratio:  Make sure that DISPC FCK is at least n x PCK
+ 
+ RFBI
+ ----
+diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
+index 4043ecb38016..bf84a8487aae 100644
+--- a/arch/arm/boot/dts/omap3.dtsi
++++ b/arch/arm/boot/dts/omap3.dtsi
+@@ -751,7 +751,7 @@
+ 			#size-cells = <1>;
+ 			ranges;
+ 
+-			dispc@48050400 {
++			dispc: dispc@48050400 {
+ 				compatible = "ti,omap3-dispc";
+ 				reg = <0x48050400 0x400>;
+ 				interrupts = <25>;
+diff --git a/drivers/gpu/drm/omapdrm/dss/Kconfig b/drivers/gpu/drm/omapdrm/dss/Kconfig
+index f24ebf7f61dd..d0666edcdf2a 100644
+--- a/drivers/gpu/drm/omapdrm/dss/Kconfig
++++ b/drivers/gpu/drm/omapdrm/dss/Kconfig
+@@ -102,24 +102,6 @@ config OMAP2_DSS_DSI
+ 
+ 	  See http://www.mipi.org/ for DSI specifications.
+ 
+-config OMAP2_DSS_MIN_FCK_PER_PCK
+-	int "Minimum FCK/PCK ratio (for scaling)"
+-	range 0 32
+-	default 0
+-	help
+-	  This can be used to adjust the minimum FCK/PCK ratio.
+-
+-	  With this you can make sure that DISPC FCK is at least
+-	  n x PCK. Video plane scaling requires higher FCK than
+-	  normally.
+-
+-	  If this is set to 0, there's no extra constraint on the
+-	  DISPC FCK. However, the FCK will at minimum be
+-	  2xPCK (if active matrix) or 3xPCK (if passive matrix).
+-
+-	  Max FCK is 173MHz, so this doesn't work if your PCK
+-	  is very high.
+-
+ config OMAP2_DSS_SLEEP_AFTER_VENC_RESET
+ 	bool "Sleep 20ms after VENC reset"
+ 	default y
+diff --git a/drivers/gpu/drm/omapdrm/dss/dispc.c b/drivers/gpu/drm/omapdrm/dss/dispc.c
+index ba82d916719c..09a130c53da2 100644
+--- a/drivers/gpu/drm/omapdrm/dss/dispc.c
++++ b/drivers/gpu/drm/omapdrm/dss/dispc.c
+@@ -198,6 +198,9 @@ struct dispc_device {
+ 
+ 	/* DISPC_CONTROL & DISPC_CONFIG lock*/
+ 	spinlock_t control_lock;
++
++	/* Optional min-fck-pck-ratio */
++	u32 min_fck_per_pck;
+ };
+ 
+ enum omap_color_component {
+@@ -3683,15 +3686,8 @@ bool dispc_div_calc(struct dispc_device *dispc, unsigned long dispc_freq,
+ 	unsigned long pck, lck;
+ 	unsigned long lck_max;
+ 	unsigned long pckd_hw_min, pckd_hw_max;
+-	unsigned int min_fck_per_pck;
+ 	unsigned long fck;
+ 
+-#ifdef CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK
+-	min_fck_per_pck = CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK;
+-#else
+-	min_fck_per_pck = 0;
+-#endif
+-
+ 	pckd_hw_min = dispc->feat->min_pcd;
+ 	pckd_hw_max = 255;
+ 
+@@ -3723,7 +3719,7 @@ bool dispc_div_calc(struct dispc_device *dispc, unsigned long dispc_freq,
+ 			else
+ 				fck = lck;
+ 
+-			if (fck < pck * min_fck_per_pck)
++			if (fck < pck * dispc->min_fck_per_pck)
+ 				continue;
+ 
+ 			if (func(lckd, pckd, lck, pck, data))
+@@ -4826,6 +4822,8 @@ static int dispc_bind(struct device *dev, struct device *master, void *data)
+ 		}
+ 	}
+ 
++	of_property_read_u32(np, "min-fck-pck-ratio", &dispc->min_fck_per_pck);
++
+ 	r = dispc_init_gamma_tables(dispc);
+ 	if (r)
+ 		goto err_free;
+-- 
+2.17.1
 
