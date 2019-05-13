@@ -2,185 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E06761B1ED
-	for <lists+linux-omap@lfdr.de>; Mon, 13 May 2019 10:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F59A1B6DF
+	for <lists+linux-omap@lfdr.de>; Mon, 13 May 2019 15:16:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727695AbfEMIdC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 May 2019 04:33:02 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:7745 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725866AbfEMIdC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 13 May 2019 04:33:02 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 2065CD97083CE2953F2;
-        Mon, 13 May 2019 16:32:58 +0800 (CST)
-Received: from localhost (10.177.31.96) by DGGEMS403-HUB.china.huawei.com
- (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Mon, 13 May 2019
- 16:32:49 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <t-kristo@ti.com>, <mturquette@baylibre.com>, <sboyd@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-clk@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH v2] clk: ti: Remove unused functions
-Date:   Mon, 13 May 2019 16:32:24 +0800
-Message-ID: <20190513083224.28892-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
-In-Reply-To: <20190512100328.27136-1-yuehaibing@huawei.com>
-References: <20190512100328.27136-1-yuehaibing@huawei.com>
+        id S1728777AbfEMNQy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 May 2019 09:16:54 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:55978 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727807AbfEMNQx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 May 2019 09:16:53 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4DDGgPI059591;
+        Mon, 13 May 2019 08:16:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1557753402;
+        bh=evb15vmJghMs7efQZJn7Qos7FojXgtGOvLlTOmG0hY4=;
+        h=From:To:CC:Subject:Date;
+        b=lZHSQPQw4Gp9+ZFGutRJtb4vcy1SH0lPQqwyWngoI9y/eEDQ5Pnumbd6ze9raKpgu
+         BI+7u42I9A3H6jttp7inLG/cbkhVsGgD26wk9stluEnMbsNxGRLC2gu406n33ssBDT
+         U5Dh98vGHnGWHvfmeMHoVs/rfL2zuNwPPkME0HF8=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4DDGgGX072538
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 13 May 2019 08:16:42 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 13
+ May 2019 08:16:41 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 13 May 2019 08:16:41 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4DDGfYv012618;
+        Mon, 13 May 2019 08:16:41 -0500
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     "David S. Miller" <davem@davemloft.net>,
+        <linux-omap@vger.kernel.org>
+CC:     <netdev@vger.kernel.org>, Sekhar Nori <nsekhar@ti.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH] net: ethernet: ti: netcp_ethss: fix build
+Date:   Mon, 13 May 2019 16:16:36 +0300
+Message-ID: <1557753396-12367-1-git-send-email-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.177.31.96]
-X-CFilter-Loop: Reflected
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-They are not used any more since
-commit 7558562a70fb ("clk: ti: Drop legacy clk-3xxx-legacy code")
+Fix reported build fail:
+ERROR: "cpsw_ale_flush_multicast" [drivers/net/ethernet/ti/keystone_netcp_ethss.ko] undefined!
+ERROR: "cpsw_ale_create" [drivers/net/ethernet/ti/keystone_netcp_ethss.ko] undefined!
+ERROR: "cpsw_ale_add_vlan" [drivers/net/ethernet/ti/keystone_netcp_ethss.ko] undefined!
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Suggested-by: Tero Kristo <t-kristo@ti.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Fixes: 16f54164828b ("net: ethernet: ti: cpsw: drop CONFIG_TI_CPSW_ALE config option")
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 ---
-v2: also remove mux/div unused functions
----
- drivers/clk/ti/divider.c | 36 ------------------------------------
- drivers/clk/ti/gate.c    | 30 ------------------------------
- drivers/clk/ti/mux.c     | 31 -------------------------------
- 3 files changed, 97 deletions(-)
+ drivers/net/ethernet/ti/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/ti/divider.c b/drivers/clk/ti/divider.c
-index 4786e0e..c2ff4ce 100644
---- a/drivers/clk/ti/divider.c
-+++ b/drivers/clk/ti/divider.c
-@@ -474,42 +474,6 @@ struct clk_hw *ti_clk_build_component_div(struct ti_clk_divider *setup)
- 	return &div->hw;
- }
- 
--struct clk *ti_clk_register_divider(struct ti_clk *setup)
--{
--	struct ti_clk_divider *div = setup->data;
--	struct clk_omap_reg reg = {
--		.index = div->module,
--		.offset = div->reg,
--	};
--	u8 width;
--	u32 flags = 0;
--	u8 div_flags = 0;
--	const struct clk_div_table *table;
--	struct clk *clk;
--
--	if (div->flags & CLKF_INDEX_STARTS_AT_ONE)
--		div_flags |= CLK_DIVIDER_ONE_BASED;
--
--	if (div->flags & CLKF_INDEX_POWER_OF_TWO)
--		div_flags |= CLK_DIVIDER_POWER_OF_TWO;
--
--	if (div->flags & CLKF_SET_RATE_PARENT)
--		flags |= CLK_SET_RATE_PARENT;
--
--	table = _get_div_table_from_setup(div, &width);
--	if (IS_ERR(table))
--		return (struct clk *)table;
--
--	clk = _register_divider(NULL, setup->name, div->parent,
--				flags, &reg, div->bit_shift,
--				width, -EINVAL, div_flags, table);
--
--	if (IS_ERR(clk))
--		kfree(table);
--
--	return clk;
--}
--
- static struct clk_div_table *
- __init ti_clk_get_div_table(struct device_node *node)
- {
-diff --git a/drivers/clk/ti/gate.c b/drivers/clk/ti/gate.c
-index 504c0e9..4238955 100644
---- a/drivers/clk/ti/gate.c
-+++ b/drivers/clk/ti/gate.c
-@@ -131,36 +131,6 @@ static struct clk *_register_gate(struct device *dev, const char *name,
- 	return clk;
- }
- 
--struct clk_hw *ti_clk_build_component_gate(struct ti_clk_gate *setup)
--{
--	struct clk_hw_omap *gate;
--	struct clk_omap_reg *reg;
--	const struct clk_hw_omap_ops *ops = &clkhwops_wait;
--
--	if (!setup)
--		return NULL;
--
--	gate = kzalloc(sizeof(*gate), GFP_KERNEL);
--	if (!gate)
--		return ERR_PTR(-ENOMEM);
--
--	reg = (struct clk_omap_reg *)&gate->enable_reg;
--	reg->index = setup->module;
--	reg->offset = setup->reg;
--
--	gate->enable_bit = setup->bit_shift;
--
--	if (setup->flags & CLKF_NO_WAIT)
--		ops = NULL;
--
--	if (setup->flags & CLKF_INTERFACE)
--		ops = &clkhwops_iclk_wait;
--
--	gate->ops = ops;
--
--	return &gate->hw;
--}
--
- static void __init _of_ti_gate_clk_setup(struct device_node *node,
- 					 const struct clk_ops *ops,
- 					 const struct clk_hw_omap_ops *hw_ops)
-diff --git a/drivers/clk/ti/mux.c b/drivers/clk/ti/mux.c
-index b7f9a4f..0069e7c 100644
---- a/drivers/clk/ti/mux.c
-+++ b/drivers/clk/ti/mux.c
-@@ -164,37 +164,6 @@ static struct clk *_register_mux(struct device *dev, const char *name,
- 	return clk;
- }
- 
--struct clk *ti_clk_register_mux(struct ti_clk *setup)
--{
--	struct ti_clk_mux *mux;
--	u32 flags;
--	u8 mux_flags = 0;
--	struct clk_omap_reg reg;
--	u32 mask;
--
--	mux = setup->data;
--	flags = CLK_SET_RATE_NO_REPARENT;
--
--	mask = mux->num_parents;
--	if (!(mux->flags & CLKF_INDEX_STARTS_AT_ONE))
--		mask--;
--
--	mask = (1 << fls(mask)) - 1;
--	reg.index = mux->module;
--	reg.offset = mux->reg;
--	reg.ptr = NULL;
--
--	if (mux->flags & CLKF_INDEX_STARTS_AT_ONE)
--		mux_flags |= CLK_MUX_INDEX_ONE;
--
--	if (mux->flags & CLKF_SET_RATE_PARENT)
--		flags |= CLK_SET_RATE_PARENT;
--
--	return _register_mux(NULL, setup->name, mux->parents, mux->num_parents,
--			     flags, &reg, mux->bit_shift, mask, -EINVAL,
--			     mux_flags, NULL);
--}
--
- /**
-  * of_mux_clk_setup - Setup function for simple mux rate clock
-  * @node: DT node for the clock
+diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
+index c3f53a40b48f..ed12e1e5df2f 100644
+--- a/drivers/net/ethernet/ti/Makefile
++++ b/drivers/net/ethernet/ti/Makefile
+@@ -19,4 +19,4 @@ ti_cpsw-y := cpsw.o davinci_cpdma.o cpsw_ale.o cpsw_priv.o cpsw_sl.o cpsw_ethtoo
+ obj-$(CONFIG_TI_KEYSTONE_NETCP) += keystone_netcp.o
+ keystone_netcp-y := netcp_core.o cpsw_ale.o
+ obj-$(CONFIG_TI_KEYSTONE_NETCP_ETHSS) += keystone_netcp_ethss.o
+-keystone_netcp_ethss-y := netcp_ethss.o netcp_sgmii.o netcp_xgbepcsr.o
++keystone_netcp_ethss-y := netcp_ethss.o netcp_sgmii.o netcp_xgbepcsr.o cpsw_ale.o
 -- 
-2.7.4
-
+2.17.1
 
