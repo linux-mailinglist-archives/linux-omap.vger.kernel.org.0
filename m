@@ -2,53 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8C4B1BB0F
-	for <lists+linux-omap@lfdr.de>; Mon, 13 May 2019 18:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98DE41BB5D
+	for <lists+linux-omap@lfdr.de>; Mon, 13 May 2019 18:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728659AbfEMQhS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 May 2019 12:37:18 -0400
-Received: from muru.com ([72.249.23.125]:48740 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728639AbfEMQhS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 13 May 2019 12:37:18 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 1D05C8047;
-        Mon, 13 May 2019 16:37:37 +0000 (UTC)
-Date:   Mon, 13 May 2019 09:37:15 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     "thilo.cestonaro@ts.fujitsu.com" <thilo.cestonaro@ts.fujitsu.com>
-Cc:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Subject: Re: Kernel Oops when something is executed from within the initramfs
-Message-ID: <20190513163715.GW8007@atomide.com>
-References: <50042d920efa281582ed8b5486ea89456ad4de65.camel@ts.fujitsu.com>
- <20190510145441.GU8007@atomide.com>
- <e22ceb01c9f2d9136e44475962d570af0d489d7a.camel@ts.fujitsu.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e22ceb01c9f2d9136e44475962d570af0d489d7a.camel@ts.fujitsu.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+        id S1731074AbfEMQ4X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 May 2019 12:56:23 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:40024 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731063AbfEMQ4X (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 May 2019 12:56:23 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id D647814E266D0;
+        Mon, 13 May 2019 09:56:22 -0700 (PDT)
+Date:   Mon, 13 May 2019 09:56:21 -0700 (PDT)
+Message-Id: <20190513.095621.1645129482960405173.davem@davemloft.net>
+To:     grygorii.strashko@ti.com
+Cc:     linux-omap@vger.kernel.org, netdev@vger.kernel.org, nsekhar@ti.com,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] net: ethernet: ti: netcp_ethss: fix build
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <1557753396-12367-1-git-send-email-grygorii.strashko@ti.com>
+References: <1557753396-12367-1-git-send-email-grygorii.strashko@ti.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 13 May 2019 09:56:23 -0700 (PDT)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+From: Grygorii Strashko <grygorii.strashko@ti.com>
+Date: Mon, 13 May 2019 16:16:36 +0300
 
-* thilo.cestonaro@ts.fujitsu.com <thilo.cestonaro@ts.fujitsu.com> [190513 14:51]:
-> Hi Tony,
+> Fix reported build fail:
+> ERROR: "cpsw_ale_flush_multicast" [drivers/net/ethernet/ti/keystone_netcp_ethss.ko] undefined!
+> ERROR: "cpsw_ale_create" [drivers/net/ethernet/ti/keystone_netcp_ethss.ko] undefined!
+> ERROR: "cpsw_ale_add_vlan" [drivers/net/ethernet/ti/keystone_netcp_ethss.ko] undefined!
 > 
-> thanks for your answer. Sadly it's not an overlapping issue.
-> I even printed the first four and the last four bytes of the initramfs before the kernel decompresses it,
-> so I can be sure. And the bytes fit the bytes of my initramfs.
+> Fixes: 16f54164828b ("net: ethernet: ti: cpsw: drop CONFIG_TI_CPSW_ALE config option")
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-OK
-
-> Any other hint why I can't execute anything from within the initramfs?
-
-Maybe check with current mainline Linux kernel and beaglebone
-that initramfs behaves and then narrow it down from there?
-
-Regards,
-
-Tony
+Applied, thank you.
