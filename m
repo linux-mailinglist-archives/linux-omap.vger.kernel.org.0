@@ -2,113 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4786F1FE82
-	for <lists+linux-omap@lfdr.de>; Thu, 16 May 2019 06:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D4B91FFC0
+	for <lists+linux-omap@lfdr.de>; Thu, 16 May 2019 08:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726537AbfEPEcC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 May 2019 00:32:02 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:54450 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725975AbfEPEcC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 May 2019 00:32:02 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4G4W046126411;
-        Wed, 15 May 2019 23:32:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1557981120;
-        bh=uEVCSV19YfhFYWQvWChkq8hxy9erGlYnGHbP6Twl6FI=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=IJnJ+h9LVoELo+NxLX3Q+6P599BawnnbHM8YvNgByN7rszhmZtTPvzlmg6ginoTIP
-         Cx+xTK/u3hmAcPWARnRkRgmlACBCYB/K9uZ0ci4XIXrTlgdz1AGqbZihBekazkR/9U
-         3kofJUMXnlESY8OaAnqrM24ElzF6BIXH4Qbe/hws=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4G4W0WY042242
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 15 May 2019 23:32:00 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 15
- May 2019 23:31:58 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 15 May 2019 23:31:59 -0500
-Received: from a0393675ula.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4G4Vmio094857;
-        Wed, 15 May 2019 23:31:57 -0500
-From:   Keerthy <j-keerthy@ti.com>
-To:     <lee.jones@linaro.org>, <robh+dt@kernel.org>, <broonie@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <t-kristo@ti.com>, <j-keerthy@ti.com>
-Subject: [PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561 regulator support
-Date:   Thu, 16 May 2019 10:02:18 +0530
-Message-ID: <20190516043218.8222-4-j-keerthy@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190516043218.8222-1-j-keerthy@ti.com>
-References: <20190516043218.8222-1-j-keerthy@ti.com>
+        id S1726563AbfEPGnz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 May 2019 02:43:55 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:42215 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726513AbfEPGnz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 May 2019 02:43:55 -0400
+Received: by mail-lj1-f194.google.com with SMTP id 188so1981873ljf.9
+        for <linux-omap@vger.kernel.org>; Wed, 15 May 2019 23:43:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lixom-net.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=ierxK4ZQGi+aWEa2Ph1i719XCDGMZKo2rMWZhKVF1Dw=;
+        b=hrG6wbDepq3YTtYbip3mTp/54Elj7pE2elU5/5rzyMZPdN3EY3isKNgqbk9GBvEJwZ
+         BsEYXk5CMKoKdJkaldGmdmQ1HLRxTq3ZE2ifAMHC/Toni7Oi3r/+G0T6WsUmqNGR9/aL
+         Z4FogoliR0ubby3thG5/XdUE7P5gg5bX5O6oCJagpIWfHAjFlKNqEUZDXOv7FmNNjbF1
+         knveOMK21X7xZBDx8xTTxLaWZO3Uky4s8S4nDaNqPWr1qx7O73bpf3He8fzeGkIlldI0
+         7R/fV2kRFxZ0JKd8vxsMbeFXperTfXoO8WUwqOQpudmP9epCOcC/AljmzWPjOH9pVYCw
+         UU1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ierxK4ZQGi+aWEa2Ph1i719XCDGMZKo2rMWZhKVF1Dw=;
+        b=ntFzNNzz0rN+U2ou8JwnviX/9mSP3ym2cIAIDXs7Q/DA1DYxPbxA7Ky2CVlHDM8E5S
+         ZfHNBJpX2/irAxTkrvoyCMG28H6ULsDsjrRWKwQMCxrqERROk/Puotx5T26WcJ+4ZMkJ
+         T+LjumPDt3zkNuSYzTl3zP70x4Cqh1kW1cZByWK+I/KjLJjH3mivNaiwDuEDlnt5Hjua
+         2ANYMmpKvwrMaXbkLZ8YiG25j+uAKHV82rQoS8WT8vIY3vgn6/yjI4Hpr9lcdNtn/3vB
+         zIO+l76ikrpK8rm6IGCPlVdTqHPZkH4N9lxTRztaV3mb7xKlMfv1Vm8XcEFcqracPy3x
+         6PBQ==
+X-Gm-Message-State: APjAAAWr5c9jgd8KmCvjs39/CsdaMEI4gqdBdUxyhTZUvV8Po8UqzHLR
+        7AFl+YUN3aOnv4RKfBHiPREtBw==
+X-Google-Smtp-Source: APXvYqxkryLRV88jfKs2gdlozGt/U8xEDox58X7vzcMh7YV9aLILewaecxKOwUn+g02nJT8W1mn2cw==
+X-Received: by 2002:a2e:d1a:: with SMTP id 26mr22896184ljn.147.1557989033442;
+        Wed, 15 May 2019 23:43:53 -0700 (PDT)
+Received: from localhost (h85-30-9-151.cust.a3fiber.se. [85.30.9.151])
+        by smtp.gmail.com with ESMTPSA id y3sm776722lfh.12.2019.05.15.23.43.52
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 15 May 2019 23:43:52 -0700 (PDT)
+Date:   Wed, 15 May 2019 23:23:16 -0700
+From:   Olof Johansson <olof@lixom.net>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [GIT PULL] two fixes for omaps
+Message-ID: <20190516062316.3amk72lykcmugnyu@localhost>
+References: <pull-1556727306-300309@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <pull-1556727306-300309@atomide.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The LP8756x family has a single output 4-phase regulator
-configuration. Add support for the same. The control
-lies in the master buck which is buck0 for 4-phase
-configuration. Enable/disable/voltage set happen via
-buck0 registers.
+On Wed, May 01, 2019 at 09:15:36AM -0700, Tony Lindgren wrote:
+> From: "Tony Lindgren" <tony@atomide.com>
+> 
+> The following changes since commit 81717283cf2c4c4d9bf8fd618cd6e5bdfe082edd:
+> 
+>   Merge commit '7d56bedb2730dc2ea8abf0fd7240ee99ecfee3c9' into omap-for-v5.1/fixes (2019-04-01 09:36:25 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.1/fixes-rc6
+> 
+> for you to fetch changes up to 6a38df676a0a06bfc7ff8607ac62ccd6d95969ad:
+> 
+>   ARM: dts: logicpd-som-lv: Fix MMC1 card detect (2019-04-30 08:49:25 -0700)
+> 
+> ----------------------------------------------------------------
+> Two regression fixes for omaps
+> 
+> Two one-liners to fix board-ams-delta booting regression and
+> logicpd-som-lv MMC card detect to use GPIO_ACTIVE_LOW instead of
+> IRQ_TYPE_LEVEL_LOW. Note that the board-ams-delta regression has
+> been in there already since v5.0, so if necessary these can wait
+> for the merge window.
 
-Data Sheet: https://www.ti.com/lit/ds/symlink/lp87561-q1.pdf
+Merged into arm/late for 5.2. Thanks!
 
-Signed-off-by: Keerthy <j-keerthy@ti.com>
----
 
-Changes in v2:
-
-  * Changed if/else block to switch statement.
-
- drivers/regulator/lp87565-regulator.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/regulator/lp87565-regulator.c b/drivers/regulator/lp87565-regulator.c
-index 81eb4b890c0c..af00d1ffcf33 100644
---- a/drivers/regulator/lp87565-regulator.c
-+++ b/drivers/regulator/lp87565-regulator.c
-@@ -153,6 +153,12 @@ static const struct lp87565_regulator regulators[] = {
- 			  LP87565_REG_BUCK2_CTRL_1,
- 			  LP87565_BUCK_CTRL_1_EN, 3230,
- 			  buck0_1_2_3_ranges, LP87565_REG_BUCK2_CTRL_2),
-+	LP87565_REGULATOR("BUCK3210", LP87565_BUCK_3210, "buck3210",
-+			  lp87565_buck_ops, 256, LP87565_REG_BUCK0_VOUT,
-+			  LP87565_BUCK_VSET, LP87565_REG_BUCK0_CTRL_1,
-+			  LP87565_BUCK_CTRL_1_EN |
-+			  LP87565_BUCK_CTRL_1_FPWM_MP_0_2, 3230,
-+			  buck0_1_2_3_ranges, LP87565_REG_BUCK0_CTRL_2),
- };
- 
- static int lp87565_regulator_probe(struct platform_device *pdev)
-@@ -169,9 +175,18 @@ static int lp87565_regulator_probe(struct platform_device *pdev)
- 	config.driver_data = lp87565;
- 	config.regmap = lp87565->regmap;
- 
--	if (lp87565->dev_type == LP87565_DEVICE_TYPE_LP87565_Q1) {
-+	switch (lp87565->dev_type) {
-+	case LP87565_DEVICE_TYPE_LP87565_Q1:
- 		min_idx = LP87565_BUCK_10;
- 		max_idx = LP87565_BUCK_23;
-+		break;
-+	case LP87565_DEVICE_TYPE_LP87561_Q1:
-+		min_idx = LP87565_BUCK_3210;
-+		max_idx = LP87565_BUCK_3210;
-+	default:
-+		dev_err(lp87565->dev, "Invalid lp config %d\n",
-+			lp87565->dev_type);
-+		return -EINVAL;
- 	}
- 
- 	for (i = min_idx; i <= max_idx; i++) {
--- 
-2.17.1
-
+-Olof
