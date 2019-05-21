@@ -2,56 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A541257D1
-	for <lists+linux-omap@lfdr.de>; Tue, 21 May 2019 20:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FDEA25952
+	for <lists+linux-omap@lfdr.de>; Tue, 21 May 2019 22:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728175AbfEUSyV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 May 2019 14:54:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35266 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727990AbfEUSyV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 21 May 2019 14:54:21 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 745FF2173C;
-        Tue, 21 May 2019 18:54:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558464860;
-        bh=pGnWjrWwcAERSC/ENQSsLfsgcNI5Pu/basBjAjHLLe0=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=zjH56mZr+Rs1f937c3Dvpf5PZjMRxsWxRAQN9tZSrjr1D2feSiqcUc3BHZMCVT85a
-         if2FDx1pz+VxSR2tLfOFdREsmZKYdw8Xk9jmn0rc+AmgJvoAU3D5Gqnq9rE0Oa8qwM
-         8PwcymCXEYwri9PywAiEDhEmq1gYfS8PE5SdNHKI=
-Content-Type: text/plain; charset="utf-8"
+        id S1727222AbfEUUnK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 May 2019 16:43:10 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:51967 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726907AbfEUUnK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 May 2019 16:43:10 -0400
+Received: from localhost (lfbn-1-3034-80.w90-66.abo.wanadoo.fr [90.66.53.80])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 456A9240004;
+        Tue, 21 May 2019 20:43:06 +0000 (UTC)
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH] mfd: menelaus: Remove superfluous error message
+Date:   Tue, 21 May 2019 22:43:04 +0200
+Message-Id: <20190521204304.21295-1-alexandre.belloni@bootlin.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20190506210854.24300-1-tony@atomide.com>
-References: <20190506210854.24300-1-tony@atomide.com>
-Subject: Re: [PATCH] clk: ti: clkctrl: Fix clkdm_clk handling
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>
-User-Agent: alot/0.8.1
-Date:   Tue, 21 May 2019 11:54:19 -0700
-Message-Id: <20190521185420.745FF2173C@mail.kernel.org>
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Tony Lindgren (2019-05-06 14:08:54)
-> We need to always call clkdm_clk_enable() and clkdm_clk_disable() even
-> the clkctrl clock(s) enabled for the domain do not have any gate register
-> bits. Otherwise clockdomains may never get enabled except when devices get
-> probed with the legacy "ti,hwmods" devicetree property.
->=20
-> Fixes: 88a172526c32 ("clk: ti: add support for clkctrl clocks")
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
+The RTC core already has error messages in case of failure, there is no
+need to have another message in the driver.
 
-Applied to clk-fixes
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+---
+ drivers/mfd/menelaus.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/mfd/menelaus.c b/drivers/mfd/menelaus.c
+index d28ebe7ecd21..91c568ef5857 100644
+--- a/drivers/mfd/menelaus.c
++++ b/drivers/mfd/menelaus.c
+@@ -1138,8 +1138,6 @@ static inline void menelaus_rtc_init(struct menelaus_chip *m)
+ 			menelaus_remove_irq_work(MENELAUS_RTCALM_IRQ);
+ 			device_init_wakeup(&m->client->dev, 0);
+ 		}
+-		dev_err(&m->client->dev, "can't register RTC: %d\n",
+-				(int) PTR_ERR(m->rtc));
+ 		the_menelaus->rtc = NULL;
+ 	}
+ }
+-- 
+2.21.0
 
