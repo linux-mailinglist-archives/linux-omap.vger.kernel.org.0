@@ -2,39 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF78026FE6
-	for <lists+linux-omap@lfdr.de>; Wed, 22 May 2019 22:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9855B26F26
+	for <lists+linux-omap@lfdr.de>; Wed, 22 May 2019 21:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730828AbfEVTXS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 May 2019 15:23:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44176 "EHLO mail.kernel.org"
+        id S1731561AbfEVTZ1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 May 2019 15:25:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46766 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729898AbfEVTXS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 22 May 2019 15:23:18 -0400
+        id S1731537AbfEVTZ0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 22 May 2019 15:25:26 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8CFCC21473;
-        Wed, 22 May 2019 19:23:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 435F021473;
+        Wed, 22 May 2019 19:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558552997;
+        s=default; t=1558553125;
         bh=Na5zua+BMhBNFZNBRjS6szXtRLjVmifaB5T4ebTYgO0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=alVOEaX6foa6mn7l0lMrz1xYWC35/d/M1qFAMo7P0JG/lgl9LhZhXEMJey1ZH9o8P
-         v6ogVDJTmGU2+AK/kNj1RSVXCiYS4NRJFR7EV0NTL5oMvUVAG9LG7B/4qrizEtHC0+
-         Eg3IkPTOSFPSpGsRFDNklJw3kwUMVARn2LZcQRn8=
+        b=KJGFPPklFjI7gHolpv2vmnVae7GJeLZHqcmh9uBCgpjUqiZRKqc4cLiCbtxHGXU9L
+         j1eOWwWtgJ+PcBI7twHdXzRJKPutYEjoPnnfK3DCqwbMxXT8i3syWS6gLiSmNCRthQ
+         GLiF9IJbaVEYIIQt4WPDb99Ltpu3ksz5BEiGKXwk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
         "David S . Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 067/375] net: ethernet: ti: cpsw: fix allmulti cfg in dual_mac mode
-Date:   Wed, 22 May 2019 15:16:07 -0400
-Message-Id: <20190522192115.22666-67-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.0 059/317] net: ethernet: ti: cpsw: fix allmulti cfg in dual_mac mode
+Date:   Wed, 22 May 2019 15:19:20 -0400
+Message-Id: <20190522192338.23715-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190522192115.22666-1-sashal@kernel.org>
-References: <20190522192115.22666-1-sashal@kernel.org>
+In-Reply-To: <20190522192338.23715-1-sashal@kernel.org>
+References: <20190522192338.23715-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
