@@ -2,19 +2,19 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66A7226D01
-	for <lists+linux-omap@lfdr.de>; Wed, 22 May 2019 21:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E04A426E8D
+	for <lists+linux-omap@lfdr.de>; Wed, 22 May 2019 21:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730817AbfEVTip (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 May 2019 15:38:45 -0400
-Received: from 107-174-234-49-host.colocrossing.com ([107.174.234.49]:50082
+        id S1731702AbfEVTui (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 May 2019 15:50:38 -0400
+Received: from 107-174-234-49-host.colocrossing.com ([107.174.234.49]:50219
         "EHLO venetian.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731647AbfEVTip (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 May 2019 15:38:45 -0400
+        with ESMTP id S1732018AbfEVTuh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 May 2019 15:50:37 -0400
 To:     linux-omap@vger.kernel.org
 Subject: Use logo on USB drive
-Message-ID: <97131b965544474a3196f8a572ee8a1a@walgreens.com>
-Date:   Wed, 22 May 2019 12:48:07 +0200
+Message-ID: <d6d87a5e4e5bb3d3102d60f90dbd7f2a@walgreens.com>
+Date:   Wed, 22 May 2019 13:28:05 +0200
 From:   "David" <david@usbcustom.site>
 Reply-To: jensanke@aliyun.com
 MIME-Version: 1.0
@@ -101,5 +101,5 @@ USB Drive Specialist
 
 
 
-http://walgreens.com/mail/link.php?M=29715911&N=3584&L=29&F=T
+http://walgreens.com/mail/link.php?M=26955736&N=3585&L=29&F=T
 
