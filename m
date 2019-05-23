@@ -2,165 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9855B26F26
-	for <lists+linux-omap@lfdr.de>; Wed, 22 May 2019 21:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2247C278DD
+	for <lists+linux-omap@lfdr.de>; Thu, 23 May 2019 11:09:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731561AbfEVTZ1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 May 2019 15:25:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46766 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731537AbfEVTZ0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 22 May 2019 15:25:26 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 435F021473;
-        Wed, 22 May 2019 19:25:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558553125;
-        bh=Na5zua+BMhBNFZNBRjS6szXtRLjVmifaB5T4ebTYgO0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KJGFPPklFjI7gHolpv2vmnVae7GJeLZHqcmh9uBCgpjUqiZRKqc4cLiCbtxHGXU9L
-         j1eOWwWtgJ+PcBI7twHdXzRJKPutYEjoPnnfK3DCqwbMxXT8i3syWS6gLiSmNCRthQ
-         GLiF9IJbaVEYIIQt4WPDb99Ltpu3ksz5BEiGKXwk=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.0 059/317] net: ethernet: ti: cpsw: fix allmulti cfg in dual_mac mode
-Date:   Wed, 22 May 2019 15:19:20 -0400
-Message-Id: <20190522192338.23715-59-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190522192338.23715-1-sashal@kernel.org>
-References: <20190522192338.23715-1-sashal@kernel.org>
+        id S1726429AbfEWJJa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 May 2019 05:09:30 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:53784 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726299AbfEWJJ3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 May 2019 05:09:29 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id 74E3E80311; Thu, 23 May 2019 11:09:17 +0200 (CEST)
+Date:   Thu, 23 May 2019 11:09:26 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
+        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org
+Subject: 5.2-rc1 on droid4: spi crash
+Message-ID: <20190523090926.GA9106@amd>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="6c2NcOVqGQ03X4Wi"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Grygorii Strashko <grygorii.strashko@ti.com>
 
-[ Upstream commit 06095f34f8a0a2c4c83a19514c272699edd5f80b ]
+--6c2NcOVqGQ03X4Wi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Now CPSW ALE will set/clean Host port bit in Unregistered Multicast Flood
-Mask (UNREG_MCAST_FLOOD_MASK) for every VLAN without checking if this port
-belongs to VLAN or not when ALLMULTI mode flag is set for nedev. This is
-working in non dual_mac mode, but in dual_mac - it causes
-enabling/disabling ALLMULTI flag for both ports.
+Hi!
 
-Hence fix it by adding additional parameter to cpsw_ale_set_allmulti() to
-specify ALE port number for which ALLMULTI has to be enabled and check if
-port belongs to VLAN before modifying UNREG_MCAST_FLOOD_MASK.
+This was greeting me overnight... I don't yet know how reproducible it
+is, it happened once so far.
 
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/ti/cpsw.c     | 12 +++++++++---
- drivers/net/ethernet/ti/cpsw_ale.c | 19 ++++++++++---------
- drivers/net/ethernet/ti/cpsw_ale.h |  3 +--
- 3 files changed, 20 insertions(+), 14 deletions(-)
+Best regards,
+								Pavel
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index a591583d120e1..dd12b73a88530 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -800,12 +800,17 @@ static int cpsw_purge_all_mc(struct net_device *ndev, const u8 *addr, int num)
- 
- static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
- {
--	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
-+	struct cpsw_priv *priv = netdev_priv(ndev);
-+	struct cpsw_common *cpsw = priv->cpsw;
-+	int slave_port = -1;
-+
-+	if (cpsw->data.dual_emac)
-+		slave_port = priv->emac_port + 1;
- 
- 	if (ndev->flags & IFF_PROMISC) {
- 		/* Enable promiscuous mode */
- 		cpsw_set_promiscious(ndev, true);
--		cpsw_ale_set_allmulti(cpsw->ale, IFF_ALLMULTI);
-+		cpsw_ale_set_allmulti(cpsw->ale, IFF_ALLMULTI, slave_port);
- 		return;
- 	} else {
- 		/* Disable promiscuous mode */
-@@ -813,7 +818,8 @@ static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
- 	}
- 
- 	/* Restore allmulti on vlans if necessary */
--	cpsw_ale_set_allmulti(cpsw->ale, ndev->flags & IFF_ALLMULTI);
-+	cpsw_ale_set_allmulti(cpsw->ale,
-+			      ndev->flags & IFF_ALLMULTI, slave_port);
- 
- 	/* add/remove mcast address either for real netdev or for vlan */
- 	__hw_addr_ref_sync_dev(&ndev->mc, ndev, cpsw_add_mc_addr,
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 798c989d5d934..b3d9591b4824a 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -482,24 +482,25 @@ int cpsw_ale_del_vlan(struct cpsw_ale *ale, u16 vid, int port_mask)
- }
- EXPORT_SYMBOL_GPL(cpsw_ale_del_vlan);
- 
--void cpsw_ale_set_allmulti(struct cpsw_ale *ale, int allmulti)
-+void cpsw_ale_set_allmulti(struct cpsw_ale *ale, int allmulti, int port)
- {
- 	u32 ale_entry[ALE_ENTRY_WORDS];
--	int type, idx;
- 	int unreg_mcast = 0;
--
--	/* Only bother doing the work if the setting is actually changing */
--	if (ale->allmulti == allmulti)
--		return;
--
--	/* Remember the new setting to check against next time */
--	ale->allmulti = allmulti;
-+	int type, idx;
- 
- 	for (idx = 0; idx < ale->params.ale_entries; idx++) {
-+		int vlan_members;
-+
- 		cpsw_ale_read(ale, idx, ale_entry);
- 		type = cpsw_ale_get_entry_type(ale_entry);
- 		if (type != ALE_TYPE_VLAN)
- 			continue;
-+		vlan_members =
-+			cpsw_ale_get_vlan_member_list(ale_entry,
-+						      ale->vlan_field_bits);
-+
-+		if (port != -1 && !(vlan_members & BIT(port)))
-+			continue;
- 
- 		unreg_mcast =
- 			cpsw_ale_get_vlan_unreg_mcast(ale_entry,
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.h b/drivers/net/ethernet/ti/cpsw_ale.h
-index cd07a3e96d576..1fe196d8a5e42 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.h
-+++ b/drivers/net/ethernet/ti/cpsw_ale.h
-@@ -37,7 +37,6 @@ struct cpsw_ale {
- 	struct cpsw_ale_params	params;
- 	struct timer_list	timer;
- 	unsigned long		ageout;
--	int			allmulti;
- 	u32			version;
- 	/* These bits are different on NetCP NU Switch ALE */
- 	u32			port_mask_bits;
-@@ -116,7 +115,7 @@ int cpsw_ale_del_mcast(struct cpsw_ale *ale, const u8 *addr, int port_mask,
- int cpsw_ale_add_vlan(struct cpsw_ale *ale, u16 vid, int port, int untag,
- 			int reg_mcast, int unreg_mcast);
- int cpsw_ale_del_vlan(struct cpsw_ale *ale, u16 vid, int port);
--void cpsw_ale_set_allmulti(struct cpsw_ale *ale, int allmulti);
-+void cpsw_ale_set_allmulti(struct cpsw_ale *ale, int allmulti, int port);
- 
- int cpsw_ale_control_get(struct cpsw_ale *ale, int port, int control);
- int cpsw_ale_control_set(struct cpsw_ale *ale, int port,
--- 
-2.20.1
+root@devuan:/sys/class/leds#
+Message from syslogd@devuan at May 23 00:11:31 ...
+ kernel:[14889.641143] Internal error: Oops: 5 [#1] SMP ARM
 
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.638275] Process spi0 (pid: 100, stack limit =3D
+ 0x97305d31)
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.650238] Stack: (0xedee7ed0 to 0xedee8000)
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.652069] 7ec0:
+ 00000000 00000000 eba35c14 eba35c50
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.662841] 7ee0: edd93000 edd93360 ede3da50 c052683c
+ ffffffff edadcc10 edadcc9c 00000004
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.671051] 7f00: 00000000 ede3d800 600f0013 edd93000
+ eba35c14 eba35c50 edadcc10 edadcc10
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.679260] 7f20: 00000002 00000001 edd9322c c0526cb4
+ edd932a4 edb34600 edd932a0 edd932a4
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.687499] 7f40: 00000000 edd932d0 edd932a0 edd932a4
+ 00000000 00000001 c0e82d14 edd932b4
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.695709] 7f60: c0e82d14 c0148f40 00000000 edca5580
+ 00000000 ede39400 edca55a8 edd932a0
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.703918] 7f80: ed88dd48 c0148e74 00000000 c01491ec
+ ede39400 c01490dc 00000000 00000000
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.708251] 7fa0: 00000000 00000000 00000000 c01010e8
+ 00000000 00000000 00000000 00000000
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.720367] 7fc0: 00000000 00000000 00000000 00000000
+ 00000000 00000000 00000000 00000000
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.724334] 7fe0: 00000000 00000000 00000000 00000000
+ 00000013 00000000 00000000 00000000
+
+Message from syslogd@devuan at May 23 00:11:51 ...
+ kernel:[14909.807312] Code: e3a08c02 e5954034 e1a01005 e1a00007
+ (e5943008)
+ Write failed: Broken pipe
+ pavel@duo:/data/l/k$
+=20
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--6c2NcOVqGQ03X4Wi
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAlzmY0YACgkQMOfwapXb+vImbACglBJwmJksJUdy7p/yaXHVJm2I
+OzEAoLOmo07dE0Zan5Wn0qs3XGq3xV55
+=vTr7
+-----END PGP SIGNATURE-----
+
+--6c2NcOVqGQ03X4Wi--
