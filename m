@@ -2,40 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D22F228602
-	for <lists+linux-omap@lfdr.de>; Thu, 23 May 2019 20:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FA5C28B43
+	for <lists+linux-omap@lfdr.de>; Thu, 23 May 2019 22:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731575AbfEWSg3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 May 2019 14:36:29 -0400
-Received: from emh02.mail.saunalahti.fi ([62.142.5.108]:59472 "EHLO
-        emh02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731383AbfEWSg3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 May 2019 14:36:29 -0400
-Received: from darkstar.musicnaut.iki.fi (85-76-4-80-nat.elisa-mobile.fi [85.76.4.80])
-        by emh02.mail.saunalahti.fi (Postfix) with ESMTP id F02B220060;
-        Thu, 23 May 2019 21:36:23 +0300 (EEST)
-Date:   Thu, 23 May 2019 21:36:23 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@redhat.com>
-Cc:     Thomas Huth <thuth@redhat.com>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        qemu-devel@nongnu.org, linux-kernel@vger.kernel.org,
-        Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [Qemu-devel] Running linux on qemu omap
-Message-ID: <20190523183623.GB5234@darkstar.musicnaut.iki.fi>
-References: <20190520190533.GA28160@Red>
- <20190521232323.GD3621@darkstar.musicnaut.iki.fi>
- <20190522093341.GA32154@Red>
- <20190522181904.GE3621@darkstar.musicnaut.iki.fi>
- <8977e2bb-8d9e-f4fd-4c44-b4f67e0e7314@redhat.com>
- <c2972889-fe60-7614-fb6e-e57ddf780a54@redhat.com>
+        id S2387538AbfEWUIH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 May 2019 16:08:07 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:38612 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387504AbfEWUIH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 May 2019 16:08:07 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 4926626117E
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Sebastian Reichel <sre@kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Tony Lindgren <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCHv6 0/4] omapdrm: DSI command mode panel support
+Date:   Thu, 23 May 2019 22:07:52 +0200
+Message-Id: <20190523200756.25314-1-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c2972889-fe60-7614-fb6e-e57ddf780a54@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
@@ -43,39 +36,85 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi,
 
-On Thu, May 23, 2019 at 02:00:41PM +0200, Philippe Mathieu-Daudé wrote:
-> On 5/23/19 1:27 PM, Thomas Huth wrote:
-> > On 22/05/2019 20.19, Aaro Koskinen wrote:
-> >> On Wed, May 22, 2019 at 11:33:41AM +0200, Corentin Labbe wrote:
-> >>> qemu-system-arm -M help |grep OMAP
-> >>> cheetah              Palm Tungsten|E aka. Cheetah PDA (OMAP310)
-> >>> n800                 Nokia N800 tablet aka. RX-34 (OMAP2420)
-> >>> n810                 Nokia N810 tablet aka. RX-44 (OMAP2420)
-> >>> sx1                  Siemens SX1 (OMAP310) V2
-> >>> sx1-v1               Siemens SX1 (OMAP310) V1
-> >>>
-> >>>>> The maximum I can get with omap1_defconfig is
-> >>>>> qemu-system-arm -kernel zImage -nographic -machine cheetah -append 'root=/dev/ram0 console=ttyO0'
-> >>>>> Uncompressing Linux... done, booting the kernel.
-> >>>>> then nothing more.
-> >>
-> >> With N800/N810 omap2plus_defconfig should be used instead. However,
-> >> I don't think that works either (but haven't tried recently). Also with
-> >> N800/N810 you need to append the DTB file to the kernel image.
-> > 
-> > FWIW, Philippe recently posted a mail how to run older kernels on n810:
-> > 
-> > https://www.mail-archive.com/qemu-devel@nongnu.org/msg610653.html
+Here is another round of the DSI command mode panel patchset
+integrating the feedback from PATCHv5. The patches are based
+on v5.2-rc1 tag. It does not contain the patches required for
+OMAP3 support (it needs a workaround for a hardware bug) and
+for automatic display rotation. They should get their own series,
+once after everything has been moved to DRM panel API. I think
+DRM panel conversion should happen _after_ this series, since
+otherwise there is a high risk of bricking DSI support completely.
+I already started a WIP branch for converting DSI to the DRM panel
+API on top of this patchset.
 
-So it seems the issue with N8x0 is that serial console does not work.
-And we are missing the display support in the mainline kernel.
+Tested on Droid 4:
+ * Display blanking
+  - automatic backlight blanking is missing (not handled by DSI)
+ * Framebuffer Console, updated at 1Hz due to blinking cursor
+ * Xorg 1.19 with modesetting driver
+ * Weston 5.0 with DRM backend
+ * kmstest (static image)
+ * No updates send when nothing needs to be sent
 
-> However I can see than none of the board listed by Corentin are tested
-> ... That reminder me I never succeed at using the Cheetah PDA. So the
-> OMAP310 is probably bitroting in QEMU...
+Known issues:
+ * OMAP3 is untested and most likely broken due to missing
+   workaround(s) for hardware bugs.
+ * Weston 5.0 with fbdev backend does not work, since it
+   uses neither page flip nor dirty ioctl. You need to use
+   the drm backend.
 
-Cheetah works with serial console. I tried with console on display,
-and it seems to boot up, and the frame buffer window gets correctly
-sized but for some reason it just stays blank.
+Changes since PATCHv5:
+ * Rebased to v5.2-rc1
+ * Simplified omap_framebuffer_dirty() by using
+   drm_for_each_crtc()
 
-A.
+Changes since PATCHv4:
+ * Apply Acked-/Tested-by received from Tony and Pavel
+ * Fix spelling/optimize commit messages
+ * Use proper multi-line comments
+ * Restructure patch 4: move the whole HDMI block into a
+   static subfunction, that is only called when output
+   type is HDMI. Also drop the incorrect check for DVI.
+
+Changes since PATCHv3:
+ * Drop all Tested/Acked-by tags
+ * Drop the rotation patches for now
+ * Rebase to 4.20-rc1 + fixes from Laurent and Tony
+ * Add fixes for DSI regressions introduced in 4.20-rc1
+ * Store info update manual update mode in omap_crtc_state
+ * Lock modesetting in omap_framebuffer_dirty
+ * Directly loop through CRTCs instead of connectors in dirty function
+ * Properly refresh display during page flips and get Weston working
+ * Add more comments about implementation details
+
+Changes since PATCHv2:
+ * Drop omap3 quirk patch (OMAP3 should get its own mini-series)
+ * Rebase to current linux-next
+ * Use existing 'rotation' DT property to set DRM orientation hint
+ * Add Tested-by from Tony
+
+Changes since PATCHv1:
+ * Drop patches, that were queued by Tomi
+ * Rebase to current master
+ * Rework the omap3 workaround patch to only affect omap3
+ * Add orientation DRM property support
+
+-- Sebastian
+
+Sebastian Reichel (4):
+  drm/omap: use DRM_DEBUG_DRIVER instead of CORE
+  drm/omap: don't check dispc timings for DSI
+  drm/omap: add framedone interrupt support
+  drm/omap: add support for manually updated displays
+
+ drivers/gpu/drm/omapdrm/omap_crtc.c | 182 ++++++++++++++++++++++++++--
+ drivers/gpu/drm/omapdrm/omap_crtc.h |   2 +
+ drivers/gpu/drm/omapdrm/omap_drv.h  |   4 +-
+ drivers/gpu/drm/omapdrm/omap_fb.c   |  19 +++
+ drivers/gpu/drm/omapdrm/omap_irq.c  |  25 ++++
+ drivers/gpu/drm/omapdrm/omap_irq.h  |   1 +
+ 6 files changed, 222 insertions(+), 11 deletions(-)
+
+-- 
+2.20.1
+
