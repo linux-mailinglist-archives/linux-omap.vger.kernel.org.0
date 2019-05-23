@@ -2,334 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B6428B4B
-	for <lists+linux-omap@lfdr.de>; Thu, 23 May 2019 22:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89BAD28B79
+	for <lists+linux-omap@lfdr.de>; Thu, 23 May 2019 22:27:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387504AbfEWUIS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 May 2019 16:08:18 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:38680 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387993AbfEWUIS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 May 2019 16:08:18 -0400
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id 0D60F26117E
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Sebastian Reichel <sre@kernel.org>,
+        id S2387450AbfEWU1o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 May 2019 16:27:44 -0400
+Received: from smtprelay0160.hostedemail.com ([216.40.44.160]:37661 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726451AbfEWU1o (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 23 May 2019 16:27:44 -0400
+X-Greylist: delayed 504 seconds by postgrey-1.27 at vger.kernel.org; Thu, 23 May 2019 16:27:43 EDT
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave04.hostedemail.com (Postfix) with ESMTP id 23F581801B747
+        for <linux-omap@vger.kernel.org>; Thu, 23 May 2019 20:19:20 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id A74F8182CED28;
+        Thu, 23 May 2019 20:19:18 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::,RULES_HIT:41:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3868:3871:4250:4321:5007:6117:6119:7903:10004:10400:10848:11026:11232:11473:11657:11658:11914:12043:12048:12679:12740:12760:12895:13069:13311:13357:13439:14659:14721:21080:21433:21451:21627:30029:30054:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:28,LUA_SUMMARY:none
+X-HE-Tag: lock32_6e24366692258
+X-Filterd-Recvd-Size: 2246
+Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
+        (Authenticated sender: joe@perches.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Thu, 23 May 2019 20:19:16 +0000 (UTC)
+Message-ID: <f1fa87acecc7cb5329d28d42f7327742aceb04db.camel@perches.com>
+Subject: Re: [PATCHv6 1/4] drm/omap: use DRM_DEBUG_DRIVER instead of CORE
+From:   Joe Perches <joe@perches.com>
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sebastian Reichel <sre@kernel.org>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
         Tony Lindgren <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
         dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCHv6 4/4] drm/omap: add support for manually updated displays
-Date:   Thu, 23 May 2019 22:07:56 +0200
-Message-Id: <20190523200756.25314-5-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190523200756.25314-1-sebastian.reichel@collabora.com>
+        linux-kernel@vger.kernel.org, kernel@collabora.com
+Date:   Thu, 23 May 2019 13:19:15 -0700
+In-Reply-To: <20190523200756.25314-2-sebastian.reichel@collabora.com>
 References: <20190523200756.25314-1-sebastian.reichel@collabora.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+         <20190523200756.25314-2-sebastian.reichel@collabora.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.30.1-1build1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This adds the required infrastructure for manually updated displays,
-such as DSI command mode panels. While those panels often support
-partial updates we currently always do a full refresh.
+On Thu, 2019-05-23 at 22:07 +0200, Sebastian Reichel wrote:
+> This macro is only used by omapdrm, which should print
+> debug messages using the DRIVER category instead of the
+> default CORE category.
+[]
+> diff --git a/drivers/gpu/drm/omapdrm/omap_drv.h b/drivers/gpu/drm/omapdrm/omap_drv.h
+[]
+> @@ -37,8 +37,8 @@
+>  #include "omap_irq.h"
+>  #include "omap_plane.h"
+>  
+> -#define DBG(fmt, ...) DRM_DEBUG(fmt"\n", ##__VA_ARGS__)
+> -#define VERB(fmt, ...) if (0) DRM_DEBUG(fmt, ##__VA_ARGS__) /* verbose debug */
+> +#define DBG(fmt, ...) DRM_DEBUG_DRIVER(fmt"\n", ##__VA_ARGS__)
+> +#define VERB(fmt, ...) if (0) DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__) /* verbose debug */
 
-The display will be refreshed when something calls the dirty callback,
-such as libdrm's drmModeDirtyFB(). This is currently being done at least
-by the kernel console and Xorg (with modesetting driver) in their
-default configuration. Weston does not implement this and the fbdev
-backend does not work (display will not update). Weston's DRM backend
-uses double buffering and the page flip will also trigger a display
-refresh.
+Trivia:
 
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
----
- drivers/gpu/drm/omapdrm/omap_crtc.c | 114 ++++++++++++++++++++++++++--
- drivers/gpu/drm/omapdrm/omap_crtc.h |   1 +
- drivers/gpu/drm/omapdrm/omap_fb.c   |  19 +++++
- 3 files changed, 129 insertions(+), 5 deletions(-)
+Strictly, this should use do { if (0) etc... } while (0)
 
-diff --git a/drivers/gpu/drm/omapdrm/omap_crtc.c b/drivers/gpu/drm/omapdrm/omap_crtc.c
-index 68697820d189..b59065365c9e 100644
---- a/drivers/gpu/drm/omapdrm/omap_crtc.c
-+++ b/drivers/gpu/drm/omapdrm/omap_crtc.c
-@@ -32,6 +32,7 @@ struct omap_crtc_state {
- 	/* Shadow values for legacy userspace support. */
- 	unsigned int rotation;
- 	unsigned int zpos;
-+	bool manually_updated;
- };
- 
- #define to_omap_crtc(x) container_of(x, struct omap_crtc, base)
-@@ -51,6 +52,7 @@ struct omap_crtc {
- 	bool pending;
- 	wait_queue_head_t pending_wait;
- 	struct drm_pending_vblank_event *event;
-+	struct delayed_work update_work;
- 
- 	void (*framedone_handler)(void *);
- 	void *framedone_handler_data;
-@@ -105,21 +107,18 @@ int omap_crtc_wait_pending(struct drm_crtc *crtc)
- /*
-  * Manager-ops, callbacks from output when they need to configure
-  * the upstream part of the video pipe.
-- *
-- * Most of these we can ignore until we add support for command-mode
-- * panels.. for video-mode the crtc-helpers already do an adequate
-- * job of sequencing the setup of the video pipe in the proper order
-  */
- 
--/* we can probably ignore these until we support command-mode panels: */
- static void omap_crtc_dss_start_update(struct omap_drm_private *priv,
- 				       enum omap_channel channel)
- {
-+	priv->dispc_ops->mgr_enable(priv->dispc, channel, true);
- }
- 
- /* Called only from the encoder enable/disable and suspend/resume handlers. */
- static void omap_crtc_set_enabled(struct drm_crtc *crtc, bool enable)
- {
-+	struct omap_crtc_state *omap_state = to_omap_crtc_state(crtc->state);
- 	struct drm_device *dev = crtc->dev;
- 	struct omap_drm_private *priv = dev->dev_private;
- 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
-@@ -131,6 +130,12 @@ static void omap_crtc_set_enabled(struct drm_crtc *crtc, bool enable)
- 	if (WARN_ON(omap_crtc->enabled == enable))
- 		return;
- 
-+	if (omap_state->manually_updated) {
-+		omap_irq_enable_framedone(crtc, enable);
-+		omap_crtc->enabled = enable;
-+		return;
-+	}
-+
- 	if (omap_crtc->pipe->output->type == OMAP_DISPLAY_TYPE_HDMI) {
- 		priv->dispc_ops->mgr_enable(priv->dispc, channel, enable);
- 		omap_crtc->enabled = enable;
-@@ -352,6 +357,51 @@ void omap_crtc_framedone_irq(struct drm_crtc *crtc, uint32_t irqstatus)
- 	wake_up(&omap_crtc->pending_wait);
- }
- 
-+void omap_crtc_flush(struct drm_crtc *crtc)
-+{
-+	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
-+	struct omap_crtc_state *omap_state = to_omap_crtc_state(crtc->state);
-+
-+	if (!omap_state->manually_updated)
-+		return;
-+
-+	if (!delayed_work_pending(&omap_crtc->update_work))
-+		schedule_delayed_work(&omap_crtc->update_work, 0);
-+}
-+
-+static void omap_crtc_manual_display_update(struct work_struct *data)
-+{
-+	struct omap_crtc *omap_crtc =
-+			container_of(data, struct omap_crtc, update_work.work);
-+	struct drm_display_mode *mode = &omap_crtc->pipe->crtc->mode;
-+	struct omap_dss_device *dssdev = omap_crtc->pipe->output->next;
-+	struct drm_device *dev = omap_crtc->base.dev;
-+	const struct omap_dss_driver *dssdrv;
-+	int ret;
-+
-+	if (!dssdev) {
-+		dev_err_once(dev->dev, "missing display dssdev!");
-+		return;
-+	}
-+
-+	dssdrv = dssdev->driver;
-+	if (!dssdrv || !dssdrv->update) {
-+		dev_err_once(dev->dev, "missing or incorrect dssdrv!");
-+		return;
-+	}
-+
-+	if (dssdrv->sync)
-+		dssdrv->sync(dssdev);
-+
-+	ret = dssdrv->update(dssdev, 0, 0, mode->hdisplay, mode->vdisplay);
-+	if (ret < 0) {
-+		spin_lock_irq(&dev->event_lock);
-+		omap_crtc->pending = false;
-+		spin_unlock_irq(&dev->event_lock);
-+		wake_up(&omap_crtc->pending_wait);
-+	}
-+}
-+
- static void omap_crtc_write_crtc_properties(struct drm_crtc *crtc)
- {
- 	struct omap_drm_private *priv = crtc->dev->dev_private;
-@@ -401,12 +451,17 @@ static void omap_crtc_atomic_enable(struct drm_crtc *crtc,
- {
- 	struct omap_drm_private *priv = crtc->dev->dev_private;
- 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
-+	struct omap_crtc_state *omap_state = to_omap_crtc_state(crtc->state);
- 	int ret;
- 
- 	DBG("%s", omap_crtc->name);
- 
- 	priv->dispc_ops->runtime_get(priv->dispc);
- 
-+	/* manual updated display will not trigger vsync irq */
-+	if (omap_state->manually_updated)
-+		return;
-+
- 	spin_lock_irq(&crtc->dev->event_lock);
- 	drm_crtc_vblank_on(crtc);
- 	ret = drm_crtc_vblank_get(crtc);
-@@ -421,6 +476,7 @@ static void omap_crtc_atomic_disable(struct drm_crtc *crtc,
- {
- 	struct omap_drm_private *priv = crtc->dev->dev_private;
- 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
-+	struct drm_device *dev = crtc->dev;
- 
- 	DBG("%s", omap_crtc->name);
- 
-@@ -431,6 +487,11 @@ static void omap_crtc_atomic_disable(struct drm_crtc *crtc,
- 	}
- 	spin_unlock_irq(&crtc->dev->event_lock);
- 
-+	cancel_delayed_work(&omap_crtc->update_work);
-+
-+	if (!omap_crtc_wait_pending(crtc))
-+		dev_warn(dev->dev, "manual display update did not finish!");
-+
- 	drm_crtc_vblank_off(crtc);
- 
- 	priv->dispc_ops->runtime_put(priv->dispc);
-@@ -501,6 +562,22 @@ static void omap_crtc_mode_set_nofb(struct drm_crtc *crtc)
- 	drm_display_mode_to_videomode(mode, &omap_crtc->vm);
- }
- 
-+static bool omap_crtc_is_manually_updated(struct drm_crtc *crtc)
-+{
-+	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
-+	struct omap_dss_device *display = omap_crtc->pipe->output->next;
-+
-+	if (!display)
-+		return false;
-+
-+	if (display->caps & OMAP_DSS_DISPLAY_CAP_MANUAL_UPDATE) {
-+		DBG("detected manually updated display!");
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- static int omap_crtc_atomic_check(struct drm_crtc *crtc,
- 				struct drm_crtc_state *state)
- {
-@@ -522,6 +599,9 @@ static int omap_crtc_atomic_check(struct drm_crtc *crtc,
- 		/* Mirror new values for zpos and rotation in omap_crtc_state */
- 		omap_crtc_state->zpos = pri_state->zpos;
- 		omap_crtc_state->rotation = pri_state->rotation;
-+
-+		/* Check if this CRTC is for a manually updated display */
-+		omap_crtc_state->manually_updated = omap_crtc_is_manually_updated(crtc);
- 	}
- 
- 	return 0;
-@@ -537,6 +617,7 @@ static void omap_crtc_atomic_flush(struct drm_crtc *crtc,
- {
- 	struct omap_drm_private *priv = crtc->dev->dev_private;
- 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
-+	struct omap_crtc_state *omap_crtc_state = to_omap_crtc_state(crtc->state);
- 	int ret;
- 
- 	if (crtc->state->color_mgmt_changed) {
-@@ -561,6 +642,15 @@ static void omap_crtc_atomic_flush(struct drm_crtc *crtc,
- 
- 	DBG("%s: GO", omap_crtc->name);
- 
-+	if (omap_crtc_state->manually_updated) {
-+		/* send new image for page flips and modeset changes */
-+		spin_lock_irq(&crtc->dev->event_lock);
-+		omap_crtc_flush(crtc);
-+		omap_crtc_arm_event(crtc);
-+		spin_unlock_irq(&crtc->dev->event_lock);
-+		return;
-+	}
-+
- 	ret = drm_crtc_vblank_get(crtc);
- 	WARN_ON(ret != 0);
- 
-@@ -646,6 +736,7 @@ omap_crtc_duplicate_state(struct drm_crtc *crtc)
- 
- 	state->zpos = current_state->zpos;
- 	state->rotation = current_state->rotation;
-+	state->manually_updated = current_state->manually_updated;
- 
- 	return &state->base;
- }
-@@ -722,6 +813,19 @@ struct drm_crtc *omap_crtc_init(struct drm_device *dev,
- 	omap_crtc->channel = channel;
- 	omap_crtc->name = channel_names[channel];
- 
-+	/*
-+	 * We want to refresh manually updated displays from dirty callback,
-+	 * which is called quite often (e.g. for each drawn line). This will
-+	 * be used to do the display update asynchronously to avoid blocking
-+	 * the rendering process and merges multiple dirty calls into one
-+	 * update if they arrive very fast. We also call this function for
-+	 * atomic display updates (e.g. for page flips), which means we do
-+	 * not need extra locking. Atomic updates should be synchronous, but
-+	 * need to wait for the framedone interrupt anyways.
-+	 */
-+	INIT_DELAYED_WORK(&omap_crtc->update_work,
-+			  omap_crtc_manual_display_update);
-+
- 	ret = drm_crtc_init_with_planes(dev, crtc, plane, NULL,
- 					&omap_crtc_funcs, NULL);
- 	if (ret < 0) {
-diff --git a/drivers/gpu/drm/omapdrm/omap_crtc.h b/drivers/gpu/drm/omapdrm/omap_crtc.h
-index d33bbb7a4f90..2b518c74203e 100644
---- a/drivers/gpu/drm/omapdrm/omap_crtc.h
-+++ b/drivers/gpu/drm/omapdrm/omap_crtc.h
-@@ -42,5 +42,6 @@ int omap_crtc_wait_pending(struct drm_crtc *crtc);
- void omap_crtc_error_irq(struct drm_crtc *crtc, u32 irqstatus);
- void omap_crtc_vblank_irq(struct drm_crtc *crtc);
- void omap_crtc_framedone_irq(struct drm_crtc *crtc, uint32_t irqstatus);
-+void omap_crtc_flush(struct drm_crtc *crtc);
- 
- #endif /* __OMAPDRM_CRTC_H__ */
-diff --git a/drivers/gpu/drm/omapdrm/omap_fb.c b/drivers/gpu/drm/omapdrm/omap_fb.c
-index 4f8eb9d08f99..b6f052f2a7e1 100644
---- a/drivers/gpu/drm/omapdrm/omap_fb.c
-+++ b/drivers/gpu/drm/omapdrm/omap_fb.c
-@@ -66,8 +66,27 @@ struct omap_framebuffer {
- 	struct mutex lock;
- };
- 
-+static int omap_framebuffer_dirty(struct drm_framebuffer *fb,
-+				  struct drm_file *file_priv,
-+				  unsigned flags, unsigned color,
-+				  struct drm_clip_rect *clips,
-+				  unsigned num_clips)
-+{
-+	struct drm_crtc *crtc;
-+
-+	drm_modeset_lock_all(fb->dev);
-+
-+	drm_for_each_crtc(crtc, fb->dev)
-+		omap_crtc_flush(crtc);
-+
-+	drm_modeset_unlock_all(fb->dev);
-+
-+	return 0;
-+}
-+
- static const struct drm_framebuffer_funcs omap_framebuffer_funcs = {
- 	.create_handle = drm_gem_fb_create_handle,
-+	.dirty = omap_framebuffer_dirty,
- 	.destroy = drm_gem_fb_destroy,
- };
- 
--- 
-2.20.1
+Also, none of the VERB uses have a terminating newline
+so ideally, this should be:
+
+#define VERB(fmt, ...) do { if (0) DRM_DEBUG_DRIVER(fmt "\n", ##__VA_ARGS__); } while (0) /* verbose debug */
+
+And VERB isn't a particularly intelligible macro name.
+Maybe VDBG instead.
+
 
