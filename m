@@ -2,62 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D79862AEBD
-	for <lists+linux-omap@lfdr.de>; Mon, 27 May 2019 08:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 587C22AED2
+	for <lists+linux-omap@lfdr.de>; Mon, 27 May 2019 08:39:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725940AbfE0Gcy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 May 2019 02:32:54 -0400
-Received: from muru.com ([72.249.23.125]:51060 "EHLO muru.com"
+        id S1725996AbfE0Gjh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 May 2019 02:39:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33522 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725907AbfE0Gcy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 27 May 2019 02:32:54 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 70E5880F3;
-        Mon, 27 May 2019 06:33:13 +0000 (UTC)
-Date:   Sun, 26 May 2019 23:32:50 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@redhat.com>
-Cc:     Thomas Huth <thuth@redhat.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Corentin Labbe <clabbe.montjoie@gmail.com>,
-        linux-omap@vger.kernel.org, qemu-devel@nongnu.org,
-        linux-kernel@vger.kernel.org,
-        Peter Maydell <peter.maydell@linaro.org>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [Qemu-devel] Running linux on qemu omap
-Message-ID: <20190527063250.GI5447@atomide.com>
-References: <20190520190533.GA28160@Red>
- <20190521232323.GD3621@darkstar.musicnaut.iki.fi>
- <20190522093341.GA32154@Red>
- <20190522181904.GE3621@darkstar.musicnaut.iki.fi>
- <8977e2bb-8d9e-f4fd-4c44-b4f67e0e7314@redhat.com>
- <c2972889-fe60-7614-fb6e-e57ddf780a54@redhat.com>
+        id S1725943AbfE0Gjg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 27 May 2019 02:39:36 -0400
+Received: from localhost (unknown [171.61.91.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BCD6A2054F;
+        Mon, 27 May 2019 06:39:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558939176;
+        bh=JT4KTsrIWgsbKhkPbSLThrwY2+w4AOrCa0jWApt18+k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xP5ZOf0b4QiCw7NzBzQbzedrrWapYQKtZu//RoV7n6FD1I16KTQuswyZBWZHiHBHT
+         I/lzbXFeC9Gg60JZUSxntpdJbi/m5DTKF71SwHwsE6GxgHiwQ0EADV5P8TMPINwCub
+         zrbrDDzMTqbdN5dpVnFhfGWQ6DH6rrEbfQi4B2p0=
+Date:   Mon, 27 May 2019 12:09:32 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc:     dan.j.williams@intel.com, dmaengine@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] dmaengine: ti: edma: Polled completion support
+Message-ID: <20190527063932.GE15118@vkoul-mobl>
+References: <20190521093646.21836-1-peter.ujfalusi@ti.com>
+ <19b0d346-5249-e832-8eea-685c8e7706e2@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c2972889-fe60-7614-fb6e-e57ddf780a54@redhat.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <19b0d346-5249-e832-8eea-685c8e7706e2@ti.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On 23-05-19, 13:57, Peter Ujfalusi wrote:
+> Vinod,
+> 
+> On 21/05/2019 12.36, Peter Ujfalusi wrote:
+> > Hi,
+> > 
+> > Changes since v2:
+> > - Fix typo in the comment for patch 0
+> > 
+> > Changes since v1:
+> > - Cleanup patch for the array register handling
+> > - typo fixed in patch2 commit message
+> > 
+> > The code around the array register access was pretty confusing for the first
+> > look, so clean them up first then use the cleaner way in the polled handling.
+> > 
+> > When a DMA client driver decides that it is not providing callback for
+> > completion of a transfer (and/or does not set the DMA_PREP_INTERRUPT) but
+> > it will poll the status of the transfer (in case of short memcpy for
+> > example) we will not get interrupt for the completion of the transfer and
+> > will not mark the transaction as done.
+> > 
+> > Check the event registers (ER and EER) and if the channel is inactive then
+> > return wioth DMA_COMPLETE to let the client know that the transfer is
+> > completed.
+> 
+> Please do not pick this up yet, I got report that it might cause side
+> effect which I need to debug to understand.
 
-* Philippe Mathieu-Daudé <philmd@redhat.com> [190523 12:01]:
-> What I use as reference for testing ARM boards [*] is the work of
-> Guenter Roeck:
-> https://github.com/groeck/linux-build-test/blob/master/rootfs/arm/run-qemu-arm.sh
+OK dropped for queue
 
-I think Guenter also has v2.3.50-local-linaro branch in his
-github repo that has support for few extra boards like Beagleboard.
-Not sure what's the current branch to use though.
-
-Regards,
-
-Tony
-
-
-
-
+-- 
+~Vinod
