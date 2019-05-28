@@ -2,102 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 707332C41D
-	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2019 12:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCA612C423
+	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2019 12:19:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726481AbfE1KSw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 May 2019 06:18:52 -0400
-Received: from muru.com ([72.249.23.125]:51544 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726236AbfE1KSw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 28 May 2019 06:18:52 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AA3D080F3;
-        Tue, 28 May 2019 10:19:10 +0000 (UTC)
-Date:   Tue, 28 May 2019 03:18:47 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Sebastian Reichel <sebastian.reichel@collabora.com>,
+        id S1726236AbfE1KT1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 May 2019 06:19:27 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:33256 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726203AbfE1KT1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 May 2019 06:19:27 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4SAJ5Ak021461;
+        Tue, 28 May 2019 05:19:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1559038745;
+        bh=zQamKnGEmQhWoSzRt42BHFoPsQGnR1ArVAvOV1yOmwI=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=uJg88Y68pZASvJpleiZ4FWK9XAkk599Oue1bBGBOwU6vKG6K6M30HzSptXIHpcEJD
+         WfX0Fvhat7IZpYk1ATIpBzYJqihfJWV1cdWsf1qovDLyCyw327yKwnLE7riLJ1sJKM
+         X77XxVmYmameXBoWtskWxMg3kCLYGtMTCuAoBHls=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4SAJ5JQ048867
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 28 May 2019 05:19:05 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 28
+ May 2019 05:19:04 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Tue, 28 May 2019 05:19:04 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4SAJ24o016075;
+        Tue, 28 May 2019 05:19:02 -0500
+Subject: Re: [PATCHv6 3/4] drm/omap: add framedone interrupt support
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sebastian Reichel <sre@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        Keerthy <j-keerthy@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: Re: [PATCHv6 0/4] omapdrm: DSI command mode panel support
-Message-ID: <20190528101847.GN5447@atomide.com>
+        Tony Lindgren <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+CC:     "H. Nikolaus Schaller" <hns@goldelico.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@collabora.com>
 References: <20190523200756.25314-1-sebastian.reichel@collabora.com>
- <60c45d23-de2f-d94a-c3d7-146a2bee538f@ti.com>
- <20190527112122.GJ5447@atomide.com>
- <e507c415-38de-86fe-9265-4b0aed0d7224@ti.com>
- <20190528093952.GM5447@atomide.com>
- <14c6c702-844b-756d-2d97-44e8f5a169df@ti.com>
+ <20190523200756.25314-4-sebastian.reichel@collabora.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <9eb23a5d-438e-7b25-e7cb-8b734a150e43@ti.com>
+Date:   Tue, 28 May 2019 13:19:01 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <14c6c702-844b-756d-2d97-44e8f5a169df@ti.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20190523200756.25314-4-sebastian.reichel@collabora.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tomi Valkeinen <tomi.valkeinen@ti.com> [190528 10:05]:
-> On 28/05/2019 12:39, Tony Lindgren wrote:
-> > Hi,
-> > 
-> > * Tomi Valkeinen <tomi.valkeinen@ti.com> [190528 09:19]:
-> > > On 27/05/2019 14:21, Tony Lindgren wrote:
-> > > 
-> > > > > Looks good to me. For some reason I can't boot 5.2-rc2 (on x15) so I haven't
-> > > > > been able to test yet. I'll pick the series up in any case, and I'll test it
-> > > > > when I get the kernel booting.
-> > > > 
-> > > > Great good to have these merged finally :)
-> > > > 
-> > > > Hmm I wonder if some x15 models are affected by the SoC variant
-> > > > changes queued in my fixes branch?
-> > > 
-> > > This is what I see with earlycon, on linux-omap fixes branch. I think this looks
-> > > similar to what I saw with dra76 _without_ the fixes.
-> > 
-> > OK sounds like we need to use some different SoC specific .dtsi file,
-> > is this maybe x15 rev c?
-> > 
-> > You can detect which modules fail based on the module base address
-> > for revision register seen with the following debug patch. Then
-> > those need to be tagged with status = "disabled" at the module
-> > level in the SoC specific dtsi file.
-> 
-> [    1.370609] ti-sysc 4ae20000.target-module: probing device
-> 
-> This change lets me boot. I don't know that's the correct place, though:
-> 
-> diff --git a/arch/arm/boot/dts/am5728.dtsi b/arch/arm/boot/dts/am5728.dtsi
-> index 82e5427ef6a9..c778f9a86b3a 100644
-> --- a/arch/arm/boot/dts/am5728.dtsi
-> +++ b/arch/arm/boot/dts/am5728.dtsi
-> @@ -31,3 +31,7 @@
-> &atl_tm {
->        status = "disabled";
-> };
+Hi Sebastian,
+
+On 23/05/2019 23:07, Sebastian Reichel wrote:
+
+> @@ -302,6 +328,30 @@ void omap_crtc_vblank_irq(struct drm_crtc *crtc)
+>   	DBG("%s: apply done", omap_crtc->name);
+>   }
+>   
+> +void omap_crtc_framedone_irq(struct drm_crtc *crtc, uint32_t irqstatus)
+> +{
+> +	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
 > +
-> +&timer12 {
-> +       status = "disabled";
-> +};
+> +	if (!omap_crtc->framedone_handler) {
+> +		dev_warn(omap_crtc->base.dev->dev, "no framedone handler?");
+> +		return;
+> +	}
 
-OK we should disable it at the target-module level though. Interesting
-that reading the revision register works with the above, or maybe you
-still get some warning?
+This triggers on normal displays.
 
-> My board is x15 rev A3, attached to AM5 EVM. I've also attached my kernel
-> config.
+FRAMEDONE is an interrupt we get when DISPC's output videoport is being 
+turned off. It's raised after the last frame has been finished (i.e. the 
+DISPC is truly done with that videoport).
 
-Strange that this is not affecting other x15? I think timer12 would
-be blocked on HS devices though?
+We get it for both conventional displays (when the display is turned 
+off) and for DSI command mode (when a single frame has been sent), as in 
+both cases the videoport is disabled after the operation. For 
+conventional displays, you can think FRAMEDONE as the last vsync.
 
-Regards,
+We also have special handling for FRAMEDONE in omap_crtc_set_enabled(), 
+which is used to get the drm driver to wait for FRAMEDONE when disabling 
+the display. I wonder if this separate framedone handling might somehow 
+conflict with that code. And/or should these be somehow combined.
 
-Tony
+  Tomi
+
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
