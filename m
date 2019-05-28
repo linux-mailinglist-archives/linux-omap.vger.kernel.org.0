@@ -2,96 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF042C523
-	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2019 13:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DFBA2C52F
+	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2019 13:12:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726747AbfE1LGc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Tue, 28 May 2019 07:06:32 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:37051 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726512AbfE1LGc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 28 May 2019 07:06:32 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-51-I9st8qMRPWGW6eWon_ML-A-1; Tue, 28 May 2019 12:06:27 +0100
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Tue, 28 May 2019 12:06:26 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Tue, 28 May 2019 12:06:26 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Tony Lindgren' <tony@atomide.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        "Roger Quadros" <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Rob Herring <robh@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: RE: [PATCH 01/12] bus: ti-sysc: Support 16-bit writes too
-Thread-Topic: [PATCH 01/12] bus: ti-sysc: Support 16-bit writes too
-Thread-Index: AQHVFIXZIpY/mCelSky05+1Jud+wtaaAYYxw
-Date:   Tue, 28 May 2019 11:06:26 +0000
-Message-ID: <5e9a31dfdfd843469c51106fce9ea353@AcuMS.aculab.com>
-References: <20190527121348.45251-1-tony@atomide.com>
- <20190527121348.45251-2-tony@atomide.com>
-In-Reply-To: <20190527121348.45251-2-tony@atomide.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S1726400AbfE1LMG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 May 2019 07:12:06 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:53486 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726313AbfE1LMG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 May 2019 07:12:06 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4SBBrF8071878;
+        Tue, 28 May 2019 06:11:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1559041913;
+        bh=XbgikyC9otiR4YuTt/uxocCuXVecKc1fGa0PD78NL7o=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=VPQcS2VMgEKOda7JpQv+0emh77HzV9Whuj3flfgsA+DAQrZa01jON9U3tCmf2khOg
+         fuw5K1DoHnhNWdOzur4PZNOJX0q0cdLT/bK5zsw6KnctJ5aFcCtwqMPk6Qb1AC39zI
+         lI9LCTS6Hi/6C3uZNTUIZsvumuuOlaTDghM/tqgQ=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4SBBr2P112080
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 28 May 2019 06:11:53 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 28
+ May 2019 06:11:52 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Tue, 28 May 2019 06:11:52 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4SBBoLo088964;
+        Tue, 28 May 2019 06:11:50 -0500
+Subject: Re: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to
+ dts
+To:     Adam Ford <aford173@gmail.com>, <linux-omap@vger.kernel.org>
+CC:     <adam.ford@logicpd.com>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20190510194229.20628-1-aford173@gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <af325707-3e42-493d-e858-77878ef06138@ti.com>
+Date:   Tue, 28 May 2019 14:11:49 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-X-MC-Unique: I9st8qMRPWGW6eWon_ML-A-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20190510194229.20628-1-aford173@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tony Lindgren
-> Sent: 27 May 2019 13:14
-> We need to also support 16-bit writes for i2c in addition to the reads
-> when we start configuring the sysconfig register for reset and idle modes.
+Hi,
+
+On 10/05/2019 22:42, Adam Ford wrote:
+> Currently the source code is compiled using hard-coded values
+> from CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK.  This patch allows this
+> clock divider value to be moved to the device tree and be changed
+> without having to recompile the kernel.
 > 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/bus/ti-sysc.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-> --- a/drivers/bus/ti-sysc.c
-> +++ b/drivers/bus/ti-sysc.c
-> @@ -100,6 +100,13 @@ static void sysc_parse_dts_quirks(struct sysc *ddata, struct device_node *np,
-> 
->  static void sysc_write(struct sysc *ddata, int offset, u32 value)
->  {
-> +	if (ddata->cfg.quirks & SYSC_QUIRK_16BIT) {
-> +		writew_relaxed(value & 0xffff, ddata->module_va + offset);
-> +		writew_relaxed(value >> 16, ddata->module_va + offset + 4);
+> Signed-off-by: Adam Ford <aford173@gmail.com>
 
-Should that be + 2 ???
+I understand why you want to do this, but I'm not sure it's a good idea. 
+It's really something the driver should figure out, and if we add it to 
+the DT, it effectively becomes an ABI.
 
-> +
-> +		return;
-> +	}
-> +
->  	writel_relaxed(value, ddata->module_va + offset);
->  }
+That said... I'm not sure how good of a job the driver could ever do, as 
+it can't know the future scaling needs of the userspace at the time it 
+is configuring the clock. And so, I'm not nacking this patch, but I 
+don't feel very good about this patch...
 
-	David
+The setting also affects all outputs (exluding venc), which may not be 
+what the user wants. Then again, I think this setting is really only 
+needed on OMAP2 & 3, which have only a single output. But that's the 
+same with the current kconfig option, of course.
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+So, the current CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK is an ugly hack, in my 
+opinion, and moving it to DT makes it a worse hack =). But I don't have 
+any good suggestions either.
 
+  Tomi
+
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
