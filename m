@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A78802BF58
-	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2019 08:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3DDD2BF5B
+	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2019 08:25:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727789AbfE1GYp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 May 2019 02:24:45 -0400
-Received: from muru.com ([72.249.23.125]:51454 "EHLO muru.com"
+        id S1727834AbfE1GYr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 May 2019 02:24:47 -0400
+Received: from muru.com ([72.249.23.125]:51466 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727772AbfE1GYp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 28 May 2019 02:24:45 -0400
+        id S1727815AbfE1GYr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 28 May 2019 02:24:47 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id C49DF82BF;
-        Tue, 28 May 2019 06:25:03 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id C9800810D;
+        Tue, 28 May 2019 06:25:05 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
@@ -22,11 +22,11 @@ Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
         Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
-Subject: [PATCH 11/13] bus: ti-sysc: Detect uarts also on omap34xx
-Date:   Mon, 27 May 2019 23:24:12 -0700
-Message-Id: <20190528062414.27192-12-tony@atomide.com>
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH 12/13] ARM: dts: Drop legacy custom hwmods property for omap4 uart
+Date:   Mon, 27 May 2019 23:24:13 -0700
+Message-Id: <20190528062414.27192-13-tony@atomide.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190528062414.27192-1-tony@atomide.com>
 References: <20190528062414.27192-1-tony@atomide.com>
@@ -37,32 +37,53 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Looks like we currently only detect UART on omap36xx, let's also
-add support for omap34xx. And let's also fix the SWSUP mode, it should
-be SWSUP_SIDLE for omap3, not SWSUP_SIDLE_ACT like for omap4 and later.
+With recent ti-sysc driver changes, we can now finally probe most
+modules without needing the custom ti,hwmods property.
 
-Note that we are still booting omap3 for most part without ti-sysc,
-so no need to treat this change as a fix.
+Let's start with omap4 uart as we can test that for runtime PM
+for core retention idle mode.
 
+Cc: devicetree@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/bus/ti-sysc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/omap4-l4.dtsi | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1205,8 +1205,10 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 		   0),
- 	SYSC_QUIRK("timer", 0, 0, 0x10, -1, 0x4fff1301, 0xffff00ff,
- 		   0),
-+	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x00000046, 0xffffffff,
-+		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x00000052, 0xffffffff,
--		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
- 	/* Uarts on omap4 and later */
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x50411e03, 0xffff00ff,
- 		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
+diff --git a/arch/arm/boot/dts/omap4-l4.dtsi b/arch/arm/boot/dts/omap4-l4.dtsi
+--- a/arch/arm/boot/dts/omap4-l4.dtsi
++++ b/arch/arm/boot/dts/omap4-l4.dtsi
+@@ -1371,7 +1371,6 @@
+ 
+ 		target-module@20000 {			/* 0x48020000, ap 3 06.0 */
+ 			compatible = "ti,sysc-omap2", "ti,sysc";
+-			ti,hwmods = "uart3";
+ 			reg = <0x20050 0x4>,
+ 			      <0x20054 0x4>,
+ 			      <0x20058 0x4>;
+@@ -1728,7 +1727,6 @@
+ 
+ 		target-module@6a000 {			/* 0x4806a000, ap 26 18.0 */
+ 			compatible = "ti,sysc-omap2", "ti,sysc";
+-			ti,hwmods = "uart1";
+ 			reg = <0x6a050 0x4>,
+ 			      <0x6a054 0x4>,
+ 			      <0x6a058 0x4>;
+@@ -1758,7 +1756,6 @@
+ 
+ 		target-module@6c000 {			/* 0x4806c000, ap 28 20.0 */
+ 			compatible = "ti,sysc-omap2", "ti,sysc";
+-			ti,hwmods = "uart2";
+ 			reg = <0x6c050 0x4>,
+ 			      <0x6c054 0x4>,
+ 			      <0x6c058 0x4>;
+@@ -1788,7 +1785,6 @@
+ 
+ 		target-module@6e000 {			/* 0x4806e000, ap 30 1c.1 */
+ 			compatible = "ti,sysc-omap2", "ti,sysc";
+-			ti,hwmods = "uart4";
+ 			reg = <0x6e050 0x4>,
+ 			      <0x6e054 0x4>,
+ 			      <0x6e058 0x4>;
 -- 
 2.21.0
