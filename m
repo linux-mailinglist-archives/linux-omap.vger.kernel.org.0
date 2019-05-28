@@ -2,114 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E1392C446
-	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2019 12:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DF042C523
+	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2019 13:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726453AbfE1Kc5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 May 2019 06:32:57 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:34426 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726305AbfE1Kc5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 May 2019 06:32:57 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4SAWir0024513;
-        Tue, 28 May 2019 05:32:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1559039564;
-        bh=McxG6qXOV6aRVRHUHTwTeJqgXjBwYLgFzusvSu8toTI=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=teL/QmkddaZ+JzvBP0kX3Zm+hUB2eEut+CxRyf1eliUYVy2PPqICzksu1aHHx7X2O
-         Fk4/Aanx/SAHDeW89PaVQ3q7A+XPnUWEp/I9coniBud2KIaEQO7WNpW9KfghmQ7NHn
-         JOfGXAu1q/V2yvRu7cxIdjt6xOETDdqQDOoiSKR0=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4SAWiAY015404
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 28 May 2019 05:32:44 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 28
- May 2019 05:32:43 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 28 May 2019 05:32:43 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4SAWfN4034016;
-        Tue, 28 May 2019 05:32:41 -0500
-Subject: Re: [PATCHv6 0/4] omapdrm: DSI command mode panel support
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@collabora.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>
-References: <20190523200756.25314-1-sebastian.reichel@collabora.com>
- <60c45d23-de2f-d94a-c3d7-146a2bee538f@ti.com>
- <20190527112122.GJ5447@atomide.com>
- <e507c415-38de-86fe-9265-4b0aed0d7224@ti.com>
- <20190528093952.GM5447@atomide.com>
- <14c6c702-844b-756d-2d97-44e8f5a169df@ti.com>
- <20190528101847.GN5447@atomide.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <c2eaee25-a0d3-2632-fdea-3a81ac7085af@ti.com>
-Date:   Tue, 28 May 2019 13:32:40 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190528101847.GN5447@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+        id S1726747AbfE1LGc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Tue, 28 May 2019 07:06:32 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:37051 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726512AbfE1LGc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 28 May 2019 07:06:32 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-51-I9st8qMRPWGW6eWon_ML-A-1; Tue, 28 May 2019 12:06:27 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Tue, 28 May 2019 12:06:26 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Tue, 28 May 2019 12:06:26 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Tony Lindgren' <tony@atomide.com>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        "Roger Quadros" <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Rob Herring <robh@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: RE: [PATCH 01/12] bus: ti-sysc: Support 16-bit writes too
+Thread-Topic: [PATCH 01/12] bus: ti-sysc: Support 16-bit writes too
+Thread-Index: AQHVFIXZIpY/mCelSky05+1Jud+wtaaAYYxw
+Date:   Tue, 28 May 2019 11:06:26 +0000
+Message-ID: <5e9a31dfdfd843469c51106fce9ea353@AcuMS.aculab.com>
+References: <20190527121348.45251-1-tony@atomide.com>
+ <20190527121348.45251-2-tony@atomide.com>
+In-Reply-To: <20190527121348.45251-2-tony@atomide.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-MC-Unique: I9st8qMRPWGW6eWon_ML-A-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 28/05/2019 13:18, Tony Lindgren wrote:
-
->> This change lets me boot. I don't know that's the correct place, though:
->>
->> diff --git a/arch/arm/boot/dts/am5728.dtsi b/arch/arm/boot/dts/am5728.dtsi
->> index 82e5427ef6a9..c778f9a86b3a 100644
->> --- a/arch/arm/boot/dts/am5728.dtsi
->> +++ b/arch/arm/boot/dts/am5728.dtsi
->> @@ -31,3 +31,7 @@
->> &atl_tm {
->>         status = "disabled";
->> };
->> +
->> +&timer12 {
->> +       status = "disabled";
->> +};
+From: Tony Lindgren
+> Sent: 27 May 2019 13:14
+> We need to also support 16-bit writes for i2c in addition to the reads
+> when we start configuring the sysconfig register for reset and idle modes.
 > 
-> OK we should disable it at the target-module level though. Interesting
-> that reading the revision register works with the above, or maybe you
-> still get some warning?
-
-I don't see anything odd in the boot log with the above change. At least 
-no kernel WARNs, nor anything with grepping "timer", "err", or "warn".
-
-I just verified with clean 5.2-rc2, that it doesn't boot, and with the 
-above change, boots.
-
->> My board is x15 rev A3, attached to AM5 EVM. I've also attached my kernel
->> config.
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/bus/ti-sysc.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> Strange that this is not affecting other x15? I think timer12 would
-> be blocked on HS devices though?
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
+> @@ -100,6 +100,13 @@ static void sysc_parse_dts_quirks(struct sysc *ddata, struct device_node *np,
+> 
+>  static void sysc_write(struct sysc *ddata, int offset, u32 value)
+>  {
+> +	if (ddata->cfg.quirks & SYSC_QUIRK_16BIT) {
+> +		writew_relaxed(value & 0xffff, ddata->module_va + offset);
+> +		writew_relaxed(value >> 16, ddata->module_va + offset + 4);
 
-I don't know... I can't believe my x15 would be unique =). Can it be 
-something in the kernel config? u-boot?
+Should that be + 2 ???
 
-Peter should have the same A3. Peter, can you try with my config?
+> +
+> +		return;
+> +	}
+> +
+>  	writel_relaxed(value, ddata->module_va + offset);
+>  }
 
-  Tomi
+	David
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
