@@ -2,76 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09F7E2D764
-	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2019 10:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37A232D780
+	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2019 10:17:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726102AbfE2IKn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 May 2019 04:10:43 -0400
-Received: from muru.com ([72.249.23.125]:51648 "EHLO muru.com"
+        id S1726015AbfE2IRR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 May 2019 04:17:17 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:34218 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726005AbfE2IKm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 May 2019 04:10:42 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 851638027;
-        Wed, 29 May 2019 08:11:01 +0000 (UTC)
-Date:   Wed, 29 May 2019 01:10:38 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        Keerthy <j-keerthy@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: Re: [PATCHv6 0/4] omapdrm: DSI command mode panel support
-Message-ID: <20190529081038.GP5447@atomide.com>
-References: <20190523200756.25314-1-sebastian.reichel@collabora.com>
- <60c45d23-de2f-d94a-c3d7-146a2bee538f@ti.com>
- <20190527112122.GJ5447@atomide.com>
- <e507c415-38de-86fe-9265-4b0aed0d7224@ti.com>
- <20190528093952.GM5447@atomide.com>
- <14c6c702-844b-756d-2d97-44e8f5a169df@ti.com>
- <20190528101847.GN5447@atomide.com>
- <ac487765-01a3-2c82-d86e-db00451563a9@ti.com>
+        id S1725956AbfE2IRR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 May 2019 04:17:17 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 6A60781F12;
+        Wed, 29 May 2019 08:17:09 +0000 (UTC)
+Received: from carbon (ovpn-200-30.brq.redhat.com [10.40.200.30])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7F45760BDF;
+        Wed, 29 May 2019 08:17:01 +0000 (UTC)
+Date:   Wed, 29 May 2019 10:16:59 +0200
+From:   Jesper Dangaard Brouer <brouer@redhat.com>
+To:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Cc:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net,
+        ast@kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
+        daniel@iogearbox.net, jakub.kicinski@netronome.com,
+        john.fastabend@gmail.com, brouer@redhat.com
+Subject: Re: [PATCH net-next 3/3] net: ethernet: ti: cpsw: add XDP support
+Message-ID: <20190529101659.2aa714b8@carbon>
+In-Reply-To: <20190523182035.9283-4-ivan.khoronzhuk@linaro.org>
+References: <20190523182035.9283-1-ivan.khoronzhuk@linaro.org>
+        <20190523182035.9283-4-ivan.khoronzhuk@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ac487765-01a3-2c82-d86e-db00451563a9@ti.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Wed, 29 May 2019 08:17:17 +0000 (UTC)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tomi Valkeinen <tomi.valkeinen@ti.com> [190529 07:06]:
-> On 28/05/2019 13:18, Tony Lindgren wrote:
-> 
-> > > My board is x15 rev A3, attached to AM5 EVM. I've also attached my kernel
-> > > config.
-> > 
-> > Strange that this is not affecting other x15? I think timer12 would
-> > be blocked on HS devices though?
-> 
-> Seems that the kernel config affects. omap2plus_defconfig boots ok.
+On Thu, 23 May 2019 21:20:35 +0300
+Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
 
-OK, this line in your oops:
+> +static struct page *cpsw_alloc_page(struct cpsw_common *cpsw)
+> +{
+> +	struct page_pool *pool = cpsw->rx_page_pool;
+> +	struct page *page, *prev_page = NULL;
+> +	int try = pool->p.pool_size << 2;
+> +	int start_free = 0, ret;
+> +
+> +	do {
+> +		page = page_pool_dev_alloc_pages(pool);
+> +		if (!page)
+> +			return NULL;
+> +
+> +		/* if netstack has page_pool recycling remove the rest */
+> +		if (page_ref_count(page) == 1)
+> +			break;
+> +
+> +		/* start free pages in use, shouldn't happen */
+> +		if (prev_page == page || start_free) {
+> +			/* dma unmap/puts page if rfcnt != 1 */
+> +			page_pool_recycle_direct(pool, page);
+> +			start_free = 1;
+> +			continue;
+> +		}
+> +
+> +		/* if refcnt > 1, page has been holding by netstack, it's pity,
+> +		 * so put it to the ring to be consumed later when fast cash is
+> +		 * empty. If ring is full then free page by recycling as above.
+> +		 */
+> +		ret = ptr_ring_produce(&pool->ring, page);
 
-Unable to handle kernel paging request at virtual address 5a5a5a5a
+This looks very wrong to me!  First of all you are manipulation
+directly with the internal pool->ring and not using the API, which
+makes this code un-maintainable.  Second this is wrong, as page_pool
+assume the in-variance that pages on the ring have refcnt==1.
 
-Probably means we hit some slab poison with DEBUG_SLAB set.
-Looks like your config boots fine with DEBUG_SLAB disabled
-for me.
+> +		if (ret) {
+> +			page_pool_recycle_direct(pool, page);
+> +			continue;
+> +		}
+> +
+> +		if (!prev_page)
+> +			prev_page = page;
+> +	} while (try--);
+> +
+> +	return page;
+> +}
 
-As this only happens for timer12, I wonder if we're again
-hitting some uncompress issue with corrupted dtb. Changing
-u-boot ftdaddr higher up might possibly make it go away.
-Or else there's a bug elsewhere :)
 
-Regards,
-
-Tony
-
-
+-- 
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
