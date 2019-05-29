@@ -2,92 +2,236 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B09F12D91D
-	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2019 11:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CBFB2D938
+	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2019 11:39:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725874AbfE2JdD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 May 2019 05:33:03 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:41362 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725861AbfE2JdC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 May 2019 05:33:02 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4T9Wnxm013499;
-        Wed, 29 May 2019 04:32:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1559122369;
-        bh=2CV8kVGEL0DMRiySLsnj3/iJiNMR+R8ZgD7i62w7GMA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=dNt+pk8f/F0CeV2V0M1owj47aWo7uhBpsHFxJ+wZmllgADPY9uTdoLqiVILdgYdcy
-         PYqSduIK6wqutKVyYF9FI/tZcc2VMdPGSLXOHeCQziQuyY55QM5z9UoMha/UcuX+J/
-         yhuasD8cnxZ5scS9dhXv2BFnZYyl7Q0xCkwe97ag=
-Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4T9Wn1t074537
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 29 May 2019 04:32:49 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 29
- May 2019 04:32:48 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 29 May 2019 04:32:48 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4T9Wkn5043713;
-        Wed, 29 May 2019 04:32:46 -0500
-Subject: Re: [PATCHv6 0/4] omapdrm: DSI command mode panel support
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Lindgren <tony@atomide.com>
-CC:     Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@collabora.com>,
-        Keerthy <j-keerthy@ti.com>
-References: <20190523200756.25314-1-sebastian.reichel@collabora.com>
- <60c45d23-de2f-d94a-c3d7-146a2bee538f@ti.com>
- <20190527112122.GJ5447@atomide.com>
- <e507c415-38de-86fe-9265-4b0aed0d7224@ti.com>
- <20190528093952.GM5447@atomide.com>
- <14c6c702-844b-756d-2d97-44e8f5a169df@ti.com>
- <20190528101847.GN5447@atomide.com>
- <c2eaee25-a0d3-2632-fdea-3a81ac7085af@ti.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <0f124d61-b2ed-2b7f-f63a-0b478473c8fd@ti.com>
-Date:   Wed, 29 May 2019 12:33:07 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726024AbfE2Jjx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 May 2019 05:39:53 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:17604 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725894AbfE2Jjx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 May 2019 05:39:53 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id A197A194D203AE1D13FD;
+        Wed, 29 May 2019 17:39:50 +0800 (CST)
+Received: from localhost (10.177.31.96) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Wed, 29 May 2019
+ 17:39:41 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <t-kristo@ti.com>, <mturquette@baylibre.com>, <sboyd@kernel.org>,
+        <tony@atomide.com>
+CC:     <linux-kernel@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH v3] clk: ti: Remove unused functions
+Date:   Wed, 29 May 2019 17:39:37 +0800
+Message-ID: <20190529093937.21748-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
+In-Reply-To: <20190512100328.27136-1-yuehaibing@huawei.com>
+References: <20190512100328.27136-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <c2eaee25-a0d3-2632-fdea-3a81ac7085af@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain
+X-Originating-IP: [10.177.31.96]
+X-CFilter-Loop: Reflected
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+They are not used any more since
+commit 7558562a70fb ("clk: ti: Drop legacy clk-3xxx-legacy code")
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Suggested-by: Tero Kristo <t-kristo@ti.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+v3: remove ti_clk_build_component_div and _get_div_table_from_setup
+v2: also remove mux/div unused functions
+---
+ drivers/clk/ti/divider.c | 85 ----------------------------------------
+ drivers/clk/ti/gate.c    | 30 --------------
+ drivers/clk/ti/mux.c     | 31 ---------------
+ 3 files changed, 146 deletions(-)
+
+diff --git a/drivers/clk/ti/divider.c b/drivers/clk/ti/divider.c
+index 4786e0ebc2e8..6cb863c13648 100644
+--- a/drivers/clk/ti/divider.c
++++ b/drivers/clk/ti/divider.c
+@@ -425,91 +425,6 @@ int ti_clk_parse_divider_data(int *div_table, int num_dividers, int max_div,
+ 	return 0;
+ }
+ 
+-static const struct clk_div_table *
+-_get_div_table_from_setup(struct ti_clk_divider *setup, u8 *width)
+-{
+-	const struct clk_div_table *table = NULL;
+-
+-	ti_clk_parse_divider_data(setup->dividers, setup->num_dividers,
+-				  setup->max_div, setup->flags, width,
+-				  &table);
+-
+-	return table;
+-}
+-
+-struct clk_hw *ti_clk_build_component_div(struct ti_clk_divider *setup)
+-{
+-	struct clk_omap_divider *div;
+-	struct clk_omap_reg *reg;
+-	int ret;
+-
+-	if (!setup)
+-		return NULL;
+-
+-	div = kzalloc(sizeof(*div), GFP_KERNEL);
+-	if (!div)
+-		return ERR_PTR(-ENOMEM);
+-
+-	reg = (struct clk_omap_reg *)&div->reg;
+-	reg->index = setup->module;
+-	reg->offset = setup->reg;
+-
+-	if (setup->flags & CLKF_INDEX_STARTS_AT_ONE)
+-		div->flags |= CLK_DIVIDER_ONE_BASED;
+-
+-	if (setup->flags & CLKF_INDEX_POWER_OF_TWO)
+-		div->flags |= CLK_DIVIDER_POWER_OF_TWO;
+-
+-	div->table = _get_div_table_from_setup(setup, &div->width);
+-	if (IS_ERR(div->table)) {
+-		ret = PTR_ERR(div->table);
+-		kfree(div);
+-		return ERR_PTR(ret);
+-	}
+-
+-
+-	div->shift = setup->bit_shift;
+-	div->latch = -EINVAL;
+-
+-	return &div->hw;
+-}
+-
+-struct clk *ti_clk_register_divider(struct ti_clk *setup)
+-{
+-	struct ti_clk_divider *div = setup->data;
+-	struct clk_omap_reg reg = {
+-		.index = div->module,
+-		.offset = div->reg,
+-	};
+-	u8 width;
+-	u32 flags = 0;
+-	u8 div_flags = 0;
+-	const struct clk_div_table *table;
+-	struct clk *clk;
+-
+-	if (div->flags & CLKF_INDEX_STARTS_AT_ONE)
+-		div_flags |= CLK_DIVIDER_ONE_BASED;
+-
+-	if (div->flags & CLKF_INDEX_POWER_OF_TWO)
+-		div_flags |= CLK_DIVIDER_POWER_OF_TWO;
+-
+-	if (div->flags & CLKF_SET_RATE_PARENT)
+-		flags |= CLK_SET_RATE_PARENT;
+-
+-	table = _get_div_table_from_setup(div, &width);
+-	if (IS_ERR(table))
+-		return (struct clk *)table;
+-
+-	clk = _register_divider(NULL, setup->name, div->parent,
+-				flags, &reg, div->bit_shift,
+-				width, -EINVAL, div_flags, table);
+-
+-	if (IS_ERR(clk))
+-		kfree(table);
+-
+-	return clk;
+-}
+-
+ static struct clk_div_table *
+ __init ti_clk_get_div_table(struct device_node *node)
+ {
+diff --git a/drivers/clk/ti/gate.c b/drivers/clk/ti/gate.c
+index 504c0e91cdc7..42389558418c 100644
+--- a/drivers/clk/ti/gate.c
++++ b/drivers/clk/ti/gate.c
+@@ -131,36 +131,6 @@ static struct clk *_register_gate(struct device *dev, const char *name,
+ 	return clk;
+ }
+ 
+-struct clk_hw *ti_clk_build_component_gate(struct ti_clk_gate *setup)
+-{
+-	struct clk_hw_omap *gate;
+-	struct clk_omap_reg *reg;
+-	const struct clk_hw_omap_ops *ops = &clkhwops_wait;
+-
+-	if (!setup)
+-		return NULL;
+-
+-	gate = kzalloc(sizeof(*gate), GFP_KERNEL);
+-	if (!gate)
+-		return ERR_PTR(-ENOMEM);
+-
+-	reg = (struct clk_omap_reg *)&gate->enable_reg;
+-	reg->index = setup->module;
+-	reg->offset = setup->reg;
+-
+-	gate->enable_bit = setup->bit_shift;
+-
+-	if (setup->flags & CLKF_NO_WAIT)
+-		ops = NULL;
+-
+-	if (setup->flags & CLKF_INTERFACE)
+-		ops = &clkhwops_iclk_wait;
+-
+-	gate->ops = ops;
+-
+-	return &gate->hw;
+-}
+-
+ static void __init _of_ti_gate_clk_setup(struct device_node *node,
+ 					 const struct clk_ops *ops,
+ 					 const struct clk_hw_omap_ops *hw_ops)
+diff --git a/drivers/clk/ti/mux.c b/drivers/clk/ti/mux.c
+index b7f9a4f068bf..0069e7cf3ebc 100644
+--- a/drivers/clk/ti/mux.c
++++ b/drivers/clk/ti/mux.c
+@@ -164,37 +164,6 @@ static struct clk *_register_mux(struct device *dev, const char *name,
+ 	return clk;
+ }
+ 
+-struct clk *ti_clk_register_mux(struct ti_clk *setup)
+-{
+-	struct ti_clk_mux *mux;
+-	u32 flags;
+-	u8 mux_flags = 0;
+-	struct clk_omap_reg reg;
+-	u32 mask;
+-
+-	mux = setup->data;
+-	flags = CLK_SET_RATE_NO_REPARENT;
+-
+-	mask = mux->num_parents;
+-	if (!(mux->flags & CLKF_INDEX_STARTS_AT_ONE))
+-		mask--;
+-
+-	mask = (1 << fls(mask)) - 1;
+-	reg.index = mux->module;
+-	reg.offset = mux->reg;
+-	reg.ptr = NULL;
+-
+-	if (mux->flags & CLKF_INDEX_STARTS_AT_ONE)
+-		mux_flags |= CLK_MUX_INDEX_ONE;
+-
+-	if (mux->flags & CLKF_SET_RATE_PARENT)
+-		flags |= CLK_SET_RATE_PARENT;
+-
+-	return _register_mux(NULL, setup->name, mux->parents, mux->num_parents,
+-			     flags, &reg, mux->bit_shift, mask, -EINVAL,
+-			     mux_flags, NULL);
+-}
+-
+ /**
+  * of_mux_clk_setup - Setup function for simple mux rate clock
+  * @node: DT node for the clock
+-- 
+2.17.1
 
 
-On 28/05/2019 13.32, Tomi Valkeinen wrote:
-> On 28/05/2019 13:18, Tony Lindgren wrote:
->> Strange that this is not affecting other x15? I think timer12 would
->> be blocked on HS devices though?
-> 
-> I don't know... I can't believe my x15 would be unique =). Can it be
-> something in the kernel config? u-boot?
-> 
-> Peter should have the same A3. Peter, can you try with my config?
-
-It did not boot with your config.
-My config boots, I'm using SLUB.
-Flipping CONFIG_SLUB_DEBUG_ON to y and the kernel does not boot.
-
-- Péter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
