@@ -2,74 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D5742CDEB
-	for <lists+linux-omap@lfdr.de>; Tue, 28 May 2019 19:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 027372D5E6
+	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2019 09:06:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727548AbfE1RsK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 May 2019 13:48:10 -0400
-Received: from mail-lj1-f169.google.com ([209.85.208.169]:41687 "EHLO
-        mail-lj1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726452AbfE1RsJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 May 2019 13:48:09 -0400
-Received: by mail-lj1-f169.google.com with SMTP id q16so1451782ljj.8
-        for <linux-omap@vger.kernel.org>; Tue, 28 May 2019 10:48:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=2b+zSBhPUFYF8TBcN9S0abTU+XNsI8SZLoQByKSROWg=;
-        b=qX8y18Zy+GnzVQa2UigP1iRWt+eWH2IvHmgfCT3SGRK1RLT3u3ZkxEq5ulQl015/6P
-         bcUK7u6Urwg/yga0aWUmCiP5HjwwCcK3HDZBnnUusAWTbUSRnskCM8K5qnGHLAYY+PrA
-         u/pnUg2xKKJQ4RcCUv5FI2i4nW0K9pWMXuPllE+bBKuEHBS7oCDPM4pzYgPzhBhDJD9m
-         KQW73mD4AnCgsoJ5Slg1aiDUBVeERnp6OLebxRK8m5r8o4uA3mRX7ycpaNylAoKcHs4U
-         7lFasX2dOAzUNi6OAY8cPlSa3MwVIBFYDZjO5QxKDT61RGSN8CekqS0ZVu7I1iLlJAu8
-         Sxhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=2b+zSBhPUFYF8TBcN9S0abTU+XNsI8SZLoQByKSROWg=;
-        b=eZRQ3WApf1IHT0623SeUJuEXW5kNWTa+KLO5nRhgG5A45m+AZWNh5x87f3EfaXLgen
-         3iE8Lw12Ux1Zg3Rs6TdWq3eVheB62ZK/g0GIcmNiZg7hovWYx3FYrh6ayM8Z6LtUrT7E
-         Qg56o8QyD5/jQAx5lDXIaDfepOX62t0py2QJGttMBZ9C/rkbuqucDGdEjuGrzmhPyJ6O
-         KYwBE5yDdgmrlWRkfUfCrGe+j5aLCOTDp4zKP9Srf/ePOEcz9k04ILw1rZpwrjRZH191
-         WqhFM1kKylp3hClvjCP0uiW3CGxL/248tsG1FF5Ckbf6aZRmBcFyPDM/qO/s4uT+A2Zr
-         7l9Q==
-X-Gm-Message-State: APjAAAW3E+2FaVftePHbdCUyTb03Mqis5XEhkcxQrhNGmyXgMJx1cBSg
-        TwK7r05CG9GowmtyWt1ZKJz9rAaurpg=
-X-Google-Smtp-Source: APXvYqzGAfNp2urKxLyPkaIXh7rQVPVPHDYGjYpJ53BFyfb2W3CmKlz169LP2vWgEVFSJtyS7SBhfw==
-X-Received: by 2002:a2e:818b:: with SMTP id e11mr65623965ljg.82.1559065687568;
-        Tue, 28 May 2019 10:48:07 -0700 (PDT)
-Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id j7sm3641208lji.27.2019.05.28.10.48.06
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 28 May 2019 10:48:07 -0700 (PDT)
-Date:   Tue, 28 May 2019 20:48:05 +0300
-From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-To:     grygorii.strashko@ti.com
-Cc:     davem@davemloft.net, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ethernet: ti: cpsw: correct .ndo_open
- error path
-Message-ID: <20190528174803.GA3233@khorivan>
-Mail-Followup-To: grygorii.strashko@ti.com, davem@davemloft.net,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190528123352.21505-1-ivan.khoronzhuk@linaro.org>
+        id S1725948AbfE2HGv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 May 2019 03:06:51 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:50666 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725911AbfE2HGv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 May 2019 03:06:51 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x4T76XlJ104973;
+        Wed, 29 May 2019 02:06:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1559113593;
+        bh=SB026D3ajxFdRIc7n9qxk9u1vBZJWW0jZuTDSvXX7t4=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=tA5SEkJn+6HHVMgi/Z+ltEZKF4o4sH9ly30+SnU0y0h6Oa6gbczSq+B9hWXzqX8L7
+         R+pIFBZerml9joHBI9VKUgA61hhSY1VdN1yGdPbMXI8XpAEtHHo+SmPfzPSGZfQC7B
+         e270M0jtMkAU3U4y+MkpjUv/iOxhTg9KbGMJzOrs=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x4T76Was037571
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 29 May 2019 02:06:33 -0500
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 29
+ May 2019 02:06:32 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 29 May 2019 02:06:32 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x4T76TGH091555;
+        Wed, 29 May 2019 02:06:30 -0500
+Subject: Re: [PATCHv6 0/4] omapdrm: DSI command mode panel support
+To:     Tony Lindgren <tony@atomide.com>
+CC:     Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@collabora.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>
+References: <20190523200756.25314-1-sebastian.reichel@collabora.com>
+ <60c45d23-de2f-d94a-c3d7-146a2bee538f@ti.com>
+ <20190527112122.GJ5447@atomide.com>
+ <e507c415-38de-86fe-9265-4b0aed0d7224@ti.com>
+ <20190528093952.GM5447@atomide.com>
+ <14c6c702-844b-756d-2d97-44e8f5a169df@ti.com>
+ <20190528101847.GN5447@atomide.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <ac487765-01a3-2c82-d86e-db00451563a9@ti.com>
+Date:   Wed, 29 May 2019 10:06:29 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190528123352.21505-1-ivan.khoronzhuk@linaro.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190528101847.GN5447@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Please ignore this version, I've sent version 2 that do the same but is more
-adjustable for later on changes and based on usage counter.
+On 28/05/2019 13:18, Tony Lindgren wrote:
+
+>> My board is x15 rev A3, attached to AM5 EVM. I've also attached my kernel
+>> config.
+> 
+> Strange that this is not affecting other x15? I think timer12 would
+> be blocked on HS devices though?
+
+Seems that the kernel config affects. omap2plus_defconfig boots ok.
+
+  Tomi
 
 -- 
-Regards,
-Ivan Khoronzhuk
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
