@@ -2,148 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 366A22D9C8
-	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2019 11:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DCD42E79E
+	for <lists+linux-omap@lfdr.de>; Wed, 29 May 2019 23:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726702AbfE2J6V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 May 2019 05:58:21 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:41428 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725861AbfE2J6U (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 May 2019 05:58:20 -0400
-Received: by mail-lj1-f194.google.com with SMTP id q16so1795224ljj.8
-        for <linux-omap@vger.kernel.org>; Wed, 29 May 2019 02:58:19 -0700 (PDT)
+        id S1726326AbfE2VsE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 May 2019 17:48:04 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:33270 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726054AbfE2VsE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 May 2019 17:48:04 -0400
+Received: by mail-lf1-f67.google.com with SMTP id y17so3338828lfe.0
+        for <linux-omap@vger.kernel.org>; Wed, 29 May 2019 14:48:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=/sVA9YKu8BEhrQsD2y3FdbEDwI/iZvTti9LgKUCmCho=;
-        b=g+VZs9Wxzz58VQ5DfHuZCBSCmF8aIdt6hK2FWdf0aNvXP76PgEkEf4YXVcL7dYgQHM
-         VpIeRvv5y1ZohW1l8kwQ1c890KodOvZp0InN/sTV9/KjSQEYcDEXqVue1N/EBRHpf1UD
-         m2osWXg00PBOXJjV+EHuOoBB/GHktgYIA/LqkSY+ZUWgKu/urkNwpq8DWtOZTc/6egeV
-         NE9etHNAxCUyYK3TH6bo2fQpZRnnr2lM4RfGEc0eiN2Z5wGJFVIrFscKwD7vSDgBc/hK
-         4aRzH1y/V6P1mdWF4oOeZZp/vj/703I/BX3k0UU3AVEA9WhXraoDNNN8qLYYSnRy2aNC
-         TitA==
+        h=from:to:cc:subject:date:message-id;
+        bh=yGZo23cWxl6g2KAaugpJu9muCFq+8s0tirfzRsyyzGc=;
+        b=aMPGcFBgYYRTPnCpwiwXYCAOjA5tmBAEQubH0ej1OKPl9D/K4Iv5piicsC7n7uPHPk
+         BOgpQCEQPa2iLxlhWnSMQoVSrIcT6LfZT8g0A/6n6kepICN+pizG12ldjZ/lSu2vLOh4
+         sJloAO4vIkII4y6RrJqrzPqX16Yz874Z/gjZ5HdsI+wGw+1eDXGXXtv0792pSxxrIjt2
+         tpHnvM18Uwsmwxfgh2yFXWI9gyrAjc1FpkP+V6ChRilOD86qHIO3Ls1bwbkcBMt5SsgN
+         nf4SNmuFw73Kib5QHeSJsGvz2T4dK4yOnNbrXxFqP2I0SACxgvlOKdYpkEjApP8BuIO3
+         Swbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=/sVA9YKu8BEhrQsD2y3FdbEDwI/iZvTti9LgKUCmCho=;
-        b=l50pUn883fpL4p8hJkUOfs/Ftp60oQZ3EE7zW4Bhi+qZB5klHNIYQijCuDQI8AcTiY
-         /8w9LxsHWEEznGLSWiyz+KfZz+LckgN2gJF3splF/H2aHAKtroayONmE+TEK1KDjHDiF
-         +uvXxNh341Q8f2ykEmDMOjMvN6Olxph/UGNFbxXtIZ++pZWNNA7ZuIinC7OdzxxG5+YV
-         6Fjgg+DpxI/bvUX4T69DFYiAUEjkDXqqfPwU9XsIEf5lHfEK1e2Rm4sBC7ccwmrYes4O
-         6HZDbM0MZGhG+hI7x9WdPLB5zCr25ul/tyuXcwg0K12Bcbn4X/0o4czfAkvM5GhCKlu2
-         uRmQ==
-X-Gm-Message-State: APjAAAXlYpm35FSHWBSfQLdIGCeU0ipPs3F61Cz93sAZU261/eH0XUsQ
-        XLjYfJv1yqtnlkorWQnAgkTD/g==
-X-Google-Smtp-Source: APXvYqwKiANimuGQ4pshZYkZK2pN3RuXOcvwID5gqoUKwV2aHk7xiqEVLVSRPzHagRqjYp4pJSQQsw==
-X-Received: by 2002:a2e:9c09:: with SMTP id s9mr39657738lji.74.1559123899025;
-        Wed, 29 May 2019 02:58:19 -0700 (PDT)
-Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id h10sm3937299ljm.9.2019.05.29.02.58.17
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 29 May 2019 02:58:18 -0700 (PDT)
-Date:   Wed, 29 May 2019 12:58:16 +0300
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=yGZo23cWxl6g2KAaugpJu9muCFq+8s0tirfzRsyyzGc=;
+        b=jCK5iL7t7Xp7H2TXvReSCnz8LOeLpOH6XDe7wPm91Jq5TjTcdDaFMvWfy/DxsVu+Y6
+         /9+Im1eLzYuWSTPNrzhwA6ThoN0WOwHN5xKO9yTi9LKkQJ50vQ90Zobtq8LqpgTKVRD+
+         bkSSEIUoR4OmzD7ou2tjlRjF5+y3Ewj3Lni6cPSz03yVQURB6/KMq7RNZO47sENWJa4Y
+         b5RkRSrV4zY0ptYLcep9fh4a689xmZrZbXtDBjyyVTIRFG6Tkr3uv8/1FRsRLx2kac5m
+         hCZQAmRdiN5xPXYr0G+rrwIuHX4z7Rq/LzOAyiDwpGzRopQhJf6PWl1GykHAr6ULQ9k6
+         FNsA==
+X-Gm-Message-State: APjAAAWPhPmkovmPhQrTxR/xsSZqOMSBDBYEjA6moexacm4zOZaB4AFV
+        Tg6i9rO7bXSWm85JceI3lRg0Hw==
+X-Google-Smtp-Source: APXvYqx1vuKE081CnhdNF6P+EfJ0Z1kQ9QcafIyaY+mcEKNOf4kj1tT15NdOOUlKeaEnHROoxsZh1A==
+X-Received: by 2002:a19:ca02:: with SMTP id a2mr104072lfg.88.1559166482478;
+        Wed, 29 May 2019 14:48:02 -0700 (PDT)
+Received: from localhost.localdomain (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
+        by smtp.gmail.com with ESMTPSA id b29sm134846lfo.38.2019.05.29.14.48.01
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 May 2019 14:48:01 -0700 (PDT)
 From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-To:     Jesper Dangaard Brouer <brouer@redhat.com>
-Cc:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net,
-        ast@kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
-        daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        john.fastabend@gmail.com
-Subject: Re: [PATCH net-next 3/3] net: ethernet: ti: cpsw: add XDP support
-Message-ID: <20190529095814.GA4639@khorivan>
-Mail-Followup-To: Jesper Dangaard Brouer <brouer@redhat.com>,
-        grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net,
-        ast@kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
-        daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        john.fastabend@gmail.com
-References: <20190523182035.9283-1-ivan.khoronzhuk@linaro.org>
- <20190523182035.9283-4-ivan.khoronzhuk@linaro.org>
- <20190529101659.2aa714b8@carbon>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190529101659.2aa714b8@carbon>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+To:     grygorii.strashko@ti.com, davem@davemloft.net
+Cc:     linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Subject: [PATCH] net: ethernet: ti: cpsw_ethtool: fix ethtool ring param set
+Date:   Thu, 30 May 2019 00:47:53 +0300
+Message-Id: <20190529214753.21804-1-ivan.khoronzhuk@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, May 29, 2019 at 10:16:59AM +0200, Jesper Dangaard Brouer wrote:
->On Thu, 23 May 2019 21:20:35 +0300
->Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
->
->> +static struct page *cpsw_alloc_page(struct cpsw_common *cpsw)
->> +{
->> +	struct page_pool *pool = cpsw->rx_page_pool;
->> +	struct page *page, *prev_page = NULL;
->> +	int try = pool->p.pool_size << 2;
->> +	int start_free = 0, ret;
->> +
->> +	do {
->> +		page = page_pool_dev_alloc_pages(pool);
->> +		if (!page)
->> +			return NULL;
->> +
->> +		/* if netstack has page_pool recycling remove the rest */
->> +		if (page_ref_count(page) == 1)
->> +			break;
->> +
->> +		/* start free pages in use, shouldn't happen */
->> +		if (prev_page == page || start_free) {
->> +			/* dma unmap/puts page if rfcnt != 1 */
->> +			page_pool_recycle_direct(pool, page);
->> +			start_free = 1;
->> +			continue;
->> +		}
->> +
->> +		/* if refcnt > 1, page has been holding by netstack, it's pity,
->> +		 * so put it to the ring to be consumed later when fast cash is
->> +		 * empty. If ring is full then free page by recycling as above.
->> +		 */
->> +		ret = ptr_ring_produce(&pool->ring, page);
->
->This looks very wrong to me!  First of all you are manipulation
->directly with the internal pool->ring and not using the API, which
->makes this code un-maintainable.
-Yes I know, it's hack, it was with assumption to be dropped once page_pool
-recycling is added.
+After adding ethtool ring param sanity check patch:
 
->Second this is wrong, as page_pool
->assume the in-variance that pages on the ring have refcnt==1.
-Yes, but this is w/o obvious reason, seems like it can work with refcnt > 1 if
-remove restriction and use >= instead of ==.
+commit 37e2d99b59c4765112533a1d38174fea58d28a51 ("ethtool: Ensure new
+ring parameters are within bounds during SRINGPARAM")
 
-As I answered on Ilias comment, I'm going to leave version from RFC and drop
-this one.
+cpsw has no ability to change rx descriptor numbers.
+But the reason - initially "tx_max_pending" was not correctly set
+while adding a patch:
 
->
->> +		if (ret) {
->> +			page_pool_recycle_direct(pool, page);
->> +			continue;
->> +		}
->> +
->> +		if (!prev_page)
->> +			prev_page = page;
->> +	} while (try--);
->> +
->> +	return page;
->> +}
->
->
->-- 
->Best regards,
->  Jesper Dangaard Brouer
->  MSc.CS, Principal Kernel Engineer at Red Hat
->  LinkedIn: http://www.linkedin.com/in/brouer
+commit be034fc14015c7fcabe62317d156e98b508a759b ("net: ethernet: ti:
+cpsw: add support for ringparam configuration")
 
+The issue appears after adding sanity check, so fix is for "sanity"
+patch.
+
+Fixes: 37e2d99b59c4765112533a1d38174fea58d28a51 ("ethtool: Ensure new
+ring parameters are within bounds during SRINGPARAM")
+
+Signed-off-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+---
+
+Based on net/master
+
+ drivers/net/ethernet/ti/cpsw_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/ti/cpsw_ethtool.c
+index a4a7ec0d2531..6d1c9ebae7cc 100644
+--- a/drivers/net/ethernet/ti/cpsw_ethtool.c
++++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
+@@ -643,7 +643,7 @@ void cpsw_get_ringparam(struct net_device *ndev,
+ 	struct cpsw_common *cpsw = priv->cpsw;
+ 
+ 	/* not supported */
+-	ering->tx_max_pending = 0;
++	ering->tx_max_pending = cpsw->descs_pool_size - CPSW_MAX_QUEUES;
+ 	ering->tx_pending = cpdma_get_num_tx_descs(cpsw->dma);
+ 	ering->rx_max_pending = cpsw->descs_pool_size - CPSW_MAX_QUEUES;
+ 	ering->rx_pending = cpdma_get_num_rx_descs(cpsw->dma);
 -- 
-Regards,
-Ivan Khoronzhuk
+2.17.1
+
