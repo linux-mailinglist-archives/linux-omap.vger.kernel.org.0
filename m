@@ -2,47 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14259301B9
-	for <lists+linux-omap@lfdr.de>; Thu, 30 May 2019 20:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 391EE301D2
+	for <lists+linux-omap@lfdr.de>; Thu, 30 May 2019 20:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726688AbfE3SUy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 May 2019 14:20:54 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:35417 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726563AbfE3SUx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 May 2019 14:20:53 -0400
-Received: by mail-lj1-f194.google.com with SMTP id h11so7043542ljb.2
-        for <linux-omap@vger.kernel.org>; Thu, 30 May 2019 11:20:51 -0700 (PDT)
+        id S1726125AbfE3SVp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 May 2019 14:21:45 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:40478 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726668AbfE3SUy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 May 2019 14:20:54 -0400
+Received: by mail-lf1-f66.google.com with SMTP id a9so4375301lff.7
+        for <linux-omap@vger.kernel.org>; Thu, 30 May 2019 11:20:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=AdSMTsu+LtgUCnPNRXGwSYsCPQyqbNfQqw5/RcvDJNQ=;
-        b=NTEyy87mbpZennf/zO3UY3SG/jU34eWt9oBeag4D8YjahXlGpvo7jFJ45TsemIdnir
-         GDDTpbKLurGeDuALSvM6j7s2xNdezurfEaq3Do0FdVu1zSrcVUfBnzEjlX9CPvMPhzYJ
-         syvG28Ahiha6P8q/z1kIyl0178d00DQHN+sX/j5wk8ko44/63zLEGfJyi7VPUdIJ0LKG
-         TgaTpYJ6tpJG3xAZrI95TMKLk8q+WGk0L19nUTHjuhUVz5EeWBCSPoZe7eWVxtRSZtYW
-         kYjH1/WFTyKdQ+VO2y6VV9nuGp1SruffgOv8KjxhvVfDhLZ+qlpEcUfBKzBd6xbaakTA
-         2nxA==
+        bh=J8udFRfvbZ6fXOojTQ4C0YPBDnze74Ovvj+f7jr19Fw=;
+        b=wU1WwXoEjKxZ3uqM80S4B/iacjxdOKTanw/C0MhErCrltoOGbqOgl6D3+r1s/I5MDs
+         43CeGw6Y6RckooIj+upDJFUOq/x8S44sRl4IecU2CAs9bIntSdh8qHidWHvG+s5sZZwr
+         tMo1h8S1ts9QZr8NNUvE3T9naG3R4FHAPT23kfi5+VV7aUci43qWu5ZZWJKAHQleHoEy
+         /ajuUGqlAVxb3HPheATiiuEdAXwo7PokCTbdy4XNP9sZTvD5RheyUk1vZwg8Azp9xD2i
+         pnBXFBTfRa7tQ02r91dRnH9CWokN/c7+ti7EZKQlpvZEfndG6pFqlRF4421kR1+T9DU1
+         CSjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=AdSMTsu+LtgUCnPNRXGwSYsCPQyqbNfQqw5/RcvDJNQ=;
-        b=atkEAd17L3Ot1URjgyv5ppJb7d1oozV0drsRSER3IkEcYvXagUi1lH0etc9Conul2l
-         V5k57L212MzaiytXMmDk5elM6WPZacLd5QylDSnj8X9bN47gffHm9e3qOdR0XvHHWy6V
-         YXnlDVjaMYdVWe6D2EEGN1oUHOVs732im+2SicwroyqOavjCx39MVyuV6WahTIp+fgON
-         RhYhNahBz4FTGrQA4x6ZcDE6aZFret/FkZtMpE77w99Ue2uX6LLkFxSpsBRjOZdrJneI
-         ikqxHXvwi0EgmgJkWFWgQHLwO3xt9erkAna8ZOUp5f0AABofLu3jHRN/S4ENHJSYUYbu
-         hBhw==
-X-Gm-Message-State: APjAAAVRWGBXshsXC2xbfIHzk4KFir31kDkGceJkiETw9alScrPnK1tu
-        qCj6ykuEqGgRxH72qT8qiQ4/eA==
-X-Google-Smtp-Source: APXvYqwcOOLVdQF2eRwE44U7qP1o+9tRsDYFuMaBYPD6l5MItx//FH0w80EsZyjHpAQDOz9EOA3SFQ==
-X-Received: by 2002:a2e:9756:: with SMTP id f22mr3083605ljj.30.1559240451067;
-        Thu, 30 May 2019 11:20:51 -0700 (PDT)
+        bh=J8udFRfvbZ6fXOojTQ4C0YPBDnze74Ovvj+f7jr19Fw=;
+        b=O+NqlGja01yyuVieXE+tp/m5HwVJKQAjwgA4zpj8IeR9XzNw/d0BVHfObYjGOadVxc
+         wDsSRMv4OmYbzmQnXJUQ99SDlXOSrFPUJsuQSj3Bnn4y3dLsd55iyY3HgiNyHwwwRn4b
+         Db+jAoGPtndLPvRqX0aiKyzQlDlLcCmlwMFZ3xhWrQrF/MIzgivTHX+ED5H/O7BK+pWA
+         C/iVMrCBKzTNQKEfbG5zextnnDECzh9WN0uWuNa998GVNMDKB/NAVFrteuLjIOWApD/U
+         8Qpx2jxIur5yM+ztZ5SeHJD8KMLUNrfdlbBcBbfUPmhWsFNHGzuXrwchR3rQKQ8V7mB4
+         Sgsw==
+X-Gm-Message-State: APjAAAWbivcoKA+7L1gW7J+5um+CcAbPXXYHe9d9mfDHTV2pesb69OwW
+        nggJZKx2gJz431Ur3tLRJTEasA==
+X-Google-Smtp-Source: APXvYqzmIrTETx9SuLnFJbbk7eE7VgPvlT6tOo6LaT1WkjJJjIEn1SeLZrsHAr7qOO6dBn1fCt8qbg==
+X-Received: by 2002:ac2:494f:: with SMTP id o15mr2908131lfi.22.1559240452479;
+        Thu, 30 May 2019 11:20:52 -0700 (PDT)
 Received: from localhost.localdomain (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id v7sm388946lfe.11.2019.05.30.11.20.49
+        by smtp.gmail.com with ESMTPSA id v7sm388946lfe.11.2019.05.30.11.20.51
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 30 May 2019 11:20:50 -0700 (PDT)
+        Thu, 30 May 2019 11:20:51 -0700 (PDT)
 From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
 To:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net
 Cc:     ast@kernel.org, linux-kernel@vger.kernel.org,
@@ -52,9 +52,9 @@ Cc:     ast@kernel.org, linux-kernel@vger.kernel.org,
         john.fastabend@gmail.com,
         Jesper Dangaard Brouer <brouer@redhat.com>,
         Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-Subject: [PATCH v2 net-next 1/7] net: page_pool: add helper function to retrieve dma addresses
-Date:   Thu, 30 May 2019 21:20:33 +0300
-Message-Id: <20190530182039.4945-2-ivan.khoronzhuk@linaro.org>
+Subject: [PATCH v2 net-next 2/7] net: page_pool: add helper function to unmap dma addresses
+Date:   Thu, 30 May 2019 21:20:34 +0300
+Message-Id: <20190530182039.4945-3-ivan.khoronzhuk@linaro.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190530182039.4945-1-ivan.khoronzhuk@linaro.org>
 References: <20190530182039.4945-1-ivan.khoronzhuk@linaro.org>
@@ -66,31 +66,46 @@ X-Mailing-List: linux-omap@vger.kernel.org
 From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
 On a previous patch dma addr was stored in 'struct page'.
-Use that to retrieve DMA addresses used by network drivers
+Use that to unmap DMA addresses used by network drivers
 
 Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 Signed-off-by: Jesper Dangaard Brouer <brouer@redhat.com>
 Signed-off-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
 ---
- include/net/page_pool.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/net/page_pool.h | 1 +
+ net/core/page_pool.c    | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
 diff --git a/include/net/page_pool.h b/include/net/page_pool.h
-index 694d055e01ef..b885d86cb7a1 100644
+index b885d86cb7a1..ad218cef88c5 100644
 --- a/include/net/page_pool.h
 +++ b/include/net/page_pool.h
-@@ -132,6 +132,11 @@ static inline void page_pool_recycle_direct(struct page_pool *pool,
- 	__page_pool_put_page(pool, page, true);
+@@ -110,6 +110,7 @@ static inline struct page *page_pool_dev_alloc_pages(struct page_pool *pool)
+ struct page_pool *page_pool_create(const struct page_pool_params *params);
+ 
+ void page_pool_destroy(struct page_pool *pool);
++void page_pool_unmap_page(struct page_pool *pool, struct page *page);
+ 
+ /* Never call this directly, use helpers below */
+ void __page_pool_put_page(struct page_pool *pool,
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 5b2252c6d49b..205af7bd6d09 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -190,6 +190,13 @@ static void __page_pool_clean_page(struct page_pool *pool,
+ 	page->dma_addr = 0;
  }
  
-+static inline dma_addr_t page_pool_get_dma_addr(struct page *page)
++/* unmap the page and clean our state */
++void page_pool_unmap_page(struct page_pool *pool, struct page *page)
 +{
-+	return page->dma_addr;
++	__page_pool_clean_page(pool, page);
 +}
++EXPORT_SYMBOL(page_pool_unmap_page);
 +
- static inline bool is_page_pool_compiled_in(void)
+ /* Return a page to the page allocator, cleaning up our state */
+ static void __page_pool_return_page(struct page_pool *pool, struct page *page)
  {
- #ifdef CONFIG_PAGE_POOL
 -- 
 2.17.1
 
