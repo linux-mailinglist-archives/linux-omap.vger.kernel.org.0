@@ -2,48 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CA2F2F5D4
-	for <lists+linux-omap@lfdr.de>; Thu, 30 May 2019 06:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D372F731
+	for <lists+linux-omap@lfdr.de>; Thu, 30 May 2019 07:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388894AbfE3Euf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 May 2019 00:50:35 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:46852 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388946AbfE3Eud (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 May 2019 00:50:33 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 4EF0513AEF25B;
-        Wed, 29 May 2019 21:50:33 -0700 (PDT)
-Date:   Wed, 29 May 2019 21:50:32 -0700 (PDT)
-Message-Id: <20190529.215032.862998826382261504.davem@davemloft.net>
-To:     ivan.khoronzhuk@linaro.org
-Cc:     grygorii.strashko@ti.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 net-next] net: ethernet: ti: cpsw: correct .ndo_open
- error path
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190528174519.7370-1-ivan.khoronzhuk@linaro.org>
-References: <20190528174519.7370-1-ivan.khoronzhuk@linaro.org>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 29 May 2019 21:50:33 -0700 (PDT)
+        id S1726896AbfE3Fqp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 May 2019 01:46:45 -0400
+Received: from muru.com ([72.249.23.125]:51828 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726308AbfE3Fqo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 30 May 2019 01:46:44 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 2744A8027;
+        Thu, 30 May 2019 05:47:03 +0000 (UTC)
+Date:   Wed, 29 May 2019 22:46:40 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com,
+        Keerthy <j-keerthy@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Re: [PATCHv6 0/4] omapdrm: DSI command mode panel support
+Message-ID: <20190530054640.GQ5447@atomide.com>
+References: <20190523200756.25314-1-sebastian.reichel@collabora.com>
+ <60c45d23-de2f-d94a-c3d7-146a2bee538f@ti.com>
+ <20190527112122.GJ5447@atomide.com>
+ <e507c415-38de-86fe-9265-4b0aed0d7224@ti.com>
+ <20190528093952.GM5447@atomide.com>
+ <14c6c702-844b-756d-2d97-44e8f5a169df@ti.com>
+ <20190528101847.GN5447@atomide.com>
+ <ac487765-01a3-2c82-d86e-db00451563a9@ti.com>
+ <20190529081038.GP5447@atomide.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190529081038.GP5447@atomide.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-Date: Tue, 28 May 2019 20:45:19 +0300
-
-> It's found while review and probably never happens, but real number
-> of queues is set per device, and error path should be per device.
-> So split error path based on usage_count.
+* Tony Lindgren <tony@atomide.com> [190529 08:11]:
+> * Tomi Valkeinen <tomi.valkeinen@ti.com> [190529 07:06]:
+> > On 28/05/2019 13:18, Tony Lindgren wrote:
+> > 
+> > > > My board is x15 rev A3, attached to AM5 EVM. I've also attached my kernel
+> > > > config.
+> > > 
+> > > Strange that this is not affecting other x15? I think timer12 would
+> > > be blocked on HS devices though?
+> > 
+> > Seems that the kernel config affects. omap2plus_defconfig boots ok.
 > 
-> Signed-off-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+> OK, this line in your oops:
+> 
+> Unable to handle kernel paging request at virtual address 5a5a5a5a
+> 
+> Probably means we hit some slab poison with DEBUG_SLAB set.
+> Looks like your config boots fine with DEBUG_SLAB disabled
+> for me.
+> 
+> As this only happens for timer12, I wonder if we're again
+> hitting some uncompress issue with corrupted dtb. Changing
+> u-boot ftdaddr higher up might possibly make it go away.
+> Or else there's a bug elsewhere :)
 
-Applied, thanks.
+Oh but CM_WKUPAON_TIMER12_CLKCTRL has no CLKSEL option unlike
+CM_WKUPAON_TIMER1_CLKCTRL. Below is one part of the fix, but
+it seems like we're missing handling somewhere as trying to
+get a non-existing clock should just produce -ENODEV type error.
+
+And the clksel should be just handled with assigned-clocks
+in general, but I think we still need it there until we
+have drivers/clocksource/ timer drivers updated to boot
+using early_platform_device.
+
+Regards,
+
+Tony
+
+8< ---------------
+diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
+--- a/arch/arm/boot/dts/dra7-l4.dtsi
++++ b/arch/arm/boot/dts/dra7-l4.dtsi
+@@ -4450,8 +4450,6 @@
+ 			timer12: timer@0 {
+ 				compatible = "ti,omap5430-timer";
+ 				reg = <0x0 0x80>;
+-				clocks = <&wkupaon_clkctrl DRA7_WKUPAON_TIMER12_CLKCTRL 24>;
+-				clock-names = "fck";
+ 				interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
+ 				ti,timer-alwon;
+ 				ti,timer-secure;
