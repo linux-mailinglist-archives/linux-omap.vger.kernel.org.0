@@ -2,36 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A3D31D9D
-	for <lists+linux-omap@lfdr.de>; Sat,  1 Jun 2019 15:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C70931D3C
+	for <lists+linux-omap@lfdr.de>; Sat,  1 Jun 2019 15:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729463AbfFANaX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 1 Jun 2019 09:30:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56772 "EHLO mail.kernel.org"
+        id S1729952AbfFAN1d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 1 Jun 2019 09:27:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59482 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729678AbfFAN0V (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 1 Jun 2019 09:26:21 -0400
+        id S1729960AbfFAN1b (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:27:31 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 410E1273B8;
-        Sat,  1 Jun 2019 13:26:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1EF5D25515;
+        Sat,  1 Jun 2019 13:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559395581;
-        bh=iKFhaIr8rPvFeRFwneCZtFEEkt+6qqK4mTCTtwCb0eM=;
+        s=default; t=1559395650;
+        bh=DXLDT3cjyd1hg4iNu9cprxPx3Jjx2o2sbUQoe1/bG9w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EBVDrJbm5dJfs3zy4iFRHeItpW8Jl62qKSyWVjFEh+4yEs4Rfg2qQgN1Li9npDebm
-         wEBrwELOiX2j9GprzrTPKHtwelTE1hFfXRJ0ZLJPTDRFsaM+NoI/+jvcXoM+DB2rsv
-         6b2yyDWxDxaXl+XRp8K5IQXDC13/HmSQ9gOQ/SLQ=
+        b=jufq+0dGOgoA5Le+Cy0nW5kf3WSQJrn+B/uztad1Rg/1/7qFT8YAWZDle7huQ1YSw
+         VZh5iOfSWAPUKwPz1l4CZyd8NEG2fE9Ob/FmVq5RWxqoA4xPdZ4uepeTmpUELLaOxj
+         hOgKbyMkXC2vAAZtI5Ch8e2KJdHPFjeiGss7X70s=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 09/56] mfd: twl6040: Fix device init errors for ACCCTL register
-Date:   Sat,  1 Jun 2019 09:25:13 -0400
-Message-Id: <20190601132600.27427-9-sashal@kernel.org>
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Tero Kristo <t-kristo@ti.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.4 51/56] gpio: gpio-omap: add check for off wake capable gpios
+Date:   Sat,  1 Jun 2019 09:25:55 -0400
+Message-Id: <20190601132600.27427-51-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190601132600.27427-1-sashal@kernel.org>
 References: <20190601132600.27427-1-sashal@kernel.org>
@@ -46,60 +52,80 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 48171d0ea7caccf21c9ee3ae75eb370f2a756062 ]
+[ Upstream commit da38ef3ed10a09248e13ae16530c2c6d448dc47d ]
 
-I noticed that we can get a -EREMOTEIO errors on at least omap4 duovero:
+We are currently assuming all GPIOs are non-wakeup capable GPIOs as we
+not configuring the bank->non_wakeup_gpios like we used to earlier with
+platform_data.
 
-twl6040 0-004b: Failed to write 2d = 19: -121
+Let's add omap_gpio_is_off_wakeup_capable() to make the handling clearer
+while considering that later patches may want to configure SoC specific
+bank->non_wakeup_gpios for the GPIOs in wakeup domain.
 
-And then any following register access will produce errors.
-
-There 2d offset above is register ACCCTL that gets written on twl6040
-powerup. With error checking added to the related regcache_sync() call,
-the -EREMOTEIO error is reproducable on twl6040 powerup at least
-duovero.
-
-To fix the error, we need to wait until twl6040 is accessible after the
-powerup. Based on tests on omap4 duovero, we need to wait over 8ms after
-powerup before register write will complete without failures. Let's also
-make sure we warn about possible errors too.
-
-Note that we have twl6040_patch[] reg_sequence with the ACCCTL register
-configuration and regcache_sync() will write the new value to ACCCTL.
-
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc: Russell King <rmk+kernel@armlinux.org.uk>
+Cc: Tero Kristo <t-kristo@ti.com>
+Reported-by: Grygorii Strashko <grygorii.strashko@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/twl6040.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-omap.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mfd/twl6040.c b/drivers/mfd/twl6040.c
-index 72aab60ae8466..db8684430f02c 100644
---- a/drivers/mfd/twl6040.c
-+++ b/drivers/mfd/twl6040.c
-@@ -316,8 +316,19 @@ int twl6040_power(struct twl6040 *twl6040, int on)
- 			}
- 		}
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index 9943273ec9818..c8c49b1d5f9f9 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -292,6 +292,22 @@ static void omap_clear_gpio_debounce(struct gpio_bank *bank, unsigned offset)
+ 	}
+ }
  
-+		/*
-+		 * Register access can produce errors after power-up unless we
-+		 * wait at least 8ms based on measurements on duovero.
-+		 */
-+		usleep_range(10000, 12000);
++/*
++ * Off mode wake-up capable GPIOs in bank(s) that are in the wakeup domain.
++ * See TRM section for GPIO for "Wake-Up Generation" for the list of GPIOs
++ * in wakeup domain. If bank->non_wakeup_gpios is not configured, assume none
++ * are capable waking up the system from off mode.
++ */
++static bool omap_gpio_is_off_wakeup_capable(struct gpio_bank *bank, u32 gpio_mask)
++{
++	u32 no_wake = bank->non_wakeup_gpios;
 +
- 		/* Sync with the HW */
--		regcache_sync(twl6040->regmap);
-+		ret = regcache_sync(twl6040->regmap);
-+		if (ret) {
-+			dev_err(twl6040->dev, "Failed to sync with the HW: %i\n",
-+				ret);
-+			goto out;
-+		}
++	if (no_wake)
++		return !!(~no_wake & gpio_mask);
++
++	return false;
++}
++
+ static inline void omap_set_gpio_trigger(struct gpio_bank *bank, int gpio,
+ 						unsigned trigger)
+ {
+@@ -323,13 +339,7 @@ static inline void omap_set_gpio_trigger(struct gpio_bank *bank, int gpio,
+ 	}
  
- 		/* Default PLL configuration after power up */
- 		twl6040->pll = TWL6040_SYSCLK_SEL_LPPLL;
+ 	/* This part needs to be executed always for OMAP{34xx, 44xx} */
+-	if (!bank->regs->irqctrl) {
+-		/* On omap24xx proceed only when valid GPIO bit is set */
+-		if (bank->non_wakeup_gpios) {
+-			if (!(bank->non_wakeup_gpios & gpio_bit))
+-				goto exit;
+-		}
+-
++	if (!bank->regs->irqctrl && !omap_gpio_is_off_wakeup_capable(bank, gpio)) {
+ 		/*
+ 		 * Log the edge gpio and manually trigger the IRQ
+ 		 * after resume if the input level changes
+@@ -342,7 +352,6 @@ static inline void omap_set_gpio_trigger(struct gpio_bank *bank, int gpio,
+ 			bank->enabled_non_wakeup_gpios &= ~gpio_bit;
+ 	}
+ 
+-exit:
+ 	bank->level_mask =
+ 		readl_relaxed(bank->base + bank->regs->leveldetect0) |
+ 		readl_relaxed(bank->base + bank->regs->leveldetect1);
 -- 
 2.20.1
 
