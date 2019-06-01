@@ -2,39 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D81A31F4D
-	for <lists+linux-omap@lfdr.de>; Sat,  1 Jun 2019 15:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8639A31EBD
+	for <lists+linux-omap@lfdr.de>; Sat,  1 Jun 2019 15:40:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727748AbfFANSU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 1 Jun 2019 09:18:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45166 "EHLO mail.kernel.org"
+        id S1727548AbfFANUx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 1 Jun 2019 09:20:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48132 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727715AbfFANSM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 1 Jun 2019 09:18:12 -0400
+        id S1727981AbfFANUw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:20:52 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E7C3A229EB;
-        Sat,  1 Jun 2019 13:18:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B72EE272E0;
+        Sat,  1 Jun 2019 13:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559395091;
+        s=default; t=1559395251;
         bh=FqTSBe2EtMLANJyq2W3Rh4WKsrc9+fooGilgER43Ulc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tRZMlXeKi5uPSLK8j2R/UhwidAdU3PKPyaeKO47cC0NC+a0efO6FONNxgUF635JBo
-         rxlka0FZJAHf9/EEaB4NcHQn+vEb6WaZwigvcOCuRM3/XIg5JNhxA2iS6EqL1p1koh
-         5sFE3t7GbWI2CDoDi6qIxvIYIo+Hk+X/hJdE2pIE=
+        b=RMhOUBQAiX4ZtMdBr5WYqKmIVUE94uOOMPKC3foU+ztUOhjGbMnVCYbUZ5qXpfCyC
+         n+mSzYvKviHUS7d92FNf9L/gTxo7muWYHuMzMFvgawRqtU6CJs9A6nARuEMXXXhOO+
+         u9VBnSsf89sMwAj5xT0qVEfx4imcfLRmz/JjzdlA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Lee Jones <lee.jones@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 029/186] mfd: twl6040: Fix device init errors for ACCCTL register
-Date:   Sat,  1 Jun 2019 09:14:05 -0400
-Message-Id: <20190601131653.24205-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.0 027/173] mfd: twl6040: Fix device init errors for ACCCTL register
+Date:   Sat,  1 Jun 2019 09:16:59 -0400
+Message-Id: <20190601131934.25053-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601131653.24205-1-sashal@kernel.org>
-References: <20190601131653.24205-1-sashal@kernel.org>
+In-Reply-To: <20190601131934.25053-1-sashal@kernel.org>
+References: <20190601131934.25053-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
