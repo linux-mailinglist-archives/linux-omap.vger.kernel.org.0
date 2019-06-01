@@ -2,127 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8808317E5
-	for <lists+linux-omap@lfdr.de>; Sat,  1 Jun 2019 01:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27AF331B40
+	for <lists+linux-omap@lfdr.de>; Sat,  1 Jun 2019 12:36:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726555AbfEaX1d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 31 May 2019 19:27:33 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:43625 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726450AbfEaX1d (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 31 May 2019 19:27:33 -0400
-Received: by mail-lf1-f68.google.com with SMTP id d7so2066244lfb.10
-        for <linux-omap@vger.kernel.org>; Fri, 31 May 2019 16:27:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=/CnFI/Gplfb8sUNP8cdDqVeMfZ2XFe8YBzOqCLpB94A=;
-        b=zRB3kJXbFOYoNSwjaQOpmRSldudJn+Df4uOo0m22Btl5w47IUgSF1V3KT9/1YBYqT2
-         oQwMa8lZ8u1ftVKKwEjJSWoMnlGmoYsGw+g5M3W/zbFQvnxeX13U8hIMfcgwhGXYLtj3
-         a4x+sk4uvlBpZvKG4WRkc2vdpY+N/iVAFAMGFeBGW8bWww4AgMd6wECsZe/Vj+ClsQ94
-         LkRpa/iRwq3UCuhIW1BKIfW5E7Y6SE+Z+ibxlllm8+Lju9f67/TsPJ5y3DSY5dK0lK7Y
-         tdEXFDHpC3dWaDw2Z25AarWFlmKDxvgKg01+1gdBP7eMcTnSIwX7WL0QC7vwnc7xCKdz
-         xGDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=/CnFI/Gplfb8sUNP8cdDqVeMfZ2XFe8YBzOqCLpB94A=;
-        b=p0QpNAMFgsuxHeI/gMOk0262vBAtDxhT3n3mVf0qM4hT0+wRLWzBCEE6uKkucdZRUN
-         jAEHz3LdoU1oHHOt9516uBOmsAYhlGjWAWsmkYYIn4ez2DrFULI+RCM7pwwzOCr/JBfV
-         bRab/O185aMzyCERRuxDboTIW7XWWktqOp1rYSUzAdZI9FVj10DlWMVQIXWqRqjdcZw2
-         qp1G6eEXTwFUblgXre47csI9iuCNzeoJyDSxD+uJEmP/STEd9R7irRdLdsgNefvW0fAe
-         g15LHklvMv543fWK0l+YnQrpuoDUQn+wZWeRQkFXlDvyujv4rXZGhAv3jxomnT6bAMgm
-         QSyg==
-X-Gm-Message-State: APjAAAVLTZ4QF/vrPhUKuOP2JEnFQGDVjirSPwGOTk+K2ZM+UgUleKpZ
-        Z21FkmMX+sU6kHUpsc/RIKB9Jg==
-X-Google-Smtp-Source: APXvYqyW6MyVd0bvo1rYW8SDDxZBjY37O9w7HbIg7ST3VlduimXROlJPkxHLbG8bh/ASOk8YwdBEqw==
-X-Received: by 2002:a19:f806:: with SMTP id a6mr3164054lff.102.1559345251665;
-        Fri, 31 May 2019 16:27:31 -0700 (PDT)
-Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id y6sm1462951ljj.20.2019.05.31.16.27.30
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 31 May 2019 16:27:31 -0700 (PDT)
-Date:   Sat, 1 Jun 2019 02:27:28 +0300
-From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-To:     Jesper Dangaard Brouer <brouer@redhat.com>
-Cc:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net,
-        ast@kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
-        daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        john.fastabend@gmail.com
-Subject: Re: [PATCH v2 net-next 7/7] net: ethernet: ti: cpsw: add XDP support
-Message-ID: <20190531232727.GB15675@khorivan>
-Mail-Followup-To: Jesper Dangaard Brouer <brouer@redhat.com>,
-        grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net,
-        ast@kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
-        daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        john.fastabend@gmail.com
-References: <20190530182039.4945-1-ivan.khoronzhuk@linaro.org>
- <20190530182039.4945-8-ivan.khoronzhuk@linaro.org>
- <20190531174643.4be8b27f@carbon>
- <20190531162523.GA3694@khorivan>
- <20190531183241.255293bc@carbon>
- <20190531170332.GB3694@khorivan>
- <20190601003736.65cb6a61@carbon>
+        id S1726697AbfFAKgb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 1 Jun 2019 06:36:31 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:35452 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726089AbfFAKga (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 1 Jun 2019 06:36:30 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x51AaSmc090174;
+        Sat, 1 Jun 2019 05:36:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1559385388;
+        bh=shWkaHiI805do+UScyf+ZVyVOGJ/6uFSU3jC7FwgsqQ=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=hxDfOUbTxHfV9P7O2168bRlHcaNJa3/Kds0xQMv6S2kYWREhPmdGbWcbwZc3qRmbM
+         wGniq9vlqnEJ4awYfI0I9igorDYESZeZRLRmU+NyjpfWH9GAyLlIWLuzF2pvypLIKj
+         VMCkw42D15t6FsgaKnKqLjaCJPN4EvpHlDk/iYWI=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x51AaSrj117528
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 1 Jun 2019 05:36:28 -0500
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Sat, 1 Jun
+ 2019 05:36:28 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Sat, 1 Jun 2019 05:36:28 -0500
+Received: from [10.250.96.121] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x51AaQnn041282;
+        Sat, 1 Jun 2019 05:36:27 -0500
+Subject: Re: [PATCH v2] net: ethernet: ti: cpsw_ethtool: fix ethtool ring
+ param set
+To:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>, <davem@davemloft.net>
+CC:     <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20190531134725.2054-1-ivan.khoronzhuk@linaro.org>
+From:   grygorii <grygorii.strashko@ti.com>
+Message-ID: <3b1b0ac9-6165-6d59-d3f7-d484705119f2@ti.com>
+Date:   Sat, 1 Jun 2019 13:36:20 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190601003736.65cb6a61@carbon>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190531134725.2054-1-ivan.khoronzhuk@linaro.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Jun 01, 2019 at 12:37:36AM +0200, Jesper Dangaard Brouer wrote:
->On Fri, 31 May 2019 20:03:33 +0300
->Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
->
->> Probably it's not good example for others how it should be used, not
->> a big problem to move it to separate pools.., even don't remember why
->> I decided to use shared pool, there was some more reasons... need
->> search in history.
->
->Using a shared pool is makes it a lot harder to solve the issue I'm
->currently working on.  That is handling/waiting for in-flight frames to
->complete, before removing the mem ID from the (r)hashtable lookup.  I
->have working code, that basically remove page_pool_destroy() from
->public API, and instead lets xdp_rxq_info_unreg() call it when
->in-flight count reach zero (and delay fully removing the mem ID).
 
-Frankly, not see reason why it can block smth, it can be considered
-like not shared pool. But Ok, anyway it can look more logical and can be
-reused by another SoC. I will add it per channel not a problem,
-at least for now no blockers. Adding pool per channel will create more
-page_pool_destroy() calls, per each pool, that I can be dropped once
-you decided to remove it form the API.
 
-This API is called along with xdp_rxq_info_unreg(), and seems like not
-a problem to just remove page_pool_destroy(), except one case that
-worries me... cpsw has one interesting feature, share same h/w with 2
-network devices like dual mac, basically it's 3 port switch, but used
-as 2 separate interfaces. So that, both of them share same queues/channels/rings.
-XDP rxq requires network device to be set in rxq info, wich is used in the
-code as a pointer and is shared between xdp buffers, so can't be changed in
-flight. That's why each network interface has it's own instances of rxq, but
-page pools per each network device is common, so when I call
-xdp_rxq_info_unreg() per net device it doesn't mean I want to delete
-page pool....But seems I can avoid it calling xdp_rxq_info_unreg()
-for both when delete page pools...
+On 31/05/2019 16:47, Ivan Khoronzhuk wrote:
+> Fix ability to set RX descriptor number, the reason - initially
+> "tx_max_pending" was set incorrectly, but the issue appears after
+> adding sanity check, so fix is for "sanity" patch.
+> 
+> Fixes: 37e2d99b59c476 ("ethtool: Ensure new ring parameters are within bounds during SRINGPARAM")
+> Signed-off-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+> ---
+> Based on net/master
+> 
+>   drivers/net/ethernet/ti/cpsw_ethtool.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/ti/cpsw_ethtool.c
+> index a4a7ec0d2531..6d1c9ebae7cc 100644
+> --- a/drivers/net/ethernet/ti/cpsw_ethtool.c
+> +++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
+> @@ -643,7 +643,7 @@ void cpsw_get_ringparam(struct net_device *ndev,
+>   	struct cpsw_common *cpsw = priv->cpsw;
+>   
+>   	/* not supported */
+> -	ering->tx_max_pending = 0;
+> +	ering->tx_max_pending = cpsw->descs_pool_size - CPSW_MAX_QUEUES;
+>   	ering->tx_pending = cpdma_get_num_tx_descs(cpsw->dma);
+>   	ering->rx_max_pending = cpsw->descs_pool_size - CPSW_MAX_QUEUES;
+>   	ering->rx_pending = cpdma_get_num_rx_descs(cpsw->dma);
+> 
 
->
->-- 
->Best regards,
->  Jesper Dangaard Brouer
->  MSc.CS, Principal Kernel Engineer at Red Hat
->  LinkedIn: http://www.linkedin.com/in/brouer
+Thank you.
+Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
 -- 
-Regards,
-Ivan Khoronzhuk
+Best regards,
+grygorii
