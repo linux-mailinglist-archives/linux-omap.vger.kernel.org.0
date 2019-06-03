@@ -2,110 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13ED53239E
-	for <lists+linux-omap@lfdr.de>; Sun,  2 Jun 2019 16:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C4D4329EC
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Jun 2019 09:44:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726168AbfFBO4J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 2 Jun 2019 10:56:09 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:41784 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726084AbfFBO4J (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 2 Jun 2019 10:56:09 -0400
-Received: by mail-lj1-f196.google.com with SMTP id s21so3198993lji.8;
-        Sun, 02 Jun 2019 07:56:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DW2E0BpzAc0HLFFmW75+Kp5tG91kuZE20dTCBSAHOjQ=;
-        b=WsL5NCHO/hx1ZcYASq4bsmolID5vN3N1r5wG/oh7g8v9HayVY74o1nj2uE6NvUpM+t
-         dByuvmgtCWtJmogFel7dFCHTiIsgOSJclkZ3LElEGL5FLevDqF3Tm25/Mz/fftMMWMha
-         kWImrXq7jvQXlgq5Dlw2jVjERZ0/NNI0ApMjPxRfOvDp9aykkipBF4yhaERnX1ZuGSI5
-         haG2X8KSUGAtGdmSFDJDI3I8XCzb5BgO5DVX0NV4JRBFWRcKAHeH/QGERFelXs2+l4Hc
-         w7DL2pR3j8JMZEKcvfgE8Sg1D/QP7Rx8ELE3zkJnd8XCkXEhpyJSFm01SHb+BAjswNGu
-         EqpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DW2E0BpzAc0HLFFmW75+Kp5tG91kuZE20dTCBSAHOjQ=;
-        b=DL/bCED6pyk2o0xo0DDFrOjBeiidp03yLS2nN0yiOVKPZAnlKeDX/2P8Eqjm54zl6t
-         7ZF/dPaFb+SbDWknszgiYy7+ZqN1kFP75JjUayFLejCnxYLvXzxditeQAcdx70BPxNjv
-         89NfwPKi9UPR8jJuWJHpB1JKGCi2/TA0detj+hveO1jMhcKX87+ih3NDUbMBgVZx4i9m
-         VzchOgPhTAsOL5Zxp6g3AWvCtc/BdwlMFnEYVazWHRtXWB7yqhTfRVC7s9y/2CUzGXGn
-         gSXT88MSsz6wC8vAtV5OXTgT155eHaoD4SaDbsDfBgGV/rWc5qtxFhu88AYlihboHCyn
-         LSYg==
-X-Gm-Message-State: APjAAAV08SRcB32YUvw3H+9XlTYLX5g9LczD1X55Qa4ElFL5IBvBu3aE
-        OntjQCri1eA+Jsw43c2SbyJk7BQPmIM=
-X-Google-Smtp-Source: APXvYqxuvhbc5F1/SxRPxqwQh4RZAsUd4T+CyhZn3U7SOKGpwqiR7EKjrJoNpV/YsRm9j6xUQKE+3g==
-X-Received: by 2002:a2e:5d49:: with SMTP id r70mr11553508ljb.102.1559487366917;
-        Sun, 02 Jun 2019 07:56:06 -0700 (PDT)
-Received: from z50.gdansk-morena.vectranet.pl (109241207190.gdansk.vectranet.pl. [109.241.207.190])
-        by smtp.gmail.com with ESMTPSA id x14sm2523212lfe.83.2019.06.02.07.56.05
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 02 Jun 2019 07:56:06 -0700 (PDT)
-From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Mark Brown <broonie@kernel.org>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Subject: [PATCH] ASoC: ti: Fix SDMA users not providing channel names
-Date:   Sun,  2 Jun 2019 16:55:49 +0200
-Message-Id: <20190602145549.30899-1-jmkrzyszt@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        id S1726885AbfFCHot (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Jun 2019 03:44:49 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:52136 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725975AbfFCHot (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jun 2019 03:44:49 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x537iiVJ049374;
+        Mon, 3 Jun 2019 02:44:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1559547884;
+        bh=TXG8J+PUkGcvPfKML+X+9SkZHkdS+nNvxMr5mF0IbZc=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=pfL8oRuDBHuh47grxYuprlPTIq8guAhLDB4ClOOu4OtuClg8JrS3Xg4TFG4iOn39U
+         YiWBVGtFcj5prRGl1gpYtKvxMhWe+47lWpgoyEqC2Ev/cg2glqaHDyvRL19m662vyv
+         qrR8BkidRHb9igc+6nFA4krAwR3zZcnWrZN3zHCg=
+Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x537ii4m044046
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 3 Jun 2019 02:44:44 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 3 Jun
+ 2019 02:44:43 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 3 Jun 2019 02:44:42 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x537ieef006709;
+        Mon, 3 Jun 2019 02:44:40 -0500
+Subject: Re: [PATCH] clk: ti: clkctrl: Fix returning uninitialized data
+To:     Tony Lindgren <tony@atomide.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Tero Kristo <t-kristo@ti.com>
+CC:     <devicetree@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+References: <20190530065557.42741-1-tony@atomide.com>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+Message-ID: <8f77a28b-4496-fbfe-f4e2-4cc8043f27d8@ti.com>
+Date:   Mon, 3 Jun 2019 10:45:07 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
+In-Reply-To: <20190530065557.42741-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-McBSP used to work correctly as long as compat DMA probing, removed by
-commit 642aafea8889 ("ASoC: ti: remove compat dma probing"), was
-available.  New method of DMA probing apparently requires users to
-provide channel names when registering with SDMA, while McBSP passes
-NULLs.  Fix it.
 
-The same probably applies to McASP (not tested), hence the patch fixes
-both.
 
-Fixes: 642aafea8889 ("ASoC: ti: remove compat dma probing")
-Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
----
- sound/soc/ti/davinci-mcasp.c | 2 +-
- sound/soc/ti/omap-mcbsp.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+On 30/05/2019 9.55, Tony Lindgren wrote:
+> If we do a clk_get() for a clock that does not exists, we have
+> _ti_omap4_clkctrl_xlate() return uninitialized data if no match
+> is found. This can be seen in some cases with SLAB_DEBUG enabled:
+> 
+> Unable to handle kernel paging request at virtual address 5a5a5a5a
+> ...
+> clk_hw_create_clk.part.33
+> sysc_notifier_call
+> notifier_call_chain
+> blocking_notifier_call_chain
+> device_add
+> 
+> Let's fix this by setting a found flag only when we find a match.
 
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index 9fbc759fdefe..f31805920e3e 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -2237,7 +2237,7 @@ static int davinci_mcasp_probe(struct platform_device *pdev)
- 		ret = edma_pcm_platform_register(&pdev->dev);
- 		break;
- 	case PCM_SDMA:
--		ret = sdma_pcm_platform_register(&pdev->dev, NULL, NULL);
-+		ret = sdma_pcm_platform_register(&pdev->dev, "tx", "rx");
- 		break;
- 	default:
- 		dev_err(&pdev->dev, "No DMA controller found (%d)\n", ret);
-diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index a395598f1f20..610c5e706fd2 100644
---- a/sound/soc/ti/omap-mcbsp.c
-+++ b/sound/soc/ti/omap-mcbsp.c
-@@ -1438,7 +1438,7 @@ static int asoc_mcbsp_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	return sdma_pcm_platform_register(&pdev->dev, NULL, NULL);
-+	return sdma_pcm_platform_register(&pdev->dev, "tx", "rx");
- }
- 
- static int asoc_mcbsp_remove(struct platform_device *pdev)
--- 
-2.21.0
+Tested-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 
+> 
+> Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Reported-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Fixes: 88a172526c32 ("clk: ti: add support for clkctrl clocks")
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/clk/ti/clkctrl.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+> --- a/drivers/clk/ti/clkctrl.c
+> +++ b/drivers/clk/ti/clkctrl.c
+> @@ -229,6 +229,7 @@ static struct clk_hw *_ti_omap4_clkctrl_xlate(struct of_phandle_args *clkspec,
+>  {
+>  	struct omap_clkctrl_provider *provider = data;
+>  	struct omap_clkctrl_clk *entry;
+> +	bool found = false;
+>  
+>  	if (clkspec->args_count != 2)
+>  		return ERR_PTR(-EINVAL);
+> @@ -238,11 +239,13 @@ static struct clk_hw *_ti_omap4_clkctrl_xlate(struct of_phandle_args *clkspec,
+>  
+>  	list_for_each_entry(entry, &provider->clocks, node) {
+>  		if (entry->reg_offset == clkspec->args[0] &&
+> -		    entry->bit_offset == clkspec->args[1])
+> +		    entry->bit_offset == clkspec->args[1]) {
+> +			found = true;
+>  			break;
+> +		}
+>  	}
+>  
+> -	if (!entry)
+> +	if (!found)
+>  		return ERR_PTR(-EINVAL);
+>  
+>  	return entry->clk;
+> 
+
+- Péter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
