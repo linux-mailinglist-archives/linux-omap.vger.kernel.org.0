@@ -2,83 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1F2232B54
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Jun 2019 11:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 725FE33047
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Jun 2019 14:52:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727137AbfFCJDW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Jun 2019 05:03:22 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:33521 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726902AbfFCJDW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jun 2019 05:03:22 -0400
-Received: by mail-wr1-f66.google.com with SMTP id d9so11184563wrx.0
-        for <linux-omap@vger.kernel.org>; Mon, 03 Jun 2019 02:03:21 -0700 (PDT)
+        id S1727442AbfFCMwL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Jun 2019 08:52:11 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:43697 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727248AbfFCMwL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Jun 2019 08:52:11 -0400
+Received: by mail-wr1-f67.google.com with SMTP id r18so2927208wrm.10
+        for <linux-omap@vger.kernel.org>; Mon, 03 Jun 2019 05:52:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to
          :user-agent;
-        bh=a1mkYyCrc83Bv+zphH07Gxd4PhX3LAFjUYuUVnAFGYo=;
-        b=OoWqRLOmDPj+mmfUzNKkgrBa1E+ijOzEbzhu5ES63kGonC2+w9C1xHgRl/W/MdjyQB
-         XvMHc6AXeQAWOTbVT/oaZZbrxXorwdeM0quSC7VEcxmcTCzlEQuLSQhGSuCN45Xmhg8L
-         mopTvWxvFVt3zkhzxu5H7sueSAJbCkGw1bV5LDHrhRQ/YfjMA769es6a8zMwL4CaCz76
-         ZZc/5mEUvw1ERXRow49PggplOBB2aNF8nD62x69CfjFidi48YDz4zimyI86UkfgnE+My
-         8JFoqUi2uW/FG7o0zbMX6h9FzVfeyzo4xeoBPWFNHnF/ZA/Okb3uMRVygXWjYM6CxnH3
-         QXYA==
+        bh=wq4yXJBlhuJZxMm1hF9bS2M5hccH7sIFbHfwg9bPyr8=;
+        b=u0FiRAG1N1Uc7hXsujUHXgiHeLFDEduvv2RaP9IH4uBuwimI4HmDFnwWTCj/YuqzlN
+         GHtC4OSLAXSoEGZgkYrBiCnnjYAKdsQrWDtYs70f+dbavzGxEnWcuxe2ScUjnutYWmvo
+         gzD56w7XjOfdy/bHa3vFc9EzoVt0VT5wuf+1hIyrpuT2FHQHWHjZ9Bm+Bp6Unu/7mqxU
+         9G+YzbZmQCJm07mZ24PQbLpTNBU6ijYualwFvtX6LIdd1lsxYKIamM4UrdxzzT5kFulT
+         itq42B17nQ5vpo/TxNUMY36cNp3NsCWrx90hg7OleUfxzpTp5ofnjUaZuFERuMLbV+wg
+         NdcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to:user-agent;
-        bh=a1mkYyCrc83Bv+zphH07Gxd4PhX3LAFjUYuUVnAFGYo=;
-        b=o5a/2fdzwxLjeSeGY6Wz4Bb9je9VJ3f0VxTQcYSVzBCiPpiV/pziSkDVfiblSS6tQr
-         gsv1L9nXSeCPAnoiaJRKyCjj3XpHScyao7J/QJZK4oZ1Q0yK+WpgNu+qnHJWK3LShnQp
-         htOjA/+Sva0TOjan52f4CpqeyTENBNiBoGPy4nR9Wzbn6krAkr5+grFT+z8jaXaiZgxQ
-         6VPzQjlpqp00AKawxZ6BX+VHUVrJoJ7E+ydwzyjnZ7wq97LQZ+g00NZpiGTttbK1ulxM
-         hw3y50hSIkMR3fYVUcpcRQl0wkOMNcW6wGJJjyV1caFtt63Ial7vFd2A3I0Wei7a7m5T
-         f3Ww==
-X-Gm-Message-State: APjAAAUm8HXAjpXY8KMz05OdNcWMN2ELS6PvWPKpVp1CvY7RdvvuCXNF
-        Jnu4q7jvUzGS4Hl1lS4GMVM0D0pNUG0=
-X-Google-Smtp-Source: APXvYqwFDCLsbQ/QRNN1gOWGbULHl5E+WHYuirmI65LmDirQ7atTzHodX99UNEbk9EtG2HUCL/9C0w==
-X-Received: by 2002:adf:9cd0:: with SMTP id h16mr1539930wre.211.1559552600653;
-        Mon, 03 Jun 2019 02:03:20 -0700 (PDT)
+        bh=wq4yXJBlhuJZxMm1hF9bS2M5hccH7sIFbHfwg9bPyr8=;
+        b=DoB5N+k30cogPv6DE+VXwHvI+5RGW9+STJreZtWYhjJbwGCpd10xb2YN2K7rV0dFBC
+         POYlGaBwi7/V/Tbq2Fm2I2PempdWJASVfJwbBE7pmpndkK6taLIk8uOAfKp1sSwCpyKH
+         u76EGUOg01kQghULAeyzhF4ItegxdIBSSRDposnDfqTiwDqjGU8xF04Lam/D3TqeHDYO
+         u19Pm08k6Yca/uv+DonlNbTNyVhUHsGYQUTBV3xGiyUNhvPlMIOhZIiM5GEp+F2HHHly
+         2mHi8wG1jgWLmoADSi9lluD21/7B7hUSDMgJf/NLM/ovgbq+J/hPrEco5NJ5y/vZaOFO
+         0XcQ==
+X-Gm-Message-State: APjAAAVgNMtHY6b+2yjCrZZU8xzunagJB3Z+WVr6ifG7fsh4qA61qnTM
+        5ivjn7ZzPe1+XuyPfOxcxpt3qg==
+X-Google-Smtp-Source: APXvYqyHqS828di86eR4vgH2o4EKGJYQNKkueq2r86n9Zcm0f3WrLAXn3vXIJ40ZJjMdjHZWGSyg0g==
+X-Received: by 2002:adf:eb45:: with SMTP id u5mr2393533wrn.38.1559566329776;
+        Mon, 03 Jun 2019 05:52:09 -0700 (PDT)
 Received: from dell ([2.27.167.43])
-        by smtp.gmail.com with ESMTPSA id 65sm28726567wro.85.2019.06.03.02.03.19
+        by smtp.gmail.com with ESMTPSA id o3sm11745269wrv.94.2019.06.03.05.52.08
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 03 Jun 2019 02:03:20 -0700 (PDT)
-Date:   Mon, 3 Jun 2019 10:03:18 +0100
+        Mon, 03 Jun 2019 05:52:09 -0700 (PDT)
+Date:   Mon, 3 Jun 2019 13:52:07 +0100
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Keerthy <j-keerthy@ti.com>
-Cc:     robh+dt@kernel.org, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, t-kristo@ti.com
-Subject: Re: [PATCH 2/3] mfd: lp87565: Add support for 4-phase lp87561
- combination
-Message-ID: <20190603090318.GI4797@dell>
-References: <20190515100848.19560-1-j-keerthy@ti.com>
- <20190515100848.19560-3-j-keerthy@ti.com>
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mfd: menelaus: Remove superfluous error message
+Message-ID: <20190603125207.GT4797@dell>
+References: <20190521204304.21295-1-alexandre.belloni@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190515100848.19560-3-j-keerthy@ti.com>
+In-Reply-To: <20190521204304.21295-1-alexandre.belloni@bootlin.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 15 May 2019, Keerthy wrote:
+On Tue, 21 May 2019, Alexandre Belloni wrote:
 
-> Add support for 4-phase lp87561 combination.
+> The RTC core already has error messages in case of failure, there is no
+> need to have another message in the driver.
 > 
-> Data Sheet: https://www.ti.com/lit/ds/symlink/lp87561-q1.pdf
-> 
-> Signed-off-by: Keerthy <j-keerthy@ti.com>
+> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 > ---
->  drivers/mfd/lp87565.c       | 4 ++++
->  include/linux/mfd/lp87565.h | 2 ++
->  2 files changed, 6 insertions(+)
+>  drivers/mfd/menelaus.c | 2 --
+>  1 file changed, 2 deletions(-)
 
 Applied, thanks.
 
