@@ -2,90 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3F4A34877
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Jun 2019 15:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E27B34CBD
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Jun 2019 18:00:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727709AbfFDNUW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 4 Jun 2019 09:20:22 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:55300 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727153AbfFDNUW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Jun 2019 09:20:22 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x54DJWAs028463;
-        Tue, 4 Jun 2019 08:19:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1559654372;
-        bh=v8mkOQlj6ZUtE+6KavYFNHYT3JmxgtDfIA3TqfNwJt8=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=JS7LGnlKVoepjTyrc5BULAMKzps2ynnHiT+iX2qyeiH5smSSWUYojVAN1Qtv429bR
-         TOyZ2BoQeDbgrVWdG2zcpvAMfPFq8pmnuZIUmhlBDKa7tx1ysjxN/1YL3loHqQU40W
-         NToo66TKTov/SdeKR0f0JVJV7omF03IH00npvrOo=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x54DJWRK055289
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 4 Jun 2019 08:19:32 -0500
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 4 Jun
- 2019 08:19:31 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 4 Jun 2019 08:19:31 -0500
-Received: from a0393678ub.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x54DGdGk098972;
-        Tue, 4 Jun 2019 08:19:26 -0500
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-To:     Tom Joseph <tjoseph@cadence.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Jingoo Han <jingoohan1@gmail.com>, <linux-pci@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-rockchip@lists.infradead.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>
-Subject: [RFC PATCH 30/30] misc: pci_endpoint_test: Enable legacy interrupt
-Date:   Tue, 4 Jun 2019 18:45:16 +0530
-Message-ID: <20190604131516.13596-31-kishon@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190604131516.13596-1-kishon@ti.com>
-References: <20190604131516.13596-1-kishon@ti.com>
+        id S1727951AbfFDQAX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 4 Jun 2019 12:00:23 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:38506 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727422AbfFDQAX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Jun 2019 12:00:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=uBZ3QnhWu98kJQiat9L0PeoNpIYCmdNp7OssQ/cTY7E=; b=a3QI9+OphW/f0GNMiWE5jZbJ4
+        AkPfWmPn+TgoAapbIU4UPv+HVxXg9GjNLaT+QyIWT8SscxEBJM+O3tzvdOgQxnBOeqnJuqtwyl3t6
+        Q+WpmlwQbKTGnNghWgerxVOcQ4Vxy4Aj8GtY51jgPRtZHdnZeaWhCm5TCYbHKPKJQ7ddo=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=finisterre.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1hYBrH-0006MC-8B; Tue, 04 Jun 2019 16:00:19 +0000
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+        id 58E5B440046; Tue,  4 Jun 2019 17:00:18 +0100 (BST)
+Date:   Tue, 4 Jun 2019 17:00:18 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-next@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: next/master boot: 257 boots: 11 failed, 229 passed with 16
+ offline, 1 conflict (next-20190604)
+Message-ID: <20190604160018.GI2456@sirena.org.uk>
+References: <5cf685d0.1c69fb81.e3d89.43ae@mx.google.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="boT9Oj39GmgPxYhu"
+Content-Disposition: inline
+In-Reply-To: <5cf685d0.1c69fb81.e3d89.43ae@mx.google.com>
+X-Cookie: The other line moves faster.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-PCI core does not enable legacy interrupt if it finds MSI or MSIX interrupt.
-Explicitly enable legacy interrupt here in order to perform legacy
-interrupt tests.
 
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
----
- drivers/misc/pci_endpoint_test.c | 1 +
- 1 file changed, 1 insertion(+)
+--boT9Oj39GmgPxYhu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 2a6cd9e65e67..e12a3845ad2e 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -697,6 +697,7 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
- 	}
- 
- 	pci_set_master(pdev);
-+	pci_intx(pdev, true);
- 
- 	if (!pci_endpoint_test_alloc_irq_vectors(test, irq_type))
- 		goto err_disable_irq;
--- 
-2.17.1
+On Tue, Jun 04, 2019 at 07:53:04AM -0700, kernelci.org bot wrote:
 
+Today's -next fails to boot omap2plus_defconfig on Beagle XM:
+
+>     omap2plus_defconfig:
+>         gcc-8:
+>           omap3-beagle-xm:
+>               lab-baylibre: failing since 1 day (last pass: next-20190531 - first fail: next-20190603)
+
+The boot fails silently with no output after the bootloader:
+
+    https://kernelci.org/boot/id/5cf655fc59b5149acad51504/
+
+which isn't much to go on, it does seem to have been OK in
+multi_v7_defconfig though.
+
+--boT9Oj39GmgPxYhu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlz2lZEACgkQJNaLcl1U
+h9BmWQf6AoY5VMMkCTmC1WC0Xuomm1kiC7szNoyymcavNs7I8BPlfTssjnJMZTQP
+JOCRjldsXBmPY8PF4YTpuBK6ANNTWE1n0WgbNgZEuOPWt2nCOT1QRvfHagOE31Eb
+OAvG19faDLlh3ivrj32ACTXd/bbBudESyYXsKBC/P2JJ7KyYmSf99cPw1bqeDm49
+7FAHWdODlE86i3VxYGjFseO2WLatjOf55opyVmUhsL65dX8vyssf1kWmq4iDGCgs
+p4a6btnaVbHdYUBmSMuhlevIHRJAubRAaxG70XP+cnNsvTO1hUM5ITNVHemNUIPB
+gAs7N1rUmpjROjkN+QGwRNN1wECBSg==
+=3tvl
+-----END PGP SIGNATURE-----
+
+--boT9Oj39GmgPxYhu--
