@@ -2,66 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25CD233E77
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Jun 2019 07:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38CBA33ED9
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Jun 2019 08:13:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726653AbfFDFh5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 4 Jun 2019 01:37:57 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:56094 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726410AbfFDFh5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Jun 2019 01:37:57 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x545bs0U102550;
-        Tue, 4 Jun 2019 00:37:54 -0500
+        id S1726606AbfFDGNS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 4 Jun 2019 02:13:18 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:40518 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726488AbfFDGNS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Jun 2019 02:13:18 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x546DEPx008945;
+        Tue, 4 Jun 2019 01:13:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1559626674;
-        bh=AldrBYHNoxyeSd+IdVZbc6Bbp3fGBTC4NspR4ZBH60E=;
-        h=To:CC:From:Subject:Date;
-        b=VP1BYNB5z/7WRqW7X5MByPX9JK5Wl3yCO0oZa0M3Mk9gKtY9rZzF4GL+PRN+LLVSW
-         ff4+K+z7PdiGv84tnvj7bo/Q5GJcFwV8P5Hc0hBMZzNU3fi8/2qZRh0TotaUxUr3ST
-         zC8+NtWFpBWYPVAOT5K+5MqNSTN8bZMf11HYTcuM=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x545bsMv115062
+        s=ti-com-17Q1; t=1559628794;
+        bh=u/BALELt1gi51fdTWElCfv9ApNJCaqkJ3slwOHkec3k=;
+        h=From:To:CC:Subject:Date;
+        b=vVtJICAMD4fIQEIW+OsqJ5W5Nr40K5re924DLGkEuN/0u6t5G0yDIdGimv8/p5/3N
+         C1r4RYW1eB9uYi8b/jTL0Mp6u7gKFN632jwvVOie5P/R46Sr5qDlVOI7Ow7gWLL/jV
+         yQ2J/aQjrGcbYWZ1ZhfLz5Ng6PFW58QdrVX6dZm8=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x546DDKQ068713
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 4 Jun 2019 00:37:54 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 4 Jun 2019 01:13:13 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 4 Jun
- 2019 00:37:54 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ 2019 01:13:13 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 4 Jun 2019 00:37:54 -0500
-Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x545bq5j121352;
-        Tue, 4 Jun 2019 00:37:52 -0500
-To:     Tony Lindgren <tony@atomide.com>, "Kristo, Tero" <t-kristo@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-CC:     Vignesh Raghavendra <vigneshr@ti.com>
+ Frontend Transport; Tue, 4 Jun 2019 01:13:13 -0500
+Received: from a0393675ula.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x546DAmR040385;
+        Tue, 4 Jun 2019 01:13:11 -0500
 From:   Keerthy <j-keerthy@ti.com>
-Subject: Kernel boot crash on latest next dated june 3
-Message-ID: <aa22befb-227c-85fe-4eb9-c3775ee87c45@ti.com>
-Date:   Tue, 4 Jun 2019 11:08:34 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+To:     <tony@atomide.com>, <robh+dt@kernel.org>
+CC:     <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <t-kristo@ti.com>,
+        <j-keerthy@ti.com>
+Subject: [PATCH] arm: dts: dra72x: Disable usb4_tm target module
+Date:   Tue, 4 Jun 2019 11:43:35 +0530
+Message-ID: <20190604061335.8264-1-j-keerthy@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+usb4_tm is unsed on dra72 and accessing the module
+with ti,sysc is causing a boot crash hence disable its target
+module.
 
-DRA7/71/76, AM4/3 are not able to boot with latest next branch.
-The crash behavior is pretty similar on all the platforms.
-Example log on DRA7-EVM:
+Fixes: 549fce068a3112 ("ARM: dts: dra7: Add l4 interconnect hierarchy and ti-sysc data")
+Reported-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Keerthy <j-keerthy@ti.com>
+---
+ arch/arm/boot/dts/dra72x.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-https://pastebin.ubuntu.com/p/tNPZrpHZzV/
+diff --git a/arch/arm/boot/dts/dra72x.dtsi b/arch/arm/boot/dts/dra72x.dtsi
+index 89831552cd86..9c39c6b9b5d6 100644
+--- a/arch/arm/boot/dts/dra72x.dtsi
++++ b/arch/arm/boot/dts/dra72x.dtsi
+@@ -62,3 +62,7 @@
+ &pcie2_rc {
+ 	compatible = "ti,dra726-pcie-rc", "ti,dra7-pcie";
+ };
++
++&usb4_tm {
++	status = "disabled";
++};
+-- 
+2.17.1
 
-Regards,
-Keerthy
