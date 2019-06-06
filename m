@@ -2,93 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C75B369D4
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2019 04:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3CB236E2D
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2019 10:09:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726568AbfFFCK6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Jun 2019 22:10:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56016 "EHLO mail.kernel.org"
+        id S1726962AbfFFIJE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 Jun 2019 04:09:04 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:53822 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726541AbfFFCK6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 5 Jun 2019 22:10:58 -0400
-Received: from dragon (li1264-180.members.linode.com [45.79.165.180])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        id S1725267AbfFFIJD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 6 Jun 2019 04:09:03 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 943F920717;
-        Thu,  6 Jun 2019 02:10:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559787057;
-        bh=1wV4ExVvlN5EgzNFrCwIfBYS4g4614HuuxSdiSYaE/s=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iaBgjkWHvEUB8xTxgpH7CYMJSqAEFJfcmI6o0nb7AXcneh+zDM86Ycr7Dgq2kb6yz
-         mmwwCHGq64fFLsorar9SPLF5AZaKCC1oM+7C3300P/f7k+roVd1FB3O9wi4YsBL8w9
-         X2EyQoBRKcUrQF+WyBrJQ4Y6VrM9A4SyL2ECfOYQ=
-Date:   Thu, 6 Jun 2019 10:10:32 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     arm@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Olof Johansson <olof@lixom.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Marc Gonzalez <marc.w.gonzalez@free.fr>,
-        Mans Rullgard <mans@mansr.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: Re: [PATCH v2] ARM: configs: Remove useless UEVENT_HELPER_PATH
-Message-ID: <20190606021027.GV29853@dragon>
-References: <1559636093-26005-1-git-send-email-krzk@kernel.org>
+        by mx1.redhat.com (Postfix) with ESMTPS id 5CA3A308626C;
+        Thu,  6 Jun 2019 08:09:02 +0000 (UTC)
+Received: from carbon (ovpn-200-32.brq.redhat.com [10.40.200.32])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 23D1917C40;
+        Thu,  6 Jun 2019 08:08:51 +0000 (UTC)
+Date:   Thu, 6 Jun 2019 10:08:50 +0200
+From:   Jesper Dangaard Brouer <brouer@redhat.com>
+To:     David Miller <davem@davemloft.net>
+Cc:     ivan.khoronzhuk@linaro.org, grygorii.strashko@ti.com,
+        hawk@kernel.org, ast@kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
+        daniel@iogearbox.net, jakub.kicinski@netronome.com,
+        john.fastabend@gmail.com, brouer@redhat.com
+Subject: Re: [PATCH v3 net-next 0/7] net: ethernet: ti: cpsw: Add XDP
+ support
+Message-ID: <20190606100850.72a48a43@carbon>
+In-Reply-To: <20190605.121450.2198491088032558315.davem@davemloft.net>
+References: <20190605132009.10734-1-ivan.khoronzhuk@linaro.org>
+        <20190605.121450.2198491088032558315.davem@davemloft.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1559636093-26005-1-git-send-email-krzk@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Thu, 06 Jun 2019 08:09:03 +0000 (UTC)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 04, 2019 at 10:14:53AM +0200, Krzysztof Kozlowski wrote:
-> Remove the CONFIG_UEVENT_HELPER_PATH because:
-> 1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
->    CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
->    made default to 'n',
-> 2. It is not recommended (help message: "This should not be used today
->    [...] creates a high system load") and was kept only for ancient
->    userland,
-> 3. Certain userland specifically requests it to be disabled (systemd
->    README: "Legacy hotplug slows down the system and confuses udev").
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> 
-> ---
-> 
-> Changes since v2:
-> 1. Remove unrelated files.
-> 2. Add Geert's ack.
-> ---
-...
->  arch/arm/configs/imx_v4_v5_defconfig      | 1 -
+On Wed, 05 Jun 2019 12:14:50 -0700 (PDT)
+David Miller <davem@davemloft.net> wrote:
 
-Acked-by: Shawn Guo <shawnguo@kernel.org>
+> From: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+> Date: Wed,  5 Jun 2019 16:20:02 +0300
+> 
+> > This patchset adds XDP support for TI cpsw driver and base it on
+> > page_pool allocator. It was verified on af_xdp socket drop,
+> > af_xdp l2f, ebpf XDP_DROP, XDP_REDIRECT, XDP_PASS, XDP_TX.  
+> 
+> Jesper et al., please give this a good once over.
+
+The issue with merging this, is that I recently discovered two bug with
+page_pool API, when using DMA-mappings, which result in missing
+DMA-unmap's.  These bugs are not "exposed" yet, but will get exposed
+now with this drivers.  
+
+The two bugs are:
+
+#1: in-flight packet-pages can still be on remote drivers TX queue,
+while XDP RX driver manage to unregister the page_pool (waiting 1 RCU
+period is not enough).
+
+#2: this patchset also introduce page_pool_unmap_page(), which is
+called before an XDP frame travel into networks stack (as no callback
+exist, yet).  But the CPUMAP redirect *also* needs to call this, else we
+"leak"/miss DMA-unmap.
+
+I do have a working prototype, that fixes these two bugs.  I guess, I'm
+under pressure to send this to the list soon...
+
+-- 
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
