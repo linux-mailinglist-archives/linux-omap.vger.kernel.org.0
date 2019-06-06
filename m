@@ -2,51 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2182136457
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Jun 2019 21:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 261A8369A6
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jun 2019 04:00:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726515AbfFETOw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Jun 2019 15:14:52 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:38478 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726280AbfFETOw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jun 2019 15:14:52 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id E40B71510F003;
-        Wed,  5 Jun 2019 12:14:50 -0700 (PDT)
-Date:   Wed, 05 Jun 2019 12:14:50 -0700 (PDT)
-Message-Id: <20190605.121450.2198491088032558315.davem@davemloft.net>
-To:     ivan.khoronzhuk@linaro.org
-Cc:     grygorii.strashko@ti.com, hawk@kernel.org, ast@kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        xdp-newbies@vger.kernel.org, ilias.apalodimas@linaro.org,
-        netdev@vger.kernel.org, daniel@iogearbox.net,
-        jakub.kicinski@netronome.com, john.fastabend@gmail.com
-Subject: Re: [PATCH v3 net-next 0/7] net: ethernet: ti: cpsw: Add XDP
- support
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190605132009.10734-1-ivan.khoronzhuk@linaro.org>
-References: <20190605132009.10734-1-ivan.khoronzhuk@linaro.org>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 05 Jun 2019 12:14:51 -0700 (PDT)
+        id S1726723AbfFFCAb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Jun 2019 22:00:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54244 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726593AbfFFCAb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 5 Jun 2019 22:00:31 -0400
+Received: from dragon (li1264-180.members.linode.com [45.79.165.180])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 12B4420866;
+        Thu,  6 Jun 2019 02:00:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559786431;
+        bh=iLIh1cF5PrdXT/fdIuzZB/k+k3Z+d0zIq2E9MelXmLg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Dv5TTeCz1d2AZNEaYK00A5nsKms4beVe0/HMpGnLt7s6oxOYmK2ryuXseFxDkgcoG
+         KMffspjP3zcZ58h0JhogAVnnqLlErgIspfCvlalaTD+KafiKyvMPhYsWg94oU8mZmw
+         iN+ojzDvSH7u11XjJvT8HPYB5hzRXhx0B99kMI7A=
+Date:   Thu, 6 Jun 2019 10:00:09 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Tony Lindgren <tony@atomide.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, arm@kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH v2] ARM: config: Remove left-over BACKLIGHT_LCD_SUPPORT
+Message-ID: <20190606020008.GT29853@dragon>
+References: <1559633061-28003-1-git-send-email-krzk@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1559633061-28003-1-git-send-email-krzk@kernel.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-Date: Wed,  5 Jun 2019 16:20:02 +0300
+On Tue, Jun 04, 2019 at 09:24:21AM +0200, Krzysztof Kozlowski wrote:
+> The CONFIG_BACKLIGHT_LCD_SUPPORT was removed in commit 8c5dc8d9f19c
+> ("video: backlight: Remove useless BACKLIGHT_LCD_SUPPORT kernel
+> symbol"). Options protected by CONFIG_BACKLIGHT_LCD_SUPPORT are now
+> available directly.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> 
+> ---
+> 
+> Changes since v1:
+> 1. Change also mini2440_defconfig.
+> ---
+...
+>  arch/arm/configs/mxs_defconfig            | 1 -
 
-> This patchset adds XDP support for TI cpsw driver and base it on
-> page_pool allocator. It was verified on af_xdp socket drop,
-> af_xdp l2f, ebpf XDP_DROP, XDP_REDIRECT, XDP_PASS, XDP_TX.
-
-Jesper et al., please give this a good once over.
-
-Thank you.
+Acked-by: Shawn Guo <shawnguo@kernel.org>
