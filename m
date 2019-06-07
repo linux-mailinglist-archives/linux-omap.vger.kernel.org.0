@@ -2,31 +2,31 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77E443889F
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Jun 2019 13:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 847F9388A7
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Jun 2019 13:12:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728374AbfFGLL0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S1728520AbfFGLL0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Fri, 7 Jun 2019 07:11:26 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.170]:30562 "EHLO
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.83]:22244 "EHLO
         mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728334AbfFGLL0 (ORCPT
+        with ESMTP id S1728355AbfFGLL0 (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Fri, 7 Jun 2019 07:11:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1559905882;
         s=strato-dkim-0002; d=goldelico.com;
         h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
         X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=7/qIHPW7YK3E/1WVa6JBhancuqJUkFLGU+ia6pFayDE=;
-        b=I7GUj53Se6Sz+iR5cftjDo2nuoeVBcffUdywF4sraQHhNamvSxBxpPSh88CkxSiQjC
-        K3e5PJGCAB0AgmYtJi+tkPlAIy97vCjVGRtW/un+GM6rej2wZ76bRy/aTXKEZMNx1d/g
-        GwjZ6+0bunW/WSbwah2V0W4VYenCZlH/hlUzdykhpF0PruDygR+qjmSj66vAc3UY7VSV
-        QazCzdzJ6L3jvUFZ+ebBldk0IX3hVbOSo7JeVb8By6qniIuxFl7TOgUZMeyv9a59Q6sJ
-        lmiYi8to0RrA5C2zrHFzZ8K40TYGbv+HB8LfMj4HKS1/OFpZTE+FJHW6ywjVSq9Lyhmj
-        YRNg==
+        bh=Vi8XPkzvs3rsYu99yfQYh/pogLXeP+Q04MJbkT2ESyM=;
+        b=NK5F3ZKTAC39u8aPycwpBa9wTX/PLkPtIYeX1z8RLEj4cNg6YVVjz2bDQNPOSHYoXu
+        x+q0prwdyK3fmOxDkChTuDvARDWeUhjV4jZ+yl6i0EjdGVR+NENcKFE5hP4dAz0LB60S
+        jem5ua/4tkDW8z32rJHB+6iAFX18woeESJp8KuVGkb9M66Lh+r7KnJCMwIIJmMATjNzs
+        S2l1DaO5+bioro8pi5OEAQKLTXj39m5BteslAPRriGQF1I5xEdGyJABh3msSQqhEctf7
+        xxf1CWUcZKPUasbsjtGZizUT7njbjaTecAuYSkM6gwJEzPsjydqdE0GcB7yFtGozJFTf
+        ureQ==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0pAwkq13LM="
 X-RZG-CLASS-ID: mo00
 Received: from iMac.fritz.box
         by smtp.strato.de (RZmta 44.22 DYNA|AUTH)
-        with ESMTPSA id i01b98v57BBDPaO
+        with ESMTPSA id i01b98v57BBDPaP
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
         (Client did not present a certificate);
         Fri, 7 Jun 2019 13:11:13 +0200 (CEST)
@@ -41,9 +41,9 @@ Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, letux-kernel@openphoenux.org,
         devicetree@vger.kernel.org,
         "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v3 1/5] drm/panel: simple: Add Sharp LQ070Y3DG3B panel support
-Date:   Fri,  7 Jun 2019 13:11:07 +0200
-Message-Id: <d16aaa1ac93e4f15c13cd7d621de95836257676a.1559905870.git.hns@goldelico.com>
+Subject: [PATCH v3 2/5] drm/panel: simple: Add Ortustech COM37H3M panel support
+Date:   Fri,  7 Jun 2019 13:11:08 +0200
+Message-Id: <43b47034b618cff26cea0484591c6deafb7f0685.1559905870.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <cover.1559905870.git.hns@goldelico.com>
 References: <cover.1559905870.git.hns@goldelico.com>
@@ -54,63 +54,66 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The change adds support for the Sharp LQ070Y3DG3B 7.0" TFT LCD panel.
+The change adds support for the Ortustech COM37H3M05DTC/99DTC 3.7" TFT LCD panel.
 
-Tested on Letux7004.
+Tested on Letux3704.
 
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 30 ++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/gpu/drm/panel/panel-simple.c | 33 ++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 569be4efd8d1..5b27829c5a78 100644
+index 5b27829c5a78..1fb74908a269 100644
 --- a/drivers/gpu/drm/panel/panel-simple.c
 +++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -2204,6 +2204,33 @@ static const struct panel_desc samsung_ltn140at29_301 = {
- 	},
+@@ -2007,6 +2007,33 @@ static const struct panel_desc ontat_yx700wv03 = {
+ 	.bus_format = MEDIA_BUS_FMT_RGB666_1X18,
  };
  
-+static const struct drm_display_mode sharp_lq070y3dg3b_mode = {
-+	.clock = 33260,
-+	.hdisplay = 800,
-+	.hsync_start = 800 + 64,
-+	.hsync_end = 800 + 64 + 128,
-+	.htotal = 800 + 64 + 128 + 64,
-+	.vdisplay = 480,
-+	.vsync_start = 480 + 8,
-+	.vsync_end = 480 + 8 + 2,
-+	.vtotal = 480 + 8 + 2 + 35,
++static const struct drm_display_mode ortustech_com37h3m_mode  = {
++	.clock = 22153,
++	.hdisplay = 480,
++	.hsync_start = 480 + 8,
++	.hsync_end = 480 + 8 + 10,
++	.htotal = 480 + 8 + 10 + 10,
++	.vdisplay = 640,
++	.vsync_start = 640 + 4,
++	.vsync_end = 640 + 4 + 3,
++	.vtotal = 640 + 4 + 3 + 4,
 +	.vrefresh = 60,
-+	.flags = DISPLAY_FLAGS_PIXDATA_POSEDGE,
++	.flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
 +};
 +
-+static const struct panel_desc sharp_lq070y3dg3b = {
-+	.modes = &sharp_lq070y3dg3b_mode,
++static const struct panel_desc ortustech_com37h3m = {
++	.modes = &ortustech_com37h3m_mode,
 +	.num_modes = 1,
 +	.bpc = 8,
 +	.size = {
-+		.width = 152,	/* 152.4mm */
-+		.height = 91,	/* 91.4mm */
++		.width = 56,	/* 56.16mm */
++		.height = 75,	/* 74.88mm */
 +	},
 +	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
 +	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_POSEDGE |
 +		     DRM_BUS_FLAG_SYNC_DRIVE_POSEDGE,
 +};
 +
- static const struct drm_display_mode sharp_lq035q7db03_mode = {
- 	.clock = 5500,
- 	.hdisplay = 240,
-@@ -2786,6 +2813,9 @@ static const struct of_device_id platform_of_match[] = {
+ static const struct drm_display_mode ortustech_com43h4m85ulc_mode  = {
+ 	.clock = 25000,
+ 	.hdisplay = 480,
+@@ -2786,6 +2813,12 @@ static const struct of_device_id platform_of_match[] = {
  	}, {
- 		.compatible = "sharp,lq035q7db03",
- 		.data = &sharp_lq035q7db03,
+ 		.compatible = "ontat,yx700wv03",
+ 		.data = &ontat_yx700wv03,
 +	}, {
-+		.compatible = "sharp,lq070y3dg3b",
-+		.data = &sharp_lq070y3dg3b,
++		.compatible = "ortustech,com37h3m05dtc",
++		.data = &ortustech_com37h3m,
++	}, {
++		.compatible = "ortustech,com37h3m99dtc",
++		.data = &ortustech_com37h3m,
  	}, {
- 		.compatible = "sharp,lq101k1ly04",
- 		.data = &sharp_lq101k1ly04,
+ 		.compatible = "ortustech,com43h4m85ulc",
+ 		.data = &ortustech_com43h4m85ulc,
 -- 
 2.19.1
 
