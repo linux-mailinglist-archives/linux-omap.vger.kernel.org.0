@@ -2,91 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B60353850A
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Jun 2019 09:29:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70603388A9
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Jun 2019 13:12:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727318AbfFGH3A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 7 Jun 2019 03:29:00 -0400
-Received: from smtp1.iitb.ac.in ([103.21.127.13]:60586 "EHLO smtp1.iitb.ac.in"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727404AbfFGH27 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 7 Jun 2019 03:28:59 -0400
-Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
-        by smtp1.iitb.ac.in (Postfix) with SMTP id 1A678103DF57
-        for <linux-omap@vger.kernel.org>; Fri,  7 Jun 2019 12:01:54 +0530 (IST)
-Received: (qmail 29995 invoked by uid 510); 7 Jun 2019 12:01:34 +0530
-X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
- spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
- Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 3.224183 secs; 07 Jun 2019 12:01:34 +0530
-X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns2.iitb.ac.in
-X-Spam-Level: *
-X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
-        MISSING_HEADERS,PROPER_IITB_MSGID autolearn=disabled version=3.4.1
-X-Spam-Pyzor: Reported 1 times.
-X-Envelope-From: rws@aero.iitb.ac.in
-X-Qmail-Scanner-Mime-Attachments: |
-X-Qmail-Scanner-Zip-Files: |
-Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
-  by ldns2.iitb.ac.in with SMTP; 7 Jun 2019 12:01:31 +0530
-Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
-        by ldns2.iitb.ac.in (Postfix) with ESMTP id CB958341965;
-        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 9509A8902E52F;
-        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
-Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
-        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 3VnK-_U7b-vs; Fri,  7 Jun 2019 12:01:17 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 5DAB88902E54D;
-        Fri,  7 Jun 2019 12:01:14 +0530 (IST)
-X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
-Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
-        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id TgJiwoMo_EHZ; Fri,  7 Jun 2019 12:01:14 +0530 (IST)
-Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 0EEE684310111;
-        Fri,  7 Jun 2019 12:01:10 +0530 (IST)
-Date:   Fri, 7 Jun 2019 12:01:09 +0530 (IST)
-From:   Martins Henry <rws@aero.iitb.ac.in>
-Message-ID: <412557711.60336.1559889069980.JavaMail.zimbra@aero.iitb.ac.in>
-Subject: Thanks and I wait for your answer
+        id S1728589AbfFGLLg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 7 Jun 2019 07:11:36 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:15734 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728573AbfFGLLd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 Jun 2019 07:11:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1559905889;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=gdbB42uBtpCZVbeW6GNf/4lkZJ/Djuqs29FobgjrNn4=;
+        b=HLp3Ssps7BnuxN0rKyZgAZxMMHp2GZv7CkVDfglU46BfWkhURMjXmt4cLRanOUQ4Fq
+        ykvygxX/TeYfq1e8sIjmVnnKIFBR0T0Sz5UcmYkMGso1M81TIor/aAyo0eApxL8WlJSZ
+        eTgGp84MtmeE0+fIouBaEW/9q2qgx5Zt+DZOA10jOJC0Xskwuaf01RKrXoY5r6vTXQMv
+        UqUDpmm+JhMGPG1skTnpNsng3Zis8CScPcKRc6qYDdLe/DMf7E6aqRcvGIY9WWirBNey
+        3+bnQg5XGTQyFuUiIFP2YxjIkrDVp7FKuPNyRY0s1iPzVxMPb4BbxglU0TngQ++u4P4p
+        XG0g==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0pAwkq13LM="
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+        by smtp.strato.de (RZmta 44.22 DYNA|AUTH)
+        with ESMTPSA id i01b98v57BBCPaN
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Fri, 7 Jun 2019 13:11:12 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, tomi.valkeinen@ti.com,
+        imirkin@alum.mit.edu, marek.belisko@gmail.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, letux-kernel@openphoenux.org,
+        devicetree@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: [PATCH v3 0/5] drm/panel-simple: Add panel parameters for ortustech-com37h3m05dtc/99dtc and sharp-lq070y3dg3b
+Date:   Fri,  7 Jun 2019 13:11:06 +0200
+Message-Id: <cover.1559905870.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.101.1.5]
-X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
-Thread-Index: SsslhYkcLNFU69da/wYft5cO9/ZYnA==
-Thread-Topic: Thanks and I wait for your answer
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
+V3:
+* add bindings documentation (suggested by sam@ravnborg.org)
 
-I am Martin Henry, An American Citizen; I am the personal secretary to
-Mr. Donald Railton, the controller of a Lottery Company. Please I am
-having big problem now, I have a 6yrs old daughter who has leukemia, a
-disease of the blood, and she needs a bone marrow transplant or she
-will die.
+V2 2019-06-05 07:07:05:
+* fix typo in 99dtc panel compatible string (reported by imirkin@alum.mit.edu)
 
-Please I am only asking for your help and you will benefit from it
-also. As an insider with Lottery Firm, working as the personal
-secretary to the controller, I want you to send me your name to play,
-I have some numbers that are going to win, stored in his secret data
-system in the office. The Lottery is an online entry with credit card
-anywhere with a name and address. All I want you to do is to send your
-name to play it and I will send confirmation to you.
+V1 2019-06-04 14:53:00:
 
-I will play with my card on your name and the Prize will be shared
-equally between us. Immediately the results are released they will
-contact you for payment as the oversea winner. The lotto can be played
-with 9.00 dollars, or 50 dollars but the prize will be Millions.
-Remember that I am playing on your name with my card; I just want to
-front you for this, because I need this money to save the life of my
-little daughter.
+Since v5.2-rc1 OMAP is no longer using a special display driver architecture
+for DPI panels, but uses the general drm/panel/panel-simple.
 
-Thanks and I wait for your answer
-Martin Henry.
+So we finally can add SoC independent panel definitions for two panel models
+which we already had worked on quite a while ago (before device tree was
+introduced):
+
+	https://patchwork.kernel.org/patch/2851295/
+
+
+
+H. Nikolaus Schaller (5):
+  drm/panel: simple: Add Sharp LQ070Y3DG3B panel support
+  drm/panel: simple: Add Ortustech COM37H3M panel support
+  dt-bindings: drm/panel: simple: add ortustech,com37h3m05dtc panel
+  dt-bindings: drm/panel: simple: add ortustech,com37h3m99dtc panel
+  dt-bindings: drm/panel: simple: add sharp,lq070y3dg3b panel
+
+ .../display/panel/ortustech,com37h3m05dtc.txt | 12 ++++
+ .../display/panel/ortustech,com37h3m99dtc.txt | 12 ++++
+ .../display/panel/sharp,lq070y3dg3b.txt       | 12 ++++
+ drivers/gpu/drm/panel/panel-simple.c          | 63 +++++++++++++++++++
+ 4 files changed, 99 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/ortustech,com37h3m05dtc.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/ortustech,com37h3m99dtc.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/sharp,lq070y3dg3b.txt
+
+-- 
+2.19.1
+
