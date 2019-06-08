@@ -2,38 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A643039DB6
-	for <lists+linux-omap@lfdr.de>; Sat,  8 Jun 2019 13:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F147239EEE
+	for <lists+linux-omap@lfdr.de>; Sat,  8 Jun 2019 13:53:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728621AbfFHLnG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 8 Jun 2019 07:43:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60322 "EHLO mail.kernel.org"
+        id S1728765AbfFHLw3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 8 Jun 2019 07:52:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35744 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728105AbfFHLnF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 8 Jun 2019 07:43:05 -0400
+        id S1728436AbfFHLrG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 8 Jun 2019 07:47:06 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D39D7214D8;
-        Sat,  8 Jun 2019 11:43:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D84E821530;
+        Sat,  8 Jun 2019 11:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559994184;
-        bh=Xu0+t3OhrCS1y2hn65l4oChxMZzBDiH0Hf5geJGUV18=;
+        s=default; t=1559994425;
+        bh=DqdJoUiOexOk1nezwmUags9JJP3MTaMWMU/KBAzLsXc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t69oJ4QFXNgyqJyixxZR+ObNsjdROR4B+Q6aMZlpZgdsCkYvKpwvNi6aKrYeA3Edq
-         hl/4DHRjPcscqBtJxpLmkg5pcjjofN4W6alR8N5qbjhIWKwYdXTop85KLts4iqZiez
-         kxLhZq9kRv/xwDVGiCAMpjCRvPxr/C3gO4W//+BE=
+        b=hsJMVijlqzaWle/QLLBJXdLewvF7sT/Tscix21FkzvZPrgCwGuw4Pe5ZDbkJJNJTo
+         DOwpeZk09VSeCoZ55tC41FZ2meVZd/E8oCnoxbq2J600AAiOuoyy54m1bEGXMqhWLc
+         BJeWrCKfNnbAIBTzw7stLneCUyVHPNVGoDm5JtQE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 08/49] clk: ti: clkctrl: Fix clkdm_clk handling
-Date:   Sat,  8 Jun 2019 07:41:49 -0400
-Message-Id: <20190608114232.8731-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 06/31] clk: ti: clkctrl: Fix clkdm_clk handling
+Date:   Sat,  8 Jun 2019 07:46:17 -0400
+Message-Id: <20190608114646.9415-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608114232.8731-1-sashal@kernel.org>
-References: <20190608114232.8731-1-sashal@kernel.org>
+In-Reply-To: <20190608114646.9415-1-sashal@kernel.org>
+References: <20190608114646.9415-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +61,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-index 421b05392220..ca3218337fd7 100644
+index 53e71d0503ec..82e4d5cccf84 100644
 --- a/drivers/clk/ti/clkctrl.c
 +++ b/drivers/clk/ti/clkctrl.c
-@@ -137,9 +137,6 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
+@@ -124,9 +124,6 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
  	int ret;
  	union omap4_timeout timeout = { 0 };
  
@@ -74,7 +74,7 @@ index 421b05392220..ca3218337fd7 100644
  	if (clk->clkdm) {
  		ret = ti_clk_ll_ops->clkdm_clk_enable(clk->clkdm, hw->clk);
  		if (ret) {
-@@ -151,6 +148,9 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
+@@ -138,6 +135,9 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
  		}
  	}
  
@@ -84,7 +84,7 @@ index 421b05392220..ca3218337fd7 100644
  	val = ti_clk_ll_ops->clk_readl(&clk->enable_reg);
  
  	val &= ~OMAP4_MODULEMODE_MASK;
-@@ -179,7 +179,7 @@ static void _omap4_clkctrl_clk_disable(struct clk_hw *hw)
+@@ -166,7 +166,7 @@ static void _omap4_clkctrl_clk_disable(struct clk_hw *hw)
  	union omap4_timeout timeout = { 0 };
  
  	if (!clk->enable_bit)
