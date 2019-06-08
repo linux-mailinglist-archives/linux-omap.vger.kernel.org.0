@@ -2,38 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BA0439F2D
-	for <lists+linux-omap@lfdr.de>; Sat,  8 Jun 2019 13:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A643039DB6
+	for <lists+linux-omap@lfdr.de>; Sat,  8 Jun 2019 13:43:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727936AbfFHLy4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 8 Jun 2019 07:54:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57362 "EHLO mail.kernel.org"
+        id S1728621AbfFHLnG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 8 Jun 2019 07:43:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60322 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727387AbfFHLkN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 8 Jun 2019 07:40:13 -0400
+        id S1728105AbfFHLnF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 8 Jun 2019 07:43:05 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 742A8214D8;
-        Sat,  8 Jun 2019 11:40:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D39D7214D8;
+        Sat,  8 Jun 2019 11:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559994013;
-        bh=8r8ka3Dy5ssf2HI4AWlbCTlh4KKtCZC2Pzs6vACDIiE=;
+        s=default; t=1559994184;
+        bh=Xu0+t3OhrCS1y2hn65l4oChxMZzBDiH0Hf5geJGUV18=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fh88KPAef2L/SR18dG27yn98hmwSamt2in2XQPK+yyvnJMb2A8DVPI3FOqsYe6Dfs
-         bCZWS+NRHGJuBD6CsSIJZe2bGoAarwV3B6Y1Y/ByL9PWFNaGyR9x1UnXkFb46TiD43
-         WgMHpRWenzH280Sv3p2Whj3GM8CuwlhXWXgcMH+0=
+        b=t69oJ4QFXNgyqJyixxZR+ObNsjdROR4B+Q6aMZlpZgdsCkYvKpwvNi6aKrYeA3Edq
+         hl/4DHRjPcscqBtJxpLmkg5pcjjofN4W6alR8N5qbjhIWKwYdXTop85KLts4iqZiez
+         kxLhZq9kRv/xwDVGiCAMpjCRvPxr/C3gO4W//+BE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 16/70] clk: ti: clkctrl: Fix clkdm_clk handling
-Date:   Sat,  8 Jun 2019 07:38:55 -0400
-Message-Id: <20190608113950.8033-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 08/49] clk: ti: clkctrl: Fix clkdm_clk handling
+Date:   Sat,  8 Jun 2019 07:41:49 -0400
+Message-Id: <20190608114232.8731-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608113950.8033-1-sashal@kernel.org>
-References: <20190608113950.8033-1-sashal@kernel.org>
+In-Reply-To: <20190608114232.8731-1-sashal@kernel.org>
+References: <20190608114232.8731-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,7 +61,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-index 639f515e08f0..3325ee43bcc1 100644
+index 421b05392220..ca3218337fd7 100644
 --- a/drivers/clk/ti/clkctrl.c
 +++ b/drivers/clk/ti/clkctrl.c
 @@ -137,9 +137,6 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
