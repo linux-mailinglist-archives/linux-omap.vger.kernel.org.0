@@ -2,97 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F147239EEE
-	for <lists+linux-omap@lfdr.de>; Sat,  8 Jun 2019 13:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A27733A19F
+	for <lists+linux-omap@lfdr.de>; Sat,  8 Jun 2019 21:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728765AbfFHLw3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 8 Jun 2019 07:52:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35744 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728436AbfFHLrG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 8 Jun 2019 07:47:06 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D84E821530;
-        Sat,  8 Jun 2019 11:47:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559994425;
-        bh=DqdJoUiOexOk1nezwmUags9JJP3MTaMWMU/KBAzLsXc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hsJMVijlqzaWle/QLLBJXdLewvF7sT/Tscix21FkzvZPrgCwGuw4Pe5ZDbkJJNJTo
-         DOwpeZk09VSeCoZ55tC41FZ2meVZd/E8oCnoxbq2J600AAiOuoyy54m1bEGXMqhWLc
-         BJeWrCKfNnbAIBTzw7stLneCUyVHPNVGoDm5JtQE=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 06/31] clk: ti: clkctrl: Fix clkdm_clk handling
-Date:   Sat,  8 Jun 2019 07:46:17 -0400
-Message-Id: <20190608114646.9415-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608114646.9415-1-sashal@kernel.org>
-References: <20190608114646.9415-1-sashal@kernel.org>
+        id S1727356AbfFHTwE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 8 Jun 2019 15:52:04 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:49998 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727215AbfFHTwE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 8 Jun 2019 15:52:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=RgVlU1FphHQ8a0Buvri5uIq/ULpe71jqRpW2Pu9WNug=; b=Rl/GYJCY+7qh+7jC7Uiwiy8R1
+        +Pd8W/Rn2KYCq4rGEyro3aI9Ayk/od4kWYu5e4vwPn1y8PSvA8jYSsEc5xX0QCecjMRy3Urq3OJuJ
+        m2lC8uxnI8kWiknIDDrAUn+0ucidWizD1rEJ8tZGlGpHHjLA09aQRBkRULSwab7uojTcg=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=finisterre.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1hZhNg-00076h-I2; Sat, 08 Jun 2019 19:52:00 +0000
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+        id 2F47B440046; Sat,  8 Jun 2019 20:51:59 +0100 (BST)
+Date:   Sat, 8 Jun 2019 20:51:59 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     keerthy <j-keerthy@ti.com>
+Cc:     lee.jones@linaro.org, robh+dt@kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, t-kristo@ti.com
+Subject: Re: [PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561 regulator
+ support
+Message-ID: <20190608195159.GA5316@sirena.org.uk>
+References: <20190516043218.8222-1-j-keerthy@ti.com>
+ <20190516043218.8222-4-j-keerthy@ti.com>
+ <20190522153528.GG8582@sirena.org.uk>
+ <1712197d-7d43-38a8-efde-11b99537eae9@ti.com>
+ <20190528132755.GK2456@sirena.org.uk>
+ <e68d9939-a56a-b3c5-7f6d-e5783e16a6de@ti.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="DocE+STaALJfprDB"
+Content-Disposition: inline
+In-Reply-To: <e68d9939-a56a-b3c5-7f6d-e5783e16a6de@ti.com>
+X-Cookie: Editing is a rewording activity.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 1cc54078d104f5b4d7e9f8d55362efa5a8daffdb ]
+--DocE+STaALJfprDB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-We need to always call clkdm_clk_enable() and clkdm_clk_disable() even
-the clkctrl clock(s) enabled for the domain do not have any gate register
-bits. Otherwise clockdomains may never get enabled except when devices get
-probed with the legacy "ti,hwmods" devicetree property.
+On Sat, Jun 08, 2019 at 09:26:31AM +0530, keerthy wrote:
 
-Fixes: 88a172526c32 ("clk: ti: add support for clkctrl clocks")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/clk/ti/clkctrl.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> mfd patches are on linux-next already. Hope you can pull this one now that
+> dependencies are met.
 
-diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-index 53e71d0503ec..82e4d5cccf84 100644
---- a/drivers/clk/ti/clkctrl.c
-+++ b/drivers/clk/ti/clkctrl.c
-@@ -124,9 +124,6 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
- 	int ret;
- 	union omap4_timeout timeout = { 0 };
- 
--	if (!clk->enable_bit)
--		return 0;
--
- 	if (clk->clkdm) {
- 		ret = ti_clk_ll_ops->clkdm_clk_enable(clk->clkdm, hw->clk);
- 		if (ret) {
-@@ -138,6 +135,9 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
- 		}
- 	}
- 
-+	if (!clk->enable_bit)
-+		return 0;
-+
- 	val = ti_clk_ll_ops->clk_readl(&clk->enable_reg);
- 
- 	val &= ~OMAP4_MODULEMODE_MASK;
-@@ -166,7 +166,7 @@ static void _omap4_clkctrl_clk_disable(struct clk_hw *hw)
- 	union omap4_timeout timeout = { 0 };
- 
- 	if (!clk->enable_bit)
--		return;
-+		goto exit;
- 
- 	val = ti_clk_ll_ops->clk_readl(&clk->enable_reg);
- 
--- 
-2.20.1
+Someone will need to send me a copy of the patch, if I acked it I was
+expecting it to go in with the MFD changes.
 
+--DocE+STaALJfprDB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlz8Ed4ACgkQJNaLcl1U
+h9AGHAf/bKw40uSf8TiKMNME3+rtTwA5jmWpVk6ZKGFMQ8VdpA0HGY2JRsIUTuTq
+XbcwJiElcnNPObYFWifauDWDKbu0cyobZncfVmOsGvWlyNXa2KHH5dyGKINCwtIl
+VSoLYzZ/bOj7ksFVyLTLmPgAdXaPOzPfTxHaERRXb5D9Oaxq1SqpPjwRP2LRPtwC
+fNZQ2uSB2SJTC7hDdM/RSjvgsghIVUKPgurkfh+AzeHJQhFeZ2reQsx0A+3G37qZ
+K85r0eLHEI4XEg9lZgIc9ypA8EXZiuLYtEi3B4M6tsnQXqkEbs3tZKoflF7ZiBR/
+teHq8C9MOoAu7hQAIXAPBZ35SGEYuA==
+=mYL3
+-----END PGP SIGNATURE-----
+
+--DocE+STaALJfprDB--
