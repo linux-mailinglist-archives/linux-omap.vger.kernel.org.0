@@ -2,86 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BC3339A8E
-	for <lists+linux-omap@lfdr.de>; Sat,  8 Jun 2019 05:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BA0439F2D
+	for <lists+linux-omap@lfdr.de>; Sat,  8 Jun 2019 13:55:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730740AbfFHD4i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 7 Jun 2019 23:56:38 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:53050 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730445AbfFHD4i (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 Jun 2019 23:56:38 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x583uauE087580;
-        Fri, 7 Jun 2019 22:56:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1559966196;
-        bh=xApOPbaphWPzxJKeQBh1cTOQCKroY+KpTKbui6gP1u0=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=sHErhbm31wd1mMeI6q39S/hwgyi5oGATYBqAjIu1ZeM5jj3cFF9w1QZoxonsrao9D
-         rEf7HM3GYAp3iGdvEIVRt5GWgu5B64RSUcQwcEH1nuBEP52qiyqFAKsl8q3dIlN6ts
-         H+JM9j7tlKAScZAM6N0uxJBsQU1xCVD3JzeoE+yY=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x583uaUE061427
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 7 Jun 2019 22:56:36 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 7 Jun
- 2019 22:56:35 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 7 Jun 2019 22:56:35 -0500
-Received: from [172.22.216.123] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x583uW8K064766;
-        Fri, 7 Jun 2019 22:56:33 -0500
-Subject: Re: [PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561 regulator
- support
-To:     Mark Brown <broonie@kernel.org>
-CC:     <lee.jones@linaro.org>, <robh+dt@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <t-kristo@ti.com>
-References: <20190516043218.8222-1-j-keerthy@ti.com>
- <20190516043218.8222-4-j-keerthy@ti.com>
- <20190522153528.GG8582@sirena.org.uk>
- <1712197d-7d43-38a8-efde-11b99537eae9@ti.com>
- <20190528132755.GK2456@sirena.org.uk>
-From:   keerthy <j-keerthy@ti.com>
-Message-ID: <e68d9939-a56a-b3c5-7f6d-e5783e16a6de@ti.com>
-Date:   Sat, 8 Jun 2019 09:26:31 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1727936AbfFHLy4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 8 Jun 2019 07:54:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57362 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727387AbfFHLkN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 8 Jun 2019 07:40:13 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 742A8214D8;
+        Sat,  8 Jun 2019 11:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559994013;
+        bh=8r8ka3Dy5ssf2HI4AWlbCTlh4KKtCZC2Pzs6vACDIiE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=fh88KPAef2L/SR18dG27yn98hmwSamt2in2XQPK+yyvnJMb2A8DVPI3FOqsYe6Dfs
+         bCZWS+NRHGJuBD6CsSIJZe2bGoAarwV3B6Y1Y/ByL9PWFNaGyR9x1UnXkFb46TiD43
+         WgMHpRWenzH280Sv3p2Whj3GM8CuwlhXWXgcMH+0=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Tony Lindgren <tony@atomide.com>, Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.1 16/70] clk: ti: clkctrl: Fix clkdm_clk handling
+Date:   Sat,  8 Jun 2019 07:38:55 -0400
+Message-Id: <20190608113950.8033-16-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190608113950.8033-1-sashal@kernel.org>
+References: <20190608113950.8033-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20190528132755.GK2456@sirena.org.uk>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: Tony Lindgren <tony@atomide.com>
 
+[ Upstream commit 1cc54078d104f5b4d7e9f8d55362efa5a8daffdb ]
 
-On 5/28/2019 6:57 PM, Mark Brown wrote:
-> On Tue, May 28, 2019 at 03:23:41PM +0530, Keerthy wrote:
->> On 22/05/19 9:05 PM, Mark Brown wrote:
->>> On Thu, May 16, 2019 at 10:02:18AM +0530, Keerthy wrote:
-> 
->>> Acked-by: Mark Brown <broonie@kernel.org>
-> 
->> This patch will come via the mfd branch?
-> 
-> I'd expect so, IIRC it had a build dependency on the earlier patches in
-> the series so if that doesn't happen I'll need to merge the relevant MFD
-> commits.
+We need to always call clkdm_clk_enable() and clkdm_clk_disable() even
+the clkctrl clock(s) enabled for the domain do not have any gate register
+bits. Otherwise clockdomains may never get enabled except when devices get
+probed with the legacy "ti,hwmods" devicetree property.
 
-Mark,
+Fixes: 88a172526c32 ("clk: ti: add support for clkctrl clocks")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/clk/ti/clkctrl.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-mfd patches are on linux-next already. Hope you can pull this one now 
-that dependencies are met.
+diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+index 639f515e08f0..3325ee43bcc1 100644
+--- a/drivers/clk/ti/clkctrl.c
++++ b/drivers/clk/ti/clkctrl.c
+@@ -137,9 +137,6 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
+ 	int ret;
+ 	union omap4_timeout timeout = { 0 };
+ 
+-	if (!clk->enable_bit)
+-		return 0;
+-
+ 	if (clk->clkdm) {
+ 		ret = ti_clk_ll_ops->clkdm_clk_enable(clk->clkdm, hw->clk);
+ 		if (ret) {
+@@ -151,6 +148,9 @@ static int _omap4_clkctrl_clk_enable(struct clk_hw *hw)
+ 		}
+ 	}
+ 
++	if (!clk->enable_bit)
++		return 0;
++
+ 	val = ti_clk_ll_ops->clk_readl(&clk->enable_reg);
+ 
+ 	val &= ~OMAP4_MODULEMODE_MASK;
+@@ -179,7 +179,7 @@ static void _omap4_clkctrl_clk_disable(struct clk_hw *hw)
+ 	union omap4_timeout timeout = { 0 };
+ 
+ 	if (!clk->enable_bit)
+-		return;
++		goto exit;
+ 
+ 	val = ti_clk_ll_ops->clk_readl(&clk->enable_reg);
+ 
+-- 
+2.20.1
 
-- Keerthy
-> 
