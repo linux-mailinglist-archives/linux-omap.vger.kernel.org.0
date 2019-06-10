@@ -2,91 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59FAB3AEB6
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2019 07:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE0A3AF0F
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2019 08:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387517AbfFJFs0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 10 Jun 2019 01:48:26 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:44884 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387457AbfFJFs0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 Jun 2019 01:48:26 -0400
-Received: by mail-wr1-f65.google.com with SMTP id b17so7768581wrq.11
-        for <linux-omap@vger.kernel.org>; Sun, 09 Jun 2019 22:48:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=UqTMfvdUN4l4dmfUrLpLCLxSB+Co9swJe7W/3oUlri0=;
-        b=tcJdLTorzCf4nvzqeoyQF2XfPfTYL490JDW0DOUImon5g5L3pLvtatzry6AKu3ahJw
-         zM9dC1SF0n2o3vxGe/b9rpXN3ZdXKACyvUcegPGCc3TPpYVUk6SZ+Mv/wJOSUb3F9ZQ1
-         VzJFUDXsDX+i4wAujIYBm2L09Q1IyNHrXgacLWKslptpyzU1jyZGwvBeZ48HxhZy/0jG
-         gJo7dINUS1p3HVnTu+DvaZx7jc4z6RBcFA7GWbgEcH5V21D7pG/VeVTAaD1jGRfGlhnw
-         cV179tidSdxtnzxNCzFnWwibq35ErWEeGSHqsAaR80//LhCE1zygrHaFYRJKdKVNA2ou
-         swlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=UqTMfvdUN4l4dmfUrLpLCLxSB+Co9swJe7W/3oUlri0=;
-        b=kL1GsjD00wVhS18wIJJYgK4wXmzOpGA9gwHE37hReXNkQLJT7g1PWdOhAuuSwqU4ST
-         eax/iWmGC6joXZx3JdefpfLrUhtNe0Cs+8HWHkPJ8qhqt89BxOciH0PPmwYanePUwL9L
-         UZ0uihNH89gTjVWVSrN6x1urE4Fwwiq1rohjOigDz9fPKwfJxim9Oooa6vzXACD3yfRA
-         /s82y0Qt0XlmDf4R2iuPFo2+dLFNg8sy1MA7Mdl0jSGA7uh+qam80h67S87K57jqrU77
-         BITk7sw08R1b85UFicDW1+6KkTZNXeT3359ycnskHDRKIkRxyQjcyfx35QOIq4jkmaAN
-         PraA==
-X-Gm-Message-State: APjAAAVYn0JsymOF/tcX8hxNaXo/cMedwcarLJNRFM3LxDJNLUP0i8hq
-        NRwgysD1aw5sXlN4sHsOkrh71w==
-X-Google-Smtp-Source: APXvYqwsrG8dkGOUshS3cNu9PxOmmzcafSURYr1r2F+1zsSm5ObYfNFi3/TpWb7kqnrdPh7vZpSZtw==
-X-Received: by 2002:adf:db4c:: with SMTP id f12mr20398326wrj.276.1560145704642;
-        Sun, 09 Jun 2019 22:48:24 -0700 (PDT)
-Received: from dell ([2.31.167.229])
-        by smtp.gmail.com with ESMTPSA id d10sm9750323wrp.74.2019.06.09.22.48.23
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 09 Jun 2019 22:48:24 -0700 (PDT)
-Date:   Mon, 10 Jun 2019 06:48:22 +0100
-From:   Lee Jones <lee.jones@linaro.org>
+        id S2387708AbfFJGlt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 10 Jun 2019 02:41:49 -0400
+Received: from muru.com ([72.249.23.125]:52388 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387655AbfFJGlt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 10 Jun 2019 02:41:49 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 39169807E;
+        Mon, 10 Jun 2019 06:42:09 +0000 (UTC)
+Date:   Sun, 9 Jun 2019 23:41:45 -0700
+From:   Tony Lindgren <tony@atomide.com>
 To:     Mark Brown <broonie@kernel.org>
-Cc:     keerthy <j-keerthy@ti.com>, robh+dt@kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, t-kristo@ti.com
-Subject: Re: [PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561 regulator
- support
-Message-ID: <20190610054822.GE4797@dell>
-References: <20190516043218.8222-1-j-keerthy@ti.com>
- <20190516043218.8222-4-j-keerthy@ti.com>
- <20190522153528.GG8582@sirena.org.uk>
- <1712197d-7d43-38a8-efde-11b99537eae9@ti.com>
- <20190528132755.GK2456@sirena.org.uk>
- <e68d9939-a56a-b3c5-7f6d-e5783e16a6de@ti.com>
- <20190608195159.GA5316@sirena.org.uk>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        linux-next@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Kevin Hilman <khilman@baylibre.com>
+Subject: Re: next/master boot: 257 boots: 11 failed, 229 passed with 16
+ offline, 1 conflict (next-20190604)
+Message-ID: <20190610064145.GS5447@atomide.com>
+References: <5cf685d0.1c69fb81.e3d89.43ae@mx.google.com>
+ <20190604160018.GI2456@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190608195159.GA5316@sirena.org.uk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190604160018.GI2456@sirena.org.uk>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 08 Jun 2019, Mark Brown wrote:
+Hi,
 
-> On Sat, Jun 08, 2019 at 09:26:31AM +0530, keerthy wrote:
+* Mark Brown <broonie@kernel.org> [190604 16:00]:
+> On Tue, Jun 04, 2019 at 07:53:04AM -0700, kernelci.org bot wrote:
 > 
-> > mfd patches are on linux-next already. Hope you can pull this one now that
-> > dependencies are met.
+> Today's -next fails to boot omap2plus_defconfig on Beagle XM:
 > 
-> Someone will need to send me a copy of the patch, if I acked it I was
-> expecting it to go in with the MFD changes.
+> >     omap2plus_defconfig:
+> >         gcc-8:
+> >           omap3-beagle-xm:
+> >               lab-baylibre: failing since 1 day (last pass: next-20190531 - first fail: next-20190603)
+> 
+> The boot fails silently with no output after the bootloader:
+> 
+>     https://kernelci.org/boot/id/5cf655fc59b5149acad51504/
+> 
+> which isn't much to go on, it does seem to have been OK in
+> multi_v7_defconfig though.
 
-There is/was no need for that.  Patches are built-time orthogonal.
+Thanks for the report, adding Kevin to Cc. I think this is the same
+board that seems to have started randomly failing?
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Regards,
+
+Tony
