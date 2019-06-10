@@ -2,58 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37C3F3B49D
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2019 14:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 037063BA7B
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Jun 2019 19:12:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389757AbfFJMUT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 10 Jun 2019 08:20:19 -0400
-Received: from muru.com ([72.249.23.125]:52560 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388952AbfFJMUT (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 10 Jun 2019 08:20:19 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 5C442816A;
-        Mon, 10 Jun 2019 12:20:40 +0000 (UTC)
-Date:   Mon, 10 Jun 2019 05:20:16 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     "santosh.shilimkar@oracle.com" <santosh.shilimkar@oracle.com>
-Cc:     Keerthy <j-keerthy@ti.com>, ssantosh@kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        d-gerlach@ti.com, t-kristo@ti.com
-Subject: Re: [PATCH] soc: ti: pm33xx: Add a print while entering RTC only
- mode with DDR in self-refresh
-Message-ID: <20190610122016.GZ5447@atomide.com>
-References: <20190429044435.19315-1-j-keerthy@ti.com>
- <b862e2c4-781c-ced9-3a6f-b0095562732a@oracle.com>
- <20190429184245.GG8007@atomide.com>
+        id S1728289AbfFJRLY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 10 Jun 2019 13:11:24 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:44254 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728373AbfFJRLY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 Jun 2019 13:11:24 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5AHBCWa121338;
+        Mon, 10 Jun 2019 12:11:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1560186672;
+        bh=t38w1L4mrxYXXMjDQM1becdv+NFut23PDyS5X30wChs=;
+        h=From:To:CC:Subject:Date;
+        b=IY7mJsgQmMZXyAx1hLY3wQu261gSm79u4CiTJ53uSmXqLjbf7invQW++CCrFO2mb7
+         V3Ag3YM3RSQuMRUJmbTfgRAYLvLu9YCWbjTDjb2g9UXuZTI1p4doIEb1128wCPwOh/
+         RgT+mKi7stL9fx7C4U/xUt+07bLYEVs1JPf9DCb4=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5AHBCiO079481
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 10 Jun 2019 12:11:12 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 10
+ Jun 2019 12:11:11 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 10 Jun 2019 12:11:11 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5AHBAaL066346;
+        Mon, 10 Jun 2019 12:11:11 -0500
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     Russell King <rmk@arm.linux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tony Lindgren <tony@atomide.com>
+CC:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        <linux-omap@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH-next 00/20]  gpio: gpio-omap: set of fixes and big clean-up
+Date:   Mon, 10 Jun 2019 20:10:43 +0300
+Message-ID: <20190610171103.30903-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190429184245.GG8007@atomide.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [190429 18:43]:
-> * santosh.shilimkar@oracle.com <santosh.shilimkar@oracle.com> [190429 18:40]:
-> > On 4/28/19 9:44 PM, Keerthy wrote:
-> > > Currently there is no way to distinguish if the SoC entered DS0
-> > > mode or the RTC only mode. Hence add a print before entering
-> > > the RTC only mode.
-> > > 
-> > > Signed-off-by: Keerthy <j-keerthy@ti.com>
-> > > ---
-> > Acked-by: Santosh Shilimkar <ssantosh@kernel.org>
-> > 
-> > Tony, Am assuming you will queue this up ?
-> 
-> OK yeah I'll queue it.
+Hi Linus, Russell, Tony, All,
 
-Just found this still sitting in my inbox, applying into omap-for-v5.3/soc.
-Sorry for the delay.
+This series contains set of patches from Russell King which were circulated
+internally for quite some time already and I fill it's reasonable to move
+future discussion upstream (and also avoid rebasing).
+Fisrt two patches are fixes and the rest are big, great clean up
+from Russell King.
 
-Regards,
+Personally, I like this clean up and refactoring very much and don't want
+it to be lost.
 
-Tony
+Code can be found at:
+ git@git.ti.com:~gragst/ti-linux-kernel/gragsts-ti-linux-kernel.git
+branch:
+ lkml-next-gpio-clean-up
+
+Russell King (20):
+  gpio: gpio-omap: ensure irq is enabled before wakeup
+  gpio: gpio-omap: fix lack of irqstatus_raw0 for OMAP4
+  gpio: gpio-omap: remove remainder of list management
+  gpio: gpio-omap: clean up edge interrupt handling
+  gpio: gpio-omap: remove irq_ack method
+  gpio: gpio-omap: move omap_gpio_request() and omap_gpio_free()
+  gpio: gpio-omap: simplify omap_gpio_get_direction()
+  gpio: gpio-omap: simplify get() method
+  gpio: gpio-omap: simplify get_multiple()
+  gpio: gpio-omap: simplify set_multiple()
+  gpio: gpio-omap: simplify bank->level_mask
+  gpio: gpio-omap: simplify read-modify-write
+  gpio: gpio-omap: simplify omap_toggle_gpio_edge_triggering()
+  gpio: gpio-omap: simplify omap_set_gpio_irqenable()
+  gpio: gpio-omap: remove dataout variation in context handling
+  gpio: gpio-omap: clean up omap_gpio_restore_context()
+  gpio: gpio-omap: constify register tables
+  gpio: gpio-omap: clean up wakeup handling
+  gpio: gpio-omap: irq_startup() must not return error codes
+  gpio: gpio-omap: clean up register access in omap2_set_gpio_debounce()
+
+ drivers/gpio/gpio-omap.c                | 497 ++++++++----------------
+ include/linux/platform_data/gpio-omap.h |   2 +-
+ 2 files changed, 161 insertions(+), 338 deletions(-)
+
+-- 
+2.17.1
+
