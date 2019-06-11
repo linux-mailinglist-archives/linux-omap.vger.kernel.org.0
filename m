@@ -2,39 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF0F13C339
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2019 07:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B139E3C45A
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2019 08:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391206AbfFKFKC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Tue, 11 Jun 2019 01:10:02 -0400
-Received: from slot0.etcslc.ga ([85.204.116.123]:53043 "EHLO slot0.etcslc.ga"
+        id S2391243AbfFKGhR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Jun 2019 02:37:17 -0400
+Received: from muru.com ([72.249.23.125]:52720 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390911AbfFKFKC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 11 Jun 2019 01:10:02 -0400
-X-Greylist: delayed 624 seconds by postgrey-1.27 at vger.kernel.org; Tue, 11 Jun 2019 01:10:01 EDT
-Content-Type: text/plain; charset="iso-8859-1"
+        id S2390485AbfFKGhQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 11 Jun 2019 02:37:16 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A221280C0;
+        Tue, 11 Jun 2019 06:37:37 +0000 (UTC)
+Date:   Mon, 10 Jun 2019 23:37:13 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     linux-omap@vger.kernel.org,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Tero Kristo <t-kristo@ti.com>
+Subject: Re: [PATCH] ARM: dts: Drop bogus CLKSEL for timer12 on dra7
+Message-ID: <20190611063713.GA5447@atomide.com>
+References: <20190530065635.42811-1-tony@atomide.com>
+ <89884096-cda4-ea67-6776-4fb25abc65e3@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Quation needed For June Inquiry
-To:     Recipients <purchase@greattrades.ga>
-From:   "Jpexcc Salesi" <purchase@greattrades.ga>
-Date:   Tue, 11 Jun 2019 07:49:53 +0300
-Reply-To: jpexcc@aol.com
-Message-ID: <0.0.0.CF0.1D520110D978C26.0@slot0.etcslc.ga>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <89884096-cda4-ea67-6776-4fb25abc65e3@ti.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello dear,
- 
-We are in the market for your products after meeting at your stand during last expo.
- 
-Please kindly send us your latest catalog and price list so as to start a new project/order as promised during the exhibition. 
- 
-I would appreciate your response about the above details required so we can revert back to you asap.
- 
-Kind regards
- 
-Rhema Zoeh
+* Tomi Valkeinen <tomi.valkeinen@ti.com> [190531 12:06]:
+> On 30/05/2019 09:56, Tony Lindgren wrote:
+> > There is no CLKSEL for timer12 on dra6 unlike for timer1. This
+> 
+> dra7
+
+Thanks for spotting the typo, pushed out now and will send
+a pull request for the dra7 fixes probably on Wednesday.
+
+Regards,
+
+Tony
