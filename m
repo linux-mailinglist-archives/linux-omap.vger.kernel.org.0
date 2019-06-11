@@ -2,103 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B1023C541
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2019 09:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD5083C737
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Jun 2019 11:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404082AbfFKHhZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Jun 2019 03:37:25 -0400
-Received: from muru.com ([72.249.23.125]:52734 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404009AbfFKHhZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 11 Jun 2019 03:37:25 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 23EA580C0;
-        Tue, 11 Jun 2019 07:37:45 +0000 (UTC)
-Date:   Tue, 11 Jun 2019 00:37:20 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Russell King <rmk@arm.linux.org.uk>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: Re: [PATCH-next 00/20]  gpio: gpio-omap: set of fixes and big
- clean-up
-Message-ID: <20190611073720.GB5447@atomide.com>
-References: <20190610171103.30903-1-grygorii.strashko@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190610171103.30903-1-grygorii.strashko@ti.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+        id S2404395AbfFKJa4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Jun 2019 05:30:56 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:45149 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727642AbfFKJa4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Jun 2019 05:30:56 -0400
+Received: by mail-ed1-f65.google.com with SMTP id a14so17156333edv.12;
+        Tue, 11 Jun 2019 02:30:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=8flzYEJcuEkyJ1AH0OXfB04E7XpbRTYOxRAsuUYCYrc=;
+        b=ptUAF4qZ0rEElNWbGs61q1jTEremdphbh0Nx4KtLGD8bae4CqeZY+P5dbk4OH0s0tq
+         /eYly5UbsUQumNuD9Xk7XseyOg+JBKXRORRVDn3lRgYEveIdicPTQDhV0MBaDnvObVxG
+         D5x2tcvXgyp8BE34r8z1538j2GIJqoPkmx1R4uqpcinRDK8f8LxE+tD1SDL6SuquaFJE
+         csDAe7W1YRX6TDP5LM0a30JXGc8NzbFI3FWEGAPz2Cfh+Sp3HKjQU7X6gYpiilRQYkE9
+         2WQIIujkHyqw+vKre/pr+6XEEvIxXUc9Kn9Z2EKZ67iAsOfnIo0d5/KJJs+fXwiatk8r
+         76Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=8flzYEJcuEkyJ1AH0OXfB04E7XpbRTYOxRAsuUYCYrc=;
+        b=CHh6RZiklcLe9XMWdyt3liWMFvHg98i5JcQM+z2moWYb/I283NnSY41MZ+wQWhwGjw
+         yioAAQo70+gZOa8RP7tHNgcIoszPtGlz8lrAEnkYEqvTTG87xuswAl4Se2d+gDdxOs5R
+         zNUGPs1Zmc1qGQ/OmCc4yZjvJqRdH7jw5QWPIRUkmz39LtSn1pXZav4c7TEzPpCaSHNk
+         eoGDLg8V1FYs0qonc+DcjUO459d4e59NsNhIJctygRALqhH1yJnSBPDPWjn28+JpCB+x
+         MHo4Y2XYQq4q8t4V2FVH33WXTatPPvWHZcWHCgr+MQNRagBY2hGL6DtOJaeLM9Bwzfvn
+         aW/A==
+X-Gm-Message-State: APjAAAWegcu7obcghkXfa0CB+fX7loNpK3F64JHiUEYl1kifHUmN+L0I
+        H5LlKvFalMvpWItFgU3G46KFEk57
+X-Google-Smtp-Source: APXvYqyrbbQNFmcA4UDfTW5MCnvxlp2KccM8qJhuSQ/hMlRthhbaKxgWlE+FzpSwpEFD3LPu+p+LOA==
+X-Received: by 2002:a50:e707:: with SMTP id a7mr80066691edn.68.1560245454427;
+        Tue, 11 Jun 2019 02:30:54 -0700 (PDT)
+Received: from development1.visionsystems.de (mail.visionsystems.de. [213.209.99.202])
+        by smtp.gmail.com with ESMTPSA id l38sm200874eda.1.2019.06.11.02.30.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Jun 2019 02:30:53 -0700 (PDT)
+From:   yegorslists@googlemail.com
+To:     linux-omap@vger.kernel.org
+Cc:     tony@atomide.com, robh+dt@kernel.org, devicetree@vger.kernel.org,
+        Yegor Yefremov <yegorslists@googlemail.com>
+Subject: [PATCH] ARM: dts: am335x-baltos: Fix PHY mode for ethernet
+Date:   Tue, 11 Jun 2019 11:30:45 +0200
+Message-Id: <20190611093045.4810-1-yegorslists@googlemail.com>
+X-Mailer: git-send-email 2.17.0
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-* Grygorii Strashko <grygorii.strashko@ti.com> [190610 10:11]:
-> Hi Linus, Russell, Tony, All,
-> 
-> This series contains set of patches from Russell King which were circulated
-> internally for quite some time already and I fill it's reasonable to move
-> future discussion upstream (and also avoid rebasing).
-> Fisrt two patches are fixes and the rest are big, great clean up
-> from Russell King.
-> 
-> Personally, I like this clean up and refactoring very much and don't want
-> it to be lost.
+The PHY must add both tx and rx delay and not only on the tx clock.
 
-Adding Aaro to Cc too hopefully for more testing. Yes this is very nice
-and behaves for my idle test cases. I've also boot tested omap1 osk and
-it still works just fine for NFSroot.
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ arch/arm/boot/dts/am335x-baltos-ir2110.dts | 2 +-
+ arch/arm/boot/dts/am335x-baltos-ir3220.dts | 2 +-
+ arch/arm/boot/dts/am335x-baltos-ir5221.dts | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-FYI, after this series, the only issue I'm aware of still remaining
-is the lost edge wake-up interrupts for L4 PER idle that I posted a WIP
-fix as "[PATCH] gpio: gpio-omap: Fix lost edge wake-up interrupts".
-But that one still needs a bit more work and is a separate fix from this
-series.
+diff --git a/arch/arm/boot/dts/am335x-baltos-ir2110.dts b/arch/arm/boot/dts/am335x-baltos-ir2110.dts
+index 2f650a736b44..f127af2afd00 100644
+--- a/arch/arm/boot/dts/am335x-baltos-ir2110.dts
++++ b/arch/arm/boot/dts/am335x-baltos-ir2110.dts
+@@ -68,7 +68,7 @@
+ };
+ 
+ &cpsw_emac1 {
+-	phy-mode = "rgmii-txid";
++	phy-mode = "rgmii-id";
+ 	dual_emac_res_vlan = <2>;
+ 	phy-handle = <&phy1>;
+ };
+diff --git a/arch/arm/boot/dts/am335x-baltos-ir3220.dts b/arch/arm/boot/dts/am335x-baltos-ir3220.dts
+index 1ba66d5e21e8..058d9eb96cff 100644
+--- a/arch/arm/boot/dts/am335x-baltos-ir3220.dts
++++ b/arch/arm/boot/dts/am335x-baltos-ir3220.dts
+@@ -110,7 +110,7 @@
+ };
+ 
+ &cpsw_emac1 {
+-	phy-mode = "rgmii-txid";
++	phy-mode = "rgmii-id";
+ 	dual_emac_res_vlan = <2>;
+ 	phy-handle = <&phy1>;
+ };
+diff --git a/arch/arm/boot/dts/am335x-baltos-ir5221.dts b/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+index eed65fc0e8e6..7b99c8ed3c3a 100644
+--- a/arch/arm/boot/dts/am335x-baltos-ir5221.dts
++++ b/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+@@ -128,7 +128,7 @@
+ };
+ 
+ &cpsw_emac1 {
+-	phy-mode = "rgmii-txid";
++	phy-mode = "rgmii-id";
+ 	dual_emac_res_vlan = <2>;
+ 	phy-handle = <&phy1>;
+ };
+-- 
+2.17.0
 
-So for this whole series, please feel free to add:
-
-Tested-by: Tony Lindgren <tony@atomide.com>
-
-
-
-> Code can be found at:
->  git@git.ti.com:~gragst/ti-linux-kernel/gragsts-ti-linux-kernel.git
-> branch:
->  lkml-next-gpio-clean-up
-> 
-> Russell King (20):
->   gpio: gpio-omap: ensure irq is enabled before wakeup
->   gpio: gpio-omap: fix lack of irqstatus_raw0 for OMAP4
->   gpio: gpio-omap: remove remainder of list management
->   gpio: gpio-omap: clean up edge interrupt handling
->   gpio: gpio-omap: remove irq_ack method
->   gpio: gpio-omap: move omap_gpio_request() and omap_gpio_free()
->   gpio: gpio-omap: simplify omap_gpio_get_direction()
->   gpio: gpio-omap: simplify get() method
->   gpio: gpio-omap: simplify get_multiple()
->   gpio: gpio-omap: simplify set_multiple()
->   gpio: gpio-omap: simplify bank->level_mask
->   gpio: gpio-omap: simplify read-modify-write
->   gpio: gpio-omap: simplify omap_toggle_gpio_edge_triggering()
->   gpio: gpio-omap: simplify omap_set_gpio_irqenable()
->   gpio: gpio-omap: remove dataout variation in context handling
->   gpio: gpio-omap: clean up omap_gpio_restore_context()
->   gpio: gpio-omap: constify register tables
->   gpio: gpio-omap: clean up wakeup handling
->   gpio: gpio-omap: irq_startup() must not return error codes
->   gpio: gpio-omap: clean up register access in omap2_set_gpio_debounce()
-> 
->  drivers/gpio/gpio-omap.c                | 497 ++++++++----------------
->  include/linux/platform_data/gpio-omap.h |   2 +-
->  2 files changed, 161 insertions(+), 338 deletions(-)
-> 
-> -- 
-> 2.17.1
-> 
