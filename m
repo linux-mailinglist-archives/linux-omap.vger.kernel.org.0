@@ -2,114 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BC66429BF
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 16:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46B9642B54
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 17:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731996AbfFLOpr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Jun 2019 10:45:47 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:36680 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728707AbfFLOpq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 10:45:46 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5CEjhlO123299;
-        Wed, 12 Jun 2019 09:45:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1560350743;
-        bh=xyAWNTrYH0QoNd9ukAbvyzeuxkpCV6ALotpkbQS0afA=;
-        h=From:To:CC:Subject:Date;
-        b=NGU+gcXHrfLDdBMjSjJW29qFwrVKeVVvnTBrDiINwHuZzOcnJWCMSJYCkR+HIGIbu
-         a+9WF7E0LU/XEfGyUp5yCtIU1h8WO2alp8x7KMsaVKeHYeC5MdJ5GNC52CgmuhR2Ft
-         Wpd4TGQqjVBaeIVBoyjY0kE8ACWUvDUTmWeXUEQE=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5CEjhJS079595
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 12 Jun 2019 09:45:43 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 12
- Jun 2019 09:45:43 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 12 Jun 2019 09:45:43 -0500
-Received: from a0393675ula.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5CEjf5P083688;
-        Wed, 12 Jun 2019 09:45:41 -0500
-From:   Keerthy <j-keerthy@ti.com>
-To:     <lee.jones@linaro.org>, <broonie@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <t-kristo@ti.com>, <j-keerthy@ti.com>
-Subject: [RESEND PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561 regulator support
-Date:   Wed, 12 Jun 2019 20:16:20 +0530
-Message-ID: <20190612144620.28331-1-j-keerthy@ti.com>
-X-Mailer: git-send-email 2.17.1
+        id S1729872AbfFLP4J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Jun 2019 11:56:09 -0400
+Received: from mail-qt1-f176.google.com ([209.85.160.176]:39467 "EHLO
+        mail-qt1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729861AbfFLP4J (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 11:56:09 -0400
+Received: by mail-qt1-f176.google.com with SMTP id i34so19031526qta.6
+        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 08:56:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=0AhW1jqIHEEtfEVda49sOgcatgOyt/WdTDxj6pvRHrw=;
+        b=TuxhhNXxgbDPDKm6QR9VZF5QDLGH2DNdaoYJBG5AYSX8YXWxCzWHHfOn73FbxJKCqz
+         6MbAh4obw7KR1SKMXGWtofrRPZuqkYtOzdVP6A2gTXp8T3JoYQD0/43/+L9PfeNjyzZQ
+         9bejuZQPnDrK/SLhxccqhACAXn+/30ZlJbc9fHbV+mswWkRLFBP7LYFGSapZprcYD/tg
+         LmWYhsfv6XJ8m/fjs1IbZtEBVHnNFc7D77TOmLhGIR1Z+XlQO/73yZjBufU7t1KSNtr8
+         SAAC4tWxnJPkT8EA3OMyc6ghh0jjXtZi+GDSK2IbagXvzoZfNYJnF7a6nLl3nxhBm/+M
+         Dnyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=0AhW1jqIHEEtfEVda49sOgcatgOyt/WdTDxj6pvRHrw=;
+        b=I276Fkj1w9v2gzgk2/CKJiFWwJkEnhiBErtO7v1Dztea+ywGELVcbzURYiZUxonrPG
+         cJv37UVp+qR7BFLkDkc9SQ8JEWB8JpW/vKgHiJki1RF7G8ukdSszU7cBfmMzWizX0Joy
+         ZekCDbAKxD2HcSu9x/rKzOvN+lZc8W8G+k402UNiM2o5jPHg8PuL0aFra/iUWvf89R71
+         1JATctLm/+o50MxC2EJ2PcXod6sa6yAmOKOIFA/UlfgIhllLE/FtEJnsDFmYKtcpjpFQ
+         qGv9gphG6X0LqnBfWSwt2DWXHAqWgfzDv+joCa1OdzfNfdVWfD0wXJY0XCZrSd5hT2bI
+         jZ+Q==
+X-Gm-Message-State: APjAAAUpFjpd2Vt879fhuUDJPaqPB/4q94ZbDTq6B4KsVyXiIKPS7jrT
+        fuK3Gp84aOWEx6sKyascmpt4xcTG9f6C26h8Px4870Pp
+X-Google-Smtp-Source: APXvYqyAfEOTdmGmy/yqpriARYmt6uV5jSdhGlrVXMAMGmfCGSgBf98TmAwBCj4tIw6AvVgcqxdFbbYxNq1dP88gCO8=
+X-Received: by 2002:ac8:5294:: with SMTP id s20mr5961083qtn.279.1560354968358;
+ Wed, 12 Jun 2019 08:56:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+From:   Pratim Ugale <pratim.ugale@gmail.com>
+Date:   Wed, 12 Jun 2019 21:25:58 +0530
+Message-ID: <CA+xR38=+qvQtHvtUq8zoi5nTA_=LTtYt574w2zLTJb9CuiSPBQ@mail.gmail.com>
+Subject: Project Announcement of an updated PRU User Space API under BeagleBoard.org
+To:     linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The LP8756x family has a single output 4-phase regulator
-configuration. Add support for the same. The control
-lies in the master buck which is buck0 for 4-phase
-configuration. Enable/disable/voltage set happen via
-buck0 registers.
+Hello,
 
-Data Sheet: https://www.ti.com/lit/ds/symlink/lp87561-q1.pdf
+My name is Pratim Ugale and I will be developing Open Source Code for
+BeagleBoard.org as a student of Google Summer of Code (GSoC) 2019. I
+got this email from Mr. Jason Kridner, he said that an announcement
+was needed regarding what I'll be working on.
 
-Signed-off-by: Keerthy <j-keerthy@ti.com>
-Acked-by: Mark Brown <broonie@kernel.org>
----
+The project will involve making updated bindings/API for controlling
+the PRUs using the RemoteProc, RPMsg drivers. (In earlier projects
+like 'PyPRUSS', the UIO driver was being used) It will provide an easy
+to use interface for loading firmware, controlling execution and
+interrupts/memory management for the PRUs, therefore shortening the
+learning curve for users new to PRU programming and also allowing
+seamless integration of PRU functionality to larger projects.
 
-patches 1/3 2/3 are already applied to linux-next.
+The project code will mostly be in the userspace-only, a kernel module
+will also be needed for a dedicated driver-probing-id, for the rpmsgs
+when using the APIs.
 
-Changes in v2:
+Please let me know if there are any suggestions, features that you
+would like me to include to make the project more efficient.
 
-  * Changed if/else block to switch statement.
+Regards,
 
- drivers/regulator/lp87565-regulator.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/regulator/lp87565-regulator.c b/drivers/regulator/lp87565-regulator.c
-index 81eb4b890c0c..af00d1ffcf33 100644
---- a/drivers/regulator/lp87565-regulator.c
-+++ b/drivers/regulator/lp87565-regulator.c
-@@ -153,6 +153,12 @@ static const struct lp87565_regulator regulators[] = {
- 			  LP87565_REG_BUCK2_CTRL_1,
- 			  LP87565_BUCK_CTRL_1_EN, 3230,
- 			  buck0_1_2_3_ranges, LP87565_REG_BUCK2_CTRL_2),
-+	LP87565_REGULATOR("BUCK3210", LP87565_BUCK_3210, "buck3210",
-+			  lp87565_buck_ops, 256, LP87565_REG_BUCK0_VOUT,
-+			  LP87565_BUCK_VSET, LP87565_REG_BUCK0_CTRL_1,
-+			  LP87565_BUCK_CTRL_1_EN |
-+			  LP87565_BUCK_CTRL_1_FPWM_MP_0_2, 3230,
-+			  buck0_1_2_3_ranges, LP87565_REG_BUCK0_CTRL_2),
- };
- 
- static int lp87565_regulator_probe(struct platform_device *pdev)
-@@ -169,9 +175,18 @@ static int lp87565_regulator_probe(struct platform_device *pdev)
- 	config.driver_data = lp87565;
- 	config.regmap = lp87565->regmap;
- 
--	if (lp87565->dev_type == LP87565_DEVICE_TYPE_LP87565_Q1) {
-+	switch (lp87565->dev_type) {
-+	case LP87565_DEVICE_TYPE_LP87565_Q1:
- 		min_idx = LP87565_BUCK_10;
- 		max_idx = LP87565_BUCK_23;
-+		break;
-+	case LP87565_DEVICE_TYPE_LP87561_Q1:
-+		min_idx = LP87565_BUCK_3210;
-+		max_idx = LP87565_BUCK_3210;
-+	default:
-+		dev_err(lp87565->dev, "Invalid lp config %d\n",
-+			lp87565->dev_type);
-+		return -EINVAL;
- 	}
- 
- 	for (i = min_idx; i <= max_idx; i++) {
--- 
-2.17.1
-
+Pratim Ugale.
