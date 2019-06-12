@@ -2,51 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E93341FFB
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 10:55:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C764242009
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 10:56:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437418AbfFLIzK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Jun 2019 04:55:10 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:46686 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731917AbfFLIzK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 04:55:10 -0400
-Received: by mail-lf1-f65.google.com with SMTP id z15so8752453lfh.13
-        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 01:55:09 -0700 (PDT)
+        id S2437162AbfFLI4A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Jun 2019 04:56:00 -0400
+Received: from mail-lf1-f53.google.com ([209.85.167.53]:42462 "EHLO
+        mail-lf1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437166AbfFLI4A (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 04:56:00 -0400
+Received: by mail-lf1-f53.google.com with SMTP id y13so11424241lfh.9
+        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 01:55:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=kYmy1iwC9fHd5KWLhp1RgKawKxO1mu1wxNioKBbyABA=;
-        b=h6usaoQug8lDvGPga/GoFi0ROvWZSoFgoJtb4cGyFbDPe9GepaD4ZR88gxTxmAKSjc
-         k0s72v3ZCuBZW4L7iF3K1umMYln6/dVvvGLdZu5CuzqWT8CynCANyyq3R3cltgLDim9e
-         VHu5z3PS7r3qGy/XdpON1jH5mX+WY+z4Phh8ItRc8wbT0fCciV76wmJf7Ar7v8p8sOPd
-         2wpDzzpluUdLY5pgT2SJWi/3bPsjuvRdWl+C76gGgK5BoOo3D3rV6GbR1NXnbpQq7d1H
-         RuSbtTsf56z6dcb1ezTBGHpBPegXMwulv3qa5Hl+yfTXHsS54N+2Cs1S/qK5uNuGNNPw
-         TfcQ==
+        bh=S6dsc9hWBbsJ9ftcy5oIWdQeYlBaT7RnVpUbv8am+So=;
+        b=cdDvAZo+BI/4z2Gjdm90L1glbL5oSJei4EYJuA9mTlDlpUK2J0mpDznfRk/DdmnreZ
+         sGTgEGq/NrXG/+FkTauUqDUSnEfYnMgZW9F8eLlFFGI16rSZf6AyBxty18aDbh16Ercs
+         baT9ohslEOYLTztWBQynYAIhVJpSIuR3gE+pXd9iCtV/D0B0HPxnhD6+icAER68vr9Wr
+         p6j2SlRTsKlvkihYJAFHt79r+J2HCwn5OUAXH4tgUJxtYcIx8FFzR93yzPNLZUevLQW6
+         YosMYudXrNcLxU9VhUWaWtbzmh3o+rDlHuT97QSK6/19hanulIx0ZAzcm/R672NpCOg8
+         sEhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=kYmy1iwC9fHd5KWLhp1RgKawKxO1mu1wxNioKBbyABA=;
-        b=NnS6Me7JuJu96V41TNKkRoPh5bE7VAOS4YnVcXHsb32MyeELx9waTaMkk0sLHHV+i/
-         eIO76H85FCqxHOv3MpN0BMyT7qqhMeXPBkpdwICV0mI5fmtCrVGFixjpjg4iIm4uEJlD
-         EDbCnOPBBKGUFdwbbTb6Se45vGysdh+l2bIJ3pI90aMFe/QJm1G/aO3lFNabHBC88Rtl
-         Qis3bLZBBJaAIbQCcy9PvAv1t6NGJKcaqjFlmQWpHcAxt4kPpXJWFP8VEz4kmzedBRG+
-         gQ/oKOZVmGwAUPHcc7+JdZ8EPzDa7FMP+qfzNdFPrkxdcsVFY50OhxeNdYuPTl+eyVKf
-         69jw==
-X-Gm-Message-State: APjAAAW7hmGY9IFM0SFM9Rn6P2vQqqaZ9qvvAeDFwZ7fPs6wq3Z36nz1
-        vZXadbXajKfNHDrTRvBJWtYxHQEAIFRVQvWDzcz5pw==
-X-Google-Smtp-Source: APXvYqzeDRSSKfvhmShyB+/P0FILzPLpf2pje3o4J+5k4U0J1a8BDmwLQm4k9Sil0KRtpRKe+JdwQr33hsfwQpyIN2g=
-X-Received: by 2002:a19:dc0d:: with SMTP id t13mr16897617lfg.152.1560329708499;
- Wed, 12 Jun 2019 01:55:08 -0700 (PDT)
+        bh=S6dsc9hWBbsJ9ftcy5oIWdQeYlBaT7RnVpUbv8am+So=;
+        b=rbH5vs3d6dj9tnQ2NgVccy8Yn226+4IFryGrrnUHDFE8o9QiYOHKvi3FYlUEYBGofB
+         vM1D1Xb6VlHnTqE5Vil3B40lHru26nSWOy5apfIz1CN8SPm18aQhwdl3nMq2pFlXKsPK
+         Wp7ZPBm/wrRufViHMlnWI+9UP/Eyfz1V86xtFsdVc+NvNrn/w1hB2htfrtiwJ6yr8vYk
+         xeAXDeGnnGDkJ+Gn6z7MFgWqSiv5uxNdBEOIyeCyd61JLUhkv7ebaw8yOQscLyVR81rP
+         BGhDHeWTPTIyIESKKLCJP0u6WCsY42YhyqZe+0OrUXmBhdbNUP4eZhDZo+0/zlrKyt8H
+         dp0g==
+X-Gm-Message-State: APjAAAXD+QHnnPVaLUqjyDf4ezFpplLtwYwYyNs2GOHpX1SASOpIeBtU
+        1idvhGeAX8TQ2hKPcO0ocfbCJiQ4lfaj9qz7BPniyA==
+X-Google-Smtp-Source: APXvYqzPSx5XfdL5cdU82+TCxBTmCmwTndsIlHmjhMLF7KXn4u1Puk4//3L7dErprp1ZZvvjJHwNVyPpuMFsHUSjlJ4=
+X-Received: by 2002:a19:7616:: with SMTP id c22mr36812571lff.115.1560329758321;
+ Wed, 12 Jun 2019 01:55:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190610171103.30903-1-grygorii.strashko@ti.com> <20190610171103.30903-15-grygorii.strashko@ti.com>
-In-Reply-To: <20190610171103.30903-15-grygorii.strashko@ti.com>
+References: <20190610171103.30903-1-grygorii.strashko@ti.com> <20190610171103.30903-16-grygorii.strashko@ti.com>
+In-Reply-To: <20190610171103.30903-16-grygorii.strashko@ti.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 12 Jun 2019 10:54:57 +0200
-Message-ID: <CACRpkdZ0fwHuFr9f_QTn=gXGo56Vo1CUM7=zmiCaxfwjp_Pyxg@mail.gmail.com>
-Subject: Re: [PATCH-next 14/20] gpio: gpio-omap: simplify omap_set_gpio_irqenable()
+Date:   Wed, 12 Jun 2019 10:55:46 +0200
+Message-ID: <CACRpkdZQpG5eHdDUy4aRxr6vEgs0qZHRMXUkCfms_VBYwiQeXg@mail.gmail.com>
+Subject: Re: [PATCH-next 15/20] gpio: gpio-omap: remove dataout variation in
+ context handling
 To:     Grygorii Strashko <grygorii.strashko@ti.com>
 Cc:     Russell King <rmk@arm.linux.org.uk>,
         Tony Lindgren <tony@atomide.com>,
@@ -62,18 +63,16 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 10, 2019 at 7:12 PM Grygorii Strashko
+On Mon, Jun 10, 2019 at 7:13 PM Grygorii Strashko
 <grygorii.strashko@ti.com> wrote:
 
 > From: Russell King <rmk+kernel@armlinux.org.uk>
 >
-> omap_set_gpio_irqenable() calls two helpers that are almost the same
-> apart from whether they set or clear bits. We can consolidate these:
->
-> - in the set/clear bit register case, we can perform the operation on
->   our saved context copy and write the appropriate set/clear register.
-> - otherwise, we can use our read-modify-write helper and invert enable
->   if irqenable_inv is set.
+> When a GPIO block has the set/clear dataout registers implemented, it
+> also has the normal dataout register implemented. Reading this register
+> reads the current GPIO output state, and writing it sets the GPIOs to
+> the explicit state. This is the behaviour that we want when saving and
+> restoring the context, so use the dataout register exclusively.
 >
 > Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 > Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
