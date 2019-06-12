@@ -2,51 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B76FB41E53
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 09:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1FD241E67
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 09:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731545AbfFLHzE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Jun 2019 03:55:04 -0400
-Received: from mail-lf1-f53.google.com ([209.85.167.53]:40727 "EHLO
-        mail-lf1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729413AbfFLHzE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 03:55:04 -0400
-Received: by mail-lf1-f53.google.com with SMTP id a9so11307919lff.7
-        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 00:55:02 -0700 (PDT)
+        id S1731637AbfFLH4O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Jun 2019 03:56:14 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:41593 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726357AbfFLH4M (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 03:56:12 -0400
+Received: by mail-lj1-f193.google.com with SMTP id s21so14249375lji.8
+        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 00:56:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=7PzIlTNIG9ZNiKS3hRUm3RewsbWBmwo6U2w2huv5deg=;
-        b=Ikh3hhr86U05Rwd/ohMNVvV7u0ctcFy7sv/uEL+EuxN98f3uQ67oC/e0EYe1RhQy8P
-         GJFuf3O1tXMHShRpTgs1L8ewX/PFmrqAppj5PDuaoH3wYMGxvrkub2lXMWDhtvhhHInF
-         ARAMOP1P6S6rvNLYPYfqORNKO1XSgrKGhExGTZJLtohlRIq3Npv7paeV6ElrVG69IdHH
-         LxJS0EsMtyX1pKMDDSRbrirELXHF5eqYTU4kvAAzk5tfUlvp4fdYCIKCCxKMbk6xgobY
-         lhpxsi57qNqQJVRRei3ceZXe4P0MuV4wPp9R8Mu4xrPb3dZbVCKlfuKWnUJ7naD6LBXM
-         m3kw==
+        bh=MpVyyIY+84Nucp0CGFI/TVYjVMVNEKw90ADvLXHqdCE=;
+        b=ywhFsERMuu6cckroCnmO4n7s8QukIAuyz0zLikfSlsBUYZFkfXANfIGjA5/KhVSGhU
+         wsTIS0bWPWJna21j3rW8yvYs+F3NDlNqUUNiwkURwt7WWjHQqvSdAVutVveDLoeATPmt
+         YORL3OagMZLOBpPjV+Lzr3Zc5+emLQXq8fBsmzAk+ZzLkaAJi8UAoaKnj+VxyW7Gz8TH
+         ZkfgwAA8LK1D47ev74wBPQDWl+uzPcltC2JGYtqEHXKChCSe2HGOK/amvFPZaQpfcYa8
+         sP35dsdokzVNIdfr8KF3qAK8nz6YpxVF9GycG2qi5PIFNksCy8C4t63BybmL5wEh/Sng
+         wPwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7PzIlTNIG9ZNiKS3hRUm3RewsbWBmwo6U2w2huv5deg=;
-        b=NIWF+fFGUHWjXYQV5aaLhXIJsfVN82mAoCqBzB+g1InhNm33tKWTW/02ugLbGG33Tr
-         hsmTZ5Pn8JnrbzOfVhqmY02DJvjXVHXtDJoeZA83AZe8k0UZnrjuv9SejlrXuI/U1FyB
-         L32hWAgx9aSTl9+D0jEzqI3ywoqr/OWDIZoNpe6qs8O9Ed0m04iTBiEg6ZzWpfqq6/uj
-         v1Hm4tnHvt2Kw/zn/HEWwqFnlJoDbJNeV3mA1YaC9B8MgiEcxB8k6VJdBRKk0SHddXUq
-         YQNJKsD/nw1BqhnFUcoA2oDTSQ+7xBcKBNBxQZFvmneGdh34dTz4ulwR+umffHOOgCWd
-         n9Aw==
-X-Gm-Message-State: APjAAAXpvGzxvvkrvb63dVfEVu4yVYHmve9RqjvBUI7jKs8dXDgbWvUI
-        c4hp1LnNxxlh7UrXJu8WfnK86hOZMoKOaH4yhZBdQQ==
-X-Google-Smtp-Source: APXvYqwr+IggkBTWnR7/O1aUrCDYKzqAI3QVMBZqKcDtkTqDwEoqgL77KBrEFS20MTecxS2RTiEs6OZy6RxBT1DXdYY=
-X-Received: by 2002:a19:7616:: with SMTP id c22mr36632491lff.115.1560326101939;
- Wed, 12 Jun 2019 00:55:01 -0700 (PDT)
+        bh=MpVyyIY+84Nucp0CGFI/TVYjVMVNEKw90ADvLXHqdCE=;
+        b=bOgMdOl0cJzglJAIhEbNiRwddbtN+N2NYoAfU6J/m77mp5/TA5AxpVnD3aPHvjk9++
+         5/bKTfwB7nJb26WekpnVJRZ1Ao2joTKIxCZ6goKzyn83GcvnCMbtHm+AzSQsauftO0eM
+         9QkkeJb0jsulxZ9XarJFV9iWyfGIBd5RckL1XMnYJ8hD0/41/3I1AbMgQQP4FrXfM1Dj
+         ZNrXpzIwPmCQWaCD1rasyFMAfeqts0ufA0QVnx6YnZn2dbQ7kGy6Dd5h7JsqFNhSpFD9
+         8blBKjI5rmg6I87S6O7gwiukyrQdnjQ734C5xCeoSLP7VLj71FrkTe3Tz3BMf/hA1NW0
+         AHnw==
+X-Gm-Message-State: APjAAAUcj3u3O9yXQEyrEmP0Qlp2MZtjLfhEcC6CXdt390PYNZVd8Kvz
+        R1DjiARdXZkTU9voOFViyRNMtTOYvO0PGBlgUunSQA==
+X-Google-Smtp-Source: APXvYqwBtvb1aHOu8BGk+6o3Llz+ZVHUG284rkHqlGevLtNgB6RjYMYSnQnZgYw64OXncNMQfXgGGBNNy6xlBvlYPQA=
+X-Received: by 2002:a2e:7508:: with SMTP id q8mr26686053ljc.165.1560326170850;
+ Wed, 12 Jun 2019 00:56:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190610171103.30903-1-grygorii.strashko@ti.com> <20190610171103.30903-2-grygorii.strashko@ti.com>
-In-Reply-To: <20190610171103.30903-2-grygorii.strashko@ti.com>
+References: <20190610171103.30903-1-grygorii.strashko@ti.com> <20190610171103.30903-3-grygorii.strashko@ti.com>
+In-Reply-To: <20190610171103.30903-3-grygorii.strashko@ti.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 12 Jun 2019 09:54:50 +0200
-Message-ID: <CACRpkdZvd_pApYbDL+PTJ1LDuDuvcVc2OCA_anRoWvwka_xm6g@mail.gmail.com>
-Subject: Re: [PATCH-next 01/20] gpio: gpio-omap: ensure irq is enabled before wakeup
+Date:   Wed, 12 Jun 2019 09:55:59 +0200
+Message-ID: <CACRpkdZdCxvFQp9xssmqToeT5FrC4quusEgJOAbYo+TxUzGujw@mail.gmail.com>
+Subject: Re: [PATCH-next 02/20] gpio: gpio-omap: fix lack of irqstatus_raw0
+ for OMAP4
 To:     Grygorii Strashko <grygorii.strashko@ti.com>
 Cc:     Russell King <rmk@arm.linux.org.uk>,
         Tony Lindgren <tony@atomide.com>,
@@ -67,21 +68,17 @@ On Mon, Jun 10, 2019 at 7:11 PM Grygorii Strashko
 
 > From: Russell King <rmk+kernel@armlinux.org.uk>
 >
-> Documentation states:
+> Commit 384ebe1c2849 ("gpio/omap: Add DT support to GPIO driver") added
+> the register definition tables to the gpio-omap driver. Subsequently to
+> that commit, commit 4e962e8998cc ("gpio/omap: remove cpu_is_omapxxxx()
+> checks from *_runtime_resume()") added definitions for irqstatus_raw*
+> registers to the legacy OMAP4 definitions, but missed the DT
+> definitions.
 >
->   NOTE: There must be a correlation between the wake-up enable and
->   interrupt-enable registers. If a GPIO pin has a wake-up configured
->   on it, it must also have the corresponding interrupt enabled (on
->   one of the two interrupt lines).
+> This causes an unintentional change of behaviour for the 1.101 errata
+> workaround on OMAP4 platforms. Fix this oversight.
 >
-> Ensure that this condition is always satisfied by enabling the detection
-> events after enabling the interrupt, and disabling the detection before
-> disabling the interrupt.  This ensures interrupt/wakeup events can not
-> happen until both the wakeup and interrupt enables correlate.
->
-> If we do any clearing, clear between the interrupt enable/disable and
-> trigger setting.
->
+> Fixes: 4e962e8998cc ("gpio/omap: remove cpu_is_omapxxxx() checks from *_runtime_resume()")
 > Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 > Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
