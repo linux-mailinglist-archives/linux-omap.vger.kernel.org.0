@@ -2,109 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27082425E8
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 14:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41AA442959
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 16:34:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436805AbfFLMc5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Jun 2019 08:32:57 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:43461 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2438948AbfFLMc5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 08:32:57 -0400
-Received: by mail-lf1-f66.google.com with SMTP id j29so11941276lfk.10
-        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 05:32:56 -0700 (PDT)
+        id S1731700AbfFLOdz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Jun 2019 10:33:55 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:45017 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731698AbfFLOdy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 10:33:54 -0400
+Received: by mail-wr1-f68.google.com with SMTP id b17so17168010wrq.11
+        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 07:33:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RY94QzNQiSIY9OS6+U4U7Y5OtGWNMofbaKCtbejPZUo=;
-        b=Gv4E4rBN3zXJMLR8rQaTB6Aq7wKMK+v30MeCaaYbUhvKZKSNXbISiVB1bxMqmXJHC6
-         2xvdtmuC6gHizZEBoF/ZQ7Z089ktc4qL2tfqceiki04D0m8ek46ye21HR3nDMcoZy92b
-         H+a5kSMnMZxv4D1gZ1us+OYM1zJPD6vlnkS0MGuWicXNrymcaHKEQOsLWfHnoq52H8I9
-         +iBEheJo9VOdgvPF45EOBBsjWxiLYHC+N+qbPDLy4DOFxuf2KM6+yYtuunfrqNLcLgCU
-         5l+KFD1tXu6y9BjDPLhTvOMwwXWY90YscmemdlcBztcTEctNvDIHlMaVoAG25CMDys/9
-         lZ5A==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=5tpURbYw8ulSj4zNIAnwRv+mqsPvaMs89zHgCbwUorE=;
+        b=pc3Q4WLwtyH/QqKBdbPVUglaSmeArsffZq21ZXYXzU0DRnR35+sY3tdGWBuagK0cZI
+         wtd9n32LtCybJZK7GO1zh3tHmEwZHbWLSXmR2OOndJ9BVl9Gf5gPTc8tuRnaESo4WFrl
+         lJlwyoVwN+S3JZ2O69BZoIUYNXBtDaFza1rrCroi5ISfOyaJRSe83xxkFeXAZUAsn0wE
+         v89G7hLfRq6vxIPrlUc39q8Jq1j8+rYvCGITvtOAt5G8RjwVJkfvFbPAgYOEfCJQMODw
+         mCcpaR4WPIwz31PgpOt3n3lOPHHz/aUkTS5liQDjdAbSnFydljdrrcrQ4SCJOqpB+exu
+         08mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RY94QzNQiSIY9OS6+U4U7Y5OtGWNMofbaKCtbejPZUo=;
-        b=khOEcHFnMaBBR+XcHfGFT/qsdRBlXm6gQ5Da5PW1KHTAHq5sdgl7P/nNWgYUtbR3ei
-         HnJWRCPviZKDWNWTv0/AkaYzPzLTu/fRH8fid3oPa2ckDNfGi6YfVvla6uAG1wIgbNI7
-         0mDk02Hh7lEm5iwdqEgz3ns/0GPi3TS376QtixuhJ7D+OGwPDvBAbfKMhu+tx0P4cOSb
-         BI7HPJvDaHVrJ7XgNSwbP7c+AsFCECTXJZusRCqmLMmhlAaO3poFul9YcgWQwfstJAZ3
-         D/FqhMsHQSyTOSAf6qprHkhBhj8R4Lwe6YkEXTI8sdxOgZhMpdCmOIIwDv6qQ8k1vesz
-         gKLQ==
-X-Gm-Message-State: APjAAAVnK/OZeUOshCbHdMkuKlFiJ2cnQWp4ga3RlTLnOiJEAsahNAMA
-        c0oMrVoZWj/dH/FLhoo1T7crlQH7WqzLZG1DjgtU0A==
-X-Google-Smtp-Source: APXvYqziASDeIuDoNfT01AzUpb/Ihc11W5Iyq6Kl+XFlWwVNcjQGPwFkVZ5ya615zk2hSyIw7lfpZQ5Rn3VQtdnXGfs=
-X-Received: by 2002:a19:6a01:: with SMTP id u1mr39417835lfu.141.1560342775269;
- Wed, 12 Jun 2019 05:32:55 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=5tpURbYw8ulSj4zNIAnwRv+mqsPvaMs89zHgCbwUorE=;
+        b=URHrZkkUTgAPx10OeEFWEWKknPhAd1gn6t7TRUWDyxpvVR875s6s/l/YScldqLdBhI
+         NGzc+cMZRoyy0qP1x3LBZelm8uEw0CbDhAl86lMqJ13wVHhBmxP1qgMnI8rLyPHGAjnr
+         ur1cAH0FhAMXyUpYyb6+GItwed2Wl5RXvVcf/YWF3XWwiEleANaV54+cQkqMUmQMYNpm
+         CQpLNzhZCTpZP/h9PmkK5VQOoRkrw09V3yeQebI1hwe8K0jgvft4TVEsnUQNOrHVerd6
+         V3bEtlteKRVd4kSCzoyAfI5Qkr3DCvP91aPlJ0yHzipWCE3aPNR9TgZnHArfwey766nO
+         8GpA==
+X-Gm-Message-State: APjAAAVpT1LJTd1NpJHl0nn4z7vzHpxKSrPt4Gt1T0OJD3Sl9+6ErPwK
+        IPVxXQ+Z2PHZTdSORcroKqSJDA==
+X-Google-Smtp-Source: APXvYqy3YGHWLFgs7/wW/TUEjrur0gU36dxTuCSlAFVwP2jci8YFavbg0zMWnihd20zFriRbKLVnCA==
+X-Received: by 2002:adf:de8b:: with SMTP id w11mr31381985wrl.134.1560350032633;
+        Wed, 12 Jun 2019 07:33:52 -0700 (PDT)
+Received: from dell ([185.80.132.160])
+        by smtp.gmail.com with ESMTPSA id w67sm264912wma.24.2019.06.12.07.33.51
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 12 Jun 2019 07:33:51 -0700 (PDT)
+Date:   Wed, 12 Jun 2019 15:33:50 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Keerthy <j-keerthy@ti.com>
+Cc:     Mark Brown <broonie@kernel.org>, robh+dt@kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, t-kristo@ti.com
+Subject: Re: [PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561 regulator
+ support
+Message-ID: <20190612143350.GB4660@dell>
+References: <20190516043218.8222-1-j-keerthy@ti.com>
+ <20190516043218.8222-4-j-keerthy@ti.com>
+ <20190522153528.GG8582@sirena.org.uk>
+ <1712197d-7d43-38a8-efde-11b99537eae9@ti.com>
+ <20190528132755.GK2456@sirena.org.uk>
+ <e68d9939-a56a-b3c5-7f6d-e5783e16a6de@ti.com>
+ <20190608195159.GA5316@sirena.org.uk>
+ <20190610054822.GE4797@dell>
+ <c58ef6cd-893e-c20f-f437-e0343aa83fea@ti.com>
 MIME-Version: 1.0
-References: <20190612063352.5760-1-tony@atomide.com>
-In-Reply-To: <20190612063352.5760-1-tony@atomide.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 12 Jun 2019 14:32:43 +0200
-Message-ID: <CACRpkdam8pMztF9=yL2rWGFqjUnURf5x=v40x7UKVEwXwZ5anA@mail.gmail.com>
-Subject: Re: [PATCHv3] gpio: gpio-omap: Fix lost edge wake-up interrupts
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Tero Kristo <t-kristo@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c58ef6cd-893e-c20f-f437-e0343aa83fea@ti.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 8:34 AM Tony Lindgren <tony@atomide.com> wrote:
+On Wed, 12 Jun 2019, Keerthy wrote:
 
-> If an edge interrupt triggers while entering idle just before we save
-> GPIO datain register to saved_datain, the triggered GPIO will not be
-> noticed on wake-up. This is because the saved_datain and GPIO datain
-> are the same on wake-up in omap_gpio_unidle(). Let's fix this by
-> ignoring any pending edge interrupts for saved_datain.
->
-> This issue affects only idle states where the GPIO module internal
-> wake-up path is operational. For deeper idle states where the GPIO
-> module gets powered off, Linux generic wakeirqs must be used for
-> the padconf wake-up events with pinctrl-single driver. For examples,
-> please see "interrupts-extended" dts usage in many drivers.
->
-> This issue can be somewhat easily reproduced by pinging an idle system
-> with smsc911x Ethernet interface configured IRQ_TYPE_EDGE_FALLING. At
-> some point the smsc911x interrupts will just stop triggering. Also if
-> WLCORE WLAN is used with EDGE interrupt like it's documentation specifies,
-> we can see lost interrupts without this patch.
->
-> Note that in the long run we may be able to cancel entering idle by
-> returning an error in gpio_omap_cpu_notifier() on pending interrupts.
-> But let's fix the bug first.
->
-> Also note that because of the recent clean-up efforts this patch does
-> not apply directly to older kernels. This does fix a long term issue
-> though, and can be backported as needed.
->
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-> Cc: Keerthy <j-keerthy@ti.com>
-> Cc: Ladislav Michl <ladis@linux-mips.org>
-> Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> Cc: Russell King <rmk+kernel@armlinux.org.uk>
-> Cc: Tero Kristo <t-kristo@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> 
+> 
+> On 10/06/19 11:18 AM, Lee Jones wrote:
+> > On Sat, 08 Jun 2019, Mark Brown wrote:
+> > 
+> > > On Sat, Jun 08, 2019 at 09:26:31AM +0530, keerthy wrote:
+> > > 
+> > > > mfd patches are on linux-next already. Hope you can pull this one now that
+> > > > dependencies are met.
+> > > 
+> > > Someone will need to send me a copy of the patch, if I acked it I was
+> > > expecting it to go in with the MFD changes.
+> > 
+> > There is/was no need for that.  Patches are built-time orthogonal.
+> 
+> Sorry i am still not clear. Should i resend this patch?
 
-Patch applied.
+Yes.  It sounds like Mark no longer has the patch to apply.
 
-Let's see if this nails it.
-
-Yours,
-Linus Walleij
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
