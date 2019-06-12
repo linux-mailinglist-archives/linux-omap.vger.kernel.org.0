@@ -2,95 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3139C41EEA
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 10:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99B5341F78
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 10:43:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408603AbfFLIUx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Jun 2019 04:20:53 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:33639 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404384AbfFLIUw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 04:20:52 -0400
-Received: by mail-ua1-f67.google.com with SMTP id f20so5596568ual.0;
-        Wed, 12 Jun 2019 01:20:51 -0700 (PDT)
+        id S1731727AbfFLInJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Jun 2019 04:43:09 -0400
+Received: from mail-lj1-f179.google.com ([209.85.208.179]:41822 "EHLO
+        mail-lj1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726196AbfFLInI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 04:43:08 -0400
+Received: by mail-lj1-f179.google.com with SMTP id s21so14370125lji.8
+        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 01:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ybvN6sVNB0HsC9fuhfWLcMT3o1VtdzgctfkIIPGr7rs=;
-        b=FY+HAegkbKvwhji5dPWIctT+eCc/3CQZ3IxdR6AixcRxUiLo8OJRW04d6c9Nk/cS+J
-         CllGFRNQmGWbZRqFoZioTwCEkD/77sUCfLDkh7+zhLiApjlEtVDYoo0zYjoWQ/Oul9Rq
-         qDZoeJhLDkkoZR4vj1PjGYMvtBnd4myQtFDPwIVMdjiojoXzgU9KmEniC0n3AE+kzKdF
-         D1xRepleDGLrn9gM2OvfgU8x1PNlEKpAnM0RG68zhzAgcxn0d3Bwwa0hDoDe4iZbSOWW
-         8AaruT5X1nFFFvd/pk87kW/1YfFpUDj08q0x0DzhNRRPxpSAX3/auj3ERJl/BcA5+mhg
-         EUoA==
+        bh=x+EjlD1+T7CCrikjK1HAO5M7exqwmkOmFUVOPSS1Jzc=;
+        b=o2bm3iMtBobjXXtxNv1yFCOKCEhNUdN1OsTsR9YVk17KPGSUwu4aT0rnhkx69gbg95
+         e2jjaVb1Se7IrsCu31pdFspgjFlEuVi9fGbKbg5PlhWAR+3A8iphpCXysUy9RzLYddgl
+         aQNZlqA2yjNcOCK0yYlTihm0cVfIdW7csM0JGNjE93raaG/4HQLO9z5U0AY8tolh5QGv
+         E9IiagQROkDPg0Gek2RaF8qaGdek3UkTHykivSnaKNP2wVIHhAaH/Qzd5o65P2RAW7MQ
+         1LcaQk9sZ0sz5i9K0nXFhZxkqx8Xwd8rM86vTPKG20eZr4FXCJkN14MSO3s8wSzqj5B+
+         GLDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ybvN6sVNB0HsC9fuhfWLcMT3o1VtdzgctfkIIPGr7rs=;
-        b=AG1YGRwUsynQiIvktlnArooCmwLQCrYA5GOKqhkAtPjF0kXKIb2LpX68O3+I6Aphz8
-         sfSSRqv/9OiCWTAF8RCvN+vtLE/bdvgck6y0jMDTO2Up0EB0mrVD0a9dtrRRGaK3CdAd
-         CMsG/YdSISLU2lK/mg+B3gNsMB0GVyu/fGu4J/aIjB+pqmVld9L01LHI5W74+bgz9bsM
-         oQdOaWFN1kS3BagofM7mzYMCjDS8Qf4WbbkCX9tg+PGXpMmn18sgPxChJI7/LU1frLUf
-         lYmplBcdPbxz9Fw3vH554VbpFMiheiNiBaSCkMhki4V+FHF9+TOJ307sShUvZQBwoHtf
-         0xiw==
-X-Gm-Message-State: APjAAAW60Wut4DkGfcFR4LXgb/E5cbBB7g2BHq0rIxnF/sQ/vt02Woma
-        xhX2YIIZXirMBY5d6CUx6x7ZuVV7i31mKaHqA3hM6sBV
-X-Google-Smtp-Source: APXvYqysZ8g9WLWyZgh6SikGp5P774Pu0gepJoBxs+LwbPb0WTNU3mCFEpZs+WbUWr2XHGxsGORiDNFn4W5nLmzWRcw=
-X-Received: by 2002:ab0:4744:: with SMTP id i4mr5899076uac.63.1560327650984;
- Wed, 12 Jun 2019 01:20:50 -0700 (PDT)
+        bh=x+EjlD1+T7CCrikjK1HAO5M7exqwmkOmFUVOPSS1Jzc=;
+        b=L/qQcntGzBCkuTJ1Gy1LLiHTKmS+xX/AUoeCsEd98kMXeCj3JWZY3iagA/+mqeMuz/
+         4ZnEji2GBO4aSKHu+q2geMtkQtl80YE/nDWQkMnEawarohYNYMB5P3Zy3yPvYk0R+XfU
+         ctjyzxFTj7LpsjruH7Y/d5PI1poS5FRkKNA5SW85grpxQIexW1YalULYAEaEMRxgdKYD
+         kwL6Hidq0mBDD47T2hAq/2q7t5MB5JMUzMjPPaI0aF1+h42vv3MGuWTyZX32FT8lvy7V
+         FfgMyGFI5ZWmcdcH0a5AH7+QpEOxOagh50HD62ulvCCK9Bh3BqhlsZmV3y89McWf8g4W
+         T4Cg==
+X-Gm-Message-State: APjAAAXMtwfCU/cWjstgVUGtZFpi0kHWvsNuZmoRT6TSwWAgoGcUpRmw
+        JbkY0L2IGh1Kri3z/v19/2/B1+m6snUsq/EjqH924g==
+X-Google-Smtp-Source: APXvYqxcESdgBagFUM3+T7x4f4AJ5XZlAtn+aqs2xl9XMwCPhMnxciJL8Ij4vBzLWAJ5RBgDBwAgRsx8strN2LlYm58=
+X-Received: by 2002:a2e:7508:: with SMTP id q8mr26813533ljc.165.1560328986596;
+ Wed, 12 Jun 2019 01:43:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190611093045.4810-1-yegorslists@googlemail.com> <20190612080421.GC5447@atomide.com>
-In-Reply-To: <20190612080421.GC5447@atomide.com>
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Wed, 12 Jun 2019 10:20:27 +0200
-Message-ID: <CAGm1_kufcx3siXKc6EtFJhLQ_K+V7MgVtvZuXeN2YikkPcufmg@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: am335x-baltos: Fix PHY mode for ethernet
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org, peter.ujfalusi@ti.com
+References: <20190610171103.30903-1-grygorii.strashko@ti.com> <20190610171103.30903-6-grygorii.strashko@ti.com>
+In-Reply-To: <20190610171103.30903-6-grygorii.strashko@ti.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 12 Jun 2019 10:42:54 +0200
+Message-ID: <CACRpkdbaXFZQ3d8pQJAxd2WaCJQbBHZZ4XKS3ovrq=ZOmP8o7w@mail.gmail.com>
+Subject: Re: [PATCH-next 05/20] gpio: gpio-omap: remove irq_ack method
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Russell King <rmk@arm.linux.org.uk>,
+        Tony Lindgren <tony@atomide.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Russell King <rmk+kernel@armlinux.org.uk>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+On Mon, Jun 10, 2019 at 7:11 PM Grygorii Strashko
+<grygorii.strashko@ti.com> wrote:
 
-On Wed, Jun 12, 2019 at 10:04 AM Tony Lindgren <tony@atomide.com> wrote:
+> From: Russell King <rmk+kernel@armlinux.org.uk>
 >
-> Hi,
+> The irq_ack method does not fit our hardware requirements. Edge
+> interrupts must be cleared before we handle them, and level interrupts
+> must be cleared after handling them.
 >
-> * yegorslists@googlemail.com <yegorslists@googlemail.com> [190611 02:31]:
-> > From: Yegor Yefremov <yegorslists@googlemail.com>
-> >
-> > The PHY must add both tx and rx delay and not only on the tx clock.
+> We handle the interrupt clearance in our interrupt handler for edge IRQs
+> and in the unmask method for level IRQs.
 >
-> As we're close to -rc5, I applied this against v5.2-rc1 and merged into
-> omap-for-v5.3/dt as it seems it's optional or has been broken for a while
-> with no fixes tag. After it hits the mainline kernel during the merge
-> window you can request it be applied into the stable trees as needed.
+> Replace the irq_ack method with the no-op method from the dummy irq
+> chip.
 >
-> However, if this is urgent, let me know what regression it fixes and
-> I'll merge it into my fixes branch too.
+> Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-This is the same fix as 759c962d3c9bb1a60e3b4b780daa66ee6d4be13a:
+Patch applied.
 
-    ARM: dts: am335x-evmsk: Fix PHY mode for ethernet
-
-    The PHY must add both tx and rx delay and not only on the tx clock.
-    The board uses AR8031_AL1A PHY where the rx delay is enabled by default,
-    the tx dealy is disabled.
-
-    The reason why rgmii-txid worked because the rx delay was not disabled by
-    the driver so essentially we ended up with rgmii-id PHY mode.
-
-It seems to be working in 4.19. So I think kernels 5.0, 5.1 are the
-first to be affected. Without this patch eth1 is not working on Baltos
-devices.
-
-Thanks.
-
-Best regards,
-Yegor
+Yours,
+Linus Walleij
