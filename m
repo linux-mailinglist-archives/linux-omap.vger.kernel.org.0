@@ -2,84 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAF2D422EB
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 12:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27082425E8
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 14:33:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438020AbfFLKqW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Jun 2019 06:46:22 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:45926 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2407373AbfFLKqW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 06:46:22 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5CAkKJ3043859;
-        Wed, 12 Jun 2019 05:46:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1560336380;
-        bh=rCT9l5IB5WSu/R5x7AxJQaWq6nyaViKh5rnaJFmCr/M=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=cYE4SOdVysL5JEHSNnno25M76Oa5XuwIig9vWinB4Gj4JLeuOnQ9fvGspfoOzSEv3
-         9zVhGYLfBmdovfjOdbN2A61xDw6XepUPq/st9Sb32JLfda2wXsNgrqBcjoVXOLWTAD
-         ycqlBkrNzycWaIyAOP1O53gLrmGEfcjOTvqpnBkY=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5CAkKS4057190
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 12 Jun 2019 05:46:20 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 12
- Jun 2019 05:46:20 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 12 Jun 2019 05:46:20 -0500
-Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5CAkHX3058786;
-        Wed, 12 Jun 2019 05:46:18 -0500
-Subject: Re: [PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561 regulator
- support
-To:     Lee Jones <lee.jones@linaro.org>, Mark Brown <broonie@kernel.org>
-CC:     <robh+dt@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <t-kristo@ti.com>
-References: <20190516043218.8222-1-j-keerthy@ti.com>
- <20190516043218.8222-4-j-keerthy@ti.com>
- <20190522153528.GG8582@sirena.org.uk>
- <1712197d-7d43-38a8-efde-11b99537eae9@ti.com>
- <20190528132755.GK2456@sirena.org.uk>
- <e68d9939-a56a-b3c5-7f6d-e5783e16a6de@ti.com>
- <20190608195159.GA5316@sirena.org.uk> <20190610054822.GE4797@dell>
-From:   Keerthy <j-keerthy@ti.com>
-Message-ID: <c58ef6cd-893e-c20f-f437-e0343aa83fea@ti.com>
-Date:   Wed, 12 Jun 2019 16:17:03 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S2436805AbfFLMc5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Jun 2019 08:32:57 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:43461 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438948AbfFLMc5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 08:32:57 -0400
+Received: by mail-lf1-f66.google.com with SMTP id j29so11941276lfk.10
+        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 05:32:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RY94QzNQiSIY9OS6+U4U7Y5OtGWNMofbaKCtbejPZUo=;
+        b=Gv4E4rBN3zXJMLR8rQaTB6Aq7wKMK+v30MeCaaYbUhvKZKSNXbISiVB1bxMqmXJHC6
+         2xvdtmuC6gHizZEBoF/ZQ7Z089ktc4qL2tfqceiki04D0m8ek46ye21HR3nDMcoZy92b
+         H+a5kSMnMZxv4D1gZ1us+OYM1zJPD6vlnkS0MGuWicXNrymcaHKEQOsLWfHnoq52H8I9
+         +iBEheJo9VOdgvPF45EOBBsjWxiLYHC+N+qbPDLy4DOFxuf2KM6+yYtuunfrqNLcLgCU
+         5l+KFD1tXu6y9BjDPLhTvOMwwXWY90YscmemdlcBztcTEctNvDIHlMaVoAG25CMDys/9
+         lZ5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RY94QzNQiSIY9OS6+U4U7Y5OtGWNMofbaKCtbejPZUo=;
+        b=khOEcHFnMaBBR+XcHfGFT/qsdRBlXm6gQ5Da5PW1KHTAHq5sdgl7P/nNWgYUtbR3ei
+         HnJWRCPviZKDWNWTv0/AkaYzPzLTu/fRH8fid3oPa2ckDNfGi6YfVvla6uAG1wIgbNI7
+         0mDk02Hh7lEm5iwdqEgz3ns/0GPi3TS376QtixuhJ7D+OGwPDvBAbfKMhu+tx0P4cOSb
+         BI7HPJvDaHVrJ7XgNSwbP7c+AsFCECTXJZusRCqmLMmhlAaO3poFul9YcgWQwfstJAZ3
+         D/FqhMsHQSyTOSAf6qprHkhBhj8R4Lwe6YkEXTI8sdxOgZhMpdCmOIIwDv6qQ8k1vesz
+         gKLQ==
+X-Gm-Message-State: APjAAAVnK/OZeUOshCbHdMkuKlFiJ2cnQWp4ga3RlTLnOiJEAsahNAMA
+        c0oMrVoZWj/dH/FLhoo1T7crlQH7WqzLZG1DjgtU0A==
+X-Google-Smtp-Source: APXvYqziASDeIuDoNfT01AzUpb/Ihc11W5Iyq6Kl+XFlWwVNcjQGPwFkVZ5ya615zk2hSyIw7lfpZQ5Rn3VQtdnXGfs=
+X-Received: by 2002:a19:6a01:: with SMTP id u1mr39417835lfu.141.1560342775269;
+ Wed, 12 Jun 2019 05:32:55 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190610054822.GE4797@dell>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20190612063352.5760-1-tony@atomide.com>
+In-Reply-To: <20190612063352.5760-1-tony@atomide.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 12 Jun 2019 14:32:43 +0200
+Message-ID: <CACRpkdam8pMztF9=yL2rWGFqjUnURf5x=v40x7UKVEwXwZ5anA@mail.gmail.com>
+Subject: Re: [PATCHv3] gpio: gpio-omap: Fix lost edge wake-up interrupts
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Ladislav Michl <ladis@linux-mips.org>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Tero Kristo <t-kristo@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, Jun 12, 2019 at 8:34 AM Tony Lindgren <tony@atomide.com> wrote:
 
+> If an edge interrupt triggers while entering idle just before we save
+> GPIO datain register to saved_datain, the triggered GPIO will not be
+> noticed on wake-up. This is because the saved_datain and GPIO datain
+> are the same on wake-up in omap_gpio_unidle(). Let's fix this by
+> ignoring any pending edge interrupts for saved_datain.
+>
+> This issue affects only idle states where the GPIO module internal
+> wake-up path is operational. For deeper idle states where the GPIO
+> module gets powered off, Linux generic wakeirqs must be used for
+> the padconf wake-up events with pinctrl-single driver. For examples,
+> please see "interrupts-extended" dts usage in many drivers.
+>
+> This issue can be somewhat easily reproduced by pinging an idle system
+> with smsc911x Ethernet interface configured IRQ_TYPE_EDGE_FALLING. At
+> some point the smsc911x interrupts will just stop triggering. Also if
+> WLCORE WLAN is used with EDGE interrupt like it's documentation specifies,
+> we can see lost interrupts without this patch.
+>
+> Note that in the long run we may be able to cancel entering idle by
+> returning an error in gpio_omap_cpu_notifier() on pending interrupts.
+> But let's fix the bug first.
+>
+> Also note that because of the recent clean-up efforts this patch does
+> not apply directly to older kernels. This does fix a long term issue
+> though, and can be backported as needed.
+>
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+> Cc: Keerthy <j-keerthy@ti.com>
+> Cc: Ladislav Michl <ladis@linux-mips.org>
+> Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> Cc: Russell King <rmk+kernel@armlinux.org.uk>
+> Cc: Tero Kristo <t-kristo@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-On 10/06/19 11:18 AM, Lee Jones wrote:
-> On Sat, 08 Jun 2019, Mark Brown wrote:
-> 
->> On Sat, Jun 08, 2019 at 09:26:31AM +0530, keerthy wrote:
->>
->>> mfd patches are on linux-next already. Hope you can pull this one now that
->>> dependencies are met.
->>
->> Someone will need to send me a copy of the patch, if I acked it I was
->> expecting it to go in with the MFD changes.
-> 
-> There is/was no need for that.  Patches are built-time orthogonal.
+Patch applied.
 
-Sorry i am still not clear. Should i resend this patch?
+Let's see if this nails it.
 
-> 
+Yours,
+Linus Walleij
