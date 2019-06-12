@@ -2,51 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A43CA4202C
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 10:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB4EC42033
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 10:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731950AbfFLI6c (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Jun 2019 04:58:32 -0400
-Received: from mail-lj1-f178.google.com ([209.85.208.178]:42351 "EHLO
-        mail-lj1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731298AbfFLI6c (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 04:58:32 -0400
-Received: by mail-lj1-f178.google.com with SMTP id t28so14361272lje.9
-        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 01:58:30 -0700 (PDT)
+        id S2390208AbfFLI7O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Jun 2019 04:59:14 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:35211 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729197AbfFLI7O (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 04:59:14 -0400
+Received: by mail-lf1-f68.google.com with SMTP id a25so11467361lfg.2
+        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 01:59:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=PKauJBPQOqxGtVzNuf3fprEZzBxC6KXL4WG2Nxgkiks=;
-        b=nnx+CuUK3eR2qMPr6GAKKvG0mkxPze1gLGjt+fq4RsDs4UUOoegAmM8XnLC3fnGQgW
-         GTyqhslKNfo/iN3MHt0Zkvz4IqfR0N6rbMucbW0h2QpKLOE1944ZRLyzomjSZPncB4oB
-         JdxHik6NRZooJbbcRYM8KsNh2VMSsKY6Br4iawfVt6D/w+eqx+VC7seuAfYo8l2rkyNY
-         n6E0NgG//tOXiD7O6bo+tDyHU269Jh7/rKJm27EMXHQ4E4e4uoqiXyod6YS8/FQRssQq
-         RxZZWrIoYGP/LrZaJcCtp3zHGIRLVAMIifqQZht5xZ4udl03rTMJAqgboklPlsWDanWr
-         rwVQ==
+        bh=V2L+zl6dowkd/yIBbT7eRrGp601e57v2tAHbEjBGJTw=;
+        b=X4fqxkFUUtZqYl036ehGL/EeenuwWFqKCNrIgtl0sfKO1CziKoyuiKNHtxSW7mmdT/
+         GmMSjXhOyHCeA2bLmKJ4EYbomOxRED8IWzZlcIOAzfR30W2mt8A2uoEoKFoVGcG5Ihxj
+         GFrYwP1ohGAB58nb+WHlzAwM0jSdY3H/80yFHE/XZ+IgCbPGlbi1HDfBC9PbEtgPAn99
+         nQxs3HRHSInY1DkPn/OAJ9SKqQ5nqiDk5sZkBuJuWFkpBFuB38xQt5fJ1Fm9eqKu8OgJ
+         PT0emqTy4xxMN4Rr552UHUcBV9d0PjU9STLc/KZiaiv5JPdhC6w+GrFWUxEn/fdfq0+/
+         OtOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=PKauJBPQOqxGtVzNuf3fprEZzBxC6KXL4WG2Nxgkiks=;
-        b=WL/Xv0/eKRmB7lEwF8equkS9FMSi72/LVJWXSiMYhHGRyRAOC1pMgzTQm0LVCbrX5F
-         QoaQ7NxR5JAuNFKWL4C7cUsela75rE4xKCi9zfCerHqlbWNAcIX/Evz0h68Bv8x1QKun
-         HnkE03T1YQEtQuyaWdRRZ8DkJ+/T9Ihj9vHrBEYoa83YLgotEwyvjebk000NVWKLTsdT
-         6EAKPFuwkv5wxUFefUANBzrwUJEmZYfLk0TX2EcC5sCG/O3pMjkasomimSEyF/tfYkL2
-         mDdCP4OfgBNkVTzXmojAYnb6Cmqqzm/GcmCjulxglxvIIBBedhN5opHwFfWEW/2BvcF6
-         viug==
-X-Gm-Message-State: APjAAAXB1+LeJRENCsSCpRHV8wIz9zV1Qf/UopXvGnlbAnDjFksr9krg
-        s2DNiyOqjIRFG8MMfwIDViKld1J0PXIjvHnEp2QXzF/UOlg=
-X-Google-Smtp-Source: APXvYqzAY9mtYPmypf1H3gmCAmSQiLenTibAeELDBFfuArXscCYTvhyZ71qp7kWngsG+U17kzAzSUBBfpqdbrkoZuoc=
-X-Received: by 2002:a2e:2f12:: with SMTP id v18mr42095554ljv.196.1560329909819;
- Wed, 12 Jun 2019 01:58:29 -0700 (PDT)
+        bh=V2L+zl6dowkd/yIBbT7eRrGp601e57v2tAHbEjBGJTw=;
+        b=Ac5L2vThTWj/Rv15P0AO0CZj+C4PQoRsVM/waLcZZUwoYtped4xop2yZmo8gcklW9v
+         /dmbdM5/d2oDs+aGyNwR6FcPCvRl6GmIssSisI8ihgRyoSCR0k6v5UczkW3pUM0VaviF
+         1qZHFcewYBS1JiC65A6ke+vqaRmKZ1VKnJUyDSDI51M7iG+dNJ3TsH4sowv+opaST0z0
+         U4siuO7WFM62RzcuDUqy6SFcP5Omu5hb5rZhyiQXwsYvBwIHhgAS8hoR3VvX1Yo5GvpP
+         6mK9MauiXld9eOBXBem3cMGQHBI/sx9js4obL7xdwNogU/QDYKSFbrEaOzWxhT+OCLQp
+         O0Xg==
+X-Gm-Message-State: APjAAAWbLFcT9LroN+j6caHN8QelDEp/tn+oNTo4epSDB4xURJ3ZYHRj
+        q2jY+soZZ0xkbB0UMqkDVsDB+hRpe27u5v/AHFDzQw==
+X-Google-Smtp-Source: APXvYqxjS/7aTV8YOZIs8AdNxK6uGmYNc9VJ3EJJBU3O7jWDspDz9e4LDwcqW1lbvKFFYrHG6CHJ4s9KIP+m6y6ZICQ=
+X-Received: by 2002:ac2:598d:: with SMTP id w13mr39036425lfn.165.1560329952465;
+ Wed, 12 Jun 2019 01:59:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190610171103.30903-1-grygorii.strashko@ti.com> <20190610171103.30903-19-grygorii.strashko@ti.com>
-In-Reply-To: <20190610171103.30903-19-grygorii.strashko@ti.com>
+References: <20190610171103.30903-1-grygorii.strashko@ti.com> <20190610171103.30903-20-grygorii.strashko@ti.com>
+In-Reply-To: <20190610171103.30903-20-grygorii.strashko@ti.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 12 Jun 2019 10:58:18 +0200
-Message-ID: <CACRpkdbELs-gZVeCCnFBaXOqzWQ74E+SF2ZCXOy4deGA+Bx9Tw@mail.gmail.com>
-Subject: Re: [PATCH-next 18/20] gpio: gpio-omap: clean up wakeup handling
+Date:   Wed, 12 Jun 2019 10:59:00 +0200
+Message-ID: <CACRpkdYdcj9kEntzZ0q=xkEKjdzH6tmWPYBAH+8iSpPGvMaT5w@mail.gmail.com>
+Subject: Re: [PATCH-next 19/20] gpio: gpio-omap: irq_startup() must not return
+ error codes
 To:     Grygorii Strashko <grygorii.strashko@ti.com>
 Cc:     Russell King <rmk@arm.linux.org.uk>,
         Tony Lindgren <tony@atomide.com>,
@@ -66,6 +67,12 @@ On Mon, Jun 10, 2019 at 7:13 PM Grygorii Strashko
 <grygorii.strashko@ti.com> wrote:
 
 > From: Russell King <rmk+kernel@armlinux.org.uk>
+>
+> The irq_startup() method returns an unsigned int, but in __irq_startup()
+> it is assigned to an int.  However, nothing checks for errors, so any
+> error that is returned is ignored.
+>
+> Remove the check for GPIO-input mode and the error return.
 >
 > Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 > Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
