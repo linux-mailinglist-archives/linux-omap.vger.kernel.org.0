@@ -2,102 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41AA442959
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 16:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC66429BF
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 16:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731700AbfFLOdz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Jun 2019 10:33:55 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:45017 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731698AbfFLOdy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 10:33:54 -0400
-Received: by mail-wr1-f68.google.com with SMTP id b17so17168010wrq.11
-        for <linux-omap@vger.kernel.org>; Wed, 12 Jun 2019 07:33:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=5tpURbYw8ulSj4zNIAnwRv+mqsPvaMs89zHgCbwUorE=;
-        b=pc3Q4WLwtyH/QqKBdbPVUglaSmeArsffZq21ZXYXzU0DRnR35+sY3tdGWBuagK0cZI
-         wtd9n32LtCybJZK7GO1zh3tHmEwZHbWLSXmR2OOndJ9BVl9Gf5gPTc8tuRnaESo4WFrl
-         lJlwyoVwN+S3JZ2O69BZoIUYNXBtDaFza1rrCroi5ISfOyaJRSe83xxkFeXAZUAsn0wE
-         v89G7hLfRq6vxIPrlUc39q8Jq1j8+rYvCGITvtOAt5G8RjwVJkfvFbPAgYOEfCJQMODw
-         mCcpaR4WPIwz31PgpOt3n3lOPHHz/aUkTS5liQDjdAbSnFydljdrrcrQ4SCJOqpB+exu
-         08mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=5tpURbYw8ulSj4zNIAnwRv+mqsPvaMs89zHgCbwUorE=;
-        b=URHrZkkUTgAPx10OeEFWEWKknPhAd1gn6t7TRUWDyxpvVR875s6s/l/YScldqLdBhI
-         NGzc+cMZRoyy0qP1x3LBZelm8uEw0CbDhAl86lMqJ13wVHhBmxP1qgMnI8rLyPHGAjnr
-         ur1cAH0FhAMXyUpYyb6+GItwed2Wl5RXvVcf/YWF3XWwiEleANaV54+cQkqMUmQMYNpm
-         CQpLNzhZCTpZP/h9PmkK5VQOoRkrw09V3yeQebI1hwe8K0jgvft4TVEsnUQNOrHVerd6
-         V3bEtlteKRVd4kSCzoyAfI5Qkr3DCvP91aPlJ0yHzipWCE3aPNR9TgZnHArfwey766nO
-         8GpA==
-X-Gm-Message-State: APjAAAVpT1LJTd1NpJHl0nn4z7vzHpxKSrPt4Gt1T0OJD3Sl9+6ErPwK
-        IPVxXQ+Z2PHZTdSORcroKqSJDA==
-X-Google-Smtp-Source: APXvYqy3YGHWLFgs7/wW/TUEjrur0gU36dxTuCSlAFVwP2jci8YFavbg0zMWnihd20zFriRbKLVnCA==
-X-Received: by 2002:adf:de8b:: with SMTP id w11mr31381985wrl.134.1560350032633;
-        Wed, 12 Jun 2019 07:33:52 -0700 (PDT)
-Received: from dell ([185.80.132.160])
-        by smtp.gmail.com with ESMTPSA id w67sm264912wma.24.2019.06.12.07.33.51
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 12 Jun 2019 07:33:51 -0700 (PDT)
-Date:   Wed, 12 Jun 2019 15:33:50 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Keerthy <j-keerthy@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>, robh+dt@kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, t-kristo@ti.com
-Subject: Re: [PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561 regulator
- support
-Message-ID: <20190612143350.GB4660@dell>
-References: <20190516043218.8222-1-j-keerthy@ti.com>
- <20190516043218.8222-4-j-keerthy@ti.com>
- <20190522153528.GG8582@sirena.org.uk>
- <1712197d-7d43-38a8-efde-11b99537eae9@ti.com>
- <20190528132755.GK2456@sirena.org.uk>
- <e68d9939-a56a-b3c5-7f6d-e5783e16a6de@ti.com>
- <20190608195159.GA5316@sirena.org.uk>
- <20190610054822.GE4797@dell>
- <c58ef6cd-893e-c20f-f437-e0343aa83fea@ti.com>
+        id S1731996AbfFLOpr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Jun 2019 10:45:47 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:36680 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728707AbfFLOpq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Jun 2019 10:45:46 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5CEjhlO123299;
+        Wed, 12 Jun 2019 09:45:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1560350743;
+        bh=xyAWNTrYH0QoNd9ukAbvyzeuxkpCV6ALotpkbQS0afA=;
+        h=From:To:CC:Subject:Date;
+        b=NGU+gcXHrfLDdBMjSjJW29qFwrVKeVVvnTBrDiINwHuZzOcnJWCMSJYCkR+HIGIbu
+         a+9WF7E0LU/XEfGyUp5yCtIU1h8WO2alp8x7KMsaVKeHYeC5MdJ5GNC52CgmuhR2Ft
+         Wpd4TGQqjVBaeIVBoyjY0kE8ACWUvDUTmWeXUEQE=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5CEjhJS079595
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 12 Jun 2019 09:45:43 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 12
+ Jun 2019 09:45:43 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 12 Jun 2019 09:45:43 -0500
+Received: from a0393675ula.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5CEjf5P083688;
+        Wed, 12 Jun 2019 09:45:41 -0500
+From:   Keerthy <j-keerthy@ti.com>
+To:     <lee.jones@linaro.org>, <broonie@kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <t-kristo@ti.com>, <j-keerthy@ti.com>
+Subject: [RESEND PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561 regulator support
+Date:   Wed, 12 Jun 2019 20:16:20 +0530
+Message-ID: <20190612144620.28331-1-j-keerthy@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c58ef6cd-893e-c20f-f437-e0343aa83fea@ti.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 12 Jun 2019, Keerthy wrote:
+The LP8756x family has a single output 4-phase regulator
+configuration. Add support for the same. The control
+lies in the master buck which is buck0 for 4-phase
+configuration. Enable/disable/voltage set happen via
+buck0 registers.
 
-> 
-> 
-> On 10/06/19 11:18 AM, Lee Jones wrote:
-> > On Sat, 08 Jun 2019, Mark Brown wrote:
-> > 
-> > > On Sat, Jun 08, 2019 at 09:26:31AM +0530, keerthy wrote:
-> > > 
-> > > > mfd patches are on linux-next already. Hope you can pull this one now that
-> > > > dependencies are met.
-> > > 
-> > > Someone will need to send me a copy of the patch, if I acked it I was
-> > > expecting it to go in with the MFD changes.
-> > 
-> > There is/was no need for that.  Patches are built-time orthogonal.
-> 
-> Sorry i am still not clear. Should i resend this patch?
+Data Sheet: https://www.ti.com/lit/ds/symlink/lp87561-q1.pdf
 
-Yes.  It sounds like Mark no longer has the patch to apply.
+Signed-off-by: Keerthy <j-keerthy@ti.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+---
 
+patches 1/3 2/3 are already applied to linux-next.
+
+Changes in v2:
+
+  * Changed if/else block to switch statement.
+
+ drivers/regulator/lp87565-regulator.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/regulator/lp87565-regulator.c b/drivers/regulator/lp87565-regulator.c
+index 81eb4b890c0c..af00d1ffcf33 100644
+--- a/drivers/regulator/lp87565-regulator.c
++++ b/drivers/regulator/lp87565-regulator.c
+@@ -153,6 +153,12 @@ static const struct lp87565_regulator regulators[] = {
+ 			  LP87565_REG_BUCK2_CTRL_1,
+ 			  LP87565_BUCK_CTRL_1_EN, 3230,
+ 			  buck0_1_2_3_ranges, LP87565_REG_BUCK2_CTRL_2),
++	LP87565_REGULATOR("BUCK3210", LP87565_BUCK_3210, "buck3210",
++			  lp87565_buck_ops, 256, LP87565_REG_BUCK0_VOUT,
++			  LP87565_BUCK_VSET, LP87565_REG_BUCK0_CTRL_1,
++			  LP87565_BUCK_CTRL_1_EN |
++			  LP87565_BUCK_CTRL_1_FPWM_MP_0_2, 3230,
++			  buck0_1_2_3_ranges, LP87565_REG_BUCK0_CTRL_2),
+ };
+ 
+ static int lp87565_regulator_probe(struct platform_device *pdev)
+@@ -169,9 +175,18 @@ static int lp87565_regulator_probe(struct platform_device *pdev)
+ 	config.driver_data = lp87565;
+ 	config.regmap = lp87565->regmap;
+ 
+-	if (lp87565->dev_type == LP87565_DEVICE_TYPE_LP87565_Q1) {
++	switch (lp87565->dev_type) {
++	case LP87565_DEVICE_TYPE_LP87565_Q1:
+ 		min_idx = LP87565_BUCK_10;
+ 		max_idx = LP87565_BUCK_23;
++		break;
++	case LP87565_DEVICE_TYPE_LP87561_Q1:
++		min_idx = LP87565_BUCK_3210;
++		max_idx = LP87565_BUCK_3210;
++	default:
++		dev_err(lp87565->dev, "Invalid lp config %d\n",
++			lp87565->dev_type);
++		return -EINVAL;
+ 	}
+ 
+ 	for (i = min_idx; i <= max_idx; i++) {
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.17.1
+
