@@ -2,117 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DF6341C47
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 08:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA0BC41D78
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Jun 2019 09:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731108AbfFLGeC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Jun 2019 02:34:02 -0400
-Received: from muru.com ([72.249.23.125]:52832 "EHLO muru.com"
+        id S2407344AbfFLHSm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Jun 2019 03:18:42 -0400
+Received: from muru.com ([72.249.23.125]:52854 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726875AbfFLGeC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 12 Jun 2019 02:34:02 -0400
+        id S2406388AbfFLHSm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 12 Jun 2019 03:18:42 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 4568780E2;
-        Wed, 12 Jun 2019 06:34:22 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 27B7980E2;
+        Wed, 12 Jun 2019 07:19:03 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc:     linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Tero Kristo <t-kristo@ti.com>
-Subject: [PATCHv3] gpio: gpio-omap: Fix lost edge wake-up interrupts
-Date:   Tue, 11 Jun 2019 23:33:52 -0700
-Message-Id: <20190612063352.5760-1-tony@atomide.com>
+To:     arm@kernel.org
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL] three fixes for omaps
+Date:   Wed, 12 Jun 2019 00:18:39 -0700
+Message-Id: <pull-1560323885-602179@atomide.com>
 X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If an edge interrupt triggers while entering idle just before we save
-GPIO datain register to saved_datain, the triggered GPIO will not be
-noticed on wake-up. This is because the saved_datain and GPIO datain
-are the same on wake-up in omap_gpio_unidle(). Let's fix this by
-ignoring any pending edge interrupts for saved_datain.
+From: "Tony Lindgren" <tony@atomide.com>
 
-This issue affects only idle states where the GPIO module internal
-wake-up path is operational. For deeper idle states where the GPIO
-module gets powered off, Linux generic wakeirqs must be used for
-the padconf wake-up events with pinctrl-single driver. For examples,
-please see "interrupts-extended" dts usage in many drivers.
+The following changes since commit 4ee23cd76c0ce8622976b3da0e2bc89e6d94f6d4:
 
-This issue can be somewhat easily reproduced by pinging an idle system
-with smsc911x Ethernet interface configured IRQ_TYPE_EDGE_FALLING. At
-some point the smsc911x interrupts will just stop triggering. Also if
-WLCORE WLAN is used with EDGE interrupt like it's documentation specifies,
-we can see lost interrupts without this patch.
+  Merge branch 'omap-for-v5.2/ti-sysc' into fixes (2019-05-20 08:33:03 -0700)
 
-Note that in the long run we may be able to cancel entering idle by
-returning an error in gpio_omap_cpu_notifier() on pending interrupts.
-But let's fix the bug first.
+are available in the Git repository at:
 
-Also note that because of the recent clean-up efforts this patch does
-not apply directly to older kernels. This does fix a long term issue
-though, and can be backported as needed.
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.2/fixes-rc4
 
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Ladislav Michl <ladis@linux-mips.org>
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc: Russell King <rmk+kernel@armlinux.org.uk>
-Cc: Tero Kristo <t-kristo@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
+for you to fetch changes up to 8a0098c05a272c9a68f6885e09755755b612459c:
 
-This patch is against v5.2-rc series. FYI, it does not conflict with
-the fixes (or the clean-up) in Russell's patch series.
+  ARM: dts: am335x phytec boards: Fix cd-gpios active level (2019-06-10 00:06:57 -0700)
 
-Changes since v2:
-- Add comments for what we're checking, drop comments for saved_datain
+----------------------------------------------------------------
+Fixes for omap variants
 
-Changes since v1:
-- Add handling to ignore EDGE_BOTH
+Three fixes mostly for dra7 SoC variants that have some devices disabled
+compared to the base SoC. These got broken by the change of making devices
+probe with ti-sysc interconnect target module and went unnnoticed for a
+while. And there is no clkcel bit for timer12 unlike timer1. Also included
+is a GPIO direction fix for phytec SDIO card detection.
 
----
- drivers/gpio/gpio-omap.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+----------------------------------------------------------------
+Keerthy (1):
+      ARM: dts: dra72x: Disable usb4_tm target module
 
-diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
---- a/drivers/gpio/gpio-omap.c
-+++ b/drivers/gpio/gpio-omap.c
-@@ -1277,13 +1277,23 @@ static void omap_gpio_idle(struct gpio_bank *bank, bool may_lose_context)
- {
- 	struct device *dev = bank->chip.parent;
- 	void __iomem *base = bank->base;
--	u32 nowake;
-+	u32 mask, nowake;
- 
- 	bank->saved_datain = readl_relaxed(base + bank->regs->datain);
- 
- 	if (!bank->enabled_non_wakeup_gpios)
- 		goto update_gpio_context_count;
- 
-+	/* Check for pending EDGE_FALLING, ignore EDGE_BOTH */
-+	mask = bank->enabled_non_wakeup_gpios & bank->context.fallingdetect;
-+	mask &= ~bank->context.risingdetect;
-+	bank->saved_datain |= mask;
-+
-+	/* Check for pending EDGE_RISING, ignore EDGE_BOTH */
-+	mask = bank->enabled_non_wakeup_gpios & bank->context.risingdetect;
-+	mask &= ~bank->context.fallingdetect;
-+	bank->saved_datain &= ~mask;
-+
- 	if (!may_lose_context)
- 		goto update_gpio_context_count;
- 
--- 
-2.21.0
+Teresa Remmet (1):
+      ARM: dts: am335x phytec boards: Fix cd-gpios active level
+
+Tony Lindgren (1):
+      ARM: dts: Drop bogus CLKSEL for timer12 on dra7
+
+ arch/arm/boot/dts/am335x-pcm-953.dtsi | 2 +-
+ arch/arm/boot/dts/am335x-wega.dtsi    | 2 +-
+ arch/arm/boot/dts/dra7-l4.dtsi        | 2 --
+ arch/arm/boot/dts/dra72x.dtsi         | 4 ++++
+ 4 files changed, 6 insertions(+), 4 deletions(-)
