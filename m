@@ -2,26 +2,28 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6671744497
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2019 18:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 493B344499
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2019 18:38:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392587AbfFMQht (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S2387999AbfFMQht (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Thu, 13 Jun 2019 12:37:49 -0400
-Received: from muru.com ([72.249.23.125]:52928 "EHLO muru.com"
+Received: from muru.com ([72.249.23.125]:52936 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730629AbfFMHLA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 13 Jun 2019 03:11:00 -0400
+        id S1730628AbfFMHLB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 13 Jun 2019 03:11:01 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 2E960811B;
-        Thu, 13 Jun 2019 07:11:21 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 210398160;
+        Thu, 13 Jun 2019 07:11:22 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     arm@kernel.org
 Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 1/4] soc changes for omap variants for v5.3
-Date:   Thu, 13 Jun 2019 00:10:50 -0700
-Message-Id: <pull-1560399818-512977@atomide.com>
+Subject: [GIT PULL 2/4] dts changes for omap variants for v5.3
+Date:   Thu, 13 Jun 2019 00:10:51 -0700
+Message-Id: <pull-1560399818-512977@atomide.com-2>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <pull-1560399818-512977@atomide.com>
+References: <pull-1560399818-512977@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -38,27 +40,58 @@ The following changes since commit a188339ca5a396acc588e5851ed7e19f66b0ebd9:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.3/soc-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.3/dt-signed
 
-for you to fetch changes up to 45450f36e569e5162957df488b0174c9a952e1b0:
+for you to fetch changes up to 8f62581f820d32eec9698e477ddff21ebfbe0541:
 
-  soc: ti: pm33xx: Add a print while entering RTC only mode with DDR in self-refresh (2019-06-10 05:19:26 -0700)
-
-----------------------------------------------------------------
-ti-sysc soc changes for v5.3
-
-Just two changes to make few platform data functions static, and to
-call dev_info() if am437x is suspending to RTC-only mode. We want to
-see this in case of issues as it depends on the board wiring for things
-like DDR memory.
+  Merge branch 'baltos' into omap-for-v5.3/dt (2019-06-12 00:57:27 -0700)
 
 ----------------------------------------------------------------
-Keerthy (1):
-      soc: ti: pm33xx: Add a print while entering RTC only mode with DDR in self-refresh
+dts changes for omap variants for v5.3
 
-YueHaibing (1):
-      ARM: OMAP2+: Make some variables static
+This series of changes improves support for few boards:
 
- arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c | 8 ++++----
- drivers/soc/ti/pm33xx.c                                 | 1 +
- 2 files changed, 5 insertions(+), 4 deletions(-)
+- configure another lcd type for logicpd torpedo devkit
+
+- a series of updates for am335x phytec boards
+
+- configure mmc card detect pin for am335x-baltos
+
+----------------------------------------------------------------
+Adam Ford (1):
+      ARM: dts: Add LCD type 28 support to LogicPD Torpedo DM3730 devkit
+
+Daniel Schultz (1):
+      ARM: dts: am335x-phycore-som: Add emmc node
+
+Teresa Remmet (5):
+      ARM: dts: am335x phytec boards: Remove regulator node
+      ARM: dts: am335x-phycore-som: Enable gpmc node in dts files
+      ARM: dts: am335x-pcm-953: Update user led names
+      ARM: dts: am335x-pcm-953: Remove eth phy delay
+      ARM: dts: Add support for phyBOARD-REGOR-AM335x
+
+Tony Lindgren (1):
+      Merge branch 'baltos' into omap-for-v5.3/dt
+
+Yegor Yefremov (2):
+      ARM: dts: am335x-baltos: Fix PHY mode for ethernet
+      ARM: dts: am335x-baltos: add support for MMC1 CD pin
+
+ .../devicetree/bindings/arm/omap/omap.txt          |   3 +
+ arch/arm/boot/dts/Makefile                         |   1 +
+ arch/arm/boot/dts/am335x-baltos-ir2110.dts         |  14 +-
+ arch/arm/boot/dts/am335x-baltos-ir3220.dts         |  14 +-
+ arch/arm/boot/dts/am335x-baltos-ir5221.dts         |  13 +-
+ arch/arm/boot/dts/am335x-pcm-953.dtsi              |  22 +-
+ arch/arm/boot/dts/am335x-phycore-rdk.dts           |   4 +
+ arch/arm/boot/dts/am335x-phycore-som.dtsi          |  47 +++--
+ arch/arm/boot/dts/am335x-regor-rdk.dts             |  24 +++
+ arch/arm/boot/dts/am335x-regor.dtsi                | 223 +++++++++++++++++++++
+ arch/arm/boot/dts/am335x-wega-rdk.dts              |   4 +
+ arch/arm/boot/dts/am335x-wega.dtsi                 |  16 +-
+ .../boot/dts/logicpd-torpedo-37xx-devkit-28.dts    |  32 +++
+ 13 files changed, 372 insertions(+), 45 deletions(-)
+ create mode 100644 arch/arm/boot/dts/am335x-regor-rdk.dts
+ create mode 100644 arch/arm/boot/dts/am335x-regor.dtsi
+ create mode 100644 arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
