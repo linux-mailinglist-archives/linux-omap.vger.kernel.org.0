@@ -2,181 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B87DC44D51
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2019 22:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C159244E78
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2019 23:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727668AbfFMUWX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Jun 2019 16:22:23 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:45544 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727576AbfFMUWX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jun 2019 16:22:23 -0400
-Received: by mail-qt1-f196.google.com with SMTP id j19so24109928qtr.12;
-        Thu, 13 Jun 2019 13:22:22 -0700 (PDT)
+        id S1726369AbfFMV2n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Jun 2019 17:28:43 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:41680 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725747AbfFMV2m (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jun 2019 17:28:42 -0400
+Received: by mail-qt1-f195.google.com with SMTP id 33so128387qtr.8;
+        Thu, 13 Jun 2019 14:28:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=PGYgAEgbagAdsu5GyWbotd9ekKgsN2P9KFLuwB0EuYg=;
-        b=QhqoztoMbgwlHt6t4o6myDyQreHCWPlOAMJ3aT2mTeEXDcvmtGWQkSmK9MDGwxxCLy
-         HNtofLDZ1a7kIsvObXT1krxn8UU4pHMsS+ADbWTbFaI4fd5Y0q3Sj/cNxmh2oM7uZXSj
-         sQ3icXiVG7+j4cGhStCWgcgoNqZ31huwu+xl+KUM2R5MZTlCf0EWuhdNuXwKhbOYxNuC
-         bE7zznYvP49EnPC1EDcicgu5lepi6txH5zx9U+HsWF5KNT/gBOBS6oV+igrMlAiFc1ql
-         JSL/piKUrrw4VjX8xhHq8pq2eTnSQaruN4RXGumgkeAYHs306x+yAriumZDF0EQiHCoa
-         JOmg==
-X-Gm-Message-State: APjAAAWbi4keTApjKO2IApnRq3bxyEQZLV0hBuJbe+xBTm5s+Bg8YG0x
-        y3HXM5QKiouIiGiAvh7lNQ==
-X-Google-Smtp-Source: APXvYqwjv0mrGiN12UMZjswyz/MsknKU4+SlFUsCqjcmrXhGitx7gMlcgdGflgeS0mNkX5YAF1j9NA==
-X-Received: by 2002:aed:2063:: with SMTP id 90mr38651901qta.307.1560457341649;
-        Thu, 13 Jun 2019 13:22:21 -0700 (PDT)
+        bh=br2bl3VJkXVRPZRHNgYzbC/ehG2FQqZ7sIoSvLav/o4=;
+        b=Gszq2/mSLn/dJrsyvk4rRLEyNjZ6QuF9W96OQIGbB4GTZ/MyR24lEoI/65mHiidH91
+         w2WovRpmPzb8v6Z5J9QOoLRBRHmwVXP7actumLpjtiLPy8D9VWHbVNDc+mDO0rO40kWS
+         DESecmCIJ9Y+3iOQmS+Tz9hz4kO+yjsgzLc0ZPi7RtFvY2jxhr8BqK5WhsYWnueR75uU
+         25mIi5sop8UMQC6RcKstZTO6Mod/7/PYp7MY9pSHzsbSgRBBMy5V5Z0yGrk26KPoXWGO
+         HWFZAsX1E42vA5paP0f+UJ0vsHCNGcHgJ0iLG7SaWsimCVwMCr6YEXnlNNt1Ns2FEVG1
+         zhUA==
+X-Gm-Message-State: APjAAAVnNI4CqJnqLmEXgP7FsbjFPz5TNI49iiNXxEK+4o92+/7a6kLy
+        L8D1UCVr2pOvlcgMEOM6Pg==
+X-Google-Smtp-Source: APXvYqzkDDD1eG9eQFojGtBeXwWVDtxmKGm5yq7U6XK2t/sOfUWwfaQAUzl1Zj3zOiSTjCEIb9D6cQ==
+X-Received: by 2002:ac8:685:: with SMTP id f5mr3113629qth.9.1560461321718;
+        Thu, 13 Jun 2019 14:28:41 -0700 (PDT)
 Received: from localhost ([64.188.179.243])
-        by smtp.gmail.com with ESMTPSA id q2sm363082qkf.44.2019.06.13.13.22.20
+        by smtp.gmail.com with ESMTPSA id u19sm611563qka.35.2019.06.13.14.28.40
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 13 Jun 2019 13:22:21 -0700 (PDT)
-Date:   Thu, 13 Jun 2019 14:22:20 -0600
+        Thu, 13 Jun 2019 14:28:40 -0700 (PDT)
+Date:   Thu, 13 Jun 2019 15:28:38 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     linux-omap@vger.kernel.org, adam.ford@logicpd.com,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to
- dts
-Message-ID: <20190613202220.GA4282@bogus>
-References: <20190510194229.20628-1-aford173@gmail.com>
+To:     Keerthy <j-keerthy@ti.com>
+Cc:     lee.jones@linaro.org, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, t-kristo@ti.com
+Subject: Re: [PATCH v2 1/3] dt-bindings: mfd: lp87565: Add lp87561
+ configuration
+Message-ID: <20190613212838.GA21714@bogus>
+References: <20190516043218.8222-1-j-keerthy@ti.com>
+ <20190516043218.8222-2-j-keerthy@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190510194229.20628-1-aford173@gmail.com>
+In-Reply-To: <20190516043218.8222-2-j-keerthy@ti.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, May 10, 2019 at 02:42:29PM -0500, Adam Ford wrote:
-> Currently the source code is compiled using hard-coded values
-> from CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK.  This patch allows this
-> clock divider value to be moved to the device tree and be changed
-> without having to recompile the kernel.
+On Thu, May 16, 2019 at 10:02:16AM +0530, Keerthy wrote:
+> lp87561 is a single output 4-phase regulator configuration.
+> Add support for the same.
 > 
-> Signed-off-by: Adam Ford <aford173@gmail.com>
+> Signed-off-by: Keerthy <j-keerthy@ti.com>
+> ---
+>  .../devicetree/bindings/mfd/lp87565.txt       | 36 +++++++++++++++++++
+>  1 file changed, 36 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/display/ti/ti,omap3-dss.txt b/Documentation/devicetree/bindings/display/ti/ti,omap3-dss.txt
-> index cd02516a40b6..42449d07c47e 100644
-> --- a/Documentation/devicetree/bindings/display/ti/ti,omap3-dss.txt
-> +++ b/Documentation/devicetree/bindings/display/ti/ti,omap3-dss.txt
-> @@ -40,7 +40,7 @@ Required properties:
->  Optional properties:
->  - max-memory-bandwidth: Input memory (from main memory to dispc) bandwidth limit
->  			in bytes per second
-> -
-> +- min-fck-pck-ratio:  Make sure that DISPC FCK is at least n x PCK
-
-Assuming this patch progresses, this needs a vendor prefix and please 
-split bindings to separate patch.
-
->  
->  RFBI
->  ----
-> diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
-> index 4043ecb38016..bf84a8487aae 100644
-> --- a/arch/arm/boot/dts/omap3.dtsi
-> +++ b/arch/arm/boot/dts/omap3.dtsi
-> @@ -751,7 +751,7 @@
->  			#size-cells = <1>;
->  			ranges;
->  
-> -			dispc@48050400 {
-> +			dispc: dispc@48050400 {
-
-Unrelated change.
-
->  				compatible = "ti,omap3-dispc";
->  				reg = <0x48050400 0x400>;
->  				interrupts = <25>;
-> diff --git a/drivers/gpu/drm/omapdrm/dss/Kconfig b/drivers/gpu/drm/omapdrm/dss/Kconfig
-> index f24ebf7f61dd..d0666edcdf2a 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/Kconfig
-> +++ b/drivers/gpu/drm/omapdrm/dss/Kconfig
-> @@ -102,24 +102,6 @@ config OMAP2_DSS_DSI
->  
->  	  See http://www.mipi.org/ for DSI specifications.
->  
-> -config OMAP2_DSS_MIN_FCK_PER_PCK
-> -	int "Minimum FCK/PCK ratio (for scaling)"
-> -	range 0 32
-> -	default 0
-> -	help
-> -	  This can be used to adjust the minimum FCK/PCK ratio.
-> -
-> -	  With this you can make sure that DISPC FCK is at least
-> -	  n x PCK. Video plane scaling requires higher FCK than
-> -	  normally.
-> -
-> -	  If this is set to 0, there's no extra constraint on the
-> -	  DISPC FCK. However, the FCK will at minimum be
-> -	  2xPCK (if active matrix) or 3xPCK (if passive matrix).
-> -
-> -	  Max FCK is 173MHz, so this doesn't work if your PCK
-> -	  is very high.
-> -
->  config OMAP2_DSS_SLEEP_AFTER_VENC_RESET
->  	bool "Sleep 20ms after VENC reset"
->  	default y
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dispc.c b/drivers/gpu/drm/omapdrm/dss/dispc.c
-> index ba82d916719c..09a130c53da2 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dispc.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dispc.c
-> @@ -198,6 +198,9 @@ struct dispc_device {
->  
->  	/* DISPC_CONTROL & DISPC_CONFIG lock*/
->  	spinlock_t control_lock;
-> +
-> +	/* Optional min-fck-pck-ratio */
-> +	u32 min_fck_per_pck;
+> diff --git a/Documentation/devicetree/bindings/mfd/lp87565.txt b/Documentation/devicetree/bindings/mfd/lp87565.txt
+> index a48df7c08ab0..41671e0dc26b 100644
+> --- a/Documentation/devicetree/bindings/mfd/lp87565.txt
+> +++ b/Documentation/devicetree/bindings/mfd/lp87565.txt
+> @@ -41,3 +41,39 @@ lp87565_pmic: pmic@60 {
+>  		};
+>  	};
 >  };
->  
->  enum omap_color_component {
-> @@ -3683,15 +3686,8 @@ bool dispc_div_calc(struct dispc_device *dispc, unsigned long dispc_freq,
->  	unsigned long pck, lck;
->  	unsigned long lck_max;
->  	unsigned long pckd_hw_min, pckd_hw_max;
-> -	unsigned int min_fck_per_pck;
->  	unsigned long fck;
->  
-> -#ifdef CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK
-> -	min_fck_per_pck = CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK;
-> -#else
-> -	min_fck_per_pck = 0;
-> -#endif
-> -
->  	pckd_hw_min = dispc->feat->min_pcd;
->  	pckd_hw_max = 255;
->  
-> @@ -3723,7 +3719,7 @@ bool dispc_div_calc(struct dispc_device *dispc, unsigned long dispc_freq,
->  			else
->  				fck = lck;
->  
-> -			if (fck < pck * min_fck_per_pck)
-> +			if (fck < pck * dispc->min_fck_per_pck)
->  				continue;
->  
->  			if (func(lckd, pckd, lck, pck, data))
-> @@ -4826,6 +4822,8 @@ static int dispc_bind(struct device *dev, struct device *master, void *data)
->  		}
->  	}
->  
-> +	of_property_read_u32(np, "min-fck-pck-ratio", &dispc->min_fck_per_pck);
 > +
->  	r = dispc_init_gamma_tables(dispc);
->  	if (r)
->  		goto err_free;
+> +TI LP87561 PMIC:
+> +
+> +This is a single output 4-phase regulator configuration
+> +
+> +Required properties:
+> +  - compatible:	"ti,lp87561-q1"
+> +  - reg:		I2C slave address.
+> +  - gpio-controller:	Marks the device node as a GPIO Controller.
+> +  - #gpio-cells:	Should be two.  The first cell is the pin number and
+> +			the second cell is used to specify flags.
+> +			See ../gpio/gpio.txt for more information.
+> +  - xxx-in-supply:	Phandle to parent supply node of each regulator
+> +			populated under regulators node. xxx should match
+> +			the supply_name populated in driver.
+
+This is not something we can validate. You need to enumerate values of 
+'xxx'.
+
+> +Example:
+> +
+> +lp87561_pmic: pmic@62 {
+> +	compatible = "ti,lp87561-q1";
+> +	reg = <0x62>;
+> +	gpio-controller;
+> +	#gpio-cells = <2>;
+> +
+> +	buck3210-in-supply = <&vsys_3v3>;
+> +
+> +	regulators: regulators {
+> +		buck3210_reg: buck3210 {
+> +			/* VDD_CORE */
+> +			regulator-name = "buck3210";
+> +			regulator-min-microvolt = <800000>;
+> +			regulator-max-microvolt = <800000>;
+> +			regulator-always-on;
+> +			regulator-boot-on;
+> +		};
+> +	};
+> +};
 > -- 
 > 2.17.1
 > 
