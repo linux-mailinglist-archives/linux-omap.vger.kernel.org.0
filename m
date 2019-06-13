@@ -2,69 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9427444492
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2019 18:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D48143781
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2019 16:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726870AbfFMQhs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Jun 2019 12:37:48 -0400
-Received: from muru.com ([72.249.23.125]:52948 "EHLO muru.com"
+        id S1732692AbfFMO7Z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Jun 2019 10:59:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56834 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730631AbfFMHLD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 13 Jun 2019 03:11:03 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 7001381BD;
-        Thu, 13 Jun 2019 07:11:24 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     arm@kernel.org
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 4/4] ti-sysc dts changes for v5.3
-Date:   Thu, 13 Jun 2019 00:10:53 -0700
-Message-Id: <pull-1560399818-512977@atomide.com-4>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <pull-1560399818-512977@atomide.com>
-References: <pull-1560399818-512977@atomide.com>
+        id S1732611AbfFMOyH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 13 Jun 2019 10:54:07 -0400
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D82BB2175B;
+        Thu, 13 Jun 2019 14:54:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560437647;
+        bh=GYf/+gkGyncHp31uy7FPojBQ7mL+yl6nzbXTfvhlMGc=;
+        h=References:In-Reply-To:From:Date:Subject:To:From;
+        b=TcJCjqavWAlojNJrYEhlAxJC2cZ5+UcNQ+J8ry2eA6PDcyKHn5GTWrvlFPceYjtSN
+         fNESd+v8TcrthsynLoOq6/UUiPKuYYYpkBjUXEUYtQvUnIEhzpGldliabELRtYoQf4
+         H75jbCoov7obKq4HVZrmdfy9zEZ/PwTSrtP3JxCc=
+Received: by mail-lj1-f182.google.com with SMTP id k18so18822574ljc.11;
+        Thu, 13 Jun 2019 07:54:06 -0700 (PDT)
+X-Gm-Message-State: APjAAAV6XUq9F9E39O5SnpoMeGacdv0A3u8+bNEknKmJ8R7Hq8pUXmxb
+        zRI4+rKoLbLikeEtjCjloRJ44nNXNOhJlB2X4sE=
+X-Google-Smtp-Source: APXvYqxHuV7Q03SqzPQJxsXIaEVNMtkbU1nrHhyj83hOaQCq0FDxpomV2Y8SgjCcQw0UPaOf6ZfRnkeRkUssQQzCFAM=
+X-Received: by 2002:a2e:124b:: with SMTP id t72mr39255568lje.143.1560437645055;
+ Thu, 13 Jun 2019 07:54:05 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190604185229.7393-1-krzk@kernel.org>
+In-Reply-To: <20190604185229.7393-1-krzk@kernel.org>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Thu, 13 Jun 2019 16:53:53 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPd4LVFGgonbsuxii-5Fu5wWhxU9yotLHw+OXsPcxYw_3g@mail.gmail.com>
+Message-ID: <CAJKOXPd4LVFGgonbsuxii-5Fu5wWhxU9yotLHw+OXsPcxYw_3g@mail.gmail.com>
+Subject: Re: [PATCH v3] ARM: configs: Remove useless UEVENT_HELPER_PATH
+To:     arm@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Olof Johansson <olof@lixom.net>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, linux-omap@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+On Tue, 4 Jun 2019 at 20:52, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>
+> Remove the CONFIG_UEVENT_HELPER_PATH because:
+> 1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
+>    CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
+>    made default to 'n',
+> 2. It is not recommended (help message: "This should not be used today
+>    [...] creates a high system load") and was kept only for ancient
+>    userland,
+> 3. Certain userland specifically requests it to be disabled (systemd
+>    README: "Legacy hotplug slows down the system and confuses udev").
+>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> For vexpress:
+> Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+>
+> ---
+>
+> Changes since v2:
+> 1. Remove unrelated files.
+> 2. Add Geert's ack.
+>
+> Changes sice v3:
+> 1. Change also mini2440_defconfig.
+> 2. Add more acks.
 
-The following changes since commit b6a53c4c872ab6870eb455d10a6f7ff0d99b1b1f:
+Hi Arnd and Olof,
 
-  bus: ti-sysc: Detect uarts also on omap34xx (2019-05-28 05:19:17 -0700)
+Do you want to apply it directly or maybe I can send it along with
+other my defconfig pull request?
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.3/ti-sysc-dt-signed
-
-for you to fetch changes up to 22a7fc15cf1e742884fdc11a236fcd755225b4f0:
-
-  ARM: dts: Drop legacy custom hwmods property for omap4 mmc (2019-05-28 05:19:17 -0700)
-
-----------------------------------------------------------------
-ti-sysc dts changes for v5.3
-
-We can now drop the custom dts property "ti,hwmods" for drivers that
-have the ti-sysc interconnect target module configured in dts.
-
-Let's start with a minimal changes to omap4 uart and mmc. We use
-omap4 as the starting point as it has runtime PM implemented and all
-the omap variants after that are based on it with similar clkctrl
-clock for the modules. More devices will be updated later on as they
-get tested.
-
-Note that these changes are based on the related ti-sysc driver
-changes.
-
-----------------------------------------------------------------
-Tony Lindgren (2):
-      ARM: dts: Drop legacy custom hwmods property for omap4 uart
-      ARM: dts: Drop legacy custom hwmods property for omap4 mmc
-
- arch/arm/boot/dts/omap4-l4.dtsi | 9 ---------
- 1 file changed, 9 deletions(-)
+Best regards,
+Krzysztof
