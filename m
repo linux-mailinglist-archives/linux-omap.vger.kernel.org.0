@@ -2,84 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B2C343DDC
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2019 17:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22755445D1
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jun 2019 18:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732881AbfFMPp4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Jun 2019 11:45:56 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:39714 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727446AbfFMPpz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jun 2019 11:45:55 -0400
+        id S1730283AbfFMQqv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Jun 2019 12:46:51 -0400
+Received: from mail.andi.de1.cc ([85.214.239.24]:49434 "EHLO mail.andi.de1.cc"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404168AbfFMQqt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 13 Jun 2019 12:46:49 -0400
+X-Greylist: delayed 1124 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Jun 2019 12:46:47 EDT
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=S/Hz66zfUqFTM9lEJJLGr7NIoOTRtHtoEtXaG4KN1+k=; b=g2XWnishsfgj/HVqzEnSgiAg0
-        96YUSwpy4Gw7eqFMLqOynOK9uxIosdLTejC1d8sTI2E46cd2PfCQ2q4/Ydo55Eyv4KFTDmksJy0FJ
-        KsDKHgQxBFCmx8Yxfo5Wp6dcxj+R5PI9cfJ3SUz+UV0MxiLwol1dKJG+SGgi/uwodpDBg=;
-Received: from [2001:470:1f1d:6b5:7e7a:91ff:fede:4a45] (helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:Message-ID:Subject:To
+        :From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=1I3y8nqcJVpxthG73yLJqt3fM1GjciDgS30mgpzyGos=; b=i+5hfE2B0oerl7ASbQfCQ9Ckpu
+        NAD8hrilFOX0+AkKTEAiXKhYzkYZ+HYcfEJiwgdIIqSHP9KAY63nD2ajs05yT6mCfecjlZNDWg3vo
+        VFiK/OsEtD8diKZTdcFaaRatrvKu3Gfzd1Q+S+jciRacE0tKZIWwSEWQYfcezjTCsOSY=;
+Received: from p5dcc3dfb.dip0.t-ipconnect.de ([93.204.61.251] helo=eeepc)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hbRvF-0005E1-6z; Thu, 13 Jun 2019 15:45:53 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id 857D1440046; Thu, 13 Jun 2019 16:45:52 +0100 (BST)
-Date:   Thu, 13 Jun 2019 16:45:52 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Keerthy <j-keerthy@ti.com>
-Cc:     lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, t-kristo@ti.com
-Subject: Re: [RESEND PATCH v2 3/3] regulator: lp87565: Add 4-phase lp87561
- regulator support
-Message-ID: <20190613154552.GL5316@sirena.org.uk>
-References: <20190612144620.28331-1-j-keerthy@ti.com>
+        (envelope-from <andreas@kemnade.info>)
+        id 1hbSa2-0005j7-2T; Thu, 13 Jun 2019 18:28:02 +0200
+Received: from [::1] (helo=localhost)
+        by localhost with esmtp (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1hbSIz-0002wp-Cw; Thu, 13 Jun 2019 18:10:25 +0200
+Date:   Thu, 13 Jun 2019 18:09:58 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        linux-pm@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: BUG: no cpufreq on gta04 (omap dm3730) in 5.2-rc4
+Message-ID: <20190613180958.48e04530@kemnade.info>
+X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="GeDkoc8jIzHasOdk"
-Content-Disposition: inline
-In-Reply-To: <20190612144620.28331-1-j-keerthy@ti.com>
-X-Cookie: Editing is a rewording activity.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/phLSzGZi9/nM=tEb3SaLRWC"; protocol="application/pgp-signature"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
---GeDkoc8jIzHasOdk
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+--Sig_/phLSzGZi9/nM=tEb3SaLRWC
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 12, 2019 at 08:16:20PM +0530, Keerthy wrote:
+Hi,
 
-> patches 1/3 2/3 are already applied to linux-next.
+On the gta04 (dm3730 cpu), cpufreq does not work properly with above-mentio=
+ned
+kernel.
+cpufreq-info just shows
+analyzing CPU 0:
+  no or unknown cpufreq driver is active on this CPU
+  maximum transition latency: 0.00 ms.
 
-This doesn't build without those patches:
+dmesg log shows these interesting lines.
 
-  CC      drivers/regulator/lp87565-regulator.o
-drivers/regulator/lp87565-regulator.c:156:32: error: =E2=80=98LP87565_BUCK_=
-3210=E2=80=99 undeclared here (not in a function); did you mean =E2=80=98LP=
-87565_BUCK_10=E2=80=99?
-  LP87565_REGULATOR("BUCK3210", LP87565_BUCK_3210, "buck3210",
-                                ^~~~~~~~~~~~~~~~~
+[    3.140655] core: _opp_supported_by_regulators: OPP minuV: 1012500 maxuV=
+: 1012500, not supported by regulator
+[    3.152709] cpu cpu0: _opp_add: OPP not supported by regulators (3000000=
+00)
+[    3.160278] core: _opp_supported_by_regulators: OPP minuV: 1200000 maxuV=
+: 1200000, not supported by regulator
+[    3.171142] cpu cpu0: _opp_add: OPP not supported by regulators (6000000=
+00)
+[    3.178710] core: _opp_supported_by_regulators: OPP minuV: 1325000 maxuV=
+: 1325000, not supported by regulator
+[    3.189483] cpu cpu0: _opp_add: OPP not supported by regulators
+(800000000)
 
---GeDkoc8jIzHasOdk
-Content-Type: application/pgp-signature; name="signature.asc"
+looking through logs shows that these lines first appeared in
+next-20190506. They were not present in next-20190503. If I understand that
+correcly it is about vdd1.
+Analysis reveals:
+
+in
+int regulator_is_supported_voltage(struct regulator *regulator,
+                                   int min_uV, int max_uV)
+
+the following if fails:
+     /* Any voltage within constrains range is fine? */
+        if (rdev->desc->continuous_voltage_range) {
+
+The following hack did the trick
+
+diff --git a/drivers/regulator/twl-regulator.c b/drivers/regulator/twl-regu=
+lator.c
+index 6fa15b2d6fb3..f7bfdf53701d 100644
+--- a/drivers/regulator/twl-regulator.c
++++ b/drivers/regulator/twl-regulator.c
+@@ -478,6 +478,7 @@ static const struct twlreg_info TWL4030_INFO_##label =
+=3D { \
+ 		.type =3D REGULATOR_VOLTAGE, \
+ 		.owner =3D THIS_MODULE, \
+ 		.enable_time =3D turnon_delay, \
++		.continuous_voltage_range =3D true, \
+ 		.of_map_mode =3D twl4030reg_map_mode, \
+ 		}, \
+ 	}
+
+
+not sure whether it is correct, whether these things are continuous enough.
+If that all is ok, I will of course submit a formal patch.
+
+Regards
+Andreas
+
+--Sig_/phLSzGZi9/nM=tEb3SaLRWC
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0Cb68ACgkQJNaLcl1U
-h9AUbgf6A+P+h4sdG/p+dyYpkKGR3cquJxOVi7Exm40YbqYaCWO0HY5QzQFIuW7J
-gp1fNPT0jE9eSpfZFBDHxSJjBVsaQMBDLa5lxjZoxjR1s+TBCsb1KvZkNeUmqaq+
-MFsy4b4R21CFzZa29LUKVF6d+OP8dror7J4Nrs+XS0qk9B2woSuvtH5XoNQ7blD6
-cL6ibkfEWpaL/LZYpjbAHWdyUD9/xMPBd+3LR6N+FnsqcxdGsC/vExczha6DgWHo
-8vEX3Upy/jAph3CAcBWTx6qmWmroonea5tLg02jqAha/Un+uvVRSSwsOQYiTxqm7
-9ua7ffTjwmyDRxOFrLLz4b0Sb6GeIw==
-=jcCU
+iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl0CdVYACgkQl4jFM1s/
+ye+K2g//QGXv4imVjMS+bJhxOxvePnHgA9xkT3GXJjB1my/12HiWIXt7lsqr67mQ
+K8UmKN1ZazgBCDk77d8s8pLIZXPQOCwNgmQq6OXqeeSKVeR23VLh7q+FAIw62d+G
+p8GGkrh5qPjWncXnzdnAvXSl0qDe5vCvnlTjxwJ4H0H1S/+yBEb8FP6CkJa7Q2yJ
+2eXi1MM308zn2be24+WT7BFFkSWRbsLrOk1d1Tlxofgb4aejN1dymB5xi/VjSj3B
+OWFLvnal5wKnktWjpRhTy+hozzgJN/OQsz8tbkQh73ty68X6DIxXhJLNlcu0uO0n
+oBg2ebKnybEwEDlMhTxWfW9eG5Fk7opiDMUEWpQoj9HSitSzgfDH5M544UzfLeBu
+EVaMMcHxpHLVYKpSJtEfKW+Po6JmnT7ckV4r8i4qzyKUEIkVp5EPryZdX2JPgexn
+83HOiHdkf91I4KpLncAXzcSpoWxe7VJZOWNIudSgF32/tkoopq7hkmaeKCF0ukPi
+WfDtry1onnbfKwxaOpZ+LL5kqq0w99oKgx+jwZseCO/X9+7R5qnvk3NBMM1ado/Q
+RIYPl94GnEDz481cGBsuO/AT3B+MUMi9IchLb4bclHTKNxvllszVoq9Rl+t8mI/J
+L3YtP4UQL9a20qFHyFfE1NvyymW0bsYiWHzsh077OpebgPBepwY=
+=8loG
 -----END PGP SIGNATURE-----
 
---GeDkoc8jIzHasOdk--
+--Sig_/phLSzGZi9/nM=tEb3SaLRWC--
