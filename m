@@ -2,67 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A26254631A
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Jun 2019 17:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7992946BA3
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Jun 2019 23:16:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725999AbfFNPlg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Jun 2019 11:41:36 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:44104 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725780AbfFNPlg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 14 Jun 2019 11:41:36 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id BDF8DA992A2F1DCED3A4;
-        Fri, 14 Jun 2019 23:41:31 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Fri, 14 Jun 2019
- 23:41:23 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <kishon@ti.com>, <lorenzo.pieralisi@arm.com>, <bhelgaas@google.com>
-CC:     <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH] PCI: dwc: pci-dra7xx: Add missing include file
-Date:   Fri, 14 Jun 2019 23:40:44 +0800
-Message-ID: <20190614154044.4972-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1726530AbfFNVQS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Jun 2019 17:16:18 -0400
+Received: from [89.32.41.185] ([89.32.41.185]:43314 "EHLO slot0.normalihy.ga"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S1726512AbfFNVQS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 14 Jun 2019 17:16:18 -0400
+X-Greylist: delayed 1990 seconds by postgrey-1.27 at vger.kernel.org; Fri, 14 Jun 2019 17:16:17 EDT
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=normalihy.ga;
+ h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID; i=slaoma@normalihy.ga;
+ bh=LF69dDschg8kOsoWmykprZXCKM4=;
+ b=CwGpeN8ZAi0A/B3cVNVN+tFQQkmzYHAgDk/cuMqGzmBflPmdsXUpSnE8p2AzqPrKYtKPjJTRG1vc
+   cPyrDe0o3q3DpCehNlG3/npK8+rE/p89Q6Mx8hEd4qh1dQGZolc3BZCVijA+6M6Ol3nHIPpmdnL4
+   bJL1YC0I61ikVFUDcljAB/bnUEhKyP/xYJydoU33WcVEwJbcD1M7XRZ7BrqgWX2oB9dSdKkdL07L
+   JLZObGrxVXVSDYDtZlSAyW+nyKukEtg+x15L049xaw0hUJ9FtYSpvszLjcMaMRINQ0T9YgQPdiMz
+   i/XFnbu7A4VI4jU6W8CyDtVCXOnyxwPtad2pGw==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=normalihy.ga;
+ b=u7e31GyesR25bJ2yeF8/4SiPICbKtYqhfZqDBM8yZsb8pA16AY87JcehH7VX01wzOueHAq1ZLqOW
+   ZDWyrzxd7VNWGOh0MBG7KqiDiUHPPx0nAqRbS62S/MvopMg29h7xfPmlKjIu99GogLJZUcJ6oqlV
+   7iq763rM69tjT60IOm8+kHTonHcpJDpA5KKbaXiuhRh2390LGW6Stl3Lv0TckZw0COxSqxWikdIG
+   rqZkUKQJ0/SNE3OehaaOFLVSua4d6bv6FNCwyHsSGbn3G4aev83Z15ZeBgQTwItpTFMYMi5Xxw8f
+   ZtbQ/PLZLDpHz7U/AZ6yvShl8EQbf+Ppi++Xbg==;
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: INQUIRY -AGRA POLANDS
+To:     Recipients <slaoma@normalihy.ga>
+From:   "Mrkt dept" <slaoma@normalihy.ga>
+Date:   Fri, 14 Jun 2019 13:33:18 -0700
+Reply-To: agra.poland@aol.com
+Message-ID: <0.0.2.493.1D522F05A88CEFA.0@slot0.normalihy.ga>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix build error:
+Hello Sir,
 
-drivers/pci/controller/dwc/pci-dra7xx.c:
- In function dra7xx_pcie_probe:
-drivers/pci/controller/dwc/pci-dra7xx.c:777:10:
- error: implicit declaration of function devm_gpiod_get_optional;
- did you mean devm_regulator_get_optional? [-Werror=implicit-function-declaration]
+Greetings rom Agra Polands.
+we have been building our international business since 1997, dealing with a=
+ wide range of luxury consumer goods in order to efficiently and effectivel=
+y satisfy all our customers=E2=80=99 demands.
 
-  reset = devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH);
+Kindly confirm if you be able to supply us with our desired items.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/pci/controller/dwc/pci-dra7xx.c | 1 +
- 1 file changed, 1 insertion(+)
+What is your Payment terms and Shipments?.
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 419451e..4234ddb 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -26,6 +26,7 @@
- #include <linux/types.h>
- #include <linux/mfd/syscon.h>
- #include <linux/regmap.h>
-+#include <linux/gpio/consumer.h>
- 
- #include "../../pci.h"
- #include "pcie-designware.h"
--- 
-2.7.4
+Regards
 
+Riccardo Corbo
+International Buyer & Analyst
+Address:Via Trento, 7/F - Lomazzo (CO) - Italy VAT IT 12165160156 =
 
+agra.poland@aol.com
