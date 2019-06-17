@@ -2,95 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E26C47A90
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2019 09:15:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC7247FB1
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2019 12:31:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725827AbfFQHPF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Jun 2019 03:15:05 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:51494 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725826AbfFQHPF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jun 2019 03:15:05 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5H7F2sh045275;
-        Mon, 17 Jun 2019 02:15:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1560755702;
-        bh=1KiWNol22bOYzL01WVy0sgNUkt47J5o6+/RPRsqVDlc=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=PkNPQh9JiJLF2L4LhcXUt2uveSVgOsls62y6XhwFUgsaf73c61j0d+CqocqP0Azz0
-         NvaLWILitMmJu2iR1EzjDfjE++A2q+fzBvcqvNWhzSCPgOSHSlaAaj9pTyW6xrfE/K
-         CRmB1SRUUj11VxGrT8fqYnapP/UZw4cXzm+Ps4SQ=
-Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5H7F2SO123976
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 17 Jun 2019 02:15:02 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 17
- Jun 2019 02:15:02 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 17 Jun 2019 02:15:02 -0500
-Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5H7F0r4016991;
-        Mon, 17 Jun 2019 02:15:00 -0500
-Subject: Re: [GIT PULL] Immutable branch between MFD and Regulator due for the
- v5.3 merge window
-To:     Lee Jones <lee.jones@linaro.org>
-CC:     <broonie@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <t-kristo@ti.com>
-References: <20190612144620.28331-1-j-keerthy@ti.com>
- <20190617070341.GC16364@dell>
-From:   Keerthy <j-keerthy@ti.com>
-Message-ID: <2a3240e2-75f5-ef87-8fa7-0162a84fb590@ti.com>
-Date:   Mon, 17 Jun 2019 12:45:48 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726607AbfFQKbS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Jun 2019 06:31:18 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:38394 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726091AbfFQKbS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jun 2019 06:31:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=TSyEikwRmMeCR1bDMoxiHnUHKSbz82o6XWDHp751sE8=; b=V0bCupC+fPPlIT6U9yltJLPOm
+        3m2GY3ZyZB8EzOkTf2juEOeWdQnkcC1qO276A140mr7s3g6n6wKcZjQn1b8dU+HF5+ML21PBO8Ar0
+        pF6bVAIAHmsdaUqWaWgWnj9VoChqZxrPKQxNY84eykDQiRbUR47VU/CIGh7Ss94nC3/Qo=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=finisterre.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1hcout-0001Ms-Qe; Mon, 17 Jun 2019 10:31:11 +0000
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+        id 311C2440046; Mon, 17 Jun 2019 11:31:11 +0100 (BST)
+Date:   Mon, 17 Jun 2019 11:31:11 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     tony@atomide.com, lgirdwood@gmail.com, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        sboyd@kernel.org, nm@ti.com, vireshk@kernel.org,
+        letux-kernel@openphoenux.org
+Subject: Re: [PATCH] regulator: twl: mark vdd1/2 as continuous on twl4030
+Message-ID: <20190617103111.GM5316@sirena.org.uk>
+Mail-Followup-To: Andreas Kemnade <andreas@kemnade.info>, tony@atomide.com,
+        lgirdwood@gmail.com, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        sboyd@kernel.org, nm@ti.com, vireshk@kernel.org,
+        letux-kernel@openphoenux.org
+References: <20190615163314.28173-1-andreas@kemnade.info>
 MIME-Version: 1.0
-In-Reply-To: <20190617070341.GC16364@dell>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="bNLLTo5eXWXFd6av"
+Content-Disposition: inline
+In-Reply-To: <20190615163314.28173-1-andreas@kemnade.info>
+X-Cookie: Editing is a rewording activity.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
+--bNLLTo5eXWXFd6av
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 17/06/19 12:33 PM, Lee Jones wrote:
-> Enjoy!
-> 
-> The following changes since commit a188339ca5a396acc588e5851ed7e19f66b0ebd9:
-> 
->    Linux 5.2-rc1 (2019-05-19 15:47:09 -0700)
-> 
-> are available in the Git repository at:
-> 
->    git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-regulator-v5.3
-> 
-> for you to fetch changes up to 7ee63bd74750a2c6fac31805ca0ac67f2522bfa5:
-> 
->    regulator: lp87565: Add 4-phase lp87561 regulator support (2019-06-17 08:00:24 +0100)
-> 
-> ----------------------------------------------------------------
-> Immutable branch between MFD and Regulator due for the v5.3 merge window
-> 
-> ----------------------------------------------------------------
-> Keerthy (3):
->        dt-bindings: mfd: lp87565: Add LP87561 configuration
->        mfd: lp87565: Add support for 4-phase LP87561 combination
->        regulator: lp87565: Add 4-phase lp87561 regulator support
+On Sat, Jun 15, 2019 at 06:33:14PM +0200, Andreas Kemnade wrote:
 
-Thanks Lee Jones.
+> The VDD1/VDD2 regulators on twl4030 are neither defined with
+> voltage lists nor with the continuous flag set, so
+> regulator_is_supported_voltage() returns false and an error
+> before above mentioned commit (which was considered success)
+> The result is that after the above mentioned commit cpufreq
+> does not work properly e.g. dm3730.
 
-> 
->   Documentation/devicetree/bindings/mfd/lp87565.txt | 36 +++++++++++++++++++++++
->   drivers/mfd/lp87565.c                             |  4 +++
->   drivers/regulator/lp87565-regulator.c             | 17 ++++++++++-
->   include/linux/mfd/lp87565.h                       |  2 ++
->   4 files changed, 58 insertions(+), 1 deletion(-)
-> 
+Why is this a good fix and not defining the supported voltages?  These
+look like fairly standard linear range regulators.
+
+--bNLLTo5eXWXFd6av
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0Ha+sACgkQJNaLcl1U
+h9CySgf/QMQ2EqpD1L/XFhmLo/ZBQ0MxTTbrhP3mxCoktiXaHq/8rC1GKin90FQ+
+63Z79sD50NvjwOao024deSYu+7MVpCoojPdVwdizjH/B2meplYkB5fw3yhHKvsKc
++r1BYXVYODtZC590X8RcFCT4nO91acJoSbkA9dbHhp16+qnyjy/7sr9OmtDwTYkw
+qVjma1T5nDgWfw1G9bQ6WAdQHSdZtuo7LYmPbrvpPXNAaTv2Va2YssbniIOWNgsW
+sC/YRIuwWUztdeRwfhWIbyt3elAP0kUmoRVD1O3WzQx4STBpn97C++fDwjDwgn7H
+F99QnvGMDroMdwasCwHr5TcSfoWAKQ==
+=Awof
+-----END PGP SIGNATURE-----
+
+--bNLLTo5eXWXFd6av--
