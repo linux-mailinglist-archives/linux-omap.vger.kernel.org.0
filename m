@@ -2,101 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 656AC47A67
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2019 09:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96AAD47AED
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2019 09:28:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725906AbfFQHDq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Jun 2019 03:03:46 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:46491 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725778AbfFQHDq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jun 2019 03:03:46 -0400
-Received: by mail-wr1-f66.google.com with SMTP id n4so8592013wrw.13
-        for <linux-omap@vger.kernel.org>; Mon, 17 Jun 2019 00:03:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=4+pITYSfaf6rsitQnMBBcSbRxuZE47ZzaATw3AkXEIY=;
-        b=GlJiJVygE2SJu2dlv813B1LT1RBKsB8OADALaafZKHFOhQ6+Veg/uRGRyHJ9lHmpoQ
-         y2JLsWtApQC7szDYnTKUWgYBQknS8vLCK0cl8EgERMGZ9zLX/OugYJ4McPN/eGHWAyHR
-         L2bLqp/FOdRjxFs0rgdKIKWFBxOjOAd9qRnR40dMDOpSH/V4oYJmqiUwimyX62BBsJ91
-         HLTyEfJb7c4L7wl+TgA/oEMGHFHnGjGk19dEK2ercGoMHw6rJ25h32PTHHW6HGF+FuiW
-         k2M/vsYAcUeBRxC84OvLHu1q3A2Vpv+fHsMVrc09tMivqGC0PoIRMU39XYBCoqGfaU2Z
-         FUEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=4+pITYSfaf6rsitQnMBBcSbRxuZE47ZzaATw3AkXEIY=;
-        b=bbwIREeh8ghn/wGw/ALZ8dgC5AbuyTUma3+KxINe/Q6VAG92YfmkUwz7XTlqzHzWUe
-         YsWhddAgFCDnoTZ6+lQsAf6MnUKHeRO1BhU3nTXlMixinzdLNYvgdAndp2aWDW1Bimac
-         9vX5JuCk4g0FL11FD1LU3fymNb0mE3ymHKQRFYN6peGsh9+9fV6/G8omU9T4oBeMp1Ay
-         f7S0ajNUs9cfrgRcPuMdC90DtuddlxKwFWtHMn/vuTevSgF4hYXmlfggTk/DZOjianD5
-         gkrTvCv0tEuOAoh2DjgDxSUL5Fd4NwXGozvdaPjQaCauxOHPoL+ZCv1/ePOe57gsbwhb
-         XEgg==
-X-Gm-Message-State: APjAAAWcddd7QHC2RLQLZG3NAmDJrNMPY6dz8qQyxoAqngY+Tfp+6PIS
-        uGP6MmxGb6GTub9vN6ApQB5Mvg==
-X-Google-Smtp-Source: APXvYqzNat4IzfDWlts1T6Zm9jqhh/J1uCafDL7GG5Mn60bm6L8LeVgA4j3nnEkpv4fL1f34nwj4bA==
-X-Received: by 2002:a5d:5302:: with SMTP id e2mr59875456wrv.347.1560755023967;
-        Mon, 17 Jun 2019 00:03:43 -0700 (PDT)
-Received: from dell ([2.27.35.243])
-        by smtp.gmail.com with ESMTPSA id u23sm8108217wmj.33.2019.06.17.00.03.43
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 17 Jun 2019 00:03:43 -0700 (PDT)
-Date:   Mon, 17 Jun 2019 08:03:41 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Keerthy <j-keerthy@ti.com>
-Cc:     broonie@kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, t-kristo@ti.com
-Subject: [GIT PULL] Immutable branch between MFD and Regulator due for the
- v5.3 merge window
-Message-ID: <20190617070341.GC16364@dell>
-References: <20190612144620.28331-1-j-keerthy@ti.com>
+        id S1726665AbfFQH2u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Jun 2019 03:28:50 -0400
+Received: from slot0.nejknio.cf ([89.32.41.233]:45407 "EHLO slot0.nejknio.cf"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726302AbfFQH2t (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 17 Jun 2019 03:28:49 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=nejknio.cf;
+ h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID; i=trade1@nejknio.cf;
+ bh=73Xs4LxjK+lP+h5mKCyFyWTpkoQ=;
+ b=XhdQGmylof+D2b23HuocSxN6r5gLqGXVMnJpX6/xjjPjkw5TA1lms2qzL23plhT0rQkltqRx9w2K
+   q9MVzdwlBJFnEE8nhuo/S9O3e5dUTKErYAhL+f2lgNm9tlzaBoSK2SqrNsEBcAXAC6LbcqaE09As
+   lgAe742six7T//Du5XUmTkCCp4aA2LpRkHkHgDe9zl0dhFlJUeQop+evXzzLzaPoKK+5uJ40AhqA
+   ZJUq1LE2CTENwAQ0fxeHxa+4ZPJvaLl+5xge6qnV5V9rYyx0I9MAmOwumy/fLy/YGKcreP6fRkuE
+   7k7FxIVjd4+WYFBqLqsIuqs04iHWr2P3GXH1QQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=nejknio.cf;
+ b=BRbq5E3R44zUU6dPv+LeaU3AE9flhEbNprmbA1z2iEwojy/BTBprWlBatEv6NhxH5Cuq6F3oCz5V
+   dlHM8hetMh9RfkcbC7flmbczQrAZ5YtWPrMA68JAje7cxjJjPQ9tAiCOjDJHJ2v/VkeEn5Nw25o1
+   Yt/N/h3r/+ghKxKsRjsdCpB0wUOYUNvZaq7I6/i1QV//Dsucfc3hmZYnDap6uhGcy2LbMjueCKMA
+   EkZX0ExvGFocL4EWwfee4bkDZZhl+QEUW2UDc+0p950rYOCHdpV6dN4HJyCwnGnpNCtl+Kn29hOF
+   drzsbXiKv+bSIsp7XQREU2XSKBC22RIT/fWD2w==;
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190612144620.28331-1-j-keerthy@ti.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: PRODUCT INQUIRY FOR EXPORT SHIPMENT
+To:     Recipients <trade1@nejknio.cf>
+From:   "Mark Maths" <trade1@nejknio.cf>
+Date:   Mon, 17 Jun 2019 10:08:38 +0300
+Reply-To: purchase_m.maths@aol.com
+Message-ID: <0.0.1.877.1D524DB717C76CE.0@slot0.nejknio.cf>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Enjoy!
+Dear Sales team,
+ =
 
-The following changes since commit a188339ca5a396acc588e5851ed7e19f66b0ebd9:
+In furtherance to our market research, we have reviewed all your products t=
+ypes and we have finally interested in your product for our market here in =
 
-  Linux 5.2-rc1 (2019-05-19 15:47:09 -0700)
 
-are available in the Git repository at:
+United State for your production. We introduce ourselves as Emilxa Tram SRL=
+, A general group of company located in the United State. =
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-regulator-v5.3
 
-for you to fetch changes up to 7ee63bd74750a2c6fac31805ca0ac67f2522bfa5:
+We are sourcing for new suppliers from your location =
 
-  regulator: lp87565: Add 4-phase lp87561 regulator support (2019-06-17 08:00:24 +0100)
 
-----------------------------------------------------------------
-Immutable branch between MFD and Regulator due for the v5.3 merge window
+Kindly advice us if you accept new purchase orders, I will forward our PO f=
+or urgent order.
 
-----------------------------------------------------------------
-Keerthy (3):
-      dt-bindings: mfd: lp87565: Add LP87561 configuration
-      mfd: lp87565: Add support for 4-phase LP87561 combination
-      regulator: lp87565: Add 4-phase lp87561 regulator support
+Waiting for your response to send order. Reply to ( purchase_m.maths@aol.co=
+m)
 
- Documentation/devicetree/bindings/mfd/lp87565.txt | 36 +++++++++++++++++++++++
- drivers/mfd/lp87565.c                             |  4 +++
- drivers/regulator/lp87565-regulator.c             | 17 ++++++++++-
- include/linux/mfd/lp87565.h                       |  2 ++
- 4 files changed, 58 insertions(+), 1 deletion(-)
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Best regards.
+Mark Maths
+Company Address:
+Emilxa Tram SRL Company Limited
+P.O. Box 978
+Road Town
+Tortola
+British Virgin Islands
+Contact information:
+Tel: +1 (284) 493 7235
+Email: purchase_m.maths@aol.com
+https://meridianbvi.com/contact-us/
