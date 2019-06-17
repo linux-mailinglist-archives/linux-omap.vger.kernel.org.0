@@ -2,124 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19EB5489F4
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2019 19:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B68FC48C4A
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2019 20:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726200AbfFQRVf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Jun 2019 13:21:35 -0400
-Received: from mail.andi.de1.cc ([85.214.239.24]:58880 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725995AbfFQRVf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 17 Jun 2019 13:21:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
-        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=4afMFHfci1u5XXeLng+byGIrAzWSNyHsyI06871YI5k=; b=FR9ugC9LJ0EMC2/WW4dLztG7v
-        Z9BFt8fEyX5RVGOXY8z489nJKdESRtqNRSNS5QHNxjvaXV0RnundYRxH+Vx87UQTZp3a0HPVzEDna
-        nPP0c7qOVDer/AdFchb2UCLDMJiwwy2CLxPoHPRWNjCzYHTknewrQi9lZbL/JKINkSPLo=;
-Received: from p200300ccff076f007ee9d3fffe1fa246.dip0.t-ipconnect.de ([2003:cc:ff07:6f00:7ee9:d3ff:fe1f:a246] helo=eeepc)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1hcvJz-0004Db-89; Mon, 17 Jun 2019 19:21:31 +0200
-Received: from [::1] (helo=localhost)
-        by eeepc with esmtp (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1hcvJy-0005Fn-DA; Mon, 17 Jun 2019 19:21:30 +0200
-Date:   Mon, 17 Jun 2019 19:21:16 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     tony@atomide.com, lgirdwood@gmail.com, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        sboyd@kernel.org, nm@ti.com, vireshk@kernel.org,
-        letux-kernel@openphoenux.org
-Subject: Re: [PATCH] regulator: twl: mark vdd1/2 as continuous on twl4030
-Message-ID: <20190617192116.053951e8@kemnade.info>
-In-Reply-To: <20190617170255.GF5316@sirena.org.uk>
-References: <20190615163314.28173-1-andreas@kemnade.info>
-        <20190617103111.GM5316@sirena.org.uk>
-        <20190617130357.41204ff7@kemnade.info>
-        <20190617114048.GN5316@sirena.org.uk>
-        <20190617182743.7f40f2ee@aktux>
-        <20190617170255.GF5316@sirena.org.uk>
-X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/VP/ge4m0D4p08_w=ity.hXK"; protocol="application/pgp-signature"
+        id S1726026AbfFQSlh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Jun 2019 14:41:37 -0400
+Received: from mout.kundenserver.de ([212.227.17.24]:35253 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725764AbfFQSlh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jun 2019 14:41:37 -0400
+Received: from orion.localdomain ([77.2.173.233]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MhUDl-1iFYm80Vff-00eexp; Mon, 17 Jun 2019 20:41:15 +0200
+From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     thloh@altera.com, linus.walleij@linaro.org,
+        bgolaszewski@baylibre.com, andriy.shevchenko@linux.intel.com,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, grygorii.strashko@ti.com,
+        ssantosh@kernel.org, khilman@kernel.org, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
+        patches@opensource.cirrus.com
+Subject: [PATCH 01/30] include: linux: platform_device: more helpers for declaring platform drivers
+Date:   Mon, 17 Jun 2019 20:40:42 +0200
+Message-Id: <1560796871-18560-1-git-send-email-info@metux.net>
+X-Mailer: git-send-email 1.9.1
+X-Provags-ID: V03:K1:vh3WgaKAfp/7utsDwGStG8lhMEJOLPpqeqqOIPZUy69iRDhMgUT
+ YLO0VVH9+WSHOOP9Z9lTkwLZQut5VFowC3UxPBimZV2gDZsASGuddTCo4Ns+x279im1k6P6
+ DvVmuitj/sUJGSikRzupru9N53/CfW5itFY6p4aDEVz9PvxnW7pBVq3Fmi/cVgqMjBnVHGa
+ GhxJ055QzOASmoYXb/xGw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:pncoYwVZfPU=:I4jSkF7FQyUU1Sq0ZMKvoJ
+ hrJzfvo2len4wsFtN0hwymlMcBge1MDGz+loqbRkJ8CW/uRDselgl9z8OUHkvxhAJwTUPCoK2
+ 5LRdxHWKDEVzf+MuRQjoI+ISMzc40B9oTOcQXNJn3uxLp24Zf0lG++O4eNVoKQJk32AVy3b6T
+ 7z80l+YlX2u6QXjMp2DzSlFJ5FwvWeJ2nTmoWP8EpQeg8OoAf/ecvdpSWa7ZjRgf3udyWH7Fm
+ YTcg2Rho7x7lehyZlIG+aFWHsQqBlWWsAa2cKA0/W8Nlk4QHva+ZiPenQ4qo+tavkhrew/M1J
+ 99WAeRqb8RxlmqjxXqIVewncVfPRIbnHN4lm53x1O4kYrdlRETFiqL3wsiLhsU6pb7OhSpcke
+ H01Gpa7OSgdd+7tbdwfSE2dnCuhFHgxdI9iP2KiBrO08v6ihVnsWKvCjCdsBr0wd0c/vmqaaD
+ cOC+hxmoLR4uO7790+Uwko4cRo813Uc1adwb/A7nrMNIWc3D1yWASdCxy0X14MJ5ewLUt3EMS
+ 04MllSWdEijwsXKnH9zr+YctR/GxkORREQwZab5xab0l6k+QY4bGbB1FH1I6l1cMBHHJ0EYMf
+ xUbRGtlHTBwRBpR7kHDfTij/AkHg00n1c4hTwOWu7/YHW1ud65SgcWkdAVvYU8Mr1ylUhXiUU
+ 1LeCBRSQvuBLsKgKGHNygUZdlvOtR7m3hQ+MhrZslo8e24+3/0fbPcwoAc1RtbmIk3gFaYxiZ
+ TlsWX1yXNmkScOxTVP7Gxd5Jxz50lkfGbbRVwQ==
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---Sig_/VP/ge4m0D4p08_w=ity.hXK
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: Enrico Weigelt <info@metux.net>
 
-On Mon, 17 Jun 2019 18:02:55 +0100
-Mark Brown <broonie@kernel.org> wrote:
+Add more helper macros for trivial driver init cases, similar to the
+already existing module_platform_driver()+friends - now for those which
+are initialized at other stages. Lots of drivers couldn't use the existing
+macros, as they need to be called at different init stages, eg. subsys,
+postcore, arch.
 
-> On Mon, Jun 17, 2019 at 06:27:43PM +0200, Andreas Kemnade wrote:
->=20
-> > Citing tps65950 trm page 55: =20
->=20
-> > The device contains three switch-mode power supplies (SMPS):
-> > =E2=80=A2 VDD1: 1.2-A, buck DC/DC converter (VOUT =3D 0.6 V to 1.45 V, =
-in steps of 12.5 mV)
-> > =E2=80=A2 VDD2: 600-mA buck DC/DC converter (VOUT =3D 0.6 V to 1.45 V, =
-in steps of 12.5 mV, and 1.5 V as a
-> >    single programmable value) =20
->=20
-> > you are right, they are not really continuous. So should I add these
-> > 68 steps they have as a voltage list? =20
->=20
-> There's helpers for linear mappings, you should be able to use those
-> (see helpers.c).
->=20
-ok, I will send a 2 with such a list.
+This helps to further reduce driver init boilerplate.
 
-Thanks for the hint.
+Signed-off-by: Enrico Weigelt <info@metux.net>
+---
+ include/linux/platform_device.h | 51 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-> > I think they are nearly continuous, so we should IMHO rather take that
-> > not that strict. I guess there are no really continuous regulators, all
-> > have steps as voltage is specified in a limited resolution. So what is
-> > the exact meaning of that flag here? =20
->=20
-> This was added for devices with extremely high resolution interfaces
-> like some microcontroller interfaces that take voltage values directly
-> (mirroring the regulator API) or PWM regulators - it's for cases where
-> enumerating all the voltages is unreasonable.  The TWL4030 regulators
-> look fairly standard in comparison.
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index beb25f2..5f3a967 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -259,6 +259,57 @@ static inline void platform_set_drvdata(struct platform_device *pdev,
+ } \
+ module_exit(__platform_driver##_exit);
+ 
++/* postcore_platform_driver() - Helper macro for drivers that don't do
++ * anything special in module init/exit.  This eliminates a lot of
++ * boilerplate.  Each module may only use this macro once, and
++ * calling it replaces postcore_initcall() and module_exit()
++ */
++#define postcore_platform_driver(__platform_driver) \
++static int __init __platform_driver##_init(void) \
++{ \
++	return platform_driver_register(&(__platform_driver)); \
++} \
++postcore_initcall(__platform_driver##_init); \
++static void __exit __platform_driver##_exit(void) \
++{ \
++	platform_driver_unregister(&(__platform_driver)); \
++} \
++module_exit(__platform_driver##_exit);
++
++/* subsys_platform_driver() - Helper macro for drivers that don't do
++ * anything special in module init/exit.  This eliminates a lot of
++ * boilerplate.  Each module may only use this macro once, and
++ * calling it replaces subsys_initcall() and module_exit()
++ */
++#define subsys_platform_driver(__platform_driver) \
++static int __init __platform_driver##_init(void) \
++{ \
++	return platform_driver_register(&(__platform_driver)); \
++} \
++subsys_initcall(__platform_driver##_init); \
++static void __exit __platform_driver##_exit(void) \
++{ \
++	platform_driver_unregister(&(__platform_driver)); \
++} \
++module_exit(__platform_driver##_exit);
++
++/* arch_platform_driver() - Helper macro for drivers that don't do
++ * anything special in module init/exit.  This eliminates a lot of
++ * boilerplate.  Each module may only use this macro once, and
++ * calling it replaces arch_initcall() and module_exit()
++ */
++#define arch_platform_driver(__platform_driver) \
++static int __init __platform_driver##_init(void) \
++{ \
++	return platform_driver_register(&(__platform_driver)); \
++} \
++arch_initcall(__platform_driver##_init); \
++static void __exit __platform_driver##_exit(void) \
++{ \
++	platform_driver_unregister(&(__platform_driver)); \
++} \
++module_exit(__platform_driver##_exit);
++
+ /* builtin_platform_driver_probe() - Helper macro for drivers that don't do
+  * anything special in device init.  This eliminates some boilerplate.  Each
+  * driver may only use this macro once, and using it replaces device_initcall.
+-- 
+1.9.1
 
-well, VDD1 is a lot more continuous than e.g. VAUX3, but your examples
-seem to be even more continuous. But maybe a comment in the api documentati=
-on
-might be helpful so that people do not misinterpret the meaning.
-
-Regards,
-Andreas
-
---Sig_/VP/ge4m0D4p08_w=ity.hXK
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl0HzAwACgkQl4jFM1s/
-ye/IoxAAuLW2LEMjp4xn39FDONGqu0QFyP9KNVd/Qur8jRIjxoXWgvkzwPTufX4R
-WMpf0hIhoyLcZVk+EJ46FeGqNavX77W2R+kqx8qPo57uVt+ZhP2vgda7V32xE/9l
-kYiyAzDnO7iVREnSSV39d8JRMz+QM86aKoGK7Int93AsIFwlTdRpaAOHXsf3dRiw
-PO6EZv96aytWmchRcvMAGMz02L65AkFRpyPCUbVCfd6QqVq+ddz4SHQPJTh1dtU8
-ubUE9oYmsLYg+5MeiOR6hNx+xZgIk086SbmeqRqdFZ8f21G44p8AIGDRRBx3HNX7
-usoIhX6O+kHR6m3tyTLbsINjURG60AvYRvNj2xqvIkRo9yr92Cr1moE/gzblckp4
-s8Jw/nA9cI7F7htdAFPJBRT+t5KZl2uI+HyxoA3kAzAuqSx2ZbD8lYJk2uSGLDOb
-gC4Ii/XIuweASfSLIkMcKBNPOvX62d2++rYVWrBmWhLYp8GA4ofNJzvCWhBPZkE5
-rLt8U3ejevmb0s8Embx+9M9Bs1DriliGMrdRqLpjg56T4sWiWfJYGy9exud0svhE
-cKU8XnylrRtOJvu9yHE3BDqR34FAMLjpwI+jKHnhJCfb+qWgpA7/+xmbpT01Rd7x
-DFHHIfoLhwJCM/2q/sWzan+S8AMgt9mmF7bbxxt6IThSEuhc8ic=
-=D/c6
------END PGP SIGNATURE-----
-
---Sig_/VP/ge4m0D4p08_w=ity.hXK--
