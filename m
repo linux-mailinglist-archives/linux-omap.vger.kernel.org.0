@@ -2,78 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0B884833C
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2019 14:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B476748380
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Jun 2019 15:07:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726028AbfFQMzo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Jun 2019 08:55:44 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:45045 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727921AbfFQMzo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jun 2019 08:55:44 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1N3KgE-1ibs0F23KE-010PaW; Mon, 17 Jun 2019 14:55:25 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Paul Walmsley <paul@pwsan.com>,
+        id S1726286AbfFQNHh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Jun 2019 09:07:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38044 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725983AbfFQNHh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 17 Jun 2019 09:07:37 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 25B9720861;
+        Mon, 17 Jun 2019 13:07:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560776856;
+        bh=YEze8d0ugX/o37Qat8tEvyzluGQMF4GPJRGRLiubo7A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T8IcNFQif6dtxeAQFZKGxX3KZE+HknYXD1IUtwMVufd9JJqg7lIVaSVTEjJir+Rab
+         SuMnirjeUS+oQBFYUxHnUQhxHi58+DwOwEdO1D9ysmVnAOAziOQszhXuyYVHA9lUZ+
+         rMqfHFhPYT1DTT3aoqSd64zw4agHKe7c7Ldjsw8Y=
+Date:   Mon, 17 Jun 2019 15:07:34 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Paul Walmsley <paul@pwsan.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Tony Lindgren <tony@atomide.com>,
         Russell King <linux@armlinux.org.uk>,
         Kevin Hilman <khilman@kernel.org>, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH, for GregKH] ARM: omap1: remove unused variable
-Date:   Mon, 17 Jun 2019 14:55:02 +0200
-Message-Id: <20190617125521.1553103-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
+Subject: Re: [PATCH, for GregKH] ARM: omap1: remove unused variable
+Message-ID: <20190617130734.GA15784@kroah.com>
+References: <20190617125521.1553103-1-arnd@arndb.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:5sZGK4gs2Z6lmbY+AZRULzOzFNndqrsR+LR3N/b8eoORxP0RDRK
- 4cwluOKmjFxZCnLo2qjBpxUUor/ZXJ6iEOFu4JpoLJpxM9m4apj+ajihoQh0JF6jBNqRUk6
- 6PPyM14TQksrd7+xKxkYUtkmSnkp4rcQ+bNDJB86ByweuvD+ZWfuaaSvro2a99gv7/O6PtM
- yrVhks6FHyXfuGJOb8tkQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:vOzSgpnzn8Y=:1UhMFQ7PRhzaTbKtTHzgsT
- 5+AiVHzBehXpewrih74danSoQRVN7gVvj2LwcJMjovTHaV/Wyw4ViTKEqbVzd4scs1XsCGzO1
- Uf0MYtPBFdXpjUY7EdnT9n/Sx3X9ZEv8buU8UjwG9r3csAMpb2DG0k+A8Vwe8WtV+JBbW4hKF
- kkQSzdm3YZz5daeUE8MxrYUfJlpl8jXHmlR9FAsDz748cfxqiwvYi7r6d3oGWCa9krHTvldF9
- ifuTXbZZ6/s9zRxzsA0Iw+lbc7b4iW+MWhBp6MF/HOakiWDQvowMgPEK9q6cGqiJmA60GqvJk
- 27fGHmd3qp997d5pGrZUgbUtg+9eRe65Pi4CC42FghZ/FqHhAtMjHZz2YdVhUReZ51Ju0jOxW
- iK6OrUR3wNTS0Of90ifwvPRkTzJ3uXQESeImSIeNO+VSFjTJJ3AffNyJfV7moQF4BdCeZn9pb
- hCStqGC+UbBGwjmOi/U1OhkYFluLjG46BwkaFV70Qkk4z8Xe8AyUaKfreqTQweEvBWTN5djKA
- Knz3ZQT13EC/45cg0E+EsVNclYxV0dkG/qNoIe3nZ7SUde5whaJV4E2nZbdFCaOILpylFzyRz
- jtB/qrS5wmw9P6iKCkc6aUzpkp5z1xXHXycv695xZdFIBNC5BkoTM+Xsykg+Io46UGfoQ0oux
- s4vvsz8urhMUWnUF5BGBe7aAfYcI2fUWZc7SkLo1iRfeIgzBA5Vu8dsZ8s421DQ22epTb8HCj
- uwKQnAgsCRwDixLu77x5b2TVETajW7qitnG9hA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190617125521.1553103-1-arnd@arndb.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The cleanup of the debugfs functions left one variable behind that
-should now be removed as well:
+On Mon, Jun 17, 2019 at 02:55:02PM +0200, Arnd Bergmann wrote:
+> The cleanup of the debugfs functions left one variable behind that
+> should now be removed as well:
+> 
+> arch/arm/mach-omap1/clock.c:1008:6: error: unused variable 'err' [-Werror,-Wunused-variable]
+> 
+> Fixes: d5ddd5a51726 ("arm: omap1: no need to check return value of debugfs_create functions")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/arm/mach-omap1/clock.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-arch/arm/mach-omap1/clock.c:1008:6: error: unused variable 'err' [-Werror,-Wunused-variable]
+Oops, sorry about that, odd that 0-day never reported it :(
 
-Fixes: d5ddd5a51726 ("arm: omap1: no need to check return value of debugfs_create functions")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/arm/mach-omap1/clock.c | 1 -
- 1 file changed, 1 deletion(-)
+I'll go queue this up now, thanks.
 
-diff --git a/arch/arm/mach-omap1/clock.c b/arch/arm/mach-omap1/clock.c
-index 3d7ab2bcf46c..a5a50efc8e17 100644
---- a/arch/arm/mach-omap1/clock.c
-+++ b/arch/arm/mach-omap1/clock.c
-@@ -1005,7 +1005,6 @@ static void clk_debugfs_register_one(struct clk *c)
- 
- static void clk_debugfs_register(struct clk *c)
- {
--	int err;
- 	struct clk *pa = c->parent;
- 
- 	if (pa && !pa->dent)
--- 
-2.20.0
-
+greg k-h
