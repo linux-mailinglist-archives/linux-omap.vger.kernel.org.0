@@ -2,86 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E664B965
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Jun 2019 15:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 792B14BA28
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Jun 2019 15:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731724AbfFSNFy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Jun 2019 09:05:54 -0400
-Received: from mout.kundenserver.de ([212.227.17.10]:60669 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731178AbfFSNFx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jun 2019 09:05:53 -0400
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1M7s1M-1hhPlr438s-0051Nk; Wed, 19 Jun 2019 15:05:38 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     arm@kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: omap2: remove incorrect __init annotation
-Date:   Wed, 19 Jun 2019 15:04:54 +0200
-Message-Id: <20190619130529.1502322-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
+        id S1730404AbfFSNjQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Jun 2019 09:39:16 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:39643 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730389AbfFSNjP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jun 2019 09:39:15 -0400
+Received: by mail-lj1-f195.google.com with SMTP id v18so3299503ljh.6
+        for <linux-omap@vger.kernel.org>; Wed, 19 Jun 2019 06:39:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lixom-net.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=I8Nrwj4ElZXBcf5FVzV3Tn26XcGAm+m+0urFxFQjV6U=;
+        b=N0wVLI3jKk4wObXwz8cGz+NvM5k9FfBKEJGf2fNZDS9Juh5qYLFbZZ+7lPUw6YRIze
+         mbrYkXj5x7m0+q2W4L0/oJFqtsuETgjfmQbQDnszyH5WzhPOhj1RLZ3LPwS6TRyYD9EG
+         mEB3QJb+hALovKwsDjoHPja1+dZ0Yy/fa4AMgmZtOnSrByejKpa1i8hDlhIx8BGVN8BU
+         W6gtnle9d1Czq7W/jiNq3W3nIPle3u6x1GHTVksOFl1+SoC5e7Odg0KnuYXiGyR+WfAA
+         gleCahfGsWUuLOPJhxVzEyuUeoa/635yMuILmCB547Uf/zjeQEw0nlzH+6viwTZUqFgQ
+         8eDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=I8Nrwj4ElZXBcf5FVzV3Tn26XcGAm+m+0urFxFQjV6U=;
+        b=m0yawxYgmyH6jaUaz8sFiu3HlzJtyj2AA5+97nvaN30U5af9qrtm5wnatIhBG3qJU7
+         IHVQTxxX1GIbVHVmmIqrlv42O2OQvWmK+bmfSdBS5WGCDxoUAZDddb6bF1JR4Zo6I7oj
+         SZGgAs9Z7kLn2PiH9qDBtQ0y6kO5gBImsTFyT5uN0MLKUlizXeyF+Jm0UpK7i8fv4QRW
+         aBM6zT4Sq4DHJyE7gGfrQqfL7r5hjOLi0giyhlSEWLQDlrNP1i/cOmWq8xsJzqHtLa4N
+         QgQA3v1WYmMyYDtFYVi4w1AXy2EklOj5HlEi2S18gmX7ZEKHLv7Qp90axMjM+I7wU/aC
+         lOIg==
+X-Gm-Message-State: APjAAAXRvi6NTBxSCNMmU1AbySw5Hx8bGE7JxKvOtInZU5TZ+3xikl5c
+        +PhEL7kZ5/vmyl8GV5w5a5ZzKA==
+X-Google-Smtp-Source: APXvYqweauG+YK6x1oUHhM2R/NzXwxeZlWtJjJkH915o9vNzhAi8CToRGyd13k1Te0NB02ORTjn97w==
+X-Received: by 2002:a2e:9ad1:: with SMTP id p17mr35460317ljj.34.1560951553415;
+        Wed, 19 Jun 2019 06:39:13 -0700 (PDT)
+Received: from localhost (h85-30-9-151.cust.a3fiber.se. [85.30.9.151])
+        by smtp.gmail.com with ESMTPSA id b6sm3020618lfa.54.2019.06.19.06.39.11
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 19 Jun 2019 06:39:12 -0700 (PDT)
+Date:   Wed, 19 Jun 2019 06:25:43 -0700
+From:   Olof Johansson <olof@lixom.net>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [GIT PULL 2/4] dts changes for omap variants for v5.3
+Message-ID: <20190619132543.ojwfslo7rbmznsog@localhost>
+References: <pull-1560399818-512977@atomide.com>
+ <pull-1560399818-512977@atomide.com-2>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:dnAraIqnAFKO4Ee+PXPJF/LL3WFx+kBCx35hS/zH3XPenx1T9Ys
- kgXaZ8E4MOrxh9YQWe2g5fxpnQBAjZAJiNm8/rhI/Q9x58NdE5suxhAdEY176sJhbxqO0ZU
- 0dwSTg4Gvhn+nxBMPKr9Wz38owbJx2ueOa5DEA60MCmTAC8sdf7kVmXLR/nWg7mc692p9Le
- BvoIQPBnyZctUKgIRs8/g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0mRlXBkSslw=:FoLq8ELxMpa2ObJt7RxxZ7
- QQJlQ/XyvjcJchlJGmvbu+7W4CFnMm5z4zxQ1TwUtjrpriuekVOwMyX0PdzUFJ7fXpmHcF/ZW
- yjCB7+ZOpMJj+0ECdwIc0Pd9O0t3fYDc1ahzT9prtfhu/uu4/kd6/jSuXvKKbcE9IdoX3iIkA
- ZAFlq9IT9R+8iOEvGQG7iGZiJAjbBA1MfTwMuxlvDkv7tBZR1ezHdDQjwg4shzvEvIDVl7hEg
- WlPAfmpIvWKIyqR7KHkYlbjHCHvt/gmpzfzsCYJQIEHKW9LSAESmDmoVDV7v8Om9kXBh9BwQT
- ZH0bhfooDV5RhLKH6euGrIeQEl1DeNKGp3DP/huqIiEYezEH0k1KCdkBRduZr9EHFAvEUJChY
- rhMi6qLhqnzdUHUcdc7jpaunWTtFbN7hvCinLppWvCEUCjxHfnlxnoCAIHhBTSlIjusySXLhM
- jftrcky1AQcVoBAgxOGxxnvT1B9qA8y0R9PU/Tfdw34KZ9oUz2P3n0heMcClgTD/qoDKorXGy
- Z27RxBCvyruSt90PIPKW5mSl7huKCyW3u4tDQWwATKwZlHvA3nt6aJtxeAawRaHn6rITq5JXm
- FvTuguSX2tcSG8yNuTNTJ/6iE45AJ222Mr4tj+JbceubmXOsFyceBnZ5iNa5efEIAdwW7oJu9
- Wvj8eI0QnD9UHilbLOp7yk63PY/iCCHOOWdCc6VQoyE460y7ceIEvWFYYO8F86sTz1OjTNA6B
- FxGgg1lfBa7KgEULX59U37Mgu4FH1j2G2JzutA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <pull-1560399818-512977@atomide.com-2>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-omap3xxx_prm_enable_io_wakeup() is marked __init, but its caller is not, so
-we get a warning with clang-8:
+On Thu, Jun 13, 2019 at 12:10:51AM -0700, Tony Lindgren wrote:
+> From: "Tony Lindgren" <tony@atomide.com>
+> 
+> The following changes since commit a188339ca5a396acc588e5851ed7e19f66b0ebd9:
+> 
+>   Linux 5.2-rc1 (2019-05-19 15:47:09 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.3/dt-signed
+> 
+> for you to fetch changes up to 8f62581f820d32eec9698e477ddff21ebfbe0541:
+> 
+>   Merge branch 'baltos' into omap-for-v5.3/dt (2019-06-12 00:57:27 -0700)
+> 
+> ----------------------------------------------------------------
+> dts changes for omap variants for v5.3
+> 
+> This series of changes improves support for few boards:
+> 
+> - configure another lcd type for logicpd torpedo devkit
+> 
+> - a series of updates for am335x phytec boards
+> 
+> - configure mmc card detect pin for am335x-baltos
 
-WARNING: vmlinux.o(.text+0x343c8): Section mismatch in reference from the function omap3xxx_prm_late_init() to the function .init.text:omap3xxx_prm_enable_io_wakeup()
-The function omap3xxx_prm_late_init() references
-the function __init omap3xxx_prm_enable_io_wakeup().
-This is often because omap3xxx_prm_late_init lacks a __init
-annotation or the annotation of omap3xxx_prm_enable_io_wakeup is wrong.
+Merged, thanks!
 
-When building with gcc, omap3xxx_prm_enable_io_wakeup() is always
-inlined, so we never noticed in the past.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Acked-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/mach-omap2/prm3xxx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-omap2/prm3xxx.c b/arch/arm/mach-omap2/prm3xxx.c
-index 05858f966f7d..dfa65fc2c82b 100644
---- a/arch/arm/mach-omap2/prm3xxx.c
-+++ b/arch/arm/mach-omap2/prm3xxx.c
-@@ -433,7 +433,7 @@ static void omap3_prm_reconfigure_io_chain(void)
-  * registers, and omap3xxx_prm_reconfigure_io_chain() must be called.
-  * No return value.
-  */
--static void __init omap3xxx_prm_enable_io_wakeup(void)
-+static void omap3xxx_prm_enable_io_wakeup(void)
- {
- 	if (prm_features & PRM_HAS_IO_WAKEUP)
- 		omap2_prm_set_mod_reg_bits(OMAP3430_EN_IO_MASK, WKUP_MOD,
--- 
-2.20.0
-
+-Olof
