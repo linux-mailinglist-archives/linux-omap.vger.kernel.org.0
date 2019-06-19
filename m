@@ -2,49 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 173AB4A20A
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Jun 2019 15:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8AAF4B624
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Jun 2019 12:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726181AbfFRNYt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Jun 2019 09:24:49 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:34174 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725919AbfFRNYt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Jun 2019 09:24:49 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5IDOh9E096783;
-        Tue, 18 Jun 2019 08:24:43 -0500
+        id S1727085AbfFSKYq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Jun 2019 06:24:46 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:52186 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726959AbfFSKYq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jun 2019 06:24:46 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5JAObhd052264;
+        Wed, 19 Jun 2019 05:24:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1560864283;
-        bh=fEiVVUNxKUTV5pmE+DhrGRrNcaajXtj3g4DtOVkNe0M=;
+        s=ti-com-17Q1; t=1560939877;
+        bh=Rf3pm+iq7urdERtn0NzlcXUHizrExgM7UOvr4JIifow=;
         h=From:To:CC:Subject:Date;
-        b=QlI1GmFLreu8eCjET3RN0CrEx0VSThOz75oIzfCTr1zBTqYix4JHb1h5GJL5Hzmmm
-         K2xN9p2g+k0/rd9zSzGlT7N7Kk0jq9+s7NAJdT38K5Vz1DB+sq0xnPWrpaJPcro3Ux
-         K/1Sqs+gqOhwD74eliSDF2Wlm5/7ssPnG9W/xnEU=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5IDOhbu024943
+        b=UJvDZVNr7vlhA5aAnb5eqHMVVX5oRclFTC7caPuWum6vaBoQj26tXza4ugXG4Jngd
+         APJFWKioTPoMRhX7bHXHuDNmH4r6W1iIEfMNw5u8sDMfdauSGCbfKvn5Nj/WC7sC1m
+         s1B5KBtS9/DuLMC2EidVzLP4tOPR3JuaTy5IfdVk=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5JAObiE097632
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 18 Jun 2019 08:24:43 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 18
- Jun 2019 08:23:42 -0500
+        Wed, 19 Jun 2019 05:24:37 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 19
+ Jun 2019 05:24:37 -0500
 Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE110.ent.ti.com
  (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 18 Jun 2019 08:23:42 -0500
-Received: from feketebors.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5IDNeIC121888;
-        Tue, 18 Jun 2019 08:23:40 -0500
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-To:     <vkoul@kernel.org>
-CC:     <dan.j.williams@intel.com>, <dmaengine@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
+ Frontend Transport; Wed, 19 Jun 2019 05:24:37 -0500
+Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5JAOYY7059883;
+        Wed, 19 Jun 2019 05:24:35 -0500
+From:   Faiz Abbas <faiz_abbas@ti.com>
+To:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-omap@vger.kernel.org>
-Subject: [PATCH] dmaengine: ti: omap-dma: Improved memcpy polling support
-Date:   Tue, 18 Jun 2019 16:24:16 +0300
-Message-ID: <20190618132416.26874-1-peter.ujfalusi@ti.com>
-X-Mailer: git-send-email 2.22.0
+CC:     <mark.rutland@arm.com>, <robh+dt@kernel.org>, <tony@atomide.com>,
+        <faiz_abbas@ti.com>, <robertcnelson@gmail.com>
+Subject: [PATCH] ARM: dts: am57xx: Disable voltage switching for SD card
+Date:   Wed, 19 Jun 2019 15:54:54 +0530
+Message-ID: <20190619102454.5097-1-faiz_abbas@ti.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -54,110 +54,146 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-When a DMA client driver does not set the DMA_PREP_INTERRUPT because it
-does not want to use interrupts for DMA completion or because it can not
-rely on DMA interrupts due to executing the memcpy when interrupts are
-disabled it will poll the status of the transfer.
+If UHS speed modes are enabled, a compatible SD card switches down to
+1.8V during enumeration. If after this a software reboot/crash takes
+place and on-chip ROM tries to enumerate the SD card, the difference in
+IO voltages (host @ 3.3V and card @ 1.8V) may end up damaging the card.
 
-If the interrupts are enabled then the cookie will be set completed in the
-interrupt handler so only check in HW completion when the polling is really
-needed.
+The fix for this is to have support for power cycling the card in
+hardware (with a PORz/soft-reset line causing a power cycle of the
+card). Because the beaglebone X15 (rev A,B and C), am57xx-idks and
+am57xx-evms don't have this capability, disable voltage switching for
+these boards.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+The major effect of this is that the maximum supported speed
+mode is now high speed(50 MHz) down from SDR104(200 MHz).
+
+commit 88a748419b84 ("ARM: dts: am57xx-idk: Remove support for voltage
+switching for SD card") did this only for idk boards. Do it for all
+affected boards.
+
+Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
 ---
-Hi,
+ arch/arm/boot/dts/am571x-idk.dts                | 7 +------
+ arch/arm/boot/dts/am572x-idk.dts                | 7 +------
+ arch/arm/boot/dts/am574x-idk.dts                | 7 +------
+ arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi | 1 +
+ arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts   | 7 +------
+ arch/arm/boot/dts/am57xx-beagle-x15-revc.dts    | 7 +------
+ 6 files changed, 6 insertions(+), 30 deletions(-)
 
-This patch fine-tunes the omap-dma polled memcpy support to be inline with how
-the EDMA driver is handling it.
-
-The polled completion can be tested by applying:
-https://patchwork.kernel.org/patch/10966499/
-
-and run the dmatest with polled = 1 on boards where sDMA is used.
-
-Or boot up any dra7 family device with display enabled. The workaround for DMM
-errata i878 uses polled DMA memcpy.
-
-Regards,
-Peter
-
- drivers/dma/ti/omap-dma.c | 37 ++++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
-index 5ba7d8485026..75d8f7e13c8d 100644
---- a/drivers/dma/ti/omap-dma.c
-+++ b/drivers/dma/ti/omap-dma.c
-@@ -94,6 +94,7 @@ struct omap_desc {
- 	bool using_ll;
- 	enum dma_transfer_direction dir;
- 	dma_addr_t dev_addr;
-+	bool polled;
+diff --git a/arch/arm/boot/dts/am571x-idk.dts b/arch/arm/boot/dts/am571x-idk.dts
+index 66116ad3f9f4..0a043908215c 100644
+--- a/arch/arm/boot/dts/am571x-idk.dts
++++ b/arch/arm/boot/dts/am571x-idk.dts
+@@ -178,14 +178,9 @@
+ };
  
- 	int32_t fi;		/* for OMAP_DMA_SYNC_PACKET / double indexing */
- 	int16_t ei;		/* for double indexing */
-@@ -834,20 +835,10 @@ static enum dma_status omap_dma_tx_status(struct dma_chan *chan,
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default_no_clk_pu>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_sdr12>;
+-	pinctrl-3 = <&mmc1_pins_sdr25>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50_rev20 &mmc1_iodelay_ddr50_conf>;
+-	pinctrl-6 = <&mmc1_pins_sdr104 &mmc1_iodelay_sdr104_rev20_conf>;
+ };
  
- 	ret = dma_cookie_status(chan, cookie, txstate);
+ &mmc2 {
+diff --git a/arch/arm/boot/dts/am572x-idk.dts b/arch/arm/boot/dts/am572x-idk.dts
+index 4f835222c266..8663a9416af6 100644
+--- a/arch/arm/boot/dts/am572x-idk.dts
++++ b/arch/arm/boot/dts/am572x-idk.dts
+@@ -19,14 +19,9 @@
+ };
  
--	if (!c->paused && c->running) {
--		uint32_t ccr = omap_dma_chan_read(c, CCR);
--		/*
--		 * The channel is no longer active, set the return value
--		 * accordingly
--		 */
--		if (!(ccr & CCR_ENABLE))
--			ret = DMA_COMPLETE;
--	}
--
-+	spin_lock_irqsave(&c->vc.lock, flags);
- 	if (ret == DMA_COMPLETE || !txstate)
--		return ret;
-+		goto out;
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default_no_clk_pu>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_sdr12>;
+-	pinctrl-3 = <&mmc1_pins_sdr25>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_rev20_conf>;
+-	pinctrl-6 = <&mmc1_pins_sdr104 &mmc1_iodelay_sdr104_rev20_conf>;
+ };
  
--	spin_lock_irqsave(&c->vc.lock, flags);
- 	vd = vchan_find_desc(&c->vc, cookie);
- 	if (vd) {
- 		txstate->residue = omap_dma_desc_size(to_omap_dma_desc(&vd->tx));
-@@ -868,6 +859,23 @@ static enum dma_status omap_dma_tx_status(struct dma_chan *chan,
- 	}
- 	if (ret == DMA_IN_PROGRESS && c->paused)
- 		ret = DMA_PAUSED;
-+
-+out:
-+	if (ret == DMA_IN_PROGRESS && c->running && c->desc &&
-+	    c->desc->polled && c->desc->vd.tx.cookie == cookie) {
-+		uint32_t ccr = omap_dma_chan_read(c, CCR);
-+		/*
-+		 * The channel is no longer active, set the return value
-+		 * accordingly
-+		 */
-+		if (!(ccr & CCR_ENABLE)) {
-+			struct omap_desc *d = c->desc;
-+			ret = DMA_COMPLETE;
-+			omap_dma_start_desc(c);
-+			vchan_cookie_complete(&d->vd);
-+		}
-+	}
-+
- 	spin_unlock_irqrestore(&c->vc.lock, flags);
+ &mmc2 {
+diff --git a/arch/arm/boot/dts/am574x-idk.dts b/arch/arm/boot/dts/am574x-idk.dts
+index dc5141c35610..7935d70874ce 100644
+--- a/arch/arm/boot/dts/am574x-idk.dts
++++ b/arch/arm/boot/dts/am574x-idk.dts
+@@ -24,14 +24,9 @@
+ };
  
- 	return ret;
-@@ -1233,7 +1241,10 @@ static struct dma_async_tx_descriptor *omap_dma_prep_dma_memcpy(
- 	d->ccr = c->ccr;
- 	d->ccr |= CCR_DST_AMODE_POSTINC | CCR_SRC_AMODE_POSTINC;
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default_no_clk_pu>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_default>;
+-	pinctrl-3 = <&mmc1_pins_hs>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_conf>;
+-	pinctrl-6 = <&mmc1_pins_ddr50 &mmc1_iodelay_sdr104_conf>;
+ };
  
--	d->cicr = CICR_DROP_IE | CICR_FRAME_IE;
-+	if (tx_flags & DMA_PREP_INTERRUPT)
-+		d->cicr |= CICR_FRAME_IE;
-+	else
-+		d->polled = true;
+ &mmc2 {
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
+index 2341a56ebab9..0cdfd2853ba8 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
+@@ -433,6 +433,7 @@
  
- 	d->csdp = data_type;
+ 	bus-width = <4>;
+ 	cd-gpios = <&gpio6 27 GPIO_ACTIVE_LOW>; /* gpio 219 */
++	no-1-8-v;
+ };
  
+ &mmc2 {
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts b/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts
+index 5a77b334923d..34c69965821b 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts
+@@ -19,14 +19,9 @@
+ };
+ 
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_sdr12>;
+-	pinctrl-3 = <&mmc1_pins_sdr25>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_rev11_conf>;
+-	pinctrl-6 = <&mmc1_pins_sdr104 &mmc1_iodelay_sdr104_rev11_conf>;
+ 	vmmc-supply = <&vdd_3v3>;
+ 	vqmmc-supply = <&ldo1_reg>;
+ };
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts b/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts
+index 17c41da3b55f..ccd99160bbdf 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts
+@@ -19,14 +19,9 @@
+ };
+ 
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_sdr12>;
+-	pinctrl-3 = <&mmc1_pins_sdr25>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_rev20_conf>;
+-	pinctrl-6 = <&mmc1_pins_sdr104 &mmc1_iodelay_sdr104_rev20_conf>;
+ 	vmmc-supply = <&vdd_3v3>;
+ 	vqmmc-supply = <&ldo1_reg>;
+ };
 -- 
-Peter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+2.19.2
 
