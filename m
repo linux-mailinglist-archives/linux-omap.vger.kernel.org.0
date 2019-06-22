@@ -2,78 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E7424F435
-	for <lists+linux-omap@lfdr.de>; Sat, 22 Jun 2019 09:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A4B4F4AE
+	for <lists+linux-omap@lfdr.de>; Sat, 22 Jun 2019 11:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726148AbfFVHow (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 22 Jun 2019 03:44:52 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:33862 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726099AbfFVHow (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Jun 2019 03:44:52 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5M7ioUC102053;
-        Sat, 22 Jun 2019 02:44:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1561189490;
-        bh=qQtXR14x4+gV1DNHGvOFHxW3UZSeZjxVv+1CVz6yETA=;
-        h=To:From:Subject:Date;
-        b=zFjnEzzLwkbXvnf3neinbJ/5K6rz2S1sSrK4sGRGsH6Z9bkRnQPaFwSWnNL03wLz9
-         aqjVjxUJUh5G/nN9Gu0MjTG0cD6C+u4ng+f4l03vbWzTyUOUeaVYOJJW3tFyGwHkqv
-         LPDh8Og96dWD4LV1HfflUmiFeoNbct9y20saUmqM=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5M7ioQg117008
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 22 Jun 2019 02:44:50 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Sat, 22
- Jun 2019 02:44:50 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Sat, 22 Jun 2019 02:44:50 -0500
-Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5M7imcI106156;
-        Sat, 22 Jun 2019 02:44:49 -0500
-To:     Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-From:   Keerthy <j-keerthy@ti.com>
-Subject: DS0 broken on Linux-next-20190621
-Message-ID: <12e578d2-1b54-67aa-a81e-5ce5a956fcd3@ti.com>
-Date:   Sat, 22 Jun 2019 13:15:23 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726285AbfFVJ1B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 22 Jun 2019 05:27:01 -0400
+Received: from eposta.erbakan.edu.tr ([95.183.198.3]:44428 "EHLO
+        eposta.erbakan.edu.tr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726187AbfFVJ1A (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Jun 2019 05:27:00 -0400
+X-Greylist: delayed 439 seconds by postgrey-1.27 at vger.kernel.org; Sat, 22 Jun 2019 05:26:59 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by eposta.erbakan.edu.tr (Postfix) with ESMTP id 147D31217C95D;
+        Sat, 22 Jun 2019 12:19:36 +0300 (+03)
+Received: from eposta.erbakan.edu.tr ([127.0.0.1])
+        by localhost (eposta.erbakan.edu.tr [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ukFf_sinQxQl; Sat, 22 Jun 2019 12:19:35 +0300 (+03)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by eposta.erbakan.edu.tr (Postfix) with ESMTP id AF5331217C95E;
+        Sat, 22 Jun 2019 12:19:34 +0300 (+03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 eposta.erbakan.edu.tr AF5331217C95E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=erbakan.edu.tr;
+        s=9A114B22-0D17-11E9-AE7D-5CB170D0BDE7; t=1561195175;
+        bh=7gPtLH2IfInUtCVySpji1swR+cf+cxpGTko9mBBSIuM=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=AIuOdmgrK9U/Eh5bXpIONezwWcS7yCheCf3Wx6M0k7Yf2N7hgVSOjMlOztSUc6xVP
+         Td4Z799K7JTaMlzjzvL7rKqxVmTQ5+SzaJ0jsgSiFS1BoNd2+7jWr9gHXwoOQje5xo
+         Rl5FNTv9YY4RBw4/v3wDRGmCzg50GyHM8GlJ0od/uws1vItJxvMPt6AykJDoPRpGI5
+         2s6iyrfuwuD0sOmadBZl8s3KBYiYJahevISkfig31MIUCSjhjzBGeX6bbqkkp8vmSt
+         n/8v/WQE9HK9wzgAPcsCYSwKRGYl6MOBkDXeZVGTFLfRCHIRdl1KUAjw/yeYupv5xS
+         KV8c+6dHgjBcA==
+X-Virus-Scanned: amavisd-new at eposta.erbakan.edu.tr
+Received: from eposta.erbakan.edu.tr ([127.0.0.1])
+        by localhost (eposta.erbakan.edu.tr [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id CZ6AfGiJxw2S; Sat, 22 Jun 2019 12:19:34 +0300 (+03)
+Received: from eposta.erbakan.edu.tr (eposta.konya.edu.tr [172.42.44.72])
+        by eposta.erbakan.edu.tr (Postfix) with ESMTP id F2AC81217C94D;
+        Sat, 22 Jun 2019 12:19:25 +0300 (+03)
+Date:   Sat, 22 Jun 2019 12:19:25 +0300 (EET)
+From:   =?utf-8?B?QsO2bMO8bQ==?= Sekreteri <fatihyilmaz@erbakan.edu.tr>
+Reply-To: EDDIE <eddiejimephra@gmail.com>
+Message-ID: <759304707.8526753.1561195165608.JavaMail.zimbra@erbakan.edu.tr>
+Subject: SPENDE
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Originating-IP: [185.217.171.24]
+X-Mailer: Zimbra 8.8.11_GA_3799 (zclient/8.8.11_GA_3799)
+Thread-Index: whmRs/HBmT6HBi7gFA5mljULgdNCKQ==
+Thread-Topic: SPENDE
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
 
-Seems like suspend fails on am437x-gp-evm on the latest next branch.
 
-commit e2d28c40292bdc35553d599e5bbbeaefbab49416 (HEAD -> local_next)
-Author: Stephen Rothwell <sfr@canb.auug.org.au>
-Date:   Fri Jun 21 20:58:07 2019 +1000
-
-Basic suspend is broken i believe.
-
-commit 9e0babf2c06c73cda2c0cd37a1653d823adb40ec
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sun Jun 16 08:49:45 2019 -1000
-
-     Linux 5.2-rc5
-
-Is fine.
-
-I have not done a bisect yet. I will see if that gets better in the next 
-couple of days else will need to debug.
-
-- Keerthy
-
+Ich habe eine Spende in H&ouml;he von 3,1 Millionen Euro f&uuml;r Sie. Ich bin zurzeit an Krebs erkrankt und meine Gesundheit wird nicht besser. Ich habe eine Lotterie gewonnen und seitdem habe ich mein Leben und ich m&ouml;chte den Armen helfen.( eddiejimephra@gmail.com)
