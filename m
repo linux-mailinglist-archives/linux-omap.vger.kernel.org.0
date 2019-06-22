@@ -2,58 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0250F4F542
-	for <lists+linux-omap@lfdr.de>; Sat, 22 Jun 2019 12:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DB5F4F707
+	for <lists+linux-omap@lfdr.de>; Sat, 22 Jun 2019 18:29:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726121AbfFVKcu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 22 Jun 2019 06:32:50 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:53126 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726112AbfFVKct (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Jun 2019 06:32:49 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5MAWjQq118992;
-        Sat, 22 Jun 2019 05:32:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1561199565;
-        bh=flcX7zQ9OZpuV/CKYOEk9fLhQeytmb0ChQLomlZaq+M=;
-        h=Subject:From:To:CC:References:Date:In-Reply-To;
-        b=nzVxnfh6qbY/zf2tn0TJMDJ6uAdxIvzKpl2qbuJLso1HBwhQ2cnyQk3Quee3OWQ5J
-         4jXM798+0w4dO0mjHngczokHYZtnTZWOd5lAi93iSfHSF6w9EG7MkoBx3/LDuKfLfa
-         ttU9oxAD7O2ETrrF7K1YMbDPa33WO0DoCtZ1nT24=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5MAWjaK113205
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sat, 22 Jun 2019 05:32:45 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Sat, 22
- Jun 2019 05:32:45 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Sat, 22 Jun 2019 05:32:45 -0500
-Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5MAWg7X094973;
-        Sat, 22 Jun 2019 05:32:43 -0500
-Subject: Re: DS0 broken on Linux-next-20190621
-From:   Keerthy <j-keerthy@ti.com>
-To:     Tony Lindgren <tony@atomide.com>, <ivan.khoronzhuk@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-CC:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Nori, Sekhar" <nsekhar@ti.com>, "Kristo, Tero" <t-kristo@ti.com>
-References: <12e578d2-1b54-67aa-a81e-5ce5a956fcd3@ti.com>
- <ff88c023-737c-ddf1-0842-0adb8c2ef9ac@ti.com>
-Message-ID: <9aaca290-1f15-dba1-0c82-02d835cfd140@ti.com>
-Date:   Sat, 22 Jun 2019 16:03:18 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726455AbfFVQ3P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 22 Jun 2019 12:29:15 -0400
+Received: from sonic316-11.consmr.mail.bf2.yahoo.com ([74.6.130.121]:37200
+        "EHLO sonic316-11.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726452AbfFVQ3J (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 22 Jun 2019 12:29:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220948; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=Sqmma7rQCC9csXbuiUU3W2/3JNoNH7S8264Vtax3p6vjP/GOy3xpD3wbU2PRR9kt9Hpkf+FIWW9PMCnOCaw1O79buHof/+e4XCSgtAjG8InDhCml6NU6QqPjKJ3zDc6ntgnpVqWtJnbhtjoUqIbv1W6GU8NTi8qVdCcmhrTc1IZ6aiOxpvBar7FQmN3jAwZcqruMWVYBgbk1LAoNqGvQ8jjOiTjNhCDJjpcLi94EE60gk+qIfYgu1AQDdd9wVo7X6i3XlVR9KCYw0l7ikZmlDSVkcSrrmJBlognD3+QlW4wko0RiyOGAXy+sEMAa8UXhFfxEEhf+A0WfqKBKwkVQbg==
+X-YMail-OSG: 3TA6aNEVM1mHk4tfSNROwYxIcekGBuzt5YSl8uAf.0_HHQ2LGDBhX2FGT2.Do_z
+ _0DV280q.YGRxDLoRDSJM82e2d5hsgoPZVcKxWsle6Z3oHX8Omo6hY9bu5QjJLY68zQNKFXygJQb
+ l1z62dHRy69xOFvl6tq.81EbMsOh1_cirrcCk2fMX_Jmwx0sebG__1rhE6wzzo_NDP9VbvIqZ9bR
+ 2icQk1E4jS_eT.9i5S8Sf0xsdShl9dMibpAXRU93yOYuHTQIa_P77tZTcStgCsIVxKiDvC3a0NxY
+ 8gZtRhwFdS641nFzLb368UTov.mB4xMHIDhTJv9NazaTg1j8sw18ET29s.TqlBmXHg8vLU94qBpd
+ 5PlUttniCcoNFEJpnLF3UUydECDiL8Z11cc18YJXwsIeDfFkYqHGX5XdA4jNj054mfKUIhoNEakn
+ WUKps59xvPMOhDCVBujS9v_vJClG4fXrBtjl.W_LQqwsSCutxIcdvaqHEtURhc6MkAEPdp4bTGI.
+ srA9smb.rYGHYAQmfGBYSrMpzCORaFwD3sLBOdwCdBjEVVdu.sBEOGddWsx2T8AZRYYy5nvR9Foz
+ bPsz41tE4__SqGjxrktEJ2_s2wIQAUza2deZFDGXc6T62eXwgZpA4Pp2nGTmGbFQ6h4nAMd51HJh
+ T3GzQn8s4GOn.0BKRwZDpwf7w10rv6JPk5nAgLZOaX7LfFs2yeq7fnFrg4OCOiG9MCMxrUNq6gf7
+ VomHdE0MTMCDmL3Ebk4K0YUhXaCTht27MRDaoJusaRVRGavzgn0vj3Z4n7xxu27l7AAqrNZTRmUI
+ n_b8fWLMzkIFoI7ZcmL_O5d2bYctv7x0WqIS4U6onMjRr4HtPSPFTejqwRtmzChG01EgeDt1Xu9J
+ 3fp8ciCxthupmhAtFqCrukMze7VttucN.DpeM8bKmVw1EDgn.s_L.L9fVdDwg2umGkLNazDxoP0_
+ dzbgtjASRdO1.JaxkowN5gRT6rna4oVoAmbHsjQ4rLTjBWSWz8ZqQDlV43apY.buigbJvn4Qmvf1
+ GxhsPAlHlnnGfjZ9pr3BSAVXKd_Qs83vYaBOYxWdXDlwxBl9.1.bnCTqFBLXCTND1BZASE2pli5W
+ fu842ttK3BMCdw5COU_fvmE4HTFnTUQ5tN2a6KHryWZiInkZpWdo8I9xFucw8IlPI3qY2rDSegZk
+ LLEiGCawsrUj04Yg3uv6LVIzJaVvTytAzboyOeQVTgoj.0EfkvEtgpXm3
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:29:08 +0000
+Date:   Sat, 22 Jun 2019 16:29:03 +0000 (UTC)
+From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
+Reply-To: miss.fmayusuf11@gmail.com
+Message-ID: <1743094696.311303.1561220943310@mail.yahoo.com>
+Subject: From:Miss: Fatima Yusuf.
 MIME-Version: 1.0
-In-Reply-To: <ff88c023-737c-ddf1-0842-0adb8c2ef9ac@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
@@ -61,53 +47,20 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 
 
-On 22/06/19 3:34 PM, Keerthy wrote:
-> 
-> 
-> On 22/06/19 1:15 PM, Keerthy wrote:
->> Hi Tony,
->>
->> Seems like suspend fails on am437x-gp-evm on the latest next branch.
->>
->> commit e2d28c40292bdc35553d599e5bbbeaefbab49416 (HEAD -> local_next)
->> Author: Stephen Rothwell <sfr@canb.auug.org.au>
->> Date:   Fri Jun 21 20:58:07 2019 +1000
->>
->> Basic suspend is broken i believe.
->>
->> commit 9e0babf2c06c73cda2c0cd37a1653d823adb40ec
->> Author: Linus Torvalds <torvalds@linux-foundation.org>
->> Date:   Sun Jun 16 08:49:45 2019 -1000
->>
->>      Linux 5.2-rc5
->>
->> Is fine.
->>
->> I have not done a bisect yet. I will see if that gets better in the 
->> next couple of days else will need to debug.
-> 
-> git bisect bad
-> bfe59032bd6127ee190edb30be9381a01765b958 is the first bad commit
-> commit bfe59032bd6127ee190edb30be9381a01765b958
-> Author: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-> Date:   Wed Jun 12 00:49:03 2019 +0300
-> 
->      net: ethernet: ti: cpsw: use cpsw as drv data
-> 
-> Turns out the above patch is breaking suspend resume on am43/33 also.
-> 
-> Just reverting this patch from latest next-20190621 resolves the issue.
+From:Miss: Fatima Yusuf.
 
-Posted:
+For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
 
-https://patchwork.kernel.org/patch/11011263/
+I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
 
-That fixes the Suspend/resume issues on AM43.
+Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
 
-- Keerthy
-> 
-> - Keerthy
-> 
->>
->> - Keerthy
->>
+I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
+
+I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
+
+My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
+
+I am waiting to hear from you.
+Yours Sincerely,
+Miss.Fatima Yusuf.
