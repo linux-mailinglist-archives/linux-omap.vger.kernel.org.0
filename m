@@ -2,56 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1A4B4F4AE
-	for <lists+linux-omap@lfdr.de>; Sat, 22 Jun 2019 11:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4944B4F50B
+	for <lists+linux-omap@lfdr.de>; Sat, 22 Jun 2019 12:03:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726285AbfFVJ1B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 22 Jun 2019 05:27:01 -0400
-Received: from eposta.erbakan.edu.tr ([95.183.198.3]:44428 "EHLO
-        eposta.erbakan.edu.tr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726187AbfFVJ1A (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Jun 2019 05:27:00 -0400
-X-Greylist: delayed 439 seconds by postgrey-1.27 at vger.kernel.org; Sat, 22 Jun 2019 05:26:59 EDT
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by eposta.erbakan.edu.tr (Postfix) with ESMTP id 147D31217C95D;
-        Sat, 22 Jun 2019 12:19:36 +0300 (+03)
-Received: from eposta.erbakan.edu.tr ([127.0.0.1])
-        by localhost (eposta.erbakan.edu.tr [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id ukFf_sinQxQl; Sat, 22 Jun 2019 12:19:35 +0300 (+03)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by eposta.erbakan.edu.tr (Postfix) with ESMTP id AF5331217C95E;
-        Sat, 22 Jun 2019 12:19:34 +0300 (+03)
-DKIM-Filter: OpenDKIM Filter v2.10.3 eposta.erbakan.edu.tr AF5331217C95E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=erbakan.edu.tr;
-        s=9A114B22-0D17-11E9-AE7D-5CB170D0BDE7; t=1561195175;
-        bh=7gPtLH2IfInUtCVySpji1swR+cf+cxpGTko9mBBSIuM=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=AIuOdmgrK9U/Eh5bXpIONezwWcS7yCheCf3Wx6M0k7Yf2N7hgVSOjMlOztSUc6xVP
-         Td4Z799K7JTaMlzjzvL7rKqxVmTQ5+SzaJ0jsgSiFS1BoNd2+7jWr9gHXwoOQje5xo
-         Rl5FNTv9YY4RBw4/v3wDRGmCzg50GyHM8GlJ0od/uws1vItJxvMPt6AykJDoPRpGI5
-         2s6iyrfuwuD0sOmadBZl8s3KBYiYJahevISkfig31MIUCSjhjzBGeX6bbqkkp8vmSt
-         n/8v/WQE9HK9wzgAPcsCYSwKRGYl6MOBkDXeZVGTFLfRCHIRdl1KUAjw/yeYupv5xS
-         KV8c+6dHgjBcA==
-X-Virus-Scanned: amavisd-new at eposta.erbakan.edu.tr
-Received: from eposta.erbakan.edu.tr ([127.0.0.1])
-        by localhost (eposta.erbakan.edu.tr [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id CZ6AfGiJxw2S; Sat, 22 Jun 2019 12:19:34 +0300 (+03)
-Received: from eposta.erbakan.edu.tr (eposta.konya.edu.tr [172.42.44.72])
-        by eposta.erbakan.edu.tr (Postfix) with ESMTP id F2AC81217C94D;
-        Sat, 22 Jun 2019 12:19:25 +0300 (+03)
-Date:   Sat, 22 Jun 2019 12:19:25 +0300 (EET)
-From:   =?utf-8?B?QsO2bMO8bQ==?= Sekreteri <fatihyilmaz@erbakan.edu.tr>
-Reply-To: EDDIE <eddiejimephra@gmail.com>
-Message-ID: <759304707.8526753.1561195165608.JavaMail.zimbra@erbakan.edu.tr>
-Subject: SPENDE
+        id S1726281AbfFVKDg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 22 Jun 2019 06:03:36 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:39422 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726112AbfFVKDf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Jun 2019 06:03:35 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5MA3Xkv029912;
+        Sat, 22 Jun 2019 05:03:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1561197813;
+        bh=mvTUzrqP8WUGNR8yimIxg/PeDvzTEN2Ak+AgUiu4NHY=;
+        h=Subject:From:To:References:CC:Date:In-Reply-To;
+        b=gDQU1eeMKM5FuDHD7mwytePriHy3BFjIhDAIiNgNR/DMBbL8eVoj1UuGwOtZ+NIoW
+         R5jvrFUFs1UpP3qzYSRhqdVjInDTTBWtDA8SS7NEMHFUwo8x1dl/VmAoaojOp06XLp
+         OCG6gcelk4AeW4Oy/VhJdlHHNrR3ytVDvYY1TRNY=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5MA3XwA026856
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 22 Jun 2019 05:03:33 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Sat, 22
+ Jun 2019 05:03:33 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Sat, 22 Jun 2019 05:03:33 -0500
+Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5MA3UZY123220;
+        Sat, 22 Jun 2019 05:03:31 -0500
+Subject: Re: DS0 broken on Linux-next-20190621
+From:   Keerthy <j-keerthy@ti.com>
+To:     Tony Lindgren <tony@atomide.com>, <ivan.khoronzhuk@linaro.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+References: <12e578d2-1b54-67aa-a81e-5ce5a956fcd3@ti.com>
+CC:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        "Nori, Sekhar" <nsekhar@ti.com>, "Kristo, Tero" <t-kristo@ti.com>
+Message-ID: <ff88c023-737c-ddf1-0842-0adb8c2ef9ac@ti.com>
+Date:   Sat, 22 Jun 2019 15:34:05 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [185.217.171.24]
-X-Mailer: Zimbra 8.8.11_GA_3799 (zclient/8.8.11_GA_3799)
-Thread-Index: whmRs/HBmT6HBi7gFA5mljULgdNCKQ==
-Thread-Topic: SPENDE
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <12e578d2-1b54-67aa-a81e-5ce5a956fcd3@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
@@ -59,4 +60,42 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 
 
-Ich habe eine Spende in H&ouml;he von 3,1 Millionen Euro f&uuml;r Sie. Ich bin zurzeit an Krebs erkrankt und meine Gesundheit wird nicht besser. Ich habe eine Lotterie gewonnen und seitdem habe ich mein Leben und ich m&ouml;chte den Armen helfen.( eddiejimephra@gmail.com)
+On 22/06/19 1:15 PM, Keerthy wrote:
+> Hi Tony,
+> 
+> Seems like suspend fails on am437x-gp-evm on the latest next branch.
+> 
+> commit e2d28c40292bdc35553d599e5bbbeaefbab49416 (HEAD -> local_next)
+> Author: Stephen Rothwell <sfr@canb.auug.org.au>
+> Date:   Fri Jun 21 20:58:07 2019 +1000
+> 
+> Basic suspend is broken i believe.
+> 
+> commit 9e0babf2c06c73cda2c0cd37a1653d823adb40ec
+> Author: Linus Torvalds <torvalds@linux-foundation.org>
+> Date:   Sun Jun 16 08:49:45 2019 -1000
+> 
+>      Linux 5.2-rc5
+> 
+> Is fine.
+> 
+> I have not done a bisect yet. I will see if that gets better in the next 
+> couple of days else will need to debug.
+
+git bisect bad
+bfe59032bd6127ee190edb30be9381a01765b958 is the first bad commit
+commit bfe59032bd6127ee190edb30be9381a01765b958
+Author: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Date:   Wed Jun 12 00:49:03 2019 +0300
+
+     net: ethernet: ti: cpsw: use cpsw as drv data
+
+Turns out the above patch is breaking suspend resume on am43/33 also.
+
+Just reverting this patch from latest next-20190621 resolves the issue.
+
+- Keerthy
+
+> 
+> - Keerthy
+> 
