@@ -2,82 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B1204EE90
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Jun 2019 20:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E7424F435
+	for <lists+linux-omap@lfdr.de>; Sat, 22 Jun 2019 09:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726759AbfFUSOo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Jun 2019 14:14:44 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:50910 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726755AbfFUSOn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Jun 2019 14:14:43 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5LIERfO044449;
-        Fri, 21 Jun 2019 13:14:27 -0500
+        id S1726148AbfFVHow (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 22 Jun 2019 03:44:52 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:33862 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726099AbfFVHow (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Jun 2019 03:44:52 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5M7ioUC102053;
+        Sat, 22 Jun 2019 02:44:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1561140867;
-        bh=X8GqRi5MahIax6EcHx4+El9aoatiMmSDgbQKpSyfgCo=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=icGVjq8xW1yh/4OPsc4BSMrRiNQ3ddBFvZPRV0UGIBudDXL70oOIYkdM5KoJMo0H+
-         vmUq5kc9Kg5zh3qsNMEB0pn++oUxfDnzoKS6Qj6EDFyMivtH9McVCDowRLcZ5RP8hm
-         0QUiLiZcz1/8b5HNKpsS0ZCI9/kgVYRnnwA4tLs8=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5LIERok003598
+        s=ti-com-17Q1; t=1561189490;
+        bh=qQtXR14x4+gV1DNHGvOFHxW3UZSeZjxVv+1CVz6yETA=;
+        h=To:From:Subject:Date;
+        b=zFjnEzzLwkbXvnf3neinbJ/5K6rz2S1sSrK4sGRGsH6Z9bkRnQPaFwSWnNL03wLz9
+         aqjVjxUJUh5G/nN9Gu0MjTG0cD6C+u4ng+f4l03vbWzTyUOUeaVYOJJW3tFyGwHkqv
+         LPDh8Og96dWD4LV1HfflUmiFeoNbct9y20saUmqM=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5M7ioQg117008
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 21 Jun 2019 13:14:27 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 21
- Jun 2019 13:14:27 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+        Sat, 22 Jun 2019 02:44:50 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Sat, 22
+ Jun 2019 02:44:50 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 21 Jun 2019 13:14:27 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5LIEQBX030102;
-        Fri, 21 Jun 2019 13:14:27 -0500
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-To:     <netdev@vger.kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        Jiri Pirko <jiri@resnulli.us>
-CC:     Florian Fainelli <f.fainelli@gmail.com>,
-        Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Ivan Vecera <ivecera@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [RFC PATCH v4 net-next 11/11] arm: omap2plus_defconfig: enable CONFIG_TI_CPSW_SWITCHDEV
-Date:   Fri, 21 Jun 2019 21:13:14 +0300
-Message-ID: <20190621181314.20778-12-grygorii.strashko@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190621181314.20778-1-grygorii.strashko@ti.com>
-References: <20190621181314.20778-1-grygorii.strashko@ti.com>
+ Frontend Transport; Sat, 22 Jun 2019 02:44:50 -0500
+Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5M7imcI106156;
+        Sat, 22 Jun 2019 02:44:49 -0500
+To:     Tony Lindgren <tony@atomide.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+From:   Keerthy <j-keerthy@ti.com>
+Subject: DS0 broken on Linux-next-20190621
+Message-ID: <12e578d2-1b54-67aa-a81e-5ce5a956fcd3@ti.com>
+Date:   Sat, 22 Jun 2019 13:15:23 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
----
- arch/arm/configs/omap2plus_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+Hi Tony,
 
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 927db1d022d2..ef70b5d537de 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -561,3 +561,4 @@ CONFIG_NET_CLS_MATCHALL=m
- CONFIG_NET_CLS_ACT=y
- CONFIG_NET_ACT_POLICE=m
- CONFIG_NET_ACT_GACT=m
-+CONFIG_TI_CPSW_SWITCHDEV=y
--- 
-2.17.1
+Seems like suspend fails on am437x-gp-evm on the latest next branch.
+
+commit e2d28c40292bdc35553d599e5bbbeaefbab49416 (HEAD -> local_next)
+Author: Stephen Rothwell <sfr@canb.auug.org.au>
+Date:   Fri Jun 21 20:58:07 2019 +1000
+
+Basic suspend is broken i believe.
+
+commit 9e0babf2c06c73cda2c0cd37a1653d823adb40ec
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun Jun 16 08:49:45 2019 -1000
+
+     Linux 5.2-rc5
+
+Is fine.
+
+I have not done a bisect yet. I will see if that gets better in the next 
+couple of days else will need to debug.
+
+- Keerthy
 
