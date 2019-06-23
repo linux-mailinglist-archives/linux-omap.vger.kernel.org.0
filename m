@@ -2,65 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DB5F4F707
-	for <lists+linux-omap@lfdr.de>; Sat, 22 Jun 2019 18:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1AD64FC1C
+	for <lists+linux-omap@lfdr.de>; Sun, 23 Jun 2019 17:13:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726455AbfFVQ3P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 22 Jun 2019 12:29:15 -0400
-Received: from sonic316-11.consmr.mail.bf2.yahoo.com ([74.6.130.121]:37200
-        "EHLO sonic316-11.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726452AbfFVQ3J (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 22 Jun 2019 12:29:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220948; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=Sqmma7rQCC9csXbuiUU3W2/3JNoNH7S8264Vtax3p6vjP/GOy3xpD3wbU2PRR9kt9Hpkf+FIWW9PMCnOCaw1O79buHof/+e4XCSgtAjG8InDhCml6NU6QqPjKJ3zDc6ntgnpVqWtJnbhtjoUqIbv1W6GU8NTi8qVdCcmhrTc1IZ6aiOxpvBar7FQmN3jAwZcqruMWVYBgbk1LAoNqGvQ8jjOiTjNhCDJjpcLi94EE60gk+qIfYgu1AQDdd9wVo7X6i3XlVR9KCYw0l7ikZmlDSVkcSrrmJBlognD3+QlW4wko0RiyOGAXy+sEMAa8UXhFfxEEhf+A0WfqKBKwkVQbg==
-X-YMail-OSG: 3TA6aNEVM1mHk4tfSNROwYxIcekGBuzt5YSl8uAf.0_HHQ2LGDBhX2FGT2.Do_z
- _0DV280q.YGRxDLoRDSJM82e2d5hsgoPZVcKxWsle6Z3oHX8Omo6hY9bu5QjJLY68zQNKFXygJQb
- l1z62dHRy69xOFvl6tq.81EbMsOh1_cirrcCk2fMX_Jmwx0sebG__1rhE6wzzo_NDP9VbvIqZ9bR
- 2icQk1E4jS_eT.9i5S8Sf0xsdShl9dMibpAXRU93yOYuHTQIa_P77tZTcStgCsIVxKiDvC3a0NxY
- 8gZtRhwFdS641nFzLb368UTov.mB4xMHIDhTJv9NazaTg1j8sw18ET29s.TqlBmXHg8vLU94qBpd
- 5PlUttniCcoNFEJpnLF3UUydECDiL8Z11cc18YJXwsIeDfFkYqHGX5XdA4jNj054mfKUIhoNEakn
- WUKps59xvPMOhDCVBujS9v_vJClG4fXrBtjl.W_LQqwsSCutxIcdvaqHEtURhc6MkAEPdp4bTGI.
- srA9smb.rYGHYAQmfGBYSrMpzCORaFwD3sLBOdwCdBjEVVdu.sBEOGddWsx2T8AZRYYy5nvR9Foz
- bPsz41tE4__SqGjxrktEJ2_s2wIQAUza2deZFDGXc6T62eXwgZpA4Pp2nGTmGbFQ6h4nAMd51HJh
- T3GzQn8s4GOn.0BKRwZDpwf7w10rv6JPk5nAgLZOaX7LfFs2yeq7fnFrg4OCOiG9MCMxrUNq6gf7
- VomHdE0MTMCDmL3Ebk4K0YUhXaCTht27MRDaoJusaRVRGavzgn0vj3Z4n7xxu27l7AAqrNZTRmUI
- n_b8fWLMzkIFoI7ZcmL_O5d2bYctv7x0WqIS4U6onMjRr4HtPSPFTejqwRtmzChG01EgeDt1Xu9J
- 3fp8ciCxthupmhAtFqCrukMze7VttucN.DpeM8bKmVw1EDgn.s_L.L9fVdDwg2umGkLNazDxoP0_
- dzbgtjASRdO1.JaxkowN5gRT6rna4oVoAmbHsjQ4rLTjBWSWz8ZqQDlV43apY.buigbJvn4Qmvf1
- GxhsPAlHlnnGfjZ9pr3BSAVXKd_Qs83vYaBOYxWdXDlwxBl9.1.bnCTqFBLXCTND1BZASE2pli5W
- fu842ttK3BMCdw5COU_fvmE4HTFnTUQ5tN2a6KHryWZiInkZpWdo8I9xFucw8IlPI3qY2rDSegZk
- LLEiGCawsrUj04Yg3uv6LVIzJaVvTytAzboyOeQVTgoj.0EfkvEtgpXm3
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:29:08 +0000
-Date:   Sat, 22 Jun 2019 16:29:03 +0000 (UTC)
-From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
-Reply-To: miss.fmayusuf11@gmail.com
-Message-ID: <1743094696.311303.1561220943310@mail.yahoo.com>
-Subject: From:Miss: Fatima Yusuf.
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726586AbfFWPNy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 23 Jun 2019 11:13:54 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:38845 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726417AbfFWPNy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 23 Jun 2019 11:13:54 -0400
+Received: by mail-pf1-f196.google.com with SMTP id y15so1410507pfn.5;
+        Sun, 23 Jun 2019 08:13:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:subject:date:message-id;
+        bh=Xny/Smm8ZOguBx6TIBYh9sfQZ5lBQfd4r1V74iu/FWY=;
+        b=AHq9iXY732JpkFSqZdNIYjZNHnrPNVqUImqq8TWWU45Q3Esqy5KfwrkA9Vb0zJz8hR
+         8p1BVEMu/lR5DwXb36tOM+ZwT5i7oPTfi2M7f36Ix3XTlBygBeCAW/jdWdcC4NFTB9C3
+         8Vag/Y/jhqkr4RhoHTnUy2LuO+R6GGdvJ6TUnKhKyxe3tVw/WOarmd6mMiruUvMjVYbd
+         IMppE2WaX0i2Rlw/yRAHXS0FSm9UwC54+mJKiRSoDOmT6sXtCQcIOvaXfpxmuxS1xogJ
+         0p9gi+R7XHfmvA3x7Kl9RYAyPLh5jt5MJ+S4xWyQZh3AjhYXE9JZI0ij4hSkhFDOelBc
+         3ELA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=Xny/Smm8ZOguBx6TIBYh9sfQZ5lBQfd4r1V74iu/FWY=;
+        b=A6AJpbK0nhXuQL6Fj7VvKRr9JmXWF0Wk5XhZHUrd12dfOlt238J34ToWYPW1O1xuRB
+         Q7MmHY1Nmzyn2jH/QCc6QZ4EsKlrgPwMZn91OKLG74U4FhVNgQ0ETSu2KYwx+LUFBgmR
+         zMpOgSwBdVPBep/sRbXLpSyUl9WIDA4qavSPmgX7Qg1GZuCehJgVuTSQQ9Ff602RvrQN
+         b4twQHS92xnIMKDpL85lxwoBYKhK4hJGrG/UxMuArjQiOp0XaiS8oG7cQN6kzYQL+m4K
+         2vGrRRKBHSOzXy5stsZ3fZi/wO3RlQr4yk77CBK32m2wb+SmxogjKivqQFAXkoqLITp2
+         uqpA==
+X-Gm-Message-State: APjAAAVbIFnW2ja/GEJs0f8YCuXPfK03gX8l4fUqBA75ztnUDQPzVmOr
+        mqRS6bnP6S03HHReq2sT7lg=
+X-Google-Smtp-Source: APXvYqxriftyOkEo1w2RU5r8+lBgCvesL+lma0dOdPirxFZjjUgMMEvh5asrfLLTeV2X5oRX0ldd/A==
+X-Received: by 2002:a17:90a:d3d7:: with SMTP id d23mr18126025pjw.26.1561302833413;
+        Sun, 23 Jun 2019 08:13:53 -0700 (PDT)
+Received: from debian.net.fpt ([1.55.47.94])
+        by smtp.gmail.com with ESMTPSA id p6sm8329194pgs.77.2019.06.23.08.13.43
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 08:13:52 -0700 (PDT)
+From:   Phong Tran <tranmanphong@gmail.com>
+To:     mark.rutland@arm.com, kstewart@linuxfoundation.org,
+        songliubraving@fb.com, andrew@lunn.ch, peterz@infradead.org,
+        nsekhar@ti.com, ast@kernel.org, jolsa@redhat.com,
+        netdev@vger.kernel.org, gerg@uclinux.org,
+        lorenzo.pieralisi@arm.com, will@kernel.org,
+        linux-samsung-soc@vger.kernel.org, daniel@iogearbox.net,
+        tranmanphong@gmail.com, festevam@gmail.com,
+        gregory.clement@bootlin.com, allison@lohutok.net,
+        linux@armlinux.org.uk, krzk@kernel.org, haojian.zhuang@gmail.com,
+        bgolaszewski@baylibre.com, tony@atomide.com, mingo@redhat.com,
+        linux-imx@nxp.com, yhs@fb.com, sebastian.hesselbarth@gmail.com,
+        illusionist.neo@gmail.com, jason@lakedaemon.net,
+        liviu.dudau@arm.com, s.hauer@pengutronix.de, acme@kernel.org,
+        lkundrak@v3.sk, robert.jarzmik@free.fr, dmg@turingmachine.org,
+        swinslow@gmail.com, namhyung@kernel.org, tglx@linutronix.de,
+        linux-omap@vger.kernel.org, alexander.sverdlin@gmail.com,
+        linux-arm-kernel@lists.infradead.org, info@metux.net,
+        gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+        alexander.shishkin@linux.intel.com, hsweeten@visionengravers.com,
+        kgene@kernel.org, kernel@pengutronix.de, sudeep.holla@arm.com,
+        bpf@vger.kernel.org, shawnguo@kernel.org, kafai@fb.com,
+        daniel@zonque.org
+Subject: [PATCH 00/15] cleanup cppcheck signed shifting errors
+Date:   Sun, 23 Jun 2019 22:12:58 +0700
+Message-Id: <20190623151313.970-1-tranmanphong@gmail.com>
+X-Mailer: git-send-email 2.11.0
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+There are errors with cppcheck 
 
+"Shifting signed 32-bit value by 31 bits is undefined behaviour errors"
 
-From:Miss: Fatima Yusuf.
+This is just a mirror changing.
 
-For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
+Phong Tran (15):
+  arm: perf: cleanup cppcheck shifting error
+  ARM: davinci: cleanup cppcheck shifting errors
+  ARM: ep93xx: cleanup cppcheck shifting errors
+  ARM: exynos: cleanup cppcheck shifting error
+  ARM: footbridge: cleanup cppcheck shifting error
+  ARM: imx: cleanup cppcheck shifting errors
+  ARM: ks8695: cleanup cppcheck shifting error
+  ARM: mmp: cleanup cppcheck shifting errors
+  ARM: omap2: cleanup cppcheck shifting error
+  ARM: orion5x: cleanup cppcheck shifting errors
+  ARM: pxa: cleanup cppcheck shifting errors
+  ARM: vexpress: cleanup cppcheck shifting error
+  ARM: mm: cleanup cppcheck shifting errors
+  ARM: bpf: cleanup cppcheck shifting error
+  ARM: vfp: cleanup cppcheck shifting errors
 
-I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
+ arch/arm/kernel/perf_event_v7.c    |   6 +-
+ arch/arm/mach-davinci/ddr2.h       |   6 +-
+ arch/arm/mach-ep93xx/soc.h         | 132 ++++++++++++++++++-------------------
+ arch/arm/mach-exynos/suspend.c     |   2 +-
+ arch/arm/mach-footbridge/dc21285.c |   2 +-
+ arch/arm/mach-imx/iomux-mx3.h      |  64 +++++++++---------
+ arch/arm/mach-ks8695/regs-pci.h    |   4 +-
+ arch/arm/mach-mmp/pm-mmp2.h        |  40 +++++------
+ arch/arm/mach-mmp/pm-pxa910.h      |  76 ++++++++++-----------
+ arch/arm/mach-omap2/powerdomain.c  |   2 +-
+ arch/arm/mach-orion5x/pci.c        |   8 +--
+ arch/arm/mach-pxa/irq.c            |   4 +-
+ arch/arm/mach-vexpress/spc.c       |  12 ++--
+ arch/arm/mm/fault.h                |   6 +-
+ arch/arm/net/bpf_jit_32.c          |   2 +-
+ arch/arm/vfp/vfpinstr.h            |  28 ++++----
+ 16 files changed, 197 insertions(+), 197 deletions(-)
 
-Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
+-- 
+2.11.0
 
-I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
-
-I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
-
-My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
-
-I am waiting to hear from you.
-Yours Sincerely,
-Miss.Fatima Yusuf.
