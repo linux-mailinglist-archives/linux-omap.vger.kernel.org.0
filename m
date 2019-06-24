@@ -2,56 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0C7C50DD1
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 16:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0788951051
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 17:29:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728233AbfFXOXf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Jun 2019 10:23:35 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:54666 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727170AbfFXOXf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 10:23:35 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 4AA411504101A;
-        Mon, 24 Jun 2019 07:23:34 -0700 (PDT)
-Date:   Mon, 24 Jun 2019 07:23:33 -0700 (PDT)
-Message-Id: <20190624.072333.2300932810459542260.davem@davemloft.net>
-To:     j-keerthy@ti.com
-Cc:     ivan.khoronzhuk@linaro.org, andrew@lunn.ch,
-        ilias.apalodimas@linaro.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        t-kristo@ti.com, grygorii.strashko@ti.com, nsekhar@ti.com
-Subject: Re: [PATCH V2] net: ethernet: ti: cpsw: Fix suspend/resume break
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190624051619.20146-1-j-keerthy@ti.com>
-References: <20190624051619.20146-1-j-keerthy@ti.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 24 Jun 2019 07:23:34 -0700 (PDT)
+        id S1729535AbfFXP3B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Jun 2019 11:29:01 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:46678 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726708AbfFXP3A (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 11:29:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=oAjztfS6a11nHbhHo7uC7mDxqHgIvw/jJlFzaOoft6c=; b=ChS7ei37kxum+rWJw+kFlBTPO
+        C/scV2A8FYJo+q7aUFx1PkEmzzt4b5EVV6M1jdpQvr0Gx1lO5RSYlbIId/xZJ25JZx0WNvctgqNzO
+        rAUAboJM7X/Gu3T9M4213MrJRQ7Q/mQ7kswh7gpnMJQh/fxuH2dMJbUPXd3UZUsdk8yWXjFSqLxks
+        20EGrtd6HZnSY8b2S3g+12cmGcfsy0QRYFRXsxS2cf+9CzDBGrqe7U3RJUNo92vPmuQ+UtysgfdZB
+        OIBKgc7xSf41vYlypspPOuf7je/fafDmAxpYAMEVwHpSvsnctIKIuJET9jDFXJoMNBfVMo73uzyy5
+        0pMuLoOBA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hfQsj-0000ti-6T; Mon, 24 Jun 2019 15:27:47 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id C2D8720A585BA; Mon, 24 Jun 2019 17:27:43 +0200 (CEST)
+Date:   Mon, 24 Jun 2019 17:27:43 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Phong Tran <tranmanphong@gmail.com>
+Cc:     acme@kernel.org, alexander.shishkin@linux.intel.com,
+        alexander.sverdlin@gmail.com, allison@lohutok.net, andrew@lunn.ch,
+        ast@kernel.org, bgolaszewski@baylibre.com, bpf@vger.kernel.org,
+        daniel@iogearbox.net, daniel@zonque.org, dmg@turingmachine.org,
+        festevam@gmail.com, gerg@uclinux.org, gregkh@linuxfoundation.org,
+        gregory.clement@bootlin.com, haojian.zhuang@gmail.com,
+        hsweeten@visionengravers.com, illusionist.neo@gmail.com,
+        info@metux.net, jason@lakedaemon.net, jolsa@redhat.com,
+        kafai@fb.com, kernel@pengutronix.de, kgene@kernel.org,
+        krzk@kernel.org, kstewart@linuxfoundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux@armlinux.org.uk,
+        liviu.dudau@arm.com, lkundrak@v3.sk, lorenzo.pieralisi@arm.com,
+        mark.rutland@arm.com, mingo@redhat.com, namhyung@kernel.org,
+        netdev@vger.kernel.org, nsekhar@ti.com, robert.jarzmik@free.fr,
+        s.hauer@pengutronix.de, sebastian.hesselbarth@gmail.com,
+        shawnguo@kernel.org, songliubraving@fb.com, sudeep.holla@arm.com,
+        swinslow@gmail.com, tglx@linutronix.de, tony@atomide.com,
+        will@kernel.org, yhs@fb.com
+Subject: Re: [PATCH V2 00/15] cleanup cppcheck signed shifting errors
+Message-ID: <20190624152743.GG3436@hirez.programming.kicks-ass.net>
+References: <20190623151313.970-1-tranmanphong@gmail.com>
+ <20190624135105.15579-1-tranmanphong@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190624135105.15579-1-tranmanphong@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Keerthy <j-keerthy@ti.com>
-Date: Mon, 24 Jun 2019 10:46:19 +0530
-
-> Commit bfe59032bd6127ee190edb30be9381a01765b958 ("net: ethernet:
-> ti: cpsw: use cpsw as drv data")changes
-> the driver data to struct cpsw_common *cpsw. This is done
-> only in probe/remove but the suspend/resume functions are
-> still left with struct net_device *ndev. Hence fix both
-> suspend & resume also to fetch the updated driver data.
+On Mon, Jun 24, 2019 at 08:50:50PM +0700, Phong Tran wrote:
+> There are errors with cppcheck 
 > 
-> Fixes: bfe59032bd6127ee1 ("net: ethernet: ti: cpsw: use cpsw as drv data")
-> Signed-off-by: Keerthy <j-keerthy@ti.com>
+> "Shifting signed 32-bit value by 31 bits is undefined behaviour errors"
 
-Applied but please make it clear that changes are targetting net-next in the
-future by saying "[PATCH net-next v2] ...." in your Subject line.
+As I've already told you; your checker is bad. That is not in face
+undefined behaviour in the kernel.
 
-Thank you.
+That's not to say you shouldn't clean up the code, but don't give broken
+checkout output as a reason.
