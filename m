@@ -2,119 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D88CA501E8
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 08:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D955A502C6
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 09:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726891AbfFXGGT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Jun 2019 02:06:19 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:34912 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726312AbfFXGGS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 02:06:18 -0400
-Received: by mail-pl1-f193.google.com with SMTP id p1so6272338plo.2
-        for <linux-omap@vger.kernel.org>; Sun, 23 Jun 2019 23:06:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=aGcIyULDIj+/YCJKjZCul6zq9ZyFOh+SAi/ktfFmdnA=;
-        b=ojCRx10N1FWdtoFOzUCjMACQhavDUeLMd4dGW8VDGyit16iBmkUSKO2IAFGfq1Wmbt
-         0uRGTWOvvWsodOBMsw/OvECQDLwMM4B6HhJzGcLD5UbCSu6BmYUm4NczknhOIEj/IuRH
-         XtVJmMowfw5pB397ZN7ISh5oyHyDK3TU/4KAVg12oICmXL0IvNisLpwzbM9LGfjKCFV3
-         AmU2e1hmuxFrZhIYxwhYSIr3p0Qs66yiYKY2I7doKsqcZkBsgcCpRJmL61o9GJg/fFVT
-         BozhLSVASWxIsc0UwIXqdwjvHNQBC68j0zce2ZR7wOxuVHs4cqp5LPKI9Nda+PynZ5Ip
-         2xrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=aGcIyULDIj+/YCJKjZCul6zq9ZyFOh+SAi/ktfFmdnA=;
-        b=MDE8iplvaXMgMKP73xDq9z8nYtcGJFEMcieapp/P3K7rgdmM0usMgGDyd9W3o347J3
-         MghU5trWTxIFWaCyiP/062bxFWvlgijgwXE4ePtw8ZKD51wtTqCkpdQExfMZt3JYWzPI
-         qPnjNlBdFvEfgnk2OLGQwVdOdUgiF16RhxynThP8lxnZZbrzNb1Th0nXZCZhy+40oXPd
-         sDUKIpvjtOU5hr4XP2VFFW5vgVaS8/zF9OV1r3bohiQPvBXGOlDtn6CoWXROpxhfUhGR
-         D6M4puFsaV7b9fKDIi7bQ+PjFYHWHSEbipf9b08Sd+tThwK/kXq77640jsbDANiWcZYB
-         lARg==
-X-Gm-Message-State: APjAAAVbsSvvlj+axdlTq2WYDRGDikGaNjSAh/dN1rOuBRsVxlGfxSzh
-        96gw+xbxCk8rESwhdtJTw7pavw==
-X-Google-Smtp-Source: APXvYqwthf8PxT+L5Pi9Ju4TgVKwn2daZ1Xa+6cWzh6FDJ19THDBLX7OB8cN2dmP9iHMiWNEWVZ3Qw==
-X-Received: by 2002:a17:902:7787:: with SMTP id o7mr458356pll.120.1561356378089;
-        Sun, 23 Jun 2019 23:06:18 -0700 (PDT)
-Received: from localhost ([122.172.211.128])
-        by smtp.gmail.com with ESMTPSA id e10sm6598616pfi.153.2019.06.23.23.06.17
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 23 Jun 2019 23:06:17 -0700 (PDT)
-Date:   Mon, 24 Jun 2019 11:36:15 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     edubezval@gmail.com, linux-kernel@vger.kernel.org,
-        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" <linux-pm@vger.kernel.org>,
-        "open list:TI BANDGAP AND THERMAL DRIVER" 
-        <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH 6/6] thermal/drivers/ti: Remove cooling device usage
-Message-ID: <20190624060615.ptdeejny75x44wue@vireshk-i7>
-References: <20190621132302.30414-1-daniel.lezcano@linaro.org>
- <20190621132302.30414-6-daniel.lezcano@linaro.org>
+        id S1727170AbfFXHLz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Jun 2019 03:11:55 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:51544 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727426AbfFXHLz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 03:11:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=RQ35CdI7OgSCvNIJDvf1p+BfUv8hYylGCi0q85yv+Yw=; b=baaTIpENIFYajuYTAHyVtoJWM
+        a1DUikSr096fgOD3KX66qiitLLwEMKxstZe8F41v2bSIUYioz/6i/Vb3pW05jvnSnC5RPE6dMcTgk
+        FedZTCJIKdzczm2PnKEbJfSoyTfz35zM5fMJsM0iTkOxlNBkJIIR1i0sUUDu1qFJyoqUqf5O1fwMa
+        l74AR53sr2mYYr4dztHj0eXb6WjQaYg+uj0apZv4X+6qDpy7TCzvXnv803NPjM0irg441yMX68Br0
+        7M3ZzB6dbVUOAGX2i68AXvhyavS/LvKi+Yk7Gl2BqJiPyfGlLda1wsZU/Dj3y2X8MalupSjMainTx
+        eExFIV/+A==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hfJ8O-0002ZO-91; Mon, 24 Jun 2019 07:11:24 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id D17A920A021ED; Mon, 24 Jun 2019 09:11:21 +0200 (CEST)
+Date:   Mon, 24 Jun 2019 09:11:21 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Phong Tran <tranmanphong@gmail.com>
+Cc:     mark.rutland@arm.com, kstewart@linuxfoundation.org,
+        songliubraving@fb.com, andrew@lunn.ch, nsekhar@ti.com,
+        ast@kernel.org, jolsa@redhat.com, netdev@vger.kernel.org,
+        gerg@uclinux.org, lorenzo.pieralisi@arm.com, will@kernel.org,
+        linux-samsung-soc@vger.kernel.org, daniel@iogearbox.net,
+        festevam@gmail.com, gregory.clement@bootlin.com,
+        allison@lohutok.net, linux@armlinux.org.uk, krzk@kernel.org,
+        haojian.zhuang@gmail.com, bgolaszewski@baylibre.com,
+        tony@atomide.com, mingo@redhat.com, linux-imx@nxp.com, yhs@fb.com,
+        sebastian.hesselbarth@gmail.com, illusionist.neo@gmail.com,
+        jason@lakedaemon.net, liviu.dudau@arm.com, s.hauer@pengutronix.de,
+        acme@kernel.org, lkundrak@v3.sk, robert.jarzmik@free.fr,
+        dmg@turingmachine.org, swinslow@gmail.com, namhyung@kernel.org,
+        tglx@linutronix.de, linux-omap@vger.kernel.org,
+        alexander.sverdlin@gmail.com, linux-arm-kernel@lists.infradead.org,
+        info@metux.net, gregkh@linuxfoundation.org,
+        linux-kernel@vger.kernel.org, alexander.shishkin@linux.intel.com,
+        hsweeten@visionengravers.com, kgene@kernel.org,
+        kernel@pengutronix.de, sudeep.holla@arm.com, bpf@vger.kernel.org,
+        shawnguo@kernel.org, kafai@fb.com, daniel@zonque.org
+Subject: Re: [PATCH 01/15] arm: perf: cleanup cppcheck shifting error
+Message-ID: <20190624071121.GN3436@hirez.programming.kicks-ass.net>
+References: <20190623151313.970-1-tranmanphong@gmail.com>
+ <20190623151313.970-2-tranmanphong@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190621132302.30414-6-daniel.lezcano@linaro.org>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <20190623151313.970-2-tranmanphong@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 21-06-19, 15:23, Daniel Lezcano wrote:
-> The cpufreq_cooling_unregister() function uses now the policy to
-> unregister itself. The only purpose of the cooling device pointer is
-> to unregister the cpu cooling device.
+On Sun, Jun 23, 2019 at 10:12:59PM +0700, Phong Tran wrote:
+> fix "Shifting signed 32-bit value by 31 bits is undefined behaviour
+> errors"
 > 
-> As there is no more need of this pointer, remove it.
-> 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> ---
->  drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> index 217b1aae8b4f..170b70b6ec61 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> @@ -41,7 +41,6 @@ struct ti_thermal_data {
->  	struct cpufreq_policy *policy;
->  	struct thermal_zone_device *ti_thermal;
->  	struct thermal_zone_device *pcb_tz;
-> -	struct thermal_cooling_device *cool_dev;
->  	struct ti_bandgap *bgp;
->  	enum thermal_device_mode mode;
->  	struct work_struct thermal_wq;
-> @@ -233,6 +232,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
->  {
->  	struct ti_thermal_data *data;
->  	struct device_node *np = bgp->dev->of_node;
-> +	struct thermal_cooling_device *cdev;
->  
->  	/*
->  	 * We are assuming here that if one deploys the zone
-> @@ -256,9 +256,9 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
->  	}
->  
->  	/* Register cooling device */
-> -	data->cool_dev = cpufreq_cooling_register(data->policy);
-> -	if (IS_ERR(data->cool_dev)) {
-> -		int ret = PTR_ERR(data->cool_dev);
-> +	cdev = cpufreq_cooling_register(data->policy);
-> +	if (IS_ERR(cdev)) {
-> +		int ret = PTR_ERR(cdev);
->  		dev_err(bgp->dev, "Failed to register cpu cooling device %d\n",
->  			ret);
->  		cpufreq_cpu_put(data->policy);
+> [arch/arm/kernel/perf_event_v7.c:1080]: (error) Shifting signed 32-bit
+> value by 31 bits is undefined behaviour
+> [arch/arm/kernel/perf_event_v7.c:1436]: (error) Shifting signed 32-bit
+> value by 31 bits is undefined behaviour
+> [arch/arm/kernel/perf_event_v7.c:1783]: (error) Shifting signed 32-bit
+> value by 31 bits is undefined behaviour
 
-And this too..
-
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-
--- 
-viresh
+I don't think that is true; the kernel uses -fno-strict-overflow (which
+implies -fwrapv) and that takes away all the signed UB.
