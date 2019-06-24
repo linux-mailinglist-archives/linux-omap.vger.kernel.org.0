@@ -2,36 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B6DC50D26
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 16:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F2A50D31
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 16:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727172AbfFXOA7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Jun 2019 10:00:59 -0400
-Received: from pandora.armlinux.org.uk ([78.32.30.218]:35072 "EHLO
+        id S1728017AbfFXOCg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Jun 2019 10:02:36 -0400
+Received: from pandora.armlinux.org.uk ([78.32.30.218]:35196 "EHLO
         pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726263AbfFXOA7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 10:00:59 -0400
+        with ESMTP id S1727901AbfFXOCf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 10:02:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
         MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=P36kn/N1hL6vLQjrYYYTpIoKKbISRgU6Xg2zkTQA/00=; b=MgECc+8MDlEJIvcqAD4aHtS+q
-        E49AMGRpq5ij9b70AL2iMMk78Xs6U9I533k3fy54DzceDFaRUBXqHPWBY0aeGw4nG1kaBS0t62qcx
-        /GT3otQBMYifkFlND816aDaL+FX5YxBDfz2+hdzFAYEQjXQjECS7kpyrfR1f4jM2kwoVe9wwrgkuX
-        gg0ZwOGDiFyjLlRIZidhrB1JlownmlZ+nlFtW+PGMpREenznUisZWiojMEykMQh3DYMAE6d+jNZDi
-        yv8S6OmbWsF1EUcnZZPShye9LLcPyhYeRwEjtsmjKuYP4xxZEqe0QJbmILVeXEhP6WVKHcXtRE1cn
-        9EHtNxEEQ==;
-Received: from shell.armlinux.org.uk ([2002:4e20:1eda:1:5054:ff:fe00:4ec]:59038)
+         bh=zZSxwVvfCril3he0j5sVVnq9Oums5ivrZ078cOx8kAU=; b=T1kGrnSSYrMNPlLFuiEIzBqNx
+        rS2N5cBpI30qrO9Oq02nPbzVZPV48XXtXtAO8PYzmgSVdD1duTRlScBD/3WxhXcQUVVbgs6h6f2cg
+        k6E3rCHcqypJyRJX8kPVVDhX8dfNr9kkMNtCVDS3xJfapvb1rixKwuiPGSEyeEsfy824ZXthgg2rw
+        6YcJij50Pp1ffta9EeCAneztN+8M2gJQW60gx/G7ZexA9CZqPV93lQb9ZcGvJwua4EGrw+iSdvXO/
+        y8h5UvoRXRpXNzE7XxtVh/IAZ+FmE/EwDRUIxkVPtzeBbnQF4LCupNMk3rj+9qAY8Vj22BbwN8Bji
+        VGTUcDTiw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59944)
         by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
         (Exim 4.90_1)
         (envelope-from <linux@armlinux.org.uk>)
-        id 1hfPWS-0008Sd-CZ; Mon, 24 Jun 2019 15:00:40 +0100
+        id 1hfPY3-0008Uf-6a; Mon, 24 Jun 2019 15:02:19 +0100
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.89)
         (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1hfPWN-0006LT-9N; Mon, 24 Jun 2019 15:00:35 +0100
-Date:   Mon, 24 Jun 2019 15:00:35 +0100
+        id 1hfPXx-0006Lb-0M; Mon, 24 Jun 2019 15:02:13 +0100
+Date:   Mon, 24 Jun 2019 15:02:12 +0100
 From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
 To:     Phong Tran <tranmanphong@gmail.com>
 Cc:     acme@kernel.org, alexander.shishkin@linux.intel.com,
@@ -54,46 +54,76 @@ Cc:     acme@kernel.org, alexander.shishkin@linux.intel.com,
         shawnguo@kernel.org, songliubraving@fb.com, sudeep.holla@arm.com,
         swinslow@gmail.com, tglx@linutronix.de, tony@atomide.com,
         will@kernel.org, yhs@fb.com
-Subject: Re: [PATCH V2 14/15] ARM: bpf: cleanup cppcheck shifting error
-Message-ID: <20190624140035.36md6cp5ikniluwv@shell.armlinux.org.uk>
+Subject: Re: [PATCH V2 00/15] cleanup cppcheck signed shifting errors
+Message-ID: <20190624140212.p6xvcg5lhtgeeogc@shell.armlinux.org.uk>
 References: <20190623151313.970-1-tranmanphong@gmail.com>
  <20190624135105.15579-1-tranmanphong@gmail.com>
- <20190624135105.15579-15-tranmanphong@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190624135105.15579-15-tranmanphong@gmail.com>
+In-Reply-To: <20190624135105.15579-1-tranmanphong@gmail.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 24, 2019 at 08:51:04PM +0700, Phong Tran wrote:
-> [arch/arm/net/bpf_jit_32.c:618]: (error) Shifting signed 32-bit value by
-> 31 bits is undefined behaviour
+On Mon, Jun 24, 2019 at 08:50:50PM +0700, Phong Tran wrote:
+> There are errors with cppcheck 
 > 
-> Signed-off-by: Phong Tran <tranmanphong@gmail.com>
-> ---
->  arch/arm/net/bpf_jit_32.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> "Shifting signed 32-bit value by 31 bits is undefined behaviour errors"
 > 
-> diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
-> index adff54c312bf..4e8ad26305ca 100644
-> --- a/arch/arm/net/bpf_jit_32.c
-> +++ b/arch/arm/net/bpf_jit_32.c
-> @@ -612,7 +612,7 @@ static inline void emit_a32_mov_se_i64(const bool is64, const s8 dst[],
->  				       const u32 val, struct jit_ctx *ctx) {
->  	u64 val64 = val;
->  
-> -	if (is64 && (val & (1<<31)))
-> +	if (is64 && (val & (BIT(31))))
+> This is just a mirror changing. 
 
-Extra parens are not necessary, please remove.
+"mirror" ?
 
->  		val64 |= 0xffffffff00000000ULL;
->  	emit_a32_mov_i64(dst, val64, ctx);
->  }
+Apart from that and the extra unnecessary parens (which ought to be
+cleaned up) this looks fine to me.
+
+When there's too many parens next to each other, it makes reading
+the expression more difficult - and that is definitely bad, so please
+avoid unecessary parens where possible.
+
+Thanks.
+
+> 
+> V2: Using BIT() macro instead of (1UL << nr) 
+> 
+> Phong Tran (15):
+>   arm: perf: cleanup cppcheck shifting error
+>   ARM: davinci: cleanup cppcheck shifting errors
+>   ARM: ep93xx: cleanup cppcheck shifting errors
+>   ARM: exynos: cleanup cppcheck shifting error
+>   ARM: footbridge: cleanup cppcheck shifting error
+>   ARM: imx: cleanup cppcheck shifting errors
+>   ARM: ks8695: cleanup cppcheck shifting error
+>   ARM: mmp: cleanup cppcheck shifting errors
+>   ARM: omap2: cleanup cppcheck shifting error
+>   ARM: orion5x: cleanup cppcheck shifting errors
+>   ARM: pxa: cleanup cppcheck shifting errors
+>   ARM: vexpress: cleanup cppcheck shifting error
+>   ARM: mm: cleanup cppcheck shifting errors
+>   ARM: bpf: cleanup cppcheck shifting error
+>   ARM: vfp: cleanup cppcheck shifting errors
+> 
+>  arch/arm/kernel/perf_event_v7.c    |   6 +-
+>  arch/arm/mach-davinci/ddr2.h       |   6 +-
+>  arch/arm/mach-ep93xx/soc.h         | 132 ++++++++++++++++++-------------------
+>  arch/arm/mach-exynos/suspend.c     |   2 +-
+>  arch/arm/mach-footbridge/dc21285.c |   2 +-
+>  arch/arm/mach-imx/iomux-mx3.h      |  64 +++++++++---------
+>  arch/arm/mach-ks8695/regs-pci.h    |   4 +-
+>  arch/arm/mach-mmp/pm-mmp2.h        |  40 +++++------
+>  arch/arm/mach-mmp/pm-pxa910.h      |  76 ++++++++++-----------
+>  arch/arm/mach-omap2/powerdomain.c  |   2 +-
+>  arch/arm/mach-orion5x/pci.c        |   8 +--
+>  arch/arm/mach-pxa/irq.c            |   4 +-
+>  arch/arm/mach-vexpress/spc.c       |  12 ++--
+>  arch/arm/mm/fault.h                |   6 +-
+>  arch/arm/net/bpf_jit_32.c          |   2 +-
+>  arch/arm/vfp/vfpinstr.h            |   8 +--
+>  16 files changed, 187 insertions(+), 187 deletions(-)
+> 
 > -- 
 > 2.11.0
 > 
