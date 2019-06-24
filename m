@@ -2,81 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 444C551068
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 17:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9866351AEA
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 20:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730425AbfFXP3b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Jun 2019 11:29:31 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:46706 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728981AbfFXP3b (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 11:29:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=AuLQsK9hRO1fb6NJfONFwxIOQIE7npgOk1R+t9Ub7ts=; b=fpnySevvVrhdEBV3ijKCActWC
-        po7uhKBUpY4QCcVXmmR9NaA+6bVOAV590rzFfaNrM6SKMf6ymxCOx0ZRMdpTY/bcw2H/VxokqTNgW
-        ytMc4jvWg9ZZrcWnHFEqOc6uO6ZjGsfJRjvLkNdlM+OeWxU2masdu2fQ4Pu1y8CI/VV8zoTjwMzEk
-        IAubmlQGQWwJtTASH66B5tlNGXkYYWfyiKFfDYAWNDIvKAmd9VCw5gu3CCyhEz0VyZ9q21C27hdze
-        xXHOcZbM8Py+ijx++l8yICyG3kqfcGt1MuE/4okPB2dyrUaRsnlruaJtxwoftAx33TKuiHjyJMe8T
-        w/LGXMdfw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
-        by merlin.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hfQtH-0000uH-7d; Mon, 24 Jun 2019 15:28:19 +0000
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 1EA9120A585BA; Mon, 24 Jun 2019 17:28:18 +0200 (CEST)
-Date:   Mon, 24 Jun 2019 17:28:18 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Phong Tran <tranmanphong@gmail.com>
-Cc:     acme@kernel.org, alexander.shishkin@linux.intel.com,
-        alexander.sverdlin@gmail.com, allison@lohutok.net, andrew@lunn.ch,
-        ast@kernel.org, bgolaszewski@baylibre.com, bpf@vger.kernel.org,
-        daniel@iogearbox.net, daniel@zonque.org, dmg@turingmachine.org,
-        festevam@gmail.com, gerg@uclinux.org, gregkh@linuxfoundation.org,
-        gregory.clement@bootlin.com, haojian.zhuang@gmail.com,
-        hsweeten@visionengravers.com, illusionist.neo@gmail.com,
-        info@metux.net, jason@lakedaemon.net, jolsa@redhat.com,
-        kafai@fb.com, kernel@pengutronix.de, kgene@kernel.org,
-        krzk@kernel.org, kstewart@linuxfoundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux@armlinux.org.uk,
-        liviu.dudau@arm.com, lkundrak@v3.sk, lorenzo.pieralisi@arm.com,
-        mark.rutland@arm.com, mingo@redhat.com, namhyung@kernel.org,
-        netdev@vger.kernel.org, nsekhar@ti.com, robert.jarzmik@free.fr,
-        s.hauer@pengutronix.de, sebastian.hesselbarth@gmail.com,
-        shawnguo@kernel.org, songliubraving@fb.com, sudeep.holla@arm.com,
-        swinslow@gmail.com, tglx@linutronix.de, tony@atomide.com,
-        will@kernel.org, yhs@fb.com
-Subject: Re: [PATCH V2 00/15] cleanup cppcheck signed shifting errors
-Message-ID: <20190624152818.GX3463@hirez.programming.kicks-ass.net>
-References: <20190623151313.970-1-tranmanphong@gmail.com>
- <20190624135105.15579-1-tranmanphong@gmail.com>
- <20190624152743.GG3436@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
+        id S1728714AbfFXSpN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Jun 2019 14:45:13 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:16171 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726285AbfFXSpM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 14:45:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1561401910;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=s0LbhSknlCM5hc8ANHokTmG0D8Dtvf0T0SdiBQitSTY=;
+        b=fTbb0NiwuBQ0VbR5R9c/m30pxhd8Q2KsH1atqNSCJt9Q76rh8E48Jrh5ixhjfxfjXV
+        Rvbi+esRxMofHc6sKYLFbGRsbjD0omlbgnJphUXuc6FM0ddbxcZUfgq04xCCRZ1dZaEK
+        qh6n9JVaEZk0zTEKKwcltmvsmSW31/yzJ6gNdEPBltC714syrZZQU5S0UJ7EEVw12H28
+        6RHvlaiW5dp2J9cIn0wY/ZChLgXGFt1sNDfb9A49NQiY6+NJQL/lN4tpwYip3x89j7yv
+        1H+a1jcQ/yxGSnxCpXNlv/p9hZrOaZKwJi6eWnd6g/AP+0yu1zUrvYe3gsBjS2CgyLIB
+        GdkQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmAgw4vuNw=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 44.24 DYNA|AUTH)
+        with ESMTPSA id V09459v5OIj0Rvj
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Mon, 24 Jun 2019 20:45:00 +0200 (CEST)
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190624152743.GG3436@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [PATCH v3 0/5] drm/panel-simple: Add panel parameters for ortustech-com37h3m05dtc/99dtc and sharp-lq070y3dg3b
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <cover.1559905870.git.hns@goldelico.com>
+Date:   Mon, 24 Jun 2019 20:44:59 +0200
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, letux-kernel@openphoenux.org,
+        devicetree@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0842FF88-D8E0-441B-837B-769C2EF6C1CB@goldelico.com>
+References: <cover.1559905870.git.hns@goldelico.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, tomi.valkeinen@ti.com,
+        imirkin@alum.mit.edu, marek.belisko@gmail.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 24, 2019 at 05:27:43PM +0200, Peter Zijlstra wrote:
-> On Mon, Jun 24, 2019 at 08:50:50PM +0700, Phong Tran wrote:
-> > There are errors with cppcheck 
-> > 
-> > "Shifting signed 32-bit value by 31 bits is undefined behaviour errors"
-> 
-> As I've already told you; your checker is bad. That is not in face
+Hi,
 
-Bah, fact, typing hard.
+> Am 07.06.2019 um 13:11 schrieb H. Nikolaus Schaller =
+<hns@goldelico.com>:
+>=20
+> V3:
+> * add bindings documentation (suggested by sam@ravnborg.org)
+>=20
+> V2 2019-06-05 07:07:05:
+> * fix typo in 99dtc panel compatible string (reported by =
+imirkin@alum.mit.edu)
+>=20
+> V1 2019-06-04 14:53:00:
+>=20
+> Since v5.2-rc1 OMAP is no longer using a special display driver =
+architecture
+> for DPI panels, but uses the general drm/panel/panel-simple.
+>=20
+> So we finally can add SoC independent panel definitions for two panel =
+models
+> which we already had worked on quite a while ago (before device tree =
+was
+> introduced):
+>=20
+> 	https://patchwork.kernel.org/patch/2851295/
+>=20
+>=20
+>=20
+> H. Nikolaus Schaller (5):
+>  drm/panel: simple: Add Sharp LQ070Y3DG3B panel support
+>  drm/panel: simple: Add Ortustech COM37H3M panel support
+>  dt-bindings: drm/panel: simple: add ortustech,com37h3m05dtc panel
+>  dt-bindings: drm/panel: simple: add ortustech,com37h3m99dtc panel
+>  dt-bindings: drm/panel: simple: add sharp,lq070y3dg3b panel
+>=20
+> .../display/panel/ortustech,com37h3m05dtc.txt | 12 ++++
+> .../display/panel/ortustech,com37h3m99dtc.txt | 12 ++++
+> .../display/panel/sharp,lq070y3dg3b.txt       | 12 ++++
+> drivers/gpu/drm/panel/panel-simple.c          | 63 +++++++++++++++++++
+> 4 files changed, 99 insertions(+)
+> create mode 100644 =
+Documentation/devicetree/bindings/display/panel/ortustech,com37h3m05dtc.tx=
+t
+> create mode 100644 =
+Documentation/devicetree/bindings/display/panel/ortustech,com37h3m99dtc.tx=
+t
+> create mode 100644 =
+Documentation/devicetree/bindings/display/panel/sharp,lq070y3dg3b.txt
+>=20
+> --=20
+> 2.19.1
+>=20
 
-> undefined behaviour in the kernel.
-> 
-> That's not to say you shouldn't clean up the code, but don't give broken
-> checkout output as a reason.
+any progress towards merging this somewhere? It did not yet arrive in =
+linux-next.
+
+BTW: should also be applied to 5.2
+
+BR and thanks,
+Nikolaus
+
