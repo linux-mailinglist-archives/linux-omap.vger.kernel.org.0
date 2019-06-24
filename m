@@ -2,136 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E2E8500EA
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 07:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46D23501C7
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Jun 2019 08:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726412AbfFXFP7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Jun 2019 01:15:59 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:38442 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726312AbfFXFP7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 01:15:59 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5O5FrXK026815;
-        Mon, 24 Jun 2019 00:15:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1561353353;
-        bh=PofutAHSNf3VInOdjB75/tzlJ8kFqqMgjpO4KBqkvfI=;
-        h=From:To:CC:Subject:Date;
-        b=Q1SlhMNwYdOsVxxJL6lCiw4Ca03MWQfdgzodjAFq/vkUYyJMWdvGlh4dOjap+S8/U
-         OAsxF1sKPKD21iXGJ057RCeP5K+W6n3zy59f9aHS2eMfWOp3GARjBfAg6fgU0PnbU9
-         QpstzW6vqoIMbgtovir7nETXjrpBLZsXakkRXIpM=
-Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5O5FrbL109350
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 24 Jun 2019 00:15:53 -0500
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 24
- Jun 2019 00:15:52 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 24 Jun 2019 00:15:52 -0500
-Received: from a0393675ula.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5O5FnOM000902;
-        Mon, 24 Jun 2019 00:15:49 -0500
-From:   Keerthy <j-keerthy@ti.com>
-To:     <davem@davemloft.net>, <ivan.khoronzhuk@linaro.org>,
-        <andrew@lunn.ch>, <ilias.apalodimas@linaro.org>
-CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <t-kristo@ti.com>,
-        <j-keerthy@ti.com>, <grygorii.strashko@ti.com>, <nsekhar@ti.com>
-Subject: [PATCH V2] net: ethernet: ti: cpsw: Fix suspend/resume break
-Date:   Mon, 24 Jun 2019 10:46:19 +0530
-Message-ID: <20190624051619.20146-1-j-keerthy@ti.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726472AbfFXGDj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Jun 2019 02:03:39 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:34925 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726077AbfFXGDj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Jun 2019 02:03:39 -0400
+Received: by mail-pg1-f195.google.com with SMTP id s27so6522109pgl.2
+        for <linux-omap@vger.kernel.org>; Sun, 23 Jun 2019 23:03:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=dNs4bFTn0f/H2512covQPvgW7xHEQrBSIemzlMYE1WU=;
+        b=F6gYtTDouoTcZyvItCkzcdGIm2GiI5ij2KNmjl/uLGOHVF2Mgm3DYbvhBuN+5OjeHL
+         gp6gGnmh2wXuboNfODnOsROpHwsUB9Ah54gRqCRbwzS+v36jwN8cRN7coJoZm1T8h5m9
+         Lc/SvxQO+ojDltrR1frfHPAqHVEaQ4rZzvi2puGHraCUF6e74PXvr3xPErsg6EpQr4yj
+         hLAjMEOKC+z12zOExSiI2StSVfgVkC8OuGmJS5f3b0R6Gbjp6VKG5Z39CCOrbIkpccjh
+         mSAPWAu7IbIkiDA0ajpEjHQorirY8MFMy+N2aZyiyn/PgVaFliemA83jUL/+xt4Y6rB7
+         zeew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=dNs4bFTn0f/H2512covQPvgW7xHEQrBSIemzlMYE1WU=;
+        b=jQiJuFnn4Bkde54OK4X/kYTilJqBEOXIjecRYF2Hs4L5CWmKxA9URYzAE+igUZzCl/
+         hdaD9wo9cbgkiYJXFDPIi8pPSNSutVnHiCbt2z8xB7jmLThwVnKpzTtPcErvwBTIvCpA
+         mhxcdsau6XWczTz0ahIc4Y8PjJgGDhVFlTtBNzXtg3+R8QRcZt4PuSo84NpNoNFS9zBw
+         QX5R5vlW+Oy4ZoHq/t0kl6EPbjP3yjenLkFOQeVpmXerGQ9VXfpP8nGULSc/BgGnimQC
+         4F/xtSlhx620xELYy+zx2EBiwQpcpwREF+Qrt6hSy03jWh5ksD3fTqcatmcmZp9AwVee
+         2mtw==
+X-Gm-Message-State: APjAAAXoyP+Rf9oUKeju6spjyA2ag6oSdsWZcgClq6z8wPxp0OjBIBDk
+        mrp0XWe4v5jsRakV/bHJESqpdw==
+X-Google-Smtp-Source: APXvYqy9bO/usfvdFvRCWkxVVdZwwaK8oMRu4R8n9ullXNpcFe0FPzC2a9IPf+ONlr+KOyOJ5GZlLw==
+X-Received: by 2002:a63:dd53:: with SMTP id g19mr30047290pgj.3.1561356218023;
+        Sun, 23 Jun 2019 23:03:38 -0700 (PDT)
+Received: from localhost ([122.172.211.128])
+        by smtp.gmail.com with ESMTPSA id bo20sm10925850pjb.23.2019.06.23.23.03.36
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 23:03:36 -0700 (PDT)
+Date:   Mon, 24 Jun 2019 11:33:34 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     edubezval@gmail.com, linux-kernel@vger.kernel.org,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        Javi Merino <javi.merino@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Keerthy <j-keerthy@ti.com>,
+        "open list:CPU FREQUENCY DRIVERS - ARM BIG LITTLE" 
+        <linux-pm@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:TI BANDGAP AND THERMAL DRIVER" 
+        <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH 2/6] thermal/drivers/cpu_cooling: Unregister with the
+ policy
+Message-ID: <20190624060334.kak2mjuou4napi4x@vireshk-i7>
+References: <20190621132302.30414-1-daniel.lezcano@linaro.org>
+ <20190621132302.30414-2-daniel.lezcano@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190621132302.30414-2-daniel.lezcano@linaro.org>
+User-Agent: NeoMutt/20180716-391-311a52
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Commit bfe59032bd6127ee190edb30be9381a01765b958 ("net: ethernet:
-ti: cpsw: use cpsw as drv data")changes
-the driver data to struct cpsw_common *cpsw. This is done
-only in probe/remove but the suspend/resume functions are
-still left with struct net_device *ndev. Hence fix both
-suspend & resume also to fetch the updated driver data.
+On 21-06-19, 15:22, Daniel Lezcano wrote:
+> Currently the function cpufreq_cooling_register() returns a cooling
+> device pointer which is used back as a pointer to call the function
+> cpufreq_cooling_unregister(). Even if it is correct, it would make
+> sense to not leak the structure inside a cpufreq driver and keep the
+> code thermal code self-encapsulate. Moreover, that forces to add an
+> extra variable in each driver using this function.
+> 
+> Instead of passing the cooling device to unregister, pass the policy.
+> 
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> ---
+>  drivers/cpufreq/arm_big_little.c               |  2 +-
+>  drivers/cpufreq/cpufreq.c                      |  2 +-
+>  drivers/thermal/cpu_cooling.c                  | 18 ++++++++++--------
+>  drivers/thermal/imx_thermal.c                  |  4 ++--
+>  .../thermal/ti-soc-thermal/ti-thermal-common.c |  2 +-
+>  include/linux/cpu_cooling.h                    |  6 +++---
+>  6 files changed, 18 insertions(+), 16 deletions(-)
 
-Fixes: bfe59032bd6127ee1 ("net: ethernet: ti: cpsw: use cpsw as drv data")
-Signed-off-by: Keerthy <j-keerthy@ti.com>
----
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-Change in v2:
-
-  * Added NULL Checks for cpsw->slaves[i].ndev in suspend/resume functions.
-
- drivers/net/ethernet/ti/cpsw.c | 30 +++++++++---------------------
- 1 file changed, 9 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index 7bdd287074fc..32b7b3b74a6b 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -2590,20 +2590,13 @@ static int cpsw_remove(struct platform_device *pdev)
- #ifdef CONFIG_PM_SLEEP
- static int cpsw_suspend(struct device *dev)
- {
--	struct net_device	*ndev = dev_get_drvdata(dev);
--	struct cpsw_common	*cpsw = ndev_to_cpsw(ndev);
--
--	if (cpsw->data.dual_emac) {
--		int i;
-+	struct cpsw_common *cpsw = dev_get_drvdata(dev);
-+	int i;
- 
--		for (i = 0; i < cpsw->data.slaves; i++) {
-+	for (i = 0; i < cpsw->data.slaves; i++)
-+		if (cpsw->slaves[i].ndev)
- 			if (netif_running(cpsw->slaves[i].ndev))
- 				cpsw_ndo_stop(cpsw->slaves[i].ndev);
--		}
--	} else {
--		if (netif_running(ndev))
--			cpsw_ndo_stop(ndev);
--	}
- 
- 	/* Select sleep pin state */
- 	pinctrl_pm_select_sleep_state(dev);
-@@ -2613,25 +2606,20 @@ static int cpsw_suspend(struct device *dev)
- 
- static int cpsw_resume(struct device *dev)
- {
--	struct net_device	*ndev = dev_get_drvdata(dev);
--	struct cpsw_common	*cpsw = ndev_to_cpsw(ndev);
-+	struct cpsw_common *cpsw = dev_get_drvdata(dev);
-+	int i;
- 
- 	/* Select default pin state */
- 	pinctrl_pm_select_default_state(dev);
- 
- 	/* shut up ASSERT_RTNL() warning in netif_set_real_num_tx/rx_queues */
- 	rtnl_lock();
--	if (cpsw->data.dual_emac) {
--		int i;
- 
--		for (i = 0; i < cpsw->data.slaves; i++) {
-+	for (i = 0; i < cpsw->data.slaves; i++)
-+		if (cpsw->slaves[i].ndev)
- 			if (netif_running(cpsw->slaves[i].ndev))
- 				cpsw_ndo_open(cpsw->slaves[i].ndev);
--		}
--	} else {
--		if (netif_running(ndev))
--			cpsw_ndo_open(ndev);
--	}
-+
- 	rtnl_unlock();
- 
- 	return 0;
 -- 
-2.17.1
-
+viresh
