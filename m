@@ -2,353 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4278354DB2
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Jun 2019 13:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71437555C5
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Jun 2019 19:21:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730685AbfFYLdK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Jun 2019 07:33:10 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:54478 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730803AbfFYLdI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Jun 2019 07:33:08 -0400
-Received: by mail-wm1-f66.google.com with SMTP id g135so2430048wme.4
-        for <linux-omap@vger.kernel.org>; Tue, 25 Jun 2019 04:33:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=1GRtxbvJ7zQMEAzf5USjpOzydVY/5kmGwkIlpaLrADw=;
-        b=Ehnr0RmwjLMD+uPoNHV4VCT4BrNvFINrvm11Jwmp0X8vbmx+CNYN+Xzx2gu/xT8lpq
-         8aedQccZjAUzVVMTUpA2k7EY0zEoQiuPm3+MTjSSCmKUCD4qEZah+MCAkZR/lkTRJI8S
-         qbsbqrNVmVADWjyODTHoz5RjwGacaOvrPpOG9n+D2mTLbfYQ+6cyWLYZ1IFurqUM8G8C
-         QxbXLEpXQHL1AOl5edMeAfrg6YT3BRmCXl7xMkLLqi8CqiM/UM97yFjN2PyGg9ciwVU4
-         QcDd6ai+2zpnXnbhsqFUf9fFfPiyk2XA1hse2h4u2/A/9o0zmmOSN14PBIHatZNybjvJ
-         Cfpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=1GRtxbvJ7zQMEAzf5USjpOzydVY/5kmGwkIlpaLrADw=;
-        b=Kv/FtJ1CYnVeCDxsSmQZ/5jCGOTmUYp1mkLrYbPB+G/xIBrYnvjuFJdNjgIs5q/8mT
-         mnYkXvvslh9dbfqqdaQBVWzYhurmdKsbkYaQ1wchu06xJ+UNA2YroBFW5qq5TA1wea3e
-         fwQJiLTdrcz0g0HMDRrOnVdZX031JLxI2u2j9vRkXeFeXlegei6hgE6ZEOXD67/NqfI+
-         JtazfzWFY63k2tyIAiu/C7gCiTqaZWZyl/KdvePoWG2q62rYbHz0H2hi9vZ14g8bIdUS
-         keDS79i4UAnVTu/23t1W6l0vSnMECwhFesQvASfOQDOk6TlFuTogo2MI7KRAE4CCIWDK
-         uCcA==
-X-Gm-Message-State: APjAAAVgrienh+WxqUpCLKQEBj1+LoSbO4SqAkzc5o1wJt618lZDJZ3/
-        52/U9gsO3nOLQK7N4kxn+LuSGw==
-X-Google-Smtp-Source: APXvYqyEyB2lNfbV8SJL0HSWaizGxaMKeN5Sw5X3E86zHZQ+GTc3cszJfeHxfYNey1cdGehMbHxjSg==
-X-Received: by 2002:a05:600c:28d:: with SMTP id 13mr19743593wmk.5.1561462385508;
-        Tue, 25 Jun 2019 04:33:05 -0700 (PDT)
-Received: from clegane.local (191.184.66.86.rev.sfr.net. [86.66.184.191])
-        by smtp.gmail.com with ESMTPSA id j7sm19254284wru.54.2019.06.25.04.33.03
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 25 Jun 2019 04:33:04 -0700 (PDT)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     viresh.kumar@linaro.org
-Cc:     rjw@rjwysocki.net, edubezval@gmail.com,
-        linux-kernel@vger.kernel.org,
-        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
-        Javi Merino <javi.merino@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Keerthy <j-keerthy@ti.com>,
-        linux-pm@vger.kernel.org (open list:THERMAL/CPU_COOLING),
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX
-        / MXC ARM ARCHITECTURE),
-        linux-omap@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER)
-Subject: [PATCH V3 3/3] thermal/drivers/cpu_cooling: cpufreq_cooling_register returns an int
-Date:   Tue, 25 Jun 2019 13:32:43 +0200
-Message-Id: <20190625113244.18146-3-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190625113244.18146-1-daniel.lezcano@linaro.org>
-References: <20190625113244.18146-1-daniel.lezcano@linaro.org>
+        id S1727920AbfFYRVU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 Jun 2019 13:21:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47022 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726455AbfFYRVU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 25 Jun 2019 13:21:20 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F311A20883;
+        Tue, 25 Jun 2019 17:21:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561483279;
+        bh=y3gHH2+O9Ql5mg2OLCYxLt0FlNiFmTJg7bWVV64XY6A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=l0X8y69GjzACRoWboU+YWIzW7at90jv3ub3xnAcXiI2AY8/5/o+s3FRVzpgcgow0s
+         qZmJE2x8/1tEeCUA18QS4W+Yz1mC+61cO3nOBUjQHVQcXFkkCUKwIEfAS1tx+d6aG5
+         CA/HKhKBrcyp62GzhIdzWDjDAQIaPUIBh0JBfMOI=
+Date:   Tue, 25 Jun 2019 18:21:07 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Phong Tran <tranmanphong@gmail.com>
+Cc:     acme@kernel.org, alexander.shishkin@linux.intel.com,
+        alexander.sverdlin@gmail.com, allison@lohutok.net, andrew@lunn.ch,
+        ast@kernel.org, bgolaszewski@baylibre.com, bpf@vger.kernel.org,
+        daniel@iogearbox.net, daniel@zonque.org, dmg@turingmachine.org,
+        festevam@gmail.com, gerg@uclinux.org, gregkh@linuxfoundation.org,
+        gregory.clement@bootlin.com, haojian.zhuang@gmail.com,
+        hsweeten@visionengravers.com, illusionist.neo@gmail.com,
+        info@metux.net, jason@lakedaemon.net, jolsa@redhat.com,
+        kafai@fb.com, kernel@pengutronix.de, kgene@kernel.org,
+        krzk@kernel.org, kstewart@linuxfoundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux@armlinux.org.uk,
+        liviu.dudau@arm.com, lkundrak@v3.sk, lorenzo.pieralisi@arm.com,
+        mark.rutland@arm.com, mingo@redhat.com, namhyung@kernel.org,
+        netdev@vger.kernel.org, nsekhar@ti.com, peterz@infradead.org,
+        robert.jarzmik@free.fr, s.hauer@pengutronix.de,
+        sebastian.hesselbarth@gmail.com, shawnguo@kernel.org,
+        songliubraving@fb.com, sudeep.holla@arm.com, swinslow@gmail.com,
+        tglx@linutronix.de, tony@atomide.com, yhs@fb.com
+Subject: Re: [PATCH V3 01/15] arm: perf: cleanup cppcheck shifting error
+Message-ID: <20190625172106.26xxbeiwpn4avykh@willie-the-truck>
+References: <20190624135105.15579-1-tranmanphong@gmail.com>
+ <20190625040356.27473-1-tranmanphong@gmail.com>
+ <20190625040356.27473-2-tranmanphong@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190625040356.27473-2-tranmanphong@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-It looks like after the changes in the patch the only reason for
-returning (struct thermal_cooling_device *) from
-cpufreq_cooling_register() is error checking, but it would be much
-more straightforward to return int for this purpose.
+On Tue, Jun 25, 2019 at 11:03:42AM +0700, Phong Tran wrote:
+> There is error from cppcheck tool
+> "Shifting signed 32-bit value by 31 bits is undefined behaviour errors"
+> change to use BIT() marco for improvement.
 
-Moreover, that would prevent the callers of it from doing incorrect
-things with the returned pointers (like using it to unregister the
-cooling device).
+s/marco/macro/
 
-Replace the returned value an integer instead of a pointer to a
-thermal cooling device structure.
+As Peter pointed out, this "error" is also a false positive also for the
+kernel.
 
-Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/thermal/cpu_cooling.c                 | 63 +++++++++----------
- drivers/thermal/imx_thermal.c                 |  6 +-
- .../ti-soc-thermal/ti-thermal-common.c        |  7 +--
- include/linux/cpu_cooling.h                   | 16 ++---
- 4 files changed, 40 insertions(+), 52 deletions(-)
+> Signed-off-by: Phong Tran <tranmanphong@gmail.com>
+> ---
+>  arch/arm/kernel/perf_event_v7.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/kernel/perf_event_v7.c b/arch/arm/kernel/perf_event_v7.c
+> index a4fb0f8b8f84..2924d7910b10 100644
+> --- a/arch/arm/kernel/perf_event_v7.c
+> +++ b/arch/arm/kernel/perf_event_v7.c
+> @@ -697,9 +697,9 @@ static struct attribute_group armv7_pmuv2_events_attr_group = {
+>  /*
+>   * Event filters for PMUv2
+>   */
+> -#define	ARMV7_EXCLUDE_PL1	(1 << 31)
+> -#define	ARMV7_EXCLUDE_USER	(1 << 30)
+> -#define	ARMV7_INCLUDE_HYP	(1 << 27)
+> +#define	ARMV7_EXCLUDE_PL1	BIT(31)
+> +#define	ARMV7_EXCLUDE_USER	BIT(30)
+> +#define	ARMV7_INCLUDE_HYP	BIT(27)
 
-diff --git a/drivers/thermal/cpu_cooling.c b/drivers/thermal/cpu_cooling.c
-index 007c7c6bf845..f5fa31a57658 100644
---- a/drivers/thermal/cpu_cooling.c
-+++ b/drivers/thermal/cpu_cooling.c
-@@ -530,13 +530,12 @@ static struct notifier_block thermal_cpufreq_notifier_block = {
-  * cooling devices. It also gives the opportunity to link the cooling device
-  * with a device tree node, in order to bind it via the thermal DT code.
-  *
-- * Return: a valid struct thermal_cooling_device pointer on success,
-- * on failure, it returns a corresponding ERR_PTR().
-+ * Return: zero on success, less than zero corresponding to the
-+ * negative error code.
-  */
--static struct thermal_cooling_device *
--__cpufreq_cooling_register(struct device_node *np,
--			struct cpufreq_policy *policy,
--			struct em_perf_domain *em)
-+static int __cpufreq_cooling_register(struct device_node *np,
-+				      struct cpufreq_policy *policy,
-+				      struct em_perf_domain *em)
- {
- 	struct thermal_cooling_device *cdev;
- 	struct cpufreq_cooling_device *cpufreq_cdev;
-@@ -548,19 +547,19 @@ __cpufreq_cooling_register(struct device_node *np,
- 
- 	if (IS_ERR_OR_NULL(policy)) {
- 		pr_err("%s: cpufreq policy isn't valid: %p\n", __func__, policy);
--		return ERR_PTR(-EINVAL);
-+		return -EINVAL;
- 	}
- 
- 	i = cpufreq_table_count_valid_entries(policy);
- 	if (!i) {
- 		pr_debug("%s: CPUFreq table not found or has no valid entries\n",
- 			 __func__);
--		return ERR_PTR(-ENODEV);
-+		return -ENODEV;
- 	}
- 
- 	cpufreq_cdev = kzalloc(sizeof(*cpufreq_cdev), GFP_KERNEL);
- 	if (!cpufreq_cdev)
--		return ERR_PTR(-ENOMEM);
-+		return -ENOMEM;
- 
- 	cpufreq_cdev->policy = policy;
- 	num_cpus = cpumask_weight(policy->related_cpus);
-@@ -568,7 +567,7 @@ __cpufreq_cooling_register(struct device_node *np,
- 					 sizeof(*cpufreq_cdev->idle_time),
- 					 GFP_KERNEL);
- 	if (!cpufreq_cdev->idle_time) {
--		cdev = ERR_PTR(-ENOMEM);
-+		ret = -ENOMEM;
- 		goto free_cdev;
- 	}
- 
-@@ -576,10 +575,8 @@ __cpufreq_cooling_register(struct device_node *np,
- 	cpufreq_cdev->max_level = i - 1;
- 
- 	ret = ida_simple_get(&cpufreq_ida, 0, 0, GFP_KERNEL);
--	if (ret < 0) {
--		cdev = ERR_PTR(ret);
-+	if (ret < 0)
- 		goto free_idle_time;
--	}
- 	cpufreq_cdev->id = ret;
- 
- 	snprintf(dev_name, sizeof(dev_name), "thermal-cpufreq-%d",
-@@ -597,14 +594,16 @@ __cpufreq_cooling_register(struct device_node *np,
- 	if (policy->freq_table_sorted == CPUFREQ_TABLE_UNSORTED) {
- 		pr_err("%s: unsorted frequency tables are not supported\n",
- 				__func__);
--		cdev = ERR_PTR(-EINVAL);
-+		ret = -EINVAL;
- 		goto remove_ida;
- 	}
- 
- 	cdev = thermal_of_cooling_device_register(np, dev_name, cpufreq_cdev,
- 						  cooling_ops);
--	if (IS_ERR(cdev))
-+	if (IS_ERR(cdev)) {
-+		ret = PTR_ERR(cdev);
- 		goto remove_ida;
-+	}
- 
- 	cpufreq_cdev->clipped_freq = get_state_freq(cpufreq_cdev, 0);
- 	cpufreq_cdev->cdev = cdev;
-@@ -619,7 +618,7 @@ __cpufreq_cooling_register(struct device_node *np,
- 		cpufreq_register_notifier(&thermal_cpufreq_notifier_block,
- 					  CPUFREQ_POLICY_NOTIFIER);
- 
--	return cdev;
-+	return 0;
- 
- remove_ida:
- 	ida_simple_remove(&cpufreq_ida, cpufreq_cdev->id);
-@@ -627,7 +626,7 @@ __cpufreq_cooling_register(struct device_node *np,
- 	kfree(cpufreq_cdev->idle_time);
- free_cdev:
- 	kfree(cpufreq_cdev);
--	return cdev;
-+	return ret;
- }
- 
- /**
-@@ -638,11 +637,10 @@ __cpufreq_cooling_register(struct device_node *np,
-  * "thermal-cpufreq-%x". This api can support multiple instances of cpufreq
-  * cooling devices.
-  *
-- * Return: a valid struct thermal_cooling_device pointer on success,
-- * on failure, it returns a corresponding ERR_PTR().
-+ * Return: zero on success, less than zero corresponding to the
-+ * negative error code.
-  */
--struct thermal_cooling_device *
--cpufreq_cooling_register(struct cpufreq_policy *policy)
-+int cpufreq_cooling_register(struct cpufreq_policy *policy)
- {
- 	return __cpufreq_cooling_register(NULL, policy, NULL);
- }
-@@ -664,34 +662,31 @@ EXPORT_SYMBOL_GPL(cpufreq_cooling_register);
-  * It also takes into account, if property present in policy CPU node, the
-  * static power consumed by the cpu.
-  *
-- * Return: a valid struct thermal_cooling_device pointer on success,
-- * and NULL on failure.
-+ * Return: zero on success, less than zero corresponding to the
-+ * negative error code.
-  */
--struct thermal_cooling_device *
--of_cpufreq_cooling_register(struct cpufreq_policy *policy)
-+int of_cpufreq_cooling_register(struct cpufreq_policy *policy)
- {
- 	struct device_node *np = of_get_cpu_node(policy->cpu, NULL);
--	struct thermal_cooling_device *cdev = NULL;
-+	int ret = -EINVAL;
- 
- 	if (!np) {
- 		pr_err("cpu_cooling: OF node not available for cpu%d\n",
- 		       policy->cpu);
--		return NULL;
-+		return -EINVAL;
- 	}
- 
- 	if (of_find_property(np, "#cooling-cells", NULL)) {
- 		struct em_perf_domain *em = em_cpu_get(policy->cpu);
- 
--		cdev = __cpufreq_cooling_register(np, policy, em);
--		if (IS_ERR(cdev)) {
--			pr_err("cpu_cooling: cpu%d failed to register as cooling device: %ld\n",
--			       policy->cpu, PTR_ERR(cdev));
--			cdev = NULL;
--		}
-+		ret = __cpufreq_cooling_register(np, policy, em);
-+		if (ret)
-+			pr_err("cpu_cooling: cpu%d failed to register as cooling device: %d\n",
-+			       policy->cpu, ret);
- 	}
- 
- 	of_node_put(np);
--	return cdev;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(of_cpufreq_cooling_register);
- 
-diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.c
-index 021c0948b740..1c4b49b583bc 100644
---- a/drivers/thermal/imx_thermal.c
-+++ b/drivers/thermal/imx_thermal.c
-@@ -655,7 +655,6 @@ MODULE_DEVICE_TABLE(of, of_imx_thermal_match);
- static int imx_thermal_register_legacy_cooling(struct imx_thermal_data *data)
- {
- 	struct device_node *np;
--	struct thermal_cooling_device *cdev;
- 	int ret;
- 
- 	data->policy = cpufreq_cpu_get(0);
-@@ -667,9 +666,8 @@ static int imx_thermal_register_legacy_cooling(struct imx_thermal_data *data)
- 	np = of_get_cpu_node(data->policy->cpu, NULL);
- 
- 	if (!np || !of_find_property(np, "#cooling-cells", NULL)) {
--		cdev = cpufreq_cooling_register(data->policy);
--		if (IS_ERR(cdev)) {
--			ret = PTR_ERR(cdev);
-+		ret = cpufreq_cooling_register(data->policy);
-+		if (ret) {
- 			cpufreq_cpu_put(data->policy);
- 			return ret;
- 		}
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-index 170b70b6ec61..eacc46d7bd1c 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -232,7 +232,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
- {
- 	struct ti_thermal_data *data;
- 	struct device_node *np = bgp->dev->of_node;
--	struct thermal_cooling_device *cdev;
-+	int ret;
- 
- 	/*
- 	 * We are assuming here that if one deploys the zone
-@@ -256,9 +256,8 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
- 	}
- 
- 	/* Register cooling device */
--	cdev = cpufreq_cooling_register(data->policy);
--	if (IS_ERR(cdev)) {
--		int ret = PTR_ERR(cdev);
-+	ret = cpufreq_cooling_register(data->policy);
-+	if (ret) {
- 		dev_err(bgp->dev, "Failed to register cpu cooling device %d\n",
- 			ret);
- 		cpufreq_cpu_put(data->policy);
-diff --git a/include/linux/cpu_cooling.h b/include/linux/cpu_cooling.h
-index 89f469ee4be4..98f7c8a9cab6 100644
---- a/include/linux/cpu_cooling.h
-+++ b/include/linux/cpu_cooling.h
-@@ -24,8 +24,7 @@ struct cpufreq_policy;
-  * cpufreq_cooling_register - function to create cpufreq cooling device.
-  * @policy: cpufreq policy.
-  */
--struct thermal_cooling_device *
--cpufreq_cooling_register(struct cpufreq_policy *policy);
-+int cpufreq_cooling_register(struct cpufreq_policy *policy);
- 
- /**
-  * cpufreq_cooling_unregister - function to remove cpufreq cooling device.
-@@ -34,10 +33,9 @@ cpufreq_cooling_register(struct cpufreq_policy *policy);
- void cpufreq_cooling_unregister(struct cpufreq_policy *policy);
- 
- #else /* !CONFIG_CPU_THERMAL */
--static inline struct thermal_cooling_device *
--cpufreq_cooling_register(struct cpufreq_policy *policy)
-+static inline int cpufreq_cooling_register(struct cpufreq_policy *policy)
- {
--	return ERR_PTR(-ENOSYS);
-+	return -ENOSYS;
- }
- 
- static inline
-@@ -52,13 +50,11 @@ void cpufreq_cooling_unregister(struct cpufreq_policy *policy)
-  * of_cpufreq_cooling_register - create cpufreq cooling device based on DT.
-  * @policy: cpufreq policy.
-  */
--struct thermal_cooling_device *
--of_cpufreq_cooling_register(struct cpufreq_policy *policy);
-+int of_cpufreq_cooling_register(struct cpufreq_policy *policy);
- #else
--static inline struct thermal_cooling_device *
--of_cpufreq_cooling_register(struct cpufreq_policy *policy)
-+static inline int of_cpufreq_cooling_register(struct cpufreq_policy *policy)
- {
--	return NULL;
-+	return -ENOSYS;
- }
- #endif /* defined(CONFIG_THERMAL_OF) && defined(CONFIG_CPU_THERMAL) */
- 
--- 
-2.17.1
+Acked-by: Will Deacon <will.deacon@arm.com>
 
+You can drop this into Russell's patch system[1].
+
+Will
+
+[1] https://www.arm.linux.org.uk/developer/patches/
