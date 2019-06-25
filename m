@@ -2,89 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5368655763
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Jun 2019 20:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EEC3558B4
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Jun 2019 22:26:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731361AbfFYSt6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Jun 2019 14:49:58 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:52930 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731728AbfFYSt6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Jun 2019 14:49:58 -0400
-Received: by mail-wm1-f65.google.com with SMTP id s3so3884366wms.2;
-        Tue, 25 Jun 2019 11:49:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=NnYdk1L9tNxJOrD8BD7rIwHwgh6hKQRIs6DjAkp3gAE=;
-        b=Dp/hi+AnZRvnxV252Y1zilwrKb8DnTlvzlzlZ7571aQHlUTEFf+blfsC/9YM10g2y8
-         4Z/jbIJxtlAsHvLlbOabt2tQ71m7RCujDYIkCwG47Wpx+Z2tw7NYUqc1qr4bNvyknw87
-         D2NHpGF/XVK09k4FuV5z13cayPp6FhgLBgvEUD91ytD4v2F96agf27+jiJ4/YfG8SDMf
-         r1B2Ow67nBRyMgeGmvDR3wgdDdK8IwD8eGX9okmSiXeJyB91SP1VCMaTM00/FufBRZdw
-         NFHsJeLz5Ofm5Gwjfj+RmYQgAZ0SeB81RwbVkQvaODXOCnQkT8KwPQhw7SxHRFg827ak
-         eR4A==
-X-Gm-Message-State: APjAAAX4u0J4O/wCdUqmYHiSLIOhbBn3kC8FkCRF03a2IMQCdgXoIVt5
-        8VypmjweWZTHv36c3Hvmva8=
-X-Google-Smtp-Source: APXvYqzegnboHeF+ubq+Re36XcyZoE34C8XzPBywiqM+pa+uCqEiiTKajy0OCgcU1IWo0AD7Iuihsw==
-X-Received: by 2002:a1c:ef0c:: with SMTP id n12mr19655866wmh.132.1561488595719;
-        Tue, 25 Jun 2019 11:49:55 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.151])
-        by smtp.googlemail.com with ESMTPSA id o14sm12298185wrp.77.2019.06.25.11.49.52
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 25 Jun 2019 11:49:54 -0700 (PDT)
-Date:   Tue, 25 Jun 2019 20:49:51 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Phong Tran <tranmanphong@gmail.com>
-Cc:     acme@kernel.org, alexander.shishkin@linux.intel.com,
-        alexander.sverdlin@gmail.com, allison@lohutok.net, andrew@lunn.ch,
-        ast@kernel.org, bgolaszewski@baylibre.com, bpf@vger.kernel.org,
-        daniel@iogearbox.net, daniel@zonque.org, dmg@turingmachine.org,
-        festevam@gmail.com, gerg@uclinux.org, gregkh@linuxfoundation.org,
-        gregory.clement@bootlin.com, haojian.zhuang@gmail.com,
-        hsweeten@visionengravers.com, illusionist.neo@gmail.com,
-        info@metux.net, jason@lakedaemon.net, jolsa@redhat.com,
-        kafai@fb.com, kernel@pengutronix.de, kgene@kernel.org,
-        kstewart@linuxfoundation.org, linux-arm-kernel@lists.infradead.org,
-        linux-imx@nxp.com, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux@armlinux.org.uk, liviu.dudau@arm.com, lkundrak@v3.sk,
-        lorenzo.pieralisi@arm.com, mark.rutland@arm.com, mingo@redhat.com,
-        namhyung@kernel.org, netdev@vger.kernel.org, nsekhar@ti.com,
-        peterz@infradead.org, robert.jarzmik@free.fr,
-        s.hauer@pengutronix.de, sebastian.hesselbarth@gmail.com,
-        shawnguo@kernel.org, songliubraving@fb.com, sudeep.holla@arm.com,
-        swinslow@gmail.com, tglx@linutronix.de, tony@atomide.com,
-        will@kernel.org, yhs@fb.com
-Subject: Re: [PATCH V3 04/15] ARM: exynos: cleanup cppcheck shifting error
-Message-ID: <20190625184951.GA10025@kozik-lap>
-References: <20190624135105.15579-1-tranmanphong@gmail.com>
- <20190625040356.27473-1-tranmanphong@gmail.com>
- <20190625040356.27473-5-tranmanphong@gmail.com>
+        id S1726414AbfFYU0R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 Jun 2019 16:26:17 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:44258 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726053AbfFYU0R (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Jun 2019 16:26:17 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 1465780301;
+        Tue, 25 Jun 2019 22:26:12 +0200 (CEST)
+Date:   Tue, 25 Jun 2019 22:26:11 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, tomi.valkeinen@ti.com,
+        imirkin@alum.mit.edu, marek.belisko@gmail.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        letux-kernel@openphoenux.org
+Subject: Re: [PATCH v3 3/5] dt-bindings: drm/panel: simple: add ortustech,
+ com37h3m05dtc panel
+Message-ID: <20190625202611.GA18595@ravnborg.org>
+References: <cover.1559905870.git.hns@goldelico.com>
+ <a650cb8df1bdf58ec3c8a182532692db16b77f70.1559905870.git.hns@goldelico.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190625040356.27473-5-tranmanphong@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <a650cb8df1bdf58ec3c8a182532692db16b77f70.1559905870.git.hns@goldelico.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=VcLZwmh9 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=ztCEdXhiAAAA:8
+        a=7gkXJVJtAAAA:8 a=e5mUnYsNAAAA:8 a=TaQvIJAheEgyp50s76YA:9
+        a=CjuIK1q_8ugA:10 a=nCm3ceeH17rKjHWsMeRo:22 a=E9Po1WZjFZOl8hwRPBS3:22
+        a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 11:03:45AM +0700, Phong Tran wrote:
-> There is error from cppcheck tool
-> "Shifting signed 32-bit value by 31 bits is undefined behaviour errors"
-> change to use BIT() marco for improvement.
-> 
-> Signed-off-by: Phong Tran <tranmanphong@gmail.com>
+On Fri, Jun 07, 2019 at 01:11:09PM +0200, H. Nikolaus Schaller wrote:
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+
+We need OK from one of the DT people before we can apply this.
+
+	Sam
+
 > ---
->  arch/arm/mach-exynos/suspend.c | 2 +-
-
-Thanks, applied with slightly different commit message. As Peter
-pointed, there is no error because of GCC.  Usually we expect a reply to
-comments on LKML...  and also you could take his hints and use them to
-improve the commit msg to properly describe what is the problem.
-
-Best regards,
-Krzysztof
-
+>  .../display/panel/ortustech,com37h3m05dtc.txt        | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/panel/ortustech,com37h3m05dtc.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/ortustech,com37h3m05dtc.txt b/Documentation/devicetree/bindings/display/panel/ortustech,com37h3m05dtc.txt
+> new file mode 100644
+> index 000000000000..c16907c02f80
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/ortustech,com37h3m05dtc.txt
+> @@ -0,0 +1,12 @@
+> +OrtusTech COM37H3M05DTC Blanview 3.7" VGA portrait TFT-LCD panel
+> +
+> +Required properties:
+> +- compatible: should be "ortustech,com37h3m05dtc"
+> +
+> +Optional properties:
+> +- enable-gpios: GPIO pin to enable or disable the panel
+> +- backlight: phandle of the backlight device attached to the panel
+> +- power-supply: phandle of the regulator that provides the supply voltage
+> +
+> +This binding is compatible with the simple-panel binding, which is specified
+> +in simple-panel.txt in this directory.
+> -- 
+> 2.19.1
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
