@@ -2,669 +2,253 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 371A656604
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 11:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07AD756683
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 12:20:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726628AbfFZJ6s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jun 2019 05:58:48 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:44765 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726487AbfFZJ6r (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 05:58:47 -0400
-Received: by mail-lj1-f194.google.com with SMTP id k18so709839ljc.11
-        for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2019 02:58:46 -0700 (PDT)
+        id S1726077AbfFZKT7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jun 2019 06:19:59 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:38682 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726104AbfFZKT7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 06:19:59 -0400
+Received: by mail-wr1-f66.google.com with SMTP id d18so2063520wrs.5
+        for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2019 03:19:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=PBNpa0fe2lxiY3oi4Yz97EGdJS/d5sgIDQQHO7FmfTA=;
-        b=mpA7e48X0kGmTm3SqWODh2AldqmI9ON5GZZDMgX88qKXh7+Zh6JmvYSO52wYCEMRk8
-         A2QSiiA+GeS+mND14bUi+upQs5qbkjKdZccB7AOiQ6tgFbqDf+6mdVGOD2VJuXY7gYeN
-         /zz6InGlg2xdTIpcd7xrMjq3mllZLXrHUdiyttPKu53akQ+iozXgFMeTzjMIOtRUD4mO
-         BdqO7FRCjjh+6elVPjSfn41Zj4+A9CFfCuGOpELQwy7e+5uhzrNu8jAzP0vl5wzCsron
-         /PSzq2KW4X3MhH9z6BO/v5u5rjqu+IOaXrba8KigQgO4+Z1L1qJK/AdA2XMJXTEWEolF
-         MJLQ==
+        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=eqxkIQ2gfMcOm07YboB3YuAHE5CN9FSjgEDC065L9w8=;
+        b=yWOsM+MSG8NdZuS36JBR36QqIAZvkBe6jRhiyfiNgSabYUqFu/ZNfLfyWd3Z0ssrtq
+         FJpL86FVWiyzL//PBzairlqt6II+o+HLZtOJZnPh7MMYamDTocbHhRLnjhIeN1UUk+zk
+         nxt7YP6D6ONacBhyT5JvbyUym0NJveh/Ef7hkne90kHhbeMkYwdtlqzXi/U97NHtNC9Z
+         3R2RFTbz5mXhvXKXsf5pjJRPD2RrL+sJtMZFqCDS/c67Qhj64a0ksscFF8ilYLG5H09V
+         GRDjpHXqhTrX/O6SqEb4so/BwTkZo1hBhupzg2KlLz2nxC2szlYyfVLSo+DojEt21X3x
+         Dpiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=PBNpa0fe2lxiY3oi4Yz97EGdJS/d5sgIDQQHO7FmfTA=;
-        b=j4QtgW2HjL0hbExXVzZiQYNOJb8jLoiBKIv3rF5Cf+sejqPJODWUM1aFjOlqjkNJ22
-         g1zSqC+ZinEJDGjqzHIgQq7VSdWpBiqPJsAwadlDwugR8hc9Ba+vZP84VVSU5VuYgufk
-         o0mcp1JoNx0h8svau5Artl5WhMfBZG8SNu9RKI39qDPnkOSD/6Z+EkjnSriMxpOsGMct
-         qpcnuS+g/1oZMk+YZ9Rppq3bcpU+gOLrXqKdO0FrD7ParX7QXL+utiNFmjc33YTXdR4q
-         97EqNQQmyM4JGuKm+nxfEHPUdJqyg0wktL5bvqBIPezDjeubVR4HSyxR/aj+yNXKvDuo
-         SP1g==
-X-Gm-Message-State: APjAAAVIPTD75cR+MoEUouAoB4OnEBov1+UpRwGyAt0ST+OG/eY0NERk
-        dxegZPVV1MvJhx8rSZqNfBxKKQ==
-X-Google-Smtp-Source: APXvYqzNFxfVX9de86L2UgFlGfdLdsNudfKlSAPxlO8JRkFe2MYug9gl6HUyXx7EFq3ektf6gSJ+0w==
-X-Received: by 2002:a2e:5c88:: with SMTP id q130mr2398685ljb.176.1561543125048;
-        Wed, 26 Jun 2019 02:58:45 -0700 (PDT)
-Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id z83sm2732080ljb.73.2019.06.26.02.58.43
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 26 Jun 2019 02:58:44 -0700 (PDT)
-Date:   Wed, 26 Jun 2019 12:58:42 +0300
-From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     netdev@vger.kernel.org,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Sekhar Nori <nsekhar@ti.com>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Murali Karicheri <m-karicheri2@ti.com>,
-        Ivan Vecera <ivecera@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [RFC PATCH v4 net-next 06/11] net: ethernet: ti: introduce cpsw
- switchdev based driver part 1 - dual-emac
-Message-ID: <20190626095839.GE6485@khorivan>
-Mail-Followup-To: Grygorii Strashko <grygorii.strashko@ti.com>,
-        netdev@vger.kernel.org,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Sekhar Nori <nsekhar@ti.com>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Murali Karicheri <m-karicheri2@ti.com>,
-        Ivan Vecera <ivecera@redhat.com>, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org
-References: <20190621181314.20778-1-grygorii.strashko@ti.com>
- <20190621181314.20778-7-grygorii.strashko@ti.com>
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=eqxkIQ2gfMcOm07YboB3YuAHE5CN9FSjgEDC065L9w8=;
+        b=TXXRFn4YUrT25VC1zIJ3mHSI1HWG7UNAPCtqWjx92SI9bo4+HtLbhJcROeJg0XYpjr
+         oSGGL9vmrDVAx6czAr4dIGSilu3fQQBY/wNE6ep0UOW/VDAmn7Xus71eUBClkjXBl3p6
+         aliN6oX2EaWbAZ78RejJ6R53o3UQHlmICAjiJ0ehnhDvEce0vUissEOyySbF0RmIqTXm
+         ZGS5H3x4ETuNi+NkBN0cS586QeY9DXP4aVFtlsm0CZSnmM1y4Lpa3VqACI5IiWiuXlEf
+         Rh25dkYG5fCIKlHDHCe3VYaZG0lLj6DrrA/nD4+xt/JEOjOT1RCy3281zWguI4Sme9LT
+         r4iw==
+X-Gm-Message-State: APjAAAUii66kZ7wImdGhuix2nB2AfoFykJliPdktSQjzxGCAIkVET+fG
+        MQaxi2j6oKqEPYdxXpXrOQehQsEk5RU=
+X-Google-Smtp-Source: APXvYqxpWeMZ/gJp+P/UTpQaRu2M8uCUV3artFaU6oXQMLT+W+CvNDNq8EhcvKj7XzxMzLztdcHWjA==
+X-Received: by 2002:a5d:518c:: with SMTP id k12mr3074586wrv.322.1561544395865;
+        Wed, 26 Jun 2019 03:19:55 -0700 (PDT)
+Received: from [192.168.0.41] (26.92.130.77.rev.sfr.net. [77.130.92.26])
+        by smtp.googlemail.com with ESMTPSA id o6sm2210047wmc.46.2019.06.26.03.19.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 26 Jun 2019 03:19:55 -0700 (PDT)
+Subject: Re: [PATCH V3 2/3] thermal/drivers/cpu_cooling: Unregister with the
+ policy
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        Javi Merino <javi.merino@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Keerthy <j-keerthy@ti.com>,
+        "open list:CPU FREQUENCY DRIVERS - ARM BIG LITTLE" 
+        <linux-pm@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:TI BANDGAP AND THERMAL DRIVER" 
+        <linux-omap@vger.kernel.org>
+References: <20190625113244.18146-1-daniel.lezcano@linaro.org>
+ <20190625113244.18146-2-daniel.lezcano@linaro.org>
+ <20190626025831.jmyzyypxr6ezpbtu@vireshk-i7>
+ <da1d2603-e30a-d877-54c3-1fad218f9d57@linaro.org>
+ <20190626063716.cechnzsb75q5lclr@vireshk-i7>
+ <CAJZ5v0jFXmJ3ikEPQUp-cLv3+ZSnp1kP8CxdkZVofV1BS3+UwQ@mail.gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Openpgp: preference=signencrypt
+Autocrypt: addr=daniel.lezcano@linaro.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <8a9b7bd0-9b21-1ce1-6176-cffff4b8d739@linaro.org>
+Date:   Wed, 26 Jun 2019 12:19:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190621181314.20778-7-grygorii.strashko@ti.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <CAJZ5v0jFXmJ3ikEPQUp-cLv3+ZSnp1kP8CxdkZVofV1BS3+UwQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Grygorii
+On 26/06/2019 11:06, Rafael J. Wysocki wrote:
+> On Wed, Jun 26, 2019 at 8:37 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>>
+>> On 26-06-19, 08:02, Daniel Lezcano wrote:
+>>> On 26/06/2019 04:58, Viresh Kumar wrote:
+>>>> On 25-06-19, 13:32, Daniel Lezcano wrote:
+>>>>> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+>>>>> index aee024e42618..f07454249fbc 100644
+>>>>> --- a/drivers/cpufreq/cpufreq.c
+>>>>> +++ b/drivers/cpufreq/cpufreq.c
+>>>>> @@ -1379,8 +1379,8 @@ static int cpufreq_online(unsigned int cpu)
+>>>>>            cpufreq_driver->ready(policy);
+>>>>>
+>>>>>    if (cpufreq_thermal_control_enabled(cpufreq_driver))
+>>>>> -          policy->cdev = of_cpufreq_cooling_register(policy);
+>>>>> -
+>>>>> +          of_cpufreq_cooling_register(policy);
+>>>>> +
+>>>>
+>>>> We don't need any error checking here anymore ?
+>>>
+>>> There was no error checking initially. This comment and the others below
+>>> are for an additional patch IMO, not a change in this one.
+>>
+>> right, but ...
+>>
+>>>>> -void cpufreq_cooling_unregister(struct thermal_cooling_device *cdev)
+>>>>> +void cpufreq_cooling_unregister(struct cpufreq_policy *policy)
+>>>>>  {
+>>>>>    struct cpufreq_cooling_device *cpufreq_cdev;
+>>>>>    bool last;
+>>>>>
+>>>>> -  if (!cdev)
+>>>>> -          return;
+>>
+>> we used to return without any errors from here. Now we will have
+>> problems if regsitering fails for some reason.
+> 
+> Specifically, the last cpufreq_cdev in the list will be unregistered
+> AFAICS, and without removing it from the list for that matter, which
+> isn't what the caller wants.
 
-Too much code, but I've tried pass thru.
-Probably expectation the devlink to be reviewed, but several
-common replies that should be reflected in non RFC v.
+Indeed,
 
-On Fri, Jun 21, 2019 at 09:13:09PM +0300, Grygorii Strashko wrote:
->From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
->
->Part 1:
-> Introduce basic CPSW dual_mac driver (cpsw_new.c) which is operating in
->dual-emac mode by default, thus working as 2 individual network interfaces.
->Main differences from legacy CPSW driver are:
->
-> - optimized promiscuous mode: The P0_UNI_FLOOD (both ports) is enabled in
->addition to ALLMULTI (current port) instead of ALE_BYPASS. So, Ports in
->promiscuous mode will keep possibility of mcast and vlan filtering, which
->is provides significant benefits when ports are joined to the same bridge,
->but without enabling "switch" mode, or to different bridges.
-> - learning disabled on ports as it make not too much sense for
->   segregated ports - no forwarding in HW.
-> - enabled basic support for devlink.
->
->	devlink dev show
->		platform/48484000.ethernet_switch
->
->	devlink dev param show
->	 platform/48484000.ethernet_switch:
->	name ale_bypass type driver-specific
->	 values:
->		cmode runtime value false
->
-> - "ale_bypass" devlink driver parameter allows to enable
->ALE_CONTROL(4).BYPASS mode for debug purposes.
-> - updated DT bindings.
->
->Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
->Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
->Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
->---
-> drivers/net/ethernet/ti/Kconfig     |   19 +-
-> drivers/net/ethernet/ti/Makefile    |    2 +
-> drivers/net/ethernet/ti/cpsw_new.c  | 1555 +++++++++++++++++++++++++++
-> drivers/net/ethernet/ti/cpsw_priv.c |    8 +-
-> drivers/net/ethernet/ti/cpsw_priv.h |   12 +-
-> 5 files changed, 1591 insertions(+), 5 deletions(-)
-> create mode 100644 drivers/net/ethernet/ti/cpsw_new.c
->
+What about the resulting code above:
 
-[...]
+void __cpufreq_cooling_unregister(struct cpufreq_cooling_device
+*cpufreq_cdev, int last)
+{
+        /* Unregister the notifier for the last cpufreq cooling device */
+        if (last)
+                cpufreq_unregister_notifier(&thermal_cpufreq_notifier_block,
+                                            CPUFREQ_POLICY_NOTIFIER);
 
->+
->+static void cpsw_rx_handler(void *token, int len, int status)
->+{
->+	struct sk_buff *skb = token;
->+	struct cpsw_common *cpsw;
->+	struct net_device *ndev;
->+	struct sk_buff *new_skb;
->+	struct cpsw_priv *priv;
->+	struct cpdma_chan *ch;
->+	int ret = 0, port;
->+
->+	ndev = skb->dev;
->+	cpsw = ndev_to_cpsw(ndev);
->+
->+	port = CPDMA_RX_SOURCE_PORT(status);
->+	if (port) {
->+		ndev = cpsw->slaves[--port].ndev;
->+		skb->dev = ndev;
->+	}
->+
->+	if (unlikely(status < 0) || unlikely(!netif_running(ndev))) {
->+		/* In dual emac mode check for all interfaces */
->+		if (cpsw->usage_count && status >= 0) {
->+			/* The packet received is for the interface which
->+			 * is already down and the other interface is up
->+			 * and running, instead of freeing which results
->+			 * in reducing of the number of rx descriptor in
->+			 * DMA engine, requeue skb back to cpdma.
->+			 */
->+			new_skb = skb;
->+			goto requeue;
->+		}
->+
->+		/* the interface is going down, skbs are purged */
->+		dev_kfree_skb_any(skb);
->+		return;
->+	}
->+
->+	priv = netdev_priv(ndev);
->+
->+	new_skb = netdev_alloc_skb_ip_align(ndev, cpsw->rx_packet_max);
->+	if (new_skb) {
->+		skb_copy_queue_mapping(new_skb, skb);
->+		skb_put(skb, len);
->+		if (status & CPDMA_RX_VLAN_ENCAP)
->+			cpsw_rx_vlan_encap(skb);
->+		if (priv->rx_ts_enabled)
->+			cpts_rx_timestamp(cpsw->cpts, skb);
->+		skb->protocol = eth_type_trans(skb, ndev);
->+		netif_receive_skb(skb);
->+		ndev->stats.rx_bytes += len;
->+		ndev->stats.rx_packets++;
->+		/* CPDMA stores skb in internal CPPI RAM (SRAM) which belongs
->+		 * to DEV MMIO space. Kmemleak does not scan IO memory and so
->+		 * reports memory leaks.
->+		 * see commit 254a49d5139a ('drivers: net: cpsw: fix kmemleak
->+		 * false-positive reports for sk buffers') for details.
->+		 */
->+		kmemleak_not_leak(new_skb);
->+	} else {
->+		ndev->stats.rx_dropped++;
->+		new_skb = skb;
->+	}
->+
->+requeue:
+        thermal_cooling_device_unregister(cpufreq_cdev->cdev);
+        ida_simple_remove(&cpufreq_ida, cpufreq_cdev->id);
+        kfree(cpufreq_cdev->idle_time);
+        kfree(cpufreq_cdev);
+}
 
-----
->+	if (netif_dormant(ndev)) {
->+		dev_kfree_skb_any(new_skb);
->+		return;
->+	}
----
+/**
 
-drop above, no need any more
+ * cpufreq_cooling_unregister - function to remove cpufreq cooling
+device.
+ * @cdev: thermal cooling device pointer.
 
->+
->+	ch = cpsw->rxv[skb_get_queue_mapping(new_skb)].ch;
->+	ret = cpdma_chan_submit(ch, new_skb, new_skb->data,
->+				skb_tailroom(new_skb), 0);
->+	if (WARN_ON(ret < 0))
->+		dev_kfree_skb_any(new_skb);
+ *
 
-Here were a little changes last time, looks like:
+ * This interface function unregisters the "thermal-cpufreq-%x" cooling
+device.
+ */
+void cpufreq_cooling_unregister(struct cpufreq_policy *policy)
+{
+        struct cpufreq_cooling_device *cpufreq_cdev;
+        bool last;
 
-	ret = cpdma_chan_submit(ch, new_skb, new_skb->data,
-				skb_tailroom(new_skb), 0);
-	if (ret < 0) {
-		WARN_ON(ret == -ENOMEM);
-		dev_kfree_skb_any(new_skb);
-	}
+        mutex_lock(&cooling_list_lock);
+        list_for_each_entry(cpufreq_cdev, &cpufreq_cdev_list, node) {
+                if (cpufreq_cdev->policy == policy) {
+                        list_del(&cpufreq_cdev->node);
+                        last = list_empty(&cpufreq_cdev_list);
+                        break;
+                }
+        }
+        mutex_unlock(&cooling_list_lock);
 
->+}
->+
-
-[...]
-
->+
->+static void cpsw_init_host_port(struct cpsw_priv *priv)
->+{
->+	struct cpsw_common *cpsw = priv->cpsw;
->+	u32 control_reg;
->+
->+	/* soft reset the controller and initialize ale */
->+	soft_reset("cpsw", &cpsw->regs->soft_reset);
->+	cpsw_ale_start(cpsw->ale);
->+
->+	/* switch to vlan unaware mode */
->+	cpsw_ale_control_set(cpsw->ale, HOST_PORT_NUM, ALE_VLAN_AWARE,
->+			     CPSW_ALE_VLAN_AWARE);
->+	control_reg = readl(&cpsw->regs->control);
->+	control_reg |= CPSW_VLAN_AWARE | CPSW_RX_VLAN_ENCAP;
->+	writel(control_reg, &cpsw->regs->control);
->+
->+	/* setup host port priority mapping */
->+	writel_relaxed(CPDMA_TX_PRIORITY_MAP,
->+		       &cpsw->host_port_regs->cpdma_tx_pri_map);
->+	writel_relaxed(0, &cpsw->host_port_regs->cpdma_rx_chan_map);
-
-----
->+
->+	/* disable priority elevation */
->+	writel_relaxed(0, &cpsw->regs->ptype);
->+
->+	/* enable statistics collection only on all ports */
->+	writel_relaxed(0x7, &cpsw->regs->stat_port_en);
->+
->+	/* Enable internal fifo flow control */
->+	writel(0x7, &cpsw->regs->flow_control);
----
-
-Would be nice to do the same in old driver.
-I mean moving it from ndo_open
-Also were thoughts about this.
-
->+
->+	cpsw_init_host_port_dual_mac(priv);
->+
->+	cpsw_ale_control_set(cpsw->ale, HOST_PORT_NUM,
->+			     ALE_PORT_STATE, ALE_PORT_STATE_FORWARD);
->+}
->+
-
-[...]
-
->+
->+static int cpsw_ndo_open(struct net_device *ndev)
->+{
->+	struct cpsw_priv *priv = netdev_priv(ndev);
->+	struct cpsw_common *cpsw = priv->cpsw;
->+	int ret;
->+
->+	cpsw_info(priv, ifdown, "starting ndev\n");
->+	ret = pm_runtime_get_sync(cpsw->dev);
->+	if (ret < 0) {
->+		pm_runtime_put_noidle(cpsw->dev);
->+		return ret;
->+	}
->+
->+	netif_carrier_off(ndev);
->+
->+	/* Notify the stack of the actual queue counts. */
->+	ret = netif_set_real_num_tx_queues(ndev, cpsw->tx_ch_num);
->+	if (ret) {
->+		dev_err(priv->dev, "cannot set real number of tx queues\n");
->+		goto err_cleanup;
->+	}
->+
->+	ret = netif_set_real_num_rx_queues(ndev, cpsw->rx_ch_num);
->+	if (ret) {
->+		dev_err(priv->dev, "cannot set real number of rx queues\n");
->+		goto err_cleanup;
->+	}
->+
->+	/* Initialize host and slave ports */
->+	if (!cpsw->usage_count)
->+		cpsw_init_host_port(priv);
->+	cpsw_slave_open(&cpsw->slaves[priv->emac_port - 1], priv);
->+
->+	/* initialize shared resources for every ndev */
->+	if (!cpsw->usage_count) {
->+		ret = cpsw_fill_rx_channels(priv);
->+		if (ret < 0)
->+			goto err_cleanup;
->+
->+		if (cpts_register(cpsw->cpts))
->+			dev_err(priv->dev, "error registering cpts device\n");
->+
->+		napi_enable(&cpsw->napi_rx);
->+		napi_enable(&cpsw->napi_tx);
->+
->+		if (cpsw->tx_irq_disabled) {
->+			cpsw->tx_irq_disabled = false;
->+			enable_irq(cpsw->irqs_table[1]);
->+		}
->+
->+		if (cpsw->rx_irq_disabled) {
->+			cpsw->rx_irq_disabled = false;
->+			enable_irq(cpsw->irqs_table[0]);
->+		}
->+	}
->+
->+	cpsw_restore(priv);
->+
->+	/* Enable Interrupt pacing if configured */
->+	if (cpsw->coal_intvl != 0) {
->+		struct ethtool_coalesce coal;
->+
->+		coal.rx_coalesce_usecs = cpsw->coal_intvl;
->+		cpsw_set_coalesce(ndev, &coal);
->+	}
->+
->+	cpdma_ctlr_start(cpsw->dma);
->+	cpsw_intr_enable(cpsw);
->+	cpsw->usage_count++;
->+
->+	return 0;
->+
->+err_cleanup:
->+	cpdma_ctlr_stop(cpsw->dma);
-Here were a little changes also:
-Now looks like:
-	if (!cpsw->usage_count) {
-		cpdma_ctlr_stop(cpsw->dma)
-	}
+        if (cpufreq_cdev->policy == policy)
+                __cpufreq_cooling_unregister(cpufreq_cdev, last);
+}
+EXPORT_SYMBOL_GPL(cpufreq_cooling_unregister);
 
 
->+	cpsw_slave_stop(&cpsw->slaves[priv->emac_port - 1], priv);
->+	pm_runtime_put_sync(cpsw->dev);
->+	netif_carrier_off(priv->ndev);
->+	return ret;
->+}
->+
 
-[...]
-
->+
->+static netdev_tx_t cpsw_ndo_start_xmit(struct sk_buff *skb,
->+				       struct net_device *ndev)
->+{
->+	struct cpsw_priv *priv = netdev_priv(ndev);
->+	struct cpsw_common *cpsw = priv->cpsw;
->+	struct cpts *cpts = cpsw->cpts;
->+	struct netdev_queue *txq;
->+	struct cpdma_chan *txch;
->+	int ret, q_idx;
->+
->+	if (skb_padto(skb, CPSW_MIN_PACKET_SIZE)) {
->+		cpsw_err(priv, tx_err, "packet pad failed\n");
->+		ndev->stats.tx_dropped++;
->+		return NET_XMIT_DROP;
->+	}
->+
->+	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP &&
->+	    priv->tx_ts_enabled && cpts_can_timestamp(cpts, skb))
->+		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
->+
->+	q_idx = skb_get_queue_mapping(skb);
->+	if (q_idx >= cpsw->tx_ch_num)
->+		q_idx = q_idx % cpsw->tx_ch_num;
->+
->+	txch = cpsw->txv[q_idx].ch;
->+	txq = netdev_get_tx_queue(ndev, q_idx);
->+	skb_tx_timestamp(skb);
->+	ret = cpdma_chan_submit(txch, skb, skb->data, skb->len,
->+				priv->emac_port);
-------------
-
->+	if (unlikely(ret != 0)) {
->+		cpsw_err(priv, tx_err, "desc submit failed\n");
->+		goto fail;
->+	}
->+
->+	/* If there is no more tx desc left free then we need to
->+	 * tell the kernel to stop sending us tx frames.
->+	 */
->+	if (unlikely(!cpdma_check_free_tx_desc(txch))) {
->+		netif_tx_stop_queue(txq);
->+
->+		/* Barrier, so that stop_queue visible to other cpus */
->+		smp_mb__after_atomic();
->+
->+		if (cpdma_check_free_tx_desc(txch))
->+			netif_tx_wake_queue(txq);
->+	}
->+
->+	return NETDEV_TX_OK;
->+fail:
->+	ndev->stats.tx_dropped++;
->+	netif_tx_stop_queue(txq);
->+
->+	/* Barrier, so that stop_queue visible to other cpus */
->+	smp_mb__after_atomic();
->+
->+	if (cpdma_check_free_tx_desc(txch))
->+		netif_tx_wake_queue(txq);
->+
->+	return NETDEV_TX_BUSY;
->+}
--------------
-
-I have a proposition, here were no reason lastly, but now maybe
-it can be optimized a little. Smth like, replace above on:
-
-	if (unlikely(ret != 0)) {
-		cpsw_err(priv, tx_err, "desc submit failed\n");
-		ndev->stats.tx_dropped++;
-		ret = NETDEV_TX_BUSY;
-		goto fail
-	}
-
-	ret = NETDEV_TX_OK;
-
-	/* If there is no more tx desc left free then we need to
-	 * tell the kernel to stop sending us tx frames.
-	 */
-	if (unlikely(cpdma_check_free_tx_desc(txch)))
-		return ret;
-
-fail:
-	netif_tx_stop_queue(txq);
-
-	/* Barrier, so that stop_queue visible to other cpus */
-	smp_mb__after_atomic();
-
-	if (cpdma_check_free_tx_desc(txch))
-		netif_tx_wake_queue(txq);
-
-	return ret;
-
-Result: minus 6 lines and less dupes.
-
->+
->+
-
-[...]
-
->+static int cpsw_probe(struct platform_device *pdev)
->+{
->+	const struct soc_device_attribute *soc;
->+	struct device *dev = &pdev->dev;
->+	struct resource *ss_res;
->+	struct cpsw_common *cpsw;
->+	struct gpio_descs *mode;
->+	void __iomem *ss_regs;
->+	int ret = 0, ch;
->+	struct clk *clk;
->+	int irq;
->+
->+	cpsw = devm_kzalloc(dev, sizeof(struct cpsw_common), GFP_KERNEL);
->+	if (!cpsw)
->+		return -ENOMEM;
->+
->+	cpsw_slave_index = cpsw_slave_index_priv;
->+
->+	cpsw->dev = dev;
->+
->+	cpsw->slaves = devm_kcalloc(dev,
->+				    CPSW_SLAVE_PORTS_NUM,
->+				    sizeof(struct cpsw_slave),
->+				    GFP_KERNEL);
->+	if (!cpsw->slaves)
->+		return -ENOMEM;
->+
->+	mode = devm_gpiod_get_array_optional(dev, "mode", GPIOD_OUT_LOW);
->+	if (IS_ERR(mode)) {
->+		ret = PTR_ERR(mode);
->+		dev_err(dev, "gpio request failed, ret %d\n", ret);
->+		return ret;
->+	}
->+
->+	clk = devm_clk_get(dev, "fck");
->+	if (IS_ERR(clk)) {
->+		ret = PTR_ERR(clk);
->+		dev_err(dev, "fck is not found %d\n", ret);
->+		return ret;
->+	}
->+	cpsw->bus_freq_mhz = clk_get_rate(clk) / 1000000;
->+
->+	ss_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->+	ss_regs = devm_ioremap_resource(dev, ss_res);
->+	if (IS_ERR(ss_regs)) {
->+		ret = PTR_ERR(ss_regs);
->+		return ret;
->+	}
->+	cpsw->regs = ss_regs;
->+
->+	irq = platform_get_irq_byname(pdev, "rx");
->+	if (irq < 0)
->+		return irq;
->+	cpsw->irqs_table[0] = irq;
->+
->+	irq = platform_get_irq_byname(pdev, "tx");
->+	if (irq < 0)
->+		return irq;
->+	cpsw->irqs_table[1] = irq;
->+
->+	platform_set_drvdata(pdev, cpsw);
-set cpsw, but below ndev
-
->+	/* This may be required here for child devices. */
->+	pm_runtime_enable(dev);
->+
->+	/* Need to enable clocks with runtime PM api to access module
->+	 * registers
->+	 */
->+	ret = pm_runtime_get_sync(dev);
->+	if (ret < 0) {
->+		pm_runtime_put_noidle(dev);
->+		pm_runtime_disable(dev);
->+		return ret;
->+	}
->+
->+	ret = cpsw_probe_dt(cpsw);
->+	if (ret)
->+		goto clean_dt_ret;
->+
->+	soc = soc_device_match(cpsw_soc_devices);
->+	if (soc)
->+		cpsw->quirk_irq = 1;
->+
->+	cpsw->rx_packet_max = rx_packet_max;
->+	cpsw->descs_pool_size = descs_pool_size;
->+
->+	ret = cpsw_init_common(cpsw, ss_regs, ale_ageout,
->+			       (u32 __force)ss_res->start + CPSW2_BD_OFFSET,
->+			       descs_pool_size);
->+	if (ret)
->+		goto clean_dt_ret;
->+
->+	cpsw->wr_regs = cpsw->version == CPSW_VERSION_1 ?
->+			ss_regs + CPSW1_WR_OFFSET :
->+			ss_regs + CPSW2_WR_OFFSET;
->+
->+	ch = cpsw->quirk_irq ? 0 : 7;
->+	cpsw->txv[0].ch = cpdma_chan_create(cpsw->dma, ch, cpsw_tx_handler, 0);
->+	if (IS_ERR(cpsw->txv[0].ch)) {
->+		dev_err(dev, "error initializing tx dma channel\n");
->+		ret = PTR_ERR(cpsw->txv[0].ch);
->+		goto clean_cpts;
->+	}
->+
->+	cpsw->rxv[0].ch = cpdma_chan_create(cpsw->dma, 0, cpsw_rx_handler, 1);
->+	if (IS_ERR(cpsw->rxv[0].ch)) {
->+		dev_err(dev, "error initializing rx dma channel\n");
->+		ret = PTR_ERR(cpsw->rxv[0].ch);
->+		goto clean_cpts;
->+	}
->+	cpsw_split_res(cpsw);
->+
->+	/* setup netdevs */
->+	ret = cpsw_create_ports(cpsw);
->+	if (ret)
->+		goto clean_unregister_netdev;
->+
->+	/* Grab RX and TX IRQs. Note that we also have RX_THRESHOLD and
->+	 * MISC IRQs which are always kept disabled with this driver so
->+	 * we will not request them.
->+	 *
->+	 * If anyone wants to implement support for those, make sure to
->+	 * first request and append them to irqs_table array.
->+	 */
->+
->+	ret = devm_request_irq(dev, cpsw->irqs_table[0], cpsw_rx_interrupt,
->+			       0, dev_name(dev), cpsw);
->+	if (ret < 0) {
->+		dev_err(dev, "error attaching irq (%d)\n", ret);
->+		goto clean_unregister_netdev;
->+	}
->+
->+	ret = devm_request_irq(dev, cpsw->irqs_table[1], cpsw_tx_interrupt,
->+			       0, dev_name(dev), cpsw);
->+	if (ret < 0) {
->+		dev_err(dev, "error attaching irq (%d)\n", ret);
->+		goto clean_unregister_netdev;
->+	}
->+
->+	ret = cpsw_register_devlink(cpsw);
->+	if (ret)
->+		goto clean_unregister_netdev;
->+
->+	dev_notice(dev, "initialized (regs %pa, pool size %d) hw_ver:%08X %d.%d (%d)\n",
->+		   &ss_res->start, descs_pool_size,
->+		   cpsw->version, CPSW_MAJOR_VERSION(cpsw->version),
->+		   CPSW_MINOR_VERSION(cpsw->version),
->+		   CPSW_RTL_VERSION(cpsw->version));
->+
->+	pm_runtime_put(dev);
->+
->+	return 0;
->+
->+clean_unregister_netdev:
->+	cpsw_unregister_ports(cpsw);
->+clean_cpts:
->+	cpts_release(cpsw->cpts);
->+	cpdma_ctlr_destroy(cpsw->dma);
->+clean_dt_ret:
->+	cpsw_remove_dt(cpsw);
->+	pm_runtime_put_sync(dev);
->+	pm_runtime_disable(dev);
->+	return ret;
->+}
->+
->+static int cpsw_remove(struct platform_device *pdev)
->+{
->+	struct net_device *ndev = platform_get_drvdata(pdev);
-now it's cpsw, as in probe?
-
->+	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
->+	int ret;
->+
->+	ret = pm_runtime_get_sync(&pdev->dev);
->+	if (ret < 0) {
->+		pm_runtime_put_noidle(&pdev->dev);
->+		return ret;
->+	}
->+
->+	cpsw_unregister_devlink(cpsw);
->+	cpsw_unregister_ports(cpsw);
->+
->+	cpts_release(cpsw->cpts);
->+	cpdma_ctlr_destroy(cpsw->dma);
->+	cpsw_remove_dt(cpsw);
->+	pm_runtime_put_sync(&pdev->dev);
->+	pm_runtime_disable(&pdev->dev);
->+	return 0;
->+}
->+
-
-[...]
 
 -- 
-Regards,
-Ivan Khoronzhuk
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
