@@ -2,139 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE3685622C
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 08:14:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 973BD56267
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 08:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726682AbfFZGOW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jun 2019 02:14:22 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:54367 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725790AbfFZGOV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 02:14:21 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hg1C5-0005zD-Ll; Wed, 26 Jun 2019 08:14:09 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hg1C1-0003D1-Jo; Wed, 26 Jun 2019 08:14:05 +0200
-Date:   Wed, 26 Jun 2019 08:14:05 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     linux-kernel@vger.kernel.org, grygorii.strashko@ti.com,
-        mcoquelin.stm32@gmail.com, thloh@altera.com, festevam@gmail.com,
-        linus.walleij@linaro.org, khilman@kernel.org,
-        patches@opensource.cirrus.com, bgolaszewski@baylibre.com,
-        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-imx@nxp.com, kernel@pengutronix.de, ssantosh@kernel.org,
-        linux-tegra@vger.kernel.org, andriy.shevchenko@linux.intel.com,
-        shawnguo@kernel.org, s.hauer@pengutronix.de,
-        alexandre.torgue@st.com
-Subject: Re: [PATCH 01/30] include: linux: platform_device: more helpers for
- declaring platform drivers
-Message-ID: <20190626061405.qsqq5na4oactuo6f@pengutronix.de>
-References: <1560796871-18560-1-git-send-email-info@metux.net>
+        id S1725930AbfFZGhU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jun 2019 02:37:20 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:44727 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725379AbfFZGhT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 02:37:19 -0400
+Received: by mail-pf1-f194.google.com with SMTP id t16so771291pfe.11
+        for <linux-omap@vger.kernel.org>; Tue, 25 Jun 2019 23:37:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=ulju9cyok8EhZLzJkm6HOPS5fcX/Htl+DZbhZzeBbcU=;
+        b=a6+5sIZiD0nVb1R7BQJaxqjmWS0X7+NIktIS03BwIaF/s/fDV9gypnLfcx8wAwLRwD
+         pWOFYQFmV+9zlv7IXWCNsD3db6hnvyca2vxexElpbGek3puYnEdTOqguDs6z2/Xt5woO
+         0KF4FkqztPAfqq8FqkN/b3FjR4u3zvHKGJbVsEHIHqAws5jWLYCJJXLrQVvwDDptdPUF
+         Q+/YUy2HmDIIach3VxRudAqY80ynW4/O3cHyQKvihNuPbtJIhyoBL4N8F9hRTSCIz/jV
+         u8IPd6qxqEZPml0Neor4IYja9bdmEdB9zJMkk0npnxfYlEW9Qvq0h3Q6Tls1we3/Zir2
+         St6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ulju9cyok8EhZLzJkm6HOPS5fcX/Htl+DZbhZzeBbcU=;
+        b=Ma6UukU4rlHXSc2lF4DNR79GcjqhO7XfHPX0taCBjR7FP0cl3+0OmjOWp4pTMAkI9h
+         mccUqvAjiMehy74Qrz1QGeP/kR3tFcKVaEvK2AEpEQwd2j1waUCkdcbYAsP+RVOc3Zgw
+         qwvfegTUJcFO2+3Es6bmrHFwO3eb/tq9oZkP6PV1EsQnOiQQpMzHmHUOccPsy/szTLTL
+         Cn64sdYxGeXX078cOIIezb9IB+mpQwseSgMQnK5D7x+FuzdEcVKXBmLWx2cGqL3O3syF
+         NctIfRRWybh2FJV9Q2YgPUsnw8cYoTni+gtLA/yR0HLq9NY8SodQOxbPxurev7p7+Cyq
+         1BNQ==
+X-Gm-Message-State: APjAAAWpeOofyqfEZY4xd4CLmXupY07rBdGAzpUQMP+3EMQGwAyRhd3/
+        fXoXO7+79f+S5DXdlqqawrWUYw==
+X-Google-Smtp-Source: APXvYqx7TTUQo7RU0eIOLKo3zgmmKH3tUXAM08KcSIuTB/xlfkZkplQmU+BRYnzQc+wOuFKRXmJnSw==
+X-Received: by 2002:a65:510c:: with SMTP id f12mr1298010pgq.92.1561531039015;
+        Tue, 25 Jun 2019 23:37:19 -0700 (PDT)
+Received: from localhost ([122.172.211.128])
+        by smtp.gmail.com with ESMTPSA id a21sm10252143pgd.45.2019.06.25.23.37.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 25 Jun 2019 23:37:18 -0700 (PDT)
+Date:   Wed, 26 Jun 2019 12:07:16 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     rjw@rjwysocki.net, edubezval@gmail.com,
+        linux-kernel@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>,
+        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        Javi Merino <javi.merino@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Keerthy <j-keerthy@ti.com>,
+        "open list:CPU FREQUENCY DRIVERS - ARM BIG LITTLE" 
+        <linux-pm@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:TI BANDGAP AND THERMAL DRIVER" 
+        <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH V3 2/3] thermal/drivers/cpu_cooling: Unregister with the
+ policy
+Message-ID: <20190626063716.cechnzsb75q5lclr@vireshk-i7>
+References: <20190625113244.18146-1-daniel.lezcano@linaro.org>
+ <20190625113244.18146-2-daniel.lezcano@linaro.org>
+ <20190626025831.jmyzyypxr6ezpbtu@vireshk-i7>
+ <da1d2603-e30a-d877-54c3-1fad218f9d57@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1560796871-18560-1-git-send-email-info@metux.net>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+In-Reply-To: <da1d2603-e30a-d877-54c3-1fad218f9d57@linaro.org>
+User-Agent: NeoMutt/20180716-391-311a52
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
-
-On Mon, Jun 17, 2019 at 08:40:42PM +0200, Enrico Weigelt, metux IT consult wrote:
-> From: Enrico Weigelt <info@metux.net>
+On 26-06-19, 08:02, Daniel Lezcano wrote:
+> On 26/06/2019 04:58, Viresh Kumar wrote:
+> > On 25-06-19, 13:32, Daniel Lezcano wrote:
+> >> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+> >> index aee024e42618..f07454249fbc 100644
+> >> --- a/drivers/cpufreq/cpufreq.c
+> >> +++ b/drivers/cpufreq/cpufreq.c
+> >> @@ -1379,8 +1379,8 @@ static int cpufreq_online(unsigned int cpu)
+> >>  		cpufreq_driver->ready(policy);
+> >>  
+> >>  	if (cpufreq_thermal_control_enabled(cpufreq_driver))
+> >> -		policy->cdev = of_cpufreq_cooling_register(policy);
+> >> -
+> >> +		of_cpufreq_cooling_register(policy);
+> >> +	
+> > 
+> > We don't need any error checking here anymore ?
 > 
-> Add more helper macros for trivial driver init cases, similar to the
-> already existing module_platform_driver()+friends - now for those which
-> are initialized at other stages. Lots of drivers couldn't use the existing
-> macros, as they need to be called at different init stages, eg. subsys,
-> postcore, arch.
-> 
-> This helps to further reduce driver init boilerplate.
-> 
-> Signed-off-by: Enrico Weigelt <info@metux.net>
-> ---
->  include/linux/platform_device.h | 51 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 51 insertions(+)
-> 
-> diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-> index beb25f2..5f3a967 100644
-> --- a/include/linux/platform_device.h
-> +++ b/include/linux/platform_device.h
-> @@ -259,6 +259,57 @@ static inline void platform_set_drvdata(struct platform_device *pdev,
->  } \
->  module_exit(__platform_driver##_exit);
->  
-> +/* postcore_platform_driver() - Helper macro for drivers that don't do
-> + * anything special in module init/exit.  This eliminates a lot of
-> + * boilerplate.  Each module may only use this macro once, and
-> + * calling it replaces postcore_initcall() and module_exit()
-> + */
-> +#define postcore_platform_driver(__platform_driver) \
-> +static int __init __platform_driver##_init(void) \
-> +{ \
-> +	return platform_driver_register(&(__platform_driver)); \
-> +} \
-> +postcore_initcall(__platform_driver##_init); \
-> +static void __exit __platform_driver##_exit(void) \
-> +{ \
-> +	platform_driver_unregister(&(__platform_driver)); \
-> +} \
-> +module_exit(__platform_driver##_exit);
-> +
-> +/* subsys_platform_driver() - Helper macro for drivers that don't do
-> + * anything special in module init/exit.  This eliminates a lot of
-> + * boilerplate.  Each module may only use this macro once, and
-> + * calling it replaces subsys_initcall() and module_exit()
-> + */
-> +#define subsys_platform_driver(__platform_driver) \
-> +static int __init __platform_driver##_init(void) \
-> +{ \
-> +	return platform_driver_register(&(__platform_driver)); \
-> +} \
-> +subsys_initcall(__platform_driver##_init); \
-> +static void __exit __platform_driver##_exit(void) \
-> +{ \
-> +	platform_driver_unregister(&(__platform_driver)); \
-> +} \
-> +module_exit(__platform_driver##_exit);
+> There was no error checking initially. This comment and the others below
+> are for an additional patch IMO, not a change in this one.
 
-Would it make sense to do something like:
+right, but ...
 
-	#define __module_platform_driver(__platform_driver, __initlvl) \
-	static int __init __platform_driver##_init(void) \
-	{ \
-		return platform_driver_register(&(__platform_driver)); \
-	} \
-	__initlvl ## _initcall(__platform_driver##_init); \
-	static void __exit __platform_driver##_exit(void) \
-	{ \
-		platform_driver_unregister(&(__platform_driver)); \
-	} \
-	module_exit(__platform_driver##_exit);
+> >> -void cpufreq_cooling_unregister(struct thermal_cooling_device *cdev)
+> >> +void cpufreq_cooling_unregister(struct cpufreq_policy *policy)
+> >>  {
+> >>  	struct cpufreq_cooling_device *cpufreq_cdev;
+> >>  	bool last;
+> >>  
+> >> -	if (!cdev)
+> >> -		return;
 
-	#define postcore_platform_driver(__platform_driver) __module_platform_driver(__platform_driver, postcore)
-	#define subsys_platform_driver(__platform_driver) __module_platform_driver(__platform_driver, subsys)
-	...
-
-Which would be more compact and makes the difference between these
-macros a bit more obvious.
-
-Best regards
-Uwe
+we used to return without any errors from here. Now we will have
+problems if regsitering fails for some reason.
 
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+viresh
