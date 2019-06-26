@@ -2,77 +2,190 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4715B56AF1
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 15:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1700C56B77
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 16:01:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727579AbfFZNnF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jun 2019 09:43:05 -0400
-Received: from sauhun.de ([88.99.104.3]:56364 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726462AbfFZNnE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 26 Jun 2019 09:43:04 -0400
-Received: from localhost (p54B330AF.dip0.t-ipconnect.de [84.179.48.175])
-        by pokefinder.org (Postfix) with ESMTPSA id E84C82C0114;
-        Wed, 26 Jun 2019 15:43:02 +0200 (CEST)
-Date:   Wed, 26 Jun 2019 15:43:02 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] dt-bindings: i2c: omap: Add new compatible for J721E SoCs
-Message-ID: <20190626134302.GM801@ninjato>
-References: <20190605084504.2777-1-vigneshr@ti.com>
+        id S1727663AbfFZOB3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jun 2019 10:01:29 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:35025 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727516AbfFZOB3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 10:01:29 -0400
+Received: by mail-lf1-f66.google.com with SMTP id a25so1669921lfg.2
+        for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2019 07:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=x1UZPvC6jySD6bcWuGMOeB5kHfs+J7Qdhm276494Xu0=;
+        b=Wu+94JchBAyS84B61JphaZAKx7TNoDFXvxUTCXPJpwQe9Tcze9sbfjU6U1XAb79Gsq
+         x1jZEemqGhxFXCaIA5p08huPs0KgbiLJ7r37JohACYv/3netAPMhzi0hy9cTZ6YbIi4Q
+         /56YQrdnFV1MrHINy6BEHfe7mnRTwgw9646HnDJA+6qL58YoXyagJf+2Jpm4F8LIi0gH
+         zXg3LSnq1bk21qSkDoXkd4KpUwUSzedYRqbol+GPVvMBKu5Ycw4rtuXakA2deyMoJDyb
+         uZXQt0oQaBZVKWg1OOKn/R/vVDC14I3Qxfy9ohKR7oWhMUzQT9YukX9gHDmS2NnJtb3K
+         o2eA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=x1UZPvC6jySD6bcWuGMOeB5kHfs+J7Qdhm276494Xu0=;
+        b=bIMD6D6vaUwxJIoUxxVRys0L/loYfBdloZpEJTquWjs1EZ3EpAlS5+QWrJxHkYNBKG
+         Z6crIEVM4M1JCBKO5y1prL2KKAVJe5usYpsA+yVQQWGEGeaoBAzgk/wUqyGLK4uyMJEQ
+         +WuYOwaqIOasYLd5Z/inKd1B0hCAZ8cEB2Cone21DpFAjuLYUMeiBTmsMFFE6a6irTPr
+         J/Dq07jLvrQcr7HOjQYNgkazMy8yPxJN25WnvBgYsF5xgRn1wrNBFN8ssjJBJbe58PP+
+         SOkHN9aAG6943ah3GV1cDNIcTve1O6nIKnAztS38AZKN6w2evbnp7LjWc0Lvs35zixKt
+         Xpug==
+X-Gm-Message-State: APjAAAWnwxmzHqkwBkZRT5HXGixd3JzlCpEFWEZV/lb21WtDgYSMHsux
+        weHm99mvSrqZ+xb7rlDqrkqetg==
+X-Google-Smtp-Source: APXvYqwMUIcvk0OhonGIojoReS6XyCXzw+WPITleyk890WHpWACo13bwV2OljeaobA3sXmDFnWyzyg==
+X-Received: by 2002:a19:9152:: with SMTP id y18mr2804059lfj.128.1561557686492;
+        Wed, 26 Jun 2019 07:01:26 -0700 (PDT)
+Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
+        by smtp.gmail.com with ESMTPSA id v14sm2834356ljh.51.2019.06.26.07.01.25
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 26 Jun 2019 07:01:25 -0700 (PDT)
+Date:   Wed, 26 Jun 2019 17:01:23 +0300
+From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc:     David Miller <davem@davemloft.net>, grygorii.strashko@ti.com,
+        hawk@kernel.org, brouer@redhat.com, saeedm@mellanox.com,
+        leon@kernel.org, Alexei Starovoitov <ast@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        ilias.apalodimas@linaro.org,
+        Network Development <netdev@vger.kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        jakub.kicinski@netronome.com,
+        John Fastabend <john.fastabend@gmail.com>
+Subject: Re: [PATCH v4 net-next 1/4] net: core: page_pool: add user cnt
+ preventing pool deletion
+Message-ID: <20190626140122.GH6485@khorivan>
+Mail-Followup-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        David Miller <davem@davemloft.net>, grygorii.strashko@ti.com,
+        hawk@kernel.org, brouer@redhat.com, saeedm@mellanox.com,
+        leon@kernel.org, Alexei Starovoitov <ast@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        ilias.apalodimas@linaro.org,
+        Network Development <netdev@vger.kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        jakub.kicinski@netronome.com,
+        John Fastabend <john.fastabend@gmail.com>
+References: <20190625175948.24771-1-ivan.khoronzhuk@linaro.org>
+ <20190625175948.24771-2-ivan.khoronzhuk@linaro.org>
+ <CA+FuTSff=+zqxxmCv3+bNxraigNgx_1Wm5Kn2FM7TTSZV4dnOg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="EOHJn1TVIJfeVXv2"
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20190605084504.2777-1-vigneshr@ti.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CA+FuTSff=+zqxxmCv3+bNxraigNgx_1Wm5Kn2FM7TTSZV4dnOg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Tue, Jun 25, 2019 at 09:36:15PM -0400, Willem de Bruijn wrote:
+>On Tue, Jun 25, 2019 at 2:00 PM Ivan Khoronzhuk
+><ivan.khoronzhuk@linaro.org> wrote:
+>>
+>> Add user counter allowing to delete pool only when no users.
+>> It doesn't prevent pool from flush, only prevents freeing the
+>> pool instance. Helps when no need to delete the pool and now
+>> it's user responsibility to free it by calling page_pool_free()
+>> while destroying procedure. It also makes to use page_pool_free()
+>> explicitly, not fully hidden in xdp unreg, which looks more
+>> correct after page pool "create" routine.
+>>
+>> Signed-off-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+>> ---
+>
+>> diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+>> index f07c518ef8a5..1ec838e9927e 100644
+>> --- a/include/net/page_pool.h
+>> +++ b/include/net/page_pool.h
+>> @@ -101,6 +101,7 @@ struct page_pool {
+>>         struct ptr_ring ring;
+>>
+>>         atomic_t pages_state_release_cnt;
+>> +       atomic_t user_cnt;
+>
+>refcount_t?
+yes, thanks.
 
---EOHJn1TVIJfeVXv2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>
+>>  };
+>>
+>>  struct page *page_pool_alloc_pages(struct page_pool *pool, gfp_t gfp);
+>> @@ -183,6 +184,12 @@ static inline dma_addr_t page_pool_get_dma_addr(struct page *page)
+>>         return page->dma_addr;
+>>  }
+>>
+>> +/* used to prevent pool from deallocation */
+>> +static inline void page_pool_get(struct page_pool *pool)
+>> +{
+>> +       atomic_inc(&pool->user_cnt);
+>> +}
+>> +
+>>  static inline bool is_page_pool_compiled_in(void)
+>>  {
+>>  #ifdef CONFIG_PAGE_POOL
+>> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+>> index b366f59885c1..169b0e3c870e 100644
+>> --- a/net/core/page_pool.c
+>> +++ b/net/core/page_pool.c
+>> @@ -48,6 +48,7 @@ static int page_pool_init(struct page_pool *pool,
+>>                 return -ENOMEM;
+>>
+>>         atomic_set(&pool->pages_state_release_cnt, 0);
+>> +       atomic_set(&pool->user_cnt, 0);
+>>
+>>         if (pool->p.flags & PP_FLAG_DMA_MAP)
+>>                 get_device(pool->p.dev);
+>> @@ -70,6 +71,8 @@ struct page_pool *page_pool_create(const struct page_pool_params *params)
+>>                 kfree(pool);
+>>                 return ERR_PTR(err);
+>>         }
+>> +
+>> +       page_pool_get(pool);
+>>         return pool;
+>>  }
+>>  EXPORT_SYMBOL(page_pool_create);
+>> @@ -356,6 +359,10 @@ static void __warn_in_flight(struct page_pool *pool)
+>>
+>>  void __page_pool_free(struct page_pool *pool)
+>>  {
+>> +       /* free only if no users */
+>> +       if (!atomic_dec_and_test(&pool->user_cnt))
+>> +               return;
+>> +
+>>         WARN(pool->alloc.count, "API usage violation");
+>>         WARN(!ptr_ring_empty(&pool->ring), "ptr_ring is not empty");
+>>
+>> diff --git a/net/core/xdp.c b/net/core/xdp.c
+>> index 829377cc83db..04bdcd784d2e 100644
+>> --- a/net/core/xdp.c
+>> +++ b/net/core/xdp.c
+>> @@ -372,6 +372,9 @@ int xdp_rxq_info_reg_mem_model(struct xdp_rxq_info *xdp_rxq,
+>>
+>>         mutex_unlock(&mem_id_lock);
+>>
+>> +       if (type == MEM_TYPE_PAGE_POOL)
+>> +               page_pool_get(xdp_alloc->page_pool);
+>> +
+>
+>need an analogous page_pool_put in xdp_rxq_info_unreg_mem_model? mlx5
+>does not use that inverse function, but intel drivers do.
+no need, it's put after call to page_pool_free() in unreg workqueue.
 
-On Wed, Jun 05, 2019 at 02:15:04PM +0530, Vignesh Raghavendra wrote:
-> From: Peter Ujfalusi <peter.ujfalusi@ti.com>
->=20
-> J721E SoCs have same I2C IP as OMAP SoCs. Add new compatible to
-> handle J721E SoCs.
->=20
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+>
+>>         trace_mem_connect(xdp_alloc, xdp_rxq);
+>>         return 0;
+>>  err:
+>> --
+>> 2.17.1
+>>
 
-Applied to for-next, thanks!
-
-Sorry for the delay, I was waiting for an ack to show up. I totally
-missed you are the maintainer :( Won't happen again!
-
-
---EOHJn1TVIJfeVXv2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl0TdmAACgkQFA3kzBSg
-KbZ9dBAAo919nA+c20of0MlgEZW7UedZulT6dQ4dEQarjiBxvSypxnuLFf4GK0HU
-49ES8y9RFx/ALu1w0tuB2X8tdnymyeURHhKamiRzI9uQckdWdG+bq4CYqJAbjyRn
-wrqn09bsPLR3X7tW5Ivcn5p0capglvGYbKMfSG4sM43b793RglSxydF2XhDoZYlQ
-jw7ixZikzVY1hl7fz05zhjXNnOpEF/M3HdnqpkcFf/PrAlZH+NycWnAU3LbERYVa
-hCIo98A7lqgfuGgCsiifSwc0M9fcLu7ddf8SVPnS5V39//H+8oW2BpR5U8tDZ4nW
-Iu3l/R4mBdZ68Evda2mQHNbRGybt3cV4e4VdyuxeKjGPe+kAxBUaEsPNwYF01k2A
-StviNSwbGPDkzHOLP4/Cw+1cb++CsduUJd06e1xocsqkpzLoaGUTmy1g0TiL1hdv
-ehM8d+zmZfm1l4RMF/bXe06+nOlMy4JvT/4yB1a4XoptrOdOJ7gKvAguKQkVfwx9
-yopMdS2cysDNu2ny9258EnAls1cfFJCbysBbl3/lX8HNwb8yUWSrD/EleroF/35h
-2H/awiSEuDDGXJRXoUxXlJQpS/kXrw3ehpplkFptKKhpG5s1U+EZNXZk5IZHWw8c
-helXxIcFR4UZUuMefJ/5NzB+yi6v2VJFHmZyOHmnRwxdtqNDekI=
-=T4Na
------END PGP SIGNATURE-----
-
---EOHJn1TVIJfeVXv2--
+-- 
+Regards,
+Ivan Khoronzhuk
