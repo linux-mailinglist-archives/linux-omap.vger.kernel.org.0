@@ -2,147 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB61A56CA7
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 16:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AE0556F89
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 19:33:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728446AbfFZOsJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jun 2019 10:48:09 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:51122 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728398AbfFZOr5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 10:47:57 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5QElSHR080337;
-        Wed, 26 Jun 2019 09:47:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1561560448;
-        bh=euKafHZbspwxm0WbBPizKb3mUMGv/MWPwIANUP7B8M8=;
-        h=Subject:To:References:From:Date:In-Reply-To;
-        b=h/IXXlmmt4ncU4+QQRtcmK4UwK9El/hxz7x4t8V/h8ghkG0KJ30UZL6Q+qb/Fc3Z3
-         99h4bwh+AHOjJj2hTZDDdoFzzuj548JusSiIacn7H6KNrdgPah3mV4orod+HhF52YF
-         Yz42z9yZzJLh3P13XA3zwJpZD4x3O+ye1pXGqNiQ=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5QElSp7067781
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 26 Jun 2019 09:47:28 -0500
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 26
- Jun 2019 09:47:27 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 26 Jun 2019 09:47:27 -0500
-Received: from [10.250.96.121] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5QElOE7019579;
-        Wed, 26 Jun 2019 09:47:24 -0500
-Subject: Re: [RFC PATCH v4 net-next 06/11] net: ethernet: ti: introduce cpsw
- switchdev based driver part 1 - dual-emac
-To:     <netdev@vger.kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Ivan Vecera <ivecera@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
-References: <20190621181314.20778-1-grygorii.strashko@ti.com>
- <20190621181314.20778-7-grygorii.strashko@ti.com>
- <20190626095839.GE6485@khorivan>
-From:   grygorii <grygorii.strashko@ti.com>
-Message-ID: <d6f1f1fb-21c3-ca5f-2585-8d1c3a4f571d@ti.com>
-Date:   Wed, 26 Jun 2019 17:47:20 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726381AbfFZRdB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jun 2019 13:33:01 -0400
+Received: from mout.kundenserver.de ([217.72.192.74]:41971 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726042AbfFZRdB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 13:33:01 -0400
+Received: from [192.168.1.110] ([77.4.50.183]) by mrelayeu.kundenserver.de
+ (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1M6UVr-1hdirL1gd7-006uGv; Wed, 26 Jun 2019 19:27:06 +0200
+Subject: Re: [PATCH 01/30] include: linux: platform_device: more helpers for
+ declaring platform drivers
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     linux-kernel@vger.kernel.org, grygorii.strashko@ti.com,
+        mcoquelin.stm32@gmail.com, thloh@altera.com, festevam@gmail.com,
+        linus.walleij@linaro.org, khilman@kernel.org,
+        patches@opensource.cirrus.com, bgolaszewski@baylibre.com,
+        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-imx@nxp.com, kernel@pengutronix.de, ssantosh@kernel.org,
+        linux-tegra@vger.kernel.org, andriy.shevchenko@linux.intel.com,
+        shawnguo@kernel.org, s.hauer@pengutronix.de,
+        alexandre.torgue@st.com
+References: <1560796871-18560-1-git-send-email-info@metux.net>
+ <20190626061405.qsqq5na4oactuo6f@pengutronix.de>
+From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <30f541a7-ef9d-d687-ab76-22a4544258f8@metux.net>
+Date:   Wed, 26 Jun 2019 19:27:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-In-Reply-To: <20190626095839.GE6485@khorivan>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <20190626061405.qsqq5na4oactuo6f@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Provags-ID: V03:K1:4cVH4PkCtQv/LUwiS6UCMsXOnJKPoFgtu8YIQh2qre1SlC0rID3
+ iH0aKQ/MKkZJ2yEuVJpv7mEkC1UjMv1ovjIFymwEqaJMY5AQyXvkOzmTCMq13end5r0f9xS
+ yMx11gxpvqiWbWj5JDclzAGEDJ/U+TuS0GJfpPcHqTpNdKo6+6kBrvObB6Qy47Oj5TZ6PPN
+ S2g10gMfdY9wpMg6E4Uzg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:p7DzD82Py24=:LTBxbNA+enqTVtVo1asr5u
+ fojJY6VPTEzYaSJmnoo2Q08KvoDIOijxX27ZhdAkutA8pG3r2+igrKbf0Fr1hVHFN+0+Zm563
+ xU3yBgs2kIQumCzDZakchFcCbHnWcLq1dDjHduz9l5x8WbJ/QjWvztmVLtLec6s3T/7wn9f4b
+ hB94PAd14mx2OzyVmlsrfgS6p7iw5JWUcjH465pyFgPXWaa9f8VjH6xW5ux2bE6+rIMbpk5Ty
+ junIYo1id38mTc1V85zeagLxg1x2WbqCQ08z0saH2UrLQj0TODg2fH+jgg1nULwKYD1b7QksU
+ 5zYpMwlRIfQk33Hio6mvEahIFHMzJ4ehYRrJnkkp5az6d1WwBProOdeVWTK2qVW4zI/UFgwV6
+ NAeOZfNFAsRJkPSNeywmV1Ms6jLg5J6SLBAW/b8VSQxanNDKjFtGLiUsQPGGrygYRASQ/lYRp
+ +u8tbOCLBQKNl9ZVrApeSLLH0ksCfzNH+cZ8GNJCnSQitkHKMCw3t+mOxAGy0aif6rXMPdz9Q
+ m6ftp/V4ktJEzSCtvq1zGgc6rxZALGDd1jSCx8umIEuSe4utCYnm2NJIpJ58Mh496OnAihtyD
+ CHxFOC3zGdx+8PQVDH4pHkwEXG6nvHZfDaSNdRY6hV/UUbFvjekhcfWq+1Ms87SGmTwRNl2hy
+ ec01eIhUZI7jd9eRtU9P3gL6qFG8ol+BFr7lrNRSyVSKVmlZmvsK8AlDOczVKKRXRAsYW9qoc
+ AjvunGTjxWWoot/j7F503lFwZ0SKs+7YtXKRyB+QgYf4oTlYrIKhATZrRkE=
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 26.06.19 08:14, Uwe Kleine-König wrote:
+Hi,
 
-
-On 26/06/2019 12:58, Ivan Khoronzhuk wrote:
-> Hi Grygorii
-> 
-> Too much code, but I've tried pass thru.
-> Probably expectation the devlink to be reviewed, but several
-> common replies that should be reflected in non RFC v.
-> 
-> On Fri, Jun 21, 2019 at 09:13:09PM +0300, Grygorii Strashko wrote:
->> From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
->>
->> Part 1:
->> Introduce basic CPSW dual_mac driver (cpsw_new.c) which is operating in
->> dual-emac mode by default, thus working as 2 individual network interfaces.
->> Main differences from legacy CPSW driver are:
->>
->> - optimized promiscuous mode: The P0_UNI_FLOOD (both ports) is enabled in
->> addition to ALLMULTI (current port) instead of ALE_BYPASS. So, Ports in
->> promiscuous mode will keep possibility of mcast and vlan filtering, which
->> is provides significant benefits when ports are joined to the same bridge,
->> but without enabling "switch" mode, or to different bridges.
->> - learning disabled on ports as it make not too much sense for
->>   segregated ports - no forwarding in HW.
->> - enabled basic support for devlink.
->>
->>     devlink dev show
->>         platform/48484000.ethernet_switch
->>
->>     devlink dev param show
->>      platform/48484000.ethernet_switch:
->>     name ale_bypass type driver-specific
->>      values:
->>         cmode runtime value false
->>
->> - "ale_bypass" devlink driver parameter allows to enable
->> ALE_CONTROL(4).BYPASS mode for debug purposes.
->> - updated DT bindings.
->>
->> Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
->> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+> Would it make sense to do something like:
 >
+> 	#define __module_platform_driver(__platform_driver, __initlvl) \
+> 	static int __init __platform_driver##_init(void) \
+> 	{ \
+> 		return platform_driver_register(&(__platform_driver)); \
+> 	} \
+> 	__initlvl ## _initcall(__platform_driver##_init); \
+> 	static void __exit __platform_driver##_exit(void) \
+> 	{ \
+> 		platform_driver_unregister(&(__platform_driver)); \
+> 	} \
+> 	module_exit(__platform_driver##_exit);
+>
+> 	#define postcore_platform_driver(__platform_driver)
+__module_platform_driver(__platform_driver, postcore)
+> 	#define subsys_platform_driver(__platform_driver)
+__module_platform_driver(__platform_driver, subsys)
+> 	...
+>
+> Which would be more compact and makes the difference between these
+> macros a bit more obvious.
+yeah, could do that, but not sure whether it's really good for
+readability when we have so many nested macros :p
 
-[...]
+OTOH, I didn't want to touch the existing macros for now, just trim down
+the actual init boilerplate, postponing further compactions for later.
 
->> +
->> +    /* setup host port priority mapping */
->> +    writel_relaxed(CPDMA_TX_PRIORITY_MAP,
->> +               &cpsw->host_port_regs->cpdma_tx_pri_map);
->> +    writel_relaxed(0, &cpsw->host_port_regs->cpdma_rx_chan_map);
-> 
-> ----
->> +
->> +    /* disable priority elevation */
->> +    writel_relaxed(0, &cpsw->regs->ptype);
->> +
->> +    /* enable statistics collection only on all ports */
->> +    writel_relaxed(0x7, &cpsw->regs->stat_port_en);
->> +
->> +    /* Enable internal fifo flow control */
->> +    writel(0x7, &cpsw->regs->flow_control);
-> ---
-> 
-> Would be nice to do the same in old driver.
-> I mean moving it from ndo_open
-> Also were thoughts about this.
-
-I have no plans to perform any kind of optimization in old driver any more.
-
-Agree with other comments.
-
-[...]
-
-Thank you.
+--mtx
 
 -- 
-Best regards,
-grygorii
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287
