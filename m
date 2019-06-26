@@ -2,230 +2,176 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02EB256727
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 12:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C13A256798
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 13:28:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726604AbfFZKtz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jun 2019 06:49:55 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:33875 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726339AbfFZKtz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 06:49:55 -0400
-Received: by mail-lj1-f195.google.com with SMTP id p17so1705780ljg.1
-        for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2019 03:49:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=DbYsEvBW6F8N7wNO234XyQBFfHMkwstcMZVR/YcSDHw=;
-        b=VsEWkm0MKum6Fuf4raOeZFMKLL6F5QD+CIAWzqOlcXyDeZgZSuaqNcUonl4RMBv/7x
-         /kgGbT97ZXeUXhT9BlRiesPZFqWrXiIGDMgjN7IYOxJUaTkfGOQp3nXTaFE+clonoHv+
-         +3owRGkMDcfqI4MgdCMZQYf/kHYq4VTMfbnGMUsFacARq8FhUoalSx7j1BRJQnhnpObx
-         68Dx3ihI0FP/0BGbVxW0dfJHr601fLSKJvdBIh4T9k8Aj+hIgpcT7eGrG13u0MoqL2ed
-         sQBIHOjxrfgpo/BzJeMXHXJNHK5D2F7iKgDj9AOoDvEjbwSwMfEXwJD0h/vjqyZNefnu
-         HYlA==
+        id S1726468AbfFZL2b convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 26 Jun 2019 07:28:31 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:42749 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726339AbfFZL2b (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 07:28:31 -0400
+Received: by mail-ot1-f66.google.com with SMTP id l15so2119547otn.9;
+        Wed, 26 Jun 2019 04:28:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=DbYsEvBW6F8N7wNO234XyQBFfHMkwstcMZVR/YcSDHw=;
-        b=W9fO2Xs8MSXMTHmo8+m/j2cmt6EbwIxHr99PsEbbdYlMLCPRbuUuAOaGmPPgv3S0tk
-         +pNRedsV+NWifrcVYnaplTqc4ypIOfJaQyAD7PlJlsWWNw1nQBchlhUGos1m9wyvlo55
-         0YWXsjICRy+ZJ4IpFfikpEE4hcgXoQizHoJdBEqBTd/wkU9G7Px07MH9tav8JnFBN8JL
-         6U3u73c31jpYaHZ0aQbKtlKdhRXxnc86uyNZ+i5EHJaRlyqxXAWBan9TiYIdYTxry22Y
-         vb0loIzbykQK2LF5axgIfnFbZE1CzqRQqXgZnBDRESibkUKpBMehboZzcH27qQOyTwSd
-         FZoQ==
-X-Gm-Message-State: APjAAAWgwPa+OEGbHpCmlXX+SUf1S+5QIzilA5UpLxnWjvKBmN3+vlv8
-        z/JmVBhL+iBl0/V7BV7nX+wztg==
-X-Google-Smtp-Source: APXvYqyf4W3q5MehDftLZSo/IFhASVjHPRiT4GnnAHEmxeIYcMFSDZsrmhFSjrMVhLaA2kVqaSHKYw==
-X-Received: by 2002:a2e:8ed2:: with SMTP id e18mr2469846ljl.235.1561546192452;
-        Wed, 26 Jun 2019 03:49:52 -0700 (PDT)
-Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id q2sm2341611lfj.25.2019.06.26.03.49.51
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 26 Jun 2019 03:49:51 -0700 (PDT)
-Date:   Wed, 26 Jun 2019 13:49:49 +0300
-From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-To:     Jesper Dangaard Brouer <brouer@redhat.com>
-Cc:     davem@davemloft.net, grygorii.strashko@ti.com, hawk@kernel.org,
-        saeedm@mellanox.com, leon@kernel.org, ast@kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        xdp-newbies@vger.kernel.org, ilias.apalodimas@linaro.org,
-        netdev@vger.kernel.org, daniel@iogearbox.net,
-        jakub.kicinski@netronome.com, john.fastabend@gmail.com
-Subject: Re: [PATCH v4 net-next 1/4] net: core: page_pool: add user cnt
- preventing pool deletion
-Message-ID: <20190626104948.GF6485@khorivan>
-Mail-Followup-To: Jesper Dangaard Brouer <brouer@redhat.com>,
-        davem@davemloft.net, grygorii.strashko@ti.com, hawk@kernel.org,
-        saeedm@mellanox.com, leon@kernel.org, ast@kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        xdp-newbies@vger.kernel.org, ilias.apalodimas@linaro.org,
-        netdev@vger.kernel.org, daniel@iogearbox.net,
-        jakub.kicinski@netronome.com, john.fastabend@gmail.com
-References: <20190625175948.24771-1-ivan.khoronzhuk@linaro.org>
- <20190625175948.24771-2-ivan.khoronzhuk@linaro.org>
- <20190626124216.494eee86@carbon>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=zYG7+FYrQci0B0NIIaV4SdyVIkXx7HP7jsA5/CTPT+A=;
+        b=I/rVUbKcJWx0fApH7NgpK6+ISwu3DE1elJmg+JSChHT5MddeovLDMcyCNgMsvF8L3V
+         x0hldkNCghWWU4eFQfXRRC0jwZtLFcnIUNZPXrFckHL4NrQdVkkCyls+82x3i+rUtp5V
+         4j4WmRF8xVeF0AjlP5CPuMIKy2WUzTjIizmvGsJQdzUGo/B5MVQty3855y9tLGsf8IyA
+         MHho5/17RwhTMyt3vCXJYwYJknCcPizUmh+G88iI3FaewxgAEYNnrBdRQLb8/4mtBvWa
+         EJk1iTE5LTMfujhzApk9a3qnzsdLf9Wy5dlTWLaR5Xh7FRTTzqW8ONWwyjD8sA/OYgxs
+         LT3A==
+X-Gm-Message-State: APjAAAWPMA82e1z6z6aBm9mXpacR1GSoy1biySEA77/lbDUww3tDNv89
+        cNMLcx3taCTUXLxUNJ2knGhcYm3DKe9lGxPEvOzgsbEg
+X-Google-Smtp-Source: APXvYqxQcfGkDZskFmpDKI+mK6sXWnA1QxcoJlpLtksnfosbfzd0ZwAqux1kiyfOCsazXPoyKgzI+/UQgzyr5VyCpbU=
+X-Received: by 2002:a9d:6959:: with SMTP id p25mr2713084oto.118.1561548510328;
+ Wed, 26 Jun 2019 04:28:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190626124216.494eee86@carbon>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20190625113244.18146-1-daniel.lezcano@linaro.org>
+ <20190625113244.18146-2-daniel.lezcano@linaro.org> <20190626025831.jmyzyypxr6ezpbtu@vireshk-i7>
+ <da1d2603-e30a-d877-54c3-1fad218f9d57@linaro.org> <20190626063716.cechnzsb75q5lclr@vireshk-i7>
+ <CAJZ5v0jFXmJ3ikEPQUp-cLv3+ZSnp1kP8CxdkZVofV1BS3+UwQ@mail.gmail.com> <8a9b7bd0-9b21-1ce1-6176-cffff4b8d739@linaro.org>
+In-Reply-To: <8a9b7bd0-9b21-1ce1-6176-cffff4b8d739@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 26 Jun 2019 13:28:19 +0200
+Message-ID: <CAJZ5v0h7=BqnQqvULnQr3MuQsS2qwSn7RCZbMo-V+cUi+kbvSg@mail.gmail.com>
+Subject: Re: [PATCH V3 2/3] thermal/drivers/cpu_cooling: Unregister with the policy
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        Javi Merino <javi.merino@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Keerthy <j-keerthy@ti.com>,
+        "open list:CPU FREQUENCY DRIVERS - ARM BIG LITTLE" 
+        <linux-pm@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "open list:TI BANDGAP AND THERMAL DRIVER" 
+        <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 12:42:16PM +0200, Jesper Dangaard Brouer wrote:
->On Tue, 25 Jun 2019 20:59:45 +0300
->Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
+On Wed, Jun 26, 2019 at 12:19 PM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
 >
->> Add user counter allowing to delete pool only when no users.
->> It doesn't prevent pool from flush, only prevents freeing the
->> pool instance. Helps when no need to delete the pool and now
->> it's user responsibility to free it by calling page_pool_free()
->> while destroying procedure. It also makes to use page_pool_free()
->> explicitly, not fully hidden in xdp unreg, which looks more
->> correct after page pool "create" routine.
+> On 26/06/2019 11:06, Rafael J. Wysocki wrote:
+> > On Wed, Jun 26, 2019 at 8:37 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> >>
+> >> On 26-06-19, 08:02, Daniel Lezcano wrote:
+> >>> On 26/06/2019 04:58, Viresh Kumar wrote:
+> >>>> On 25-06-19, 13:32, Daniel Lezcano wrote:
+> >>>>> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+> >>>>> index aee024e42618..f07454249fbc 100644
+> >>>>> --- a/drivers/cpufreq/cpufreq.c
+> >>>>> +++ b/drivers/cpufreq/cpufreq.c
+> >>>>> @@ -1379,8 +1379,8 @@ static int cpufreq_online(unsigned int cpu)
+> >>>>>            cpufreq_driver->ready(policy);
+> >>>>>
+> >>>>>    if (cpufreq_thermal_control_enabled(cpufreq_driver))
+> >>>>> -          policy->cdev = of_cpufreq_cooling_register(policy);
+> >>>>> -
+> >>>>> +          of_cpufreq_cooling_register(policy);
+> >>>>> +
+> >>>>
+> >>>> We don't need any error checking here anymore ?
+> >>>
+> >>> There was no error checking initially. This comment and the others below
+> >>> are for an additional patch IMO, not a change in this one.
+> >>
+> >> right, but ...
+> >>
+> >>>>> -void cpufreq_cooling_unregister(struct thermal_cooling_device *cdev)
+> >>>>> +void cpufreq_cooling_unregister(struct cpufreq_policy *policy)
+> >>>>>  {
+> >>>>>    struct cpufreq_cooling_device *cpufreq_cdev;
+> >>>>>    bool last;
+> >>>>>
+> >>>>> -  if (!cdev)
+> >>>>> -          return;
+> >>
+> >> we used to return without any errors from here. Now we will have
+> >> problems if regsitering fails for some reason.
+> >
+> > Specifically, the last cpufreq_cdev in the list will be unregistered
+> > AFAICS, and without removing it from the list for that matter, which
+> > isn't what the caller wants.
 >
->No, this is wrong.
-below.
+> Indeed,
+>
+> What about the resulting code above:
+>
+> void __cpufreq_cooling_unregister(struct cpufreq_cooling_device
+> *cpufreq_cdev, int last)
+> {
+>         /* Unregister the notifier for the last cpufreq cooling device */
+>         if (last)
+>                 cpufreq_unregister_notifier(&thermal_cpufreq_notifier_block,
+>                                             CPUFREQ_POLICY_NOTIFIER);
+>
 
->
->> Signed-off-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
->> ---
->>  drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 8 +++++---
->>  include/net/page_pool.h                           | 7 +++++++
->>  net/core/page_pool.c                              | 7 +++++++
->>  net/core/xdp.c                                    | 3 +++
->>  4 files changed, 22 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
->> index 5e40db8f92e6..cb028de64a1d 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
->> @@ -545,10 +545,8 @@ static int mlx5e_alloc_rq(struct mlx5e_channel *c,
->>  	}
->>  	err = xdp_rxq_info_reg_mem_model(&rq->xdp_rxq,
->>  					 MEM_TYPE_PAGE_POOL, rq->page_pool);
->> -	if (err) {
->> -		page_pool_free(rq->page_pool);
->> +	if (err)
->>  		goto err_free;
->> -	}
->>
->>  	for (i = 0; i < wq_sz; i++) {
->>  		if (rq->wq_type == MLX5_WQ_TYPE_LINKED_LIST_STRIDING_RQ) {
->> @@ -613,6 +611,8 @@ static int mlx5e_alloc_rq(struct mlx5e_channel *c,
->>  	if (rq->xdp_prog)
->>  		bpf_prog_put(rq->xdp_prog);
->>  	xdp_rxq_info_unreg(&rq->xdp_rxq);
->> +	if (rq->page_pool)
->> +		page_pool_free(rq->page_pool);
->>  	mlx5_wq_destroy(&rq->wq_ctrl);
->>
->>  	return err;
->> @@ -643,6 +643,8 @@ static void mlx5e_free_rq(struct mlx5e_rq *rq)
->>  	}
->>
->>  	xdp_rxq_info_unreg(&rq->xdp_rxq);
->> +	if (rq->page_pool)
->> +		page_pool_free(rq->page_pool);
->
->No, this is wrong.  The hole point with the merged page_pool fixes
->patchset was that page_pool_free() needs to be delayed until no-more
->in-flight packets exist.
+Doesn't the notifier need to be unregistered under cooling_list_lock ?
 
-Probably it's not so obvious, but it's still delayed and deleted only
-after no-more in-flight packets exist. Here question is only who is able
-to do this first based on refcnt.
-
+>         thermal_cooling_device_unregister(cpufreq_cdev->cdev);
+>         ida_simple_remove(&cpufreq_ida, cpufreq_cdev->id);
+>         kfree(cpufreq_cdev->idle_time);
+>         kfree(cpufreq_cdev);
+> }
 >
+> /**
 >
->>  	mlx5_wq_destroy(&rq->wq_ctrl);
->>  }
->>
->> diff --git a/include/net/page_pool.h b/include/net/page_pool.h
->> index f07c518ef8a5..1ec838e9927e 100644
->> --- a/include/net/page_pool.h
->> +++ b/include/net/page_pool.h
->> @@ -101,6 +101,7 @@ struct page_pool {
->>  	struct ptr_ring ring;
->>
->>  	atomic_t pages_state_release_cnt;
->> +	atomic_t user_cnt;
->>  };
->>
->>  struct page *page_pool_alloc_pages(struct page_pool *pool, gfp_t gfp);
->> @@ -183,6 +184,12 @@ static inline dma_addr_t page_pool_get_dma_addr(struct page *page)
->>  	return page->dma_addr;
->>  }
->>
->> +/* used to prevent pool from deallocation */
->> +static inline void page_pool_get(struct page_pool *pool)
->> +{
->> +	atomic_inc(&pool->user_cnt);
->> +}
->> +
->>  static inline bool is_page_pool_compiled_in(void)
->>  {
->>  #ifdef CONFIG_PAGE_POOL
->> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
->> index b366f59885c1..169b0e3c870e 100644
->> --- a/net/core/page_pool.c
->> +++ b/net/core/page_pool.c
->> @@ -48,6 +48,7 @@ static int page_pool_init(struct page_pool *pool,
->>  		return -ENOMEM;
->>
->>  	atomic_set(&pool->pages_state_release_cnt, 0);
->> +	atomic_set(&pool->user_cnt, 0);
->>
->>  	if (pool->p.flags & PP_FLAG_DMA_MAP)
->>  		get_device(pool->p.dev);
->> @@ -70,6 +71,8 @@ struct page_pool *page_pool_create(const struct page_pool_params *params)
->>  		kfree(pool);
->>  		return ERR_PTR(err);
->>  	}
->> +
->> +	page_pool_get(pool);
->>  	return pool;
->>  }
->>  EXPORT_SYMBOL(page_pool_create);
->> @@ -356,6 +359,10 @@ static void __warn_in_flight(struct page_pool *pool)
->>
->>  void __page_pool_free(struct page_pool *pool)
->>  {
->> +	/* free only if no users */
->> +	if (!atomic_dec_and_test(&pool->user_cnt))
->> +		return;
->> +
->>  	WARN(pool->alloc.count, "API usage violation");
->>  	WARN(!ptr_ring_empty(&pool->ring), "ptr_ring is not empty");
->>
->> diff --git a/net/core/xdp.c b/net/core/xdp.c
->> index 829377cc83db..04bdcd784d2e 100644
->> --- a/net/core/xdp.c
->> +++ b/net/core/xdp.c
->> @@ -372,6 +372,9 @@ int xdp_rxq_info_reg_mem_model(struct xdp_rxq_info *xdp_rxq,
->>
->>  	mutex_unlock(&mem_id_lock);
->>
->> +	if (type == MEM_TYPE_PAGE_POOL)
->> +		page_pool_get(xdp_alloc->page_pool);
->> +
->>  	trace_mem_connect(xdp_alloc, xdp_rxq);
->>  	return 0;
->>  err:
+>  * cpufreq_cooling_unregister - function to remove cpufreq cooling
+> device.
+>  * @cdev: thermal cooling device pointer.
+>
+>  *
+>
+>  * This interface function unregisters the "thermal-cpufreq-%x" cooling
+> device.
+>  */
+> void cpufreq_cooling_unregister(struct cpufreq_policy *policy)
+> {
+>         struct cpufreq_cooling_device *cpufreq_cdev;
+>         bool last;
+>
+>         mutex_lock(&cooling_list_lock);
+>         list_for_each_entry(cpufreq_cdev, &cpufreq_cdev_list, node) {
+>                 if (cpufreq_cdev->policy == policy) {
+>                         list_del(&cpufreq_cdev->node);
+>                         last = list_empty(&cpufreq_cdev_list);
+>                         break;
+>                 }
+>         }
+>         mutex_unlock(&cooling_list_lock);
+>
+>         if (cpufreq_cdev->policy == policy)
+>                 __cpufreq_cooling_unregister(cpufreq_cdev, last);
+> }
+> EXPORT_SYMBOL_GPL(cpufreq_cooling_unregister);
 >
 >
 >
->-- 
->Best regards,
->  Jesper Dangaard Brouer
->  MSc.CS, Principal Kernel Engineer at Red Hat
->  LinkedIn: http://www.linkedin.com/in/brouer
-
--- 
-Regards,
-Ivan Khoronzhuk
+>
+> --
+>  <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+>
+> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+> <http://twitter.com/#!/linaroorg> Twitter |
+> <http://www.linaro.org/linaro-blog/> Blog
+>
