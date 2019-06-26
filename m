@@ -2,190 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1700C56B77
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 16:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E7F156C65
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jun 2019 16:43:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727663AbfFZOB3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Jun 2019 10:01:29 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:35025 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727516AbfFZOB3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 10:01:29 -0400
-Received: by mail-lf1-f66.google.com with SMTP id a25so1669921lfg.2
-        for <linux-omap@vger.kernel.org>; Wed, 26 Jun 2019 07:01:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=x1UZPvC6jySD6bcWuGMOeB5kHfs+J7Qdhm276494Xu0=;
-        b=Wu+94JchBAyS84B61JphaZAKx7TNoDFXvxUTCXPJpwQe9Tcze9sbfjU6U1XAb79Gsq
-         x1jZEemqGhxFXCaIA5p08huPs0KgbiLJ7r37JohACYv/3netAPMhzi0hy9cTZ6YbIi4Q
-         /56YQrdnFV1MrHINy6BEHfe7mnRTwgw9646HnDJA+6qL58YoXyagJf+2Jpm4F8LIi0gH
-         zXg3LSnq1bk21qSkDoXkd4KpUwUSzedYRqbol+GPVvMBKu5Ycw4rtuXakA2deyMoJDyb
-         uZXQt0oQaBZVKWg1OOKn/R/vVDC14I3Qxfy9ohKR7oWhMUzQT9YukX9gHDmS2NnJtb3K
-         o2eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=x1UZPvC6jySD6bcWuGMOeB5kHfs+J7Qdhm276494Xu0=;
-        b=bIMD6D6vaUwxJIoUxxVRys0L/loYfBdloZpEJTquWjs1EZ3EpAlS5+QWrJxHkYNBKG
-         Z6crIEVM4M1JCBKO5y1prL2KKAVJe5usYpsA+yVQQWGEGeaoBAzgk/wUqyGLK4uyMJEQ
-         +WuYOwaqIOasYLd5Z/inKd1B0hCAZ8cEB2Cone21DpFAjuLYUMeiBTmsMFFE6a6irTPr
-         J/Dq07jLvrQcr7HOjQYNgkazMy8yPxJN25WnvBgYsF5xgRn1wrNBFN8ssjJBJbe58PP+
-         SOkHN9aAG6943ah3GV1cDNIcTve1O6nIKnAztS38AZKN6w2evbnp7LjWc0Lvs35zixKt
-         Xpug==
-X-Gm-Message-State: APjAAAWnwxmzHqkwBkZRT5HXGixd3JzlCpEFWEZV/lb21WtDgYSMHsux
-        weHm99mvSrqZ+xb7rlDqrkqetg==
-X-Google-Smtp-Source: APXvYqwMUIcvk0OhonGIojoReS6XyCXzw+WPITleyk890WHpWACo13bwV2OljeaobA3sXmDFnWyzyg==
-X-Received: by 2002:a19:9152:: with SMTP id y18mr2804059lfj.128.1561557686492;
-        Wed, 26 Jun 2019 07:01:26 -0700 (PDT)
-Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id v14sm2834356ljh.51.2019.06.26.07.01.25
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 26 Jun 2019 07:01:25 -0700 (PDT)
-Date:   Wed, 26 Jun 2019 17:01:23 +0300
-From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc:     David Miller <davem@davemloft.net>, grygorii.strashko@ti.com,
-        hawk@kernel.org, brouer@redhat.com, saeedm@mellanox.com,
-        leon@kernel.org, Alexei Starovoitov <ast@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        ilias.apalodimas@linaro.org,
-        Network Development <netdev@vger.kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        jakub.kicinski@netronome.com,
-        John Fastabend <john.fastabend@gmail.com>
-Subject: Re: [PATCH v4 net-next 1/4] net: core: page_pool: add user cnt
- preventing pool deletion
-Message-ID: <20190626140122.GH6485@khorivan>
-Mail-Followup-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        David Miller <davem@davemloft.net>, grygorii.strashko@ti.com,
-        hawk@kernel.org, brouer@redhat.com, saeedm@mellanox.com,
-        leon@kernel.org, Alexei Starovoitov <ast@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        ilias.apalodimas@linaro.org,
-        Network Development <netdev@vger.kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        jakub.kicinski@netronome.com,
-        John Fastabend <john.fastabend@gmail.com>
-References: <20190625175948.24771-1-ivan.khoronzhuk@linaro.org>
- <20190625175948.24771-2-ivan.khoronzhuk@linaro.org>
- <CA+FuTSff=+zqxxmCv3+bNxraigNgx_1Wm5Kn2FM7TTSZV4dnOg@mail.gmail.com>
+        id S1726628AbfFZOnE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jun 2019 10:43:04 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:34672 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726029AbfFZOnE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jun 2019 10:43:04 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5QEgYSO026643;
+        Wed, 26 Jun 2019 09:42:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1561560154;
+        bh=JQTsc372ZbtieW6Fo3QsbkjZrLLE5ueFi63b7dRTl4c=;
+        h=Subject:To:References:From:Date:In-Reply-To;
+        b=kOdAPlvju6ImTTkUKJpjLOaQbVwlSty9CUpFjGolXUM/l/Y1TvDpAlIcJj8kqo/P9
+         OXZRDV+CAYR1DjQAP/57Z5/0okfurKo9+2WzM2kblpSl2aVMXbd/Iv1J1sWUkX7K5g
+         TnxoIRX+kXX7gyrpx4ZPallDebew116A7zzBBn10=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5QEgYjd113018
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 Jun 2019 09:42:34 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 26
+ Jun 2019 09:42:34 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 26 Jun 2019 09:42:34 -0500
+Received: from [10.250.96.121] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5QEgTNu089437;
+        Wed, 26 Jun 2019 09:42:30 -0500
+Subject: Re: [RFC PATCH v4 net-next 10/11] ARM: dts: am57xx-idk: add dt nodes
+ for new cpsw switch dev driver
+To:     <netdev@vger.kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Ivan Vecera <ivecera@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
+References: <20190621181314.20778-1-grygorii.strashko@ti.com>
+ <20190621181314.20778-11-grygorii.strashko@ti.com>
+ <20190625224953.GD6485@khorivan>
+From:   grygorii <grygorii.strashko@ti.com>
+Message-ID: <311aa679-2656-ad1c-d2fb-b16efa1c33c4@ti.com>
+Date:   Wed, 26 Jun 2019 17:42:20 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CA+FuTSff=+zqxxmCv3+bNxraigNgx_1Wm5Kn2FM7TTSZV4dnOg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190625224953.GD6485@khorivan>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 25, 2019 at 09:36:15PM -0400, Willem de Bruijn wrote:
->On Tue, Jun 25, 2019 at 2:00 PM Ivan Khoronzhuk
-><ivan.khoronzhuk@linaro.org> wrote:
+
+
+On 26/06/2019 01:49, Ivan Khoronzhuk wrote:
+> On Fri, Jun 21, 2019 at 09:13:13PM +0300, Grygorii Strashko wrote:
+>> Add DT nodes for new cpsw switch dev driver.
 >>
->> Add user counter allowing to delete pool only when no users.
->> It doesn't prevent pool from flush, only prevents freeing the
->> pool instance. Helps when no need to delete the pool and now
->> it's user responsibility to free it by calling page_pool_free()
->> while destroying procedure. It also makes to use page_pool_free()
->> explicitly, not fully hidden in xdp unreg, which looks more
->> correct after page pool "create" routine.
->>
->> Signed-off-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+>> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 >> ---
->
->> diff --git a/include/net/page_pool.h b/include/net/page_pool.h
->> index f07c518ef8a5..1ec838e9927e 100644
->> --- a/include/net/page_pool.h
->> +++ b/include/net/page_pool.h
->> @@ -101,6 +101,7 @@ struct page_pool {
->>         struct ptr_ring ring;
+>> arch/arm/boot/dts/am571x-idk.dts         | 28 +++++++++++++
+>> arch/arm/boot/dts/am572x-idk.dts         |  5 +++
+>> arch/arm/boot/dts/am574x-idk.dts         |  5 +++
+>> arch/arm/boot/dts/am57xx-idk-common.dtsi |  2 +-
+>> arch/arm/boot/dts/dra7-l4.dtsi           | 53 ++++++++++++++++++++++++
+>> 5 files changed, 92 insertions(+), 1 deletion(-)
 >>
->>         atomic_t pages_state_release_cnt;
->> +       atomic_t user_cnt;
->
->refcount_t?
-yes, thanks.
+> 
+> [...]
+> 
+>> diff --git a/arch/arm/boot/dts/am57xx-idk-common.dtsi b/arch/arm/boot/dts/am57xx-idk-common.dtsi
+>> index f7bd26458915..5c7663699efa 100644
+>> --- a/arch/arm/boot/dts/am57xx-idk-common.dtsi
+>> +++ b/arch/arm/boot/dts/am57xx-idk-common.dtsi
+>> @@ -367,7 +367,7 @@
+>> };
+>>
+>> &mac {
+>> -    status = "okay";
+>> +//    status = "okay";
+> ?
 
->
->>  };
->>
->>  struct page *page_pool_alloc_pages(struct page_pool *pool, gfp_t gfp);
->> @@ -183,6 +184,12 @@ static inline dma_addr_t page_pool_get_dma_addr(struct page *page)
->>         return page->dma_addr;
->>  }
->>
->> +/* used to prevent pool from deallocation */
->> +static inline void page_pool_get(struct page_pool *pool)
->> +{
->> +       atomic_inc(&pool->user_cnt);
->> +}
->> +
->>  static inline bool is_page_pool_compiled_in(void)
->>  {
->>  #ifdef CONFIG_PAGE_POOL
->> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
->> index b366f59885c1..169b0e3c870e 100644
->> --- a/net/core/page_pool.c
->> +++ b/net/core/page_pool.c
->> @@ -48,6 +48,7 @@ static int page_pool_init(struct page_pool *pool,
->>                 return -ENOMEM;
->>
->>         atomic_set(&pool->pages_state_release_cnt, 0);
->> +       atomic_set(&pool->user_cnt, 0);
->>
->>         if (pool->p.flags & PP_FLAG_DMA_MAP)
->>                 get_device(pool->p.dev);
->> @@ -70,6 +71,8 @@ struct page_pool *page_pool_create(const struct page_pool_params *params)
->>                 kfree(pool);
->>                 return ERR_PTR(err);
->>         }
->> +
->> +       page_pool_get(pool);
->>         return pool;
->>  }
->>  EXPORT_SYMBOL(page_pool_create);
->> @@ -356,6 +359,10 @@ static void __warn_in_flight(struct page_pool *pool)
->>
->>  void __page_pool_free(struct page_pool *pool)
->>  {
->> +       /* free only if no users */
->> +       if (!atomic_dec_and_test(&pool->user_cnt))
->> +               return;
->> +
->>         WARN(pool->alloc.count, "API usage violation");
->>         WARN(!ptr_ring_empty(&pool->ring), "ptr_ring is not empty");
->>
->> diff --git a/net/core/xdp.c b/net/core/xdp.c
->> index 829377cc83db..04bdcd784d2e 100644
->> --- a/net/core/xdp.c
->> +++ b/net/core/xdp.c
->> @@ -372,6 +372,9 @@ int xdp_rxq_info_reg_mem_model(struct xdp_rxq_info *xdp_rxq,
->>
->>         mutex_unlock(&mem_id_lock);
->>
->> +       if (type == MEM_TYPE_PAGE_POOL)
->> +               page_pool_get(xdp_alloc->page_pool);
->> +
->
->need an analogous page_pool_put in xdp_rxq_info_unreg_mem_model? mlx5
->does not use that inverse function, but intel drivers do.
-no need, it's put after call to page_pool_free() in unreg workqueue.
-
->
->>         trace_mem_connect(xdp_alloc, xdp_rxq);
->>         return 0;
->>  err:
->> --
->> 2.17.1
->>
+This i'm going to clean up as part of next submission.
 
 -- 
-Regards,
-Ivan Khoronzhuk
+Best regards,
+grygorii
