@@ -2,82 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BA345857C
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Jun 2019 17:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9233C58B0C
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Jun 2019 21:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726405AbfF0PY3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 Jun 2019 11:24:29 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:58682 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726187AbfF0PY3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Jun 2019 11:24:29 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5RFOMTb080093;
-        Thu, 27 Jun 2019 10:24:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1561649062;
-        bh=K+/sisfJQK0iMTmxIZ08y2H69XPOMZf85Fc5VJrJl4k=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=D6ahYR8N0/WKOucNT5bs+QSPWv64AtntsLnp5fPj/E4hvny/i/YJq5WjZfb+zlXMt
-         b21znpuqY8rT8+cwS+btrffCVxVJBlbQQ7t7auONHLSwnBNITOhL2l6kBIwLIn6DSY
-         YOyf+Uqz8MKLTliR25whKexwpvgA9+RGMIfzprfs=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5RFOMbj007398
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 27 Jun 2019 10:24:22 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 27
- Jun 2019 10:24:22 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 27 Jun 2019 10:24:22 -0500
-Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5RFOMct103718;
-        Thu, 27 Jun 2019 10:24:22 -0500
-Subject: Re: [PATCH 5/5] bus: ti-sysc: Simplify cleanup upon failures in
- sysc_probe()
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Tero Kristo <t-kristo@ti.com>, Roger Quadros <rogerq@ti.com>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20190625233315.22301-1-s-anna@ti.com>
- <20190625233315.22301-6-s-anna@ti.com> <20190627121158.GJ5447@atomide.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <d1a5c892-abc1-8978-67ee-92c4ecb3622a@ti.com>
-Date:   Thu, 27 Jun 2019 10:24:21 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726472AbfF0Tp2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Jun 2019 15:45:28 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:54816 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726443AbfF0Tp2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 27 Jun 2019 15:45:28 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 33F42C04BD4A;
+        Thu, 27 Jun 2019 19:45:27 +0000 (UTC)
+Received: from carbon (ovpn-200-45.brq.redhat.com [10.40.200.45])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 3D3C419C4F;
+        Thu, 27 Jun 2019 19:45:18 +0000 (UTC)
+Date:   Thu, 27 Jun 2019 21:44:46 +0200
+From:   Jesper Dangaard Brouer <brouer@redhat.com>
+To:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Cc:     davem@davemloft.net, grygorii.strashko@ti.com, saeedm@mellanox.com,
+        leon@kernel.org, ast@kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, ilias.apalodimas@linaro.org,
+        netdev@vger.kernel.org, daniel@iogearbox.net,
+        jakub.kicinski@netronome.com, john.fastabend@gmail.com,
+        brouer@redhat.com
+Subject: Re: [PATCH v4 net-next 1/4] net: core: page_pool: add user cnt
+ preventing pool deletion
+Message-ID: <20190627214317.237e5926@carbon>
+In-Reply-To: <20190625175948.24771-2-ivan.khoronzhuk@linaro.org>
+References: <20190625175948.24771-1-ivan.khoronzhuk@linaro.org>
+        <20190625175948.24771-2-ivan.khoronzhuk@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <20190627121158.GJ5447@atomide.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.31]); Thu, 27 Jun 2019 19:45:28 +0000 (UTC)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 6/27/19 7:11 AM, Tony Lindgren wrote:
-> Hi,
-> 
-> * Suman Anna <s-anna@ti.com> [190625 23:33]:
->> The clocks are not yet parsed and prepared until after a successful
->> sysc_get_clocks(), so there is no need to unprepare the clocks upon
->> any failure of any of the prior functions in sysc_probe(). The current
->> code path would have been a no-op because of the clock validity checks
->> within sysc_unprepare(), but let's just simplify the cleanup path by
->> returning the error directly.
->>
->> While at this, also fix the cleanup path for a sysc_init_resets()
->> failure which is executed after the clocks are prepared.
-> 
-> Sounds like this should get queued separately as a fix for v5.3-rc
-> cycle, probably got broken with the recent ti-sysc init order changes.
+On Tue, 25 Jun 2019 20:59:45 +0300
+Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
 
-Yeah, this patch does not depend on the previous 4 patches, so can be
-picked up independently for v5.3-rc as well.
+> Add user counter allowing to delete pool only when no users.
+> It doesn't prevent pool from flush, only prevents freeing the
+> pool instance. Helps when no need to delete the pool and now
+> it's user responsibility to free it by calling page_pool_free()
+> while destroying procedure. It also makes to use page_pool_free()
+> explicitly, not fully hidden in xdp unreg, which looks more
+> correct after page pool "create" routine.
 
-regards
-Suman
+I don't think that "create" and "free" routines paring looks "more
+correct" together.
+
+Maybe we can scale back your solution(?), via creating a page_pool_get()
+and page_pool_put() API that can be used by your driver, to keep the
+page_pool object after a xdp_rxq_info_unreg() call.  Then you can use
+it for two xdp_rxq_info structs, and call page_pool_put() after you
+have unregistered both.
+
+The API would basically be:
+
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index b366f59885c1..691ddacfb5a6 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -357,6 +357,10 @@ static void __warn_in_flight(struct page_pool *pool)
+ void __page_pool_free(struct page_pool *pool)
+ {
+        WARN(pool->alloc.count, "API usage violation");
++
++       if (atomic_read(&pool->user_cnt) != 0)
++               return;
++
+        WARN(!ptr_ring_empty(&pool->ring), "ptr_ring is not empty");
+ 
+        /* Can happen due to forced shutdown */
+@@ -372,6 +376,19 @@ void __page_pool_free(struct page_pool *pool)
+ }
+ EXPORT_SYMBOL(__page_pool_free);
+ 
++void page_pool_put(struct page_pool *pool)
++{
++       if (!atomic_dec_and_test(&pool->user_cnt))
++               __page_pool_free(pool);
++}
++EXPORT_SYMBOL(page_pool_put);
++
++void page_pool_get(struct page_pool *pool)
++{
++       atomic_inc(&pool->user_cnt);
++}
++EXPORT_SYMBOL(page_pool_get);
++
+
+
+-- 
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
