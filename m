@@ -2,57 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B7C4581C0
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Jun 2019 13:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4BE358238
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Jun 2019 14:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726429AbfF0LjI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 Jun 2019 07:39:08 -0400
-Received: from muru.com ([72.249.23.125]:53712 "EHLO muru.com"
+        id S1726480AbfF0MMC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Jun 2019 08:12:02 -0400
+Received: from muru.com ([72.249.23.125]:53730 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726375AbfF0LjI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 27 Jun 2019 07:39:08 -0400
+        id S1726465AbfF0MMB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 27 Jun 2019 08:12:01 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 43780805C;
-        Thu, 27 Jun 2019 11:39:30 +0000 (UTC)
-Date:   Thu, 27 Jun 2019 04:39:04 -0700
+        by muru.com (Postfix) with ESMTPS id 4CED2805C;
+        Thu, 27 Jun 2019 12:12:24 +0000 (UTC)
+Date:   Thu, 27 Jun 2019 05:11:58 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Faiz Abbas <faiz_abbas@ti.com>
-Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, mark.rutland@arm.com,
-        robh+dt@kernel.org, robertcnelson@gmail.com
-Subject: Re: [PATCH] ARM: dts: am57xx: Disable voltage switching for SD card
-Message-ID: <20190627113904.GI5447@atomide.com>
-References: <20190619102454.5097-1-faiz_abbas@ti.com>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Tero Kristo <t-kristo@ti.com>, Roger Quadros <rogerq@ti.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/5] bus: ti-sysc: Simplify cleanup upon failures in
+ sysc_probe()
+Message-ID: <20190627121158.GJ5447@atomide.com>
+References: <20190625233315.22301-1-s-anna@ti.com>
+ <20190625233315.22301-6-s-anna@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190619102454.5097-1-faiz_abbas@ti.com>
+In-Reply-To: <20190625233315.22301-6-s-anna@ti.com>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Faiz Abbas <faiz_abbas@ti.com> [190619 03:25]:
-> If UHS speed modes are enabled, a compatible SD card switches down to
-> 1.8V during enumeration. If after this a software reboot/crash takes
-> place and on-chip ROM tries to enumerate the SD card, the difference in
-> IO voltages (host @ 3.3V and card @ 1.8V) may end up damaging the card.
-> 
-> The fix for this is to have support for power cycling the card in
-> hardware (with a PORz/soft-reset line causing a power cycle of the
-> card). Because the beaglebone X15 (rev A,B and C), am57xx-idks and
-> am57xx-evms don't have this capability, disable voltage switching for
-> these boards.
-> 
-> The major effect of this is that the maximum supported speed
-> mode is now high speed(50 MHz) down from SDR104(200 MHz).
-> 
-> commit 88a748419b84 ("ARM: dts: am57xx-idk: Remove support for voltage
-> switching for SD card") did this only for idk boards. Do it for all
-> affected boards.
+Hi,
 
-Thanks applying into fixes.
+* Suman Anna <s-anna@ti.com> [190625 23:33]:
+> The clocks are not yet parsed and prepared until after a successful
+> sysc_get_clocks(), so there is no need to unprepare the clocks upon
+> any failure of any of the prior functions in sysc_probe(). The current
+> code path would have been a no-op because of the clock validity checks
+> within sysc_unprepare(), but let's just simplify the cleanup path by
+> returning the error directly.
+> 
+> While at this, also fix the cleanup path for a sysc_init_resets()
+> failure which is executed after the clocks are prepared.
+
+Sounds like this should get queued separately as a fix for v5.3-rc
+cycle, probably got broken with the recent ti-sysc init order changes.
 
 Regards,
 
