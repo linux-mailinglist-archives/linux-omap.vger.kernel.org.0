@@ -2,131 +2,164 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E3DA5C0FE
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2019 18:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E468D5C2A9
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Jul 2019 20:09:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728145AbfGAQTV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 1 Jul 2019 12:19:21 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:38878 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726863AbfGAQTV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 1 Jul 2019 12:19:21 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 8A2F885546;
-        Mon,  1 Jul 2019 16:19:10 +0000 (UTC)
-Received: from carbon (ovpn-200-45.brq.redhat.com [10.40.200.45])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9855C2D34F;
-        Mon,  1 Jul 2019 16:19:03 +0000 (UTC)
-Date:   Mon, 1 Jul 2019 18:19:01 +0200
-From:   Jesper Dangaard Brouer <brouer@redhat.com>
-To:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-Cc:     grygorii.strashko@ti.com, davem@davemloft.net, ast@kernel.org,
+        id S1727133AbfGASJx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 1 Jul 2019 14:09:53 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:35015 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726307AbfGASJx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 1 Jul 2019 14:09:53 -0400
+Received: by mail-wr1-f67.google.com with SMTP id c27so7154163wrb.2
+        for <linux-omap@vger.kernel.org>; Mon, 01 Jul 2019 11:09:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Tom75Cnwd9KKAYGdXJ7Or9I0viw4ifzUP1kVH1ESMr8=;
+        b=r26eGlI1oqCOpnXCm4AsDUOM5RswG8gCYs0bjgpUBI0fKoIHZg+WqZxRT1aAsgRSAk
+         8kH2SyOCSTp0UduPVOs8QBX0rTJ6o3eGX+oZaYir7F0LxaxU8XXC1mF4U1Vdxub6/Y6g
+         S+tOsv4kgy1/rRzES+rFtF0O0jPss2QqcA8D+cC4KtV/TOfrvymqGWL9AA3D/6treW0D
+         oClgF5W0X1xWymCtw0qO6uONaqOEylA1/ccMb1yb32Yxrgg2G1yylJRwcYH/TgrbSXga
+         rrZYncxZJsEQPyqQwRWNKfRzcq+qY9p5UFfM9TpGA/qvd8ueef+iXyj+L5QFNBGPDj1M
+         XI5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Tom75Cnwd9KKAYGdXJ7Or9I0viw4ifzUP1kVH1ESMr8=;
+        b=JMoTmTARQk5hn7waDBRUZgZrBX/bm9Jg47xT1s9ucONciQiS7FZ3QpvnUgqsZXOxJh
+         D3TosZ31dndbltGS4UUUoTr42+SVsxq642SiUPDCMH6asF2KsienAsRvtLwh1aUdmXD4
+         LdFk/ts+r8Tl4y+oC9XTtr7VthOgrQ+lvjCsNka2zMh+o/zzwykDid+OIm5bTWfWJb5S
+         UgnO4ucu4cFk47zXi20vHD5uK/IILqNv4U4Y1RnZ1GRBpY5fiMjZYow7OTf6DhLJBKHH
+         Jta1itMY0ml1jkvt9sMBXH4wrEut7IEXEwYCCjorKd7GoavDmeohDa7R+ubd3pafi8qb
+         gEqg==
+X-Gm-Message-State: APjAAAUxkiNiq+R7JSpYYKPPcYeZiCXxIQDUxR2DVIrACPmrLhm6n+Yt
+        sXEH4lx86+t+UpVRy/LVPkKLww==
+X-Google-Smtp-Source: APXvYqyqnPEBYWJD2HDs73mHTpLrCMSCr8+1moM/RFyoqZCzx7VQioeT7CTQ9oag+wGFtPQeWyajcg==
+X-Received: by 2002:adf:fb47:: with SMTP id c7mr19185842wrs.116.1562004590929;
+        Mon, 01 Jul 2019 11:09:50 -0700 (PDT)
+Received: from apalos (athedsl-4461147.home.otenet.gr. [94.71.2.75])
+        by smtp.gmail.com with ESMTPSA id n1sm9267934wrx.39.2019.07.01.11.09.49
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 01 Jul 2019 11:09:50 -0700 (PDT)
+Date:   Mon, 1 Jul 2019 21:09:47 +0300
+From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
+To:     Jesper Dangaard Brouer <brouer@redhat.com>
+Cc:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+        grygorii.strashko@ti.com, davem@davemloft.net, ast@kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
-        daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        john.fastabend@gmail.com, brouer@redhat.com
-Subject: Re: [PATCH v5 net-next 6/6] net: ethernet: ti: cpsw: add XDP
- support
-Message-ID: <20190701181901.150c0b71@carbon>
-In-Reply-To: <20190630172348.5692-7-ivan.khoronzhuk@linaro.org>
+        netdev@vger.kernel.org, daniel@iogearbox.net,
+        jakub.kicinski@netronome.com, john.fastabend@gmail.com
+Subject: Re: [PATCH v5 net-next 6/6] net: ethernet: ti: cpsw: add XDP support
+Message-ID: <20190701180947.GA11915@apalos>
 References: <20190630172348.5692-1-ivan.khoronzhuk@linaro.org>
-        <20190630172348.5692-7-ivan.khoronzhuk@linaro.org>
+ <20190630172348.5692-7-ivan.khoronzhuk@linaro.org>
+ <20190701181901.150c0b71@carbon>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.28]); Mon, 01 Jul 2019 16:19:21 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190701181901.150c0b71@carbon>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, 30 Jun 2019 20:23:48 +0300
-Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
+On Mon, Jul 01, 2019 at 06:19:01PM +0200, Jesper Dangaard Brouer wrote:
+> On Sun, 30 Jun 2019 20:23:48 +0300
+> Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
+> 
+> > +static int cpsw_ndev_create_xdp_rxq(struct cpsw_priv *priv, int ch)
+> > +{
+> > +	struct cpsw_common *cpsw = priv->cpsw;
+> > +	int ret, new_pool = false;
+> > +	struct xdp_rxq_info *rxq;
+> > +
+> > +	rxq = &priv->xdp_rxq[ch];
+> > +
+> > +	ret = xdp_rxq_info_reg(rxq, priv->ndev, ch);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (!cpsw->page_pool[ch]) {
+> > +		ret =  cpsw_create_rx_pool(cpsw, ch);
+> > +		if (ret)
+> > +			goto err_rxq;
+> > +
+> > +		new_pool = true;
+> > +	}
+> > +
+> > +	ret = xdp_rxq_info_reg_mem_model(rxq, MEM_TYPE_PAGE_POOL,
+> > +					 cpsw->page_pool[ch]);
+> > +	if (!ret)
+> > +		return 0;
+> > +
+> > +	if (new_pool) {
+> > +		page_pool_free(cpsw->page_pool[ch]);
+> > +		cpsw->page_pool[ch] = NULL;
+> > +	}
+> > +
+> > +err_rxq:
+> > +	xdp_rxq_info_unreg(rxq);
+> > +	return ret;
+> > +}
+> 
+> Looking at this, and Ilias'es XDP-netsec error handling path, it might
+> be a mistake that I removed page_pool_destroy() and instead put the
+> responsibility on xdp_rxq_info_unreg().
+> 
+> As here, we have to detect if page_pool_create() was a success, and then
+> if xdp_rxq_info_reg_mem_model() was a failure, explicitly call
+> page_pool_free() because the xdp_rxq_info_unreg() call cannot "free"
+> the page_pool object given it was not registered.  
+> 
+> Ivan's patch in[1], might be a better approach, which forced all
+> drivers to explicitly call page_pool_free(), even-though it just
+> dec-refcnt and the real call to page_pool_free() happened via
+> xdp_rxq_info_unreg().
+We did discuss that xdp_XXXXX naming might be confusing.
+That being said since Ivan's approach serves 'special' hardware and fixes the
+naming irregularity, i perfectly fine doing that as long as we clearly document
+that the API is supposed to serve a pool per queue (unless the hardware needs to
+deal with it differently)
+> 
+> To better handle error path, I would re-introduce page_pool_destroy(),
+> as a driver API, that would gracefully handle NULL-pointer case, and
+> then call page_pool_free() with the atomic_dec_and_test().  (It should
+> hopefully simplify the error handling code a bit)
+> 
+> [1] https://lore.kernel.org/netdev/20190625175948.24771-2-ivan.khoronzhuk@linaro.org/
+> 
+>
 
-> +static int cpsw_ndev_create_xdp_rxq(struct cpsw_priv *priv, int ch)
-> +{
-> +	struct cpsw_common *cpsw = priv->cpsw;
-> +	int ret, new_pool = false;
-> +	struct xdp_rxq_info *rxq;
-> +
-> +	rxq = &priv->xdp_rxq[ch];
-> +
-> +	ret = xdp_rxq_info_reg(rxq, priv->ndev, ch);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!cpsw->page_pool[ch]) {
-> +		ret =  cpsw_create_rx_pool(cpsw, ch);
-> +		if (ret)
-> +			goto err_rxq;
-> +
-> +		new_pool = true;
-> +	}
-> +
-> +	ret = xdp_rxq_info_reg_mem_model(rxq, MEM_TYPE_PAGE_POOL,
-> +					 cpsw->page_pool[ch]);
-> +	if (!ret)
-> +		return 0;
-> +
-> +	if (new_pool) {
-> +		page_pool_free(cpsw->page_pool[ch]);
-> +		cpsw->page_pool[ch] = NULL;
-> +	}
-> +
-> +err_rxq:
-> +	xdp_rxq_info_unreg(rxq);
-> +	return ret;
-> +}
-
-Looking at this, and Ilias'es XDP-netsec error handling path, it might
-be a mistake that I removed page_pool_destroy() and instead put the
-responsibility on xdp_rxq_info_unreg().
-
-As here, we have to detect if page_pool_create() was a success, and then
-if xdp_rxq_info_reg_mem_model() was a failure, explicitly call
-page_pool_free() because the xdp_rxq_info_unreg() call cannot "free"
-the page_pool object given it was not registered.  
-
-Ivan's patch in[1], might be a better approach, which forced all
-drivers to explicitly call page_pool_free(), even-though it just
-dec-refcnt and the real call to page_pool_free() happened via
-xdp_rxq_info_unreg().
-
-To better handle error path, I would re-introduce page_pool_destroy(),
-as a driver API, that would gracefully handle NULL-pointer case, and
-then call page_pool_free() with the atomic_dec_and_test().  (It should
-hopefully simplify the error handling code a bit)
-
-[1] https://lore.kernel.org/netdev/20190625175948.24771-2-ivan.khoronzhuk@linaro.org/
-
-
-> +void cpsw_ndev_destroy_xdp_rxqs(struct cpsw_priv *priv)
-> +{
-> +	struct cpsw_common *cpsw = priv->cpsw;
-> +	struct xdp_rxq_info *rxq;
-> +	int i;
-> +
-> +	for (i = 0; i < cpsw->rx_ch_num; i++) {
-> +		rxq = &priv->xdp_rxq[i];
-> +		if (xdp_rxq_info_is_reg(rxq))
-> +			xdp_rxq_info_unreg(rxq);
-> +	}
-> +}
-
-Are you sure you need to test xdp_rxq_info_is_reg() here?
-
-You should just call xdp_rxq_info_unreg(rxq), if you know that this rxq
-should be registered.  If your assumption failed, you will get a
-WARNing, and discover your driver level bug.  This is one of the ways
-the API is designed to "detect" misuse of the API.  (I found this
-rather useful, when I converted the approx 12 drivers using this
-xdp_rxq_info API).
-
--- 
-Best regards,
-  Jesper Dangaard Brouer
-  MSc.CS, Principal Kernel Engineer at Red Hat
-  LinkedIn: http://www.linkedin.com/in/brouer
+Thanks
+/Ilias
+> > +void cpsw_ndev_destroy_xdp_rxqs(struct cpsw_priv *priv)
+> > +{
+> > +	struct cpsw_common *cpsw = priv->cpsw;
+> > +	struct xdp_rxq_info *rxq;
+> > +	int i;
+> > +
+> > +	for (i = 0; i < cpsw->rx_ch_num; i++) {
+> > +		rxq = &priv->xdp_rxq[i];
+> > +		if (xdp_rxq_info_is_reg(rxq))
+> > +			xdp_rxq_info_unreg(rxq);
+> > +	}
+> > +}
+> 
+> Are you sure you need to test xdp_rxq_info_is_reg() here?
+> 
+> You should just call xdp_rxq_info_unreg(rxq), if you know that this rxq
+> should be registered.  If your assumption failed, you will get a
+> WARNing, and discover your driver level bug.  This is one of the ways
+> the API is designed to "detect" misuse of the API.  (I found this
+> rather useful, when I converted the approx 12 drivers using this
+> xdp_rxq_info API).
+> 
+> -- 
+> Best regards,
+>   Jesper Dangaard Brouer
+>   MSc.CS, Principal Kernel Engineer at Red Hat
+>   LinkedIn: http://www.linkedin.com/in/brouer
