@@ -2,104 +2,152 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C50E5D61F
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Jul 2019 20:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A87A5D672
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Jul 2019 20:58:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726652AbfGBS3U (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Jul 2019 14:29:20 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:33934 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726627AbfGBS3U (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 2 Jul 2019 14:29:20 -0400
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id CAA2137EE0;
-        Tue,  2 Jul 2019 18:29:14 +0000 (UTC)
-Received: from carbon (ovpn-200-45.brq.redhat.com [10.40.200.45])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0F7DA5C29A;
-        Tue,  2 Jul 2019 18:29:08 +0000 (UTC)
-Date:   Tue, 2 Jul 2019 20:29:07 +0200
-From:   Jesper Dangaard Brouer <brouer@redhat.com>
-To:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+        id S1726636AbfGBS6q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 2 Jul 2019 14:58:46 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:46588 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726150AbfGBS6q (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 Jul 2019 14:58:46 -0400
+Received: by mail-lj1-f196.google.com with SMTP id v24so18035353ljg.13
+        for <linux-omap@vger.kernel.org>; Tue, 02 Jul 2019 11:58:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=HJRRZ7xwVWKgrrchV3QbMX/wgWRGVLbHC2E+m6l+0/o=;
+        b=RxycRGr5u5OwWuZ2gNevQdwgxs7WNYCcmy6MN0Xz79Q2tNLNs9oq+9T+GtYIaKou4x
+         ApR0Uy9q0zxgvGzaYSBJKVvkIoXFr2fitP7amOqfsC1+gzDKM5svTDQXAnLJRSi6kRsI
+         lK/ehsnPvFZW9qpq7sF5A7L+b0lAYwspjsHRHpiLcqhVBTr7D63JpIV+329tMpzh8b8p
+         TxWQUv26+Xm5H7imex4kC2lwaVpHvj+tPooHa7MKHwF4ZTeQt1PL7nBQF8/WZ2STEOsc
+         kjDlnPXKKR6HCmEvt2fYSEmuRWh39ix8wP0ttAcjK6Dw6L0e5zkxQOh8ocywsKapU8H5
+         +/Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=HJRRZ7xwVWKgrrchV3QbMX/wgWRGVLbHC2E+m6l+0/o=;
+        b=Oq+4S9VzAIUGbp7EuAIHTA3KbkN9D5Z8AEnq/JUeiEP1XARpH1M+IGUvq4/Kk3TDLW
+         nT5baGhngIW96i9vWbZ1X4KzNUtsMvqSCbra60yDaGbxYUEfDlCwWFq0zw1knXmyS2HK
+         H9zqcMCpIhWf17BqYUmBoJiCNoLHOqF9Y/zdjuNp9om6lv7Bs4zNm7DDosig6VOUdJgd
+         VjFC/w4Hq+DMJBvGdQKhquU2rpMd2+t5dJLyvGFprXidDjuCC4ekb0IBJnw4or9eJmkH
+         wRiPTp5CepgnNOyO5zgXJdmRkmYHj4CFeyu65zgffA84QYrd7rJA5IKDefqaLoyGgtRQ
+         sOVA==
+X-Gm-Message-State: APjAAAUpnJ3R/8tp3iU7/tiTO5B/1oXoO1dFn8x6gY18NzcjDvhPyXl4
+        dgu+LpYSi37u9R6kofBIAgzHjA==
+X-Google-Smtp-Source: APXvYqwOnRz12ZXWfwVkH3WodU4LhkeAYjXfGRaMtJWg1mdkdc5MbazZkwv/mQfmjb288oDC/euaTw==
+X-Received: by 2002:a2e:730d:: with SMTP id o13mr517630ljc.81.1562093923391;
+        Tue, 02 Jul 2019 11:58:43 -0700 (PDT)
+Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
+        by smtp.gmail.com with ESMTPSA id o8sm842315ljh.100.2019.07.02.11.58.42
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 02 Jul 2019 11:58:42 -0700 (PDT)
+Date:   Tue, 2 Jul 2019 21:58:40 +0300
+From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+To:     Jesper Dangaard Brouer <brouer@redhat.com>
 Cc:     netdev@vger.kernel.org,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
         grygorii.strashko@ti.com, jakub.kicinski@netronome.com,
         daniel@iogearbox.net, john.fastabend@gmail.com, ast@kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        brouer@redhat.com
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
 Subject: Re: [PATCH] net: core: page_pool: add user refcnt and reintroduce
  page_pool_destroy
-Message-ID: <20190702202907.15fb30ce@carbon>
-In-Reply-To: <20190702152112.GG4510@khorivan>
+Message-ID: <20190702185839.GH4510@khorivan>
+Mail-Followup-To: Jesper Dangaard Brouer <brouer@redhat.com>,
+        netdev@vger.kernel.org,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        grygorii.strashko@ti.com, jakub.kicinski@netronome.com,
+        daniel@iogearbox.net, john.fastabend@gmail.com, ast@kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
 References: <20190702153902.0e42b0b2@carbon>
-        <156207778364.29180.5111562317930943530.stgit@firesoul>
-        <20190702144426.GD4510@khorivan>
-        <20190702165230.6caa36e3@carbon>
-        <20190702145612.GF4510@khorivan>
-        <20190702171029.76c60538@carbon>
-        <20190702152112.GG4510@khorivan>
+ <156207778364.29180.5111562317930943530.stgit@firesoul>
+ <20190702144426.GD4510@khorivan>
+ <20190702165230.6caa36e3@carbon>
+ <20190702145612.GF4510@khorivan>
+ <20190702171029.76c60538@carbon>
+ <20190702152112.GG4510@khorivan>
+ <20190702202907.15fb30ce@carbon>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.29]); Tue, 02 Jul 2019 18:29:20 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20190702202907.15fb30ce@carbon>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 2 Jul 2019 18:21:13 +0300
-Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
+On Tue, Jul 02, 2019 at 08:29:07PM +0200, Jesper Dangaard Brouer wrote:
+>On Tue, 2 Jul 2019 18:21:13 +0300
+>Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
+>
+>> On Tue, Jul 02, 2019 at 05:10:29PM +0200, Jesper Dangaard Brouer wrote:
+>> >On Tue, 2 Jul 2019 17:56:13 +0300
+>> >Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
+>> >
+>> >> On Tue, Jul 02, 2019 at 04:52:30PM +0200, Jesper Dangaard Brouer wrote:
+>> >> >On Tue, 2 Jul 2019 17:44:27 +0300
+>> >> >Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
+>> >> >
+>> >> >> On Tue, Jul 02, 2019 at 04:31:39PM +0200, Jesper Dangaard Brouer wrote:
+>> >> >> >From: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+>> >> >> >
+>> >> >> >Jesper recently removed page_pool_destroy() (from driver invocation) and
+>> >> >> >moved shutdown and free of page_pool into xdp_rxq_info_unreg(), in-order to
+>> >> >> >handle in-flight packets/pages. This created an asymmetry in drivers
+>> >> >> >create/destroy pairs.
+>> >> >> >
+>> >> >> >This patch add page_pool user refcnt and reintroduce page_pool_destroy.
+>> >> >> >This serves two purposes, (1) simplify drivers error handling as driver now
+>> >> >> >drivers always calls page_pool_destroy() and don't need to track if
+>> >> >> >xdp_rxq_info_reg_mem_model() was unsuccessful. (2) allow special cases
+>> >> >> >where a single RX-queue (with a single page_pool) provides packets for two
+>> >> >> >net_device'es, and thus needs to register the same page_pool twice with two
+>> >> >> >xdp_rxq_info structures.
+>> >> >>
+>> >> >> As I tend to use xdp level patch there is no more reason to mention (2) case
+>> >> >> here. XDP patch serves it better and can prevent not only obj deletion but also
+>> >> >> pool flush, so, this one patch I could better leave only for (1) case.
+>> >> >
+>> >> >I don't understand what you are saying.
+>> >> >
+>> >> >Do you approve this patch, or do you reject this patch?
+>> >> >
+>> >> It's not reject, it's proposition to use both, XDP and page pool patches,
+>> >> each having its goal.
+>> >
+>> >Just to be clear, if you want this patch to get accepted you have to
+>> >reply with your Signed-off-by (as I wrote).
+>> >
+>> >Maybe we should discuss it in another thread, about why you want two
+>> >solutions to the same problem.
+>>
+>> If it solves same problem I propose to reject this one and use this:
+>> https://lkml.org/lkml/2019/7/2/651
+>
+>No, I propose using this one, and rejecting the other one.
 
-> On Tue, Jul 02, 2019 at 05:10:29PM +0200, Jesper Dangaard Brouer wrote:
-> >On Tue, 2 Jul 2019 17:56:13 +0300
-> >Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
-> >  
-> >> On Tue, Jul 02, 2019 at 04:52:30PM +0200, Jesper Dangaard Brouer wrote:  
-> >> >On Tue, 2 Jul 2019 17:44:27 +0300
-> >> >Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
-> >> >  
-> >> >> On Tue, Jul 02, 2019 at 04:31:39PM +0200, Jesper Dangaard Brouer wrote:  
-> >> >> >From: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-> >> >> >
-> >> >> >Jesper recently removed page_pool_destroy() (from driver invocation) and
-> >> >> >moved shutdown and free of page_pool into xdp_rxq_info_unreg(), in-order to
-> >> >> >handle in-flight packets/pages. This created an asymmetry in drivers
-> >> >> >create/destroy pairs.
-> >> >> >
-> >> >> >This patch add page_pool user refcnt and reintroduce page_pool_destroy.
-> >> >> >This serves two purposes, (1) simplify drivers error handling as driver now
-> >> >> >drivers always calls page_pool_destroy() and don't need to track if
-> >> >> >xdp_rxq_info_reg_mem_model() was unsuccessful. (2) allow special cases
-> >> >> >where a single RX-queue (with a single page_pool) provides packets for two
-> >> >> >net_device'es, and thus needs to register the same page_pool twice with two
-> >> >> >xdp_rxq_info structures.  
-> >> >>
-> >> >> As I tend to use xdp level patch there is no more reason to mention (2) case
-> >> >> here. XDP patch serves it better and can prevent not only obj deletion but also
-> >> >> pool flush, so, this one patch I could better leave only for (1) case.  
-> >> >
-> >> >I don't understand what you are saying.
-> >> >
-> >> >Do you approve this patch, or do you reject this patch?
-> >> >  
-> >> It's not reject, it's proposition to use both, XDP and page pool patches,
-> >> each having its goal.  
-> >
-> >Just to be clear, if you want this patch to get accepted you have to
-> >reply with your Signed-off-by (as I wrote).
-> >
-> >Maybe we should discuss it in another thread, about why you want two
-> >solutions to the same problem.  
-> 
-> If it solves same problem I propose to reject this one and use this:
-> https://lkml.org/lkml/2019/7/2/651
+There is at least several arguments against this one (related (2) purpose)
 
-No, I propose using this one, and rejecting the other one.
+It allows:
+- avoid changes to page_pool/mlx5/netsec
+- save not only allocator obj but allocator "page/buffer flush"
+- buffer flush can be present not only in page_pool but for other allocators
+  that can behave differently and not so simple solution.
+- to not limit cpsw/(potentially others) to use "page_pool" allocator only
+....
+
+This patch better leave also, as it simplifies error path for page_pool and
+have more error prone usage comparing with existent one.
+
+Please, don't limit cpsw and potentially other drivers to use only
+page_pool it can be zca or etc... I don't won't to modify each allocator.
+I propose to add both as by fact they solve different problems with common
+solution.
 
 -- 
-Best regards,
-  Jesper Dangaard Brouer
-  MSc.CS, Principal Kernel Engineer at Red Hat
-  LinkedIn: http://www.linkedin.com/in/brouer
+Regards,
+Ivan Khoronzhuk
