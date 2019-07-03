@@ -2,135 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92FF35DEFD
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 09:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 222FE5E1DB
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 12:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727186AbfGCHjD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 3 Jul 2019 03:39:03 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:36480 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727184AbfGCHjD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 3 Jul 2019 03:39:03 -0400
-Received: by mail-lf1-f66.google.com with SMTP id q26so1030952lfc.3
-        for <linux-omap@vger.kernel.org>; Wed, 03 Jul 2019 00:39:01 -0700 (PDT)
+        id S1727008AbfGCKTJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 3 Jul 2019 06:19:09 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:37962 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726825AbfGCKTJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 3 Jul 2019 06:19:09 -0400
+Received: by mail-lf1-f68.google.com with SMTP id b11so1374689lfa.5
+        for <linux-omap@vger.kernel.org>; Wed, 03 Jul 2019 03:19:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=2Wp52PBXKgmN1eJSawD7UHQEQNJnFNq41D1U5ZiE5Bo=;
-        b=Xh1pMxs44/cvgbIPdlvqWFnxIJ8en8yjJHAJY6KuWeq1CEy3k59s8hTBuaV/uvBt3m
-         ycpPeoODSURlw/yRgrS9/Ix2TTPYntmr15kL0HXjEBAHulbR0XvdXSwImep3KZ0jLT6X
-         xTkSmgo0jYD7TQosCD70j71q3pejld6xQVHya/IukRJm4km2mbLSsSnNzkY9CLXVAbZ5
-         0YS8qFpA0RjSPWjfTu8/nVmGbQ1PtI8oOMysnJSZb2Vdg3P95jdot7hY+X1M9Hs47pr0
-         F2PcCz6fK0JvmGwcEVYXEgRU5iqE+h0xid1o2dDSun7EagnjIf1nf0tmqTHNq8QWjhDP
-         3SuA==
+        h=from:to:cc:subject:date:message-id;
+        bh=N64YiOP2YVl5zyPZolUHrk+pThiJwXVkclxV2400gD8=;
+        b=LJ4cpywQ/xDEXzvzPx3lv5wTD8nK1FnzRsjS+SpAP/ku9u/Eucxp0IM0ubt0Lf88CD
+         n0Wt5pfYPGUdkxsnqzyhixYwadc7A3ZzzFNg94W+ySo4vsGGzR5DunUjXbSE3re5Kb1Y
+         Cuh9IpTxCSD1KhslOS9u9hdklo06Zd5y83ViBydoeJcW1t8G06Xs6q3F+8DOc6ewUVvC
+         ZM+v/ABR2xPA2s2rpO6fcgIbRu3EQvuYFogMfF4Q67ACp5frmT58cZaylS/a4KrOJwqY
+         TaiA4h8PMjtNM2Pjn4vLZ7cWQTL2kRj7dfnenF93TULHMrcSIfbqlBdXw1tcsRRv4m3w
+         D8tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=2Wp52PBXKgmN1eJSawD7UHQEQNJnFNq41D1U5ZiE5Bo=;
-        b=qBs8fpNOQTiouiYNRZRC/S1QRg4f+T2C+ASWGKsiCgynEw2oUd68LB42SAg5bZ2Ptn
-         8wrTwA+uPvuL1BofGQuxuuIrJjUg+N6Np9LqiAcc/VyVVPjcfmlS94IhTRMofXuZimSS
-         MR8cZc26SwVrzFNSkzHDYxGngdLqnOyKj/Y9oH4z+vBUz/cCb2UpbpNk6n35NdNlEfmW
-         7eV72B7Z5rv3/ZxcTmiE72CQjjh+8lj16YjBOuqZ+wKjV/3aoumiu3s5xrcW01HiXSR1
-         Hu+5BsVosqo5IRXCtwK1sp0oKe1osCq8pOezA4xhbvaL1Z5nnuVJRnJAQpBiQ8ActV1J
-         ys2g==
-X-Gm-Message-State: APjAAAV2/bJ6h899u6rpX6OVxCPZjs93mg/0z9f5vxT74OucPBJGuetZ
-        Ii97NtuLy91EV7OnvxZ9nyHFZQ==
-X-Google-Smtp-Source: APXvYqwM0R72JZGl28dY5apLp/0qpK7E8sI9lybonc8uNIDSvz67trZs+adr4gBSsGpVXl3/NyBo2A==
-X-Received: by 2002:ac2:42ca:: with SMTP id n10mr5174666lfl.121.1562139540856;
-        Wed, 03 Jul 2019 00:39:00 -0700 (PDT)
-Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id h129sm263683lfd.74.2019.07.03.00.38.59
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 03 Jul 2019 00:39:00 -0700 (PDT)
-Date:   Wed, 3 Jul 2019 10:38:58 +0300
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=N64YiOP2YVl5zyPZolUHrk+pThiJwXVkclxV2400gD8=;
+        b=RPdgcC/sFnZDYmNCA0fabYS00R2Z5VY1R0EjfR+wDYfe1XVt2DVOdi4+YZbCPYu/6g
+         269zZRIcNfS7ZrEfgmHFdK7aKJWF1XGl9scmwyrNWlTEyj9a6VgI33T7q0HCWcwNI7ix
+         2oeEaKCBta3YB9yAsyQNqLpXboxlQh5yrPIh9K/a1MUNDBLN1mhY/WQHQ3JgAMxuwPew
+         gdiOhnEk9Qp2j3IrrYS2ltG6MvQSwSE9hH8dPgi+I43sOa8je0bnrjNWw1ttCvyg+YU+
+         ge3GD7pbkiB+mlpCmJw+droGnJ0keqK1PnPsOCaXrbHZaPuN2RPmL38SOs6Pjx0C3OoI
+         DGaA==
+X-Gm-Message-State: APjAAAXrGxQMEYV82yzQP+IfpW9mbBUrwfnFhQHJ2VkcwW/8sCM8y7LT
+        6g2xevLXFUySVQr5qiO72nvNiQ==
+X-Google-Smtp-Source: APXvYqzdLBy5TYPMJzQqNxFe8fF++4bQDuW89whZy9M57F++RFeRiQmMpPN71lULn5Cx1d6ruJxhfA==
+X-Received: by 2002:a19:f00a:: with SMTP id p10mr5215455lfc.68.1562149147493;
+        Wed, 03 Jul 2019 03:19:07 -0700 (PDT)
+Received: from localhost.localdomain (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
+        by smtp.gmail.com with ESMTPSA id i9sm67267lfl.10.2019.07.03.03.19.05
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 03 Jul 2019 03:19:06 -0700 (PDT)
 From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-To:     Jesper Dangaard Brouer <brouer@redhat.com>
-Cc:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net,
-        ast@kernel.org, linux-kernel@vger.kernel.org,
+To:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net
+Cc:     ast@kernel.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
         ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
         daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        john.fastabend@gmail.com
-Subject: Re: [PATCH v5 net-next 6/6] net: ethernet: ti: cpsw: add XDP support
-Message-ID: <20190703073857.GA2927@khorivan>
-Mail-Followup-To: Jesper Dangaard Brouer <brouer@redhat.com>,
-        grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net,
-        ast@kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
-        daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        john.fastabend@gmail.com
-References: <20190630172348.5692-1-ivan.khoronzhuk@linaro.org>
- <20190630172348.5692-7-ivan.khoronzhuk@linaro.org>
- <20190703092603.66f36914@carbon>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190703092603.66f36914@carbon>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        john.fastabend@gmail.com,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Subject: [PATCH v6 net-next 0/5] net: ethernet: ti: cpsw: Add XDP support
+Date:   Wed,  3 Jul 2019 13:18:58 +0300
+Message-Id: <20190703101903.8411-1-ivan.khoronzhuk@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jul 03, 2019 at 09:26:03AM +0200, Jesper Dangaard Brouer wrote:
->
->On Sun, 30 Jun 2019 20:23:48 +0300 Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
->
->> Add XDP support based on rx page_pool allocator, one frame per page.
->> Page pool allocator is used with assumption that only one rx_handler
->> is running simultaneously. DMA map/unmap is reused from page pool
->> despite there is no need to map whole page.
->>
->> Due to specific of cpsw, the same TX/RX handler can be used by 2
->> network devices, so special fields in buffer are added to identify
->> an interface the frame is destined to. Thus XDP works for both
->> interfaces, that allows to test xdp redirect between two interfaces
->> easily. Aslo, each rx queue have own page pools, but common for both
->> netdevs.
->
->Looking at the details what happen when a single RX-queue can receive
->into multiple net_device'es.  I realize that this driver will
->violate/kill some of the "hidden"/implicit RX-bulking that the
->XDP_REDIRECT code depend on for performance.
->
->Specifically, it violate this assumption:
-> https://github.com/torvalds/linux/blob/v5.2-rc7/kernel/bpf/devmap.c#L324-L329
->
->	/* Ingress dev_rx will be the same for all xdp_frame's in
->	 * bulk_queue, because bq stored per-CPU and must be flushed
->	 * from net_device drivers NAPI func end.
->	 */
->	if (!bq->dev_rx)
->		bq->dev_rx = dev_rx;
->
->This drivers "NAPI func end", can have received into multiple
->net_devices, before it's NAPI cycle ends.  Thus, violating this code
->assumption.
-). I said, I moved to be per device in rx_handler. It violates nothing.
+This patchset adds XDP support for TI cpsw driver and base it on
+page_pool allocator. It was verified on af_xdp socket drop,
+af_xdp l2f, ebpf XDP_DROP, XDP_REDIRECT, XDP_PASS, XDP_TX.
 
->
->Knowing all xdp_frame's in the bulk queue is from the same net_device,
->can be used to further optimize XDP.  E.g. the dev->netdev_ops->ndo_xdp_xmit()
->call don't take fully advantage of this, yet.  If we merge this driver,
->it will block optimizations in this area.
->
->NACK
+It was verified with following configs enabled:
+CONFIG_JIT=y
+CONFIG_BPFILTER=y
+CONFIG_BPF_SYSCALL=y
+CONFIG_XDP_SOCKETS=y
+CONFIG_BPF_EVENTS=y
+CONFIG_HAVE_EBPF_JIT=y
+CONFIG_BPF_JIT=y
+CONFIG_CGROUP_BPF=y
 
-Jesper,
+Link on previous v5:
+https://lkml.org/lkml/2019/6/30/89
 
-Seems I said that I moved it to flush, that does
-dev->netdev_ops->ndo_xdp_xmit(), to rx_handler, so that it's done per device,
-so device is knows per each flush.
+Also regular tests with iperf2 were done in order to verify impact on
+regular netstack performance, compared with base commit:
+https://pastebin.com/JSMT0iZ4
 
-In the code, I hope everyone can see ..., after each flush dev_rx is cleared
-to 0. So no any impact on it.
+v5..v6:
+- do changes that is rx_dev while redirect/flush cycle is kept the same
+- dropped net: ethernet: ti: davinci_cpdma: return handler status
+- other changes desc in patches
 
-As for me, it's very not clear and strange decision.
+v4..v5:
+- added two plreliminary patches:
+  net: ethernet: ti: davinci_cpdma: allow desc split while down
+  net: ethernet: ti: cpsw_ethtool: allow res split while down
+- added xdp alocator refcnt on xdp level, avoiding page pool refcnt
+- moved flush status as separate argument for cpdma_chan_process
+- reworked cpsw code according to last changes to allocator
+- added missed statistic counter
+
+v3..v4:
+- added page pool user counter
+- use same pool for ndevs in dual mac
+- restructured page pool create/destroy according to the last changes in API
+
+v2..v3:
+- each rxq and ndev has its own page pool
+
+v1..v2:
+- combined xdp_xmit functions
+- used page allocation w/o refcnt juggle
+- unmapped page for skb netstack
+- moved rxq/page pool allocation to open/close pair
+- added several preliminary patches:
+  net: page_pool: add helper function to retrieve dma addresses
+  net: page_pool: add helper function to unmap dma addresses
+  net: ethernet: ti: cpsw: use cpsw as drv data
+  net: ethernet: ti: cpsw_ethtool: simplify slave loops
+
+Ivan Khoronzhuk (5):
+  xdp: allow same allocator usage
+  net: ethernet: ti: davinci_cpdma: add dma mapped submit
+  net: ethernet: ti: davinci_cpdma: allow desc split while down
+  net: ethernet: ti: cpsw_ethtool: allow res split while down
+  net: ethernet: ti: cpsw: add XDP support
+
+ drivers/net/ethernet/ti/Kconfig         |   1 +
+ drivers/net/ethernet/ti/cpsw.c          | 485 +++++++++++++++++++++---
+ drivers/net/ethernet/ti/cpsw_ethtool.c  |  76 +++-
+ drivers/net/ethernet/ti/cpsw_priv.h     |   7 +
+ drivers/net/ethernet/ti/davinci_cpdma.c |  99 ++++-
+ drivers/net/ethernet/ti/davinci_cpdma.h |   7 +-
+ include/net/xdp_priv.h                  |   2 +
+ net/core/xdp.c                          |  55 +++
+ 8 files changed, 656 insertions(+), 76 deletions(-)
 
 -- 
-Regards,
-Ivan Khoronzhuk
+2.17.1
+
