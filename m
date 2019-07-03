@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C17E5DC02
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 04:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E57A35DBD6
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 04:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727788AbfGCCUH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Jul 2019 22:20:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56728 "EHLO mail.kernel.org"
+        id S1728383AbfGCCTD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 2 Jul 2019 22:19:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56892 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727642AbfGCCSw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 2 Jul 2019 22:18:52 -0400
+        id S1728375AbfGCCTD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 2 Jul 2019 22:19:03 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8D7D72187F;
-        Wed,  3 Jul 2019 02:18:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 82D352187F;
+        Wed,  3 Jul 2019 02:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562120331;
-        bh=eUj0ZVGO8PKILQTJEtxf6raT4rDm6uUSVkzKyoS5pJs=;
+        s=default; t=1562120342;
+        bh=YSgfuzXJLpqZG+rJ/aJh77RvtwOBa5bD2bHpUHwvLog=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qbafI6Xh7s3GDlUJ2+iXJfGGyf3QQogham9sd/ruSceNYEuNu1PUe6eIdYMkXMkUw
-         wpFt3z+RdvpzC5LPHIM81ySXi/+8JsXK5MA2QPsauEfjqZ8LdoFP82MpDSvMup+6Dt
-         iO212Inqi1toAIip81pdY1STPVo9yy5HfJ0JpioA=
+        b=QKdOBfpwccJT+v0d7v9QbidTkxZ1uyqftmYjrxFzbdK+PXo6IKA6PUrnYOjWZo3xo
+         s/0htZFfMOUdO9Y/mVjjn2OeE9ukQv4EHdxeIq5WsxjqAkiDj/uud7AEA58OkF/gKs
+         CcVP1I87EXfu38pb7TC7AqENmBQu4bDkyWpXZNTU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@arndb.de>,
@@ -32,12 +32,12 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Olof Johansson <olof@lixom.net>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.9 2/8] ARM: omap2: remove incorrect __init annotation
-Date:   Tue,  2 Jul 2019 22:18:41 -0400
-Message-Id: <20190703021847.18542-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 2/6] ARM: omap2: remove incorrect __init annotation
+Date:   Tue,  2 Jul 2019 22:18:54 -0400
+Message-Id: <20190703021858.18653-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190703021847.18542-1-sashal@kernel.org>
-References: <20190703021847.18542-1-sashal@kernel.org>
+In-Reply-To: <20190703021858.18653-1-sashal@kernel.org>
+References: <20190703021858.18653-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -74,10 +74,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/mach-omap2/prm3xxx.c b/arch/arm/mach-omap2/prm3xxx.c
-index 718981bb80cd..0aec48c1736b 100644
+index 62680aad2126..b5ce9ca76336 100644
 --- a/arch/arm/mach-omap2/prm3xxx.c
 +++ b/arch/arm/mach-omap2/prm3xxx.c
-@@ -433,7 +433,7 @@ static void omap3_prm_reconfigure_io_chain(void)
+@@ -430,7 +430,7 @@ static void omap3_prm_reconfigure_io_chain(void)
   * registers, and omap3xxx_prm_reconfigure_io_chain() must be called.
   * No return value.
   */
