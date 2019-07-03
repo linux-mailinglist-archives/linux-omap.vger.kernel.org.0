@@ -2,90 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E57A35DBD6
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 04:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 252E95DED6
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 09:26:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728383AbfGCCTD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Jul 2019 22:19:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56892 "EHLO mail.kernel.org"
+        id S1727111AbfGCH0N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 3 Jul 2019 03:26:13 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:14659 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728375AbfGCCTD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 2 Jul 2019 22:19:03 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726670AbfGCH0N (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 3 Jul 2019 03:26:13 -0400
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 82D352187F;
-        Wed,  3 Jul 2019 02:19:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562120342;
-        bh=YSgfuzXJLpqZG+rJ/aJh77RvtwOBa5bD2bHpUHwvLog=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QKdOBfpwccJT+v0d7v9QbidTkxZ1uyqftmYjrxFzbdK+PXo6IKA6PUrnYOjWZo3xo
-         s/0htZFfMOUdO9Y/mVjjn2OeE9ukQv4EHdxeIq5WsxjqAkiDj/uud7AEA58OkF/gKs
-         CcVP1I87EXfu38pb7TC7AqENmBQu4bDkyWpXZNTU=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Andrew Murray <andrew.murray@arm.com>,
-        Olof Johansson <olof@lixom.net>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.4 2/6] ARM: omap2: remove incorrect __init annotation
-Date:   Tue,  2 Jul 2019 22:18:54 -0400
-Message-Id: <20190703021858.18653-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190703021858.18653-1-sashal@kernel.org>
-References: <20190703021858.18653-1-sashal@kernel.org>
+        by mx1.redhat.com (Postfix) with ESMTPS id F2A123083391;
+        Wed,  3 Jul 2019 07:26:12 +0000 (UTC)
+Received: from carbon (ovpn-200-45.brq.redhat.com [10.40.200.45])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5CCF680F70;
+        Wed,  3 Jul 2019 07:26:05 +0000 (UTC)
+Date:   Wed, 3 Jul 2019 09:26:03 +0200
+From:   Jesper Dangaard Brouer <brouer@redhat.com>
+To:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Cc:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net,
+        ast@kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
+        daniel@iogearbox.net, jakub.kicinski@netronome.com,
+        john.fastabend@gmail.com, brouer@redhat.com
+Subject: Re: [PATCH v5 net-next 6/6] net: ethernet: ti: cpsw: add XDP
+ support
+Message-ID: <20190703092603.66f36914@carbon>
+In-Reply-To: <20190630172348.5692-7-ivan.khoronzhuk@linaro.org>
+References: <20190630172348.5692-1-ivan.khoronzhuk@linaro.org>
+        <20190630172348.5692-7-ivan.khoronzhuk@linaro.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Wed, 03 Jul 2019 07:26:13 +0000 (UTC)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 27e23d8975270df6999f8b5b3156fc0c04927451 ]
+On Sun, 30 Jun 2019 20:23:48 +0300 Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
 
-omap3xxx_prm_enable_io_wakeup() is marked __init, but its caller is not, so
-we get a warning with clang-8:
+> Add XDP support based on rx page_pool allocator, one frame per page.
+> Page pool allocator is used with assumption that only one rx_handler
+> is running simultaneously. DMA map/unmap is reused from page pool
+> despite there is no need to map whole page.
+> 
+> Due to specific of cpsw, the same TX/RX handler can be used by 2
+> network devices, so special fields in buffer are added to identify
+> an interface the frame is destined to. Thus XDP works for both
+> interfaces, that allows to test xdp redirect between two interfaces
+> easily. Aslo, each rx queue have own page pools, but common for both
+> netdevs.
 
-WARNING: vmlinux.o(.text+0x343c8): Section mismatch in reference from the function omap3xxx_prm_late_init() to the function .init.text:omap3xxx_prm_enable_io_wakeup()
-The function omap3xxx_prm_late_init() references
-the function __init omap3xxx_prm_enable_io_wakeup().
-This is often because omap3xxx_prm_late_init lacks a __init
-annotation or the annotation of omap3xxx_prm_enable_io_wakeup is wrong.
+Looking at the details what happen when a single RX-queue can receive
+into multiple net_device'es.  I realize that this driver will
+violate/kill some of the "hidden"/implicit RX-bulking that the
+XDP_REDIRECT code depend on for performance.
 
-When building with gcc, omap3xxx_prm_enable_io_wakeup() is always
-inlined, so we never noticed in the past.
+Specifically, it violate this assumption:
+ https://github.com/torvalds/linux/blob/v5.2-rc7/kernel/bpf/devmap.c#L324-L329
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Andrew Murray <andrew.murray@arm.com>
-Signed-off-by: Olof Johansson <olof@lixom.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/mach-omap2/prm3xxx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+	/* Ingress dev_rx will be the same for all xdp_frame's in
+	 * bulk_queue, because bq stored per-CPU and must be flushed
+	 * from net_device drivers NAPI func end.
+	 */
+	if (!bq->dev_rx)
+		bq->dev_rx = dev_rx;
 
-diff --git a/arch/arm/mach-omap2/prm3xxx.c b/arch/arm/mach-omap2/prm3xxx.c
-index 62680aad2126..b5ce9ca76336 100644
---- a/arch/arm/mach-omap2/prm3xxx.c
-+++ b/arch/arm/mach-omap2/prm3xxx.c
-@@ -430,7 +430,7 @@ static void omap3_prm_reconfigure_io_chain(void)
-  * registers, and omap3xxx_prm_reconfigure_io_chain() must be called.
-  * No return value.
-  */
--static void __init omap3xxx_prm_enable_io_wakeup(void)
-+static void omap3xxx_prm_enable_io_wakeup(void)
- {
- 	if (prm_features & PRM_HAS_IO_WAKEUP)
- 		omap2_prm_set_mod_reg_bits(OMAP3430_EN_IO_MASK, WKUP_MOD,
+This drivers "NAPI func end", can have received into multiple
+net_devices, before it's NAPI cycle ends.  Thus, violating this code
+assumption.
+
+Knowing all xdp_frame's in the bulk queue is from the same net_device,
+can be used to further optimize XDP.  E.g. the dev->netdev_ops->ndo_xdp_xmit()
+call don't take fully advantage of this, yet.  If we merge this driver,
+it will block optimizations in this area.
+
+NACK
+
 -- 
-2.20.1
-
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
