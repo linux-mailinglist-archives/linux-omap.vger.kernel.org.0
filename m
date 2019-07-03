@@ -2,42 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9933E5DC19
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 04:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBFDD5DC15
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 04:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727435AbfGCCUx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Jul 2019 22:20:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54918 "EHLO mail.kernel.org"
+        id S1728225AbfGCCSR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 2 Jul 2019 22:18:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56212 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727969AbfGCCQe (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 2 Jul 2019 22:16:34 -0400
+        id S1727919AbfGCCSR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 2 Jul 2019 22:18:17 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CCC9121881;
-        Wed,  3 Jul 2019 02:16:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5FF5221873;
+        Wed,  3 Jul 2019 02:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562120193;
-        bh=Aeh1Pnz51BbGOzC67Bac39NpqcFOp3F1K5sQsWf4tu8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HOZvHWf9q5pwgw1HyQmPLttBZoukdbR20vTqTxOJXrTrV8ZHBFubTaNFx8xs8/601
-         XklKnByxRcdD+MnE/QJc5pjURv17PHk+NYxRXvD2XWrYVnGv8v7kMvzEqF34CrS5H5
-         LkoIXhuQlprTfhOKjMnUOQxCKzHvSp0RF/EJHfvU=
+        s=default; t=1562120296;
+        bh=8Khvw1CXl7hKEvHm32HTns+qzUCEgZkcV/yGjgbRFyU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=rGH9f/6zl6a/GJU0dxQWZ0syRpdTX7Zgf+sHe2QP6NHiEFAojCqEAayqyuNUni51h
+         v/VzhwPYDAUZ6DyFNhDr6C0vQFNtEziyUuJVBAAswY/vaz3FYTUUhKHS96pjPDURAn
+         cR5lwkpArwJEAaqJuKwh/bhU1k2hOHXNw7ZUIPRA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Andrew Murray <andrew.murray@arm.com>,
-        Olof Johansson <olof@lixom.net>,
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.19 06/26] ARM: omap2: remove incorrect __init annotation
-Date:   Tue,  2 Jul 2019 22:16:05 -0400
-Message-Id: <20190703021625.18116-6-sashal@kernel.org>
+        linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 01/13] clk: ti: clkctrl: Fix returning uninitialized data
+Date:   Tue,  2 Jul 2019 22:18:02 -0400
+Message-Id: <20190703021814.18385-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190703021625.18116-1-sashal@kernel.org>
-References: <20190703021625.18116-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -47,45 +44,63 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 27e23d8975270df6999f8b5b3156fc0c04927451 ]
+[ Upstream commit 41b3588dba6ef4b7995735a97e47ff0aeea6c276 ]
 
-omap3xxx_prm_enable_io_wakeup() is marked __init, but its caller is not, so
-we get a warning with clang-8:
+If we do a clk_get() for a clock that does not exists, we have
+_ti_omap4_clkctrl_xlate() return uninitialized data if no match
+is found. This can be seen in some cases with SLAB_DEBUG enabled:
 
-WARNING: vmlinux.o(.text+0x343c8): Section mismatch in reference from the function omap3xxx_prm_late_init() to the function .init.text:omap3xxx_prm_enable_io_wakeup()
-The function omap3xxx_prm_late_init() references
-the function __init omap3xxx_prm_enable_io_wakeup().
-This is often because omap3xxx_prm_late_init lacks a __init
-annotation or the annotation of omap3xxx_prm_enable_io_wakeup is wrong.
+Unable to handle kernel paging request at virtual address 5a5a5a5a
+...
+clk_hw_create_clk.part.33
+sysc_notifier_call
+notifier_call_chain
+blocking_notifier_call_chain
+device_add
 
-When building with gcc, omap3xxx_prm_enable_io_wakeup() is always
-inlined, so we never noticed in the past.
+Let's fix this by setting a found flag only when we find a match.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Andrew Murray <andrew.murray@arm.com>
-Signed-off-by: Olof Johansson <olof@lixom.net>
+Reported-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Fixes: 88a172526c32 ("clk: ti: add support for clkctrl clocks")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/prm3xxx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/ti/clkctrl.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/prm3xxx.c b/arch/arm/mach-omap2/prm3xxx.c
-index 05858f966f7d..dfa65fc2c82b 100644
---- a/arch/arm/mach-omap2/prm3xxx.c
-+++ b/arch/arm/mach-omap2/prm3xxx.c
-@@ -433,7 +433,7 @@ static void omap3_prm_reconfigure_io_chain(void)
-  * registers, and omap3xxx_prm_reconfigure_io_chain() must be called.
-  * No return value.
-  */
--static void __init omap3xxx_prm_enable_io_wakeup(void)
-+static void omap3xxx_prm_enable_io_wakeup(void)
+diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+index 82e4d5cccf84..2df8564f08a0 100644
+--- a/drivers/clk/ti/clkctrl.c
++++ b/drivers/clk/ti/clkctrl.c
+@@ -215,6 +215,7 @@ static struct clk_hw *_ti_omap4_clkctrl_xlate(struct of_phandle_args *clkspec,
  {
- 	if (prm_features & PRM_HAS_IO_WAKEUP)
- 		omap2_prm_set_mod_reg_bits(OMAP3430_EN_IO_MASK, WKUP_MOD,
+ 	struct omap_clkctrl_provider *provider = data;
+ 	struct omap_clkctrl_clk *entry;
++	bool found = false;
+ 
+ 	if (clkspec->args_count != 2)
+ 		return ERR_PTR(-EINVAL);
+@@ -224,11 +225,13 @@ static struct clk_hw *_ti_omap4_clkctrl_xlate(struct of_phandle_args *clkspec,
+ 
+ 	list_for_each_entry(entry, &provider->clocks, node) {
+ 		if (entry->reg_offset == clkspec->args[0] &&
+-		    entry->bit_offset == clkspec->args[1])
++		    entry->bit_offset == clkspec->args[1]) {
++			found = true;
+ 			break;
++		}
+ 	}
+ 
+-	if (!entry)
++	if (!found)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	return entry->clk;
 -- 
 2.20.1
 
