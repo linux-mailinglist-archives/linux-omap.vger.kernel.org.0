@@ -2,96 +2,181 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0F875E8CC
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 18:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF0295EAA7
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Jul 2019 19:40:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726739AbfGCQ1I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 3 Jul 2019 12:27:08 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:44070 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726890AbfGCQ1I (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 3 Jul 2019 12:27:08 -0400
-Received: by mail-pg1-f193.google.com with SMTP id i18so1492131pgl.11;
-        Wed, 03 Jul 2019 09:27:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=TEzZFcG2ux6XyZ++qvllUzv8fwdbc/Y07ZwzuS6e5J8=;
-        b=gh5m5TBhcC7qBwPsdP2tODNXbKTzgMXdRhN/vdS/gDK5qvHgBqJpxgl3B/0qeJInI2
-         r5bqud/fdSvl/CqrOsMumauiFRiwWgVr90YBgBkuMKtczX+2KtmTf0QqNNQffZga5237
-         Lxz1Xt+m2Tp8wVg/Ss3ntSnmYZzksVrFtY9fb8CJfuHmwqeMuJEcKYcaaO7ANPdlnDnb
-         pYj2rojJNJqHsk73Dn+ogiNk2dt4klUGiAE6COyEN6hjgFSbSTsLykAkVsHTuzUaQ6yt
-         QT3+V84GrwGZooZbyu4p2x08C0LXPxcBZq6jwHCGgsYEbLxV5euDAebva3cJN9yy38F1
-         KywA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=TEzZFcG2ux6XyZ++qvllUzv8fwdbc/Y07ZwzuS6e5J8=;
-        b=EeePICMln4v++m0KurnNrpaGrsx/4FWjynzaYvZPyIoYXW6PAypiAE585nJ0Qtk/X4
-         Ml2OHGrwIwkAlW/wxpHVKKf77ndBnZA4B+aPO57r640B9fBH2bF6QdPcH45zqwv2gH2g
-         kYWjEamPwpQzPj6S7h6oiQgnvHsJ/PEcifnyJc4ckRth/jv6dwTBRZkOvhhrhB3P6Lu8
-         xC/iakKyobDLFDF3oIGeyI+BE0c0Sqi3rmyBT6HPkABCi/Hp1CsF1zhfyc8YgLPoczQ3
-         cMTgYgwuzXOtQQ+mcAVPLPovssz2wjVdx1qp526Xr5jwLQl7FSxgbi2P7bZjY6ymxJw5
-         JkEw==
-X-Gm-Message-State: APjAAAUp4vKXHN2W5OF8cu4iGFSEsJMLPyUXAeZiLlgYnAcyyR4OjbXy
-        mn5mSsd8Jkzl7X/aKlVSJ44=
-X-Google-Smtp-Source: APXvYqz00MKUXknmNwmBzla2cR8L6An8m4ro4xbf2reOWqqaqMB0hCczYqnPD/GwHjWM0vxWtsrWbA==
-X-Received: by 2002:a63:24c1:: with SMTP id k184mr7356709pgk.120.1562171227347;
-        Wed, 03 Jul 2019 09:27:07 -0700 (PDT)
-Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
-        by smtp.googlemail.com with ESMTPSA id u65sm10496017pjb.1.2019.07.03.09.27.04
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 03 Jul 2019 09:27:07 -0700 (PDT)
-From:   Fuqian Huang <huangfq.daxian@gmail.com>
-Cc:     Tero Kristo <t-kristo@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Fuqian Huang <huangfq.daxian@gmail.com>
-Subject: [PATCH v2 05/35] clk/ti: Use kmemdup rather than duplicating its implementation
-Date:   Thu,  4 Jul 2019 00:27:00 +0800
-Message-Id: <20190703162700.32091-1-huangfq.daxian@gmail.com>
-X-Mailer: git-send-email 2.11.0
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726736AbfGCRkg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 3 Jul 2019 13:40:36 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:53372 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726574AbfGCRkg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 3 Jul 2019 13:40:36 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id A62BB308FFB1;
+        Wed,  3 Jul 2019 17:40:24 +0000 (UTC)
+Received: from carbon (ovpn-200-17.brq.redhat.com [10.40.200.17])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 575A13795;
+        Wed,  3 Jul 2019 17:40:15 +0000 (UTC)
+Date:   Wed, 3 Jul 2019 19:40:13 +0200
+From:   Jesper Dangaard Brouer <brouer@redhat.com>
+To:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Cc:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net,
+        ast@kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
+        daniel@iogearbox.net, jakub.kicinski@netronome.com,
+        john.fastabend@gmail.com, brouer@redhat.com
+Subject: Re: [PATCH v6 net-next 1/5] xdp: allow same allocator usage
+Message-ID: <20190703194013.02842e42@carbon>
+In-Reply-To: <20190703101903.8411-2-ivan.khoronzhuk@linaro.org>
+References: <20190703101903.8411-1-ivan.khoronzhuk@linaro.org>
+        <20190703101903.8411-2-ivan.khoronzhuk@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Wed, 03 Jul 2019 17:40:35 +0000 (UTC)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-kmemdup is introduced to duplicate a region of memory in a neat way.
-Rather than kmalloc/kzalloc + memcpy, which the programmer needs to
-write the size twice (sometimes lead to mistakes), kmemdup improves
-readability, leads to smaller code and also reduce the chances of mistakes.
-Suggestion to use kmemdup rather than using kmalloc/kzalloc + memcpy.
+On Wed,  3 Jul 2019 13:18:59 +0300
+Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
 
-Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
----
-Changes in v2:
-  - Fix a typo in commit message (memset -> memcpy)
+> First of all, it is an absolute requirement that each RX-queue have
+> their own page_pool object/allocator. And this change is intendant
+> to handle special case, where a single RX-queue can receive packets
+> from two different net_devices.
+> 
+> In order to protect against using same allocator for 2 different rx
+> queues, add queue_index to xdp_mem_allocator to catch the obvious
+> mistake where queue_index mismatch, as proposed by Jesper Dangaard
+> Brouer.
+> 
+> Adding this on xdp allocator level allows drivers with such dependency
+> change the allocators w/o modifications.
+> 
+> Signed-off-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+> ---
+>  include/net/xdp_priv.h |  2 ++
+>  net/core/xdp.c         | 55 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 57 insertions(+)
+> 
+> diff --git a/include/net/xdp_priv.h b/include/net/xdp_priv.h
+> index 6a8cba6ea79a..9858a4057842 100644
+> --- a/include/net/xdp_priv.h
+> +++ b/include/net/xdp_priv.h
+> @@ -18,6 +18,8 @@ struct xdp_mem_allocator {
+>  	struct rcu_head rcu;
+>  	struct delayed_work defer_wq;
+>  	unsigned long defer_warn;
+> +	unsigned long refcnt;
+> +	u32 queue_index;
+>  };
 
- drivers/clk/ti/dpll.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+I don't like this approach, because I think we need to extend struct
+xdp_mem_allocator with a net_device pointer, for doing dev_hold(), to
+correctly handle lifetime issues. (As I tried to explain previously).
+This will be much harder after this change, which is why I proposed the
+other patch.
 
-diff --git a/drivers/clk/ti/dpll.c b/drivers/clk/ti/dpll.c
-index 659dadb23279..f728d987ebac 100644
---- a/drivers/clk/ti/dpll.c
-+++ b/drivers/clk/ti/dpll.c
-@@ -291,14 +291,12 @@ static void __init of_ti_dpll_setup(struct device_node *node,
- 	struct dpll_data *dd = NULL;
- 	u8 dpll_mode = 0;
- 
--	dd = kzalloc(sizeof(*dd), GFP_KERNEL);
-+	dd = kmemdup(ddt, sizeof(*dd), GFP_KERNEL);
- 	clk_hw = kzalloc(sizeof(*clk_hw), GFP_KERNEL);
- 	init = kzalloc(sizeof(*init), GFP_KERNEL);
- 	if (!dd || !clk_hw || !init)
- 		goto cleanup;
- 
--	memcpy(dd, ddt, sizeof(*dd));
--
- 	clk_hw->dpll_data = dd;
- 	clk_hw->ops = &clkhwops_omap3_dpll;
- 	clk_hw->hw.init = init;
+
+>  #endif /* __LINUX_NET_XDP_PRIV_H__ */
+> diff --git a/net/core/xdp.c b/net/core/xdp.c
+> index 829377cc83db..4f0ddbb3717a 100644
+> --- a/net/core/xdp.c
+> +++ b/net/core/xdp.c
+> @@ -98,6 +98,18 @@ static bool __mem_id_disconnect(int id, bool force)
+>  		WARN(1, "Request remove non-existing id(%d), driver bug?", id);
+>  		return true;
+>  	}
+> +
+> +	/* to avoid calling hash lookup twice, decrement refcnt here till it
+> +	 * reaches zero, then it can be called from workqueue afterwards.
+> +	 */
+> +	if (xa->refcnt)
+> +		xa->refcnt--;
+> +
+> +	if (xa->refcnt) {
+> +		mutex_unlock(&mem_id_lock);
+> +		return true;
+> +	}
+> +
+>  	xa->disconnect_cnt++;
+>  
+>  	/* Detects in-flight packet-pages for page_pool */
+> @@ -312,6 +324,33 @@ static bool __is_supported_mem_type(enum xdp_mem_type type)
+>  	return true;
+>  }
+>  
+> +static struct xdp_mem_allocator *xdp_allocator_find(void *allocator)
+> +{
+> +	struct xdp_mem_allocator *xae, *xa = NULL;
+> +	struct rhashtable_iter iter;
+> +
+> +	if (!allocator)
+> +		return xa;
+> +
+> +	rhashtable_walk_enter(mem_id_ht, &iter);
+> +	do {
+> +		rhashtable_walk_start(&iter);
+> +
+> +		while ((xae = rhashtable_walk_next(&iter)) && !IS_ERR(xae)) {
+> +			if (xae->allocator == allocator) {
+> +				xa = xae;
+> +				break;
+> +			}
+> +		}
+> +
+> +		rhashtable_walk_stop(&iter);
+> +
+> +	} while (xae == ERR_PTR(-EAGAIN));
+> +	rhashtable_walk_exit(&iter);
+> +
+> +	return xa;
+> +}
+> +
+>  int xdp_rxq_info_reg_mem_model(struct xdp_rxq_info *xdp_rxq,
+>  			       enum xdp_mem_type type, void *allocator)
+>  {
+> @@ -347,6 +386,20 @@ int xdp_rxq_info_reg_mem_model(struct xdp_rxq_info *xdp_rxq,
+>  		}
+>  	}
+>  
+> +	mutex_lock(&mem_id_lock);
+> +	xdp_alloc = xdp_allocator_find(allocator);
+> +	if (xdp_alloc) {
+> +		/* One allocator per queue is supposed only */
+> +		if (xdp_alloc->queue_index != xdp_rxq->queue_index)
+> +			return -EINVAL;
+> +
+> +		xdp_rxq->mem.id = xdp_alloc->mem.id;
+> +		xdp_alloc->refcnt++;
+> +		mutex_unlock(&mem_id_lock);
+> +		return 0;
+> +	}
+> +	mutex_unlock(&mem_id_lock);
+> +
+>  	xdp_alloc = kzalloc(sizeof(*xdp_alloc), gfp);
+>  	if (!xdp_alloc)
+>  		return -ENOMEM;
+> @@ -360,6 +413,8 @@ int xdp_rxq_info_reg_mem_model(struct xdp_rxq_info *xdp_rxq,
+>  	xdp_rxq->mem.id = id;
+>  	xdp_alloc->mem  = xdp_rxq->mem;
+>  	xdp_alloc->allocator = allocator;
+> +	xdp_alloc->refcnt = 1;
+> +	xdp_alloc->queue_index = xdp_rxq->queue_index;
+>  
+>  	/* Insert allocator into ID lookup table */
+>  	ptr = rhashtable_insert_slow(mem_id_ht, &id, &xdp_alloc->node);
+
+
+
 -- 
-2.11.0
-
+Best regards,
+  Jesper Dangaard Brouer
+  MSc.CS, Principal Kernel Engineer at Red Hat
+  LinkedIn: http://www.linkedin.com/in/brouer
