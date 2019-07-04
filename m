@@ -2,76 +2,145 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC8F55FC71
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Jul 2019 19:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 391425FE9C
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Jul 2019 01:15:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727562AbfGDRYA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 4 Jul 2019 13:24:00 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:35834 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727551AbfGDRX7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Jul 2019 13:23:59 -0400
-Received: by mail-wm1-f65.google.com with SMTP id c6so6895158wml.0
-        for <linux-omap@vger.kernel.org>; Thu, 04 Jul 2019 10:23:58 -0700 (PDT)
+        id S1727410AbfGDXO0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 4 Jul 2019 19:14:26 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:36332 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727393AbfGDXO0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Jul 2019 19:14:26 -0400
+Received: by mail-lj1-f196.google.com with SMTP id i21so7451689ljj.3
+        for <linux-omap@vger.kernel.org>; Thu, 04 Jul 2019 16:14:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=y4voAUiJJKE00AR2uSiAh6BEDQ5M7euB2mZzQvioBBI=;
-        b=AMvBLGrkP3CxUMSu0pr8Ckfnkpodk0l7sqq8Obe/MOQ8WwX1KdepPQ+ppj3izznsRx
-         BPfFUnRlk4/8LeKNLiudk/y7uO4kWDyowv/67oOFxJvhDJHaP0AW+A81dAoIsJk13Ipu
-         qDj5cZoFiDPeAuItKuxoonv77G4RvV0pQxyyXo2fkt0nx+c48mqY0BB3yvRCWIwAZGs6
-         zfSCJGDFcJ0LSua8fwDx9g+k3FsJuG6QOlRJR8pGb2hxqp1WYZMe1J21oA2+UpXMtYqc
-         HQPqW1Si8gyGWg3pJcJ2dOayzk7n9QTGSdtb6TCbnSSIEBUm2QdK4+wROyyMd2CyU+2s
-         d1GQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=bVDhPr1NYeKDnrMdcMHlybkPxVb9bTLFPQt8UIwuo9g=;
+        b=Y2oAh8lvwJqXl1+6yeHQ/iXA9z4VaR8LEnUnmIAOpwP5SNCVLDSMIzrsWl/abPO2X4
+         G9Sh4lSvLw0dpYZ68GsTpzVFmuij/tHS0rMJAo6G6hn7tbXDsjTzFgQ9SLGoyqvYs8tN
+         onSKcrgq6/GjjogzlnAKi9a5wg2orPWPCKR91cft2pADiG9rqhWV4Nm7pyQDFLYCNvFo
+         okyPW7k+sAB7pzXkyCVpMfeyj29nxKbyGDE1m6M/3jrUyHlFlNJ/m1WaLdTVYUopk5ox
+         lsO9gsZZJMbAUxt4VPy9M+YKdPTUF9n8vXCP644dzTOSMya+t7a0m0j4MDBy/uFck7II
+         NzEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=y4voAUiJJKE00AR2uSiAh6BEDQ5M7euB2mZzQvioBBI=;
-        b=tiWifjBdtAmi8VbBO7S3v65VdLio4vxfCPmg8ffgHcl1hgIqEM4tG9pqebHd+b+t/r
-         SOnkXTEckEQ06BBZOXesSAnOvGhpHC8JY/5EWPH5Rge4TO8qhgSHxfK4w++MSyW1fID7
-         i0cEb5XsiO4f7x+6ilRHMZNkxeZp5jT7VM3BohnzEm738ynLp+eGsHidEBqmumVrOwHK
-         LEjPp7CaollA+rffVroWrDGyqqyof8Z14Z4J5uYeqQLxc/5KvDtENDQXuGD1vWptQM4R
-         569L6SrlU/+qH1lXME3CxX+GJl4qSCa5NcuUV8O8iNVzx8se/kWc4Qchvq6pRW7KFF74
-         wPaA==
-X-Gm-Message-State: APjAAAXCAXH9PTgDEWn0APnfGHFGbzPJ24KRv06VprPgZoSmg2IMoWsb
-        g7jTgr9fFa3LDFDk+DUqp7EqYA==
-X-Google-Smtp-Source: APXvYqxR4bWTM5Aja4k+CHVHyqNjVnyHlOR72b86JbspolqS1srdqfiF4hRoTqd9BH0wTPlRkH3nnw==
-X-Received: by 2002:a1c:ac81:: with SMTP id v123mr389342wme.145.1562261037825;
-        Thu, 04 Jul 2019 10:23:57 -0700 (PDT)
-Received: from apalos (athedsl-428434.home.otenet.gr. [79.131.225.144])
-        by smtp.gmail.com with ESMTPSA id 2sm2219802wrn.29.2019.07.04.10.23.56
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 04 Jul 2019 10:23:57 -0700 (PDT)
-Date:   Thu, 4 Jul 2019 20:23:54 +0300
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-To:     Jesper Dangaard Brouer <brouer@redhat.com>, netdev@vger.kernel.org,
-        grygorii.strashko@ti.com, jakub.kicinski@netronome.com,
-        daniel@iogearbox.net, john.fastabend@gmail.com, ast@kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH net-next V2] net: core: page_pool: add user refcnt and
- reintroduce page_pool_destroy
-Message-ID: <20190704172354.GA14255@apalos>
-References: <156225871578.1603.6630229522953924907.stgit@firesoul>
- <20190704171354.GC2923@khorivan>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190704171354.GC2923@khorivan>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=bVDhPr1NYeKDnrMdcMHlybkPxVb9bTLFPQt8UIwuo9g=;
+        b=bJW0i3seDdSgJtLaz3MqoO/wCXpW98Y+PHuUr1A1OWHWPZ9tXSjgZhGHRxqBg2Fvb6
+         R2gC70uTeaY3vom4+VOFE1tm1GhwWta2BXXNdM3voIdwcf6Cp0OZUnqm4cByQg1nktVQ
+         +P+FUHIa/QuvEmHXpxW5ExmJ5tiHgJNNpMxpGfi1tVrxMS2HDdOPhTvZYiKIoNqCeO8p
+         hxddZJAxHvGMO82VJ0+yJ++RyTDrNIa4UnVGwQTyn9RqP6OGuzYHExorUO9USfVS5bjV
+         ZmSsOhIjKHvIVKGL3Y9cnG4znOkKwbAZfKbofJRx/JSYuKrZqQArDd2GGo4TU93D26mV
+         cLSg==
+X-Gm-Message-State: APjAAAU88QYWVYdxg2plgeh0U5NmsMauIEOAuJBRzFYFK3aX5y1Q1ePt
+        7FZZ6b8OvE2wsNvjo56Z7KzDMA==
+X-Google-Smtp-Source: APXvYqx6b8pMO3ob9Z9MsfHZZaYugwvubPmR0cqUGxRbp1KtNkJwzV66jFtpNj7shjptk/+JiMADqw==
+X-Received: by 2002:a2e:864d:: with SMTP id i13mr302944ljj.92.1562282064462;
+        Thu, 04 Jul 2019 16:14:24 -0700 (PDT)
+Received: from localhost.localdomain ([46.211.39.135])
+        by smtp.gmail.com with ESMTPSA id q6sm1407269lji.70.2019.07.04.16.14.13
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 04 Jul 2019 16:14:23 -0700 (PDT)
+From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+To:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net
+Cc:     ast@kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
+        daniel@iogearbox.net, jakub.kicinski@netronome.com,
+        john.fastabend@gmail.com,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Subject: [PATCH v7 net-next 0/5] net: ethernet: ti: cpsw: Add XDP support
+Date:   Fri,  5 Jul 2019 02:14:01 +0300
+Message-Id: <20190704231406.27083-1-ivan.khoronzhuk@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Ivan,
+This patchset adds XDP support for TI cpsw driver and base it on
+page_pool allocator. It was verified on af_xdp socket drop,
+af_xdp l2f, ebpf XDP_DROP, XDP_REDIRECT, XDP_PASS, XDP_TX.
 
-> 
-> Have trouble with inet today...I will pick up it as my changes depend on it.
-> And send probably in couple hours after verification.
-Maybe you'd like to add your signed-off on this one since it was based on your
-patchset?
+It was verified with following configs enabled:
+CONFIG_JIT=y
+CONFIG_BPFILTER=y
+CONFIG_BPF_SYSCALL=y
+CONFIG_XDP_SOCKETS=y
+CONFIG_BPF_EVENTS=y
+CONFIG_HAVE_EBPF_JIT=y
+CONFIG_BPF_JIT=y
+CONFIG_CGROUP_BPF=y
 
-Regards
-/Ilias
+Link on previous v6:
+https://lkml.org/lkml/2019/7/3/243
+
+Also regular tests with iperf2 were done in order to verify impact on
+regular netstack performance, compared with base commit:
+https://pastebin.com/JSMT0iZ4
+
+v6..v7:
+- rolled back to v4 solution but with small modification
+- picked up patch:
+  https://www.spinics.net/lists/netdev/msg583145.html
+- added changes related to netsec fix and cpsw
+
+
+v5..v6:
+- do changes that is rx_dev while redirect/flush cycle is kept the same
+- dropped net: ethernet: ti: davinci_cpdma: return handler status
+- other changes desc in patches
+
+v4..v5:
+- added two plreliminary patches:
+  net: ethernet: ti: davinci_cpdma: allow desc split while down
+  net: ethernet: ti: cpsw_ethtool: allow res split while down
+- added xdp alocator refcnt on xdp level, avoiding page pool refcnt
+- moved flush status as separate argument for cpdma_chan_process
+- reworked cpsw code according to last changes to allocator
+- added missed statistic counter
+
+v3..v4:
+- added page pool user counter
+- use same pool for ndevs in dual mac
+- restructured page pool create/destroy according to the last changes in API
+
+v2..v3:
+- each rxq and ndev has its own page pool
+
+v1..v2:
+- combined xdp_xmit functions
+- used page allocation w/o refcnt juggle
+- unmapped page for skb netstack
+- moved rxq/page pool allocation to open/close pair
+- added several preliminary patches:
+  net: page_pool: add helper function to retrieve dma addresses
+  net: page_pool: add helper function to unmap dma addresses
+  net: ethernet: ti: cpsw: use cpsw as drv data
+  net: ethernet: ti: cpsw_ethtool: simplify slave loops
+
+Ivan Khoronzhuk (5):
+  net: core: page_pool: add user refcnt and reintroduce
+    page_pool_destroy
+  net: ethernet: ti: davinci_cpdma: add dma mapped submit
+  net: ethernet: ti: davinci_cpdma: allow desc split while down
+  net: ethernet: ti: cpsw_ethtool: allow res split while down
+  net: ethernet: ti: cpsw: add XDP support
+
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |   4 +-
+ drivers/net/ethernet/socionext/netsec.c       |   8 +-
+ drivers/net/ethernet/ti/Kconfig               |   1 +
+ drivers/net/ethernet/ti/cpsw.c                | 502 ++++++++++++++++--
+ drivers/net/ethernet/ti/cpsw_ethtool.c        |  57 +-
+ drivers/net/ethernet/ti/cpsw_priv.h           |   7 +
+ drivers/net/ethernet/ti/davinci_cpdma.c       | 106 +++-
+ drivers/net/ethernet/ti/davinci_cpdma.h       |   7 +-
+ include/net/page_pool.h                       |  25 +
+ net/core/page_pool.c                          |   8 +
+ net/core/xdp.c                                |   3 +
+ 11 files changed, 640 insertions(+), 88 deletions(-)
+
+-- 
+2.17.1
+
