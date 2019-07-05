@@ -2,152 +2,149 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FDA6605A6
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Jul 2019 14:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3004608A2
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Jul 2019 17:05:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727416AbfGEMBV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 5 Jul 2019 08:01:21 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:33551 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725926AbfGEMBV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 5 Jul 2019 08:01:21 -0400
-Received: by mail-lj1-f195.google.com with SMTP id h10so9046119ljg.0
-        for <linux-omap@vger.kernel.org>; Fri, 05 Jul 2019 05:01:19 -0700 (PDT)
+        id S1727188AbfGEPFI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 5 Jul 2019 11:05:08 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:33187 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725837AbfGEPFH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 5 Jul 2019 11:05:07 -0400
+Received: by mail-lf1-f68.google.com with SMTP id x3so608765lfc.0
+        for <linux-omap@vger.kernel.org>; Fri, 05 Jul 2019 08:05:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Bwcx4Wrt/iXqyeT5/Qi9DpMy8WMhSBFAEuk3MBcreWs=;
-        b=PDLasy29nXLVksqy7cLdFBOQ9g2BdW8VmAJB2XAM3FVzzudxYV1GYTh4MxhCTAhdRY
-         I2eU7LywN45QJfSknrIMQcUhoFzKrFlbBXQDiWO6sbH9bRermdHBGkNFBwbt3Dey734R
-         MLg9SOSXh8SW1giZ1GMV975NOYl7iUiaPi6QMePfFqIhiC2aHaE7zyV3pFtm3ncn2AqN
-         GzHLIRxgQtIoaBvYzUNMsHlhw7MtFqXZhGDAnNf38XhdqKak8Af/TBkCAeaEEwI22phG
-         Cdi8EBwpTxIl071uBoKLN5i/SLqStnx6Qba+01fW4FVWgH5SiFipPCRQ2pD5Zxr73ip0
-         IjCA==
+        h=from:to:cc:subject:date:message-id;
+        bh=t4hREu48yBnNnsCNkLAAjVA+oW6+KCJ+i2tHd3IV11E=;
+        b=XucT8mV2bn8M6+M5EBsqcx85sYF0juNmA8uMTvRwSlotpvmRHojKtgF3XR01w/4vTe
+         rFgwuvm8O2C8jvcS8CPPL0Y43ZAmtyLOR8q5umFqHOkP18t0hCQtxwFzabcZzw3sWo6J
+         On4/cQhQ2Sb9UTZtouhT+zyRzv1ysEepTo8Kh7kwptKpy44YjWq+B6+fdFiHqFobRtkz
+         qq18nU+g8j7mmV4811k0DN8ySLwnp43/Pq5CzQqtxOz64Vzyijwt8mQfRmPg3XiZHhjy
+         KX9MMPu9CmSrTHzVyE30Z6hFhLhWJX8t5BO2Q3FrGGw8zNpeBO5JCL2NJHO7lxmm+RmP
+         F6OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=Bwcx4Wrt/iXqyeT5/Qi9DpMy8WMhSBFAEuk3MBcreWs=;
-        b=k4xdWggM6Rw8a2jimpEYGnttwjIcipRra2tRqUI6lIdpauqeBh+CcNsrq+RdUVbxzG
-         NBAn7Z1Dhw9l1p/xZ8sRTS/jWQCgT+CYyhKMy5UjzKNuvgL5/kDBiyVwOwRDIcv9fCUL
-         FsQVCXrSUR9yncpQBG9nAgQZkZXHqmuP/qE4c9v2V+MifhUzr65RyjCw06EmaR7GR86A
-         jtz1vftKz+3/FVsw9ocPZQXkCr+Lz9ZG/JSpUULz+W2qyxCh9krRCx6IQ+1LgAMnZY2F
-         nGmYWg0VXzcZoWHCDLWlwgKvQJBczSGYzD364mpK0cNwoRYPzD6Ay7Glxaa1ZEpdN6Ru
-         mvTg==
-X-Gm-Message-State: APjAAAXZuGgTemHtPqr4cZZktHwPTs/XXAD65F1Hb6T2tHzs9a2jtfXD
-        tE8tMXubwha1UESLlWdCzTSmJQ==
-X-Google-Smtp-Source: APXvYqymqamwctlOmGse9fcGqqLcn0TvUuXCUQ+EQ0I3fubLivDV0hSv0DHD5tkqr5to/nt2Tz02tg==
-X-Received: by 2002:a2e:3a13:: with SMTP id h19mr1946573lja.220.1562328079191;
-        Fri, 05 Jul 2019 05:01:19 -0700 (PDT)
-Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id h18sm1351494lfc.40.2019.07.05.05.01.18
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 05 Jul 2019 05:01:18 -0700 (PDT)
-Date:   Fri, 5 Jul 2019 15:01:16 +0300
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=t4hREu48yBnNnsCNkLAAjVA+oW6+KCJ+i2tHd3IV11E=;
+        b=JAXsD2TNu1WSeEkarEa//iLzMMw6oFWlkb7YZ4RYzt0wO4DnE/l8fT0cPrv/mmiC+g
+         MXYqp/MtCMcSeDZNrHduJG/Z9LOrH6NyHNF9PYxJQ0DoUq94wtsu4AzVzPqUc8RuBko/
+         DZ+/JHBpfX+eYF3Y5uzKDIGhLI9HuYUGj3gCvuAYBx1FFA1/y7sbIfHnqIAo5uUDXhRa
+         yYij406+WEnQ3Zjxaca10pOLN2ky3QM28tdwOowW00iM3nON1MX3z0caC5gfcKVMN5XX
+         B2ODn84VrXDp2Oe+x1jcluLVlSK32lgWjSWywsSS3TlUv+2wECevwXqziFVQxbYn3V40
+         XA4Q==
+X-Gm-Message-State: APjAAAVI3K/0yF7J8SnUT57gjCYMEK2hCgynE16/kiTNj27zMhyH6btw
+        PpIf5GRhlGCMPdCgczl4omwf/A==
+X-Google-Smtp-Source: APXvYqwYRYc3jsjZ+mK2EnOEXmF8Zex6VVfLBO6dpr1GmnEL7ua1JEJo/rRGGAShvVcj57nHCOQOWw==
+X-Received: by 2002:ac2:5336:: with SMTP id f22mr2194391lfh.180.1562339105564;
+        Fri, 05 Jul 2019 08:05:05 -0700 (PDT)
+Received: from localhost.localdomain (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
+        by smtp.gmail.com with ESMTPSA id y4sm1433660lfc.56.2019.07.05.08.05.04
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 05 Jul 2019 08:05:04 -0700 (PDT)
 From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-To:     Jesper Dangaard Brouer <brouer@redhat.com>
-Cc:     grygorii.strashko@ti.com, davem@davemloft.net, ast@kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+To:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net
+Cc:     ast@kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
         ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
         daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        john.fastabend@gmail.com
-Subject: Re: [PATCH v7 net-next 5/5] net: ethernet: ti: cpsw: add XDP support
-Message-ID: <20190705120114.GA3587@khorivan>
-Mail-Followup-To: Jesper Dangaard Brouer <brouer@redhat.com>,
-        grygorii.strashko@ti.com, davem@davemloft.net, ast@kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
-        daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        john.fastabend@gmail.com
-References: <20190704231406.27083-1-ivan.khoronzhuk@linaro.org>
- <20190704231406.27083-6-ivan.khoronzhuk@linaro.org>
- <20190705131354.15a9313c@carbon>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190705131354.15a9313c@carbon>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        john.fastabend@gmail.com,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Subject: [PATCH v8 net-next 0/5] net: ethernet: ti: cpsw: Add XDP support
+Date:   Fri,  5 Jul 2019 18:04:57 +0300
+Message-Id: <20190705150502.6600-1-ivan.khoronzhuk@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jul 05, 2019 at 01:13:54PM +0200, Jesper Dangaard Brouer wrote:
->On Fri,  5 Jul 2019 02:14:06 +0300
->Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org> wrote:
->
->> +static int cpsw_xdp_tx_frame(struct cpsw_priv *priv, struct xdp_frame *xdpf,
->> +			     struct page *page)
->> +{
->> +	struct cpsw_common *cpsw = priv->cpsw;
->> +	struct cpsw_meta_xdp *xmeta;
->> +	struct cpdma_chan *txch;
->> +	dma_addr_t dma;
->> +	int ret, port;
->> +
->> +	xmeta = (void *)xdpf + CPSW_XMETA_OFFSET;
->> +	xmeta->ndev = priv->ndev;
->> +	xmeta->ch = 0;
->> +	txch = cpsw->txv[0].ch;
->> +
->> +	port = priv->emac_port + cpsw->data.dual_emac;
->> +	if (page) {
->> +		dma = page_pool_get_dma_addr(page);
->> +		dma += xdpf->data - (void *)xdpf;
->
->This code is only okay because this only happens for XDP_TX, where you
->know this head-room calculation will be true.  The "correct"
->calculation of the head-room would be:
->
->  dma += xdpf->headroom + sizeof(struct xdp_frame);
->
->The reason behind not using xdpf pointer itself as "data_hard_start",
->is to allow struct xdp_frame to be located in another memory area.
+This patchset adds XDP support for TI cpsw driver and base it on
+page_pool allocator. It was verified on af_xdp socket drop,
+af_xdp l2f, ebpf XDP_DROP, XDP_REDIRECT, XDP_PASS, XDP_TX.
 
-My assumption was based on:
+It was verified with following configs enabled:
+CONFIG_JIT=y
+CONFIG_BPFILTER=y
+CONFIG_BPF_SYSCALL=y
+CONFIG_XDP_SOCKETS=y
+CONFIG_BPF_EVENTS=y
+CONFIG_HAVE_EBPF_JIT=y
+CONFIG_BPF_JIT=y
+CONFIG_CGROUP_BPF=y
 
-struct xdp_frame *convert_to_xdp_frame(struct xdp_buff *xdp)
-{
-	...
-	xdp_frame = xdp->data_hard_start;
-	...
+Link on previous v7:
+https://lkml.org/lkml/2019/7/4/715
 
-	xdp_frame->headroom = headroom - sizeof(*xdp_frame);
-	...
-}
+Also regular tests with iperf2 were done in order to verify impact on
+regular netstack performance, compared with base commit:
+https://pastebin.com/JSMT0iZ4
 
-But agree, it doesn't contradict the reason in question.
-So, better use proposed variant. Will check and do this in v8 a little later:
+v7..v8:
+- corrected dma calculation based on headroom instead of hard start
+- minor comment changes
 
-dma += xdpf->headroom + sizeof(struct xdp_frame);
+v6..v7:
+- rolled back to v4 solution but with small modification
+- picked up patch:
+  https://www.spinics.net/lists/netdev/msg583145.html
+- added changes related to netsec fix and cpsw
 
->This will be useful for e.g. AF_XDP transmit, or other zero-copy
->transmit to go through ndo_xdp_xmit() (as we don't want userspace to
->be-able to e.g. "race" change xdpf->len during transmit/DMA-completion).
->
->
->> +		ret = cpdma_chan_submit_mapped(txch, cpsw_xdpf_to_handle(xdpf),
->> +					       dma, xdpf->len, port);
->> +	} else {
->> +		if (sizeof(*xmeta) > xdpf->headroom) {
->> +			xdp_return_frame_rx_napi(xdpf);
->> +			return -EINVAL;
->> +		}
->> +
->> +		ret = cpdma_chan_submit(txch, cpsw_xdpf_to_handle(xdpf),
->> +					xdpf->data, xdpf->len, port);
->> +	}
->
->
->
->-- 
->Best regards,
->  Jesper Dangaard Brouer
->  MSc.CS, Principal Kernel Engineer at Red Hat
->  LinkedIn: http://www.linkedin.com/in/brouer
+
+v5..v6:
+- do changes that is rx_dev while redirect/flush cycle is kept the same
+- dropped net: ethernet: ti: davinci_cpdma: return handler status
+- other changes desc in patches
+
+v4..v5:
+- added two plreliminary patches:
+  net: ethernet: ti: davinci_cpdma: allow desc split while down
+  net: ethernet: ti: cpsw_ethtool: allow res split while down
+- added xdp alocator refcnt on xdp level, avoiding page pool refcnt
+- moved flush status as separate argument for cpdma_chan_process
+- reworked cpsw code according to last changes to allocator
+- added missed statistic counter
+
+v3..v4:
+- added page pool user counter
+- use same pool for ndevs in dual mac
+- restructured page pool create/destroy according to the last changes in API
+
+v2..v3:
+- each rxq and ndev has its own page pool
+
+v1..v2:
+- combined xdp_xmit functions
+- used page allocation w/o refcnt juggle
+- unmapped page for skb netstack
+- moved rxq/page pool allocation to open/close pair
+- added several preliminary patches:
+  net: page_pool: add helper function to retrieve dma addresses
+  net: page_pool: add helper function to unmap dma addresses
+  net: ethernet: ti: cpsw: use cpsw as drv data
+  net: ethernet: ti: cpsw_ethtool: simplify slave loops
+
+Ivan Khoronzhuk (5):
+  net: core: page_pool: add user refcnt and reintroduce
+    page_pool_destroy
+  net: ethernet: ti: davinci_cpdma: add dma mapped submit
+  net: ethernet: ti: davinci_cpdma: allow desc split while down
+  net: ethernet: ti: cpsw_ethtool: allow res split while down
+  net: ethernet: ti: cpsw: add XDP support
+
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |   4 +-
+ drivers/net/ethernet/socionext/netsec.c       |   8 +-
+ drivers/net/ethernet/ti/Kconfig               |   1 +
+ drivers/net/ethernet/ti/cpsw.c                | 502 ++++++++++++++++--
+ drivers/net/ethernet/ti/cpsw_ethtool.c        |  57 +-
+ drivers/net/ethernet/ti/cpsw_priv.h           |   7 +
+ drivers/net/ethernet/ti/davinci_cpdma.c       | 106 +++-
+ drivers/net/ethernet/ti/davinci_cpdma.h       |   7 +-
+ include/net/page_pool.h                       |  25 +
+ net/core/page_pool.c                          |   8 +
+ net/core/xdp.c                                |   3 +
+ 11 files changed, 640 insertions(+), 88 deletions(-)
 
 -- 
-Regards,
-Ivan Khoronzhuk
+2.17.1
+
