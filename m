@@ -2,83 +2,152 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3FAF62AD0
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Jul 2019 23:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D022F62B03
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Jul 2019 23:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732446AbfGHVPn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Jul 2019 17:15:43 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:45990 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405308AbfGHVPm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Jul 2019 17:15:42 -0400
-Received: by mail-io1-f68.google.com with SMTP id g20so17436472ioc.12
-        for <linux-omap@vger.kernel.org>; Mon, 08 Jul 2019 14:15:42 -0700 (PDT)
+        id S1732219AbfGHVei (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Jul 2019 17:34:38 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:41429 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731542AbfGHVei (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Jul 2019 17:34:38 -0400
+Received: by mail-lj1-f195.google.com with SMTP id d24so8332901ljg.8
+        for <linux-omap@vger.kernel.org>; Mon, 08 Jul 2019 14:34:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z4B1DM+aYjxU+okrUuJoTvRLDFQzAUQP1MHsJfZ8ctg=;
-        b=SLhX0XQ7jdunERsvbzW5rmWFMqQbNfd/ssL4EHiPd6010D+g7edXvw0buXR4poj5vG
-         Mm7UH0Nx6BJnd9DXCxXqgGpH+0zV+NW0kn78r1uWiEjrMvsK2iQhpTEhme1ozrNFrLJf
-         Sa23fjW00XLs0pLpVWpdsmqkDuKelJ2dxCnSeCTqpTzgC/M8SJzIrMA2iPbadLE8oyjf
-         fqf+tS3Aw10UX6PyXEtJhThn7yBoooYBBvw7FwMHL+uBiAugFssNKGv0qHVJoDioaEx8
-         qNDUraVvr9BXTY70aabpxIVOahC5yPVD/1nmTEQeNnhnBkSXu8SqSMjjepwlCtXj5NVB
-         1KWA==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=/jUllDDZ3b7We2EmtZhggvnRSS7NBu/TTaz5tD6/PUc=;
+        b=T8pbps6CRd0YYwTNpgOwCFTwOOC7K3bS+QLebfKLWanCnY22hZ2/Fzlhoz21wi9btl
+         qeHAu27UExxlUyTgdNIVzORsRVkvD3PDhUCD7Z2LQRxS0R9ofH1QhUxQRs6Te1v6eGyZ
+         LG1uW2nD+Ayo0T1reG8dFirp5xGI/MbJiyeG0tO5JKRgedhe7zP2ba2fOODu1NV0RFZq
+         0j5U87HXsJ1iFXKpPtbeK9jKHLRN2vUICPWz3OSNeWLZZ1zqhrrdqHV2PEiI7IG2DrQV
+         4/303OFQ65FkDNFHHdYHF81pcV4rhG06bASB5InaH3MQxmxx2WsbbMPYxSAN/o98cxgp
+         NwQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z4B1DM+aYjxU+okrUuJoTvRLDFQzAUQP1MHsJfZ8ctg=;
-        b=bF6DscuawMDs/4e2LRo1ftGSOPcmcuPkZto9GKY2tIdbdsFA6RqJRGT4/mwjluAyNc
-         myHL83XtJSASIez5drwGPjgWuTSO5u+XKglOohx+R2oLPZ4eFFwttmI1EJStzQHcIRj1
-         ZLskJHvRk8qBLRMKI76qXgupnxj0ZkeS1qiM/YpBl78Xj+rANdEPrQIlIOxgTsSJSVhp
-         VfMr2peQJWqWCIXdwAyIdJ2J6fvXQf+HK2AV0oJz5gc2klmbop1211yYxMUHPWxxGuFs
-         zdEhX+kUz1Cl11gq60RhHtEJ3tuJmkCzzqjgZhMvuRWvCAIdxPqxc2zaxxEwDQ+Q2d6b
-         sBKA==
-X-Gm-Message-State: APjAAAXiaot23C5BjfJlbWWDLaaebQLArYtJw94iERumPNGqMeRv+vxI
-        uzC/PcCIxO96Qglm4RMAL/VZxWcyG7a61k92QFs=
-X-Google-Smtp-Source: APXvYqw1IJHNrCAcS88FviMesY21KKq/oTbZJWaR5+dS6ohOnl+Jhmx3B2/WSN6fqz+imi80wnklJb0xBshRy82sHCU=
-X-Received: by 2002:a5d:8890:: with SMTP id d16mr18544504ioo.274.1562620542083;
- Mon, 08 Jul 2019 14:15:42 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:ac0:8bac:0:0:0:0:0 with HTTP; Mon, 8 Jul 2019 14:15:41 -0700 (PDT)
-Reply-To: muahammedrabia@gmail.com
-From:   "Mrs. Rabia Muahammed " <udumachambers2@gmail.com>
-Date:   Mon, 8 Jul 2019 16:15:41 -0500
-Message-ID: <CAAaKNyY-yOvtZuTSpn4FhxXtjszwv-eU72Mx9Vhdp+c7BgDawg@mail.gmail.com>
-Subject: From Mrs. Rabia Muahammed
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=/jUllDDZ3b7We2EmtZhggvnRSS7NBu/TTaz5tD6/PUc=;
+        b=CdC2a2PVAX3c/W/3CS5KZ6B3N+eG6uw1lAPIax+PQH0WQlAyXSTZrfeYhAdbOYaF6L
+         5e9ivzJ60/L9y7Sp4XcKLqjB2AGGBr0Py1m6X6JUe/9BFpYp+zZwwWu8Q9Z8kZj6IdKe
+         +RvlvOOCljKAgZYt43pOuZ9no8UYqJH/0Ocbzu6c9jS/6n663dJqwLuRaCOX+Aopuj3q
+         Ea8oY6iKzXGYO6PRlljVrAu5oIDd4a4mfrdMBi+GRHigr+R3wQu4cczmP8BDGjud2/b4
+         +HSvmMLWMn1BAKLVYO7cUCzQJsxjq4KyA3MAEnUbiNe/24R1UCqV2oKLRecmn35AV8DA
+         hlMQ==
+X-Gm-Message-State: APjAAAXNbAKTKARO/nJ+su6aptmPfZmi4tcD/BKZo+MoMCHBoDAyY1FV
+        3nKHXjJeCNz9AE1N/fwXCk3OhQ==
+X-Google-Smtp-Source: APXvYqyanSllvP+L4q7Yp4S2QCZWO8l25caUDQzKE7LWtFwOxuNGkd5k/wLMnr72X/k+Tk3RffI2HA==
+X-Received: by 2002:a2e:1459:: with SMTP id 25mr8862117lju.153.1562621676013;
+        Mon, 08 Jul 2019 14:34:36 -0700 (PDT)
+Received: from localhost.localdomain (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
+        by smtp.gmail.com with ESMTPSA id o24sm3883096ljg.6.2019.07.08.14.34.34
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 08 Jul 2019 14:34:35 -0700 (PDT)
+From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+To:     grygorii.strashko@ti.com, hawk@kernel.org, davem@davemloft.net
+Cc:     ast@kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        ilias.apalodimas@linaro.org, netdev@vger.kernel.org,
+        daniel@iogearbox.net, jakub.kicinski@netronome.com,
+        john.fastabend@gmail.com,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Subject: [PATCH v9 net-next 0/5] net: ethernet: ti: cpsw: Add XDP support
+Date:   Tue,  9 Jul 2019 00:34:27 +0300
+Message-Id: <20190708213432.8525-1-ivan.khoronzhuk@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+This patchset adds XDP support for TI cpsw driver and base it on
+page_pool allocator. It was verified on af_xdp socket drop,
+af_xdp l2f, ebpf XDP_DROP, XDP_REDIRECT, XDP_PASS, XDP_TX.
+
+It was verified with following configs enabled:
+CONFIG_JIT=y
+CONFIG_BPFILTER=y
+CONFIG_BPF_SYSCALL=y
+CONFIG_XDP_SOCKETS=y
+CONFIG_BPF_EVENTS=y
+CONFIG_HAVE_EBPF_JIT=y
+CONFIG_BPF_JIT=y
+CONFIG_CGROUP_BPF=y
+
+Link on previous v7:
+https://lkml.org/lkml/2019/7/4/715
+
+Also regular tests with iperf2 were done in order to verify impact on
+regular netstack performance, compared with base commit:
+https://pastebin.com/JSMT0iZ4
+
+v8..v9:
+- fix warnings on arm64 caused by typos in type casting
+
+v7..v8:
+- corrected dma calculation based on headroom instead of hard start
+- minor comment changes
+
+v6..v7:
+- rolled back to v4 solution but with small modification
+- picked up patch:
+  https://www.spinics.net/lists/netdev/msg583145.html
+- added changes related to netsec fix and cpsw
+
+
+v5..v6:
+- do changes that is rx_dev while redirect/flush cycle is kept the same
+- dropped net: ethernet: ti: davinci_cpdma: return handler status
+- other changes desc in patches
+
+v4..v5:
+- added two plreliminary patches:
+  net: ethernet: ti: davinci_cpdma: allow desc split while down
+  net: ethernet: ti: cpsw_ethtool: allow res split while down
+- added xdp alocator refcnt on xdp level, avoiding page pool refcnt
+- moved flush status as separate argument for cpdma_chan_process
+- reworked cpsw code according to last changes to allocator
+- added missed statistic counter
+
+v3..v4:
+- added page pool user counter
+- use same pool for ndevs in dual mac
+- restructured page pool create/destroy according to the last changes in API
+
+v2..v3:
+- each rxq and ndev has its own page pool
+
+v1..v2:
+- combined xdp_xmit functions
+- used page allocation w/o refcnt juggle
+- unmapped page for skb netstack
+- moved rxq/page pool allocation to open/close pair
+- added several preliminary patches:
+  net: page_pool: add helper function to retrieve dma addresses
+  net: page_pool: add helper function to unmap dma addresses
+  net: ethernet: ti: cpsw: use cpsw as drv data
+  net: ethernet: ti: cpsw_ethtool: simplify slave loops
+
+Ivan Khoronzhuk (5):
+  net: core: page_pool: add user refcnt and reintroduce
+    page_pool_destroy
+  net: ethernet: ti: davinci_cpdma: add dma mapped submit
+  net: ethernet: ti: davinci_cpdma: allow desc split while down
+  net: ethernet: ti: cpsw_ethtool: allow res split while down
+  net: ethernet: ti: cpsw: add XDP support
+
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |   4 +-
+ drivers/net/ethernet/socionext/netsec.c       |   8 +-
+ drivers/net/ethernet/ti/Kconfig               |   1 +
+ drivers/net/ethernet/ti/cpsw.c                | 502 ++++++++++++++++--
+ drivers/net/ethernet/ti/cpsw_ethtool.c        |  57 +-
+ drivers/net/ethernet/ti/cpsw_priv.h           |   7 +
+ drivers/net/ethernet/ti/davinci_cpdma.c       | 106 +++-
+ drivers/net/ethernet/ti/davinci_cpdma.h       |   7 +-
+ include/net/page_pool.h                       |  25 +
+ net/core/page_pool.c                          |   8 +
+ net/core/xdp.c                                |   3 +
+ 11 files changed, 640 insertions(+), 88 deletions(-)
+
 -- 
-From Mrs. Rabia Muahammed
+2.17.1
 
-Dear Good Friend
-
-My Name Is Mrs. Rabia Muahammed , I am a banker in (GARANTI BANK
-ISTANBUL TURKEY (G B I T)
-I want to transfer an abandoned sum of 25.5 millions USD to your
-account. 50% will be for you. No risk involved. Contact me for more
-details. Kindly reply me back.
-
-
-Fill this information
-
-
-Full name:
-Direct cell number:
-Country:
-City:
-Age :
-Gender:
-Occupation:
-
-
-Please respond urgently
-
-
-Regards,
-Mrs.Rabia Muahammed
