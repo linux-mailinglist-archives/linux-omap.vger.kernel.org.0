@@ -2,70 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 156B962DCE
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2019 04:01:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEA00634DD
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2019 13:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727167AbfGIB62 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Jul 2019 21:58:28 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:34819 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727165AbfGIB62 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Jul 2019 21:58:28 -0400
-Received: by mail-io1-f66.google.com with SMTP id m24so30269451ioo.2;
-        Mon, 08 Jul 2019 18:58:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=GkkAho5u9ZRo8sAo/m6sBY3/HBCvrNggwRmK+JAndDo=;
-        b=X/fPYeauxCDD8+Xc26ahyju/GqDs7p9si3t6UY59f7xXPRbX5HI7qbnLASVIxeDaxB
-         /Z+fRC+gZMNFg/BuaNW4UgoLmT+xoySMZ1RYM5JsScE9nuKXkt0K9SnOG9IbtU9nomRW
-         iRLOPcLjiP/QKiq1rJr3bjlg0cD+AvLKC6gBT2nwfFhn3HN2wnX9T9nvNglhfdtxekLi
-         /twKdUHQP2iqP0iLrCsm1z6GgaD6bmWFKTUEBJBHWOLKrFsdcHx9NE8mnXkgQFff3QAb
-         Tq0k1K2+DVEADGeGnnrzewm08WcODz1W/nlkG6jKOl66YU5HQkW4DYcam9JGuCCnSGtO
-         qDIA==
-X-Gm-Message-State: APjAAAVa/NhnFUj0oamwqwk4gE6TRgCe7lB7OkMc3vX1z2DeDHdpxPbJ
-        NKLxB8s1q7Y1Rlumq0V3Fg==
-X-Google-Smtp-Source: APXvYqzFMBYbPmXb2HfLpyr5pupdnhjP1NM+px7xYIHdBAoiAWfhkkQfdUbKjMiGk7ldZbL+nLrPZA==
-X-Received: by 2002:a02:ab99:: with SMTP id t25mr24471171jan.113.1562637507345;
-        Mon, 08 Jul 2019 18:58:27 -0700 (PDT)
-Received: from localhost ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id i23sm14676192ioj.24.2019.07.08.18.58.26
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 08 Jul 2019 18:58:26 -0700 (PDT)
-Date:   Mon, 8 Jul 2019 19:58:25 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, tomi.valkeinen@ti.com,
-        imirkin@alum.mit.edu, marek.belisko@gmail.com,
-        Mark Rutland <mark.rutland@arm.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, letux-kernel@openphoenux.org,
-        devicetree@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [PATCH v3 5/5] dt-bindings: drm/panel: simple: add
- sharp,lq070y3dg3b panel
-Message-ID: <20190709015825.GA4312@bogus>
-References: <cover.1559905870.git.hns@goldelico.com>
- <ee90ed56d2c294ce8ac3b44bf2229c5ab9f85e91.1559905870.git.hns@goldelico.com>
+        id S1726165AbfGILYA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Jul 2019 07:24:00 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:44742 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726140AbfGILYA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Jul 2019 07:24:00 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x69BNlHP023028;
+        Tue, 9 Jul 2019 06:23:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1562671427;
+        bh=b8hnSaDtAsosEIqS3Wtlk/YzhxSQT2YsI/k+98clIo4=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=pAXArl2RZan427WEUzWy9FensFk4A0hpvp9/x8sbuF1yxrtUBLgCbUTKad7XwGZNf
+         TqwzAlaNy9ga3jmP4K7U+LemryiE61ZvgIefs6CvPvKfpcTiyUWrWF5VHcwQWL7Spb
+         pwr0Ui2qd4Km4UgVISbtWeSe1wE3RDPm8ER/MX0Y=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x69BNlV0097963
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 9 Jul 2019 06:23:47 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 9 Jul
+ 2019 06:23:47 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Tue, 9 Jul 2019 06:23:47 -0500
+Received: from [172.24.190.233] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x69BNeuB048589;
+        Tue, 9 Jul 2019 06:23:41 -0500
+Subject: Re: [PATCH] PCI: dwc: pci-dra7xx: Add missing include file
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        YueHaibing <yuehaibing@huawei.com>
+CC:     <bhelgaas@google.com>, <linux-kernel@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-omap@vger.kernel.org>
+References: <20190614154044.4972-1-yuehaibing@huawei.com>
+ <20190705152905.GA6284@e121166-lin.cambridge.arm.com>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <619055c4-7d18-a77e-f7c6-267e4340bc4e@ti.com>
+Date:   Tue, 9 Jul 2019 16:52:01 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ee90ed56d2c294ce8ac3b44bf2229c5ab9f85e91.1559905870.git.hns@goldelico.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190705152905.GA6284@e121166-lin.cambridge.arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri,  7 Jun 2019 13:11:11 +0200, "H. Nikolaus Schaller" wrote:
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
->  .../bindings/display/panel/sharp,lq070y3dg3b.txt     | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/panel/sharp,lq070y3dg3b.txt
-> 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+
+On 05/07/19 8:59 PM, Lorenzo Pieralisi wrote:
+> On Fri, Jun 14, 2019 at 11:40:44PM +0800, YueHaibing wrote:
+>> Fix build error:
+>>
+>> drivers/pci/controller/dwc/pci-dra7xx.c:
+>>  In function dra7xx_pcie_probe:
+>> drivers/pci/controller/dwc/pci-dra7xx.c:777:10:
+>>  error: implicit declaration of function devm_gpiod_get_optional;
+>>  did you mean devm_regulator_get_optional? [-Werror=implicit-function-declaration]
+>>
+>>   reset = devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH);
+> 
+> Adding the reason (in particular the config options) that triggers
+> this error would not hurt.
+> 
+> Kishon please let me know if I can merge it (ACK it if so).
+
+Acked-by: Kishon Vijay Abraham I <kishon@ti.com>
+> 
+> Thanks,
+> Lorenzo
+> 
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>> ---
+>>  drivers/pci/controller/dwc/pci-dra7xx.c | 1 +
+>>  1 file changed, 1 insertion(+)
+> 
+> 
+>>
+>> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+>> index 419451e..4234ddb 100644
+>> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+>> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+>> @@ -26,6 +26,7 @@
+>>  #include <linux/types.h>
+>>  #include <linux/mfd/syscon.h>
+>>  #include <linux/regmap.h>
+>> +#include <linux/gpio/consumer.h>
+>>  
+>>  #include "../../pci.h"
+>>  #include "pcie-designware.h"
+>> -- 
+>> 2.7.4
+>>
+>>
