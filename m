@@ -2,34 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42BDC63C46
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2019 21:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27C4A63BF2
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Jul 2019 21:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727436AbfGIT5R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Jul 2019 15:57:17 -0400
-Received: from [139.59.80.196] ([139.59.80.196]:46596 "EHLO
-        centos-s-2vcpu-2gb-blr1-01.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727030AbfGIT5R (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Jul 2019 15:57:17 -0400
-X-Greylist: delayed 3074 seconds by postgrey-1.27 at vger.kernel.org; Tue, 09 Jul 2019 15:57:16 EDT
-Received: from localhost (centos-s-2vcpu-2gb-blr1-01 [IPv6:::1])
-        by centos-s-2vcpu-2gb-blr1-01.localdomain (Postfix) with SMTP id C8DD97C0EA3
-        for <linux-omap@vger.kernel.org>; Tue,  9 Jul 2019 18:40:43 +0000 (UTC)
-From:   linux-omap@vger.kernel.org
-Reply-To: prodawez@armyspy.com
-To:     JN2LHCdLIFSrllinux-omap@vger.kernel.org
-Subject: =?utf-8?B?0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1ISDQktCw0YEg?=
-        =?utf-8?B?0LjQvdGC0LXRgNC10YHRg9GO0YIg0LrQu9C40LXQvdGC?=
-        =?utf-8?B?0YHQutC40LUg0LHQsNC30Ysg0LTQsNC90L3Ri9GFPw==?=
+        id S1727017AbfGITcd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Jul 2019 15:32:33 -0400
+Received: from mga04.intel.com ([192.55.52.120]:41957 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727248AbfGITc3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 9 Jul 2019 15:32:29 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Jul 2019 12:32:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,471,1557212400"; 
+   d="scan'208";a="317124773"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 09 Jul 2019 12:32:27 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1hkvqk-0003hv-Dy; Wed, 10 Jul 2019 03:32:26 +0800
+Date:   Wed, 10 Jul 2019 03:32:24 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Cc:     kbuild-all@01.org, Grygorii Strashko <grygorii.strashko@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [linux-next:master 13028/13492]
+ drivers/net/ethernet/ti/davinci_cpdma.c:725:5: sparse: sparse: symbol
+ 'cpdma_chan_split_pool' was not declared. Should it be static?
+Message-ID: <201907100329.bQl3UgMB%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8";
-Content-Transfer-Encoding: base64
-Message-Id: <20190709184043.C8DD97C0EA3@centos-s-2vcpu-2gb-blr1-01.localdomain>
-Date:   Tue,  9 Jul 2019 18:40:43 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Patchwork-Hint: ignore
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1ISDQktCw0YEg0LjQvdGC0LXRgNC10YHRg9GO0YIg0LrQ
-u9C40LXQvdGC0YHQutC40LUg0LHQsNC30Ysg0LTQsNC90L3Ri9GFPw0K
+tree:   https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   4608a726c66807c27bc7d91bdf8a288254e29985
+commit: 962fb618909ef64e0c89af5b79ba0fed910b78e3 [13028/13492] net: ethernet: ti: davinci_cpdma: allow desc split while down
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-rc1-7-g2b96cd8-dirty
+        git checkout 962fb618909ef64e0c89af5b79ba0fed910b78e3
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
+
+
+sparse warnings: (new ones prefixed by >>)
+
+>> drivers/net/ethernet/ti/davinci_cpdma.c:725:5: sparse: sparse: symbol 'cpdma_chan_split_pool' was not declared. Should it be static?
+
+Please review and possibly fold the followup patch.
+
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
