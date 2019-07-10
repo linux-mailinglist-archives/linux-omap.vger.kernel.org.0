@@ -2,100 +2,175 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C0E6484E
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Jul 2019 16:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20DD564B88
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Jul 2019 19:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727693AbfGJO0o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 10 Jul 2019 10:26:44 -0400
-Received: from mail-lf1-f42.google.com ([209.85.167.42]:39920 "EHLO
-        mail-lf1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727231AbfGJO0n (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 10 Jul 2019 10:26:43 -0400
-Received: by mail-lf1-f42.google.com with SMTP id v85so1738774lfa.6
-        for <linux-omap@vger.kernel.org>; Wed, 10 Jul 2019 07:26:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=nv9p/G+s9XtbbbTHB54r/CSbDNWoOb77fcrWutVfYq8=;
-        b=eBMeHMKybkIEBqDr6w99KrnEXGyDkPz9sItt1EtsmxnQD7Gnwk4wtQy03KZnCF+86K
-         q9+1vvKZxI6oR64bYdA05nmnBZ9riEKWeLM6dPEP0dzyNPXobbRLxHqxAq18KGQBFY7q
-         HpQs4KXs5sVRXuRO0XnOmYQK8bqn8MR27ymwxrBKRpTxTUlPjcqnpeiMhlc/d+75lYKH
-         7ibShzSop6ZSjxPWxWZH3zkjsH/pr5kFYze0THExtPDeoEnl++fzgOQHMeGIaYwTSPGg
-         NRaF2ROCpDiEqJZtIbCH7PQend6jhJOY5fgAS+XFw52G4OB6MACNOv376QT/lD9zDojV
-         aSZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to:user-agent;
-        bh=nv9p/G+s9XtbbbTHB54r/CSbDNWoOb77fcrWutVfYq8=;
-        b=isnoG3AVwv+fPCPZK9djjNKVVQ8MfJ+rGV8L3EfTU/EAoeM5UTilq5yEN/En9C13H+
-         s7eAdxnaul2daIpxBvQJnP4V/aiQLq2FZajRp2bNzLxTYrLBGLr0FAE5TMYnGghuHeop
-         fCrMsUD5OeoXsnZ9EXAKh7JPUfKa2TWUBcwPIUPNqBHGyDR797j2veUMta4mf6uwQS40
-         vIARHU2/rC7380djKaIznjpGCiFkN12Ri90mKvJscb5QBIaEcsxx0UrKFcohfOpLP2Sc
-         QghJmcPY1LyLZZr1k9s7xU4kEfp6/8/SMMuFIWJ1x9i2VOCpKhwviS80z6Wxc9EMOJkn
-         vf9w==
-X-Gm-Message-State: APjAAAVYaiCxRWWcILVMJ4NuTNr+lrknz6Hmz/SeR1xccPksgIItQ1Qs
-        JTci0tCPKeoBWnY95OC18tKneg==
-X-Google-Smtp-Source: APXvYqwm5UNfCj55WhIv27Loj6GM6O6ploYa29fsoHfI11MRiIhU8qT1ozyqldFfaWQMFLXIXxwmyg==
-X-Received: by 2002:a19:4f42:: with SMTP id a2mr14942041lfk.23.1562768801531;
-        Wed, 10 Jul 2019 07:26:41 -0700 (PDT)
-Received: from khorivan (59-201-94-178.pool.ukrtel.net. [178.94.201.59])
-        by smtp.gmail.com with ESMTPSA id n24sm501910ljc.25.2019.07.10.07.26.40
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 10 Jul 2019 07:26:41 -0700 (PDT)
-Date:   Wed, 10 Jul 2019 17:26:39 +0300
-From:   Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+        id S1727184AbfGJRhz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 10 Jul 2019 13:37:55 -0400
+Received: from vern.gendns.com ([98.142.107.122]:45282 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727179AbfGJRhz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 10 Jul 2019 13:37:55 -0400
+X-Greylist: delayed 1765 seconds by postgrey-1.27 at vger.kernel.org; Wed, 10 Jul 2019 13:37:54 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=742DpKy/3b3aX3/oMvUvDOUEYqGujp/g6haYNubKl7I=; b=ms1OuSEyHhgFjbxrDtK9phgJcv
+        MMKv20yCMtriXEpwZh5Jo3kSYocR0t73tmXpfSCpsXSfF93JsxV0C9YVM3HNIn3ncOlsAO+zQeoQ1
+        +ZGZmWCo6FoM04K96zl6PRHpGqSqYRn8uBp4zrCPDf070s6ReMIJHA+xaN14TJOvkYLhm8Cs4epEs
+        xYoABusaadCrtfLyoYz6IaDmvSZV2Mxeu7I/VcLNGa4s17ldWHuewV4jArpRO+6Co7QHYLZakOgUY
+        NYDe921QmXQtYGVil0xhQBtN+kUjgrHtch2Zp9ABr+EuAhH/rs/KbrpJ1riuDFjXUs2dyxy9H9vMC
+        eKpir75Q==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:45726 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1hlG4x-0010KP-A6; Wed, 10 Jul 2019 13:08:27 -0400
+Subject: Re: [PATCH 1/6] dt-bindings: irqchip: Add PRUSS interrupt controller
+ bindings
+To:     Suman Anna <s-anna@ti.com>, "Andrew F. Davis" <afd@ti.com>,
+        Marc Zyngier <marc.zyngier@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+Cc:     Tony Lindgren <tony@atomide.com>, Roger Quadros <rogerq@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] [net-next] davinci_cpdma: don't cast dma_addr_t to
- pointer
-Message-ID: <20190710142637.GA5375@khorivan>
-Mail-Followup-To: Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190710080106.24237-1-arnd@arndb.de>
+        Sekhar Nori <nsekhar@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20190708035243.12170-1-s-anna@ti.com>
+ <20190708035243.12170-2-s-anna@ti.com>
+ <b67e8ce6-a291-ce4c-9972-b7fc7cd08bb4@ti.com>
+ <53868885-a78d-448a-1f2a-03a16251d028@ti.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <c3f0061f-22b0-c281-b8ff-4a2cb7e91aba@lechnology.com>
+Date:   Wed, 10 Jul 2019 12:08:24 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20190710080106.24237-1-arnd@arndb.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <53868885-a78d-448a-1f2a-03a16251d028@ti.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jul 10, 2019 at 10:00:33AM +0200, Arnd Bergmann wrote:
->dma_addr_t may be 64-bit wide on 32-bit architectures, so it is not
->valid to cast between it and a pointer:
->
->drivers/net/ethernet/ti/davinci_cpdma.c: In function 'cpdma_chan_submit_si':
->drivers/net/ethernet/ti/davinci_cpdma.c:1047:12: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
->drivers/net/ethernet/ti/davinci_cpdma.c: In function 'cpdma_chan_idle_submit_mapped':
->drivers/net/ethernet/ti/davinci_cpdma.c:1114:12: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
->drivers/net/ethernet/ti/davinci_cpdma.c: In function 'cpdma_chan_submit_mapped':
->drivers/net/ethernet/ti/davinci_cpdma.c:1164:12: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
->
->Solve this by using two separate members in 'struct submit_info'.
->Since this avoids the use of the 'flag' member, the structure does
->not even grow in typical configurations.
->
->Fixes: 6670acacd59e ("net: ethernet: ti: davinci_cpdma: add dma mapped submit")
->Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Despite "flags" could be used for smth else (who knows), looks ok.
-Reviewed-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+>>> +- interrupts           : all the interrupts generated towards the main host
+>>> +                         processor in the SoC. The format depends on the
+>>> +                         interrupt specifier for the particular SoC's ARM GIC
+>>> +                         parent interrupt controller. A shared interrupt can
+>>> +                         be skipped if the desired destination and usage is by
+>>> +                         a different processor/device.
+>>> +- interrupt-names      : should use one of the following names for each valid
+>>> +                         interrupt connected to ARM GIC, the name should match
+>>> +                         the corresponding host interrupt number,
+>>> +                             "host0", "host1", "host2", "host3", "host4",
+>>> +                             "host5", "host6" or "host7"
+>>> +- interrupt-controller : mark this node as an interrupt controller
+>>> +- #interrupt-cells     : should be 1. Client users shall use the PRU System
+>>> +                         event number (the interrupt source that the client
+>>> +                         is interested in) as the value of the interrupts
+>>> +                         property in their node
+>>> +
+>>> +Optional Properties:
+>>> +--------------------
+>>> +The following properties are _required_ only for some SoCs. If none of the below
+>>> +properties are defined, it implies that all the host interrupts 2 through 9 are
+>>> +connected exclusively to the ARM GIC.
+>>> +
+>>> +- ti,irqs-reserved     : an array of 8-bit elements of host interrupts between
+>>> +                         0 and 7 (corresponding to PRUSS INTC output interrupts
+>>> +                         2 through 9) that are not connected to the ARM GIC.
+>>
+>> The reason for 0-7 mapping to 2-9 is not instantly clear to someone
+>> reading this. If you respin this could you note that reason is
+>> interrupts 0 and 1 are always routed back into the PRUSS.
+> 
+> Yeah, this is always going to be somewhat confusing since the driver has
+> to deal with all hosts from channel-mapping perspective, but only the 8
+> interrupts at most that reach MPU for handling interrupts. TRM has
+> 
+> Anyway, I have already mentioned the first 2 interrupt routing in the
+> first paragraph above.
+> 
+> Thinking more
+>> on that, the same is true for interrupt 7 ("host5") on AM437x/66AK2G yet
+>> we don't skip that in the naming.. now that we have the reserved IRQ
+>> mechanism above, why not leave the one-to-one interrupt to name mapping,
+>> but always have at least the first two marked as reserved for all the
+>> current devices:
+>>
+>> ti,irqs-reserved = /bits/ 8 <0 1>;
+>>
+>> Then any "hostx" listed as reserved need not be present in the host
+>> interrupts property array. To me that would solve the "managing
+>> interrupts not targeting the Linux running core" problem and keep the
+>> names consistent, e.g.:
+> 
+> I had actually used the interrupt-names always starting from "host2"
+> through "host9" (names from PRU perspective) previously, and I have
+> changed this to start indexing from 0 in this series to address an
+> internal review comment from Grygorii and to align with TRM. All the
+> TRMs (except for AM572x) actually use the names/signals "host_intr0",
+> "host_intr1".."host_intr7" etc for the interrupts going towards MPU.
+> Maybe I should actually rename the interrupt-names to be host_intrX
+> instead of hostX to avoid confusion and be exactly aligned with the TRM
+> names. I will file a bug against AM57xx TRM to align the names with all
+> other SoC TRMs.
+> 
+> I am using "output interrupt lines" to imply names w.r.t PRU vs "host
+> interrupt" to imply ARM GIC names.
+> 
+> regards
+> Suman
+> 
 
--- 
-Regards,
-Ivan Khoronzhuk
+FWIW, the AM1808 TRM only uses PRU_EVTOUT0 to PRU_EVTOUT7 and does not
+mention "host" in relation to these interrupts. The AM3xxx and AM4xxx
+also use similar names (PRU_ICSS_EVTOUT0, PRU_ICSS1_EVTOUT0) although
+they do mention that the source is "pr1_host[0] output/events exported
+from PRU_ICSS1". (Also, the older processors have AINTC instead of GIC).
+
+Maybe to help clarify here we could mention "event" in the docs:
+
+
++- interrupt-names      : should use one of the following names for each valid
++                         host event interrupt connected to ARM interrupt
++                         controller,the name should match the corresponding
++                         host event interrupt number,
++                             "host0", "host1", "host2", "host3", "host4",
++                             "host5", "host6" or "host7"
+
+
+
+...
+
+>>> +
+>>> +Example:
+>>> +--------
+>>> +
+>>> +1.	/* AM33xx PRU-ICSS */
+>>> +	pruss: pruss@0 {
+
+I don't suppose there is a generic name that could be used here
+instead of pruss? It seems like there should be one for remote
+processors that aren't DSPs or other specialized processors.
+
