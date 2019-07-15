@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E786169332
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Jul 2019 16:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 653A2693D6
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Jul 2019 16:47:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392188AbfGOOis (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 Jul 2019 10:38:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37438 "EHLO mail.kernel.org"
+        id S2392083AbfGOOrQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Jul 2019 10:47:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41394 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392182AbfGOOis (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 15 Jul 2019 10:38:48 -0400
+        id S2392069AbfGOOrP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 15 Jul 2019 10:47:15 -0400
 Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 31ECE20651;
-        Mon, 15 Jul 2019 14:38:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AE4C920896;
+        Mon, 15 Jul 2019 14:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563201527;
-        bh=8LJGaQcquEdVsFoeWyXpkqumTYbSPSrrFcy3rBx4mx8=;
+        s=default; t=1563202034;
+        bh=pJWg48+kNqHl1VlRuE9K6jWYUqdNwt4hfqqK4cAvq7o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FfclDnrT7H+YsmFsABJBWVTAW73vgNEqC+BQFsmwl0e/kvgihDJBTIFd01Ogttynj
-         TgzPZDDybF9++dcCtC19iEAlOWCu70A9xI6M5Eh0rSSD9CWe4cJwiX9hryNjnzFMxw
-         yRXFn/1OttDrzChsFtrZebm5sWufPk+xqitxPKzw=
+        b=E66tcj0sffMEk5UyfnnwkbmTIEewN+oeOOkd3RJSCYlM/l/m81/iTYE7gHYorTXEJ
+         ES/Kp5zEXmQY7sJmv+z9rw3IYkM5EIJvB+YRhSP68YTfdsNnAeMUc4+BSQuLZ/89pH
+         r0kSaIBuFd98QhbPR0T9rnq6vXHTRs6PBmJ8ymOM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
@@ -31,12 +31,12 @@ Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
         Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 34/73] gpio: omap: ensure irq is enabled before wakeup
-Date:   Mon, 15 Jul 2019 10:35:50 -0400
-Message-Id: <20190715143629.10893-34-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 27/53] gpio: omap: ensure irq is enabled before wakeup
+Date:   Mon, 15 Jul 2019 10:45:09 -0400
+Message-Id: <20190715144535.11636-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190715143629.10893-1-sashal@kernel.org>
-References: <20190715143629.10893-1-sashal@kernel.org>
+In-Reply-To: <20190715144535.11636-1-sashal@kernel.org>
+References: <20190715144535.11636-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -75,10 +75,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-index bd12b433f964..fc841ce24db7 100644
+index f23136825a6e..6e65c02baad1 100644
 --- a/drivers/gpio/gpio-omap.c
 +++ b/drivers/gpio/gpio-omap.c
-@@ -786,9 +786,9 @@ static void omap_gpio_irq_shutdown(struct irq_data *d)
+@@ -821,9 +821,9 @@ static void omap_gpio_irq_shutdown(struct irq_data *d)
  
  	raw_spin_lock_irqsave(&bank->lock, flags);
  	bank->irq_usage &= ~(BIT(offset));
@@ -90,7 +90,7 @@ index bd12b433f964..fc841ce24db7 100644
  	if (!LINE_USED(bank->mod_usage, offset))
  		omap_clear_gpio_debounce(bank, offset);
  	omap_disable_gpio_module(bank, offset);
-@@ -830,8 +830,8 @@ static void omap_gpio_mask_irq(struct irq_data *d)
+@@ -865,8 +865,8 @@ static void omap_gpio_mask_irq(struct irq_data *d)
  	unsigned long flags;
  
  	raw_spin_lock_irqsave(&bank->lock, flags);
@@ -100,7 +100,7 @@ index bd12b433f964..fc841ce24db7 100644
  	raw_spin_unlock_irqrestore(&bank->lock, flags);
  }
  
-@@ -843,9 +843,6 @@ static void omap_gpio_unmask_irq(struct irq_data *d)
+@@ -878,9 +878,6 @@ static void omap_gpio_unmask_irq(struct irq_data *d)
  	unsigned long flags;
  
  	raw_spin_lock_irqsave(&bank->lock, flags);
@@ -110,7 +110,7 @@ index bd12b433f964..fc841ce24db7 100644
  	omap_set_gpio_irqenable(bank, offset, 1);
  
  	/*
-@@ -853,9 +850,13 @@ static void omap_gpio_unmask_irq(struct irq_data *d)
+@@ -888,9 +885,13 @@ static void omap_gpio_unmask_irq(struct irq_data *d)
  	 * is cleared, thus after the handler has run. OMAP4 needs this done
  	 * after enabing the interrupt to clear the wakeup status.
  	 */
