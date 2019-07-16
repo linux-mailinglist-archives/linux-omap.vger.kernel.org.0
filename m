@@ -2,49 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 902186AD67
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Jul 2019 19:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C9736AD96
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Jul 2019 19:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387770AbfGPRJX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Jul 2019 13:09:23 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:44156 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725926AbfGPRJX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Jul 2019 13:09:23 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6GH7wGu022595;
-        Tue, 16 Jul 2019 12:07:59 -0500
+        id S1728608AbfGPRWa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Jul 2019 13:22:30 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:56060 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728124AbfGPRW3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Jul 2019 13:22:29 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6GHLDUB121252;
+        Tue, 16 Jul 2019 12:21:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1563296879;
-        bh=VQ/fp5ABUyt0fOaHGKlhXyBUzQD3cI800FDzOaTcw8o=;
+        s=ti-com-17Q1; t=1563297673;
+        bh=pGJ1pH9t9oveC+3vYJABnQ3Dl3UWKH//72W69udD7FY=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=yd5g/CALb31GGT87CeoGnogbhZ/u8y5VHXCC2ySvjip0C0JxwGiCfWx5k3o6XuSsq
-         nJ/1uakbglW4rgoUvz+E3GC2qf+LEKFIrzkBmVEiv8RD2yhCwHGLcsJwFGowMwGhXz
-         EC4HfAzbmWLuC5Nwe0BqmE0yyr2DA0Dglgg8Cjqg=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6GH7w4v032498
+        b=Mrymdx2GYA40SecDfTaIbavUEsPGErwk1Zc2ttv1kBtfwP68dRGjycQ6wWFahEVK+
+         otTX3ti8R+FRahEWwbW2UjA1uRSKtwYidJYT4/ojUn1I2y9nbWVUhIAMj4c+/QgOvj
+         k8YT+lFCY7TzinV3N6N/r/K5dYd5i4tUpZ3aphPU=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6GHLD9E045222
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 16 Jul 2019 12:07:58 -0500
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 16 Jul 2019 12:21:13 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 16
- Jul 2019 12:07:58 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ Jul 2019 12:21:12 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 16 Jul 2019 12:07:58 -0500
+ Frontend Transport; Tue, 16 Jul 2019 12:21:12 -0500
 Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6GH7wZu122924;
-        Tue, 16 Jul 2019 12:07:58 -0500
-Subject: Re: [PATCH 1/6] dt-bindings: irqchip: Add PRUSS interrupt controller
- bindings
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6GHLCYw074615;
+        Tue, 16 Jul 2019 12:21:12 -0500
+Subject: Re: [PATCH 2/6] irqchip/irq-pruss-intc: Add a PRUSS irqchip driver
+ for PRUSS interrupts
 To:     David Lechner <david@lechnology.com>,
-        "Andrew F. Davis" <afd@ti.com>,
         Marc Zyngier <marc.zyngier@arm.com>,
         Rob Herring <robh+dt@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Jason Cooper <jason@lakedaemon.net>
-CC:     Tony Lindgren <tony@atomide.com>, Roger Quadros <rogerq@ti.com>,
+CC:     Tony Lindgren <tony@atomide.com>, "Andrew F. Davis" <afd@ti.com>,
+        Roger Quadros <rogerq@ti.com>,
         Lokesh Vutla <lokeshvutla@ti.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         Sekhar Nori <nsekhar@ti.com>,
@@ -53,17 +53,15 @@ CC:     Tony Lindgren <tony@atomide.com>, Roger Quadros <rogerq@ti.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>
 References: <20190708035243.12170-1-s-anna@ti.com>
- <20190708035243.12170-2-s-anna@ti.com>
- <b67e8ce6-a291-ce4c-9972-b7fc7cd08bb4@ti.com>
- <53868885-a78d-448a-1f2a-03a16251d028@ti.com>
- <c3f0061f-22b0-c281-b8ff-4a2cb7e91aba@lechnology.com>
+ <20190708035243.12170-3-s-anna@ti.com>
+ <3d91800b-e858-8c73-5ea8-e99e5ea30e8e@lechnology.com>
 From:   Suman Anna <s-anna@ti.com>
-Message-ID: <2eb76f94-3d01-2620-89a0-207a4084be1b@ti.com>
-Date:   Tue, 16 Jul 2019 12:07:58 -0500
+Message-ID: <54e871a8-dfa4-f65b-5869-d1661144cbf0@ti.com>
+Date:   Tue, 16 Jul 2019 12:21:12 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <c3f0061f-22b0-c281-b8ff-4a2cb7e91aba@lechnology.com>
+In-Reply-To: <3d91800b-e858-8c73-5ea8-e99e5ea30e8e@lechnology.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -75,149 +73,508 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi David,
 
-On 7/10/19 12:08 PM, David Lechner wrote:
-> 
->>>> +- interrupts           : all the interrupts generated towards the
->>>> main host
->>>> +                         processor in the SoC. The format depends
->>>> on the
->>>> +                         interrupt specifier for the particular
->>>> SoC's ARM GIC
->>>> +                         parent interrupt controller. A shared
->>>> interrupt can
->>>> +                         be skipped if the desired destination and
->>>> usage is by
->>>> +                         a different processor/device.
->>>> +- interrupt-names      : should use one of the following names for
->>>> each valid
->>>> +                         interrupt connected to ARM GIC, the name
->>>> should match
->>>> +                         the corresponding host interrupt number,
->>>> +                             "host0", "host1", "host2", "host3",
->>>> "host4",
->>>> +                             "host5", "host6" or "host7"
->>>> +- interrupt-controller : mark this node as an interrupt controller
->>>> +- #interrupt-cells     : should be 1. Client users shall use the
->>>> PRU System
->>>> +                         event number (the interrupt source that
->>>> the client
->>>> +                         is interested in) as the value of the
->>>> interrupts
->>>> +                         property in their node
->>>> +
->>>> +Optional Properties:
->>>> +--------------------
->>>> +The following properties are _required_ only for some SoCs. If none
->>>> of the below
->>>> +properties are defined, it implies that all the host interrupts 2
->>>> through 9 are
->>>> +connected exclusively to the ARM GIC.
->>>> +
->>>> +- ti,irqs-reserved     : an array of 8-bit elements of host
->>>> interrupts between
->>>> +                         0 and 7 (corresponding to PRUSS INTC
->>>> output interrupts
->>>> +                         2 through 9) that are not connected to the
->>>> ARM GIC.
->>>
->>> The reason for 0-7 mapping to 2-9 is not instantly clear to someone
->>> reading this. If you respin this could you note that reason is
->>> interrupts 0 and 1 are always routed back into the PRUSS.
+On 7/11/19 11:45 AM, David Lechner wrote:
+> On 7/7/19 10:52 PM, Suman Anna wrote:
+>> From: "Andrew F. Davis" <afd@ti.com>
 >>
->> Yeah, this is always going to be somewhat confusing since the driver has
->> to deal with all hosts from channel-mapping perspective, but only the 8
->> interrupts at most that reach MPU for handling interrupts. TRM has
+>> The Programmable Real-Time Unit Subsystem (PRUSS) contains a local
+>> interrupt controller (INTC) that can handle various system input events
+>> and post interrupts back to the device-level initiators. The INTC can
+>> support upto 64 input events with individual control configuration and
+>> hardware prioritization. These events are mapped onto 10 output interrupt
+>> lines through two levels of many-to-one mapping support. Different
+>> interrupt lines are routed to the individual PRU cores or to the host
+>> CPU, or to other devices on the SoC. Some of these events are sourced
+>> from peripherals or other sub-modules within that PRUSS, while a few
+>> others are sourced from SoC-level peripherals/devices.
 >>
->> Anyway, I have already mentioned the first 2 interrupt routing in the
->> first paragraph above.
+>> The PRUSS INTC platform driver manages this PRUSS interrupt controller
+>> and implements an irqchip driver to provide a Linux standard way for
+>> the PRU client users to enable/disable/ack/re-trigger a PRUSS system
+>> event. The system events to interrupt channels and host interrupts
+>> relies on the mapping configuration provided either through the PRU
+>> firmware blob or via the PRU application's device tree node. The
+>> mappings will be programmed during the boot/shutdown of a PRU core.
 >>
->> Thinking more
->>> on that, the same is true for interrupt 7 ("host5") on AM437x/66AK2G yet
->>> we don't skip that in the naming.. now that we have the reserved IRQ
->>> mechanism above, why not leave the one-to-one interrupt to name mapping,
->>> but always have at least the first two marked as reserved for all the
->>> current devices:
->>>
->>> ti,irqs-reserved = /bits/ 8 <0 1>;
->>>
->>> Then any "hostx" listed as reserved need not be present in the host
->>> interrupts property array. To me that would solve the "managing
->>> interrupts not targeting the Linux running core" problem and keep the
->>> names consistent, e.g.:
+>> The PRUSS INTC module is reference counted during the interrupt
+>> setup phase through the irqchip's irq_request_resources() and
+>> irq_release_resources() ops. This restricts the module from being
+>> removed as long as there are active interrupt users.
 >>
->> I had actually used the interrupt-names always starting from "host2"
->> through "host9" (names from PRU perspective) previously, and I have
->> changed this to start indexing from 0 in this series to address an
->> internal review comment from Grygorii and to align with TRM. All the
->> TRMs (except for AM572x) actually use the names/signals "host_intr0",
->> "host_intr1".."host_intr7" etc for the interrupts going towards MPU.
->> Maybe I should actually rename the interrupt-names to be host_intrX
->> instead of hostX to avoid confusion and be exactly aligned with the TRM
->> names. I will file a bug against AM57xx TRM to align the names with all
->> other SoC TRMs.
+>> The driver currently supports and can be built for OMAP architecture
+>> based AM335x, AM437x and AM57xx SoCs; Keystone2 architecture based
+>> 66AK2G SoCs and Davinci architecture based OMAP-L13x/AM18x/DA850 SoCs.
+>> All of these SoCs support 64 system events, 10 interrupt channels and
+>> 10 output interrupt lines per PRUSS INTC with a few SoC integration
+>> differences.
 >>
->> I am using "output interrupt lines" to imply names w.r.t PRU vs "host
->> interrupt" to imply ARM GIC names.
+>> NOTE:
+>> Each PRU-ICSS's INTC on AM57xx SoCs is preceded by a Crossbar that
+>> enables multiple external events to be routed to a specific number
+>> of input interrupt events. Any non-default external interrupt event
+>> directed towards PRUSS needs this crossbar to be setup properly.
+> 
+> The all of the explanations above are very helpful. Great work.
+> 
 >>
->> regards
->> Suman
+>> Signed-off-by: Andrew F. Davis <afd@ti.com>
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> Signed-off-by: Roger Quadros <rogerq@ti.com>
+>> ---
+>> Prior version: https://patchwork.kernel.org/patch/10795761/
 >>
+>>   drivers/irqchip/Kconfig          |  10 +
+>>   drivers/irqchip/Makefile         |   1 +
+>>   drivers/irqchip/irq-pruss-intc.c | 352 +++++++++++++++++++++++++++++++
+>>   3 files changed, 363 insertions(+)
+>>   create mode 100644 drivers/irqchip/irq-pruss-intc.c
+>>
+>> diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+>> index 659c5e0fb835..b0a9479d527c 100644
+>> --- a/drivers/irqchip/Kconfig
+>> +++ b/drivers/irqchip/Kconfig
+>> @@ -447,6 +447,16 @@ config TI_SCI_INTA_IRQCHIP
+>>         If you wish to use interrupt aggregator irq resources managed
+>> by the
+>>         TI System Controller, say Y here. Otherwise, say N.
+>>   +config TI_PRUSS_INTC
+>> +    tristate "TI PRU-ICSS Interrupt Controller"
+>> +    depends on ARCH_DAVINCI || SOC_AM33XX || SOC_AM437X || SOC_DRA7XX
+>> || ARCH_KEYSTONE
+>> +    select IRQ_DOMAIN
+>> +    help
+>> +       This enables support for the PRU-ICSS Local Interrupt Controller
+>> +       present within a PRU-ICSS subsystem present on various TI SoCs.
+>> +       The PRUSS INTC enables various interrupts to be routed to
+>> multiple
+>> +       different processors within the SoC.
+>> +
+>>   endmenu
+>>     config SIFIVE_PLIC
+>> diff --git a/drivers/irqchip/Makefile b/drivers/irqchip/Makefile
+>> index 606a003a0000..717f1d49e549 100644
+>> --- a/drivers/irqchip/Makefile
+>> +++ b/drivers/irqchip/Makefile
+>> @@ -100,3 +100,4 @@ obj-$(CONFIG_MADERA_IRQ)        += irq-madera.o
+>>   obj-$(CONFIG_LS1X_IRQ)            += irq-ls1x.o
+>>   obj-$(CONFIG_TI_SCI_INTR_IRQCHIP)    += irq-ti-sci-intr.o
+>>   obj-$(CONFIG_TI_SCI_INTA_IRQCHIP)    += irq-ti-sci-inta.o
+>> +obj-$(CONFIG_TI_PRUSS_INTC)        += irq-pruss-intc.o
+>> diff --git a/drivers/irqchip/irq-pruss-intc.c
+>> b/drivers/irqchip/irq-pruss-intc.c
+>> new file mode 100644
+>> index 000000000000..d62186ad1be4
+>> --- /dev/null
+>> +++ b/drivers/irqchip/irq-pruss-intc.c
+>> @@ -0,0 +1,352 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * PRU-ICSS INTC IRQChip driver for various TI SoCs
+>> + *
+>> + * Copyright (C) 2016-2019 Texas Instruments Incorporated -
+>> http://www.ti.com/
+>> + *    Andrew F. Davis <afd@ti.com>
+>> + *    Suman Anna <s-anna@ti.com>
+>> + */
+>> +
+>> +#include <linux/irq.h>
+>> +#include <linux/irqchip/chained_irq.h>
+>> +#include <linux/irqdomain.h>
+>> +#include <linux/module.h>
+>> +#include <linux/of_device.h>
+>> +#include <linux/platform_device.h>
+>> +
+>> +/*
+>> + * Number of host interrupts reaching the main MPU sub-system. Note
+>> that this
+>> + * is not the same as the total number of host interrupts supported
+>> by the PRUSS
+>> + * INTC instance
+>> + */
+>> +#define MAX_NUM_HOST_IRQS    8
+>> +
+>> +/* minimum starting host interrupt number for MPU */
+>> +#define MIN_PRU_HOST_INT    2
+>> +
+>> +/* maximum number of system events */
+>> +#define MAX_PRU_SYS_EVENTS    64
+>> +
+>> +/* PRU_ICSS_INTC registers */
+>> +#define PRU_INTC_REVID        0x0000
+>> +#define PRU_INTC_CR        0x0004
+>> +#define PRU_INTC_GER        0x0010
+>> +#define PRU_INTC_GNLR        0x001c
+>> +#define PRU_INTC_SISR        0x0020
+>> +#define PRU_INTC_SICR        0x0024
+>> +#define PRU_INTC_EISR        0x0028
+>> +#define PRU_INTC_EICR        0x002c
+>> +#define PRU_INTC_HIEISR        0x0034
+>> +#define PRU_INTC_HIDISR        0x0038
+>> +#define PRU_INTC_GPIR        0x0080
+>> +#define PRU_INTC_SRSR0        0x0200
+>> +#define PRU_INTC_SRSR1        0x0204
+>> +#define PRU_INTC_SECR0        0x0280
+>> +#define PRU_INTC_SECR1        0x0284
+>> +#define PRU_INTC_ESR0        0x0300
+>> +#define PRU_INTC_ESR1        0x0304
+>> +#define PRU_INTC_ECR0        0x0380
+>> +#define PRU_INTC_ECR1        0x0384
+>> +#define PRU_INTC_CMR(x)        (0x0400 + (x) * 4)
+>> +#define PRU_INTC_HMR(x)        (0x0800 + (x) * 4)
+>> +#define PRU_INTC_HIPIR(x)    (0x0900 + (x) * 4)
+>> +#define PRU_INTC_SIPR0        0x0d00
+>> +#define PRU_INTC_SIPR1        0x0d04
+>> +#define PRU_INTC_SITR0        0x0d80
+>> +#define PRU_INTC_SITR1        0x0d84
+>> +#define PRU_INTC_HINLR(x)    (0x1100 + (x) * 4)
+>> +#define PRU_INTC_HIER        0x1500
+>> +
+>> +/* HIPIR register bit-fields */
+>> +#define INTC_HIPIR_NONE_HINT    0x80000000
 > 
-> FWIW, the AM1808 TRM only uses PRU_EVTOUT0 to PRU_EVTOUT7 and does not
-> mention "host" in relation to these interrupts. The AM3xxx and AM4xxx
-> also use similar names (PRU_ICSS_EVTOUT0, PRU_ICSS1_EVTOUT0) although
-> they do mention that the source is "pr1_host[0] output/events exported
-> from PRU_ICSS1". (Also, the older processors have AINTC instead of GIC).
+> Unused macro. See below.
 
-Indeed, EVTOUT was only used in the Interrupts chapter on AM1808, AM335x
-and AM437x. These TRMs are only getting very infrequent updates, so I
-doubt we will have these names synchronized to the other SoCs.
-
-The descriptions in PRUSS INTC sections themselves always use the term
-host interrupts for all host events, but the output signals get
-re-indexed to 0, which tends to be confusing.
+Will use the macro in the code.
 
 > 
-> Maybe to help clarify here we could mention "event" in the docs:
-> 
-> 
-> +- interrupt-names      : should use one of the following names for each
-> valid
-> +                         host event interrupt connected to ARM interrupt
-> +                         controller,the name should match the
-> corresponding
-> +                         host event interrupt number,
+>> +
+>> +/**
+>> + * struct pruss_intc - PRUSS interrupt controller structure
+>> + * @irqs: kernel irq numbers corresponding to PRUSS host interrupts
+>> + * @base: base virtual address of INTC register space
+>> + * @irqchip: irq chip for this interrupt controller
+>> + * @domain: irq domain for this interrupt controller
+>> + * @lock: mutex to serialize access to INTC
+>> + * @host_mask: indicate which HOST IRQs are enabled
+>> + */
+>> +struct pruss_intc {
+>> +    unsigned int irqs[MAX_NUM_HOST_IRQS];
+>> +    void __iomem *base;
+>> +    struct irq_chip *irqchip;
+>> +    struct irq_domain *domain;
+>> +    struct mutex lock; /* PRUSS INTC lock */
+>> +    u32 host_mask;
 
-Yeah, I like your rewording. Will update for the next version.
+This is also unused in this patch, will move this to patch 4.
 
-> +                             "host0", "host1", "host2", "host3", "host4",
-> +                             "host5", "host6" or "host7"
+>> +};
+>> +
+>> +static inline u32 pruss_intc_read_reg(struct pruss_intc *intc,
+>> unsigned int reg)
+>> +{
+>> +    return readl_relaxed(intc->base + reg);
+>> +}
+>> +
+>> +static inline void pruss_intc_write_reg(struct pruss_intc *intc,
+>> +                    unsigned int reg, u32 val)
+>> +{
+>> +    writel_relaxed(val, intc->base + reg);
+>> +}
+>> +
+>> +static int pruss_intc_check_write(struct pruss_intc *intc, unsigned
+>> int reg,
+>> +                  unsigned int sysevent)
+>> +{
+>> +    if (!intc)
+>> +        return -EINVAL;
+>> +
+>> +    if (sysevent >= MAX_PRU_SYS_EVENTS)
+>> +        return -EINVAL;
+>> +
+>> +    pruss_intc_write_reg(intc, reg, sysevent);
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static void pruss_intc_init(struct pruss_intc *intc)
+>> +{
+>> +    int i;
+>> +
+>> +    /* configure polarity to active high for all system interrupts */
+>> +    pruss_intc_write_reg(intc, PRU_INTC_SIPR0, 0xffffffff);
+>> +    pruss_intc_write_reg(intc, PRU_INTC_SIPR1, 0xffffffff);
+>> +
+>> +    /* configure type to pulse interrupt for all system interrupts */
+>> +    pruss_intc_write_reg(intc, PRU_INTC_SITR0, 0);
+>> +    pruss_intc_write_reg(intc, PRU_INTC_SITR1, 0);
+>> +
+>> +    /* clear all 16 interrupt channel map registers */
+>> +    for (i = 0; i < 16; i++)
+>> +        pruss_intc_write_reg(intc, PRU_INTC_CMR(i), 0);
+>> +
+>> +    /* clear all 3 host interrupt map registers */
+>> +    for (i = 0; i < 3; i++)
+>> +        pruss_intc_write_reg(intc, PRU_INTC_HMR(i), 0);
+>> +}
+>> +
+>> +static void pruss_intc_irq_ack(struct irq_data *data)
+>> +{
+>> +    struct pruss_intc *intc = irq_data_get_irq_chip_data(data);
+>> +    unsigned int hwirq = data->hwirq;
+>> +
+>> +    pruss_intc_check_write(intc, PRU_INTC_SICR, hwirq);
+>> +}
+>> +
+>> +static void pruss_intc_irq_mask(struct irq_data *data)
+>> +{
+>> +    struct pruss_intc *intc = irq_data_get_irq_chip_data(data);
+>> +    unsigned int hwirq = data->hwirq;
+>> +
+>> +    pruss_intc_check_write(intc, PRU_INTC_EICR, hwirq);
+>> +}
+>> +
+>> +static void pruss_intc_irq_unmask(struct irq_data *data)
+>> +{
+>> +    struct pruss_intc *intc = irq_data_get_irq_chip_data(data);
+>> +    unsigned int hwirq = data->hwirq;
+>> +
+>> +    pruss_intc_check_write(intc, PRU_INTC_EISR, hwirq);
+>> +}
+>> +
+>> +static int pruss_intc_irq_retrigger(struct irq_data *data)
+>> +{
+>> +    struct pruss_intc *intc = irq_data_get_irq_chip_data(data);
+>> +    unsigned int hwirq = data->hwirq;
+>> +
+>> +    return pruss_intc_check_write(intc, PRU_INTC_SISR, hwirq);
+>> +}
+>> +
+>> +static int pruss_intc_irq_reqres(struct irq_data *data)
+>> +{
+>> +    if (!try_module_get(THIS_MODULE))
+>> +        return -ENODEV;
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static void pruss_intc_irq_relres(struct irq_data *data)
+>> +{
+>> +    module_put(THIS_MODULE);
+>> +}
+>> +
+>> +static int pruss_intc_irq_domain_map(struct irq_domain *d, unsigned
+>> int virq,
+>> +                     irq_hw_number_t hw)
+>> +{
+>> +    struct pruss_intc *intc = d->host_data;
+>> +
+>> +    irq_set_chip_data(virq, intc);
+>> +    irq_set_chip_and_handler(virq, intc->irqchip, handle_level_irq);
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static void pruss_intc_irq_domain_unmap(struct irq_domain *d,
+>> unsigned int virq)
+>> +{
+>> +    irq_set_chip_and_handler(virq, NULL, NULL);
+>> +    irq_set_chip_data(virq, NULL);
+>> +}
+>> +
+>> +static const struct irq_domain_ops pruss_intc_irq_domain_ops = {
+>> +    .xlate    = irq_domain_xlate_onecell,
+>> +    .map    = pruss_intc_irq_domain_map,
+>> +    .unmap    = pruss_intc_irq_domain_unmap,
+>> +};
+>> +
+>> +static void pruss_intc_irq_handler(struct irq_desc *desc)
+>> +{
+>> +    unsigned int irq = irq_desc_get_irq(desc);
+>> +    struct irq_chip *chip = irq_desc_get_chip(desc);
+>> +    struct pruss_intc *intc = irq_get_handler_data(irq);
+>> +    u32 hipir;
+>> +    unsigned int virq;
+>> +    int i, hwirq;
+>> +
+>> +    chained_irq_enter(chip, desc);
+>> +
+>> +    /* find our host irq number */
+>> +    for (i = 0; i < MAX_NUM_HOST_IRQS; i++)
+>> +        if (intc->irqs[i] == irq)
+>> +            break;
+>> +    if (i == MAX_NUM_HOST_IRQS)
+>> +        goto err;
+>> +
+>> +    i += MIN_PRU_HOST_INT;
+>> +
+>> +    /* get highest priority pending PRUSS system event */
+>> +    hipir = pruss_intc_read_reg(intc, PRU_INTC_HIPIR(i));
+>> +    while (!(hipir & BIT(31))) {
+> 
+> Is BIT(31) here supposed to be INTC_HIPIR_NONE_HINT?
 
-I will be updating these names as well to add either a int or intr suffix.
+Yes, will replace BIT(31) with the macro.
 
 > 
+>> +        hwirq = hipir & GENMASK(9, 0);
+>> +        virq = irq_linear_revmap(intc->domain, hwirq);
+>> +
+>> +        /*
+>> +         * NOTE: manually ACK any system events that do not have a
+>> +         * handler mapped yet
+>> +         */
+>> +        if (unlikely(!virq))
+>> +            pruss_intc_check_write(intc, PRU_INTC_SICR, hwirq);
+>> +        else
+>> +            generic_handle_irq(virq);
+>> +
+>> +        /* get next system event */
+>> +        hipir = pruss_intc_read_reg(intc, PRU_INTC_HIPIR(i));
+>> +    }
+>> +err:
+>> +    chained_irq_exit(chip, desc);
+>> +}
+>> +
+>> +static int pruss_intc_probe(struct platform_device *pdev)
+>> +{
+>> +    static const char * const irq_names[] = {
+>> +                "host0", "host1", "host2", "host3",
+>> +                "host4", "host5", "host6", "host7", };
+>> +    struct device *dev = &pdev->dev;
+>> +    struct pruss_intc *intc;
+>> +    struct resource *res;
+>> +    struct irq_chip *irqchip;
+>> +    int i, irq;
+>> +
+>> +    intc = devm_kzalloc(dev, sizeof(*intc), GFP_KERNEL);
+>> +    if (!intc)
+>> +        return -ENOMEM;
+>> +    platform_set_drvdata(pdev, intc);
+>> +
+>> +    res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> +    intc->base = devm_ioremap_resource(dev, res);
+>> +    if (IS_ERR(intc->base)) {
+>> +        dev_err(dev, "failed to parse and map intc memory resource\n");
+>> +        return PTR_ERR(intc->base);
+>> +    }
+>> +
+>> +    dev_dbg(dev, "intc memory: pa %pa size 0x%zx va %pK\n", &res->start,
+>> +        (size_t)resource_size(res), intc->base);
+>> +
+>> +    mutex_init(&intc->lock);
+>> +
+>> +    pruss_intc_init(intc);
+>> +
+>> +    irqchip = devm_kzalloc(dev, sizeof(*irqchip), GFP_KERNEL);
+>> +    if (!irqchip)
+>> +        return -ENOMEM;
+>> +
+>> +    irqchip->irq_ack = pruss_intc_irq_ack;
+>> +    irqchip->irq_mask = pruss_intc_irq_mask;
+>> +    irqchip->irq_unmask = pruss_intc_irq_unmask;
+>> +    irqchip->irq_retrigger = pruss_intc_irq_retrigger;
+>> +    irqchip->irq_request_resources = pruss_intc_irq_reqres;
+>> +    irqchip->irq_release_resources = pruss_intc_irq_relres;
+>> +    irqchip->name = dev_name(dev);
 > 
+> Should we also set `irqchip->parent_device = dev;` here?
 > 
-> ...
-> 
->>>> +
->>>> +Example:
->>>> +--------
->>>> +
->>>> +1.    /* AM33xx PRU-ICSS */
->>>> +    pruss: pruss@0 {
-> 
-> I don't suppose there is a generic name that could be used here
-> instead of pruss? It seems like there should be one for remote
-> processors that aren't DSPs or other specialized processors.
-> 
+> I tried it and had to add pm runtime stuff as well, otherwise
+> requesting irqs would fail.
 
-Yeah, there is none. It is the overall PRU subsystem, the individual
-cores are called PRU. The subsystems are usually referred to as PRUSS,
-PRU-ICSS and ICSSG (on the newer K3 SoCs), so I simply chose the shorter
-pruss.
+I haven't seen any during my local testing. What sort of failure are you
+seeing?
+
+The clocking for the overall PRUSS module will be handled in either the
+ti-sysc driver for OMAP SoCs or in the pruss platform driver.
+
+> 
+>> +    intc->irqchip = irqchip;
+>> +
+>> +    /* always 64 events */
+>> +    intc->domain = irq_domain_add_linear(dev->of_node,
+>> MAX_PRU_SYS_EVENTS,
+>> +                         &pruss_intc_irq_domain_ops, intc);
+>> +    if (!intc->domain)
+>> +        return -ENOMEM;
+>> +
+>> +    for (i = 0; i < MAX_NUM_HOST_IRQS; i++) {
+>> +        irq = platform_get_irq_byname(pdev, irq_names[i]);
+>> +        if (irq < 0) {
+>> +            dev_err(dev->parent, "platform_get_irq_byname failed for
+>> %s : %d\n",
+> 
+> Why dev->parent instead of just dev?
+
+Yeah, will fix this. It is a vestige from previous code where we were
+actually parsing the interrupts from the PRUSS node instead of the PRUSS
+INTC node.
+
+> 
+>> +                irq_names[i], irq);
+>> +            goto fail_irq;
+>> +        }
+>> +
+>> +        intc->irqs[i] = irq;
+>> +        irq_set_handler_data(irq, intc);
+>> +        irq_set_chained_handler(irq, pruss_intc_irq_handler);
+>> +    }
+>> +
+>> +    return 0;
+>> +
+>> +fail_irq:
+>> +    while (--i >= 0) {
+>> +        if (intc->irqs[i])
+>> +            irq_set_chained_handler_and_data(intc->irqs[i], NULL,
+>> +                             NULL);
+>> +    }
+>> +    irq_domain_remove(intc->domain);
+>> +    return irq;
+>> +}
+>> +
+>> +static int pruss_intc_remove(struct platform_device *pdev)
+>> +{
+>> +    struct pruss_intc *intc = platform_get_drvdata(pdev);
+>> +    unsigned int hwirq;
+>> +    int i;
+>> +
+>> +    for (i = 0; i < MAX_NUM_HOST_IRQS; i++) {
+>> +        if (intc->irqs[i])
+>> +            irq_set_chained_handler_and_data(intc->irqs[i], NULL,
+>> +                             NULL);
+>> +    }
+>> +
+>> +    if (intc->domain) {
+> 
+> Is it actuall possible for intc->domain to be NULL here?
+
+Nope, will remove it.
+
+Thank you for all the review comments.
 
 regards
 Suman
 
+> 
+>> +        for (hwirq = 0; hwirq < MAX_PRU_SYS_EVENTS; hwirq++)
+>> +            irq_dispose_mapping(irq_find_mapping(intc->domain,
+>> +                                 hwirq));
+>> +        irq_domain_remove(intc->domain);
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static const struct of_device_id pruss_intc_of_match[] = {
+>> +    { .compatible = "ti,pruss-intc", },
+>> +    { /* sentinel */ },
+>> +};
+>> +MODULE_DEVICE_TABLE(of, pruss_intc_of_match);
+>> +
+>> +static struct platform_driver pruss_intc_driver = {
+>> +    .driver = {
+>> +        .name = "pruss-intc",
+>> +        .of_match_table = pruss_intc_of_match,
+>> +    },
+>> +    .probe  = pruss_intc_probe,
+>> +    .remove = pruss_intc_remove,
+>> +};
+>> +module_platform_driver(pruss_intc_driver);
+>> +
+>> +MODULE_AUTHOR("Andrew F. Davis <afd@ti.com>");
+>> +MODULE_AUTHOR("Suman Anna <s-anna@ti.com>");
+>> +MODULE_DESCRIPTION("TI PRU-ICSS INTC Driver");
+>> +MODULE_LICENSE("GPL v2");
+>>
+> 
 
