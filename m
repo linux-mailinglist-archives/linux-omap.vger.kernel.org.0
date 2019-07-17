@@ -2,447 +2,192 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEFEB6B267
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Jul 2019 01:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 532FA6BB10
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jul 2019 13:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389162AbfGPXaa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Jul 2019 19:30:30 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:53394 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389126AbfGPXa3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Jul 2019 19:30:29 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6GNTLIT029133;
-        Tue, 16 Jul 2019 18:29:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1563319761;
-        bh=xPaiUzUTXdy20THUhZZ6zdQIrbTNTiLWiHOV2hqZN1o=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=ZwdIgHSs98c8Zk04/g8w9eCbXptyJyjygWF+XIlp+x4univOm67yY4RL8uUCNY/cB
-         t4jPYZ68wda8h39nOhohA2lFA2fnuzn1YeDW9fXuHunyr3036yG2S5cj//aY19kL0e
-         edClWTkMLdmYjLjODWfBpjBZ4BHge6qLP2+oR7po=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6GNTLwc087124
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 16 Jul 2019 18:29:21 -0500
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 16
- Jul 2019 18:29:21 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 16 Jul 2019 18:29:21 -0500
-Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6GNTLC3128954;
-        Tue, 16 Jul 2019 18:29:21 -0500
-Subject: Re: [PATCH 4/6] irqchip/irq-pruss-intc: Add helper functions to
- configure internal mapping
-To:     David Lechner <david@lechnology.com>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-CC:     Tony Lindgren <tony@atomide.com>, "Andrew F. Davis" <afd@ti.com>,
-        Roger Quadros <rogerq@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20190708035243.12170-1-s-anna@ti.com>
- <20190708035243.12170-5-s-anna@ti.com>
- <9aa5acd8-81bf-10dc-5a86-cea2acd1132b@lechnology.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <23ae1767-3531-ea57-2c82-f2657baa123f@ti.com>
-Date:   Tue, 16 Jul 2019 18:29:21 -0500
+        id S1726326AbfGQLIY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Jul 2019 07:08:24 -0400
+Received: from nala.villavu.com ([188.165.243.101]:42632 "EHLO
+        nala.villavu.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725980AbfGQLIY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Jul 2019 07:08:24 -0400
+X-Greylist: delayed 1282 seconds by postgrey-1.27 at vger.kernel.org; Wed, 17 Jul 2019 07:08:23 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
+         s=mail; h=Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:
+        References:Cc:To:Subject:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+        :List-Post:List-Owner:List-Archive;
+        bh=a+g0WmEJX63OCNnWyS5QA+OCkCiRdWdTIG2RqRVpgPU=; b=UfVBv2jBr7Ad/flxHEXzEf9S2w
+        ych3fH2BxeS2AaKeFkQJen8nQt9DFdQ/MfljYA7xUkKOAwF4nPnpQTH0RIA5DZyKsJ0/d6VdNkhq3
+        sfzycacogppszxU4TqWeqc/Ux2Q9ppSba0lX0zA8Sy7LR/FLGtJglF/uIOj1IQhBHB+aLpAZQ0Otz
+        bjWmBLjO5HVvUNr8K2V0iOfULrxZ1vHzPdN73poPTnn7EKSASAhiVP9KxyxJJoCIVXOMWyVVY2107
+        NWpADf2Ahoy3ZNWo5HLjO74ENf130aSEQ4wYjgrDNBYzPSzD/GhCkwPQJ8F3mur3qBKEqJevJjjdH
+        rkWixb7Q==;
+Received: from a82-161-36-93.adsl.xs4all.nl ([82.161.36.93] helo=[0.0.0.0])
+        by nala.villavu.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <merlijn@wizzup.org>)
+        id 1hnhST-0007pE-9W; Wed, 17 Jul 2019 12:46:50 +0200
+Subject: Re: Lay common foundation to make PVR/SGX work without hacks on
+ OMAP34xx, OMAP36xx, AM335x and potentially OMAP4, OMAP5
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?UTF-8?Q?Pawe=c5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Philipp Rossak <embed3d@gmail.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        moaz korena <moaz@korena.xyz>,
+        =?UTF-8?Q?Filip_Matijevi=c4=87?= <filip.matijevic.pz@gmail.com>,
+        kernel@pyra-handheld.com,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, Adam Ford <aford173@gmail.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        maemo-leste@lists.dyne.org
+References: <20180108214032.GW3872@atomide.com>
+ <4d99c1ae-7752-949b-7e88-bc8f1dc594a2@wizzup.org>
+ <0C51EC59-9CDC-4196-ACF9-24596C9E61B6@goldelico.com>
+ <FA4520D5-62CB-446D-975C-A1C7B9251517@goldelico.com>
+ <20190212205132.GO5720@atomide.com>
+ <0b00ce0a-969f-e638-8247-c2da96cf7ce6@gmail.com>
+ <20190213004143.GP5720@atomide.com>
+ <480AB632-A544-41E7-95A4-DC354AEBB71A@goldelico.com>
+ <CAKpie0SigGGsQxSU+X-Mz5boy-Xx=3wRNOcrf+F=ehFr3RBi7Q@mail.gmail.com>
+ <092210C3-05DE-4AFB-986F-81BD8F990B67@goldelico.com>
+ <CAKpie0RXM1UC33YFeFy-kAxfGhYGNkw4vUgNTThf-ZCAhPTVXw@mail.gmail.com>
+ <BE23C1E4-2877-49FA-B230-F9C10691B805@goldelico.com>
+ <CAKpie0TSo-8gmDm9_Zw4Sd+kjVVEomp8yA9Vu8qY2U2AcrQc=w@mail.gmail.com>
+ <8A069D96-C65F-43F5-8F54-20019CFB1A8D@goldelico.com>
+ <d0cbfaaf-813e-8803-f90b-931a38396750@wizzup.org>
+ <3A03FF16-C203-43ED-AEEF-0260F6B3331A@goldelico.com>
+ <3b0a5e78-c4c2-1963-bac7-b49496a1e9b9@wizzup.org>
+ <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com>
+From:   Merlijn Wajer <merlijn@wizzup.org>
+Openpgp: preference=signencrypt
+Message-ID: <84cac9b8-0eff-33f8-464d-4f8045d7db19@wizzup.org>
+Date:   Wed, 17 Jul 2019 12:51:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ Thunderbird/60.5.2
 MIME-Version: 1.0
-In-Reply-To: <9aa5acd8-81bf-10dc-5a86-cea2acd1132b@lechnology.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="FWKuak9PlNcUfM2Bslt0wrkIrfndwVriY"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi David,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--FWKuak9PlNcUfM2Bslt0wrkIrfndwVriY
+Content-Type: multipart/mixed; boundary="XQz9IsGkPyjwVUzsbDEGcZZ8FQUcCTs0z";
+ protected-headers="v1"
+From: Merlijn Wajer <merlijn@wizzup.org>
+To: "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc: =?UTF-8?Q?Pawe=c5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+ Tony Lindgren <tony@atomide.com>, Philipp Rossak <embed3d@gmail.com>,
+ linux-omap <linux-omap@vger.kernel.org>,
+ Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, moaz korena
+ <moaz@korena.xyz>, =?UTF-8?Q?Filip_Matijevi=c4=87?=
+ <filip.matijevic.pz@gmail.com>, kernel@pyra-handheld.com,
+ Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+ Adam Ford <aford173@gmail.com>, Tomi Valkeinen <tomi.valkeinen@ti.com>,
+ maemo-leste@lists.dyne.org
+Message-ID: <84cac9b8-0eff-33f8-464d-4f8045d7db19@wizzup.org>
+Subject: Re: Lay common foundation to make PVR/SGX work without hacks on
+ OMAP34xx, OMAP36xx, AM335x and potentially OMAP4, OMAP5
+References: <20180108214032.GW3872@atomide.com>
+ <CAHCN7xJFK3XXjJ+qHqU4h7Hcdq2eCj5wu3-P=1mykzPSAagfqQ@mail.gmail.com>
+ <8BCD0335-D116-464F-849D-F8C74C314907@goldelico.com>
+ <4d99c1ae-7752-949b-7e88-bc8f1dc594a2@wizzup.org>
+ <0C51EC59-9CDC-4196-ACF9-24596C9E61B6@goldelico.com>
+ <FA4520D5-62CB-446D-975C-A1C7B9251517@goldelico.com>
+ <20190212205132.GO5720@atomide.com>
+ <0b00ce0a-969f-e638-8247-c2da96cf7ce6@gmail.com>
+ <20190213004143.GP5720@atomide.com>
+ <480AB632-A544-41E7-95A4-DC354AEBB71A@goldelico.com>
+ <CAKpie0SigGGsQxSU+X-Mz5boy-Xx=3wRNOcrf+F=ehFr3RBi7Q@mail.gmail.com>
+ <092210C3-05DE-4AFB-986F-81BD8F990B67@goldelico.com>
+ <CAKpie0RXM1UC33YFeFy-kAxfGhYGNkw4vUgNTThf-ZCAhPTVXw@mail.gmail.com>
+ <BE23C1E4-2877-49FA-B230-F9C10691B805@goldelico.com>
+ <CAKpie0TSo-8gmDm9_Zw4Sd+kjVVEomp8yA9Vu8qY2U2AcrQc=w@mail.gmail.com>
+ <8A069D96-C65F-43F5-8F54-20019CFB1A8D@goldelico.com>
+ <d0cbfaaf-813e-8803-f90b-931a38396750@wizzup.org>
+ <3A03FF16-C203-43ED-AEEF-0260F6B3331A@goldelico.com>
+ <3b0a5e78-c4c2-1963-bac7-b49496a1e9b9@wizzup.org>
+ <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com>
+In-Reply-To: <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com>
 
-On 7/10/19 10:10 PM, David Lechner wrote:
-> On 7/7/19 10:52 PM, Suman Anna wrote:
->> The PRUSS INTC receives a number of system input interrupt source events
->> and supports individual control configuration and hardware
->> prioritization.
->> These input events can be mapped to some output host interrupts through 2
->> levels of many-to-one mapping i.e. events to channel mapping and channels
->> to host interrupts.
+--XQz9IsGkPyjwVUzsbDEGcZZ8FQUcCTs0z
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On 10/03/2019 08:07, H. Nikolaus Schaller wrote:
+>=20
+>> Am 10.03.2019 um 00:14 schrieb Merlijn Wajer <merlijn@wizzup.org>:
 >>
->> This mapping information is provided through the PRU firmware that is
->> loaded onto a PRU core/s or through the device tree node of the PRU
-> 
-
-Thanks for the thorough review and alternate solutions/suggestions.
-
-> What will the device tree bindings for this look like?
-
-They would be as in the below patch you already figured.
-
-> 
-> Looking back at Rob's comment on the initial series [1], I still think
-> that increasing the #interrupt-cells sounds like a reasonable solution.
-> 
-> [1]: https://patchwork.kernel.org/patch/10697705/#22375155
-
-So, there are couple of reasons why I did not use an extended
-#interrupt-cells:
-
-1. There is only one irq descriptor associated with each event, and the
-usage of events is typically per application. And the descriptor mapping
-is done once. We can have two different applications use the same event
-with different mappings. So we want this programming done at
-application's usage of PRU (so done when a consumer driver acquires a
-PRU processor(s) which are treated as an exclusive resource). All the
-different application properties that you saw in [1] are configured at
-the time of acquiring a PRU and reset when they release a PRU.
-
-2. The configuration is performed by Linux for all host interrupts and
-channels, and this was primarily done to save the very limited IRAM
-space for those needed by the PRUs. From firmware's point of view, this
-was offloaded to the ARM OS driver/infrastructure, but in general it is
-a design by contract between a PRU client driver and its firmware. Also,
-the DT binding semantics using interrupts property and request_irq()
-typically limits these to interrupts only being requested by MPU, and so
-will leave out those needed by PRUs.
-
-> 
-> 
-> 
->> application. The mapping is configured by the PRU remoteproc driver, and
->> is setup before the PRU core is started and cleaned up after the PRU core
->> is stopped. This event mapping configuration logic is optimized to
->> program
->> the Channel Map Registers (CMRx) and Host-Interrupt Map Registers (HMRx)
->> only when a new program is being loaded/started and simply disables the
->> same events and interrupt channels without zeroing out the corresponding
->> map registers when stopping a PRU.
+>> Hi,
 >>
->> Add two helper functions: pruss_intc_configure() &
->> pruss_intc_unconfigure()
->> that the PRU remoteproc driver can use to configure the PRUSS INTC.
+>> On 15/02/2019 14:09, H. Nikolaus Schaller wrote:
 >>
->> Signed-off-by: Suman Anna <s-anna@ti.com>
->> Signed-off-by: Andrew F. Davis <afd@ti.com>
->> Signed-off-by: Roger Quadros <rogerq@ti.com>
->> ---
->>   drivers/irqchip/irq-pruss-intc.c       | 258 ++++++++++++++++++++++++-
->>   include/linux/irqchip/irq-pruss-intc.h |  33 ++++
->>   2 files changed, 289 insertions(+), 2 deletions(-)
->>   create mode 100644 include/linux/irqchip/irq-pruss-intc.h
+>>>>> At least I can download and start firmware. I just have to find a w=
+ay to fix the omaplfb so that it works
+>>>>> with our omapdrm based panels to runs the CLipBlit test [1] on mode=
+rn kernels...
+>>>>
+>>>> Maybe you can compare with what we have here:
+>>>> https://github.com/maemo-leste/n9xx-linux/tree/pvr-wip-4.15.7/driver=
+s/gpu/pvr
+>>>
+>>> I'll take a look into it especially how omaplfb is done.
+>>>
+>>> First observation is that there is a "flat" tree while I am working o=
+n a structured one...
+>>> But that is just a marginal difference (mainly significant for Makefi=
+le writers).
 >>
->> diff --git a/drivers/irqchip/irq-pruss-intc.c
->> b/drivers/irqchip/irq-pruss-intc.c
->> index 142d01b434e0..8118c2a2ac43 100644
->> --- a/drivers/irqchip/irq-pruss-intc.c
->> +++ b/drivers/irqchip/irq-pruss-intc.c
->> @@ -9,6 +9,7 @@
->>     #include <linux/irq.h>
->>   #include <linux/irqchip/chained_irq.h>
->> +#include <linux/irqchip/irq-pruss-intc.h>
->>   #include <linux/irqdomain.h>
->>   #include <linux/module.h>
->>   #include <linux/of_device.h>
->> @@ -24,8 +25,8 @@
->>   /* minimum starting host interrupt number for MPU */
->>   #define MIN_PRU_HOST_INT    2
->>   -/* maximum number of system events */
->> -#define MAX_PRU_SYS_EVENTS    64
->> +/* maximum number of host interrupts */
->> +#define MAX_PRU_HOST_INT    10
->>     /* PRU_ICSS_INTC registers */
->>   #define PRU_INTC_REVID        0x0000
->> @@ -57,15 +58,29 @@
->>   #define PRU_INTC_HINLR(x)    (0x1100 + (x) * 4)
->>   #define PRU_INTC_HIER        0x1500
->>   +/* CMR register bit-field macros */
->> +#define CMR_EVT_MAP_MASK    0xf
->> +#define CMR_EVT_MAP_BITS    8
->> +#define CMR_EVT_PER_REG        4
->> +
->> +/* HMR register bit-field macros */
->> +#define HMR_CH_MAP_MASK        0xf
->> +#define HMR_CH_MAP_BITS        8
->> +#define HMR_CH_PER_REG        4
->> +
->>   /* HIPIR register bit-fields */
->>   #define INTC_HIPIR_NONE_HINT    0x80000000
->>   +/* use -1 to mark unassigned events and channels */
->> +#define FREE            -1
-> 
-> It could be helpful to have this macro in the public header.
-
-Yes, I can rename it and move it, and I can reuse it in the parsing
-logic within the PRU remoteproc driver as well.
-
-> 
->> +
->>   /**
->>    * struct pruss_intc - PRUSS interrupt controller structure
->>    * @irqs: kernel irq numbers corresponding to PRUSS host interrupts
->>    * @base: base virtual address of INTC register space
->>    * @irqchip: irq chip for this interrupt controller
->>    * @domain: irq domain for this interrupt controller
->> + * @config_map: stored INTC configuration mapping data
->>    * @lock: mutex to serialize access to INTC
->>    * @host_mask: indicate which HOST IRQs are enabled
->>    * @shared_intr: bit-map denoting if the MPU host interrupt is shared
->> @@ -76,6 +91,7 @@ struct pruss_intc {
->>       void __iomem *base;
->>       struct irq_chip *irqchip;
->>       struct irq_domain *domain;
->> +    struct pruss_intc_config config_map;
->>       struct mutex lock; /* PRUSS INTC lock */
->>       u32 host_mask;
->>       u16 shared_intr;
->> @@ -107,6 +123,238 @@ static int pruss_intc_check_write(struct
->> pruss_intc *intc, unsigned int reg,
->>       return 0;
->>   }
->>   +static struct pruss_intc *to_pruss_intc(struct device *pru_dev)
->> +{
->> +    struct device_node *np;
->> +    struct platform_device *pdev;
->> +    struct device *pruss_dev = pru_dev->parent;
->> +    struct pruss_intc *intc = ERR_PTR(-ENODEV);
->> +
->> +    np = of_get_child_by_name(pruss_dev->of_node,
->> "interrupt-controller");
->> +    if (!np) {
->> +        dev_err(pruss_dev, "pruss does not have an
->> interrupt-controller node\n");
->> +        return intc;
->> +    }
->> +
->> +    pdev = of_find_device_by_node(np);
->> +    if (!pdev) {
->> +        dev_err(pruss_dev, "no associated platform device\n");
->> +        goto out;
->> +    }
->> +
->> +    intc = platform_get_drvdata(pdev);
->> +    if (!intc) {
->> +        dev_err(pruss_dev, "pruss intc device probe failed?\n");
->> +        intc = ERR_PTR(-EINVAL);
->> +    }
->> +
->> +out:
->> +    of_node_put(np);
->> +    return intc;
->> +}
->> +
->> +/**
->> + * pruss_intc_configure() - configure the PRUSS INTC
->> + * @dev: pru device pointer
->> + * @intc_config: PRU core-specific INTC configuration
->> + *
->> + * Configures the PRUSS INTC with the provided configuration from
->> + * a PRU core. Any existing event to channel mappings or channel to
->> + * host interrupt mappings are checked to make sure there are no
->> + * conflicting configuration between both the PRU cores. The function
->> + * is intended to be used only by the PRU remoteproc driver.
->> + *
->> + * Returns 0 on success, or a suitable error code otherwise
->> + */
->> +int pruss_intc_configure(struct device *dev,
-> 
-> It seems like this would be easier to use if it took an IRQ number
-> or struct irq_data * as a parameter instead of struct device *. My
-> line of thinking is that callers of this function will already be
-> calling some variant of request_irq() so they will already have
-> this info. It would cut out the pointer acrobatics in to_pruss_intc.
-
-These API are actually not seen by PRU client drivers, but is only
-limited to the PRU remoteproc driver. The INTC configuration is managed
-per PRU core and in sync with the life-cycle of the PRU load/start and stop.
-
-As I mentioned above, we need to manage the configuration for events
-generating interrupts to non Linux ARM host as well.
-
-> 
-> 
->> +             struct pruss_intc_config *intc_config)
->> +{
->> +    struct pruss_intc *intc;
->> +    int i, idx, ret;
->> +    s8 ch, host;
->> +    u64 sysevt_mask = 0;
->> +    u32 ch_mask = 0;
->> +    u32 host_mask = 0;
->> +    u32 val;
->> +
->> +    intc = to_pruss_intc(dev);
->> +    if (IS_ERR(intc))
->> +        return PTR_ERR(intc);
->> +
->> +    mutex_lock(&intc->lock);
->> +
->> +    /*
->> +     * configure channel map registers - each register holds map info
->> +     * for 4 events, with each event occupying the lower nibble in
->> +     * a register byte address in little-endian fashion
->> +     */
->> +    for (i = 0; i < ARRAY_SIZE(intc_config->sysev_to_ch); i++) {
->> +        ch = intc_config->sysev_to_ch[i];
->> +        if (ch < 0)
->> +            continue;
->> +
->> +        /* check if sysevent already assigned */
->> +        if (intc->config_map.sysev_to_ch[i] != FREE) {
->> +            dev_err(dev, "event %d (req. channel %d) already assigned
->> to channel %d\n",
->> +                i, ch, intc->config_map.sysev_to_ch[i]);
->> +            ret = -EEXIST;
->> +            goto unlock;
-> 
-> If we fail here, shouldn't we unwind any previous mappings made?
-> Otherwise, if we try to map the same event again, it will show as
-> in use, even though it is not in use.
-
-Yeah, I will fix up the unwind logic. I intended for the callers to
-invoke the unconfigure upon failures, but even that has some unneeded
-operations, so it is better to unwind the operations here for a cleaner
-style.
-
-> 
->> +        }
->> +
->> +        intc->config_map.sysev_to_ch[i] = ch;
->> +
->> +        idx = i / CMR_EVT_PER_REG;
->> +        val = pruss_intc_read_reg(intc, PRU_INTC_CMR(idx));
->> +        val &= ~(CMR_EVT_MAP_MASK <<
->> +             ((i % CMR_EVT_PER_REG) * CMR_EVT_MAP_BITS));
->> +        val |= ch << ((i % CMR_EVT_PER_REG) * CMR_EVT_MAP_BITS);
->> +        pruss_intc_write_reg(intc, PRU_INTC_CMR(idx), val);
->> +        sysevt_mask |= BIT_ULL(i);
->> +        ch_mask |= BIT(ch);
->> +
->> +        dev_dbg(dev, "SYSEV%d -> CH%d (CMR%d 0x%08x)\n", i, ch, idx,
->> +            pruss_intc_read_reg(intc, PRU_INTC_CMR(idx)));
->> +    }
->> +
->> +    /*
->> +     * set host map registers - each register holds map info for
->> +     * 4 channels, with each channel occupying the lower nibble in
->> +     * a register byte address in little-endian fashion
->> +     */
->> +    for (i = 0; i < ARRAY_SIZE(intc_config->ch_to_host); i++) {
->> +        host = intc_config->ch_to_host[i];
->> +        if (host < 0)
->> +            continue;
->> +
->> +        /* check if channel already assigned */
->> +        if (intc->config_map.ch_to_host[i] != FREE) {
->> +            dev_err(dev, "channel %d (req. intr_no %d) already
->> assigned to intr_no %d\n",
->> +                i, host, intc->config_map.ch_to_host[i]);
->> +            ret = -EEXIST;
->> +            goto unlock;
-> 
-> Same comment about unwinding here and below.
-
-Yep, will fix this up as well in the next version.
-
-> 
->> +        }
->> +
->> +        /* check if host intr is already in use by other PRU */
-> 
-> It seems like there would be use cases where someone might want to map
-> multiple PRU system events, and therefore multiple channels, to a single
-> host interrupt.
-
-Yes, that is in general supported but for a given PRU. The idea here was
-to partition the host events separately between two PRUs and this is
-done to simplify the life-cycle per host event and their mappings
-between two different PRUs potentially running two different unrelated
-co-operative applications.
-
-> 
->> +        if (intc->host_mask & (1U << host)) {
->> +            dev_err(dev, "%s: host intr %d already in use\n",
->> +                __func__, host);
->> +            ret = -EEXIST;
->> +            goto unlock;
->> +        }
->> +
-> 
-> --snip--
-> 
->> diff --git a/include/linux/irqchip/irq-pruss-intc.h
->> b/include/linux/irqchip/irq-pruss-intc.h
->> new file mode 100644
->> index 000000000000..f1f1bb150100
->> --- /dev/null
->> +++ b/include/linux/irqchip/irq-pruss-intc.h
->> @@ -0,0 +1,33 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * PRU-ICSS sub-system private interfaces
->> + *
->> + * Copyright (C) 2019 Texas Instruments Incorporated -
->> http://www.ti.com/
->> + *    Suman Anna <s-anna@ti.com>
->> + */
->> +
->> +#ifndef __LINUX_IRQ_PRUSS_INTC_H
->> +#define __LINUX_IRQ_PRUSS_INTC_H
->> +
->> +/* maximum number of system events */
->> +#define MAX_PRU_SYS_EVENTS    64
->> +
->> +/* maximum number of interrupt channels */
->> +#define MAX_PRU_CHANNELS    10
->> +
->> +/**
->> + * struct pruss_intc_config - INTC configuration info
->> + * @sysev_to_ch: system events to channel mapping information
->> + * @ch_to_host: interrupt channel to host interrupt information
->> + */
->> +struct pruss_intc_config {
->> +    s8 sysev_to_ch[MAX_PRU_SYS_EVENTS];
->> +    s8 ch_to_host[MAX_PRU_CHANNELS];
->> +};
->> +
->> +int pruss_intc_configure(struct device *dev,
->> +             struct pruss_intc_config *intc_config);
->> +int pruss_intc_unconfigure(struct device *dev,
->> +               struct pruss_intc_config *intc_config);
->> +
->> +#endif    /* __LINUX_IRQ_PRUSS_INTC_H */
+>> I've ported the Maemo Leste kernel + pvr to 5.0 and it seems to work:
+>> https://github.com/maemo-leste/n9xx-linux/commits/pvr-wip-5.0.y
 >>
-> 
-> FYI, on AM18xx, events 0 to 31 can be muxed via CFGCHIP3[3].PRUSSEVTSEL
-> so an additional bit of information will be needed in this struct for
-> the mux selection. I don't see a probably with adding that later though.
+>> Should I add this as maemo-leste-n900-5.0 branch (or something) to
+>> https://github.com/openpvrsgx-devgroup/linux_openpvrsgx ?
+>=20
+> Yes, that would be nice to be able to easily compare stuff.
 
-Yeah, there are different input pinmux'ing options controlling different
-number of input events on different SoCs. On AM18xx it is a SoC-level
-CHIPCFG register, and on other SoCs, it is a PRUSS CFG register
-(Standard mode vs MII mode) both of which are registers outside of the
-INTC module. I see these again as an application-level configuration,
-and this is what the last bullet item in the feature list in my
-cover-letter is about.
+I've just pushed the Maemo Leste v5.1 branch + patches here:
 
-I did think about adding a separate property to INTC node to configure a
-default value at INTC probe time, and then allow it to be overwritten as
-per a PRU application need. The latter is going to be needed anyway, so
-I dropped the idea of a default configuration, and leave it at POR values.
+	https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/tree/n900/v5.1-p=
+atch
 
-regards
-Suman
+This works on N900 with X, but it doesn't use DRM yet. I'm wondering
+what a next logical step would be: to try and modules to load/probe on
+another device (I have a droid4 or a Pandaboard ES rev B1), or to try
+and get DRM PowerVR to work on the N900, with omapdrmfb and dri3wsegl.
 
+For either path, I'll probably need some help. Any updates from anyone
+else? Maybe we should list things people can work - perhaps document
+progress in github issues. (Mailing list is also fine, BTW)
+
+Cheers,
+Merlijn
+
+
+--XQz9IsGkPyjwVUzsbDEGcZZ8FQUcCTs0z--
+
+--FWKuak9PlNcUfM2Bslt0wrkIrfndwVriY
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXS79mQAKCRAGN09rynK8
+Wv31AQCzqIHa+/NE+Mz+8Qu/8rhkM2KWJ1y/gZZFkQZ339KdagD/eJlvPcej64Bl
+TtsqQTz3ggNXgm4n0y7UCve9HZBSFA0=
+=kcNJ
+-----END PGP SIGNATURE-----
+
+--FWKuak9PlNcUfM2Bslt0wrkIrfndwVriY--
