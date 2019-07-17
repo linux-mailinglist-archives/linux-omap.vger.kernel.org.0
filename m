@@ -2,88 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE6BC6C073
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Jul 2019 19:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBE346C0AE
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jul 2019 19:58:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726917AbfGQReD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Jul 2019 13:34:03 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.165]:18818 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725948AbfGQReD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Jul 2019 13:34:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1563384839;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=dOZPXX2/0UU+1woBsjSlDEXl3gIGo8OmSzylGf5Wz0k=;
-        b=skV6paaY29cqK31xSkvj0hUeaBV/IkN4lFR+MuC1HRPNjqaOjs8MjwbSLxkooasoOC
-        HtPRxz/FcFN5YOxIyG+WeZdnk/3YHTxpEigM2sD0JBNH56UO1ole/FcnxaXTmU9nR6Ve
-        Z6/fFfw/r7biyVjLvqtwRQXwqlZjt/hpSuLoHbMJMLBk6iROA82xSMhfE6f/eX+PN4cW
-        3/E90TpzmqP35YoWIU5MPwSX3eOWdD1CNTx1HKay8gCmFfn2ZYVuHZamu6+by3R4X890
-        /wiGfp7J8ovQ15X/MJnHgA+idSS7HY4/k5i4vdnYz9eMxlmgWyb3SsbjOY8trvUnScGV
-        9RQg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlaZXA4NYcM="
-X-RZG-CLASS-ID: mo00
-Received: from mbp-13-nikolaus.fritz.box
-        by smtp.strato.de (RZmta 44.24 DYNA|AUTH)
-        with ESMTPSA id V09459v6HHXaDXl
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Wed, 17 Jul 2019 19:33:36 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [Letux-kernel] [PATCH v3 0/5] drm/panel-simple: Add panel parameters for ortustech-com37h3m05dtc/99dtc and sharp-lq070y3dg3b
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <CF1D9929-58D2-4E75-932A-870D11BBFBDE@goldelico.com>
-Date:   Wed, 17 Jul 2019 19:33:35 +0200
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        Belisko Marek <marek.belisko@gmail.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel@lists.freedesktop.org, Rob Herring <robh+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <33D92C0E-A430-4C34-A698-646F2592093D@goldelico.com>
-References: <cover.1559905870.git.hns@goldelico.com> <0842FF88-D8E0-441B-837B-769C2EF6C1CB@goldelico.com> <20190625204356.GF18595@ravnborg.org> <20190626073350.GA15288@ravnborg.org> <CF1D9929-58D2-4E75-932A-870D11BBFBDE@goldelico.com>
-To:     Sam Ravnborg <sam@ravnborg.org>
-X-Mailer: Apple Mail (2.3124)
+        id S1727356AbfGQR5e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Jul 2019 13:57:34 -0400
+Received: from vern.gendns.com ([98.142.107.122]:46798 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726085AbfGQR5d (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 17 Jul 2019 13:57:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=kBCqv/tlrCEB7BtFXFOJV8+OGPJGlXhO5dquLsunvpA=; b=JUQJVM1vwnZ1tOfW05WU4K8sS2
+        nnbTCmMPTP6+9fc5yWMZ2iP7WFyv+sU+yUiKL1DeKN/yCiRIE+Oto8digXX58a8eUQcBIUjgvV5ua
+        UUEToaMClhulA2UtFibfORrN/XoiIcY5QyuGKr4nURytgYQdCx1zHnUwobNvlsf4rYZtKS8eLKntU
+        0ae9SntXkf+cQxpG/F5LwfkqQUhKWFbuOjJ1CaXASbnjl7ETaDflMcn00WrHPcJDN6Mkqgvl98ftq
+        vrDMN8nLWRDAkIxmQSEwZcQKwNYHitsoXyA5TWcLf+IJp3Qye49SsOvgyhEeOzOC8pjnmAiBXx067
+        t3rfX8Dg==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:48454 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1hnoBG-007dWK-Hb; Wed, 17 Jul 2019 13:57:30 -0400
+Subject: Re: [PATCH 4/6] irqchip/irq-pruss-intc: Add helper functions to
+ configure internal mapping
+To:     Suman Anna <s-anna@ti.com>, Marc Zyngier <marc.zyngier@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>
+Cc:     Tony Lindgren <tony@atomide.com>, "Andrew F. Davis" <afd@ti.com>,
+        Roger Quadros <rogerq@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20190708035243.12170-1-s-anna@ti.com>
+ <20190708035243.12170-5-s-anna@ti.com>
+ <9aa5acd8-81bf-10dc-5a86-cea2acd1132b@lechnology.com>
+ <23ae1767-3531-ea57-2c82-f2657baa123f@ti.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <22825f06-d968-03a7-585b-8cbf4123915c@lechnology.com>
+Date:   Wed, 17 Jul 2019 12:57:29 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <23ae1767-3531-ea57-2c82-f2657baa123f@ti.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Sam,
+On 7/16/19 6:29 PM, Suman Anna wrote:
+> Hi David,
+> 
+> On 7/10/19 10:10 PM, David Lechner wrote:
+>> On 7/7/19 10:52 PM, Suman Anna wrote:
+>>> The PRUSS INTC receives a number of system input interrupt source events
+>>> and supports individual control configuration and hardware
+>>> prioritization.
+>>> These input events can be mapped to some output host interrupts through 2
+>>> levels of many-to-one mapping i.e. events to channel mapping and channels
+>>> to host interrupts.
+>>>
+>>> This mapping information is provided through the PRU firmware that is
+>>> loaded onto a PRU core/s or through the device tree node of the PRU
+>>
+> 
+> Thanks for the thorough review and alternate solutions/suggestions.
+> 
+>> What will the device tree bindings for this look like?
+> 
+> They would be as in the below patch you already figured.
 
-> Am 26.06.2019 um 14:40 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->=20
-> Hi Sam,
->=20
->> Am 26.06.2019 um 09:33 schrieb Sam Ravnborg <sam@ravnborg.org>:
->>=20
->> Hi Nikolaus.
->>=20
->>>>=20
->>>> any progress towards merging this somewhere? It did not yet arrive =
-in linux-next.
->>>>=20
->>>> BTW: should also be applied to 5.2
->>> The drm bits are reviewed. The DT bits needs OK from DT people.
->>> When we have OK from DT people we can apply them all to =
-drm-misc-next.
->>=20
->> I got OK on irc from Rob to process these.
->> All patches are now applied to drm-misc-next.
->=20
-> Thanks for taking care of this!
+Ah, makes sense now: the mapping is defined in the remoteproc node
+rather than in the interrupt controller node.
 
-I have checked but it seems they are still not merged into linux-next.
+> 
+>>
+>> Looking back at Rob's comment on the initial series [1], I still think
+>> that increasing the #interrupt-cells sounds like a reasonable solution.
+>>
+>> [1]: https://patchwork.kernel.org/patch/10697705/#22375155
+> 
+> So, there are couple of reasons why I did not use an extended
+> #interrupt-cells:
+> 
+> 1. There is only one irq descriptor associated with each event, and the
+> usage of events is typically per application. And the descriptor mapping
+> is done once. We can have two different applications use the same event
+> with different mappings. So we want this programming done at
+> application's usage of PRU (so done when a consumer driver acquires a
+> PRU processor(s) which are treated as an exclusive resource). All the
+> different application properties that you saw in [1] are configured at
+> the time of acquiring a PRU and reset when they release a PRU.
+> 
+> 2. The configuration is performed by Linux for all host interrupts and
+> channels, and this was primarily done to save the very limited IRAM
+> space for those needed by the PRUs. From firmware's point of view, this
+> was offloaded to the ARM OS driver/infrastructure, but in general it is
+> a design by contract between a PRU client driver and its firmware. Also,
+> the DT binding semantics using interrupts property and request_irq()
+> typically limits these to interrupts only being requested by MPU, and so
+> will leave out those needed by PRUs.
+> 
 
-BR and thanks,
-Nikolaus
+Hmm... case 1. is a tricky one indeed. If there are going to be times where
+an event requires multiple mappings, I agree that this doesn't seem to fit
+into any existing device tree bindings.
+
 
