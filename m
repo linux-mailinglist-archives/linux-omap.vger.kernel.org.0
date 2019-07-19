@@ -2,81 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51DEC6D5A4
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Jul 2019 22:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 859ED6DA52
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Jul 2019 06:01:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727780AbfGRURQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 18 Jul 2019 16:17:16 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:42108 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727687AbfGRURQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Jul 2019 16:17:16 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 2B2CC802B6; Thu, 18 Jul 2019 22:17:03 +0200 (CEST)
-Date:   Thu, 18 Jul 2019 22:17:13 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        johan@kernel.org, gregkh@linuxfoundation.org,
-        linux-usb@vger.kernel.org
-Subject: USB Modem support for Droid 4
-Message-ID: <20190718201713.GA25103@amd>
+        id S1729343AbfGSEBU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Jul 2019 00:01:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32994 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727372AbfGSEBR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 19 Jul 2019 00:01:17 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C738A218B8;
+        Fri, 19 Jul 2019 04:01:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563508876;
+        bh=eyrz6BQnCnJ6buX2Al9FoEHYMHlPxCOzi3qzeEDLdu0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=eA7xzS1FRiLAL3zbVGltzZYfv557kYD67dRTNeTVjeRas9wFlMhR1ttZsZfB1gKTE
+         TCjiHdoxD7q998BQYmsze9L+MD9iSN+f/Az1bWbHoghIzaNDksDWm2Se78bKO2JBFn
+         fHHzrAm2msx0g+/7zYubzFxXpKasQmSuWAnwZfak=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.2 132/171] PCI: dwc: pci-dra7xx: Fix compilation when !CONFIG_GPIOLIB
+Date:   Thu, 18 Jul 2019 23:56:03 -0400
+Message-Id: <20190719035643.14300-132-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190719035643.14300-1-sashal@kernel.org>
+References: <20190719035643.14300-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="azLHFNyN32YCQGCU"
-Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: YueHaibing <yuehaibing@huawei.com>
 
---azLHFNyN32YCQGCU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 381ed79c8655a40268ee7391f716edd90c5c3a97 ]
 
-=46rom: Tony Lindgren <tony@atomide.com>
+If CONFIG_GPIOLIB is not selected the compilation results in the
+following build errors:
 
-Droid starts to have useful support in linux-next. Modem is tricky to
-play with, but this is enough to get basic support.
+drivers/pci/controller/dwc/pci-dra7xx.c:
+ In function dra7xx_pcie_probe:
+drivers/pci/controller/dwc/pci-dra7xx.c:777:10:
+ error: implicit declaration of function devm_gpiod_get_optional;
+ did you mean devm_regulator_get_optional? [-Werror=implicit-function-declaration]
 
-Signed-off-by: Pavel Machek <pavel@ucw.cz>
+  reset = devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH);
 
-diff --git a/drivers/usb/serial/qcserial.c b/drivers/usb/serial/qcserial.c
-index 613f91a..3ca9439 100644
---- a/drivers/usb/serial/qcserial.c
-+++ b/drivers/usb/serial/qcserial.c
-@@ -181,6 +181,9 @@ static const struct usb_device_id id_table[] =3D {
- 	/* Huawei devices */
- 	{DEVICE_HWI(0x03f0, 0x581d)},	/* HP lt4112 LTE/HSPA+ Gobi 4G Modem (Huawe=
-i me906e) */
-=20
-+	/* Motorola devices */
-+	{DEVICE_HWI(0x22b8, 0x2a70)},	/* Droid 4 mdm6600 */
-+
- 	{ }				/* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, id_table);
+drivers/pci/controller/dwc/pci-dra7xx.c:778:45: error: ‘GPIOD_OUT_HIGH’
+undeclared (first use in this function); did you mean ‘GPIOF_INIT_HIGH’?
+  reset = devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH);
+                                             ^~~~~~~~~~~~~~
+                                             GPIOF_INIT_HIGH
 
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
+Fix them by including the appropriate header file.
 
---azLHFNyN32YCQGCU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+[lorenzo.pieralisi@arm.com: commit log]
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Acked-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pci/controller/dwc/pci-dra7xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index 419451efd58c..4234ddb4722f 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -26,6 +26,7 @@
+ #include <linux/types.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/regmap.h>
++#include <linux/gpio/consumer.h>
+ 
+ #include "../../pci.h"
+ #include "pcie-designware.h"
+-- 
+2.20.1
 
-iEYEARECAAYFAl0w08kACgkQMOfwapXb+vJpwQCfTiUS2K4a1CVoJwFu6/B1FtTc
-z+kAnRGFucsG+uLBUmYmxdZiQpeyBTXZ
-=SQkN
------END PGP SIGNATURE-----
-
---azLHFNyN32YCQGCU--
