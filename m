@@ -2,95 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CA386DD8B
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Jul 2019 06:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4CDE6E08A
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Jul 2019 07:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732431AbfGSEKR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Jul 2019 00:10:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44966 "EHLO mail.kernel.org"
+        id S1726328AbfGSFWK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Jul 2019 01:22:10 -0400
+Received: from muru.com ([72.249.23.125]:55306 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728468AbfGSEKO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 19 Jul 2019 00:10:14 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 068A5218B6;
-        Fri, 19 Jul 2019 04:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563509414;
-        bh=G+8sZy2ufiDDhHgfN8/lhi9b6SGiBlgFv+YhD3Sr3e0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DoYnaIUwJanPk60qfiHKKBc/eEpYZKhrps5rE3nu6JKPsvjxvd9T13Z3AmHtSFBjv
-         7vHJZ8OzE3LKsEwGQoZEcL1tkLubM7jVqeIKasWNoOjRcSWea1Z0Pny5JsLtEwr0j+
-         CuI1Ava64jD+nV1YbiICl83CV5e5uRoXfMIK1mPg=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 078/101] PCI: dwc: pci-dra7xx: Fix compilation when !CONFIG_GPIOLIB
-Date:   Fri, 19 Jul 2019 00:07:09 -0400
-Message-Id: <20190719040732.17285-78-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190719040732.17285-1-sashal@kernel.org>
-References: <20190719040732.17285-1-sashal@kernel.org>
+        id S1725794AbfGSFWK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 19 Jul 2019 01:22:10 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id D34C8809B;
+        Fri, 19 Jul 2019 05:22:33 +0000 (UTC)
+Date:   Thu, 18 Jul 2019 22:22:05 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@denx.de>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, johan@kernel.org,
+        gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
+Subject: Re: USB Modem support for Droid 4
+Message-ID: <20190719052205.GK5447@atomide.com>
+References: <20190718201713.GA25103@amd>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190718201713.GA25103@amd>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+Hi,
 
-[ Upstream commit 381ed79c8655a40268ee7391f716edd90c5c3a97 ]
+* Pavel Machek <pavel@denx.de> [190718 20:17]:
+> From: Tony Lindgren <tony@atomide.com>
+> 
+> Droid starts to have useful support in linux-next. Modem is tricky to
+> play with, but this is enough to get basic support.
 
-If CONFIG_GPIOLIB is not selected the compilation results in the
-following build errors:
+Below is a better patch using option driver adding support for all
+the ports. I'll send it out with a proper description after -rc1.
 
-drivers/pci/controller/dwc/pci-dra7xx.c:
- In function dra7xx_pcie_probe:
-drivers/pci/controller/dwc/pci-dra7xx.c:777:10:
- error: implicit declaration of function devm_gpiod_get_optional;
- did you mean devm_regulator_get_optional? [-Werror=implicit-function-declaration]
+Regards,
 
-  reset = devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH);
+Tony
 
-drivers/pci/controller/dwc/pci-dra7xx.c:778:45: error: ‘GPIOD_OUT_HIGH’
-undeclared (first use in this function); did you mean ‘GPIOF_INIT_HIGH’?
-  reset = devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH);
-                                             ^~~~~~~~~~~~~~
-                                             GPIOF_INIT_HIGH
-
-Fix them by including the appropriate header file.
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-[lorenzo.pieralisi@arm.com: commit log]
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Acked-by: Kishon Vijay Abraham I <kishon@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/pci/controller/dwc/pci-dra7xx.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index a32d6dde7a57..412524aa1fde 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -26,6 +26,7 @@
- #include <linux/types.h>
- #include <linux/mfd/syscon.h>
- #include <linux/regmap.h>
-+#include <linux/gpio/consumer.h>
+8< ----------------
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -83,6 +83,12 @@ static void option_instat_callback(struct urb *urb);
+ #define HUAWEI_PRODUCT_K4605			0x14C6
+ #define HUAWEI_PRODUCT_E173S6			0x1C07
  
- #include "../../pci.h"
- #include "pcie-designware.h"
--- 
-2.20.1
-
++#define MOTOROLA_VENDOR_ID			0x22b8
++#define MOTOROLA_PRODUCT_MDM6600		0x2a70
++#define MOTOROLA_PRODUCT_MDM9600		0x2e0a
++#define MOTOROLA_PRODUCT_MDM_RAM_DL		0x4281
++#define MOTOROLA_PRODUCT_MDM_QC_DL		0x900e
++
+ #define QUANTA_VENDOR_ID			0x0408
+ #define QUANTA_PRODUCT_Q101			0xEA02
+ #define QUANTA_PRODUCT_Q111			0xEA03
+@@ -968,6 +974,10 @@ static const struct usb_device_id option_ids[] = {
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(HUAWEI_VENDOR_ID, 0xff, 0x06, 0x7B) },
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(HUAWEI_VENDOR_ID, 0xff, 0x06, 0x7C) },
+ 
++	{ USB_DEVICE_AND_INTERFACE_INFO(MOTOROLA_VENDOR_ID, MOTOROLA_PRODUCT_MDM6600, 0xff, 0xff, 0xff) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MOTOROLA_VENDOR_ID, MOTOROLA_PRODUCT_MDM9600, 0xff, 0xff, 0xff) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MOTOROLA_VENDOR_ID, MOTOROLA_PRODUCT_MDM_RAM_DL, 0x0a, 0x00, 0xfc) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MOTOROLA_VENDOR_ID, MOTOROLA_PRODUCT_MDM_QC_DL, 0xff, 0xff, 0xff) },
+ 
+ 	{ USB_DEVICE(NOVATELWIRELESS_VENDOR_ID, NOVATELWIRELESS_PRODUCT_V640) },
+ 	{ USB_DEVICE(NOVATELWIRELESS_VENDOR_ID, NOVATELWIRELESS_PRODUCT_V620) },
