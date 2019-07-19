@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 859ED6DA52
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Jul 2019 06:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30E826DE7A
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Jul 2019 06:29:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729343AbfGSEBU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Jul 2019 00:01:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32994 "EHLO mail.kernel.org"
+        id S1730836AbfGSE24 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Jul 2019 00:28:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39140 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727372AbfGSEBR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 19 Jul 2019 00:01:17 -0400
+        id S1732036AbfGSEGM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 19 Jul 2019 00:06:12 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C738A218B8;
-        Fri, 19 Jul 2019 04:01:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2EE3C21873;
+        Fri, 19 Jul 2019 04:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563508876;
-        bh=eyrz6BQnCnJ6buX2Al9FoEHYMHlPxCOzi3qzeEDLdu0=;
+        s=default; t=1563509172;
+        bh=zuY25SSnxTlqO2X+VYaatBbwaIjiAAiDI83fxmu47vM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eA7xzS1FRiLAL3zbVGltzZYfv557kYD67dRTNeTVjeRas9wFlMhR1ttZsZfB1gKTE
-         TCjiHdoxD7q998BQYmsze9L+MD9iSN+f/Az1bWbHoghIzaNDksDWm2Se78bKO2JBFn
-         fHHzrAm2msx0g+/7zYubzFxXpKasQmSuWAnwZfak=
+        b=1ipnEl5OP6paLKLeLvb/z3sIIBkoQn602cwVwtk0Y+r7fQWpPf4Zwd+3H4GpNh6aF
+         7JAephdjSIwKRgvlF5Y/gYOFTaf5oKKSP76zGjzIyKjNB0npY1/e2YC9ZsX1ZKCXNn
+         WIW3TysPWN0jybfI9cIikw6jgKQ8TkngTzuPpGew=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
@@ -30,12 +30,12 @@ Cc:     YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
         Kishon Vijay Abraham I <kishon@ti.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 132/171] PCI: dwc: pci-dra7xx: Fix compilation when !CONFIG_GPIOLIB
-Date:   Thu, 18 Jul 2019 23:56:03 -0400
-Message-Id: <20190719035643.14300-132-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 105/141] PCI: dwc: pci-dra7xx: Fix compilation when !CONFIG_GPIOLIB
+Date:   Fri, 19 Jul 2019 00:02:10 -0400
+Message-Id: <20190719040246.15945-105-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190719035643.14300-1-sashal@kernel.org>
-References: <20190719035643.14300-1-sashal@kernel.org>
+In-Reply-To: <20190719040246.15945-1-sashal@kernel.org>
+References: <20190719040246.15945-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
@@ -80,7 +80,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 419451efd58c..4234ddb4722f 100644
+index ae84a69ae63a..4ef0a592505c 100644
 --- a/drivers/pci/controller/dwc/pci-dra7xx.c
 +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
 @@ -26,6 +26,7 @@
