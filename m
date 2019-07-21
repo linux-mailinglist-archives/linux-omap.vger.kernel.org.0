@@ -2,59 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F06DA6E9BE
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Jul 2019 19:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A9D36F14C
+	for <lists+linux-omap@lfdr.de>; Sun, 21 Jul 2019 04:42:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731851AbfGSRCV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Jul 2019 13:02:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58234 "EHLO mail.kernel.org"
+        id S1726238AbfGUCmw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 20 Jul 2019 22:42:52 -0400
+Received: from vern.gendns.com ([98.142.107.122]:34186 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728476AbfGSRCV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 19 Jul 2019 13:02:21 -0400
-Received: from localhost (unknown [84.241.199.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 825C12184E;
-        Fri, 19 Jul 2019 17:02:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563555740;
-        bh=mc9dpku4ZlCQzY0VURDm7LZ8gZlKE0j++u2PjTJ3XdM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OW4hvB/DoSAgfh3FWmT4AWO+a7FQdlt3aM00yFr9oP8qSAOzd3w7U5lc3JHGO0mlD
-         /XpP4yAmtEhIIugEoVZ014rhWASJywD3fnNthzH8n+t8hHsG2V97sX+qrmaZq60zjK
-         uFs3Q+fcX+VG0Q769/eDIvnWXP4oFaAtbg6a5YHw=
-Date:   Fri, 19 Jul 2019 19:27:48 +0900
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Pavel Machek <pavel@denx.de>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        johan@kernel.org, linux-usb@vger.kernel.org
-Subject: Re: USB Modem support for Droid 4
-Message-ID: <20190719102748.GA14546@kroah.com>
-References: <20190718201713.GA25103@amd>
+        id S1726184AbfGUCmw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 20 Jul 2019 22:42:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=QBCxrWgQQvbzcSHUE+6V5GYiHh8kl0xDb7n2C2WZI1U=; b=evrWp+eTbUOlJMWIwZri5RT/jU
+        5WhW7H5EVxsOoU+e2v3rKQ7Km5/PUUkYGhesGGviICzbRx3A91I3Vzubr/CQlLVm0RXw2IRQz6wAE
+        vgWLHpoJzvSy3hVcQEri0fNKnaoyLMzFurmu3Xs4LEhZ6guZv2tBxI/E/fLwHG8fUSnAFzOdfFXfU
+        xpD5ZTWPoR5W/HBaDvCVr0hCFbB3KeJQDhgE3GtXRx9THOkDA2szgseW7aZgURr3RemxHOgCi9jsi
+        lyA0Tx2lZ9fogw0qJ1pp5SoiDLm8thW7iUj8dxrQh+ozh5AKwYWwmIiN6X72qPEUrRMeMNrkqJoCL
+        /uXUpnDw==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:51266 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1hp1oH-001YcK-CZ; Sat, 20 Jul 2019 22:42:49 -0400
+Subject: Re: [PATCH 1/4] ARM: OMAP2+: Drop mmc platform data for am330x and
+ am43xx
+To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org
+References: <20190326181324.32140-1-tony@atomide.com>
+ <20190326181324.32140-2-tony@atomide.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <0af63198-5a68-2f0d-f14e-2b514580d2d5@lechnology.com>
+Date:   Sat, 20 Jul 2019 21:42:49 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190718201713.GA25103@amd>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190326181324.32140-2-tony@atomide.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jul 18, 2019 at 10:17:13PM +0200, Pavel Machek wrote:
-> From: Tony Lindgren <tony@atomide.com>
+On 3/26/19 1:13 PM, Tony Lindgren wrote:
+> We can now drop legacy platform data one interconnect target module at
+> a time in favor of the device tree based data that has been added earlier.
 > 
-> Droid starts to have useful support in linux-next. Modem is tricky to
-> play with, but this is enough to get basic support.
-> 
-> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
 
-No signed-off-by from Tony?
+This breaks wifi on BeagleBone Blue (found via git bisect). In dmesg, I see:
 
-And no [PATCH] in the subject?
+     platform 47810000.mmc: Cannot lookup hwmod 'mmc3'
 
-odd...
-
+How can we fix it?
