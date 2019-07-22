@@ -2,141 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C567045E
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jul 2019 17:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE5EF7070A
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jul 2019 19:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729229AbfGVPqc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Jul 2019 11:46:32 -0400
-Received: from vern.gendns.com ([98.142.107.122]:44142 "EHLO vern.gendns.com"
+        id S1731443AbfGVR00 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Jul 2019 13:26:26 -0400
+Received: from sauhun.de ([88.99.104.3]:42308 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729631AbfGVPqY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 22 Jul 2019 11:46:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=References:In-Reply-To:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=kQ5tjS0DIkzEg92Su0xvHHf6qFC0tM+cXFESZNk2Qdc=; b=jbyvO9Vwktsa0oeaEDu6oNfSj
-        INCGXxhiypFiIpWeSeDImMe5LuwmX7rafXTcyntH94Je6nsqmfpGS7aZ4hh1g8lXFlQwsK82ZlqE3
-        bnTOoJIZG8IiaQO805qBLpuwpPyXmpdId2mayyljDpBtoizsYIWxDjX9M7FAfzb/esCNcBZaBnf7S
-        GbpCp4NOr9Zxk8Ko4H5B4atYQF4mgHdgIW8kPMUJ6F+QgHHNG2Tn/wjzzNiURZWxNgO6VhsG66Q5p
-        RpTrrpCW6KrYehyuoL+HZ45UOkRVs28xsjazv3Ue2/mLDYP43lUmNpUrZgRZpIR2ZeVDf5sea6vLP
-        RXUFgkexA==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:44690 helo=freyr.lechnology.com)
-        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <david@lechnology.com>)
-        id 1hpaW5-006p1O-Jl; Mon, 22 Jul 2019 11:46:21 -0400
-From:   David Lechner <david@lechnology.com>
-To:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     David Lechner <david@lechnology.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: [PATCH 4/4] ARM: dts: am335x-boneblue: Enable eQEP
-Date:   Mon, 22 Jul 2019 10:45:38 -0500
-Message-Id: <20190722154538.5314-5-david@lechnology.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190722154538.5314-1-david@lechnology.com>
-References: <20190722154538.5314-1-david@lechnology.com>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+        id S1731425AbfGVR00 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 22 Jul 2019 13:26:26 -0400
+Received: from localhost (p54B33E22.dip0.t-ipconnect.de [84.179.62.34])
+        by pokefinder.org (Postfix) with ESMTPSA id 205654A149A;
+        Mon, 22 Jul 2019 19:26:24 +0200 (CEST)
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-i2c@vger.kernel.org
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH 00/14] mfd: convert subsystem to i2c_new_dummy_device()
+Date:   Mon, 22 Jul 2019 19:26:07 +0200
+Message-Id: <20190722172623.4166-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This enables the Enhanced Quadrature Encoder Pulse (eQEP) module for
-connectors E1, E2 and E3 on BeagleBone Blue.
+This series is part of a tree-wide movement to replace the I2C API call
+'i2c_new_dummy' which returns NULL with its new counterpart returning an
+ERRPTR.
 
-Signed-off-by: David Lechner <david@lechnology.com>
----
- arch/arm/boot/dts/am335x-boneblue.dts | 54 +++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+The series was generated with coccinelle (audited afterwards, of course) and
+build tested by me and by buildbot. No tests on HW have been performed.
 
-diff --git a/arch/arm/boot/dts/am335x-boneblue.dts b/arch/arm/boot/dts/am335x-boneblue.dts
-index 0257576d5d16..df3978ce061c 100644
---- a/arch/arm/boot/dts/am335x-boneblue.dts
-+++ b/arch/arm/boot/dts/am335x-boneblue.dts
-@@ -258,6 +258,30 @@
- 			AM33XX_PADCONF(AM335X_PIN_MII1_RXD0, PIN_OUTPUT, MUX_MODE7)		/* (M16) gmii1_rxd0.gpio2[21] */
- 		>;
- 	};
-+
-+	/* E1 */
-+	eqep0_pins: pinmux_eqep0_pins {
-+		pinctrl-single,pins = <
-+			AM33XX_PADCONF(AM335X_PIN_MCASP0_AXR0, PIN_INPUT, MUX_MODE1)		/* (B12) mcasp0_aclkr.eQEP0A_in */
-+			AM33XX_PADCONF(AM335X_PIN_MCASP0_FSR, PIN_INPUT, MUX_MODE1)		/* (C13) mcasp0_fsr.eQEP0B_in */
-+		>;
-+	};
-+
-+	/* E2 */
-+	eqep1_pins: pinmux_eqep1_pins {
-+		pinctrl-single,pins = <
-+			AM33XX_PADCONF(AM335X_PIN_LCD_DATA12, PIN_INPUT, MUX_MODE2)		/* (V2) lcd_data12.eQEP1A_in */
-+			AM33XX_PADCONF(AM335X_PIN_LCD_DATA13, PIN_INPUT, MUX_MODE2)		/* (V3) lcd_data13.eQEP1B_in */
-+		>;
-+	};
-+
-+	/* E3 */
-+	eqep2_pins: pinmux_eqep2_pins {
-+		pinctrl-single,pins = <
-+			AM33XX_PADCONF(AM335X_PIN_GPMC_AD12, PIN_INPUT, MUX_MODE4)		/* (T12) gpmc_ad12.eQEP2A_in */
-+			AM33XX_PADCONF(AM335X_PIN_GPMC_AD13, PIN_INPUT, MUX_MODE4)		/* (R12) gpmc_ad13.eQEP2B_in */
-+		>;
-+	};
- };
- 
- &uart0 {
-@@ -530,3 +554,33 @@
- 		line-name = "LS_BUF_EN";
- 	};
- };
-+
-+&epwmss0 {
-+	status = "okay";
-+};
-+
-+&eqep0 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&eqep0_pins>;
-+};
-+
-+&epwmss1 {
-+	status = "okay";
-+};
-+
-+&eqep1 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&eqep1_pins>;
-+};
-+
-+&epwmss2 {
-+	status = "okay";
-+};
-+
-+&eqep2 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&eqep2_pins>;
-+};
+The branch is based on v5.3-rc1. A branch (with some more stuff included) can
+be found here:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/i2c/new_dummy
+
+Some drivers still need to be manually converted. Patches for those will be
+sent out individually.
+
+
+Wolfram Sang (14):
+  mfd: 88pm800: convert to i2c_new_dummy_device
+  mfd: 88pm860x-core: convert to i2c_new_dummy_device
+  mfd: ab3100-core: convert to i2c_new_dummy_device
+  mfd: bcm590xx: convert to i2c_new_dummy_device
+  mfd: da9150-core: convert to i2c_new_dummy_device
+  mfd: max14577: convert to i2c_new_dummy_device
+  mfd: max77693: convert to i2c_new_dummy_device
+  mfd: max77843: convert to i2c_new_dummy_device
+  mfd: max8907: convert to i2c_new_dummy_device
+  mfd: max8925-i2c: convert to i2c_new_dummy_device
+  mfd: max8997: convert to i2c_new_dummy_device
+  mfd: max8998: convert to i2c_new_dummy_device
+  mfd: palmas: convert to i2c_new_dummy_device
+  mfd: twl-core: convert to i2c_new_dummy_device
+
+ drivers/mfd/88pm800.c       | 12 ++++++------
+ drivers/mfd/88pm860x-core.c |  6 +++---
+ drivers/mfd/ab3100-core.c   |  6 +++---
+ drivers/mfd/bcm590xx.c      |  6 +++---
+ drivers/mfd/da9150-core.c   |  6 +++---
+ drivers/mfd/max14577.c      |  6 +++---
+ drivers/mfd/max77693.c      | 12 ++++++------
+ drivers/mfd/max77843.c      |  6 +++---
+ drivers/mfd/max8907.c       |  6 +++---
+ drivers/mfd/max8925-i2c.c   | 12 ++++++------
+ drivers/mfd/max8997.c       | 18 +++++++++---------
+ drivers/mfd/max8998.c       |  6 +++---
+ drivers/mfd/palmas.c        |  6 +++---
+ drivers/mfd/twl-core.c      |  6 +++---
+ 14 files changed, 57 insertions(+), 57 deletions(-)
+
 -- 
-2.17.1
+2.20.1
 
