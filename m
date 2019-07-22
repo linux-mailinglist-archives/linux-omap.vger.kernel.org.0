@@ -2,96 +2,162 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCE596FAB5
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jul 2019 09:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A10116FAC5
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jul 2019 09:54:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727268AbfGVHuh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Jul 2019 03:50:37 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:36781 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726236AbfGVHug (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Jul 2019 03:50:36 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 803AE80317; Mon, 22 Jul 2019 09:50:21 +0200 (CEST)
-Date:   Mon, 22 Jul 2019 09:50:32 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Ezequiel Garcia <ezequiel@collabora.com>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        jacek.anaszewski@gmail.com, linux-leds@vger.kernel.org,
-        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] Enable backlight when trigger is activated
-Message-ID: <20190722075032.GA27524@amd>
-References: <20190718190849.GA11409@amd>
- <22d7eca4ad8aa2e73933c4f83c92221ce6e0945a.camel@collabora.com>
+        id S1727093AbfGVHyQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Jul 2019 03:54:16 -0400
+Received: from muru.com ([72.249.23.125]:55488 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726905AbfGVHyQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 22 Jul 2019 03:54:16 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 5425180FA;
+        Mon, 22 Jul 2019 07:54:40 +0000 (UTC)
+Date:   Mon, 22 Jul 2019 00:54:12 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/4] ARM: OMAP2+: Drop mmc platform data for am330x and
+ am43xx
+Message-ID: <20190722075411.GM5447@atomide.com>
+References: <20190326181324.32140-1-tony@atomide.com>
+ <20190326181324.32140-2-tony@atomide.com>
+ <0af63198-5a68-2f0d-f14e-2b514580d2d5@lechnology.com>
+ <20190722060951.GL5447@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="ZPt4rx8FFjLCG7dd"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <22d7eca4ad8aa2e73933c4f83c92221ce6e0945a.camel@collabora.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20190722060951.GL5447@atomide.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Tony Lindgren <tony@atomide.com> [190722 06:10]:
+> * David Lechner <david@lechnology.com> [190721 02:43]:
+> > On 3/26/19 1:13 PM, Tony Lindgren wrote:
+> > > We can now drop legacy platform data one interconnect target module at
+> > > a time in favor of the device tree based data that has been added earlier.
+> > > 
+> > > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > > ---
+> > 
+> > This breaks wifi on BeagleBone Blue (found via git bisect). In dmesg, I see:
+> > 
+> >     platform 47810000.mmc: Cannot lookup hwmod 'mmc3'
+> 
+> Thanks for letting me know and sorry for breaking it.
+> 
+> > How can we fix it?
+> 
+> The warning you pasted above hints that we're still trying to
+> probe mmc3 using platform data, and that data no longer exists.
+> 
+> Looks like I've completely missed updating the dts file for
+> mmc3 that is directly on the l3 interconnect instead of l4 like
+> all the other mmc instances. The same applies for am4 too, and
+> I've also left some "ti,hwmods" properties around too..
+> 
+> Care to try the following patch and see if it fixes the issue
+> for you?
 
---ZPt4rx8FFjLCG7dd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh I just noticed this needs to be fixed in v5.2, not in v5.3-rc
+series. It's best to keep the "ti,hwmods" property still around
+as there may be dependencies to ti-sysc driver changes in v5.3-rc
+series for dropping it. Below is a more minimal fix to try.
 
-Hi!
+Regards,
 
-> > Configuring backlight trigger from dts results in backlight off during
-> > boot. Machine looks dead upon boot, which is not good.
-> >=20
-> > Fix that by enabling LED on trigger activation.
+Tony
 
-> > +++ b/drivers/leds/trigger/ledtrig-backlight.c
-> > @@ -114,6 +114,8 @@ static int bl_trig_activate(struct led_classdev *le=
-d)
-> >  	n->old_status =3D UNBLANK;
-> >  	n->notifier.notifier_call =3D fb_notifier_callback;
-> > =20
-> > +	led_set_brightness(led, LED_ON);
-> > +
->=20
-> This looks fishy.
->=20
-> Maybe you should use a default-state =3D "keep" instead? (and you'll have
-> to support it in the LED driver).
->=20
-> That'll give you proper "don't touch the LED if it was turned on" behavio=
-r,
-> which is what you seem to want.
-
-Actually no, that's not what I want. LED should go on if the display
-is active, as soon as trigger is activated.
-
-Unfortunately, I have see no good way to tell if the display is
-active (and display is usually active when trigger is activated).
-
-Thanks,
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---ZPt4rx8FFjLCG7dd
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl01asgACgkQMOfwapXb+vK9lgCbBcUNDD1pNFmswZowkerycBcz
-v80AoK7Dv7JR0+GNLhozQBGFuNFWTOIt
-=oVmU
------END PGP SIGNATURE-----
-
---ZPt4rx8FFjLCG7dd--
+8< -------------
+diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+--- a/arch/arm/boot/dts/am33xx.dtsi
++++ b/arch/arm/boot/dts/am33xx.dtsi
+@@ -234,13 +234,33 @@
+ 			interrupt-names = "edma3_tcerrint";
+ 		};
+ 
+-		mmc3: mmc@47810000 {
+-			compatible = "ti,omap4-hsmmc";
++		target-module@47810000 {
++			compatible = "ti,sysc-omap2", "ti,sysc";
+ 			ti,hwmods = "mmc3";
+-			ti,needs-special-reset;
+-			interrupts = <29>;
+-			reg = <0x47810000 0x1000>;
+-			status = "disabled";
++			reg = <0x478102fc 0x4>,
++			      <0x47810110 0x4>,
++			      <0x47810114 0x4>;
++			reg-names = "rev", "sysc", "syss";
++			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
++					 SYSC_OMAP2_ENAWAKEUP |
++					 SYSC_OMAP2_SOFTRESET |
++					 SYSC_OMAP2_AUTOIDLE)>;
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ti,syss-mask = <1>;
++			clocks = <&l3s_clkctrl AM3_L3S_MMC3_CLKCTRL 0>;
++			clock-names = "fck";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0x0 0x47810000 0x1000>;
++
++			mmc3: mmc@0 {
++				compatible = "ti,omap4-hsmmc";
++				ti,needs-special-reset;
++				interrupts = <29>;
++				reg = <0x0 0x1000>;
++			};
+ 		};
+ 
+ 		usb: usb@47400000 {
+diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
+--- a/arch/arm/boot/dts/am4372.dtsi
++++ b/arch/arm/boot/dts/am4372.dtsi
+@@ -228,13 +228,33 @@
+ 			interrupt-names = "edma3_tcerrint";
+ 		};
+ 
+-		mmc3: mmc@47810000 {
+-			compatible = "ti,omap4-hsmmc";
+-			reg = <0x47810000 0x1000>;
++		target-module@47810000 {
++			compatible = "ti,sysc-omap2", "ti,sysc";
+ 			ti,hwmods = "mmc3";
+-			ti,needs-special-reset;
+-			interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
+-			status = "disabled";
++			reg = <0x478102fc 0x4>,
++			      <0x47810110 0x4>,
++			      <0x47810114 0x4>;
++			reg-names = "rev", "sysc", "syss";
++			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
++					 SYSC_OMAP2_ENAWAKEUP |
++					 SYSC_OMAP2_SOFTRESET |
++					 SYSC_OMAP2_AUTOIDLE)>;
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ti,syss-mask = <1>;
++			clocks = <&l3s_clkctrl AM4_L3S_MMC3_CLKCTRL 0>;
++			clock-names = "fck";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0x0 0x47810000 0x1000>;
++
++			mmc3: mmc@0 {
++				compatible = "ti,omap4-hsmmc";
++				ti,needs-special-reset;
++				interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
++				reg = <0x0 0x1000>;
++			};
+ 		};
+ 
+ 		sham: sham@53100000 {
+-- 
+2.21.0
