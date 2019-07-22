@@ -2,27 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE5EF7070A
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jul 2019 19:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BDF6706F3
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jul 2019 19:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731443AbfGVR00 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Jul 2019 13:26:26 -0400
-Received: from sauhun.de ([88.99.104.3]:42308 "EHLO pokefinder.org"
+        id S1731667AbfGVR1k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Jul 2019 13:27:40 -0400
+Received: from sauhun.de ([88.99.104.3]:42386 "EHLO pokefinder.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731425AbfGVR00 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 22 Jul 2019 13:26:26 -0400
+        id S1731476AbfGVR0c (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 22 Jul 2019 13:26:32 -0400
 Received: from localhost (p54B33E22.dip0.t-ipconnect.de [84.179.62.34])
-        by pokefinder.org (Postfix) with ESMTPSA id 205654A149A;
-        Mon, 22 Jul 2019 19:26:24 +0200 (CEST)
+        by pokefinder.org (Postfix) with ESMTPSA id 600C84A1496;
+        Mon, 22 Jul 2019 19:26:31 +0200 (CEST)
 From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
 To:     linux-i2c@vger.kernel.org
 Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH 00/14] mfd: convert subsystem to i2c_new_dummy_device()
-Date:   Mon, 22 Jul 2019 19:26:07 +0200
-Message-Id: <20190722172623.4166-1-wsa+renesas@sang-engineering.com>
+        Tony Lindgren <tony@atomide.com>,
+        Lee Jones <lee.jones@linaro.org>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 13/14] mfd: palmas: convert to i2c_new_dummy_device
+Date:   Mon, 22 Jul 2019 19:26:20 +0200
+Message-Id: <20190722172623.4166-14-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190722172623.4166-1-wsa+renesas@sang-engineering.com>
+References: <20190722172623.4166-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
@@ -30,54 +33,37 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This series is part of a tree-wide movement to replace the I2C API call
-'i2c_new_dummy' which returns NULL with its new counterpart returning an
-ERRPTR.
+Move from i2c_new_dummy() to i2c_new_dummy_device(), so we now get an
+ERRPTR which we use in error handling.
 
-The series was generated with coccinelle (audited afterwards, of course) and
-build tested by me and by buildbot. No tests on HW have been performed.
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
 
-The branch is based on v5.3-rc1. A branch (with some more stuff included) can
-be found here:
+Generated with coccinelle. Build tested by me and buildbot. Not tested on HW.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/i2c/new_dummy
+ drivers/mfd/palmas.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Some drivers still need to be manually converted. Patches for those will be
-sent out individually.
-
-
-Wolfram Sang (14):
-  mfd: 88pm800: convert to i2c_new_dummy_device
-  mfd: 88pm860x-core: convert to i2c_new_dummy_device
-  mfd: ab3100-core: convert to i2c_new_dummy_device
-  mfd: bcm590xx: convert to i2c_new_dummy_device
-  mfd: da9150-core: convert to i2c_new_dummy_device
-  mfd: max14577: convert to i2c_new_dummy_device
-  mfd: max77693: convert to i2c_new_dummy_device
-  mfd: max77843: convert to i2c_new_dummy_device
-  mfd: max8907: convert to i2c_new_dummy_device
-  mfd: max8925-i2c: convert to i2c_new_dummy_device
-  mfd: max8997: convert to i2c_new_dummy_device
-  mfd: max8998: convert to i2c_new_dummy_device
-  mfd: palmas: convert to i2c_new_dummy_device
-  mfd: twl-core: convert to i2c_new_dummy_device
-
- drivers/mfd/88pm800.c       | 12 ++++++------
- drivers/mfd/88pm860x-core.c |  6 +++---
- drivers/mfd/ab3100-core.c   |  6 +++---
- drivers/mfd/bcm590xx.c      |  6 +++---
- drivers/mfd/da9150-core.c   |  6 +++---
- drivers/mfd/max14577.c      |  6 +++---
- drivers/mfd/max77693.c      | 12 ++++++------
- drivers/mfd/max77843.c      |  6 +++---
- drivers/mfd/max8907.c       |  6 +++---
- drivers/mfd/max8925-i2c.c   | 12 ++++++------
- drivers/mfd/max8997.c       | 18 +++++++++---------
- drivers/mfd/max8998.c       |  6 +++---
- drivers/mfd/palmas.c        |  6 +++---
- drivers/mfd/twl-core.c      |  6 +++---
- 14 files changed, 57 insertions(+), 57 deletions(-)
-
+diff --git a/drivers/mfd/palmas.c b/drivers/mfd/palmas.c
+index 6818ff34837c..f5b3fa973b13 100644
+--- a/drivers/mfd/palmas.c
++++ b/drivers/mfd/palmas.c
+@@ -549,12 +549,12 @@ static int palmas_i2c_probe(struct i2c_client *i2c,
+ 			palmas->i2c_clients[i] = i2c;
+ 		else {
+ 			palmas->i2c_clients[i] =
+-					i2c_new_dummy(i2c->adapter,
++					i2c_new_dummy_device(i2c->adapter,
+ 							i2c->addr + i);
+-			if (!palmas->i2c_clients[i]) {
++			if (IS_ERR(palmas->i2c_clients[i])) {
+ 				dev_err(palmas->dev,
+ 					"can't attach client %d\n", i);
+-				ret = -ENOMEM;
++				ret = PTR_ERR(palmas->i2c_clients[i]);
+ 				goto err_i2c;
+ 			}
+ 			palmas->i2c_clients[i]->dev.of_node = of_node_get(node);
 -- 
 2.20.1
 
