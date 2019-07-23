@@ -2,44 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4937071FD9
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jul 2019 21:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A10072133
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jul 2019 23:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729694AbfGWTDS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Jul 2019 15:03:18 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:39612 "EHLO
+        id S2391899AbfGWVBv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Jul 2019 17:01:51 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:53874 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729050AbfGWTDS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jul 2019 15:03:18 -0400
+        with ESMTP id S1731830AbfGWVBv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jul 2019 17:01:51 -0400
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6NJ3Dx2070436;
-        Tue, 23 Jul 2019 14:03:13 -0500
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6NL1hJ8098993;
+        Tue, 23 Jul 2019 16:01:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1563908593;
-        bh=dgAWQjxtCP5dIIzQPntXQvITimMe67GhUEu5H0ZWdpM=;
+        s=ti-com-17Q1; t=1563915703;
+        bh=u6SXikvGbSFU77KnFGFUWfACbpOyuISOALYakteXBb0=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=gy+LLjyXgC5A3RA4GVKO+AvXneYwLjeV590QU7snUStl1OHXMmPMMFs4oa6VVWkKT
-         Usl+KatzH41hPr3P8wNfK2+jp+JMAZTvuWL2o7/p6YdEx2g9v/Rf4dhMt1ok0lphYN
-         pTjZxeRTTKCd3pHlWqqQBM435Mv18Ab/i4zD0mRk=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6NJ3DEf036172
+        b=O9CkEp5xCTYBUGASZzWVRrFKX6mskxwPOfQCOpkxx68DZlr3/1acoGJa82ue+d9dB
+         con4HqbuGQpT43hLr52sObTQFTt8sZXgyJJMz5dZFzRpGnX6Eo4i7At8vk2v/KB6Dr
+         zyCZejU/CIXstHxFU7TLFe7scnrhUV1MHBMbhpNE=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6NL1hPL046625
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 23 Jul 2019 14:03:13 -0500
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 23 Jul 2019 16:01:43 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 23
- Jul 2019 14:03:12 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ Jul 2019 16:01:42 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 23 Jul 2019 14:03:12 -0500
+ Frontend Transport; Tue, 23 Jul 2019 16:01:42 -0500
 Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6NJ3CFq033455;
-        Tue, 23 Jul 2019 14:03:12 -0500
-Subject: Re: [PATCH 2/8] ARM: OMAP2+: Remove unconfigured midlemode for am3
- lcdc
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>,
-        Jyri Sarha <jsarha@ti.com>
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6NL1gEL050568;
+        Tue, 23 Jul 2019 16:01:42 -0500
+Subject: Re: [PATCH 5/8] ARM: dts: Drop bogus ahclkr clocks for dra7 mcasp 3
+ to 8
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
 CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
@@ -48,14 +47,14 @@ CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
 References: <20190723112811.44381-1-tony@atomide.com>
- <20190723112811.44381-3-tony@atomide.com>
+ <20190723112811.44381-6-tony@atomide.com>
 From:   Suman Anna <s-anna@ti.com>
-Message-ID: <bcc130a5-f7e0-e182-9f4b-5a48fc3d6e17@ti.com>
-Date:   Tue, 23 Jul 2019 14:03:12 -0500
+Message-ID: <2c750847-700e-c835-ee53-a656b363c36c@ti.com>
+Date:   Tue, 23 Jul 2019 16:01:42 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190723112811.44381-3-tony@atomide.com>
+In-Reply-To: <20190723112811.44381-6-tony@atomide.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -65,51 +64,88 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-+ Jyri
+Hi Tony,
 
 On 7/23/19 6:28 AM, Tony Lindgren wrote:
-> We currently get a warning for lcdc because of a difference
-> with dts provided configuration compared to the legacy platform
-> data. This is because lcdc has SYSC_HAS_MIDLEMODE configured in
-> the platform data without configuring the modes.
+> The ahclkr clkctrl clock bit 28 only exists for mcasp 1 and 2 on dra7.
+> Otherwise we get the following warning on beagle-x15:
+> 
+> ti-sysc 48468000.target-module: could not add child clock ahclkr: -19
+> 
+> Fixes: 5241ccbf2819 ("ARM: dts: Add missing ranges for dra7 mcasp l3 ports")
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  arch/arm/boot/dts/dra7-l4.dtsi | 25 ++++++++++---------------
+>  1 file changed, 10 insertions(+), 15 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
+> --- a/arch/arm/boot/dts/dra7-l4.dtsi
+> +++ b/arch/arm/boot/dts/dra7-l4.dtsi
+> @@ -2818,9 +2818,8 @@
+>  					<SYSC_IDLE_SMART>;
+>  			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
+>  			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 0>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 24>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 28>;
+> -			clock-names = "fck", "ahclkx", "ahclkr";
+> +				 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 24>;
+> +			clock-names = "fck", "ahclkx";
+>  			#address-cells = <1>;
+>  			#size-cells = <1>;
+>  			ranges = <0x0 0x68000 0x2000>,
+> @@ -2854,9 +2853,8 @@
+>  					<SYSC_IDLE_SMART>;
+>  			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
+>  			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 0>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 24>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 28>;
+> -			clock-names = "fck", "ahclkx", "ahclkr";
+> +				 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 24>;
+> +			clock-names = "fck", "ahclkx";
+>  			#address-cells = <1>;
+>  			#size-cells = <1>;
+>  			ranges = <0x0 0x6c000 0x2000>,
+> @@ -2890,9 +2888,8 @@
+>  					<SYSC_IDLE_SMART>;
+>  			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
+>  			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 0>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 24>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 28>;
+> -			clock-names = "fck", "ahclkx", "ahclkr";
+> +				 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 24>;
+> +			clock-names = "fck", "ahclkx";
+>  			#address-cells = <1>;
+>  			#size-cells = <1>;
+>  			ranges = <0x0 0x70000 0x2000>,
+> @@ -2926,9 +2923,8 @@
+>  					<SYSC_IDLE_SMART>;
+>  			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
+>  			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 0>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 24>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 28>;
+> -			clock-names = "fck", "ahclkx", "ahclkr";
+> +				 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 24>;
+> +			clock-names = "fck", "ahclkx";
+>  			#address-cells = <1>;
+>  			#size-cells = <1>;
+>  			ranges = <0x0 0x74000 0x2000>,
+> @@ -2962,9 +2958,8 @@
+>  					<SYSC_IDLE_SMART>;
+>  			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
+>  			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 0>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>,
+> -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 28>;
+> -			clock-names = "fck", "ahclkx", "ahclkr";
+> +				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>;
+> +			clock-names = "fck", "ahclkx";
 
-Hi Tony,
-While I understand that you are trying to match the DT data with the
-existing legacy data, do you know if there was a reason why this was
-omitted in the first place? Should we be really adding the MSTANDBY_
-flags and fix up the DTS node accordingly? I tried looking through the
-git log, and the initial commit itself didn't add the MSTANDBY_ flags
-but used the SYSC_HAS_MIDLEMODE.
-
-Jyri,
-Do you know the history?
+The equivalent change to MCASP8 is missing.
 
 regards
 Suman
 
-> 
-> Let's fix the warning by removing SYSC_HAS_MIDLEMODE. Note that
-> the am335x TRM lists SYSC_HAS_MIDLEMODE, but it is unused.
-
-
-
-> 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  arch/arm/mach-omap2/omap_hwmod_33xx_data.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-> --- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-> +++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-> @@ -231,7 +231,7 @@ static struct omap_hwmod am33xx_control_hwmod = {
->  static struct omap_hwmod_class_sysconfig lcdc_sysc = {
->  	.rev_offs	= 0x0,
->  	.sysc_offs	= 0x54,
-> -	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE),
-> +	.sysc_flags	= SYSC_HAS_SIDLEMODE,
->  	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
->  	.sysc_fields	= &omap_hwmod_sysc_type2,
->  };
+>  			#address-cells = <1>;
+>  			#size-cells = <1>;
+>  			ranges = <0x0 0x78000 0x2000>,
 > 
 
