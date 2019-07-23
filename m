@@ -2,80 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46C3971780
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jul 2019 13:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA05671AAF
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jul 2019 16:45:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732093AbfGWLyI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Jul 2019 07:54:08 -0400
-Received: from muru.com ([72.249.23.125]:55696 "EHLO muru.com"
+        id S2390590AbfGWOpd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Jul 2019 10:45:33 -0400
+Received: from vern.gendns.com ([98.142.107.122]:35634 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728765AbfGWLyI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Jul 2019 07:54:08 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 2C1F0808C;
-        Tue, 23 Jul 2019 11:54:32 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Peter Hurley <peter@hurleysoftware.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh R <vigneshr@ti.com>, linux-serial@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH] serial: 8250_omap: Fix idling for unloaded serdev drivers
-Date:   Tue, 23 Jul 2019 04:54:00 -0700
-Message-Id: <20190723115400.46432-1-tony@atomide.com>
-X-Mailer: git-send-email 2.21.0
+        id S1732850AbfGWOpd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 23 Jul 2019 10:45:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=OuZctdUUveCDjOVizawYZ+/RE1oqBYnynbzzPf+MOl8=; b=0IgNld4+UjgjRm3pgN/LIyj7UB
+        jJ7eayhB6Z81Zqx5kKpW0HvC5qok+wvM4G+cAi5+W7Z5FxQwMhJvK+0dX9Fyh62mFCwzFsUPsDgf+
+        rCpSDDMriqtQBQwnn6m15+Rsl8TYsNkGWMFcQciOBJxc0XTGPQwMXP0zOo6PQ4WV2AIU5Lc0ItcBY
+        Nyaa+SaDjbJcbXES+lQRT66SAuO1dpNWLCvFCCmds+7PI0TQE8VDvAK4cqKVdNFApXfEPM9X4rTWh
+        RNH03l7b2r/qRMx9wfq9sBBhqK06wgYqzc3JaIp4NO4yKuc+pjZMtRL3g5x0HtZq80oxHFiQ5LUfs
+        vKjBxGAg==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:49700 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1hpw2l-009zPy-D8; Tue, 23 Jul 2019 10:45:31 -0400
+Subject: Re: [PATCH 3/4] ARM: dts: am33xx: Add nodes for eQEP
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20190722154538.5314-1-david@lechnology.com>
+ <20190722154538.5314-4-david@lechnology.com>
+ <20190723084213.GR5447@atomide.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <af21fd76-7123-b317-896b-bfe18d293325@lechnology.com>
+Date:   Tue, 23 Jul 2019 09:45:29 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190723084213.GR5447@atomide.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-For many years omap variants have been setting the runtime PM
-autosuspend delay to -1 to prevent unsafe policy with lossy first
-character on wake-up. The user must specifically enable the timeout
-for UARTs if desired.
+On 7/23/19 3:42 AM, Tony Lindgren wrote:
+> * David Lechner <david@lechnology.com> [190722 15:46]:
+>> This adds new nodes for the Texas Instruments Enhanced Quadrature
+>> Encoder Pulse (eQEP) module in the PWM subsystem on AM33XX.
+>>
+>> Signed-off-by: David Lechner <david@lechnology.com>
+>> ---
+>>   arch/arm/boot/dts/am33xx-l4.dtsi | 27 +++++++++++++++++++++++++++
+>>   1 file changed, 27 insertions(+)
+>>
+>> diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+>> index 3b1fb2ba4dff..7fdc2f61c553 100644
+>> --- a/arch/arm/boot/dts/am33xx-l4.dtsi
+>> +++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+>> @@ -1908,6 +1908,15 @@
+>>   					status = "disabled";
+>>   				};
+>>   
+>> +				eqep0: eqep@180 {
+>> +					compatible = "ti,am3352-eqep";
+>> +					reg = <0x180 0x80>;
+>> +					clocks = <&l4ls_gclk>;
+>> +					clock-names = "fck";
+>> +					interrupts = <79>;
+>> +					status = "disabled";
+>> +				};
+>> +
+> 
+> You probably no longer need to map any clocks here as this> is now a child of the interconnect target module managed
+> by ti-sysc driver. I have not checked but probably l4ls_gclk
+> is same as clocks = <&l4ls_clkctrl AM3_L4LS_EPWMSS0_CLKCTRL 0>
+> already managed by ti-sysc. If so, then just using runtime PM
+> calls in any of the child device drivers will keep it enabled.
+> 
+> If l4ls_gclk is a separate functional clock, then it still
+> needs to be managed by the child device driver directly.
 
-We must not enable the workaround for serdev devices though. It leads
-into UARTs not idling if no serdev devices are loaded and there is no
-sysfs entry to configure the UART in that case. And this means that
-my PM may not work unless the serdev modules are loaded.
+The clock is included so that we can get the clock rate for
+the timing aspects of the eQEP, not for power management.
 
-We can detect a serdev device being configured based on a dts child
-node, and we can simply skip the workround in that case. And the
-serdev driver can idle the port during runtime when suitable if an
-out-of-band wake-up GPIO line exists for example.
-
-Let's also add some comments to the workaround while at it.
-
-Cc: Johan Hovold <johan@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/tty/serial/8250/8250_omap.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1234,7 +1234,16 @@ static int omap8250_probe(struct platform_device *pdev)
- 
- 	device_init_wakeup(&pdev->dev, true);
- 	pm_runtime_use_autosuspend(&pdev->dev);
--	pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
-+
-+	/*
-+	 * Disable runtime PM until autosuspend delay unless specifically
-+	 * enabled by the user via sysfs. This is the historic way to
-+	 * prevent an unsafe default policy with lossy characters on wake-up.
-+	 * For serdev devices this is not needed, the policy can be managed by
-+	 * the serdev driver.
-+	 */
-+	if (!of_get_available_child_count(pdev->dev.of_node))
-+		pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
- 
- 	pm_runtime_irq_safe(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
--- 
-2.21.0
+I chose to use the "fck" name to be consistent with the
+sibling EHRPWM and ECAP nodes that already have the same
+bindings for the same clock.
