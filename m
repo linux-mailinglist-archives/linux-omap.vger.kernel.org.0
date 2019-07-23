@@ -2,42 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B0E171F59
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jul 2019 20:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4937071FD9
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jul 2019 21:03:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388455AbfGWSbl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Jul 2019 14:31:41 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:36372 "EHLO
+        id S1729694AbfGWTDS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Jul 2019 15:03:18 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:39612 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727021AbfGWSbl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jul 2019 14:31:41 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6NIVaCT063191;
-        Tue, 23 Jul 2019 13:31:36 -0500
+        with ESMTP id S1729050AbfGWTDS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jul 2019 15:03:18 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6NJ3Dx2070436;
+        Tue, 23 Jul 2019 14:03:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1563906696;
-        bh=9cv0+/SVJMPPDN0ZhXDWZYsyy291EnVoJwpIzV02j8M=;
+        s=ti-com-17Q1; t=1563908593;
+        bh=dgAWQjxtCP5dIIzQPntXQvITimMe67GhUEu5H0ZWdpM=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=SeHacVK8t8RCkv+qAMQXCHTb6PB5lzmPbPg+KdmGrP+jyoTeiqZD0/n1ltfNLbthV
-         x7QfW3TGGjmgaa/0bqdDHOHZUzwJjtHyA63cjRBgwevKfkv/g92Dr4/MBFo7eGzDD4
-         7oiKUwn7vFUJfLYTwAlaNeX2eS2s+o4s4RbIb+VY=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6NIVaKB079235
+        b=gy+LLjyXgC5A3RA4GVKO+AvXneYwLjeV590QU7snUStl1OHXMmPMMFs4oa6VVWkKT
+         Usl+KatzH41hPr3P8wNfK2+jp+JMAZTvuWL2o7/p6YdEx2g9v/Rf4dhMt1ok0lphYN
+         pTjZxeRTTKCd3pHlWqqQBM435Mv18Ab/i4zD0mRk=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6NJ3DEf036172
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 23 Jul 2019 13:31:36 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 23 Jul 2019 14:03:13 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 23
- Jul 2019 13:31:36 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ Jul 2019 14:03:12 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 23 Jul 2019 13:31:36 -0500
+ Frontend Transport; Tue, 23 Jul 2019 14:03:12 -0500
 Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6NIVZ6q129119;
-        Tue, 23 Jul 2019 13:31:36 -0500
-Subject: Re: [PATCH 3/8] bus: ti-sysc: Fix handling of forced idle
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6NJ3CFq033455;
+        Tue, 23 Jul 2019 14:03:12 -0500
+Subject: Re: [PATCH 2/8] ARM: OMAP2+: Remove unconfigured midlemode for am3
+ lcdc
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>,
+        Jyri Sarha <jsarha@ti.com>
 CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
@@ -46,14 +48,14 @@ CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
 References: <20190723112811.44381-1-tony@atomide.com>
- <20190723112811.44381-4-tony@atomide.com>
+ <20190723112811.44381-3-tony@atomide.com>
 From:   Suman Anna <s-anna@ti.com>
-Message-ID: <4336e7ef-3857-e42f-e67c-94809acc59b8@ti.com>
-Date:   Tue, 23 Jul 2019 13:31:35 -0500
+Message-ID: <bcc130a5-f7e0-e182-9f4b-5a48fc3d6e17@ti.com>
+Date:   Tue, 23 Jul 2019 14:03:12 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190723112811.44381-4-tony@atomide.com>
+In-Reply-To: <20190723112811.44381-3-tony@atomide.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -63,38 +65,51 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 7/23/19 6:28 AM, Tony Lindgren wrote:
-> For some devices we can get the following warning on boot:
-> 
-> ti-sysc 48485200.target-module: sysc_disable_module: invalid midlemode
-> 
-> Fix this by treating SYSC_IDLE_FORCE like we do for the other bits
-> for idlemodes mask.
-> 
-> Fixes: d59b60564cbf ("bus: ti-sysc: Add generic enable/disable functions")
-> Cc: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
++ Jyri
 
-Reviewed-by: Suman Anna <s-anna@ti.com>
+On 7/23/19 6:28 AM, Tony Lindgren wrote:
+> We currently get a warning for lcdc because of a difference
+> with dts provided configuration compared to the legacy platform
+> data. This is because lcdc has SYSC_HAS_MIDLEMODE configured in
+> the platform data without configuring the modes.
+
+Hi Tony,
+While I understand that you are trying to match the DT data with the
+existing legacy data, do you know if there was a reason why this was
+omitted in the first place? Should we be really adding the MSTANDBY_
+flags and fix up the DTS node accordingly? I tried looking through the
+git log, and the initial commit itself didn't add the MSTANDBY_ flags
+but used the SYSC_HAS_MIDLEMODE.
+
+Jyri,
+Do you know the history?
 
 regards
 Suman
 
+> 
+> Let's fix the warning by removing SYSC_HAS_MIDLEMODE. Note that
+> the am335x TRM lists SYSC_HAS_MIDLEMODE, but it is unused.
+
+
+
+> 
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
->  drivers/bus/ti-sysc.c | 2 +-
+>  arch/arm/mach-omap2/omap_hwmod_33xx_data.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-> --- a/drivers/bus/ti-sysc.c
-> +++ b/drivers/bus/ti-sysc.c
-> @@ -949,7 +949,7 @@ static int sysc_best_idle_mode(u32 idlemodes, u32 *best_mode)
->  		*best_mode = SYSC_IDLE_SMART_WKUP;
->  	else if (idlemodes & BIT(SYSC_IDLE_SMART))
->  		*best_mode = SYSC_IDLE_SMART;
-> -	else if (idlemodes & SYSC_IDLE_FORCE)
-> +	else if (idlemodes & BIT(SYSC_IDLE_FORCE))
->  		*best_mode = SYSC_IDLE_FORCE;
->  	else
->  		return -EINVAL;
+> diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+> --- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+> +++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+> @@ -231,7 +231,7 @@ static struct omap_hwmod am33xx_control_hwmod = {
+>  static struct omap_hwmod_class_sysconfig lcdc_sysc = {
+>  	.rev_offs	= 0x0,
+>  	.sysc_offs	= 0x54,
+> -	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE),
+> +	.sysc_flags	= SYSC_HAS_SIDLEMODE,
+>  	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+>  	.sysc_fields	= &omap_hwmod_sysc_type2,
+>  };
 > 
 
