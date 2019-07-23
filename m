@@ -2,107 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7493D71C3E
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jul 2019 17:53:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8818A71EDE
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jul 2019 20:16:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732321AbfGWPx2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Jul 2019 11:53:28 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:38888 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730033AbfGWPx2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jul 2019 11:53:28 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6NFrHdq123362;
-        Tue, 23 Jul 2019 10:53:17 -0500
+        id S1731654AbfGWSQV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Jul 2019 14:16:21 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:34924 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730565AbfGWSQV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jul 2019 14:16:21 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6NIGGou059594;
+        Tue, 23 Jul 2019 13:16:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1563897197;
-        bh=BnpzLYQscthG64FXJPL0D5x3+LttJD4n7FxCLVoQ0rA=;
+        s=ti-com-17Q1; t=1563905776;
+        bh=KQPkYhTuJfhyS8PfO8QYjfDY+4JKdUSmCoRj+O/+9ag=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=gkraDMxJpl13gmc0klMe62QZD5YLEBklo56Rv8top1IngDZE9KlmpfkvrrdenAnpw
-         TQ8GrX5yR+mAPQyR0Oh8LrD66BgHfo9ZvM7y99x+1GiGruvaXAIsVrP8pU1F4MlKQo
-         vOS5dopVL2UbV+bnnhcoATqIi3tx/ra1ezJKEwPM=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6NFrHbk101439
+        b=NlcOtrYY77ZUl0NocV0eWonHVSyGHb/YHl1135OyC/OY7ULW9OY2TRkxn7liAEDOb
+         07SxjV+Knmk8m6lvYfwWe6TP/UkCiZayuEz2XXJU+qU6q0iJttYTBeP76s6o5fv0/I
+         XG76G/rJprda4Xn39B1JhY+vIXJ37jzYQdXZ0BAk=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6NIGGa5062230
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 23 Jul 2019 10:53:17 -0500
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 23 Jul 2019 13:16:16 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 23
- Jul 2019 10:53:17 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ Jul 2019 13:16:15 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 23 Jul 2019 10:53:17 -0500
-Received: from [10.250.65.13] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6NFrG4X017922;
-        Tue, 23 Jul 2019 10:53:16 -0500
-Subject: Re: Backlight in motorola Droid 4
-To:     Pavel Machek <pavel@ucw.cz>, <linux-omap@vger.kernel.org>,
-        <tony@atomide.com>, <sre@kernel.org>, <nekit1000@gmail.com>,
-        <mpartap@gmx.net>, <merlijn@wizzup.org>
-CC:     <jacek.anaszewski@gmail.com>, <linux-kernel@vger.kernel.org>,
-        <linux-leds@vger.kernel.org>
-References: <20181219162626.12297-1-dmurphy@ti.com>
- <20190722205921.GA24787@amd>
-From:   Dan Murphy <dmurphy@ti.com>
-Message-ID: <b8fbc94f-c087-2c9d-4532-ea423f1626e6@ti.com>
-Date:   Tue, 23 Jul 2019 10:53:16 -0500
+ Frontend Transport; Tue, 23 Jul 2019 13:16:15 -0500
+Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6NIGFZZ100648;
+        Tue, 23 Jul 2019 13:16:15 -0500
+Subject: Re: [PATCH 1/8] ARM: OMAP2+: Fix missing SYSC_HAS_RESET_STATUS for
+ dra7 epwmss
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20190723112811.44381-1-tony@atomide.com>
+ <20190723112811.44381-2-tony@atomide.com>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <212f2172-8612-86b6-83d7-0c70baaaf046@ti.com>
+Date:   Tue, 23 Jul 2019 13:16:15 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190722205921.GA24787@amd>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190723112811.44381-2-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Pavel
+On 7/23/19 6:28 AM, Tony Lindgren wrote:
+> TRM says PWMSS_SYSCONFIG bit for SOFTRESET changes to zero when
+> reset is completed. Let's configure it as otherwise we get warnings
+> on boot when we check the data against dts provided data. Eventually
+> the legacy platform data will be just dropped, but let's fix the
+> warning first.
+> 
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-On 7/22/19 3:59 PM, Pavel Machek wrote:
-> Hi!
->
-> So now the backlight LED can be controlled. Good. (And thanks!)
->
-> But I seem to remember that backlight had range from "is it really on?"
-> to "very bright"; now it seems to have range from "bright" to "very
-> bright".
->
-> Any ideas what goes on there?
+Reviewed-by: Suman Anna <s-anna@ti.com>
 
-In the LM3552 driver we are changing the Full scale brightness registers 
-for the
+regards
+Suman
 
-specific control bank.
+> ---
+>  arch/arm/mach-omap2/omap_hwmod_7xx_data.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
+> --- a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
+> +++ b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
+> @@ -379,7 +379,8 @@ static struct omap_hwmod dra7xx_dcan2_hwmod = {
+>  static struct omap_hwmod_class_sysconfig dra7xx_epwmss_sysc = {
+>  	.rev_offs	= 0x0,
+>  	.sysc_offs	= 0x4,
+> -	.sysc_flags	= SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET,
+> +	.sysc_flags	= SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET |
+> +			  SYSC_HAS_RESET_STATUS,
+>  	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+>  	.sysc_fields	= &omap_hwmod_sysc_type2,
+>  };
+> 
 
-#define LM3532_REG_CTRL_A_BRT    0x17
-#define LM3532_REG_CTRL_B_BRT    0x19
-#define LM3532_REG_CTRL_C_BRT    0x1b
-
-In the ti-lmu code the ALS zones were being modified not the control 
-bank brightness.
-
-#define LM3532_REG_BRT_A            0x70    /* zone 0 */
-#define LM3532_REG_BRT_B            0x76    /* zone 1 */
-#define LM3532_REG_BRT_C            0x7C    /* zone 2 */
-
-Not sure how the ALS is attached in the system if it reports to the host 
-and the host manages
-
-the back light or if the the ALS is connected directly to the LM3532.
-
-Maybe the ALS zone targets need to be updated to allow a fuller range.  
-The LM3532 may be stuck
-
-in a certain zone.
-
-Probably should set up the ALS properties in the device tree.
-
-Dan
-
-> Thanks,
-> 									Pavel
->
