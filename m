@@ -2,116 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FF2972796
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 07:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A35A77283B
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 08:31:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725917AbfGXFvt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Jul 2019 01:51:49 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:57028 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbfGXFvt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Jul 2019 01:51:49 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6O5pht6095860;
-        Wed, 24 Jul 2019 00:51:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1563947503;
-        bh=/ukI6z7MwTgGEJKQ7FloIKRXPBiEaTOaKdMkfX0Lm6c=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=m4UD7L77PYQorEIAvyPJXNXpMcdziaU0iCvOD5nB0J7WeSorpyHJ0hPoQ5Izkuy41
-         8rC5e+CxYsvXn61rik6QU+PHVOY/kTTaPoJw91Kz/OPSsvVb2sUNgy+/WXwfuwp6FS
-         irwpJYjRBGts224etehfvcSvo4Me7NT5Yv4U8KfU=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6O5phYB048370
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 24 Jul 2019 00:51:43 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 24
- Jul 2019 00:51:42 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 24 Jul 2019 00:51:42 -0500
-Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6O5pcdZ000559;
-        Wed, 24 Jul 2019 00:51:39 -0500
-Subject: Re: [PATCH 0/8] ti-sysc related warning fixes for v5.3-rc cycle
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
-CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
+        id S1725900AbfGXGbQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Jul 2019 02:31:16 -0400
+Received: from muru.com ([72.249.23.125]:55846 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725870AbfGXGbP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 24 Jul 2019 02:31:15 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 01D51816A;
+        Wed, 24 Jul 2019 06:31:38 +0000 (UTC)
+Date:   Tue, 23 Jul 2019 23:31:10 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Keerthy <j-keerthy@ti.com>
+Cc:     Suman Anna <s-anna@ti.com>, linux-omap@vger.kernel.org,
+        Jyri Sarha <jsarha@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Nishanth Menon <nm@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
+        Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/8] ARM: OMAP2+: Remove unconfigured midlemode for am3
+ lcdc
+Message-ID: <20190724063110.GT5447@atomide.com>
 References: <20190723112811.44381-1-tony@atomide.com>
-From:   Keerthy <j-keerthy@ti.com>
-Message-ID: <84de9487-761f-2f66-0227-97615e240477@ti.com>
-Date:   Wed, 24 Jul 2019 11:22:15 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ <20190723112811.44381-3-tony@atomide.com>
+ <bcc130a5-f7e0-e182-9f4b-5a48fc3d6e17@ti.com>
+ <52328e14-58b2-2ea1-8b0a-33548a1c6a7a@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20190723112811.44381-1-tony@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <52328e14-58b2-2ea1-8b0a-33548a1c6a7a@ti.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 23/07/19 4:58 PM, Tony Lindgren wrote:
-> Hi all,
+* Keerthy <j-keerthy@ti.com> [190724 05:50]:
 > 
-> I noticed that with recent ti-sysc driver changes some new warnings
-> have crept in. Mostly they are caused by having different configuration
-> in the dts compared to the legacy platform data. Let's fix these first
-> before we continue dropping the legacy platform data.
+> On 24/07/19 12:33 AM, Suman Anna wrote:
+> > + Jyri
+> > 
+> > On 7/23/19 6:28 AM, Tony Lindgren wrote:
+> > > We currently get a warning for lcdc because of a difference
+> > > with dts provided configuration compared to the legacy platform
+> > > data. This is because lcdc has SYSC_HAS_MIDLEMODE configured in
+> > > the platform data without configuring the modes.
+> > 
+> > Hi Tony,
+> > While I understand that you are trying to match the DT data with the
+> > existing legacy data, do you know if there was a reason why this was
+> > omitted in the first place? Should we be really adding the MSTANDBY_
+> > flags and fix up the DTS node accordingly? I tried looking through the
+> > git log, and the initial commit itself didn't add the MSTANDBY_ flags
+> > but used the SYSC_HAS_MIDLEMODE.
+
+Yes the goal is to get rid of all errors and warnings in dmesg output
+so we can spot the real issues.
+
+> > Jyri,
+> > Do you know the history?
 > 
-> I also noticed we need two fixes for the ti-sysc driver while looking
-> at the warnings.
+> Tony/Suman,
+> 
+> This patch breaks DS0 on am3.
 
-Tony,
+OK thanks for testing. Let's drop this for now, sounds like there is
+some midlemode configuration happening even with no flags set.
 
-Apart from Patch 2(breaks DS0 on AM3). Rest all work fine.
-
-Tested for DS0/RTC+ddr on AM4, DS0 on AM3 Boneblack.
-
-You can add my:
-
-Tested-by: Keerthy <j-keerthy@ti.com>
-
-For all the 7 patches except Patch 2.
+Probably the right fix is to configure the usable midlemodes instead
+both for platform data and dts data and then drop the platform data.
 
 Regards,
-Keerthy
 
-> 
-> Regards,
-> 
-> Tony
-> 
-> Tony Lindgren (8):
->    ARM: OMAP2+: Fix missing SYSC_HAS_RESET_STATUS for dra7 epwmss
->    ARM: OMAP2+: Remove unconfigured midlemode for am3 lcdc
->    bus: ti-sysc: Fix handling of forced idle
->    bus: ti-sysc: Fix using configured sysc mask value
->    ARM: dts: Drop bogus ahclkr clocks for dra7 mcasp 3 to 8
->    ARM: dts: Fix flags for gpio7
->    ARM: dts: Fix incorrect dcan register mapping for am3, am4 and dra7
->    ARM: dts: Fix lcdc sysc flags for am3
-> 
->   arch/arm/boot/dts/am33xx-l4.dtsi              |  6 +++-
->   arch/arm/boot/dts/am437x-l4.dtsi              |  4 +++
->   .../boot/dts/am57xx-beagle-x15-common.dtsi    |  2 +-
->   arch/arm/boot/dts/dra7-evm.dts                |  2 +-
->   arch/arm/boot/dts/dra7-l4.dtsi                | 31 ++++++++-----------
->   arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |  2 +-
->   arch/arm/mach-omap2/omap_hwmod_7xx_data.c     |  3 +-
->   drivers/bus/ti-sysc.c                         | 10 +++---
->   8 files changed, 31 insertions(+), 29 deletions(-)
-> 
+Tony
+
+
+
+> > > Let's fix the warning by removing SYSC_HAS_MIDLEMODE. Note that
+> > > the am335x TRM lists SYSC_HAS_MIDLEMODE, but it is unused.
+> > 
+> > 
+> > 
+> > > 
+> > > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > > ---
+> > >   arch/arm/mach-omap2/omap_hwmod_33xx_data.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+> > > --- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+> > > +++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+> > > @@ -231,7 +231,7 @@ static struct omap_hwmod am33xx_control_hwmod = {
+> > >   static struct omap_hwmod_class_sysconfig lcdc_sysc = {
+> > >   	.rev_offs	= 0x0,
+> > >   	.sysc_offs	= 0x54,
+> > > -	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE),
+> > > +	.sysc_flags	= SYSC_HAS_SIDLEMODE,
+> > >   	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+> > >   	.sysc_fields	= &omap_hwmod_sysc_type2,
+> > >   };
+> > > 
+> > 
