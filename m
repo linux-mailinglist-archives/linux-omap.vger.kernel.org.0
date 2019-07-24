@@ -2,172 +2,217 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1BBB740C1
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 23:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39C02740D7
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 23:29:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728244AbfGXVQq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Jul 2019 17:16:46 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:41755 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727211AbfGXVQp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Jul 2019 17:16:45 -0400
-Received: by mail-wr1-f68.google.com with SMTP id c2so45224315wrm.8;
-        Wed, 24 Jul 2019 14:16:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=W1jFeugsJ0oirRWmWhC8GQwi5V7rmQsow/rL22Dmte8=;
-        b=usVr2ZwLIZQWZ7AIbj+TxyWWjwYj+Qp44q3aXgoV9E2Tqt/vYxz4oCR/lSjLaXfDta
-         JOZ1NftN2dnDfnAD6PYTMvQYUD0igLbjcAGsnG7CK1TWLuw9ddtV2gpjDHq8MGUxsduG
-         T9TTeXMSVtJ3To5rElilFQXBgSSOa0AXot8M9Ihi6R7+xomcyz0ztq3HKX/SrcKz7eW8
-         AvzsPtuRLrvSFmFhFihwRslqM0LIgVigxV0fCgaFG1RHbfKNbjCXMQ9UBsmu4BPo11DN
-         eGrBU4X5KYvEJOSFct2TrbXIY2bgA1Fn/JazB7SKpUVdfMiJTdCrDbMv4WQDlYHUci8a
-         y/1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=W1jFeugsJ0oirRWmWhC8GQwi5V7rmQsow/rL22Dmte8=;
-        b=oNbx5ssQwLAhHLgGPUeBt+buktKHiIgZPJTCAtMboR5BYZg9D4gQ4fjBgVMj5DFxWc
-         OOEV1pOWxg+dxF0NwfgM/hsAcc7vA3w7HsBZ43l2NfPtkS5+ThreUcMlOuhO9byNmsJ6
-         fZVnLDCoDaV7PBb2DTPH+0GGOAeAQD2VCGFhrNdwnKfzW0hslVldJtiHH2crEZxlfnkK
-         a2QgZ0k+YJhaJdFV45unuH8jdwZKG4F9+DqIelg/jU3ayL0UWoC82CMGwV9jYwNx3DSf
-         B9DEaLAKMM42qzm4me1Xc+F7lH3eCo9cCpxFdrzw46CzqVqPfHzDDHdZ/kQQMZy+Ii7u
-         Ia/Q==
-X-Gm-Message-State: APjAAAVrGXU+4M3cXMEzlEVitigNGzAcKmrJDzqFDzkY9dwEQ4y6Pm4k
-        4rl3aP8wgPIrNfGQpsWJo2iuVIZa
-X-Google-Smtp-Source: APXvYqzogvYFojqU+LiKW5qZ/iRZn2RtP8P4IXNz/56oAvGgeGNR0S8kfcjgs2G7ekuiKhVfW3tn5A==
-X-Received: by 2002:adf:ea8b:: with SMTP id s11mr88132670wrm.100.1564003002083;
-        Wed, 24 Jul 2019 14:16:42 -0700 (PDT)
-Received: from [192.168.1.19] (bko238.neoplus.adsl.tpnet.pl. [83.28.182.238])
-        by smtp.gmail.com with ESMTPSA id y6sm58524363wmd.16.2019.07.24.14.16.40
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 24 Jul 2019 14:16:41 -0700 (PDT)
-Subject: Re: [PATCH] Enable backlight when trigger is activated
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Ezequiel Garcia <ezequiel@collabora.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        linux-leds@vger.kernel.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20190718190849.GA11409@amd>
- <22d7eca4ad8aa2e73933c4f83c92221ce6e0945a.camel@collabora.com>
- <20190722075032.GA27524@amd> <6fc6af89-1455-7665-47e7-0568ecd87c9c@gmail.com>
- <20190724083355.GA27716@amd>
-From:   Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=jacek.anaszewski@gmail.com; prefer-encrypt=mutual; keydata=
- mQINBFWjfaEBEADd66EQbd6yd8YjG0kbEDT2QIkx8C7BqMXR8AdmA1OMApbfSvEZFT1D/ECR
- eWFBS8XtApKQx1xAs1j5z70k3zebk2eeNs5ahxi6vM4Qh89vBM46biSKeeX5fLcv7asmGb/a
- FnHPAfQaKFyG/Bj9V+//ef67hpjJWR3s74C6LZCFLcbZM0z/wTH+baA5Jwcnqr4h/ygosvhP
- X3gkRzJLSFYekmEv+WHieeKXLrJdsUPUvPJTZtvi3ELUxHNOZwX2oRJStWpmL2QGMwPokRNQ
- 29GvnueQdQrIl2ylhul6TSrClMrKZqOajDFng7TLgvNfyVZE8WQwmrkTrdzBLfu3kScjE14Q
- Volq8OtQpTsw5570D4plVKh2ahlhrwXdneSot0STk9Dh1grEB/Jfw8dknvqkdjALUrrM45eF
- FM4FSMxIlNV8WxueHDss9vXRbCUxzGw37Ck9JWYo0EpcpcvwPf33yntYCbnt+RQRjv7vy3w5
- osVwRR4hpbL/fWt1AnZ+RvbP4kYSptOCPQ+Pp1tCw16BOaPjtlqSTcrlD2fo2IbaB5D21SUa
- IsdZ/XkD+V2S9jCrN1yyK2iKgxtDoUkWiqlfRgH2Ep1tZtb4NLF/S0oCr7rNLO7WbqLZQh1q
- ShfZR16h7YW//1/NFwnyCVaG1CP/L/io719dPWgEd/sVSKT2TwARAQABtC1KYWNlayBBbmFz
- emV3c2tpIDxqYWNlay5hbmFzemV3c2tpQGdtYWlsLmNvbT6JAj4EEwEIACgCGwMHCwkIBwMC
- AQYVCAIJCgsDFgIBAh4BAheABQJVo39tBQkJZgNMAAoJEL1qUBy3i3wmxLQQAK8QEQ0JqZEv
- 5hrxiwT+Qtkx1TULYriK9sYcY9zbi18YxbKB0C4Znh5iP5o7k26WnPGLM+w4qWvTAkHjuAI7
- aBrvb4nGRvE5s14PQ9IHgL7iL3zAAHT1azIZng9dUCCSontB+vQZu1x/Un0lVlVCvsvO7QVt
- hAZUlT3iucNMO0jpCiS3raZkNfab8M+JWP/iplaV0Kn+O7LX3A/RdLmx5ZhuT+zvyHwl2c3K
- T56UHaQnjkuHB2Ytk8HtOjNXGNYnm4nLx3ok3jEN1nWDRV/DeiPn8zz4Zebsp686OH9vvX/0
- R4dk2YEjUCY/S7CbJxXzUnLjboUAGmtTVOu/uJ7y11iS9XEoJ09HEzijQwWctJXLojcTXCFw
- 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
- eGGiEQ==
-Message-ID: <f00d99cb-da32-05b3-bf49-447cb8bd33e0@gmail.com>
-Date:   Wed, 24 Jul 2019 23:16:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190724083355.GA27716@amd>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S2388053AbfGXV3s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Jul 2019 17:29:48 -0400
+Received: from vern.gendns.com ([98.142.107.122]:58406 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726087AbfGXV3q (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 24 Jul 2019 17:29:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Message-Id:Date:Subject:Cc:To:From:Sender:
+        Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=FK7kA+WWZ4kZ6RCye8o+1VU69VmtjkxSH/+NyFwhvnU=; b=yclmgoCE+WA4mh0m1r5KDmCubB
+        ixiZz59c16yhdmmn55Tbg7ZpcuFz+ixYvC72VvJ3phAzwM5spCWhtInI+BhEiHYuHh1MKOgNoVDRW
+        OnulIuqysIYeysYlfQjsbSv1cnmFNAd/Zu624BiQVjubI87pC8j1pYCxt1C5FQV93cUMv2vG8Wn/4
+        15EpQPglDDH+11MdLJzvIV1Yx0Nbtng1uVO7Oxg92IUHQw/sIwajDLVlWVo+e4SGNdZ8aKv3/P2ju
+        WvEleaSenwIgcPiH1beZm1BXUiS75XV9HzF7d+ZG0w9+MUd3AQH4hU2PYE6WZl8/0ga1K9yi4gHA4
+        ghBxQbMw==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:40080 helo=freyr.lechnology.com)
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1hqOpT-00EGFs-Bp; Wed, 24 Jul 2019 17:29:43 -0400
+From:   David Lechner <david@lechnology.com>
+To:     linux-omap@vger.kernel.org
+Cc:     David Lechner <david@lechnology.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Robert Nelson <robertcnelson@gmail.com>
+Subject: [PATCH] ARM: dts: am335x-boneblue: Use of am335x-osd335x-common.dtsi
+Date:   Wed, 24 Jul 2019 16:26:16 -0500
+Message-Id: <20190724212616.17945-1-david@lechnology.com>
+X-Mailer: git-send-email 2.17.1
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 7/24/19 10:33 AM, Pavel Machek wrote:
-> Hi!
-> 
->>>>> +++ b/drivers/leds/trigger/ledtrig-backlight.c
->>>>> @@ -114,6 +114,8 @@ static int bl_trig_activate(struct led_classdev *led)
->>>>>  	n->old_status = UNBLANK;
->>>>>  	n->notifier.notifier_call = fb_notifier_callback;
->>>>>  
->>>>> +	led_set_brightness(led, LED_ON);
->>>>> +
->>>>
->>>> This looks fishy.
->>>>
->>>> Maybe you should use a default-state = "keep" instead? (and you'll have
->>>> to support it in the LED driver).
->>>>
->>>> That'll give you proper "don't touch the LED if it was turned on" behavior,
->>>> which is what you seem to want.
->>>
->>> Actually no, that's not what I want. LED should go on if the display
->>> is active, as soon as trigger is activated.
->>>
->>> Unfortunately, I have see no good way to tell if the display is
->>> active (and display is usually active when trigger is activated).
->>
->> default-state DT property can be also set to "on"
->> (see Documentation/devicetree/bindings/leds/common.txt).
-> 
-> Yes, except that it does not work with all drivers :-(. In particular,
-> it does not work with lm3532.
-> 
-> We should really move more of the device tree parsing into core, so
-> that there's one place to fix...
+This makes use of the am335x-osd335x-common.dtsi file that contains the
+common device tree components for Octavo Systems AM335x System-in-
+Package that is used on the BeagleBone Blue.
 
-Right. We could have something similar to led_get_default_pattern().
-led_get_default_state() ?
+This has two minor side-effects:
+1. pinmux_i2c0_pins is renamed to pinmux-i2c0-pins
+2. the 1MHz cpufreq operating point is enabled
 
+Cc: Robert Nelson <robertcnelson@gmail.com>
+Signed-off-by: David Lechner <david@lechnology.com>
+---
+ arch/arm/boot/dts/am335x-boneblue.dts | 92 +--------------------------
+ 1 file changed, 2 insertions(+), 90 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am335x-boneblue.dts b/arch/arm/boot/dts/am335x-boneblue.dts
+index 0257576d5d16..2f6652ef9a15 100644
+--- a/arch/arm/boot/dts/am335x-boneblue.dts
++++ b/arch/arm/boot/dts/am335x-boneblue.dts
+@@ -5,23 +5,13 @@
+ /dts-v1/;
+ 
+ #include "am33xx.dtsi"
++#include "am335x-osd335x-common.dtsi"
+ #include <dt-bindings/interrupt-controller/irq.h>
+ 
+ / {
+ 	model = "TI AM335x BeagleBone Blue";
+ 	compatible = "ti,am335x-bone-blue", "ti,am33xx";
+ 
+-	cpus {
+-		cpu@0 {
+-			cpu0-supply = <&dcdc2_reg>;
+-		};
+-	};
+-
+-	memory@80000000 {
+-		device_type = "memory";
+-		reg = <0x80000000 0x20000000>; /* 512 MB */
+-	};
+-
+ 	chosen {
+ 		stdout-path = &uart0;
+ 	};
+@@ -142,13 +132,6 @@
+ 		>;
+ 	};
+ 
+-	i2c0_pins: pinmux_i2c0_pins {
+-		pinctrl-single,pins = <
+-			AM33XX_PADCONF(AM335X_PIN_I2C0_SDA, PIN_INPUT_PULLUP, MUX_MODE0)	/* (C17) I2C0_SDA.I2C0_SDA */
+-			AM33XX_PADCONF(AM335X_PIN_I2C0_SCL, PIN_INPUT_PULLUP, MUX_MODE0)	/* (C16) I2C0_SCL.I2C0_SCL */
+-		>;
+-	};
+-
+ 	i2c2_pins: pinmux_i2c2_pins {
+ 		pinctrl-single,pins = <
+ 			AM33XX_PADCONF(AM335X_PIN_UART1_CTSN, PIN_INPUT_PULLUP, MUX_MODE3)	/* (D18) uart1_ctsn.I2C2_SDA */
+@@ -328,16 +311,6 @@
+ };
+ 
+ &i2c0 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&i2c0_pins>;
+-
+-	status = "okay";
+-	clock-frequency = <400000>;
+-
+-	tps: tps@24 {
+-		reg = <0x24>;
+-	};
+-
+ 	baseboard_eeprom: baseboard_eeprom@50 {
+ 		compatible = "atmel,24c256";
+ 		reg = <0x50>;
+@@ -381,66 +354,13 @@
+ /include/ "tps65217.dtsi"
+ 
+ &tps {
+-	interrupts = <7>; /* NMI */
+-	interrupt-parent = <&intc>;
++	/delete-property/ ti,pmic-shutdown-controller;
+ 
+ 	charger {
+ 		interrupts = <0>, <1>;
+ 		interrupt-names = "USB", "AC";
+ 		status = "okay";
+ 	};
+-
+-	pwrbutton {
+-		interrupts = <2>;
+-		status = "okay";
+-	};
+-
+-	regulators {
+-		dcdc1_reg: regulator@0 {
+-			regulator-name = "vdds_dpr";
+-			regulator-always-on;
+-		};
+-
+-		dcdc2_reg: regulator@1 {
+-			/* VDD_MPU voltage limits 0.95V - 1.26V with +/-4% tolerance */
+-			regulator-name = "vdd_mpu";
+-			regulator-min-microvolt = <925000>;
+-			regulator-max-microvolt = <1351500>;
+-			regulator-boot-on;
+-			regulator-always-on;
+-		};
+-
+-		dcdc3_reg: regulator@2 {
+-			/* VDD_CORE voltage limits 0.95V - 1.1V with +/-4% tolerance */
+-			regulator-name = "vdd_core";
+-			regulator-min-microvolt = <925000>;
+-			regulator-max-microvolt = <1150000>;
+-			regulator-boot-on;
+-			regulator-always-on;
+-		};
+-
+-		ldo1_reg: regulator@3 {
+-			regulator-name = "vio,vrtc,vdds";
+-			regulator-always-on;
+-		};
+-
+-		ldo2_reg: regulator@4 {
+-			regulator-name = "vdd_3v3aux";
+-			regulator-always-on;
+-		};
+-
+-		ldo3_reg: regulator@5 {
+-			regulator-name = "vdd_1v8";
+-			regulator-min-microvolt = <1800000>;
+-			regulator-max-microvolt = <1800000>;
+-			regulator-always-on;
+-		};
+-
+-		ldo4_reg: regulator@6 {
+-			regulator-name = "vdd_3v3a";
+-			regulator-always-on;
+-		};
+-	};
+ };
+ 
+ &mmc1 {
+@@ -502,14 +422,6 @@
+ 	};
+ };
+ 
+-&aes {
+-	status = "okay";
+-};
+-
+-&sham {
+-	status = "okay";
+-};
+-
+ &rtc {
+ 	system-power-controller;
+ 	clocks = <&clk_32768_ck>, <&clk_24mhz_clkctrl AM3_CLK_24MHZ_CLKDIV32K_CLKCTRL 0>;
 -- 
-Best regards,
-Jacek Anaszewski
+2.17.1
+
