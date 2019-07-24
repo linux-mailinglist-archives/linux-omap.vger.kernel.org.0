@@ -2,81 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 638A77287A
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 08:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11DE6729D9
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 10:22:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726312AbfGXGsE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Jul 2019 02:48:04 -0400
-Received: from muru.com ([72.249.23.125]:55858 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725878AbfGXGsD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 24 Jul 2019 02:48:03 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 6EFF9816A;
-        Wed, 24 Jul 2019 06:48:27 +0000 (UTC)
-Date:   Tue, 23 Jul 2019 23:47:58 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     linux-omap@vger.kernel.org, Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 5/8] ARM: dts: Drop bogus ahclkr clocks for dra7 mcasp 3
- to 8
-Message-ID: <20190724064758.GU5447@atomide.com>
-References: <20190723112811.44381-1-tony@atomide.com>
- <20190723112811.44381-6-tony@atomide.com>
- <2c750847-700e-c835-ee53-a656b363c36c@ti.com>
+        id S1725970AbfGXIW5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Jul 2019 04:22:57 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:47530 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725851AbfGXIW4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Jul 2019 04:22:56 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id A18978029F; Wed, 24 Jul 2019 10:22:42 +0200 (CEST)
+Date:   Wed, 24 Jul 2019 10:22:53 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Dan Murphy <dmurphy@ti.com>
+Cc:     linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
+        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
+        jacek.anaszewski@gmail.com, linux-kernel@vger.kernel.org,
+        linux-leds@vger.kernel.org
+Subject: Re: Backlight in motorola Droid 4
+Message-ID: <20190724082253.GA23552@amd>
+References: <20181219162626.12297-1-dmurphy@ti.com>
+ <20190722205921.GA24787@amd>
+ <b8fbc94f-c087-2c9d-4532-ea423f1626e6@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
 Content-Disposition: inline
-In-Reply-To: <2c750847-700e-c835-ee53-a656b363c36c@ti.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <b8fbc94f-c087-2c9d-4532-ea423f1626e6@ti.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Suman Anna <s-anna@ti.com> [190723 21:02]:
-> Hi Tony,
-> 
-> On 7/23/19 6:28 AM, Tony Lindgren wrote:
-> > The ahclkr clkctrl clock bit 28 only exists for mcasp 1 and 2 on dra7.
-> > Otherwise we get the following warning on beagle-x15:
-...
-> > @@ -2962,9 +2958,8 @@
-> >  					<SYSC_IDLE_SMART>;
-> >  			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
-> >  			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 0>,
-> > -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>,
-> > -				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 28>;
-> > -			clock-names = "fck", "ahclkx", "ahclkr";
-> > +				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>;
-> > +			clock-names = "fck", "ahclkx";
-> 
-> The equivalent change to MCASP8 is missing.
 
-Thanks for spotting it, probably should be set up the same way as
-MCASP4 too looking at the TRM.
+--HlL+5n6rz5pIUxbD
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tero, care to check the dra7 mcasp clocks we have defined?
+On Tue 2019-07-23 10:53:16, Dan Murphy wrote:
+> Pavel
+>=20
+> On 7/22/19 3:59 PM, Pavel Machek wrote:
+> >Hi!
+> >
+> >So now the backlight LED can be controlled. Good. (And thanks!)
+> >
+> >But I seem to remember that backlight had range from "is it really on?"
+> >to "very bright"; now it seems to have range from "bright" to "very
+> >bright".
+> >
+> >Any ideas what goes on there?
+>=20
+> In the LM3552 driver we are changing the Full scale brightness registers =
+for
+> the
+>=20
+> specific control bank.
+>=20
+> #define LM3532_REG_CTRL_A_BRT=A0=A0=A0 0x17
+> #define LM3532_REG_CTRL_B_BRT=A0=A0=A0 0x19
+> #define LM3532_REG_CTRL_C_BRT=A0=A0=A0 0x1b
 
-$ grep MCASP drivers/clk/ti/clk-7xx.c
-        { DRA7_IPU_MCASP1_CLKCTRL, dra7_mcasp1_bit_data, CLKF_SW_SUP, "ipu-clkctrl:0000:22" },
-        { DRA7_L4PER2_MCASP2_CLKCTRL, dra7_mcasp2_bit_data, CLKF_SW_SUP, "l4per2-clkctrl:0154:22" },
-        { DRA7_L4PER2_MCASP3_CLKCTRL, dra7_mcasp3_bit_data, CLKF_SW_SUP, "l4per2-clkctrl:015c:22" },
-        { DRA7_L4PER2_MCASP5_CLKCTRL, dra7_mcasp5_bit_data, CLKF_SW_SUP, "l4per2-clkctrl:016c:22" },
-        { DRA7_L4PER2_MCASP8_CLKCTRL, dra7_mcasp8_bit_data, CLKF_SW_SUP, "l4per2-clkctrl:0184:24" },
-        { DRA7_L4PER2_MCASP4_CLKCTRL, dra7_mcasp4_bit_data, CLKF_SW_SUP, "l4per2-clkctrl:018c:22" },
-        { DRA7_L4PER2_MCASP6_CLKCTRL, dra7_mcasp6_bit_data, CLKF_SW_SUP, "l4per2-clkctrl:01f8:22" },
-        { DRA7_L4PER2_MCASP7_CLKCTRL, dra7_mcasp7_bit_data, CLKF_SW_SUP, "l4per2-clkctrl:01fc:22" },
+Yep, and those registers are 5-bit linear...
 
-Is bit 24 above correct for MCASP8 or should it too be 22 like
-adjacent MCASP4 in the TRM?
+> In the ti-lmu code the ALS zones were being modified not the control bank
+> brightness.
+>=20
+> #define LM3532_REG_BRT_A=A0=A0=A0 =A0=A0=A0 =A0=A0=A0 0x70=A0=A0=A0 /* zo=
+ne 0 */
+> #define LM3532_REG_BRT_B=A0=A0=A0 =A0=A0=A0 =A0=A0=A0 0x76=A0=A0=A0 /* zo=
+ne 1 */
+> #define LM3532_REG_BRT_C=A0=A0=A0 =A0=A0=A0 =A0=A0=A0 0x7C=A0=A0=A0 /* zo=
+ne 2 */
 
-Regards,
+=2E..while these allow 14-bits of control.
 
-Tony
+That explains very limited range of backlight control.
+
+Do you have any plans to change that?
+
+Best regards,
+									Pavel
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--HlL+5n6rz5pIUxbD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl04FV0ACgkQMOfwapXb+vI3tgCguRG0MY2FC+hQMV0vAg4QyYGf
+mJ8Anix5g0Mp6MVJSUSJhX7Bk6dJOX2a
+=0ZJs
+-----END PGP SIGNATURE-----
+
+--HlL+5n6rz5pIUxbD--
