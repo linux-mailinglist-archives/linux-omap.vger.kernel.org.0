@@ -2,101 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9877672A2E
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 10:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F418B72EDA
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 14:29:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726574AbfGXId7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Jul 2019 04:33:59 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:47812 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbfGXId7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Jul 2019 04:33:59 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id C6CE28028C; Wed, 24 Jul 2019 10:33:44 +0200 (CEST)
-Date:   Wed, 24 Jul 2019 10:33:55 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Cc:     Ezequiel Garcia <ezequiel@collabora.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        linux-leds@vger.kernel.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH] Enable backlight when trigger is activated
-Message-ID: <20190724083355.GA27716@amd>
-References: <20190718190849.GA11409@amd>
- <22d7eca4ad8aa2e73933c4f83c92221ce6e0945a.camel@collabora.com>
- <20190722075032.GA27524@amd>
- <6fc6af89-1455-7665-47e7-0568ecd87c9c@gmail.com>
+        id S1726770AbfGXM3h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Jul 2019 08:29:37 -0400
+Received: from mx2.freebsd.org ([96.47.72.81]:60526 "EHLO mx2.freebsd.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726115AbfGXM3h (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 24 Jul 2019 08:29:37 -0400
+Received: from mx1.freebsd.org (mx1.freebsd.org [96.47.72.80])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (Client CN "mx1.freebsd.org", Issuer "Let's Encrypt Authority X3" (verified OK))
+        by mx2.freebsd.org (Postfix) with ESMTPS id 36C4E6BAB6;
+        Wed, 24 Jul 2019 12:23:42 +0000 (UTC)
+        (envelope-from manu@freebsd.org)
+Received: from smtp.freebsd.org (smtp.freebsd.org [IPv6:2610:1c1:1:606c::24b:4])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         server-signature RSA-PSS (4096 bits)
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "smtp.freebsd.org", Issuer "Let's Encrypt Authority X3" (verified OK))
+        by mx1.freebsd.org (Postfix) with ESMTPS id C907D77C77;
+        Wed, 24 Jul 2019 12:23:41 +0000 (UTC)
+        (envelope-from manu@freebsd.org)
+Received: from localhost.localdomain (ip-9.net-89-3-105.rev.numericable.fr [89.3.105.9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: manu)
+        by smtp.freebsd.org (Postfix) with ESMTPSA id B0E682BB03;
+        Wed, 24 Jul 2019 12:23:40 +0000 (UTC)
+        (envelope-from manu@freebsd.org)
+From:   Emmanuel Vadot <manu@freebsd.org>
+To:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-omap@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Emmanuel Vadot <manu@freebsd.org>
+Subject: [PATCH 0/1] ARM: dts: am335x: Fix UARTs length
+Date:   Wed, 24 Jul 2019 14:23:28 +0200
+Message-Id: <20190724122329.21231-1-manu@freebsd.org>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="5vNYLRcllDrimb99"
-Content-Disposition: inline
-In-Reply-To: <6fc6af89-1455-7665-47e7-0568ecd87c9c@gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C907D77C77
+X-Spamd-Bar: --
+Authentication-Results: mx1.freebsd.org
+X-Spamd-Result: default: False [-2.94 / 15.00];
+         TAGGED_RCPT(0.00)[dt];
+         local_wl_from(0.00)[freebsd.org];
+         NEURAL_HAM_SHORT(-0.94)[-0.940,0];
+         NEURAL_HAM_MEDIUM(-1.00)[-1.000,0];
+         ASN(0.00)[asn:11403, ipnet:2610:1c1:1::/48, country:US];
+         NEURAL_HAM_LONG(-1.00)[-1.000,0]
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+For some reason the uart region size were set to 0x2000 while the TRM clearly
+specify that the size is 0x1000.
+I guess this is not a problem on Linux but for FreeBSD the resource manager will
+not allow the mapping when the region declared in the parents is less that the one
+declared in the child.
 
---5vNYLRcllDrimb99
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Emmanuel Vadot (1):
+  ARM: dts: am335x: Fix UARTs length
 
-Hi!
+ arch/arm/boot/dts/am33xx-l4.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-> >>> +++ b/drivers/leds/trigger/ledtrig-backlight.c
-> >>> @@ -114,6 +114,8 @@ static int bl_trig_activate(struct led_classdev *=
-led)
-> >>>  	n->old_status =3D UNBLANK;
-> >>>  	n->notifier.notifier_call =3D fb_notifier_callback;
-> >>> =20
-> >>> +	led_set_brightness(led, LED_ON);
-> >>> +
-> >>
-> >> This looks fishy.
-> >>
-> >> Maybe you should use a default-state =3D "keep" instead? (and you'll h=
-ave
-> >> to support it in the LED driver).
-> >>
-> >> That'll give you proper "don't touch the LED if it was turned on" beha=
-vior,
-> >> which is what you seem to want.
-> >=20
-> > Actually no, that's not what I want. LED should go on if the display
-> > is active, as soon as trigger is activated.
-> >=20
-> > Unfortunately, I have see no good way to tell if the display is
-> > active (and display is usually active when trigger is activated).
->=20
-> default-state DT property can be also set to "on"
-> (see Documentation/devicetree/bindings/leds/common.txt).
+-- 
+2.22.0
 
-Yes, except that it does not work with all drivers :-(. In particular,
-it does not work with lm3532.
-
-We should really move more of the device tree parsing into core, so
-that there's one place to fix...
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---5vNYLRcllDrimb99
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl04F/MACgkQMOfwapXb+vISagCfdaWbZQ6RjvGQ3Edw3INdzb04
-i5gAoItfTEBcniDsblUC4rEvK/EzZthi
-=NU1f
------END PGP SIGNATURE-----
-
---5vNYLRcllDrimb99--
