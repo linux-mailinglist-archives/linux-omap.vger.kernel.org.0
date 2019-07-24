@@ -2,128 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D4A3721E1
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jul 2019 23:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14489724B8
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 04:34:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389406AbfGWV6s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Jul 2019 17:58:48 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:51514 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392231AbfGWV6s (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jul 2019 17:58:48 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6NLweTl036312;
-        Tue, 23 Jul 2019 16:58:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1563919120;
-        bh=ILKhKI41EkFj4wPxs81h4zDtCcBF0AQzAXW0JOqC9K0=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Dk6jIp5+ZXbAUqHopDnnzLjWF8ef7bRO3D1TFj5xiKqSBuZ8aFkYJZZSYbV/0k3QZ
-         w2YcU5RB6ytxVT7uAyQ9xMRLOz8EmjGTuo/oZ8ofOqUY1QzGO5rClW+N8cazVo4ygY
-         dwDXwdvi3TbO8+xh0u8rZrVl6b74pRjj0EVf/UTE=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6NLwejB005955
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 23 Jul 2019 16:58:40 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 23
- Jul 2019 16:58:39 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 23 Jul 2019 16:58:40 -0500
-Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6NLwdj7128934;
-        Tue, 23 Jul 2019 16:58:39 -0500
-Subject: Re: [PATCH 6/8] ARM: dts: Fix flags for gpio7
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
-CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20190723112811.44381-1-tony@atomide.com>
- <20190723112811.44381-7-tony@atomide.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <7b09274a-eed2-a7ef-e1ae-b95f1d0b8666@ti.com>
-Date:   Tue, 23 Jul 2019 16:58:39 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727172AbfGXCeP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Jul 2019 22:34:15 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:36387 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726130AbfGXCeO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jul 2019 22:34:14 -0400
+Received: by mail-pg1-f194.google.com with SMTP id l21so20376272pgm.3;
+        Tue, 23 Jul 2019 19:34:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=zLRKL/gPs+H8SY77w9eVBrRyeHltVjkGP2Avoqt8jdk=;
+        b=A1c4BoDRmx0ORVvKKiL72V4Q6T65Dly7SwVr7+L8Z8PoVqhMCd5V+h3oDgzqhF0xlS
+         ZlJ7J9Vbr41LsJCV46TKMxMdiUav5iiRAbeEW/goapwL0PE8/kp5UbsQvCBCFPT9AORV
+         ICxXCjOC7KafO89PTQnfamcfZyvnOoOzc5Vk4qJApDpd/DZ7jt0f1yv5HmyrBnRAvxbg
+         9WcDNJcPQlLP1RXjnZv75dsEtr8g2WFQW8t2lkASc9U59F5Iy2iO0w06QmL0AUt8Ld5l
+         gkr5ubVzpi9i9wOrQlgbqdhZY7wz4td7IbR3XYK+nSJEdjyTBIdz88jnWffHhRwNeibw
+         GcNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=zLRKL/gPs+H8SY77w9eVBrRyeHltVjkGP2Avoqt8jdk=;
+        b=OTJt7pqUw+4qxm8fCFdeIOwWJWlSCn9vR3YdtDOJv5rA3myV+iS3AqXsqXCwrX4bpF
+         yZ0w1myAgfu+3IRH2oujhwgy0tIf5Vvn3TYDCnVmeWV19l1d9BLNsB+TerI3jJqEpa1F
+         K3C+NNXMvCqCPEDLwCVCfcg9FK4nXeDoGM2iZE4vBgU5OstIGwpQekrkLtaHqIrulgT9
+         BK5M3moFgPMByIExEN67N2jP0TRGEB7GT/KR2wM10mvTgo4qEMgGxpH4YqnF6g+C2qYM
+         ONngGNkTSruunPLmJvZPIKRXMvxtjsWPfE0Rk4CRENBTldFvHeXlS9uFtWdh7sMWg9dQ
+         5TLg==
+X-Gm-Message-State: APjAAAWVV27wd62xMnnwVAha2ychwlpPx/DOSJFvad6NmEC6xtTbXSY6
+        LuLRpNqiG20Y1HSC6CTonfM=
+X-Google-Smtp-Source: APXvYqzfA83c3TncrVOHNCO4gafJ0pOTxGRqj3ih5x1kS51UKLt8voYTdn970u/vx83IkL0x3MjUow==
+X-Received: by 2002:a63:5a4d:: with SMTP id k13mr76810401pgm.174.1563935654132;
+        Tue, 23 Jul 2019 19:34:14 -0700 (PDT)
+Received: from [192.168.1.5] ([110.78.179.210])
+        by smtp.googlemail.com with ESMTPSA id s66sm48054058pfs.8.2019.07.23.19.34.10
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 23 Jul 2019 19:34:13 -0700 (PDT)
+Subject: Re: [PATCH] USB: serial: option: Add Motorola modem UARTs
+To:     Tony Lindgren <tony@atomide.com>, Johan Hovold <johan@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?Q?Bj=c3=b8rn_Mork?= <bjorn@mork.no>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Marcel Partap <mpartap@gmx.net>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Michael Scott <hashcode0f@gmail.com>,
+        NeKit <nekit1000@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>
+References: <20190723144956.55753-1-tony@atomide.com>
+From:   Lars Melin <larsm17@gmail.com>
+Message-ID: <75e9bccc-d76d-2bc6-f9f3-a0efc25e8238@gmail.com>
+Date:   Wed, 24 Jul 2019 09:34:09 +0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190723112811.44381-7-tony@atomide.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20190723144956.55753-1-tony@atomide.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+On 7/23/2019 21:49, Tony Lindgren wrote:
 
-On 7/23/19 6:28 AM, Tony Lindgren wrote:
-> The ti,no-idle-on-init and ti,no-reset-on-init flags need to be at
-> the interconnect target module level for the modules that have it
-> defined. Otherwise we get the following warnings:
-> 
-> dts flag should be at module level for ti,no-idle-on-init
-> dts flag should be at module level for ti,no-reset-on-init
-> 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> +#define MOTOROLA_VENDOR_ID			0x22b8
+> +#define MOTOROLA_PRODUCT_MDM6600		0x2a70
+> +#define MOTOROLA_PRODUCT_MDM9600		0x2e0a
+> +#define MOTOROLA_PRODUCT_MDM_RAM_DL		0x4281
+> +#define MOTOROLA_PRODUCT_MDM_QC_DL		0x900e
+> +
 
-There's a similar one within the am335x-icev2.dts file for gpio0
-that can also use this fix.
+Johan, when he is back from vacation, will tell you to drop those 
+defines and instead use the values directly in the list with a comment 
+behind reflecting the device model.
+Just telling you so you can save time by sending out your v2 early..
 
-Reviewed-by: Suman Anna <s-anna@ti.com>
 
-regards
-Suman
-
-> ---
->  arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi | 2 +-
->  arch/arm/boot/dts/dra7-evm.dts                  | 2 +-
->  arch/arm/boot/dts/dra7-l4.dtsi                  | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
-> --- a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
-> +++ b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
-> @@ -379,7 +379,7 @@
->  	};
->  };
->  
-> -&gpio7 {
-> +&gpio7_target {
->  	ti,no-reset-on-init;
->  	ti,no-idle-on-init;
->  };
-> diff --git a/arch/arm/boot/dts/dra7-evm.dts b/arch/arm/boot/dts/dra7-evm.dts
-> --- a/arch/arm/boot/dts/dra7-evm.dts
-> +++ b/arch/arm/boot/dts/dra7-evm.dts
-> @@ -498,7 +498,7 @@
->  	phy-supply = <&ldousb_reg>;
->  };
->  
-> -&gpio7 {
-> +&gpio7_target {
->  	ti,no-reset-on-init;
->  	ti,no-idle-on-init;
->  };
-> diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
-> --- a/arch/arm/boot/dts/dra7-l4.dtsi
-> +++ b/arch/arm/boot/dts/dra7-l4.dtsi
-> @@ -1261,7 +1261,7 @@
->  			};
->  		};
->  
-> -		target-module@51000 {			/* 0x48051000, ap 45 2e.0 */
-> +		gpio7_target: target-module@51000 {		/* 0x48051000, ap 45 2e.0 */
->  			compatible = "ti,sysc-omap2", "ti,sysc";
->  			ti,hwmods = "gpio7";
->  			reg = <0x51000 0x4>,
-> 
-
+best rgds
+/Lars
