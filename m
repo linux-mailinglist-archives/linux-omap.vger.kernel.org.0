@@ -2,34 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11DE6729D9
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 10:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9877672A2E
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Jul 2019 10:34:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725970AbfGXIW5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Jul 2019 04:22:57 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:47530 "EHLO
+        id S1726574AbfGXId7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Jul 2019 04:33:59 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:47812 "EHLO
         atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725851AbfGXIW4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Jul 2019 04:22:56 -0400
+        with ESMTP id S1725870AbfGXId7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Jul 2019 04:33:59 -0400
 Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id A18978029F; Wed, 24 Jul 2019 10:22:42 +0200 (CEST)
-Date:   Wed, 24 Jul 2019 10:22:53 +0200
+        id C6CE28028C; Wed, 24 Jul 2019 10:33:44 +0200 (CEST)
+Date:   Wed, 24 Jul 2019 10:33:55 +0200
 From:   Pavel Machek <pavel@ucw.cz>
-To:     Dan Murphy <dmurphy@ti.com>
-Cc:     linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
+To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Cc:     Ezequiel Garcia <ezequiel@collabora.com>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
         nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        jacek.anaszewski@gmail.com, linux-kernel@vger.kernel.org,
-        linux-leds@vger.kernel.org
-Subject: Re: Backlight in motorola Droid 4
-Message-ID: <20190724082253.GA23552@amd>
-References: <20181219162626.12297-1-dmurphy@ti.com>
- <20190722205921.GA24787@amd>
- <b8fbc94f-c087-2c9d-4532-ea423f1626e6@ti.com>
+        linux-leds@vger.kernel.org, b.zolnierkie@samsung.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH] Enable backlight when trigger is activated
+Message-ID: <20190724083355.GA27716@amd>
+References: <20190718190849.GA11409@amd>
+ <22d7eca4ad8aa2e73933c4f83c92221ce6e0945a.camel@collabora.com>
+ <20190722075032.GA27524@amd>
+ <6fc6af89-1455-7665-47e7-0568ecd87c9c@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
+        protocol="application/pgp-signature"; boundary="5vNYLRcllDrimb99"
 Content-Disposition: inline
-In-Reply-To: <b8fbc94f-c087-2c9d-4532-ea423f1626e6@ti.com>
+In-Reply-To: <6fc6af89-1455-7665-47e7-0568ecd87c9c@gmail.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
@@ -37,70 +41,62 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---HlL+5n6rz5pIUxbD
-Content-Type: text/plain; charset=iso-8859-1
+--5vNYLRcllDrimb99
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue 2019-07-23 10:53:16, Dan Murphy wrote:
-> Pavel
+Hi!
+
+> >>> +++ b/drivers/leds/trigger/ledtrig-backlight.c
+> >>> @@ -114,6 +114,8 @@ static int bl_trig_activate(struct led_classdev *=
+led)
+> >>>  	n->old_status =3D UNBLANK;
+> >>>  	n->notifier.notifier_call =3D fb_notifier_callback;
+> >>> =20
+> >>> +	led_set_brightness(led, LED_ON);
+> >>> +
+> >>
+> >> This looks fishy.
+> >>
+> >> Maybe you should use a default-state =3D "keep" instead? (and you'll h=
+ave
+> >> to support it in the LED driver).
+> >>
+> >> That'll give you proper "don't touch the LED if it was turned on" beha=
+vior,
+> >> which is what you seem to want.
+> >=20
+> > Actually no, that's not what I want. LED should go on if the display
+> > is active, as soon as trigger is activated.
+> >=20
+> > Unfortunately, I have see no good way to tell if the display is
+> > active (and display is usually active when trigger is activated).
 >=20
-> On 7/22/19 3:59 PM, Pavel Machek wrote:
-> >Hi!
-> >
-> >So now the backlight LED can be controlled. Good. (And thanks!)
-> >
-> >But I seem to remember that backlight had range from "is it really on?"
-> >to "very bright"; now it seems to have range from "bright" to "very
-> >bright".
-> >
-> >Any ideas what goes on there?
->=20
-> In the LM3552 driver we are changing the Full scale brightness registers =
-for
-> the
->=20
-> specific control bank.
->=20
-> #define LM3532_REG_CTRL_A_BRT=A0=A0=A0 0x17
-> #define LM3532_REG_CTRL_B_BRT=A0=A0=A0 0x19
-> #define LM3532_REG_CTRL_C_BRT=A0=A0=A0 0x1b
+> default-state DT property can be also set to "on"
+> (see Documentation/devicetree/bindings/leds/common.txt).
 
-Yep, and those registers are 5-bit linear...
+Yes, except that it does not work with all drivers :-(. In particular,
+it does not work with lm3532.
 
-> In the ti-lmu code the ALS zones were being modified not the control bank
-> brightness.
->=20
-> #define LM3532_REG_BRT_A=A0=A0=A0 =A0=A0=A0 =A0=A0=A0 0x70=A0=A0=A0 /* zo=
-ne 0 */
-> #define LM3532_REG_BRT_B=A0=A0=A0 =A0=A0=A0 =A0=A0=A0 0x76=A0=A0=A0 /* zo=
-ne 1 */
-> #define LM3532_REG_BRT_C=A0=A0=A0 =A0=A0=A0 =A0=A0=A0 0x7C=A0=A0=A0 /* zo=
-ne 2 */
-
-=2E..while these allow 14-bits of control.
-
-That explains very limited range of backlight control.
-
-Do you have any plans to change that?
-
-Best regards,
+We should really move more of the device tree parsing into core, so
+that there's one place to fix...
 									Pavel
 --=20
 (english) http://www.livejournal.com/~pavelmachek
 (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
 g.html
 
---HlL+5n6rz5pIUxbD
+--5vNYLRcllDrimb99
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iEYEARECAAYFAl04FV0ACgkQMOfwapXb+vI3tgCguRG0MY2FC+hQMV0vAg4QyYGf
-mJ8Anix5g0Mp6MVJSUSJhX7Bk6dJOX2a
-=0ZJs
+iEYEARECAAYFAl04F/MACgkQMOfwapXb+vISagCfdaWbZQ6RjvGQ3Edw3INdzb04
+i5gAoItfTEBcniDsblUC4rEvK/EzZthi
+=NU1f
 -----END PGP SIGNATURE-----
 
---HlL+5n6rz5pIUxbD--
+--5vNYLRcllDrimb99--
