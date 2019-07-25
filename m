@@ -2,117 +2,177 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C46C275AD2
-	for <lists+linux-omap@lfdr.de>; Fri, 26 Jul 2019 00:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BDDE75AEB
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Jul 2019 00:52:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726909AbfGYWnH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Jul 2019 18:43:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55084 "EHLO mail.kernel.org"
+        id S1726969AbfGYWw0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Jul 2019 18:52:26 -0400
+Received: from vern.gendns.com ([98.142.107.122]:42466 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726704AbfGYWnH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 25 Jul 2019 18:43:07 -0400
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8E8BB22BF5;
-        Thu, 25 Jul 2019 22:43:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564094585;
-        bh=lBESfuT3DmI+rgGQfA5Bgd1cqeRkqGQxNUSPLRT7J/w=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Nv80oMNgEN71r3/BbqLh/q7zx+mZrVMhluqgvK4uigmTgyG2Qrpej99va5ARTRYqz
-         hNJlcDNZ5zVI3+fa4g9d0ZUUDegPlf28mUu6+eCDC/czkZ0H05t/GEVU1VfhMYABRd
-         1/+T5bnkyHC2A6g6LO4gPGxap4XYNjcZRILpeRwo=
-Received: by mail-qt1-f180.google.com with SMTP id z4so50787195qtc.3;
-        Thu, 25 Jul 2019 15:43:05 -0700 (PDT)
-X-Gm-Message-State: APjAAAX3lNwfuIZomWaUDY6UePS9LWFNB8ZwsoP68vLsCDLHse9OPlIg
-        q/gviR489Nggv9+Uu89u1gtUHUPhZN4ilTLH6Q==
-X-Google-Smtp-Source: APXvYqxdeWh9cmjbYBWJqGtuD2MR1ApRKd+If++ai9lKP0uWwFcRMyo2Qs/i7JSDX0ekJFmk7Df2ahT9V7pGKFBaufs=
-X-Received: by 2002:a0c:b627:: with SMTP id f39mr66634624qve.72.1564094584748;
- Thu, 25 Jul 2019 15:43:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com>
- <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
-In-Reply-To: <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 25 Jul 2019 16:42:53 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
-Message-ID: <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] DTS: ARM: gta04: introduce legacy spi-cs-high to make
- display work again
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
+        id S1726803AbfGYWw0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 25 Jul 2019 18:52:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=cufzKvM23k36qgeaMJsciSzpLS9HDdtbAMUo1XycXVU=; b=fdgCHBt0SFE0H/5+b0ciMuO96a
+        66c4HpMoHFj8BHwLUVPet+9ACY2TfL7cm4KsIR30wPSIJeiogYdSa0HnrRMPmk0gZRDQbyPV/6ojb
+        hrXLItSPw4YEX8pHiHZvGuUx+2/Ss3DK7P8i5wTHW7918UmABAcoySt3TtghDe9IDB4+OX8Kq23Ez
+        e2loW2naJtnwS9AV1GijkuyuP44yHdlIkYN5haA10DdH4AEXhNDN0Lg0i5KCeWv5S3E6oy6/mTkSG
+        d3cCZDR8GjHWS7B7o+LOh4HaYl3e/ShmRquRddApKolQScySmgBs+bENcK7o7Zbaht567WlgfFADb
+        p0QkG8XA==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:45618 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1hqmb0-000Lvg-4H; Thu, 25 Jul 2019 18:52:22 -0400
+Subject: Re: [PATCH 0/4] new driver for TI eQEP
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20190722154538.5314-1-david@lechnology.com>
+ <20190725124037.GA4802@icarus>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <4616508c-d753-586d-0d3b-5a003e86f582@lechnology.com>
+Date:   Thu, 25 Jul 2019 17:52:21 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <20190725124037.GA4802@icarus>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jul 25, 2019 at 12:23 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
->
-> Hi Rob,
->
-> > Am 24.07.2019 um 21:42 schrieb Rob Herring <robh@kernel.org>:
-> >
-> > On Mon, Jul 08, 2019 at 04:46:05PM +0200, H. Nikolaus Schaller wrote:
-> >> commit 6953c57ab172 "gpio: of: Handle SPI chipselect legacy bindings"
-> >>
-> >> did introduce logic to centrally handle the legacy spi-cs-high property
-> >> in combination with cs-gpios. This assumes that the polarity
-> >> of the CS has to be inverted if spi-cs-high is missing, even
-> >> and especially if non-legacy GPIO_ACTIVE_HIGH is specified.
-> >>
-> >> The DTS for the GTA04 was orginally introduced under the assumption
-> >> that there is no need for spi-cs-high if the gpio is defined with
-> >> proper polarity GPIO_ACTIVE_HIGH.
-> >
-> > Given that spi-cs-high is called legacy, that would imply that DT's
-> > should not have to use spi-cs-high.
->
-> Yes.
->
-> >
-> >> This was not a problem until gpiolib changed the interpretation of
-> >> GPIO_ACTIVE_HIGH and missing spi-cs-high.
-> >
-> > Then we should fix gpiolib...
->
-> I tried to convince Linus that this is the right way but he convinced
-> me that a fix that handles all cases does not exist.
->
-> There seem to be embedded devices with older DTB (potentially in ROM)
-> which provide a plain 0 value for a gpios definition. And either with
-> or without spi-cs-high.
->
-> Since "0" is the same as "GPIO_ACTIVE_HIGH", the absence of
-> spi-cs-high was and must be interpreted as active low for these
-> devices. This leads to the inversion logic in code.
->
-> AFAIR it boils down to the question if gpiolib and the bindings
-> should still support such legacy devices with out-of tree DTB,
-> but force in-tree DTS to add the legacy spi-cs-high property.
->
-> Or if we should fix the 2 or 3 cases of in-tree legacy cases
-> and potentially break out-of tree DTBs.
+On 7/25/19 7:40 AM, William Breathitt Gray wrote:
+> On Mon, Jul 22, 2019 at 10:45:34AM -0500, David Lechner wrote:
+>> This series adds device tree bindings and a new counter driver for the Texas
+>> Instruments Enhanced Quadrature Encoder Pulse (eQEP).
+>>
+>> As mentioned in one of the commit messages, to start with, the driver only
+>> supports reading the current counter value and setting the min/max values.
+>> Other features can be added on an as-needed basis.
+>>
+>> The only other feature I am interested in is adding is getting time data in
+>> order to calculate the rotational speed of a motor. However, there probably
+>> needs to be a higher level discussion of how this can fit into the counter
+>> subsystem in general first.
+> 
+> I believe exposing some sort of time data has merit. Quadrature counter
+> devices in particular are commonly used for position tracking of
+> automation systems, and such systems would benefit from velocity/speed
+> information. So let's try to introduce that sort of functionality in this
+> driver if possible.
+> 
+> First, let's discuss your specific use case and requirements, and hopefully we
+> can generalize it enough to be of use for future drivers. From your description,
+> it sounds like you're attaching some sort of rotary encoder to the eQEP device.
+> Is that correct? What sort of time data are you hoping to use; does the eQEP
+> device provide a clock value, or would you be grabbing a timestamp from the
+> system?
 
-If it is small number of platforms, then the kernel could handle those
-cases explicitly as needed.
+My use case is robotics using LEGO MINDSTORMS. More specifically, I am using
+motors that have a cheap optical rotary encoder (plastic wheel and infrared
+LED/detectors) that give 360 counts per 1 rotation of the motor shaft. One count
+is defined as the rising edge or falling edge of the A signal. We are looking at
+anywhere from 0 to around 2000 counts per second. We use the speed as feedback in
+a control algorithm to drive the motor at a constant speed. The control loop
+updates on the order of 1 to 10 ms.
 
-> IMHO it is more general to keep the out-of-tree DTBs working
-> and "fix" what we can control (in-tree DTS).
+Because the encoder resolution and speeds are relatively low, we are currently
+logging a timestamp for each count. If no count occurs for 50ms, then we log the
+same count again with a new timestamp (otherwise we would never see 0 speed). To
+get the actual speed, we find the first timestamp > 20 ms before the current
+timestamp then compute the speed as the change in position divided by the change
+in time between these two samples. This give a fairly accurate speed across most
+of the range, but does get a bit noisy once we get below 100 counts per second.
+It also means that we need a ring buffer that holds about 50 samples.
 
-If we do this, then we need to not call spi-cs-high legacy because
-we're stuck with it forever.
+The timestamp itself comes from the eQEP, not the system. There are latching
+registers to ensure that the timestamp read is from exactly the moment when
+the count register was read.
 
-Rob
+  
+> I'm not sure yet if it would make sense to expose rotational speed directly as
+> an attribute. If we were to expose just the count value and timestamp since the
+> last read, that should be enough for a user to compute the delta and derive
+> speed. I'll think more about this since some devices may simplify that case if
+> the hardware is able to compute the speed for us.
+> 
+
+I agree that it probably doesn't make sense to expect drivers to compute the
+speed. There isn't really a general way to do that works for an arbitrary
+speed. For example at high speeds, it is better to just look at the change
+in counts over a fixed interval rather than triggering a timestamp based on
+a certain number of counts.
+
+I also don't think having a timestamp sysfs attribute would be very useful.
+To make it work at all, I think it would have to be implemented such that
+it returns the timestamp for the count that was most recently read via sysfs.
+And it would require 4 syscalls (2 seeks and 2 reads) to get a single count/
+timestamp pair in a control loop. On a 300MHz ARM9 processor, this is not
+a negligible amount of time.
+
+I noticed that several of the other counter drivers also register an IIO
+device. So this got me thinking that perhaps the counter subsystem should
+just be for configuring a counter device an then the IIO subsystem should
+be used for triggers and ring buffers.
+
+For the general case a counter device could have two possible triggers.
+One that triggers an interrupt after X counts and another that triggers
+with a period of T nanoseconds (or microseconds). Both triggers would add
+a count/timestamp pair to an IIO ring buffer.
+
+To fully reproduce our current methodology the first trigger would actually
+need two configurable settings, the count X that triggers every X counts and
+a watchdog time setting (using terminology from eQEP docs) that will also
+trigger if and only if the count does not change before the time has elapsed.
+Note, this is different from the other proposed time based trigger which
+would cause a trigger interrupt at a fixed period regardless of whether
+the count changed or not.
+
+---
+
+Thinking more generally though, I think what I would propose is adding a new
+component to the existing list of Count, Signal and Synapse. The new component
+could be called Event. Event would be more general than the trigger conditions
+I have just discussed. In addition to those two, it could be any event
+generated by the hardware, such as an error condition or a change in direction.
+
+Drivers could register an arbitrary number of events for each Count, so we
+would have /sys/bus/counter/devices/counterX/eventY/*. There should be a few
+standard attributes, like "name" and "enable". Configurable events would need
+ext attributes to allow configuration.
+
+However, I see that there are already preset and error_noise "events" for
+count objects, so maybe we don't do the eventY thing and keep it flatter (or
+is the counter subsystem still considered in "staging" where breaking ABI
+changes could be made?).
+
+When thinking about what events would actually do when enabled though, it
+seems like we should be using IIO events and triggers (we have found reading
+sysfs attributes to be insufficient performance-wise). It seems like unnecessary
+work to reproduce all of this in the counter subsystem. Which makes me wonder if
+it would be better to have counter devices just be a different device type (i.e.
+different struct device_type for dev->type) in the IIO subsystem instead of
+creating a completely new subsystem.
