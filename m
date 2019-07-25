@@ -2,118 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D49687471D
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Jul 2019 08:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99EFA74A3E
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Jul 2019 11:46:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727776AbfGYGXs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Jul 2019 02:23:48 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.166]:24799 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727089AbfGYGXs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Jul 2019 02:23:48 -0400
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBp5hRw/qOxWRk4dCzwp5iD+2s6bqei8mNpEiGupa/KJG1vh7ft13w="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2001:16b8:26ed:3500:85cc:8b56:536:d1f1]
-        by smtp.strato.de (RZmta 44.24 AUTH)
-        with ESMTPSA id j00b6dv6P6NhX0K
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Thu, 25 Jul 2019 08:23:43 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH 2/2] DTS: ARM: gta04: introduce legacy spi-cs-high to make display work again
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20190724194259.GA25847@bogus>
-Date:   Thu, 25 Jul 2019 08:23:49 +0200
-Cc:     Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Content-Transfer-Encoding: 7bit
-Message-Id: <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
-References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com> <20190724194259.GA25847@bogus>
-To:     Rob Herring <robh@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-X-Mailer: Apple Mail (2.3124)
+        id S1727747AbfGYJp4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Jul 2019 05:45:56 -0400
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:53751 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725808AbfGYJpz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Jul 2019 05:45:55 -0400
+X-Originating-IP: 92.137.69.152
+Received: from localhost (alyon-656-1-672-152.w92-137.abo.wanadoo.fr [92.137.69.152])
+        (Authenticated sender: gregory.clement@bootlin.com)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 4093BE0005;
+        Thu, 25 Jul 2019 09:45:53 +0000 (UTC)
+From:   Gregory CLEMENT <gregory.clement@bootlin.com>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 0/3]  regulator: twl6030: Fix the VMMC reset behavior
+Date:   Thu, 25 Jul 2019 11:45:39 +0200
+Message-Id: <20190725094542.16547-1-gregory.clement@bootlin.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Rob,
+Hello,
 
-> Am 24.07.2019 um 21:42 schrieb Rob Herring <robh@kernel.org>:
-> 
-> On Mon, Jul 08, 2019 at 04:46:05PM +0200, H. Nikolaus Schaller wrote:
->> commit 6953c57ab172 "gpio: of: Handle SPI chipselect legacy bindings"
->> 
->> did introduce logic to centrally handle the legacy spi-cs-high property
->> in combination with cs-gpios. This assumes that the polarity
->> of the CS has to be inverted if spi-cs-high is missing, even
->> and especially if non-legacy GPIO_ACTIVE_HIGH is specified.
->> 
->> The DTS for the GTA04 was orginally introduced under the assumption
->> that there is no need for spi-cs-high if the gpio is defined with
->> proper polarity GPIO_ACTIVE_HIGH.
-> 
-> Given that spi-cs-high is called legacy, that would imply that DT's 
-> should not have to use spi-cs-high.
+With the TWL6030 PMIC, during reset the VMMC regulator doesn't reach
+0V and only drops to 1.8V, furthermore the pulse width is under 200us
+whereas the SD specification expect 1ms.
 
-Yes.
+Fortunately, the WR_S bit allows the TWL6030 to no reset at all the
+VMMC during warm reset and keep the current voltage. Thanks to this
+workaround the SD card doesn't reach a undefined reset stage.
 
-> 
->> This was not a problem until gpiolib changed the interpretation of
->> GPIO_ACTIVE_HIGH and missing spi-cs-high.
-> 
-> Then we should fix gpiolib...
+The first patch describes the new property needed for this "feature".
 
-I tried to convince Linus that this is the right way but he convinced
-me that a fix that handles all cases does not exist.
+The second one is just a small cleanup done while I wrote the last
+patch, but as it was not really related to the feature itself, I made
+a separate patch for it.
 
-There seem to be embedded devices with older DTB (potentially in ROM)
-which provide a plain 0 value for a gpios definition. And either with
-or without spi-cs-high.
+The last patch adds the feature in the driver.
 
-Since "0" is the same as "GPIO_ACTIVE_HIGH", the absence of
-spi-cs-high was and must be interpreted as active low for these
-devices. This leads to the inversion logic in code.
+Gregory
 
-AFAIR it boils down to the question if gpiolib and the bindings
-should still support such legacy devices with out-of tree DTB,
-but force in-tree DTS to add the legacy spi-cs-high property.
+Gregory CLEMENT (3):
+  dt-bindings: regulator: twl6030: Add retain-on-reset property
+  regulator: twl6030: use variable for device node
+  regulator: twl6030: workaround the VMMC reset behavior
 
-Or if we should fix the 2 or 3 cases of in-tree legacy cases
-and potentially break out-of tree DTBs.
+ .../bindings/regulator/twl-regulator.txt      |  7 +++++++
+ drivers/regulator/twl6030-regulator.c         | 21 +++++++++++++++----
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-IMHO it is more general to keep the out-of-tree DTBs working
-and "fix" what we can control (in-tree DTS).
-
-> 
->> The effect is that the missing spi-cs-high is now interpreted as CS being
->> low (despite GPIO_ACTIVE_HIGH) which turns off the SPI interface when the
->> panel is to be programmed by the panel driver.
->> 
->> Therefore, we have to add the redundant and legacy spi-cs-high property
->> to properly pass through the legacy handler.
->> 
->> Since this is nowhere documented in the bindings, we add some words of
->> WARNING.
->> 
->> Cc: stable@vger.kernel.org
->> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
->> ---
->> Documentation/devicetree/bindings/spi/spi-bus.txt | 6 ++++++
->> arch/arm/boot/dts/omap3-gta04.dtsi                | 1 +
->> 2 files changed, 7 insertions(+)
-
-BR,
-Nikolaus
-
+-- 
+2.20.1
 
