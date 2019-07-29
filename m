@@ -2,122 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23D05782CC
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2019 02:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7791784DE
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2019 08:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726248AbfG2AXU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 28 Jul 2019 20:23:20 -0400
-Received: from gateway22.websitewelcome.com ([192.185.46.194]:46476 "EHLO
-        gateway22.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726238AbfG2AXT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 28 Jul 2019 20:23:19 -0400
-X-Greylist: delayed 1459 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Jul 2019 20:23:19 EDT
-Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
-        by gateway22.websitewelcome.com (Postfix) with ESMTP id E10702FD8
-        for <linux-omap@vger.kernel.org>; Sun, 28 Jul 2019 18:58:59 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id rt47hR2Yq2PzOrt47hX9Pv; Sun, 28 Jul 2019 18:58:59 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=PnpOUz+ntdJPawVX2iaj0kEkJmhXCKqTbDBvO3kRWpo=; b=W0wdNcHdB5vA5TrmPC8kCcEa0o
-        aLR8p+2Ta3Obw3CylGM5ig/eg9GzYkJGpClHeV8yMsE7WXKTqra27NGIywJTFNmVWCYGt4/n+fbYx
-        NxaulxKYvUUZXeegrQuwKjlJCA3EoMTHUPILaHdyXAYPGTcZsBjQpPFgndfcxWFJH0DVcAMpfSZbP
-        WfiS/AZqAw+f9G82dQX77HfCI+c+IPTSInqgj0jq4fCCxj+VvP8OKV9mMEjGP1mD2G/zIfG9m7hM1
-        LRzQ+0WmV4xSCUZ4sJ1aDK/+ffzn5L3dHeO2L0TzSAGlsMWnyc+xz+8MEHAMpcl0JtMWmFB9tGtTQ
-        l3/QQKsQ==;
-Received: from [187.192.11.120] (port=39628 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1hrt46-003mmd-Pj; Sun, 28 Jul 2019 18:58:58 -0500
-Date:   Sun, 28 Jul 2019 18:58:58 -0500
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH] mfd: omap-usb-host: Mark expected switch fall-throughs
-Message-ID: <20190728235858.GA23755@embeddedor>
+        id S1726516AbfG2GRs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Jul 2019 02:17:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46174 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725934AbfG2GRs (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 29 Jul 2019 02:17:48 -0400
+Received: from localhost (unknown [122.178.221.187])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 34E9A20578;
+        Mon, 29 Jul 2019 06:17:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564381067;
+        bh=SzvnrYeZ/XVMFTRV94yVm4GxaXQLhbrOmoBn0kkt5WA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NEJHkhIRe3vLDfy4/gTgsVp62iujdtY5y67s5hPGe2OzXzQbgUR7lpQhcgd61inXL
+         qUStUbcCTjjyD5EYIU/1BUbc0pIGXDfSeWzoPAzHZt5aibsI/EZkl02fqyKzLIX4yc
+         mM32MaHU+ycs/lyOjtTIft+tIE84XRl5cNhHYaE8=
+Date:   Mon, 29 Jul 2019 11:46:34 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc:     dan.j.williams@intel.com, dmaengine@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] dmaengine: ti: omap-dma: Improved memcpy polling
+ support
+Message-ID: <20190729061634.GD12733@vkoul-mobl.Dlink>
+References: <20190716082459.1222-1-peter.ujfalusi@ti.com>
+ <20190716082459.1222-3-peter.ujfalusi@ti.com>
+ <20190725133748.GX12733@vkoul-mobl.Dlink>
+ <59794775-95e6-04c3-2660-9344c89df9a1@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.192.11.120
-X-Source-L: No
-X-Exim-ID: 1hrt46-003mmd-Pj
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [187.192.11.120]:39628
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 57
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+In-Reply-To: <59794775-95e6-04c3-2660-9344c89df9a1@ti.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Mark switch cases where we are expecting to fall through.
+On 25-07-19, 17:07, Peter Ujfalusi wrote:
+> 
+> 
+> On 25/07/2019 16.37, Vinod Koul wrote:
+> > On 16-07-19, 11:24, Peter Ujfalusi wrote:
+> >> When a DMA client driver does not set the DMA_PREP_INTERRUPT because it
+> >> does not want to use interrupts for DMA completion or because it can not
+> >> rely on DMA interrupts due to executing the memcpy when interrupts are
+> >> disabled it will poll the status of the transfer.
+> >>
+> >> If the interrupts are enabled then the cookie will be set completed in the
+> >> interrupt handler so only check in HW completion when the polling is really
+> >> needed.
+> >>
+> >> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> >> ---
+> >>  drivers/dma/ti/omap-dma.c | 44 +++++++++++++++++++++++++--------------
+> >>  1 file changed, 28 insertions(+), 16 deletions(-)
+> >>
+> >> diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
+> >> index 029c0bd550d5..966d8f0323b5 100644
+> >> --- a/drivers/dma/ti/omap-dma.c
+> >> +++ b/drivers/dma/ti/omap-dma.c
+> >> @@ -91,6 +91,7 @@ struct omap_desc {
+> >>  	bool using_ll;
+> >>  	enum dma_transfer_direction dir;
+> >>  	dma_addr_t dev_addr;
+> >> +	bool polled;
+> >>  
+> >>  	int32_t fi;		/* for OMAP_DMA_SYNC_PACKET / double indexing */
+> >>  	int16_t ei;		/* for double indexing */
+> >> @@ -815,26 +816,20 @@ static enum dma_status omap_dma_tx_status(struct dma_chan *chan,
+> >>  	struct virt_dma_desc *vd;
+> >>  	enum dma_status ret;
+> >>  	unsigned long flags;
+> >> +	struct omap_desc *d = NULL;
+> >>  
+> >>  	ret = dma_cookie_status(chan, cookie, txstate);
+> >> -
+> >> -	if (!c->paused && c->running) {
+> >> -		uint32_t ccr = omap_dma_chan_read(c, CCR);
+> >> -		/*
+> >> -		 * The channel is no longer active, set the return value
+> >> -		 * accordingly
+> >> -		 */
+> >> -		if (!(ccr & CCR_ENABLE))
+> >> -			ret = DMA_COMPLETE;
+> >> -	}
+> >> -
+> >> -	if (ret == DMA_COMPLETE || !txstate)
+> >> +	if (ret == DMA_COMPLETE)
+> > 
+> > why do you want to continue for txstate being null?
+> 
+> The caller could opt to not provide txstate and I still need to check if
+> the non completed transfer is actually done by the HW or not.
+> 
+> > Also it would lead to NULL ptr deref for txstate
+> 
+> There is a !txstate check to avoid that.
+> 
+> > 
+> >>  		return ret;
+> >>  
+> >>  	spin_lock_irqsave(&c->vc.lock, flags);
+> >> +	if (c->desc && c->desc->vd.tx.cookie == cookie)
+> >> +		d = c->desc;
+> >> +
+> >> +	if (!txstate)
+> >> +		goto out;
 
-This patch fixes the following warnings:
+Oops missed that, let me check again and do the needful
 
-drivers/mfd/omap-usb-host.c: In function 'usbhs_runtime_resume':
-drivers/mfd/omap-usb-host.c:303:7: warning: this statement may fall through [-Wimplicit-fallthrough=]
-    if (!IS_ERR(omap->hsic480m_clk[i])) {
-       ^
-drivers/mfd/omap-usb-host.c:313:3: note: here
-   case OMAP_EHCI_PORT_MODE_TLL:
-   ^~~~
-drivers/mfd/omap-usb-host.c: In function 'usbhs_runtime_suspend':
-drivers/mfd/omap-usb-host.c:345:7: warning: this statement may fall through [-Wimplicit-fallthrough=]
-    if (!IS_ERR(omap->hsic480m_clk[i]))
-       ^
-drivers/mfd/omap-usb-host.c:349:3: note: here
-   case OMAP_EHCI_PORT_MODE_TLL:
-   ^~~~
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
- drivers/mfd/omap-usb-host.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-index 792b855a9104..4798d9f3f9d5 100644
---- a/drivers/mfd/omap-usb-host.c
-+++ b/drivers/mfd/omap-usb-host.c
-@@ -308,7 +308,7 @@ static int usbhs_runtime_resume(struct device *dev)
- 					 i, r);
- 				}
- 			}
--		/* Fall through as HSIC mode needs utmi_clk */
-+		/* Fall through - as HSIC mode needs utmi_clk */
- 
- 		case OMAP_EHCI_PORT_MODE_TLL:
- 			if (!IS_ERR(omap->utmi_clk[i])) {
-@@ -344,7 +344,7 @@ static int usbhs_runtime_suspend(struct device *dev)
- 
- 			if (!IS_ERR(omap->hsic480m_clk[i]))
- 				clk_disable_unprepare(omap->hsic480m_clk[i]);
--		/* Fall through as utmi_clks were used in HSIC mode */
-+		/* Fall through - as utmi_clks were used in HSIC mode */
- 
- 		case OMAP_EHCI_PORT_MODE_TLL:
- 			if (!IS_ERR(omap->utmi_clk[i]))
 -- 
-2.22.0
-
+~Vinod
