@@ -2,95 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29BA078668
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2019 09:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FFB779100
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Jul 2019 18:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725988AbfG2HfH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Jul 2019 03:35:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53582 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725917AbfG2HfH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 29 Jul 2019 03:35:07 -0400
-Received: from localhost (unknown [122.178.221.187])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 569A2216C8;
-        Mon, 29 Jul 2019 07:35:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1564385706;
-        bh=lHr/IieIlO/oNxt2fLFQBYX0xMOgH8ucnVD1H9PHqD0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=m34kicv/qIiguNPsZsqpBwARdFZASjMRiRr/AaWmvTws3aoMRDRlXgqSAf/rmlzvq
-         he3cc21rFsyypWb5lEq+gmk2g9zwW5CiEu4Lf2muw9HC8KpaKDbEqGwLzLtGQPcWbf
-         f1oVhoG/7fxzEk/D4Yr49hq4dom3gNL3Pl7osBzg=
-Date:   Mon, 29 Jul 2019 13:03:54 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     dan.j.williams@intel.com, dmaengine@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] dmaengine: ti: edma: Polled completion support
-Message-ID: <20190729073354.GL12733@vkoul-mobl.Dlink>
-References: <20190716082655.1620-1-peter.ujfalusi@ti.com>
- <20190729064209.GF12733@vkoul-mobl.Dlink>
- <f051dd12-911b-2b13-1908-7f0e1bd4b695@ti.com>
+        id S1729184AbfG2Qen (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Jul 2019 12:34:43 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:35256 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729183AbfG2Qem (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Jul 2019 12:34:42 -0400
+Received: by mail-pg1-f193.google.com with SMTP id s1so22224712pgr.2
+        for <linux-omap@vger.kernel.org>; Mon, 29 Jul 2019 09:34:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=vUjj6N1I6vMTCipD+qtqP93tKHcPzr/XHddLallJiUQ=;
+        b=BQkHvxRpF2AAJ+UdBJQXbbI0xM/Y+dARaYo49C03ziIYjkFz5pUP1pQh04+R5Ouyh8
+         06mEgzgPvGk/qWvvHfl4pn0hU+pE1OSamQLzLmTH7T/u40C4LYsLNa/aHdaA1+xkB3f5
+         hIUIsGBkANMp3WAfzYKV3fmFZOJei+Rp2FsUs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=vUjj6N1I6vMTCipD+qtqP93tKHcPzr/XHddLallJiUQ=;
+        b=ZRwDwDkpj5C78w2tKT5GW34GATw4I1D5zfYW6hBauJSy2Gy1/KszcaYOG3I7jPmXeP
+         5TsHBUanKz8c4EG9Hu9qUk859t55TLzQJwLUP5EzVE8dszqNyfQ08S/ZF9qd7/znSv3D
+         daPz04UhEuWQ4Mokj5Jbl+z8Kbfx5FkrtnYGkwkve2RTlftWc0JjacQAC22Xlt9BSygf
+         +QJ3SSrTr33YDA0eS6vr+5yqVxp4vPpO539Ru2dYCWVmVaP2Fi4G2J9FWka4ZT+CRwQ2
+         IBkFIDCXu1oYTK7EmLYqeiiPqWKeZ9BxztqVETSHU69gbTKLLQR63KFGPdq5KbEaF+hs
+         vuoQ==
+X-Gm-Message-State: APjAAAXJTeWAg3ktiwaRmltbJy8TiWUxUntNFpnPamEshlaNEqdCQRgO
+        Mpz2Nm3mmqUC1vLQyBxM4TG9Jw==
+X-Google-Smtp-Source: APXvYqx2FkrDdwq2i3WnLGDnQvHrZD/9LANeryz6v82uCSLvbbMEBPBAp1/MW4dWZBLjPOrNhzDhlw==
+X-Received: by 2002:a63:eb56:: with SMTP id b22mr106511441pgk.355.1564418081835;
+        Mon, 29 Jul 2019 09:34:41 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id c23sm56307412pgj.62.2019.07.29.09.34.40
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 29 Jul 2019 09:34:41 -0700 (PDT)
+Date:   Mon, 29 Jul 2019 09:34:40 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH] ARM: OMAP: dma: Mark expected switch fall-throughs
+Message-ID: <201907290934.B2053972E3@keescook>
+References: <20190728232240.GA22393@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f051dd12-911b-2b13-1908-7f0e1bd4b695@ti.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <20190728232240.GA22393@embeddedor>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 29-07-19, 10:22, Peter Ujfalusi wrote:
-> Vinod,
+On Sun, Jul 28, 2019 at 06:22:40PM -0500, Gustavo A. R. Silva wrote:
+> Mark switch cases where we are expecting to fall through.
 > 
-> On 29/07/2019 9.42, Vinod Koul wrote:
-> > On 16-07-19, 11:26, Peter Ujfalusi wrote:
-> >> Hi,
-> >>
-> >> Changes since v4:
-> >> - Split the DMA_COMPLETE and !txstate check as Vinod suggested
-> >>
-> >> Change since v3:
-> >> - fix DMA pointer tracking for memcpy
-> >> - completion polling is only done when it is asked by not providing
-> >>   DMA_PREP_INTERRUPT for memcpy
-> >>
-> >> Changes since v2:
-> >> - Fix typo in the comment for patch 0
-> >>
-> >> Changes since v1:
-> >> - Cleanup patch for the array register handling
-> >> - typo fixed in patch2 commit message
-> >>
-> >> The code around the array register access was pretty confusing for the first
-> >> look, so clean them up first then use the cleaner way in the polled handling.
-> >>
-> >> When a DMA client driver does not set the DMA_PREP_INTERRUPT because it
-> >> does not want to use interrupts for DMA completion or because it can not
-> >> rely on DMA interrupts due to executing the memcpy when interrupts are
-> >> disabled it will poll the status of the transfer.
-> >>
-> >> Since we can not tell from any EDMA register that the transfer is
-> >> completed, we can only know that the paRAM set has been sent to TPTC for
-> >> processing we need to check the residue of the transfer, if it is 0 then
-> >> the transfer is completed.
-> >>
-> >> The polled completion can bve tested by applying:
-> >> https://patchwork.kernel.org/patch/10966499/
-> >>
-> >> Enabling the memcpy for EDMA and run the dmatest with polled = 1.
-> >>
-> >> Or, enable the EDMA memcpy support and boot up any dra7 family device with
-> >> display enabled. The workaround for DMM errata i878 uses polled DMA memcpy.
-> > 
-> > Applied, thanks. Fixed typo in 2nd patch while at it
+> This patch fixes the following warnings:
 > 
-> Thank you! I was about to send v6 with the fixed typo.
+> arch/arm/plat-omap/dma.c: In function 'omap_set_dma_src_burst_mode':
+> arch/arm/plat-omap/dma.c:384:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    if (dma_omap2plus()) {
+>       ^
+> arch/arm/plat-omap/dma.c:393:2: note: here
+>   case OMAP_DMA_DATA_BURST_16:
+>   ^~~~
+> arch/arm/plat-omap/dma.c:394:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    if (dma_omap2plus()) {
+>       ^
+> arch/arm/plat-omap/dma.c:402:2: note: here
+>   default:
+>   ^~~~~~~
+> arch/arm/plat-omap/dma.c: In function 'omap_set_dma_dest_burst_mode':
+> arch/arm/plat-omap/dma.c:473:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
+>    if (dma_omap2plus()) {
+>       ^
+> arch/arm/plat-omap/dma.c:481:2: note: here
+>   default:
+>   ^~~~~~~
+> 
+> Notice that, in this particular case, the code comment is
+> modified in accordance with what GCC is expecting to find.
+> 
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 
-Simpler typos are ok to fix while applying
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-Kees
+
+> ---
+>  arch/arm/plat-omap/dma.c | 14 +++++---------
+>  1 file changed, 5 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/arm/plat-omap/dma.c b/arch/arm/plat-omap/dma.c
+> index 79f43acf9acb..08c99413d02c 100644
+> --- a/arch/arm/plat-omap/dma.c
+> +++ b/arch/arm/plat-omap/dma.c
+> @@ -388,17 +388,15 @@ void omap_set_dma_src_burst_mode(int lch, enum omap_dma_burst_mode burst_mode)
+>  		/*
+>  		 * not supported by current hardware on OMAP1
+>  		 * w |= (0x03 << 7);
+> -		 * fall through
+>  		 */
+> +		/* fall through */
+>  	case OMAP_DMA_DATA_BURST_16:
+>  		if (dma_omap2plus()) {
+>  			burst = 0x3;
+>  			break;
+>  		}
+> -		/*
+> -		 * OMAP1 don't support burst 16
+> -		 * fall through
+> -		 */
+> +		/* OMAP1 don't support burst 16 */
+> +		/* fall through */
+>  	default:
+>  		BUG();
+>  	}
+> @@ -474,10 +472,8 @@ void omap_set_dma_dest_burst_mode(int lch, enum omap_dma_burst_mode burst_mode)
+>  			burst = 0x3;
+>  			break;
+>  		}
+> -		/*
+> -		 * OMAP1 don't support burst 16
+> -		 * fall through
+> -		 */
+> +		/* OMAP1 don't support burst 16 */
+> +		/* fall through */
+>  	default:
+>  		printk(KERN_ERR "Invalid DMA burst mode\n");
+>  		BUG();
+> -- 
+> 2.22.0
+> 
 
 -- 
-~Vinod
+Kees Cook
