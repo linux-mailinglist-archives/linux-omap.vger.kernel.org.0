@@ -2,81 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AB967A959
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2019 15:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C2C37AC64
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2019 17:29:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727514AbfG3NUc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Jul 2019 09:20:32 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:56734 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727409AbfG3NUc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Jul 2019 09:20:32 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6UDKRib110036;
-        Tue, 30 Jul 2019 08:20:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1564492827;
-        bh=udC4eB7/7djyKfo+FEyGPgDOqsWoiwYjF6+4BMQvCno=;
-        h=From:To:CC:Subject:Date;
-        b=fFmBjHr0CSc8kKbP+Uj3HUkwn9NBfq+fto3YHooYhd3kb/+Wy2/y6qRJCp0D7z3Fw
-         PlnpyGgoZrvStEJa25oIhqIYv/Vfp8bJ+lF7iXL8Yk8gxKFPLdWXZKtlHJYDoZa1Pq
-         tycdWXlrCM/TSXroPWHZ7SGOwJ5Vg52Og/kfXeuA=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6UDKRmQ083638
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 30 Jul 2019 08:20:27 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 30
- Jul 2019 08:20:26 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 30 Jul 2019 08:20:26 -0500
-Received: from feketebors.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6UDKPO6056322;
-        Tue, 30 Jul 2019 08:20:25 -0500
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-To:     <vkoul@kernel.org>
-CC:     <dan.j.williams@intel.com>, <dmaengine@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>
-Subject: [PATCH] dmaengine: ti: omap-dma: Remove variable override in omap_dma_tx_status()
-Date:   Tue, 30 Jul 2019 16:20:29 +0300
-Message-ID: <20190730132029.2971-1-peter.ujfalusi@ti.com>
-X-Mailer: git-send-email 2.22.0
+        id S1732430AbfG3P2O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Jul 2019 11:28:14 -0400
+Received: from vern.gendns.com ([98.142.107.122]:41606 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728653AbfG3P2O (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 30 Jul 2019 11:28:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=D1cCKbBJLkaeJdKkx3868DjQ1Exc5f5bo+iv777eCxM=; b=oMplsA8uNa2qIKzbHTIzvrjLHu
+        iKNy3P0r1uBI1xJ1VmdzMQgorZddjJQ9g6ARWgJilPRIG5wZiD25Pk/n55nQbwj3YP7HOFIAvXWOu
+        uMdNvVQH0FvUUbQ/QM438RIbLsbr6ZfE7CLyNKwVkJI87xEXzUOZ58wX6paoIc8zDy7LmxUDWjn8i
+        wwYdFlpoadsErKsRjDieagqDq+SXaEXNNZJu93CjkmhW4I84hSvkcI+nqyrgE9s3HBn82lSNIFQhm
+        Lhz2j/mqJKMVdzrDdWYtzQMJKPcEObd+aSly9uo8oqRRjm7HUIu+pLOo3sp5MyGosQJQ9keL2Ydkm
+        UYMbmWoQ==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:57832 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1hsU2t-00G8iR-1G; Tue, 30 Jul 2019 11:28:11 -0400
+Subject: Re: [PATCH 2/4] counter: new TI eQEP driver
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20190722154538.5314-1-david@lechnology.com>
+ <20190722154538.5314-3-david@lechnology.com>
+ <20190730123523.cjtmr3tpttn6r3pt@pengutronix.de>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <58ef00df-4d99-f4f2-0eda-01db2afe5502@lechnology.com>
+Date:   Tue, 30 Jul 2019 10:28:10 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
+In-Reply-To: <20190730123523.cjtmr3tpttn6r3pt@pengutronix.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There is no need to fetch local omap_desc since the desc we have is the
-correct one already when we need to check the channel status.
+On 7/30/19 7:35 AM, Uwe Kleine-König wrote:
+> On Mon, Jul 22, 2019 at 10:45:36AM -0500, David Lechner wrote:
+>> This adds a new counter driver for the Texas Instruments Enhanced
+>> Quadrature Encoder Pulse (eQEP) module.
+>>
+>> Only very basic functionality is currently implemented - only enough to
+>> be able to read the position. The actual device has many more features
+>> which can be added to the driver on an as-needed basis.
+>>
+>> Signed-off-by: David Lechner <david@lechnology.com>
+>> ---
+>>   MAINTAINERS               |   6 +
+>>   drivers/counter/Kconfig   |  12 ++
+>>   drivers/counter/Makefile  |   1 +
+>>   drivers/counter/ti-eqep.c | 381 ++++++++++++++++++++++++++++++++++++++
+>>   drivers/pwm/Kconfig       |   2 +-
+> 
+> It's not obvious why the change to drivers/pwm/Kconfig is needed. Can
+> you please motivate that in the change log?
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
----
- drivers/dma/ti/omap-dma.c | 1 -
- 1 file changed, 1 deletion(-)
+Will do. The short version is that it is needed for power management.
 
-diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
-index 3b57b68df896..9f359ec3386d 100644
---- a/drivers/dma/ti/omap-dma.c
-+++ b/drivers/dma/ti/omap-dma.c
-@@ -860,7 +860,6 @@ static enum dma_status omap_dma_tx_status(struct dma_chan *chan,
- 		 * accordingly and mark it as completed
- 		 */
- 		if (!(ccr & CCR_ENABLE)) {
--			struct omap_desc *d = c->desc;
- 			ret = DMA_COMPLETE;
- 			omap_dma_start_desc(c);
- 			vchan_cookie_complete(&d->vd);
--- 
-Peter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> 
+> Best regards
+> Uwe
+> 
 
