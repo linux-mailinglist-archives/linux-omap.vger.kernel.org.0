@@ -2,76 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE7FE7A89B
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2019 14:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D5C7A955
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2019 15:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728473AbfG3Mfg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Jul 2019 08:35:36 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:58351 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727993AbfG3Mfg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Jul 2019 08:35:36 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hsRLj-0005tb-FO; Tue, 30 Jul 2019 14:35:27 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1hsRLf-0001Vh-M1; Tue, 30 Jul 2019 14:35:23 +0200
-Date:   Tue, 30 Jul 2019 14:35:23 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 2/4] counter: new TI eQEP driver
-Message-ID: <20190730123523.cjtmr3tpttn6r3pt@pengutronix.de>
-References: <20190722154538.5314-1-david@lechnology.com>
- <20190722154538.5314-3-david@lechnology.com>
+        id S1727753AbfG3NUN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Jul 2019 09:20:13 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:56702 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727601AbfG3NUM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Jul 2019 09:20:12 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6UDK4j7109814;
+        Tue, 30 Jul 2019 08:20:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1564492804;
+        bh=A1hY1j0EjSsyhP7lVvn6SAE68U3tIYMeRYSABLOghr8=;
+        h=From:To:CC:Subject:Date;
+        b=hGmfUxdC91ECqh6zxCyML4ArKTwg2uJVxg0mQ87yKOpe7YOHb2nuHCw36KuTIHkLI
+         TZ86a32tEWIp2Yyc9C6vPBLB/5zu0PaFOWlWQP+NrIH4iImehfs/ssZ/gQhCvJqfNn
+         VvGcHxE3T/v1oIxvA4a5oxQq3RygXCrI1WzUyifg=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6UDK48A000583
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 30 Jul 2019 08:20:04 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 30
+ Jul 2019 08:20:04 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Tue, 30 Jul 2019 08:20:04 -0500
+Received: from feketebors.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6UDK2Bt055518;
+        Tue, 30 Jul 2019 08:20:02 -0500
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+To:     <vkoul@kernel.org>
+CC:     <dan.j.williams@intel.com>, <dmaengine@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>
+Subject: [PATCH] dmaengine: ti: edma: Remove 'Assignment in if condition'
+Date:   Tue, 30 Jul 2019 16:20:06 +0300
+Message-ID: <20190730132006.2790-1-peter.ujfalusi@ti.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190722154538.5314-3-david@lechnology.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jul 22, 2019 at 10:45:36AM -0500, David Lechner wrote:
-> This adds a new counter driver for the Texas Instruments Enhanced
-> Quadrature Encoder Pulse (eQEP) module.
-> 
-> Only very basic functionality is currently implemented - only enough to
-> be able to read the position. The actual device has many more features
-> which can be added to the driver on an as-needed basis.
-> 
-> Signed-off-by: David Lechner <david@lechnology.com>
-> ---
->  MAINTAINERS               |   6 +
->  drivers/counter/Kconfig   |  12 ++
->  drivers/counter/Makefile  |   1 +
->  drivers/counter/ti-eqep.c | 381 ++++++++++++++++++++++++++++++++++++++
->  drivers/pwm/Kconfig       |   2 +-
+While the compiler does not have problem with how it is implemented,
+checkpatch does give en ERROR for this arrangement.
 
-It's not obvious why the change to drivers/pwm/Kconfig is needed. Can
-you please motivate that in the change log?
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+---
+ drivers/dma/ti/edma.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-Best regards
-Uwe
-
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index fe468e2f7e67..6f2d6c592663 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -1832,7 +1832,6 @@ static enum dma_status edma_tx_status(struct dma_chan *chan,
+ 				      struct dma_tx_state *txstate)
+ {
+ 	struct edma_chan *echan = to_edma_chan(chan);
+-	struct virt_dma_desc *vdesc;
+ 	struct dma_tx_state txstate_tmp;
+ 	enum dma_status ret;
+ 	unsigned long flags;
+@@ -1846,12 +1845,18 @@ static enum dma_status edma_tx_status(struct dma_chan *chan,
+ 	if (!txstate)
+ 		txstate = &txstate_tmp;
+ 
+-	txstate->residue = 0;
+ 	spin_lock_irqsave(&echan->vchan.lock, flags);
+-	if (echan->edesc && echan->edesc->vdesc.tx.cookie == cookie)
++	if (echan->edesc && echan->edesc->vdesc.tx.cookie == cookie) {
+ 		txstate->residue = edma_residue(echan->edesc);
+-	else if ((vdesc = vchan_find_desc(&echan->vchan, cookie)))
+-		txstate->residue = to_edma_desc(&vdesc->tx)->residue;
++	} else {
++		struct virt_dma_desc *vdesc = vchan_find_desc(&echan->vchan,
++							      cookie);
++
++		if (vdesc)
++			txstate->residue = to_edma_desc(&vdesc->tx)->residue;
++		else
++			txstate->residue = 0;
++	}
+ 
+ 	/*
+ 	 * Mark the cookie completed if the residue is 0 for non cyclic
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
