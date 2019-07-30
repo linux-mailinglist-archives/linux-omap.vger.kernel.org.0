@@ -2,68 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0407A72A
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2019 13:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE7FE7A89B
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jul 2019 14:35:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727246AbfG3Lkp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Jul 2019 07:40:45 -0400
-Received: from 50-87-157-213.static.tentacle.fi ([213.157.87.50]:46829 "EHLO
-        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726386AbfG3Lkp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 30 Jul 2019 07:40:45 -0400
-X-Greylist: delayed 2689 seconds by postgrey-1.27 at vger.kernel.org; Tue, 30 Jul 2019 07:40:44 EDT
-Received: from jarkko by bitmer.com with local (Exim 4.84_2)
-        (envelope-from <jarkko.nikula@bitmer.com>)
-        id 1hsPmy-0007As-Rj; Tue, 30 Jul 2019 13:55:28 +0300
-Date:   Tue, 30 Jul 2019 13:55:28 +0300
-From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] ASoC: ti: Mark expected switch fall-throughs
-Message-ID: <20190730105528.GA27548@bitmer.com>
-References: <20190729221534.GA18696@embeddedor>
+        id S1728473AbfG3Mfg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Jul 2019 08:35:36 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:58351 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727993AbfG3Mfg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Jul 2019 08:35:36 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1hsRLj-0005tb-FO; Tue, 30 Jul 2019 14:35:27 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1hsRLf-0001Vh-M1; Tue, 30 Jul 2019 14:35:23 +0200
+Date:   Tue, 30 Jul 2019 14:35:23 +0200
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     David Lechner <david@lechnology.com>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH 2/4] counter: new TI eQEP driver
+Message-ID: <20190730123523.cjtmr3tpttn6r3pt@pengutronix.de>
+References: <20190722154538.5314-1-david@lechnology.com>
+ <20190722154538.5314-3-david@lechnology.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190729221534.GA18696@embeddedor>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20190722154538.5314-3-david@lechnology.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jul 29, 2019 at 05:15:34PM -0500, Gustavo A. R. Silva wrote:
-> Mark switch cases where we are expecting to fall through.
+On Mon, Jul 22, 2019 at 10:45:36AM -0500, David Lechner wrote:
+> This adds a new counter driver for the Texas Instruments Enhanced
+> Quadrature Encoder Pulse (eQEP) module.
 > 
-> This patch fixes the following warning (Building: arm):
+> Only very basic functionality is currently implemented - only enough to
+> be able to read the position. The actual device has many more features
+> which can be added to the driver on an as-needed basis.
 > 
-> sound/soc/ti/n810.c: In function ‘n810_ext_control’:
-> sound/soc/ti/n810.c:48:10: warning: this statement may fall through [-Wimplicit-fallthrough=]
->    line1l = 1;
->    ~~~~~~~^~~
-> sound/soc/ti/n810.c:49:2: note: here
->   case N810_JACK_HP:
->   ^~~~
-> 
-> sound/soc/ti/rx51.c: In function ‘rx51_ext_control’:
-> sound/soc/ti/rx51.c:57:6: warning: this statement may fall through [-Wimplicit-fallthrough=]
->    hs = 1;
->    ~~~^~~
-> sound/soc/ti/rx51.c:58:2: note: here
->   case RX51_JACK_HP:
->   ^~~~
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> Signed-off-by: David Lechner <david@lechnology.com>
 > ---
->  sound/soc/ti/n810.c | 1 +
->  sound/soc/ti/rx51.c | 1 +
->  2 files changed, 2 insertions(+)
-> 
-Acked-by: Jarkko Nikula <jarkko.nikula@bitmer.com> 
+>  MAINTAINERS               |   6 +
+>  drivers/counter/Kconfig   |  12 ++
+>  drivers/counter/Makefile  |   1 +
+>  drivers/counter/ti-eqep.c | 381 ++++++++++++++++++++++++++++++++++++++
+>  drivers/pwm/Kconfig       |   2 +-
+
+It's not obvious why the change to drivers/pwm/Kconfig is needed. Can
+you please motivate that in the change log?
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-K�nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
