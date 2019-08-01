@@ -2,154 +2,166 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF0607D2D4
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Aug 2019 03:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCBBE7D2D5
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Aug 2019 03:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726514AbfHAB2h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 31 Jul 2019 21:28:37 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:37640 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725942AbfHAB2h (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 Jul 2019 21:28:37 -0400
-Received: by mail-qt1-f196.google.com with SMTP id y26so68571583qto.4
-        for <linux-omap@vger.kernel.org>; Wed, 31 Jul 2019 18:28:36 -0700 (PDT)
+        id S1726595AbfHAB2k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 31 Jul 2019 21:28:40 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:34168 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725942AbfHAB2k (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 Jul 2019 21:28:40 -0400
+Received: by mail-qt1-f195.google.com with SMTP id k10so68644051qtq.1
+        for <linux-omap@vger.kernel.org>; Wed, 31 Jul 2019 18:28:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CmpHUutSyWgxNu2ZA15TTUnHQ/0LHm6e64ko4evaYEk=;
-        b=Eh4AyoyDBI+5V+pNdyvE4NkTwqA5ns5qq2zbckvy8LbyqnAf+Ie15nHPui30/o0T/Q
-         HiD4mv88CVLi48QltiB+WpAn2dOLMeT5tqul1RFnf0MXRW9DPWUFkXdNp7jjoTsNhVT9
-         7wI7uPTpwF/wejQ3/Qn70J2FvdJIlkTtbWdOmNsNW83xPSAngokn6C2tB2jJdQR37F8z
-         WVQdDttIeVp72tYHCQvWQ/APhqEaM0aWu+bByw7uDcyXF5n0Z1RD1TJdgyGvxojS0zJm
-         jxgEuv+3w+IRLb6VIUit7yfWMF95yrxdOCoEiYAdsfWtQfcHBHZXMSMacUermqrZGVfJ
-         gfug==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=vkqM9EeVWWbKA5vw3EmFiWRlvOGZd/rCtzh5bKIOEKs=;
+        b=TtXwCp1OmcqGOrZ/c5whDtNcVaG6swgTRzPBUJuiRzCXTtzSxUzHusXVvfOz7SDDZS
+         E4eatwtbNzvNIF6WOkkZR99pEImwQMK0X/g/SrkKym0S8XrOtXBjzDtKEDaO4f41BALw
+         61PBSxKwwb5YEqNhcuN2/oyXLNixhjavktSfy6uyCY6KwoyBbVdqIt5G/9hmY/hwZCqb
+         VltYx6kvHnnQgloIBw3Ult42PYspiiw30JRcXagTL6Nh+023bw2ZNWkxUDji7N8SLsTF
+         wMr7AtEcnKZhCuYSzZkufDGhvCvpRCN9bhY5ZUIoWmCdhCJY8ya9CSfHB+RAk7enEVu4
+         0Zsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CmpHUutSyWgxNu2ZA15TTUnHQ/0LHm6e64ko4evaYEk=;
-        b=eTrtWjPbiaFeAiHGMYVjhLP7pJkR1YOhIhqb9nfk4eNf8T9iCpbrvBBYbA9swwYhPU
-         6EJ0upBGaNxVae0cfu+juFxR4FkGFlgozIjkwsSI2KPI/0vzOmnJAF7N5Ktqd8CjO/8X
-         wu9rNQvKbn40P05NoWewalkJH6SdF7hhbHQbyLfep+DW4QyTa4zcGyFNyDiL7JOpBv/x
-         WyJFndF9Y6XAKt9t7K9AXRFyiD4FCoRs5RjgkKFjsyqY1IfEJde9lbCBnjA+rL36VRNg
-         0XAYfU5atgTq8lCRnANEZP5Bl0+zk/6AO5ccns2CBWBhjChMydIr+462r4M0pgiOVt/8
-         cQtw==
-X-Gm-Message-State: APjAAAXziq8hU632lSS63tcVZYFWqPwrjVhsuzko/01v6rgNoS2z0nI5
-        tCv6ijk/S5LPBnD9gQeLhO6bpKXSZlCmlA==
-X-Google-Smtp-Source: APXvYqz3OS2LnDxhKwTTpghovPvhNAXNCv6UNSPCUY7AIubAt6DTfDe8gPwPjuWRnOt3E4mmurigvw==
-X-Received: by 2002:a0c:b0a8:: with SMTP id o37mr90550170qvc.76.1564622915881;
-        Wed, 31 Jul 2019 18:28:35 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=vkqM9EeVWWbKA5vw3EmFiWRlvOGZd/rCtzh5bKIOEKs=;
+        b=ktYa/28TCcU3e8jRxr+5NhUTNjUklV+mEtArP/XTu8ySln1Rc7iRtpKGsj4Oq6bvQ4
+         X9R60aLTXeLfoJNSkqNoJxWl4y9eLWIDUYN3v8UtF49Dg/h8poNqLo3t0SFpzJh865uY
+         j/Zbu/1+tkgr9G+UbXHiky/PXkP69HQ/MnX68uVGDFu1vbRlqjQviyt+uc7KP6lwElqO
+         z6SqkThWHj7yu0nqn5hZ6SWm74qrS5lqBrfzkqNJf6Eio7ilwJZSx+A45vmPW7KxRvSl
+         yQMwO093MFHCxiYFrgxU74hitJ7m3h9tTihvLb6WvSLD52AWmRnXkU1/ySBdCQv/nFJT
+         DrRg==
+X-Gm-Message-State: APjAAAWqI3BUJ717ZmIjVh5W+YW+sPx5jpHIm8U1S3O7Mr6E3WyKFDpn
+        KcdHmd/2RlJY/7dSWmAZn0ITV9UkIlkSIA==
+X-Google-Smtp-Source: APXvYqzrdYFVajCv/ELm7UeBTS84YqJ+gPNjTEeZ9kzMyJCajmN9OwLd9Xw5Ih1cdeCeEn15zw3Ycw==
+X-Received: by 2002:ac8:2535:: with SMTP id 50mr87216438qtm.373.1564622919238;
+        Wed, 31 Jul 2019 18:28:39 -0700 (PDT)
 Received: from lepton.domain.name ([191.243.232.18])
-        by smtp.gmail.com with ESMTPSA id x205sm32130536qka.56.2019.07.31.18.28.33
-        for <linux-omap@vger.kernel.org>
+        by smtp.gmail.com with ESMTPSA id x205sm32130536qka.56.2019.07.31.18.28.36
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Jul 2019 18:28:35 -0700 (PDT)
+        Wed, 31 Jul 2019 18:28:38 -0700 (PDT)
 From:   =?UTF-8?q?Andr=C3=A9=20Roth?= <neolynx@gmail.com>
 To:     linux-omap@vger.kernel.org
-Subject: [RFC PATCH 0/3] Enable 1GHz support on omap36xx
-Date:   Thu,  1 Aug 2019 03:28:20 +0200
-Message-Id: <20190801012823.28730-1-neolynx@gmail.com>
+Cc:     Thara Gopinath <thara@ti.com>, Nishanth Menon <nm@ti.com>,
+        Shweta Gulati <shweta.gulati@ti.com>,
+        linux-arm-kernel@lists.infradead.org, Kevin Hilman <khilman@ti.com>
+Subject: [PATCH 1/3] OMAP3: PM: Set/clear T2 bit for Smartreflex on TWL
+Date:   Thu,  1 Aug 2019 03:28:21 +0200
+Message-Id: <20190801012823.28730-2-neolynx@gmail.com>
 X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190801012823.28730-1-neolynx@gmail.com>
+References: <20190801012823.28730-1-neolynx@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi all,
+From: Thara Gopinath <thara@ti.com>
 
-the current mainline kernel does not provide support for running
-omap36xx based boards at 1GHz for chips like DM3730 where this would be
-supported. It has been discussed many times, I hope you do not mind me
-bringing this up again ;)
+Voltage control on TWL can be done using VMODE/I2C1/I2C_SR.
+Since almost all platforms use I2C_SR on omap3, omap3_twl_init by
+default expects that OMAP's I2C_SR is plugged in to TWL's I2C
+and calls omap3_twl_set_sr_bit. On platforms where I2C_SR is not connected,
+the board files are expected to call omap3_twl_set_sr_bit(false) to
+ensure that I2C_SR path is not set for voltage control and prevent
+the default behavior of omap3_twl_init.
 
-I found some proposed patches by Nishanth Menon from TI [1] and a
-statement [2] that drivers for the Voltage processor and controllers are
-needed to properly run those chips at 1GHz using Adaptive Voltage
-Scaling (AVS) and SmartReflex (SR).
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Thara Gopinath <thara@ti.com>
+Signed-off-by: Shweta Gulati <shweta.gulati@ti.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Signed-off-by: Kevin Hilman <khilman@ti.com>
+---
+ arch/arm/mach-omap2/omap_twl.c | 60 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-As there are drivers for VP and VC in the kernel, I tried to figure out
-how to enable them and found a PATCH 1/3 which enables SR in the TWL
-driver. However, the order in which PM, SR and TWL are initialized or
-probed did not match, which I was able to fix with PATCH 2/3. In the end
-calling omap_sr_enable in PATCH 3/3 finally enables SR and my board
-seems to run fine at 1GHz (not battery powered, full performance
-required).
-
-Looking at a register dump on DM3730, I can see that VP, VC1 and SR1 are
-enabled:
-
-Global PRM_VC_SMPS_SA     [0x48307220]: 0x00120012  00000000000100100000000000010010
-Global PRM_VC_SMPS_VOL_RA [0x48307224]: 0x00010000  00000000000000010000000000000000
-Global PRM_VC_SMPS_CMD_RA [0x48307228]: 0x00000000  00000000000000000000000000000000
-Global PRM_VC_CMD_VAL_0   [0x4830722C]: 0x3E201E00  00111110001000000001111000000000
-Global PRM_VC_CMD_VAL_1   [0x48307230]: 0x30201E00  00110000001000000001111000000000
-Global PRM_VC_CH_CONF     [0x48307234]: 0x00130008  00000000000100110000000000001000
-Global PRM_VC_I2C_CFG     [0x48307238]: 0x00000008  00000000000000000000000000001000
-Global PRM_VC_BYPASS_VAL  [0x4830723C]: 0x00000000  00000000000000000000000000000000
-Global PRM_RSTCTRL        [0x48307250]: 0x00000000  00000000000000000000000000000000
-Global PRM_RSTTIME        [0x48307254]: 0x00001006  00000000000000000001000000000110
-Global PRM_RSTST          [0x48307258]: 0x00000001  00000000000000000000000000000001
-Global PRM_VOLTCTRL       [0x48307260]: 0x0000000A  00000000000000000000000000001010
-Global PRM_SRAM_PCHARGE   [0x48307264]: 0x00000050  00000000000000000000000001010000
-Global PRM_CLKSRC_CTRL    [0x48307270]: 0x00000088  00000000000000000000000010001000
-Global PRM_OBS            [0x48307280]: 0x00000000  00000000000000000000000000000000
-Global PRM_VOLTSETUP1     [0x48307290]: 0x00700070  00000000011100000000000001110000
-Global PRM_VOLTOFFSET     [0x48307294]: 0x00000010  00000000000000000000000000010000
-Global PRM_CLKSETUP       [0x48307298]: 0x00000148  00000000000000000000000101001000
-Global PRM_POLCTRL        [0x4830729C]: 0x00000002  00000000000000000000000000000010
-Global PRM_VOLTSETUP2     [0x483072A0]: 0x00000000  00000000000000000000000000000000
-Global PRM_VP1_CONFIG     [0x483072B0]: 0x00273E09  00000000001001110011111000001001
-Global PRM_VP1_VSTEPMIN   [0x483072B4]: 0x00002901  00000000000000000010100100000001
-Global PRM_VP1_VSTEPMAX   [0x483072B8]: 0x00002904  00000000000000000010100100000100
-Global PRM_VP1_VLIMITTO   [0x483072BC]: 0x42140A28  01000010000101000000101000101000
-Global PRM_VP1_VOLTAGE    [0x483072C0]: 0x00000034  00000000000000000000000000110100
-Global PRM_VP1_STATUS     [0x483072C4]: 0x00000001  00000000000000000000000000000001
-Global PRM_VP2_CONFIG     [0x483072D0]: 0x00000008  00000000000000000000000000001000
-Global PRM_VP2_VSTEPMIN   [0x483072D4]: 0x00002901  00000000000000000010100100000001
-Global PRM_VP2_VSTEPMAX   [0x483072D8]: 0x00002904  00000000000000000010100100000100
-Global PRM_VP2_VLIMITTO   [0x483072DC]: 0x2C180A28  00101100000110000000101000101000
-Global PRM_VP2_VOLTAGE    [0x483072E0]: 0x00000000  00000000000000000000000000000000
-Global PRM_VP2_STATUS     [0x483072E4]: 0x00000001  00000000000000000000000000000001
-Global PRM_LDO_ABB_SETUP  [0x483072F0]: 0x00000000  00000000000000000000000000000000
-Global PRM_LDO_ABB_CTRL   [0x483072F4]: 0x00003201  00000000000000000011001000000001
-PRCM   SRCONFIG           [0x480C9000]: 0x00041E03  00000000000001000001111000000011
-PRCM   SRSTATUS           [0x480C9004]: 0x0000000A  00000000000000000000000000001010
-PRCM   SENVAL             [0x480C9008]: 0x064A0715  00000110010010100000011100010101
-PRCM   SENMIN             [0x480C900C]: 0xFFFFFFFF  11111111111111111111111111111111
-PRCM   SENMAX             [0x480C9010]: 0x00000000  00000000000000000000000000000000
-PRCM   SENAVG             [0x480C9014]: 0x00000000  00000000000000000000000000000000
-PRCM   AVGWEIGHT          [0x480C9018]: 0x00000000  00000000000000000000000000000000
-PRCM   NVALUERECIPROCAL   [0x480C901C]: 0x00AAA699  00000000101010101010011010011001
-PRCM   IRQSTATUS_RAW      [0x480C9024]: 0x00000006  00000000000000000000000000000110
-PRCM   IRQSTATUS          [0x480C9028]: 0x00000000  00000000000000000000000000000000
-PRCM   IRQENABLE_SET      [0x480C902C]: 0x00000000  00000000000000000000000000000000
-PRCM   IRQENABLE_CLR      [0x480C9030]: 0x00000000  00000000000000000000000000000000
-PRCM   SENERROR_REG       [0x480C9034]: 0x0000FDFD  00000000000000001111110111111101
-PRCM   ERRCONFIG          [0x480C9038]: 0x064402FA  00000110010001000000001011111010
-
-@Nishanth: could you confirm that DM3730 (1GHz version) is properly
-configured for running at 1GHz ? (I know this is a tricky question and
-has been asked before...)
-
-As this is just a hack, I would like to know how to properly
-initialize those driver in the right order, preferably via device tree
-or kernel config instead of a board file.
-
-Also, SR2 (vcore) is not enabled, as no OPPs are defined in the device
-tree. I assume it would require 1.2V at 200MHz but could not find any
-reference to that.
-
-
-[1] https://marc.info/?l=linux-kernel&m=137185002523884&w=2
-[2] https://patchwork.kernel.org/patch/9526883/#20026873
-[3] https://marc.info/?l=linux-omap&m=129584746102725&w=2
-
-[PATCH 1/3] OMAP3: PM: Set/clear T2 bit for Smartreflex on TWL
-[PATCH 2/3] OMAP: Initialize PM and SmartReflex after TWL probe
-[PATCH 3/3] OMAP3: Enable SmartReflex on om36xx
-
+diff --git a/arch/arm/mach-omap2/omap_twl.c b/arch/arm/mach-omap2/omap_twl.c
+index 6787f1e72c6b..1dae906128c2 100644
+--- a/arch/arm/mach-omap2/omap_twl.c
++++ b/arch/arm/mach-omap2/omap_twl.c
+@@ -43,8 +43,15 @@
+ 
+ static bool is_offset_valid;
+ static u8 smps_offset;
++/*
++ * Flag to ensure Smartreflex bit in TWL
++ * being cleared in board file is not overwritten.
++ */
++static bool __initdata twl_sr_enable_autoinit;
+ 
++#define TWL4030_DCDC_GLOBAL_CFG        0x06
+ #define REG_SMPS_OFFSET         0xE0
++#define SMARTREFLEX_ENABLE     BIT(3)
+ 
+ static unsigned long twl4030_vsel_to_uv(const u8 vsel)
+ {
+@@ -241,6 +248,18 @@ int __init omap3_twl_init(void)
+ 	if (!cpu_is_omap34xx())
+ 		return -ENODEV;
+ 
++	/*
++	 * The smartreflex bit on twl4030 specifies if the setting of voltage
++	 * is done over the I2C_SR path. Since this setting is independent of
++	 * the actual usage of smartreflex AVS module, we enable TWL SR bit
++	 * by default irrespective of whether smartreflex AVS module is enabled
++	 * on the OMAP side or not. This is because without this bit enabled,
++	 * the voltage scaling through vp forceupdate/bypass mechanism of
++	 * voltage scaling will not function on TWL over I2C_SR.
++	 */
++	if (!twl_sr_enable_autoinit)
++		omap3_twl_set_sr_bit(true);
++
+ 	voltdm = voltdm_lookup("mpu_iva");
+ 	omap_voltage_register_pmic(voltdm, &omap3_mpu_pmic);
+ 
+@@ -249,3 +268,44 @@ int __init omap3_twl_init(void)
+ 
+ 	return 0;
+ }
++
++/**
++ * omap3_twl_set_sr_bit() - Set/Clear SR bit on TWL
++ * @enable: enable SR mode in twl or not
++ *
++ * If 'enable' is true, enables Smartreflex bit on TWL 4030 to make sure
++ * voltage scaling through OMAP SR works. Else, the smartreflex bit
++ * on twl4030 is cleared as there are platforms which use OMAP3 and T2 but
++ * use Synchronized Scaling Hardware Strategy (ENABLE_VMODE=1) and Direct
++ * Strategy Software Scaling Mode (ENABLE_VMODE=0), for setting the voltages,
++ * in those scenarios this bit is to be cleared (enable = false).
++ *
++ * Returns 0 on sucess, error is returned if I2C read/write fails.
++ */
++int __init omap3_twl_set_sr_bit(bool enable)
++{
++	u8 temp;
++	int ret;
++	if (twl_sr_enable_autoinit)
++		pr_warning("%s: unexpected multiple calls\n", __func__);
++
++	ret = twl_i2c_read_u8(TWL_MODULE_PM_RECEIVER, &temp,
++					TWL4030_DCDC_GLOBAL_CFG);
++	if (ret)
++		goto err;
++
++	if (enable)
++		temp |= SMARTREFLEX_ENABLE;
++	else
++		temp &= ~SMARTREFLEX_ENABLE;
++
++	ret = twl_i2c_write_u8(TWL_MODULE_PM_RECEIVER, temp,
++				TWL4030_DCDC_GLOBAL_CFG);
++	if (!ret) {
++		twl_sr_enable_autoinit = true;
++		return 0;
++	}
++err:
++	pr_err("%s: Error access to TWL4030 (%d)\n", __func__, ret);
++	return ret;
++}
+-- 
+2.17.1
 
