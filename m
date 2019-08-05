@@ -2,109 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB068170B
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Aug 2019 12:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89C11824E3
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Aug 2019 20:32:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727328AbfHEK3c (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 5 Aug 2019 06:29:32 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:40992 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727868AbfHEK3c (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Aug 2019 06:29:32 -0400
-Received: by mail-lj1-f195.google.com with SMTP id d24so78831429ljg.8
-        for <linux-omap@vger.kernel.org>; Mon, 05 Aug 2019 03:29:31 -0700 (PDT)
+        id S1730065AbfHEScA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 5 Aug 2019 14:32:00 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:44889 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728831AbfHEScA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Aug 2019 14:32:00 -0400
+Received: by mail-pf1-f194.google.com with SMTP id t16so40038111pfe.11
+        for <linux-omap@vger.kernel.org>; Mon, 05 Aug 2019 11:32:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DgQS0RVhrSHQQR06ywIE1zI7rR3vFUB6ECm2IurTYyo=;
-        b=TJhyTIrKmge5lMJkKhRDhrf0usgOVPRIyssINJZl9KhrEAjHwotzV+X21lZDDYjC0M
-         P5pVYNVHlNLwMG3LHRidN3jSvU8cYH8mYP/HTeo8EPKiSj/OHOwF2Zwyoh2thRu68rI6
-         L6f9lF1QgFORxs4MHrtWAchdW/d96ikEcF+nWE2Vkl7i1/HeViHAUcYXzQMVIfltapDE
-         FgEiiihR9xs6jdYn3JmiKcqLTRBUvgTAnT6c/pBWxNLXPr0jmin9OJyi+v+k+lwBAeW/
-         Z/2QzPXTscDPB1xCTgCTXbL1xI5xl7zlaawW4GmILlyuBUEu1F/RnYhe5TJO7H6vyzE/
-         bcnQ==
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=GAZtoqMTbDsSEkTKLvtg+7SDqJDueQbXtR/WE8SM+Mc=;
+        b=eLCpJfoh/+Lkf3U5Jq1Gw1cvSEsPrPw2J+Jj1cKEaDJJOhXr0kqg4nEbozdiW9YyZW
+         MxwXt8S6yghOSjDY3p0XzVPZkQ9IDX8wNCa+Qv6vXmaUTiEb+PublVJvS7pSWJGp8KEx
+         w9HQXI6qhlsTEtJk/CdDPSdHkxIWQIH6hjn96/vYSQJ8y01/RqngcS6Oq2O9DA5M5rVN
+         fvxg1/cP+66yiU9OGP3cgIMltSY6quBi6snXE8Lh6SdljDPnXzTsPpnLyTbyUbk8aWam
+         aCjEgEpKTEI7REjqoFE/WpbKcnCBuJMhe6vk5dAdvMc2bGkn8nFYuZ1PobjwNlCPV9X1
+         L22A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DgQS0RVhrSHQQR06ywIE1zI7rR3vFUB6ECm2IurTYyo=;
-        b=dhNw1Il9ROZpug6jLp1egAwLvMcqH8s7/DqjWVV7qClSS17kg9gpaPANlbh4/B6906
-         8XPVEboxaV2ATlURqKrof5qEM9MASwvNqCOK+WSXiVFUPl9kUFB0+cd7tNwwxc56p0OV
-         MAY74d964giFrdBbOWFMX/oYbQ2FxuvXMgioHGzcK8otwa10LL+WdA/5OwAJjymFwdeE
-         TC/G52pvv/QI81zZWhu9hbJ+BIozmw+cSg+QKCADoze7EHnBRy+SskKHgyhcEvFOJDxU
-         5U/lcbd1iVlHReaCkLyo8v1nRe/pHU7BiE+rx6i11D6oTUnYTYgmeHDnNO4CoMl9ri0D
-         i5pw==
-X-Gm-Message-State: APjAAAUBqqMb1h2h9+mjpUuS7+JAN+OGPYVec+QegPrRlU3SU7A2GUmC
-        5Cn8YiEjTSMQIUmHxdT3C5W9qyI8XLbjW3HQH/oGYg==
-X-Google-Smtp-Source: APXvYqwiNvI+PlbXBDdXFR2b7KDlreAp73XJI0KzmpIJ2V9t3xStoSZeInn1tp918uDCSC1a31ftyr1FKdpYYFKfQjE=
-X-Received: by 2002:a05:651c:28c:: with SMTP id b12mr13784957ljo.69.1565000970574;
- Mon, 05 Aug 2019 03:29:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com>
- <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
- <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
-In-Reply-To: <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 5 Aug 2019 12:29:19 +0200
-Message-ID: <CACRpkdY0AVnkRa8sV_Z54qfX9SYufvaYYhU0k2+LitXo0sLx2w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] DTS: ARM: gta04: introduce legacy spi-cs-high to make
- display work again
-To:     Rob Herring <robh@kernel.org>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=GAZtoqMTbDsSEkTKLvtg+7SDqJDueQbXtR/WE8SM+Mc=;
+        b=U3l4crAhcp4ytCL6h7p8w2SdkB2vD1e/VgExbcZ6Y/mprAjuwmU0pRXh826Zk+Jh0f
+         F8KQKN9y6fE9EzJL49859clcpf1RAPmQZNtxg+DBvTmX+mMo5iEUH7BnNeT+ngiTrrs5
+         WUqBAwlwvjo2san5dmvxg/g3BzhN4NXYuomtIK970a53q1zDt8hAjxWFCgssAEDJleWs
+         aHWMRBJQTNgWiKmVQlGylXMXgAn4qbfQMibPmXdm6uFKNW32VCsu3LlElTqWXCs7K1N6
+         tNOmbl9xvbiEAKuA4Ck64pq162nQ8/bsTBzc9gRV8M3aI0xidIGsPcwCvWDRolrPKHnE
+         1Z/w==
+X-Gm-Message-State: APjAAAX/Hk7iTJMjwshbr4+RNg5a3AScrD3QGkN4lm01Mooyju3yw12h
+        zAaXNdHKJi3U4KSDI1BxYxJOJg==
+X-Google-Smtp-Source: APXvYqy5L3JR07HcEnA00M1CL8VNhKg77fHOWXFhUU5EGpQJP/FGGVXDbvKX2iSPUCmowPs/39oslw==
+X-Received: by 2002:a63:c118:: with SMTP id w24mr136487259pgf.347.1565029919532;
+        Mon, 05 Aug 2019 11:31:59 -0700 (PDT)
+Received: from localhost ([2601:602:9200:a1a5:7483:80d6:7f67:2672])
+        by smtp.googlemail.com with ESMTPSA id a1sm51592199pgh.61.2019.08.05.11.31.58
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 05 Aug 2019 11:31:58 -0700 (PDT)
+From:   Kevin Hilman <khilman@baylibre.com>
+To:     Chuhong Yuan <hslester96@gmail.com>
+Cc:     Russell King <linux@armlinux.org.uk>,
         Tony Lindgren <tony@atomide.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Kevin Hilman <khilman@kernel.org>,
+        Alexander Clouter <alex@digriz.org.uk>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+Subject: Re: [PATCH] ARM: Replace strncmp with str_has_prefix
+In-Reply-To: <20190730024426.17262-1-hslester96@gmail.com>
+References: <20190730024426.17262-1-hslester96@gmail.com>
+Date:   Mon, 05 Aug 2019 11:31:57 -0700
+Message-ID: <7hzhknh3aa.fsf@baylibre.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jul 26, 2019 at 12:43 AM Rob Herring <robh@kernel.org> wrote:
-> On Thu, Jul 25, 2019 at 12:23 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+Chuhong Yuan <hslester96@gmail.com> writes:
 
-> > I tried to convince Linus that this is the right way but he convinced
-> > me that a fix that handles all cases does not exist.
-> >
-> > There seem to be embedded devices with older DTB (potentially in ROM)
-> > which provide a plain 0 value for a gpios definition. And either with
-> > or without spi-cs-high.
-> >
-> > Since "0" is the same as "GPIO_ACTIVE_HIGH", the absence of
-> > spi-cs-high was and must be interpreted as active low for these
-> > devices. This leads to the inversion logic in code.
-> >
-> > AFAIR it boils down to the question if gpiolib and the bindings
-> > should still support such legacy devices with out-of tree DTB,
-> > but force in-tree DTS to add the legacy spi-cs-high property.
-> >
-> > Or if we should fix the 2 or 3 cases of in-tree legacy cases
-> > and potentially break out-of tree DTBs.
+> In commit b6b2735514bc
+> ("tracing: Use str_has_prefix() instead of using fixed sizes")
+> the newly introduced str_has_prefix() was used
+> to replace error-prone strncmp(str, const, len).
+> Here fix codes with the same pattern.
 >
-> If it is small number of platforms, then the kernel could handle those
-> cases explicitly as needed.
->
-> > IMHO it is more general to keep the out-of-tree DTBs working
-> > and "fix" what we can control (in-tree DTS).
->
-> If we do this, then we need to not call spi-cs-high legacy because
-> we're stuck with it forever.
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> ---
+>  arch/arm/kernel/module-plts.c        | 2 +-
+>  arch/arm/mach-omap2/omap_device.c    | 4 ++--
+>  arch/arm/mach-omap2/pm-debug.c       | 8 ++++----
+>  arch/arm/mach-omap2/pm.c             | 2 +-
+>  arch/arm/mach-omap2/pm44xx.c         | 2 +-
+>  arch/arm/mach-omap2/sr_device.c      | 8 ++++----
+>  arch/arm/mach-orion5x/ts78xx-setup.c | 4 ++--
 
-I agree. The background on it is here:
-https://lkml.org/lkml/2019/4/2/4
+For the OMAP stuff:
 
-Not using the negatively defined (i.e. if it is no there, the line is
-by default active low) spi-cs-high would break
-PowerPC, who were AFAICT using this to ship devices.
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>  # arch/arm/mach-omap2/*
 
-Yours,
-Linus Walleij
+Kevin
