@@ -2,87 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 754F380BB7
-	for <lists+linux-omap@lfdr.de>; Sun,  4 Aug 2019 18:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AB068170B
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Aug 2019 12:29:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726319AbfHDQdl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 4 Aug 2019 12:33:41 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:33333 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726181AbfHDQdl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 4 Aug 2019 12:33:41 -0400
-Received: by mail-pf1-f195.google.com with SMTP id g2so38375203pfq.0;
-        Sun, 04 Aug 2019 09:33:41 -0700 (PDT)
+        id S1727328AbfHEK3c (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 5 Aug 2019 06:29:32 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:40992 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727868AbfHEK3c (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Aug 2019 06:29:32 -0400
+Received: by mail-lj1-f195.google.com with SMTP id d24so78831429ljg.8
+        for <linux-omap@vger.kernel.org>; Mon, 05 Aug 2019 03:29:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RBmoH+gM970xlSbiTXIHKJDYeSa4KiDTJot95o30ow8=;
-        b=R/ctcO/OWCZ07yL9Gh/aOB0/jgK0/Kx2ofb2OR4WYVwe+3A1qgYmsWlavE7us1kltG
-         X+5EAGUrUWhaeaKQSQCLfX/voWv+NDcrcyKdvPsBimw9VGhVuD2XONZ8e+Vw6U1EhPys
-         QeVXn0tg/K/Sf3vKzp7IoU0k0fqnzbSVPgoz6khmAlnoqL/OxM/Ynl6KuL7QJCy8eZFk
-         Z4l+vf/q0IiFe37TqLgv6RQDSFlVDU34qU25hYWJ9XLqL79q6Z32MeNlQudPJjIPPJpM
-         8jjiIcCBDhGS4BODDL+QCF2OXseuKCwnVYVcGn2nD98KqU7AAhWBxq8QmE/r/Vxz2sbV
-         grcg==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DgQS0RVhrSHQQR06ywIE1zI7rR3vFUB6ECm2IurTYyo=;
+        b=TJhyTIrKmge5lMJkKhRDhrf0usgOVPRIyssINJZl9KhrEAjHwotzV+X21lZDDYjC0M
+         P5pVYNVHlNLwMG3LHRidN3jSvU8cYH8mYP/HTeo8EPKiSj/OHOwF2Zwyoh2thRu68rI6
+         L6f9lF1QgFORxs4MHrtWAchdW/d96ikEcF+nWE2Vkl7i1/HeViHAUcYXzQMVIfltapDE
+         FgEiiihR9xs6jdYn3JmiKcqLTRBUvgTAnT6c/pBWxNLXPr0jmin9OJyi+v+k+lwBAeW/
+         Z/2QzPXTscDPB1xCTgCTXbL1xI5xl7zlaawW4GmILlyuBUEu1F/RnYhe5TJO7H6vyzE/
+         bcnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RBmoH+gM970xlSbiTXIHKJDYeSa4KiDTJot95o30ow8=;
-        b=ZNijuKWwDMaJV/eni26Guei3ivyTVvRvbihbbnFPOJDWn33gs4AxQVM3NrKunPF6OT
-         1y/frc8O0+KUxEyLN8okO+dRveBRC/pJSqe/+7M/ILQhSPJAiWLfNw9TYQl1Yn9g4nwy
-         fQRMzGGWTWb5ja086BVIEhIwfyF2mNQNfh0IDEI9YEXF894UELHRWt4XLwEWZLvL1ced
-         9Tn+3/tCQl4A9d5ejf8r0Ga2UnPO1JyPrYigIjCr6HiJ9Ew8tr+AuEvvt+HXD/tfaM2q
-         NP3mXnUjR//3gQ8n5C+85czdr/6wH8ju5ltqbckBEOTsBjzb4m/OLyvDPKjdWKzsCCD0
-         D0bg==
-X-Gm-Message-State: APjAAAU7a0N0NQ/OK/6M1Y3YO5nAjPXOwyIr+OEU9sceEZFjE4bzy5Mz
-        uxeryh9S0z2up+ibp3q+goA=
-X-Google-Smtp-Source: APXvYqx/2ykpTtxuJAAy+UyPpHP9QAub0yFjD3M7gDzMewXK8hMg7tELkkyTaLhZhWmhpFIzxfTMgQ==
-X-Received: by 2002:aa7:90d8:: with SMTP id k24mr68774819pfk.115.1564936420769;
-        Sun, 04 Aug 2019 09:33:40 -0700 (PDT)
-Received: from localhost.localdomain ([122.163.105.8])
-        by smtp.gmail.com with ESMTPSA id b126sm118897837pfa.126.2019.08.04.09.33.37
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Sun, 04 Aug 2019 09:33:40 -0700 (PDT)
-From:   Nishka Dasgupta <nishkadg.linux@gmail.com>
-To:     mturquette@baylibre.com, sboyd@kernel.org,
-        linux-clk@vger.kernel.org, t-kristo@ti.com,
-        linux-omap@vger.kernel.org
-Cc:     Nishka Dasgupta <nishkadg.linux@gmail.com>
-Subject: [PATCH] clk: ti: dm814x: Add of_node_put() to prevent memory leak
-Date:   Sun,  4 Aug 2019 22:03:28 +0530
-Message-Id: <20190804163328.6693-1-nishkadg.linux@gmail.com>
-X-Mailer: git-send-email 2.19.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DgQS0RVhrSHQQR06ywIE1zI7rR3vFUB6ECm2IurTYyo=;
+        b=dhNw1Il9ROZpug6jLp1egAwLvMcqH8s7/DqjWVV7qClSS17kg9gpaPANlbh4/B6906
+         8XPVEboxaV2ATlURqKrof5qEM9MASwvNqCOK+WSXiVFUPl9kUFB0+cd7tNwwxc56p0OV
+         MAY74d964giFrdBbOWFMX/oYbQ2FxuvXMgioHGzcK8otwa10LL+WdA/5OwAJjymFwdeE
+         TC/G52pvv/QI81zZWhu9hbJ+BIozmw+cSg+QKCADoze7EHnBRy+SskKHgyhcEvFOJDxU
+         5U/lcbd1iVlHReaCkLyo8v1nRe/pHU7BiE+rx6i11D6oTUnYTYgmeHDnNO4CoMl9ri0D
+         i5pw==
+X-Gm-Message-State: APjAAAUBqqMb1h2h9+mjpUuS7+JAN+OGPYVec+QegPrRlU3SU7A2GUmC
+        5Cn8YiEjTSMQIUmHxdT3C5W9qyI8XLbjW3HQH/oGYg==
+X-Google-Smtp-Source: APXvYqwiNvI+PlbXBDdXFR2b7KDlreAp73XJI0KzmpIJ2V9t3xStoSZeInn1tp918uDCSC1a31ftyr1FKdpYYFKfQjE=
+X-Received: by 2002:a05:651c:28c:: with SMTP id b12mr13784957ljo.69.1565000970574;
+ Mon, 05 Aug 2019 03:29:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com>
+ <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
+ <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
+In-Reply-To: <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 5 Aug 2019 12:29:19 +0200
+Message-ID: <CACRpkdY0AVnkRa8sV_Z54qfX9SYufvaYYhU0k2+LitXo0sLx2w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] DTS: ARM: gta04: introduce legacy spi-cs-high to make
+ display work again
+To:     Rob Herring <robh@kernel.org>
+Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In function dm814x_adpll_early_init, variable np takes the value
-returned by of_find_node_by_name, which gets a node but does not put it.
-If np is not put before return, it may cause a memory leak. Hence put np
-before return.
-Issue found with Coccinelle.
+On Fri, Jul 26, 2019 at 12:43 AM Rob Herring <robh@kernel.org> wrote:
+> On Thu, Jul 25, 2019 at 12:23 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
 
-Signed-off-by: Nishka Dasgupta <nishkadg.linux@gmail.com>
----
- drivers/clk/ti/clk-814x.c | 1 +
- 1 file changed, 1 insertion(+)
+> > I tried to convince Linus that this is the right way but he convinced
+> > me that a fix that handles all cases does not exist.
+> >
+> > There seem to be embedded devices with older DTB (potentially in ROM)
+> > which provide a plain 0 value for a gpios definition. And either with
+> > or without spi-cs-high.
+> >
+> > Since "0" is the same as "GPIO_ACTIVE_HIGH", the absence of
+> > spi-cs-high was and must be interpreted as active low for these
+> > devices. This leads to the inversion logic in code.
+> >
+> > AFAIR it boils down to the question if gpiolib and the bindings
+> > should still support such legacy devices with out-of tree DTB,
+> > but force in-tree DTS to add the legacy spi-cs-high property.
+> >
+> > Or if we should fix the 2 or 3 cases of in-tree legacy cases
+> > and potentially break out-of tree DTBs.
+>
+> If it is small number of platforms, then the kernel could handle those
+> cases explicitly as needed.
+>
+> > IMHO it is more general to keep the out-of-tree DTBs working
+> > and "fix" what we can control (in-tree DTS).
+>
+> If we do this, then we need to not call spi-cs-high legacy because
+> we're stuck with it forever.
 
-diff --git a/drivers/clk/ti/clk-814x.c b/drivers/clk/ti/clk-814x.c
-index e8cee6f3b4a0..087cfa75ac24 100644
---- a/drivers/clk/ti/clk-814x.c
-+++ b/drivers/clk/ti/clk-814x.c
-@@ -66,6 +66,7 @@ static int __init dm814x_adpll_early_init(void)
- 	}
- 
- 	of_platform_populate(np, NULL, NULL, NULL);
-+	of_node_put(np);
- 
- 	return 0;
- }
--- 
-2.19.1
+I agree. The background on it is here:
+https://lkml.org/lkml/2019/4/2/4
 
+Not using the negatively defined (i.e. if it is no there, the line is
+by default active low) spi-cs-high would break
+PowerPC, who were AFAICT using this to ship devices.
+
+Yours,
+Linus Walleij
