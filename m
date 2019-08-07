@@ -2,47 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0D8684C58
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Aug 2019 15:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 306E884C5A
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Aug 2019 15:05:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388007AbfHGNFG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Aug 2019 09:05:06 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:43580 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387476AbfHGNFG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Aug 2019 09:05:06 -0400
+        id S2388021AbfHGNFJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Aug 2019 09:05:09 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:51486 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387476AbfHGNFJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Aug 2019 09:05:09 -0400
 Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x77D534m018259;
-        Wed, 7 Aug 2019 08:05:03 -0500
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x77D564I056045;
+        Wed, 7 Aug 2019 08:05:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1565183103;
-        bh=5ZJWE2YShcEteM2b5hAEhwzpnJw3NLmASsHKII8cvV4=;
+        s=ti-com-17Q1; t=1565183106;
+        bh=frBLaLQ0BrBJmM1vM+OF6FUfFxBudXkh00pQru7C5JM=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=FiyP2UbME094Iy1/m9tNXIjVlMpuyshYCaRsc/pSo9HKnT+CQTHZPSscwnyn/UDtW
-         ZMdlRUTGBuIlXcQ7xEgODGrWw30UieaQYpqe9JFeO0qOMgoRBWqXXayLHlRBkwE493
-         mNFpK+E9EkEobMTQlF3W7NiJVpiStFV/wtoQ6qm8=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x77D53AF039631
+        b=yhGRoa2lKVLMRRSFEke20CwxVEQdR6YaEARQTamupOkpFJl/NcCIGoyjnr8relvTQ
+         ZFdVjcHV1rw7YlngjMlz1rb4vdw0LWzu2j3JWdBKf4KCU/NXzVJNA9q4u9aGoI/w/J
+         v6ltniz+5H0/UBdRUa5dWnuJZcOaswoK0FJtHGho=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x77D56aE039779
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 7 Aug 2019 08:05:03 -0500
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 7 Aug 2019 08:05:06 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 7 Aug
- 2019 08:05:02 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ 2019 08:05:06 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 7 Aug 2019 08:05:02 -0500
+ Frontend Transport; Wed, 7 Aug 2019 08:05:06 -0500
 Received: from gomoku.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x77D4i1d081508;
-        Wed, 7 Aug 2019 08:05:00 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x77D4i1e081508;
+        Wed, 7 Aug 2019 08:05:03 -0500
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <linux-clk@vger.kernel.org>, <sboyd@kernel.org>,
         <mturquette@baylibre.com>
 CC:     <linux-omap@vger.kernel.org>, <tony@atomide.com>, <s-anna@ti.com>
-Subject: [PATCH 1/3] clk: ti: clkctrl: add support for polling clock status for enable only
-Date:   Wed, 7 Aug 2019 16:04:37 +0300
-Message-ID: <1565183079-27798-2-git-send-email-t-kristo@ti.com>
+Subject: [PATCH 2/3] clk: ti: dra7xx: remove idlest polling from disabling ipu/dsp clocks
+Date:   Wed, 7 Aug 2019 16:04:38 +0300
+Message-ID: <1565183079-27798-3-git-send-email-t-kristo@ti.com>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1565183079-27798-1-git-send-email-t-kristo@ti.com>
 References: <1565183079-27798-1-git-send-email-t-kristo@ti.com>
@@ -54,59 +54,54 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The activity status for certain clocks is possible to be polled only
-during enable phase; the disable phase depends on additional reset
-logic. If the disable phase is polled with these clocks, it will
-result in a timeout. To fix this, add logic for polling the clock
-activity only during enable, and add a new flag for this purpose.
+These cause some unwanted timeouts in the kernel, as they depend on
+reset and the execution state of the remotecore itself. These details
+should be handled by the driver with proper sequencing of events.
 
 Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- drivers/clk/ti/clkctrl.c | 5 ++++-
- drivers/clk/ti/clock.h   | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/clk/ti/clk-7xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-index 975995e..f5517a8 100644
---- a/drivers/clk/ti/clkctrl.c
-+++ b/drivers/clk/ti/clkctrl.c
-@@ -25,6 +25,7 @@
- #include "clock.h"
+diff --git a/drivers/clk/ti/clk-7xx.c b/drivers/clk/ti/clk-7xx.c
+index b57fe09..5208eb8 100644
+--- a/drivers/clk/ti/clk-7xx.c
++++ b/drivers/clk/ti/clk-7xx.c
+@@ -25,7 +25,7 @@
+ };
  
- #define NO_IDLEST			0x1
-+#define NO_IDLE_POLL			0x2
+ static const struct omap_clkctrl_reg_data dra7_dsp1_clkctrl_regs[] __initconst = {
+-	{ DRA7_DSP1_MMU0_DSP1_CLKCTRL, NULL, CLKF_HW_SUP, "dpll_dsp_m2_ck" },
++	{ DRA7_DSP1_MMU0_DSP1_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLE_POLL, "dpll_dsp_m2_ck" },
+ 	{ 0 },
+ };
  
- #define OMAP4_MODULEMODE_MASK		0x3
+@@ -41,7 +41,7 @@
+ };
  
-@@ -187,7 +188,7 @@ static void _omap4_clkctrl_clk_disable(struct clk_hw *hw)
+ static const struct omap_clkctrl_reg_data dra7_ipu1_clkctrl_regs[] __initconst = {
+-	{ DRA7_IPU1_MMU_IPU1_CLKCTRL, dra7_mmu_ipu1_bit_data, CLKF_HW_SUP, "ipu1-clkctrl:0000:24" },
++	{ DRA7_IPU1_MMU_IPU1_CLKCTRL, dra7_mmu_ipu1_bit_data, CLKF_HW_SUP | CLKF_NO_IDLE_POLL, "ipu1-clkctrl:0000:24" },
+ 	{ 0 },
+ };
  
- 	ti_clk_ll_ops->clk_writel(val, &clk->enable_reg);
+@@ -137,7 +137,7 @@
+ };
  
--	if (clk->flags & NO_IDLEST)
-+	if (clk->flags & (NO_IDLEST | NO_IDLE_POLL))
- 		goto exit;
+ static const struct omap_clkctrl_reg_data dra7_dsp2_clkctrl_regs[] __initconst = {
+-	{ DRA7_DSP2_MMU0_DSP2_CLKCTRL, NULL, CLKF_HW_SUP, "dpll_dsp_m2_ck" },
++	{ DRA7_DSP2_MMU0_DSP2_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLE_POLL, "dpll_dsp_m2_ck" },
+ 	{ 0 },
+ };
  
- 	/* Wait until module is disabled */
-@@ -597,6 +598,8 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
- 			hw->enable_bit = MODULEMODE_HWCTRL;
- 		if (reg_data->flags & CLKF_NO_IDLEST)
- 			hw->flags |= NO_IDLEST;
-+		if (reg_data->flags & CLKF_NO_IDLE_POLL)
-+			hw->flags |= NO_IDLE_POLL;
+@@ -164,7 +164,7 @@
+ };
  
- 		if (reg_data->clkdm_name)
- 			hw->clkdm_name = reg_data->clkdm_name;
-diff --git a/drivers/clk/ti/clock.h b/drivers/clk/ti/clock.h
-index e4b8392..6410ff6 100644
---- a/drivers/clk/ti/clock.h
-+++ b/drivers/clk/ti/clock.h
-@@ -82,6 +82,7 @@ enum {
- #define CLKF_SW_SUP			BIT(5)
- #define CLKF_HW_SUP			BIT(6)
- #define CLKF_NO_IDLEST			BIT(7)
-+#define CLKF_NO_IDLE_POLL		BIT(8)
- 
- #define CLKF_SOC_MASK			GENMASK(11, 8)
+ static const struct omap_clkctrl_reg_data dra7_ipu2_clkctrl_regs[] __initconst = {
+-	{ DRA7_IPU2_MMU_IPU2_CLKCTRL, NULL, CLKF_HW_SUP, "dpll_core_h22x2_ck" },
++	{ DRA7_IPU2_MMU_IPU2_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLE_POLL, "dpll_core_h22x2_ck" },
+ 	{ 0 },
+ };
  
 -- 
 1.9.1
