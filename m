@@ -2,92 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C11824E3
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Aug 2019 20:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E6718462F
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Aug 2019 09:49:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730065AbfHEScA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 5 Aug 2019 14:32:00 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:44889 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728831AbfHEScA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Aug 2019 14:32:00 -0400
-Received: by mail-pf1-f194.google.com with SMTP id t16so40038111pfe.11
-        for <linux-omap@vger.kernel.org>; Mon, 05 Aug 2019 11:32:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=GAZtoqMTbDsSEkTKLvtg+7SDqJDueQbXtR/WE8SM+Mc=;
-        b=eLCpJfoh/+Lkf3U5Jq1Gw1cvSEsPrPw2J+Jj1cKEaDJJOhXr0kqg4nEbozdiW9YyZW
-         MxwXt8S6yghOSjDY3p0XzVPZkQ9IDX8wNCa+Qv6vXmaUTiEb+PublVJvS7pSWJGp8KEx
-         w9HQXI6qhlsTEtJk/CdDPSdHkxIWQIH6hjn96/vYSQJ8y01/RqngcS6Oq2O9DA5M5rVN
-         fvxg1/cP+66yiU9OGP3cgIMltSY6quBi6snXE8Lh6SdljDPnXzTsPpnLyTbyUbk8aWam
-         aCjEgEpKTEI7REjqoFE/WpbKcnCBuJMhe6vk5dAdvMc2bGkn8nFYuZ1PobjwNlCPV9X1
-         L22A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=GAZtoqMTbDsSEkTKLvtg+7SDqJDueQbXtR/WE8SM+Mc=;
-        b=U3l4crAhcp4ytCL6h7p8w2SdkB2vD1e/VgExbcZ6Y/mprAjuwmU0pRXh826Zk+Jh0f
-         F8KQKN9y6fE9EzJL49859clcpf1RAPmQZNtxg+DBvTmX+mMo5iEUH7BnNeT+ngiTrrs5
-         WUqBAwlwvjo2san5dmvxg/g3BzhN4NXYuomtIK970a53q1zDt8hAjxWFCgssAEDJleWs
-         aHWMRBJQTNgWiKmVQlGylXMXgAn4qbfQMibPmXdm6uFKNW32VCsu3LlElTqWXCs7K1N6
-         tNOmbl9xvbiEAKuA4Ck64pq162nQ8/bsTBzc9gRV8M3aI0xidIGsPcwCvWDRolrPKHnE
-         1Z/w==
-X-Gm-Message-State: APjAAAX/Hk7iTJMjwshbr4+RNg5a3AScrD3QGkN4lm01Mooyju3yw12h
-        zAaXNdHKJi3U4KSDI1BxYxJOJg==
-X-Google-Smtp-Source: APXvYqy5L3JR07HcEnA00M1CL8VNhKg77fHOWXFhUU5EGpQJP/FGGVXDbvKX2iSPUCmowPs/39oslw==
-X-Received: by 2002:a63:c118:: with SMTP id w24mr136487259pgf.347.1565029919532;
-        Mon, 05 Aug 2019 11:31:59 -0700 (PDT)
-Received: from localhost ([2601:602:9200:a1a5:7483:80d6:7f67:2672])
-        by smtp.googlemail.com with ESMTPSA id a1sm51592199pgh.61.2019.08.05.11.31.58
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 05 Aug 2019 11:31:58 -0700 (PDT)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Chuhong Yuan <hslester96@gmail.com>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Tony Lindgren <tony@atomide.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Alexander Clouter <alex@digriz.org.uk>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-Subject: Re: [PATCH] ARM: Replace strncmp with str_has_prefix
-In-Reply-To: <20190730024426.17262-1-hslester96@gmail.com>
-References: <20190730024426.17262-1-hslester96@gmail.com>
-Date:   Mon, 05 Aug 2019 11:31:57 -0700
-Message-ID: <7hzhknh3aa.fsf@baylibre.com>
+        id S2387439AbfHGHtg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Aug 2019 03:49:36 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:38102 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387414AbfHGHtg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Aug 2019 03:49:36 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x777nQ1a074494;
+        Wed, 7 Aug 2019 02:49:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1565164166;
+        bh=tUDZOFOrbWsC/r3cVBM7AKpl36lzyGepos+RtNTL9Xc=;
+        h=From:To:CC:Subject:Date;
+        b=dxVz+4pf69S4TcWLVQha2U0J98uOtQcfrVYMgchQ4ILh1Zyi9/PSfh8sYEXU7LPd0
+         RDIQWm6t/65vzsmqpX184nUUMsudT7A4e1NTvuEV1UyzFKE0J4lcZrx8j9SYKOq8i4
+         15bUGTA4nsNFm7/nsuqA8/1WNgJmMBMZdhQEvYlE=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x777nQlx078506
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 7 Aug 2019 02:49:26 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 7 Aug
+ 2019 02:49:25 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 7 Aug 2019 02:49:25 -0500
+Received: from gomoku.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x777nNHc118711;
+        Wed, 7 Aug 2019 02:49:23 -0500
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <ssantosh@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>
+CC:     <tony@atomide.com>, <s-anna@ti.com>, <devicetree@vger.kernel.org>
+Subject: [PATCH 0/8] soc: ti: Add OMAP PRM driver
+Date:   Wed, 7 Aug 2019 10:48:51 +0300
+Message-ID: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
 Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Chuhong Yuan <hslester96@gmail.com> writes:
+Hi,
 
-> In commit b6b2735514bc
-> ("tracing: Use str_has_prefix() instead of using fixed sizes")
-> the newly introduced str_has_prefix() was used
-> to replace error-prone strncmp(str, const, len).
-> Here fix codes with the same pattern.
->
-> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-> ---
->  arch/arm/kernel/module-plts.c        | 2 +-
->  arch/arm/mach-omap2/omap_device.c    | 4 ++--
->  arch/arm/mach-omap2/pm-debug.c       | 8 ++++----
->  arch/arm/mach-omap2/pm.c             | 2 +-
->  arch/arm/mach-omap2/pm44xx.c         | 2 +-
->  arch/arm/mach-omap2/sr_device.c      | 8 ++++----
->  arch/arm/mach-orion5x/ts78xx-setup.c | 4 ++--
+This series adds OMAP PRM driver which initially supports only reset
+handling. Later on, power domain support can be added to this to get
+rid of the current OMAP power domain handling code which resides
+under the mach-omap2 platform directory. Initially, reset data is
+added for AM3, OMAP4 and DRA7 SoCs.
 
-For the OMAP stuff:
+I've been testing the reset handling logic with OMAP remoteproc
+driver which has been converted to use generic reset framework. This
+part is a work in progress, so will be posting patches from that part
+later on.
 
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>  # arch/arm/mach-omap2/*
+-Tero
 
-Kevin
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
