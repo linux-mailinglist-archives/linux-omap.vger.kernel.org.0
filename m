@@ -2,107 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C723B859D0
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2019 07:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5F9685AF9
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2019 08:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730860AbfHHFaL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Aug 2019 01:30:11 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:48610 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730505AbfHHFaL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Aug 2019 01:30:11 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x785U5Ls031936;
-        Thu, 8 Aug 2019 00:30:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1565242205;
-        bh=Om5NSalTtmTObIUv0acQzdTPhMq7gVkI73HNZY/ZgKY=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=NWZFklCEL489y4jXUA4v5yHSem9kWzMGtMkoPgH7BWydOYz56uP1yDcFoadSq7vVU
-         IzKThsJFl2wzw9A8bb2TFnCbpPKJtaJT2Iwxu2ss6uZJo6VnGULNjncsIC4Pxjb+OI
-         kK0HdBxfW6fZRvte6c+8NbyFxXLDiATXg7QvTTgc=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x785U5il068308
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 8 Aug 2019 00:30:05 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 8 Aug
- 2019 00:30:05 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 8 Aug 2019 00:30:05 -0500
-Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x785U2dh066424;
-        Thu, 8 Aug 2019 00:30:03 -0500
-Subject: Re: [PATCH 5/8] soc: ti: omap-prm: add omap4 PRM data
-To:     Tero Kristo <t-kristo@ti.com>, <ssantosh@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>
-CC:     <tony@atomide.com>, <s-anna@ti.com>, <devicetree@vger.kernel.org>
-References: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
- <1565164139-21886-6-git-send-email-t-kristo@ti.com>
-From:   Keerthy <j-keerthy@ti.com>
-Message-ID: <643cd090-a4d5-dac6-8395-c01f7fba04ab@ti.com>
-Date:   Thu, 8 Aug 2019 11:00:38 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726721AbfHHGmi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Aug 2019 02:42:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42420 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726359AbfHHGmi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 8 Aug 2019 02:42:38 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EF2DD20880;
+        Thu,  8 Aug 2019 06:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565246557;
+        bh=QkRNK9YOfVlVjw60w9/iF0cccnbeZTBNkhlnMmoHZSo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TEEQWuy6TSpOEZMwvSr5bheEo6c0goUwfwhY6u81BONopHxyVvbgi4ZhzicU1UCZU
+         QXbtoqaRmyPdA18atxTjX/YtfT5T8mPLvFzvbzRdeu4qtSO+eZw4b0Gf4W97UvfZSm
+         L8jVUt4qJ/cpM3lWvFw3sZyg80FMbtaTWDY/b8Qo=
+Date:   Thu, 8 Aug 2019 08:42:35 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tejun Heo <tj@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] kernfs: fix memleak in kernel_ops_readdir()
+Message-ID: <20190808064235.GC26197@kroah.com>
+References: <20190805173404.GF136335@devbig004.ftw2.facebook.com>
+ <20190807132928.GD5443@atomide.com>
+ <20190807184518.GP136335@devbig004.ftw2.facebook.com>
 MIME-Version: 1.0
-In-Reply-To: <1565164139-21886-6-git-send-email-t-kristo@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190807184518.GP136335@devbig004.ftw2.facebook.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 07/08/19 1:18 PM, Tero Kristo wrote:
-> Add PRM data for omap4 family of SoCs.
+On Wed, Aug 07, 2019 at 11:45:18AM -0700, Tejun Heo wrote:
+> Hello,
 > 
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> ---
->   drivers/soc/ti/omap_prm.c | 20 ++++++++++++++++++++
->   1 file changed, 20 insertions(+)
+> On Wed, Aug 07, 2019 at 06:29:28AM -0700, Tony Lindgren wrote:
+> > Hi,
+> > 
+> > * Tejun Heo <tj@kernel.org> [691231 23:00]:
+> > > From: Andrea Arcangeli <aarcange@redhat.com>
+> > > 
+> > > If getdents64 is killed or hits on segfault, it'll leave cgroups
+> > > directories in sysfs pinned leaking memory because the kernfs node
+> > > won't be freed on rmdir and the parent neither.
+> > 
+> > Somehow this causes a regression in Linux next for me where I'm seeing
+> > lots of sysfs entries now missing under /sys/bus/platform/devices.
+> > 
+> > For example, I now only see one .serial entry show up in sysfs.
+> > Things work again if I revert commit cc798c83898e ("kernfs: fix memleak
+> > inkernel_ops_readdir()"). Any ideas why that would be?
+> > 
+> > Below is a diff -u of ls /sys/bus/platform/devices for reference
+> > showing the missing entries with cc798c83898e.
 > 
-> diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
-> index 870515e3..9b8d5945 100644
-> --- a/drivers/soc/ti/omap_prm.c
-> +++ b/drivers/soc/ti/omap_prm.c
-> @@ -54,7 +54,27 @@ struct omap_reset_data {
->   
->   #define OMAP_PRM_NO_RSTST	BIT(0)
->   
-> +struct omap_prm_data omap4_prm_data[] = {
-> +	{ .name = "mpu", .base = 0x4a306300, .pwstst = 0x4 },
-> +	{ .name = "tesla", .base = 0x4a306400, .pwstst = 0x4, .rstctl = 0x10, .rstst = 0x14 },
-> +	{ .name = "abe", .base = 0x4a306500, .pwstst = 0x4 },
-> +	{ .name = "always_on_core", .base = 0x4a306600, .pwstst = 0x4 },
-> +	{ .name = "core", .base = 0x4a306700, .pwstst = 0x4, .rstctl = 0x210, .rstst = 0x214 },
-> +	{ .name = "ivahd", .base = 0x4a306f00, .pwstst = 0x4, .rstctl = 0x10, .rstst = 0x14 },
-> +	{ .name = "cam", .base = 0x4a307000, .pwstst = 0x4 },
-> +	{ .name = "dss", .base = 0x4a307100, .pwstst = 0x4 },
-> +	{ .name = "gfx", .base = 0x4a307200, .pwstst = 0x4 },
-> +	{ .name = "l3init", .base = 0x4a307300, .pwstst = 0x4 },
-> +	{ .name = "l4per", .base = 0x4a307400, .pwstst = 0x4 },
-> +	{ .name = "cefuse", .base = 0x4a307600, .pwstst = 0x4 },
-> +	{ .name = "wkup", .base = 0x4a307700, .pwstst = 0x4 },
-> +	{ .name = "emu", .base = 0x4a307900, .pwstst = 0x4 },
-> +	{ .name = "device", .base = 0x4a307b00, .rstctl = 0x0, .rstst = 0x4 },
-> +	{ },
-> +};
+> Ugh, you're right.  It can get double-put cuz ctx->pos is put by
+> release too.  Greg, sorry about the noise but can you please revert
+> the patch?  I'll look into why this looked like memory leak from
+> slabinfo side.
 
-So at some point arch/arm/mach-omap2/powerdomains44xx_data.c
-duplicated data will be removed?
+Now reverted, thanks.
 
-> +
->   static const struct of_device_id omap_prm_id_table[] = {
-> +	{ .compatible = "ti,omap4-prm-inst", .data = omap4_prm_data },
->   	{ },
->   };
->   
-> 
+greg k-h
