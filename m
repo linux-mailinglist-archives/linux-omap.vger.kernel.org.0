@@ -2,54 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 370FC8563B
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2019 00:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD6185959
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2019 06:35:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729938AbfHGW5D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Aug 2019 18:57:03 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:36146 "EHLO
+        id S1730699AbfHHEfG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Aug 2019 00:35:06 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:42764 "EHLO
         fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729934AbfHGW5D (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Aug 2019 18:57:03 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x77MuxQT071522;
-        Wed, 7 Aug 2019 17:56:59 -0500
+        with ESMTP id S1726047AbfHHEfG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Aug 2019 00:35:06 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x784YwBH018854;
+        Wed, 7 Aug 2019 23:34:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1565218619;
-        bh=vBqecGmGLXrk1xJPdBNtDgOsDujQPp1amdCZD9wkXp0=;
+        s=ti-com-17Q1; t=1565238898;
+        bh=YNkeZor4D4BOB12Hp6yGNDKu4t56bZPpvWGGMeoCrl0=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=QPdOL3THUYlGpN/WjkjqRyKy2pNUESv3GUgWevWxV5u87FMIHnVbGD5CMOyyA/scY
-         +NL5gqBY4lW8kYpBdwYKZknE9iF8JVNlFGPY19gjDo8Bv+i1mgy+3jBUVNYRXsdKBn
-         noWnHdRVcFyBAFi01vaVhrCZe/ooFowYalqiN5+M=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x77MuxZv112414
+        b=fg1k/hSnQ8rbVpmBHzaJJumKn1v1JKpzvvBcD7tAgyfoYfdzYRYvgyGnbipADze4O
+         Y4mxDTqNtZY2pjuTwAW7pB2f1yeHulOE51EDbLNX+qwpMRe6KMKHvPsdT8QMQoKSWX
+         oloJ1nuaZwjXUhJnK8Lokw+6XtCi026QCHqyCSq0=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x784YwKl022311
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 7 Aug 2019 17:56:59 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 7 Aug 2019 23:34:58 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 7 Aug
- 2019 17:56:59 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ 2019 23:34:58 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 7 Aug 2019 17:56:59 -0500
-Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x77Muxfp119836;
-        Wed, 7 Aug 2019 17:56:59 -0500
-Subject: Re: [PATCH 3/3] clk: ti: dra7xx: add timer_sys_ck clock alias
-To:     Tero Kristo <t-kristo@ti.com>, <linux-clk@vger.kernel.org>,
-        <sboyd@kernel.org>, <mturquette@baylibre.com>
-CC:     <linux-omap@vger.kernel.org>, <tony@atomide.com>
-References: <1565183079-27798-1-git-send-email-t-kristo@ti.com>
- <1565183079-27798-4-git-send-email-t-kristo@ti.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <9d0edab4-cae2-50d5-2df9-42c879f2623f@ti.com>
-Date:   Wed, 7 Aug 2019 17:56:59 -0500
+ Frontend Transport; Wed, 7 Aug 2019 23:34:58 -0500
+Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x784YthG082287;
+        Wed, 7 Aug 2019 23:34:56 -0500
+Subject: Re: [PATCH 1/8] dt-bindings: omap: add new binding for PRM instances
+To:     Tero Kristo <t-kristo@ti.com>, <ssantosh@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>
+CC:     <tony@atomide.com>, <s-anna@ti.com>, <devicetree@vger.kernel.org>
+References: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
+ <1565164139-21886-2-git-send-email-t-kristo@ti.com>
+From:   Keerthy <j-keerthy@ti.com>
+Message-ID: <6bf4194b-23c0-2de0-3f9c-e99195336dc7@ti.com>
+Date:   Thu, 8 Aug 2019 10:05:31 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <1565183079-27798-4-git-send-email-t-kristo@ti.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <1565164139-21886-2-git-send-email-t-kristo@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -58,48 +59,50 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tero,
 
-On 8/7/19 8:04 AM, Tero Kristo wrote:
-> This is needed by the TI DM timer driver.
 
-Again can do with some better patch descriptions. Similar to the
-previous patch, missing the equivalent patches for OMAP4 and OMAP5.
-You can use my downstream patches for these - [1][2][3] that has all the
-needed Fixes by details. Only difference is that you used a single line
-change on DRA7, and this should suffice since all the sources are same,
-but OMAP4 and OMAP5 needed different ones.
-
-[1] OMAP4:
-http://git.ti.com/gitweb/?p=rpmsg/remoteproc.git;a=commit;h=9d45dc42fbed8395d733366dbf6c0fd5ec171e2f
-[2] OMAP5:
-http://git.ti.com/gitweb/?p=rpmsg/remoteproc.git;a=commit;h=34f4682a91173386307b310d7f4955d46dcaaea2
-[3] DRA7:
-http://git.ti.com/gitweb/?p=rpmsg/remoteproc.git;a=commit;h=2a662694437ae7192b5ef759ec40abe796d2a058
-
-Technically, this data need to be added back for all OMAP2+ SoCs which
-support dmtimer with any other drivers wanting to use the timers.
-
-regards
-Suman
-
+On 07/08/19 1:18 PM, Tero Kristo wrote:
+> Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
+> of these will act as a power domain controller and potentially as a reset
+> provider.
 > 
 > Signed-off-by: Tero Kristo <t-kristo@ti.com>
 > ---
->  drivers/clk/ti/clk-7xx.c | 1 +
->  1 file changed, 1 insertion(+)
+>   .../devicetree/bindings/arm/omap/prm-inst.txt      | 24 ++++++++++++++++++++++
+>   1 file changed, 24 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
 > 
-> diff --git a/drivers/clk/ti/clk-7xx.c b/drivers/clk/ti/clk-7xx.c
-> index 5208eb8..64507b8 100644
-> --- a/drivers/clk/ti/clk-7xx.c
-> +++ b/drivers/clk/ti/clk-7xx.c
-> @@ -792,6 +792,7 @@
->  static struct ti_dt_clk dra7xx_clks[] = {
->  	DT_CLK(NULL, "timer_32k_ck", "sys_32k_ck"),
->  	DT_CLK(NULL, "sys_clkin_ck", "timer_sys_clk_div"),
-> +	DT_CLK(NULL, "timer_sys_ck", "timer_sys_clk_div"),
->  	DT_CLK(NULL, "sys_clkin", "sys_clkin1"),
->  	DT_CLK(NULL, "atl_dpll_clk_mux", "atl-clkctrl:0000:24"),
->  	DT_CLK(NULL, "atl_gfclk_mux", "atl-clkctrl:0000:26"),
-> 
+> diff --git a/Documentation/devicetree/bindings/arm/omap/prm-inst.txt b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+> new file mode 100644
+> index 0000000..e0ae87b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+> @@ -0,0 +1,24 @@
+> +OMAP PRM instance bindings
+> +
+> +Power and Reset Manager is an IP block on OMAP family of devices which
+> +handle the power domains and their current state, and provide reset
+> +handling for the domains and/or separate IP blocks under the power domain
+> +hierarchy.
+> +
+> +Required properties:
+> +- compatible:	Must be one of:
+> +		"ti,am3-prm-inst"
+> +		"ti,am4-prm-inst"
+> +		"ti,omap4-prm-inst"
+> +		"ti,omap5-prm-inst"
+> +		"ti,dra7-prm-inst"
+> +- reg:		Contains PRM instance register address range
+> +		(base address and length)
 
+How about reset-cells property, Isn't that a mandatory property?
+
+> +
+> +Example:
+> +
+> +prm_dsp2: prm@1b00 {
+> +	compatible = "ti,dra7-prm-inst";
+> +	reg = <0x1b00 0x40>;
+> +	#reset-cells = <1>;
+> +};
+> 
