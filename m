@@ -2,445 +2,372 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F9AA86C47
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2019 23:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1140B86C4D
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2019 23:25:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390219AbfHHVZJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Aug 2019 17:25:09 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:58877 "EHLO
+        id S2390437AbfHHVZY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Aug 2019 17:25:24 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:52775 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732327AbfHHVZJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Aug 2019 17:25:09 -0400
+        with ESMTP id S1732327AbfHHVZY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Aug 2019 17:25:24 -0400
 Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
  (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MJWgK-1hc7Bs1j2W-00JoM1; Thu, 08 Aug 2019 23:24:36 +0200
+ 1MFb38-1i6JUE4714-00HBDf; Thu, 08 Aug 2019 23:25:05 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Tony Lindgren <tony@atomide.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Linus Walleij <linus.walleij@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH 02/22] ARM: omap1: make omapfb standalone compilable
-Date:   Thu,  8 Aug 2019 23:22:11 +0200
-Message-Id: <20190808212234.2213262-3-arnd@arndb.de>
+        Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [PATCH 03/22] ARM: omap1: move omap15xx local bus handling to usb.c
+Date:   Thu,  8 Aug 2019 23:22:12 +0200
+Message-Id: <20190808212234.2213262-4-arnd@arndb.de>
 X-Mailer: git-send-email 2.20.0
 In-Reply-To: <20190808212234.2213262-1-arnd@arndb.de>
 References: <20190808212234.2213262-1-arnd@arndb.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:11i56NfFlknfNnC84C5yQ9TME7FVsp8Y+DmrbBUbFNY0KYTjh7r
- qwXQfS1rxSZwzWV3GXq9HyioqLR6Y1NlbXTchmgozHhdIZX4fFbNmboEj7Md18xoSkmgaYS
- SnLPl1CdxRR/02K7+wQDfEoWCS0ny+uZj3ooZAvr5jQUWyV0XTddIYfFZKZgoqHpGTjEEIN
- Zv4bEIHCYk5aFgjgrwCQw==
+X-Provags-ID: V03:K1:rmObN8c4em3z6MADtDn1dH5ygzXHXH23QHeCylcVTnOlhY+ZPCt
+ 9JTDbQhYBjlZCOji0YTVOOiNozPUOmVyu5bSGp5FjvGiqwdn2EjM1DB7Lvl9z8kzYoi0GIi
+ sAsiPqAf3BGfCbkvHO6Xq9hcge9WjUUn9Wt6WXok8Z/6R6Ij7XkWeZ7NqDBuuQY0FACvFTq
+ mg1JUQO8HGF+l4UgCpwXA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Kp3KkkDmuLo=:x2OyPkvc2DT2eWNV3abo+4
- QJheF9GV8zXOrQbgMx2NBCwhlRbWwsylsLof8719DmVPRyBUB1SItpBw7lp3FVm6aCGikCALt
- FEMEktzLxyj108G89zZZSTqbV59taLq35kkM8sWcuEJO9UYoP7y5UBb/J7rQHqFWW0Ql00k1B
- FR0gAKj90PIoghnm+MK0Xpfdhweh3oyVEUzSNP6iE4emJC5k/+ZUQADbOhZEuQQ3cdNMJEUi+
- 8uXnr2BKOJcpzx6Ce537od9N7bLbYTkzBdNfkYM6jat1b4ru8cJQ5UtvxDO1bkCFMylr3roUW
- t4T6T/dCJzGnrZGq8BUC/7TA44/egNfgAdGvHAFFQSG376E+4cYzWTSlp5bXwRFncL7CB0gjd
- /9WrcovCYjoVK4nDObWDLLKh3xtuM4uNgSmKu1ErYItY3ax2inc7bjrId7u8OxQJGFPqa8VH6
- Hv2zmS4x3sLBT5xdxX8danIJeguENiFybA4pSQRbcUraem1KmpPw1e11PsdT7XtM4QKNfZ1AE
- dwbhblwCysaFAvPgKf7nk3vvs6mTp7/jRPavBV92K8VoxSMmA4Y39xaQ4YtbkraTcjjqXcQ/y
- tbs67iLZEazULgIeIBsVDMQ4qbprvDf7kB4crhhn4h/HAaBzRvIa3a3EBoPdDNcjrWUsZC6XX
- vEhThDfJWoa56a/5bGZUBPTijQGCQc+BIiL5K0PLLE+RZ/COGBmT14I4tWT1DlfWQJIYJvFvq
- m9DnjwZrX6GOvIfJSX113bDsaW6PymUjzOI3VQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:mbk8i9bIm40=:m8WNxBYOf+mHNwotPmsJTT
+ bVT0EiIA51AJzcxHr109cLxi1Hz3cezAl8cww4l+fLfdIxu0AJbeUwvkcsyMSRLV+7u0DxlT0
+ WIM+cSIqflSXl2MdNK5ga13JeFyevwSJdBTJhZzgtRnZoFco5BVGrDZ2+XU/IJcyjP9IG1AW6
+ Gq7FRGvHhl5EezehOB1IwI1flNqBP1EJPQpfG0/xt4XhWm/t47YhuqA7Rw+PnPPWvsDHUtBH9
+ dW5xi+BdytYUnjMVpM/N5SqgWZH23xzUVLM7OuQwHp2vjgR9yMSSDDqGfHwCs28yUQiSLF2BA
+ KXcneZ5opCMNRhjEA+ix48uERHEvH2AZb8OarN6qcej78qRNV5i+U+NoALIRntHrhdA0ShLbR
+ CXYJv4g1K+WQlC9YjRgYT7+QlqokNLPoDwsvVEC1d9214PTZ2Bdau5CpdoXL6M4E63mIxC8R0
+ yenYakopWppiLWGUqPkx7zUQl/JvEMFYnNZuEMDTG9e+0zkCmVu47yyGJadhMhqSWKUbujafH
+ ZrhlTJAfXtkDhNOmE3aa3ZnmPBfrDzp8/5+yVa2ZKR1mbpZ7OC9Gs5ZKSgPwyQ3XLuuV9aW9h
+ Yvp6kZKzYG5aXKHwoPyBCwPArFNnSjStculNF2U0V1OSSIgY5ESRZzIcdYVnjSbtXxFF6FY1l
+ NQUXU2k7WC1F1Or6Ld7HspeYxGz4i7VUKdyNSbtqKPgE1JwsHijsg2tidql05vVd/mR/kXV2O
+ fkdq1gvHPb21UOw6JDQwRGwEp6o2qIckoxnloQ==
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The omapfb driver is split into platform specific code for omap1, and
-driver code that is also specific to omap1.
+The mach/memory.h file only exists to implement a dma offset for "Local
+Bus" devices, and that consists of the OHCI USB controller for practical
+purposes.
 
-Moving both parts into the driver directory simplifies the structure
-and avoids the dependency on certain omap machine header files.
+The generic dma-mapping interface has gained this exact feature some
+years ago and can do it much more efficiently, so replace the complex
+__arch_virt_to_dma/__arch_dma_to_pfn/... logic with a much simpler boot
+time initialization.
 
-The interrupt numbers in particular however must not be referenced
-directly from the driver to allow building in a multiplatform
-configuration, so these have to be passed through resources, is
-done for all other omap drivers.
+This should also make any code that performs dma mapping calls at
+runtime much more efficient, by eliminating the strcmp() along with
+the computation.
+
+Similar, a portion of the ohci-omap driver is just there for configuring
+the memory translation, this too can get moved into usb.c
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm/mach-omap1/Makefile                  |  4 --
- arch/arm/mach-omap1/fb.c                      | 19 +++++++-
- arch/arm/mach-omap1/include/mach/lcdc.h       | 44 -------------------
- drivers/video/fbdev/Makefile                  |  2 +-
- drivers/video/fbdev/omap/Makefile             |  5 +++
- .../video/fbdev/omap}/lcd_dma.c               |  4 +-
- .../video/fbdev/omap}/lcd_dma.h               |  2 -
- drivers/video/fbdev/omap/lcdc.c               |  8 ++--
- drivers/video/fbdev/omap/lcdc.h               | 35 +++++++++++++++
- drivers/video/fbdev/omap/omapfb.h             |  2 +
- drivers/video/fbdev/omap/omapfb_main.c        | 16 ++++++-
- drivers/video/fbdev/omap/sossi.c              |  3 +-
- include/linux/omap-dma.h                      |  7 ++-
- 13 files changed, 90 insertions(+), 61 deletions(-)
- delete mode 100644 arch/arm/mach-omap1/include/mach/lcdc.h
- rename {arch/arm/mach-omap1 => drivers/video/fbdev/omap}/lcd_dma.c (99%)
- rename {arch/arm/mach-omap1/include/mach => drivers/video/fbdev/omap}/lcd_dma.h (98%)
+ arch/arm/mach-omap1/include/mach/memory.h   | 43 -----------
+ arch/arm/mach-omap1/include/mach/omap1510.h |  1 -
+ arch/arm/mach-omap1/usb.c                   | 79 +++++++++++++++++++++
+ drivers/usb/host/ohci-omap.c                | 72 +------------------
+ include/linux/platform_data/usb-omap1.h     |  2 +
+ 5 files changed, 83 insertions(+), 114 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/Makefile b/arch/arm/mach-omap1/Makefile
-index c757a52d0801..450bbf552b57 100644
---- a/arch/arm/mach-omap1/Makefile
-+++ b/arch/arm/mach-omap1/Makefile
-@@ -57,7 +57,3 @@ obj-$(CONFIG_ARCH_OMAP730)		+= gpio7xx.o
- obj-$(CONFIG_ARCH_OMAP850)		+= gpio7xx.o
- obj-$(CONFIG_ARCH_OMAP15XX)		+= gpio15xx.o
- obj-$(CONFIG_ARCH_OMAP16XX)		+= gpio16xx.o
--
--ifneq ($(CONFIG_FB_OMAP),)
--obj-y += lcd_dma.o
--endif
-diff --git a/arch/arm/mach-omap1/fb.c b/arch/arm/mach-omap1/fb.c
-index 0e32a959f254..b093375afc27 100644
---- a/arch/arm/mach-omap1/fb.c
-+++ b/arch/arm/mach-omap1/fb.c
-@@ -17,9 +17,12 @@
- #include <linux/io.h>
- #include <linux/omapfb.h>
- #include <linux/dma-mapping.h>
-+#include <linux/irq.h>
+diff --git a/arch/arm/mach-omap1/include/mach/memory.h b/arch/arm/mach-omap1/include/mach/memory.h
+index 1142560e0078..ba3a350479c8 100644
+--- a/arch/arm/mach-omap1/include/mach/memory.h
++++ b/arch/arm/mach-omap1/include/mach/memory.h
+@@ -9,47 +9,4 @@
+ /* REVISIT: omap1 legacy drivers still rely on this */
+ #include <mach/soc.h>
  
- #include <asm/mach/map.h>
- 
-+#include <mach/irqs.h>
-+
- #if IS_ENABLED(CONFIG_FB_OMAP)
- 
- static bool omapfb_lcd_configured;
-@@ -27,6 +30,19 @@ static struct omapfb_platform_data omapfb_config;
- 
- static u64 omap_fb_dma_mask = ~(u32)0;
- 
-+struct resource omap_fb_resources[] = {
-+	{
-+		.name  = "irq",
-+		.start = INT_LCD_CTRL,
-+		.flags = IORESOURCE_IRQ,
-+	},
-+	{
-+		.name  = "irq",
-+		.start = INT_SOSSI_MATCH,
-+		.flags = IORESOURCE_IRQ,
-+	},
-+};
-+
- static struct platform_device omap_fb_device = {
- 	.name		= "omapfb",
- 	.id		= -1,
-@@ -35,7 +51,8 @@ static struct platform_device omap_fb_device = {
- 		.coherent_dma_mask	= DMA_BIT_MASK(32),
- 		.platform_data		= &omapfb_config,
- 	},
--	.num_resources = 0,
-+	.num_resources = ARRAY_SIZE(omap_fb_resources),
-+	.resource = omap_fb_resources,
- };
- 
- void __init omapfb_set_lcd_config(const struct omap_lcd_config *config)
-diff --git a/arch/arm/mach-omap1/include/mach/lcdc.h b/arch/arm/mach-omap1/include/mach/lcdc.h
-deleted file mode 100644
-index 7152db1f5361..000000000000
---- a/arch/arm/mach-omap1/include/mach/lcdc.h
-+++ /dev/null
-@@ -1,44 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
 -/*
-- * arch/arm/mach-omap1/include/mach/lcdc.h
-- *
-- * Extracted from drivers/video/omap/lcdc.c
-- * Copyright (C) 2004 Nokia Corporation
-- * Author: Imre Deak <imre.deak@nokia.com>
+- * Bus address is physical address, except for OMAP-1510 Local Bus.
+- * OMAP-1510 bus address is translated into a Local Bus address if the
+- * OMAP bus type is lbus. We do the address translation based on the
+- * device overriding the defaults used in the dma-mapping API.
+- * Note that the is_lbus_device() test is not very efficient on 1510
+- * because of the strncmp().
 - */
--#ifndef __MACH_LCDC_H__
--#define __MACH_LCDC_H__
+-#if defined(CONFIG_ARCH_OMAP15XX) && !defined(__ASSEMBLER__)
 -
--#define OMAP_LCDC_BASE			0xfffec000
--#define OMAP_LCDC_SIZE			256
--#define OMAP_LCDC_IRQ			INT_LCD_CTRL
+-/*
+- * OMAP-1510 Local Bus address offset
+- */
+-#define OMAP1510_LB_OFFSET	UL(0x30000000)
 -
--#define OMAP_LCDC_CONTROL		(OMAP_LCDC_BASE + 0x00)
--#define OMAP_LCDC_TIMING0		(OMAP_LCDC_BASE + 0x04)
--#define OMAP_LCDC_TIMING1		(OMAP_LCDC_BASE + 0x08)
--#define OMAP_LCDC_TIMING2		(OMAP_LCDC_BASE + 0x0c)
--#define OMAP_LCDC_STATUS		(OMAP_LCDC_BASE + 0x10)
--#define OMAP_LCDC_SUBPANEL		(OMAP_LCDC_BASE + 0x14)
--#define OMAP_LCDC_LINE_INT		(OMAP_LCDC_BASE + 0x18)
--#define OMAP_LCDC_DISPLAY_STATUS	(OMAP_LCDC_BASE + 0x1c)
+-#define virt_to_lbus(x)		((x) - PAGE_OFFSET + OMAP1510_LB_OFFSET)
+-#define lbus_to_virt(x)		((x) - OMAP1510_LB_OFFSET + PAGE_OFFSET)
+-#define is_lbus_device(dev)	(cpu_is_omap15xx() && dev && (strncmp(dev_name(dev), "ohci", 4) == 0))
 -
--#define OMAP_LCDC_STAT_DONE		(1 << 0)
--#define OMAP_LCDC_STAT_VSYNC		(1 << 1)
--#define OMAP_LCDC_STAT_SYNC_LOST	(1 << 2)
--#define OMAP_LCDC_STAT_ABC		(1 << 3)
--#define OMAP_LCDC_STAT_LINE_INT		(1 << 4)
--#define OMAP_LCDC_STAT_FUF		(1 << 5)
--#define OMAP_LCDC_STAT_LOADED_PALETTE	(1 << 6)
+-#define __arch_pfn_to_dma(dev, pfn)	\
+-	({ dma_addr_t __dma = __pfn_to_phys(pfn); \
+-	   if (is_lbus_device(dev)) \
+-		__dma = __dma - PHYS_OFFSET + OMAP1510_LB_OFFSET; \
+-	   __dma; })
 -
--#define OMAP_LCDC_CTRL_LCD_EN		(1 << 0)
--#define OMAP_LCDC_CTRL_LCD_TFT		(1 << 7)
--#define OMAP_LCDC_CTRL_LINE_IRQ_CLR_SEL	(1 << 10)
+-#define __arch_dma_to_pfn(dev, addr)	\
+-	({ dma_addr_t __dma = addr;				\
+-	   if (is_lbus_device(dev))				\
+-		__dma += PHYS_OFFSET - OMAP1510_LB_OFFSET;	\
+-	   __phys_to_pfn(__dma);				\
+-	})
 -
--#define OMAP_LCDC_IRQ_VSYNC		(1 << 2)
--#define OMAP_LCDC_IRQ_DONE		(1 << 3)
--#define OMAP_LCDC_IRQ_LOADED_PALETTE	(1 << 4)
--#define OMAP_LCDC_IRQ_LINE_NIRQ		(1 << 5)
--#define OMAP_LCDC_IRQ_LINE		(1 << 6)
--#define OMAP_LCDC_IRQ_MASK		(((1 << 5) - 1) << 2)
+-#define __arch_dma_to_virt(dev, addr)	({ (void *) (is_lbus_device(dev) ? \
+-						lbus_to_virt(addr) : \
+-						__phys_to_virt(addr)); })
 -
--#endif /* __MACH_LCDC_H__ */
-diff --git a/drivers/video/fbdev/Makefile b/drivers/video/fbdev/Makefile
-index aab7155884ea..3324301e4c36 100644
---- a/drivers/video/fbdev/Makefile
-+++ b/drivers/video/fbdev/Makefile
-@@ -111,7 +111,7 @@ obj-$(CONFIG_FB_UDL)		  += udlfb.o
- obj-$(CONFIG_FB_SMSCUFX)	  += smscufx.o
- obj-$(CONFIG_FB_XILINX)           += xilinxfb.o
- obj-$(CONFIG_FB_SH_MOBILE_LCDC)	  += sh_mobile_lcdcfb.o
--obj-$(CONFIG_FB_OMAP)             += omap/
-+obj-y				  += omap/
- obj-y                             += omap2/
- obj-$(CONFIG_XEN_FBDEV_FRONTEND)  += xen-fbfront.o
- obj-$(CONFIG_FB_CARMINE)          += carminefb.o
-diff --git a/drivers/video/fbdev/omap/Makefile b/drivers/video/fbdev/omap/Makefile
-index daaa73a94e7f..b88e02f5cb1f 100644
---- a/drivers/video/fbdev/omap/Makefile
-+++ b/drivers/video/fbdev/omap/Makefile
-@@ -5,6 +5,11 @@
- 
- obj-$(CONFIG_FB_OMAP) += omapfb.o
- 
-+ifdef CONFIG_FB_OMAP
-+# must be built-in
-+obj-y += lcd_dma.o
-+endif
-+
- objs-yy := omapfb_main.o lcdc.o
- 
- objs-y$(CONFIG_FB_OMAP_LCDC_EXTERNAL) += sossi.o
-diff --git a/arch/arm/mach-omap1/lcd_dma.c b/drivers/video/fbdev/omap/lcd_dma.c
-similarity index 99%
-rename from arch/arm/mach-omap1/lcd_dma.c
-rename to drivers/video/fbdev/omap/lcd_dma.c
-index a72ac0c02b4f..867a63c06f42 100644
---- a/arch/arm/mach-omap1/lcd_dma.c
-+++ b/drivers/video/fbdev/omap/lcd_dma.c
-@@ -26,7 +26,9 @@
- #include <linux/omap-dma.h>
- 
- #include <mach/hardware.h>
--#include <mach/lcdc.h>
-+
-+#include "lcdc.h"
-+#include "lcd_dma.h"
- 
- int omap_lcd_dma_running(void)
- {
-diff --git a/arch/arm/mach-omap1/include/mach/lcd_dma.h b/drivers/video/fbdev/omap/lcd_dma.h
-similarity index 98%
-rename from arch/arm/mach-omap1/include/mach/lcd_dma.h
-rename to drivers/video/fbdev/omap/lcd_dma.h
-index 1a3c0cf17899..1b4780197381 100644
---- a/arch/arm/mach-omap1/include/mach/lcd_dma.h
-+++ b/drivers/video/fbdev/omap/lcd_dma.h
-@@ -60,6 +60,4 @@ extern void omap_set_lcd_dma_b1_vxres(unsigned long vxres);
- extern void omap_set_lcd_dma_b1_mirror(int mirror);
- extern void omap_set_lcd_dma_b1_scale(unsigned int xscale, unsigned int yscale);
- 
--extern int omap_lcd_dma_running(void);
+-#define __arch_virt_to_dma(dev, addr)	({ unsigned long __addr = (unsigned long)(addr); \
+-					   (dma_addr_t) (is_lbus_device(dev) ? \
+-						virt_to_lbus(__addr) : \
+-						__virt_to_phys(__addr)); })
 -
- #endif /* __MACH_OMAP1_LCD_DMA_H__ */
-diff --git a/drivers/video/fbdev/omap/lcdc.c b/drivers/video/fbdev/omap/lcdc.c
-index fa73acfc1371..65953b7fbdb9 100644
---- a/drivers/video/fbdev/omap/lcdc.c
-+++ b/drivers/video/fbdev/omap/lcdc.c
-@@ -17,7 +17,6 @@
- #include <linux/clk.h>
- #include <linux/gfp.h>
- 
--#include <mach/lcdc.h>
- #include <linux/omap-dma.h>
- 
- #include <asm/mach-types.h>
-@@ -25,6 +24,7 @@
- #include "omapfb.h"
- 
- #include "lcdc.h"
-+#include "lcd_dma.h"
- 
- #define MODULE_NAME			"lcdc"
- 
-@@ -713,7 +713,7 @@ static int omap_lcdc_init(struct omapfb_device *fbdev, int ext_mode,
- 	}
- 	clk_enable(lcdc.lcd_ck);
- 
--	r = request_irq(OMAP_LCDC_IRQ, lcdc_irq_handler, 0, MODULE_NAME, fbdev);
-+	r = request_irq(fbdev->int_irq, lcdc_irq_handler, 0, MODULE_NAME, fbdev);
- 	if (r) {
- 		dev_err(fbdev->dev, "unable to get IRQ\n");
- 		goto fail2;
-@@ -744,7 +744,7 @@ static int omap_lcdc_init(struct omapfb_device *fbdev, int ext_mode,
- fail4:
- 	omap_free_lcd_dma();
- fail3:
--	free_irq(OMAP_LCDC_IRQ, lcdc.fbdev);
-+	free_irq(fbdev->int_irq, lcdc.fbdev);
- fail2:
- 	clk_disable(lcdc.lcd_ck);
- fail1:
-@@ -759,7 +759,7 @@ static void omap_lcdc_cleanup(void)
- 		free_palette_ram();
- 	free_fbmem();
- 	omap_free_lcd_dma();
--	free_irq(OMAP_LCDC_IRQ, lcdc.fbdev);
-+	free_irq(lcdc.fbdev->int_irq, lcdc.fbdev);
- 	clk_disable(lcdc.lcd_ck);
- 	clk_put(lcdc.lcd_ck);
- }
-diff --git a/drivers/video/fbdev/omap/lcdc.h b/drivers/video/fbdev/omap/lcdc.h
-index 8a7607d861c1..cbbfd9b9e949 100644
---- a/drivers/video/fbdev/omap/lcdc.h
-+++ b/drivers/video/fbdev/omap/lcdc.h
-@@ -1,6 +1,41 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #ifndef LCDC_H
- #define LCDC_H
-+/*
-+ * Copyright (C) 2004 Nokia Corporation
-+ * Author: Imre Deak <imre.deak@nokia.com>
-+ */
-+#define OMAP_LCDC_BASE			0xfffec000
-+#define OMAP_LCDC_SIZE			256
-+#define OMAP_LCDC_IRQ			INT_LCD_CTRL
-+
-+#define OMAP_LCDC_CONTROL		(OMAP_LCDC_BASE + 0x00)
-+#define OMAP_LCDC_TIMING0		(OMAP_LCDC_BASE + 0x04)
-+#define OMAP_LCDC_TIMING1		(OMAP_LCDC_BASE + 0x08)
-+#define OMAP_LCDC_TIMING2		(OMAP_LCDC_BASE + 0x0c)
-+#define OMAP_LCDC_STATUS		(OMAP_LCDC_BASE + 0x10)
-+#define OMAP_LCDC_SUBPANEL		(OMAP_LCDC_BASE + 0x14)
-+#define OMAP_LCDC_LINE_INT		(OMAP_LCDC_BASE + 0x18)
-+#define OMAP_LCDC_DISPLAY_STATUS	(OMAP_LCDC_BASE + 0x1c)
-+
-+#define OMAP_LCDC_STAT_DONE		(1 << 0)
-+#define OMAP_LCDC_STAT_VSYNC		(1 << 1)
-+#define OMAP_LCDC_STAT_SYNC_LOST	(1 << 2)
-+#define OMAP_LCDC_STAT_ABC		(1 << 3)
-+#define OMAP_LCDC_STAT_LINE_INT		(1 << 4)
-+#define OMAP_LCDC_STAT_FUF		(1 << 5)
-+#define OMAP_LCDC_STAT_LOADED_PALETTE	(1 << 6)
-+
-+#define OMAP_LCDC_CTRL_LCD_EN		(1 << 0)
-+#define OMAP_LCDC_CTRL_LCD_TFT		(1 << 7)
-+#define OMAP_LCDC_CTRL_LINE_IRQ_CLR_SEL	(1 << 10)
-+
-+#define OMAP_LCDC_IRQ_VSYNC		(1 << 2)
-+#define OMAP_LCDC_IRQ_DONE		(1 << 3)
-+#define OMAP_LCDC_IRQ_LOADED_PALETTE	(1 << 4)
-+#define OMAP_LCDC_IRQ_LINE_NIRQ		(1 << 5)
-+#define OMAP_LCDC_IRQ_LINE		(1 << 6)
-+#define OMAP_LCDC_IRQ_MASK		(((1 << 5) - 1) << 2)
- 
- int omap_lcdc_set_dma_callback(void (*callback)(void *data), void *data);
- void omap_lcdc_free_dma_callback(void);
-diff --git a/drivers/video/fbdev/omap/omapfb.h b/drivers/video/fbdev/omap/omapfb.h
-index d930152c289c..313a051fe7a4 100644
---- a/drivers/video/fbdev/omap/omapfb.h
-+++ b/drivers/video/fbdev/omap/omapfb.h
-@@ -204,6 +204,8 @@ struct omapfb_device {
- 	struct lcd_panel	*panel;			/* LCD panel */
- 	const struct lcd_ctrl	*ctrl;			/* LCD controller */
- 	const struct lcd_ctrl	*int_ctrl;		/* internal LCD ctrl */
-+	int			ext_irq;
-+	int			int_irq;
- 	struct lcd_ctrl_extif	*ext_if;		/* LCD ctrl external
- 							   interface */
- 	struct device		*dev;
-diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-index 90eca64e3144..dc06057de91d 100644
---- a/drivers/video/fbdev/omap/omapfb_main.c
-+++ b/drivers/video/fbdev/omap/omapfb_main.c
-@@ -1618,7 +1618,7 @@ static int omapfb_do_probe(struct platform_device *pdev,
- 
- 	init_state = 0;
- 
--	if (pdev->num_resources != 0) {
-+	if (pdev->num_resources != 1) {
- 		dev_err(&pdev->dev, "probed for an unknown device\n");
- 		r = -ENODEV;
- 		goto cleanup;
-@@ -1637,6 +1637,20 @@ static int omapfb_do_probe(struct platform_device *pdev,
- 		r = -ENOMEM;
- 		goto cleanup;
- 	}
-+	fbdev->int_irq = platform_get_irq(pdev, 0);
-+	if (!fbdev->int_irq) {
-+		dev_err(&pdev->dev, "unable to get irq\n");
-+		r = ENXIO;
-+		goto cleanup;
-+	}
-+
-+	fbdev->ext_irq = platform_get_irq(pdev, 1);
-+	if (!fbdev->ext_irq) {
-+		dev_err(&pdev->dev, "unable to get irq\n");
-+		r = ENXIO;
-+		goto cleanup;
-+	}
-+
- 	init_state++;
- 
- 	fbdev->dev = &pdev->dev;
-diff --git a/drivers/video/fbdev/omap/sossi.c b/drivers/video/fbdev/omap/sossi.c
-index 80ac67f27f0d..ade9d452254c 100644
---- a/drivers/video/fbdev/omap/sossi.c
-+++ b/drivers/video/fbdev/omap/sossi.c
-@@ -15,6 +15,7 @@
- #include <linux/omap-dma.h>
- 
- #include "omapfb.h"
-+#include "lcd_dma.h"
- #include "lcdc.h"
- 
- #define MODULE_NAME		"omapfb-sossi"
-@@ -638,7 +639,7 @@ static int sossi_init(struct omapfb_device *fbdev)
- 	l &= ~(1 << 31); /* REORDERING */
- 	sossi_write_reg(SOSSI_INIT1_REG, l);
- 
--	if ((r = request_irq(INT_1610_SoSSI_MATCH, sossi_match_irq,
-+	if ((r = request_irq(fbdev->ext_irq, sossi_match_irq,
- 			     IRQ_TYPE_EDGE_FALLING,
- 	     "sossi_match", sossi.fbdev->dev)) < 0) {
- 		dev_err(sossi.fbdev->dev, "can't get SoSSI match IRQ\n");
-diff --git a/include/linux/omap-dma.h b/include/linux/omap-dma.h
-index ba3cfbb52312..e9d76ac6321d 100644
---- a/include/linux/omap-dma.h
-+++ b/include/linux/omap-dma.h
-@@ -346,8 +346,8 @@ extern void omap_dma_set_global_params(int arb_rate, int max_fifo_depth,
- void omap_dma_global_context_save(void);
- void omap_dma_global_context_restore(void);
- 
--#if defined(CONFIG_ARCH_OMAP1) && IS_ENABLED(CONFIG_FB_OMAP)
--#include <mach/lcd_dma.h>
-+#if IS_ENABLED(CONFIG_FB_OMAP)
-+extern int omap_lcd_dma_running(void);
- #else
- static inline int omap_lcd_dma_running(void)
- {
-@@ -356,6 +356,9 @@ static inline int omap_lcd_dma_running(void)
+-#endif	/* CONFIG_ARCH_OMAP15XX */
+-
  #endif
+diff --git a/arch/arm/mach-omap1/include/mach/omap1510.h b/arch/arm/mach-omap1/include/mach/omap1510.h
+index 3d235244bf5c..7af9c0c7c5ab 100644
+--- a/arch/arm/mach-omap1/include/mach/omap1510.h
++++ b/arch/arm/mach-omap1/include/mach/omap1510.h
+@@ -159,4 +159,3 @@
+ #define OMAP1510_INT_FPGA23		(OMAP_FPGA_IRQ_BASE + 23)
  
- #else /* CONFIG_ARCH_OMAP */
-+static inline void omap_set_dma_priority(int lch, int dst_port, int priority)
+ #endif /*  __ASM_ARCH_OMAP15XX_H */
+-
+diff --git a/arch/arm/mach-omap1/usb.c b/arch/arm/mach-omap1/usb.c
+index d8e9bbda8f7b..740c876ae46b 100644
+--- a/arch/arm/mach-omap1/usb.c
++++ b/arch/arm/mach-omap1/usb.c
+@@ -10,6 +10,7 @@
+ #include <linux/init.h>
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
++#include <linux/delay.h>
+ 
+ #include <asm/irq.h>
+ 
+@@ -127,6 +128,7 @@ omap_otg_init(struct omap_usb_config *config)
+ 
+ 		syscon &= ~HST_IDLE_EN;
+ 		ohci_device->dev.platform_data = config;
++
+ 		status = platform_device_register(ohci_device);
+ 		if (status)
+ 			pr_debug("can't register OHCI device, %d\n", status);
+@@ -533,6 +535,80 @@ static u32 __init omap1_usb2_init(unsigned nwires, unsigned alt_pingroup)
+ }
+ 
+ #ifdef	CONFIG_ARCH_OMAP15XX
++/* OMAP-1510 OHCI has its own MMU for DMA */
++#define OMAP1510_LB_MEMSIZE	32	/* Should be same as SDRAM size */
++#define OMAP1510_LB_CLOCK_DIV	0xfffec10c
++#define OMAP1510_LB_MMU_CTL	0xfffec208
++#define OMAP1510_LB_MMU_LCK	0xfffec224
++#define OMAP1510_LB_MMU_LD_TLB	0xfffec228
++#define OMAP1510_LB_MMU_CAM_H	0xfffec22c
++#define OMAP1510_LB_MMU_CAM_L	0xfffec230
++#define OMAP1510_LB_MMU_RAM_H	0xfffec234
++#define OMAP1510_LB_MMU_RAM_L	0xfffec238
++
++/*
++ * Bus address is physical address, except for OMAP-1510 Local Bus.
++ * OMAP-1510 bus address is translated into a Local Bus address if the
++ * OMAP bus type is lbus.
++ */
++#define OMAP1510_LB_OFFSET	   UL(0x30000000)
++#define OMAP1510_LB_DMA_PFN_OFFSET ((OMAP1510_LB_OFFSET - PAGE_OFFSET) >> PAGE_SHIFT)
++
++/*
++ * OMAP-1510 specific Local Bus clock on/off
++ */
++static int omap_1510_local_bus_power(int on)
 +{
++	if (on) {
++		omap_writel((1 << 1) | (1 << 0), OMAP1510_LB_MMU_CTL);
++		udelay(200);
++	} else {
++		omap_writel(0, OMAP1510_LB_MMU_CTL);
++	}
++
++	return 0;
++}
++
++/*
++ * OMAP-1510 specific Local Bus initialization
++ * NOTE: This assumes 32MB memory size in OMAP1510LB_MEMSIZE.
++ *       See also arch/mach-omap/memory.h for __virt_to_dma() and
++ *       __dma_to_virt() which need to match with the physical
++ *       Local Bus address below.
++ */
++static int omap_1510_local_bus_init(void)
++{
++	unsigned int tlb;
++	unsigned long lbaddr, physaddr;
++
++	omap_writel((omap_readl(OMAP1510_LB_CLOCK_DIV) & 0xfffffff8) | 0x4,
++	       OMAP1510_LB_CLOCK_DIV);
++
++	/* Configure the Local Bus MMU table */
++	for (tlb = 0; tlb < OMAP1510_LB_MEMSIZE; tlb++) {
++		lbaddr = tlb * 0x00100000 + OMAP1510_LB_OFFSET;
++		physaddr = tlb * 0x00100000 + PHYS_OFFSET;
++		omap_writel((lbaddr & 0x0fffffff) >> 22, OMAP1510_LB_MMU_CAM_H);
++		omap_writel(((lbaddr & 0x003ffc00) >> 6) | 0xc,
++		       OMAP1510_LB_MMU_CAM_L);
++		omap_writel(physaddr >> 16, OMAP1510_LB_MMU_RAM_H);
++		omap_writel((physaddr & 0x0000fc00) | 0x300, OMAP1510_LB_MMU_RAM_L);
++		omap_writel(tlb << 4, OMAP1510_LB_MMU_LCK);
++		omap_writel(0x1, OMAP1510_LB_MMU_LD_TLB);
++	}
++
++	/* Enable the walking table */
++	omap_writel(omap_readl(OMAP1510_LB_MMU_CTL) | (1 << 3), OMAP1510_LB_MMU_CTL);
++	udelay(200);
++
++	return 0;
++}
++
++static void omap_1510_local_bus_reset(void)
++{
++	omap_1510_local_bus_power(1);
++	omap_1510_local_bus_init();
 +}
  
- static inline struct omap_system_dma_plat_info *omap_get_plat_info(void)
- {
+ /* ULPD_DPLL_CTRL */
+ #define DPLL_IOB		(1 << 13)
+@@ -601,11 +677,14 @@ static void __init omap_1510_usb_init(struct omap_usb_config *config)
+ 		int status;
+ 
+ 		ohci_device.dev.platform_data = config;
++		ohci_device.dev.dma_pfn_offset = OMAP1510_LB_DMA_PFN_OFFSET;
+ 		status = platform_device_register(&ohci_device);
+ 		if (status)
+ 			pr_debug("can't register OHCI device, %d\n", status);
+ 		/* hcd explicitly gates 48MHz */
+ 	}
++
++	config->lb_reset = omap_1510_local_bus_reset;
+ #endif
+ }
+ 
+diff --git a/drivers/usb/host/ohci-omap.c b/drivers/usb/host/ohci-omap.c
+index d8d35d456456..f7efe65f01c5 100644
+--- a/drivers/usb/host/ohci-omap.c
++++ b/drivers/usb/host/ohci-omap.c
+@@ -40,17 +40,6 @@
+ #include <mach/usb.h>
+ 
+ 
+-/* OMAP-1510 OHCI has its own MMU for DMA */
+-#define OMAP1510_LB_MEMSIZE	32	/* Should be same as SDRAM size */
+-#define OMAP1510_LB_CLOCK_DIV	0xfffec10c
+-#define OMAP1510_LB_MMU_CTL	0xfffec208
+-#define OMAP1510_LB_MMU_LCK	0xfffec224
+-#define OMAP1510_LB_MMU_LD_TLB	0xfffec228
+-#define OMAP1510_LB_MMU_CAM_H	0xfffec22c
+-#define OMAP1510_LB_MMU_CAM_L	0xfffec230
+-#define OMAP1510_LB_MMU_RAM_H	0xfffec234
+-#define OMAP1510_LB_MMU_RAM_L	0xfffec238
+-
+ #define DRIVER_DESC "OHCI OMAP driver"
+ 
+ #ifdef CONFIG_TPS65010
+@@ -113,61 +102,6 @@ static int omap_ohci_transceiver_power(int on)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_ARCH_OMAP15XX
+-/*
+- * OMAP-1510 specific Local Bus clock on/off
+- */
+-static int omap_1510_local_bus_power(int on)
+-{
+-	if (on) {
+-		omap_writel((1 << 1) | (1 << 0), OMAP1510_LB_MMU_CTL);
+-		udelay(200);
+-	} else {
+-		omap_writel(0, OMAP1510_LB_MMU_CTL);
+-	}
+-
+-	return 0;
+-}
+-
+-/*
+- * OMAP-1510 specific Local Bus initialization
+- * NOTE: This assumes 32MB memory size in OMAP1510LB_MEMSIZE.
+- *       See also arch/mach-omap/memory.h for __virt_to_dma() and
+- *       __dma_to_virt() which need to match with the physical
+- *       Local Bus address below.
+- */
+-static int omap_1510_local_bus_init(void)
+-{
+-	unsigned int tlb;
+-	unsigned long lbaddr, physaddr;
+-
+-	omap_writel((omap_readl(OMAP1510_LB_CLOCK_DIV) & 0xfffffff8) | 0x4,
+-	       OMAP1510_LB_CLOCK_DIV);
+-
+-	/* Configure the Local Bus MMU table */
+-	for (tlb = 0; tlb < OMAP1510_LB_MEMSIZE; tlb++) {
+-		lbaddr = tlb * 0x00100000 + OMAP1510_LB_OFFSET;
+-		physaddr = tlb * 0x00100000 + PHYS_OFFSET;
+-		omap_writel((lbaddr & 0x0fffffff) >> 22, OMAP1510_LB_MMU_CAM_H);
+-		omap_writel(((lbaddr & 0x003ffc00) >> 6) | 0xc,
+-		       OMAP1510_LB_MMU_CAM_L);
+-		omap_writel(physaddr >> 16, OMAP1510_LB_MMU_RAM_H);
+-		omap_writel((physaddr & 0x0000fc00) | 0x300, OMAP1510_LB_MMU_RAM_L);
+-		omap_writel(tlb << 4, OMAP1510_LB_MMU_LCK);
+-		omap_writel(0x1, OMAP1510_LB_MMU_LD_TLB);
+-	}
+-
+-	/* Enable the walking table */
+-	omap_writel(omap_readl(OMAP1510_LB_MMU_CTL) | (1 << 3), OMAP1510_LB_MMU_CTL);
+-	udelay(200);
+-
+-	return 0;
+-}
+-#else
+-#define omap_1510_local_bus_power(x)	{}
+-#define omap_1510_local_bus_init()	{}
+-#endif
+-
+ #ifdef	CONFIG_USB_OTG
+ 
+ static void start_hnp(struct ohci_hcd *ohci)
+@@ -237,10 +171,8 @@ static int ohci_omap_reset(struct usb_hcd *hcd)
+ 
+ 	omap_ohci_clock_power(1);
+ 
+-	if (cpu_is_omap15xx()) {
+-		omap_1510_local_bus_power(1);
+-		omap_1510_local_bus_init();
+-	}
++	if (config->lb_reset)
++		config->lb_reset();
+ 
+ 	ret = ohci_setup(hcd);
+ 	if (ret < 0)
+diff --git a/include/linux/platform_data/usb-omap1.h b/include/linux/platform_data/usb-omap1.h
+index 43b5ce139c37..878e572a78bf 100644
+--- a/include/linux/platform_data/usb-omap1.h
++++ b/include/linux/platform_data/usb-omap1.h
+@@ -48,6 +48,8 @@ struct omap_usb_config {
+ 	u32 (*usb2_init)(unsigned nwires, unsigned alt_pingroup);
+ 
+ 	int (*ocpi_enable)(void);
++
++	void (*lb_reset)(void);
+ };
+ 
+ #endif /* __LINUX_USB_OMAP1_H */
 -- 
 2.20.0
 
