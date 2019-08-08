@@ -2,85 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7507E86D25
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2019 00:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEB4786DF7
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2019 01:39:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404638AbfHHWYU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Aug 2019 18:24:20 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:47000 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404609AbfHHWYU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Aug 2019 18:24:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=CiEMLkgHGajJ+S7I72ZRbI8J7SWrJ8WWjs7jCf+7ejA=; b=XzTgQRKOpMPcNVm19/fjK2NKn
-        gbcyvI50SCZkj9gpPdA03kw37BV1nyEBViCYHxfIGU80E5dScLRBJhBD2923bZplbjZW/LQnGt9ij
-        bi01zdTjgmerrxLHVQhidSyL8PwUt0HTOlKhS0q73QYazG9iS9IlGlVgt+iCFNGYMf4QU=;
-Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.co.uk>)
-        id 1hvqpN-0004Dp-F3; Thu, 08 Aug 2019 22:24:09 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 8BD112742BDD; Thu,  8 Aug 2019 23:24:08 +0100 (BST)
-Date:   Thu, 8 Aug 2019 23:24:08 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Tony Lindgren <tony@atomide.com>,
+        id S2404508AbfHHXjp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Aug 2019 19:39:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52606 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404499AbfHHXjp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 8 Aug 2019 19:39:45 -0400
+Received: from earth.universe (unknown [185.62.205.103])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E81492173E;
+        Thu,  8 Aug 2019 23:39:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565307584;
+        bh=hLWsFUdUcKRF0BwHo3bvjZSVzrjv6mmq4xPi05kJJ/4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MNHo0Mqax8BfZY/2I5nzeHuwwEznk/RUpCQqzDq5omoeaheqwojMryMSScBtB/j6i
+         ZkP/qKLkKnKBH1AUuMgnk+/eja3bpIvXgmrJUBDlXR7ntXrtowug2350E3I2okc6Pj
+         OcfXU/hIqST1Lafe5ba18WaxT4KTNKp1GRy5/J/Y=
+Received: by earth.universe (Postfix, from userid 1000)
+        id 68EEC3C0944; Fri,  9 Aug 2019 01:39:41 +0200 (CEST)
+Date:   Fri, 9 Aug 2019 01:39:41 +0200
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Tony Lindgren <tony@atomide.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH 07/22] ARM: omap1: move perseus spi pinconf to board file
-Message-ID: <20190808222408.GS3795@sirena.co.uk>
+        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 13/22] input: omap: void using mach/*.h headers
+Message-ID: <20190808233941.v6elo2mdji5awylu@earth.universe>
 References: <20190808212234.2213262-1-arnd@arndb.de>
- <20190808212234.2213262-8-arnd@arndb.de>
+ <20190808212234.2213262-14-arnd@arndb.de>
+ <20190808214257.GF178933@dtor-ws>
+ <CAK8P3a2TOcjxwCBGkZAhMAf9HuTL=FAB1e0=FAg+oHB0U1nJ0A@mail.gmail.com>
+ <20190808221950.GG178933@dtor-ws>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="kVhvBuyIzNBvw9vr"
+        protocol="application/pgp-signature"; boundary="4tjmcfjvugwwn6md"
 Content-Disposition: inline
-In-Reply-To: <20190808212234.2213262-8-arnd@arndb.de>
-X-Cookie: I think we're in trouble.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190808221950.GG178933@dtor-ws>
+User-Agent: NeoMutt/20180716
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---kVhvBuyIzNBvw9vr
+--4tjmcfjvugwwn6md
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 08, 2019 at 11:22:16PM +0200, Arnd Bergmann wrote:
-> The driver has always had a FIXME about this, and it seems
-> like this trivial code move avoids a mach header inclusion,
-> so just do it.
+Hi,
 
-This appears to be part of a series but I've no cover letter or anything
-else from it.  What's the story for dependencies and merging?
+On Thu, Aug 08, 2019 at 03:19:50PM -0700, Dmitry Torokhov wrote:
+> On Thu, Aug 08, 2019 at 11:46:45PM +0200, Arnd Bergmann wrote:
+> > On Thu, Aug 8, 2019 at 11:43 PM Dmitry Torokhov wrote:
+> > > On Thu, Aug 08, 2019 at 11:22:22PM +0200, Arnd Bergmann wrote:
+> > > > By using the new linux/soc/ti/omap1-io.h header instead,
+> > > > compile-testing can be enabled, and a CONFIG_ARCH_MULTIPLATFORM
+> > > > conversion of omap1 may eventually be possible.
+> > > >
+> > > > The warning in the header file gets removed in order to
+> > > > allow CONFIG_COMPILE_TEST.
+> > >
+> > > Given that we want to migrate people off this driver everywhere but
+> > > OMAP1 I wonder why we would want to improve compile coverage of it.
+> >=20
+> > Mainly for consistency: I'm converting all omap1 drivers in this series=
+ to
+> > not rely on mach/* headers and to let them be compiled standalone.
+> > The other drivers don't have a replacement, so I could treat this diffe=
+rent
+> > from the rest and skip the Kconfig and platform_data changes if you
+> > prefer.
+>=20
+> Yes, because at least with the version you posted we are losing the
+> #warning telling people to move to matrix_keypad. We could do:
+>=20
+> #ifndef CONFIG_COMPILE_TEST
+> #warning ...
+> #endif
+>=20
+> if you really want to allow compiling standalone for testing.
 
---kVhvBuyIzNBvw9vr
+FWIW the driver depends on ARCH_OMAP1 and the warning is
+only printed for !ARCH_OMAP1. In other words: The warning
+is never printed at the moment. All OMAP2+ boards moved to
+matrix-keypad long time ago and the driver does not support
+OMAP2+ anymore since f799a3d8fe170 from 2012.
+
+-- Sebastian
+
+--4tjmcfjvugwwn6md
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1MoQcACgkQJNaLcl1U
-h9BTcwf+PZNQyv2QwRk6+uATv2Z/5jBqf59MD6hu+nPG7ZvewRhifHBZ0Wn0oGIy
-LKuN77ve2quiHJEaXWc+6uMdkTKzHf0dq7PXzkSHvdGpKY8oXpfv+JxIP1fbvLU2
-LjgoKVq4QXXKOwQKuPuBt6G5MFmPXLsTLnxo0C2CA8bBYHUhY1YNpslOiDbmN7kY
-si0Og/am+P+msK+XEDu2s2waVhOEA9JhUJzNBSLvqdZnVrbKflMnJ1f+lqGPtJuf
-G249qyMoeuoQoq7XX2OmvHk6MPxgjyFnANG88Pmz7kITgyC7M8cQbeMDsox6X5Wf
-yZd+9ZI1XiupoEyUNs+MRVRuLA77Dg==
-=Q0wr
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl1MsroACgkQ2O7X88g7
++poQJBAAnjfNcZ21PrPoH/EmfeeRe4fGSZaNSCLXNqf+HuY+WIUD72F8q4ywHwvn
+Fkm85facQO3vu6RCVoapSh5nZVHkL/WyM6fqDhJDuBZvqleHE68sgmBY9KIgg7ur
+qeYMF4ul4BhvC218JY0dM/xwV0uwp61g3T+4vgUPvT3YsnB5uoYa7wT2D71lilr8
+Q+S/Az/rTrrn7uI1vKXZjfUKsm/cWuWyAHbzgH7Ax8f/gxcLUoHS1IUTiwyCFzKJ
+BxAGPsZziw7Un8d3LPwcSzqB9VslryGs4hiuiaSAYaYN6+NrjjlCI7wka+HFfKGO
+0OumM77eQCkVNgCSafoTxJWZZo9HsTAeKkJy1iDGWVeiSWqHKPUj/YDj6ityxuba
+5LKhZan4Gx1JoihDEw69N/a0ZxNvYJzHPBffqHbSLOc7QkWeveoSUMGgJjLLNl/f
+UD7U1rC1ugAz3jqmgS5it+35pCA17glrVtIPzDsTPx90lGK0lxe+krbPClVkeckP
+IIkuf4xyJtsep5fQQDGxtCape8V52GtQYre1BjBxQU/k7KUGR+08gkiRmc3x8qvK
+v05wmqSeIyGXox8WrvB/hARab8/2nTA6hf+LedV+ofvNzRGBKM8hrgdpfveXlwhF
+HEJ74R2g3SOIxtXz/CuFWgUwsHEEF1NlaBOAaNa+1H9tFMMRgIo=
+=sia4
 -----END PGP SIGNATURE-----
 
---kVhvBuyIzNBvw9vr--
+--4tjmcfjvugwwn6md--
