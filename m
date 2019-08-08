@@ -2,225 +2,169 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F98886C6D
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2019 23:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B56F86C71
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Aug 2019 23:32:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733295AbfHHVbR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Aug 2019 17:31:17 -0400
-Received: from mout.kundenserver.de ([212.227.126.130]:42593 "EHLO
+        id S1728020AbfHHVcD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Aug 2019 17:32:03 -0400
+Received: from mout.kundenserver.de ([212.227.126.130]:43579 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728020AbfHHVbR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Aug 2019 17:31:17 -0400
+        with ESMTP id S2390151AbfHHVcD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Aug 2019 17:32:03 -0400
 Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
  (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MRVy9-1hhrWF2GCz-00NOKO; Thu, 08 Aug 2019 23:30:54 +0200
+ 1MOm9H-1hgDtV07kV-00Q9Tu; Thu, 08 Aug 2019 23:31:38 +0200
 From:   Arnd Bergmann <arnd@arndb.de>
 To:     Tony Lindgren <tony@atomide.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Felipe Balbi <balbi@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Linus Walleij <linus.walleij@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Arnd Bergmann <arnd@arndb.de>, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 09/22] fbdev: omap: avoid using mach/*.h files
-Date:   Thu,  8 Aug 2019 23:22:18 +0200
-Message-Id: <20190808212234.2213262-10-arnd@arndb.de>
+        Arnd Bergmann <arnd@arndb.de>, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 10/22] usb: omap: avoid mach/*.h headers
+Date:   Thu,  8 Aug 2019 23:22:19 +0200
+Message-Id: <20190808212234.2213262-11-arnd@arndb.de>
 X-Mailer: git-send-email 2.20.0
 In-Reply-To: <20190808212234.2213262-1-arnd@arndb.de>
 References: <20190808212234.2213262-1-arnd@arndb.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:88szA/Fo8mKxxZtSI6a/3DryoEp3R0RLjKS0a4qc6cmQ6XF/WLN
- W6t9LZZrLHyweQaVq4It4vpP6q85bngaTLNjJhSu5Zs2FGsc54mk16/FUff6KabydJOjjCe
- gSmfFkLusQj3C1K+t2nV3Wqk3CMDq1pgtV+FfUcRXuvH8yvWc3/+WkYXaDaoJQ/KokIL5Gr
- xffTou6CcBEBFvrAC7+Ag==
+X-Provags-ID: V03:K1:K8p91cbBYQ5A6juVoYtAsHFWMTNlYAsjgZ8+WIV+MCLOAHAN+bI
+ 9MmlQhFN1ZowAxZ2w9fUiyN+IDd8DmdzaDEwPUwTeCdhZom/wIlrusHmEAlUofR52EyMf+e
+ 5eRWH1Am5fD3Nt9jU6lvvx7GI4Ud+CVsUuDyp00MS9K9a9/2I83Ahg4E5lqMvM2KP7M60r4
+ v1lqaRtJAhI5kuZaXg0tA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6N8ZFBB2B8Y=:wwhyQ2dKFdjd+6txhxm6GB
- r5EWrXStpxQkas/tMQjlyNgIuWpDTVEGNewKIx4571rKYanefuhEZP0pD3j2pjFRdNzg5UgW+
- IW7CzqHLPdUm85HJLglUX7OqEOcVEbgGAI1kCxHvXS1uOvbmi7D2v1c7w/yFoBi+vwWVS8LMC
- aDov4Mh+N2gS8ZThs48vRk+9QD7cxwEEL8X/KY9uzByDaCWMzl/TCZ3Jh6fDzEz8gLit7wkEv
- 4JZLpB3hartGRTwG+xBsKnN88mk4uf/CDeVnuk7PPbUHKr24BUHqNIqEZL5xsH6QHc5aAR7Hz
- gRGxaUH6+xvfrWQsKR+4BVWyHEWi3DK7jRLdTDHoA9G0e9QOSV2qwxXqDKyLbuYsjUKFLnRLR
- HnxedBZ1eZoQXa7u0JGSC3gTvrZODSrSNLszP37JOJu5YYZ2Xk3Z/89TeOGvfjXQHd+pY3I+a
- qgQxEoY3gquwky6+fW1cac+0CMNSLt0rLsz4B/FSaOPcpddCWCFi7g56CFoGYRWStLTdMI3ku
- VsedmQ+8yonko1eXRZbay8pU8N/GF4B7zrZKut9GQYn0tU3zh3gak2KJPmQQ3rxDT2ay263OF
- GKprQYzYiToguAEYLSmF0fj+PvLCyShLqvTE0X9bwMYJ74sQrNCo7ua2Qs9aDs+Lb4jZ8A34Q
- g6EE4OlJUTq14Pq3PRMnoKSvhNov8EeS6ihQ6jSwX2ds7twSs2Uvp3NvVraWllP7kdtbLG4ZL
- CY7+25N0BR2fUkAk9y/nUxS35Oa1K3St34qBFQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:d64A3weE10U=:stpqXJN3P6K37+8vT1wNmi
+ w2ZB0cYFfx2bIMi755d558sXZJ4Ikum1Pc5j7XFqiKdcZlsJLE4aR4MdO72rRkd1/KfcVcvQz
+ WUf56OUsz83T4vUdgyOZQMuZR3MlKXpGa53RKx6/OLEeEfSRb4D4hMN0spyhJv/TTT7oJs/th
+ 1SVpt9luHJ3d+6AfznWsujYZLEKvV0xsxzmbzTlsstKOS8JgQtoU0WHZJ3LE4jlmvAxDjEaZt
+ zIuSZyXlPGJf+vxOIATOkABFt408UThVINSP/yXFxVcfhhkpFcdCWELRnHEzcaKEBoAoZgK+n
+ NDUUAHNOqFV5/oFLXo8aLJPal7sPHJslOZPbB5ij3vDkEtnVfshyPA6v04LGEaxyUmT6QS+FT
+ 7XxR4EF6ScOzbmnzgvLw42bvw11PuhJiiIHRAcuNJADkMOJIiLv8DCZEnjc4fEQNYpk/8Ie9w
+ 7LjutujJNs8+VMPWkZqp07RNwpW3zxOCZ1xJZwO/VNbPQz0oxsbe+7FCULX+uZZXNaSCv9Uq/
+ WuZz1xuttxDEkT5xYTDdplbMiJ0Tmzm3NHiiCqh7wLeLDtlC5DObut2TXL/VXVPM+rRYbS8Lk
+ cth6BTlmBj/47eFsfiuczPUILFHZ3PAmbZ2cDSkvp4r5OPKpP6UNeiufJrtKfIVPv91bHBVqt
+ qxlAcwYcjCQbsN+S/9LysYAVKNLFhTy8OiOfZF1NejD4/iyi1cYXJQpcXoYF6Fr5hEjgNK2vv
+ wvNvx4b7vfBdtG9p2QGmSQbbejnM9UZXlH83qw==
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-All the headers we actually need are now in include/linux/soc,
-so use those versions instead and allow compile-testing on
-other architectures.
+The omap usb drivers still rely on mach/*.h headers that
+are explicitly or implicitly included, but all the required
+definitions are now in include/linux/soc/ti/, so use those
+instead and allow compile-testing on other architectures.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/video/backlight/Kconfig          | 4 ++--
- drivers/video/backlight/omap1_bl.c       | 4 ++--
- drivers/video/fbdev/omap/Kconfig         | 4 ++--
- drivers/video/fbdev/omap/lcd_ams_delta.c | 2 +-
- drivers/video/fbdev/omap/lcd_dma.c       | 3 ++-
- drivers/video/fbdev/omap/lcd_inn1510.c   | 2 +-
- drivers/video/fbdev/omap/lcd_osk.c       | 4 ++--
- drivers/video/fbdev/omap/lcdc.c          | 2 ++
- drivers/video/fbdev/omap/omapfb_main.c   | 3 +--
- drivers/video/fbdev/omap/sossi.c         | 1 +
- 10 files changed, 16 insertions(+), 13 deletions(-)
+ drivers/usb/gadget/udc/Kconfig     | 2 +-
+ drivers/usb/gadget/udc/omap_udc.c  | 2 ++
+ drivers/usb/host/Kconfig           | 2 +-
+ drivers/usb/host/ohci-omap.c       | 7 +++----
+ drivers/usb/phy/Kconfig            | 3 ++-
+ drivers/usb/phy/phy-isp1301-omap.c | 4 ++--
+ 6 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-index 8b081d61773e..195c71130827 100644
---- a/drivers/video/backlight/Kconfig
-+++ b/drivers/video/backlight/Kconfig
-@@ -213,8 +213,8 @@ config BACKLIGHT_LOCOMO
+diff --git a/drivers/usb/gadget/udc/Kconfig b/drivers/usb/gadget/udc/Kconfig
+index d354036ff6c8..ac0891a3dbf2 100644
+--- a/drivers/usb/gadget/udc/Kconfig
++++ b/drivers/usb/gadget/udc/Kconfig
+@@ -128,7 +128,7 @@ config USB_GR_UDC
  
- config BACKLIGHT_OMAP1
- 	tristate "OMAP1 PWL-based LCD Backlight"
+ config USB_OMAP
+ 	tristate "OMAP USB Device Controller"
 -	depends on ARCH_OMAP1
--	default y
-+	depends on ARCH_OMAP1 || COMPILE_TEST
-+	default ARCH_OMAP1
++	depends on ARCH_OMAP1 || (ARCH_OMAP && COMPILE_TEST)
+ 	depends on ISP1301_OMAP || !(MACH_OMAP_H2 || MACH_OMAP_H3)
  	help
- 	  This driver controls the LCD backlight level and power for
- 	  the PWL module of OMAP1 processors.  Say Y if your board
-diff --git a/drivers/video/backlight/omap1_bl.c b/drivers/video/backlight/omap1_bl.c
-index 74263021b1b3..69a49384b3de 100644
---- a/drivers/video/backlight/omap1_bl.c
-+++ b/drivers/video/backlight/omap1_bl.c
-@@ -14,8 +14,8 @@
- #include <linux/slab.h>
- #include <linux/platform_data/omap1_bl.h>
+ 	   Many Texas Instruments OMAP processors have flexible full
+diff --git a/drivers/usb/gadget/udc/omap_udc.c b/drivers/usb/gadget/udc/omap_udc.c
+index 721c9c3fe5a7..27b6142ea803 100644
+--- a/drivers/usb/gadget/udc/omap_udc.c
++++ b/drivers/usb/gadget/udc/omap_udc.c
+@@ -43,6 +43,8 @@
+ #include <linux/platform_data/usb-omap1.h>
  
--#include <mach/hardware.h>
--#include <mach/mux.h>
+ #include <linux/soc/ti/omap1-usb.h>
++#include <linux/soc/ti/omap1-soc.h>
 +#include <linux/soc/ti/omap1-io.h>
-+#include <linux/soc/ti/omap1-mux.h>
  
- #define OMAPBL_MAX_INTENSITY		0xff
+ #include "omap_udc.h"
  
-diff --git a/drivers/video/fbdev/omap/Kconfig b/drivers/video/fbdev/omap/Kconfig
-index df2a5d0d4aa2..b1786cf1b486 100644
---- a/drivers/video/fbdev/omap/Kconfig
-+++ b/drivers/video/fbdev/omap/Kconfig
-@@ -2,7 +2,7 @@
- config FB_OMAP
- 	tristate "OMAP frame buffer support"
- 	depends on FB
--	depends on ARCH_OMAP1
-+	depends on ARCH_OMAP1 || (ARM && COMPILE_TEST)
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-@@ -42,7 +42,7 @@ config FB_OMAP_LCD_MIPID
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 79bbce685583..e566a99bc8c9 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -201,7 +201,7 @@ config USB_EHCI_HCD_NPCM7XX
  
- config FB_OMAP_LCD_H3
- 	bool "TPS65010 LCD controller on OMAP-H3"
--	depends on MACH_OMAP_H3
-+	depends on MACH_OMAP_H3 || COMPILE_TEST
- 	depends on TPS65010=y
+ config USB_EHCI_HCD_OMAP
+ 	tristate "EHCI support for OMAP3 and later chips"
+-	depends on ARCH_OMAP
++	depends on ARCH_OMAP || COMPILE_TEST
+ 	depends on NOP_USB_XCEIV
  	default y
- 	help
-diff --git a/drivers/video/fbdev/omap/lcd_ams_delta.c b/drivers/video/fbdev/omap/lcd_ams_delta.c
-index 8e54aae544a0..da2e32615abe 100644
---- a/drivers/video/fbdev/omap/lcd_ams_delta.c
-+++ b/drivers/video/fbdev/omap/lcd_ams_delta.c
-@@ -14,7 +14,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/lcd.h>
- 
--#include <mach/hardware.h>
-+#include <linux/soc/ti/omap1-io.h>
- 
- #include "omapfb.h"
- 
-diff --git a/drivers/video/fbdev/omap/lcd_dma.c b/drivers/video/fbdev/omap/lcd_dma.c
-index 867a63c06f42..f85817635a8c 100644
---- a/drivers/video/fbdev/omap/lcd_dma.c
-+++ b/drivers/video/fbdev/omap/lcd_dma.c
-@@ -25,7 +25,8 @@
- 
- #include <linux/omap-dma.h>
- 
--#include <mach/hardware.h>
-+#include <linux/soc/ti/omap1-soc.h>
-+#include <linux/soc/ti/omap1-io.h>
- 
- #include "lcdc.h"
- #include "lcd_dma.h"
-diff --git a/drivers/video/fbdev/omap/lcd_inn1510.c b/drivers/video/fbdev/omap/lcd_inn1510.c
-index 37ed0c14aa5a..bb915637e9b6 100644
---- a/drivers/video/fbdev/omap/lcd_inn1510.c
-+++ b/drivers/video/fbdev/omap/lcd_inn1510.c
-@@ -10,7 +10,7 @@
+ 	---help---
+diff --git a/drivers/usb/host/ohci-omap.c b/drivers/usb/host/ohci-omap.c
+index 841563fba20d..be3571778b60 100644
+--- a/drivers/usb/host/ohci-omap.c
++++ b/drivers/usb/host/ohci-omap.c
+@@ -27,6 +27,9 @@
  #include <linux/platform_device.h>
- #include <linux/io.h>
- 
--#include <mach/hardware.h>
-+#include <linux/soc/ti/omap1-soc.h>
- 
- #include "omapfb.h"
- 
-diff --git a/drivers/video/fbdev/omap/lcd_osk.c b/drivers/video/fbdev/omap/lcd_osk.c
-index 5d5762128c8d..8168ba0d47fd 100644
---- a/drivers/video/fbdev/omap/lcd_osk.c
-+++ b/drivers/video/fbdev/omap/lcd_osk.c
-@@ -11,8 +11,8 @@
- #include <linux/platform_device.h>
- #include <linux/gpio.h>
- 
--#include <mach/hardware.h>
--#include <mach/mux.h>
-+#include <linux/soc/ti/omap1-io.h>
+ #include <linux/platform_data/usb-omap1.h>
+ #include <linux/soc/ti/omap1-usb.h>
 +#include <linux/soc/ti/omap1-mux.h>
- 
- #include "omapfb.h"
- 
-diff --git a/drivers/video/fbdev/omap/lcdc.c b/drivers/video/fbdev/omap/lcdc.c
-index 65953b7fbdb9..3af758f12afd 100644
---- a/drivers/video/fbdev/omap/lcdc.c
-+++ b/drivers/video/fbdev/omap/lcdc.c
-@@ -17,6 +17,8 @@
- #include <linux/clk.h>
- #include <linux/gfp.h>
- 
-+#include <linux/soc/ti/omap1-io.h>
 +#include <linux/soc/ti/omap1-soc.h>
- #include <linux/omap-dma.h>
- 
++#include <linux/soc/ti/omap1-io.h>
+ #include <linux/signal.h>
+ #include <linux/usb.h>
+ #include <linux/usb/hcd.h>
+@@ -36,10 +39,6 @@
+ #include <asm/io.h>
  #include <asm/mach-types.h>
-diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-index dc06057de91d..af73a3f9ac53 100644
---- a/drivers/video/fbdev/omap/omapfb_main.c
-+++ b/drivers/video/fbdev/omap/omapfb_main.c
-@@ -19,8 +19,7 @@
  
- #include <linux/omap-dma.h>
- 
+-#include <mach/mux.h>
+-
 -#include <mach/hardware.h>
 -
-+#include <linux/soc/ti/omap1-soc.h>
- #include "omapfb.h"
- #include "lcdc.h"
+ #define DRIVER_DESC "OHCI OMAP driver"
  
-diff --git a/drivers/video/fbdev/omap/sossi.c b/drivers/video/fbdev/omap/sossi.c
-index ade9d452254c..6b99d89fbe6e 100644
---- a/drivers/video/fbdev/omap/sossi.c
-+++ b/drivers/video/fbdev/omap/sossi.c
-@@ -13,6 +13,7 @@
- #include <linux/interrupt.h>
+ #ifdef CONFIG_TPS65010
+diff --git a/drivers/usb/phy/Kconfig b/drivers/usb/phy/Kconfig
+index 24b4f091acb8..c6b2559fd334 100644
+--- a/drivers/usb/phy/Kconfig
++++ b/drivers/usb/phy/Kconfig
+@@ -30,7 +30,8 @@ config FSL_USB2_OTG
  
- #include <linux/omap-dma.h>
+ config ISP1301_OMAP
+ 	tristate "Philips ISP1301 with OMAP OTG"
+-	depends on I2C && ARCH_OMAP_OTG
++	depends on I2C
++	depends on ARCH_OMAP_OTG || (ARM && COMPILE_TEST)
+ 	depends on USB
+ 	depends on USB_GADGET || !USB_GADGET # if USB_GADGET=m, this can't be 'y'
+ 	select USB_PHY
+diff --git a/drivers/usb/phy/phy-isp1301-omap.c b/drivers/usb/phy/phy-isp1301-omap.c
+index 18cf87dcc21f..0f3475e91403 100644
+--- a/drivers/usb/phy/phy-isp1301-omap.c
++++ b/drivers/usb/phy/phy-isp1301-omap.c
+@@ -23,9 +23,9 @@
+ #include <asm/irq.h>
+ #include <asm/mach-types.h>
+ 
+-#include <mach/mux.h>
+-
++#include <linux/soc/ti/omap1-mux.h>
+ #include <linux/soc/ti/omap1-usb.h>
 +#include <linux/soc/ti/omap1-io.h>
  
- #include "omapfb.h"
- #include "lcd_dma.h"
+ #undef VERBOSE
+ 
 -- 
 2.20.0
 
