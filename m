@@ -2,84 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A31E9878E9
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2019 13:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B024787935
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2019 14:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406388AbfHILna (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 9 Aug 2019 07:43:30 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:33743 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726537AbfHILna (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 9 Aug 2019 07:43:30 -0400
-Received: by mail-qk1-f195.google.com with SMTP id r6so71395269qkc.0;
-        Fri, 09 Aug 2019 04:43:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VVKEn1uhwnct32QQNQWKMMQwz1IKox/lIkY41QXr3n4=;
-        b=pCcFPrfdJR3psG1WSF4SqBcVO9efXbGlDkZnISOeV48IJOlST7hCwEbNOmGCMbbME9
-         4sKynNmZKh45UuwLnbPw3vRvkUvHtyW+wj6KvnNeMKPb1CuyiUyYO7/RY8EXYdTgopcc
-         pXA0vaCQS4yyjeAUYa5ioHJ8IhnkcHzPM/CjWXpBio6xnthFrColZM75jAjebVvx3SL/
-         filj+B4a9nQDcuYiDoUqLmyeKBP1blIAAp7kiwVJ2Mkd3I6TF1vUK2NYPIgbbAwo4gBb
-         3sq2D2z/K8nUwedJDV4mn1+pYxV0r5jND8v+BI3s4QlDYG6ixG3d/1gE97Wsefrc6faN
-         htOA==
-X-Gm-Message-State: APjAAAUh4oqO4ohfs4yKMOFD3UDhtJ4rqdoVi8O+DO/p/bAwzS5u15Lz
-        3QOkQxjFqTkfoeFfJ/hg2LLbe0FKSOhgcxh/ycM=
-X-Google-Smtp-Source: APXvYqz3y2NTzxkuXgdthyLbml49Ah52Sn2rqR//B9FnkAzFwcen/MazMdX5ZFS3FoRo2xISosV/96/4q4XOkHiRGAw=
-X-Received: by 2002:a05:620a:b:: with SMTP id j11mr17853054qki.352.1565351009257;
- Fri, 09 Aug 2019 04:43:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190808212234.2213262-1-arnd@arndb.de> <CGME20190808212453epcas2p44ff418662ee1acf428c6842ee4488f9f@epcas2p4.samsung.com>
- <20190808212234.2213262-3-arnd@arndb.de> <55c9608d-68c4-17f6-2682-7668d5d7720a@samsung.com>
-In-Reply-To: <55c9608d-68c4-17f6-2682-7668d5d7720a@samsung.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 9 Aug 2019 13:43:13 +0200
-Message-ID: <CAK8P3a3grFEGr33s327yNMabK5=1kCJc3k7y55dhzQx9sTvkyQ@mail.gmail.com>
-Subject: Re: [PATCH 02/22] ARM: omap1: make omapfb standalone compilable
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+        id S2405723AbfHIMBv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 9 Aug 2019 08:01:51 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:36844 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726157AbfHIMBv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 9 Aug 2019 08:01:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=hUtaPSltEcXHVj72o+olbdV6HgeE8OWSIe3V2Uuu1E0=; b=HYR+RmxIHYcnV12KQgaa45QYm
+        GoLpS+CUr2+B771DY9+uhonKQLK7YsOJAwGv75D3RZbMPZIBuW8boHuc9XkIts0Daloey31CHcgUa
+        WH+rTEag4wVkzNL5wEJyHMs0PXe5Yxd8Nl1mueXt6MmxoZmfr8yfY9cc0f5GK8L4jy0Ek=;
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.co.uk>)
+        id 1hw3aU-0005uE-Rc; Fri, 09 Aug 2019 12:01:38 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id B8B46274303D; Fri,  9 Aug 2019 13:01:37 +0100 (BST)
+Date:   Fri, 9 Aug 2019 13:01:37 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Tony Lindgren <tony@atomide.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
         linux-omap <linux-omap@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Linus Walleij <linus.walleij@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Boris Brezillon <bbrezillon@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-spi <linux-spi@vger.kernel.org>
+Subject: Re: [PATCH 07/22] ARM: omap1: move perseus spi pinconf to board file
+Message-ID: <20190809120137.GB3963@sirena.co.uk>
+References: <20190808212234.2213262-1-arnd@arndb.de>
+ <20190808212234.2213262-8-arnd@arndb.de>
+ <20190808222408.GS3795@sirena.co.uk>
+ <CAK8P3a0qTvDFMj4GrKfD=2mkPpKN=eRJ--mp0r7mqAH+b2r=kg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="mojUlQ0s9EVzWg2t"
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a0qTvDFMj4GrKfD=2mkPpKN=eRJ--mp0r7mqAH+b2r=kg@mail.gmail.com>
+X-Cookie: Klatu barada nikto.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Aug 9, 2019 at 1:32 PM Bartlomiej Zolnierkiewicz
-<b.zolnierkie@samsung.com> wrote:
-> On 8/8/19 11:22 PM, Arnd Bergmann wrote:
-> > The omapfb driver is split into platform specific code for omap1, and
-> > driver code that is also specific to omap1.
-> >
-> > Moving both parts into the driver directory simplifies the structure
-> > and avoids the dependency on certain omap machine header files.
-> >
-> > The interrupt numbers in particular however must not be referenced
-> > directly from the driver to allow building in a multiplatform
-> > configuration, so these have to be passed through resources, is
-> > done for all other omap drivers.
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> For fbdev part:
->
-> Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 
-Thanks for taking a look.
+--mojUlQ0s9EVzWg2t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> [ It seems that adding of static inline for omap_set_dma_priority()
->   when ARCH_OMAP=n should be in patch #9 but this is a minor issue. ]
+On Fri, Aug 09, 2019 at 01:29:13PM +0200, Arnd Bergmann wrote:
+> On Fri, Aug 9, 2019 at 12:24 AM Mark Brown <broonie@kernel.org> wrote:
 
-That would have been ok as well, but having the addition here was
-intentional and seems more logical to me as this is where the headers
-get moved around.
+> > On Thu, Aug 08, 2019 at 11:22:16PM +0200, Arnd Bergmann wrote:
+> > > The driver has always had a FIXME about this, and it seems
+> > > like this trivial code move avoids a mach header inclusion,
+> > > so just do it.
 
-      Arnd
+> > This appears to be part of a series but I've no cover letter or anything
+> > else from it.  What's the story for dependencies and merging?
+
+> Sorry for missing you on the cover letter. The patch is part of a series
+> to make omap1 part of ARCH_MULTIPLATFORM. I'd like to merge the entire
+> series through the arm-soc tree to avoid dependencies:
+
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--mojUlQ0s9EVzWg2t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1NYKAACgkQJNaLcl1U
+h9D0Mgf/YWgKanEmJ6JDhVz0YRrbGtKA8AWG2fRI2pGeEytOfrDSw7hneA7X5s8z
+h4/FRWERBh3ITDppRQSAK0n/A9qeD5rERsYSRCqAoMWMLKEkvuYwyCWwZQgdtH33
+SNzuCxSqJYCuGS7xhq4K3rAm6f7xKmiZdznNEw85e5ko/vKsep9rvM/GypIE4eFH
+q8p6nexDb6VAQrJoaq6APDLZxygD6QNvokmhM0rjgSpX7VIwBwuYJOKhO9+dwglw
+9sQ/rq8KIuYpIWQ1idwf7c3NCGeJ9kbhjaHC31QhDZlSYRyV1mtmoocSCkU3Hg2D
+rA7q8CGPt8k2fysNcaxG/yrZBUY4QA==
+=ujey
+-----END PGP SIGNATURE-----
+
+--mojUlQ0s9EVzWg2t--
