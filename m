@@ -2,73 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB9498717C
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2019 07:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42F5587290
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Aug 2019 09:00:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725920AbfHIFcd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 9 Aug 2019 01:32:33 -0400
-Received: from mga03.intel.com ([134.134.136.65]:48559 "EHLO mga03.intel.com"
+        id S2405395AbfHIHAL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 9 Aug 2019 03:00:11 -0400
+Received: from muru.com ([72.249.23.125]:56828 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725890AbfHIFcd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 9 Aug 2019 01:32:33 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Aug 2019 22:32:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,364,1559545200"; 
-   d="scan'208";a="193315385"
-Received: from pipin.fi.intel.com (HELO pipin) ([10.237.72.175])
-  by fmsmga001.fm.intel.com with ESMTP; 08 Aug 2019 22:32:29 -0700
-From:   Felipe Balbi <felipe.balbi@linux.intel.com>
-To:     Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 03/22] ARM: omap1: move omap15xx local bus handling to usb.c
-In-Reply-To: <20190808212234.2213262-4-arnd@arndb.de>
-References: <20190808212234.2213262-1-arnd@arndb.de> <20190808212234.2213262-4-arnd@arndb.de>
-Date:   Fri, 09 Aug 2019 08:32:28 +0300
-Message-ID: <87y302ewer.fsf@gmail.com>
+        id S1726212AbfHIHAL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 9 Aug 2019 03:00:11 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 1BF56809F;
+        Fri,  9 Aug 2019 07:00:38 +0000 (UTC)
+Date:   Fri, 9 Aug 2019 00:00:03 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: Regression in next with codec unload and snd_soc_component_get/put
+Message-ID: <20190809070003.GA52127@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Arnd Bergmann <arnd@arndb.de> writes:
+Hi,
 
-> The mach/memory.h file only exists to implement a dma offset for "Local
-> Bus" devices, and that consists of the OHCI USB controller for practical
-> purposes.
->
-> The generic dma-mapping interface has gained this exact feature some
-> years ago and can do it much more efficiently, so replace the complex
-> __arch_virt_to_dma/__arch_dma_to_pfn/... logic with a much simpler boot
-> time initialization.
->
-> This should also make any code that performs dma mapping calls at
-> runtime much more efficient, by eliminating the strcmp() along with
-> the computation.
->
-> Similar, a portion of the ohci-omap driver is just there for configuring
-> the memory translation, this too can get moved into usb.c
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Looks like commit 4a81e8f30d0b ("ASoC: soc-component: add
+snd_soc_component_get/put()") causes a regression where trying
+to rmmod a codec driver fails with module is in use error after
+rmmod of snd-soc-audio-graph-card for example.
 
-For all of these patches related to usb:
+Any ideas what goes wrong there?
 
-Acked-by: Felipe Balbi <felipe.balbi@linux.intel.com>
+BTW, looks like the lore.kernel.org link in that commit also is
+unreachable?
 
-Thanks for cleaning this up, Arnd.
+Regards,
 
--- 
-balbi
+Tony
