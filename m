@@ -2,214 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C94418BFED
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2019 19:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAF6F8C063
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2019 20:19:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726899AbfHMRun (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Aug 2019 13:50:43 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:37508 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726628AbfHMRun (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Aug 2019 13:50:43 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7DHnXTS055863;
-        Tue, 13 Aug 2019 12:49:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1565718573;
-        bh=b3NXbVt7j4BNDJSrXSjS89196MKYwtPw38V5K9ccPys=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=nxnLGmHZHQ6/itQTUurYXPSohuD5ehSgQfONEs5mXo6aC0EU4hVxXiqETzpKLZfwC
-         uHVRC/VlOd9ARZ8VVt+nxWwxXTZpKFFVrDfw7dNIS1VMgQ46M/HOqv2ASKxraBIvtf
-         WTpd+jXTZRsWLyP5ksdAlA4OfB4ZPWcVZnhmQ5jo=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7DHnXd2108561
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Aug 2019 12:49:33 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 13
- Aug 2019 12:49:33 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 13 Aug 2019 12:49:33 -0500
-Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7DHnWZY068892;
-        Tue, 13 Aug 2019 12:49:33 -0500
-Subject: Re: [PATCH v2 4/6] irqchip/irq-pruss-intc: Add helper functions to
- configure internal mapping
-To:     David Lechner <david@lechnology.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>
-CC:     Rob Herring <robh+dt@kernel.org>, Tony Lindgren <tony@atomide.com>,
-        "Andrew F. Davis" <afd@ti.com>, Roger Quadros <rogerq@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20190731224149.11153-1-s-anna@ti.com>
- <20190731224149.11153-5-s-anna@ti.com>
- <1a63eb50-7c5c-eb3d-3cbe-bd1cc59ce3fe@kernel.org>
- <89abc27f-5d02-a8ce-df0e-b185c2a647cd@ti.com>
- <1ac233f6-f3a3-6cec-9ad2-49e985fdfaca@lechnology.com>
- <6c17875e-496d-1277-278f-239d3a9d8ca2@ti.com>
- <124b03b8-f8e7-682b-8767-13a739329da2@lechnology.com>
- <fed95ae1-86a5-af75-c017-08b19e8e743b@ti.com>
- <de94d398-4768-17b0-b9ef-a66d43d34ae3@lechnology.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <6ccdbdbc-cc84-0b2e-87af-e69252b4074a@ti.com>
-Date:   Tue, 13 Aug 2019 12:49:32 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727491AbfHMSSx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Aug 2019 14:18:53 -0400
+Received: from emh06.mail.saunalahti.fi ([62.142.5.116]:57504 "EHLO
+        emh06.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728575AbfHMSSv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Aug 2019 14:18:51 -0400
+X-Greylist: delayed 407 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Aug 2019 14:18:49 EDT
+Received: from darkstar.musicnaut.iki.fi (85-76-96-82-nat.elisa-mobile.fi [85.76.96.82])
+        by emh06.mail.saunalahti.fi (Postfix) with ESMTP id 3918430016;
+        Tue, 13 Aug 2019 21:11:59 +0300 (EEST)
+Date:   Tue, 13 Aug 2019 21:11:58 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 14/22] ARM: omap1: use pci_ioremap_io() for omap_cf
+Message-ID: <20190813181158.GA26798@darkstar.musicnaut.iki.fi>
+References: <20190808212234.2213262-1-arnd@arndb.de>
+ <20190808212234.2213262-15-arnd@arndb.de>
+ <20190813103605.GL52127@atomide.com>
+ <CAK8P3a0E+QUn9wcP5Obv-FitWyXCFwcp+oPConeO2p-NV1rqsw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <de94d398-4768-17b0-b9ef-a66d43d34ae3@lechnology.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a0E+QUn9wcP5Obv-FitWyXCFwcp+oPConeO2p-NV1rqsw@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi David,
+Hi,
 
-On 8/13/19 9:26 AM, David Lechner wrote:
-> On 8/12/19 2:39 PM, Suman Anna wrote:
->> Hi David,
->>
->> On 8/8/19 12:09 PM, David Lechner wrote:
->>> On 8/2/19 4:26 PM, Suman Anna wrote:
->>>> Point is different applications might use mapping differently as per
->>>> their firmware and driver/application design and their split across one
->>>> or more PRUs (design by contract). And we need to set this up at
->>>> runtime
->>>> when the application driver is getting run. We will have either the
->>>> Soft
->>>> UART or the Ethernet running at a time depending on the end goal
->>>> desired
->>>>
->>>>> I have an idea that we can use multiple struct irq_domains to make
->>>>> this work in the existing IRQ framework, but it would be helpful to
->>>>> know more about the bigger picture first.
->>>>
->>>> Yeah, would be great if there is a way this can be solved without
->>>> having
->>>> to introduce additional API.
->>>>
->>>
->>>
->>> Here is what I came up with to use existing IRQ APIs to implement event
->>> mapping.
->>> Basically it is the same as my previous suggestion [1], with the
->>> addition of
->>> multiple IRQ domains.
->>
->> First of all, many thanks for looking into the problem and providing
->> patches for the alternate solutions. If we were to not use any exported
->> functions, this approach does seem to be a viable solution. I am going
->> to play around with both [1] and this patch with all our existing
->> usecases and see if I run into any issues.
->>
->> So, w.r.t this patch compared to [1], is the multiple IRQ domain solving
->> anything specifically? Our main issue is the re-purposing of a event
->> (and its mapping depending on the application), and the same issue will
->> remain whether we have multiple domains or not. Also, now we would
->> expect an event to migrate between different domains based on its usage.
+On Tue, Aug 13, 2019 at 01:02:16PM +0200, Arnd Bergmann wrote:
+> On Tue, Aug 13, 2019 at 12:36 PM Tony Lindgren <tony@atomide.com> wrote:
+> > * Arnd Bergmann <arnd@arndb.de> [190808 21:34]:
+> > > The ISA I/O space handling in omap_cf is incompatible with
+> > > PCI drivers in a multiplatform kernel, and requires a custom
+> > > mach/io.h.
+> > >
+> > > Change the driver to use pci_ioremap_io() like PCI drivers do,
+> > > so the generic ioport access can work across platforms.
+> > >
+> > > To actually use that code, we have to select CONFIG_PCI
+> > > here.
+> > >
+> > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> >
+> > Looks like this series boots for me on 5912osk up to this
+> > patch
 > 
-> The only thing using multiple IRQ domains gets us is that it allows us to
-> have multiple IRQ descriptors (virq) for a single PRU event. In other
-> words, if we needed to map a single system event to both a PRU core and
-> the MCU interrupt controller at the same time, then we would need separate
-> IRQ domains to do this. I we would never need to do something like this,
-> then we don't the IRQ domains.
-
-Yeah, this is not a realistic usecase. A event can only be mapped to a
-single channel which in turn can be mapped to only a single output
-interrupt and we expect this to be processed by only a single entity
-even if it may be connected to multiple processors. That is going to be
-a system integration partitioning design choice. This is where the
-irqs-shared and irqs-reserved logic comes in, so that MPU doesn't deal
-with that interrupt line if it is expected to be handled by a different
-processor.
-
+> Ok, that's something. Thanks for testing!
 > 
-> Previously, you said "We can have two different applications use the same
-> event with different mappings." So I took this to mean that the events
-> would actually be mapped in hardware at the same time, but now I
-> understand it to just mean that a single firmware blob could contain
-> multiple mappings that contain the same events, but won't actually be used
-> at the same time. So if this is the case, then we probably don't need to
-> mess with IRQ domains.
-
-The different applications (like PRU Dual-EMAC or PRU Soft UART I
-mentioned earlier) will indeed be running at separate times, PRU cores
-are a very limited resource, so it is treated as an exclusive resource.
-The INTC is expected to be programmed as per the application running at
-a given time. We also expect the firmware blob to change as per the
-application.
-
+> >, but this patch breaks booting somehow.
+> >
+> > Any ideas for fixes?
 > 
+> I can think of multiple possible issues:
 > 
->>
->>>
->>> The idea is that each external interrupt controller (or DMA controller,
->>> etc.)
->>> that is connected to the PRUSS interrupt controller is considered an
->>> interrupt
->>> domain. One of the objections to my previous patch was that we could
->>> only have
->>> one IRQ descriptor per event. Now we can have one descriptor per
->>> event per
->>> domain.
->>>
->>> I am still proposing that we use the interrupt-cells and identical
->>> vendor
->>> resource data structures in the PRU firmware be used to provide the
->>> mapping
->>> information. (As a side note, I still think it is important to include
->>> EVTSEL
->>> on AM18xx in order to fully describe the event.)
->>
->> W.r.t EVTSEL, it is a global value and applies to a range of events. I
->> have another equivalent register/functionality on most of the other SoCs
->> as well (a register in PRUSS_CFG space) that muxes standard events vs
->> MII_RT events. Again, that is limited to only a subset of all the system
->> events. So, should this continue to be a per event specifier, it will be
->> yet another mapping configuration data item (my idea was to manage this
->> once per application within the PRU remoteproc driver along with the
->> fwspec mapping).
-> 
-> I guess it just seems a bit fragile to me to specify EVTSEL elsewhere. My
-> thinking is that the first event registered that requires a specific EVTSEL
-> value "wins" and if any other events are registered with a different EVTSEL
-> value, then we will get an error. Likewise, if all users of a specific
-> EVTSEL value are unmapped, then it is up for grabs for any value again.
+> - I force CONFIG_PCI to be enabled here in order to keep the
+>   asm/io.h logic unchanged. If PCI support in itself is an issue,
+>   then turning on CONFIG_PCI without the rest of this patch
+>   should also break.
 
-We usually expect an application to have possibly multiple events, and
-so all of them are expected to match if it is using multiple events
-within the range controlled by EVTSEL or the CFG register. It only needs
-to be programmed once if the application needs it. The first one to win
-introduces ordering issues in general. Anyway, for this solution to work
-in general, I am expecting the irq_create_fwspec_mapping()s to be per
-application, and they should be overwriting any previous configured values.
+The board dies early, probably in pci_reserve_io():
 
-> 
-> On the other hand, with a global value as you have proposed, we can just
-> leave comments in the device tree and the firmware about which EVTSEL value
-> is required for a specific event number. We won't be able to catch mistakes
-> at runtime, but at least there will be something to remind us what we did
-> wrong. So, I suppose that is good enough.
+Starting kernel ...
 
-With the global value, I expect it to be a property of the client node
-alongside interrupts. The management and selection of this will be left
-to the PRU remoteproc driver. Encoding this on the firmware-side per
-event also seems a waste of memory. End of the day, it is going to be
-design contract with the application and firmware.
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 5.3.0-rc4-osk-los_80efa+-00028-g09f6f22a63e9 (aaro@amd-fx-6350) (gcc version 8.3.0 (GCC)) #1 Tue Aug 13 20:50:11 EEST 2019
+[    0.000000] CPU: ARM926EJ-S [41069263] revision 3 (ARMv5TEJ), cr=0005317f
+[    0.000000] CPU: VIVT data cache, VIVT instruction cache
+[    0.000000] Machine: TI-OSK
+[    0.000000] Ignoring tag cmdline (using the default kernel command line)
+[    0.000000] printk: bootconsole [earlycon0] enabled
+[    0.000000] Memory policy: Data cache writeback
+[    0.000000] Internal error: Oops - undefined instruction: 0 [#1] ARM
+[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.3.0-rc4-osk-los_80efa+-00028-g09f6f22a63e9 #1
+[    0.000000] Hardware name: TI-OSK
+[    0.000000] PC is at vm_area_add_early+0x1c/0x74
+[    0.000000] LR is at 0x200000
+[    0.000000] pc : [<c0419310>]    lr : [<00200000>]    psr: 800000d3
+[    0.000000] sp : c05b5f14  ip : ff000000  fp : c05bad68
+[    0.000000] r10: fefb0000  r9 : ffe00000  r8 : 001fffff
+[    0.000000] r7 : c05bad88  r6 : c05db3d4  r5 : c05ca678  r4 : c1ffcf60
+[    0.000000] r3 : c1ffcfd8  r2 : c1ffcfb0  r1 : fefb0000  r0 : c1ffcf60
+[    0.000000] Flags: Nzcv  IRQs off  FIQs off  Mode SVC_32  ISA ARM  Segment none
+[    0.000000] Control: 0005317f  Table: 10004000  DAC: 00000053
+[    0.000000] Process swapper (pid: 0, stack limit = 0x(ptrval))
+[    0.000000] Stack: (0xc05b5f14 to 0xc05b6000)
+[    0.000000] 5f00:                                              c0411724 ff000000 c041260c
+[    0.000000] 5f20: 00010000 00010600 c0428794 c05b7008 c042b000 00600000 00000000 ffff1000
+[    0.000000] 5f40: 00011fff 00001000 00000007 00000000 00000000 c0428794 c0008000 c060ba7c
+[    0.000000] 5f60: c0429a38 c05b5fc4 c05ca818 00053177 00000001 c04101fc 0000006c 0005317f
+[    0.000000] 5f80: 00000000 00000000 00000053 00003135 c05b7008 c05b7000 41069263 00053177
+[    0.000000] 5fa0: 00000001 c040da10 00000000 00000000 00000000 00000000 00000000 00000000
+[    0.000000] 5fc0: 00000000 c0429a38 00000000 00000000 00000000 c040d330 00000053 00003135
+[    0.000000] 5fe0: 00000203 10000100 41069263 00053177 00000000 00000000 00000000 00000000
+[    0.000000] [<c0419310>] (vm_area_add_early) from [<c0411724>] (add_static_vm_early+0xc/0x5c)
+[    0.000000] [<c0411724>] (add_static_vm_early) from [<c041260c>] (paging_init+0x2e0/0x5b4)
+[    0.000000] [<c041260c>] (paging_init) from [<c04101fc>] (setup_arch+0x4c8/0x7cc)
+[    0.000000] [<c04101fc>] (setup_arch) from [<c040da10>] (start_kernel+0x58/0x478)
+[    0.000000] [<c040da10>] (start_kernel) from [<00000000>] (0x0)
+[    0.000000] Code: e3530000 059f2058 05923000 0a000006 (e7f001f2) 
+[    0.000000] random: get_random_bytes called from init_oops_id+0x20/0x3c with crng_init=0
+[    0.000000] ---[ end trace 0000000000000000 ]---
+[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
+[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]---
 
-regards
-Suman
+A.
