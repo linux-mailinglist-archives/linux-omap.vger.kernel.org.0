@@ -2,58 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D4BD8AE8D
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2019 07:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C70858B53B
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2019 12:17:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726086AbfHMFI3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Aug 2019 01:08:29 -0400
-Received: from muru.com ([72.249.23.125]:57030 "EHLO muru.com"
+        id S1727930AbfHMKRX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Aug 2019 06:17:23 -0400
+Received: from muru.com ([72.249.23.125]:57048 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725786AbfHMFI3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 13 Aug 2019 01:08:29 -0400
+        id S1727097AbfHMKRX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 13 Aug 2019 06:17:23 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 074A280CC;
-        Tue, 13 Aug 2019 05:08:56 +0000 (UTC)
-Date:   Mon, 12 Aug 2019 22:08:26 -0700
+        by muru.com (Postfix) with ESMTPS id 0CD3B805C;
+        Tue, 13 Aug 2019 10:17:49 +0000 (UTC)
+Date:   Tue, 13 Aug 2019 03:17:19 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     =?utf-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: [RFC PATCH 0/3] Enable 1GHz support on omap36xx
-Message-ID: <20190813050826.GE52127@atomide.com>
-References: <20190801012823.28730-1-neolynx@gmail.com>
+To:     Andreas Klinger <ak@it-klinger.de>
+Cc:     linux-omap@vger.kernel.org, bcousson@baylibre.com,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: am335x-wega.dtsi: fix wrong card detect pin
+ level
+Message-ID: <20190813101719.GG52127@atomide.com>
+References: <20190709183209.y64keopah5rkismc@arbad>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190801012823.28730-1-neolynx@gmail.com>
+In-Reply-To: <20190709183209.y64keopah5rkismc@arbad>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* André Roth <neolynx@gmail.com> [190801 01:29]:
-> the current mainline kernel does not provide support for running
-> omap36xx based boards at 1GHz for chips like DM3730 where this would be
-> supported. It has been discussed many times, I hope you do not mind me
-> bringing this up again ;)
-
-Good to see some progress on this one :)
-...
-
-> @Nishanth: could you confirm that DM3730 (1GHz version) is properly
-> configured for running at 1GHz ? (I know this is a tricky question and
-> has been asked before...)
+* Andreas Klinger <ak@it-klinger.de> [190709 11:32]:
+> mmc cards on mmc1 are not detected because of wrong card detect (cd) level.
 > 
-> As this is just a hack, I would like to know how to properly
-> initialize those driver in the right order, preferably via device tree
-> or kernel config instead of a board file.
+> Change cd from GPIO_ACTIVE_HIGH to GPIO_ACTIVE_LOW.
+> 
+> This is necessary because of commit e63201f19438 ("mmc: omap_hsmmc:
+> Delete platform data GPIO CD and WP")
+> 
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> ---
+>  arch/arm/boot/dts/am335x-wega.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boot/dts/am335x-wega.dtsi b/arch/arm/boot/dts/am335x-wega.dtsi
+> index b7d28a20341f..84581fed3d06 100644
+> --- a/arch/arm/boot/dts/am335x-wega.dtsi
+> +++ b/arch/arm/boot/dts/am335x-wega.dtsi
+> @@ -157,7 +157,7 @@
+>  	bus-width = <4>;
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&mmc1_pins>;
+> -	cd-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
+> +	cd-gpios = <&gpio0 6 GPIO_ACTIVE_LOW>;
+>  	status = "okay";
+>  };
+>  
 
-I agree device tree configuration is the way to go here. That way we
-can configure one board at a time as needed after it's been verified
-to work properly.
+Looks like this already got fixed with an earlier commit 8a0098c05a27
+("ARM: dts: am335x phytec boards: Fix cd-gpios active level").
 
 Regards,
 
