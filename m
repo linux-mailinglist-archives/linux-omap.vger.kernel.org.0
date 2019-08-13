@@ -2,95 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 946D08B6CB
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2019 13:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 767238B6D5
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Aug 2019 13:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725981AbfHML3f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Aug 2019 07:29:35 -0400
-Received: from muru.com ([72.249.23.125]:57164 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726650AbfHML3f (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 13 Aug 2019 07:29:35 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 00CBA805C;
-        Tue, 13 Aug 2019 11:30:00 +0000 (UTC)
-Date:   Tue, 13 Aug 2019 04:29:30 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Jyri Sarha <jsarha@ti.com>
-Cc:     Suman Anna <s-anna@ti.com>, linux-omap@vger.kernel.org,
-        Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/8] ARM: OMAP2+: Remove unconfigured midlemode for am3
- lcdc
-Message-ID: <20190813112930.GO52127@atomide.com>
-References: <20190723112811.44381-1-tony@atomide.com>
- <20190723112811.44381-3-tony@atomide.com>
- <bcc130a5-f7e0-e182-9f4b-5a48fc3d6e17@ti.com>
- <b5d757dc-6326-4b93-c2a2-2db02a440c26@ti.com>
+        id S1726650AbfHMLaO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Aug 2019 07:30:14 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:32970 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725953AbfHMLaN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Aug 2019 07:30:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=Zq++AH36LcJV8AEMAUwSGNdy/skc7edYjMJDAHmF7M8=; b=ZwZWUKiUxBj9FOa8Z3s5c7GoJ
+        gxwgBVHVPGQ1V7ib3cLwm9AnJDH7Q8QWguLFsVEuAm+7DWkAaoeLwvHz63FLLjr8UUVAkcDi7PQR1
+        C/oixVlRFcRW+k+7Hl6NEAaolSkzzgHYlUYl3tz7AgQm7Rzmg4KyjeJWVRlb3CGAvxwIc=;
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.co.uk>)
+        id 1hxUzR-0007lv-EK; Tue, 13 Aug 2019 11:29:21 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id 983992742B44; Tue, 13 Aug 2019 12:29:20 +0100 (BST)
+Date:   Tue, 13 Aug 2019 12:29:20 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Takashi Iwai <tiwai@suse.de>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [alsa-devel] Regression in next with codec unload and
+ snd_soc_component_get/put
+Message-ID: <20190813112920.GC5093@sirena.co.uk>
+References: <20190809070003.GA52127@atomide.com>
+ <s5hwofmhkbs.wl-tiwai@suse.de>
+ <20190809074643.GB52127@atomide.com>
+ <s5hv9v6hhm9.wl-tiwai@suse.de>
+ <20190813102451.GJ52127@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="raC6veAxrt5nqIoY"
 Content-Disposition: inline
-In-Reply-To: <b5d757dc-6326-4b93-c2a2-2db02a440c26@ti.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20190813102451.GJ52127@atomide.com>
+X-Cookie: Poverty begins at home.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Jyri Sarha <jsarha@ti.com> [190813 11:05]:
-> On 23/07/2019 22:03, Suman Anna wrote:
-> > + Jyri
-> > 
-> > On 7/23/19 6:28 AM, Tony Lindgren wrote:
-> >> We currently get a warning for lcdc because of a difference
-> >> with dts provided configuration compared to the legacy platform
-> >> data. This is because lcdc has SYSC_HAS_MIDLEMODE configured in
-> >> the platform data without configuring the modes.
-> > 
-> > Hi Tony,
-> > While I understand that you are trying to match the DT data with the
-> > existing legacy data, do you know if there was a reason why this was
-> > omitted in the first place? Should we be really adding the MSTANDBY_
-> > flags and fix up the DTS node accordingly? I tried looking through the
-> > git log, and the initial commit itself didn't add the MSTANDBY_ flags
-> > but used the SYSC_HAS_MIDLEMODE.
-> > 
-> > Jyri,
-> > Do you know the history?
-> > 
-> 
-> Sorry. This all has happened before my time. This is all new to me.
 
-Oh OK. Well if possible, could you please check if the following patch
-behaves with v5.2 for you for LCDC? I only have rack access to a
-beaglebone with hdmi right now.
+--raC6veAxrt5nqIoY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-TRM "Table 13-34. SYSCONFIG Register Field Descriptions" lists both
-standbymode and idlemode that should be just the sidle and midle
-registers where midle is currently unconfigured.
+On Tue, Aug 13, 2019 at 03:24:51AM -0700, Tony Lindgren wrote:
+> * Takashi Iwai <tiwai@suse.de> [190809 08:24]:
 
-Regards,
+> > ... and it was already fixed in the later commit 0e36f36b04e7
+> > "ASoC: soc-core: fix module_put() warning in soc_cleanup_component".
 
-Tony
+> Mark, looks like this commit is still not in Linux next, forgot
+> to push out something?
 
-8< ---------------------
-diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-@@ -255,8 +255,9 @@ static struct omap_hwmod am33xx_gpio0_hwmod = {
- static struct omap_hwmod_class_sysconfig lcdc_sysc = {
- 	.rev_offs	= 0x0,
- 	.sysc_offs	= 0x54,
--	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE),
--	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
-+	.sysc_flags	= SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE,
-+	.idlemodes	= SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
-+			  MSTANDBY_FORCE | MSTANDBY_NO | MSTANDBY_SMART,
- 	.sysc_fields	= &omap_hwmod_sysc_type2,
- };
- 
+There's a build failure the Intel guys haven't fixed.
+
+--raC6veAxrt5nqIoY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1Snw8ACgkQJNaLcl1U
+h9DF/Qf/WDdJEsNmRPfcsZFd9wcH/l/YYYCUVgA62rjOVqjdmJimIzjWXlc+W4xw
+CZk3JtYhXgKz31j0/toBAkOS8bbArTQtWi5+40EuzExrZKV/MYBA2dlSSYKazuQO
+bDQBxTg5kKAafEyViBEVMxCey+ubNGO4Ms69de/KW1lmZeEqtfSHPzOjWgrEI+H9
+1xjLx4KVTDk2o3TaSc0iKj7MNCKJy0nBW/VnW8RxJiOnKu+kO2G4lBpCu+/0afjm
+f+oufYCVjGXJKKv5SBsfB30/c11H+PindiU1ECSY5mn0YytmPY+cC2d00aE20GXY
+v3jxVVy7d8M5zo4qooHjGF84oeCX7w==
+=XIoR
+-----END PGP SIGNATURE-----
+
+--raC6veAxrt5nqIoY--
