@@ -2,158 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B9888DDCB
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 21:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 581668DECC
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 22:28:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727814AbfHNTNd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Aug 2019 15:13:33 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:33300 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725828AbfHNTNc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Aug 2019 15:13:32 -0400
-Received: by mail-ot1-f65.google.com with SMTP id q20so636871otl.0;
-        Wed, 14 Aug 2019 12:13:32 -0700 (PDT)
+        id S1728320AbfHNU2Z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Aug 2019 16:28:25 -0400
+Received: from mail-ed1-f48.google.com ([209.85.208.48]:42426 "EHLO
+        mail-ed1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726804AbfHNU2Z (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Aug 2019 16:28:25 -0400
+Received: by mail-ed1-f48.google.com with SMTP id m44so359487edd.9
+        for <linux-omap@vger.kernel.org>; Wed, 14 Aug 2019 13:28:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TIMapTPG9TsKNv8gxrvskWdnMtxRZS5RDBC2qelM/IA=;
-        b=HDN7Xfjey0zPgdvSwUfQwg/F2tS+QJSnem6AhqG2iCoclIIlDmEiHo/sqGIXDW/+EY
-         WQ8R47te4xIFIJpvxdGDxXEgmx3ugMKEJ31gMq9sHOOXBrjEzOX5HdtWjXg8OcGsyGlZ
-         GA0j8Gx0prQEe8zkTaP3hxEzo4OnVDga8I9HlNm8E/hklEUp2iNjTcocgDn28SJiKRSJ
-         5EzbE95RFvVwQkUUOh1xM/hDNZ9Vm0o5rmsvUEx046kCPR9rMAWhvdgqev8TO7JfEFEt
-         Rfze5xvVcCzLfKYbXPvMmpDdHPtEI/2P4Esg0Ft3A3nGL07MMIg4On1HYHRtimiiVQSa
-         XXXA==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=qLqQURwCR30ATyaZ3IymQvcdVRhQdSz4H7hnZmYK+F0=;
+        b=IE9wb8GRGwauC0zwEJTj3a6Iq0FzH1yQkyyDnVN8v9gfSefHp9p+/Xjp/F+uFBDFdx
+         svmBbJ5PF/Ge4JxhwzFmSzVSYrmlazyRDYpdje2pXn4IsRAzjdHjDuc6SgkBUM7Nr23D
+         ouBR+foaGdt5ZQ8hok6NguqV19gJ4KzQBJhNDRXdhEJ+TWVaKbpw6fwh4dDnACk2aSfk
+         +cT1U74VD2t7iZO+ubBDBPEtKZkDUBaQ225IeIHgdvG2/OHtKaBxhfTc2bGpxYDL4TtK
+         JuFgLugteXs6IyV3TIqzqx4+v3fpDYZF+j9RBc1+pHIc2g059xAZEpO80Z5msGs3KOyC
+         zbDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TIMapTPG9TsKNv8gxrvskWdnMtxRZS5RDBC2qelM/IA=;
-        b=GAVMubE7r73d5WAntE7YayaN8u0PH7x6jdkHnoodnKJkAn8a2T4nCxmVvjKv/G/ueM
-         E+xDeozKyjEa6tE26y8HbHxcN133rUnE157cTXgYMv7QRqroZnKOYtF/y4JjXRN3rJdF
-         Qre0BcryACp1R72xxa26zs+8x7RpKN8m/cIaErnpEHuA480m/OvwVrBIi7AmmFjzPugG
-         oH/Sla/fW6olXIEuHf7JaT6E5I0a8xUJvjHDlweeHIsS85lPOewHdS1kArxjHDB8Nkoz
-         lmBnid5Hk4U3p93WPIpyqXKbTcV2sOJqNRmU72UQlhKUd4iCIVpH7vC1/NMOjyWUPJQM
-         z+dw==
-X-Gm-Message-State: APjAAAUVHEon2kTUYa5P8wV4kBQe74Nv6k5DhHVBy9QLLx44jI8KRE2U
-        eqPKLYOqBLeMlWiHPYOZFglPa68bs6QC5k9+FE9e8LMpW2mD7g==
-X-Google-Smtp-Source: APXvYqyHWOWBENOuAaX/jmzLmM06wjbi0uiNrAMmhJcOZVwvxhfuSce5NmWmhfJKC09gvUSKQJacLSGUTCtQ1AzhBSQ=
-X-Received: by 2002:a6b:e511:: with SMTP id y17mr1581062ioc.228.1565810011197;
- Wed, 14 Aug 2019 12:13:31 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=qLqQURwCR30ATyaZ3IymQvcdVRhQdSz4H7hnZmYK+F0=;
+        b=IXNeirS+YoIOBSe31ECgeNf3IuEMDGwwk2W9llj/VtTypR8kHtno5Kedd/KeYsjKLO
+         oyBYobWYsQyybN2eMYx49NiLteisipLwRwbsdnAVzlgguPYpk0Q8oGQ6FFOWzp0tHiXJ
+         rQHLWhCQbx9H5U6B5R8ozXbJI3ASiGCqQ4UXA2kbhcIRQsZMnad0qU5WqVS3SxURDaaq
+         UT0dkreSebiAF1BldB2Mu2ZL0xrFOLaYFPcv94tSITEyPyBluYEpyBVoLlOELruVA+YT
+         mCwRA8kgbFVGnszvp7GRekh0jO8Qpgiqq40+kb/dDndMlUosukZlyvLE6LyZXzVoHJui
+         p1Yg==
+X-Gm-Message-State: APjAAAU65RIEfiuujksVEwO3EDysf7G03NJDcMmvIDFdaNt6umVy46Xo
+        k6u+/CVUUMU7Xvtz6h7vMtW+ILuUsnzXVtW6QNygYU1CQ3Bi9w==
+X-Google-Smtp-Source: APXvYqzUQUdH3vzln2hOPpbu5+OFN7t9U1/wvqwi1HE0Bam0SAKG4KNsVhEnrILjRgkYzvg1+ILVq2z+B5UDcd1WE8s=
+X-Received: by 2002:a50:9401:: with SMTP id p1mr1617844eda.189.1565814503313;
+ Wed, 14 Aug 2019 13:28:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190814131408.57162-1-tony@atomide.com>
-In-Reply-To: <20190814131408.57162-1-tony@atomide.com>
 From:   Adam Ford <aford173@gmail.com>
-Date:   Wed, 14 Aug 2019 14:13:19 -0500
-Message-ID: <CAHCN7x+p5+XoRHJP--mZ0QcP0FzpYK+pRj7d8Y-js6a8z=p_7A@mail.gmail.com>
-Subject: Re: [PATCH 0/6] Configure sgx interconnect data for some omap variants
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        =?UTF-8?Q?Filip_Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        =?UTF-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
-        Philipp Rossak <embed3d@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>, Tero Kristo <t-kristo@ti.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        moaz korena <moaz@korena.xyz>
+Date:   Wed, 14 Aug 2019 15:28:11 -0500
+Message-ID: <CAHCN7xJXJ__Gm3x=eAKkXuRTi1tDJocddKUzSw8oeYXQzM4tuQ@mail.gmail.com>
+Subject: omap36
+To:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Aug 14, 2019 at 8:14 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> Hi all,
->
-> For a while we've been idling sgx module on omap4 by probing it with
-> ti-sysc interconnect target module driver. This allows leaving out any
-> platform data in favor of device tree data, and idles the module for
-> PM even if we don't have any sgx driver.
->
-> I've added similar configuration for omap34xx, omap36xx, omap5 and
-> am335x. Adding dra7 should work too, but my beagle x15 is suffering
-> from a power supply problem right now and I'll need to work more on
-> that later on.
->
-> For am335x, the recently posted prm rstctrl driver is needed. The
-> other SoCs here don't have a dependency to the prm rstctrl driver.
-> And probably am335x child driver(s) also need to map the rstctrl
-> register to increase the deassert use count.
->
-> Please review and test, this should allow sgx child driver(s) to
-> just use PM runtime to enable the module with no platform data.
->
-> I've only tested these SoCs via sysfs to ensure the sgx module gets
-> enabled and disabled properly. If you know something about sgx,
-> please describe more why the sgx registers seem to be at different
-> place for each SoC like between omap34xx and omap36xx.
->
-> These patches may have some dependencies to what I've queued into
-> my for-next branch for fixes so it's best to test with that merged
-> in. Linux next should be usable for testing with these the next
-> time it gets integrated.
->
-> Regards,
->
-> Tony
->
->
-> Tony Lindgren (6):
->   ARM: OMAP2+: Drop legacy platform data for omap4 gpu
->   bus: ti-sysc: Add module enable quirk for SGX on omap36xx
->   clk: ti: add clkctrl data omap5 sgx
->   ARM: dts: Configure sgx for omap5
->   ARM: dts: Configure interconnect target module for omap3 sgx
->   ARM: dts: Configure rstctrl reset for SGX
->
+The Logic PD Torpedo dm3730 boots with a few messages that concern me:
 
-Assuming the following is correct:
+[    2.824188] omap2_set_init_voltage: unable to find boot up OPP for
+vdd_mpu_iva
+[    2.831481] omap2_set_init_voltage: unable to set vdd_mpu_iva
+[    2.837280] omap2_set_init_voltage: unable to find boot up OPP for vdd_core
+[    2.844329] omap2_set_init_voltage: unable to set vdd_core
 
-echo on > /sys/bus/platform/devices/5000fe00.target-module/power/control
-# devmem 0x5000fe00 32
-0x40000000
 
 and
 
-echo auto > /sys/bus/platform/devices/5000fe00.target-module/power/control
-# devmem 0x5000fe00 32
-[  776.373504] 8<--- cut here ---
-[  776.376617] Unhandled fault: external abort on non-linefetch (0x1018) at 0xb6
-f76e00
-[  776.384338] pgd = bde98bb0
-[  776.387054] [b6f76e00] *pgd=8cb61831, *pte=5000f383, *ppte=5000fa33
-[  776.393402] In-band Error seen by MPU  at address 0
+[    7.664245] core: _opp_supported_by_regulators: OPP minuV: 1012500
+maxuV: 1012500, not supported by regulator
+[    7.674377] cpu cpu0: _opp_add: OPP not supported by regulators (300000000)
+[    7.681640] core: _opp_supported_by_regulators: OPP minuV: 1200000
+maxuV: 1200000, not supported by regulator
+[    7.691650] cpu cpu0: _opp_add: OPP not supported by regulators (600000000)
+[    7.698822] core: _opp_supported_by_regulators: OPP minuV: 1325000
+maxuV: 1325000, not supported by regulator
+[    7.708831] cpu cpu0: _opp_add: OPP not supported by regulators (800000000)
 
-Then
+The current device tree shows the arm is powered by VCC.
 
-Tested-by: Adam Ford <aford173@gmail.com> #logicpd-torpedo-37xx-devkit
+cpus {
+    cpu@0 {
+    cpu0-supply = <&vcc>;
+};
 
-I do wonder if an omap34xx or omap36xx should use
-compatible = "ti,sysc-omap4", "ti,sysc";
+I noticed that abb_mpu_iva has a bunch of OPP's, but it's not clear to
+me how or what should power this and/or how the regulator is is
+related (if at all)
 
-should it use an omap3 equivalent?
+The torpedo is using the TWL4030 PMIC, and I would expect those
+voltages to be acceptable to the twl4030
 
 adam
-
->  arch/arm/boot/dts/am33xx.dtsi              | 25 ++++++++++
->  arch/arm/boot/dts/omap34xx.dtsi            | 26 +++++++++++
->  arch/arm/boot/dts/omap36xx.dtsi            | 27 +++++++++++
->  arch/arm/boot/dts/omap4.dtsi               |  1 -
->  arch/arm/boot/dts/omap5.dtsi               | 23 ++++++++++
->  arch/arm/boot/dts/omap54xx-clocks.dtsi     | 14 ++++++
->  arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 53 ----------------------
->  drivers/bus/ti-sysc.c                      | 21 +++++++++
->  drivers/clk/ti/clk-54xx.c                  | 34 ++++++++++++++
->  include/dt-bindings/clock/omap5.h          |  3 ++
->  include/linux/platform_data/ti-sysc.h      |  1 +
->  11 files changed, 174 insertions(+), 54 deletions(-)
->
-> --
-> 2.21.0
