@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 550F38D454
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 15:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D28C8D457
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 15:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727742AbfHNNOU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Aug 2019 09:14:20 -0400
-Received: from muru.com ([72.249.23.125]:57620 "EHLO muru.com"
+        id S1727750AbfHNNOX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Aug 2019 09:14:23 -0400
+Received: from muru.com ([72.249.23.125]:57628 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726551AbfHNNOU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Aug 2019 09:14:20 -0400
+        id S1726551AbfHNNOX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Aug 2019 09:14:23 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id CA6E18176;
-        Wed, 14 Aug 2019 13:14:45 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 71AAA81DD;
+        Wed, 14 Aug 2019 13:14:48 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
@@ -29,9 +29,9 @@ Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>, Tero Kristo <t-kristo@ti.com>,
         linux-clk@vger.kernel.org
-Subject: [PATCH 1/6] ARM: OMAP2+: Drop legacy platform data for omap4 gpu
-Date:   Wed, 14 Aug 2019 06:14:03 -0700
-Message-Id: <20190814131408.57162-2-tony@atomide.com>
+Subject: [PATCH 2/6] bus: ti-sysc: Add module enable quirk for SGX on omap36xx
+Date:   Wed, 14 Aug 2019 06:14:04 -0700
+Message-Id: <20190814131408.57162-3-tony@atomide.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190814131408.57162-1-tony@atomide.com>
 References: <20190814131408.57162-1-tony@atomide.com>
@@ -43,15 +43,7 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I've tested that the interconnect target module enables and idles
-just fine when probed with ti-sysc with PM runtime control via sys:
-
-# echo on > $(find /sys -name control | grep \/5601)
-# rwmem 0x56000024
-0x56000024 = 0x00010200		# SGX540 CORE_REVISION
-# echo auto > $(find /sys -name control | grep \/5601)
-# rwmem 0x56000024
-And when idled, it will produce "Bus error" as expected.
+Add module enable quirk for SGX needed on omap36xx.
 
 Cc: Adam Ford <aford173@gmail.com>
 Cc: Filip Matijević <filip.matijevic.pz@gmail.com>
@@ -64,111 +56,93 @@ Cc: Philipp Rossak <embed3d@gmail.com>
 Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/omap4.dtsi               |  1 -
- arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 53 ----------------------
- 2 files changed, 54 deletions(-)
+ drivers/bus/ti-sysc.c                 | 21 +++++++++++++++++++++
+ include/linux/platform_data/ti-sysc.h |  1 +
+ 2 files changed, 22 insertions(+)
 
-diff --git a/arch/arm/boot/dts/omap4.dtsi b/arch/arm/boot/dts/omap4.dtsi
---- a/arch/arm/boot/dts/omap4.dtsi
-+++ b/arch/arm/boot/dts/omap4.dtsi
-@@ -330,7 +330,6 @@
- 
- 		target-module@56000000 {
- 			compatible = "ti,sysc-omap4", "ti,sysc";
--			ti,hwmods = "gpu";
- 			reg = <0x5601fc00 0x4>,
- 			      <0x5601fc10 0x4>;
- 			reg-names = "rev", "sysc";
-diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-@@ -1085,41 +1085,6 @@ static struct omap_hwmod omap44xx_gpmc_hwmod = {
- 	},
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -73,6 +73,7 @@ static const char * const clock_names[SYSC_MAX_CLOCKS] = {
+  * @clk_enable_quirk: module specific clock enable quirk
+  * @clk_disable_quirk: module specific clock disable quirk
+  * @reset_done_quirk: module specific reset done quirk
++ * @module_enable_quirk: module specific enable quirk
+  */
+ struct sysc {
+ 	struct device *dev;
+@@ -98,6 +99,7 @@ struct sysc {
+ 	void (*clk_enable_quirk)(struct sysc *sysc);
+ 	void (*clk_disable_quirk)(struct sysc *sysc);
+ 	void (*reset_done_quirk)(struct sysc *sysc);
++	void (*module_enable_quirk)(struct sysc *sysc);
  };
  
--/*
-- * 'gpu' class
-- * 2d/3d graphics accelerator
-- */
--
--static struct omap_hwmod_class_sysconfig omap44xx_gpu_sysc = {
--	.rev_offs	= 0x1fc00,
--	.sysc_offs	= 0x1fc10,
--	.sysc_flags	= (SYSC_HAS_MIDLEMODE | SYSC_HAS_SIDLEMODE),
--	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
--			   SIDLE_SMART_WKUP | MSTANDBY_FORCE | MSTANDBY_NO |
--			   MSTANDBY_SMART | MSTANDBY_SMART_WKUP),
--	.sysc_fields	= &omap_hwmod_sysc_type2,
--};
--
--static struct omap_hwmod_class omap44xx_gpu_hwmod_class = {
--	.name	= "gpu",
--	.sysc	= &omap44xx_gpu_sysc,
--};
--
--/* gpu */
--static struct omap_hwmod omap44xx_gpu_hwmod = {
--	.name		= "gpu",
--	.class		= &omap44xx_gpu_hwmod_class,
--	.clkdm_name	= "l3_gfx_clkdm",
--	.main_clk	= "sgx_clk_mux",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP4_CM_GFX_GFX_CLKCTRL_OFFSET,
--			.context_offs = OMAP4_RM_GFX_GFX_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
--		},
--	},
--};
--
- /*
-  * 'hdq1w' class
-  * hdq / 1-wire serial interface controller
-@@ -2596,14 +2561,6 @@ static struct omap_hwmod_ocp_if omap44xx_fdif__l3_main_2 = {
- 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ static void sysc_parse_dts_quirks(struct sysc *ddata, struct device_node *np,
+@@ -938,6 +940,9 @@ static int sysc_enable_module(struct device *dev)
+ 		sysc_write(ddata, ddata->offsets[SYSC_SYSCONFIG], reg);
+ 	}
+ 
++	if (ddata->module_enable_quirk)
++		ddata->module_enable_quirk(ddata);
++
+ 	return 0;
+ }
+ 
+@@ -1251,6 +1256,9 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 		   SYSC_MODULE_QUIRK_I2C),
+ 	SYSC_QUIRK("i2c", 0, 0, 0x10, 0x90, 0x5040000a, 0xfffff0f0,
+ 		   SYSC_MODULE_QUIRK_I2C),
++	SYSC_QUIRK("gpu", 0x50000000, 0x14, -1, -1, 0x00010201, 0xffffffff, 0),
++	SYSC_QUIRK("gpu", 0x50000000, 0xfe00, 0xfe10, -1, 0x40000000 , 0xffffffff,
++		   SYSC_MODULE_QUIRK_SGX),
+ 	SYSC_QUIRK("wdt", 0, 0, 0x10, 0x14, 0x502a0500, 0xfffff0f0,
+ 		   SYSC_MODULE_QUIRK_WDT),
+ 
+@@ -1268,6 +1276,7 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 	SYSC_QUIRK("dwc3", 0, 0, 0x10, -1, 0x500a0200, 0xffffffff, 0),
+ 	SYSC_QUIRK("epwmss", 0, 0, 0x4, -1, 0x47400001, 0xffffffff, 0),
+ 	SYSC_QUIRK("gpu", 0, 0x1fc00, 0x1fc10, -1, 0, 0, 0),
++	SYSC_QUIRK("gpu", 0, 0xfe00, 0xfe10, -1, 0x40000000 , 0xffffffff, 0),
+ 	SYSC_QUIRK("hsi", 0, 0, 0x10, 0x14, 0x50043101, 0xffffffff, 0),
+ 	SYSC_QUIRK("iss", 0, 0, 0x10, -1, 0x40000101, 0xffffffff, 0),
+ 	SYSC_QUIRK("lcdc", 0, 0, 0x54, -1, 0x4f201000, 0xffffffff, 0),
+@@ -1419,6 +1428,15 @@ static void sysc_clk_disable_quirk_i2c(struct sysc *ddata)
+ 	sysc_clk_quirk_i2c(ddata, false);
+ }
+ 
++/* 36xx SGX needs a quirk for to bypass OCP IPG interrupt logic */
++static void sysc_module_enable_quirk_sgx(struct sysc *ddata)
++{
++	int offset = 0xff08;	/* OCP_DEBUG_CONFIG */
++	u32 val = BIT(31);	/* THALIA_INT_BYPASS */
++
++	sysc_write(ddata, offset, val);
++}
++
+ /* Watchdog timer needs a disable sequence after reset */
+ static void sysc_reset_done_quirk_wdt(struct sysc *ddata)
+ {
+@@ -1461,6 +1479,9 @@ static void sysc_init_module_quirks(struct sysc *ddata)
+ 		return;
+ 	}
+ 
++	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_SGX)
++		ddata->module_enable_quirk = sysc_module_enable_quirk_sgx;
++
+ 	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_WDT)
+ 		ddata->reset_done_quirk = sysc_reset_done_quirk_wdt;
+ }
+diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
+--- a/include/linux/platform_data/ti-sysc.h
++++ b/include/linux/platform_data/ti-sysc.h
+@@ -49,6 +49,7 @@ struct sysc_regbits {
+ 	s8 emufree_shift;
  };
  
--/* gpu -> l3_main_2 */
--static struct omap_hwmod_ocp_if omap44xx_gpu__l3_main_2 = {
--	.master		= &omap44xx_gpu_hwmod,
--	.slave		= &omap44xx_l3_main_2_hwmod,
--	.clk		= "l3_div_ck",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
--};
--
- /* hsi -> l3_main_2 */
- static struct omap_hwmod_ocp_if omap44xx_hsi__l3_main_2 = {
- 	.master		= &omap44xx_hsi_hwmod,
-@@ -3028,14 +2985,6 @@ static struct omap_hwmod_ocp_if omap44xx_l3_main_2__gpmc = {
- 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
- };
- 
--/* l3_main_2 -> gpu */
--static struct omap_hwmod_ocp_if omap44xx_l3_main_2__gpu = {
--	.master		= &omap44xx_l3_main_2_hwmod,
--	.slave		= &omap44xx_gpu_hwmod,
--	.clk		= "l3_div_ck",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
--};
--
- /* l4_per -> hdq1w */
- static struct omap_hwmod_ocp_if omap44xx_l4_per__hdq1w = {
- 	.master		= &omap44xx_l4_per_hwmod,
-@@ -3450,7 +3399,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
- 	&omap44xx_debugss__l3_main_2,
- 	&omap44xx_dma_system__l3_main_2,
- 	&omap44xx_fdif__l3_main_2,
--	&omap44xx_gpu__l3_main_2,
- 	&omap44xx_hsi__l3_main_2,
- 	&omap44xx_ipu__l3_main_2,
- 	&omap44xx_iss__l3_main_2,
-@@ -3503,7 +3451,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
- 	&omap44xx_l4_per__elm,
- 	&omap44xx_l4_cfg__fdif,
- 	&omap44xx_l3_main_2__gpmc,
--	&omap44xx_l3_main_2__gpu,
- 	&omap44xx_l4_per__hdq1w,
- 	&omap44xx_l4_cfg__hsi,
- 	&omap44xx_l3_main_2__ipu,
++#define SYSC_MODULE_QUIRK_SGX		BIT(18)
+ #define SYSC_MODULE_QUIRK_HDQ1W		BIT(17)
+ #define SYSC_MODULE_QUIRK_I2C		BIT(16)
+ #define SYSC_MODULE_QUIRK_WDT		BIT(15)
 -- 
 2.21.0
