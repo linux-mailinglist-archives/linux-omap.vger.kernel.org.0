@@ -2,124 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1B618D46A
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 15:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BC758D51D
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 15:40:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726934AbfHNNQN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Aug 2019 09:16:13 -0400
-Received: from muru.com ([72.249.23.125]:57716 "EHLO muru.com"
+        id S1727083AbfHNNkK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Aug 2019 09:40:10 -0400
+Received: from muru.com ([72.249.23.125]:57752 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726263AbfHNNQN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Aug 2019 09:16:13 -0400
+        id S1726722AbfHNNkK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Aug 2019 09:40:10 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AA17680C8;
-        Wed, 14 Aug 2019 13:16:38 +0000 (UTC)
-Date:   Wed, 14 Aug 2019 06:16:07 -0700
+        by muru.com (Postfix) with ESMTPS id D37C680C8;
+        Wed, 14 Aug 2019 13:40:36 +0000 (UTC)
+Date:   Wed, 14 Aug 2019 06:40:06 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Merlijn Wajer <merlijn@wizzup.org>,
-        =?utf-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
-        Philipp Rossak <embed3d@gmail.com>,
-        moaz korena <moaz@korena.xyz>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Filip =?utf-8?Q?Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
-        Adam Ford <aford173@gmail.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
         linux-omap <linux-omap@vger.kernel.org>,
-        kernel@pyra-handheld.com,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, maemo-leste@lists.dyne.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: Lay common foundation to make PVR/SGX work without hacks on
- OMAP34xx, OMAP36xx, AM335x and potentially OMAP4, OMAP5
-Message-ID: <20190814131607.GD52127@atomide.com>
-References: <CAKpie0TSo-8gmDm9_Zw4Sd+kjVVEomp8yA9Vu8qY2U2AcrQc=w@mail.gmail.com>
- <8A069D96-C65F-43F5-8F54-20019CFB1A8D@goldelico.com>
- <d0cbfaaf-813e-8803-f90b-931a38396750@wizzup.org>
- <3A03FF16-C203-43ED-AEEF-0260F6B3331A@goldelico.com>
- <3b0a5e78-c4c2-1963-bac7-b49496a1e9b9@wizzup.org>
- <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com>
- <84cac9b8-0eff-33f8-464d-4f8045d7db19@wizzup.org>
- <BFAA7FA6-A352-476A-99F9-02EA663A6AAD@goldelico.com>
- <20190814094755.GC52127@atomide.com>
- <6A6394A6-9D50-4E43-A8E4-716888897AD6@goldelico.com>
+Subject: Re: [PATCH 14/22] ARM: omap1: use pci_ioremap_io() for omap_cf
+Message-ID: <20190814134006.GE52127@atomide.com>
+References: <20190808212234.2213262-1-arnd@arndb.de>
+ <20190808212234.2213262-15-arnd@arndb.de>
+ <20190813103605.GL52127@atomide.com>
+ <CAK8P3a0E+QUn9wcP5Obv-FitWyXCFwcp+oPConeO2p-NV1rqsw@mail.gmail.com>
+ <20190813181158.GA26798@darkstar.musicnaut.iki.fi>
+ <CAK8P3a0LjKrc+7c5Ht9OL7LfYyLnG9=y7u+w24ujA1xAid_yCQ@mail.gmail.com>
+ <20190814074918.GA52127@atomide.com>
+ <CAK8P3a3k_HOGqzMGjtc+7NSaK0Bsa_vxxRFLzY8aP6ev4wa9iA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6A6394A6-9D50-4E43-A8E4-716888897AD6@goldelico.com>
+In-Reply-To: <CAK8P3a3k_HOGqzMGjtc+7NSaK0Bsa_vxxRFLzY8aP6ev4wa9iA@mail.gmail.com>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [190814 10:34]:
+* Arnd Bergmann <arnd@arndb.de> [190814 10:37]:
+> On Wed, Aug 14, 2019 at 9:49 AM Tony Lindgren <tony@atomide.com> wrote:
+> > * Arnd Bergmann <arnd@arndb.de> [190813 19:34]:
+> > > On Tue, Aug 13, 2019 at 8:12 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+> > > diff --git a/arch/arm/mach-omap1/hardware.h b/arch/arm/mach-omap1/hardware.h
+> > > index 232b8deef907..9fc76a3c9e57 100644
+> > > --- a/arch/arm/mach-omap1/hardware.h
+> > > +++ b/arch/arm/mach-omap1/hardware.h
+> > > @@ -61,7 +61,7 @@ static inline u32 omap_cs3_phys(void)
+> > >
+> > >  #endif /* ifndef __ASSEMBLER__ */
+> > >
+> > > -#define OMAP1_IO_OFFSET                0x01000000      /* Virtual IO
+> > > = 0xfefb0000 */
+> > > +#define OMAP1_IO_OFFSET                0x00fb0000      /* Virtual IO
+> > > = 0xff000000 */
+> > >  #define OMAP1_IO_ADDRESS(pa)   IOMEM((pa) - OMAP1_IO_OFFSET)
+> > >
+> > >  #include "serial.h"
+> >
+> > Oh OK yeah sounds like that's the issue.
+> >
+> > > There may be additional locations that hardcode the virtual address.
+> >
+> > Those should be in mach-omap1/io.c, and I recall innovator had some
+> > hardcoded fpga address that should also be checked.
 > 
-> > Am 14.08.2019 um 11:47 schrieb Tony Lindgren <tony@atomide.com>:
-> > 
-> > * H. Nikolaus Schaller <hns@goldelico.com> [190814 08:57]:
-> >> I also have pushed good news to
-> >> 
-> >> 	https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/tree/letux-pvr
-> >> 
-> >> Thanks to the help from the Pyra community, I was able to get a (binary) reference
-> >> implementation using DRM that works on Pyra/OMAP5. At least the gles1test1.
-> >> 
-> >> With that reference setup I was able to fix my Makefiles for the staging/pvr implementation.
-> >> 
-> >> I have tested that it works with v4.19.66 and v5.3-rc4 (LPAE build of the LetuxOS kernel tree)
-> >> on the Pyra.
-> >> 
-> >> In which areas does this tree go beyond the TI SDK/IMG DDK 1.14?
-> >> 
-> >> * includes internal API fixes for kernels up to v5.3
-> >> * lives in drivers/staging/pvr/1.14.3699939 - so that we can ask for inclusion in linux-next
-> >> * has Kconfig and Makefiles for in-kernel configuration (no separate build system)
-> >> * builds separate kernel modules for omap3430, omap3630, am335x, omap4, omap5, dra7 etc.
-> >>  pvrsrvkm
-> >>  e.g. pvrsrvkm_omap_omap5_sgx544_116
-> >> * the correct kernel module is automatically probed by matching .compatible in device tree
-> >>  so that the code is multi-platform friendly
-> >> * includes SoC integration for OMAP3/4/5 and has some preliminary bindings documentation
-> >> * code base should also support JZ4780/CI20 and some Intel Atom processors (CedarView, Poulsbo)
-> >> * has got a ToDo to describe what should be done during staging phase
-> >> 
-> >> 	https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/blob/letux/latest-pvr/drivers/staging/pvr/TODO
-> >> 
-> >> My plans for the next steps are:
-> >> 
-> >> * do more testing (e.g. X11, kmscube)
-> >> * check if and/or how it can run on am335x (BeagleBone) or OMAP3 (e.g. GTA04, OpenPandora)
-> >> * try a JZ480/CI20 build (unfortuantely I have no HDMI there with mainline kernels and I am
-> >>  missing the user-space libraries for MIPS).
-> > 
-> > That sounds good to me, just one comment. Before getting these into
-> > staging, I'd like to have omap variants use proper interconnect
-> > target module in devicetree like we already have in omap4.dtsi
-> > as target-module@56000000. This should simplify things further
-> > as the module child device driver(s) can just enable things with
-> > runtime PM and we can leave out all the legacy hwmod platform data
-> > that sounds like you're still carrying.
+> I see four boards with hardcoded I/O addresses, but they are all below
+> the PCI I/O virtual address range, and are not affected by that change.
 > 
-> Yes, there is still a lot of SoC-glue included:
-> 
-> 	https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/commits/letux/omap-pvr-soc-glue
-> 
-> It would indeed be a good move to simplify and reduce the glue code
-> and make it more maintainable / stable / identical on different platforms.
+> For the innovator FPGA access, this was ok, it uses the correct address
+> in the OMAP1_IO_OFFSET range.
 
-OK yeah all that should just disappear :)
-
-> > I have patches here to add similar interconnect target modules for
-> > at least omap34xx, omap36xx, omap5, and am335x that I'll try to post
-> > later on today to play with. For am335x, things still depend on the
-> > recentely posted prm rstctrl patches. I'm not sure if I already
-> > did a dts patch for dra7 yet, need to check.
-> 
-> I assume it is not yet in linux-next... So something for v5.5 or later.
-
-Well I just posted some sgx interconnect target module patches. We might
-still have them in v5.4 assuming people manage to review and test them.
+OK thanks for checking. I tried to apply your virtual address patch to
+test boot it, but could not get it to apply. What tree is it against?
 
 Regards,
 
