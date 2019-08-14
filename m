@@ -2,111 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A5D8D462
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 15:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1B618D46A
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 15:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727991AbfHNNOd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Aug 2019 09:14:33 -0400
-Received: from muru.com ([72.249.23.125]:57690 "EHLO muru.com"
+        id S1726934AbfHNNQN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Aug 2019 09:16:13 -0400
+Received: from muru.com ([72.249.23.125]:57716 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727685AbfHNNOd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Aug 2019 09:14:33 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 2458C80C8;
-        Wed, 14 Aug 2019 13:14:59 +0000 (UTC)
+        id S1726263AbfHNNQN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Aug 2019 09:16:13 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id AA17680C8;
+        Wed, 14 Aug 2019 13:16:38 +0000 (UTC)
+Date:   Wed, 14 Aug 2019 06:16:07 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>,
-        =?UTF-8?q?Filip=20Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        moaz korena <moaz@korena.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        =?UTF-8?q?Pawe=C5=82=20Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Merlijn Wajer <merlijn@wizzup.org>,
+        =?utf-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
         Philipp Rossak <embed3d@gmail.com>,
+        moaz korena <moaz@korena.xyz>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Filip =?utf-8?Q?Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
+        Adam Ford <aford173@gmail.com>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Tero Kristo <t-kristo@ti.com>,
-        linux-clk@vger.kernel.org
-Subject: [PATCH 6/6] ARM: dts: Configure rstctrl reset for SGX
-Date:   Wed, 14 Aug 2019 06:14:08 -0700
-Message-Id: <20190814131408.57162-7-tony@atomide.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190814131408.57162-1-tony@atomide.com>
-References: <20190814131408.57162-1-tony@atomide.com>
+        linux-omap <linux-omap@vger.kernel.org>,
+        kernel@pyra-handheld.com,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, maemo-leste@lists.dyne.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: Lay common foundation to make PVR/SGX work without hacks on
+ OMAP34xx, OMAP36xx, AM335x and potentially OMAP4, OMAP5
+Message-ID: <20190814131607.GD52127@atomide.com>
+References: <CAKpie0TSo-8gmDm9_Zw4Sd+kjVVEomp8yA9Vu8qY2U2AcrQc=w@mail.gmail.com>
+ <8A069D96-C65F-43F5-8F54-20019CFB1A8D@goldelico.com>
+ <d0cbfaaf-813e-8803-f90b-931a38396750@wizzup.org>
+ <3A03FF16-C203-43ED-AEEF-0260F6B3331A@goldelico.com>
+ <3b0a5e78-c4c2-1963-bac7-b49496a1e9b9@wizzup.org>
+ <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com>
+ <84cac9b8-0eff-33f8-464d-4f8045d7db19@wizzup.org>
+ <BFAA7FA6-A352-476A-99F9-02EA663A6AAD@goldelico.com>
+ <20190814094755.GC52127@atomide.com>
+ <6A6394A6-9D50-4E43-A8E4-716888897AD6@goldelico.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6A6394A6-9D50-4E43-A8E4-716888897AD6@goldelico.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The following can be tested via sysfs with the following to ensure the SGX
-module gets enabled and disabled properly:
+* H. Nikolaus Schaller <hns@goldelico.com> [190814 10:34]:
+> 
+> > Am 14.08.2019 um 11:47 schrieb Tony Lindgren <tony@atomide.com>:
+> > 
+> > * H. Nikolaus Schaller <hns@goldelico.com> [190814 08:57]:
+> >> I also have pushed good news to
+> >> 
+> >> 	https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/tree/letux-pvr
+> >> 
+> >> Thanks to the help from the Pyra community, I was able to get a (binary) reference
+> >> implementation using DRM that works on Pyra/OMAP5. At least the gles1test1.
+> >> 
+> >> With that reference setup I was able to fix my Makefiles for the staging/pvr implementation.
+> >> 
+> >> I have tested that it works with v4.19.66 and v5.3-rc4 (LPAE build of the LetuxOS kernel tree)
+> >> on the Pyra.
+> >> 
+> >> In which areas does this tree go beyond the TI SDK/IMG DDK 1.14?
+> >> 
+> >> * includes internal API fixes for kernels up to v5.3
+> >> * lives in drivers/staging/pvr/1.14.3699939 - so that we can ask for inclusion in linux-next
+> >> * has Kconfig and Makefiles for in-kernel configuration (no separate build system)
+> >> * builds separate kernel modules for omap3430, omap3630, am335x, omap4, omap5, dra7 etc.
+> >>  pvrsrvkm
+> >>  e.g. pvrsrvkm_omap_omap5_sgx544_116
+> >> * the correct kernel module is automatically probed by matching .compatible in device tree
+> >>  so that the code is multi-platform friendly
+> >> * includes SoC integration for OMAP3/4/5 and has some preliminary bindings documentation
+> >> * code base should also support JZ4780/CI20 and some Intel Atom processors (CedarView, Poulsbo)
+> >> * has got a ToDo to describe what should be done during staging phase
+> >> 
+> >> 	https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/blob/letux/latest-pvr/drivers/staging/pvr/TODO
+> >> 
+> >> My plans for the next steps are:
+> >> 
+> >> * do more testing (e.g. X11, kmscube)
+> >> * check if and/or how it can run on am335x (BeagleBone) or OMAP3 (e.g. GTA04, OpenPandora)
+> >> * try a JZ480/CI20 build (unfortuantely I have no HDMI there with mainline kernels and I am
+> >>  missing the user-space libraries for MIPS).
+> > 
+> > That sounds good to me, just one comment. Before getting these into
+> > staging, I'd like to have omap variants use proper interconnect
+> > target module in devicetree like we already have in omap4.dtsi
+> > as target-module@56000000. This should simplify things further
+> > as the module child device driver(s) can just enable things with
+> > runtime PM and we can leave out all the legacy hwmod platform data
+> > that sounds like you're still carrying.
+> 
+> Yes, there is still a lot of SoC-glue included:
+> 
+> 	https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/commits/letux/omap-pvr-soc-glue
+> 
+> It would indeed be a good move to simplify and reduce the glue code
+> and make it more maintainable / stable / identical on different platforms.
 
-# echo on > /sys/bus/platform/devices/5600fe00.target-module/power/control
-# rwmem 0x5600fe00		# revision register
-0x5600fe00 = 0x40000000
-# echo auto > /sys/bus/platform/devices/5600fe00.target-module/power/control
-# rwmem 0x5000fe00
-Bus error
+OK yeah all that should just disappear :)
 
-Note that this patch depends on the PRM rstctrl driver that has
-been recently posted. If the child device driver(s) need to prevent
-rstctrl reset on PM runtime suspend, the drivers need to increase
-the usecount for the shared rstctrl reset that can be mapped also
-for the child device(s) or accessed via dev->parent.
+> > I have patches here to add similar interconnect target modules for
+> > at least omap34xx, omap36xx, omap5, and am335x that I'll try to post
+> > later on today to play with. For am335x, things still depend on the
+> > recentely posted prm rstctrl patches. I'm not sure if I already
+> > did a dts patch for dra7 yet, need to check.
+> 
+> I assume it is not yet in linux-next... So something for v5.5 or later.
 
-Cc: Adam Ford <aford173@gmail.com>
-Cc: Filip Matijević <filip.matijevic.pz@gmail.com>
-Cc: "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: moaz korena <moaz@korena.xyz>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Paweł Chmiel <pawel.mikolaj.chmiel@gmail.com>
-Cc: Philipp Rossak <embed3d@gmail.com>
-Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/am33xx.dtsi | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+Well I just posted some sgx interconnect target module patches. We might
+still have them in v5.4 assuming people manage to review and test them.
 
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -460,6 +460,31 @@
- 			       <&edma 5 0>;
- 			dma-names = "tx", "rx";
- 		};
-+
-+		target-module@56000000 {
-+			compatible = "ti,sysc-omap4", "ti,sysc";
-+			reg = <0x5600fe00 0x4>,
-+			      <0x5600fe10 0x4>;
-+			reg-names = "rev", "sysc";
-+			ti,sysc-midle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>;
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>;
-+			clocks = <&gfx_l3_clkctrl AM3_GFX_L3_GFX_CLKCTRL 0>;
-+			clock-names = "fck";
-+			resets = <&prm_gfx 0>;
-+			reset-names = "rstctrl";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0x56000000 0x1000000>;
-+
-+			/*
-+			 * Closed source PowerVR driver, no child device
-+			 * binding or driver in mainline
-+			 */
-+		};
- 	};
- };
- 
--- 
-2.21.0
+Regards,
+
+Tony
