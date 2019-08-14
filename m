@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D28C8D457
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 15:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 911EC8D459
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Aug 2019 15:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727750AbfHNNOX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Aug 2019 09:14:23 -0400
-Received: from muru.com ([72.249.23.125]:57628 "EHLO muru.com"
+        id S1727913AbfHNNOZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Aug 2019 09:14:25 -0400
+Received: from muru.com ([72.249.23.125]:57646 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726551AbfHNNOX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Aug 2019 09:14:23 -0400
+        id S1726551AbfHNNOZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Aug 2019 09:14:25 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 71AAA81DD;
-        Wed, 14 Aug 2019 13:14:48 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 360658216;
+        Wed, 14 Aug 2019 13:14:51 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
@@ -23,15 +23,15 @@ Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
         moaz korena <moaz@korena.xyz>,
         Merlijn Wajer <merlijn@wizzup.org>,
+        Michael Turquette <mturquette@baylibre.com>,
         =?UTF-8?q?Pawe=C5=82=20Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
         Philipp Rossak <embed3d@gmail.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>, Tero Kristo <t-kristo@ti.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
         linux-clk@vger.kernel.org
-Subject: [PATCH 2/6] bus: ti-sysc: Add module enable quirk for SGX on omap36xx
-Date:   Wed, 14 Aug 2019 06:14:04 -0700
-Message-Id: <20190814131408.57162-3-tony@atomide.com>
+Subject: [PATCH 3/6] clk: ti: add clkctrl data omap5 sgx
+Date:   Wed, 14 Aug 2019 06:14:05 -0700
+Message-Id: <20190814131408.57162-4-tony@atomide.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190814131408.57162-1-tony@atomide.com>
 References: <20190814131408.57162-1-tony@atomide.com>
@@ -43,7 +43,7 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add module enable quirk for SGX needed on omap36xx.
+Looks like we have sgx clock missing currently so let's add it.
 
 Cc: Adam Ford <aford173@gmail.com>
 Cc: Filip Matijević <filip.matijevic.pz@gmail.com>
@@ -51,98 +51,82 @@ Cc: "H. Nikolaus Schaller" <hns@goldelico.com>
 Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
 Cc: moaz korena <moaz@korena.xyz>
 Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Michael Turquette <mturquette@baylibre.com>
 Cc: Paweł Chmiel <pawel.mikolaj.chmiel@gmail.com>
 Cc: Philipp Rossak <embed3d@gmail.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Tero Kristo <t-kristo@ti.com>
 Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc: linux-clk@vger.kernel.org
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/bus/ti-sysc.c                 | 21 +++++++++++++++++++++
- include/linux/platform_data/ti-sysc.h |  1 +
- 2 files changed, 22 insertions(+)
+ drivers/clk/ti/clk-54xx.c         | 34 +++++++++++++++++++++++++++++++
+ include/dt-bindings/clock/omap5.h |  3 +++
+ 2 files changed, 37 insertions(+)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -73,6 +73,7 @@ static const char * const clock_names[SYSC_MAX_CLOCKS] = {
-  * @clk_enable_quirk: module specific clock enable quirk
-  * @clk_disable_quirk: module specific clock disable quirk
-  * @reset_done_quirk: module specific reset done quirk
-+ * @module_enable_quirk: module specific enable quirk
-  */
- struct sysc {
- 	struct device *dev;
-@@ -98,6 +99,7 @@ struct sysc {
- 	void (*clk_enable_quirk)(struct sysc *sysc);
- 	void (*clk_disable_quirk)(struct sysc *sysc);
- 	void (*reset_done_quirk)(struct sysc *sysc);
-+	void (*module_enable_quirk)(struct sysc *sysc);
+diff --git a/drivers/clk/ti/clk-54xx.c b/drivers/clk/ti/clk-54xx.c
+--- a/drivers/clk/ti/clk-54xx.c
++++ b/drivers/clk/ti/clk-54xx.c
+@@ -314,6 +314,39 @@ static const struct omap_clkctrl_reg_data omap5_dss_clkctrl_regs[] __initconst =
+ 	{ 0 },
  };
  
- static void sysc_parse_dts_quirks(struct sysc *ddata, struct device_node *np,
-@@ -938,6 +940,9 @@ static int sysc_enable_module(struct device *dev)
- 		sysc_write(ddata, ddata->offsets[SYSC_SYSCONFIG], reg);
- 	}
- 
-+	if (ddata->module_enable_quirk)
-+		ddata->module_enable_quirk(ddata);
++static const char * const omap5_gpu_core_mux_parents[] __initconst = {
++	"dpll_core_h14x2_ck",
++	"dpll_per_h14x2_ck",
++	NULL,
++};
 +
- 	return 0;
- }
- 
-@@ -1251,6 +1256,9 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 		   SYSC_MODULE_QUIRK_I2C),
- 	SYSC_QUIRK("i2c", 0, 0, 0x10, 0x90, 0x5040000a, 0xfffff0f0,
- 		   SYSC_MODULE_QUIRK_I2C),
-+	SYSC_QUIRK("gpu", 0x50000000, 0x14, -1, -1, 0x00010201, 0xffffffff, 0),
-+	SYSC_QUIRK("gpu", 0x50000000, 0xfe00, 0xfe10, -1, 0x40000000 , 0xffffffff,
-+		   SYSC_MODULE_QUIRK_SGX),
- 	SYSC_QUIRK("wdt", 0, 0, 0x10, 0x14, 0x502a0500, 0xfffff0f0,
- 		   SYSC_MODULE_QUIRK_WDT),
- 
-@@ -1268,6 +1276,7 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 	SYSC_QUIRK("dwc3", 0, 0, 0x10, -1, 0x500a0200, 0xffffffff, 0),
- 	SYSC_QUIRK("epwmss", 0, 0, 0x4, -1, 0x47400001, 0xffffffff, 0),
- 	SYSC_QUIRK("gpu", 0, 0x1fc00, 0x1fc10, -1, 0, 0, 0),
-+	SYSC_QUIRK("gpu", 0, 0xfe00, 0xfe10, -1, 0x40000000 , 0xffffffff, 0),
- 	SYSC_QUIRK("hsi", 0, 0, 0x10, 0x14, 0x50043101, 0xffffffff, 0),
- 	SYSC_QUIRK("iss", 0, 0, 0x10, -1, 0x40000101, 0xffffffff, 0),
- 	SYSC_QUIRK("lcdc", 0, 0, 0x54, -1, 0x4f201000, 0xffffffff, 0),
-@@ -1419,6 +1428,15 @@ static void sysc_clk_disable_quirk_i2c(struct sysc *ddata)
- 	sysc_clk_quirk_i2c(ddata, false);
- }
- 
-+/* 36xx SGX needs a quirk for to bypass OCP IPG interrupt logic */
-+static void sysc_module_enable_quirk_sgx(struct sysc *ddata)
-+{
-+	int offset = 0xff08;	/* OCP_DEBUG_CONFIG */
-+	u32 val = BIT(31);	/* THALIA_INT_BYPASS */
++static const char * const omap5_gpu_hyd_mux_parents[] __initconst = {
++	"dpll_core_h14x2_ck",
++	"dpll_per_h14x2_ck",
++	NULL,
++};
 +
-+	sysc_write(ddata, offset, val);
-+}
++static const char * const omap5_gpu_sys_clk_parents[] __initconst = {
++	"sys_clkin",
++	NULL,
++};
 +
- /* Watchdog timer needs a disable sequence after reset */
- static void sysc_reset_done_quirk_wdt(struct sysc *ddata)
- {
-@@ -1461,6 +1479,9 @@ static void sysc_init_module_quirks(struct sysc *ddata)
- 		return;
- 	}
- 
-+	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_SGX)
-+		ddata->module_enable_quirk = sysc_module_enable_quirk_sgx;
++static const struct omap_clkctrl_div_data omap5_gpu_sys_clk_data __initconst = {
++	.max_div = 2,
++};
 +
- 	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_WDT)
- 		ddata->reset_done_quirk = sysc_reset_done_quirk_wdt;
- }
-diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
---- a/include/linux/platform_data/ti-sysc.h
-+++ b/include/linux/platform_data/ti-sysc.h
-@@ -49,6 +49,7 @@ struct sysc_regbits {
- 	s8 emufree_shift;
- };
++static const struct omap_clkctrl_bit_data omap5_gpu_core_bit_data[] __initconst = {
++	{ 24, TI_CLK_MUX, omap5_gpu_core_mux_parents, NULL },
++	{ 25, TI_CLK_MUX, omap5_gpu_hyd_mux_parents, NULL },
++	{ 26, TI_CLK_DIVIDER, omap5_gpu_sys_clk_parents, &omap5_gpu_sys_clk_data },
++	{ 0 },
++};
++
++static const struct omap_clkctrl_reg_data omap5_gpu_clkctrl_regs[] __initconst = {
++	{ OMAP5_GPU_CLKCTRL, omap5_gpu_core_bit_data, CLKF_SW_SUP, "gpu_cm:clk:0000:24" },
++	{ 0 },
++};
++
+ static const char * const omap5_mmc1_fclk_mux_parents[] __initconst = {
+ 	"func_128m_clk",
+ 	"dpll_per_m2x2_ck",
+@@ -470,6 +503,7 @@ const struct omap_clkctrl_data omap5_clkctrl_data[] __initconst = {
+ 	{ 0x4a008e20, omap5_l3instr_clkctrl_regs },
+ 	{ 0x4a009020, omap5_l4per_clkctrl_regs },
+ 	{ 0x4a009420, omap5_dss_clkctrl_regs },
++	{ 0x4a009520, omap5_gpu_clkctrl_regs },
+ 	{ 0x4a009620, omap5_l3init_clkctrl_regs },
+ 	{ 0x4ae07920, omap5_wkupaon_clkctrl_regs },
+ 	{ 0 },
+diff --git a/include/dt-bindings/clock/omap5.h b/include/dt-bindings/clock/omap5.h
+--- a/include/dt-bindings/clock/omap5.h
++++ b/include/dt-bindings/clock/omap5.h
+@@ -89,6 +89,9 @@
+ /* dss clocks */
+ #define OMAP5_DSS_CORE_CLKCTRL	OMAP5_CLKCTRL_INDEX(0x20)
  
-+#define SYSC_MODULE_QUIRK_SGX		BIT(18)
- #define SYSC_MODULE_QUIRK_HDQ1W		BIT(17)
- #define SYSC_MODULE_QUIRK_I2C		BIT(16)
- #define SYSC_MODULE_QUIRK_WDT		BIT(15)
++/* gpu clocks */
++#define OMAP5_GPU_CLKCTRL	OMAP5_CLKCTRL_INDEX(0x20)
++
+ /* l3init clocks */
+ #define OMAP5_MMC1_CLKCTRL	OMAP5_CLKCTRL_INDEX(0x28)
+ #define OMAP5_MMC2_CLKCTRL	OMAP5_CLKCTRL_INDEX(0x30)
 -- 
 2.21.0
