@@ -2,172 +2,208 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C1278E53E
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 09:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0D18E642
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 10:26:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730535AbfHOHKt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Aug 2019 03:10:49 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:33440 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730404AbfHOHKs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Aug 2019 03:10:48 -0400
-Received: by mail-qt1-f196.google.com with SMTP id v38so1469004qtb.0;
-        Thu, 15 Aug 2019 00:10:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+XZYmbsnbr0sSwIKTeFZGEhcqBxG1btN9f5DRyi29Vc=;
-        b=DfO8MQ8L3aUWOnTlbTG1bpnKD4q2MFa849saZYTebOqTqoUI4bA7jI453gfyE8dCQT
-         m33owpPqbUtBwzyI9wLH0dCaQnQLg0xdIy3U7CI7fXtu/OVleoYHLlP7scCEgUY3fOjF
-         H6BFgaIerNa6IUaWt9qQ9bzAT58kwtH+POhCvfxpGybZLrCxtGz73BH4QT2Kw4sRsZ9b
-         LLnWu42T0rkK9b8ilCdOyC90P3ZD23E03gn8sF80PyfnDtLQOxItTAeLzHxkOyDd7XSf
-         4lghyBWJYZ81mSgao52TbX6y7Wa8W6skagPs3HpKz2pqnAUDJBiH9PYG56wfO4nk0j5K
-         BEJQ==
-X-Gm-Message-State: APjAAAU32kcxfXUNksln0EyFECCWaj/+GHbWrn9vybPkDD9ZxfUrecPN
-        +2vqSy5s+MWMIl47bhXz4t+ckmrTm+Fr19GgjPU=
-X-Google-Smtp-Source: APXvYqzes2xrmqdbClCROX/Q+PfszKVeI1DW0ZX+TIylT9deTu0v9IMyny/8McBlEj0PozeCVXwlC25l9yO+FLH9dOM=
-X-Received: by 2002:ac8:117:: with SMTP id e23mr2752639qtg.18.1565853047353;
- Thu, 15 Aug 2019 00:10:47 -0700 (PDT)
+        id S1729838AbfHOI0J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Aug 2019 04:26:09 -0400
+Received: from muru.com ([72.249.23.125]:57912 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725875AbfHOI0J (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 15 Aug 2019 04:26:09 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 5CF63803A;
+        Thu, 15 Aug 2019 08:26:34 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Lars Melin <larsm17@gmail.com>,
+        Marcel Partap <mpartap@gmx.net>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Michael Scott <hashcode0f@gmail.com>,
+        NeKit <nekit1000@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Tony Lingren <tony@atomide.com>
+Subject: [PATCHv2] USB: serial: option: Add Motorola modem UARTs
+Date:   Thu, 15 Aug 2019 01:26:02 -0700
+Message-Id: <20190815082602.51765-1-tony@atomide.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190808212234.2213262-1-arnd@arndb.de> <20190808214347.2865294-1-arnd@arndb.de>
- <20190808214347.2865294-2-arnd@arndb.de> <20190814211002.GA1952@darkstar.musicnaut.iki.fi>
-In-Reply-To: <20190814211002.GA1952@darkstar.musicnaut.iki.fi>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 15 Aug 2019 09:10:31 +0200
-Message-ID: <CAK8P3a36dztkctUD2jZND9gR7zo2joZu4PPzVozDJCi9gLcmkg@mail.gmail.com>
-Subject: Re: [PATCH 21/22] ARM: omap1: use common clk framework
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     Tony Lindgren <tony@atomide.com>, Paul Walmsley <paul@pwsan.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Aug 14, 2019 at 11:10 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
->
-> Hi,
->
-> On Thu, Aug 08, 2019 at 11:43:39PM +0200, Arnd Bergmann wrote:
-> > The omap1 clock driver now uses types and calling conventions
-> > that are compatible with the common clk core.
-> >
-> > Turn on CONFIG_COMMON_CLK and remove all the code that is
-> > now duplicated.
-> >
-> > Note: if this previous steps didn't already break it, this one
-> > most likely will, because the interfaces are very likely to
-> > have different semantics.
->
-> QEMU SX1 board works up to this patch (the I/O virtual address change
-> included). With this patch, it seems to fail to allocate memory during
-> omap1_init_early() (the log is a bit messy as I extracted it using QEMU
-> memory dumping):
+On Motorola Mapphone devices such as Droid 4 there are five USB ports
+that do not use the same layout as Gobi 1K/2K/etc devices listed in
+qcserial.c. So we should use qcaux.c or option.c as noted by
+Dan Williams <dan.j.williams@intel.com>.
 
-That sounds pretty good, I definitely did not expect this patch
-to work without first dealing with a few bugs, and it it did not break
-earlier, I'm willing to call that success ;-)
+As the Motorola USB serial ports have an interrupt endpoint as shown
+with lsusb -v, we should use option.c instead of qcaux.c as pointed out
+by Johan Hovold <johan@kernel.org>.
 
-Unfortunately, doing it in qemu does not guarantee that the clocks
-are set up right at this point: if any of the clocks are disabled when
-they should not be, qemu won't care as much as real hardware  would.
+The ff/ff/ff interfaces seem to always be UARTs on Motorola devices.
+For the other interfaces, class 0x0a (CDC Data) should not in general
+be added as they are typically part of a multi-interface function as
+noted earlier by Bjørn Mork <bjorn@mork.no>.
 
-> swapper: page allocation failure: order:0, mode:0x0(), nodemask=(null)
-> CPU: 0 PID: 0 Comm: swapper Not tainted 5.3.0-rc4-sx1-los_80efa++ #1
-> Hardware name: OMAP310 based Siemens SX1
-> [<c000dc44>] (unwind_backtrace) from [<c000cb00>] (show_stack+0x10/0x18)
-> [<c000cb00>] (show_stack) from [<c0172ba8>] (dump_stack+0x18/0x24)
-> [<c0172ba8>] (dump_stack) from [<c00844e8>] (warn_alloc+0x90/0x140)
-> [<c00844e8>] (warn_alloc) from [<c0084dcc>] (__alloc_pages_nodemask+0x7a4/0x9cc)
-> [<c0084dcc>] (__alloc_pages_nodemask) from [<c008df24>] (slob_new_pages.constpro
-> p.2+0x10/0x3c)
-> [<c008df24>] (slob_new_pages.constprop.2) from [<c008e208>] (slob_alloc.constprop.1+0xe4/0x1e8)
-> [<c008e208>] (slob_alloc.constprop.1) from [<c008e344>] (__kmalloc+0x38/0xb0)
-> [<c008e344>] (__kmalloc) from [<c0126514>] (__clk_register+0x20/0x62c)
-> [<c0126514>] (__clk_register) from [<c01f6614>] (omap1_clk_init+0x88/0x220)
-> [<c01f6614>] (omap1_clk_init) from [<c01f5820>] (omap1_init_early+0x20/0x30)
-> [<c01f5820>] (omap1_init_early) from [<c01f09e8>] (start_kernel+0x48/0x408)
-> [<c01f09e8>] (start_kernel) from [<00000000>] (0x0)
-> Clocks: ARM_SYSST: 0x003a DPLL_CTL: 0x2002 ARM_CKCTL: 0x3000
-> Clocking rate (xtal/DPLL1/MPU): 12.0/12.0/0.0 MHz
+However, looking at the Motorola mapphone kernel code, the mdm6600 0x0a
+class is only used for flashing the modem firmware, and there are no
+other interfaces. So I've added that too with more details below as it
+works just fine.
 
-Ok, so here the problem is that we call the omap1_clk_init() function from
-setup_arch(), which is before we can even allocate memory with kmalloc.
+The ttyUSB ports on Droid 4 are:
 
-Most other machines do it from init_time(), which comes after the initialization
-of the memory allocator.
+ttyUSB0 DIAG, CQDM-capable
+ttyUSB1 MUX or NMEA, no response
+ttyUSB2 MUX or NMEA, no response
+ttyUSB3 TCMD
+ttyUSB4 AT-capable
 
-Something like this would be needed:
+The ttyUSB0 is detected as QCDM capable by ModemManager. I think
+it's only used for debugging with ModemManager --debug for sending
+custom AT commands though. ModemManager already can manage data
+connection using the USB QMI ports that are already handled by the
+qmi_wwan.c driver.
 
-diff --git a/arch/arm/mach-omap1/io.c b/arch/arm/mach-omap1/io.c
-index b0465a956ea8..17ba8dfd8e19 100644
---- a/arch/arm/mach-omap1/io.c
-+++ b/arch/arm/mach-omap1/io.c
-@@ -125,9 +125,6 @@ void __init omap1_init_early(void)
-        omap_writew(0x0, MPU_PUBLIC_TIPB_CNTL);
-        omap_writew(0x0, MPU_PRIVATE_TIPB_CNTL);
+To enable the MUX or NMEA ports, it seems that something needs to be
+done additionally to enable them, maybe via the DIAG or TCMD port.
+It might be just a NVRAM setting somewhere, but I have no idea what
+NVRAM settings may need changing for that.
 
--       /* Must init clocks early to assure that timer interrupt works
--        */
--       omap1_clk_init();
-        omap1_mux_init();
- }
+The TCMD port seems to be a Motorola custom protocol for testing
+the modem and to configure it's NVRAM and seems to work just fine
+based on a quick test with a minimal tcmdrw tool I wrote.
 
-diff --git a/arch/arm/mach-omap1/time.c b/arch/arm/mach-omap1/time.c
-index 7cc1a968230e..4e5ddd1db429 100644
---- a/arch/arm/mach-omap1/time.c
-+++ b/arch/arm/mach-omap1/time.c
-@@ -228,6 +228,8 @@ static inline void omap_mpu_timer_init(void)
-  */
- void __init omap1_timer_init(void)
- {
-+       omap1_clk_init();
-+
-        if (omap_32k_timer_init() != 0)
-                omap_mpu_timer_init();
- }
+The voice modem AT-capable port seems to provide only partial
+support, and no PM support compared to the TS 27.010 based UART
+wired directly to the modem.
 
-but the removed comment up there makes me suspect that it introduces
-a different issue.
+The UARTs added with this change are the same product IDs as the
+Motorola Mapphone Android Linux kernel mdm6600_id_table. I don't
+have any mdm9600 based devices, so I have only tested these on
+mdm6600 based droid 4.
 
-> "8<--- cut here ---
-> "Unable to handle kernel NULL pointer dereference at virtual address 00000018
-> "pgd = (ptrval)
-> "[00000018] *pgd=00000000
-> Internal error: Oops: 5 [#1] ARM
-> CPU: 0 PID: 0 Comm: swapper Not tainted 5.3.0-rc4-sx1-los_80efa++ #1
-> Hardware name: OMAP310 based Siemens SX1
-> PC is at clk_hw_get_parent+0x4/0x14
-> LR is at omap1_clk_enable+0xc/0xcc
-> OMAP310 based Siemens SX1
-> [    0.000000]  free:0 free_pcp:0 free_cma:0
-> pc : [<c0126cd0>]    lr : [<c00128d4>]    psr: 600001d3
-> sp : c03aff88  ip : 00000000  fp : 00000000
-> r10: 00000001  r9 : 54029252  r8 : 10000100
-> r7 : c03b1000  r6 : 00002002  r5 : 0000003a  r4 : c03b5444
-> r3 : 00000000  r2 : c03b9818  r1 : ff03ce08  r0 : c03b5444
-> Flags: nZCv  IRQs off  FIQs off  Mode SVC_32  ISA ARM  Segment user
-> Control: 0000317f  Table: 10004000  DAC: 00000055
-> Process swapper (pid: 0, stack limit = 0x(ptrval))
-> Stack: (0xc03aff88 to 0xc03b0000)
-> ff80:                   c03b5438 0000003a 00002002 c01f6734 00000000 00000057
-> ffa0: 0000313d c01f5820 00000000 c01f09e8 00000000 00000000 00000000 00000000
-> ffc0: 00000000 00000000 00000000 c0201a38 00000000 c01f0330 00000057 0000313d
-> ffe0: 00000265 10000100 54029252 0000317f 00000000 00000000 00000000 00000000
-> [<c0126cd0>] (clk_hw_get_parent) from [<c00128d4>] (omap1_clk_enable+0xc/0xcc)
-> [<c00128d4>] (omap1_clk_enable) from [<c01f6734>] (omap1_clk_init+0x1a8/0x220)
-> [<c01f6734>] (omap1_clk_init) from [<c01f5820>] (omap1_init_early+0x20/0x30)
-> [<c01f5820>] (omap1_init_early) from [<c01f09e8>] (start_kernel+0x48/0x408)
-> [<c01f09e8>] (start_kernel) from [<00000000>] (0x0)
+Then for the class 0x0a (CDC Data) mode, the Motorola Mapphone Android
+Linux kernel driver moto_flashqsc.c just seems to change the
+port->bulk_out_size to 8K from the default. And is only used for
+flashing the modem firmware it seems.
 
-clk_hw->core is NULL here, presumably as a result of the first issue.
+I've verified that flashing the modem with signed firmware works just
+fine with the option driver after manually toggling the GPIO pins, so
+I've added droid 4 modem flashing mode to the option driver. I've not
+added the other devices listed in moto_flashqsc.c in case they really
+need different port->bulk_out_size. Those can be added as they get
+tested to work for flashing the modem.
 
-      Arnd
+After this patch the output of /sys/kernel/debug/usb/devices has
+the following for normal 22b8:2a70 mode including the related qmi_wwan
+interfaces:
+
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=22b8 ProdID=2a70 Rev= 0.00
+S:  Manufacturer=Motorola, Incorporated
+S:  Product=Flash MZ600
+C:* #Ifs= 9 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=84(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=5ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fb Prot=ff Driver=qmi_wwan
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=5ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fb Prot=ff Driver=qmi_wwan
+E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=5ms
+E:  Ad=8a(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=07(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fb Prot=ff Driver=qmi_wwan
+E:  Ad=8b(I) Atr=03(Int.) MxPS=  64 Ivl=5ms
+E:  Ad=8c(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=08(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fb Prot=ff Driver=qmi_wwan
+E:  Ad=8d(I) Atr=03(Int.) MxPS=  64 Ivl=5ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=09(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+
+In 22b8:900e "qc_dload" mode the device shows up as:
+
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=22b8 ProdID=900e Rev= 0.00
+S:  Manufacturer=Motorola, Incorporated
+S:  Product=Flash MZ600
+C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+
+And in 22b8:4281 "ram_downloader" mode the device shows up as:
+
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=22b8 ProdID=4281 Rev= 0.00
+S:  Manufacturer=Motorola, Incorporated
+S:  Product=Flash MZ600
+C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=fc Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+
+Cc: Bjørn Mork <bjorn@mork.no>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Lars Melin <larsm17@gmail.com>
+Cc: Marcel Partap <mpartap@gmx.net>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Michael Scott <hashcode0f@gmail.com>
+Cc: NeKit <nekit1000@gmail.com>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Tested-by: Pavel Machek <pavel@ucw.cz>
+Signed-off-by: Tony Lingren <tony@atomide.com>
+---
+
+Changes since v1:
+- Leave out defines as suggested by Lars
+
+---
+ drivers/usb/serial/option.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -968,6 +968,11 @@ static const struct usb_device_id option_ids[] = {
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(HUAWEI_VENDOR_ID, 0xff, 0x06, 0x7B) },
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(HUAWEI_VENDOR_ID, 0xff, 0x06, 0x7C) },
+ 
++	/* Motorola devices */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x22b8, 0x2a70, 0xff, 0xff, 0xff) },	/* mdm6600 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x22b8, 0x2e0a, 0xff, 0xff, 0xff) },	/* mdm9600 */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x22b8, 0x4281, 0x0a, 0x00, 0xfc) },	/* mdm ram dl */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x22b8, 0x900e, 0xff, 0xff, 0xff) },	/* mdm qc dl */
+ 
+ 	{ USB_DEVICE(NOVATELWIRELESS_VENDOR_ID, NOVATELWIRELESS_PRODUCT_V640) },
+ 	{ USB_DEVICE(NOVATELWIRELESS_VENDOR_ID, NOVATELWIRELESS_PRODUCT_V620) },
+-- 
+2.21.0
