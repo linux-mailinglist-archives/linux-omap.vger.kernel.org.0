@@ -2,94 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83ADB8EBA5
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 14:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE60A8EBB0
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 14:40:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730558AbfHOMiU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Aug 2019 08:38:20 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:37481 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725977AbfHOMiU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Aug 2019 08:38:20 -0400
-Received: by mail-pl1-f194.google.com with SMTP id bj8so1039177plb.4;
-        Thu, 15 Aug 2019 05:38:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=1ee2WC7wFUitxl0VhlNk/I0IaNSildZhX3LeEHVWcaU=;
-        b=bU7F69OaIb5ke+Qt0qr7HlZwNfbiYKkzBNNDd8WzOHgsvEfE1khSOgq2w7EpiRuWPh
-         uTqfEiRYLy6fq3vEnJnH7/iPX37E1FVbVulx7Vv4U18g2VLI86sei7DpxGqKZDZ96V8+
-         rSoDO6VJthK6lxxQXoyz0eywkCeUmf/HVebo2WM0qgyPW9iHxjb5jXIwCH/78l9samiB
-         m2STME5iKjiocHcUzIBq5wqyuPgAlKn7Cq1b3FOToXEt7XIEjowRnd3jV3pH+WCgbrwb
-         y/wg7L3zNnBb2BOCFeUQahe99n0O2JYWx17ui9xB37TfI3KFvJtxA92FplWroT1DsaAR
-         LHVg==
+        id S1729986AbfHOMkN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Aug 2019 08:40:13 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:43501 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725977AbfHOMkN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Aug 2019 08:40:13 -0400
+Received: by mail-qt1-f195.google.com with SMTP id b11so2107347qtp.10
+        for <linux-omap@vger.kernel.org>; Thu, 15 Aug 2019 05:40:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=1ee2WC7wFUitxl0VhlNk/I0IaNSildZhX3LeEHVWcaU=;
-        b=ovbZ5cY9Trf6ZwcGv1tYn/TZUTd+r7paJG4+Q5oFgYBYbVsvoewwFhgpB4eNPFlTxI
-         jC9jY0iNn7t7e74onD8L0NcWQQFnmHwPF10gIIoKS1ijpZ5vpjI31Gmhnd2616ZwhO/D
-         +hSDlydnoBQceM8gm9y3+0Y2E5jAX37hF+uKWCIbvSo6sE1FbQUl8bfZPrYVlctdnM5J
-         6MLCJeLG3TTRS9pD2Il8x3sXkQNsm3riUVG5lJ22bFoRs/eZyWWxa6w5G9SkR2/x8hbo
-         a95v+VwN4FeDcteDIJSd5QzxGFd92DllBoHg06K3IL3xe/EPNKrCEQezfy+DA28eh8n3
-         VwTg==
-X-Gm-Message-State: APjAAAW4Q1sF4cJSddhaYGVhTutcImjlbyFSSC+7b+p3BbND4I/mSz3L
-        Tk6BajHMEOfijOLvFgXpwkk=
-X-Google-Smtp-Source: APXvYqwacwndMgsXukx1fTNdcEaTu+xtzJYP9eajJDSzmxObARVKtVJS5xCwgo93gUEa6Hu2wopekQ==
-X-Received: by 2002:a17:902:e60c:: with SMTP id cm12mr2573361plb.304.1565872699079;
-        Thu, 15 Aug 2019 05:38:19 -0700 (PDT)
-Received: from icarus ([2001:268:c146:4483:71c4:4d14:b4c7:2693])
-        by smtp.gmail.com with ESMTPSA id t4sm2836798pfd.109.2019.08.15.05.38.13
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 15 Aug 2019 05:38:17 -0700 (PDT)
-Date:   Thu, 15 Aug 2019 21:37:58 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v2 3/5] counter: new TI eQEP driver
-Message-ID: <20190815123758.GA646493@icarus>
-References: <20190807194023.15318-1-david@lechnology.com>
- <20190807194023.15318-4-david@lechnology.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8N/eZnpVtVGXNfEPij+EtmJf4Wqq8E7G+Ac9dKa5ORg=;
+        b=FIp1UKOL/XF7d28WrXankVVpC1aWDjJXR4RXnTts4TCW5tUa9sol9IEa9/15PqUpO5
+         d2NcmIwJ3ZAamfZZyxtgrMK81y93So08k6R29YLlgEBx2wVwviIQUe2q0F5FZKlA0tWr
+         y/Cb7NZ5ODCk/SLGYqGM+iZQF+ni0oDpUCm2RPYpld3cquX4HhOgK9BwgtFkJK4SJhZr
+         IjiAt7CTMxO3miZD+SmE9HEg0zyDUi9hLLhrob+Sw8yz3s0WWud5fX2bkcI0Kr/ub/UW
+         FDkrWIo1KIzE/fl4cXcFvDi4CylGn0L1nlCgZzAoQD4kyymsEboTAJzTJB6cT6olAY7U
+         na6g==
+X-Gm-Message-State: APjAAAV8KrH1kUljEVA3tnVusnp/sTggjvFelr7cab10fMobKb/6aUqT
+        Sp34CK6xrFYNqcFCyTG0UL+lesgcYWV6ygu4wEY=
+X-Google-Smtp-Source: APXvYqwb4zQ8FF0KzdVSpE5ZInOoO4R9nOdgsHtEhyR9Jym3zQ3ggtHiQguCw7If8eUlxix/ZQJVW96l8ka0oYGrtsE=
+X-Received: by 2002:ac8:239d:: with SMTP id q29mr3688037qtq.304.1565872812114;
+ Thu, 15 Aug 2019 05:40:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190807194023.15318-4-david@lechnology.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <pull-1565844391-332885@atomide.com>
+In-Reply-To: <pull-1565844391-332885@atomide.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 15 Aug 2019 14:39:56 +0200
+Message-ID: <CAK8P3a0Ynmu1X+Y6Ba6UP9gfyJddhFj3ZfF5vA45nZgOdfn8fQ@mail.gmail.com>
+Subject: Re: [GIT PULL] fixes for omap variants for v5.3-rc cycle
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     SoC Team <soc@kernel.org>, arm-soc <arm@kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Aug 07, 2019 at 02:40:21PM -0500, David Lechner wrote:
-> +static struct counter_synapse ti_eqep_position_synapses[] = {
-> +	{
-> +		.action		= TI_EQEP_SYNAPSE_ACTION_BOTH_EDGES,
-> +		.actions_list	= ti_eqep_position_synapse_actions,
-> +		.num_actions	= ARRAY_SIZE(ti_eqep_position_synapse_actions),
-> +		.signal		= &ti_eqep_signals[TI_EQEP_SIGNAL_QEPA],
-> +	},
-> +	{
-> +		.action		= TI_EQEP_SYNAPSE_ACTION_BOTH_EDGES,
-> +		.actions_list	= ti_eqep_position_synapse_actions,
-> +		.num_actions	= ARRAY_SIZE(ti_eqep_position_synapse_actions),
-> +		.signal		= &ti_eqep_signals[TI_EQEP_SIGNAL_QEPB],
-> +	},
-> +};
+On Thu, Aug 15, 2019 at 6:49 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> From: "Tony Lindgren" <tony@atomide.com>
+>
+> The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
+>
+>   Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.3/fixes-rc4
+>
+> for you to fetch changes up to 4a65bbb9109ed7edd4b6ed7168ced48abb8561a2:
+>
+>   soc: ti: pm33xx: Make two symbols static (2019-08-13 05:05:38 -0700)
+>
+> ----------------------------------------------------------------
+> Fixes for omap variants for v5.3-rc cycle
+>
+> We have another fix to disable voltage switching for am57xx SDIO as
+> the bootrom cannot handle all the voltages after a reset that thought
+> I had already sent a pull request for earlier but forgot. And we also
+> update dra74x iodelay configuration for mmc3 to use the recommended
+> values.
+>
+> Then I noticed we had introduced few new boot warnings with the various
+> recent ti-sysc changes and wanted to fix those. I also noticed we still
+> have too many warnings to be able to spot the real ones easily and fixed
+> up few of those. Sure some of the warnings have been around for a long
+> time and few of the fixes could have waited for the merge window, but
+> having more usable dmesg log level output is a valuable.
+>
+> Other fixes are IO size correction for am335x UARTs that cause issues
+> for at least FreeBSD using the same device tree file that checks that
+> the child IO range is not larger than the parent has.
+>
+> For omap1 ams-delta keyboard we need to fix a irq ack that broke with
+> all the recent gpio changes.
+>
+> And there are also few static checker warning fixes for recent am335x
+> PM changes and ti-sysc driver and one switch fall-though update.
 
-Hi David,
+Pulled into fixes, thanks!
 
-Just a minor suggestion for your v3: you don't need to initialize
-"action" here since it'll be automatically updated in the core
-counter_action_show function to the value returned by your action_get
-callback function. So you can safely delete those two ".action =" lines.
-
-William Breathitt Gray
+     Arnd
