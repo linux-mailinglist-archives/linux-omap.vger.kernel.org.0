@@ -2,191 +2,248 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8304F8F1C3
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 19:15:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F7D08F698
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 23:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731887AbfHOROn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Aug 2019 13:14:43 -0400
-Received: from mail-ed1-f97.google.com ([209.85.208.97]:40226 "EHLO
-        mail-ed1-f97.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731808AbfHOROi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Aug 2019 13:14:38 -0400
-Received: by mail-ed1-f97.google.com with SMTP id h8so2704211edv.7
-        for <linux-omap@vger.kernel.org>; Thu, 15 Aug 2019 10:14:36 -0700 (PDT)
+        id S1732032AbfHOVpr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Aug 2019 17:45:47 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:45938 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732069AbfHOVpr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Aug 2019 17:45:47 -0400
+Received: by mail-io1-f68.google.com with SMTP id t3so2212170ioj.12
+        for <linux-omap@vger.kernel.org>; Thu, 15 Aug 2019 14:45:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=W7dmVx9P3UmAPzrTGPH5uSZ0QIPuvEvdrwJSpH7T3YU=;
+        b=UvwFCeQKWgS/IzuUPPn7RfklN9Zql/GyFk3V5sgSbz2HeSVkZYyq0PTQDP8elVLf61
+         ljLjFz7YJVupCG3J2uKCQzPuDrqnMJ4E4Vnk9wJB258peyYWcBw3G/osZCBm1Nf91I9H
+         L0T9yvYbxJHk4tRKEjLNCOXrzeaaOsRKkKPsHwdyvWwg/PwJZPPsUJTz5k1E/ExnsxZM
+         GkoX7d2lz+45p430ZDhqxV3DVYrZi3bnvL0KTwtHyCIA9JUc/mu6cp5lydcJZT2Lab28
+         mT0Xcy+vAVvDncmrAkZHqUHqflPpFUTsJ/OQnam5WI0JyPPW9XpQKkOQJ8jtqvy14zR/
+         jOHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:message-id:date;
-        bh=STOMTB8soQ9SpdsHI1kcwCTKID5AQX15fSXLD/Rbf0M=;
-        b=huf8EnBZlcyf2XLSOe/XkDnF7pTTSOqK9HLM+XJI2I3krscS8d0fNldGAir1z+GzEF
-         D5bKwtTT0Lwy9oOIQEU8Wx6MzahAEFdTMSpiKf5hO+Po5i/c6EtSGz7rL5RPU61ohPRV
-         j0rD9VCeX+hno6zR/c0cDwsDze4/IY6QNnR5O95yBb+0FxweqCj9JgQ846c9zrcN54fm
-         QPnTFGgQ/6bf9oMiim24M6UdEQYO/o+wWij9gl0HcSIw2ReBvKanijLWyK3d8I3LuAT/
-         arj8sSFgTEdWACBpQ7AMXOdm4owOmknpmFqtGYcZ/IQ3KHzrUEY+SFJecg9850NRTIA1
-         JvFg==
-X-Gm-Message-State: APjAAAUPpvqNsQqBLYlksTuqa8yyBGDfeGutIerEfHT1hTAdX+JT+39L
-        WK+c/cxls0cndwcEQsszuezSFjCowt2hIUO0un8lV680lyw6wRJT/3OGt2Y9vQ2biA==
-X-Google-Smtp-Source: APXvYqzyLgL1YBE8FNASctPwC+Lz8lFYO0GlBacef5FmFcI+vyr96Ej3Sj0TANIE49KimsRnjlx4FWa+dJ98
-X-Received: by 2002:a50:ba81:: with SMTP id x1mr6456670ede.257.1565889276186;
-        Thu, 15 Aug 2019 10:14:36 -0700 (PDT)
-Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk. [2a01:7e01::f03c:91ff:fed4:a3b6])
-        by smtp-relay.gmail.com with ESMTPS id m17sm21059ejc.94.2019.08.15.10.14.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Aug 2019 10:14:36 -0700 (PDT)
-X-Relaying-Domain: sirena.org.uk
-Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.co.uk>)
-        id 1hyJKd-000531-Qb; Thu, 15 Aug 2019 17:14:35 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 3A8AC2742BC7; Thu, 15 Aug 2019 18:14:35 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     Adam Ford <aford173@gmail.com>, broonie@kernel.org,
-        lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, nm@ti.com, sboyd@kernel.org,
-        stable@vger.kernel.org, tony@atomide.com, vireshk@kernel.org
-Subject: Applied "regulator: twl: voltage lists for vdd1/2 on twl4030" to the regulator tree
-In-Reply-To: <20190814214319.24087-1-andreas@kemnade.info>
-X-Patchwork-Hint: ignore
-Message-Id: <20190815171435.3A8AC2742BC7@ypsilon.sirena.org.uk>
-Date:   Thu, 15 Aug 2019 18:14:35 +0100 (BST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=W7dmVx9P3UmAPzrTGPH5uSZ0QIPuvEvdrwJSpH7T3YU=;
+        b=SWXJL/LdonB7SQRTI605MSksrrPoUDmfj74LbGkny04HC7UfW2yFW0qYAzQwmMjgLJ
+         eWW1rDTlA0dPiXhAIB5MoqtNhAwpIEIrFdijb+lssRVkMQ8t+WOlDE+exASwAhd14vyN
+         Fi1nitgQqpz7Ak6TAvTAi1gjt98XgQozuIipqmxRPyez8Y4mQa1vHQo6zHP2W7+bH8In
+         l3f13YPeGAquzawazggnOVWO7ju3oWwQ6qGj05q0ABujGBG2tiFQSbzA6zQ6aAPS8me1
+         N4DiS/E9AjGSE5nRrtpq2UsnXhTF+qegU+sO88liiPi+LcF/VF7pqiyYWBcizz7nSqB4
+         vWug==
+X-Gm-Message-State: APjAAAUvuTJlyPrrp7cwrM5WSHPaqAX96L1zUbCuSPI3fA/1e8P174dO
+        Uc473+kZ/v8zshd72+71+2LDrtPqPiPN3g7u9zCbzjXhSz4=
+X-Google-Smtp-Source: APXvYqw024JdkHU1Vq7Jj2RVlCcUWewGB1WJ/BRHOvh0QqIvc/fLkTEH/2UWUcIRb/+hbFyBm5liQ9IiJqQGX4NoItI=
+X-Received: by 2002:a6b:621a:: with SMTP id f26mr7207565iog.127.1565905545802;
+ Thu, 15 Aug 2019 14:45:45 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190801012823.28730-1-neolynx@gmail.com> <CAHCN7x+nD0J6KZYtfH+0ApQTPO5byO2obMkUwc9Uf4WubyRbTw@mail.gmail.com>
+In-Reply-To: <CAHCN7x+nD0J6KZYtfH+0ApQTPO5byO2obMkUwc9Uf4WubyRbTw@mail.gmail.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Thu, 15 Aug 2019 16:45:34 -0500
+Message-ID: <CAHCN7x+aAOOAik6QyAbhc0_Q_sDa3+Jh70vQBp=3CmAv-dLMdw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/3] Enable 1GHz support on omap36xx
+To:     =?UTF-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The patch
+On Thu, Aug 15, 2019 at 10:41 AM Adam Ford <aford173@gmail.com> wrote:
+>
+> On Wed, Jul 31, 2019 at 8:42 PM Andr=C3=A9 Roth <neolynx@gmail.com> wrote=
+:
+> >
+> > Hi all,
+> >
+> > the current mainline kernel does not provide support for running
+> > omap36xx based boards at 1GHz for chips like DM3730 where this would be
+> > supported. It has been discussed many times, I hope you do not mind me
+> > bringing this up again ;)
+> >
+> > I found some proposed patches by Nishanth Menon from TI [1] and a
+> > statement [2] that drivers for the Voltage processor and controllers ar=
+e
+> > needed to properly run those chips at 1GHz using Adaptive Voltage
+> > Scaling (AVS) and SmartReflex (SR).
+> >
+> > As there are drivers for VP and VC in the kernel, I tried to figure out
+> > how to enable them and found a PATCH 1/3 which enables SR in the TWL
+> > driver. However, the order in which PM, SR and TWL are initialized or
+> > probed did not match, which I was able to fix with PATCH 2/3. In the en=
+d
+> > calling omap_sr_enable in PATCH 3/3 finally enables SR and my board
+> > seems to run fine at 1GHz (not battery powered, full performance
+> > required).
+> >
 
-   regulator: twl: voltage lists for vdd1/2 on twl4030
+With this patch,
 
-has been applied to the regulator tree at
+[    3.361358] omap2_set_init_voltage: unable to set vdd_mpu_iva
+[    3.367156] omap2_set_init_voltage: unable to find boot up OPP for vdd_c=
+ore
+[    3.374206] omap2_set_init_voltage: unable to set vdd_core
+and
+[    3.414978] smartreflex 480cb000.smartreflex: omap_sr_probe:
+SmartReflex driver initialized
+[    3.423919] smartreflex 480c9000.smartreflex: omap_sr_probe:
+SmartReflex driver initialized
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-5.3
+Is there anything I need to do to make it be able to set vdd_core
+and/or vdd_mpu_iva?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+I also applied which also fixed
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+https://patchwork.kernel.org/patch/11094653/
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+I should not that I am running an 800MHz version of the DM3730, but I
+have a 1000 MHz somewhere at work.  I wasn't sure if this is normal or
+if I needed to do something else.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+adam
 
-Thanks,
-Mark
-
-From 3829100a63724f6dbf264b2a7f06e7f638ed952d Mon Sep 17 00:00:00 2001
-From: Andreas Kemnade <andreas@kemnade.info>
-Date: Wed, 14 Aug 2019 23:43:19 +0200
-Subject: [PATCH] regulator: twl: voltage lists for vdd1/2 on twl4030
-
-_opp_supported_by_regulators() wrongly ignored errors from
-regulator_is_supported_voltage(), so it considered errors as
-success. Since
-commit 498209445124 ("regulator: core: simplify return value on suported_voltage")
-regulator_is_supported_voltage() returns a real boolean, so
-errors make _opp_supported_by_regulators() return false.
-
-That reveals a problem with the declaration of the VDD1/2
-regulators on twl4030.
-The VDD1/VDD2 regulators on twl4030 are neither defined with
-voltage lists nor with the continuous flag set, so
-regulator_is_supported_voltage() returns false and an error
-before above mentioned commit (which was considered success)
-The result is that after the above mentioned commit cpufreq
-does not work properly e.g. dm3730.
-
-[    2.490997] core: _opp_supported_by_regulators: OPP minuV: 1012500 maxuV: 1012500, not supported by regulator
-[    2.501617] cpu cpu0: _opp_add: OPP not supported by regulators (300000000)
-[    2.509246] core: _opp_supported_by_regulators: OPP minuV: 1200000 maxuV: 1200000, not supported by regulator
-[    2.519775] cpu cpu0: _opp_add: OPP not supported by regulators (600000000)
-[    2.527313] core: _opp_supported_by_regulators: OPP minuV: 1325000 maxuV: 1325000, not supported by regulator
-[    2.537750] cpu cpu0: _opp_add: OPP not supported by regulators (800000000)
-
-The patch fixes declaration of VDD1/2 regulators by
-adding proper voltage lists.
-
-Fixes: 498209445124 ("regulator: core: simplify return value on suported_voltage")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Tested-by: Adam Ford <aford173@gmail.com> #logicpd-torpedo-37xx-devkit
-Link: https://lore.kernel.org/r/20190814214319.24087-1-andreas@kemnade.info
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/regulator/twl-regulator.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/regulator/twl-regulator.c b/drivers/regulator/twl-regulator.c
-index 6fa15b2d6fb3..866b4dd01da9 100644
---- a/drivers/regulator/twl-regulator.c
-+++ b/drivers/regulator/twl-regulator.c
-@@ -359,6 +359,17 @@ static const u16 VINTANA2_VSEL_table[] = {
- 	2500, 2750,
- };
- 
-+/* 600mV to 1450mV in 12.5 mV steps */
-+static const struct regulator_linear_range VDD1_ranges[] = {
-+	REGULATOR_LINEAR_RANGE(600000, 0, 68, 12500)
-+};
-+
-+/* 600mV to 1450mV in 12.5 mV steps, everything above = 1500mV */
-+static const struct regulator_linear_range VDD2_ranges[] = {
-+	REGULATOR_LINEAR_RANGE(600000, 0, 68, 12500),
-+	REGULATOR_LINEAR_RANGE(1500000, 69, 69, 12500)
-+};
-+
- static int twl4030ldo_list_voltage(struct regulator_dev *rdev, unsigned index)
- {
- 	struct twlreg_info	*info = rdev_get_drvdata(rdev);
-@@ -427,6 +438,8 @@ static int twl4030smps_get_voltage(struct regulator_dev *rdev)
- }
- 
- static const struct regulator_ops twl4030smps_ops = {
-+	.list_voltage   = regulator_list_voltage_linear_range,
-+
- 	.set_voltage	= twl4030smps_set_voltage,
- 	.get_voltage	= twl4030smps_get_voltage,
- };
-@@ -466,7 +479,8 @@ static const struct twlreg_info TWL4030_INFO_##label = { \
- 		}, \
- 	}
- 
--#define TWL4030_ADJUSTABLE_SMPS(label, offset, num, turnon_delay, remap_conf) \
-+#define TWL4030_ADJUSTABLE_SMPS(label, offset, num, turnon_delay, remap_conf, \
-+		n_volt) \
- static const struct twlreg_info TWL4030_INFO_##label = { \
- 	.base = offset, \
- 	.id = num, \
-@@ -479,6 +493,9 @@ static const struct twlreg_info TWL4030_INFO_##label = { \
- 		.owner = THIS_MODULE, \
- 		.enable_time = turnon_delay, \
- 		.of_map_mode = twl4030reg_map_mode, \
-+		.n_voltages = n_volt, \
-+		.n_linear_ranges = ARRAY_SIZE(label ## _ranges), \
-+		.linear_ranges = label ## _ranges, \
- 		}, \
- 	}
- 
-@@ -518,8 +535,8 @@ TWL4030_ADJUSTABLE_LDO(VSIM, 0x37, 9, 100, 0x00);
- TWL4030_ADJUSTABLE_LDO(VDAC, 0x3b, 10, 100, 0x08);
- TWL4030_ADJUSTABLE_LDO(VINTANA2, 0x43, 12, 100, 0x08);
- TWL4030_ADJUSTABLE_LDO(VIO, 0x4b, 14, 1000, 0x08);
--TWL4030_ADJUSTABLE_SMPS(VDD1, 0x55, 15, 1000, 0x08);
--TWL4030_ADJUSTABLE_SMPS(VDD2, 0x63, 16, 1000, 0x08);
-+TWL4030_ADJUSTABLE_SMPS(VDD1, 0x55, 15, 1000, 0x08, 68);
-+TWL4030_ADJUSTABLE_SMPS(VDD2, 0x63, 16, 1000, 0x08, 69);
- /* VUSBCP is managed *only* by the USB subchip */
- TWL4030_FIXED_LDO(VINTANA1, 0x3f, 1500, 11, 100, 0x08);
- TWL4030_FIXED_LDO(VINTDIG, 0x47, 1500, 13, 100, 0x08);
--- 
-2.20.1
-
+>
+> Question:
+>
+> Not all 36xx SoC's can do 1GHz.  I know there is a register that we
+> can read on the OMAP36 to determine its max speed, but I wasn't sure
+> how that would play into cpufreq or whatever is going to be driving
+> the dynamic voltage and frequency scaling.  Are going to have to
+> expect people who have the 1GHz version to use a custom device tree?
+> AFAICT, there is an updated opp-v2-ti table which has a 'supported'
+> entry which appears to read registers to determine which opp's are
+> available for the am33xx, but I don't think this applies to the
+> omap36.  Do we need something that like for this?
+>
+> adam
+>
+> > Looking at a register dump on DM3730, I can see that VP, VC1 and SR1 ar=
+e
+> > enabled:
+> >
+> > Global PRM_VC_SMPS_SA     [0x48307220]: 0x00120012  0000000000010010000=
+0000000010010
+> > Global PRM_VC_SMPS_VOL_RA [0x48307224]: 0x00010000  0000000000000001000=
+0000000000000
+> > Global PRM_VC_SMPS_CMD_RA [0x48307228]: 0x00000000  0000000000000000000=
+0000000000000
+> > Global PRM_VC_CMD_VAL_0   [0x4830722C]: 0x3E201E00  0011111000100000000=
+1111000000000
+> > Global PRM_VC_CMD_VAL_1   [0x48307230]: 0x30201E00  0011000000100000000=
+1111000000000
+> > Global PRM_VC_CH_CONF     [0x48307234]: 0x00130008  0000000000010011000=
+0000000001000
+> > Global PRM_VC_I2C_CFG     [0x48307238]: 0x00000008  0000000000000000000=
+0000000001000
+> > Global PRM_VC_BYPASS_VAL  [0x4830723C]: 0x00000000  0000000000000000000=
+0000000000000
+> > Global PRM_RSTCTRL        [0x48307250]: 0x00000000  0000000000000000000=
+0000000000000
+> > Global PRM_RSTTIME        [0x48307254]: 0x00001006  0000000000000000000=
+1000000000110
+> > Global PRM_RSTST          [0x48307258]: 0x00000001  0000000000000000000=
+0000000000001
+> > Global PRM_VOLTCTRL       [0x48307260]: 0x0000000A  0000000000000000000=
+0000000001010
+> > Global PRM_SRAM_PCHARGE   [0x48307264]: 0x00000050  0000000000000000000=
+0000001010000
+> > Global PRM_CLKSRC_CTRL    [0x48307270]: 0x00000088  0000000000000000000=
+0000010001000
+> > Global PRM_OBS            [0x48307280]: 0x00000000  0000000000000000000=
+0000000000000
+> > Global PRM_VOLTSETUP1     [0x48307290]: 0x00700070  0000000001110000000=
+0000001110000
+> > Global PRM_VOLTOFFSET     [0x48307294]: 0x00000010  0000000000000000000=
+0000000010000
+> > Global PRM_CLKSETUP       [0x48307298]: 0x00000148  0000000000000000000=
+0000101001000
+> > Global PRM_POLCTRL        [0x4830729C]: 0x00000002  0000000000000000000=
+0000000000010
+> > Global PRM_VOLTSETUP2     [0x483072A0]: 0x00000000  0000000000000000000=
+0000000000000
+> > Global PRM_VP1_CONFIG     [0x483072B0]: 0x00273E09  0000000000100111001=
+1111000001001
+> > Global PRM_VP1_VSTEPMIN   [0x483072B4]: 0x00002901  0000000000000000001=
+0100100000001
+> > Global PRM_VP1_VSTEPMAX   [0x483072B8]: 0x00002904  0000000000000000001=
+0100100000100
+> > Global PRM_VP1_VLIMITTO   [0x483072BC]: 0x42140A28  0100001000010100000=
+0101000101000
+> > Global PRM_VP1_VOLTAGE    [0x483072C0]: 0x00000034  0000000000000000000=
+0000000110100
+> > Global PRM_VP1_STATUS     [0x483072C4]: 0x00000001  0000000000000000000=
+0000000000001
+> > Global PRM_VP2_CONFIG     [0x483072D0]: 0x00000008  0000000000000000000=
+0000000001000
+> > Global PRM_VP2_VSTEPMIN   [0x483072D4]: 0x00002901  0000000000000000001=
+0100100000001
+> > Global PRM_VP2_VSTEPMAX   [0x483072D8]: 0x00002904  0000000000000000001=
+0100100000100
+> > Global PRM_VP2_VLIMITTO   [0x483072DC]: 0x2C180A28  0010110000011000000=
+0101000101000
+> > Global PRM_VP2_VOLTAGE    [0x483072E0]: 0x00000000  0000000000000000000=
+0000000000000
+> > Global PRM_VP2_STATUS     [0x483072E4]: 0x00000001  0000000000000000000=
+0000000000001
+> > Global PRM_LDO_ABB_SETUP  [0x483072F0]: 0x00000000  0000000000000000000=
+0000000000000
+> > Global PRM_LDO_ABB_CTRL   [0x483072F4]: 0x00003201  0000000000000000001=
+1001000000001
+> > PRCM   SRCONFIG           [0x480C9000]: 0x00041E03  0000000000000100000=
+1111000000011
+> > PRCM   SRSTATUS           [0x480C9004]: 0x0000000A  0000000000000000000=
+0000000001010
+> > PRCM   SENVAL             [0x480C9008]: 0x064A0715  0000011001001010000=
+0011100010101
+> > PRCM   SENMIN             [0x480C900C]: 0xFFFFFFFF  1111111111111111111=
+1111111111111
+> > PRCM   SENMAX             [0x480C9010]: 0x00000000  0000000000000000000=
+0000000000000
+> > PRCM   SENAVG             [0x480C9014]: 0x00000000  0000000000000000000=
+0000000000000
+> > PRCM   AVGWEIGHT          [0x480C9018]: 0x00000000  0000000000000000000=
+0000000000000
+> > PRCM   NVALUERECIPROCAL   [0x480C901C]: 0x00AAA699  0000000010101010101=
+0011010011001
+> > PRCM   IRQSTATUS_RAW      [0x480C9024]: 0x00000006  0000000000000000000=
+0000000000110
+> > PRCM   IRQSTATUS          [0x480C9028]: 0x00000000  0000000000000000000=
+0000000000000
+> > PRCM   IRQENABLE_SET      [0x480C902C]: 0x00000000  0000000000000000000=
+0000000000000
+> > PRCM   IRQENABLE_CLR      [0x480C9030]: 0x00000000  0000000000000000000=
+0000000000000
+> > PRCM   SENERROR_REG       [0x480C9034]: 0x0000FDFD  0000000000000000111=
+1110111111101
+> > PRCM   ERRCONFIG          [0x480C9038]: 0x064402FA  0000011001000100000=
+0001011111010
+> >
+> > @Nishanth: could you confirm that DM3730 (1GHz version) is properly
+> > configured for running at 1GHz ? (I know this is a tricky question and
+> > has been asked before...)
+> >
+> > As this is just a hack, I would like to know how to properly
+> > initialize those driver in the right order, preferably via device tree
+> > or kernel config instead of a board file.
+> >
+> > Also, SR2 (vcore) is not enabled, as no OPPs are defined in the device
+> > tree. I assume it would require 1.2V at 200MHz but could not find any
+> > reference to that.
+> >
+> >
+> > [1] https://marc.info/?l=3Dlinux-kernel&m=3D137185002523884&w=3D2
+> > [2] https://patchwork.kernel.org/patch/9526883/#20026873
+> > [3] https://marc.info/?l=3Dlinux-omap&m=3D129584746102725&w=3D2
+> >
+> > [PATCH 1/3] OMAP3: PM: Set/clear T2 bit for Smartreflex on TWL
+> > [PATCH 2/3] OMAP: Initialize PM and SmartReflex after TWL probe
+> > [PATCH 3/3] OMAP3: Enable SmartReflex on om36xx
+> >
+> >
