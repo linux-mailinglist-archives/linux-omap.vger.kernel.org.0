@@ -2,86 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE9958E07B
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 00:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD23D8E35E
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 06:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729881AbfHNWO1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Aug 2019 18:14:27 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:45099 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727929AbfHNWOV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Aug 2019 18:14:21 -0400
-Received: by mail-qt1-f196.google.com with SMTP id k13so325809qtm.12
-        for <linux-omap@vger.kernel.org>; Wed, 14 Aug 2019 15:14:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=p6m83mGjllDiHyeRTSS1oVMHX5M/xE6ILn6PPhzsgs4=;
-        b=l5PC+4msT+R1VOq1FIInu61dIh2STHPN9aSBt/Y5M3n644FfA169IT6wzP+sfbruwG
-         5vHd8QNfmmF7FOlV1OW4+1ls9+argQAW0MZ9696kjqRFjMtNiRxkPVvom8CpuMz6+P3J
-         lvnykAE+N5ClLjt8+21Oenlj55mmWn47h6bOufTUj3iAyACG+cL0ImoQgj5m6u3w1/lr
-         fVPm9fs++0X3Li7mpOQ13No26+jYpH9OobXYps5GGnrfpp0Xq6qTsPtsJRMHzlRsuSi2
-         Q5RuPSHMeFGhG1MzboDTj+tp2IBpQDy9TN5wUYjWC528WeGARQxpLHz2F9meUvIkEvkQ
-         sSPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=p6m83mGjllDiHyeRTSS1oVMHX5M/xE6ILn6PPhzsgs4=;
-        b=dAfu1lA55CVAzqthlgZWOahcHAQPAbav5LMZBzU/9Gp1uqCaH8AWDC0u8JrrIOsGu4
-         iZ4u0aA8/hNUAUyXZ36j80jRocQIlXYwM47Iz+ZyXXJVBsHq5TGlON8QwUiaXMANfeYx
-         pBT/cmhMtOPdg0ORFfYiJHg9gRstq7kejN1P7eEURt6hSwVb47DAnxfftDy8ND/cJzJs
-         fJusVx4RoZKKwyLF21NZhvluDk8zUVV1IsqzV89zF7jD2K/5fw2WdRzBKnxYJ4sdMOOA
-         rlUyCiYkf3QjletlPn9Ff+8OEKSw8k4GZHAk9tT0xYNO6KcQE7ErQyyp+kiliXwUcrYQ
-         Hgfg==
-X-Gm-Message-State: APjAAAXKxvsRq/g/kMxOytACvbP5S3+arVCI85T8EsFEsYlpDIVnkhkg
-        P1AhVLmJlHSwFuW+lfyaY1CzCFdJ26POWTjQaVg=
-X-Google-Smtp-Source: APXvYqwvEwq36YC/YcFdGthiFQqEswOUmu8y33AXL4ty34gsygcaTEjmhvj04/dFUfa1vFoE719aJcDSjuFoUwkSVes=
-X-Received: by 2002:aed:3826:: with SMTP id j35mr1333309qte.54.1565820860049;
- Wed, 14 Aug 2019 15:14:20 -0700 (PDT)
+        id S1726008AbfHOECz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Aug 2019 00:02:55 -0400
+Received: from muru.com ([72.249.23.125]:57858 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725440AbfHOECz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 15 Aug 2019 00:02:55 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id C95EE80C8;
+        Thu, 15 Aug 2019 04:03:19 +0000 (UTC)
+Date:   Wed, 14 Aug 2019 21:02:48 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Filip =?utf-8?Q?Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        =?utf-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
+        Philipp Rossak <embed3d@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>, Tero Kristo <t-kristo@ti.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        moaz korena <moaz@korena.xyz>
+Subject: Re: [PATCH 0/6] Configure sgx interconnect data for some omap
+ variants
+Message-ID: <20190815040248.GF52127@atomide.com>
+References: <20190814131408.57162-1-tony@atomide.com>
+ <CAHCN7x+p5+XoRHJP--mZ0QcP0FzpYK+pRj7d8Y-js6a8z=p_7A@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:aed:3544:0:0:0:0:0 with HTTP; Wed, 14 Aug 2019 15:14:19
- -0700 (PDT)
-Reply-To: Katerinejones19@gmail.com
-From:   "MS. MARYANNA B. THOMASON" <westernunion.benin982@gmail.com>
-Date:   Wed, 14 Aug 2019 23:14:19 +0100
-Message-ID: <CAP=nHB+U+By16HzeUHiDfPT5KNtemGam6gniZhL2s7_itZ3F8w@mail.gmail.com>
-Subject: TODAY, Wed, Aug 14, 2019 I AM READY FOR COMING TO YOUR ADDRESS WITH
- THIS ATM CARD
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHCN7x+p5+XoRHJP--mZ0QcP0FzpYK+pRj7d8Y-js6a8z=p_7A@mail.gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-ATTN DEAR PARCEL BENEFICIARY.
+* Adam Ford <aford173@gmail.com> [190814 19:14]:
+> echo on > /sys/bus/platform/devices/5000fe00.target-module/power/control
+> # devmem 0x5000fe00 32
+> 0x40000000
+> 
+> and
+> 
+> echo auto > /sys/bus/platform/devices/5000fe00.target-module/power/control
+> # devmem 0x5000fe00 32
+> [  776.373504] 8<--- cut here ---
+> [  776.376617] Unhandled fault: external abort on non-linefetch (0x1018) at 0xb6
+> f76e00
+> [  776.384338] pgd = bde98bb0
+> [  776.387054] [b6f76e00] *pgd=8cb61831, *pte=5000f383, *ppte=5000fa33
+> [  776.393402] In-band Error seen by MPU  at address 0
+> 
+> Then
+> 
+> Tested-by: Adam Ford <aford173@gmail.com> #logicpd-torpedo-37xx-devkit
 
-I AM CATHY JONES,DIPLOMATIC AGENT ASIGNED ON THE DELIVERY OF YOUR ATM
-CARD THROUGH MS. MARYANNA B. THOMASON, DHL MANAGEMENT DIRECTOR NEW
-YORK.
-TODAY, Wed, Aug 14, 2019 I AM READY FOR COMING TO YOUR ADDRESS WITH
-THIS ATM CARD, So before i deliver I want you to send me.
-official diplomatic agent delivery fee sum of $150.00 us
- only. I am here at JFK Airport,Florida. USA
+Thanks for testing, yes that's all there is to it for the SoC glue in
+this case. The child device driver(s) can be just generic sgx driver(s)
+that just do pm_runtime_get_sync() to access the registers and that
+enables the parent interconnect target module as needed.
 
-SEND THIS FEE BY WESTERN UNION OR MONEY WITH RECEIVER'S NAME AND ADDRESS BELOW.
+> I do wonder if an omap34xx or omap36xx should use
+> compatible = "ti,sysc-omap4", "ti,sysc";
+> 
+> should it use an omap3 equivalent?
 
-RECEIVER'S NAME-----------------ERROL PRINGLE
-ADDRESS----------------3500 OLD DENTON RD APT 208; CARROLLTON, TEXAS 75007
-COUNTRY----------------USA
-AMOUNT--------------------$150.00 ONLY
-TEST QUESTION----------------WHO IS THE CREATOR
-ANSWER------------------GOD
- meanwhile this $150.00 is required by the Custom Service,USA Homeland
-Security,for protection of your delivery, it will make the ATM CARD
-and funds worth $15.8MILLION US DOLLARS secure, Beleiev me, this is my
-word, remark my word,you will receive your delivery from me, Mrs.
-Cathy Jones once you send this only $150.00 today.
-I WAIT ON YOUR PAYMENT CONFIRMATION, ONCE I GOT YOUR PAYMENT, I WILL
-FINALLY ARRIVE TO YOUR NEAREST ADDRESS. today
-THANKS AND MAY GOD BLESS  YOU
-CATHY JONES,DIPLOMATIC AGENT
-EMAIL; katerinejones19@gmail.com
-CALL OR TEXT ME, DIPLOMATIC AGENT MS. CATHY JONES
-Phone Number; (408) 650-6103,
+We named the old hwmod type1 as ti,sysc-omap2, type2 as ti,sysc-omap4,
+and type3 as ti,sysc-omap4-simple based on where we thought they
+appeared. Based on the sysconfig register bit layout, sgx on omap36xx
+seems to have a subset of ti,sysc-omap4 and we can recycle it. If we
+used a wrong type, the module would not get enabled or disabled as
+the register bits would not match.
+
+How about let's add a comment like:
+
+Yes sg has a subset of ti,sysc-omap4 type sysconfig register
+
+Regards,
+
+Tony
