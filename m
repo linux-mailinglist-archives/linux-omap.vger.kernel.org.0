@@ -2,128 +2,172 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70C558E434
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 06:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C1278E53E
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Aug 2019 09:10:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726139AbfHOEtM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Aug 2019 00:49:12 -0400
-Received: from muru.com ([72.249.23.125]:57896 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725681AbfHOEtL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 15 Aug 2019 00:49:11 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 51FD380C8;
-        Thu, 15 Aug 2019 04:49:39 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] fixes for omap variants for v5.3-rc cycle
-Date:   Wed, 14 Aug 2019 21:49:08 -0700
-Message-Id: <pull-1565844391-332885@atomide.com>
-X-Mailer: git-send-email 2.21.0
+        id S1730535AbfHOHKt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Aug 2019 03:10:49 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:33440 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730404AbfHOHKs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Aug 2019 03:10:48 -0400
+Received: by mail-qt1-f196.google.com with SMTP id v38so1469004qtb.0;
+        Thu, 15 Aug 2019 00:10:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+XZYmbsnbr0sSwIKTeFZGEhcqBxG1btN9f5DRyi29Vc=;
+        b=DfO8MQ8L3aUWOnTlbTG1bpnKD4q2MFa849saZYTebOqTqoUI4bA7jI453gfyE8dCQT
+         m33owpPqbUtBwzyI9wLH0dCaQnQLg0xdIy3U7CI7fXtu/OVleoYHLlP7scCEgUY3fOjF
+         H6BFgaIerNa6IUaWt9qQ9bzAT58kwtH+POhCvfxpGybZLrCxtGz73BH4QT2Kw4sRsZ9b
+         LLnWu42T0rkK9b8ilCdOyC90P3ZD23E03gn8sF80PyfnDtLQOxItTAeLzHxkOyDd7XSf
+         4lghyBWJYZ81mSgao52TbX6y7Wa8W6skagPs3HpKz2pqnAUDJBiH9PYG56wfO4nk0j5K
+         BEJQ==
+X-Gm-Message-State: APjAAAU32kcxfXUNksln0EyFECCWaj/+GHbWrn9vybPkDD9ZxfUrecPN
+        +2vqSy5s+MWMIl47bhXz4t+ckmrTm+Fr19GgjPU=
+X-Google-Smtp-Source: APXvYqzes2xrmqdbClCROX/Q+PfszKVeI1DW0ZX+TIylT9deTu0v9IMyny/8McBlEj0PozeCVXwlC25l9yO+FLH9dOM=
+X-Received: by 2002:ac8:117:: with SMTP id e23mr2752639qtg.18.1565853047353;
+ Thu, 15 Aug 2019 00:10:47 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190808212234.2213262-1-arnd@arndb.de> <20190808214347.2865294-1-arnd@arndb.de>
+ <20190808214347.2865294-2-arnd@arndb.de> <20190814211002.GA1952@darkstar.musicnaut.iki.fi>
+In-Reply-To: <20190814211002.GA1952@darkstar.musicnaut.iki.fi>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 15 Aug 2019 09:10:31 +0200
+Message-ID: <CAK8P3a36dztkctUD2jZND9gR7zo2joZu4PPzVozDJCi9gLcmkg@mail.gmail.com>
+Subject: Re: [PATCH 21/22] ARM: omap1: use common clk framework
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     Tony Lindgren <tony@atomide.com>, Paul Walmsley <paul@pwsan.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+On Wed, Aug 14, 2019 at 11:10 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+>
+> Hi,
+>
+> On Thu, Aug 08, 2019 at 11:43:39PM +0200, Arnd Bergmann wrote:
+> > The omap1 clock driver now uses types and calling conventions
+> > that are compatible with the common clk core.
+> >
+> > Turn on CONFIG_COMMON_CLK and remove all the code that is
+> > now duplicated.
+> >
+> > Note: if this previous steps didn't already break it, this one
+> > most likely will, because the interfaces are very likely to
+> > have different semantics.
+>
+> QEMU SX1 board works up to this patch (the I/O virtual address change
+> included). With this patch, it seems to fail to allocate memory during
+> omap1_init_early() (the log is a bit messy as I extracted it using QEMU
+> memory dumping):
 
-The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
+That sounds pretty good, I definitely did not expect this patch
+to work without first dealing with a few bugs, and it it did not break
+earlier, I'm willing to call that success ;-)
 
-  Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
+Unfortunately, doing it in qemu does not guarantee that the clocks
+are set up right at this point: if any of the clocks are disabled when
+they should not be, qemu won't care as much as real hardware  would.
 
-are available in the Git repository at:
+> swapper: page allocation failure: order:0, mode:0x0(), nodemask=(null)
+> CPU: 0 PID: 0 Comm: swapper Not tainted 5.3.0-rc4-sx1-los_80efa++ #1
+> Hardware name: OMAP310 based Siemens SX1
+> [<c000dc44>] (unwind_backtrace) from [<c000cb00>] (show_stack+0x10/0x18)
+> [<c000cb00>] (show_stack) from [<c0172ba8>] (dump_stack+0x18/0x24)
+> [<c0172ba8>] (dump_stack) from [<c00844e8>] (warn_alloc+0x90/0x140)
+> [<c00844e8>] (warn_alloc) from [<c0084dcc>] (__alloc_pages_nodemask+0x7a4/0x9cc)
+> [<c0084dcc>] (__alloc_pages_nodemask) from [<c008df24>] (slob_new_pages.constpro
+> p.2+0x10/0x3c)
+> [<c008df24>] (slob_new_pages.constprop.2) from [<c008e208>] (slob_alloc.constprop.1+0xe4/0x1e8)
+> [<c008e208>] (slob_alloc.constprop.1) from [<c008e344>] (__kmalloc+0x38/0xb0)
+> [<c008e344>] (__kmalloc) from [<c0126514>] (__clk_register+0x20/0x62c)
+> [<c0126514>] (__clk_register) from [<c01f6614>] (omap1_clk_init+0x88/0x220)
+> [<c01f6614>] (omap1_clk_init) from [<c01f5820>] (omap1_init_early+0x20/0x30)
+> [<c01f5820>] (omap1_init_early) from [<c01f09e8>] (start_kernel+0x48/0x408)
+> [<c01f09e8>] (start_kernel) from [<00000000>] (0x0)
+> Clocks: ARM_SYSST: 0x003a DPLL_CTL: 0x2002 ARM_CKCTL: 0x3000
+> Clocking rate (xtal/DPLL1/MPU): 12.0/12.0/0.0 MHz
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.3/fixes-rc4
+Ok, so here the problem is that we call the omap1_clk_init() function from
+setup_arch(), which is before we can even allocate memory with kmalloc.
 
-for you to fetch changes up to 4a65bbb9109ed7edd4b6ed7168ced48abb8561a2:
+Most other machines do it from init_time(), which comes after the initialization
+of the memory allocator.
 
-  soc: ti: pm33xx: Make two symbols static (2019-08-13 05:05:38 -0700)
+Something like this would be needed:
 
-----------------------------------------------------------------
-Fixes for omap variants for v5.3-rc cycle
+diff --git a/arch/arm/mach-omap1/io.c b/arch/arm/mach-omap1/io.c
+index b0465a956ea8..17ba8dfd8e19 100644
+--- a/arch/arm/mach-omap1/io.c
++++ b/arch/arm/mach-omap1/io.c
+@@ -125,9 +125,6 @@ void __init omap1_init_early(void)
+        omap_writew(0x0, MPU_PUBLIC_TIPB_CNTL);
+        omap_writew(0x0, MPU_PRIVATE_TIPB_CNTL);
 
-We have another fix to disable voltage switching for am57xx SDIO as
-the bootrom cannot handle all the voltages after a reset that thought
-I had already sent a pull request for earlier but forgot. And we also
-update dra74x iodelay configuration for mmc3 to use the recommended
-values.
+-       /* Must init clocks early to assure that timer interrupt works
+-        */
+-       omap1_clk_init();
+        omap1_mux_init();
+ }
 
-Then I noticed we had introduced few new boot warnings with the various
-recent ti-sysc changes and wanted to fix those. I also noticed we still
-have too many warnings to be able to spot the real ones easily and fixed
-up few of those. Sure some of the warnings have been around for a long
-time and few of the fixes could have waited for the merge window, but
-having more usable dmesg log level output is a valuable.
+diff --git a/arch/arm/mach-omap1/time.c b/arch/arm/mach-omap1/time.c
+index 7cc1a968230e..4e5ddd1db429 100644
+--- a/arch/arm/mach-omap1/time.c
++++ b/arch/arm/mach-omap1/time.c
+@@ -228,6 +228,8 @@ static inline void omap_mpu_timer_init(void)
+  */
+ void __init omap1_timer_init(void)
+ {
++       omap1_clk_init();
++
+        if (omap_32k_timer_init() != 0)
+                omap_mpu_timer_init();
+ }
 
-Other fixes are IO size correction for am335x UARTs that cause issues
-for at least FreeBSD using the same device tree file that checks that
-the child IO range is not larger than the parent has.
+but the removed comment up there makes me suspect that it introduces
+a different issue.
 
-For omap1 ams-delta keyboard we need to fix a irq ack that broke with
-all the recent gpio changes.
+> "8<--- cut here ---
+> "Unable to handle kernel NULL pointer dereference at virtual address 00000018
+> "pgd = (ptrval)
+> "[00000018] *pgd=00000000
+> Internal error: Oops: 5 [#1] ARM
+> CPU: 0 PID: 0 Comm: swapper Not tainted 5.3.0-rc4-sx1-los_80efa++ #1
+> Hardware name: OMAP310 based Siemens SX1
+> PC is at clk_hw_get_parent+0x4/0x14
+> LR is at omap1_clk_enable+0xc/0xcc
+> OMAP310 based Siemens SX1
+> [    0.000000]  free:0 free_pcp:0 free_cma:0
+> pc : [<c0126cd0>]    lr : [<c00128d4>]    psr: 600001d3
+> sp : c03aff88  ip : 00000000  fp : 00000000
+> r10: 00000001  r9 : 54029252  r8 : 10000100
+> r7 : c03b1000  r6 : 00002002  r5 : 0000003a  r4 : c03b5444
+> r3 : 00000000  r2 : c03b9818  r1 : ff03ce08  r0 : c03b5444
+> Flags: nZCv  IRQs off  FIQs off  Mode SVC_32  ISA ARM  Segment user
+> Control: 0000317f  Table: 10004000  DAC: 00000055
+> Process swapper (pid: 0, stack limit = 0x(ptrval))
+> Stack: (0xc03aff88 to 0xc03b0000)
+> ff80:                   c03b5438 0000003a 00002002 c01f6734 00000000 00000057
+> ffa0: 0000313d c01f5820 00000000 c01f09e8 00000000 00000000 00000000 00000000
+> ffc0: 00000000 00000000 00000000 c0201a38 00000000 c01f0330 00000057 0000313d
+> ffe0: 00000265 10000100 54029252 0000317f 00000000 00000000 00000000 00000000
+> [<c0126cd0>] (clk_hw_get_parent) from [<c00128d4>] (omap1_clk_enable+0xc/0xcc)
+> [<c00128d4>] (omap1_clk_enable) from [<c01f6734>] (omap1_clk_init+0x1a8/0x220)
+> [<c01f6734>] (omap1_clk_init) from [<c01f5820>] (omap1_init_early+0x20/0x30)
+> [<c01f5820>] (omap1_init_early) from [<c01f09e8>] (start_kernel+0x48/0x408)
+> [<c01f09e8>] (start_kernel) from [<00000000>] (0x0)
 
-And there are also few static checker warning fixes for recent am335x
-PM changes and ti-sysc driver and one switch fall-though update.
+clk_hw->core is NULL here, presumably as a result of the first issue.
 
-----------------------------------------------------------------
-Emmanuel Vadot (1):
-      ARM: dts: am335x: Fix UARTs length
-
-Faiz Abbas (2):
-      ARM: dts: am57xx: Disable voltage switching for SD card
-      ARM: dts: dra74x: Fix iodelay configuration for mmc3
-
-Gustavo A. R. Silva (1):
-      ARM: OMAP: dma: Mark expected switch fall-throughs
-
-Janusz Krzysztofik (1):
-      ARM: OMAP1: ams-delta-fiq: Fix missing irq_ack
-
-Keerthy (1):
-      soc: ti: pm33xx: Fix static checker warnings
-
-Suman Anna (1):
-      bus: ti-sysc: Simplify cleanup upon failures in sysc_probe()
-
-Tony Lindgren (10):
-      Merge commit '79499bb11db508' into fixes
-      ARM: OMAP2+: Fix missing SYSC_HAS_RESET_STATUS for dra7 epwmss
-      bus: ti-sysc: Fix handling of forced idle
-      bus: ti-sysc: Fix using configured sysc mask value
-      ARM: dts: Fix flags for gpio7
-      ARM: dts: Fix incorrect dcan register mapping for am3, am4 and dra7
-      ARM: OMAP2+: Fix omap4 errata warning on other SoCs
-      Merge branch 'ti-sysc-fixes' into fixes
-      ARM: dts: Fix incomplete dts data for am3 and am4 mmc
-      Merge branch 'ti-sysc-fixes' into fixes
-
-YueHaibing (1):
-      soc: ti: pm33xx: Make two symbols static
-
- arch/arm/boot/dts/am33xx-l4.dtsi                | 16 +++++---
- arch/arm/boot/dts/am33xx.dtsi                   | 32 +++++++++++++---
- arch/arm/boot/dts/am4372.dtsi                   | 32 +++++++++++++---
- arch/arm/boot/dts/am437x-l4.dtsi                |  4 ++
- arch/arm/boot/dts/am571x-idk.dts                |  7 +---
- arch/arm/boot/dts/am572x-idk.dts                |  7 +---
- arch/arm/boot/dts/am574x-idk.dts                |  7 +---
- arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi |  3 +-
- arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts   |  7 +---
- arch/arm/boot/dts/am57xx-beagle-x15-revc.dts    |  7 +---
- arch/arm/boot/dts/dra7-evm.dts                  |  2 +-
- arch/arm/boot/dts/dra7-l4.dtsi                  |  6 +--
- arch/arm/boot/dts/dra74x-mmc-iodelay.dtsi       | 50 ++++++++++++-------------
- arch/arm/mach-omap1/ams-delta-fiq-handler.S     |  3 +-
- arch/arm/mach-omap1/ams-delta-fiq.c             |  4 +-
- arch/arm/mach-omap2/omap4-common.c              |  3 ++
- arch/arm/mach-omap2/omap_hwmod_7xx_data.c       |  3 +-
- arch/arm/plat-omap/dma.c                        | 14 +++----
- drivers/bus/ti-sysc.c                           | 24 ++++++------
- drivers/soc/ti/pm33xx.c                         | 19 ++++++----
- 20 files changed, 138 insertions(+), 112 deletions(-)
+      Arnd
