@@ -2,80 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6929290B31
+	by mail.lfdr.de (Postfix) with ESMTP id DD65590B32
 	for <lists+linux-omap@lfdr.de>; Sat, 17 Aug 2019 00:58:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727765AbfHPW6U (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Aug 2019 18:58:20 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:39746 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727696AbfHPW6U (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Aug 2019 18:58:20 -0400
-Received: by mail-io1-f65.google.com with SMTP id l7so9392101ioj.6
-        for <linux-omap@vger.kernel.org>; Fri, 16 Aug 2019 15:58:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=Yt62NiecCdV5bCndAIPH9PMyIUX3h3cE3F9d5aI9/eA=;
-        b=K/BdsAq56whhrj6bPhV+kJkcy4aNp2WSRRyulE+pYkYHsi96oApxg7BTXq7puEmPL7
-         hy5OcordJ0JrGocSsdBvnmYZUk5/WYGVjJmp5RAKONW+NWalo8Noz9c91Y7+WdD2U1S6
-         NCFIuXq4rLCobOK3Gr504qeP1TzFOA38ZFRIGyvN7pOjwB5psNWv2hgiRY6PP37DW/xB
-         nOkZayLnkLc5scETtFcyUVGIF159yIVK6Jmc7VC/DFZ5yYjTbWi06smGOg8q6jJtiyYg
-         5aVXADaGVSvIYaQUJyi3JOCUE75W9OZlhDDNGpMi+c0HPrd/D2/aKIWbNvuCvNNFdV6j
-         hIQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=Yt62NiecCdV5bCndAIPH9PMyIUX3h3cE3F9d5aI9/eA=;
-        b=F9f/rEe3MQIM8UtRXD5jDfJ1UKRYT3ircE7cnuy5n469//Y70hwThMUp65lEv5iCMv
-         Hfg5vOB/1NToqM/Eijc5+Q0owbNtIFYo6d6MBQzBWmxbdA3qkw5MsUbCyB08ulHWm1P5
-         y87oNHhR10aFDt/+WYk9F3Ya741GijtFYyrklKJNd4P/5MSTEJ9Oy4DGCaXHniMnFvo6
-         VJBZH6BI2JQ3I5W0xdILIVCG6dg/Ay5OGiBjXL0L51Y/agMBl58GOKz7qWozj6ESLx3B
-         EQ106td/2xAVKK3pibZghp8FTJ+jTeRiblDbxaVpINHbbDNHpZhV5/h0zC13j/BnzfOd
-         6GCw==
-X-Gm-Message-State: APjAAAUYygpQf6/VlxWtedatKAgVdqQFGSNlRa0d3NSB52j5eMawLXxY
-        jXGX8ALj9AY0OI3Pg5C5y/iV5FZV3sM=
-X-Google-Smtp-Source: APXvYqxHPKTDkFklE2NHIbQU48hboGvRsG1l3A5E2ksHevQk8ulUPYgu9ExBYVt8MDH/KZgJ+vJJ6w==
-X-Received: by 2002:a02:9988:: with SMTP id a8mr13702493jal.127.1565996299419;
-        Fri, 16 Aug 2019 15:58:19 -0700 (PDT)
-Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id s10sm8662194iod.46.2019.08.16.15.58.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Aug 2019 15:58:17 -0700 (PDT)
-From:   Adam Ford <aford173@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>
-Subject: [PATCH] ARM: dts: logicpd-torpedo-som: Remove twl_keypad
-Date:   Fri, 16 Aug 2019 17:58:12 -0500
-Message-Id: <20190816225812.14301-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1727766AbfHPW6p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Aug 2019 18:58:45 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:54724 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727696AbfHPW6p (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Aug 2019 18:58:45 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7GMweZw041435;
+        Fri, 16 Aug 2019 17:58:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1565996320;
+        bh=ZhrZRIol3LJne5DNWYX66jQ+190Rd1/PWrEfkR4gDCs=;
+        h=From:To:CC:Subject:Date;
+        b=paBifWsEEojK9yFtprRtARaF/wJ1qFvrKH+RnQuqVLIqJcClpj1LVGMtCO7sYRqnt
+         FK9s1pwEY3pxmO36de062r4c6A9f3UAw/7WjRuGi2jpOyNDvZex3/+psk/beMDkb+j
+         nAOmheH66XeP0cDH7wM9xtbaCB0nZ5GQpetI8WvQ=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7GMwdC2031428
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 16 Aug 2019 17:58:40 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 16
+ Aug 2019 17:58:39 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Fri, 16 Aug 2019 17:58:39 -0500
+Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7GMwdM8024932;
+        Fri, 16 Aug 2019 17:58:39 -0500
+Received: from localhost (irmo.dhcp.ti.com [128.247.58.153])
+        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id x7GMwdZ24401;
+        Fri, 16 Aug 2019 17:58:39 -0500 (CDT)
+From:   Suman Anna <s-anna@ti.com>
+To:     Joerg Roedel <joro@8bytes.org>
+CC:     <iommu@lists.linux-foundation.org>, <linux-omap@vger.kernel.org>,
+        Suman Anna <s-anna@ti.com>
+Subject: [PATCH] iommu/omap: Use the correct type for SLAB_HWCACHE_ALIGN
+Date:   Fri, 16 Aug 2019 17:58:37 -0500
+Message-ID: <20190816225837.6362-1-s-anna@ti.com>
+X-Mailer: git-send-email 2.22.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The TWL4030 used on the Logit PD Torpedo SOM does not have the
-keypad pins routed.  This patch disables the twl_keypad driver
-to remove some splat during boot:
+The macro SLAB_HWCACHE_ALIGN is of type slab_flags_t, but is currently
+assigned in the OMAP IOMMU driver using a unsigned long variable. This
+generates a sparse warning around the type check. Fix this by defining
+the variable flags using the correct type.
 
-[    5.902221] twl4030_keypad 48070000.i2c:twl@48:keypad: missing or malformed property linux,keymap: -22
-[    5.911773] twl4030_keypad 48070000.i2c:twl@48:keypad: Failed to build keymap
-[    5.918975] twl4030_keypad: probe of 48070000.i2c:twl@48:keypad failed with error -22
+Signed-off-by: Suman Anna <s-anna@ti.com>
+---
+ drivers/iommu/omap-iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-
-diff --git a/arch/arm/boot/dts/logicpd-torpedo-som.dtsi b/arch/arm/boot/dts/logicpd-torpedo-som.dtsi
-index 3fdd0a72f87f..506b118e511a 100644
---- a/arch/arm/boot/dts/logicpd-torpedo-som.dtsi
-+++ b/arch/arm/boot/dts/logicpd-torpedo-som.dtsi
-@@ -192,3 +192,7 @@
- &twl_gpio {
- 	ti,use-leds;
- };
-+
-+&twl_keypad {
-+	status = "disabled";
-+};
+diff --git a/drivers/iommu/omap-iommu.c b/drivers/iommu/omap-iommu.c
+index 99a9ff3e7f71..8645e9b175a3 100644
+--- a/drivers/iommu/omap-iommu.c
++++ b/drivers/iommu/omap-iommu.c
+@@ -1818,7 +1818,7 @@ static const struct iommu_ops omap_iommu_ops = {
+ static int __init omap_iommu_init(void)
+ {
+ 	struct kmem_cache *p;
+-	const unsigned long flags = SLAB_HWCACHE_ALIGN;
++	const slab_flags_t flags = SLAB_HWCACHE_ALIGN;
+ 	size_t align = 1 << 10; /* L2 pagetable alignement */
+ 	struct device_node *np;
+ 	int ret;
 -- 
-2.17.1
+2.22.0
 
