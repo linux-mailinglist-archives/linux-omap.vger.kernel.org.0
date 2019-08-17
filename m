@@ -2,109 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9473690FA7
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Aug 2019 11:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86C3E91230
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Aug 2019 20:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725908AbfHQJZF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 17 Aug 2019 05:25:05 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:20068 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725877AbfHQJZF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Aug 2019 05:25:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1566033903;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=ijs/kURws359Us4T+k669A+WG1ftqk/SV6cjRML2p+8=;
-        b=t2AhWV8hGWVn0BHgsfiO5jwXvi1mRw1IUTcS9jIdyparuHZ+PEpx+YZ12p60zYc2u4
-        podz5l64QWqPZenitbVCX8yDz6RgE0k1wL7hA2IkFGvmZKwmX3svaUxmW7KXSp/z68Je
-        2yln+iDkZFDRJGdcs6/9ryaZHelTFaTL7+8W8hYv398cVo93YenbM/1LZ4XKg9N6XMlf
-        FNAlQmHoPjt1damGs9Lt37c2X0fSiUXCu+WdHs8cBi/ZWNvtMrmI5Q0k6hybVClW0SLy
-        bKx8SpZzUB2osHZT6v8SSitUFx5DgK+9NIU7SanRLC3H7vm2UTXumB2WAS6FoMIdu7OT
-        EBWg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBi5wp38sDGQBQKV9qb"
-X-RZG-CLASS-ID: mo00
-Received: from [192.168.2.7]
-        by smtp.strato.de (RZmta 44.26.1 DYNA|AUTH)
-        with ESMTPSA id V074e8v7H9OuJeh
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Sat, 17 Aug 2019 11:24:56 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [RFC PATCH 0/3] Enable 1GHz support on omap36xx
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <CAHCN7x+Ye6sB_YqO0sAX1OJDw64B-qGS3pL545v3Xk5z914cwQ@mail.gmail.com>
-Date:   Sat, 17 Aug 2019 11:24:59 +0200
-Cc:     =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0C1EF64E-B33C-4BFA-A7D3-471DD1B9EE86@goldelico.com>
-References: <20190801012823.28730-1-neolynx@gmail.com> <CAHCN7x+nD0J6KZYtfH+0ApQTPO5byO2obMkUwc9Uf4WubyRbTw@mail.gmail.com> <C04F49BA-1229-4E96-9FCF-4FC662D1DB11@goldelico.com> <CAHCN7x+Ye6sB_YqO0sAX1OJDw64B-qGS3pL545v3Xk5z914cwQ@mail.gmail.com>
+        id S1726215AbfHQSTY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 17 Aug 2019 14:19:24 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:45388 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725945AbfHQSTY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Aug 2019 14:19:24 -0400
+Received: by mail-ed1-f68.google.com with SMTP id x19so7747998eda.12
+        for <linux-omap@vger.kernel.org>; Sat, 17 Aug 2019 11:19:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=l4Zq+tFnMwb2gtAsHpdtwm0JNO0SPfA6LHnkY5EY27s=;
+        b=Za/YA7zek+5ZztDFmIfgo7PQsP/odjpheL8StIBTB43v6MlEMG1qy37cOOE8w0jQca
+         NQEH3MfxwMJ3C7jdxQpulHgx593kBfZ8u0N8BGRCTlTGpNliQen2bhcx+/W6S7syswu1
+         Nn8yyz8Y70mEJWwtks1IoWfvzUCSdXBhOTBQTonvXNm8c7YzrzOO1sRAF1/c+XuPdvlt
+         mzJO8f31bZdXtFY5WHBEOhMbtIFkmychLoBq1MdB9FiM+8VggSi73Gt7mz5bVtTAYUPx
+         EzOr3e9qZ9xxtTgw7cgdvr77VbOdPRkKAMzFtxHFFWWZsgYijR+uIvXinEQwTAlSSFAb
+         ETlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=l4Zq+tFnMwb2gtAsHpdtwm0JNO0SPfA6LHnkY5EY27s=;
+        b=koEPMBxtGa7vc5gW2JvZuyJAkEoJESpzhx9bbu/Qrg+bZoXRMIFuMhRnECvVzRwtH/
+         JlT/OFagkdVdnO4oub/YjWZxR1NBXNfM8bu2pf4GH0CcmAIpF8rC/oeksmbxk0SyMDPi
+         vd6JmDm3qcnbD19ZvWAIk2kZbJf05G6Rdjatc8PSbi3rj3TuzM1xaUxWTuh0+Uvo3RUq
+         u6Q8v4R22A31e7vsvs4wGvSf+Z96DxlNLZfLG+VZGKDVfDBS0TdIy2dXzHPZ5sJg0864
+         smQLtWjsgUa9BS83MGEvWsE7GUtLVp6nLiNciX3NkRtV1uyVN7FIhO78mb+AWqhKYfXJ
+         Gr2A==
+X-Gm-Message-State: APjAAAV14JdJCd8GFj/0ZKOhjunUZHSJStI6R1uGV2n+o80gB6SDAj0T
+        pq7Uog4wkqMgnhZmM/FVkP4=
+X-Google-Smtp-Source: APXvYqyUoOUm0C+S7m7AmUwFNU7FpsVFGrqnSdc8Gy7DExCpkaw08vx9C/yeVYpXLdKG9V1uvkG6oQ==
+X-Received: by 2002:a50:b875:: with SMTP id k50mr17228396ede.232.1566065962468;
+        Sat, 17 Aug 2019 11:19:22 -0700 (PDT)
+Received: from lepton (46.137.104.92.dynamic.wline.res.cust.swisscom.ch. [92.104.137.46])
+        by smtp.gmail.com with ESMTPSA id oh24sm1299616ejb.35.2019.08.17.11.19.21
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 17 Aug 2019 11:19:21 -0700 (PDT)
+Date:   Sat, 17 Aug 2019 20:19:18 +0200
+From:   =?UTF-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>
 To:     Adam Ford <aford173@gmail.com>
-X-Mailer: Apple Mail (2.3124)
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
+Subject: Re: [RFC PATCH 0/3] Enable 1GHz support on omap36xx
+Message-ID: <20190817201918.7d3fc065@lepton>
+In-Reply-To: <CAHCN7x+aAOOAik6QyAbhc0_Q_sDa3+Jh70vQBp=3CmAv-dLMdw@mail.gmail.com>
+References: <20190801012823.28730-1-neolynx@gmail.com>
+        <CAHCN7x+nD0J6KZYtfH+0ApQTPO5byO2obMkUwc9Uf4WubyRbTw@mail.gmail.com>
+        <CAHCN7x+aAOOAik6QyAbhc0_Q_sDa3+Jh70vQBp=3CmAv-dLMdw@mail.gmail.com>
+X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
-> Am 16.08.2019 um 14:25 schrieb Adam Ford <aford173@gmail.com>:
->>=20
->> I tried to get such code into drivers/cpufreq/ti-cpufreq.c but
->> gave up when I found that this is not used for the omap36xx.
->>=20
->>=20
->> To me it looks as if this opp-v2-ti table is what we need for =
-omap36xx.dtsi
->> as well to manage the speed-binned bit of DM3730. To me it looks =
-sufficiently
->> similar to an "eFuse" bit. But I didn't look into the details of the
->> opp-v2-ti format, because all that is a second step after getting =
-1GHz stable
->> on 1GHz capable chips.
->=20
-> I looked into this once, but I couldn't figure out how to interpret
-> the "opp-supported-hw" entries.
+Hi Adam,
 
-Translating the OPP values isn't difficult and I have started a sketch =
-for it.
-"opp-supported-hw" is indeed difficult to understand. I just have a =
-working
-hypothesis that it seems to be possible to have major chip variants and =
-minor
-variants. Major variants get their own 32 bit value in each record. =
-Minor variants
-are described by bit positions.
+> With this patch,
+> 
+> [    3.361358] omap2_set_init_voltage: unable to set vdd_mpu_iva
+> [    3.367156] omap2_set_init_voltage: unable to find boot up OPP for vdd_core
+> [    3.374206] omap2_set_init_voltage: unable to set vdd_core
+> and
+> [    3.414978] smartreflex 480cb000.smartreflex: omap_sr_probe:
+> SmartReflex driver initialized
+> [    3.423919] smartreflex 480c9000.smartreflex: omap_sr_probe:
+> SmartReflex driver initialized
+> 
+> Is there anything I need to do to make it be able to set vdd_core
+> and/or vdd_mpu_iva?
 
-Since we only have to care about one major variant of omap36xx (unless =
-we want
-a single OPP value list for omap34xx and omap36xx) and there are only =
-800MHz
-and 1GHz rated chips a single entry array with only one or two bits in =
-each value
-should suffice to handle it.
+I think OPPs for vdd_core are missing in the device tree, only the
+vdd_mpu_iva ones are defined in the CPU.
 
-What I am missing in the big picture is how to specify the register =
-address to
-be inspected and how the bits in the eFuse / "speed-binned" register =
-match
-the bits in the "opp-supported-hw" entries. Maybe it is done by driver =
-code
-or needs a separate DT entry somewhere.
+I did not find out yet how to configure them... and the current
+drivers for VC and VP will probably change with the AVS device tree
+implementation. This will also render my patches obsolete I think.
 
-For the records, we have to read the Control Device Status Register 15:0
-(Address 0x4800 244C) BIT(9).
+> I also applied which also fixed
+> 
+> https://patchwork.kernel.org/patch/11094653/
+> 
+> I should not that I am running an 800MHz version of the DM3730, but I
+> have a 1000 MHz somewhere at work.  I wasn't sure if this is normal or
+> if I needed to do something else.
 
-I'll look into that as soon as I find time for further study.
+AFAIK an internal calibration of the voltages should be
+performed (i.e. at boot time) in order to ensure the correct voltages
+are provided, which might change with temperature / silicon aging...
+I guess this also applies if you run at 800MHz, but might be less
+severe.
 
->  If you keep me in the, loop, I'm more
-> than happen to help where I can and/or test when possible.
+My patch only enables those drivers, but the calibration is not
+actually done. A discussion off-list with TI has revealed some more
+information, which we can share here soon...
 
-Sure!
+Kind Regards,
 
-BR,
-Nikolaus
-
+ André
