@@ -2,140 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F282392035
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 11:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A95AE9204A
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 11:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727082AbfHSJYR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Aug 2019 05:24:17 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:47341 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726627AbfHSJYQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 05:24:16 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id B65278043B; Mon, 19 Aug 2019 11:24:01 +0200 (CEST)
-Date:   Mon, 19 Aug 2019 11:24:14 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sre@kernel.org>, nekit1000@gmail.com,
-        mpartap@gmx.net, Merlijn Wajer <merlijn@wizzup.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>
-Subject: Re: wifi on Motorola Droid 4 in 5.3-rc2
-Message-ID: <20190819092414.GB21072@amd>
-References: <20190818104629.GA27360@amd>
- <CAOf5uwnUx3mtGGHFGqKB30qcb_AMhMEhHLp2pf-4pUdhi7KP7w@mail.gmail.com>
- <20190818114332.GA32205@amd>
- <CAOf5uwncAHQ-nfFzQhv=T+pyXJ+60_QNT4F11VJg+25GjFFkxQ@mail.gmail.com>
+        id S1726373AbfHSJ2j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Aug 2019 05:28:39 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:50662 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726211AbfHSJ2j (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 05:28:39 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7J9ST5v094267;
+        Mon, 19 Aug 2019 04:28:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1566206909;
+        bh=HGtxFvyXr5k21k3Vw4hs+J3eZoXEfv8iPVT8Ir7Om78=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Y+52lKgTCMut3kxNLKxT6noSbLG2YBlV2PI1gz+1x9wffhvj8p8flSv2TSf4KmKI9
+         4FInvdAAKRZ/8pbWPhodsjKzXqkLDovwYDg2KrD9rmPmfYA8AS5WJpdSTGYe1iQ60G
+         Mo4aSO/v3dJD/0bECQuPqjf0/IFxZx/SIwnBjf/A=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7J9STpQ077641
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 19 Aug 2019 04:28:29 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 19
+ Aug 2019 04:28:28 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 19 Aug 2019 04:28:28 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7J9SQGj017750;
+        Mon, 19 Aug 2019 04:28:26 -0500
+Subject: Re: [PATCH 1/8] dt-bindings: omap: add new binding for PRM instances
+To:     Keerthy <j-keerthy@ti.com>, <ssantosh@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>
+CC:     <tony@atomide.com>, <s-anna@ti.com>, <devicetree@vger.kernel.org>
+References: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
+ <1565164139-21886-2-git-send-email-t-kristo@ti.com>
+ <6bf4194b-23c0-2de0-3f9c-e99195336dc7@ti.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <aa5538ae-76b4-942b-dc98-6e55628cf36a@ti.com>
+Date:   Mon, 19 Aug 2019 12:28:25 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="IiVenqGWf+H9Y6IX"
-Content-Disposition: inline
-In-Reply-To: <CAOf5uwncAHQ-nfFzQhv=T+pyXJ+60_QNT4F11VJg+25GjFFkxQ@mail.gmail.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <6bf4194b-23c0-2de0-3f9c-e99195336dc7@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 08/08/2019 07:35, Keerthy wrote:
+> 
+> 
+> On 07/08/19 1:18 PM, Tero Kristo wrote:
+>> Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
+>> of these will act as a power domain controller and potentially as a reset
+>> provider.
+>>
+>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>> ---
+>>   .../devicetree/bindings/arm/omap/prm-inst.txt      | 24 
+>> ++++++++++++++++++++++
+>>   1 file changed, 24 insertions(+)
+>>   create mode 100644 
+>> Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+>>
+>> diff --git a/Documentation/devicetree/bindings/arm/omap/prm-inst.txt 
+>> b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+>> new file mode 100644
+>> index 0000000..e0ae87b
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+>> @@ -0,0 +1,24 @@
+>> +OMAP PRM instance bindings
+>> +
+>> +Power and Reset Manager is an IP block on OMAP family of devices which
+>> +handle the power domains and their current state, and provide reset
+>> +handling for the domains and/or separate IP blocks under the power 
+>> domain
+>> +hierarchy.
+>> +
+>> +Required properties:
+>> +- compatible:    Must be one of:
+>> +        "ti,am3-prm-inst"
+>> +        "ti,am4-prm-inst"
+>> +        "ti,omap4-prm-inst"
+>> +        "ti,omap5-prm-inst"
+>> +        "ti,dra7-prm-inst"
+>> +- reg:        Contains PRM instance register address range
+>> +        (base address and length)
+> 
+> How about reset-cells property, Isn't that a mandatory property?
 
---IiVenqGWf+H9Y6IX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It is optional, but you are right, should be added to this.
 
-Hi!
+-Tero
 
-> > [   13.653778] panel-dsi-cm 58004000.encoder:display: using lookup
-> > tables for GPIO lookup
-> > [   13.661834] panel-dsi-cm 58004000.encoder:display: No GPIO consumer
-> > te found
-> > [   14.756622] ------------[ cut here ]------------
-> > [   14.761352] WARNING: CPU: 0 PID: 20 at
-> > /data/fast/l/k/drivers/net/wireless/ti/wlcore/sdio.c:86
-> > wl12xx_sdio_raw_read+0xa8/0x128
-> > [   14.772888] Modules linked in:
-> > [   14.776062] CPU: 0 PID: 20 Comm: kworker/0:1 Tainted: G        W
-> > 5.3.0-rc4-58571-gdbaece1 #85
-> > [   14.783630] Hardware name: Generic OMAP4 (Flattened Device Tree)
-> > [   14.791381] Workqueue: events request_firmware_work_func
->=20
-> You have a timeout here. Can be that your reset sequence of the wifi
-> is not optimal because
-> is not responding?
+> 
+>> +
+>> +Example:
+>> +
+>> +prm_dsp2: prm@1b00 {
+>> +    compatible = "ti,dra7-prm-inst";
+>> +    reg = <0x1b00 0x40>;
+>> +    #reset-cells = <1>;
+>> +};
+>>
 
-I tried delays and printks... WL12XX_REG_FUSE_BD_ADDR_1 read fails,
-and retrying does not really help. If you have idea how to debug/fix
-this, let me know...
-
-Best regards,
-								Pavel
-
-diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/t=
-i/wl12xx/main.c
-index 3c9c623..afb294a 100644
---- a/drivers/net/wireless/ti/wl12xx/main.c
-+++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -1505,24 +1505,40 @@ static int wl12xx_get_fuse_mac(struct wl1271 *wl)
- {
- 	u32 mac1, mac2;
- 	int ret;
--
-+=09
-+	mdelay(1);
-+	printk("get_fuse_mac: %d\n", __LINE__);
- 	ret =3D wlcore_set_partition(wl, &wl->ptable[PART_DRPW]);
- 	if (ret < 0)
- 		goto out;
-=20
-+	mdelay(1);
-+	printk("get_fuse_mac: %d\n", __LINE__);
-+	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_1, &mac1);
-+	if (ret < 0) {
-+	printk("get_fuse_mac: X %d\n", __LINE__);
-+	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_1, &mac1);
-+	if (ret < 0) {
-+	printk("get_fuse_mac: XX %d\n", __LINE__);
- 	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_1, &mac1);
- 	if (ret < 0)
- 		goto out;
-+	}
-+	}
-+=09
-=20
-+	printk("get_fuse_mac: %d\n", __LINE__);
- 	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_2, &mac2);
- 	if (ret < 0)
- 		goto out;
-=20
-+	printk("get_fuse_mac: %d\n", __LINE__);
- 	/* these are the two parts of the BD_ADDR */
- 	wl->fuse_oui_addr =3D ((mac2 & 0xffff) << 8) +
- 		((mac1 & 0xff000000) >> 24);
- 	wl->fuse_nic_addr =3D mac1 & 0xffffff;
-=20
-+	printk("get_fuse_mac: %d\n", __LINE__);
- 	ret =3D wlcore_set_partition(wl, &wl->ptable[PART_DOWN]);
-=20
- out:
-
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---IiVenqGWf+H9Y6IX
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl1aar4ACgkQMOfwapXb+vJb9wCdEMS4069vsm0A0Ev1TelvVMac
-tEUAoMRMPsW6X4ytZQOHwh1J6znBX4KV
-=Zu6g
------END PGP SIGNATURE-----
-
---IiVenqGWf+H9Y6IX--
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
