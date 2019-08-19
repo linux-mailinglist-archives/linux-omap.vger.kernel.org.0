@@ -2,81 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69DC091FCF
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 11:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C8D191FE8
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 11:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727068AbfHSJRc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Aug 2019 05:17:32 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:45900 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726857AbfHSJRc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 05:17:32 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7J9HSst088485;
-        Mon, 19 Aug 2019 04:17:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1566206248;
-        bh=prR8qDp+rNmaZd7/JHYj4GbUFH/B/KbxOEvT8xu4Q7A=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=aaa+nb0qKt8TgoCItrtorHjpsHf8TZrHbBj8si4cwasCK3Q6mhoolz4LEZwF1yQ2q
-         grEozliQJ4D9fNwi6/1VrIpZYZXLSMxNMvlerB0e1pCd5Qptb7u1ZJ0CAOTPaHpJZg
-         m6Ha/dVrfLPfnKCUVXqJOx7yCs+4ZONC+WGz+CtE=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7J9HSRU042870
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 19 Aug 2019 04:17:28 -0500
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 19
- Aug 2019 04:17:25 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 19 Aug 2019 04:17:25 -0500
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7J9HNvm130587;
-        Mon, 19 Aug 2019 04:17:24 -0500
-Subject: Re: [PATCH 0/3] clk: ti: couple of fixes towards 5.4
-To:     Stephen Boyd <sboyd@kernel.org>, <linux-clk@vger.kernel.org>,
-        <mturquette@baylibre.com>
-CC:     <linux-omap@vger.kernel.org>, <tony@atomide.com>, <s-anna@ti.com>
-References: <1565183079-27798-1-git-send-email-t-kristo@ti.com>
- <20190807222514.059A0214C6@mail.kernel.org>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <ae4d9e95-e56b-3641-c167-567f83ebff93@ti.com>
-Date:   Mon, 19 Aug 2019 12:17:22 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727245AbfHSJTo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Aug 2019 05:19:44 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:46955 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726857AbfHSJTo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 05:19:44 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id BF9CA815D4; Mon, 19 Aug 2019 11:19:28 +0200 (CEST)
+Date:   Mon, 19 Aug 2019 11:19:41 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Michael Nazzareno Trimarchi <michael@amarulasolutions.com>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sebastian Reichel <sre@kernel.org>, nekit1000@gmail.com,
+        mpartap@gmx.net, Merlijn Wajer <merlijn@wizzup.org>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>
+Subject: Re: wifi on Motorola Droid 4 in 5.3-rc2
+Message-ID: <20190819091941.GA21072@amd>
+References: <20190818104629.GA27360@amd>
+ <CAOf5uwnUx3mtGGHFGqKB30qcb_AMhMEhHLp2pf-4pUdhi7KP7w@mail.gmail.com>
+ <20190818114332.GA32205@amd>
+ <87h86elgaa.fsf@tynnyri.adurom.net>
 MIME-Version: 1.0
-In-Reply-To: <20190807222514.059A0214C6@mail.kernel.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="zhXaljGHf11kAtnf"
+Content-Disposition: inline
+In-Reply-To: <87h86elgaa.fsf@tynnyri.adurom.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/08/2019 01:25, Stephen Boyd wrote:
-> Quoting Tero Kristo (2019-08-07 06:04:36)
->> Hi,
->>
->> Here are some TI clock fixes which can be queued for 5.4. These are
->> needed for getting remoteproc functionality working properly, as these
->> depend on reset handling also and timing out with clocks is bad for
->> them. The timer clock alias fix is needed for the same, as remoteprocs
->> depend on certain HW timers for their functionality.
->>
-> 
-> Looks ok to me. Are you going to add Fixes tags to any? Should I expect
-> a PR or you want me to pick them up directly?
 
-Either way is fine, let me resolve the comments from Suman before 
-proceeding with these.
+--zhXaljGHf11kAtnf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--Tero
+On Sun 2019-08-18 17:06:05, Kalle Valo wrote:
+> Pavel Machek <pavel@ucw.cz> writes:
+>=20
+> > On Sun 2019-08-18 12:53:01, Michael Nazzareno Trimarchi wrote:
+> >> Hi
+> >>=20
+> >> On Sun, Aug 18, 2019 at 12:46 PM Pavel Machek <pavel@ucw.cz> wrote:
+> >> >
+> >> > Hi!
+> >> >
+> >> > First, I guess I should mention that this is first time I'm attempti=
+ng
+> >> > to get wifi going on D4.
+> >> >
+> >> > I'm getting this:
+> >> >
+> >> > user@devuan:~/g/ofono$ sudo ifconfig wlan0 down
+> >> > user@devuan:~/g/ofono$ sudo ifconfig wlan0 up
+> >> > user@devuan:~/g/ofono$ sudo iwlist wlan0 scan
+> >> > wlan0     Interface doesn't support scanning.
+> >> >
+> >>=20
+> >> Try to use iw command. iwlist use an obsolete interface that you need
+> >> to activate in kernel for back compatibility with old command. Can be
+> >> your problem?
+> >
+> > Let me see ... CONFIG_CFG80211_WEXT was not set.
+> >
+> > Tried enabling it, and now I got. I remember getting it before,
+> > too... let me try few more boots, perhaps it is random.
+>=20
+> >From developers' point of view WEXT is ancient and untested, everybody
+> should switch to nl80211. So I strongly using iw (which uses nl80211).
+> Of course this nothing to do with the wlcore warning you saw, just
+> wanted to make you aware the state of wireless extensions.
 
+You may want to add this to Kconfig test... and maybe it would be good
+to mention iwconfig there, for easier grepping.
 
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+I'm using rather old distro; I'll update, but kernel is expected to be
+back-compatible.. and tested :-).
+
+Best regards,
+									Pavel
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--zhXaljGHf11kAtnf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl1aaa0ACgkQMOfwapXb+vLfxgCgwnUj/6zNjDP8mVxxlrKZK1lM
+pPoAnRZSZcbtXRDj7ieMQtZo77crQdVF
+=S9kP
+-----END PGP SIGNATURE-----
+
+--zhXaljGHf11kAtnf--
