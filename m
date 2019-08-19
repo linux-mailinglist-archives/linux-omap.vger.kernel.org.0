@@ -2,118 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1157C92066
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 11:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41000922B3
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 13:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727142AbfHSJdA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Aug 2019 05:33:00 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:37524 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726491AbfHSJdA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 05:33:00 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7J9WrkH091941;
-        Mon, 19 Aug 2019 04:32:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1566207173;
-        bh=Tl3P3YfHa/NL1Glc6+gi9ROXr1hL3aCM4tFVkkDcjxQ=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=h3quO8rmqSPHiuw0g6LdDMjd8pN9DhQYNhtigxwBvnKbRKfifRP539uaPACtFodgI
-         vTaOpQ2xuSvSFyO9fpDqKFQIxi4/pukcwTj4YjqrithJzPldLW/i/glHsOCRxq0owr
-         eMfacolfvd28GLBbZ2UHLXCvIWSjZB8XLpWhipN8=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7J9WrXh084052
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 19 Aug 2019 04:32:53 -0500
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 19
- Aug 2019 04:32:52 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 19 Aug 2019 04:32:52 -0500
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7J9Wn1A025052;
-        Mon, 19 Aug 2019 04:32:50 -0500
-Subject: Re: [PATCH 5/8] soc: ti: omap-prm: add omap4 PRM data
-To:     Keerthy <j-keerthy@ti.com>, <ssantosh@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>
-CC:     <tony@atomide.com>, <s-anna@ti.com>, <devicetree@vger.kernel.org>
-References: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
- <1565164139-21886-6-git-send-email-t-kristo@ti.com>
- <643cd090-a4d5-dac6-8395-c01f7fba04ab@ti.com>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <80e70ba0-691e-8284-ae6b-80b160b3317e@ti.com>
-Date:   Mon, 19 Aug 2019 12:32:49 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726949AbfHSLqO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Aug 2019 07:46:14 -0400
+Received: from muru.com ([72.249.23.125]:58228 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726703AbfHSLqO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 19 Aug 2019 07:46:14 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 2507A8043;
+        Mon, 19 Aug 2019 11:46:41 +0000 (UTC)
+Date:   Mon, 19 Aug 2019 04:46:09 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Merlijn Wajer <merlijn@wizzup.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Sebastian Reichel <sre@kernel.org>, bencoh@notk.org
+Subject: Re: Charging voltage for droid4 battery
+Message-ID: <20190819114609.GL52127@atomide.com>
+References: <4a845327-348f-5e4f-ec76-4c5d1f61c270@wizzup.org>
+ <20190818183459.GA29779@amd>
 MIME-Version: 1.0
-In-Reply-To: <643cd090-a4d5-dac6-8395-c01f7fba04ab@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190818183459.GA29779@amd>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/08/2019 08:30, Keerthy wrote:
+* Pavel Machek <pavel@ucw.cz> [190818 18:35]:
+> Hi!
 > 
+> > Recently my Droid4 battery seems to be swelling up quite a bit. It could
+> > be of old age, but bencoh (CC) suggested that he changed the driver code
+> > in his kernel to charge until 4.2v, instead of the 4.35v that mainline
+> > currently seems to use. (After one of his batteries started to swell up too)
+> > 
+> > I assume the 4.35v value was taken from Android?
+
+Yes the values we have been using are the values dumped from Android.
+
+So far I have not seen anything changing the values when left connected
+to a charger, so I was assuming/hoping that the charger hardware might
+drop the voltage automatically.. But it seems that's not the case.
+
+I too have seen at least two swollen batteries and at least one that
+seemed to happen with Cyanogenmod or LineageOS few years ago. I suspect
+it happens if left connected to a charger for a longer period of time
+like several weeks at a time.
+
+> You can let stock android charge the battery, then read voltage from
+> mainline kernel. It seems stock uses 4.35V:
 > 
-> On 07/08/19 1:18 PM, Tero Kristo wrote:
->> Add PRM data for omap4 family of SoCs.
->>
->> Signed-off-by: Tero Kristo <t-kristo@ti.com>
->> ---
->>   drivers/soc/ti/omap_prm.c | 20 ++++++++++++++++++++
->>   1 file changed, 20 insertions(+)
->>
->> diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
->> index 870515e3..9b8d5945 100644
->> --- a/drivers/soc/ti/omap_prm.c
->> +++ b/drivers/soc/ti/omap_prm.c
->> @@ -54,7 +54,27 @@ struct omap_reset_data {
->>   #define OMAP_PRM_NO_RSTST    BIT(0)
->> +struct omap_prm_data omap4_prm_data[] = {
->> +    { .name = "mpu", .base = 0x4a306300, .pwstst = 0x4 },
->> +    { .name = "tesla", .base = 0x4a306400, .pwstst = 0x4, .rstctl = 
->> 0x10, .rstst = 0x14 },
->> +    { .name = "abe", .base = 0x4a306500, .pwstst = 0x4 },
->> +    { .name = "always_on_core", .base = 0x4a306600, .pwstst = 0x4 },
->> +    { .name = "core", .base = 0x4a306700, .pwstst = 0x4, .rstctl = 
->> 0x210, .rstst = 0x214 },
->> +    { .name = "ivahd", .base = 0x4a306f00, .pwstst = 0x4, .rstctl = 
->> 0x10, .rstst = 0x14 },
->> +    { .name = "cam", .base = 0x4a307000, .pwstst = 0x4 },
->> +    { .name = "dss", .base = 0x4a307100, .pwstst = 0x4 },
->> +    { .name = "gfx", .base = 0x4a307200, .pwstst = 0x4 },
->> +    { .name = "l3init", .base = 0x4a307300, .pwstst = 0x4 },
->> +    { .name = "l4per", .base = 0x4a307400, .pwstst = 0x4 },
->> +    { .name = "cefuse", .base = 0x4a307600, .pwstst = 0x4 },
->> +    { .name = "wkup", .base = 0x4a307700, .pwstst = 0x4 },
->> +    { .name = "emu", .base = 0x4a307900, .pwstst = 0x4 },
->> +    { .name = "device", .base = 0x4a307b00, .rstctl = 0x0, .rstst = 
->> 0x4 },
->> +    { },
->> +};
+> https://forums.lenovo.com/t5/Moto-Z/MOTO-Z-EXTREME-BATTERY-DRAIN/m-p/4435636
 > 
-> So at some point arch/arm/mach-omap2/powerdomains44xx_data.c
-> duplicated data will be removed?
+> ...but maybe we should not.
 
-Yes, that would be the path forward eventually.
+OK so sounds like Motorola always keeps the voltage at 4.35V
+and there's no need to try to dump out any more charger related
+values from Android.
 
--Tero
+> https://batteryuniversity.com/learn/article/how_to_prolong_lithium_based_batteries
 
-> 
->> +
->>   static const struct of_device_id omap_prm_id_table[] = {
->> +    { .compatible = "ti,omap4-prm-inst", .data = omap4_prm_data },
->>       { },
->>   };
->>
+Pavel, care to send out a minimal fix to lower the charge
+voltage to 4.2V since you have the related changes already?
 
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Then later on we may want to optionally consider implementing
+support for 4.35V charge voltages assuming we scale down the
+charge voltage to 4.2V after reaching full charge.
+
+Regards,
+
+Tony
