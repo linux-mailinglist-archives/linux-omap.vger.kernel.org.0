@@ -2,175 +2,282 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DC3F94E88
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 21:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30C8C94F8D
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 23:07:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728363AbfHSTn2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Aug 2019 15:43:28 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:37322 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727957AbfHSTn1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 15:43:27 -0400
-Received: by mail-io1-f67.google.com with SMTP id q22so6946180iog.4;
-        Mon, 19 Aug 2019 12:43:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LteuoyutT2WV2dwF2vd0nnFOiyU2EWcBqEz+vG3dUms=;
-        b=g35NV6mx5CHu67h2Mt01MleVzz9g5Gzx81F1enSKh55M3qXCWRj81b8OWCNKkKf0SN
-         UEkiHnGker7RzbSpOnojildWtkPvD+1aEJhDk3BAR53CmI48XziRIgJfSfyAEPrTrM9c
-         +OW9BjFUOseDIMY3EVupeJ0mRORRKiybFzrIkzOP7iK3vTpbzx11uC+blAscJxITFq4P
-         TRDBCquI2jUtj/0pXOnTCHfwGvmym2RyDahFFGIr3jVzI3vse29U5nbFLB/fMmgHMlF9
-         AfHwiApnPzzCeyikEjmv5hIYv5qEmIVsFuud2M5jWO16uzx0hrtaEYTubn5/KF+dwtkf
-         X/GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LteuoyutT2WV2dwF2vd0nnFOiyU2EWcBqEz+vG3dUms=;
-        b=l/YkVntWxHYTWCVbshUiF+Qx/IBje80I2yGMsmblCl9GzOLPRkECkj/CyXpkhrkrHm
-         6uwMAIlNELu+S0mRGg4KOJm7QSyJWItLd0hsM0XpPeP177vabR5wxc8V/OJawh112F5W
-         0LmeVnSLl4YhEax++nPbDxgFRT0zMONUipLkd44GPwQjg5UiQ9VrIcLT+PHrj/wjaIQb
-         4lSybMFnrkoapbeNA6cHBr6vpXMCpnB+x+zJw/jLEUHi5zj5Ls7mQdtK+4vF964Wbe57
-         5q/dIOZzHL4f+/kRQIVlyqXldpUATyXQKjNpKJcg1NO01tZcCJWNY5Yus+jEMFpTK1Ce
-         4dTg==
-X-Gm-Message-State: APjAAAVmmdqmJEbRvrGykmI9ENjJbiYydNqWweqwY1S6SdeswGdVS/IZ
-        85RcL+yHLMEZah2Lb+vthXHD35a6jIc0V9ueLgE=
-X-Google-Smtp-Source: APXvYqwWLSAD6ysVPGYvrqX9xRxKMsNCGOoYw5v/ACvV38QCqVjS4yG15ZTSOVeg3wkmGoMTT0ealrSSyOCtKEXiHTU=
-X-Received: by 2002:a6b:621a:: with SMTP id f26mr11762609iog.127.1566243806380;
- Mon, 19 Aug 2019 12:43:26 -0700 (PDT)
+        id S1728441AbfHSVHO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Aug 2019 17:07:14 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:60750 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728018AbfHSVHN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 17:07:13 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7JL77uC002269;
+        Mon, 19 Aug 2019 16:07:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1566248827;
+        bh=8YegP2wAru2VH++m0rvbBD1uWrCBQvEAW5hESAlMQsw=;
+        h=From:Subject:To:CC:References:Date:In-Reply-To;
+        b=RHOSYZ0g5h5cMeTH5B6SHdoddsLbGW5g+OxFAUN+ZgV1dNSl4lb4JqeEAJcTFAzUT
+         sSe3fDC/mwZqbH7Kaj1KDSmH3Z0kKj6Ym11FcUH2CE4zLISK+dS8ohgUL+yZoV2m0R
+         ETkr7tYgOvM4KAbExE7br11IB6pZVmit9LxXN/zg=
+Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7JL77g3054174
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 19 Aug 2019 16:07:07 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 19
+ Aug 2019 16:07:06 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 19 Aug 2019 16:07:07 -0500
+Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7JL76TC001937;
+        Mon, 19 Aug 2019 16:07:06 -0500
+From:   Suman Anna <s-anna@ti.com>
+Subject: Re: [PATCH 1/3] clk: ti: clkctrl: add support for polling clock
+ status for enable only
+To:     "Kristo, Tero" <t-kristo@ti.com>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "sboyd@kernel.org" <sboyd@kernel.org>,
+        "mturquette@baylibre.com" <mturquette@baylibre.com>
+CC:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "tony@atomide.com" <tony@atomide.com>
+References: <1565183079-27798-1-git-send-email-t-kristo@ti.com>
+ <1565183079-27798-2-git-send-email-t-kristo@ti.com>
+ <6a088bc2-e854-b4fa-3c97-ce94dd2a92cb@ti.com>
+ <99f2b99f-6b5a-eef6-cc6f-fed7431f7cc8@ti.com>
+Message-ID: <839910f6-e533-b823-c2ca-22525a7b8733@ti.com>
+Date:   Mon, 19 Aug 2019 16:07:06 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <20180108214032.GW3872@atomide.com> <4d99c1ae-7752-949b-7e88-bc8f1dc594a2@wizzup.org>
- <0C51EC59-9CDC-4196-ACF9-24596C9E61B6@goldelico.com> <FA4520D5-62CB-446D-975C-A1C7B9251517@goldelico.com>
- <20190212205132.GO5720@atomide.com> <0b00ce0a-969f-e638-8247-c2da96cf7ce6@gmail.com>
- <20190213004143.GP5720@atomide.com> <480AB632-A544-41E7-95A4-DC354AEBB71A@goldelico.com>
- <CAKpie0SigGGsQxSU+X-Mz5boy-Xx=3wRNOcrf+F=ehFr3RBi7Q@mail.gmail.com>
- <092210C3-05DE-4AFB-986F-81BD8F990B67@goldelico.com> <CAKpie0RXM1UC33YFeFy-kAxfGhYGNkw4vUgNTThf-ZCAhPTVXw@mail.gmail.com>
- <BE23C1E4-2877-49FA-B230-F9C10691B805@goldelico.com> <CAKpie0TSo-8gmDm9_Zw4Sd+kjVVEomp8yA9Vu8qY2U2AcrQc=w@mail.gmail.com>
- <8A069D96-C65F-43F5-8F54-20019CFB1A8D@goldelico.com> <d0cbfaaf-813e-8803-f90b-931a38396750@wizzup.org>
- <3A03FF16-C203-43ED-AEEF-0260F6B3331A@goldelico.com> <3b0a5e78-c4c2-1963-bac7-b49496a1e9b9@wizzup.org>
- <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com> <84cac9b8-0eff-33f8-464d-4f8045d7db19@wizzup.org>
- <BFAA7FA6-A352-476A-99F9-02EA663A6AAD@goldelico.com>
-In-Reply-To: <BFAA7FA6-A352-476A-99F9-02EA663A6AAD@goldelico.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Mon, 19 Aug 2019 14:43:14 -0500
-Message-ID: <CAHCN7x+87xTsA3MeHy7kUWU0SU3X8HmSc2wbk5gKvYm1dRNe6A@mail.gmail.com>
-Subject: Re: Lay common foundation to make PVR/SGX work without hacks on
- OMAP34xx, OMAP36xx, AM335x and potentially OMAP4, OMAP5
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Merlijn Wajer <merlijn@wizzup.org>,
-        Tony Lindgren <tony@atomide.com>,
-        =?UTF-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
-        Philipp Rossak <embed3d@gmail.com>,
-        moaz korena <moaz@korena.xyz>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        =?UTF-8?Q?Filip_Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        kernel@pyra-handheld.com,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, maemo-leste@lists.dyne.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <99f2b99f-6b5a-eef6-cc6f-fed7431f7cc8@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Aug 14, 2019 at 3:56 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
->
-> Hi all,
->
-> > Am 17.07.2019 um 12:51 schrieb Merlijn Wajer <merlijn@wizzup.org>:
-> >
-> > Hi,
-> >
-> > On 10/03/2019 08:07, H. Nikolaus Schaller wrote:
-> >>
-> >>> Am 10.03.2019 um 00:14 schrieb Merlijn Wajer <merlijn@wizzup.org>:
-> >>>
-> >>> Hi,
-> >>>
-> >>> On 15/02/2019 14:09, H. Nikolaus Schaller wrote:
-> >>>
-> >>>>>> At least I can download and start firmware. I just have to find a way to fix the omaplfb so that it works
-> >>>>>> with our omapdrm based panels to runs the CLipBlit test [1] on modern kernels...
-> >>>>>
-> >>>>> Maybe you can compare with what we have here:
-> >>>>> https://github.com/maemo-leste/n9xx-linux/tree/pvr-wip-4.15.7/drivers/gpu/pvr
-> >>>>
-> >>>> I'll take a look into it especially how omaplfb is done.
-> >>>>
-> >>>> First observation is that there is a "flat" tree while I am working on a structured one...
-> >>>> But that is just a marginal difference (mainly significant for Makefile writers).
-> >>>
-> >>> I've ported the Maemo Leste kernel + pvr to 5.0 and it seems to work:
-> >>> https://github.com/maemo-leste/n9xx-linux/commits/pvr-wip-5.0.y
-> >>>
-> >>> Should I add this as maemo-leste-n900-5.0 branch (or something) to
-> >>> https://github.com/openpvrsgx-devgroup/linux_openpvrsgx ?
-> >>
-> >> Yes, that would be nice to be able to easily compare stuff.
-> >
-> > I've just pushed the Maemo Leste v5.1 branch + patches here:
-> >
-> >       https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/tree/n900/v5.1-patch
-> >
-> > This works on N900 with X, but it doesn't use DRM yet. I'm wondering
-> > what a next logical step would be: to try and modules to load/probe on
-> > another device (I have a droid4 or a Pandaboard ES rev B1), or to try
-> > and get DRM PowerVR to work on the N900, with omapdrmfb and dri3wsegl.
-> >
-> > For either path, I'll probably need some help. Any updates from anyone
-> > else? Maybe we should list things people can work - perhaps document
-> > progress in github issues. (Mailing list is also fine, BTW)
-> >
-> > Cheers,
-> > Merlijn
-> >
->
-> I also have pushed good news to
->
->         https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/tree/letux-pvr
->
-> Thanks to the help from the Pyra community, I was able to get a (binary) reference
-> implementation using DRM that works on Pyra/OMAP5. At least the gles1test1.
+On 8/19/19 4:13 AM, Tero Kristo wrote:
+> On 08/08/2019 01:43, Suman Anna wrote:
+>> Hi Tero,
+>>
+>> On 8/7/19 8:04 AM, Tero Kristo wrote:
+>>> The activity status for certain clocks is possible to be polled only
+>>> during enable phase; the disable phase depends on additional reset
+>>> logic.
+>>
+>> I am not sure this is an entirely accurate statement. Can you explain
+>> why this is an issue only with disable sequence and not enable sequence?
+>> Almost sounds like you are doing some asymmetric sequence w.r.t clocks
+>> and resets.
+> 
+> This follows the recommended ordering sequence from TRM, so reset will
+> be de-asserted before enabling clock, so we can keep the polling there.
 
-just a question,
+Can you please point out the section where this ordering sequence is
+mentioned? If anything, this is quite the opposite, and that is what the
+existing hwmod code also reflects. Please see the NOTE in Section
+5.3.3.2 of the DRA7 TRM [1] for reference and the section 3.5.6.6 and/or
+3.5.6.7.
 
-If DRM is working, does that mean it works without needing the overhead of X?
+Your patch is a consequence of your on-going ti-sysc code where you have
+flipped the logic compared to hwmod code. In anycase, the mainline
+kernel has the various MMUs on OMAP3, OMAP4 and OMAP5 SoCs functional a
+long-time before ti-sysc and clkctrl are introduced and this was broken
+when clkctrl clks were introduced in 4.16 kernel. The issue can be seen
+rather easily with an OMAP IOMMU unit-test [2], and the error issue
+signatures are something like below. Below log is an example log
+generated when using OMAP5 DSP MMU on 5.3-rc1 + addition of test nodes
+from [2], and similar crashes are also seen with other MMUs.
 
-adam
->
-> With that reference setup I was able to fix my Makefiles for the staging/pvr implementation.
->
-> I have tested that it works with v4.19.66 and v5.3-rc4 (LPAE build of the LetuxOS kernel tree)
-> on the Pyra.
->
-> In which areas does this tree go beyond the TI SDK/IMG DDK 1.14?
->
-> * includes internal API fixes for kernels up to v5.3
-> * lives in drivers/staging/pvr/1.14.3699939 - so that we can ask for inclusion in linux-next
-> * has Kconfig and Makefiles for in-kernel configuration (no separate build system)
-> * builds separate kernel modules for omap3430, omap3630, am335x, omap4, omap5, dra7 etc.
->   pvrsrvkm
->   e.g. pvrsrvkm_omap_omap5_sgx544_116
-> * the correct kernel module is automatically probed by matching .compatible in device tree
->   so that the code is multi-platform friendly
-> * includes SoC integration for OMAP3/4/5 and has some preliminary bindings documentation
-> * code base should also support JZ4780/CI20 and some Intel Atom processors (CedarView, Poulsbo)
-> * has got a ToDo to describe what should be done during staging phase
->
->         https://github.com/openpvrsgx-devgroup/linux_openpvrsgx/blob/letux/latest-pvr/drivers/staging/pvr/TODO
->
-> My plans for the next steps are:
->
-> * do more testing (e.g. X11, kmscube)
-> * check if and/or how it can run on am335x (BeagleBone) or OMAP3 (e.g. GTA04, OpenPandora)
-> * try a JZ480/CI20 build (unfortuantely I have no HDMI there with mainline kernels and I am
->   missing the user-space libraries for MIPS).
->
-> BR,
-> Nikolaus
->
+# insmod iommu_dt_test.ko count=4
+[  126.070188] iommu_dt_test: loading out-of-tree module taints kernel.
+[  126.077568] omap_iommu_test iommu_test: ignoring dependency for
+device, assuming no driver
+[  126.085963] omap_iommu_test_init: iommu_test_init entered
+[  126.091495] omap_iommu_test iommu_test: Enabling IOMMU...
+[  126.096997] omap_iommu_test iommu_test: dev->of_node->name:
+iommu_test dev_name iommu_test
+[  126.107352] dsp_cm:clk:0000:0: failed to enable
+[  126.111907] ------------[ cut here ]------------
+[  126.116553] WARNING: CPU: 0 PID: 1013 at drivers/clk/clk.c:924
+clk_core_disable_lock+0x18/0x24
+[  126.125198] dsp_cm:clk:0000:0 already disabled
+[  126.129656] Modules linked in: iommu_dt_test(O+)
+[  126.134299] CPU: 0 PID: 1013 Comm: insmod Tainted: G           O
+5.3.0-rc1-00005-gd893572f52c6 #129
+[  126.143816] Hardware name: Generic OMAP5 (Flattened Device Tree)
+[  126.149859] [<c01122d8>] (unwind_backtrace) from [<c010c8b8>]
+(show_stack+0x10/0x14)
+[  126.157641] [<c010c8b8>] (show_stack) from [<c08cce38>]
+(dump_stack+0xb4/0xd4)
+[  126.164900] [<c08cce38>] (dump_stack) from [<c0139d70>]
+(__warn.part.3+0xa8/0xd4)
+[  126.172419] [<c0139d70>] (__warn.part.3) from [<c0139df8>]
+(warn_slowpath_fmt+0x5c/0x88)
+[  126.180549] [<c0139df8>] (warn_slowpath_fmt) from [<c05733b4>]
+(clk_core_disable_lock+0x18/0x24)
+[  126.189376] [<c05733b4>] (clk_core_disable_lock) from [<c0122d5c>]
+(_disable_clocks+0x18/0x98)
+[  126.198027] [<c0122d5c>] (_disable_clocks) from [<c012569c>]
+(omap_hwmod_deassert_hardreset+0xc8/0x174)
+[  126.207463] [<c012569c>] (omap_hwmod_deassert_hardreset) from
+[<c0126160>] (omap_device_deassert_hardreset+0x30/0x50)
+[  126.218121] [<c0126160>] (omap_device_deassert_hardreset) from
+[<c05d5f24>] (omap_iommu_attach_dev+0x298/0x418)
+[  126.228256] [<c05d5f24>] (omap_iommu_attach_dev) from [<c05d0ba8>]
+(__iommu_attach_device+0x44/0xdc)
+[  126.237430] [<c05d0ba8>] (__iommu_attach_device) from [<c05d28e8>]
+(__iommu_attach_group+0x40/0x68)
+[  126.246517] [<c05d28e8>] (__iommu_attach_group) from [<c05d29c8>]
+(iommu_attach_device+0x80/0x88)
+[  126.255434] [<c05d29c8>] (iommu_attach_device) from [<bf000188>]
+(omap_iommu_test_probe+0x10c/0x210 [iommu_dt_test])
+[  126.266011] [<bf000188>] (omap_iommu_test_probe [iommu_dt_test]) from
+[<c05e0d8c>] (platform_drv_probe+0x48/0x98)
+[  126.276321] [<c05e0d8c>] (platform_drv_probe) from [<c05dedd0>]
+(really_probe+0xec/0x2cc)
+[  126.284537] [<c05dedd0>] (really_probe) from [<c05df134>]
+(driver_probe_device+0x5c/0x160)
+[  126.292839] [<c05df134>] (driver_probe_device) from [<c05df3d8>]
+(device_driver_attach+0x58/0x60)
+[  126.301751] [<c05df3d8>] (device_driver_attach) from [<c05df438>]
+(__driver_attach+0x58/0xcc)
+[  126.310314] [<c05df438>] (__driver_attach) from [<c05dd264>]
+(bus_for_each_dev+0x70/0xb4)
+[  126.318529] [<c05dd264>] (bus_for_each_dev) from [<c05de2ac>]
+(bus_add_driver+0x198/0x1d0)
+[  126.326831] [<c05de2ac>] (bus_add_driver) from [<c05dfea0>]
+(driver_register+0x74/0x108)
+[  126.334959] [<c05dfea0>] (driver_register) from [<c0102e80>]
+(do_one_initcall+0x48/0x224)
+[  126.343177] [<c0102e80>] (do_one_initcall) from [<c01d6fa4>]
+(do_init_module+0x5c/0x234)
+[  126.351307] [<c01d6fa4>] (do_init_module) from [<c01d9404>]
+(load_module+0x2200/0x24d0)
+[  126.359347] [<c01d9404>] (load_module) from [<c01d9928>]
+(sys_finit_module+0xbc/0xdc)
+[  126.367213] [<c01d9928>] (sys_finit_module) from [<c01011e0>]
+(__sys_trace_return+0x0/0x20)
+[  126.375598] Exception stack(0xebc99fa8 to 0xebc99ff0)
+[  126.380671] 9fa0:                   00000000 00035160 00000003
+00035150 00000000 00035ee8
+[  126.388885] 9fc0: 00000000 00035160 00000000 0000017b 00000007
+00000003 00035150 be8e3c2c
+[  126.397095] 9fe0: be8e3a80 be8e3a70 0001b42d b6e4a1b0
+[  126.402166] ---[ end trace 9ba6f4788aad890b ]---
+[  126.406896] omap-iommu 4a066000.mmu: 4a066000.mmu: version 2.0
+[  126.412765] omap_iommu_test iommu_test: Mapping da 0xa0100000, pa
+0x95100000, len 0x100000
+[  126.421196] omap_iommu_test iommu_test: Mapping da 0xa0200000, pa
+0x95200000, len 0x100000
+[  126.429622] omap_iommu_test iommu_test: Mapping da 0xa0300000, pa
+0x95300000, len 0x100000
+[  126.437997] omap_iommu_test iommu_test: Mapping da 0xa0400000, pa
+0x95400000, len 0x100000
+
+The fix for that is actually doing this poll bailout in _enable rather
+than disable. I would rather see these fixed first before the ti-sysc
+conversions and logic are vetted.
+
+> 
+> Going down, reset must be asserted post disabling clocks, which results
+> a timeout if the idle status check is not bypassed.
+> 
+> This is kind of not perfect and should be fixed later to somehow add a
+> direct link between the clock and reset lines, so that we know when
+> there is dependency between the two and can check the status of both to
+> see if we should poll something or not.
+
+Yeah, agreed. Unfortunately, I do not there is a clean way of doing this
+given that typically clocks and resets are treated and managed by
+separate subsystems in kernel. You will always end up with a quirk flags
+like this in either of the drivers.
+
+> 
+>>
+>> On the downstream kernel, we have reused the existing NO_IDLEST flag as
+>> a quirk within both the enable and disable functions for the IPs with
+>> hardreset lines, and this patch seems to introduce a new NO_IDLE_POLL
+>> flag but only during the disable path.
+> 
+> The NO_IDLEST patch is not perfect, as it introduces a timing hazard
+> where while enabling the module one can access the IP registers before
+> it has left idle, leading into a crash.
+
+Both these flag macro names are misnomers IMO, the IP registers cannot
+be accessed without releasing the resets and clocks on the IPs with the
+hard-reset lines.
+
+regards
+Suman
+
+[1] http://www.ti.com/lit/pdf/sprui30
+[2] https://github.com/sumananna/omap-test-iommu
+
+> 
+> -Tero
+> 
+>>
+>> regards
+>> Suman
+>>
+>> If the disable phase is polled with these clocks, it will
+>>> result in a timeout. To fix this, add logic for polling the clock
+>>> activity only during enable, and add a new flag for this purpose.
+>>>
+>>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>>> ---
+>>>   drivers/clk/ti/clkctrl.c | 5 ++++-
+>>>   drivers/clk/ti/clock.h   | 1 +
+>>>   2 files changed, 5 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+>>> index 975995e..f5517a8 100644
+>>> --- a/drivers/clk/ti/clkctrl.c
+>>> +++ b/drivers/clk/ti/clkctrl.c
+>>> @@ -25,6 +25,7 @@
+>>>   #include "clock.h"
+>>>     #define NO_IDLEST            0x1
+>>> +#define NO_IDLE_POLL            0x2
+>>>     #define OMAP4_MODULEMODE_MASK        0x3
+>>>   @@ -187,7 +188,7 @@ static void _omap4_clkctrl_clk_disable(struct
+>>> clk_hw *hw)
+>>>         ti_clk_ll_ops->clk_writel(val, &clk->enable_reg);
+>>>   -    if (clk->flags & NO_IDLEST)
+>>> +    if (clk->flags & (NO_IDLEST | NO_IDLE_POLL))
+>>>           goto exit;
+>>>         /* Wait until module is disabled */
+>>> @@ -597,6 +598,8 @@ static void __init _ti_omap4_clkctrl_setup(struct
+>>> device_node *node)
+>>>               hw->enable_bit = MODULEMODE_HWCTRL;
+>>>           if (reg_data->flags & CLKF_NO_IDLEST)
+>>>               hw->flags |= NO_IDLEST;
+>>> +        if (reg_data->flags & CLKF_NO_IDLE_POLL)
+>>> +            hw->flags |= NO_IDLE_POLL;
+>>>             if (reg_data->clkdm_name)
+>>>               hw->clkdm_name = reg_data->clkdm_name;
+>>> diff --git a/drivers/clk/ti/clock.h b/drivers/clk/ti/clock.h
+>>> index e4b8392..6410ff6 100644
+>>> --- a/drivers/clk/ti/clock.h
+>>> +++ b/drivers/clk/ti/clock.h
+>>> @@ -82,6 +82,7 @@ enum {
+>>>   #define CLKF_SW_SUP            BIT(5)
+>>>   #define CLKF_HW_SUP            BIT(6)
+>>>   #define CLKF_NO_IDLEST            BIT(7)
+>>> +#define CLKF_NO_IDLE_POLL        BIT(8)
+>>>     #define CLKF_SOC_MASK            GENMASK(11, 8)
+>>>  
+>>
+> 
+> -- 
+> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
