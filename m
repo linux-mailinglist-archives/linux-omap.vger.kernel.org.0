@@ -2,148 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFEB291FEF
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 11:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F282392035
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Aug 2019 11:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727352AbfHSJT6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Aug 2019 05:19:58 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:46970 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725790AbfHSJT6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 05:19:58 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7J9JsDe089620;
-        Mon, 19 Aug 2019 04:19:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1566206394;
-        bh=GNZU/NeGfxTaDylzoDngNX7wLh9BHQt7GzEKQ6CQVUE=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=ubUs8pkfmwnavTyUX3lccRYQoYIOgYf146A0kx1e8gyBbVg58dow3pd1j+v61YQIF
-         R3UprD+oOQUP37B4Xt/G6mohzgH6DfG/pY8mXyo3WWMKcEVJdRlFwkemcnmW258clr
-         fAsmWjpkV6PL5dtEAuy8DHJXFZwDEN6TOv3SgxOc=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7J9Jst9064808
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 19 Aug 2019 04:19:54 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 19
- Aug 2019 04:19:54 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 19 Aug 2019 04:19:53 -0500
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7J9Jpnr003270;
-        Mon, 19 Aug 2019 04:19:52 -0500
-Subject: Re: [PATCH 2/3] clk: ti: dra7xx: remove idlest polling from disabling
- ipu/dsp clocks
-To:     Suman Anna <s-anna@ti.com>, <linux-clk@vger.kernel.org>,
-        <sboyd@kernel.org>, <mturquette@baylibre.com>
-CC:     <linux-omap@vger.kernel.org>, <tony@atomide.com>
-References: <1565183079-27798-1-git-send-email-t-kristo@ti.com>
- <1565183079-27798-3-git-send-email-t-kristo@ti.com>
- <932d4ef2-7259-24a9-9a53-c5fcf751ea1b@ti.com>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <4925ad2f-228f-4200-5500-43daa634be24@ti.com>
-Date:   Mon, 19 Aug 2019 12:19:51 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1727082AbfHSJYR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Aug 2019 05:24:17 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:47341 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726627AbfHSJYQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 05:24:16 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id B65278043B; Mon, 19 Aug 2019 11:24:01 +0200 (CEST)
+Date:   Mon, 19 Aug 2019 11:24:14 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sebastian Reichel <sre@kernel.org>, nekit1000@gmail.com,
+        mpartap@gmx.net, Merlijn Wajer <merlijn@wizzup.org>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>
+Subject: Re: wifi on Motorola Droid 4 in 5.3-rc2
+Message-ID: <20190819092414.GB21072@amd>
+References: <20190818104629.GA27360@amd>
+ <CAOf5uwnUx3mtGGHFGqKB30qcb_AMhMEhHLp2pf-4pUdhi7KP7w@mail.gmail.com>
+ <20190818114332.GA32205@amd>
+ <CAOf5uwncAHQ-nfFzQhv=T+pyXJ+60_QNT4F11VJg+25GjFFkxQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <932d4ef2-7259-24a9-9a53-c5fcf751ea1b@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="IiVenqGWf+H9Y6IX"
+Content-Disposition: inline
+In-Reply-To: <CAOf5uwncAHQ-nfFzQhv=T+pyXJ+60_QNT4F11VJg+25GjFFkxQ@mail.gmail.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/08/2019 01:50, Suman Anna wrote:
-> Hi Tero,
-> 
-> On 8/7/19 8:04 AM, Tero Kristo wrote:
->> These cause some unwanted timeouts in the kernel, as they depend on
->> reset and the execution state of the remotecore itself. These details
->> should be handled by the driver with proper sequencing of events.
-> 
-> This can definitely do with some better patch description.
 
-Can you elaborate a bit what you are missing here?
+--IiVenqGWf+H9Y6IX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> What about
-> the changes to the OMAP4 and OMAP5 files? Please see my equivalent
-> downstream patches [1][2][3] for the same though they are using the
-> CLKF_NO_IDLEST flag.
+Hi!
 
-I did not want to touch OMAP4/OMAP5 for now, they can be fixed with 
-trivial data only patches separately once the approach has been approved 
-on one device (DRA7.)
+> > [   13.653778] panel-dsi-cm 58004000.encoder:display: using lookup
+> > tables for GPIO lookup
+> > [   13.661834] panel-dsi-cm 58004000.encoder:display: No GPIO consumer
+> > te found
+> > [   14.756622] ------------[ cut here ]------------
+> > [   14.761352] WARNING: CPU: 0 PID: 20 at
+> > /data/fast/l/k/drivers/net/wireless/ti/wlcore/sdio.c:86
+> > wl12xx_sdio_raw_read+0xa8/0x128
+> > [   14.772888] Modules linked in:
+> > [   14.776062] CPU: 0 PID: 20 Comm: kworker/0:1 Tainted: G        W
+> > 5.3.0-rc4-58571-gdbaece1 #85
+> > [   14.783630] Hardware name: Generic OMAP4 (Flattened Device Tree)
+> > [   14.791381] Workqueue: events request_firmware_work_func
+>=20
+> You have a timeout here. Can be that your reset sequence of the wifi
+> is not optimal because
+> is not responding?
 
--Tero
+I tried delays and printks... WL12XX_REG_FUSE_BD_ADDR_1 read fails,
+and retrying does not really help. If you have idea how to debug/fix
+this, let me know...
 
-> 
-> regards
-> Suman
-> 
-> [1] OMAP4:
-> http://git.ti.com/gitweb/?p=rpmsg/iommu.git;a=commit;h=1979318da6f76809a5e6d652f814b2e80836aa21
-> [2] OMAP5:
-> http://git.ti.com/gitweb/?p=rpmsg/iommu.git;a=commit;h=69b31b56ceffdec3aed5b0feaa06090f8ee318b6
-> [3] DRA7:
-> http://git.ti.com/gitweb/?p=rpmsg/iommu.git;a=commit;h=a26129c10cda1d64bec3cd7a03b9acd447df84ea
-> (portions of this patch content are already upstream, the delta being
-> these additional flags).
-> 
->>
->> Signed-off-by: Tero Kristo <t-kristo@ti.com>
->> ---
->>   drivers/clk/ti/clk-7xx.c | 8 ++++----
->>   1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/clk/ti/clk-7xx.c b/drivers/clk/ti/clk-7xx.c
->> index b57fe09..5208eb8 100644
->> --- a/drivers/clk/ti/clk-7xx.c
->> +++ b/drivers/clk/ti/clk-7xx.c
->> @@ -25,7 +25,7 @@
->>   };
->>   
->>   static const struct omap_clkctrl_reg_data dra7_dsp1_clkctrl_regs[] __initconst = {
->> -	{ DRA7_DSP1_MMU0_DSP1_CLKCTRL, NULL, CLKF_HW_SUP, "dpll_dsp_m2_ck" },
->> +	{ DRA7_DSP1_MMU0_DSP1_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLE_POLL, "dpll_dsp_m2_ck" },
->>   	{ 0 },
->>   };
->>   
->> @@ -41,7 +41,7 @@
->>   };
->>   
->>   static const struct omap_clkctrl_reg_data dra7_ipu1_clkctrl_regs[] __initconst = {
->> -	{ DRA7_IPU1_MMU_IPU1_CLKCTRL, dra7_mmu_ipu1_bit_data, CLKF_HW_SUP, "ipu1-clkctrl:0000:24" },
->> +	{ DRA7_IPU1_MMU_IPU1_CLKCTRL, dra7_mmu_ipu1_bit_data, CLKF_HW_SUP | CLKF_NO_IDLE_POLL, "ipu1-clkctrl:0000:24" },
->>   	{ 0 },
->>   };
->>   
->> @@ -137,7 +137,7 @@
->>   };
->>   
->>   static const struct omap_clkctrl_reg_data dra7_dsp2_clkctrl_regs[] __initconst = {
->> -	{ DRA7_DSP2_MMU0_DSP2_CLKCTRL, NULL, CLKF_HW_SUP, "dpll_dsp_m2_ck" },
->> +	{ DRA7_DSP2_MMU0_DSP2_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLE_POLL, "dpll_dsp_m2_ck" },
->>   	{ 0 },
->>   };
->>   
->> @@ -164,7 +164,7 @@
->>   };
->>   
->>   static const struct omap_clkctrl_reg_data dra7_ipu2_clkctrl_regs[] __initconst = {
->> -	{ DRA7_IPU2_MMU_IPU2_CLKCTRL, NULL, CLKF_HW_SUP, "dpll_core_h22x2_ck" },
->> +	{ DRA7_IPU2_MMU_IPU2_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLE_POLL, "dpll_core_h22x2_ck" },
->>   	{ 0 },
->>   };
->>   
->>
-> 
+Best regards,
+								Pavel
 
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/t=
+i/wl12xx/main.c
+index 3c9c623..afb294a 100644
+--- a/drivers/net/wireless/ti/wl12xx/main.c
++++ b/drivers/net/wireless/ti/wl12xx/main.c
+@@ -1505,24 +1505,40 @@ static int wl12xx_get_fuse_mac(struct wl1271 *wl)
+ {
+ 	u32 mac1, mac2;
+ 	int ret;
+-
++=09
++	mdelay(1);
++	printk("get_fuse_mac: %d\n", __LINE__);
+ 	ret =3D wlcore_set_partition(wl, &wl->ptable[PART_DRPW]);
+ 	if (ret < 0)
+ 		goto out;
+=20
++	mdelay(1);
++	printk("get_fuse_mac: %d\n", __LINE__);
++	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_1, &mac1);
++	if (ret < 0) {
++	printk("get_fuse_mac: X %d\n", __LINE__);
++	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_1, &mac1);
++	if (ret < 0) {
++	printk("get_fuse_mac: XX %d\n", __LINE__);
+ 	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_1, &mac1);
+ 	if (ret < 0)
+ 		goto out;
++	}
++	}
++=09
+=20
++	printk("get_fuse_mac: %d\n", __LINE__);
+ 	ret =3D wlcore_read32(wl, WL12XX_REG_FUSE_BD_ADDR_2, &mac2);
+ 	if (ret < 0)
+ 		goto out;
+=20
++	printk("get_fuse_mac: %d\n", __LINE__);
+ 	/* these are the two parts of the BD_ADDR */
+ 	wl->fuse_oui_addr =3D ((mac2 & 0xffff) << 8) +
+ 		((mac1 & 0xff000000) >> 24);
+ 	wl->fuse_nic_addr =3D mac1 & 0xffffff;
+=20
++	printk("get_fuse_mac: %d\n", __LINE__);
+ 	ret =3D wlcore_set_partition(wl, &wl->ptable[PART_DOWN]);
+=20
+ out:
+
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--IiVenqGWf+H9Y6IX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl1aar4ACgkQMOfwapXb+vJb9wCdEMS4069vsm0A0Ev1TelvVMac
+tEUAoMRMPsW6X4ytZQOHwh1J6znBX4KV
+=Zu6g
+-----END PGP SIGNATURE-----
+
+--IiVenqGWf+H9Y6IX--
