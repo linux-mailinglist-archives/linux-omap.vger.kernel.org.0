@@ -2,94 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 833C79519C
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2019 01:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47D6D957A2
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2019 08:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728554AbfHSXUZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Aug 2019 19:20:25 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:32972 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728351AbfHSXUZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Aug 2019 19:20:25 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7JNKJpb000863;
-        Mon, 19 Aug 2019 18:20:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1566256819;
-        bh=tyfJkNHq2EgWFBMlbBdi4Iejj9XMXwAnbWKf48D+V+o=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Cbh9+OTQ3s9PsG8tp/r4Zlfp/ZIh5/bSwoQU0OtozakeWlGir8Wc/XtcSfIaXA/AA
-         M40fly1jYvRML+drcNTw+xuGQYhtcpDb9+sVpNogCBBTlVunxyPxvqXT9UuG1G9G94
-         ecAEoXzn64IzTUDdaYB0yI6UVAbOPPTTJy2hCdFA=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7JNKJOj002841
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 19 Aug 2019 18:20:19 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 19
- Aug 2019 18:20:19 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 19 Aug 2019 18:20:19 -0500
-Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7JNKI6l051111;
-        Mon, 19 Aug 2019 18:20:18 -0500
-Subject: Re: [PATCH 0/8] soc: ti: Add OMAP PRM driver
-To:     Tero Kristo <t-kristo@ti.com>, <ssantosh@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>
-CC:     <tony@atomide.com>, <devicetree@vger.kernel.org>
-References: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <432a70fc-2683-42ca-3ac7-9775efa3ca41@ti.com>
-Date:   Mon, 19 Aug 2019 18:20:18 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S1728960AbfHTGtJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Aug 2019 02:49:09 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:16467 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726049AbfHTGtJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Aug 2019 02:49:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1566283744;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=MgN3E8s/3Mj7cEN1rbdygo/AW47MY5ZHyV9Juur5Ve4=;
+        b=n6ZVKF/Ew8NYHv20jCwI/8DAIgKCChmnEHej8BXFCZS/6LO3V9FvSyVl+XrqpevQoH
+        TeNFurnYxns3Z/5/ZyuaVhZeuFm3M1Sh5P2gEoWZbN24Zr0RHy59lKuv8fwh88uTJm1C
+        /5zqDM9CldDKgHd3BE6GwBUqMJ5x+/oLKqzBdlIbzxpjgqH+mMGugeuaXcLKFOk+z7MF
+        e1yFJQDs5Qyk6qgyUYlmj/Bn+VAhyL+my5X4RqJmeyT2iTjuG5bX0k3Cmtf9g8rAfWdQ
+        39y8A9henv4OBNkin6+Mq67EigF3oWBZrKiB6v1Y6xXnzEVNgcFTODwFb8U2kU/kDbkH
+        EiUw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4gpw8F85YnqKQ+tuXA=="
+X-RZG-CLASS-ID: mo00
+Received: from [192.168.2.133]
+        by smtp.strato.de (RZmta 44.26.1 DYNA|AUTH)
+        with ESMTPSA id V074e8v7K6mbUB7
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Tue, 20 Aug 2019 08:48:37 +0200 (CEST)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: Lay common foundation to make PVR/SGX work without hacks on OMAP34xx, OMAP36xx, AM335x and potentially OMAP4, OMAP5
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <CAHCN7x+87xTsA3MeHy7kUWU0SU3X8HmSc2wbk5gKvYm1dRNe6A@mail.gmail.com>
+Date:   Tue, 20 Aug 2019 08:48:51 +0200
+Cc:     Merlijn Wajer <merlijn@wizzup.org>,
+        Tony Lindgren <tony@atomide.com>,
+        =?utf-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        Philipp Rossak <embed3d@gmail.com>,
+        moaz korena <moaz@korena.xyz>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        =?utf-8?Q?Filip_Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        kernel@pyra-handheld.com,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, maemo-leste@lists.dyne.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <04809E3E-A690-4931-B949-1CFDAF407C14@goldelico.com>
+References: <20180108214032.GW3872@atomide.com> <4d99c1ae-7752-949b-7e88-bc8f1dc594a2@wizzup.org> <0C51EC59-9CDC-4196-ACF9-24596C9E61B6@goldelico.com> <FA4520D5-62CB-446D-975C-A1C7B9251517@goldelico.com> <20190212205132.GO5720@atomide.com> <0b00ce0a-969f-e638-8247-c2da96cf7ce6@gmail.com> <20190213004143.GP5720@atomide.com> <480AB632-A544-41E7-95A4-DC354AEBB71A@goldelico.com> <CAKpie0SigGGsQxSU+X-Mz5boy-Xx=3wRNOcrf+F=ehFr3RBi7Q@mail.gmail.com> <092210C3-05DE-4AFB-986F-81BD8F990B67@goldelico.com> <CAKpie0RXM1UC33YFeFy-kAxfGhYGNkw4vUgNTThf-ZCAhPTVXw@mail.gmail.com> <BE23C1E4-2877-49FA-B230-F9C10691B805@goldelico.com> <CAKpie0TSo-8gmDm9_Zw4Sd+kjVVEomp8yA9Vu8qY2U2AcrQc=w@mail.gmail.com> <8A069D96-C65F-43F5-8F54-20019CFB1A8D@goldelico.com> <d0cbfaaf-813e-8803-f90b-931a38396750@wizzup.org> <3A03FF16-C203-43ED-AEEF-0260F6B3331A@goldelico.com> <3b0a5e78-c4c2-1963-bac7-b49496a1e9b9@wizzup.org> <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com> <84cac9b8-0eff-33f8-464d-4f8045d7db19@wizzup.org> <BFAA7FA6-A352-476A-99F9-02EA663A6AAD@goldelico.com> <CAHCN7x+87xTsA3MeHy7kUWU0SU3X8HmSc2wbk5gKvYm1dRNe6A@mail.gmail.com>
+To:     Adam Ford <aford173@gmail.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tero,
 
-On 8/7/19 2:48 AM, Tero Kristo wrote:
-> Hi,
-> 
-> This series adds OMAP PRM driver which initially supports only reset
-> handling. Later on, power domain support can be added to this to get
-> rid of the current OMAP power domain handling code which resides
-> under the mach-omap2 platform directory. Initially, reset data is
-> added for AM3, OMAP4 and DRA7 SoCs.
+> Am 19.08.2019 um 21:43 schrieb Adam Ford <aford173@gmail.com>:
+>=20
+>> Thanks to the help from the Pyra community, I was able to get a =
+(binary) reference
+>> implementation using DRM that works on Pyra/OMAP5. At least the =
+gles1test1.
+>=20
+> just a question,
+>=20
+> If DRM is working, does that mean it works without needing the =
+overhead of X?
 
-Wakeup M3 remoteproc driver is fully upstream, so we should be able to
-test that driver as well if you can add the AM4 data. That will also
-unblock my PRUSS.
-
-If you can add the data to others as well, it will help in easier
-migration of the individual drivers, otherwise the ti-sysc interconnect,
-hwmod, and hwmod reset data combinations will all have to be supported
-in code.
-
-regards
-Suman
-
-> 
-> I've been testing the reset handling logic with OMAP remoteproc
-> driver which has been converted to use generic reset framework. This
-> part is a work in progress, so will be posting patches from that part
-> later on.
-> 
-> -Tero
-> 
-> --
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-> 
-
+Yes, we have to kill X11 to successfully run the gles1test1. An =
+interesting question
+will be how to mix both... E.g. have a 3D rendering in a window =
+controlled by some
+window manager.=
