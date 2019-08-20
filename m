@@ -2,422 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44F92966B8
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2019 18:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C54E5966CA
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Aug 2019 18:51:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727272AbfHTQrx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 20 Aug 2019 12:47:53 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:56278 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725971AbfHTQrw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Aug 2019 12:47:52 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7KGlbqC121448;
-        Tue, 20 Aug 2019 11:47:37 -0500
+        id S1727272AbfHTQvR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Aug 2019 12:51:17 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:56330 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726345AbfHTQvR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Aug 2019 12:51:17 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7KGpBgC060459;
+        Tue, 20 Aug 2019 11:51:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1566319657;
-        bh=5sVk1fkouXDyUnQTqANlBQOvqssnGb5odk+97r2i4TA=;
+        s=ti-com-17Q1; t=1566319871;
+        bh=KcyOfR8Cu+0kW7PJcSG2BYRDkc98ta3TUYno7667hwI=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=JG/J3+uy1OoBGh91jk+BVkQi8TqRuktskkds4+RIaoTHLxg6SuGvHl1y46I/eelBu
-         5UxL9tNYYogFSrWKJfdN3l7T+4c8GZIYN+aYe91Z88UYk98CcwxPLSTBDf6wa0EQM5
-         IgCd3whuA2Tyt8fW6mkmE8dnfL8E2PgCIaDJeVTM=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7KGlb3R094128
+        b=CyZdzT6xgsqKqNo5OCdTb3yFz087dFuG+TdNxK7dGMsSaWt99Omk8nnxZOaAx5it+
+         wT/8K3vDMhm6g2zO2JphhxYfJCj7sL9j3M+zxuQpj3byTr3PYIhw8B/DYUfRC6KjQM
+         Ff6evVTQyaAae2nY3A9aakm53CKcgDS4UU/NBH3U=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7KGpB7h073104
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 20 Aug 2019 11:47:37 -0500
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 20 Aug 2019 11:51:11 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 20
- Aug 2019 11:47:37 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2019 11:51:11 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 20 Aug 2019 11:47:37 -0500
+ Frontend Transport; Tue, 20 Aug 2019 11:51:11 -0500
 Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7KGlbZp100254;
-        Tue, 20 Aug 2019 11:47:37 -0500
-Subject: Re: [PATCH 2/8] soc: ti: add initial PRM driver with reset control
- support
-To:     Tero Kristo <t-kristo@ti.com>, Keerthy <j-keerthy@ti.com>,
-        <ssantosh@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7KGpAjf010013;
+        Tue, 20 Aug 2019 11:51:10 -0500
+Subject: Re: [PATCH 0/8] soc: ti: Add OMAP PRM driver
+To:     Tero Kristo <t-kristo@ti.com>, <ssantosh@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>
 CC:     <tony@atomide.com>, <devicetree@vger.kernel.org>
 References: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
- <1565164139-21886-3-git-send-email-t-kristo@ti.com>
- <3b76f0e0-7530-e7b5-09df-2de9956f30ee@ti.com>
- <59709a2d-f13a-bd55-8aba-864c1cf2f19e@ti.com>
- <9372957c-9ab9-b0dd-fe07-815eb2cb2f16@ti.com>
- <0f335aec-bfdf-345a-8dfb-dad70aef1af6@ti.com>
+ <432a70fc-2683-42ca-3ac7-9775efa3ca41@ti.com>
+ <b991f374-9e2a-5f1d-d48d-5f50a3c41756@ti.com>
 From:   Suman Anna <s-anna@ti.com>
-Message-ID: <a4196b73-63a0-f9d8-1c43-e6c4d1c1d6a4@ti.com>
-Date:   Tue, 20 Aug 2019 11:47:37 -0500
+Message-ID: <88446f5f-60ae-1205-33e5-a225a2764c72@ti.com>
+Date:   Tue, 20 Aug 2019 11:51:10 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <0f335aec-bfdf-345a-8dfb-dad70aef1af6@ti.com>
+In-Reply-To: <b991f374-9e2a-5f1d-d48d-5f50a3c41756@ti.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 8/20/19 2:37 AM, Tero Kristo wrote:
-> On 20.8.2019 2.01, Suman Anna wrote:
+On 8/20/19 2:54 AM, Tero Kristo wrote:
+> On 20.8.2019 2.20, Suman Anna wrote:
 >> Hi Tero,
 >>
->> On 8/19/19 4:32 AM, Tero Kristo wrote:
->>> On 08/08/2019 08:26, Keerthy wrote:
->>>>
->>>>
->>>> On 07/08/19 1:18 PM, Tero Kristo wrote:
->>>>> Add initial PRM (Power and Reset Management) driver for TI OMAP class
->>>>> SoCs. Initially this driver only supports reset control, but can be
->>>>> extended to support rest of the functionality, like powerdomain
->>>>> control, PRCM irq support etc.
->>>>>
->>>>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
->>>>> ---
->>>>>    arch/arm/mach-omap2/Kconfig |   1 +
->>>>>    drivers/soc/ti/Makefile     |   1 +
->>>>>    drivers/soc/ti/omap_prm.c   | 216
->>>>> ++++++++++++++++++++++++++++++++++++++++++++
->>>>>    3 files changed, 218 insertions(+)
->>>>>    create mode 100644 drivers/soc/ti/omap_prm.c
->>>>>
->>>>> diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
->>>>> index fdb6743..42ad063 100644
->>>>> --- a/arch/arm/mach-omap2/Kconfig
->>>>> +++ b/arch/arm/mach-omap2/Kconfig
->>>>> @@ -109,6 +109,7 @@ config ARCH_OMAP2PLUS
->>>>>        select TI_SYSC
->>>>>        select OMAP_IRQCHIP
->>>>>        select CLKSRC_TI_32K
->>>>> +    select RESET_CONTROLLER
->>
->> Use ARCH_HAS_RESET_CONTROLLER instead.
-> 
-> Ok.
-> 
->>
->>>>>        help
->>>>>          Systems based on OMAP2, OMAP3, OMAP4 or OMAP5
->>>>> diff --git a/drivers/soc/ti/Makefile b/drivers/soc/ti/Makefile
->>>>> index b3868d3..788b5cd 100644
->>>>> --- a/drivers/soc/ti/Makefile
->>>>> +++ b/drivers/soc/ti/Makefile
->>>>> @@ -6,6 +6,7 @@ obj-$(CONFIG_KEYSTONE_NAVIGATOR_QMSS)    +=
->>>>> knav_qmss.o
->>>>>    knav_qmss-y := knav_qmss_queue.o knav_qmss_acc.o
->>>>>    obj-$(CONFIG_KEYSTONE_NAVIGATOR_DMA)    += knav_dma.o
->>>>>    obj-$(CONFIG_AMX3_PM)            += pm33xx.o
->>>>> +obj-$(CONFIG_ARCH_OMAP2PLUS)        += omap_prm.o
->>>>>    obj-$(CONFIG_WKUP_M3_IPC)        += wkup_m3_ipc.o
->>>>>    obj-$(CONFIG_TI_SCI_PM_DOMAINS)        += ti_sci_pm_domains.o
->>>>>    obj-$(CONFIG_TI_SCI_INTA_MSI_DOMAIN)    += ti_sci_inta_msi.o
->>>>> diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
->>>>> new file mode 100644
->>>>> index 0000000..7c89eb8
->>>>> --- /dev/null
->>>>> +++ b/drivers/soc/ti/omap_prm.c
->>>>> @@ -0,0 +1,216 @@
->>>>> +// SPDX-License-Identifier: GPL-2.0
->>>>> +/*
->>>>> + * OMAP2+ PRM driver
->>>>> + *
->>>>> + * Copyright (C) 2019 Texas Instruments Incorporated -
->>>>> http://www.ti.com/
->>>>> + *    Tero Kristo <t-kristo@ti.com>
->>>>> + */
->>>>> +
->>>>> +#include <linux/kernel.h>
->>>>> +#include <linux/module.h>
->>>>> +#include <linux/device.h>
->>>>> +#include <linux/io.h>
->>>>> +#include <linux/of.h>
->>>>> +#include <linux/of_device.h>
->>>>> +#include <linux/platform_device.h>
->>>>> +#include <linux/reset-controller.h>
->>>>> +#include <linux/delay.h>
->>>>> +
->>>>> +struct omap_rst_map {
->>>>> +    s8 rst;
->>>>> +    s8 st;
->>>>> +};
->>>>> +
->>>>> +struct omap_prm_data {
->>>>> +    u32 base;
->>>>> +    const char *name;
->>>>> +    u16 pwstctrl;
->>>>> +    u16 pwstst;
->>>>> +    u16 rstctl;
->>
->> Minor nit, can you use rstctrl instead here so that it is in sync with
->> the other variables and with the register names used in TRM.
-> 
-> Ok.
-> 
->>
->>>>> +    u16 rstst;
->>>>> +    struct omap_rst_map *rstmap;
->>>>> +    u8 flags;
->>>>> +};
->>>>> +
->>>>> +struct omap_prm {
->>>>> +    const struct omap_prm_data *data;
->>>>> +    void __iomem *base;
->>>>> +};
->>>>> +
->>>>> +struct omap_reset_data {
->>>>> +    struct reset_controller_dev rcdev;
->>>>> +    struct omap_prm *prm;
->>>>> +};
->>>>> +
->>>>> +#define to_omap_reset_data(p) container_of((p), struct
->>>>> omap_reset_data, rcdev)
->>>>> +
->>>>> +#define OMAP_MAX_RESETS        8
->>>>> +#define OMAP_RESET_MAX_WAIT    10000
->>>>> +
->>>>> +#define OMAP_PRM_NO_RSTST    BIT(0)
->>>>> +
->>>>> +static const struct of_device_id omap_prm_id_table[] = {
->>>>> +    { },
->>>>> +};
->>>>
->>>> This table is blank and we are doing of_match_device against it.
+>> On 8/7/19 2:48 AM, Tero Kristo wrote:
+>>> Hi,
 >>>
->>> Yes, it gets populated with other patches in series, one entry per soc.
->>>
->>>>
->>>>> +
->>>>> +static int omap_reset_status(struct reset_controller_dev *rcdev,
->>>>> +                 unsigned long id)
->>>>> +{
->>>>> +    struct omap_reset_data *reset = to_omap_reset_data(rcdev);
->>>>> +    u32 v;
->>>>> +
->>>>> +    v = readl_relaxed(reset->prm->base + reset->prm->data->rstst);
->>>>> +    v &= 1 << id;
->>>>> +    v >>= id;
->>>>> +
->>>>> +    return v;
->>>>> +}
->>>>> +
->>>>> +static int omap_reset_assert(struct reset_controller_dev *rcdev,
->>>>> +                 unsigned long id)
->>>>> +{
->>>>> +    struct omap_reset_data *reset = to_omap_reset_data(rcdev);
->>>>> +    u32 v;
->>>>> +
->>>>> +    /* assert the reset control line */
->>>>> +    v = readl_relaxed(reset->prm->base + reset->prm->data->rstctl);
->>>>> +    v |= 1 << id;
->>>>> +    writel_relaxed(v, reset->prm->base + reset->prm->data->rstctl);
->>>>> +
->>>>> +    return 0;
->>>>> +}
->>>>> +
->>>>> +static int omap_reset_get_st_bit(struct omap_reset_data *reset,
->>>>> +                 unsigned long id)
->>>>> +{
->>>>> +    struct omap_rst_map *map = reset->prm->data->rstmap;
->>>>> +
->>>>> +    while (map && map->rst >= 0) {
->>>>> +        if (map->rst == id)
->>>>> +            return map->st;
->>>>> +
->>>>> +        map++;
->>>>> +    }
->>>>> +
->>>>> +    return id;
->>>>> +}
->>>>> +
->>>>> +/*
->>>>> + * Note that status will not change until clocks are on, and clocks
->>>>> cannot be
->>>>> + * enabled until reset is deasserted. Consumer drivers must check
->>>>> status
->>>>> + * separately after enabling clocks.
->>>>> + */
->>>>> +static int omap_reset_deassert(struct reset_controller_dev *rcdev,
->>>>> +                   unsigned long id)
->>>>> +{
->>>>> +    struct omap_reset_data *reset = to_omap_reset_data(rcdev);
->>>>> +    u32 v;
->>>>> +    int st_bit = id;
+>>> This series adds OMAP PRM driver which initially supports only reset
+>>> handling. Later on, power domain support can be added to this to get
+>>> rid of the current OMAP power domain handling code which resides
+>>> under the mach-omap2 platform directory. Initially, reset data is
+>>> added for AM3, OMAP4 and DRA7 SoCs.
 >>
->> No need to initialize this, will always get overwritten below.
-> 
-> Hmm right, must be a leftover from some earlier code.
-> 
+>> Wakeup M3 remoteproc driver is fully upstream, so we should be able to
+>> test that driver as well if you can add the AM4 data. That will also
+>> unblock my PRUSS.
 >>
->>>>> +    bool has_rstst;
->>>>> +
->>>>> +    /* check the current status to avoid de-asserting the line
->>>>> twice */
->>>>> +    v = readl_relaxed(reset->prm->base + reset->prm->data->rstctl);
->>>>> +    if (!(v & BIT(id)))
->>>>> +        return -EEXIST;
->>>>> +
->>>>> +    has_rstst = !(reset->prm->data->flags & OMAP_PRM_NO_RSTST);
->>>>> +
->>>>> +    if (has_rstst) {
->>>>> +        st_bit = omap_reset_get_st_bit(reset, id);
->>>>> +
->>>>> +        /* Clear the reset status by writing 1 to the status bit */
->>>>> +        v = readl_relaxed(reset->prm->base +
->>>>> reset->prm->data->rstst);
->>>>> +        v |= 1 << st_bit;
->>>>> +        writel_relaxed(v, reset->prm->base +
->>>>> reset->prm->data->rstst);
->>>>> +    }
->>>>> +
->>>>> +    /* de-assert the reset control line */
->>>>> +    v = readl_relaxed(reset->prm->base + reset->prm->data->rstctl);
->>>>> +    v &= ~(1 << id);
->>>>> +    writel_relaxed(v, reset->prm->base + reset->prm->data->rstctl);
->>>>> +
->>>>> +    return 0;
->>>>> +}
->>>>> +
->>>>> +static const struct reset_control_ops omap_reset_ops = {
->>>>> +    .assert        = omap_reset_assert,
->>>>> +    .deassert    = omap_reset_deassert,
->>>>> +    .status        = omap_reset_status,
->>>>> +};
->>>>> +
->>>>> +static int omap_prm_reset_probe(struct platform_device *pdev,
->>>>> +                struct omap_prm *prm)
->>
->> Call this omap_prm_reset_init or something similar to avoid confusion.
+>> If you can add the data to others as well, it will help in easier
+>> migration of the individual drivers, otherwise the ti-sysc interconnect,
+>> hwmod, and hwmod reset data combinations will all have to be supported
+>> in code.
 > 
-> Ok, can change this.
-> 
->>
->>>>> +{
->>>>> +    struct omap_reset_data *reset;
->>>>> +
->>>>> +    /*
->>>>> +     * Check if we have resets. If either rstctl or rstst is
->>>>> +     * non-zero, we have reset registers in place. Additionally
->>>>> +     * the flag OMAP_PRM_NO_RSTST implies that we have resets.
->>>>> +     */
->>>>> +    if (!prm->data->rstctl && !prm->data->rstst &&
->>>>> +        !(prm->data->flags & OMAP_PRM_NO_RSTST))
->>>>> +        return 0;
->>>>> +
->>>>> +    reset = devm_kzalloc(&pdev->dev, sizeof(*reset), GFP_KERNEL);
->>>>> +    if (!reset)
->>>>> +        return -ENOMEM;
->>>>> +
->>>>> +    reset->rcdev.owner = THIS_MODULE;
->>>>> +    reset->rcdev.ops = &omap_reset_ops;
->>>>> +    reset->rcdev.of_node = pdev->dev.of_node;
->>>>> +    reset->rcdev.nr_resets = OMAP_MAX_RESETS;
->>
->> Suggest adding a number of resets to prm->data, and using it so that we
->> don't even entertain any resets beyond the actual number of resets.
-> 
-> Hmm why bother? Accessing a stale reset bit will just cause access to a
-> reserved bit in the reset register, doing basically nothing. Also, this
-> would not work for am3/am4 wkup, as there is a single reset bit at an
-> arbitrary position.
+> Ok, so you are saying you would need the PRM data for am4 in addition? I
+> can generate that one also.
 
-The generic convention seems to be defining a reset id value defined
-from include/dt-bindings/reset/ that can be used to match between the
-dt-nodes and the reset-controller driver.
+Yes, if you can include the data for AM4 and OMAP5 as well, then we can
+convert all the SoCs other than OMAP2/OMAP3 at the same time as per your
+comment on bindings. Almost all of the active remoteprocs will be
+covered by these.
 
-Philipp,
-Any comments?
+OMAP3 ISP driver is also fully upstream, so we would have to manage its
+legacy compatibility.
 
 regards
 Suman
 
-> 
->>
->> You actually seem to be using the bit-position directly in client data
->> instead of a reset number. I am not sure if this is accepted practice
->> with reset controllers, do you incur any memory wastage?
-> 
-> Reset numbering almost always seems to start from 0, I think the only
-> exception to this is wkup_m3 on am3/am4. Introducing an additional
-> arbitrary mapping for this doesn't seem to make any sense.
-> 
-> Also, resets are allocated on-need-basis, so it only allocates one
-> instance for the reset control whatever the index is.
-> 
->>
->>>>> +
->>>>> +    reset->prm = prm;
->>>>> +
->>>>> +    return devm_reset_controller_register(&pdev->dev, &reset->rcdev);
->>>>> +}
->>>>> +
->>>>> +static int omap_prm_probe(struct platform_device *pdev)
->>>>> +{
->>>>> +    struct resource *res;
->>>>> +    const struct omap_prm_data *data;
->>>>> +    struct omap_prm *prm;
->>>>> +    const struct of_device_id *match;
->>>>> +
->>>>> +    res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>>>> +    if (!res)
->>>>> +        return -ENODEV;
->>>>> +
->>>>> +    match = of_match_device(omap_prm_id_table, &pdev->dev);
->>>>> +    if (!match)
->>>>> +        return -ENOTSUPP;
->>
->> Use of_device_get_match_data() instead to do both match and get the
->> data. That can perhaps be the first block.
->>
->>>>> +
->>>>> +    prm = devm_kzalloc(&pdev->dev, sizeof(*prm), GFP_KERNEL);
->>>>> +    if (!prm)
->>>>> +        return -ENOMEM;
->>
->> Perhaps move the allocate after the match check to streamline.
-> 
-> Ok, will check these two out.
-> 
->>
->>>>> +
->>>>> +    data = match->data;
->>>>> +
->>>>> +    while (data->base != res->start) {
->>>>> +        if (!data->base)
->>>>> +            return -EINVAL;
->>>>> +        data++;
->>>>> +    }
->>>>> +
->>>>> +    prm->data = data;
->>>>> +
->>>>> +    prm->base = devm_ioremap_resource(&pdev->dev, res);
->>>>> +    if (!prm->base)
->>>>> +        return -ENOMEM;
->>>>> +
->>>>> +    return omap_prm_reset_probe(pdev, prm);
->>>>> +}
->>>>> +
->>>>> +static struct platform_driver omap_prm_driver = {
->>>>> +    .probe = omap_prm_probe,
->>>>> +    .driver = {
->>>>> +        .name        = KBUILD_MODNAME,
->>>>> +        .of_match_table    = omap_prm_id_table,
->>>>> +    },
->>>>> +};
->>>>> +builtin_platform_driver(omap_prm_driver);
->>>>> +
->>>>> +MODULE_ALIAS("platform:prm");
->>
->> Drop this and use MODULE_DEVICE_TABLE instead on omap_prm_id_table if
->> retaining, but I don't think these need to be defined.
-> 
-> Ok, will ditch them.
 > 
 > -Tero
 > 
@@ -425,16 +103,16 @@ Suman
 >> regards
 >> Suman
 >>
->>>>> +MODULE_LICENSE("GPL v2");
->>>>> +MODULE_DESCRIPTION("omap2+ prm driver");
->>>>
->>>> It is a builtin_platform_driver so do we need the MODULE*?
 >>>
->>> Well, thats debatable, however some existing drivers do introduce this
->>> even if they are builtin.
+>>> I've been testing the reset handling logic with OMAP remoteproc
+>>> driver which has been converted to use generic reset framework. This
+>>> part is a work in progress, so will be posting patches from that part
+>>> later on.
 >>>
 >>> -Tero
->>> -- 
+>>>
+>>> -- 
+>>>
 >>
 > 
 > -- 
