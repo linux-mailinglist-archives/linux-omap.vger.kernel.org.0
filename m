@@ -2,53 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 650F498621
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Aug 2019 23:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3A649878F
+	for <lists+linux-omap@lfdr.de>; Thu, 22 Aug 2019 00:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730391AbfHUVAP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 21 Aug 2019 17:00:15 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:33778 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728571AbfHUVAP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Aug 2019 17:00:15 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id C11EF14DAD6A8;
-        Wed, 21 Aug 2019 14:00:14 -0700 (PDT)
-Date:   Wed, 21 Aug 2019 14:00:14 -0700 (PDT)
-Message-Id: <20190821.140014.255300007478960933.davem@davemloft.net>
-To:     antoine.tenart@bootlin.com
-Cc:     grygorii.strashko@ti.com, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        maxime.chevallier@bootlin.com
-Subject: Re: [PATCH net] net: cpsw: fix NULL pointer exception in the probe
- error path
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190821144123.22248-1-antoine.tenart@bootlin.com>
-References: <20190821144123.22248-1-antoine.tenart@bootlin.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 21 Aug 2019 14:00:15 -0700 (PDT)
+        id S1731272AbfHUWza (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 21 Aug 2019 18:55:30 -0400
+Received: from tako.kondi.net ([192.166.219.46]:40594 "EHLO
+        grzegorz.bedra.webh.me" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1731036AbfHUWza (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Aug 2019 18:55:30 -0400
+Received: from tako.kondi.net (localhost [IPv6:::1])
+        by grzegorz.bedra.webh.me (Postfix) with SMTP id EC5BB1C70F30;
+        Tue, 20 Aug 2019 23:44:46 +0200 (CEST)
+From:   prodawez@cuvox.de
+Reply-To: prodawez@cuvox.de
+To:     prodawez@cuvox.de
+Subject: Zdravstvujte! Vas interesujut klientskie bazy dannyh?
+Message-Id: <20190820214447.EC5BB1C70F30@grzegorz.bedra.webh.me>
+Date:   Tue, 20 Aug 2019 23:44:46 +0200 (CEST)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Antoine Tenart <antoine.tenart@bootlin.com>
-Date: Wed, 21 Aug 2019 16:41:23 +0200
-
-> In certain cases when the probe function fails the error path calls
-> cpsw_remove_dt() before calling platform_set_drvdata(). This is an
-> issue as cpsw_remove_dt() uses platform_get_drvdata() to retrieve the
-> cpsw_common data and leds to a NULL pointer exception. This patches
-> fixes it by calling platform_set_drvdata() earlier in the probe.
-> 
-> Fixes: 83a8471ba255 ("net: ethernet: ti: cpsw: refactor probe to group common hw initialization")
-> Reported-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Signed-off-by: Antoine Tenart <antoine.tenart@bootlin.com>
-
-Applied and queued up for -stable, thanks.
+Zdravstvujte! Vas interesujut klientskie bazy dannyh?
