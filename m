@@ -2,87 +2,145 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8816698595
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Aug 2019 22:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5FE79859F
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Aug 2019 22:32:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727014AbfHUU03 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 21 Aug 2019 16:26:29 -0400
-Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:42434 "EHLO
-        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726998AbfHUU03 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Aug 2019 16:26:29 -0400
-Received: from darkstar.musicnaut.iki.fi (85-76-66-34-nat.elisa-mobile.fi [85.76.66.34])
-        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 9459A30049;
-        Wed, 21 Aug 2019 23:26:27 +0300 (EEST)
-Date:   Wed, 21 Aug 2019 23:26:27 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] drm/omap: Fix port lookup for SDI output
-Message-ID: <20190821202627.GD30291@darkstar.musicnaut.iki.fi>
-References: <20190818140838.GC30291@darkstar.musicnaut.iki.fi>
- <20190821183226.13784-1-laurent.pinchart@ideasonboard.com>
+        id S1728687AbfHUUba (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 21 Aug 2019 16:31:30 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:34295 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727014AbfHUUba (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Aug 2019 16:31:30 -0400
+Received: by mail-ot1-f65.google.com with SMTP id c7so3361351otp.1;
+        Wed, 21 Aug 2019 13:31:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=iabTxjGtNwFPz618omlBwY8T1BonwpR5OPoPhDx+RAI=;
+        b=WYbOEE9Gy49PJrRZIF4UzXIVNnr3FJk4n4J+C/Tb1KQz9hvmb1uczkBPxMBKM/igic
+         0SNsn4mNhaeqU/Tb5AS8Ni2Rpxxh0j+0WWN/5WrfIZKcY5/63lI2NMfwf6PK3BVqdPN7
+         DLwab1EEfwZ9T2vS9ceWnkIJ9hGAkJy2bszpoRGNyKJsgu0XQj6i0Ig1ziJW4CM6RPau
+         cowsQARkeHukD1/vawY5anj2mN2vbrYwmeTtCyUQ84uswelQdf7WQIOBV64CU1Rw5I+W
+         CJAZry04iuRsvm0CC4NOIPbEQg/SmOfaANmd0lA+ZgZxDdT0rpkkQkqr2eWD+2GPtH/k
+         /45Q==
+X-Gm-Message-State: APjAAAVoW7QyrpPLjF+scMFmsL/Rg9cl9HWIKDAC+JUaS/iUwjv1Cu7P
+        0C+M/iPipBU9yGSzkHGDtA==
+X-Google-Smtp-Source: APXvYqxA5DddGYiMIluqgvMEXnIjXJXPtUYSn4UKKWLOHwak79bzGLItjFHyJqv8AZhca2/koFNGsw==
+X-Received: by 2002:a9d:7a5a:: with SMTP id z26mr26056383otm.348.1566419488855;
+        Wed, 21 Aug 2019 13:31:28 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id d22sm6221319oic.23.2019.08.21.13.31.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Aug 2019 13:31:28 -0700 (PDT)
+Date:   Wed, 21 Aug 2019 15:31:27 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     David Lechner <david@lechnology.com>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] dt-bindings: counter: new bindings for TI eQEP
+Message-ID: <20190821203127.GA29308@bogus>
+References: <20190807194023.15318-1-david@lechnology.com>
+ <20190807194023.15318-3-david@lechnology.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190821183226.13784-1-laurent.pinchart@ideasonboard.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <20190807194023.15318-3-david@lechnology.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-On Wed, Aug 21, 2019 at 09:32:26PM +0300, Laurent Pinchart wrote:
-> When refactoring port lookup for DSS outputs, commit d17eb4537a7e
-> ("drm/omap: Factor out common init/cleanup code for output devices")
-> incorrectly hardcoded usage of DT port 0. This breaks operation for SDI
-> (which uses the DT port 1) and DPI outputs other than DPI0 (which are
-> not used in mainline DT sources).
+On Wed, Aug 07, 2019 at 02:40:20PM -0500, David Lechner wrote:
+> This documents device tree binding for the Texas Instruments Enhanced
+> Quadrature Encoder Pulse (eQEP) Module found in various TI SoCs.
 > 
-> Fix this by using the port number from the output omap_dss_device
-> of_ports field.
-> 
-> Fixes: d17eb4537a7e ("drm/omap: Factor out common init/cleanup code for output devices")
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-
-Thanks, this fixes the display issue on N900.
-
-A.
-
+> Signed-off-by: David Lechner <david@lechnology.com>
 > ---
->  drivers/gpu/drm/omapdrm/dss/output.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/output.c b/drivers/gpu/drm/omapdrm/dss/output.c
-> index de0f882f0f7b..14b41de44ebc 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/output.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/output.c
-> @@ -4,6 +4,7 @@
->   * Author: Archit Taneja <archit@ti.com>
->   */
->  
-> +#include <linux/bitops.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
-> @@ -20,7 +21,8 @@ int omapdss_device_init_output(struct omap_dss_device *out)
->  {
->  	struct device_node *remote_node;
->  
-> -	remote_node = of_graph_get_remote_node(out->dev->of_node, 0, 0);
-> +	remote_node = of_graph_get_remote_node(out->dev->of_node,
-> +					       ffs(out->of_ports) - 1, 0);
->  	if (!remote_node) {
->  		dev_dbg(out->dev, "failed to find video sink\n");
->  		return 0;
+> v2 changes:
+> - convert to .yaml format
+> - rename clock to "sysclkout"
+> 
+>  .../devicetree/bindings/counter/ti-eqep.yaml  | 50 +++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/counter/ti-eqep.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+> new file mode 100644
+> index 000000000000..8f8b2e87e5c3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/counter/ti-eqep.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments Enhanced Quadrature Encoder Pulse (eQEP) Module
+> +
+> +maintainers:
+> +  - David Lechner <david@lechnology.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: "ti,am3352-eqep"
+
+No need for quotes
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    description: The eQEP event interrupt
+
+Don't really have to have a description when there is only 1 entry.
+
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    description: The clock that determines the SYSCLKOUT rate for the eQEP
+> +                 peripheral.
+
+Same here. 2 spaces in from description is the normal indentation.
+
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: sysclkout
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    eqep0: eqep@180 {
+
+counter@...
+
+> +        compatible = "ti,am3352-eqep";
+> +        reg = <0x180 0x80>;
+> +        clocks = <&l4ls_gclk>;
+> +        clock-names = "sysclkout";
+> +        interrupts = <79>;
+> +    };
+> +
+> +...
 > -- 
-> Regards,
-> 
-> Laurent Pinchart
+> 2.17.1
 > 
