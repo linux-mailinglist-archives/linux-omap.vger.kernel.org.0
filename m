@@ -2,82 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E24A197DF4
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Aug 2019 17:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2238497E3B
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Aug 2019 17:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727687AbfHUPCV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 21 Aug 2019 11:02:21 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:45476 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726739AbfHUPCV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Aug 2019 11:02:21 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7LF2H3Q115452;
-        Wed, 21 Aug 2019 10:02:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1566399737;
-        bh=9U6VgUhs0WUhDkB5sgJHbbn7p+rrmYQHaH8DyLgbm0k=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=WKZKmhCzTM92U3edVWZZeYK4kHibPRD0XAY8t4dJraauANMKIyKyr1+385o/bgEGX
-         ueKkwTe+Q2z6jj6avJRaK4VH4oYZRpVGXZ6PJ2E3bXMbVV6OwfqWKvQy+B+uL0xpJW
-         trbrL78+ft4yyD/sbq/jPIEKYFfiU7HYvGhB9g5g=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7LF2H1R046792
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 21 Aug 2019 10:02:17 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 21
- Aug 2019 10:02:16 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 21 Aug 2019 10:02:17 -0500
-Received: from [10.250.98.116] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7LF2Eeg041638;
-        Wed, 21 Aug 2019 10:02:15 -0500
-Subject: Re: [PATCH net] net: cpsw: fix NULL pointer exception in the probe
- error path
-To:     Antoine Tenart <antoine.tenart@bootlin.com>, <davem@davemloft.net>
-CC:     <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <maxime.chevallier@bootlin.com>
-References: <20190821144123.22248-1-antoine.tenart@bootlin.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <139cd66e-e8f8-0d18-a876-59e791bb8624@ti.com>
-Date:   Wed, 21 Aug 2019 18:02:07 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190821144123.22248-1-antoine.tenart@bootlin.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S1727504AbfHUPKq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 21 Aug 2019 11:10:46 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:52529 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727134AbfHUPKq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Aug 2019 11:10:46 -0400
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1i0SFy-0001Rj-L8; Wed, 21 Aug 2019 17:10:38 +0200
+Message-ID: <1566400237.4193.15.camel@pengutronix.de>
+Subject: Re: [PATCH 2/8] soc: ti: add initial PRM driver with reset control
+ support
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Suman Anna <s-anna@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        Keerthy <j-keerthy@ti.com>, ssantosh@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        robh+dt@kernel.org
+Cc:     tony@atomide.com, devicetree@vger.kernel.org
+Date:   Wed, 21 Aug 2019 17:10:37 +0200
+In-Reply-To: <a4196b73-63a0-f9d8-1c43-e6c4d1c1d6a4@ti.com>
+References: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
+         <1565164139-21886-3-git-send-email-t-kristo@ti.com>
+         <3b76f0e0-7530-e7b5-09df-2de9956f30ee@ti.com>
+         <59709a2d-f13a-bd55-8aba-864c1cf2f19e@ti.com>
+         <9372957c-9ab9-b0dd-fe07-815eb2cb2f16@ti.com>
+         <0f335aec-bfdf-345a-8dfb-dad70aef1af6@ti.com>
+         <a4196b73-63a0-f9d8-1c43-e6c4d1c1d6a4@ti.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.22.6-1+deb9u2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 21/08/2019 17:41, Antoine Tenart wrote:
-> In certain cases when the probe function fails the error path calls
-> cpsw_remove_dt() before calling platform_set_drvdata(). This is an
-> issue as cpsw_remove_dt() uses platform_get_drvdata() to retrieve the
-> cpsw_common data and leds to a NULL pointer exception. This patches
-> fixes it by calling platform_set_drvdata() earlier in the probe.
+On Tue, 2019-08-20 at 11:47 -0500, Suman Anna wrote:
+> On 8/20/19 2:37 AM, Tero Kristo wrote:
+> > On 20.8.2019 2.01, Suman Anna wrote:
+> > > Hi Tero,
+> > > 
+> > > On 8/19/19 4:32 AM, Tero Kristo wrote:
+[...]
+> > > > > > +{
+> > > > > > +    struct omap_reset_data *reset;
+> > > > > > +
+> > > > > > +    /*
+> > > > > > +     * Check if we have resets. If either rstctl or rstst is
+> > > > > > +     * non-zero, we have reset registers in place. Additionally
+> > > > > > +     * the flag OMAP_PRM_NO_RSTST implies that we have resets.
+> > > > > > +     */
+> > > > > > +    if (!prm->data->rstctl && !prm->data->rstst &&
+> > > > > > +        !(prm->data->flags & OMAP_PRM_NO_RSTST))
+> > > > > > +        return 0;
+> > > > > > +
+> > > > > > +    reset = devm_kzalloc(&pdev->dev, sizeof(*reset), GFP_KERNEL);
+> > > > > > +    if (!reset)
+> > > > > > +        return -ENOMEM;
+> > > > > > +
+> > > > > > +    reset->rcdev.owner = THIS_MODULE;
+> > > > > > +    reset->rcdev.ops = &omap_reset_ops;
+> > > > > > +    reset->rcdev.of_node = pdev->dev.of_node;
+> > > > > > +    reset->rcdev.nr_resets = OMAP_MAX_RESETS;
+> > > 
+> > > Suggest adding a number of resets to prm->data, and using it so that we
+> > > don't even entertain any resets beyond the actual number of resets.
+> > 
+> > Hmm why bother? Accessing a stale reset bit will just cause access to a
+> > reserved bit in the reset register, doing basically nothing. Also, this
+> > would not work for am3/am4 wkup, as there is a single reset bit at an
+> > arbitrary position.
 > 
-> Fixes: 83a8471ba255 ("net: ethernet: ti: cpsw: refactor probe to group common hw initialization")
-> Reported-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Signed-off-by: Antoine Tenart <antoine.tenart@bootlin.com>
-> ---
->   drivers/net/ethernet/ti/cpsw.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> The generic convention seems to be defining a reset id value defined
+> from include/dt-bindings/reset/ that can be used to match between the
+> dt-nodes and the reset-controller driver.
 > 
+> Philipp,
+> Any comments?
 
-Thank you.
-Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Are there only reset bits and reserved bits in the range accessible by
+[0..OMAP_MAX_RESETS] or are ther bits with another function as well?
+If the latter is the case, I would prefer enumerating the resets in a
+dt-bindings header, with the driver containing an enum -> reg/bit
+position lookup table.
 
--- 
-Best regards,
-grygorii
+In general, assuming the device tree contains no errors, this should not
+matter much, but I think it is nice if the reset driver, even with a
+misconfigured device tree, can't write into arbitrary bit fields.
+
+regards
+Philipp
