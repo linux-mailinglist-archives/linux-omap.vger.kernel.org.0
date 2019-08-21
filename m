@@ -2,160 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F04AE973AA
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Aug 2019 09:36:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F930974CE
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Aug 2019 10:24:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727469AbfHUHgV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 21 Aug 2019 03:36:21 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:36226 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727210AbfHUHgV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Aug 2019 03:36:21 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7L7aEgv094718;
-        Wed, 21 Aug 2019 02:36:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1566372974;
-        bh=t9ppVPq7IC2TVAGLlqMcOquzMEQC6ajE6CYvZHvX3Vw=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=XuxHz71emVTmDAoK4lUezNKGhzbIt/mHV1V2ilZUZnGhmzoYABWU+5lcZ93OBH1Oe
-         nVwlgh4JEiX/fDH3mMkrZOgDNotSlVEz3HzkVxAGGroqA1E2YWSVzT7w8f4LaU5Gfm
-         QCPUi0AYYSXXkb5tudY3cyUuI3ZZkD3i4JDiDXwo=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7L7aESb104418
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 21 Aug 2019 02:36:14 -0500
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 21
- Aug 2019 02:36:14 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 21 Aug 2019 02:36:14 -0500
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7L7aCOA058793;
-        Wed, 21 Aug 2019 02:36:12 -0500
-Subject: Re: [PATCH 7/8] soc: ti: omap-prm: add dra7 PRM data
-To:     Suman Anna <s-anna@ti.com>, <ssantosh@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>
-CC:     <tony@atomide.com>, <devicetree@vger.kernel.org>
-References: <1565164139-21886-1-git-send-email-t-kristo@ti.com>
- <1565164139-21886-8-git-send-email-t-kristo@ti.com>
- <0e8aa351-4c58-ab6c-890f-094118b812ac@ti.com>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <67a06e0c-f85d-bdc4-aedf-9a3c0e80fc6a@ti.com>
-Date:   Wed, 21 Aug 2019 10:36:11 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726562AbfHUIYE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 21 Aug 2019 04:24:04 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:37030 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726541AbfHUIYE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Aug 2019 04:24:04 -0400
+Received: by mail-vs1-f65.google.com with SMTP id q188so821743vsa.4;
+        Wed, 21 Aug 2019 01:24:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=0ZYOhaXziyopUu4yQ7NDO9r3XJlJMH+kc0PEY3F5Biw=;
+        b=GW2/QhsQg7295rXP4rzhO2ZxxyCnttdz88ovVCRwvoYtsstRBYYLUQU2EbtpRm15c0
+         UHPuf4myAXJ1Qc/J9ctnEWWXocTo9v9Jbep6nr7blJwnOYCLkK+/uL+g+Uf4AFOM5tn5
+         CS//Q9CisOSZicTmq9xv1P3h76Ldmct8COTbK3w/DJSS6hY9K9h/JvzMcQdg5L3dpdwS
+         j+cyYoq8HI60XIaPuS2bCPNSzTdnkV+WPZzcUDIVD8rf6Bmj5iCVHtYMOq2bq+LEv6Cs
+         sOd8w77xgylEMddG+Z+61oFg/D9ieLsfAcLKvI6a94eZcmSKVMNx4/x1vWnT1CDws+wn
+         Kqag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=0ZYOhaXziyopUu4yQ7NDO9r3XJlJMH+kc0PEY3F5Biw=;
+        b=phx+00LgcTWfFDWPTGJdCdPoSse1RO53DiSnufe2yl6i2WNGMeJlz8t3/fx3YXr+6P
+         Zr9E5eFKaV5UfnSQBeXK5gAcHIkdAlXVrNBXvyIQw4xtuvlT3w8HlahQ3EBI1FB+ZPiA
+         1E2toGoXedH2pFvIzOmgLh2qDAl7ngoY0CTNV9FGvyTKEy/jko+u4o1jKRb5oK3YjAkY
+         gPhnW9CcvD1SCIhQM/bUZm+hLMRFEl7LxQSgvyQYpRpYveuaLfhi7Oerz+JrJJ8VozMK
+         hYJGyv9O0kfA8vsUJZWx1yShMxBWIZT3CRBIBQFqqbOXVsq8CMCy0VGMTjRILAilKpNZ
+         x6eA==
+X-Gm-Message-State: APjAAAXdCOga4+qMC1VDDThOb7jg4q1d+FAd2EbIF3bhffBohUESO58T
+        S19ksLeW7NMnecJyPaLaWsourjt4ptUfg/xRfjNqvGdqtco=
+X-Google-Smtp-Source: APXvYqyhIW1BgX238dkpOipJIIDenE8ivDd1DgGtgQNfuw+MwPeN6jaXWpKE3XhPBC27BT9WfEmUa8T5par18ZGTkLc=
+X-Received: by 2002:a67:be15:: with SMTP id x21mr20182663vsq.142.1566375842882;
+ Wed, 21 Aug 2019 01:24:02 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <0e8aa351-4c58-ab6c-890f-094118b812ac@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Wed, 21 Aug 2019 10:23:12 +0200
+Message-ID: <CAGm1_kt_cbLHpw2=JKgKGEmdOu9d-=gT9hsLn_XwJg=gtdJY7Q@mail.gmail.com>
+Subject: musb: Could not flush host TX2 fifo: csr: 2403
+To:     linux-omap@vger.kernel.org
+Cc:     Bin Liu <b-liu@ti.com>, linux-usb <linux-usb@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 20.8.2019 22.03, Suman Anna wrote:
-> Hi Tero,
-> 
-> On 8/7/19 2:48 AM, Tero Kristo wrote:
->> Add PRM data for dra7 family of SoCs.
->>
->> Signed-off-by: Tero Kristo <t-kristo@ti.com>
->> ---
->>   drivers/soc/ti/omap_prm.c | 26 ++++++++++++++++++++++++++
->>   1 file changed, 26 insertions(+)
->>
->> diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
->> index fadfc7f..05b7749 100644
->> --- a/drivers/soc/ti/omap_prm.c
->> +++ b/drivers/soc/ti/omap_prm.c
->> @@ -73,6 +73,31 @@ struct omap_prm_data omap4_prm_data[] = {
->>   	{ },
->>   };
->>   
->> +static struct omap_prm_data dra7_prm_data[] = {
->> +	{ .name = "mpu", .base = 0x4ae06300, .pwstst = 0x4 },
->> +	{ .name = "dsp1", .base = 0x4ae06400, .pwstst = 0x4, .rstctl = 0x10, .rstst = 0x14 },
->> +	{ .name = "ipu", .base = 0x4ae06500, .pwstst = 0x4, .rstctl = 0x10, .rstst = 0x14, .clkdm_name = "ipu1" },
->> +	{ .name = "coreaon", .base = 0x4ae06628, .pwstst = 0x4 },
-> 
-> Public TRM marks this region Reserved. Do you need it for anything?
-This is copied from existing PRM data from kernel. However, I'll ditch 
-these for now and only retain the reset enabled domains.
+I'm moving our systems to the recent kernel and have encountered an
+older musb issue [1] that occurs with some 3G/4G modems. In this case
+it is  SIMCom 7600G-H. After this dump occurs the modem is still
+working though.
 
-> 
->> +	{ .name = "core", .base = 0x4ae06700, .pwstst = 0x4, .rstctl = 0x210, .rstst = 0x214, .clkdm_name = "ipu2" },
->> +	{ .name = "iva", .base = 0x4ae06f00, .pwstst = 0x4 },
-> 
-> Missing rstctrl and rstst offsets.
+[   45.585644] ------------[ cut here ]------------
+[   45.590785] WARNING: CPU: 0 PID: 242 at
+drivers/usb/musb/musb_host.c:115 musb_h_tx_flush_fifo+0x118/0x138
+[   45.600421] musb-hdrc musb-hdrc.0: Could not flush host TX2 fifo: csr: 2403
+[   45.607433] Modules linked in: 8021q garp stp mrp llc wl18xx wlcore
+mac80211 libarc4 sha256_generic cfg80211 wlcore_sdio c_can_platform
+omap_rng rng_core c_can can_dev at24 gpio_pca953x omap_wdt watchdog
+rtc_omap leds_gpio led_class
+[   45.628258] CPU: 0 PID: 242 Comm: ModemManager Not tainted 5.3.0-rc5 #2
+[   45.634920] Hardware name: Generic AM33XX (Flattened Device Tree)
+[   45.641092] [<c0111d28>] (unwind_backtrace) from [<c010d000>]
+(show_stack+0x10/0x14)
+[   45.648910] [<c010d000>] (show_stack) from [<c09bd0f0>]
+(dump_stack+0xd8/0x110)
+[   45.656291] [<c09bd0f0>] (dump_stack) from [<c013a034>] (__warn+0xe0/0x10c)
+[   45.663314] [<c013a034>] (__warn) from [<c013a0a4>]
+(warn_slowpath_fmt+0x44/0x6c)
+[   45.670862] [<c013a0a4>] (warn_slowpath_fmt) from [<c076fbf0>]
+(musb_h_tx_flush_fifo+0x118/0x138)
+[   45.679806] [<c076fbf0>] (musb_h_tx_flush_fifo) from [<c0770ef4>]
+(musb_cleanup_urb+0x128/0x204)
+[   45.688660] [<c0770ef4>] (musb_cleanup_urb) from [<c077167c>]
+(musb_urb_dequeue+0x14c/0x234)
+[   45.697165] [<c077167c>] (musb_urb_dequeue) from [<c07323fc>]
+(usb_hcd_unlink_urb+0x68/0x84)
+[   45.705667] [<c07323fc>] (usb_hcd_unlink_urb) from [<c0768530>]
+(usb_wwan_write+0x64/0x1f0)
+[   45.714090] [<c0768530>] (usb_wwan_write) from [<c075b600>]
+(serial_write+0x34/0x60)
+[   45.721898] [<c075b600>] (serial_write) from [<c060e3ec>]
+(n_tty_write+0x360/0x460)
+[   45.729626] [<c060e3ec>] (n_tty_write) from [<c060a1bc>]
+(tty_write+0x1c0/0x36c)
+[   45.737092] [<c060a1bc>] (tty_write) from [<c02f0410>]
+(__vfs_write+0x28/0x1c4)
+[   45.744465] [<c02f0410>] (__vfs_write) from [<c02f2f48>]
+(vfs_write+0xa0/0x184)
+[   45.751835] [<c02f2f48>] (vfs_write) from [<c02f31e8>] (ksys_write+0x98/0xdc)
+[   45.759033] [<c02f31e8>] (ksys_write) from [<c0101000>]
+(ret_fast_syscall+0x0/0x28)
+[   45.766743] Exception stack(0xcb911fa8 to 0xcb911ff0)
+[   45.771845] 1fa0:                   00160170 bea0fc14 00000009
+00141be9 00000001 bea0fc14
+[   45.780086] 1fc0: 00160170 bea0fc14 00000000 00000004 00141be9
+00000001 00000001 00141be9
+[   45.788322] 1fe0: 00000000 bea0fbc8 b68d992b b68d9934
+[   45.793416] irq event stamp: 109442
+[   45.796945] hardirqs last  enabled at (109441): [<c0101a74>]
+__irq_svc+0x74/0x98
+[   45.804406] hardirqs last disabled at (109442): [<c09dd3e8>]
+_raw_spin_lock_irqsave+0x1c/0x4c
+[   45.812992] softirqs last  enabled at (109180): [<c0102580>]
+__do_softirq+0x360/0x524
+[   45.820880] softirqs last disabled at (109157): [<c0141c28>]
+irq_exit+0x12c/0x17c
+[   45.828416] ---[ end trace eecf6f3aa6209643 ]---
 
-Will add.
+[1] https://patchwork.kernel.org/patch/7389591/
 
-> 
->> +	{ .name = "cam", .base = 0x4ae07000, .pwstst = 0x4 },
->> +	{ .name = "dss", .base = 0x4ae07100, .pwstst = 0x4 },
->> +	{ .name = "gpu", .base = 0x4ae07200, .pwstst = 0x4 },
->> +	{ .name = "l3init", .base = 0x4ae07300, .pwstst = 0x4, .rstctl = 0x10, .rstst = 0x14 },
->> +	{ .name = "l4per", .base = 0x4ae07400, .pwstst = 0x4 },
->> +	{ .name = "custefuse", .base = 0x4ae07600, .pwstst = 0x4 },
->> +	{ .name = "wkupaon", .base = 0x4ae07724, .pwstst = 0x4 },
-> 
-> No pwstctrl and pwstst bits documented in TRM or are marked reserved.
-
-Same as coreaon.
-
-> 
->> +	{ .name = "emu", .base = 0x4ae07900, .pwstst = 0x4 },
->> +	{ .name = "dsp2", .base = 0x4ae07b00, .pwstst = 0x4, .rstctl = 0x10, .rstst = 0x14 },
->> +	{ .name = "eve1", .base = 0x4ae07b40, .pwstst = 0x4 },
->> +	{ .name = "eve2", .base = 0x4ae07b80, .pwstst = 0x4 },
->> +	{ .name = "eve3", .base = 0x4ae07bc0, .pwstst = 0x4 },
->> +	{ .name = "eve4", .base = 0x4ae07c00, .pwstst = 0x4 },
-> 
-> All EVEs are missing rstctrl and rstst fields.
-
-Will add.
-
-> 
->> +	{ .name = "rtc", .base = 0x4ae07c60, .pwstst = 0x4 },
-> 
-> Undocumented pwstctrl and pwstst registers.
-> 
->> +	{ .name = "vpe", .base = 0x4ae07c80, .pwstst = 0x4 },
-> 
-> Missing "device" and "instr" PRM. The latter doesn't have any pwrstctl
-> and pwrstst though.
-
-Will ditch those.
-
--Tero
-
-> 
-> regards
-> Suman
-> 
->> +	{ },
->> +};
->> +
->>   struct omap_rst_map am3_wkup_rst_map[] = {
->>   	{ .rst = 3, .st = 5 },
->>   	{ .rst = -1 },
->> @@ -91,6 +116,7 @@ struct omap_prm_data am3_prm_data[] = {
->>   
->>   static const struct of_device_id omap_prm_id_table[] = {
->>   	{ .compatible = "ti,omap4-prm-inst", .data = omap4_prm_data },
->> +	{ .compatible = "ti,dra7-prm-inst", .data = dra7_prm_data },
->>   	{ .compatible = "ti,am3-prm-inst", .data = am3_prm_data },
->>   	{ },
->>   };
->>
-> 
-
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Regards,
+Yegor
