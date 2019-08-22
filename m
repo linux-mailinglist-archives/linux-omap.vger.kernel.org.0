@@ -2,120 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2166B98984
-	for <lists+linux-omap@lfdr.de>; Thu, 22 Aug 2019 04:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C3D993C4
+	for <lists+linux-omap@lfdr.de>; Thu, 22 Aug 2019 14:34:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729284AbfHVCjl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 21 Aug 2019 22:39:41 -0400
-Received: from mail-io1-f46.google.com ([209.85.166.46]:42648 "EHLO
-        mail-io1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729253AbfHVCjl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Aug 2019 22:39:41 -0400
-Received: by mail-io1-f46.google.com with SMTP id e20so8804085iob.9
-        for <linux-omap@vger.kernel.org>; Wed, 21 Aug 2019 19:39:40 -0700 (PDT)
+        id S2387645AbfHVMd4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 22 Aug 2019 08:33:56 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:36054 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387660AbfHVMd4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 22 Aug 2019 08:33:56 -0400
+Received: by mail-lj1-f194.google.com with SMTP id u15so5393677ljl.3
+        for <linux-omap@vger.kernel.org>; Thu, 22 Aug 2019 05:33:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DjkqXBEpoRl7YWU1PeR2dqOHuwVcGnBT/nBbzmjYkzo=;
-        b=uyiL7ghi5f1jy1APYYvpzV5FMe9qOAsRl9pjy7QVpo986Ty7xTQa8pbfJtBPSiNe4P
-         AVGi+3DAi7gD7567Y08HlWy0LcOO8t0NxFURuvXa6dSoXJIBmOrzELvR6w79KM9w9V6B
-         6oGTs38ok5p5tpXndqbO5LTv34QvoIrSJo5l8Hdyy+zbedGge8ZOF1Vicpo/wvFSUlUb
-         AVFE8vgDmtCGTYgziPytM9+/YP9vU/8s750w3Rdqvvnty8D8wi/HQG5ghrRIZQTYL/iz
-         mU5Uc9c8DDpYbHLU0iqT1/aXV5cVmZg02CvIH1gHopVykFXj3wrsOngc9WnqwZveDTOt
-         4xiQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=AUhQHTcU1mgF9tzfCfhTROT5gqg6hyWkEW6XXLZ5cKmIG6UWi6GCnenpPcHX4Cri83
+         w1TgBBzhAQ9fJrCgRmYTB4GtgbaO8IYXyp82dYVIMcnRnJj3uIfVM+gak46EuT3WPl1x
+         MyO4bF1hJx29JmhWKS8kScMNA5YTmDoIRwF1/KQAtk31i+8c3IqCHvOpnyvwNseUyrye
+         1IqvNZv01+7i1PNQshNGopcLr8O6ocZqfYYvQlq9uTQ8VyMAZeOwyheLMbZ2C+xE2wz6
+         V+JMN5SgJUKZipPYiSbmyA/OCQqpqeQ5Dv68tcLS5KbcRU0g3nTBmm4Sbfda1dl2wNbG
+         eFAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DjkqXBEpoRl7YWU1PeR2dqOHuwVcGnBT/nBbzmjYkzo=;
-        b=jhaXe0vl+/TNW6CrxGILv9CK3FJnadZtRo8jThNenxiC5JFXDqZvYm7zfgzdeH0IX4
-         26WrErtgzCqPCwDrKhZgum21cxhlIH99O6NDKSFb1AbHzNs/jGUh8nt7b/qxb0W2dfKu
-         oV+0aNSw5XOD7tPcy4YXSHyAz7LSVuVr3vy7xu9/jZJDyyhFpgiF1teLAoSuHgGDyAv1
-         h5sPvmfHdsA+RGcqJakKhUOSSTiJV0pMbQd0KOWoy4/+SJa974lJCWxBTJUOy80Gpw1F
-         +BoORUwQP0diOR+Y9XiisIEzY3I5JafJKCzu7n12cKIZjqx11A2GkbdbbSUuA2wWz7wa
-         OyAA==
-X-Gm-Message-State: APjAAAW+xWKzgdxByWJy/R1Nn6uiQjXdPxbxFkkmO9/rLmFUamsHtd2p
-        eNts+74bk/wniPI0iln4/OjBpcQIpra8nQCnkqcKzGCRBV4=
-X-Google-Smtp-Source: APXvYqyrLPYM1EnwxEvoQOXg8DQOk06/bHMKOZeDBrRRhOlp2KKgjF2e3o32y3NnqOWpi4MaPdOfzoa7unHI1VZoKJY=
-X-Received: by 2002:a6b:c98c:: with SMTP id z134mr10104989iof.276.1566441579698;
- Wed, 21 Aug 2019 19:39:39 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
+        b=ByYO9M8ZW9Jjm13tInjjGzXRchAXxT1va+Jck0IgTBszlIh/7zkS7mwQBinKNQlyih
+         5b+S70hrJQi5Lw20SYkP8Kp3N1dZhtOKRFVrjAK94++AsLt+B86li/rUUhgiCvJ23a9v
+         howI1RB2wcCeJAFEm1nM0SAlCINtTqsrq4hrDLN2y7SA/fH69Z+FyWnARb2r+dXCXHIp
+         yVFQCAdrpKftB6AGPCOcuHkboemGt6nHjEbN9KSExajAFJaSEFTxBAUiDGlw2IVHPWFY
+         SyR2liPhMWFV0e/nFHMC0TbTMnDQ7v5ZmX/O2lJYyBglP2bsO94I+krVsBH+tWR11QIC
+         FJ4A==
+X-Gm-Message-State: APjAAAUd4Og1BuCb9Ht7ewY/wuRvCWGZhfJwaV2QnkW8soPjs/pfoCV6
+        mdqxvf942ngXD5s5MmoCrBVmRAJ0dIAFpIq0JDQ=
+X-Google-Smtp-Source: APXvYqxg7AtGyQDADYULNl8nHybD0AJp2ycxrRkCZAvwbR0kvEi3IE06cyQbgNbI8SGqgtUqnsJ3Iq1qssJPpmxZSt8=
+X-Received: by 2002:a2e:970e:: with SMTP id r14mr16736896lji.204.1566477233810;
+ Thu, 22 Aug 2019 05:33:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAHCN7x+F9c-_0febeV1EdJqVBs8aOrqYLQdds26MT25t=Sa_Fg@mail.gmail.com>
- <20190822020850.GC17402@pendragon.ideasonboard.com>
-In-Reply-To: <20190822020850.GC17402@pendragon.ideasonboard.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Wed, 21 Aug 2019 21:39:27 -0500
-Message-ID: <CAHCN7xJdCBLo2Qop6gD1kRFXE-fxkH3OuN0XO6t9kUJ3HA-tRw@mail.gmail.com>
-Subject: Re: Question about drm/omap: Remove panel-dpi driver
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
+Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:33:53
+ -0700 (PDT)
+Reply-To: eku.lawfirm@gmail.com
+From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
+Date:   Thu, 22 Aug 2019 12:33:53 +0000
+Message-ID: <CAN-_bTaF=eU-LMX4XaaadMGLTp31z=_83HGFhxq7=Kkzk_Q0hg@mail.gmail.com>
+Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Aug 21, 2019 at 9:08 PM Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> Hello Adam,
->
-> On Wed, Aug 21, 2019 at 08:14:43PM -0500, Adam Ford wrote:
-> > I know it's been nearly 9 months this this was removed, but for those
-> > of us who still define our displays in the device tree expecting the
-> > dpi-panel, we're not getting video.
-> >
-> > The commit message only states:
-> >
-> >     Panels are now supported through the drm_panel infrastructure, remove
-> >     the omapdrm-specific driver.
-> >
-> > It does not give examples of how to do this, and I feel like we should
-> > have been given some warning or indication.  Is there an example I can
-> > follow for linking a dpi panel into the omap DSS?
->
-> Sorry to have left you with non-working systems :-(
+--=20
+Dear,
+With due respect this is not spam or Scam mail, because I have
+contacted you before and there was no response from you,I apologise if
+the contents of this mail are contrary to your moral ethics, which I
+feel may be of great disturbance to your person, but please treat this
+with absolute confidentiality, believing that this email reaches you
+in good faith. My contacting you is not a mistake or a coincidence
+because God can use any person known or unknown to accomplish great
+things.
+I am a lawyer and I have an investment business proposal to offer you.
+It is not official but should be considered as legal and confidential
+business. I have a customer's deposit of $US25 million dollars ready
+to be moved for investment if you can partner with us. We are ready to
+offer you 10% of this total amount as your compensation for supporting
+the transaction to completion. If you are interested to help me please
+reply me with your full details as stated below:
+(1) Your full names:
+(2) Your address:
+(3) Your occupation:
+(4) Your mobile telephone number:
+(5) Your nationality:
+(6) Your present location:
+(7) Your age:
+So that I will provide you more details on what to do and what is
+required for successful completion.
+Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
+MENTIONED DETAILS
 
-I have really only been following the omap-linux mailing list and only
-really focus on the LTS kernels because my employer uses the LTS
-kernels as the basis for the their linux distributions. If there is a
-different mailing list I should follow, let me know.  I just wish it
-would have been marked as deprecated or something before just being
-killed.
-
->
-> If the panel is supported by a mainline DRM panel driver the change
-> should be transparent (provided of course that the driver is compiled in
-> the kernel or as a module). Most panels are supported by the
-> panel-simple driver (CONFIG_DRM_PANEL_SIMPLE), with a few dozen of other
-> panels supported by dedicated drivers (in drivers/gpu/drm/panel/)
->
-> Could you point me to the DT sources of one (or all) of the affected
-> systems ?
-
-Sure,
-The same panel is used on these these two boards:
-logicpd-som-lv-baseboard.dtsi
-logicpd-torpedo-37xx-devkit-28.dts
-
-A second panel is used on:
-logicpd-torpedo-37xx-devkit.dts which has the LCD timings defined in
-logicpd-torpedo-baseboard.dtsi
-The am3517-evm also uses the same timings, but the gpio enables are different.
-
-The da850-evm uses the same panel as the am3517-evm, but it's not
-using the same video driver, and I haven't had a chance to see if that
-driver still exists or not.
-
-Thanks for your quick response.
-:-)
-
-Sorry if my e-mail came across angrily, it wasn't my intention.
-
-adam
-
-> --
-> Regards,
->
-> Laurent Pinchart
+Sinc=C3=A8rement v=C3=B4tre,
+Avocat Etienne Eku Esq.(Lawfirm)
+Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
+=E2=80=99ouest.
+Skype:westafricalawfirm
