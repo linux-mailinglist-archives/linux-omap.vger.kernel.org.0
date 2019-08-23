@@ -2,46 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB1D19B84D
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2019 23:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF179B886
+	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2019 00:24:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393018AbfHWVrC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 23 Aug 2019 17:47:02 -0400
-Received: from emh07.mail.saunalahti.fi ([62.142.5.117]:35770 "EHLO
-        emh07.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392654AbfHWVrC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Aug 2019 17:47:02 -0400
-Received: from darkstar.musicnaut.iki.fi (85-76-87-181-nat.elisa-mobile.fi [85.76.87.181])
-        by emh07.mail.saunalahti.fi (Postfix) with ESMTP id 15AB6B002B;
-        Sat, 24 Aug 2019 00:47:00 +0300 (EEST)
-Date:   Sat, 24 Aug 2019 00:46:55 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali.rohar@gmail.com>
-Cc:     linux-omap@vger.kernel.org
-Subject: OMAP3 ROM RNG probe failure on N900
-Message-ID: <20190823214655.GH30291@darkstar.musicnaut.iki.fi>
+        id S2390762AbfHWWYr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 23 Aug 2019 18:24:47 -0400
+Received: from muru.com ([72.249.23.125]:58476 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731062AbfHWWYq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 23 Aug 2019 18:24:46 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 0FB4880A5;
+        Fri, 23 Aug 2019 22:25:14 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL 1/2] ti-sysc driver changes for v5.3
+Date:   Fri, 23 Aug 2019 15:24:41 -0700
+Message-Id: <pull-1566599057-142651@atomide.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+From: "Tony Lindgren" <tony@atomide.com>
 
-I was looking at N900 boot logs from the current mainline (v5.3-rc),
-and noticed this:
+The following changes since commit 5b63fb90adb95a178ad403e1703f59bf1ff2c16b:
 
-[    3.297668] omap3_rom_rng: initializing
-[    3.301940] omap3_rom_rng: unable to get RNG clock
-[    3.307006] omap3-rom-rng: probe of omap3-rom-rng failed with error -2
+  ARM: dts: Fix incomplete dts data for am3 and am4 mmc (2019-08-13 04:03:30 -0700)
 
-It seems some clock data was deleted with 0ed266d7ae5e ("clk: ti: omap3:
-cleanup unnecessary clock aliases"), including one for omap3-rom-rng.
-How this driver is supposed to work now? I guess it has been broken for
-a while. :-(
+are available in the Git repository at:
 
-A.
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.4/ti-sysc-signed
+
+for you to fetch changes up to c8a738f4cfaeccce40b171aca6da5fc45433ce60:
+
+  bus: ti-sysc: remove set but not used variable 'quirks' (2019-08-13 04:40:11 -0700)
+
+----------------------------------------------------------------
+Driver changes for ti-sysc for v5.4
+
+Few changes to prepare for using a reset driver for PRM rstctrl mostly
+to deal with the clocks for reset. Then few minor clean-up patches and
+SPDX license identifier changes, and add a MAINTAINERs file entry.
+
+----------------------------------------------------------------
+Suman Anna (4):
+      MAINTAINERS: Add ti-sysc files under the OMAP2+ entry
+      dt-bindings: ti-sysc: Add SPDX license identifier
+      bus: ti-sysc: Switch to SPDX license identifier
+      bus: ti-sysc: Add missing kerneldoc comments
+
+Tero Kristo (3):
+      bus: ti-sysc: re-order the clkdm control around reset handling
+      bus: ti-sysc: rework the reset handling
+      bus: ti-sysc: allow reset sharing across devices
+
+YueHaibing (1):
+      bus: ti-sysc: remove set but not used variable 'quirks'
+
+ MAINTAINERS                           |  2 ++
+ drivers/bus/ti-sysc.c                 | 56 ++++++++++++++---------------------
+ include/dt-bindings/bus/ti-sysc.h     |  1 +
+ include/linux/platform_data/ti-sysc.h |  7 +++--
+ 4 files changed, 31 insertions(+), 35 deletions(-)
