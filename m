@@ -2,91 +2,154 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7C3D993C4
-	for <lists+linux-omap@lfdr.de>; Thu, 22 Aug 2019 14:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6311D9A5E6
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2019 05:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387645AbfHVMd4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 22 Aug 2019 08:33:56 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:36054 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387660AbfHVMd4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 22 Aug 2019 08:33:56 -0400
-Received: by mail-lj1-f194.google.com with SMTP id u15so5393677ljl.3
-        for <linux-omap@vger.kernel.org>; Thu, 22 Aug 2019 05:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=AUhQHTcU1mgF9tzfCfhTROT5gqg6hyWkEW6XXLZ5cKmIG6UWi6GCnenpPcHX4Cri83
-         w1TgBBzhAQ9fJrCgRmYTB4GtgbaO8IYXyp82dYVIMcnRnJj3uIfVM+gak46EuT3WPl1x
-         MyO4bF1hJx29JmhWKS8kScMNA5YTmDoIRwF1/KQAtk31i+8c3IqCHvOpnyvwNseUyrye
-         1IqvNZv01+7i1PNQshNGopcLr8O6ocZqfYYvQlq9uTQ8VyMAZeOwyheLMbZ2C+xE2wz6
-         V+JMN5SgJUKZipPYiSbmyA/OCQqpqeQ5Dv68tcLS5KbcRU0g3nTBmm4Sbfda1dl2wNbG
-         eFAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=ByYO9M8ZW9Jjm13tInjjGzXRchAXxT1va+Jck0IgTBszlIh/7zkS7mwQBinKNQlyih
-         5b+S70hrJQi5Lw20SYkP8Kp3N1dZhtOKRFVrjAK94++AsLt+B86li/rUUhgiCvJ23a9v
-         howI1RB2wcCeJAFEm1nM0SAlCINtTqsrq4hrDLN2y7SA/fH69Z+FyWnARb2r+dXCXHIp
-         yVFQCAdrpKftB6AGPCOcuHkboemGt6nHjEbN9KSExajAFJaSEFTxBAUiDGlw2IVHPWFY
-         SyR2liPhMWFV0e/nFHMC0TbTMnDQ7v5ZmX/O2lJYyBglP2bsO94I+krVsBH+tWR11QIC
-         FJ4A==
-X-Gm-Message-State: APjAAAUd4Og1BuCb9Ht7ewY/wuRvCWGZhfJwaV2QnkW8soPjs/pfoCV6
-        mdqxvf942ngXD5s5MmoCrBVmRAJ0dIAFpIq0JDQ=
-X-Google-Smtp-Source: APXvYqxg7AtGyQDADYULNl8nHybD0AJp2ycxrRkCZAvwbR0kvEi3IE06cyQbgNbI8SGqgtUqnsJ3Iq1qssJPpmxZSt8=
-X-Received: by 2002:a2e:970e:: with SMTP id r14mr16736896lji.204.1566477233810;
- Thu, 22 Aug 2019 05:33:53 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:33:53
- -0700 (PDT)
-Reply-To: eku.lawfirm@gmail.com
-From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
-Date:   Thu, 22 Aug 2019 12:33:53 +0000
-Message-ID: <CAN-_bTaF=eU-LMX4XaaadMGLTp31z=_83HGFhxq7=Kkzk_Q0hg@mail.gmail.com>
-Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S2404072AbfHWDIN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 22 Aug 2019 23:08:13 -0400
+Received: from condef-07.nifty.com ([202.248.20.72]:57650 "EHLO
+        condef-07.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404059AbfHWDIN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 22 Aug 2019 23:08:13 -0400
+Received: from conuserg-11.nifty.com ([10.126.8.74])by condef-07.nifty.com with ESMTP id x7N2x98A013891
+        for <linux-omap@vger.kernel.org>; Fri, 23 Aug 2019 11:59:09 +0900
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-11.nifty.com with ESMTP id x7N2wDua012632;
+        Fri, 23 Aug 2019 11:58:13 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-11.nifty.com x7N2wDua012632
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1566529093;
+        bh=8CosFU0pC2ctS3iNrA/qY5iVZIjxaMWMDqXin1AO7LU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Yf6o5wqGOxca7n5PZXCSlYBzIInSYk2Nv000Mt4NIkIcVz8rSQnsvfW9PIZDlqqz0
+         i+1vweVR5eCqZA9iFLtHZBDlwPvVpHEBx9KqCAlPxb6TKfs0dhwEOheTQszwfiXHGh
+         mICZM+hR7tjISdF+WMNRDRQcnIm15BifexxXESwU1HLbSKHZuQJdOk6+e7CIz9gJg9
+         fJhD1Hzo0Xf8I2uTeVJBSDg1x5lA63RoFQsFktDIrLe8W+WhDu2v3KWb8JkRbkXDUa
+         itg2weW3P3uSJsRhiHk787sKx07cUMeivpemvawtu7fd0UUdwJVmItVGR86sMyZFzE
+         UKe55y3NyZxRQ==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: omap2: move platform-specific asm-offset.h to arch/arm/mach-omap2
+Date:   Fri, 23 Aug 2019 11:58:08 +0900
+Message-Id: <20190823025808.11875-1-yamada.masahiro@socionext.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-Dear,
-With due respect this is not spam or Scam mail, because I have
-contacted you before and there was no response from you,I apologise if
-the contents of this mail are contrary to your moral ethics, which I
-feel may be of great disturbance to your person, but please treat this
-with absolute confidentiality, believing that this email reaches you
-in good faith. My contacting you is not a mistake or a coincidence
-because God can use any person known or unknown to accomplish great
-things.
-I am a lawyer and I have an investment business proposal to offer you.
-It is not official but should be considered as legal and confidential
-business. I have a customer's deposit of $US25 million dollars ready
-to be moved for investment if you can partner with us. We are ready to
-offer you 10% of this total amount as your compensation for supporting
-the transaction to completion. If you are interested to help me please
-reply me with your full details as stated below:
-(1) Your full names:
-(2) Your address:
-(3) Your occupation:
-(4) Your mobile telephone number:
-(5) Your nationality:
-(6) Your present location:
-(7) Your age:
-So that I will provide you more details on what to do and what is
-required for successful completion.
-Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
-MENTIONED DETAILS
+<generated/ti-pm-asm-offsets.h> is only generated and included by
+arch/arm/mach-omap2/, so it does not need to reside in the globally
+visible include/generated/.
 
-Sinc=C3=A8rement v=C3=B4tre,
-Avocat Etienne Eku Esq.(Lawfirm)
-Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
-=E2=80=99ouest.
-Skype:westafricalawfirm
+I renamed it to arch/arm/mach-omap2/pm-asm-offsets.h since the prefix
+'ti-' is just redundant in mach-omap2/.
+
+My main motivation of this change is to avoid the race condition for
+the parallel build (-j) when CONFIG_IKHEADERS is enabled.
+
+When it is enabled, all the headers under include/ are archived into
+kernel/kheaders_data.tar.xz and exposed in the sysfs.
+
+In the parallel build, we have no idea in which order files are built.
+
+ - If ti-pm-asm-offsets.h is built before kheaders_data.tar.xz,
+   the header will be included in the archive. Probably nobody will
+   use it, but it is harmless except that it will increase the archive
+   size needlessly.
+
+ - If kheaders_data.tar.xz is built before ti-pm-asm-offsets.h,
+   the header will not be included in the archive. However, in the next
+   build, the archive will be re-generated to include the newly-found
+   ti-pm-asm-offsets.h. This is not nice from the build system point
+   of view.
+
+ - If ti-pm-asm-offsets.h and kheaders_data.tar.xz are built at the
+   same time, the corrupted header might be included in the archive,
+   which does not look nice either.
+
+This commit fixes the race.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Tested-by: Keerthy <j-keerthy@ti.com>
+---
+
+ arch/arm/mach-omap2/.gitignore  | 1 +
+ arch/arm/mach-omap2/Makefile    | 5 +++--
+ arch/arm/mach-omap2/sleep33xx.S | 2 +-
+ arch/arm/mach-omap2/sleep43xx.S | 2 +-
+ 4 files changed, 6 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm/mach-omap2/.gitignore
+
+diff --git a/arch/arm/mach-omap2/.gitignore b/arch/arm/mach-omap2/.gitignore
+new file mode 100644
+index 000000000000..79a8d6ea7152
+--- /dev/null
++++ b/arch/arm/mach-omap2/.gitignore
+@@ -0,0 +1 @@
++pm-asm-offsets.h
+diff --git a/arch/arm/mach-omap2/Makefile b/arch/arm/mach-omap2/Makefile
+index 600650551621..21c6d4bca3c0 100644
+--- a/arch/arm/mach-omap2/Makefile
++++ b/arch/arm/mach-omap2/Makefile
+@@ -223,9 +223,10 @@ obj-y					+= omap_phy_internal.o
+ 
+ obj-$(CONFIG_MACH_OMAP2_TUSB6010)	+= usb-tusb6010.o
+ 
+-include/generated/ti-pm-asm-offsets.h: arch/arm/mach-omap2/pm-asm-offsets.s FORCE
++$(obj)/pm-asm-offsets.h: $(obj)/pm-asm-offsets.s FORCE
+ 	$(call filechk,offsets,__TI_PM_ASM_OFFSETS_H__)
+ 
+-$(obj)/sleep33xx.o $(obj)/sleep43xx.o: include/generated/ti-pm-asm-offsets.h
++$(obj)/sleep33xx.o $(obj)/sleep43xx.o: $(obj)/pm-asm-offsets.h
+ 
+ targets += pm-asm-offsets.s
++clean-files += pm-asm-offsets.h
+diff --git a/arch/arm/mach-omap2/sleep33xx.S b/arch/arm/mach-omap2/sleep33xx.S
+index 68fee339d3f1..dc221249bc22 100644
+--- a/arch/arm/mach-omap2/sleep33xx.S
++++ b/arch/arm/mach-omap2/sleep33xx.S
+@@ -6,7 +6,6 @@
+  *	Dave Gerlach, Vaibhav Bedia
+  */
+ 
+-#include <generated/ti-pm-asm-offsets.h>
+ #include <linux/linkage.h>
+ #include <linux/platform_data/pm33xx.h>
+ #include <linux/ti-emif-sram.h>
+@@ -15,6 +14,7 @@
+ 
+ #include "iomap.h"
+ #include "cm33xx.h"
++#include "pm-asm-offsets.h"
+ 
+ #define AM33XX_CM_CLKCTRL_MODULESTATE_DISABLED			0x00030000
+ #define AM33XX_CM_CLKCTRL_MODULEMODE_DISABLE			0x0003
+diff --git a/arch/arm/mach-omap2/sleep43xx.S b/arch/arm/mach-omap2/sleep43xx.S
+index c1f4e4852644..90d2907a2eb2 100644
+--- a/arch/arm/mach-omap2/sleep43xx.S
++++ b/arch/arm/mach-omap2/sleep43xx.S
+@@ -6,7 +6,6 @@
+  *	Dave Gerlach, Vaibhav Bedia
+  */
+ 
+-#include <generated/ti-pm-asm-offsets.h>
+ #include <linux/linkage.h>
+ #include <linux/ti-emif-sram.h>
+ #include <linux/platform_data/pm33xx.h>
+@@ -19,6 +18,7 @@
+ #include "iomap.h"
+ #include "omap-secure.h"
+ #include "omap44xx.h"
++#include "pm-asm-offsets.h"
+ #include "prm33xx.h"
+ #include "prcm43xx.h"
+ 
+-- 
+2.17.1
+
