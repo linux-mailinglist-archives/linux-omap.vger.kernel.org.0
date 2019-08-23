@@ -2,293 +2,154 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE569B022
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2019 15:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2C029B627
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Aug 2019 20:18:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395027AbfHWM4T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 23 Aug 2019 08:56:19 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:46462 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2395018AbfHWM4T (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Aug 2019 08:56:19 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7NCuDVd073814;
-        Fri, 23 Aug 2019 07:56:13 -0500
+        id S2404393AbfHWSQz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 23 Aug 2019 14:16:55 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:48432 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390422AbfHWSQy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Aug 2019 14:16:54 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7NIGnjn061687;
+        Fri, 23 Aug 2019 13:16:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1566564973;
-        bh=YzETJQzcjwwuCGbcFqt2yh0/B3OCbpsu/i5Eo/6kFzk=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=JkuBIF0K21oaMUR8d4+RXAoDtsuQXZqzc6i3dIwsbEhUDPS7DZt+TnETrJpJa1yCf
-         kfhdUnbZSGLN2wiozBiLopS9lMqouL4aWI1oix0nLbS0ZbdDLk2bM7DzdNyPL0k0Zo
-         yU/YDVQIHcQLLpGNmMP7pdHcSD9scf6PKd3icUK8=
-Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7NCuDFa016228
+        s=ti-com-17Q1; t=1566584209;
+        bh=FMLSygCw6ss56+cWZANwKBAvWc1Q1/9AHdxfh6O7xAA=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=qdrtLsEkJUq+QVYUQxunJuF1stxvp871yFab3Hg3pBVximp/iHFzge9vgo5Ua07oO
+         DHrCa0+HavjVmymt0Qtw3JBoRjhh2x490SjSNiq0Q6UvukRH4VqrD91oc9/t/9C/D6
+         +I4Z8A+35q/7wGbQcfBqa85sGbOZWT4mH6Hw+Gao=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7NIGnEL104575
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 23 Aug 2019 07:56:13 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 23 Aug 2019 13:16:49 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 23
- Aug 2019 07:56:12 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2019 13:16:49 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 23 Aug 2019 07:56:12 -0500
-Received: from feketebors.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7NCtwkj092319;
-        Fri, 23 Aug 2019 07:56:10 -0500
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-To:     <vkoul@kernel.org>, <robh+dt@kernel.org>
-CC:     <dan.j.williams@intel.com>, <dmaengine@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>
-Subject: [PATCH 5/5] dmaengine: ti: edma: Add support for handling reserved channels
-Date:   Fri, 23 Aug 2019 15:56:18 +0300
-Message-ID: <20190823125618.8133-6-peter.ujfalusi@ti.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190823125618.8133-1-peter.ujfalusi@ti.com>
-References: <20190823125618.8133-1-peter.ujfalusi@ti.com>
+ Frontend Transport; Fri, 23 Aug 2019 13:16:49 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7NIGlVE126177;
+        Fri, 23 Aug 2019 13:16:47 -0500
+Subject: Re: [PATCH 3/3] clk: ti: dra7xx: add timer_sys_ck clock alias
+To:     Suman Anna <s-anna@ti.com>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "sboyd@kernel.org" <sboyd@kernel.org>,
+        "mturquette@baylibre.com" <mturquette@baylibre.com>
+CC:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "tony@atomide.com" <tony@atomide.com>
+References: <1565183079-27798-1-git-send-email-t-kristo@ti.com>
+ <1565183079-27798-4-git-send-email-t-kristo@ti.com>
+ <9d0edab4-cae2-50d5-2df9-42c879f2623f@ti.com>
+ <b1005a98-e098-f651-d70e-c519fd740540@ti.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <12f0fa92-f6e1-0e71-09da-78722f040966@ti.com>
+Date:   Fri, 23 Aug 2019 21:16:46 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+In-Reply-To: <b1005a98-e098-f651-d70e-c519fd740540@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Like paRAM slots, channels could be used by other cores and in this case
-we need to make sure that the driver do not alter these channels.
+On 20.8.2019 0.14, Suman Anna wrote:
+> Hi Tero,
+> 
+> On 8/7/19 5:56 PM, Anna, Suman wrote:
+>> Hi Tero,
+>>
+>> On 8/7/19 8:04 AM, Tero Kristo wrote:
+>>> This is needed by the TI DM timer driver.
+>>
+>> Again can do with some better patch descriptions. Similar to the
+>> previous patch, missing the equivalent patches for OMAP4 and OMAP5.
+>> You can use my downstream patches for these - [1][2][3] that has all the
+>> needed Fixes by details. Only difference is that you used a single line
+>> change on DRA7, and this should suffice since all the sources are same,
+>> but OMAP4 and OMAP5 needed different ones.
+>>
+>> [1] OMAP4:
+>> http://git.ti.com/gitweb/?p=rpmsg/remoteproc.git;a=commit;h=9d45dc42fbed8395d733366dbf6c0fd5ec171e2f
+>> [2] OMAP5:
+>> http://git.ti.com/gitweb/?p=rpmsg/remoteproc.git;a=commit;h=34f4682a91173386307b310d7f4955d46dcaaea2
+>> [3] DRA7:
+>> http://git.ti.com/gitweb/?p=rpmsg/remoteproc.git;a=commit;h=2a662694437ae7192b5ef759ec40abe796d2a058
+>>
+>> Technically, this data need to be added back for all OMAP2+ SoCs which
+>> support dmtimer with any other drivers wanting to use the timers.
+> 
+> So, I checked and these aliases already are defined on OMAP2, OMAP3,
+> AM33xx, AM43xx, DM814x and DM816x SoCs. So, just include the OMAP4 and
+> OMAP5 ones along with the DRA7x one.
 
-Move the reserved slot/channel query from DT to a separate function for
-cleaner implementation.
+Actually, all these alias definitions can be completely removed, and can 
+be replaced with DT data. Here's sample how it can be done for dra7xx 
+timer11:
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
----
- drivers/dma/ti/edma.c | 161 +++++++++++++++++++++++++++---------------
- 1 file changed, 106 insertions(+), 55 deletions(-)
+diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
+index bed67603c186..fafa0a131af0 100644
+--- a/arch/arm/boot/dts/dra7-l4.dtsi
++++ b/arch/arm/boot/dts/dra7-l4.dtsi
+@@ -1910,8 +1910,8 @@
+                         timer11: timer@0 {
+                                 compatible = "ti,omap5430-timer";
+                                 reg = <0x0 0x80>;
+-                               clocks = <&l4per_clkctrl 
+DRA7_L4PER_TIMER11_CLKCTRL 24>;
+-                               clock-names = "fck";
++                               clocks = <&l4per_clkctrl 
+DRA7_L4PER_TIMER11_CLKCTRL 24>, <&timer_sys_clk_div>;
++                               clock-names = "fck", "timer_sys_ck";
+                                 interrupts = <GIC_SPI 42 
+IRQ_TYPE_LEVEL_HIGH>;
+                         };
+                 };
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index ba7c4f07fcd6..5201aeebf5c1 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -260,6 +260,9 @@ struct edma_cc {
- 	 */
- 	unsigned long *slot_inuse;
- 
-+	/* for tracking reserved channels used by DSP */
-+	unsigned long *reserved_chans;
-+
- 	struct dma_device		dma_slave;
- 	struct dma_device		*dma_memcpy;
- 	struct edma_chan		*slave_chans;
-@@ -716,6 +719,12 @@ static int edma_alloc_channel(struct edma_chan *echan,
- 	struct edma_cc *ecc = echan->ecc;
- 	int channel = EDMA_CHAN_SLOT(echan->ch_num);
- 
-+	if (test_bit(echan->ch_num, ecc->reserved_chans)) {
-+		dev_err(ecc->dev, "Channel%d is reserved, can not be used!\n",
-+			echan->ch_num);
-+		return -EINVAL;
-+	}
-+
- 	/* ensure access through shadow region 0 */
- 	edma_or_array2(ecc, EDMA_DRAE, 0, EDMA_REG_ARRAY_INDEX(channel),
- 		       EDMA_CHANNEL_BIT(channel));
-@@ -2096,6 +2105,76 @@ static int edma_xbar_event_map(struct device *dev, struct edma_soc_info *pdata,
- 	return 0;
- }
- 
-+static struct edma_rsv_info *edma_get_reserved_ranges_dt(struct device *dev)
-+{
-+	static const char * const prop_names[] = {
-+						"ti,edma-reserved-slot-ranges",
-+						"ti,edma-reserved-chan-ranges"
-+						};
-+	struct edma_rsv_info *rsv_info = NULL;
-+	struct property *props[2];
-+	int sz[2], i, ret;
-+
-+	for (i = 0; i < 2; i++)
-+		props[i] = of_find_property(dev->of_node, prop_names[i],
-+					    &sz[i]);
-+
-+	if (!props[0] && !props[1])
-+		return NULL;
-+
-+	rsv_info = devm_kzalloc(dev, sizeof(*rsv_info), GFP_KERNEL);
-+	if (!rsv_info)
-+		return ERR_PTR(-ENOMEM);
-+
-+	for (i = 0; i < 2; i++) {
-+		u32 (*tmp)[2];
-+		s16 (*reserved)[2];
-+		size_t nelm;
-+		int j;
-+
-+		if (!props[i])
-+			continue;
-+
-+		nelm = sz[i] / sizeof(*tmp);
-+		if (!nelm)
-+			continue;
-+
-+		tmp = kcalloc(nelm, sizeof(*tmp), GFP_KERNEL);
-+		if (!tmp)
-+			return ERR_PTR(-ENOMEM);
-+
-+		reserved = devm_kcalloc(dev, nelm + 1, sizeof(*reserved),
-+					GFP_KERNEL);
-+		if (!reserved) {
-+			kfree(tmp);
-+			return ERR_PTR(-ENOMEM);
-+		}
-+
-+		ret = of_property_read_u32_array(dev->of_node, prop_names[i],
-+						 (u32 *)tmp, nelm * 2);
-+		if (ret) {
-+			kfree(tmp);
-+			return ERR_PTR(ret);
-+		}
-+
-+		for (j = 0; j < nelm; j++) {
-+			reserved[j][0] = tmp[j][0];
-+			reserved[j][1] = tmp[j][1];
-+		}
-+		reserved[nelm][0] = -1;
-+		reserved[nelm][1] = -1;
-+
-+		if (i == 0)
-+			rsv_info->rsv_slots = (const s16 (*)[2])reserved;
-+		else if (i == 1)
-+			rsv_info->rsv_chans = (const s16 (*)[2])reserved;
-+
-+		kfree(tmp);
-+	}
-+
-+	return rsv_info;
-+}
-+
- static struct edma_soc_info *edma_setup_info_from_dt(struct device *dev,
- 						     bool legacy_mode)
- {
-@@ -2139,55 +2218,9 @@ static struct edma_soc_info *edma_setup_info_from_dt(struct device *dev,
- 		info->memcpy_channels = memcpy_ch;
- 	}
- 
--	prop = of_find_property(dev->of_node, "ti,edma-reserved-slot-ranges",
--				&sz);
--	if (prop) {
--		const char pname[] = "ti,edma-reserved-slot-ranges";
--		u32 (*tmp)[2];
--		s16 (*rsv_slots)[2];
--		size_t nelm = sz / sizeof(*tmp);
--		struct edma_rsv_info *rsv_info;
--		int i;
--
--		if (!nelm)
--			return info;
--
--		tmp = kcalloc(nelm, sizeof(*tmp), GFP_KERNEL);
--		if (!tmp)
--			return ERR_PTR(-ENOMEM);
--
--		rsv_info = devm_kzalloc(dev, sizeof(*rsv_info), GFP_KERNEL);
--		if (!rsv_info) {
--			kfree(tmp);
--			return ERR_PTR(-ENOMEM);
--		}
--
--		rsv_slots = devm_kcalloc(dev, nelm + 1, sizeof(*rsv_slots),
--					 GFP_KERNEL);
--		if (!rsv_slots) {
--			kfree(tmp);
--			return ERR_PTR(-ENOMEM);
--		}
--
--		ret = of_property_read_u32_array(dev->of_node, pname,
--						 (u32 *)tmp, nelm * 2);
--		if (ret) {
--			kfree(tmp);
--			return ERR_PTR(ret);
--		}
--
--		for (i = 0; i < nelm; i++) {
--			rsv_slots[i][0] = tmp[i][0];
--			rsv_slots[i][1] = tmp[i][1];
--		}
--		rsv_slots[nelm][0] = -1;
--		rsv_slots[nelm][1] = -1;
--
--		info->rsv = rsv_info;
--		info->rsv->rsv_slots = (const s16 (*)[2])rsv_slots;
--
--		kfree(tmp);
--	}
-+	info->rsv = edma_get_reserved_ranges_dt(dev);
-+	if (IS_ERR(info->rsv))
-+		return ERR_CAST(info->rsv);
- 
- 	return info;
- }
-@@ -2250,7 +2283,7 @@ static int edma_probe(struct platform_device *pdev)
- 	struct edma_soc_info	*info = pdev->dev.platform_data;
- 	s8			(*queue_priority_mapping)[2];
- 	int			i, off;
--	const s16		(*rsv_slots)[2];
-+	const s16		(*reserved)[2];
- 	const s16		(*xbar_chans)[2];
- 	int			irq;
- 	char			*irq_name;
-@@ -2331,15 +2364,29 @@ static int edma_probe(struct platform_device *pdev)
- 	if (!ecc->slot_inuse)
- 		return -ENOMEM;
- 
-+	ecc->reserved_chans = devm_kcalloc(dev,
-+					   BITS_TO_LONGS(ecc->num_channels),
-+					   sizeof(unsigned long), GFP_KERNEL);
-+	if (!ecc->reserved_chans)
-+		return -ENOMEM;
-+
- 	ecc->default_queue = info->default_queue;
- 
- 	if (info->rsv) {
- 		/* Set the reserved slots in inuse list */
--		rsv_slots = info->rsv->rsv_slots;
--		if (rsv_slots) {
--			for (i = 0; rsv_slots[i][0] != -1; i++)
--				bitmap_set(ecc->slot_inuse, rsv_slots[i][0],
--					   rsv_slots[i][1]);
-+		reserved = info->rsv->rsv_slots;
-+		if (reserved) {
-+			for (i = 0; reserved[i][0] != -1; i++)
-+				bitmap_set(ecc->slot_inuse, reserved[i][0],
-+					   reserved[i][1]);
-+		}
-+
-+		/* Mark reserved channels */
-+		reserved = info->rsv->rsv_chans;
-+		if (reserved) {
-+			for (i = 0; reserved[i][0] != -1; i++)
-+				bitmap_set(ecc->reserved_chans, reserved[i][0],
-+					   reserved[i][1]);
- 		}
- 	}
- 
-@@ -2437,6 +2484,10 @@ static int edma_probe(struct platform_device *pdev)
- 	edma_dma_init(ecc, legacy_mode);
- 
- 	for (i = 0; i < ecc->num_channels; i++) {
-+		/* Do not touch reserved channels */
-+		if (test_bit(i, ecc->reserved_chans))
-+			continue;
-+
- 		/* Assign all channels to the default queue */
- 		edma_assign_channel_eventq(&ecc->slave_chans[i],
- 					   info->default_queue);
--- 
-Peter
+I will post these changes along with other DTS patches once the time is 
+right. For now, I will just drop these aliases completely.
 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+-Tero
 
+> 
+> regards
+> Suman
+> 
+>>
+>> regards
+>> Suman
+>>
+>>>
+>>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>>> ---
+>>>   drivers/clk/ti/clk-7xx.c | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/drivers/clk/ti/clk-7xx.c b/drivers/clk/ti/clk-7xx.c
+>>> index 5208eb8..64507b8 100644
+>>> --- a/drivers/clk/ti/clk-7xx.c
+>>> +++ b/drivers/clk/ti/clk-7xx.c
+>>> @@ -792,6 +792,7 @@
+>>>   static struct ti_dt_clk dra7xx_clks[] = {
+>>>   	DT_CLK(NULL, "timer_32k_ck", "sys_32k_ck"),
+>>>   	DT_CLK(NULL, "sys_clkin_ck", "timer_sys_clk_div"),
+>>> +	DT_CLK(NULL, "timer_sys_ck", "timer_sys_clk_div"),
+>>>   	DT_CLK(NULL, "sys_clkin", "sys_clkin1"),
+>>>   	DT_CLK(NULL, "atl_dpll_clk_mux", "atl-clkctrl:0000:24"),
+>>>   	DT_CLK(NULL, "atl_gfclk_mux", "atl-clkctrl:0000:26"),
+>>>
+>>
+> 
+
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
