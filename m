@@ -2,71 +2,65 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E4E49B887
-	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2019 00:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED529B88E
+	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2019 00:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391574AbfHWWYr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 23 Aug 2019 18:24:47 -0400
-Received: from muru.com ([72.249.23.125]:58484 "EHLO muru.com"
+        id S2406246AbfHWW1C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 23 Aug 2019 18:27:02 -0400
+Received: from muru.com ([72.249.23.125]:58496 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731062AbfHWWYr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 23 Aug 2019 18:24:47 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 329518161;
-        Fri, 23 Aug 2019 22:25:16 +0000 (UTC)
+        id S2405013AbfHWW1C (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 23 Aug 2019 18:27:02 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 807B980A5;
+        Fri, 23 Aug 2019 22:27:30 +0000 (UTC)
+Date:   Fri, 23 Aug 2019 15:26:58 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 2/2] dts changes for omap variants for v5.4
-Date:   Fri, 23 Aug 2019 15:24:42 -0700
-Message-Id: <pull-1566599057-142651@atomide.com-2>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <pull-1566599057-142651@atomide.com>
-References: <pull-1566599057-142651@atomide.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     linux-omap@vger.kernel.org, adam.ford@logicpd.com,
+        Filip =?utf-8?Q?Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        moaz korena <moaz@korena.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        =?utf-8?B?UGF3ZcWC?= Chmiel <pawel.mikolaj.chmiel@gmail.com>,
+        Philipp Rossak <embed3d@gmail.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: Re: [PATCH] ARM: dts: Configure rstctrl reset for SGX on AM3517
+Message-ID: <20190823222658.GQ52127@atomide.com>
+References: <20190821125502.32187-1-aford173@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190821125502.32187-1-aford173@gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+* Adam Ford <aford173@gmail.com> [190821 12:55]:
+> Based on Tony Lindgren's work for omap34xx, this patch applies the same
+> functionality to the AM3517.
+> 
+> The following can be tested via sysfs with the following to ensure the SGX
+> module gets enabled and disabled properly:
+> 
+> 0x00010201
+> 
+> Bus error
 
-The following changes since commit 5f9e832c137075045d15cd6899ab0505cfb2ca4b:
+OK thanks for doing that.
 
-  Linus 5.3-rc1 (2019-07-21 14:05:38 -0700)
+> Note that this patch depends on the PRM rstctrl driver that has
+> been recently posted. If the child device driver(s) need to prevent
+> rstctrl reset on PM runtime suspend, the drivers need to increase
+> the usecount for the shared rstctrl reset that can be mapped also
+> for the child device(s) or accessed via dev->parent.
 
-are available in the Git repository at:
+Care to check the subject and description again.. I don't think
+this one uses rstctrl resets :)
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.4/dt-take2-signed
+Regards,
 
-for you to fetch changes up to a27401cecf7795cda7e0c17751feb98fedbaa99d:
-
-  ARM: dts: am335x-boneblue: Use of am335x-osd335x-common.dtsi (2019-08-13 04:51:31 -0700)
-
-----------------------------------------------------------------
-dts changes for omap variants for v5.4
-
-Remove regulator-boot-off properties that we never had in the mainline
-kernel so they won't do anything. We add stdout-path for gta04, and
-make am335x-boneblue use am335x-osd335x-common.dtsi file.
-
-----------------------------------------------------------------
-David Lechner (1):
-      ARM: dts: am335x-boneblue: Use of am335x-osd335x-common.dtsi
-
-Ezequiel Garcia (2):
-      ARM: dts: am335x-cm-t335: Remove regulator-boot-off property
-      ARM: dts: omap3-n950-n9: Remove regulator-boot-off property
-
-H. Nikolaus Schaller (1):
-      ARM: dts: gta04: define chosen/stdout-path
-
- arch/arm/boot/dts/am335x-boneblue.dts | 92 +----------------------------------
- arch/arm/boot/dts/am335x-cm-t335.dts  |  1 -
- arch/arm/boot/dts/omap3-gta04.dtsi    |  4 ++
- arch/arm/boot/dts/omap3-n950-n9.dtsi  |  1 -
- 4 files changed, 6 insertions(+), 92 deletions(-)
+Tony
