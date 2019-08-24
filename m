@@ -2,54 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 454809B88F
-	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2019 00:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77AEA9BF9B
+	for <lists+linux-omap@lfdr.de>; Sat, 24 Aug 2019 21:00:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405013AbfHWW1u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 23 Aug 2019 18:27:50 -0400
-Received: from muru.com ([72.249.23.125]:58510 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727370AbfHWW1u (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 23 Aug 2019 18:27:50 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 73A0D8161;
-        Fri, 23 Aug 2019 22:28:19 +0000 (UTC)
-Date:   Fri, 23 Aug 2019 15:27:47 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
-Subject: Re: wl1271 broken on am3517-evm on for-next
-Message-ID: <20190823222747.GR52127@atomide.com>
-References: <CAHCN7xKmQmGBig0k+gwdMax8ojoR+B3aowDOu1FyiNM3gvypKg@mail.gmail.com>
- <20190821113759.GO52127@atomide.com>
- <CAHCN7xJFGuogTXkVuEorNhXwwTVKHUrH8y9YrgTLi86peCYbUQ@mail.gmail.com>
+        id S1727268AbfHXTAh convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Sat, 24 Aug 2019 15:00:37 -0400
+Received: from smtp2.osep.mendoza.gov.ar ([200.16.135.145]:52942 "HELO
+        smtp2.osep.mendoza.gov.ar" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1728057AbfHXTAh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 24 Aug 2019 15:00:37 -0400
+X-Greylist: delayed 9987 seconds by postgrey-1.27 at vger.kernel.org; Sat, 24 Aug 2019 15:00:36 EDT
+Received: (qmail 402 invoked from network); 24 Aug 2019 14:14:38 -0000
+Received: from unknown (HELO zimbra.servers.dg.intranet) (10.10.195.224)
+  by smtp2.osep.mendoza.gov.ar with SMTP; 24 Aug 2019 14:14:38 -0000
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.servers.dg.intranet (Postfix) with ESMTP id DB8B3CF7CC66;
+        Sat, 24 Aug 2019 11:14:37 -0300 (ART)
+Received: from zimbra.servers.dg.intranet ([127.0.0.1])
+        by localhost (zimbra.servers.dg.intranet [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id RViPrJdL95bg; Sat, 24 Aug 2019 11:14:37 -0300 (ART)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.servers.dg.intranet (Postfix) with ESMTP id 877BBCF7CC58;
+        Sat, 24 Aug 2019 11:14:37 -0300 (ART)
+X-Virus-Scanned: amavisd-new at osep.mendoza.gov.ar
+Received: from zimbra.servers.dg.intranet ([127.0.0.1])
+        by localhost (zimbra.servers.dg.intranet [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 9n2-6F1Dy9XD; Sat, 24 Aug 2019 11:14:37 -0300 (ART)
+Received: from zimbra.servers.dg.intranet (zimbra.servers.dg.intranet [10.10.195.224])
+        by zimbra.servers.dg.intranet (Postfix) with ESMTP id BAAEBCF7CC40;
+        Sat, 24 Aug 2019 11:14:36 -0300 (ART)
+Date:   Sat, 24 Aug 2019 11:14:36 -0300 (ART)
+From:   "Herr.Robert Jackson" <liliana.marinero@osep.mendoza.gov.ar>
+Reply-To: SKY GROUP FINANCIAL <skygroupfinancial0@gmail.com>
+Message-ID: <1268244548.24999093.1566656076742.JavaMail.zimbra@osep.mendoza.gov.ar>
+Subject: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHCN7xJFGuogTXkVuEorNhXwwTVKHUrH8y9YrgTLi86peCYbUQ@mail.gmail.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [172.16.3.2]
+X-Mailer: Zimbra 8.6.0_GA_1153 (zclient/8.6.0_GA_1153)
+Thread-Topic: 
+Thread-Index: 9gdTMQJ8JBu8cvpzdFVmtKjzn0qahQ==
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Adam Ford <aford173@gmail.com> [190821 13:50]:
-> On Wed, Aug 21, 2019 at 6:38 AM Tony Lindgren <tony@atomide.com> wrote:
-> > Also, please test (again) with level wlcore interrupt instead of
-> > edge. We recent gpio-omap fixes it's starting to look that we can
-> > still have edge interrupts lost in retention idle with no status
-> > to be seen in the gpio controller. So anything that can be treated
-> > as level interrupt probaby should be.
-> 
-> Currently, it it setup as
-> interrupts = <10 IRQ_TYPE_EDGE_RISING>; /* gpio_170 */
-> 
-> Are you suggesting we go back to
-> interrupts = <10 IRQ_TYPE_LEVEL_HIGH>; /* gpio_170 */
 
-If you see wlcore warnings that relate to lost GPIO interrupts
-then that should help yeah.
 
-Regards,
-
-Tony
+Wir sind zuverlässige, vertrauenswürdige Kreditgeber, leihen wir Unternehmen und Einzelpersonen zu einem niedrigen Zinssatz von 2%, Sind Sie auf der Suche nach einem Geschäftskredit, Privatkredite, Schuldenkonsolidierung, unbesicherte Kredite, Risikokapital, wenn ja Kontaktieren Sie uns jetzt für weitere Einzelheiten.
