@@ -2,117 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD3C9C2AC
-	for <lists+linux-omap@lfdr.de>; Sun, 25 Aug 2019 11:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DE989CB2B
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Aug 2019 10:00:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725809AbfHYJ2S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 25 Aug 2019 05:28:18 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:44950 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726159AbfHYJ2S (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 25 Aug 2019 05:28:18 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id D8B0E80834; Sun, 25 Aug 2019 11:28:01 +0200 (CEST)
-Date:   Sun, 25 Aug 2019 11:28:14 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Merlijn Wajer <merlijn@wizzup.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Sebastian Reichel <sre@kernel.org>, bencoh@notk.org
-Subject: Re: Charging voltage for droid4 battery
-Message-ID: <20190825092814.GB1644@amd>
-References: <4a845327-348f-5e4f-ec76-4c5d1f61c270@wizzup.org>
- <20190818183459.GA29779@amd>
- <20190819114609.GL52127@atomide.com>
- <20190819124422.GI21072@amd>
- <20190821113521.GN52127@atomide.com>
+        id S1730136AbfHZIAg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 26 Aug 2019 04:00:36 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:34146 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728233AbfHZIAg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 26 Aug 2019 04:00:36 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7Q80NDQ114534;
+        Mon, 26 Aug 2019 03:00:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1566806423;
+        bh=49aC23UcYQ4csP+556MKJUVYmtJJlMk4hmn+NUlvgw0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=OtMRk7FJKfykpqRIrFgKs76I5XJKWrX5/0UZHPOu63HBOyahYpKPRgKder+6GRH5o
+         YgdJEw8gpg4YDrk4WaVDfT3Cvam/2ddEPLFCKKRdzWhx0mWsW92KebbYAM28ymG940
+         7IufPH1TDcSwVIpVncpBhnOqhBzj2GK3f3Km/+BM=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7Q80N6Y121067
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 26 Aug 2019 03:00:23 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 26
+ Aug 2019 03:00:23 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 26 Aug 2019 03:00:23 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7Q80Lqm096610;
+        Mon, 26 Aug 2019 03:00:22 -0500
+Subject: Re: OMAP3 ROM RNG probe failure on N900
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali.rohar@gmail.com>
+CC:     <linux-omap@vger.kernel.org>
+References: <20190823214655.GH30291@darkstar.musicnaut.iki.fi>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <7d195797-085e-3bcc-933e-dca71dc12364@ti.com>
+Date:   Mon, 26 Aug 2019 11:00:21 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="WYTEVAkct0FjGQmd"
-Content-Disposition: inline
-In-Reply-To: <20190821113521.GN52127@atomide.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20190823214655.GH30291@darkstar.musicnaut.iki.fi>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 24.8.2019 0.46, Aaro Koskinen wrote:
+> Hi,
+> 
+> I was looking at N900 boot logs from the current mainline (v5.3-rc),
+> and noticed this:
+> 
+> [    3.297668] omap3_rom_rng: initializing
+> [    3.301940] omap3_rom_rng: unable to get RNG clock
+> [    3.307006] omap3-rom-rng: probe of omap3-rom-rng failed with error -2
+>
+> It seems some clock data was deleted with 0ed266d7ae5e ("clk: ti: omap3:
+> cleanup unnecessary clock aliases"), including one for omap3-rom-rng.
+> How this driver is supposed to work now? I guess it has been broken for
+> a while. :-(
 
---WYTEVAkct0FjGQmd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+You should have a DT node for the device, which contains the clock handle.
 
-Hi!
-
-> * Pavel Machek <pavel@ucw.cz> [190819 12:44]:
-> > Hmm. Related changes make it harder, not easier but.. here you
-> > go... But... while this is simple... you are applying it at your own
-> > risk. Untested. One potential problem is that while mainline will charge
-> > to 4.2V, "power off charging" and Adroid will still charge to 4.35V,
-> > leading to charge/discharge cycles even while charging is connected.
->=20
-> I guess not much we can do about Android charging at 4.35V.
-
-Well, true.=20
-
-> > > Then later on we may want to optionally consider implementing
-> > > support for 4.35V charge voltages assuming we scale down the
-> > > charge voltage to 4.2V after reaching full charge.
-> >=20
-> > Not sure how that would work / why we'd want to do that / what do you
-> > consider to be full charge.
->=20
-> Well that would be if we wanted to make use of the extra capacity..
->=20
-> > https://secondlifestorage.com/t-Li-ion-4-35V-How-much-do-we-lose-by-cha=
-rging-it-at-4-20V
-> > https://batteryuniversity.com/learn/article/confusion_with_voltages
->=20
-> .. but yeah I don't know what we should consider full. I guess it's
-> a 3.8V/4.35V battery vs 3.7V/4.2V battery.. To me it seems safest
-> to set charge voltage to 4.2V and battery full to 4.2V until we
-> we have some better ideas.
-
-Well, feel free to apply the one-liner. Plus you can have a full patch
-to make current and voltage configurable...
-
-> > +++ b/drivers/power/supply/cpcap-charger.c
-> > @@ -440,7 +440,7 @@ static void cpcap_usb_detect(struct work_struct *wo=
-rk)
-> >  			max_current =3D CPCAP_REG_CRM_ICHRG_0A532;
-> > =20
-> >  		error =3D cpcap_charger_set_state(ddata,
-> > -						CPCAP_REG_CRM_VCHRG_4V35,
-> > +						CPCAP_REG_CRM_VCHRG_4V20,
-> >  						max_current, 0);
-> >  		if (error)
-> >  			goto out_err;
-> >=20
->=20
-> So I think you also need to change the battery full to 4.2V too? Sure
-> if Android charged to 4.35V, we show 15 minutes of over 100%..
-
-Umm. I am not sure I need to change anything else _in the kernel_?
-
-Best regards,
-									Pavel
-
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---WYTEVAkct0FjGQmd
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl1iVK4ACgkQMOfwapXb+vJkuQCcC8l9+0lIpWaIfM5ivE53a57H
-jg8An3VAVF15Fx7YA1qxLOyLVEe+fvbX
-=GqCB
------END PGP SIGNATURE-----
-
---WYTEVAkct0FjGQmd--
+-Tero
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
