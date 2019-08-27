@@ -2,105 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F2C19D9CC
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Aug 2019 01:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DC929DA7D
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Aug 2019 02:15:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726466AbfHZXNE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Aug 2019 19:13:04 -0400
-Received: from muru.com ([72.249.23.125]:58794 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726307AbfHZXND (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 26 Aug 2019 19:13:03 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 21A1880AA;
-        Mon, 26 Aug 2019 23:13:32 +0000 (UTC)
-Date:   Mon, 26 Aug 2019 16:13:00 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Merlijn Wajer <merlijn@wizzup.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Sebastian Reichel <sre@kernel.org>, bencoh@notk.org
-Subject: Re: Charging voltage for droid4 battery
-Message-ID: <20190826231259.GY5443@atomide.com>
-References: <4a845327-348f-5e4f-ec76-4c5d1f61c270@wizzup.org>
- <20190818183459.GA29779@amd>
- <20190819114609.GL52127@atomide.com>
- <20190819124422.GI21072@amd>
- <20190821113521.GN52127@atomide.com>
- <20190825092814.GB1644@amd>
+        id S1727857AbfH0AP2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 26 Aug 2019 20:15:28 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:46436 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727798AbfH0AP1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 26 Aug 2019 20:15:27 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7R0F94q123270;
+        Mon, 26 Aug 2019 19:15:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1566864909;
+        bh=RsMdpRqUalyAi3dA3oqiFcxv5t3kJ8Ef294FTJiip/Y=;
+        h=From:To:CC:Subject:Date;
+        b=mtNiy007c4c+bjaKOM+VXU0XirUWm3gZ3N7XfEEFwPDQww3FaTEu5Is1few/wZ71k
+         hr3/3ebZBvMX1oM+yWUlSVeltang57drIWNn9v6bvGIaMlOLcY4RgxN9nmWDDcNzIA
+         PFkqNN8A0ogp0fM+Bp+3GDU1fc5FLwlwyRw0xiw8=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7R0F9UT022283
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 26 Aug 2019 19:15:09 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 26
+ Aug 2019 19:15:09 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 26 Aug 2019 19:15:09 -0500
+Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7R0F9eD004937;
+        Mon, 26 Aug 2019 19:15:09 -0500
+Received: from localhost (irmo.dhcp.ti.com [128.247.58.153])
+        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id x7R0F8Z18962;
+        Mon, 26 Aug 2019 19:15:08 -0500 (CDT)
+From:   Suman Anna <s-anna@ti.com>
+To:     Tony Lindgren <tony@atomide.com>
+CC:     Joerg Roedel <joro@8bytes.org>, Sakari Ailus <sakari.ailus@iki.fi>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tero Kristo <t-kristo@ti.com>, <linux-omap@vger.kernel.org>,
+        <iommu@lists.linux-foundation.org>, Suman Anna <s-anna@ti.com>
+Subject: [PATCH 0/2] OMAP IOMMU fixes to go with 5.4 OMAP IOMMU changes
+Date:   Mon, 26 Aug 2019 19:14:50 -0500
+Message-ID: <20190827001452.31930-1-s-anna@ti.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190825092814.GB1644@amd>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Pavel Machek <pavel@ucw.cz> [190825 09:28]:
-> Hi!
-> 
-> > * Pavel Machek <pavel@ucw.cz> [190819 12:44]:
-> > > Hmm. Related changes make it harder, not easier but.. here you
-> > > go... But... while this is simple... you are applying it at your own
-> > > risk. Untested. One potential problem is that while mainline will charge
-> > > to 4.2V, "power off charging" and Adroid will still charge to 4.35V,
-> > > leading to charge/discharge cycles even while charging is connected.
-> > 
-> > I guess not much we can do about Android charging at 4.35V.
-> 
-> Well, true. 
-> 
-> > > > Then later on we may want to optionally consider implementing
-> > > > support for 4.35V charge voltages assuming we scale down the
-> > > > charge voltage to 4.2V after reaching full charge.
-> > > 
-> > > Not sure how that would work / why we'd want to do that / what do you
-> > > consider to be full charge.
-> > 
-> > Well that would be if we wanted to make use of the extra capacity..
-> > 
-> > > https://secondlifestorage.com/t-Li-ion-4-35V-How-much-do-we-lose-by-charging-it-at-4-20V
-> > > https://batteryuniversity.com/learn/article/confusion_with_voltages
-> > 
-> > .. but yeah I don't know what we should consider full. I guess it's
-> > a 3.8V/4.35V battery vs 3.7V/4.2V battery.. To me it seems safest
-> > to set charge voltage to 4.2V and battery full to 4.2V until we
-> > we have some better ideas.
-> 
-> Well, feel free to apply the one-liner. Plus you can have a full patch
-> to make current and voltage configurable...
+Hi Tony,
 
-Well for the initial patch, should we still keep battery
-.info.voltage_max_design at 4.35V?
+The following 2 patches need to go along with the recent "iommu/omap: misc
+fixes" series [1] that is currently staged [2] for a 5.4 merge and available
+in linux-next. That series added runtime pm callbacks in preparation for
+the ti-sysc migration, but without adding the necessary platform data
+callbacks for the existing functional MMUs on OMAP3, OMAP4 and OMAP5 SoCs.
+These 2 patches add the same to maintain the functionality (l3_noc errors
+are the visible symptom while enabling the MMUs without these patches).
 
-Anyways after that I like the idea of making current and voltage
-configurable. But it should only be configurable within a range
-speciefied by the battery somehow.
+OMAP4 and OMAP5 would also need another set of fixes related to the
+breakage caused by the switch to clkctrl clocks as seen in [3].
 
-> > > +++ b/drivers/power/supply/cpcap-charger.c
-> > > @@ -440,7 +440,7 @@ static void cpcap_usb_detect(struct work_struct *work)
-> > >  			max_current = CPCAP_REG_CRM_ICHRG_0A532;
-> > >  
-> > >  		error = cpcap_charger_set_state(ddata,
-> > > -						CPCAP_REG_CRM_VCHRG_4V35,
-> > > +						CPCAP_REG_CRM_VCHRG_4V20,
-> > >  						max_current, 0);
-> > >  		if (error)
-> > >  			goto out_err;
-> > > 
-> > 
-> > So I think you also need to change the battery full to 4.2V too? Sure
-> > if Android charged to 4.35V, we show 15 minutes of over 100%..
-> 
-> Umm. I am not sure I need to change anything else _in the kernel_?
+These patches do have a dependency on the staged patches, so either you
+submit a pull-request towards 5.4-rc2 using 5.4-rc1 baseline, or let
+Joerg pick these through the arm/omap IOMMU branch for 5.4-rc1 itself.
 
-It's just the battery .info.voltage_max_design that I'm wondering
-about. But then again, that should be battery specific and we don't
-need to care about that for the initial fix.
+Sakari/Laurent,
+Appreciate it if you can check the OMAP3 ISP functionality on latest
+linux-next with the second patch. I have verified the ISP MMU programming
+only through an unit-test.
 
-Regards,
+Tero,
+I will be submitting another patch against OMAP IOMMU driver to skip the
+pdata callbacks for ti-sysc in the next couple of days.
 
-Tony
+regards
+Suman
+
+[1] https://lore.kernel.org/linux-iommu/20190809153730.GF12930@8bytes.org/T/#mec99f8e8ed351689f4fcc76f4f000f9144a02b51
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu.git/log/?h=arm/omap
+[3] https://patchwork.kernel.org/patch/11082125/#22829477
+
+Suman Anna (2):
+  ARM: OMAP2+: Plug in device_enable/idle ops for IOMMUs
+  ARM: OMAP2+: Add pdata for OMAP3 ISP IOMMU
+
+ arch/arm/mach-omap2/pdata-quirks.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+-- 
+2.22.0
 
