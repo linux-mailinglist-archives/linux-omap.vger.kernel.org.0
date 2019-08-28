@@ -2,111 +2,188 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5697A0270
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2019 15:02:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3648CA057B
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2019 17:01:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726593AbfH1NCy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Aug 2019 09:02:54 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:39443 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726253AbfH1NCy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Aug 2019 09:02:54 -0400
-Received: by mail-qt1-f195.google.com with SMTP id n7so12760qtb.6;
-        Wed, 28 Aug 2019 06:02:53 -0700 (PDT)
+        id S1726545AbfH1PBR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Aug 2019 11:01:17 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:34427 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726394AbfH1PBR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Aug 2019 11:01:17 -0400
+Received: by mail-io1-f68.google.com with SMTP id s21so225724ioa.1;
+        Wed, 28 Aug 2019 08:01:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=I02anmGj4S9YRqFAlcHCi6doUcoEtL7IRdbmX6PMidk=;
+        b=W937E6M1/3aGD86pktze21hmWXVXnR5Q1jTQYOIHz1ME1/HCzrY4VoLPr5bXDtptJM
+         l0G6n8SS33Mt41/3NqSVimzOzaiY0ANI2qstCIZWvakBAlcoP8hjPT1DDEyGaiA2QagU
+         UzzcpZ5i3UKA8PAIn10G2nT0JEhoadrZCz2kGZ+uiAZygn3yuDmE1nOoX6E1VOethwtK
+         SmziPGXcE/lAKu8nANcYsI1cezKhsmDfl1nxPTtn0IUOkmZmNBvLj4iSxGmPY1HyDlWN
+         MllmQVzai4Fo2qjjLQx8duDt0QjTJ+6tUF8BPjUKEgRq4ypEJd+K+oF5ew4jsCp9kgvK
+         Xwiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IGBGJGSXKu1XI7QCTZRx+ka85VzBENyC+3JcanBjN3E=;
-        b=kels8ahvdbtG6I/zeXlp2TPncvBGw+0OZ6yveDN/QHjqt66v/KTiuxyDkNH4mLAeeh
-         f4ScJWKCH9HhgAeK5giljAYVR6RQMe+JteLC7CHuOyyO0+3mcHmpfvh7kf68Nz6RMsN5
-         YYSzrG3uDUhrmC6Rv1976zwvnIpAXCMsFxQ2YjMe12Za0vHYsB1V9nF18Cc0mH/euCZw
-         hnIuy3VF2KbylkfR7KiP9BKoQiLnnXIvKZhfzE62MzvoQX+7jyo8yRWg7fOkUFAjGTiH
-         A71nmS8U18m5SbtwUrJJIWSiQAIvWivEPQaKaYc5GdYU8WBReyZYNfWCJbgbI0raVmJy
-         pROw==
-X-Gm-Message-State: APjAAAU7irnUz74pNRden1djY0tbvT8j37oku3imyo9clV7f9A55d91X
-        LnNhvzU0aGkofzSGu8Pu4yA0KmYDpLHDdT5cV6M=
-X-Google-Smtp-Source: APXvYqwFs2+ff1HO4EmjqAOCzKXa7tMdrsXizeCnfMrVB5CqO4/vjsoIDKOUj+3CtQPhIKsdnKwWMimhgoCxxhSPV9c=
-X-Received: by 2002:ac8:239d:: with SMTP id q29mr4036253qtq.304.1566997372955;
- Wed, 28 Aug 2019 06:02:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190808212234.2213262-1-arnd@arndb.de> <20190808212234.2213262-15-arnd@arndb.de>
- <20190813103605.GL52127@atomide.com> <CAK8P3a0E+QUn9wcP5Obv-FitWyXCFwcp+oPConeO2p-NV1rqsw@mail.gmail.com>
- <20190813181158.GA26798@darkstar.musicnaut.iki.fi> <CAK8P3a0LjKrc+7c5Ht9OL7LfYyLnG9=y7u+w24ujA1xAid_yCQ@mail.gmail.com>
- <20190814074918.GA52127@atomide.com> <CAK8P3a3k_HOGqzMGjtc+7NSaK0Bsa_vxxRFLzY8aP6ev4wa9iA@mail.gmail.com>
- <20190816083403.GB1952@darkstar.musicnaut.iki.fi> <CAK8P3a3jqNxoihQ+UFvOZMg=AcF2yzHXs5ay6X1TZX8L3zQ3rg@mail.gmail.com>
- <20190827190453.GJ30291@darkstar.musicnaut.iki.fi>
-In-Reply-To: <20190827190453.GJ30291@darkstar.musicnaut.iki.fi>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 28 Aug 2019 15:02:36 +0200
-Message-ID: <CAK8P3a1PeBMRuweAmzrTQC85CmwdZPirG3HPg9aJ99p2U7zknQ@mail.gmail.com>
-Subject: Re: [PATCH 14/22] ARM: omap1: use pci_ioremap_io() for omap_cf
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=I02anmGj4S9YRqFAlcHCi6doUcoEtL7IRdbmX6PMidk=;
+        b=kiPULo+g9fxgSV0Px26qv/FSTjm5E1QVcaHplyE2nS3z9V/F8IiRHRXG5op1jUaR2J
+         BKLv//nifb05d/i5TFcptEN0SjL27eXP1Br5MJjkVeeVrnPAzCQ8rZBhBpL3EM4cuDCZ
+         auYAree8kRmqAIOcpVIo8Wofmhta7pqZ44C/ts/PbktSMpTu623z8TaJUJFa98yEqxNS
+         rKwOe02ftA0KncBaExpgNO08X1TiwbIXs3GyDYfyVvWrvt6rpJCyG6UxwDOipg5QCeuG
+         WJ4cL/Jvo8r5lu2QjMP63TasH0FueUfhOHaLN5fXxoNNe8ZMdd4HxFMH3UlPX1iuVtLe
+         D/VA==
+X-Gm-Message-State: APjAAAVoOGXo0KhsetWWb6LqYNTmQgevHpq/sL/c/CL7Q6nvdY8DJpaS
+        mJB0nHVbsgqoCOx6b4lvpNH0lAP1ksxLKQ==
+X-Google-Smtp-Source: APXvYqx5Aj1D6vL8dP3t9chNG93WuIFnEzdvfmVcbvK2YhKl8QfZue87AJSXNER131BK/7+PXrFCFQ==
+X-Received: by 2002:a5e:c101:: with SMTP id v1mr4819198iol.231.1567004475549;
+        Wed, 28 Aug 2019 08:01:15 -0700 (PDT)
+Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
+        by smtp.gmail.com with ESMTPSA id i10sm2291519ioq.51.2019.08.28.08.01.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Aug 2019 08:01:14 -0700 (PDT)
+From:   Adam Ford <aford173@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     pali.rohar@gmail.com, t-kristo@ti.com, aaro.koskinen@iki.fi,
+        adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Paul Walmsley <paul@pwsan.com>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [RFC] ARM: omap3: Enable HWMODS for HW Random Number Generator
+Date:   Wed, 28 Aug 2019 10:00:37 -0500
+Message-Id: <20190828150037.2640-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Aug 27, 2019 at 9:05 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-> On Tue, Aug 27, 2019 at 06:33:01PM +0200, Arnd Bergmann wrote:
-> > On Fri, Aug 16, 2019 at 10:34 AM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-> > > However with earlyprintk it seems to hang as soon as kernel tries to print
-> > > something. So something goes wrong with early DEBUG_LL mapping code when
-> > > CONFIG_DEBUG_UART_VIRT=0xff000000 is used?
-> >
-> > I just redid the calculation and came out with the same address, so I
-> > don't think I put the wrong one there. The address also does not
-> > conflict with the PCI mapping, and the address is the same one that
-> > is installed later, so that should also be fine.
-> >
-> > Are you sure you used the correct address in the .config file? If you
-> > ran 'make oldconfig', the virtual address would not be changed here
-> > as I just modify the default for a fresh 'make omap1_defconfig'
-> > run or similar.
->
-> Yes... You should be able to try this out also in QEMU to see the hang:
+The datasheet for the AM3517 shows the RNG is connected to L4.
+It shows the module address for the RNG is 0x480A0000, and it
+matches the omap2.dtsi description.  Since the driver can support
+omap2 and omap4, it seems reasonable to assume the omap3 would
+use the same core for the RNG.
 
-Haven't tried yet, but I took a look at the dump:
+This RFC, mimics much of the omap2 hwmods on the OMAP3. It
+also adds the necessary clock for driving the RNG.  Unfortunately,
+it appears non-functional.  If anyone has any suggestions on how
+to finish the hwmod (or port it to the newer l4 device tree
+format), feedback is requested.
 
-> $ qemu-system-arm -M sx1 -kernel sx1-zImage -nographic
->
-> [ Hangs silently, press Ctrl-a c to enter monitor. ]
->
-> QEMU 4.1.0 monitor - type 'help' for more information
-> (qemu) info registers
-> R00=c0379de1 R01=0000005b R02=00000000 R03=ff000000
-> R04=00000000 R05=00000031 R06=c038f119 R07=00000000
-> R08=00000000 R09=c038f50e R10=600001d3 R11=00000001
-> R12=00000010 R13=c0379de0 R14=c000e07c R15=c000dfcc
-> PSR=000001d3 ---- A svc32
-> FPSCR: 00000000
->
-> from System.map:
-> c000df7c T printascii
-> c000dfe0 T printch
+Currently the hwmods repond as follows:
 
-Ok, that is clearly the "busyloop" macro in
-arch/arm/include/debug/8250.S, checking if the data got sent.
+[    0.245697] omap_hwmod: rng: _wait_target_ready failed: -22
+[    0.245727] omap_hwmod: rng: cannot be enabled for reset (3)
+[    6.780792] omap_hwmod: rng: _wait_target_ready failed: -22
 
-The 'r2' register contains zero, so UART_LSR_TEMT and
-UART_LSR_THRE are not set, but presumably the mapping
-was installed right since you did not get a page fault.
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-I assume you checked that the uart output wasn't already broken
-by one of the earlier patches, right?
+diff --git a/arch/arm/boot/dts/omap36xx-omap3430es2plus-clocks.dtsi b/arch/arm/boot/dts/omap36xx-omap3430es2plus-clocks.dtsi
+index 945537aee3ca..05891dff7fa1 100644
+--- a/arch/arm/boot/dts/omap36xx-omap3430es2plus-clocks.dtsi
++++ b/arch/arm/boot/dts/omap36xx-omap3430es2plus-clocks.dtsi
+@@ -189,7 +189,7 @@
+ 			 <&mcspi2_ick>, <&mcspi1_ick>, <&i2c3_ick>, <&i2c2_ick>,
+ 			 <&i2c1_ick>, <&uart2_ick>, <&uart1_ick>, <&gpt11_ick>,
+ 			 <&gpt10_ick>, <&mcbsp5_ick>, <&mcbsp1_ick>,
+-			 <&omapctrl_ick>, <&aes2_ick>, <&sha12_ick>,
++			 <&omapctrl_ick>, <&aes2_ick>, <&sha12_ick>, <&rng_ick>,
+ 			 <&ssi_ick>;
+ 	};
+ };
+diff --git a/arch/arm/mach-omap2/cm-regbits-34xx.h b/arch/arm/mach-omap2/cm-regbits-34xx.h
+index 037529a9e969..82330a66e35c 100644
+--- a/arch/arm/mach-omap2/cm-regbits-34xx.h
++++ b/arch/arm/mach-omap2/cm-regbits-34xx.h
+@@ -17,6 +17,7 @@
+ #define OMAP3430_CLKACTIVITY_IVA2_MASK			(1 << 0)
+ #define OMAP3430_CLKTRCTRL_MPU_MASK			(0x3 << 0)
+ #define OMAP3430_ST_AES2_SHIFT				28
++#define OMAP34XX_ST_RNG_SHIFT                           2
+ #define OMAP3430_ST_SHA12_SHIFT				27
+ #define AM35XX_ST_UART4_SHIFT				23
+ #define OMAP3430_ST_HDQ_SHIFT				22
+diff --git a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
+index f52438bdfc14..bae4487383b6 100644
+--- a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
+@@ -1627,6 +1627,42 @@ static struct omap_hwmod omap3xxx_gpmc_hwmod = {
+ 	.flags		= HWMOD_NO_IDLEST | DEBUG_OMAP_GPMC_HWMOD_FLAGS,
+ };
+ 
++/* RNG */
++
++static struct omap_hwmod_class_sysconfig omap3_rng_sysc = {
++	.rev_offs	= 0x3c,
++	.sysc_offs	= 0x40,
++	.syss_offs	= 0x44,
++	.sysc_flags	= (SYSC_HAS_SOFTRESET | SYSC_HAS_AUTOIDLE |
++			   SYSS_HAS_RESET_STATUS),
++	.sysc_fields	= &omap_hwmod_sysc_type1,
++};
++
++static struct omap_hwmod_class omap3_rng_hwmod_class = {
++	.name		= "rng",
++	.sysc		= &omap3_rng_sysc,
++};
++
++struct omap_hwmod omap3xxx_rng_hwmod = {
++	.name		= "rng",
++	.main_clk	= "rng_ick",
++	.prcm		= {
++		.omap2 = {
++			.module_offs = CORE_MOD,
++			.idlest_reg_id = 4,
++			.idlest_idle_bit = OMAP34XX_ST_RNG_SHIFT,
++		},
++	},
++	/*
++	 * XXX The first read from the SYSSTATUS register of the RNG
++	 * after the SYSCONFIG SOFTRESET bit is set triggers an
++	 * imprecise external abort.  It's unclear why this happens.
++	 * Until this is analyzed, skip the IP block reset.
++	 */
++	.flags		= HWMOD_INIT_NO_RESET,
++	.class		= &omap3_rng_hwmod_class,
++};
++
+ /*
+  * interfaces
+  */
+@@ -2508,6 +2544,13 @@ static struct omap_hwmod omap3xxx_sham_hwmod = {
+ 	.class		= &omap3xxx_sham_class,
+ };
+ 
++/* l4_core -> rng */
++struct omap_hwmod_ocp_if omap3xxx_l4_core__rng = {
++	.master		= &omap3xxx_l4_core_hwmod,
++	.slave		= &omap3xxx_rng_hwmod,
++	.clk		= "rng_ick",
++	.user		= OCP_USER_MPU | OCP_USER_SDMA,
++};
+ 
+ static struct omap_hwmod_ocp_if omap3xxx_l4_core__sham = {
+ 	.master		= &omap3xxx_l4_core_hwmod,
+@@ -2769,6 +2812,7 @@ static struct omap_hwmod_ocp_if *omap36xx_hwmod_ocp_ifs[] __initdata = {
+ 	&omap3xxx_l4_core__mmu_isp,
+ 	&omap3xxx_l3_main__mmu_iva,
+ 	&omap3xxx_l4_core__ssi,
++	&omap3xxx_l4_core__rng,
+ 	NULL,
+ };
+ 
+@@ -2788,6 +2832,7 @@ static struct omap_hwmod_ocp_if *am35xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am35xx_l4_core__mdio,
+ 	&am35xx_emac__l3,
+ 	&am35xx_l4_core__emac,
++	&omap3xxx_l4_core__rng,
+ 	NULL,
+ };
+ 
+-- 
+2.17.1
 
-Also, looking at arch/arm/mach-omap1/include/mach/uncompress.h
-it seems that SX1 normally uses UART3, not UART1.
-Is that different in qemu?
-
-        Arnd
