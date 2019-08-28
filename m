@@ -2,46 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A386AA0984
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2019 20:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C469DA0986
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Aug 2019 20:34:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726911AbfH1Sd7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Aug 2019 14:33:59 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:39205 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726586AbfH1Sd6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Aug 2019 14:33:58 -0400
-Received: by mail-io1-f67.google.com with SMTP id l7so1548039ioj.6;
-        Wed, 28 Aug 2019 11:33:58 -0700 (PDT)
+        id S1726981AbfH1SeA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Aug 2019 14:34:00 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:37092 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726953AbfH1SeA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Aug 2019 14:34:00 -0400
+Received: by mail-io1-f68.google.com with SMTP id q12so1576008iog.4;
+        Wed, 28 Aug 2019 11:33:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=8hu0ssZ0oGIHsc6XK0+vNFtta74+suq/nbsPFXeUCzo=;
-        b=gOExUspZ43jLMuF+eKU6GV47d0erYUbZyKrYKRx3biAPGIachP/lZDr5vFrM7ph+Sw
-         shJydx+mpJs1RrkwMNxmJECY4wh7aA7ZKu2d5mA0P3sr7HYMgo5ybKOr2mPGlKDdZp30
-         7MhEdpd/5TcPxjlpD44R15158z8gKGN6ZD88QhHvYg+xnGrDm/RXuKuVoinN/WjSDYBd
-         VEkShaMh9qJLhxrQfM1EKfjC43RqqjIPrRMvlqTDlrYXW5m3DjhUqwV1z0XKmIM7KBar
-         abct8GgJIyTOCQIYegKpz+CXpOUpCR3AegIdWRO5vz88hIWhrDN/hGXah/6GhnMAOo6y
-         2rew==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=/MCZVi6gjQnZzoBjDSkBgdTOk/6xTGkg3e6v7Fw/HG0=;
+        b=MX5SyXOUxD2vJG2x6hKpHKvhGuMWvvBTWHZYjsUQdx6ZY2viicTRwtxSMD47wa409Y
+         JvjUa55W/633dQyDYaHCNrSZaGRJiuUBZI1QWPRsuzKDmHjhzvvdJMPP1PvLHlbLyzfb
+         uTpB7933v3IBYa5I21x2OLWbVDNUaEeXtqqRddXuxYe0nJoPKa98DxVssomiX5cpmAkF
+         5JGLTXeujpJLuSz1lnxVv9oLt5cq9HBSKjlptjjOvbKtPv2TSyy4rfp6PkccRZQhDyTc
+         YHctd6QYUvP6r4TrPlet9Vg+cePEAlqG3oKvy2/1u/D14R3D/KvPafvJ20gfnfagcZ+X
+         +gkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=8hu0ssZ0oGIHsc6XK0+vNFtta74+suq/nbsPFXeUCzo=;
-        b=EYPwzy/1oztWmVzmRGlGq9FBEUpMlFMK1rOvvsgsaESFrzkwOhoIIgia0fCilOU+R3
-         7fJgJau1mQ6o/9V61223Vi2Xkm9uBRubnqboWHBPCnPG7ayFqFr11j+kaRSVZT7mfPpV
-         /51c4iFH1/ug9LzcJdXPq9l59r8Vmd5264LlzRi2DpWHPun3tDtBkr6b95bDtKvhK/mi
-         heouUZm/si7Ce02gLy9ROHaM2bhaTXMFJgIsf0dzNDOgf3Mif29hPTWi2ZcyZvCQQ7k6
-         hhJAyUKAnI3oFaum01gvSX3SZ0a3Oq79hvmGZi1C2dD+rX5WliOAZfw8QeANLseor3+N
-         G+Yw==
-X-Gm-Message-State: APjAAAV6EyWsNCeuGUCciVIldUcg/B0LGMEQjMkYNl90apW9An5GI3DS
-        yknQLgmaBEnOTWa3jhI85boG07VN54U=
-X-Google-Smtp-Source: APXvYqwEMGWFsgtbR4pzYu0QHQcSSHkT8AIV7Vx2F+xl54RWfWBWN+WSLiU9SH8fydowdo4lmRC4Ww==
-X-Received: by 2002:a05:6602:219a:: with SMTP id b26mr236370iob.55.1567017237339;
-        Wed, 28 Aug 2019 11:33:57 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=/MCZVi6gjQnZzoBjDSkBgdTOk/6xTGkg3e6v7Fw/HG0=;
+        b=hSdScAqEcWnyg8PgEiLeDJDKDMcKMUkzoj6uKwsSQ9gxlWQa+E3FPCfQNy32hiFkVo
+         wM++vS5EpqCBeSr4XYNgl/NTXlfcCfrV5mPzD44pJ8r7I424IdHLjDFyY/54y+X+4CdF
+         5GfrxC3xjGEn2JBg3ztgy743lbVLa+yhQjUDl9b1jekx2Eeckx6V1/vJPtKWDElR6pLv
+         UJ3eUwgS+3fUNHI7RIyJW7VvddcN8uVPisL/FrR7xPkPoJE+/zES43oRk5f5iIB8U+rk
+         cWUC7lD+JrcZZqlDu0i312SEZLhon3ibqkf+UabQIeuQ64mQhlbCHkRrg85dQRQFUe1n
+         gAFQ==
+X-Gm-Message-State: APjAAAVR6Gx3JRTYx9m22l3AGHRsCtX4dMYmrtNIcqDmmLdSAFxvCH0n
+        DVIREMciwb+6Mq1+PtQH5I+pCL7dpW4=
+X-Google-Smtp-Source: APXvYqzmuCBqbBBlo0qBs8s6y7oPoSyp9ckKM7QjXTCJ6WTRe6Z523OcD2B18vcA1COotQmCvdcC8g==
+X-Received: by 2002:a6b:ea02:: with SMTP id m2mr5943823ioc.155.1567017238874;
+        Wed, 28 Aug 2019 11:33:58 -0700 (PDT)
 Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id o3sm2494650ioo.74.2019.08.28.11.33.56
+        by smtp.gmail.com with ESMTPSA id o3sm2494650ioo.74.2019.08.28.11.33.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2019 11:33:56 -0700 (PDT)
+        Wed, 28 Aug 2019 11:33:58 -0700 (PDT)
 From:   Adam Ford <aford173@gmail.com>
 To:     linux-omap@vger.kernel.org
 Cc:     Adam Ford <aford173@gmail.com>,
@@ -52,39 +53,90 @@ Cc:     Adam Ford <aford173@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 1/3] ARM: omap2plus_defconfig: Fix missing video
-Date:   Wed, 28 Aug 2019 13:33:49 -0500
-Message-Id: <20190828183351.822-1-aford173@gmail.com>
+Subject: [PATCH 2/3] ARM: dts: logicpd-torpedo-baseboard: Fix missing video
+Date:   Wed, 28 Aug 2019 13:33:50 -0500
+Message-Id: <20190828183351.822-2-aford173@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190828183351.822-1-aford173@gmail.com>
+References: <20190828183351.822-1-aford173@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-When the panel-dpi driver was removed, the simple-panels driver
-was never enabled, so anyone who used the panel-dpi driver lost
-video, and those who used it inconjunction with simple-panels
-would have to manually enable CONFIG_DRM_PANEL_SIMPLE.
-
-This patch makes CONFIG_DRM_PANEL_SIMPLE a module in the same
-way the deprecated panel-dpi was.
+A previous commit removed the panel-dpi driver, which made the
+Torpedo video stop working because it relied on the dpi driver
+for setting video timings.  Now that the simple-panel driver is
+available in omap2plus, this patch migrates the Torpedo dev kits
+to use a similar panel and remove the manual timing requirements.
 
 Fixes: 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
 
 Signed-off-by: Adam Ford <aford173@gmail.com>
 
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index c7bf9c493646..64eb896907bf 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -363,6 +363,7 @@ CONFIG_DRM_OMAP_PANEL_TPO_TD028TTEC1=m
- CONFIG_DRM_OMAP_PANEL_TPO_TD043MTEA1=m
- CONFIG_DRM_OMAP_PANEL_NEC_NL8048HL11=m
- CONFIG_DRM_TILCDC=m
-+CONFIG_DRM_PANEL_SIMPLE=m
- CONFIG_FB=y
- CONFIG_FIRMWARE_EDID=y
- CONFIG_FB_MODE_HELPERS=y
+diff --git a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+index 642e809e757a..449cc7616da6 100644
+--- a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
++++ b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+@@ -108,7 +108,6 @@
+ &dss {
+ 	status = "ok";
+ 	vdds_dsi-supply = <&vpll2>;
+-	vdda_video-supply = <&video_reg>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&dss_dpi_pins1>;
+ 	port {
+@@ -124,44 +123,20 @@
+ 		display0 = &lcd0;
+ 	};
+ 
+-	video_reg: video_reg {
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&panel_pwr_pins>;
+-		compatible = "regulator-fixed";
+-		regulator-name = "fixed-supply";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio5 27 GPIO_ACTIVE_HIGH>;	/* gpio155, lcd INI */
+-	};
+-
+ 	lcd0: display {
+-		compatible = "panel-dpi";
++		/* This isn't the exact LCD, but the timings meet spec */
++		/* To make it work, set CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=4 */
++		compatible = "newhaven,nhd-4.3-480272ef-atxl";
+ 		label = "15";
+-		status = "okay";
+-		/* default-on; */
+ 		pinctrl-names = "default";
+-
++		pinctrl-0 = <&panel_pwr_pins>;
++		backlight = <&bl>;
++		enable-gpios = <&gpio5 27 GPIO_ACTIVE_HIGH>;
+ 		port {
+ 			lcd_in: endpoint {
+ 				remote-endpoint = <&dpi_out>;
+ 			};
+ 		};
+-
+-		panel-timing {
+-			clock-frequency = <9000000>;
+-			hactive = <480>;
+-			vactive = <272>;
+-			hfront-porch = <3>;
+-			hback-porch = <2>;
+-			hsync-len = <42>;
+-			vback-porch = <3>;
+-			vfront-porch = <4>;
+-			vsync-len = <11>;
+-			hsync-active = <0>;
+-			vsync-active = <0>;
+-			de-active = <1>;
+-			pixelclk-active = <1>;
+-		};
+ 	};
+ 
+ 	bl: backlight {
 -- 
 2.17.1
 
