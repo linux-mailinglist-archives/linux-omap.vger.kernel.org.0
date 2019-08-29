@@ -2,69 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C16A8A229E
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Aug 2019 19:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CEC2A27AC
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Aug 2019 22:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727635AbfH2RnK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Aug 2019 13:43:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42790 "EHLO mail.kernel.org"
+        id S1726526AbfH2UFQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Aug 2019 16:05:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38538 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726661AbfH2RnK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 29 Aug 2019 13:43:10 -0400
+        id S1726512AbfH2UFQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 29 Aug 2019 16:05:16 -0400
 Received: from kernel.org (unknown [104.132.0.74])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5E96D20674;
-        Thu, 29 Aug 2019 17:43:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AFB0622CEA;
+        Thu, 29 Aug 2019 20:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567100589;
-        bh=mjslpPHGtEDwGZueAQ46/cgrEEfGqC5lXFcjVTs2u4Y=;
+        s=default; t=1567109115;
+        bh=AC4gPJfrVrrii0HywXSnULvkrHqrXMjorH4PY24NIjA=;
         h=In-Reply-To:References:Cc:Subject:To:From:Date:From;
-        b=bl8v2sL91TDdw9ack7i0skLxScM6e9vX/Wodtl53zCkTGuirL0MWnwol0siTItoQi
-         gsd8nXJwjifQHhDvrNmQ+UOdtep3BQd8CcdgvRB0hnb50kp4YUW3M9natO96Cvp7qj
-         LDpPNm/4RJ7NzBt8m2qCqjlCaGStUab0EmL8b6Kc=
+        b=SlHe5Oeeh9/O5WzTo7SsVCbNGyQbPalgziUivEKYsktatpgPqDink/dSf8MdRdAE2
+         UW5HLJPtG0gyvZJcQiHRiU8Q4IJBrcIHjrb2ugNNurH2Oa5v8vRDWOg+EkcDoX0ERM
+         quuNvlOclcFpGw0TVbcgLu7lr/BY9kvFyqyTf69g=
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20190828065929.32150-1-t-kristo@ti.com>
-References: <20190828065929.32150-1-t-kristo@ti.com>
+In-Reply-To: <20190828065929.32150-5-t-kristo@ti.com>
+References: <20190828065929.32150-1-t-kristo@ti.com> <20190828065929.32150-5-t-kristo@ti.com>
 Cc:     linux-omap@vger.kernel.org, tony@atomide.com, s-anna@ti.com
-Subject: Re: [PATCHv2 0/6] clk: ti: reset handling support fixes
+Subject: Re: [PATCHv2 4/6] clk: ti: clkctrl: add API to notify reset status
 To:     Tero Kristo <t-kristo@ti.com>, linux-clk@vger.kernel.org,
         mturquette@baylibre.com
 From:   Stephen Boyd <sboyd@kernel.org>
 User-Agent: alot/0.8.1
-Date:   Thu, 29 Aug 2019 10:43:08 -0700
-Message-Id: <20190829174309.5E96D20674@mail.kernel.org>
+Date:   Thu, 29 Aug 2019 13:05:14 -0700
+Message-Id: <20190829200515.AFB0622CEA@mail.kernel.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Tero Kristo (2019-08-27 23:59:23)
-> Hi,
->=20
-> This is v2 of the earlier series [1]=C2=A0targeting remoteproc / reset su=
-pport for
-> OMAP SoCs. None of the earlier patches have been retained, mostly everyth=
-ing
-> is re-written. :)
->=20
-> Couple of notes about the individual patches:
->=20
-> #1: needed so that reset handling code can find clkctrl handles
-> #2: just to convert the code to look a bit neater with all the bit
->     handling logic
-> #3: new TI SoC only API for checking standby state for clocks, needed
->     for remoteproc idle status handling
-> #4: new TI SoC only API for syncing up status between reset + associated
->     clock
-> #5/#6: add missing IVA clkctrl clock entries for omap5, this has been
->     just missed before and is needed as IVA has reset lines
->=20
-> I know its already quite late for 5.4, but in theory these
-> could be picked up for it also. If not, pushing for 5.5 is fine.
+Quoting Tero Kristo (2019-08-27 23:59:27)
+> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+> index e3e0a66a6ce2..47a0d1398c6f 100644
+> --- a/drivers/clk/ti/clkctrl.c
+> +++ b/drivers/clk/ti/clkctrl.c
+> @@ -680,3 +689,38 @@ u32 ti_clk_is_in_standby(struct clk *clk)
+>         return false;
+>  }
+>  EXPORT_SYMBOL_GPL(ti_clk_is_in_standby);
+> +
+> +/**
+> + * ti_clk_notify_resets - Notify the clock driver associated reset status
 
-Its sort of late. I guess let me throw it into fixes and try to send off
-one more PR to Linus early next week.
+This is completely unused in this patch series. What's going on?
 
+> + * @clk: clock to notify reset status for
+> + * @asserted: true if all HW reset lines are asserted
+> + *
+> + * Some clkctrl clocks have associated resets for them which effectively
+> + * prevent the clock to transition from/to idle if the reset state is not
+> + * in sync. For the clock to transition to idle properly, all associated
+> + * resets must be asserted, and to leave idle, vice versa. To provide the
+> + * current reset status, the reset driver should issue this callback.
+> + */
