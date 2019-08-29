@@ -2,157 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FFC1A1B56
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Aug 2019 15:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C16A8A229E
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Aug 2019 19:43:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726950AbfH2NZS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Aug 2019 09:25:18 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:49647 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726518AbfH2NZS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Aug 2019 09:25:18 -0400
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1i3KQN-0004VF-23; Thu, 29 Aug 2019 15:25:15 +0200
-Message-ID: <1567085114.5345.12.camel@pengutronix.de>
-Subject: Re: [PATCHv2 05/11] soc: ti: omap-prm: sync func clock status with
- resets
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Tero Kristo <t-kristo@ti.com>, ssantosh@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        robh+dt@kernel.org
-Cc:     tony@atomide.com, s-anna@ti.com, devicetree@vger.kernel.org
-Date:   Thu, 29 Aug 2019 15:25:14 +0200
-In-Reply-To: <20190828071941.32378-6-t-kristo@ti.com>
-References: <20190828071941.32378-1-t-kristo@ti.com>
-         <20190828071941.32378-6-t-kristo@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6-1+deb9u2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+        id S1727635AbfH2RnK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Aug 2019 13:43:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42790 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726661AbfH2RnK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 29 Aug 2019 13:43:10 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5E96D20674;
+        Thu, 29 Aug 2019 17:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567100589;
+        bh=mjslpPHGtEDwGZueAQ46/cgrEEfGqC5lXFcjVTs2u4Y=;
+        h=In-Reply-To:References:Cc:Subject:To:From:Date:From;
+        b=bl8v2sL91TDdw9ack7i0skLxScM6e9vX/Wodtl53zCkTGuirL0MWnwol0siTItoQi
+         gsd8nXJwjifQHhDvrNmQ+UOdtep3BQd8CcdgvRB0hnb50kp4YUW3M9natO96Cvp7qj
+         LDpPNm/4RJ7NzBt8m2qCqjlCaGStUab0EmL8b6Kc=
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190828065929.32150-1-t-kristo@ti.com>
+References: <20190828065929.32150-1-t-kristo@ti.com>
+Cc:     linux-omap@vger.kernel.org, tony@atomide.com, s-anna@ti.com
+Subject: Re: [PATCHv2 0/6] clk: ti: reset handling support fixes
+To:     Tero Kristo <t-kristo@ti.com>, linux-clk@vger.kernel.org,
+        mturquette@baylibre.com
+From:   Stephen Boyd <sboyd@kernel.org>
+User-Agent: alot/0.8.1
+Date:   Thu, 29 Aug 2019 10:43:08 -0700
+Message-Id: <20190829174309.5E96D20674@mail.kernel.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 2019-08-28 at 10:19 +0300, Tero Kristo wrote:
-> Hardware reset signals are tightly coupled with associated clocks, and
-> basically de-asserting a reset won't succeed properly if the clock is
-> not enabled, and vice-versa. Also, disabling a clock won't fully succeed
-> if the associated hardware resets are not asserted. Add status sync
-> functionality between these two for TI drivers so that the situations
-> can be handled properly without generating any timeouts.
-> 
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> ---
->  drivers/soc/ti/omap_prm.c | 36 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
-> 
-> diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
-> index 38998ce19c71..e876bad8f8d5 100644
-> --- a/drivers/soc/ti/omap_prm.c
-> +++ b/drivers/soc/ti/omap_prm.c
-> @@ -15,6 +15,8 @@
->  #include <linux/platform_device.h>
->  #include <linux/reset-controller.h>
->  #include <linux/delay.h>
-> +#include <linux/clk.h>
-> +#include <linux/clk/ti.h>
->  
->  #include <linux/platform_data/ti-prm.h>
->  
-> @@ -42,7 +44,9 @@ struct omap_reset_data {
->  	struct reset_controller_dev rcdev;
->  	struct omap_prm *prm;
->  	struct clockdomain *clkdm;
-> +	struct clk *clk;
->  	struct device *dev;
-> +	u32 mask;
->  };
->  
->  #define to_omap_reset_data(p) container_of((p), struct omap_reset_data, rcdev)
-> @@ -102,6 +106,8 @@ static int omap_reset_assert(struct reset_controller_dev *rcdev,
->  	v |= 1 << id;
->  	writel_relaxed(v, reset->prm->base + reset->prm->data->rstctrl);
->  
-> +	ti_clk_notify_resets(reset->clk, v == reset->mask);
-> +
->  	return 0;
->  }
->  
-> @@ -163,9 +169,19 @@ static int omap_reset_deassert(struct reset_controller_dev *rcdev,
->  	v &= ~(1 << id);
->  	writel_relaxed(v, reset->prm->base + reset->prm->data->rstctrl);
->  
-> +	ti_clk_notify_resets(reset->clk, v == reset->mask);
-> +
->  	if (!has_rstst)
->  		goto exit;
->  
-> +	/* If associated clock is disabled, we can't poll completion status */
-> +	if (reset->clk) {
-> +		struct clk_hw *hw = __clk_get_hw(reset->clk);
-> +
-> +		if (!clk_hw_is_enabled(hw))
-> +			return ret;
-> +	}
-> +
->  	/* wait for the status to be set */
->  	while (1) {
->  		v = readl_relaxed(reset->prm->base + reset->prm->data->rstst);
-> @@ -199,8 +215,10 @@ static int omap_prm_reset_init(struct platform_device *pdev,
->  			       struct omap_prm *prm)
->  {
->  	struct omap_reset_data *reset;
-> +	const struct omap_rst_map *map;
->  	struct ti_prm_platform_data *pdata = dev_get_platdata(&pdev->dev);
->  	char buf[32];
-> +	u32 v;
->  
->  	/*
->  	 * Check if we have controllable resets. If either rstctrl is non-zero
-> @@ -215,6 +233,10 @@ static int omap_prm_reset_init(struct platform_device *pdev,
->  	    !pdata->clkdm_allow_idle)
->  		return -EINVAL;
->  
-> +	map = prm->data->rstmap;
-> +	if (!map)
-> +		return -EINVAL;
+Quoting Tero Kristo (2019-08-27 23:59:23)
+> Hi,
+>=20
+> This is v2 of the earlier series [1]=C2=A0targeting remoteproc / reset su=
+pport for
+> OMAP SoCs. None of the earlier patches have been retained, mostly everyth=
+ing
+> is re-written. :)
+>=20
+> Couple of notes about the individual patches:
+>=20
+> #1: needed so that reset handling code can find clkctrl handles
+> #2: just to convert the code to look a bit neater with all the bit
+>     handling logic
+> #3: new TI SoC only API for checking standby state for clocks, needed
+>     for remoteproc idle status handling
+> #4: new TI SoC only API for syncing up status between reset + associated
+>     clock
+> #5/#6: add missing IVA clkctrl clock entries for omap5, this has been
+>     just missed before and is needed as IVA has reset lines
+>=20
+> I know its already quite late for 5.4, but in theory these
+> could be picked up for it also. If not, pushing for 5.5 is fine.
 
-Can this actually happen?
+Its sort of late. I guess let me throw it into fixes and try to send off
+one more PR to Linus early next week.
 
-> +
->  	reset = devm_kzalloc(&pdev->dev, sizeof(*reset), GFP_KERNEL);
->  	if (!reset)
->  		return -ENOMEM;
-> @@ -224,6 +246,10 @@ static int omap_prm_reset_init(struct platform_device *pdev,
->  	reset->rcdev.of_node = pdev->dev.of_node;
->  	reset->rcdev.nr_resets = OMAP_MAX_RESETS;
->  	reset->dev = &pdev->dev;
-> +	reset->clk = of_clk_get(pdev->dev.of_node, 0);
-> +
-> +	if (IS_ERR(reset->clk))
-> +		reset->clk = NULL;
-
-Maybe only ignore -ENOENT?
-
->  	reset->prm = prm;
->  
-> @@ -234,6 +260,16 @@ static int omap_prm_reset_init(struct platform_device *pdev,
->  	if (!reset->clkdm)
->  		return -EINVAL;
->  
-> +	while (map->rst >= 0) {
-> +		reset->mask |= BIT(map->rst);
-> +		map++;
-> +	}
-
-With this, you could use reset->mask to simplify _is_valid_reset.
-
-regards
-Philipp
