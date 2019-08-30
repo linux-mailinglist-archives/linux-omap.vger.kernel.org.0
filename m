@@ -2,48 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C14AEA3695
-	for <lists+linux-omap@lfdr.de>; Fri, 30 Aug 2019 14:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1B23A3697
+	for <lists+linux-omap@lfdr.de>; Fri, 30 Aug 2019 14:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728135AbfH3MSp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 30 Aug 2019 08:18:45 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:39266 "EHLO
+        id S1728152AbfH3MSr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 30 Aug 2019 08:18:47 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:39272 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728122AbfH3MSp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 30 Aug 2019 08:18:45 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7UCIcWt119952;
-        Fri, 30 Aug 2019 07:18:38 -0500
+        with ESMTP id S1728117AbfH3MSq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 30 Aug 2019 08:18:46 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x7UCIeDK119961;
+        Fri, 30 Aug 2019 07:18:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1567167518;
-        bh=p4CR2/bpO2SmuYHCrI6BzoLr7Plewq/qhb2FSuKAUmU=;
+        s=ti-com-17Q1; t=1567167520;
+        bh=C/SSLF6gUJB4HpZa8ZPhirOUkBhUUOqeJuvqdZTQaow=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=mJXWfTq7FafNSvwWBj2Uy+zbV4DUeNH1pVL1N+0giyX4TV34c0sFLF87EHWxWScsQ
-         EGQ/dt4hJ67aP7994yUhxh3iRK6r93yBH8l2vRoE8vBZYscKlS1FZhvo4sYJbLggqv
-         YFA/DWUIOLUbLtyIQJJbrCnD6oSiBK10tu/T49JY=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7UCIcO9004587
+        b=rdk48wkWAn9ZBiTw3YN+gMT7gokPYP3HC7g/tGBnknPKzgyyPFlgbz5i8fv5X0MAU
+         FUHyfsTXaw2zsjNXZjMhvLVRQMognaU2qbXZnQvCzCphWAglvZDr02B6W90gbZIoZg
+         kLN/Q7CXdR2OiRUYC+d+cf1KEp1F3xWqLeUHu78c=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x7UCIeOq128504
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 30 Aug 2019 07:18:38 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 30 Aug 2019 07:18:40 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 30
- Aug 2019 07:18:37 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2019 07:18:39 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 30 Aug 2019 07:18:37 -0500
+ Frontend Transport; Fri, 30 Aug 2019 07:18:39 -0500
 Received: from sokoban.bb.dnainternet.fi (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7UCIP6L083824;
-        Fri, 30 Aug 2019 07:18:36 -0500
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x7UCIP6M083824;
+        Fri, 30 Aug 2019 07:18:38 -0500
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <ssantosh@kernel.org>, <linux-omap@vger.kernel.org>,
         <tony@atomide.com>, <s-anna@ti.com>, <p.zabel@pengutronix.de>
 CC:     <linux-arm-kernel@lists.infradead.org>,
         <devicetree@vger.kernel.org>
-Subject: [PATCHv3 05/10] soc: ti: omap-prm: sync func clock status with resets
-Date:   Fri, 30 Aug 2019 15:18:11 +0300
-Message-ID: <20190830121816.30034-6-t-kristo@ti.com>
+Subject: [PATCHv3 06/10] soc: ti: omap-prm: add omap4 PRM data
+Date:   Fri, 30 Aug 2019 15:18:12 +0300
+Message-ID: <20190830121816.30034-7-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190830121816.30034-1-t-kristo@ti.com>
 References: <20190830121816.30034-1-t-kristo@ti.com>
@@ -55,101 +55,47 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hardware reset signals are tightly coupled with associated clocks, and
-basically de-asserting a reset won't succeed properly if the clock is
-not enabled, and vice-versa. Also, disabling a clock won't fully succeed
-if the associated hardware resets are not asserted. Add status sync
-functionality between these two for TI drivers so that the situations
-can be handled properly without generating any timeouts.
+Add PRM data for omap4 family of SoCs. Initially this is just used to
+provide reset support.
 
 Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- drivers/soc/ti/omap_prm.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/soc/ti/omap_prm.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
-index 0b6a300f935b..7c8fdc5e6c50 100644
+index 7c8fdc5e6c50..d413e65c9b9b 100644
 --- a/drivers/soc/ti/omap_prm.c
 +++ b/drivers/soc/ti/omap_prm.c
-@@ -15,6 +15,8 @@
- #include <linux/platform_device.h>
- #include <linux/reset-controller.h>
- #include <linux/delay.h>
-+#include <linux/clk.h>
-+#include <linux/clk/ti.h>
+@@ -61,7 +61,29 @@ struct omap_reset_data {
  
- #include <linux/platform_data/ti-prm.h>
+ #define OMAP_PRM_HAS_RESETS	(OMAP_PRM_HAS_RSTCTRL | OMAP_PRM_HAS_RSTST)
  
-@@ -44,6 +46,7 @@ struct omap_reset_data {
- 	u32 mask;
- 	spinlock_t lock;
- 	struct clockdomain *clkdm;
-+	struct clk *clk;
- 	struct device *dev;
++static const struct omap_rst_map rst_map_01[] = {
++	{ .rst = 0, .st = 0 },
++	{ .rst = 1, .st = 1 },
++	{ .rst = -1 },
++};
++
++static const struct omap_rst_map rst_map_012[] = {
++	{ .rst = 0, .st = 0 },
++	{ .rst = 1, .st = 1 },
++	{ .rst = 2, .st = 2 },
++	{ .rst = -1 },
++};
++
++static const struct omap_prm_data omap4_prm_data[] = {
++	{ .name = "tesla", .base = 0x4a306400, .rstctrl = 0x10, .rstst = 0x14, .rstmap = rst_map_01 },
++	{ .name = "core", .base = 0x4a306700, .rstctrl = 0x210, .rstst = 0x214, .clkdm_name = "ducati", .rstmap = rst_map_012 },
++	{ .name = "ivahd", .base = 0x4a306f00, .rstctrl = 0x10, .rstst = 0x14, .rstmap = rst_map_012 },
++	{ .name = "device", .base = 0x4a307b00, .rstctrl = 0x0, .rstst = 0x4, .rstmap = rst_map_01, .flags = OMAP_PRM_HAS_RSTCTRL | OMAP_PRM_HAS_NO_CLKDM },
++	{ },
++};
++
+ static const struct of_device_id omap_prm_id_table[] = {
++	{ .compatible = "ti,omap4-prm-inst", .data = omap4_prm_data },
+ 	{ },
  };
- 
-@@ -128,6 +131,8 @@ static int omap_reset_assert(struct reset_controller_dev *rcdev,
- 	writel_relaxed(v, reset->prm->base + reset->prm->data->rstctrl);
- 	spin_unlock_irqrestore(&reset->lock, flags);
- 
-+	ti_clk_notify_resets(reset->clk, v == reset->mask);
-+
- 	return 0;
- }
- 
-@@ -164,9 +169,19 @@ static int omap_reset_deassert(struct reset_controller_dev *rcdev,
- 	writel_relaxed(v, reset->prm->base + reset->prm->data->rstctrl);
- 	spin_unlock_irqrestore(&reset->lock, flags);
- 
-+	ti_clk_notify_resets(reset->clk, v == reset->mask);
-+
- 	if (!has_rstst)
- 		goto exit;
- 
-+	/* If associated clock is disabled, we can't poll completion status */
-+	if (reset->clk) {
-+		struct clk_hw *hw = __clk_get_hw(reset->clk);
-+
-+		if (!clk_hw_is_enabled(hw))
-+			return ret;
-+	}
-+
- 	/* wait for the status to be set */
- 	ret = readl_relaxed_poll_timeout(reset->prm->base +
- 					 reset->prm->data->rstst,
-@@ -207,6 +222,7 @@ static int omap_prm_reset_init(struct platform_device *pdev,
- 	const struct omap_rst_map *map;
- 	struct ti_prm_platform_data *pdata = dev_get_platdata(&pdev->dev);
- 	char buf[32];
-+	u32 v;
- 
- 	/*
- 	 * Check if we have controllable resets. If either rstctrl is non-zero
-@@ -237,6 +253,13 @@ static int omap_prm_reset_init(struct platform_device *pdev,
- 	reset->rcdev.of_reset_n_cells = 1;
- 	reset->dev = &pdev->dev;
- 	spin_lock_init(&reset->lock);
-+	reset->clk = of_clk_get(pdev->dev.of_node, 0);
-+
-+	if (PTR_ERR(reset->clk) == -ENOENT)
-+		reset->clk = NULL;
-+
-+	if (IS_ERR(reset->clk))
-+		return PTR_ERR(reset->clk);
- 
- 	reset->prm = prm;
- 
-@@ -254,6 +277,11 @@ static int omap_prm_reset_init(struct platform_device *pdev,
- 		map++;
- 	}
- 
-+	if (reset->clk) {
-+		v = readl_relaxed(reset->prm->base + reset->prm->data->rstctrl);
-+		ti_clk_notify_resets(reset->clk, v == reset->mask);
-+	}
-+
- 	return devm_reset_controller_register(&pdev->dev, &reset->rcdev);
- }
  
 -- 
 2.17.1
