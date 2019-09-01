@@ -2,102 +2,152 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D71AA4C76
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 00:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D9E6A4C83
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 00:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729059AbfIAW1F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 1 Sep 2019 18:27:05 -0400
-Received: from muru.com ([72.249.23.125]:59428 "EHLO muru.com"
+        id S1729137AbfIAW6r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 1 Sep 2019 18:58:47 -0400
+Received: from vern.gendns.com ([98.142.107.122]:37370 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728942AbfIAW1F (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 1 Sep 2019 18:27:05 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id CFAFC80C0;
-        Sun,  1 Sep 2019 22:27:32 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Bin Liu <b-liu@ti.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Marcel Partap <mpartap@gmx.net>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Michael Scott <hashcode0f@gmail.com>,
-        NeKit <nekit1000@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH] usb: musb: omap2430: Idle musb on init
-Date:   Sun,  1 Sep 2019 15:27:00 -0700
-Message-Id: <20190901222700.36410-1-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1729048AbfIAW6r (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 1 Sep 2019 18:58:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Message-Id:Date:Subject:Cc:To:From:Sender:
+        Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=q5I8hNXYUTOVr6qJJGD6VgyFndq2TJGOuDuT4GVouDk=; b=mAzKb4qBMqscx40J8SieYVnJ4w
+        CDyosjONCebl6PiNzSRwIofpGAlYPNofqndaEpMvvk8lvwe1w7fsvH83Tujs96moLqifpQyJnux87
+        wkDWpRnJlKNZKRAlU8KfmigT6KsWTrRXB191TcLia30td2qHcwWP7Kx7ukmkiz0M15VlJFNVc0ULE
+        0i33kJnUTMUabzPKXh/lStK2yp9qJZzXMgkqG5NbNR7IRdZ7K76ic7jvivuq8pxkNa2OBX6iHRWrE
+        8ExsjK/beLyVM8HARyLDpaSa9bEjk8e82W+tGip6D4fkuhu5c2yyjRBihjeei/PfeAmTvYXu6CACe
+        o0IHTW0w==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:58390 helo=freyr.lechnology.com)
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1i4Ynz-000351-RK; Sun, 01 Sep 2019 18:58:43 -0400
+From:   David Lechner <david@lechnology.com>
+To:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org
+Cc:     David Lechner <david@lechnology.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: [PATCH v3 0/6] counter: new TI eQEP driver
+Date:   Sun,  1 Sep 2019 17:58:21 -0500
+Message-Id: <20190901225827.12301-1-david@lechnology.com>
+X-Mailer: git-send-email 2.17.1
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We want to configure musb state in omap2430_musb_enable() instead of
-omap2430_musb_init(). Otherwise musb may not idle properly until
-USB cable has been connected at least once.
+This series adds device tree bindings and a new counter driver for the Texas
+Instruments Enhanced Quadrature Encoder Pulse (eQEP).
 
-And we already have omap_musb_set_mailbox() configure mode with
-omap_control_usb_set_mode() so we can remove those calls from
-omap2430_musb_enable().
+As mentioned in one of the commit messages, to start with, the driver only
+supports reading the current counter value and setting the min/max values.
+Other features can be added as the counter subsystem gains support for them.
 
-Cc: Jacopo Mondi <jacopo@jmondi.org>
-Cc: Marcel Partap <mpartap@gmx.net>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Michael Scott <hashcode0f@gmail.com>
-Cc: NeKit <nekit1000@gmail.com>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/usb/musb/omap2430.c | 20 +++-----------------
- 1 file changed, 3 insertions(+), 17 deletions(-)
+v3 changes:
+- Minor changes to device tree bindings (style and generic node name)
+- Drop action in initializer
+- Fix ordering of pm runtime disable
+v2 changes:
+- New patch to move TI PWMSS driver from drivers/pwm/ to drivers/bus/
+- Device tree bindings converted to .yaml format
+- Device tree clock renamed from "fck" to "sysclkout"
+- Dropped unused index and strobe signals from counter driver
+- Added synapses and actions to counter driver
+- Fixed base in of kstrtouint()
+- Clarifications in commit messages
 
-diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -211,7 +211,6 @@ static int omap2430_musb_init(struct musb *musb)
- 	u32 l;
- 	int status = 0;
- 	struct device *dev = musb->controller;
--	struct omap2430_glue *glue = dev_get_drvdata(dev->parent);
- 	struct musb_hdrc_platform_data *plat = dev_get_platdata(dev);
- 	struct omap_musb_board_data *data = plat->board_data;
- 
-@@ -267,9 +266,6 @@ static int omap2430_musb_init(struct musb *musb)
- 			musb_readl(musb->mregs, OTG_INTERFSEL),
- 			musb_readl(musb->mregs, OTG_SIMENABLE));
- 
--	if (glue->status != MUSB_UNKNOWN)
--		omap_musb_set_mailbox(glue);
--
- 	return 0;
- }
- 
-@@ -278,19 +274,9 @@ static void omap2430_musb_enable(struct musb *musb)
- 	struct device *dev = musb->controller;
- 	struct omap2430_glue *glue = dev_get_drvdata(dev->parent);
- 
--	switch (glue->status) {
--
--	case MUSB_ID_GROUND:
--		omap_control_usb_set_mode(glue->control_otghs, USB_MODE_HOST);
--		break;
--
--	case MUSB_VBUS_VALID:
--		omap_control_usb_set_mode(glue->control_otghs, USB_MODE_DEVICE);
--		break;
--
--	default:
--		break;
--	}
-+	if (glue->status == MUSB_UNKNOWN)
-+		glue->status = MUSB_VBUS_OFF;
-+	omap_musb_set_mailbox(glue);
- }
- 
- static void omap2430_musb_disable(struct musb *musb)
+This series has been tested on a BeagleBone Blue with the following script:
+
+#!/usr/bin/env python3
+
+from os import path
+from time import sleep
+
+COUNTER_PATH = '/sys/bus/counter/devices'
+COUNTERS = ['counter0', 'counter1', 'counter2']
+COUNT0 = 'count0'
+COUNT = 'count'
+FUNCTION = 'function'
+CEILING = 'ceiling'
+FLOOR = 'floor'
+ENABLE = 'enable'
+
+cnts = []
+
+for c in COUNTERS:
+    function_path = path.join(COUNTER_PATH, c, COUNT0, FUNCTION)
+    with open(function_path, 'w') as f:
+        f.write('quadrature x4')
+    floor_path = path.join(COUNTER_PATH, c, COUNT0, FLOOR)
+    with open(floor_path, 'w') as f:
+        f.write(str(0))
+    ceiling_path = path.join(COUNTER_PATH, c, COUNT0, CEILING)
+    with open(ceiling_path, 'w') as f:
+        f.write(str(0xffffffff))
+    enable_path = path.join(COUNTER_PATH, c, COUNT0, ENABLE)
+    with open(enable_path, 'w') as f:
+        f.write('1')
+
+    cnt_path = path.join(COUNTER_PATH, c, COUNT0, COUNT)
+    cnts.append(open(cnt_path, 'r'))
+
+while True:
+    for c in cnts:
+        c.seek(0)
+        val = int(c.read())
+        if val >= 0x80000000:
+            val -= 0x100000000
+        print(val, end=' ')
+    print()
+    sleep(1)
+
+David Lechner (6):
+  bus/ti-pwmss: move TI PWMSS driver from PWM to bus subsystem
+  dt-bindings: counter: new bindings for TI eQEP
+  counter: new TI eQEP driver
+  ARM: dts: am33xx: Add nodes for eQEP
+  ARM: dts: am335x-boneblue: Enable eQEP
+  ARM: dts: am335x-boneblue: Use of am335x-osd335x-common.dtsi
+
+ .../devicetree/bindings/counter/ti-eqep.yaml  |  50 ++
+ MAINTAINERS                                   |   6 +
+ arch/arm/boot/dts/am335x-boneblue.dts         | 146 +++---
+ arch/arm/boot/dts/am33xx-l4.dtsi              |  27 +
+ drivers/bus/Kconfig                           |   9 +
+ drivers/bus/Makefile                          |   1 +
+ drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} |   0
+ drivers/counter/Kconfig                       |  11 +
+ drivers/counter/Makefile                      |   1 +
+ drivers/counter/ti-eqep.c                     | 473 ++++++++++++++++++
+ drivers/pwm/Kconfig                           |   9 -
+ drivers/pwm/Makefile                          |   1 -
+ 12 files changed, 634 insertions(+), 100 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/counter/ti-eqep.yaml
+ rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)
+ create mode 100644 drivers/counter/ti-eqep.c
+
 -- 
-2.23.0
+2.17.1
+
