@@ -2,147 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A4E9A4C8C
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 00:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6711A4F60
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 08:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729251AbfIAW6w (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 1 Sep 2019 18:58:52 -0400
-Received: from vern.gendns.com ([98.142.107.122]:37446 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729132AbfIAW6w (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 1 Sep 2019 18:58:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=References:In-Reply-To:Message-Id:Date:Subject
-        :Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=UWqdC7qainDYiI83hlQ8fsjYCgOyB5DxNVt66ZZMzls=; b=ylitdJlj49OjGR89tj65PvTZ5
-        mtjniIleBJvINx6qFjoIrM5Ges/AFdY2u++OdzX2n5GJdrc81o6tBrNgcAPxThoSL/E9IFM+SBt85
-        l+iird9IcCpCLoV3fOufqspRqTKEdWfWXA5EdBLBBrf2uFoZ1F6ehP5dlobEW7Q9HUX+oqt2nfDa/
-        3pn9nIaE8URhiBCpxwmZHypnf/JbkJE85sk6pYFu4L79w5856BN2Vi3GMHHAYT7oEE+yHEK13Dki0
-        zpQbwclV9vzG2D4gbzzR50wIdE5odvfJA6I7VmdJclNHb0Y2jfdeHbH8iU7qg46UMy/dSRfhqofOc
-        G3BXMVmnw==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:58390 helo=freyr.lechnology.com)
-        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <david@lechnology.com>)
-        id 1i4Yo5-000351-7e; Sun, 01 Sep 2019 18:58:49 -0400
-From:   David Lechner <david@lechnology.com>
-To:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org
-Cc:     David Lechner <david@lechnology.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org
-Subject: [PATCH v3 5/6] ARM: dts: am335x-boneblue: Enable eQEP
-Date:   Sun,  1 Sep 2019 17:58:26 -0500
-Message-Id: <20190901225827.12301-6-david@lechnology.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190901225827.12301-1-david@lechnology.com>
-References: <20190901225827.12301-1-david@lechnology.com>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+        id S1729456AbfIBGvO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Sep 2019 02:51:14 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:43682 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729359AbfIBGvO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Sep 2019 02:51:14 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x826oq5V049395;
+        Mon, 2 Sep 2019 01:50:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1567407052;
+        bh=ox3ufaLMVDgFuqEZpqLT51isg/cyX5JQ6XMTFXw8veU=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=cIHMXK/iZ8iNX114dUzNvVAZWBnAaoAPYxYr9hmovMIzMOC8ea4E0VU8F2o9j6QpW
+         0D8W+837wZsTy5TcrP8u7vgdsjnOQo+aLM9thxs7nSGV3B5B1AJ3ioaX7pQVmmBkvS
+         UfwW9xxQ8EdN8ljnJrmWBhGnutOJM399b+bgMRkI=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x826opBQ082261
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 2 Sep 2019 01:50:51 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 2 Sep
+ 2019 01:50:51 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 2 Sep 2019 01:50:51 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x826onNI003681;
+        Mon, 2 Sep 2019 01:50:49 -0500
+Subject: Re: [PATCHv3 00/10] soc: ti: add OMAP PRM driver (for reset)
+To:     <santosh.shilimkar@oracle.com>, <ssantosh@kernel.org>,
+        <linux-omap@vger.kernel.org>, <tony@atomide.com>, <s-anna@ti.com>,
+        <p.zabel@pengutronix.de>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>
+References: <20190830121816.30034-1-t-kristo@ti.com>
+ <f7d6a2fb-175c-361b-00ff-ddde67700daa@oracle.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <178f8d3a-3658-132f-e937-64313c912dd0@ti.com>
+Date:   Mon, 2 Sep 2019 09:50:48 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <f7d6a2fb-175c-361b-00ff-ddde67700daa@oracle.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This enables the Enhanced Quadrature Encoder Pulse (eQEP) module for
-connectors E1, E2 and E3 on BeagleBone Blue.
+On 30/08/2019 19:50, santosh.shilimkar@oracle.com wrote:
+> On 8/30/19 5:18 AM, Tero Kristo wrote:
+>> Hi,
+>>
+>> V3 of the series, ended up re-sending the whole series as I squashed one
+>> patch from v2 and because of that the ordering has changed a bit. Changes
+>> in v3 contain fixes for the comments from Philipp Zabel.
+>>
+>> - added spinlock to protect register writes
+>> - added own xlate function to prevent bad reset IDs to be registered
+>> - use mask for the valid reset detection instead of parsing reset map
+>> - fixed reset status bit handling
+>> - used iopoll macro instead of handwritten poll loop for timeouts
+>> - squashed patch #6 into #4 from v2 of the series
+>> - some other minor fixes.
+>>
+>> This series still depends on the clk driver changes for the reset<->clk
+>> syncing [1].
+>>
+> This has to wait for another merge window. It will also take care of 
+> dependencies landing in mainline. Will push this to linux-next as
+> soon as v5.4-rc1 is out. Please remind me in case you don't see it
+> in next after 5.4-rc1.
 
-Signed-off-by: David Lechner <david@lechnology.com>
----
+Yep it is very late so did not expect it getting in, just wanted to get 
+the patches rolling. I still hope to see the clock patches getting in 
+this cycle due to dependency, lets keep fingers crossed.
 
-v3 changes:
-- none
-v2 changes:
-- none
-
- arch/arm/boot/dts/am335x-boneblue.dts | 54 +++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
-
-diff --git a/arch/arm/boot/dts/am335x-boneblue.dts b/arch/arm/boot/dts/am335x-boneblue.dts
-index 0257576d5d16..df3978ce061c 100644
---- a/arch/arm/boot/dts/am335x-boneblue.dts
-+++ b/arch/arm/boot/dts/am335x-boneblue.dts
-@@ -258,6 +258,30 @@
- 			AM33XX_PADCONF(AM335X_PIN_MII1_RXD0, PIN_OUTPUT, MUX_MODE7)		/* (M16) gmii1_rxd0.gpio2[21] */
- 		>;
- 	};
-+
-+	/* E1 */
-+	eqep0_pins: pinmux_eqep0_pins {
-+		pinctrl-single,pins = <
-+			AM33XX_PADCONF(AM335X_PIN_MCASP0_AXR0, PIN_INPUT, MUX_MODE1)		/* (B12) mcasp0_aclkr.eQEP0A_in */
-+			AM33XX_PADCONF(AM335X_PIN_MCASP0_FSR, PIN_INPUT, MUX_MODE1)		/* (C13) mcasp0_fsr.eQEP0B_in */
-+		>;
-+	};
-+
-+	/* E2 */
-+	eqep1_pins: pinmux_eqep1_pins {
-+		pinctrl-single,pins = <
-+			AM33XX_PADCONF(AM335X_PIN_LCD_DATA12, PIN_INPUT, MUX_MODE2)		/* (V2) lcd_data12.eQEP1A_in */
-+			AM33XX_PADCONF(AM335X_PIN_LCD_DATA13, PIN_INPUT, MUX_MODE2)		/* (V3) lcd_data13.eQEP1B_in */
-+		>;
-+	};
-+
-+	/* E3 */
-+	eqep2_pins: pinmux_eqep2_pins {
-+		pinctrl-single,pins = <
-+			AM33XX_PADCONF(AM335X_PIN_GPMC_AD12, PIN_INPUT, MUX_MODE4)		/* (T12) gpmc_ad12.eQEP2A_in */
-+			AM33XX_PADCONF(AM335X_PIN_GPMC_AD13, PIN_INPUT, MUX_MODE4)		/* (R12) gpmc_ad13.eQEP2B_in */
-+		>;
-+	};
- };
- 
- &uart0 {
-@@ -530,3 +554,33 @@
- 		line-name = "LS_BUF_EN";
- 	};
- };
-+
-+&epwmss0 {
-+	status = "okay";
-+};
-+
-+&eqep0 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&eqep0_pins>;
-+};
-+
-+&epwmss1 {
-+	status = "okay";
-+};
-+
-+&eqep1 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&eqep1_pins>;
-+};
-+
-+&epwmss2 {
-+	status = "okay";
-+};
-+
-+&eqep2 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&eqep2_pins>;
-+};
--- 
-2.17.1
-
+-Tero
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
