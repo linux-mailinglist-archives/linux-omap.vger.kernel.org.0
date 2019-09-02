@@ -2,89 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02FC1A5473
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 12:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE89A547E
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 12:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730493AbfIBKwK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 Sep 2019 06:52:10 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.164]:15406 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727951AbfIBKwJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Sep 2019 06:52:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1567421522;
+        id S1731288AbfIBK4M (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Sep 2019 06:56:12 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.83]:36011 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731278AbfIBK4M (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Sep 2019 06:56:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1567421769;
         s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=PIIRQHyBHjDWfAG96VfWkalrihUvQNdQm4OYqIZRphQ=;
-        b=eI2wkWSi4erK2jWXlfsfXRO3n1bmVSS0B4Tbww+RUpVVxKKc7bCXZ5nQTtdqgF6yeM
-        AxR9MxZmNCTOx0QulOJyXDw5fQnQNIrYyO8gmV9mscwp/9f83sSzYta+gVZHIHpnRcrC
-        StvcJMTHxIvBnu9KkRM8fzE5R0oeHKtHJCq69E6MBKGKzifxrE0/FFIptuuivaWOuCVQ
-        bEoyIL2Hk5PFmlWZ+kADEgpycZSPK6Va7uNmCFiYji/SXjHsz0kVNFvEw9hF2yeIFzlA
-        HprxE4yVn9ipXJR7t6QlT/3hKzJPyG9w6zgxPc4jUjqmlxrWFWfcxtvjk5ra0P2sp/RY
-        LYVQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDVCaXA4ImYQ="
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=gh/3sTibgDq3nRs3zSWyY8xHtE864u/e8eeLmwdgoBQ=;
+        b=V+4+yhjO/EZrDZa6PNvva0wq4C5ycXNhO8V9qXv+HjKkc60hTGB7l7Bg/Ob/LZYGCQ
+        FYZuxlaq5bZJWYFUuLtJrZSNe+fJdaY7BWeUaHKeubrVhmWJcIKzQTibVyGbHVTYAcOl
+        Ew/1uUnIk5cHO987eZKNcPGULTyARTaUmM+nlcvp9YepM/dtuJrNn61Wadmz8zr1Zfid
+        OHjjsWVNczmt09ii97+g7YvZ348eiRqjISVFnbD5cF0RJodJKE/b1Xm70rnvOupv0bU5
+        vmYrMdFUKuCqwhUV4tJk06pl+xKQ++1sV5dTtEweeW95hRMdTAEdKXsiERxoDCNKNZfH
+        fkEg==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXL8GTnvuHRT"
 X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
+Received: from iMac.fritz.box
         by smtp.strato.de (RZmta 44.27.0 DYNA|AUTH)
-        with ESMTPSA id u036f9v82Aq1PuM
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        with ESMTPSA id u036f9v82AtqPvg
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
         (Client did not present a certificate);
-        Mon, 2 Sep 2019 12:52:01 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: omap36 1GHz OPP
+        Mon, 2 Sep 2019 12:55:52 +0200 (CEST)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20190817204746.5e06b9cc@lepton>
-Date:   Mon, 2 Sep 2019 12:52:00 +0200
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1D399618-067C-4108-B9A8-9948AE5E2FFF@goldelico.com>
-References: <CAHCN7xJXJ__Gm3x=eAKkXuRTi1tDJocddKUzSw8oeYXQzM4tuQ@mail.gmail.com> <20190814232816.4906f903@lepton> <CAHCN7xJyhy9F6JLCG_Lz7EizNDGnA_wHgr13Xs91yo+zdp2c4Q@mail.gmail.com> <20190817204746.5e06b9cc@lepton>
-To:     =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
-        Adam Ford <aford173@gmail.com>,
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        =?utf-8?Q?Filip_Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@ucw.cz>
-X-Mailer: Apple Mail (2.3124)
+        Rob Herring <robh+dt@kernel.org>,
+        Adam Ford <aford173@gmail.com>,
+        =?UTF-8?q?Andr=C3=A9=20Roth?= <neolynx@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: [RFC 0/5] OMAP3: convert opp-v1 to opp-v2 and read speed binned / 720MHz grade bits
+Date:   Mon,  2 Sep 2019 12:55:46 +0200
+Message-Id: <cover.1567421750.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.19.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi all,
+This patch set converts the opp tables to opp-v2 format
+and extends the ti-cpufreq to support omap3.
 
-> Am 17.08.2019 um 20:47 schrieb Andr=C3=A9 Roth <neolynx@gmail.com>:
->=20
->=20
-> Hi Adam,
->=20
->> What makes DVFS different from what cpufreq does by changing the
->> operating voltage and frequency?
->=20
-> If I understood correctly, it actively measures and optimizes the
-> voltages applied by cpufreq since they change with
-> temperature/manufacturing differences/age. At higher frequencies
-> (i.e. 1GHz) this is required to not damage the chip or reduce its
-> lifetime.
+It adds 720 MHz (omap34xx) and 1 GHz (omap36xx) OPPs but
+tells the ti-cpufreq driver to disable them if the speed
+binned / 720MHz grade eFuse bits indicate that the chip
+is not rated for that speed. 
 
-I also understood that there are some CONTROL_FUSE registers in syscon
-(e.g. CONTROL_FUSE_OPP1G_VDD1) to specify factory optimized values.
-Maybe DVFS can/should be added to the ti-cpufreq driver?
+It has been tested (for chip variant detection, not reliability
+of high speed OPPs) on:
+* BeagleBoard C2 (omap3430 600MHz)
+* BeagleBoard XM B (dm3730 800MHz)
+* GTA04A4 (dm3730 800MHz)
+* GTA04A5 (dm3730 1GHz)
 
-Interestingly, the n950-n9 device tree simply adds an 1GHz OPP
-at 1.375V by commit 0f4f1542ea0928f4840d308e411797c0dacac239
 
-	=
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ar=
-ch/arm/boot/dts/omap3-n950-n9.dtsi?h=3Dv5.3-rc6#n14
+H. Nikolaus Schaller (5):
+  cpufreq: ti-cpufreq: add support for omap34xx and omap36xx
+  ARM: dts: add support for opp-v2 for omap34xx and omap36xx
+  ARM: dts: omap3-evm-37xx: fix compatible from omap3630 to omap36xx
+  ARM: dts: omap3-n950-n9: remove opp-v1 table
+  ARM: dts: omap3-beagle: make explicitly compatible to ti,omap34xx
 
-This would mean that it would suffice to add the OPP1G to the
-device tree, at least on the n950. But we have seen some RAM
-errors on other devices when trying 1GHz.
+ arch/arm/boot/dts/omap3-beagle.dts   |  2 +-
+ arch/arm/boot/dts/omap3-evm-37xx.dts |  2 +-
+ arch/arm/boot/dts/omap3-n950-n9.dtsi |  7 ---
+ arch/arm/boot/dts/omap34xx.dtsi      | 59 ++++++++++++++++---
+ arch/arm/boot/dts/omap36xx.dtsi      | 47 ++++++++++++---
+ drivers/cpufreq/cpufreq-dt-platdev.c |  2 +-
+ drivers/cpufreq/ti-cpufreq.c         | 86 +++++++++++++++++++++++++++-
+ 7 files changed, 176 insertions(+), 29 deletions(-)
 
-Maybe someone owning and using a mainline kernel on n950 can
-comment on reliability of this setting.
-
-BR,
-Nikolaus
+-- 
+2.19.1
 
