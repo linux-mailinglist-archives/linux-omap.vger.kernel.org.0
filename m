@@ -2,92 +2,203 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6711A4F60
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 08:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07AA5A5080
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 09:59:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729456AbfIBGvO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 Sep 2019 02:51:14 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:43682 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729359AbfIBGvO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Sep 2019 02:51:14 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x826oq5V049395;
-        Mon, 2 Sep 2019 01:50:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1567407052;
-        bh=ox3ufaLMVDgFuqEZpqLT51isg/cyX5JQ6XMTFXw8veU=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=cIHMXK/iZ8iNX114dUzNvVAZWBnAaoAPYxYr9hmovMIzMOC8ea4E0VU8F2o9j6QpW
-         0D8W+837wZsTy5TcrP8u7vgdsjnOQo+aLM9thxs7nSGV3B5B1AJ3ioaX7pQVmmBkvS
-         UfwW9xxQ8EdN8ljnJrmWBhGnutOJM399b+bgMRkI=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x826opBQ082261
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 2 Sep 2019 01:50:51 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 2 Sep
- 2019 01:50:51 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 2 Sep 2019 01:50:51 -0500
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x826onNI003681;
-        Mon, 2 Sep 2019 01:50:49 -0500
-Subject: Re: [PATCHv3 00/10] soc: ti: add OMAP PRM driver (for reset)
-To:     <santosh.shilimkar@oracle.com>, <ssantosh@kernel.org>,
-        <linux-omap@vger.kernel.org>, <tony@atomide.com>, <s-anna@ti.com>,
-        <p.zabel@pengutronix.de>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>
-References: <20190830121816.30034-1-t-kristo@ti.com>
- <f7d6a2fb-175c-361b-00ff-ddde67700daa@oracle.com>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <178f8d3a-3658-132f-e937-64313c912dd0@ti.com>
-Date:   Mon, 2 Sep 2019 09:50:48 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1729896AbfIBH7r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Sep 2019 03:59:47 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:58033 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729535AbfIBH7r (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Sep 2019 03:59:47 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id 61D2C8219A; Mon,  2 Sep 2019 09:59:30 +0200 (CEST)
+Date:   Mon, 2 Sep 2019 09:59:43 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org,
+        linux-omap@vger.kernel.org, Jacopo Mondi <jacopo@jmondi.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Marcel Partap <mpartap@gmx.net>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Michael Scott <hashcode0f@gmail.com>,
+        NeKit <nekit1000@gmail.com>
+Subject: Re: [PATCH] power: supply: cpcap-charger: Enable vbus boost voltage
+Message-ID: <20190902075943.GB15850@amd>
+References: <20190830232316.53750-1-tony@atomide.com>
 MIME-Version: 1.0
-In-Reply-To: <f7d6a2fb-175c-361b-00ff-ddde67700daa@oracle.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="QTprm0S8XgL7H0Dt"
+Content-Disposition: inline
+In-Reply-To: <20190830232316.53750-1-tony@atomide.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 30/08/2019 19:50, santosh.shilimkar@oracle.com wrote:
-> On 8/30/19 5:18 AM, Tero Kristo wrote:
->> Hi,
->>
->> V3 of the series, ended up re-sending the whole series as I squashed one
->> patch from v2 and because of that the ordering has changed a bit. Changes
->> in v3 contain fixes for the comments from Philipp Zabel.
->>
->> - added spinlock to protect register writes
->> - added own xlate function to prevent bad reset IDs to be registered
->> - use mask for the valid reset detection instead of parsing reset map
->> - fixed reset status bit handling
->> - used iopoll macro instead of handwritten poll loop for timeouts
->> - squashed patch #6 into #4 from v2 of the series
->> - some other minor fixes.
->>
->> This series still depends on the clk driver changes for the reset<->clk
->> syncing [1].
->>
-> This has to wait for another merge window. It will also take care of 
-> dependencies landing in mainline. Will push this to linux-next as
-> soon as v5.4-rc1 is out. Please remind me in case you don't see it
-> in next after 5.4-rc1.
 
-Yep it is very late so did not expect it getting in, just wanted to get 
-the patches rolling. I still hope to see the clock patches getting in 
-this cycle due to dependency, lets keep fingers crossed.
+--QTprm0S8XgL7H0Dt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--Tero
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Hi!
+
+> We are currently not enabling VBUS boost for cpcap when in host mode.
+> This means the VBUS is fed at the battery voltage level, which can cause
+> flakeyness enumerating devices.
+>=20
+> Looks like the boost control for VBUS is CPCAP_BIT_VBUS_SWITCH that we
+> must enable in the charger for nice 4.92 V VBUS output. And looks like
+> we must not use the STBY pin enabling but must instead use manual VBUS
+> control in phy-cpcap-usb.
+>=20
+> We want to do this in cpcap_charger_vbus_work() and also set a flag for
+> feeding_vbus to avoid races between USB detection and charger detection,
+> and disable charging if feeding_vbus is set.
+
+I did not know phone is supposed to provide voltage on USB. USB mouse
+works for me.. in stock android, provided I conect USB hub and
+external power.
+
+This does not seem to work for me.. and it does not even work on stock
+kernel. What is going on here?
+
+Is there some kind of debug ineterface where I could test just the
+vbus switch? I do have voltmeter for the usb port...
+
+Best regards,
+								Pavel
+
+> diff --git a/drivers/phy/motorola/phy-cpcap-usb.c b/drivers/phy/motorola/=
+phy-cpcap-usb.c
+> --- a/drivers/phy/motorola/phy-cpcap-usb.c
+> +++ b/drivers/phy/motorola/phy-cpcap-usb.c
+> @@ -231,8 +231,9 @@ static void cpcap_usb_detect(struct work_struct *work)
+>  			goto out_err;
+> =20
+>  		error =3D regmap_update_bits(ddata->reg, CPCAP_REG_USBC3,
+> -					   CPCAP_BIT_VBUSSTBY_EN,
+> -					   CPCAP_BIT_VBUSSTBY_EN);
+> +					   CPCAP_BIT_VBUSSTBY_EN |
+> +					   CPCAP_BIT_VBUSEN_SPI,
+> +					   CPCAP_BIT_VBUSEN_SPI);
+>  		if (error)
+>  			goto out_err;
+> =20
+> @@ -240,7 +241,8 @@ static void cpcap_usb_detect(struct work_struct *work)
+>  	}
+> =20
+>  	error =3D regmap_update_bits(ddata->reg, CPCAP_REG_USBC3,
+> -				   CPCAP_BIT_VBUSSTBY_EN, 0);
+> +				   CPCAP_BIT_VBUSSTBY_EN |
+> +				   CPCAP_BIT_VBUSEN_SPI, 0);
+>  	if (error)
+>  		goto out_err;
+> =20
+> diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/=
+cpcap-charger.c
+> --- a/drivers/power/supply/cpcap-charger.c
+> +++ b/drivers/power/supply/cpcap-charger.c
+> @@ -108,6 +108,9 @@
+>  #define CPCAP_REG_CRM_ICHRG_1A596	CPCAP_REG_CRM_ICHRG(0xe)
+>  #define CPCAP_REG_CRM_ICHRG_NO_LIMIT	CPCAP_REG_CRM_ICHRG(0xf)
+> =20
+> +/* CPCAP_REG_VUSBC register bits needed for VBUS */
+> +#define CPCAP_BIT_VBUS_SWITCH		BIT(0)	/* VBUS boost to 5V */
+> +
+>  enum {
+>  	CPCAP_CHARGER_IIO_BATTDET,
+>  	CPCAP_CHARGER_IIO_VOLTAGE,
+> @@ -130,7 +133,8 @@ struct cpcap_charger_ddata {
+>  	struct power_supply *usb;
+> =20
+>  	struct phy_companion comparator;	/* For USB VBUS */
+> -	bool vbus_enabled;
+> +	unsigned int vbus_enabled:1;
+> +	unsigned int feeding_vbus:1;
+>  	atomic_t active;
+> =20
+>  	int status;
+> @@ -325,7 +329,6 @@ static bool cpcap_charger_vbus_valid(struct cpcap_cha=
+rger_ddata *ddata)
+>  }
+> =20
+>  /* VBUS control functions for the USB PHY companion */
+> -
+>  static void cpcap_charger_vbus_work(struct work_struct *work)
+>  {
+>  	struct cpcap_charger_ddata *ddata;
+> @@ -343,6 +346,7 @@ static void cpcap_charger_vbus_work(struct work_struc=
+t *work)
+>  			return;
+>  		}
+> =20
+> +		ddata->feeding_vbus =3D true;
+>  		cpcap_charger_set_cable_path(ddata, false);
+>  		cpcap_charger_set_inductive_path(ddata, false);
+> =20
+> @@ -350,12 +354,23 @@ static void cpcap_charger_vbus_work(struct work_str=
+uct *work)
+>  		if (error)
+>  			goto out_err;
+> =20
+> +		error =3D regmap_update_bits(ddata->reg, CPCAP_REG_VUSBC,
+> +					   CPCAP_BIT_VBUS_SWITCH,
+> +					   CPCAP_BIT_VBUS_SWITCH);
+> +		if (error)
+> +			goto out_err;
+> +
+>  		error =3D regmap_update_bits(ddata->reg, CPCAP_REG_CRM,
+>  					   CPCAP_REG_CRM_RVRSMODE,
+>  					   CPCAP_REG_CRM_RVRSMODE);
+>  		if (error)
+>  			goto out_err;
+>  	} else {
+> +		error =3D regmap_update_bits(ddata->reg, CPCAP_REG_VUSBC,
+> +					   CPCAP_BIT_VBUS_SWITCH, 0);
+> +		if (error)
+> +			goto out_err;
+> +
+>  		error =3D regmap_update_bits(ddata->reg, CPCAP_REG_CRM,
+>  					   CPCAP_REG_CRM_RVRSMODE, 0);
+>  		if (error)
+> @@ -363,6 +378,7 @@ static void cpcap_charger_vbus_work(struct work_struc=
+t *work)
+> =20
+>  		cpcap_charger_set_cable_path(ddata, true);
+>  		cpcap_charger_set_inductive_path(ddata, true);
+> +		ddata->feeding_vbus =3D false;
+>  	}
+> =20
+>  	return;
+> @@ -431,7 +447,8 @@ static void cpcap_usb_detect(struct work_struct *work)
+>  	if (error)
+>  		return;
+> =20
+> -	if (cpcap_charger_vbus_valid(ddata) && s.chrgcurr1) {
+> +	if (!ddata->feeding_vbus && cpcap_charger_vbus_valid(ddata) &&
+> +	    s.chrgcurr1) {
+>  		int max_current;
+> =20
+>  		if (cpcap_charger_battery_found(ddata))
+
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--QTprm0S8XgL7H0Dt
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl1sy+8ACgkQMOfwapXb+vKc5wCdGy4C48hGf4R2WehOQzOw6AAy
+2+YAnj5B2/Lli8iBqDDqG1t5zSctNmxi
+=tuya
+-----END PGP SIGNATURE-----
+
+--QTprm0S8XgL7H0Dt--
