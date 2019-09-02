@@ -2,120 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 965FEA581B
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 15:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A683A5913
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Sep 2019 16:17:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731325AbfIBNjT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 Sep 2019 09:39:19 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:38027 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731301AbfIBNjT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Sep 2019 09:39:19 -0400
-Received: by mail-wr1-f66.google.com with SMTP id l11so5251311wrx.5;
-        Mon, 02 Sep 2019 06:39:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mBpjwnSsFCTVBcmHZlpMrYye8G+2awgzTgrbzOvv4w4=;
-        b=eqnKd+PA5OOWM5zv4c8rX48i+DSgbxxpb6FgKOfR9ZSpY0F+tEI7Ql5nvTedKHcUba
-         1G9GNEn6TW3HNiO3hbnmbniuqgEjMbuARomEs9+P8cirSXSbpHnEIURsoQrBeaLJ8Sno
-         j8t8voSEB0qKY+v6J08QIPXSnS/JHv7c5VEgCCWLDWl4pXWR0dhfnAXi+/CJbog4UMGE
-         D53UqR92Sf55SQ6EC15VEtzTDwkWlDs+oJlA5jip4ndqKXbmRz+iNXbLdl7i/Zoau3Lk
-         riSm7RFsFAKbWW++vg4LzCti3aSJijJdVPJXGvC2fqAkS7nYBTnU1OCGJ7o8yDJnDhX3
-         E9lA==
-X-Gm-Message-State: APjAAAUfSGma7yd8B7SmY4e2p4NKtBn2KdDvDWSXdbwl9e9K9UfRnzVS
-        35cQgfEExo7SrgrIxYs9UQ==
-X-Google-Smtp-Source: APXvYqw80tZ831GwJOJkT8zNmc12IMcFltPAd+Zpk7tUl46ueJLKOI89QyXozExV5CZuhbIYuxu0cw==
-X-Received: by 2002:a5d:6647:: with SMTP id f7mr5887085wrw.170.1567431557093;
-        Mon, 02 Sep 2019 06:39:17 -0700 (PDT)
-Received: from localhost ([212.187.182.166])
-        by smtp.gmail.com with ESMTPSA id g3sm14924272wrh.28.2019.09.02.06.39.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2019 06:39:16 -0700 (PDT)
-Date:   Mon, 02 Sep 2019 14:39:16 +0100
-From:   Rob Herring <robh@kernel.org>
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     ssantosh@kernel.org, linux-omap@vger.kernel.org, tony@atomide.com,
-        s-anna@ti.com, p.zabel@pengutronix.de,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
-Subject: Re: [PATCHv3 01/10] dt-bindings: omap: add new binding for PRM
- instances
-Message-ID: <20190902042631.GA22055@bogus>
-References: <20190830121816.30034-1-t-kristo@ti.com>
- <20190830121816.30034-2-t-kristo@ti.com>
+        id S1731333AbfIBORo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Sep 2019 10:17:44 -0400
+Received: from vern.gendns.com ([98.142.107.122]:47558 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726438AbfIBORo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 2 Sep 2019 10:17:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=6TLPgKGO4e+YChj0k7INLip6MXL7BlzYN8RpVTNGmwE=; b=gCzu6eHLvtHmo74UR0XtZFFNvw
+        lt+v8Xw9aZU0MmjUZRkHT6nR6XBjxZ4HH4EkrPuS09uI2dGSx9ibq/Y0ZNnc7YHABNgQ9+3fTlIfZ
+        QTuVHU3lUfSyYZkk22c9kGePnIeLG2pwvQM/H6TsZL30zq28kdCTwYzSinXYn+OkXK1g+tdWHfinH
+        NDcioOH2VtEPOdO5qOPbp3h9EZhVyVvlrCGWSDpC8613bx0r8KjpHPkybIrxA7tkSzFekVPB36MMp
+        KBlMeNBLDRqK0zVl3KvdrcPc3kA1oS6/O8iHMLtsPxyQUNd4AuHJow82+CIxeNnkUo5VF5B2gKwHX
+        jRtkO5PA==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:49090 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <david@lechnology.com>)
+        id 1i4n9J-0003eo-2X; Mon, 02 Sep 2019 10:17:41 -0400
+Subject: Re: [PATCH v3 0/6] counter: new TI eQEP driver
+To:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+References: <20190901225827.12301-1-david@lechnology.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <68ce4c1a-5098-f6b8-e318-1d86d91a3206@lechnology.com>
+Date:   Mon, 2 Sep 2019 09:17:40 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190830121816.30034-2-t-kristo@ti.com>
+In-Reply-To: <20190901225827.12301-1-david@lechnology.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Aug 30, 2019 at 03:18:07PM +0300, Tero Kristo wrote:
-> Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
-> of these will act as a power domain controller and potentially as a reset
-> provider.
+On 9/1/19 5:58 PM, David Lechner wrote:
+> This series adds device tree bindings and a new counter driver for the Texas
+> Instruments Enhanced Quadrature Encoder Pulse (eQEP).
 > 
 
-Converting this to schema would be nice.
+...
 
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> ---
->  .../devicetree/bindings/arm/omap/prm-inst.txt | 31 +++++++++++++++++++
-
-bindings/reset/
-
->  1 file changed, 31 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+> David Lechner (6):
+>    bus/ti-pwmss: move TI PWMSS driver from PWM to bus subsystem
+>    dt-bindings: counter: new bindings for TI eQEP
+>    counter: new TI eQEP driver
+>    ARM: dts: am33xx: Add nodes for eQEP
+>    ARM: dts: am335x-boneblue: Enable eQEP
+>    ARM: dts: am335x-boneblue: Use of am335x-osd335x-common.dtsi
 > 
-> diff --git a/Documentation/devicetree/bindings/arm/omap/prm-inst.txt b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
-> new file mode 100644
-> index 000000000000..7c7527c37734
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
-> @@ -0,0 +1,31 @@
-> +OMAP PRM instance bindings
-> +
-> +Power and Reset Manager is an IP block on OMAP family of devices which
-> +handle the power domains and their current state, and provide reset
-> +handling for the domains and/or separate IP blocks under the power domain
-> +hierarchy.
-> +
-> +Required properties:
-> +- compatible:	Must be one of:
-> +		"ti,am3-prm-inst"
-> +		"ti,am4-prm-inst"
-> +		"ti,omap4-prm-inst"
-> +		"ti,omap5-prm-inst"
-> +		"ti,dra7-prm-inst"
 
-'-inst' seems a bit redundant.
-
-> +- reg:		Contains PRM instance register address range
-> +		(base address and length)
-> +
-> +Optional properties:
-> +- #reset-cells:	Should be 1 if the PRM instance in question supports resets.
-> +- clocks:	Associated clocks for the reset signals if any. Certain reset
-> +		signals can't be toggled properly without functional clock
-> +		being active for them.
-> +
-> +Example:
-> +
-> +prm_dsp2: prm@1b00 {
-
-reset-controller@...
-
-> +	compatible = "ti,dra7-prm-inst";
-> +	reg = <0x1b00 0x40>;
-> +	#reset-cells = <1>;
-> +	clocks = <&dsp2_clkctrl DRA7_DSP2_MMU0_DSP2_CLKCTRL 0>;
-> +};
-> -- 
-> 2.17.1
-> 
-> --
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
+In case anyone notices, this series only has 5 patches, not 6. "ARM: dts:
+am335x-boneblue: Use of am335x-osd335x-common.dtsi" is unrelated and was
+submitted separately.
