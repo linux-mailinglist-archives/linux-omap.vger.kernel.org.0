@@ -2,136 +2,141 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C601A638A
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2019 10:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED1EA6397
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2019 10:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727845AbfICIH3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Sep 2019 04:07:29 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:50908 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725878AbfICIH3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Sep 2019 04:07:29 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 42A1381CAE; Tue,  3 Sep 2019 10:07:12 +0200 (CEST)
-Date:   Tue, 3 Sep 2019 10:07:25 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Pavel Machek <pavel@denx.de>, Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Marcel Partap <mpartap@gmx.net>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Michael Scott <hashcode0f@gmail.com>,
-        NeKit <nekit1000@gmail.com>, Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH 0/4] musb host improvments mostly for omap2430 glue
-Message-ID: <20190903080725.GA26076@amd>
-References: <20190830232058.53414-1-tony@atomide.com>
- <20190902092344.GA31410@amd>
- <20190902094408.GB31410@amd>
- <20190902160651.GI52127@atomide.com>
+        id S1727969AbfICIK4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Sep 2019 04:10:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49384 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726062AbfICIK4 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 3 Sep 2019 04:10:56 -0400
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 428DB23402;
+        Tue,  3 Sep 2019 08:10:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567498255;
+        bh=mmY3hWUsfCuDZTERSlcQQns8+8xf4fjtCn2+x1QX+fQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=jTK155zT+TTIFoc5p53LF+n1EyXl0NzBqTKFG7AHV860Goc52cSa/attMTIsNhxac
+         ifVlelPhB37SgFvr6WQ3hSmIIuaVnMkvDd0XEQb2FxvyIEtVL4JoaatTYBJ9RIg8Qt
+         7+fdONZfD/G54IgRbbgMgn8bbh2nefpI10QsGJfc=
+Received: by mail-qt1-f181.google.com with SMTP id r15so12989835qtn.12;
+        Tue, 03 Sep 2019 01:10:55 -0700 (PDT)
+X-Gm-Message-State: APjAAAXvl1TIvS7CZUVEOqLh5U+CiCd8bGn9NHTfZXYr3NjSYVHYq/jK
+        33Ebge97VjPg11QlRIQS6QAYE7MI8B+AZmFdOQ==
+X-Google-Smtp-Source: APXvYqy5doxdwG87feSeQY0V4gTTDYw9M2LO6Y70U41ya0/OkgB02OHduhddwiPIXVxlZ6uyh6EYVmxF/KKNBOvDyoY=
+X-Received: by 2002:ac8:6b05:: with SMTP id w5mr16898911qts.136.1567498254387;
+ Tue, 03 Sep 2019 01:10:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
-Content-Disposition: inline
-In-Reply-To: <20190902160651.GI52127@atomide.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+References: <20190830121816.30034-1-t-kristo@ti.com> <20190830121816.30034-2-t-kristo@ti.com>
+ <20190902042631.GA22055@bogus> <e8d700cd-8f3c-5cea-a022-b20a595fc1e1@ti.com>
+In-Reply-To: <e8d700cd-8f3c-5cea-a022-b20a595fc1e1@ti.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 3 Sep 2019 09:10:42 +0100
+X-Gmail-Original-Message-ID: <CAL_Jsq+AJj1bgOQYG=c86A5HC_g2UZph387oVEKZyP4M18kURw@mail.gmail.com>
+Message-ID: <CAL_Jsq+AJj1bgOQYG=c86A5HC_g2UZph387oVEKZyP4M18kURw@mail.gmail.com>
+Subject: Re: [PATCHv3 01/10] dt-bindings: omap: add new binding for PRM instances
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>, Suman Anna <s-anna@ti.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Tue, Sep 3, 2019 at 8:26 AM Tero Kristo <t-kristo@ti.com> wrote:
+>
+> On 02/09/2019 16:39, Rob Herring wrote:
+> > On Fri, Aug 30, 2019 at 03:18:07PM +0300, Tero Kristo wrote:
+> >> Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
+> >> of these will act as a power domain controller and potentially as a reset
+> >> provider.
+> >>
+> >
+> > Converting this to schema would be nice.
+>
+> Do you have documentation about schema somewhere? Basically what I need
+> to do to fix this.
 
---TB36FDmn/VVEgNH/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Documentation/devicetree/writing-schema.md (.rst in -next)
+Documentation/devicetree/bindings/example-schema.yaml
 
-Hi!
+> >> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> >> ---
+> >>   .../devicetree/bindings/arm/omap/prm-inst.txt | 31 +++++++++++++++++++
+> >
+> > bindings/reset/
+>
+> I did not put this under reset, because this is basically a
+> multi-purpose function. Reset just happens to be the first functionality
+> it is going to provide. It will be followed by power domain support
+> later on.
+>
+> Any thoughts?
 
-On Mon 2019-09-02 09:06:51, Tony Lindgren wrote:
-> * Pavel Machek <pavel@denx.de> [190902 09:44]:
-> > On Mon 2019-09-02 11:23:44, Pavel Machek wrote:
-> > Hmm. I guess CONFIG_USB_MUSB_DUAL_ROLE=3Dy might be useful.
-> >=20
-> > And now... if I unplug/replug the usb after the boot, USB hub and
-> > mouse are recognized. Good!
-> >=20
-> > Less than minute later:
-> >=20
-> > mmusb-hdrc.0.auto: Babble
-> > USB disconnect
->=20
-> The babble is most likely caused by some kind of signaling issue.
->=20
-> > I unplug, replug usb (not at the phone, between hub and dongle, and
-> > green LED indincating charging starts blinking rapidly.
-> >=20
-> > cpcap-core spi0.0: EOT timed out.
-> >=20
-> > I try plug/replug, and now green led is on.
-> >=20
-> > I unplug replug at the phone, and get bunch more of messages:
-> >=20
-> > musm _set_peripheral: already in peripheral mode: 99
-> > musm _set_peripheral: already in peripheral mode: 81
-> > musm _set_peripheral: already in peripheral mode: 81
-> >=20
-> > musb_set_host: could not set host: 99
-> > musb_set_host: could not set host: 99
-> > musb_set_host: could not set host: 99
-> > musb_set_host: could not set host: 99
-> > musb_set_host: could not set host: 99
-> > musb_set_host: could not set host: 99
-> > musb_set_host: could not set host: 99
-> > musb_set_host: could not set host: 99
-> >=20
-> > Unplug/replug at host, and again, hub+mouse is detected.
-> >=20
-> > I unplug power connected to one of USB hub's ports... and find out
-> > that phone was _not_ powering it.
-> >=20
-> > Ok... so something somehow works.... sometimes :-).
->=20
-> My guess is you're missing a USB micro-B cable with ID pin
-> grounded, with that things should just work automagically.
->=20
-> So no need for hubs feeding back VBUS and no need to
-> try to force host mode via sysfs unlike on n900.
+I prefer that bindings be complete as possible even if driver support
+is not there yet. Adding power domain support may only mean adding
+'#power-domain-cells'.
 
-I don't think so... I got it to run in the end (and I have to
-apologize, it seems to work at least as long as it is plugged it an
-boot and not touched).
+The location is fine then.
 
-So... I actually have two cables.
+> >>   1 file changed, 31 insertions(+)
+> >>   create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/arm/omap/prm-inst.txt b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+> >> new file mode 100644
+> >> index 000000000000..7c7527c37734
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+> >> @@ -0,0 +1,31 @@
+> >> +OMAP PRM instance bindings
+> >> +
+> >> +Power and Reset Manager is an IP block on OMAP family of devices which
+> >> +handle the power domains and their current state, and provide reset
+> >> +handling for the domains and/or separate IP blocks under the power domain
+> >> +hierarchy.
+> >> +
+> >> +Required properties:
+> >> +- compatible:       Must be one of:
+> >> +            "ti,am3-prm-inst"
+> >> +            "ti,am4-prm-inst"
+> >> +            "ti,omap4-prm-inst"
+> >> +            "ti,omap5-prm-inst"
+> >> +            "ti,dra7-prm-inst"
+> >
+> > '-inst' seems a bit redundant.
+>
+> ti,xyz-prm is already reserved by the parent node of all these.
+>
+> The hierarchy is basically like this (omap4 as example):
+>
+> prm: prm@4a306000 {
+>    compatible = "ti,omap4-prm";
+>    ...
+>
+>    prm_dsp: prm@400 {
+>      compatible = "ti,omap4-prm-inst";
+>      ...
+>    };
+>
+>    prm_device: prm@1b00 {
+>      compatible = "ti,omap4-prm-inst";
+>      ...
+>    };
+>
+>    ...
+> };
 
-#1 definitely does not have ID pin grounded. That does not work, not
- even in original android.
+Okay. Then you need to state this binding must be a child of PRM. The
+schema would need to take this into account too, so probably best to
+not convert this yet.
 
-#2 definitely has _something_, because it does work in original
- android. But not even original android provides VBUS (5V on USB) in
- that configuration. It also looks like hardware _can_ provide at
- least VBAT on VBUS, because I seen that during some of the crashes.
-
-Thanks for the patches, BTW.
-
-Best regards,
-							Pavel
-
---=20
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---TB36FDmn/VVEgNH/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl1uHz0ACgkQMOfwapXb+vI8kQCfWjqHD6BViWkC1q4L9fI15UAQ
-Qh4An13nqS6ckdJuwgGnVBBNs7BsTTwI
-=WbNt
------END PGP SIGNATURE-----
-
---TB36FDmn/VVEgNH/--
+Rob
