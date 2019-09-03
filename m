@@ -2,25 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E538EA7141
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2019 19:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9640A7286
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2019 20:29:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729746AbfICRBM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Sep 2019 13:01:12 -0400
-Received: from muru.com ([72.249.23.125]:59626 "EHLO muru.com"
+        id S1729653AbfICS3K (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Sep 2019 14:29:10 -0400
+Received: from muru.com ([72.249.23.125]:59634 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729705AbfICRBM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 3 Sep 2019 13:01:12 -0400
+        id S1729079AbfICS3K (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 3 Sep 2019 14:29:10 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id ABF5480CF;
-        Tue,  3 Sep 2019 17:01:40 +0000 (UTC)
-Date:   Tue, 3 Sep 2019 10:01:07 -0700
+        by muru.com (Postfix) with ESMTPS id 3951980CF;
+        Tue,  3 Sep 2019 18:29:39 +0000 (UTC)
+Date:   Tue, 3 Sep 2019 11:29:06 -0700
 From:   Tony Lindgren <tony@atomide.com>
 To:     Grygorii Strashko <grygorii.strashko@ti.com>
 Cc:     Tero Kristo <t-kristo@ti.com>, Keerthy <j-keerthy@ti.com>,
         linux-omap@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>
 Subject: Re: Linux-next: File system over NFS broken on DRA7/AM5 platforms
-Message-ID: <20190903170107.GP52127@atomide.com>
+Message-ID: <20190903182906.GQ52127@atomide.com>
 References: <b5f54d5f-4790-7be1-cb65-847a98d2e8dd@ti.com>
  <c32b9e04-b230-7634-051b-202868597ec1@ti.com>
  <59564d54-c032-7ca0-3130-6fa7d10f43b7@ti.com>
@@ -29,150 +29,143 @@ References: <b5f54d5f-4790-7be1-cb65-847a98d2e8dd@ti.com>
  <20190903140553.GN52127@atomide.com>
  <20190903152427.GO52127@atomide.com>
  <6fa1c2af-457c-3dbc-74a2-72ae539a48b0@ti.com>
+ <20190903170107.GP52127@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6fa1c2af-457c-3dbc-74a2-72ae539a48b0@ti.com>
+In-Reply-To: <20190903170107.GP52127@atomide.com>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Grygorii Strashko <grygorii.strashko@ti.com> [190903 15:58]:
+* Tony Lindgren <tony@atomide.com> [190903 17:01]:
+> * Grygorii Strashko <grygorii.strashko@ti.com> [190903 15:58]:
+> > This might be not right thing to do as in probe this operation is delayed
+> > sysc_probe()
+> > 	pm_runtime_enable(ddata->dev);
+> > 	error = pm_runtime_get_sync(ddata->dev);
+> > ^^^ above is the first PM runtime get call, so it might be bette to keep module active
 > 
+> Oh OK, yeah that needs some more thinking.
 > 
-> On 03/09/2019 18:24, Tony Lindgren wrote:
-> > * Tony Lindgren <tony@atomide.com> [190903 14:06]:
-> > > * Grygorii Strashko <grygorii.strashko@ti.com> [190903 12:46]:
-> > > > > The clock definition itself looks fine, however the question is why does someone try to disable it while it
-> > > >   is apparently still used (by NFS that is)? If it fails to disable, clock core is trying to disable it, but the IDLEST bit does not switch for some reason.
-> > > > 
-> > > > I've tried to disable "ti,no-idle" in DT for dra7 cpsw and got below failure
-> > > > 
-> > > > [    0.634530] gmac-clkctrl:0000:0: failed to enable 08070002
-> > > > [    0.634557] ti-sysc: probe of 48485200.target-module failed with error -16
-> > > > 
-> > > > so samthing is not right with GMAC clocks as it should probe without "ti,no-idle".
-> > > > 
-> > > > 
-> > > > original place of the issue is:
-> > > > 
-> > > > cpsw_probe()
-> > > >   -> pm_runtime_get_sync()
-> > > >      -> sysc_runtime_resume()
-> > > >         -> sysc_enable_main_clocks()
-> > > > 
-> > > > Note. the sysc_init_module() for "ti,no-idle" case looks a little bit strange as there is
-> > > > no guarantee that target-module or clock were enabled before.
-> > > 
-> > > Good point on the "ti,no-idle" handling. That is easy to fix by always enabling
-> > > the clocks. The "ti,no-idle-on-init" handling needs probably a flag set for
-> > > PM runtime.
+> > ^^^ by the way, CPSW will fail here with "ti,no-idle" removed
+> 
+> > 	if (ddata->cfg.quirks & (SYSC_QUIRK_NO_IDLE_ON_INIT |
+> > 				 SYSC_QUIRK_NO_RESET_ON_INIT)) {
+> > 		schedule_delayed_work(&ddata->idle_work, 3000);
 > > 
-> > The following should fix the clock handling for "ti,no-idle" and
+> > ^^ and check and double disable module in first PM runtime suspend
+> > 	} else {
 > 
-> It does - i have mostly similar diff. I've posted it below for you reference -
->  feel free to reuse or combine.
+> Hmm yeah that might work.
 
-OK
+Actually we can just decrement the clocks in ti_sysc_idle()
+since we have it already available.
 
-> Note. pm_runtime_get_noresume() in my patch should be done only for SYSC_QUIRK_NO_IDLE.
-
-Hmm so what would pm_runtime_get_noresume() for SYSC_QUIRK_NO_IDLE_ON_INIT?
-The PM runtime callbacks will run in that case.
-
-> > "ti,no-idle-on-init". Sounds like we still might have other issues
-> > left though based on removing "ti,no-idle"?
+> > > +	sysc_clkdm_allow_idle(ddata);
+> > 
+> > No. if SYSC_QUIRK_NO_IDLE is set we can't do above
 > 
-> Yes. if you remove "ti,no-idle" cpsw 48485200.target-module will fail to probe at all.
-> 
-> X15 may boot due to u-boot differences.
+> Well we should pair here since we call it unconditionally. The
+> calls for sysc_clkdm_deny_idle() and sysc_clkdm_allow_idle()
+> are only needed when enabling or disabling the clocks.
 
-Maybe we have missing assigned-clocks and assigned-clock-parents for
-one of the clocks?
+I've kept the sysc_clkdm_allow_idle() change to keep things
+paired locally. That is assuming you don't come up with good
+reasons to not do it :)
 
-> > +	if (unlikely(ddata->clocks_enabled_from_init)) {
-> > +		sysc_disable_main_clocks(ddata);
-> > +		sysc_disable_opt_clocks(ddata);
-> > +		ddata->clocks_enabled_from_init = false;
-> > +	}
-> > +
-> 
-> This might be not right thing to do as in probe this operation is delayed
-> sysc_probe()
-> 	pm_runtime_enable(ddata->dev);
-> 	error = pm_runtime_get_sync(ddata->dev);
-> ^^^ above is the first PM runtime get call, so it might be bette to keep module active
-
-Oh OK, yeah that needs some more thinking.
-
-> ^^^ by the way, CPSW will fail here with "ti,no-idle" removed
-
-> 	if (ddata->cfg.quirks & (SYSC_QUIRK_NO_IDLE_ON_INIT |
-> 				 SYSC_QUIRK_NO_RESET_ON_INIT)) {
-> 		schedule_delayed_work(&ddata->idle_work, 3000);
-> 
-> ^^ and check and double disable module in first PM runtime suspend
-> 	} else {
-
-Hmm yeah that might work.
-
-> > +	sysc_clkdm_allow_idle(ddata);
-> 
-> No. if SYSC_QUIRK_NO_IDLE is set we can't do above
-
-Well we should pair here since we call it unconditionally. The
-calls for sysc_clkdm_deny_idle() and sysc_clkdm_allow_idle()
-are only needed when enabling or disabling the clocks.
-
-> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-> index 9207ac291341..04e2f87799b1 100644
-> --- a/drivers/bus/ti-sysc.c
-> +++ b/drivers/bus/ti-sysc.c
-> @@ -1632,17 +1632,15 @@ static int sysc_init_module(struct sysc *ddata)
->         if (error)
->                 return error;
-> -       if (manage_clocks) {
-> -               sysc_clkdm_deny_idle(ddata);
-> +       sysc_clkdm_deny_idle(ddata);
-> -               error = sysc_enable_opt_clocks(ddata);
-> -               if (error)
-> -                       return error;
-> +       error = sysc_enable_opt_clocks(ddata);
-> +       if (error)
-> +               return error;
-> -               error = sysc_enable_main_clocks(ddata);
-> -               if (error)
-> -                       goto err_opt_clocks;
-> -       }
-> +       error = sysc_enable_main_clocks(ddata);
-> +       if (error)
-> +               goto err_opt_clocks;
->         if (!(ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT)) {
->                 error = sysc_rstctrl_reset_deassert(ddata, true);
-> @@ -1660,7 +1658,7 @@ static int sysc_init_module(struct sysc *ddata)
->                         goto err_main_clocks;
->         }
-> -       if (!ddata->legacy_mode && manage_clocks) {
-> +       if (!ddata->legacy_mode) {
->                 error = sysc_enable_module(ddata->dev);
->                 if (error)
->                         goto err_main_clocks;
-> @@ -1673,6 +1671,9 @@ static int sysc_init_module(struct sysc *ddata)
->         if (!ddata->legacy_mode && manage_clocks)
->                 sysc_disable_module(ddata->dev);
-> +       if (!manage_clocks)
-> +               pm_runtime_get_noresume(ddata->dev);
-> +
->  err_main_clocks:
->         if (manage_clocks)
->                 sysc_disable_main_clocks(ddata);
-
-So this is missing the "ti,no-idle-on-init" handling but
-if we can handle it all with the pm_runtime_* variants that's
-great.
-
+Updated patch below to play with.
 Regards,
 
 Tony
+
+8< ---------------------
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -1632,17 +1632,19 @@ static int sysc_init_module(struct sysc *ddata)
+ 	if (error)
+ 		return error;
+ 
+-	if (manage_clocks) {
+-		sysc_clkdm_deny_idle(ddata);
++	sysc_clkdm_deny_idle(ddata);
+ 
+-		error = sysc_enable_opt_clocks(ddata);
+-		if (error)
+-			return error;
++	/*
++	 * Always enable clocks. The bootloader may or may not have enabled
++	 * the related clocks.
++	 */
++	error = sysc_enable_opt_clocks(ddata);
++	if (error)
++		return error;
+ 
+-		error = sysc_enable_main_clocks(ddata);
+-		if (error)
+-			goto err_opt_clocks;
+-	}
++	error = sysc_enable_main_clocks(ddata);
++	if (error)
++		goto err_opt_clocks;
+ 
+ 	if (!(ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT)) {
+ 		error = sysc_rstctrl_reset_deassert(ddata, true);
+@@ -1677,10 +1679,10 @@ static int sysc_init_module(struct sysc *ddata)
+ 	if (manage_clocks)
+ 		sysc_disable_main_clocks(ddata);
+ err_opt_clocks:
+-	if (manage_clocks) {
++	if (manage_clocks)
+ 		sysc_disable_opt_clocks(ddata);
+-		sysc_clkdm_allow_idle(ddata);
+-	}
++
++	sysc_clkdm_allow_idle(ddata);
+ 
+ 	return error;
+ }
+@@ -2357,6 +2359,28 @@ static void ti_sysc_idle(struct work_struct *work)
+ 
+ 	ddata = container_of(work, struct sysc, idle_work.work);
+ 
++	/*
++	 * One time decrement of clock usage counts if left on from init.
++	 * Note that we disable opt clocks unconditionally in this case
++	 * as they are enabled unconditionally during init without
++	 * considering sysc_opt_clks_needed() at that point.
++	 */
++	if (ddata->cfg.quirks & (SYSC_QUIRK_NO_IDLE |
++				 SYSC_QUIRK_NO_IDLE_ON_INIT)) {
++		sysc_clkdm_deny_idle(ddata);
++		sysc_disable_main_clocks(ddata);
++		sysc_disable_opt_clocks(ddata);
++		sysc_clkdm_allow_idle(ddata);
++	}
++
++	/* Keep permanent PM runtime usage count for SYSC_QUIRK_NO_IDLE */
++	if (ddata->cfg.quirks & SYSC_QUIRK_NO_IDLE)
++		return;
++
++	/*
++	 * Decrement PM runtime usage count for SYSC_QUIRK_NO_IDLE_ON_INIT
++	 * and SYSC_QUIRK_NO_RESET_ON_INIT
++	 */
+ 	if (pm_runtime_active(ddata->dev))
+ 		pm_runtime_put_sync(ddata->dev);
+ }
+@@ -2445,7 +2469,8 @@ static int sysc_probe(struct platform_device *pdev)
+ 	INIT_DELAYED_WORK(&ddata->idle_work, ti_sysc_idle);
+ 
+ 	/* At least earlycon won't survive without deferred idle */
+-	if (ddata->cfg.quirks & (SYSC_QUIRK_NO_IDLE_ON_INIT |
++	if (ddata->cfg.quirks & (SYSC_QUIRK_NO_IDLE |
++				 SYSC_QUIRK_NO_IDLE_ON_INIT |
+ 				 SYSC_QUIRK_NO_RESET_ON_INIT)) {
+ 		schedule_delayed_work(&ddata->idle_work, 3000);
+ 	} else {
+-- 
+2.23.0
