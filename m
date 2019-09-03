@@ -2,80 +2,194 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACCF0A6A23
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2019 15:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68C41A6A65
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2019 15:50:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729079AbfICNkF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Sep 2019 09:40:05 -0400
-Received: from muru.com ([72.249.23.125]:59570 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727107AbfICNkF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:40:05 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id B540380CF;
-        Tue,  3 Sep 2019 13:40:33 +0000 (UTC)
-Date:   Tue, 3 Sep 2019 06:40:00 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        =?utf-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
-Subject: Re: [RFC 5/5] ARM: dts: omap3-beagle: make explicitly compatible to
- ti,omap34xx
-Message-ID: <20190903134000.GM52127@atomide.com>
-References: <cover.1567421750.git.hns@goldelico.com>
- <150eb34a95b2e7ead8ac81a9ab275592ea31595b.1567421751.git.hns@goldelico.com>
+        id S1729362AbfICNuo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Sep 2019 09:50:44 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:53990 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729169AbfICNuo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Sep 2019 09:50:44 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x83DoVk7067535;
+        Tue, 3 Sep 2019 08:50:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1567518631;
+        bh=glybkcFaeSv13hn8kobaPpNcJ7k9Wi7ag5McnzpQOME=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=B3jZFJE4E8JRUxvvH1s3f/SkeqFFGL955p8bAzXw4uJbyy6VtjnVVMdcAyUjw6rrC
+         pcLiLFWGOPl+fJLFQjltEuQqGA4i9A9T8Ze3oAwq13lrbMRkK2LyA52JFQAmR+Y+ua
+         yFUmqbzSoH3U7IphPqy7VPyBYyvqWq9jcfiCIajI=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x83DoVkC079801
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 3 Sep 2019 08:50:31 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 3 Sep
+ 2019 08:50:30 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Tue, 3 Sep 2019 08:50:30 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x83DoRIU003031;
+        Tue, 3 Sep 2019 08:50:28 -0500
+Subject: Re: [PATCHv3 01/10] dt-bindings: omap: add new binding for PRM
+ instances
+To:     Adam Ford <aford173@gmail.com>
+CC:     Rob Herring <robh@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>, Suman Anna <s-anna@ti.com>,
+        <p.zabel@pengutronix.de>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        devicetree <devicetree@vger.kernel.org>
+References: <20190830121816.30034-1-t-kristo@ti.com>
+ <20190830121816.30034-2-t-kristo@ti.com> <20190902042631.GA22055@bogus>
+ <e8d700cd-8f3c-5cea-a022-b20a595fc1e1@ti.com>
+ <CAHCN7xKNSj_DW+Gcbpy4ehphBYCbJw9mSATOcWzT7ZcZR81r6g@mail.gmail.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <e6fd5cd6-8176-55f9-5285-d52b84435649@ti.com>
+Date:   Tue, 3 Sep 2019 16:50:26 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <150eb34a95b2e7ead8ac81a9ab275592ea31595b.1567421751.git.hns@goldelico.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <CAHCN7xKNSj_DW+Gcbpy4ehphBYCbJw9mSATOcWzT7ZcZR81r6g@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [190902 10:56]:
-> Matching the ti-cpufreq driver needs to specify explicitly if
-> a board uses an omap34xx or omap36xx chip.
+On 03/09/2019 16:19, Adam Ford wrote:
+> On Tue, Sep 3, 2019 at 2:26 AM Tero Kristo <t-kristo@ti.com> wrote:
+>>
+>> On 02/09/2019 16:39, Rob Herring wrote:
+>>> On Fri, Aug 30, 2019 at 03:18:07PM +0300, Tero Kristo wrote:
+>>>> Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
+>>>> of these will act as a power domain controller and potentially as a reset
+>>>> provider.
+>>>>
+>>>
+>>> Converting this to schema would be nice.
+>>
+>> Do you have documentation about schema somewhere? Basically what I need
+>> to do to fix this.
+>>
+>>>
+>>>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>>>> ---
+>>>>    .../devicetree/bindings/arm/omap/prm-inst.txt | 31 +++++++++++++++++++
+>>>
+>>> bindings/reset/
+>>
+>> I did not put this under reset, because this is basically a
+>> multi-purpose function. Reset just happens to be the first functionality
+>> it is going to provide. It will be followed by power domain support
+>> later on.
+>>
+>> Any thoughts?
+>>
+>>>
+>>>>    1 file changed, 31 insertions(+)
+>>>>    create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/arm/omap/prm-inst.txt b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+>>>> new file mode 100644
+>>>> index 000000000000..7c7527c37734
+>>>> --- /dev/null
+>>>> +++ b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+>>>> @@ -0,0 +1,31 @@
+>>>> +OMAP PRM instance bindings
+>>>> +
+>>>> +Power and Reset Manager is an IP block on OMAP family of devices which
+>>>> +handle the power domains and their current state, and provide reset
+>>>> +handling for the domains and/or separate IP blocks under the power domain
+>>>> +hierarchy.
+>>>> +
+>>>> +Required properties:
+>>>> +- compatible:       Must be one of:
+>>>> +            "ti,am3-prm-inst"
 > 
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
->  arch/arm/boot/dts/omap3-beagle.dts | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Would it make sense to call it am33 instead of am3?  The AM35xx is
+> different than AM33.
+
+Well, am35xx is effectively just a variant of omap3, they just named it 
+funnily. Same for dra7 vs. am57xx. Also, bindings of type "ti,am3-*" 
+exist for other am33xx functionality already.
+
+-Tero
+
 > 
-> diff --git a/arch/arm/boot/dts/omap3-beagle.dts b/arch/arm/boot/dts/omap3-beagle.dts
-> index e3df3c166902..d47213c7a4d0 100644
-> --- a/arch/arm/boot/dts/omap3-beagle.dts
-> +++ b/arch/arm/boot/dts/omap3-beagle.dts
-> @@ -8,7 +8,7 @@
->  
->  / {
->  	model = "TI OMAP3 BeagleBoard";
-> -	compatible = "ti,omap3-beagle", "ti,omap3";
-> +	compatible = "ti,omap3-beagle", "ti,omap34xx", "ti,omap3";
->  
->  	cpus {
->  		cpu@0 {
+>>>> +            "ti,am4-prm-inst"
+>>>> +            "ti,omap4-prm-inst"
+>>>> +            "ti,omap5-prm-inst"
+>>>> +            "ti,dra7-prm-inst"
+>>>
+>>> '-inst' seems a bit redundant.
+>>
+>> ti,xyz-prm is already reserved by the parent node of all these.
+>>
+>> The hierarchy is basically like this (omap4 as example):
+>>
+>> prm: prm@4a306000 {
+>>     compatible = "ti,omap4-prm";
+>>     ...
+>>
+>>     prm_dsp: prm@400 {
+>>       compatible = "ti,omap4-prm-inst";
+>>       ...
+>>     };
+>>
+>>     prm_device: prm@1b00 {
+>>       compatible = "ti,omap4-prm-inst";
+>>       ...
+>>     };
+>>
+>>     ...
+>> };
+>>
+>>
+>>
+>>>
+>>>> +- reg:              Contains PRM instance register address range
+>>>> +            (base address and length)
+>>>> +
+>>>> +Optional properties:
+>>>> +- #reset-cells:     Should be 1 if the PRM instance in question supports resets.
+>>>> +- clocks:   Associated clocks for the reset signals if any. Certain reset
+>>>> +            signals can't be toggled properly without functional clock
+>>>> +            being active for them.
+>>>> +
+>>>> +Example:
+>>>> +
+>>>> +prm_dsp2: prm@1b00 {
+>>>
+>>> reset-controller@...
+>>
+>> Well, as said, the same node is going to be also power domain provider
+>> later on...
+>>
+>>>
+>>>> +    compatible = "ti,dra7-prm-inst";
+>>>> +    reg = <0x1b00 0x40>;
+>>>> +    #reset-cells = <1>;
+>>>> +    clocks = <&dsp2_clkctrl DRA7_DSP2_MMU0_DSP2_CLKCTRL 0>;
+>>>> +};
+>>>> --
+>>>> 2.17.1
+>>>>
+>>>> --
+>>>
+>>
+> 
+> adam
+>> --
 
-For a clean-up patch, we should just use the following compatibles
-in general for omap3:
-
-ti,omap3	omap3
-ti,omap34	omap34xx and omap35xx
-ti,omap36	omap36xx and dm37xx
-ti,am35		am35xx
-
-So we should just leave out the "xx" part. But we still need parse
-also the legacy binding with "xx" in drivers.
-
-Regards,
-
-Tony
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
