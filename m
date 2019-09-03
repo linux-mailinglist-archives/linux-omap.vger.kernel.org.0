@@ -2,54 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82808A6630
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2019 12:01:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A63BDA6674
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Sep 2019 12:19:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726946AbfICKBn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Sep 2019 06:01:43 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:41058 "EHLO
+        id S1728610AbfICKT2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Sep 2019 06:19:28 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:42974 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726840AbfICKBn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Sep 2019 06:01:43 -0400
+        with ESMTP id S1727005AbfICKT2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Sep 2019 06:19:28 -0400
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x83A1e08039481;
-        Tue, 3 Sep 2019 05:01:40 -0500
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x83AJJrI043302;
+        Tue, 3 Sep 2019 05:19:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1567504900;
-        bh=2KlABauITgXea8zZ9AAL1+m1f1POVR+5WeSeJv1Pu64=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=EEGiKCKLhV3wcP3OA79CnrtkhyOQEyCxSY82xmPl336gL+41EvK4Gc+T9cSYaW2r/
-         JsHXjVpFXCTtu9l6LuKJ7V/oFGAtGHfxqmgCeIlsg81q5VH7MOJlZw70/a/xFRhhro
-         RGov4dTB66CEPWOIe8sCogJLjivjz2ObNH5qi3vo=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x83A1ebf059706
+        s=ti-com-17Q1; t=1567505959;
+        bh=nRTqcKo/WxW5TqzAmvGzBhBJLV092AmqWAXRSgLL4HQ=;
+        h=Subject:From:To:CC:References:Date:In-Reply-To;
+        b=MAVqHP5rCVzAK7qY2G2VaRwl+Eht1wf++tyKAUBDMpBXY1dqWnkSOasWdWuL3UJH0
+         U1dTBLkeDz1xPdv8fjND7octTCvsoznIQlEEKIsiKu28tOdcGOTTPx52xwX7H2+Mlc
+         7C8KTXqRqmsSup83zDK3uH75JreICd8llooyx7us=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x83AJJXP081861
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 3 Sep 2019 05:01:40 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 3 Sep 2019 05:19:19 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 3 Sep
- 2019 05:01:39 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ 2019 05:19:19 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 3 Sep 2019 05:01:39 -0500
-Received: from [10.250.98.116] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x83A1bIA123521;
-        Tue, 3 Sep 2019 05:01:38 -0500
-Subject: Re: Linux-next: File system over NFS broken on DRA7/AM5 platforms
-To:     Keerthy <j-keerthy@ti.com>, Tony Lindgren <tony@atomide.com>,
-        "Kristo, Tero" <t-kristo@ti.com>
-CC:     <linux-omap@vger.kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>
-References: <b5f54d5f-4790-7be1-cb65-847a98d2e8dd@ti.com>
- <c32b9e04-b230-7634-051b-202868597ec1@ti.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <59564d54-c032-7ca0-3130-6fa7d10f43b7@ti.com>
-Date:   Tue, 3 Sep 2019 13:01:37 +0300
+ Frontend Transport; Tue, 3 Sep 2019 05:19:19 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x83AJHVI102032;
+        Tue, 3 Sep 2019 05:19:17 -0500
+Subject: Re: [PATCH 4/5] dt-bindings: dma: ti-edma: Add option for reserved
+ channel ranges
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+To:     Rob Herring <robh@kernel.org>
+CC:     <vkoul@kernel.org>, <dan.j.williams@intel.com>,
+        <dmaengine@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+References: <20190823125618.8133-1-peter.ujfalusi@ti.com>
+ <20190823125618.8133-5-peter.ujfalusi@ti.com> <20190829224728.GA1198@bogus>
+ <a4c5688b-cbeb-5059-5351-11d9ae1b25d5@ti.com>
+Message-ID: <15d5dc03-d6ca-f438-f37a-e71298abda95@ti.com>
+Date:   Tue, 3 Sep 2019 13:19:45 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <c32b9e04-b230-7634-051b-202868597ec1@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <a4c5688b-cbeb-5059-5351-11d9ae1b25d5@ti.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -58,50 +63,78 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Rob,
 
-
-On 03/09/2019 09:04, Keerthy wrote:
+On 30/08/2019 8.37, Peter Ujfalusi wrote:
+> Rob,
 > 
-> 
-> On 31/08/19 7:21 AM, keerthy wrote:
->> Hi Tony,
+> On 30/08/2019 1.47, Rob Herring wrote:
+>> On Fri, Aug 23, 2019 at 03:56:17PM +0300, Peter Ujfalusi wrote:
+>>> Similarly to paRAM slots, channels can be used by other cores.
+>>>
+>>> Add optional property to configure the reserved channel ranges.
+>>>
+>>> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+>>> ---
+>>>  Documentation/devicetree/bindings/dma/ti-edma.txt | 5 +++++
+>>>  1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/dma/ti-edma.txt b/Documentation/devicetree/bindings/dma/ti-edma.txt
+>>> index 4bbc94d829c8..1198682ada99 100644
+>>> --- a/Documentation/devicetree/bindings/dma/ti-edma.txt
+>>> +++ b/Documentation/devicetree/bindings/dma/ti-edma.txt
+>>> @@ -42,6 +42,9 @@ Optional properties:
+>>>  - ti,edma-reserved-slot-ranges: PaRAM slot ranges which should not be used by
+>>>  		the driver, they are allocated to be used by for example the
+>>>  		DSP. See example.
+>>> +- ti,edma-reserved-chan-ranges: channel ranges which should not be used by
+>>> +		the driver, they are allocated to be used by for example the
+>>> +		DSP. See example.
 >>
->> https://pastebin.ubuntu.com/p/pt7b3JPgRn/
->>
->> NFS boot seems to be broken. Works well with 5.3-rc6.
->>
->> I couldn't do the bisect yet.
+>> Based on the other thread, I think extending dma-channel-mask to a 
+>> uint32-array makes sense here.
 > 
-> Vignesh,
+> Yes, that is the reason I have asked on that and I'm in progress of
+> converting the edma driver to use the dma-channel-mask.
+> Just need to do some shuffling in the driver to get the mask in a form
+> usable by the driver.
 > 
-> Thanks for the clue.
-> 
-> Tony,
-> 
-> [    2.457707] gmac-clkctrl:0000:0: failed to enable
-> [    2.462570] cpsw: probe of 48484000.ethernet failed with error -16
-> 
-> seems like gmac clkctrl failing to enable.
-> 
-> commit 1faa415c9c6e41a5350d3067307e7985b546ac3a
-> Author: Tony Lindgren <tony@atomide.com>
-> Date:   Mon Aug 26 08:41:14 2019 -0700
-> 
-> ARM: dts: Add fck for cpsw mdio for omap variants
-> 
-> The above commit seems to be causing that. I tried experimenting
-> with removing the patch changes for dra7-dt alone.
-> 
-> The above errors seem to go away but then i see a crash:
-> 
-> https://pastebin.ubuntu.com/p/zBqGX959J2/
-> 
-> Could you please take a look at the above patch?
+> I'll send an updated series early next week.
 
-The log still contains "gmac-clkctrl:0000:0: failed to disable"
+How should the dma-channel-mask uint31-array should be documented and used?
 
-So, there is smth wrong with gmak clocks definitions
+Basically some EDMA have 32, some 64 channels. This is fine.
+Let's say I want to mask out channel 0-4 and 24-27
 
--- 
-Best regards,
-grygorii
+This would look like in case of EDMA with 32 channels:
+&edma {
+	/* channel 0-4 and 24-27 is not to be used */
+	dma-channel-mask = <0xf0fffff0>;
+};
+
+How this should look like in case when I have 64 channels?
+&edma {
+	/* channel 0-4 and 24-27 is not to be used */
+	dma-channel-mask = <0xf0fffff0>, <0xffffffff>;
+};
+
+When I read the u32s then
+chan_mask[0] is for channel 0-31 (LSB is channel 0)
+chan_maks[1] is for channel 32-63 (LSB is channel 32)
+
+Or:
+&edma {
+	/* channel 0-4 and 24-27 is not to be used */
+	dma-channel-mask = <0xffffffff>, <0xf0fffff0>;
+};
+
+chan_maks[0] is for channel 32-63 (LSB is channel 32)
+chan_mask[1] is for channel 0-31 (LSB is channel 0)
+
+Do you have pointer on already established notion on how to document and
+handle this?
+
+- Péter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
