@@ -2,65 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 300C7A819B
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 13:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AAF0A8984
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 21:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727722AbfIDLzD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Sep 2019 07:55:03 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:49656 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728717AbfIDLzD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 4 Sep 2019 07:55:03 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 1C68646AB9A51F46E78D;
-        Wed,  4 Sep 2019 19:55:01 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Wed, 4 Sep 2019
- 19:54:52 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <b.zolnierkie@samsung.com>, <tglx@linutronix.de>,
-        <alexios.zavras@intel.com>, <gregkh@linuxfoundation.org>,
-        <allison@lohutok.net>, <yuehaibing@huawei.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next] fbdev: omapfb: use devm_platform_ioremap_resource() to simplify code
-Date:   Wed, 4 Sep 2019 19:54:06 +0800
-Message-ID: <20190904115406.23880-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1730135AbfIDP0i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Sep 2019 11:26:38 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:42472 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730011AbfIDP0h (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Sep 2019 11:26:37 -0400
+Received: by mail-qt1-f196.google.com with SMTP id t12so24809229qtp.9
+        for <linux-omap@vger.kernel.org>; Wed, 04 Sep 2019 08:26:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DABWG+eaL7f1l3FkKdJb8DYEm6uMRDe9I7ADfmro334=;
+        b=FPQPP/t4Ao0azhSrbMj4OJWMhxlr/Ny6rr1yJAJzJse9ZSVvUZx6JUDHtx2VQYQQF1
+         IFy5bvwYKvT+jDzSo29YXGyqdYB1QrgRKft1eaiI+0d4kZLhJOM2PK842fmzjMNVYqY9
+         GfxRGsPcslFyuW8vBwO77gqgeFbgDkw8fuNBrHOmuHyc4t8ikiWTG15gnHDvwhkicqj+
+         rIyEBxtzRjQonwRqlr3LNgZfeKWNVb9C9GrmVGxlQIy1W36fXkrUjVM6gNz9ck+XT0F5
+         Rd9tUs/87EFdfzhJqbEzrD94dFgrG1zU8kX9pToppEP7hkYZhwmrOUpivOMCYh1wlu/n
+         JiDA==
+X-Gm-Message-State: APjAAAUn7ZRyjVcVHMW8enF6GkC5Kv8hm4a18wNWLTFrb7Ag8QNuJelO
+        j1oHg7Xig2lzrssziBOLl6lzJhXGGiZOT/6WI3v1wA==
+X-Google-Smtp-Source: APXvYqwZyMKAoyunn/3lv5bd8d4pnIpPJThQ/mKRZx5bTL2Yk9viBbGlJNtSjIv6XKutfivLFx/WQuEZsR6dtCrBUns=
+X-Received: by 2002:a0c:e74b:: with SMTP id g11mr25545961qvn.62.1567610796803;
+ Wed, 04 Sep 2019 08:26:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+References: <pull-1566599057-142651@atomide.com>
+In-Reply-To: <pull-1566599057-142651@atomide.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 4 Sep 2019 17:26:20 +0200
+Message-ID: <CAK8P3a1Hh8nFe7h0Jr7tf_aoarvwr3utD7LrFf9rV_OePL-+Zg@mail.gmail.com>
+Subject: Re: [GIT PULL 1/2] ti-sysc driver changes for v5.3
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     SoC Team <soc@kernel.org>, arm-soc <arm@kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use devm_platform_ioremap_resource() to simplify the code a bit.
-This is detected by coccinelle.
+On Sat, Aug 24, 2019 at 12:24 AM Tony Lindgren <tony@atomide.com> wrote:
+> Driver changes for ti-sysc for v5.4
+>
+> Few changes to prepare for using a reset driver for PRM rstctrl mostly
+> to deal with the clocks for reset. Then few minor clean-up patches and
+> SPDX license identifier changes, and add a MAINTAINERs file entry.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/video/fbdev/omap2/omapfb/vrfb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Pulled this one into an arm/late branch, together with the three
+other pull requests that depend on this one.
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/vrfb.c b/drivers/video/fbdev/omap2/omapfb/vrfb.c
-index 819e0bc..ee0dd4c 100644
---- a/drivers/video/fbdev/omap2/omapfb/vrfb.c
-+++ b/drivers/video/fbdev/omap2/omapfb/vrfb.c
-@@ -339,9 +339,7 @@ static int __init vrfb_probe(struct platform_device *pdev)
- 	int i;
- 
- 	/* first resource is the register res, the rest are vrfb contexts */
--
--	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	vrfb_base = devm_ioremap_resource(&pdev->dev, mem);
-+	vrfb_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(vrfb_base))
- 		return PTR_ERR(vrfb_base);
- 
--- 
-2.7.4
+Don't worry about the arm/late name, I expect to send this off
+together with the other branches, it's just easier for me to
+describe what's in each of the top-level branches this way.
 
-
+       Arnd
