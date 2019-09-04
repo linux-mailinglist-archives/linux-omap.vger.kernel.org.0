@@ -2,38 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2348A8C48
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 21:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E48C0A8C09
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 21:29:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731886AbfIDQMH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Sep 2019 12:12:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35104 "EHLO mail.kernel.org"
+        id S1732345AbfIDQIw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Sep 2019 12:08:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36760 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732625AbfIDQAR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 4 Sep 2019 12:00:17 -0400
+        id S1732974AbfIDQBY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 4 Sep 2019 12:01:24 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 569652339E;
-        Wed,  4 Sep 2019 16:00:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 377A522DBF;
+        Wed,  4 Sep 2019 16:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567612817;
-        bh=B68nc9OKkAQbmzyRHs40pHmAXAslMRrZ1Tb5cmtIk74=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fdILO6OPZRV591Sr8z3qhgW3DQm5zj9RTpSbWpSLkyyECdYrRDhE3E3yumwTs2T/k
-         lGyvPyAUpRB3OQ0m4IxZQVzNLbKR1n5wziTLoh7FSouu4mqspIShoAbuh9L8I2Qgt7
-         QzQvkJlFJSx6JN+zTRc40pvFkZgr7PEEMupjSlS8=
+        s=default; t=1567612884;
+        bh=1hjpLjdFnleXPVsjkwIlMm3goH7mRfAhm1zbSJYjR7s=;
+        h=From:To:Cc:Subject:Date:From;
+        b=R5S/Ai9qfoySfMe3lfnhlkDZTOfXjU6QQwctylnMYMHZB7TDtgbXg2WSgTbMglCCo
+         XvPXSy6n4UCDkczfo2Tuh6KXTOmDxvKpO6Qd8DZepZH8ySiag0AwZtA1OuJ5bkAunv
+         ls81T1HM6NusIPxPx1+17Q+1OS8/myHD3/yN3VgA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 09/52] ARM: OMAP1: ams-delta-fiq: Fix missing irq_ack
-Date:   Wed,  4 Sep 2019 11:59:21 -0400
-Message-Id: <20190904160004.3671-9-sashal@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>, Suman Anna <s-anna@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Sasha Levin <sashal@kernel.org>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 01/36] ARM: OMAP2+: Fix missing SYSC_HAS_RESET_STATUS for dra7 epwmss
+Date:   Wed,  4 Sep 2019 12:00:47 -0400
+Message-Id: <20190904160122.4179-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190904160004.3671-1-sashal@kernel.org>
-References: <20190904160004.3671-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -43,63 +41,38 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit fa8397e45c64e60c80373bc19ee56e42a6bed9b6 ]
+[ Upstream commit afd58b162e48076e3fe66d08a69eefbd6fe71643 ]
 
-Non-serio path of Amstrad Delta FIQ deferred handler depended on
-irq_ack() method provided by OMAP GPIO driver.  That method has been
-removed by commit 693de831c6e5 ("gpio: omap: remove irq_ack method").
-Remove useless code from the deferred handler and reimplement the
-missing operation inside the base FIQ handler.
+TRM says PWMSS_SYSCONFIG bit for SOFTRESET changes to zero when
+reset is completed. Let's configure it as otherwise we get warnings
+on boot when we check the data against dts provided data. Eventually
+the legacy platform data will be just dropped, but let's fix the
+warning first.
 
-Should another dependency - irq_unmask() - be ever removed from the OMAP
-GPIO driver, WARN once if missing.
-
-Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Reviewed-by: Suman Anna <s-anna@ti.com>
+Tested-by: Keerthy <j-keerthy@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap1/ams-delta-fiq-handler.S | 3 ++-
- arch/arm/mach-omap1/ams-delta-fiq.c         | 4 +---
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ arch/arm/mach-omap2/omap_hwmod_7xx_data.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap1/ams-delta-fiq-handler.S b/arch/arm/mach-omap1/ams-delta-fiq-handler.S
-index ddc27638ba2a5..017c792be0a07 100644
---- a/arch/arm/mach-omap1/ams-delta-fiq-handler.S
-+++ b/arch/arm/mach-omap1/ams-delta-fiq-handler.S
-@@ -135,6 +135,8 @@ restart:
- 	orr r11, r11, r13			@ mask all requested interrupts
- 	str r11, [r12, #OMAP1510_GPIO_INT_MASK]
- 
-+	str r13, [r12, #OMAP1510_GPIO_INT_STATUS] @ ack all requested interrupts
-+
- 	ands r10, r13, #KEYBRD_CLK_MASK		@ extract keyboard status - set?
- 	beq hksw				@ no - try next source
- 
-@@ -142,7 +144,6 @@ restart:
- 	@@@@@@@@@@@@@@@@@@@@@@
- 	@ Keyboard clock FIQ mode interrupt handler
- 	@ r10 now contains KEYBRD_CLK_MASK, use it
--	str r10, [r12, #OMAP1510_GPIO_INT_STATUS]	@ ack the interrupt
- 	bic r11, r11, r10				@ unmask it
- 	str r11, [r12, #OMAP1510_GPIO_INT_MASK]
- 
-diff --git a/arch/arm/mach-omap1/ams-delta-fiq.c b/arch/arm/mach-omap1/ams-delta-fiq.c
-index b0dc7ddf5877d..b8ba763fe1086 100644
---- a/arch/arm/mach-omap1/ams-delta-fiq.c
-+++ b/arch/arm/mach-omap1/ams-delta-fiq.c
-@@ -73,9 +73,7 @@ static irqreturn_t deferred_fiq(int irq, void *dev_id)
- 			 * interrupts default to since commit 80ac93c27441
- 			 * requires interrupt already acked and unmasked.
- 			 */
--			if (irq_chip->irq_ack)
--				irq_chip->irq_ack(d);
--			if (irq_chip->irq_unmask)
-+			if (!WARN_ON_ONCE(!irq_chip->irq_unmask))
- 				irq_chip->irq_unmask(d);
- 		}
- 		for (; irq_counter[gpio] < fiq_count; irq_counter[gpio]++)
+diff --git a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
+index 2f4f7002f38d0..87b0c38b7ca59 100644
+--- a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
+@@ -389,7 +389,8 @@ static struct omap_hwmod dra7xx_dcan2_hwmod = {
+ static struct omap_hwmod_class_sysconfig dra7xx_epwmss_sysc = {
+ 	.rev_offs	= 0x0,
+ 	.sysc_offs	= 0x4,
+-	.sysc_flags	= SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET,
++	.sysc_flags	= SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET |
++			  SYSC_HAS_RESET_STATUS,
+ 	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+ 	.sysc_fields	= &omap_hwmod_sysc_type2,
+ };
 -- 
 2.20.1
 
