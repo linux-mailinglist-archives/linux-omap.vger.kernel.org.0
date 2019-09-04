@@ -2,37 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D369A8B3F
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 21:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 288A3A8B75
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 21:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732350AbfIDQC0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Sep 2019 12:02:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38404 "EHLO mail.kernel.org"
+        id S1732747AbfIDQDH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Sep 2019 12:03:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39478 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733265AbfIDQCZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 4 Sep 2019 12:02:25 -0400
+        id S1732460AbfIDQDG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 4 Sep 2019 12:03:06 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 67B8822DBF;
-        Wed,  4 Sep 2019 16:02:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B293422CF5;
+        Wed,  4 Sep 2019 16:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567612945;
-        bh=9msoC85KjAkTZ+3NyTfzwtqHQ+ihqnOm2jDZUcXZ8B4=;
+        s=default; t=1567612986;
+        bh=j1iYY3kQO3B/s0ayC98GlO6pXuKeFJHAECORyA+XmSs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X3kziu+5lOf1/qd66LKDBRZhkn9XiN7tHSIObOtaW7LJC2HF1ch7JdKdUWEmZzGMr
-         iqVkAwOKMBb80LP+OCOixEfUXdLVIBRQQrh7Ick3tmrRk0p+o6kHcoQ+8wvFbz7XVn
-         MQvG7uQ4s30lWSVrPRoqsjbKkR7bY/IVbMdGjeyY=
+        b=1AP0bcLQOs7vySkGD/8wdoaDzoCcjVPSvGU1J66tiE2jk22sudesp4TOvrBber5YF
+         4scpRoujloahihmvpQw2MuQhVA1s1xJO8Sku65MupsOsSw0/zW+x+MCc+dviZyW/+3
+         boBlmD4goyJcQ30IksLwueCAc4q1LaeKgy25IOSg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
         linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 03/27] ARM: OMAP2+: Fix omap4 errata warning on other SoCs
-Date:   Wed,  4 Sep 2019 12:01:56 -0400
-Message-Id: <20190904160220.4545-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 02/20] ARM: OMAP2+: Fix omap4 errata warning on other SoCs
+Date:   Wed,  4 Sep 2019 12:02:45 -0400
+Message-Id: <20190904160303.5062-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190904160220.4545-1-sashal@kernel.org>
-References: <20190904160220.4545-1-sashal@kernel.org>
+In-Reply-To: <20190904160303.5062-1-sashal@kernel.org>
+References: <20190904160303.5062-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,7 +66,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/arch/arm/mach-omap2/omap4-common.c b/arch/arm/mach-omap2/omap4-common.c
-index cf65ab8bb0046..e5dcbda20129d 100644
+index 949696b6f17b6..511fd08c784ba 100644
 --- a/arch/arm/mach-omap2/omap4-common.c
 +++ b/arch/arm/mach-omap2/omap4-common.c
 @@ -131,6 +131,9 @@ static int __init omap4_sram_init(void)
