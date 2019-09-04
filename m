@@ -2,38 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F519A89F6
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 21:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6534FA8C57
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 21:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731699AbfIDP6D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Sep 2019 11:58:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59850 "EHLO mail.kernel.org"
+        id S1732762AbfIDQMi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Sep 2019 12:12:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34872 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731717AbfIDP6D (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 4 Sep 2019 11:58:03 -0400
+        id S1732561AbfIDQAK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 4 Sep 2019 12:00:10 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 718C020820;
-        Wed,  4 Sep 2019 15:58:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 67C4C22CED;
+        Wed,  4 Sep 2019 16:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567612682;
-        bh=2GL256L2/6vJG33uyRE6ssbbk6KXwoAxkQYI36Ywbvg=;
+        s=default; t=1567612809;
+        bh=hepvH7SjapywPDPI2SBLLPFx6wumdhL0IWMJt9o1E0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ed0uL5BKGOvyU7LXhMUlb2tdGqPQkyxOLSWrHSpzaYYkafadgEO1ksvcVLm0fDmFA
-         TUB/LQiEtGzPvjpyvlqBQ5FDdZc7w8OTQWFYDmvU80/DMlDNUdYRFHYNXuMKe5M7AW
-         a5uH+H0XuNIVYgk/uIoavmqAnwKwzVWLeMx8LJF8=
+        b=iLDTEoiBZmO063BT88eZuIuNGxr/Zu3Vuup4zAUOplNZLRwvLnwfAtDLdbG410iOq
+         9X6HaWO/id/QRWqoCEPK3WA5qdBvnONHvja1O6I9r1g/8S0S85W+aXKQq4WbuaX4Na
+         lwsS4yyqwT76FYI/RuB14HkiWipWp6L/2/CzNhd8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 14/94] ARM: OMAP1: ams-delta-fiq: Fix missing irq_ack
-Date:   Wed,  4 Sep 2019 11:56:19 -0400
-Message-Id: <20190904155739.2816-14-sashal@kernel.org>
+Cc:     Faiz Abbas <faiz_abbas@ti.com>, Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 03/52] ARM: dts: am57xx: Disable voltage switching for SD card
+Date:   Wed,  4 Sep 2019 11:59:15 -0400
+Message-Id: <20190904160004.3671-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190904155739.2816-1-sashal@kernel.org>
-References: <20190904155739.2816-1-sashal@kernel.org>
+In-Reply-To: <20190904160004.3671-1-sashal@kernel.org>
+References: <20190904160004.3671-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -43,63 +43,152 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+From: Faiz Abbas <faiz_abbas@ti.com>
 
-[ Upstream commit fa8397e45c64e60c80373bc19ee56e42a6bed9b6 ]
+[ Upstream commit fb59ee37cfe20d10d19568899d1458a58361246c ]
 
-Non-serio path of Amstrad Delta FIQ deferred handler depended on
-irq_ack() method provided by OMAP GPIO driver.  That method has been
-removed by commit 693de831c6e5 ("gpio: omap: remove irq_ack method").
-Remove useless code from the deferred handler and reimplement the
-missing operation inside the base FIQ handler.
+If UHS speed modes are enabled, a compatible SD card switches down to
+1.8V during enumeration. If after this a software reboot/crash takes
+place and on-chip ROM tries to enumerate the SD card, the difference in
+IO voltages (host @ 3.3V and card @ 1.8V) may end up damaging the card.
 
-Should another dependency - irq_unmask() - be ever removed from the OMAP
-GPIO driver, WARN once if missing.
+The fix for this is to have support for power cycling the card in
+hardware (with a PORz/soft-reset line causing a power cycle of the
+card). Because the beaglebone X15 (rev A,B and C), am57xx-idks and
+am57xx-evms don't have this capability, disable voltage switching for
+these boards.
 
-Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+The major effect of this is that the maximum supported speed
+mode is now high speed(50 MHz) down from SDR104(200 MHz).
+
+commit 88a748419b84 ("ARM: dts: am57xx-idk: Remove support for voltage
+switching for SD card") did this only for idk boards. Do it for all
+affected boards.
+
+Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap1/ams-delta-fiq-handler.S | 3 ++-
- arch/arm/mach-omap1/ams-delta-fiq.c         | 4 +---
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/am571x-idk.dts                | 7 +------
+ arch/arm/boot/dts/am572x-idk.dts                | 7 +------
+ arch/arm/boot/dts/am574x-idk.dts                | 7 +------
+ arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi | 1 +
+ arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts   | 7 +------
+ arch/arm/boot/dts/am57xx-beagle-x15-revc.dts    | 7 +------
+ 6 files changed, 6 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/ams-delta-fiq-handler.S b/arch/arm/mach-omap1/ams-delta-fiq-handler.S
-index 81159af44862e..14a6c3eb32985 100644
---- a/arch/arm/mach-omap1/ams-delta-fiq-handler.S
-+++ b/arch/arm/mach-omap1/ams-delta-fiq-handler.S
-@@ -126,6 +126,8 @@ restart:
- 	orr r11, r11, r13			@ mask all requested interrupts
- 	str r11, [r12, #OMAP1510_GPIO_INT_MASK]
+diff --git a/arch/arm/boot/dts/am571x-idk.dts b/arch/arm/boot/dts/am571x-idk.dts
+index d9a2049a1ea8a..6bebedfc0f35a 100644
+--- a/arch/arm/boot/dts/am571x-idk.dts
++++ b/arch/arm/boot/dts/am571x-idk.dts
+@@ -98,14 +98,9 @@
+ };
  
-+	str r13, [r12, #OMAP1510_GPIO_INT_STATUS] @ ack all requested interrupts
-+
- 	ands r10, r13, #KEYBRD_CLK_MASK		@ extract keyboard status - set?
- 	beq hksw				@ no - try next source
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default_no_clk_pu>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_sdr12>;
+-	pinctrl-3 = <&mmc1_pins_sdr25>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50_rev20 &mmc1_iodelay_ddr50_conf>;
+-	pinctrl-6 = <&mmc1_pins_sdr104 &mmc1_iodelay_sdr104_rev20_conf>;
+ };
  
-@@ -133,7 +135,6 @@ restart:
- 	@@@@@@@@@@@@@@@@@@@@@@
- 	@ Keyboard clock FIQ mode interrupt handler
- 	@ r10 now contains KEYBRD_CLK_MASK, use it
--	str r10, [r12, #OMAP1510_GPIO_INT_STATUS]	@ ack the interrupt
- 	bic r11, r11, r10				@ unmask it
- 	str r11, [r12, #OMAP1510_GPIO_INT_MASK]
+ &mmc2 {
+diff --git a/arch/arm/boot/dts/am572x-idk.dts b/arch/arm/boot/dts/am572x-idk.dts
+index 3ef9111d0e8ba..9235173edbd3a 100644
+--- a/arch/arm/boot/dts/am572x-idk.dts
++++ b/arch/arm/boot/dts/am572x-idk.dts
+@@ -20,14 +20,9 @@
+ };
  
-diff --git a/arch/arm/mach-omap1/ams-delta-fiq.c b/arch/arm/mach-omap1/ams-delta-fiq.c
-index 0af2bf6f99331..fd87382a3f183 100644
---- a/arch/arm/mach-omap1/ams-delta-fiq.c
-+++ b/arch/arm/mach-omap1/ams-delta-fiq.c
-@@ -69,9 +69,7 @@ static irqreturn_t deferred_fiq(int irq, void *dev_id)
- 			 * interrupts default to since commit 80ac93c27441
- 			 * requires interrupt already acked and unmasked.
- 			 */
--			if (irq_chip->irq_ack)
--				irq_chip->irq_ack(d);
--			if (irq_chip->irq_unmask)
-+			if (!WARN_ON_ONCE(!irq_chip->irq_unmask))
- 				irq_chip->irq_unmask(d);
- 		}
- 		for (; irq_counter[gpio] < fiq_count; irq_counter[gpio]++)
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default_no_clk_pu>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_sdr12>;
+-	pinctrl-3 = <&mmc1_pins_sdr25>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_rev20_conf>;
+-	pinctrl-6 = <&mmc1_pins_sdr104 &mmc1_iodelay_sdr104_rev20_conf>;
+ };
+ 
+ &mmc2 {
+diff --git a/arch/arm/boot/dts/am574x-idk.dts b/arch/arm/boot/dts/am574x-idk.dts
+index 378dfa780ac17..ae43de3297f4f 100644
+--- a/arch/arm/boot/dts/am574x-idk.dts
++++ b/arch/arm/boot/dts/am574x-idk.dts
+@@ -24,14 +24,9 @@
+ };
+ 
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default_no_clk_pu>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_default>;
+-	pinctrl-3 = <&mmc1_pins_hs>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_conf>;
+-	pinctrl-6 = <&mmc1_pins_ddr50 &mmc1_iodelay_sdr104_conf>;
+ };
+ 
+ &mmc2 {
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
+index ad953113cefbd..d53532b479475 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
+@@ -433,6 +433,7 @@
+ 
+ 	bus-width = <4>;
+ 	cd-gpios = <&gpio6 27 GPIO_ACTIVE_LOW>; /* gpio 219 */
++	no-1-8-v;
+ };
+ 
+ &mmc2 {
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts b/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts
+index 5a77b334923d0..34c69965821bb 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts
+@@ -19,14 +19,9 @@
+ };
+ 
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_sdr12>;
+-	pinctrl-3 = <&mmc1_pins_sdr25>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_rev11_conf>;
+-	pinctrl-6 = <&mmc1_pins_sdr104 &mmc1_iodelay_sdr104_rev11_conf>;
+ 	vmmc-supply = <&vdd_3v3>;
+ 	vqmmc-supply = <&ldo1_reg>;
+ };
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts b/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts
+index 17c41da3b55f1..ccd99160bbdfb 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts
+@@ -19,14 +19,9 @@
+ };
+ 
+ &mmc1 {
+-	pinctrl-names = "default", "hs", "sdr12", "sdr25", "sdr50", "ddr50", "sdr104";
++	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default>;
+ 	pinctrl-1 = <&mmc1_pins_hs>;
+-	pinctrl-2 = <&mmc1_pins_sdr12>;
+-	pinctrl-3 = <&mmc1_pins_sdr25>;
+-	pinctrl-4 = <&mmc1_pins_sdr50>;
+-	pinctrl-5 = <&mmc1_pins_ddr50 &mmc1_iodelay_ddr_rev20_conf>;
+-	pinctrl-6 = <&mmc1_pins_sdr104 &mmc1_iodelay_sdr104_rev20_conf>;
+ 	vmmc-supply = <&vdd_3v3>;
+ 	vqmmc-supply = <&ldo1_reg>;
+ };
 -- 
 2.20.1
 
