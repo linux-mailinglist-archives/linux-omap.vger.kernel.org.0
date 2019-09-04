@@ -2,165 +2,207 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1602EA8CFA
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 21:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84495A8D0F
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Sep 2019 21:31:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731476AbfIDQUX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Sep 2019 12:20:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59950 "EHLO mail.kernel.org"
+        id S1730156AbfIDQW2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Sep 2019 12:22:28 -0400
+Received: from muru.com ([72.249.23.125]:59660 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731717AbfIDP6G (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 4 Sep 2019 11:58:06 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A3E0723400;
-        Wed,  4 Sep 2019 15:58:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567612685;
-        bh=HG04MnMtyHZXAlO8F+WuIQp+1U7sG5+8U7kCHEbHDaI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1pJCnAR3liQo/U29tnGQsDUU+DE38RJHlvo9eeaHcT45ISZ2utxM5qLTKlYc7OPv9
-         LUWtEPCS/aXkL60sAShF2geW4B8UlwDY24EODaA/ydvJsK6w9PD7XyTYCIkyQg3aj/
-         tNt6BHUc07fgIBKOVJYzPrI3wLvrpDl2b26Iznng=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>,
-        David Lechner <david@lechnology.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.2 16/94] ARM: dts: Fix incomplete dts data for am3 and am4 mmc
-Date:   Wed,  4 Sep 2019 11:56:21 -0400
-Message-Id: <20190904155739.2816-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190904155739.2816-1-sashal@kernel.org>
-References: <20190904155739.2816-1-sashal@kernel.org>
+        id S1729890AbfIDQW2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 4 Sep 2019 12:22:28 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 9283180F3;
+        Wed,  4 Sep 2019 16:22:56 +0000 (UTC)
+Date:   Wed, 4 Sep 2019 09:22:23 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Tero Kristo <t-kristo@ti.com>, Keerthy <j-keerthy@ti.com>,
+        linux-omap@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: Linux-next: File system over NFS broken on DRA7/AM5 platforms
+Message-ID: <20190904162223.GR52127@atomide.com>
+References: <c32b9e04-b230-7634-051b-202868597ec1@ti.com>
+ <59564d54-c032-7ca0-3130-6fa7d10f43b7@ti.com>
+ <c89bd1cb-be2b-eceb-4c3d-144dc9bb951a@ti.com>
+ <17acc359-5938-5f43-3f20-c8de93556748@ti.com>
+ <20190903140553.GN52127@atomide.com>
+ <20190903152427.GO52127@atomide.com>
+ <6fa1c2af-457c-3dbc-74a2-72ae539a48b0@ti.com>
+ <20190903170107.GP52127@atomide.com>
+ <20190903182906.GQ52127@atomide.com>
+ <e67d05c7-b35b-1ddc-ca06-9496c3e28f74@ti.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e67d05c7-b35b-1ddc-ca06-9496c3e28f74@ti.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+* Grygorii Strashko <grygorii.strashko@ti.com> [190904 11:39]:
+> On 03/09/2019 21:29, Tony Lindgren wrote:
+> > diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> > --- a/drivers/bus/ti-sysc.c
+> > +++ b/drivers/bus/ti-sysc.c
+> > @@ -1632,17 +1632,19 @@ static int sysc_init_module(struct sysc *ddata)
+> >   	if (error)
+> >   		return error;
+> > -	if (manage_clocks) {
+> > -		sysc_clkdm_deny_idle(ddata);
+> > +	sysc_clkdm_deny_idle(ddata);
+> > -		error = sysc_enable_opt_clocks(ddata);
+> > -		if (error)
+> > -			return error;
+> > +	/*
+> > +	 * Always enable clocks. The bootloader may or may not have enabled
+> > +	 * the related clocks.
+> > +	 */
+> > +	error = sysc_enable_opt_clocks(ddata);
+> > +	if (error)
+> > +		return error;
+> > -		error = sysc_enable_main_clocks(ddata);
+> > -		if (error)
+> > -			goto err_opt_clocks;
+> > -	}
+> > +	error = sysc_enable_main_clocks(ddata);
+> > +	if (error)
+> > +		goto err_opt_clocks;
+> >   	if (!(ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT)) {
+> >   		error = sysc_rstctrl_reset_deassert(ddata, true);
+> 
+> 
+> -       if (!ddata->legacy_mode && manage_clocks) {
+> +       if (!ddata->legacy_mode) {
+>                 error = sysc_enable_module(ddata->dev);
+>                 if (error)
+>                         goto err_main_clocks;
+> 
+> Module should also enabled here.
 
-[ Upstream commit 5b63fb90adb95a178ad403e1703f59bf1ff2c16b ]
+You are right, good catch. Maybe this in addition to the clocks is
+why some dra7 boards fail to enable cpsw depending on the bootloader?
 
-Commit 4e27f752ab8c ("ARM: OMAP2+: Drop mmc platform data for am330x and
-am43xx") dropped legacy mmc platform data for am3 and am4, but missed the
-fact that we never updated the dts files for mmc3 that is directly on l3
-interconnect instead of l4 interconnect. This leads to a situation with
-no legacy platform data and incomplete dts data.
+> > @@ -1677,10 +1679,10 @@ static int sysc_init_module(struct sysc *ddata)
+> >   	if (manage_clocks)
+> >   		sysc_disable_main_clocks(ddata);
+> >   err_opt_clocks:
+> > -	if (manage_clocks) {
+> > +	if (manage_clocks)
+> >   		sysc_disable_opt_clocks(ddata);
+> > -		sysc_clkdm_allow_idle(ddata);
+> > -	}
+> > +
+> > +	sysc_clkdm_allow_idle(ddata);
+> 
+> clkdm doesn't have counters while clock do, so if module is in HW_AUTO
+> and clkdm in HW_AUTO - the module can go IDLE between this point and  ti_sysc_idle() call.
+> 
+> Errate i877 required
+> CM_GMAC_CLKSTCTRL[1:0] CLKTRCTRL = 0x2:SW_WKUP.
+> to be set at boot time and never changed.
+> 
+> and
+> "In addition to programming SW_WKUP(0x2) on CM_GMAC_CLKSTCTRL, SW should
+> also program modulemode field as ENABLED(0x2) on CM_GMAC_GMAC_CLKCTRL
+> register."
 
-Let's update the mmc instances on l3 interconnect to probe properly with
-ti-sysc interconnect target module driver to make mmc3 work again. Let's
-still keep legacy "ti,hwmods" property around for v5.2 kernel and only
-drop it later on.
+OK makes sense now thanks. I've dropped that change and added a comment
+there. Updated patch below again to test.
 
-Note that there is no need to use property status = "disabled" for mmc3.
-The default for dts is enabled, and runtime PM will idle unused instances
-just fine.
+Regards,
 
-Fixes: 4e27f752ab8c ("ARM: OMAP2+: Drop mmc platform data for am330x and am43xx")
-Reported-by: David Lechner <david@lechnology.com>
-Tested-by: David Lechner <david@lechnology.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/boot/dts/am33xx.dtsi | 32 ++++++++++++++++++++++++++------
- arch/arm/boot/dts/am4372.dtsi | 32 ++++++++++++++++++++++++++------
- 2 files changed, 52 insertions(+), 12 deletions(-)
+Tony
 
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-index e5c2f71a7c77d..fb6b8aa12cc56 100644
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -234,13 +234,33 @@
- 			interrupt-names = "edma3_tcerrint";
- 		};
+8< -------------------
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -1632,17 +1632,19 @@ static int sysc_init_module(struct sysc *ddata)
+ 	if (error)
+ 		return error;
  
--		mmc3: mmc@47810000 {
--			compatible = "ti,omap4-hsmmc";
-+		target-module@47810000 {
-+			compatible = "ti,sysc-omap2", "ti,sysc";
- 			ti,hwmods = "mmc3";
--			ti,needs-special-reset;
--			interrupts = <29>;
--			reg = <0x47810000 0x1000>;
--			status = "disabled";
-+			reg = <0x478102fc 0x4>,
-+			      <0x47810110 0x4>,
-+			      <0x47810114 0x4>;
-+			reg-names = "rev", "sysc", "syss";
-+			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
-+					 SYSC_OMAP2_ENAWAKEUP |
-+					 SYSC_OMAP2_SOFTRESET |
-+					 SYSC_OMAP2_AUTOIDLE)>;
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>;
-+			ti,syss-mask = <1>;
-+			clocks = <&l3s_clkctrl AM3_L3S_MMC3_CLKCTRL 0>;
-+			clock-names = "fck";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0x0 0x47810000 0x1000>;
+-	if (manage_clocks) {
+-		sysc_clkdm_deny_idle(ddata);
++	sysc_clkdm_deny_idle(ddata);
+ 
+-		error = sysc_enable_opt_clocks(ddata);
+-		if (error)
+-			return error;
++	/*
++	 * Always enable clocks. The bootloader may or may not have enabled
++	 * the related clocks.
++	 */
++	error = sysc_enable_opt_clocks(ddata);
++	if (error)
++		return error;
+ 
+-		error = sysc_enable_main_clocks(ddata);
+-		if (error)
+-			goto err_opt_clocks;
+-	}
++	error = sysc_enable_main_clocks(ddata);
++	if (error)
++		goto err_opt_clocks;
+ 
+ 	if (!(ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT)) {
+ 		error = sysc_rstctrl_reset_deassert(ddata, true);
+@@ -1660,7 +1662,7 @@ static int sysc_init_module(struct sysc *ddata)
+ 			goto err_main_clocks;
+ 	}
+ 
+-	if (!ddata->legacy_mode && manage_clocks) {
++	if (!ddata->legacy_mode) {
+ 		error = sysc_enable_module(ddata->dev);
+ 		if (error)
+ 			goto err_main_clocks;
+@@ -1677,6 +1679,7 @@ static int sysc_init_module(struct sysc *ddata)
+ 	if (manage_clocks)
+ 		sysc_disable_main_clocks(ddata);
+ err_opt_clocks:
++	/* No re-enable of clockdomain autoidle to prevent module autoidle */
+ 	if (manage_clocks) {
+ 		sysc_disable_opt_clocks(ddata);
+ 		sysc_clkdm_allow_idle(ddata);
+@@ -2357,6 +2360,28 @@ static void ti_sysc_idle(struct work_struct *work)
+ 
+ 	ddata = container_of(work, struct sysc, idle_work.work);
+ 
++	/*
++	 * One time decrement of clock usage counts if left on from init.
++	 * Note that we disable opt clocks unconditionally in this case
++	 * as they are enabled unconditionally during init without
++	 * considering sysc_opt_clks_needed() at that point.
++	 */
++	if (ddata->cfg.quirks & (SYSC_QUIRK_NO_IDLE |
++				 SYSC_QUIRK_NO_IDLE_ON_INIT)) {
++		sysc_clkdm_deny_idle(ddata);
++		sysc_disable_main_clocks(ddata);
++		sysc_disable_opt_clocks(ddata);
++		sysc_clkdm_allow_idle(ddata);
++	}
 +
-+			mmc3: mmc@0 {
-+				compatible = "ti,omap4-hsmmc";
-+				ti,needs-special-reset;
-+				interrupts = <29>;
-+				reg = <0x0 0x1000>;
-+			};
- 		};
- 
- 		usb: usb@47400000 {
-diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
-index 55aff4db9c7c2..848e2a8884e2c 100644
---- a/arch/arm/boot/dts/am4372.dtsi
-+++ b/arch/arm/boot/dts/am4372.dtsi
-@@ -228,13 +228,33 @@
- 			interrupt-names = "edma3_tcerrint";
- 		};
- 
--		mmc3: mmc@47810000 {
--			compatible = "ti,omap4-hsmmc";
--			reg = <0x47810000 0x1000>;
-+		target-module@47810000 {
-+			compatible = "ti,sysc-omap2", "ti,sysc";
- 			ti,hwmods = "mmc3";
--			ti,needs-special-reset;
--			interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
--			status = "disabled";
-+			reg = <0x478102fc 0x4>,
-+			      <0x47810110 0x4>,
-+			      <0x47810114 0x4>;
-+			reg-names = "rev", "sysc", "syss";
-+			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
-+					 SYSC_OMAP2_ENAWAKEUP |
-+					 SYSC_OMAP2_SOFTRESET |
-+					 SYSC_OMAP2_AUTOIDLE)>;
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>;
-+			ti,syss-mask = <1>;
-+			clocks = <&l3s_clkctrl AM4_L3S_MMC3_CLKCTRL 0>;
-+			clock-names = "fck";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0x0 0x47810000 0x1000>;
++	/* Keep permanent PM runtime usage count for SYSC_QUIRK_NO_IDLE */
++	if (ddata->cfg.quirks & SYSC_QUIRK_NO_IDLE)
++		return;
 +
-+			mmc3: mmc@0 {
-+				compatible = "ti,omap4-hsmmc";
-+				ti,needs-special-reset;
-+				interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
-+				reg = <0x0 0x1000>;
-+			};
- 		};
++	/*
++	 * Decrement PM runtime usage count for SYSC_QUIRK_NO_IDLE_ON_INIT
++	 * and SYSC_QUIRK_NO_RESET_ON_INIT
++	 */
+ 	if (pm_runtime_active(ddata->dev))
+ 		pm_runtime_put_sync(ddata->dev);
+ }
+@@ -2445,7 +2470,8 @@ static int sysc_probe(struct platform_device *pdev)
+ 	INIT_DELAYED_WORK(&ddata->idle_work, ti_sysc_idle);
  
- 		sham: sham@53100000 {
+ 	/* At least earlycon won't survive without deferred idle */
+-	if (ddata->cfg.quirks & (SYSC_QUIRK_NO_IDLE_ON_INIT |
++	if (ddata->cfg.quirks & (SYSC_QUIRK_NO_IDLE |
++				 SYSC_QUIRK_NO_IDLE_ON_INIT |
+ 				 SYSC_QUIRK_NO_RESET_ON_INIT)) {
+ 		schedule_delayed_work(&ddata->idle_work, 3000);
+ 	} else {
 -- 
-2.20.1
-
+2.23.0
