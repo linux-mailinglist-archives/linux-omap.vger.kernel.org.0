@@ -2,62 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DDC8AA57B
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2019 16:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FA50AA596
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2019 16:17:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726080AbfIEOK6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Sep 2019 10:10:58 -0400
-Received: from muru.com ([72.249.23.125]:59740 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726048AbfIEOK6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 5 Sep 2019 10:10:58 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D319A810D;
-        Thu,  5 Sep 2019 14:11:26 +0000 (UTC)
-Date:   Thu, 5 Sep 2019 07:10:53 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     David Lechner <david@lechnology.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-omap@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v3 0/6] counter: new TI eQEP driver
-Message-ID: <20190905141053.GU52127@atomide.com>
-References: <20190901225827.12301-1-david@lechnology.com>
- <20190905133721.GA728346@icarus>
+        id S1732082AbfIEORW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Sep 2019 10:17:22 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:58040 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727009AbfIEORW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Sep 2019 10:17:22 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x85EHF6q066539;
+        Thu, 5 Sep 2019 09:17:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1567693035;
+        bh=ub+LpZSR2SqSnDTZYERv7a6nXgZCl/QfTXbE8sjKO10=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=jkRJNor/c//NIjSOu2F8t0GecbA3rmd/dTZM1I1uP2YjUNdtSlFyQGTDRm9uataKz
+         xfiha8TFkN8MrbcAr3s8LDQvlhyGJtIzrD+azaihHuMhi4HkdJAb/qCRntw9a9Pq7y
+         RiNzAl0LUP90NvcSOwe8j9ck78Ybh+3+QPEydLsA=
+Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x85EHF1r089155;
+        Thu, 5 Sep 2019 09:17:15 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 5 Sep
+ 2019 09:17:13 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Thu, 5 Sep 2019 09:17:13 -0500
+Received: from [10.250.98.116] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x85EH9Sc113593;
+        Thu, 5 Sep 2019 09:17:10 -0500
+Subject: Re: [PATCH] bus: ti-sysc: Fix clock handling for no-idle quirks
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+References: <20190905140337.19373-1-tony@atomide.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <49ce192d-697b-48e2-2b18-47acb370739b@ti.com>
+Date:   Thu, 5 Sep 2019 17:17:04 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190905133721.GA728346@icarus>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20190905140337.19373-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* William Breathitt Gray <vilhelm.gray@gmail.com> [190905 13:38]:
-> On Sun, Sep 01, 2019 at 05:58:21PM -0500, David Lechner wrote:
-> > This series adds device tree bindings and a new counter driver for the Texas
-> > Instruments Enhanced Quadrature Encoder Pulse (eQEP).
-> > 
-> > As mentioned in one of the commit messages, to start with, the driver only
-> > supports reading the current counter value and setting the min/max values.
-> > Other features can be added as the counter subsystem gains support for them.
-...
 
-> I'm satisfied with this version of the patchset.
+
+On 05/09/2019 17:03, Tony Lindgren wrote:
+> NFSroot can fail on dra7 when cpsw is probed using ti-sysc interconnect
+> target module driver as reported by Keerthy.
 > 
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> Device clocks and the interconnect target module may or may not be
+> enabled by the bootloader on init, but we currently assume the clocks
+> and module are on from the bootloader for "ti,no-idle" and
+> "ti,no-idle-on-init" quirks as reported by Grygorii Strashko.
 > 
-> Jonathan, if you have no objections please pick up this up so that it
-> can make it to the 5.4 merge window coming in soon. Alternatively, I can
-> merge it into my repository instead and hold it for a while longer
-> there, if you prefer that route.
+> Let's fix the issue by always enabling clocks init, and
+> never disable them for "ti,no-idle" quirk. For "ti,no-idle-on-init"
+> quirk, we must decrement the usage count later on to allow PM
+> runtime to idle the module if requested.
+> 
+> Fixes: 1a5cd7c23cc5 ("bus: ti-sysc: Enable all clocks directly during init to read revision")
+> Cc: Keerthy <j-keerthy@ti.com>
+> Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> Reported-by: Keerthy <j-keerthy@ti.com>
+> Reported-by: Grygorii Strashko <grygorii.strashko@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>   drivers/bus/ti-sysc.c | 48 +++++++++++++++++++++++++++++++++----------
+>   1 file changed, 37 insertions(+), 11 deletions(-)
+> 
 
-Looks good to me too:
+Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-Acked-by: Tony Lindgren <tony@atomide.com>
+Thank you, Tony.
+
+-- 
+Best regards,
+grygorii
