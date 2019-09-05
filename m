@@ -2,97 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FA50AA596
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2019 16:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A22EAA5D3
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2019 16:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732082AbfIEORW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Sep 2019 10:17:22 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:58040 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727009AbfIEORW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Sep 2019 10:17:22 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x85EHF6q066539;
-        Thu, 5 Sep 2019 09:17:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1567693035;
-        bh=ub+LpZSR2SqSnDTZYERv7a6nXgZCl/QfTXbE8sjKO10=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=jkRJNor/c//NIjSOu2F8t0GecbA3rmd/dTZM1I1uP2YjUNdtSlFyQGTDRm9uataKz
-         xfiha8TFkN8MrbcAr3s8LDQvlhyGJtIzrD+azaihHuMhi4HkdJAb/qCRntw9a9Pq7y
-         RiNzAl0LUP90NvcSOwe8j9ck78Ybh+3+QPEydLsA=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x85EHF1r089155;
-        Thu, 5 Sep 2019 09:17:15 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 5 Sep
- 2019 09:17:13 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 5 Sep 2019 09:17:13 -0500
-Received: from [10.250.98.116] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x85EH9Sc113593;
-        Thu, 5 Sep 2019 09:17:10 -0500
-Subject: Re: [PATCH] bus: ti-sysc: Fix clock handling for no-idle quirks
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
-CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-References: <20190905140337.19373-1-tony@atomide.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <49ce192d-697b-48e2-2b18-47acb370739b@ti.com>
-Date:   Thu, 5 Sep 2019 17:17:04 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2389194AbfIEO1j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Sep 2019 10:27:39 -0400
+Received: from muru.com ([72.249.23.125]:59764 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389046AbfIEO1j (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 5 Sep 2019 10:27:39 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 00B01810D;
+        Thu,  5 Sep 2019 14:28:07 +0000 (UTC)
+Date:   Thu, 5 Sep 2019 07:27:34 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Adam Ford <aford173@gmail.com>,
+        =?utf-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
+Subject: Re: [RFC v2 3/3] ARM: dts: omap3: bulk convert compatible to be
+ explicitly ti,omap3430 or ti,omap36xx
+Message-ID: <20190905142734.GV52127@atomide.com>
+References: <cover.1567587220.git.hns@goldelico.com>
+ <a2b56edcada7b9000a6e906387a02c0ee42681db.1567587220.git.hns@goldelico.com>
 MIME-Version: 1.0
-In-Reply-To: <20190905140337.19373-1-tony@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a2b56edcada7b9000a6e906387a02c0ee42681db.1567587220.git.hns@goldelico.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi,
 
-
-On 05/09/2019 17:03, Tony Lindgren wrote:
-> NFSroot can fail on dra7 when cpsw is probed using ti-sysc interconnect
-> target module driver as reported by Keerthy.
+* H. Nikolaus Schaller <hns@goldelico.com> [190904 08:54]:
+> According to omap.txt bindings documentation, matching the ti-cpufreq driver needs
+> to specify explicitly if a board uses an omap3430 or omap36xx chip.
 > 
-> Device clocks and the interconnect target module may or may not be
-> enabled by the bootloader on init, but we currently assume the clocks
-> and module are on from the bootloader for "ti,no-idle" and
-> "ti,no-idle-on-init" quirks as reported by Grygorii Strashko.
+> This needs to add ti,omap3430 to most omap34xx boards and replace ti,omap3630
+> by ti,omap36xx for some omap36xx boards (most others already have done it right).
 > 
-> Let's fix the issue by always enabling clocks init, and
-> never disable them for "ti,no-idle" quirk. For "ti,no-idle-on-init"
-> quirk, we must decrement the usage count later on to allow PM
-> runtime to idle the module if requested.
+> We also clean up some instances of missing ti,am3517 so that we can rely on
+> seeing either one of:
 > 
-> Fixes: 1a5cd7c23cc5 ("bus: ti-sysc: Enable all clocks directly during init to read revision")
-> Cc: Keerthy <j-keerthy@ti.com>
-> Cc: Vignesh Raghavendra <vigneshr@ti.com>
-> Reported-by: Keerthy <j-keerthy@ti.com>
-> Reported-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->   drivers/bus/ti-sysc.c | 48 +++++++++++++++++++++++++++++++++----------
->   1 file changed, 37 insertions(+), 11 deletions(-)
+> ti,am3517
+> ti,omap34xx
+> ti,omap36xx
 > 
+> in addition to ti,omap3.
 
-Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Please set up things to use ti,omap3630 in addition to ti,omap36xx
+for compatible to avoid churning the same files later.
 
-Thank you, Tony.
+> diff --git a/arch/arm/boot/dts/logicpd-som-lv-37xx-devkit.dts b/arch/arm/boot/dts/logicpd-som-lv-37xx-devkit.dts
+> --- a/arch/arm/boot/dts/logicpd-som-lv-37xx-devkit.dts
+> +++ b/arch/arm/boot/dts/logicpd-som-lv-37xx-devkit.dts
+> @@ -9,5 +9,5 @@
+>  
+>  / {
+>  	model = "LogicPD Zoom DM3730 SOM-LV Development Kit";
+> -	compatible = "logicpd,dm3730-som-lv-devkit", "ti,omap3630", "ti,omap3";
+> +	compatible = "logicpd,dm3730-som-lv-devkit", "ti,omap36xx", "ti,omap3";
+>  };
 
--- 
-Best regards,
-grygorii
+So just make this:
+
+compatible = "logicpd,dm3730-som-lv-devkit", "ti,omap3630", "ti,omap36xx", "ti,omap3";
+
+And so on. It's fine to use ti,omap3630 for 37xx too as they're the same.
+
+> diff --git a/arch/arm/boot/dts/omap3-ldp.dts b/arch/arm/boot/dts/omap3-ldp.dts
+> index 9a5fde2d9bce..9947574bd0f8 100644
+> --- a/arch/arm/boot/dts/omap3-ldp.dts
+> +++ b/arch/arm/boot/dts/omap3-ldp.dts
+> @@ -10,7 +10,7 @@
+>  
+>  / {
+>  	model = "TI OMAP3430 LDP (Zoom1 Labrador)";
+> -	compatible = "ti,omap3-ldp", "ti,omap3";
+> +	compatible = "ti,omap3-ldp", "ti,omap34xx, "ti,omap3";
+
+This fails to compile, it's missing a '"' for ti,omap34xx. And here too,
+please update to use:
+
+compatible = "ti,omap3-ldp", "ti,omap3430", "ti,omap34xx", "ti,omap3";
+
+And again it's fine to add "ti,omap3430" for 3530 variants.
+
+Regards,
+
+Tony
