@@ -2,137 +2,176 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E19AA99EA
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2019 07:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDEBFAA4A5
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2019 15:37:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730785AbfIEFDF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Sep 2019 01:03:05 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:32823 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726032AbfIEFDF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Sep 2019 01:03:05 -0400
-Received: by mail-pl1-f195.google.com with SMTP id t11so710325plo.0
-        for <linux-omap@vger.kernel.org>; Wed, 04 Sep 2019 22:03:05 -0700 (PDT)
+        id S1727992AbfIENho (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Sep 2019 09:37:44 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:47014 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727143AbfIENhn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Sep 2019 09:37:43 -0400
+Received: by mail-pf1-f194.google.com with SMTP id q5so1754156pfg.13;
+        Thu, 05 Sep 2019 06:37:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=4kF3e1zsFRcXZceVWYoKwvOb0B8jkCH1xLzvA0xA6lE=;
-        b=KizyhipGjkEgmtMTKybiHzm6jb3VM2fPNbn/ucG6Zjg04C6K6+tpxoJhQSYsUz0f+l
-         DgO2hmSz+dsjpN5r1fg2pFWZPto71JAv5pGRYUru6vOiP2h2DaSFsqGcnaBVA94fru2J
-         7T/ssB1SdbYipqOrsDHMY9TxljHSCKi+zsMKUmj7E7Vkf8nnB0WrFyQDRXFwMtojk0FN
-         yUnMeqIc3feZ5vuuoVYAcVjUAKHqnjiuIfmQddQ6GMdnR/Z7+jHPxU9VfTuFOiz6LBlN
-         UQEhe2S3skIdfY8seiu15fWsgR3JDrquku6DFAbjM8YiF4XWnuVtDTXJVdK8QF1lC28u
-         6aYg==
+        bh=fi++776ImZEZT48n1qE4d0SlhAt4GD7N11zpq7SBZhM=;
+        b=iZ32udt5Ao+f4A8AcqWMD0UzwlSrvD4qFci1gCSpLs167HXqVYUYi0+M1A9Is/tjrD
+         dSLyGCd0tUG5IE29UZfmw1UIVLGaf3DaSHlaScDW+EX8J6bW6VlfZHdTVtslVlwEPW55
+         AbBtVYL4O7SmjSiyKhKSQ/6e4c3GcOgOm7iYlNwysHhdZs+JeO3YnSH//pWzjkFYoq+Y
+         Wo927FE786DNSu9sHlPoCEaLHphRMla1OzN01QiESJNg9tnViF3DHGe20a0yKaRE9NuT
+         EthsXjvgs5JZK1C99hc4SjQtyBoLqXW1eItvh+J+VIWJxI3QYY9qjmdBMPcXdh1XDjuD
+         gd/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=4kF3e1zsFRcXZceVWYoKwvOb0B8jkCH1xLzvA0xA6lE=;
-        b=HhKXKEWiyt1/o4H5rioeqq3O63g4ldt8l82Q9t+MTHOiVET5CLtKz232xOl1QO0jQU
-         TLpbQ7E9gOS9ThkX4ZD3JxQ6BlHxwdO8e2/FnCZiAvrOZAA+Z9GKNqRM5qktUyO7bn1V
-         PV6p4uM3O63tozFElWWiBBrqqGtQLEqePdqkWpjJOHkcNHCyT8HTx/R/j6k/dAR5NSSd
-         e/qvqmFL03bnx98P0gpj+b+P00oub8kN0L9NqSyJ7irBI6VR3itUURAmfrs2GUoMs4PN
-         qEGBUTd+HTgcFK38VmJpMo9OHnZr/kOwMW+L03JRoLmEVTqAj8Wt2iFoocizz6lt+aus
-         1+Cg==
-X-Gm-Message-State: APjAAAVqu+57KnNjwTI8d8EX0UGh2wrGyNTJXJVF7/A6BuvpZ8a/WNls
-        MQDrEV6DU8ZK2s3EG6BjpfMsAw==
-X-Google-Smtp-Source: APXvYqyT6Wj0CVdxSGtdOLntILebZr38S2rX5CcajMvuY6Vi2Qck71OpHBK+DDdImEW/4d/3+ViFEg==
-X-Received: by 2002:a17:902:ba16:: with SMTP id j22mr1275680pls.253.1567659784719;
-        Wed, 04 Sep 2019 22:03:04 -0700 (PDT)
-Received: from localhost ([122.167.132.221])
-        by smtp.gmail.com with ESMTPSA id k14sm677205pgi.20.2019.09.04.22.03.03
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 04 Sep 2019 22:03:03 -0700 (PDT)
-Date:   Thu, 5 Sep 2019 10:33:02 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
+        bh=fi++776ImZEZT48n1qE4d0SlhAt4GD7N11zpq7SBZhM=;
+        b=qxNgG7sY8E4672rhqwam/wjRA9bmeYp0SqKI8i4TLq7Zu4TNilK0yQfkcCYTIE17KA
+         O7hJ8wppVlI2au+UX+lSSAcgL2intL7ap/PXa5N87Tclb7Ev/c/7Qe751MRkRW+gTEvH
+         6dlkFlnrEH1EuEs6LCFwZXTsdQgrDxPTF/l4cyZoD61W4252fP74OvNjG2tRjevd6C/m
+         EFPD/tWhMV1r7AfgtGEajKAbM5z39xlsi/M9CrocaOBnDKrM+3C7qcaKzBIPAGQZwFcG
+         HJslk+sltcqe4GT2KoSX+RJC6qUBuMCDs9eyYFbu5nAOHUdx6oVl+x+fcECrcgIcm10c
+         OeLg==
+X-Gm-Message-State: APjAAAUl6Soyq3HG7wh5e3VOxciTxulW2QoquCEn78jwv/65xMWyYSsP
+        kxh5DR7DRgzCzAU2yh9XVP0=
+X-Google-Smtp-Source: APXvYqwfariauCzmmaTcCfPD/BTxjV8KxWhNia0IPgs/fMJkiUKEcxPoLnijDvxLMAc8xd3e4YgaWg==
+X-Received: by 2002:a17:90a:32c8:: with SMTP id l66mr3979785pjb.44.1567690662640;
+        Thu, 05 Sep 2019 06:37:42 -0700 (PDT)
+Received: from icarus ([2001:268:c145:7cce:aed2:6823:62ef:c22d])
+        by smtp.gmail.com with ESMTPSA id f188sm2268221pfa.170.2019.09.05.06.37.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Sep 2019 06:37:41 -0700 (PDT)
+Date:   Thu, 5 Sep 2019 22:37:21 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     David Lechner <david@lechnology.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        =?utf-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
-Subject: Re: [RFC v2 0/3] OMAP3: convert opp-v1 to opp-v2 and read speed
- binned / 720MHz grade bits
-Message-ID: <20190905050302.t7dsmyl7xa25umjg@vireshk-i7>
-References: <cover.1567587220.git.hns@goldelico.com>
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 0/6] counter: new TI eQEP driver
+Message-ID: <20190905133721.GA728346@icarus>
+References: <20190901225827.12301-1-david@lechnology.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1567587220.git.hns@goldelico.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <20190901225827.12301-1-david@lechnology.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 04-09-19, 10:53, H. Nikolaus Schaller wrote:
-> Changes V2:
-> * merge separate patch to remove opp-v1 table from n950-n9 into
->   the general omap3xxx.dtsi patch
-> * add legacy compatibility to ti,omap3430 and ti,omap3630 for
->   the ti-cpufreq driver
-> * make driver and omap3xxx.dtsi patches pass checkpatch
-> * add bulk patch to explicitly define compatibility to ti,omap3430
->   and ti,omap36xx in addition to ti,omap3 of all in-tree boards
->   where it was missing
+On Sun, Sep 01, 2019 at 05:58:21PM -0500, David Lechner wrote:
+> This series adds device tree bindings and a new counter driver for the Texas
+> Instruments Enhanced Quadrature Encoder Pulse (eQEP).
 > 
-> RFC V1 2019-09-02 12:55:55:
+> As mentioned in one of the commit messages, to start with, the driver only
+> supports reading the current counter value and setting the min/max values.
+> Other features can be added as the counter subsystem gains support for them.
 > 
-> This patch set converts the opp tables to opp-v2 format
-> and extends the ti-cpufreq to support omap3.
+> v3 changes:
+> - Minor changes to device tree bindings (style and generic node name)
+> - Drop action in initializer
+> - Fix ordering of pm runtime disable
+> v2 changes:
+> - New patch to move TI PWMSS driver from drivers/pwm/ to drivers/bus/
+> - Device tree bindings converted to .yaml format
+> - Device tree clock renamed from "fck" to "sysclkout"
+> - Dropped unused index and strobe signals from counter driver
+> - Added synapses and actions to counter driver
+> - Fixed base in of kstrtouint()
+> - Clarifications in commit messages
 > 
-> It adds 720 MHz (omap34xx) and 1 GHz (omap36xx) OPPs but
-> tells the ti-cpufreq driver to disable them if the speed
-> binned / 720MHz grade eFuse bits indicate that the chip
-> is not rated for that speed. 
+> This series has been tested on a BeagleBone Blue with the following script:
 > 
-> It has been tested (for chip variant detection, not reliability
-> of the high speed OPPs) on:
+> #!/usr/bin/env python3
 > 
-> * BeagleBoard C2 (omap3430 600MHz)
-> * BeagleBoard XM B (dm3730 800MHz)
-> * GTA04A4 (dm3730 800MHz)
-> * GTA04A5 (dm3730 1GHz)
+> from os import path
+> from time import sleep
 > 
+> COUNTER_PATH = '/sys/bus/counter/devices'
+> COUNTERS = ['counter0', 'counter1', 'counter2']
+> COUNT0 = 'count0'
+> COUNT = 'count'
+> FUNCTION = 'function'
+> CEILING = 'ceiling'
+> FLOOR = 'floor'
+> ENABLE = 'enable'
 > 
-> H. Nikolaus Schaller (3):
->   cpufreq: ti-cpufreq: add support for omap34xx and omap36xx
->   ARM: dts: replace opp-v1 tables by opp-v2 for omap34xx and omap36xx
->   ARM: dts: omap3: bulk convert compatible to be explicitly ti,omap3430
->     or ti,omap36xx
+> cnts = []
 > 
->  arch/arm/boot/dts/am3517_mt_ventoux.dts       |  2 +-
->  .../boot/dts/logicpd-som-lv-35xx-devkit.dts   |  2 +-
->  .../boot/dts/logicpd-som-lv-37xx-devkit.dts   |  2 +-
->  .../boot/dts/logicpd-torpedo-35xx-devkit.dts  |  2 +-
->  .../boot/dts/logicpd-torpedo-37xx-devkit.dts  |  2 +-
->  arch/arm/boot/dts/omap3-beagle.dts            |  2 +-
->  arch/arm/boot/dts/omap3-cm-t3530.dts          |  2 +-
->  arch/arm/boot/dts/omap3-devkit8000-lcd43.dts  |  2 +-
->  arch/arm/boot/dts/omap3-devkit8000-lcd70.dts  |  2 +-
->  arch/arm/boot/dts/omap3-devkit8000.dts        |  2 +-
->  arch/arm/boot/dts/omap3-evm-37xx.dts          |  2 +-
->  arch/arm/boot/dts/omap3-ha-lcd.dts            |  2 +-
->  arch/arm/boot/dts/omap3-ha.dts                |  2 +-
->  arch/arm/boot/dts/omap3-ldp.dts               |  2 +-
->  arch/arm/boot/dts/omap3-n950-n9.dtsi          |  7 --
->  arch/arm/boot/dts/omap3-sbc-t3530.dts         |  2 +-
->  arch/arm/boot/dts/omap3-thunder.dts           |  2 +-
->  arch/arm/boot/dts/omap3430-sdp.dts            |  2 +-
->  arch/arm/boot/dts/omap34xx.dtsi               | 65 ++++++++++++--
->  arch/arm/boot/dts/omap36xx.dtsi               | 53 +++++++++--
->  drivers/cpufreq/cpufreq-dt-platdev.c          |  2 +-
->  drivers/cpufreq/ti-cpufreq.c                  | 87 ++++++++++++++++++-
->  22 files changed, 204 insertions(+), 44 deletions(-)
+> for c in COUNTERS:
+>     function_path = path.join(COUNTER_PATH, c, COUNT0, FUNCTION)
+>     with open(function_path, 'w') as f:
+>         f.write('quadrature x4')
+>     floor_path = path.join(COUNTER_PATH, c, COUNT0, FLOOR)
+>     with open(floor_path, 'w') as f:
+>         f.write(str(0))
+>     ceiling_path = path.join(COUNTER_PATH, c, COUNT0, CEILING)
+>     with open(ceiling_path, 'w') as f:
+>         f.write(str(0xffffffff))
+>     enable_path = path.join(COUNTER_PATH, c, COUNT0, ENABLE)
+>     with open(enable_path, 'w') as f:
+>         f.write('1')
+> 
+>     cnt_path = path.join(COUNTER_PATH, c, COUNT0, COUNT)
+>     cnts.append(open(cnt_path, 'r'))
+> 
+> while True:
+>     for c in cnts:
+>         c.seek(0)
+>         val = int(c.read())
+>         if val >= 0x80000000:
+>             val -= 0x100000000
+>         print(val, end=' ')
+>     print()
+>     sleep(1)
+> 
+> David Lechner (6):
+>   bus/ti-pwmss: move TI PWMSS driver from PWM to bus subsystem
+>   dt-bindings: counter: new bindings for TI eQEP
+>   counter: new TI eQEP driver
+>   ARM: dts: am33xx: Add nodes for eQEP
+>   ARM: dts: am335x-boneblue: Enable eQEP
+>   ARM: dts: am335x-boneblue: Use of am335x-osd335x-common.dtsi
+> 
+>  .../devicetree/bindings/counter/ti-eqep.yaml  |  50 ++
+>  MAINTAINERS                                   |   6 +
+>  arch/arm/boot/dts/am335x-boneblue.dts         | 146 +++---
+>  arch/arm/boot/dts/am33xx-l4.dtsi              |  27 +
+>  drivers/bus/Kconfig                           |   9 +
+>  drivers/bus/Makefile                          |   1 +
+>  drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} |   0
+>  drivers/counter/Kconfig                       |  11 +
+>  drivers/counter/Makefile                      |   1 +
+>  drivers/counter/ti-eqep.c                     | 473 ++++++++++++++++++
+>  drivers/pwm/Kconfig                           |   9 -
+>  drivers/pwm/Makefile                          |   1 -
+>  12 files changed, 634 insertions(+), 100 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/counter/ti-eqep.yaml
+>  rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)
+>  create mode 100644 drivers/counter/ti-eqep.c
+> 
+> -- 
+> 2.17.1
 
-Most of the stuff looks fine to me here. I will pick the patches when
-the SoC maintainers provide an Ack.
+I'm satisfied with this version of the patchset.
 
--- 
-viresh
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+
+Jonathan, if you have no objections please pick up this up so that it
+can make it to the 5.4 merge window coming in soon. Alternatively, I can
+merge it into my repository instead and hold it for a while longer
+there, if you prefer that route.
+
+Thank you,
+
+William Breathitt Gray
