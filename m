@@ -2,117 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B012CAB616
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 12:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CDE9AB88A
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 14:57:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727039AbfIFKgT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Sep 2019 06:36:19 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:38762 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725846AbfIFKgT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Sep 2019 06:36:19 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x86Aa4JA112792;
-        Fri, 6 Sep 2019 05:36:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1567766164;
-        bh=NKu33tCBfYWn/j0hyZDumUtOVco0J0GnTjsYln1Fv+Y=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=A02WkVUupyPbaiJr1QyQemypxZ8pXyzutM05BOr3B2hQnmz8sdtZCXVlYZfcICYTt
-         HwujqOspTnPdvT/6UeMPjxPf9Zq918TEbqzpGVbOaT4KgWowKjgOEsqsJwDDsk4qN3
-         tU5FZhQLCa59rbMWtm/0BoqgYYHSx8Jqcxiovv2Y=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x86Aa48j050155
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 6 Sep 2019 05:36:04 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 6 Sep
- 2019 05:36:02 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 6 Sep 2019 05:36:02 -0500
-Received: from sokoban.bb.dnainternet.fi (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x86AZxp9060862;
-        Fri, 6 Sep 2019 05:36:00 -0500
-From:   Tero Kristo <t-kristo@ti.com>
-To:     <ssantosh@kernel.org>, <linux-omap@vger.kernel.org>,
-        <tony@atomide.com>, <s-anna@ti.com>, <p.zabel@pengutronix.de>,
-        <robh+dt@kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>
-Subject: [PATCHv4 01/10] dt-bindings: omap: add new binding for PRM instances
-Date:   Fri, 6 Sep 2019 13:35:58 +0300
-Message-ID: <20190906103558.17694-1-t-kristo@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190830121816.30034-2-t-kristo@ti.com>
-References: <20190830121816.30034-2-t-kristo@ti.com>
+        id S2404675AbfIFM5L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Sep 2019 08:57:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51840 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404455AbfIFM5L (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 6 Sep 2019 08:57:11 -0400
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F1E98208C3;
+        Fri,  6 Sep 2019 12:57:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567774631;
+        bh=NL02bNQfH90Jrh+T8P44tgOkFtizvrx9wmPax7o59to=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=vDMxptgHsUae7s7z00ld+VjzFkQDdCjcUSozl7tLfuvMQHWN3Rn35I8UJpOTQP1n1
+         +x1TCX+cwuFwmBTss46FBiUWuHnvvt5X+2eAm3Eas/565ha+NwrLKikC8q4IDQAQXU
+         ORP3TBiGUU6g2gSv1iHZQ4I4hqdZ9Mg41OurrDmg=
+Received: by mail-qt1-f178.google.com with SMTP id b2so6888295qtq.5;
+        Fri, 06 Sep 2019 05:57:10 -0700 (PDT)
+X-Gm-Message-State: APjAAAW1wdr+Yeiij3L5x0SJGVVr6CU2mqgqvKtXRDe8/DhcPUMxEzUJ
+        p6rkVCshDjsze3vkqUoXY5/uitcbEXetCMoblA==
+X-Google-Smtp-Source: APXvYqyDk0WFHsHVbn49ivVXFxlgtYthvW6nlgjYDlf1/VbP/QyxY/nRvcooxFGw9uRPTPZaOoDz4E2YHy7hCWtcbLg=
+X-Received: by 2002:ac8:31b3:: with SMTP id h48mr9073369qte.300.1567774630183;
+ Fri, 06 Sep 2019 05:57:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20190830121816.30034-2-t-kristo@ti.com> <20190906103558.17694-1-t-kristo@ti.com>
+In-Reply-To: <20190906103558.17694-1-t-kristo@ti.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Fri, 6 Sep 2019 13:56:58 +0100
+X-Gmail-Original-Message-ID: <CAL_JsqLHTsEz6RJSi3rZ9AKyTBc00abyAxqwG8B9zAqL6cnv+w@mail.gmail.com>
+Message-ID: <CAL_JsqLHTsEz6RJSi3rZ9AKyTBc00abyAxqwG8B9zAqL6cnv+w@mail.gmail.com>
+Subject: Re: [PATCHv4 01/10] dt-bindings: omap: add new binding for PRM instances
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>, Suman Anna <s-anna@ti.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
-of these will act as a power domain controller and potentially as a reset
-provider.
+On Fri, Sep 6, 2019 at 11:36 AM Tero Kristo <t-kristo@ti.com> wrote:
+>
+> Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
+> of these will act as a power domain controller and potentially as a reset
+> provider.
+>
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> ---
+> v4:
+> - renamed nodes as power-controller
+> - added documentation about hierarchy
+>
+>  .../devicetree/bindings/arm/omap/prm-inst.txt | 31 +++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
 
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
----
-v4:
-- renamed nodes as power-controller
-- added documentation about hierarchy
-
- .../devicetree/bindings/arm/omap/prm-inst.txt | 31 +++++++++++++++++++
- 1 file changed, 31 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
-
-diff --git a/Documentation/devicetree/bindings/arm/omap/prm-inst.txt b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
-new file mode 100644
-index 000000000000..7c7527c37734
---- /dev/null
-+++ b/Documentation/devicetree/bindings/arm/omap/prm-inst.txt
-@@ -0,0 +1,35 @@
-+OMAP PRM instance bindings
-+
-+Power and Reset Manager is an IP block on OMAP family of devices which
-+handle the power domains and their current state, and provide reset
-+handling for the domains and/or separate IP blocks under the power domain
-+hierarchy. A PRM instance node must be a child of a PRM node [1].
-+
-+[1] Documentation/devicetree/bindings/arm/omap/prcm.txt
-+
-+Required properties:
-+- compatible:	Must be one of:
-+		"ti,am3-prm-inst"
-+		"ti,am4-prm-inst"
-+		"ti,omap4-prm-inst"
-+		"ti,omap5-prm-inst"
-+		"ti,dra7-prm-inst"
-+- reg:		Contains PRM instance register address range
-+		(base address and length)
-+
-+Optional properties:
-+- #reset-cells:	Should be 1 if the PRM instance in question supports resets.
-+- clocks:	Associated clocks for the reset signals if any. Certain reset
-+		signals can't be toggled properly without functional clock
-+		being active for them.
-+
-+Example:
-+
-+&prm {
-+	prm_dsp2: power-controller@1b00 {
-+		compatible = "ti,dra7-prm-inst";
-+		reg = <0x1b00 0x40>;
-+		#reset-cells = <1>;
-+		clocks = <&dsp2_clkctrl DRA7_DSP2_MMU0_DSP2_CLKCTRL 0>;
-+	};
-+};
--- 
-2.17.1
-
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Reviewed-by: Rob Herring <robh@kernel.org>
