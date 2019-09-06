@@ -2,82 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAC1AAB0D4
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 05:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37AE6AB352
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 09:39:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388526AbfIFDEr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Sep 2019 23:04:47 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:36528 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731518AbfIFDEr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Sep 2019 23:04:47 -0400
-Received: by mail-pg1-f194.google.com with SMTP id l21so2624482pgm.3
-        for <linux-omap@vger.kernel.org>; Thu, 05 Sep 2019 20:04:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=3PTG9G99Umh/O+x7zai5y5HPdUR0mgJht59Vfjck7XQ=;
-        b=JlDu4etbqmzw9wXT6FGlXJk4Kybmbh1/HwtZgLtvcc8JacahcRVrky+j2sG5rrZxqY
-         ZuWEB7PpdtHHvjpRMr9Hpl8sE7EzzL40ASpLyvsnzjPjtGh9HtWndBXBMMuumMHcmkrj
-         y0KB+73vEvTTP5yitiPrGNYRZ60cWlRbfyRqtgeV+0z91OL/2fNXYQCJC3JQpljqLY8T
-         oRH7HWg5t/sLhnSxhen5EAdICh6nkloegeVwQg5oNeNOAmzqH9Mug+z3YdIUyu6ad2/f
-         5CY1Fjq+vCZAP0hF0/29kPAvJgzAfXzscrMSgkKJo7qZK8vvAqDL5FuHlDH1/wHA8kp2
-         EPOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=3PTG9G99Umh/O+x7zai5y5HPdUR0mgJht59Vfjck7XQ=;
-        b=fIWMKkZIV3PHSdxoi8xp5tt6UF1ejosGAML+6Yi+pJEHUUJDczV6t7kd5oj7mWX3k1
-         D06L9bEMb3ABOcLkYLfqN8oTHzqQf2htMUbVIdAk5HW+YZj1i/cbS2fpCsYP7a/rWY0/
-         mRjxNyUtTzwY0mTCEmyeT3YL4+hW5qrJyetOEJwGqjNgc3onXax5c9El7tq6cm6UZUSa
-         pZcFGoiWkGEEitSMBg8mDWL/03JlBInWlclMrc6htwdAMv/ZNuDDW6b6vjtazbMGQD/Z
-         w7zSCfRiji7CaaptMB3e8z5Rr0EKZg9indem7h3Nh2RE68UT5mdMwRchX48yJlqGTwoB
-         A6vQ==
-X-Gm-Message-State: APjAAAVaF0dSDD+V4Tg6hJ6E/dC3rjjmKvX071o3D4j8lmcmIXp3n7Pm
-        cSRn96EJmHU1/pFMtvpwNOj3aA==
-X-Google-Smtp-Source: APXvYqwcU7P4KYdNJHTHBUa+PS5plDHub2NwjRt0YWUkZiqMjDWKH6/fIdJ8dd+tt9qVDv5mRdVbYw==
-X-Received: by 2002:a65:5cca:: with SMTP id b10mr6247565pgt.365.1567739086676;
-        Thu, 05 Sep 2019 20:04:46 -0700 (PDT)
-Received: from localhost ([122.167.132.221])
-        by smtp.gmail.com with ESMTPSA id e10sm4578936pfh.77.2019.09.05.20.04.45
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 05 Sep 2019 20:04:46 -0700 (PDT)
-Date:   Fri, 6 Sep 2019 08:34:44 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        =?utf-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
-Subject: Re: [RFC v2 1/3] cpufreq: ti-cpufreq: add support for omap34xx and
- omap36xx
-Message-ID: <20190906030444.lklvvpbdqesatohb@vireshk-i7>
-References: <cover.1567587220.git.hns@goldelico.com>
- <a889b10386bebfbfd6cdb5491367235290d53247.1567587220.git.hns@goldelico.com>
- <20190905143226.GW52127@atomide.com>
+        id S1731772AbfIFHjh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Sep 2019 03:39:37 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:34420 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728769AbfIFHjh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Sep 2019 03:39:37 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x867dRJB053866;
+        Fri, 6 Sep 2019 02:39:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1567755567;
+        bh=z6Nh68YYvTDDh5HiSd5ce/6VHBCPMMXmMgbKOM1slds=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=iT3e59oWcC9/GWHtEvNJFERDlEd0VDsMZpqKav5auCLqqTQwYdbZs8EqQFLsI8XrU
+         SXq+HElmMR2X3k2eAlJiw/9PISXTbdHV2qiKjDSy6p68s2Y/5sQfQBKhxd+rYVubVD
+         tfqhQNMpcmlE5XUW7wOdQ6USYzAY9iKr+slbYk7g=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x867dRN6029677;
+        Fri, 6 Sep 2019 02:39:27 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 6 Sep
+ 2019 02:39:26 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Fri, 6 Sep 2019 02:39:26 -0500
+Received: from [192.168.2.14] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x867dNc9078451;
+        Fri, 6 Sep 2019 02:39:23 -0500
+Subject: Re: [PATCH] bus: ti-sysc: Fix handling of invalid clocks
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Suman Anna <s-anna@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20190905215356.8168-1-tony@atomide.com>
+From:   Roger Quadros <rogerq@ti.com>
+Message-ID: <3c9f7340-f17f-cecd-3ae4-ec8a1af7c2bf@ti.com>
+Date:   Fri, 6 Sep 2019 10:39:22 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190905143226.GW52127@atomide.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <20190905215356.8168-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 05-09-19, 07:32, Tony Lindgren wrote:
-> Acked-by: Tony Lindgren <tony@atomide.com>
+On 06/09/2019 00:53, Tony Lindgren wrote:
+> We can currently get "Unable to handle kernel paging request at
+> virtual address" for invalid clocks with dts node but no driver:
+> 
+> (__clk_get_hw) from [<c0138ebc>] (ti_sysc_find_one_clockdomain+0x18/0x34)
+> (ti_sysc_find_one_clockdomain) from [<c0138f0c>] (ti_sysc_clkdm_init+0x34/0xdc)
+> (ti_sysc_clkdm_init) from [<c0584660>] (sysc_probe+0xa50/0x10e8)
+> (sysc_probe) from [<c065c6ac>] (platform_drv_probe+0x58/0xa8)
+> 
+> Let's add IS_ERR checks to ti_sysc_clkdm_init() as And let's start treating
+> clk_get() with -ENOENT as a proper error. If the clock name is specified
+> in device tree we must succeed with clk_get() to continue. For modules with
+> no clock names specified in device tree we will just ignore the clocks.
+> 
+> Fixes: 2b2f7def058a ("bus: ti-sysc: Add support for missing clockdomain handling")
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-Do you want to pick the series instead as this has lots of DT changes
-?
+Acked-by: Roger Quadros <rogerq@ti.com>
+
+> ---
+>   arch/arm/mach-omap2/pdata-quirks.c | 4 ++--
+>   drivers/bus/ti-sysc.c              | 5 +----
+>   2 files changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
+> --- a/arch/arm/mach-omap2/pdata-quirks.c
+> +++ b/arch/arm/mach-omap2/pdata-quirks.c
+> @@ -491,11 +491,11 @@ static int ti_sysc_clkdm_init(struct device *dev,
+>   			      struct clk *fck, struct clk *ick,
+>   			      struct ti_sysc_cookie *cookie)
+>   {
+> -	if (fck)
+> +	if (!IS_ERR(fck))
+>   		cookie->clkdm = ti_sysc_find_one_clockdomain(fck);
+>   	if (cookie->clkdm)
+>   		return 0;
+> -	if (ick)
+> +	if (!IS_ERR(ick))
+>   		cookie->clkdm = ti_sysc_find_one_clockdomain(ick);
+>   	if (cookie->clkdm)
+>   		return 0;
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
+> @@ -280,9 +280,6 @@ static int sysc_get_one_clock(struct sysc *ddata, const char *name)
+>   
+>   	ddata->clocks[index] = devm_clk_get(ddata->dev, name);
+>   	if (IS_ERR(ddata->clocks[index])) {
+> -		if (PTR_ERR(ddata->clocks[index]) == -ENOENT)
+> -			return 0;
+> -
+>   		dev_err(ddata->dev, "clock get error for %s: %li\n",
+>   			name, PTR_ERR(ddata->clocks[index]));
+>   
+> @@ -357,7 +354,7 @@ static int sysc_get_clocks(struct sysc *ddata)
+>   			continue;
+>   
+>   		error = sysc_get_one_clock(ddata, name);
+> -		if (error && error != -ENOENT)
+> +		if (error)
+>   			return error;
+>   	}
+>   
+> 
 
 -- 
-viresh
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
