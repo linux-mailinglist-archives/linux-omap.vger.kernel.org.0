@@ -2,134 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DC44AC180
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 22:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D93AC198
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 22:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727819AbfIFUhj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Sep 2019 16:37:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48658 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726776AbfIFUhi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 6 Sep 2019 16:37:38 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 59A592070C;
-        Fri,  6 Sep 2019 20:37:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567802257;
-        bh=kDvMHv3TwiSKK0oZRUf58uBDdc0xHs3w2kiIWMY/3gw=;
-        h=In-Reply-To:References:To:From:Cc:Subject:Date:From;
-        b=WWqyHesMUAZswloxpKHAI0z6/Z+5h29ewfO+UTbCpz1j9iooovd38PU0MYAoGHCNv
-         8RxWdekDWGOSQkTKcLDUL0KBne/fd0fLFrAF04KDkoU09n+F1xv2Lm+jg6v0ATlY8u
-         3TP+FL9hoo8JeeY9wBBmFTyN+DAEYsrs/bDNz/t0=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+        id S2392340AbfIFUrB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Sep 2019 16:47:01 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:15204 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392301AbfIFUrB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Sep 2019 16:47:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1567802818;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=GekG4DGQmZmxyopgQNgSk7xa93ZINLYsz3ZXcUkShOA=;
+        b=AaHsJK7M2oEsxvV8by86+YlP+5EJ7qPAvzbdBcfG1kaQY720t1ZfMzJ3Y8IgXDPNkp
+        0KEBvH3wmW7au12WCbZq9gCWQaeg+Q9pNlcbBXk7jgFga2XZocmzc7leLRF37TkwxidK
+        HOyh9cGi+E55umZJPC4u6XkEDGwWxSgJxW9FnlKCdTvbuJmDKDJa5IxDKHnt1C4qlBjl
+        m88jgCM5yzyETQ0iMzFouf1B+FB/w6v9NNbBDSzrs/bNB43mXKmuSnanN9rtDmnQLM9N
+        euhKrEwJDvNZYw7zZE7bVsbyDQ/KTTZXZ+Bj5XdB9E7iVWrSgIxVx16Vt7LrMZB6tfes
+        vqGA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/PqwDqp5w=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 44.27.0 DYNA|AUTH)
+        with ESMTPSA id u036f9v86Kknpyo
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Fri, 6 Sep 2019 22:46:49 +0200 (CEST)
+Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [RFC v2 1/3] cpufreq: ti-cpufreq: add support for omap34xx and omap36xx
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20190906030158.leuumg7rwsvowwfx@vireshk-i7>
+Date:   Fri, 6 Sep 2019 22:46:49 +0200
+Cc:     =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Adam Ford <aford173@gmail.com>,
+        =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-pm@vger.kernel.org,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <3c1c9285-1627-0b71-18aa-f3bc1f5286ca@ti.com>
-References: <20190828065929.32150-1-t-kristo@ti.com> <20190828065929.32150-5-t-kristo@ti.com> <20190829200515.AFB0622CEA@mail.kernel.org> <ed1e3868-af4d-8141-2a04-202923715d06@ti.com> <20190906161543.EB392206CD@mail.kernel.org> <3c1c9285-1627-0b71-18aa-f3bc1f5286ca@ti.com>
-To:     Tero Kristo <t-kristo@ti.com>, linux-clk@vger.kernel.org,
-        mturquette@baylibre.com
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-omap@vger.kernel.org, tony@atomide.com, s-anna@ti.com
-Subject: Re: [PATCHv2 4/6] clk: ti: clkctrl: add API to notify reset status
-User-Agent: alot/0.8.1
-Date:   Fri, 06 Sep 2019 13:37:36 -0700
-Message-Id: <20190906203737.59A592070C@mail.kernel.org>
+Message-Id: <1ED2450A-A445-42B8-8956-58A53F15DBE2@goldelico.com>
+References: <cover.1567587220.git.hns@goldelico.com> <a889b10386bebfbfd6cdb5491367235290d53247.1567587220.git.hns@goldelico.com> <20190905143226.GW52127@atomide.com> <20190906030158.leuumg7rwsvowwfx@vireshk-i7>
+To:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Tony Lindgren <tony@atomide.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Tero Kristo (2019-09-06 12:57:06)
-> On 06/09/2019 19:15, Stephen Boyd wrote:
-> > Quoting Tero Kristo (2019-08-29 23:06:41)
-> >> On 29/08/2019 23:05, Stephen Boyd wrote:
-> >>> Quoting Tero Kristo (2019-08-27 23:59:27)
-> >>>> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-> >>>> index e3e0a66a6ce2..47a0d1398c6f 100644
-> >>>> --- a/drivers/clk/ti/clkctrl.c
-> >>>> +++ b/drivers/clk/ti/clkctrl.c
-> >>>> @@ -680,3 +689,38 @@ u32 ti_clk_is_in_standby(struct clk *clk)
-> >>>>           return false;
-> >>>>    }
-> >>>>    EXPORT_SYMBOL_GPL(ti_clk_is_in_standby);
-> >>>> +
-> >>>> +/**
-> >>>> + * ti_clk_notify_resets - Notify the clock driver associated reset =
-status
-> >>>
-> >>> This is completely unused in this patch series. What's going on?
-> >>
-> >> This is needed by the OMAP reset driver. See:
-> >>
-> >> https://lwn.net/Articles/797597/
-> >>
-> >=20
-> > Ok. I decided to punt this topic forward to next release at the least.
-> > To clarify, TI is not special with regards to coordinating resets and
-> > clk enable/disable state. Every other silicon vendor has the same
-> > requirements and nobody is doing a good job at it.
-> >=20
-> > Please devise a way that avoids making a tight coupling between the clk
-> > driver and the reset driver in this way. Are the two in the same
-> > register space?
->=20
-> No, they do not share register space. One is under a PRM node, one is=20
-> under CM node, and there are multiple instances of each following each=20
-> other:
->=20
-> prm-1
-> prm-2
-> prm-3
+Hi,
 
-So PRM is reset?
+> Am 06.09.2019 um 05:01 schrieb Viresh Kumar <viresh.kumar@linaro.org>:
+>=20
+> On 05-09-19, 07:32, Tony Lindgren wrote:
+>> * H. Nikolaus Schaller <hns@goldelico.com> [190904 08:54]:
+>>> This adds code and tables to read the silicon revision and
+>>> eFuse (speed binned / 720 MHz grade) bits for selecting
+>>> opp-v2 table entries.
+>>>=20
+>>> Since these bits are not always part of the syscon register
+>>> range (like for am33xx, am43, dra7), we add code to directly
+>>> read the register values using ioremap() if syscon access fails.
+>>=20
+>> This is nice :) Seems to work for me based on a quick test
+>> on at least omap36xx.
+>>=20
+>> Looks like n900 produces the following though:
+>>=20
+>> core: _opp_supported_by_regulators: OPP minuV: 1270000 maxuV: =
+1270000, not supported by regulator
+>> cpu cpu0: _opp_add: OPP not supported by regulators (550000000)
+>=20
+> That's a DT thing I believe where the voltage doesn't fit what the
+> regulator can support.
+
+I can confirm this on BeagleBoard C2:
+
+root@gta04:~# dmesg|fgrep -i opp
+[    2.347442] core: _opp_supported_by_regulators: OPP minuV: 1270000 =
+maxuV: 1270000, not supported by regulator
+[    2.359222] cpu cpu0: _opp_add: OPP not supported by regulators =
+(550000000)
+[    2.580993] omap2_set_init_voltage: unable to find boot up OPP for =
+vdd_core
+root@gta04:~#=20
 
 >=20
-> ...
->=20
-> cm-1
-> cm-2
-> cm-3
+>> But presumably that can be further patched.
 
-And CM is clk?
+Well, the opp-v1 table also has this voltage point:
 
->=20
-> And the gap between PRM + CM nodes is multiple megabytes in register=20
-> space. To make things worse, there are some mutant CM nodes in the=20
-> middle of the PRM nodes on certain SoCs.
+			/* OMAP343x/OMAP35xx variants OPP1-5 */
+			operating-points =3D <
+				/* kHz    uV */
+				125000   975000
+				250000  1075000
+				500000  1200000
+				550000  1270000
+				600000  1350000
+			>;
 
-Ok, sounds fair!
 
->=20
->   Perhaps we need to combine the two drivers then. Or can
-> > this be implemented as a genpd that coordinates the resets and clk
-> > controls for various devices?
->=20
-> Generally, ti-sysc bus driver is the one doing the trick combining reset =
+This is OPP4 which is recommended by OMAP3530 data sheet to be 1.27V +/- =
+5%
 
-> + clock handling. However, this is linked at the pm-runtime on device=20
-> level so it imposes certain sequencing due to way kernel PM is=20
-> implemented. Basically we can't enable the clocks + deassert reset for=20
-> remoteproc before the driver is able to load up the firmware for it.=20
-> Maybe if I add a custom genpd or just custom PM runtime for the=20
-> remoteprocs that would handle both clk + reset...
->=20
-> Another potential change I can think of here is that I would add resets=20
-> property under the clkctrl nodes, and link them via DT handles. The=20
-> clock driver would get a handle to the reset controller, and query its=20
-> state via generic API instead of adding this custom one. I would still=20
-> need to add a separate custom API for telling the clocks that reset=20
-> controller is in place though... And this would still be a hard link=20
-> between reset + clocks.
->=20
-> Do you think fully custom PM implementation would be better here which=20
-> would just control reset + clock signals directly?
->=20
+Data sheet of tps65950 says
 
-From what you're saying it sounds like a job for genpds. Maybe genpds
-aren't up to the task yet, but we want devices that have resets and clks
-going to them to manage the order of operations somehow without having
-to "lie" and say that the resets go to the clk controller when they
-don't (or vice versa).
+	=E2=80=A2 VDD1: 1.2-A, buck DC/DC converter (VOUT =3D 0.6 V to =
+1.45 V, in steps of 12.5 mV)
 
+This means 1270 mV is not a "step" and rejected by the twl4030 driver.
+Maybe nobody did notice yet because the opp-v1 drivers did not warn...
+
+The closest value to 1.27V is 0.6V + 54 * 12.5mV is 1.275V
+
+So let's also change the OPP4 to 1275000 uV in the opp-v2 table.
+
+BR and thanks,
+Nikolaus=
