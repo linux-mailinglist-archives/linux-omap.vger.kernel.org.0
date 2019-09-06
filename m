@@ -2,143 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF4CAB8F2
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 15:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0F34ABB91
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 16:58:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392837AbfIFNKk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Sep 2019 09:10:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33198 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392815AbfIFNKj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 6 Sep 2019 09:10:39 -0400
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E82A5206BB;
-        Fri,  6 Sep 2019 13:10:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567775438;
-        bh=fsvy9vB8q4xTi27VCFoIvbbPemsnqqmabbXkyz4cBfE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=GVwE5+RV6T7Gk0Oq0NkKxThLbuJJSjnvI2Fitw6yXzMf7D4uZ6OIeVDHXzmCK5XnV
-         bq+EA39B9jr5AId38ttNcjiDLYKzPER1qO2wSA3U2M1i/WXGu0VKr0Dx5t2AOBb/oT
-         SaVnWO//bsZKavhY81nypz6K1yXB1rEYJovkI/jA=
-Received: by mail-qk1-f169.google.com with SMTP id q203so5561287qke.1;
-        Fri, 06 Sep 2019 06:10:37 -0700 (PDT)
-X-Gm-Message-State: APjAAAWuwzl3XeH0cZIlzgltmPftGaBM8ky9lW2Y01t9oq4m9C7yu5NN
-        bumJ2gtfVkGOzdhFV3nGUdE9J2coI2+52AV5/w==
-X-Google-Smtp-Source: APXvYqzQsKhFz6B/Tax9+gdiWg6xhgwxLCJHR+sGwYgZteGSTYU6RIcYIc2kuLGw0yP+EpjEMjHw0xD2+f0cwiairNk=
-X-Received: by 2002:a37:682:: with SMTP id 124mr8391679qkg.393.1567775437120;
- Fri, 06 Sep 2019 06:10:37 -0700 (PDT)
+        id S1731750AbfIFO6s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Sep 2019 10:58:48 -0400
+Received: from hosting.pavoucek.net ([46.28.107.168]:57214 "EHLO
+        hosting.pavoucek.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726019AbfIFO6s (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Sep 2019 10:58:48 -0400
+X-Greylist: delayed 456 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Sep 2019 10:58:47 EDT
+Received: from tomas.local.tbs-biometrics.cz (176-74-132-138.netdatacomm.cz [176.74.132.138])
+        (Authenticated sender: tomas@novotny.cz)
+        by hosting.pavoucek.net (Postfix) with ESMTPSA id 4B03E102F9E;
+        Fri,  6 Sep 2019 16:51:09 +0200 (CEST)
+Date:   Fri, 6 Sep 2019 16:51:09 +0200
+From:   Tomas Novotny <tomas@novotny.cz>
+To:     linux-omap@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: omap-mcbsp: TX Buffer Overflow
+Message-ID: <20190906165109.53c5a306@tomas.local.tbs-biometrics.cz>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-References: <20190823125618.8133-1-peter.ujfalusi@ti.com> <20190823125618.8133-5-peter.ujfalusi@ti.com>
- <20190829224728.GA1198@bogus> <a4c5688b-cbeb-5059-5351-11d9ae1b25d5@ti.com> <15d5dc03-d6ca-f438-f37a-e71298abda95@ti.com>
-In-Reply-To: <15d5dc03-d6ca-f438-f37a-e71298abda95@ti.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 6 Sep 2019 14:10:25 +0100
-X-Gmail-Original-Message-ID: <CAL_JsqJ6R9X93vVM6A6H5yDFnQk5T7ym126TRb140m5COD3nwg@mail.gmail.com>
-Message-ID: <CAL_JsqJ6R9X93vVM6A6H5yDFnQk5T7ym126TRb140m5COD3nwg@mail.gmail.com>
-Subject: Re: [PATCH 4/5] dt-bindings: dma: ti-edma: Add option for reserved
- channel ranges
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Vinod <vkoul@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
-        "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" 
-        <dmaengine@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>, devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Sep 3, 2019 at 11:19 AM Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
->
-> Hi Rob,
->
-> On 30/08/2019 8.37, Peter Ujfalusi wrote:
-> > Rob,
-> >
-> > On 30/08/2019 1.47, Rob Herring wrote:
-> >> On Fri, Aug 23, 2019 at 03:56:17PM +0300, Peter Ujfalusi wrote:
-> >>> Similarly to paRAM slots, channels can be used by other cores.
-> >>>
-> >>> Add optional property to configure the reserved channel ranges.
-> >>>
-> >>> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> >>> ---
-> >>>  Documentation/devicetree/bindings/dma/ti-edma.txt | 5 +++++
-> >>>  1 file changed, 5 insertions(+)
-> >>>
-> >>> diff --git a/Documentation/devicetree/bindings/dma/ti-edma.txt b/Documentation/devicetree/bindings/dma/ti-edma.txt
-> >>> index 4bbc94d829c8..1198682ada99 100644
-> >>> --- a/Documentation/devicetree/bindings/dma/ti-edma.txt
-> >>> +++ b/Documentation/devicetree/bindings/dma/ti-edma.txt
-> >>> @@ -42,6 +42,9 @@ Optional properties:
-> >>>  - ti,edma-reserved-slot-ranges: PaRAM slot ranges which should not be used by
-> >>>             the driver, they are allocated to be used by for example the
-> >>>             DSP. See example.
-> >>> +- ti,edma-reserved-chan-ranges: channel ranges which should not be used by
-> >>> +           the driver, they are allocated to be used by for example the
-> >>> +           DSP. See example.
-> >>
-> >> Based on the other thread, I think extending dma-channel-mask to a
-> >> uint32-array makes sense here.
-> >
-> > Yes, that is the reason I have asked on that and I'm in progress of
-> > converting the edma driver to use the dma-channel-mask.
-> > Just need to do some shuffling in the driver to get the mask in a form
-> > usable by the driver.
-> >
-> > I'll send an updated series early next week.
->
-> How should the dma-channel-mask uint31-array should be documented and used?
->
-> Basically some EDMA have 32, some 64 channels. This is fine.
-> Let's say I want to mask out channel 0-4 and 24-27
->
-> This would look like in case of EDMA with 32 channels:
-> &edma {
->         /* channel 0-4 and 24-27 is not to be used */
->         dma-channel-mask = <0xf0fffff0>;
-> };
->
-> How this should look like in case when I have 64 channels?
-> &edma {
->         /* channel 0-4 and 24-27 is not to be used */
->         dma-channel-mask = <0xf0fffff0>, <0xffffffff>;
-> };
->
-> When I read the u32s then
-> chan_mask[0] is for channel 0-31 (LSB is channel 0)
-> chan_maks[1] is for channel 32-63 (LSB is channel 32)
->
-> Or:
-> &edma {
->         /* channel 0-4 and 24-27 is not to be used */
->         dma-channel-mask = <0xffffffff>, <0xf0fffff0>;
-> };
->
-> chan_maks[0] is for channel 32-63 (LSB is channel 32)
-> chan_mask[1] is for channel 0-31 (LSB is channel 0)
->
-> Do you have pointer on already established notion on how to document and
-> handle this?
+Hi,
 
-As far as word ordering, I guess you can do whatever order you want.
-MSB first would make the most sense if this was only going to be up to
-64-bit. But given it could be 96, 128, ... bits, probably the least
-significant word first makes sense and is easier to parse for a
-variable length.
+we have AM3703 based board similar to BeagleBoard. I'm hitting this error
+after upgrade to latest LTS 4.19.71 (upgraded from 4.1):
 
-The binding schema can be something like this:
+omap-mcbsp 49022000.mcbsp: TX Buffer Overflow!
 
-items:
-  - description: Mask of channels 0-31
-  - description: Mask of channels 32-63
+This appears during or after playing of short (~2s) ding-dong wav. That error
+exists for longer time, because handling of tx buffer overflow irq was
+introduced in 2016: 4e85e7776eba ("ASoC: omap-mcbsp: Enable TX/RX under and
+overflow interrupts"). I've cherry-picked it to 4.1 and I see the error there also.
+The sound seems clear and ok to me, but we are using low quality speaker.
 
-The length is implied by the number of list items.
+There are two workarounds to get rid of the message:
+1) Change 'dma_op_mode' sysfs attribute from 'element' to 'threshold'. I
+found that just by coincidence when checking sysfs attributes.
+2) Compile kernel with CONFIG_VIDEO_OMAP3=y. Found on Logic PD forum [1].
 
-Rob
+Does anybody have any idea what's going wrong? Or why these (somehow)
+unrelated workarounds help?
+
+Thanks,
+
+Tomas
+
+[1] https://support.logicpd.com/TDGForum/tabid/124/aft/2277/Default.aspx
