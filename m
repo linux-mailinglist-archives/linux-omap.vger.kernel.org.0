@@ -2,72 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38FDAAA8DF
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2019 18:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE4EEAA97A
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Sep 2019 18:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728983AbfIEQYn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Sep 2019 12:24:43 -0400
-Received: from sauhun.de ([88.99.104.3]:58922 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728815AbfIEQYn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 5 Sep 2019 12:24:43 -0400
-Received: from localhost (p54B335F6.dip0.t-ipconnect.de [84.179.53.246])
-        by pokefinder.org (Postfix) with ESMTPSA id 835902C00C0;
-        Thu,  5 Sep 2019 18:24:40 +0200 (CEST)
-Date:   Thu, 5 Sep 2019 18:24:40 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc:     stable@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-mtd@lists.infradead.org
-Subject: Re: [BACKPORT 4.14.y 00/18] Backport candidate from TI 4.14 product
- kernel
-Message-ID: <20190905162440.GB3695@kunai>
-References: <20190905161759.28036-1-mathieu.poirier@linaro.org>
+        id S1728254AbfIEQ4r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Sep 2019 12:56:47 -0400
+Received: from ms-01.pmbv.rr.gov.br ([131.255.233.30]:43396 "HELO
+        ms-01.pmbv.rr.gov.br" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S2389547AbfIEQ4r (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Sep 2019 12:56:47 -0400
+X-Greylist: delayed 345 seconds by postgrey-1.27 at vger.kernel.org; Thu, 05 Sep 2019 12:56:46 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by ms-01.pmbv.rr.gov.br (Postfix) with ESMTP id D77D19828DC;
+        Thu,  5 Sep 2019 12:51:10 -0400 (AMT)
+Received: from ms-01.pmbv.rr.gov.br ([127.0.0.1])
+        by localhost (ms-01.pmbv.rr.gov.br [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id dL9_KPs4-a9h; Thu,  5 Sep 2019 12:51:10 -0400 (AMT)
+Received: from localhost (localhost [127.0.0.1])
+        by ms-01.pmbv.rr.gov.br (Postfix) with ESMTP id 864CD9828DB;
+        Thu,  5 Sep 2019 12:51:10 -0400 (AMT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 ms-01.pmbv.rr.gov.br 864CD9828DB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pmbv.rr.gov.br;
+        s=90A96264-468C-11E9-BF4C-306595602C4C; t=1567702270;
+        bh=gZDpaQPD4VVWOJkW2luTx/G9LJUs4JT3j/kdrE8zGDU=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=oBjnFGr3GrBBS827Q6EzmLOo3rIXHDBTsZelhmGtPReHYDsvJhk0dL1D8h4Y2p/sl
+         DJyUTGYhidfmiLJACGymnWaXb4XElewYMs9mbLs1iCpoO94D07jwdS4pIAdRZ2oxE8
+         loKlglfgB+smVeztC8ubEs8SAgNGqwfBJWsOQvOo0VrbEYukXyL6q6Oqt7xRreM7Ji
+         X6LBp9UzP8wQ3e47XWr68vuEcbYJVNhi2GhrX0JkkvaZEgbMplvIyshOzf4jYqTd7f
+         W7lT8Ap6JuKm+yr8InQ80iFnzACRIInwr7ko5VNkmfCz41yzVMD/Zvev4ybWf80lCI
+         3B5iao/Ba7FqQ==
+X-Virus-Scanned: amavisd-new at pmbv.rr.gov.br
+Received: from ms-01.pmbv.rr.gov.br ([127.0.0.1])
+        by localhost (ms-01.pmbv.rr.gov.br [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id dN-b9mfTmiOE; Thu,  5 Sep 2019 12:51:10 -0400 (AMT)
+Received: from [192.168.88.209] (unknown [185.248.13.226])
+        by ms-01.pmbv.rr.gov.br (Postfix) with ESMTPSA id 8737D9828D3;
+        Thu,  5 Sep 2019 12:51:03 -0400 (AMT)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mojUlQ0s9EVzWg2t"
-Content-Disposition: inline
-In-Reply-To: <20190905161759.28036-1-mathieu.poirier@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Herzlichen_gl=C3=BCckwunsch?=
+To:     Recipients <hcsa.saude@pmbv.rr.gov.br>
+From:   "Allen and Violet" <hcsa.saude@pmbv.rr.gov.br>
+Date:   Fri, 06 Sep 2019 05:50:18 +0300
+Reply-To: pavel.fer8@gmail.com
+Message-Id: <20190905165103.8737D9828D3@ms-01.pmbv.rr.gov.br>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
---mojUlQ0s9EVzWg2t
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, Sep 05, 2019 at 10:17:41AM -0600, Mathieu Poirier wrote:
-> These patches are backport candidates picked out of TI's 4.14.y tree [1],
-> with most of them already found in the 4.19.y stable tree.
-
-Could you please update your scripting that only the cover-letter and
-I2C related patches will be sent to the I2C mailing list?
-
-
---mojUlQ0s9EVzWg2t
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl1xNscACgkQFA3kzBSg
-KbbSXA//Qr7qcTKeYW+0LEBOI7jVtHAd2WvUvM5Dd4cDxWi9xFJLp3mq9RHpUp2n
-C+TcMxlcW7slL8ffeERAPOV3hF+IOWkWiMg+9VUHgK2MvWf+fd3wcmBC/8Cn4DQ3
-B8582lHxQQcVy6jYAvgxkojUFDRrVNS0nSb0Vfb8am062q1DIkiilFqdNPNFoGWy
-UMV6JnawALcKyWVHftb8p66KvJ0SRMNdm36It3CDQhr4ZBRnuLkZD5HN0QKljKYp
-0iFy2yoJnsnTZKmtuEetjVNM01avU8wE0CY9gUb3Oi0xQUfPkqOgQ3WtmeolsOLQ
-PriFq6j8Xt4knqOjVhkyPFpfm1uedxeqNF8uUtRL+r0Fm7ytDTwsGashc7so4D0O
-s1oOEKDeYT6EOVBVC/4oxYJmIeRk6PX8qeyt6+7dz4MEkfrR+yWr10zOFr7wX6Bh
-xmDd5nGeWLVCUnRWaXmph+QTjUlmsP/bKDuTtpkVSuM5X5y62NYpZ7WqsQV2Hob9
-NsYPtS4xag5ak71KlvQRVpqaK8Lzgna0qHrXrk9gynDOYpoN+bUsBf+JNfRCKCOa
-RO1DDv2S35m+mFLoS5Ddxo/j2urW36sfuLuUmdGcR3oxovCNcgUyG+CRIDJTwnFn
-HVVbHqEnxF7f+gw6CiKqAdhye4IWXYWxYbK4hKWi540R8iLVI6g=
-=3bwX
------END PGP SIGNATURE-----
-
---mojUlQ0s9EVzWg2t--
+Gl=FCckwunschgeld wurde an Sie gespendet. Wenden Sie sich f=FCr weitere Inf=
+ormationen an pavel.fer8@gmail.com
