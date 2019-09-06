@@ -2,90 +2,138 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78AF2ABF0A
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 19:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E9F9AC10E
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 21:57:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390275AbfIFRzu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Sep 2019 13:55:50 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.84]:9972 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388384AbfIFRzu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Sep 2019 13:55:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1567792547;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=le0i+C3WnJJ1pNcpGn6EKP8MS/2QDXn4lZNvB0jm46I=;
-        b=QDpoVKvqt6915dyUTD+lH3OqId+5Uc4wxacuz+IjP8LKaWrUMdMSN7J/dyeEDk5uiN
-        HU3z/eHIuJ+Jx59C8WoHxVTSTMZtSS4PrzZ2+ITJ08DGKbjGc/dXSpPkyIdeoC+EhlK7
-        gmRZdan+nEqWYgMSnN6e3JXC/yR1rxb+FVk/NT9bPgI9M0DldZeF9h8xeHBTEmSWKGTO
-        2w42kLWtItN/bM0W1s0NC6d3l2mfp8RA0LN0Is1TLgxZp1OwYy+ljx/XoxK+ObrmQr81
-        ycbv+Tdf82NzAOy/pcWyEf0tBlTS7IuB5SrQyt0DhPTh26wZdeTrRRNOotG+IrF50Xv3
-        5xGw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/PqwDqp5w=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.27.0 DYNA|AUTH)
-        with ESMTPSA id u036f9v86Htepil
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Fri, 6 Sep 2019 19:55:40 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [RFC v2 3/3] ARM: dts: omap3: bulk convert compatible to be explicitly ti,omap3430 or ti,omap36xx
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20190906172403.GG52127@atomide.com>
-Date:   Fri, 6 Sep 2019 19:55:40 +0200
-Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-pm@vger.kernel.org,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com
+        id S1726837AbfIFT5P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Sep 2019 15:57:15 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:32946 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726168AbfIFT5P (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Sep 2019 15:57:15 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x86JvAbZ100721;
+        Fri, 6 Sep 2019 14:57:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1567799830;
+        bh=jGgzEpvx2SwIlJaQUdrwySzNq4xTkSsm8n7VDLxniQE=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=mMmnyTDKHok3Du6q7TytGgAMNQEKU7dJzjrIW5EM5KZx4CA9yBMiLdNmgGW3KYlHx
+         RSfDKojiYTP4MhGM5C7OgTQvWMJDpC9igwdWCJsrA1F9JT9HJzQcq4Apa0tpgXWpjq
+         qC4VSWTbgG3uGkDWwZvicRj8mUAwi3Po8BK30bjk=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x86JvAcD021927
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 6 Sep 2019 14:57:10 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 6 Sep
+ 2019 14:57:09 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Fri, 6 Sep 2019 14:57:09 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x86Jv7U7062971;
+        Fri, 6 Sep 2019 14:57:08 -0500
+Subject: Re: [PATCHv2 4/6] clk: ti: clkctrl: add API to notify reset status
+To:     Stephen Boyd <sboyd@kernel.org>, <linux-clk@vger.kernel.org>,
+        <mturquette@baylibre.com>
+CC:     <linux-omap@vger.kernel.org>, <tony@atomide.com>, <s-anna@ti.com>
+References: <20190828065929.32150-1-t-kristo@ti.com>
+ <20190828065929.32150-5-t-kristo@ti.com>
+ <20190829200515.AFB0622CEA@mail.kernel.org>
+ <ed1e3868-af4d-8141-2a04-202923715d06@ti.com>
+ <20190906161543.EB392206CD@mail.kernel.org>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <3c1c9285-1627-0b71-18aa-f3bc1f5286ca@ti.com>
+Date:   Fri, 6 Sep 2019 22:57:06 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190906161543.EB392206CD@mail.kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Message-Id: <17A56ADB-2217-41CC-BE0B-C3899815F10F@goldelico.com>
-References: <cover.1567587220.git.hns@goldelico.com> <a2b56edcada7b9000a6e906387a02c0ee42681db.1567587220.git.hns@goldelico.com> <20190905142734.GV52127@atomide.com> <4BC39938-D63E-4BDC-BA28-5132F77F602D@goldelico.com> <20190906154732.GC52127@atomide.com> <8C8644AC-FA12-4D26-B96A-76B78798612A@goldelico.com> <20190906172403.GG52127@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-> Am 06.09.2019 um 19:24 schrieb Tony Lindgren <tony@atomide.com>:
+On 06/09/2019 19:15, Stephen Boyd wrote:
+> Quoting Tero Kristo (2019-08-29 23:06:41)
+>> On 29/08/2019 23:05, Stephen Boyd wrote:
+>>> Quoting Tero Kristo (2019-08-27 23:59:27)
+>>>> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+>>>> index e3e0a66a6ce2..47a0d1398c6f 100644
+>>>> --- a/drivers/clk/ti/clkctrl.c
+>>>> +++ b/drivers/clk/ti/clkctrl.c
+>>>> @@ -680,3 +689,38 @@ u32 ti_clk_is_in_standby(struct clk *clk)
+>>>>           return false;
+>>>>    }
+>>>>    EXPORT_SYMBOL_GPL(ti_clk_is_in_standby);
+>>>> +
+>>>> +/**
+>>>> + * ti_clk_notify_resets - Notify the clock driver associated reset status
+>>>
+>>> This is completely unused in this patch series. What's going on?
+>>
+>> This is needed by the OMAP reset driver. See:
+>>
+>> https://lwn.net/Articles/797597/
+>>
 > 
-> * H. Nikolaus Schaller <hns@goldelico.com> [190906 17:09]:
+> Ok. I decided to punt this topic forward to next release at the least.
+> To clarify, TI is not special with regards to coordinating resets and
+> clk enable/disable state. Every other silicon vendor has the same
+> requirements and nobody is doing a good job at it.
 > 
->> BTW there is also some code that does special SoC detection based on
->> soc_device_match(), mainly in omapdrm/dss.
->> 
->> If we were to use this mechanism in the ti-cpufreq driver we could
->> match it to ti,omap3 and could avoid all these changes.
->> 
->> But make it less maintainable and code more complex.
-> 
-> Hmm right, yeah using soc_device_match() would remove this issue.
-> It might be worth doing as these SoC variants do not change
-> much and the code should not need updating. Up to you to
-> decide.
+> Please devise a way that avoids making a tight coupling between the clk
+> driver and the reset driver in this way. Are the two in the same
+> register space?
 
-I have looked through the structure of the ti-cpufreq driver but
-it assumes that each set of register offsets and bit masks
-has its own compatible so that it can just switch descriptor
-tables.
+No, they do not share register space. One is under a PRM node, one is 
+under CM node, and there are multiple instances of each following each 
+other:
 
-There is no provision to run soc_device_match() instead.
+prm-1
+prm-2
+prm-3
 
-So let's forget this idea...
+...
 
-BR,
-Nikolaus
+cm-1
+cm-2
+cm-3
 
+And the gap between PRM + CM nodes is multiple megabytes in register 
+space. To make things worse, there are some mutant CM nodes in the 
+middle of the PRM nodes on certain SoCs.
+
+  Perhaps we need to combine the two drivers then. Or can
+> this be implemented as a genpd that coordinates the resets and clk
+> controls for various devices?
+
+Generally, ti-sysc bus driver is the one doing the trick combining reset 
++ clock handling. However, this is linked at the pm-runtime on device 
+level so it imposes certain sequencing due to way kernel PM is 
+implemented. Basically we can't enable the clocks + deassert reset for 
+remoteproc before the driver is able to load up the firmware for it. 
+Maybe if I add a custom genpd or just custom PM runtime for the 
+remoteprocs that would handle both clk + reset...
+
+Another potential change I can think of here is that I would add resets 
+property under the clkctrl nodes, and link them via DT handles. The 
+clock driver would get a handle to the reset controller, and query its 
+state via generic API instead of adding this custom one. I would still 
+need to add a separate custom API for telling the clocks that reset 
+controller is in place though... And this would still be a hard link 
+between reset + clocks.
+
+Do you think fully custom PM implementation would be better here which 
+would just control reset + clock signals directly?
+
+-Tero
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
