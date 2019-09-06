@@ -2,57 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0F34ABB91
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 16:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDBF5ABCAD
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 17:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731750AbfIFO6s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Sep 2019 10:58:48 -0400
-Received: from hosting.pavoucek.net ([46.28.107.168]:57214 "EHLO
-        hosting.pavoucek.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726019AbfIFO6s (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Sep 2019 10:58:48 -0400
-X-Greylist: delayed 456 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Sep 2019 10:58:47 EDT
-Received: from tomas.local.tbs-biometrics.cz (176-74-132-138.netdatacomm.cz [176.74.132.138])
-        (Authenticated sender: tomas@novotny.cz)
-        by hosting.pavoucek.net (Postfix) with ESMTPSA id 4B03E102F9E;
-        Fri,  6 Sep 2019 16:51:09 +0200 (CEST)
-Date:   Fri, 6 Sep 2019 16:51:09 +0200
-From:   Tomas Novotny <tomas@novotny.cz>
-To:     linux-omap@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: omap-mcbsp: TX Buffer Overflow
-Message-ID: <20190906165109.53c5a306@tomas.local.tbs-biometrics.cz>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+        id S2404940AbfIFPhC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Sep 2019 11:37:02 -0400
+Received: from muru.com ([72.249.23.125]:59944 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404930AbfIFPhC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 6 Sep 2019 11:37:02 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 7BB3880CC;
+        Fri,  6 Sep 2019 15:37:31 +0000 (UTC)
+Date:   Fri, 6 Sep 2019 08:36:58 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Tero Kristo <t-kristo@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Suman Anna <s-anna@ti.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCHv4 01/10] dt-bindings: omap: add new binding for PRM
+ instances
+Message-ID: <20190906153658.GB52127@atomide.com>
+References: <20190830121816.30034-2-t-kristo@ti.com>
+ <20190906103558.17694-1-t-kristo@ti.com>
+ <CAL_JsqLHTsEz6RJSi3rZ9AKyTBc00abyAxqwG8B9zAqL6cnv+w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAL_JsqLHTsEz6RJSi3rZ9AKyTBc00abyAxqwG8B9zAqL6cnv+w@mail.gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+* Rob Herring <robh+dt@kernel.org> [190906 12:57]:
+> On Fri, Sep 6, 2019 at 11:36 AM Tero Kristo <t-kristo@ti.com> wrote:
+> >
+> > Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
+> > of these will act as a power domain controller and potentially as a reset
+> > provider.
+> >
+> > Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> > ---
+> > v4:
+> > - renamed nodes as power-controller
+> > - added documentation about hierarchy
+> >
+> >  .../devicetree/bindings/arm/omap/prm-inst.txt | 31 +++++++++++++++++++
+> >  1 file changed, 31 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-we have AM3703 based board similar to BeagleBoard. I'm hitting this error
-after upgrade to latest LTS 4.19.71 (upgraded from 4.1):
+Looks good to me too:
 
-omap-mcbsp 49022000.mcbsp: TX Buffer Overflow!
-
-This appears during or after playing of short (~2s) ding-dong wav. That error
-exists for longer time, because handling of tx buffer overflow irq was
-introduced in 2016: 4e85e7776eba ("ASoC: omap-mcbsp: Enable TX/RX under and
-overflow interrupts"). I've cherry-picked it to 4.1 and I see the error there also.
-The sound seems clear and ok to me, but we are using low quality speaker.
-
-There are two workarounds to get rid of the message:
-1) Change 'dma_op_mode' sysfs attribute from 'element' to 'threshold'. I
-found that just by coincidence when checking sysfs attributes.
-2) Compile kernel with CONFIG_VIDEO_OMAP3=y. Found on Logic PD forum [1].
-
-Does anybody have any idea what's going wrong? Or why these (somehow)
-unrelated workarounds help?
-
-Thanks,
-
-Tomas
-
-[1] https://support.logicpd.com/TDGForum/tabid/124/aft/2277/Default.aspx
+Reviewed-by: Tony Lindgren <tony@atomide.com>
