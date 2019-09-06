@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37AE6AB352
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 09:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06407AB376
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Sep 2019 09:48:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731772AbfIFHjh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Sep 2019 03:39:37 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:34420 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728769AbfIFHjh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Sep 2019 03:39:37 -0400
+        id S1731779AbfIFHsr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Sep 2019 03:48:47 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:47154 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728267AbfIFHsq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Sep 2019 03:48:46 -0400
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x867dRJB053866;
-        Fri, 6 Sep 2019 02:39:27 -0500
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x867mX7e071654;
+        Fri, 6 Sep 2019 02:48:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1567755567;
-        bh=z6Nh68YYvTDDh5HiSd5ce/6VHBCPMMXmMgbKOM1slds=;
+        s=ti-com-17Q1; t=1567756113;
+        bh=vrG6lpi8QEWkZKj5pHICh2MWv598YJm3hDtGFd45Ws8=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=iT3e59oWcC9/GWHtEvNJFERDlEd0VDsMZpqKav5auCLqqTQwYdbZs8EqQFLsI8XrU
-         SXq+HElmMR2X3k2eAlJiw/9PISXTbdHV2qiKjDSy6p68s2Y/5sQfQBKhxd+rYVubVD
-         tfqhQNMpcmlE5XUW7wOdQ6USYzAY9iKr+slbYk7g=
+        b=g30HVDUyWInJMcMatKA49ZDCVU8I4zfgaktbMK8nK2CgRdz3d0MIVRLhL/NgxDddz
+         9ogWHNd17/arDpVY2AuOSnn3T+FWnwXTVIk9MOGz6FnWEcR2pRgj9AkUaJUo+rdtXY
+         1oW5naxq0C4WV684cX/bI41caxxkVoaGiUKh8wMk=
 Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x867dRN6029677;
-        Fri, 6 Sep 2019 02:39:27 -0500
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE105.ent.ti.com
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x867mXim041637;
+        Fri, 6 Sep 2019 02:48:33 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE105.ent.ti.com
  (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 6 Sep
- 2019 02:39:26 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ 2019 02:48:33 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 6 Sep 2019 02:39:26 -0500
-Received: from [192.168.2.14] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x867dNc9078451;
-        Fri, 6 Sep 2019 02:39:23 -0500
+ Frontend Transport; Fri, 6 Sep 2019 02:48:33 -0500
+Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x867mTW5109187;
+        Fri, 6 Sep 2019 02:48:30 -0500
 Subject: Re: [PATCH] bus: ti-sysc: Fix handling of invalid clocks
 To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
 CC:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
         Faiz Abbas <faiz_abbas@ti.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Nishanth Menon <nm@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Suman Anna <s-anna@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        <linux-kernel@vger.kernel.org>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
 References: <20190905215356.8168-1-tony@atomide.com>
-From:   Roger Quadros <rogerq@ti.com>
-Message-ID: <3c9f7340-f17f-cecd-3ae4-ec8a1af7c2bf@ti.com>
-Date:   Fri, 6 Sep 2019 10:39:22 +0300
+From:   Keerthy <j-keerthy@ti.com>
+Message-ID: <fd38f85f-c5f0-0166-c55c-0da6d5c2518d@ti.com>
+Date:   Fri, 6 Sep 2019 13:19:08 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
@@ -62,7 +62,9 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 06/09/2019 00:53, Tony Lindgren wrote:
+
+
+On 06/09/19 3:23 AM, Tony Lindgren wrote:
 > We can currently get "Unable to handle kernel paging request at
 > virtual address" for invalid clocks with dts node but no driver:
 > 
@@ -75,12 +77,15 @@ On 06/09/2019 00:53, Tony Lindgren wrote:
 > clk_get() with -ENOENT as a proper error. If the clock name is specified
 > in device tree we must succeed with clk_get() to continue. For modules with
 > no clock names specified in device tree we will just ignore the clocks.
+
+Tested for DS0 and RTC+DDR modes on AM437x
+
+FWIW
+Tested-by: Keerthy <j-keerthy@ti.com>
+
 > 
 > Fixes: 2b2f7def058a ("bus: ti-sysc: Add support for missing clockdomain handling")
 > Signed-off-by: Tony Lindgren <tony@atomide.com>
-
-Acked-by: Roger Quadros <rogerq@ti.com>
-
 > ---
 >   arch/arm/mach-omap2/pdata-quirks.c | 4 ++--
 >   drivers/bus/ti-sysc.c              | 5 +----
@@ -126,7 +131,3 @@ Acked-by: Roger Quadros <rogerq@ti.com>
 >   	}
 >   
 > 
-
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
