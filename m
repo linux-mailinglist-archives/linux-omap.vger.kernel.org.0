@@ -2,111 +2,145 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99B46AC446
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Sep 2019 05:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC763AC4E8
+	for <lists+linux-omap@lfdr.de>; Sat,  7 Sep 2019 08:35:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388624AbfIGDzU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Sep 2019 23:55:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46140 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387398AbfIGDzU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 6 Sep 2019 23:55:20 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EB40C208C3;
-        Sat,  7 Sep 2019 03:55:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567828519;
-        bh=ouj8soGL/AW5IIZJSFR1lrkDv7ywyAdB6F1D/OVOLjQ=;
-        h=In-Reply-To:References:Cc:To:From:Subject:Date:From;
-        b=NIl1Y9QDvnViM4pR0oe+PUjIOUt03KUh6XTfAvPFMqc6tX8lCAg0T4K/zybJBtmmz
-         fO4tM32F/JId5mwT5LsT4XeKeqRAR4fuwMLCxXgp7oGmJImUMtXd+crGJCATARotL5
-         PJygavkiisRoRjdVGK4kt76vPXeJHM1sv9DD76Vg=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+        id S2405742AbfIGGee (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 7 Sep 2019 02:34:34 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:22516 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733303AbfIGGee (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Sep 2019 02:34:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1567838071;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=GUX1eWsEK1Al1N1ta4hnlkUwJe6XR50RrgXmahK2eDg=;
+        b=dO7tIyh8N0bVjWVWI+hGom1sV6MO9Z1dlKXl/6LIMdq1IqgF5i2oQeICJVimb+sqk0
+        gtJd/EWtwHvejp18oLzJtWfs+qcQCM8XRxzCIAhVdnGasnRAg4H4tYQse6Kx0FgvGjSB
+        NWvO3PnY+561uTae0WyOHxNRl8Zm2agxK0S11yRHr3oz8fvg4jxCgHY855amMtf1Oz4r
+        q3D6O4kiZwo6XWguIe9yZcMfjwLcow8zutO42mgsdTOGNqMH2zYkgNoLSiSb/12wrU8H
+        7FfUbNyOzRbDO0LpCRlkkwlVuPjBqxS6TYiRlOBoiwGgjcOPCyggqGn8cIxnKdnxZxKQ
+        Tffg==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDVCaXAwLbA=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 44.27.0 DYNA|AUTH)
+        with ESMTPSA id u036f9v876YFqUD
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Sat, 7 Sep 2019 08:34:15 +0200 (CEST)
+Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [RFC v2 1/3] cpufreq: ti-cpufreq: add support for omap34xx and omap36xx
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <1ED2450A-A445-42B8-8956-58A53F15DBE2@goldelico.com>
+Date:   Sat, 7 Sep 2019 08:34:14 +0200
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
+        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        kernel@pyra-handheld.com, Linux-OMAP <linux-omap@vger.kernel.org>,
+        Adam Ford <aford173@gmail.com>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20190905215532.8357-1-tony@atomide.com>
-References: <20190905215532.8357-1-tony@atomide.com>
-Cc:     devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>
-From:   Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [PATCH] clk: ti: clkctrl: Fix hidden dependency to node name with reg-names
-User-Agent: alot/0.8.1
-Date:   Fri, 06 Sep 2019 20:55:18 -0700
-Message-Id: <20190907035518.EB40C208C3@mail.kernel.org>
+Message-Id: <12A8E9DF-3D58-48A7-BC91-898B21536E04@goldelico.com>
+References: <cover.1567587220.git.hns@goldelico.com> <a889b10386bebfbfd6cdb5491367235290d53247.1567587220.git.hns@goldelico.com> <20190905143226.GW52127@atomide.com> <20190906030158.leuumg7rwsvowwfx@vireshk-i7> <1ED2450A-A445-42B8-8956-58A53F15DBE2@goldelico.com>
+To:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Tony Lindgren <tony@atomide.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Tony Lindgren (2019-09-05 14:55:32)
-> We currently have a hidden dependency to the device tree node name for
-> the clkctrl clocks. Instead of using standard node name like "clock", we
-> must use "l4-per-clkctrl" naming so the clock driver can find the
 
-The node name is "clk" though.
+> Am 06.09.2019 um 22:46 schrieb H. Nikolaus Schaller =
+<hns@goldelico.com>:
+>=20
+> Hi,
+>=20
+>> Am 06.09.2019 um 05:01 schrieb Viresh Kumar =
+<viresh.kumar@linaro.org>:
+>>=20
+>> On 05-09-19, 07:32, Tony Lindgren wrote:
+>>> * H. Nikolaus Schaller <hns@goldelico.com> [190904 08:54]:
+>>>> This adds code and tables to read the silicon revision and
+>>>> eFuse (speed binned / 720 MHz grade) bits for selecting
+>>>> opp-v2 table entries.
+>>>>=20
+>>>> Since these bits are not always part of the syscon register
+>>>> range (like for am33xx, am43, dra7), we add code to directly
+>>>> read the register values using ioremap() if syscon access fails.
+>>>=20
+>>> This is nice :) Seems to work for me based on a quick test
+>>> on at least omap36xx.
+>>>=20
+>>> Looks like n900 produces the following though:
+>>>=20
+>>> core: _opp_supported_by_regulators: OPP minuV: 1270000 maxuV: =
+1270000, not supported by regulator
+>>> cpu cpu0: _opp_add: OPP not supported by regulators (550000000)
+>>=20
+>> That's a DT thing I believe where the voltage doesn't fit what the
+>> regulator can support.
+>=20
+> I can confirm this on BeagleBoard C2:
+>=20
+> root@gta04:~# dmesg|fgrep -i opp
+> [    2.347442] core: _opp_supported_by_regulators: OPP minuV: 1270000 =
+maxuV: 1270000, not supported by regulator
+> [    2.359222] cpu cpu0: _opp_add: OPP not supported by regulators =
+(550000000)
+> [    2.580993] omap2_set_init_voltage: unable to find boot up OPP for =
+vdd_core
+> root@gta04:~#=20
+>=20
+>>=20
+>>> But presumably that can be further patched.
+>=20
+> Well, the opp-v1 table also has this voltage point:
+>=20
+> 			/* OMAP343x/OMAP35xx variants OPP1-5 */
+> 			operating-points =3D <
+> 				/* kHz    uV */
+> 				125000   975000
+> 				250000  1075000
+> 				500000  1200000
+> 				550000  1270000
+> 				600000  1350000
+> 			>;
+>=20
+>=20
+> This is OPP4 which is recommended by OMAP3530 data sheet to be 1.27V =
++/- 5%
+>=20
+> Data sheet of tps65950 says
+>=20
+> 	=E2=80=A2 VDD1: 1.2-A, buck DC/DC converter (VOUT =3D 0.6 V to =
+1.45 V, in steps of 12.5 mV)
+>=20
+> This means 1270 mV is not a "step" and rejected by the twl4030 driver.
+> Maybe nobody did notice yet because the opp-v1 drivers did not warn...
+>=20
+> The closest value to 1.27V is 0.6V + 54 * 12.5mV is 1.275V
+>=20
+> So let's also change the OPP4 to 1275000 uV in the opp-v2 table.
 
-> associated clock domain. Further, if "clk" is specified for a clock node
-> name, the driver sets TI_CLK_CLKCTRL_COMPAT flag that uses different
-> logic with earlier naming for the clock node name.
->=20
-> If the clock node naming dependency is not understood, the related
-> clockdomain is not found, or a wrong one can get used if a clock manager
-> instance has multiple domains.
->=20
-> As each clkctrl instance represents a single clock domain with it's
-> reg property describing the clocks available in that clock domain,
-> we can simply use "reg-names" property for the clock domain.
->=20
-> This simplifies things and removes the hidden dependency to the node
-> name. And then later on, we should be able to drop the related code
-> for parsing the node names.
->=20
-> Let's also update the binding to use standard "clock" node naming
-> instead of "clk".
->=20
-> Cc: devicetree@vger.kernel.org
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  Documentation/devicetree/bindings/clock/ti-clkctrl.txt |  6 +++++-
->  drivers/clk/ti/clkctrl.c                               | 10 ++++++++--
->  2 files changed, 13 insertions(+), 3 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/clock/ti-clkctrl.txt b/Doc=
-umentation/devicetree/bindings/clock/ti-clkctrl.txt
-> --- a/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
-> +++ b/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
-> @@ -20,15 +20,19 @@ Required properties :
->  - #clock-cells : shall contain 2 with the first entry being the instance
->                  offset from the clock domain base and the second being t=
-he
->                  clock index
-> +- reg : clock registers
-> +- reg-names : clock register names for the clock, should be same as the
-> +             domain name
+The OPP is now available. Only
 
-Is this necessary? I'd rather see that the names of the clks don't
-actually matter by means of connecting the clk tree through the "clocks"
-property when the parent clks are provided by external nodes and through
-direct pointers when they're within a controller. If that works then it
-should be possible to ignore this name in general?
+[    2.569519] omap2_set_init_voltage: unable to find boot up OPP for =
+vdd_core
 
-> =20
->  Example: Clock controller node on omap 4430:
-> =20
->  &cm2 {
->         l4per: cm@1400 {
->                 cm_l4per@0 {
-> -                       cm_l4per_clkctrl: clk@20 {
-> +                       cm_l4per_clkctrl: clock@20 {
->                                 compatible =3D "ti,clkctrl";
->                                 reg =3D <0x20 0x1b0>;
-> +                               reg-names =3D "l4_per";
->                                 #clock-cells =3D <2>;
->                         };
->                 };
+remains but this is a different issue (mismatch between U-Boot =
+clock/vdd_core
+setup and kernel table). Most likely U-Boot runs with an 300MHz OPP =
+which is
+not defined by data sheet or kernel opp tables.
+
+BR,
+Nikolaus=
