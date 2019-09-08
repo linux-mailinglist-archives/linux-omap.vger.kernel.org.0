@@ -2,126 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93637AD080
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Sep 2019 21:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B573AD082
+	for <lists+linux-omap@lfdr.de>; Sun,  8 Sep 2019 21:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728774AbfIHTmq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Sep 2019 15:42:46 -0400
-Received: from muru.com ([72.249.23.125]:60308 "EHLO muru.com"
+        id S1728847AbfIHTow (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Sep 2019 15:44:52 -0400
+Received: from muru.com ([72.249.23.125]:60324 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728743AbfIHTmq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 8 Sep 2019 15:42:46 -0400
+        id S1728817AbfIHTow (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 8 Sep 2019 15:44:52 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 07E4C809B;
-        Sun,  8 Sep 2019 19:43:14 +0000 (UTC)
-Date:   Sun, 8 Sep 2019 12:42:41 -0700
+        by muru.com (Postfix) with ESMTPS id 824B5809B;
+        Sun,  8 Sep 2019 19:45:21 +0000 (UTC)
+Date:   Sun, 8 Sep 2019 12:44:48 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Tero Kristo <t-kristo@ti.com>, devicetree@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH] clk: ti: clkctrl: Fix hidden dependency to node name
- with reg-names
-Message-ID: <20190908194241.GL52127@atomide.com>
-References: <20190905215532.8357-1-tony@atomide.com>
- <20190907035518.EB40C208C3@mail.kernel.org>
+To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        David Lechner <david@lechnology.com>,
+        linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 1/6] bus/ti-pwmss: move TI PWMSS driver from PWM to
+ bus subsystem
+Message-ID: <20190908194447.GM52127@atomide.com>
+References: <20190901225827.12301-1-david@lechnology.com>
+ <20190901225827.12301-2-david@lechnology.com>
+ <20190902150245.GE1445@ulmo>
+ <20190908121524.49b4874d@archlinux>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190907035518.EB40C208C3@mail.kernel.org>
+In-Reply-To: <20190908121524.49b4874d@archlinux>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Stephen Boyd <sboyd@kernel.org> [190907 03:55]:
-> Quoting Tony Lindgren (2019-09-05 14:55:32)
-> > We currently have a hidden dependency to the device tree node name for
-> > the clkctrl clocks. Instead of using standard node name like "clock", we
-> > must use "l4-per-clkctrl" naming so the clock driver can find the
+* Jonathan Cameron <jic23@jic23.retrosnub.co.uk> [190908 11:16]:
+> On Mon, 2 Sep 2019 17:02:45 +0200
+> Thierry Reding <thierry.reding@gmail.com> wrote:
 > 
-> The node name is "clk" though.
-
-Yes for some it's "clk" and for some it's "l4-per-clkctrl".
-
-In general, the clock node name should be "clock@foo", rather than
-"clk@foo", right?
-
-> > associated clock domain. Further, if "clk" is specified for a clock node
-> > name, the driver sets TI_CLK_CLKCTRL_COMPAT flag that uses different
-> > logic with earlier naming for the clock node name.
+> > On Sun, Sep 01, 2019 at 05:58:22PM -0500, David Lechner wrote:
+> > > The TI PWMSS driver is a simple bus driver for providing power
+> > > power management for the PWM peripherals on TI AM33xx SoCs, namely
+> > > eCAP, eHRPWM and eQEP. The eQEP is a counter rather than a PWM, so
+> > > it does not make sense to have the bus driver in the PWM subsystem
+> > > since the PWMSS is not exclusive to PWM devices.
+> > > 
+> > > Signed-off-by: David Lechner <david@lechnology.com>
+> > > ---
+> > > 
+> > > v3 changes:
+> > > - none
+> > > v2 changes:
+> > > - new patch
+> > > 
+> > >  drivers/bus/Kconfig                           | 9 +++++++++
+> > >  drivers/bus/Makefile                          | 1 +
+> > >  drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} | 0
+> > >  drivers/pwm/Kconfig                           | 9 ---------
+> > >  drivers/pwm/Makefile                          | 1 -
+> > >  5 files changed, 10 insertions(+), 10 deletions(-)
+> > >  rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)  
 > > 
-> > If the clock node naming dependency is not understood, the related
-> > clockdomain is not found, or a wrong one can get used if a clock manager
-> > instance has multiple domains.
-> > 
-> > As each clkctrl instance represents a single clock domain with it's
-> > reg property describing the clocks available in that clock domain,
-> > we can simply use "reg-names" property for the clock domain.
-> > 
-> > This simplifies things and removes the hidden dependency to the node
-> > name. And then later on, we should be able to drop the related code
-> > for parsing the node names.
-> > 
-> > Let's also update the binding to use standard "clock" node naming
-> > instead of "clk".
-> > 
-> > Cc: devicetree@vger.kernel.org
-> > Cc: Rob Herring <robh+dt@kernel.org>
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> >  Documentation/devicetree/bindings/clock/ti-clkctrl.txt |  6 +++++-
-> >  drivers/clk/ti/clkctrl.c                               | 10 ++++++++--
-> >  2 files changed, 13 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/clock/ti-clkctrl.txt b/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
-> > --- a/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
-> > +++ b/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
-> > @@ -20,15 +20,19 @@ Required properties :
-> >  - #clock-cells : shall contain 2 with the first entry being the instance
-> >                  offset from the clock domain base and the second being the
-> >                  clock index
-> > +- reg : clock registers
-> > +- reg-names : clock register names for the clock, should be same as the
-> > +             domain name
+> > Acked-by: Thierry Reding <thierry.reding@gmail.com>
 > 
-> Is this necessary? I'd rather see that the names of the clks don't
-> actually matter by means of connecting the clk tree through the "clocks"
-> property when the parent clks are provided by external nodes and through
-> direct pointers when they're within a controller. If that works then it
-> should be possible to ignore this name in general?
+> Do we need an immutable branch for these precursor patches to the
+> driver addition? It's not going to make 5.4 via my tree as cutting it
+> too fine so we'll be in the position of holding these in a non obvious
+> tree for a whole cycle. 
 
-This is not for names of the clocks :) This is to name the clock
-provider register range. The name of the register range is the
-same as the clockdomain that this range of clocks belongs to.
-This property is used by the clock provider on init to initialize the
-clock provider, not when a clock is requested.
-
-In this case a clkctrl clock provider instance has one to some tens
-clocks where they all belong to the same domain. If some similar clock
-would have multiple domains, then it would simply just have multiple
-reg ranges and multiple reg-names properties.
-
-Or do you have some better ideas on how to name a clock controller
-in the device tree?
+Sure an immutable branch would be nice in case of unlikely
+dts file conflicts. And yeah no need to try to rush to v5.4.
 
 Regards,
 
 Tony
-
-> >  Example: Clock controller node on omap 4430:
-> >  
-> >  &cm2 {
-> >         l4per: cm@1400 {
-> >                 cm_l4per@0 {
-> > -                       cm_l4per_clkctrl: clk@20 {
-> > +                       cm_l4per_clkctrl: clock@20 {
-> >                                 compatible = "ti,clkctrl";
-> >                                 reg = <0x20 0x1b0>;
-> > +                               reg-names = "l4_per";
-> >                                 #clock-cells = <2>;
-> >                         };
-> >                 };
