@@ -2,88 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C6C2ACC62
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Sep 2019 13:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA19FACF65
+	for <lists+linux-omap@lfdr.de>; Sun,  8 Sep 2019 17:09:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728820AbfIHLQb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Sep 2019 07:16:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53358 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728753AbfIHLQa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 8 Sep 2019 07:16:30 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9BE5221734;
-        Sun,  8 Sep 2019 11:16:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567941390;
-        bh=wVRmKL60wVlOm/tyjEk55fqdWDRTI9BBf/XK/zL+TVk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VMGRFkm61R+D4fz5Nj+NsOd1PDoLkb7AKotZy82PByD2dAvfvbogS2baSK0OUp818
-         rz1vpKHcxbrh3Y/XKC/G4CiVHad4/rXmytjJWlv9TQ7KoJ0srrU//LX43f1vBStmji
-         jHIK9PpCDOpmT2V84oFZaBa81wHXFsXnGuZfop2Y=
-Date:   Sun, 8 Sep 2019 12:16:18 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        David Lechner <david@lechnology.com>,
-        linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v3 0/6] counter: new TI eQEP driver
-Message-ID: <20190908121618.3e7e5618@archlinux>
-In-Reply-To: <20190905141053.GU52127@atomide.com>
-References: <20190901225827.12301-1-david@lechnology.com>
- <20190905133721.GA728346@icarus>
- <20190905141053.GU52127@atomide.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726582AbfIHPJM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Sep 2019 11:09:12 -0400
+Received: from mail-yw1-f67.google.com ([209.85.161.67]:40798 "EHLO
+        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726535AbfIHPJM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Sep 2019 11:09:12 -0400
+Received: by mail-yw1-f67.google.com with SMTP id e205so775821ywc.7
+        for <linux-omap@vger.kernel.org>; Sun, 08 Sep 2019 08:09:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=IhwWzaeE8rT6bUYbJ5piV4c/tVs2bp0QZr1J1A+j8Kk=;
+        b=G75+AzLA/1nRBhT+xN7pa0uxqDugR7uIk8PYV4wLMTF/UCkxgp8m0t0LuLLITKyepd
+         4Q7sOwAke3oMb0rLfUqeGYVvRtfIOOe3d46mmO20chuf+46lo0jkZcsX09ZCYtjSHGRC
+         sRLQe5Iu9VhUOTEziV7aEE8Q2Vw7kJU2WuBFlfpttBjLS+fIMdLKf56LNnXeXP/luutJ
+         EBsv2xD3C9YEVTrvm38rIB3cqaO7m0JOsU/jIVs2Hq6MCPVAKesAVqOq1aNnB5Uk/BK9
+         0B/mGa0cXEdHDiMo7EtGOkPyvvIqrS2xujOaYi+5hX8gaQxYcDURlAi4UnmvcpB07EBW
+         RKog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=IhwWzaeE8rT6bUYbJ5piV4c/tVs2bp0QZr1J1A+j8Kk=;
+        b=g5P+NOwU11qByjKzw3Y8ZatRPziKBqG/vDdViUYpKV2vh4LOFFZZiPJv8iWP/aQtiK
+         /M7Cb34kFZxkrblCUM0jyHq8G3jUMbPAGTwErFEcfHpsugtUNgUDyvcMF4vcE5z9DiKR
+         5Rm6GuHzCZu61szVpgvxX8K48ZH6HGeJqEAjM8BllGf5TFWhM3AtulLKZz45UjKwSZCr
+         9i2shnw7H40TbdJa/xxp67v7GMKatXkVc7Z7GR+Xuf9M2SHnaNZjHIWvBOCI60GQSFbI
+         c7x8pWMqoRFLPjTl3ly/OUlWGctt1WDYRvpIbQZaFRwyTGYzDBPpfeNUkcJxKsb9rh0+
+         JBYg==
+X-Gm-Message-State: APjAAAXsw8ue1X37C/79RlObjiHWR9MOd6ZBtKxRVMXeXSEgls6Udqon
+        aDIuikH5xkRtCsqsaU142HDpNSNCK6EQyrdtjw0=
+X-Google-Smtp-Source: APXvYqwU6vdkbfV7fxSLeVzmmp9UcS1hW1qLg9GTN5UnM5StB5LcbdYFoeMCOkGWIFUpkUQ5BQpWlsSqY9U0gGwfoeQ=
+X-Received: by 2002:a81:2b0a:: with SMTP id r10mr13993889ywr.301.1567954887860;
+ Sun, 08 Sep 2019 08:01:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Reply-To: mrsnicolemarois94@gmail.com
+Received: by 2002:a25:d343:0:0:0:0:0 with HTTP; Sun, 8 Sep 2019 08:01:27 -0700 (PDT)
+From:   "Mrs. Nicole Marois " <maroismrsnicole2@gmail.com>
+Date:   Sun, 8 Sep 2019 15:01:27 +0000
+X-Google-Sender-Auth: GjAOmORnfqAnr-L3oHDeAXQzX8A
+Message-ID: <CA+MQQV+Dbg27FqEPq99-Kr6mDEtS6Q4fXRA7CJj79CM0+ryutA@mail.gmail.com>
+Subject: Greetings
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 5 Sep 2019 07:10:53 -0700
-Tony Lindgren <tony@atomide.com> wrote:
+-- 
+Hello Dear,
 
-> * William Breathitt Gray <vilhelm.gray@gmail.com> [190905 13:38]:
-> > On Sun, Sep 01, 2019 at 05:58:21PM -0500, David Lechner wrote:  
-> > > This series adds device tree bindings and a new counter driver for the Texas
-> > > Instruments Enhanced Quadrature Encoder Pulse (eQEP).
-> > > 
-> > > As mentioned in one of the commit messages, to start with, the driver only
-> > > supports reading the current counter value and setting the min/max values.
-> > > Other features can be added as the counter subsystem gains support for them.  
-> ...
-> 
-> > I'm satisfied with this version of the patchset.
-> > 
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > 
-> > Jonathan, if you have no objections please pick up this up so that it
-> > can make it to the 5.4 merge window coming in soon. Alternatively, I can
-> > merge it into my repository instead and hold it for a while longer
-> > there, if you prefer that route.  
-> 
-> Looks good to me too:
-> 
-> Acked-by: Tony Lindgren <tony@atomide.com>
+Please forgive me for stressing you with my predicaments as I know
+that this letter may come to you as big surprise. Actually, I came
+across your E-mail from my personal search afterward I decided to
+email you directly believing that you will be honest to fulfill my
+final wish before i die.
 
-Sorry, too close to the likely opening of the 5.4 merge window for it to
-go via IIO this cycle (unless there is a significant delay for some reason!)
-I'm happy to queue it up for 5.5 but before I do this, see replies to patch 1
-about whether an immutable branch is needed as we are going across multiple
-trees.
+Meanwhile, I am Mrs.  Nicole Marois 62 years old, from France, and I
+am suffering from a long time cancer and from all indication my
+condition is really deteriorating as my doctors have confirmed and
+courageously advised me that I may not live beyond two months from now
+for the reason that my tumor has reached a critical stage which has
+defiled all forms of medical treatment. As a matter of fact,
+registered nurse by profession while my husband was dealing on Gold
+Dust and Gold Dory Bars in Burkina Faso till his sudden death the year
+2008 then I took over his business till date.
 
-Thanks,
+In fact, at this moment I have a deposit sum of four million five
+hundred thousand US dollars [$4,500,000.00] with one of the leading
+bank in Burkina Faso but unfortunately I cannot visit the bank since
+I m critically sick and powerless to do anything myself but my bank
+account officer advised me to assign any of my trustworthy relative,
+friends or partner with authorization letter to stand as the recipient
+of my money but sorrowfully I don t have any reliable relative and no
+child.
 
-Jonathan
+Therefore, I want you to receive the money and take 50% to take care
+of yourself and family while 50% should be use basically on
+humanitarian purposes mostly to orphanages home, Motherless babies
+home, less privileged and disable citizens and widows around the
+world. and as soon as I receive your I shall send you my pictures,
+banking records and with full contacts of my banking institution to
+communicate them on the matter. Please contact me with these email
+address.(mrsnicolemarois94@gmail.com)
 
-
+Hope to hear from you soon.
+Yours Faithfully,
+Mrs.  Nicole Marois
