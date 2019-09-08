@@ -2,95 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA19FACF65
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Sep 2019 17:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93637AD080
+	for <lists+linux-omap@lfdr.de>; Sun,  8 Sep 2019 21:42:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726582AbfIHPJM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Sep 2019 11:09:12 -0400
-Received: from mail-yw1-f67.google.com ([209.85.161.67]:40798 "EHLO
-        mail-yw1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726535AbfIHPJM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Sep 2019 11:09:12 -0400
-Received: by mail-yw1-f67.google.com with SMTP id e205so775821ywc.7
-        for <linux-omap@vger.kernel.org>; Sun, 08 Sep 2019 08:09:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=IhwWzaeE8rT6bUYbJ5piV4c/tVs2bp0QZr1J1A+j8Kk=;
-        b=G75+AzLA/1nRBhT+xN7pa0uxqDugR7uIk8PYV4wLMTF/UCkxgp8m0t0LuLLITKyepd
-         4Q7sOwAke3oMb0rLfUqeGYVvRtfIOOe3d46mmO20chuf+46lo0jkZcsX09ZCYtjSHGRC
-         sRLQe5Iu9VhUOTEziV7aEE8Q2Vw7kJU2WuBFlfpttBjLS+fIMdLKf56LNnXeXP/luutJ
-         EBsv2xD3C9YEVTrvm38rIB3cqaO7m0JOsU/jIVs2Hq6MCPVAKesAVqOq1aNnB5Uk/BK9
-         0B/mGa0cXEdHDiMo7EtGOkPyvvIqrS2xujOaYi+5hX8gaQxYcDURlAi4UnmvcpB07EBW
-         RKog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=IhwWzaeE8rT6bUYbJ5piV4c/tVs2bp0QZr1J1A+j8Kk=;
-        b=g5P+NOwU11qByjKzw3Y8ZatRPziKBqG/vDdViUYpKV2vh4LOFFZZiPJv8iWP/aQtiK
-         /M7Cb34kFZxkrblCUM0jyHq8G3jUMbPAGTwErFEcfHpsugtUNgUDyvcMF4vcE5z9DiKR
-         5Rm6GuHzCZu61szVpgvxX8K48ZH6HGeJqEAjM8BllGf5TFWhM3AtulLKZz45UjKwSZCr
-         9i2shnw7H40TbdJa/xxp67v7GMKatXkVc7Z7GR+Xuf9M2SHnaNZjHIWvBOCI60GQSFbI
-         c7x8pWMqoRFLPjTl3ly/OUlWGctt1WDYRvpIbQZaFRwyTGYzDBPpfeNUkcJxKsb9rh0+
-         JBYg==
-X-Gm-Message-State: APjAAAXsw8ue1X37C/79RlObjiHWR9MOd6ZBtKxRVMXeXSEgls6Udqon
-        aDIuikH5xkRtCsqsaU142HDpNSNCK6EQyrdtjw0=
-X-Google-Smtp-Source: APXvYqwU6vdkbfV7fxSLeVzmmp9UcS1hW1qLg9GTN5UnM5StB5LcbdYFoeMCOkGWIFUpkUQ5BQpWlsSqY9U0gGwfoeQ=
-X-Received: by 2002:a81:2b0a:: with SMTP id r10mr13993889ywr.301.1567954887860;
- Sun, 08 Sep 2019 08:01:27 -0700 (PDT)
+        id S1728774AbfIHTmq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Sep 2019 15:42:46 -0400
+Received: from muru.com ([72.249.23.125]:60308 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728743AbfIHTmq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 8 Sep 2019 15:42:46 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 07E4C809B;
+        Sun,  8 Sep 2019 19:43:14 +0000 (UTC)
+Date:   Sun, 8 Sep 2019 12:42:41 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Stephen Boyd <sboyd@kernel.org>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Tero Kristo <t-kristo@ti.com>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH] clk: ti: clkctrl: Fix hidden dependency to node name
+ with reg-names
+Message-ID: <20190908194241.GL52127@atomide.com>
+References: <20190905215532.8357-1-tony@atomide.com>
+ <20190907035518.EB40C208C3@mail.kernel.org>
 MIME-Version: 1.0
-Reply-To: mrsnicolemarois94@gmail.com
-Received: by 2002:a25:d343:0:0:0:0:0 with HTTP; Sun, 8 Sep 2019 08:01:27 -0700 (PDT)
-From:   "Mrs. Nicole Marois " <maroismrsnicole2@gmail.com>
-Date:   Sun, 8 Sep 2019 15:01:27 +0000
-X-Google-Sender-Auth: GjAOmORnfqAnr-L3oHDeAXQzX8A
-Message-ID: <CA+MQQV+Dbg27FqEPq99-Kr6mDEtS6Q4fXRA7CJj79CM0+ryutA@mail.gmail.com>
-Subject: Greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190907035518.EB40C208C3@mail.kernel.org>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Hello Dear,
+* Stephen Boyd <sboyd@kernel.org> [190907 03:55]:
+> Quoting Tony Lindgren (2019-09-05 14:55:32)
+> > We currently have a hidden dependency to the device tree node name for
+> > the clkctrl clocks. Instead of using standard node name like "clock", we
+> > must use "l4-per-clkctrl" naming so the clock driver can find the
+> 
+> The node name is "clk" though.
 
-Please forgive me for stressing you with my predicaments as I know
-that this letter may come to you as big surprise. Actually, I came
-across your E-mail from my personal search afterward I decided to
-email you directly believing that you will be honest to fulfill my
-final wish before i die.
+Yes for some it's "clk" and for some it's "l4-per-clkctrl".
 
-Meanwhile, I am Mrs.  Nicole Marois 62 years old, from France, and I
-am suffering from a long time cancer and from all indication my
-condition is really deteriorating as my doctors have confirmed and
-courageously advised me that I may not live beyond two months from now
-for the reason that my tumor has reached a critical stage which has
-defiled all forms of medical treatment. As a matter of fact,
-registered nurse by profession while my husband was dealing on Gold
-Dust and Gold Dory Bars in Burkina Faso till his sudden death the year
-2008 then I took over his business till date.
+In general, the clock node name should be "clock@foo", rather than
+"clk@foo", right?
 
-In fact, at this moment I have a deposit sum of four million five
-hundred thousand US dollars [$4,500,000.00] with one of the leading
-bank in Burkina Faso but unfortunately I cannot visit the bank since
-I m critically sick and powerless to do anything myself but my bank
-account officer advised me to assign any of my trustworthy relative,
-friends or partner with authorization letter to stand as the recipient
-of my money but sorrowfully I don t have any reliable relative and no
-child.
+> > associated clock domain. Further, if "clk" is specified for a clock node
+> > name, the driver sets TI_CLK_CLKCTRL_COMPAT flag that uses different
+> > logic with earlier naming for the clock node name.
+> > 
+> > If the clock node naming dependency is not understood, the related
+> > clockdomain is not found, or a wrong one can get used if a clock manager
+> > instance has multiple domains.
+> > 
+> > As each clkctrl instance represents a single clock domain with it's
+> > reg property describing the clocks available in that clock domain,
+> > we can simply use "reg-names" property for the clock domain.
+> > 
+> > This simplifies things and removes the hidden dependency to the node
+> > name. And then later on, we should be able to drop the related code
+> > for parsing the node names.
+> > 
+> > Let's also update the binding to use standard "clock" node naming
+> > instead of "clk".
+> > 
+> > Cc: devicetree@vger.kernel.org
+> > Cc: Rob Herring <robh+dt@kernel.org>
+> > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > ---
+> >  Documentation/devicetree/bindings/clock/ti-clkctrl.txt |  6 +++++-
+> >  drivers/clk/ti/clkctrl.c                               | 10 ++++++++--
+> >  2 files changed, 13 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/clock/ti-clkctrl.txt b/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
+> > --- a/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
+> > +++ b/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
+> > @@ -20,15 +20,19 @@ Required properties :
+> >  - #clock-cells : shall contain 2 with the first entry being the instance
+> >                  offset from the clock domain base and the second being the
+> >                  clock index
+> > +- reg : clock registers
+> > +- reg-names : clock register names for the clock, should be same as the
+> > +             domain name
+> 
+> Is this necessary? I'd rather see that the names of the clks don't
+> actually matter by means of connecting the clk tree through the "clocks"
+> property when the parent clks are provided by external nodes and through
+> direct pointers when they're within a controller. If that works then it
+> should be possible to ignore this name in general?
 
-Therefore, I want you to receive the money and take 50% to take care
-of yourself and family while 50% should be use basically on
-humanitarian purposes mostly to orphanages home, Motherless babies
-home, less privileged and disable citizens and widows around the
-world. and as soon as I receive your I shall send you my pictures,
-banking records and with full contacts of my banking institution to
-communicate them on the matter. Please contact me with these email
-address.(mrsnicolemarois94@gmail.com)
+This is not for names of the clocks :) This is to name the clock
+provider register range. The name of the register range is the
+same as the clockdomain that this range of clocks belongs to.
+This property is used by the clock provider on init to initialize the
+clock provider, not when a clock is requested.
 
-Hope to hear from you soon.
-Yours Faithfully,
-Mrs.  Nicole Marois
+In this case a clkctrl clock provider instance has one to some tens
+clocks where they all belong to the same domain. If some similar clock
+would have multiple domains, then it would simply just have multiple
+reg ranges and multiple reg-names properties.
+
+Or do you have some better ideas on how to name a clock controller
+in the device tree?
+
+Regards,
+
+Tony
+
+> >  Example: Clock controller node on omap 4430:
+> >  
+> >  &cm2 {
+> >         l4per: cm@1400 {
+> >                 cm_l4per@0 {
+> > -                       cm_l4per_clkctrl: clk@20 {
+> > +                       cm_l4per_clkctrl: clock@20 {
+> >                                 compatible = "ti,clkctrl";
+> >                                 reg = <0x20 0x1b0>;
+> > +                               reg-names = "l4_per";
+> >                                 #clock-cells = <2>;
+> >                         };
+> >                 };
