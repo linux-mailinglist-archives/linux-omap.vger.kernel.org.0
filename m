@@ -2,164 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A97AC863
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Sep 2019 19:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0343ACC5C
+	for <lists+linux-omap@lfdr.de>; Sun,  8 Sep 2019 13:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436617AbfIGRrP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 7 Sep 2019 13:47:15 -0400
-Received: from mo4-p03-ob.smtp.rzone.de ([85.215.255.101]:24848 "EHLO
-        mo4-p03-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436544AbfIGRrP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Sep 2019 13:47:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1567878431;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=dkjt0qMhGxLVTBpvMP6aAPlNlv/UnmzG7T8esfy3ij4=;
-        b=E6kLNjw0XWaixjxK/AMZtsJ1QOVph9PUUTHm/tmknGAXdeM3m24vDAQwzRLpldcqt0
-        tdvhg9R7n2yrOeOhB67oHou1xGqh+11vLwhd0xmu+Va05RfWrMNgbiMIjKHs2z22H1qa
-        bQio10gp8gPMVLDlRMOVwLNrQ781lXuNghzM7uHoGcpUh8Mv7dacGXwpq/tAPFRUFpj7
-        5MkPazj7cyitXW+hKRq0qm53/O0HTsl9wc9x+YSwpanbkEZKSKhl+PI2PuHmXoXzdy5W
-        V1YV/VYr0cEPgTAUdlA/dXvtJKKW2eC0sKS+FF9mfBZ0nfieNIWWnqzVB8Wdb982NKQM
-        yT7w==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXL8GTntuxg="
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-        by smtp.strato.de (RZmta 44.27.0 DYNA|AUTH)
-        with ESMTPSA id u036f9v87Hkwrbm
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Sat, 7 Sep 2019 19:46:58 +0200 (CEST)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        =?UTF-8?q?Andr=C3=A9=20Roth?= <neolynx@gmail.com>,
+        id S1728803AbfIHLQ0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Sep 2019 07:16:26 -0400
+Received: from saturn.retrosnub.co.uk ([46.235.226.198]:52996 "EHLO
+        saturn.retrosnub.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728753AbfIHLQ0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Sep 2019 07:16:26 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        by saturn.retrosnub.co.uk (Postfix; Retrosnub mail submission) with ESMTPSA id C92309E74EA;
+        Sun,  8 Sep 2019 12:16:22 +0100 (BST)
+Date:   Sun, 8 Sep 2019 12:15:24 +0100
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
+        linux-omap@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Enric Balletbo i Serra <eballetbo@gmail.com>,
-        Javier Martinez Canillas <javier@dowhile0.org>,
-        Roger Quadros <rogerq@ti.com>,
-        Teresa Remmet <t.remmet@phytec.de>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 4/4] DTS: bindings: omap: update bindings documentation
-Date:   Sat,  7 Sep 2019 19:46:53 +0200
-Message-Id: <35e4f219af5f8bff48e89ece7541f4e4ae6f27a0.1567878413.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <cover.1567878413.git.hns@goldelico.com>
-References: <cover.1567878413.git.hns@goldelico.com>
+        =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v3 1/6] bus/ti-pwmss: move TI PWMSS driver from PWM to
+ bus subsystem
+Message-ID: <20190908121524.49b4874d@archlinux>
+In-Reply-To: <20190902150245.GE1445@ulmo>
+References: <20190901225827.12301-1-david@lechnology.com>
+        <20190901225827.12301-2-david@lechnology.com>
+        <20190902150245.GE1445@ulmo>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* clarify that we now need either "ti,omap3430" or "ti,omap3630" or "ti,am3517" for omap3 chips
-* clarify that "ti,omap3" has no default
-* clarify that AM33x is not an "ti,omap3"
-* clarify that the list of boards is incomplete
-* remove some "ti,am33xx", "ti,omap3"
-* add some missing "ti,omap4"
+On Mon, 2 Sep 2019 17:02:45 +0200
+Thierry Reding <thierry.reding@gmail.com> wrote:
 
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Acked-by: Tony Lindgren <tony@atomide.com>
----
- .../devicetree/bindings/arm/omap/omap.txt     | 30 +++++++++++--------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+> On Sun, Sep 01, 2019 at 05:58:22PM -0500, David Lechner wrote:
+> > The TI PWMSS driver is a simple bus driver for providing power
+> > power management for the PWM peripherals on TI AM33xx SoCs, namely
+> > eCAP, eHRPWM and eQEP. The eQEP is a counter rather than a PWM, so
+> > it does not make sense to have the bus driver in the PWM subsystem
+> > since the PWMSS is not exclusive to PWM devices.
+> > 
+> > Signed-off-by: David Lechner <david@lechnology.com>
+> > ---
+> > 
+> > v3 changes:
+> > - none
+> > v2 changes:
+> > - new patch
+> > 
+> >  drivers/bus/Kconfig                           | 9 +++++++++
+> >  drivers/bus/Makefile                          | 1 +
+> >  drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} | 0
+> >  drivers/pwm/Kconfig                           | 9 ---------
+> >  drivers/pwm/Makefile                          | 1 -
+> >  5 files changed, 10 insertions(+), 10 deletions(-)
+> >  rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)  
+> 
+> Acked-by: Thierry Reding <thierry.reding@gmail.com>
 
-diff --git a/Documentation/devicetree/bindings/arm/omap/omap.txt b/Documentation/devicetree/bindings/arm/omap/omap.txt
-index b301f753ed2c..e77635c5422c 100644
---- a/Documentation/devicetree/bindings/arm/omap/omap.txt
-+++ b/Documentation/devicetree/bindings/arm/omap/omap.txt
-@@ -43,7 +43,7 @@ SoC Families:
- 
- - OMAP2 generic - defaults to OMAP2420
-   compatible = "ti,omap2"
--- OMAP3 generic - defaults to OMAP3430
-+- OMAP3 generic
-   compatible = "ti,omap3"
- - OMAP4 generic - defaults to OMAP4430
-   compatible = "ti,omap4"
-@@ -51,6 +51,8 @@ SoC Families:
-   compatible = "ti,omap5"
- - DRA7 generic - defaults to DRA742
-   compatible = "ti,dra7"
-+- AM33x generic
-+  compatible = "ti,am33xx"
- - AM43x generic - defaults to AM4372
-   compatible = "ti,am43"
- 
-@@ -63,12 +65,14 @@ SoCs:
- 
- - OMAP3430
-   compatible = "ti,omap3430", "ti,omap3"
-+  legacy: "ti,omap34xx" - please do not use any more
- - AM3517
-   compatible = "ti,am3517", "ti,omap3"
- - OMAP3630
--  compatible = "ti,omap36xx", "ti,omap3"
--- AM33xx
--  compatible = "ti,am33xx", "ti,omap3"
-+  compatible = "ti,omap3630", "ti,omap3"
-+  legacy: "ti,omap36xx" - please do not use any more
-+- AM335x
-+  compatible = "ti,am33xx"
- 
- - OMAP4430
-   compatible = "ti,omap4430", "ti,omap4"
-@@ -110,19 +114,19 @@ SoCs:
- - AM4372
-   compatible = "ti,am4372", "ti,am43"
- 
--Boards:
-+Boards (incomplete list of examples):
- 
- - OMAP3 BeagleBoard : Low cost community board
--  compatible = "ti,omap3-beagle", "ti,omap3"
-+  compatible = "ti,omap3-beagle", "ti,omap3430", "ti,omap3"
- 
- - OMAP3 Tobi with Overo : Commercial expansion board with daughter board
--  compatible = "gumstix,omap3-overo-tobi", "gumstix,omap3-overo", "ti,omap3"
-+  compatible = "gumstix,omap3-overo-tobi", "gumstix,omap3-overo", "ti,omap3430", "ti,omap3"
- 
- - OMAP4 SDP : Software Development Board
--  compatible = "ti,omap4-sdp", "ti,omap4430"
-+  compatible = "ti,omap4-sdp", "ti,omap4430", "ti,omap4"
- 
- - OMAP4 PandaBoard : Low cost community board
--  compatible = "ti,omap4-panda", "ti,omap4430"
-+  compatible = "ti,omap4-panda", "ti,omap4430", "ti,omap4"
- 
- - OMAP4 DuoVero with Parlor : Commercial expansion board with daughter board
-   compatible = "gumstix,omap4-duovero-parlor", "gumstix,omap4-duovero", "ti,omap4430", "ti,omap4";
-@@ -134,16 +138,16 @@ Boards:
-   compatible = "variscite,var-dvk-om44", "variscite,var-som-om44", "ti,omap4460", "ti,omap4";
- 
- - OMAP3 EVM : Software Development Board for OMAP35x, AM/DM37x
--  compatible = "ti,omap3-evm", "ti,omap3"
-+  compatible = "ti,omap3-evm", "ti,omap3630", "ti,omap3"
- 
- - AM335X EVM : Software Development Board for AM335x
--  compatible = "ti,am335x-evm", "ti,am33xx", "ti,omap3"
-+  compatible = "ti,am335x-evm", "ti,am33xx"
- 
- - AM335X Bone : Low cost community board
--  compatible = "ti,am335x-bone", "ti,am33xx", "ti,omap3"
-+  compatible = "ti,am335x-bone", "ti,am33xx"
- 
- - AM3359 ICEv2 : Low cost Industrial Communication Engine EVM.
--  compatible = "ti,am3359-icev2", "ti,am33xx", "ti,omap3"
-+  compatible = "ti,am3359-icev2", "ti,am33xx"
- 
- - AM335X OrionLXm : Substation Automation Platform
-   compatible = "novatech,am335x-lxm", "ti,am33xx"
--- 
-2.19.1
+Do we need an immutable branch for these precursor patches to the
+driver addition? It's not going to make 5.4 via my tree as cutting it
+too fine so we'll be in the position of holding these in a non obvious
+tree for a whole cycle. 
+
+Thanks,
+
+Jonathan
+
 
