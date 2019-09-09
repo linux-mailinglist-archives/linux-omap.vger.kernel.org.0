@@ -2,78 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2395BADD03
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2019 18:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A38D6ADD4A
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2019 18:32:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389269AbfIIQYL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Sep 2019 12:24:11 -0400
-Received: from muru.com ([72.249.23.125]:60372 "EHLO muru.com"
+        id S1725928AbfIIQck (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Sep 2019 12:32:40 -0400
+Received: from muru.com ([72.249.23.125]:60392 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726410AbfIIQYL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 9 Sep 2019 12:24:11 -0400
+        id S1725908AbfIIQck (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 9 Sep 2019 12:32:40 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 69DBC80BF;
-        Mon,  9 Sep 2019 16:24:41 +0000 (UTC)
-Date:   Mon, 9 Sep 2019 09:24:07 -0700
+        by muru.com (Postfix) with ESMTPS id 4035B80BF;
+        Mon,  9 Sep 2019 16:33:10 +0000 (UTC)
+Date:   Mon, 9 Sep 2019 09:32:36 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Ladislav Michl <ladis@linux-mips.org>
-Cc:     Tomas Novotny <tomas@novotny.cz>, linux-omap@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: omap-mcbsp: TX Buffer Overflow
-Message-ID: <20190909162407.GO52127@atomide.com>
-References: <20190906165109.53c5a306@tomas.local.tbs-biometrics.cz>
- <20190907091358.GA7166@lenoch>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Adam Ford <aford173@gmail.com>,
+        =?utf-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Nishanth Menon <nm@ti.com>
+Subject: Re: [Letux-kernel] [RFC PATCH 0/3] Enable 1GHz support on omap36xx
+Message-ID: <20190909163236.GP52127@atomide.com>
+References: <C04F49BA-1229-4E96-9FCF-4FC662D1DB11@goldelico.com>
+ <CAHCN7x+Ye6sB_YqO0sAX1OJDw64B-qGS3pL545v3Xk5z914cwQ@mail.gmail.com>
+ <0C1EF64E-B33C-4BFA-A7D3-471DD1B9EE86@goldelico.com>
+ <515048DE-138D-4400-8168-F2B7D61F1005@goldelico.com>
+ <CAHCN7xLPCX9rZ0+7KVBiA_bgZ6tg6VeCXqD-UXu+6iwpFMPVrA@mail.gmail.com>
+ <7B3D1D77-3E8C-444F-90B9-6DF2641178B8@goldelico.com>
+ <CAHCN7xLW58ggx3CpVL=HdCVHWo6D-MCTB91A_9rtSRoZQ+xJuQ@mail.gmail.com>
+ <FA2920FE-B76A-4D44-A264-862A1CCBF7FC@goldelico.com>
+ <CAHCN7xJsPa0i+Z+qpCkWcdAh9+udmGT0RPNchdDsfB=8ptd3Nw@mail.gmail.com>
+ <87420DBD-770F-4C32-9499-A3AEA5876E8A@goldelico.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190907091358.GA7166@lenoch>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87420DBD-770F-4C32-9499-A3AEA5876E8A@goldelico.com>
 User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Ladislav Michl <ladis@linux-mips.org> [190907 09:14]:
-> On Fri, Sep 06, 2019 at 04:51:09PM +0200, Tomas Novotny wrote:
-> > Hi,
-> > 
-> > we have AM3703 based board similar to BeagleBoard. I'm hitting this error
-> > after upgrade to latest LTS 4.19.71 (upgraded from 4.1):
-> > 
-> > omap-mcbsp 49022000.mcbsp: TX Buffer Overflow!
-> > 
-> > This appears during or after playing of short (~2s) ding-dong wav. That error
-> > exists for longer time, because handling of tx buffer overflow irq was
-> > introduced in 2016: 4e85e7776eba ("ASoC: omap-mcbsp: Enable TX/RX under and
-> > overflow interrupts"). I've cherry-picked it to 4.1 and I see the error there also.
-> > The sound seems clear and ok to me, but we are using low quality speaker.
+Hi,
+
+* H. Nikolaus Schaller <hns@goldelico.com> [190909 14:57]:
+> Another question that came up by private mail from André was if we
+> should better disable the turbo OPPs of omap34xx and 36xx by default
+> (status = "disabled";) because there are concerns about overheating
+> the chips and we have no thermal regulation like for omap4 & 5.
 > 
-> Just FYI, for stream capture there's
-> omap-mcbsp 49022000.mcbsp: RX Buffer Underflow!
-> 
-> As far as I remember all stable kernels we have in production - 4.9.x, 4.14.x and
-> 4.19.x - are affected. IGEPv2 with both DM3730 and OMAP3530 are affected
-> (headless machines, CONFIG_VIDEO_OMAP3=n).
+> But this would mean that every board DTS would have to set it explicitly
+> to "enabled".
 
-Hmm I wonder if this is still related to the SoC idling?
-See commit 9834ffd1ecc3 ("ASoC: omap-mcbsp: Add PM QoS support for McBSP
-to prevent glitches"), maybe something still needs to be fixed in that
-area.
+Yes I started thinking about that too. I think there is a requirement
+to do the scaling via the voltage processor for the higher modes.
+And there needs to be some way to automatically change to a lower
+OPP in some cases.
 
-> And DT is probably worth updating:
-> omap_hwmod: mcbsp2_sidetone using broken dt data from mcbsp
-> omap_hwmod: mcbsp3_sidetone using broken dt data from mcbsp
-> 
-> I never motivated myself to dig deeper as catured stream looks pretty normal.
+For normal OPPs, using the twl regulator directly should be OK.
 
-These mean the devices should really have separate nodes
-in the dts rather than combining multiple devices into a
-single node with multiple reg entries.
-
-The issue with combining multiple devices into a single device
-is that flushing posted write with a read back to one register
-range will not flush it for the other which can cause mysterious
-bugs.
+For the higher modes, maybe we could pass the callback functions
+from arch/arm/mach-omap2/voltage.c for the twl regulator so the
+voltage processor hardware can handle them directly. Or add a
+separate regulator driver operating the voltages like Nishanth
+posted patches for earlier.
 
 Regards,
 
