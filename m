@@ -2,182 +2,157 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A413ADA02
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2019 15:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45B9DADA0F
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2019 15:37:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727086AbfIINcT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Sep 2019 09:32:19 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:41669 "EHLO
+        id S1728743AbfIINhX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Sep 2019 09:37:23 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:40991 "EHLO
         mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726863AbfIINcT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Sep 2019 09:32:19 -0400
-Received: by mail-io1-f65.google.com with SMTP id r26so28566609ioh.8;
-        Mon, 09 Sep 2019 06:32:18 -0700 (PDT)
+        with ESMTP id S1726529AbfIINhX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Sep 2019 09:37:23 -0400
+Received: by mail-io1-f65.google.com with SMTP id r26so28607681ioh.8;
+        Mon, 09 Sep 2019 06:37:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=uNPO18E9u4VFHR5eE6QVM48gJTzLZL8W/Knzhp286xk=;
-        b=kNHXD6JFZgQUAAdrzrOtXDHAaJeBL1xnN3iwN3mKbai6Q7jKlJxgRu39o/iTAD3TeH
-         JvQH/prFlc7xMpZHQ9hPTCS7xrImCip45XKaKwayev6LJ0XxQdwiKuVS0NJTbQ/fdCA9
-         FV5FpGnJrjYoTzpr0PQYsYAjo493bmJpXO1qNDuiO8dV24MeTQyQ2wDdU+Q3ktLeMGYq
-         lVYJ1vjR88/KtWt7zyDM1lxQFksTFp/6BgwKcTxAtl0ynEemsN44g/skL+sppOLiNvIc
-         o4KmNbsK9gPlf0bt9xe3YyJ9Li4sQdRhj52vGN3VgAfRIXbIyO54otGYNOjHIJMEcr0N
-         RivA==
+        bh=yh5I34I3F+kfotLecJXxZJWCxaSx2fVhdlna36vlC/Q=;
+        b=aMjYbIgkkBOM4kFGelnj0CRr0XsK616LuEIBdWHa9oQUjj0CAGINRicUeroEu9gczK
+         S4rD+z3DtU83yn88vV/t8iPfliEYHa29cYU0+0KKObloJYilOTnlM/Sa+sVi1JW4J5pX
+         v0E73NBQ8LSkMYfyRJSaimQ8uBE0hNloy9kq/q9JapEbnJa14f/df4kHpswzkb+F0E0A
+         mC6ki7e6q674qnVL5OrCPCgG24lGF5mnBpC7x7j92FeFALc37r2hywEdPpj23cySjR2e
+         C2QCUC47GcJrWxOMYvoXMUOXRn3zDs4IZsu3nCVxa6vYz3Bh9LoRSH1QKkvS2QfC0Axb
+         jiVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=uNPO18E9u4VFHR5eE6QVM48gJTzLZL8W/Knzhp286xk=;
-        b=byFJoyiyhf/siJL9lvyV3xc7oIa1WhP3/UFd47yYW1MQCi7yd11t3BIDgwjX+W0wNN
-         aF2ooUlaGCJynwvdvyM7wADxSVBVn/Wm5TY0wu/fAfxNh5ojHiF7EAHaiJjLDgNoWIN/
-         KQ8A1QkoLltCy/ae1/E7btRYtpFxbvFeP/Kh9Carvnq+jaZrKakWX9WMicF6dwTh4BhK
-         TddS/A+z6vp0nkuGX/hqCqA8rZd+xPFInc0R3vJ9PvDtnMgSWf48l9dsy0lPw0IBdV3u
-         jvInAZzH41eXb0/RKg38IVPeshAknpIqxcfxiAuQq6h1jG1g64Pnz/c+bVhG7uHk8NEt
-         xIWw==
-X-Gm-Message-State: APjAAAWbQpFZw+kfn/IuUJtAuBdvgHiXqCo1L+tq7gX5Reh0iPFWl5QO
-        AIJ+gkO6tQqAQ9ZvY2sIOCQ//Ns2DtY0ci8YJYw=
-X-Google-Smtp-Source: APXvYqwLFSwDFF4ktapBCBuY9u/0Yh7kqig52d6DQ/Kmcw1NR1FMw1oGhVlizUKzQqVuwAUlzoNX4hC9NZnYBHbbLbg=
-X-Received: by 2002:a02:b395:: with SMTP id p21mr26999521jan.52.1568035937967;
- Mon, 09 Sep 2019 06:32:17 -0700 (PDT)
+        bh=yh5I34I3F+kfotLecJXxZJWCxaSx2fVhdlna36vlC/Q=;
+        b=dZ0ofNr2RoRbCp1QUews2YdPDblFzpjwFcbxD4A3PSx1r6Pb7r+103M2UvwUm6vcQh
+         sk3rjBtdZQ1Y2TXaGuFmrPI8UKCvOxpzXALlg23coIlEnkRf7z4PJtufQnFWZW+f5O6M
+         n8SBEEJMRct/siXFGGiane4I5Rqeu7rNL4+WeE7tC52n6U7K//7isAZhRUBLj+a2WGzr
+         sWj6+MqHDUhjzo9TvW1CVzFJ5nLIRml3ED12dwFlTu+M3m7is6y903VTkrTDu5PZ9R9l
+         RWXvwVUjMrq1tejm52GFxhGb/4wIlLafQpNmp1Ny9yg/pC6uZTpDB1Gr7due/zVsIW7a
+         y1Jw==
+X-Gm-Message-State: APjAAAUsvOec/cqkAlL7vCm3avJGxmSlJiJ1SYzEMWXkp96XKQizmisF
+        lIpsMGtR3rzrCLskItkOMFKr7fpSglUNQf+2ieo=
+X-Google-Smtp-Source: APXvYqyp7hx2ZCMIfDI5DkTtuxBM/fx0HuShxFbt9jNMkXe/jgYYg8kF8aWEGdXk2I4SrI2LI8SYRU+FTsVSCybZo4Y=
+X-Received: by 2002:a6b:8e92:: with SMTP id q140mr4178546iod.205.1568036240538;
+ Mon, 09 Sep 2019 06:37:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190814214319.24087-1-andreas@kemnade.info> <CAHCN7xL4K+1nJDXDRs7yVi6LhGL-4uPu9M+SN1dcOPu8=M8s2g@mail.gmail.com>
-In-Reply-To: <CAHCN7xL4K+1nJDXDRs7yVi6LhGL-4uPu9M+SN1dcOPu8=M8s2g@mail.gmail.com>
+References: <20190828150037.2640-1-aford173@gmail.com> <20190905230443.GA52127@atomide.com>
+ <CAHCN7xL0fbr=Sv+b=0AuGB1PPhAAFdAFLEd_iBM+ZMTkUw5sHQ@mail.gmail.com>
+In-Reply-To: <CAHCN7xL0fbr=Sv+b=0AuGB1PPhAAFdAFLEd_iBM+ZMTkUw5sHQ@mail.gmail.com>
 From:   Adam Ford <aford173@gmail.com>
-Date:   Mon, 9 Sep 2019 08:32:06 -0500
-Message-ID: <CAHCN7xJ0RmRQwo3bSF6FoLjOtrg5YZAMD9+=332LMzLLR1qdDA@mail.gmail.com>
-Subject: Re: [PATCH v2] regulator: twl: voltage lists for vdd1/2 on twl4030
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
+Date:   Mon, 9 Sep 2019 08:37:09 -0500
+Message-ID: <CAHCN7xL-Gfxe0qF5w7BUsHnyhcNNpmCnchdKErnmiqggXfsLWw@mail.gmail.com>
+Subject: Re: [RFC] ARM: omap3: Enable HWMODS for HW Random Number Generator
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali.rohar@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Adam Ford <adam.ford@logicpd.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Paul Walmsley <paul@pwsan.com>,
+        devicetree <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-pm@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
-        Nishanth Menon <nm@ti.com>, vireshk@kernel.org,
-        stable@vger.kernel.org
+        arm-soc <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Aug 15, 2019 at 5:47 AM Adam Ford <aford173@gmail.com> wrote:
+On Mon, Sep 9, 2019 at 7:13 AM Adam Ford <aford173@gmail.com> wrote:
 >
-> On Wed, Aug 14, 2019 at 5:18 PM Andreas Kemnade <andreas@kemnade.info> wrote:
+> On Thu, Sep 5, 2019 at 6:04 PM Tony Lindgren <tony@atomide.com> wrote:
 > >
-> > _opp_supported_by_regulators() wrongly ignored errors from
-> > regulator_is_supported_voltage(), so it considered errors as
-> > success. Since
-> > commit 498209445124 ("regulator: core: simplify return value on suported_voltage")
-> > regulator_is_supported_voltage() returns a real boolean, so
-> > errors make _opp_supported_by_regulators() return false.
+> > Hi,
 > >
-> > That reveals a problem with the declaration of the VDD1/2
-> > regulators on twl4030.
-> > The VDD1/VDD2 regulators on twl4030 are neither defined with
-> > voltage lists nor with the continuous flag set, so
-> > regulator_is_supported_voltage() returns false and an error
-> > before above mentioned commit (which was considered success)
-> > The result is that after the above mentioned commit cpufreq
-> > does not work properly e.g. dm3730.
+> > * Adam Ford <aford173@gmail.com> [190828 15:01]:
+> > > The datasheet for the AM3517 shows the RNG is connected to L4.
+> > > It shows the module address for the RNG is 0x480A0000, and it
+> > > matches the omap2.dtsi description.  Since the driver can support
+> > > omap2 and omap4, it seems reasonable to assume the omap3 would
+> > > use the same core for the RNG.
+> > >
+> > > This RFC, mimics much of the omap2 hwmods on the OMAP3. It
+> > > also adds the necessary clock for driving the RNG.  Unfortunately,
+> > > it appears non-functional.  If anyone has any suggestions on how
+> > > to finish the hwmod (or port it to the newer l4 device tree
+> > > format), feedback is requested.
 > >
-> > [    2.490997] core: _opp_supported_by_regulators: OPP minuV: 1012500 maxuV: 1012500, not supported by regulator
-> > [    2.501617] cpu cpu0: _opp_add: OPP not supported by regulators (300000000)
-> > [    2.509246] core: _opp_supported_by_regulators: OPP minuV: 1200000 maxuV: 1200000, not supported by regulator
-> > [    2.519775] cpu cpu0: _opp_add: OPP not supported by regulators (600000000)
-> > [    2.527313] core: _opp_supported_by_regulators: OPP minuV: 1325000 maxuV: 1325000, not supported by regulator
-> > [    2.537750] cpu cpu0: _opp_add: OPP not supported by regulators (800000000)
+> > Yup I'll take the bait :) The patch below seems to do the trick
+> > for me on dm3730 based on translating your patch to probe with
+> > ti-sysc.
 > >
-> > The patch fixes declaration of VDD1/2 regulators by
-> > adding proper voltage lists.
+> > Not sure about 34xx, it seems we're missing rng_clk? Care
+> > to give it a try and attempt simlar patches for 34xx and
+> > 3517?
 > >
-> > Fixes: 498209445124 ("regulator: core: simplify return value on suported_voltage")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
->
-> Tested-by: Adam Ford <aford173@gmail.com> #logicpd-torpedo-37xx-devkit
->
+> > At least I'm not needing the "ti,no-reset-on-init" property
+> > that your patch has a comment for. Maybe that's needed on
+> > some other omap3.
+> >
+> > Oh and this needs to default to status = "disabled" for
+> > HS devices like n900 as it needs to use the omap3-rom-rng.
+> >
+> > Regards,
+> >
+> > Tony
+> >
+> > 8< -----------------------
+> > diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
+> > --- a/arch/arm/boot/dts/omap36xx.dtsi
+> > +++ b/arch/arm/boot/dts/omap36xx.dtsi
+> > @@ -140,6 +140,29 @@
+> >                         };
+> >                 };
+> >
+> > +               rng_target: target-module@480a0000 {
+> > +                       compatible = "ti,sysc-omap2", "ti,sysc";
+> > +                       reg = <0x480a003c 0x4>,
+> > +                             <0x480a0040 0x4>,
+> > +                             <0x480a0044 0x4>;
+> > +                       reg-names = "rev", "sysc", "syss";
+> > +                       ti,sysc-mask = <(SYSC_OMAP2_AUTOIDLE)>;
+> > +                       ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+> > +                                       <SYSC_IDLE_NO>;
+> > +                       ti,syss-mask = <1>;
+> > +                       clocks = <&rng_ick>;
+> > +                       clock-names = "ick";
+> > +                       #address-cells = <1>;
+> > +                       #size-cells = <1>;
+> > +                       ranges = <0 0x480a0000 0x2000>;
+> > +
+> > +                       rng: rng@0 {
+> > +                               compatible = "ti,omap2-rng";
+> > +                               reg = <0x0 0x2000>;
+> > +                               interrupts = <52>;
+> > +                       };
+> > +               };
+> > +
 
-I am not sure who the right maintainer is, but as of today, cpufreq
-for users of twl4030 on 5.3-RC8 is still broken without this patch.
-Is there any way it can be applied before the final release?
+I applied this on 5.3 and it is working.  I assume the same is true in for-next.
 
-thank you,
+Do you want to submit a formal patch?  I  can mark it as 'tested-by'
+This really helps speed up the startup sequence on boards with sshd
+because it delays for nearly 80 seconds waiting for entropy without
+the hwrng.
 
 adam
-> > ---
-> > resent because it was rejected by mailing lists, due to technical
-> > issues, sorry for the noise.
-> > changes in v2:
-> >   using a proper voltage list instead of misusing the continuous flag
-> >   subject was regulator: twl: mark vdd1/2 as continuous on twl4030
-> >
-> >  drivers/regulator/twl-regulator.c | 23 ++++++++++++++++++++---
-> >  1 file changed, 20 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/regulator/twl-regulator.c b/drivers/regulator/twl-regulator.c
-> > index 6fa15b2d6fb3..866b4dd01da9 100644
-> > --- a/drivers/regulator/twl-regulator.c
-> > +++ b/drivers/regulator/twl-regulator.c
-> > @@ -359,6 +359,17 @@ static const u16 VINTANA2_VSEL_table[] = {
-> >         2500, 2750,
-> >  };
-> >
-> > +/* 600mV to 1450mV in 12.5 mV steps */
-> > +static const struct regulator_linear_range VDD1_ranges[] = {
-> > +       REGULATOR_LINEAR_RANGE(600000, 0, 68, 12500)
-> > +};
-> > +
-> > +/* 600mV to 1450mV in 12.5 mV steps, everything above = 1500mV */
-> > +static const struct regulator_linear_range VDD2_ranges[] = {
-> > +       REGULATOR_LINEAR_RANGE(600000, 0, 68, 12500),
-> > +       REGULATOR_LINEAR_RANGE(1500000, 69, 69, 12500)
-> > +};
-> > +
-> >  static int twl4030ldo_list_voltage(struct regulator_dev *rdev, unsigned index)
-> >  {
-> >         struct twlreg_info      *info = rdev_get_drvdata(rdev);
-> > @@ -427,6 +438,8 @@ static int twl4030smps_get_voltage(struct regulator_dev *rdev)
-> >  }
-> >
-> >  static const struct regulator_ops twl4030smps_ops = {
-> > +       .list_voltage   = regulator_list_voltage_linear_range,
-> > +
-> >         .set_voltage    = twl4030smps_set_voltage,
-> >         .get_voltage    = twl4030smps_get_voltage,
-> >  };
-> > @@ -466,7 +479,8 @@ static const struct twlreg_info TWL4030_INFO_##label = { \
-> >                 }, \
-> >         }
-> >
-> > -#define TWL4030_ADJUSTABLE_SMPS(label, offset, num, turnon_delay, remap_conf) \
-> > +#define TWL4030_ADJUSTABLE_SMPS(label, offset, num, turnon_delay, remap_conf, \
-> > +               n_volt) \
-> >  static const struct twlreg_info TWL4030_INFO_##label = { \
-> >         .base = offset, \
-> >         .id = num, \
-> > @@ -479,6 +493,9 @@ static const struct twlreg_info TWL4030_INFO_##label = { \
-> >                 .owner = THIS_MODULE, \
-> >                 .enable_time = turnon_delay, \
-> >                 .of_map_mode = twl4030reg_map_mode, \
-> > +               .n_voltages = n_volt, \
-> > +               .n_linear_ranges = ARRAY_SIZE(label ## _ranges), \
-> > +               .linear_ranges = label ## _ranges, \
-> >                 }, \
-> >         }
-> >
-> > @@ -518,8 +535,8 @@ TWL4030_ADJUSTABLE_LDO(VSIM, 0x37, 9, 100, 0x00);
-> >  TWL4030_ADJUSTABLE_LDO(VDAC, 0x3b, 10, 100, 0x08);
-> >  TWL4030_ADJUSTABLE_LDO(VINTANA2, 0x43, 12, 100, 0x08);
-> >  TWL4030_ADJUSTABLE_LDO(VIO, 0x4b, 14, 1000, 0x08);
-> > -TWL4030_ADJUSTABLE_SMPS(VDD1, 0x55, 15, 1000, 0x08);
-> > -TWL4030_ADJUSTABLE_SMPS(VDD2, 0x63, 16, 1000, 0x08);
-> > +TWL4030_ADJUSTABLE_SMPS(VDD1, 0x55, 15, 1000, 0x08, 68);
-> > +TWL4030_ADJUSTABLE_SMPS(VDD2, 0x63, 16, 1000, 0x08, 69);
-> >  /* VUSBCP is managed *only* by the USB subchip */
-> >  TWL4030_FIXED_LDO(VINTANA1, 0x3f, 1500, 11, 100, 0x08);
-> >  TWL4030_FIXED_LDO(VINTDIG, 0x47, 1500, 13, 100, 0x08);
-> > --
-> > 2.20.1
-> >
+>
+> Tony,
+>
+> Can you tell me what branch you're using?  I am not seeing the note
+> below, so I am not exactly sure what version to base my testing.
+>
+> ada,
+> >                 /*
+> >                  * Note that the sysconfig register layout is a subset of the
+> >                  * "ti,sysc-omap4" type register with just sidle and midle bits
