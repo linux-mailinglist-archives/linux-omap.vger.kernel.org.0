@@ -2,84 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B573AD082
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Sep 2019 21:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0632AD1B2
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2019 03:56:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728847AbfIHTow (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Sep 2019 15:44:52 -0400
-Received: from muru.com ([72.249.23.125]:60324 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728817AbfIHTow (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 8 Sep 2019 15:44:52 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 824B5809B;
-        Sun,  8 Sep 2019 19:45:21 +0000 (UTC)
-Date:   Sun, 8 Sep 2019 12:44:48 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        David Lechner <david@lechnology.com>,
-        linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] bus/ti-pwmss: move TI PWMSS driver from PWM to
- bus subsystem
-Message-ID: <20190908194447.GM52127@atomide.com>
-References: <20190901225827.12301-1-david@lechnology.com>
- <20190901225827.12301-2-david@lechnology.com>
- <20190902150245.GE1445@ulmo>
- <20190908121524.49b4874d@archlinux>
+        id S1732350AbfIIB4s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Sep 2019 21:56:48 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:44890 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732304AbfIIB4s (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Sep 2019 21:56:48 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x891ucNi093546;
+        Sun, 8 Sep 2019 20:56:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1567994198;
+        bh=lUH/u9a2zTD6UF778x023rDtCPXhaWcsnAHpbSuBK3o=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=nFoHhQ+r46Wn0jPfAF+YacwzfnNk4mm29ggO1pW5VUXM90PuQMzsYZ7PQda6sx/nm
+         wkxRkAYX44pkz21mUWS5IbKnkVQBZzd3W+oqvcyirTBTQPFuwObt+WBpGWFn15uiJw
+         eXh3LIsGFqpFkBGe4/BjbIdlFokfub5YhMT0GjiQ=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x891ubNL019345
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 8 Sep 2019 20:56:38 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Sun, 8 Sep
+ 2019 20:56:37 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Sun, 8 Sep 2019 20:56:37 -0500
+Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x891uWaN094203;
+        Sun, 8 Sep 2019 20:56:32 -0500
+Subject: Re: [PATCH] bus: ti-sysc: Remove unpaired sysc_clkdm_deny_idle()
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+References: <20190906200154.6510-1-tony@atomide.com>
+From:   Keerthy <j-keerthy@ti.com>
+Message-ID: <40e5c2a1-3682-584a-4eb9-4d96901bbfda@ti.com>
+Date:   Mon, 9 Sep 2019 07:27:12 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190908121524.49b4874d@archlinux>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20190906200154.6510-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Jonathan Cameron <jic23@jic23.retrosnub.co.uk> [190908 11:16]:
-> On Mon, 2 Sep 2019 17:02:45 +0200
-> Thierry Reding <thierry.reding@gmail.com> wrote:
+
+
+On 07/09/19 1:31 AM, Tony Lindgren wrote:
+> Commit d098913a10f8 ("bus: ti-sysc: Fix clock handling for no-idle
+> quirks") fixed handling for no-idle quirk modules that are not enabled
+> by the bootloader.
 > 
-> > On Sun, Sep 01, 2019 at 05:58:22PM -0500, David Lechner wrote:
-> > > The TI PWMSS driver is a simple bus driver for providing power
-> > > power management for the PWM peripherals on TI AM33xx SoCs, namely
-> > > eCAP, eHRPWM and eQEP. The eQEP is a counter rather than a PWM, so
-> > > it does not make sense to have the bus driver in the PWM subsystem
-> > > since the PWMSS is not exclusive to PWM devices.
-> > > 
-> > > Signed-off-by: David Lechner <david@lechnology.com>
-> > > ---
-> > > 
-> > > v3 changes:
-> > > - none
-> > > v2 changes:
-> > > - new patch
-> > > 
-> > >  drivers/bus/Kconfig                           | 9 +++++++++
-> > >  drivers/bus/Makefile                          | 1 +
-> > >  drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} | 0
-> > >  drivers/pwm/Kconfig                           | 9 ---------
-> > >  drivers/pwm/Makefile                          | 1 -
-> > >  5 files changed, 10 insertions(+), 10 deletions(-)
-> > >  rename drivers/{pwm/pwm-tipwmss.c => bus/ti-pwmss.c} (100%)  
-> > 
-> > Acked-by: Thierry Reding <thierry.reding@gmail.com>
+> But it also caused unpaired clockdomain calls that won't allow idling
+> the system. That's because clkdm_allow_idle_nolock() and
+> clkdm_deny_idle_nolock() have usage count with clkdm->forcewake_count.
 > 
-> Do we need an immutable branch for these precursor patches to the
-> driver addition? It's not going to make 5.4 via my tree as cutting it
-> too fine so we'll be in the position of holding these in a non obvious
-> tree for a whole cycle. 
+> Let's drop the unpaired sysc_clkdm_deny_idle() to fix idling of devices.
 
-Sure an immutable branch would be nice in case of unlikely
-dts file conflicts. And yeah no need to try to rush to v5.4.
+Tested-by: Keerthy <j-keerthy@ti.com>
 
-Regards,
+I believe still the previous fix [1] for nfs boot is still not on 
+linux-next. Are you planning on more testing or it will be queued as fixes?
 
-Tony
+
+[1] https://lkml.org/lkml/2019/9/5/616
+
+- Keerthy
+
+> 
+> Fixes: d098913a10f8 ("bus: ti-sysc: Fix clock handling for no-idle quirks")
+> Cc: Keerthy <j-keerthy@ti.com>
+> Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>   drivers/bus/ti-sysc.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
+> @@ -2363,7 +2363,6 @@ static void ti_sysc_idle(struct work_struct *work)
+>   	 */
+>   	if (ddata->cfg.quirks & (SYSC_QUIRK_NO_IDLE |
+>   				 SYSC_QUIRK_NO_IDLE_ON_INIT)) {
+> -		sysc_clkdm_deny_idle(ddata);
+>   		sysc_disable_main_clocks(ddata);
+>   		sysc_disable_opt_clocks(ddata);
+>   		sysc_clkdm_allow_idle(ddata);
+> 
