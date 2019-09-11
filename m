@@ -2,103 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 430E2AFE41
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2019 16:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46BF9AFF30
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2019 16:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728031AbfIKOBx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Sep 2019 10:01:53 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:35945 "EHLO
+        id S1727664AbfIKOwr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Sep 2019 10:52:47 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:33525 "EHLO
         mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727912AbfIKOBw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Sep 2019 10:01:52 -0400
-Received: by mail-io1-f67.google.com with SMTP id b136so46079195iof.3
-        for <linux-omap@vger.kernel.org>; Wed, 11 Sep 2019 07:01:52 -0700 (PDT)
+        with ESMTP id S1727873AbfIKOwr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Sep 2019 10:52:47 -0400
+Received: by mail-io1-f67.google.com with SMTP id m11so46497530ioo.0;
+        Wed, 11 Sep 2019 07:52:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gVldwPHBEEmbVAp0mqxQZ8yLS+V+O/vse0Nw9BG4UF4=;
-        b=hBNyoV0eH/Hs1sEwCVhxj9P0JoyfQUrF0U3/ZXzz5girYAggowVoFY2+1JI1EFRFpQ
-         Fjsdy0gmaNawhrBqh3dirr4WnLeBVcC85YwTMGzVZcowXPgFcVvsoCQ2eF8suXeCJVkz
-         JzE011UVXk9nKhJXe1Y50RbHaKbNCH5/fiOGC5eeYN5XB9LkSZHr4wCn93Q4fqtTOCHy
-         ptj6s8zn2e1a8JDLxhyaflKp/gsslZYNCH3Xqp+OJsjpf3peoaBVI2T8yCpbdH7MD6Fo
-         bl/p/zPK8SVvwuHoAbYY/baFe/qYTBigkc9dQIQv9bno/q7j4HmDRzajYYWIY4yFWnXz
-         WJBQ==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=NGTdt9F3ZZ0dAl/NdWgfhoQHQnI6Jo5dypLz9RxIFA4=;
+        b=GbyNlW7h2LT7nD3Ki7aDD9R1X05eplw0cyGNnFV9cKkIE8KMZE8Z5Wi32J3x9MuD6d
+         zED3Dr8G52vVyizid/Bfl4ycAopbtx6KJ82zD56iixaf5vJMVq9adv8MxHqXJE7i9rB3
+         LXwhDREw4vrAttqxN5ia3975x/V78DTDCq9/JFA8r4htJgk2YgUNzlacu+5f1be+4+V2
+         6gT1D9PPSf5hIgpKrxPjYbJLLDYbAALoFHUuIrqvxLpuTy9W1VVINDSfjoqicZ+OAZGH
+         YxhKsUFVpHWC6lRx3F4J6r3XOenJMbPiqY8tVGxJp/hYw5oKLCQIfhMv9S2fR+nuT/x6
+         NqYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gVldwPHBEEmbVAp0mqxQZ8yLS+V+O/vse0Nw9BG4UF4=;
-        b=A4S2cPA6sX+98aaFF2rON9JYJppCuJFNDgFIZgH2kPZloFZ9cQMbhyuvNa2+wtcGyO
-         7Ghig6VNI7sIpK8VjUX8sR/oXmDvlCuZFYQaXZdOlhY19jhgS/Vfk/fFJHD0HxewBfzt
-         Fvdyp/1VA4OHaZBib6rXxy6/l0vUrBc2coymOkGsD0GiKXYCgcj89gAEqu+R2kKm+ATV
-         1/U4bEJ2qvb3L5aCWiPIlgXh4qLAI/vTlbUQoN+97O8ikLqdeosieDaElpGK16fvuCgo
-         gAlqgV3ZkiAfieepbT2HUxmfm8eVbvJow+z/W4UuKc/z+lhdntxvH/qWGMuwt60AZYuM
-         bZ/w==
-X-Gm-Message-State: APjAAAVVck8ur64bnHRtPD7tXL5u8izi/S+O89bQmnjZNDhT3pj+UoSL
-        fYfuTqCnPEgA1wYSGlxXePQRfyRQwM6SdBncY4U53g==
-X-Google-Smtp-Source: APXvYqxA0bdjqPHqQ2NueNxICWH/tLLMJq1Vz+tJAm+kZ8i8BExfLfIhffXcQQNYtvksdWYGm4ADVKWY6+G86Koreqs=
-X-Received: by 2002:a05:6638:93b:: with SMTP id 27mr1396480jak.36.1568210511727;
- Wed, 11 Sep 2019 07:01:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190905161759.28036-1-mathieu.poirier@linaro.org>
- <20190905161759.28036-5-mathieu.poirier@linaro.org> <20190910143601.GD3362@kroah.com>
-In-Reply-To: <20190910143601.GD3362@kroah.com>
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
-Date:   Wed, 11 Sep 2019 08:01:40 -0600
-Message-ID: <CANLsYkwkq2fLWsGXHxr2tSBLHdfe4JXgu8ehuD1FOEQeDAPNnA@mail.gmail.com>
-Subject: Re: [BACKPORT 4.14.y 04/18] usb: dwc3: Allow disabling of
- metastability workaround
-To:     Greg KH <greg@kroah.com>
-Cc:     "# 4 . 7" <stable@vger.kernel.org>, linux-usb@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-pm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-mtd@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=NGTdt9F3ZZ0dAl/NdWgfhoQHQnI6Jo5dypLz9RxIFA4=;
+        b=Vx8WybcSZmZPGxLNoKaWE3tLGXD7fuJSJT/S0Ux3DxY3Q6j3Fkj2+YWa9tDOqYzizf
+         EDs7p/i3eBaOQdVxa8efN2JZOp5IGF2SKIEUB4a7pgxytcT/u9bLVl0/fAjB6t16yFne
+         EO1mzqI/oHB+LF74DbryFwWobvTSSTxPi5N54TO3TwETMVHXRrnzPuoCXBp6jN7IY3U5
+         bkDFK0S0B5Qog2wPn6puSTlFohm4T7yM79S04S/YeKu+EnTu6t2g1TJOKq+yNAIVPQh1
+         DT1oBF1bEz5BWSMJZA31mkJBwxFxBt5PJtw6QBm2NE0n6Fq+r+tP1cdzbkkpoAONZOOm
+         Kp3w==
+X-Gm-Message-State: APjAAAXyHxNoHa2lZj8Jz89lsSH9Ge5xSD8iP1BldK5twbzLCsyfT7X0
+        SNbZsiWFoFICyYadx2rAtJXLYJh1
+X-Google-Smtp-Source: APXvYqzVP2bjj9XYcMcE3MUN8QMaHKh++5QvZJUYU65sh0Dv0wdc0Q1dzhJAnOiiWC/xGnT3dclImQ==
+X-Received: by 2002:a5d:894a:: with SMTP id b10mr17475319iot.49.1568213565885;
+        Wed, 11 Sep 2019 07:52:45 -0700 (PDT)
+Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
+        by smtp.gmail.com with ESMTPSA id p25sm17109904ioo.35.2019.09.11.07.52.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Sep 2019 07:52:44 -0700 (PDT)
+From:   Adam Ford <aford173@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] ARM: omap2plus_defconfig: Update for removed items
+Date:   Wed, 11 Sep 2019 09:52:25 -0500
+Message-Id: <20190911145226.21088-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 10 Sep 2019 at 08:36, Greg KH <greg@kroah.com> wrote:
->
-> On Thu, Sep 05, 2019 at 10:17:45AM -0600, Mathieu Poirier wrote:
-> > From: Roger Quadros <rogerq@ti.com>
-> >
-> > commit 42bf02ec6e420e541af9a47437d0bdf961ca2972 upstream
-> >
-> > Some platforms (e.g. TI's DRA7 USB2 instance) have more trouble
-> > with the metastability workaround as it supports only
-> > a High-Speed PHY and the PHY can enter into an Erratic state [1]
-> > when the controller is set in SuperSpeed mode as part of
-> > the metastability workaround.
-> >
-> > This causes upto 2 seconds delay in enumeration on DRA7's USB2
-> > instance in gadget mode.
-> >
-> > If these platforms can be better off without the workaround,
-> > provide a device tree property to suggest that so the workaround
-> > is avoided.
-> >
-> > [1] Device mode enumeration trace showing PHY Erratic Error.
-> >      irq/90-dwc3-969   [000] d...    52.323145: dwc3_event: event (00000901): Erratic Error [U0]
-> >      irq/90-dwc3-969   [000] d...    52.560646: dwc3_event: event (00000901): Erratic Error [U0]
-> >      irq/90-dwc3-969   [000] d...    52.798144: dwc3_event: event (00000901): Erratic Error [U0]
->
-> Does the DT also need to get updated with this new id for this?  Is that
-> a separate patch somewhere?
+The omap panel-dpi driver was removed in
+Commit 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
 
-The upstream commit is:
+The tFP410 and DVI connector was remove in
+Commit be3143d8b27f ("drm/omap: Remove TFP410 and DVI connector drivers")
 
-b8c9c6fa2002 ARM: dts: dra7: Disable USB metastability workaround for USB2
+This patch removes these items from the omap2plus_defconfig.
 
-Should I just send the latter or you prefer a resend with both patches?
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-Thanks,
-Mathieu
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index c7bf9c493646..166b36be2ca6 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -349,12 +349,9 @@ CONFIG_OMAP5_DSS_HDMI=y
+ CONFIG_OMAP2_DSS_SDI=y
+ CONFIG_OMAP2_DSS_DSI=y
+ CONFIG_DRM_OMAP_ENCODER_OPA362=m
+-CONFIG_DRM_OMAP_ENCODER_TFP410=m
+ CONFIG_DRM_OMAP_ENCODER_TPD12S015=m
+-CONFIG_DRM_OMAP_CONNECTOR_DVI=m
+ CONFIG_DRM_OMAP_CONNECTOR_HDMI=m
+ CONFIG_DRM_OMAP_CONNECTOR_ANALOG_TV=m
+-CONFIG_DRM_OMAP_PANEL_DPI=m
+ CONFIG_DRM_OMAP_PANEL_DSI_CM=m
+ CONFIG_DRM_OMAP_PANEL_SONY_ACX565AKM=m
+ CONFIG_DRM_OMAP_PANEL_LGPHILIPS_LB035Q02=m
+-- 
+2.17.1
 
->
-> thanks,
->
-> greg k-h
