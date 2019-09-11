@@ -2,130 +2,275 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94C1EB031E
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2019 19:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28FDAB0467
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2019 21:05:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729688AbfIKRuH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Sep 2019 13:50:07 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:38273 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729681AbfIKRuG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Sep 2019 13:50:06 -0400
-Received: by mail-io1-f66.google.com with SMTP id k5so22572356iol.5;
-        Wed, 11 Sep 2019 10:50:05 -0700 (PDT)
+        id S1730227AbfIKTFo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Sep 2019 15:05:44 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:43254 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730020AbfIKTFo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Sep 2019 15:05:44 -0400
+Received: by mail-io1-f65.google.com with SMTP id r8so23446517iol.10;
+        Wed, 11 Sep 2019 12:05:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=BiVtPEqM908NUB3dBSJY2gAQDyOXwRsQwEkRcPZywqI=;
-        b=jc9Nf8+GW9nZpQ0ok6swsNOLkv+pGqsSyc21nizbrfEMW5OQZTAYm96rg9TIObiBCt
-         XHJngLQdhpxII/jMetLaSjWWHddk+kc/6WlV6Rp5+ONZJ7lo9qA/4x3vO97qduAHC/Th
-         ItwIUifaX2DGdTlFMc54yWpK8kM0fvXp6akMNLJpOBl47p2BXp/oE/sf9T72YQqwLto9
-         9dUIzTM4+awJdTHsMN7TjQ8pJhcccTbf9h1Ms1Qc17ZJeuUt/80RKtfHmmwkQyBWZpkz
-         q2dsHwVpM24jqLYSfhJv9bSmw1LY+mIBL5JMRx2hQmIBIUNThCkmEvpxKsr0VzRUdMM8
-         BHMw==
+         :cc;
+        bh=CRqcj7+NuoI4D3cZX40T5TKikuDO93RhQlD6Y+l1eos=;
+        b=TFQM0ojamkh1ySloLepkw4Vnnp+z3PWbYhYVqfkdh4RxgGEuHC8TPTbpPbHy6x2JD0
+         JRUofNZKnBYbutyDTigYjqzOBsaCkSSp2rSl7dz9AfUYw8IZrQ5RGdVORUbixBiivPyC
+         4We9ZWshElKuWJ4fE3UjLaRxLawGRNLiFCDws2ba2evyAajjVJrUdSZU/0jqB3xkeLkD
+         hw3FRKk6X/U5TAhBdki7UmmeY8N76FyqymbXsNA/JGyt+cYmtdrsN94M7mM7DTwRm4ZJ
+         ZngIcxjzCos1Tl9aSuDs9N8sMuShcXcZ5ykpNKaAi0c9WhRK14DBUow1s2/49M/VHyx4
+         ZBpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=BiVtPEqM908NUB3dBSJY2gAQDyOXwRsQwEkRcPZywqI=;
-        b=lGKzQwP95M0H3IPHjOp/FJ5hUVMIw+REtqM54dnMtNu17NtV3cvaPhxcNPTBooGWBI
-         nIYouiZAW+61ngGKwhHWt66QVVyXgD0ZHGO0MZkEwW1Z5woCWv886Cr3YZHKd9oMwGS9
-         +dC4TPvCwldDoQ/EQy9wAvLuXNqBCCfc32y3T4Z/DJrn2BQsZi/YqomnzrEczMHu4oVK
-         VCRW1G1JZti8p5ChCcvMNvCMKeY2mYzSBQcuwJs59U2j6GROLWloNl8yUazAVQmbmTH7
-         KpOe0N2izE9qu9wRX+QdveQ8kHQEW/qpQkh7IvMZVuoCLT7hTcwfn7Iay6HmxcCQSG22
-         heZA==
-X-Gm-Message-State: APjAAAU5v3fnTs86+OaSUhlrZbHlZAxwdVB93OYsmjP9HthWn38reRI1
-        lM7tftpVEz+I9DD7OXwjf+G0NHQ/goZlSaGhjQg=
-X-Google-Smtp-Source: APXvYqxIT4Dcqge2c5gC0lT0eUdANFfKovs5IBIuAHz7cTm/bLxKVUyS8v9G9EAwjfRfiW5heNFtoExzCoI5CJy/qRU=
-X-Received: by 2002:a6b:8e92:: with SMTP id q140mr13229896iod.205.1568224205056;
- Wed, 11 Sep 2019 10:50:05 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=CRqcj7+NuoI4D3cZX40T5TKikuDO93RhQlD6Y+l1eos=;
+        b=j6H7by2tByfOYiXdO3MfJS8ZNIYTtxunrzZ6hdvJevuKSxRjA9/ZUMZ6/jFLlWM/8f
+         BTsPrWllCJTBeyuaET1raa2R67qIwvcg6SIatPjIooLM/ouZBrt5MFIN1qWhB61sT+MO
+         FZwWjxqu4EsGaQtQIqB7LyhqHYPdFHL7hXqSQE+b8u5VisIgO2n023cml6LNOsbmNg0N
+         HRxwxtRtsyjxwn0A0AvAnJYK6GrV58Ou5qy7JbkMh0RSC2QIlD90utba/0BwGQuX57v+
+         ALl8CEYDMoui677JPortJUUhlcheRQzbs2TqumCMX3l80i2DK5VUbCtrV8V1ndFYwkxA
+         zLEg==
+X-Gm-Message-State: APjAAAUM8FGwVArkWyKNo2LTOOdo3oOb5SJYJNe2ZJ7/m5w5dRb7P4UP
+        62AAXkB0s8tFThzdGhKwZ5VmFIsh6qVwtSBY8qzjI9Z0
+X-Google-Smtp-Source: APXvYqyW3zpytIyyY4lkLih9aeq6GQUikYQE55Vk06YhYYlczXfzgPpsPg7ZSwNMCyW0TtkF3zR3Lv4zwFuvzF0J46Y=
+X-Received: by 2002:a02:b395:: with SMTP id p21mr40570622jan.52.1568228743054;
+ Wed, 11 Sep 2019 12:05:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <C04F49BA-1229-4E96-9FCF-4FC662D1DB11@goldelico.com>
- <CAHCN7x+Ye6sB_YqO0sAX1OJDw64B-qGS3pL545v3Xk5z914cwQ@mail.gmail.com>
- <0C1EF64E-B33C-4BFA-A7D3-471DD1B9EE86@goldelico.com> <515048DE-138D-4400-8168-F2B7D61F1005@goldelico.com>
- <CAHCN7xLPCX9rZ0+7KVBiA_bgZ6tg6VeCXqD-UXu+6iwpFMPVrA@mail.gmail.com>
- <7B3D1D77-3E8C-444F-90B9-6DF2641178B8@goldelico.com> <CAHCN7xLW58ggx3CpVL=HdCVHWo6D-MCTB91A_9rtSRoZQ+xJuQ@mail.gmail.com>
- <FA2920FE-B76A-4D44-A264-862A1CCBF7FC@goldelico.com> <CAHCN7xJsPa0i+Z+qpCkWcdAh9+udmGT0RPNchdDsfB=8ptd3Nw@mail.gmail.com>
- <87420DBD-770F-4C32-9499-A3AEA5876E8A@goldelico.com> <20190909163236.GP52127@atomide.com>
- <E001F74D-724E-4C50-9265-CBD33C4F2918@goldelico.com> <F8F08882-8011-441C-9581-ECCE9772EC21@goldelico.com>
- <CAHCN7x+fgtMHMNYU2W7BRQwd-d2g_Tb8-L5QNcnZjCF=VzRXJg@mail.gmail.com>
- <3663B13C-1AAB-4BE3-8CAD-F821B70393FA@goldelico.com> <CAHCN7x+mLCNq4evwGZfk6Ka=3o6EzhL=s38aNdukyLwKB1xO7A@mail.gmail.com>
- <56482888-DBD3-4658-8DB9-FB57653B5AA8@goldelico.com> <CAHCN7xLPZisrNk==eF-+V8hD+sceQq25qw+sK7vVZAYdd8=Q2Q@mail.gmail.com>
- <CAHCN7xL59cXgbe1YTbNvTjptO9bMnuxprCP7ok5kRuc8UO9Fcw@mail.gmail.com>
- <D7B54A39-D8A3-4EDF-8B47-66D59319B3F4@goldelico.com> <F65E947E-784A-4540-B926-BF3ECB0C01EC@goldelico.com>
- <285FED38-2B2B-4813-9FD2-396C53E9B1B2@goldelico.com> <CAHCN7xKyTnNojwRqsXcE1AsDKtJikBpXoUo8ED=89ZR9-ko9hA@mail.gmail.com>
- <65A23326-70B4-46E3-992D-74256B056900@goldelico.com> <CAHCN7xLGx0S3xyd0q-N8pgY8VdBbUUaJdgoxkKxakR59sH+zXQ@mail.gmail.com>
- <BF829797-492C-4120-AC69-F8B83572FD38@goldelico.com> <D3E8B5DC-AB53-4F46-8ABB-F839A11EB31C@goldelico.com>
-In-Reply-To: <D3E8B5DC-AB53-4F46-8ABB-F839A11EB31C@goldelico.com>
+References: <cover.1568224032.git.hns@goldelico.com> <9254e741d1b43d824f0697ec54fe9c132903e244.1568224033.git.hns@goldelico.com>
+In-Reply-To: <9254e741d1b43d824f0697ec54fe9c132903e244.1568224033.git.hns@goldelico.com>
 From:   Adam Ford <aford173@gmail.com>
-Date:   Wed, 11 Sep 2019 12:49:53 -0500
-Message-ID: <CAHCN7xKq1CszKxax+7sG4O_V+iBYLSDVtDC480gvGV+KVb2-sw@mail.gmail.com>
-Subject: Re: [Letux-kernel] [RFC PATCH 0/3] Enable 1GHz support on omap36xx
+Date:   Wed, 11 Sep 2019 14:05:31 -0500
+Message-ID: <CAHCN7x+rK3aoLN7bKOn69JDsfJX69VSJBTuSRe78_YidmbOzEA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/8] cpufreq: ti-cpufreq: add support for omap34xx and omap36xx
 To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Nishanth Menon <nm@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
+Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         =?UTF-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Enric Balletbo i Serra <eballetbo@gmail.com>,
+        Javier Martinez Canillas <javier@dowhile0.org>,
+        Roger Quadros <rogerq@ti.com>,
+        Teresa Remmet <t.remmet@phytec.de>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-pm@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel@pyra-handheld.com,
         Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
+        <letux-kernel@openphoenux.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 11, 2019 at 12:43 PM H. Nikolaus Schaller <hns@goldelico.com> w=
-rote:
+On Wed, Sep 11, 2019 at 12:47 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
 >
-> Hi Adam,
+> This adds code and tables to read the silicon revision and
+> eFuse (speed binned / 720 MHz grade) bits for selecting
+> opp-v2 table entries.
 >
-> > Am 11.09.2019 um 18:01 schrieb H. Nikolaus Schaller <hns@goldelico.com>=
-:
-> >
-> >>
-> >> Am 11.09.2019 um 17:56 schrieb Adam Ford <aford173@gmail.com>:
-> >>
-> >>> There are some subtleties for testing.
-> >>>
-> >>> * I have added turbo-mode; to OPP6 / OPP1G
-> >>> * which means they are available but not used by the ondemand govenor
-> >>> * to enable them one has to echo 1 >/sys/devices/system/cpu/cpufreq/b=
-oost
-> >>
-> >> Will that be documented somewhere? If not, can we put a comment in the
-> >> device tree so people know how to enable it?
-> >
-> > It seems to be pretty standard on i86 systems if you google for "turbo =
-mode".
-> > I have added it to the commit message which adds the vbb regulator.
+> Since these bits are not always part of the syscon register
+> range (like for am33xx, am43, dra7), we add code to directly
+> read the register values using ioremap() if syscon access fails.
 >
-> And, I am not sure if DT maintainers will accept comments about the
-> Linux /sys implementation in device tree files or bindings. Those
-> should be independent of Linux.
+> The format of the opp-supported-hw entries is that it has
+> two 32 bit bitfields. E.g.:
+>
+>         opp-supported-hw = <0xffffffff 3>
+>
+> The first value is matched against the bit position of the
+> silicon revision which is (see TRM)
+>
+> omap34xx:
+> BIT(0)  ES1.0
+> BIT(1)  ES2.0
+> BIT(2)  ES2.1
+> BIT(3)  ES3.0
+> BIT(4)  ES3.1
+> BIT(7)  ES3.1.2
+>
+> omap36xx:
+> BIT(0)  ES1.0
+> BIT(1)  ES1.1
+> BIT(2)  ES1.2
+>
+> The second value is matched against the speed grade eFuse:
+>
+> BIT(0)  no high speed OPP
+> BIT(1)  high speed OPP
+>
+> This means for the example above that it is always enabled
+> while e.g.
+>
+>         opp-supported-hw = <0x1 2>
+>
+> enables the OPP only for ES1.0 BIT(0) and if the high speed
+> eFuse is set BIT(1).
+>
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Reviewed-by: Tony Lindgren <tony@atomide.com>
 
-OK.
->
-> Basically the turbo-mode property is a hint to the OPP system (which
-> may or may not use of it).
->
-> So I think it is indeed better to have it in the commit message and
-> not the code.
+For the entire series, I tested on the Logic PD devices:
+DM3730 Torpedo, OMAP3530 SOM-LV, DM3730 SOM-LV and AM3517-EVM
 
-That makes sense.
+Tested-by: Adam Ford <aford173@gmail.com>
 
+> ---
+>  drivers/cpufreq/ti-cpufreq.c | 91 +++++++++++++++++++++++++++++++++++-
+>  1 file changed, 89 insertions(+), 2 deletions(-)
 >
-> One more thought: as long as we do not have junction temperature monitori=
-ng
-> we should keep it off by default... We may even remove the turbo-mode
-> designator if we have the 90=C2=B0C limit and smart reflex working.
-
-We're almost there!
-
-adam
+> diff --git a/drivers/cpufreq/ti-cpufreq.c b/drivers/cpufreq/ti-cpufreq.c
+> index 2ad1ae17932d..f2f58d689320 100644
+> --- a/drivers/cpufreq/ti-cpufreq.c
+> +++ b/drivers/cpufreq/ti-cpufreq.c
+> @@ -31,6 +31,11 @@
+>  #define DRA7_EFUSE_OD_MPU_OPP                  BIT(1)
+>  #define DRA7_EFUSE_HIGH_MPU_OPP                        BIT(2)
 >
-> BR,
-> Nikolaus
+> +#define OMAP3_CONTROL_DEVICE_STATUS            0x4800244C
+> +#define OMAP3_CONTROL_IDCODE                   0x4830A204
+> +#define OMAP34xx_ProdID_SKUID                  0x4830A20C
+> +#define OMAP3_SYSCON_BASE      (0x48000000 + 0x2000 + 0x270)
+> +
+>  #define VERSION_COUNT                          2
 >
+>  struct ti_cpufreq_data;
+> @@ -84,6 +89,13 @@ static unsigned long dra7_efuse_xlate(struct ti_cpufreq_data *opp_data,
+>         return calculated_efuse;
+>  }
+>
+> +static unsigned long omap3_efuse_xlate(struct ti_cpufreq_data *opp_data,
+> +                                     unsigned long efuse)
+> +{
+> +       /* OPP enable bit ("Speed Binned") */
+> +       return BIT(efuse);
+> +}
+> +
+>  static struct ti_cpufreq_soc_data am3x_soc_data = {
+>         .efuse_xlate = amx3_efuse_xlate,
+>         .efuse_fallback = AM33XX_800M_ARM_MPU_MAX_FREQ,
+> @@ -111,6 +123,56 @@ static struct ti_cpufreq_soc_data dra7_soc_data = {
+>         .multi_regulator = true,
+>  };
+>
+> +/*
+> + * OMAP35x TRM (SPRUF98K):
+> + *  CONTROL_IDCODE (0x4830 A204) describes Silicon revisions.
+> + *  Control OMAP Status Register 15:0 (Address 0x4800 244C)
+> + *    to separate between omap3503, omap3515, omap3525, omap3530
+> + *    and feature presence.
+> + *    There are encodings for versions limited to 400/266MHz
+> + *    but we ignore.
+> + *    Not clear if this also holds for omap34xx.
+> + *  some eFuse values e.g. CONTROL_FUSE_OPP1_VDD1
+> + *    are stored in the SYSCON register range
+> + *  Register 0x4830A20C [ProdID.SKUID] [0:3]
+> + *    0x0 for normal 600/430MHz device.
+> + *    0x8 for 720/520MHz device.
+> + *    Not clear what omap34xx value is.
+> + */
+> +
+> +static struct ti_cpufreq_soc_data omap34xx_soc_data = {
+> +       .efuse_xlate = omap3_efuse_xlate,
+> +       .efuse_offset = OMAP34xx_ProdID_SKUID - OMAP3_SYSCON_BASE,
+> +       .efuse_shift = 3,
+> +       .efuse_mask = BIT(3),
+> +       .rev_offset = OMAP3_CONTROL_IDCODE - OMAP3_SYSCON_BASE,
+> +       .multi_regulator = false,
+> +};
+> +
+> +/*
+> + * AM/DM37x TRM (SPRUGN4M)
+> + *  CONTROL_IDCODE (0x4830 A204) describes Silicon revisions.
+> + *  Control Device Status Register 15:0 (Address 0x4800 244C)
+> + *    to separate between am3703, am3715, dm3725, dm3730
+> + *    and feature presence.
+> + *   Speed Binned = Bit 9
+> + *     0 800/600 MHz
+> + *     1 1000/800 MHz
+> + *  some eFuse values e.g. CONTROL_FUSE_OPP 1G_VDD1
+> + *    are stored in the SYSCON register range.
+> + *  There is no 0x4830A20C [ProdID.SKUID] register (exists but
+> + *    seems to always read as 0).
+> + */
+> +
+> +static struct ti_cpufreq_soc_data omap36xx_soc_data = {
+> +       .efuse_xlate = omap3_efuse_xlate,
+> +       .efuse_offset = OMAP3_CONTROL_DEVICE_STATUS - OMAP3_SYSCON_BASE,
+> +       .efuse_shift = 9,
+> +       .efuse_mask = BIT(9),
+> +       .rev_offset = OMAP3_CONTROL_IDCODE - OMAP3_SYSCON_BASE,
+> +       .multi_regulator = false,
+> +};
+> +
+>  /**
+>   * ti_cpufreq_get_efuse() - Parse and return efuse value present on SoC
+>   * @opp_data: pointer to ti_cpufreq_data context
+> @@ -127,7 +189,17 @@ static int ti_cpufreq_get_efuse(struct ti_cpufreq_data *opp_data,
+>
+>         ret = regmap_read(opp_data->syscon, opp_data->soc_data->efuse_offset,
+>                           &efuse);
+> -       if (ret) {
+> +       if (ret == -EIO) {
+> +               /* not a syscon register! */
+> +               void __iomem *regs = ioremap(OMAP3_SYSCON_BASE +
+> +                               opp_data->soc_data->efuse_offset, 4);
+> +
+> +               if (!regs)
+> +                       return -ENOMEM;
+> +               efuse = readl(regs);
+> +               iounmap(regs);
+> +               }
+> +       else if (ret) {
+>                 dev_err(dev,
+>                         "Failed to read the efuse value from syscon: %d\n",
+>                         ret);
+> @@ -158,7 +230,17 @@ static int ti_cpufreq_get_rev(struct ti_cpufreq_data *opp_data,
+>
+>         ret = regmap_read(opp_data->syscon, opp_data->soc_data->rev_offset,
+>                           &revision);
+> -       if (ret) {
+> +       if (ret == -EIO) {
+> +               /* not a syscon register! */
+> +               void __iomem *regs = ioremap(OMAP3_SYSCON_BASE +
+> +                               opp_data->soc_data->rev_offset, 4);
+> +
+> +               if (!regs)
+> +                       return -ENOMEM;
+> +               revision = readl(regs);
+> +               iounmap(regs);
+> +               }
+> +       else if (ret) {
+>                 dev_err(dev,
+>                         "Failed to read the revision number from syscon: %d\n",
+>                         ret);
+> @@ -190,6 +272,11 @@ static const struct of_device_id ti_cpufreq_of_match[] = {
+>         { .compatible = "ti,am33xx", .data = &am3x_soc_data, },
+>         { .compatible = "ti,am43", .data = &am4x_soc_data, },
+>         { .compatible = "ti,dra7", .data = &dra7_soc_data },
+> +       { .compatible = "ti,omap34xx", .data = &omap34xx_soc_data, },
+> +       { .compatible = "ti,omap36xx", .data = &omap36xx_soc_data, },
+> +       /* legacy */
+> +       { .compatible = "ti,omap3430", .data = &omap34xx_soc_data, },
+> +       { .compatible = "ti,omap3630", .data = &omap36xx_soc_data, },
+>         {},
+>  };
+>
+> --
+> 2.19.1
+>
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
