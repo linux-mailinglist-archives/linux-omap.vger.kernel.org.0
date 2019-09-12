@@ -2,46 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2B96B0FD5
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Sep 2019 15:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EC7EB0FD8
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Sep 2019 15:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732107AbfILN0f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Sep 2019 09:26:35 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:41632 "EHLO
+        id S1732111AbfILN0g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Sep 2019 09:26:36 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:41644 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732098AbfILN0f (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Sep 2019 09:26:35 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8CDQVNr049544;
-        Thu, 12 Sep 2019 08:26:31 -0500
+        with ESMTP id S1732098AbfILN0g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Sep 2019 09:26:36 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8CDQX32049558;
+        Thu, 12 Sep 2019 08:26:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1568294791;
-        bh=64fqodASKJfeJLGxH1nNhSTYa8joNo1U/kmhF3htzCY=;
+        s=ti-com-17Q1; t=1568294793;
+        bh=fW+u/vGNd3Os0mTVhUYzxkOa/BShSQwBQHEQNFyKdFs=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=btVwRm+W6GNuXn4Cm6khmKzPRo/76ZIDAQMS7ilq8XaK3uMMczfBbATeJdAM72tr3
-         iey4tVlBN4QG1PCpCsBdnmDWRn6WFJafKquzxIOrHG0/qaXCpu4GpDoH9QRJfWGf1Y
-         cWa818w+bc9oicEQGpIYRb30Ipz8DubNLCa2nioo=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8CDQVxw071201;
-        Thu, 12 Sep 2019 08:26:31 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+        b=V2hJTOndcru4A2B+/0dj6uIigedP6zT8br+44ERD4Hul/owl+qMxuj/4pzkqOR2W/
+         ohXWxEva4Aj5SQ789rN1iQulJk5BonMZp6tzvGU8/50c4wWnR/nt9Y5HxYaudMpl2L
+         9nyJEGzo1CUdFj7MTynFe5qCTAPbPCQyHMQN9jqc=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8CDQXdA053259
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 12 Sep 2019 08:26:33 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 12
- Sep 2019 08:26:31 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ Sep 2019 08:26:33 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 12 Sep 2019 08:26:31 -0500
+ Frontend Transport; Thu, 12 Sep 2019 08:26:33 -0500
 Received: from sokoban.bb.dnainternet.fi (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8CDQFvW130575;
-        Thu, 12 Sep 2019 08:26:29 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8CDQFvX130575;
+        Thu, 12 Sep 2019 08:26:31 -0500
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <linux-omap@vger.kernel.org>, <linux-clk@vger.kernel.org>,
         <sboyd@kernel.org>, <mturquette@baylibre.com>
 CC:     <tony@atomide.com>, <s-anna@ti.com>
-Subject: [PATCHv3 07/10] clk: ti: omap4: Drop idlest polling from IPU & DSP clkctrl clocks
-Date:   Thu, 12 Sep 2019 16:26:10 +0300
-Message-ID: <20190912132613.28093-8-t-kristo@ti.com>
+Subject: [PATCHv3 08/10] clk: ti: omap5: Drop idlest polling from IPU & DSP clkctrl clocks
+Date:   Thu, 12 Sep 2019 16:26:11 +0300
+Message-ID: <20190912132613.28093-9-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190912132613.28093-1-t-kristo@ti.com>
 References: <20190912132613.28093-1-t-kristo@ti.com>
@@ -56,7 +57,7 @@ X-Mailing-List: linux-omap@vger.kernel.org
 From: Suman Anna <s-anna@ti.com>
 
 The IPU and DSP remote processor cores and their corresponding MMUs on
-OMAP4 SoCs have hardreset lines associated with them and are controlled
+OMAP5 SoCs have hardreset lines associated with them and are controlled
 by a PRCM reset line each. Any clkctrl enable/disable operations cannot
 be checked for module enabled/disabled status independent of the reset
 operation, and this causes some unwanted timeouts in the kernel and
@@ -68,28 +69,28 @@ that these module status checks are skipped.
 
 Signed-off-by: Suman Anna <s-anna@ti.com>
 ---
- drivers/clk/ti/clk-44xx.c | 4 ++--
+ drivers/clk/ti/clk-54xx.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/ti/clk-44xx.c b/drivers/clk/ti/clk-44xx.c
-index b10ed0429091..2b4dab632318 100644
---- a/drivers/clk/ti/clk-44xx.c
-+++ b/drivers/clk/ti/clk-44xx.c
-@@ -37,7 +37,7 @@ static const struct omap_clkctrl_reg_data omap4_mpuss_clkctrl_regs[] __initconst
+diff --git a/drivers/clk/ti/clk-54xx.c b/drivers/clk/ti/clk-54xx.c
+index f63871dac600..b5e5658f614f 100644
+--- a/drivers/clk/ti/clk-54xx.c
++++ b/drivers/clk/ti/clk-54xx.c
+@@ -31,7 +31,7 @@ static const struct omap_clkctrl_reg_data omap5_mpu_clkctrl_regs[] __initconst =
  };
  
- static const struct omap_clkctrl_reg_data omap4_tesla_clkctrl_regs[] __initconst = {
--	{ OMAP4_DSP_CLKCTRL, NULL, CLKF_HW_SUP, "dpll_iva_m4x2_ck" },
-+	{ OMAP4_DSP_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLEST, "dpll_iva_m4x2_ck" },
+ static const struct omap_clkctrl_reg_data omap5_dsp_clkctrl_regs[] __initconst = {
+-	{ OMAP5_MMU_DSP_CLKCTRL, NULL, CLKF_HW_SUP, "dpll_iva_h11x2_ck" },
++	{ OMAP5_MMU_DSP_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLEST, "dpll_iva_h11x2_ck" },
  	{ 0 },
  };
  
-@@ -219,7 +219,7 @@ static const struct omap_clkctrl_reg_data omap4_l3_2_clkctrl_regs[] __initconst
+@@ -145,7 +145,7 @@ static const struct omap_clkctrl_reg_data omap5_l3main2_clkctrl_regs[] __initcon
  };
  
- static const struct omap_clkctrl_reg_data omap4_ducati_clkctrl_regs[] __initconst = {
--	{ OMAP4_IPU_CLKCTRL, NULL, CLKF_HW_SUP, "ducati_clk_mux_ck" },
-+	{ OMAP4_IPU_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLEST, "ducati_clk_mux_ck" },
+ static const struct omap_clkctrl_reg_data omap5_ipu_clkctrl_regs[] __initconst = {
+-	{ OMAP5_MMU_IPU_CLKCTRL, NULL, CLKF_HW_SUP, "dpll_core_h22x2_ck" },
++	{ OMAP5_MMU_IPU_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_NO_IDLEST, "dpll_core_h22x2_ck" },
  	{ 0 },
  };
  
