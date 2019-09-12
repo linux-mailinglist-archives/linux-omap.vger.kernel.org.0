@@ -2,261 +2,175 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87343B164E
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2019 00:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 249F2B16D2
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2019 01:59:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726894AbfILWdr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Sep 2019 18:33:47 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:37728 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726689AbfILWdr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Sep 2019 18:33:47 -0400
-Received: by mail-wm1-f68.google.com with SMTP id r195so617096wme.2
-        for <linux-omap@vger.kernel.org>; Thu, 12 Sep 2019 15:33:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZsqN86h5WbPq7Dpp9HUwKTFNGt5lllJGgSB3BnL4nwQ=;
-        b=rv4reagk4+PpKDXzvEI+hg8b/IFqQ5M+F6kxd+1pmm1gpAAsJq78Q304rP7hxaUjKS
-         Ztpw8iHcYAFtPC/sV07ZffnJP6hBD3QmLwk4OmZ4Sel1jLD547iidq/09knQD55PXh00
-         ZT5gS3y4tNoy84yCR8ind6CI2YnGizCQ+zSTDHC6KTP9OoOG2XWxKWAXxlQhKZtwppoa
-         7hvQBPq6O3M86s/I3/WAvzCw7FOijUaWH1iVbKO1PTFk3TfywmgPo2wnAqQmo8kokp8g
-         YPN1QazFUvMJ0MNhkbVhaWlbb2ChMoMetQTYVWH1ugnyO5oraSb4/gLdXpAfnSWITNDP
-         BSbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=ZsqN86h5WbPq7Dpp9HUwKTFNGt5lllJGgSB3BnL4nwQ=;
-        b=J3GRhaRRExaNpYvaPv2IpHFQpgQO7Sgfv+qxX0ILMpdW89l9srf1Ql8Ot5tf32qcol
-         RqVPdFXSik07qrMewUXzp9jpWKnD7u0B9skF2+9vT8t62/eA0gDY3kpD49koZMulPiCF
-         IyvzXxI40ju/TbOPikc60v2ZZGnFfEvwjEbGEcCiK9zvmsp/pFiK26CFKAFi8k9iI6ER
-         hsIhjPg+lBJ3kr3cwY/bOB1+YKfgkYoGf59Gsw9KRY52BLXpuj46+EIQgYwYf//qJrxQ
-         OqPns6kG5tZTrp3Y6/8HZYu6EPpgoddpNMiiBp88YrZtOnn9tJfhSkZXw0OFfwfV0nma
-         Nx2Q==
-X-Gm-Message-State: APjAAAXoxqkW/WOko8jKXLeQTbjDg20lDnfx21MLWc09h67OJbj98DSg
-        PfXzBIs4B6CO923+MbjGT5JE2V54bHTVtw==
-X-Google-Smtp-Source: APXvYqzfZ/CBXMPc8nLV3JFm+7P/Y4k0aLGd7RA/20c6HKWoHSxRXFZyKW4JNXD47PG4GDqX66GEbA==
-X-Received: by 2002:a05:600c:20c2:: with SMTP id y2mr689380wmm.68.1568327623253;
-        Thu, 12 Sep 2019 15:33:43 -0700 (PDT)
-Received: from [192.168.3.203] ([148.69.85.38])
-        by smtp.googlemail.com with ESMTPSA id z13sm1796803wrq.51.2019.09.12.15.33.41
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Sep 2019 15:33:42 -0700 (PDT)
-Subject: Re: [RFC] ARM: dts: omap36xx: Enable thermal throttling
-To:     Adam Ford <aford173@gmail.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tony Lindgren <tony@atomide.com>,
-        =?UTF-8?Q?Andr=c3=a9_Roth?= <neolynx@gmail.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Nishanth Menon <nm@ti.com>, Adam Ford <adam.ford@logicpd.com>
-References: <20190912183037.18449-1-aford173@gmail.com>
- <51bb8890-bfd7-c241-1ce5-151df3a90513@linaro.org>
- <CAHCN7xKjwkJHysSkNymF=sw6KuS=FqbapuRFZODuj6E_hmRG1A@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Openpgp: preference=signencrypt
-Autocrypt: addr=daniel.lezcano@linaro.org; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <2ef812a4-2f2d-b2e2-9fa4-080775e24bc8@linaro.org>
-Date:   Fri, 13 Sep 2019 00:33:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <CAHCN7xKjwkJHysSkNymF=sw6KuS=FqbapuRFZODuj6E_hmRG1A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+        id S1726032AbfILX67 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Sep 2019 19:58:59 -0400
+Received: from mail-eopbgr1360130.outbound.protection.outlook.com ([40.107.136.130]:36533
+        "EHLO AUS01-ME1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726074AbfILX67 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 12 Sep 2019 19:58:59 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=W+8SEeNkCBM3m1mDBsG6rWwx3gp0F3vUVx5owzOYsQnqd/NgofNLoKdEvRnFB0Om/F5u1uOStrJNaHza/R+FT2V2Dlc4yEuZH1uvqb+cWseaww81VeETeZxGNl0b1kYwiLo2/XRqOGJvRMhSVVTXxT0P16M/zsxk9MzG7C2eHSTtPc0ibDxDmwhlZKhv/BTRytemtLXcxou2XVPMGcUsoo8DnZNz4yF9YhVXQtiVDhZHn2PDcVVqzZb8r2UYd+cPJSmHTIv/4mMsIoMJxUZ6vRJxDs1TwG0tDFYv5XrZCC4PcrUHKUrjgcbQJsebLC4rZDlOoQOqUieRiYyrINkqQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1I1F3TtjwyOwPot+mTN6saFheXe6l2gOtLFPI4C+Vn0=;
+ b=mnFtNCrVGS3bxAx+PLobIusO5hHrD5IVH53tZsCUsFYxq/07XLKjYl035+l1KVRsjizpBLBs+nmmSvArWvPD+0OwYQAZmdUrqSTAlAHInLFwva/xp3h45cPTrVeTOpB/sNCC30yoV8LNKz9vBQHTkUIYqqLIngpl/FnvXukNGKZHtlV5WnxS/OKbZCB00bcqXc0g9s9s9+hOd0ya7BYNnwGIr8qLxkSNXtXB9kzDAEL2k26KUXtQZeT6hiZFGQH5+KxATFOY0jRwQaxEtKBHzWihAh6ze7g4/9BAAA9JicU1+ujIczmUIGOtE3Q4of8OVu7RBd0qi4ycxt0Hxm9b/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=gallagher.com; dmarc=pass action=none
+ header.from=gallagher.com; dkim=pass header.d=gallagher.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gallagher.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1I1F3TtjwyOwPot+mTN6saFheXe6l2gOtLFPI4C+Vn0=;
+ b=kfBj4tYYkqI54InPNiNrh/T6c7RLauDeZFIkH78f+pv6d44J4WNb+g+q+eEGZZUWylnCNMuNVtFbwu6TwL8ZrywjVhYeTIUJNUT+Daey4t6woTVN1Ol3TTWtUBZb5SzPZ4vlL6VJDRh3oXvEURQO+d4ADoC9kgIYX6NYUHjlrNM=
+Received: from ME2PR01MB4738.ausprd01.prod.outlook.com (20.178.183.211) by
+ ME2PR01MB4964.ausprd01.prod.outlook.com (20.178.182.78) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2263.14; Thu, 12 Sep 2019 23:58:54 +0000
+Received: from ME2PR01MB4738.ausprd01.prod.outlook.com
+ ([fe80::6de7:80f:8c28:c734]) by ME2PR01MB4738.ausprd01.prod.outlook.com
+ ([fe80::6de7:80f:8c28:c734%7]) with mapi id 15.20.2263.016; Thu, 12 Sep 2019
+ 23:58:54 +0000
+From:   Ankur Tyagi <Ankur.Tyagi@gallagher.com>
+To:     Tero Kristo <t-kristo@ti.com>,
+        "mturquette@baylibre.com" <mturquette@baylibre.com>,
+        "sboyd@kernel.org" <sboyd@kernel.org>
+CC:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        Ondrej Pohl <Ondrej.Pohl@gallagher.com>
+Subject: RE: [PATCH 2/2] clk: ti: clk-33xx.c: Update GPIO number as per
+ datasheet
+Thread-Topic: [PATCH 2/2] clk: ti: clk-33xx.c: Update GPIO number as per
+ datasheet
+Thread-Index: AQHVaQyQZW4DBes7W0K4rla8qWMPQ6cnqS2AgAEQYqA=
+Date:   Thu, 12 Sep 2019 23:58:53 +0000
+Message-ID: <ME2PR01MB47387F5FF08810FDE3A1CCF7E5B00@ME2PR01MB4738.ausprd01.prod.outlook.com>
+References: <20190912015104.10737-1-ankur.tyagi@gallagher.com>
+ <b2a40288-ca74-3381-13c6-56c5da262a89@ti.com>
+In-Reply-To: <b2a40288-ca74-3381-13c6-56c5da262a89@ti.com>
+Accept-Language: en-NZ, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Ankur.Tyagi@gallagher.com; 
+x-originating-ip: [203.167.229.98]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 30f48ad2-0c76-4cb1-679e-08d737dd2ac5
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:ME2PR01MB4964;
+x-ms-traffictypediagnostic: ME2PR01MB4964:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <ME2PR01MB49643BC0627B3422E6C7DDD0E5B00@ME2PR01MB4964.ausprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 01583E185C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(366004)(396003)(39850400004)(376002)(346002)(13464003)(189003)(199004)(71200400001)(6436002)(33656002)(102836004)(99286004)(55016002)(14454004)(7696005)(478600001)(2501003)(54906003)(9686003)(446003)(11346002)(110136005)(4326008)(316002)(25786009)(76176011)(486006)(476003)(76116006)(305945005)(53546011)(7736002)(6116002)(74316002)(6506007)(3846002)(52536014)(66946007)(5660300002)(66446008)(64756008)(66476007)(66556008)(81166006)(81156014)(26005)(8676002)(8936002)(2906002)(5024004)(14444005)(186003)(229853002)(15650500001)(256004)(86362001)(2201001)(107886003)(6246003)(66066001)(71190400001)(53936002);DIR:OUT;SFP:1102;SCL:1;SRVR:ME2PR01MB4964;H:ME2PR01MB4738.ausprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: gallagher.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: Wtg60o8QsJTtuHqis/9llnvw5xVywV4MGt+FluGwWVYbmcFltNFrHLVn/RryUY9ZdVrLhABtGjTc2MaEd0uCNYDPMERDF5jE7/8LuLzAZOco4iUYMtYeHP2cxPhQt9ZKFxkvr/GNfl2zImhGbCS5zxXNTxRzYMjGH3wI3QJN6T2NjM3Wx9xt3pVLb9WgOFHJdWB+46U8batYHsLet3YLu9YGPyU6MaUtyX+l22YKBDvDWdgdddcmspMlzFzwlLTXAkfIOSPBNuN7Ht2aVQFPW8UmNqdsGeE0HftRb01PPzEqg9FQw8utlJEzZAHX4uhHMETep6PRL+cAqUfeCZFfMkLfkVc5eKUjBiFV78fu2CwSndKi9TqDV39t2jgLcoToMTZiXD7kbzVAJdrOg+C1JKnw1JdgRyT54vPDyjRFWCs=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: gallagher.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30f48ad2-0c76-4cb1-679e-08d737dd2ac5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Sep 2019 23:58:53.9585
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 2156b869-431f-4815-b2ce-b4893b5c9aaa
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SZhC32p2jVcCy+1412cu9EBldV3CR3r9oDwc8+jS8DnmIo89hNi3chyMMMbFrY1YTLSwHKfGMQkN3sJzVFjc8Zj2tk6nyVQF6nXZ3g5LFKI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME2PR01MB4964
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-Hi Adam,
-
-On 12/09/2019 23:19, Adam Ford wrote:
-> On Thu, Sep 12, 2019 at 4:12 PM Daniel Lezcano
-> <daniel.lezcano@linaro.org> wrote:
->>
->> On 12/09/2019 20:30, Adam Ford wrote:
->>> The thermal sensor in the omap3 family isn't accurate, but it's
->>> better than nothing.  The various OPP's enabled for the omap3630
->>> support up to OPP1G, however the datasheet for the DM3730 states
->>> that OPP130 and OPP1G are not available above TJ of 90C.
->>>
->>> This patch configures the thermal throttling to limit the
->>> operating points of the omap3630 to Only OPP50 and OPP100 if
->>> the thermal sensor reads a value above 90C.
-
-Oh, that's a very interesting use case.
-
-AFAICT the thermal framework is not designed to deal with this
-situation. I agree this setup may work (even if I'm not convinced about
-the stability of the whole).
-
-May be Viresh can help for the cpufreq side?
-
->> Out of curiosity, what are the OPP50 and OPP100 mentioned above? and
->> what does mean "OPP130 and OPP1G are not available above TJ of 90C"?
->>
-> OPP130 is the 800 MHz and OPP1G is 1GHz operating point.
-> The 90C is the max junction temperature.  When the temperature exceeds
-> 90C, the processor is not designed to operate at 800+ MHz.  The
-> statement itself is a direct quote from the public datasheet for the
-> dm3730, Table 4-19.
-
-> The datasheet is: http://www.ti.com/lit/ds/symlink/dm3730.pdf
-
-It is ambiguous how it is stated:
-
-"OPP130 and OPP1G are not available above TJ of 90C"
-
-that can be interpreted the OPP is disabled by the hardware, no?
-
-> The operating points were updated in [1], but they haven't yet been
-> fully applied yet, but during the discussion, the question came about
-> regarding how to limit the speed at high temp, so that's why this
-> patch was done.
-> 
-> [1] - https://patchwork.kernel.org/patch/11141643/
-
-I see, you switched to opp-v2.
-
-Thanks for the detailed answer.
-
-
-
->> I don't see the connection between these OPP names and the definition in
->> the DT.
->>
->>> Signed-off-by: Adam Ford <aford173@gmail.com>
->>>
->>> diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
->>> index 4bb4f534afe2..58b9d347019f 100644
->>> --- a/arch/arm/boot/dts/omap36xx.dtsi
->>> +++ b/arch/arm/boot/dts/omap36xx.dtsi
->>> @@ -25,6 +25,7 @@
->>>
->>>                       vbb-supply = <&abb_mpu_iva>;
->>>                       clock-latency = <300000>; /* From omap-cpufreq driver */
->>> +                     #cooling-cells = <2>;
->>>               };
->>>       };
->>>
->>> @@ -195,6 +196,31 @@
->>>       };
->>>  };
->>>
->>> +&cpu_thermal {
->>> +     cpu_trips: trips {
->>> +             /* OPP130 and OPP1G are not available above TJ of 90C. */
->>> +             cpu_alert0: cpu_alert {
->>> +                     temperature = <90000>; /* millicelsius */
->>> +                     hysteresis = <2000>; /* millicelsius */
->>> +                     type = "passive";
->>> +             };
->>> +
->>> +             cpu_crit: cpu_crit {
->>> +                     temperature = <125000>; /* millicelsius */
->>> +                     hysteresis = <2000>; /* millicelsius */
->>> +                     type = "critical";
->>> +             };
->>> +     };
->>> +
->>> +     cpu_cooling_maps: cooling-maps {
->>> +             map0 {
->>> +                     trip = <&cpu_alert0>;
->>> +                     /* Only allow OPP50 and OPP100 */
->>> +                     cooling-device = <&cpu 0 1>;
->>> +             };
->>> +     };
->>> +};
->>> +
->>>  /* OMAP3630 needs dss_96m_fck for VENC */
->>>  &venc {
->>>       clocks = <&dss_tv_fck>, <&dss_96m_fck>;
->>>
->>
->>
->> --
->>  <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
->>
->> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
->> <http://twitter.com/#!/linaroorg> Twitter |
->> <http://www.linaro.org/linaro-blog/> Blog
->>
-
-
--- 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBUZXJvIEtyaXN0byA8dC1rcmlz
+dG9AdGkuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgMTIgU2VwdGVtYmVyIDIwMTkgNzo0MyBQTQ0K
+PiBUbzogQW5rdXIgVHlhZ2kgPEFua3VyLlR5YWdpQGdhbGxhZ2hlci5jb20+OyBtdHVycXVldHRl
+QGJheWxpYnJlLmNvbTsNCj4gc2JveWRAa2VybmVsLm9yZw0KPiBDYzogbGludXgtb21hcEB2Z2Vy
+Lmtlcm5lbC5vcmc7IE9uZHJlaiBQb2hsIDxPbmRyZWouUG9obEBnYWxsYWdoZXIuY29tPg0KPiBT
+dWJqZWN0OiBSZTogW1BBVENIIDIvMl0gY2xrOiB0aTogY2xrLTMzeHguYzogVXBkYXRlIEdQSU8g
+bnVtYmVyIGFzIHBlcg0KPiBkYXRhc2hlZXQNCj4NCj4gT24gMTIvMDkvMjAxOSAwNDo1MSwgQW5r
+dXIgVHlhZ2kgd3JvdGU6DQo+ID4gU2l0YXJhIHRlY2huaWNhbCByZWZlcmVuY2UgbWFudWFsIG51
+bWJlcnMgR1BJTyBmcm9tIDAtMyB3aGVyZWFzIGluDQo+ID4gY29kZSBHUElPIGFyZSBudW1iZXJl
+ZCBmcm9tIDEtNC4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEFua3VyIFR5YWdpIDxhbmt1ci50
+eWFnaUBnYWxsYWdoZXIuY29tPg0KPg0KPiBTYW1lIGNvbW1lbnRzIGFzIGZvciBwYXRjaCAjMSwg
+Y2F1c2luZyBjb21waWxlIGJyZWFrYWdlICsgYmlzZWN0IGlzc3Vlcy4NCj4NCj4gQWxzbywgbmV4
+dCB0aW1lIHdoZW4gcG9zdGluZywgY2FuIHlvdSBzZW5kIHBhdGNoZXMgYXMgYSBwcm9wZXIgc2Vy
+aWVzIHNvDQo+IGluZGl2aWR1YWwgcGF0Y2hlcyBnZXQgc29ydGVkIGluIHRoZSByZWNpcGllbnQg
+bWFpbGJveGVzIGF1dG9tYXRpY2FsbHk/DQo+IE90aGVyd2lzZSBpdCBpcyBlYXN5IHRvIGxvc2Ug
+cGF0Y2hlcyBpZiB0aGV5IGFyZSBub3QgZ3JvdXBlZCBwcm9wZXJseS4NCj4gZ2l0IHNlbmQtZW1h
+aWwgdG9vbCBkb2VzIHRoaXMgZm9yIHlvdSBhdXRvbWF0aWNhbGx5IGZvciBleGFtcGxlLg0KPg0K
+PiAtVGVybw0KDQpJIHdhc24ndCBzdXJlIGFib3V0IHNlbmRpbmcgRFQgZml4IGluIHRoaXMgbWFp
+bGluZyBsaXN0IGJ1dCBJIGd1ZXNzIGl0IG1ha2Ugc2Vuc2UNCnRvIHNlbmQgc2VyaWVzIGluIHNh
+bWUgbGlzdCB0byBhdm9pZCBjb25mdXNpb24uDQoNClRoYW5rcw0KQW5rdXINCj4NCj4gPiAtLS0N
+Cj4gPiAgIGRyaXZlcnMvY2xrL3RpL2Nsay0zM3h4LmMgfCAxMiArKysrKystLS0tLS0NCj4gPiAg
+IDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pDQo+ID4NCj4g
+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9jbGsvdGkvY2xrLTMzeHguYyBiL2RyaXZlcnMvY2xrL3Rp
+L2Nsay0zM3h4LmMNCj4gPiBpbmRleCBhMzYwZDMxMDk1NTUuLmQ2N2YxZjZiYmVjMCAxMDA2NDQN
+Cj4gPiAtLS0gYS9kcml2ZXJzL2Nsay90aS9jbGstMzN4eC5jDQo+ID4gKysrIGIvZHJpdmVycy9j
+bGsvdGkvY2xrLTMzeHguYw0KPiA+IEBAIC0yOCwxNyArMjgsMTcgQEAgc3RhdGljIGNvbnN0IGNo
+YXIgKiBjb25zdA0KPiBhbTNfZ3BpbzFfZGJjbGtfcGFyZW50c1tdIF9faW5pdGNvbnN0ID0gew0K
+PiA+ICAgTlVMTCwNCj4gPiAgIH07DQo+ID4NCj4gPiAtc3RhdGljIGNvbnN0IHN0cnVjdCBvbWFw
+X2Nsa2N0cmxfYml0X2RhdGEgYW0zX2dwaW8yX2JpdF9kYXRhW10NCj4gPiBfX2luaXRjb25zdCA9
+IHsNCj4gPiArc3RhdGljIGNvbnN0IHN0cnVjdCBvbWFwX2Nsa2N0cmxfYml0X2RhdGEgYW0zX2dw
+aW8xX2JpdF9kYXRhW10NCj4gPiArX19pbml0Y29uc3QgPSB7DQo+ID4gICB7IDE4LCBUSV9DTEtf
+R0FURSwgYW0zX2dwaW8xX2RiY2xrX3BhcmVudHMsIE5VTEwgfSwNCj4gPiAgIHsgMCB9LA0KPiA+
+ICAgfTsNCj4gPg0KPiA+IC1zdGF0aWMgY29uc3Qgc3RydWN0IG9tYXBfY2xrY3RybF9iaXRfZGF0
+YSBhbTNfZ3BpbzNfYml0X2RhdGFbXQ0KPiA+IF9faW5pdGNvbnN0ID0gew0KPiA+ICtzdGF0aWMg
+Y29uc3Qgc3RydWN0IG9tYXBfY2xrY3RybF9iaXRfZGF0YSBhbTNfZ3BpbzJfYml0X2RhdGFbXQ0K
+PiA+ICtfX2luaXRjb25zdCA9IHsNCj4gPiAgIHsgMTgsIFRJX0NMS19HQVRFLCBhbTNfZ3BpbzFf
+ZGJjbGtfcGFyZW50cywgTlVMTCB9LA0KPiA+ICAgeyAwIH0sDQo+ID4gICB9Ow0KPiA+DQo+ID4g
+LXN0YXRpYyBjb25zdCBzdHJ1Y3Qgb21hcF9jbGtjdHJsX2JpdF9kYXRhIGFtM19ncGlvNF9iaXRf
+ZGF0YVtdDQo+ID4gX19pbml0Y29uc3QgPSB7DQo+ID4gK3N0YXRpYyBjb25zdCBzdHJ1Y3Qgb21h
+cF9jbGtjdHJsX2JpdF9kYXRhIGFtM19ncGlvM19iaXRfZGF0YVtdDQo+ID4gK19faW5pdGNvbnN0
+ID0gew0KPiA+ICAgeyAxOCwgVElfQ0xLX0dBVEUsIGFtM19ncGlvMV9kYmNsa19wYXJlbnRzLCBO
+VUxMIH0sDQo+ID4gICB7IDAgfSwNCj4gPiAgIH07DQo+ID4gQEAgLTYxLDkgKzYxLDkgQEAgc3Rh
+dGljIGNvbnN0IHN0cnVjdCBvbWFwX2Nsa2N0cmxfcmVnX2RhdGENCj4gYW0zX2w0bHNfY2xrY3Ry
+bF9yZWdzW10gX19pbml0Y29uc3QgPQ0KPiA+ICAgeyBBTTNfTDRMU19USU1FUjNfQ0xLQ1RSTCwg
+TlVMTCwgQ0xLRl9TV19TVVAsICJ0aW1lcjNfZmNrIiB9LA0KPiA+ICAgeyBBTTNfTDRMU19USU1F
+UjRfQ0xLQ1RSTCwgTlVMTCwgQ0xLRl9TV19TVVAsICJ0aW1lcjRfZmNrIiB9LA0KPiA+ICAgeyBB
+TTNfTDRMU19STkdfQ0xLQ1RSTCwgTlVMTCwgQ0xLRl9TV19TVVAsICJybmdfZmNrIiB9LA0KPiA+
+ICt7IEFNM19MNExTX0dQSU8xX0NMS0NUUkwsIGFtM19ncGlvMV9iaXRfZGF0YSwgQ0xLRl9TV19T
+VVAsDQo+ID4gKyJsNGxzX2djbGsiIH0sDQo+ID4gICB7IEFNM19MNExTX0dQSU8yX0NMS0NUUkws
+IGFtM19ncGlvMl9iaXRfZGF0YSwgQ0xLRl9TV19TVVAsDQo+ICJsNGxzX2djbGsiIH0sDQo+ID4g
+ICB7IEFNM19MNExTX0dQSU8zX0NMS0NUUkwsIGFtM19ncGlvM19iaXRfZGF0YSwgQ0xLRl9TV19T
+VVAsDQo+ICJsNGxzX2djbGsiIH0sDQo+ID4gLXsgQU0zX0w0TFNfR1BJTzRfQ0xLQ1RSTCwgYW0z
+X2dwaW80X2JpdF9kYXRhLCBDTEtGX1NXX1NVUCwNCj4gImw0bHNfZ2NsayIgfSwNCj4gPiAgIHsg
+QU0zX0w0TFNfRF9DQU4wX0NMS0NUUkwsIE5VTEwsIENMS0ZfU1dfU1VQLCAiZGNhbjBfZmNrIiB9
+LA0KPiA+ICAgeyBBTTNfTDRMU19EX0NBTjFfQ0xLQ1RSTCwgTlVMTCwgQ0xLRl9TV19TVVAsICJk
+Y2FuMV9mY2siIH0sDQo+ID4gICB7IEFNM19MNExTX0VQV01TUzFfQ0xLQ1RSTCwgTlVMTCwgQ0xL
+Rl9TV19TVVAsICJsNGxzX2djbGsiIH0sDQo+IEBADQo+ID4gLTEzMSwxNCArMTMxLDE0IEBAIHN0
+YXRpYyBjb25zdCBjaGFyICogY29uc3QgYW0zX2dwaW8wX2RiY2xrX3BhcmVudHNbXQ0KPiBfX2lu
+aXRjb25zdCA9IHsNCj4gPiAgIE5VTEwsDQo+ID4gICB9Ow0KPiA+DQo+ID4gLXN0YXRpYyBjb25z
+dCBzdHJ1Y3Qgb21hcF9jbGtjdHJsX2JpdF9kYXRhIGFtM19ncGlvMV9iaXRfZGF0YVtdDQo+ID4g
+X19pbml0Y29uc3QgPSB7DQo+ID4gK3N0YXRpYyBjb25zdCBzdHJ1Y3Qgb21hcF9jbGtjdHJsX2Jp
+dF9kYXRhIGFtM19ncGlvMF9iaXRfZGF0YVtdDQo+ID4gK19faW5pdGNvbnN0ID0gew0KPiA+ICAg
+eyAxOCwgVElfQ0xLX0dBVEUsIGFtM19ncGlvMF9kYmNsa19wYXJlbnRzLCBOVUxMIH0sDQo+ID4g
+ICB7IDAgfSwNCj4gPiAgIH07DQo+ID4NCj4gPiAgIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgb21hcF9j
+bGtjdHJsX3JlZ19kYXRhIGFtM19sNF93a3VwX2Nsa2N0cmxfcmVnc1tdDQo+IF9faW5pdGNvbnN0
+ID0gew0KPiA+ICAgeyBBTTNfTDRfV0tVUF9DT05UUk9MX0NMS0NUUkwsIE5VTEwsIENMS0ZfU1df
+U1VQLA0KPiAiZHBsbF9jb3JlX200X2RpdjJfY2siIH0sDQo+ID4gLXsgQU0zX0w0X1dLVVBfR1BJ
+TzFfQ0xLQ1RSTCwgYW0zX2dwaW8xX2JpdF9kYXRhLA0KPiBDTEtGX1NXX1NVUCwgImRwbGxfY29y
+ZV9tNF9kaXYyX2NrIiB9LA0KPiA+ICt7IEFNM19MNF9XS1VQX0dQSU8wX0NMS0NUUkwsIGFtM19n
+cGlvMF9iaXRfZGF0YSwNCj4gQ0xLRl9TV19TVVAsDQo+ID4gKyJkcGxsX2NvcmVfbTRfZGl2Ml9j
+ayIgfSwNCj4gPiAgIHsgQU0zX0w0X1dLVVBfTDRfV0tVUF9DTEtDVFJMLCBOVUxMLCBDTEtGX1NX
+X1NVUCwNCj4gImRwbGxfY29yZV9tNF9kaXYyX2NrIiB9LA0KPiA+ICAgeyBBTTNfTDRfV0tVUF9V
+QVJUMV9DTEtDVFJMLCBOVUxMLCBDTEtGX1NXX1NVUCwNCj4gImRwbGxfcGVyX20yX2RpdjRfd2t1
+cGRtX2NrIiB9LA0KPiA+ICAgeyBBTTNfTDRfV0tVUF9JMkMxX0NMS0NUUkwsIE5VTEwsIENMS0Zf
+U1dfU1VQLA0KPiA+ICJkcGxsX3Blcl9tMl9kaXY0X3drdXBkbV9jayIgfSwNCj4gPg0KPg0KPiAt
+LQ0KPiBUZXhhcyBJbnN0cnVtZW50cyBGaW5sYW5kIE95LCBQb3Jra2FsYW5rYXR1IDIyLCAwMDE4
+MCBIZWxzaW5raS4gWS0NCj4gdHVubnVzL0J1c2luZXNzIElEOiAwNjE1NTIxLTQuIEtvdGlwYWlr
+a2EvRG9taWNpbGU6IEhlbHNpbmtpDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0K
+IFRoaXMgZW1haWwgaXMgY29uZmlkZW50aWFsIGFuZCBtYXkgY29udGFpbiBpbmZvcm1hdGlvbiBz
+dWJqZWN0IHRvIGxlZ2FsIHByaXZpbGVnZS4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkIHJl
+Y2lwaWVudCBwbGVhc2UgYWR2aXNlIHVzIG9mIG91ciBlcnJvciBieSByZXR1cm4gZS1tYWlsIHRo
+ZW4gZGVsZXRlIHRoaXMgZW1haWwgYW5kIGFueSBhdHRhY2hlZCBmaWxlcy4gWW91IG1heSBub3Qg
+Y29weSwgZGlzY2xvc2Ugb3IgdXNlIHRoZSBjb250ZW50cyBpbiBhbnkgd2F5LiBUaGUgdmlld3Mg
+ZXhwcmVzc2VkIGluIHRoaXMgZW1haWwgbWF5IG5vdCBiZSB0aG9zZSBvZiBHYWxsYWdoZXIgR3Jv
+dXAgTHRkIG9yIHN1YnNpZGlhcnkgY29tcGFuaWVzIHRoZXJlb2YuDQpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXw0K
