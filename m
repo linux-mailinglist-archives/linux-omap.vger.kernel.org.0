@@ -2,129 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7556AB2301
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2019 17:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07327B230E
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2019 17:11:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390368AbfIMPJY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Sep 2019 11:09:24 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:27397 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390046AbfIMPJY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Sep 2019 11:09:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1568387362;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=MjDaNE23KGmdcexxJE0YAkaPMCvMuA5pb1NItekYG4A=;
-        b=LI1o/E3kaCf9Augbo30pbZlQ5M0sVyBh96Ra84FNbjvgosJfw6/K9Qe8uIci1xJBCb
-        oXSV584w+uqfOEoXirnhGS087d+wBOSMvv1q50lL20PLxYE/3okNsnm6fWQNx2nLE57V
-        UkEH+w1Muu46ACxZWfccJS6u+c3vqxA4xPGpnL+WrXEtwJ/2QC1Aed3/Yi7xqkiuoTWs
-        bDA+YNH+Im0dZ9gQ3IJIDGICcegeONFyeiJSIGsWWy8BSWPsaPZIkYLxz+ZgWj6j0OBA
-        KQzpnKnx3YS7jYZhUji3DoLGRzEh4Wpw73C2tC2xgdlOsy6L0Lod3FQXZJtG1KSAHjUV
-        Ht2A==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlSVXA4OAWU="
-X-RZG-CLASS-ID: mo00
-Received: from mbp-13-nikolaus.fritz.box
-        by smtp.strato.de (RZmta 44.27.0 DYNA|AUTH)
-        with ESMTPSA id u036f9v8DF8xIqW
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Fri, 13 Sep 2019 17:08:59 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [RFC] ARM: dts: omap36xx: Enable thermal throttling
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <CAHCN7xKfeh-cqJVfbW_km27cgee2MEBdPM3edACRi0fCaohxvw@mail.gmail.com>
-Date:   Fri, 13 Sep 2019 17:09:00 +0200
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Nishanth Menon <nm@ti.com>, Adam Ford <adam.ford@logicpd.com>,
-        kernel@pyra-handheld.com
+        id S2388170AbfIMPLf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Sep 2019 11:11:35 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:41881 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388211AbfIMPLe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Sep 2019 11:11:34 -0400
+Received: by mail-io1-f66.google.com with SMTP id r26so63126460ioh.8
+        for <linux-omap@vger.kernel.org>; Fri, 13 Sep 2019 08:11:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=mMvrolpZictsp0vcsnA439WHJN6VazlWfkqCTVMaJ18=;
+        b=Q4o8MOrcV7wEiSL8OeQZ81/0lAc+RejvSKnrttWS2SFoFR64ZA1IaQgSJBkK2GN+50
+         SQKP5T8Pif4V9w82Bs85UcpBl3gVWj4FW9BU79sX2RROleiEONemjmi96p/6JeqUu/96
+         Tv3fNahITQYZaycVB26/sZMi6lLyJElfbVPnHwNg5mYDnODnoqAk6lCeXnECn0Gk6/YX
+         xwPL/xFa0hoiE6uysgnE9yoAXybGqx45GzL0Fv3/k6N2Ss7YIOQjx8SNyQeG35akObeD
+         I48LQPzMq9ByueSf1nPG+7xgl9M8Uu3qOBX7/hlOmDy2abfw+Cc/eu5NIBslUP58B2Bs
+         igdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=mMvrolpZictsp0vcsnA439WHJN6VazlWfkqCTVMaJ18=;
+        b=P1oBWjXR5n42UWCQgAJn/+slIxJEiOLIliTKMIZcHrDFmkbTWkKQmCHu3WtTU8+7AU
+         bTHJL/toPsCeDFvQdx0gfEykdJ07gYxRAW6CvA3g4N5+bZX69c6+0DwgsA9Xgh4KZiZE
+         FaJWnAUxaTIQa1o5G2T/rg0m9xyhNLjebSzS8rzu15VdKvgAaGGg5PvqGfkFFdvfQGpM
+         Ui6yLm0rkSsaxWXu96+Wb5S+S6vz4sYkuF6QKGcV+5YYL4qk7TfBmECD/h7o9ZgP9Se4
+         fz3hwedLtIe/tA/O2+C9yQ71SfDr0iILH1ApMH+NAcYPKCnjKedn7YlWvFc1iKK41mcz
+         /5gA==
+X-Gm-Message-State: APjAAAVC8LpuQcg+QaBb3NFuNGvMbRy25Xk7rAe73ZCPXpsuXL2BjIZ0
+        dHBqDpixSpp0oyJ3ku4flQlIpGosZ9rJLDbFXcI=
+X-Google-Smtp-Source: APXvYqwg1b8JOuGD1khBTu2NdeWJ8zoK/q4xdCG1EtENfPvGPZ7lf5eC4XfwBU+ueiNWo+YAxTP8qZ9XchiZQf10Duo=
+X-Received: by 2002:a6b:cd81:: with SMTP id d123mr347064iog.78.1568387493695;
+ Fri, 13 Sep 2019 08:11:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190801012823.28730-1-neolynx@gmail.com> <20190801012823.28730-2-neolynx@gmail.com>
+ <CAHCN7x+Vd+ECoa4fmUfoX47znag+NxKSzRt3iouQCZ2CQ2T--A@mail.gmail.com> <20190912210937.GU52127@atomide.com>
+In-Reply-To: <20190912210937.GU52127@atomide.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 13 Sep 2019 10:11:22 -0500
+Message-ID: <CAHCN7xLh+6rdfjaXJJxv_s82OhPiVGhksu2L+krZAnYCTnpijw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] OMAP3: PM: Set/clear T2 bit for Smartreflex on TWL
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     =?UTF-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Nishanth Menon <nm@ti.com>, Kevin Hilman <khilman@ti.com>,
+        Thara Gopinath <thara@ti.com>,
+        Shweta Gulati <shweta.gulati@ti.com>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <7C9393BD-B23B-41A6-BF96-E53CD707AAC7@goldelico.com>
-References: <20190912183037.18449-1-aford173@gmail.com> <D4F7E03C-1880-45AC-8F7C-6C8A336E2A01@goldelico.com> <CAHCN7xK100mR=fNns3qdDKpOyWsTWXgDnnngQfQ_j8cB_SFfuA@mail.gmail.com> <98751DAF-B3F7-4638-97BE-1D067B24EF18@goldelico.com> <CAHCN7xL-CmwmXP3PLdwAHiC-9tMjrpY4k7ZhxQ9WoXY6yUz8BA@mail.gmail.com> <ABCE2ACA-D19A-42D2-9606-C60F1A5CBCCB@goldelico.com> <CAHCN7xKfeh-cqJVfbW_km27cgee2MEBdPM3edACRi0fCaohxvw@mail.gmail.com>
-To:     Adam Ford <aford173@gmail.com>
-X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, Sep 12, 2019 at 4:09 PM Tony Lindgren <tony@atomide.com> wrote:
+>
+> * Adam Ford <aford173@gmail.com> [190912 19:00]:
+> > On Wed, Jul 31, 2019 at 8:29 PM Andr=C3=A9 Roth <neolynx@gmail.com> wro=
+te:
+> > >
+> > > From: Thara Gopinath <thara@ti.com>
+> > >
+> > > Voltage control on TWL can be done using VMODE/I2C1/I2C_SR.
+> > > Since almost all platforms use I2C_SR on omap3, omap3_twl_init by
+> > > default expects that OMAP's I2C_SR is plugged in to TWL's I2C
+> > > and calls omap3_twl_set_sr_bit. On platforms where I2C_SR is not conn=
+ected,
+> > > the board files are expected to call omap3_twl_set_sr_bit(false) to
+> > > ensure that I2C_SR path is not set for voltage control and prevent
+> > > the default behavior of omap3_twl_init.
+> > >
+> > > Signed-off-by: Nishanth Menon <nm@ti.com>
+> > > Signed-off-by: Thara Gopinath <thara@ti.com>
+> > > Signed-off-by: Shweta Gulati <shweta.gulati@ti.com>
+> > > Cc: linux-arm-kernel@lists.infradead.org
+> > > Signed-off-by: Kevin Hilman <khilman@ti.com>
+> >
+> > Tony,
+> >
+> > Is there a status update on this series?  It's been several months,
+> > and I haven't seen any feedback on it, nor does it appear to be in any
+> > of your branches that I can see.
+>
+> Well it was tagged RFC.. Does something need updating
+> with it?
 
-> Am 13.09.2019 um 17:01 schrieb Adam Ford <aford173@gmail.com>:
->=20
-> On Fri, Sep 13, 2019 at 9:24 AM H. Nikolaus Schaller =
-<hns@goldelico.com> wrote:
->>=20
->>=20
->>> Am 13.09.2019 um 16:05 schrieb Adam Ford <aford173@gmail.com>:
->>>=20
->>> On Fri, Sep 13, 2019 at 8:32 AM H. Nikolaus Schaller =
-<hns@goldelico.com> wrote:
->>>>=20
->>>> Hi Adam,
->>>>=20
->>>>> Am 13.09.2019 um 13:07 schrieb Adam Ford <aford173@gmail.com>:
->>>>=20
->>>>>>> +     cpu_cooling_maps: cooling-maps {
->>>>>>> +             map0 {
->>>>>>> +                     trip =3D <&cpu_alert0>;
->>>>>>> +                     /* Only allow OPP50 and OPP100 */
->>>>>>> +                     cooling-device =3D <&cpu 0 1>;
->>>>>>=20
->>>>>> omap4-cpu-thermal.dtsi uses THERMAL_NO_LIMIT constants but I do =
-not
->>>>>> understand their meaning (and how it relates to the opp list).
->>>>>=20
->>>>> I read through the documentation, but it wasn't completely clear =
-to
->>>>> me. AFAICT, the numbers after &cpu represent the min and max index =
-in
->>>>> the OPP table when the condition is hit.
->>>>=20
->>>> Ok. It seems to use "cooling state" for those and the first is =
-minimum
->>>> and the last is maximum. Using THERMAL_NO_LIMIT (-1UL) means to =
-have
->>>> no limits.
->>>>=20
->>>> Since here we use the &cpu node it is likely that the "cooling =
-state"
->>>> is the same as the OPP index currently in use.
->>>>=20
->>>> I have looked through the .dts which use cpu_crit and the picture =
-is
->>>> not unique...
->>>>=20
->>>> omap4           seems to only define it
->>>> am57xx          has two different grade dtsi files
->>>> dra7            overwrites critical temperature value
->>>> am57xx-beagle   defines a gpio to control a fan
->>>=20
->=20
-> I am going to push a separate but related RFC with 2 patches in the
-> series.  This new one will setup the alerts and maps without any
-> throttling for all omap3's in the first patch.  The second patch will
-> consolidate the thermal references to omap3.dtsi so omap34, omap36 and
-> am35 can all use them without having to duplicate the entries.
->=20
-> It will make the omap36xx changes simpler to manage, because we can
-> just modify a portion of the entries instead of having the whole
-> table.
->=20
-> Once this parallel RFC gets comments/feedback, I'll re-integrate the
-> omap36xx throttling.
+I didn't notice the RTC until you pointed out the 0/3 file showed the RFC.
 
-Good idea. I have looked over them and they seem to be ok.
+Andre -  since you have sign-off by various TI people and Tony seems
+satisfied, would you be will to re-base and push the patch series
+without the RFC?
 
->=20
-> adam
+I think some of the work that H Nikolaus Schaller is doing will
+benefit from this.
 
-BR and thanks,
-Nikolaus
+Thank you,
 
+adam
+>
+> At least the first two patches looked OK to me.
+>
+> Regards,
+>
+> Tony
