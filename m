@@ -2,227 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28AAFB22D0
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2019 17:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B45A1B22ED
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2019 17:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390387AbfIMPCI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Sep 2019 11:02:08 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:46738 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390376AbfIMPCI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Sep 2019 11:02:08 -0400
-Received: by mail-io1-f66.google.com with SMTP id d17so41260561ios.13;
-        Fri, 13 Sep 2019 08:02:07 -0700 (PDT)
+        id S2390552AbfIMPEl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Sep 2019 11:04:41 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:44741 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390365AbfIMPEk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Sep 2019 11:04:40 -0400
+Received: by mail-io1-f65.google.com with SMTP id j4so63191644iog.11;
+        Fri, 13 Sep 2019 08:04:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=l5FDHbt8lqGJHAWfO4cgNSZrnf0h9Sq8dTow7K6r8jI=;
-        b=GfxjsW6Bh/ewfSByUpN0azT/eN5lDwC4a3uApj0HQfyln/Gjb8leQ6dkQCNLMvMLfE
-         yDw83dcFS5bbpyltm2p64jdbE+Yj5bbnqdlmHubkkp/bgxWkgh4rhlBmvPxk+YaZlOEf
-         jZfVRncSyeSN+UhxuflBLrOuSwSMkB255pqKoQPtKd6N4JqspKs2v8IaOMEAKnQ4TlVj
-         WFIfzmPXJModv8i21LNvwthrar48qdihLsiqMreCL6nLOUI0fBIQD8oenmWgwB3bjgNj
-         HlH3jH9VHuN8ukr/Zdv9BstVhIW3Y4aFqjN0BzWwheHgy+T58iXFwbAZO5u41CbS3c1e
-         xnfQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=pxzm0Da2RMICbYeB3ji5PIHGS0/dwIlS+lqwiNEvwqk=;
+        b=mZ5Y2T4kUU6YtTmXJmEe0RSeHEYEsHWkf2QZgVBonzWm/eI6fTGnhyk6uqKiwQVJBZ
+         wx1XUa4SB4I3pJ+7XEfiJRUmc1kj0NPtKRvzqz7cRLKAob1TDKAqlXby0IlO7jXnZBaE
+         xoWXKinpKxOVYW4rm3gZ/r/bDTHmZRaU/FzD6PJ7ME+yQtSR1qYuM44EkBb8S0Gsisky
+         7i/JcdJUADKlzUeddV7gKns/eWg9JJZYkogYQbQDC/0DUcHCQMZqNlfNpXe3BfqTsnZ2
+         0eMakF/aZmqde2d8mZnekHjWpn9QYwh7fF2whvYQvRmBHvPyiLSWLlm208kAGESC0qX/
+         NKsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=l5FDHbt8lqGJHAWfO4cgNSZrnf0h9Sq8dTow7K6r8jI=;
-        b=YAcgmPtuzgz/H/LKtj+z+9aP7Gblx+/fShU/kIYDBCmdg6fWNyXVjPuC4MSRxSxTBK
-         Jwmc9qyGPJ3awg7HFTT3t/Dnov6wAIqh9+V5zMGux2as/2AChNDHYkyaXIne+Asfvufr
-         9vT1rHVjeniEwiC2J+/p+e/cZYJgY1QquinL3vyhYM3663h/t2oppVn8tRm/061rFenw
-         wQB7X5yGQpEZZXI3f9MGQaIms6/E3Xq0W/YtPgGxHSevGN65JwlNSHj6hLmXfrf5eRkh
-         Wh/YGRQziHYhP1pfOvqsMb/K70TAB+/k/xPKDBVZwQC8srz4AshAGDp95GfpYioTZP4d
-         ZIbw==
-X-Gm-Message-State: APjAAAVi8t1N2HZLlPpkrIidsFKn0xDNHKCr4hnAoogvRiV/H+ja9PC6
-        O7BvGE+RN3MsdTjOScdidn0D7F7klSUEoC8KftonaA==
-X-Google-Smtp-Source: APXvYqyS8kp3Oxa+ZkW/xzmIjtGuJ0ULPdjfslQ9lAlwJPx9It9zOZQBbTgQMX3Fg2Uomu/X6GZz5ZKg0eZg4TAsyBI=
-X-Received: by 2002:a6b:c581:: with SMTP id v123mr286873iof.158.1568386926591;
- Fri, 13 Sep 2019 08:02:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190912183037.18449-1-aford173@gmail.com> <D4F7E03C-1880-45AC-8F7C-6C8A336E2A01@goldelico.com>
- <CAHCN7xK100mR=fNns3qdDKpOyWsTWXgDnnngQfQ_j8cB_SFfuA@mail.gmail.com>
- <98751DAF-B3F7-4638-97BE-1D067B24EF18@goldelico.com> <CAHCN7xL-CmwmXP3PLdwAHiC-9tMjrpY4k7ZhxQ9WoXY6yUz8BA@mail.gmail.com>
- <ABCE2ACA-D19A-42D2-9606-C60F1A5CBCCB@goldelico.com>
-In-Reply-To: <ABCE2ACA-D19A-42D2-9606-C60F1A5CBCCB@goldelico.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=pxzm0Da2RMICbYeB3ji5PIHGS0/dwIlS+lqwiNEvwqk=;
+        b=EMUZoUsA3jR4Jexlpdfm6+Dy3m7XwfhA/cBl3kCDWkaKUx6pSJ38JImJrTbcY+S43r
+         nmWEEVQfr9lvScg2aENVXXrwiJjziU+sbq3Nxv8kiki96M3pLU0k0QawfdOCxEhklIan
+         XHinHJTdwvqgpxsk2Ydqy72MC54pddvpmN6RatzAiLkkgDFLYc7pkpdEjDlmeGrfcrmj
+         xD5tN46VwcXzH+FrOgD3pVFl6DvE+6NWgGC3yixDkwKv/qv9e7YxdIPuRFatc6UYDs6g
+         yqd7uEH6aZ1IA+oRIOqI/47EmZSdmP0+H1HebpzCxWDyA98KVZcR0qLBf/L+4VksIQGi
+         sBBA==
+X-Gm-Message-State: APjAAAUXevT6Snd9WRTF4OwTeyOYahNWR10CCNDApNKNyNuNCpt3Seh1
+        KvJGkqBuS+qSQd/Rqwv5QF3ShLZg
+X-Google-Smtp-Source: APXvYqyvnUxMPxTaMhLG0wey5/qLTAyik7SBioh2C0zRMy7EmsX+0kPiTQ9ClGLu405lwitix1JYtg==
+X-Received: by 2002:a6b:5f11:: with SMTP id t17mr305475iob.169.1568387078505;
+        Fri, 13 Sep 2019 08:04:38 -0700 (PDT)
+Received: from aford-OptiPlex-7050.logicpd.com ([174.46.170.158])
+        by smtp.gmail.com with ESMTPSA id q8sm19169414ion.82.2019.09.13.08.04.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2019 08:04:37 -0700 (PDT)
 From:   Adam Ford <aford173@gmail.com>
-Date:   Fri, 13 Sep 2019 10:01:55 -0500
-Message-ID: <CAHCN7xKfeh-cqJVfbW_km27cgee2MEBdPM3edACRi0fCaohxvw@mail.gmail.com>
-Subject: Re: [RFC] ARM: dts: omap36xx: Enable thermal throttling
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+To:     linux-omap@vger.kernel.org
+Cc:     adam.ford@logicpd.com, nm@ti.com, hns@goldelico.com,
+        Adam Ford <aford173@gmail.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        =?UTF-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Nishanth Menon <nm@ti.com>, Adam Ford <adam.ford@logicpd.com>,
-        kernel@pyra-handheld.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [RFC 1/2] ARM: dts: omap3: Add cpu trips and cooling map for omap3 family
+Date:   Fri, 13 Sep 2019 10:04:08 -0500
+Message-Id: <20190913150410.27391-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Sep 13, 2019 at 9:24 AM H. Nikolaus Schaller <hns@goldelico.com> wr=
-ote:
->
->
-> > Am 13.09.2019 um 16:05 schrieb Adam Ford <aford173@gmail.com>:
-> >
-> > On Fri, Sep 13, 2019 at 8:32 AM H. Nikolaus Schaller <hns@goldelico.com=
-> wrote:
-> >>
-> >> Hi Adam,
-> >>
-> >>> Am 13.09.2019 um 13:07 schrieb Adam Ford <aford173@gmail.com>:
-> >>
-> >>>>> +     cpu_cooling_maps: cooling-maps {
-> >>>>> +             map0 {
-> >>>>> +                     trip =3D <&cpu_alert0>;
-> >>>>> +                     /* Only allow OPP50 and OPP100 */
-> >>>>> +                     cooling-device =3D <&cpu 0 1>;
-> >>>>
-> >>>> omap4-cpu-thermal.dtsi uses THERMAL_NO_LIMIT constants but I do not
-> >>>> understand their meaning (and how it relates to the opp list).
-> >>>
-> >>> I read through the documentation, but it wasn't completely clear to
-> >>> me. AFAICT, the numbers after &cpu represent the min and max index in
-> >>> the OPP table when the condition is hit.
-> >>
-> >> Ok. It seems to use "cooling state" for those and the first is minimum
-> >> and the last is maximum. Using THERMAL_NO_LIMIT (-1UL) means to have
-> >> no limits.
-> >>
-> >> Since here we use the &cpu node it is likely that the "cooling state"
-> >> is the same as the OPP index currently in use.
-> >>
-> >> I have looked through the .dts which use cpu_crit and the picture is
-> >> not unique...
-> >>
-> >> omap4           seems to only define it
-> >> am57xx          has two different grade dtsi files
-> >> dra7            overwrites critical temperature value
-> >> am57xx-beagle   defines a gpio to control a fan
-> >
+The OMAP3530, AM3517 and DM3730 all show thresholds of 90C and 105C
+depending on commercial or industrial temperature ratings.  This
+patch expands the thermal information to the limits of 90 and 105
+for alert and critical.
 
-I am going to push a separate but related RFC with 2 patches in the
-series.  This new one will setup the alerts and maps without any
-throttling for all omap3's in the first patch.  The second patch will
-consolidate the thermal references to omap3.dtsi so omap34, omap36 and
-am35 can all use them without having to duplicate the entries.
+For boards who never use industrial temperatures, these can be
+changed on their respective device trees with something like:
 
-It will make the omap36xx changes simpler to manage, because we can
-just modify a portion of the entries instead of having the whole
-table.
+&cpu_alert0 {
+	temperature = <85000>; /* millicelsius */
+};
 
-Once this parallel RFC gets comments/feedback, I'll re-integrate the
-omap36xx throttling.
+&cpu_crit {
+	temperature = <90000>; /* millicelsius */
+};
 
-adam
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-> > Checkout rk3288-veyron-mickey.dts
-> >
-> > They have almost_warm, warm, almost_hot, hot, hotter, very_hot, and
-> > critical for trips, and they have as many corresponding cooling maps
-> > which appear to limit the CPU speeds, but their index references are
-> > still confusing to me.
->
-> Seems to be quite sophistcated.
->
-> The arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi also has a lot
-> of trip points. So there may be very different needs...
->
-> But it has potentially helpful comments...
->
->                                 /*
->                                  * When reaching cpu0_alert3, reduce CPU
->                                  * by 2 steps. On Exynos5422/5800 that wo=
-uld
->                                  * be: 1600 MHz and 1100 MHz.
->                                  */
->                                 map3 {
->                                         trip =3D <&cpu0_alert3>;
->                                         cooling-device =3D <&cpu0 0 2>;
->                                 };
->                                 map4 {
->                                         trip =3D <&cpu0_alert3>;
->                                         cooling-device =3D <&cpu4 0 2>;
->                                 };
->                                 /*
->                                  * When reaching cpu0_alert4, reduce CPU
->                                  * further, down to 600 MHz (12 steps for=
- big,
->                                  * 7 steps for LITTLE).
->                                  */
->                                 map5 {
->                                         trip =3D <&cpu0_alert4>;
->                                         cooling-device =3D <&cpu0 3 7>;
->                                 };
->                                 map6 {
->                                         trip =3D <&cpu0_alert4>;
->                                         cooling-device =3D <&cpu4 3 12>;
->                                 };
->
-> That would mean the second integer is something about how
-> many steps to reduce.
->
-> But the first is not explained.
->
-> BTW: this also demonstrates how a single trip point can map to multiple
-> cooling-device actions (something we likely do not need).
->
-> >
-> > For that device,
-> > Warm and no limit first, then 4:   coolling-device =3D <&cpu0 THERMAL_N=
-O_LIMIT 4>
-> > ...
-> > very_hot uses a number then no limit: cooling-device =3D <&cpu0 8
-> > THERMAL_NO_LIMIT>
-> >
-> > This makes me wonder if the min and max are switched or the index
-> > values go backwards.
->
-> It may depend on the specific cpu driver? Maybe even omap rk and exynos
-> have different interpretation in code?
->
-> >>
-> >> Then we can use the data sheet limits of 90=C2=B0C and 105=C2=B0C in t=
-he trip point
-> >> table (which should not be tweaked for sensor inaccuracy).
-> >
-> > I can see not compensating if it reads high, but if the temp reads
-> > low, shouldn't compensate so we don't over temp the processor?
->
-> I just mean that we must ensure that the TJ is <=3D 90=C2=B0 if the bandg=
-ap
-> ever reports 90=C2=B0. So it may report 10 or 20 or even 30 degrees more =
-than the
-> real temperature but never less (reaching the critical temperature too ea=
-rly
-> but not too late).
->
-> We can achieve that by adding bias or changing slope etc. in the bandgap =
-sensor
-> driver.
->
-> If I find some time I am curious enough to look into the code and the dat=
-a
-> sheets to understand why it is said to be inaccurate... Maybe there is
-> jitter from some LDO and it needs a median filter?
->
-> And why it seems to add a bias of ca. 10=C2=B0 as soon as I read it more =
-than
-> for the first time. And how well temperature correlates to ambient temper=
-ature
-> (it definitively correlates to cpufreq-set -f).
->
-> But we should not modify the trip temperatures by 10 or 20 or 30 degrees.
-> IMHO they should have the values defined by the data sheet.
->
-> BR,
-> Nikolaus
->
+diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+index 235ecfd61e2d..11452590ea85 100644
+--- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
++++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+@@ -17,4 +17,25 @@ cpu_thermal: cpu_thermal {
+ 
+ 			/* sensor       ID */
+ 	thermal-sensors = <&bandgap     0>;
++
++	cpu_trips: trips {
++		cpu_alert0: cpu_alert {
++			temperature = <90000>; /* millicelsius */
++			hysteresis = <2000>; /* millicelsius */
++			type = "passive";
++		};
++		cpu_crit: cpu_crit {
++			temperature = <105000>; /* millicelsius */
++			hysteresis = <2000>; /* millicelsius */
++			type = "critical";
++		};
++	};
++
++	cpu_cooling_maps: cooling-maps {
++		map0 {
++			trip = <&cpu_alert0>;
++			cooling-device =
++				<&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++		};
++	};
+ };
+-- 
+2.17.1
+
