@@ -2,137 +2,163 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80865B2387
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2019 17:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44C73B242A
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2019 18:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730198AbfIMPh3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Sep 2019 11:37:29 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:44816 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728811AbfIMPh2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Sep 2019 11:37:28 -0400
-Received: by mail-io1-f65.google.com with SMTP id j4so63445696iog.11;
-        Fri, 13 Sep 2019 08:37:27 -0700 (PDT)
+        id S2389940AbfIMQf2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Sep 2019 12:35:28 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:36784 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387822AbfIMQf2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Sep 2019 12:35:28 -0400
+Received: by mail-io1-f67.google.com with SMTP id b136so63959363iof.3;
+        Fri, 13 Sep 2019 09:35:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=zmHEq/Xr17AzVU8XIpJ00tKT+crE7NuUO+gN/6eqT+0=;
-        b=cEXFv8y65yzIrZm/GmQ+NP3gY53BT6jJwwBKpSyMypfRrP3iji32Vny4+VInRdlbBP
-         mcMDrQIUXx4MCEJS/MkEdahpEhYpq/DiAAp0MG99cb4jdzw9pZWcyhcibNQ3CdlbT5j8
-         +d768wH9oVDCx0TztVRZP1yFT6WUSAxvRNSGDgMixzav/GeIKgBx6s1Y7JANwnJrnxus
-         5BXp1bAHObXvsXl/Wj23aZZ0YTOr94mU/Zwv5ME2cA+0P38M+qZtgPH5lKiOonEPbBij
-         m5fgN4KfSvTCFOdG/N8MkOUoBqUOveTSZRLHfoEJSpf1ahdwTTiMPxEQK6tyW71/2gHF
-         /ZEw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KjwJiwmcH2/79ybI6jcq3ploVvAGPGEEuHdJsNide34=;
+        b=Tf9r7it5Nm7p62KuSGGb2k8JtyI/gS7gqlZcv+2cBaRdH/9pRVAIuSBQrX4XqlfCV3
+         Bp1wmypp2i1tkjtr3pUaVrd/MzIS+whjmHWKnbPHlt3qZ+M7ThRXAmgL7R7a/oSFs3S6
+         AbgFSXAVujz552kbjEVI+7DS2dCCI8ytdols0iBbY0rJyMTtlnF9+nMuTV7OJXQo7rpz
+         xkm0TRUwWVghrcrpVajExH89/J4whoqJLSUGZe/IGV3GVtmNxZ6VYSFrpeHEmvWF089g
+         bFU050zLq86T/khbSfqIAltZY6/Z3MSoNVa7qeRi4tOL9C+C4y5P+fdtSkZPSYQKGOtC
+         fGng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=zmHEq/Xr17AzVU8XIpJ00tKT+crE7NuUO+gN/6eqT+0=;
-        b=U+6tnMm+TL6kgy42L6zxU68kWUB0Qra47xZ9ABqFKCjkl5YKi4t+tSmP4cDZPygJyO
-         b+SvmovBg+V9BO6wD+XzOSf3lBK1qwTpOTLzUi5Bx7P3PN8EEY1FGc+2DARWiDTkg1OG
-         nS2o4Nv8hBCYHwbRtWSyOM3qUaOuBNORH0q3Eh1TRmGq4Xm/sKBUIfSoW00a9M8pySBg
-         nDfkQzOcsCjDRayewEMT3Zb8y8ypaIGzVay7bRhcQJtVKmOoNEMbuLheRT3MXSr30kLF
-         5dcg309WVlkS7sV4FCHgbwo0X4Os6+F2TdJO2L1nrgeuIAzOhJte6K7CZBgQLvV+dA5C
-         Vbcw==
-X-Gm-Message-State: APjAAAWH4mJhex7KrbtU+ZOBo7vFSTWHjZNK1XwSZ5KnP17aXReyIrxS
-        GevbeC1/S8soYQO9Ug/DIBEE7i8I
-X-Google-Smtp-Source: APXvYqxrC3PIiczCEPVZ3vsBJoXPRhPq3XFNf/S+t0qlksJvZ3MVmbhDf7cJDiuQ7qJHaqdYQi+ohw==
-X-Received: by 2002:a05:6602:c7:: with SMTP id z7mr275670ioe.130.1568389046172;
-        Fri, 13 Sep 2019 08:37:26 -0700 (PDT)
-Received: from aford-OptiPlex-7050.logicpd.com ([174.46.170.158])
-        by smtp.gmail.com with ESMTPSA id h3sm19780842iol.73.2019.09.13.08.37.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 08:37:25 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KjwJiwmcH2/79ybI6jcq3ploVvAGPGEEuHdJsNide34=;
+        b=Ntyg0NAkLDxWmIliSMimrJyZWwSoq12rlwMph+h8SPcoeiXmIcxmSLHUWXuGVRWGFe
+         GawKwI0FUyOiAWiBNa0gDxqU1GYzQvVmwZW4gNH16S0GSGkGtQWpZ3k8vP4wVGUN1fgo
+         PBjCISpRDqNoZv0fwQp1ZJIaqVZMCzqummOraLhqKMHfZAc2cIcehT95rEjIsXDVn85M
+         0HZrkzZSLTOxoZWYN9qckkd1YEYftrpzgPo4ZYC6LmsTeOH+Prrs16QLfqf3+ruCd6/Z
+         qmLi675ZazCgc6kbG9EH9NYWUpNtkZ/0qPuq4DwjXvBHScTKAIUiWZDTwfmQudArDwmR
+         lGxg==
+X-Gm-Message-State: APjAAAUq3RFMRD+EOHWEb63Ir8jShEZhdaImRQ0D5yHkhPUTmJCkB0lb
+        hFY7RmJAwmIpV89NJuttE7JrvTAGj7lQUuDeb8M=
+X-Google-Smtp-Source: APXvYqzKeHmSJRvJtlL+yF2VNMXHs6xIV1eggn3tngTE5IZYb9CUEvFC5LomeFzRpoLiqJM8NNneb8dprT+qGrS1nic=
+X-Received: by 2002:a6b:b213:: with SMTP id b19mr714079iof.58.1568392527255;
+ Fri, 13 Sep 2019 09:35:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190912183037.18449-1-aford173@gmail.com> <D4F7E03C-1880-45AC-8F7C-6C8A336E2A01@goldelico.com>
+ <CAHCN7xK100mR=fNns3qdDKpOyWsTWXgDnnngQfQ_j8cB_SFfuA@mail.gmail.com>
+ <98751DAF-B3F7-4638-97BE-1D067B24EF18@goldelico.com> <CAHCN7xL-CmwmXP3PLdwAHiC-9tMjrpY4k7ZhxQ9WoXY6yUz8BA@mail.gmail.com>
+ <ABCE2ACA-D19A-42D2-9606-C60F1A5CBCCB@goldelico.com> <CAHCN7xKfeh-cqJVfbW_km27cgee2MEBdPM3edACRi0fCaohxvw@mail.gmail.com>
+ <7C9393BD-B23B-41A6-BF96-E53CD707AAC7@goldelico.com>
+In-Reply-To: <7C9393BD-B23B-41A6-BF96-E53CD707AAC7@goldelico.com>
 From:   Adam Ford <aford173@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     adam.ford@logicpd.com, nm@ti.com, hns@goldelico.com,
-        Adam Ford <aford173@gmail.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+Date:   Fri, 13 Sep 2019 11:35:16 -0500
+Message-ID: <CAHCN7x+_f_jrttUGyKHBOUyYjkOx0mJxba1Yb3tPm9ee7+21og@mail.gmail.com>
+Subject: Re: [RFC] ARM: dts: omap36xx: Enable thermal throttling
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
         Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [RFC v2 2/2] ARM: omap3: Consolidate thermal references to common omap3
-Date:   Fri, 13 Sep 2019 10:37:14 -0500
-Message-Id: <20190913153714.30980-2-aford173@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190913153714.30980-1-aford173@gmail.com>
-References: <20190913153714.30980-1-aford173@gmail.com>
+        =?UTF-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Nishanth Menon <nm@ti.com>, Adam Ford <adam.ford@logicpd.com>,
+        kernel@pyra-handheld.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Because the omap34xx, omap36xx and am3517 SoC's have the same
-thermal junction limits, there is no need to duplicate the entry
-multiple times.
+On Fri, Sep 13, 2019 at 10:09 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+>
+>
+> > Am 13.09.2019 um 17:01 schrieb Adam Ford <aford173@gmail.com>:
+> >
+> > On Fri, Sep 13, 2019 at 9:24 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+> >>
+> >>
+> >>> Am 13.09.2019 um 16:05 schrieb Adam Ford <aford173@gmail.com>:
+> >>>
+> >>> On Fri, Sep 13, 2019 at 8:32 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+> >>>>
+> >>>> Hi Adam,
+> >>>>
+> >>>>> Am 13.09.2019 um 13:07 schrieb Adam Ford <aford173@gmail.com>:
+> >>>>
+> >>>>>>> +     cpu_cooling_maps: cooling-maps {
+> >>>>>>> +             map0 {
+> >>>>>>> +                     trip = <&cpu_alert0>;
+> >>>>>>> +                     /* Only allow OPP50 and OPP100 */
+> >>>>>>> +                     cooling-device = <&cpu 0 1>;
+> >>>>>>
+> >>>>>> omap4-cpu-thermal.dtsi uses THERMAL_NO_LIMIT constants but I do not
+> >>>>>> understand their meaning (and how it relates to the opp list).
+> >>>>>
+> >>>>> I read through the documentation, but it wasn't completely clear to
+> >>>>> me. AFAICT, the numbers after &cpu represent the min and max index in
+> >>>>> the OPP table when the condition is hit.
+> >>>>
+> >>>> Ok. It seems to use "cooling state" for those and the first is minimum
+> >>>> and the last is maximum. Using THERMAL_NO_LIMIT (-1UL) means to have
+> >>>> no limits.
+> >>>>
+> >>>> Since here we use the &cpu node it is likely that the "cooling state"
+> >>>> is the same as the OPP index currently in use.
+> >>>>
+> >>>> I have looked through the .dts which use cpu_crit and the picture is
+> >>>> not unique...
+> >>>>
+> >>>> omap4           seems to only define it
+> >>>> am57xx          has two different grade dtsi files
+> >>>> dra7            overwrites critical temperature value
+> >>>> am57xx-beagle   defines a gpio to control a fan
+> >>>
+> >
+> > I am going to push a separate but related RFC with 2 patches in the
+> > series.  This new one will setup the alerts and maps without any
+> > throttling for all omap3's in the first patch.  The second patch will
+> > consolidate the thermal references to omap3.dtsi so omap34, omap36 and
+> > am35 can all use them without having to duplicate the entries.
+> >
+> > It will make the omap36xx changes simpler to manage, because we can
+> > just modify a portion of the entries instead of having the whole
+> > table.
+> >
+> > Once this parallel RFC gets comments/feedback, I'll re-integrate the
+> > omap36xx throttling.
+>
+> Good idea. I have looked over them and they seem to be ok.
 
-This patch removes the thermal references from omap36xx and
-omap34xx and pushes it into the common omap3.dtsi file with
-the added benefit of enabling the thermal info on the AM3517.
+Rebasing my omap36xx throttling after the v2 RFC I pushed moving the
+omap3-cpu thermal stuff, I modified the omap36xx accordingly to try
+and force the alert condition:
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
----
-V2:	Add node name for cpu and add cooling-cells entry
+&cpu_alert0 {
+     temperature = <55000>; /* millicelsius */
+};
 
-diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
-index 4043ecb38016..84704eb3b604 100644
---- a/arch/arm/boot/dts/omap3.dtsi
-+++ b/arch/arm/boot/dts/omap3.dtsi
-@@ -32,7 +32,7 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
--		cpu@0 {
-+		cpu: cpu@0 {
- 			compatible = "arm,cortex-a8";
- 			device_type = "cpu";
- 			reg = <0x0>;
-@@ -41,9 +41,14 @@
- 			clock-names = "cpu";
- 
- 			clock-latency = <300000>; /* From omap-cpufreq driver */
-+			#cooling-cells = <2>;
- 		};
- 	};
- 
-+	thermal_zones: thermal-zones {
-+		#include "omap3-cpu-thermal.dtsi"
-+	};
-+
- 	pmu@54000000 {
- 		compatible = "arm,cortex-a8-pmu";
- 		reg = <0x54000000 0x800000>;
-diff --git a/arch/arm/boot/dts/omap34xx.dtsi b/arch/arm/boot/dts/omap34xx.dtsi
-index f572a477f74c..b80378d6e5c1 100644
---- a/arch/arm/boot/dts/omap34xx.dtsi
-+++ b/arch/arm/boot/dts/omap34xx.dtsi
-@@ -101,10 +101,6 @@
- 			};
- 		};
- 	};
--
--	thermal_zones: thermal-zones {
--		#include "omap3-cpu-thermal.dtsi"
--	};
- };
- 
- &ssi {
-diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
-index 6fb23ada1f64..ff2dca63a04e 100644
---- a/arch/arm/boot/dts/omap36xx.dtsi
-+++ b/arch/arm/boot/dts/omap36xx.dtsi
-@@ -140,10 +140,6 @@
- 			};
- 		};
- 	};
--
--	thermal_zones: thermal-zones {
--		#include "omap3-cpu-thermal.dtsi"
--	};
- };
- 
- /* OMAP3630 needs dss_96m_fck for VENC */
--- 
-2.17.1
+&cpu_cooling_maps {
+     map0 {
+          /* OPP130 and OPP1G are not available above 90C */
+          cooling-device = <&cpu 0 2>;
+     };
+};
 
+I would expect that with the temperature set for 55C, it would have
+done something, but it doesn't appear to be working as I would expect.
+
+# cat /sys/devices/virtual/thermal/thermal_zone0/temp
+58500
+
+# cat /sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies
+300000 600000 800000
+#
+
+:-(
+
+
+>
+> >
+> > adam
+>
+> BR and thanks,
+> Nikolaus
+>
