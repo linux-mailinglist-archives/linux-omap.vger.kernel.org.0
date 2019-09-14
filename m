@@ -2,30 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EE1BB2B4C
-	for <lists+linux-omap@lfdr.de>; Sat, 14 Sep 2019 15:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3087B2B57
+	for <lists+linux-omap@lfdr.de>; Sat, 14 Sep 2019 15:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388503AbfINNAc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 14 Sep 2019 09:00:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56804 "EHLO mail.kernel.org"
+        id S2388624AbfINNFn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 14 Sep 2019 09:05:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57318 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387448AbfINNAc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 14 Sep 2019 09:00:32 -0400
+        id S2388575AbfINNFn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 14 Sep 2019 09:05:43 -0400
 Received: from earth.universe (unknown [185.62.205.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E51B620830;
-        Sat, 14 Sep 2019 13:00:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A4DB2206A4;
+        Sat, 14 Sep 2019 13:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568466031;
-        bh=fnfSGrk8a8UH1ZH/X/H6HhV2yMjSqFE6ewed4hbxMQA=;
+        s=default; t=1568466342;
+        bh=gU4CO6duH0AH0YKj1jI15GcCTMmQHOV1AnE0wHF0lbE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UPWIlSX6kZ73vbU2eakauAPRpE82rRgQEYfzg0yohHdjzxojE77MOX6guOGhV8ZbL
-         p/IMfBWFnkJ9ZojKcZoUeD3AILshuwI//NAqhpYO4An9MM9dMYf7XJjqRsH/KTYAAS
-         Qmx05x1J+MfX/nuNJG4IEiVSdYXsNOvAh5xzfESI=
+        b=lsxJAW04dWcvUE0tzwucaUjD5aoqdG4PqgTbESOsIaaQBBk7k6373iozOifsrjsVL
+         heLPLCjCzXjXa270ZhP+OP+6LGJZ2Nq6F95cBNHU3uA2IrtzjLPvKHfdysEM+HMcGM
+         YPLyJ2AmpSCohiG7Ft7g0A95DppKBJ/mYJXuTEs8=
 Received: by earth.universe (Postfix, from userid 1000)
-        id 37F0C3C0CA2; Sat, 14 Sep 2019 14:54:27 +0200 (CEST)
-Date:   Sat, 14 Sep 2019 14:54:27 +0200
+        id 3C6603C0CA2; Sat, 14 Sep 2019 15:05:40 +0200 (CEST)
+Date:   Sat, 14 Sep 2019 15:05:40 +0200
 From:   Sebastian Reichel <sre@kernel.org>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     Matt Mackall <mpm@selenic.com>,
@@ -34,18 +34,16 @@ Cc:     Matt Mackall <mpm@selenic.com>,
         linux-crypto@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
         Adam Ford <aford173@gmail.com>,
         Pali =?utf-8?B?Um9ow6Fy?= <pali.rohar@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH 3/6] hwrng: omap3-rom - Call clk_prepare() on init and
- exit only
-Message-ID: <20190914125427.nvbrxoubvll43b3j@earth.universe>
+        Rob Herring <robh+dt@kernel.org>,
+        Tero Kristo <t-kristo@ti.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/6] Non-urgent fixes and improvments for omap3-rom-rng
+Message-ID: <20190914130540.jvtxaame7pat7jph@earth.universe>
 References: <20190913220922.29501-1-tony@atomide.com>
- <20190913220922.29501-4-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="g7gc3vmijk7ssgbr"
+        protocol="application/pgp-signature"; boundary="mdog2bpqvzul6dqe"
 Content-Disposition: inline
-In-Reply-To: <20190913220922.29501-4-tony@atomide.com>
+In-Reply-To: <20190913220922.29501-1-tony@atomide.com>
 User-Agent: NeoMutt/20180716
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
@@ -53,40 +51,49 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---g7gc3vmijk7ssgbr
+--mdog2bpqvzul6dqe
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Fri, Sep 13, 2019 at 03:09:19PM -0700, Tony Lindgren wrote:
-> Also, we should not call prepare and unprepare except during init, and
-> only call enable and disable during use.
+On Fri, Sep 13, 2019 at 03:09:16PM -0700, Tony Lindgren wrote:
+> Here are fixes and improvments for omap3-rom-rng that's been broken for
+> a while.
+>=20
+> The first four patches get it working, and then the last two patches add
+> support for runtime PM.
 
-Why? Usually clk_(un)prepare() is the part saving most power, so I
-would expect the runtime resume handlers to call clk_prepare_enable
-and vice versa in the suspend handler.
+Nice cleanups, the series is
+
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+
+Assuming you use clk_prepare_enable() in the runtime PM handler, I
+suggest to add another patch and go all the way to managed resources:
+devm_add_action() can be used for disabling runtime PM and
+devm_hwrng_register() can be used to register the hwrng device.
 
 -- Sebastian
 
---g7gc3vmijk7ssgbr
+--mdog2bpqvzul6dqe
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl184v8ACgkQ2O7X88g7
-+przwRAApx3Dbs6XroHfe+gpVT73gb6Yc5/uExIITkplTaKX/ZIp+4hT0rAj8hzE
-ctOOflg1pVF4LsEoF3O8wFbJMeSN9kwxQlP64ckgabIOWHhFRUSR9RHeqBWqUxvY
-/KBDidv/6s8qFj26OdczLqUZYbwrE6XXk5aS/rxn+llaftWPLocxUg6PlcQqbhW2
-jC9MKKyGN3/3a0AF6fU3nIlTpP5RQr+cxtbrNJ6qbRoKP6n6yMe5xCCERR2CG7d1
-ROUdgSTIhDFtCWcfAREKmPJyXUA5XvjUthEzABnC43T6QsSqXARIzJoIt0xT9h/5
-kRyxoGElflW65vvzy3JHP3uEkxsTqVZIMS4DKHRuZy6Xa9tN2u0O1c6TdqqAutq+
-LglWMiaiUWSsKlN3nLkTO0YdEgnTB3Ygt5hrDDOFn8cgENCpjGEnLd1CbpsE3jIV
-o7F1WQxBKoryScoOyaELPwBIUQ2HKxF35nZcpgWJrMFm57Ha5i5Num3cqitH9m1n
-WCZM2/bMnJSvJ47tsezdfb0XYM0+01kyJhdytQbFtJzRBQw0bOJT72+AlYp4jIJO
-j4JKXOVWPhtxoMpT3RpbNhS6hZ/AK1sxljNaX4O+IqMYhX8l5oY1ct+XDj3/V/fP
-UO2+cjB34jZThu+9JByuf4suzcGJXooIFqm8PhTQCwp8w5ONFqc=
-=/fji
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl185ZkACgkQ2O7X88g7
++ppqNA/+JmsrHxkgYD+ip05tbafR/Z7vXD250VZkgq+1vhiP5xn3FfwHTGHmNB02
+WSnGZFh1i5i1XleRfA/2ITvoaqT3EhCx89DZPqrg1GYiUR/Ol3HhIh8axTOs331G
+KIFbTI3ZGH3pVqS7N77Egf4vGqmv/rUUnMZjm8b6flGVpLL4WvqPpGvs8Yglxdmq
+j+EntLH/jD+vm1MdaTgTLL7DchwgCW0uonukbfMKZqan8p7S9akqhvxmIo+G9OdV
+Ok19HmlUf/Mplg959p6HjaE0ycZ/6j2r7PZQrnYlzIyt6jyvbusIZPawOW7LSkWE
+0TU6c00OHJwDN0dM5oL23AZM9I3kR5HF4Dd9Cfk1VaWnFpEumOrP1sjp0Czb2ZgL
+bVtlqfkhu+LDF052Sb544DbYICaRj6OB4LICDM6IEkPiwLgquK2vu0BmAIXmUMNV
+wEmQW+u2fIqDxUez15RSpgnToI35NFXj8XotFdyDtMpuNqM6hsV6wadMEE/j83l/
+8BJ0+RR4ftudQWdFTDDmyPPnbADAnRLjb4RF1HJWd94u1PrX88q5CHag1gPE+Jq+
+XpUIZDjezBO9srd3UWteMBFGdpKTdxMQsfhxav/a11vMe+RAXcyKzzGg6rvCSx+X
+YMnq5CJdagSR1nmSFEJuv3lENUgBXxniwRX7EFbxsOE46kV2IXc=
+=lttE
 -----END PGP SIGNATURE-----
 
---g7gc3vmijk7ssgbr--
+--mdog2bpqvzul6dqe--
