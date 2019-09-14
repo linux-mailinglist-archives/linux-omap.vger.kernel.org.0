@@ -2,52 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFB4BB2B6D
-	for <lists+linux-omap@lfdr.de>; Sat, 14 Sep 2019 15:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD917B2B70
+	for <lists+linux-omap@lfdr.de>; Sat, 14 Sep 2019 15:47:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730744AbfINNnF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 14 Sep 2019 09:43:05 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:32891 "EHLO
+        id S1730579AbfINNrg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 14 Sep 2019 09:47:36 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:41932 "EHLO
         mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730739AbfINNnF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 14 Sep 2019 09:43:05 -0400
-Received: by mail-io1-f65.google.com with SMTP id m11so68866790ioo.0;
-        Sat, 14 Sep 2019 06:43:04 -0700 (PDT)
+        with ESMTP id S1728741AbfINNrg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 14 Sep 2019 09:47:36 -0400
+Received: by mail-io1-f65.google.com with SMTP id r26so68718303ioh.8;
+        Sat, 14 Sep 2019 06:47:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=sEh+NFUnNzOqaKFuMPrw8vEceb15ckMMUWj1cxO8DnY=;
-        b=opB9sFvXMk1XjoFYQETF/xvWc5mqOUqgN6nEixsszzEHVXhaDxsaODYGKBzi/nVDis
-         zv8nCw5UesREoMH6KGk1K2Qdr3dQ9tqXaJGrhAIbaHZkoLTFOqHBA24VhJZDG53sr1X7
-         SbZICE/OmhDtBtV457ZiOrvqzSuUgCpBpc3MfgCPYnrusfeTjU1WGNGul+CcGJJnraG6
-         Bo4VvOd3cC6hm65OyAfyJa9mKKqKW+YlCtJmJhXa/ALvzWN/9w+AOGuF4DQchis+MiSA
-         ORk9doq6Ov/ujJNaqncgm7mvs8XZO8HjQknSsD+nxA6pYhJjNyJGScoNkci/Nk2tPekb
-         eDMQ==
+         :cc;
+        bh=5c+7toLvMTmRgmguxP1GEOcN8tq63Ii62NDiuk379RA=;
+        b=t38f0IxagpfezKSWCERSYqTbsX0x2HA/RBWwIdXA5/avDR6wd5S5L4euBNBYg/cw/e
+         F+VCjXJiRYZGG9vqwXaHZcAMdF2uQUYyoEKzDBfgeihzXO5d5Y87dfFsyH89mQl85irU
+         ow7lg9M2UcLzVJctrrocZAfv09EWNkBg5VsTjuqSescLGv5HuDVZto92mwin/S08n3J8
+         yK1RaxrYOm26R6B8QN2kw6XpKgFBvpKWybU2oMgno7Xa5+bVUg9/2jEsc136SfqtlPix
+         ybD+l01Ttcc2ChhF038xUjCzb9lcoXcO8ag5V/hwqvLXkSOKE9xGbhTFQt0Vq0EUo2EC
+         xF2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=sEh+NFUnNzOqaKFuMPrw8vEceb15ckMMUWj1cxO8DnY=;
-        b=DOXRwriyJ7GrOnXbiosU7P9jecaeuBmC3AcoWTfJvynedhrJ6Klf6dBsmG/B4loK7O
-         UOaTTDaGyXHBo96jKwcumzhj8fx4Kk8BrCtKmOQsIdOpsm6F5USN8ePsyyavqE5U2JJx
-         Ax4RWCwpsHk2qvHHOrjHyR+iVEM/CgjmuWG3a477LBMgPP8OJO00+2m+18nYe4g1GOe6
-         JZwK9NcqzFGhtlHon3zTrnd/pdUJb8AvAQuXvJZJZgJAcOFv3DtSPD4TH/k6ZsnjGOj9
-         hA2AKRnTUNeKKGCIq3KM0PL60oeDmav2aoZcMWzaQUX/px0JIfNs2HfoGXWH0kB5I33U
-         YCVQ==
-X-Gm-Message-State: APjAAAUiuxWlexR7vf8mHEl5dtk7uhv0/5psoXYDcgdjGIV6FEzwl6zJ
-        71eYWOLinriEybSo5YLoG/MW1CCleJnVX9BuWT0=
-X-Google-Smtp-Source: APXvYqwxhh9fPPGVNC3Dq2cAkuGjs451BxDB8YGLbXfKkyUsXYj3pX1GkOzo1T3BlFKj9OGSsA/NZDawdz1A4LSOFCk=
-X-Received: by 2002:a6b:cd81:: with SMTP id d123mr3490655iog.78.1568468583472;
- Sat, 14 Sep 2019 06:43:03 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=5c+7toLvMTmRgmguxP1GEOcN8tq63Ii62NDiuk379RA=;
+        b=I1ZTVt0xNqhH3A0z9NAZmSKKDpmgUUzYNCxuPnOKmWbcbH3dWN0Gtrf/6ul51g/Qg/
+         efEQFPblMtRkqVGtGyu4WHsK7ZfaaGjhPHqaAv4kbjHsAGdfx2txfsXZa/XlOXphWwPx
+         MziG2t67omAe/D09Tg0QHcVxlDi1u4uGlFc4F9McBSJtJJhftUNaw6ER42XjSKdPbjU5
+         9Jv1QqCLzlUgRzppscsNgkF8tGKPnJsPHspy8oiSenPbmHxUYI92awr7u/LIwLbdSi0/
+         XBYrPleU4irFBuBUkc82yTSSuyEFHFtpxJRjSDPciiQ7UOdBf8HsQvQDjMXeuq7bcJHZ
+         9Z7g==
+X-Gm-Message-State: APjAAAW1cwVBhxxNMorRs+JmixCM4/hPcjWNVXy5QTwcRsNRvLn1RN0W
+        6/09oZHljhW15ajVDkotc0QTB8pJJ98E2N/1/vA=
+X-Google-Smtp-Source: APXvYqwUse6tFuqhH0U4m98RAEPjXI9vDzBPZjzhFMFp+HTD3Raqj6PYbwedbk/NyALcNXsEokeqZLTv64GdQwfzlzc=
+X-Received: by 2002:a6b:b213:: with SMTP id b19mr5724302iof.58.1568468854433;
+ Sat, 14 Sep 2019 06:47:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190913153714.30980-1-aford173@gmail.com> <B710D701-6311-4344-BF4E-F39157BBF2BD@goldelico.com>
-In-Reply-To: <B710D701-6311-4344-BF4E-F39157BBF2BD@goldelico.com>
+References: <20190913153714.30980-1-aford173@gmail.com> <20190913153714.30980-2-aford173@gmail.com>
+ <40FEEAC9-8F19-466F-83C3-C8F0142D44B7@goldelico.com>
+In-Reply-To: <40FEEAC9-8F19-466F-83C3-C8F0142D44B7@goldelico.com>
 From:   Adam Ford <aford173@gmail.com>
-Date:   Sat, 14 Sep 2019 08:42:51 -0500
-Message-ID: <CAHCN7xKU1v-BFkwiuZQx82+Cmdgj_1CH1j51bN0TaaduWcu8rQ@mail.gmail.com>
-Subject: Re: [RFC v2 1/2] ARM: dts: omap3: Add cpu trips and cooling map for
- omap3 family
+Date:   Sat, 14 Sep 2019 08:47:23 -0500
+Message-ID: <CAHCN7xLVFP23Rt5tpTwN+LGmJr3vC0_v7pfGVdDYj=PSHFGvgA@mail.gmail.com>
+Subject: Re: [RFC v2 2/2] ARM: omap3: Consolidate thermal references to common omap3
 To:     "H. Nikolaus Schaller" <hns@goldelico.com>
 Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
         Adam Ford <adam.ford@logicpd.com>, Nishanth Menon <nm@ti.com>,
@@ -56,200 +56,149 @@ Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Grazvydas Ignotas <notasas@gmail.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Sep 14, 2019 at 4:20 AM H. Nikolaus Schaller <hns@goldelico.com> wr=
-ote:
+On Sat, Sep 14, 2019 at 4:25 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
 >
 >
 > > Am 13.09.2019 um 17:37 schrieb Adam Ford <aford173@gmail.com>:
 > >
-> > The OMAP3530, AM3517 and DM3730 all show thresholds of 90C and 105C
-> > depending on commercial or industrial temperature ratings.  This
-> > patch expands the thermal information to the limits of 90 and 105
-> > for alert and critical.
+> > Because the omap34xx, omap36xx and am3517 SoC's have the same
+> > thermal junction limits, there is no need to duplicate the entry
+> > multiple times.
 > >
-> > For boards who never use industrial temperatures, these can be
-> > changed on their respective device trees with something like:
-> >
-> > &cpu_alert0 {
-> >       temperature =3D <85000>; /* millicelsius */
-> > };
-> >
-> > &cpu_crit {
-> >       temperature =3D <90000>; /* millicelsius */
-> > };
+> > This patch removes the thermal references from omap36xx and
+> > omap34xx and pushes it into the common omap3.dtsi file with
+> > the added benefit of enabling the thermal info on the AM3517.
 > >
 > > Signed-off-by: Adam Ford <aford173@gmail.com>
+
+Disregard this patch.  I'll drop it based on Nikolaus' comments below.
+
 > > ---
-> > V2:  Change the CPU reference to &cpu instead of &cpu0
+> > V2:   Add node name for cpu and add cooling-cells entry
 > >
-> > diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/d=
-ts/omap3-cpu-thermal.dtsi
-> > index 235ecfd61e2d..dfbd0cb0b00b 100644
-> > --- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-> > +++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-> > @@ -17,4 +17,25 @@ cpu_thermal: cpu_thermal {
+> > diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
+> > index 4043ecb38016..84704eb3b604 100644
+> > --- a/arch/arm/boot/dts/omap3.dtsi
+> > +++ b/arch/arm/boot/dts/omap3.dtsi
+> > @@ -32,7 +32,7 @@
+> >               #address-cells = <1>;
+> >               #size-cells = <0>;
 > >
-> >                       /* sensor       ID */
-> >       thermal-sensors =3D <&bandgap     0>;
-> > +
-> > +     cpu_trips: trips {
-> > +             cpu_alert0: cpu_alert {
-> > +                     temperature =3D <90000>; /* millicelsius */
-> > +                     hysteresis =3D <2000>; /* millicelsius */
-> > +                     type =3D "passive";
-> > +             };
-> > +             cpu_crit: cpu_crit {
-> > +                     temperature =3D <105000>; /* millicelsius */
-> > +                     hysteresis =3D <2000>; /* millicelsius */
-> > +                     type =3D "critical";
-> > +             };
+> > -             cpu@0 {
+> > +             cpu: cpu@0 {
+> >                       compatible = "arm,cortex-a8";
+> >                       device_type = "cpu";
+> >                       reg = <0x0>;
+> > @@ -41,9 +41,14 @@
+> >                       clock-names = "cpu";
+> >
+> >                       clock-latency = <300000>; /* From omap-cpufreq driver */
+> > +                     #cooling-cells = <2>;
+> >               };
+> >       };
+>
+> Looks ok.
+>
+> >
+> > +     thermal_zones: thermal-zones {
+> > +             #include "omap3-cpu-thermal.dtsi"
 > > +     };
 > > +
-> > +     cpu_cooling_maps: cooling-maps {
-> > +             map0 {
-> > +                     trip =3D <&cpu_alert0>;
-> > +                     cooling-device =3D
-> > +                             <&cpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
-> > +             };
-> > +     };
+>
+> I have observed one compile issue: we also include this indirectly by am3517.dtsi
+> and the included code refers to <&bandgap 0> but there is no bandgap definition in am3517.dtsi
+>
+> Therefore I studied the am35x TRM (SPRUGR0C) and compared to the am/dm37x TRM (SPRUGN4M).
+>
+> But I can't find a bandgap temperature sensor with ADC like it is described in
+> "13.4.6 Band Gap Voltage and Temperature Sensor" for the am/dm37x. Only
+> "BANDGAP Logic" exists in both and both have the CM_FCLKEN3_CORE but with
+> different meaning of bit 0.
+
+I didn't read the technical details, I just read there was a bandgap
+logic, so I assumed it existed.
+
+>
+> There is also no description of an CONTROL_TEMP_SENSOR (0x48002524) register for am35x.
+> (note: the register is also documented for omap3530).
+
+Thanks for looking into this.
+
+>
+> So this might mean that the am35x does not have this feature unless TI simply
+> did not document it because the chip is specified for a single OPP only where it
+> make no sense to monitor the temperature.
+>
+> We can find out only by looking at 0x48002524 if there is an undocumented
+> bandgap converter.
+
+I will try to read this register when I have some time, but I have to
+watch Chelsea FC play in 15 minutes.  ;-)
+
+>
+> Which means we probably can't make thermal throttling work for it. And even
+> if the bandgap sensor exists we are lacking an value -> celsius table.
+
+I think it's probably best to abandon this patch, per my comment based
+on all your comments.
+
+>
+>
+> >       pmu@54000000 {
+> >               compatible = "arm,cortex-a8-pmu";
+> >               reg = <0x54000000 0x800000>;
+> > diff --git a/arch/arm/boot/dts/omap34xx.dtsi b/arch/arm/boot/dts/omap34xx.dtsi
+> > index f572a477f74c..b80378d6e5c1 100644
+> > --- a/arch/arm/boot/dts/omap34xx.dtsi
+> > +++ b/arch/arm/boot/dts/omap34xx.dtsi
+> > @@ -101,10 +101,6 @@
+> >                       };
+> >               };
+> >       };
+> > -
+> > -     thermal_zones: thermal-zones {
+> > -             #include "omap3-cpu-thermal.dtsi"
+> > -     };
 > > };
+> >
+> > &ssi {
+> > diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
+> > index 6fb23ada1f64..ff2dca63a04e 100644
+> > --- a/arch/arm/boot/dts/omap36xx.dtsi
+> > +++ b/arch/arm/boot/dts/omap36xx.dtsi
+> > @@ -140,10 +140,6 @@
+> >                       };
+> >               };
+> >       };
+> > -
+> > -     thermal_zones: thermal-zones {
+> > -             #include "omap3-cpu-thermal.dtsi"
+> > -     };
+> > };
+>
+> So if we have to exclude the am3517 we can not apply the rearrangement part
+> of this patch.
+>
+> I'd suggest to move the cpu: cpu@0 and #cooling-cells into 1/2 (also to make it
+> compile stand-alone). And have the consolidation separately - if we can fix the
+> am3517 bandgap sensor issue.
+
+I'll drop this, and leave everything in the omap3-cpu-thermal file and
+let omap34xx and omap36xx point to them as we do now.
+
+>
+> >
+> > /* OMAP3630 needs dss_96m_fck for VENC */
 > > --
 > > 2.17.1
 > >
 >
-> Here is my test log (GTA04A5 with DM3730CBP100).
-> "high-load" script is driving the NEON to full power
-> and would report calculation errors.
->
-> There is no noise visible in the bandgap sensor data
-> induced by power supply fluctuations (log shows system
-> voltage while charging).
->
-
-Great data!
-
-> root@letux:~# ./high-load -n2
-> 100% load stress test for 1 cores running ./neon_loop2
-> Sat Sep 14 09:05:50 UTC 2019 65=C2=B0 4111mV 1000MHz
-> Sat Sep 14 09:05:50 UTC 2019 67=C2=B0 4005mV 1000MHz
-> Sat Sep 14 09:05:52 UTC 2019 68=C2=B0 4000mV 1000MHz
-> Sat Sep 14 09:05:53 UTC 2019 68=C2=B0 4000mV 1000MHz
-> Sat Sep 14 09:05:55 UTC 2019 72=C2=B0 3976mV 1000MHz
-> Sat Sep 14 09:05:56 UTC 2019 72=C2=B0 4023mV 1000MHz
-> Sat Sep 14 09:05:57 UTC 2019 72=C2=B0 3900mV 1000MHz
-> Sat Sep 14 09:05:59 UTC 2019 73=C2=B0 4029mV 1000MHz
-> Sat Sep 14 09:06:00 UTC 2019 73=C2=B0 3988mV 1000MHz
-> Sat Sep 14 09:06:01 UTC 2019 73=C2=B0 4005mV 1000MHz
-> Sat Sep 14 09:06:03 UTC 2019 73=C2=B0 4011mV 1000MHz
-> Sat Sep 14 09:06:04 UTC 2019 73=C2=B0 4117mV 1000MHz
-> Sat Sep 14 09:06:06 UTC 2019 73=C2=B0 4005mV 1000MHz
-> Sat Sep 14 09:06:07 UTC 2019 75=C2=B0 3994mV 1000MHz
-> Sat Sep 14 09:06:08 UTC 2019 75=C2=B0 3970mV 1000MHz
-> Sat Sep 14 09:06:09 UTC 2019 75=C2=B0 4046mV 1000MHz
-> Sat Sep 14 09:06:11 UTC 2019 75=C2=B0 4005mV 1000MHz
-> Sat Sep 14 09:06:12 UTC 2019 75=C2=B0 4023mV 1000MHz
-> Sat Sep 14 09:06:14 UTC 2019 75=C2=B0 3970mV 1000MHz
-> Sat Sep 14 09:06:15 UTC 2019 75=C2=B0 4011mV 1000MHz
-> Sat Sep 14 09:06:16 UTC 2019 77=C2=B0 4017mV 1000MHz
-> Sat Sep 14 09:06:18 UTC 2019 77=C2=B0 3994mV 1000MHz
-> Sat Sep 14 09:06:19 UTC 2019 77=C2=B0 3994mV 1000MHz
-> Sat Sep 14 09:06:20 UTC 2019 77=C2=B0 3988mV 1000MHz
-> Sat Sep 14 09:06:22 UTC 2019 77=C2=B0 4023mV 1000MHz
-> Sat Sep 14 09:06:23 UTC 2019 77=C2=B0 4023mV 1000MHz
-> Sat Sep 14 09:06:24 UTC 2019 78=C2=B0 4005mV 1000MHz
-> Sat Sep 14 09:06:26 UTC 2019 78=C2=B0 4105mV 1000MHz
-> Sat Sep 14 09:06:27 UTC 2019 78=C2=B0 4011mV 1000MHz
-> Sat Sep 14 09:06:28 UTC 2019 78=C2=B0 3994mV 1000MHz
-> Sat Sep 14 09:06:30 UTC 2019 78=C2=B0 4123mV 1000MHz
-> ...
-> Sat Sep 14 09:09:57 UTC 2019 88=C2=B0 4082mV 1000MHz
-> Sat Sep 14 09:09:59 UTC 2019 88=C2=B0 4164mV 1000MHz
-> Sat Sep 14 09:10:00 UTC 2019 88=C2=B0 4058mV 1000MHz
-> Sat Sep 14 09:10:01 UTC 2019 88=C2=B0 4058mV 1000MHz
-> Sat Sep 14 09:10:03 UTC 2019 88=C2=B0 4082mV 1000MHz
-> Sat Sep 14 09:10:04 UTC 2019 88=C2=B0 4058mV 1000MHz
-> Sat Sep 14 09:10:06 UTC 2019 88=C2=B0 4146mV 1000MHz
-> Sat Sep 14 09:10:07 UTC 2019 88=C2=B0 4041mV 1000MHz
-> Sat Sep 14 09:10:08 UTC 2019 88=C2=B0 4035mV 1000MHz
-> Sat Sep 14 09:10:10 UTC 2019 88=C2=B0 4052mV 1000MHz
-> Sat Sep 14 09:10:11 UTC 2019 88=C2=B0 4087mV 1000MHz
-> Sat Sep 14 09:10:12 UTC 2019 88=C2=B0 4152mV 1000MHz
-> Sat Sep 14 09:10:14 UTC 2019 88=C2=B0 4070mV 1000MHz
-> Sat Sep 14 09:10:15 UTC 2019 88=C2=B0 4064mV 1000MHz
-> Sat Sep 14 09:10:17 UTC 2019 88=C2=B0 4170mV 1000MHz
-> Sat Sep 14 09:10:18 UTC 2019 88=C2=B0 4058mV 1000MHz
-> Sat Sep 14 09:10:19 UTC 2019 88=C2=B0 4187mV 1000MHz
-> Sat Sep 14 09:10:21 UTC 2019 88=C2=B0 4093mV 1000MHz
-> Sat Sep 14 09:10:22 UTC 2019 88=C2=B0 4087mV 1000MHz
-> Sat Sep 14 09:10:23 UTC 2019 90=C2=B0 4070mV 1000MHz
-
-Should we be a little more conservative?  Without knowing the
-accuracy, i believe we do not want to run at 800 or 1GHz at 90C, so if
-we made this value 89 instead of 90, we would throttle a little more
-conservatively.
-
-> Sat Sep 14 09:10:25 UTC 2019 88=C2=B0 4123mV 800MHz
-> Sat Sep 14 09:10:26 UTC 2019 88=C2=B0 4064mV 1000MHz
-> Sat Sep 14 09:10:28 UTC 2019 90=C2=B0 4058mV 1000MHz
-
-Again here, I interpret the data sheet correctly, we're technically out of =
-spec
-
-> Sat Sep 14 09:10:29 UTC 2019 88=C2=B0 4076mV 1000MHz
-> Sat Sep 14 09:10:30 UTC 2019 88=C2=B0 4064mV 1000MHz
-> Sat Sep 14 09:10:32 UTC 2019 88=C2=B0 4117mV 1000MHz
-> Sat Sep 14 09:10:33 UTC 2019 88=C2=B0 4105mV 800MHz
-> Sat Sep 14 09:10:34 UTC 2019 88=C2=B0 4070mV 1000MHz
-> Sat Sep 14 09:10:36 UTC 2019 88=C2=B0 4076mV 1000MHz
-> Sat Sep 14 09:10:37 UTC 2019 88=C2=B0 4087mV 1000MHz
-> Sat Sep 14 09:10:39 UTC 2019 88=C2=B0 4017mV 1000MHz
-> Sat Sep 14 09:10:40 UTC 2019 88=C2=B0 4093mV 1000MHz
-> Sat Sep 14 09:10:41 UTC 2019 88=C2=B0 4058mV 800MHz
-> Sat Sep 14 09:10:42 UTC 2019 88=C2=B0 4035mV 1000MHz
-> Sat Sep 14 09:10:44 UTC 2019 90=C2=B0 4058mV 1000MHz
-> Sat Sep 14 09:10:45 UTC 2019 88=C2=B0 4064mV 1000MHz
-> Sat Sep 14 09:10:47 UTC 2019 88=C2=B0 4064mV 1000MHz
-> Sat Sep 14 09:10:48 UTC 2019 88=C2=B0 4029mV 1000MHz
-> Sat Sep 14 09:10:50 UTC 2019 90=C2=B0 4046mV 1000MHz
-> ^Ckill 4680
-> root@letux:~# cpufreq-info
-> cpufrequtils 008: cpufreq-info (C) Dominik Brodowski 2004-2009
-> Report errors and bugs to cpufreq@vger.kernel.org, please.
-> analyzing CPU 0:
->   driver: cpufreq-dt
->   CPUs which run at the same hardware frequency: 0
->   CPUs which need to have their frequency coordinated by software: 0
->   maximum transition latency: 300 us.
->   hardware limits: 300 MHz - 1000 MHz
->   available frequency steps: 300 MHz, 600 MHz, 800 MHz, 1000 MHz
->   available cpufreq governors: conservative, userspace, powersave, ondema=
-nd, performance
->   current policy: frequency should be within 300 MHz and 1000 MHz.
->                   The governor "ondemand" may decide which speed to use
->                   within this range.
->   current CPU frequency is 600 MHz (asserted by call to hardware).
->   cpufreq stats: 300 MHz:22.81%, 600 MHz:2.50%, 800 MHz:2.10%, 1000 MHz:7=
-2.59%  (1563)
-> root@letux:~#
->
-> So OPP is reduced if bandgap sensor reports >=3D 90=C2=B0C
-> which almost immediately makes the temperature
-> go down.
->
-> No operational hickups were observed.
->
-> Surface temperature of the PoP chip did rise to
-> approx. 53=C2=B0C during this test.
->
-> Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # on GTA04A5 with dm3=
-730cbp100
+> Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # on GTA04A5 with dm3730cbp100
 >
