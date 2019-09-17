@@ -2,80 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A30E2B507B
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Sep 2019 16:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFA96B51C9
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Sep 2019 17:49:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728312AbfIQOf1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 17 Sep 2019 10:35:27 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.169]:33219 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728128AbfIQOf1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 Sep 2019 10:35:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1568730925;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=aDkxVMbY8vRvqozEwY9dfWbrp1yfXlJPYl/GV2fom4s=;
-        b=TEA2P3pdTKwtdTJbORsNcJvcpWV+xP3Cn45HdtSkp5vdIgFyvrkVum+t2l+QQ+yhHf
-        6DvmGvykcNsS+QIfYnoAWtnqROv6k22YHLzUroaUNAqbLMFmTHPBOeYiiq+LgBPHgYsO
-        Yfk8SdGSmMrkzszN1LOhp/JIgjMsb4C2DV5TfCDhV4Q/OkYBW2ltOl8WlqmzgawF629O
-        VsRLLFZfXizeshXSciPKUPgtIvvhaL8HfmQi9sJzjsZweYtL5wOrdEk2Z7pNKRy6Kt2i
-        VnYgKUJiqZpp+Ur3vVLhVZH6zG0obe2yzRJSe4x3k5GNQ5u7ksXbjZhl/dEsjNakPuf0
-        NjfQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBp5hRw/qOxWRk4dCyjDPUnsm74p9bR0nKSw0V7uzbYrtFUHmEd2msW"
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2001:16b8:266f:d200:e9b9:e9c0:8734:b26d]
-        by smtp.strato.de (RZmta 44.27.0 AUTH)
-        with ESMTPSA id u036f9v8HEZ6XP4
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Tue, 17 Sep 2019 16:35:06 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH v3 0/8] OMAP3: convert opp-v1 to opp-v2 and read speed binned / 720MHz grade bits
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20190916162816.GF52127@atomide.com>
-Date:   Tue, 17 Sep 2019 16:35:22 +0200
-Cc:     =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Enric Balletbo i Serra <eballetbo@gmail.com>,
-        Javier Martinez Canillas <javier@dowhile0.org>,
-        Roger Quadros <rogerq@ti.com>,
-        Teresa Remmet <t.remmet@phytec.de>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, linux-arm-kernel@lists.infradead.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <DAF6ACB4-AD7E-4528-9F4B-C54104B5E260@goldelico.com>
-References: <cover.1568224032.git.hns@goldelico.com> <20190916162816.GF52127@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1729785AbfIQPta (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 17 Sep 2019 11:49:30 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:42819 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727147AbfIQPta (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 Sep 2019 11:49:30 -0400
+Received: by mail-io1-f67.google.com with SMTP id n197so8714582iod.9
+        for <linux-omap@vger.kernel.org>; Tue, 17 Sep 2019 08:49:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=UxRu0hfIOj7rnd/2d0FeY2ghe0hTXPZWI+QnR+jIQvc=;
+        b=nkDZySz1oxziYyP/913cQGVX9HYiBvKraEPhcAARX4DyYrCHL7/dA+CU+dYGnlpvN6
+         VKkTvIV00sRa2E/exN9GxEnO9VdJZJtLwkfeepRggxag8Sj/00YqJ1llhaxzYPlOVDEe
+         boZcAd0hXnNoa5aXzh2J7OpKxupRn1iqQz3/0AJ+m48l6kdVzUJmTuXiZANpbvrG8KBG
+         HbgV9R4le+C4Vbyo70ibE8AxW87Whn4ngBK+V9SW0bCNRSbqZ/Oq5LHOvLVwspJB34nV
+         IbMUj7dg0F0RvtGGT/3g3l2x8EMNNkrC4rJvjDDYQe5RH6K9Jtlptapytp9sOgQhxP1F
+         xMfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=UxRu0hfIOj7rnd/2d0FeY2ghe0hTXPZWI+QnR+jIQvc=;
+        b=YK9MgtaXfje3gYXGobmS+8ozLEw3c9EJVGsbGnn+zSqlaqp5oxXf10yZmnouMUuplm
+         kp0MQ9w1BJ5OuEDeQCKqVnP3O9KRGO7beyNc4xUsnLG4ewV+XumTu69i1AGzzvhinuYa
+         V5m0Ib0kiciwfM+UFWyD6PVTFmUtTmcgVuf1XVfOjUWi9Unw8SAPs95nl9unypT3XiDr
+         ZuYBuTikyVt3F04CcPkBJaYSyEjpszyjtq3LB/2SKSVtJTGEpjHCmHN7yvw/9JC6J2CY
+         PtBnCg9DuZ/dX7lgNKNKdXr1NAT9q+C7X5HLyK7jz30XviECPn/91i12l5p9deC5n1iI
+         /nag==
+X-Gm-Message-State: APjAAAWdJLc0TKtqKorO5kW6zjGj2Bd/kV9D2joHwmASYKCJd2JI3Dv4
+        5VkAvaKFQWf+yP5oepkIZPd+LMYFSlA=
+X-Google-Smtp-Source: APXvYqzMAbytdq+L+rdLuxfU+Sv3D600a69hFO3BIMhz1J3VNLoE0wmv3inaXoYyLdgA+52AaeOf2A==
+X-Received: by 2002:a02:92:: with SMTP id 140mr4328878jaa.98.1568735369278;
+        Tue, 17 Sep 2019 08:49:29 -0700 (PDT)
+Received: from aford-OptiPlex-7050.logicpd.com ([174.46.170.158])
+        by smtp.gmail.com with ESMTPSA id x26sm1737367ioa.37.2019.09.17.08.49.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Sep 2019 08:49:28 -0700 (PDT)
+From:   Adam Ford <aford173@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>
+Subject: [PATCH] ARM: dts: logicpd-torpedo-baseboard: Reduce video regulator chatter
+Date:   Tue, 17 Sep 2019 10:49:23 -0500
+Message-Id: <20190917154923.1073-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+The dss driver wants two regulators or it dump some splat while
+initializing.  This patch adds a reference to the second regulator
+which to avoid the warnings that the regulator is missing.
 
-> Am 16.09.2019 um 18:28 schrieb Tony Lindgren <tony@atomide.com>:
-> 
-> * H. Nikolaus Schaller <hns@goldelico.com> [190911 17:48]:
->> CHANGES V3:
->> * make omap36xx control the abb-ldo and properly switch mode
->>  (suggested by Adam Ford <aford173@gmail.com>)
->> * add a note about enabling the turbo-mode OPPs
-> 
-> Looks good to me, when applying, please provide a
-> minimal immutable branch maybe against v5.3 or v5.4-rc1,
-> that I can also merge in if needed for the dts changes.
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-Should I resend a v4 with your Acked-By added?
-
-BR and thanks,
-Nikolaus
+diff --git a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+index 449cc7616da6..184e462d96ab 100644
+--- a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
++++ b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+@@ -108,6 +108,7 @@
+ &dss {
+ 	status = "ok";
+ 	vdds_dsi-supply = <&vpll2>;
++	vdda_video-supply = <&vpll2>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&dss_dpi_pins1>;
+ 	port {
+-- 
+2.17.1
 
