@@ -2,78 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84EB9B5455
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Sep 2019 19:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF2E9B548D
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Sep 2019 19:48:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726030AbfIQRf2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 17 Sep 2019 13:35:28 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:44186 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726017AbfIQRf2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 Sep 2019 13:35:28 -0400
-Received: by mail-io1-f68.google.com with SMTP id j4so9500050iog.11
-        for <linux-omap@vger.kernel.org>; Tue, 17 Sep 2019 10:35:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=JHHEwesfK2iLZDx0apPoffR04w/omaTzddsEsubqJeE=;
-        b=IHlx5bNvX5DjyizZaZasU4cVwGJNlq1FNHswa3s2cgV4MLebL6GajAkheADO+co/td
-         VxhfqEDPlvPoCN9LiQtB4S2jXBZsJOnh/sc+zQ0PJkAbm4DnA07hKxGbreOBjEnkP43U
-         ngfNmJcC/Z6hkMpMeM7292jOkVNMvcmOlHVTrouskZpRn5q0Q85gzeY5kQzytlm7coWb
-         gT7VHtmYbS8dX4KtwpHztvsJVbzjV2gBJgiX6elR8bUuyOaWRhGqHVuOXMshdLEI4pzy
-         F0Xl+2C7DUm1gGQELMYpSRhxDBcgGg8bKub4oIr9z6qavo7rB4CpmbOgRzKBKv2x1FzS
-         Stnw==
+        id S1726151AbfIQRsU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 17 Sep 2019 13:48:20 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:38191 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726017AbfIQRsU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 Sep 2019 13:48:20 -0400
+Received: by mail-oi1-f195.google.com with SMTP id 7so3640918oip.5;
+        Tue, 17 Sep 2019 10:48:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=JHHEwesfK2iLZDx0apPoffR04w/omaTzddsEsubqJeE=;
-        b=GwYlZpgRVkIMHNBuSufUVssajup8ikctdK+9+rV1HJCKx6Biwabfzs5KlCeB/uQxIl
-         SowN53OrSY136jXvPBGRDFWdGe5hf9xbJuzNTcttqU+yJOBwmnd4GZeLEhxputpifhuP
-         txB9SJzGwbTqqiTpGdewodkKeJh0s3NYV9r1Bxwiy2/VVHx/HiCbthuwmk13iZm+BOdf
-         prAxQNQKD0iT6RtdCpqhdr4wD0Go1CPjQrK77DTNQEpKXmS9XtDZGu/Bj3sY91I50mU2
-         mr/EY3sX0kfqrPQ0fTHgavShNvFtYj2VHzk0kNhsctzCOz0E+ge6qPSvO0EKpD7ZT3Jx
-         H2jQ==
-X-Gm-Message-State: APjAAAXb/OsCTgIcP9aN+IXb7YpOXXAUkCcDEPgz3/8yaWboOi2vGGTX
-        vvaM22ywFuvbHqqmxWAb2w+kI9hYZeLhh434kYt4iJo22r8=
-X-Google-Smtp-Source: APXvYqx2I0LPUqzc/fXAYaALiTtthBJoRLpdEUt6ZqTByOkB34IyIaIYLxG0ZV50uLn8HLNZXgpk33xPLQDRUdkLAIk=
-X-Received: by 2002:a05:6638:3:: with SMTP id z3mr5044482jao.54.1568741726523;
- Tue, 17 Sep 2019 10:35:26 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=OLNPrRxDPRbWhwGlQA4d3JzAWazNN4nV438P8IDTTRw=;
+        b=qUppZ/jUYMWSk6liv8Di9k8s3dqOYhvYOcpmxGDRp2Hi8c4mfQO4JtQwIWJNALtQs+
+         P0T+Fg/TlsjM8i4KOUDl7H0QLDU+PYYqkFpZzCqed7TnK7B3KFw1+WS5DUzziWUbLiiR
+         n+MqZLFYlVHYg1Ra7MGTG5PXXXa1rR/qrRpw7KPtcKnX5ATgICRdLGNunymHhjwLCbaU
+         4apV1PIshSn8jVvtDqIOm3KNQFCeNvLMskedRSDgKstXkMhRZrDEmv8OSq2hgzxGa5Xu
+         2Dd8aJGkWUIblYGle9DnEM6OTiiaELOWekAboYx6ygXHZ0JygMkxfaMP363UUgbcV3IV
+         VARg==
+X-Gm-Message-State: APjAAAW5gq0wNLtrLgZVYiM9DBulH5D8hWXAWSOoklQ6m2fscN3RymJD
+        350JKSLsOUDUBQVxrmqQywVoZJ0=
+X-Google-Smtp-Source: APXvYqxNJazxNhfPpyZsGDNi6/fGR8tESyF7OTgG4GBaUNLvJb1qsI+fGEqf8ccBQ1yOyJ5iAh9d7Q==
+X-Received: by 2002:aca:5dd4:: with SMTP id r203mr4828782oib.67.1568742499482;
+        Tue, 17 Sep 2019 10:48:19 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id e2sm876135otk.6.2019.09.17.10.48.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Sep 2019 10:48:18 -0700 (PDT)
+Date:   Tue, 17 Sep 2019 12:48:17 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     linux-omap@vger.kernel.org, ssantosh@kernel.org,
+        p.zabel@pengutronix.de, robh+dt@kernel.org, tony@atomide.com,
+        s-anna@ti.com, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCHv5 01/10] dt-bindings: omap: add new binding for PRM
+ instances
+Message-ID: <20190917174817.GA27938@bogus>
+References: <20190912113916.20093-1-t-kristo@ti.com>
+ <20190912113916.20093-2-t-kristo@ti.com>
 MIME-Version: 1.0
-From:   Adam Ford <aford173@gmail.com>
-Date:   Tue, 17 Sep 2019 12:35:15 -0500
-Message-ID: <CAHCN7xL-DOtFg-o8JFvfGWHJCo4Jh7Qtaf8CoRxWmq_9aRRroQ@mail.gmail.com>
-Subject: OMAP Maintainers
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190912113916.20093-2-t-kristo@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Tony,
+On Thu, 12 Sep 2019 14:39:07 +0300, Tero Kristo wrote:
+> Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
+> of these will act as a power domain controller and potentially as a reset
+> provider.
+> 
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> ---
+> v5: - dropped the clocks property as the dependency towards clocks was
+>       removed
+>     - changed the name of the node to be power-controller
+> 
+>  .../devicetree/bindings/arm/omap/prm-inst.txt | 28 +++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+> 
 
-I was noticing the maintainers file lists a bunch of stuff that goes
-through your branch
-
-OMAP DEVICE TREE SUPPORT
-M: Beno=C3=AEt Cousson <bcousson@baylibre.com>
-M: Tony Lindgren <tony@atomide.com>
-L: linux-omap@vger.kernel.org
-L: devicetree@vger.kernel.org
-S: Maintained
-F: arch/arm/boot/dts/*omap*
-F: arch/arm/boot/dts/*am3*
-F: arch/arm/boot/dts/*am4*
-F: arch/arm/boot/dts/*am5*
-F: arch/arm/boot/dts/*dra7*
-
-
-Unfortunately, none of the logicpd-torpedo/som-lv files fit this format.
-
-Are you OK if I submit a patch to include them in your maintainer table?
-
-adam
+Reviewed-by: Rob Herring <robh@kernel.org>
