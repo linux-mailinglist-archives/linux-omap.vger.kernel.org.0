@@ -2,75 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E4C2B66C7
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2019 17:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CB34B66F3
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2019 17:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729319AbfIRPK3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Sep 2019 11:10:29 -0400
-Received: from muru.com ([72.249.23.125]:33626 "EHLO muru.com"
+        id S1731608AbfIRPU5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Sep 2019 11:20:57 -0400
+Received: from muru.com ([72.249.23.125]:33638 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728260AbfIRPK3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 18 Sep 2019 11:10:29 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 44547806C;
-        Wed, 18 Sep 2019 15:11:00 +0000 (UTC)
+        id S1731607AbfIRPU5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 18 Sep 2019 11:20:57 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id EB9EC806C;
+        Wed, 18 Sep 2019 15:21:27 +0000 (UTC)
+Date:   Wed, 18 Sep 2019 08:20:53 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] fixes for omaps for v5.4 merge window
-Date:   Wed, 18 Sep 2019 08:10:24 -0700
-Message-Id: <pull-1568819401-72461@atomide.com>
-X-Mailer: git-send-email 2.23.0
+To:     Ankur Tyagi <ankur.tyagi@gallagher.com>
+Cc:     t-kristo@ti.com, mturquette@baylibre.com, sboyd@kernel.org,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] clk: ti: am3: Update AM3 GPIO number as per
+ datasheet
+Message-ID: <20190918152053.GB5610@atomide.com>
+References: <20190917234829.91132-1-ankur.tyagi@gallagher.com>
+ <20190917234829.91132-2-ankur.tyagi@gallagher.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190917234829.91132-2-ankur.tyagi@gallagher.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+Hi,
 
-The following changes since commit 4a65bbb9109ed7edd4b6ed7168ced48abb8561a2:
+* Ankur Tyagi <ankur.tyagi@gallagher.com> [190917 23:49]:
+> Sitara technical reference manual numbers GPIO from 0 whereas in
+> code GPIO are numbered from 1
 
-  soc: ti: pm33xx: Make two symbols static (2019-08-13 05:05:38 -0700)
+If this is a cosmetic fix, please add it to the description.
+Then if there is also some other fix, that should be done
+separately
 
-are available in the Git repository at:
+> --- a/arch/arm/boot/dts/am33xx-l4.dtsi
+> +++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+> @@ -129,7 +129,7 @@
+>  
+>  		target-module@7000 {			/* 0x44e07000, ap 14 20.0 */
+>  			compatible = "ti,sysc-omap2", "ti,sysc";
+> -			ti,hwmods = "gpio1";
+> +			ti,hwmods = "gpio0";
+>  			reg = <0x7000 0x4>,
+>  			      <0x7010 0x4>,
+>  			      <0x7114 0x4>;
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/fixes-5.4-merge-window
+Let's simplify things a bit first :) We should be able to drop
+the "ti,hwmods" property for all gpio instances and the related
+platform data. I'll post a patch for that after -rc1.
 
-for you to fetch changes up to a4c8723a162e6244fb01944fbf446750575dba59:
+If there's some non-cosmetic fix here too, we should naturally
+apply a fix for that first.
 
-  bus: ti-sysc: Remove unpaired sysc_clkdm_deny_idle() (2019-09-06 12:57:46 -0700)
 
-----------------------------------------------------------------
-Fixes for omap variants
+> -			clocks = <&l4_wkup_clkctrl AM3_L4_WKUP_GPIO1_CLKCTRL 0>,
+> -				 <&l4_wkup_clkctrl AM3_L4_WKUP_GPIO1_CLKCTRL 18>;
+> +			clocks = <&l4_wkup_clkctrl AM3_L4_WKUP_GPIO0_CLKCTRL 0>,
+> +				 <&l4_wkup_clkctrl AM3_L4_WKUP_GPIO0_CLKCTRL 18>;
 
-Few fixes for ti-sysc interconnect target module driver for no-idle
-quirks that caused nfsroot to fail on some dra7 boards.
+Not sure if this renumbering helps.. It might actually make it easier
+to introduce weird bugs if older dtb is used with a newer kernel.
 
-And let's fixes to get LCD working again for logicpd board that got
-broken a while back with removal of panel-dpi driver. We need to now
-use generic CONFIG_DRM_PANEL_SIMPLE instead.
+> @@ -72,9 +72,9 @@ static const struct omap_clkctrl_reg_data am3_l4_per_clkctrl_regs[] __initconst
+>  	{ AM3_RNG_CLKCTRL, NULL, CLKF_SW_SUP, "rng_fck" },
+>  	{ AM3_AES_CLKCTRL, NULL, CLKF_SW_SUP, "aes0_fck", "l3_clkdm" },
+>  	{ AM3_SHAM_CLKCTRL, NULL, CLKF_SW_SUP, "l3_gclk", "l3_clkdm" },
+> +	{ AM3_GPIO1_CLKCTRL, am3_gpio1_bit_data, CLKF_SW_SUP, "l4ls_gclk" },
+>  	{ AM3_GPIO2_CLKCTRL, am3_gpio2_bit_data, CLKF_SW_SUP, "l4ls_gclk" },
+>  	{ AM3_GPIO3_CLKCTRL, am3_gpio3_bit_data, CLKF_SW_SUP, "l4ls_gclk" },
+> -	{ AM3_GPIO4_CLKCTRL, am3_gpio4_bit_data, CLKF_SW_SUP, "l4ls_gclk" },
+>  	{ AM3_TPCC_CLKCTRL, NULL, CLKF_SW_SUP, "l3_gclk", "l3_clkdm" },
+>  	{ AM3_D_CAN0_CLKCTRL, NULL, CLKF_SW_SUP, "dcan0_fck" },
+>  	{ AM3_D_CAN1_CLKCTRL, NULL, CLKF_SW_SUP, "dcan1_fck" },
 
-----------------------------------------------------------------
-Adam Ford (4):
-      ARM: omap2plus_defconfig: Fix missing video
-      ARM: dts: logicpd-torpedo-baseboard: Fix missing video
-      ARM: dts: am3517-evm: Fix missing video
-      ARM: dts: logicpd-som-lv: Fix i2c2 and i2c3 Pin mux
+So is this just renumbering, or do we have some other real bug
+too here?
 
-Tony Lindgren (3):
-      bus: ti-sysc: Fix clock handling for no-idle quirks
-      bus: ti-sysc: Fix handling of invalid clocks
-      bus: ti-sysc: Remove unpaired sysc_clkdm_deny_idle()
+Regards,
 
- arch/arm/boot/dts/am3517-evm.dts                 | 23 ++---------
- arch/arm/boot/dts/logicpd-som-lv.dtsi            | 26 ++++++------
- arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi | 37 +++--------------
- arch/arm/configs/omap2plus_defconfig             |  1 +
- arch/arm/mach-omap2/pdata-quirks.c               |  4 +-
- drivers/bus/ti-sysc.c                            | 52 +++++++++++++++++-------
- 6 files changed, 64 insertions(+), 79 deletions(-)
+Tony
