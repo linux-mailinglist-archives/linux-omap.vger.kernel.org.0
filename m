@@ -2,105 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 919E7B600F
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2019 11:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC964B6029
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2019 11:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726491AbfIRJYW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Sep 2019 05:24:22 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:38977 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725989AbfIRJYW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Sep 2019 05:24:22 -0400
-Received: by mail-pf1-f195.google.com with SMTP id i1so3986185pfa.6
-        for <linux-omap@vger.kernel.org>; Wed, 18 Sep 2019 02:24:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=gxoSuJQ6tFLYp4g2neEbM8yU2CStuYNj11hMjYPafM0=;
-        b=Fk/TzG+zR7aMVIWtTy+Yxf3cDDmJPfGy2lwVIWxXmfAmZzAlaACNEJbKJkPHu2ia2E
-         YXjLa9LF9NBR2KfrMTDAoPx3l7enK+r001ZMoNtsxj1kPshqgLP0pLTeQ91lqKaiWCOu
-         V/f2DW71FndaBt7uaP1SE0hsTLfZW+fEcvwj8mfYS6QqtidCeGNT5KvLVtkYTPKr4Qs/
-         ffcOfOcI8t8FEOiuOA6DrqjMNMkLVJCn08H9tZymDF3iN3mVcWFUCL8c9UxfacKhBkiv
-         GMv+kOMZ01UA2RSI/0DzJJtz25hxRKvTdbmOJORLhNCqUBnjcVqihD//gNsgoVXi5GAq
-         axEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=gxoSuJQ6tFLYp4g2neEbM8yU2CStuYNj11hMjYPafM0=;
-        b=gaGc7WK1uAroo3Tm+gptixxBo1fwi4vEK7nSegvEZjIpKaBYkp4IsgcaMUY+RdgBHu
-         9MGYMhLPEO/mhHr7jWyHI+BbZz4yetILc59zrcPZ/gWXJ2ntmxwVkeHa8iKUSu0BKHU+
-         WQkGKltyVbJ17vzJXpBdMDBk3twNZNIVm099yO+4wIVvDa9IUpzjNTbGs9JcIMkbrqo1
-         SBEZjgA5ut9SOGZKCIZP56TRQnBHhcZcf0BVkBA2yYwO9CY0Fh9Y4WuKcG5iZSfFll2+
-         tYigOosadMDxx3yBqhLubVzzR+21b9KKuZRcsSdhJcaFQ8uAxak3JZ2jHpRLZ/gn2b2k
-         mg9A==
-X-Gm-Message-State: APjAAAVChRTP2LJSZ9KkzIUk3hbtnfG0ha85n34EganrtenZ8C8idPcy
-        BUW5vX0TxmZGsiQDDCwNNcIdMQ==
-X-Google-Smtp-Source: APXvYqz7Ynw9js8OL9E7HFrRlFKBtt+IpGnyik3APBXO5zcuV+d4IhN19kTq6wgZbJpIvoCMlNjK6Q==
-X-Received: by 2002:aa7:8d81:: with SMTP id i1mr2935659pfr.191.1568798661686;
-        Wed, 18 Sep 2019 02:24:21 -0700 (PDT)
-Received: from localhost ([122.172.73.172])
-        by smtp.gmail.com with ESMTPSA id t8sm3523628pjq.30.2019.09.18.02.24.20
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 18 Sep 2019 02:24:20 -0700 (PDT)
-Date:   Wed, 18 Sep 2019 14:54:18 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Adam Ford <aford173@gmail.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tony Lindgren <tony@atomide.com>,
-        =?iso-8859-1?Q?Andr=E9?= Roth <neolynx@gmail.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
+        id S1730767AbfIRJ3i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Sep 2019 05:29:38 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:55970 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730500AbfIRJ3i (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Sep 2019 05:29:38 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8I9TEKI003295;
+        Wed, 18 Sep 2019 04:29:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1568798954;
+        bh=vsbH6rLafkiptTfcuqawPRZcaFsNYSCvZqDodrB1HXA=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=eoBhni1+j0mzz1sgm/0bpvD9AQ2MvsRpZ0ejLF7zOL7hwMbyyaYsRwXiwzjBNvQ4Z
+         Cl7YncVOSl9Hrhzi9wXAXhNK777+1jYGxxxvkCLLYB/ryoMHkwhr7wxvluwRb7Wil7
+         0lTX26Jstsrt6rt5wA4uhIZBS5/Pheie/GTAx1fI=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8I9TEqb100328
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 18 Sep 2019 04:29:14 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 18
+ Sep 2019 04:29:10 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 18 Sep 2019 04:29:10 -0500
+Received: from [10.250.98.116] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8I9TB5M037955;
+        Wed, 18 Sep 2019 04:29:12 -0500
+Subject: Re: [PATCH net-next] net: ethernet: ti: use
+ devm_platform_ioremap_resource() to simplify code
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        YueHaibing <yuehaibing@huawei.com>
+CC:     "David S. Miller" <davem@davemloft.net>,
+        <ivan.khoronzhuk@linaro.org>, Andrew Lunn <andrew@lunn.ch>,
+        =?UTF-8?Q?Petr_=c5=a0tetiar?= <ynezz@true.cz>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Nishanth Menon <nm@ti.com>, Adam Ford <adam.ford@logicpd.com>
-Subject: Re: [RFC] ARM: dts: omap36xx: Enable thermal throttling
-Message-ID: <20190918092418.que4c5jpcn2dcavx@vireshk-mac-ubuntu>
-References: <20190912183037.18449-1-aford173@gmail.com>
- <51bb8890-bfd7-c241-1ce5-151df3a90513@linaro.org>
- <CAHCN7xKjwkJHysSkNymF=sw6KuS=FqbapuRFZODuj6E_hmRG1A@mail.gmail.com>
- <2ef812a4-2f2d-b2e2-9fa4-080775e24bc8@linaro.org>
+        netdev <netdev@vger.kernel.org>,
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>
+References: <20190821124850.9592-1-yuehaibing@huawei.com>
+ <CAMuHMdXdd4oiHqTpFTYBTSeCB6A78_gSGmwPy5EgPRZXibOqZw@mail.gmail.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <12c00786-980f-5761-3117-3e741e63d7b3@ti.com>
+Date:   Wed, 18 Sep 2019 12:29:15 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ef812a4-2f2d-b2e2-9fa4-080775e24bc8@linaro.org>
-User-Agent: NeoMutt/20170609 (1.8.3)
+In-Reply-To: <CAMuHMdXdd4oiHqTpFTYBTSeCB6A78_gSGmwPy5EgPRZXibOqZw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 13-09-19, 00:33, Daniel Lezcano wrote:
-> 
-> Hi Adam,
-> 
-> On 12/09/2019 23:19, Adam Ford wrote:
-> > On Thu, Sep 12, 2019 at 4:12 PM Daniel Lezcano
-> > <daniel.lezcano@linaro.org> wrote:
-> >>
-> >> On 12/09/2019 20:30, Adam Ford wrote:
-> >>> The thermal sensor in the omap3 family isn't accurate, but it's
-> >>> better than nothing.  The various OPP's enabled for the omap3630
-> >>> support up to OPP1G, however the datasheet for the DM3730 states
-> >>> that OPP130 and OPP1G are not available above TJ of 90C.
-> >>>
-> >>> This patch configures the thermal throttling to limit the
-> >>> operating points of the omap3630 to Only OPP50 and OPP100 if
-> >>> the thermal sensor reads a value above 90C.
-> 
-> Oh, that's a very interesting use case.
-> 
-> AFAICT the thermal framework is not designed to deal with this
-> situation. I agree this setup may work (even if I'm not convinced about
-> the stability of the whole).
-> 
-> May be Viresh can help for the cpufreq side?
 
-Sorry but I am not able to understand what's not supported by thermal framework
-here and what can I do to help :)
+
+On 17/09/2019 21:35, Geert Uytterhoeven wrote:
+> Hi YueHaibing,
+> 
+> On Wed, Aug 21, 2019 at 2:51 PM YueHaibing <yuehaibing@huawei.com> wrote:
+>> Use devm_platform_ioremap_resource() to simplify the code a bit.
+>> This is detected by coccinelle.
+>>
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>> ---
+>>   drivers/net/ethernet/ti/cpsw.c | 5 ++---
+>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+>> index 32a8974..5401095 100644
+>> --- a/drivers/net/ethernet/ti/cpsw.c
+>> +++ b/drivers/net/ethernet/ti/cpsw.c
+>> @@ -2764,7 +2764,7 @@ static int cpsw_probe(struct platform_device *pdev)
+>>          struct net_device               *ndev;
+>>          struct cpsw_priv                *priv;
+>>          void __iomem                    *ss_regs;
+>> -       struct resource                 *res, *ss_res;
+>> +       struct resource                 *ss_res;
+>>          struct gpio_descs               *mode;
+>>          const struct soc_device_attribute *soc;
+>>          struct cpsw_common              *cpsw;
+>> @@ -2798,8 +2798,7 @@ static int cpsw_probe(struct platform_device *pdev)
+> 
+> And just out-of-context, we also have:
+> 
+>          ss_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>          ss_regs = devm_ioremap_resource(dev, ss_res);
+>          if (IS_ERR(ss_regs))
+> 
+> which was not detected as being the same pattern?
+> 
+> Interesting...
+
+ss_res is used below to determine phys address of CPPI RAM.
+
+> 
+>>                  return PTR_ERR(ss_regs);
+>>          cpsw->regs = ss_regs;
+>>
+>> -       res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+>> -       cpsw->wr_regs = devm_ioremap_resource(dev, res);
+>> +       cpsw->wr_regs = devm_platform_ioremap_resource(pdev, 1);
+>>          if (IS_ERR(cpsw->wr_regs))
+>>                  return PTR_ERR(cpsw->wr_regs);
 
 -- 
-viresh
+Best regards,
+grygorii
