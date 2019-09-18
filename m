@@ -2,217 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C628B681B
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2019 18:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60F80B6A40
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2019 20:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387566AbfIRQ2o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Sep 2019 12:28:44 -0400
-Received: from muru.com ([72.249.23.125]:33692 "EHLO muru.com"
+        id S1729300AbfIRSHb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Sep 2019 14:07:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34096 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387520AbfIRQ2o (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 18 Sep 2019 12:28:44 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id AEFD68198;
-        Wed, 18 Sep 2019 16:29:13 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
-Subject: [PATCH 2/2] ARM: dts: Fix wrong clocks for dra7 mcasp
-Date:   Wed, 18 Sep 2019 09:28:32 -0700
-Message-Id: <20190918162832.25784-3-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20190918162832.25784-1-tony@atomide.com>
-References: <20190918162832.25784-1-tony@atomide.com>
+        id S1727481AbfIRSHb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 18 Sep 2019 14:07:31 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C2BB521907;
+        Wed, 18 Sep 2019 18:07:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568830049;
+        bh=XzJzeNxP8bcSnXYl+BgI5Ibmb/8qVl2V7xrrPu1TKHs=;
+        h=In-Reply-To:References:Cc:To:From:Subject:Date:From;
+        b=ezGRyKUxJeuNeLIdwwgat+b3wVh6TDBnB1pbmXczV11d3tyA9yNj1j916mXxVJ3VR
+         0l/Lc8NdVrEXWF+E7BlODp31uMOr35vDaCeOLv58D+ilrwgbDMloOjA+b659HSzqDH
+         uV7nS+atNfBTwjArfqAQMM1uTljOw5FSQKCp3kco=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190908194241.GL52127@atomide.com>
+References: <20190905215532.8357-1-tony@atomide.com> <20190907035518.EB40C208C3@mail.kernel.org> <20190908194241.GL52127@atomide.com>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Tero Kristo <t-kristo@ti.com>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+From:   Stephen Boyd <sboyd@kernel.org>
+Subject: Re: [PATCH] clk: ti: clkctrl: Fix hidden dependency to node name with reg-names
+User-Agent: alot/0.8.1
+Date:   Wed, 18 Sep 2019 11:07:28 -0700
+Message-Id: <20190918180729.C2BB521907@mail.kernel.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The ahclkr clkctrl clock bit 28 only exists for mcasp 1 and 2 on dra7.
-This causes the following warning on beagle-x15:
+Quoting Tony Lindgren (2019-09-08 12:42:41)
+> * Stephen Boyd <sboyd@kernel.org> [190907 03:55]:
+> > Quoting Tony Lindgren (2019-09-05 14:55:32)
+> > > We currently have a hidden dependency to the device tree node name for
+> > > the clkctrl clocks. Instead of using standard node name like "clock",=
+ we
+> > > must use "l4-per-clkctrl" naming so the clock driver can find the
+> >=20
+> > The node name is "clk" though.
+>=20
+> Yes for some it's "clk" and for some it's "l4-per-clkctrl".
+>=20
+> In general, the clock node name should be "clock@foo", rather than
+> "clk@foo", right?
 
-ti-sysc 48468000.target-module: could not add child clock ahclkr: -19
+I don't think it really matters but sure, clock is nicer because that's
+a more standard node name than the vowel-less one.
 
-Also the mcasp clkctrl clock bits are wrong:
+>=20
+> > > associated clock domain. Further, if "clk" is specified for a clock n=
+ode
+> > > name, the driver sets TI_CLK_CLKCTRL_COMPAT flag that uses different
+> > > logic with earlier naming for the clock node name.
+> > >=20
+> > > If the clock node naming dependency is not understood, the related
+> > > clockdomain is not found, or a wrong one can get used if a clock mana=
+ger
+> > > instance has multiple domains.
+> > >=20
+> > > As each clkctrl instance represents a single clock domain with it's
+> > > reg property describing the clocks available in that clock domain,
+> > > we can simply use "reg-names" property for the clock domain.
+> > >=20
+> > > This simplifies things and removes the hidden dependency to the node
+> > > name. And then later on, we should be able to drop the related code
+> > > for parsing the node names.
+> > >=20
+> > > Let's also update the binding to use standard "clock" node naming
+> > > instead of "clk".
+> > >=20
+> > > Cc: devicetree@vger.kernel.org
+> > > Cc: Rob Herring <robh+dt@kernel.org>
+> > > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > > ---
+> > >  Documentation/devicetree/bindings/clock/ti-clkctrl.txt |  6 +++++-
+> > >  drivers/clk/ti/clkctrl.c                               | 10 ++++++++=
+--
+> > >  2 files changed, 13 insertions(+), 3 deletions(-)
+> > >=20
+> > > diff --git a/Documentation/devicetree/bindings/clock/ti-clkctrl.txt b=
+/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
+> > > --- a/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
+> > > +++ b/Documentation/devicetree/bindings/clock/ti-clkctrl.txt
+> > > @@ -20,15 +20,19 @@ Required properties :
+> > >  - #clock-cells : shall contain 2 with the first entry being the inst=
+ance
+> > >                  offset from the clock domain base and the second bei=
+ng the
+> > >                  clock index
+> > > +- reg : clock registers
+> > > +- reg-names : clock register names for the clock, should be same as =
+the
+> > > +             domain name
+> >=20
+> > Is this necessary? I'd rather see that the names of the clks don't
+> > actually matter by means of connecting the clk tree through the "clocks"
+> > property when the parent clks are provided by external nodes and through
+> > direct pointers when they're within a controller. If that works then it
+> > should be possible to ignore this name in general?
+>=20
+> This is not for names of the clocks :) This is to name the clock
+> provider register range. The name of the register range is the
+> same as the clockdomain that this range of clocks belongs to.
+> This property is used by the clock provider on init to initialize the
+> clock provider, not when a clock is requested.
+>=20
+> In this case a clkctrl clock provider instance has one to some tens
+> clocks where they all belong to the same domain. If some similar clock
+> would have multiple domains, then it would simply just have multiple
+> reg ranges and multiple reg-names properties.
+>=20
+> Or do you have some better ideas on how to name a clock controller
+> in the device tree?
+>=20
 
-For mcasp1 and 2 we have four clocks at bits 28, 24, 22 and 0:
+Why does the name of the clock controller or clkdm_name matter? Using a
+string from reg-names smells like a workaround to describe some sort of
+linkage between things that isn't being described in DT today.
 
-bit 28 is ahclkr
-bit 24 is ahclkx
-bit 22 is auxclk
-bit 0 is fck
-
-For mcasp3 to 8 we have three clocks at bits 24, 22 and 0.
-
-bit 24 is ahclkx
-bit 22 is auxclk
-bit 0 is fck
-
-We do not have currently mapped auxclk at bit 22 for the drivers, that can
-be added if needed.
-
-Fixes: 5241ccbf2819 ("ARM: dts: Add missing ranges for dra7 mcasp l3 ports")
-Cc: Suman Anna <s-anna@ti.com>
-Cc: Tero Kristo <t-kristo@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/dra7-l4.dtsi | 48 +++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 27 deletions(-)
-
-diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
---- a/arch/arm/boot/dts/dra7-l4.dtsi
-+++ b/arch/arm/boot/dts/dra7-l4.dtsi
-@@ -2732,7 +2732,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 129 1>, <&edma_xbar 128 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 22>,
-+				clocks = <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 0>,
- 					 <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 24>,
- 					 <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 28>;
- 				clock-names = "fck", "ahclkx", "ahclkr";
-@@ -2768,8 +2768,8 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 131 1>, <&edma_xbar 130 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP2_CLKCTRL 22>,
--					 <&l4per2_clkctrl DRA7_L4PER2_MCASP2_CLKCTRL 24>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP2_CLKCTRL 0>,
-+					 <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 24>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP2_CLKCTRL 28>;
- 				clock-names = "fck", "ahclkx", "ahclkr";
- 				status = "disabled";
-@@ -2786,9 +2786,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x68000 0x2000>,
-@@ -2804,7 +2803,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 133 1>, <&edma_xbar 132 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2821,9 +2820,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x6c000 0x2000>,
-@@ -2839,7 +2837,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 135 1>, <&edma_xbar 134 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2856,9 +2854,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x70000 0x2000>,
-@@ -2874,7 +2871,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 137 1>, <&edma_xbar 136 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2891,9 +2888,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x74000 0x2000>,
-@@ -2909,7 +2905,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 139 1>, <&edma_xbar 138 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2926,9 +2922,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x78000 0x2000>,
-@@ -2944,7 +2939,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 141 1>, <&edma_xbar 140 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2961,9 +2956,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x7c000 0x2000>,
-@@ -2979,7 +2973,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 143 1>, <&edma_xbar 142 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
--- 
-2.23.0
