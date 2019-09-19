@@ -2,32 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36240B761F
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Sep 2019 11:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F34B763E
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Sep 2019 11:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730506AbfISJT7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Sep 2019 05:19:59 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:43437 "EHLO
+        id S2388775AbfISJ1C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Sep 2019 05:27:02 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:45291 "EHLO
         atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725887AbfISJT6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Sep 2019 05:19:58 -0400
+        with ESMTP id S2388601AbfISJ1B (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Sep 2019 05:27:01 -0400
 Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 357B181895; Thu, 19 Sep 2019 11:19:42 +0200 (CEST)
-Date:   Thu, 19 Sep 2019 11:19:55 +0200
+        id 3721881B7E; Thu, 19 Sep 2019 11:26:45 +0200 (CEST)
+Date:   Thu, 19 Sep 2019 11:26:58 +0200
 From:   Pavel Machek <pavel@ucw.cz>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org,
         linux-omap@vger.kernel.org, Merlijn Wajer <merlijn@wizzup.org>
-Subject: Re: [PATCH 3/3] power: supply: cpcap-charger: Improve battery
- detection
-Message-ID: <20190919091955.GC9644@amd>
-References: <20190917213501.16907-1-tony@atomide.com>
- <20190917213501.16907-4-tony@atomide.com>
+Subject: Re: [PATCH 2/3] power: supply: cpcap-charger: Allow changing
+ constant charge voltage
+Message-ID: <20190919092658.GD9644@amd>
+References: <20190917215253.17880-1-tony@atomide.com>
+ <20190917215253.17880-3-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="4jXrM3lyYWu4nBt5"
+        protocol="application/pgp-signature"; boundary="3Gf/FFewwPeBMqCJ"
 Content-Disposition: inline
-In-Reply-To: <20190917213501.16907-4-tony@atomide.com>
+In-Reply-To: <20190917215253.17880-3-tony@atomide.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
@@ -35,84 +35,83 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---4jXrM3lyYWu4nBt5
+--3Gf/FFewwPeBMqCJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> We are currently using a wrong ADC range for the battery detection.
-> The ADC returns the battery temperature if connected.
+> Let's allow reconfiguring the cpcap-charger max charge voltage and
+> default to 4.2V that should be safe for the known users.
+>=20
+> This allows the users to use 4.35V for the extra capacity if really
+> needed at a cost of probably shorter battery life. We check the
+> constant charge voltage limit set by the battery.
+>=20
+> Some pieces of the property setting code is based on an earlier patch
+> from Pavel Machek <pavel@ucw.cz> but limited to configuring the charge
+> voltage for now.
 
-This one looks good.
+I'm sorry I'm a tiny bit busy at the moment.
 
-> Cc: Merlijn Wajer <merlijn@wizzup.org>
+> +const int cpcap_charge_voltage[] =3D {
+> +	[CPCAP_REG_CRM_VCHRG_3V80] =3D 3800000,
+> +	[CPCAP_REG_CRM_VCHRG_4V10] =3D 4100000,
+> +	[CPCAP_REG_CRM_VCHRG_4V12] =3D 4120000,
+> +	[CPCAP_REG_CRM_VCHRG_4V15] =3D 4150000,
+> +	[CPCAP_REG_CRM_VCHRG_4V17] =3D 4170000,
+> +	[CPCAP_REG_CRM_VCHRG_4V20] =3D 4200000,
+> +	[CPCAP_REG_CRM_VCHRG_4V23] =3D 4230000,
+> +	[CPCAP_REG_CRM_VCHRG_4V25] =3D 4250000,
+> +	[CPCAP_REG_CRM_VCHRG_4V27] =3D 4270000,
+> +	[CPCAP_REG_CRM_VCHRG_4V30] =3D 4300000,
+> +	[CPCAP_REG_CRM_VCHRG_4V33] =3D 4330000,
+> +	[CPCAP_REG_CRM_VCHRG_4V35] =3D 4350000,
+> +	[CPCAP_REG_CRM_VCHRG_4V38] =3D 4380000,
+> +	[CPCAP_REG_CRM_VCHRG_4V40] =3D 4400000,
+> +	[CPCAP_REG_CRM_VCHRG_4V42] =3D 4420000,
+> +	[CPCAP_REG_CRM_VCHRG_4V44] =3D 4440000,
+> +};
 
-Acked-by: Pavel Machek <pavel@ucw.cz>
+We really don't need this kind of explicit table, as the values can be
+simply computed. Can I offer this?
 
-Would it also make sense to publish battery temperature somewhere? It
-is somehow important for checking "what is going on" and it should
-also be used to control charging. (Normal charging should only be
-allowed in normal temperatures, like >10C and <30C or so..)
-
-Thanks and best regards,
+Best regards,
 								Pavel
 
+static int voltage_to_register(int microvolt)
+{
+	int milivolt =3D microvolt/1000;
+	int res;
 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/power/supply/cpcap-charger.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/=
-cpcap-charger.c
-> --- a/drivers/power/supply/cpcap-charger.c
-> +++ b/drivers/power/supply/cpcap-charger.c
-> @@ -166,20 +166,21 @@ static enum power_supply_property cpcap_charger_pro=
-ps[] =3D {
->  	POWER_SUPPLY_PROP_CURRENT_NOW,
->  };
-> =20
-> +/* No battery always shows temperature of -40000 */
->  static bool cpcap_charger_battery_found(struct cpcap_charger_ddata *ddat=
-a)
->  {
->  	struct iio_channel *channel;
-> -	int error, value;
-> +	int error, temperature;
-> =20
->  	channel =3D ddata->channels[CPCAP_CHARGER_IIO_BATTDET];
-> -	error =3D iio_read_channel_raw(channel, &value);
-> +	error =3D iio_read_channel_processed(channel, &temperature);
->  	if (error < 0) {
->  		dev_warn(ddata->dev, "%s failed: %i\n", __func__, error);
-> =20
->  		return false;
->  	}
-> =20
-> -	return value =3D=3D 1;
-> +	return temperature > -20000 && temperature < 60000;
->  }
-> =20
->  static int cpcap_charger_get_charge_voltage(struct cpcap_charger_ddata *=
-ddata)
+	if (milivolt < 4100)
+		return CPCAP_REG_CRM_VCHRG_3V80;
+	if (milivolt > 4350)
+		return -EINVAL;
+
+	milivolt =3D milivolt - (4100 - 250);
+	res =3D milivolt / 250;
+	BUG_ON(res < 1);
+	BUG_ON(res > 0xb);
+	return CPCAP_REG_CRM_VCHRG(res);
+}
 
 --=20
 (english) http://www.livejournal.com/~pavelmachek
 (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
 g.html
 
---4jXrM3lyYWu4nBt5
+--3Gf/FFewwPeBMqCJ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iEYEARECAAYFAl2DSDsACgkQMOfwapXb+vKgowCbBP2eQe/F7WR1obNTH/1NqJ3b
-RXUAn0fqlpo7pgSOf0QCoOpF2Dh5Qg2d
-=byaD
+iEYEARECAAYFAl2DSeIACgkQMOfwapXb+vI3ZwCfbjRw5XriwwePmB0OD5zrLXQo
+6cMAn0LHMD1AefGxjgzYYy/t3k1UKBe5
+=1nCB
 -----END PGP SIGNATURE-----
 
---4jXrM3lyYWu4nBt5--
+--3Gf/FFewwPeBMqCJ--
