@@ -2,69 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EB85B81F5
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Sep 2019 21:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38B26B8C24
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Sep 2019 10:00:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389652AbfISTyw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Sep 2019 15:54:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42426 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387854AbfISTyw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 19 Sep 2019 15:54:52 -0400
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ACC9721924;
-        Thu, 19 Sep 2019 19:54:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568922891;
-        bh=NKeHsjE9y7nzQ8bAyeySvn4Pq7CKSbTu+e+36rl6Wxo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=BcSOxA+eFw++/YClQslyED8fMsXKHPPI8vtL84o6dVNJAIbQRkqdc1w565fVgGX3/
-         nYbL7F4fSNBPFIqXi8g3tmc33ZotDgNvGMfGYMLtNS8fGm9e5wvoN8HX0b2emp5GKj
-         2x53yfrJ0Ar7a+L1vi7eYnnul08bUUK+N+zmHc3Q=
-Received: by mail-qt1-f180.google.com with SMTP id 3so3391248qta.1;
-        Thu, 19 Sep 2019 12:54:51 -0700 (PDT)
-X-Gm-Message-State: APjAAAXXzIxZ1n52F6LkFDOwyE0z7CxF+vGLY3fz6hlPjrJ5GIf1ELYc
-        AUyopqox0WKHekNckzw56RJacJdiGZCoGp/B7A==
-X-Google-Smtp-Source: APXvYqz+8osRNXbt3CtV46VPmD8JNxl+29Q1bDc72UZd/+b0HeyXjy+hyOaYu5e/za8SVmBxq3mr0divdiMrmZGdnw4=
-X-Received: by 2002:ac8:444f:: with SMTP id m15mr5229280qtn.110.1568922890902;
- Thu, 19 Sep 2019 12:54:50 -0700 (PDT)
+        id S2405042AbfITIAC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Sep 2019 04:00:02 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:43916 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404951AbfITIAC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Sep 2019 04:00:02 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8K7ximS035593;
+        Fri, 20 Sep 2019 02:59:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1568966384;
+        bh=fRna3Ce4+QZO4OTHHC6NwL1VdN3RV06uWyYjVpJ4w0w=;
+        h=From:To:CC:Subject:Date;
+        b=lYgP0KrTvECQvoCQYpcn36zdWF8tNJk54Ae3b1UWjSU3x8fLdBVJnC8OMs2NAvLHL
+         rZwwsHP0KpKvQRSZelEz315DVRR0JEbLCSKrGzSRRkGWkm08aKuh/wFy1PA+NvkFI9
+         gdIEHMjAO6ibWPdiN16npOUDgJN+XlUyy7cCy1Rk=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8K7xiDW057565
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 20 Sep 2019 02:59:44 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 20
+ Sep 2019 02:59:40 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Fri, 20 Sep 2019 02:59:40 -0500
+Received: from a0393675ula.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8K7xeXS118255;
+        Fri, 20 Sep 2019 02:59:40 -0500
+From:   Keerthy <j-keerthy@ti.com>
+To:     <arnd@arndb.de>, <nsekhar@ti.com>, <olof@lixom.net>,
+        <t-kristo@ti.com>, <catalin.marinas@arm.com>, <will@kernel.org>,
+        <tony@atomide.com>
+CC:     <s-anna@ti.com>, <hch@lst.de>, <bjorn.andersson@linaro.org>,
+        <j-keerthy@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH v2 linux-next 0/4] arm/arm64: configs: Convert all CONFIG_REMOTEPROC instances to y
+Date:   Fri, 20 Sep 2019 13:29:42 +0530
+Message-ID: <20190920075946.13282-1-j-keerthy@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20190917174817.GA27938@bogus> <20190919123001.23081-1-t-kristo@ti.com>
-In-Reply-To: <20190919123001.23081-1-t-kristo@ti.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 19 Sep 2019 14:54:39 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+x93K9=L4s6ZdmsDb__==kP36WbM_WY1pB-_QNPOhsGw@mail.gmail.com>
-Message-ID: <CAL_Jsq+x93K9=L4s6ZdmsDb__==kP36WbM_WY1pB-_QNPOhsGw@mail.gmail.com>
-Subject: Re: [PATCHv6 01/10] dt-bindings: omap: add new binding for PRM instances
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     Santosh Shilimkar <ssantosh@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Suman Anna <s-anna@ti.com>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Sep 19, 2019 at 7:30 AM Tero Kristo <t-kristo@ti.com> wrote:
->
-> Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
-> of these will act as a power domain controller and potentially as a reset
-> provider.
->
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> ---
-> v6: added common compatible as per request from Tony Lindgren. This is
->     to simplify the support code in patch #10 of the series slightly
->
->  .../devicetree/bindings/arm/omap/prm-inst.txt | 30 +++++++++++++++++++
->  1 file changed, 30 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+Commit 6334150e9 changes CONFIG_REMOTEPROC to a boolean config
+option that inhibits all defconfigs marking CONFIG_REMOTEPROC as
+a module in compiling the remoteproc and dependent config options.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+So convert all the instances to built in.
+
+Boot tested for omap2plus_defconfig for dra7/am4/am3.
+
+Any quick testing on other boards welcome. 
+
+Patches apply on top of linux-next branch
+
+Changes in v2:
+
+Cc the right lists.
+
+Keerthy (4):
+  arm: configs: omap2plus_defconfig: Change CONFIG_REMOTEPROC from m to
+    y
+  arm: configs: davinci_all_defconfig: Change CONFIG_REMOTEPROC  from m
+    to y
+  arm: configs: multi_v7_defconfig: Change CONFIG_REMOTEPROC  from m to
+    y
+  arm64: configs: defconfig: Change CONFIG_REMOTEPROC from m to y
+
+ arch/arm/configs/davinci_all_defconfig | 2 +-
+ arch/arm/configs/multi_v7_defconfig    | 2 +-
+ arch/arm/configs/omap2plus_defconfig   | 2 +-
+ arch/arm64/configs/defconfig           | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+-- 
+2.17.1
+
