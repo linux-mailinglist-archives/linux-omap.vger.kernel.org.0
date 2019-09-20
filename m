@@ -2,71 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34AADB9191
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Sep 2019 16:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFD39B91D9
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Sep 2019 16:26:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387851AbfITOVD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 Sep 2019 10:21:03 -0400
-Received: from muru.com ([72.249.23.125]:33990 "EHLO muru.com"
+        id S2388972AbfITO0S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Sep 2019 10:26:18 -0400
+Received: from muru.com ([72.249.23.125]:34020 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387817AbfITOVD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 20 Sep 2019 10:21:03 -0400
+        id S2388962AbfITO0S (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 20 Sep 2019 10:26:18 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D36A980AA;
-        Fri, 20 Sep 2019 14:21:33 +0000 (UTC)
-Date:   Fri, 20 Sep 2019 07:20:59 -0700
+        by muru.com (Postfix) with ESMTPS id 1B04780AA;
+        Fri, 20 Sep 2019 14:26:49 +0000 (UTC)
+Date:   Fri, 20 Sep 2019 07:26:14 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, Rob Herring <robh@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>
-Subject: Re: [Letux-kernel] [PATCH 2/2] DTS: ARM: gta04: introduce legacy
- spi-cs-high to make display work again
-Message-ID: <20190920142059.GO5610@atomide.com>
-References: <20190724194259.GA25847@bogus>
- <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
- <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
- <CACRpkdY0AVnkRa8sV_Z54qfX9SYufvaYYhU0k2+LitXo0sLx2w@mail.gmail.com>
- <20190831084852.5e726cfa@aktux>
- <ED6A6797-D1F9-473B-ABFF-B6951A924BC1@goldelico.com>
- <CACRpkdZQgPVvB=78vOFsHe5n45Vwe4N6JJOcm1_vz5FbAw9CYA@mail.gmail.com>
- <1624298A-C51B-418A-96C3-EA09367A010D@goldelico.com>
- <CACRpkdZvpPOM1Ug-=GHf7Z-2VEbJz3Cuo7+0yDFuNm5ShXK8=Q@mail.gmail.com>
- <7DF102BC-C818-4D27-988F-150C7527E6CC@goldelico.com>
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Tero Kristo <t-kristo@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Suman Anna <s-anna@ti.com>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCHv6 01/10] dt-bindings: omap: add new binding for PRM
+ instances
+Message-ID: <20190920142614.GQ5610@atomide.com>
+References: <20190917174817.GA27938@bogus>
+ <20190919123001.23081-1-t-kristo@ti.com>
+ <CAL_Jsq+x93K9=L4s6ZdmsDb__==kP36WbM_WY1pB-_QNPOhsGw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7DF102BC-C818-4D27-988F-150C7527E6CC@goldelico.com>
+In-Reply-To: <CAL_Jsq+x93K9=L4s6ZdmsDb__==kP36WbM_WY1pB-_QNPOhsGw@mail.gmail.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [190920 09:19]:
-> > Am 20.09.2019 um 10:55 schrieb Linus Walleij <linus.walleij@linaro.org>:
-> > I suggest to go both way:
-> > apply this oneliner and tag for stable so that GTA04 works
-> > again.
-> > 
-> > Then for the next kernel think about a possible more abitious
-> > whitelist solution and after adding that remove *all* "spi-cs-high"
-> > flags from all device trees in the kernel after fixing them
-> > all up.
+* Rob Herring <robh+dt@kernel.org> [190919 19:55]:
+> On Thu, Sep 19, 2019 at 7:30 AM Tero Kristo <t-kristo@ti.com> wrote:
+> >
+> > Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
+> > of these will act as a power domain controller and potentially as a reset
+> > provider.
+> >
+> > Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> > ---
+> > v6: added common compatible as per request from Tony Lindgren. This is
+> >     to simplify the support code in patch #10 of the series slightly
+> >
+> >  .../devicetree/bindings/arm/omap/prm-inst.txt | 30 +++++++++++++++++++
+> >  1 file changed, 30 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
 > 
-> Ok, that looks like a viable path.
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-Please repost the oneline so people can ack easily. At least
-I've already lost track of this thread.
+Looks good to me too:
 
-Regards,
-
-Tony
+Reviewed-by: Tony Lindgren <tony@atomide.com>
