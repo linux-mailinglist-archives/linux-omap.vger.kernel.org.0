@@ -2,62 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD39B91D9
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Sep 2019 16:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DC44B91EF
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Sep 2019 16:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388972AbfITO0S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 Sep 2019 10:26:18 -0400
-Received: from muru.com ([72.249.23.125]:34020 "EHLO muru.com"
+        id S2389389AbfITO0w (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Sep 2019 10:26:52 -0400
+Received: from muru.com ([72.249.23.125]:34038 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388962AbfITO0S (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 20 Sep 2019 10:26:18 -0400
+        id S2389378AbfITO0v (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 20 Sep 2019 10:26:51 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 1B04780AA;
-        Fri, 20 Sep 2019 14:26:49 +0000 (UTC)
-Date:   Fri, 20 Sep 2019 07:26:14 -0700
+        by muru.com (Postfix) with ESMTPS id 78E1C80AA;
+        Fri, 20 Sep 2019 14:27:22 +0000 (UTC)
+Date:   Fri, 20 Sep 2019 07:26:47 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Tero Kristo <t-kristo@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Suman Anna <s-anna@ti.com>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCHv6 01/10] dt-bindings: omap: add new binding for PRM
- instances
-Message-ID: <20190920142614.GQ5610@atomide.com>
-References: <20190917174817.GA27938@bogus>
- <20190919123001.23081-1-t-kristo@ti.com>
- <CAL_Jsq+x93K9=L4s6ZdmsDb__==kP36WbM_WY1pB-_QNPOhsGw@mail.gmail.com>
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     ssantosh@kernel.org, p.zabel@pengutronix.de, robh+dt@kernel.org,
+        s-anna@ti.com, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCHv6 10/10] ARM: OMAP2+: pdata-quirks: add PRM data for
+ reset support
+Message-ID: <20190920142647.GR5610@atomide.com>
+References: <20190912170953.GT52127@atomide.com>
+ <20190919123258.23172-1-t-kristo@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAL_Jsq+x93K9=L4s6ZdmsDb__==kP36WbM_WY1pB-_QNPOhsGw@mail.gmail.com>
+In-Reply-To: <20190919123258.23172-1-t-kristo@ti.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Rob Herring <robh+dt@kernel.org> [190919 19:55]:
-> On Thu, Sep 19, 2019 at 7:30 AM Tero Kristo <t-kristo@ti.com> wrote:
-> >
-> > Add new binding for OMAP PRM (Power and Reset Manager) instances. Each
-> > of these will act as a power domain controller and potentially as a reset
-> > provider.
-> >
-> > Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> > ---
-> > v6: added common compatible as per request from Tony Lindgren. This is
-> >     to simplify the support code in patch #10 of the series slightly
-> >
-> >  .../devicetree/bindings/arm/omap/prm-inst.txt | 30 +++++++++++++++++++
-> >  1 file changed, 30 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/arm/omap/prm-inst.txt
+* Tero Kristo <t-kristo@ti.com> [190919 12:33]:
+> The parent clockdomain for reset must be in force wakeup mode, otherwise
+> the reset may never complete. Add pdata quirks for this purpose for PRM
+> driver.
 > 
-> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> ---
+> v6: replaced platform specific compatibles with a single common
+>     compatible check
 
-Looks good to me too:
+Thanks looks good to me:
 
-Reviewed-by: Tony Lindgren <tony@atomide.com>
+Acked-by: Tony Lindgren <tony@atomide.com>
