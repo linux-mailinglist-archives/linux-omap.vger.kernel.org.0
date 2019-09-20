@@ -2,95 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84AC8B94FA
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Sep 2019 18:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D62A5B97B9
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Sep 2019 21:20:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389340AbfITQLg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 Sep 2019 12:11:36 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.168]:23170 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388473AbfITQLg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Sep 2019 12:11:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1568995893;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
-        Subject:Sender;
-        bh=pMuJS7ZxGerg+itWYAGiO02bP41ocHFhwtgwC16Oy+4=;
-        b=hGBWKLKzjWq3O6h9+xukeP0VNFzjSOGlXzAbD90kDzOf6DTvEQbgUQX3w7HREfAIfq
-        Y35h0dABORrrcyTE02T2xt8VEkxoYBg2LU67Yd6zKLqTyMEYVYsYMRCet11YxBb8pcex
-        Y43ANkTglCf7V9Hy/SxbLzmjW4BnBJnH6wntosDZObE/UaL7ojL6dyV4+knHRTkhER1W
-        K1NHNXLk62k8igubIjX4iNEFUiRmubjHHoXHQ5H6buDbRpAoTbvxdkQ34+6JV2Y83e1N
-        S6ihrJV01pq8BFOCsYKRDXF6JsgPFsl7tm3M1yFWsBpMxuqEmLfhtfgzGejR7pPNbwNu
-        LNOg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2AyPw8lBX+A"
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-        by smtp.strato.de (RZmta 44.27.0 DYNA|AUTH)
-        with ESMTPSA id u036f9v8KGBFpHV
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Fri, 20 Sep 2019 18:11:15 +0200 (CEST)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, broonie@kernel.org,
-        linus.walleij@linaro.org
-Cc:     stable@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v2] DTS: ARM: gta04: introduce legacy spi-cs-high to make display work again
-Date:   Fri, 20 Sep 2019 18:11:15 +0200
-Message-Id: <c031340840daba810bb2a612c35eea7fab307e56.1568995874.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.19.1
+        id S1729525AbfITTUb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Sep 2019 15:20:31 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:41632 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725869AbfITTUb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Sep 2019 15:20:31 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8KJEGx6115790;
+        Fri, 20 Sep 2019 19:20:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2019-08-05;
+ bh=NTgWiBq1iOSn7E4DUsV0oOzifM6YvCmeXgLvP8GhXpQ=;
+ b=YJKcSsRRnT6afxtXsPMppGt9Rgkn3BMTmHFs4rS80XEMtJlg07xr3xOg0BkHYrBPE0P7
+ plAegF0BTsqJu3KYg89buLvo30tikcoaGPK7xcVr6YI2vauuoTBbUT6nOf9U7dlcdRad
+ ksMXwxFoKnzLkVIwm1/8z4NUq81YrXd97kh5mglsvKTBdG7cLzQPpCn4LQxC0MVhvIOP
+ 46S2wPdldNUvautuBloWAPBCLrIvnJ4sZIpXw/RApFzhFx8Y7C0tXE3rxpMAv5RjaBz1
+ Qk4KFmbHZsXoFcpggeo6XsUZ0bp4GGdmKQeQOTQFugjOmL42rH0tpChD4HavXf+SaMnj bQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2v3vb5cb1m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 20 Sep 2019 19:19:59 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8KJJWuj126991;
+        Fri, 20 Sep 2019 19:19:59 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2v4vpmtufj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 20 Sep 2019 19:19:59 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8KJJvCb002952;
+        Fri, 20 Sep 2019 19:19:58 GMT
+Received: from [10.209.227.25] (/10.209.227.25)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 20 Sep 2019 12:19:57 -0700
+Subject: Re: [PATCHv5 00/10] soc: ti: add OMAP PRM driver (for reset)
+To:     Tony Lindgren <tony@atomide.com>, Tero Kristo <t-kristo@ti.com>
+Cc:     linux-omap@vger.kernel.org, ssantosh@kernel.org,
+        p.zabel@pengutronix.de, robh+dt@kernel.org, s-anna@ti.com,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
+References: <20190912113916.20093-1-t-kristo@ti.com>
+ <20190920142849.GS5610@atomide.com>
+From:   santosh.shilimkar@oracle.com
+Organization: Oracle Corporation
+Message-ID: <13a77bd8-72bd-6a44-9141-d5492be82d82@oracle.com>
+Date:   Fri, 20 Sep 2019 12:19:56 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190920142849.GS5610@atomide.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9386 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1909200156
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9386 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1909200156
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-commit 6953c57ab172 "gpio: of: Handle SPI chipselect legacy bindings"
+On 9/20/19 7:28 AM, Tony Lindgren wrote:
+> * Tero Kristo <t-kristo@ti.com> [190912 04:39]:
+>> Hi,
+>>
+>> V5 of the series, re-sent the whole series as one patch was dropped.
+>> Changes compared to v3/v4:
+>>
+>> - removed dependency towards clock driver (patch #5 was completely
+>>    dropped compared to v3/v4)
+>> - dropped clocks property from dt binding
+>> - re-added the pdata patch which was accidentally dropped out (it has
+>>    dependency towards this series.)
+>>
+>> The new implementation (without clock driver dependency) relies on the
+>> bus driver to sequence events properly, otherwise some timeouts will
+>> occur either at clock driver or reset driver end.
+> 
+> With the two updated patches seems like we're done with this
+> series?
+> 
+> If so, I suggest either Santosh or me sets up an immutable
+> branch against v5.3 or v5.4-rc1 that we all can merge in.
+> I will need it for the related dts changes at least.
+> 
+I will pick this up Tony and apply it once v5.4-rc1 is out.
 
-did introduce logic to centrally handle the legacy spi-cs-high property
-in combination with cs-gpios. This assumes that the polarity
-of the CS has to be inverted if spi-cs-high is missing, even
-and especially if non-legacy GPIO_ACTIVE_HIGH is specified.
-
-The DTS for the GTA04 was orginally introduced under the assumption
-that there is no need for spi-cs-high if the gpio is defined with
-proper polarity GPIO_ACTIVE_HIGH.
-
-This was not a problem until gpiolib changed the interpretation of
-GPIO_ACTIVE_HIGH and missing spi-cs-high.
-
-The effect is that the missing spi-cs-high is now interpreted as CS being
-low (despite GPIO_ACTIVE_HIGH) which turns off the SPI interface when the
-panel is to be programmed by the panel driver.
-
-Therefore, we have to add the redundant and legacy spi-cs-high property
-to properly activate CS.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
----
- arch/arm/boot/dts/omap3-gta04.dtsi | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi b/arch/arm/boot/dts/omap3-gta04.dtsi
-index b295f6fad2a5..954c216140ad 100644
---- a/arch/arm/boot/dts/omap3-gta04.dtsi
-+++ b/arch/arm/boot/dts/omap3-gta04.dtsi
-@@ -120,6 +120,7 @@
- 			spi-max-frequency = <100000>;
- 			spi-cpol;
- 			spi-cpha;
-+			spi-cs-high;
- 
- 			backlight= <&backlight>;
- 			label = "lcd";
--- 
-2.19.1
-
+Regards,
+Santosh
