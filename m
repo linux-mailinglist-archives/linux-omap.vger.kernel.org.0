@@ -2,103 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D62A5B97B9
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Sep 2019 21:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF64FB9F83
+	for <lists+linux-omap@lfdr.de>; Sat, 21 Sep 2019 21:07:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729525AbfITTUb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 Sep 2019 15:20:31 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:41632 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725869AbfITTUb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Sep 2019 15:20:31 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8KJEGx6115790;
-        Fri, 20 Sep 2019 19:20:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2019-08-05;
- bh=NTgWiBq1iOSn7E4DUsV0oOzifM6YvCmeXgLvP8GhXpQ=;
- b=YJKcSsRRnT6afxtXsPMppGt9Rgkn3BMTmHFs4rS80XEMtJlg07xr3xOg0BkHYrBPE0P7
- plAegF0BTsqJu3KYg89buLvo30tikcoaGPK7xcVr6YI2vauuoTBbUT6nOf9U7dlcdRad
- ksMXwxFoKnzLkVIwm1/8z4NUq81YrXd97kh5mglsvKTBdG7cLzQPpCn4LQxC0MVhvIOP
- 46S2wPdldNUvautuBloWAPBCLrIvnJ4sZIpXw/RApFzhFx8Y7C0tXE3rxpMAv5RjaBz1
- Qk4KFmbHZsXoFcpggeo6XsUZ0bp4GGdmKQeQOTQFugjOmL42rH0tpChD4HavXf+SaMnj bQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2v3vb5cb1m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 20 Sep 2019 19:19:59 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8KJJWuj126991;
-        Fri, 20 Sep 2019 19:19:59 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2v4vpmtufj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 20 Sep 2019 19:19:59 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8KJJvCb002952;
-        Fri, 20 Sep 2019 19:19:58 GMT
-Received: from [10.209.227.25] (/10.209.227.25)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 20 Sep 2019 12:19:57 -0700
-Subject: Re: [PATCHv5 00/10] soc: ti: add OMAP PRM driver (for reset)
-To:     Tony Lindgren <tony@atomide.com>, Tero Kristo <t-kristo@ti.com>
-Cc:     linux-omap@vger.kernel.org, ssantosh@kernel.org,
-        p.zabel@pengutronix.de, robh+dt@kernel.org, s-anna@ti.com,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
-References: <20190912113916.20093-1-t-kristo@ti.com>
- <20190920142849.GS5610@atomide.com>
-From:   santosh.shilimkar@oracle.com
-Organization: Oracle Corporation
-Message-ID: <13a77bd8-72bd-6a44-9141-d5492be82d82@oracle.com>
-Date:   Fri, 20 Sep 2019 12:19:56 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.7.2
+        id S1727368AbfIUTHN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 21 Sep 2019 15:07:13 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:60584 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727106AbfIUTHN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 21 Sep 2019 15:07:13 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 8458B2002D;
+        Sat, 21 Sep 2019 21:07:09 +0200 (CEST)
+Date:   Sat, 21 Sep 2019 21:07:08 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        adam.ford@logicpd.com, Thierry Reding <thierry.reding@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] dt-bindings: Add Logic PD Type 28 display panel
+Message-ID: <20190921190708.GB32133@ravnborg.org>
+References: <20190917161214.2913-1-aford173@gmail.com>
+ <20190917161214.2913-2-aford173@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190920142849.GS5610@atomide.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9386 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1909200156
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9386 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1909200156
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190917161214.2913-2-aford173@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=dqr19Wo4 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=pGLkceISAAAA:8
+        a=TaQvIJAheEgyp50s76YA:9 a=CjuIK1q_8ugA:10
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 9/20/19 7:28 AM, Tony Lindgren wrote:
-> * Tero Kristo <t-kristo@ti.com> [190912 04:39]:
->> Hi,
->>
->> V5 of the series, re-sent the whole series as one patch was dropped.
->> Changes compared to v3/v4:
->>
->> - removed dependency towards clock driver (patch #5 was completely
->>    dropped compared to v3/v4)
->> - dropped clocks property from dt binding
->> - re-added the pdata patch which was accidentally dropped out (it has
->>    dependency towards this series.)
->>
->> The new implementation (without clock driver dependency) relies on the
->> bus driver to sequence events properly, otherwise some timeouts will
->> occur either at clock driver or reset driver end.
-> 
-> With the two updated patches seems like we're done with this
-> series?
-> 
-> If so, I suggest either Santosh or me sets up an immutable
-> branch against v5.3 or v5.4-rc1 that we all can merge in.
-> I will need it for the related dts changes at least.
-> 
-I will pick this up Tony and apply it once v5.4-rc1 is out.
+Hi Adam.
 
-Regards,
-Santosh
+Good with even more panels.
+But for new bindings please use meta-schema (.yaml) format.
+This is what we use for new bindings as it allows better
+validation.
+
+	Sam
+
+On Tue, Sep 17, 2019 at 11:12:12AM -0500, Adam Ford wrote:
+> This patch adds documentation of device tree bindings for the WVGA panel
+> Logic PD Type 28 display.
+> 
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/logicpd,type28.txt b/Documentation/devicetree/bindings/display/panel/logicpd,type28.txt
+> new file mode 100644
+> index 000000000000..829fc5210e06
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/logicpd,type28.txt
+> @@ -0,0 +1,26 @@
+> +Logic PD Type 28 4.3" WQVGA TFT LCD panel
+> +
+> +This binding is compatible with the simple-panel binding, which is specified
+> +in simple-panel.txt in this directory.
+> +
+> +Required properties:
+> +- compatible: should be "logicpd,type28"
+> +
+> +Optional properties:
+> +- power-supply: regulator to provide the supply voltage
+> +- enable-gpios: GPIO pin to enable or disable the panel
+> +- backlight: phandle of the backlight device attached to the panel
+Is it correct that these are optional for the descrivbed panel?
+
+> +
+> +Optional nodes:
+> +- Video port for RGB input.
+> +
+> +Example:
+> +	lcd0: display {
+> +		compatible = "logicpd,type28";
+> +		enable-gpios = <&gpio5 27 GPIO_ACTIVE_HIGH>;
+> +		port {
+> +			lcd_in: endpoint {
+> +				remote-endpoint = <&dpi_out>;
+> +			};
+> +		};
+> +	};
+> -- 
+> 2.17.1
