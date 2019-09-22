@@ -2,101 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8170DB9F8A
-	for <lists+linux-omap@lfdr.de>; Sat, 21 Sep 2019 21:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1F01BA38B
+	for <lists+linux-omap@lfdr.de>; Sun, 22 Sep 2019 19:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727926AbfIUTJq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 21 Sep 2019 15:09:46 -0400
-Received: from asavdk3.altibox.net ([109.247.116.14]:60638 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725838AbfIUTJq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 21 Sep 2019 15:09:46 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id 887AA2002D;
-        Sat, 21 Sep 2019 21:09:42 +0200 (CEST)
-Date:   Sat, 21 Sep 2019 21:09:41 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        adam.ford@logicpd.com, Thierry Reding <thierry.reding@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] ARM: logicpd-torpedo-37xx-devkit-28: Reference new
- DRM panel
-Message-ID: <20190921190941.GD32133@ravnborg.org>
-References: <20190917161214.2913-1-aford173@gmail.com>
- <20190917161214.2913-3-aford173@gmail.com>
+        id S2388276AbfIVR5o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 22 Sep 2019 13:57:44 -0400
+Received: from muru.com ([72.249.23.125]:34162 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388220AbfIVR5o (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 22 Sep 2019 13:57:44 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 6DA2C804F;
+        Sun, 22 Sep 2019 17:58:16 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] ARM: omap2plus_defconfig: Enable more droid4 devices as loadable modules
+Date:   Sun, 22 Sep 2019 10:57:40 -0700
+Message-Id: <20190922175740.26445-1-tony@atomide.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190917161214.2913-3-aford173@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=dqr19Wo4 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=pGLkceISAAAA:8
-        a=7gkXJVJtAAAA:8 a=4bu5KDIevAQmuqN_AgEA:9 a=CjuIK1q_8ugA:10
-        a=E9Po1WZjFZOl8hwRPBS3:22
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Adam.
+Droid4 needs USB option serial driver for modem, and lm3532 for the
+LCD backlight.
 
-On Tue, Sep 17, 2019 at 11:12:13AM -0500, Adam Ford wrote:
-> With the removal of the panel-dpi from the omap drivers, the
-> LCD no longer works.  This patch points the device tree to
-> a newly created panel named "logicpd,type28"
-> 
-> Fixes: 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
-> 
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-Looks good.
-One nit below.
+Note that the LCD backlight does not yet get enabled automatically,
+but needs to be done manually with:
 
-With this addressed:
+# echo 50 > /sys/class/leds/lm3532::backlight/brightness
 
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/configs/omap2plus_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-	Sam
-> 
-> diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-> index 07ac99b9cda6..00c426bd51a0 100644
-> --- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-> +++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-> @@ -11,22 +11,8 @@
->  #include "logicpd-torpedo-37xx-devkit.dts"
->  
->  &lcd0 {
-> -
-> +	/* This isn't the exact LCD, but the timings meet spec */
-> +	/* To make it work, set CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=4 */
-> +	compatible = "logicpd,type28";
->  	label = "28";
-You left this property - but us it documented and what use has it?
-
-> -
-> -	panel-timing {
-> -		clock-frequency = <9000000>;
-> -		hactive = <480>;
-> -		vactive = <272>;
-> -		hfront-porch = <3>;
-> -		hback-porch = <2>;
-> -		hsync-len = <42>;
-> -		vback-porch = <3>;
-> -		vfront-porch = <2>;
-> -		vsync-len = <11>;
-> -		hsync-active = <1>;
-> -		vsync-active = <1>;
-> -		de-active = <1>;
-> -		pixelclk-active = <0>;
-> -	};
->  };
-> -- 
-> 2.17.1
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -429,6 +429,7 @@ CONFIG_USB_SERIAL_GENERIC=y
+ CONFIG_USB_SERIAL_SIMPLE=m
+ CONFIG_USB_SERIAL_FTDI_SIO=m
+ CONFIG_USB_SERIAL_PL2303=m
++CONFIG_USB_SERIAL_OPTION=m
+ CONFIG_USB_TEST=m
+ CONFIG_NOP_USB_XCEIV=m
+ CONFIG_AM335X_PHY_USB=m
+@@ -466,6 +467,7 @@ CONFIG_MMC_SDHCI_OMAP=y
+ CONFIG_NEW_LEDS=y
+ CONFIG_LEDS_CLASS=m
+ CONFIG_LEDS_CPCAP=m
++CONFIG_LEDS_LM3532=m
+ CONFIG_LEDS_GPIO=m
+ CONFIG_LEDS_PCA963X=m
+ CONFIG_LEDS_PWM=m
+-- 
+2.23.0
