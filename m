@@ -2,127 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75DB5BB54D
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2019 15:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77DFABB5A9
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2019 15:45:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407834AbfIWNcY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 23 Sep 2019 09:32:24 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:40804 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404581AbfIWNcY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Sep 2019 09:32:24 -0400
-Received: by mail-io1-f66.google.com with SMTP id h144so33361224iof.7;
-        Mon, 23 Sep 2019 06:32:23 -0700 (PDT)
+        id S1730903AbfIWNpH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 23 Sep 2019 09:45:07 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:46023 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725854AbfIWNpG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Sep 2019 09:45:06 -0400
+Received: by mail-io1-f65.google.com with SMTP id c25so1312026iot.12;
+        Mon, 23 Sep 2019 06:45:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9Gkx6KfsI/v7RjesbZJM0miCqFfmb10UpE9xFSBSG4M=;
-        b=XYNE4TvnKpcq7LW/JhTVMgCt4cU8pZLEMVe7XH0UwDBfwwE+o6ExtyHMX7nBaHe8oT
-         mI7NYIP5AataRCuGAJ9tg0nC4owo4+fPvB8vTXk8V2I7hcC2NzGbs30N4UdJ3ZLGAUm5
-         11l/j7vKPnT6VC3RW/0y71fviHmelkldDJtMmvkB5SSvJNtV5ZE2LUhUL9QK4uY8zvyX
-         Vxg3fgCBY+HUMOz63RFY89I3hAIzJYpXfjSRFey6zsSLkPZrBNHkJSnsbkU8U1fp0042
-         vBPielQ6d5yeAsaZc2jCoSqLXCtgU6M1IPmsrRcQEqdki+kZtXOmiRP1l8oD/1F8Wq4+
-         NyYA==
+        h=from:to:cc:subject:date:message-id;
+        bh=8gJJO39rFvRPC27Eg6HXHKJTgns+bBIO2jkPaH1hgc4=;
+        b=gYnxWxDzYUW5wn60fhXJrrdD/bHxTVKwpKATR5CRZEQcYGvXyNPjvq4hzHLvfaf5Qn
+         HLcQUGjw/5+RhsF9F2VVpXwAiTSkvIWCGnJo+3s8xZjyaV9ZfeUxBFlwP7KzOZAiIPTC
+         T6j7b4NdQ//XRSTLKNKUQrQtMi5hhBgDwKp0tt0msVN9MHViDBJTcaUFdlXxZR90ujcH
+         4PYYFitroKR3Jc9v8E9sNobSwr3+LrMmKvS3jUjbM2Tt3xXNwVsdeb7M+QmK+83NBXfS
+         LzBnzOTk9WrX+w3N0JyHc/MPaPt0Ej4YzZq5CAGpOPoSrTgEdQwTidx0M4upHPwcTPxH
+         3IJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9Gkx6KfsI/v7RjesbZJM0miCqFfmb10UpE9xFSBSG4M=;
-        b=LD6GXgA6pNEeuPFfExT91C/FutejA+pkcEngURmkPNw7WTcvmQ068fFv5WH9bhWkPE
-         KGyf01YqJ2UlOcIVazsfONHO4Cic94qxk1Ixs56gF/gX0ahJg7+KfoI5RlXK2pFe02FE
-         28ot3Ae2ZKFLR5cD0S1XtIhDXPEhRSs0ONii2dFj0kqp9YtABC9iu3wq6UUp2EMYYeGT
-         3FF3ZDDhY8GopmNVbCu0BKZi5NfQqR6H54uArQU4uqKDFqKb+r/0n6N945na3POM+aek
-         6hZqALa+y9L39fO0zAas11cAKefg+dpPmqB/OvU+IIQeHVs8WlWZE3QeExIDUbacQ4y2
-         QksQ==
-X-Gm-Message-State: APjAAAWehUgtzwvFABPYy4FpMM44E+DUK4HIUD1czmiL22MeKM482GiR
-        qIv0ezVLxWHRrdMckChVUGt7oKhqXUj3zI6px1U=
-X-Google-Smtp-Source: APXvYqwJR3QJD1jIZYV2jbJW2R5s+jizFtekkek5ZBdhPG1M8UvVC0BL2Whi5uGAdV9CgEENkoGzDWq5OShcNE+n+v8=
-X-Received: by 2002:a02:6a22:: with SMTP id l34mr25692766jac.33.1569245543173;
- Mon, 23 Sep 2019 06:32:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190917161214.2913-1-aford173@gmail.com> <20190917161214.2913-3-aford173@gmail.com>
- <20190921190941.GD32133@ravnborg.org>
-In-Reply-To: <20190921190941.GD32133@ravnborg.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=8gJJO39rFvRPC27Eg6HXHKJTgns+bBIO2jkPaH1hgc4=;
+        b=Yj4ZTcj/kA+Tp7HziU4XFUU3RjxMw1ipehnjFdijpgvcy9d5VirFF9uKH5yStefzSN
+         q8fj648/091mqtNYWcBjfqF2Pb4CA9SLT4wt4SyKWIPoG/MxFwB4A6mpahdPXC5+9Uh1
+         PCkw8nMeZTckxIVsFuOk0yOpLZW1fOVf430pih7SyU9PU8a9pWir8FkocqtqjOUBiSgR
+         DkcRCMEJHa2qy1bTKglERR11I10mi2P8DyKmCrq9sii8Ec0GsyOpzlzWp1T/QOLD4L4G
+         u06adWW/Q5XPus5YwtVFSJDYPBanmDgf48WquLvndnmGSQn8QOII6eMs0Hunjcqx3ww1
+         yGQw==
+X-Gm-Message-State: APjAAAVvubTPzdtSKu5CxDDLE/4orwmNMtSOP7ljgjxNMx+3jG8x6ih+
+        Q8IT57iuEMWdrCG3Ja03Cws=
+X-Google-Smtp-Source: APXvYqzJ5o3V+xw8Vo6YavSbpE/G0mrA+1QvHonDZaHomPezsl9Rg4ZVusHEe89mStO7TrQUS+BgXA==
+X-Received: by 2002:a6b:c895:: with SMTP id y143mr14632059iof.271.1569246305617;
+        Mon, 23 Sep 2019 06:45:05 -0700 (PDT)
+Received: from aford-OptiPlex-7050.logicpd.com ([174.46.170.158])
+        by smtp.gmail.com with ESMTPSA id x2sm8844474iob.74.2019.09.23.06.44.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Sep 2019 06:44:59 -0700 (PDT)
 From:   Adam Ford <aford173@gmail.com>
-Date:   Mon, 23 Sep 2019 08:32:11 -0500
-Message-ID: <CAHCN7xKqiNxrR+DVDV_7pE0vmQAXQkhf-0RPS3GGgZU=81RC-A@mail.gmail.com>
-Subject: Re: [PATCH 3/3] ARM: logicpd-torpedo-37xx-devkit-28: Reference new
- DRM panel
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     dri-devel@lists.freedesktop.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>,
+To:     dri-devel@lists.freedesktop.org
+Cc:     linux-omap@vger.kernel.org, adam.ford@logicpd.com,
+        Adam Ford <aford173@gmail.com>,
         Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V2 1/3] drm/panel: simple: Add Logic PD Type 28 display support
+Date:   Mon, 23 Sep 2019 08:44:47 -0500
+Message-Id: <20190923134449.22326-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Sep 21, 2019 at 2:09 PM Sam Ravnborg <sam@ravnborg.org> wrote:
->
-> Hi Adam.
->
-> On Tue, Sep 17, 2019 at 11:12:13AM -0500, Adam Ford wrote:
-> > With the removal of the panel-dpi from the omap drivers, the
-> > LCD no longer works.  This patch points the device tree to
-> > a newly created panel named "logicpd,type28"
-> >
-> > Fixes: 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
-> >
-> > Signed-off-by: Adam Ford <aford173@gmail.com>
-> Looks good.
-> One nit below.
->
-> With this addressed:
->
-> Acked-by: Sam Ravnborg <sam@ravnborg.org>
->
->         Sam
-> >
-> > diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-> > index 07ac99b9cda6..00c426bd51a0 100644
-> > --- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-> > +++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-> > @@ -11,22 +11,8 @@
-> >  #include "logicpd-torpedo-37xx-devkit.dts"
-> >
-> >  &lcd0 {
-> > -
-> > +     /* This isn't the exact LCD, but the timings meet spec */
-> > +     /* To make it work, set CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=4 */
-> > +     compatible = "logicpd,type28";
-> >       label = "28";
-> You left this property - but us it documented and what use has it?
+Previously, there was an omap panel-dpi driver that would
+read generic timings from the device tree and set the display
+timing accordingly.  This driver was removed so the screen
+no longer functions.  This patch modifies the panel-simple
+file to setup the timings to the same values previously used.
 
-Good catch, I'll remove it and post a V2 today once I can figure out
-the yaml stuff.
+Fixes: 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
 
-adam
->
-> > -
-> > -     panel-timing {
-> > -             clock-frequency = <9000000>;
-> > -             hactive = <480>;
-> > -             vactive = <272>;
-> > -             hfront-porch = <3>;
-> > -             hback-porch = <2>;
-> > -             hsync-len = <42>;
-> > -             vback-porch = <3>;
-> > -             vfront-porch = <2>;
-> > -             vsync-len = <11>;
-> > -             hsync-active = <1>;
-> > -             vsync-active = <1>;
-> > -             de-active = <1>;
-> > -             pixelclk-active = <0>;
-> > -     };
-> >  };
-> > --
-> > 2.17.1
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+---
+V2:  No change
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 5a93c4edf1e4..c86c30f3a8a1 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1900,6 +1900,40 @@ static const struct drm_display_mode mitsubishi_aa070mc01_mode = {
+ 	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+ };
+ 
++static const struct drm_display_mode logicpd_type_28_mode = {
++	.clock = 9000,
++	.hdisplay = 480,
++	.hsync_start = 480 + 3,
++	.hsync_end = 480 + 3 + 42,
++	.htotal = 480 + 3 + 42 + 2,
++
++	.vdisplay = 272,
++	.vsync_start = 272 + 2,
++	.vsync_end = 272 + 2 + 11,
++	.vtotal = 272 + 2 + 11 + 3,
++	.vrefresh = 60,
++	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
++};
++
++static const struct panel_desc logicpd_type_28 = {
++	.modes = &logicpd_type_28_mode,
++	.num_modes = 1,
++	.bpc = 8,
++	.size = {
++		.width = 105,
++		.height = 67,
++	},
++	.delay = {
++		.prepare = 200,
++		.enable = 200,
++		.unprepare = 200,
++		.disable = 200,
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE |
++		     DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE,
++};
++
+ static const struct panel_desc mitsubishi_aa070mc01 = {
+ 	.modes = &mitsubishi_aa070mc01_mode,
+ 	.num_modes = 1,
+@@ -2948,6 +2982,9 @@ static const struct of_device_id platform_of_match[] = {
+ 	}, {
+ 		.compatible = "lg,lp129qe",
+ 		.data = &lg_lp129qe,
++	}, {
++		.compatible = "logicpd,type28",
++		.data = &logicpd_type_28,
+ 	}, {
+ 		.compatible = "mitsubishi,aa070mc01-ca1",
+ 		.data = &mitsubishi_aa070mc01,
+-- 
+2.17.1
+
