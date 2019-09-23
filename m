@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9788BB5FE
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2019 15:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D26FBB605
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2019 15:59:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439808AbfIWN7b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S2439811AbfIWN7b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Mon, 23 Sep 2019 09:59:31 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:42699 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439806AbfIWN7a (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Sep 2019 09:59:30 -0400
-Received: by mail-io1-f65.google.com with SMTP id n197so33597639iod.9;
-        Mon, 23 Sep 2019 06:59:29 -0700 (PDT)
+Received: from mail-io1-f68.google.com ([209.85.166.68]:38683 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2439807AbfIWN7b (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Sep 2019 09:59:31 -0400
+Received: by mail-io1-f68.google.com with SMTP id u8so12318847iom.5;
+        Mon, 23 Sep 2019 06:59:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
         bh=TWgZDntOMYE0pJNm4v4MgMyLm0itzJK9E74UOUCbCFE=;
-        b=hXTzopcIeEtU3YQpZSBp5dvZTJ34eZGS9dDGpC4OHcG4AN7Of7TFkRelLOlS+lhrLR
-         3ZW3djNcy8+CEc54FtuvZDppefcCC9PzwHoSkao3l8AJXAYZuM+I99a4gD9sZ1Fzs5Py
-         Ky+2zPa6AvZerjOwsQrGfVTidMxj6GzNTi6bymKP/GCLJb1E07XA21Nypo3yQ2Wwblvx
-         QfUaiG4dSphMnE468ZYfz9RPGxxuYo5Mp7s+IOxnx0e4sCae3SKiWYRWTfNbgThh/4Vj
-         aa0RGz8bwrcSZ0A93/5GTdZiqpsuqz4EfD1alE4pE8CvUg0gO7xMkABA7PB2ClNDTtnX
-         oqPQ==
+        b=TBnRiSLVfy271WWoAMMWc0Z8UXP2L2wtqgfKishrEDSHLtOLoJQQU1hcwiMswSc+r3
+         bZ7CfjNGnfPdjQEO0iq538SdTVfCT4VIIeL42m4UMEUaw/a/QyJMU2Y65S8M/4K3twhh
+         q9FI3zwhb64MDZtkaNKK/9wtIOz6SB3RLWT90+j9SH+kEwRWCVx0pmG5eO+xxL73Pe7C
+         YMMkBZmecT7mhlQS+49SF5vX3ZEfPMy5hHhL0v75R4pJUqxjyq9AgZfV0w1GJcAdkLQM
+         oma4YMVrkYPTxEWhiCP0/TzsI5Q7aJwiCgFJ0r7Qwh19Gj3SzCLatW/LnQXVIvCcz01v
+         X/kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
         bh=TWgZDntOMYE0pJNm4v4MgMyLm0itzJK9E74UOUCbCFE=;
-        b=bZ8Wac3fnn4gZeqCl1v/OPKUHbaYfBaZgN5dYHnrRhxBR1H7+XQZHemFbVeTsKTOiE
-         zj3AQFfotcPUZVgRyUTbkbGFTrDBXTvUAgcF/BijLx6zNLw+Vr1TXwtzQu/gjxzLszEN
-         Up8C6tmZo2+SbgfoeePJhrUwY97BcUgdOKHV1JQPBUNMs7dZVCefKZfeGL112tVXtfba
-         W94y8w+82Q43AVbvj3CKT9pXgwNrDaJEsbH6VuS5p5qhLxF/KgSyO8EDoNwoLdOBKP+7
-         qJ50WRYxucTjkOmDUBXe3Es/WvEy39dcBvVplfL8yAsc9n8HpvhmysVVDxlcZIJhh9Ss
-         qidQ==
-X-Gm-Message-State: APjAAAVI3pGnftJpjxxQly1R5mQLfQ7+rh3bKa8a8oOnuviCkH1onwih
-        cEGy2i4FJ3aWSoc2k7QEYuOFTsYRcIk=
-X-Google-Smtp-Source: APXvYqzKXJ14ZJ19fJit1ABq++SlGZCf+1o9nIpifnXKaLyS326hNX5guZLcZi6nHehygWI9jbHqKg==
-X-Received: by 2002:a6b:6117:: with SMTP id v23mr527829iob.95.1569247168654;
-        Mon, 23 Sep 2019 06:59:28 -0700 (PDT)
+        b=s78ZKnmWReuhvaGkFpV0O52B7Mqo2u7XBCsjkaz6Awxk04i0IWyhqYEbXDpXkxsZ0H
+         y7LonknhlWeockJ6uFy77bDjc2rM3kGRzAeh3HPKptASRlIw+r8+eCmugkrHfeqi7lI0
+         eU/nGAUW277kJmp+abd1XXH5vPHLBZXN9YbMEiBPxJv8tal/x02uVYabW6xVtvIt0FL0
+         9uhW+Cc3/go+9e38mpRyDmpvkxEWLG/b3Z08KK/oZMbe2NkOKrovmgDv+7odRxRCEy/G
+         lAFw6xRhpXxmmpEGTDTWrx0TyxEn31AeCiq1ZEE6zcagEs1kQ0SPuS9jvRYQZ1QGp8J1
+         0sqQ==
+X-Gm-Message-State: APjAAAXMfywPSs5FhUpKhKTZMNol81wavIJ+8AWvuYFSmndqvpVN9nkb
+        rtjpXrfxWvk2o2gcs2VlJdUiThgksIE=
+X-Google-Smtp-Source: APXvYqxQQ5uwRDzAsTCimzcavWphLCLaUzPU1+RY3btfgKUFL7s2fglpIdGwwlkGKxp66jJ02QUP4w==
+X-Received: by 2002:a02:c8cd:: with SMTP id q13mr36171142jao.133.1569247169744;
+        Mon, 23 Sep 2019 06:59:29 -0700 (PDT)
 Received: from aford-OptiPlex-7050.logicpd.com ([174.46.170.158])
-        by smtp.gmail.com with ESMTPSA id j11sm7917262ioa.55.2019.09.23.06.59.26
+        by smtp.gmail.com with ESMTPSA id j11sm7917262ioa.55.2019.09.23.06.59.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2019 06:59:26 -0700 (PDT)
+        Mon, 23 Sep 2019 06:59:28 -0700 (PDT)
 From:   Adam Ford <aford173@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     linux-omap@vger.kernel.org, Adam Ford <aford173@gmail.com>
 Subject: [PATCH] MAINTAINERS: Add logicpd-som-lv and logicpd-torpedo to OMAP TREE
-Date:   Mon, 23 Sep 2019 08:59:07 -0500
-Message-Id: <20190923135908.23080-2-aford173@gmail.com>
+Date:   Mon, 23 Sep 2019 08:59:08 -0500
+Message-Id: <20190923135908.23080-3-aford173@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190923135908.23080-1-aford173@gmail.com>
 References: <20190923135908.23080-1-aford173@gmail.com>
