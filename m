@@ -2,92 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 35059BCC46
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2019 18:20:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A44F1BCC76
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2019 18:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731112AbfIXQTz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 24 Sep 2019 12:19:55 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:34950 "EHLO vps0.lunn.ch"
+        id S1725919AbfIXQ32 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 24 Sep 2019 12:29:28 -0400
+Received: from muru.com ([72.249.23.125]:34416 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725963AbfIXQTz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 24 Sep 2019 12:19:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=vJx4OSw+W8B8k4E2rJbiOozySYYyf29eZ8oUmoJKcmQ=; b=JeYq/lyNoO/HTyK24fwrGLp0HF
-        GW9sM8WUJDY08ljNkyXdGGvx93Q6iodF8o5VMmsZO+b1cJraYCeX2rr6PPyMeOX/kGmWsJwAREpBc
-        H0rxa1ad8isaBunQ8MriCGVrCnWBhuS7CKZITr0Y0YF4ZF7l1bKhBCgYHvMi/3Rsd1vo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.89)
-        (envelope-from <andrew@lunn.ch>)
-        id 1iCnXP-0006Zg-P0; Tue, 24 Sep 2019 18:19:39 +0200
-Date:   Tue, 24 Sep 2019 18:19:39 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Jerome Brunet <jbrunet@baylibre.com>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
-        Tero Kristo <t-kristo@ti.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-rockchip@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 2/3] clk: let init callback return an error code
-Message-ID: <20190924161939.GD28770@lunn.ch>
-References: <20190924123954.31561-1-jbrunet@baylibre.com>
- <20190924123954.31561-3-jbrunet@baylibre.com>
+        id S1725787AbfIXQ32 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 24 Sep 2019 12:29:28 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 7F27380E2;
+        Tue, 24 Sep 2019 16:29:59 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, Lokesh Vutla <lokeshvutla@ti.com>,
+        Suman Anna <s-anna@ti.com>
+Subject: [PATCH] ARM: dts: Fix gpio0 flags for am335x-icev2
+Date:   Tue, 24 Sep 2019 09:29:24 -0700
+Message-Id: <20190924162924.9914-1-tony@atomide.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190924123954.31561-3-jbrunet@baylibre.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Sep 24, 2019 at 02:39:53PM +0200, Jerome Brunet wrote:
-> If the init callback is allowed to request resources, it needs a return
-> value to report the outcome of such a request.
-> 
-> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-> ---
-> 
->  Sorry about the spam.
->  This patch change quite a few files so I have tried to Cc the
->  relevant people. Stephen, You may notice that I have added a
->  couple of the network people. You need an Ack from one of them
->  since the Amlogic G12a mdio mux has a clock which uses the .init()
->  callback
+The ti,no-idle-on-init and ti,no-reset-on-init flags need to be at
+the interconnect target module level for the modules that have it
+defined. Otherwise we get the following warnings:
 
->  static void __init of_ti_clockdomain_setup(struct device_node *node)
-> diff --git a/drivers/net/phy/mdio-mux-meson-g12a.c b/drivers/net/phy/mdio-mux-meson-g12a.c
-> index 7a9ad54582e1..bf86c9c7a288 100644
-> --- a/drivers/net/phy/mdio-mux-meson-g12a.c
-> +++ b/drivers/net/phy/mdio-mux-meson-g12a.c
-> @@ -123,7 +123,7 @@ static int g12a_ephy_pll_is_enabled(struct clk_hw *hw)
->  	return (val & PLL_CTL0_LOCK_DIG) ? 1 : 0;
->  }
->  
-> -static void g12a_ephy_pll_init(struct clk_hw *hw)
-> +static int g12a_ephy_pll_init(struct clk_hw *hw)
->  {
->  	struct g12a_ephy_pll *pll = g12a_ephy_pll_to_dev(hw);
->  
-> @@ -136,6 +136,8 @@ static void g12a_ephy_pll_init(struct clk_hw *hw)
->  	writel(0x20200000, pll->base + ETH_PLL_CTL5);
->  	writel(0x0000c002, pll->base + ETH_PLL_CTL6);
->  	writel(0x00000023, pll->base + ETH_PLL_CTL7);
-> +
-> +	return 0;
->  }
+dts flag should be at module level for ti,no-idle-on-init
+dts flag should be at module level for ti,no-reset-on-init
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: 87fc89ced3a7 ("ARM: dts: am335x: Move l4 child devices to probe them with ti-sysc")
+Cc: Lokesh Vutla <lokeshvutla@ti.com>
+Reported-by: Suman Anna <s-anna@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/am335x-icev2.dts | 2 +-
+ arch/arm/boot/dts/am33xx-l4.dtsi   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-It should be safe to merge this via the clk tree. You would probably
-know about an possible merge conflicts, since you wrote this driver!
-
-    Andrew
+diff --git a/arch/arm/boot/dts/am335x-icev2.dts b/arch/arm/boot/dts/am335x-icev2.dts
+--- a/arch/arm/boot/dts/am335x-icev2.dts
++++ b/arch/arm/boot/dts/am335x-icev2.dts
+@@ -432,7 +432,7 @@
+ 	pinctrl-0 = <&mmc0_pins_default>;
+ };
+ 
+-&gpio0 {
++&gpio0_target {
+ 	/* Do not idle the GPIO used for holding the VTT regulator */
+ 	ti,no-reset-on-init;
+ 	ti,no-idle-on-init;
+diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+--- a/arch/arm/boot/dts/am33xx-l4.dtsi
++++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+@@ -127,7 +127,7 @@
+ 			ranges = <0x0 0x5000 0x1000>;
+ 		};
+ 
+-		target-module@7000 {			/* 0x44e07000, ap 14 20.0 */
++		gpio0_target: target-module@7000 {	/* 0x44e07000, ap 14 20.0 */
+ 			compatible = "ti,sysc-omap2", "ti,sysc";
+ 			ti,hwmods = "gpio1";
+ 			reg = <0x7000 0x4>,
+-- 
+2.23.0
