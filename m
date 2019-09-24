@@ -2,90 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1227FBD06A
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2019 19:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A778BD22C
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2019 20:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439014AbfIXRPt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 24 Sep 2019 13:15:49 -0400
-Received: from muru.com ([72.249.23.125]:34438 "EHLO muru.com"
+        id S2405436AbfIXS41 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 24 Sep 2019 14:56:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50398 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437027AbfIXRPt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 24 Sep 2019 13:15:49 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 8C83780E2;
-        Tue, 24 Sep 2019 17:16:20 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Jyri Sarha <jsarha@ti.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Robert Nelson <robertcnelson@gmail.com>,
-        Suman Anna <s-anna@ti.com>
-Subject: [PATCH] ARM: OMAP2+: Add missing LCDC midlemode for am335x
-Date:   Tue, 24 Sep 2019 10:15:43 -0700
-Message-Id: <20190924171543.345-1-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
+        id S2404492AbfIXS41 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 24 Sep 2019 14:56:27 -0400
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5F24B217D7;
+        Tue, 24 Sep 2019 18:56:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1569351386;
+        bh=LSnxNkAK4K1j/IzwlV7DqnevZGMvr4ZQeIMxCU8J5vQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=tFN0/Q3HSpKyaXRS1ezEo/lWr3qRUDs/uDBOZ0JD5QKSQwx6572O13z/K2D64zcEk
+         DLSyWNnDZgsD95DB5ZqPoXEfDReQiNObo9wmkZ0QGcvJHHs/KNSDVlQgkX4YCqLqsy
+         Y1oAm6zkblqjwIwRCXs3k4IWGlVBmr37CG6SMiQQ=
+Received: by mail-qk1-f170.google.com with SMTP id 201so2862883qkd.13;
+        Tue, 24 Sep 2019 11:56:26 -0700 (PDT)
+X-Gm-Message-State: APjAAAX4rcaPUy+5rISB8e5kuTXglt9bAdVXBOO0vQ60VDqthSDGgG3a
+        QaVCzjBip00Z4Ry70Iw20NRrcfbzPJAH1n0K6g==
+X-Google-Smtp-Source: APXvYqzgGJQAxwg29kI1BAufWxuS/v+zfPqBzGSeDOF57xsu58JMb98Gap3AA0MrWWA5pI6TPglIXyu9nnpsuaZGoBk=
+X-Received: by 2002:a05:620a:549:: with SMTP id o9mr4215400qko.223.1569351385602;
+ Tue, 24 Sep 2019 11:56:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190923134449.22326-1-aford173@gmail.com> <20190923134449.22326-2-aford173@gmail.com>
+In-Reply-To: <20190923134449.22326-2-aford173@gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 24 Sep 2019 13:56:14 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJB54aTWNxh+FsEOBRFEWXBi6WZE3pzqo+LJWM781v-PQ@mail.gmail.com>
+Message-ID: <CAL_JsqJB54aTWNxh+FsEOBRFEWXBi6WZE3pzqo+LJWM781v-PQ@mail.gmail.com>
+Subject: Re: [PATCH V2 2/3] dt-bindings: Add Logic PD Type 28 display panel
+To:     Adam Ford <aford173@gmail.com>
+Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-omap <linux-omap@vger.kernel.org>, adam.ford@logicpd.com,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-TRM "Table 13-34. SYSCONFIG Register Field Descriptions" lists both
-standbymode and idlemode that should be just the sidle and midle
-registers where midle is currently unconfigured for lcdc_sysc. As
-the dts data has been generated based on lcdc_sysc, we now have an
-empty "ti,sysc-midle" property.
+On Mon, Sep 23, 2019 at 8:45 AM Adam Ford <aford173@gmail.com> wrote:
+>
+> This patch adds documentation of device tree bindings for the WVGA panel
+> Logic PD Type 28 display.
+>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> ---
+> V2:  Use YAML instead of TXT for binding
 
-And so we currently get a warning for lcdc because of a difference
-with dts provided configuration compared to the legacy platform
-data. This is because lcdc has SYSC_HAS_MIDLEMODE configured in
-the platform data without configuring the modes.
+Fails to build with 'make dt_binding_check':
 
-Let's fix the issue by adding the missing midlemode to lcdc_sysc,
-and configuring the "ti,sysc-midle" property based on the TRM
-values.
+https://patchwork.ozlabs.org/patch/1166057/
 
-Fixes: f711c575cfec ("ARM: dts: am335x: Add l4 interconnect hierarchy and ti-sysc data")
-Cc: Jyri Sarha <jsarha@ti.com>
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Robert Nelson <robertcnelson@gmail.com>
-Cc: Suman Anna <s-anna@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/am33xx-l4.dtsi           | 4 +++-
- arch/arm/mach-omap2/omap_hwmod_33xx_data.c | 5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+Looks like a tab character used perhaps.
 
-diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
---- a/arch/arm/boot/dts/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/am33xx-l4.dtsi
-@@ -2038,7 +2038,9 @@
- 			reg = <0xe000 0x4>,
- 			      <0xe054 0x4>;
- 			reg-names = "rev", "sysc";
--			ti,sysc-midle ;
-+			ti,sysc-midle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>;
- 			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
- 					<SYSC_IDLE_NO>,
- 					<SYSC_IDLE_SMART>;
-diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-@@ -231,8 +231,9 @@ static struct omap_hwmod am33xx_control_hwmod = {
- static struct omap_hwmod_class_sysconfig lcdc_sysc = {
- 	.rev_offs	= 0x0,
- 	.sysc_offs	= 0x54,
--	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE),
--	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
-+	.sysc_flags	= SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE,
-+	.idlemodes	= SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
-+			  MSTANDBY_FORCE | MSTANDBY_NO | MSTANDBY_SMART,
- 	.sysc_fields	= &omap_hwmod_sysc_type2,
- };
- 
--- 
-2.23.0
+Rob
