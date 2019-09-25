@@ -2,143 +2,234 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22DE5BE32D
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2019 19:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E192BE5E4
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2019 21:51:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726200AbfIYRPB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 25 Sep 2019 13:15:01 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:41334 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726546AbfIYRO6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Sep 2019 13:14:58 -0400
-Received: by mail-io1-f68.google.com with SMTP id r26so702668ioh.8
-        for <linux-omap@vger.kernel.org>; Wed, 25 Sep 2019 10:14:56 -0700 (PDT)
+        id S1732451AbfIYTv2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 25 Sep 2019 15:51:28 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:46280 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728595AbfIYTv1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Sep 2019 15:51:27 -0400
+Received: by mail-io1-f65.google.com with SMTP id c6so1858462ioo.13
+        for <linux-omap@vger.kernel.org>; Wed, 25 Sep 2019 12:51:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=tustjGhBUF11rx885HACJ9rTuwnb1TxiOoFdNWQ4/Po=;
-        b=FhncIf0AY8sCx6/5CgCFvTvklW2lKnjRB6ooOUa28gqFws7RlHajymJJ3SHYDR4d85
-         lVVBhHFb8jCC4aui3156Bgx/b+Jpciy3HN3PcfOX7U8H+9XCYnciMbX5XmF09K1ETxgi
-         IdC9NXoMXu5L38NwZEZ4W5GfnvRnNMCsbTxvYkUSjB1qfeI4Weh98fq+HSJ+aJLSgssJ
-         lQIuJdH+flMEMNYS3CvtA27VWOsWVS+V9cacWl8e3/FzUa8VWZtgUzEtrLfuO6QJuXZG
-         eIe1R/HzAR5+Xk88lt9J/0FoqUieJ///olorggHKDh1VeAF+c8C7SlKSI3UpSlE6oN/j
-         7NVw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=7UzUPhdDwye0y9pei0w7rdNmv2ryHHm6LDWbyRnVYSM=;
+        b=Jz3bj8mMNC56BKXs2n2SMJ0d2h55KjTNKe8YC6ViXX6LoPaXgBnHzUfhhNMkL9Fa/4
+         u+eRbsSoXjoi0t71SgHUHC2HdGFleskh9MZ3whT5uAr7pFz95h8NpSr+0NbGfPv7CgOj
+         3jbTFmX6alYk4PsRE671QrYXdixfJshL/YFAtd/zANi/DxDYatQhIhAkxfubHLxzjDez
+         eOXmlCwglkfO2gXdzFWBpi1oVhQzNcdH7XCzv2HitvVZhIngYbJfnQpOgZu7K9thPz/y
+         9FkNV1FF6/O42BCrcbOwbJtMUY6zvCxzILf9qJLP5GQDJUKUehaYbJNrgzcSnzSc9SKy
+         ZiNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=tustjGhBUF11rx885HACJ9rTuwnb1TxiOoFdNWQ4/Po=;
-        b=f8buSUpmKgjdG+WUHrcffLyn4dxM2aKrImkqFTBkdyVVTBoQwDZ9TzpGI8zs2K3x4b
-         IqwyFZeAxDD2EV6JHcKDxQgGv6GrbhmrYD6/uCfsaO/l/4Wnv9EajhtS7f52cjnUP6xy
-         +um+6S3Jl7jw4p81JP2Xnkv/j2AEl7T6lnngeFh0FLXB/89lYVinkjcNUZcKcIsTYs18
-         qEhMBeR7G9hbLFwbNRjNJ2kuXAOR/IrFbKbhkruoMULKVARNbYYYhg1LIHwUfY/IJ406
-         PnVzP2cNdswUhQmmfVDY5Po4WeqoW+Lfi+e9BKTSHqDghtynDWmwEj5ysxGmnEJTf4SL
-         mKOw==
-X-Gm-Message-State: APjAAAWHp36u/RaqMRdIS1JSZ3lWYPRAuA2+Ky8ybERFf84tvB0SbxKv
-        pnDp0ddBR/f6JJYhqhJFkQxNNFZhsrw=
-X-Google-Smtp-Source: APXvYqy2xYvC05CxrJU5nc8/lHN0zeH0I/OBAUnEIBMPD9Pk62ja/OIm6+LzC0rrLXSSSyb4aUJj7A==
-X-Received: by 2002:a6b:e706:: with SMTP id b6mr452690ioh.236.1569431695854;
-        Wed, 25 Sep 2019 10:14:55 -0700 (PDT)
-Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id a17sm287708ilf.22.2019.09.25.10.14.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2019 10:14:55 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=7UzUPhdDwye0y9pei0w7rdNmv2ryHHm6LDWbyRnVYSM=;
+        b=oy2/ZwWuR9wVEFItcCR9qIhjNa1SKevHVeLINGpL5cQeNHnFopiX+cCmND8c9L49S/
+         FrdHh+A7Cw1XpBBP8HLziF8wHucfeLcLpoDqxN/muX0SdTTjLTevvqiT5s0Xw/dxgy6w
+         t4Md2e8fmU8vON/ZgRBfo0i2bQCcUWdef+Kx2554gM7cMQ1vd1D90gJIQaMFy/mCpgmV
+         hB6d+Ktqptd9WSDFxCW65YLuFQCfj2MKcdasVpLuOOPyZWdG+tgQ8T1cdVQ0DrEmBwTv
+         FZZEghWvE7S1Gsa8/xip7/YjyWpjeNavgSMuooo6kjkQvgp6NDfkObxmGzJncLw5/Vmx
+         2Mvw==
+X-Gm-Message-State: APjAAAXtmrFko3BZH9JYb0QzzyPG914+h4nedA0NniM6rH/VV/RaOuAw
+        PZq9LMaRuMdnSnCfPgMcG6RjxMQ8STB1v/KQn2g=
+X-Google-Smtp-Source: APXvYqxcvI6IY3d2gQ423bUVEy1STmzRP8gUTGUS8oc/J0R9DQhj159yNvNzXmKFKih9k353isQqBHIslijHdk+6+8E=
+X-Received: by 2002:a6b:8e92:: with SMTP id q140mr1215257iod.205.1569441086526;
+ Wed, 25 Sep 2019 12:51:26 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190924233222.52757-1-tony@atomide.com>
+In-Reply-To: <20190924233222.52757-1-tony@atomide.com>
 From:   Adam Ford <aford173@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>
-Subject: [PATCH] ARM: dts: omap3.dtsi: Fix AES and SHA Engines
-Date:   Wed, 25 Sep 2019 12:14:44 -0500
-Message-Id: <20190925171444.9904-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.17.1
+Date:   Wed, 25 Sep 2019 14:51:15 -0500
+Message-ID: <CAHCN7xKfk8C=cccMUPLn1voKRaUQC1GSJi_0EPAaW2Rg7Zc8Eg@mail.gmail.com>
+Subject: Re: [PATCH] ARM: OMAP2+: Fix warnings with broken omap2_set_init_voltage()
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        =?UTF-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Nishanth Menon <nm@ti.com>, Tero Kristo <t-kristo@ti.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The AES and SHA engines for the OMAP3 are currently not functional.
-When the stopped working is unknown, but we have a regression.
+On Tue, Sep 24, 2019 at 6:32 PM Tony Lindgren <tony@atomide.com> wrote:
+>
+> This code is currently unable to find the dts opp tables as ti-cpufreq
+> needs to set them up first based on speed binning.
+>
+> We stopped initializing the opp tables with platform code years ago for
+> device tree based booting with commit 92d51856d740 ("ARM: OMAP3+: do not
+> register non-dt OPP tables for device tree boot"), and all of mach-omap2
+> is now booting using device tree.
+>
+> We currently get the following errors on init:
+>
+> omap2_set_init_voltage: unable to find boot up OPP for vdd_mpu
+> omap2_set_init_voltage: unable to set vdd_mpu
+> omap2_set_init_voltage: unable to find boot up OPP for vdd_core
+> omap2_set_init_voltage: unable to set vdd_core
+> omap2_set_init_voltage: unable to find boot up OPP for vdd_iva
+> omap2_set_init_voltage: unable to set vdd_iva
+>
+> Let's just drop the unused code. Nowadays ti-cpufreq should be used to
+> to initialize things properly.
 
-This patch uses the ti,sysc-omap2 to address the issue and enables
-to the AES and SHA engines on the DM3730 and OMAP3530 to work once
-again.
+AFAICT, the ti-cpufreq changes haven't been applied yet to support
+omap3 boards, but the regular cpufreq does, and it seems OK.
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
+>
+> Cc: Adam Ford <aford173@gmail.com>
+> Cc: Andr=C3=A9 Roth <neolynx@gmail.com>
+> Cc: "H. Nikolaus Schaller" <hns@goldelico.com>
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Tero Kristo <t-kristo@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>
+> Guys, please check and ack if we can really do this to get rid of some
+> pointless dmesg -l3 errors without affecting the ongoing cpufreq and
+> voltage work.
+>
 
-diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
-index 4043ecb38016..5123dc80b694 100644
---- a/arch/arm/boot/dts/omap3.dtsi
-+++ b/arch/arm/boot/dts/omap3.dtsi
-@@ -156,13 +156,28 @@
- 			};
- 		};
- 
--		aes: aes@480c5000 {
--			compatible = "ti,omap3-aes";
--			ti,hwmods = "aes";
--			reg = <0x480c5000 0x50>;
--			interrupts = <0>;
--			dmas = <&sdma 65 &sdma 66>;
--			dma-names = "tx", "rx";
-+		aes_target: target-module@480c5000 {
-+			compatible = "ti,sysc-omap2", "ti,sysc";
-+			reg = <0x480c5044 0x4>,
-+			     <0x480c5048 0x4>,
-+			     <0x480c504c 0x4>;
-+			reg-names = "rev", "sysc", "syss";
-+			ti,sysc-mask = <(SYSC_OMAP2_AUTOIDLE)>;
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+				       <SYSC_IDLE_NO>;
-+			ti,syss-mask = <1>;
-+			clocks = <&aes2_ick>;
-+			clock-names = "ick";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0x480c5000 0x2000>;
-+			aes: aes@0 {
-+				compatible = "ti,omap3-aes";
-+				reg = <0 0x50>;
-+				interrupts = <0>;
-+				dmas = <&sdma 65 &sdma 66>;
-+				dma-names = "tx", "rx";
-+			};
- 		};
- 
- 		prm: prm@48306000 {
-@@ -579,13 +594,28 @@
- 			status = "disabled";
- 		};
- 
--		sham: sham@480c3000 {
--			compatible = "ti,omap3-sham";
--			ti,hwmods = "sham";
--			reg = <0x480c3000 0x64>;
--			interrupts = <49>;
--			dmas = <&sdma 69>;
--			dma-names = "rx";
-+		sham_target: target-module@480c3000 {
-+			compatible = "ti,sysc-omap2", "ti,sysc";
-+			reg = <0x480c3056 0x4>,
-+			     <0x480c3060 0x4>,
-+			     <0x480c3064 0x4>;
-+			reg-names = "rev", "sysc", "syss";
-+			ti,sysc-mask = <(SYSC_OMAP2_AUTOIDLE)>;
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+				       <SYSC_IDLE_NO>;
-+			ti,syss-mask = <1>;
-+			clocks = <&sha12_ick>;
-+			clock-names = "ick";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0x480c3000 0x2000>;
-+			sham: sham@0 {
-+				compatible = "ti,omap3-sham";
-+				reg = <0 0x64>;
-+				interrupts = <49>;
-+				dmas = <&sdma 69>;
-+				dma-names = "rx";
-+			};
- 		};
- 
- 		timer1: timer@48318000 {
--- 
-2.17.1
+Tested-by: Adam Ford <aford173@gmail.com> #logicpd-torpedo-37xx-devkit
 
+> ---
+>  arch/arm/mach-omap2/pm.c | 100 ---------------------------------------
+>  1 file changed, 100 deletions(-)
+>
+> diff --git a/arch/arm/mach-omap2/pm.c b/arch/arm/mach-omap2/pm.c
+> --- a/arch/arm/mach-omap2/pm.c
+> +++ b/arch/arm/mach-omap2/pm.c
+> @@ -74,83 +74,6 @@ int omap_pm_clkdms_setup(struct clockdomain *clkdm, vo=
+id *unused)
+>         return 0;
+>  }
+>
+> -/*
+> - * This API is to be called during init to set the various voltage
+> - * domains to the voltage as per the opp table. Typically we boot up
+> - * at the nominal voltage. So this function finds out the rate of
+> - * the clock associated with the voltage domain, finds out the correct
+> - * opp entry and sets the voltage domain to the voltage specified
+> - * in the opp entry
+> - */
+> -static int __init omap2_set_init_voltage(char *vdd_name, char *clk_name,
+> -                                        const char *oh_name)
+> -{
+> -       struct voltagedomain *voltdm;
+> -       struct clk *clk;
+> -       struct dev_pm_opp *opp;
+> -       unsigned long freq, bootup_volt;
+> -       struct device *dev;
+> -
+> -       if (!vdd_name || !clk_name || !oh_name) {
+> -               pr_err("%s: invalid parameters\n", __func__);
+> -               goto exit;
+> -       }
+> -
+> -       if (!strncmp(oh_name, "mpu", 3))
+> -               /*
+> -                * All current OMAPs share voltage rail and clock
+> -                * source, so CPU0 is used to represent the MPU-SS.
+> -                */
+> -               dev =3D get_cpu_device(0);
+> -       else
+> -               dev =3D omap_device_get_by_hwmod_name(oh_name);
+> -
+> -       if (IS_ERR(dev)) {
+> -               pr_err("%s: Unable to get dev pointer for hwmod %s\n",
+> -                       __func__, oh_name);
+> -               goto exit;
+> -       }
+> -
+> -       voltdm =3D voltdm_lookup(vdd_name);
+> -       if (!voltdm) {
+> -               pr_err("%s: unable to get vdd pointer for vdd_%s\n",
+> -                       __func__, vdd_name);
+> -               goto exit;
+> -       }
+> -
+> -       clk =3D  clk_get(NULL, clk_name);
+> -       if (IS_ERR(clk)) {
+> -               pr_err("%s: unable to get clk %s\n", __func__, clk_name);
+> -               goto exit;
+> -       }
+> -
+> -       freq =3D clk_get_rate(clk);
+> -       clk_put(clk);
+> -
+> -       opp =3D dev_pm_opp_find_freq_ceil(dev, &freq);
+> -       if (IS_ERR(opp)) {
+> -               pr_err("%s: unable to find boot up OPP for vdd_%s\n",
+> -                       __func__, vdd_name);
+> -               goto exit;
+> -       }
+> -
+> -       bootup_volt =3D dev_pm_opp_get_voltage(opp);
+> -       dev_pm_opp_put(opp);
+> -
+> -       if (!bootup_volt) {
+> -               pr_err("%s: unable to find voltage corresponding to the b=
+ootup OPP for vdd_%s\n",
+> -                      __func__, vdd_name);
+> -               goto exit;
+> -       }
+> -
+> -       voltdm_scale(voltdm, bootup_volt);
+> -       return 0;
+> -
+> -exit:
+> -       pr_err("%s: unable to set vdd_%s\n", __func__, vdd_name);
+> -       return -EINVAL;
+> -}
+> -
+>  #ifdef CONFIG_SUSPEND
+>  static int omap_pm_enter(suspend_state_t suspend_state)
+>  {
+> @@ -208,25 +131,6 @@ void omap_common_suspend_init(void *pm_suspend)
+>  }
+>  #endif /* CONFIG_SUSPEND */
+>
+> -static void __init omap3_init_voltages(void)
+> -{
+> -       if (!soc_is_omap34xx())
+> -               return;
+> -
+> -       omap2_set_init_voltage("mpu_iva", "dpll1_ck", "mpu");
+> -       omap2_set_init_voltage("core", "l3_ick", "l3_main");
+> -}
+> -
+> -static void __init omap4_init_voltages(void)
+> -{
+> -       if (!soc_is_omap44xx())
+> -               return;
+> -
+> -       omap2_set_init_voltage("mpu", "dpll_mpu_ck", "mpu");
+> -       omap2_set_init_voltage("core", "l3_div_ck", "l3_main_1");
+> -       omap2_set_init_voltage("iva", "dpll_iva_m5x2_ck", "iva");
+> -}
+> -
+>  int __maybe_unused omap_pm_nop_init(void)
+>  {
+>         return 0;
+> @@ -246,10 +150,6 @@ int __init omap2_common_pm_late_init(void)
+>         omap4_twl_init();
+>         omap_voltage_late_init();
+>
+> -       /* Initialize the voltages */
+> -       omap3_init_voltages();
+> -       omap4_init_voltages();
+> -
+>         /* Smartreflex device init */
+>         omap_devinit_smartreflex();
+>
+> --
+> 2.23.0
