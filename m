@@ -2,103 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1F1AC08E3
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Sep 2019 17:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B8F3C0906
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Sep 2019 17:57:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727825AbfI0PsE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Sep 2019 11:48:04 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:59552 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727585AbfI0PsE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Sep 2019 11:48:04 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8RFlwsx028604;
-        Fri, 27 Sep 2019 10:47:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1569599278;
-        bh=U37r5TojFgcS5DwKcw0E6Hys+tinXCxumASCFgqCX8M=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=n0Dr10Fc+4D7YJlreDJ02Ho/MKselqyZ6JuPychdRGigTx8dWWa2gK6i2fqY5dVQc
-         IUPJMUBCpnPe8DrSvyAnfIiHNm4vGE9zwJvOxkba71HzXwN4KHTMU/1RfIyWs0RCMF
-         vVrX5avWBICkiZbB3QrrbQqe4DGgEkXTJSC9ZWrM=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8RFlwN2037608
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 27 Sep 2019 10:47:58 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 27
- Sep 2019 10:47:49 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 27 Sep 2019 10:47:49 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8RFltEh071020;
-        Fri, 27 Sep 2019 10:47:55 -0500
-Subject: Re: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to
- dts
-To:     Tero Kristo <t-kristo@ti.com>, Adam Ford <aford173@gmail.com>
-CC:     Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20190510194229.20628-1-aford173@gmail.com>
- <af325707-3e42-493d-e858-77878ef06138@ti.com>
- <CAHCN7xLzoCNW6q5yDCsqMHeNvdNegkGhd0N+q9+Gd8JUGbG=_g@mail.gmail.com>
- <7ada0752-6f65-2906-cb29-a47c9490fd57@ti.com>
- <CAHCN7xJexJvh71vyb31ETgo=n_y_CupHH-AZwVK9mZe3GzJfEQ@mail.gmail.com>
- <845055e2-8182-de74-2077-629fdf50ac6c@ti.com>
- <CAHCN7xJFrTLOnbqrnH2W_T2whR8Xji0EMNR_cy8GYkDV-JDodQ@mail.gmail.com>
- <854f6130-c8a8-81cb-aa76-4830f218ae54@ti.com>
- <CAHCN7xKocdiWOdmoWQV3POr84qte6WNt0QbQRAwxKSvU8COB_w@mail.gmail.com>
- <0473526e-df0a-94a5-5c22-debd0084ab16@ti.com>
- <36369388-e9c8-22cd-8c19-e2bdf2d0389b@ti.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <eb2eb1f6-3c9b-7ecb-667e-819033af9c14@ti.com>
-Date:   Fri, 27 Sep 2019 18:47:54 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727334AbfI0P5m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Sep 2019 11:57:42 -0400
+Received: from muru.com ([72.249.23.125]:34662 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727273AbfI0P5m (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 27 Sep 2019 11:57:42 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A59878022;
+        Fri, 27 Sep 2019 15:58:13 +0000 (UTC)
+Date:   Fri, 27 Sep 2019 08:57:38 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Yegor Yefremov <yegorslists@googlemail.com>
+Cc:     linux-omap@vger.kernel.org, vkoul@kernel.org,
+        Bin Liu <b-liu@ti.com>, linux-usb <linux-usb@vger.kernel.org>
+Subject: Re: musb: cppi41: broken high speed FTDI functionality when
+ connected to musb directly
+Message-ID: <20190927155738.GF5610@atomide.com>
+References: <CAGm1_kuK6aA1ew9ZY-fVDUE+o71u1QaSg0kfX2jWUWE9Me8Tjg@mail.gmail.com>
+ <CAGm1_kuQTtyrdwXAV9NCHnvj3f5d7TixmqCPw=Cxd2A=jKSYmg@mail.gmail.com>
+ <20190927151935.GD5610@atomide.com>
 MIME-Version: 1.0
-In-Reply-To: <36369388-e9c8-22cd-8c19-e2bdf2d0389b@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190927151935.GD5610@atomide.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 27/09/2019 18:37, Tero Kristo wrote:
+* Tony Lindgren <tony@atomide.com> [190927 15:20]:
+> * Yegor Yefremov <yegorslists@googlemail.com> [190927 12:31]:
+> > On Fri, Sep 27, 2019 at 10:18 AM Yegor Yefremov
+> > <yegorslists@googlemail.com> wrote:
+> > >
+> > > I was porting my system from 3.18/4.2 to 5.3. During this process I
+> > > noticed that FT4232 that is attached directly to musb is not working
+> > > correctly when opened for the first time: tx is working but nothing
+> > > can be received. On the second opening everything is working fine.
+> > > When the same chip is connected via a USB hub - everything is working
+> > > from the very beginning.
+> > >
+> > > I could reproduce this issue using BeagleBone Black with omap2plus_defconfig.
+> > >
+> > > # lsusb -t
+> > > +/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=musb-hdrc/1p, 480M
+> > >     |__ Port 1: Dev 2, If 0, Class=, Driver=ftdi_sio, 480M
+> > >     |__ Port 1: Dev 2, If 1, Class=, Driver=ftdi_sio, 480M
+> > >     |__ Port 1: Dev 2, If 2, Class=, Driver=ftdi_sio, 480M
+> > >     |__ Port 1: Dev 2, If 3, Class=, Driver=ftdi_sio, 480M
+> > >
+> > > git bisect revealed the following:
+> > >
+> > > fdea2d09b997ba4c86e7a707a5fac87c305f2131 is the first bad commit
+> > > commit fdea2d09b997ba4c86e7a707a5fac87c305f2131
+> > > Author: Tony Lindgren <tony@atomide.com>
+> > > Date:   Wed Aug 31 07:19:59 2016 -0700
+> > >
+> > >     dmaengine: cppi41: Add basic PM runtime support
+> > >
+> > >     Let's keep the device enabled between cppi41_dma_issue_pending()
+> > >     and dmaengine_desc_get_callback_invoke() and rely on the PM runtime
+> > >     autoidle timeout elsewhere.
+> > >
+> > >     As the PM runtime is for whole device, not for each channel,
+> > >     we need to queue pending transfers if the device is PM runtime
+> > >     suspended. Then we start the pending transfers in PM runtime
+> > >     resume.
+> > >
+> > >     Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > >     Signed-off-by: Vinod Koul <vinod.koul@intel.com>
+> > >
+> > > :040000 040000 8cf92c09083541dfdee01cc2973e73ef520f4fb1
+> > > a03c1a7ba8e723f7b503733c46edaa4141483265 M      drivers
+> > >
+> > > Any idea?
+> > 
+> > The problems can be reproduced with other FTDI chips like FT232R.
+> > 
+> > Invoking "minicom -D /dev/ttyUSB0" and typing some characters is
+> > enough to reproduce the issue (just in case, hw flow control should be
+> > disabled).
+> > 
+> > cp210x based converter is working without an issue. So only FTDI chips
+> > are affected so far.
+> 
+> Hmm OK. Maybe this could be an issue where the FTDI chip takes
+> longer to enumerate and cppi41 is already suspended by then?
+> 
+> At least we had a similar issue with commit ae4a3e028bb8
+> ("dmaengine: cppi41: Fix runtime PM timeouts with USB mass
+> storage").
 
-> If you can provide details about what clock framework / driver does 
-> wrong (sample clk_set_xyz call sequence, expected results via 
-> clk_get_xyz, and what fails), I can take a look at it. Just reporting 
-> arbitrary display driver issues I won't be able to debug at all (I don't 
-> have access to any of the displays, nor do I want to waste time 
-> debugging them without absolutely no knowledge whatsoever.)
+Looks like I'm unable to reproduce this with bbb and FT232R
+USB UART.
 
-I used your hack patches to allow changing rates via debugfs. And set 
-dss1_alwon_fck_3430es2 to 27000000 or 27870967. The end result was that 
-DSS gets some very high clock from dss1_alwon_fck_3430es2, as the frame 
-rate jumps to many hundreds fps.
+I tried v5.3 with omap2plus_defconfig, then boot, load musb
+and ftdi-sio modules, then connect ftdi directly to bbb,
+and then run "minicom -D /dev/ttyUSB0" on bbb and it works
+just fine for me.
 
-So, these numbers are not real, but to give the idea what I saw. Running 
-first with 50 MHz, I can see, say, 40 fps. Then I set the clock to 30 
-MHz, and fps dropped to, say, 30fps, as expected with lower clock. Then 
-I set the clock to 27MHz (or the other one), expecting a bit lower fps, 
-but instead I saw hundreds of fps.
+I tried also rebooting the device inbetween in case it only
+happens on the first connect after boot but still no luck
+reproducing.
 
-I don't know if there's any other way to observe the wrong clock rate 
-but have the dss enabled and running kmstest or similar. I can help you 
-set that up next week, should be trivial. You don't need a display for that.
+Maybe try adding some debug prints to cppi41_runtime_suspend()
+and cppi41_runtime_resume() to see if gets runtime suspended
+too early?
 
-  Tomi
+Regards,
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Tony
