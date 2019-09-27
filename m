@@ -2,102 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27555C0078
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Sep 2019 09:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E5E9C00F7
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Sep 2019 10:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726054AbfI0HzY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Sep 2019 03:55:24 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:43554 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725812AbfI0HzY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Sep 2019 03:55:24 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8R7tHv2065733;
-        Fri, 27 Sep 2019 02:55:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1569570917;
-        bh=tRDmuFTcml9/vkcUAcgHfVDQw97SRNjv+W5LESjr7XI=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=huDKGiiTuQoxMrSKLQ4HaZZ0bHxCorwA5fVfKJKSbv4nwI4rPsuKgRB4f+rS0wWTV
-         qZEAZeYx7sUl0PlkbiZwlmuBI8cWIH/o7zEJQFcDZbSibeUbJH0HzX4AUhMKoy1GRd
-         LZeuRRobiubmw8KKEE2V9ZkUv1I6R8kLV7AthT/M=
-Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8R7tHgD077317
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 27 Sep 2019 02:55:17 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 27
- Sep 2019 02:55:16 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 27 Sep 2019 02:55:09 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8R7tE5K122558;
-        Fri, 27 Sep 2019 02:55:14 -0500
-Subject: Re: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to
- dts
-To:     Adam Ford <aford173@gmail.com>, Tony Lindgren <tony@atomide.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-CC:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20190510194229.20628-1-aford173@gmail.com>
- <af325707-3e42-493d-e858-77878ef06138@ti.com>
- <CAHCN7xLzoCNW6q5yDCsqMHeNvdNegkGhd0N+q9+Gd8JUGbG=_g@mail.gmail.com>
- <7ada0752-6f65-2906-cb29-a47c9490fd57@ti.com>
- <CAHCN7xJexJvh71vyb31ETgo=n_y_CupHH-AZwVK9mZe3GzJfEQ@mail.gmail.com>
- <845055e2-8182-de74-2077-629fdf50ac6c@ti.com>
- <CAHCN7xJFrTLOnbqrnH2W_T2whR8Xji0EMNR_cy8GYkDV-JDodQ@mail.gmail.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <854f6130-c8a8-81cb-aa76-4830f218ae54@ti.com>
-Date:   Fri, 27 Sep 2019 10:55:13 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726118AbfI0IS6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Sep 2019 04:18:58 -0400
+Received: from mail-vk1-f196.google.com ([209.85.221.196]:44633 "EHLO
+        mail-vk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726027AbfI0IS6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Sep 2019 04:18:58 -0400
+Received: by mail-vk1-f196.google.com with SMTP id j21so1029161vki.11;
+        Fri, 27 Sep 2019 01:18:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=LkJDn6ibgbN4/9pWs1W9eHajworB/c/+Fplmk0dMkcw=;
+        b=UBrBjlMTyQ648bspIoJgaMbZH9JbM7BC1g+A4L+FO4nF5LpE7KAR+jOFPpG5L55U2g
+         j646BasiKzBZ00NpzmIVhcVWZF8tjYFfo7KF/6NM0cQDawxL3ZbNEBbmAgSZsGdbkzG7
+         4ths5ZVPKJvaozzZrTeY85K6/ISSGBA/hgnQv1pqwaMwJASOeu7bnL3pQ8/DSpqQI2bk
+         hH6GTn5cwSzNpjmlEW3mn3P7PjlqrsqEAT8g+qGAMinvTUGcjASpvLHW/v2Ie9jYJjZa
+         rN78JyqVKcl6S0V4W8JrGAskH6YWh1T2UxJb36PcGfzBkUHypgDannKBTmR8Iu5jUnck
+         yGlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=LkJDn6ibgbN4/9pWs1W9eHajworB/c/+Fplmk0dMkcw=;
+        b=bUxP+Ix5Jl562ZiZSgIpI5qk02uvh2i/o9F9Bn8wCoHCzMb6dmaqLfVE1h7NJsPyYe
+         sKKYsGP7jUQ80CwG0Vd/JUVSEkzjJ55KSIsvdDvu/844AlnnbObbo17FHefIPLk9VZ/z
+         J82H01hDkXUh9bP/pWB77rlzqqQLEZQ8Ixqy3HV5fhrCKoxG3RYruSsQlKvnZbW2QooK
+         RxjEXrvR+ChTTVp/2lypaZuS2j5aGGzw3Y2byVj3EkaE4/8QzbZoCnthTku1yh7CXJzw
+         OGf6xO/qWQ20FvtRCk/Yp2bKn6f+LcwuEvpCTeL8U+HbtFYLG6e0ONSLZ2LlS0Ed8IYU
+         sUXA==
+X-Gm-Message-State: APjAAAUAYxy+TQxuy020qBTmFB/KhuW7xIoiyuQLJh3nH3xoHWGsXg9a
+        RsIHDHdebCNuEVQwOZDRPTNsx/40gwgrYh/TTJqAHz+MWbw=
+X-Google-Smtp-Source: APXvYqyNhZeXXSjGF3QhP6DSX+R7WJSLFPVJqg+aGBiHxxmVzGYIzj1eEvkUAHgfPFClZJXktAzdex5eSZieBJa4030=
+X-Received: by 2002:a1f:a4c5:: with SMTP id n188mr3958522vke.11.1569572335654;
+ Fri, 27 Sep 2019 01:18:55 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAHCN7xJFrTLOnbqrnH2W_T2whR8Xji0EMNR_cy8GYkDV-JDodQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Fri, 27 Sep 2019 10:18:41 +0200
+Message-ID: <CAGm1_kuK6aA1ew9ZY-fVDUE+o71u1QaSg0kfX2jWUWE9Me8Tjg@mail.gmail.com>
+Subject: musb: cppi41: broken high speed FTDI functionality when connected to
+ musb directly
+To:     linux-omap@vger.kernel.org
+Cc:     Tony Lindgren <tony@atomide.com>, vkoul@kernel.org,
+        Bin Liu <b-liu@ti.com>, linux-usb <linux-usb@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-(dropping folks who're probably not interested...)
+I was porting my system from 3.18/4.2 to 5.3. During this process I
+noticed that FT4232 that is attached directly to musb is not working
+correctly when opened for the first time: tx is working but nothing
+can be received. On the second opening everything is working fine.
+When the same chip is connected via a USB hub - everything is working
+from the very beginning.
 
-On 26/09/2019 17:12, Adam Ford wrote:
-> On Thu, Sep 26, 2019 at 1:55 AM Tomi Valkeinen <tomi.valkeinen@ti.com> wrote:
->>
->> On 25/09/2019 23:51, Adam Ford wrote:
->>
->>>> Has anyone debugged why the hang is happening?
->>> I started to debug this, but I got distracted when I noticed the LCD
->>> did't work at all on modern kernels.  I have that fixed now, so I can
->>> go back to investigating this.
+I could reproduce this issue using BeagleBone Black with omap2plus_defconfig.
 
-I dont' have the same board, but I was testing with omap3 beagle xm. I 
-can reproduce rather similar issue, although I don't get a hang but 
-instead sync lost and underflow flood (which makes the device unusable).
+# lsusb -t
++/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=musb-hdrc/1p, 480M
+    |__ Port 1: Dev 2, If 0, Class=, Driver=ftdi_sio, 480M
+    |__ Port 1: Dev 2, If 1, Class=, Driver=ftdi_sio, 480M
+    |__ Port 1: Dev 2, If 2, Class=, Driver=ftdi_sio, 480M
+    |__ Port 1: Dev 2, If 3, Class=, Driver=ftdi_sio, 480M
 
-It looks like a bug in omap clock handling.
+git bisect revealed the following:
 
-DSS uses dss1_alwon_fck_3430es2 as fclk. dss1_alwon_fck_3430es2 comes 
-from dpll4_ck, and there's a divider after the PLL, dpll4_m4_ck.
+fdea2d09b997ba4c86e7a707a5fac87c305f2131 is the first bad commit
+commit fdea2d09b997ba4c86e7a707a5fac87c305f2131
+Author: Tony Lindgren <tony@atomide.com>
+Date:   Wed Aug 31 07:19:59 2016 -0700
 
-When the DSS driver sets dss1_alwon_fck_3430es2 rate to 27000000 or 
-27870967, which can be created with m4 dividers 32 and 31, it looks like 
-the divider goes to bypass, or to a very small value. DSS gets a very 
-high clock rate and breaks down.
+    dmaengine: cppi41: Add basic PM runtime support
 
-  Tomi
+    Let's keep the device enabled between cppi41_dma_issue_pending()
+    and dmaengine_desc_get_callback_invoke() and rely on the PM runtime
+    autoidle timeout elsewhere.
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+    As the PM runtime is for whole device, not for each channel,
+    we need to queue pending transfers if the device is PM runtime
+    suspended. Then we start the pending transfers in PM runtime
+    resume.
+
+    Signed-off-by: Tony Lindgren <tony@atomide.com>
+    Signed-off-by: Vinod Koul <vinod.koul@intel.com>
+
+:040000 040000 8cf92c09083541dfdee01cc2973e73ef520f4fb1
+a03c1a7ba8e723f7b503733c46edaa4141483265 M      drivers
+
+Any idea?
+
+Thanks.
+
+Best regards,
+Yegor
