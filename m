@@ -2,72 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65E6FC087A
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Sep 2019 17:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB29CC08B4
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Sep 2019 17:37:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727289AbfI0PXT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Sep 2019 11:23:19 -0400
-Received: from muru.com ([72.249.23.125]:34640 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727140AbfI0PXT (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 27 Sep 2019 11:23:19 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id C37D88022;
-        Fri, 27 Sep 2019 15:23:50 +0000 (UTC)
-Date:   Fri, 27 Sep 2019 08:23:15 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Stephen Kitt <steve@sk2.org>
-Cc:     Tero Kristo <t-kristo@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] clk/ti/adpll: allocate room for terminating null
-Message-ID: <20190927152315.GE5610@atomide.com>
-References: <20190927145737.7832-1-steve@sk2.org>
+        id S1727289AbfI0Phr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Sep 2019 11:37:47 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:55662 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727207AbfI0Phr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Sep 2019 11:37:47 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8RFbeYx051670;
+        Fri, 27 Sep 2019 10:37:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1569598661;
+        bh=Lqo9bBRFGck3umPvJYDrWptfCEGsJ4lcKhD97BGvgh4=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=tw1025iq5dUXluSa0qqR4U6Bp2835f/huQP/igQAdoBf7BB9A6bmoqA6aXnTtrg0O
+         Ci6gi14TCsYVDllFYOrN+WaIZG6gl6l46r44G4j7qzkkMdu8wcV2nGcTS4qr+7kJNV
+         EK90yh8PU6/aLkGC+Q3CDLZh1e5gb7RHko52UUCk=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8RFbeNn015785;
+        Fri, 27 Sep 2019 10:37:40 -0500
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 27
+ Sep 2019 10:37:32 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Fri, 27 Sep 2019 10:37:40 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8RFba8k044922;
+        Fri, 27 Sep 2019 10:37:37 -0500
+Subject: Re: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to
+ dts
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Adam Ford <aford173@gmail.com>
+CC:     Tony Lindgren <tony@atomide.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Adam Ford <adam.ford@logicpd.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20190510194229.20628-1-aford173@gmail.com>
+ <af325707-3e42-493d-e858-77878ef06138@ti.com>
+ <CAHCN7xLzoCNW6q5yDCsqMHeNvdNegkGhd0N+q9+Gd8JUGbG=_g@mail.gmail.com>
+ <7ada0752-6f65-2906-cb29-a47c9490fd57@ti.com>
+ <CAHCN7xJexJvh71vyb31ETgo=n_y_CupHH-AZwVK9mZe3GzJfEQ@mail.gmail.com>
+ <845055e2-8182-de74-2077-629fdf50ac6c@ti.com>
+ <CAHCN7xJFrTLOnbqrnH2W_T2whR8Xji0EMNR_cy8GYkDV-JDodQ@mail.gmail.com>
+ <854f6130-c8a8-81cb-aa76-4830f218ae54@ti.com>
+ <CAHCN7xKocdiWOdmoWQV3POr84qte6WNt0QbQRAwxKSvU8COB_w@mail.gmail.com>
+ <0473526e-df0a-94a5-5c22-debd0084ab16@ti.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <36369388-e9c8-22cd-8c19-e2bdf2d0389b@ti.com>
+Date:   Fri, 27 Sep 2019 18:37:35 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190927145737.7832-1-steve@sk2.org>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <0473526e-df0a-94a5-5c22-debd0084ab16@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Stephen Kitt <steve@sk2.org> [190927 15:13]:
-> The buffer allocated in ti_adpll_clk_get_name doesn't account for the
-> terminating null. This patch adds the extra byte, and switches to
-> snprintf to avoid overflowing.
+On 27/09/2019 16:47, Tomi Valkeinen wrote:
+> On 27/09/2019 15:33, Adam Ford wrote:
 > 
-> Signed-off-by: Stephen Kitt <steve@sk2.org>
-> ---
->  drivers/clk/ti/adpll.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>>> It looks like a bug in omap clock handling.
+>>>
+>>> DSS uses dss1_alwon_fck_3430es2 as fclk. dss1_alwon_fck_3430es2 comes
+>>> from dpll4_ck, and there's a divider after the PLL, dpll4_m4_ck.
+>>>
+>>> When the DSS driver sets dss1_alwon_fck_3430es2 rate to 27000000 or
+>>> 27870967, which can be created with m4 dividers 32 and 31, it looks like
+>>> the divider goes to bypass, or to a very small value. DSS gets a very
+>>> high clock rate and breaks down.
+>>
+>> Is there anything I can do to help troubleshoot this?  I could insert
+>> a hack that checks if we're omap3 and if so make the divider equal to
+>> 4, but that seems like just a hack.
+>> I can run more tests or insert code somewhere if you want.
 > 
-> diff --git a/drivers/clk/ti/adpll.c b/drivers/clk/ti/adpll.c
-> index fdfb90058504..27933c4e8a27 100644
-> --- a/drivers/clk/ti/adpll.c
-> +++ b/drivers/clk/ti/adpll.c
-> @@ -196,12 +196,13 @@ static const char *ti_adpll_clk_get_name(struct ti_adpll_data *d,
->  	} else {
->  		const char *base_name = "adpll";
->  		char *buf;
-> +		size_t size = 8 + 1 + strlen(base_name) + 1 +
-> +			      strlen(postfix) + 1;
->  
-> -		buf = devm_kzalloc(d->dev, 8 + 1 + strlen(base_name) + 1 +
-> -				    strlen(postfix), GFP_KERNEL);
-> +		buf = devm_kzalloc(d->dev, size, GFP_KERNEL);
->  		if (!buf)
->  			return NULL;
-> -		sprintf(buf, "%08lx.%s.%s", d->pa, base_name, postfix);
-> +		snprintf(buf, size, "%08lx.%s.%s", d->pa, base_name, postfix);
->  		name = buf;
->  	}
->  
+> I think it's up to someone who's knowledgeable in omap clock framework. 
+> I'm kind of hoping that Tero or Tony would be willing to debug =). I can 
+> try to find time to debug the omap clk framework, but I'll be going on 
+> blindly there.
 
-Thanks for catching this. Maybe just use devm_kasprintf() here?
+If you can provide details about what clock framework / driver does 
+wrong (sample clk_set_xyz call sequence, expected results via 
+clk_get_xyz, and what fails), I can take a look at it. Just reporting 
+arbitrary display driver issues I won't be able to debug at all (I don't 
+have access to any of the displays, nor do I want to waste time 
+debugging them without absolutely no knowledge whatsoever.)
 
-Regards,
-
-Tony
+-Tero
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
