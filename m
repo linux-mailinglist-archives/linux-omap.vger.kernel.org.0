@@ -2,96 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A1FC2962
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2019 00:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63097C29A1
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2019 00:34:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731806AbfI3WUX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Sep 2019 18:20:23 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:44126 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726350AbfI3WUW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Sep 2019 18:20:22 -0400
-Received: by mail-ot1-f68.google.com with SMTP id 21so9769659otj.11;
-        Mon, 30 Sep 2019 15:20:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=F7EuIouiHhXnI+Mf2IJX0I4I3pBr8z7vl6hhtN/rydc=;
-        b=nanYkIa88zdOcBjfYJinBCYrY35jvSz2AVXYvp9G2XcgAkEu3fzBFxpJo5neLokxRN
-         dlxdoWvCNz+rI7kgcLGCJxL+Fo2bYc5T0hoW3X1E57CnXdYCqEsi5jYAM6dwbX8In+8/
-         cq/MCKlh3jD1AkgLTlJ715FWF05TC8Iuz9m8DaYEppH9PYvGmiUHBVbtgWUWLhWUgmXc
-         uBDCWMXF8zI4EvCXoSs/t+12/nuf4gNN/j1rnS1A/Uhmfp30RhMvbjk5Dc6wDc88grLX
-         vWd2FdVbhvq6Vz6HDBfx1BgNtfWR5ICBL95TGVGFN7uI6KjgKsK8v86OYum+OMtjYYKv
-         2D5w==
-X-Gm-Message-State: APjAAAVDi1wWxKcOwfwZjad7SZJEo91xV3NDxemY5+5lyAoBRKKFSUhi
-        rrkMabGU6j7lThacGUQPYw==
-X-Google-Smtp-Source: APXvYqwlTz51SdwLtiYS/F6mSjvwoCRn1JCMaKGRrqHAekh5UT3CgLba9X+2enyJqSphfurQyQWK4A==
-X-Received: by 2002:a9d:7844:: with SMTP id c4mr577304otm.273.1569882021729;
-        Mon, 30 Sep 2019 15:20:21 -0700 (PDT)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id v10sm4017054otk.17.2019.09.30.15.20.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2019 15:20:21 -0700 (PDT)
-Date:   Mon, 30 Sep 2019 17:20:20 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-crypto@vger.kernel.org, devicetree@vger.kernel.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Adam Ford <aford173@gmail.com>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali.rohar@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>
-Subject: Re: [PATCH 2/7] hwrng: omap3-rom - Fix missing clock by probing with
- device tree
-Message-ID: <20190930222020.GA13078@bogus>
-References: <20190914210300.15836-1-tony@atomide.com>
- <20190914210300.15836-3-tony@atomide.com>
+        id S1727645AbfI3WeB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Sep 2019 18:34:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35518 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726350AbfI3WeA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 30 Sep 2019 18:34:00 -0400
+Received: from earth.universe (unknown [185.62.205.105])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4E52920842;
+        Mon, 30 Sep 2019 22:33:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1569882839;
+        bh=ISUtgowUUlOBG9tC6LlpHlkEKmAkDDDE4cTTZB+2Z68=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=R/vGfivyxO0EQOoZJilucBMK+Ggb7FG/PEMeT7JlM4a1pePlH6Q4U1Tp4eKJyh0I+
+         Gpz/JjFFm/BLnAYTl8V1jk7rcEkdYpKHlbobFjSecMN9eclILTSBPJZpui5Uh5cVrA
+         Mk5/0gEOFKk0tyLzmTl7O5ihrL92nbm8ly6JQ6fA=
+Received: by earth.universe (Postfix, from userid 1000)
+        id BC02A3C0CA1; Tue,  1 Oct 2019 00:33:56 +0200 (CEST)
+Date:   Tue, 1 Oct 2019 00:33:56 +0200
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
+        Philipp Puschmann <philipp.puschmann@emlix.com>
+Subject: Re: [PATCH] Bluetooth: hci_ll: set operational frequency earlier
+Message-ID: <20190930223356.z6tiv4v5yrqtzu2t@earth.universe>
+References: <CAHCN7xLOCC00UC4PB3vHa6Q7yyhXVEaWgx2X9D9L2dDubd_5fA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="niqozkc3jiirtp7i"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190914210300.15836-3-tony@atomide.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAHCN7xLOCC00UC4PB3vHa6Q7yyhXVEaWgx2X9D9L2dDubd_5fA@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 14 Sep 2019 14:02:55 -0700, Tony Lindgren wrote:
-> Commit 0ed266d7ae5e ("clk: ti: omap3: cleanup unnecessary clock aliases")
-> removed old omap3 clock framework aliases but caused omap3-rom-rng to
-> stop working with clock not found error.
-> 
-> Based on discussions on the mailing list it was requested by Tero Kristo
-> that it would be best to fix this issue by probing omap3-rom-rng using
-> device tree to provide a proper clk property. The other option would be
-> to add back the missing clock alias, but that does not help moving things
-> forward with removing old legacy platform_data.
-> 
-> Let's also add a proper device tree binding and keep it together with
-> the fix.
-> 
-> Cc: devicetree@vger.kernel.org
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Adam Ford <aford173@gmail.com>
-> Cc: Pali Rohár <pali.rohar@gmail.com>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Tero Kristo <t-kristo@ti.com>
-> Fixes: 0ed266d7ae5e ("clk: ti: omap3: cleanup unnecessary clock aliases")
-> Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  .../devicetree/bindings/rng/omap3_rom_rng.txt | 27 +++++++++++++++++++
->  arch/arm/boot/dts/omap3-n900.dts              |  6 +++++
->  arch/arm/mach-omap2/pdata-quirks.c            | 12 +--------
->  drivers/char/hw_random/omap3-rom-rng.c        | 17 ++++++++++--
->  4 files changed, 49 insertions(+), 13 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/rng/omap3_rom_rng.txt
-> 
 
-Acked-by: Rob Herring <robh@kernel.org>
+--niqozkc3jiirtp7i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Mon, Sep 30, 2019 at 03:10:18PM -0500, Adam Ford wrote:
+> Is anyone else having issues with the hci_ll after a2e02f38eff8
+> ("Bluetooth: hci_ll: set operational frequency earlier") was applied?
+>=20
+> I have an i.MX6Q with a WL1837MOD attached to UART2. After this patch
+> I git a bunch of timeouts when initializing the device using the 5.3
+> and 5.3.1 kernel.   I know a bunch of omap and imx users have done
+> some various tests over the years, so I thought I'd ask.
+>=20
+> [  195.911836] Bluetooth: hci0: command 0xff36 tx timeout
+> [  206.071837] Bluetooth: hci0: command 0x1001 tx timeout
+> [  214.231862] Bluetooth: hci0: Reading TI version information failed (-1=
+10)
+> [  214.238712] Bluetooth: hci0: download firmware failed, retrying...
+> [  216.391834] Bluetooth: hci0: command 0xff36 tx timeout
+> [  226.551843] Bluetooth: hci0: command 0x1001 tx timeout
+> [  234.711856] Bluetooth: hci0: Reading TI version information failed (-1=
+10)
+> [  234.718705] Bluetooth: hci0: download firmware failed, retrying...
+> [  236.871832] Bluetooth: hci0: command 0xff36 tx timeout
+> [  247.031837] Bluetooth: hci0: command 0x1001 tx timeout
+> [  255.191852] Bluetooth: hci0: Reading TI version information failed (-1=
+10)
+> [  255.198706] Bluetooth: hci0: download firmware failed, retrying...
+>
+> Can't init device hci0: Connection timed out (110)
+
+I can see the same messages on OMAP4+WL1285 based Motorola Droid 4
+(with the same commands resulting in a timeout).
+
+> Revering this patch fixes the issue,
+
+Ack.
+
+> and subsequent patch proposals form Philipp haven't seemed
+> to fix the issues for me on 5.3.
+
+I did not do any further tests, just noticed this while working
+on another patchset.
+
+-- Sebastian
+
+--niqozkc3jiirtp7i
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl2SgtEACgkQ2O7X88g7
++po4/g/+IGM3j5jfpYzr+RYoNYjBkQPYgwWojq8LpIwfihDVFs6NCfjt3f1G0aJ+
+zDczVpLC/Pnj6ltnfliLUAuyhOM94+unB/yOCKtKIwSWMX+wgofyITm6rSxlAM0n
+SoqgY5TkNXUBv0wMoJse+6wqOBsMZ/mJg6vpP7L2IjP5s668MgoD4wPADi4mJ0p7
+9L68Of5PodwjXMnTQG8FiMezaetSiLGNtFBFBnRY8R499AhldpDf/uDSafaFNNyg
+U+K4fBYhFFcYECQI3UvFD6vhytH49dSzOByCNjLsf0je7g92qbm1bZV0FomTuFrJ
+ni5px6yFV+svNgo+w+n+jFrDpzutkU91jp/TGJpGDHb2QaztQ8gGHb/R68ZkFPko
+y9r4f3y6N6d44oJnxpEPerDw0jKyfNQ3HbLZNqHTWQPOLqVy9V3S4WGF9AZ5fgWG
+Jd0tkAh2mjryNjwKv6z0JnNA6PBMSyle0C1wdwxExL2QNqmNKf6C16ada2N32anb
+QqYKj/UcA86Qad0rDwdY8KLj784/7+1yUgO+LUtv3ZYv9lUgbHcb1EB+/5jaNOvv
+X17dW2bTu+RXYefM3Uq/DI2wxSg6umFfjCmou/yJiqa7O8yfkmzGlmywNBESCRfZ
+TcUjqJROSUaYKi6JZwsuaBsMqgeMlfsk97HgBkVF8RxiDTtNEiQ=
+=P+sU
+-----END PGP SIGNATURE-----
+
+--niqozkc3jiirtp7i--
