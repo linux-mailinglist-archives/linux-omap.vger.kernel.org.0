@@ -2,118 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63097C29A1
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2019 00:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 196B8C2AA1
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2019 01:11:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727645AbfI3WeB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Sep 2019 18:34:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35518 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726350AbfI3WeA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 30 Sep 2019 18:34:00 -0400
-Received: from earth.universe (unknown [185.62.205.105])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4E52920842;
-        Mon, 30 Sep 2019 22:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569882839;
-        bh=ISUtgowUUlOBG9tC6LlpHlkEKmAkDDDE4cTTZB+2Z68=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=R/vGfivyxO0EQOoZJilucBMK+Ggb7FG/PEMeT7JlM4a1pePlH6Q4U1Tp4eKJyh0I+
-         Gpz/JjFFm/BLnAYTl8V1jk7rcEkdYpKHlbobFjSecMN9eclILTSBPJZpui5Uh5cVrA
-         Mk5/0gEOFKk0tyLzmTl7O5ihrL92nbm8ly6JQ6fA=
-Received: by earth.universe (Postfix, from userid 1000)
-        id BC02A3C0CA1; Tue,  1 Oct 2019 00:33:56 +0200 (CEST)
-Date:   Tue, 1 Oct 2019 00:33:56 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
-        Philipp Puschmann <philipp.puschmann@emlix.com>
-Subject: Re: [PATCH] Bluetooth: hci_ll: set operational frequency earlier
-Message-ID: <20190930223356.z6tiv4v5yrqtzu2t@earth.universe>
-References: <CAHCN7xLOCC00UC4PB3vHa6Q7yyhXVEaWgx2X9D9L2dDubd_5fA@mail.gmail.com>
+        id S1732438AbfI3XLI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Sep 2019 19:11:08 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:59566 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730433AbfI3XLH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Sep 2019 19:11:07 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x8UNAnGS039746;
+        Mon, 30 Sep 2019 18:10:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1569885049;
+        bh=OUHywMUtej7GlrP6k5IHpcQZlK4jvSX03Oy+36G5YdY=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=HCBY20MxGKQCMraorRHsqfQFekbPqI8q5nNNbRNw/hjMBrGrYpW8z2HmpPf9J45S9
+         VkpG2EoEL+a/zFdOWbTfybj7JMVz3KRpccnUO5eoUBZbiItl1YbVt21xB9shEmROiO
+         f8GoKfvVKOGm5dErjP11p5aCFYzmAtYSkH4CiY0s=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x8UNAnBT005434
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 30 Sep 2019 18:10:49 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 30
+ Sep 2019 18:10:39 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 30 Sep 2019 18:10:39 -0500
+Received: from [10.250.197.80] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x8UNAkNV118782;
+        Mon, 30 Sep 2019 18:10:47 -0500
+Subject: Re: [PATCH v2 linux-next 4/4] arm64: configs: defconfig: Change
+ CONFIG_REMOTEPROC from m to y
+To:     Olof Johansson <olof@lixom.net>, Will Deacon <will@kernel.org>
+CC:     Arnd Bergmann <arnd@arndb.de>, Sekhar Nori <nsekhar@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Tony Lindgren <tony@atomide.com>, Suman Anna <s-anna@ti.com>,
+        <hch@lst.de>, Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>
+References: <20190920075946.13282-1-j-keerthy@ti.com>
+ <20190920075946.13282-5-j-keerthy@ti.com>
+ <20190930134856.umdoeq7k6ukmajij@willie-the-truck>
+ <CAOesGMgs7rKOVnimDwSpeGTAf93Er+Ymzy9-R-mKkQK6MQcF3Q@mail.gmail.com>
+From:   keerthy <j-keerthy@ti.com>
+Message-ID: <0c8dcf78-6f9e-f47f-1175-90b716cdad84@ti.com>
+Date:   Tue, 1 Oct 2019 04:40:47 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="niqozkc3jiirtp7i"
-Content-Disposition: inline
-In-Reply-To: <CAHCN7xLOCC00UC4PB3vHa6Q7yyhXVEaWgx2X9D9L2dDubd_5fA@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <CAOesGMgs7rKOVnimDwSpeGTAf93Er+Ymzy9-R-mKkQK6MQcF3Q@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---niqozkc3jiirtp7i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On 10/1/2019 12:16 AM, Olof Johansson wrote:
+> On Mon, Sep 30, 2019 at 6:49 AM Will Deacon <will@kernel.org> wrote:
+>>
+>> On Fri, Sep 20, 2019 at 01:29:46PM +0530, Keerthy wrote:
+>>> Commit 6334150e9a36 ("remoteproc: don't allow modular build")
+>>> changes CONFIG_REMOTEPROC to a boolean from a tristate config
+>>> option which inhibits all defconfigs marking CONFIG_REMOTEPROC as
+>>> a module in compiling the remoteproc and dependent config options.
+>>>
+>>> So fix the defconfig to have CONFIG_REMOTEPROC built in.
+>>>
+>>> Fixes: 6334150e9a36 ("remoteproc: don't allow modular build")
+>>> Signed-off-by: Keerthy <j-keerthy@ti.com>
+>>> ---
+>>>   arch/arm64/configs/defconfig | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+>>> index 8e05c39eab08..c9a867ac32d4 100644
+>>> --- a/arch/arm64/configs/defconfig
+>>> +++ b/arch/arm64/configs/defconfig
+>>> @@ -723,7 +723,7 @@ CONFIG_TEGRA_IOMMU_SMMU=y
+>>>   CONFIG_ARM_SMMU=y
+>>>   CONFIG_ARM_SMMU_V3=y
+>>>   CONFIG_QCOM_IOMMU=y
+>>> -CONFIG_REMOTEPROC=m
+>>> +CONFIG_REMOTEPROC=y
+>>>   CONFIG_QCOM_Q6V5_MSS=m
+>>>   CONFIG_QCOM_Q6V5_PAS=m
+>>>   CONFIG_QCOM_SYSMON=m
+>>
+>> Acked-by: Will Deacon <will@kernel.org>
+>>
+>> This fixes the following annoying warning from "make defconfig" on arm64:
+>>
+>>    arch/arm64/configs/defconfig:726:warning: symbol value 'm' invalid for REMOTEPROC
+>>
+>> I'm assuming the fix will go via arm-soc, but I can take it otherwise
+>> (please just let me know).
+> 
+> Thanks, I'll pick this up, but I'll squash the 4 one-line changes into
+> one commit instead of separate patches.
 
-On Mon, Sep 30, 2019 at 03:10:18PM -0500, Adam Ford wrote:
-> Is anyone else having issues with the hci_ll after a2e02f38eff8
-> ("Bluetooth: hci_ll: set operational frequency earlier") was applied?
->=20
-> I have an i.MX6Q with a WL1837MOD attached to UART2. After this patch
-> I git a bunch of timeouts when initializing the device using the 5.3
-> and 5.3.1 kernel.   I know a bunch of omap and imx users have done
-> some various tests over the years, so I thought I'd ask.
->=20
-> [  195.911836] Bluetooth: hci0: command 0xff36 tx timeout
-> [  206.071837] Bluetooth: hci0: command 0x1001 tx timeout
-> [  214.231862] Bluetooth: hci0: Reading TI version information failed (-1=
-10)
-> [  214.238712] Bluetooth: hci0: download firmware failed, retrying...
-> [  216.391834] Bluetooth: hci0: command 0xff36 tx timeout
-> [  226.551843] Bluetooth: hci0: command 0x1001 tx timeout
-> [  234.711856] Bluetooth: hci0: Reading TI version information failed (-1=
-10)
-> [  234.718705] Bluetooth: hci0: download firmware failed, retrying...
-> [  236.871832] Bluetooth: hci0: command 0xff36 tx timeout
-> [  247.031837] Bluetooth: hci0: command 0x1001 tx timeout
-> [  255.191852] Bluetooth: hci0: Reading TI version information failed (-1=
-10)
-> [  255.198706] Bluetooth: hci0: download firmware failed, retrying...
->
-> Can't init device hci0: Connection timed out (110)
+Thanks Olof.
 
-I can see the same messages on OMAP4+WL1285 based Motorola Droid 4
-(with the same commands resulting in a timeout).
-
-> Revering this patch fixes the issue,
-
-Ack.
-
-> and subsequent patch proposals form Philipp haven't seemed
-> to fix the issues for me on 5.3.
-
-I did not do any further tests, just noticed this while working
-on another patchset.
-
--- Sebastian
-
---niqozkc3jiirtp7i
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl2SgtEACgkQ2O7X88g7
-+po4/g/+IGM3j5jfpYzr+RYoNYjBkQPYgwWojq8LpIwfihDVFs6NCfjt3f1G0aJ+
-zDczVpLC/Pnj6ltnfliLUAuyhOM94+unB/yOCKtKIwSWMX+wgofyITm6rSxlAM0n
-SoqgY5TkNXUBv0wMoJse+6wqOBsMZ/mJg6vpP7L2IjP5s668MgoD4wPADi4mJ0p7
-9L68Of5PodwjXMnTQG8FiMezaetSiLGNtFBFBnRY8R499AhldpDf/uDSafaFNNyg
-U+K4fBYhFFcYECQI3UvFD6vhytH49dSzOByCNjLsf0je7g92qbm1bZV0FomTuFrJ
-ni5px6yFV+svNgo+w+n+jFrDpzutkU91jp/TGJpGDHb2QaztQ8gGHb/R68ZkFPko
-y9r4f3y6N6d44oJnxpEPerDw0jKyfNQ3HbLZNqHTWQPOLqVy9V3S4WGF9AZ5fgWG
-Jd0tkAh2mjryNjwKv6z0JnNA6PBMSyle0C1wdwxExL2QNqmNKf6C16ada2N32anb
-QqYKj/UcA86Qad0rDwdY8KLj784/7+1yUgO+LUtv3ZYv9lUgbHcb1EB+/5jaNOvv
-X17dW2bTu+RXYefM3Uq/DI2wxSg6umFfjCmou/yJiqa7O8yfkmzGlmywNBESCRfZ
-TcUjqJROSUaYKi6JZwsuaBsMqgeMlfsk97HgBkVF8RxiDTtNEiQ=
-=P+sU
------END PGP SIGNATURE-----
-
---niqozkc3jiirtp7i--
+> 
+> 
+> -Olof
+> 
