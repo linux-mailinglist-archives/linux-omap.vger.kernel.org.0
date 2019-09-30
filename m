@@ -2,85 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53DC9C2267
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Sep 2019 15:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF1EC2281
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Sep 2019 15:54:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730759AbfI3NtD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Sep 2019 09:49:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39956 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730693AbfI3NtD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 30 Sep 2019 09:49:03 -0400
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 551602086A;
-        Mon, 30 Sep 2019 13:49:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569851342;
-        bh=FCh5P+PLkf8Fy6u6DVHDWSyXy5Kb48cMb9OwoT818PQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nw3vrRnoJ/wyKkOghJGAhrfUjB4HUOGPzCULFD4Kr3iQLmw7IAL1yY1IbWzMPK4da
-         eWbi6TE0ysvXKKMXYG8TK4x25jKiw/UAo+8HKTHiQZ8fv8/6pjbdMTDnYfvnQhdogc
-         3egyNZeMKQN7sD0n38+1a4P88VMa2muNcfOChcBU=
-Date:   Mon, 30 Sep 2019 14:48:57 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Keerthy <j-keerthy@ti.com>
-Cc:     arnd@arndb.de, nsekhar@ti.com, olof@lixom.net, t-kristo@ti.com,
-        catalin.marinas@arm.com, tony@atomide.com, s-anna@ti.com,
-        hch@lst.de, bjorn.andersson@linaro.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 linux-next 4/4] arm64: configs: defconfig: Change
- CONFIG_REMOTEPROC from m to y
-Message-ID: <20190930134856.umdoeq7k6ukmajij@willie-the-truck>
-References: <20190920075946.13282-1-j-keerthy@ti.com>
- <20190920075946.13282-5-j-keerthy@ti.com>
+        id S1730378AbfI3Nyr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Sep 2019 09:54:47 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:39252 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729738AbfI3Nyr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Sep 2019 09:54:47 -0400
+Received: by mail-io1-f67.google.com with SMTP id a1so38517098ioc.6;
+        Mon, 30 Sep 2019 06:54:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=v/6cTPKdYhCWm4oLn5nnbSZnKAi257wb/KoyfLSpOZ8=;
+        b=mYXxmzMjX2uupScR95FotMBV60td1h7GEI1SE1kqw7gcg+cUuNOF/LlEyv8C8cYA1X
+         TnShjEcS4laWh9uKeWQkPd+sxEBwdg0NvOmq5aditwp160k4/U0uaHpNBeZRqsn/dcYi
+         AZj2GK7NBcSceCOT6GoV88CRKsTOE3cN8ZjVlbofX1UuxXVZdL5zwgLFP4HEwViw9kxS
+         3BSJmRYpS2lOchJETLBBTTzTvmE5YHtS1/u4slG6REkeQdRr7GbQ7I7W+OxT4V8Ocvqg
+         4Q+A7ITlEQ2bYWrN27FnMvn79gJdgsYlFKinQnqGM3Si+CbXnqg+9lS1ajToADw3FA6W
+         vzmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=v/6cTPKdYhCWm4oLn5nnbSZnKAi257wb/KoyfLSpOZ8=;
+        b=kL/lTkQOHE8R+9EnheLuFVrxMR7SMqRwbMAK2C/GpfeXXO8AtQZDVXSMkGkVVg7Ubu
+         b68KcPoiHfQOSPxoZphjlz4xBNMO+Zgs0uQ4PpFPKygvDKW9ZBH4n/R65k7bIPOZWicy
+         hWDUguJrK35wJB2bE7cgJNYzKeYuI9vfxQWY7u0wyY4UbWiaN7Gkweq2g0lJOmf8+PHS
+         W5HfCkeZDJ/pUGQKYM938VneoWQCA1/D2TteqlmoL1Vusfdzd56+ijbWOQtKnAFagdr5
+         3kpURxROPXcXuwwyWZykuTe+iyy3DeuWJBpBCV6b0/MF8I5XpXpmRRidK4aju1JtfSH3
+         voHA==
+X-Gm-Message-State: APjAAAVFnIXHClPiEFBUubJI+MXU63z0dKccveUMZiMn5zVu8GUT0W8K
+        aaH0nzdbPMcJjAZa+2A1v+kTWbQTHT+s/75h1W4=
+X-Google-Smtp-Source: APXvYqxbNYGoI0Ebnhewnu+oe0JbB4iIoaKSizxLuOYI/fUvQoO0IBP74yP9CUOWd1hGyNh8HR7NMPqsFmwcwEM4XV0=
+X-Received: by 2002:a5d:9c4c:: with SMTP id 12mr1983384iof.276.1569851686291;
+ Mon, 30 Sep 2019 06:54:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190920075946.13282-5-j-keerthy@ti.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+References: <20190510194229.20628-1-aford173@gmail.com> <af325707-3e42-493d-e858-77878ef06138@ti.com>
+ <CAHCN7xLzoCNW6q5yDCsqMHeNvdNegkGhd0N+q9+Gd8JUGbG=_g@mail.gmail.com>
+ <7ada0752-6f65-2906-cb29-a47c9490fd57@ti.com> <CAHCN7xJexJvh71vyb31ETgo=n_y_CupHH-AZwVK9mZe3GzJfEQ@mail.gmail.com>
+ <845055e2-8182-de74-2077-629fdf50ac6c@ti.com> <CAHCN7xJFrTLOnbqrnH2W_T2whR8Xji0EMNR_cy8GYkDV-JDodQ@mail.gmail.com>
+ <854f6130-c8a8-81cb-aa76-4830f218ae54@ti.com> <CAHCN7xKocdiWOdmoWQV3POr84qte6WNt0QbQRAwxKSvU8COB_w@mail.gmail.com>
+ <0473526e-df0a-94a5-5c22-debd0084ab16@ti.com> <36369388-e9c8-22cd-8c19-e2bdf2d0389b@ti.com>
+ <eb2eb1f6-3c9b-7ecb-667e-819033af9c14@ti.com> <23eba53a-9304-2ceb-d97e-01891ec0b3ed@ti.com>
+ <cb028b1e-05ca-9b22-be5d-c63f5fd56cc4@ti.com> <F3335195-6EB7-4D44-B884-2F29D9238011@goldelico.com>
+In-Reply-To: <F3335195-6EB7-4D44-B884-2F29D9238011@goldelico.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Mon, 30 Sep 2019 08:54:34 -0500
+Message-ID: <CAHCN7xL9bFxO=2i1DzmRj6A3XwUNdt=DZeJ2a0EZ0f9gcFTy6g@mail.gmail.com>
+Subject: Re: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to dts
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Tero Kristo <t-kristo@ti.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Adam Ford <adam.ford@logicpd.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Sep 20, 2019 at 01:29:46PM +0530, Keerthy wrote:
-> Commit 6334150e9a36 ("remoteproc: don't allow modular build")
-> changes CONFIG_REMOTEPROC to a boolean from a tristate config
-> option which inhibits all defconfigs marking CONFIG_REMOTEPROC as
-> a module in compiling the remoteproc and dependent config options.
-> 
-> So fix the defconfig to have CONFIG_REMOTEPROC built in.
-> 
-> Fixes: 6334150e9a36 ("remoteproc: don't allow modular build")
-> Signed-off-by: Keerthy <j-keerthy@ti.com>
-> ---
->  arch/arm64/configs/defconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-> index 8e05c39eab08..c9a867ac32d4 100644
-> --- a/arch/arm64/configs/defconfig
-> +++ b/arch/arm64/configs/defconfig
-> @@ -723,7 +723,7 @@ CONFIG_TEGRA_IOMMU_SMMU=y
->  CONFIG_ARM_SMMU=y
->  CONFIG_ARM_SMMU_V3=y
->  CONFIG_QCOM_IOMMU=y
-> -CONFIG_REMOTEPROC=m
-> +CONFIG_REMOTEPROC=y
->  CONFIG_QCOM_Q6V5_MSS=m
->  CONFIG_QCOM_Q6V5_PAS=m
->  CONFIG_QCOM_SYSMON=m
+On Mon, Sep 30, 2019 at 8:39 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+>
+>
+> > Am 30.09.2019 um 10:53 schrieb Tero Kristo <t-kristo@ti.com>:
+> >
+> > The best action here is probably to drop the max-div value for this clock to 16. Can someone check this with their display setup and see what happens? Attached patch should do the trick.
+>
+> I have checked on GTA04 and OpenPandora (DM3730 resp. OMAP3430) and did not notice a negative effect.
+>
+> (Well, we never see the problem that is discussed here and have built with CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=0).
 
-Acked-by: Will Deacon <will@kernel.org>
+I have never been able to use CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=0, but
+I assume it's either a function of pck or a combination of pck with
+the resolution.
 
-This fixes the following annoying warning from "make defconfig" on arm64:
+Based on Tomi's comment, I assume he's working on the following.  Can
+you also try:
 
-  arch/arm64/configs/defconfig:726:warning: symbol value 'm' invalid for REMOTEPROC
+diff --git a/drivers/gpu/drm/omapdrm/dss/dss.c
+b/drivers/gpu/drm/omapdrm/dss/dss.c
+index 5711b7a720e6..5e584f32ea6a 100644
+--- a/drivers/gpu/drm/omapdrm/dss/dss.c
++++ b/drivers/gpu/drm/omapdrm/dss/dss.c
+@@ -1090,7 +1090,7 @@ static const struct dss_features omap34xx_dss_feats = {
 
-I'm assuming the fix will go via arm-soc, but I can take it otherwise
-(please just let me know).
+ static const struct dss_features omap3630_dss_feats = {
+        .model                  =       DSS_MODEL_OMAP3,
+-       .fck_div_max            =       32,
++       .fck_div_max            =       16,
+        .fck_freq_max           =       173000000,
+        .dss_fck_multiplier     =       1,
+        .parent_clk_name        =       "dpll4_ck",
 
-Will
+
+Hopefully it doesn't break the 3630 for you, but it fixed my issue
+with no back trace:
+
+[    9.915588] DSS: set fck to 54000000
+[    9.915618] DISPC: lck = 54000000 (1)
+[    9.915649] DISPC: pck = 9000000 (6)
+[    9.917633] DISPC: channel 0 xres 480 yres 272
+[    9.917663] DISPC: pck 9000000
+
+I do wonder, however if there is a divider that is higher than 16, but
+lower than 32.
+I was able to run fck at 36MHz before with divide by 4 to 9MHz, so I
+am hoping that by running at 54MHz / 6 doesn't draw more power.  I was
+reading through the datasheet, but I could not find any reference to
+the max divider.
+
+adam
+>
+> BR,
+> Nikolaus
+>
