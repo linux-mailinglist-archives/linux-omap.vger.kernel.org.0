@@ -2,106 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D94A2C23F7
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Sep 2019 17:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75D46C242D
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Sep 2019 17:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731872AbfI3PKY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Sep 2019 11:10:24 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:35110 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731867AbfI3PKX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Sep 2019 11:10:23 -0400
-Received: by mail-io1-f67.google.com with SMTP id q10so39311096iop.2;
-        Mon, 30 Sep 2019 08:10:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pDc8+7cL7Y/4C0a6+07Pf5UoiAcCuQN9j9naZA92m/0=;
-        b=XAxgqcVCJ0KTsEs61oTy/OJohBiI9uvP3rdzYsBtljp2uXLIhWrCfKkri/Tu5Wl+Wr
-         BaRtLcYL7krs2ngV78Nkhx6J8pM/8T1eofwTwlgYcg6rheQnSzc9IASx3Fm4mkFvIUG2
-         Lo2Gn/siHlqy+GFLeYsW3+m1RYN+O2WSyflAEtRyXDs+9xQuCvZUUOcjRsONfB81CuZT
-         FnY1zzPD7jtNJWcLhLUps8URe4kC+hK4GvFY/C8F1d+yLgMutc0q6Nxd61Obgu1tGIpT
-         psffbZDtzaaf7lUDzIdZeoevfZxGTm6B3IBZW2QrS1x9P6/W10IsX6W4vbDcXN/Zszbt
-         6wCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pDc8+7cL7Y/4C0a6+07Pf5UoiAcCuQN9j9naZA92m/0=;
-        b=nDkpsZYx0Dtm0UrjjEiED9SW5aucuepE5E6SWMZ9jAqc13vwlvp8/ATQ6Bc3ZKTZhm
-         yAU2vCzqQiHP0P8IF0o6+8lDZAQCqtZHT7B80xMV9Dgg/3yqwctLzS/SEm4l0bhDs5aS
-         3VZDIaD1YGgGWZnfcgnj6aCUdqcxtE4X//wFEZzBFQhpAnGvzxKOwIjjtbMmnikgIU1o
-         gTtJrANhWoYB5tnS9rRJVPLvlwa6F6nkU7dz+pcubKPB77jrqx/hMhItvyFw3vTe8af2
-         eZZHetbrfi1B9+Y8z9WQNVNv6wXGCDPWImUsoHc1ij4C+cbfoIzBoFOzN5sFEOrSiwS7
-         bdcA==
-X-Gm-Message-State: APjAAAW5ScqRWFwJPxqwpEKQy7Pj9LHg0nwLoRoESbLBmCSK1B3XfgM/
-        GdI6kNj008NdKrgmA/ExF+Pfmdwywsh8/oWL4Ko=
-X-Google-Smtp-Source: APXvYqyzDMlPXrOMXU8uR89U0O8jpXzWwYfcO5kKUr3rMEw1nkiaNwzvwL+uFQHt7SWZhkPxpu0e2/wrwcUd0IP2oeU=
-X-Received: by 2002:a6b:b213:: with SMTP id b19mr823617iof.58.1569856222518;
- Mon, 30 Sep 2019 08:10:22 -0700 (PDT)
+        id S1731504AbfI3PXf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Sep 2019 11:23:35 -0400
+Received: from muru.com ([72.249.23.125]:34912 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731276AbfI3PXf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 30 Sep 2019 11:23:35 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 706DB80FA;
+        Mon, 30 Sep 2019 15:24:06 +0000 (UTC)
+Date:   Mon, 30 Sep 2019 08:23:30 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Yegor Yefremov <yegorslists@googlemail.com>
+Cc:     linux-omap@vger.kernel.org, vkoul@kernel.org,
+        Bin Liu <b-liu@ti.com>, linux-usb <linux-usb@vger.kernel.org>,
+        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+        giulio.benetti@benettiengineering.com,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: musb: cppi41: broken high speed FTDI functionality when
+ connected to musb directly
+Message-ID: <20190930152330.GH5610@atomide.com>
+References: <CAGm1_kuK6aA1ew9ZY-fVDUE+o71u1QaSg0kfX2jWUWE9Me8Tjg@mail.gmail.com>
+ <CAGm1_kuQTtyrdwXAV9NCHnvj3f5d7TixmqCPw=Cxd2A=jKSYmg@mail.gmail.com>
+ <20190927151935.GD5610@atomide.com>
+ <20190927155738.GF5610@atomide.com>
+ <CAGm1_kvvMc848f6f+kg5K2sQ3+NHA-Se7T_pcwQfrB=4GfZM4Q@mail.gmail.com>
+ <CAGm1_kvZpYH+NP8JfYJWE2v3E9v+yFs20L8MSKsAjfC_g+GmaQ@mail.gmail.com>
+ <CAGm1_ktjndofS_N-qh7GVRuJFG1Jn87rf4D8Lt2XMj=+RrL2aw@mail.gmail.com>
+ <20190930145711.GG5610@atomide.com>
 MIME-Version: 1.0
-References: <20190510194229.20628-1-aford173@gmail.com> <7ada0752-6f65-2906-cb29-a47c9490fd57@ti.com>
- <CAHCN7xJexJvh71vyb31ETgo=n_y_CupHH-AZwVK9mZe3GzJfEQ@mail.gmail.com>
- <845055e2-8182-de74-2077-629fdf50ac6c@ti.com> <CAHCN7xJFrTLOnbqrnH2W_T2whR8Xji0EMNR_cy8GYkDV-JDodQ@mail.gmail.com>
- <854f6130-c8a8-81cb-aa76-4830f218ae54@ti.com> <CAHCN7xKocdiWOdmoWQV3POr84qte6WNt0QbQRAwxKSvU8COB_w@mail.gmail.com>
- <0473526e-df0a-94a5-5c22-debd0084ab16@ti.com> <36369388-e9c8-22cd-8c19-e2bdf2d0389b@ti.com>
- <eb2eb1f6-3c9b-7ecb-667e-819033af9c14@ti.com> <23eba53a-9304-2ceb-d97e-01891ec0b3ed@ti.com>
- <cb028b1e-05ca-9b22-be5d-c63f5fd56cc4@ti.com> <F3335195-6EB7-4D44-B884-2F29D9238011@goldelico.com>
- <CAHCN7xL9bFxO=2i1DzmRj6A3XwUNdt=DZeJ2a0EZ0f9gcFTy6g@mail.gmail.com>
- <CAHCN7x+vCfPTRE+zzYUwAXdbBzRotTP2hSOgsHB0FdgBhZV5zA@mail.gmail.com>
- <CAHCN7xJDV=R9Ysjhff7=mEXdciwPP_5LQbHwaUT8KvhSkLKw8A@mail.gmail.com>
- <04306a5e-f9be-35a4-1aa1-5795d780e289@ti.com> <3777f1b1-2d9a-334b-b9e7-99dfda2ae29b@ti.com>
-In-Reply-To: <3777f1b1-2d9a-334b-b9e7-99dfda2ae29b@ti.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Mon, 30 Sep 2019 10:10:11 -0500
-Message-ID: <CAHCN7xJNJca8W_yw5nNY3AmKDSPoLzJ8voPmR1HS3bNcU8uQGg@mail.gmail.com>
-Subject: Re: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to dts
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190930145711.GG5610@atomide.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Sep 30, 2019 at 9:27 AM Tomi Valkeinen <tomi.valkeinen@ti.com> wrote:
->
-> On 30/09/2019 17:20, Tomi Valkeinen wrote:
->
-> > Let's see what Tero says, but yeah, something is odd here. I expected
-> > the max divider to be 16 with Tero's patch, but I don't see it having
-> > that effect. I can get the div to 31.
-> >
-> > You can see this from the clock register 0x48004e40 (CM_CLKSEL_DSS). The
-> > lowest bits are the divider, 5 to 0. The TRM says max div is 32.
-> >
-> > Tero said for him the dividers > 16 didn't "stick" to the register. I'm
-> > now wondering if he has an old beagleboard with OMAP34xx, which has max
-> > div 16.
->
-> So testing a bit more here, I can see the DSS working fine and fps as
-> expected when I write values directly to CM_CLKSEL_DSS:5:0, with
-> dividers up to 31. With 32, DSS breaks. The TRM (AM/DM37x) says value 32
-> is valid.
+* Tony Lindgren <tony@atomide.com> [190930 14:57]:
+> * Yegor Yefremov <yegorslists@googlemail.com> [190930 08:20]:
+> > On Mon, Sep 30, 2019 at 8:59 AM Yegor Yefremov
+> > <yegorslists@googlemail.com> wrote:
+> > >
+> > > On Sat, Sep 28, 2019 at 6:09 PM Yegor Yefremov
+> > > <yegorslists@googlemail.com> wrote:
+> > > >
+> > > > On Fri, Sep 27, 2019 at 5:57 PM Tony Lindgren <tony@atomide.com> wrote:
+> > > > > Looks like I'm unable to reproduce this with bbb and FT232R
+> > > > > USB UART.
+> > > > >
+> > > > > I tried v5.3 with omap2plus_defconfig, then boot, load musb
+> > > > > and ftdi-sio modules, then connect ftdi directly to bbb,
+> > > > > and then run "minicom -D /dev/ttyUSB0" on bbb and it works
+> > > > > just fine for me.
+> > > > >
+> > > > > I tried also rebooting the device inbetween in case it only
+> > > > > happens on the first connect after boot but still no luck
+> > > > > reproducing.
+> > > >
+> > > > Strange. I've used a loopback to check whether the characters will be echoed.
+> > > > FTDI cable was connected all the time so that I could check RX right after boot.
+> > > > Both Buildroot and OpenWrt rootfs's showed this behaviour.
+> > > >
+> > > > > Maybe try adding some debug prints to cppi41_runtime_suspend()
+> > > > > and cppi41_runtime_resume() to see if gets runtime suspended
+> > > > > too early?
+> > > >
+> > > > Will do on Mo.
+> > >
+> > > I've added the printks to both routines and the result is quite
+> > > interesting. On the system with a directly attached FTDI both routines
+> > > will be always invoked before (resume) and after (suspend) the
+> > > test/minicom i.e. during the USB initialization.
+> > >
+> > > On the systems with a USB hub, these routines will be invoked only
+> > > during the USB initialization and the last invocation is resume.
+> > > During the test, there are no invocations.
+> 
+> Hmm OK thanks. Hard to say still based on that what might be missing.
+> 
+> I just tried also musb and phy built-in with FTDI connected on
+> boot, but still no luck reproducing the issue here.
+> 
+> > Removing PM routines workarounds the issue. Quick and dirty.
+> > 
+> >  static struct platform_driver cpp41_dma_driver = {
+> >           .probe  = cppi41_dma_probe,
+> >           .remove = cppi41_dma_remove,
+> >           .driver = {
+> >                   .name = "cppi41-dma-engine",
+> >                   /*.pm = &cppi41_pm_ops,*/
+> >                   .of_match_table = of_match_ptr(cppi41_dma_ids),
+> >           },
+> >   };
+> 
+> Well doing something like this to disable autosuspend might
+> be less intrusive until this one is fixed:
+> 
+> # echo on > /sys/bus/platform/drivers/musb-hdrc/musb-hdrc.1/power/control
+> 
+> But before that, maybe try with control set to auto, and increase the
+> autosuspend_delay_ms from 500 ms to let's say 2500 ms:
+> 
+> # echo 2500 > /sys/bus/platform/drivers/musb-hdrc/musb-hdrc.1/power/autosuspend_delay_ms
+> 
+> That is assuming the musb instance is 1 on your board, replace
+> with musb-hdrc.0 if a different interface from bbb.
 
-I wonder if it's somehow being masked with bits 4:0 instead of 5:0
-which could potentially make the divider 0 and that value doesn't
-appear to be valid.
+Actually playing with the cppi41 timeout might be more suitable here,
+they use the same module clock from what I remember though. So
+maybe increase the cppi41 autosuspend_timeout from 100 ms to 500 ms
+or higher:
 
-adam
+# echo 500 > /sys/bus/platform/drivers/cppi41-dma-engine/47400000.dma-controller/power/autosuspend_delay_ms
 
->
->   Tomi
->
-> --
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+If changing the autosuspend_timeout_ms value does not help, then
+try setting control to on there.
+
+Regards,
+
+Tony
