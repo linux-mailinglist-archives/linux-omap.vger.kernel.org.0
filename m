@@ -2,72 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B4CC2248
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Sep 2019 15:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DC9C2267
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Sep 2019 15:49:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731043AbfI3NjB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Sep 2019 09:39:01 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:32100 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726314AbfI3NjB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Sep 2019 09:39:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1569850738;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=/cU1GThaHWVMVBPXz7oa2Qdh8Oy/K7aL/RC4Cd4MOGc=;
-        b=eLrsf/U6eQR8Mi0M55p9b4d4SPzDz+ZHp3mdhhqgEGheD6v/mEIX1i8ghDEkMHc1+i
-        oS3eRZbzyPLNnWygfTa+HtbgOauJdLjbPg0dxi604gJ04BISd8dEyLZRk/mLptBgz8RN
-        mvW89TQhDAk83lu3qw0MOZvCgpfjiTNP4uHf/1GqhJOyRKndRWMSeNzSmLSNfeNUYiOW
-        cY/vzvPdtMcMQPuRJCZ8tozpBfgcHhX+RsORLVWUpOK7er3Q13uY9RP8oJqkhude+q1x
-        XNjwc3vBqJNBDMUa6bP+jLexY9aiQbzOZBRwdXVqLdkTlGgbqmurkubaTaplf94+Ghx1
-        xcWg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlaZXA0Ji18="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.28.0 DYNA|AUTH)
-        with ESMTPSA id v00409v8UDcpSJN
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Mon, 30 Sep 2019 15:38:51 +0200 (CEST)
+        id S1730759AbfI3NtD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Sep 2019 09:49:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39956 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730693AbfI3NtD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 30 Sep 2019 09:49:03 -0400
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 551602086A;
+        Mon, 30 Sep 2019 13:49:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1569851342;
+        bh=FCh5P+PLkf8Fy6u6DVHDWSyXy5Kb48cMb9OwoT818PQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nw3vrRnoJ/wyKkOghJGAhrfUjB4HUOGPzCULFD4Kr3iQLmw7IAL1yY1IbWzMPK4da
+         eWbi6TE0ysvXKKMXYG8TK4x25jKiw/UAo+8HKTHiQZ8fv8/6pjbdMTDnYfvnQhdogc
+         3egyNZeMKQN7sD0n38+1a4P88VMa2muNcfOChcBU=
+Date:   Mon, 30 Sep 2019 14:48:57 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Keerthy <j-keerthy@ti.com>
+Cc:     arnd@arndb.de, nsekhar@ti.com, olof@lixom.net, t-kristo@ti.com,
+        catalin.marinas@arm.com, tony@atomide.com, s-anna@ti.com,
+        hch@lst.de, bjorn.andersson@linaro.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 linux-next 4/4] arm64: configs: defconfig: Change
+ CONFIG_REMOTEPROC from m to y
+Message-ID: <20190930134856.umdoeq7k6ukmajij@willie-the-truck>
+References: <20190920075946.13282-1-j-keerthy@ti.com>
+ <20190920075946.13282-5-j-keerthy@ti.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to dts
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <cb028b1e-05ca-9b22-be5d-c63f5fd56cc4@ti.com>
-Date:   Mon, 30 Sep 2019 15:38:51 +0200
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Adam Ford <aford173@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F3335195-6EB7-4D44-B884-2F29D9238011@goldelico.com>
-References: <20190510194229.20628-1-aford173@gmail.com> <af325707-3e42-493d-e858-77878ef06138@ti.com> <CAHCN7xLzoCNW6q5yDCsqMHeNvdNegkGhd0N+q9+Gd8JUGbG=_g@mail.gmail.com> <7ada0752-6f65-2906-cb29-a47c9490fd57@ti.com> <CAHCN7xJexJvh71vyb31ETgo=n_y_CupHH-AZwVK9mZe3GzJfEQ@mail.gmail.com> <845055e2-8182-de74-2077-629fdf50ac6c@ti.com> <CAHCN7xJFrTLOnbqrnH2W_T2whR8Xji0EMNR_cy8GYkDV-JDodQ@mail.gmail.com> <854f6130-c8a8-81cb-aa76-4830f218ae54@ti.com> <CAHCN7xKocdiWOdmoWQV3POr84qte6WNt0QbQRAwxKSvU8COB_w@mail.gmail.com> <0473526e-df0a-94a5-5c22-debd0084ab16@ti.com> <36369388-e9c8-22cd-8c19-e2bdf2d0389b@ti.com> <eb2eb1f6-3c9b-7ecb-667e-819033af9c14@ti.com> <23eba53a-9304-2ceb-d97e-01891ec0b3ed@ti.com> <cb028b1e-05ca-9b22-be5d-c63f5fd56cc4@ti.com>
-To:     Tero Kristo <t-kristo@ti.com>
-X-Mailer: Apple Mail (2.3124)
+Content-Disposition: inline
+In-Reply-To: <20190920075946.13282-5-j-keerthy@ti.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Fri, Sep 20, 2019 at 01:29:46PM +0530, Keerthy wrote:
+> Commit 6334150e9a36 ("remoteproc: don't allow modular build")
+> changes CONFIG_REMOTEPROC to a boolean from a tristate config
+> option which inhibits all defconfigs marking CONFIG_REMOTEPROC as
+> a module in compiling the remoteproc and dependent config options.
+> 
+> So fix the defconfig to have CONFIG_REMOTEPROC built in.
+> 
+> Fixes: 6334150e9a36 ("remoteproc: don't allow modular build")
+> Signed-off-by: Keerthy <j-keerthy@ti.com>
+> ---
+>  arch/arm64/configs/defconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+> index 8e05c39eab08..c9a867ac32d4 100644
+> --- a/arch/arm64/configs/defconfig
+> +++ b/arch/arm64/configs/defconfig
+> @@ -723,7 +723,7 @@ CONFIG_TEGRA_IOMMU_SMMU=y
+>  CONFIG_ARM_SMMU=y
+>  CONFIG_ARM_SMMU_V3=y
+>  CONFIG_QCOM_IOMMU=y
+> -CONFIG_REMOTEPROC=m
+> +CONFIG_REMOTEPROC=y
+>  CONFIG_QCOM_Q6V5_MSS=m
+>  CONFIG_QCOM_Q6V5_PAS=m
+>  CONFIG_QCOM_SYSMON=m
 
-> Am 30.09.2019 um 10:53 schrieb Tero Kristo <t-kristo@ti.com>:
->=20
-> The best action here is probably to drop the max-div value for this =
-clock to 16. Can someone check this with their display setup and see =
-what happens? Attached patch should do the trick.
+Acked-by: Will Deacon <will@kernel.org>
 
-I have checked on GTA04 and OpenPandora (DM3730 resp. OMAP3430) and did =
-not notice a negative effect.
+This fixes the following annoying warning from "make defconfig" on arm64:
 
-(Well, we never see the problem that is discussed here and have built =
-with CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=3D0).
+  arch/arm64/configs/defconfig:726:warning: symbol value 'm' invalid for REMOTEPROC
 
-BR,
-Nikolaus
+I'm assuming the fix will go via arm-soc, but I can take it otherwise
+(please just let me know).
 
+Will
