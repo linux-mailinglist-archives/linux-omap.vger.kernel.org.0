@@ -2,89 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87656C2DFC
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2019 09:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5A06C2E88
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2019 10:03:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726703AbfJAHKu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Oct 2019 03:10:50 -0400
-Received: from mx1.emlix.com ([188.40.240.192]:38752 "EHLO mx1.emlix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726157AbfJAHKu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 1 Oct 2019 03:10:50 -0400
-X-Greylist: delayed 382 seconds by postgrey-1.27 at vger.kernel.org; Tue, 01 Oct 2019 03:10:49 EDT
-Received: from mailer.emlix.com (unknown [81.20.119.6])
-        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mx1.emlix.com (Postfix) with ESMTPS id A6EB25FCC9;
-        Tue,  1 Oct 2019 09:04:26 +0200 (CEST)
-Subject: Re: [PATCH] Bluetooth: hci_ll: set operational frequency earlier
-To:     Adam Ford <aford173@gmail.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>
-References: <CAHCN7xLOCC00UC4PB3vHa6Q7yyhXVEaWgx2X9D9L2dDubd_5fA@mail.gmail.com>
-From:   Philipp Puschmann <philipp.puschmann@emlix.com>
-Openpgp: preference=signencrypt
-Message-ID: <9525ffc4-3e1f-9941-8f7b-ba74690add77@emlix.com>
-Date:   Tue, 1 Oct 2019 09:04:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727365AbfJAIDf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Oct 2019 04:03:35 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:42735 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726822AbfJAIDe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Oct 2019 04:03:34 -0400
+Received: by mail-lf1-f67.google.com with SMTP id c195so9110891lfg.9;
+        Tue, 01 Oct 2019 01:03:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=phwrmQv3WwVi3axl8RFNHHUxwBXKpIYVAs/RyvL7K3M=;
+        b=NoQHVMErN++xOeDNiRyW0wqEm9IxgWERvdCNJKoqS02tbrP6DHc7yyBvCYVBdOV3qI
+         27poackoPRMH3YiMuTSeti6fSGkm9wLKTfs+7qPoP9rj7oy6+7BvWjaNl5bNyg3YJWvM
+         1h72GJDZ5z5HL6vC2zuNb+rppkGmTjXSgPpxYSNObxICl8ukARcWl+neY2wTjZpX6+F1
+         ZKo/F+H4W7TO0Vk8K5cofGIs5D4+rzBtBCrvKzmzQmaaPvPWGrQydPe4pejAMmbUSNe7
+         HvO0lOlYNn1AEVmzEF7lM2PmIFD4EKKRRqUm7iNNae3KHxUrNnjdcpHBhody7R3sGTA/
+         abmA==
+X-Gm-Message-State: APjAAAXjIrvqhpMtqKkJowKKvqGEZZ3ZR4oaoet7dWW3AfV/rXBDOTNp
+        RIFVrIQgwTLqrnDbzQhO2oQ=
+X-Google-Smtp-Source: APXvYqws4d1Xmv/GKKc/rQTtlW/8USznaOLbdNbNQsOXKMeP9IJWN/zrTnD4rYlPmYv0Zp+X7W1GHg==
+X-Received: by 2002:a19:7605:: with SMTP id c5mr14912654lff.114.1569917012586;
+        Tue, 01 Oct 2019 01:03:32 -0700 (PDT)
+Received: from xi.terra (c-51f1e055.07-184-6d6c6d4.bbcust.telenor.se. [85.224.241.81])
+        by smtp.gmail.com with ESMTPSA id s7sm3848568ljs.16.2019.10.01.01.03.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 01 Oct 2019 01:03:31 -0700 (PDT)
+Received: from johan by xi.terra with local (Exim 4.92.2)
+        (envelope-from <johan@kernel.org>)
+        id 1iFD8F-0008OW-Eh; Tue, 01 Oct 2019 10:03:39 +0200
+Date:   Tue, 1 Oct 2019 10:03:39 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Yegor Yefremov <yegorslists@googlemail.com>,
+        linux-omap@vger.kernel.org, vkoul@kernel.org,
+        Bin Liu <b-liu@ti.com>, linux-usb <linux-usb@vger.kernel.org>,
+        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+        giulio.benetti@benettiengineering.com,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: musb: cppi41: broken high speed FTDI functionality when
+ connected to musb directly
+Message-ID: <20191001080339.GF13531@localhost>
+References: <CAGm1_kuK6aA1ew9ZY-fVDUE+o71u1QaSg0kfX2jWUWE9Me8Tjg@mail.gmail.com>
+ <CAGm1_kuQTtyrdwXAV9NCHnvj3f5d7TixmqCPw=Cxd2A=jKSYmg@mail.gmail.com>
+ <20190927151935.GD5610@atomide.com>
+ <20190927155738.GF5610@atomide.com>
+ <CAGm1_kvvMc848f6f+kg5K2sQ3+NHA-Se7T_pcwQfrB=4GfZM4Q@mail.gmail.com>
+ <CAGm1_kvZpYH+NP8JfYJWE2v3E9v+yFs20L8MSKsAjfC_g+GmaQ@mail.gmail.com>
+ <CAGm1_ktjndofS_N-qh7GVRuJFG1Jn87rf4D8Lt2XMj=+RrL2aw@mail.gmail.com>
+ <20190930145711.GG5610@atomide.com>
+ <20190930152330.GH5610@atomide.com>
+ <20190930195411.6porqtm7tlokgel3@earth.universe>
 MIME-Version: 1.0
-In-Reply-To: <CAHCN7xLOCC00UC4PB3vHa6Q7yyhXVEaWgx2X9D9L2dDubd_5fA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: de-DE
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="VS++wcV0S1rZb1Fb"
+Content-Disposition: inline
+In-Reply-To: <20190930195411.6porqtm7tlokgel3@earth.universe>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-A few times i have seen this here too. The wl1837mod should definitely be able to set
-the operaional frequency before loading the firmware.
-It takes nearly 5 seconds to upload the firmware with 115kbps while only
-0.2s with 3mbps. So i see a high interest to do it the fast way.
-A problem i have identified may be the power supply. At least on my custom board
-the power supply is controlled via gpio. But the serial bluetooth device has no
-support for a regulator. As it is controlled by wifi driver only. I have prepared a patch
-adding regulator support to hci_ll driver. In a few weeks i may try to get it upstream.
 
-Another problem may be the timings. The timings the driver uses are according the wl1837mod
-datasheets but it may that not all devices of that class or the wiring have the same
-specifications and this causes the trouble.
+--VS++wcV0S1rZb1Fb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-For the above mentioned performance gain i would like to see the problem really solved.
-It may be enough to add some sleep time or small delay or something of that kind in
-ll_setup().
+On Mon, Sep 30, 2019 at 09:54:11PM +0200, Sebastian Reichel wrote:
+> Hi,
+>=20
+> On Mon, Sep 30, 2019 at 08:23:30AM -0700, Tony Lindgren wrote:
 
-Regards,
-Philipp
+> > Actually playing with the cppi41 timeout might be more suitable here,
+> > they use the same module clock from what I remember though. So
+> > maybe increase the cppi41 autosuspend_timeout from 100 ms to 500 ms
+> > or higher:
+> >=20
+> > # echo 500 > /sys/bus/platform/drivers/cppi41-dma-engine/47400000.dma-c=
+ontroller/power/autosuspend_delay_ms
+> >=20
+> > If changing the autosuspend_timeout_ms value does not help, then
+> > try setting control to on there.
+>=20
+> I did not check the details, but from the cover-letter this might be
+> woth looking into:
+>=20
+> https://lore.kernel.org/lkml/20190930161205.18803-1-johan@kernel.org/
 
+No, that one should be unrelated as it would only prevent later suspends af=
+ter
+a driver has been unbound (and rebound).
 
-Am 30.09.19 um 22:10 schrieb Adam Ford:
-> Is anyone else having issues with the hci_ll after  a2e02f38eff8
-> ("Bluetooth: hci_ll: set operational frequency earlier") was applied?
-> 
-> I have an i.MX6Q with a WL1837MOD attached to UART2.  After this patch
-> I git a bunch of timeouts when initializing the device using the 5.3
-> and 5.3.1 kernel.   I know a bunch of omap and imx users have done
-> some various tests over the years, so I thought I'd ask.
-> 
-> [  195.911836] Bluetooth: hci0: command 0xff36 tx timeout
-> [  206.071837] Bluetooth: hci0: command 0x1001 tx timeout
-> [  214.231862] Bluetooth: hci0: Reading TI version information failed (-110)
-> [  214.238712] Bluetooth: hci0: download firmware failed, retrying...
-> [  216.391834] Bluetooth: hci0: command 0xff36 tx timeout
-> [  226.551843] Bluetooth: hci0: command 0x1001 tx timeout
-> [  234.711856] Bluetooth: hci0: Reading TI version information failed (-110)
-> [  234.718705] Bluetooth: hci0: download firmware failed, retrying...
-> [  236.871832] Bluetooth: hci0: command 0xff36 tx timeout
-> [  247.031837] Bluetooth: hci0: command 0x1001 tx timeout
-> [  255.191852] Bluetooth: hci0: Reading TI version information failed (-110)
-> [  255.198706] Bluetooth: hci0: download firmware failed, retrying...
-> Can't init device hci0: Connection timed out (110)
-> 
-> Revering this patch fixes the issue, and subsequent patch proposals
-> form Philipp haven't seemed to fix the issues for me on 5.3
-> 
-> adam
-> 
+Johan
+
+--VS++wcV0S1rZb1Fb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCXZMIWAAKCRALxc3C7H1l
+CGT5AQDIHV+XzTRbXywIry2DPN8FKYG1EWxrlad41pMXQnZaSgD+KXt/l3w0CN3Q
+3YmvyZsCjR/8IQk1PFHNAo5SKF0bmQM=
+=yh8c
+-----END PGP SIGNATURE-----
+
+--VS++wcV0S1rZb1Fb--
