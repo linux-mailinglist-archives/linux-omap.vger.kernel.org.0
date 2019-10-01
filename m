@@ -2,116 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 952B6C3039
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2019 11:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72A01C3465
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2019 14:37:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727375AbfJAJbw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Oct 2019 05:31:52 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:44850 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725765AbfJAJbw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Oct 2019 05:31:52 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x919Vftr060917;
-        Tue, 1 Oct 2019 04:31:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1569922301;
-        bh=9mRbJDk5sUd9pMs4IG5bnvQl42wchkWmZqaMcfc5vi8=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=LqKnd50sbKz0s3OYz0yOvmOOKcHUKZYgrUtGPjzpk1t9TpJJBrQ/ZfSKB1B+xq7On
-         /ZEES/Bf0zGJ1yElhkb5EYpEDlwfh0MpOeH1b/ePVgliCCNkJVCidQGHNX6TMXYMt9
-         OTljvacmw0m2thDKtFe0KN5xgcI0dY3DQGVRbc9I=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x919VfeF015535
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 1 Oct 2019 04:31:41 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 1 Oct
- 2019 04:31:41 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 1 Oct 2019 04:31:31 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x919Vc21040870;
-        Tue, 1 Oct 2019 04:31:39 -0500
-Subject: Re: [PATCH] drm/omap: Migrate minimum FCK/PCK ratio from Kconfig to
- dts
-To:     Tero Kristo <t-kristo@ti.com>, Adam Ford <aford173@gmail.com>
-CC:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20190510194229.20628-1-aford173@gmail.com>
- <854f6130-c8a8-81cb-aa76-4830f218ae54@ti.com>
- <CAHCN7xKocdiWOdmoWQV3POr84qte6WNt0QbQRAwxKSvU8COB_w@mail.gmail.com>
- <0473526e-df0a-94a5-5c22-debd0084ab16@ti.com>
- <36369388-e9c8-22cd-8c19-e2bdf2d0389b@ti.com>
- <eb2eb1f6-3c9b-7ecb-667e-819033af9c14@ti.com>
- <23eba53a-9304-2ceb-d97e-01891ec0b3ed@ti.com>
- <cb028b1e-05ca-9b22-be5d-c63f5fd56cc4@ti.com>
- <F3335195-6EB7-4D44-B884-2F29D9238011@goldelico.com>
- <CAHCN7xL9bFxO=2i1DzmRj6A3XwUNdt=DZeJ2a0EZ0f9gcFTy6g@mail.gmail.com>
- <CAHCN7x+vCfPTRE+zzYUwAXdbBzRotTP2hSOgsHB0FdgBhZV5zA@mail.gmail.com>
- <CAHCN7xJDV=R9Ysjhff7=mEXdciwPP_5LQbHwaUT8KvhSkLKw8A@mail.gmail.com>
- <04306a5e-f9be-35a4-1aa1-5795d780e289@ti.com>
- <3777f1b1-2d9a-334b-b9e7-99dfda2ae29b@ti.com>
- <CAHCN7xJNJca8W_yw5nNY3AmKDSPoLzJ8voPmR1HS3bNcU8uQGg@mail.gmail.com>
- <6cd7c9f0-cb26-588b-dfd1-faf462732549@ti.com>
- <ec718740-bb8f-0d31-3622-89a62bd8fede@ti.com>
- <202ae3b3-f72c-5b5b-4344-be22c8368cc7@ti.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <f01bf6ec-e531-371b-4f66-312b12379273@ti.com>
-Date:   Tue, 1 Oct 2019 12:31:38 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1731685AbfJAMhu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Oct 2019 08:37:50 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:46046 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726393AbfJAMhu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Oct 2019 08:37:50 -0400
+Received: by mail-io1-f68.google.com with SMTP id c25so47365091iot.12;
+        Tue, 01 Oct 2019 05:37:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FhGjmsDKKPD3QinXgHs/uFmvxQ7KlC4IGlI0yWXxnE0=;
+        b=SFJhuHSvvW8Erq96m6ImL3eOj9JoDGgxYXzBmaiAeyLFuGPT/wzkJf1l7w5eQ+jZHs
+         pHpSDRUEYeKgubAl6P98cKWJIUh4hgv8fL/P3cU0fVvj8EIMqvSVfmDrOg4lj7cz6E5u
+         dj5JAk9Aordu1jw3j09N0Zwwd0+qF5LPwXnOtkuolUx2dcstilmeBCk0C9huvDWh0xDx
+         n68JOqjX3hVXcABMXPV71RCw8nnZjeIjHNbXw3PClR2TFED+9Xc6iZZCYguJHFPKKD+M
+         SlcSv2SQuJHQbYlKeYpvzX+YWhpUoMQ06i35N9jZ1vH534UVPFd/N6JPO2dDh9WznuHA
+         1D7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FhGjmsDKKPD3QinXgHs/uFmvxQ7KlC4IGlI0yWXxnE0=;
+        b=Ghy6G1a9Vai2MrczuSndvKjBjLzTDtAztuwWPv8cTvgI1HFzHSj4x8uHd/ym1Q420p
+         HcsvIoTE2ui4A+XPitQPPo2BzM7rZR+5eeRr7U3dVk5t6LNMhmj5uS0e7gl61lgf/yey
+         oKiZgqGf0M/uzKmAazuSkAsZ+/ZCLDYtIG8VxeUHUgMbuIa+FWq0W8RRNpkoIE3pyWEQ
+         zo/cusNtmkfFiqoumPz0dx5vIKF1KCCGXQhzHryFeCAybJik9psDu5qoWW2KxVPO+k0Z
+         aldY3WLMBFZ3tGVlNOdgdzLM1BVNRAN1CqE4232J38UWempe5C4L5SCWqQiJHrRofRJg
+         Q4Hg==
+X-Gm-Message-State: APjAAAVEs8wLRa78bfdpbRcO0lo2aSP1hmRDCrL9Z88aVxoMW+XadENy
+        CiKaOZy/F4KxhCVt+kYLaLlMyOebinT5ErL+iwg=
+X-Google-Smtp-Source: APXvYqz7VBVXBG+ZMWE3fVk0pO5Y0YXERVtxa+N9juNb16CLwwIaQ6lC3GHyv2uy+2PbeZn7ajoc+Kexz4K/mtji6X8=
+X-Received: by 2002:a92:d84d:: with SMTP id h13mr26003328ilq.205.1569933468111;
+ Tue, 01 Oct 2019 05:37:48 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <202ae3b3-f72c-5b5b-4344-be22c8368cc7@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <CAHCN7xLOCC00UC4PB3vHa6Q7yyhXVEaWgx2X9D9L2dDubd_5fA@mail.gmail.com>
+ <9525ffc4-3e1f-9941-8f7b-ba74690add77@emlix.com>
+In-Reply-To: <9525ffc4-3e1f-9941-8f7b-ba74690add77@emlix.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Tue, 1 Oct 2019 07:37:37 -0500
+Message-ID: <CAHCN7xJ7GsnwT3CM7giK1ydGY_9SFNMbhz6U0k2eYvpz_EK9oQ@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: hci_ll: set operational frequency earlier
+To:     Philipp Puschmann <philipp.puschmann@emlix.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 01/10/2019 11:12, Tero Kristo wrote:
-> On 01/10/2019 08:07, Tomi Valkeinen wrote:
->> On 30/09/2019 20:48, Tero Kristo wrote:
->>
->>> Hmmh, after some testing, it seems there is bad stuff happening with 
->>> the divider clock implementation, I am re-working it as of now. 
->>> Basically what is wrong is that with a divider max value of say 16, 
->>> the driver attempts to craft the max value into a mask, but this ends 
->>> up being 0x1f. If the max value is 15, it ends up into 0xf which is 
->>> correct.
->>
->> Ok, that explains the max not working.
->>
->> It doesn't explain the other issue, where the TRM says the max div is 
->> 32, but it does not work. But taking the max div from the old SoCs, 
->> 16, is not correct either, as it seems that dividers up to 31 work ok.
->>
->>   Tomi
->>
-> 
-> Ok, attached a series that hopefully fixes it, any testing feedback 
-> welcome before I post this properly.
-> 
-> This also supports omap36xx dpll4_m4_ck divider up-to 31, other omap3 
-> family is limited to 16.
+On Tue, Oct 1, 2019 at 2:04 AM Philipp Puschmann
+<philipp.puschmann@emlix.com> wrote:
+>
+> A few times i have seen this here too. The wl1837mod should definitely be able to set
+> the operaional frequency before loading the firmware.
+> It takes nearly 5 seconds to upload the firmware with 115kbps while only
+> 0.2s with 3mbps. So i see a high interest to do it the fast way.
+> A problem i have identified may be the power supply. At least on my custom board
+> the power supply is controlled via gpio. But the serial bluetooth device has no
+> support for a regulator. As it is controlled by wifi driver only. I have prepared a patch
+> adding regulator support to hci_ll driver. In a few weeks i may try to get it upstream.
 
-Works for me. This also needs the change to dss.c to change the max from 
-32 to 31. I'll send a patch for that separately.
+Any change you can share with me what you have?  With 5.4 being the
+next LTS and at least two of us with broken boards, I am concerned
+that a patch in a few weeks may not make the cut for the final release
+of 5.4.
 
-  Tomi
+>
+> Another problem may be the timings. The timings the driver uses are according the wl1837mod
+> datasheets but it may that not all devices of that class or the wiring have the same
+> specifications and this causes the trouble.
+>
+> For the above mentioned performance gain i would like to see the problem really solved.
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+I agree it would be nice to have it working fast, but for others of
+us, we just need to work, so unless there is a clear solution to the
+problem, I would advocate reverting the patch until the solution can
+be found that doesn't break other boards.
+
+> It may be enough to add some sleep time or small delay or something of that kind in
+> ll_setup().
+>
+
+I am willing to try something if you want.
+
+
+adam
+> Regards,
+> Philipp
+>
+>
+> Am 30.09.19 um 22:10 schrieb Adam Ford:
+> > Is anyone else having issues with the hci_ll after  a2e02f38eff8
+> > ("Bluetooth: hci_ll: set operational frequency earlier") was applied?
+> >
+> > I have an i.MX6Q with a WL1837MOD attached to UART2.  After this patch
+> > I git a bunch of timeouts when initializing the device using the 5.3
+> > and 5.3.1 kernel.   I know a bunch of omap and imx users have done
+> > some various tests over the years, so I thought I'd ask.
+> >
+> > [  195.911836] Bluetooth: hci0: command 0xff36 tx timeout
+> > [  206.071837] Bluetooth: hci0: command 0x1001 tx timeout
+> > [  214.231862] Bluetooth: hci0: Reading TI version information failed (-110)
+> > [  214.238712] Bluetooth: hci0: download firmware failed, retrying...
+> > [  216.391834] Bluetooth: hci0: command 0xff36 tx timeout
+> > [  226.551843] Bluetooth: hci0: command 0x1001 tx timeout
+> > [  234.711856] Bluetooth: hci0: Reading TI version information failed (-110)
+> > [  234.718705] Bluetooth: hci0: download firmware failed, retrying...
+> > [  236.871832] Bluetooth: hci0: command 0xff36 tx timeout
+> > [  247.031837] Bluetooth: hci0: command 0x1001 tx timeout
+> > [  255.191852] Bluetooth: hci0: Reading TI version information failed (-110)
+> > [  255.198706] Bluetooth: hci0: download firmware failed, retrying...
+> > Can't init device hci0: Connection timed out (110)
+> >
+> > Revering this patch fixes the issue, and subsequent patch proposals
+> > form Philipp haven't seemed to fix the issues for me on 5.3
+> >
+> > adam
+> >
