@@ -2,88 +2,309 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82AC4C8C1D
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 16:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D7F2C8EAB
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 18:44:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726137AbfJBOxs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Oct 2019 10:53:48 -0400
-Received: from mout.gmx.net ([212.227.17.21]:59119 "EHLO mout.gmx.net"
+        id S1726798AbfJBQnw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Oct 2019 12:43:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48060 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725747AbfJBOxs (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 2 Oct 2019 10:53:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1570027987;
-        bh=51Sd29DCKYAXaUWlFEJfRj+l41UwrIs1JX74yeC2ifg=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=eGO/GTXU76rDgAICREMwEX/TkRpVYd9ymRixLzDswWuw4gRFI8ZOD8rPM4E2Nigsn
-         fxG3euEh8tYs4TW1BffO6iCYWm9Nqbavtww0Pgxm1c4wx4Vef0kLWePKTXmyr/cuA2
-         PFQfEqFfEGwXm8yd8n/PaLbw0JR5CLAPRxRGeWqI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from longitude ([109.90.233.87]) by mail.gmx.com (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N3bX1-1i7bDE2xKl-010c1P; Wed, 02
- Oct 2019 16:53:07 +0200
-From:   =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        id S1726000AbfJBQnw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 2 Oct 2019 12:43:52 -0400
+Received: from localhost.localdomain (unknown [194.230.155.145])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2DABB21848;
+        Wed,  2 Oct 2019 16:43:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570034631;
+        bh=6TGfhp6A9L6XL3h83OQIrQQEBV22mU2Dsc9NbOkvBhE=;
+        h=From:To:Subject:Date:From;
+        b=CUwCvhqHj52pdVjBwYJz3x8y4HFSYL0mkneIaaksQyDIdslFJVbjijLvVgE87v8rT
+         KrjejYQZ+S1jh4cl0pkZv3OUPYLAcyQCZAtffRQlzEv3OlI2A/NasNcZoq7V/U+Z5R
+         nFf4LVNvIJZ9Pua6oAB+4yuo2FyAQMem8vO0pIXM=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: OMAP1: ams-delta FIQ: Fix a typo ("Initiaize")
-Date:   Wed,  2 Oct 2019 16:53:00 +0200
-Message-Id: <20191002145301.11332-1-j.neuschaefer@gmx.net>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:JYPZWN/GxGfD2Zob7XwPzNdaW8wOJ3rz+ji1lyCuLCH7QKVtti/
- MGFmD0gLOjy0Ua1xo7IKccQWtn7TCgXY2iEK1pX5S6lXIbBDag25F8PDyk7Wn06DJj93Xtx
- wNy4qxraBwTRLKgOsrbiRPtJ4u4DDaRRHzMFHMra1Bmsx586a60tttRt4RvoW06ohx6+Mza
- N/VLYdNh74j4vhtbcFLCQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:tdTVvgG66qQ=:u6AgU0YGduHL8Z3UaiQ622
- wv/wVVVHkW3Anw1I+FJjIz7gor+YRx+7cGkhBnoZtE+5Wu8rbOvyk6/+9kWfwxRHGb+jizTnB
- dZ3RDmXWUMyZkXkyHDvLb8466ouLnWTQi67bW+j1PaGWVD00m7ymgUp0037qED+YdOOtBY11a
- p2E8CD2iyt6UI4GFoXIUYVvRO51AUr9K1XmO7E4p+uBm+PJ9uTereJMqB8IE+px2q0QRPLC7K
- HAckLZEz5pEGGJv+FsMrfYoURQmbxt1kzn07e2UFeDWOdVSRddhppZDwOPbR78Aga/7nT9RCy
- NVx5hIjWYDfkWW14tPGsL42wqQ4XX/Rvw8nHzJoHgJP3ADqk5r7Su5TKvnRQuMjcg/UlS8RnY
- +YvheJ8xVc8+/L+vj1aMeoYzkrs2YlDdssT9IICB2mvKHzTB3dd9gXNXRwTlbB8Mi6F9SP53t
- xLviBkVD+SIt79wRcfAyXbyOWjULeTA/j4KRzmiSNQS9n9144SZmCy+tEU/NPXT9ejGhTGLwG
- hJRvIw9NnLp68Sorj5GjieVrch0JNddPMRK9eGQkBxvj9oxykrrvXzC/5RvzsuQIWAHHUWJK3
- 9anS6CPh7L9dRST8QtrLRnbZv5gbQUqTp0ziqe8s0LFZICgDFmRiU033AFEaFBv+pi/al5gbZ
- THAAdN7lgScO+ec2WW++1DiQbveJydqUwNXVhZ+3QG8rxt9o/aa0NyucY9ydXexvYY58KJ+wH
- QnJxlWDMvSV9QJebDe742JKoTZnMdVYCHR3/9lbh8NWu8N9vaGTjXbkXRS01Fjfq+qxhG0Xm+
- 9QeFhmo5gFf4kSrzxsuss9RdgIj9afhlfiQjmfTa4bsbiAoOXIxKntnnIJQhL7Aiz/DWqP5EF
- Q9/W2oQe7c19RDJerBg8dPwgPflDjdRKsiWR1lcN/rt6kGY4VYtez3auBFRhn92YEWlCvcrY7
- xl62xYp6WugxI/eUW/Mn22Ltiy9MbIpYkrV4AaM2M8v+3k8r6X5A/M0/U89JOD4zhxBC1TfTJ
- 1ztxk6kz6olpE/mbS4R2RSSOLF9RukbyNIVQRpFX4sw6nb+Q39S26Z03o0pWneTWJ7L9vzo+8
- PhQbNDnDaXW/9wxmTBrCjIM1SMnDdWrIvNjgkYaOlE7Ny1w9uH03F9RKPDG9b2e4eyg12s8O7
- wmAOm8oIE1GkBzDUWa5XwOuuq8mz60SNLNtwYbMgANe1ko31mjkZ7IFy5Z4pOf+zTeQg+gFhy
- j+/B9HvA3KQnMdPIXSQ7HmBF45JQ31LbktB61lGvtyvM73X/YO93zQcpf4jI=
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Subject: [PATCH v3 01/10] dt-bindings: sram: Convert SRAM bindings to json-schema
+Date:   Wed,  2 Oct 2019 18:43:07 +0200
+Message-Id: <20191002164316.14905-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Signed-off-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
-=2D--
- arch/arm/mach-omap1/ams-delta-fiq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Convert generic mmio-sram bindings to DT schema format using
+json-schema.  Require the address/size cells to be 1, not equal to root
+node.
 
-diff --git a/arch/arm/mach-omap1/ams-delta-fiq.c b/arch/arm/mach-omap1/ams=
--delta-fiq.c
-index 0254eb9cf8c6..4eea3e39e633 100644
-=2D-- a/arch/arm/mach-omap1/ams-delta-fiq.c
-+++ b/arch/arm/mach-omap1/ams-delta-fiq.c
-@@ -110,7 +110,7 @@ void __init ams_delta_init_fiq(struct gpio_chip *chip,
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
- 		/*
- 		 * FIQ handler takes full control over serio data and clk GPIO
--		 * pins.  Initiaize them and keep requested so nobody can
-+		 * pins.  Initialize them and keep requested so nobody can
- 		 * interfere.  Fail if any of those two couldn't be requested.
- 		 */
- 		switch (i) {
-=2D-
-2.20.1
+---
+
+Changes since v2:
+1. Add Rob as maintainer,
+2. Use "contains" for compatible,
+3. Fix address and size cells to 1,
+4. Add maxitems to reg under children,
+5. Remove unneeded string type from label.
+
+Changes since v1:
+1. Indent example with four spaces (more readable).
+---
+ .../devicetree/bindings/sram/sram.txt         |  80 -----------
+ .../devicetree/bindings/sram/sram.yaml        | 134 ++++++++++++++++++
+ 2 files changed, 134 insertions(+), 80 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/sram/sram.txt
+ create mode 100644 Documentation/devicetree/bindings/sram/sram.yaml
+
+diff --git a/Documentation/devicetree/bindings/sram/sram.txt b/Documentation/devicetree/bindings/sram/sram.txt
+deleted file mode 100644
+index e98908bd4227..000000000000
+--- a/Documentation/devicetree/bindings/sram/sram.txt
++++ /dev/null
+@@ -1,80 +0,0 @@
+-Generic on-chip SRAM
+-
+-Simple IO memory regions to be managed by the genalloc API.
+-
+-Required properties:
+-
+-- compatible : mmio-sram or atmel,sama5d2-securam
+-
+-- reg : SRAM iomem address range
+-
+-Reserving sram areas:
+----------------------
+-
+-Each child of the sram node specifies a region of reserved memory. Each
+-child node should use a 'reg' property to specify a specific range of
+-reserved memory.
+-
+-Following the generic-names recommended practice, node names should
+-reflect the purpose of the node. Unit address (@<address>) should be
+-appended to the name.
+-
+-Required properties in the sram node:
+-
+-- #address-cells, #size-cells : should use the same values as the root node
+-- ranges : standard definition, should translate from local addresses
+-           within the sram to bus addresses
+-
+-Optional properties in the sram node:
+-
+-- no-memory-wc : the flag indicating, that SRAM memory region has not to
+-                 be remapped as write combining. WC is used by default.
+-
+-Required properties in the area nodes:
+-
+-- reg : iomem address range, relative to the SRAM range
+-
+-Optional properties in the area nodes:
+-
+-- compatible : standard definition, should contain a vendor specific string
+-               in the form <vendor>,[<device>-]<usage>
+-- pool : indicates that the particular reserved SRAM area is addressable
+-         and in use by another device or devices
+-- export : indicates that the reserved SRAM area may be accessed outside
+-           of the kernel, e.g. by bootloader or userspace
+-- protect-exec : Same as 'pool' above but with the additional
+-		 constraint that code wil be run from the region and
+-		 that the memory is maintained as read-only, executable
+-		 during code execution. NOTE: This region must be page
+-		 aligned on start and end in order to properly allow
+-		 manipulation of the page attributes.
+-- label : the name for the reserved partition, if omitted, the label
+-          is taken from the node name excluding the unit address.
+-- clocks : a list of phandle and clock specifier pair that controls the
+-	   single SRAM clock.
+-
+-Example:
+-
+-sram: sram@5c000000 {
+-	compatible = "mmio-sram";
+-	reg = <0x5c000000 0x40000>; /* 256 KiB SRAM at address 0x5c000000 */
+-
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-	ranges = <0 0x5c000000 0x40000>;
+-
+-	smp-sram@100 {
+-		compatible = "socvendor,smp-sram";
+-		reg = <0x100 0x50>;
+-	};
+-
+-	device-sram@1000 {
+-		reg = <0x1000 0x1000>;
+-		pool;
+-	};
+-
+-	exported@20000 {
+-		reg = <0x20000 0x20000>;
+-		export;
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/sram/sram.yaml b/Documentation/devicetree/bindings/sram/sram.yaml
+new file mode 100644
+index 000000000000..a1c1ec2183f2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sram/sram.yaml
+@@ -0,0 +1,134 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/sram/sram.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Generic on-chip SRAM
++
++maintainers:
++  - Rob Herring <robh@kernel.org>
++
++description: |+
++  Simple IO memory regions to be managed by the genalloc API.
++
++  Each child of the sram node specifies a region of reserved memory. Each
++  child node should use a 'reg' property to specify a specific range of
++  reserved memory.
++
++  Following the generic-names recommended practice, node names should
++  reflect the purpose of the node. Unit address (@<address>) should be
++  appended to the name.
++
++properties:
++  $nodename:
++    pattern: "^sram(@.*)?"
++
++  compatible:
++    contains:
++      enum:
++        - mmio-sram
++        - atmel,sama5d2-securam
++
++  reg:
++    maxItems: 1
++
++  "#address-cells":
++    const: 1
++
++  "#size-cells":
++    const: 1
++
++  ranges:
++    description:
++      Should translate from local addresses within the sram to bus addresses.
++
++  no-memory-wc:
++    description:
++      The flag indicating, that SRAM memory region has not to be remapped
++      as write combining. WC is used by default.
++    type: boolean
++
++patternProperties:
++  "^([a-z]*-)?sram@[a-f0-9]$":
++    type: object
++    description:
++      Each child of the sram node specifies a region of reserved memory.
++    properties:
++      reg:
++        description:
++          IO mem address range, relative to the SRAM range.
++        maxItems: 1
++
++      compatible:
++        $ref: /schemas/types.yaml#/definitions/string
++        description:
++          Should contain a vendor specific string in the form
++          <vendor>,[<device>-]<usage>
++
++      pool:
++        description:
++          Indicates that the particular reserved SRAM area is addressable
++          and in use by another device or devices.
++        type: boolean
++
++      export:
++        description:
++          Indicates that the reserved SRAM area may be accessed outside
++          of the kernel, e.g. by bootloader or userspace.
++        type: boolean
++
++      protect-exec:
++        description: |
++          Same as 'pool' above but with the additional constraint that code
++          will be run from the region and that the memory is maintained as
++          read-only, executable during code execution. NOTE: This region must
++          be page aligned on start and end in order to properly allow
++          manipulation of the page attributes.
++        type: boolean
++
++      label:
++        description:
++          The name for the reserved partition, if omitted, the label is taken
++          from the node name excluding the unit address.
++
++      clocks:
++        description:
++          A list of phandle and clock specifier pair that controls the
++          single SRAM clock.
++
++    required:
++      - reg
++
++required:
++  - compatible
++  - reg
++  - "#address-cells"
++  - "#size-cells"
++  - ranges
++
++examples:
++  - |
++    sram: sram@5c000000 {
++        compatible = "mmio-sram";
++        reg = <0x5c000000 0x40000>; /* 256 KiB SRAM at address 0x5c000000 */
++
++        #address-cells = <1>;
++        #size-cells = <1>;
++        ranges = <0 0x5c000000 0x40000>;
++
++        smp-sram@100 {
++            compatible = "socvendor,smp-sram";
++            reg = <0x100 0x50>;
++        };
++
++        device-sram@1000 {
++            reg = <0x1000 0x1000>;
++            pool;
++        };
++
++        exported@20000 {
++            reg = <0x20000 0x20000>;
++            export;
++        };
++    };
+-- 
+2.17.1
 
