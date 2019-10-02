@@ -2,111 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36845C446E
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 01:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E381BC4727
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 07:47:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729225AbfJAXju (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Oct 2019 19:39:50 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:37682 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729219AbfJAXju (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Oct 2019 19:39:50 -0400
-Received: by mail-io1-f66.google.com with SMTP id b19so24534959iob.4;
-        Tue, 01 Oct 2019 16:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=IviJQ2N622ovMvnAFQ5UMMPkhv4vjXzkXpkg1vsAmBc=;
-        b=DNOUBVmVUAypCrPEcDm3GsIKmKDVicfDkI4NfruqmYi2MbnOdkXuQs2Hz45pZdKkXP
-         tQ8LxfGcTS8aExdl0rNn7GFyd+jpdJ0HQkik2f14QyjgMJu4MWa7nZUeDWbS4HTnivc4
-         mZGOByd/VTLmvEpH9QvFam1pMSxa0F3bFvzbBfk5lYVcOJwA2lz7vl0qxcwkIkW1Y58w
-         OhmFkSTbCGXaUlfxXD5sPggnlSdIIsRuJCrbbcAVvIMb8p5RCFKEcxTpstSB54rK1NbJ
-         yPq7hRfuuMWFF8lnjYYrApUgOMCcSjRLKS4O/IDjL9cXqDM8eB+mpJTU6YkzzHQgKDMy
-         O7Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=IviJQ2N622ovMvnAFQ5UMMPkhv4vjXzkXpkg1vsAmBc=;
-        b=Z1HD5QUY742LX4P48C3Ze3bwTaRFnuhXZ1L0it1qxlwCNiJh/t5UflVGUKJqSzNwCR
-         Br6jdFRv+fnyNGx6/z79FrzOuJYTswKvFjd3sYBTqxjPaY7rgKg+RCl2FF/xzgsw6Pzc
-         454ziLaUNwk3VlCsCPqrIt3L+3mDTlRaiTVY5H8PHC/jiurGCiEflnXRY4c75sR6ackW
-         rmain2ze94EeYRdNqHTabdgJjDcDp5HM+3jopZ976FFsd9wmLcttLHUcXLs0UUNwUffz
-         penWqJzoCKyI9yFu8WTXHblPlwAitr7vks8SsaKJB126i30M5+OJVeZQ5GZM0+OvGQrc
-         tf4A==
-X-Gm-Message-State: APjAAAWJrUgAmfYkKwThzyTDmEMJ6m6kVPRVmqLTegfzxENjhs4vPJbH
-        +TGkwrcPXNTNVsR5y6lbMHo=
-X-Google-Smtp-Source: APXvYqy4qifIuV3uXjVmLyj/P9fmIFx/f/pEw5vONAuRa7jHVpmKT9t9pDPuxlKh2izbbpKZGI5FbQ==
-X-Received: by 2002:a92:1559:: with SMTP id v86mr820194ilk.130.1569973189265;
-        Tue, 01 Oct 2019 16:39:49 -0700 (PDT)
-Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id r22sm8659935ilb.85.2019.10.01.16.39.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2019 16:39:48 -0700 (PDT)
-From:   Adam Ford <aford173@gmail.com>
-To:     dri-devel@lists.freedesktop.org
-Cc:     linux-omap@vger.kernel.org, adam.ford@logicpd.com,
-        Adam Ford <aford173@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        id S1726614AbfJBFrk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Oct 2019 01:47:40 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:12193 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726266AbfJBFrj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Oct 2019 01:47:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1569995255;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=m4MmnejFIePSpi3WGLlVz9LTEEmUQI0FZsmc67nbE3A=;
+        b=U5L1CM3BWEaRd+2HvFX6EQkGXWY1nN6nQOOoq4bP3JIwXOBcZeArf4ZkQKkkMVIQxu
+        TvS8TBJ7qUpuAPC+DVvWysRZaXOQar4Wc0XlLv12cJ8oLlj1bmOJbHfYC2/Jzb4tRlZk
+        585I+socoe3+t0Yuo0XQlAkEVPWEnEKFMriNBzeag6h83cqz7AZl4dW6l/om7TmsQRWj
+        SNSwuPfQOxbQIfEkyIc7UeQdFw3sM1vP7UK2Q+G8Kw/BBF3EGCX+m2iY5hOv8bpgiMDB
+        Ybgk/Zep7WV+YjUJdvEhw0cS282zVeu5kObgGka2LeMfsY1ZulTUpX3moUP/JWDqTf0h
+        MoKA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmMgw47pPLg="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 44.28.0 DYNA|AUTH)
+        with ESMTPSA id v00409v925l7Zg4
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Wed, 2 Oct 2019 07:47:07 +0200 (CEST)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [PATCH v3 0/8] OMAP3: convert opp-v1 to opp-v2 and read speed binned / 720MHz grade bits
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <DAF6ACB4-AD7E-4528-9F4B-C54104B5E260@goldelico.com>
+Date:   Wed, 2 Oct 2019 07:47:07 +0200
+Cc:     =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Rob Herring <robh+dt@kernel.org>,
+        Adam Ford <aford173@gmail.com>,
+        =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V4 3/3] ARM: logicpd-torpedo-37xx-devkit-28: Reference new DRM panel
-Date:   Tue,  1 Oct 2019 18:39:23 -0500
-Message-Id: <20191001233923.16514-6-aford173@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191001233923.16514-1-aford173@gmail.com>
-References: <20191001233923.16514-1-aford173@gmail.com>
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Enric Balletbo i Serra <eballetbo@gmail.com>,
+        Javier Martinez Canillas <javier@dowhile0.org>,
+        Roger Quadros <rogerq@ti.com>,
+        Teresa Remmet <t.remmet@phytec.de>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-arm-kernel@lists.infradead.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <8C3DD775-07DF-45E0-8E04-2B050CEB5800@goldelico.com>
+References: <cover.1568224032.git.hns@goldelico.com> <20190916162816.GF52127@atomide.com> <DAF6ACB4-AD7E-4528-9F4B-C54104B5E260@goldelico.com>
+To:     Tony Lindgren <tony@atomide.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-With the removal of the panel-dpi from the omap drivers, the
-LCD no longer works.  This patch points the device tree to
-a newly created panel named "logicpd,type28"
+Hi Tony,
 
-Fixes: 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
+> Am 17.09.2019 um 16:35 schrieb H. Nikolaus Schaller <hns@goldelico.com>:
+> 
+> Hi Tony,
+> 
+>> Am 16.09.2019 um 18:28 schrieb Tony Lindgren <tony@atomide.com>:
+>> 
+>> * H. Nikolaus Schaller <hns@goldelico.com> [190911 17:48]:
+>>> CHANGES V3:
+>>> * make omap36xx control the abb-ldo and properly switch mode
+>>> (suggested by Adam Ford <aford173@gmail.com>)
+>>> * add a note about enabling the turbo-mode OPPs
+>> 
+>> Looks good to me, when applying, please provide a
+>> minimal immutable branch maybe against v5.3 or v5.4-rc1,
+>> that I can also merge in if needed for the dts changes.
+> 
+> Should I resend a v4 with your Acked-By added?
+> 
+> BR and thanks,
+> Nikolaus
+> 
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
----
-V4:  No Change
-V3:  No change
-V2:  Remove legacy 'label' from binding
+what is the procedure to get this and Adam's thermal setup into linux-next?
+BR and thanks,
+Nikolaus
 
-diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-index 07ac99b9cda6..cdb89b3e2a9b 100644
---- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-+++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-@@ -11,22 +11,6 @@
- #include "logicpd-torpedo-37xx-devkit.dts"
- 
- &lcd0 {
--
--	label = "28";
--
--	panel-timing {
--		clock-frequency = <9000000>;
--		hactive = <480>;
--		vactive = <272>;
--		hfront-porch = <3>;
--		hback-porch = <2>;
--		hsync-len = <42>;
--		vback-porch = <3>;
--		vfront-porch = <2>;
--		vsync-len = <11>;
--		hsync-active = <1>;
--		vsync-active = <1>;
--		de-active = <1>;
--		pixelclk-active = <0>;
--	};
-+	/* To make it work, set CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=4 */
-+	compatible = "logicpd,type28";
- };
--- 
-2.17.1
+
 
