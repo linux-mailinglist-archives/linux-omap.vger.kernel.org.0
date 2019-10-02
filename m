@@ -2,124 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F184C90B1
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 20:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21A8EC9148
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 21:04:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727756AbfJBSVB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Oct 2019 14:21:01 -0400
-Received: from muru.com ([72.249.23.125]:35156 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726708AbfJBSVA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 2 Oct 2019 14:21:00 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 80D3880E1;
-        Wed,  2 Oct 2019 18:21:32 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] fixes for omaps for v5.4
-Date:   Wed,  2 Oct 2019 11:20:50 -0700
-Message-Id: <pull-1570040410-308159@atomide.com>
-X-Mailer: git-send-email 2.23.0
+        id S1728786AbfJBTEG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Oct 2019 15:04:06 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:34657 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726076AbfJBTEF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Oct 2019 15:04:05 -0400
+Received: by mail-io1-f68.google.com with SMTP id q1so59542510ion.1;
+        Wed, 02 Oct 2019 12:04:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=St/5Yx9IAdho5qVopBMcN0+NvHaC/UJiWRlETASobFI=;
+        b=kaUlL3j6+0GmaCUe6vpBY5PoTGdlqVWCuZBArGh4SbLS0unPdcxIETP2WXDtya3J/7
+         Pk9jW8ioH0dWaNgAUdcsqjSe+ptGhqMISbLg5dm+hvb2S+u4qcUVzhr7JGR/hZWaA3Tl
+         aXOf2pISMsJzFG4lPCx/mZi0cditrZ3P6CdICEdcy25sACwFF9VVvPYz+D8H5IZNf+zk
+         wH9Sj8+S7I2eWwhlTFkk9rL3mkHlmq7nkou3hRNkTXV6lADFcrRg59W1EymyGTJkhzZW
+         PHG8mN8uvM3vyGO4Cki8S/OHDQPNUuwvGsQDV+DUOF9zHFcrVJJ6ayS4j3yml5T2RHr/
+         RgtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=St/5Yx9IAdho5qVopBMcN0+NvHaC/UJiWRlETASobFI=;
+        b=LoB6OUaFeI6sDHNdbS0CsMOzJ2agxfMQBPilN3iJ2ruNoVYG18GNajwBkCEswu269W
+         FSC5oeU0lcDTPSXLdseU3xJasMkweWldA5me7XMiX0ZiDxKqcBE8E8rI7xhhK27s8sH6
+         R5Kiu6S/B3wUeeRMvRNWaQV8Tio9zen+1YdPvCjSR2gsqk21uq5z3X0IL2ihZQLaVjum
+         VPliQyMmqf58ru58hzf/u19wOZIlgcteHjFfMEPu99QZAEQ37UPmGW0671/3fOI28W7e
+         kKeFQBAFF/YDbMPtfBTTs4j3jxN08A7tJ8QzJ9N5dF0H5HYJSXXci9RaxmgNJxScgOlE
+         TPZw==
+X-Gm-Message-State: APjAAAWAbaiUygYbsXNDl0CdU/MPe91X2g4OIZe2Rj3uqcZUdqRBLR9y
+        obmDnWTZH8kx3L7X3cQnSGtfO1sPeviGdhTetL4=
+X-Google-Smtp-Source: APXvYqyBDRqzCOURp0bIg87hcNlK+OwvFnOdUWlJtXBAuGTiO64hQFSh/cP5qStkleVFnxHHNCRKAk8bKbmsvDUw5BU=
+X-Received: by 2002:a92:3314:: with SMTP id a20mr5448246ilf.276.1570043044661;
+ Wed, 02 Oct 2019 12:04:04 -0700 (PDT)
 MIME-Version: 1.0
+References: <20181221011752.25627-1-sre@kernel.org> <4f47f7f2-3abb-856c-4db5-675caf8057c7@xs4all.nl>
+ <20190319133154.7tbfafy7pguzw2tk@earth.universe>
+In-Reply-To: <20190319133154.7tbfafy7pguzw2tk@earth.universe>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Wed, 2 Oct 2019 14:03:52 -0500
+Message-ID: <CAHCN7xLffcvC0LVnfrhf4cA=y1PRMx+COa3c8rBm1xOj179vEA@mail.gmail.com>
+Subject: Re: [PATCH 00/14] Add support for FM radio in hcill and kill TI_ST
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
+        linux-media@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+On Tue, Mar 19, 2019 at 8:33 AM Sebastian Reichel <sre@kernel.org> wrote:
+>
+> Hi Hans,
+>
+> On Thu, Mar 14, 2019 at 09:20:10AM +0100, Hans Verkuil wrote:
+> > On 12/21/18 2:17 AM, Sebastian Reichel wrote:
+> > > This moves all remaining users of the legacy TI_ST driver to hcill (patches
+> > > 1-3). Then patches 4-7 convert wl128x-radio driver to a standard platform
+> > > device driver with support for multiple instances. Patch 7 will result in
+> > > (userless) TI_ST driver no longer supporting radio at runtime. Patch 8-11 do
+> > > some cleanups in the wl128x-radio driver. Finally patch 12 removes the TI_ST
+> > > specific parts from wl128x-radio and adds the required infrastructure to use it
+> > > with the serdev hcill driver instead. The remaining patches 13 and 14 remove
+> > > the old TI_ST code.
+> > >
+> > > The new code has been tested on the Motorola Droid 4. For testing the audio
+> > > should be configured to route Ext to Speaker or Headphone. Then you need to
+> > > plug headphone, since its cable is used as antenna. For testing there is a
+> > > 'radio' utility packages in Debian. When you start the utility you need to
+> > > specify a frequency, since initial get_frequency returns an error:
+> >
+> > What is the status of this series?
+> >
+> > Based on some of the replies (from Adam Ford in particular) it appears that
+> > this isn't ready to be merged, so is a v2 planned?
+>
+> Yes, a v2 is planned, but I'm super busy at the moment. I don't
+> expect to send something for this merge window. Neither LogicPD
+> nor IGEP use FM radio, so I can just remove FM support from the
+> TI_ST framework. Converting those platforms to hci_ll can be done
+> in a different patchset.
+>
 
-The following changes since commit 4d856f72c10ecb060868ed10ff1b1453943fc6c8:
+Sebastian,
 
-  Linux 5.3 (2019-09-15 14:19:32 -0700)
+After a bunch of testing, I think the issue I was having was the BTS
+file being pulled in from linux-firmware.  I was able to successfully
+load a BTS file that I have from Logic PD with working BLE and BT
+working together.  I have to run some tests, but if you wouldn't mind
+re-basing your code and pushing it again for review, I can most likely
+add my 'tested-by'
+I am not sure who to discuss my perceived bug in the BTS blob.  I have
+to go find the old BTS editor and see if I can determine the cause,
+but the fact that I can use the BTS file that corresponds to the FCC
+certified file that Logic PD used is more important to me than using
+the generic BTS file provided by TI, however it would be nice for the
+reference BTS file to operate without error.
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.4/fixes-rc1-signed
-
-for you to fetch changes up to f90ec6cdf674248dcad85bf9af6e064bf472b841:
-
-  ARM: dts: am4372: Set memory bandwidth limit for DISPC (2019-09-30 09:32:03 -0700)
-
-----------------------------------------------------------------
-Fixes for omaps for v5.4-rc cycle
-
-Here are fixes for omaps to deal with few regressions, and to fix
-more boot time errors and warnings:
-
-- The recent ti-sysc interconnect target module driver changes had
-  incorrect clock bits for both clocks and dts that cause warnings
-
-- For omap3-gta04, gpio changes caused the LCD to break a while back,
-  and after discussing things the right fix is to set spi-cs-high
-
-- Recent omapdrm changes to use generic panels caused tfp410 to be
-  disabled as we now must enable the generic support for it in
-  defconfig
-
-- Recent omapdrm and backlight changes also finally made droid4 LCD
-  to work, so let's enable it in the defconfig it can be used out
-  of the box. This is not strictly a fix, but we still also have the
-  older CONFIG_MFD_TI_LMU options available so this cuts down the
-  confusion for trying to guess which display and which backlight
-  is needed
-
-- Recent ti-sysc interconnect target module changes need the gpio
-  module disabled on some boards, but this now needs to happen at
-  the module level, not at the gpio driver level
-
-- Recent changes to probe system timers with ti-sysc caused warnings
-  about mismatch in syconfig registers, so let's configure the option
-  for RESET_STATUS as available in the TRMs
-
-- Recent changes to probe LCDC with ti-sysc caused warnings about
-  mismatch in sysconfig registers, so let's configure the missing
-  idlemodes for both platform data and dts as documented in TRMs
-
-- Since we moved mach-omap2 to probe with device tree, we've been
-  getting voltage controller warnings. Turns out this code is no
-  longer needed, so let's just remove omap2_set_init_voltage() to
-  get rid of the pointless warnings
-
-- Configure am4372 dispc memory bandwidth to avoid underflow errors
-
-----------------------------------------------------------------
-Adam Ford (1):
-      ARM: omap2plus_defconfig: Enable DRM_TI_TFP410
-
-H. Nikolaus Schaller (1):
-      DTS: ARM: gta04: introduce legacy spi-cs-high to make display work again
-
-Peter Ujfalusi (1):
-      ARM: dts: am4372: Set memory bandwidth limit for DISPC
-
-Tony Lindgren (8):
-      clk: ti: dra7: Fix mcasp8 clock bits
-      ARM: dts: Fix wrong clocks for dra7 mcasp
-      Merge branch 'fixes-merge-window-pt2' into fixes
-      ARM: omap2plus_defconfig: Enable more droid4 devices as loadable modules
-      ARM: dts: Fix gpio0 flags for am335x-icev2
-      ARM: OMAP2+: Fix missing reset done flag for am3 and am43
-      ARM: OMAP2+: Add missing LCDC midlemode for am335x
-      ARM: OMAP2+: Fix warnings with broken omap2_set_init_voltage()
-
- arch/arm/boot/dts/am335x-icev2.dts                 |   2 +-
- arch/arm/boot/dts/am33xx-l4.dtsi                   |   6 +-
- arch/arm/boot/dts/am3517-evm.dts                   |  23 +----
- arch/arm/boot/dts/am4372.dtsi                      |   2 +
- arch/arm/boot/dts/dra7-l4.dtsi                     |  48 +++++-----
- arch/arm/boot/dts/logicpd-som-lv.dtsi              |  26 +++---
- arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi   |  37 ++------
- arch/arm/boot/dts/omap3-gta04.dtsi                 |   1 +
- arch/arm/configs/omap2plus_defconfig               |   4 +
- .../mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c |   3 +-
- arch/arm/mach-omap2/omap_hwmod_33xx_data.c         |   5 +-
- arch/arm/mach-omap2/pdata-quirks.c                 |   4 +-
- arch/arm/mach-omap2/pm.c                           | 100 ---------------------
- drivers/bus/ti-sysc.c                              |  52 +++++++----
- drivers/clk/ti/clk-7xx.c                           |   6 +-
- 15 files changed, 104 insertions(+), 215 deletions(-)
+adam
+> If that was the only issue there would be a v2 already. But Marcel
+> Holtmann suggested to pass the custom packet data through the BT
+> subsystem, which is non-trivial (at least for me) :)
+>
+> -- Sebastian
