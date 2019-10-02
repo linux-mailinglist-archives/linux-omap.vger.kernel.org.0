@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0180DC8ED4
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 18:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7678AC8EDB
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 18:45:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727407AbfJBQos (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Oct 2019 12:44:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49186 "EHLO mail.kernel.org"
+        id S1726708AbfJBQoz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Oct 2019 12:44:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49330 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726708AbfJBQos (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 2 Oct 2019 12:44:48 -0400
+        id S1727587AbfJBQoz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 2 Oct 2019 12:44:55 -0400
 Received: from localhost.localdomain (unknown [194.230.155.145])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BF4ED21D81;
-        Wed,  2 Oct 2019 16:44:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 00C5221D82;
+        Wed,  2 Oct 2019 16:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570034687;
-        bh=+s5Aendlt2pjyaSZzeQUNm82lkdAyFArqb1VFwYPYJQ=;
+        s=default; t=1570034694;
+        bh=R3JtOA0Dfq49tu8H2veFMJQO3r2gPbDYYE4d7ZI1Ix8=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=kpHC7Mh4WQVlnH0Fj9TyYyBI4gmqNySnF0ZOgfMYYW6LvJQaIZ/9AKD5qboTv7u+b
-         EuYTQ/ZI8XNk1Wp6kYA2w3JqAlfom5qD3x2IBV7WvB5n5Jx2F8wpXDPC3EmauUYBRz
-         dVSU1huQ4hFqVlUhRjOZXwRs2ka6Ik11hF4TVFJI=
+        b=MwRjVxg5VW4JlCPfao/vHhQoNy67kt4iEbnc0YMpw30oX3aIBpRBHn1zF4T4qxZXD
+         KgPq9w5E8dz4qOVlO3mwxSRUskZsQ/cKaUCvbCNT4eDs8BcppMaWMcEWxri1AhtN0Q
+         pz0an0WXawlkxRqiL5dOMDVreqb08i6T1muT0iAI=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -46,9 +46,9 @@ To:     Rob Herring <robh+dt@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-tegra@vger.kernel.org
-Subject: [PATCH v3 09/10] ARM: dts: am: Rename "ocmcram" node to "sram"
-Date:   Wed,  2 Oct 2019 18:43:15 +0200
-Message-Id: <20191002164316.14905-9-krzk@kernel.org>
+Subject: [PATCH v3 10/10] ARM: dts: omap: Rename "ocmcram" node to "sram"
+Date:   Wed,  2 Oct 2019 18:43:16 +0200
+Message-Id: <20191002164316.14905-10-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191002164316.14905-1-krzk@kernel.org>
 References: <20191002164316.14905-1-krzk@kernel.org>
@@ -63,36 +63,36 @@ schema.  No functional change.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/arm/boot/dts/am33xx.dtsi | 2 +-
- arch/arm/boot/dts/am4372.dtsi | 2 +-
+ arch/arm/boot/dts/omap4.dtsi | 2 +-
+ arch/arm/boot/dts/omap5.dtsi | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-index fb6b8aa12cc5..3e37ae7241a4 100644
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -393,7 +393,7 @@
- 			};
+diff --git a/arch/arm/boot/dts/omap4.dtsi b/arch/arm/boot/dts/omap4.dtsi
+index 7cc95bc1598b..413304540f8b 100644
+--- a/arch/arm/boot/dts/omap4.dtsi
++++ b/arch/arm/boot/dts/omap4.dtsi
+@@ -148,7 +148,7 @@
+ 		l4_abe: interconnect@40100000 {
+ 		};
+ 
+-		ocmcram: ocmcram@40304000 {
++		ocmcram: sram@40304000 {
+ 			compatible = "mmio-sram";
+ 			reg = <0x40304000 0xa000>; /* 40k */
+ 		};
+diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
+index 1fb7937638f0..9f1621f554d7 100644
+--- a/arch/arm/boot/dts/omap5.dtsi
++++ b/arch/arm/boot/dts/omap5.dtsi
+@@ -162,7 +162,7 @@
+ 		l4_abe: interconnect@40100000 {
  		};
  
 -		ocmcram: ocmcram@40300000 {
 +		ocmcram: sram@40300000 {
  			compatible = "mmio-sram";
- 			reg = <0x40300000 0x10000>; /* 64k */
- 			ranges = <0x0 0x40300000 0x10000>;
-diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
-index 848e2a8884e2..d7775aed7483 100644
---- a/arch/arm/boot/dts/am4372.dtsi
-+++ b/arch/arm/boot/dts/am4372.dtsi
-@@ -349,7 +349,7 @@
- 			};
+ 			reg = <0x40300000 0x20000>; /* 128k */
  		};
- 
--		ocmcram: ocmcram@40300000 {
-+		ocmcram: sram@40300000 {
- 			compatible = "mmio-sram";
- 			reg = <0x40300000 0x40000>; /* 256k */
- 			ranges = <0x0 0x40300000 0x40000>;
 -- 
 2.17.1
 
