@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB48C8EAD
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 18:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4058C8EB5
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2019 18:44:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727685AbfJBQn7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Oct 2019 12:43:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48188 "EHLO mail.kernel.org"
+        id S1727510AbfJBQoG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Oct 2019 12:44:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48332 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726000AbfJBQn6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 2 Oct 2019 12:43:58 -0400
+        id S1726000AbfJBQoF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 2 Oct 2019 12:44:05 -0400
 Received: from localhost.localdomain (unknown [194.230.155.145])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7A8D921D82;
-        Wed,  2 Oct 2019 16:43:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 88DCA21D81;
+        Wed,  2 Oct 2019 16:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570034638;
-        bh=hqR3oR3039Xuwre18nY2z8JHLqphmqqXmB0IT7So0Ms=;
+        s=default; t=1570034644;
+        bh=UmEHRN9iGNdvANrP038774VqJvTLK0XIrWHKs42XDIc=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=t8txsmzdKtwkKtIPW27FgVn8DCokS8ighnxArfHg3lb+vpNBMtYfxQkwp1gMoth/m
-         Gh2t90tGleZk6GN1AlkAgL7QMalP8JgKs31ZSH0jyjRWi1xKlOx3o0BC+iBCjJHfE3
-         B8UO2R6Cuz+IlJGAH5X0Wiv2HZQSeJ3cEGGgGOns=
+        b=bk/fs5HSy2Bms4sYmUo5urCsI1uxRu1O4NUPW8RT+5VCT7RxRp8StxBxCTslOYZuH
+         JakGUtv1BUC0JZTEQaFqSiU67aUSuH9TDEMWLSlG+foCZcME4VOhouVkc7mu1rwIaN
+         VZ7UV6aPWeLtX9gYRDZ1U5S1OOKhLDZo6mZa5O4M=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -46,9 +46,9 @@ To:     Rob Herring <robh+dt@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-tegra@vger.kernel.org
-Subject: [PATCH v3 02/10] dt-bindings: sram: Convert Samsung Exynos SYSRAM bindings to json-schema
-Date:   Wed,  2 Oct 2019 18:43:08 +0200
-Message-Id: <20191002164316.14905-2-krzk@kernel.org>
+Subject: [PATCH v3 03/10] ARM: dts: exynos: Rename SysRAM node to "sram"
+Date:   Wed,  2 Oct 2019 18:43:09 +0200
+Message-Id: <20191002164316.14905-3-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191002164316.14905-1-krzk@kernel.org>
 References: <20191002164316.14905-1-krzk@kernel.org>
@@ -57,147 +57,85 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert Samsung Exynos SYSRAM bindings to DT schema format using
-json-schema.
+The device node name should reflect generic class of a device so rename
+the SysRAM node from "sysram" to "sram".  The child nodes stay as before
+as "smp-sysram" to match their real purpose.  This will be also in sync
+with upcoming DT schema.  No functional change.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-
 ---
+ arch/arm/boot/dts/exynos3250.dtsi | 2 +-
+ arch/arm/boot/dts/exynos4210.dtsi | 2 +-
+ arch/arm/boot/dts/exynos4412.dtsi | 2 +-
+ arch/arm/boot/dts/exynos5250.dtsi | 2 +-
+ arch/arm/boot/dts/exynos54xx.dtsi | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-Changes since v2:
-1. Use sram as name of node in example.
-
-Changes since v1:
-1. Indent example with four spaces (more readable).
----
- .../devicetree/bindings/sram/samsung-sram.txt | 38 ------------
- .../bindings/sram/samsung-sram.yaml           | 58 +++++++++++++++++++
- MAINTAINERS                                   |  2 +-
- 3 files changed, 59 insertions(+), 39 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/sram/samsung-sram.txt
- create mode 100644 Documentation/devicetree/bindings/sram/samsung-sram.yaml
-
-diff --git a/Documentation/devicetree/bindings/sram/samsung-sram.txt b/Documentation/devicetree/bindings/sram/samsung-sram.txt
-deleted file mode 100644
-index 61a9bbed303d..000000000000
---- a/Documentation/devicetree/bindings/sram/samsung-sram.txt
-+++ /dev/null
-@@ -1,38 +0,0 @@
--Samsung Exynos SYSRAM for SMP bringup:
--------------------------------------
--
--Samsung SMP-capable Exynos SoCs use part of the SYSRAM for the bringup
--of the secondary cores. Once the core gets powered up it executes the
--code that is residing at some specific location of the SYSRAM.
--
--Therefore reserved section sub-nodes have to be added to the mmio-sram
--declaration. These nodes are of two types depending upon secure or
--non-secure execution environment.
--
--Required sub-node properties:
--- compatible : depending upon boot mode, should be
--		"samsung,exynos4210-sysram" : for Secure SYSRAM
--		"samsung,exynos4210-sysram-ns" : for Non-secure SYSRAM
--
--The rest of the properties should follow the generic mmio-sram discription
--found in Documentation/devicetree/bindings/sram/sram.txt
--
--Example:
--
--	sysram@2020000 {
--		compatible = "mmio-sram";
--		reg = <0x02020000 0x54000>;
--		#address-cells = <1>;
--		#size-cells = <1>;
--		ranges = <0 0x02020000 0x54000>;
--
--		smp-sysram@0 {
--			compatible = "samsung,exynos4210-sysram";
--			reg = <0x0 0x1000>;
--		};
--
--		smp-sysram@53000 {
--			compatible = "samsung,exynos4210-sysram-ns";
--			reg = <0x53000 0x1000>;
--		};
--	};
-diff --git a/Documentation/devicetree/bindings/sram/samsung-sram.yaml b/Documentation/devicetree/bindings/sram/samsung-sram.yaml
-new file mode 100644
-index 000000000000..3e77c434ecca
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sram/samsung-sram.yaml
-@@ -0,0 +1,58 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sram/samsung-sram.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Samsung Exynos SoC SYSRAM for SMP bringup
-+
-+maintainers:
-+  - Krzysztof Kozlowski <krzk@kernel.org>
-+
-+description: |+
-+  Samsung SMP-capable Exynos SoCs use part of the SYSRAM for the bringup
-+  of the secondary cores. Once the core gets powered up it executes the
-+  code that is residing at some specific location of the SYSRAM.
-+
-+  Therefore reserved section sub-nodes have to be added to the mmio-sram
-+  declaration. These nodes are of two types depending upon secure or
-+  non-secure execution environment.
-+
-+allOf:
-+  - $ref: "sram.yaml#"
-+
-+properties:
-+  $nodename:
-+    pattern: "^sysram(@.*)?"
-+
-+patternProperties:
-+  "^([a-z]*-)?sysram@[a-f0-9]$":
-+    type: object
-+
-+    properties:
-+      compatible:
-+        description:
-+          Depending upon boot mode
-+        enum:
-+          - samsung,exynos4210-sysram                 # for Secure SYSRAM
-+          - samsung,exynos4210-sysram-ns              # for Non-secure SYSRAM
-+
-+examples:
-+  - |
-+    sram@2020000 {
-+        compatible = "mmio-sram";
-+        reg = <0x02020000 0x54000>;
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+        ranges = <0 0x02020000 0x54000>;
-+
-+        smp-sysram@0 {
-+            compatible = "samsung,exynos4210-sysram";
-+            reg = <0x0 0x1000>;
-+        };
-+
-+        smp-sysram@53000 {
-+            compatible = "samsung,exynos4210-sysram-ns";
-+            reg = <0x53000 0x1000>;
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b26b2009c230..53b426e27f30 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2235,7 +2235,7 @@ F:	drivers/soc/samsung/
- F:	include/linux/soc/samsung/
- F:	Documentation/arm/samsung/
- F:	Documentation/devicetree/bindings/arm/samsung/
--F:	Documentation/devicetree/bindings/sram/samsung-sram.txt
-+F:	Documentation/devicetree/bindings/sram/samsung-sram.yaml
- F:	Documentation/devicetree/bindings/power/pd-samsung.txt
- N:	exynos
+diff --git a/arch/arm/boot/dts/exynos3250.dtsi b/arch/arm/boot/dts/exynos3250.dtsi
+index d122fb52d3d4..cf422b48cb15 100644
+--- a/arch/arm/boot/dts/exynos3250.dtsi
++++ b/arch/arm/boot/dts/exynos3250.dtsi
+@@ -138,7 +138,7 @@
+ 		#size-cells = <1>;
+ 		ranges;
  
+-		sysram@2020000 {
++		sram@2020000 {
+ 			compatible = "mmio-sram";
+ 			reg = <0x02020000 0x40000>;
+ 			#address-cells = <1>;
+diff --git a/arch/arm/boot/dts/exynos4210.dtsi b/arch/arm/boot/dts/exynos4210.dtsi
+index 298b8ddc0545..554819ae1446 100644
+--- a/arch/arm/boot/dts/exynos4210.dtsi
++++ b/arch/arm/boot/dts/exynos4210.dtsi
+@@ -72,7 +72,7 @@
+ 	};
+ 
+ 	soc: soc {
+-		sysram: sysram@2020000 {
++		sysram: sram@2020000 {
+ 			compatible = "mmio-sram";
+ 			reg = <0x02020000 0x20000>;
+ 			#address-cells = <1>;
+diff --git a/arch/arm/boot/dts/exynos4412.dtsi b/arch/arm/boot/dts/exynos4412.dtsi
+index 6cf0e259fb39..5022aa574b26 100644
+--- a/arch/arm/boot/dts/exynos4412.dtsi
++++ b/arch/arm/boot/dts/exynos4412.dtsi
+@@ -188,7 +188,7 @@
+ 			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
+ 
+-		sysram@2020000 {
++		sram@2020000 {
+ 			compatible = "mmio-sram";
+ 			reg = <0x02020000 0x40000>;
+ 			#address-cells = <1>;
+diff --git a/arch/arm/boot/dts/exynos5250.dtsi b/arch/arm/boot/dts/exynos5250.dtsi
+index f01e3156191d..2780bf5c83c8 100644
+--- a/arch/arm/boot/dts/exynos5250.dtsi
++++ b/arch/arm/boot/dts/exynos5250.dtsi
+@@ -164,7 +164,7 @@
+ 	};
+ 
+ 	soc: soc {
+-		sysram@2020000 {
++		sram@2020000 {
+ 			compatible = "mmio-sram";
+ 			reg = <0x02020000 0x30000>;
+ 			#address-cells = <1>;
+diff --git a/arch/arm/boot/dts/exynos54xx.dtsi b/arch/arm/boot/dts/exynos54xx.dtsi
+index 06ae40a2f1e9..dff9ef3ad0ef 100644
+--- a/arch/arm/boot/dts/exynos54xx.dtsi
++++ b/arch/arm/boot/dts/exynos54xx.dtsi
+@@ -46,7 +46,7 @@
+ 	};
+ 
+ 	soc: soc {
+-		sysram@2020000 {
++		sram@2020000 {
+ 			compatible = "mmio-sram";
+ 			reg = <0x02020000 0x54000>;
+ 			#address-cells = <1>;
 -- 
 2.17.1
 
