@@ -2,115 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40126C9AC5
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2019 11:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEF38C9FA9
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2019 15:42:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728766AbfJCJb6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Oct 2019 05:31:58 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:42348 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728743AbfJCJb6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Oct 2019 05:31:58 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x939Vrnj054353;
-        Thu, 3 Oct 2019 04:31:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1570095113;
-        bh=P9zTt6JVcLBVKsSp0EGZr4X1HHOjTST4nbJcuG2gmb0=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Ws2T/1ygmfuTnYSc0i15+fJsvQsMVPI1/XArSZ/lUPr90FyyLlP9GMblLFbXCfoL7
-         nWup/dphJ872DsMqfjVZ2qGwTXdBUItyAS9ZJN1x+rf1ykG2NArC+pXUhHp7IUdPd4
-         nQIW+2PJFqlf3Y3ShmGDC7NdoPHpvmGr4YK5kZLw=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x939VrZ1082190
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 3 Oct 2019 04:31:53 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 3 Oct
- 2019 04:31:42 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 3 Oct 2019 04:31:42 -0500
-Received: from [10.250.98.116] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x939VpeZ102890;
-        Thu, 3 Oct 2019 04:31:51 -0500
-Subject: Re: [PATCH] ARM: dts: am335x-sancloud-bbe: Fix PHY mode for ethernet
-To:     Jeroen Hofstee <jhofstee@victronenergy.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-CC:     Koen Kooi <koen@dominion.thruhere.net>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20191002095416.19603-1-jhofstee@victronenergy.com>
- <d027ef07-807d-6a7b-2939-b67be4542469@ti.com>
- <436f1712-7dec-db40-d08f-1a3032af3596@victronenergy.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <d85cd860-22a3-6142-7f2d-736a428d7a31@ti.com>
-Date:   Thu, 3 Oct 2019 12:31:49 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1730518AbfJCNmE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Oct 2019 09:42:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53342 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730508AbfJCNmE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 3 Oct 2019 09:42:04 -0400
+Received: from jupiter.universe (dyndsl-037-138-174-173.ewe-ip-backbone.de [37.138.174.173])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9DD3721783;
+        Thu,  3 Oct 2019 13:42:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570110123;
+        bh=WCUEssIU9+0G8g1dfJGIxcEKX0xGTgolp0w5mbPkFoU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=bi9wqLQcIhlqDcoclEDoiLIEYVPEre9nISGzXfUjkF4Eg5vRrvup3aBt46GaOXXYR
+         QGSnAY0mldFrgJ6x2vtbgDPjJxhJx1OkS29zzKxGU8oXWee2zrBodbnHfbQKp7aZgA
+         GvVlY/X2Rc5WMHc10orq73fR8aL9VKjMWRLIiF3c=
+Received: by jupiter.universe (Postfix, from userid 1000)
+        id 8B07D4800C0; Thu,  3 Oct 2019 15:42:01 +0200 (CEST)
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Sebastian Reichel <sre@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     Adam Ford <aford173@gmail.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        linux-bluetooth@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com
+Subject: [PATCHv2 0/4] Convert all btwilink users to hci_ll and drop btwilink
+Date:   Thu,  3 Oct 2019 15:41:43 +0200
+Message-Id: <20191003134147.9458-1-sre@kernel.org>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <436f1712-7dec-db40-d08f-1a3032af3596@victronenergy.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi,
 
+This moves the remaining users of btwilink to the "new" serdev based hci_ll
+driver and drops the btwilink driver afterwards. The patches were only compile
+tested by me, but Enric tested the IGEP platform and Adam will test the LogicPD
+platform.
 
-On 03/10/2019 11:16, Jeroen Hofstee wrote:
-> Hello Grygorri,
-> 
-> On 10/2/19 4:48 PM, Grygorii Strashko wrote:
->>
->>
->> On 02/10/2019 12:54, Jeroen Hofstee wrote:
->>> cd28d1d6e52e: ("net: phy: at803x: Disable phy delay for RGMII mode")
->>> broke
->>> the ethernet networking on the beaglebone enhanced.
->>
->> Above commit is incorrect (by itself) and there are few more commits
->> on top of
->> it, so pls. update reference to commit(s)
->>
->> bb0ce4c1517d net: phy: at803x: stop switching phy delay config needlessly
->> 6d4cd041f0af net: phy: at803x: disable delay only for RGMII mode
->>
->>
-> I don't see why that is relevant. The mention patch introduces a
-> backwards incompatibility for the device tree. 
+I kept the TI_ST driver for now, since I plan to send a second patchset for the
+FM radio driver. Once the FM driver has been converted to also use hci_ll, we
+can remove TI_ST completly.
 
-Pls read https://patchwork.kernel.org/patch/10773389/
-The patch you've mentioned here is buggy by itself and not related to your
-fix, but final at803x behavior actually defined by above two commits.
+My suggestion is for the patch handling is, that everything simply goes through
+Tony's tree.
 
-I've posted this commit because I was confused when i've checked commit you referenced.
+Changes since PATCHv1 [0]
+ * rebase to 5.4-rc1
+ * move FM radio patches into separate patchset
 
-The patches you
-> mention don't fix that and hence are unrelated to this patch.
+[0] https://lore.kernel.org/lkml/20181221011752.25627-1-sre@kernel.org/
 
-No. but they define new at803x behavior which is:
-After commits (see above) at803x driver disable RX RGMII delay
-if phy-mode = "rgmii-txid"
-or will disable TX RGMII delay
-if phy-mode = "rgmii-rxid"
+-- Sebastian
 
-Before above commits, the at803x driver was keeping RX or TX RGMII delay setting
-untouched as per bootloader or bootstraping configuration for "rgmii-txid"/"rgmii-rxid".
+Sebastian Reichel (4):
+  ARM: dts: LogicPD Torpedo: Add WiLink UART node
+  ARM: dts: IGEP: Add WiLink UART node
+  ARM: OMAP2+: pdata-quirks: drop TI_ST/KIM support
+  Bluetooth: btwilink: drop superseded driver
 
-> 
-> Furthermore 4.19 is fine, so there is no need to include it in stable
-> and have a note to make sure also other patches are required etc.
-
-Hence all above patches went in 5.1 it would be correct to mention only
-6d4cd041f0af net: phy: at803x: disable delay only for RGMII mode
+ .../boot/dts/logicpd-torpedo-37xx-devkit.dts  |   8 +
+ arch/arm/boot/dts/omap3-igep0020-rev-f.dts    |   8 +
+ arch/arm/boot/dts/omap3-igep0030-rev-g.dts    |   8 +
+ arch/arm/mach-omap2/pdata-quirks.c            |  52 ---
+ drivers/bluetooth/Kconfig                     |  11 -
+ drivers/bluetooth/Makefile                    |   1 -
+ drivers/bluetooth/btwilink.c                  | 337 ------------------
+ 7 files changed, 24 insertions(+), 401 deletions(-)
+ delete mode 100644 drivers/bluetooth/btwilink.c
 
 -- 
-Best regards,
-grygorii
+2.23.0
+
