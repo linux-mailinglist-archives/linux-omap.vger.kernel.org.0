@@ -2,152 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B5BC9A03
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2019 10:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40126C9AC5
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2019 11:31:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727995AbfJCIjf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Oct 2019 04:39:35 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:33929 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726039AbfJCIjf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Oct 2019 04:39:35 -0400
-Received: by mail-vs1-f66.google.com with SMTP id d3so1154777vsr.1;
-        Thu, 03 Oct 2019 01:39:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EDL0K7bu+EaFhDHsKjQKMN9nqMYxFXTuN9RZq2K0XLs=;
-        b=vZTYtcQT9HDCFCD+QfZYvhzvJqlBBT4f5/Wih2yrcVyVZbjsZF7kRWu43SnCLzGD58
-         muuTu3HnQmK7Fa08HI4dbD3tRIOVXtBgDeCL26fqfTI2muFaV7/4foWz7ke+gq14n0I6
-         CdtMMXE0JoeomYzFroPc9bw6+nT68Rqf6sZKmu6MHFFPDUaIIMflFEPRXvDJSCRb2SKB
-         IwBPDTFGfawz4xydN4Uaqa2moAHlQf6e3pdWUSQ4JjcmXhTRTMrpvFTu4Bd3FBn31p0V
-         /aOdkegg0NlNo89Z0CcM2PiISU4w89PtLMqYav14GdC+WTMo5VYhR3qoID16qO0uPkok
-         hL5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EDL0K7bu+EaFhDHsKjQKMN9nqMYxFXTuN9RZq2K0XLs=;
-        b=LwGaTeAYVB9VG3tZvsHdTrU0iCcMcFTw408Th0ePzXVzQExlpBWPbAT6Yr6bdlgtX8
-         h6kFIL6BSLO0isoFWoArS584A3e5x/2GmOuJYiou09xcKZJLB3lG78N1dEAhmdUcMaC7
-         kkWLpR8kuTOi4rmhJAgf+7TIzqjsohHk3wPTWq2ziMeGb1ooOJEi8O8BZ2n3JXoJ2G7M
-         /3+7Hie88xUh5SeTzTSYUvPQpCdKMRMPJyfPIHK2qKxfMnMyB2TXHLsKu7/KW8d9Ddg7
-         +b3I9CY8AQGChn/aJR91bs0BOleARgHPbt74bjo5ZGihMJ5BGz4r9caKGwdAnCpTT6ut
-         9RGQ==
-X-Gm-Message-State: APjAAAWytKYESzRLixkXVSoGIjiw+VqDCGsAz4Lad8rSIKdT8DsSg/jJ
-        hQR4xLru2UzwtCPaId2AL83TrDl8mWzldKCiWuc=
-X-Google-Smtp-Source: APXvYqyzlaOkmJgrW2R8dTFnOKgdbLZPSAQXVW3o+oNw2ZgL40mHMHZq1tNU8jP/qM4X1maCnDqpPtoeE3WTQdpg6s0=
-X-Received: by 2002:a67:dc95:: with SMTP id g21mr4505650vsk.164.1570091974256;
- Thu, 03 Oct 2019 01:39:34 -0700 (PDT)
+        id S1728766AbfJCJb6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Oct 2019 05:31:58 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:42348 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728743AbfJCJb6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Oct 2019 05:31:58 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x939Vrnj054353;
+        Thu, 3 Oct 2019 04:31:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1570095113;
+        bh=P9zTt6JVcLBVKsSp0EGZr4X1HHOjTST4nbJcuG2gmb0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Ws2T/1ygmfuTnYSc0i15+fJsvQsMVPI1/XArSZ/lUPr90FyyLlP9GMblLFbXCfoL7
+         nWup/dphJ872DsMqfjVZ2qGwTXdBUItyAS9ZJN1x+rf1ykG2NArC+pXUhHp7IUdPd4
+         nQIW+2PJFqlf3Y3ShmGDC7NdoPHpvmGr4YK5kZLw=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x939VrZ1082190
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 3 Oct 2019 04:31:53 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 3 Oct
+ 2019 04:31:42 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Thu, 3 Oct 2019 04:31:42 -0500
+Received: from [10.250.98.116] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x939VpeZ102890;
+        Thu, 3 Oct 2019 04:31:51 -0500
+Subject: Re: [PATCH] ARM: dts: am335x-sancloud-bbe: Fix PHY mode for ethernet
+To:     Jeroen Hofstee <jhofstee@victronenergy.com>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+CC:     Koen Kooi <koen@dominion.thruhere.net>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20191002095416.19603-1-jhofstee@victronenergy.com>
+ <d027ef07-807d-6a7b-2939-b67be4542469@ti.com>
+ <436f1712-7dec-db40-d08f-1a3032af3596@victronenergy.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <d85cd860-22a3-6142-7f2d-736a428d7a31@ti.com>
+Date:   Thu, 3 Oct 2019 12:31:49 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <CAGm1_kvZpYH+NP8JfYJWE2v3E9v+yFs20L8MSKsAjfC_g+GmaQ@mail.gmail.com>
- <CAGm1_ktjndofS_N-qh7GVRuJFG1Jn87rf4D8Lt2XMj=+RrL2aw@mail.gmail.com>
- <20190930145711.GG5610@atomide.com> <20190930152330.GH5610@atomide.com>
- <20190930195411.6porqtm7tlokgel3@earth.universe> <20191001080339.GF13531@localhost>
- <CAGm1_ksg2x9USqB+XGhkMQpA-zc77Ha1-j+foPJFR7R3XPZsNg@mail.gmail.com>
- <20191001164351.GJ5610@atomide.com> <20191001220321.GK5610@atomide.com>
- <CAGm1_kv12P1hb7PXSQUo3EXXrCUCQV0ptoQpxewGYHJgROL=cQ@mail.gmail.com> <20191002165219.GL5610@atomide.com>
-In-Reply-To: <20191002165219.GL5610@atomide.com>
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Thu, 3 Oct 2019 10:39:22 +0200
-Message-ID: <CAGm1_kt4W+2uN_6WduUtR+NwKCmQMZwNRHQQ7kVJt0PqmoobaA@mail.gmail.com>
-Subject: Re: musb: cppi41: broken high speed FTDI functionality when connected
- to musb directly
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Johan Hovold <johan@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org,
-        vkoul@kernel.org, Bin Liu <b-liu@ti.com>,
-        linux-usb <linux-usb@vger.kernel.org>,
-        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-        giulio.benetti@benettiengineering.com,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <436f1712-7dec-db40-d08f-1a3032af3596@victronenergy.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
 
-On Wed, Oct 2, 2019 at 6:52 PM Tony Lindgren <tony@atomide.com> wrote:
->
-> * Yegor Yefremov <yegorslists@googlemail.com> [191002 06:57]:
-> > On Wed, Oct 2, 2019 at 12:03 AM Tony Lindgren <tony@atomide.com> wrote:
-> > > The other way to fix this would be to just wake up cpp41 in
-> > > cppi41_dma_prep_slave_sg() and return NULL so that we can
-> > > have musb_ep_program() continue with PIO while cppi41 is
-> > > asleep.
-> > >
-> > > Anyways, care to try it out and see if it fixes your issue?
-> >
-> > The fix is working but on the first invocation, I get this output
-> > (minicom provokes the same output):
->
-> > # serialtest.py -c 2 /dev/ttyUSB0 /dev/ttyUSB0
-> ...
-> > [  210.940612] [<c065fc94>] (__rpm_callback) from [<c065fd60>]
-> > (rpm_callback+0x20/0x80)
-> > [  210.948402] [<c065fd60>] (rpm_callback) from [<c065f7cc>]
-> > (rpm_resume+0x468/0x7a0)
-> > [  210.956018] [<c065f7cc>] (rpm_resume) from [<c065fb50>]
-> > (__pm_runtime_resume+0x4c/0x64)
-> > [  210.964086] [<c065fb50>] (__pm_runtime_resume) from [<bf020940>]
-> > (cppi41_dma_prep_slave_sg+0x20/0xfc [cppi41])
->
-> OK so that won't work, thanks for testing. Here's the alternative
-> patch to try along the lines described above that just wakes up
-> cppi41 and returns NULL so musb_ep_program() can continue with PIO
-> until cppi41 is awake.
 
-I'm out of the office for some weeks and don't have access to my hw.
-I'll make the test as soon as I'm back.
+On 03/10/2019 11:16, Jeroen Hofstee wrote:
+> Hello Grygorri,
+> 
+> On 10/2/19 4:48 PM, Grygorii Strashko wrote:
+>>
+>>
+>> On 02/10/2019 12:54, Jeroen Hofstee wrote:
+>>> cd28d1d6e52e: ("net: phy: at803x: Disable phy delay for RGMII mode")
+>>> broke
+>>> the ethernet networking on the beaglebone enhanced.
+>>
+>> Above commit is incorrect (by itself) and there are few more commits
+>> on top of
+>> it, so pls. update reference to commit(s)
+>>
+>> bb0ce4c1517d net: phy: at803x: stop switching phy delay config needlessly
+>> 6d4cd041f0af net: phy: at803x: disable delay only for RGMII mode
+>>
+>>
+> I don't see why that is relevant. The mention patch introduces a
+> backwards incompatibility for the device tree. 
 
-Thanks.
-Yegor
+Pls read https://patchwork.kernel.org/patch/10773389/
+The patch you've mentioned here is buggy by itself and not related to your
+fix, but final at803x behavior actually defined by above two commits.
 
-> 8< -----------------------
-> diff --git a/drivers/dma/ti/cppi41.c b/drivers/dma/ti/cppi41.c
-> --- a/drivers/dma/ti/cppi41.c
-> +++ b/drivers/dma/ti/cppi41.c
-> @@ -586,9 +586,22 @@ static struct dma_async_tx_descriptor *cppi41_dma_prep_slave_sg(
->         enum dma_transfer_direction dir, unsigned long tx_flags, void *context)
->  {
->         struct cppi41_channel *c = to_cpp41_chan(chan);
-> +       struct dma_async_tx_descriptor *txd = NULL;
-> +       struct cppi41_dd *cdd = c->cdd;
->         struct cppi41_desc *d;
->         struct scatterlist *sg;
->         unsigned int i;
-> +       int error;
-> +
-> +       error = pm_runtime_get(cdd->ddev.dev);
-> +       if (error < 0) {
-> +               pm_runtime_put_noidle(cdd->ddev.dev);
-> +
-> +               return NULL;
-> +       }
-> +
-> +       if (cdd->is_suspended)
-> +               goto err_out_not_ready;
->
->         d = c->desc;
->         for_each_sg(sgl, sg, sg_len, i) {
-> @@ -611,7 +624,13 @@ static struct dma_async_tx_descriptor *cppi41_dma_prep_slave_sg(
->                 d++;
->         }
->
-> -       return &c->txd;
-> +       txd = &c->txd;
-> +
-> +err_out_not_ready:
-> +       pm_runtime_mark_last_busy(cdd->ddev.dev);
-> +       pm_runtime_put_autosuspend(cdd->ddev.dev);
-> +
-> +       return txd;
->  }
->
->  static void cppi41_compute_td_desc(struct cppi41_desc *d)
-> --
-> 2.23.0
+I've posted this commit because I was confused when i've checked commit you referenced.
+
+The patches you
+> mention don't fix that and hence are unrelated to this patch.
+
+No. but they define new at803x behavior which is:
+After commits (see above) at803x driver disable RX RGMII delay
+if phy-mode = "rgmii-txid"
+or will disable TX RGMII delay
+if phy-mode = "rgmii-rxid"
+
+Before above commits, the at803x driver was keeping RX or TX RGMII delay setting
+untouched as per bootloader or bootstraping configuration for "rgmii-txid"/"rgmii-rxid".
+
+> 
+> Furthermore 4.19 is fine, so there is no need to include it in stable
+> and have a note to make sure also other patches are required etc.
+
+Hence all above patches went in 5.1 it would be correct to mention only
+6d4cd041f0af net: phy: at803x: disable delay only for RGMII mode
+
+-- 
+Best regards,
+grygorii
