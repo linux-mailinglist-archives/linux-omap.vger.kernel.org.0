@@ -2,107 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EE9CC9FAD
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2019 15:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E06CA426
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2019 18:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730610AbfJCNnD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Oct 2019 09:43:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53954 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729655AbfJCNnD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 3 Oct 2019 09:43:03 -0400
-Received: from earth.universe (dyndsl-037-138-174-173.ewe-ip-backbone.de [37.138.174.173])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7DD3520830;
-        Thu,  3 Oct 2019 13:43:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570110181;
-        bh=abRlt0tWQx8wHRdQAm2ffKGRAzb4Fb6wF3dHUvT+a9g=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=01ipPJ1T73AEkeXxjuzYiLpHcOBEyTJfYrMMQhaz23nOkeBj8M2bp0l5wNdDlW/pz
-         h6BIJihrVbI5rHohhty4QxkbD+afipPAZJUoAEq3lXB5lo8Yq36///mKoT0ZtgtHfF
-         kA3T1fpfZr1rLEbIb7Wt6Ep6mhD7Vl+3Na3KgkSw=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 71EB23C0CA1; Thu,  3 Oct 2019 15:42:59 +0200 (CEST)
-Date:   Thu, 3 Oct 2019 15:42:59 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
-        linux-media@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/14] Add support for FM radio in hcill and kill TI_ST
-Message-ID: <20191003134259.bmrhgkvvkyjdvsr3@earth.universe>
-References: <20181221011752.25627-1-sre@kernel.org>
- <4f47f7f2-3abb-856c-4db5-675caf8057c7@xs4all.nl>
- <20190319133154.7tbfafy7pguzw2tk@earth.universe>
- <CAHCN7xLffcvC0LVnfrhf4cA=y1PRMx+COa3c8rBm1xOj179vEA@mail.gmail.com>
+        id S2390318AbfJCQWa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Oct 2019 12:22:30 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:38392 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390309AbfJCQW3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Oct 2019 12:22:29 -0400
+Received: by mail-ed1-f66.google.com with SMTP id l21so3071428edr.5
+        for <linux-omap@vger.kernel.org>; Thu, 03 Oct 2019 09:22:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lixom-net.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zgiIl2UmnymsEs7W7Y/0luQQ7GJPPBSiJs/1Ty1rsK0=;
+        b=rkyDoupCerKeqe5O5z5bzTnbyeWAjQxXfTbOxOz+SLqZLG5hMOeu9MzKK+7sniDVSZ
+         vQYfRwlXM7F2FjLguFqk6g2+IMKJpAqloCuIuxhQPBFO5y60vMhJnF6Fo3tD83dX0gwF
+         NlgTroSbDnyty/H3cVHXq6uac0bsDfXUgu6wRMfz3C4aGL3AKGqhHz5l5YyAlhLAv3DR
+         Etek/+N6YtviUrfoPr7s4OQ4HYvDB+dLGwqF3iWtvXcsGv9TwXOBZAaBNDfXDA1AteLD
+         q/FIpkPDNsnkyxgqWR4zAIYDbSB7D2hZ4jWUy8wvkLjhGtSLiLepnIMRShJrOXTKr3/k
+         tDMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zgiIl2UmnymsEs7W7Y/0luQQ7GJPPBSiJs/1Ty1rsK0=;
+        b=HBtwdgtWSkrCe7/cDfpfS+6S7iBIqOfX8L9k0DasJTjKmX475bVsRUybrvP+AgFSzx
+         6dFRXGasCEbUpLpp3JaDTWOXelkkg98lWDbfX1B1nkHrlAo7vKE7Deiz4nn+oauAGmL+
+         YI4TPTTXEyvRGOC1Vs+uzg3y5/B6FcKbE63wbm05NrLVb5nThDwfhEz8eQqnpl0YAJxR
+         K+ciESm2MhkzODgb8NsL7hhxJIIudR/Ofyj0P0jcFrjEhKfI8a4Bx7HJX+lpU1tw6Vj3
+         P4HCduThlV0kwTlZOhKs220baZYTRji1OdQMaGKKiNBh36iXy/KBYJ/BE8zXFCf1CcVS
+         X4nw==
+X-Gm-Message-State: APjAAAXBJ+Xg+DjVSwGJyKnvxks8mN+SYKfmpW5VM+CMVIxDTkR8Reh9
+        b5MjSyU4RuwF5EA2EytViXcKbqSvnQD9JvDW9klqOQ==
+X-Google-Smtp-Source: APXvYqwYYpQV3/dIPap2YGzTn+v9evDh/nI2myNoel0fTmROYiguWslZ1XNfJc/p+s/yLiLvLymESiH2fKEyjlJ9Vf4=
+X-Received: by 2002:a17:906:5382:: with SMTP id g2mr8406831ejo.203.1570119747699;
+ Thu, 03 Oct 2019 09:22:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="3hs23bfjj5434d43"
-Content-Disposition: inline
-In-Reply-To: <CAHCN7xLffcvC0LVnfrhf4cA=y1PRMx+COa3c8rBm1xOj179vEA@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+References: <pull-1570040410-308159@atomide.com>
+In-Reply-To: <pull-1570040410-308159@atomide.com>
+From:   Olof Johansson <olof@lixom.net>
+Date:   Thu, 3 Oct 2019 09:22:15 -0700
+Message-ID: <CAOesGMg_5omTAeyjeS_GOF8drtjS3DEQz_0+8XP2HhnD8X_wMA@mail.gmail.com>
+Subject: Re: [GIT PULL] fixes for omaps for v5.4
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     SoC Team <soc@kernel.org>, ARM-SoC Maintainers <arm@kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
---3hs23bfjj5434d43
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Hi Adam,
-
-On Wed, Oct 02, 2019 at 02:03:52PM -0500, Adam Ford wrote:
-> On Tue, Mar 19, 2019 at 8:33 AM Sebastian Reichel <sre@kernel.org> wrote:
-> After a bunch of testing, I think the issue I was having was the BTS
-> file being pulled in from linux-firmware.  I was able to successfully
-> load a BTS file that I have from Logic PD with working BLE and BT
-> working together.  I have to run some tests, but if you wouldn't mind
-> re-basing your code and pushing it again for review, I can most likely
-> add my 'tested-by'.
+On Wed, Oct 2, 2019 at 11:21 AM Tony Lindgren <tony@atomide.com> wrote:
 >
-> I am not sure who to discuss my perceived bug in the BTS blob.  I have
-> to go find the old BTS editor and see if I can determine the cause,
-> but the fact that I can use the BTS file that corresponds to the FCC
-> certified file that Logic PD used is more important to me than using
-> the generic BTS file provided by TI, however it would be nice for the
-> reference BTS file to operate without error.
+> From: "Tony Lindgren" <tony@atomide.com>
+>
+> The following changes since commit 4d856f72c10ecb060868ed10ff1b1453943fc6c8:
+>
+>   Linux 5.3 (2019-09-15 14:19:32 -0700)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.4/fixes-rc1-signed
+>
+> for you to fetch changes up to f90ec6cdf674248dcad85bf9af6e064bf472b841:
+>
+>   ARM: dts: am4372: Set memory bandwidth limit for DISPC (2019-09-30 09:32:03 -0700)
 
-nice :) I just send a rebased partial series. I need some more time
-for the FM radio part (I plan to work on that within the next 3
-weeks).
+Merged, thanks!
 
--- Sebastian
 
---3hs23bfjj5434d43
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl2V+t4ACgkQ2O7X88g7
-+pqntw//XWtlZbSO/mbBluBjdqneqq8If142mAI8pY6Z1yv9hZV4H4ybUiS4czE8
-5aWvAeye7uUZYbj85bELesffkWiKDShkT2K0mmfnY+apgcRRRsGhNMVN0+lNOHrV
-Ekm2sVokpe+BKHu2hPPiCTsMMSfd4Z6Xga7KeClQJgJFYtmst3e4/k0pTTNNu9tV
-O6J1j+baQzjiJEs7rz24vIrE6PoSvYmh8VRzOv2VwZ3kfcABu2vnz1JPxCSJvDfD
-swO2nW3uZiMdeTDvI027iHCWupdkCc+XReqVHKu7VhiwnEiUg/8YuUxFL43bnFvY
-vVRhJarFYkTvarwA2d1phCPH8DfH+uQ3nvFhpCjHUs+5KEEYWmiZhxkC7urL6xFY
-KvvKQVm0bvNnWtHLOSwrkQD0nRVYEAm3Cjk9DtnwjMemVs7F1vYq9OA6u6GDflty
-FSBlOZMplAA34TzvS3AcFjnKwzfmQqp43britTK1k+FDWcsBM2NWBN6aEOfcxmTs
-hGmFfOOzckx2cf6xPnkkjhzpvMsZHWMcdKp67MWBJxglOBMRpvY+0+JtaXbvDoXQ
-p7GfLTdLP7xkCMcTwXLFD6VvN2lbLioCPBQXCY+HbZ9AseDrHZlSzIM4MXE8nr/v
-qRQ8UFg2GG+KfwxV5uM4IEFOfAdPAtCcWClbYvmcOsJxrbBmqt4=
-=MOKK
------END PGP SIGNATURE-----
-
---3hs23bfjj5434d43--
+-Olof
