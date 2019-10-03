@@ -2,29 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 806BDC9F9B
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2019 15:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 467EEC9FA8
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2019 15:42:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730524AbfJCNmE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Oct 2019 09:42:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53344 "EHLO mail.kernel.org"
+        id S1730568AbfJCNmU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Oct 2019 09:42:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53322 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730509AbfJCNmE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        id S1729655AbfJCNmE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
         Thu, 3 Oct 2019 09:42:04 -0400
 Received: from jupiter.universe (dyndsl-037-138-174-173.ewe-ip-backbone.de [37.138.174.173])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D3ED215EA;
+        by mail.kernel.org (Postfix) with ESMTPSA id 88A5920865;
         Thu,  3 Oct 2019 13:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=default; t=1570110123;
-        bh=05Bgr78pOG3wspZTxe4PBM+L/UnEye5T6LMVFGmo/lc=;
+        bh=2YcAnzBdAV7qyRpwx2YdNckb96mGyoFb2wx9qLfpgi4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pLRN3JpLTN8QlfpSY7S71yhj3/ePXdU7sXG/Q+tfq2Lb16M9eksoMZvb6RoZgoaXE
-         05YyqroJnHv2rrYgFcQqiezzYi/mAGEBwdo7keIXA6YsyhIV5z4TMjyLeSFFCBdP2o
-         UibGe9SIOTiW02XLVtOiQUpyz/U5LsY/owsh3QLA=
+        b=fiUS24t2tYDYlclxqzqVdyh8KBgheC5Zjm9ZeVnEGKotElY8AsuN5+F97TTpm160M
+         bW9Qbo/J6ohiBwEadZ7Ahf/PQZFzpnfhdZ8t0dlQbYBTTA7sH+U90jo4Zvo6IWRo7Z
+         wFHvdYgvjPV/mTH7NeRas7dxJAJxJ+1L/k5xGwLU=
 Received: by jupiter.universe (Postfix, from userid 1000)
-        id 8E5504800BE; Thu,  3 Oct 2019 15:42:01 +0200 (CEST)
+        id 8F9CE4800C3; Thu,  3 Oct 2019 15:42:01 +0200 (CEST)
 From:   Sebastian Reichel <sre@kernel.org>
 To:     Sebastian Reichel <sre@kernel.org>,
         Marcel Holtmann <marcel@holtmann.org>,
@@ -34,9 +34,9 @@ Cc:     Adam Ford <aford173@gmail.com>,
         linux-bluetooth@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel@collabora.com,
         Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCHv2 1/4] ARM: dts: LogicPD Torpedo: Add WiLink UART node
-Date:   Thu,  3 Oct 2019 15:41:44 +0200
-Message-Id: <20191003134147.9458-2-sre@kernel.org>
+Subject: [PATCHv2 2/4] ARM: dts: IGEP: Add WiLink UART node
+Date:   Thu,  3 Oct 2019 15:41:45 +0200
+Message-Id: <20191003134147.9458-3-sre@kernel.org>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191003134147.9458-1-sre@kernel.org>
 References: <20191003134147.9458-1-sre@kernel.org>
@@ -51,33 +51,45 @@ From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
 Add a node for the UART part of WiLink chip.
 
-This is compile tested only!
-
-Cc: Adam Ford <aford173@gmail.com>
+Tested-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm/boot/dts/omap3-igep0020-rev-f.dts | 8 ++++++++
+ arch/arm/boot/dts/omap3-igep0030-rev-g.dts | 8 ++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
-index 18c27e85051f..c34ba0ef8b4d 100644
---- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
-+++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
-@@ -50,6 +50,14 @@
+diff --git a/arch/arm/boot/dts/omap3-igep0020-rev-f.dts b/arch/arm/boot/dts/omap3-igep0020-rev-f.dts
+index 03dcd05fb8a0..001decc20b3d 100644
+--- a/arch/arm/boot/dts/omap3-igep0020-rev-f.dts
++++ b/arch/arm/boot/dts/omap3-igep0020-rev-f.dts
+@@ -49,3 +49,11 @@
+ 		interrupts = <17 IRQ_TYPE_EDGE_RISING>; /* gpio 177 */
  	};
  };
- 
++
 +&uart2 {
 +	bluetooth {
-+		compatible = "ti,wl1283-st";
-+		enable-gpios = <&gpio6 2 GPIO_ACTIVE_HIGH>; /* gpio 162 */
-+		max-speed = <3000000>;
++		compatible = "ti,wl1835-st";
++		enable-gpios = <&gpio5 9 GPIO_ACTIVE_HIGH>; /* gpio 137 */
++		max-speed = <300000>;
 +	};
 +};
+diff --git a/arch/arm/boot/dts/omap3-igep0030-rev-g.dts b/arch/arm/boot/dts/omap3-igep0030-rev-g.dts
+index 060acd1e803a..9a8975799e16 100644
+--- a/arch/arm/boot/dts/omap3-igep0030-rev-g.dts
++++ b/arch/arm/boot/dts/omap3-igep0030-rev-g.dts
+@@ -71,3 +71,11 @@
+ 		interrupts = <8 IRQ_TYPE_EDGE_RISING>; /* gpio 136 */
+ 	};
+ };
 +
- &omap3_pmx_core {
- 	mmc3_pins: pinmux_mm3_pins {
- 		pinctrl-single,pins = <
++&uart2 {
++	bluetooth {
++		compatible = "ti,wl1835-st";
++		enable-gpios = <&gpio5 9 GPIO_ACTIVE_HIGH>; /* gpio 137 */
++		max-speed = <300000>;
++	};
++};
 -- 
 2.23.0
 
