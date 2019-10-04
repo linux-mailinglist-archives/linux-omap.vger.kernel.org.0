@@ -2,114 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA58CB693
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 10:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9643CCB7C9
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 12:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbfJDImS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Oct 2019 04:42:18 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:42756 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725730AbfJDImS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Oct 2019 04:42:18 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x948g1lt013759;
-        Fri, 4 Oct 2019 03:42:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1570178521;
-        bh=7GfWdysTbWv4kzHlurdLL/jJt+BcoAZEb2L+lCANjKQ=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Eo83z6zEo4/5fQjemH9UPOAnk0HJZNEc1ZFz7fTJEDd0g+/ydf0W9ZaNIjMGs+oeR
-         nmqbmyrumdUQQwLwAYJl/VhHWEVd8UI0xV2gjTyI5afBtc31Ah9SiBJeKQP9SQEg8Y
-         kaJ923DN5LObBPzNIAsEmGjy5P4LFx1C+RWvsD/k=
-Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x948g1eP116713
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 4 Oct 2019 03:42:01 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 4 Oct
- 2019 03:42:00 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 4 Oct 2019 03:42:00 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x948fxMO032434;
-        Fri, 4 Oct 2019 03:41:59 -0500
-Subject: Re: [PATCH] ARM: omap2plus_defconfig: Fix selected panels after
- generic panel changes
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>, Jyri Sarha <jsarha@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <20191003165539.50318-1-tony@atomide.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <03ca02c1-2816-17cd-03fd-5b72e5d0ec96@ti.com>
-Date:   Fri, 4 Oct 2019 11:41:58 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1730053AbfJDKCS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Oct 2019 06:02:18 -0400
+Received: from mail-io1-f51.google.com ([209.85.166.51]:36262 "EHLO
+        mail-io1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726927AbfJDKCS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Oct 2019 06:02:18 -0400
+Received: by mail-io1-f51.google.com with SMTP id b136so12272048iof.3;
+        Fri, 04 Oct 2019 03:02:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=zVzaL13aBMw0U8JG2NOEmJnjPxX8zMVFzGvL8Tcw4zE=;
+        b=QMWp6/G+6FQ1g1EQynFBy9qWtAZZvbEl3vOY2ZedehHYyxKZxM/Eonl4lW4ykcXIC9
+         3kiJdmKWs3Q8Z/0PPZNV7FfF+lkzhC7tyZp5I3lgBnlk2/dx0jCtyxFuUP4Kq3q+UaV9
+         j2zrTEBpydXkC24ZBOnRVqg8olG2y1m5ntg+ouIBV18wnKLvdHTJ1aSe0LOrqXlPBRMg
+         foVktVWwiAPyFKX202xdxFE1O3kdUG2v59sGkmod4c92aICgMbdfr3t/6fwCY/60fxD/
+         XUFu2W2PvCyn4JFcZUizrR5n4vGtTn3UgiVAkGHeJMU2jVoSr8F2M0+F6HsBwLf42ngb
+         vg8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=zVzaL13aBMw0U8JG2NOEmJnjPxX8zMVFzGvL8Tcw4zE=;
+        b=Pa8Iea1+rBsZKbGTf2sy8N82+lgIjLJVCeZQ6SpiG2DyyDZrua0XQS3pXYN+xhIGBW
+         anSqK1hTFzrgH6XOYqdOLzxor+T+G4MMfdLj3NLmNrUzNUaDmaGJXJ2HBOi8nkCphU8M
+         lkkkLrGy98NSEMelfwqdTWg0gNQuCYPAv26BERjsV0Qe365BuEpI5glcfkYG5faA4jty
+         j/9MxbNtnUygAr7nC726icOXNZn4Ghvf3FnrK7GFKteLE570gDcs4vYMgr1K4XuWk+ib
+         poh+u1biin+Pd3/Jys4dbtXvmLcgidH8OJ5ex5F6tZD8Uv+pmChLO/I2mE9R5ToGZCKc
+         bSLw==
+X-Gm-Message-State: APjAAAWGzyOPD1jUVqhW0ofvcmcKB1kW7uRiPc68mekQ8+LUUI7G6bot
+        3Ery/jKeKLEoGyO2Vx69AgUV+s3lR6/zoGjwXIY=
+X-Google-Smtp-Source: APXvYqzMrdeHLGJcpBa6sb2EAlzKy/w8w1xOVCGpGNdUkhtzyFrrOpSnqNRE8cnlYFCtBJxxnh89exYjDJhjAyKlo4M=
+X-Received: by 2002:a05:6638:3a5:: with SMTP id z5mr13854093jap.95.1570183337214;
+ Fri, 04 Oct 2019 03:02:17 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20191003165539.50318-1-tony@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 4 Oct 2019 05:02:05 -0500
+Message-ID: <CAHCN7xLO5VgA6tW4p7QjwPv_QXv==zbC38TxXtsR5x9H0mUGJA@mail.gmail.com>
+Subject: DM3730 Bluetooth Performance differences between SERIAL_8250_OMAP vs SERIAL_OMAP
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, linux-serial@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Vignesh R <vigneshr@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 03/10/2019 19:55, Tony Lindgren wrote:
-> The old omapdrm panels got removed for v5.4 in favor of generic panels,
-> and the Kconfig options changed. Let's update omap2plus_defconfig
-> accordingly so the same panels are still enabled.
-> 
-> Cc: Jyri Sarha <jsarha@ti.com>
-> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->   arch/arm/configs/omap2plus_defconfig | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-> --- a/arch/arm/configs/omap2plus_defconfig
-> +++ b/arch/arm/configs/omap2plus_defconfig
-> @@ -356,14 +356,14 @@ CONFIG_DRM_OMAP_CONNECTOR_HDMI=m
->   CONFIG_DRM_OMAP_CONNECTOR_ANALOG_TV=m
->   CONFIG_DRM_OMAP_PANEL_DPI=m
->   CONFIG_DRM_OMAP_PANEL_DSI_CM=m
-> -CONFIG_DRM_OMAP_PANEL_SONY_ACX565AKM=m
-> -CONFIG_DRM_OMAP_PANEL_LGPHILIPS_LB035Q02=m
-> -CONFIG_DRM_OMAP_PANEL_SHARP_LS037V7DW01=m
-> -CONFIG_DRM_OMAP_PANEL_TPO_TD028TTEC1=m
-> -CONFIG_DRM_OMAP_PANEL_TPO_TD043MTEA1=m
-> -CONFIG_DRM_OMAP_PANEL_NEC_NL8048HL11=m
->   CONFIG_DRM_TILCDC=m
->   CONFIG_DRM_PANEL_SIMPLE=m
-> +CONFIG_DRM_PANEL_LG_LB035Q02=m
-> +CONFIG_DRM_PANEL_NEC_NL8048HL11=m
-> +CONFIG_DRM_PANEL_SHARP_LS037V7DW01=m
-> +CONFIG_DRM_PANEL_SONY_ACX565AKM=m
-> +CONFIG_DRM_PANEL_TPO_TD028TTEC1=m
-> +CONFIG_DRM_PANEL_TPO_TD043MTEA1=m
->   CONFIG_FB=y
->   CONFIG_FIRMWARE_EDID=y
->   CONFIG_FB_MODE_HELPERS=y
+I am running Kernel 5.3.2 trying to troubleshoot some intermittent
+Bluetooth issues, and I think I have narrowed it down to the serial
+driver in use.
+By default, omap2plus_defconfig enables both SERIAL_8250_OMAP and
+SERIAL_OMAP.  I have my console device configured as  ttyS0, and all
+appears fine.  When I enable Bluetooth, however, I get intermittent
+errors on an DM3730 / OMAP3630.
 
-Sorry, I didn't remember to update these. Some additions:
+Using the 8250 driver for Blueotooth I get intermittent frame errors
+and data loss.
 
-These can be dropped, they no longer exist:
+Scanning ...
+[   28.482452] Bluetooth: hci0: Frame reassembly failed (-84)
+[   36.162170] Bluetooth: hci0: Frame reassembly failed (-84)
+        F4:4E:FC:C9:2F:57       BluJax
+# l2ping F4:4E:FC:C9:2F:57
+Ping: F4:4E:FC:C9:2F:57 from 00:18:30:49:7D:63 (data size 44) ...
+44 bytes from F4:4E:FC:C9:2F:57 id 0 time 8.27ms
+no response from F4:4E:FC:C9:2F:57: id 1
+^C2 sent, 1 received, 50% loss
 
-CONFIG_DRM_OMAP_ENCODER_TFP410=m
-CONFIG_DRM_OMAP_CONNECTOR_DVI=m
-CONFIG_DRM_OMAP_PANEL_DPI=m
+(after a fairly long hang, I hit control-c)
 
-This can be added to get the DVI output working on many of the boards:
+However, disabling the 8250 driver and using the only SERIAL_OMAP and
+the console routed to ttyO0, the Bluetooth works well, so I believe it
+to be a serial driver issue and not a Bluetooth error.
 
-CONFIG_DRM_TI_TFP410=m
+# hcitool scan
+Scanning ...
+        F4:4E:FC:C9:2F:57       BluJax
+^C
+# l2ping F4:4E:FC:C9:2F:57
+Ping: F4:4E:FC:C9:2F:57 from 00:18:30:49:7D:63 (data size 44) ...
+44 bytes from F4:4E:FC:C9:2F:57 id 0 time 6.90ms
+...
+44 bytes from F4:4E:FC:C9:2F:57 id 14 time 28.29ms
+^C15 sent, 15 received, 0% loss
+#
 
-  Tomi
+0% loss and regular, repeatable communication without any Frame
+reassembly errors.
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Any suggestions on how to troubleshoot or what might cause the
+difference between the two drivers?
+
+adam
