@@ -2,94 +2,193 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E05B3CC06F
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 18:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64459CC116
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 18:51:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728264AbfJDQ1O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Oct 2019 12:27:14 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.221]:16278 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728124AbfJDQ1O (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Oct 2019 12:27:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1570206432;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=0/3jZE2Hpi3+YqUr6/w7aTaGAeSa0HOcpJDg6DnEKPY=;
-        b=M8wSo53Yd3aTq7mn4BwjwFmSbjj1JvDeT/jKG7+Y/RaBDolRdpRdNvdd5AbR+tkl9y
-        sAfRcMPfdp9O38eIwKqhlKktmPIi/yGJKoQAicEwmtVQDFwusuW8ZXrHZISfk4FJzWFC
-        p00NS6AUwmB38UiZKISL9Qp2FiMoMX5xZPKiMVS46EHrNR1dOqCol4jl99ceHCnfr4b2
-        A4L5EbvuOdM+lQw3NelFGC/L5UAuCVqoCUjzOc5371JLG5IpIprDhO5TJpThjZ/w9qc+
-        NHL4r2Z9eNx0EpCCMc4mDzdfFSwzPnNMlxp9emcFZP2+zxeoW16tY4UuekgUj7x0rgpJ
-        QF5A==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlSYXAoFBA=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.28.0 DYNA|AUTH)
-        with ESMTPSA id v00409v94GRCiOo
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Fri, 4 Oct 2019 18:27:12 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: iss: camera interface omap5
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20191004161117.GO5610@atomide.com>
-Date:   Fri, 4 Oct 2019 18:27:12 +0200
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <EDF29A32-77BB-4346-BBCC-C12F2BB4745E@goldelico.com>
-References: <0D08B352-F0DF-45A4-8279-51B07D366AD0@goldelico.com> <20191004161117.GO5610@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1728671AbfJDQvk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Oct 2019 12:51:40 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:33930 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725932AbfJDQvj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Oct 2019 12:51:39 -0400
+Received: by mail-io1-f66.google.com with SMTP id q1so15067208ion.1;
+        Fri, 04 Oct 2019 09:51:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1m5jMl+j0wFCdGUDGZKKaL6nviatVJQaN7YzAwj3ZUs=;
+        b=rtGE/maStH7QAtH/Tydy2qxQVsveofu5bu6sC5eRUZYx9ILOFtWaXSSpEFFf2iHYF2
+         5RIK5U43/6p/zgoe7l3fvcpLHWE1il4GxscoIR+p/PS1bSNc2dmu2g+PVfpK5/rQBGck
+         LictbWaY7Dav8baespzhw7QubnIvI09sguG/VFRmSmK/jZ84YvIV6U4SNWxWpUJq3lBd
+         K46xH3c7BoYCZavKfwV28ETdeh+MgDs1c4yaxshWpB7fc3dc4Q9qaYaDE5DWUBiKDTIj
+         AmczBSiM0UKf8FAa2WFLSIdrFmHcv+WBlZ/J+rUS8ySyBG9/yFHcYYyN1NuN5PBq2Fel
+         LLKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1m5jMl+j0wFCdGUDGZKKaL6nviatVJQaN7YzAwj3ZUs=;
+        b=pPiQCR+Y2d3uaYdWxdNRlu5mapuS3tMq90i3j8OYo03ktUr/bqL7PijFJAziQCi88V
+         OWnLYS8kqO90uPZ8Gwb6sJ5YE96H6Ayu7FfRdkVEwYoEWQXctYlHnVagsHVboEiYXT/A
+         NOP0xw1d+i1gObV9qsmqxlSNV4QdysLfzXA+ZREukECU8H1ut7bxEkHbqb7pDqxXJMaP
+         YmO6hpPUNgyswDplE9etb1YPDe/NznYFYUqHvF3tRqCsEoKDxelE+5YJhdnX9Pujfjl9
+         Y6H9Fq54FYagR5Qz0rcpvr1FShkwB8ZW/7lAf+8B707Vi5fVfWpGBOtcmyinvN1+6lKJ
+         Y5OQ==
+X-Gm-Message-State: APjAAAVcaOptkwxsqNxzjf6GATVpT+Fo8wHiwyWFSz+1FN++Zl9kFjNr
+        sNSfzoEBzfNIgD44h0r7Bpkm1tdNyPOfPRZlr1Q=
+X-Google-Smtp-Source: APXvYqxjbUkl/PPycJs0mioIVrdWJpeRRCmnG8ST8fukbge6BCLJArIZwITPrFFWqLG9P9I6pPOilOofsMdWyBXaoOg=
+X-Received: by 2002:a92:3314:: with SMTP id a20mr16052072ilf.276.1570207898037;
+ Fri, 04 Oct 2019 09:51:38 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAHCN7xLO5VgA6tW4p7QjwPv_QXv==zbC38TxXtsR5x9H0mUGJA@mail.gmail.com>
+ <CAHCN7xJPv7W381R7LS4bB8xWWpugz2NwbTUtj-hqHnDBZ9MFzA@mail.gmail.com>
+ <CAGm1_kv6RMUDppu6ZjY9Dq7QL=hS=D+e3KS37+V0ncbwoXE6mQ@mail.gmail.com> <CAHCN7xKsGz4UA4gfM5jpS9UE-V7_k265G_hB=wQ5Ueh3T5kaNQ@mail.gmail.com>
+In-Reply-To: <CAHCN7xKsGz4UA4gfM5jpS9UE-V7_k265G_hB=wQ5Ueh3T5kaNQ@mail.gmail.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 4 Oct 2019 11:51:27 -0500
+Message-ID: <CAHCN7xKirqyj3un1k+QNeoKc0DvOt4g8ScFScG02pZF=OX+GZg@mail.gmail.com>
+Subject: Re: DM3730 Bluetooth Performance differences between SERIAL_8250_OMAP
+ vs SERIAL_OMAP
+To:     Yegor Yefremov <yegorslists@googlemail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>, linux-serial@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Vignesh R <vigneshr@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+On Fri, Oct 4, 2019 at 9:08 AM Adam Ford <aford173@gmail.com> wrote:
+>
+> On Fri, Oct 4, 2019 at 7:27 AM Yegor Yefremov
+> <yegorslists@googlemail.com> wrote:
+> >
+> > Hi Adam,
+> >
+> > On Fri, Oct 4, 2019 at 12:39 PM Adam Ford <aford173@gmail.com> wrote:
+> > >
+> > > On Fri, Oct 4, 2019 at 5:02 AM Adam Ford <aford173@gmail.com> wrote:
+> > > >
+> > > > I am running Kernel 5.3.2 trying to troubleshoot some intermittent
+> > > > Bluetooth issues, and I think I have narrowed it down to the serial
+> > > > driver in use.
+> > >
+> > > I should have also noted that it's using UART2 with CTS and RTS on the
+> > > DM3730 (omap3630) and its configured with a baud rate of 3M.
+> > > I tried slowing it to 115200, but that didn't help.  I tried disabling
+> > > the DMA hooks from the device tree, and that didn't help.
+> > >
+> > > > By default, omap2plus_defconfig enables both SERIAL_8250_OMAP and
+> > > > SERIAL_OMAP.  I have my console device configured as  ttyS0, and all
+> > > > appears fine.  When I enable Bluetooth, however, I get intermittent
+> > > > errors on an DM3730 / OMAP3630.
+> > > >
+> > > > Using the 8250 driver for Blueotooth I get intermittent frame errors
+> > > > and data loss.
+> > > >
+> > > > Scanning ...
+> > > > [   28.482452] Bluetooth: hci0: Frame reassembly failed (-84)
+> > > > [   36.162170] Bluetooth: hci0: Frame reassembly failed (-84)
+> > > >         F4:4E:FC:C9:2F:57       BluJax
+> > > > # l2ping F4:4E:FC:C9:2F:57
+> > > > Ping: F4:4E:FC:C9:2F:57 from 00:18:30:49:7D:63 (data size 44) ...
+> > > > 44 bytes from F4:4E:FC:C9:2F:57 id 0 time 8.27ms
+> > > > no response from F4:4E:FC:C9:2F:57: id 1
+> > > > ^C2 sent, 1 received, 50% loss
+> > > >
+> > > > (after a fairly long hang, I hit control-c)
+> > > >
+> > > > However, disabling the 8250 driver and using the only SERIAL_OMAP and
+> > > > the console routed to ttyO0, the Bluetooth works well, so I believe it
+> > > > to be a serial driver issue and not a Bluetooth error.
+> > > >
+> > > > # hcitool scan
+> > > > Scanning ...
+> > > >         F4:4E:FC:C9:2F:57       BluJax
+> > > > ^C
+> > > > # l2ping F4:4E:FC:C9:2F:57
+> > > > Ping: F4:4E:FC:C9:2F:57 from 00:18:30:49:7D:63 (data size 44) ...
+> > > > 44 bytes from F4:4E:FC:C9:2F:57 id 0 time 6.90ms
+> > > > ...
+> > > > 44 bytes from F4:4E:FC:C9:2F:57 id 14 time 28.29ms
+> > > > ^C15 sent, 15 received, 0% loss
+> > > > #
+> > > >
+> > > > 0% loss and regular, repeatable communication without any Frame
+> > > > reassembly errors.
+> > > >
+> > >
+> > > I tried disabling SERIAL_OMAP and using only SERIAL_8250_OMAP, but
+> > > that didn't help.  Because the issue goes away when I disable
+> > > SERIAL_8250_OMAP, I am wondering if something is either being
+> > > misconfigured or some IRQ or DMA integration is missing that may be
+> > > present with the older SERIAL_OMAP driver.
+> > >
+> > > > Any suggestions on how to troubleshoot or what might cause the
+> > > > difference between the two drivers?
+> >
+> > Can it be related to this issue [1]? Can you confirm that 5.2 is
+> > working as expected with the 8250 driver?
+> >
+> > [1] https://marc.info/?l=linux-serial&m=156965039008649&w=2
+>
+> I reverted the whole 8250 directory to d99482673f95 ("serial:
+> mctrl_gpio: Check if GPIO property exisits before requesting it") and
+> it is somewhat better, but it's not as good as the stock OMAP serial
+> driver.  I get some frame errors and eventually, I get some timeouts,
+> but it's not as bad.  I'll try to implement the RTS and CTS as gpio
+> pins and change the device tree accordingly.  It might shed some light
+> on the situation.
 
-> Am 04.10.2019 um 18:11 schrieb Tony Lindgren <tony@atomide.com>:
->=20
-> * H. Nikolaus Schaller <hns@goldelico.com> [191004 07:25]:
->> Hi Tony,
->> is there a similar node for omap5 comparable to this for omap4:
->>=20
->> =
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ar=
-ch/arm/boot/dts/omap4.dtsi?h=3Dv5.4-rc1#n176
+I tried to manually setup RTS and CTS pins as GPIO, but that didn't
+work, so I changed it back.
 
-(I just noticed there seems to be a missing empty line between 216 and =
-217)
+It looks like the clocking is correct.  I don't know enough about the
+DMA or the IRQ to know if it's working correctly.
 
->=20
-> Not sure if it's the same interface as on omap4, but at
-> least TRM has "8.1.3.1 ISS Instance Summary" at 0x52000000.
+I was wondering if the problem is in the handshaking or not.
+I added " uart-has-rtscts;" to by uart node thinking it might help,
+but it did not.
 
-Ok.
+>
+8250_omap.c has some checks to see if we can enable autoRTS:
 
-IMHO there was a patch where someone got it working a while ago so it is =
-likely the same:
+if (termios->c_cflag & CRTSCTS && up->port.flags & UPF_HARD_FLOW &&
+    !up->gpios) {
+     /* Enable AUTOCTS (autoRTS is enabled when RTS is raised) */
+     ...
+}
 
-	https://e2e.ti.com/support/interface/f/138/t/647460
+Based on this, I would expect up->gpios to always be zero if we want
+auto RTS CTS.
 
-Now I wonder how it can be updated to current target-module style.
+I threw some debug code into the serial driver to look at the status
+of the various flags that go into setting up auto RTS/CTS.
 
-Is it correct to do it similar to omap4 and replace
+[   13.837005] termios->c_cflag & CRTSCTS = 80000000
+[   13.841888] up->port.flags & UPF_HARD_FLOW = 300000
+[   13.846801] up->gpios = ce3f3cc0
+[   17.166595] termios->c_cflag & CRTSCTS = 0
+[   17.170745] up->port.flags & UPF_HARD_FLOW = 300000
+[   17.175781] up->gpios = ce3f3d40
 
-	/* No child device binding, driver in staging */
+I don't know which port is which, but I only have two active uarts
+(console and Bluetooth)
+The Bluetooth port should use handshaking and the console should not.
 
-by a child node that is compatible to "ti,omap4-iss".
-And there define a reg record like in the example on e2e?
-I.e. split into sysc registers for the target-module@52000000
-and driver specific registers in the child node?
+From the look of the dump, up->gpios is never 0, so the last
+evaluation would always be false unless I am misinterpreting
+something.
 
-Regarding clocks they likely have to stay with the =
-target-module@52000000
-node, right?
+I tried to modify the check to remove !up->gpios check, but that
+didn't help either, but it made it a little better.
 
-And what about the dma nodes? Also keep in the target-module@52000000?
 
-BR and thanks,
-Nikolaus
-
+> adam
+> >
+> > Cheers,
+> > Yegor
