@@ -2,93 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4205CCBFCB
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 17:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AC59CC004
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 18:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390053AbfJDPya (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Oct 2019 11:54:30 -0400
-Received: from muru.com ([72.249.23.125]:35364 "EHLO muru.com"
+        id S2390241AbfJDQEb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Oct 2019 12:04:31 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:42710 "EHLO fornost.hmeau.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390011AbfJDPya (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 4 Oct 2019 11:54:30 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 3F26980BF;
-        Fri,  4 Oct 2019 15:55:02 +0000 (UTC)
-Date:   Fri, 4 Oct 2019 08:54:26 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Jyri Sarha <jsarha@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH] ARM: omap2plus_defconfig: Fix selected panels after
- generic panel changes
-Message-ID: <20191004155426.GM5610@atomide.com>
-References: <20191003165539.50318-1-tony@atomide.com>
- <03ca02c1-2816-17cd-03fd-5b72e5d0ec96@ti.com>
+        id S2390091AbfJDQEb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 4 Oct 2019 12:04:31 -0400
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
+        id 1iGPhH-0001FJ-3M; Sat, 05 Oct 2019 01:40:48 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Sat, 05 Oct 2019 01:40:41 +1000
+Date:   Sat, 5 Oct 2019 01:40:41 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Matt Mackall <mpm@selenic.com>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-crypto@vger.kernel.org,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Adam Ford <aford173@gmail.com>,
+        Pali =?iso-8859-1?Q?Roh=E1r?= <pali.rohar@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Tero Kristo <t-kristo@ti.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCHv2 0/7] Non-urgent fixes and improvments for omap3-rom-rng
+Message-ID: <20191004154041.GL5148@gondor.apana.org.au>
+References: <20190914210300.15836-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <03ca02c1-2816-17cd-03fd-5b72e5d0ec96@ti.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190914210300.15836-1-tony@atomide.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tomi Valkeinen <tomi.valkeinen@ti.com> [191004 08:42]:
-> On 03/10/2019 19:55, Tony Lindgren wrote:
-> > The old omapdrm panels got removed for v5.4 in favor of generic panels,
-> > and the Kconfig options changed. Let's update omap2plus_defconfig
-> > accordingly so the same panels are still enabled.
-> > 
-> > Cc: Jyri Sarha <jsarha@ti.com>
-> > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> >   arch/arm/configs/omap2plus_defconfig | 12 ++++++------
-> >   1 file changed, 6 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-> > --- a/arch/arm/configs/omap2plus_defconfig
-> > +++ b/arch/arm/configs/omap2plus_defconfig
-> > @@ -356,14 +356,14 @@ CONFIG_DRM_OMAP_CONNECTOR_HDMI=m
-> >   CONFIG_DRM_OMAP_CONNECTOR_ANALOG_TV=m
-> >   CONFIG_DRM_OMAP_PANEL_DPI=m
-> >   CONFIG_DRM_OMAP_PANEL_DSI_CM=m
-> > -CONFIG_DRM_OMAP_PANEL_SONY_ACX565AKM=m
-> > -CONFIG_DRM_OMAP_PANEL_LGPHILIPS_LB035Q02=m
-> > -CONFIG_DRM_OMAP_PANEL_SHARP_LS037V7DW01=m
-> > -CONFIG_DRM_OMAP_PANEL_TPO_TD028TTEC1=m
-> > -CONFIG_DRM_OMAP_PANEL_TPO_TD043MTEA1=m
-> > -CONFIG_DRM_OMAP_PANEL_NEC_NL8048HL11=m
-> >   CONFIG_DRM_TILCDC=m
-> >   CONFIG_DRM_PANEL_SIMPLE=m
-> > +CONFIG_DRM_PANEL_LG_LB035Q02=m
-> > +CONFIG_DRM_PANEL_NEC_NL8048HL11=m
-> > +CONFIG_DRM_PANEL_SHARP_LS037V7DW01=m
-> > +CONFIG_DRM_PANEL_SONY_ACX565AKM=m
-> > +CONFIG_DRM_PANEL_TPO_TD028TTEC1=m
-> > +CONFIG_DRM_PANEL_TPO_TD043MTEA1=m
-> >   CONFIG_FB=y
-> >   CONFIG_FIRMWARE_EDID=y
-> >   CONFIG_FB_MODE_HELPERS=y
+On Sat, Sep 14, 2019 at 02:02:53PM -0700, Tony Lindgren wrote:
+> Hi all,
 > 
-> Sorry, I didn't remember to update these. Some additions:
+> Here are fixes and improvments for omap3-rom-rng that's been broken for
+> a while.
 > 
-> These can be dropped, they no longer exist:
+> The first four patches get it working, and then the last two patches add
+> support for runtime PM.
 > 
-> CONFIG_DRM_OMAP_ENCODER_TFP410=m
-> CONFIG_DRM_OMAP_CONNECTOR_DVI=m
-> CONFIG_DRM_OMAP_PANEL_DPI=m
+> I did not add Sebastian's acks from v1 set as many of the patches
+> changed. Please review again :)
 > 
-> This can be added to get the DVI output working on many of the boards:
+> Regards,
 > 
-> CONFIG_DRM_TI_TFP410=m
+> Tony
+> 
+> Changes since v1:
+> - Use clk_prepare_enable() as pointed out by Sebastian
+> - Simplify runtime PM changes patch
+> - Add a new patch for devm changes as suggested by Sebastian
+> 
+> 
+> Tony Lindgren (7):
+>   ARM: OMAP2+: Check omap3-rom-rng for GP device instead of HS device
+>   hwrng: omap3-rom - Fix missing clock by probing with device tree
+>   hwrng: omap3-rom - Call clk_disable_unprepare() on exit only if not
+>     idled
+>   hwrng: omap3-rom - Initialize default quality to get data
+>   hwrng: omap3-rom - Update to use standard driver data
+>   hwrng: omap3-rom - Use runtime PM instead of custom functions
+>   hwrng: omap3-rom - Use devm hwrng and runtime PM
+> 
+>  .../devicetree/bindings/rng/omap3_rom_rng.txt |  27 +++
+>  arch/arm/boot/dts/omap3-n900.dts              |   6 +
+>  arch/arm/mach-omap2/pdata-quirks.c            |  14 +-
+>  drivers/char/hw_random/omap3-rom-rng.c        | 168 +++++++++++-------
+>  4 files changed, 139 insertions(+), 76 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/rng/omap3_rom_rng.txt
 
-We have patches already posted for these by Adam and me so we
-should be good to go with just $subject patch missing now.
-
-Regards,
-
-Tony
+All applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
