@@ -2,170 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F5B9CB321
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 03:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEA58CB693
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 10:42:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730923AbfJDBqH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Oct 2019 21:46:07 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:46647 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729891AbfJDBqG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Oct 2019 21:46:06 -0400
-Received: by mail-pl1-f194.google.com with SMTP id q24so2348948plr.13;
-        Thu, 03 Oct 2019 18:46:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=F2Ug4BOLGPrMjjEj52g7g4pWiptas8bJOxWiWz/fDVU=;
-        b=PbWTIUYJu/Xb4h87WBSmtho2pGiy7vMg+m3KA0/4TuBxNM68QPvXEM7REe7FEgDyOB
-         C/MkrPLVUfrCJT5k3VvlPCCF9Rb4MNn+GRhaiQLEp13xhVdtj/p8UWW0EmefL/sgP9yH
-         NcvrfT4cWSbm+IThZXmSPJChYqX7fpuvK/7CDa/JWshZTJ2QZsZClMaouA9xBK3DaW7F
-         ouBt54Z44CYdW3PEBMF56LIGVeha5OEUuTXsiwsU13kR3QNqsHhk7Whec9/N5H8LZ40C
-         PXbacFyfqvGoSKfo7BHq5T9lJTBeLuIy53+VpVDJdox7FuhP5fI2UwZSlbnztdxVUTL1
-         HDrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=F2Ug4BOLGPrMjjEj52g7g4pWiptas8bJOxWiWz/fDVU=;
-        b=me/5r4v7114Bf/4khV7RPUiktiSTLcbqjyZ/dmmlmSM+MT+OhIqbPtGNhkyTFjKR2I
-         R19fjID5tVSXcmYGMTNb7b9Nvutx3i7LDyXkR7x8t3ZEIiiD76u9zybDCh6Vcu4Gp/Wl
-         jd45C75Axhdrad1n6/ZL9nayyOjv+kwRk5bkI80CRN1c+yPpa4b1f4ZQ97a41pZU6JFz
-         brXKiXfdd5yypsEH/z1JIj5lw/hIBOnVi5uE+A9WhDNVd8y2qua4rkaYbyYnDN/oTG/j
-         WpX6Nr6YM5j+RyUszM8r8n8Koh8N1Vp0pgM5HncUWvf8VXVEHbMPCwrgFmGLUMbZUjPY
-         3Y1w==
-X-Gm-Message-State: APjAAAVNtr+qmdWOBZ/Smy7H88BIrlRP7KzkXYqzwXfe1TTKEV0rE4nL
-        AgGE7dWce7UBhfafkp5GZl33XMe0wNA=
-X-Google-Smtp-Source: APXvYqzD5JuUHJ3dQCJweyuHhGuiHfqNxgxYzkz0cxux7VBByd5MhYM993TSZb5o7eTm04RUHnJyfA==
-X-Received: by 2002:a17:902:5983:: with SMTP id p3mr12808037pli.156.1570153564249;
-        Thu, 03 Oct 2019 18:46:04 -0700 (PDT)
-Received: from localhost.lan (c-67-185-54-80.hsd1.wa.comcast.net. [67.185.54.80])
-        by smtp.gmail.com with ESMTPSA id e4sm4333514pff.22.2019.10.03.18.46.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2019 18:46:03 -0700 (PDT)
-From:   Andrey Smirnov <andrew.smirnov@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     Andrey Smirnov <andrew.smirnov@gmail.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Graeme Smecher <gsmecher@threespeedlogic.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: am3874-iceboard: Fix 'i2c-mux-idle-disconnect' usage
-Date:   Thu,  3 Oct 2019 18:45:48 -0700
-Message-Id: <20191004014548.29583-1-andrew.smirnov@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        id S1727024AbfJDImS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Oct 2019 04:42:18 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:42756 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbfJDImS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Oct 2019 04:42:18 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x948g1lt013759;
+        Fri, 4 Oct 2019 03:42:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1570178521;
+        bh=7GfWdysTbWv4kzHlurdLL/jJt+BcoAZEb2L+lCANjKQ=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Eo83z6zEo4/5fQjemH9UPOAnk0HJZNEc1ZFz7fTJEDd0g+/ydf0W9ZaNIjMGs+oeR
+         nmqbmyrumdUQQwLwAYJl/VhHWEVd8UI0xV2gjTyI5afBtc31Ah9SiBJeKQP9SQEg8Y
+         kaJ923DN5LObBPzNIAsEmGjy5P4LFx1C+RWvsD/k=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x948g1eP116713
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 4 Oct 2019 03:42:01 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 4 Oct
+ 2019 03:42:00 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Fri, 4 Oct 2019 03:42:00 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x948fxMO032434;
+        Fri, 4 Oct 2019 03:41:59 -0500
+Subject: Re: [PATCH] ARM: omap2plus_defconfig: Fix selected panels after
+ generic panel changes
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     <linux-arm-kernel@lists.infradead.org>, Jyri Sarha <jsarha@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <20191003165539.50318-1-tony@atomide.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <03ca02c1-2816-17cd-03fd-5b72e5d0ec96@ti.com>
+Date:   Fri, 4 Oct 2019 11:41:58 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191003165539.50318-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-According to
-Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.txt,
-i2c-mux-idle-disconnect is a property of a parent node since it
-pertains to the mux/switch as a whole, so move it there and drop all
-of the concurrences in child nodes.
+On 03/10/2019 19:55, Tony Lindgren wrote:
+> The old omapdrm panels got removed for v5.4 in favor of generic panels,
+> and the Kconfig options changed. Let's update omap2plus_defconfig
+> accordingly so the same panels are still enabled.
+> 
+> Cc: Jyri Sarha <jsarha@ti.com>
+> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>   arch/arm/configs/omap2plus_defconfig | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+> --- a/arch/arm/configs/omap2plus_defconfig
+> +++ b/arch/arm/configs/omap2plus_defconfig
+> @@ -356,14 +356,14 @@ CONFIG_DRM_OMAP_CONNECTOR_HDMI=m
+>   CONFIG_DRM_OMAP_CONNECTOR_ANALOG_TV=m
+>   CONFIG_DRM_OMAP_PANEL_DPI=m
+>   CONFIG_DRM_OMAP_PANEL_DSI_CM=m
+> -CONFIG_DRM_OMAP_PANEL_SONY_ACX565AKM=m
+> -CONFIG_DRM_OMAP_PANEL_LGPHILIPS_LB035Q02=m
+> -CONFIG_DRM_OMAP_PANEL_SHARP_LS037V7DW01=m
+> -CONFIG_DRM_OMAP_PANEL_TPO_TD028TTEC1=m
+> -CONFIG_DRM_OMAP_PANEL_TPO_TD043MTEA1=m
+> -CONFIG_DRM_OMAP_PANEL_NEC_NL8048HL11=m
+>   CONFIG_DRM_TILCDC=m
+>   CONFIG_DRM_PANEL_SIMPLE=m
+> +CONFIG_DRM_PANEL_LG_LB035Q02=m
+> +CONFIG_DRM_PANEL_NEC_NL8048HL11=m
+> +CONFIG_DRM_PANEL_SHARP_LS037V7DW01=m
+> +CONFIG_DRM_PANEL_SONY_ACX565AKM=m
+> +CONFIG_DRM_PANEL_TPO_TD028TTEC1=m
+> +CONFIG_DRM_PANEL_TPO_TD043MTEA1=m
+>   CONFIG_FB=y
+>   CONFIG_FIRMWARE_EDID=y
+>   CONFIG_FB_MODE_HELPERS=y
 
-Fixes: d031773169df ("ARM: dts: Adds device tree file for McGill's IceBoard, based on TI AM3874")
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Benoît Cousson <bcousson@baylibre.com>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Graeme Smecher <gsmecher@threespeedlogic.com>
-Cc: linux-omap@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
+Sorry, I didn't remember to update these. Some additions:
 
-This is purely a drive-by fix, since it concerns the HW I've never
-heard of before. However I was working with PCA9548
-(vf610-zii-scu4-aib is my HW) and looking at various users in the
-kernel, when this code caught my eye. Apologies for the noise if this
-fix is somehow bogus.
+These can be dropped, they no longer exist:
 
-In case that it matters this patch is based on top of 5.4-rc1.
+CONFIG_DRM_OMAP_ENCODER_TFP410=m
+CONFIG_DRM_OMAP_CONNECTOR_DVI=m
+CONFIG_DRM_OMAP_PANEL_DPI=m
 
-Thanks,
-Andrey Smirnov
+This can be added to get the DVI output working on many of the boards:
 
- arch/arm/boot/dts/am3874-iceboard.dts | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+CONFIG_DRM_TI_TFP410=m
 
-diff --git a/arch/arm/boot/dts/am3874-iceboard.dts b/arch/arm/boot/dts/am3874-iceboard.dts
-index 883fb85135d4..1b4b2b0500e4 100644
---- a/arch/arm/boot/dts/am3874-iceboard.dts
-+++ b/arch/arm/boot/dts/am3874-iceboard.dts
-@@ -111,13 +111,13 @@
- 		reg = <0x70>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
-+		i2c-mux-idle-disconnect;
- 
- 		i2c@0 {
- 			/* FMC A */
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <0>;
--			i2c-mux-idle-disconnect;
- 		};
- 
- 		i2c@1 {
-@@ -125,7 +125,6 @@
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <1>;
--			i2c-mux-idle-disconnect;
- 		};
- 
- 		i2c@2 {
-@@ -133,7 +132,6 @@
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <2>;
--			i2c-mux-idle-disconnect;
- 		};
- 
- 		i2c@3 {
-@@ -141,7 +139,6 @@
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <3>;
--			i2c-mux-idle-disconnect;
- 		};
- 
- 		i2c@4 {
-@@ -149,14 +146,12 @@
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <4>;
--			i2c-mux-idle-disconnect;
- 		};
- 
- 		i2c@5 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <5>;
--			i2c-mux-idle-disconnect;
- 
- 			ina230@40 { compatible = "ti,ina230"; reg = <0x40>; shunt-resistor = <5000>; };
- 			ina230@41 { compatible = "ti,ina230"; reg = <0x41>; shunt-resistor = <5000>; };
-@@ -182,14 +177,12 @@
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <6>;
--			i2c-mux-idle-disconnect;
- 		};
- 
- 		i2c@7 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <7>;
--			i2c-mux-idle-disconnect;
- 
- 			u41: pca9575@20 {
- 				compatible = "nxp,pca9575";
+  Tomi
+
 -- 
-2.21.0
-
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
