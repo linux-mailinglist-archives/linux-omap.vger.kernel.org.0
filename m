@@ -2,193 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64459CC116
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 18:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D76EECC390
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2019 21:29:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728671AbfJDQvk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Oct 2019 12:51:40 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:33930 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725932AbfJDQvj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Oct 2019 12:51:39 -0400
-Received: by mail-io1-f66.google.com with SMTP id q1so15067208ion.1;
-        Fri, 04 Oct 2019 09:51:38 -0700 (PDT)
+        id S1729490AbfJDT3t (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Oct 2019 15:29:49 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:45202 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725932AbfJDT3t (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Oct 2019 15:29:49 -0400
+Received: by mail-io1-f68.google.com with SMTP id c25so15905328iot.12;
+        Fri, 04 Oct 2019 12:29:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=1m5jMl+j0wFCdGUDGZKKaL6nviatVJQaN7YzAwj3ZUs=;
-        b=rtGE/maStH7QAtH/Tydy2qxQVsveofu5bu6sC5eRUZYx9ILOFtWaXSSpEFFf2iHYF2
-         5RIK5U43/6p/zgoe7l3fvcpLHWE1il4GxscoIR+p/PS1bSNc2dmu2g+PVfpK5/rQBGck
-         LictbWaY7Dav8baespzhw7QubnIvI09sguG/VFRmSmK/jZ84YvIV6U4SNWxWpUJq3lBd
-         K46xH3c7BoYCZavKfwV28ETdeh+MgDs1c4yaxshWpB7fc3dc4Q9qaYaDE5DWUBiKDTIj
-         AmczBSiM0UKf8FAa2WFLSIdrFmHcv+WBlZ/J+rUS8ySyBG9/yFHcYYyN1NuN5PBq2Fel
-         LLKg==
+        bh=y0OJ7/SgReOk2grQFvLnWH91Op9wRRMdd5tOpx1hbC4=;
+        b=mHbN9Zq37CUj7dDvd5GrFR4IpOo9GIoKPErGNZnhpHnU56KhvOuWcFlRocijnLctvK
+         VLqMyrAwP66rgebj4xeayopAFe9kezh8O0LUhQNIP/3WCjkmfCts8nUSNKv0IA4O3kXS
+         9uZmUiVfs/da+hSDrhijeCxDwnUvpbeNy+nUUGPoi7HzCK3irA33zewV4A7tcGGX374y
+         Qpk+rsA3D1yrJATG9JfbEflWw/+SyUnbWD0Z71jrVxzDaVdR5IpKN18eJGXFbGdxpYwn
+         s8dSDWR37eSDNVweXavLH0TGAt6R0ircrGNjs7pylUYmHUHuMAfTY4H5zmExHRBrdQR+
+         MdTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1m5jMl+j0wFCdGUDGZKKaL6nviatVJQaN7YzAwj3ZUs=;
-        b=pPiQCR+Y2d3uaYdWxdNRlu5mapuS3tMq90i3j8OYo03ktUr/bqL7PijFJAziQCi88V
-         OWnLYS8kqO90uPZ8Gwb6sJ5YE96H6Ayu7FfRdkVEwYoEWQXctYlHnVagsHVboEiYXT/A
-         NOP0xw1d+i1gObV9qsmqxlSNV4QdysLfzXA+ZREukECU8H1ut7bxEkHbqb7pDqxXJMaP
-         YmO6hpPUNgyswDplE9etb1YPDe/NznYFYUqHvF3tRqCsEoKDxelE+5YJhdnX9Pujfjl9
-         Y6H9Fq54FYagR5Qz0rcpvr1FShkwB8ZW/7lAf+8B707Vi5fVfWpGBOtcmyinvN1+6lKJ
-         Y5OQ==
-X-Gm-Message-State: APjAAAVcaOptkwxsqNxzjf6GATVpT+Fo8wHiwyWFSz+1FN++Zl9kFjNr
-        sNSfzoEBzfNIgD44h0r7Bpkm1tdNyPOfPRZlr1Q=
-X-Google-Smtp-Source: APXvYqxjbUkl/PPycJs0mioIVrdWJpeRRCmnG8ST8fukbge6BCLJArIZwITPrFFWqLG9P9I6pPOilOofsMdWyBXaoOg=
-X-Received: by 2002:a92:3314:: with SMTP id a20mr16052072ilf.276.1570207898037;
- Fri, 04 Oct 2019 09:51:38 -0700 (PDT)
+        bh=y0OJ7/SgReOk2grQFvLnWH91Op9wRRMdd5tOpx1hbC4=;
+        b=mfI9rzDhvBYzE3bFn5jWbdGoEB0oJL7lm01Q7+lkBvNkLM9Qz/O6GaW78sA3LdOlNP
+         8BkgQ+LBZTlo+dzeBfLUE9Nw46JEKFO/Ov7476iutneCNcEnjDB+HHngM/CgrafnMJv2
+         wEManqk8LDZxo0XfduKl9b6NQErC6N9chQ/MIGfpnqws33UsFicKq+JZgXprPr2vZgl2
+         wnPtaDTqo0UveO1hZZ/T2pfabnAX0daxd1OR67Zg5ve+ohB4xMB8MpdiVAIAWyKltQ+D
+         Q2IBVQzYKqFUxVlJt6J79WS1iE9SG2T6r73CUIU6h2GR/4CVjgKuMLAhrWZBBiuRYHdu
+         BYFg==
+X-Gm-Message-State: APjAAAWAFWa40gFDQXhvy5leYrFovHO4ETd3lkQ88/XVIB1y4AEF9kmT
+        TZE4zY+ebpGq50wLSSTAUqjxwFCbC//iFmW5LGU=
+X-Google-Smtp-Source: APXvYqzaMGngribRRvqu3VAuNb5LGILxFgGbQKy7BcwnBkr8wOogbBTVo+amQa6LHmrdHfubVeo8mjbYvh53Yxf3djg=
+X-Received: by 2002:a92:3314:: with SMTP id a20mr16796103ilf.276.1570217386586;
+ Fri, 04 Oct 2019 12:29:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAHCN7xLO5VgA6tW4p7QjwPv_QXv==zbC38TxXtsR5x9H0mUGJA@mail.gmail.com>
- <CAHCN7xJPv7W381R7LS4bB8xWWpugz2NwbTUtj-hqHnDBZ9MFzA@mail.gmail.com>
- <CAGm1_kv6RMUDppu6ZjY9Dq7QL=hS=D+e3KS37+V0ncbwoXE6mQ@mail.gmail.com> <CAHCN7xKsGz4UA4gfM5jpS9UE-V7_k265G_hB=wQ5Ueh3T5kaNQ@mail.gmail.com>
-In-Reply-To: <CAHCN7xKsGz4UA4gfM5jpS9UE-V7_k265G_hB=wQ5Ueh3T5kaNQ@mail.gmail.com>
+References: <20190723115400.46432-1-tony@atomide.com>
+In-Reply-To: <20190723115400.46432-1-tony@atomide.com>
 From:   Adam Ford <aford173@gmail.com>
-Date:   Fri, 4 Oct 2019 11:51:27 -0500
-Message-ID: <CAHCN7xKirqyj3un1k+QNeoKc0DvOt4g8ScFScG02pZF=OX+GZg@mail.gmail.com>
-Subject: Re: DM3730 Bluetooth Performance differences between SERIAL_8250_OMAP
- vs SERIAL_OMAP
-To:     Yegor Yefremov <yegorslists@googlemail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-serial@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Fri, 4 Oct 2019 14:29:35 -0500
+Message-ID: <CAHCN7x+6KYjnm5daRe_Y5XEWnDBWQnz8rOKYH2wTgx9avvokmQ@mail.gmail.com>
+Subject: Re: [PATCH] serial: 8250_omap: Fix idling for unloaded serdev drivers
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Peter Hurley <peter@hurleysoftware.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh R <vigneshr@ti.com>, linux-serial@vger.kernel.org,
         Linux-OMAP <linux-omap@vger.kernel.org>,
-        Vignesh R <vigneshr@ti.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Johan Hovold <johan@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Oct 4, 2019 at 9:08 AM Adam Ford <aford173@gmail.com> wrote:
+On Tue, Jul 23, 2019 at 5:21 PM Tony Lindgren <tony@atomide.com> wrote:
 >
-> On Fri, Oct 4, 2019 at 7:27 AM Yegor Yefremov
-> <yegorslists@googlemail.com> wrote:
-> >
-> > Hi Adam,
-> >
-> > On Fri, Oct 4, 2019 at 12:39 PM Adam Ford <aford173@gmail.com> wrote:
-> > >
-> > > On Fri, Oct 4, 2019 at 5:02 AM Adam Ford <aford173@gmail.com> wrote:
-> > > >
-> > > > I am running Kernel 5.3.2 trying to troubleshoot some intermittent
-> > > > Bluetooth issues, and I think I have narrowed it down to the serial
-> > > > driver in use.
-> > >
-> > > I should have also noted that it's using UART2 with CTS and RTS on the
-> > > DM3730 (omap3630) and its configured with a baud rate of 3M.
-> > > I tried slowing it to 115200, but that didn't help.  I tried disabling
-> > > the DMA hooks from the device tree, and that didn't help.
-> > >
-> > > > By default, omap2plus_defconfig enables both SERIAL_8250_OMAP and
-> > > > SERIAL_OMAP.  I have my console device configured as  ttyS0, and all
-> > > > appears fine.  When I enable Bluetooth, however, I get intermittent
-> > > > errors on an DM3730 / OMAP3630.
-> > > >
-> > > > Using the 8250 driver for Blueotooth I get intermittent frame errors
-> > > > and data loss.
-> > > >
-> > > > Scanning ...
-> > > > [   28.482452] Bluetooth: hci0: Frame reassembly failed (-84)
-> > > > [   36.162170] Bluetooth: hci0: Frame reassembly failed (-84)
-> > > >         F4:4E:FC:C9:2F:57       BluJax
-> > > > # l2ping F4:4E:FC:C9:2F:57
-> > > > Ping: F4:4E:FC:C9:2F:57 from 00:18:30:49:7D:63 (data size 44) ...
-> > > > 44 bytes from F4:4E:FC:C9:2F:57 id 0 time 8.27ms
-> > > > no response from F4:4E:FC:C9:2F:57: id 1
-> > > > ^C2 sent, 1 received, 50% loss
-> > > >
-> > > > (after a fairly long hang, I hit control-c)
-> > > >
-> > > > However, disabling the 8250 driver and using the only SERIAL_OMAP and
-> > > > the console routed to ttyO0, the Bluetooth works well, so I believe it
-> > > > to be a serial driver issue and not a Bluetooth error.
-> > > >
-> > > > # hcitool scan
-> > > > Scanning ...
-> > > >         F4:4E:FC:C9:2F:57       BluJax
-> > > > ^C
-> > > > # l2ping F4:4E:FC:C9:2F:57
-> > > > Ping: F4:4E:FC:C9:2F:57 from 00:18:30:49:7D:63 (data size 44) ...
-> > > > 44 bytes from F4:4E:FC:C9:2F:57 id 0 time 6.90ms
-> > > > ...
-> > > > 44 bytes from F4:4E:FC:C9:2F:57 id 14 time 28.29ms
-> > > > ^C15 sent, 15 received, 0% loss
-> > > > #
-> > > >
-> > > > 0% loss and regular, repeatable communication without any Frame
-> > > > reassembly errors.
-> > > >
-> > >
-> > > I tried disabling SERIAL_OMAP and using only SERIAL_8250_OMAP, but
-> > > that didn't help.  Because the issue goes away when I disable
-> > > SERIAL_8250_OMAP, I am wondering if something is either being
-> > > misconfigured or some IRQ or DMA integration is missing that may be
-> > > present with the older SERIAL_OMAP driver.
-> > >
-> > > > Any suggestions on how to troubleshoot or what might cause the
-> > > > difference between the two drivers?
-> >
-> > Can it be related to this issue [1]? Can you confirm that 5.2 is
-> > working as expected with the 8250 driver?
-> >
-> > [1] https://marc.info/?l=linux-serial&m=156965039008649&w=2
+> For many years omap variants have been setting the runtime PM
+> autosuspend delay to -1 to prevent unsafe policy with lossy first
+> character on wake-up. The user must specifically enable the timeout
+> for UARTs if desired.
 >
-> I reverted the whole 8250 directory to d99482673f95 ("serial:
-> mctrl_gpio: Check if GPIO property exisits before requesting it") and
-> it is somewhat better, but it's not as good as the stock OMAP serial
-> driver.  I get some frame errors and eventually, I get some timeouts,
-> but it's not as bad.  I'll try to implement the RTS and CTS as gpio
-> pins and change the device tree accordingly.  It might shed some light
-> on the situation.
+> We must not enable the workaround for serdev devices though. It leads
+> into UARTs not idling if no serdev devices are loaded and there is no
+> sysfs entry to configure the UART in that case. And this means that
+> my PM may not work unless the serdev modules are loaded.
+>
+> We can detect a serdev device being configured based on a dts child
+> node, and we can simply skip the workround in that case. And the
+> serdev driver can idle the port during runtime when suitable if an
+> out-of-band wake-up GPIO line exists for example.
+>
+> Let's also add some comments to the workaround while at it.
 
-I tried to manually setup RTS and CTS pins as GPIO, but that didn't
-work, so I changed it back.
+This seems to help some of the stability issues I am seeing on the
+DM3730 UART2 running Bluetooth at 3000000 baud.
+Does it make sense to backport this to the stable kernels?
 
-It looks like the clocking is correct.  I don't know enough about the
-DMA or the IRQ to know if it's working correctly.
-
-I was wondering if the problem is in the handshaking or not.
-I added " uart-has-rtscts;" to by uart node thinking it might help,
-but it did not.
+adam
 
 >
-8250_omap.c has some checks to see if we can enable autoRTS:
-
-if (termios->c_cflag & CRTSCTS && up->port.flags & UPF_HARD_FLOW &&
-    !up->gpios) {
-     /* Enable AUTOCTS (autoRTS is enabled when RTS is raised) */
-     ...
-}
-
-Based on this, I would expect up->gpios to always be zero if we want
-auto RTS CTS.
-
-I threw some debug code into the serial driver to look at the status
-of the various flags that go into setting up auto RTS/CTS.
-
-[   13.837005] termios->c_cflag & CRTSCTS = 80000000
-[   13.841888] up->port.flags & UPF_HARD_FLOW = 300000
-[   13.846801] up->gpios = ce3f3cc0
-[   17.166595] termios->c_cflag & CRTSCTS = 0
-[   17.170745] up->port.flags & UPF_HARD_FLOW = 300000
-[   17.175781] up->gpios = ce3f3d40
-
-I don't know which port is which, but I only have two active uarts
-(console and Bluetooth)
-The Bluetooth port should use handshaking and the console should not.
-
-From the look of the dump, up->gpios is never 0, so the last
-evaluation would always be false unless I am misinterpreting
-something.
-
-I tried to modify the check to remove !up->gpios check, but that
-didn't help either, but it made it a little better.
-
-
-> adam
-> >
-> > Cheers,
-> > Yegor
+> Cc: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/tty/serial/8250/8250_omap.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+> --- a/drivers/tty/serial/8250/8250_omap.c
+> +++ b/drivers/tty/serial/8250/8250_omap.c
+> @@ -1234,7 +1234,16 @@ static int omap8250_probe(struct platform_device *pdev)
+>
+>         device_init_wakeup(&pdev->dev, true);
+>         pm_runtime_use_autosuspend(&pdev->dev);
+> -       pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
+> +
+> +       /*
+> +        * Disable runtime PM until autosuspend delay unless specifically
+> +        * enabled by the user via sysfs. This is the historic way to
+> +        * prevent an unsafe default policy with lossy characters on wake-up.
+> +        * For serdev devices this is not needed, the policy can be managed by
+> +        * the serdev driver.
+> +        */
+> +       if (!of_get_available_child_count(pdev->dev.of_node))
+> +               pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
+>
+>         pm_runtime_irq_safe(&pdev->dev);
+>         pm_runtime_enable(&pdev->dev);
+> --
+> 2.21.0
