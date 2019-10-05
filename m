@@ -2,220 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E676CC786
-	for <lists+linux-omap@lfdr.de>; Sat,  5 Oct 2019 05:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D132ACC972
+	for <lists+linux-omap@lfdr.de>; Sat,  5 Oct 2019 12:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725909AbfJEDpz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Oct 2019 23:45:55 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:42934 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725907AbfJEDpy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Oct 2019 23:45:54 -0400
-Received: by mail-io1-f68.google.com with SMTP id n197so17740899iod.9;
-        Fri, 04 Oct 2019 20:45:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RbOV3wUZGc55OMGd29XCe5o36BtLuTkL2nl8j4ZexH8=;
-        b=iLaLvLZPDI3+ubx2d1POYTJlXGaqW+uAKgvv/uUNV6F+dNuF/AH/LVe3pXauHSdsBv
-         j0yNP+tEZNx7Ha+jUAQrwSK2+0UEpT9nmrH7bBXzrueGjd/aAUrzw2fmf/o0Jk/D7z52
-         XyEeU5YtkRixCKjG6zeT/rOUaoHY5q4lLK1uZwQUgHR4y0AZT81aawaZvdntGsHnQnGf
-         beo6Jpt/A9Yl5tfuLPpnWYzcZClBVoWjB4NB07MCY90BmHXubbt39PRIoj9FdLBWP5zC
-         PLkK9uQSW0P5Yn4x0PsFQm1+TLw2bp0ZTZd95OsnYHyuW8YkNPSfhxYfsH6D/a16obIJ
-         kbmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RbOV3wUZGc55OMGd29XCe5o36BtLuTkL2nl8j4ZexH8=;
-        b=qwu6Ea1rbJNrv+IUNP85HTzQUsCKSoaoYuopt0pIlogDqpGrP8cxbysLAub3J3GfPA
-         L1pTsBC3erBo8zxlnKXNaniTkhvS1dvTs9W4oaiE6AqNXoFCvjRFkrMmjRF+1cGUhGaO
-         AjE6mlNxwoYPuEvBYVCR5hFRkvr3xAmjlbKxwXC9Rveex7s1YqUl5KZGHutzKs7ff+Fo
-         D5RmtJ7Z+wIVMmf7xYZsYAHDNaRLGlbO2tG6PPM9jyO6+DdyHnXJwuT7aeg0YtsG54oL
-         8xOrMRAXIPe6bpDshBdNkO0LxxF1dSlHOFVexAhg5ESf0/leg7+9HKuNgWbynl98MIPG
-         9/Wg==
-X-Gm-Message-State: APjAAAVtlnN5bjFvUFBT1nQl5eYm1GNavYYHRyE7MYvIsJALQXfYtPm0
-        uuzN00WBtJRM63CdhK+27Z1lfJZsypUYbwdqynw=
-X-Google-Smtp-Source: APXvYqz3tCzOSy/+h7h3l/lcKeA+u1PiF903ta+om2XMsvEk/JNZMNqbbHXnymtiAUL86JYced4BzI8YhAWqrun8eo0=
-X-Received: by 2002:a02:6017:: with SMTP id i23mr935803jac.0.1570247153151;
- Fri, 04 Oct 2019 20:45:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAHCN7xLO5VgA6tW4p7QjwPv_QXv==zbC38TxXtsR5x9H0mUGJA@mail.gmail.com>
- <CAHCN7xJPv7W381R7LS4bB8xWWpugz2NwbTUtj-hqHnDBZ9MFzA@mail.gmail.com>
- <CAGm1_kv6RMUDppu6ZjY9Dq7QL=hS=D+e3KS37+V0ncbwoXE6mQ@mail.gmail.com>
- <CAHCN7xKsGz4UA4gfM5jpS9UE-V7_k265G_hB=wQ5Ueh3T5kaNQ@mail.gmail.com> <CAHCN7xKirqyj3un1k+QNeoKc0DvOt4g8ScFScG02pZF=OX+GZg@mail.gmail.com>
-In-Reply-To: <CAHCN7xKirqyj3un1k+QNeoKc0DvOt4g8ScFScG02pZF=OX+GZg@mail.gmail.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Fri, 4 Oct 2019 22:45:46 -0500
-Message-ID: <CAHCN7xLkBi0dWiuirh7sAgywKFM5Oe=sU3nojSuN2MMzkqyEEA@mail.gmail.com>
-Subject: Re: DM3730 Bluetooth Performance differences between SERIAL_8250_OMAP
- vs SERIAL_OMAP
-To:     Yegor Yefremov <yegorslists@googlemail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linux-serial@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        id S1727916AbfJEKvF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 5 Oct 2019 06:51:05 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.23]:35690 "EHLO
+        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727930AbfJEKvF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 5 Oct 2019 06:51:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1570272660;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=KEG+jqNQygCDaE4Yi2bJFMrWBErgNOEsINx5knzy92M=;
+        b=daRczfbfu/tf+oM5094AW21/2aDpPnNoAOa1WyFrGUJPhyzUcxishOfoTf96Hfmn5f
+        6+skXplE+arvfyBe+gybJGOT3ly1IUkNNZEL21i+wLZLY+Oy4mCVwDM+HJs6ioIOpIWp
+        8LhWEPUrnkeTdCRkF0w5GliO3kwpZk2ykwbosBmLAI6sfZdbUktRzJMXV75CD4diYS8o
+        5VUIhHDfnTqdAJ6hfzo4tE+L3p1QgI00530HGlEM1xLNgRQ0o9kj5diqHg5FZgJgb7Nd
+        J1oZhsrktmVbaF2bVK3uNHkhHg4xrY892xsUKZb4j4F5Zlx2ubtWBE6ezOGzN3ovD//9
+        UlJw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmAlw47tvfA="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 44.28.0 DYNA|AUTH)
+        with ESMTPSA id v00409v95AocjVF
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Sat, 5 Oct 2019 12:50:38 +0200 (CEST)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [PATCH] ARM: omap2plus_defconfig: Fix selected panels after generic panel changes
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <03ca02c1-2816-17cd-03fd-5b72e5d0ec96@ti.com>
+Date:   Sat, 5 Oct 2019 12:50:37 +0200
+Cc:     Tony Lindgren <tony@atomide.com>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
-        Vignesh R <vigneshr@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Jyri Sarha <jsarha@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <39E48EC6-65FE-419B-BBE8-E72CB44B517D@goldelico.com>
+References: <20191003165539.50318-1-tony@atomide.com> <03ca02c1-2816-17cd-03fd-5b72e5d0ec96@ti.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Oct 4, 2019 at 11:51 AM Adam Ford <aford173@gmail.com> wrote:
->
-> On Fri, Oct 4, 2019 at 9:08 AM Adam Ford <aford173@gmail.com> wrote:
-> >
-> > On Fri, Oct 4, 2019 at 7:27 AM Yegor Yefremov
-> > <yegorslists@googlemail.com> wrote:
-> > >
-> > > Hi Adam,
-> > >
-> > > On Fri, Oct 4, 2019 at 12:39 PM Adam Ford <aford173@gmail.com> wrote:
-> > > >
-> > > > On Fri, Oct 4, 2019 at 5:02 AM Adam Ford <aford173@gmail.com> wrote:
-> > > > >
-> > > > > I am running Kernel 5.3.2 trying to troubleshoot some intermittent
-> > > > > Bluetooth issues, and I think I have narrowed it down to the serial
-> > > > > driver in use.
-> > > >
-> > > > I should have also noted that it's using UART2 with CTS and RTS on the
-> > > > DM3730 (omap3630) and its configured with a baud rate of 3M.
-> > > > I tried slowing it to 115200, but that didn't help.  I tried disabling
-> > > > the DMA hooks from the device tree, and that didn't help.
-> > > >
-> > > > > By default, omap2plus_defconfig enables both SERIAL_8250_OMAP and
-> > > > > SERIAL_OMAP.  I have my console device configured as  ttyS0, and all
-> > > > > appears fine.  When I enable Bluetooth, however, I get intermittent
-> > > > > errors on an DM3730 / OMAP3630.
-> > > > >
-> > > > > Using the 8250 driver for Blueotooth I get intermittent frame errors
-> > > > > and data loss.
-> > > > >
-> > > > > Scanning ...
-> > > > > [   28.482452] Bluetooth: hci0: Frame reassembly failed (-84)
-> > > > > [   36.162170] Bluetooth: hci0: Frame reassembly failed (-84)
-> > > > >         F4:4E:FC:C9:2F:57       BluJax
-> > > > > # l2ping F4:4E:FC:C9:2F:57
-> > > > > Ping: F4:4E:FC:C9:2F:57 from 00:18:30:49:7D:63 (data size 44) ...
-> > > > > 44 bytes from F4:4E:FC:C9:2F:57 id 0 time 8.27ms
-> > > > > no response from F4:4E:FC:C9:2F:57: id 1
-> > > > > ^C2 sent, 1 received, 50% loss
-> > > > >
-> > > > > (after a fairly long hang, I hit control-c)
-> > > > >
-> > > > > However, disabling the 8250 driver and using the only SERIAL_OMAP and
-> > > > > the console routed to ttyO0, the Bluetooth works well, so I believe it
-> > > > > to be a serial driver issue and not a Bluetooth error.
-> > > > >
-> > > > > # hcitool scan
-> > > > > Scanning ...
-> > > > >         F4:4E:FC:C9:2F:57       BluJax
-> > > > > ^C
-> > > > > # l2ping F4:4E:FC:C9:2F:57
-> > > > > Ping: F4:4E:FC:C9:2F:57 from 00:18:30:49:7D:63 (data size 44) ...
-> > > > > 44 bytes from F4:4E:FC:C9:2F:57 id 0 time 6.90ms
-> > > > > ...
-> > > > > 44 bytes from F4:4E:FC:C9:2F:57 id 14 time 28.29ms
-> > > > > ^C15 sent, 15 received, 0% loss
-> > > > > #
-> > > > >
-> > > > > 0% loss and regular, repeatable communication without any Frame
-> > > > > reassembly errors.
-> > > > >
-> > > >
-> > > > I tried disabling SERIAL_OMAP and using only SERIAL_8250_OMAP, but
-> > > > that didn't help.  Because the issue goes away when I disable
-> > > > SERIAL_8250_OMAP, I am wondering if something is either being
-> > > > misconfigured or some IRQ or DMA integration is missing that may be
-> > > > present with the older SERIAL_OMAP driver.
-> > > >
-> > > > > Any suggestions on how to troubleshoot or what might cause the
-> > > > > difference between the two drivers?
-> > >
-> > > Can it be related to this issue [1]? Can you confirm that 5.2 is
-> > > working as expected with the 8250 driver?
-> > >
-> > > [1] https://marc.info/?l=linux-serial&m=156965039008649&w=2
-> >
-> > I reverted the whole 8250 directory to d99482673f95 ("serial:
-> > mctrl_gpio: Check if GPIO property exisits before requesting it") and
-> > it is somewhat better, but it's not as good as the stock OMAP serial
-> > driver.  I get some frame errors and eventually, I get some timeouts,
-> > but it's not as bad.  I'll try to implement the RTS and CTS as gpio
-> > pins and change the device tree accordingly.  It might shed some light
-> > on the situation.
->
-> I tried to manually setup RTS and CTS pins as GPIO, but that didn't
-> work, so I changed it back.
->
-> It looks like the clocking is correct.  I don't know enough about the
-> DMA or the IRQ to know if it's working correctly.
->
-> I was wondering if the problem is in the handshaking or not.
-> I added " uart-has-rtscts;" to by uart node thinking it might help,
-> but it did not.
->
-> >
-> 8250_omap.c has some checks to see if we can enable autoRTS:
->
-> if (termios->c_cflag & CRTSCTS && up->port.flags & UPF_HARD_FLOW &&
->     !up->gpios) {
->      /* Enable AUTOCTS (autoRTS is enabled when RTS is raised) */
->      ...
-> }
->
-> Based on this, I would expect up->gpios to always be zero if we want
-> auto RTS CTS.
->
-> I threw some debug code into the serial driver to look at the status
-> of the various flags that go into setting up auto RTS/CTS.
->
-> [   13.837005] termios->c_cflag & CRTSCTS = 80000000
-> [   13.841888] up->port.flags & UPF_HARD_FLOW = 300000
-> [   13.846801] up->gpios = ce3f3cc0
-> [   17.166595] termios->c_cflag & CRTSCTS = 0
-> [   17.170745] up->port.flags & UPF_HARD_FLOW = 300000
-> [   17.175781] up->gpios = ce3f3d40
->
-> I don't know which port is which, but I only have two active uarts
-> (console and Bluetooth)
-> The Bluetooth port should use handshaking and the console should not.
->
-> From the look of the dump, up->gpios is never 0, so the last
-> evaluation would always be false unless I am misinterpreting
-> something.
->
-> I tried to modify the check to remove !up->gpios check, but that
-> didn't help either, but it made it a little better.
+Hi Tomi,
 
-I have it working now on the 5.3.y branch, but I had to do 4 things.
+> Am 04.10.2019 um 10:41 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
+>=20
+> On 03/10/2019 19:55, Tony Lindgren wrote:
+>> The old omapdrm panels got removed for v5.4 in favor of generic =
+panels,
+>> and the Kconfig options changed. Let's update omap2plus_defconfig
+>> accordingly so the same panels are still enabled.
+>> Cc: Jyri Sarha <jsarha@ti.com>
+>> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>> Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+>> Signed-off-by: Tony Lindgren <tony@atomide.com>
+>> ---
+>>  arch/arm/configs/omap2plus_defconfig | 12 ++++++------
+>>  1 file changed, 6 insertions(+), 6 deletions(-)
+>> diff --git a/arch/arm/configs/omap2plus_defconfig =
+b/arch/arm/configs/omap2plus_defconfig
+>> --- a/arch/arm/configs/omap2plus_defconfig
+>> +++ b/arch/arm/configs/omap2plus_defconfig
+>> @@ -356,14 +356,14 @@ CONFIG_DRM_OMAP_CONNECTOR_HDMI=3Dm
+>>  CONFIG_DRM_OMAP_CONNECTOR_ANALOG_TV=3Dm
+>>  CONFIG_DRM_OMAP_PANEL_DPI=3Dm
+>>  CONFIG_DRM_OMAP_PANEL_DSI_CM=3Dm
+>> -CONFIG_DRM_OMAP_PANEL_SONY_ACX565AKM=3Dm
+>> -CONFIG_DRM_OMAP_PANEL_LGPHILIPS_LB035Q02=3Dm
+>> -CONFIG_DRM_OMAP_PANEL_SHARP_LS037V7DW01=3Dm
+>> -CONFIG_DRM_OMAP_PANEL_TPO_TD028TTEC1=3Dm
+>> -CONFIG_DRM_OMAP_PANEL_TPO_TD043MTEA1=3Dm
+>> -CONFIG_DRM_OMAP_PANEL_NEC_NL8048HL11=3Dm
+>>  CONFIG_DRM_TILCDC=3Dm
+>>  CONFIG_DRM_PANEL_SIMPLE=3Dm
+>> +CONFIG_DRM_PANEL_LG_LB035Q02=3Dm
+>> +CONFIG_DRM_PANEL_NEC_NL8048HL11=3Dm
+>> +CONFIG_DRM_PANEL_SHARP_LS037V7DW01=3Dm
+>> +CONFIG_DRM_PANEL_SONY_ACX565AKM=3Dm
+>> +CONFIG_DRM_PANEL_TPO_TD028TTEC1=3Dm
+>> +CONFIG_DRM_PANEL_TPO_TD043MTEA1=3Dm
+>>  CONFIG_FB=3Dy
+>>  CONFIG_FIRMWARE_EDID=3Dy
+>>  CONFIG_FB_MODE_HELPERS=3Dy
+>=20
+> Sorry, I didn't remember to update these. Some additions:
+>=20
+> These can be dropped, they no longer exist:
+>=20
+> CONFIG_DRM_OMAP_ENCODER_TFP410=3Dm
+> CONFIG_DRM_OMAP_CONNECTOR_DVI=3Dm
+> CONFIG_DRM_OMAP_PANEL_DPI=3Dm
 
-1)   Disable the older OMAP serial driver
-2)   Apply [1] patch
-3)   Disable 8250 DMA support
-4)  Remove checks for !up->gpios in the 8250-omap.c code.
+After being hit by the __always_inline issue [1] I am now
+back with being able to test v5.4-rc1.
 
-With all those changes, I am able to successfully and repeatedly scan
-and l2ping Bluetooth devices.  Without any one of those, I get frame
-errors or lost packets.
+Now this patch fixes the build problem, but we still have
+one: panel drivers are no longer automatically loaded at
+boot. We now need to manually modprobe them.
 
-I wonder if we can dump the legacy omap serial driver once  the 8250
-driver is working better.  That would eliminate at least one of the 4.
-I am not sure what's up with the DMA, and I've already stated some
-thoughts on item 4 in a previous e-mail.
+This has been observed with GTA04 (TD028TTEC1) and OpenPandora
+(TD043MTEA1). So moving the drivers seems to have changed/broken
+something with DT based driver matching.
 
-I think the [1] patch is probably going to help fix some other issues
-and should probably be backported, but by itself it isn't enough to
-fix the Bluetooth problem on the OMAP3630.
+BR and thanks,
+Nikolaus
 
-[1] - https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/tty/serial/8250/8250_omap.c?h=v5.4-rc1&id=627a545c6bb0c7de09208e6546f5111290477261
 
-adam
->
->
-> > adam
-> > >
-> > > Cheers,
-> > > Yegor
+[1]: https://lkml.org/lkml/2019/10/2/201=
