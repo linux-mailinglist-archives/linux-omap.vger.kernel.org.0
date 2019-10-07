@@ -2,111 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01123CECB7
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 21:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C762CECDD
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 21:33:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728079AbfJGTYO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Oct 2019 15:24:14 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:28954 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728325AbfJGTYN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 15:24:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1570476251;
+        id S1728459AbfJGTdn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 15:33:43 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:14107 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728530AbfJGTdn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 15:33:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1570476821;
         s=strato-dkim-0002; d=goldelico.com;
         h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
         X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=SUuLZ9/Ns88S7H6NhvMnE7p2C2vGnlfSwiBX5DnbRF0=;
-        b=BHibw8Mep17qllLLXICn77EMS6vbtVRBM27LkL6GFVMb9DsrZkv81581qVGzXe3DyF
-        sLyh3CcQoAW5VMFbqPgT/AOYREmNW2WeJ5DWSI0gvVUZ53xEnHARWoObi5P5QrKYSIDN
-        ww2MET8AIsz186ib2STGza37oSEsw6Jr1ki90LEvQ8sSMwwpMsa3Hp8EfCNuzvZ8N7Gt
-        EDfnSCKXnuWoMGh5rOI+DtTEdxMPDNXto75bHePi7dDRXoqtfORUpESyk407Dy4WTJUT
-        uRbgDn9Jm0cjiC/WaKKIziiFq7tEoxOgSgYJN1fPGwKa5W7rpkMx8/NwnJ5esjZUS8e7
-        vEEA==
+        bh=hBBDf3WMhkIUZHGfT8GhaY3Pu2txvTnzOFfltNs8rKg=;
+        b=miGTbkjgDdnvZt32FZqE6B7J2aEUyK1o3QIAR3SOJYdO8+mEMqJW7Yp93lDEpUwcW6
+        d4H5Z83DcPSXUzLAsb0YEoBQAciRPzWg+km7CEDqLXXSFtFWpWRVycL/nniDtbOu/6Dg
+        oIER7PF27Adt6b1vHalAgScYNa+QJn+oEtYvD8Dkl8oCDB9OWPOydLSMjvr53o+k3D4j
+        NaSyA9pxTum/KbvmTahgk2lkvCuyyO2QBR01K1IPhDdbdaiEc8iE0e8KsvbXSk7+eKxG
+        6QPJyXUv6Wkwx4/wtmlCSXqWHz7J8I5c6fgKiNG9pfm+dnuSQpTrAeUppxzePOO1cx6z
+        /Lxw==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmMgw47ty6c="
 X-RZG-CLASS-ID: mo00
 Received: from imac.fritz.box
         by smtp.strato.de (RZmta 44.28.0 DYNA|AUTH)
-        with ESMTPSA id v00409v97JO9qr5
+        with ESMTPSA id v00409v97JXTqry
         (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
         (Client did not present a certificate);
-        Mon, 7 Oct 2019 21:24:09 +0200 (CEST)
+        Mon, 7 Oct 2019 21:33:29 +0200 (CEST)
 Content-Type: text/plain; charset=us-ascii
 Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: Lay common foundation to make PVR/SGX work without hacks on OMAP34xx, OMAP36xx, AM335x and potentially OMAP4, OMAP5
+Subject: Re: [Letux-kernel] [PATCH 4/5] drm/panel: tpo-td028ttec1: Fix SPI alias
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <64474fb1-f6d2-52d0-175a-65bb493dc1fe@ti.com>
-Date:   Mon, 7 Oct 2019 21:24:08 +0200
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Adam Ford <aford173@gmail.com>,
-        Philipp Rossak <embed3d@gmail.com>,
-        =?utf-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        =?utf-8?Q?Filip_Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        moaz korena <moaz@korena.xyz>,
-        James Hilliard <james.hilliard1@gmail.com>,
-        kernel@pyra-handheld.com,
+In-Reply-To: <20191007195849.72562d6b@aktux>
+Date:   Mon, 7 Oct 2019 21:33:29 +0200
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, maemo-leste@lists.dyne.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>
+        <letux-kernel@openphoenux.org>, dri-devel@lists.freedesktop.org,
+        linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        Jyri Sarha <jsarha@ti.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        thierry.reding@gmail.com, sam@ravnborg.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <9253CFB5-0AF7-4EA0-AC7F-6DE37318238A@goldelico.com>
-References: <d0cbfaaf-813e-8803-f90b-931a38396750@wizzup.org> <3A03FF16-C203-43ED-AEEF-0260F6B3331A@goldelico.com> <3b0a5e78-c4c2-1963-bac7-b49496a1e9b9@wizzup.org> <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com> <84cac9b8-0eff-33f8-464d-4f8045d7db19@wizzup.org> <BFAA7FA6-A352-476A-99F9-02EA663A6AAD@goldelico.com> <CAHCN7x+87xTsA3MeHy7kUWU0SU3X8HmSc2wbk5gKvYm1dRNe6A@mail.gmail.com> <04809E3E-A690-4931-B949-1CFDAF407C14@goldelico.com> <ebb50954-b456-4dab-0765-9dfa06c67075@wizzup.org> <C3A56737-6187-4B31-8697-3A02DD164429@goldelico.com> <20191007155252.GQ5610@atomide.com> <64474fb1-f6d2-52d0-175a-65bb493dc1fe@ti.com>
-To:     Tero Kristo <t-kristo@ti.com>
+Message-Id: <4524D803-D5C8-4201-B1B3-7EB88FE1460C@goldelico.com>
+References: <20191007170801.27647-1-laurent.pinchart@ideasonboard.com> <20191007170801.27647-5-laurent.pinchart@ideasonboard.com> <20191007195849.72562d6b@aktux>
+To:     Andreas Kemnade <andreas@kemnade.info>
 X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tero,
 
-> Am 07.10.2019 um 21:18 schrieb Tero Kristo <t-kristo@ti.com>:
+> Am 07.10.2019 um 19:58 schrieb Andreas Kemnade <andreas@kemnade.info>:
 >=20
-> On 07/10/2019 18:52, Tony Lindgren wrote:
->> Hi,
->> * H. Nikolaus Schaller <hns@goldelico.com> [191005 16:59]:
->> Please try with Tero's current github branch at =
-github.com/t-kristo/linux-pm.git
->> 5.4-rc1-ipc from few days ago, the earlier versions had still issues.
+> On Mon,  7 Oct 2019 20:08:00 +0300
+> Laurent Pinchart <laurent.pinchart@ideasonboard.com> wrote:
 >=20
-> Yeah, this one should be fixed now.
-
-Ok! Will try asap.
-
+>> The panel-tpo-td028ttec1 driver incorrectly includes the OF vendor
+>> prefix in its SPI alias. Fix it.
+>>=20
+>> Fixes: 415b8dd08711 ("drm/panel: Add driver for the Toppoly =
+TD028TTEC1 panel")
+>> Reported-by: H. Nikolaus Schaller <hns@goldelico.com>
+>> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 >=20
->>> * OMAP5 (Pyra): fails to enable the clocks (did work with the =
-previous version)
->>> [  304.140363] clock-controller:clk:0000:0: failed to enable
->>> [  304.147388] PVR_K:(Error): EnableSGXClocks: pm_runtime_get_sync =
-failed (16)
->> Hmm no idea what might be up with this one. Did some clkctrl clock
->> fixes maybe cause a regression here? Tero do you have any ideas?
+> Tested-by: Andreas Kemnade <andreas@kemnade.info>
+Tested-by: H. Nikolaus Schaller <hns@goldelico.com>
 >=20
-> So, this one I am not too sure, I haven't looked at omap5 graphics =
-clocking. I don't think it has anything to do with reset handling =
-though.
+>> ---
+>> drivers/gpu/drm/panel/panel-tpo-td028ttec1.c | 3 +--
+>> 1 file changed, 1 insertion(+), 2 deletions(-)
+>>=20
+>> diff --git a/drivers/gpu/drm/panel/panel-tpo-td028ttec1.c =
+b/drivers/gpu/drm/panel/panel-tpo-td028ttec1.c
+>> index d7b2e34626ef..f2baff827f50 100644
+>> --- a/drivers/gpu/drm/panel/panel-tpo-td028ttec1.c
+>> +++ b/drivers/gpu/drm/panel/panel-tpo-td028ttec1.c
+>> @@ -375,8 +375,7 @@ static const struct of_device_id =
+td028ttec1_of_match[] =3D {
+>> MODULE_DEVICE_TABLE(of, td028ttec1_of_match);
+>>=20
+>> static const struct spi_device_id td028ttec1_ids[] =3D {
+>> -	{ "tpo,td028ttec1", 0},
+>> -	{ "toppoly,td028ttec1", 0 },
+>> +	{ "td028ttec1", 0 },
+>> 	{ /* sentinel */ }
+>> };
+>>=20
 >=20
-> Is there some simple way to try this out on board; without PVR module =
-that is?
 
-Yes, I have also seen it when just running the commands in the original =
-commit message [1]:
-
-# echo on > $(find /sys -name control | grep \/5600)
-# rwmem 0x5600fe00	# OCP Revision
-0x5600fe00 =3D 0x40000000
-# echo auto > $(find /sys -name control | grep \/5600)
-# rwmem 0x5600fe10
-# rwmem 0x56000024
-
-But I have not yet tested with 5.4-rc2, just 5.4-rc1.
-
-BR and thanks,
-Nikolaus
-
-[1]: =
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
-?h=3Dv5.4-rc2&id=3D394534cb07d8f89b6e621e8a1e6da23571725aef=
