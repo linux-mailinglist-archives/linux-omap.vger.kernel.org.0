@@ -2,56 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CA7DCDA03
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 02:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CDE6CDA0F
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 03:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726741AbfJGA5I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 6 Oct 2019 20:57:08 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:52726 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726266AbfJGA5I (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 6 Oct 2019 20:57:08 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x970v1Th104895;
-        Sun, 6 Oct 2019 19:57:01 -0500
+        id S1726741AbfJGBIc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 6 Oct 2019 21:08:32 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:34508 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726266AbfJGBIb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 6 Oct 2019 21:08:31 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9718R9q040661;
+        Sun, 6 Oct 2019 20:08:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1570409821;
-        bh=y1PP9ltrxnowjAkMcLF1tzTezdMwJrZBzBpXFZIAsDU=;
+        s=ti-com-17Q1; t=1570410507;
+        bh=1/fpTrsGpZ3Bwnu1ecGMORsUGRgRwd7RTb3TGOpICG8=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=s1j6LSdxWXh1k2aIaVOCPbuvP0zSKvG35A7Gk8QtC90iWgvTx7iCE3RpIuK8jSIsL
-         S0oQf6WlAEPrxzGDUKfQKbMCYpK4CTiQ0HT6bkT5YdDXtSswOOWXjVrMq3QhSVICFs
-         xKyVHhgdg9K8KkxGR5ixDPNrsi01n5UGFTRFOYTQ=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x970v1Ij088111
+        b=SCZR724tufS742O0322i/jjcUs0ViavNDGN2/oaE5jk2voAAR5q2NV88bsR0jO4PJ
+         LAgXhLDSypthP+Cvu9t8Njd2wgI5sjQ54SMC/RPm/7rUu3yGbdKZqqIYZoiCrdZtMs
+         O8trZa+IT9WvhUUBSFWnUbgfCvJNuMuIL956KbHQ=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9718RR5094154
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 6 Oct 2019 19:57:01 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+        Sun, 6 Oct 2019 20:08:27 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Sun, 6 Oct
- 2019 19:56:59 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ 2019 20:08:25 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Sun, 6 Oct 2019 19:56:59 -0500
+ Frontend Transport; Sun, 6 Oct 2019 20:08:25 -0500
 Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x970uwtd085060;
-        Sun, 6 Oct 2019 19:56:59 -0500
-Subject: Re: [PATCH] clk: ti: clkctrl: Fix failed to enable error with double
- udelay timeout
-To:     Tony Lindgren <tony@atomide.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Tero Kristo <t-kristo@ti.com>
-CC:     <devicetree@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>
-References: <20190930154001.46581-1-tony@atomide.com>
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9718O1v049370;
+        Sun, 6 Oct 2019 20:08:25 -0500
+Subject: Re: [PATCH] ARM: OMAP2+: Add missing LCDC midlemode for am335x
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        <devicetree@vger.kernel.org>, Jyri Sarha <jsarha@ti.com>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        Suman Anna <s-anna@ti.com>
+References: <20190924171543.345-1-tony@atomide.com>
 From:   Keerthy <j-keerthy@ti.com>
-Message-ID: <93a6448d-cece-a903-5c7e-ade793d62063@ti.com>
-Date:   Mon, 7 Oct 2019 06:27:32 +0530
+Message-ID: <f19f559d-6c7e-9db9-4fa7-84a8abd5558f@ti.com>
+Date:   Mon, 7 Oct 2019 06:38:58 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190930154001.46581-1-tony@atomide.com>
+In-Reply-To: <20190924171543.345-1-tony@atomide.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -63,48 +61,65 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 
 
-On 30/09/19 9:10 PM, Tony Lindgren wrote:
-> Commit 3d8598fb9c5a ("clk: ti: clkctrl: use fallback udelay approach if
-> timekeeping is suspended") added handling for cases when timekeeping is
-> suspended. But looks like we can still get occasional "failed to enable"
-> errors on the PM runtime resume path with udelay() returning faster than
-> expected.
+On 24/09/19 10:45 PM, Tony Lindgren wrote:
+> TRM "Table 13-34. SYSCONFIG Register Field Descriptions" lists both
+> standbymode and idlemode that should be just the sidle and midle
+> registers where midle is currently unconfigured for lcdc_sysc. As
+> the dts data has been generated based on lcdc_sysc, we now have an
+> empty "ti,sysc-midle" property.
 > 
-> With ti-sysc interconnect target module driver this leads into device
-> failure with PM runtime failing with "failed to enable" clkctrl error.
+> And so we currently get a warning for lcdc because of a difference
+> with dts provided configuration compared to the legacy platform
+> data. This is because lcdc has SYSC_HAS_MIDLEMODE configured in
+> the platform data without configuring the modes.
 > 
-> Let's fix the issue with a delay of two times the desired delay as in
-> often done for udelay() to account for the inaccuracy.
+> Let's fix the issue by adding the missing midlemode to lcdc_sysc,
+> and configuring the "ti,sysc-midle" property based on the TRM
+> values.
 
 Tested for DS0 and rtc+ddr modes on am43 and ds0 on am33.
 
 Tested-by: Keerthy <j-keerthy@ti.com>
 
 > 
-> Fixes: 3d8598fb9c5a ("clk: ti: clkctrl: use fallback udelay approach if timekeeping is suspended")
+> Fixes: f711c575cfec ("ARM: dts: am335x: Add l4 interconnect hierarchy and ti-sysc data")
+> Cc: Jyri Sarha <jsarha@ti.com>
 > Cc: Keerthy <j-keerthy@ti.com>
-> Cc: Tero Kristo <t-kristo@ti.com>
+> Cc: Robert Nelson <robertcnelson@gmail.com>
+> Cc: Suman Anna <s-anna@ti.com>
 > Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
->   drivers/clk/ti/clkctrl.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>   arch/arm/boot/dts/am33xx-l4.dtsi           | 4 +++-
+>   arch/arm/mach-omap2/omap_hwmod_33xx_data.c | 5 +++--
+>   2 files changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-> --- a/drivers/clk/ti/clkctrl.c
-> +++ b/drivers/clk/ti/clkctrl.c
-> @@ -100,11 +100,12 @@ static bool _omap4_is_timeout(union omap4_timeout *time, u32 timeout)
->   	 * can be from a timer that requires pm_runtime access, which
->   	 * will eventually bring us here with timekeeping_suspended,
->   	 * during both suspend entry and resume paths. This happens
-> -	 * at least on am43xx platform.
-> +	 * at least on am43xx platform. Account for flakeyness
-> +	 * with udelay() by multiplying the timeout value by 2.
->   	 */
->   	if (unlikely(_early_timeout || timekeeping_suspended)) {
->   		if (time->cycles++ < timeout) {
-> -			udelay(1);
-> +			udelay(1 * 2);
->   			return false;
->   		}
->   	} else {
+> diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+> --- a/arch/arm/boot/dts/am33xx-l4.dtsi
+> +++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+> @@ -2038,7 +2038,9 @@
+>   			reg = <0xe000 0x4>,
+>   			      <0xe054 0x4>;
+>   			reg-names = "rev", "sysc";
+> -			ti,sysc-midle ;
+> +			ti,sysc-midle = <SYSC_IDLE_FORCE>,
+> +					<SYSC_IDLE_NO>,
+> +					<SYSC_IDLE_SMART>;
+>   			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+>   					<SYSC_IDLE_NO>,
+>   					<SYSC_IDLE_SMART>;
+> diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+> --- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+> +++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+> @@ -231,8 +231,9 @@ static struct omap_hwmod am33xx_control_hwmod = {
+>   static struct omap_hwmod_class_sysconfig lcdc_sysc = {
+>   	.rev_offs	= 0x0,
+>   	.sysc_offs	= 0x54,
+> -	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE),
+> -	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+> +	.sysc_flags	= SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE,
+> +	.idlemodes	= SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
+> +			  MSTANDBY_FORCE | MSTANDBY_NO | MSTANDBY_SMART,
+>   	.sysc_fields	= &omap_hwmod_sysc_type2,
+>   };
+>   
 > 
