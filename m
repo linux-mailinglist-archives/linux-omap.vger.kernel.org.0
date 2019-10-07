@@ -2,210 +2,117 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12996CE28B
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 15:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D07ACE53A
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 16:29:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728130AbfJGNDY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Oct 2019 09:03:24 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:49360 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728057AbfJGNDY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 09:03:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=IBedbPcWi2oFjLuWTy0vnawK7yIvgrD1j1GmEPV8jJQ=; b=QerIeijOJ/FM
-        oddnmQnotFtFnwtRI+5bD4ARReBPGncRwcrXz+O5LCAnk2XCGtiXRnGrhVLdUO/x4M7GGSsQZrdr9
-        RHKuFdBmTDw1RJBgSPgqFQ/yqnBaKqZDuib3L+yJi0qE0N8z21bpZLuQwi2NusznLgXkg0c0VbYSK
-        iUZbk=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.co.uk>)
-        id 1iHSfY-0003SM-0Z; Mon, 07 Oct 2019 13:03:20 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 817382741D8E; Mon,  7 Oct 2019 14:03:19 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Axel Lin <axel.lin@ingics.com>
-Cc:     Balaji T K <balajitk@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-Subject: Applied "regulator: pbias: Get rid of struct pbias_regulator_data" to the regulator tree
-In-Reply-To: <20191007114320.20977-1-axel.lin@ingics.com>
-X-Patchwork-Hint: ignore
-Message-Id: <20191007130319.817382741D8E@ypsilon.sirena.org.uk>
-Date:   Mon,  7 Oct 2019 14:03:19 +0100 (BST)
+        id S1727490AbfJGO3x (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 10:29:53 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:58564 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726334AbfJGO3x (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 10:29:53 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x97ETOAJ036075;
+        Mon, 7 Oct 2019 09:29:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1570458564;
+        bh=PG51P+fRN0Li8qnqF66zYDUyUyJJyL6KBk3a4211uss=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=vBWXUXEMjVMQLU4OXY6lPd0Ftvui3MRu4YzPSrpaSNlutfAxLrv9f5g1oqlY8aiYE
+         ZXx44HY6sivNhZltYBOD7LBKlNHg+311ZRPweOt5UoGjdKUBupbpdKOIrY5zetWi2s
+         zNd3mbToshhDlirrnJOVU8keoHrg+OyeGt41/WG0=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x97ETOI4009904;
+        Mon, 7 Oct 2019 09:29:24 -0500
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 7 Oct
+ 2019 09:29:23 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 7 Oct 2019 09:29:23 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x97ETLtD017644;
+        Mon, 7 Oct 2019 09:29:22 -0500
+Subject: Re: [Letux-kernel] [PATCH] ARM: omap2plus_defconfig: Fix selected
+ panels after generic panel changes
+To:     Andreas Kemnade <andreas@kemnade.info>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+CC:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        Tony Lindgren <tony@atomide.com>, Jyri Sarha <jsarha@ti.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+References: <20191003165539.50318-1-tony@atomide.com>
+ <03ca02c1-2816-17cd-03fd-5b72e5d0ec96@ti.com>
+ <39E48EC6-65FE-419B-BBE8-E72CB44B517D@goldelico.com>
+ <20191006145348.GD4740@pendragon.ideasonboard.com>
+ <20191006223958.67725fdf@aktux> <20191007064035.72016c78@aktux>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <654d00a7-d802-d116-84c4-7c614d0fe272@ti.com>
+Date:   Mon, 7 Oct 2019 17:29:20 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20191007064035.72016c78@aktux>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The patch
+On 07/10/2019 07:40, Andreas Kemnade wrote:
 
-   regulator: pbias: Get rid of struct pbias_regulator_data
+>>> That's really weird, the driver name, the SPI device table and the OF
+>>> device table are the same (except for the "omapdss," prefix that we
+>>> don't add anymore in omapdss-boot-init.c). Would you be able to
+>>> investigate what broke ?
+>>>    
+>> in earlier times:
+>>
+>> root@gta04:/sys/bus/spi/devices/spi4.0# cat modalias
+>> spi:tpo,td028ttec1
+>>
+>> now in 5.4-rc1:
+>> root@gta04:/sys/bus/spi/devices/spi4.0# cat modalias
+>> spi:td028ttec1
+>>
+>> root@gta04:~# modinfo /lib/modules/5.4.0-rc1-letux+/kernel/drivers/gpu/drm/panel/panel-tpo-td028ttec1.ko
+>> filename:       /lib/modules/5.4.0-rc1-letux+/kernel/drivers/gpu/drm/panel/panel-tpo-td028ttec1.ko
+>> license:        GPL
+>> description:    Toppoly TD028TTEC1 panel driver
+>> author:         H. Nikolaus Schaller <hns@goldelico.com>
+>> srcversion:     6B3E224BCD3D76253CF361C
+>> alias:          of:N*T*Ctoppoly,td028ttec1C*
+>> alias:          of:N*T*Ctoppoly,td028ttec1
+>> alias:          of:N*T*Ctpo,td028ttec1C*
+>> alias:          of:N*T*Ctpo,td028ttec1
+>> alias:          spi:toppoly,td028ttec1
+>> alias:          spi:tpo,td028ttec1
+>> depends:        drm
+>> intree:         Y
+>> name:           panel_tpo_td028ttec1
+>> vermagic:       5.4.0-rc1-letux+ SMP preempt mod_unload ARMv7 p2v8
+>>
+>> That alias is not in the list.
+>>
+> some more research:
+> in former times
+> of_modalias_node() has stripped the omapdss prefix, result: modalias=spi:tpo,td028ttec1
+> now it strips the tpo prefix because there is no omapdss prefix anymore.
 
-has been applied to the regulator tree at
+I haven't studied this more yet, but yes, I can see of_modalias_node 
+stripping the vendor prefix on purpose. I do wonder how this is supposed 
+to work, it would make more sense to me to keep the vendor prefix.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-5.5
+Is the spi_device_id supposed to be without vendor prefix? With a quick 
+grep, this seems to be the case.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+  Tomi
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From df8c542ee853f22dc0e5584ba0a70de397a3d73e Mon Sep 17 00:00:00 2001
-From: Axel Lin <axel.lin@ingics.com>
-Date: Mon, 7 Oct 2019 19:43:20 +0800
-Subject: [PATCH] regulator: pbias: Get rid of struct pbias_regulator_data
-
-Only the desc field is really used, so use struct regulator_desc instead.
-Then struct pbias_regulator_data can be removed.
-
-Signed-off-by: Axel Lin <axel.lin@ingics.com>
-Link: https://lore.kernel.org/r/20191007114320.20977-1-axel.lin@ingics.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/regulator/pbias-regulator.c | 69 +++++++++++------------------
- 1 file changed, 26 insertions(+), 43 deletions(-)
-
-diff --git a/drivers/regulator/pbias-regulator.c b/drivers/regulator/pbias-regulator.c
-index a59811060bdc..bfc15dd3f730 100644
---- a/drivers/regulator/pbias-regulator.c
-+++ b/drivers/regulator/pbias-regulator.c
-@@ -38,15 +38,6 @@ struct pbias_reg_info {
- 	int n_voltages;
- };
- 
--struct pbias_regulator_data {
--	struct regulator_desc desc;
--	void __iomem *pbias_addr;
--	struct regulator_dev *dev;
--	struct regmap *syscon;
--	const struct pbias_reg_info *info;
--	int voltage;
--};
--
- struct pbias_of_data {
- 	unsigned int offset;
- };
-@@ -157,13 +148,13 @@ MODULE_DEVICE_TABLE(of, pbias_of_match);
- static int pbias_regulator_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
--	struct pbias_regulator_data *drvdata;
- 	struct resource *res;
- 	struct regulator_config cfg = { };
-+	struct regulator_desc *desc;
-+	struct regulator_dev *rdev;
- 	struct regmap *syscon;
- 	const struct pbias_reg_info *info;
--	int ret = 0;
--	int count, idx, data_idx = 0;
-+	int ret, count, idx;
- 	const struct pbias_of_data *data;
- 	unsigned int offset;
- 
-@@ -172,10 +163,8 @@ static int pbias_regulator_probe(struct platform_device *pdev)
- 	if (count < 0)
- 		return count;
- 
--	drvdata = devm_kcalloc(&pdev->dev,
--			       count, sizeof(struct pbias_regulator_data),
--			       GFP_KERNEL);
--	if (!drvdata)
-+	desc = devm_kcalloc(&pdev->dev, count, sizeof(*desc), GFP_KERNEL);
-+	if (!desc)
- 		return -ENOMEM;
- 
- 	syscon = syscon_regmap_lookup_by_phandle(np, "syscon");
-@@ -198,7 +187,7 @@ static int pbias_regulator_probe(struct platform_device *pdev)
- 	cfg.regmap = syscon;
- 	cfg.dev = &pdev->dev;
- 
--	for (idx = 0; idx < PBIAS_NUM_REGS && data_idx < count; idx++) {
-+	for (idx = 0; idx < PBIAS_NUM_REGS && count; idx++) {
- 		if (!pbias_matches[idx].init_data ||
- 			!pbias_matches[idx].of_node)
- 			continue;
-@@ -207,41 +196,35 @@ static int pbias_regulator_probe(struct platform_device *pdev)
- 		if (!info)
- 			return -ENODEV;
- 
--		drvdata[data_idx].syscon = syscon;
--		drvdata[data_idx].info = info;
--		drvdata[data_idx].desc.name = info->name;
--		drvdata[data_idx].desc.owner = THIS_MODULE;
--		drvdata[data_idx].desc.type = REGULATOR_VOLTAGE;
--		drvdata[data_idx].desc.ops = &pbias_regulator_voltage_ops;
--		drvdata[data_idx].desc.volt_table = info->pbias_volt_table;
--		drvdata[data_idx].desc.n_voltages = info->n_voltages;
--		drvdata[data_idx].desc.enable_time = info->enable_time;
--		drvdata[data_idx].desc.vsel_reg = offset;
--		drvdata[data_idx].desc.vsel_mask = info->vmode;
--		drvdata[data_idx].desc.enable_reg = offset;
--		drvdata[data_idx].desc.enable_mask = info->enable_mask;
--		drvdata[data_idx].desc.enable_val = info->enable;
--		drvdata[data_idx].desc.disable_val = info->disable_val;
-+		desc->name = info->name;
-+		desc->owner = THIS_MODULE;
-+		desc->type = REGULATOR_VOLTAGE;
-+		desc->ops = &pbias_regulator_voltage_ops;
-+		desc->volt_table = info->pbias_volt_table;
-+		desc->n_voltages = info->n_voltages;
-+		desc->enable_time = info->enable_time;
-+		desc->vsel_reg = offset;
-+		desc->vsel_mask = info->vmode;
-+		desc->enable_reg = offset;
-+		desc->enable_mask = info->enable_mask;
-+		desc->enable_val = info->enable;
-+		desc->disable_val = info->disable_val;
- 
- 		cfg.init_data = pbias_matches[idx].init_data;
--		cfg.driver_data = &drvdata[data_idx];
- 		cfg.of_node = pbias_matches[idx].of_node;
- 
--		drvdata[data_idx].dev = devm_regulator_register(&pdev->dev,
--					&drvdata[data_idx].desc, &cfg);
--		if (IS_ERR(drvdata[data_idx].dev)) {
--			ret = PTR_ERR(drvdata[data_idx].dev);
-+		rdev = devm_regulator_register(&pdev->dev, desc, &cfg);
-+		if (IS_ERR(rdev)) {
-+			ret = PTR_ERR(rdev);
- 			dev_err(&pdev->dev,
- 				"Failed to register regulator: %d\n", ret);
--			goto err_regulator;
-+			return ret;
- 		}
--		data_idx++;
-+		desc++;
-+		count--;
- 	}
- 
--	platform_set_drvdata(pdev, drvdata);
--
--err_regulator:
--	return ret;
-+	return 0;
- }
- 
- static struct platform_driver pbias_regulator_driver = {
 -- 
-2.20.1
-
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
