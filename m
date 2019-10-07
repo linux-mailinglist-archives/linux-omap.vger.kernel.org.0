@@ -2,93 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4A84CE871
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 17:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E03CCE873
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 17:57:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727814AbfJGP4p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Oct 2019 11:56:45 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:30784 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727791AbfJGP4p (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 11:56:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1570463800;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=FyKZsEpJI7kWJI0Rot+lLT/EfNutbsETMRLUCZ3F92M=;
-        b=EatcSIenBjqm/1WyyRTNIhxW5cXtvt75fKzQ6BCRo9ww4I+LTGBZgHx1Hd7vMs4sIe
-        R5iw5y+wF4A4Fn41yB3oW4WwMZ4BA3Prh9+xmuaPcIg9PW3NwvmX8ciu6W5VMygMcKs+
-        lbqWhJrcyxqx4+gmSzc7WmtGjBqU4jQESUEZGfJFTbYYArteDv+QIsSXJ1kEZPN5fes3
-        G4ehiZpu9+UBcTWqUnz/Pl2Ev5orf9sP7U38cP9GcweAS1ZV7gNph+ZRJl/cmUvzeIgt
-        0lbWq/lwpjoknA1rDIRJbSUM7tjGZq+RLxnQuRKXSPNU5nK5nsOpMqGKxaDnNSa889/S
-        ht+Q==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmMgw47ty6c="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.28.0 DYNA|AUTH)
-        with ESMTPSA id v00409v97FudqQY
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Mon, 7 Oct 2019 17:56:39 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: Lay common foundation to make PVR/SGX work without hacks on OMAP34xx, OMAP36xx, AM335x and potentially OMAP4, OMAP5
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20191007155252.GQ5610@atomide.com>
-Date:   Mon, 7 Oct 2019 17:56:38 +0200
-Cc:     Merlijn Wajer <merlijn@wizzup.org>, Adam Ford <aford173@gmail.com>,
-        Philipp Rossak <embed3d@gmail.com>,
-        =?utf-8?Q?Pawe=C5=82_Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        =?utf-8?Q?Filip_Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        moaz korena <moaz@korena.xyz>,
-        James Hilliard <james.hilliard1@gmail.com>,
-        kernel@pyra-handheld.com,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, maemo-leste@lists.dyne.org,
+        id S1728786AbfJGP4t (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 11:56:49 -0400
+Received: from muru.com ([72.249.23.125]:35636 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727791AbfJGP4t (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 7 Oct 2019 11:56:49 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id E459280A5;
+        Mon,  7 Oct 2019 15:57:20 +0000 (UTC)
+Date:   Mon, 7 Oct 2019 08:56:44 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     Peter Hurley <peter@hurleysoftware.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh R <vigneshr@ti.com>, linux-serial@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Tero Kristo <t-kristo@ti.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D1CD5D93-4178-4359-AF00-FFC3AA9CA054@goldelico.com>
-References: <d0cbfaaf-813e-8803-f90b-931a38396750@wizzup.org> <3A03FF16-C203-43ED-AEEF-0260F6B3331A@goldelico.com> <3b0a5e78-c4c2-1963-bac7-b49496a1e9b9@wizzup.org> <1F942AAB-1648-46C0-ADD5-90F6898778BE@goldelico.com> <84cac9b8-0eff-33f8-464d-4f8045d7db19@wizzup.org> <BFAA7FA6-A352-476A-99F9-02EA663A6AAD@goldelico.com> <CAHCN7x+87xTsA3MeHy7kUWU0SU3X8HmSc2wbk5gKvYm1dRNe6A@mail.gmail.com> <04809E3E-A690-4931-B949-1CFDAF407C14@goldelico.com> <ebb50954-b456-4dab-0765-9dfa06c67075@wizzup.org> <C3A56737-6187-4B31-8697-3A02DD164429@goldelico.com> <20191007155252.GQ5610@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+        Johan Hovold <johan@kernel.org>
+Subject: Re: [PATCH] serial: 8250_omap: Fix idling for unloaded serdev drivers
+Message-ID: <20191007155644.GR5610@atomide.com>
+References: <20190723115400.46432-1-tony@atomide.com>
+ <CAHCN7x+6KYjnm5daRe_Y5XEWnDBWQnz8rOKYH2wTgx9avvokmQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHCN7x+6KYjnm5daRe_Y5XEWnDBWQnz8rOKYH2wTgx9avvokmQ@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Adam Ford <aford173@gmail.com> [191004 19:30]:
+> On Tue, Jul 23, 2019 at 5:21 PM Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > For many years omap variants have been setting the runtime PM
+> > autosuspend delay to -1 to prevent unsafe policy with lossy first
+> > character on wake-up. The user must specifically enable the timeout
+> > for UARTs if desired.
+> >
+> > We must not enable the workaround for serdev devices though. It leads
+> > into UARTs not idling if no serdev devices are loaded and there is no
+> > sysfs entry to configure the UART in that case. And this means that
+> > my PM may not work unless the serdev modules are loaded.
+> >
+> > We can detect a serdev device being configured based on a dts child
+> > node, and we can simply skip the workround in that case. And the
+> > serdev driver can idle the port during runtime when suitable if an
+> > out-of-band wake-up GPIO line exists for example.
+> >
+> > Let's also add some comments to the workaround while at it.
+> 
+> This seems to help some of the stability issues I am seeing on the
+> DM3730 UART2 running Bluetooth at 3000000 baud.
+> Does it make sense to backport this to the stable kernels?
 
-> Am 07.10.2019 um 17:52 schrieb Tony Lindgren <tony@atomide.com>:
->=20
-> Hi,
->=20
-> * H. Nikolaus Schaller <hns@goldelico.com> [191005 16:59]:
->>=20
->>=20
->> * AM335x (BeagleBoneBlack): reports a problem with =
-omap_reset_deassert:
->> [  204.246706] omap_reset_deassert: timedout waiting for gfx:0
->=20
-> Please try with Tero's current github branch at =
-github.com/t-kristo/linux-pm.git
-> 5.4-rc1-ipc from few days ago, the earlier versions had still issues.
+Sure if it helps with issues, it should be safe to apply to earlier
+kernels that have serdev potentially in use.
 
-I have seen there has been a new version today and I'll try that one =
-asap.
+No need for earlier kernels before serdev though.
 
->=20
->> * OMAP5 (Pyra): fails to enable the clocks (did work with the =
-previous version)
->> [  304.140363] clock-controller:clk:0000:0: failed to enable
->> [  304.147388] PVR_K:(Error): EnableSGXClocks: pm_runtime_get_sync =
-failed (16)
->=20
-> Hmm no idea what might be up with this one. Did some clkctrl clock
-> fixes maybe cause a regression here? Tero do you have any ideas?
+Regards,
 
-BR and thanks,
-Nikolaus
+Tony
 
+> > Cc: Johan Hovold <johan@kernel.org>
+> > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > ---
+> >  drivers/tty/serial/8250/8250_omap.c | 11 ++++++++++-
+> >  1 file changed, 10 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+> > --- a/drivers/tty/serial/8250/8250_omap.c
+> > +++ b/drivers/tty/serial/8250/8250_omap.c
+> > @@ -1234,7 +1234,16 @@ static int omap8250_probe(struct platform_device *pdev)
+> >
+> >         device_init_wakeup(&pdev->dev, true);
+> >         pm_runtime_use_autosuspend(&pdev->dev);
+> > -       pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
+> > +
+> > +       /*
+> > +        * Disable runtime PM until autosuspend delay unless specifically
+> > +        * enabled by the user via sysfs. This is the historic way to
+> > +        * prevent an unsafe default policy with lossy characters on wake-up.
+> > +        * For serdev devices this is not needed, the policy can be managed by
+> > +        * the serdev driver.
+> > +        */
+> > +       if (!of_get_available_child_count(pdev->dev.of_node))
+> > +               pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
+> >
+> >         pm_runtime_irq_safe(&pdev->dev);
+> >         pm_runtime_enable(&pdev->dev);
+> > --
+> > 2.21.0
