@@ -2,68 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D27F1CE950
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 18:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 653A9CE958
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 18:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727830AbfJGQeI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Oct 2019 12:34:08 -0400
-Received: from muru.com ([72.249.23.125]:35666 "EHLO muru.com"
+        id S1727830AbfJGQfp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 12:35:45 -0400
+Received: from muru.com ([72.249.23.125]:35684 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727801AbfJGQeI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 7 Oct 2019 12:34:08 -0400
+        id S1727801AbfJGQfp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 7 Oct 2019 12:35:45 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 5653C80A5;
-        Mon,  7 Oct 2019 16:34:41 +0000 (UTC)
-Date:   Mon, 7 Oct 2019 09:34:04 -0700
+        by muru.com (Postfix) with ESMTPS id C424A8127;
+        Mon,  7 Oct 2019 16:36:17 +0000 (UTC)
+Date:   Mon, 7 Oct 2019 09:35:41 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Sakari Ailus <sakari.ailus@iki.fi>,
-        Michael Allwright <allsey87@gmail.com>
-Cc:     Michael Allwright <michael.allwright@upb.de>,
-        linux-media@vger.kernel.org,
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        Michael Allwright <allsey87@gmail.com>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Mauro Carvalho Chehab <mchehab@osg.samsung.com>,
-        Arnd Bergmann <arnd@arndb.de>, Tero Kristo <t-kristo@ti.com>,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH RFC] DT support for omap4-iss
-Message-ID: <20191007163404.GZ5607@atomide.com>
-References: <CALcgO_6UXp-Xqwim8WpLXz7XWAEpejipR7JNQc0TdH0ETL4JYQ@mail.gmail.com>
- <20190628110441.42gdqidkg5csuxai@valkosipuli.retiisi.org.uk>
+        Sakari Ailus <sakari.ailus@iki.fi>, linux-media@vger.kernel.org
+Subject: Re: iss: camera interface omap5
+Message-ID: <20191007163541.GT5610@atomide.com>
+References: <0D08B352-F0DF-45A4-8279-51B07D366AD0@goldelico.com>
+ <20191004161117.GO5610@atomide.com>
+ <EDF29A32-77BB-4346-BBCC-C12F2BB4745E@goldelico.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190628110441.42gdqidkg5csuxai@valkosipuli.retiisi.org.uk>
+In-Reply-To: <EDF29A32-77BB-4346-BBCC-C12F2BB4745E@goldelico.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Sakari Ailus <sakari.ailus@iki.fi> [190628 11:05]:
-> Hi Michael,
+* H. Nikolaus Schaller <hns@goldelico.com> [191004 16:27]:
+> Hi Tony,
 > 
-> On Mon, Aug 10, 2015 at 05:16:30PM +0200, Michael Allwright wrote:
-> > Hi All,
+> > Am 04.10.2019 um 18:11 schrieb Tony Lindgren <tony@atomide.com>:
 > > 
-> > The following PRELIMINARY patch adds DT support to the OMAP4 ISS. It
-> > also fixes some problems a have found along the way. It is tightly
-> > modelled after the omap3-isp media platform driver. This patch is a
-> > work in progress as I would like feedback. It contains debugging
-> > messages that need to be removed, as well as disgusting abuses of the
-> > C language as required (i.e. clk_core_fake and clk_fake).
+> > * H. Nikolaus Schaller <hns@goldelico.com> [191004 07:25]:
+> >> Hi Tony,
+> >> is there a similar node for omap5 comparable to this for omap4:
+> >> 
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/omap4.dtsi?h=v5.4-rc1#n176
 > 
-> We'd like to restart the effort adding DT support for this driver. Would
-> you be able to, if not address the comments, at least resend your old patch
-> with your Signed-off-by: line so we could make use of what you've already
-> done?
+> (I just noticed there seems to be a missing empty line between 216 and 217)
+> 
+> > 
+> > Not sure if it's the same interface as on omap4, but at
+> > least TRM has "8.1.3.1 ISS Instance Summary" at 0x52000000.
+> 
+> Ok.
+> 
+> IMHO there was a patch where someone got it working a while ago so it is likely the same:
+> 
+> 	https://e2e.ti.com/support/interface/f/138/t/647460
+> 
+> Now I wonder how it can be updated to current target-module style.
+> 
+> Is it correct to do it similar to omap4 and replace
+> 
+> 	/* No child device binding, driver in staging */
+> 
+> by a child node that is compatible to "ti,omap4-iss".
+> And there define a reg record like in the example on e2e?
+> I.e. split into sysc registers for the target-module@52000000
+> and driver specific registers in the child node?
 
-I think this email no longer works for Michael? Adding another
-one from commit at [0] below.
+Yeah something like that. Michael Alwright has a patch at [0]
+with improvments for the iss staging driver to get it working.
+Have you seen that one?
 
-Michael, care to email that patch to the lists with your
-Signed-off-by so Sakari can use it? Or at least reply with
-your Signed-off-by to this thread :)
+> Regarding clocks they likely have to stay with the target-module@52000000
+> node, right?
+
+I think it should be just something like this for
+the target-module (on top of Michael's changes):
+
+clocks = <&iss_clkctrl OMAP4_ISS_CLKCTRL 0>;
+clock-names = "fck";
+
+Then in the child node:
+
+clocks = <&iss_clkctrl OMAP4_ISS_CLKCTRL 8>;
+clock-names = "ctrlclk";
+
+> And what about the dma nodes? Also keep in the target-module@52000000?
+
+Those should be all in the child iss driver(s).
+
+In general, it sounds like the iss is a private interconnect with
+a control module for clocks etc, so doing it as multiple device
+drivers probably makes sense.
 
 Regards,
 
