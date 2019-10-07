@@ -2,98 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD088CEB9B
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 20:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5728DCEC5F
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 21:00:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728031AbfJGSQQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Mon, 7 Oct 2019 14:16:16 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.163]:9946 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728329AbfJGSQQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 14:16:16 -0400
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmMgw47ty6c="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.28.0 DYNA|AUTH)
-        with ESMTPSA id v00409v97IG5qjw
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Mon, 7 Oct 2019 20:16:05 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH RFC] DT support for omap4-iss
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <CALcgO_4Usn_OAwiCWpx45+_YRsTKiUpOYs9fCSbUbYjnvmrc-g@mail.gmail.com>
-Date:   Mon, 7 Oct 2019 20:16:04 +0200
-Cc:     linux-media@vger.kernel.org,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com
-Content-Transfer-Encoding: 8BIT
-Message-Id: <77B9C173-5E61-473D-AA2E-79586B7A9C62@goldelico.com>
-References: <CALcgO_6UXp-Xqwim8WpLXz7XWAEpejipR7JNQc0TdH0ETL4JYQ@mail.gmail.com> <20190628110441.42gdqidkg5csuxai@valkosipuli.retiisi.org.uk> <20191007163404.GZ5607@atomide.com> <CALcgO_4Usn_OAwiCWpx45+_YRsTKiUpOYs9fCSbUbYjnvmrc-g@mail.gmail.com>
-To:     Michael Allwright <allsey87@gmail.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1728273AbfJGTAa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 15:00:30 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:34852 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728079AbfJGTAa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 15:00:30 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x97J0K4N123042;
+        Mon, 7 Oct 2019 14:00:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1570474820;
+        bh=0vcs8rJ4wLMMAot/YqVdXrTFHozVQXOKjEGPQggiNtA=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=x6uUPj56N0zvOFeyYbLxOa+VcLOYM7KLO1Ih8m9afOoWDqwMxacQLCzQ+8Ru1Iv2g
+         5k/iGHUUHlFQnNLC0NBnDu/41EISo6wU72Ws/yvwmT7J20f3t3j4btKIWfS8rsxNZz
+         5vWWm+8h4pq6J2q4y3t6jB1mF3s9O48ZSoZeCIRw=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x97J0Kw6063227
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 7 Oct 2019 14:00:20 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 7 Oct
+ 2019 14:00:16 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 7 Oct 2019 14:00:18 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x97J0HRM099832;
+        Mon, 7 Oct 2019 14:00:17 -0500
+Subject: Re: [PATCH 0/3] bus: ti-sysc: fix reset sequencing
+To:     Tony Lindgren <tony@atomide.com>
+CC:     <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20191007122931.18668-1-t-kristo@ti.com>
+ <20191007163807.GU5610@atomide.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <32031606-23da-2e0b-6d75-7225a082eb6b@ti.com>
+Date:   Mon, 7 Oct 2019 22:00:16 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20191007163807.GU5610@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-> Am 07.10.2019 um 18:56 schrieb Michael Allwright <allsey87@gmail.com>:
-> 
-> On Mon, 7 Oct 2019 at 18:34, Tony Lindgren <tony@atomide.com> wrote:
->> 
+On 07/10/2019 19:38, Tony Lindgren wrote:
+> * Tero Kristo <t-kristo@ti.com> [191007 12:30]:
 >> Hi,
->> 
->> * Sakari Ailus <sakari.ailus@iki.fi> [190628 11:05]:
->>> Hi Michael,
->>> 
->>> On Mon, Aug 10, 2015 at 05:16:30PM +0200, Michael Allwright wrote:
->>>> Hi All,
->>>> 
->>>> The following PRELIMINARY patch adds DT support to the OMAP4 ISS. It
->>>> also fixes some problems a have found along the way. It is tightly
->>>> modelled after the omap3-isp media platform driver. This patch is a
->>>> work in progress as I would like feedback. It contains debugging
->>>> messages that need to be removed, as well as disgusting abuses of the
->>>> C language as required (i.e. clk_core_fake and clk_fake).
->>> 
->>> We'd like to restart the effort adding DT support for this driver. Would
->>> you be able to, if not address the comments, at least resend your old patch
->>> with your Signed-off-by: line so we could make use of what you've already
->>> done?
->> 
->> I think this email no longer works for Michael? Adding another
->> one from commit at [0] below.
->> 
->> Michael, care to email that patch to the lists with your
->> Signed-off-by so Sakari can use it? Or at least reply with
->> your Signed-off-by to this thread :)
->> 
->> Regards,
->> 
->> Tony
->> 
->> [0] https://github.com/allsey87/meta-builderbot/blob/master/recipes-kernel/linux/linux-stable-4.16/0008-omap4iss-Fix-multiple-bugs-and-use-device-tree.patch
+>>
+>> These three patches make sure that IOMMU/remoteprocs work across
+>> all devices with the latest OMAP PRM series for reset support [1].
+>> The last dangling issues were caused by the removal of the hardlink
+>> between the reset + clock drivers.
 > 
-> Hi All,
-> 
-> Sorry for the lack of communication, indeed the University of Paderborn
-> email is no longer used. We ran out of time on our end to work on this.
-> Naturally I would be glad to see any efforts towards getting DT support
-> together for this driver. To that end, we release all the work we have
-> done, including the patch in [0], to the public domain.
-> 
-> Signed-off-by: Michael Allwright <michael.allwright@ulb.ac.be>
+> OK. I presume these are safe to wait for v5.5 since we don't
+> have the rstctrl driver yet?
 
-Looks really good and the DTS goes into the same direction
-as I had roughly been thinking of. I'll adapt my tree and try
-to make it work. As well as do something similar for omap5. But
-may need some time.
+Yeah, they are safe to wait.
 
-BR and thanks,
-Nikolaus
-
-
+-Tero
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
