@@ -2,99 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AECDBCE9EB
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 18:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF438CE9F6
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 18:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728162AbfJGQ51 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Oct 2019 12:57:27 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:44235 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727935AbfJGQ51 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 12:57:27 -0400
-Received: by mail-wr1-f65.google.com with SMTP id z9so16143965wrl.11;
-        Mon, 07 Oct 2019 09:57:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=EGIejddfLAJpf9sVwGueon/dDKY2GtQH18Tsw28Siug=;
-        b=b95EUpLOK9666SITwUpVBSwU2pywae50FdIH9QYz/Z34kYcrNGLRsRUx9dTkdlKZmq
-         LWrFj2emjChmIG9Rd7BWrjnQ+xtsiBdkCk2I3IDigUSTnk55zqzhgn5A+sY4nbcNxjQY
-         A3oslNZ/u1H07qzks+yqcy+BPmyNtVLxx9oOVKQfwrLSB30m7DJY7+SU0az9FjV1WQ3U
-         gT8U+KlzZ5SRGt10EvTynQdjuoXom2rg1xJSENIwBlegMTZXApv+L4C49QIePR5R/OEE
-         JHvYP4pxsvXwufsKkDvV17pJ0A4gIGOUp+8qIxXRN0OTxqlVifLVij2usGuJNinsWcpZ
-         V8/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=EGIejddfLAJpf9sVwGueon/dDKY2GtQH18Tsw28Siug=;
-        b=X/tbdjg/tI+5YhdAkeqwnHoCHzxbxrniYN3askFg7cFxaMjwZiv+5rQNyzMg/e1d2E
-         eDDjhRSJ7fVgSUShkNGMQBSgJWZSzs16cAbNWxrCTZHT8F7fQkefwh26NFsgvFfT4lQ1
-         lzl1bY6pX8Z6+9mvSebK0Gts8Nw6ah7L0R0fakfsQy8AigZZ/4tw/Umlh7Wu9O93qJ3F
-         m5lHjAVEoYN1Zm/qg4O8W47s71Fy5j4hK046xRFdNQBNYeHge+47bScTgJntIg4YCDIt
-         eN5DjFshb8J6xVvpYvAr9tkcKmw8FOGqfFB+Kjt6YGLwclG358d75BX92XsziGfcXfH+
-         NR5A==
-X-Gm-Message-State: APjAAAUBL534n7OrmzMX7MWhwsy6XaeEX7OIU5TPU6s22v6d2Ithwu8B
-        W3IP6SCDFtlPWuzTPJ790siiWMo4w3jDSpAF0eYBQi41Js0=
-X-Google-Smtp-Source: APXvYqyvFWpIhF+9Cosbi6sSUF5ovkjfFZymgTkrhevWZA7f6MkVr1y06JJgLo71q+gZ+qPpYIYW5zeMq7ElyYw0gGA=
-X-Received: by 2002:a5d:67cc:: with SMTP id n12mr22272024wrw.359.1570467444847;
- Mon, 07 Oct 2019 09:57:24 -0700 (PDT)
+        id S1728019AbfJGQ7D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 12:59:03 -0400
+Received: from muru.com ([72.249.23.125]:35720 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727935AbfJGQ7D (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 7 Oct 2019 12:59:03 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 906858191;
+        Mon,  7 Oct 2019 16:59:35 +0000 (UTC)
+Date:   Mon, 7 Oct 2019 09:58:59 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Emmanuel Vadot <manu@bidouilliste.com>
+Cc:     Emmanuel Vadot <manu@freebsd.org>, bcousson@baylibre.com,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: Set status to disable for MMC3
+Message-ID: <20191007165859.GV5610@atomide.com>
+References: <20191007080339.57209-1-manu@freebsd.org>
+ <20191007161634.GS5610@atomide.com>
+ <20191007183830.71e1303d6bd713014dc36710@bidouilliste.com>
 MIME-Version: 1.0
-References: <CALcgO_6UXp-Xqwim8WpLXz7XWAEpejipR7JNQc0TdH0ETL4JYQ@mail.gmail.com>
- <20190628110441.42gdqidkg5csuxai@valkosipuli.retiisi.org.uk> <20191007163404.GZ5607@atomide.com>
-In-Reply-To: <20191007163404.GZ5607@atomide.com>
-From:   Michael Allwright <allsey87@gmail.com>
-Date:   Mon, 7 Oct 2019 18:56:59 +0200
-Message-ID: <CALcgO_4Usn_OAwiCWpx45+_YRsTKiUpOYs9fCSbUbYjnvmrc-g@mail.gmail.com>
-Subject: Re: [PATCH RFC] DT support for omap4-iss
-To:     linux-media@vger.kernel.org, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191007183830.71e1303d6bd713014dc36710@bidouilliste.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 7 Oct 2019 at 18:34, Tony Lindgren <tony@atomide.com> wrote:
->
-> Hi,
->
-> * Sakari Ailus <sakari.ailus@iki.fi> [190628 11:05]:
-> > Hi Michael,
-> >
-> > On Mon, Aug 10, 2015 at 05:16:30PM +0200, Michael Allwright wrote:
-> > > Hi All,
-> > >
-> > > The following PRELIMINARY patch adds DT support to the OMAP4 ISS. It
-> > > also fixes some problems a have found along the way. It is tightly
-> > > modelled after the omap3-isp media platform driver. This patch is a
-> > > work in progress as I would like feedback. It contains debugging
-> > > messages that need to be removed, as well as disgusting abuses of the
-> > > C language as required (i.e. clk_core_fake and clk_fake).
-> >
-> > We'd like to restart the effort adding DT support for this driver. Would
-> > you be able to, if not address the comments, at least resend your old patch
-> > with your Signed-off-by: line so we could make use of what you've already
-> > done?
->
-> I think this email no longer works for Michael? Adding another
-> one from commit at [0] below.
->
-> Michael, care to email that patch to the lists with your
-> Signed-off-by so Sakari can use it? Or at least reply with
-> your Signed-off-by to this thread :)
->
-> Regards,
->
-> Tony
->
-> [0] https://github.com/allsey87/meta-builderbot/blob/master/recipes-kernel/linux/linux-stable-4.16/0008-omap4iss-Fix-multiple-bugs-and-use-device-tree.patch
+* Emmanuel Vadot <manu@bidouilliste.com> [191007 16:39]:
+> On Mon, 7 Oct 2019 09:16:34 -0700
+> Tony Lindgren <tony@atomide.com> wrote:
+> 
+> > Hi,
+> > 
+> > * Emmanuel Vadot <manu@freebsd.org> [191007 08:04]:
+> > > Commit 5b63fb90adb95 ("ARM: dts: Fix incomplete dts data for am3 and am4 mmc")
+> > > fixed the mmc instances on the l3 interconnect but removed the disabled status.
+> > > Fix this and let boards properly define it if it have it.
+> > 
+> > The dts default is "okay", and should be fine for all the
+> > internal devices even if not pinned out on the board. This
+> > way the devices get properly idled during boot, and we
+> > avoid repeating status = "enabled" over and over again in
+> > the board specific dts files.
+> 
+>  That is not correct, if a status != "disabled" then pinmuxing will be
+> configured for this device and if multiple devices share the same pin
+> then you have a problem. Note that I have (almost) no knowledge on Ti
+> SoC but I doubt that this is not the case on them.
 
-Hi All,
+Hmm well, that should not be needed. The pinmux configuration is always
+done in a board specific dts file.
 
-Sorry for the lack of communication, indeed the University of Paderborn
-email is no longer used. We ran out of time on our end to work on this.
-Naturally I would be glad to see any efforts towards getting DT support
-together for this driver. To that end, we release all the work we have
-done, including the patch in [0], to the public domain.
+>  Also every other boards that I work with use the standard of setting
+> every node to disabled in the dtsi and let the board enable them at
+> will. Is there something different happening in the TI world ?
 
-Signed-off-by: Michael Allwright <michael.allwright@ulb.ac.be>
+There should be no need to do that for SoC internal devices, the
+the default status = "okay" should be just fine. Setting the
+status = "disabled" for SoC internal devices and then enabling them
+again for tens of board specific dts files just generates tons of
+pointless extra churn for the board specific configuration.
+
+> > Then the board specific dts files might want to configure
+> > devices with status = "disabled" if really needed. But this
+> > should be only done for devices that Linux must not use,
+> > such as crypto acclerators on secure devices if claimed by
+> > the secure mode.
+> > 
+> > So if this fixes something, it's almost certainly a sign
+> > of something else being broken?
+> 
+>  In this case it's FreeBSD being  because (I think) we have bad support
+> for the clocks for this module so we panic when we read from it as the
+> module isn't clocked. And since I find it wrong to have device enabled
+> while it isn't present I've sent this patch.
+
+Thanks for clarifying what happens. OK, sounds like FreeBSD might be
+missing clock handling for some devices then.
+
+What Linux does is probe the internal devices and then idle the
+unused ones as bootloaders often leave many things enabled. Otherwise
+the SoC power management won't work properly because device clocks
+will block deeper SoC idle states.
+
+Regards,
+
+Tony
+
+> > > Fixes: 5b63fb90adb95 ("ARM: dts: Fix incomplete dts data for am3 and am4 mmc")
+> > > Signed-off-by: Emmanuel Vadot <manu@freebsd.org>
+> > > ---
+> > >  arch/arm/boot/dts/am33xx.dtsi | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+> > > index fb6b8aa12cc5..b3a1fd9e39fa 100644
+> > > --- a/arch/arm/boot/dts/am33xx.dtsi
+> > > +++ b/arch/arm/boot/dts/am33xx.dtsi
+> > > @@ -260,6 +260,7 @@
+> > >  				ti,needs-special-reset;
+> > >  				interrupts = <29>;
+> > >  				reg = <0x0 0x1000>;
+> > > +				status = "disabled";
+> > >  			};
+> > >  		};
+> > >  
+> > > -- 
+> > > 2.22.0
+> > > 
+> 
+> 
+> -- 
+> Emmanuel Vadot <manu@bidouilliste.com>
