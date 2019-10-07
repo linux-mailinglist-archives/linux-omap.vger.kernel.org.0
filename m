@@ -2,112 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37F6ECE8B9
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 18:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AF7FCE8E6
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 18:16:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728088AbfJGQKI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Oct 2019 12:10:08 -0400
-Received: from mail.andi.de1.cc ([85.214.55.253]:53416 "EHLO mail.andi.de1.cc"
+        id S1727931AbfJGQQi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 12:16:38 -0400
+Received: from muru.com ([72.249.23.125]:35650 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728083AbfJGQKI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 7 Oct 2019 12:10:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=i+GXtAfr3NT3UKe6c7/u/5BLJlOdChLnvUuNpkuv6bw=; b=JhMyFEVEhJ/XLzBh0FKFsnS31J
-        hrnMM3KookEC6NnkjhswkBvc7g/iWE5SnfIg4OB00XxqSw40WdC9gX7kjTYf+dvlQqFzC0cjQirx1
-        Er7u+RQ6ohu09IpukZQVG3aK3Ja8K4KmUIgy2AcfDPlqBm5WrNH8Kb003Xff4BO0+vKs=;
-Received: from p200300ccff0a88001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0a:8800:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1iHVaA-0008Fu-U1; Mon, 07 Oct 2019 18:09:59 +0200
-Date:   Mon, 7 Oct 2019 18:09:57 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, Tony Lindgren <tony@atomide.com>,
-        Jyri Sarha <jsarha@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [Letux-kernel] [PATCH] ARM: omap2plus_defconfig: Fix selected
- panels after generic panel changes
-Message-ID: <20191007180957.69cf7b55@aktux>
-In-Reply-To: <654d00a7-d802-d116-84c4-7c614d0fe272@ti.com>
-References: <20191003165539.50318-1-tony@atomide.com>
-        <03ca02c1-2816-17cd-03fd-5b72e5d0ec96@ti.com>
-        <39E48EC6-65FE-419B-BBE8-E72CB44B517D@goldelico.com>
-        <20191006145348.GD4740@pendragon.ideasonboard.com>
-        <20191006223958.67725fdf@aktux>
-        <20191007064035.72016c78@aktux>
-        <654d00a7-d802-d116-84c4-7c614d0fe272@ti.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727791AbfJGQQi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 7 Oct 2019 12:16:38 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 5B2E580A5;
+        Mon,  7 Oct 2019 16:17:11 +0000 (UTC)
+Date:   Mon, 7 Oct 2019 09:16:34 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Emmanuel Vadot <manu@freebsd.org>
+Cc:     bcousson@baylibre.com, robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: Set status to disable for MMC3
+Message-ID: <20191007161634.GS5610@atomide.com>
+References: <20191007080339.57209-1-manu@freebsd.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191007080339.57209-1-manu@freebsd.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 7 Oct 2019 17:29:20 +0300
-Tomi Valkeinen <tomi.valkeinen@ti.com> wrote:
+Hi,
 
-> On 07/10/2019 07:40, Andreas Kemnade wrote:
-> 
-> >>> That's really weird, the driver name, the SPI device table and the OF
-> >>> device table are the same (except for the "omapdss," prefix that we
-> >>> don't add anymore in omapdss-boot-init.c). Would you be able to
-> >>> investigate what broke ?
-> >>>      
-> >> in earlier times:
-> >>
-> >> root@gta04:/sys/bus/spi/devices/spi4.0# cat modalias
-> >> spi:tpo,td028ttec1
-> >>
-> >> now in 5.4-rc1:
-> >> root@gta04:/sys/bus/spi/devices/spi4.0# cat modalias
-> >> spi:td028ttec1
-> >>
-> >> root@gta04:~# modinfo /lib/modules/5.4.0-rc1-letux+/kernel/drivers/gpu/drm/panel/panel-tpo-td028ttec1.ko
-> >> filename:       /lib/modules/5.4.0-rc1-letux+/kernel/drivers/gpu/drm/panel/panel-tpo-td028ttec1.ko
-> >> license:        GPL
-> >> description:    Toppoly TD028TTEC1 panel driver
-> >> author:         H. Nikolaus Schaller <hns@goldelico.com>
-> >> srcversion:     6B3E224BCD3D76253CF361C
-> >> alias:          of:N*T*Ctoppoly,td028ttec1C*
-> >> alias:          of:N*T*Ctoppoly,td028ttec1
-> >> alias:          of:N*T*Ctpo,td028ttec1C*
-> >> alias:          of:N*T*Ctpo,td028ttec1
-> >> alias:          spi:toppoly,td028ttec1
-> >> alias:          spi:tpo,td028ttec1
-> >> depends:        drm
-> >> intree:         Y
-> >> name:           panel_tpo_td028ttec1
-> >> vermagic:       5.4.0-rc1-letux+ SMP preempt mod_unload ARMv7 p2v8
-> >>
-> >> That alias is not in the list.
-> >>  
-> > some more research:
-> > in former times
-> > of_modalias_node() has stripped the omapdss prefix, result: modalias=spi:tpo,td028ttec1
-> > now it strips the tpo prefix because there is no omapdss prefix anymore.  
-> 
-> I haven't studied this more yet, but yes, I can see of_modalias_node 
-> stripping the vendor prefix on purpose. I do wonder how this is supposed 
-> to work, it would make more sense to me to keep the vendor prefix.
-> 
-> Is the spi_device_id supposed to be without vendor prefix? With a quick 
-> grep, this seems to be the case.
-> 
-as it is done in drivers/spi/spi.c we have no influence from drm side.
-So we must live with it. Also checked several drivers, no vendor-prefix
-there.
+* Emmanuel Vadot <manu@freebsd.org> [191007 08:04]:
+> Commit 5b63fb90adb95 ("ARM: dts: Fix incomplete dts data for am3 and am4 mmc")
+> fixed the mmc instances on the l3 interconnect but removed the disabled status.
+> Fix this and let boards properly define it if it have it.
+
+The dts default is "okay", and should be fine for all the
+internal devices even if not pinned out on the board. This
+way the devices get properly idled during boot, and we
+avoid repeating status = "enabled" over and over again in
+the board specific dts files.
+
+Then the board specific dts files might want to configure
+devices with status = "disabled" if really needed. But this
+should be only done for devices that Linux must not use,
+such as crypto acclerators on secure devices if claimed by
+the secure mode.
+
+So if this fixes something, it's almost certainly a sign
+of something else being broken?
 
 Regards,
-Andreas
+
+Tony
+
+
+> Fixes: 5b63fb90adb95 ("ARM: dts: Fix incomplete dts data for am3 and am4 mmc")
+> Signed-off-by: Emmanuel Vadot <manu@freebsd.org>
+> ---
+>  arch/arm/boot/dts/am33xx.dtsi | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+> index fb6b8aa12cc5..b3a1fd9e39fa 100644
+> --- a/arch/arm/boot/dts/am33xx.dtsi
+> +++ b/arch/arm/boot/dts/am33xx.dtsi
+> @@ -260,6 +260,7 @@
+>  				ti,needs-special-reset;
+>  				interrupts = <29>;
+>  				reg = <0x0 0x1000>;
+> +				status = "disabled";
+>  			};
+>  		};
+>  
+> -- 
+> 2.22.0
+> 
