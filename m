@@ -2,159 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E324CE976
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 18:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AECDBCE9EB
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 18:57:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728048AbfJGQly (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Oct 2019 12:41:54 -0400
-Received: from mail.andi.de1.cc ([85.214.55.253]:43478 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727801AbfJGQly (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 7 Oct 2019 12:41:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=vcGbSzQpd1TeTGagYBxvd1qotNo5UEYywORlC/ZOCyk=; b=MLzWT1osbcLQsxYkuVhd/rxpPR
-        0bGgrA/3eWQKRd02P+O8Yu0i9tyCdMXzkY4f9GZvYZnA6JqZa+XvFu7jER3oWKHdoQy3xyJA1pMtP
-        azjWe5s6eyzus7uwxGCZJLJfAhRINe8h9qJuvf4ptL0cjTuhn2BkgT0X6ZoxlcG3EfS8=;
-Received: from p200300ccff0a88001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0a:8800:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1iHW4t-0000lS-29; Mon, 07 Oct 2019 18:41:43 +0200
-Received: from andi by aktux with local (Exim 4.92)
-        (envelope-from <andreas@kemnade.info>)
-        id 1iHW4s-0008Fy-MJ; Mon, 07 Oct 2019 18:41:42 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     thierry.reding@gmail.com, sam@ravnborg.org, airlied@linux.ie,
-        daniel@ffwll.ch, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        omi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, Tony Lindgren <tony@atomide.com>,
-        Jyri Sarha <jsarha@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Cc:     Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH] drm: panels: fix spi aliases of former omap panels
-Date:   Mon,  7 Oct 2019 18:41:30 +0200
-Message-Id: <20191007164130.31534-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.20.1
+        id S1728162AbfJGQ51 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 12:57:27 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:44235 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727935AbfJGQ51 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 12:57:27 -0400
+Received: by mail-wr1-f65.google.com with SMTP id z9so16143965wrl.11;
+        Mon, 07 Oct 2019 09:57:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=EGIejddfLAJpf9sVwGueon/dDKY2GtQH18Tsw28Siug=;
+        b=b95EUpLOK9666SITwUpVBSwU2pywae50FdIH9QYz/Z34kYcrNGLRsRUx9dTkdlKZmq
+         LWrFj2emjChmIG9Rd7BWrjnQ+xtsiBdkCk2I3IDigUSTnk55zqzhgn5A+sY4nbcNxjQY
+         A3oslNZ/u1H07qzks+yqcy+BPmyNtVLxx9oOVKQfwrLSB30m7DJY7+SU0az9FjV1WQ3U
+         gT8U+KlzZ5SRGt10EvTynQdjuoXom2rg1xJSENIwBlegMTZXApv+L4C49QIePR5R/OEE
+         JHvYP4pxsvXwufsKkDvV17pJ0A4gIGOUp+8qIxXRN0OTxqlVifLVij2usGuJNinsWcpZ
+         V8/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=EGIejddfLAJpf9sVwGueon/dDKY2GtQH18Tsw28Siug=;
+        b=X/tbdjg/tI+5YhdAkeqwnHoCHzxbxrniYN3askFg7cFxaMjwZiv+5rQNyzMg/e1d2E
+         eDDjhRSJ7fVgSUShkNGMQBSgJWZSzs16cAbNWxrCTZHT8F7fQkefwh26NFsgvFfT4lQ1
+         lzl1bY6pX8Z6+9mvSebK0Gts8Nw6ah7L0R0fakfsQy8AigZZ/4tw/Umlh7Wu9O93qJ3F
+         m5lHjAVEoYN1Zm/qg4O8W47s71Fy5j4hK046xRFdNQBNYeHge+47bScTgJntIg4YCDIt
+         eN5DjFshb8J6xVvpYvAr9tkcKmw8FOGqfFB+Kjt6YGLwclG358d75BX92XsziGfcXfH+
+         NR5A==
+X-Gm-Message-State: APjAAAUBL534n7OrmzMX7MWhwsy6XaeEX7OIU5TPU6s22v6d2Ithwu8B
+        W3IP6SCDFtlPWuzTPJ790siiWMo4w3jDSpAF0eYBQi41Js0=
+X-Google-Smtp-Source: APXvYqyvFWpIhF+9Cosbi6sSUF5ovkjfFZymgTkrhevWZA7f6MkVr1y06JJgLo71q+gZ+qPpYIYW5zeMq7ElyYw0gGA=
+X-Received: by 2002:a5d:67cc:: with SMTP id n12mr22272024wrw.359.1570467444847;
+ Mon, 07 Oct 2019 09:57:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0 (-)
+References: <CALcgO_6UXp-Xqwim8WpLXz7XWAEpejipR7JNQc0TdH0ETL4JYQ@mail.gmail.com>
+ <20190628110441.42gdqidkg5csuxai@valkosipuli.retiisi.org.uk> <20191007163404.GZ5607@atomide.com>
+In-Reply-To: <20191007163404.GZ5607@atomide.com>
+From:   Michael Allwright <allsey87@gmail.com>
+Date:   Mon, 7 Oct 2019 18:56:59 +0200
+Message-ID: <CALcgO_4Usn_OAwiCWpx45+_YRsTKiUpOYs9fCSbUbYjnvmrc-g@mail.gmail.com>
+Subject: Re: [PATCH RFC] DT support for omap4-iss
+To:     linux-media@vger.kernel.org, linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-When the panels were moved from omap/displays/ to panel/
-omapdss prefix was stripped, which cause spi modalias
-to not contain the vendor-prefix anymore.
+On Mon, 7 Oct 2019 at 18:34, Tony Lindgren <tony@atomide.com> wrote:
+>
+> Hi,
+>
+> * Sakari Ailus <sakari.ailus@iki.fi> [190628 11:05]:
+> > Hi Michael,
+> >
+> > On Mon, Aug 10, 2015 at 05:16:30PM +0200, Michael Allwright wrote:
+> > > Hi All,
+> > >
+> > > The following PRELIMINARY patch adds DT support to the OMAP4 ISS. It
+> > > also fixes some problems a have found along the way. It is tightly
+> > > modelled after the omap3-isp media platform driver. This patch is a
+> > > work in progress as I would like feedback. It contains debugging
+> > > messages that need to be removed, as well as disgusting abuses of the
+> > > C language as required (i.e. clk_core_fake and clk_fake).
+> >
+> > We'd like to restart the effort adding DT support for this driver. Would
+> > you be able to, if not address the comments, at least resend your old patch
+> > with your Signed-off-by: line so we could make use of what you've already
+> > done?
+>
+> I think this email no longer works for Michael? Adding another
+> one from commit at [0] below.
+>
+> Michael, care to email that patch to the lists with your
+> Signed-off-by so Sakari can use it? Or at least reply with
+> your Signed-off-by to this thread :)
+>
+> Regards,
+>
+> Tony
+>
+> [0] https://github.com/allsey87/meta-builderbot/blob/master/recipes-kernel/linux/linux-stable-4.16/0008-omap4iss-Fix-multiple-bugs-and-use-device-tree.patch
 
-so we had e.g. in former times:
-compatible=omapdss,tpo,td028ttec1 -> modalias=spi:tpo,td028ttec1
-now:
-compatible=tpo,td028ttec1 -> modalias=spi:td028ttec1
+Hi All,
 
-This is consistent with other drivers. Tested the td028ttec.c
-only, but the pattern looks the same for the other ones.
+Sorry for the lack of communication, indeed the University of Paderborn
+email is no longer used. We ran out of time on our end to work on this.
+Naturally I would be glad to see any efforts towards getting DT support
+together for this driver. To that end, we release all the work we have
+done, including the patch in [0], to the public domain.
 
-Fixes: 45f16c82db7e8 ("drm/omap: displays: Remove unused panel drivers")
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- drivers/gpu/drm/panel/panel-lg-lb035q02.c       | 2 +-
- drivers/gpu/drm/panel/panel-nec-nl8048hl11.c    | 2 +-
- drivers/gpu/drm/panel/panel-sharp-ls037v7dw01.c | 2 +-
- drivers/gpu/drm/panel/panel-sony-acx565akm.c    | 2 +-
- drivers/gpu/drm/panel/panel-tpo-td028ttec1.c    | 3 +--
- drivers/gpu/drm/panel/panel-tpo-td043mtea1.c    | 2 +-
- 6 files changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/panel/panel-lg-lb035q02.c b/drivers/gpu/drm/panel/panel-lg-lb035q02.c
-index fc82a525b071b..8423684a0557e 100644
---- a/drivers/gpu/drm/panel/panel-lg-lb035q02.c
-+++ b/drivers/gpu/drm/panel/panel-lg-lb035q02.c
-@@ -231,7 +231,7 @@ static struct spi_driver lb035q02_driver = {
- 
- module_spi_driver(lb035q02_driver);
- 
--MODULE_ALIAS("spi:lgphilips,lb035q02");
-+MODULE_ALIAS("spi:lb035q02");
- MODULE_AUTHOR("Tomi Valkeinen <tomi.valkeinen@ti.com>");
- MODULE_DESCRIPTION("LG.Philips LB035Q02 LCD Panel driver");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/gpu/drm/panel/panel-nec-nl8048hl11.c b/drivers/gpu/drm/panel/panel-nec-nl8048hl11.c
-index 299b217c83e18..71b07ef2a62dd 100644
---- a/drivers/gpu/drm/panel/panel-nec-nl8048hl11.c
-+++ b/drivers/gpu/drm/panel/panel-nec-nl8048hl11.c
-@@ -242,7 +242,7 @@ static struct spi_driver nl8048_driver = {
- 
- module_spi_driver(nl8048_driver);
- 
--MODULE_ALIAS("spi:nec,nl8048hl11");
-+MODULE_ALIAS("spi:nl8048hl11");
- MODULE_AUTHOR("Erik Gilling <konkers@android.com>");
- MODULE_DESCRIPTION("NEC-NL8048HL11 Driver");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/gpu/drm/panel/panel-sharp-ls037v7dw01.c b/drivers/gpu/drm/panel/panel-sharp-ls037v7dw01.c
-index 46cd9a2501298..838d39a263f53 100644
---- a/drivers/gpu/drm/panel/panel-sharp-ls037v7dw01.c
-+++ b/drivers/gpu/drm/panel/panel-sharp-ls037v7dw01.c
-@@ -204,7 +204,7 @@ static int ls037v7dw01_remove(struct platform_device *pdev)
- }
- 
- static const struct of_device_id ls037v7dw01_of_match[] = {
--	{ .compatible = "sharp,ls037v7dw01", },
-+	{ .compatible = "ls037v7dw01", },
- 	{ /* sentinel */ },
- };
- 
-diff --git a/drivers/gpu/drm/panel/panel-sony-acx565akm.c b/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-index 305259b587670..a8af9340f89ee 100644
---- a/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-+++ b/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-@@ -695,7 +695,7 @@ static struct spi_driver acx565akm_driver = {
- 
- module_spi_driver(acx565akm_driver);
- 
--MODULE_ALIAS("spi:sony,acx565akm");
-+MODULE_ALIAS("spi:acx565akm");
- MODULE_AUTHOR("Nokia Corporation");
- MODULE_DESCRIPTION("Sony ACX565AKM LCD Panel Driver");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/gpu/drm/panel/panel-tpo-td028ttec1.c b/drivers/gpu/drm/panel/panel-tpo-td028ttec1.c
-index d7b2e34626efe..3ab66b4d3ea27 100644
---- a/drivers/gpu/drm/panel/panel-tpo-td028ttec1.c
-+++ b/drivers/gpu/drm/panel/panel-tpo-td028ttec1.c
-@@ -375,8 +375,7 @@ static const struct of_device_id td028ttec1_of_match[] = {
- MODULE_DEVICE_TABLE(of, td028ttec1_of_match);
- 
- static const struct spi_device_id td028ttec1_ids[] = {
--	{ "tpo,td028ttec1", 0},
--	{ "toppoly,td028ttec1", 0 },
-+	{ "td028ttec1", 0},
- 	{ /* sentinel */ }
- };
- 
-diff --git a/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c b/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c
-index 84370562910ff..7e6cf0890600c 100644
---- a/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c
-+++ b/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c
-@@ -503,7 +503,7 @@ static struct spi_driver td043mtea1_driver = {
- 
- module_spi_driver(td043mtea1_driver);
- 
--MODULE_ALIAS("spi:tpo,td043mtea1");
-+MODULE_ALIAS("spi:td043mtea1");
- MODULE_AUTHOR("Gražvydas Ignotas <notasas@gmail.com>");
- MODULE_DESCRIPTION("TPO TD043MTEA1 Panel Driver");
- MODULE_LICENSE("GPL");
--- 
-2.20.1
-
+Signed-off-by: Michael Allwright <michael.allwright@ulb.ac.be>
