@@ -2,87 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AAB6CEA93
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 19:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D585CEA98
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 19:28:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728185AbfJGR1s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Oct 2019 13:27:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48288 "EHLO mail.kernel.org"
+        id S1728915AbfJGR2E (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 13:28:04 -0400
+Received: from muru.com ([72.249.23.125]:35738 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727801AbfJGR1s (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 7 Oct 2019 13:27:48 -0400
-Received: from earth.universe (dyndsl-037-138-090-170.ewe-ip-backbone.de [37.138.90.170])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 443372133F;
-        Mon,  7 Oct 2019 17:27:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570469267;
-        bh=ADw94PRMffDcSy7CEAv64e3rw87jHsCySzGRg20pcQE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=r6zyno1esSBXGw5ZGv5usX7wTuhMw11rjdkUi6HARYgQDdaQF7NeVi2MDUg7QGz+K
-         Il1M9hXoL+wnonE7z64MSbtsDFZY6FNHzViBrxLrrvYzYcJzKLwEO0s/qXHtCtTRO2
-         bhhCwlHIrsCn7Uiz+VC8v6n9wA7IToOrJmcl0W0g=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 3E4FA3C0CA1; Mon,  7 Oct 2019 19:27:45 +0200 (CEST)
-Date:   Mon, 7 Oct 2019 19:27:45 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        thierry.reding@gmail.com, sam@ravnborg.org,
-        letux-kernel@openphoenux.org, Tony Lindgren <tony@atomide.com>,
-        Jyri Sarha <jsarha@ti.com>, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 0/5] Fix SPI module alias for panels used by omapdrm
-Message-ID: <20191007172745.e7obunwprgdiclwk@earth.universe>
-References: <20191007170801.27647-1-laurent.pinchart@ideasonboard.com>
+        id S1728079AbfJGR2E (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 7 Oct 2019 13:28:04 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id D92638191;
+        Mon,  7 Oct 2019 17:28:36 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Eyal Reizer <eyalr@ti.com>, Kishon Vijay Abraham I <kishon@ti.com>,
+        Guy Mishol <guym@ti.com>, linux-wireless@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Anders Roxell <anders.roxell@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCHv2] wlcore: fix race for WL1271_FLAG_IRQ_RUNNING
+Date:   Mon,  7 Oct 2019 10:28:00 -0700
+Message-Id: <20191007172800.64249-1-tony@atomide.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6l3anbcfnqxbanzz"
-Content-Disposition: inline
-In-Reply-To: <20191007170801.27647-1-laurent.pinchart@ideasonboard.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+We set WL1271_FLAG_IRQ_RUNNING in the beginning of wlcore_irq(), and test
+for it in wlcore_runtime_resume(). But WL1271_FLAG_IRQ_RUNNING currently
+gets cleared too early by wlcore_irq_locked() before wlcore_irq() is done
+calling it. And this will race against wlcore_runtime_resume() testing it.
 
---6l3anbcfnqxbanzz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Let's set and clear IRQ_RUNNING in wlcore_irq() so wlcore_runtime_resume()
+can rely on it. And let's remove old comments about hardirq, that's no
+longer the case as we're using request_threaded_irq().
 
-Hi,
+This fixes occasional annoying wlcore firmware reboots stat start with
+"wlcore: WARNING ELP wakeup timeout!" followed by a multisecond latency
+when the wlcore firmware gets wrongly rebooted waiting for an ELP wake
+interrupt that won't be coming.
 
-On Mon, Oct 07, 2019 at 08:07:56PM +0300, Laurent Pinchart wrote:
-> This patch series fixes a module alias issue with the five recently
-> added panel drivers used by omapdrm.
+Note that I also suspect some form of this issue was the root cause why
+the wlcore GPIO interrupt has been often configured as a level interrupt
+instead of edge as an attempt to work around the ELP wake timeout errors.
 
-For the whole series:
+Fixes: fa2648a34e73 ("wlcore: Add support for runtime PM")
+Cc: Anders Roxell <anders.roxell@linaro.org>
+Cc: Eyal Reizer <eyalr@ti.com>
+Cc: Guy Mishol <guym@ti.com>
+Cc: John Stultz <john.stultz@linaro.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
 
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Changes since v1:
 
--- Sebastian
+- Add locking around clear_bit like we do elsewhere in the driver
 
---6l3anbcfnqxbanzz
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/net/wireless/ti/wlcore/main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl2bdY0ACgkQ2O7X88g7
-+ppcMw//R+no2w6dsdlDSaOCK/KGfl9/Zag/UlNED/KhLLbD4m9KCs5kfUR2e11S
-BLfqv7I5m0hPIW2/t57YC58pMiZJHR+VwVAgpUwyFRaPzBYh+WLjuGDu/ZhKHwSD
-mreHbqJGFo3lxWKmSRXL9/qsAxdgyt+0Ge4GmqnLEy4mI0UmZBl/C2lOQzJJeJqs
-mbUSBgXeK5MBgsUGX9d4sAEmgCM+SE/tD57cxmNFShA8WJw8+IBDKMvCzXUWOv0Y
-gL5udj/ZiZ124g5iZkcsfuMIl2fzr5xwCJ3VUdxRlYYmJd8+XUlKoI2QAM34+qgs
-GGhqxmh+g2crHHuzJXNN7exwS0v8f+jF61Evo+whanNXOVE531iqMO+EOySxs6HF
-Szuap7KNTrzouANBOiTwqeZBx9jePxyJCCu23pAEP1yoAgSMe2Aj+YmWcMqCjMWU
-zmRvZuF9Nh3jPa+v5VCFKS0ywCEhZME2iOd0ua1A50i/XKRJ35L6e62BUh8yW60l
-CxU58A9YUO2x+nzG3QlvnroBdQIEpjLp3tnhsBC0E7cMicrQ2RncRxgpqw63P201
-+uaIX7j8PXQ4SUwA587026IRWCdXzZepD1Y+nsXUboOtFY6BhZMpRGJf0payP3bT
-Hd9KikLDwiC9rWTJpnVdq7q1M2KBd2EdLIy22X0maaWLY7RKm9Y=
-=WZC1
------END PGP SIGNATURE-----
-
---6l3anbcfnqxbanzz--
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -544,11 +544,6 @@ static int wlcore_irq_locked(struct wl1271 *wl)
+ 	}
+ 
+ 	while (!done && loopcount--) {
+-		/*
+-		 * In order to avoid a race with the hardirq, clear the flag
+-		 * before acknowledging the chip.
+-		 */
+-		clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
+ 		smp_mb__after_atomic();
+ 
+ 		ret = wlcore_fw_status(wl, wl->fw_status);
+@@ -668,7 +663,7 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
+ 		disable_irq_nosync(wl->irq);
+ 		pm_wakeup_event(wl->dev, 0);
+ 		spin_unlock_irqrestore(&wl->wl_lock, flags);
+-		return IRQ_HANDLED;
++		goto out_handled;
+ 	}
+ 	spin_unlock_irqrestore(&wl->wl_lock, flags);
+ 
+@@ -692,6 +687,11 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
+ 
+ 	mutex_unlock(&wl->mutex);
+ 
++out_handled:
++	spin_lock_irqsave(&wl->wl_lock, flags);
++	clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
++	spin_unlock_irqrestore(&wl->wl_lock, flags);
++
+ 	return IRQ_HANDLED;
+ }
+ 
+-- 
+2.23.0
