@@ -2,114 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3AFCCEA22
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 19:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44887CEA5D
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Oct 2019 19:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728083AbfJGRIR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Oct 2019 13:08:17 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:39382 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728796AbfJGRIR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Oct 2019 13:08:17 -0400
-Received: from pendragon.ideasonboard.com (modemcable118.64-20-96.mc.videotron.ca [96.20.64.118])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 522A9B8C;
-        Mon,  7 Oct 2019 19:08:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1570468094;
-        bh=N7ISq7NdXSNBI5n1IAaAmaCNu3Aqe5oOlMG9ryV4jx0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vJihZlHHKearzFDPIQbRJMBmk4dQa77vOgzD9+B3PLSv3J08wgfnUb5n2v6+8+U4f
-         HH2JipujkTzPu1u44nzcb/XxuhwZDF95a4+nWXhf5DLUD9+8KagFqFcAgFi63gOewM
-         z2bF7PxZ1EnXqYbZnrohu9DXDhJy5YlfEKsqkkPM=
-Date:   Mon, 7 Oct 2019 20:08:11 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        id S1728028AbfJGROo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Oct 2019 13:14:44 -0400
+Received: from mail.andi.de1.cc ([85.214.55.253]:36166 "EHLO mail.andi.de1.cc"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727801AbfJGROo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 7 Oct 2019 13:14:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=mm080KtOnLyBqIfHx4O7fkQurN0T478z2w4kEpoDaVc=; b=l9ndA5OiI6LWjL6S22yf+FBvXn
+        hRASRP6kwn3i28/ygtaLOOUtX9K2r7nPWhh0RSWMUS/jQ4iTKiZfigt2U9vBZH+t03HNcNVqX8SMm
+        hWxp3ZFoWYQZZLrRRLKKs2OX3PCGxtnAcxMEmHiNhD53x7wlvrorKR6qR7gKK6mAEmyo=;
+Received: from p200300ccff0a88001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0a:8800:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iHWac-0001u4-JD; Mon, 07 Oct 2019 19:14:33 +0200
+Date:   Mon, 7 Oct 2019 19:14:28 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     thierry.reding@gmail.com, sam@ravnborg.org, airlied@linux.ie,
+        daniel@ffwll.ch, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        omi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Discussions about the Letux Kernel 
         <letux-kernel@openphoenux.org>, Tony Lindgren <tony@atomide.com>,
         Jyri Sarha <jsarha@ti.com>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [Letux-kernel] [PATCH] ARM: omap2plus_defconfig: Fix selected
- panels after generic panel changes
-Message-ID: <20191007170811.GA11781@pendragon.ideasonboard.com>
-References: <20191003165539.50318-1-tony@atomide.com>
- <03ca02c1-2816-17cd-03fd-5b72e5d0ec96@ti.com>
- <39E48EC6-65FE-419B-BBE8-E72CB44B517D@goldelico.com>
- <20191006145348.GD4740@pendragon.ideasonboard.com>
- <20191006223958.67725fdf@aktux>
- <20191007064035.72016c78@aktux>
- <654d00a7-d802-d116-84c4-7c614d0fe272@ti.com>
- <20191007180957.69cf7b55@aktux>
+Subject: Re: [PATCH] drm: panels: fix spi aliases of former omap panels
+Message-ID: <20191007191428.016ddcd4@aktux>
+In-Reply-To: <20191007170446.yotb24s6jhe6nx3r@earth.universe>
+References: <20191007164130.31534-1-andreas@kemnade.info>
+        <20191007170446.yotb24s6jhe6nx3r@earth.universe>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20191007180957.69cf7b55@aktux>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0 (-)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 07, 2019 at 06:09:57PM +0200, Andreas Kemnade wrote:
-> On Mon, 7 Oct 2019 17:29:20 +0300 Tomi Valkeinen wrote:
-> > On 07/10/2019 07:40, Andreas Kemnade wrote:
-> > 
-> >>>> That's really weird, the driver name, the SPI device table and the OF
-> >>>> device table are the same (except for the "omapdss," prefix that we
-> >>>> don't add anymore in omapdss-boot-init.c). Would you be able to
-> >>>> investigate what broke ?
-> >>>>      
-> >>> in earlier times:
-> >>>
-> >>> root@gta04:/sys/bus/spi/devices/spi4.0# cat modalias
-> >>> spi:tpo,td028ttec1
-> >>>
-> >>> now in 5.4-rc1:
-> >>> root@gta04:/sys/bus/spi/devices/spi4.0# cat modalias
-> >>> spi:td028ttec1
-> >>>
-> >>> root@gta04:~# modinfo /lib/modules/5.4.0-rc1-letux+/kernel/drivers/gpu/drm/panel/panel-tpo-td028ttec1.ko
-> >>> filename:       /lib/modules/5.4.0-rc1-letux+/kernel/drivers/gpu/drm/panel/panel-tpo-td028ttec1.ko
-> >>> license:        GPL
-> >>> description:    Toppoly TD028TTEC1 panel driver
-> >>> author:         H. Nikolaus Schaller <hns@goldelico.com>
-> >>> srcversion:     6B3E224BCD3D76253CF361C
-> >>> alias:          of:N*T*Ctoppoly,td028ttec1C*
-> >>> alias:          of:N*T*Ctoppoly,td028ttec1
-> >>> alias:          of:N*T*Ctpo,td028ttec1C*
-> >>> alias:          of:N*T*Ctpo,td028ttec1
-> >>> alias:          spi:toppoly,td028ttec1
-> >>> alias:          spi:tpo,td028ttec1
-> >>> depends:        drm
-> >>> intree:         Y
-> >>> name:           panel_tpo_td028ttec1
-> >>> vermagic:       5.4.0-rc1-letux+ SMP preempt mod_unload ARMv7 p2v8
-> >>>
-> >>> That alias is not in the list.
-> >>>  
-> >> some more research:
-> >> in former times
-> >> of_modalias_node() has stripped the omapdss prefix, result: modalias=spi:tpo,td028ttec1
-> >> now it strips the tpo prefix because there is no omapdss prefix anymore.  
-> > 
-> > I haven't studied this more yet, but yes, I can see of_modalias_node 
-> > stripping the vendor prefix on purpose. I do wonder how this is supposed 
-> > to work, it would make more sense to me to keep the vendor prefix.
-> > 
-> > Is the spi_device_id supposed to be without vendor prefix? With a quick 
-> > grep, this seems to be the case.
->
-> as it is done in drivers/spi/spi.c we have no influence from drm side.
-> So we must live with it. Also checked several drivers, no vendor-prefix
-> there.
+On Mon, 7 Oct 2019 19:04:46 +0200
+Sebastian Reichel <sre@kernel.org> wrote:
 
-I *think* SPI drivers are not supposed to include any prefix. The fix
-would then simply be to strip the prefix from the SPI table (leaving it
-there for the OF table of course). I've submitted a patch series to do
-so.
+> Hi,
+> 
+> On Mon, Oct 07, 2019 at 06:41:30PM +0200, Andreas Kemnade wrote:
+> > When the panels were moved from omap/displays/ to panel/
+> > omapdss prefix was stripped, which cause spi modalias
+> > to not contain the vendor-prefix anymore.
+> > 
+> > so we had e.g. in former times:
+> > compatible=omapdss,tpo,td028ttec1 -> modalias=spi:tpo,td028ttec1
+> > now:
+> > compatible=tpo,td028ttec1 -> modalias=spi:td028ttec1
+> > 
+> > This is consistent with other drivers. Tested the td028ttec.c
+> > only, but the pattern looks the same for the other ones.
+> > 
+> > Fixes: 45f16c82db7e8 ("drm/omap: displays: Remove unused panel drivers")
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---  
+> 
+> Patch looks good to me, but you have one false positive.
+> 
+> > [...]
+> >
+> > diff --git a/drivers/gpu/drm/panel/panel-sharp-ls037v7dw01.c b/drivers/gpu/drm/panel/panel-sharp-ls037v7dw01.c
+> > index 46cd9a2501298..838d39a263f53 100644
+> > --- a/drivers/gpu/drm/panel/panel-sharp-ls037v7dw01.c
+> > +++ b/drivers/gpu/drm/panel/panel-sharp-ls037v7dw01.c
+> > @@ -204,7 +204,7 @@ static int ls037v7dw01_remove(struct platform_device *pdev)
+> >  }
+> >  
+> >  static const struct of_device_id ls037v7dw01_of_match[] = {
+> > -	{ .compatible = "sharp,ls037v7dw01", },
+> > +	{ .compatible = "ls037v7dw01", },
+> >  	{ /* sentinel */ },
+> >  };
+> >    
+> 
+> The DT compatible should have a vendor prefix.
+> 
 
--- 
+oops, sorry, but I it seems that Laurent already has submitted a fix.
+
 Regards,
-
-Laurent Pinchart
+Andreas
