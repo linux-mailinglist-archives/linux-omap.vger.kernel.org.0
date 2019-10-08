@@ -2,94 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50F60CFF7B
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 19:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90792D0193
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 21:55:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726264AbfJHRDE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Oct 2019 13:03:04 -0400
-Received: from muru.com ([72.249.23.125]:36050 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725900AbfJHRDE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 8 Oct 2019 13:03:04 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 50D6E8081;
-        Tue,  8 Oct 2019 17:03:36 +0000 (UTC)
-Date:   Tue, 8 Oct 2019 10:02:59 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Jeroen Hofstee <jhofstee@victronenergy.com>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        Koen Kooi <koen@dominion.thruhere.net>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ARM: dts: am335x-sancloud-bbe: Fix PHY mode for ethernet
-Message-ID: <20191008170259.GI5610@atomide.com>
-References: <20191002095416.19603-1-jhofstee@victronenergy.com>
- <d027ef07-807d-6a7b-2939-b67be4542469@ti.com>
- <436f1712-7dec-db40-d08f-1a3032af3596@victronenergy.com>
- <d85cd860-22a3-6142-7f2d-736a428d7a31@ti.com>
- <20191008142349.GE5610@atomide.com>
- <1f779973-1702-47eb-158f-7000770c435a@victronenergy.com>
- <20191008161416.GG5610@atomide.com>
- <4fa5393d-0b2c-4b8c-128a-81ab05a14a82@victronenergy.com>
- <20191008165154.GH5610@atomide.com>
- <a8a72544-7f30-c896-22e4-7d85bd0b4235@victronenergy.com>
+        id S1730722AbfJHTzY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Oct 2019 15:55:24 -0400
+Received: from mail-ed1-f46.google.com ([209.85.208.46]:45340 "EHLO
+        mail-ed1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730819AbfJHTzX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Oct 2019 15:55:23 -0400
+Received: by mail-ed1-f46.google.com with SMTP id h33so16803459edh.12
+        for <linux-omap@vger.kernel.org>; Tue, 08 Oct 2019 12:55:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=d9t6Rq0RbZ7PXIZmIcLbP2JTBMFny2QBILsKgMXZe9M=;
+        b=aMQQgi7dIXVBnmVMSSMCLgb3oXTzeafbZdgWl2Y7dgh9d3yilS1+9yTnvWoS7+GzUk
+         LWbTYKnbDzuBJ3/U6U4a0Txwis4unkVKDohWYyBjnKYrTLghN7laSYeGp1/FcmznDyEO
+         GS9pgiMN+uT0qCjbihaa5wuvtHOM98vqOW8UVjJ7Cv+EprgLSNS8LJdhrjnJyNqQEN56
+         5sfOyU15h4kpoOXNgzNljIz5N8IZnpl4XHLYJYLCwvTOpHMRDfM3ywlgrk+4Qs+isMtv
+         bwWMXB9P8rpPXCaQx70qpw2S2sG0Q07XznOIe3PPQ9uFVdh7+iWMtRM+rtyrWFblwrYM
+         wXZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=d9t6Rq0RbZ7PXIZmIcLbP2JTBMFny2QBILsKgMXZe9M=;
+        b=cQ99k/qkir/yigpofWDff356wmi7jZkmHGrutQeS1U5tXImmgUBIe457LD3BnbvAs0
+         sZufGid1vAwbzn+M+676J1paEOy5GODvMV37J6VBv0LJNairL9Iagotaynse7oM6GFdc
+         Vvi827uJNc+YQX7T60abQtebvOKZ8vJaWAhqYP/5b9JAbVQHGYbrEZz13Tu/WSEnImUq
+         wwBvaXfLhwEo29ryCK3MNe2G/7wIhg8mJ/Nvhj7enNlpuh523ZHACM1a3yq1hUjAL95p
+         lL0KVDbOQFF1xZ+2tgZVOop7c4hvu11/YGm/Krms5uHyElJGsw0PUQnMx4MguIHdYrZn
+         PJLQ==
+X-Gm-Message-State: APjAAAXe/YiUk/e+HVzwh9m9Mte6ZS8TdGfdTPGWT440N5LyNGdqh8ds
+        ErYtr48VaLbyG7WQCXJnBifeIGSgLabBYlW7TAE=
+X-Google-Smtp-Source: APXvYqxaZfvXk0/G1PfPN40JEbEfue6b7v2Lk/SQWmnUxoxmnZyxXwpPNC4UPIh9mJw4kQ9atMHeHG1Orcb22TWXOSk=
+X-Received: by 2002:a50:c306:: with SMTP id a6mr36339639edb.108.1570564517490;
+ Tue, 08 Oct 2019 12:55:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a8a72544-7f30-c896-22e4-7d85bd0b4235@victronenergy.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Received: by 2002:a17:906:cc89:0:0:0:0 with HTTP; Tue, 8 Oct 2019 12:55:16
+ -0700 (PDT)
+Reply-To: moneygram.1820@outlook.fr
+From:   MONEY GRAM <currency1000000@gmail.com>
+Date:   Tue, 8 Oct 2019 20:55:16 +0100
+Message-ID: <CAPqfnSEO==O6BEtBbcMMZfh3qcY4Bz0qndhCqbcLqZx4DCs44A@mail.gmail.com>
+Subject: HERE IS YOUR MONEY GRAM PAYMENT HAS BEEN SENT TO YOU HERE IS THE M.T.C.N:78393135
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Jeroen Hofstee <jhofstee@victronenergy.com> [191008 17:00]:
-> Hi,
-> 
-> On 10/8/19 6:51 PM, Tony Lindgren wrote:
-> > * Jeroen Hofstee <jhofstee@victronenergy.com> [191008 16:43]:
-> >> Hello Tony,
-> >>
-> >> On 10/8/19 6:14 PM, Tony Lindgren wrote:
-> >>> * Jeroen Hofstee <jhofstee@victronenergy.com> [191008 16:03]:
-> >>>> Hello Tony,
-> >>>>
-> >>>> On 10/8/19 4:23 PM, Tony Lindgren wrote:
-> >>>>> * Grygorii Strashko <grygorii.strashko@ti.com> [191003 02:32]:
-> >>>>>> On 03/10/2019 11:16, Jeroen Hofstee wrote:
-> >>>>>>> Furthermore 4.19 is fine, so there is no need to include it in stable
-> >>>>>>> and have a note to make sure also other patches are required etc.
-> >>>>>> Hence all above patches went in 5.1 it would be correct to mention only
-> >>>>>> 6d4cd041f0af net: phy: at803x: disable delay only for RGMII mode
-> >>>>> Jeroen, can you please send an updated patch with the fixes
-> >>>>> tag changed?
-> >>>>>
-> >>>> For completeness, there is no "Fixes tag" as you mentioned.
-> >>>> The commit only refers to another commit which introduces
-> >>>> a problem.
-> >>> Well please add the fixes tag, that way this will get
-> >>> properly applied to earlier stable kernels too :)
-> >> But 4.19 is fine, this is an issue in 5.1 as in EOL...
-> >> I really don't understand why I should waste time
-> >> to figure out what happened exactly during the 5.1
-> >> release cycle...
-> > Hmm so what's the issue with just adding the fixes tag Grygorii
-> > suggested:
-> >
-> > 6d4cd041f0af ("net: phy: at803x: disable delay only for RGMII mode")
-> >
-> > No need to dig further?
-> 
-> Grygorii doesn't suggest to add a fixes tag, just to change the referenced
-> commit to another. Obviously I would like to understand why another commit
-> should be referenced. And then I should read and parse the response, so there
-> is no special reason, just time...
+HERE IS YOUR MONEY GRAM PAYMENT HAS BEEN SENT TO YOU HERE IS THE
+M.T.C.N:78393135
 
-OK sure. Well once you guys have the commit figured out, let me
-know what to apply. And we know Grygorii is mostly right based
-on his history of comments so best to not ignore that :)
+Attn: Beneficiary,
 
-Cheers,
+This is to inform you that the America Embassy office was instructed
+to transfer your fund $980,000.00 U.S Dollars compensating all the
+SCAM VICTIMS and your email was found as one of the VICTIMS. by
+America security leading team and America representative officers so
+between today the 8th of October till 1ST Of December 2019 you will
+be receiving MONEY GRAM the sum of $6,000 dollars per day. However be informed
+that we have already sent the $6,000 dollars this morning to avoid
+cancellation of your payment, remain the total sum of $980,000.00.
 
-Tony
+You have only six hours to call this office upon the receipt of this
+email the maximum amount you will be receiving per a day starting from
+today's $6,000 and the Money Transfer Control Number of today is
+below.
+
+NOTE; The sent $6,000 is on hold because of the instruction from IMF
+office, they asked us to place it on hold by requesting the (Clean
+Bill Record Certificate) which will cost you $25 in order to fulfill
+all the necessary obligation to avoid any hitches while sending you
+the payment through MONEY GRAM money transfer, the necessary
+obligation I mean here is to obtain the (Clean Bill Record
+Certificate)
+
+Below is the information of today track it in our
+
+websitehttps://moneygarm.com/asp/orderStatus.asp?country=global
+to see is available to pick up by the receiver, but if we didn't here
+from you soon we'll pickup it up from line for security reason to
+avoid hackers stealing the money online.
+
+Money Transfer Control Number M.T.C.N)::78393135
+SENDERS FIRST NAME: John
+SENDERS LAST NAME: Chun
+SENDERS COUNTRY...BENIN REPUBLIC
+TEXT QUESTION: A
+ANSWER: B
+AMOUNT: $6,000
+
+We need the below details from you, to enable us place the payment to
+your name and transfer the fund to you.
+
+(Full Receivers name)...................
+(You're Country)................................
+(Address)......................................
+(Phone NuMBER-...............................
+(You're Age)............................
+(OCCUPATION)..REAL ESTATE..................
+(A Copy of Your ID CARD).SEE ATTACHMENTS.............
+
+HOWEVER YOU HAVE TO PAY $25 FOR THE (Clean Bill Record Certificate)
+AND THAT IS ALL YOU HAVE TO DO ASAP.
+
+The payment will be sending to below information, such as:
+
+Receiver.............. ALAN UDE
+Country................Benin Republic
+Amount: ....................$25
+Question: .....................A
+Answer:................... B
+Sender...............Name:
+MTCN :..............
+
+According to the instruction and order we received from IMF the their
+requested $25 must be made directly to the above info's.
+
+Furthermore you are advised to call us as the instruction was passed
+that within 6hours without hearing from you, Count your payment
+canceled. Number to call is below listed manager director office of
+release order:
+DR.ALAN UDE
+Director MONEY GRAM-Benin
