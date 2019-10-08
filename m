@@ -2,77 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A05CCFC2B
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 16:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF2D7CFC45
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 16:21:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726757AbfJHORE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Oct 2019 10:17:04 -0400
-Received: from muru.com ([72.249.23.125]:35954 "EHLO muru.com"
+        id S1726407AbfJHOV4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Oct 2019 10:21:56 -0400
+Received: from muru.com ([72.249.23.125]:35970 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725795AbfJHORD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 8 Oct 2019 10:17:03 -0400
+        id S1726138AbfJHOV4 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 8 Oct 2019 10:21:56 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 2FF498081;
-        Tue,  8 Oct 2019 14:17:36 +0000 (UTC)
-Date:   Tue, 8 Oct 2019 07:16:59 -0700
+        by muru.com (Postfix) with ESMTPS id 915D88081;
+        Tue,  8 Oct 2019 14:22:29 +0000 (UTC)
+Date:   Tue, 8 Oct 2019 07:21:53 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Graeme Smecher <gsmecher@threespeedlogic.com>
-Cc:     Andrey Smirnov <andrew.smirnov@gmail.com>,
-        linux-omap@vger.kernel.org,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: am3874-iceboard: Fix 'i2c-mux-idle-disconnect'
- usage
-Message-ID: <20191008141659.GC5610@atomide.com>
-References: <20191004014548.29583-1-andrew.smirnov@gmail.com>
- <c40b8414-45a8-575a-c3c8-902ed35e5764@threespeedlogic.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     dri-devel@lists.freedesktop.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Jyri Sarha <jsarha@ti.com>, linux-omap@vger.kernel.org
+Subject: Re: [PATCHv2 7/7] drm/omap: hdmi4: fix use of uninitialized var
+Message-ID: <20191008142153.GD5610@atomide.com>
+References: <20190930103840.18970-1-tomi.valkeinen@ti.com>
+ <20190930103840.18970-8-tomi.valkeinen@ti.com>
+ <20191008141335.GB5610@atomide.com>
+ <ffb498fb-5041-d3e9-2702-879f3d389adf@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c40b8414-45a8-575a-c3c8-902ed35e5764@threespeedlogic.com>
+In-Reply-To: <ffb498fb-5041-d3e9-2702-879f3d389adf@ti.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Graeme Smecher <gsmecher@threespeedlogic.com> [191004 23:53]:
-> Hi Andrey,
-> 
-> On 2019-10-03 6:45 p.m., Andrey Smirnov wrote:
-> > According to
-> > Documentation/devicetree/bindings/i2c/i2c-mux-pca954x.txt,
-> > i2c-mux-idle-disconnect is a property of a parent node since it
-> > pertains to the mux/switch as a whole, so move it there and drop all
-> > of the concurrences in child nodes.
+* Tomi Valkeinen <tomi.valkeinen@ti.com> [191008 14:17]:
+> On 08/10/2019 17:13, Tony Lindgren wrote:
+> > * Tomi Valkeinen <tomi.valkeinen@ti.com> [190930 10:38]:
+> > > If use_mclk is false, mclk_mode is written to a register without
+> > > initialization. This doesn't cause any ill effects as the written value
+> > > is not used when use_mclk is false.
+> > > 
+> > > To fix this, write use_mclk only when use_mclk is true.
 > > 
-> > Fixes: d031773169df ("ARM: dts: Adds device tree file for McGill's IceBoard, based on TI AM3874")
-> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> > Cc: Benoît Cousson <bcousson@baylibre.com>
-> > Cc: Tony Lindgren <tony@atomide.com>
-> > Cc: Graeme Smecher <gsmecher@threespeedlogic.com>
-> > Cc: linux-omap@vger.kernel.org
-> > Cc: devicetree@vger.kernel.org
-> > Cc: linux-kernel@vger.kernel.org
-> > ---
+> > Hey nice catch. Based on a quick test looks like this fixes an
+> > issue where power consumption stays higher after using HDMI.
 > > 
-> > This is purely a drive-by fix, since it concerns the HW I've never
-> > heard of before. However I was working with PCA9548
-> > (vf610-zii-scu4-aib is my HW) and looking at various users in the
-> > kernel, when this code caught my eye. Apologies for the noise if this
-> > fix is somehow bogus.
+> > Would be nice to have merged in the v5.4-rc series:
 > > 
-> > In case that it matters this patch is based on top of 5.4-rc1.
+> > Tested-by: Tony Lindgren <tony@atomide.com>
 > 
-> Thanks! We do have I2C address collisions on downstream bus segments, so
-> keeping these segments isolated is important. I'm surprised this patch
-> was necessary and happy to see it.
-> 
-> Lightly tested on 5.3.
-> 
-> Tested-by: Graeme Smecher <gsmecher@threespeedlogic.com>
+> Really? Ok, well, then it was a good random find =).
 
-Applying into fixes thanks.
+Yeah so it seems :) Earlier I thought there's still some
+clkctrl setting wrong after using HDMI, but did not see
+anything diffing the clkctrl registers before and after
+and gave up.
+
+> I did already push this to drm-misc-next, as I thought it does not have any
+> real effect. I'll check if it's ok to push to drm-misc-fixes too, with Cc
+> stable.
+
+OK great thanks.
 
 Tony
