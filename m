@@ -2,113 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A47CCF220
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 07:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C28CCF37D
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 09:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729489AbfJHFZM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Oct 2019 01:25:12 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:46250 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729440AbfJHFZM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Oct 2019 01:25:12 -0400
+        id S1730057AbfJHHTf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Oct 2019 03:19:35 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:34648 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729740AbfJHHTf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Oct 2019 03:19:35 -0400
 Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x985OoEi012153;
-        Tue, 8 Oct 2019 00:24:50 -0500
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x987JMKp025092;
+        Tue, 8 Oct 2019 02:19:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1570512290;
-        bh=AEmf1HcgRzxwk9rzdGvl+kF7AbL/MwAImYXwpTaFMQM=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=OlkLRrLdFkJP9Wx/IqPxHVjrW3wRzt4dTByNcLKfBx++4Q1RRwambw57HKfVVPygx
-         RI2Ee+BhJm8XN+YPW+dOmpnP3OyGbf4X8ukkuWob2DU/H0VjnoaptSEfHrrwAObhDT
-         7fNC4e65tFZSg2UvL/TjCCU+xt/f201mPs/fDw+0=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x985OowU008055
+        s=ti-com-17Q1; t=1570519162;
+        bh=rCXlC/0Ouxgo3/I2fG4Zti8IrW21Lx+Z4z7M+qCJFmc=;
+        h=From:To:CC:Subject:Date;
+        b=o9wT8pghy4BM4biHgi+UJL2bURwHryzXXllKdr98fzSC/Cto6AvJ0GOtsajfEzyzH
+         vQuaKpy+GOa3x/JGitiHVWzXf+COIa3D/4oI9nKtfCmymLeNL5NeJU3095bwWSPmIk
+         /Q6YVcYLv3IpppfCjGUmrAfiG6+7rLrk+FA0fMW8=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x987JMP2046032
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 8 Oct 2019 00:24:50 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 8 Oct 2019 02:19:22 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 8 Oct
- 2019 00:24:46 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ 2019 02:19:19 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 8 Oct 2019 00:24:48 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x985OkZi122677;
-        Tue, 8 Oct 2019 00:24:47 -0500
-Subject: Re: [PATCH 0/5] Fix SPI module alias for panels used by omapdrm
-To:     Sam Ravnborg <sam@ravnborg.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC:     <dri-devel@lists.freedesktop.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        <thierry.reding@gmail.com>, <letux-kernel@openphoenux.org>,
-        Tony Lindgren <tony@atomide.com>, Jyri Sarha <jsarha@ti.com>,
-        <linux-omap@vger.kernel.org>
-References: <20191007170801.27647-1-laurent.pinchart@ideasonboard.com>
- <20191007172256.GA1956@ravnborg.org>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <c5bac722-89ac-7d17-2a8c-7297ecb4f836@ti.com>
-Date:   Tue, 8 Oct 2019 08:24:38 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ Frontend Transport; Tue, 8 Oct 2019 02:19:19 -0500
+Received: from sokoban.bb.dnainternet.fi (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x987JJj3027770;
+        Tue, 8 Oct 2019 02:19:20 -0500
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <linux-omap@vger.kernel.org>, <ssantosh@kernel.org>
+CC:     <tony@atomide.com>, <s-anna@ti.com>, <p.zabel@pengutronix.de>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCHv7 0/9] soc: ti: add OMAP PRM driver (for reset)
+Date:   Tue, 8 Oct 2019 10:19:04 +0300
+Message-ID: <20191008071913.28740-1-t-kristo@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20191007172256.GA1956@ravnborg.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 07/10/2019 20:22, Sam Ravnborg wrote:
-> Hi Laurent.
-> On Mon, Oct 07, 2019 at 08:07:56PM +0300, Laurent Pinchart wrote:
->> Hello,
->>
->> This patch series fixes a module alias issue with the five recently
->> added panel drivers used by omapdrm.
->>
->> Before those panel drivers, omapdrm had custom drivers for the panels,
->> and prefixed the OF compatible strings with an "omapdss," prefix. The
->> SPI device IDs are constructed by stripping the OF compatible string
->> from the prefix, resulting in the "omapdss," prefix being removed, but
->> the subsequence OF vendor prefix being kept. The SPI drivers thus had
->> modules aliases that contained the vendor prefix.
->>
->> Now that the panels are supported by standard drivers and the "omapdss,"
->> prefix is removed, the SPI device IDs are stripped from the OF vendor
->> prefix. As the new panel drivers copied the module aliases from the
->> omapdrm-specific drivers, they contain the vendor prefix in their SPI
->> module aliases, and are thus not loaded automatically.
->>
->> Fix this by removing the vendor prefix from the SPI modules aliases in
->> the drivers. For consistency reason, the manual module aliases are also
->> moved to use an SPI module table.
-> 
-> Good explanation - thanks.
-> 
->>
->> These patches are based on the drm-misc-fixes branch as they fix v5.4
->> regressions.
->>
->> Laurent Pinchart (5):
->>    drm/panel: lg-lb035q02: Fix SPI alias
->>    drm/panel: nec-nl8048hl11: Fix SPI alias
->>    drm/panel: sony-acx565akm: Fix SPI alias
->>    drm/panel: tpo-td028ttec1: Fix SPI alias
->>    drm/panel: tpo-td043mtea1: Fix SPI alias
-> 
-> Full series is:
-> Acked-by: Sam Ravnborg <sam@ravnborg.org>
-> 
-> I expect someone else to pick them up or that you apply them.
+Hi,
 
-Thanks! I've pushed these to drm-misc-fixes.
+This is just a re-send of v6 on request from Santosh to gather all
+patches in a single clean series.
 
-  Tomi
+Applied Reviewed by tags to patch 1/9 only, (I actually dropped one
+erroneous line from it also, I missed removing the clocks entry from
+the examply so that one is gone; kept the reviewed by tags though)
+and dropped patch 10 from the series (that one should be applied by Tony.)
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+-Tero
+
+
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
