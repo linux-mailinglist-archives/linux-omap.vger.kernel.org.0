@@ -2,52 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D765CFC01
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 16:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1783FCFC16
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 16:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726057AbfJHOJa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Oct 2019 10:09:30 -0400
-Received: from muru.com ([72.249.23.125]:35926 "EHLO muru.com"
+        id S1725839AbfJHONi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Oct 2019 10:13:38 -0400
+Received: from muru.com ([72.249.23.125]:35934 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725853AbfJHOJa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 8 Oct 2019 10:09:30 -0400
+        id S1725834AbfJHONi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 8 Oct 2019 10:13:38 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 222338081;
-        Tue,  8 Oct 2019 14:10:04 +0000 (UTC)
-Date:   Tue, 8 Oct 2019 07:09:27 -0700
+        by muru.com (Postfix) with ESMTPS id AA7CE8081;
+        Tue,  8 Oct 2019 14:14:11 +0000 (UTC)
+Date:   Tue, 8 Oct 2019 07:13:35 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 0/3] bus: ti-sysc: fix reset sequencing
-Message-ID: <20191008140927.GA5610@atomide.com>
-References: <20191007122931.18668-1-t-kristo@ti.com>
- <20191007163807.GU5610@atomide.com>
- <32031606-23da-2e0b-6d75-7225a082eb6b@ti.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     dri-devel@lists.freedesktop.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Jyri Sarha <jsarha@ti.com>, linux-omap@vger.kernel.org
+Subject: Re: [PATCHv2 7/7] drm/omap: hdmi4: fix use of uninitialized var
+Message-ID: <20191008141335.GB5610@atomide.com>
+References: <20190930103840.18970-1-tomi.valkeinen@ti.com>
+ <20190930103840.18970-8-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <32031606-23da-2e0b-6d75-7225a082eb6b@ti.com>
+In-Reply-To: <20190930103840.18970-8-tomi.valkeinen@ti.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tero Kristo <t-kristo@ti.com> [191007 19:00]:
-> On 07/10/2019 19:38, Tony Lindgren wrote:
-> > * Tero Kristo <t-kristo@ti.com> [191007 12:30]:
-> > > Hi,
-> > > 
-> > > These three patches make sure that IOMMU/remoteprocs work across
-> > > all devices with the latest OMAP PRM series for reset support [1].
-> > > The last dangling issues were caused by the removal of the hardlink
-> > > between the reset + clock drivers.
-> > 
-> > OK. I presume these are safe to wait for v5.5 since we don't
-> > have the rstctrl driver yet?
+* Tomi Valkeinen <tomi.valkeinen@ti.com> [190930 10:38]:
+> If use_mclk is false, mclk_mode is written to a register without
+> initialization. This doesn't cause any ill effects as the written value
+> is not used when use_mclk is false.
 > 
-> Yeah, they are safe to wait.
+> To fix this, write use_mclk only when use_mclk is true.
 
-OK applying into omap-for-v5.5/ti-sysc thanks.
+Hey nice catch. Based on a quick test looks like this fixes an
+issue where power consumption stays higher after using HDMI.
 
-Tony
+Would be nice to have merged in the v5.4-rc series:
+
+Tested-by: Tony Lindgren <tony@atomide.com>
