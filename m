@@ -2,32 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33390CF9D8
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 14:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C29CF9E8
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Oct 2019 14:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730249AbfJHMdr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Oct 2019 08:33:47 -0400
-Received: from imap1.codethink.co.uk ([176.9.8.82]:54879 "EHLO
+        id S1730827AbfJHMfD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Oct 2019 08:35:03 -0400
+Received: from imap1.codethink.co.uk ([176.9.8.82]:55121 "EHLO
         imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730199AbfJHMdr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Oct 2019 08:33:47 -0400
+        with ESMTP id S1730608AbfJHMfD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Oct 2019 08:35:03 -0400
 Received: from [167.98.27.226] (helo=rainbowdash.codethink.co.uk)
         by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
-        id 1iHogT-0000vj-CY; Tue, 08 Oct 2019 13:33:45 +0100
+        id 1iHoha-00013P-Ne; Tue, 08 Oct 2019 13:34:54 +0100
 Received: from ben by rainbowdash.codethink.co.uk with local (Exim 4.92.2)
         (envelope-from <ben@rainbowdash.codethink.co.uk>)
-        id 1iHogS-0000Q4-La; Tue, 08 Oct 2019 13:33:44 +0100
+        id 1iHohZ-0000Rc-VG; Tue, 08 Oct 2019 13:34:53 +0100
 From:   Ben Dooks <ben.dooks@codethink.co.uk>
-To:     linux-arm-kernel@lists.infraread.org
+To:     linux-arm-kernel@lists.infradead.org
 Cc:     linux-kernel@lists.codethink.co.uk,
         Ben Dooks <ben.dooks@codethink.co.uk>,
-        linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 07/11] ARM: OMAP2+: prm44xx: make prm_{save,restore}_context static
-Date:   Tue,  8 Oct 2019 13:33:37 +0100
-Message-Id: <20191008123341.1551-7-ben.dooks@codethink.co.uk>
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Subject: [PATCH 06/11] ARM: OMAP2+: do not export am43xx_control functions
+Date:   Tue,  8 Oct 2019 13:34:48 +0100
+Message-Id: <20191008123453.1651-6-ben.dooks@codethink.co.uk>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191008123341.1551-1-ben.dooks@codethink.co.uk>
-References: <20191008123341.1551-1-ben.dooks@codethink.co.uk>
+In-Reply-To: <20191008123453.1651-1-ben.dooks@codethink.co.uk>
+References: <20191008123453.1651-1-ben.dooks@codethink.co.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
@@ -35,42 +35,42 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The prm_{save,restore}_context functions are not exported
-so make them static to avoid the following warnings:
+Do not export am43xx_control_{save,restore}_context to avoid
+the foloowing warnings:
 
-arch/arm/mach-omap2/prm44xx.c:748:6: warning: symbol 'prm_save_context' was not declared. Should it be static?
-arch/arm/mach-omap2/prm44xx.c:759:6: warning: symbol 'prm_restore_context' was not declared. Should it be static?
+arch/arm/mach-omap2/control.c:687:6: warning: symbol 'am43xx_control_save_context' was not declared. Should it be static?
+arch/arm/mach-omap2/control.c:701:6: warning: symbol 'am43xx_control_restore_context' was not declared. Should it be static?
 
 Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
 ---
-Cc: linux-omap@vger.kernel.org
 Cc: Tony Lindgren <tony@atomide.com>
+Cc: linux-omap@vger.kernel.org
 ---
- arch/arm/mach-omap2/prm44xx.c | 4 ++--
+ arch/arm/mach-omap2/control.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/prm44xx.c b/arch/arm/mach-omap2/prm44xx.c
-index 1d9346f2a4ae..25093c1e5b9a 100644
---- a/arch/arm/mach-omap2/prm44xx.c
-+++ b/arch/arm/mach-omap2/prm44xx.c
-@@ -745,7 +745,7 @@ struct pwrdm_ops omap4_pwrdm_operations = {
- 
- static int omap44xx_prm_late_init(void);
- 
--void prm_save_context(void)
-+static void prm_save_context(void)
+diff --git a/arch/arm/mach-omap2/control.c b/arch/arm/mach-omap2/control.c
+index c84b5e260617..73338cf80d76 100644
+--- a/arch/arm/mach-omap2/control.c
++++ b/arch/arm/mach-omap2/control.c
+@@ -684,7 +684,7 @@ static u32 am33xx_control_vals[ARRAY_SIZE(am43xx_control_reg_offsets)];
+  *
+  * Save the wkup domain registers
+  */
+-void am43xx_control_save_context(void)
++static void am43xx_control_save_context(void)
  {
- 	omap_prm_context.irq_enable =
- 			omap4_prm_read_inst_reg(AM43XX_PRM_OCP_SOCKET_INST,
-@@ -756,7 +756,7 @@ void prm_save_context(void)
- 						omap4_prcm_irq_setup.pm_ctrl);
- }
+ 	int i;
  
--void prm_restore_context(void)
-+static void prm_restore_context(void)
+@@ -698,7 +698,7 @@ void am43xx_control_save_context(void)
+  *
+  * Restore the wkup domain registers
+  */
+-void am43xx_control_restore_context(void)
++static void am43xx_control_restore_context(void)
  {
- 	omap4_prm_write_inst_reg(omap_prm_context.irq_enable,
- 				 OMAP4430_PRM_OCP_SOCKET_INST,
+ 	int i;
+ 
 -- 
 2.23.0
 
