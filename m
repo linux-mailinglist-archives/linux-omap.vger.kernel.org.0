@@ -2,68 +2,333 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60AFED1973
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 22:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B058D1995
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 22:34:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729865AbfJIUNR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Oct 2019 16:13:17 -0400
-Received: from muru.com ([72.249.23.125]:36368 "EHLO muru.com"
+        id S1730955AbfJIUeF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Oct 2019 16:34:05 -0400
+Received: from muru.com ([72.249.23.125]:36400 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729535AbfJIUNR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Oct 2019 16:13:17 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id CA4D38140;
-        Wed,  9 Oct 2019 20:13:50 +0000 (UTC)
-Date:   Wed, 9 Oct 2019 13:13:14 -0700
+        id S1728804AbfJIUeF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 9 Oct 2019 16:34:05 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 293AB8140;
+        Wed,  9 Oct 2019 20:34:37 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>
-Subject: Re: [PATCH] ARM: dts: omap3.dtsi: Fix AES and SHA Engines
-Message-ID: <20191009201314.GP5610@atomide.com>
-References: <20190925171444.9904-1-aford173@gmail.com>
- <CAHCN7xL6OXkWxY1r=ALhHpufDan6AsWkoRkv9JGST52qFJsNCQ@mail.gmail.com>
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Merlijn Wajer <merlijn@wizzup.org>
+Subject: [PATCH] power: supply: cpcap-charger: Limit voltage to 4.2V for battery
+Date:   Wed,  9 Oct 2019 13:33:55 -0700
+Message-Id: <20191009203355.5622-1-tony@atomide.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHCN7xL6OXkWxY1r=ALhHpufDan6AsWkoRkv9JGST52qFJsNCQ@mail.gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Adam Ford <aford173@gmail.com> [191009 18:56]:
-> On Wed, Sep 25, 2019 at 12:14 PM Adam Ford <aford173@gmail.com> wrote:
-> >
-> > The AES and SHA engines for the OMAP3 are currently not functional.
-> > When the stopped working is unknown, but we have a regression.
-> >
-> > This patch uses the ti,sysc-omap2 to address the issue and enables
-> > to the AES and SHA engines on the DM3730 and OMAP3530 to work once
-> > again.
-> >
-> > Signed-off-by: Adam Ford <aford173@gmail.com>
-> 
-> Tony,
-> 
-> Any chance these could get review and/or pushed for 5.4 since they
-> used to work and now they don't.  I didn't do a bisect, so I didn't
-> add a 'fixes' note, but this patch seems to fix a regression.
+There have been some cases of droid4 battery bulging that seem to be
+related to being left connected to the charger for several weeks.
 
-Well let's rather tag them with fixes tag and that way they get
-merged to stable kernels when ready.
+It is suspected that the 4.35V charge voltage configured for the battery
+is too much in the long run, so lets limit the charge voltage to 4.2V.
+It could also be that the batteries are just getting old.
 
-I'd rather not hastily start adding devices hastily during the -rc
-cycle as by the time we get there with few weeks in next we're
-already too close to the merge window.
+We don't really want to just change the charge voltage to 4.2V as Android
+may have charged the battery to 3.51.V as pointed out by Pavel Machek.
 
-And my guess is that this stuff has been broken for many years
-and nobody cared until now.
+To add checks for battery voltage, the driver needs to understand the
+voltage it's charging at, and also needs to better understand it's
+charger state. Right now it only understands connect and disconnect,
+while now we need to know also a connected state but not charging.
 
-A fixes tag would be good to know though.. And maybe we can get them
-working with hwmod data for v5.4-rc cycle with just a minimal change?
+So let's add better charger state handling with help of chrgcurr2 interrupt
+for detecting charge full and retry, and add a check for battery voltage
+before we start charging. And then we finally can lower the charge voltage
+to 4.2V.
 
-Regards,
+Note that we've been using the same register values as the Android distros
+on droid4, so it is suspected that the same problem also exists in Android.
 
-Tony
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Rob Herring <robh+dt@kernel.org>
+Reported-by: Merlijn Wajer <merlijn@wizzup.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+
+Sorry for dragging my feet on this, here's what I think we should apply
+as a fix. It's a bit intrusive but gets us where we want to be for using
+4.2V charge voltage.
+
+This is against v5.3 so it can be easily picked for earlier kernels as
+needed. If no changes needed, this is best applied on v5.3 and then merged
+into v5.4-rc based branch as this will cause a minor merge conflict with
+v5.4-rc because of 7f7378618b41 ("power: supply: cpcap-charger: Enable vbus
+boost voltage").
+
+---
+ .../bindings/power/supply/cpcap-charger.txt   |   9 +-
+ .../arm/boot/dts/motorola-cpcap-mapphone.dtsi |   6 +-
+ drivers/power/supply/cpcap-charger.c          | 132 +++++++++++++++++-
+ 3 files changed, 140 insertions(+), 7 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/power/supply/cpcap-charger.txt b/Documentation/devicetree/bindings/power/supply/cpcap-charger.txt
+--- a/Documentation/devicetree/bindings/power/supply/cpcap-charger.txt
++++ b/Documentation/devicetree/bindings/power/supply/cpcap-charger.txt
+@@ -5,7 +5,8 @@ Required properties:
+ - interrupts: Interrupt specifier for each name in interrupt-names
+ - interrupt-names: Should contain the following entries:
+ 		   "chrg_det", "rvrs_chrg", "chrg_se1b", "se0conn",
+-		   "rvrs_mode", "chrgcurr1", "vbusvld", "battdetb"
++		   "rvrs_mode", "chrgcurr2", "chrgcurr1", "vbusvld",
++		   "battdetb"
+ - io-channels: IIO ADC channel specifier for each name in io-channel-names
+ - io-channel-names: Should contain the following entries:
+ 		    "battdetb", "battp", "vbus", "chg_isense", "batti"
+@@ -21,11 +22,13 @@ cpcap_charger: charger {
+ 	compatible = "motorola,mapphone-cpcap-charger";
+ 	interrupts-extended = <
+ 		&cpcap 13 0 &cpcap 12 0 &cpcap 29 0 &cpcap 28 0
+-		&cpcap 22 0 &cpcap 20 0 &cpcap 19 0 &cpcap 54 0
++		&cpcap 22 0 &cpcap 21 0 &cpcap 20 0 &cpcap 19 0
++		&cpcap 54 0
+ 	>;
+ 	interrupt-names =
+ 		"chrg_det", "rvrs_chrg", "chrg_se1b", "se0conn",
+-		"rvrs_mode", "chrgcurr1", "vbusvld", "battdetb";
++		"rvrs_mode", "chrgcurr2", "chrgcurr1", "vbusvld",
++		"battdetb";
+ 	mode-gpios = <&gpio3 29 GPIO_ACTIVE_LOW
+ 		      &gpio3 23 GPIO_ACTIVE_LOW>;
+ 	io-channels = <&cpcap_adc 0 &cpcap_adc 1
+diff --git a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
+--- a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
++++ b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
+@@ -43,11 +43,13 @@
+ 			compatible = "motorola,mapphone-cpcap-charger";
+ 			interrupts-extended = <
+ 				&cpcap 13 0 &cpcap 12 0 &cpcap 29 0 &cpcap 28 0
+-				&cpcap 22 0 &cpcap 20 0 &cpcap 19 0 &cpcap 54 0
++				&cpcap 22 0 &cpcap 21 0 &cpcap 20 0 &cpcap 19 0
++				&cpcap 54 0
+ 			>;
+ 			interrupt-names =
+ 				"chrg_det", "rvrs_chrg", "chrg_se1b", "se0conn",
+-				"rvrs_mode", "chrgcurr1", "vbusvld", "battdetb";
++				"rvrs_mode", "chrgcurr2", "chrgcurr1", "vbusvld",
++				"battdetb";
+ 			mode-gpios = <&gpio3 29 GPIO_ACTIVE_LOW
+ 				      &gpio3 23 GPIO_ACTIVE_LOW>;
+ 			io-channels = <&cpcap_adc 0 &cpcap_adc 1
+diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+--- a/drivers/power/supply/cpcap-charger.c
++++ b/drivers/power/supply/cpcap-charger.c
+@@ -117,6 +117,13 @@ enum {
+ 	CPCAP_CHARGER_IIO_NR,
+ };
+ 
++enum {
++	CPCAP_CHARGER_DISCONNECTED,
++	CPCAP_CHARGER_DETECTING,
++	CPCAP_CHARGER_CHARGING,
++	CPCAP_CHARGER_DONE,
++};
++
+ struct cpcap_charger_ddata {
+ 	struct device *dev;
+ 	struct regmap *reg;
+@@ -134,6 +141,8 @@ struct cpcap_charger_ddata {
+ 	atomic_t active;
+ 
+ 	int status;
++	int state;
++	int voltage;
+ };
+ 
+ struct cpcap_interrupt_desc {
+@@ -149,6 +158,7 @@ struct cpcap_charger_ints_state {
+ 
+ 	bool chrg_se1b;
+ 	bool rvrs_mode;
++	bool chrgcurr2;
+ 	bool chrgcurr1;
+ 	bool vbusvld;
+ 
+@@ -406,6 +416,7 @@ static int cpcap_charger_get_ints_state(struct cpcap_charger_ddata *ddata,
+ 
+ 	s->chrg_se1b = val & BIT(13);
+ 	s->rvrs_mode = val & BIT(6);
++	s->chrgcurr2 = val & BIT(5);
+ 	s->chrgcurr1 = val & BIT(4);
+ 	s->vbusvld = val & BIT(3);
+ 
+@@ -418,6 +429,79 @@ static int cpcap_charger_get_ints_state(struct cpcap_charger_ddata *ddata,
+ 	return 0;
+ }
+ 
++static void cpcap_charger_update_state(struct cpcap_charger_ddata *ddata,
++				       int state)
++{
++	const char *status;
++
++	if (state > CPCAP_CHARGER_DONE) {
++		dev_warn(ddata->dev, "unknown state: %i\n", state);
++
++		return;
++	}
++
++	ddata->state = state;
++
++	switch (state) {
++	case CPCAP_CHARGER_DISCONNECTED:
++		status = "DISCONNECTED";
++		break;
++	case CPCAP_CHARGER_DETECTING:
++		status = "DETECTING";
++		break;
++	case CPCAP_CHARGER_CHARGING:
++		status = "CHARGING";
++		break;
++	case CPCAP_CHARGER_DONE:
++		status = "DONE";
++		break;
++	default:
++		return;
++	}
++
++	dev_dbg(ddata->dev, "state: %s\n", status);
++}
++
++int cpcap_charger_voltage_to_regval(int voltage)
++{
++	int offset;
++
++	switch (voltage) {
++	case 0 ... 4100000 - 1:
++		return 0;
++	case 4100000 ... 4200000 - 1:
++		offset = 1;
++		break;
++	case 4200000 ... 4300000 - 1:
++		offset = 0;
++		break;
++	case 4300000 ... 4380000 - 1:
++		offset = -1;
++		break;
++	case 4380000 ... 4440000:
++		offset = -2;
++		break;
++	default:
++		return 0;
++	}
++
++	return ((voltage - 4100000) / 20000) + offset;
++}
++
++static void cpcap_charger_disconnect(struct cpcap_charger_ddata *ddata,
++				     int state, unsigned long delay)
++{
++	int error;
++
++	error = cpcap_charger_set_state(ddata, 0, 0, 0);
++	if (error)
++		return;
++
++	cpcap_charger_update_state(ddata, state);
++	power_supply_changed(ddata->usb);
++	schedule_delayed_work(&ddata->detect_work, delay);
++}
++
+ static void cpcap_usb_detect(struct work_struct *work)
+ {
+ 	struct cpcap_charger_ddata *ddata;
+@@ -431,23 +515,66 @@ static void cpcap_usb_detect(struct work_struct *work)
+ 	if (error)
+ 		return;
+ 
++	/* Just init the state if a charger is connected with no chrg_det set */
++	if (!s.chrg_det && s.chrgcurr1 && s.vbusvld) {
++		cpcap_charger_update_state(ddata, CPCAP_CHARGER_DETECTING);
++
++		return;
++	}
++
++	/*
++	 * If battery voltage is higher than charge voltage, it may have been
++	 * charged to 3.51V by Android. Try again in 10 minutes.
++	 */
++	if (cpcap_charger_get_charge_voltage(ddata) > ddata->voltage) {
++		cpcap_charger_disconnect(ddata, CPCAP_CHARGER_DETECTING,
++					 HZ * 60 * 10);
++
++		return;
++	}
++
++	/* Throttle chrgcurr2 interrupt for charger done and retry */
++	switch (ddata->state) {
++	case CPCAP_CHARGER_CHARGING:
++		if (s.chrgcurr2)
++			break;
++		if (s.chrgcurr1 && s.vbusvld) {
++			cpcap_charger_disconnect(ddata, CPCAP_CHARGER_DONE,
++						 HZ * 5);
++			return;
++		}
++		break;
++	case CPCAP_CHARGER_DONE:
++		if (!s.chrgcurr2)
++			break;
++		cpcap_charger_disconnect(ddata, CPCAP_CHARGER_DETECTING,
++					 HZ * 5);
++		return;
++	default:
++		break;
++	}
++
+ 	if (cpcap_charger_vbus_valid(ddata) && s.chrgcurr1) {
+ 		int max_current;
++		int vchrg;
+ 
+ 		if (cpcap_charger_battery_found(ddata))
+ 			max_current = CPCAP_REG_CRM_ICHRG_1A596;
+ 		else
+ 			max_current = CPCAP_REG_CRM_ICHRG_0A532;
+ 
++		vchrg = cpcap_charger_voltage_to_regval(ddata->voltage);
+ 		error = cpcap_charger_set_state(ddata,
+-						CPCAP_REG_CRM_VCHRG_4V35,
++						CPCAP_REG_CRM_VCHRG(vchrg),
+ 						max_current, 0);
+ 		if (error)
+ 			goto out_err;
++		cpcap_charger_update_state(ddata, CPCAP_CHARGER_CHARGING);
+ 	} else {
+ 		error = cpcap_charger_set_state(ddata, 0, 0, 0);
+ 		if (error)
+ 			goto out_err;
++		cpcap_charger_update_state(ddata, CPCAP_CHARGER_DISCONNECTED);
+ 	}
+ 
+ 	power_supply_changed(ddata->usb);
+@@ -507,7 +634,7 @@ static const char * const cpcap_charger_irqs[] = {
+ 	"chrg_det", "rvrs_chrg",
+ 
+ 	/* REG_INT1 */
+-	"chrg_se1b", "se0conn", "rvrs_mode", "chrgcurr1", "vbusvld",
++	"chrg_se1b", "se0conn", "rvrs_mode", "chrgcurr2", "chrgcurr1", "vbusvld",
+ 
+ 	/* REG_INT_3 */
+ 	"battdetb",
+@@ -608,6 +735,7 @@ static int cpcap_charger_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	ddata->dev = &pdev->dev;
++	ddata->voltage = 4200000;
+ 
+ 	ddata->reg = dev_get_regmap(ddata->dev->parent, NULL);
+ 	if (!ddata->reg)
+-- 
+2.23.0
