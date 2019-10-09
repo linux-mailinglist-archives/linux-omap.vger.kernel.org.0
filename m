@@ -2,80 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0A37D168B
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 19:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E096D172B
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 19:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732403AbfJIRas (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Oct 2019 13:30:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48592 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732126AbfJIRYH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Oct 2019 13:24:07 -0400
-Received: from sasha-vm.mshome.net (unknown [167.220.2.234])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 12FDD21D71;
-        Wed,  9 Oct 2019 17:24:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570641847;
-        bh=2dUNRIy0dla7Y0wuoEdvjGO01rJ2UMAR+njUmoJQ62I=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WHn8Jzf++VBGK54uQy0ZSE2C9A5VRs0CVDVYOZL57ETZSTOuRRWh3Xb/B7G1FQvRm
-         uqZ5/kc3a5HGD0Rm4iQgo6+UlzhYaxZ6ejGhP9DfmSSsQ8AvNKrqjM11a//hTl+ZDH
-         v90oyhHrZGo6PupFQwScr3Zqf9t+JLS0mhGpgzDA=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 11/26] ARM: dts: am4372: Set memory bandwidth limit for DISPC
-Date:   Wed,  9 Oct 2019 13:05:43 -0400
-Message-Id: <20191009170558.32517-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191009170558.32517-1-sashal@kernel.org>
-References: <20191009170558.32517-1-sashal@kernel.org>
+        id S1728804AbfJIRx7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Oct 2019 13:53:59 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:49128 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729865AbfJIRx7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Oct 2019 13:53:59 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x99Hrttj032259;
+        Wed, 9 Oct 2019 12:53:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1570643635;
+        bh=FcFxGHNZSeZ2QDi/0mIGHWN9xxGBNaup5w8sjlaEJEs=;
+        h=From:To:CC:Subject:Date;
+        b=UykJLdorJQLt8kkFH7UDLvWEjXzLz7Nsb3+yYK7Yxwe0kpG2U0IZ52W7j+Cw+t2Rq
+         xsMQYw42HZd7v/NVfs/vo+rEemZbFTJ4vGIVjZetLtVD0b8gj4GKkm9eibSeeByt30
+         4KahrnRUsZuPoc7oKB8TFICuLIlX0h0el41RzZIo=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x99HrtxP047240;
+        Wed, 9 Oct 2019 12:53:55 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 9 Oct
+ 2019 12:53:54 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 9 Oct 2019 12:53:54 -0500
+Received: from uda0869644b.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x99Hrsh8069742;
+        Wed, 9 Oct 2019 12:53:54 -0500
+From:   Benoit Parrot <bparrot@ti.com>
+To:     Tony Lindgren <tony@atomide.com>, Tero Kristo <t-kristo@ti.com>
+CC:     Rob Herring <robh+dt@kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-media@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Benoit Parrot <bparrot@ti.com>
+Subject: [Patch 0/3] ARM: dts: dra7: add vpe nodes 
+Date:   Wed, 9 Oct 2019 12:56:25 -0500
+Message-ID: <20191009175628.20570-1-bparrot@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+This patch series adds the needed clkctrl and ty-sysc nodes for VPE module.
+We also document the VPE DT bindings.
 
-[ Upstream commit f90ec6cdf674248dcad85bf9af6e064bf472b841 ]
+Benoit Parrot (3):
+  dt-bindings: media: ti-vpe: Document VPE driver
+  ARM: dts: dra7: add vpe clkctrl node
+  ARM: dts: dra7: Add ti-sysc node for VPE
 
-Set memory bandwidth limit to filter out resolutions above 720p@60Hz to
-avoid underflow errors due to the bandwidth needs of higher resolutions.
+ .../devicetree/bindings/media/ti-vpe.txt      | 48 +++++++++++++++++++
+ MAINTAINERS                                   |  1 +
+ arch/arm/boot/dts/dra7-l4.dtsi                | 30 ++++++++++--
+ arch/arm/boot/dts/dra7xx-clocks.dtsi          | 18 ++++++-
+ drivers/clk/ti/clk-7xx.c                      |  6 +++
+ include/dt-bindings/clock/dra7.h              | 10 ++++
+ 6 files changed, 108 insertions(+), 5 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/media/ti-vpe.txt
 
-am43xx can not provide enough bandwidth to DISPC to correctly handle
-'high' resolutions.
-
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/boot/dts/am4372.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
-index d4b7c59eec685..cf1e4f747242f 100644
---- a/arch/arm/boot/dts/am4372.dtsi
-+++ b/arch/arm/boot/dts/am4372.dtsi
-@@ -1142,6 +1142,8 @@
- 				ti,hwmods = "dss_dispc";
- 				clocks = <&disp_clk>;
- 				clock-names = "fck";
-+
-+				max-memory-bandwidth = <230000000>;
- 			};
- 
- 			rfbi: rfbi@4832a800 {
 -- 
-2.20.1
+2.17.1
 
