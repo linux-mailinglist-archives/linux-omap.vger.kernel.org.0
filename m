@@ -2,35 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB53D16CD
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 19:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CA6CD16C0
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 19:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732155AbfJIRcf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Oct 2019 13:32:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47978 "EHLO mail.kernel.org"
+        id S1732035AbfJIRX6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Oct 2019 13:23:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47988 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731977AbfJIRXz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Oct 2019 13:23:55 -0400
+        id S1732004AbfJIRX5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 9 Oct 2019 13:23:57 -0400
 Received: from sasha-vm.mshome.net (unknown [167.220.2.234])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C477B21929;
-        Wed,  9 Oct 2019 17:23:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 47C3E21929;
+        Wed,  9 Oct 2019 17:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570641834;
-        bh=QSwVlSXf04HQkDaO/JdeqF0RcKB3LgXn1tgaXirBcI8=;
+        s=default; t=1570641837;
+        bh=fZWWucbpLxJGkKOUSdJkJb/oxZDR/zbWPQ//eAJTko8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j5X/i6n80Nk2A8PebYqGQcXUtmBYshjg/zYPNjt7hj7pruWCB4teGaUCDicVEfROp
-         HIvUiXFkLfSsphCAMQFxYKYngAZMU7MpAd310964ojGt8KiTALU1lW3IsIt+/tA3Aw
-         qNoabuBQJiItNXMs+4pOSHqavTQ1BBOkzpv68NdM=
+        b=BUJ5AgSlAze/wY3vUaiHBv3XQloBGFWhzZh9EDWLCV8CpmVNOUjTOjOdLrAclts0i
+         w2YXsoGcCVAgVoc6ByTKV8JLHQssZvXJjEBXcm2TJUG6fN2u8C5qhzNcp207lU9iuY
+         owJj0G05hBD4XDpWymIjVegQF3pjkeFN0yD/JEEI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, Sasha Levin <sashal@kernel.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 05/68] ARM: dts: Fix wrong clocks for dra7 mcasp
-Date:   Wed,  9 Oct 2019 13:04:44 -0400
-Message-Id: <20191009170547.32204-5-sashal@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>, Suman Anna <s-anna@ti.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.3 14/68] ARM: dts: Fix gpio0 flags for am335x-icev2
+Date:   Wed,  9 Oct 2019 13:04:53 -0400
+Message-Id: <20191009170547.32204-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191009170547.32204-1-sashal@kernel.org>
 References: <20191009170547.32204-1-sashal@kernel.org>
@@ -45,190 +46,52 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 2d3c8ba3cffa00f76bedb713c8c2126c82d8cd13 ]
+[ Upstream commit 4ef5d76b453908f21341e661a9b6f96862f6f589 ]
 
-The ahclkr clkctrl clock bit 28 only exists for mcasp 1 and 2 on dra7.
-This causes the following warning on beagle-x15:
+The ti,no-idle-on-init and ti,no-reset-on-init flags need to be at
+the interconnect target module level for the modules that have it
+defined. Otherwise we get the following warnings:
 
-ti-sysc 48468000.target-module: could not add child clock ahclkr: -19
+dts flag should be at module level for ti,no-idle-on-init
+dts flag should be at module level for ti,no-reset-on-init
 
-Also the mcasp clkctrl clock bits are wrong:
-
-For mcasp1 and 2 we have four clocks at bits 28, 24, 22 and 0:
-
-bit 28 is ahclkr
-bit 24 is ahclkx
-bit 22 is auxclk
-bit 0 is fck
-
-For mcasp3 to 8 we have three clocks at bits 24, 22 and 0.
-
-bit 24 is ahclkx
-bit 22 is auxclk
-bit 0 is fck
-
-We do not have currently mapped auxclk at bit 22 for the drivers, that can
-be added if needed.
-
-Fixes: 5241ccbf2819 ("ARM: dts: Add missing ranges for dra7 mcasp l3 ports")
-Cc: Suman Anna <s-anna@ti.com>
-Cc: Tero Kristo <t-kristo@ti.com>
+Fixes: 87fc89ced3a7 ("ARM: dts: am335x: Move l4 child devices to probe them with ti-sysc")
+Cc: Lokesh Vutla <lokeshvutla@ti.com>
+Reported-by: Suman Anna <s-anna@ti.com>
+Reviewed-by: Lokesh Vutla <lokeshvutla@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/dra7-l4.dtsi | 48 +++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 27 deletions(-)
+ arch/arm/boot/dts/am335x-icev2.dts | 2 +-
+ arch/arm/boot/dts/am33xx-l4.dtsi   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
-index 21e5914fdd620..099d6fe2a57ad 100644
---- a/arch/arm/boot/dts/dra7-l4.dtsi
-+++ b/arch/arm/boot/dts/dra7-l4.dtsi
-@@ -2762,7 +2762,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 129 1>, <&edma_xbar 128 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 22>,
-+				clocks = <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 0>,
- 					 <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 24>,
- 					 <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 28>;
- 				clock-names = "fck", "ahclkx", "ahclkr";
-@@ -2799,8 +2799,8 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 131 1>, <&edma_xbar 130 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP2_CLKCTRL 22>,
--					 <&l4per2_clkctrl DRA7_L4PER2_MCASP2_CLKCTRL 24>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP2_CLKCTRL 0>,
-+					 <&ipu_clkctrl DRA7_IPU_MCASP1_CLKCTRL 24>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP2_CLKCTRL 28>;
- 				clock-names = "fck", "ahclkx", "ahclkr";
- 				status = "disabled";
-@@ -2818,9 +2818,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x68000 0x2000>,
-@@ -2836,7 +2835,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 133 1>, <&edma_xbar 132 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2854,9 +2853,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x6c000 0x2000>,
-@@ -2872,7 +2870,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 135 1>, <&edma_xbar 134 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP4_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2890,9 +2888,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x70000 0x2000>,
-@@ -2908,7 +2905,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 137 1>, <&edma_xbar 136 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP5_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2926,9 +2923,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x74000 0x2000>,
-@@ -2944,7 +2940,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 139 1>, <&edma_xbar 138 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP6_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2962,9 +2958,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x78000 0x2000>,
-@@ -2980,7 +2975,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 141 1>, <&edma_xbar 140 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP7_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
-@@ -2998,9 +2993,8 @@
- 					<SYSC_IDLE_SMART>;
- 			/* Domains (P, C): l4per_pwrdm, l4per2_clkdm */
- 			clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 0>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 24>,
--				 <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 28>;
--			clock-names = "fck", "ahclkx", "ahclkr";
-+				 <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 24>;
-+			clock-names = "fck", "ahclkx";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x7c000 0x2000>,
-@@ -3016,7 +3010,7 @@
- 				interrupt-names = "tx", "rx";
- 				dmas = <&edma_xbar 143 1>, <&edma_xbar 142 1>;
- 				dma-names = "tx", "rx";
--				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 22>,
-+				clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 0>,
- 					 <&l4per2_clkctrl DRA7_L4PER2_MCASP8_CLKCTRL 24>;
- 				clock-names = "fck", "ahclkx";
- 				status = "disabled";
+diff --git a/arch/arm/boot/dts/am335x-icev2.dts b/arch/arm/boot/dts/am335x-icev2.dts
+index 18f70b35da4c7..204bccfcc110a 100644
+--- a/arch/arm/boot/dts/am335x-icev2.dts
++++ b/arch/arm/boot/dts/am335x-icev2.dts
+@@ -432,7 +432,7 @@
+ 	pinctrl-0 = <&mmc0_pins_default>;
+ };
+ 
+-&gpio0 {
++&gpio0_target {
+ 	/* Do not idle the GPIO used for holding the VTT regulator */
+ 	ti,no-reset-on-init;
+ 	ti,no-idle-on-init;
+diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+index 46849d6ecb3e2..1515f4f914999 100644
+--- a/arch/arm/boot/dts/am33xx-l4.dtsi
++++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+@@ -127,7 +127,7 @@
+ 			ranges = <0x0 0x5000 0x1000>;
+ 		};
+ 
+-		target-module@7000 {			/* 0x44e07000, ap 14 20.0 */
++		gpio0_target: target-module@7000 {	/* 0x44e07000, ap 14 20.0 */
+ 			compatible = "ti,sysc-omap2", "ti,sysc";
+ 			ti,hwmods = "gpio1";
+ 			reg = <0x7000 0x4>,
 -- 
 2.20.1
 
