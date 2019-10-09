@@ -2,876 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FADBD1BA4
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 00:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06D48D1CD7
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 01:31:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730900AbfJIW0E (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Oct 2019 18:26:04 -0400
-Received: from muru.com ([72.249.23.125]:36692 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730809AbfJIW0E (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Oct 2019 18:26:04 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 20E0D8140;
-        Wed,  9 Oct 2019 22:26:32 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH] ARM: dts: Add minimal support for Droid Bionic xt875
-Date:   Wed,  9 Oct 2019 15:25:49 -0700
-Message-Id: <20191009222549.53265-1-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
+        id S1732017AbfJIXbc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Oct 2019 19:31:32 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:45869 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731166AbfJIXbc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Oct 2019 19:31:32 -0400
+Received: by mail-oi1-f194.google.com with SMTP id o205so3269951oib.12;
+        Wed, 09 Oct 2019 16:31:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=To7sz3Pj+9D426NllUrSBfEbVe/N6dxbVkGeiJMXZFI=;
+        b=J/cwbmkpp4pJ6kB+Z54PiDTwxQUdVBzWvrdvpWB6ldJwMUBW+TdC4WZ2/DdbYB6PlC
+         cTxy6+NotPwEYcOzhoK3d1jAXLvUO3RkaKRAIwuiwyx7kpWymBMpiD6D8ne5vKqaWAGn
+         TM99gZmMPxbtYznxlaAMmQlgzSjmFFrO6gOduUoLgTST8xMm5hFcIu8YnRpdFnJDhDjm
+         p+2iVQT+jM8saX52nJ2XEBESlsdNJUKB/huJ5+iz0wsq7lkoflbaN6IftErWPo5KvZno
+         F08wpL92wA22Au8eCmGZs8f16bGHXM3KlFahjxWJP5/kLVN2pY+ZUWXSpCOYwwOwdX88
+         anSg==
+X-Gm-Message-State: APjAAAVLedvVrBHljoEn4q5JuAwPEBDPhFDjvL3frr26YZ2v0zqhx59O
+        eT1irv9IC6mcQwB8JwD1GJ+g89w=
+X-Google-Smtp-Source: APXvYqxdZH4Yv74xeDd6uJYTvrlMrf1KIaK0glfrQqoyHvMw957Vce44h0eFAO0IDUshuR+cc81VWA==
+X-Received: by 2002:a05:6808:689:: with SMTP id k9mr4959453oig.117.1570663891350;
+        Wed, 09 Oct 2019 16:31:31 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id r7sm1125101oih.41.2019.10.09.16.31.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Oct 2019 16:31:30 -0700 (PDT)
+Date:   Wed, 9 Oct 2019 18:31:30 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        adam.ford@logicpd.com, Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V4 2/3] dt-bindings: Add Logic PD Type 28 display panel
+Message-ID: <20191009233130.GA1002@bogus>
+References: <20191001233923.16514-1-aford173@gmail.com>
+ <20191001233923.16514-5-aford173@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191001233923.16514-5-aford173@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We already have folks booting Droid Bionic with Droid 4 dts, but it is
-a different hardware with no keyboard.
+On Tue, Oct 01, 2019 at 06:39:22PM -0500, Adam Ford wrote:
+> This patch adds documentation of device tree bindings for the WVGA panel
+> Logic PD Type 28 display.
+> 
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> ---
+> V4:  Update per Rob H's suggestions and copy other panel yaml example from 5.4-rc1
+> V3:  Correct build errors from 'make dt_binding_check'
 
-Let's start adding device specific support for Droid bionic by making
-current omap4-droid4-xt894 a common file and including it.
+The example still fails to build here.
 
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-
-diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index b21b3a64641a..7a61339b8049 100644
---- a/arch/arm/boot/dts/Makefile
-+++ b/arch/arm/boot/dts/Makefile
-@@ -765,6 +765,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
- 	am335x-wega-rdk.dtb \
- 	am335x-osd3358-sm-red.dtb
- dtb-$(CONFIG_ARCH_OMAP4) += \
-+	omap4-droid-bionic-xt875.dtb \
- 	omap4-droid4-xt894.dtb \
- 	omap4-duovero-parlor.dtb \
- 	omap4-kc1.dtb \
-diff --git a/arch/arm/boot/dts/omap4-droid4-xt894.dts b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-similarity index 99%
-copy from arch/arm/boot/dts/omap4-droid4-xt894.dts
-copy to arch/arm/boot/dts/motorola-mapphone-common.dtsi
-index 4454449de00c..ae543fb37494 100644
---- a/arch/arm/boot/dts/omap4-droid4-xt894.dts
-+++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-@@ -6,9 +6,6 @@
- #include "motorola-cpcap-mapphone.dtsi"
- 
- / {
--	model = "Motorola Droid 4 XT894";
--	compatible = "motorola,droid4", "ti,omap4430", "ti,omap4";
--
- 	chosen {
- 		stdout-path = &uart3;
- 	};
-diff --git a/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts b/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
-new file mode 100644
-index 000000000000..ba5c35b7027d
---- /dev/null
-+++ b/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/dts-v1/;
-+
-+#include "motorola-mapphone-common.dtsi"
-+
-+/ {
-+	model = "Motorola Droid Bionic XT875";
-+	compatible = "motorola,droid-bionic", "ti,omap4430", "ti,omap4";
-+};
-diff --git a/arch/arm/boot/dts/omap4-droid4-xt894.dts b/arch/arm/boot/dts/omap4-droid4-xt894.dts
-index 4454449de00c..c0d2fd92aea3 100644
---- a/arch/arm/boot/dts/omap4-droid4-xt894.dts
-+++ b/arch/arm/boot/dts/omap4-droid4-xt894.dts
-@@ -1,784 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /dts-v1/;
- 
--#include <dt-bindings/input/input.h>
--#include "omap443x.dtsi"
--#include "motorola-cpcap-mapphone.dtsi"
-+#include "motorola-mapphone-common.dtsi"
- 
- / {
- 	model = "Motorola Droid 4 XT894";
- 	compatible = "motorola,droid4", "ti,omap4430", "ti,omap4";
--
--	chosen {
--		stdout-path = &uart3;
--	};
--
--	aliases {
--		display0 = &lcd0;
--		display1 = &hdmi0;
--	};
--
--	/*
--	 * We seem to have only 1021 MB accessible, 1021 - 1022 is locked,
--	 * then 1023 - 1024 seems to contain mbm.
--	 */
--	memory {
--		device_type = "memory";
--		reg = <0x80000000 0x3fd00000>;	/* 1021 MB */
--	};
--
--	/* Poweroff GPIO probably connected to CPCAP */
--	gpio-poweroff {
--		compatible = "gpio-poweroff";
--		pinctrl-0 = <&poweroff_gpio>;
--		pinctrl-names = "default";
--		gpios = <&gpio2 18 GPIO_ACTIVE_LOW>;	/* gpio50 */
--	};
--
--	hdmi0: connector {
--		compatible = "hdmi-connector";
--		pinctrl-0 = <&hdmi_hpd_gpio>;
--		pinctrl-names = "default";
--		label = "hdmi";
--		type = "d";
--
--		hpd-gpios = <&gpio2 31 GPIO_ACTIVE_HIGH>;	/* gpio63 */
--
--		port {
--			hdmi_connector_in: endpoint {
--				remote-endpoint = <&hdmi_out>;
--			};
--		};
--	};
--
--	/*
--	 * HDMI 5V regulator probably sourced from battery. Let's keep
--	 * keep this as always enabled for HDMI to work until we've
--	 * figured what the encoder chip is.
--	 */
--	hdmi_regulator: regulator-hdmi {
--		compatible = "regulator-fixed";
--		regulator-name = "hdmi";
--		regulator-min-microvolt = <5000000>;
--		regulator-max-microvolt = <5000000>;
--		gpio = <&gpio2 27 GPIO_ACTIVE_HIGH>;	/* gpio59 */
--		enable-active-high;
--		regulator-always-on;
--	};
--
--	/* FS USB Host PHY on port 1 for mdm6600 */
--	fsusb1_phy: usb-phy@1 {
--		compatible = "motorola,mapphone-mdm6600";
--		pinctrl-0 = <&usb_mdm6600_pins>;
--		pinctrl-names = "default";
--		enable-gpios = <&gpio3 31 GPIO_ACTIVE_LOW>;     /* gpio_95 */
--		power-gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;	/* gpio_54 */
--		reset-gpios = <&gpio2 17 GPIO_ACTIVE_HIGH>;	/* gpio_49 */
--		/* mode: gpio_148 gpio_149 */
--		motorola,mode-gpios = <&gpio5 20 GPIO_ACTIVE_HIGH>,
--				      <&gpio5 21 GPIO_ACTIVE_HIGH>;
--		/* cmd: gpio_103 gpio_104 gpio_142 */
--		motorola,cmd-gpios = <&gpio4 7 GPIO_ACTIVE_HIGH>,
--				     <&gpio4 8 GPIO_ACTIVE_HIGH>,
--				     <&gpio5 14 GPIO_ACTIVE_HIGH>;
--		/* status: gpio_52 gpio_53 gpio_55 */
--		motorola,status-gpios = <&gpio2 20 GPIO_ACTIVE_HIGH>,
--					<&gpio2 21 GPIO_ACTIVE_HIGH>,
--					<&gpio2 23 GPIO_ACTIVE_HIGH>;
--		#phy-cells = <0>;
--	};
--
--	/* HS USB host TLL nop-phy on port 2 for w3glte */
--	hsusb2_phy: usb-phy@2 {
--		compatible = "usb-nop-xceiv";
--		#phy-cells = <0>;
--	};
--
--	/* LCD regulator from sw5 source */
--	lcd_regulator: regulator-lcd {
--		compatible = "regulator-fixed";
--		regulator-name = "lcd";
--		regulator-min-microvolt = <5050000>;
--		regulator-max-microvolt = <5050000>;
--		gpio = <&gpio4 0 GPIO_ACTIVE_HIGH>;	/* gpio96 */
--		enable-active-high;
--		vin-supply = <&sw5>;
--	};
--
--	/* This is probably coming straight from the battery.. */
--	wl12xx_vmmc: regulator-wl12xx {
--		compatible = "regulator-fixed";
--		regulator-name = "vwl1271";
--		regulator-min-microvolt = <1650000>;
--		regulator-max-microvolt = <1650000>;
--		gpio = <&gpio3 30 GPIO_ACTIVE_HIGH>;	/* gpio94 */
--		startup-delay-us = <70000>;
--		enable-active-high;
--	};
--
--	gpio_keys {
--		compatible = "gpio-keys";
--
--		volume_down {
--			label = "Volume Down";
--			gpios = <&gpio5 26 GPIO_ACTIVE_LOW>; /* gpio154 */
--			linux,code = <KEY_VOLUMEDOWN>;
--			linux,can-disable;
--			/* Value above 7.95ms for no GPIO hardware debounce */
--			debounce-interval = <10>;
--		};
--
--		slider {
--			label = "Keypad Slide";
--			gpios = <&gpio4 26 GPIO_ACTIVE_HIGH>; /* gpio122 */
--			linux,input-type = <EV_SW>;
--			linux,code = <SW_KEYPAD_SLIDE>;
--			linux,can-disable;
--			/* Value above 7.95ms for no GPIO hardware debounce */
--			debounce-interval = <10>;
--		};
--	};
--
--	soundcard {
--		compatible = "audio-graph-card";
--		label = "Droid 4 Audio";
--
--		simple-graph-card,widgets =
--			"Speaker", "Earpiece",
--			"Speaker", "Loudspeaker",
--			"Headphone", "Headphone Jack",
--			"Microphone", "Internal Mic";
--
--		simple-graph-card,routing =
--			"Earpiece", "EP",
--			"Loudspeaker", "SPKR",
--			"Headphone Jack", "HSL",
--			"Headphone Jack", "HSR",
--			"MICR", "Internal Mic";
--
--		dais = <&mcbsp2_port>, <&mcbsp3_port>;
--	};
--
--	pwm8: dmtimer-pwm-8 {
--		pinctrl-names = "default";
--		pinctrl-0 = <&vibrator_direction_pin>;
--
--		compatible = "ti,omap-dmtimer-pwm";
--		#pwm-cells = <3>;
--		ti,timers = <&timer8>;
--		ti,clock-source = <0x01>;
--	};
--
--	pwm9: dmtimer-pwm-9 {
--		pinctrl-names = "default";
--		pinctrl-0 = <&vibrator_enable_pin>;
--
--		compatible = "ti,omap-dmtimer-pwm";
--		#pwm-cells = <3>;
--		ti,timers = <&timer9>;
--		ti,clock-source = <0x01>;
--	};
--
--	vibrator {
--		compatible = "pwm-vibrator";
--		pwms = <&pwm9 0 10000000 0>, <&pwm8 0 10000000 0>;
--		pwm-names = "enable", "direction";
--		direction-duty-cycle-ns = <10000000>;
--	};
--};
--
--&dss {
--	status = "okay";
--};
--
--&dsi1 {
--	status = "okay";
--	vdd-supply = <&vcsi>;
--
--	port {
--		dsi1_out_ep: endpoint {
--			remote-endpoint = <&lcd0_in>;
--			lanes = <0 1 2 3 4 5>;
--		};
--	};
--
--	lcd0: display {
--		compatible = "panel-dsi-cm";
--		label = "lcd0";
--		vddi-supply = <&lcd_regulator>;
--		reset-gpios = <&gpio4 5 GPIO_ACTIVE_HIGH>;	/* gpio101 */
--
--		width-mm = <50>;
--		height-mm = <89>;
--
--		panel-timing {
--			clock-frequency = <0>;		/* Calculated by dsi */
--
--			hback-porch = <2>;
--			hactive = <540>;
--			hfront-porch = <0>;
--			hsync-len = <2>;
--
--			vback-porch = <1>;
--			vactive = <960>;
--			vfront-porch = <0>;
--			vsync-len = <1>;
--
--			hsync-active = <0>;
--			vsync-active = <0>;
--			de-active = <1>;
--			pixelclk-active = <1>;
--		};
--
--		port {
--			lcd0_in: endpoint {
--				remote-endpoint = <&dsi1_out_ep>;
--			};
--		};
--	};
--};
--
--&hdmi {
--	status = "okay";
--	pinctrl-0 = <&dss_hdmi_pins>;
--	pinctrl-names = "default";
--	vdda-supply = <&vdac>;
--
--	port {
--		hdmi_out: endpoint {
--			remote-endpoint = <&hdmi_connector_in>;
--			lanes = <1 0 3 2 5 4 7 6>;
--		};
--	};
--};
--
--&i2c1 {
--	tmp105@48 {
--		compatible = "ti,tmp105";
--		reg = <0x48>;
--		pinctrl-0 = <&tmp105_irq>;
--		pinctrl-names = "default";
--		/* kpd_row0.gpio_178 */
--		interrupts-extended = <&gpio6 18 IRQ_TYPE_EDGE_FALLING
--				       &omap4_pmx_core 0x14e>;
--		interrupt-names = "irq", "wakeup";
--		wakeup-source;
--	};
--};
--
--&keypad {
--	keypad,num-rows = <8>;
--	keypad,num-columns = <8>;
--	linux,keymap = <
--
--	/* Row 1 */
--	MATRIX_KEY(0, 2, KEY_1)
--	MATRIX_KEY(0, 6, KEY_2)
--	MATRIX_KEY(2, 3, KEY_3)
--	MATRIX_KEY(0, 7, KEY_4)
--	MATRIX_KEY(0, 4, KEY_5)
--	MATRIX_KEY(5, 5, KEY_6)
--	MATRIX_KEY(0, 1, KEY_7)
--	MATRIX_KEY(0, 5, KEY_8)
--	MATRIX_KEY(0, 0, KEY_9)
--	MATRIX_KEY(1, 6, KEY_0)
--
--	/* Row 2 */
--	MATRIX_KEY(3, 4, KEY_APOSTROPHE)
--	MATRIX_KEY(7, 6, KEY_Q)
--	MATRIX_KEY(7, 7, KEY_W)
--	MATRIX_KEY(7, 2, KEY_E)
--	MATRIX_KEY(1, 0, KEY_R)
--	MATRIX_KEY(4, 4, KEY_T)
--	MATRIX_KEY(1, 2, KEY_Y)
--	MATRIX_KEY(6, 7, KEY_U)
--	MATRIX_KEY(2, 2, KEY_I)
--	MATRIX_KEY(5, 6, KEY_O)
--	MATRIX_KEY(3, 7, KEY_P)
--	MATRIX_KEY(6, 5, KEY_BACKSPACE)
--
--	/* Row 3 */
--	MATRIX_KEY(5, 4, KEY_TAB)
--	MATRIX_KEY(5, 7, KEY_A)
--	MATRIX_KEY(2, 7, KEY_S)
--	MATRIX_KEY(7, 0, KEY_D)
--	MATRIX_KEY(2, 6, KEY_F)
--	MATRIX_KEY(6, 2, KEY_G)
--	MATRIX_KEY(6, 6, KEY_H)
--	MATRIX_KEY(1, 4, KEY_J)
--	MATRIX_KEY(3, 1, KEY_K)
--	MATRIX_KEY(2, 1, KEY_L)
--	MATRIX_KEY(4, 6, KEY_ENTER)
--
--	/* Row 4 */
--	MATRIX_KEY(3, 6, KEY_LEFTSHIFT)		/* KEY_CAPSLOCK */
--	MATRIX_KEY(6, 1, KEY_Z)
--	MATRIX_KEY(7, 4, KEY_X)
--	MATRIX_KEY(5, 1, KEY_C)
--	MATRIX_KEY(1, 7, KEY_V)
--	MATRIX_KEY(2, 4, KEY_B)
--	MATRIX_KEY(4, 1, KEY_N)
--	MATRIX_KEY(1, 1, KEY_M)
--	MATRIX_KEY(3, 5, KEY_COMMA)
--	MATRIX_KEY(5, 2, KEY_DOT)
--	MATRIX_KEY(6, 3, KEY_UP)
--	MATRIX_KEY(7, 3, KEY_OK)
--
--	/* Row 5 */
--	MATRIX_KEY(2, 5, KEY_LEFTCTRL)		/* KEY_LEFTSHIFT */
--	MATRIX_KEY(4, 5, KEY_LEFTALT)		/* SYM */
--	MATRIX_KEY(6, 0, KEY_MINUS)
--	MATRIX_KEY(4, 7, KEY_EQUAL)
--	MATRIX_KEY(1, 5, KEY_SPACE)
--	MATRIX_KEY(3, 2, KEY_SLASH)
--	MATRIX_KEY(4, 3, KEY_LEFT)
--	MATRIX_KEY(5, 3, KEY_DOWN)
--	MATRIX_KEY(3, 3, KEY_RIGHT)
--
--	/* Side buttons, KEY_VOLUMEDOWN and KEY_PWER are on CPCAP? */
--	MATRIX_KEY(5, 0, KEY_VOLUMEUP)
--	>;
--};
--
--&mmc1 {
--	vmmc-supply = <&vwlan2>;
--	bus-width = <4>;
--	cd-gpios = <&gpio6 16 GPIO_ACTIVE_LOW>;	/* gpio176 */
--};
--
--&mmc2 {
--	vmmc-supply = <&vsdio>;
--	bus-width = <8>;
--	ti,non-removable;
--};
--
--&mmc3 {
--	vmmc-supply = <&wl12xx_vmmc>;
--	/* uart2_tx.sdmmc3_dat1 pad as wakeirq */
--	interrupts-extended = <&wakeupgen GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH
--			       &omap4_pmx_core 0xde>;
--	interrupt-names = "irq", "wakeup";
--	non-removable;
--	bus-width = <4>;
--	cap-power-off-card;
--	keep-power-in-suspend;
--
--	#address-cells = <1>;
--	#size-cells = <0>;
--	wlcore: wlcore@2 {
--		compatible = "ti,wl1285", "ti,wl1283";
--		reg = <2>;
--		/* gpio_100 with gpmc_wait2 pad as wakeirq */
--		interrupts-extended = <&gpio4 4 IRQ_TYPE_EDGE_RISING>,
--				      <&omap4_pmx_core 0x4e>;
--		interrupt-names = "irq", "wakeup";
--		ref-clock-frequency = <26000000>;
--		tcxo-clock-frequency = <26000000>;
--	};
--};
--
--&i2c1 {
--	led-controller@38 {
--		compatible = "ti,lm3532";
--		#address-cells = <1>;
--		#size-cells = <0>;
--		reg = <0x38>;
--
--		enable-gpios = <&gpio6 12 GPIO_ACTIVE_HIGH>;
--
--		ramp-up-us = <1024>;
--		ramp-down-us = <8193>;
--
--		led@0 {
--			reg = <0>;
--			led-sources = <2>;
--			ti,led-mode = <0>;
--			label = ":backlight";
--			linux,default-trigger = "backlight";
--		};
--
--		led@1 {
--			reg = <1>;
--			led-sources = <1>;
--			ti,led-mode = <0>;
--			label = ":kbd_backlight";
--		};
--	};
--};
--
--&i2c2 {
--	touchscreen@4a {
--		compatible = "atmel,maxtouch";
--		reg = <0x4a>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&touchscreen_pins>;
--
--		reset-gpios = <&gpio6 13 GPIO_ACTIVE_HIGH>; /* gpio173 */
--
--		/* gpio_183 with sys_nirq2 pad as wakeup */
--		interrupts-extended = <&gpio6 23 IRQ_TYPE_EDGE_FALLING>,
--				      <&omap4_pmx_core 0x160>;
--		interrupt-names = "irq", "wakeup";
--		wakeup-source;
--	};
--
--	isl29030@44 {
--		compatible = "isil,isl29030";
--		reg = <0x44>;
--
--		pinctrl-names = "default";
--		pinctrl-0 = <&als_proximity_pins>;
--
--		interrupt-parent = <&gpio6>;
--		interrupts = <17 IRQ_TYPE_LEVEL_LOW>; /* gpio177 */
--	};
--};
--
--&omap4_pmx_core {
--
--	/* hdmi_hpd.gpio_63 */
--	hdmi_hpd_gpio: pinmux_hdmi_hpd_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x098, PIN_INPUT | MUX_MODE3)
--		>;
--	};
--
--	/* hdmi_cec.hdmi_cec, hdmi_scl.hdmi_scl, hdmi_sda.hdmi_sda */
--	dss_hdmi_pins: pinmux_dss_hdmi_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x09a, PIN_INPUT | MUX_MODE0)
--		OMAP4_IOPAD(0x09c, PIN_INPUT | MUX_MODE0)
--		OMAP4_IOPAD(0x09e, PIN_INPUT | MUX_MODE0)
--		>;
--	};
--
--	/* gpmc_ncs0.gpio_50 */
--	poweroff_gpio: pinmux_poweroff_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x074, PIN_OUTPUT_PULLUP | MUX_MODE3)
--		>;
--	};
--
--	/* kpd_row0.gpio_178 */
--	tmp105_irq: pinmux_tmp105_irq {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x18e, PIN_INPUT_PULLUP | MUX_MODE3)
--		>;
--	};
--
--	usb_gpio_mux_sel1: pinmux_usb_gpio_mux_sel1_pins {
--		/* gpio_60 */
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x088, PIN_OUTPUT | MUX_MODE3)
--		>;
--	};
--
--	touchscreen_pins: pinmux_touchscreen_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x180, PIN_OUTPUT | MUX_MODE3)
--		OMAP4_IOPAD(0x1a0, PIN_INPUT_PULLUP | MUX_MODE3)
--		>;
--	};
--
--	als_proximity_pins: pinmux_als_proximity_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x18c, PIN_INPUT_PULLUP | MUX_MODE3)
--		>;
--	};
--
--	usb_mdm6600_pins: pinmux_usb_mdm6600_pins {
--		pinctrl-single,pins = <
--		/* enable 0x4a1000d8 usbb1_ulpitll_dat7.gpio_95 ag16 */
--		OMAP4_IOPAD(0x0d8, PIN_INPUT | MUX_MODE3)
--
--		/* power 0x4a10007c gpmc_nwp.gpio_54 c25 */
--		OMAP4_IOPAD(0x07c, PIN_OUTPUT | MUX_MODE3)
--
--		/* reset 0x4a100072 gpmc_a25.gpio_49 d20 */
--		OMAP4_IOPAD(0x072, PIN_OUTPUT | MUX_MODE3)
--
--		/* mode0/bpwake 0x4a10014e sdmmc5_dat1.gpio_148 af4 */
--		OMAP4_IOPAD(0x14e, PIN_OUTPUT | MUX_MODE3)
--
--		/* mode1/apwake 0x4a100150 sdmmc5_dat2.gpio_149 ag3 */
--		OMAP4_IOPAD(0x150, PIN_OFF_OUTPUT_LOW | PIN_INPUT | MUX_MODE3)
--
--		/* status0 0x4a10007e gpmc_clk.gpio_55 b22 */
--		OMAP4_IOPAD(0x07e, PIN_INPUT | MUX_MODE3)
--
--		/* status1 0x4a10007a gpmc_ncs3.gpio_53 c22 */
--		OMAP4_IOPAD(0x07a, PIN_INPUT | MUX_MODE3)
--
--		/* status2 0x4a100078 gpmc_ncs2.gpio_52 d21 */
--		OMAP4_IOPAD(0x078, PIN_INPUT | MUX_MODE3)
--
--		/* cmd0 0x4a100094 gpmc_ncs6.gpio_103 c24 */
--		OMAP4_IOPAD(0x094, PIN_OUTPUT | MUX_MODE3)
--
--		/* cmd1 0x4a100096 gpmc_ncs7.gpio_104 d24 */
--		OMAP4_IOPAD(0x096, PIN_OUTPUT | MUX_MODE3)
--
--		/* cmd2 0x4a100142 uart3_rts_sd.gpio_142 f28 */
--		OMAP4_IOPAD(0x142, PIN_OUTPUT | MUX_MODE3)
--		>;
--	};
--
--	usb_ulpi_pins: pinmux_usb_ulpi_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x196, MUX_MODE7)
--		OMAP4_IOPAD(0x198, MUX_MODE7)
--		OMAP4_IOPAD(0x1b2, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1b4, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1b6, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1b8, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1ba, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1bc, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1be, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1c0, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1c2, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1c4, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1c6, PIN_INPUT_PULLUP | MUX_MODE0)
--		OMAP4_IOPAD(0x1c8, PIN_INPUT_PULLUP | MUX_MODE0)
--		>;
--	};
--
--	/* usb0_otg_dp and usb0_otg_dm */
--	usb_utmi_pins: pinmux_usb_utmi_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x196, PIN_INPUT | MUX_MODE0)
--		OMAP4_IOPAD(0x198, PIN_INPUT | MUX_MODE0)
--		OMAP4_IOPAD(0x1b2, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1b4, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1b6, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1b8, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1ba, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1bc, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1be, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c0, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c2, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c4, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c6, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c8, PIN_INPUT_PULLUP | MUX_MODE7)
--		>;
--	};
--
--	/*
--	 * Note that the v3.0.8 stock userspace dynamically remuxes uart1
--	 * rts pin probably for PM purposes to PIN_INPUT_PULLUP | MUX_MODE7
--	 * when not used. If needed, we can add rts pin remux later based
--	 * on power measurements.
--	 */
--	uart1_pins: pinmux_uart1_pins {
--		pinctrl-single,pins = <
--		/* 0x4a10013c mcspi1_cs2.uart1_cts ag23 */
--		OMAP4_IOPAD(0x13c, PIN_INPUT_PULLUP | MUX_MODE1)
--
--		/* 0x4a10013e mcspi1_cs3.uart1_rts ah23 */
--		OMAP4_IOPAD(0x13e, MUX_MODE1)
--
--		/* 0x4a100140 uart3_cts_rctx.uart1_tx f27 */
--		OMAP4_IOPAD(0x140, PIN_OUTPUT | MUX_MODE1)
--
--		/* 0x4a1001ca dpm_emu14.uart1_rx aa3 */
--		OMAP4_IOPAD(0x1ca, PIN_INPUT_PULLUP | MUX_MODE2)
--		>;
--	};
--
--	/* uart3_tx_irtx and uart3_rx_irrx */
--	uart3_pins: pinmux_uart3_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x196, MUX_MODE7)
--		OMAP4_IOPAD(0x198, MUX_MODE7)
--		OMAP4_IOPAD(0x1b2, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1b4, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1b6, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1b8, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1ba, MUX_MODE2)
--		OMAP4_IOPAD(0x1bc, PIN_INPUT | MUX_MODE2)
--		OMAP4_IOPAD(0x1be, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c0, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c2, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c4, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c6, PIN_INPUT_PULLUP | MUX_MODE7)
--		OMAP4_IOPAD(0x1c8, PIN_INPUT_PULLUP | MUX_MODE7)
--		>;
--	};
--
--	uart4_pins: pinmux_uart4_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x15c, PIN_INPUT | MUX_MODE0)		/* uart4_rx */
--		OMAP4_IOPAD(0x15e, PIN_OUTPUT | MUX_MODE0)		/* uart4_tx */
--		OMAP4_IOPAD(0x110, PIN_INPUT_PULLUP | MUX_MODE5)	/* uart4_cts */
--		OMAP4_IOPAD(0x112, PIN_OUTPUT_PULLUP | MUX_MODE5)	/* uart4_rts */
--		>;
--	};
--
--	mcbsp2_pins: pinmux_mcbsp2_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x0f6, PIN_INPUT | MUX_MODE0)	/* abe_mcbsp2_clkx */
--		OMAP4_IOPAD(0x0f8, PIN_INPUT | MUX_MODE0)	/* abe_mcbsp2_dr */
--		OMAP4_IOPAD(0x0fa, PIN_OUTPUT | MUX_MODE0)	/* abe_mcbsp2_dx */
--		OMAP4_IOPAD(0x0fc, PIN_INPUT | MUX_MODE0)	/* abe_mcbsp2_fsx */
--		>;
--	};
--
--	mcbsp3_pins: pinmux_mcbsp3_pins {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x106, PIN_INPUT | MUX_MODE1)	/* abe_mcbsp3_dr */
--		OMAP4_IOPAD(0x108, PIN_OUTPUT | MUX_MODE1)	/* abe_mcbsp3_dx */
--		OMAP4_IOPAD(0x10a, PIN_INPUT | MUX_MODE1)	/* abe_mcbsp3_clkx */
--		OMAP4_IOPAD(0x10c, PIN_INPUT | MUX_MODE1)	/* abe_mcbsp3_fsx */
--		>;
--	};
--
--	vibrator_direction_pin: pinmux_vibrator_direction_pin {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x1ce, PIN_OUTPUT | MUX_MODE1)	/* dmtimer8_pwm_evt (gpio_27) */
--		>;
--	};
--
--	vibrator_enable_pin: pinmux_vibrator_enable_pin {
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0X1d0, PIN_OUTPUT | MUX_MODE1)	/* dmtimer9_pwm_evt (gpio_28) */
--		>;
--	};
--};
--
--&omap4_pmx_wkup {
--	usb_gpio_mux_sel2: pinmux_usb_gpio_mux_sel2_pins {
--		/* gpio_wk0 */
--		pinctrl-single,pins = <
--		OMAP4_IOPAD(0x040, PIN_OUTPUT_PULLDOWN | MUX_MODE3)
--		>;
--	};
--};
--
--/* Configure pwm clock source for timers 8 & 9 */
--&timer8 {
--	assigned-clocks = <&abe_clkctrl OMAP4_TIMER8_CLKCTRL 24>;
--	assigned-clock-parents = <&sys_clkin_ck>;
--};
--
--&timer9 {
--	assigned-clocks = <&l4_per_clkctrl OMAP4_TIMER9_CLKCTRL 24>;
--	assigned-clock-parents = <&sys_clkin_ck>;
--};
--
--/*
-- * As uart1 is wired to mdm6600 with rts and cts, we can use the cts pin for
-- * uart1 wakeirq.
-- */
--&uart1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&uart1_pins>;
--	interrupts-extended = <&wakeupgen GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH
--			       &omap4_pmx_core 0xfc>;
--};
--
--&uart3 {
--	interrupts-extended = <&wakeupgen GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH
--			       &omap4_pmx_core 0x17c>;
--};
--
--&uart4 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&uart4_pins>;
--
--	bluetooth {
--		compatible = "ti,wl1285-st";
--		enable-gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>; /* gpio 174 */
--		max-speed = <3686400>;
--	};
--};
--
--&usbhsohci {
--	phys = <&fsusb1_phy>;
--	phy-names = "usb";
--};
--
--&usbhsehci {
--	phys = <&hsusb2_phy>;
--};
--
--&usbhshost {
--	port1-mode = "ohci-phy-4pin-dpdm";
--	port2-mode = "ehci-tll";
--};
--
--/* Internal UTMI+ PHY used for OTG, CPCAP ULPI PHY for detection and charger */
--&usb_otg_hs {
--	interface-type = <1>;
--	mode = <3>;
--	power = <50>;
--};
--
--&i2c4 {
--	ak8975: magnetometer@c {
--		compatible = "asahi-kasei,ak8975";
--		reg = <0x0c>;
--
--		vdd-supply = <&vhvio>;
--
--		interrupt-parent = <&gpio6>;
--		interrupts = <15 IRQ_TYPE_EDGE_RISING>; /* gpio175 */
--
--		rotation-matrix = "-1", "0", "0",
--				  "0", "1", "0",
--				  "0", "0", "-1";
--
--	};
--
--	lis3dh: accelerometer@18 {
--		compatible = "st,lis3dh-accel";
--		reg = <0x18>;
--
--		vdd-supply = <&vhvio>;
--
--		interrupt-parent = <&gpio2>;
--		interrupts = <2 IRQ_TYPE_EDGE_BOTH>; /* gpio34 */
--
--		rotation-matrix = "0", "-1", "0",
--				  "1", "0", "0",
--				  "0", "0", "1";
--	};
--};
--
--&mcbsp2 {
--	#sound-dai-cells = <0>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&mcbsp2_pins>;
--	status = "okay";
--
--	mcbsp2_port: port {
--		cpu_dai2: endpoint {
--			dai-format = "i2s";
--			remote-endpoint = <&cpcap_audio_codec0>;
--			frame-master = <&cpcap_audio_codec0>;
--			bitclock-master = <&cpcap_audio_codec0>;
--		};
--	};
--};
--
--&mcbsp3 {
--	#sound-dai-cells = <0>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&mcbsp3_pins>;
--	status = "okay";
--
--	mcbsp3_port: port {
--		cpu_dai3: endpoint {
--			dai-format = "dsp_a";
--			frame-master = <&cpcap_audio_codec1>;
--			bitclock-master = <&cpcap_audio_codec1>;
--			remote-endpoint = <&cpcap_audio_codec1>;
--		};
--	};
--};
--
--&cpcap_audio_codec0 {
--	remote-endpoint = <&cpu_dai2>;
--};
--
--&cpcap_audio_codec1 {
--	remote-endpoint = <&cpu_dai3>;
- };
+> V2:  Use YAML instead of TXT for binding
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/logicpd,type28.yaml b/Documentation/devicetree/bindings/display/panel/logicpd,type28.yaml
+> new file mode 100644
+> index 000000000000..e2c62e8f1db4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/logicpd,type28.yaml
+> @@ -0,0 +1,42 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/panel/logicpd,type28.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Logic PD Type 28 4.3" WQVGA TFT LCD panel
+> +
+> +maintainers:
+> +  - Adam Ford <aford173@gmail.com>
+> +
+> +allOf:
+> +  - $ref: panel-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    const: logicpd,type28
+> +
+> +  power-supply: true
+> +  enable-gpios: true
+> +  backlight: true
+> +  port: true
+> +
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    lcd0: display {
+> +      compatible = "logicpd,type28";
+> +      enable-gpios = <&gpio5 27 GPIO_ACTIVE_HIGH>;
+> +      backlight = <&backlight>;
+> +      port {
+> +        lcd_in: endpoint {
+> +          remote-endpoint = <&dpi_out>;
+> +        };
+> +      };
+> +    };
+> +
+> +...
+> -- 
+> 2.17.1
+> 
