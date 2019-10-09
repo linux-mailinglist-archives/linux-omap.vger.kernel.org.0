@@ -2,103 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18BD0D1485
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 18:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D31DAD1635
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 19:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731452AbfJIQuJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Oct 2019 12:50:09 -0400
-Received: from muru.com ([72.249.23.125]:36234 "EHLO muru.com"
+        id S1732155AbfJIR2T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Oct 2019 13:28:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49058 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730490AbfJIQuJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Oct 2019 12:50:09 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 7F5448140;
-        Wed,  9 Oct 2019 16:50:42 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Eyal Reizer <eyalr@ti.com>, Kishon Vijay Abraham I <kishon@ti.com>,
-        Guy Mishol <guym@ti.com>, linux-wireless@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Anders Roxell <anders.roxell@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCHv3] wlcore: clean-up clearing of WL1271_FLAG_IRQ_RUNNING
-Date:   Wed,  9 Oct 2019 09:50:06 -0700
-Message-Id: <20191009165006.41567-1-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
+        id S1732294AbfJIRYZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 9 Oct 2019 13:24:25 -0400
+Received: from sasha-vm.mshome.net (unknown [167.220.2.234])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BEE4A21D82;
+        Wed,  9 Oct 2019 17:24:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570641864;
+        bh=NPNT9I5o/4emtMTJrnusg3gedRhNDoLKH7IfGRjATXc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=1hVVk+DcC9NedQxXaz2xftpU3pSgQ0ZCqlZd80utf46EJiwiWeIcgrH+wNjFUGIeD
+         ewwNJCMVmA/pQWbGmau1pbCPoWorSZ35h8/On75Ebn+bsdh8XxP9G1kZ2t+mUDN5tT
+         RdEykr1zMCDmkII9oLsglvElJU4ByOSqvfvG+Fso=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 05/21] ARM: OMAP2+: Fix missing reset done flag for am3 and am43
+Date:   Wed,  9 Oct 2019 13:05:58 -0400
+Message-Id: <20191009170615.32750-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191009170615.32750-1-sashal@kernel.org>
+References: <20191009170615.32750-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We set WL1271_FLAG_IRQ_RUNNING in the beginning of wlcore_irq(), but clear
-it before interrupt handling is done in wlcore_irq_locked().
+From: Tony Lindgren <tony@atomide.com>
 
-Let's move the clearing to the end of wlcore_irq() where it gets set,
-and remove the old comments about hardirq. That's no longer the case as
-we're using request_threaded_irq().
+[ Upstream commit 8ad8041b98c665b6147e607b749586d6e20ba73a ]
 
-Note that the WL1271_FLAG_IRQ_RUNNING should never race between the
-interrupt handler and wlcore_runtime_resume() as because of autosuspend
-timeout we cannot enter idle between wlcore_irq_locked() and the end of
-wlcore_irq().
+For ti,sysc-omap4 compatible devices with no sysstatus register, we do have
+reset done status available in the SOFTRESET bit that clears when the reset
+is done. This is documented for example in am437x TRM for DMTIMER_TIOCP_CFG
+register. The am335x TRM just says that SOFTRESET bit value 1 means reset is
+ongoing, but it behaves the same way clearing after reset is done.
 
-Cc: Anders Roxell <anders.roxell@linaro.org>
-Cc: Eyal Reizer <eyalr@ti.com>
-Cc: Guy Mishol <guym@ti.com>
-Cc: John Stultz <john.stultz@linaro.org>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
+With the ti-sysc driver handling this automatically based on no sysstatus
+register defined, we see warnings if SYSC_HAS_RESET_STATUS is missing in the
+legacy platform data:
+
+ti-sysc 48042000.target-module: sysc_flags 00000222 != 00000022
+ti-sysc 48044000.target-module: sysc_flags 00000222 != 00000022
+ti-sysc 48046000.target-module: sysc_flags 00000222 != 00000022
+...
+
+Let's fix these warnings by adding SYSC_HAS_RESET_STATUS. Let's also
+remove the useless parentheses while at it.
+
+If it turns out we do have ti,sysc-omap4 compatible devices without a
+working SOFTRESET bit we can set up additional quirk handling for it.
+
 Signed-off-by: Tony Lindgren <tony@atomide.com>
-
-Changes since v2:
-
-- Downgraded to clean-up from a fix as the race should never happen
-
-Changes since v1:
-
-- Add locking around clear_bit like we do elsewhere in the driver
-
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -544,11 +544,6 @@ static int wlcore_irq_locked(struct wl1271 *wl)
- 	}
- 
- 	while (!done && loopcount--) {
--		/*
--		 * In order to avoid a race with the hardirq, clear the flag
--		 * before acknowledging the chip.
--		 */
--		clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
- 		smp_mb__after_atomic();
- 
- 		ret = wlcore_fw_status(wl, wl->fw_status);
-@@ -668,7 +663,7 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
- 		disable_irq_nosync(wl->irq);
- 		pm_wakeup_event(wl->dev, 0);
- 		spin_unlock_irqrestore(&wl->wl_lock, flags);
--		return IRQ_HANDLED;
-+		goto out_handled;
- 	}
- 	spin_unlock_irqrestore(&wl->wl_lock, flags);
- 
-@@ -692,6 +687,11 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
- 
- 	mutex_unlock(&wl->mutex);
- 
-+out_handled:
-+	spin_lock_irqsave(&wl->wl_lock, flags);
-+	clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
-+	spin_unlock_irqrestore(&wl->wl_lock, flags);
-+
- 	return IRQ_HANDLED;
- }
- 
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
+index de06a1d5ffab5..e61c14f590634 100644
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
+@@ -966,7 +966,8 @@ static struct omap_hwmod_class_sysconfig am33xx_timer_sysc = {
+ 	.rev_offs	= 0x0000,
+ 	.sysc_offs	= 0x0010,
+ 	.syss_offs	= 0x0014,
+-	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET),
++	.sysc_flags	= SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET |
++			  SYSC_HAS_RESET_STATUS,
+ 	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
+ 			  SIDLE_SMART_WKUP),
+ 	.sysc_fields	= &omap_hwmod_sysc_type2,
 -- 
-2.23.0
+2.20.1
+
