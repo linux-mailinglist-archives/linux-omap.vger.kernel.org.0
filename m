@@ -2,29 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82AD3D1458
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 18:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18BD0D1485
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 18:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731432AbfJIQnr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Oct 2019 12:43:47 -0400
-Received: from muru.com ([72.249.23.125]:36210 "EHLO muru.com"
+        id S1731452AbfJIQuJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Oct 2019 12:50:09 -0400
+Received: from muru.com ([72.249.23.125]:36234 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730708AbfJIQnr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Oct 2019 12:43:47 -0400
+        id S1730490AbfJIQuJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 9 Oct 2019 12:50:09 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 784C78140;
-        Wed,  9 Oct 2019 16:44:20 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 7F5448140;
+        Wed,  9 Oct 2019 16:50:42 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org,
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Eyal Reizer <eyalr@ti.com>, Kishon Vijay Abraham I <kishon@ti.com>,
+        Guy Mishol <guym@ti.com>, linux-wireless@vger.kernel.org,
+        linux-omap@vger.kernel.org,
         Anders Roxell <anders.roxell@linaro.org>,
-        Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
         John Stultz <john.stultz@linaro.org>,
         Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH] ARM: dts: Use level interrupt for omap4 & 5 wlcore
-Date:   Wed,  9 Oct 2019 09:43:44 -0700
-Message-Id: <20191009164344.41093-1-tony@atomide.com>
+Subject: [PATCHv3] wlcore: clean-up clearing of WL1271_FLAG_IRQ_RUNNING
+Date:   Wed,  9 Oct 2019 09:50:06 -0700
+Message-Id: <20191009165006.41567-1-tony@atomide.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -33,98 +33,72 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Commit 572cf7d7b07d ("ARM: dts: Improve omap l4per idling with wlcore edge
-sensitive interrupt") changed wlcore interrupts to use edge interrupt based
-on what's specified in the wl1835mod.pdf data sheet.
+We set WL1271_FLAG_IRQ_RUNNING in the beginning of wlcore_irq(), but clear
+it before interrupt handling is done in wlcore_irq_locked().
 
-However, there are still cases where we can have lost interrupts as
-described in omap_gpio_unidle(). And using a level interrupt instead of edge
-interrupt helps as we avoid the check for untriggered GPIO interrupts in
-omap_gpio_unidle().
+Let's move the clearing to the end of wlcore_irq() where it gets set,
+and remove the old comments about hardirq. That's no longer the case as
+we're using request_threaded_irq().
 
-And with commit e6818d29ea15 ("gpio: gpio-omap: configure edge detection
-for level IRQs for idle wakeup") GPIOs idle just fine with level interrupts.
+Note that the WL1271_FLAG_IRQ_RUNNING should never race between the
+interrupt handler and wlcore_runtime_resume() as because of autosuspend
+timeout we cannot enter idle between wlcore_irq_locked() and the end of
+wlcore_irq().
 
-Let's change omap4 and 5 wlcore users back to using level interrupt
-instead of edge interrupt. Let's not change the others as I've only seen
-this on omap4 and 5, probably because the other SoCs don't have l4per idle
-independent of the CPUs.
-
-Fixes: 572cf7d7b07d ("ARM: dts: Improve omap l4per idling with wlcore edge sensitive interrupt")
-Depends-on: e6818d29ea15 ("gpio: gpio-omap: configure edge detection for level IRQs for idle wakeup")
 Cc: Anders Roxell <anders.roxell@linaro.org>
 Cc: Eyal Reizer <eyalr@ti.com>
 Cc: Guy Mishol <guym@ti.com>
 Cc: John Stultz <john.stultz@linaro.org>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/omap4-droid4-xt894.dts       | 2 +-
- arch/arm/boot/dts/omap4-panda-common.dtsi      | 2 +-
- arch/arm/boot/dts/omap4-sdp.dts                | 2 +-
- arch/arm/boot/dts/omap4-var-som-om44-wlan.dtsi | 2 +-
- arch/arm/boot/dts/omap5-board-common.dtsi      | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap4-droid4-xt894.dts b/arch/arm/boot/dts/omap4-droid4-xt894.dts
---- a/arch/arm/boot/dts/omap4-droid4-xt894.dts
-+++ b/arch/arm/boot/dts/omap4-droid4-xt894.dts
-@@ -369,7 +369,7 @@
- 		compatible = "ti,wl1285", "ti,wl1283";
- 		reg = <2>;
- 		/* gpio_100 with gpmc_wait2 pad as wakeirq */
--		interrupts-extended = <&gpio4 4 IRQ_TYPE_EDGE_RISING>,
-+		interrupts-extended = <&gpio4 4 IRQ_TYPE_LEVEL_HIGH>,
- 				      <&omap4_pmx_core 0x4e>;
- 		interrupt-names = "irq", "wakeup";
- 		ref-clock-frequency = <26000000>;
-diff --git a/arch/arm/boot/dts/omap4-panda-common.dtsi b/arch/arm/boot/dts/omap4-panda-common.dtsi
---- a/arch/arm/boot/dts/omap4-panda-common.dtsi
-+++ b/arch/arm/boot/dts/omap4-panda-common.dtsi
-@@ -474,7 +474,7 @@
- 		compatible = "ti,wl1271";
- 		reg = <2>;
- 		/* gpio_53 with gpmc_ncs3 pad as wakeup */
--		interrupts-extended = <&gpio2 21 IRQ_TYPE_EDGE_RISING>,
-+		interrupts-extended = <&gpio2 21 IRQ_TYPE_LEVEL_HIGH>,
- 				      <&omap4_pmx_core 0x3a>;
- 		interrupt-names = "irq", "wakeup";
- 		ref-clock-frequency = <38400000>;
-diff --git a/arch/arm/boot/dts/omap4-sdp.dts b/arch/arm/boot/dts/omap4-sdp.dts
---- a/arch/arm/boot/dts/omap4-sdp.dts
-+++ b/arch/arm/boot/dts/omap4-sdp.dts
-@@ -512,7 +512,7 @@
- 		compatible = "ti,wl1281";
- 		reg = <2>;
- 		interrupt-parent = <&gpio1>;
--		interrupts = <21 IRQ_TYPE_EDGE_RISING>; /* gpio 53 */
-+		interrupts = <21 IRQ_TYPE_LEVEL_HIGH>; /* gpio 53 */
- 		ref-clock-frequency = <26000000>;
- 		tcxo-clock-frequency = <26000000>;
- 	};
-diff --git a/arch/arm/boot/dts/omap4-var-som-om44-wlan.dtsi b/arch/arm/boot/dts/omap4-var-som-om44-wlan.dtsi
---- a/arch/arm/boot/dts/omap4-var-som-om44-wlan.dtsi
-+++ b/arch/arm/boot/dts/omap4-var-som-om44-wlan.dtsi
-@@ -69,7 +69,7 @@
- 		compatible = "ti,wl1271";
- 		reg = <2>;
- 		interrupt-parent = <&gpio2>;
--		interrupts = <9 IRQ_TYPE_EDGE_RISING>; /* gpio 41 */
-+		interrupts = <9 IRQ_TYPE_LEVEL_HIGH>; /* gpio 41 */
- 		ref-clock-frequency = <38400000>;
- 	};
- };
-diff --git a/arch/arm/boot/dts/omap5-board-common.dtsi b/arch/arm/boot/dts/omap5-board-common.dtsi
---- a/arch/arm/boot/dts/omap5-board-common.dtsi
-+++ b/arch/arm/boot/dts/omap5-board-common.dtsi
-@@ -362,7 +362,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&wlcore_irq_pin>;
- 		interrupt-parent = <&gpio1>;
--		interrupts = <14 IRQ_TYPE_EDGE_RISING>;	/* gpio 14 */
-+		interrupts = <14 IRQ_TYPE_LEVEL_HIGH>;	/* gpio 14 */
- 		ref-clock-frequency = <26000000>;
- 	};
- };
+Changes since v2:
+
+- Downgraded to clean-up from a fix as the race should never happen
+
+Changes since v1:
+
+- Add locking around clear_bit like we do elsewhere in the driver
+
+---
+ drivers/net/wireless/ti/wlcore/main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -544,11 +544,6 @@ static int wlcore_irq_locked(struct wl1271 *wl)
+ 	}
+ 
+ 	while (!done && loopcount--) {
+-		/*
+-		 * In order to avoid a race with the hardirq, clear the flag
+-		 * before acknowledging the chip.
+-		 */
+-		clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
+ 		smp_mb__after_atomic();
+ 
+ 		ret = wlcore_fw_status(wl, wl->fw_status);
+@@ -668,7 +663,7 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
+ 		disable_irq_nosync(wl->irq);
+ 		pm_wakeup_event(wl->dev, 0);
+ 		spin_unlock_irqrestore(&wl->wl_lock, flags);
+-		return IRQ_HANDLED;
++		goto out_handled;
+ 	}
+ 	spin_unlock_irqrestore(&wl->wl_lock, flags);
+ 
+@@ -692,6 +687,11 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
+ 
+ 	mutex_unlock(&wl->mutex);
+ 
++out_handled:
++	spin_lock_irqsave(&wl->wl_lock, flags);
++	clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
++	spin_unlock_irqrestore(&wl->wl_lock, flags);
++
+ 	return IRQ_HANDLED;
+ }
+ 
 -- 
 2.23.0
