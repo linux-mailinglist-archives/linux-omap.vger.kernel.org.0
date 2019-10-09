@@ -2,96 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7520D1376
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 18:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 744F8D13C5
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2019 18:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731709AbfJIQCA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Oct 2019 12:02:00 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:43096 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730503AbfJIQCA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Oct 2019 12:02:00 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x99Fj1pa166135;
-        Wed, 9 Oct 2019 16:01:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2019-08-05;
- bh=K/UuWzGfUxMEM2oiMN02pZdi5bJGDtU7WGVuefuYem4=;
- b=CjiE7xHMt8aGZBu/BzCRR83hbKS+f3GcfhOM51quBklix4eKzhrztWbC78hJsVwkwXr5
- swHQEmnKKS1oLi+zH33vvjvkA5zENxqvvfTQeL9G171JC0S9jl2DqYH4M5udlNxYjjp8
- r5A+YR04MqW7qMZay2XRj3BwHFroFWT+vSpoQdEqAhRwg2NPc7V7OizjcWPrxKJsc8md
- BxemalTKn467s7avMBvHNjeFxnmwwtSVOokBYU1vhVBW4XZiaaA2KZUqi13zw2RGYs9U
- c1Qi4wLIT3M5Vb8Z5V764bsMXH5UucWxf0HtbpKDGb2F1eHJdlTDZyMwWNR+XT2NpXyJ nQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2vektrnfb1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Oct 2019 16:01:46 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x99Fhg44160795;
-        Wed, 9 Oct 2019 16:01:45 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2vh8k11mk5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Oct 2019 16:01:45 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x99G1iUu027139;
-        Wed, 9 Oct 2019 16:01:44 GMT
-Received: from dhcp-10-159-237-174.vpn.oracle.com (/10.159.237.174)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 09 Oct 2019 09:01:44 -0700
-Subject: Re: [PATCHv8 0/9] soc: ti: add OMAP PRM driver (for reset)
-To:     Tony Lindgren <tony@atomide.com>, Tero Kristo <t-kristo@ti.com>
-Cc:     linux-omap@vger.kernel.org, ssantosh@kernel.org, s-anna@ti.com,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        p.zabel@pengutronix.de
-References: <20191008125544.20679-1-t-kristo@ti.com>
- <20191008140002.GY5610@atomide.com>
-From:   "santosh.shilimkar@oracle.com" <santosh.shilimkar@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <5e10f95c-7ec9-d3a7-6862-f6f07a9c1495@oracle.com>
-Date:   Wed, 9 Oct 2019 09:01:42 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.0
+        id S1731168AbfJIQOg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Oct 2019 12:14:36 -0400
+Received: from pandora.armlinux.org.uk ([78.32.30.218]:58394 "EHLO
+        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731155AbfJIQOg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Oct 2019 12:14:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=UijyCer4OUN5eEElHKm/eMJByc5emA01vxX2Cs2zO/g=; b=JjcNe/0a3WIMrZSOZNK+M8m/i
+        dNNTIIkD771PD5Rc4fqbhSw2jXBpX2MMpN5lLzZEjzWX8pKTQyCjx5AXyuH+2yArTKWTkCg6CvHDM
+        vY0bmLWi4GgkETi6iqWhWi5vT7yoGqwZjltEdpXZoGY1AYXG8iXXzWpbLhy9oJsCDy1BKIfkm8Ag8
+        Y3+zBSb6iQ9XENF2vbntrPzASEMsCgEkWA0VwbM4InKwjVnQzq7I7UsSNX20cECEHI09oH/4sUtmA
+        OTnmHnGf0M+PvKERHfj32Fv/rWOq5Ut+NtEZylL9SoH71daS1kz653VQgYxID+jc7vBXd+x6ZKiE5
+        2V0cdoRjg==;
+Received: from shell.armlinux.org.uk ([2001:4d48:ad52:3201:5054:ff:fe00:4ec]:42014)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1iIEbZ-0002Vj-ET; Wed, 09 Oct 2019 17:14:25 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1iIEbY-0007q4-3M; Wed, 09 Oct 2019 17:14:24 +0100
+Date:   Wed, 9 Oct 2019 17:14:24 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Ben Dooks <ben.dooks@codethink.co.uk>
+Cc:     linux-kernel@lists.codethink.co.uk,
+        Tony Lindgren <tony@atomide.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] ARM: OMAP2+: force iomem for omap_interconnect_sync
+Message-ID: <20191009161423.GB1337@shell.armlinux.org.uk>
+References: <20191009133902.28405-1-ben.dooks@codethink.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20191008140002.GY5610@atomide.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9405 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=4 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=831
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910090144
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9405 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=4 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=911 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910090144
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191009133902.28405-1-ben.dooks@codethink.co.uk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/8/19 7:00 AM, Tony Lindgren wrote:
-> * Tero Kristo <t-kristo@ti.com> [191008 05:56]:
->> Hi,
->>
->> Hopefully this is the final revision of the series. Just a repost of v7
->> with the single comment from Philipp fixed, and added reviewed by tags
->> from him for couple of the patches.
+On Wed, Oct 09, 2019 at 02:39:02PM +0100, Ben Dooks wrote:
+> Force the type of omap_interconnect_sync to avoid the
+> following sparse warnign:
 > 
-> Santosh, when applying these, can you please provide me an immutable
-> branch maybe against v5.4-rc1 that I can use as the base for the related
-> dts changes?
+> arch/arm/mach-omap2/omap4-common.c:142:27: warning: incorrect type in assignment (different address spaces)
+> arch/arm/mach-omap2/omap4-common.c:142:27:    expected void [noderef] <asn:2> *static [toplevel] sram_sync
+> arch/arm/mach-omap2/omap4-common.c:142:27:    got void *
 > 
-> For the whole series where not already done, please feel free to add:
+> Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+> ---
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-omap@vger.kernel.org
+> ---
+>  arch/arm/mach-omap2/omap4-common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Reviewed-by: Tony Lindgren <tony@atomide.com>
-> 
-Pushed a branch out with series and your reviewed-by tag. I have tagged
-it yet in case Peter's soc patches get ready.
+> diff --git a/arch/arm/mach-omap2/omap4-common.c b/arch/arm/mach-omap2/omap4-common.c
+> index 5c3845730dbf..d27c5f61d708 100644
+> --- a/arch/arm/mach-omap2/omap4-common.c
+> +++ b/arch/arm/mach-omap2/omap4-common.c
+> @@ -139,7 +139,7 @@ static int __init omap4_sram_init(void)
+>  		pr_warn("%s:Unable to get sram pool needed to handle errata I688\n",
+>  			__func__);
+>  	else
+> -		sram_sync = (void *)gen_pool_alloc(sram_pool, PAGE_SIZE);
+> +		sram_sync = (void __force __iomem *)gen_pool_alloc(sram_pool, PAGE_SIZE);
 
-git://git.kernel.org/pub/scm/linux/kernel/git/ssantosh/linux-keystone.git 
-for_5.5/driver-soc
+Not sure about this one - did you check whether the memory returned
+here really is iomem memory?  If it isn't iomem memory, then the
+warning should remain.
+
+Never hide a valid sparse warning - to do so goes against the whole
+point of sparse checks.  It isn't "pointing out that a cast is missing,
+we must add a cast", the point of sparse is to find and identify where
+the code is actually incorrect - in other words, MMIO accessors are
+used on memory that is not MMIO, or direct dereferences are used on
+memory that is MMIO.  If we go around merely casting the warnings away,
+it makes sparse completely pointless.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
+According to speedtest.net: 11.9Mbps down 500kbps up
