@@ -2,104 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B05D0D20F1
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 08:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30FC6D2186
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 09:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727116AbfJJGra (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Oct 2019 02:47:30 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:54836 "EHLO
+        id S1733026AbfJJHQJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Oct 2019 03:16:09 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:58666 "EHLO
         fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726840AbfJJGra (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Oct 2019 02:47:30 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9A6lOu2076120;
-        Thu, 10 Oct 2019 01:47:24 -0500
+        with ESMTP id S1732792AbfJJHOI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Oct 2019 03:14:08 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9A7DqTR083661;
+        Thu, 10 Oct 2019 02:13:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1570690044;
-        bh=2NGrdRhVIoqIsmWEZIYwhT9Oqhp/c16vKGI/TuQoJAk=;
+        s=ti-com-17Q1; t=1570691632;
+        bh=Igz9/V9k1PMM6aDmmF606+31uSx46fazy4qUkrGadDA=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=MHjM9V635XgecZ6pTSWcyFvBfSrZfsO3ksWR3bnCyHHYSIVYfbzXbqML+Tht7hJYj
-         Dnv0aYwVVQEs6iIs03/AlZV+n0Y+jGKudkZMRUIYs2K+3fUBn81YxRe3UnTIvivSPz
-         yt5zjLJdxbqD4qtdWeckthFxr8AHJvzhV1dFBsmA=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9A6lOeF121766
+        b=wehcdvPRmkEeSFaZQAOXAzuNNCNGADesihvUrY429jDGaQKSqzy6+eDrTYS8562gv
+         o8AT3QBPnot9VFZvKZRvtUATgiIibBjCvlMUVPbaChFxqaI6H5qstEd9O1ebr8y2aK
+         ZaNknGroLRMOYoGHQi1Wm+Uffr+kfn9agrBagBo8=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9A7DpZk001188
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 10 Oct 2019 01:47:24 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 10 Oct 2019 02:13:51 -0500
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 10
- Oct 2019 01:47:20 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2019 02:13:50 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 10 Oct 2019 01:47:23 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9A6lM6R097714;
-        Thu, 10 Oct 2019 01:47:22 -0500
-Subject: Re: [PATCHv2 7/7] drm/omap: hdmi4: fix use of uninitialized var
-To:     Tony Lindgren <tony@atomide.com>
-CC:     <dri-devel@lists.freedesktop.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Jyri Sarha <jsarha@ti.com>, <linux-omap@vger.kernel.org>
-References: <20190930103840.18970-1-tomi.valkeinen@ti.com>
- <20190930103840.18970-8-tomi.valkeinen@ti.com>
- <20191008141335.GB5610@atomide.com>
- <ffb498fb-5041-d3e9-2702-879f3d389adf@ti.com>
- <20191008142153.GD5610@atomide.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <59381248-5ded-7ea9-40a6-cbfb58a3c5b1@ti.com>
-Date:   Thu, 10 Oct 2019 09:47:21 +0300
+ Frontend Transport; Thu, 10 Oct 2019 02:13:50 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9A7Dmtv113245;
+        Thu, 10 Oct 2019 02:13:49 -0500
+Subject: Re: [PATCHv8 1/9] dt-bindings: omap: add new binding for PRM
+ instances
+To:     "santosh.shilimkar@oracle.com" <santosh.shilimkar@oracle.com>,
+        Sebastian Reichel <sre@kernel.org>
+CC:     <linux-omap@vger.kernel.org>, <ssantosh@kernel.org>,
+        <tony@atomide.com>, <s-anna@ti.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <p.zabel@pengutronix.de>
+References: <20191008125544.20679-1-t-kristo@ti.com>
+ <20191008125544.20679-2-t-kristo@ti.com>
+ <20191008154655.u34wkbqgmelv3aea@earth.universe>
+ <115ab938-e025-98fa-3b9e-0b3ced39307d@ti.com>
+ <dc2a9659-8593-e5d0-54b2-44d827e76759@oracle.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <95642d2d-af8e-061c-ef6a-7b615222f360@ti.com>
+Date:   Thu, 10 Oct 2019 10:13:47 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20191008142153.GD5610@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <dc2a9659-8593-e5d0-54b2-44d827e76759@oracle.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/10/2019 17:21, Tony Lindgren wrote:
-> * Tomi Valkeinen <tomi.valkeinen@ti.com> [191008 14:17]:
->> On 08/10/2019 17:13, Tony Lindgren wrote:
->>> * Tomi Valkeinen <tomi.valkeinen@ti.com> [190930 10:38]:
->>>> If use_mclk is false, mclk_mode is written to a register without
->>>> initialization. This doesn't cause any ill effects as the written value
->>>> is not used when use_mclk is false.
->>>>
->>>> To fix this, write use_mclk only when use_mclk is true.
+On 09/10/2019 18:59, santosh.shilimkar@oracle.com wrote:
+> 
+> 
+> On 10/8/19 11:52 PM, Tero Kristo wrote:
+>> On 08/10/2019 18:46, Sebastian Reichel wrote:
+>>> Hi,
 >>>
->>> Hey nice catch. Based on a quick test looks like this fixes an
->>> issue where power consumption stays higher after using HDMI.
+>>> On Tue, Oct 08, 2019 at 03:55:36PM +0300, Tero Kristo wrote:
+>>>> +Example:
+>>>> +
+>>>> +prm_dsp2: prm@1b00 {
+>>>> +    compatible = "ti,omap-prm-inst", "ti,dra7-prm-inst";
 >>>
->>> Would be nice to have merged in the v5.4-rc series:
->>>
->>> Tested-by: Tony Lindgren <tony@atomide.com>
+>>> Nit: compatible values are sorted the other way around (most
+>>> specific first).
 >>
->> Really? Ok, well, then it was a good random find =).
+>> Hmm right, I would not like to re-post the whole series just for this 
+>> seeing all the acks are in place already.
+>>
+>> Santosh, do you want to fix this locally or shall we post a separate 
+>> patch later on to fix this?
+>>
+> No need. I fixed it up. Pls check.
 > 
-> Yeah so it seems :) Earlier I thought there's still some
-> clkctrl setting wrong after using HDMI, but did not see
-> anything diffing the clkctrl registers before and after
-> and gave up.
-> 
->> I did already push this to drm-misc-next, as I thought it does not have any
->> real effect. I'll check if it's ok to push to drm-misc-fixes too, with Cc
->> stable.
-> 
-> OK great thanks.
+> git://git.kernel.org/pub/scm/linux/kernel/git/ssantosh/linux-keystone.git for_5.5/driver-soc 
 
-Pushing this to fixes too would cause conflicts, so we shouldn't push 
-without good reason. How much power saving you see?
+Yeah, looks fine to me.
 
-I think this can still be sent to stable later, after it has been merged 
-to mainline.
-
-  Tomi
-
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Thanks,
+Tero
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
