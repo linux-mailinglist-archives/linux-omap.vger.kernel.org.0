@@ -2,130 +2,146 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3ED3D26C5
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 11:54:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D634D2729
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 12:28:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387637AbfJJJyP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Oct 2019 05:54:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35016 "EHLO mail.kernel.org"
+        id S1726869AbfJJK2F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Oct 2019 06:28:05 -0400
+Received: from mail.andi.de1.cc ([85.214.55.253]:56694 "EHLO mail.andi.de1.cc"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727330AbfJJJyP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 10 Oct 2019 05:54:15 -0400
-Received: from earth.universe (dyndsl-037-138-093-062.ewe-ip-backbone.de [37.138.93.62])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 952FA2190F;
-        Thu, 10 Oct 2019 09:54:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570701253;
-        bh=zYnEA43N+yNd72umH2kRcCuRlBKmXNf3sRWiwm2OjuY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aDYRiJmUC9nZ/Zbq/wa09izbN20Zrdk853TyAhRJindD0cFySLYdzr1LlAD1aqcxD
-         3CT3lj59R6YyVFEZg6ee1b8q7TUXVXscxbihJHXWYYa7yLMStBUO2NAQbqzCnhPoQc
-         YgBgZ1cgu20zYCl7UGuWUu9QYy7yiGbTbZNLuNqE=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 664E13C0CA2; Thu, 10 Oct 2019 11:54:11 +0200 (CEST)
-Date:   Thu, 10 Oct 2019 11:54:11 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        id S1725601AbfJJK2E (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 10 Oct 2019 06:28:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
+        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=sOQUv+9i40QZHWyHeG0HLDmykEtAPA1EbXs7LAn8Tis=; b=fBYaHSwyyx5YEbrmp3azRgZ7L
+        fuRMzw41YEUaaY1ZvwlRHiAGZgPmMlo5UEvN7LVSAGgZIVTilOrgeHCIYTelEXOgOu3uWsg4aKhyz
+        IFBX67ZIl0KFSANsLaKtO2//+0WKtcPyRZSaL2ThbWdQPEHEzk7T9kShVGGo7xDBNqoAM=;
+Received: from leintor.e.ffh.zone ([81.3.6.94] helo=localhost)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iIVfm-0001Mc-Ht; Thu, 10 Oct 2019 12:27:57 +0200
+Received: from [::1] (helo=localhost)
+        by localhost with esmtp (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1iIVfh-0006GK-E4; Thu, 10 Oct 2019 12:27:49 +0200
+Date:   Thu, 10 Oct 2019 12:25:01 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
         linux-omap <linux-omap@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: omapdrm: dsi panels
-Message-ID: <20191010095411.zklj4vwodrxzzfto@earth.universe>
-References: <3C538A9E-BCE9-4ECF-97C2-52E823266296@goldelico.com>
- <a84c175e-3d78-6d51-2018-179d828fc7c7@ti.com>
- <20191010062540.GA4756@pendragon.ideasonboard.com>
- <B5784A6E-1EC1-471C-BE38-F7165002F659@goldelico.com>
- <20191010071633.GC4756@pendragon.ideasonboard.com>
- <01479203-47C8-4C68-9A03-653C151B89E1@goldelico.com>
+        =?ISO-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        DTML <devicetree@vger.kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        John Stultz <john.stultz@linaro.org>
+Subject: Re: [PATCH] ARM: dts: Use level interrupt for omap4 & 5 wlcore
+Message-ID: <20191010122501.750d0485@kemnade.info>
+In-Reply-To: <CAPDyKFqUL1Cso1H-sNcWFngWiLHLD76Uk9PtN2TkKS_Kd6TKJw@mail.gmail.com>
+References: <20191009164344.41093-1-tony@atomide.com>
+        <CAPDyKFqUL1Cso1H-sNcWFngWiLHLD76Uk9PtN2TkKS_Kd6TKJw@mail.gmail.com>
+X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qiffkg5yzbdvmz43"
-Content-Disposition: inline
-In-Reply-To: <01479203-47C8-4C68-9A03-653C151B89E1@goldelico.com>
-User-Agent: NeoMutt/20180716
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/vB1u7WO2oI=w1jDvqt9C2Fh"; protocol="application/pgp-signature"
+X-Spam-Score: -1.0 (-)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
---qiffkg5yzbdvmz43
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--Sig_/vB1u7WO2oI=w1jDvqt9C2Fh
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, 10 Oct 2019 09:29:45 +0200
+Ulf Hansson <ulf.hansson@linaro.org> wrote:
 
-On Thu, Oct 10, 2019 at 09:27:52AM +0200, H. Nikolaus Schaller wrote:
-> > Am 10.10.2019 um 09:16 schrieb Laurent Pinchart <laurent.pinchart@ideas=
-onboard.com>:
-> > On Thu, Oct 10, 2019 at 08:41:43AM +0200, H. Nikolaus Schaller wrote:
-> >> Am 10.10.2019 um 08:25 schrieb Laurent Pinchart:
-> >>> On Thu, Oct 10, 2019 at 09:07:27AM +0300, Tomi Valkeinen wrote:
-> >>>> On 10/10/2019 09:02, H. Nikolaus Schaller wrote:
-> >>>>> Hi Tomi,
-> >>>>> now as DPI panels have been moved to drm/panel are there plans to
-> >>>>> support DSI panels sitting there as well?
-> >>>>>=20
-> >>>>> I have looked to move our boe-w677l driver for the omap5/Pyra handh=
-eld
-> >>>>> but it seems there are still some omapdrm dependencies.
-> >>>>=20
-> >>>> No, OMAPDSS DSI support has not been moved to DRM model yet. I belie=
-ve=20
-> >>>> Sebastian has been looking at that.
-> >>>=20
-> >>> That's my understanding too, if I recall correctly Sebastian told me =
-he
-> >>> had a working implementation, but I'm not sure if it can be upstreamed
-> >>> as-is. It would be amazing to get it in mainline, as we'll be able to
-> >>> drop lots of code from omapdrm.
-> >>=20
-> >> Ok, fine. I just wonder if a new driver for omapdrm/displays can then
-> >> be accepted for upstreaming or how long we should have to wait.
-> >=20
-> > I would prefer avoiding new drivers in omapdrm/displays. If you could
-> > collaborate with Sebastian that would be best :-)
+> On Wed, 9 Oct 2019 at 18:43, Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > Commit 572cf7d7b07d ("ARM: dts: Improve omap l4per idling with wlcore e=
+dge
+> > sensitive interrupt") changed wlcore interrupts to use edge interrupt b=
+ased
+> > on what's specified in the wl1835mod.pdf data sheet.
+> >
+> > However, there are still cases where we can have lost interrupts as
+> > described in omap_gpio_unidle(). And using a level interrupt instead of=
+ edge
+> > interrupt helps as we avoid the check for untriggered GPIO interrupts in
+> > omap_gpio_unidle().
+> >
+> > And with commit e6818d29ea15 ("gpio: gpio-omap: configure edge detection
+> > for level IRQs for idle wakeup") GPIOs idle just fine with level interr=
+upts.
+> >
+> > Let's change omap4 and 5 wlcore users back to using level interrupt
+> > instead of edge interrupt. Let's not change the others as I've only seen
+> > this on omap4 and 5, probably because the other SoCs don't have l4per i=
+dle
+> > independent of the CPUs. =20
 >=20
-> if you have a patch series to share, I could base my driver on it for
-> testing.
+> I assume this relates to the implementation for support of SDIO IRQs
+> (and wakeups) in the omap_hsmmc driver?
+>=20
+> In any case, just wanted to share some experience in the field, feel
+> free to do whatever you want with the below information. :-)
+>=20
+> So, while I was working for ST-Ericsson on ux500, we had a very
+> similar approach to re-route the SDIO bus DAT1 line to a GPIO IRQ as a
+> remote/system wakeup (vendor hack in the mmci driver). In other words,
+> while runtime suspending the mmc host controller, we configured a GPIO
+> IRQ, via an always on logic, to capture the IRQ instead. The point is,
+> I believe we may have ended up looking at similar problems as you have
+> been facing on OMAP.
+>=20
+> In hindsight, I realized that we actually violated the SDIO spec by
+> using this approach. More precisely, during runtime suspend we do
+> clock gating and then re-routes the IRQ. However, clock gating isn't
+> allowed before the SDIO bus width have been changed back from 4-bit
+> into 1-bit. This last piece of action, would be an interesting change
+> to see if it could affect the behaviour, but unfortunately I have
+> never been able to check this.
+>=20
+> The tricky part, is that we can't issue a command to change the bus to
+> 1-bit in omap_hsmmc ->runtime_suspend() callback (this needs to be
+> managed by the core in some way). However, we can make a simple test,
+> by simply always limit the bus width to 1-bit, as that should mean we
+> should conform to the SDIO spec.
+>=20
 
-This is my WIP development branch for converting the panel-dsi-cm
-driver into a drm_panel. The driver still is in omapdrm/displays in
-the branch, but it is free of any omapdrm specific things and can
-trivially be moved to drm/panels.
+somehow matches that with my experiences with libertas + omap3.
+SDIO irq seems to work only with runtime force-enabled in omap_hsmmc
+or using 1bit mode.
+And yes, I tried switching mode to 1bit in runtime_suspend() but as
+you said, that cannot easily done.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-n900.git/log/?h=
-=3Domapdrm-5.4-dsi-dev
+Regards,
+Andreas
 
-The branch is working on Droid 4, but panel unblanking after a blank
-results in a kernel crash. Also system shutdown results in a kernel
-crash. I plan to send out the series once I fixed these issues.
-
--- Sebastian
-
---qiffkg5yzbdvmz43
-Content-Type: application/pgp-signature; name="signature.asc"
+--Sig_/vB1u7WO2oI=w1jDvqt9C2Fh
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl2e/74ACgkQ2O7X88g7
-+pqtnQ/+OlvWyh1mrrrkGEpFB/y2vxJkFs+w+G8dtBurbNdYA7EWsQ2IHtWbrhap
-UxRctF2laZtaTv5hQRcu4QHVOcuWHiib1Qy+pZvpu8JS9+1ymnJKhxoIh2nHShyN
-6ENf+HAj4FpvGUxreTkcwmQZjhSYzJf9wYAbnOi6t90yrZmEULjnaHaxYprSjx0f
-bhFZMosShxZdzwyKgHnzKOgC99mQdtqX9HZqsR9OavBUE8rKwQoFKi0lnRGsHWCs
-7zaUVA0BQSgoqAi2iq5fx6B6sy5F9jy+RXnJvM7wdvXldBls6CSMq1MwOXeHlZ8Z
-ZHBXtc8sH24Re2AJhHWqSmW2oqVriloP+z1FqOGxEF8u8MEwhnJhA7ckW0lJzcDz
-A32UUvIYlZfsebF8I1JDxg5YD1L+tGbJbaF08Upd1TVLsNFpefuOgjBTH9JTscNd
-nWApIC56rnsWUtRiDBdbJcH2d+B39IPcRzrT6bnN3CqQT/w9acDC9LGYQvFNrf6W
-Uwx/zhBgBqPoniWt6W+HWOoawzHmLZfeZMU9uKw2YZCJFBsYnZBkxwUbjQshM8Yj
-bszk8paG2RvbiZMkQXPOY4jBpNMGnyYUMQjjnucmZUE+HjGZhNTy1QbicxIoP1Ux
-VWFZwkm/oZauV7EmXnDy0zu+UMfxM3vundizxb40PlJPqyz3N0A=
-=RkRm
+iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl2fBv0ACgkQl4jFM1s/
+ye9O6A//VlTPsnB/dywzw2PxbTL+qdPHRvN6KVpZQl02DumTowmz745M1jl8KkkW
+Z+6BdzNwQONwc+IuO/aTuImt9/+E3b2fLaOnbIcIDc8X0AHZvyWFU5dSCPcHzeLI
+WZUgAR3VTetf1YOAUaUinBFHXY9r9MMcJ9YUC9IkUvkTf5eoeHJ+My33SKWbJRTM
+U0227vam43JppT6xGIKmEK8R78r3qC8q12MZ4PXLdC93hpSrdGm5QhTz4gYFSkpu
+1lFubFJVeoV/vnCR1vlIKCY7J2bmFSFVqt734hZrJSIakYwjdjjek4FtCjWfmxux
+9aOR91CbOYw8am+YOWz/4txN/Bu9IC3BY6J0TkHbbf/kSrOrRGbNE81Ai2WFO40d
+kKR9rFL+PNPEhQNxotrYd8WTCgONvMI0I1sndfA8Q5byO+dIi/j1eNGglRRjXEaw
+t3GpmYDhHd4PapF2rEiAXTNsgKamwgUG2K7KnBVzDMxjqBPMv5FXgP8dv1uh3hJ9
+rZXih6LHZNT74nJiFPD1tlsA0R5rZOyIfRzop3H/AfEbUlWvzfJUL+lcjyKe/euy
+Lw76b2S1NS16KDoG22/XKFuRsMIqstO4+GBkbycSseHxP6CLQ4tD3aIwT7A1wVvv
+Doet2Uxewz4al/93OVO+/+5Z1oqX0ZRRwM7MQILJZKvFtiMsqLc=
+=SurR
 -----END PGP SIGNATURE-----
 
---qiffkg5yzbdvmz43--
+--Sig_/vB1u7WO2oI=w1jDvqt9C2Fh--
