@@ -2,146 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D634D2729
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 12:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6402AD276C
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 12:45:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726869AbfJJK2F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Oct 2019 06:28:05 -0400
-Received: from mail.andi.de1.cc ([85.214.55.253]:56694 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725601AbfJJK2E (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 10 Oct 2019 06:28:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
-        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=sOQUv+9i40QZHWyHeG0HLDmykEtAPA1EbXs7LAn8Tis=; b=fBYaHSwyyx5YEbrmp3azRgZ7L
-        fuRMzw41YEUaaY1ZvwlRHiAGZgPmMlo5UEvN7LVSAGgZIVTilOrgeHCIYTelEXOgOu3uWsg4aKhyz
-        IFBX67ZIl0KFSANsLaKtO2//+0WKtcPyRZSaL2ThbWdQPEHEzk7T9kShVGGo7xDBNqoAM=;
-Received: from leintor.e.ffh.zone ([81.3.6.94] helo=localhost)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1iIVfm-0001Mc-Ht; Thu, 10 Oct 2019 12:27:57 +0200
-Received: from [::1] (helo=localhost)
-        by localhost with esmtp (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1iIVfh-0006GK-E4; Thu, 10 Oct 2019 12:27:49 +0200
-Date:   Thu, 10 Oct 2019 12:25:01 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        =?ISO-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        DTML <devicetree@vger.kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
-        John Stultz <john.stultz@linaro.org>
-Subject: Re: [PATCH] ARM: dts: Use level interrupt for omap4 & 5 wlcore
-Message-ID: <20191010122501.750d0485@kemnade.info>
-In-Reply-To: <CAPDyKFqUL1Cso1H-sNcWFngWiLHLD76Uk9PtN2TkKS_Kd6TKJw@mail.gmail.com>
-References: <20191009164344.41093-1-tony@atomide.com>
-        <CAPDyKFqUL1Cso1H-sNcWFngWiLHLD76Uk9PtN2TkKS_Kd6TKJw@mail.gmail.com>
-X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
+        id S1731155AbfJJKpY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Oct 2019 06:45:24 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:33448 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725601AbfJJKpY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Oct 2019 06:45:24 -0400
+Received: by mail-pf1-f195.google.com with SMTP id q10so3655966pfl.0
+        for <linux-omap@vger.kernel.org>; Thu, 10 Oct 2019 03:45:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=YeFYhKm4PJo5d1ZlY/G1oQFiqY2ifkLQAS5VyiJD2kA=;
+        b=cG3q9551YC42aPOxOY7I1S4iCUNQ+FiNULJWSzr2B6bjMy036gzBA007+gLvAx5def
+         X2UCn8VpNQkf5PrY1dSf/jLn9ogdqFQ05qumhkMbpH0aXYl/3zaFCkbBWWsx/m9EcTJN
+         EGPWiespyxve8xlsh9sSSV0IC3TnlyP2SHIz++ugv6fir6w4NoPrYuJN5eiHRl9Pq0jU
+         6q1jsNvySYH+umo3d7rqbZPwL4Z7qbGyQiZ2va1gssLuCcIlCVWy/qRkR1M7XkimuCKF
+         H155NqnphhFljtBZEkZGQ2DM7KWh+8rYmfRFXVzFCmdy+vLllLmQEdfJc/kvo1u+9+0P
+         ZVwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=YeFYhKm4PJo5d1ZlY/G1oQFiqY2ifkLQAS5VyiJD2kA=;
+        b=okzAbINnBxqLrGi2yS3eyt9li82LZzoACzV2yy+GbVlzIWQzqeAhg4dXRb4caGr44R
+         FqytddqlRRaySN+HOeRy3gI3PwjkC85SCx4A+KjlEN4G5eCanDYPBxP15ZGV6mK1KkIQ
+         Vat22CS+QKi7B0I0xWK8cCkrcDZdg1xyW13xNE8J/zcm9RQbfw3Yu6vxRyB2OC6bCqRp
+         Cvavz0llIUhPrq4ncCwAIclSo7kkygfYf5OchnR846gedSITyd+CRQpTkbFQW1IUB1rW
+         K7LcOko8uxeXJlWTBHzUElPlaOjdM0223mvhrJDoJi5agTgEhLnmilLH0vldgecQK1ct
+         Fb7Q==
+X-Gm-Message-State: APjAAAU4zXNPoDBpmwFQCOVvrPXfdnYte7tpA7GnBksUJa6M7ZNK9EV/
+        4Uz8cuHOj+K9MU9jVWAyF2hFW90DN3w=
+X-Google-Smtp-Source: APXvYqwYM9M/m3MClMu4Z8S007xBWdkHJrU/NyiZs+nhmdbjrvkkM8AQQUaF3lEebzVejNsXRxT5JA==
+X-Received: by 2002:a17:90a:c383:: with SMTP id h3mr10552761pjt.122.1570704323312;
+        Thu, 10 Oct 2019 03:45:23 -0700 (PDT)
+Received: from localhost ([122.172.151.112])
+        by smtp.gmail.com with ESMTPSA id z13sm6824122pfq.121.2019.10.10.03.45.22
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 10 Oct 2019 03:45:22 -0700 (PDT)
+Date:   Thu, 10 Oct 2019 16:15:20 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Adam Ford <aford173@gmail.com>,
+        =?utf-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Enric Balletbo i Serra <eballetbo@gmail.com>,
+        Javier Martinez Canillas <javier@dowhile0.org>,
+        Roger Quadros <rogerq@ti.com>,
+        Teresa Remmet <t.remmet@phytec.de>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 0/8] OMAP3: convert opp-v1 to opp-v2 and read speed
+ binned / 720MHz grade bits
+Message-ID: <20191010104520.n77wxxyxvyeo2i4u@vireshk-i7>
+References: <cover.1568224032.git.hns@goldelico.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/vB1u7WO2oI=w1jDvqt9C2Fh"; protocol="application/pgp-signature"
-X-Spam-Score: -1.0 (-)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1568224032.git.hns@goldelico.com>
+User-Agent: NeoMutt/20180716-391-311a52
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---Sig_/vB1u7WO2oI=w1jDvqt9C2Fh
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 11-09-19, 19:47, H. Nikolaus Schaller wrote:
+> CHANGES V3:
+> * make omap36xx control the abb-ldo and properly switch mode
+>   (suggested by Adam Ford <aford173@gmail.com>)
+> * add a note about enabling the turbo-mode OPPs
 
-On Thu, 10 Oct 2019 09:29:45 +0200
-Ulf Hansson <ulf.hansson@linaro.org> wrote:
+Applied the series to cpufreq/arm tree.
 
-> On Wed, 9 Oct 2019 at 18:43, Tony Lindgren <tony@atomide.com> wrote:
-> >
-> > Commit 572cf7d7b07d ("ARM: dts: Improve omap l4per idling with wlcore e=
-dge
-> > sensitive interrupt") changed wlcore interrupts to use edge interrupt b=
-ased
-> > on what's specified in the wl1835mod.pdf data sheet.
-> >
-> > However, there are still cases where we can have lost interrupts as
-> > described in omap_gpio_unidle(). And using a level interrupt instead of=
- edge
-> > interrupt helps as we avoid the check for untriggered GPIO interrupts in
-> > omap_gpio_unidle().
-> >
-> > And with commit e6818d29ea15 ("gpio: gpio-omap: configure edge detection
-> > for level IRQs for idle wakeup") GPIOs idle just fine with level interr=
-upts.
-> >
-> > Let's change omap4 and 5 wlcore users back to using level interrupt
-> > instead of edge interrupt. Let's not change the others as I've only seen
-> > this on omap4 and 5, probably because the other SoCs don't have l4per i=
-dle
-> > independent of the CPUs. =20
->=20
-> I assume this relates to the implementation for support of SDIO IRQs
-> (and wakeups) in the omap_hsmmc driver?
->=20
-> In any case, just wanted to share some experience in the field, feel
-> free to do whatever you want with the below information. :-)
->=20
-> So, while I was working for ST-Ericsson on ux500, we had a very
-> similar approach to re-route the SDIO bus DAT1 line to a GPIO IRQ as a
-> remote/system wakeup (vendor hack in the mmci driver). In other words,
-> while runtime suspending the mmc host controller, we configured a GPIO
-> IRQ, via an always on logic, to capture the IRQ instead. The point is,
-> I believe we may have ended up looking at similar problems as you have
-> been facing on OMAP.
->=20
-> In hindsight, I realized that we actually violated the SDIO spec by
-> using this approach. More precisely, during runtime suspend we do
-> clock gating and then re-routes the IRQ. However, clock gating isn't
-> allowed before the SDIO bus width have been changed back from 4-bit
-> into 1-bit. This last piece of action, would be an interesting change
-> to see if it could affect the behaviour, but unfortunately I have
-> never been able to check this.
->=20
-> The tricky part, is that we can't issue a command to change the bus to
-> 1-bit in omap_hsmmc ->runtime_suspend() callback (this needs to be
-> managed by the core in some way). However, we can make a simple test,
-> by simply always limit the bus width to 1-bit, as that should mean we
-> should conform to the SDIO spec.
->=20
+Also shared a branch for you Tony: cpufreq/ti/oppv2.
 
-somehow matches that with my experiences with libertas + omap3.
-SDIO irq seems to work only with runtime force-enabled in omap_hsmmc
-or using 1bit mode.
-And yes, I tried switching mode to 1bit in runtime_suspend() but as
-you said, that cannot easily done.
-
-Regards,
-Andreas
-
---Sig_/vB1u7WO2oI=w1jDvqt9C2Fh
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl2fBv0ACgkQl4jFM1s/
-ye9O6A//VlTPsnB/dywzw2PxbTL+qdPHRvN6KVpZQl02DumTowmz745M1jl8KkkW
-Z+6BdzNwQONwc+IuO/aTuImt9/+E3b2fLaOnbIcIDc8X0AHZvyWFU5dSCPcHzeLI
-WZUgAR3VTetf1YOAUaUinBFHXY9r9MMcJ9YUC9IkUvkTf5eoeHJ+My33SKWbJRTM
-U0227vam43JppT6xGIKmEK8R78r3qC8q12MZ4PXLdC93hpSrdGm5QhTz4gYFSkpu
-1lFubFJVeoV/vnCR1vlIKCY7J2bmFSFVqt734hZrJSIakYwjdjjek4FtCjWfmxux
-9aOR91CbOYw8am+YOWz/4txN/Bu9IC3BY6J0TkHbbf/kSrOrRGbNE81Ai2WFO40d
-kKR9rFL+PNPEhQNxotrYd8WTCgONvMI0I1sndfA8Q5byO+dIi/j1eNGglRRjXEaw
-t3GpmYDhHd4PapF2rEiAXTNsgKamwgUG2K7KnBVzDMxjqBPMv5FXgP8dv1uh3hJ9
-rZXih6LHZNT74nJiFPD1tlsA0R5rZOyIfRzop3H/AfEbUlWvzfJUL+lcjyKe/euy
-Lw76b2S1NS16KDoG22/XKFuRsMIqstO4+GBkbycSseHxP6CLQ4tD3aIwT7A1wVvv
-Doet2Uxewz4al/93OVO+/+5Z1oqX0ZRRwM7MQILJZKvFtiMsqLc=
-=SurR
------END PGP SIGNATURE-----
-
---Sig_/vB1u7WO2oI=w1jDvqt9C2Fh--
+-- 
+viresh
