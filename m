@@ -2,90 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 091E2D2B38
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 15:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 992E5D2B9D
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 15:44:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388027AbfJJNYM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Oct 2019 09:24:12 -0400
-Received: from muru.com ([72.249.23.125]:36868 "EHLO muru.com"
+        id S1733114AbfJJNov (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Oct 2019 09:44:51 -0400
+Received: from muru.com ([72.249.23.125]:36886 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387828AbfJJNYL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 10 Oct 2019 09:24:11 -0400
+        id S1732912AbfJJNov (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 10 Oct 2019 09:44:51 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 565B580BB;
-        Thu, 10 Oct 2019 13:24:44 +0000 (UTC)
-Date:   Thu, 10 Oct 2019 06:24:07 -0700
+        by muru.com (Postfix) with ESMTPS id EBC9180BB;
+        Thu, 10 Oct 2019 13:45:23 +0000 (UTC)
+Date:   Thu, 10 Oct 2019 06:44:47 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Jyri Sarha <jsarha@ti.com>, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv2 7/7] drm/omap: hdmi4: fix use of uninitialized var
-Message-ID: <20191010132407.GS5610@atomide.com>
-References: <20190930103840.18970-1-tomi.valkeinen@ti.com>
- <20190930103840.18970-8-tomi.valkeinen@ti.com>
- <20191008141335.GB5610@atomide.com>
- <ffb498fb-5041-d3e9-2702-879f3d389adf@ti.com>
- <20191008142153.GD5610@atomide.com>
- <59381248-5ded-7ea9-40a6-cbfb58a3c5b1@ti.com>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        DTML <devicetree@vger.kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        John Stultz <john.stultz@linaro.org>
+Subject: Re: [PATCH] ARM: dts: Use level interrupt for omap4 & 5 wlcore
+Message-ID: <20191010134447.GT5610@atomide.com>
+References: <20191009164344.41093-1-tony@atomide.com>
+ <CAPDyKFqUL1Cso1H-sNcWFngWiLHLD76Uk9PtN2TkKS_Kd6TKJw@mail.gmail.com>
+ <20191010122501.750d0485@kemnade.info>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <59381248-5ded-7ea9-40a6-cbfb58a3c5b1@ti.com>
+In-Reply-To: <20191010122501.750d0485@kemnade.info>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tomi Valkeinen <tomi.valkeinen@ti.com> [191010 06:48]:
-> On 08/10/2019 17:21, Tony Lindgren wrote:
-> > * Tomi Valkeinen <tomi.valkeinen@ti.com> [191008 14:17]:
-> > > On 08/10/2019 17:13, Tony Lindgren wrote:
-> > > > * Tomi Valkeinen <tomi.valkeinen@ti.com> [190930 10:38]:
-> > > > > If use_mclk is false, mclk_mode is written to a register without
-> > > > > initialization. This doesn't cause any ill effects as the written value
-> > > > > is not used when use_mclk is false.
-> > > > > 
-> > > > > To fix this, write use_mclk only when use_mclk is true.
-> > > > 
-> > > > Hey nice catch. Based on a quick test looks like this fixes an
-> > > > issue where power consumption stays higher after using HDMI.
-> > > > 
-> > > > Would be nice to have merged in the v5.4-rc series:
-> > > > 
-> > > > Tested-by: Tony Lindgren <tony@atomide.com>
-> > > 
-> > > Really? Ok, well, then it was a good random find =).
-> > 
-> > Yeah so it seems :) Earlier I thought there's still some
-> > clkctrl setting wrong after using HDMI, but did not see
-> > anything diffing the clkctrl registers before and after
-> > and gave up.
-> > 
-> > > I did already push this to drm-misc-next, as I thought it does not have any
-> > > real effect. I'll check if it's ok to push to drm-misc-fixes too, with Cc
-> > > stable.
-> > 
-> > OK great thanks.
+* Andreas Kemnade <andreas@kemnade.info> [191010 10:28]:
+> On Thu, 10 Oct 2019 09:29:45 +0200
+> Ulf Hansson <ulf.hansson@linaro.org> wrote:
 > 
-> Pushing this to fixes too would cause conflicts, so we shouldn't push
-> without good reason. How much power saving you see?
+> > On Wed, 9 Oct 2019 at 18:43, Tony Lindgren <tony@atomide.com> wrote:
+> > >
+> > > Commit 572cf7d7b07d ("ARM: dts: Improve omap l4per idling with wlcore edge
+> > > sensitive interrupt") changed wlcore interrupts to use edge interrupt based
+> > > on what's specified in the wl1835mod.pdf data sheet.
+> > >
+> > > However, there are still cases where we can have lost interrupts as
+> > > described in omap_gpio_unidle(). And using a level interrupt instead of edge
+> > > interrupt helps as we avoid the check for untriggered GPIO interrupts in
+> > > omap_gpio_unidle().
+> > >
+> > > And with commit e6818d29ea15 ("gpio: gpio-omap: configure edge detection
+> > > for level IRQs for idle wakeup") GPIOs idle just fine with level interrupts.
+> > >
+> > > Let's change omap4 and 5 wlcore users back to using level interrupt
+> > > instead of edge interrupt. Let's not change the others as I've only seen
+> > > this on omap4 and 5, probably because the other SoCs don't have l4per idle
+> > > independent of the CPUs.  
+> > 
+> > I assume this relates to the implementation for support of SDIO IRQs
+> > (and wakeups) in the omap_hsmmc driver?
 
-Sure no rush with this one. I should also test again that it
-really fixes the issue I'm seeing.
+In the wlcore case, there's actually an out-of-band GPIO interrupt that
+can be used. That is in addition to the SDIO bus DAT1 line, that is not
+currently used for wlcore wake-up.
 
-Hmm so what register does this clock actually change?
+> > In any case, just wanted to share some experience in the field, feel
+> > free to do whatever you want with the below information. :-)
+> > 
+> > So, while I was working for ST-Ericsson on ux500, we had a very
+> > similar approach to re-route the SDIO bus DAT1 line to a GPIO IRQ as a
+> > remote/system wakeup (vendor hack in the mmci driver). In other words,
+> > while runtime suspending the mmc host controller, we configured a GPIO
+> > IRQ, via an always on logic, to capture the IRQ instead. The point is,
+> > I believe we may have ended up looking at similar problems as you have
+> > been facing on OMAP.
+> > 
+> > In hindsight, I realized that we actually violated the SDIO spec by
+> > using this approach. More precisely, during runtime suspend we do
+> > clock gating and then re-routes the IRQ. However, clock gating isn't
+> > allowed before the SDIO bus width have been changed back from 4-bit
+> > into 1-bit. This last piece of action, would be an interesting change
+> > to see if it could affect the behaviour, but unfortunately I have
+> > never been able to check this.
+> > 
+> > The tricky part, is that we can't issue a command to change the bus to
+> > 1-bit in omap_hsmmc ->runtime_suspend() callback (this needs to be
+> > managed by the core in some way). However, we can make a simple test,
+> > by simply always limit the bus width to 1-bit, as that should mean we
+> > should conform to the SDIO spec.
+> > 
+> 
+> somehow matches that with my experiences with libertas + omap3.
+> SDIO irq seems to work only with runtime force-enabled in omap_hsmmc
+> or using 1bit mode.
+> And yes, I tried switching mode to 1bit in runtime_suspend() but as
+> you said, that cannot easily done.
 
-I'm seeing an increase of few tens of extra mW, which means at
-least one day of standby time less for me :) It does not happen
-always, maybe half of the time.
+Yeah libertas still has a pending issue and we're missing the 1-bit
+mode. From my experience, libertas is a power hog though when in use.
 
-> I think this can still be sent to stable later, after it has been merged to
-> mainline.
+Meanwhile, mwifiex and wlcore SDIO have been behaving very nice with
+PM for omap3 variants for many years. That is even without the 1-bit
+change.
 
-Yes sure.
+But on omap4 I've seen lost interrupts with wlcore GPIO interrupt,
+while omap4 with mwifiex using SDIO DAT1 interrupt has been behaving.
 
-Thanks,
+The $subject patch fixes the lost wlcore GPIO interrupt issue, after
+all the surrounding GPIO fixes done during this year.
+
+FYI, my PM regression test is just ping -c1 an idle system over WLAN :)
+
+Then based on the ping response time I know the device is idling
+properly and the wake-up is working.
+
+The test also confirms that all the surrounding stuff like
+regulators, GPIOs, pinctrl wakeirq, and MMC layer are behaving.
+
+Then a more advanced version of this test is to ssh to an idle system
+and check the latency is OK for typing and measure power consumption
+when idle.
+
+Regards,
 
 Tony
