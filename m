@@ -2,101 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85257D1D36
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 02:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64326D2098
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 08:02:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732483AbfJJAMk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Oct 2019 20:12:40 -0400
-Received: from muru.com ([72.249.23.125]:36792 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732334AbfJJAMj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Oct 2019 20:12:39 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id A28A68140;
-        Thu, 10 Oct 2019 00:13:12 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH 8/8] ARM: OMAP2+: Initialize voltage controller for omap4
-Date:   Wed,  9 Oct 2019 17:12:24 -0700
-Message-Id: <20191010001224.41826-9-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191010001224.41826-1-tony@atomide.com>
-References: <20191010001224.41826-1-tony@atomide.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1732821AbfJJGCk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Oct 2019 02:02:40 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.218]:30552 "EHLO
+        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726983AbfJJGCk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Oct 2019 02:02:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1570687358;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:Cc:Message-Id:Date:Subject:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=yO1tqzRLFZEI6lonz5wMj4kQNc1chTOXzwu7MlVhARA=;
+        b=PZbQh2i4A359mZXCzrR247MfuFkuYYm/dlK24uTWKbtoT/uA1PgWXuIK27NViWAw6C
+        bN/W0QWvp7Qx67R8babWki+rlkOQEvkLq9H2Wmy6yileoBohvd6k6rUBXzCrCPU+Eri7
+        gmMQbVIIR56vuXhCylwht1vGcYz6zYAvYhF4O2mTrzMCD4i61pZp5yuZ0il8DkvuQVNb
+        VqACN4XiltkAy9wZnDyPj22N0GfvJc8/ioMFTdrt0Qxp14M6Fq261snDf0kP8OTuRDDA
+        aNjIo4oht1A6sFq9JNoScDwLhXCWGm0Tsxnj2atIUOr3jzxrXFF1mltax4899rWyf2RE
+        TTTg==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/zowDCp46Q="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 44.28.0 DYNA|AUTH)
+        with ESMTPSA id v00409v9A62R24Q
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Thu, 10 Oct 2019 08:02:27 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Subject: omapdrm: dsi panels
+Date:   Thu, 10 Oct 2019 08:02:26 +0200
+Message-Id: <3C538A9E-BCE9-4ECF-97C2-52E823266296@goldelico.com>
+Cc:     linux-omap <linux-omap@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We're missing initializing the PRM_VOLTCTRL register for voltage
-controller. Let's add omap4_vc_init_pmic_signaling() similar to what we
-have for omap3 and enable voltage control for retention.
+Hi Tomi,
+now as DPI panels have been moved to drm/panel are there plans to
+support DSI panels sitting there as well?
 
-This brings down droid4 power consumption with mainline kernel to somewhere
-between 40 and 50mW from about 70 to 80 mW for the whole device when running
-idle with LCD and backlight off, WLAN connected, and USB and modem modules
-unloaded.
+I have looked to move our boe-w677l driver for the omap5/Pyra handheld
+but it seems there are still some omapdrm dependencies.
 
-Mostly just rmmod of omap2430, ohci-platform and phy-mapphone-mdm6600 are
-needed to idle USB and shut down the modem. And after that measuring idle
-power consumption can be done with reading sysfs entry every ten seconds for
-/sys/class/power_supply/battery/power_avg. Then rmmod of phy-cpcap-usb will
-save few more mW, but will disable the debug UART.
+A quick search for "omap" reveals:
 
-Note that sometimes CM_L4PER_UART1_CLKCTRL at 0x4a009540 does not idle
-properly after unloading of phy-mapphone-mdm6600.
+#include "../dss/omapdss.h"
+struct omap_dss_device
+struct omap_dss_driver
+struct omap_dsi_pin_config
+struct omap_dss_device_ops
+OMAP_DSS_DSI_FMT_RGB888
+OMAP_DSS_DSI_VIDEO_MODE
+OMAP_DSS_DSI_BURST_MODE
+OMAP_DSS_DEVICE_OP_MODES
+OMAP_DISPLAY_TYPE_DSI
+omapdss_device_is_enabled()
+omapdss_display_get_modes()
+omapdss_display_init()
+omapdss_device_register()
+omapdss_device_unregister()
 
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/mach-omap2/vc.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+BR and thanks,
+Nikolaus
 
-diff --git a/arch/arm/mach-omap2/vc.c b/arch/arm/mach-omap2/vc.c
---- a/arch/arm/mach-omap2/vc.c
-+++ b/arch/arm/mach-omap2/vc.c
-@@ -26,6 +26,16 @@
- #include "scrm44xx.h"
- #include "control.h"
- 
-+#define OMAP4430_AUTO_CTRL_VDD_IVA(x)		((x) << 4)
-+#define OMAP4430_AUTO_CTRL_VDD_MPU(x)		((x) << 2)
-+#define OMAP4430_AUTO_CTRL_VDD_CORE(x)		((x) << 0)
-+#define OMAP4430_AUTO_CTRL_VDD_RET		2
-+
-+#define OMAP4_VDD_DEFAULT_VAL	\
-+	(OMAP4430_AUTO_CTRL_VDD_IVA(OMAP4430_AUTO_CTRL_VDD_RET) | \
-+	 OMAP4430_AUTO_CTRL_VDD_MPU(OMAP4430_AUTO_CTRL_VDD_RET) | \
-+	 OMAP4430_AUTO_CTRL_VDD_CORE(OMAP4430_AUTO_CTRL_VDD_RET))
-+
- /**
-  * struct omap_vc_channel_cfg - describe the cfg_channel bitfield
-  * @sa: bit for slave address
-@@ -542,9 +552,19 @@ static void omap4_set_timings(struct voltagedomain *voltdm, bool off_mode)
- 	writel_relaxed(val, OMAP4_SCRM_CLKSETUPTIME);
- }
- 
-+static void __init omap4_vc_init_pmic_signaling(struct voltagedomain *voltdm)
-+{
-+	if (vc.vd)
-+		return;
-+
-+	vc.vd = voltdm;
-+	voltdm->write(OMAP4_VDD_DEFAULT_VAL, OMAP4_PRM_VOLTCTRL_OFFSET);
-+}
-+
- /* OMAP4 specific voltage init functions */
- static void __init omap4_vc_init_channel(struct voltagedomain *voltdm)
- {
-+	omap4_vc_init_pmic_signaling(voltdm);
- 	omap4_set_timings(voltdm, true);
- 	omap4_set_timings(voltdm, false);
- }
--- 
-2.23.0
