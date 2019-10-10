@@ -2,82 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EE7DD20DD
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 08:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B05D0D20F1
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 08:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727041AbfJJGl6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Oct 2019 02:41:58 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:10144 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726840AbfJJGl5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Oct 2019 02:41:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1570689713;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=c8LGZ3SWH8Ig6IAVk204LkW/1lH3AvFRp09E9DFnbac=;
-        b=efszSh488wOI9KtQVmw/WwXDATD5bEc2Lga+kZHVwVRdzNrEZP6Du8qyZp7ap02VR/
-        oazhr+7kpZX6EM7jpBmcE9jvYWUrW0sHYExgdBhKN8PlGgyqt06gH5Po7ZEs5SN1BkSY
-        N9yoEwmf6Xtx1YqFWAKFtd0ZimTTujf6/hzI5bhv4bXNPeHWJ3A+vQChGpbIPcZywVk0
-        23p6yu904iFe1IGMKRRxS1xMnxRw5UQ2iYOkO3q9yfV4TlD1ngE1qorgAsetYZmPwB1L
-        ZEBaz20oQkqoBIHNfiDgKFH6gct2FBVF7KtqsdVBXeDfoTciJ2+OxQB8IhKF9ztYH+Dw
-        tFSw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/zowDCp46Q="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.28.0 DYNA|AUTH)
-        with ESMTPSA id v00409v9A6fi2FU
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Thu, 10 Oct 2019 08:41:44 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: omapdrm: dsi panels
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20191010062540.GA4756@pendragon.ideasonboard.com>
-Date:   Thu, 10 Oct 2019 08:41:43 +0200
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        Sebastian Reichel <sre@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B5784A6E-1EC1-471C-BE38-F7165002F659@goldelico.com>
-References: <3C538A9E-BCE9-4ECF-97C2-52E823266296@goldelico.com> <a84c175e-3d78-6d51-2018-179d828fc7c7@ti.com> <20191010062540.GA4756@pendragon.ideasonboard.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1727116AbfJJGra (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Oct 2019 02:47:30 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:54836 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726840AbfJJGra (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Oct 2019 02:47:30 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9A6lOu2076120;
+        Thu, 10 Oct 2019 01:47:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1570690044;
+        bh=2NGrdRhVIoqIsmWEZIYwhT9Oqhp/c16vKGI/TuQoJAk=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=MHjM9V635XgecZ6pTSWcyFvBfSrZfsO3ksWR3bnCyHHYSIVYfbzXbqML+Tht7hJYj
+         Dnv0aYwVVQEs6iIs03/AlZV+n0Y+jGKudkZMRUIYs2K+3fUBn81YxRe3UnTIvivSPz
+         yt5zjLJdxbqD4qtdWeckthFxr8AHJvzhV1dFBsmA=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9A6lOeF121766
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 10 Oct 2019 01:47:24 -0500
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 10
+ Oct 2019 01:47:20 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Thu, 10 Oct 2019 01:47:23 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9A6lM6R097714;
+        Thu, 10 Oct 2019 01:47:22 -0500
+Subject: Re: [PATCHv2 7/7] drm/omap: hdmi4: fix use of uninitialized var
+To:     Tony Lindgren <tony@atomide.com>
+CC:     <dri-devel@lists.freedesktop.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Jyri Sarha <jsarha@ti.com>, <linux-omap@vger.kernel.org>
+References: <20190930103840.18970-1-tomi.valkeinen@ti.com>
+ <20190930103840.18970-8-tomi.valkeinen@ti.com>
+ <20191008141335.GB5610@atomide.com>
+ <ffb498fb-5041-d3e9-2702-879f3d389adf@ti.com>
+ <20191008142153.GD5610@atomide.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <59381248-5ded-7ea9-40a6-cbfb58a3c5b1@ti.com>
+Date:   Thu, 10 Oct 2019 09:47:21 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <20191008142153.GD5610@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 08/10/2019 17:21, Tony Lindgren wrote:
+> * Tomi Valkeinen <tomi.valkeinen@ti.com> [191008 14:17]:
+>> On 08/10/2019 17:13, Tony Lindgren wrote:
+>>> * Tomi Valkeinen <tomi.valkeinen@ti.com> [190930 10:38]:
+>>>> If use_mclk is false, mclk_mode is written to a register without
+>>>> initialization. This doesn't cause any ill effects as the written value
+>>>> is not used when use_mclk is false.
+>>>>
+>>>> To fix this, write use_mclk only when use_mclk is true.
+>>>
+>>> Hey nice catch. Based on a quick test looks like this fixes an
+>>> issue where power consumption stays higher after using HDMI.
+>>>
+>>> Would be nice to have merged in the v5.4-rc series:
+>>>
+>>> Tested-by: Tony Lindgren <tony@atomide.com>
+>>
+>> Really? Ok, well, then it was a good random find =).
+> 
+> Yeah so it seems :) Earlier I thought there's still some
+> clkctrl setting wrong after using HDMI, but did not see
+> anything diffing the clkctrl registers before and after
+> and gave up.
+> 
+>> I did already push this to drm-misc-next, as I thought it does not have any
+>> real effect. I'll check if it's ok to push to drm-misc-fixes too, with Cc
+>> stable.
+> 
+> OK great thanks.
 
-> Am 10.10.2019 um 08:25 schrieb Laurent Pinchart =
-<laurent.pinchart@ideasonboard.com>:
->=20
-> On Thu, Oct 10, 2019 at 09:07:27AM +0300, Tomi Valkeinen wrote:
->> On 10/10/2019 09:02, H. Nikolaus Schaller wrote:
->>> Hi Tomi,
->>> now as DPI panels have been moved to drm/panel are there plans to
->>> support DSI panels sitting there as well?
->>>=20
->>> I have looked to move our boe-w677l driver for the omap5/Pyra =
-handheld
->>> but it seems there are still some omapdrm dependencies.
->>=20
->> No, OMAPDSS DSI support has not been moved to DRM model yet. I =
-believe=20
->> Sebastian has been looking at that.
->=20
-> That's my understanding too, if I recall correctly Sebastian told me =
-he
-> had a working implementation, but I'm not sure if it can be upstreamed
-> as-is. It would be amazing to get it in mainline, as we'll be able to
-> drop lots of code from omapdrm.
+Pushing this to fixes too would cause conflicts, so we shouldn't push 
+without good reason. How much power saving you see?
 
-Ok, fine. I just wonder if a new driver for omapdrm/displays can then
-be accepted for upstreaming or how long we should have to wait.
+I think this can still be sent to stable later, after it has been merged 
+to mainline.
 
-BR and thanks,
-Nikolaus
+  Tomi
 
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
