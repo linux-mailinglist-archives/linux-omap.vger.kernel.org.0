@@ -2,130 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 992E5D2B9D
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 15:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D010D2C14
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 16:05:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733114AbfJJNov (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Oct 2019 09:44:51 -0400
-Received: from muru.com ([72.249.23.125]:36886 "EHLO muru.com"
+        id S1726128AbfJJOFY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Oct 2019 10:05:24 -0400
+Received: from muru.com ([72.249.23.125]:36920 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732912AbfJJNov (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 10 Oct 2019 09:44:51 -0400
+        id S1725923AbfJJOFY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 10 Oct 2019 10:05:24 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id EBC9180BB;
-        Thu, 10 Oct 2019 13:45:23 +0000 (UTC)
-Date:   Thu, 10 Oct 2019 06:44:47 -0700
+        by muru.com (Postfix) with ESMTPS id A751B80BB;
+        Thu, 10 Oct 2019 14:05:56 +0000 (UTC)
+Date:   Thu, 10 Oct 2019 07:05:19 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        DTML <devicetree@vger.kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
-        John Stultz <john.stultz@linaro.org>
-Subject: Re: [PATCH] ARM: dts: Use level interrupt for omap4 & 5 wlcore
-Message-ID: <20191010134447.GT5610@atomide.com>
-References: <20191009164344.41093-1-tony@atomide.com>
- <CAPDyKFqUL1Cso1H-sNcWFngWiLHLD76Uk9PtN2TkKS_Kd6TKJw@mail.gmail.com>
- <20191010122501.750d0485@kemnade.info>
+To:     Keerthy <j-keerthy@ti.com>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Tero Kristo <t-kristo@ti.com>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] clk: ti: clkctrl: Fix failed to enable error with double
+ udelay timeout
+Message-ID: <20191010140519.GV5610@atomide.com>
+References: <20190930154001.46581-1-tony@atomide.com>
+ <93a6448d-cece-a903-5c7e-ade793d62063@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191010122501.750d0485@kemnade.info>
+In-Reply-To: <93a6448d-cece-a903-5c7e-ade793d62063@ti.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Andreas Kemnade <andreas@kemnade.info> [191010 10:28]:
-> On Thu, 10 Oct 2019 09:29:45 +0200
-> Ulf Hansson <ulf.hansson@linaro.org> wrote:
+* Keerthy <j-keerthy@ti.com> [191007 00:57]:
 > 
-> > On Wed, 9 Oct 2019 at 18:43, Tony Lindgren <tony@atomide.com> wrote:
-> > >
-> > > Commit 572cf7d7b07d ("ARM: dts: Improve omap l4per idling with wlcore edge
-> > > sensitive interrupt") changed wlcore interrupts to use edge interrupt based
-> > > on what's specified in the wl1835mod.pdf data sheet.
-> > >
-> > > However, there are still cases where we can have lost interrupts as
-> > > described in omap_gpio_unidle(). And using a level interrupt instead of edge
-> > > interrupt helps as we avoid the check for untriggered GPIO interrupts in
-> > > omap_gpio_unidle().
-> > >
-> > > And with commit e6818d29ea15 ("gpio: gpio-omap: configure edge detection
-> > > for level IRQs for idle wakeup") GPIOs idle just fine with level interrupts.
-> > >
-> > > Let's change omap4 and 5 wlcore users back to using level interrupt
-> > > instead of edge interrupt. Let's not change the others as I've only seen
-> > > this on omap4 and 5, probably because the other SoCs don't have l4per idle
-> > > independent of the CPUs.  
-> > 
-> > I assume this relates to the implementation for support of SDIO IRQs
-> > (and wakeups) in the omap_hsmmc driver?
-
-In the wlcore case, there's actually an out-of-band GPIO interrupt that
-can be used. That is in addition to the SDIO bus DAT1 line, that is not
-currently used for wlcore wake-up.
-
-> > In any case, just wanted to share some experience in the field, feel
-> > free to do whatever you want with the below information. :-)
-> > 
-> > So, while I was working for ST-Ericsson on ux500, we had a very
-> > similar approach to re-route the SDIO bus DAT1 line to a GPIO IRQ as a
-> > remote/system wakeup (vendor hack in the mmci driver). In other words,
-> > while runtime suspending the mmc host controller, we configured a GPIO
-> > IRQ, via an always on logic, to capture the IRQ instead. The point is,
-> > I believe we may have ended up looking at similar problems as you have
-> > been facing on OMAP.
-> > 
-> > In hindsight, I realized that we actually violated the SDIO spec by
-> > using this approach. More precisely, during runtime suspend we do
-> > clock gating and then re-routes the IRQ. However, clock gating isn't
-> > allowed before the SDIO bus width have been changed back from 4-bit
-> > into 1-bit. This last piece of action, would be an interesting change
-> > to see if it could affect the behaviour, but unfortunately I have
-> > never been able to check this.
-> > 
-> > The tricky part, is that we can't issue a command to change the bus to
-> > 1-bit in omap_hsmmc ->runtime_suspend() callback (this needs to be
-> > managed by the core in some way). However, we can make a simple test,
-> > by simply always limit the bus width to 1-bit, as that should mean we
-> > should conform to the SDIO spec.
-> > 
 > 
-> somehow matches that with my experiences with libertas + omap3.
-> SDIO irq seems to work only with runtime force-enabled in omap_hsmmc
-> or using 1bit mode.
-> And yes, I tried switching mode to 1bit in runtime_suspend() but as
-> you said, that cannot easily done.
+> On 30/09/19 9:10 PM, Tony Lindgren wrote:
+> > Commit 3d8598fb9c5a ("clk: ti: clkctrl: use fallback udelay approach if
+> > timekeeping is suspended") added handling for cases when timekeeping is
+> > suspended. But looks like we can still get occasional "failed to enable"
+> > errors on the PM runtime resume path with udelay() returning faster than
+> > expected.
+> > 
+> > With ti-sysc interconnect target module driver this leads into device
+> > failure with PM runtime failing with "failed to enable" clkctrl error.
+> > 
+> > Let's fix the issue with a delay of two times the desired delay as in
+> > often done for udelay() to account for the inaccuracy.
+> 
+> Tested for DS0 and rtc+ddr modes on am43 and ds0 on am33.
+> 
+> Tested-by: Keerthy <j-keerthy@ti.com>
 
-Yeah libertas still has a pending issue and we're missing the 1-bit
-mode. From my experience, libertas is a power hog though when in use.
-
-Meanwhile, mwifiex and wlcore SDIO have been behaving very nice with
-PM for omap3 variants for many years. That is even without the 1-bit
-change.
-
-But on omap4 I've seen lost interrupts with wlcore GPIO interrupt,
-while omap4 with mwifiex using SDIO DAT1 interrupt has been behaving.
-
-The $subject patch fixes the lost wlcore GPIO interrupt issue, after
-all the surrounding GPIO fixes done during this year.
-
-FYI, my PM regression test is just ping -c1 an idle system over WLAN :)
-
-Then based on the ping response time I know the device is idling
-properly and the wake-up is working.
-
-The test also confirms that all the surrounding stuff like
-regulators, GPIOs, pinctrl wakeirq, and MMC layer are behaving.
-
-Then a more advanced version of this test is to ssh to an idle system
-and check the latency is OK for typing and measure power consumption
-when idle.
+Thanks for testing. This one should be applied into v5.4-rc series
+please if no more comments.
 
 Regards,
 
 Tony
+
+> > Fixes: 3d8598fb9c5a ("clk: ti: clkctrl: use fallback udelay approach if timekeeping is suspended")
+> > Cc: Keerthy <j-keerthy@ti.com>
+> > Cc: Tero Kristo <t-kristo@ti.com>
+> > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > ---
+> >   drivers/clk/ti/clkctrl.c | 5 +++--
+> >   1 file changed, 3 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+> > --- a/drivers/clk/ti/clkctrl.c
+> > +++ b/drivers/clk/ti/clkctrl.c
+> > @@ -100,11 +100,12 @@ static bool _omap4_is_timeout(union omap4_timeout *time, u32 timeout)
+> >   	 * can be from a timer that requires pm_runtime access, which
+> >   	 * will eventually bring us here with timekeeping_suspended,
+> >   	 * during both suspend entry and resume paths. This happens
+> > -	 * at least on am43xx platform.
+> > +	 * at least on am43xx platform. Account for flakeyness
+> > +	 * with udelay() by multiplying the timeout value by 2.
+> >   	 */
+> >   	if (unlikely(_early_timeout || timekeeping_suspended)) {
+> >   		if (time->cycles++ < timeout) {
+> > -			udelay(1);
+> > +			udelay(1 * 2);
+> >   			return false;
+> >   		}
+> >   	} else {
+> > 
