@@ -2,88 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6402AD276C
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 12:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A24D2AF1
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2019 15:17:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731155AbfJJKpY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Oct 2019 06:45:24 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:33448 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725601AbfJJKpY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Oct 2019 06:45:24 -0400
-Received: by mail-pf1-f195.google.com with SMTP id q10so3655966pfl.0
-        for <linux-omap@vger.kernel.org>; Thu, 10 Oct 2019 03:45:23 -0700 (PDT)
+        id S2388141AbfJJNRx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Oct 2019 09:17:53 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:38678 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388281AbfJJNRo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Oct 2019 09:17:44 -0400
+Received: by mail-ot1-f65.google.com with SMTP id e11so4819419otl.5
+        for <linux-omap@vger.kernel.org>; Thu, 10 Oct 2019 06:17:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=YeFYhKm4PJo5d1ZlY/G1oQFiqY2ifkLQAS5VyiJD2kA=;
-        b=cG3q9551YC42aPOxOY7I1S4iCUNQ+FiNULJWSzr2B6bjMy036gzBA007+gLvAx5def
-         X2UCn8VpNQkf5PrY1dSf/jLn9ogdqFQ05qumhkMbpH0aXYl/3zaFCkbBWWsx/m9EcTJN
-         EGPWiespyxve8xlsh9sSSV0IC3TnlyP2SHIz++ugv6fir6w4NoPrYuJN5eiHRl9Pq0jU
-         6q1jsNvySYH+umo3d7rqbZPwL4Z7qbGyQiZ2va1gssLuCcIlCVWy/qRkR1M7XkimuCKF
-         H155NqnphhFljtBZEkZGQ2DM7KWh+8rYmfRFXVzFCmdy+vLllLmQEdfJc/kvo1u+9+0P
-         ZVwg==
+        d=ub-ac-id.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=kbDD0ETnfb+9T5ky4afnuU19WL5B3TgSTtrvr8/78l52RfSJ/bD7cjcm8C45XsJ4wr
+         kY8zUv/ms1sLDr56E/0rqAcpldgbTirzVsO1TqrlTRt5AL5IhxusLfWbWkCQZqSDApog
+         xVZixZPZF5pv+wD9wYHHFszyBuRJ0Z0/71+2E/SGgHwnMzv66/86w9uplcX1z0grTv9p
+         1TYZ7MtIagYr+hnMPgyspL8CH18dkY1RexU6NSgr6L6/lGHi7jHNMmmGOoiBuh2azqNd
+         aWHFVXbx5cxjkbX5kJe7PAp4IU2wf06fogqa+YoO9ylF7jna+POCU+xNsHXT6R2wFQg9
+         YqYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=YeFYhKm4PJo5d1ZlY/G1oQFiqY2ifkLQAS5VyiJD2kA=;
-        b=okzAbINnBxqLrGi2yS3eyt9li82LZzoACzV2yy+GbVlzIWQzqeAhg4dXRb4caGr44R
-         FqytddqlRRaySN+HOeRy3gI3PwjkC85SCx4A+KjlEN4G5eCanDYPBxP15ZGV6mK1KkIQ
-         Vat22CS+QKi7B0I0xWK8cCkrcDZdg1xyW13xNE8J/zcm9RQbfw3Yu6vxRyB2OC6bCqRp
-         Cvavz0llIUhPrq4ncCwAIclSo7kkygfYf5OchnR846gedSITyd+CRQpTkbFQW1IUB1rW
-         K7LcOko8uxeXJlWTBHzUElPlaOjdM0223mvhrJDoJi5agTgEhLnmilLH0vldgecQK1ct
-         Fb7Q==
-X-Gm-Message-State: APjAAAU4zXNPoDBpmwFQCOVvrPXfdnYte7tpA7GnBksUJa6M7ZNK9EV/
-        4Uz8cuHOj+K9MU9jVWAyF2hFW90DN3w=
-X-Google-Smtp-Source: APXvYqwYM9M/m3MClMu4Z8S007xBWdkHJrU/NyiZs+nhmdbjrvkkM8AQQUaF3lEebzVejNsXRxT5JA==
-X-Received: by 2002:a17:90a:c383:: with SMTP id h3mr10552761pjt.122.1570704323312;
-        Thu, 10 Oct 2019 03:45:23 -0700 (PDT)
-Received: from localhost ([122.172.151.112])
-        by smtp.gmail.com with ESMTPSA id z13sm6824122pfq.121.2019.10.10.03.45.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 10 Oct 2019 03:45:22 -0700 (PDT)
-Date:   Thu, 10 Oct 2019 16:15:20 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        =?utf-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Enric Balletbo i Serra <eballetbo@gmail.com>,
-        Javier Martinez Canillas <javier@dowhile0.org>,
-        Roger Quadros <rogerq@ti.com>,
-        Teresa Remmet <t.remmet@phytec.de>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 0/8] OMAP3: convert opp-v1 to opp-v2 and read speed
- binned / 720MHz grade bits
-Message-ID: <20191010104520.n77wxxyxvyeo2i4u@vireshk-i7>
-References: <cover.1568224032.git.hns@goldelico.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=QTZIdVmjWEaVgfwGRupI4vAqJVGET3VIX90hz2R16m0=;
+        b=C9ezkFhN8nHQU3vsI2OQetmuJhtEf5ZN4RTT70s2Kba2/3b18EdK26OlpJNwEylt2g
+         LHsfOWBMOwFU5OFaXTRyzQIB4KiyL8X4n89gFODJarRmKoj8lcUeM0U8+OUwNJtTd73a
+         L3BQeXTl2A863RJWGqbOGDX8K40mOa36IGQL5T/hXv54/PiWUauevSq4na3s711RFT1+
+         6TPQ9HsyhjiMdKqo2IJQmbFTnTE9uekgvlxLU5l9KwKxxxxCBGSt0L7qnxIMt4ZtudVi
+         5Bzo2bCuBJaR9rKl4dH3WRgoTOYTAbLUUCA9N66uZ8b8XbCcw9HiOL3rmKT9LqTOxMVy
+         0mbw==
+X-Gm-Message-State: APjAAAUuyU/1j0ROP0Wc6lkVtO/asfYwQjy4xykb2TAkTy2EcrHUhiWD
+        7KyD31Ay6ucR4klU00Ywzo3ryj8Q42mT3wU4dO6G
+X-Google-Smtp-Source: APXvYqwe5B6z/3dUuNDQtQ0n2oQYOsdY3HQR3dkIin1gqVhu0NNteov05tKzv4DhJBBR4bjK2RG7Phnj6WUHoBrkRYc=
+X-Received: by 2002:a05:6830:1103:: with SMTP id w3mr7909437otq.312.1570713462861;
+ Thu, 10 Oct 2019 06:17:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1568224032.git.hns@goldelico.com>
-User-Agent: NeoMutt/20180716-391-311a52
+Received: by 2002:a4a:3346:0:0:0:0:0 with HTTP; Thu, 10 Oct 2019 06:17:41
+ -0700 (PDT)
+Reply-To: sunrisefundingltd50@gmail.com
+From:   Valentina Yurina <v_yurina@ub.ac.id>
+Date:   Thu, 10 Oct 2019 14:17:41 +0100
+Message-ID: <CAKoEkvu4vc5Yn9-hzxQ5dYmUL=oO69=GSP0FC7O+CGz9Jni8+Q@mail.gmail.com>
+Subject: Apply For Financial investment at a lower rate 2%
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 11-09-19, 19:47, H. Nikolaus Schaller wrote:
-> CHANGES V3:
-> * make omap36xx control the abb-ldo and properly switch mode
->   (suggested by Adam Ford <aford173@gmail.com>)
-> * add a note about enabling the turbo-mode OPPs
-
-Applied the series to cpufreq/arm tree.
-
-Also shared a branch for you Tony: cpufreq/ti/oppv2.
-
 -- 
-viresh
+Hello,
+
+We are private lenders based in UK.
+
+Do you need a loan (credit) as soon as possible. Are you in search of
+money to solve your personal needs or finance your business venture,
+then get Your desired loan today! Consult us at Sunrise Funding Ltd.
+
+* We offer personal loan & huge capital loan at 2% interest rate to
+the general public both locally and internationally.
+* Credit amount range from $5,000.00 -- $500,000.00 and above.
+* Special $10,000,000.00 Loan offer for huge project also available.
+* Loan period of 6 months -- 10 years.
+* Loan is granted 24 hours after approval and accredited, directly in
+hand or bank account.
+
+Please note that you are advised to contact us for more details via
+the following e-mail address below;
+
+EMAIL : sunrisefundingltd50@gmail.com
+FIRM : Sunrise Funding Ltd UK.
