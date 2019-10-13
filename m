@@ -2,32 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 274DFD568E
-	for <lists+linux-omap@lfdr.de>; Sun, 13 Oct 2019 17:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11622D568F
+	for <lists+linux-omap@lfdr.de>; Sun, 13 Oct 2019 17:08:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729275AbfJMPIO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 13 Oct 2019 11:08:14 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:45488 "EHLO
+        id S1729054AbfJMPIV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 13 Oct 2019 11:08:21 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:45497 "EHLO
         atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729269AbfJMPIO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Oct 2019 11:08:14 -0400
+        with ESMTP id S1729269AbfJMPIU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Oct 2019 11:08:20 -0400
 Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 3837C80239; Sun, 13 Oct 2019 17:07:56 +0200 (CEST)
-Date:   Sun, 13 Oct 2019 17:08:07 +0200
+        id D044680238; Sun, 13 Oct 2019 17:08:03 +0200 (CEST)
+Date:   Sun, 13 Oct 2019 17:08:15 +0200
 From:   Pavel Machek <pavel@ucw.cz>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Merlijn Wajer <merlijn@wizzup.org>,
         Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH 7/8] ARM: OMAP2+: Allow core oswr for omap4
-Message-ID: <20191013150806.GE13278@amd>
+Subject: Re: [PATCH 8/8] ARM: OMAP2+: Initialize voltage controller for omap4
+Message-ID: <20191013150815.GF13278@amd>
 References: <20191010001224.41826-1-tony@atomide.com>
- <20191010001224.41826-8-tony@atomide.com>
+ <20191010001224.41826-9-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="vmttodhTwj0NAgWp"
+        protocol="application/pgp-signature"; boundary="TeJTyD9hb8KJN2Jy"
 Content-Disposition: inline
-In-Reply-To: <20191010001224.41826-8-tony@atomide.com>
+In-Reply-To: <20191010001224.41826-9-tony@atomide.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
@@ -35,66 +35,51 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---vmttodhTwj0NAgWp
+--TeJTyD9hb8KJN2Jy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed 2019-10-09 17:12:23, Tony Lindgren wrote:
-> Commit f74297dd9354 ("ARM: OMAP2+: Make sure LOGICRETSTATE bits are not
-> cleared") disabled oswr (open switch retention) for per and core domains
-> as various GPIO related issues were noticed if the bootloader had
-> configured the bits for LOGICRETSTATE for per and core domains.
+On Wed 2019-10-09 17:12:24, Tony Lindgren wrote:
+> We're missing initializing the PRM_VOLTCTRL register for voltage
+> controller. Let's add omap4_vc_init_pmic_signaling() similar to what we
+> have for omap3 and enable voltage control for retention.
 >=20
-> With the recent gpio-omap fixes, mostly related to commit e6818d29ea15
-> ("gpio: gpio-omap: configure edge detection for level IRQs for idle
-> wakeup"), things now behave for enabling core oswr for omap4.
+> This brings down droid4 power consumption with mainline kernel to somewhe=
+re
+> between 40 and 50mW from about 70 to 80 mW for the whole device when runn=
+ing
+> idle with LCD and backlight off, WLAN connected, and USB and modem modules
+> unloaded.
 >=20
-> Cc: Merlijn Wajer <merlijn@wizzup.org>
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> Mostly just rmmod of omap2430, ohci-platform and phy-mapphone-mdm6600 are
+> needed to idle USB and shut down the modem. And after that measuring idle
+> power consumption can be done with reading sysfs entry every ten seconds =
+for
+> /sys/class/power_supply/battery/power_avg. Then rmmod of phy-cpcap-usb wi=
+ll
+> save few more mW, but will disable the debug UART.
+>=20
+> Note that sometimes CM_L4PER_UART1_CLKCTRL at 0x4a009540 does not idle
+> properly after unloading of phy-mapphone-mdm6600.
 
-2,7,8 basically modify same lines of code? Should that be done in one
-patch?
-
-Best regards,
-
+Acked-by: Pavel Machek <pavel@ucw.cz>
 									Pavel
-> =20
-> -	/*
-> -	 * Bootloader or kexec boot may have LOGICRETSTATE cleared
-> -	 * for some domains. This is the case when kexec booting from
-> -	 * Android kernels that support off mode for example.
-> -	 * Make sure it's set at least for core and per, otherwise
-> -	 * we currently will see lost GPIO interrupts for wlcore and
-> -	 * smsc911x at least if per hits retention during idle.
-> -	 */
-> -	if (!strncmp(pwrdm->name, "core", 4)
-> -		pwrdm_set_logic_retst(pwrdm, PWRDM_POWER_RET);
-> -
-> -	if (!strncmp(pwrdm->name, "l4per", 5)
-> +	if (!strncmp(pwrdm->name, "core", 4) ||
-> +	    !strncmp(pwrdm->name, "l4per", 5))
->  		pwrdm_set_logic_retst(pwrdm, PWRDM_POWER_OFF);
-> =20
->  	pwrst =3D kmalloc(sizeof(struct power_state), GFP_ATOMIC);
-
 --=20
 (english) http://www.livejournal.com/~pavelmachek
 (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
 g.html
 
---vmttodhTwj0NAgWp
+--TeJTyD9hb8KJN2Jy
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iEYEARECAAYFAl2jPdYACgkQMOfwapXb+vIJzACeMNSoapkU3z/f5DKDV6Y0WjlP
-2mUAoJQ12bblkgVJi+y4SH2xOqtXPW2x
-=yYl4
+iEYEARECAAYFAl2jPd8ACgkQMOfwapXb+vKc6QCfTInHiCOojLoYl+MSblD5nQ+O
+DR4AoKLHNZ8Zwjp6K/Te03yOdXiHsdQx
+=5UcY
 -----END PGP SIGNATURE-----
 
---vmttodhTwj0NAgWp--
+--TeJTyD9hb8KJN2Jy--
