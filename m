@@ -2,61 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3B1BD54EA
-	for <lists+linux-omap@lfdr.de>; Sun, 13 Oct 2019 09:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5CC6D55B8
+	for <lists+linux-omap@lfdr.de>; Sun, 13 Oct 2019 12:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728811AbfJMHgD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 13 Oct 2019 03:36:03 -0400
-Received: from [206.81.8.171] ([206.81.8.171]:56546 "EHLO varon.localdomain"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728198AbfJMHgB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 13 Oct 2019 03:36:01 -0400
-Received: from 127.0.0.1 (varon [127.0.0.1])
-        by varon.localdomain (Postfix) with SMTP id 290C355D635;
-        Fri, 11 Oct 2019 10:21:17 +0000 (UTC)
-Received: from (HELO 1iqb) [176.71.184.19] by 127.0.0.1 for <linhao63@jlonline.com>; Fri, 11 Oct 2019 03:19:21 -0700
-Message-ID: <4-806$5o5$$r$as6q109r731c@hkg.so2qo8>
-From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-To:     linhao63@jlonline.com
-Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA ??
-Date:   Fri, 11 Oct 19 03:19:21 GMT
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+        id S1728816AbfJMKz3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 13 Oct 2019 06:55:29 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:40455 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728620AbfJMKz3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Oct 2019 06:55:29 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id 1B5AD80249; Sun, 13 Oct 2019 12:55:10 +0200 (CEST)
+Date:   Sun, 13 Oct 2019 12:55:05 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org,
+        linux-omap@vger.kernel.org, Merlijn Wajer <merlijn@wizzup.org>
+Subject: Re: [PATCH 1/5] power: supply: cpcap-battery: Move coulomb counter
+ units per lsb to ddata
+Message-ID: <20191013105505.GA26237@amd>
+References: <20191009210621.10522-1-tony@atomide.com>
+ <20191009210621.10522-2-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="C.F387.BA..3D"
-X-Priority: 3
-X-MSMail-Priority: Normal
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="KsGdsel6WgEHnImy"
+Content-Disposition: inline
+In-Reply-To: <20191009210621.10522-2-tony@atomide.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---C.F387.BA..3D
-Content-Type: text/plain;
+--KsGdsel6WgEHnImy
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Greetings
+On Wed 2019-10-09 14:06:17, Tony Lindgren wrote:
+> We can simplify cpcap_battery_cc_raw_div() a bit by moving the units per
+> lsb to ddata.
+>=20
+> Cc: Merlijn Wajer <merlijn@wizzup.org>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/power/supply/cpcap-battery.c | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/=
+cpcap-battery.c
+> --- a/drivers/power/supply/cpcap-battery.c
+> +++ b/drivers/power/supply/cpcap-battery.c
+> @@ -111,6 +111,7 @@ struct cpcap_battery_ddata {
+>  	struct power_supply *psy;
+>  	struct cpcap_battery_config config;
+>  	struct cpcap_battery_state_data state[CPCAP_BATTERY_STATE_NR];
+> +	u32 cc_lsb;		/* =CE=BCAms per LSB */
 
-My name is Barrister Hans Erich.
+micro-Ampere-seconds? Should be uAs?
 
-I have a client who is interested to invest in your country, she is a well=
- known politician in her country and deserve a lucrative investment partne=
-rship with you outside her country without any delay   Please can you mana=
-ge such investment please Kindly reply for further details.
-
-Your full nameS -----------
+									Pavel
 
 
-Your urgent response will be appreciated
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
 
-Thank you and God bless you.
+--KsGdsel6WgEHnImy
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Barrister Hans Erich
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-Yours sincerely,
-Barrister Hans Erich
+iEYEARECAAYFAl2jAokACgkQMOfwapXb+vLHvgCcDH3Jzo7DRlXg7WHfpaycOW4L
+Td8AoL6fJ3hD4VcZIRybDHn+nLWhnwsD
+=eo6j
+-----END PGP SIGNATURE-----
 
---C.F387.BA..3D--
-
+--KsGdsel6WgEHnImy--
