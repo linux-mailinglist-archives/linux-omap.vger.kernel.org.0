@@ -2,32 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E9AAD55FE
-	for <lists+linux-omap@lfdr.de>; Sun, 13 Oct 2019 13:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A42D7D567F
+	for <lists+linux-omap@lfdr.de>; Sun, 13 Oct 2019 16:33:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729363AbfJMLmf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 13 Oct 2019 07:42:35 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:41374 "EHLO
+        id S1729255AbfJMOdh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 13 Oct 2019 10:33:37 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:44788 "EHLO
         atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729314AbfJMLmW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Oct 2019 07:42:22 -0400
+        with ESMTP id S1729249AbfJMOdh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Oct 2019 10:33:37 -0400
 Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id C02AD80249; Sun, 13 Oct 2019 13:42:04 +0200 (CEST)
-Date:   Sun, 13 Oct 2019 13:42:17 +0200
+        id A50A58025D; Sun, 13 Oct 2019 16:33:19 +0200 (CEST)
+Date:   Sun, 13 Oct 2019 16:33:16 +0200
 From:   Pavel Machek <pavel@ucw.cz>
 To:     Tony Lindgren <tony@atomide.com>
-Cc:     Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org, Merlijn Wajer <merlijn@wizzup.org>
-Subject: Re: [PATCH 3/5] power: supply: cpcap-battery: Simplify short term
- power average calculation
-Message-ID: <20191013114217.GH5653@amd>
-References: <20191009210621.10522-1-tony@atomide.com>
- <20191009210621.10522-4-tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, Merlijn Wajer <merlijn@wizzup.org>,
+        Sebastian Reichel <sre@kernel.org>
+Subject: Re: [PATCH] ARM: dts: Add minimal support for Droid Bionic xt875
+Message-ID: <20191013143316.GA13278@amd>
+References: <20191009222549.53265-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="y9PDtDHaFrXNoMPU"
+        protocol="application/pgp-signature"; boundary="T4sUOijqQbZv57TR"
 Content-Disposition: inline
-In-Reply-To: <20191009210621.10522-4-tony@atomide.com>
+In-Reply-To: <20191009222549.53265-1-tony@atomide.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
@@ -35,37 +35,38 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---y9PDtDHaFrXNoMPU
+--T4sUOijqQbZv57TR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed 2019-10-09 14:06:19, Tony Lindgren wrote:
-> We can use sign_extend32() here to simplify things. And let's fix the
-> comment for CCM register, that contains the calibration offset.
+On Wed 2019-10-09 15:25:49, Tony Lindgren wrote:
+> We already have folks booting Droid Bionic with Droid 4 dts, but it is
+> a different hardware with no keyboard.
+>=20
+> Let's start adding device specific support for Droid bionic by making
+> current omap4-droid4-xt894 a common file and including it.
 >=20
 > Cc: Merlijn Wajer <merlijn@wizzup.org>
 > Cc: Pavel Machek <pavel@ucw.cz>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
 Acked-by: Pavel Machek <pavel@ucw.cz>
-
 
 --=20
 (english) http://www.livejournal.com/~pavelmachek
 (cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
 g.html
 
---y9PDtDHaFrXNoMPU
+--T4sUOijqQbZv57TR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iEYEARECAAYFAl2jDZkACgkQMOfwapXb+vLNhwCeOQyc+6bpQ2szU8U743TgXRlc
-RHMAoJ7EX1xh1Lu9zRw6fad/5RR7wEcE
-=fH3f
+iEYEARECAAYFAl2jNawACgkQMOfwapXb+vIRrQCdGA5NKkVL/FYF/Z4f9q4dgTDD
+gdcAoKGcBIZRxWFum3VZELKhE1V7n/r0
+=5BgC
 -----END PGP SIGNATURE-----
 
---y9PDtDHaFrXNoMPU--
+--T4sUOijqQbZv57TR--
