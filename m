@@ -2,107 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA032D56B3
-	for <lists+linux-omap@lfdr.de>; Sun, 13 Oct 2019 17:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C936D615C
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2019 13:33:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727560AbfJMP4V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 13 Oct 2019 11:56:21 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:36391 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726085AbfJMP4V (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Oct 2019 11:56:21 -0400
-Received: by mail-io1-f65.google.com with SMTP id b136so32104526iof.3;
-        Sun, 13 Oct 2019 08:56:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=S/Ip8+Jxgd0rwhnDB/VueXGj42PNw7fZm2CTH/h8LA0=;
-        b=fWNrk6Wcf+1CR3jVL77n57LtxfF1y1ZDj2mm47rK7/Y9WeAIv1x8CeFfrzxDCchZWL
-         BE/1a9QgyMg5tnm20+H4PTXgX6g/aMooAtkid42a4OrX/6wwDx1wKv2ZaZBTwf/HaXCp
-         8PJ834/B4T3qrwtk9K6atZnNJDqKHfCtCi+BKY/zZutyiKDvGO7XtrVfmVGB2+qel0/n
-         ibUKMeEg1f3KhIL+hd5evfvDQQFqaIgF/J7W2p8ZUoN4x+tCmpl7Ceyb54JzrxfgL4bg
-         C640oz/u2TELXug7xsIyZPtSUN/RZ9Mo1WZyiEvEcLO+bXCol6HGMqnlUCkB4ZMQSnSE
-         v/hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=S/Ip8+Jxgd0rwhnDB/VueXGj42PNw7fZm2CTH/h8LA0=;
-        b=CHDleDUL4sOX6HdKGCYt+wLVCahnK3ngJOUn9aPDV9ziMBkEz+AkPc2dRzXUnw0eyB
-         gc7wUL2i2LG8os0F2YnawCuqL8ij1iH0Z37LTBv9pmPg/AT/hJs+gxuhrZedF+yUyvK5
-         aT1i6boAtKZD8AA1nbTTSpq05D65yg+E9KTjpzd+Bq+LjPujuSRUhMdacZtI19SoaJJt
-         w8FSG/posWdCQHFYQ4U6krloEU42UAu/z1iOcr02XdTaLphtKDSAwsgPPL2kd4PfX+ek
-         Jr0jPbSzJHY1O3IACRoCY3AAO0nvSYt7WjHAJqnHWFVPM3CjyKQAigumI4XgmAOsttTS
-         7eNw==
-X-Gm-Message-State: APjAAAXHV0xHWuapzARfY05Z8h08bWwhz/6v4NcSp278Ul3qwzCS103U
-        j3W/QbumudzGR14DajGoQHEZzrGAAWBr0vgQXOk=
-X-Google-Smtp-Source: APXvYqwmSVFuQ3GFsuRZS3O4VKiiy3+iPXNr/Rrh2XRbTKykEf2L7RTXUXG2yXe9DRPmJV1QDLo8BJypHPQgdllTf4g=
-X-Received: by 2002:a05:6638:3a6:: with SMTP id z6mr15738134jap.33.1570982180198;
- Sun, 13 Oct 2019 08:56:20 -0700 (PDT)
+        id S1730102AbfJNLdF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Oct 2019 07:33:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38128 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729930AbfJNLdE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 14 Oct 2019 07:33:04 -0400
+Received: from dragon (li937-157.members.linode.com [45.56.119.157])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5D7A2206A3;
+        Mon, 14 Oct 2019 11:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571052784;
+        bh=FSljipgj28Jh531QTYWyNWy84keWUIqkOhpaU8aRBic=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=f7wNMYV2ne00JOhb796Z8tyUFSjnyzPW6imfoRacHOloX0vYCqWJieivDji1GxSb8
+         cib3dPUITid2TtczHaYgqz58cRQ2fKGO2SNTulJsfhGDP94nzGxD/jBXRebRqlVOU1
+         jeA9+zacLu4ynvmPM3ep/VDk+wZonBk2sbUg2RiY=
+Date:   Mon, 14 Oct 2019 19:32:41 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v3 06/10] ARM: dts: imx: Rename "iram" node to "sram"
+Message-ID: <20191014113240.GN12262@dragon>
+References: <20191002164316.14905-1-krzk@kernel.org>
+ <20191002164316.14905-6-krzk@kernel.org>
 MIME-Version: 1.0
-References: <20191002122542.8449-1-tomi.valkeinen@ti.com>
-In-Reply-To: <20191002122542.8449-1-tomi.valkeinen@ti.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Sun, 13 Oct 2019 10:56:09 -0500
-Message-ID: <CAHCN7xLjGkLHMWejEk-3vJ-OwzjB+BXtnPWoonh4mAVxbkzMWQ@mail.gmail.com>
-Subject: Re: [PATCH] drm/omap: fix max fclk divider for omap36xx
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191002164316.14905-6-krzk@kernel.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Oct 2, 2019 at 7:25 AM Tomi Valkeinen <tomi.valkeinen@ti.com> wrote:
->
-> The OMAP36xx and AM/DM37x TRMs say that the maximum divider for DSS fclk
-> (in CM_CLKSEL_DSS) is 32. Experimentation shows that this is not
-> correct, and using divider of 32 breaks DSS with a flood or underflows
-> and sync losts. Dividers up to 31 seem to work fine.
->
-> There is another patch to the DT files to limit the divider correctly,
-> but as the DSS driver also needs to know the maximum divider to be able
-> to iteratively find good rates, we also need to do the fix in the DSS
-> driver.
->
+On Wed, Oct 02, 2019 at 06:43:12PM +0200, Krzysztof Kozlowski wrote:
+> The device node name should reflect generic class of a device so rename
+> the "iram" node to "sram".  This will be also in sync with upcoming DT
+> schema.  No functional change.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Tomi,
+Acked-by: Shawn Guo <shawnguo@kernel.org>
 
-Is there any way you can do a patch for the FB version for the older
-4.9 and 4.14 kernels?  I think they are still defaulting to the omapfb
-instead of DRM, so the underflow issue still appears by default and
-the patch only impacts the DRM version of the driver.  If not, do you
-have any objections if I submit a patch to stable for those two LTS
-branches?
+Let me know if you want it go through IMX tree.
 
-thanks,
-
-adam
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Cc: Adam Ford <aford173@gmail.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/gpu/drm/omapdrm/dss/dss.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dss.c b/drivers/gpu/drm/omapdrm/dss/dss.c
-> index e226324adb69..4bdd63b57100 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dss.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dss.c
-> @@ -1083,7 +1083,7 @@ static const struct dss_features omap34xx_dss_feats = {
->
->  static const struct dss_features omap3630_dss_feats = {
->         .model                  =       DSS_MODEL_OMAP3,
-> -       .fck_div_max            =       32,
-> +       .fck_div_max            =       31,
->         .fck_freq_max           =       173000000,
->         .dss_fck_multiplier     =       1,
->         .parent_clk_name        =       "dpll4_ck",
-> --
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
->
+Shawn
