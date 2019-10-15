@@ -2,61 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44407D74D4
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2019 13:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 657AAD7AF8
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2019 18:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726004AbfJOLWN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Oct 2019 07:22:13 -0400
-Received: from slot0.abiagod.ga ([45.86.68.97]:54589 "EHLO slot0.abiagod.ga"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726596AbfJOLWM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 15 Oct 2019 07:22:12 -0400
-X-Greylist: delayed 602 seconds by postgrey-1.27 at vger.kernel.org; Tue, 15 Oct 2019 07:22:12 EDT
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=abiagod.ga;
- h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=puirchase@abiagod.ga;
- bh=qIk0qBgooCf4T+iBr48zYqJL5N4=;
- b=QIYUUFp/PrAaqbFTbwX4wvt6bj1lHKQB9sNHZwMDqHduVdJFyeJ9QH0FBOKekTTbR0vBAgnEWJlg
-   lnqpcIC8MfsbbqzFg0NHjUo5KR6nHM5QqfjOuXFUlvy2XPmLOFiFhjtpAn+jqpaZzaiVotCdwfIC
-   m08bMwS1NHtf/TIKiYl2Htw2VJCrGS9+9sOngBNFAG6sLebDgVYt3CGlR+gJSvJ/z1ET3DwJgXNV
-   nWjI1q5OqJFZdi1I2SciegAM+cLJn1pIQ4K/1Sk0OUGcKiau20IcIcfg3aWmLgDhqX36fuvLd1/E
-   IVZ9tOz9uvlyqBMHdkIva7+ykb19hvnybzAWTQ==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=abiagod.ga;
- b=WQmMsRP0UBZqNm5eEvvBNDvQLNXcrtMOh+K10X0Dpx5BSwsks21r2iMMcVaN0Vd7rHlhRfjOV84L
-   9dZL237IJe3oBOO0M7ueno7gzDLUV5GLcgBe1ZwaTgrFQ5jNzuJDPggJtEPU0mCH2bno2O8W/ZKl
-   G//r10d9cxdk4XJ3TRncmKmiRg6UOj7W49R5pT1bzY4+VCIpB8ep/fA/tIrDER/Td+hVUmu83+qN
-   NcWUVYGgIX708p6DZ2o0txgYXuW4G6wmytSCmh85+wL5GZXt7Gq+2vzhge7kNNU4nycF/pwCpjO6
-   CLns5AilDQ6tCGuOCWlaB0nyNnP4uykMK2JIOg==;
-Reply-To: import-davsar2@mail.ru
-From:   "Mrs Lubov Aleksandrov" <puirchase@abiagod.ga>
-To:     linux-omap@vger.kernel.org
-Subject: INQUIRY
-Date:   15 Oct 2019 04:02:11 -0700
-Message-ID: <20191015040211.BDF22AF92D4FAA17@abiagod.ga>
+        id S1726689AbfJOQQG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Oct 2019 12:16:06 -0400
+Received: from imap1.codethink.co.uk ([176.9.8.82]:54567 "EHLO
+        imap1.codethink.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726974AbfJOQQG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Oct 2019 12:16:06 -0400
+Received: from [167.98.27.226] (helo=rainbowdash.codethink.co.uk)
+        by imap1.codethink.co.uk with esmtpsa (Exim 4.84_2 #1 (Debian))
+        id 1iKPUO-00085Y-4m; Tue, 15 Oct 2019 17:16:00 +0100
+Received: from ben by rainbowdash.codethink.co.uk with local (Exim 4.92.2)
+        (envelope-from <ben@rainbowdash.codethink.co.uk>)
+        id 1iKPUN-0004pH-GJ; Tue, 15 Oct 2019 17:15:59 +0100
+From:   "Ben Dooks (Codethink)" <ben.dooks@codethink.co.uk>
+To:     linux-kernel@lists.codethink.co.uk
+Cc:     "Ben Dooks (Codethink)" <ben.dooks@codethink.co.uk>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] davinci_cpdma: make cpdma_chan_split_pool static
+Date:   Tue, 15 Oct 2019 17:15:58 +0100
+Message-Id: <20191015161558.18506-1-ben.dooks@codethink.co.uk>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello
+The cpdma_chan_split_pool() function is not used outside of
+the driver, so make it static to avoid the following sparse
+warning:
 
-I am Mrs Lubov Aleksandrov from DAVSAR LLC Russia.I am in charge=20
-of sales .
+drivers/net/ethernet/ti/davinci_cpdma.c:725:5: warning: symbol 'cpdma_chan_split_pool' was not declared. Should it be static?
 
-We are interested in your product .We would greatly appreciate
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+---
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-omap@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/net/ethernet/ti/davinci_cpdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-receiving any information, brochures and price lists of your=20
-products.
+diff --git a/drivers/net/ethernet/ti/davinci_cpdma.c b/drivers/net/ethernet/ti/davinci_cpdma.c
+index a65edd2770e6..37ba708ac781 100644
+--- a/drivers/net/ethernet/ti/davinci_cpdma.c
++++ b/drivers/net/ethernet/ti/davinci_cpdma.c
+@@ -722,7 +722,7 @@ static void cpdma_chan_set_descs(struct cpdma_ctlr *ctlr,
+  * cpdma_chan_split_pool - Splits ctrl pool between all channels.
+  * Has to be called under ctlr lock
+  */
+-int cpdma_chan_split_pool(struct cpdma_ctlr *ctlr)
++static int cpdma_chan_split_pool(struct cpdma_ctlr *ctlr)
+ {
+ 	int tx_per_ch_desc = 0, rx_per_ch_desc = 0;
+ 	int free_rx_num = 0, free_tx_num = 0;
+-- 
+2.23.0
 
-Thanks.
-
-
-Mrs Lubov Aleksandrov
-Sales General Manager of DAVSAR LLC)
-14 Marksistskaya St.=20
-109147 Moscow
-RUSSIA
-Phone:+7(494)213-66-26
