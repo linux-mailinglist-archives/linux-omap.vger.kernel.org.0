@@ -2,103 +2,166 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12D29D9703
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 18:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14460D9878
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 19:29:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393570AbfJPQWN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Oct 2019 12:22:13 -0400
-Received: from muru.com ([72.249.23.125]:37568 "EHLO muru.com"
+        id S2389387AbfJPR3S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Oct 2019 13:29:18 -0400
+Received: from muru.com ([72.249.23.125]:37588 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727451AbfJPQWN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 16 Oct 2019 12:22:13 -0400
+        id S2389308AbfJPR3S (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 16 Oct 2019 13:29:18 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 642748107;
-        Wed, 16 Oct 2019 16:22:46 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 7BD498176;
+        Wed, 16 Oct 2019 17:29:51 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] more fixes for omaps for v5.4
-Date:   Wed, 16 Oct 2019 09:22:08 -0700
-Message-Id: <pull-1571242890-118432@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, Tero Kristo <t-kristo@ti.com>
+Subject: [PATCH 1/2] ARM: OMAP2+: Drop unused enable_wakeup and disable_wakeup
+Date:   Wed, 16 Oct 2019 10:29:08 -0700
+Message-Id: <20191016172909.7115-1-tony@atomide.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+We're only using static _enable_wakeup(), the others have no callers.
 
-The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/mach-omap2/omap_hwmod.c | 97 --------------------------------
+ arch/arm/mach-omap2/omap_hwmod.h |  3 -
+ 2 files changed, 100 deletions(-)
 
-  Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.4/fixes-rc3-signed
-
-for you to fetch changes up to 17a9e5bbbfe5a5a6356e47cdc1c1656e1e5e1f62:
-
-  Merge tag 'wlcore-fix' into fixes (2019-10-11 09:15:35 -0700)
-
-----------------------------------------------------------------
-Fixes for omaps for v5.4-rc cycle
-
-More fixes for omap variants:
-
-- Update more panel options in omap2plus_defconfig that got changed
-  as we moved to use generic LCD panels
-
-- Remove unused twl_keypad for logicpd-torpedo-som to avoid boot
-  time warnings. This is only a cosmetic fix, but at least dmesg output
-  is now getting more readable after all the fixes to remove pointless
-  warnings
-
-- Fix gpu_cm node name as we still have a non-standard node name
-  dependency for clocks. This should eventually get fixed by use
-  of domain specific compatible property
-
-- Fix use of i2c-mux-idle-disconnect for m3874-iceboard
-
-- Use level interrupt for omap4 & 5 wlcore to avoid lost edge
-  interrupts
-
-----------------------------------------------------------------
-Adam Ford (1):
-      ARM: dts: logicpd-torpedo-som: Remove twl_keypad
-
-Andrey Smirnov (1):
-      ARM: dts: am3874-iceboard: Fix 'i2c-mux-idle-disconnect' usage
-
-Tero Kristo (1):
-      ARM: dts: omap5: fix gpu_cm clock provider name
-
-Tony Lindgren (4):
-      ARM: omap2plus_defconfig: Fix selected panels after generic panel changes
-      Merge tag 'fix-missing-panels' into fixes
-      ARM: dts: Use level interrupt for omap4 & 5 wlcore
-      Merge tag 'wlcore-fix' into fixes
-
- arch/arm/boot/dts/am335x-icev2.dts                 |   2 +-
- arch/arm/boot/dts/am33xx-l4.dtsi                   |   6 +-
- arch/arm/boot/dts/am3874-iceboard.dts              |   9 +-
- arch/arm/boot/dts/am4372.dtsi                      |   2 +
- arch/arm/boot/dts/dra7-l4.dtsi                     |  48 +++++-----
- arch/arm/boot/dts/logicpd-torpedo-som.dtsi         |   4 +
- arch/arm/boot/dts/omap3-gta04.dtsi                 |   1 +
- arch/arm/boot/dts/omap4-droid4-xt894.dts           |   2 +-
- arch/arm/boot/dts/omap4-panda-common.dtsi          |   2 +-
- arch/arm/boot/dts/omap4-sdp.dts                    |   2 +-
- arch/arm/boot/dts/omap4-var-som-om44-wlan.dtsi     |   2 +-
- arch/arm/boot/dts/omap5-board-common.dtsi          |   2 +-
- arch/arm/boot/dts/omap54xx-clocks.dtsi             |   2 +-
- arch/arm/configs/omap2plus_defconfig               |  15 ++--
- .../mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c |   3 +-
- arch/arm/mach-omap2/omap_hwmod_33xx_data.c         |   5 +-
- arch/arm/mach-omap2/pm.c                           | 100 ---------------------
- drivers/clk/ti/clk-7xx.c                           |   6 +-
- 18 files changed, 57 insertions(+), 156 deletions(-)
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -623,39 +623,6 @@ static int _enable_wakeup(struct omap_hwmod *oh, u32 *v)
+ 	return 0;
+ }
+ 
+-/**
+- * _disable_wakeup: clear OCP_SYSCONFIG.ENAWAKEUP bit in the hardware
+- * @oh: struct omap_hwmod *
+- *
+- * Prevent the hardware module @oh to send wakeups.  Returns -EINVAL
+- * upon error or 0 upon success.
+- */
+-static int _disable_wakeup(struct omap_hwmod *oh, u32 *v)
+-{
+-	if (!oh->class->sysc ||
+-	    !((oh->class->sysc->sysc_flags & SYSC_HAS_ENAWAKEUP) ||
+-	      (oh->class->sysc->idlemodes & SIDLE_SMART_WKUP) ||
+-	      (oh->class->sysc->idlemodes & MSTANDBY_SMART_WKUP)))
+-		return -EINVAL;
+-
+-	if (!oh->class->sysc->sysc_fields) {
+-		WARN(1, "omap_hwmod: %s: offset struct for sysconfig not provided in class\n", oh->name);
+-		return -EINVAL;
+-	}
+-
+-	if (oh->class->sysc->sysc_flags & SYSC_HAS_ENAWAKEUP)
+-		*v &= ~(0x1 << oh->class->sysc->sysc_fields->enwkup_shift);
+-
+-	if (oh->class->sysc->idlemodes & SIDLE_SMART_WKUP)
+-		_set_slave_idlemode(oh, HWMOD_IDLEMODE_SMART, v);
+-	if (oh->class->sysc->idlemodes & MSTANDBY_SMART_WKUP)
+-		_set_master_standbymode(oh, HWMOD_IDLEMODE_SMART, v);
+-
+-	/* XXX test pwrdm_get_wken for this hwmod's subsystem */
+-
+-	return 0;
+-}
+-
+ static struct clockdomain *_get_clkdm(struct omap_hwmod *oh)
+ {
+ 	struct clk_hw_omap *clk;
+@@ -3867,70 +3834,6 @@ void __iomem *omap_hwmod_get_mpu_rt_va(struct omap_hwmod *oh)
+  * for context save/restore operations?
+  */
+ 
+-/**
+- * omap_hwmod_enable_wakeup - allow device to wake up the system
+- * @oh: struct omap_hwmod *
+- *
+- * Sets the module OCP socket ENAWAKEUP bit to allow the module to
+- * send wakeups to the PRCM, and enable I/O ring wakeup events for
+- * this IP block if it has dynamic mux entries.  Eventually this
+- * should set PRCM wakeup registers to cause the PRCM to receive
+- * wakeup events from the module.  Does not set any wakeup routing
+- * registers beyond this point - if the module is to wake up any other
+- * module or subsystem, that must be set separately.  Called by
+- * omap_device code.  Returns -EINVAL on error or 0 upon success.
+- */
+-int omap_hwmod_enable_wakeup(struct omap_hwmod *oh)
+-{
+-	unsigned long flags;
+-	u32 v;
+-
+-	spin_lock_irqsave(&oh->_lock, flags);
+-
+-	if (oh->class->sysc &&
+-	    (oh->class->sysc->sysc_flags & SYSC_HAS_ENAWAKEUP)) {
+-		v = oh->_sysc_cache;
+-		_enable_wakeup(oh, &v);
+-		_write_sysconfig(v, oh);
+-	}
+-
+-	spin_unlock_irqrestore(&oh->_lock, flags);
+-
+-	return 0;
+-}
+-
+-/**
+- * omap_hwmod_disable_wakeup - prevent device from waking the system
+- * @oh: struct omap_hwmod *
+- *
+- * Clears the module OCP socket ENAWAKEUP bit to prevent the module
+- * from sending wakeups to the PRCM, and disable I/O ring wakeup
+- * events for this IP block if it has dynamic mux entries.  Eventually
+- * this should clear PRCM wakeup registers to cause the PRCM to ignore
+- * wakeup events from the module.  Does not set any wakeup routing
+- * registers beyond this point - if the module is to wake up any other
+- * module or subsystem, that must be set separately.  Called by
+- * omap_device code.  Returns -EINVAL on error or 0 upon success.
+- */
+-int omap_hwmod_disable_wakeup(struct omap_hwmod *oh)
+-{
+-	unsigned long flags;
+-	u32 v;
+-
+-	spin_lock_irqsave(&oh->_lock, flags);
+-
+-	if (oh->class->sysc &&
+-	    (oh->class->sysc->sysc_flags & SYSC_HAS_ENAWAKEUP)) {
+-		v = oh->_sysc_cache;
+-		_disable_wakeup(oh, &v);
+-		_write_sysconfig(v, oh);
+-	}
+-
+-	spin_unlock_irqrestore(&oh->_lock, flags);
+-
+-	return 0;
+-}
+-
+ /**
+  * omap_hwmod_assert_hardreset - assert the HW reset line of submodules
+  * contained in the hwmod module.
+diff --git a/arch/arm/mach-omap2/omap_hwmod.h b/arch/arm/mach-omap2/omap_hwmod.h
+--- a/arch/arm/mach-omap2/omap_hwmod.h
++++ b/arch/arm/mach-omap2/omap_hwmod.h
+@@ -646,9 +646,6 @@ int omap_hwmod_get_resource_byname(struct omap_hwmod *oh, unsigned int type,
+ struct powerdomain *omap_hwmod_get_pwrdm(struct omap_hwmod *oh);
+ void __iomem *omap_hwmod_get_mpu_rt_va(struct omap_hwmod *oh);
+ 
+-int omap_hwmod_enable_wakeup(struct omap_hwmod *oh);
+-int omap_hwmod_disable_wakeup(struct omap_hwmod *oh);
+-
+ int omap_hwmod_for_each_by_class(const char *classname,
+ 				 int (*fn)(struct omap_hwmod *oh,
+ 					   void *user),
+-- 
+2.23.0
