@@ -2,25 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14460D9878
+	by mail.lfdr.de (Postfix) with ESMTP id AEF27D9879
 	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 19:29:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389387AbfJPR3S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Oct 2019 13:29:18 -0400
-Received: from muru.com ([72.249.23.125]:37588 "EHLO muru.com"
+        id S2389403AbfJPR3T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Oct 2019 13:29:19 -0400
+Received: from muru.com ([72.249.23.125]:37596 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389308AbfJPR3S (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 16 Oct 2019 13:29:18 -0400
+        id S2389308AbfJPR3T (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 16 Oct 2019 13:29:19 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 7BD498176;
-        Wed, 16 Oct 2019 17:29:51 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id D11C18198;
+        Wed, 16 Oct 2019 17:29:52 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, Tero Kristo <t-kristo@ti.com>
-Subject: [PATCH 1/2] ARM: OMAP2+: Drop unused enable_wakeup and disable_wakeup
-Date:   Wed, 16 Oct 2019 10:29:08 -0700
-Message-Id: <20191016172909.7115-1-tony@atomide.com>
+Subject: [PATCH 2/2] ARM: OMAP2+: Simplify code for clkdm_clock_enable and disable
+Date:   Wed, 16 Oct 2019 10:29:09 -0700
+Message-Id: <20191016172909.7115-2-tony@atomide.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191016172909.7115-1-tony@atomide.com>
+References: <20191016172909.7115-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
@@ -28,140 +30,140 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We're only using static _enable_wakeup(), the others have no callers.
+We can make clkdm_clk_enable() usable for clkdm_hwmod_enable() by
+dropping the unused clock check, and drop _clkdm_clk_hwmod_enable().
 
+And we can make clkdm_hwmod_disable() call clkdm_hwmod_disable() and drop
+the duplicate code in clkdm_hwmod_disable().
+
+Cc: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/mach-omap2/omap_hwmod.c | 97 --------------------------------
- arch/arm/mach-omap2/omap_hwmod.h |  3 -
- 2 files changed, 100 deletions(-)
+ arch/arm/mach-omap2/clockdomain.c | 78 ++++++++-----------------------
+ 1 file changed, 20 insertions(+), 58 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
---- a/arch/arm/mach-omap2/omap_hwmod.c
-+++ b/arch/arm/mach-omap2/omap_hwmod.c
-@@ -623,39 +623,6 @@ static int _enable_wakeup(struct omap_hwmod *oh, u32 *v)
+diff --git a/arch/arm/mach-omap2/clockdomain.c b/arch/arm/mach-omap2/clockdomain.c
+--- a/arch/arm/mach-omap2/clockdomain.c
++++ b/arch/arm/mach-omap2/clockdomain.c
+@@ -1147,7 +1147,21 @@ void clkdm_del_autodeps(struct clockdomain *clkdm)
+ 
+ /* Clockdomain-to-clock/hwmod framework interface code */
+ 
+-static int _clkdm_clk_hwmod_enable(struct clockdomain *clkdm)
++/**
++ * clkdm_clk_enable - add an enabled downstream clock to this clkdm
++ * @clkdm: struct clockdomain *
++ * @clk: struct clk * of the enabled downstream clock
++ *
++ * Increment the usecount of the clockdomain @clkdm and ensure that it
++ * is awake before @clk is enabled.  Intended to be called by
++ * clk_enable() code.  If the clockdomain is in software-supervised
++ * idle mode, force the clockdomain to wake.  If the clockdomain is in
++ * hardware-supervised idle mode, add clkdm-pwrdm autodependencies, to
++ * ensure that devices in the clockdomain can be read from/written to
++ * by on-chip processors.  Returns -EINVAL if passed null pointers;
++ * returns 0 upon success or if the clockdomain is in hwsup idle mode.
++ */
++int clkdm_clk_enable(struct clockdomain *clkdm, struct clk *unused)
+ {
+ 	if (!clkdm || !arch_clkdm || !arch_clkdm->clkdm_clk_enable)
+ 		return -EINVAL;
+@@ -1174,33 +1188,6 @@ static int _clkdm_clk_hwmod_enable(struct clockdomain *clkdm)
  	return 0;
  }
  
 -/**
-- * _disable_wakeup: clear OCP_SYSCONFIG.ENAWAKEUP bit in the hardware
-- * @oh: struct omap_hwmod *
+- * clkdm_clk_enable - add an enabled downstream clock to this clkdm
+- * @clkdm: struct clockdomain *
+- * @clk: struct clk * of the enabled downstream clock
 - *
-- * Prevent the hardware module @oh to send wakeups.  Returns -EINVAL
-- * upon error or 0 upon success.
+- * Increment the usecount of the clockdomain @clkdm and ensure that it
+- * is awake before @clk is enabled.  Intended to be called by
+- * clk_enable() code.  If the clockdomain is in software-supervised
+- * idle mode, force the clockdomain to wake.  If the clockdomain is in
+- * hardware-supervised idle mode, add clkdm-pwrdm autodependencies, to
+- * ensure that devices in the clockdomain can be read from/written to
+- * by on-chip processors.  Returns -EINVAL if passed null pointers;
+- * returns 0 upon success or if the clockdomain is in hwsup idle mode.
 - */
--static int _disable_wakeup(struct omap_hwmod *oh, u32 *v)
+-int clkdm_clk_enable(struct clockdomain *clkdm, struct clk *clk)
 -{
--	if (!oh->class->sysc ||
--	    !((oh->class->sysc->sysc_flags & SYSC_HAS_ENAWAKEUP) ||
--	      (oh->class->sysc->idlemodes & SIDLE_SMART_WKUP) ||
--	      (oh->class->sysc->idlemodes & MSTANDBY_SMART_WKUP)))
+-	/*
+-	 * XXX Rewrite this code to maintain a list of enabled
+-	 * downstream clocks for debugging purposes?
+-	 */
+-
+-	if (!clk)
 -		return -EINVAL;
 -
--	if (!oh->class->sysc->sysc_fields) {
--		WARN(1, "omap_hwmod: %s: offset struct for sysconfig not provided in class\n", oh->name);
--		return -EINVAL;
--	}
--
--	if (oh->class->sysc->sysc_flags & SYSC_HAS_ENAWAKEUP)
--		*v &= ~(0x1 << oh->class->sysc->sysc_fields->enwkup_shift);
--
--	if (oh->class->sysc->idlemodes & SIDLE_SMART_WKUP)
--		_set_slave_idlemode(oh, HWMOD_IDLEMODE_SMART, v);
--	if (oh->class->sysc->idlemodes & MSTANDBY_SMART_WKUP)
--		_set_master_standbymode(oh, HWMOD_IDLEMODE_SMART, v);
--
--	/* XXX test pwrdm_get_wken for this hwmod's subsystem */
--
--	return 0;
--}
--
- static struct clockdomain *_get_clkdm(struct omap_hwmod *oh)
- {
- 	struct clk_hw_omap *clk;
-@@ -3867,70 +3834,6 @@ void __iomem *omap_hwmod_get_mpu_rt_va(struct omap_hwmod *oh)
-  * for context save/restore operations?
-  */
- 
--/**
-- * omap_hwmod_enable_wakeup - allow device to wake up the system
-- * @oh: struct omap_hwmod *
-- *
-- * Sets the module OCP socket ENAWAKEUP bit to allow the module to
-- * send wakeups to the PRCM, and enable I/O ring wakeup events for
-- * this IP block if it has dynamic mux entries.  Eventually this
-- * should set PRCM wakeup registers to cause the PRCM to receive
-- * wakeup events from the module.  Does not set any wakeup routing
-- * registers beyond this point - if the module is to wake up any other
-- * module or subsystem, that must be set separately.  Called by
-- * omap_device code.  Returns -EINVAL on error or 0 upon success.
-- */
--int omap_hwmod_enable_wakeup(struct omap_hwmod *oh)
--{
--	unsigned long flags;
--	u32 v;
--
--	spin_lock_irqsave(&oh->_lock, flags);
--
--	if (oh->class->sysc &&
--	    (oh->class->sysc->sysc_flags & SYSC_HAS_ENAWAKEUP)) {
--		v = oh->_sysc_cache;
--		_enable_wakeup(oh, &v);
--		_write_sysconfig(v, oh);
--	}
--
--	spin_unlock_irqrestore(&oh->_lock, flags);
--
--	return 0;
--}
--
--/**
-- * omap_hwmod_disable_wakeup - prevent device from waking the system
-- * @oh: struct omap_hwmod *
-- *
-- * Clears the module OCP socket ENAWAKEUP bit to prevent the module
-- * from sending wakeups to the PRCM, and disable I/O ring wakeup
-- * events for this IP block if it has dynamic mux entries.  Eventually
-- * this should clear PRCM wakeup registers to cause the PRCM to ignore
-- * wakeup events from the module.  Does not set any wakeup routing
-- * registers beyond this point - if the module is to wake up any other
-- * module or subsystem, that must be set separately.  Called by
-- * omap_device code.  Returns -EINVAL on error or 0 upon success.
-- */
--int omap_hwmod_disable_wakeup(struct omap_hwmod *oh)
--{
--	unsigned long flags;
--	u32 v;
--
--	spin_lock_irqsave(&oh->_lock, flags);
--
--	if (oh->class->sysc &&
--	    (oh->class->sysc->sysc_flags & SYSC_HAS_ENAWAKEUP)) {
--		v = oh->_sysc_cache;
--		_disable_wakeup(oh, &v);
--		_write_sysconfig(v, oh);
--	}
--
--	spin_unlock_irqrestore(&oh->_lock, flags);
--
--	return 0;
+-	return _clkdm_clk_hwmod_enable(clkdm);
 -}
 -
  /**
-  * omap_hwmod_assert_hardreset - assert the HW reset line of submodules
-  * contained in the hwmod module.
-diff --git a/arch/arm/mach-omap2/omap_hwmod.h b/arch/arm/mach-omap2/omap_hwmod.h
---- a/arch/arm/mach-omap2/omap_hwmod.h
-+++ b/arch/arm/mach-omap2/omap_hwmod.h
-@@ -646,9 +646,6 @@ int omap_hwmod_get_resource_byname(struct omap_hwmod *oh, unsigned int type,
- struct powerdomain *omap_hwmod_get_pwrdm(struct omap_hwmod *oh);
- void __iomem *omap_hwmod_get_mpu_rt_va(struct omap_hwmod *oh);
+  * clkdm_clk_disable - remove an enabled downstream clock from this clkdm
+  * @clkdm: struct clockdomain *
+@@ -1216,13 +1203,13 @@ int clkdm_clk_enable(struct clockdomain *clkdm, struct clk *clk)
+  */
+ int clkdm_clk_disable(struct clockdomain *clkdm, struct clk *clk)
+ {
+-	if (!clkdm || !clk || !arch_clkdm || !arch_clkdm->clkdm_clk_disable)
++	if (!clkdm || !arch_clkdm || !arch_clkdm->clkdm_clk_disable)
+ 		return -EINVAL;
  
--int omap_hwmod_enable_wakeup(struct omap_hwmod *oh);
--int omap_hwmod_disable_wakeup(struct omap_hwmod *oh);
+ 	pwrdm_lock(clkdm->pwrdm.ptr);
+ 
+ 	/* corner case: disabling unused clocks */
+-	if ((__clk_get_enable_count(clk) == 0) && clkdm->usecount == 0)
++	if (clk && (__clk_get_enable_count(clk) == 0) && clkdm->usecount == 0)
+ 		goto ccd_exit;
+ 
+ 	if (clkdm->usecount == 0) {
+@@ -1277,7 +1264,7 @@ int clkdm_hwmod_enable(struct clockdomain *clkdm, struct omap_hwmod *oh)
+ 	if (!oh)
+ 		return -EINVAL;
+ 
+-	return _clkdm_clk_hwmod_enable(clkdm);
++	return clkdm_clk_enable(clkdm, NULL);
+ }
+ 
+ /**
+@@ -1300,35 +1287,10 @@ int clkdm_hwmod_disable(struct clockdomain *clkdm, struct omap_hwmod *oh)
+ 	if (cpu_is_omap24xx() || cpu_is_omap34xx())
+ 		return 0;
+ 
+-	/*
+-	 * XXX Rewrite this code to maintain a list of enabled
+-	 * downstream hwmods for debugging purposes?
+-	 */
 -
- int omap_hwmod_for_each_by_class(const char *classname,
- 				 int (*fn)(struct omap_hwmod *oh,
- 					   void *user),
+-	if (!clkdm || !oh || !arch_clkdm || !arch_clkdm->clkdm_clk_disable)
++	if (!oh)
+ 		return -EINVAL;
+ 
+-	pwrdm_lock(clkdm->pwrdm.ptr);
+-
+-	if (clkdm->usecount == 0) {
+-		pwrdm_unlock(clkdm->pwrdm.ptr);
+-		WARN_ON(1); /* underflow */
+-		return -ERANGE;
+-	}
+-
+-	clkdm->usecount--;
+-	if (clkdm->usecount > 0) {
+-		pwrdm_unlock(clkdm->pwrdm.ptr);
+-		return 0;
+-	}
+-
+-	arch_clkdm->clkdm_clk_disable(clkdm);
+-	pwrdm_state_switch_nolock(clkdm->pwrdm.ptr);
+-	pwrdm_unlock(clkdm->pwrdm.ptr);
+-
+-	pr_debug("clockdomain: %s: disabled\n", clkdm->name);
+-
+-	return 0;
++	return clkdm_clk_disable(clkdm, NULL);
+ }
+ 
+ /**
 -- 
 2.23.0
