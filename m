@@ -2,106 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B63AD95B9
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 17:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19D11D95D1
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 17:39:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404850AbfJPPhL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Oct 2019 11:37:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49386 "EHLO mail.kernel.org"
+        id S2404934AbfJPPjU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Oct 2019 11:39:20 -0400
+Received: from muru.com ([72.249.23.125]:37556 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726707AbfJPPhL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 16 Oct 2019 11:37:11 -0400
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D380320854;
-        Wed, 16 Oct 2019 15:37:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571240230;
-        bh=kewc2DHCxPax0/As8Dys1vVHnw4VcjP7TAGHyJnCm3U=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=e/1YPbJN2q6MW1B2PLR7tF/VsizhEwRlx2jWIO+PGFB7nQsA+W3L40aNX+4e4meou
-         wa/+akdLGCSd3lnmxG/a2oDCPp8YqydfEk55ZXTBrL+IvmsriSRm3L+997cCx7LmxW
-         Z2M2v6ABbRZpirXk12MlNjgDzpkMsCRBLE+G0AWI=
-Received: by mail-yb1-f178.google.com with SMTP id z125so7950690ybc.4;
-        Wed, 16 Oct 2019 08:37:09 -0700 (PDT)
-X-Gm-Message-State: APjAAAXDlckBGDKsUMz91BzM7EjuDlnABHKZ2OVLfzoVYopfY1nnBVDV
-        xLnmX7IY+dlY6X6n3Qibly2NDvmfd0nzVoaf6Q==
-X-Google-Smtp-Source: APXvYqyQKovpJMvdc7d8KZIJ6YAr98uicEeI6atpwgB7s7JZpNePYfmdWhWwkMnddX4aoxlCOjiIRZ54XNh3gZE8uQE=
-X-Received: by 2002:a25:7543:: with SMTP id q64mr27841489ybc.414.1571240229011;
- Wed, 16 Oct 2019 08:37:09 -0700 (PDT)
+        id S1726796AbfJPPjU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 16 Oct 2019 11:39:20 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 974FC8107;
+        Wed, 16 Oct 2019 15:39:53 +0000 (UTC)
+Date:   Wed, 16 Oct 2019 08:39:16 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc:     Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Marcel Partap <mpartap@gmx.net>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Michael Scott <hashcode0f@gmail.com>,
+        NeKit <nekit1000@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>
+Subject: Re: [PATCH 2/7] usb: musb: omap2430: Wait on enable to avoid babble
+Message-ID: <20191016153916.GF5610@atomide.com>
+References: <20191009212145.28495-1-tony@atomide.com>
+ <20191009212145.28495-3-tony@atomide.com>
+ <d3693c4d-bf22-ce0a-cfc8-f2e55bb0c257@cogentembedded.com>
 MIME-Version: 1.0
-References: <20191009175628.20570-1-bparrot@ti.com> <20191009175628.20570-2-bparrot@ti.com>
- <20191015222947.GA13388@bogus> <20191016132239.ufptwl44ktmhvylo@ti.com>
-In-Reply-To: <20191016132239.ufptwl44ktmhvylo@ti.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 16 Oct 2019 10:36:54 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKAGE=CytS89ET+r4+mSGfYPR5FMRUo2_jjVTZgW9o=Nw@mail.gmail.com>
-Message-ID: <CAL_JsqKAGE=CytS89ET+r4+mSGfYPR5FMRUo2_jjVTZgW9o=Nw@mail.gmail.com>
-Subject: Re: [Patch 1/3] dt-bindings: media: ti-vpe: Document VPE driver
-To:     Benoit Parrot <bparrot@ti.com>
-Cc:     Tony Lindgren <tony@atomide.com>, Tero Kristo <t-kristo@ti.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d3693c4d-bf22-ce0a-cfc8-f2e55bb0c257@cogentembedded.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Oct 16, 2019 at 8:20 AM Benoit Parrot <bparrot@ti.com> wrote:
->
-> Rob Herring <robh@kernel.org> wrote on Tue [2019-Oct-15 17:29:47 -0500]:
-> > On Wed, Oct 09, 2019 at 12:56:26PM -0500, Benoit Parrot wrote:
-> > > Device Tree bindings for the Video Processing Engine (VPE) driver.
-> > >
-> > > Signed-off-by: Benoit Parrot <bparrot@ti.com>
-> > > ---
-> > >  .../devicetree/bindings/media/ti-vpe.txt      | 48 +++++++++++++++++++
-> > >  MAINTAINERS                                   |  1 +
-> > >  2 files changed, 49 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/media/ti-vpe.txt
-> >
-> > Please convert to DT schema format.
->
-> I can do that.
-> Before posting/merging a .yaml, are we supposed to be able to pass these?
-> # make dt_binding_check
-> # make dtbs_check
+* Sergei Shtylyov <sergei.shtylyov@cogentembedded.com> [191010 09:46]:
+> Hello!
+> 
+> On 10.10.2019 0:21, Tony Lindgren wrote:
+> 
+> > We can babble interrupt if we attempt to switch to USB host mode too
+>         ^ verb missing?
 
-Only dt_binding_check needs to be warning free. It is good to test
-your schema with dtbs_check and make sure any warnings seem valid.
+Thanks for catching it, it should say "We can get babble...".
 
-> Because currently with 5.4-rc3 these fails.
+Bin, do you need a resend of the whole series if no
+other comments?
 
-Yeah, still waiting on regulator and media fixes. :( linux-next is fixed.
+Regards,
 
-> Is there a way to run these "test command" target a specific .yaml and not
-> the whole set?
-
-Yes, it's documented in writing-schema.rst. Use DT_SCHEMA_FILES  to
-test just your schema file.
-
-[...]
-
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index 8598f49fa2c8..63dcda51f8ae 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -16299,6 +16299,7 @@ W:  http://linuxtv.org/
-> > >  Q: http://patchwork.linuxtv.org/project/linux-media/list/
-> > >  S: Maintained
-> > >  F: drivers/media/platform/ti-vpe/
-> > > +F: Documentation/devicetree/bindings/media/ti-vpe.txt
->
-> Now with the dt_schemas, I noticed that the maintainer's name is part of
-> the yaml file. Do we still need to add this to the MAINTAINERS file as
-> well?
-
-Within the schema is really preparation for having schema outside of
-the kernel tree and because lots of bindings don't have a MAINTAINERS
-entry. So yes, you can still have both.
-
-Rob
+Tony
