@@ -2,114 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85D32D9306
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 15:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5C8D931B
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 15:56:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405606AbfJPNwU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Oct 2019 09:52:20 -0400
-Received: from mail-il1-f194.google.com ([209.85.166.194]:38345 "EHLO
+        id S2390307AbfJPN4C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Oct 2019 09:56:02 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:40885 "EHLO
         mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405597AbfJPNwS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Oct 2019 09:52:18 -0400
-Received: by mail-il1-f194.google.com with SMTP id y5so2670429ilb.5;
-        Wed, 16 Oct 2019 06:52:16 -0700 (PDT)
+        with ESMTP id S2388087AbfJPN4C (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Oct 2019 09:56:02 -0400
+Received: by mail-il1-f194.google.com with SMTP id o16so2676860ilq.7;
+        Wed, 16 Oct 2019 06:56:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=tddk5aNBbKCrf3Fe8pk7EXB/w7qFIAJSPZblsSzkzAM=;
-        b=kTcMabWGqmRCfYcYJhOVUHGGartS+59ZQ56ld4laMvfK65ghicCYqQEvJ+MdfNZFKt
-         y6MSu97f9Fj6D3ZqFoqpOn13J+olCrcN4xcPwIZrRnHAs5pP5JtNtpBTAl0609P/63Z3
-         AiMvkCNmszBXcI5rPr56HjpXCVKKzPDSD0R3lSXcw0E5ogDMhERdt/QqGXiZ3GKsK9Ed
-         j+QDu017oT1mSDeo50Yb947NFuBW1MiB/n5ed3UqI3kbEzyqdZtVkAhavahAEDohgPDm
-         MLCUEu2iHWwEMp1QrZwHONybXqpAhfqYve8ZJvDseafG5u3CeLDsDC9hujkteBCDur6N
-         pOmw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9evKAakxTzcQ7kdnAG8O0duW0PQfeoTSmI1HDrhmXzs=;
+        b=Husn15unpBnUiUApRTjryg0iOFD/ZK/bLuqbpAPz1y8/BIXb3io3FkV5CUojUXZ6qH
+         uVvs4/pOdYWTADJVc5t8EFH8a8FQc6wf/WFnunoJ+N+Dz0F2zyPUuIe8IfEojjAghKUD
+         iKroHh+kGvUwsxahclwyS0d/8QrbQWzSpx8fkFwDVFuzMrdaJAafYPpfO7WYaGRDhqYB
+         iY/VS4F2aOH++PsfXp2d9npik0xMU8ghyZa2D440LmTLKXYH1piRBkP30RpnT9O9j2DE
+         vwISrPEn4qbcfa0Lf263v6DODZ8U0mEUOQcX//5oOpq+YZfX+7U3Bml0ddWlzKdIyNfk
+         ejyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=tddk5aNBbKCrf3Fe8pk7EXB/w7qFIAJSPZblsSzkzAM=;
-        b=LMkn9HMqexsuVkqh/8Tcqe2BeWHx+DKPjOxYI09t04RUOVL7H8Oa94A7L0yxA5i+uq
-         vwBYzAnTm8pZhBws6Nmf01cLmBkUvrzstS+uC+BkYHICS6dGka3T8oRcCA+rP3z2q/Gs
-         JnFMqbFLNFMi/DN5YSiRbAsQFWDjoeSGw/GU/VzV44ztoLgGfjmwlcfAgsPXolM3YIZk
-         E4DD2X1DJH/zbK4i2CgRsEHZ4O+WxuhNCsJBSE3hI06J2fxO8/y4V+7oqbomVlZaBXI6
-         W6uF5JiEg1sRRsXWuE+7DvpETqZ68ktPoWshsUqo8lzBULGX25ab1ACBFJ+QmZlIbGyM
-         X4mg==
-X-Gm-Message-State: APjAAAVXb7pHe3MEqBO2G115zu4OR/9SUeM+ty9kNP8tP3JiOeT5uN3S
-        61co8e2iWQY02Qe7T9j6Vp8=
-X-Google-Smtp-Source: APXvYqxfffYQGm7jczNh9MwYJUxP6Nn83rdo7ZuYmUEPfLGieQVEeLob/zjOrNMikp4xn1sZnO/d0g==
-X-Received: by 2002:a92:5f4c:: with SMTP id t73mr11861707ilb.220.1571233936326;
-        Wed, 16 Oct 2019 06:52:16 -0700 (PDT)
-Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id e139sm17227545iof.60.2019.10.16.06.52.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2019 06:52:15 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9evKAakxTzcQ7kdnAG8O0duW0PQfeoTSmI1HDrhmXzs=;
+        b=DSDZO6Z+Wl3oqS7rpcszUjBTVLAICh4tjZ4jgv/n5Fm9M4sWIzM1gPneXFi+sMEgbt
+         v58mJgqAxdjJb23QQBR92XHkrCo+znCGOUDAvOsDNQ78LcZZShjNIp0BzZVWkuhXp5Xx
+         +Lm0zDJtrWW9By2vTuR92bMLzxvU7lj1Kp3y2wKzSmA6KYWolnP7IhTf0rqhP9dMH1DV
+         iWUE6wVp2RgEu3VQnvNsRYjiNQv9ppw8w2Y7sR2jGp3lQdrtMp+6NdUxLvIV9f45WePu
+         PQq63SFmu2UY6EwFCXy3HtwEv14baAmT5zBqDNTR+T/SA98iCjAMDrQdDZlabw26MO3M
+         hHAg==
+X-Gm-Message-State: APjAAAW27ii1urg6ksLs4fTVivlinVRLkk3g01D9nthFnyZ/ikCOYvCK
+        WgFF7cjfe+/pcBbabJFD6qKTTba9uqTn9giQWyc=
+X-Google-Smtp-Source: APXvYqz6T1Cj2dTtiLoaoLYVvqyfZ7Zqfc1a9CSHlOX32P7IvKsXtPYe1zmRiq06cQd+YD+kYrow42edQZqwlqMfuCQ=
+X-Received: by 2002:a92:8384:: with SMTP id p4mr11801473ilk.276.1571234159767;
+ Wed, 16 Oct 2019 06:55:59 -0700 (PDT)
+MIME-Version: 1.0
+References: <20191001233923.16514-1-aford173@gmail.com> <20191001233923.16514-5-aford173@gmail.com>
+ <20191009233130.GA1002@bogus> <CAHCN7xLCvN1v00H10KUX625awz+nea6rhA_LYnftspjaZ+od-g@mail.gmail.com>
+ <CAL_JsqJoPda6Oj14WTdm737Mydn+pzvdqkyCPry+zU7drheq=g@mail.gmail.com>
+In-Reply-To: <CAL_JsqJoPda6Oj14WTdm737Mydn+pzvdqkyCPry+zU7drheq=g@mail.gmail.com>
 From:   Adam Ford <aford173@gmail.com>
-To:     dri-devel@lists.freedesktop.org
-Cc:     linux-omap@vger.kernel.org, Adam Ford <aford173@gmail.com>,
+Date:   Wed, 16 Oct 2019 08:55:48 -0500
+Message-ID: <CAHCN7xLN99HyZRBr-CkxvkZntx3LfBd5ELcdLPjPRH7kLKr2uw@mail.gmail.com>
+Subject: Re: [PATCH V4 2/3] dt-bindings: Add Logic PD Type 28 display panel
+To:     Rob Herring <robh@kernel.org>
+Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Adam Ford <adam.ford@logicpd.com>,
         Thierry Reding <thierry.reding@gmail.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V5 3/3] ARM: logicpd-torpedo-37xx-devkit-28: Reference new DRM panel
-Date:   Wed, 16 Oct 2019 08:51:47 -0500
-Message-Id: <20191016135147.7743-3-aford173@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191016135147.7743-1-aford173@gmail.com>
-References: <20191016135147.7743-1-aford173@gmail.com>
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-With the removal of the panel-dpi from the omap drivers, the
-LCD no longer works.  This patch points the device tree to
-a newly created panel named "logicpd,type28"
+On Wed, Oct 16, 2019 at 8:15 AM Rob Herring <robh@kernel.org> wrote:
+>
+> On Tue, Oct 15, 2019 at 6:04 PM Adam Ford <aford173@gmail.com> wrote:
+> >
+> > On Wed, Oct 9, 2019 at 6:31 PM Rob Herring <robh@kernel.org> wrote:
+> > >
+> > > On Tue, Oct 01, 2019 at 06:39:22PM -0500, Adam Ford wrote:
+> > > > This patch adds documentation of device tree bindings for the WVGA panel
+> > > > Logic PD Type 28 display.
+> > > >
+> > > > Signed-off-by: Adam Ford <aford173@gmail.com>
+> > > > ---
+> > > > V4:  Update per Rob H's suggestions and copy other panel yaml example from 5.4-rc1
+> > > > V3:  Correct build errors from 'make dt_binding_check'
+> > >
+> > > The example still fails to build here.
+> >
+> > I cannot replicate the build error on 5.4-RC3 at least for this
+> > binding on V4 of the patch.  I get build error on other bindings.
+> >
+> > $ make dt_binding_check ARCH=arm
+> > scripts/kconfig/conf  --syncconfig Kconfig
+> >   SCHEMA  Documentation/devicetree/bindings/processed-schema.yaml
+> > /home/aford/src/linux/Documentation/devicetree/bindings/net/adi,adin.yaml:
+> > ignoring, error in schema 'adi,rx-internal-delay-ps'
+> > warning: no schema found in file:
+> > Documentation/devicetree/bindings/net/adi,adin.yaml
+> > /home/aford/src/linux/Documentation/devicetree/bindings/regulator/fixed-regulator.yaml:
+> > ignoring, error in schema '0'
+> > warning: no schema found in file:
+> > Documentation/devicetree/bindings/regulator/fixed-regulator.yaml
+> >   CHKDT   Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml
+> >   ....
+> >   CHKDT   Documentation/devicetree/bindings/display/panel/tpo,tpg110.yaml
+> >   CHKDT   Documentation/devicetree/bindings/display/panel/ampire,am-480272h3tmqw-t01h.yaml
+> >   CHKDT   Documentation/devicetree/bindings/display/panel/logicpd,type28.yaml
+> >   CHKDT   Documentation/devicetree/bindings/display/panel/ronbo,rb070d30.yaml
+> >  ...
+> >  CHKDT   Documentation/devicetree/bindings/media/allwinner,sun4i-a10-ir.yaml
+> >   CHKDT   Documentation/devicetree/bindings/media/allwinner,sun4i-a10-csi.yaml
+> > Documentation/devicetree/bindings/media/allwinner,sun4i-a10-csi.yaml:
+> > $id: path/filename 'arm/allwinner,sun4i-a10-csi.yaml' doesn't match
+> > actual filename
+> > Documentation/devicetree/bindings/Makefile:12: recipe for target
+> > 'Documentation/devicetree/bindings/media/allwinner,sun4i-a10-csi.example.dts'
+> > failed
+> > make[1]: *** [Documentation/devicetree/bindings/media/allwinner,sun4i-a10-csi.example.dts]
+> > Error 1
+> > Makefile:1263: recipe for target 'dt_binding_check' failed
+> > make: *** [dt_binding_check] Error 2
+> >
+> >
+> > I took out some of the logs to make it less chatty.  I don't know
+> > anything about yaml or what the expectations are, so if there is a
+> > test beyond 'make dt_binding_check' please let me know.
+>
+> Perhaps 'make -k' is needed because of the other failures. Or try on
+> top of linux-next which should all be fixed.
 
-Fixes: 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
+Thanks.  I didn't know about the '-k'  I replaced GPIO_ACTIVE_HIGH
+with 0 and it seems to have fixed the error.
+Sorry about all the noise.  Hopefully I did it right.  There is a V5
+patch waiting now starting at [1]
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
----
-V5:  No Change
-V4:  No Change
-V3:  No change
-V2:  Remove legacy 'label' from binding
+[1] - https://patchwork.kernel.org/patch/11193399/
 
-diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-index 07ac99b9cda6..cdb89b3e2a9b 100644
---- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-+++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-@@ -11,22 +11,6 @@
- #include "logicpd-torpedo-37xx-devkit.dts"
- 
- &lcd0 {
--
--	label = "28";
--
--	panel-timing {
--		clock-frequency = <9000000>;
--		hactive = <480>;
--		vactive = <272>;
--		hfront-porch = <3>;
--		hback-porch = <2>;
--		hsync-len = <42>;
--		vback-porch = <3>;
--		vfront-porch = <2>;
--		vsync-len = <11>;
--		hsync-active = <1>;
--		vsync-active = <1>;
--		de-active = <1>;
--		pixelclk-active = <0>;
--	};
-+	/* To make it work, set CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=4 */
-+	compatible = "logicpd,type28";
- };
--- 
-2.17.1
+adam
 
+
+
+
+>
+> Rob
