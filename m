@@ -2,115 +2,187 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98218D922A
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 15:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D00E2D9246
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 15:20:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728122AbfJPNPf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Oct 2019 09:15:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37220 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727496AbfJPNPf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 16 Oct 2019 09:15:35 -0400
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D2BAB21925;
-        Wed, 16 Oct 2019 13:15:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571231734;
-        bh=IcnqT7RQVBovweaVEALr0lBoNn170n6vif3YcfLUwK8=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=nb3sfhmWYplKyJ6Jp3DpoLlQq/qomzbD39TynD+136xDVYL8TWUi2rX7ZCbnvO85y
-         c+DTLJP2AsYG8A/3H9pgWFU2/OJBdQDNVvPW6wYaVYuIzXXtx/x4jStH6DXd8K1Uqs
-         Z9s8mgbv7Y6+C1biIH7R0yLCavlmbP0O1VT/zn1w=
-Received: by mail-qt1-f169.google.com with SMTP id 3so36068090qta.1;
-        Wed, 16 Oct 2019 06:15:33 -0700 (PDT)
-X-Gm-Message-State: APjAAAVdr4L4pXj4ATLFp0l1LfqOTGeDvC3xbUGP34RGbeib8G1dvD2a
-        4LPKHN/RjAQht1RNlF5oq6Iq/Tx59p/SrtLAiA==
-X-Google-Smtp-Source: APXvYqwKs5UdvUeaFRW8bLvhtjp7znKBxIpTPywHIn8FBNhWh5DCfYY8yxrL5NLWwtGcIotNhvWLT8UwzY3fVixQOzY=
-X-Received: by 2002:ac8:44d9:: with SMTP id b25mr45955617qto.300.1571231732993;
- Wed, 16 Oct 2019 06:15:32 -0700 (PDT)
+        id S2391741AbfJPNUI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Oct 2019 09:20:08 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:48022 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388141AbfJPNUI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Oct 2019 09:20:08 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9GDK2GC110727;
+        Wed, 16 Oct 2019 08:20:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1571232002;
+        bh=pn1VJ6hcp1F1tZLG4xpI8lS3IUjFzRCxzxKnmp0Jaq0=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=KxCHByEfMBLsRmBAXWWcNQCupC/BZCNyKovmhaDakle728gy820EYYpkqCx+5Gxz+
+         J6ADvghlRoDdaFgX1JeCBynrO9CXqIUI354FGvtcr/PNJYwGAzY8Jkb5P6vfvtSitX
+         6K/r3+FOBiSWAevhohiFBj5UMuPEShDYjikPgM/k=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9GDK2Jl111013
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 16 Oct 2019 08:20:02 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 16
+ Oct 2019 08:20:01 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 16 Oct 2019 08:20:01 -0500
+Received: from ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with SMTP id x9GDK1N8027346;
+        Wed, 16 Oct 2019 08:20:01 -0500
+Date:   Wed, 16 Oct 2019 08:22:39 -0500
+From:   Benoit Parrot <bparrot@ti.com>
+To:     Rob Herring <robh@kernel.org>
+CC:     Tony Lindgren <tony@atomide.com>, Tero Kristo <t-kristo@ti.com>,
+        <linux-omap@vger.kernel.org>, <linux-media@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [Patch 1/3] dt-bindings: media: ti-vpe: Document VPE driver
+Message-ID: <20191016132239.ufptwl44ktmhvylo@ti.com>
+References: <20191009175628.20570-1-bparrot@ti.com>
+ <20191009175628.20570-2-bparrot@ti.com>
+ <20191015222947.GA13388@bogus>
 MIME-Version: 1.0
-References: <20191001233923.16514-1-aford173@gmail.com> <20191001233923.16514-5-aford173@gmail.com>
- <20191009233130.GA1002@bogus> <CAHCN7xLCvN1v00H10KUX625awz+nea6rhA_LYnftspjaZ+od-g@mail.gmail.com>
-In-Reply-To: <CAHCN7xLCvN1v00H10KUX625awz+nea6rhA_LYnftspjaZ+od-g@mail.gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 16 Oct 2019 08:15:21 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJoPda6Oj14WTdm737Mydn+pzvdqkyCPry+zU7drheq=g@mail.gmail.com>
-Message-ID: <CAL_JsqJoPda6Oj14WTdm737Mydn+pzvdqkyCPry+zU7drheq=g@mail.gmail.com>
-Subject: Re: [PATCH V4 2/3] dt-bindings: Add Logic PD Type 28 display panel
-To:     Adam Ford <aford173@gmail.com>
-Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20191015222947.GA13388@bogus>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Oct 15, 2019 at 6:04 PM Adam Ford <aford173@gmail.com> wrote:
->
-> On Wed, Oct 9, 2019 at 6:31 PM Rob Herring <robh@kernel.org> wrote:
-> >
-> > On Tue, Oct 01, 2019 at 06:39:22PM -0500, Adam Ford wrote:
-> > > This patch adds documentation of device tree bindings for the WVGA panel
-> > > Logic PD Type 28 display.
-> > >
-> > > Signed-off-by: Adam Ford <aford173@gmail.com>
-> > > ---
-> > > V4:  Update per Rob H's suggestions and copy other panel yaml example from 5.4-rc1
-> > > V3:  Correct build errors from 'make dt_binding_check'
-> >
-> > The example still fails to build here.
->
-> I cannot replicate the build error on 5.4-RC3 at least for this
-> binding on V4 of the patch.  I get build error on other bindings.
->
-> $ make dt_binding_check ARCH=arm
-> scripts/kconfig/conf  --syncconfig Kconfig
->   SCHEMA  Documentation/devicetree/bindings/processed-schema.yaml
-> /home/aford/src/linux/Documentation/devicetree/bindings/net/adi,adin.yaml:
-> ignoring, error in schema 'adi,rx-internal-delay-ps'
-> warning: no schema found in file:
-> Documentation/devicetree/bindings/net/adi,adin.yaml
-> /home/aford/src/linux/Documentation/devicetree/bindings/regulator/fixed-regulator.yaml:
-> ignoring, error in schema '0'
-> warning: no schema found in file:
-> Documentation/devicetree/bindings/regulator/fixed-regulator.yaml
->   CHKDT   Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml
->   ....
->   CHKDT   Documentation/devicetree/bindings/display/panel/tpo,tpg110.yaml
->   CHKDT   Documentation/devicetree/bindings/display/panel/ampire,am-480272h3tmqw-t01h.yaml
->   CHKDT   Documentation/devicetree/bindings/display/panel/logicpd,type28.yaml
->   CHKDT   Documentation/devicetree/bindings/display/panel/ronbo,rb070d30.yaml
->  ...
->  CHKDT   Documentation/devicetree/bindings/media/allwinner,sun4i-a10-ir.yaml
->   CHKDT   Documentation/devicetree/bindings/media/allwinner,sun4i-a10-csi.yaml
-> Documentation/devicetree/bindings/media/allwinner,sun4i-a10-csi.yaml:
-> $id: path/filename 'arm/allwinner,sun4i-a10-csi.yaml' doesn't match
-> actual filename
-> Documentation/devicetree/bindings/Makefile:12: recipe for target
-> 'Documentation/devicetree/bindings/media/allwinner,sun4i-a10-csi.example.dts'
-> failed
-> make[1]: *** [Documentation/devicetree/bindings/media/allwinner,sun4i-a10-csi.example.dts]
-> Error 1
-> Makefile:1263: recipe for target 'dt_binding_check' failed
-> make: *** [dt_binding_check] Error 2
->
->
-> I took out some of the logs to make it less chatty.  I don't know
-> anything about yaml or what the expectations are, so if there is a
-> test beyond 'make dt_binding_check' please let me know.
+Rob Herring <robh@kernel.org> wrote on Tue [2019-Oct-15 17:29:47 -0500]:
+> On Wed, Oct 09, 2019 at 12:56:26PM -0500, Benoit Parrot wrote:
+> > Device Tree bindings for the Video Processing Engine (VPE) driver.
+> > 
+> > Signed-off-by: Benoit Parrot <bparrot@ti.com>
+> > ---
+> >  .../devicetree/bindings/media/ti-vpe.txt      | 48 +++++++++++++++++++
+> >  MAINTAINERS                                   |  1 +
+> >  2 files changed, 49 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/media/ti-vpe.txt
+> 
+> Please convert to DT schema format.
 
-Perhaps 'make -k' is needed because of the other failures. Or try on
-top of linux-next which should all be fixed.
+I can do that.
+Before posting/merging a .yaml, are we supposed to be able to pass these?
+# make dt_binding_check
+# make dtbs_check
 
-Rob
+Because currently with 5.4-rc3 these fails.
+
+Is there a way to run these "test command" target a specific .yaml and not
+the whole set?
+
+> 
+> > 
+> > diff --git a/Documentation/devicetree/bindings/media/ti-vpe.txt b/Documentation/devicetree/bindings/media/ti-vpe.txt
+> > new file mode 100644
+> > index 000000000000..b2942fa8c3ea
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/media/ti-vpe.txt
+> > @@ -0,0 +1,48 @@
+> > +Texas Instruments DRA7x VIDEO PROCESSING ENGINE (VPE)
+> > +------------------------------------------------------
+> > +
+> > +The Video Processing Engine (VPE) is a key component for image post
+> > +processing applications. VPE consist of a single memory to memory
+> > +path which can perform chroma up/down sampling, deinterlacing,
+> > +scaling and color space conversion.
+> > +
+> > +Required properties:
+> > +- compatible: must be "ti,vpe"
+> 
+> Needs to have SoC specific compatibles.
+
+Yes, I'll fix that.
+
+> 
+> > +- reg:	physical base address and length of the registers set for the 4
+> > +	memory regions required;
+> > +- reg-names: name associated with the memory regions described is <reg>;
+> 
+> The names need to be documented.
+
+Ok.
+
+> 
+> > +- interrupts: should contain IRQ line for VPE;
+> > +
+> > +Example:
+> > +
+> > +	target-module@1d0010 {                  /* 0x489d0000, ap 27 30.0 */
+> > +		compatible = "ti,sysc-omap4", "ti,sysc";
+> > +		reg = <0x1d0010 0x4>;
+> > +		reg-names = "sysc";
+> > +		ti,sysc-midle = <SYSC_IDLE_FORCE>,
+> > +				<SYSC_IDLE_NO>,
+> > +				<SYSC_IDLE_SMART>;
+> > +		ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+> > +				<SYSC_IDLE_NO>,
+> > +				<SYSC_IDLE_SMART>;
+> > +		clocks = <&vpe_clkctrl DRA7_VPE_VPE_CLKCTRL 0>;
+> > +		clock-names = "fck";
+> > +		#address-cells = <1>;
+> > +		#size-cells = <1>;
+> > +		ranges = <0x0 0x1d0000 0x10000>;
+> 
+> All this is outside the scope of this binding.
+
+OK I was not sure if the whole interconnect thing was needed in the example
+or not.
+
+> 
+> > +
+> > +		vpe: vpe@0 {
+> > +			compatible = "ti,vpe";
+> > +			reg = <0x0000 0x120>,
+> > +			      <0x0700 0x80>,
+> > +			      <0x5700 0x18>,
+> > +			      <0xd000 0x400>;
+> > +			reg-names = "vpe_top",
+> > +				    "sc",
+> > +				    "csc",
+> > +				    "vpdma";
+> > +			interrupts = <GIC_SPI 354 IRQ_TYPE_LEVEL_HIGH>;
+> 
+> > +			#address-cells = <1>;
+> > +			#size-cells = <0>;
+> 
+> Not documented, nor needed as there are no child nodes.
+
+Yeah, I'll remove that.
+
+> 
+> > +		};
+> > +	};
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 8598f49fa2c8..63dcda51f8ae 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -16299,6 +16299,7 @@ W:	http://linuxtv.org/
+> >  Q:	http://patchwork.linuxtv.org/project/linux-media/list/
+> >  S:	Maintained
+> >  F:	drivers/media/platform/ti-vpe/
+> > +F:	Documentation/devicetree/bindings/media/ti-vpe.txt
+
+Now with the dt_schemas, I noticed that the maintainer's name is part of
+the yaml file. Do we still need to add this to the MAINTAINERS file as
+well?
+
+Benoit
+
+
+> >  
+> >  TI WILINK WIRELESS DRIVERS
+> >  L:	linux-wireless@vger.kernel.org
+> > -- 
+> > 2.17.1
+> > 
