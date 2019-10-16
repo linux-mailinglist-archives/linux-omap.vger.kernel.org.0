@@ -2,46 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F74CD92FB
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 15:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93D78D92FE
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2019 15:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392102AbfJPNwP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Oct 2019 09:52:15 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:41104 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391962AbfJPNwO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Oct 2019 09:52:14 -0400
-Received: by mail-io1-f66.google.com with SMTP id n26so53809895ioj.8;
-        Wed, 16 Oct 2019 06:52:13 -0700 (PDT)
+        id S2393704AbfJPNwQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Oct 2019 09:52:16 -0400
+Received: from mail-il1-f196.google.com ([209.85.166.196]:35854 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391962AbfJPNwQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Oct 2019 09:52:16 -0400
+Received: by mail-il1-f196.google.com with SMTP id z2so2658738ilb.3;
+        Wed, 16 Oct 2019 06:52:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=utCDVgVbZ5WjSdZrf9lDYLAzWEhwnZ24Zw+SLge2X/Q=;
-        b=NTm6zlZ32eSZNxQ5TRo6LYWQC7jJJNF3MjYWWedy26p/7IPFYjdWNNasmcSOJho1Na
-         YKmafUu8hzR21aTYGewjdH9rMvGXw5r0JNn5IjYFdDAnbJTjtnd9dIcF1Mde0aaFI69h
-         g9CppfLaqK77qmlX7dQCL6yLpwD/ALftKjB8Y/r+qW9yt9rAiwDtWNPEiQPuPIUsUe+J
-         uwE3NMuUIWY6Th0Qjwz21Ox6PIBy77jxAYJzwtRMGFI/vB+gOFeFnxrSk/cz4kjrjZ7P
-         y8UWu+9w90IRhrPyTplF+jZQxB6c4pWNHyxu+vGMvcpUsFVlZVMop3/UPkphYRI49TOu
-         Rltg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=Ctwff17X5J9r4AVcc5YjcP9yOcK6+mtooPGCu9/hHIw=;
+        b=A/hzu12BKfaEW8nHGrJjJcG3ppjyfUqRobpjVd8JCm4qVUwN0QQO9FUmdSJauYUm/g
+         EBenXGD+2DQyS2Fa17RvoESrYm3vDQWFKzTBDMeJ5vt7KRFqWN/+u6EA4n4oWbjLTzEv
+         SyTrTpE9IrmSuroF0F8bRo+ODWxSsJY00QTxE3Kv5Kno97QXGIp7J6gG/u8wBvlyoDdw
+         gocqu+ktkP6oCLfBW8Nk0wWiUdmYpvKaVctzmOtORafXKQfFh4Qe4yYu92d1/oRjo6kk
+         CHWGce68PvJOL/6KRi6u4894gx4NXRiBgByudZ1CYl5BsTKGm2TESBJuAkHgO6KIdgqk
+         VviA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=utCDVgVbZ5WjSdZrf9lDYLAzWEhwnZ24Zw+SLge2X/Q=;
-        b=oV6qWoFNsLy41Y2EfgL3fQHTqDe2xpLgrK0LFUXrOpfg3Ed2nvMEARRaea7DQwf73n
-         8vqWVZps7dqkNLK0bW/cVbFaAFjV53j/B9umzhVVuiCquSvGFz95seUB0aEc6BCB7wBg
-         eGMZXmCASRL43J+GvUSaneyEA5U1OTZx4fowQIRg/lRMp8FyUY8WzkRgjvSoBGDxLgaX
-         8GQFzqOjXX/gEpiiWSFtMTGifrCgfcLxvaoC/9hutFM3mVk6OpcErThmNCAE+pw7ojY7
-         uDERdmCtGqqv7DEzd0j3JyteXH4Xf/Nm4IeLcD97VIGGjHVXxc/u3369hwNxRMV/oY2Q
-         qUuQ==
-X-Gm-Message-State: APjAAAW4wfIA0GGPL72zghAWNhCpJoy8OADn68KrzaU1Si4E07Ul0eJz
-        ke/Uw99mS+pvbd16CyIecU4=
-X-Google-Smtp-Source: APXvYqxKHHiKucNI0gkNKLs3b54iLE/Y1m78a8dY5DI5Q5i+Vkenqm2lDHbWmnE7zIvO4FHH3PtqIQ==
-X-Received: by 2002:a5d:9c4b:: with SMTP id 11mr7571501iof.240.1571233933273;
-        Wed, 16 Oct 2019 06:52:13 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=Ctwff17X5J9r4AVcc5YjcP9yOcK6+mtooPGCu9/hHIw=;
+        b=akHIFHQwg4aPqMcAL2og/h1A0Acmt+8UIaGS20vHX0eFAMAcguXheyJ4XB2c41GBd9
+         R6M7kR7iHFw5POLGc3gnCtQfreVjKL4ZypRgGeb8LDrkR/XwmCjEIpm18E75UJEDD6vK
+         Qe0ycphTWjVyCZSbX0DzHHZHONbxaqv6YE55NCyt+pWoW++/gx0NoObMfnCZnIpiI6rP
+         75onSZXGxI3Rih1ZgvSyQclOygCLWgNbbam3J31GWv3yHz6hTD14otI2GBuWU+Droxi/
+         0WKnYqubfodXEhusOUr9vxW8C/JPF+dDyMkr/BhPheSTxXLkm4ayCMPRoQAHOY30J7HM
+         51Dw==
+X-Gm-Message-State: APjAAAUwG1TUd9y69NPrkqy2Rs0SX3GWf32vcXfVKKfQmXf3vajZFaXP
+        iRlPvNKeLs2HizdUl8R20BE=
+X-Google-Smtp-Source: APXvYqygyXkntWbd91r/7evKoDfONJS0uRI50cjxLBBfT2mFkyvh6ytGWEsQbsOzZE9Ya9NTMgEkDQ==
+X-Received: by 2002:a92:40d9:: with SMTP id d86mr11885733ill.303.1571233934752;
+        Wed, 16 Oct 2019 06:52:14 -0700 (PDT)
 Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id e139sm17227545iof.60.2019.10.16.06.52.12
+        by smtp.gmail.com with ESMTPSA id e139sm17227545iof.60.2019.10.16.06.52.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2019 06:52:12 -0700 (PDT)
+        Wed, 16 Oct 2019 06:52:14 -0700 (PDT)
 From:   Adam Ford <aford173@gmail.com>
 To:     dri-devel@lists.freedesktop.org
 Cc:     linux-omap@vger.kernel.org, Adam Ford <aford173@gmail.com>,
@@ -52,89 +53,78 @@ Cc:     linux-omap@vger.kernel.org, Adam Ford <aford173@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V5 1/3] drm/panel: simple: Add Logic PD Type 28 display support
-Date:   Wed, 16 Oct 2019 08:51:45 -0500
-Message-Id: <20191016135147.7743-1-aford173@gmail.com>
+Subject: [PATCH V5 2/3] dt-bindings: Add Logic PD Type 28 display panel
+Date:   Wed, 16 Oct 2019 08:51:46 -0500
+Message-Id: <20191016135147.7743-2-aford173@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191016135147.7743-1-aford173@gmail.com>
+References: <20191016135147.7743-1-aford173@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Previously, there was an omap panel-dpi driver that would
-read generic timings from the device tree and set the display
-timing accordingly.  This driver was removed so the screen
-no longer functions.  This patch modifies the panel-simple
-file to setup the timings to the same values previously used.
-
-Fixes: 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
+This patch adds documentation of device tree bindings for the WVGA panel
+Logic PD Type 28 display.
 
 Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 ---
-V5:  No Change
-V4:  No Change
-V3:  No Change
-V2:  No Change
+V5:  Replace GPIO_ACTIVE_HIGH with 0 to fix make dt_binding_check -k
+V4:  Update per Rob H's suggestions and copy other panel yaml example from 5.4-rc1
+V3:  Correct build errors from 'make dt_binding_check'
+V2:  Use YAML instead of TXT for binding
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 5d487686d25c..72f69709f349 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -2061,6 +2061,40 @@ static const struct drm_display_mode mitsubishi_aa070mc01_mode = {
- 	.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
- };
- 
-+static const struct drm_display_mode logicpd_type_28_mode = {
-+	.clock = 9000,
-+	.hdisplay = 480,
-+	.hsync_start = 480 + 3,
-+	.hsync_end = 480 + 3 + 42,
-+	.htotal = 480 + 3 + 42 + 2,
+diff --git a/Documentation/devicetree/bindings/display/panel/logicpd,type28.yaml b/Documentation/devicetree/bindings/display/panel/logicpd,type28.yaml
+new file mode 100644
+index 000000000000..2834287b8d88
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/logicpd,type28.yaml
+@@ -0,0 +1,42 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/logicpd,type28.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	.vdisplay = 272,
-+	.vsync_start = 272 + 2,
-+	.vsync_end = 272 + 2 + 11,
-+	.vtotal = 272 + 2 + 11 + 3,
-+	.vrefresh = 60,
-+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
-+};
++title: Logic PD Type 28 4.3" WQVGA TFT LCD panel
 +
-+static const struct panel_desc logicpd_type_28 = {
-+	.modes = &logicpd_type_28_mode,
-+	.num_modes = 1,
-+	.bpc = 8,
-+	.size = {
-+		.width = 105,
-+		.height = 67,
-+	},
-+	.delay = {
-+		.prepare = 200,
-+		.enable = 200,
-+		.unprepare = 200,
-+		.disable = 200,
-+	},
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE |
-+		     DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE,
-+};
++maintainers:
++  - Adam Ford <aford173@gmail.com>
 +
- static const struct panel_desc mitsubishi_aa070mc01 = {
- 	.modes = &mitsubishi_aa070mc01_mode,
- 	.num_modes = 1,
-@@ -3287,6 +3321,9 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "lg,lp129qe",
- 		.data = &lg_lp129qe,
-+	}, {
-+		.compatible = "logicpd,type28",
-+		.data = &logicpd_type_28,
- 	}, {
- 		.compatible = "mitsubishi,aa070mc01-ca1",
- 		.data = &mitsubishi_aa070mc01,
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    const: logicpd,type28
++
++  power-supply: true
++  enable-gpios: true
++  backlight: true
++  port: true
++
++required:
++  - compatible
++
++additionalProperties: false
++
++examples:
++  - |
++    lcd0: display {
++      compatible = "logicpd,type28";
++      enable-gpios = <&gpio5 27 0>;
++      backlight = <&backlight>;
++      port {
++        lcd_in: endpoint {
++          remote-endpoint = <&dpi_out>;
++        };
++      };
++    };
++
++...
 -- 
 2.17.1
 
