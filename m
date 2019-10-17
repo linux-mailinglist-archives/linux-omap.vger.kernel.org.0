@@ -2,115 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1C3FDB57D
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2019 20:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDA36DB604
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2019 20:23:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395199AbfJQSFp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Oct 2019 14:05:45 -0400
-Received: from mail-il1-f195.google.com ([209.85.166.195]:35421 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389832AbfJQSFp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Oct 2019 14:05:45 -0400
-Received: by mail-il1-f195.google.com with SMTP id j9so2971729ilr.2;
-        Thu, 17 Oct 2019 11:05:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9e6esXdSKEchwo9t/UhDN2I/NCXL7m7+/GS8N3ZNVaw=;
-        b=pywovx149iqExuPpCztzKPaZyHlSqopn1Yu6ZuQhPKw6kzhNWw/tEKI1Iq6tkYxn+E
-         Ny6vInaz8h3aq0ByQ/eTn0kIYSFU5ZEXl4hA4Ybg0DjBQWH1bI2/hChDrUBJWjpzUN0P
-         sCa9Df10e9ysv5XE80CEQzMRwRhJMmPnyWT4L41CNnw+jTvnjeC2aj6HzHcKr1sZnrFe
-         E4aubbc8D+4XxvgYEhHczLMlytY1NqNcCCDsL80CjMQr/jYvlbB2b+OXQtbN7Bnxzr6T
-         eeqyBo8JtAPnFZbWCtgrVCMkWKdoZ+vntrZJS6RF9jHrkSWtEp01+WdVBybwnhctoN0y
-         Fr4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9e6esXdSKEchwo9t/UhDN2I/NCXL7m7+/GS8N3ZNVaw=;
-        b=jDcmOgJb2XejoRimVOU9VKF1JH2Jf4Jsy4KVXOIt3o6ln1b4gRCH3eqbRXfYhwE57R
-         SAZsJx97wj7bQzTGM/CDaj/1GXPsFq8gxfqckpwdLYgitvkI3M7iNK9mE1pat+njqkt5
-         IFZhPxgLxo5biskx76NcX9SH8kmmobac0v6zq7v3EPLNbhOmwjZn9gejmHaMVBTocZNi
-         f3/EGPaBYNYDY9nT0wKbNU1VT2BDAMBcYbunyCcAcg+b9on4AQQtL0kiUpFfAGnYITtA
-         rPbwYPEGL+KzcKzlARXBCTJuD5awEPct1QT++hT24xbBnIMjRx61itJN4r0utca7NSEL
-         dTQA==
-X-Gm-Message-State: APjAAAU+sdwZu12u7lJn2jCApkSMfIkla1w5SWQ6WKHTz+6yWRq56J+F
-        ZLoInkz7T8sVeONIaJpwtqzXWWJnaBbe7euUQgQ=
-X-Google-Smtp-Source: APXvYqwhwDIMPJoLzHwPVEvU2F9RoxMzXULGAdvGmW2ojPx7JzrM7mkHKQqk4RD2cXkAHW+OVeWRX0R7l1G1AxI4u5U=
-X-Received: by 2002:a92:6a04:: with SMTP id f4mr5306698ilc.205.1571335543030;
- Thu, 17 Oct 2019 11:05:43 -0700 (PDT)
+        id S2503202AbfJQSVt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Oct 2019 14:21:49 -0400
+Received: from muru.com ([72.249.23.125]:37840 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2503219AbfJQSVt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 17 Oct 2019 14:21:49 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id E581C804F;
+        Thu, 17 Oct 2019 18:22:21 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] bus: ti-sysc: Fix watchdog quirk handling
+Date:   Thu, 17 Oct 2019 11:21:44 -0700
+Message-Id: <20191017182144.10175-1-tony@atomide.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-References: <20191002122542.8449-1-tomi.valkeinen@ti.com> <CAHCN7xLjGkLHMWejEk-3vJ-OwzjB+BXtnPWoonh4mAVxbkzMWQ@mail.gmail.com>
-In-Reply-To: <CAHCN7xLjGkLHMWejEk-3vJ-OwzjB+BXtnPWoonh4mAVxbkzMWQ@mail.gmail.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Thu, 17 Oct 2019 13:05:31 -0500
-Message-ID: <CAHCN7xKN7CePgajQLH61dBaoLWZ4VMxo39_xJOWHyvM3x_0i=A@mail.gmail.com>
-Subject: Re: [PATCH] drm/omap: fix max fclk divider for omap36xx
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Oct 13, 2019 at 10:56 AM Adam Ford <aford173@gmail.com> wrote:
->
-> On Wed, Oct 2, 2019 at 7:25 AM Tomi Valkeinen <tomi.valkeinen@ti.com> wrote:
-> >
-> > The OMAP36xx and AM/DM37x TRMs say that the maximum divider for DSS fclk
-> > (in CM_CLKSEL_DSS) is 32. Experimentation shows that this is not
-> > correct, and using divider of 32 breaks DSS with a flood or underflows
-> > and sync losts. Dividers up to 31 seem to work fine.
-> >
-> > There is another patch to the DT files to limit the divider correctly,
-> > but as the DSS driver also needs to know the maximum divider to be able
-> > to iteratively find good rates, we also need to do the fix in the DSS
-> > driver.
-> >
->
-> Tomi,
->
-> Is there any way you can do a patch for the FB version for the older
-> 4.9 and 4.14 kernels?  I think they are still defaulting to the omapfb
-> instead of DRM, so the underflow issue still appears by default and
-> the patch only impacts the DRM version of the driver.  If not, do you
-> have any objections if I submit a patch to stable for those two LTS
-> branches?
+I noticed that when probed with ti-sysc, watchdog can trigger on am3, am4
+and dra7 causing a device reset.
 
-Gentle nudge on this question.  I can do the work, but I just
-permission so don't overstep.
+Turns out I made several mistakes implementing the watchdog quirk handling:
 
-adam
->
-> thanks,
->
-> adam
-> > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > Cc: Adam Ford <aford173@gmail.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  drivers/gpu/drm/omapdrm/dss/dss.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/gpu/drm/omapdrm/dss/dss.c b/drivers/gpu/drm/omapdrm/dss/dss.c
-> > index e226324adb69..4bdd63b57100 100644
-> > --- a/drivers/gpu/drm/omapdrm/dss/dss.c
-> > +++ b/drivers/gpu/drm/omapdrm/dss/dss.c
-> > @@ -1083,7 +1083,7 @@ static const struct dss_features omap34xx_dss_feats = {
-> >
-> >  static const struct dss_features omap3630_dss_feats = {
-> >         .model                  =       DSS_MODEL_OMAP3,
-> > -       .fck_div_max            =       32,
-> > +       .fck_div_max            =       31,
-> >         .fck_freq_max           =       173000000,
-> >         .dss_fck_multiplier     =       1,
-> >         .parent_clk_name        =       "dpll4_ck",
-> > --
-> > Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> > Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-> >
+1. We must do both writes to spr register
+
+2. We must also call the reset quirk on disable
+
+3. On am3 and am4 we need to also set swsup quirk flag
+
+I probably only tested this earlier with watchdog service running when the
+watchdog never gets disabled.
+
+Fixes: 4e23be473e30 ("bus: ti-sysc: Add support for module specific reset quirks")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/bus/ti-sysc.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -74,6 +74,7 @@ static const char * const clock_names[SYSC_MAX_CLOCKS] = {
+  * @clk_disable_quirk: module specific clock disable quirk
+  * @reset_done_quirk: module specific reset done quirk
+  * @module_enable_quirk: module specific enable quirk
++ * @module_disable_quirk: module specific disable quirk
+  */
+ struct sysc {
+ 	struct device *dev;
+@@ -100,6 +101,7 @@ struct sysc {
+ 	void (*clk_disable_quirk)(struct sysc *sysc);
+ 	void (*reset_done_quirk)(struct sysc *sysc);
+ 	void (*module_enable_quirk)(struct sysc *sysc);
++	void (*module_disable_quirk)(struct sysc *sysc);
+ };
+ 
+ static void sysc_parse_dts_quirks(struct sysc *ddata, struct device_node *np,
+@@ -959,6 +961,9 @@ static int sysc_disable_module(struct device *dev)
+ 	if (ddata->offsets[SYSC_SYSCONFIG] == -ENODEV)
+ 		return 0;
+ 
++	if (ddata->module_disable_quirk)
++		ddata->module_disable_quirk(ddata);
++
+ 	regbits = ddata->cap->regbits;
+ 	reg = sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
+ 
+@@ -1248,6 +1253,9 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 		   SYSC_MODULE_QUIRK_SGX),
+ 	SYSC_QUIRK("wdt", 0, 0, 0x10, 0x14, 0x502a0500, 0xfffff0f0,
+ 		   SYSC_MODULE_QUIRK_WDT),
++	/* Watchdog on am3 and am4 */
++	SYSC_QUIRK("wdt", 0x44e35000, 0, 0x10, 0x14, 0x502a0500, 0xfffff0f0,
++		   SYSC_MODULE_QUIRK_WDT | SYSC_QUIRK_SWSUP_SIDLE),
+ 
+ #ifdef DEBUG
+ 	SYSC_QUIRK("adc", 0, 0, 0x10, -1, 0x47300001, 0xffffffff, 0),
+@@ -1440,14 +1448,14 @@ static void sysc_reset_done_quirk_wdt(struct sysc *ddata)
+ 				   !(val & 0x10), 100,
+ 				   MAX_MODULE_SOFTRESET_WAIT);
+ 	if (error)
+-		dev_warn(ddata->dev, "wdt disable spr failed\n");
++		dev_warn(ddata->dev, "wdt disable step1 failed\n");
+ 
+-	sysc_write(ddata, wps, 0x5555);
++	sysc_write(ddata, spr, 0x5555);
+ 	error = readl_poll_timeout(ddata->module_va + wps, val,
+ 				   !(val & 0x10), 100,
+ 				   MAX_MODULE_SOFTRESET_WAIT);
+ 	if (error)
+-		dev_warn(ddata->dev, "wdt disable wps failed\n");
++		dev_warn(ddata->dev, "wdt disable step2 failed\n");
+ }
+ 
+ static void sysc_init_module_quirks(struct sysc *ddata)
+@@ -1471,8 +1479,10 @@ static void sysc_init_module_quirks(struct sysc *ddata)
+ 	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_SGX)
+ 		ddata->module_enable_quirk = sysc_module_enable_quirk_sgx;
+ 
+-	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_WDT)
++	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_WDT) {
+ 		ddata->reset_done_quirk = sysc_reset_done_quirk_wdt;
++		ddata->module_disable_quirk = sysc_reset_done_quirk_wdt;
++	}
+ }
+ 
+ static int sysc_clockdomain_init(struct sysc *ddata)
+-- 
+2.23.0
