@@ -2,80 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A08B6DBE2E
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 09:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC88DBF86
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 10:09:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729877AbfJRHSm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Oct 2019 03:18:42 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:39622 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726857AbfJRHSm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 03:18:42 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9I7IVJt118924;
-        Fri, 18 Oct 2019 02:18:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1571383111;
-        bh=OilUv+GFguDJ3YR661ZCA0FSuZHVAgyHf27fIiSPtBQ=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=VFA9s4S3oEa6/V0fDs4K7SMjpWK/KswAWW8GBkMBbvZv1jBytBIFi93E2cQNu3kXC
-         A8S1vzbTVkmVP6IKcZXBT1/XH/ZTOMwUqeBAyP+Wcoyyq/ZQwnzdI+pAGEgLxzbwyt
-         87fEZ/tztleAif7MSNLX9JL2VC3rfhdo/D7JOp8E=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9I7IVZl044520;
-        Fri, 18 Oct 2019 02:18:31 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 18
- Oct 2019 02:18:22 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 18 Oct 2019 02:18:22 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9I7ITTV080168;
-        Fri, 18 Oct 2019 02:18:29 -0500
-Subject: Re: [PATCH] drm/omap: fix max fclk divider for omap36xx
-To:     Adam Ford <aford173@gmail.com>
-CC:     dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        stable <stable@vger.kernel.org>
-References: <20191002122542.8449-1-tomi.valkeinen@ti.com>
- <CAHCN7xLjGkLHMWejEk-3vJ-OwzjB+BXtnPWoonh4mAVxbkzMWQ@mail.gmail.com>
- <CAHCN7xKN7CePgajQLH61dBaoLWZ4VMxo39_xJOWHyvM3x_0i=A@mail.gmail.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <406842b9-18f0-ddf7-5317-4ace265d0ac2@ti.com>
-Date:   Fri, 18 Oct 2019 10:18:28 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S2504805AbfJRIJV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Oct 2019 04:09:21 -0400
+Received: from mail.keramplus.com ([212.3.124.226]:38526 "EHLO
+        trixbox1.localdomain" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2505014AbfJRIJU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 04:09:20 -0400
+X-Greylist: delayed 681 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Oct 2019 04:09:19 EDT
+Received: from 127.0.0.1 (trixbox1.localdomain [127.0.0.1])
+        by trixbox1.localdomain (Postfix) with SMTP id 83DBEA2AC1D;
+        Fri, 18 Oct 2019 00:10:36 +0300 (EEST)
+Received: from [69.17.131.85]
+        by 127.0.0.1;
+        Thu, 17 Oct 2019 15:08:51 -0700
+Message-ID: <10yg98$0--do083l-8$659xc-7p@p50cq9>
+From:   "Mr Barrister Hans Erich" <Barrister_Hans@stationlibraryjhelum.com>
+Reply-To: "Mr Barrister Hans Erich" <Barrister_Hans@stationlibraryjhelum.com>
+To:     clive.paterson@vircom.com.au
+Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA
+Date:   Thu, 17 Oct 19 15:08:51 GMT
+X-Mailer: Microsoft Outlook Express 6.00.2462.0000
 MIME-Version: 1.0
-In-Reply-To: <CAHCN7xKN7CePgajQLH61dBaoLWZ4VMxo39_xJOWHyvM3x_0i=A@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/alternative;
+        boundary=".EC8_C5_4D0E63E__1_E._"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 17/10/2019 21:05, Adam Ford wrote:
 
->> Is there any way you can do a patch for the FB version for the older
->> 4.9 and 4.14 kernels?  I think they are still defaulting to the omapfb
->> instead of DRM, so the underflow issue still appears by default and
->> the patch only impacts the DRM version of the driver.  If not, do you
->> have any objections if I submit a patch to stable for those two LTS
->> branches?
-> 
-> Gentle nudge on this question.  I can do the work, but I just
-> permission so don't overstep.
+--.EC8_C5_4D0E63E__1_E._
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-Sure, go ahead.
+Greetings
 
-  Tomi
+My name is Barrister Hans Erich.
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+I have a client who is interested to invest in your country, she is a well=
+ known politician in her country and deserve a lucrative investment partne=
+rship with you outside her country without any delay   Please can you mana=
+ge such investment please Kindly reply for further details.
+
+Your full names ---------
+
+
+Your urgent response will be appreciated
+
+Thank you and God bless you.
+
+Barrister Hans Erich
+
+Yours sincerely,
+Barrister Hans Erich
+
+--.EC8_C5_4D0E63E__1_E._--
+
