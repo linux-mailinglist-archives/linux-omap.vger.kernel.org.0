@@ -2,89 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C27E3DC8EE
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 17:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3389DC985
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 17:50:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728728AbfJRPmC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Oct 2019 11:42:02 -0400
-Received: from muru.com ([72.249.23.125]:38092 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728464AbfJRPmC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 18 Oct 2019 11:42:02 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D53E8809F;
-        Fri, 18 Oct 2019 15:42:35 +0000 (UTC)
-Date:   Fri, 18 Oct 2019 08:41:58 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     Joerg Roedel <joro@8bytes.org>, Sakari Ailus <sakari.ailus@iki.fi>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tero Kristo <t-kristo@ti.com>, linux-omap@vger.kernel.org,
-        iommu@lists.linux-foundation.org
-Subject: Re: [PATCH 0/2] OMAP IOMMU fixes to go with 5.4 OMAP IOMMU changes
-Message-ID: <20191018154158.GQ5610@atomide.com>
-References: <20190827001452.31930-1-s-anna@ti.com>
- <68474455-c997-a40e-74c4-ea3e0faa6c24@ti.com>
+        id S2409057AbfJRPqR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Oct 2019 11:46:17 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:42150 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2409052AbfJRPqQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 11:46:16 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9IFkDSu005895;
+        Fri, 18 Oct 2019 10:46:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1571413573;
+        bh=QIHNicus3UqUNLJM8IoaxNSWcvCYyJXUsrZb07TeW2I=;
+        h=From:To:CC:Subject:Date;
+        b=KG1ZY15ohlTbhuUOSOFwoJlqxPKAxPDTIGvk8TKan8xgllpfpmFj+szxujfu5/A2w
+         galPXyHHlLSq01Bv8S7YBlhnZOydVva/pwQj5Ogxu150xn4x5Mq+evS7t937FHqaG/
+         SWt1avt9pYlqHHnP9erzy1YfLM6B0JxnH1jXZWGI=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9IFkDBK128650;
+        Fri, 18 Oct 2019 10:46:13 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 18
+ Oct 2019 10:46:13 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Fri, 18 Oct 2019 10:46:05 -0500
+Received: from uda0869644b.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9IFkDAM045642;
+        Fri, 18 Oct 2019 10:46:13 -0500
+From:   Benoit Parrot <bparrot@ti.com>
+To:     Tony Lindgren <tony@atomide.com>, Tero Kristo <t-kristo@ti.com>
+CC:     Rob Herring <robh+dt@kernel.org>, <linux-omap@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Benoit Parrot <bparrot@ti.com>
+Subject: [Patch 0/9] ARM: dts: dra7: add cal nodes 
+Date:   Fri, 18 Oct 2019 10:48:40 -0500
+Message-ID: <20191018154849.3127-1-bparrot@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68474455-c997-a40e-74c4-ea3e0faa6c24@ti.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Suman Anna <s-anna@ti.com> [191017 23:00]:
-> Hi Tony,
-> 
-> On 8/26/19 7:14 PM, Suman Anna wrote:
-> > Hi Tony,
-> > 
-> > The following 2 patches need to go along with the recent "iommu/omap: misc
-> > fixes" series [1] that is currently staged [2] for a 5.4 merge and available
-> > in linux-next. That series added runtime pm callbacks in preparation for
-> > the ti-sysc migration, but without adding the necessary platform data
-> > callbacks for the existing functional MMUs on OMAP3, OMAP4 and OMAP5 SoCs.
-> > These 2 patches add the same to maintain the functionality (l3_noc errors
-> > are the visible symptom while enabling the MMUs without these patches).
-> > 
-> > OMAP4 and OMAP5 would also need another set of fixes related to the
-> > breakage caused by the switch to clkctrl clocks as seen in [3].
-> > 
-> > These patches do have a dependency on the staged patches, so either you
-> > submit a pull-request towards 5.4-rc2 using 5.4-rc1 baseline, or let
-> > Joerg pick these through the arm/omap IOMMU branch for 5.4-rc1 itself.
-> > 
-> > Sakari/Laurent,
-> > Appreciate it if you can check the OMAP3 ISP functionality on latest
-> > linux-next with the second patch. I have verified the ISP MMU programming
-> > only through an unit-test.
-> > 
-> > Tero,
-> > I will be submitting another patch against OMAP IOMMU driver to skip the
-> > pdata callbacks for ti-sysc in the next couple of days.
-> > 
-> > regards
-> > Suman
-> > 
-> > [1] https://lore.kernel.org/linux-iommu/20190809153730.GF12930@8bytes.org/T/#mec99f8e8ed351689f4fcc76f4f000f9144a02b51
-> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu.git/log/?h=arm/omap
-> > [3] https://patchwork.kernel.org/patch/11082125/#22829477
-> > 
-> > Suman Anna (2):
-> >   ARM: OMAP2+: Plug in device_enable/idle ops for IOMMUs
-> >   ARM: OMAP2+: Add pdata for OMAP3 ISP IOMMU
-> 
-> Can you please pick these patches up for 5.4-rc cycle? The OMAP IOMMU
-> changes that went in for 5.4-rc1 need the pdata to be plugged in.
+This patch series adds the needed clkctrl and ty-sysc nodes for CAL module.
+It also adds support for the module in related dtsi and dts for DRA72,
+DRA76 and AM654 SoC.
 
-Oh OK. Sorry for missing these, I untagged them earlier as they
-produced kbuilder test failures as the dependencies were
-missing earlier.
+Benoit Parrot (9):
+  ARM: dts: dra7: add cam clkctrl node
+  ARM: OMAP: DRA7xx: Make CAM clock domain SWSUP only
+  ARM: dts: dra7-l4: Add ti-sysc node for CAM
+  ARM: dts: DRA72: Add CAL dtsi node
+  arm: dts: dra72-evm-common: Add entries for the CSI2 cameras
+  arm: dtsi: dra76x: Add CAL dtsi node
+  arm: dts: dra76-evm: Add CAL and OV5640 nodes
+  arm64: dts: k3-am65-main Add CAL node
+  arm64: dts: k3-am654-base-board: Add CSI2 OV5640 camera
 
-Applying both into fixes.
+ arch/arm/boot/dts/dra7-l4.dtsi                | 43 ++++++++++++++++---
+ arch/arm/boot/dts/dra72-evm-common.dtsi       | 35 +++++++++++++++
+ arch/arm/boot/dts/dra72x.dtsi                 | 43 +++++++++++++++++++
+ arch/arm/boot/dts/dra76-evm.dts               | 39 +++++++++++++++++
+ arch/arm/boot/dts/dra76x.dtsi                 | 43 +++++++++++++++++++
+ arch/arm/boot/dts/dra7xx-clocks.dtsi          | 14 ++++++
+ arch/arm/mach-omap2/clockdomains7xx_data.c    |  2 +-
+ arch/arm64/boot/dts/ti/k3-am65-main.dtsi      | 23 ++++++++++
+ .../arm64/boot/dts/ti/k3-am654-base-board.dts | 36 ++++++++++++++++
+ drivers/clk/ti/clk-7xx.c                      | 19 ++++++++
+ include/dt-bindings/clock/dra7.h              | 10 +++++
+ 11 files changed, 300 insertions(+), 7 deletions(-)
 
-Regards,
+-- 
+2.17.1
 
-Tony
