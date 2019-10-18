@@ -2,183 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AC4EDCF66
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 21:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78B4FDD023
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 22:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2443348AbfJRTjL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Oct 2019 15:39:11 -0400
-Received: from mail-io1-f43.google.com ([209.85.166.43]:36680 "EHLO
-        mail-io1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2443337AbfJRTjK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 15:39:10 -0400
-Received: by mail-io1-f43.google.com with SMTP id b136so8817286iof.3;
-        Fri, 18 Oct 2019 12:39:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=8aMlPecP1SszjzpIifjH9m8749Vfm9vqZkV6kzSfeY0=;
-        b=BkqzcsU1zvmBYM2v7Pj9rN9puz0lKZ38gsUE1fB/MIQD3wPbdcxfNJJ96IBJNjjVsq
-         YJNeYdaIcgp/+YBKLmf2iDDZooLetG3nc8HIlTTPuNvckaYVSmBu2TPz7x1rAkBGn5dO
-         Ndn9blSfsXVK2jZMlibCoXHs146t8wyk6VovmYYfzC78ZFhNlm1b9YJlor78+u2A9jAT
-         L6Lkp6v0RZ8BxyY2hbgkU7E94N/NEO/O/GQIr050tIXktNfh7vmJiavc0fNthyxeowMt
-         z38jwb2fPfbPTyTnhHHwpf5akOVzjqDP5PTR8V9iaoT5H/wwHklrU/8M5PdlcF+VhVuy
-         4IDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=8aMlPecP1SszjzpIifjH9m8749Vfm9vqZkV6kzSfeY0=;
-        b=s/lm82ZyahPiFeBEbd6N8/9nAe67AcQBuSaHJunpYv4goq5ugautlD+uL3MglrRgRp
-         kbTZ8hsEV7eOIdz/o6T3bRAMK/4DIGHuQPOXCaUQSKw3kH4OrfAESQX8UYXLAtZnmzYX
-         EJTxtpCdUjot7w3dUlzOnxyf9SiMaaZ64Q1ZVOkvG3Nii7Tp4mvCROIc+09wLaAziY1b
-         aQZGbHrj3DHrd29cY2r0cgm/DCaacETueVifUm8MQdvIKDRC7u8jGO2uM2RsnCibjRN6
-         L55MNOYIir1TTcmYn+YPVPnh3y4/o0AIpKVE2Lhbx/Ij6UEUiX0yOyyFbS55+VBYu6Sx
-         uLPA==
-X-Gm-Message-State: APjAAAURf/NxE8pR0dos7N1/TarChRJ/JghsBE0I032VyqJxJ3tRFTU0
-        b8vZbciP6+FbUlPmuzB7jowc+szM8JwYbLIEbj7yrN6m
-X-Google-Smtp-Source: APXvYqwJySWniUWivckGdbyIl7/YDmLaPdDCnsNAC+GL7QWaqfoswoRnutyZYPhkDVKDKJkpeY7EPi0XG28BZ3IP1TA=
-X-Received: by 2002:a5d:9952:: with SMTP id v18mr9748458ios.58.1571427549282;
- Fri, 18 Oct 2019 12:39:09 -0700 (PDT)
+        id S2443474AbfJRU1B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Oct 2019 16:27:01 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:21004 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2506014AbfJRU06 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 16:26:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571430346;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=i+n9s4XwY9DLFEIv0Q1xv72dgRxe/+bXdwtMcjVj36s=;
+        b=lrpn4r8TbGp5Vug1YtUEZiFh9x7BNBnKNq3HV710dgABIJEaeJx9xjcPPETJ1VUGZI
+        jHk1WeEXCiofL3L/yGzyOmkgW4tscUSvCPbF2g1WDlA8fGZh3KaVlxKW27JquybT+wZc
+        mKNCSV1M40lPtmLrwe1H4c52rNtc3hUrSuKuDnZTnnIFBdT5AYmchlnhkjubEu1eppeO
+        G58X6S6trwlaGWyMKQ1T6KF0TnJg1WlXa7DRZLVKqZtFRllm0ShFtwhk31hueFPCUIWI
+        fK8xcpN3r81h4l86IdUw7pqwlDX71aCHhYxU0JM/0ihrP/zg8/CAkBHZVloQJhxMzY4k
+        YHCQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXH6F3CFF60="
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+        by smtp.strato.de (RZmta 44.28.1 DYNA|AUTH)
+        with ESMTPSA id R0b2a8v9IKPVDUm
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Fri, 18 Oct 2019 22:25:31 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com
+Subject: [PATCH 0/9] OpenPandora: make wl1251 connected to mmc3 sdio port of OpenPandora work again
+Date:   Fri, 18 Oct 2019 22:25:21 +0200
+Message-Id: <cover.1571430329.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-From:   Adam Ford <aford173@gmail.com>
-Date:   Fri, 18 Oct 2019 14:38:57 -0500
-Message-ID: <CAHCN7xKiyYGhw4M5G1v8xsrJZxg1eFKEuLvrJf=nDuCKzonnJQ@mail.gmail.com>
-Subject: OMAP3 ISP v4l2 inconsistency on DM3730
-To:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-media@vger.kernel.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Content-Type: text/plain; charset="UTF-8"
+DT:     Pandora: fixes and extensions
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I have a DM3730 with a parallel mt9p031 sensor attached.  I am trying
-to troubleshoot some issues with streaming video with G-streamer, but
-I I think the issue is in how the ISP driver reports the video info.
 
-I have the pipeline to grab from the resizer:
+Here we have a set of scattered patches to make the OpenPandora WiFi work again.
 
-media-ctl -v -V '"mt9p031 1-0048":0 [SGRBG8 1280x720
-(664,541)/1280x720], "OMAP3 ISP CCDC":2 [SGRBG8 1280x720], "OMAP3 ISP
-preview":1 [UYVY 1280x720], "OMAP3 ISP resizer":1 [UYVY 480x272]'
+v4.7 did break the pdata-quirks which made the mmc3 interface
+fail completely, because some code now assumes device tree
+based instantiation.
 
-This make /dev/video6 the output of the resizer and shows the format
-and resolution of the output of the resizer as:
+Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
 
-     Setting up format UYVY8_1X16 480x272 on pad OMAP3 ISP resizer/1
-     Format set: UYVY8_1X16 480x272
+v4.11 did break the sdio qirks for wl1251 which made the driver no longer
+load, although the device was found as an sdio client.
 
-I used 480x272 because it's the resolution of my LCD, and I was hoping
-the resizer would be able to scale this so the ARM would not need to
-do the work, and it appears to not have any issues with this
-resolution.
+Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
 
-However, if I query the video format, I don't get UYVY:
-
-# v4l2-ctl  -d6 --list-formats-ext
-ioctl: VIDIOC_ENUM_FMT
-        Type: Video Capture
-
-        [0]: 'RGB3' (RGB3, emulated)
-        [1]: 'BGR3' (BGR3, emulated)
-        [2]: 'YU12' (YU12, emulated)
-        [3]: 'YV12' (YV12, emulated)
-
-This becomes an issue when I attempt to stream video from my camera to
-anything, include fake sink:
-
-gst-launch-1.0 -v v4l2src device=/dev/video6 ! fakesink
-Tried to capture in RGB3, but device returned format UYVY
-
-So for some reason, when queried, it reports different values than
-UYVY, but when attempting to set the video capture to the listed
-formats, it returns an error.
-
-gst-launch-1.0 -v v4l2src device=/dev/video6 ! video/x-raw,
-format=UYVY ! fakesink
-
-Setting pipeline to PAUSED ...
-Pipeline is live and does not need PREROLL ...
-Setting pipeline to PLAYING ...
-New clock: GstSystemClock
-ERROR: from element /GstPipeline:pipeline0/GstV4l2Src:v4l2src0:
-Internal data stream error.
-Additional debug info:
-gstbasesrc.c(3055): gst_base_src_loop ():
-/GstPipeline:pipeline0/GstV4l2Src:v4l2src0:
-streaming stopped, reason not-negotiated (-4)
-
-This leads me to believe that v4l2 is trying to set the format to
-something it does not think it is able to negotiate, and it's being
-rejected.
-
-I can even explicitly set the output video format to UYVY with:
-
-v4l2-ctl -d /dev/video6
---set-fmt-video=width=480,height=272,pixelformat=UYVY --verbose
-
-VIDIOC_QUERYCAP: ok
-VIDIOC_G_FMT: ok
-VIDIOC_S_FMT: ok
-Format Video Capture:
-        Width/Height      : 480/272
-        Pixel Format      : 'UYVY'
-        Field             : None
-        Bytes per Line    : 960
-        Size Image        : 261120
-        Colorspace        : JPEG
-        Transfer Function : Default (maps to sRGB)
-        YCbCr/HSV Encoding: Default (maps to ITU-R 601)
-        Quantization      : Default (maps to Full Range)
-        Flags             :
-#
-
-This shows me the UYVY format, but upon a follow-up query, it does not
-appear to retain the pixel format of UYVY.
-
-v4l2-ctl -d /dev/video6 --list-formats-ext
-ioctl: VIDIOC_ENUM_FMT
-        Type: Video Capture
-
-        [0]: 'RGB3' (RGB3, emulated)
-        [1]: 'BGR3' (BGR3, emulated)
-        [2]: 'YU12' (YU12, emulated)
-        [3]: 'YV12' (YV12, emulated)
-#
-
-If I use ffmpeg to stream video, I the video codec there recognizes it
-as uyvy and I can convert it to RGB to display on my LCD, but it has
-limited framerate, and it seems to me like this should be do-able in
-G-Streamer with v4l2src.
-
-# ffmpeg -an -re -i /dev/video6 -f v4l2 -vcodec rawvideo -pix_fmt bgra
--f fbdev /dev/fb0
-
-Input #0, video4linux2,v4l2, from '/dev/video6':
-  Duration: N/A, start: 908.826490, bitrate: N/A
-    Stream #0:0: Video: rawvideo (UYVY / 0x59565955), uyvy422,
-480x272, 17.42 tbr, 1000k tbn, 1000k tbc
-Stream mapping:
-  Stream #0:0 -> #0:0 (rawvideo (native) -> rawvideo (native))
-Press [q] to stop, [?] for help
-Output #0, fbdev, to '/dev/fb0':
-  Metadata:
-    encoder         : Lavf57.83.100
-    Stream #0:0: Video: rawvideo (BGRA / 0x41524742), bgra, 480x272,
-q=2-31, 72765 kb/s, 17.42 fps, 17.42 tbn, 17.42 tbc
-    Metadata:
-      encoder         : Lavc57.107.100 rawvideo
+To solve these issues:
+* we convert mmc3 and wl1251 initialization from pdata-quirks
+  to device tree
+* we make the wl1251 driver read properties from device tree
+* we fix the mmc core vendor ids and quirks
+* we fix the wl1251 (and wl1271) driver to use only vendor ids
+  from header file instead of (potentially conflicting) local
+  definitions
 
 
-This shows me the information is available in some ways from v4l2, but
-I wonder if there is a missing IOCTL for VIDIOC_ENUM_FMT for the isp
-driver somewhere.  Shouldn't VIDIOC_ENUM_FMT  return UYVY?
+H. Nikolaus Schaller (9):
+  Documentation: dt: wireless: update wl1251 for sdio
+  net: wireless: ti: wl1251 add device tree support
+  DTS: ARM: pandora-common: define wl1251 as child node of mmc3
+  mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid
+    of pandora_wl1251_init_card
+  omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
+  mmc: sdio: fix wl1251 vendor id
+  mmc: core: fix wl1251 sdio quirks
+  net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
+  net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
 
-I noticed vpbe_display.c has a function that appears to correspond to
-this.  There is a patch at [1] for an older kernel.  Is this something
-worth pursuing?
+ .../bindings/net/wireless/ti,wl1251.txt       | 26 +++++++++++++
+ arch/arm/boot/dts/omap3-pandora-common.dtsi   | 37 ++++++++++++++++++-
+ arch/arm/mach-omap2/pdata-quirks.c            | 13 +++----
+ drivers/mmc/core/quirks.h                     |  7 ++++
+ drivers/mmc/host/omap_hsmmc.c                 | 21 +++++++++++
+ drivers/net/wireless/ti/wl1251/sdio.c         | 23 +++++++-----
+ drivers/net/wireless/ti/wlcore/sdio.c         |  8 ----
+ include/linux/mmc/sdio_ids.h                  |  2 +
+ 8 files changed, 111 insertions(+), 26 deletions(-)
 
-[1] - https://stackoverflow.com/questions/20693155/gstreamer-failed-to-enumerate-video-formats-and-inappropriate-ioctl-for-device
+-- 
+2.19.1
 
-adam
