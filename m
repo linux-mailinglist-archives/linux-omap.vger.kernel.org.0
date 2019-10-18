@@ -2,58 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3388DC213
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 12:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BB68DC465
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 14:08:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2633227AbfJRKGf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Oct 2019 06:06:35 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:26944 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727249AbfJRKGf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 06:06:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571393185;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:Cc:Message-Id:Date:Subject:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
-        Subject:Sender;
-        bh=bdkSSLrzzXgOAov0Bq9bQG7oef0hHYLCGYDjTxAmiok=;
-        b=ZYG2+Kr6HbfG+zUEVDm33s8bK+34MzSMgt0KySGpQ5ZzWXHEWUL4E64SyPICRNSp5D
-        57lZ5CO2TClqVwFCp4mbui+oMgkBqWn2J4XQ/BH3FqQ7d3tMtyJt2kkxZDR289PghB7s
-        y/9kwDj2wWDmT3vWXaqdCOsi/heowLmSx/z3xrjEJ94BTXZnUlFedYWrcHpVF7LqnPwN
-        zAmGAEAogoi93QK9RWDht+rKOWM+550Df58+BbWZ8+2o3z2pNMXg9K+zQnb1Rb+2sUtu
-        Pr3WPiHs3nx5Gf2AIw2Q+LCy5QlEK7987J42Mml+SMQIq1RPDFEyxyeKlav92jj99oJ4
-        PCsg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlaUXAwF5g=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.28.1 DYNA|AUTH)
-        with ESMTPSA id R0b2a8v9IA6PAqR
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Fri, 18 Oct 2019 12:06:25 +0200 (CEST)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Subject: ARM: add __always_inline to functions called from __get_user_check()
-Date:   Fri, 18 Oct 2019 12:06:23 +0200
-Message-Id: <1823C41A-3296-4DEA-B71F-5AD548335F8B@goldelico.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-X-Mailer: Apple Mail (2.3124)
+        id S2404855AbfJRMII (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Oct 2019 08:08:08 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4732 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2404900AbfJRMII (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 18 Oct 2019 08:08:08 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 47292C30828965867981;
+        Fri, 18 Oct 2019 20:08:06 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Fri, 18 Oct 2019
+ 20:08:00 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <khilman@kernel.org>, <tony@atomide.com>, <linux@armlinux.org.uk>
+CC:     <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH -next] ARM: OMAP2+: Make some functions static
+Date:   Fri, 18 Oct 2019 20:07:01 +0800
+Message-ID: <20191018120701.29364-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-I wonder what happened to your patch. We were "hit" by it in v5.4-rc1 and
-after finding, it made our OMAP based device bootable again (using our
-own defconfig which optimizes for SIZE).
+Fix sparse warnings:
 
-But it does not seem to have arrived in linux-next and should IMHO
-be fixed during the v5.4 release candidate cycle.
+arch/arm/mach-omap2/pmic-cpcap.c:29:15: warning: symbol 'omap_cpcap_vsel_to_uv' was not declared. Should it be static?
+arch/arm/mach-omap2/pmic-cpcap.c:43:15: warning: symbol 'omap_cpcap_uv_to_vsel' was not declared. Should it be static?
+arch/arm/mach-omap2/pmic-cpcap.c:93:15: warning: symbol 'omap_max8952_vsel_to_uv' was not declared. Should it be static?
+arch/arm/mach-omap2/pmic-cpcap.c:107:15: warning: symbol 'omap_max8952_uv_to_vsel' was not declared. Should it be static?
+arch/arm/mach-omap2/pmic-cpcap.c:140:15: warning: symbol 'omap_fan535503_vsel_to_uv' was not declared. Should it be static?
+arch/arm/mach-omap2/pmic-cpcap.c:155:15: warning: symbol 'omap_fan535508_vsel_to_uv' was not declared. Should it be static?
+arch/arm/mach-omap2/pmic-cpcap.c:173:15: warning: symbol 'omap_fan535503_uv_to_vsel' was not declared. Should it be static?
+arch/arm/mach-omap2/pmic-cpcap.c:192:15: warning: symbol 'omap_fan535508_uv_to_vsel' was not declared. Should it be static?
 
-BR and thanks,
-Nikolaus Schaller
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ arch/arm/mach-omap2/pmic-cpcap.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm/mach-omap2/pmic-cpcap.c b/arch/arm/mach-omap2/pmic-cpcap.c
+index 2c2a178..3cdf40e 100644
+--- a/arch/arm/mach-omap2/pmic-cpcap.c
++++ b/arch/arm/mach-omap2/pmic-cpcap.c
+@@ -26,7 +26,7 @@
+  * Returns the microvolts DC that the CPCAP PMIC should generate when
+  * programmed with @vsel.
+  */
+-unsigned long omap_cpcap_vsel_to_uv(unsigned char vsel)
++static unsigned long omap_cpcap_vsel_to_uv(unsigned char vsel)
+ {
+ 	if (vsel > 0x44)
+ 		vsel = 0x44;
+@@ -40,7 +40,7 @@ unsigned long omap_cpcap_vsel_to_uv(unsigned char vsel)
+  * Returns the VSEL value necessary for the CPCAP PMIC to
+  * generate an output voltage equal to or greater than @uv microvolts DC.
+  */
+-unsigned char omap_cpcap_uv_to_vsel(unsigned long uv)
++static unsigned char omap_cpcap_uv_to_vsel(unsigned long uv)
+ {
+ 	if (uv < 600000)
+ 		uv = 600000;
+@@ -90,7 +90,7 @@ static struct omap_voltdm_pmic omap_cpcap_iva = {
+  * Returns the microvolts DC that the MAX8952 Regulator should generate when
+  * programmed with @vsel.
+  */
+-unsigned long omap_max8952_vsel_to_uv(unsigned char vsel)
++static unsigned long omap_max8952_vsel_to_uv(unsigned char vsel)
+ {
+ 	if (vsel > 0x3F)
+ 		vsel = 0x3F;
+@@ -104,7 +104,7 @@ unsigned long omap_max8952_vsel_to_uv(unsigned char vsel)
+  * Returns the VSEL value necessary for the MAX8952 Regulator to
+  * generate an output voltage equal to or greater than @uv microvolts DC.
+  */
+-unsigned char omap_max8952_uv_to_vsel(unsigned long uv)
++static unsigned char omap_max8952_uv_to_vsel(unsigned long uv)
+ {
+ 	if (uv < 770000)
+ 		uv = 770000;
+@@ -137,7 +137,7 @@ static struct omap_voltdm_pmic omap443x_max8952_mpu = {
+  * Returns the microvolts DC that the FAN535503 Regulator should generate when
+  * programmed with @vsel.
+  */
+-unsigned long omap_fan535503_vsel_to_uv(unsigned char vsel)
++static unsigned long omap_fan535503_vsel_to_uv(unsigned char vsel)
+ {
+ 	/* Extract bits[5:0] */
+ 	vsel &= 0x3F;
+@@ -152,7 +152,7 @@ unsigned long omap_fan535503_vsel_to_uv(unsigned char vsel)
+  * Returns the microvolts DC that the FAN535508 Regulator should generate when
+  * programmed with @vsel.
+  */
+-unsigned long omap_fan535508_vsel_to_uv(unsigned char vsel)
++static unsigned long omap_fan535508_vsel_to_uv(unsigned char vsel)
+ {
+ 	/* Extract bits[5:0] */
+ 	vsel &= 0x3F;
+@@ -170,7 +170,7 @@ unsigned long omap_fan535508_vsel_to_uv(unsigned char vsel)
+  * Returns the VSEL value necessary for the MAX8952 Regulator to
+  * generate an output voltage equal to or greater than @uv microvolts DC.
+  */
+-unsigned char omap_fan535503_uv_to_vsel(unsigned long uv)
++static unsigned char omap_fan535503_uv_to_vsel(unsigned long uv)
+ {
+ 	unsigned char vsel;
+ 	if (uv < 750000)
+@@ -189,7 +189,7 @@ unsigned char omap_fan535503_uv_to_vsel(unsigned long uv)
+  * Returns the VSEL value necessary for the MAX8952 Regulator to
+  * generate an output voltage equal to or greater than @uv microvolts DC.
+  */
+-unsigned char omap_fan535508_uv_to_vsel(unsigned long uv)
++static unsigned char omap_fan535508_uv_to_vsel(unsigned long uv)
+ {
+ 	unsigned char vsel;
+ 	if (uv < 750000)
+-- 
+2.7.4
+
 
