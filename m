@@ -2,25 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECBCBDCB5C
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 18:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F24BDCB5F
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 18:34:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408888AbfJRQce (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Oct 2019 12:32:34 -0400
-Received: from muru.com ([72.249.23.125]:38120 "EHLO muru.com"
+        id S2409056AbfJRQcf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Oct 2019 12:32:35 -0400
+Received: from muru.com ([72.249.23.125]:38122 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2443114AbfJRQcd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 18 Oct 2019 12:32:33 -0400
+        id S2409049AbfJRQcf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 18 Oct 2019 12:32:35 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id EF2698181;
-        Fri, 18 Oct 2019 16:33:06 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id A7AD6809F;
+        Fri, 18 Oct 2019 16:33:08 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org
-Subject: [PATCH 02/10] ARM: OMAP2+: Drop legacy platform data for omap5 mcbsp
-Date:   Fri, 18 Oct 2019 09:32:12 -0700
-Message-Id: <20191018163220.3504-3-tony@atomide.com>
+Subject: [PATCH 03/10] ARM: OMAP2+: Drop legacy platform data for am4 hdq1w
+Date:   Fri, 18 Oct 2019 09:32:13 -0700
+Message-Id: <20191018163220.3504-4-tony@atomide.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191018163220.3504-1-tony@atomide.com>
 References: <20191018163220.3504-1-tony@atomide.com>
@@ -41,173 +41,87 @@ the platform data and ti,hwmods property in a single patch.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/omap5-l4-abe.dtsi        |   3 -
- arch/arm/mach-omap2/omap_hwmod_54xx_data.c | 113 ---------------------
- 2 files changed, 116 deletions(-)
+ arch/arm/boot/dts/am437x-l4.dtsi           |  1 -
+ arch/arm/mach-omap2/omap_hwmod_43xx_data.c | 36 ----------------------
+ 2 files changed, 37 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap5-l4-abe.dtsi b/arch/arm/boot/dts/omap5-l4-abe.dtsi
---- a/arch/arm/boot/dts/omap5-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/omap5-l4-abe.dtsi
-@@ -86,7 +86,6 @@
+diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
+--- a/arch/arm/boot/dts/am437x-l4.dtsi
++++ b/arch/arm/boot/dts/am437x-l4.dtsi
+@@ -2277,7 +2277,6 @@
  
- 		target-module@22000 {			/* 0x40122000, ap 2 02.0 */
+ 		target-module@47000 {			/* 0x48347000, ap 110 70.0 */
  			compatible = "ti,sysc-omap2", "ti,sysc";
--			ti,hwmods = "mcbsp1";
- 			reg = <0x2208c 0x4>;
- 			reg-names = "sysc";
- 			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
-@@ -120,7 +119,6 @@
+-			ti,hwmods = "hdq1w";
+ 			reg = <0x47000 0x4>,
+ 			      <0x47014 0x4>,
+ 			      <0x47018 0x4>;
+diff --git a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+@@ -18,8 +18,6 @@
+ #include "omap_hwmod_33xx_43xx_common_data.h"
+ #include "prcm43xx.h"
+ #include "omap_hwmod_common_data.h"
+-#include "hdq1w.h"
+-
  
- 		target-module@24000 {			/* 0x40124000, ap 4 04.0 */
- 			compatible = "ti,sysc-omap2", "ti,sysc";
--			ti,hwmods = "mcbsp2";
- 			reg = <0x2408c 0x4>;
- 			reg-names = "sysc";
- 			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
-@@ -154,7 +152,6 @@
- 
- 		target-module@26000 {			/* 0x40126000, ap 6 06.0 */
- 			compatible = "ti,sysc-omap2", "ti,sysc";
--			ti,hwmods = "mcbsp3";
- 			reg = <0x2608c 0x4>;
- 			reg-names = "sysc";
- 			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
-diff --git a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c b/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
-@@ -627,92 +627,6 @@ static struct omap_hwmod omap54xx_kbd_hwmod = {
- 	},
+ /* IP blocks */
+ static struct omap_hwmod am43xx_emif_hwmod = {
+@@ -468,32 +466,6 @@ static struct omap_hwmod am43xx_dss_rfbi_hwmod = {
+ 	.parent_hwmod	= &am43xx_dss_core_hwmod,
  };
  
--
--/*
-- * 'mcbsp' class
-- * multi channel buffered serial port controller
-- */
--
--static struct omap_hwmod_class_sysconfig omap54xx_mcbsp_sysc = {
--	.rev_offs	= -ENODEV,
--	.sysc_offs	= 0x008c,
--	.sysc_flags	= (SYSC_HAS_CLOCKACTIVITY | SYSC_HAS_ENAWAKEUP |
--			   SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET),
--	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
--	.sysc_fields	= &omap_hwmod_sysc_type1,
+-/* HDQ1W */
+-static struct omap_hwmod_class_sysconfig am43xx_hdq1w_sysc = {
+-	.rev_offs       = 0x0000,
+-	.sysc_offs      = 0x0014,
+-	.syss_offs      = 0x0018,
+-	.sysc_flags     = (SYSC_HAS_SOFTRESET | SYSC_HAS_AUTOIDLE),
+-	.sysc_fields    = &omap_hwmod_sysc_type1,
 -};
 -
--static struct omap_hwmod_class omap54xx_mcbsp_hwmod_class = {
--	.name	= "mcbsp",
--	.sysc	= &omap54xx_mcbsp_sysc,
+-static struct omap_hwmod_class am43xx_hdq1w_hwmod_class = {
+-	.name   = "hdq1w",
+-	.sysc   = &am43xx_hdq1w_sysc,
+-	.reset	= &omap_hdq1w_reset,
 -};
 -
--/* mcbsp1 */
--static struct omap_hwmod_opt_clk mcbsp1_opt_clks[] = {
--	{ .role = "pad_fck", .clk = "pad_clks_ck" },
--	{ .role = "prcm_fck", .clk = "mcbsp1_sync_mux_ck" },
--};
--
--static struct omap_hwmod omap54xx_mcbsp1_hwmod = {
--	.name		= "mcbsp1",
--	.class		= &omap54xx_mcbsp_hwmod_class,
--	.clkdm_name	= "abe_clkdm",
--	.main_clk	= "mcbsp1_gfclk",
+-static struct omap_hwmod am43xx_hdq1w_hwmod = {
+-	.name           = "hdq1w",
+-	.class          = &am43xx_hdq1w_hwmod_class,
+-	.clkdm_name     = "l4ls_clkdm",
 -	.prcm = {
 -		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_ABE_MCBSP1_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_ABE_MCBSP1_CONTEXT_OFFSET,
+-			.clkctrl_offs = AM43XX_CM_PER_HDQ1W_CLKCTRL_OFFSET,
 -			.modulemode   = MODULEMODE_SWCTRL,
 -		},
 -	},
--	.opt_clks	= mcbsp1_opt_clks,
--	.opt_clks_cnt	= ARRAY_SIZE(mcbsp1_opt_clks),
 -};
--
--/* mcbsp2 */
--static struct omap_hwmod_opt_clk mcbsp2_opt_clks[] = {
--	{ .role = "pad_fck", .clk = "pad_clks_ck" },
--	{ .role = "prcm_fck", .clk = "mcbsp2_sync_mux_ck" },
--};
--
--static struct omap_hwmod omap54xx_mcbsp2_hwmod = {
--	.name		= "mcbsp2",
--	.class		= &omap54xx_mcbsp_hwmod_class,
--	.clkdm_name	= "abe_clkdm",
--	.main_clk	= "mcbsp2_gfclk",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_ABE_MCBSP2_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_ABE_MCBSP2_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
--		},
--	},
--	.opt_clks	= mcbsp2_opt_clks,
--	.opt_clks_cnt	= ARRAY_SIZE(mcbsp2_opt_clks),
--};
--
--/* mcbsp3 */
--static struct omap_hwmod_opt_clk mcbsp3_opt_clks[] = {
--	{ .role = "pad_fck", .clk = "pad_clks_ck" },
--	{ .role = "prcm_fck", .clk = "mcbsp3_sync_mux_ck" },
--};
--
--static struct omap_hwmod omap54xx_mcbsp3_hwmod = {
--	.name		= "mcbsp3",
--	.class		= &omap54xx_mcbsp_hwmod_class,
--	.clkdm_name	= "abe_clkdm",
--	.main_clk	= "mcbsp3_gfclk",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_ABE_MCBSP3_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_ABE_MCBSP3_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
--		},
--	},
--	.opt_clks	= mcbsp3_opt_clks,
--	.opt_clks_cnt	= ARRAY_SIZE(mcbsp3_opt_clks),
--};
--
- /*
-  * 'mcpdm' class
-  * multi channel pdm controller (proprietary interface with phoenix power
-@@ -1597,30 +1511,6 @@ static struct omap_hwmod_ocp_if omap54xx_l4_wkup__kbd = {
+ 
+ static struct omap_hwmod_class_sysconfig am43xx_vpfe_sysc = {
+ 	.rev_offs       = 0x0,
+@@ -744,13 +716,6 @@ static struct omap_hwmod_ocp_if am43xx_l4_ls__dss_rfbi = {
  	.user		= OCP_USER_MPU | OCP_USER_SDMA,
  };
  
--/* l4_abe -> mcbsp1 */
--static struct omap_hwmod_ocp_if omap54xx_l4_abe__mcbsp1 = {
--	.master		= &omap54xx_l4_abe_hwmod,
--	.slave		= &omap54xx_mcbsp1_hwmod,
--	.clk		= "abe_iclk",
--	.user		= OCP_USER_MPU,
+-static struct omap_hwmod_ocp_if am43xx_l4_ls__hdq1w = {
+-	.master         = &am33xx_l4_ls_hwmod,
+-	.slave          = &am43xx_hdq1w_hwmod,
+-	.clk            = "l4ls_gclk",
+-	.user           = OCP_USER_MPU | OCP_USER_SDMA,
 -};
 -
--/* l4_abe -> mcbsp2 */
--static struct omap_hwmod_ocp_if omap54xx_l4_abe__mcbsp2 = {
--	.master		= &omap54xx_l4_abe_hwmod,
--	.slave		= &omap54xx_mcbsp2_hwmod,
--	.clk		= "abe_iclk",
--	.user		= OCP_USER_MPU,
--};
--
--/* l4_abe -> mcbsp3 */
--static struct omap_hwmod_ocp_if omap54xx_l4_abe__mcbsp3 = {
--	.master		= &omap54xx_l4_abe_hwmod,
--	.slave		= &omap54xx_mcbsp3_hwmod,
--	.clk		= "abe_iclk",
--	.user		= OCP_USER_MPU,
--};
--
- /* l4_abe -> mcpdm */
- static struct omap_hwmod_ocp_if omap54xx_l4_abe__mcpdm = {
- 	.master		= &omap54xx_l4_abe_hwmod,
-@@ -1796,9 +1686,6 @@ static struct omap_hwmod_ocp_if *omap54xx_hwmod_ocp_ifs[] __initdata = {
- 	&omap54xx_mpu__emif2,
- 	&omap54xx_l3_main_2__mmu_ipu,
- 	&omap54xx_l4_wkup__kbd,
--	&omap54xx_l4_abe__mcbsp1,
--	&omap54xx_l4_abe__mcbsp2,
--	&omap54xx_l4_abe__mcbsp3,
- 	&omap54xx_l4_abe__mcpdm,
- 	&omap54xx_l4_cfg__mpu,
- 	&omap54xx_l4_cfg__spinlock,
+ static struct omap_hwmod_ocp_if am43xx_l3__vpfe0 = {
+ 	.master         = &am43xx_vpfe0_hwmod,
+ 	.slave          = &am33xx_l3_main_hwmod,
+@@ -854,7 +819,6 @@ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am43xx_l4_ls__dss,
+ 	&am43xx_l4_ls__dss_dispc,
+ 	&am43xx_l4_ls__dss_rfbi,
+-	&am43xx_l4_ls__hdq1w,
+ 	&am43xx_l3__vpfe0,
+ 	&am43xx_l3__vpfe1,
+ 	&am43xx_l4_ls__vpfe0,
 -- 
 2.23.0
