@@ -2,25 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 339ABDCB6C
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 18:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B762DCB6E
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 18:34:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408785AbfJRQcp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Oct 2019 12:32:45 -0400
-Received: from muru.com ([72.249.23.125]:38146 "EHLO muru.com"
+        id S2393194AbfJRQcq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Oct 2019 12:32:46 -0400
+Received: from muru.com ([72.249.23.125]:38150 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392259AbfJRQco (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 18 Oct 2019 12:32:44 -0400
+        id S2392259AbfJRQcq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 18 Oct 2019 12:32:46 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 225A5809F;
-        Fri, 18 Oct 2019 16:33:18 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 9B2558168;
+        Fri, 18 Oct 2019 16:33:19 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org
-Subject: [PATCH 09/10] ARM: OMAP2+: Drop legacy platform data for omap4 mcasp
-Date:   Fri, 18 Oct 2019 09:32:19 -0700
-Message-Id: <20191018163220.3504-10-tony@atomide.com>
+Subject: [PATCH 10/10] ARM: OMAP2+: Drop legacy platform data for musb on omap4
+Date:   Fri, 18 Oct 2019 09:32:20 -0700
+Message-Id: <20191018163220.3504-11-tony@atomide.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191018163220.3504-1-tony@atomide.com>
 References: <20191018163220.3504-1-tony@atomide.com>
@@ -41,97 +41,121 @@ the platform data and ti,hwmods property in a single patch.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/omap4-l4-abe.dtsi        |  1 -
- arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 53 ----------------------
- 2 files changed, 54 deletions(-)
+ arch/arm/boot/dts/omap4-l4.dtsi            |  1 -
+ arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 63 ----------------------
+ 2 files changed, 64 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap4-l4-abe.dtsi b/arch/arm/boot/dts/omap4-l4-abe.dtsi
---- a/arch/arm/boot/dts/omap4-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4-abe.dtsi
-@@ -185,7 +185,6 @@
+diff --git a/arch/arm/boot/dts/omap4-l4.dtsi b/arch/arm/boot/dts/omap4-l4.dtsi
+--- a/arch/arm/boot/dts/omap4-l4.dtsi
++++ b/arch/arm/boot/dts/omap4-l4.dtsi
+@@ -381,7 +381,6 @@
  
- 		target-module@28000 {			/* 0x40128000, ap 8 08.0 */
- 			compatible = "ti,sysc-mcasp", "ti,sysc";
--			ti,hwmods = "mcasp";
- 			reg = <0x28000 0x4>,
- 			      <0x28004 0x4>;
- 			reg-names = "rev", "sysc";
+ 		target-module@2b000 {			/* 0x4a0ab000, ap 84 12.0 */
+ 			compatible = "ti,sysc-omap2", "ti,sysc";
+-			ti,hwmods = "usb_otg_hs";
+ 			reg = <0x2b400 0x4>,
+ 			      <0x2b404 0x4>,
+ 			      <0x2b408 0x4>;
 diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
 --- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
 +++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-@@ -1255,41 +1255,6 @@ static struct omap_hwmod omap44xx_kbd_hwmod = {
+@@ -2086,51 +2086,6 @@ static struct omap_hwmod omap44xx_usb_host_hs_hwmod = {
+ 	.flags		= HWMOD_SWSUP_SIDLE | HWMOD_SWSUP_MSTANDBY,
  };
  
- 
 -/*
-- * 'mcasp' class
-- * multi-channel audio serial port controller
+- * 'usb_otg_hs' class
+- * high-speed on-the-go universal serial bus (usb_otg_hs) controller
 - */
 -
--/* The IP is not compliant to type1 / type2 scheme */
--static struct omap_hwmod_class_sysconfig omap44xx_mcasp_sysc = {
--	.rev_offs	= 0,
--	.sysc_offs	= 0x0004,
--	.sysc_flags	= SYSC_HAS_SIDLEMODE,
+-static struct omap_hwmod_class_sysconfig omap44xx_usb_otg_hs_sysc = {
+-	.rev_offs	= 0x0400,
+-	.sysc_offs	= 0x0404,
+-	.syss_offs	= 0x0408,
+-	.sysc_flags	= (SYSC_HAS_AUTOIDLE | SYSC_HAS_ENAWAKEUP |
+-			   SYSC_HAS_MIDLEMODE | SYSC_HAS_SIDLEMODE |
+-			   SYSC_HAS_SOFTRESET | SYSS_HAS_RESET_STATUS),
 -	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
--			   SIDLE_SMART_WKUP),
--	.sysc_fields	= &omap_hwmod_sysc_type_mcasp,
+-			   SIDLE_SMART_WKUP | MSTANDBY_FORCE | MSTANDBY_NO |
+-			   MSTANDBY_SMART),
+-	.sysc_fields	= &omap_hwmod_sysc_type1,
 -};
 -
--static struct omap_hwmod_class omap44xx_mcasp_hwmod_class = {
--	.name	= "mcasp",
--	.sysc	= &omap44xx_mcasp_sysc,
+-static struct omap_hwmod_class omap44xx_usb_otg_hs_hwmod_class = {
+-	.name	= "usb_otg_hs",
+-	.sysc	= &omap44xx_usb_otg_hs_sysc,
 -};
 -
--/* mcasp */
--static struct omap_hwmod omap44xx_mcasp_hwmod = {
--	.name		= "mcasp",
--	.class		= &omap44xx_mcasp_hwmod_class,
--	.clkdm_name	= "abe_clkdm",
--	.main_clk	= "func_mcasp_abe_gfclk",
+-/* usb_otg_hs */
+-static struct omap_hwmod_opt_clk usb_otg_hs_opt_clks[] = {
+-	{ .role = "xclk", .clk = "usb_otg_hs_xclk" },
+-};
+-
+-static struct omap_hwmod omap44xx_usb_otg_hs_hwmod = {
+-	.name		= "usb_otg_hs",
+-	.class		= &omap44xx_usb_otg_hs_hwmod_class,
+-	.clkdm_name	= "l3_init_clkdm",
+-	.flags		= HWMOD_SWSUP_SIDLE | HWMOD_SWSUP_MSTANDBY,
+-	.main_clk	= "usb_otg_hs_ick",
 -	.prcm = {
 -		.omap4 = {
--			.clkctrl_offs = OMAP4_CM1_ABE_MCASP_CLKCTRL_OFFSET,
--			.context_offs = OMAP4_RM_ABE_MCASP_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
+-			.clkctrl_offs = OMAP4_CM_L3INIT_USB_OTG_CLKCTRL_OFFSET,
+-			.context_offs = OMAP4_RM_L3INIT_USB_OTG_CONTEXT_OFFSET,
+-			.modulemode   = MODULEMODE_HWCTRL,
 -		},
 -	},
+-	.opt_clks	= usb_otg_hs_opt_clks,
+-	.opt_clks_cnt	= ARRAY_SIZE(usb_otg_hs_opt_clks),
 -};
 -
  /*
-  * 'mcpdm' class
-  * multi channel pdm controller (proprietary interface with phoenix power
-@@ -2773,22 +2738,6 @@ static struct omap_hwmod_ocp_if omap44xx_l4_wkup__kbd = {
+  * 'usb_tll_hs' class
+  * usb_tll_hs module is the adapter on the usb_host_hs ports
+@@ -2338,14 +2293,6 @@ static struct omap_hwmod_ocp_if omap44xx_usb_host_hs__l3_main_2 = {
  	.user		= OCP_USER_MPU | OCP_USER_SDMA,
  };
  
--/* l4_abe -> mcasp */
--static struct omap_hwmod_ocp_if omap44xx_l4_abe__mcasp = {
--	.master		= &omap44xx_l4_abe_hwmod,
--	.slave		= &omap44xx_mcasp_hwmod,
--	.clk		= "ocp_abe_iclk",
--	.user		= OCP_USER_MPU,
+-/* usb_otg_hs -> l3_main_2 */
+-static struct omap_hwmod_ocp_if omap44xx_usb_otg_hs__l3_main_2 = {
+-	.master		= &omap44xx_usb_otg_hs_hwmod,
+-	.slave		= &omap44xx_l3_main_2_hwmod,
+-	.clk		= "l3_div_ck",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 -};
 -
--/* l4_abe -> mcasp (dma) */
--static struct omap_hwmod_ocp_if omap44xx_l4_abe__mcasp_dma = {
--	.master		= &omap44xx_l4_abe_hwmod,
--	.slave		= &omap44xx_mcasp_hwmod,
--	.clk		= "ocp_abe_iclk",
--	.user		= OCP_USER_SDMA,
+ /* l3_main_1 -> l3_main_3 */
+ static struct omap_hwmod_ocp_if omap44xx_l3_main_1__l3_main_3 = {
+ 	.master		= &omap44xx_l3_main_1_hwmod,
+@@ -2970,14 +2917,6 @@ static struct omap_hwmod_ocp_if omap44xx_l4_cfg__usb_host_hs = {
+ 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ };
+ 
+-/* l4_cfg -> usb_otg_hs */
+-static struct omap_hwmod_ocp_if omap44xx_l4_cfg__usb_otg_hs = {
+-	.master		= &omap44xx_l4_cfg_hwmod,
+-	.slave		= &omap44xx_usb_otg_hs_hwmod,
+-	.clk		= "l4_div_ck",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 -};
 -
- /* l4_abe -> mcpdm */
- static struct omap_hwmod_ocp_if omap44xx_l4_abe__mcpdm = {
- 	.master		= &omap44xx_l4_abe_hwmod,
-@@ -3124,8 +3073,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
- 	/* &omap44xx_iva__sl2if, */
- 	&omap44xx_l3_main_2__iva,
- 	&omap44xx_l4_wkup__kbd,
--	&omap44xx_l4_abe__mcasp,
--	&omap44xx_l4_abe__mcasp_dma,
- 	&omap44xx_l4_abe__mcpdm,
- 	&omap44xx_l3_main_2__mmu_ipu,
- 	&omap44xx_l4_cfg__mmu_dsp,
+ /* l4_cfg -> usb_tll_hs */
+ static struct omap_hwmod_ocp_if omap44xx_l4_cfg__usb_tll_hs = {
+ 	.master		= &omap44xx_l4_cfg_hwmod,
+@@ -3024,7 +2963,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
+ 	&omap44xx_l4_cfg__l3_main_2,
+ 	/* &omap44xx_usb_host_fs__l3_main_2, */
+ 	&omap44xx_usb_host_hs__l3_main_2,
+-	&omap44xx_usb_otg_hs__l3_main_2,
+ 	&omap44xx_l3_main_1__l3_main_3,
+ 	&omap44xx_l3_main_2__l3_main_3,
+ 	&omap44xx_l4_cfg__l3_main_3,
+@@ -3104,7 +3042,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
+ 	&omap44xx_l4_per__timer11,
+ 	/* &omap44xx_l4_cfg__usb_host_fs, */
+ 	&omap44xx_l4_cfg__usb_host_hs,
+-	&omap44xx_l4_cfg__usb_otg_hs,
+ 	&omap44xx_l4_cfg__usb_tll_hs,
+ 	&omap44xx_mpu__emif1,
+ 	&omap44xx_mpu__emif2,
 -- 
 2.23.0
