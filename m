@@ -2,133 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BB68DC465
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 14:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDAADDC567
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 14:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404855AbfJRMII (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Oct 2019 08:08:08 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4732 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2404900AbfJRMII (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 18 Oct 2019 08:08:08 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 47292C30828965867981;
-        Fri, 18 Oct 2019 20:08:06 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Fri, 18 Oct 2019
- 20:08:00 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <khilman@kernel.org>, <tony@atomide.com>, <linux@armlinux.org.uk>
-CC:     <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] ARM: OMAP2+: Make some functions static
-Date:   Fri, 18 Oct 2019 20:07:01 +0800
-Message-ID: <20191018120701.29364-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+        id S2391215AbfJRMt6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Oct 2019 08:49:58 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:43470 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726706AbfJRMt6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 08:49:58 -0400
+Received: by mail-io1-f65.google.com with SMTP id v2so7250694iob.10;
+        Fri, 18 Oct 2019 05:49:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=vt2yevto8JpVokDOAHk/MhpPGOGQv2lzrfEs5YW1bcs=;
+        b=iJ5TSOPL6guDtN+KkWvp7kq9fmbhR6QT7qC4fHwOqs6WlpIcdWtK+D90h8pl8wzGny
+         5nsnGSra/XZ0yKI/66CRCG1s24VKLQRy5yojj19uhmeiwyAo57k3UsCw5uix68W3in0A
+         at0rdp0RXaNp9DxEbO7zIpYwuODy8CoIhrzhntfzoe0vorcEmCTPyGAGv1B13FlCDVEF
+         rdSY0+i/aDWZMJHBYTnPNw+S8WyT3pOELkI/ToEjxHOz7aC7uTxiLz2N4LV00uMC7Vvk
+         rE/BdRxCBEAv13ZASSKL1Cl85btRQOTnGOGK11X0rcbL/o7TroRihlv9are58zGZu12y
+         CBeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=vt2yevto8JpVokDOAHk/MhpPGOGQv2lzrfEs5YW1bcs=;
+        b=eA5mIjQEaA/9ajeYsLIPCVQanr9sFz99zxALAN+H4NNaYokf3/j3xozOAjKjyjivkG
+         X2n9rInEFZMAGyl2NZCQykVH4Oot++asArL99uoLy1DoVF0PnDWTFMZagcJd4S7DLdnG
+         k5tDNsA4CkLUZl9TcOalMNzfDujd3xOlArd6bIb16Av0fRtlEUL1IIxNTlK/rwfidUQG
+         PGft/X008jgcLeDBgcRIPuoJvRT3QAvyVjSAs0/R5AOgQRwNcCumIqGDh2YCQAoBVeMv
+         llDV78i/bYJhu7aphDa26MQ+a1/VOiWj2QekmlJz9QzUKy2cMtsiTkNV1pgoDnm/NCnD
+         7hjA==
+X-Gm-Message-State: APjAAAUzbRVP5HfXSBycPIz/ydsKATGNS3+ARM2ej0nCtqnijN+ZPwlY
+        NSp8eoX0kCyP5EVh3nTBm0OaJMjB44A=
+X-Google-Smtp-Source: APXvYqyzzvszH1UbTyYx0NKA2hnNmpf8BjkjTNbKO7/3o54SB64EMA8N5/EMTTSPCcKrWfhQGNSgZg==
+X-Received: by 2002:a5e:9e0a:: with SMTP id i10mr8199609ioq.172.1571402996741;
+        Fri, 18 Oct 2019 05:49:56 -0700 (PDT)
+Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
+        by smtp.gmail.com with ESMTPSA id q74sm2003992iod.72.2019.10.18.05.49.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2019 05:49:55 -0700 (PDT)
+From:   Adam Ford <aford173@gmail.com>
+To:     linux-fbdev@vger.kernel.org
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        tomi.valkeinen@ti.com, adam.ford@logicpd.com,
+        Adam Ford <aford173@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH] fbdev/omap: fix max fclk divider for omap36xx
+Date:   Fri, 18 Oct 2019 07:49:38 -0500
+Message-Id: <20191018124938.29313-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix sparse warnings:
+The OMAP36xx and AM/DM37x TRMs say that the maximum divider for DSS fclk
+(in CM_CLKSEL_DSS) is 32. Experimentation shows that this is not
+correct, and using divider of 32 breaks DSS with a flood or underflows
+and sync losts. Dividers up to 31 seem to work fine.
 
-arch/arm/mach-omap2/pmic-cpcap.c:29:15: warning: symbol 'omap_cpcap_vsel_to_uv' was not declared. Should it be static?
-arch/arm/mach-omap2/pmic-cpcap.c:43:15: warning: symbol 'omap_cpcap_uv_to_vsel' was not declared. Should it be static?
-arch/arm/mach-omap2/pmic-cpcap.c:93:15: warning: symbol 'omap_max8952_vsel_to_uv' was not declared. Should it be static?
-arch/arm/mach-omap2/pmic-cpcap.c:107:15: warning: symbol 'omap_max8952_uv_to_vsel' was not declared. Should it be static?
-arch/arm/mach-omap2/pmic-cpcap.c:140:15: warning: symbol 'omap_fan535503_vsel_to_uv' was not declared. Should it be static?
-arch/arm/mach-omap2/pmic-cpcap.c:155:15: warning: symbol 'omap_fan535508_vsel_to_uv' was not declared. Should it be static?
-arch/arm/mach-omap2/pmic-cpcap.c:173:15: warning: symbol 'omap_fan535503_uv_to_vsel' was not declared. Should it be static?
-arch/arm/mach-omap2/pmic-cpcap.c:192:15: warning: symbol 'omap_fan535508_uv_to_vsel' was not declared. Should it be static?
+There is another patch to the DT files to limit the divider correctly,
+but as the DSS driver also needs to know the maximum divider to be able
+to iteratively find good rates, we also need to do the fix in the DSS
+driver.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- arch/arm/mach-omap2/pmic-cpcap.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc: stable@vger.kernel.org #linux-4.9.y+
 
-diff --git a/arch/arm/mach-omap2/pmic-cpcap.c b/arch/arm/mach-omap2/pmic-cpcap.c
-index 2c2a178..3cdf40e 100644
---- a/arch/arm/mach-omap2/pmic-cpcap.c
-+++ b/arch/arm/mach-omap2/pmic-cpcap.c
-@@ -26,7 +26,7 @@
-  * Returns the microvolts DC that the CPCAP PMIC should generate when
-  * programmed with @vsel.
-  */
--unsigned long omap_cpcap_vsel_to_uv(unsigned char vsel)
-+static unsigned long omap_cpcap_vsel_to_uv(unsigned char vsel)
- {
- 	if (vsel > 0x44)
- 		vsel = 0x44;
-@@ -40,7 +40,7 @@ unsigned long omap_cpcap_vsel_to_uv(unsigned char vsel)
-  * Returns the VSEL value necessary for the CPCAP PMIC to
-  * generate an output voltage equal to or greater than @uv microvolts DC.
-  */
--unsigned char omap_cpcap_uv_to_vsel(unsigned long uv)
-+static unsigned char omap_cpcap_uv_to_vsel(unsigned long uv)
- {
- 	if (uv < 600000)
- 		uv = 600000;
-@@ -90,7 +90,7 @@ static struct omap_voltdm_pmic omap_cpcap_iva = {
-  * Returns the microvolts DC that the MAX8952 Regulator should generate when
-  * programmed with @vsel.
-  */
--unsigned long omap_max8952_vsel_to_uv(unsigned char vsel)
-+static unsigned long omap_max8952_vsel_to_uv(unsigned char vsel)
- {
- 	if (vsel > 0x3F)
- 		vsel = 0x3F;
-@@ -104,7 +104,7 @@ unsigned long omap_max8952_vsel_to_uv(unsigned char vsel)
-  * Returns the VSEL value necessary for the MAX8952 Regulator to
-  * generate an output voltage equal to or greater than @uv microvolts DC.
-  */
--unsigned char omap_max8952_uv_to_vsel(unsigned long uv)
-+static unsigned char omap_max8952_uv_to_vsel(unsigned long uv)
- {
- 	if (uv < 770000)
- 		uv = 770000;
-@@ -137,7 +137,7 @@ static struct omap_voltdm_pmic omap443x_max8952_mpu = {
-  * Returns the microvolts DC that the FAN535503 Regulator should generate when
-  * programmed with @vsel.
-  */
--unsigned long omap_fan535503_vsel_to_uv(unsigned char vsel)
-+static unsigned long omap_fan535503_vsel_to_uv(unsigned char vsel)
- {
- 	/* Extract bits[5:0] */
- 	vsel &= 0x3F;
-@@ -152,7 +152,7 @@ unsigned long omap_fan535503_vsel_to_uv(unsigned char vsel)
-  * Returns the microvolts DC that the FAN535508 Regulator should generate when
-  * programmed with @vsel.
-  */
--unsigned long omap_fan535508_vsel_to_uv(unsigned char vsel)
-+static unsigned long omap_fan535508_vsel_to_uv(unsigned char vsel)
- {
- 	/* Extract bits[5:0] */
- 	vsel &= 0x3F;
-@@ -170,7 +170,7 @@ unsigned long omap_fan535508_vsel_to_uv(unsigned char vsel)
-  * Returns the VSEL value necessary for the MAX8952 Regulator to
-  * generate an output voltage equal to or greater than @uv microvolts DC.
-  */
--unsigned char omap_fan535503_uv_to_vsel(unsigned long uv)
-+static unsigned char omap_fan535503_uv_to_vsel(unsigned long uv)
- {
- 	unsigned char vsel;
- 	if (uv < 750000)
-@@ -189,7 +189,7 @@ unsigned char omap_fan535503_uv_to_vsel(unsigned long uv)
-  * Returns the VSEL value necessary for the MAX8952 Regulator to
-  * generate an output voltage equal to or greater than @uv microvolts DC.
-  */
--unsigned char omap_fan535508_uv_to_vsel(unsigned long uv)
-+static unsigned char omap_fan535508_uv_to_vsel(unsigned long uv)
- {
- 	unsigned char vsel;
- 	if (uv < 750000)
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+index 48c6500c24e1..4429ad37b64c 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+@@ -843,7 +843,7 @@ static const struct dss_features omap34xx_dss_feats = {
+ };
+ 
+ static const struct dss_features omap3630_dss_feats = {
+-	.fck_div_max		=	32,
++	.fck_div_max		=	31,
+ 	.dss_fck_multiplier	=	1,
+ 	.parent_clk_name	=	"dpll4_ck",
+ 	.dpi_select_source	=	&dss_dpi_select_source_omap2_omap3,
 -- 
-2.7.4
-
+2.17.1
 
