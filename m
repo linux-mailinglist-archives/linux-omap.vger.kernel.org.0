@@ -2,160 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B762DCB6E
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 18:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0810ADCCC0
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 19:30:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393194AbfJRQcq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Oct 2019 12:32:46 -0400
-Received: from muru.com ([72.249.23.125]:38150 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392259AbfJRQcq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 18 Oct 2019 12:32:46 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 9B2558168;
-        Fri, 18 Oct 2019 16:33:19 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org
-Subject: [PATCH 10/10] ARM: OMAP2+: Drop legacy platform data for musb on omap4
-Date:   Fri, 18 Oct 2019 09:32:20 -0700
-Message-Id: <20191018163220.3504-11-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191018163220.3504-1-tony@atomide.com>
-References: <20191018163220.3504-1-tony@atomide.com>
+        id S2391862AbfJRR1k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Oct 2019 13:27:40 -0400
+Received: from eddie.linux-mips.org ([148.251.95.138]:46700 "EHLO
+        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2505513AbfJRR1f (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 13:27:35 -0400
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+        (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+        id S23993628AbfJRR1bkgOYe (ORCPT
+        <rfc822;linux-fbdev@vger.kernel.org> + 2 others);
+        Fri, 18 Oct 2019 19:27:31 +0200
+Date:   Fri, 18 Oct 2019 19:27:28 +0200
+From:   Ladislav Michl <ladis@linux-mips.org>
+To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] omapfb: reduce stack usage
+Message-ID: <20191018172728.GA11857@lenoch>
+References: <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can now probe devices with ti-sysc interconnect driver and dts
-data. Let's drop the related platform data and custom ti,hwmods
-dts property.
+On Fri, Oct 18, 2019 at 05:30:04PM +0100, Sudip Mukherjee wrote:
+> The build of xtensa allmodconfig is giving a warning of:
+> In function 'dsi_dump_dsidev_irqs':
+> warning: the frame size of 1120 bytes is larger than 1024 bytes
+> 
+> Allocate the memory for 'struct dsi_irq_stats' dynamically instead
+> of assigning it in stack.
 
-As we're just dropping data, and the early platform data init
-is based on the custom ti,hwmods property, we want to drop both
-the platform data and ti,hwmods property in a single patch.
+So now function can fail silently, executes longer, code is sligthly
+bigger... And all that to silent warning about exceeding frame size.
+Is it really worth "fixing"?
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/omap4-l4.dtsi            |  1 -
- arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 63 ----------------------
- 2 files changed, 64 deletions(-)
-
-diff --git a/arch/arm/boot/dts/omap4-l4.dtsi b/arch/arm/boot/dts/omap4-l4.dtsi
---- a/arch/arm/boot/dts/omap4-l4.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4.dtsi
-@@ -381,7 +381,6 @@
- 
- 		target-module@2b000 {			/* 0x4a0ab000, ap 84 12.0 */
- 			compatible = "ti,sysc-omap2", "ti,sysc";
--			ti,hwmods = "usb_otg_hs";
- 			reg = <0x2b400 0x4>,
- 			      <0x2b404 0x4>,
- 			      <0x2b408 0x4>;
-diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-@@ -2086,51 +2086,6 @@ static struct omap_hwmod omap44xx_usb_host_hs_hwmod = {
- 	.flags		= HWMOD_SWSUP_SIDLE | HWMOD_SWSUP_MSTANDBY,
- };
- 
--/*
-- * 'usb_otg_hs' class
-- * high-speed on-the-go universal serial bus (usb_otg_hs) controller
-- */
--
--static struct omap_hwmod_class_sysconfig omap44xx_usb_otg_hs_sysc = {
--	.rev_offs	= 0x0400,
--	.sysc_offs	= 0x0404,
--	.syss_offs	= 0x0408,
--	.sysc_flags	= (SYSC_HAS_AUTOIDLE | SYSC_HAS_ENAWAKEUP |
--			   SYSC_HAS_MIDLEMODE | SYSC_HAS_SIDLEMODE |
--			   SYSC_HAS_SOFTRESET | SYSS_HAS_RESET_STATUS),
--	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
--			   SIDLE_SMART_WKUP | MSTANDBY_FORCE | MSTANDBY_NO |
--			   MSTANDBY_SMART),
--	.sysc_fields	= &omap_hwmod_sysc_type1,
--};
--
--static struct omap_hwmod_class omap44xx_usb_otg_hs_hwmod_class = {
--	.name	= "usb_otg_hs",
--	.sysc	= &omap44xx_usb_otg_hs_sysc,
--};
--
--/* usb_otg_hs */
--static struct omap_hwmod_opt_clk usb_otg_hs_opt_clks[] = {
--	{ .role = "xclk", .clk = "usb_otg_hs_xclk" },
--};
--
--static struct omap_hwmod omap44xx_usb_otg_hs_hwmod = {
--	.name		= "usb_otg_hs",
--	.class		= &omap44xx_usb_otg_hs_hwmod_class,
--	.clkdm_name	= "l3_init_clkdm",
--	.flags		= HWMOD_SWSUP_SIDLE | HWMOD_SWSUP_MSTANDBY,
--	.main_clk	= "usb_otg_hs_ick",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP4_CM_L3INIT_USB_OTG_CLKCTRL_OFFSET,
--			.context_offs = OMAP4_RM_L3INIT_USB_OTG_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_HWCTRL,
--		},
--	},
--	.opt_clks	= usb_otg_hs_opt_clks,
--	.opt_clks_cnt	= ARRAY_SIZE(usb_otg_hs_opt_clks),
--};
--
- /*
-  * 'usb_tll_hs' class
-  * usb_tll_hs module is the adapter on the usb_host_hs ports
-@@ -2338,14 +2293,6 @@ static struct omap_hwmod_ocp_if omap44xx_usb_host_hs__l3_main_2 = {
- 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
- };
- 
--/* usb_otg_hs -> l3_main_2 */
--static struct omap_hwmod_ocp_if omap44xx_usb_otg_hs__l3_main_2 = {
--	.master		= &omap44xx_usb_otg_hs_hwmod,
--	.slave		= &omap44xx_l3_main_2_hwmod,
--	.clk		= "l3_div_ck",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
--};
--
- /* l3_main_1 -> l3_main_3 */
- static struct omap_hwmod_ocp_if omap44xx_l3_main_1__l3_main_3 = {
- 	.master		= &omap44xx_l3_main_1_hwmod,
-@@ -2970,14 +2917,6 @@ static struct omap_hwmod_ocp_if omap44xx_l4_cfg__usb_host_hs = {
- 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
- };
- 
--/* l4_cfg -> usb_otg_hs */
--static struct omap_hwmod_ocp_if omap44xx_l4_cfg__usb_otg_hs = {
--	.master		= &omap44xx_l4_cfg_hwmod,
--	.slave		= &omap44xx_usb_otg_hs_hwmod,
--	.clk		= "l4_div_ck",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
--};
--
- /* l4_cfg -> usb_tll_hs */
- static struct omap_hwmod_ocp_if omap44xx_l4_cfg__usb_tll_hs = {
- 	.master		= &omap44xx_l4_cfg_hwmod,
-@@ -3024,7 +2963,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
- 	&omap44xx_l4_cfg__l3_main_2,
- 	/* &omap44xx_usb_host_fs__l3_main_2, */
- 	&omap44xx_usb_host_hs__l3_main_2,
--	&omap44xx_usb_otg_hs__l3_main_2,
- 	&omap44xx_l3_main_1__l3_main_3,
- 	&omap44xx_l3_main_2__l3_main_3,
- 	&omap44xx_l4_cfg__l3_main_3,
-@@ -3104,7 +3042,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
- 	&omap44xx_l4_per__timer11,
- 	/* &omap44xx_l4_cfg__usb_host_fs, */
- 	&omap44xx_l4_cfg__usb_host_hs,
--	&omap44xx_l4_cfg__usb_otg_hs,
- 	&omap44xx_l4_cfg__usb_tll_hs,
- 	&omap44xx_mpu__emif1,
- 	&omap44xx_mpu__emif2,
--- 
-2.23.0
+> Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+> ---
+>  drivers/video/fbdev/omap2/omapfb/dss/dsi.c | 24 ++++++++++++++----------
+>  1 file changed, 14 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+> index d620376216e1..43402467bf40 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+> @@ -1536,22 +1536,25 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+>  {
+>  	struct dsi_data *dsi = dsi_get_dsidrv_data(dsidev);
+>  	unsigned long flags;
+> -	struct dsi_irq_stats stats;
+> +	struct dsi_irq_stats *stats;
+>  
+> +	stats = kmalloc(sizeof(*stats), GFP_KERNEL);
+> +	if (!stats)
+> +		return;
+>  	spin_lock_irqsave(&dsi->irq_stats_lock, flags);
+>  
+> -	stats = dsi->irq_stats;
+> +	memcpy(stats, &dsi->irq_stats, sizeof(*stats));
+>  	memset(&dsi->irq_stats, 0, sizeof(dsi->irq_stats));
+>  	dsi->irq_stats.last_reset = jiffies;
+>  
+>  	spin_unlock_irqrestore(&dsi->irq_stats_lock, flags);
+>  
+>  	seq_printf(s, "period %u ms\n",
+> -			jiffies_to_msecs(jiffies - stats.last_reset));
+> +			jiffies_to_msecs(jiffies - stats->last_reset));
+>  
+> -	seq_printf(s, "irqs %d\n", stats.irq_count);
+> +	seq_printf(s, "irqs %d\n", stats->irq_count);
+>  #define PIS(x) \
+> -	seq_printf(s, "%-20s %10d\n", #x, stats.dsi_irqs[ffs(DSI_IRQ_##x)-1]);
+> +	seq_printf(s, "%-20s %10d\n", #x, stats->dsi_irqs[ffs(DSI_IRQ_##x)-1]);
+>  
+>  	seq_printf(s, "-- DSI%d interrupts --\n", dsi->module_id + 1);
+>  	PIS(VC0);
+> @@ -1575,10 +1578,10 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+>  
+>  #define PIS(x) \
+>  	seq_printf(s, "%-20s %10d %10d %10d %10d\n", #x, \
+> -			stats.vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
+> -			stats.vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
+> -			stats.vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
+> -			stats.vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
+> +			stats->vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
+> +			stats->vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
+> +			stats->vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
+> +			stats->vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
+>  
+>  	seq_printf(s, "-- VC interrupts --\n");
+>  	PIS(CS);
+> @@ -1594,7 +1597,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+>  
+>  #define PIS(x) \
+>  	seq_printf(s, "%-20s %10d\n", #x, \
+> -			stats.cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
+> +			stats->cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
+>  
+>  	seq_printf(s, "-- CIO interrupts --\n");
+>  	PIS(ERRSYNCESC1);
+> @@ -1618,6 +1621,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+>  	PIS(ULPSACTIVENOT_ALL0);
+>  	PIS(ULPSACTIVENOT_ALL1);
+>  #undef PIS
+> +	kfree(stats);
+>  }
+>  
+>  static void dsi1_dump_irqs(struct seq_file *s)
+> -- 
+> 2.11.0
