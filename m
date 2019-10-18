@@ -2,122 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0810ADCCC0
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 19:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 949F3DCE9A
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2019 20:47:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391862AbfJRR1k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Oct 2019 13:27:40 -0400
-Received: from eddie.linux-mips.org ([148.251.95.138]:46700 "EHLO
-        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2505513AbfJRR1f (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 13:27:35 -0400
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
-        (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S23993628AbfJRR1bkgOYe (ORCPT
-        <rfc822;linux-fbdev@vger.kernel.org> + 2 others);
-        Fri, 18 Oct 2019 19:27:31 +0200
-Date:   Fri, 18 Oct 2019 19:27:28 +0200
-From:   Ladislav Michl <ladis@linux-mips.org>
-To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        id S2634541AbfJRSrJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Oct 2019 14:47:09 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:27432 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2443134AbfJRSqt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Oct 2019 14:46:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571424406;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=1QwlT7mxYs3pWYaMtPoVjC+h0W2w6mR5VlLH4l4Vwo4=;
+        b=Kcf+ZvuIP9lsrRTKnHsW42Gh5QKk1z8Raqw9bB7SbLoJ8Tjed4IYjn0oDtRtV2Kmpx
+        VBjBWoZ3gckqUZ7vbPcK+g5bN+OgyOnTXnuc6JIWfxtF+6mZvF15rmQ4xxRAuyPEP0gw
+        4IxkWQkwW6jBFWGYHwn0L6UoW0w+jVzxtw37dm2sZcQTgPtWT1rx+mptW++nxvVrGlrg
+        5FMrN9P73iCHDal3Tu2zXJhl9F8BhaxCjB6wi6KbYPJ0ZpFdig+5vMmr1F5XYdzTAYta
+        dnRGyxqxWRNVqLVoKtGG9+sx6mbGaQ3pDJ7ohEGHBUhSSuA0DLWPc0uyBmDSBfHGFb2u
+        7myw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXH6F3CFF60="
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+        by smtp.strato.de (RZmta 44.28.1 DYNA|AUTH)
+        with ESMTPSA id R0b2a8v9IIkVDLB
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Fri, 18 Oct 2019 20:46:31 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] omapfb: reduce stack usage
-Message-ID: <20191018172728.GA11857@lenoch>
-References: <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: [PATCH 0/7] ARM: DTS: OMAP: add child nodes describing the PVRSGX present in some OMAP SoC
+Date:   Fri, 18 Oct 2019 20:46:23 +0200
+Message-Id: <cover.1571424390.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.19.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Oct 18, 2019 at 05:30:04PM +0100, Sudip Mukherjee wrote:
-> The build of xtensa allmodconfig is giving a warning of:
-> In function 'dsi_dump_dsidev_irqs':
-> warning: the frame size of 1120 bytes is larger than 1024 bytes
-> 
-> Allocate the memory for 'struct dsi_irq_stats' dynamically instead
-> of assigning it in stack.
+This patch set defines child nodes for the SGX5xx interface inside
+the OMAP SoC so that a driver can be found and probed by the
+compatible strings and can retrieve information about the SGX revision
+that is included in a specific SoC. It also defines the interrupt number
+and the timer to be used by the SGX driver.
 
-So now function can fail silently, executes longer, code is sligthly
-bigger... And all that to silent warning about exceeding frame size.
-Is it really worth "fixing"?
+There is currently no mainline driver for these GPUs, but a project [1]
+is ongoing with the goal to get the open-source part as provided by TI/IMG
+into drivers/staging/pvr.
 
-> Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-> ---
->  drivers/video/fbdev/omap2/omapfb/dss/dsi.c | 24 ++++++++++++++----------
->  1 file changed, 14 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-> index d620376216e1..43402467bf40 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-> @@ -1536,22 +1536,25 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
->  {
->  	struct dsi_data *dsi = dsi_get_dsidrv_data(dsidev);
->  	unsigned long flags;
-> -	struct dsi_irq_stats stats;
-> +	struct dsi_irq_stats *stats;
->  
-> +	stats = kmalloc(sizeof(*stats), GFP_KERNEL);
-> +	if (!stats)
-> +		return;
->  	spin_lock_irqsave(&dsi->irq_stats_lock, flags);
->  
-> -	stats = dsi->irq_stats;
-> +	memcpy(stats, &dsi->irq_stats, sizeof(*stats));
->  	memset(&dsi->irq_stats, 0, sizeof(dsi->irq_stats));
->  	dsi->irq_stats.last_reset = jiffies;
->  
->  	spin_unlock_irqrestore(&dsi->irq_stats_lock, flags);
->  
->  	seq_printf(s, "period %u ms\n",
-> -			jiffies_to_msecs(jiffies - stats.last_reset));
-> +			jiffies_to_msecs(jiffies - stats->last_reset));
->  
-> -	seq_printf(s, "irqs %d\n", stats.irq_count);
-> +	seq_printf(s, "irqs %d\n", stats->irq_count);
->  #define PIS(x) \
-> -	seq_printf(s, "%-20s %10d\n", #x, stats.dsi_irqs[ffs(DSI_IRQ_##x)-1]);
-> +	seq_printf(s, "%-20s %10d\n", #x, stats->dsi_irqs[ffs(DSI_IRQ_##x)-1]);
->  
->  	seq_printf(s, "-- DSI%d interrupts --\n", dsi->module_id + 1);
->  	PIS(VC0);
-> @@ -1575,10 +1578,10 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
->  
->  #define PIS(x) \
->  	seq_printf(s, "%-20s %10d %10d %10d %10d\n", #x, \
-> -			stats.vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
-> -			stats.vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
-> -			stats.vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
-> -			stats.vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
-> +			stats->vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
-> +			stats->vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
-> +			stats->vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
-> +			stats->vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
->  
->  	seq_printf(s, "-- VC interrupts --\n");
->  	PIS(CS);
-> @@ -1594,7 +1597,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
->  
->  #define PIS(x) \
->  	seq_printf(s, "%-20s %10d\n", #x, \
-> -			stats.cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
-> +			stats->cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
->  
->  	seq_printf(s, "-- CIO interrupts --\n");
->  	PIS(ERRSYNCESC1);
-> @@ -1618,6 +1621,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
->  	PIS(ULPSACTIVENOT_ALL0);
->  	PIS(ULPSACTIVENOT_ALL1);
->  #undef PIS
-> +	kfree(stats);
->  }
->  
->  static void dsi1_dump_irqs(struct seq_file *s)
-> -- 
-> 2.11.0
+The kernel modules built from this project have successfully demonstrated
+to work with the DTS definitions from this patch set on AM335x BeagleBone
+Black and OMAP5 Pyra. They partially works on DM3730 and PandaBoard ES but
+that is likely a problem in the kernel driver or the (non-free) user-space
+blobs.
+
+There is potential to extend this work to JZ4780 (CI20 board) and
+BananaPi-M3 (A83) and even some Intel Poulsbo and CedarView devices.
+
+[1]: https://github.com/openpvrsgx-devgroup
+
+H. Nikolaus Schaller (7):
+  dt-bindings: gpu: pvrsgx: add initial bindings
+  ARM: DTS: am33xx: add sgx gpu child node
+  ARM: DTS: am3517: add sgx gpu child node
+  ARM: DTS: omap3: add sgx gpu child node
+  ARM: DTS: omap36xx: add sgx gpu child node
+  ARM: DTS: omap4: add sgx gpu child node
+  ARM: DTS: omap5: add sgx gpu child node
+
+ .../devicetree/bindings/gpu/img,pvrsgx.txt    | 76 +++++++++++++++++++
+ arch/arm/boot/dts/am33xx.dtsi                 | 11 ++-
+ arch/arm/boot/dts/am3517.dtsi                 | 13 ++--
+ arch/arm/boot/dts/omap34xx.dtsi               | 13 ++--
+ arch/arm/boot/dts/omap36xx.dtsi               | 13 ++--
+ arch/arm/boot/dts/omap4.dtsi                  | 11 ++-
+ arch/arm/boot/dts/omap4470.dts                | 16 ++++
+ arch/arm/boot/dts/omap5.dtsi                  | 12 ++-
+ 8 files changed, 138 insertions(+), 27 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.txt
+ create mode 100644 arch/arm/boot/dts/omap4470.dts
+
+-- 
+2.19.1
+
