@@ -2,156 +2,117 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83A98DD889
-	for <lists+linux-omap@lfdr.de>; Sat, 19 Oct 2019 13:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3062FDD8DC
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Oct 2019 15:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725868AbfJSLfJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 19 Oct 2019 07:35:09 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60378 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbfJSLfJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Oct 2019 07:35:09 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id C717460D5A; Sat, 19 Oct 2019 11:35:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571484907;
-        bh=2Xx/PoFNBKT4cvQQWZqZuKa3vjJHJ9OPdlZAX5aVIgg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=SAysUsZYh9P8k1dX9KyTcyzvT6Nn5nOwtBib/jo52daUzwIbdADuRajitkY8h82A2
-         rjxMOC4R65kyQSEZIhrKoV+aL7CLjO5BNEBSFpxD3Eud23EsOHvLdzqaaRAaOxs4CP
-         p6ajZWBjeYMKL69L84pR1YLkjpksi6W2eTx+elho=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 88F67601EA;
-        Sat, 19 Oct 2019 11:34:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1571484905;
-        bh=2Xx/PoFNBKT4cvQQWZqZuKa3vjJHJ9OPdlZAX5aVIgg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dgwjPI86YslgyZtCByFuNG0ZcDPASaMoues6By5VUtSUYDCEbKXOD3luVCNv8pUTR
-         p7HGPy9hOYJAuk70bVirNgBMNTAKeUSKLheDm07QT1l9y5mVFEjEb5OYNIQ5yKfZzU
-         Fat4Amj3p2tyRb3vMlcKSuLEOQ5e/xPH4z/dM6Hw=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 88F67601EA
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com
-Subject: Re: [PATCH 0/9] OpenPandora: make wl1251 connected to mmc3 sdio port of OpenPandora work again
-References: <cover.1571430329.git.hns@goldelico.com>
-        <87sgnpvvsu.fsf@kamboji.qca.qualcomm.com>
-        <584D2E2D-7617-4F7D-A567-507C7CCB4A53@goldelico.com>
-Date:   Sat, 19 Oct 2019 14:34:57 +0300
-In-Reply-To: <584D2E2D-7617-4F7D-A567-507C7CCB4A53@goldelico.com> (H. Nikolaus
-        Schaller's message of "Sat, 19 Oct 2019 13:25:20 +0200")
-Message-ID: <87d0etvuhq.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1725890AbfJSNyq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Oct 2019 09:54:46 -0400
+Received: from 7.mo173.mail-out.ovh.net ([46.105.44.159]:57385 "EHLO
+        7.mo173.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725906AbfJSNyp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Oct 2019 09:54:45 -0400
+Received: from player786.ha.ovh.net (unknown [10.109.160.12])
+        by mo173.mail-out.ovh.net (Postfix) with ESMTP id 1017511BB66
+        for <linux-omap@vger.kernel.org>; Sat, 19 Oct 2019 15:54:42 +0200 (CEST)
+Received: from sk2.org (gw.sk2.org [88.186.243.14])
+        (Authenticated sender: steve@sk2.org)
+        by player786.ha.ovh.net (Postfix) with ESMTPSA id 6ABA5B3DBA76;
+        Sat, 19 Oct 2019 13:54:32 +0000 (UTC)
+Date:   Sat, 19 Oct 2019 15:54:41 +0200
+From:   Stephen Kitt <steve@sk2.org>
+To:     Stephen Boyd <sboyd@kernel.org>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] clk/ti/adpll: allocate room for terminating null
+Message-ID: <20191019155441.2b1b349f@heffalump.sk2.org>
+In-Reply-To: <20191017154854.5285220869@mail.kernel.org>
+References: <cec235b3e2e4e3b206fa9444b643fa56@sk2.org>
+        <20190927180559.18162-1-steve@sk2.org>
+        <20191017154854.5285220869@mail.kernel.org>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ boundary="Sig_/84fHvmaca2L9PPmq15CP2ZV"; protocol="application/pgp-signature"
+X-Ovh-Tracer-Id: 1558808425264532952
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrkedugddtfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-"H. Nikolaus Schaller" <hns@goldelico.com> writes:
+--Sig_/84fHvmaca2L9PPmq15CP2ZV
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> Hi,
->
->> Am 19.10.2019 um 13:06 schrieb Kalle Valo <kvalo@codeaurora.org>:
->> 
->> "H. Nikolaus Schaller" <hns@goldelico.com> writes:
->> 
->>> Here we have a set of scattered patches to make the OpenPandora WiFi work again.
->>> 
->>> v4.7 did break the pdata-quirks which made the mmc3 interface
->>> fail completely, because some code now assumes device tree
->>> based instantiation.
->>> 
->>> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
->>> 
->>> v4.11 did break the sdio qirks for wl1251 which made the driver no longer
->>> load, although the device was found as an sdio client.
->>> 
->>> Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
->>> 
->>> To solve these issues:
->>> * we convert mmc3 and wl1251 initialization from pdata-quirks
->>>  to device tree
->>> * we make the wl1251 driver read properties from device tree
->>> * we fix the mmc core vendor ids and quirks
->>> * we fix the wl1251 (and wl1271) driver to use only vendor ids
->>>  from header file instead of (potentially conflicting) local
->>>  definitions
->>> 
->>> 
->>> H. Nikolaus Schaller (9):
->>>  Documentation: dt: wireless: update wl1251 for sdio
->>>  net: wireless: ti: wl1251 add device tree support
->>>  DTS: ARM: pandora-common: define wl1251 as child node of mmc3
->>>  mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid
->>>    of pandora_wl1251_init_card
->>>  omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
->>>  mmc: sdio: fix wl1251 vendor id
->>>  mmc: core: fix wl1251 sdio quirks
->>>  net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
->>>  net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
->> 
->> I didn't get patches 3-7
->
-> oh sorry. I don't know why.
->
-> Here they are all: https://patchwork.kernel.org/cover/11199599/
+On Thu, 17 Oct 2019 08:48:53 -0700, Stephen Boyd <sboyd@kernel.org> wrote:
+> Quoting Stephen Kitt (2019-09-27 11:05:59)
+> > The buffer allocated in ti_adpll_clk_get_name doesn't account for the
+> > terminating null. This patch switches to ka_sprintf to avoid
+> > overflowing.
+> >=20
+> > Signed-off-by: Stephen Kitt <steve@sk2.org>
+> > ---
+> >  drivers/clk/ti/adpll.c | 10 ++--------
+> >  1 file changed, 2 insertions(+), 8 deletions(-)
+> >=20
+> > diff --git a/drivers/clk/ti/adpll.c b/drivers/clk/ti/adpll.c
+> > index fdfb90058504..021cf9e2b4db 100644
+> > --- a/drivers/clk/ti/adpll.c
+> > +++ b/drivers/clk/ti/adpll.c
+> > @@ -195,14 +195,8 @@ static const char *ti_adpll_clk_get_name(struct
+> > ti_adpll_data *d, return NULL;
+> >         } else {
+> >                 const char *base_name =3D "adpll"; =20
+>=20
+> This is used once.
+>=20
+> > -               char *buf;
+> > -
+> > -               buf =3D devm_kzalloc(d->dev, 8 + 1 + strlen(base_name) =
++ 1 +
+> > -                                   strlen(postfix), GFP_KERNEL);
+> > -               if (!buf)
+> > -                       return NULL;
+> > -               sprintf(buf, "%08lx.%s.%s", d->pa, base_name, postfix);
+> > -               name =3D buf;
+> > +               name =3D devm_kasprintf(d->dev, GFP_KERNEL, "%08lx.%s.%=
+s", =20
+>=20
+> So why not make this "%08lx.adpll.%s"?
 
-Thanks.
+Thanks for the review! I hesitated to do this because I thought the purely
+formatting string "%08lx.%s.%s" made the resulting code easier to understand
+than a combined "%08lx.adpll.%s". I=E2=80=99ll follow up with a v3 which me=
+rges the
+"adpll" string into the format string.
 
->> so I don't know what they have, but what's the
->> plan how these should be applied? Normally wl1251 patches go via
->> wireless-drivers-next but are you planning something else?
->
-> Well, I have no plan for that except that all should end up fixed in mainline
-> and stable.
->
-> The issue is that multiple subsystems are involved (net/wireless, mmc and arm/omap)
-> and all patches should be ideally be applied in combination.
+Regards,
 
-Ok, I then assume someone else is going to handle these, wl1251 rarely
-has any changes so the chance of conflicts is small anyway, and I'll
-drop the wl1251 patches from my patchwork.
+Stephen
 
-For wl1251 patches 1, 2, 8 and 9:
+--Sig_/84fHvmaca2L9PPmq15CP2ZV
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
+-----BEGIN PGP SIGNATURE-----
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAl2rFaEACgkQgNMC9Yht
+g5ym2Q//TWIp7cVUWt4XkcfWI1ktVARFG1AgDkdOnpJNGVc72ic18oi7MCF301eI
+Df0TWiciOshRpUTbTNtqbHkA9NKAIacHSqdJfdxBfUrZYHCPWBv/6qxWAom3Zd89
+1Ri99eugCJfYTOYNEyZLelHgUvQIijKjAezWozlIe4p8gfSqzP+Ee+oY7s4dh+BY
+ttmyWvl3YZ4X8K8Fzb1P7aeAg9Qz8CSuDuJVmzztx0cvBG/36PHf/b1jcqukeRoo
+kNN/iyjKAD+ctdEh84soEexF5x5S9Ecu+ilxODTiyUlyz9gdmg4xL31lI+Q+R6kf
+uY+5Mz1/cWx3+2lzC7u1go0Wm9kjDZhtkHG4b2tZ/xcRhx9jk7OGf+u4SVKf5/Cb
+ho0XEEpZXryhXwELygOjajGIqsxuEhfCpr1oT6vr8uiiPQaxoD7gf1AlUgow2Ql0
+lgSvJAmuRxRu+C0Cm5Si+6wHTk3J8dVFa7lutk5puGTplveq6EoB7eHOo8RvUVz4
+IXf8exJti705Uy3YhybvcX+NAMmJkNWbiLHJSwS2ZtZh0U/auodKKxBVhJaVOeIJ
+jBBGSpzVMehXPWmY8J+RTHfpH0Fkrv93BcPX0izX463eIHdZezDbLl6+erVjLxtd
+H6stqVeqrHusfTKLb8XP295y+n0LekTk9sadeJeNhGKPh4YVOuQ=
+=zhZj
+-----END PGP SIGNATURE-----
+
+--Sig_/84fHvmaca2L9PPmq15CP2ZV--
