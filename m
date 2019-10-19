@@ -2,97 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E73DD7A2
-	for <lists+linux-omap@lfdr.de>; Sat, 19 Oct 2019 11:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B586DD850
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Oct 2019 13:07:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728560AbfJSJMB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 19 Oct 2019 05:12:01 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:36327 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725797AbfJSJMA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Oct 2019 05:12:00 -0400
-Received: by mail-wm1-f66.google.com with SMTP id m18so8236512wmc.1;
-        Sat, 19 Oct 2019 02:11:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=+LSfVcGVgC2SgP+Cklux+YdmwHzIVlEqLbQ9PbRxrCg=;
-        b=CeWcpr6NT8ySjUyYXyaxdJuNWlxeqsR23HWvVpfZAYYVwszdHchrTotikgKwz/A5gc
-         6EI61leoFAqj+lUg0s5q6g5dHFRcGa4uxeeKPdwMt4DzLNJp9hF0HMv4DNxjWhT0BI3T
-         /+9QVX78U2Lj3lnlbOmibWKjsKL7JgXoc6Ffs3fVHDtdi4kulpzJsitGtzu4f2DWFuyI
-         A9JCqe694gIJSetB7O13NSGUhGUdfj1Q04rOV4xeeam7IOnV+pm7GsNZH/gkcdZ4bx9O
-         r4JPSKL1RCKNjA0WJS/UqP+k0RWvi9c8Leb8pmKm/d65oFvERfMpvL2j22jRoEsc1kuK
-         bp5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=+LSfVcGVgC2SgP+Cklux+YdmwHzIVlEqLbQ9PbRxrCg=;
-        b=FwIqMlo7xQRFw4BtaDU1siQH+N3Wff7wqjJx9D0Lmql0bG/nPqEOUoh/0Wo9PsF9JC
-         oBetIurAvoZQB54rQvMdKf7pUxbIbX3ocmtqve5sZSWHdsCHqZ2EM3AtYH+cnlGkZY7T
-         tF9HBfoKdNdNFiNCYkusCYQFxQRW+O9BOUQkSjbGVgSxQmDV0vf6b23l36OhE+JWUpXc
-         jRvW66zICkIzpaPsVixXQ3epiGNfDE2egyMfE/+9l0dkaItIRSXo0Ve0xpFaoaDJEvmS
-         ufOLPotW4FyFzfSh0FEcp38wMhWoM3GEACyFPKgXI6VcdFOlyUl+/LDZuxU6+KWfV0Gq
-         M3qw==
-X-Gm-Message-State: APjAAAWnafYPvyaSxAnq7GZ9epdiuzKF7roLi8NaXrfJd6sq1oicpNyr
-        +HIrtg5mJrCTjqQeGPMEfATDS/bGey0=
-X-Google-Smtp-Source: APXvYqyDsmrzv4Z1LGUFeuwlx9LTPnznWL1nXliIIrNPSfZ1mxs55/yuuVKfkVko8zJsU0ET6HYBKQ==
-X-Received: by 2002:a1c:2d4d:: with SMTP id t74mr10508690wmt.108.1571476316579;
-        Sat, 19 Oct 2019 02:11:56 -0700 (PDT)
-Received: from debian (host-78-144-219-162.as13285.net. [78.144.219.162])
-        by smtp.gmail.com with ESMTPSA id m16sm6785683wml.11.2019.10.19.02.11.55
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 19 Oct 2019 02:11:56 -0700 (PDT)
-Date:   Sat, 19 Oct 2019 10:11:54 +0100
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     Ladislav Michl <ladis@linux-mips.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] omapfb: reduce stack usage
-Message-ID: <20191019091154.qlmb7abqoqdmtz7f@debian>
-References: <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
- <20191018172728.GA11857@lenoch>
- <20191018223012.tkpwbo3mg5mthlnz@debian>
- <184cdd47d4064420b05c16f10588595c65f789e5.camel@perches.com>
+        id S1725818AbfJSLGx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Oct 2019 07:06:53 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:46646 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725535AbfJSLGx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Oct 2019 07:06:53 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id D443560D5C; Sat, 19 Oct 2019 11:06:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571483211;
+        bh=wnOIIW4MR+CLK/071OVBzNZaauLzgBfSEoUioJEm5WY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=LJ3WBBtmUl28mQPuUH7cOn3/SNt7WNhkVTxOm2/FoUoWM177EMQBU3fhRDrrDv4LM
+         44TIGZVRjG04P+wPJ8ne5GHUpLtcRtGuj4wRfcoOYICRu/2VCc2vAQsikCvk2yRG+p
+         LvBnDW67RmL2pjgKjLlvL65eGTjyESqlHYqR0qjM=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 920AB60D39;
+        Sat, 19 Oct 2019 11:06:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571483209;
+        bh=wnOIIW4MR+CLK/071OVBzNZaauLzgBfSEoUioJEm5WY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=go6dHWqpkYFY2dGyszr8OAmuSCwtZIGaTWdcfcoar0dXcL6Qvguo3sDrIpnYI9o/9
+         gwK00FxgPmGb2nKbbFTpfYe8GrirVct7y0Swsj86DabGQ/V1l8/OzsDcSaQs+LR6Kw
+         mFzFHQt5LGvtJDsyRhPd7elZFcICtGj/iQ+n/GVU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 920AB60D39
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com
+Subject: Re: [PATCH 0/9] OpenPandora: make wl1251 connected to mmc3 sdio port of OpenPandora work again
+References: <cover.1571430329.git.hns@goldelico.com>
+Date:   Sat, 19 Oct 2019 14:06:41 +0300
+In-Reply-To: <cover.1571430329.git.hns@goldelico.com> (H. Nikolaus Schaller's
+        message of "Fri, 18 Oct 2019 22:25:21 +0200")
+Message-ID: <87sgnpvvsu.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <184cdd47d4064420b05c16f10588595c65f789e5.camel@perches.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Oct 18, 2019 at 06:19:15PM -0700, Joe Perches wrote:
-> On Fri, 2019-10-18 at 23:30 +0100, Sudip Mukherjee wrote:
-> > On Fri, Oct 18, 2019 at 07:27:28PM +0200, Ladislav Michl wrote:
-> > > On Fri, Oct 18, 2019 at 05:30:04PM +0100, Sudip Mukherjee wrote:
-> > > > The build of xtensa allmodconfig is giving a warning of:
-> > > > In function 'dsi_dump_dsidev_irqs':
-> > > > warning: the frame size of 1120 bytes is larger than 1024 bytes
-<snip>
-> 
-> Without your patch:
-> 
-> $ objdump -x drivers/video/fbdev/omap2/omapfb/dss/dsi.o | grep dsi_dump_dsidev_irqs
-> 00000d20 l     F .text	0000061c dsi_dump_dsidev_irqs
-> 
-> With your patch:
-> 
-> $ objdump -x drivers/video/fbdev/omap2/omapfb/dss/dsi.o | grep dsi_dump_dsidev_irqs
-> 00000d20 l     F .text	00000638 dsi_dump_dsidev_irqs
+"H. Nikolaus Schaller" <hns@goldelico.com> writes:
 
-I did objdump -d and then compared where it started and where it ended.
+> Here we have a set of scattered patches to make the OpenPandora WiFi work again.
+>
+> v4.7 did break the pdata-quirks which made the mmc3 interface
+> fail completely, because some code now assumes device tree
+> based instantiation.
+>
+> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
+>
+> v4.11 did break the sdio qirks for wl1251 which made the driver no longer
+> load, although the device was found as an sdio client.
+>
+> Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
+>
+> To solve these issues:
+> * we convert mmc3 and wl1251 initialization from pdata-quirks
+>   to device tree
+> * we make the wl1251 driver read properties from device tree
+> * we fix the mmc core vendor ids and quirks
+> * we fix the wl1251 (and wl1271) driver to use only vendor ids
+>   from header file instead of (potentially conflicting) local
+>   definitions
+>
+>
+> H. Nikolaus Schaller (9):
+>   Documentation: dt: wireless: update wl1251 for sdio
+>   net: wireless: ti: wl1251 add device tree support
+>   DTS: ARM: pandora-common: define wl1251 as child node of mmc3
+>   mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid
+>     of pandora_wl1251_init_card
+>   omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
+>   mmc: sdio: fix wl1251 vendor id
+>   mmc: core: fix wl1251 sdio quirks
+>   net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
+>   net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
 
-But, in anycase, this driver is framebuffer driver for omap2 and in
-reality, can only be used on arm platform and when I build the driver
-with arm compiler I am not getting this warning. This is not a valid
-concern, please reject this patch.
+I didn't get patches 3-7 so I don't know what they have, but what's the
+plan how these should be applied? Normally wl1251 patches go via
+wireless-drivers-next but are you planning something else?
 
---
-Regards
-Sudip
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
