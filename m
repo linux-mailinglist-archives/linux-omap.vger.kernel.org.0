@@ -2,154 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F1DDE02D
-	for <lists+linux-omap@lfdr.de>; Sun, 20 Oct 2019 21:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0BD8DE06B
+	for <lists+linux-omap@lfdr.de>; Sun, 20 Oct 2019 22:34:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726681AbfJTTQ3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 20 Oct 2019 15:16:29 -0400
-Received: from mail-il1-f195.google.com ([209.85.166.195]:38811 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726622AbfJTTQ2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 20 Oct 2019 15:16:28 -0400
-Received: by mail-il1-f195.google.com with SMTP id y5so10065361ilb.5;
-        Sun, 20 Oct 2019 12:16:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=A6Rl+yIjZcDJ6lZinhx62wc8Hg0mf3rtlyT+aTBQ+BE=;
-        b=OLpcYgYpOXdWAhWfJAtyey/htAbBJzoaRSdY9rx9OHjzFOTk/bQmJx9nbZPcBMblH3
-         lOGbI3Ish870gb0Nn/LUBX274UloOZHh83R2Adu7363TLVuI8f+I8ZdCnD5VQj7IOYph
-         6SXz6aRtOxu11zIevOWv7gYOwG8OgFcPAhtf9PdRBswg2iD4gmOSMld4zQAVimlmGif1
-         c1kkiL28sJWYTekWe3/eKw6cAL8W1mr3Og46GTPrhijNSk/YAu0HDw1JJvzV4FZ1yz13
-         X642GGHKEu+e92R7YYvQ/Dt5Mc3Tg2IDkRHvBWzJvcYbusyxBw/PwHHLlZia3LRJ9cgM
-         gvPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=A6Rl+yIjZcDJ6lZinhx62wc8Hg0mf3rtlyT+aTBQ+BE=;
-        b=lrMwaAx7s8WW/8FOQUETR4wdYlV869DIsOsDCNtY4ARQKAanfjt9nD7jY2Dwn33yK+
-         KwLwDsLBxJ2yr187XRD4wmS5Bs32KxpKTzi6rmUQI4oweGXx1GGjpGZEwaMujxiFgaG+
-         DW8xoYQcRJUzhLSE9XMIRrkuOwlk0Wls1eAtrF26lFmIavSBxQUjsy78Tz697ZRG7xe4
-         sX2LN5ewmFKvLUbm5FGjYRTfskKdCqHZrc4H2YE4pw34I6ZnxacX8q70GRSzttXnuUNh
-         stY8fThP8SG/LMleGUIn503B1ShCYrNEpiCZ5n3/Fcqw9iBwev0sV9YzoG6UKdlUvjcM
-         BZQw==
-X-Gm-Message-State: APjAAAVMecankvYHmK2R6CVg+cmJjgk+81885yFCxmJ04oj7pWlr8kjr
-        CyWVX9LDKbaevTr7vFazwb5EHGzK78J9k7yTlDs=
-X-Google-Smtp-Source: APXvYqyndOpvnIdoihDg8nxsIE0hr2RVf3LZLOUDlrrsNZViW4aWPU+W+InKlNn9otDGtIZGrQCFsBMVrWSSkJKrR9g=
-X-Received: by 2002:a92:d652:: with SMTP id x18mr20928897ilp.58.1571598987457;
- Sun, 20 Oct 2019 12:16:27 -0700 (PDT)
+        id S1726005AbfJTUd4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 20 Oct 2019 16:33:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52382 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725941AbfJTUdz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 20 Oct 2019 16:33:55 -0400
+Received: from earth.universe (cust-west-pareq2-46-193-15-226.wb.wifirst.net [46.193.15.226])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2AAE321928;
+        Sun, 20 Oct 2019 20:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571603635;
+        bh=VKo6tnVqdhqTowY1VnS1hBJGvtyol6K5bDgkYDXR64Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nefM2rBeS7MO0nW8qLsuoMl/A6qamPKWt68X8Cm3qyFFQIRkI5iOYSw9OqkEvIpnv
+         350SJawfCGWveKacCRkVfnQljtNRe6kQ5mv5mvb9fQQywUbab6v8UK4VeaSoxv/2lC
+         BckYSV6oc4i1JAiLOPk5detrPTAY+zzY5vlHS2AA=
+Received: by earth.universe (Postfix, from userid 1000)
+        id 000B13C0CA0; Sun, 20 Oct 2019 22:33:52 +0200 (CEST)
+Date:   Sun, 20 Oct 2019 22:33:52 +0200
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Marcel Holtmann <marcel@holtmann.org>,
+        Adam Ford <aford173@gmail.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        linux-bluetooth@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCHv2 0/4] Convert all btwilink users to hci_ll and drop
+ btwilink
+Message-ID: <20191020203352.rh3n6qpagiyift7d@earth.universe>
+References: <20191003134147.9458-1-sre@kernel.org>
+ <20191008143116.GF5610@atomide.com>
 MIME-Version: 1.0
-References: <CAHCN7xLMTDondeiYiYHwGG5HYEaRwY9S4uoqQ-Eq6b8ksSS+NA@mail.gmail.com>
- <20191020180248.GD11723@pendragon.ideasonboard.com>
-In-Reply-To: <20191020180248.GD11723@pendragon.ideasonboard.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Sun, 20 Oct 2019 14:16:15 -0500
-Message-ID: <CAHCN7x+rZb5ikUeqhRAg8bVQ1vyYSc-+uVdLXcCV9RVSwt6UfQ@mail.gmail.com>
-Subject: Re: V4L2 runs out of memory when OMAP3 ISP parallel pixel clock is high
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-media@vger.kernel.org, Sakari Ailus <sakari.ailus@iki.fi>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="sm5ahi5a3wy7vwrr"
+Content-Disposition: inline
+In-Reply-To: <20191008143116.GF5610@atomide.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Oct 20, 2019 at 1:02 PM Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> Hi Adam,
->
-> On Sun, Oct 20, 2019 at 09:45:25AM -0500, Adam Ford wrote:
-> > I am running a DM3730 connected to an mt9p031 sensor, and the ISP is
-> > running in 8-bit parallel mode.
-> >
-> > I have the sensor endpoint configured as:
-> >
-> > mt9p031_out: endpoint {
-> >      input-clock-frequency =3D <24000000>;
-> >      pixel-clock-frequency =3D <72000000>;
-> >      remote-endpoint =3D <&ccdc_ep>;
-> > };
-> >
-> > I was looking through the datasheet, and it appears as if the pixel
-> > clock frequency can go up to 96MHz, so I tried to increase the
-> > pixel-clock-frequency to 96MHz, but v4l2 seems to get an out of memory
-> > error.
-> >
-> > libv4l2: error turning on stream: No space left on device
-> > ERROR: from element /GstPipeline:pipeline0/GstV4l2Src:v4l2src0: Failed
-> > to allocate required memory.
-> > Additional debug info:
-> > gstv4l2src.c(658): gst_v4l2src_decide_allocation ():
-> > /GstPipeline:pipeline0/GstV4l2Src:v4l2src0:
-> > Buffer pool activation failed
-> > Execution ended after 0:00:00.019073486
->
-> The error code may be misleading. ENOSPC is used here to report that the
-> maximum CCDC bandwidth has been exceeded, not that the driver is running
-> out of memory.
->
-> The check is performed in isp_video_check_external_subdevs(), and the
-> maximum CCDC bandwidth is calculated by omap3isp_ccdc_max_rate():
->
->         /*
->          * TRM says that for parallel sensors the maximum data rate
->          * should be 90% form L3/2 clock, otherwise just L3/2.
->          */
->         if (ccdc->input =3D=3D CCDC_INPUT_PARALLEL)
->                 rate =3D pipe->l3_ick / 2 * 9 / 10;
->         else
->                 rate =3D pipe->l3_ick / 2;
->
-> Could you point me to the part of the OMAP3 datasheet that you think
-> allows for 96 MHz ?
 
-The DM3730 TRM (SPRUGN4R =E2=80=93 May 2010 =E2=80=93 Revised September 201=
-2) doesn't
-use the 90% rule mentioned above from what I can see. Maybe it's
-somewhere else, but I didn't see it.  It does state the folllowing in
-Section 6.3.1.1:
-Camera ISP Clocks Parallel interface clock domain. This frequency
-depends on the imaging sensor type and size, its frame rate and its
-blanking time. The functional clock is required to be at least 2x
-faster than the pixel clock when the bridge is disabled and a least
-equal when it is enabled.
+--sm5ahi5a3wy7vwrr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-When I queried the cam_ick, it returned 100MHz, so I expected 96MHz to
-be tolerated.
+Hi Tony,
 
-# cat cat /sys/kernel/debug/clk/l3_ick/clk_rate
-200000000
+On Tue, Oct 08, 2019 at 07:31:16AM -0700, Tony Lindgren wrote:
+> * Sebastian Reichel <sre@kernel.org> [191003 06:42]:
+> > This moves the remaining users of btwilink to the "new" serdev based hc=
+i_ll
+> > driver and drops the btwilink driver afterwards. The patches were only =
+compile
+> > tested by me, but Enric tested the IGEP platform and Adam will test the=
+ LogicPD
+> > platform.
+> >=20
+> > I kept the TI_ST driver for now, since I plan to send a second patchset=
+ for the
+> > FM radio driver. Once the FM driver has been converted to also use hci_=
+ll, we
+> > can remove TI_ST completly.
+> >=20
+> > My suggestion is for the patch handling is, that everything simply goes=
+ through
+> > Tony's tree.
+>=20
+> Sounds good to me, good to see kim gone with patch 3/4 :)
+>=20
+> Marcel, care to ack the old driver removal patch?
 
-# cat /sys/kernel/debug/clk/cam_ick/clk_rate
-100000000
+Looks like Marcel missed the extra messages and merged the 4th
+patch, so I guess you can just merge patches 1-3. Technically that
+might lead to temporarily missing BT support on those two devices
+when the BT tree is merged before ARM tree during the merge window.
+Not a big issue I guess.
 
-For what it's worth, I removed the 90% calculation and just use the L3
-/ 2.  With that done, I was able to push the camera to 96MHz, and the
-frame rate increased
+-- Sebastian
 
-Can you point me to where this 90% requirement is located?
+--sm5ahi5a3wy7vwrr
+Content-Type: application/pgp-signature; name="signature.asc"
 
-adam
->
-> > Through trial and error, I was able to get push the sensor's
-> > pixel-clock-frequency to work at 90MHz, but no higher.  I have also
-> > tried experimenting with the input clock frequency without success.
-> >
-> > If I can get the clock to run at 96MHz, which the ISP and sensor
-> > documentation appears to permit, I am hoping to be able to achieve a
-> > little higher frame rate.
-> >
-> > Is there something I need to do to allocate more memory to V4L2 or is
-> > there some other limitation causing the out of memory at higher pixel
-> > clock frequencies?
->
-> --
-> Regards,
->
-> Laurent Pinchart
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl2sxK0ACgkQ2O7X88g7
++prIog//SHiTMzn4T99dMKj3MWuzk7SikJRKPSRc4rnLfbXHvx0WAXEADzr/fabi
+8Ek3V2rGN7RUAQmXvkqI2+cUVs/9+EwGjW2NfVvDECrhaitscUuX9IJ7+lQ3Mw4j
+eptrRQkRQtdmlP1ppPL5m8zBqomcGSMZnOwmYMuUA/Sh8968iQkECsqvUKsC5A08
+QpBNlLw+ZQgA8/C7/87ZiBnyQNr/EG+KSQCoKxVg8mt390DA3gMLCwLrbzqznDVB
+Q7ZZpxcRovyuVxDPHqzvHLcCKPWCbPIQ1mToXIGWaAkkzbRBON28UhRed8nvXT5Y
+ctZffUovpG3iXfpg7WmxMqZIf7X7wAHVbDakDIrrqgxn+WCOAUqKQ/kzFwi1P8fE
+sY4TwCTxZDpvGuTVNov+Rt1RMgEesNWT/wCVaLIA3xDSGzbz2hY9xImVrZ7WfFaA
+NelFzGcuNsdok3witPD+pf/kyULA0FE3bjS4yP1vrxqvB4TFkjAayPaTsZmteevA
+DZTKOEToREcx23/D6eXQtL5u+Y0tYlWAqXxGKSqj5NeDnykaRvXHEpyAjENCSza4
+mCAMNGeBLy+EAYhRztWADLKbxqogKNMnvYFmuiXO/GNwHKGOnAW8Dt7njbkipXrx
+k//UTEB3wKEz3zlrnbbfNg01YQP+9DiaBqXsOq1YgMLtVo4A354=
+=xq8e
+-----END PGP SIGNATURE-----
+
+--sm5ahi5a3wy7vwrr--
