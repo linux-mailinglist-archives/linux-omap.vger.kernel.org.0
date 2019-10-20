@@ -2,115 +2,216 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EDAFDE092
-	for <lists+linux-omap@lfdr.de>; Sun, 20 Oct 2019 22:59:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF3F0DE097
+	for <lists+linux-omap@lfdr.de>; Sun, 20 Oct 2019 23:03:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726301AbfJTU7F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 20 Oct 2019 16:59:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57698 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726130AbfJTU7E (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 20 Oct 2019 16:59:04 -0400
-Received: from earth.universe (cust-west-pareq2-46-193-15-226.wb.wifirst.net [46.193.15.226])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726301AbfJTVDP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 20 Oct 2019 17:03:15 -0400
+Received: from retiisi.org.uk ([95.216.213.190]:54664 "EHLO
+        hillosipuli.retiisi.org.uk" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726005AbfJTVDP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 20 Oct 2019 17:03:15 -0400
+Received: from valkosipuli.localdomain (valkosipuli.retiisi.org.uk [IPv6:2a01:4f9:c010:4572::80:2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4018721897;
-        Sun, 20 Oct 2019 20:59:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571605143;
-        bh=boQTUh6Tu3qH0IM4MLL8CiD1+e4eE1S96fTvHVhm1ag=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NBG1cM5qOQrze7OykO5KU0Se1QvaaBaF8whQY3PDe5eW2IrcDjZETeURTMQdLBMA0
-         G4y8eZW3jdwVGn5KAFEzXj2MrTlnSmyOMqDlaVo+069m6wpn6vRMZOcHJgfO2IZXWs
-         Wu+0LmS5tyC5L0qz7PrqHBKcI17esRVmp6DVQUAI=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 3C7253C0CA0; Sun, 20 Oct 2019 22:59:01 +0200 (CEST)
-Date:   Sun, 20 Oct 2019 22:59:01 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Marcel Holtmann <marcel@holtmann.org>
-Cc:     Tony Lindgren <tony@atomide.com>, Adam Ford <aford173@gmail.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        linux-bluetooth@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCHv2 4/4] Bluetooth: btwilink: drop superseded driver
-Message-ID: <20191020205901.56bafijk7cu3rpaj@earth.universe>
-References: <20191003134147.9458-1-sre@kernel.org>
- <20191003134147.9458-5-sre@kernel.org>
- <BC1F82AC-2988-4BC6-99EA-1C9F9289E582@holtmann.org>
+        by hillosipuli.retiisi.org.uk (Postfix) with ESMTPS id 8B6B7634C87;
+        Mon, 21 Oct 2019 00:03:06 +0300 (EEST)
+Received: from sailus by valkosipuli.localdomain with local (Exim 4.92)
+        (envelope-from <sakari.ailus@retiisi.org.uk>)
+        id 1iMILx-0000Mo-K4; Mon, 21 Oct 2019 00:03:05 +0300
+Date:   Mon, 21 Oct 2019 00:03:05 +0300
+From:   Sakari Ailus <sakari.ailus@iki.fi>
+To:     Hans Verkuil <hverkuil@xs4all.nl>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Adam Ford <aford173@gmail.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-media@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: OMAP3 ISP v4l2 inconsistency on DM3730
+Message-ID: <20191020210305.GA864@valkosipuli.retiisi.org.uk>
+References: <CAHCN7xKiyYGhw4M5G1v8xsrJZxg1eFKEuLvrJf=nDuCKzonnJQ@mail.gmail.com>
+ <20191018210020.GG4735@valkosipuli.retiisi.org.uk>
+ <CAHCN7xJ6yphLvTo2wG4=5HHQ=t+MsBuvZBFRv4EksHYU3fnO4w@mail.gmail.com>
+ <20191018211651.GH4735@valkosipuli.retiisi.org.uk>
+ <CAHCN7xKYYStpJu91i6ReDQVxdxfZiK_jEg9AHHFiaHGvo8JC1w@mail.gmail.com>
+ <20191020053532.GC4991@pendragon.ideasonboard.com>
+ <e82419ee-1441-a1d8-4bd7-025b7999e406@xs4all.nl>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="td6khbzgjxudi7vx"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BC1F82AC-2988-4BC6-99EA-1C9F9289E582@holtmann.org>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <e82419ee-1441-a1d8-4bd7-025b7999e406@xs4all.nl>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Hans,
 
---td6khbzgjxudi7vx
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sun, Oct 20, 2019 at 07:26:20PM +0200, Hans Verkuil wrote:
+> On 10/20/19 7:35 AM, Laurent Pinchart wrote:
+> > Hi Adam,
+> > 
+> > On Sat, Oct 19, 2019 at 11:14:03AM -0500, Adam Ford wrote:
+> >> On Fri, Oct 18, 2019 at 4:17 PM Sakari Ailus <sakari.ailus@iki.fi> wrote:
+> >>> On Fri, Oct 18, 2019 at 04:10:23PM -0500, Adam Ford wrote:
+> >>>> On Fri, Oct 18, 2019 at 4:00 PM Sakari Ailus <sakari.ailus@iki.fi> wrote:
+> >>>>> On Fri, Oct 18, 2019 at 02:38:57PM -0500, Adam Ford wrote:
+> >>>>>> I have a DM3730 with a parallel mt9p031 sensor attached.  I am trying
+> >>>>>> to troubleshoot some issues with streaming video with G-streamer, but
+> >>>>>> I I think the issue is in how the ISP driver reports the video info.
+> >>>>>>
+> >>>>>> I have the pipeline to grab from the resizer:
+> >>>>>>
+> >>>>>> media-ctl -v -V '"mt9p031 1-0048":0 [SGRBG8 1280x720
+> >>>>>> (664,541)/1280x720], "OMAP3 ISP CCDC":2 [SGRBG8 1280x720], "OMAP3 ISP
+> >>>>>> preview":1 [UYVY 1280x720], "OMAP3 ISP resizer":1 [UYVY 480x272]'
+> >>>>>>
+> >>>>>> This make /dev/video6 the output of the resizer and shows the format
+> >>>>>> and resolution of the output of the resizer as:
+> >>>>>>
+> >>>>>>      Setting up format UYVY8_1X16 480x272 on pad OMAP3 ISP resizer/1
+> >>>>>>      Format set: UYVY8_1X16 480x272
+> >>>>>>
+> >>>>>> I used 480x272 because it's the resolution of my LCD, and I was hoping
+> >>>>>> the resizer would be able to scale this so the ARM would not need to
+> >>>>>> do the work, and it appears to not have any issues with this
+> >>>>>> resolution.
+> >>>>>>
+> >>>>>> However, if I query the video format, I don't get UYVY:
+> >>>>>>
+> >>>>>> # v4l2-ctl  -d6 --list-formats-ext
+> >>>>>> ioctl: VIDIOC_ENUM_FMT
+> >>>>>>         Type: Video Capture
+> >>>>>>
+> >>>>>>         [0]: 'RGB3' (RGB3, emulated)
+> >>>>>>         [1]: 'BGR3' (BGR3, emulated)
+> >>>>>>         [2]: 'YU12' (YU12, emulated)
+> >>>>>>         [3]: 'YV12' (YV12, emulated)
+> >>>>>>
+> >>>>>> This becomes an issue when I attempt to stream video from my camera to
+> >>>>>> anything, include fake sink:
+> >>>>>>
+> >>>>>> gst-launch-1.0 -v v4l2src device=/dev/video6 ! fakesink
+> >>>>>> Tried to capture in RGB3, but device returned format UYVY
+> >>>>>>
+> >>>>>> So for some reason, when queried, it reports different values than
+> >>>>>> UYVY, but when attempting to set the video capture to the listed
+> >>>>>> formats, it returns an error.
+> >>>>>>
+> >>>>>> gst-launch-1.0 -v v4l2src device=/dev/video6 ! video/x-raw,
+> >>>>>> format=UYVY ! fakesink
+> >>>>>
+> >>>>> I don't have any experience on v4l2src recently but I can comment on the
+> >>>>> omap3isp driver.
+> >>>>>
+> >>>>> In general, the format the omap3isp may produce on a given video node
+> >>>>> depends on the format of data which the block associated with the video
+> >>>>> node is fed with.
+> >>>>>
+> >>>>> For instance, in case of the raw Bayer formats, the pixel order does not
+> >>>>> change, and thus the pixel order remains all the way from the sensor to the
+> >>>>> video node.
+> >>>>
+> >>>> From what I can tell, it looks like the output of the resizer is only
+> >>>> capable of two formats,
+> >>>> from ispresizer.c:
+> >>>>
+> >>>>      /* resizer pixel formats */
+> >>>>      static const unsigned int resizer_formats[] = {
+> >>>>      MEDIA_BUS_FMT_UYVY8_1X16,
+> >>>>      MEDIA_BUS_FMT_YUYV8_1X16,
+> >>>>      };
+> >>>>
+> >>>> Also:
+> >>>>
+> >>>>  * resizer_try_format - Handle try format by pad subdev method
+> >>>>  * @res   : ISP resizer device
+> >>>>  * @cfg: V4L2 subdev pad configuration
+> >>>>  * @pad   : pad num
+> >>>>  * @fmt   : pointer to v4l2 format structure
+> >>>>  * @which : wanted subdev format
+> >>>>
+> >>>> switch (pad) {
+> >>>> case RESZ_PAD_SINK:
+> >>>>      if (fmt->code != MEDIA_BUS_FMT_YUYV8_1X16 &&
+> >>>>          fmt->code != MEDIA_BUS_FMT_UYVY8_1X16)
+> >>>>               fmt->code = MEDIA_BUS_FMT_YUYV8_1X16;
+> >>>>
+> >>>> So it looks to me like if we're trying to do anything other than
+> >>>> either of those,we set it to MEDIA_BUS_FMT_YUYV8_1X16
+> >>>>
+> >>>> Am I missing something?
+> >>>
+> >>> I guess for this particular video node there's no need for V4L2 extensions
+> >>> to implement ENUM_FMT. Ideally the other nodes would support ENUM_FMT that
+> >>> could provide meaningful information as well.
+> >>
+> >> I applied a variation of the patch in question, and I was able to both
+> >> successfully use g-streamer-1.0 and I was able to see UYVY appear in
+> >> the list.  in fact, G-Streamer-1.0 was faster than FFPEG with less
+> >> lag.
+> >>
+> >> ioctl: VIDIOC_ENUM_FMT
+> >>         Type: Video Capture
+> >>
+> >>         [0]: 'UYVY' (UYVY 4:2:2)
+> >>         [1]: 'RGB3' (RGB3, emulated)
+> >>         [2]: 'BGR3' (BGR3, emulated)
+> >>         [3]: 'YU12' (YU12, emulated)
+> >>         [4]: 'YV12' (YV12, emulated)
+> >>
+> >> I don't know enough about VL2.  It looks like all the V4L stuff is in
+> >> the common isp files and not unique to the preview output, resizer
+> >> output or the CCDC output.  I don't have a CSI camera, so I cannot
+> >> test anything.
+> >>
+> >> I checked all the video outputs, and they are all showing the same
+> >> information.  I realize the patch I found won't be accepted upstream
+> >> as-is, but it would be nice to have some mechanism in place that can
+> >> determine which output node is being used and somehow return the
+> >> correct data for each node.
+> >>
+> >> I would like to do something to help improve this driver and/or make
+> >> it more compatible with some of the V4L tools (like G-Streamer), so if
+> >> someone has a recommendation on how we could move forward, I'm willing
+> >> work on it.
+> > 
+> > While I'm not totally opposed to implementing VIDIOC_ENUM_FMT for the
+> > resizer video node, I'm not sure it would be the best solution to your
+> > problem. Sure, it will fix an existing issue, but we already know that
+> > it won't scale, as the other video nodes can't be supported the same
+> > way.
+> > 
+> > So far, our position was mostly that userspace should grow support for
+> > MC-based devices where VIDIOC_ENUM_FMT isn't implemented. Maybe I'm
+> 
+> Well, I disagree: implementing G/S/TRY_FMT without ENUM_FMT is out-of-spec.
+> The v4l2-compliance utility would flunk any driver that tries that.
+> Unfortunately, v4l2-compliance didn't exist (or was in its infancy) when
+> omap3isp was written.
+> 
+> I didn't even know that ENUM_FMT wasn't implemented for the omap3 ISP.
+> 
+> It makes no sense either: the driver is smart enough to validate the
+> pixelformat, but not smart enough to be able to enumerate the list of
+> valid formats for the current pipeline configuration?
 
-Hi,
+As noted earlier, there's a dependency to the source media bus format. That
+needs to be specified in order to come up with the pixelformat that the
+device can actually produce. This is not really a problem with driver
+implementation but the lack of an API to get this done.
 
-On Wed, Oct 16, 2019 at 09:15:03PM +0200, Marcel Holtmann wrote:
-> > All users of this driver have been converted to the serdev based
-> > hci_ll driver. The unused driver can be safely dropped now.
-> >=20
-> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> > ---
-> > drivers/bluetooth/Kconfig    |  11 --
-> > drivers/bluetooth/Makefile   |   1 -
-> > drivers/bluetooth/btwilink.c | 337 -----------------------------------
-> > 3 files changed, 349 deletions(-)
-> > delete mode 100644 drivers/bluetooth/btwilink.c
->=20
-> patch has been applied to bluetooth-next tree.
->=20
-> However what I really like to see is that you re-introduce a
-> btwilink driver that is purely serdev based and doesn=E2=80=99t rely on
-> any hci_uart/hci_ldisc code. A clean serdev only driver is that
-> best and easier to maintain long term.
+Also, this isn't specific to omap3isp either: any device where the capture
+format depends on pipeline configuration has the same issue.
 
-So basically move the serdev implementation from hci_ll.c into its
-own driver and make hci_ll hci_uart based only? That effectively
-means, that we have two implementations of the protocol. I don't
-think this will improve maintainability, since then bugs needs to
-be fixed in two places? Note, that we have a couple of drivers
-with serdev+hci_uart by now:
+Since no better solutions have been suggested, I'd be in favour of
+extending ENUM_FMT to cover MC-enabled drivers by using one of the reserved
+fields for the source media bus code.
 
-for file in $(grep -l serdev drivers/bluetooth/hci_*c) ; grep -l hci_uart_r=
-egister_proto "${file}"
-hci_bcm.c
-hci_h5.c
-hci_ldisc.c
-hci_ll.c
-hci_mrvl.c
-hci_qca.c
+-- 
+Regards,
 
--- Sebastian
-
---td6khbzgjxudi7vx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl2sypEACgkQ2O7X88g7
-+pp5QQ/9HZr+yWBHDmBiphnMo30Xi90YCZ1Ov6RyGhUJWw2lvBcGkkHGCLuk8M/6
-qvfk4YCI7zdqajXZkVSB7+dRp6QWkt4D5+B8ORjDC1zc103auFsIZmdTBn3c/8/O
-Ed5DR6BKdGgtpdYxnsidYb3GJ5oMCHW9emRVJ603nUrbaipJTlEELjtyC8qemPtK
-px9eTLAAD15WLhImFcq3vs9zP6mZV7EkTIgoIYAoUSJ6MQyapAeQbN19WTn7j+i8
-YF3bB9+NCmM6Y2WJtuzBfq8n4B06OqSB8Yx2oNqRAFNlajIk7AnFwdU9JUj8rdYi
-UrPzL+F0jzitbw0ES05xushHWmMXP+0I4XljEcjiq+UUd3/VkYYYegca+gXmTl+4
-9DSQuITzpuhnKKgV7+VnlxIRg21KFrvC5Xib0BkDCYyTJq085hCq7b97aMlK/YJW
-o04C9zu2vlvtFflQ5ENR5T/t7A6mSpUVcwCOme3o2AhhW7rWWrGZAhFhIq2PFxLp
-9uOTquKl+WbW+rZM+Jx9RhrgGPivmEs+zFzV+bNESuLLcPB3v+b865NvRD+ESzZw
-lFMocVKVE6zgwgy5UiX9/43dcBIdaPeSLdcgz1KoTt91ugDEwzLaaBMkeJjZtsdi
-8qcw1yxVVk+sRBf4PgApEwvvaei+KF4AoNE59m4b5OIkZo4+bPQ=
-=OkWc
------END PGP SIGNATURE-----
-
---td6khbzgjxudi7vx--
+Sakari Ailus
