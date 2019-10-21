@@ -2,52 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CDF4DF6F9
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 22:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F552DF742
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 23:05:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730065AbfJUUpH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Oct 2019 16:45:07 -0400
-Received: from muru.com ([72.249.23.125]:38754 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729406AbfJUUpG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Oct 2019 16:45:06 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 950C180CC;
-        Mon, 21 Oct 2019 20:45:41 +0000 (UTC)
-Date:   Mon, 21 Oct 2019 13:45:03 -0700
-From:   Tony Lindgren <tony@atomide.com>
+        id S1729869AbfJUVFq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Oct 2019 17:05:46 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:38819 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727264AbfJUVFq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Oct 2019 17:05:46 -0400
+Received: by mail-io1-f67.google.com with SMTP id u8so17692800iom.5
+        for <linux-omap@vger.kernel.org>; Mon, 21 Oct 2019 14:05:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=imduOihtXsd/jXJ4KplV3KvTOJ6++Qe48vgO694uNsI=;
+        b=ln0g/ofbxyxYFmuZdVHno6F0BTMoGtmh3jvg/46Ljmz/cGcMEpGpPOstCYSJ8yQHl8
+         FGARAM/S3Ow4QfajTvp2F0mOzhwUllkskvZ5dAz6bvRxzBhL8dg8RKWB9VK8EC/ILBl/
+         5UrtYiwwzfk4u9GumgnJn61ND7lg4Ga/zDCmr91KAwBC0FrXqz6Y71k/JsuLibi6q9DD
+         nfiMdglp8Yop2VtTBTxk8mQ4QbiODEsHzQLmn99b7TBVM4P+UWow7ZWE9ubxiDx7zkgm
+         7RQzF59n3BDYX2G2Nto7ZU8yUUrJhPQotP7h1nyR7CBt4v4Gm0hBH5tSYVPhM2zQXwfa
+         KWLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=imduOihtXsd/jXJ4KplV3KvTOJ6++Qe48vgO694uNsI=;
+        b=U805kuw0fgnIxg2aVk8SV8ekVJtPvOTn1/Y+o9UY/G057/BYJJZ07NbRF74AMmXVed
+         inXL6F+hOAE6n0/bgG0GmXeAl+9xzsUbQuysg882zkj8pqDjzEdFQoPUe90ADmlvPmUL
+         t3N8EWOF/u3tnM7+GWiAduDA9d+d33R7Njal5V0im3H/ZPIsYiHb67DMBC4yQgRDMqik
+         C468hSrDEpr+ogD0HAuvcXA5gAI6XiC/NLZoHWL6doHDUe2N0Jb2LkA3P6SiAm/DzY1c
+         9luGaodrlxV6ZctJZGzIWdrDVw4Rgy/naiU0hqOoP4hoC/l3jvdaUQzsZHqfaHKKQa+D
+         bBMg==
+X-Gm-Message-State: APjAAAX5q1BvhvdyxCGvx15OEw7NTdxsnFR9ZgX5VGQZm2iFQhvyq0Cv
+        TI3IWCLOPSo0+nGKFprmlLb697MD
+X-Google-Smtp-Source: APXvYqyRJ8kh/hdcgVGTib1PY3sK6cXssfHkZZvpm+G5d8tpVlhVPJdeL0hEfg8Gc30gCp+GAPz1sg==
+X-Received: by 2002:a05:6638:60f:: with SMTP id g15mr324117jar.21.1571691944847;
+        Mon, 21 Oct 2019 14:05:44 -0700 (PDT)
+Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
+        by smtp.gmail.com with ESMTPSA id p19sm1006482ili.56.2019.10.21.14.05.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2019 14:05:44 -0700 (PDT)
+From:   Adam Ford <aford173@gmail.com>
 To:     linux-omap@vger.kernel.org
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 10/10] ARM: OMAP2+: Drop legacy platform data for musb on
- omap4
-Message-ID: <20191021204503.GH5610@atomide.com>
-References: <20191018163220.3504-1-tony@atomide.com>
- <20191018163220.3504-11-tony@atomide.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191018163220.3504-11-tony@atomide.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Cc:     adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>
+Subject: [PATCH] ARM: dts: logicpd-torpedo-37xx-devkit: Increase camera pixel clock
+Date:   Mon, 21 Oct 2019 16:05:32 -0500
+Message-Id: <20191021210532.1590-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [191018 16:33]:
-> We can now probe devices with ti-sysc interconnect driver and dts
-> data. Let's drop the related platform data and custom ti,hwmods
-> dts property.
-> 
-> As we're just dropping data, and the early platform data init
-> is based on the custom ti,hwmods property, we want to drop both
-> the platform data and ti,hwmods property in a single patch.
+The default settings used on the baseboard are good for the
+OMAP3530 and are compatible with the DM3730.  However, the
+DM3730 has a faster L3 clock which means the camera pixel clock
+can also be pushed faster as well.
 
-Turns out the ti-sysc driver is still missing swsup
-quirk handling, so this patch has a dependency to:
+This patch increase the Pixel clock to 90MHz which is the
+maximum the current ISP driver permits for an L3 clock
+of 200MHz.
 
-[PATCH] bus: ti-sysc: Handle mstandby quirk and use it for musb
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-Regards,
+diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
+index 18c27e85051f..fc33c76498b3 100644
+--- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
++++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
+@@ -50,6 +50,11 @@
+ 	};
+ };
+ 
++/* The DM3730 has a faster L3 than OMAP35, so increase pixel clock */
++&mt9p031_out {
++	pixel-clock-frequency = <90000000>;
++};
++
+ &omap3_pmx_core {
+ 	mmc3_pins: pinmux_mm3_pins {
+ 		pinctrl-single,pins = <
+-- 
+2.17.1
 
-Tony
