@@ -2,85 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F552DF742
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 23:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77BB9DF764
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 23:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729869AbfJUVFq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Oct 2019 17:05:46 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:38819 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727264AbfJUVFq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Oct 2019 17:05:46 -0400
-Received: by mail-io1-f67.google.com with SMTP id u8so17692800iom.5
-        for <linux-omap@vger.kernel.org>; Mon, 21 Oct 2019 14:05:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=imduOihtXsd/jXJ4KplV3KvTOJ6++Qe48vgO694uNsI=;
-        b=ln0g/ofbxyxYFmuZdVHno6F0BTMoGtmh3jvg/46Ljmz/cGcMEpGpPOstCYSJ8yQHl8
-         FGARAM/S3Ow4QfajTvp2F0mOzhwUllkskvZ5dAz6bvRxzBhL8dg8RKWB9VK8EC/ILBl/
-         5UrtYiwwzfk4u9GumgnJn61ND7lg4Ga/zDCmr91KAwBC0FrXqz6Y71k/JsuLibi6q9DD
-         nfiMdglp8Yop2VtTBTxk8mQ4QbiODEsHzQLmn99b7TBVM4P+UWow7ZWE9ubxiDx7zkgm
-         7RQzF59n3BDYX2G2Nto7ZU8yUUrJhPQotP7h1nyR7CBt4v4Gm0hBH5tSYVPhM2zQXwfa
-         KWLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=imduOihtXsd/jXJ4KplV3KvTOJ6++Qe48vgO694uNsI=;
-        b=U805kuw0fgnIxg2aVk8SV8ekVJtPvOTn1/Y+o9UY/G057/BYJJZ07NbRF74AMmXVed
-         inXL6F+hOAE6n0/bgG0GmXeAl+9xzsUbQuysg882zkj8pqDjzEdFQoPUe90ADmlvPmUL
-         t3N8EWOF/u3tnM7+GWiAduDA9d+d33R7Njal5V0im3H/ZPIsYiHb67DMBC4yQgRDMqik
-         C468hSrDEpr+ogD0HAuvcXA5gAI6XiC/NLZoHWL6doHDUe2N0Jb2LkA3P6SiAm/DzY1c
-         9luGaodrlxV6ZctJZGzIWdrDVw4Rgy/naiU0hqOoP4hoC/l3jvdaUQzsZHqfaHKKQa+D
-         bBMg==
-X-Gm-Message-State: APjAAAX5q1BvhvdyxCGvx15OEw7NTdxsnFR9ZgX5VGQZm2iFQhvyq0Cv
-        TI3IWCLOPSo0+nGKFprmlLb697MD
-X-Google-Smtp-Source: APXvYqyRJ8kh/hdcgVGTib1PY3sK6cXssfHkZZvpm+G5d8tpVlhVPJdeL0hEfg8Gc30gCp+GAPz1sg==
-X-Received: by 2002:a05:6638:60f:: with SMTP id g15mr324117jar.21.1571691944847;
-        Mon, 21 Oct 2019 14:05:44 -0700 (PDT)
-Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id p19sm1006482ili.56.2019.10.21.14.05.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2019 14:05:44 -0700 (PDT)
-From:   Adam Ford <aford173@gmail.com>
+        id S1730286AbfJUVWa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Oct 2019 17:22:30 -0400
+Received: from muru.com ([72.249.23.125]:38764 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726672AbfJUVWa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Oct 2019 17:22:30 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id E98C680CC;
+        Mon, 21 Oct 2019 21:23:03 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Cc:     adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>
-Subject: [PATCH] ARM: dts: logicpd-torpedo-37xx-devkit: Increase camera pixel clock
-Date:   Mon, 21 Oct 2019 16:05:32 -0500
-Message-Id: <20191021210532.1590-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.17.1
+Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] bus: ti-sysc: Use swsup quirks also for am335x musb
+Date:   Mon, 21 Oct 2019 14:22:25 -0700
+Message-Id: <20191021212225.28148-1-tony@atomide.com>
+X-Mailer: git-send-email 2.23.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The default settings used on the baseboard are good for the
-OMAP3530 and are compatible with the DM3730.  However, the
-DM3730 has a faster L3 clock which means the camera pixel clock
-can also be pushed faster as well.
+Also on am335x we need the swsup quirks for musb.
 
-This patch increase the Pixel clock to 90MHz which is the
-maximum the current ISP driver permits for an L3 clock
-of 200MHz.
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/bus/ti-sysc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-
-diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
-index 18c27e85051f..fc33c76498b3 100644
---- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
-+++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
-@@ -50,6 +50,11 @@
- 	};
- };
- 
-+/* The DM3730 has a faster L3 than OMAP35, so increase pixel clock */
-+&mt9p031_out {
-+	pixel-clock-frequency = <90000000>;
-+};
-+
- &omap3_pmx_core {
- 	mmc3_pins: pinmux_mm3_pins {
- 		pinctrl-single,pins = <
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -1259,6 +1259,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 		   SYSC_MODULE_QUIRK_SGX),
+ 	SYSC_QUIRK("usb_otg_hs", 0, 0x400, 0x404, 0x408, 0x00000050,
+ 		   0xffffffff, SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
++	SYSC_QUIRK("usb_otg_hs", 0, 0, 0x10, -1, 0x4ea2080d, 0xffffffff,
++		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
+ 	SYSC_QUIRK("wdt", 0, 0, 0x10, 0x14, 0x502a0500, 0xfffff0f0,
+ 		   SYSC_MODULE_QUIRK_WDT),
+ 	/* Watchdog on am3 and am4 */
 -- 
-2.17.1
-
+2.23.0
