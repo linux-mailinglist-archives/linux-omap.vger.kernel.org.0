@@ -2,97 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5241DF40D
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 19:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1A5ADF425
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 19:26:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727344AbfJURTt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Oct 2019 13:19:49 -0400
-Received: from muru.com ([72.249.23.125]:38582 "EHLO muru.com"
+        id S1727953AbfJUR0C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Oct 2019 13:26:02 -0400
+Received: from muru.com ([72.249.23.125]:38610 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727328AbfJURTt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Oct 2019 13:19:49 -0400
+        id S1726672AbfJUR0C (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Oct 2019 13:26:02 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 8EBC280CC;
-        Mon, 21 Oct 2019 17:20:22 +0000 (UTC)
-Date:   Mon, 21 Oct 2019 10:19:44 -0700
+        by muru.com (Postfix) with ESMTPS id 95D3A810A;
+        Mon, 21 Oct 2019 17:26:35 +0000 (UTC)
+Date:   Mon, 21 Oct 2019 10:25:57 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V5 3/3] ARM: logicpd-torpedo-37xx-devkit-28: Reference
- new DRM panel
-Message-ID: <20191021171944.GA5610@atomide.com>
-References: <20191016135147.7743-1-aford173@gmail.com>
- <20191016135147.7743-3-aford173@gmail.com>
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com
+Subject: Re: [PATCH 1/7] dt-bindings: gpu: pvrsgx: add initial bindings
+Message-ID: <20191021172557.GB5610@atomide.com>
+References: <cover.1571424390.git.hns@goldelico.com>
+ <f0fb68dc7bc027e5e911721852f6bc6fa2d77a63.1571424390.git.hns@goldelico.com>
+ <CAL_Jsq+obsTSU3iP1wm_3-FsAJ4Mxiz0NbMY1_h5NeFn67Sj+A@mail.gmail.com>
+ <CEA29A3B-4116-4FE3-8E18-0C97353688DC@goldelico.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191016135147.7743-3-aford173@gmail.com>
+In-Reply-To: <CEA29A3B-4116-4FE3-8E18-0C97353688DC@goldelico.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Adam Ford <aford173@gmail.com> [191016 06:53]:
-> With the removal of the panel-dpi from the omap drivers, the
-> LCD no longer works.  This patch points the device tree to
-> a newly created panel named "logicpd,type28"
+* H. Nikolaus Schaller <hns@goldelico.com> [191021 15:46]:
+> > Am 21.10.2019 um 17:07 schrieb Rob Herring <robh+dt@kernel.org>:
+> > On Fri, Oct 18, 2019 at 1:46 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+> >> +Optional properties:
+> >> +- timer:       the timer to be used by the driver.
+> > 
+> > Needs a better description and vendor prefix at least.
 > 
-> Fixes: 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
+> I am not yet sure if it is vendor specific or if all
+> SGX implementations need some timer.
 > 
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-> Acked-by: Sam Ravnborg <sam@ravnborg.org>
-> ---
-> V5:  No Change
-> V4:  No Change
-> V3:  No change
-> V2:  Remove legacy 'label' from binding
+> > 
+> > Why is this needed rather than using the OS's timers?
+> 
+> Because nobody understands the current (out of tree and
+> planned for staging) driver well enough what the timer
+> is doing. It is currently hard coded that some omap refer
+> to timer7 and others use timer11.
 
-I'm picking this patch into omap-for-v5.5/dt thanks.
+Just configure it in the driver based on the compatible
+value to keep it out of the dts. It's best to stick to
+standard bindings.
+
+> >> +- img,cores:   number of cores. Defaults to <1>.
+> > 
+> > Not discoverable?
+> 
+> Not sure if it is. This is probably available in undocumented
+> registers of the sgx.
+
+This too, and whatever non-standrd other properities
+you might have.
 
 Regards,
 
 Tony
-
-> diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-> index 07ac99b9cda6..cdb89b3e2a9b 100644
-> --- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-> +++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-> @@ -11,22 +11,6 @@
->  #include "logicpd-torpedo-37xx-devkit.dts"
->  
->  &lcd0 {
-> -
-> -	label = "28";
-> -
-> -	panel-timing {
-> -		clock-frequency = <9000000>;
-> -		hactive = <480>;
-> -		vactive = <272>;
-> -		hfront-porch = <3>;
-> -		hback-porch = <2>;
-> -		hsync-len = <42>;
-> -		vback-porch = <3>;
-> -		vfront-porch = <2>;
-> -		vsync-len = <11>;
-> -		hsync-active = <1>;
-> -		vsync-active = <1>;
-> -		de-active = <1>;
-> -		pixelclk-active = <0>;
-> -	};
-> +	/* To make it work, set CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=4 */
-> +	compatible = "logicpd,type28";
->  };
-> -- 
-> 2.17.1
-> 
