@@ -2,91 +2,257 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC7D3DF4FE
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 20:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3D8ADF6D0
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 22:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729461AbfJUSWg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Oct 2019 14:22:36 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:22262 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727110AbfJUSWg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Oct 2019 14:22:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571682152;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=ESbJhDnm5bjuVodC9kh4h0sdAOT1wrM2a4p9lLw+WMU=;
-        b=XmU7ZkYxfp33BkQgcl5YpwmrWOM3l9F4xslYbs0zMYcPe1FXsqxa3XsANba9HChcWM
-        4cZ0ZHMZdtIuY8sVtIzzS9lqfLLABXmNe3wvcbzP/ozh5hH9UI2vAifvvWsF6PpFkgPa
-        af7eo60FnAsUhj6NkntPeV3aEl6f1iELqirCKW7anm1T0OUlb5RRRC5CWwjVqR+HXumx
-        rc6lN7ZBZlqyr1hpXGSoAuH7cDwcn3UYriAHPqVPh110ZL6SOhqs81FdQixc1LXzw1pr
-        iaK9jWwik10QrAdrWZjDzEIJ5b3WItr3nK395plCbUZV7lzgu0+Vil3ikaEmYIlirdiM
-        1xRA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDVCbXA4Ewxc="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.28.1 DYNA|AUTH)
-        with ESMTPSA id R0b2a8v9LIMGM7B
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Mon, 21 Oct 2019 20:22:16 +0200 (CEST)
+        id S1728914AbfJUUej (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Oct 2019 16:34:39 -0400
+Received: from muru.com ([72.249.23.125]:38734 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729406AbfJUUej (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Oct 2019 16:34:39 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 5793880CC;
+        Mon, 21 Oct 2019 20:35:09 +0000 (UTC)
+Date:   Mon, 21 Oct 2019 13:34:31 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 08/10] ARM: OMAP2+: Drop legacy platform data for am3 and
+ am4 mcasp
+Message-ID: <20191021203431.GG5610@atomide.com>
+References: <20191018163220.3504-1-tony@atomide.com>
+ <20191018163220.3504-9-tony@atomide.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH 3/9] DTS: ARM: pandora-common: define wl1251 as child node of mmc3
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20191021171321.GZ5610@atomide.com>
-Date:   Mon, 21 Oct 2019 20:22:15 +0200
-Cc:     =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0C476142-BC54-4950-8B7A-A422ABC2AEB9@goldelico.com>
-References: <cover.1571430329.git.hns@goldelico.com> <58c57f194e35b2a055a58081a0ea0d3ffcd07b6d.1571430329.git.hns@goldelico.com> <20191021171321.GZ5610@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+Content-Disposition: inline
+In-Reply-To: <20191018163220.3504-9-tony@atomide.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Tony Lindgren <tony@atomide.com> [191018 16:33]:
+> We can now probe devices with ti-sysc interconnect driver and dts
+> data. Let's drop the related platform data and custom ti,hwmods
+> dts property.
+> 
+> As we're just dropping data, and the early platform data init
+> is based on the custom ti,hwmods property, we want to drop both
+> the platform data and ti,hwmods property in a single patch.
 
-> Am 21.10.2019 um 19:13 schrieb Tony Lindgren <tony@atomide.com>:
->=20
-> * H. Nikolaus Schaller <hns@goldelico.com> [191018 20:28]:
->> Since v4.7 the dma initialization requires that there is a
->> device tree property for "rx" and "tx" channels which is
->> not provided by the pdata-quirks initialization.
->>=20
->> By conversion of the mmc3 setup to device tree this will
->> finally allows to remove the OpenPandora wlan specific omap3
->> data-quirks.
->>=20
->> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for =
-requesting DMA channel")
->=20
-> Here you have the subject line the wrong way around,
-> please update it to start with "ARM: dts: ...".
+Sorry this one left behind some empty platform data causing an
+on bbb. Updated patch below.
 
-Ok.
+Regards,
 
+Tony
+
+8< ---------------------
+From tony Mon Sep 17 00:00:00 2001
+From: Tony Lindgren <tony@atomide.com>
+Date: Thu, 17 Oct 2019 13:26:56 -0700
+Subject: [PATCHv2] ARM: OMAP2+: Drop legacy platform data for am3 and am4
+ mcasp
+
+We can now probe devices with ti-sysc interconnect driver and dts
+data. Let's drop the related platform data and custom ti,hwmods
+dts property.
+
+As we're just dropping data, and the early platform data init
+is based on the custom ti,hwmods property, we want to drop both
+the platform data and ti,hwmods property in a single patch.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/am33xx-l4.dtsi              |  2 -
+ arch/arm/boot/dts/am437x-l4.dtsi              |  2 -
+ .../omap_hwmod_33xx_43xx_common_data.h        |  4 --
+ .../omap_hwmod_33xx_43xx_interconnect_data.c  | 16 -------
+ .../omap_hwmod_33xx_43xx_ipblock_data.c       | 45 -------------------
+ arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |  2 -
+ arch/arm/mach-omap2/omap_hwmod_43xx_data.c    |  2 -
+ 7 files changed, 73 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+--- a/arch/arm/boot/dts/am33xx-l4.dtsi
++++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+@@ -1039,7 +1039,6 @@
+ 
+ 		target-module@38000 {			/* 0x48038000, ap 16 02.0 */
+ 			compatible = "ti,sysc-omap4-simple", "ti,sysc";
+-			ti,hwmods = "mcasp0";
+ 			reg = <0x38000 0x4>,
+ 			      <0x38004 0x4>;
+ 			reg-names = "rev", "sysc";
+@@ -1070,7 +1069,6 @@
+ 
+ 		target-module@3c000 {			/* 0x4803c000, ap 20 32.0 */
+ 			compatible = "ti,sysc-omap4-simple", "ti,sysc";
+-			ti,hwmods = "mcasp1";
+ 			reg = <0x3c000 0x4>,
+ 			      <0x3c004 0x4>;
+ 			reg-names = "rev", "sysc";
+diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
+--- a/arch/arm/boot/dts/am437x-l4.dtsi
++++ b/arch/arm/boot/dts/am437x-l4.dtsi
+@@ -810,7 +810,6 @@
+ 
+ 		target-module@38000 {			/* 0x48038000, ap 14 04.0 */
+ 			compatible = "ti,sysc-omap4-simple", "ti,sysc";
+-			ti,hwmods = "mcasp0";
+ 			reg = <0x38000 0x4>,
+ 			      <0x38004 0x4>;
+ 			reg-names = "rev", "sysc";
+@@ -842,7 +841,6 @@
+ 
+ 		target-module@3c000 {			/* 0x4803c000, ap 16 2a.0 */
+ 			compatible = "ti,sysc-omap4-simple", "ti,sysc";
+-			ti,hwmods = "mcasp1";
+ 			reg = <0x3c000 0x4>,
+ 			      <0x3c004 0x4>;
+ 			reg-names = "rev", "sysc";
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h
+@@ -36,8 +36,6 @@ extern struct omap_hwmod_ocp_if am33xx_l4_ls__epwmss1;
+ extern struct omap_hwmod_ocp_if am33xx_l4_ls__epwmss2;
+ extern struct omap_hwmod_ocp_if am33xx_l3_s__gpmc;
+ extern struct omap_hwmod_ocp_if am33xx_l4_ls__spinlock;
+-extern struct omap_hwmod_ocp_if am33xx_l4_ls__mcasp0;
+-extern struct omap_hwmod_ocp_if am33xx_l4_ls__mcasp1;
+ extern struct omap_hwmod_ocp_if am33xx_l4_ls__mcspi0;
+ extern struct omap_hwmod_ocp_if am33xx_l4_ls__mcspi1;
+ extern struct omap_hwmod_ocp_if am33xx_l4_ls__timer2;
+@@ -75,8 +73,6 @@ extern struct omap_hwmod am33xx_epwmss0_hwmod;
+ extern struct omap_hwmod am33xx_epwmss1_hwmod;
+ extern struct omap_hwmod am33xx_epwmss2_hwmod;
+ extern struct omap_hwmod am33xx_gpmc_hwmod;
+-extern struct omap_hwmod am33xx_mcasp0_hwmod;
+-extern struct omap_hwmod am33xx_mcasp1_hwmod;
+ extern struct omap_hwmod am33xx_rtc_hwmod;
+ extern struct omap_hwmod am33xx_spi0_hwmod;
+ extern struct omap_hwmod am33xx_spi1_hwmod;
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
+@@ -166,22 +166,6 @@ struct omap_hwmod_ocp_if am33xx_l4_ls__spinlock = {
+ 	.user		= OCP_USER_MPU,
+ };
+ 
+-/* l4 ls -> mcasp0 */
+-struct omap_hwmod_ocp_if am33xx_l4_ls__mcasp0 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am33xx_mcasp0_hwmod,
+-	.clk		= "l4ls_gclk",
+-	.user		= OCP_USER_MPU,
+-};
+-
+-/* l4 ls -> mcasp1 */
+-struct omap_hwmod_ocp_if am33xx_l4_ls__mcasp1 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am33xx_mcasp1_hwmod,
+-	.clk		= "l4ls_gclk",
+-	.user		= OCP_USER_MPU,
+-};
+-
+ /* l4 ls -> mcspi0 */
+ struct omap_hwmod_ocp_if am33xx_l4_ls__mcspi0 = {
+ 	.master		= &am33xx_l4_ls_hwmod,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
+@@ -468,47 +468,6 @@ struct omap_hwmod am33xx_gpmc_hwmod = {
+ 	},
+ };
+ 
+-/*
+- * 'mcasp' class
+- */
+-static struct omap_hwmod_class_sysconfig am33xx_mcasp_sysc = {
+-	.rev_offs	= 0x0,
+-	.sysc_offs	= 0x4,
+-	.sysc_flags	= SYSC_HAS_SIDLEMODE,
+-	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+-	.sysc_fields	= &omap_hwmod_sysc_type3,
+-};
+-
+-static struct omap_hwmod_class am33xx_mcasp_hwmod_class = {
+-	.name		= "mcasp",
+-	.sysc		= &am33xx_mcasp_sysc,
+-};
+-
+-/* mcasp0 */
+-struct omap_hwmod am33xx_mcasp0_hwmod = {
+-	.name		= "mcasp0",
+-	.class		= &am33xx_mcasp_hwmod_class,
+-	.clkdm_name	= "l3s_clkdm",
+-	.main_clk	= "mcasp0_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.modulemode	= MODULEMODE_SWCTRL,
+-		},
+-	},
+-};
+-
+-/* mcasp1 */
+-struct omap_hwmod am33xx_mcasp1_hwmod = {
+-	.name		= "mcasp1",
+-	.class		= &am33xx_mcasp_hwmod_class,
+-	.clkdm_name	= "l3s_clkdm",
+-	.main_clk	= "mcasp1_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.modulemode	= MODULEMODE_SWCTRL,
+-		},
+-	},
+-};
+ 
+ /*
+  * 'rtc' class
+@@ -819,8 +778,6 @@ static void omap_hwmod_am33xx_clkctrl(void)
+ 	CLKCTRL(am33xx_epwmss0_hwmod, AM33XX_CM_PER_EPWMSS0_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_epwmss1_hwmod, AM33XX_CM_PER_EPWMSS1_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_epwmss2_hwmod, AM33XX_CM_PER_EPWMSS2_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_mcasp0_hwmod, AM33XX_CM_PER_MCASP0_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_mcasp1_hwmod, AM33XX_CM_PER_MCASP1_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_spi0_hwmod, AM33XX_CM_PER_SPI0_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_spi1_hwmod, AM33XX_CM_PER_SPI1_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_spinlock_hwmod, AM33XX_CM_PER_SPINLOCK_CLKCTRL_OFFSET);
+@@ -875,8 +832,6 @@ static void omap_hwmod_am43xx_clkctrl(void)
+ 	CLKCTRL(am33xx_epwmss0_hwmod, AM43XX_CM_PER_EPWMSS0_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_epwmss1_hwmod, AM43XX_CM_PER_EPWMSS1_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_epwmss2_hwmod, AM43XX_CM_PER_EPWMSS2_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_mcasp0_hwmod, AM43XX_CM_PER_MCASP0_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_mcasp1_hwmod, AM43XX_CM_PER_MCASP1_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_spi0_hwmod, AM43XX_CM_PER_SPI0_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_spi1_hwmod, AM43XX_CM_PER_SPI1_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_spinlock_hwmod, AM43XX_CM_PER_SPINLOCK_CLKCTRL_OFFSET);
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+@@ -422,8 +422,6 @@ static struct omap_hwmod_ocp_if *am33xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am33xx_l4_hs__pruss,
+ 	&am33xx_l4_per__dcan0,
+ 	&am33xx_l4_per__dcan1,
+-	&am33xx_l4_ls__mcasp0,
+-	&am33xx_l4_ls__mcasp1,
+ 	&am33xx_l4_ls__timer2,
+ 	&am33xx_l4_ls__timer3,
+ 	&am33xx_l4_ls__timer4,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+@@ -786,8 +786,6 @@ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am43xx_l3_s__qspi,
+ 	&am33xx_l4_per__dcan0,
+ 	&am33xx_l4_per__dcan1,
+-	&am33xx_l4_ls__mcasp0,
+-	&am33xx_l4_ls__mcasp1,
+ 	&am33xx_l4_ls__timer2,
+ 	&am33xx_l4_ls__timer3,
+ 	&am33xx_l4_ls__timer4,
+-- 
+2.23.0
