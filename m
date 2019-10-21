@@ -2,80 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1A5ADF425
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 19:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32C6CDF44F
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 19:31:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727953AbfJUR0C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Oct 2019 13:26:02 -0400
-Received: from muru.com ([72.249.23.125]:38610 "EHLO muru.com"
+        id S1727328AbfJURbj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Oct 2019 13:31:39 -0400
+Received: from muru.com ([72.249.23.125]:38624 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726672AbfJUR0C (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Oct 2019 13:26:02 -0400
+        id S1727517AbfJURbi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Oct 2019 13:31:38 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 95D3A810A;
-        Mon, 21 Oct 2019 17:26:35 +0000 (UTC)
-Date:   Mon, 21 Oct 2019 10:25:57 -0700
+        by muru.com (Postfix) with ESMTPS id 63266810A;
+        Mon, 21 Oct 2019 17:32:13 +0000 (UTC)
+Date:   Mon, 21 Oct 2019 10:31:35 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com
-Subject: Re: [PATCH 1/7] dt-bindings: gpu: pvrsgx: add initial bindings
-Message-ID: <20191021172557.GB5610@atomide.com>
-References: <cover.1571424390.git.hns@goldelico.com>
- <f0fb68dc7bc027e5e911721852f6bc6fa2d77a63.1571424390.git.hns@goldelico.com>
- <CAL_Jsq+obsTSU3iP1wm_3-FsAJ4Mxiz0NbMY1_h5NeFn67Sj+A@mail.gmail.com>
- <CEA29A3B-4116-4FE3-8E18-0C97353688DC@goldelico.com>
+To:     Ben Dooks <ben.dooks@codethink.co.uk>
+Cc:     linux-arm-kernel@lists.infraread.org,
+        linux-kernel@lists.codethink.co.uk, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 06/11] ARM: OMAP2+: do not export am43xx_control functions
+Message-ID: <20191021173135.GC5610@atomide.com>
+References: <20191008123341.1551-1-ben.dooks@codethink.co.uk>
+ <20191008123341.1551-6-ben.dooks@codethink.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CEA29A3B-4116-4FE3-8E18-0C97353688DC@goldelico.com>
+In-Reply-To: <20191008123341.1551-6-ben.dooks@codethink.co.uk>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [191021 15:46]:
-> > Am 21.10.2019 um 17:07 schrieb Rob Herring <robh+dt@kernel.org>:
-> > On Fri, Oct 18, 2019 at 1:46 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> >> +Optional properties:
-> >> +- timer:       the timer to be used by the driver.
-> > 
-> > Needs a better description and vendor prefix at least.
+* Ben Dooks <ben.dooks@codethink.co.uk> [191008 05:34]:
+> Do not export am43xx_control_{save,restore}_context to avoid
+> the foloowing warnings:
 > 
-> I am not yet sure if it is vendor specific or if all
-> SGX implementations need some timer.
-> 
-> > 
-> > Why is this needed rather than using the OS's timers?
-> 
-> Because nobody understands the current (out of tree and
-> planned for staging) driver well enough what the timer
-> is doing. It is currently hard coded that some omap refer
-> to timer7 and others use timer11.
+> arch/arm/mach-omap2/control.c:687:6: warning: symbol 'am43xx_control_save_context' was not declared. Should it be static?
+> arch/arm/mach-omap2/control.c:701:6: warning: symbol 'am43xx_control_restore_context' was not declared. Should it be static?
 
-Just configure it in the driver based on the compatible
-value to keep it out of the dts. It's best to stick to
-standard bindings.
-
-> >> +- img,cores:   number of cores. Defaults to <1>.
-> > 
-> > Not discoverable?
-> 
-> Not sure if it is. This is probably available in undocumented
-> registers of the sgx.
-
-This too, and whatever non-standrd other properities
-you might have.
-
-Regards,
+Applying into omap-for-v5.5/soc thanks.
 
 Tony
