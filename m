@@ -2,114 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18F03DF779
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 23:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 289FADF784
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 23:41:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730283AbfJUVaX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Oct 2019 17:30:23 -0400
-Received: from muru.com ([72.249.23.125]:38790 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727264AbfJUVaX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Oct 2019 17:30:23 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id C66F4810A;
-        Mon, 21 Oct 2019 21:30:56 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Bin Liu <b-liu@ti.com>,
-        Keerthy <j-keerthy@ti.com>
-Subject: [PATCH 3/3] ARM: OMAP2+: Drop legacy platform data for am335x musb
-Date:   Mon, 21 Oct 2019 14:30:11 -0700
-Message-Id: <20191021213011.29110-4-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191021213011.29110-1-tony@atomide.com>
-References: <20191021213011.29110-1-tony@atomide.com>
+        id S1730310AbfJUVlG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Oct 2019 17:41:06 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:45873 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729388AbfJUVlF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Oct 2019 17:41:05 -0400
+Received: by mail-io1-f65.google.com with SMTP id c25so17776713iot.12;
+        Mon, 21 Oct 2019 14:41:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XU7mKCCl67wX6wKCXpYaHrBkNqaUXbTtN4O3MSvFFZc=;
+        b=lmgKdMSOAM+bakzk/z5MJW384F6nz6yEzpp37fhndMGa54ySe3wiW/MiUDnWHhZBFf
+         F9ul3znyVUrKLaRQgKXsVqhsgxyPpIWVqdVL4O45BP1k4NcI6OcN7/hh8o/+U2kDy+D0
+         VOiqw9now5+oUNAlvOiFiJltQ0tCA5omJ5wWtYJ2l6qf0/6ntWb14QCbrp4NUa6gI+pu
+         QGPPZ5oAUu6MIoNlBIwaZigxfy1e/xwMD0N68Cmize4rHludZec8Fdn3bEUHPX8DCTWP
+         3o1oUDq+PajR8SVd2sCJualvqxQSIvF8BJ0kQ4g6IoJsGMyFgO/Bsfk3znF9cb+mMeAm
+         /Zgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XU7mKCCl67wX6wKCXpYaHrBkNqaUXbTtN4O3MSvFFZc=;
+        b=jvoyXVKm6ticztqQIh2SfiguETlmpVsNCfuejYNQ5+IAdEux9n/GfxjBR0sGYahUGF
+         KwdlB0KHpxc8bRlrHFtBPcBqbl8ovAJN5d0NSIrI/URmRL0WqtNeO167skkPuc99xAbL
+         roSLbqVQklz+WNSlBRBoRpEyVwNiJJHkCn5UXMwmFjE7DDrpUe68c6XF9Y+9tIITgcI2
+         syey9W859eb/dBx12ZKEc8jSiN3LaNW7ZulCWm5RpEuvOY7VUy3yukXWd0KRhV6kTras
+         IgS3WeHs5ca48z9poy9rP7I4F8vAuLqqggLOaFoXU+ni+Ola5hY7FRoQQmMckpxvZodh
+         PJbQ==
+X-Gm-Message-State: APjAAAWI62sF/mq+x8+MStzTsssZuVdK+qzYOSD7rTzVF7SVSBZfhtWI
+        yxjauYtixhhy1IIJxFWQWumRCNeciEqkwENkWUdztA==
+X-Google-Smtp-Source: APXvYqwHmuwaXTie6DRnB7f2lgf//8rF6DjVZSN1QuMVGBJ289l/AcRLZmg8IoEK+iWoZjGbAxoINRhU6b4e60oNXRA=
+X-Received: by 2002:a5e:9245:: with SMTP id z5mr379853iop.205.1571694063141;
+ Mon, 21 Oct 2019 14:41:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190923135908.23080-1-aford173@gmail.com>
+In-Reply-To: <20190923135908.23080-1-aford173@gmail.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Mon, 21 Oct 2019 16:40:52 -0500
+Message-ID: <CAHCN7xLQvYbY_Pu5hQOO8o+1o8CAVvXq_-RM78Q=jYvtLxtmbg@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: Add logicpd-som-lv and logicpd-torpedo to
+ OMAP TREE
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can now probe devices with ti-sysc interconnect driver and dts
-data. Let's drop the related platform data and custom ti,hwmods
-dts property.
+On Mon, Sep 23, 2019 at 8:59 AM Adam Ford <aford173@gmail.com> wrote:
+>
+> The OMAP DEVICE TREE SUPPORT lists a bunch of device tree files
+> with wildcard names using am3*, am4*, am5*, dra7*, and *omap*.
+> Unfortunately, the LogicPD boards do not follow this convention
+> so changes to these boards don't get automatically flagged to
+> route to the omap mailing list.  After consulting with Tony
+> Lindgren, he agreed it made sense to add these boards to the
+> list.
+>
+> This patch adds the omap based boards to the omap device tree
+> maintainer list.
+>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
 
-Cc: Bin Liu <b-liu@ti.com>
-Cc: Keerthy <j-keerthy@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/mach-omap2/omap_hwmod_33xx_data.c | 44 ----------------------
- 1 file changed, 44 deletions(-)
+Tony,
 
-diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-@@ -254,39 +254,6 @@ static struct omap_hwmod am33xx_lcdc_hwmod = {
- 	},
- };
- 
--/*
-- * 'usb_otg' class
-- * high-speed on-the-go universal serial bus (usb_otg) controller
-- */
--static struct omap_hwmod_class_sysconfig am33xx_usbhsotg_sysc = {
--	.rev_offs	= 0x0,
--	.sysc_offs	= 0x10,
--	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_MIDLEMODE),
--	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
--			  MSTANDBY_FORCE | MSTANDBY_NO | MSTANDBY_SMART),
--	.sysc_fields	= &omap_hwmod_sysc_type2,
--};
--
--static struct omap_hwmod_class am33xx_usbotg_class = {
--	.name		= "usbotg",
--	.sysc		= &am33xx_usbhsotg_sysc,
--};
--
--static struct omap_hwmod am33xx_usbss_hwmod = {
--	.name		= "usb_otg_hs",
--	.class		= &am33xx_usbotg_class,
--	.clkdm_name	= "l3s_clkdm",
--	.flags		= HWMOD_SWSUP_SIDLE | HWMOD_SWSUP_MSTANDBY,
--	.main_clk	= "usbotg_fck",
--	.prcm		= {
--		.omap4	= {
--			.clkctrl_offs	= AM33XX_CM_PER_USB0_CLKCTRL_OFFSET,
--			.modulemode	= MODULEMODE_SWCTRL,
--		},
--	},
--};
--
--
- /*
-  * Interfaces
-  */
-@@ -386,16 +353,6 @@ static struct omap_hwmod_ocp_if am33xx_l4_wkup__timer1 = {
- 	.user		= OCP_USER_MPU,
- };
- 
--/* usbss */
--/* l3 s -> USBSS interface */
--static struct omap_hwmod_ocp_if am33xx_l3_s__usbss = {
--	.master		= &am33xx_l3_s_hwmod,
--	.slave		= &am33xx_usbss_hwmod,
--	.clk		= "l3s_gclk",
--	.user		= OCP_USER_MPU,
--	.flags		= OCPIF_SWSUP_IDLE,
--};
--
- static struct omap_hwmod_ocp_if *am33xx_hwmod_ocp_ifs[] __initdata = {
- 	&am33xx_l3_main__emif,
- 	&am33xx_mpu__l3_main,
-@@ -441,7 +398,6 @@ static struct omap_hwmod_ocp_if *am33xx_hwmod_ocp_ifs[] __initdata = {
- 	&am33xx_l3_main__tptc1,
- 	&am33xx_l3_main__tptc2,
- 	&am33xx_l3_main__ocmc,
--	&am33xx_l3_s__usbss,
- 	&am33xx_l3_main__sha0,
- 	&am33xx_l3_main__aes0,
- 	NULL,
--- 
-2.23.0
+Are you ok with this?  I am not sure who to bug, but I am guessing
+whomever it is will want/need your approval too.
+
+adam
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a50e97a63bc8..0ee89575699c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11645,6 +11645,8 @@ F:      arch/arm/boot/dts/*am3*
+>  F:     arch/arm/boot/dts/*am4*
+>  F:     arch/arm/boot/dts/*am5*
+>  F:     arch/arm/boot/dts/*dra7*
+> +F:     arch/arm/boot/dts/logicpd-som-lv*
+> +F:     arch/arm/boot/dts/logicpd-torpedo*
+>
+>  OMAP DISPLAY SUBSYSTEM and FRAMEBUFFER SUPPORT (DSS2)
+>  L:     linux-omap@vger.kernel.org
+> --
+> 2.17.1
+>
