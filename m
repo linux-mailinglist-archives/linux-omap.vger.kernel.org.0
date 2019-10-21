@@ -2,161 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09F6BDE6C0
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 10:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A19EDE6CE
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 10:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726227AbfJUIjv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Oct 2019 04:39:51 -0400
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:39339 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726181AbfJUIju (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Oct 2019 04:39:50 -0400
-Received: by mail-ua1-f68.google.com with SMTP id b14so3558777uap.6;
-        Mon, 21 Oct 2019 01:39:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GDHAImBPnfYdcTZv5QN22K8grMSnjgjEI3IeurJ6b2A=;
-        b=RhHHQGjo61Z4HtNc5YxV5my1PmI/qYMRqvqJ3DZ/MvVMoFetpkKn2n9NqDQHhDXIN4
-         ZKuMbLKgGeM8LejyvWt+0Kp8kDiKUfI2/Ioa/++6elGSm6B7VJ/B91mso+HwE30IxCd7
-         NynlnBmQfhIi+wIPUjmtxkp04tDCAe39OfQRnesRIiayHgi4fo0e7ttK9W4L7tR7Stt/
-         kEVtyetjHTn1dIVXDtkELAo/LpSKmECtMyMZDgCPAhPu/Ru0H5JX8rvBkxr2qAnPrR0R
-         j084ygG2bbVYYHjfHHqv5SevHODqVmahfN6qphkWixIR9E2/CfBkJUnd4vW2Fe5q4CVD
-         hslg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GDHAImBPnfYdcTZv5QN22K8grMSnjgjEI3IeurJ6b2A=;
-        b=UD+4jZlhrJpl3ioYZfUMDERIwgKyAa0/aB6ZEuwzeI0gpjYladxUvj64O+XhDeVBro
-         F1u6wYEHm9H4O1WwjkkyvXsjDI7TE0TR5kl7OJY8kjSXNI8vAuSHakCuWArKhcgjMPQ9
-         dlaVORIrWz2Mfl7gJcI8Rh8bCLF0k1lBNFq7jPq8fvuSBc+uj4Fn9o8VDUFJjKhLtLv2
-         t/hryBcORXmItq+CCP1fO+v2blI5CCyLRfm6L5nYVBG4zFf3eujEM61+SZ+xSE6gNgwh
-         7pTCz3S/ACH7VNxvNXns+8bhhuNrzac2phZ0OCTfOm3r6PQWzuXXldC3npBhq/OiGnGR
-         m/Xw==
-X-Gm-Message-State: APjAAAU13CctgGIrzAZeLVapbSWI5rkfMj74tLrpmhzdTgK9s7hmxLBZ
-        9tdrMRMxMd20kEuSqLdYw9mUG88eTZeEASS1lTM=
-X-Google-Smtp-Source: APXvYqwHj5MQjpWZVXcmDx/PyiCrd2a4eCq9uZekfMZ/S11wGH1cgzOkPg5Wt/zzVKEOqLpE0vIbkA5d/0N4RGR89E4=
-X-Received: by 2002:a9f:200a:: with SMTP id 10mr11924965uam.42.1571647189530;
- Mon, 21 Oct 2019 01:39:49 -0700 (PDT)
+        id S1727399AbfJUImj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Oct 2019 04:42:39 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:52332 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726480AbfJUImj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Oct 2019 04:42:39 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9L8gXFZ103191;
+        Mon, 21 Oct 2019 03:42:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1571647353;
+        bh=7DTT/sWjsBy8Zjjf2rheZYVPaNOCPJxVzbIedIsgc3k=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Cyl+M2vHKoMAzP0Yr9PD+bCDJH+Lq/Z2N/y8ygRGEqZuOUe7BAZ64xq2UiUBUL5ea
+         gCzGkOgLZMvLTT26srTdKXzZ1Y0Aj7MHEC1dQwcOj1eQieA4iVDlDSIVw+eMg1YUQ2
+         JNOip6Af1kZlyPTRdGltB8gYeYoVscxxiL8rmbvY=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9L8gIQx124808
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 21 Oct 2019 03:42:18 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 21
+ Oct 2019 03:42:09 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Mon, 21 Oct 2019 03:42:09 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9L8gGr6046523;
+        Mon, 21 Oct 2019 03:42:17 -0500
+Subject: Re: [PATCH] fbdev/omap: fix max fclk divider for omap36xx
+To:     Adam Ford <aford173@gmail.com>, <linux-fbdev@vger.kernel.org>
+CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <adam.ford@logicpd.com>, <stable@vger.kernel.org>
+References: <20191018124938.29313-1-aford173@gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <7b8b6eba-2cb3-9b25-66e2-e128cc09ceb4@ti.com>
+Date:   Mon, 21 Oct 2019 11:42:16 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <CAGm1_kvZpYH+NP8JfYJWE2v3E9v+yFs20L8MSKsAjfC_g+GmaQ@mail.gmail.com>
- <CAGm1_ktjndofS_N-qh7GVRuJFG1Jn87rf4D8Lt2XMj=+RrL2aw@mail.gmail.com>
- <20190930145711.GG5610@atomide.com> <20190930152330.GH5610@atomide.com>
- <20190930195411.6porqtm7tlokgel3@earth.universe> <20191001080339.GF13531@localhost>
- <CAGm1_ksg2x9USqB+XGhkMQpA-zc77Ha1-j+foPJFR7R3XPZsNg@mail.gmail.com>
- <20191001164351.GJ5610@atomide.com> <20191001220321.GK5610@atomide.com>
- <CAGm1_kv12P1hb7PXSQUo3EXXrCUCQV0ptoQpxewGYHJgROL=cQ@mail.gmail.com>
- <20191002165219.GL5610@atomide.com> <CAGm1_kt4W+2uN_6WduUtR+NwKCmQMZwNRHQQ7kVJt0PqmoobaA@mail.gmail.com>
-In-Reply-To: <CAGm1_kt4W+2uN_6WduUtR+NwKCmQMZwNRHQQ7kVJt0PqmoobaA@mail.gmail.com>
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Mon, 21 Oct 2019 10:39:21 +0200
-Message-ID: <CAGm1_kvK+Xkd0Yx8AUvTPMejLTm7jr5+2dzrwNLkG2ivuUC6bw@mail.gmail.com>
-Subject: Re: musb: cppi41: broken high speed FTDI functionality when connected
- to musb directly
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Johan Hovold <johan@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>, vkoul@kernel.org,
-        Bin Liu <b-liu@ti.com>, linux-usb <linux-usb@vger.kernel.org>,
-        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191018124938.29313-1-aford173@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+On 18/10/2019 15:49, Adam Ford wrote:
+> The OMAP36xx and AM/DM37x TRMs say that the maximum divider for DSS fclk
+> (in CM_CLKSEL_DSS) is 32. Experimentation shows that this is not
+> correct, and using divider of 32 breaks DSS with a flood or underflows
+> and sync losts. Dividers up to 31 seem to work fine.
+> 
+> There is another patch to the DT files to limit the divider correctly,
+> but as the DSS driver also needs to know the maximum divider to be able
+> to iteratively find good rates, we also need to do the fix in the DSS
+> driver.
+> 
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Cc: stable@vger.kernel.org #linux-4.9.y+
+> 
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> index 48c6500c24e1..4429ad37b64c 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> @@ -843,7 +843,7 @@ static const struct dss_features omap34xx_dss_feats = {
+>   };
+>   
+>   static const struct dss_features omap3630_dss_feats = {
+> -	.fck_div_max		=	32,
+> +	.fck_div_max		=	31,
+>   	.dss_fck_multiplier	=	1,
+>   	.parent_clk_name	=	"dpll4_ck",
+>   	.dpi_select_source	=	&dss_dpi_select_source_omap2_omap3,
+> 
 
-On Thu, Oct 3, 2019 at 10:39 AM Yegor Yefremov
-<yegorslists@googlemail.com> wrote:
->
-> Hi Tony,
->
-> On Wed, Oct 2, 2019 at 6:52 PM Tony Lindgren <tony@atomide.com> wrote:
-> >
-> > * Yegor Yefremov <yegorslists@googlemail.com> [191002 06:57]:
-> > > On Wed, Oct 2, 2019 at 12:03 AM Tony Lindgren <tony@atomide.com> wrote:
-> > > > The other way to fix this would be to just wake up cpp41 in
-> > > > cppi41_dma_prep_slave_sg() and return NULL so that we can
-> > > > have musb_ep_program() continue with PIO while cppi41 is
-> > > > asleep.
-> > > >
-> > > > Anyways, care to try it out and see if it fixes your issue?
-> > >
-> > > The fix is working but on the first invocation, I get this output
-> > > (minicom provokes the same output):
-> >
-> > > # serialtest.py -c 2 /dev/ttyUSB0 /dev/ttyUSB0
-> > ...
-> > > [  210.940612] [<c065fc94>] (__rpm_callback) from [<c065fd60>]
-> > > (rpm_callback+0x20/0x80)
-> > > [  210.948402] [<c065fd60>] (rpm_callback) from [<c065f7cc>]
-> > > (rpm_resume+0x468/0x7a0)
-> > > [  210.956018] [<c065f7cc>] (rpm_resume) from [<c065fb50>]
-> > > (__pm_runtime_resume+0x4c/0x64)
-> > > [  210.964086] [<c065fb50>] (__pm_runtime_resume) from [<bf020940>]
-> > > (cppi41_dma_prep_slave_sg+0x20/0xfc [cppi41])
-> >
-> > OK so that won't work, thanks for testing. Here's the alternative
-> > patch to try along the lines described above that just wakes up
-> > cppi41 and returns NULL so musb_ep_program() can continue with PIO
-> > until cppi41 is awake.
->
-> I'm out of the office for some weeks and don't have access to my hw.
-> I'll make the test as soon as I'm back.
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
 
-I've tested your patch with both systems (with and without a hub) and
-everything is working as expected.
+  Tomi
 
-Thanks.
-Yegor
-
-> > 8< -----------------------
-> > diff --git a/drivers/dma/ti/cppi41.c b/drivers/dma/ti/cppi41.c
-> > --- a/drivers/dma/ti/cppi41.c
-> > +++ b/drivers/dma/ti/cppi41.c
-> > @@ -586,9 +586,22 @@ static struct dma_async_tx_descriptor *cppi41_dma_prep_slave_sg(
-> >         enum dma_transfer_direction dir, unsigned long tx_flags, void *context)
-> >  {
-> >         struct cppi41_channel *c = to_cpp41_chan(chan);
-> > +       struct dma_async_tx_descriptor *txd = NULL;
-> > +       struct cppi41_dd *cdd = c->cdd;
-> >         struct cppi41_desc *d;
-> >         struct scatterlist *sg;
-> >         unsigned int i;
-> > +       int error;
-> > +
-> > +       error = pm_runtime_get(cdd->ddev.dev);
-> > +       if (error < 0) {
-> > +               pm_runtime_put_noidle(cdd->ddev.dev);
-> > +
-> > +               return NULL;
-> > +       }
-> > +
-> > +       if (cdd->is_suspended)
-> > +               goto err_out_not_ready;
-> >
-> >         d = c->desc;
-> >         for_each_sg(sgl, sg, sg_len, i) {
-> > @@ -611,7 +624,13 @@ static struct dma_async_tx_descriptor *cppi41_dma_prep_slave_sg(
-> >                 d++;
-> >         }
-> >
-> > -       return &c->txd;
-> > +       txd = &c->txd;
-> > +
-> > +err_out_not_ready:
-> > +       pm_runtime_mark_last_busy(cdd->ddev.dev);
-> > +       pm_runtime_put_autosuspend(cdd->ddev.dev);
-> > +
-> > +       return txd;
-> >  }
-> >
-> >  static void cppi41_compute_td_desc(struct cppi41_desc *d)
-> > --
-> > 2.23.0
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
