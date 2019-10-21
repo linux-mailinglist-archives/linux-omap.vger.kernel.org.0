@@ -2,84 +2,204 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF8D9DEFA2
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 16:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15279DF0E2
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Oct 2019 17:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727755AbfJUOc0 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Mon, 21 Oct 2019 10:32:26 -0400
-Received: from muru.com ([72.249.23.125]:38404 "EHLO muru.com"
+        id S1727355AbfJUPIG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Oct 2019 11:08:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57936 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726915AbfJUOc0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Oct 2019 10:32:26 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id CC39E810A;
-        Mon, 21 Oct 2019 14:33:00 +0000 (UTC)
-Date:   Mon, 21 Oct 2019 07:32:23 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Sebastian Reichel <sre@kernel.org>
-Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
-        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
-        Merlijn Wajer <merlijn@wizzup.org>
-Subject: Re: [PATCHv2] power: supply: cpcap-charger: Limit voltage to 4.2V
- for battery
-Message-ID: <20191021143223.GU5610@atomide.com>
-References: <20191016221817.8501-1-tony@atomide.com>
- <20191020203516.sp2vafrvb2pi3hp6@earth.universe>
+        id S1726289AbfJUPIG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Oct 2019 11:08:06 -0400
+Received: from mail-yw1-f52.google.com (mail-yw1-f52.google.com [209.85.161.52])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 786C221872;
+        Mon, 21 Oct 2019 15:08:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571670484;
+        bh=uOOHIkxfhvis0C/Go5PYneNloCdkzG4Y0N0DZM+N+/A=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=MPG7ILQ4e6be5KuAsiCnX1NmDuX6hHYkUG3FY++76EvtLs8mWZgamXGWV9An86R4q
+         GXjJHkKJFFxLGnnO0hSxGhM8zigbrkvwJHA++tx7aKVHA71hZTI/+yojzkMyfAlG+f
+         Lzp/gPdUt6216tBHK+sUHd5Xj8YUs4dXflVIV6hg=
+Received: by mail-yw1-f52.google.com with SMTP id w140so5028314ywd.0;
+        Mon, 21 Oct 2019 08:08:04 -0700 (PDT)
+X-Gm-Message-State: APjAAAUdzAS9O8P4qEswUGrXGhEQ4EgrNMG0xJPJzcXmeC1rk0UprjVU
+        4kBMpNX5zT2up4I7XQ1+zhJpIOzY6x8l2uNpyw==
+X-Google-Smtp-Source: APXvYqzM/HACTdPRONivWDLf+Xt0qQcSVJ0ofJX0zbPQQ2RaSyY7sqAVya8zdW6qm7MUHKRoyN92+rIluy5rmGOrrYc=
+X-Received: by 2002:a0d:d307:: with SMTP id v7mr5750789ywd.507.1571670483603;
+ Mon, 21 Oct 2019 08:08:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20191020203516.sp2vafrvb2pi3hp6@earth.universe>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <cover.1571424390.git.hns@goldelico.com> <f0fb68dc7bc027e5e911721852f6bc6fa2d77a63.1571424390.git.hns@goldelico.com>
+In-Reply-To: <f0fb68dc7bc027e5e911721852f6bc6fa2d77a63.1571424390.git.hns@goldelico.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 21 Oct 2019 10:07:51 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+obsTSU3iP1wm_3-FsAJ4Mxiz0NbMY1_h5NeFn67Sj+A@mail.gmail.com>
+Message-ID: <CAL_Jsq+obsTSU3iP1wm_3-FsAJ4Mxiz0NbMY1_h5NeFn67Sj+A@mail.gmail.com>
+Subject: Re: [PATCH 1/7] dt-bindings: gpu: pvrsgx: add initial bindings
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Sebastian Reichel <sre@kernel.org> [191020 20:35]:
-> Hi Tony,
-> 
-> On Wed, Oct 16, 2019 at 03:18:17PM -0700, Tony Lindgren wrote:
-> > There have been some cases of droid4 battery bulging that seem to be
-> > related to being left connected to the charger for several weeks.
-> > 
-> > It is suspected that the 4.35V charge voltage configured for the battery
-> > is too much in the long run, so lets limit the charge voltage to 4.2V.
-> > It could also be that the batteries are just getting old.
-> > 
-> > We don't really want to just change the charge voltage to 4.2V as Android
-> > may have charged the battery to 4.35V as pointed out by Pavel Machek.
-> > 
-> > To add checks for battery voltage, the driver needs to understand the
-> > voltage it's charging at, and also needs to better understand it's
-> > charger state. Right now it only understands connect and disconnect,
-> > while now we need to know also a connected state but not charging.
-> > 
-> > So let's add better charger state handling with help of chrgcurr2 interrupt
-> > for detecting charge full and retry, and add a check for battery voltage
-> > before we start charging. And then we finally can lower the charge voltage
-> > to 4.2V.
-> > 
-> > Note that we've been using the same register values as the Android distros
-> > on droid4, so it is suspected that the same problem also exists in Android.
-> > 
-> > Cc: Pavel Machek <pavel@ucw.cz>
-> > Cc: Rob Herring <robh+dt@kernel.org>
-> > Reported-by: Merlijn Wajer <merlijn@wizzup.org>
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> > 
-> > If this looks OK, I would appreciate an immutable branch against v5.4-rc1
-> > with just this patch in it for merge conflicts with v5.5 dts changes.
-> 
-> Thanks, I queued this to power-supply's for-next branch using the following
-> signed immutable branch:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-power-supply.git/tag/?h=psy-cpcap-charge-volt-limit-signed
+On Fri, Oct 18, 2019 at 1:46 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+>
+> The Imagination PVR/SGX GPU is part of several SoC from
+> multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo
+> and others.
+>
+> Here we describe how the SGX processor is interfaced to
+> the SoC (registers, interrupt etc.).
+>
+> Clock, Reset and power management should be handled
+> by the parent node.
 
-Thanks and sorry about that sparse issue it caused.
+That's TI specific.
 
-Regards,
+>
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> ---
+>  .../devicetree/bindings/gpu/img,pvrsgx.txt    | 76 +++++++++++++++++++
+>  1 file changed, 76 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.txt
 
-Tony
+Please make this DT schema format.
 
+> diff --git a/Documentation/devicetree/bindings/gpu/img,pvrsgx.txt b/Documentation/devicetree/bindings/gpu/img,pvrsgx.txt
+> new file mode 100644
+> index 000000000000..4ad87c075791
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/gpu/img,pvrsgx.txt
+> @@ -0,0 +1,76 @@
+> +Imagination PVR/SGX GPU
+> +
+> +Only the Imagination SGX530, SGX540 and SGX544 GPUs are currently covered by this binding.
+> +
+> +Required properties:
+> +- compatible:  Should be one of
+> +               "img,sgx530-121", "img,sgx530", "ti,omap-omap3-sgx530-121";
+> +                 - BeagleBoard ABC, OpenPandora 600MHz
+> +               "img,sgx530-125", "img,sgx530", "ti,omap-omap3-sgx530-125";
+> +                 - BeagleBoard XM, GTA04, OpenPandora 1GHz
+> +               "img,sgx530-125", "img,sgx530", "ti,omap-am3517-sgx530-125";
+> +               "img,sgx530-125", "img,sgx530", "ti,omap-am335x-sgx530-125";
+> +                 - BeagleBone Black
+> +               "img,sgx540-120", "img,sgx540", "ti,omap-omap4-sgx540-120";
+> +                 - Pandaboard (ES)
+> +               "img,sgx544-112", "img,sgx544", "ti,omap-omap4-sgx544-112";
+> +               "img,sgx544-116", "img,sgx544", "ti,omap-omap5-sgx544-116";
+> +                 - OMAP5 UEVM, Pyra Handheld
+> +               "img,sgx544-116", "img,sgx544", "ti,omap-dra7-sgx544-116";
+
+The order here is wrong. Should be most specific first.
+
+Drop 'omap-' from the compatible.
+
+> +
+> +               For further study:
+> +                       "ti,omap-am3517-sgx530-?"
+> +                       "ti,omap-am43xx-sgx530-?"
+> +                       "ti,ti43xx-sgx"
+> +                       "ti,ti81xx-sgx"
+> +                       "img,jz4780-sgx5??-?"
+> +                       "intel,poulsbo-sgx?"
+> +                       "intel,cedarview-sgx?"
+> +                       "sunxi,sgx-544-?" - Banana-Pi-M3 (Allwinner A83T)
+
+Just drop these.
+
+> +
+> +               The "ti,omap..." entries are needed temporarily to handle SoC
+> +               specific builds of the kernel module.
+> +
+> +               In the long run, only the "img,sgx..." entry should suffice
+> +               to match a generic driver for all architectures and driver
+> +               code can dynamically find out on which SoC it is running.
+
+Drop this. Which compatible an OS matches on is not relevant to the
+binding. And 'temporarily' is wrong as the SoC specific compatible
+strings are what are used for handling errata or other integration
+specific things.
+
+> +
+> +
+> +- reg:         Physical base addresses and lengths of the register areas.
+
+How many?
+
+> +- reg-names:   Names for the register areas.
+
+If only 1 as the example suggests, then you don't need this.
+
+> +- interrupts:  The interrupt numbers.
+> +
+> +Optional properties:
+> +- timer:       the timer to be used by the driver.
+
+Needs a better description and vendor prefix at least.
+
+Why is this needed rather than using the OS's timers?
+
+> +- img,cores:   number of cores. Defaults to <1>.
+
+Not discoverable?
+
+> +
+> +/ {
+> +       ocp {
+> +               sgx_module: target-module@56000000 {
+
+This is TI specific and this binding covers other chips in theory at
+least. This part is outside the scope
+
+> +                       compatible = "ti,sysc-omap4", "ti,sysc";
+> +                       reg = <0x5600fe00 0x4>,
+> +                             <0x5600fe10 0x4>;
+
+How does it work that these registers overlap the GPU registers?
+
+> +                       reg-names = "rev", "sysc";
+> +                       ti,sysc-midle = <SYSC_IDLE_FORCE>,
+> +                                       <SYSC_IDLE_NO>,
+> +                                       <SYSC_IDLE_SMART>;
+> +                       ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+> +                                       <SYSC_IDLE_NO>,
+> +                                       <SYSC_IDLE_SMART>;
+> +                       clocks = <&gpu_clkctrl OMAP5_GPU_CLKCTRL 0>;
+> +                       clock-names = "fck";
+> +                       #address-cells = <1>;
+> +                       #size-cells = <1>;
+> +                       ranges = <0 0x56000000 0x2000000>;
+> +
+> +                       sgx@fe00 {
+
+gpu@...
+
+
+
+> +                               compatible = "img,sgx544-116", "img,sgx544", "ti,omap-omap5-sgx544-116";
+> +                               reg = <0xfe00 0x200>;
+> +                               reg-names = "sgx";
+> +                               interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
+> +                               timer = <&timer11>;
+> +                               img,cores = <2>;
+> +                       };
+> +               };
+> +       };
+> +};
+> --
+> 2.19.1
+>
