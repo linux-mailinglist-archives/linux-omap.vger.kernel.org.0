@@ -2,97 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61F2DE09D0
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Oct 2019 18:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E200E0C1D
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Oct 2019 21:01:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732446AbfJVQzV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Oct 2019 12:55:21 -0400
-Received: from muru.com ([72.249.23.125]:39152 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727851AbfJVQzV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 22 Oct 2019 12:55:21 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 8C69F80FA;
-        Tue, 22 Oct 2019 16:55:54 +0000 (UTC)
-Date:   Tue, 22 Oct 2019 09:55:16 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     Benoit Parrot <bparrot@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [Patch 1/3] ARM: dts: am43xx: add support for clkout1 clock
-Message-ID: <20191022165516.GE5610@atomide.com>
-References: <20191016184954.14048-1-bparrot@ti.com>
- <20191016184954.14048-2-bparrot@ti.com>
- <20191022154816.GO5610@atomide.com>
- <20191022162134.fpawonjdjvd5kxza@ti.com>
- <586dcabb-0400-50d6-5488-16bddc059286@ti.com>
+        id S1732523AbfJVTBV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Oct 2019 15:01:21 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:38366 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732517AbfJVTBV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Oct 2019 15:01:21 -0400
+Received: by mail-io1-f66.google.com with SMTP id u8so21766777iom.5;
+        Tue, 22 Oct 2019 12:01:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VfxSHYvmdEv1sm79e3HTi1RwgAIgEe7zqfMJ263x0xg=;
+        b=m6gaYXo+SBJ6yxQUD50EHP8m/o2zWCUkcm4zfRYWPqsxcCaBtfI4gR70AjPI0kgvRn
+         oCBJaeHHmvWwyrNPxa4K3iZBQtYc/YciryW1xokRbVbPel4OAQ7wD3RdVFT+QbqAs+F5
+         PNNim372/STeko7kwHy7AUVu0XinaDph2biqSG7OFr66mu66wVP9slSSX6L8361YyVbX
+         OToJI9/0WCGDmYz1T7ylnPlyUNEkU0JcnkGqSYmNelV95xkG9izQyosIY7Lsb5CeSKKA
+         +/XTgAK8JkkRzYT4SgeRBxN3/f6/fF8O8r7Gz0ca473uHMql5bZDE40m1U3Nq0GX1mEe
+         Pi3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VfxSHYvmdEv1sm79e3HTi1RwgAIgEe7zqfMJ263x0xg=;
+        b=lTsSZHPjuXU+p6N7MfZ79GghAdLjSjitYQiozhsEc9amPVuAENnNWDQV7JIsrdWO+9
+         ZDCRQuEzxXDiEMOF1VR9CnFlXyLSZZyDZkXWpj8o+A13L1SExtdZKdOA8KcIhTX2yvyM
+         LSYUpRbyOkAaAHUjLLVwmkHgdNb+aMKKPvXKLLFqxYL024iPG/LKyMatIeA3eCAWbsvU
+         kKQ/OSKD8zipOXsReixdz5xr9SXGFYWmRgGzv87X6GCFA5mrykP+aRJeWO0lDaW0O651
+         Ht7kmNUlfylwlbVj4P8vda9uyubMAhjFLQxe5hiz4ji+95NJtNUXYGIEnAgJ4Qki3q5m
+         MdOw==
+X-Gm-Message-State: APjAAAVosGGHqL6eFiAumZYqB3/Gi+QHkQLn2uAwMYr4yJQ0VPKP2uV5
+        Y+BpRxoemX9WwfaqtBquchGn2eC3N/8lOpS/vnU=
+X-Google-Smtp-Source: APXvYqzQASMPJfj+YZm2OBbuJQoz80q16/O9naj7kf1/88RbHylyV8nyZmARfqkPQXvQ0Q9vaSY+MetI2GXnLHntuLQ=
+X-Received: by 2002:a02:c519:: with SMTP id s25mr5378905jam.3.1571770880220;
+ Tue, 22 Oct 2019 12:01:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <586dcabb-0400-50d6-5488-16bddc059286@ti.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20191007220540.30690-1-aford173@gmail.com> <20191022162223.GU5610@atomide.com>
+In-Reply-To: <20191022162223.GU5610@atomide.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Tue, 22 Oct 2019 14:01:08 -0500
+Message-ID: <CAHCN7xLy975mxX+cm56PMx-TKODEZjYPfMHb=byspKxYXXq7OA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] configs: ARM: omap2plus: Enable OMAP3_THERMAL
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        Adam Ford <adam.ford@logicpd.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tero Kristo <t-kristo@ti.com> [191022 16:48]:
-> On 22/10/2019 19:21, Benoit Parrot wrote:
-> > Tony Lindgren <tony@atomide.com> wrote on Tue [2019-Oct-22 08:48:16 -0700]:
-> > > * Benoit Parrot <bparrot@ti.com> [191016 18:47]:
-> > > > --- a/arch/arm/boot/dts/am43xx-clocks.dtsi
-> > > > +++ b/arch/arm/boot/dts/am43xx-clocks.dtsi
-> > > > @@ -704,6 +704,60 @@
-> > > >   		ti,bit-shift = <8>;
-> > > >   		reg = <0x2a48>;
-> > > >   	};
-> > > > +
-> > > > +	clkout1_osc_div_ck: clkout1_osc_div_ck {
-> > > > +		#clock-cells = <0>;
-> > > > +		compatible = "ti,divider-clock";
-> > > > +		clocks = <&sys_clkin_ck>;
-> > > > +		ti,bit-shift = <20>;
-> > > > +		ti,max-div = <4>;
-> > > > +		reg = <0x4100>;
-> > > > +	};
-> > > 
-> > > Here too please describe why the clock names are not generic.
-> > 
-> > Tero originally had this patch in the kernel so this is somewhat of a
-> > revert. Since these "clock" were removed. If the name syntax is no longer
-> > valid for some reason, then I will need a little more informations to
-> > proceed.
-> > 
-> > Tero, can you assist here?
-> 
-> This one is just following the naming convention of the rest of the clocks
-> atm.
-> 
-> If we need to fix all the underscore name clocks, that requires pretty much
-> complete revamp of both the dts data + clock data under the clock driver,
-> and it is not backwards compatible either. How should we tackle that one?
-> 
-> We could maybe add support code in kernel to do s/-/_/g for the "new" clocks
-> so that their parent-child relationships would be retained, and then convert
-> the clocks in phases.
+On Tue, Oct 22, 2019 at 11:22 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> Hi,
+>
+> * Adam Ford <aford173@gmail.com> [191007 15:06]:
+> > The some in the OMAP3 family have a bandgap thermal sensor, but
+> > omap2plus has it disabled.
+> >
+> > This patch enables the OMAP3_THERMAL by default like the rest of
+> > the OMAP family.
+>
+> Looks like this breaks off mode during idle for omap3, and that's
+> probably why it never got enabled. The difference in power
+> consumption during idle is about 7mW vs 32mW for the SoC as
+> measured from torpedo shunt for main_battery_som.
+>
+> I think the right fix might be simply to add handling for
+> CPU_CLUSTER_PM_ENTER to the related thermal driver to disable
+> it during idle like we have for gpio-omap.c for example.
 
-Well some of them can be fixed by configuring things based
-on the compatible value and then the node name can be just
-clock like it should be.
+I am not sure I know where to start on fixing that issue.  Would you
+entertain enabling the driver if we set the device tree to 'disabled'
+by default?  This way if people want to to use it, it can be enabled
+on a per-device option.  Once the power stuff gets resolved, we might
+be able to enable it by default.  For people who are planning on using
+the DM3730 @ 1GHz in high temp environments, I am not sure they'll
+care about low power.
 
-Here too one option would be to add custom compatibles like:
+I'll try to look into it when I have time, but I was hoping a
+compromise might be a reasonable work-around.
 
-compatible = "ti,clkout1-osc-div", "ti,divider-clock";
-
-And then have match data configure the rest.
-
-The other option would be to have lookup tables in the clock
-driver based on the SoC and reg address.
-
-This is a hidden mine though.. We've hit it already several times,
-and any dts clean-up effort has a chance of breaking things.
-
-Regards,
-
-Tony
+adam
+>
+> Regards,
+>
+> Tony
+>
+> >
+> > Signed-off-by: Adam Ford <aford173@gmail.com>
+> >
+> > diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+> > index 8f1c2b6f9e56..7e14a8c8bb29 100644
+> > --- a/arch/arm/configs/omap2plus_defconfig
+> > +++ b/arch/arm/configs/omap2plus_defconfig
+> > @@ -292,6 +292,7 @@ CONFIG_THERMAL_GOV_FAIR_SHARE=y
+> >  CONFIG_THERMAL_GOV_USER_SPACE=y
+> >  CONFIG_CPU_THERMAL=y
+> >  CONFIG_TI_THERMAL=y
+> > +CONFIG_OMAP3_THERMAL=y
+> >  CONFIG_OMAP4_THERMAL=y
+> >  CONFIG_OMAP5_THERMAL=y
+> >  CONFIG_DRA752_THERMAL=y
+> > --
+> > 2.17.1
+> >
