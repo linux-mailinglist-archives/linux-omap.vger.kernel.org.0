@@ -2,131 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C746BE1A01
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 14:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B77FFE1AAC
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 14:35:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727309AbfJWM1t (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Oct 2019 08:27:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59508 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725947AbfJWM1t (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 23 Oct 2019 08:27:49 -0400
-Received: from earth.universe (monacowifi.monaco.mc [82.113.13.92])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8EE942086D;
-        Wed, 23 Oct 2019 12:27:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571833668;
-        bh=t8T7r1ufu3VJCAxY8EdZbRggUlqydUzVwu4ytEqymNY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rEP/KHnEMJt+p5oYo2wj9P7HvDzYxvMMwbEVPFb+ct/AWVpFypiPGZHrOr4EWYoAE
-         jlhMIW2NSPmc6niovedZIbrtq6DoVMMbZ2gRRS9/YcbVTFlwTJQY/yAge1392WcaYi
-         MH10fJB3ITMrv12A5eyEmGMImZ8HqZj4mTiHnPro=
-Received: by earth.universe (Postfix, from userid 1000)
-        id A982F3C09B2; Wed, 23 Oct 2019 14:27:45 +0200 (CEST)
-Date:   Wed, 23 Oct 2019 14:27:45 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Marcel Holtmann <marcel@holtmann.org>
-Cc:     Tony Lindgren <tony@atomide.com>, Adam Ford <aford173@gmail.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        linux-bluetooth@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCHv2 4/4] Bluetooth: btwilink: drop superseded driver
-Message-ID: <20191023122745.ldh2ghnzazdhaf2x@earth.universe>
-References: <20191003134147.9458-1-sre@kernel.org>
- <20191003134147.9458-5-sre@kernel.org>
- <BC1F82AC-2988-4BC6-99EA-1C9F9289E582@holtmann.org>
- <20191020205901.56bafijk7cu3rpaj@earth.universe>
- <AC376F8D-77F3-4497-94D1-FE25A5ED9337@holtmann.org>
+        id S2390041AbfJWMfG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Oct 2019 08:35:06 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:48818 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390039AbfJWMfF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Oct 2019 08:35:05 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9NCZ3r4112103;
+        Wed, 23 Oct 2019 07:35:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1571834104;
+        bh=dTVCATdc6pJt52c1RbShuYo6eulnkbgK4qRYqMp9s4A=;
+        h=To:CC:From:Subject:Date;
+        b=fjB02Gl5hTw6WbXOmKbsr6s+X4w8FXWuD0alG1FFPN/MhAIrPGx4dvL8wjofa0yBe
+         E1By8yE5cokiCugvTEwqHPt/pHBgnEYgQHQTq1pJ8Kr0RnZDVHDTBhb2LtQeNmZVj8
+         qR/ZQA2qo5Ae/dMdDpOR+1plYqnmViUPuuN9d5/k=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9NCZ3h9010118
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 23 Oct 2019 07:35:03 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 23
+ Oct 2019 07:34:53 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 23 Oct 2019 07:34:53 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9NCZ1pS044602;
+        Wed, 23 Oct 2019 07:35:02 -0500
+To:     Stephen Boyd <sboyd@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>
+CC:     linux-clk <linux-clk@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+From:   Tero Kristo <t-kristo@ti.com>
+Subject: [GIT PULL] clk: ti: fixes for v5.4
+Message-ID: <fc8fa6fe-5050-ec41-6fdc-c8b726255860@ti.com>
+Date:   Wed, 23 Oct 2019 15:35:01 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="iqu4xmpkphwkun2f"
-Content-Disposition: inline
-In-Reply-To: <AC376F8D-77F3-4497-94D1-FE25A5ED9337@holtmann.org>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Stephen,
 
---iqu4xmpkphwkun2f
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Please pull these fixes for 5.4.
 
-Hi,
+Thanks,
+Tero
 
-On Mon, Oct 21, 2019 at 05:14:15PM +0200, Marcel Holtmann wrote:
-> Hi Sebastian,
->=20
-> >>> All users of this driver have been converted to the serdev based
-> >>> hci_ll driver. The unused driver can be safely dropped now.
-> >>>=20
-> >>> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> >>> ---
-> >>> drivers/bluetooth/Kconfig    |  11 --
-> >>> drivers/bluetooth/Makefile   |   1 -
-> >>> drivers/bluetooth/btwilink.c | 337 -----------------------------------
-> >>> 3 files changed, 349 deletions(-)
-> >>> delete mode 100644 drivers/bluetooth/btwilink.c
-> >>=20
-> >> patch has been applied to bluetooth-next tree.
-> >>=20
-> >> However what I really like to see is that you re-introduce a
-> >> btwilink driver that is purely serdev based and doesn=E2=80=99t rely on
-> >> any hci_uart/hci_ldisc code. A clean serdev only driver is that
-> >> best and easier to maintain long term.
-> >=20
-> > So basically move the serdev implementation from hci_ll.c into its
-> > own driver and make hci_ll hci_uart based only? That effectively
-> > means, that we have two implementations of the protocol. I don't
-> > think this will improve maintainability, since then bugs needs to
-> > be fixed in two places? Note, that we have a couple of drivers
-> > with serdev+hci_uart by now:
-> >=20
-> > for file in $(grep -l serdev drivers/bluetooth/hci_*c) ; grep -l hci_ua=
-rt_register_proto "${file}"
-> > hci_bcm.c
-> > hci_h5.c
-> > hci_ldisc.c
-> > hci_ll.c
-> > hci_mrvl.c
-> > hci_qca.c
->=20
-> I would like to have something similar to btmtkuart.c which is a
-> pure serdev driver that doesn=E2=80=99t depend on any hci_ldisc.c
-> framework. If we have this, then we would just drop hci_ll.c from
-> the kernel and focus on the serdev only version. As noted, there
-> is no need for any other driver at that point since everything is
-> probed anyway. Users will not even notice the difference.
+---
 
-This can be achieved by just removing the hci_uart part from
-hci_ll. But AFAIK there are some non-wilink based TI HCILL
-devices, which do not require any extra platform data and might
-still use the hci_uart part.
+The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
 
--- Sebastian
+   Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
 
---iqu4xmpkphwkun2f
-Content-Type: application/pgp-signature; name="signature.asc"
+are available in the Git repository at:
 
------BEGIN PGP SIGNATURE-----
+   git://git.kernel.org/pub/scm/linux/kernel/git/kristo/linux 
+tags/ti-clk-fixes-for-5.4
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl2wRzoACgkQ2O7X88g7
-+pogDw//Xb2ZDLcdKOs0TDYMMcP6rvRkA9S5ou7bDl8c2XgGbqsQSr7a851UVUxK
-S6ya43Jt6jQFTyR1pB55sSvoNu278E/TuBS3dPVwML5LasWRte3eFnITIdI0lHZ4
-ixeJ7JUUsvFLsiZ0GYTFm9ps4lAoh8qvpMFy0zrF4sdNoUq8QEUH4iAePN7Y7C+z
-Tc8RKRND96YNf1oar+mOpwDjqrV9DLahcOncO5VQn5pIO6N65g28K5tBslPIG3ZV
-MDoDmQTpjLnUxLpXs6oWkEbgBmBpI3Hx+ogRZfj1OF0m0qeCEGhvvcBp6STHiEkG
-u0vlQUC4RvnbGVul73MdOTSqfoghGuHiqyxazDWNmHFpo81HdhaHSB6/IxCKl8e4
-XJYYCbDTur4uWIMw9t5NTe7QUHrOezj2QrCNXDyikz1mNN4O4WrahKzkiLA0GSAu
-V2r+gcr6Z7r0QJs5cAimiYF3Hm5xl/sPhnhCqyRfFSBX93SeraGPkqF/PvcPWDRu
-J0H10QcDLI3xo3jnhUQPgcDoMeuNsKhE4w6sQvUPfbsXUme4/6d2+hrLsevQj+HE
-1Ozg/BKkIAlPQ8Pbtz93lZoseLJPCFROArLqLZERiRb++iAfVj/inJZzyhewhZJD
-cYzanohB9A6ZpLXiZLtuRKsQxCEoBYLX314LKlZJ2FaaUeSKIDY=
-=qmL6
------END PGP SIGNATURE-----
+for you to fetch changes up to 1c7630688a0fa0738688f987c48b6be412e200dd:
 
---iqu4xmpkphwkun2f--
+   clk: ti: dra7-atl-clock: Remove ti_clk_add_alias call (2019-10-23 
+12:14:06 +0300)
+
+----------------------------------------------------------------
+TI clock driver fixes for 5.4
+
+- Divider clock fixes to accommodate max divider values properly
+- Fix for certain clkctrl clocks failing to enable due to timeout
+- Remove duplicate clock aliases for dra7-atl-clocks
+
+----------------------------------------------------------------
+Peter Ujfalusi (1):
+       clk: ti: dra7-atl-clock: Remove ti_clk_add_alias call
+
+Tero Kristo (4):
+       clk: ti: divider: cleanup _register_divider and ti_clk_get_div_table
+       clk: ti: divider: cleanup ti_clk_parse_divider_data API
+       clk: ti: divider: convert to use min,max,mask instead of width
+       ARM: dts: omap3: fix DPLL4 M4 divider max value
+
+Tony Lindgren (1):
+       clk: ti: clkctrl: Fix failed to enable error with double udelay 
+timeout
+
+  arch/arm/boot/dts/omap36xx-clocks.dtsi |   4 +
+  arch/arm/boot/dts/omap3xxx-clocks.dtsi |   2 +-
+  drivers/clk/ti/clk-dra7-atl.c          |   6 -
+  drivers/clk/ti/clkctrl.c               |   7 +-
+  drivers/clk/ti/clock.h                 |   7 +-
+  drivers/clk/ti/divider.c               | 282 
++++++++++++++--------------------
+  6 files changed, 127 insertions(+), 181 deletions(-)
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
