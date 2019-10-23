@@ -2,151 +2,150 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2E44E229F
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 20:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3943EE22CD
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 20:55:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729098AbfJWSjv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Oct 2019 14:39:51 -0400
-Received: from muru.com ([72.249.23.125]:39496 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729043AbfJWSjv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 23 Oct 2019 14:39:51 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 6D38B80CF;
-        Wed, 23 Oct 2019 18:40:24 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Adam Ford <aford173@gmail.com>,
-        =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali.rohar@gmail.com>,
+        id S2404292AbfJWSzq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Oct 2019 14:55:46 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:44038 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388827AbfJWSzq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Oct 2019 14:55:46 -0400
+Received: by mail-lf1-f67.google.com with SMTP id g3so4750203lfb.11
+        for <linux-omap@vger.kernel.org>; Wed, 23 Oct 2019 11:55:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=siFQiuzIjrmxUWWr+3F2Xxv7kAaf2tX6TRSs0T4RCwc=;
+        b=UYzrIeVTtIf1BJjJfLLhqwsRZMgn5vMmjhQA8UDNkOK272ppmCgLZXF4Am3TyqIp3l
+         XnhO2K7EO4RQYklnDB0VLmFyRoo+eaXLsdPVsk5mFGzuGFmE0b+upNFdyanOPlQqYNOw
+         snGY85gcdtWLrbbJ3o+bizmGfgw3ucS0brj5IAW6coBAOBq6+lq1FAKcpOVY1924eKGM
+         tvRJ0S1jQAQSg2PQdBxlTwhuSHYrAjkG9GmOkTxYPxZaU7DwfiaFQdc5UQjmOgBYKZPA
+         t6xQ37w4qA6SnJFVzo6CbgNZFGShTMHiGE8622aE2Wr4lGqwJcN+JXb3pHGhYR5sJomA
+         uRTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=siFQiuzIjrmxUWWr+3F2Xxv7kAaf2tX6TRSs0T4RCwc=;
+        b=QXkNYsKBFlMpMEcNfgqxbUroyOUCaquITmoplYwXoDU8gnhlcWMUE6unxBia2AOqOa
+         OFCjeeFj+mbboztpXMgLVJRich/PIVcjXIb1aUnwDi2YylR9PJqgdO5NcdsDXVc0BMPj
+         mwplVhYCeUZ+wGnFAPWfmn50iCPEAlN5SGJNXavhlYp4w+9ssuzZBvzOGbwvHAfUdie5
+         I4MmMIxeyIfiz5mYJPDGTLvqamFDC2MZ6hDw4muZA0ZQTq4EfVr4e9J/s8GCeVtML936
+         d4yAPD1DYn5wbMObggS/fWakwpg8X9sHIfmmmimuyBxQ0rxbZYUgYLFQA0vAyIOu8iTc
+         iqpg==
+X-Gm-Message-State: APjAAAW9AI5WAbcht5LtkvadzRS6AeHjPD28V0gmBtx5MGdI2FLSlzaS
+        d/8phlI1ImeitO12eex1qmPcfA==
+X-Google-Smtp-Source: APXvYqxDjviSod7jwUJYUuawdEHDdl/NXPVH+ubWyrRrncUtwvl48hJyYqE9JcUCV9380lASFQ0wWQ==
+X-Received: by 2002:a19:6a08:: with SMTP id u8mr25275437lfu.74.1571856942801;
+        Wed, 23 Oct 2019 11:55:42 -0700 (PDT)
+Received: from wasted.cogentembedded.com ([2a00:1fa0:4201:cc87:e4a0:50f7:ca47:8e61])
+        by smtp.gmail.com with ESMTPSA id b141sm10973957lfg.67.2019.10.23.11.55.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 23 Oct 2019 11:55:42 -0700 (PDT)
+Subject: Re: [PATCH] dmaengine: cppi41: Fix cppi41_dma_prep_slave_sg() when
+ idle
+To:     Tony Lindgren <tony@atomide.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vinod Koul <vinod.koul@intel.com>
+Cc:     Alexandre Bailon <abailon@baylibre.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Bin Liu <b-liu@ti.com>, Daniel Mack <zonque@gmail.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        George Cherian <george.cherian@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Johan Hovold <johan@kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        dmaengine@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, giulio.benetti@benettiengineering.com,
         Sebastian Reichel <sre@kernel.org>,
-        Tero Kristo <t-kristo@ti.com>
-Subject: [PATCH] ARM: dts: Configure omap3 rng
-Date:   Wed, 23 Oct 2019 11:39:42 -0700
-Message-Id: <20191023183942.12142-1-tony@atomide.com>
-X-Mailer: git-send-email 2.23.0
+        Skvortsov <andrej.skvortzov@gmail.com>,
+        Yegor Yefremov <yegorslists@googlemail.com>
+References: <20191023153138.23442-1-tony@atomide.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+Message-ID: <6996a5de-215b-f9a2-1aeb-5eeed1b7cf8d@cogentembedded.com>
+Date:   Wed, 23 Oct 2019 21:55:40 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191023153138.23442-1-tony@atomide.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Looks like omap3 RNG is similar to the omap2 rng, let's get it working
-by configring the dts node for it.
+Hello!
 
-We must also add rng_ick to core_l4_clkdm as noted by Adam Ford.
+On 10/23/2019 06:31 PM, Tony Lindgren wrote:
 
-And please note that the RNG is likely disabled on HS devices. At least
-n900 does not have it accessible, and instead omap3-rom-rng driver must
-be used. So let's tag RNG as disabled on n900 as noted by Pali Rohár
-<pali.rohar@gmail.com>.
+> Yegor Yefremov <yegorslists@googlemail.com> reported that musb and ftdi
+> uart can fail for the first open of the uart unless connected using
+> a hub.
+> 
+> This is because the first dma call done by musb_ep_program() must wait
+> if cppi41 is PM runtime suspended. Otherwise musb_ep_program() continues
+> with other non-dma packets before the DMA transfer is started causing at
+> least ftdi uarts to fail to receive data.
+> 
+> Let's fix the issue by waking up cppi41 with PM runtime calls added to
+> cppi41_dma_prep_slave_sg() and return NULL if still idled. This way we
+> have musb_ep_program() continue with PIO until cppi41 is awake.
+> 
+> Fixes: fdea2d09b997 ("dmaengine: cppi41: Add basic PM runtime support")
+> Cc: Bin Liu <b-liu@ti.com>
+> Cc: giulio.benetti@benettiengineering.com
+> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: Skvortsov <andrej.skvortzov@gmail.com>
+> Reported-by: Yegor Yefremov <yegorslists@googlemail.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+> 
+> Please consider adding Cc stable v4.9+ tag when committing
+> 
+> ---
+>  drivers/dma/ti/cppi41.c | 21 ++++++++++++++++++++-
+>  1 file changed, 20 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/dma/ti/cppi41.c b/drivers/dma/ti/cppi41.c
+> --- a/drivers/dma/ti/cppi41.c
+> +++ b/drivers/dma/ti/cppi41.c
+> @@ -586,9 +586,22 @@ static struct dma_async_tx_descriptor *cppi41_dma_prep_slave_sg(
+>  	enum dma_transfer_direction dir, unsigned long tx_flags, void *context)
+>  {
+>  	struct cppi41_channel *c = to_cpp41_chan(chan);
+> +	struct dma_async_tx_descriptor *txd = NULL;
+> +	struct cppi41_dd *cdd = c->cdd;
+>  	struct cppi41_desc *d;
+>  	struct scatterlist *sg;
+>  	unsigned int i;
+> +	int error;
+> +
+> +	error = pm_runtime_get(cdd->ddev.dev);
+> +	if (error < 0) {
 
-On am3517 at least the clocks need to be configured to get it working
-as noted by Adam Ford, so let's tag it disabled for now.
+   I'd call that variable 'status', comparison (error < 0) just doesn't look right.
+If it was *if* (error), it would have been more correct. 
 
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Adam Ford <aford173@gmail.com>
-Cc: Pali Rohár <pali.rohar@gmail.com>
-Cc: Sebastian Reichel <sre@kernel.org>
-Cc: Tero Kristo <t-kristo@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
+> +		pm_runtime_put_noidle(cdd->ddev.dev);
+> +
+> +		return NULL;
+> +	}
+> +
+> +	if (cdd->is_suspended)
+> +		goto err_out_not_ready;
+>  
+>  	d = c->desc;
+>  	for_each_sg(sgl, sg, sg_len, i) {
+[...]
 
-Sorry for the delay on getting this posted, please test.
-
----
- arch/arm/boot/dts/am3517.dtsi                 |  6 +++++
- arch/arm/boot/dts/omap3-n900.dts              |  5 ++++
- arch/arm/boot/dts/omap3.dtsi                  | 25 +++++++++++++++++++
- .../boot/dts/omap34xx-omap36xx-clocks.dtsi    |  2 +-
- 4 files changed, 37 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/am3517.dtsi b/arch/arm/boot/dts/am3517.dtsi
---- a/arch/arm/boot/dts/am3517.dtsi
-+++ b/arch/arm/boot/dts/am3517.dtsi
-@@ -115,6 +115,12 @@
- 	};
- };
- 
-+/* Not currently working, probably needs at least different clocks */
-+&rng_target {
-+	status = "disabled";
-+	/delete-property/ clocks;
-+};
-+
- /* Table Table 5-79 of the TRM shows 480ab000 is reserved */
- &usb_otg_hs {
- 	status = "disabled";
-diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
---- a/arch/arm/boot/dts/omap3-n900.dts
-+++ b/arch/arm/boot/dts/omap3-n900.dts
-@@ -1013,6 +1013,11 @@
- 	};
- };
- 
-+/* RNG not directly accessible on n900, se omap3-rom-rng instead */
-+&rng_target {
-+	status = "disabled";
-+};
-+
- &usb_otg_hs {
- 	interface-type = <0>;
- 	usb-phy = <&usb2_phy>;
-diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
---- a/arch/arm/boot/dts/omap3.dtsi
-+++ b/arch/arm/boot/dts/omap3.dtsi
-@@ -8,6 +8,7 @@
-  * kind, whether express or implied.
-  */
- 
-+#include <dt-bindings/bus/ti-sysc.h>
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/pinctrl/omap.h>
-@@ -502,6 +503,30 @@
- 			status = "disabled";
- 		};
- 
-+		/* Likely needs to be tagged disabled on HS devices */
-+		rng_target: target-module@480a0000 {
-+			compatible = "ti,sysc-omap2", "ti,sysc";
-+			reg = <0x480a003c 0x4>,
-+			      <0x480a0040 0x4>,
-+			      <0x480a0044 0x4>;
-+			reg-names = "rev", "sysc", "syss";
-+			ti,sysc-mask = <(SYSC_OMAP2_AUTOIDLE)>;
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>;
-+			ti,syss-mask = <1>;
-+			clocks = <&rng_ick>;
-+			clock-names = "ick";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0x480a0000 0x2000>;
-+
-+			rng: rng@0 {
-+				compatible = "ti,omap2-rng";
-+				reg = <0x0 0x2000>;
-+				interrupts = <52>;
-+			};
-+		};
-+
- 		mcbsp2: mcbsp@49022000 {
- 			compatible = "ti,omap3-mcbsp";
- 			reg = <0x49022000 0xff>,
-diff --git a/arch/arm/boot/dts/omap34xx-omap36xx-clocks.dtsi b/arch/arm/boot/dts/omap34xx-omap36xx-clocks.dtsi
---- a/arch/arm/boot/dts/omap34xx-omap36xx-clocks.dtsi
-+++ b/arch/arm/boot/dts/omap34xx-omap36xx-clocks.dtsi
-@@ -260,6 +260,6 @@
- 			 <&gpt10_ick>, <&mcbsp5_ick>, <&mcbsp1_ick>,
- 			 <&omapctrl_ick>, <&aes2_ick>, <&sha12_ick>, <&icr_ick>,
- 			 <&des2_ick>, <&mspro_ick>, <&mailboxes_ick>,
--			 <&mspro_fck>;
-+			 <&rng_ick>, <&mspro_fck>;
- 	};
- };
--- 
-2.23.0
+MBR, Sergei
