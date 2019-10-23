@@ -2,76 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2050E1FED
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 17:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43795E1FFC
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 17:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390939AbfJWPwh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Oct 2019 11:52:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40588 "EHLO mail.kernel.org"
+        id S2406962AbfJWP5C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Oct 2019 11:57:02 -0400
+Received: from muru.com ([72.249.23.125]:39386 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390909AbfJWPwg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 23 Oct 2019 11:52:36 -0400
-Received: from localhost (unknown [122.181.210.10])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D58C220679;
-        Wed, 23 Oct 2019 15:52:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571845955;
-        bh=gw+u2oDxao9S2OF9vDMVHJXR1sZpwCsxQL+71vaNdXA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=n6oem8MVv8qFbVXjuuk8lYoQjHeKNKEUbjKgmjPgh9NnWMgkQqnE1w91Zjd4v2P+m
-         ST7+KtZ2qUQCJMXvxbWBW80lyXoP8Z2bSi5GVTSbQQKjjk41FBesVs1Gkf1nZjzrbo
-         P2zTiE8t4vbIzOgpazRcSm2hrdy/+6YUFJ8i2sSw=
-Date:   Wed, 23 Oct 2019 21:22:28 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vinod.koul@intel.com>,
-        Alexandre Bailon <abailon@baylibre.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bin Liu <b-liu@ti.com>, Daniel Mack <zonque@gmail.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        George Cherian <george.cherian@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Johan Hovold <johan@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        dmaengine@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org, giulio.benetti@benettiengineering.com,
-        Sebastian Reichel <sre@kernel.org>,
-        Skvortsov <andrej.skvortzov@gmail.com>,
-        Yegor Yefremov <yegorslists@googlemail.com>
-Subject: Re: [PATCH] dmaengine: cppi41: Fix cppi41_dma_prep_slave_sg() when
- idle
-Message-ID: <20191023154759.GT2654@vkoul-mobl>
-References: <20191023153138.23442-1-tony@atomide.com>
+        id S2404448AbfJWP5C (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 23 Oct 2019 11:57:02 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 3B32F80CF;
+        Wed, 23 Oct 2019 15:57:35 +0000 (UTC)
+Date:   Wed, 23 Oct 2019 08:56:57 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     Benoit Parrot <bparrot@ti.com>, Rob Herring <robh+dt@kernel.org>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [Patch 1/3] ARM: dts: am43xx: add support for clkout1 clock
+Message-ID: <20191023155657.GL5610@atomide.com>
+References: <20191016184954.14048-1-bparrot@ti.com>
+ <20191016184954.14048-2-bparrot@ti.com>
+ <20191022154816.GO5610@atomide.com>
+ <20191022162134.fpawonjdjvd5kxza@ti.com>
+ <586dcabb-0400-50d6-5488-16bddc059286@ti.com>
+ <20191022165516.GE5610@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191023153138.23442-1-tony@atomide.com>
+In-Reply-To: <20191022165516.GE5610@atomide.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23-10-19, 08:31, Tony Lindgren wrote:
-> Yegor Yefremov <yegorslists@googlemail.com> reported that musb and ftdi
-> uart can fail for the first open of the uart unless connected using
-> a hub.
+* Tony Lindgren <tony@atomide.com> [191022 16:56]:
+> * Tero Kristo <t-kristo@ti.com> [191022 16:48]:
+> > On 22/10/2019 19:21, Benoit Parrot wrote:
+> > > Tony Lindgren <tony@atomide.com> wrote on Tue [2019-Oct-22 08:48:16 -0700]:
+> > > > * Benoit Parrot <bparrot@ti.com> [191016 18:47]:
+> > > > > --- a/arch/arm/boot/dts/am43xx-clocks.dtsi
+> > > > > +++ b/arch/arm/boot/dts/am43xx-clocks.dtsi
+> > > > > @@ -704,6 +704,60 @@
+> > > > >   		ti,bit-shift = <8>;
+> > > > >   		reg = <0x2a48>;
+> > > > >   	};
+> > > > > +
+> > > > > +	clkout1_osc_div_ck: clkout1_osc_div_ck {
+> > > > > +		#clock-cells = <0>;
+> > > > > +		compatible = "ti,divider-clock";
+> > > > > +		clocks = <&sys_clkin_ck>;
+> > > > > +		ti,bit-shift = <20>;
+> > > > > +		ti,max-div = <4>;
+> > > > > +		reg = <0x4100>;
+> > > > > +	};
+> > > > 
+> > > > Here too please describe why the clock names are not generic.
+> > > 
+> > > Tero originally had this patch in the kernel so this is somewhat of a
+> > > revert. Since these "clock" were removed. If the name syntax is no longer
+> > > valid for some reason, then I will need a little more informations to
+> > > proceed.
+> > > 
+> > > Tero, can you assist here?
+> > 
+> > This one is just following the naming convention of the rest of the clocks
+> > atm.
+> > 
+> > If we need to fix all the underscore name clocks, that requires pretty much
+> > complete revamp of both the dts data + clock data under the clock driver,
+> > and it is not backwards compatible either. How should we tackle that one?
+> > 
+> > We could maybe add support code in kernel to do s/-/_/g for the "new" clocks
+> > so that their parent-child relationships would be retained, and then convert
+> > the clocks in phases.
 > 
-> This is because the first dma call done by musb_ep_program() must wait
-> if cppi41 is PM runtime suspended. Otherwise musb_ep_program() continues
-> with other non-dma packets before the DMA transfer is started causing at
-> least ftdi uarts to fail to receive data.
+> Well some of them can be fixed by configuring things based
+> on the compatible value and then the node name can be just
+> clock like it should be.
 > 
-> Let's fix the issue by waking up cppi41 with PM runtime calls added to
-> cppi41_dma_prep_slave_sg() and return NULL if still idled. This way we
-> have musb_ep_program() continue with PIO until cppi41 is awake.
+> Here too one option would be to add custom compatibles like:
+> 
+> compatible = "ti,clkout1-osc-div", "ti,divider-clock";
+> 
+> And then have match data configure the rest.
+> 
+> The other option would be to have lookup tables in the clock
+> driver based on the SoC and reg address.
+> 
+> This is a hidden mine though.. We've hit it already several times,
+> and any dts clean-up effort has a chance of breaking things.
 
-Applied and tagged stable, thanks
--- 
-~Vinod
+Hmm maybe in this case just doing this is enough:
+
+clkout1_osc_div_ck: clock@4100 {
+	... 
+}
+
+Or do all the TI clocks we have have a dependency to the
+node naming?
+
+Regards,
+
+Tony
+
