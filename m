@@ -2,116 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 096ADE246D
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 22:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97615E2491
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 22:28:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407462AbfJWUSf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Oct 2019 16:18:35 -0400
-Received: from muru.com ([72.249.23.125]:39584 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2407427AbfJWUSe (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 23 Oct 2019 16:18:34 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id F0A6480CF;
-        Wed, 23 Oct 2019 20:19:06 +0000 (UTC)
-Date:   Wed, 23 Oct 2019 13:18:29 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Alexandre Bailon <abailon@baylibre.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bin Liu <b-liu@ti.com>, Daniel Mack <zonque@gmail.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Johan Hovold <johan@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        dmaengine@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org, giulio.benetti@benettiengineering.com,
-        Sebastian Reichel <sre@kernel.org>,
-        Skvortsov <andrej.skvortzov@gmail.com>,
-        Yegor Yefremov <yegorslists@googlemail.com>
-Subject: Re: [PATCH] dmaengine: cppi41: Fix cppi41_dma_prep_slave_sg() when
- idle
-Message-ID: <20191023201829.GR5610@atomide.com>
-References: <20191023153138.23442-1-tony@atomide.com>
- <245e1e8f-7933-bae1-b779-239f33d4d449@ti.com>
- <20191023171628.GO5610@atomide.com>
- <5deab8a9-5796-5367-213e-90c5961b8498@ti.com>
- <20191023191859.GQ5610@atomide.com>
- <7d578fe1-2d60-4a6e-48b0-73d66c39f783@ti.com>
+        id S1733186AbfJWU2N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Oct 2019 16:28:13 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:33788 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729666AbfJWU2N (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Oct 2019 16:28:13 -0400
+Received: by mail-lj1-f194.google.com with SMTP id a22so22532031ljd.0
+        for <linux-omap@vger.kernel.org>; Wed, 23 Oct 2019 13:28:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lixom-net.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=T9KQBL6LAJYjkuQGrzhfEUZi7F2d+gu+rzQyfboqTg4=;
+        b=f6LOoxDVs4/DvAnaS9H/V3nQ5s19fegLbWq/bDRM0YTRdfAQvVFoGc00O8mT7pPEJV
+         5oNprja63HwY/VsxPJqN5QG7bb15/FrYjGoyzSWqlexBDdxghJlpeIPVYDWr8jA9Z01r
+         rV577Zj/rzMt9bpw8JSXIpqGLiVsT4XxiySR4VpwUKQEwxYlCEoYJSTIUFGzK+58qUF9
+         toVFtJDLNiz9GbpbvTPeIY1V4ZOcWwGZ25gNFYmNMLN/ImsD9wTWsRS60TLj4IxnSHZH
+         yqwzRm2TBfOEPy0/Ro51jH0Lif9oNDYFynY/F4CEzcCPqbvwHkau+7c8dqiR8pRXQ6tI
+         ZTIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=T9KQBL6LAJYjkuQGrzhfEUZi7F2d+gu+rzQyfboqTg4=;
+        b=n61oDk72/3OxTSozz//HhGwNYWtz90JfVlGYGccViTrqJ4axSnB8VUoUoDAyO+KFFA
+         83lNpqa/SoEdn5zR8EsUCHWy+tFGBMFlPfyY/6ZYd6RJm3HWdAPLLeYGN1gU0bgN8mg1
+         dGSHv+gtlvykvbeQaCxbW+BBnrJJnrzTaUi+99BgJE7F9Ycke9b0lBrswIHK7AGNlune
+         iqT8Ad7vuAizvFM+kJeHUhTt2DyUANdw7soKl8f69nMDOK3De1GKjj00ENA6DFYbhF9l
+         PPY5nX5x3EgfueLlCrottfcvfCbRcRua2jFvJH23TJ9czWkwERNWP8DZnt++oywW+Tyi
+         hrjw==
+X-Gm-Message-State: APjAAAVIi9PmLK7LcwETvinS4AY8N0QCQqglsNLbFqdn6kvTI8wlLjvr
+        /9/V7tyOx8k0TGgSzbar7Z/gDw==
+X-Google-Smtp-Source: APXvYqxSodDem2VxJeSULsc2yK6A+yLio7NbpdwoWeMo0EQlIIPFpuUhQtRJJpl2pfHB2OL5yzoJcg==
+X-Received: by 2002:a05:651c:106b:: with SMTP id y11mr7541430ljm.123.1571862489642;
+        Wed, 23 Oct 2019 13:28:09 -0700 (PDT)
+Received: from localhost (h85-30-9-151.cust.a3fiber.se. [85.30.9.151])
+        by smtp.gmail.com with ESMTPSA id r12sm9386450lfp.63.2019.10.23.13.28.08
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 23 Oct 2019 13:28:08 -0700 (PDT)
+Date:   Wed, 23 Oct 2019 13:22:47 -0700
+From:   Olof Johansson <olof@lixom.net>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     soc@kernel.org, arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [GIT PULL 1/2] omap2plus_defconfig changes for v5.5
+Message-ID: <20191023202247.wb2jzwvek7u5korx@localhost>
+References: <pull-1571853258-16998@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7d578fe1-2d60-4a6e-48b0-73d66c39f783@ti.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <pull-1571853258-16998@atomide.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Peter Ujfalusi <peter.ujfalusi@ti.com> [191023 19:55]:
-> On 10/23/19 10:18 PM, Tony Lindgren wrote:
-> > We'd have to allow dma consumer driver call pm_runtime_get_sync()
-> > on the dma device. Something similar maybe to what we have
-> > for phy_pm_runtime_get_sync(). Or just get the device handle for
-> > dma so the consumer can call pm_runtime_get_sync() on it.
+On Wed, Oct 23, 2019 at 10:54:48AM -0700, Tony Lindgren wrote:
+> From: "Tony Lindgren" <tony@atomide.com>
 > 
-> How much a pm_runtime_get_sync(dmadev) is different when it is issued by
-> the client driver compared to when the dma driver issues it for it's own
-> device?
+> The following changes since commit 96d49bbfe6c1a6bb43ccd00fb87aca100e32e5e2:
+> 
+>   ARM: omap2plus_defconfig: Fix selected panels after generic panel changes (2019-10-03 09:44:40 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.5/defconfig-signed
+> 
+> for you to fetch changes up to ec2b31267263cd7d5a7567d315f839796c2a8c87:
+> 
+>   configs: omap2plus: Enable VIDEO_MT9P031 module (2019-10-22 09:11:03 -0700)
+> 
+> ----------------------------------------------------------------
+> Defconfig changes for omap2plus_defconfig for v5.5
+> 
+> A series of changes from Adam Ford to update for removed and moved items,
+> and then enable crypto devices and MT9P031 video as loadable modules.
+> 
+> Looks like I missed unifying the subject line for one commit, but I did
+> not want to mess with the commit after pushing it out.
+> 
+> ----------------------------------------------------------------
+> Adam Ford (4):
+>       ARM: omap2plus_defconfig: Update for removed items
+>       ARM: omap2plus_defconfig: Update for moved item
+>       ARM: omap2plus_defconfig: Enable HW Crypto engine modules
+>       configs: omap2plus: Enable VIDEO_MT9P031 module
 
-Well the consumer device could call pm_runtime_get_sync(dmadev)
-when the USB cable is connected for example, and then call
-pm_runtime_pu(dmadev) when let's say the USB cable is disconnected.
+Looks like this branch had a minor conflict with one of your fixes branches.
+Easy to patch up, but feel free to use your fixes as a base for the topics if
+needed.
 
-Without using pm_runtime_irq_safe() we currently don't have a
-clear path for doing this where the pm_runtime_get_sync(dmadev)
-may sleep.
 
-> But I still fail to see the difference between the events before this
-> patch and with the case when there is a 100ms delay between prep_sg and
-> issue_pending.
-> 
-> Before this patch:
-> 
-> prep_sg()
-> issue_pending() <- runtime_get() /  put_autosuspend()
-> 		   _not_ starting transfer
-> runtime_resume() <- starts the transfer
-> 
-> With this patch and than 100ms delay between prep_sg and issue_pending:
-> 
-> prep_sg() <- runtime_get() /  put_autosuspend()
-> runtime_resume() <- not starting transfer
-> issue_pending() <- runtime_get() /  put_autosuspend()
-> 		   starts the transfer
-> 
-> With this patch, but more than 100ms delay in between:
-> 
-> prep_sg() <- runtime_get() /  put_autosuspend()
-> runtime_resume() <- not starting transfer
-> > 100ms delay
-> runtime_suspend()
-> issue_pending() <- runtime_get() /  put_autosuspend()
-> 		   _not_ starting transfer
-> runtime_resume() <- starts the transfer
-> 
-> pm_runtime_get_sync() in issue_pending would be the solution to avoid
-> delayed execution, but the usb driver should not assume that DMA is
-> completed as soon as issue_pending returned.
-
-Oh I see. Yes the consumer driver would need to check for
-the completed dma transfer in all cases. The delay issues
-should not currently happen in the musb_ep_program() problem
-case as it gets called from IRQ context.
-
-And no, adding pm_runtime_get_sync() to issue_pending is not
-a solution. There may be clocks and regulators that need to
-be powered up, and we don't want to use pm_runtime_irq_safe()
-because of the permanent use count on the parent.
-
-Regards,
-
-Tony
+-Olof
