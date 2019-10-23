@@ -2,108 +2,136 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4762CE1123
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 06:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76DF6E113F
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 06:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731556AbfJWEls (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Oct 2019 00:41:48 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:33465 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731487AbfJWEls (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Oct 2019 00:41:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1571805705;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=p84wWu+8rvP9qG2T8V0aa5d86OgYm2mqo8DV3AkG+rs=;
-        b=VNyzV54eE7PwwLNOZAlH8ZpE256I1w/OGPgOpYoK2dVLHZXLmFmM5fuvaVvgG4OdSt
-        ktBnSnl9rE+o9gcJkrolwVhAzpa12wFxKko6N+llTNVgvRIfrXUqwm/64EehxC3oeSrT
-        iJnSAUan4erlDRxUv5gQKyJU7zFFgUAECdIJ5AY0FMjapNQ94vcZ83oJB0ZXfSgxXbWm
-        cuXtp2YO6ClRp/WzAx+9o2hGt+L46XUttKT2eFKN4LO4/4+GV9899HXGyQRwbSuXhjTJ
-        DF0JJf4PUunUwnEHPna/fegYaQ4CYG8vzWuQL7Gvw5b0M6y1oqmlrUWKTIKNEDfEjHbb
-        W2+g==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/PswDOqm1w="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.28.1 DYNA|AUTH)
-        with ESMTPSA id R0b2a8v9N4fBSsx
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Wed, 23 Oct 2019 06:41:11 +0200 (CEST)
-Subject: Re: [PATCH 1/2] configs: ARM: omap2plus: Enable OMAP3_THERMAL
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20191022221919.GF5610@atomide.com>
-Date:   Wed, 23 Oct 2019 06:41:11 +0200
-Cc:     Adam Ford <aford173@gmail.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>
-Content-Transfer-Encoding: 7bit
-Message-Id: <1CE62E4E-1A38-448C-9197-8FA16747F942@goldelico.com>
-References: <20191007220540.30690-1-aford173@gmail.com> <20191022162223.GU5610@atomide.com> <CAHCN7xLy975mxX+cm56PMx-TKODEZjYPfMHb=byspKxYXXq7OA@mail.gmail.com> <20191022221919.GF5610@atomide.com>
+        id S1733132AbfJWExl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Oct 2019 00:53:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59652 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731061AbfJWExl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 23 Oct 2019 00:53:41 -0400
+Received: from localhost (unknown [122.181.210.10])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1D3122173B;
+        Wed, 23 Oct 2019 04:53:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571806420;
+        bh=KmXEO9N15emCT7iHfRUVAzsxcCk2lj537nwdJsgIXJE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PvK6csaJTyaVFUf/KOKnftCZA6SnTccubTAMBReC0Rscti6sxfYml5eUnEtFiyncy
+         HYscRAxdFIqhU6GiTRllBuZz2tTxJXZdWU7k91OQgvJKmUY7k2E6NQWr61toWXC0ew
+         tycYBGN2SuBzTrMA6OkeqKJi/AM99Nt/VCVHkyTs=
+Date:   Wed, 23 Oct 2019 10:23:33 +0530
+From:   Vinod Koul <vkoul@kernel.org>
 To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Vinod Koul <vinod.koul@intel.com>,
+        Alexandre Bailon <abailon@baylibre.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Bin Liu <b-liu@ti.com>, Daniel Mack <zonque@gmail.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        George Cherian <george.cherian@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Johan Hovold <johan@kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        dmaengine@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, giulio.benetti@benettiengineering.com,
+        Sebastian Reichel <sre@kernel.org>,
+        Skvortsov <andrej.skvortzov@gmail.com>,
+        Yegor Yefremov <yegorslists@googlemail.com>
+Subject: Re: [PATCH] dmaengine: cppi41: Fix issue with musb and ftdi uart
+Message-ID: <20191023045333.GO2654@vkoul-mobl>
+References: <20191022145545.6449-1-tony@atomide.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191022145545.6449-1-tony@atomide.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Tony,
 
-> Am 23.10.2019 um 00:19 schrieb Tony Lindgren <tony@atomide.com>:
+On 22-10-19, 07:55, Tony Lindgren wrote:
+
+Patch subject should reflect the patch changes not the fix. The patch
+title here is not telling me anything about the change below. Pls
+consider updating the title.
+
+> The first dma call done by musb_ep_program() must wait if cppi41 is PM
+> runtime suspended. Otherwise musb_ep_program() continues with other
+> non-dma packets before the DMA transfer is started causing at least ftdi
+> uarts to fail to receive data.
 > 
-> * Adam Ford <aford173@gmail.com> [191022 19:01]:
->> On Tue, Oct 22, 2019 at 11:22 AM Tony Lindgren <tony@atomide.com> wrote:
->>> 
->>> Hi,
->>> 
->>> * Adam Ford <aford173@gmail.com> [191007 15:06]:
->>>> The some in the OMAP3 family have a bandgap thermal sensor, but
->>>> omap2plus has it disabled.
->>>> 
->>>> This patch enables the OMAP3_THERMAL by default like the rest of
->>>> the OMAP family.
->>> 
->>> Looks like this breaks off mode during idle for omap3, and that's
->>> probably why it never got enabled. The difference in power
->>> consumption during idle is about 7mW vs 32mW for the SoC as
->>> measured from torpedo shunt for main_battery_som.
->>> 
->>> I think the right fix might be simply to add handling for
->>> CPU_CLUSTER_PM_ENTER to the related thermal driver to disable
->>> it during idle like we have for gpio-omap.c for example.
->> 
->> I am not sure I know where to start on fixing that issue.  Would you
->> entertain enabling the driver if we set the device tree to 'disabled'
->> by default?  This way if people want to to use it, it can be enabled
->> on a per-device option.  Once the power stuff gets resolved, we might
->> be able to enable it by default.  For people who are planning on using
->> the DM3730 @ 1GHz in high temp environments, I am not sure they'll
->> care about low power.
+> Let's fix the issue by waking up cppi41 with PM runtime calls added to
+> cppi41_dma_prep_slave_sg() and return NULL if still idled. This way we
+> have musb_ep_program() continue with PIO until cppi41 is awake.
 > 
-> They should both work fine together though. They are not mutually
-> exclusive features.
+> Fixes: fdea2d09b997 ("dmaengine: cppi41: Add basic PM runtime support")
+
+Cc stable?
+
+> Cc: Bin Liu <b-liu@ti.com>
+> Cc: giulio.benetti@benettiengineering.com
+> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: Skvortsov <andrej.skvortzov@gmail.com>
+> Reported-by: Yegor Yefremov <yegorslists@googlemail.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/dma/ti/cppi41.c | 21 ++++++++++++++++++++-
+>  1 file changed, 20 insertions(+), 1 deletion(-)
 > 
->> I'll try to look into it when I have time, but I was hoping a
->> compromise might be a reasonable work-around.
-> 
-> It should be hopefully a trivial fix.. I have not looked at the
-> driver code though.
+> diff --git a/drivers/dma/ti/cppi41.c b/drivers/dma/ti/cppi41.c
+> --- a/drivers/dma/ti/cppi41.c
+> +++ b/drivers/dma/ti/cppi41.c
+> @@ -586,9 +586,22 @@ static struct dma_async_tx_descriptor *cppi41_dma_prep_slave_sg(
+>  	enum dma_transfer_direction dir, unsigned long tx_flags, void *context)
+>  {
+>  	struct cppi41_channel *c = to_cpp41_chan(chan);
+> +	struct dma_async_tx_descriptor *txd = NULL;
+> +	struct cppi41_dd *cdd = c->cdd;
+>  	struct cppi41_desc *d;
+>  	struct scatterlist *sg;
+>  	unsigned int i;
+> +	int error;
+> +
+> +	error = pm_runtime_get(cdd->ddev.dev);
+> +	if (error < 0) {
+> +		pm_runtime_put_noidle(cdd->ddev.dev);
+> +
+> +		return NULL;
+> +	}
+> +
+> +	if (cdd->is_suspended)
+> +		goto err_out_not_ready;
+>  
+>  	d = c->desc;
+>  	for_each_sg(sgl, sg, sg_len, i) {
+> @@ -611,7 +624,13 @@ static struct dma_async_tx_descriptor *cppi41_dma_prep_slave_sg(
+>  		d++;
+>  	}
+>  
+> -	return &c->txd;
+> +	txd = &c->txd;
+> +
+> +err_out_not_ready:
+> +	pm_runtime_mark_last_busy(cdd->ddev.dev);
+> +	pm_runtime_put_autosuspend(cdd->ddev.dev);
+> +
+> +	return txd;
+>  }
+>  
+>  static void cppi41_compute_td_desc(struct cppi41_desc *d)
+> -- 
+> 2.23.0
 
-If I am taken right, it is the drivers/thermal/ti-soc-thermal/ti-*.c
-which is a common driver for omap3, omap4, omap5. They only differ
-in the thermal data and which registers and bits are used to access
-the ADC.
-
-So is this problem with off mode also known for omap4 and omap5?
-
-BR,
-Nikolaus
-
+-- 
+~Vinod
