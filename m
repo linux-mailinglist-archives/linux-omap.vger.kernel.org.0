@@ -2,109 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43795E1FFC
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 17:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22235E20D3
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 18:40:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406962AbfJWP5C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Oct 2019 11:57:02 -0400
-Received: from muru.com ([72.249.23.125]:39386 "EHLO muru.com"
+        id S2407311AbfJWQkC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Oct 2019 12:40:02 -0400
+Received: from muru.com ([72.249.23.125]:39404 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404448AbfJWP5C (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 23 Oct 2019 11:57:02 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 3B32F80CF;
-        Wed, 23 Oct 2019 15:57:35 +0000 (UTC)
-Date:   Wed, 23 Oct 2019 08:56:57 -0700
+        id S2407309AbfJWQkC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 23 Oct 2019 12:40:02 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id BF2FC816C;
+        Wed, 23 Oct 2019 16:40:36 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     Benoit Parrot <bparrot@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [Patch 1/3] ARM: dts: am43xx: add support for clkout1 clock
-Message-ID: <20191023155657.GL5610@atomide.com>
-References: <20191016184954.14048-1-bparrot@ti.com>
- <20191016184954.14048-2-bparrot@ti.com>
- <20191022154816.GO5610@atomide.com>
- <20191022162134.fpawonjdjvd5kxza@ti.com>
- <586dcabb-0400-50d6-5488-16bddc059286@ti.com>
- <20191022165516.GE5610@atomide.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL] three fixes for omaps for v5.4
+Date:   Wed, 23 Oct 2019 09:39:57 -0700
+Message-Id: <pull-1571848757-282222@atomide.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191022165516.GE5610@atomide.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [191022 16:56]:
-> * Tero Kristo <t-kristo@ti.com> [191022 16:48]:
-> > On 22/10/2019 19:21, Benoit Parrot wrote:
-> > > Tony Lindgren <tony@atomide.com> wrote on Tue [2019-Oct-22 08:48:16 -0700]:
-> > > > * Benoit Parrot <bparrot@ti.com> [191016 18:47]:
-> > > > > --- a/arch/arm/boot/dts/am43xx-clocks.dtsi
-> > > > > +++ b/arch/arm/boot/dts/am43xx-clocks.dtsi
-> > > > > @@ -704,6 +704,60 @@
-> > > > >   		ti,bit-shift = <8>;
-> > > > >   		reg = <0x2a48>;
-> > > > >   	};
-> > > > > +
-> > > > > +	clkout1_osc_div_ck: clkout1_osc_div_ck {
-> > > > > +		#clock-cells = <0>;
-> > > > > +		compatible = "ti,divider-clock";
-> > > > > +		clocks = <&sys_clkin_ck>;
-> > > > > +		ti,bit-shift = <20>;
-> > > > > +		ti,max-div = <4>;
-> > > > > +		reg = <0x4100>;
-> > > > > +	};
-> > > > 
-> > > > Here too please describe why the clock names are not generic.
-> > > 
-> > > Tero originally had this patch in the kernel so this is somewhat of a
-> > > revert. Since these "clock" were removed. If the name syntax is no longer
-> > > valid for some reason, then I will need a little more informations to
-> > > proceed.
-> > > 
-> > > Tero, can you assist here?
-> > 
-> > This one is just following the naming convention of the rest of the clocks
-> > atm.
-> > 
-> > If we need to fix all the underscore name clocks, that requires pretty much
-> > complete revamp of both the dts data + clock data under the clock driver,
-> > and it is not backwards compatible either. How should we tackle that one?
-> > 
-> > We could maybe add support code in kernel to do s/-/_/g for the "new" clocks
-> > so that their parent-child relationships would be retained, and then convert
-> > the clocks in phases.
-> 
-> Well some of them can be fixed by configuring things based
-> on the compatible value and then the node name can be just
-> clock like it should be.
-> 
-> Here too one option would be to add custom compatibles like:
-> 
-> compatible = "ti,clkout1-osc-div", "ti,divider-clock";
-> 
-> And then have match data configure the rest.
-> 
-> The other option would be to have lookup tables in the clock
-> driver based on the SoC and reg address.
-> 
-> This is a hidden mine though.. We've hit it already several times,
-> and any dts clean-up effort has a chance of breaking things.
+From: "Tony Lindgren" <tony@atomide.com>
 
-Hmm maybe in this case just doing this is enough:
+The following changes since commit 17a9e5bbbfe5a5a6356e47cdc1c1656e1e5e1f62:
 
-clkout1_osc_div_ck: clock@4100 {
-	... 
-}
+  Merge tag 'wlcore-fix' into fixes (2019-10-11 09:15:35 -0700)
 
-Or do all the TI clocks we have have a dependency to the
-node naming?
+are available in the Git repository at:
 
-Regards,
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.4/fixes-rc4-signed
 
-Tony
+for you to fetch changes up to 6aed5a0e0f56213cc5e4bff674fb42e997f30df7:
 
+  Merge branch 'watchdog-fix' into fixes (2019-10-18 08:47:39 -0700)
+
+----------------------------------------------------------------
+Three fixes for omaps for v5.4-rc cycle
+
+Two regression fixes for omap3 iommu. I missed applying two omap3
+related iommu pdata quirks patches earlier because the kbuild test
+robot produced errors on them for missing dependencies.
+
+Fix ti-sysc interconnect target module driver handling for watchdog
+quirk. I must have tested this earlier only with watchdog service
+running, but clearly it does not do what it needs to do.
+
+----------------------------------------------------------------
+Suman Anna (2):
+      ARM: OMAP2+: Plug in device_enable/idle ops for IOMMUs
+      ARM: OMAP2+: Add pdata for OMAP3 ISP IOMMU
+
+Tony Lindgren (2):
+      bus: ti-sysc: Fix watchdog quirk handling
+      Merge branch 'watchdog-fix' into fixes
+
+ arch/arm/mach-omap2/pdata-quirks.c | 11 +++++++++++
+ drivers/bus/ti-sysc.c              | 18 ++++++++++++++----
+ 2 files changed, 25 insertions(+), 4 deletions(-)
