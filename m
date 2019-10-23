@@ -2,76 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2888EE2516
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 23:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4755E2544
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Oct 2019 23:27:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406297AbfJWVTw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Oct 2019 17:19:52 -0400
-Received: from muru.com ([72.249.23.125]:39598 "EHLO muru.com"
+        id S2392429AbfJWV1k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Oct 2019 17:27:40 -0400
+Received: from muru.com ([72.249.23.125]:39622 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404502AbfJWVTw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 23 Oct 2019 17:19:52 -0400
+        id S1733169AbfJWV1k (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 23 Oct 2019 17:27:40 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 8D41080CF;
-        Wed, 23 Oct 2019 21:20:26 +0000 (UTC)
-Date:   Wed, 23 Oct 2019 14:19:48 -0700
+        by muru.com (Postfix) with ESMTPS id 7347680CF;
+        Wed, 23 Oct 2019 21:28:12 +0000 (UTC)
+Date:   Wed, 23 Oct 2019 14:27:34 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Olof Johansson <olof@lixom.net>
-Cc:     soc@kernel.org, arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [GIT PULL 1/2] omap2plus_defconfig changes for v5.5
-Message-ID: <20191023211948.GS5610@atomide.com>
-References: <pull-1571853258-16998@atomide.com>
- <20191023202247.wb2jzwvek7u5korx@localhost>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Alexandre Bailon <abailon@baylibre.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Bin Liu <b-liu@ti.com>, Daniel Mack <zonque@gmail.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Johan Hovold <johan@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        dmaengine@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, giulio.benetti@benettiengineering.com,
+        Sebastian Reichel <sre@kernel.org>,
+        Skvortsov <andrej.skvortzov@gmail.com>,
+        Yegor Yefremov <yegorslists@googlemail.com>
+Subject: Re: [PATCH] dmaengine: cppi41: Fix cppi41_dma_prep_slave_sg() when
+ idle
+Message-ID: <20191023212734.GT5610@atomide.com>
+References: <20191023153138.23442-1-tony@atomide.com>
+ <245e1e8f-7933-bae1-b779-239f33d4d449@ti.com>
+ <20191023171628.GO5610@atomide.com>
+ <5deab8a9-5796-5367-213e-90c5961b8498@ti.com>
+ <20191023191859.GQ5610@atomide.com>
+ <7d578fe1-2d60-4a6e-48b0-73d66c39f783@ti.com>
+ <20191023201829.GR5610@atomide.com>
+ <c3f0ae57-bc74-bab9-c8f9-b4ca751d657e@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191023202247.wb2jzwvek7u5korx@localhost>
+In-Reply-To: <c3f0ae57-bc74-bab9-c8f9-b4ca751d657e@ti.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Olof Johansson <olof@lixom.net> [191023 20:28]:
-> On Wed, Oct 23, 2019 at 10:54:48AM -0700, Tony Lindgren wrote:
-> > From: "Tony Lindgren" <tony@atomide.com>
-> > 
-> > The following changes since commit 96d49bbfe6c1a6bb43ccd00fb87aca100e32e5e2:
-> > 
-> >   ARM: omap2plus_defconfig: Fix selected panels after generic panel changes (2019-10-03 09:44:40 -0700)
-> > 
-> > are available in the Git repository at:
-> > 
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.5/defconfig-signed
-> > 
-> > for you to fetch changes up to ec2b31267263cd7d5a7567d315f839796c2a8c87:
-> > 
-> >   configs: omap2plus: Enable VIDEO_MT9P031 module (2019-10-22 09:11:03 -0700)
-> > 
-> > ----------------------------------------------------------------
-> > Defconfig changes for omap2plus_defconfig for v5.5
-> > 
-> > A series of changes from Adam Ford to update for removed and moved items,
-> > and then enable crypto devices and MT9P031 video as loadable modules.
-> > 
-> > Looks like I missed unifying the subject line for one commit, but I did
-> > not want to mess with the commit after pushing it out.
-> > 
-> > ----------------------------------------------------------------
-> > Adam Ford (4):
-> >       ARM: omap2plus_defconfig: Update for removed items
-> >       ARM: omap2plus_defconfig: Update for moved item
-> >       ARM: omap2plus_defconfig: Enable HW Crypto engine modules
-> >       configs: omap2plus: Enable VIDEO_MT9P031 module
+* Grygorii Strashko <grygorii.strashko@ti.com> [191023 20:56]:
+> On 23/10/2019 23:18, Tony Lindgren wrote:
+> > And no, adding pm_runtime_get_sync() to issue_pending is not
+> > a solution. There may be clocks and regulators that need to
+> > be powered up, and we don't want to use pm_runtime_irq_safe()
+> > because of the permanent use count on the parent.
 > 
-> Looks like this branch had a minor conflict with one of your fixes branches.
-> Easy to patch up, but feel free to use your fixes as a base for the topics if
-> needed.
+> 5 cents.
+> 
+> I think the right thing might be to get rid of pm_runtime_xxx()
+> in cppi41_dma_issue_pending(). So overall approach will be:
+> 
+> - new job -> cppi41_dma_prep_slave_sg() -> pm_runtime_get()
+> - issue_pending: fill backlog if suspended or run_queue if active (pm_runtime_active())
+> - job done: dmaengine_desc_get_callback_invoke() ->
+> 
+> 	dmaengine_desc_get_callback_invoke();
+> 	pm_runtime_mark_last_busy(cdd->ddev.dev);
+> 	pm_runtime_put_autosuspend(cdd->ddev.dev);
+>   in all places.
+> 
+> It even might allow to get rid of cdd->lock.
 
-Oh sorry, I thought I did that. But sounds like I also had
-some additional merge resolve in my for-next.
+Well I don't think cppi41_dma_prep_slave_sg() is necessarily
+paired with anything currently. This can potentially leading
+to pm_runtime_get() called multiple times?
 
-Thanks,
+So I think we'd also need cppi41_dma_cleanup_slave_sg()
+or similar, and require they get called in a paired manner.
+
+It might be better to add seprate PM runtime specific
+functions that dma consumers can optionally call.
+
+Regards,
 
 Tony
+
