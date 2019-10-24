@@ -2,51 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CC1AE2B9D
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Oct 2019 09:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F33AE2BA6
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Oct 2019 10:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408766AbfJXH7y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Oct 2019 03:59:54 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:39470 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404701AbfJXH7y (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Oct 2019 03:59:54 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9O7xpKB066748;
-        Thu, 24 Oct 2019 02:59:51 -0500
+        id S2408844AbfJXIAx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Oct 2019 04:00:53 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:39148 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732359AbfJXIAx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Oct 2019 04:00:53 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9O80luO014296;
+        Thu, 24 Oct 2019 03:00:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1571903991;
-        bh=+IUED6wuPtdFzwetdXLMK4dsNj7i3Pf25koVr6ceON8=;
+        s=ti-com-17Q1; t=1571904047;
+        bh=bGS0uz90T2nQETvPEtdlDAoR1cWSOEVj0vqWi7GguUs=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=u/xwwGQ+I3WW3uguQVeK3bzwHYzzz5PMJetrrqu/u552Yzuo4i2ulMhDzKB3TFdVT
-         +pIFGA5kZLiYwjONdqEG68vnQFqwzNuPRUfWToKn0kPY3ecAAQE4+HnSc/RS8cH+1B
-         Kwg8G7zmiUCkv6waemSF4KNy6XPmnJpV5bMQYdUo=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9O7xpeq046214;
-        Thu, 24 Oct 2019 02:59:51 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+        b=V3ELD5s1Pm+PGLcaSBfLL5Od242jYr4nDNiHiC68fZFi8xxYNlmk+Vht/gzPJrdx4
+         wmhu3Lq2J+o8Jn5eFKLuPeyJmzw80/22lBSCw7COpgXTdInMeg2WL4dBtLd/DU44TH
+         +Mp4bStR0+ScKudJANHn3/wlyqxHDzOVqviz+IW4=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9O80lTe004080
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 24 Oct 2019 03:00:47 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 24
- Oct 2019 02:59:39 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2019 03:00:46 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 24 Oct 2019 02:59:49 -0500
+ Frontend Transport; Thu, 24 Oct 2019 03:00:36 -0500
 Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9O7xlgJ040749;
-        Thu, 24 Oct 2019 02:59:48 -0500
-Subject: Re: [PATCH v2] clk: ti: dra7-atl-clock: Remove ti_clk_add_alias call
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>, <mturquette@baylibre.com>
-CC:     <sboyd@kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20191002083436.10194-1-peter.ujfalusi@ti.com>
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9O80i7O070607;
+        Thu, 24 Oct 2019 03:00:44 -0500
+Subject: Re: [PATCH] clk: ti: clkctrl: Fix failed to enable error with double
+ udelay timeout
+To:     Tony Lindgren <tony@atomide.com>, Keerthy <j-keerthy@ti.com>
+CC:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        <devicetree@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+References: <20190930154001.46581-1-tony@atomide.com>
+ <93a6448d-cece-a903-5c7e-ade793d62063@ti.com>
+ <20191010140519.GV5610@atomide.com>
 From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <0770a061-c731-dfee-0de7-c16dcf87454e@ti.com>
-Date:   Thu, 24 Oct 2019 10:59:47 +0300
+Message-ID: <4bd4fa4f-a7a0-1a01-a1c2-31d681d6ee5d@ti.com>
+Date:   Thu, 24 Oct 2019 11:00:43 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191002083436.10194-1-peter.ujfalusi@ti.com>
+In-Reply-To: <20191010140519.GV5610@atomide.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -56,54 +62,66 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 02/10/2019 11:34, Peter Ujfalusi wrote:
-> ti_clk_register() calls it already so the driver should not create
-> duplicated alias.
+On 10/10/2019 17:05, Tony Lindgren wrote:
+> * Keerthy <j-keerthy@ti.com> [191007 00:57]:
+>>
+>>
+>> On 30/09/19 9:10 PM, Tony Lindgren wrote:
+>>> Commit 3d8598fb9c5a ("clk: ti: clkctrl: use fallback udelay approach if
+>>> timekeeping is suspended") added handling for cases when timekeeping is
+>>> suspended. But looks like we can still get occasional "failed to enable"
+>>> errors on the PM runtime resume path with udelay() returning faster than
+>>> expected.
+>>>
+>>> With ti-sysc interconnect target module driver this leads into device
+>>> failure with PM runtime failing with "failed to enable" clkctrl error.
+>>>
+>>> Let's fix the issue with a delay of two times the desired delay as in
+>>> often done for udelay() to account for the inaccuracy.
+>>
+>> Tested for DS0 and rtc+ddr modes on am43 and ds0 on am33.
+>>
+>> Tested-by: Keerthy <j-keerthy@ti.com>
 > 
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> ---
-> Hi,
-> 
-> changes since v1:
-> - removed unused ret variable
-> 
+> Thanks for testing. This one should be applied into v5.4-rc series
+> please if no more comments.
 
 Queued up for 5.4 fixes, thanks.
 
 -Tero
 
-
+> 
 > Regards,
-> Peter
 > 
->   drivers/clk/ti/clk-dra7-atl.c | 6 ------
->   1 file changed, 6 deletions(-)
+> Tony
 > 
-> diff --git a/drivers/clk/ti/clk-dra7-atl.c b/drivers/clk/ti/clk-dra7-atl.c
-> index a01ca9395179..f65e16c4f3c4 100644
-> --- a/drivers/clk/ti/clk-dra7-atl.c
-> +++ b/drivers/clk/ti/clk-dra7-atl.c
-> @@ -174,7 +174,6 @@ static void __init of_dra7_atl_clock_setup(struct device_node *node)
->   	struct clk_init_data init = { NULL };
->   	const char **parent_names = NULL;
->   	struct clk *clk;
-> -	int ret;
->   
->   	clk_hw = kzalloc(sizeof(*clk_hw), GFP_KERNEL);
->   	if (!clk_hw) {
-> @@ -207,11 +206,6 @@ static void __init of_dra7_atl_clock_setup(struct device_node *node)
->   	clk = ti_clk_register(NULL, &clk_hw->hw, node->name);
->   
->   	if (!IS_ERR(clk)) {
-> -		ret = ti_clk_add_alias(NULL, clk, node->name);
-> -		if (ret) {
-> -			clk_unregister(clk);
-> -			goto cleanup;
-> -		}
->   		of_clk_add_provider(node, of_clk_src_simple_get, clk);
->   		kfree(parent_names);
->   		return;
-> 
+>>> Fixes: 3d8598fb9c5a ("clk: ti: clkctrl: use fallback udelay approach if timekeeping is suspended")
+>>> Cc: Keerthy <j-keerthy@ti.com>
+>>> Cc: Tero Kristo <t-kristo@ti.com>
+>>> Signed-off-by: Tony Lindgren <tony@atomide.com>
+>>> ---
+>>>    drivers/clk/ti/clkctrl.c | 5 +++--
+>>>    1 file changed, 3 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+>>> --- a/drivers/clk/ti/clkctrl.c
+>>> +++ b/drivers/clk/ti/clkctrl.c
+>>> @@ -100,11 +100,12 @@ static bool _omap4_is_timeout(union omap4_timeout *time, u32 timeout)
+>>>    	 * can be from a timer that requires pm_runtime access, which
+>>>    	 * will eventually bring us here with timekeeping_suspended,
+>>>    	 * during both suspend entry and resume paths. This happens
+>>> -	 * at least on am43xx platform.
+>>> +	 * at least on am43xx platform. Account for flakeyness
+>>> +	 * with udelay() by multiplying the timeout value by 2.
+>>>    	 */
+>>>    	if (unlikely(_early_timeout || timekeeping_suspended)) {
+>>>    		if (time->cycles++ < timeout) {
+>>> -			udelay(1);
+>>> +			udelay(1 * 2);
+>>>    			return false;
+>>>    		}
+>>>    	} else {
+>>>
 
 --
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
