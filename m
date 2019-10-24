@@ -2,84 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79412E34E7
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Oct 2019 16:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE32E3764
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Oct 2019 18:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731583AbfJXOAv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Oct 2019 10:00:51 -0400
-Received: from muru.com ([72.249.23.125]:39740 "EHLO muru.com"
+        id S2407569AbfJXQFy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Oct 2019 12:05:54 -0400
+Received: from muru.com ([72.249.23.125]:39772 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727811AbfJXOAv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 24 Oct 2019 10:00:51 -0400
+        id S2407544AbfJXQFy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 24 Oct 2019 12:05:54 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 71C7680C5;
-        Thu, 24 Oct 2019 14:01:23 +0000 (UTC)
-Date:   Thu, 24 Oct 2019 07:00:45 -0700
+        by muru.com (Postfix) with ESMTPS id 5D9B280C5;
+        Thu, 24 Oct 2019 16:06:27 +0000 (UTC)
+Date:   Thu, 24 Oct 2019 09:05:49 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Alexandre Bailon <abailon@baylibre.com>,
-        Bin Liu <b-liu@ti.com>, Daniel Mack <zonque@gmail.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Johan Hovold <johan@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        dmaengine <dmaengine@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        giulio.benetti@benettiengineering.com,
-        Sebastian Reichel <sre@kernel.org>,
-        Skvortsov <andrej.skvortzov@gmail.com>,
-        Yegor Yefremov <yegorslists@googlemail.com>
-Subject: Re: [PATCH] dmaengine: cppi41: Fix cppi41_dma_prep_slave_sg() when
- idle
-Message-ID: <20191024140045.GX5610@atomide.com>
-References: <20191023153138.23442-1-tony@atomide.com>
- <245e1e8f-7933-bae1-b779-239f33d4d449@ti.com>
- <20191023171628.GO5610@atomide.com>
- <5deab8a9-5796-5367-213e-90c5961b8498@ti.com>
- <20191023191859.GQ5610@atomide.com>
- <7d578fe1-2d60-4a6e-48b0-73d66c39f783@ti.com>
- <20191023201829.GR5610@atomide.com>
- <4bcd75d8-b7c5-5006-d80f-c5bda0cdf011@ti.com>
- <CAHp75VfOHjzO=ar+G7ieJo49=Nt8kFwUnA__B7vX8+Gh4JZqzg@mail.gmail.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     netdev@vger.kernel.org,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Sekhar Nori <nsekhar@ti.com>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, Murali Karicheri <m-karicheri2@ti.com>,
+        Ivan Vecera <ivecera@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 net-next 00/12] net: ethernet: ti: introduce new cpsw
+ switchdev based driver
+Message-ID: <20191024160549.GY5610@atomide.com>
+References: <20191024100914.16840-1-grygorii.strashko@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHp75VfOHjzO=ar+G7ieJo49=Nt8kFwUnA__B7vX8+Gh4JZqzg@mail.gmail.com>
+In-Reply-To: <20191024100914.16840-1-grygorii.strashko@ti.com>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Andy Shevchenko <andy.shevchenko@gmail.com> [191024 11:23]:
-> On Thu, Oct 24, 2019 at 11:51 AM Peter Ujfalusi <peter.ujfalusi@ti.com> wrote:
-> > On 23/10/2019 23.18, Tony Lindgren wrote:
-> 
-> > And the USB cable connect/disconnect is handled in interrupt -> you need
-> > to call pm_runtime_get_sync(dmadev) from interrupt context and need to
-> > mark the dmadev to pm_runtime_irq_safe()
-> 
-> Side note: and please don't spread the pm_runtime_irq_safe() hack more...
-> I think Tony is quite aware of this.
+Hi,
 
-I agree, let's not add any more pm_runtime_irq_safe() at all. And let's get
-rid of all the existing users of it.
+* Grygorii Strashko <grygorii.strashko@ti.com> [191024 10:10]:
+> This the RFC v5 which introduces new CPSW switchdev based driver which is 
+> operating in dual-emac mode by default, thus working as 2 individual
+> network interfaces. The Switch mode can be enabled by configuring devlink driver
+> parameter "switch_mode" to 1/true:
+> 	devlink dev param set platform/48484000.ethernet_switch \
+> 	name switch_mode value 1 cmode runtime
 
-Using pm_runtime_irq_safe() causes a problem for implementing genpd because
-of the permanent use count on the parent device. And then there is the
-serial driver issue with console use.
-
-In the musb case, we should be able to enable/disable cppi41 dma from
-musb_pm_runtime_check_session() without a need for pm_runtime_irq_safe().
-
-We probably still want to keep the $subject patch for the state check and
-return NULL if cppi41 is not active. But should be able to remove the
-PM runtime calls in the $subject patch.
+Just wondering about the migration plan.. Is this a replacement
+driver or used in addition to the old driver?
 
 Regards,
 
