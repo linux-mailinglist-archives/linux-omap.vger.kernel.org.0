@@ -2,167 +2,227 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C8A5E2C83
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Oct 2019 10:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F732E2E2D
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Oct 2019 12:09:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438391AbfJXIva (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Oct 2019 04:51:30 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:46838 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730621AbfJXIva (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Oct 2019 04:51:30 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9O8p7Pp085877;
-        Thu, 24 Oct 2019 03:51:07 -0500
+        id S2403890AbfJXKJT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Oct 2019 06:09:19 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:55654 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733071AbfJXKJS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Oct 2019 06:09:18 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9OA97KM059810;
+        Thu, 24 Oct 2019 05:09:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1571907067;
-        bh=54djgH10KG/rVSnq5F8we0LmCw2lCjZh+du4GsdmEvs=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=QtrCVhPHsEj2wOocfkyA9jH2Qkcpyed05iPaxpH9sfQGNXJaooFfi5NN0O9EqX2uQ
-         CATjIV6nA3+ZYd4L41pvYSv5wtVyVIPty8whwwhky9oOHwY4bMxsuNeBHxhyWO8tVf
-         PyKeNrhT9tgNA1Lhcb+RjjSBvbOxcGwy7EpY3kBM=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9O8p7T6006768
+        s=ti-com-17Q1; t=1571911748;
+        bh=t6WlcOLhXqWq9w94jx+NbpY8YVru1q2MfkWp/IkFHss=;
+        h=From:To:CC:Subject:Date;
+        b=D7DPV6EPdvHt+HV8Zl81t213PfdPAzVUqwoPAzxN2MTMnbYFIUpckxmo2AcACGdLM
+         hYXyQndroJoPllO9MaHGjSzKoqzFzkRNU1x3fJAm9ELeCwwb+2AItb4Q8oHIpG/5uW
+         HAMcA2CzOUbt60I9kGrOYtcQrE2uhQP/luT07TQI=
+Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9OA97iE122155
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 24 Oct 2019 03:51:07 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 24 Oct 2019 05:09:07 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 24
- Oct 2019 03:50:55 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2019 05:09:07 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 24 Oct 2019 03:50:55 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9O8p1kH035606;
-        Thu, 24 Oct 2019 03:51:01 -0500
-Subject: Re: [PATCH] dmaengine: cppi41: Fix cppi41_dma_prep_slave_sg() when
- idle
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Alexandre Bailon <abailon@baylibre.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bin Liu <b-liu@ti.com>, Daniel Mack <zonque@gmail.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Johan Hovold <johan@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        <dmaengine@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+ Frontend Transport; Thu, 24 Oct 2019 05:08:57 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9OA95JN106598;
+        Thu, 24 Oct 2019 05:09:06 -0500
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     <netdev@vger.kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+        Jiri Pirko <jiri@resnulli.us>
+CC:     Florian Fainelli <f.fainelli@gmail.com>,
+        Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
         <linux-omap@vger.kernel.org>,
-        <giulio.benetti@benettiengineering.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Skvortsov <andrej.skvortzov@gmail.com>,
-        Yegor Yefremov <yegorslists@googlemail.com>
-References: <20191023153138.23442-1-tony@atomide.com>
- <245e1e8f-7933-bae1-b779-239f33d4d449@ti.com>
- <20191023171628.GO5610@atomide.com>
- <5deab8a9-5796-5367-213e-90c5961b8498@ti.com>
- <20191023191859.GQ5610@atomide.com>
- <7d578fe1-2d60-4a6e-48b0-73d66c39f783@ti.com>
- <20191023201829.GR5610@atomide.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <4bcd75d8-b7c5-5006-d80f-c5bda0cdf011@ti.com>
-Date:   Thu, 24 Oct 2019 11:52:02 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Ivan Vecera <ivecera@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH v5 net-next 00/12] net: ethernet: ti: introduce new cpsw switchdev based driver
+Date:   Thu, 24 Oct 2019 13:09:02 +0300
+Message-ID: <20191024100914.16840-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20191023201829.GR5610@atomide.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi All,
 
+Huh, I was finally able to return to this work.
 
-On 23/10/2019 23.18, Tony Lindgren wrote:
-> * Peter Ujfalusi <peter.ujfalusi@ti.com> [191023 19:55]:
->> On 10/23/19 10:18 PM, Tony Lindgren wrote:
->>> We'd have to allow dma consumer driver call pm_runtime_get_sync()
->>> on the dma device. Something similar maybe to what we have
->>> for phy_pm_runtime_get_sync(). Or just get the device handle for
->>> dma so the consumer can call pm_runtime_get_sync() on it.
->>
->> How much a pm_runtime_get_sync(dmadev) is different when it is issued by
->> the client driver compared to when the dma driver issues it for it's own
->> device?
-> 
-> Well the consumer device could call pm_runtime_get_sync(dmadev)
-> when the USB cable is connected for example, and then call
-> pm_runtime_pu(dmadev) when let's say the USB cable is disconnected.
+The major part of work done in this iteration is rebasing on top of net-next
+with XDP series from Ivan Khoronzhuk [3], and enable XDP support in the new
+CPSW switchdev driver (it was little bit painful ;(). There are mostly no
+functional changes in new CPSW driver, just few fixes, sync with old driver
+and cleanups/optimizations. So, I've kept rest of cover letter unchanged.
 
-And the USB cable connect/disconnect is handled in interrupt -> you need
-to call pm_runtime_get_sync(dmadev) from interrupt context and need to
-mark the dmadev to pm_runtime_irq_safe()
+And thank you All for review of v4.
 
-> Without using pm_runtime_irq_safe() we currently don't have a
-> clear path for doing this where the pm_runtime_get_sync(dmadev)
-> may sleep.
-> 
->> But I still fail to see the difference between the events before this
->> patch and with the case when there is a 100ms delay between prep_sg and
->> issue_pending.
->>
->> Before this patch:
->>
->> prep_sg()
->> issue_pending() <- runtime_get() /  put_autosuspend()
->> 		   _not_ starting transfer
->> runtime_resume() <- starts the transfer
->>
->> With this patch and than 100ms delay between prep_sg and issue_pending:
->>
->> prep_sg() <- runtime_get() /  put_autosuspend()
->> runtime_resume() <- not starting transfer
->> issue_pending() <- runtime_get() /  put_autosuspend()
->> 		   starts the transfer
->>
->> With this patch, but more than 100ms delay in between:
->>
->> prep_sg() <- runtime_get() /  put_autosuspend()
->> runtime_resume() <- not starting transfer
->>> 100ms delay
->> runtime_suspend()
->> issue_pending() <- runtime_get() /  put_autosuspend()
->> 		   _not_ starting transfer
->> runtime_resume() <- starts the transfer
->>
->> pm_runtime_get_sync() in issue_pending would be the solution to avoid
->> delayed execution, but the usb driver should not assume that DMA is
->> completed as soon as issue_pending returned.
-> 
-> Oh I see. Yes the consumer driver would need to check for
-> the completed dma transfer in all cases. The delay issues
-> should not currently happen in the musb_ep_program() problem
-> case as it gets called from IRQ context.
+---
+This series originally based on work [1][2] done by
+Ilias Apalodimas <ilias.apalodimas@linaro.org>.
 
-the cppi41 driver solely relies on irq to check is the transfer is
-completed (based on the cookie status).
-So yeah, musb have no other choice than trust that the transfer is done
-in a timely manner.
+This the RFC v5 which introduces new CPSW switchdev based driver which is 
+operating in dual-emac mode by default, thus working as 2 individual
+network interfaces. The Switch mode can be enabled by configuring devlink driver
+parameter "switch_mode" to 1/true:
+	devlink dev param set platform/48484000.ethernet_switch \
+	name switch_mode value 1 cmode runtime
+This can be done regardless of the state of Port's netdev devices - UP/DOWN, but
+Port's netdev devices have to be in UP before joining the bridge to avoid
+overwriting of bridge configuration as CPSW switch driver completely reloads its
+configuration when first Port changes its state to UP.
+When the both interfaces joined the bridge - CPSW switch driver will start
+marking packets with offload_fwd_mark flag unless "ale_bypass=0".
+All configuration is implemented via switchdev API. 
 
-> And no, adding pm_runtime_get_sync() to issue_pending is not
-> a solution. There may be clocks and regulators that need to
-> be powered up, and we don't want to use pm_runtime_irq_safe()
-> because of the permanent use count on the parent.
+The previous solution of tracking both Ports joined the bridge
+(from netdevice_notifier) proved to be not correct as changing CPSW switch
+driver mode required cleanup of ALE table and CPSW settings which happens
+while second Port is joined bridge and as result configuration loaded
+by bridge for the first Port became corrupted.
 
-I think the only way to handle this is to keep the DMA enabled as long
-as the USB cable is connected.
-Either to introduce dma_pm_runtime_get_sync(struct dma_chan *c) and
-dma_pm_runtime_put(struct dma_chan *c) or some better name.
+The introduction of the new CPSW switchdev based driver (cpsw_new.c) is split
+on two parts: Part 1 - basic dual-emac driver; Part 2 switchdev support.
+Such approach has simplified code development and testing alot. And, I hope, 
+it will help with better review.
 
-It's use would be optional, but for USB you would call them for cable
-connect the get_sync (from a work) and put it on disconnect.
+patches #1 - 4: preparation patches which also moves common code to cpsw_priv.c
+patches #5 - 8: Introduce TI CPSW switch driver based on switchdev and new
+ DT bindings
+patch #9: new CPSW switchdev driver documentation
+patch #10: adds DT nodes for new CPSW switchdev driver added for DRA7 SoC
+patch #11: adds DT nodes for new cpsw switchdev driver for am571x-idk board
+patch #12: enables build of TI CPSW driver
 
-The driver internally would not need to be changed, I think this patch
-could be removed as well.
+Most of the contents of the previous cover-letter have been added in
+new driver documentation, so please refer to that for configuration,
+testing and future work.
 
-- Péter
+These patches can be found at:
+ https://github.com/grygoriyS/linux.git
+ branch: lkml-5.4-switch-tbd-v5
 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+changes in v5:
+ - rebase on top of net-next with XDP series from Ivan Khoronzhuk [3],
+   and enable XDP support in the new CPSW switchdev driver
+   cpsw driver (tested XDP_DROP only)
+ - sync with old cpsw driver
+ - implement comments from  Ivan Khoronzhuk and Rob Herring
+ - fixed "NETDEV WATCHDOG: .." warning after interface after interface UP/DOWN,
+   missed TX wake in cpsw_adjust_link()
+
+v4: https://patchwork.kernel.org/cover/11010523/
+ - finished split of common CPSW code
+ - added devlink support
+ - changed CPSW mode configuration approach: from netdevice_notifier to devlink
+   parameter
+ - refactor and clean up ALE changes which allows to modify VLANs/MDBs entries
+ - added missed support for port QDISC_CBS and QDISC_MQPRIO
+ - the CPSW is split on two parts: basic dual_mac driver and switchdev support
+ - added missed callback .ndo_get_port_parent_id()
+ - reworked ingress frames marking in switch mode (offload_fwd_mark)
+ - applied comments from Andrew Lunn
+
+v3: https://lwn.net/Articles/786677/
+Changes in v3:
+- alot of work done to split properly common code between legacy and switchdev
+  CPSW drivers and clean up code
+- CPSW switchdev interface updated to the current LKML switchdev interface
+- actually new CPSW switchdev based driver introduced
+- optimized dual_mac mode in new driver. Main change is that in promiscuous
+mode P0_UNI_FLOOD (both ports) is enabled in addition to ALLMULTI (current
+port) instead of ALE_BYPASS.  So, port in non promiscuous mode will keep
+possibility of mcast and vlan filtering.
+- changed bridge join sequnce: now switch mode will be enabled only when
+both ports joined the bridge. CPSW will be switched to dual_mac mode if any
+port leave bridge. ALE table is completly cleared and then refiled while
+switching to switch mode - this simplidies code a lot, but introduces some
+limitation to bridge setup sequence:
+ ip link add name br0 type bridge
+ ip link set dev br0 type bridge ageing_time 1000
+ ip link set dev br0 type bridge vlan_filtering 0 <- disable
+ echo 0 > /sys/class/net/br0/bridge/default_vlan
+
+ ip link set dev sw0p1 up <- add ports
+ ip link set dev sw0p2 up
+ ip link set dev sw0p1 master br0
+ ip link set dev sw0p2 master br0
+
+ echo 1 > /sys/class/net/br0/bridge/default_vlan <- enable
+ ip link set dev br0 type bridge vlan_filtering 1
+ bridge vlan add dev br0 vid 1 pvid untagged self
+- STP tested with vlan_filtering 1/0. To make STP work I've had to set
+  NO_SA_UPDATE for all slave ports (see comment in code). It also required to
+  statically register STP mcast address {0x01, 0x80, 0xc2, 0x0, 0x0, 0x0};
+- allowed build both TI_CPSW and TI_CPSW_SWITCHDEV drivers
+- PTP can be enabled on both ports in dual_mac mode
+
+[1] https://patchwork.ozlabs.org/cover/929367/
+[2] https://patches.linaro.org/cover/136709/
+[3] https://patchwork.kernel.org/cover/11035813/
+
+Grygorii Strashko (8):
+  net: ethernet: ti: cpsw: allow untagged traffic on host port
+  net: ethernet: ti: cpsw: resolve build deps of cpsw drivers
+  net: ethernet: ti: cpsw: move set of common functions in cpsw_priv
+  dt-bindings: net: ti: add new cpsw switch driver bindings
+  phy: ti: phy-gmii-sel: dependency from ti cpsw-switchdev driver
+  ARM: dts: dra7: add dt nodes for new cpsw switch dev driver
+  ARM: dts: am571x-idk: enable for new cpsw switch dev driver
+  arm: omap2plus_defconfig: enable new cpsw switchdev driver
+
+Ilias Apalodimas (4):
+  net: ethernet: ti: cpsw: ale: modify vlan/mdb api for switchdev
+  net: ethernet: ti: introduce cpsw  switchdev based driver part 1 -
+    dual-emac
+  net: ethernet: ti: introduce cpsw switchdev based driver part 2 -
+    switch
+  Documentation: networking: add cpsw switchdev based driver
+    documentation
+
+ .../bindings/net/ti,cpsw-switch.txt           |  145 ++
+ .../device_drivers/ti/cpsw_switchdev.txt      |  207 ++
+ arch/arm/boot/dts/am571x-idk.dts              |   27 +
+ arch/arm/boot/dts/am572x-idk.dts              |    5 +
+ arch/arm/boot/dts/am574x-idk.dts              |    5 +
+ arch/arm/boot/dts/am57xx-idk-common.dtsi      |    5 -
+ arch/arm/boot/dts/dra7-l4.dtsi                |   52 +
+ arch/arm/configs/omap2plus_defconfig          |    1 +
+ drivers/net/ethernet/ti/Kconfig               |   19 +-
+ drivers/net/ethernet/ti/Makefile              |    2 +
+ drivers/net/ethernet/ti/cpsw.c                | 1374 +-----------
+ drivers/net/ethernet/ti/cpsw_ale.c            |  146 +-
+ drivers/net/ethernet/ti/cpsw_ale.h            |   11 +
+ drivers/net/ethernet/ti/cpsw_new.c            | 1995 +++++++++++++++++
+ drivers/net/ethernet/ti/cpsw_priv.c           | 1245 +++++++++-
+ drivers/net/ethernet/ti/cpsw_priv.h           |   79 +-
+ drivers/net/ethernet/ti/cpsw_switchdev.c      |  589 +++++
+ drivers/net/ethernet/ti/cpsw_switchdev.h      |   15 +
+ drivers/phy/ti/Kconfig                        |    4 +-
+ 19 files changed, 4586 insertions(+), 1340 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/ti,cpsw-switch.txt
+ create mode 100644 Documentation/networking/device_drivers/ti/cpsw_switchdev.txt
+ create mode 100644 drivers/net/ethernet/ti/cpsw_new.c
+ create mode 100644 drivers/net/ethernet/ti/cpsw_switchdev.c
+ create mode 100644 drivers/net/ethernet/ti/cpsw_switchdev.h
+
+-- 
+2.17.1
+
