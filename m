@@ -2,95 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D64EE71DF
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Oct 2019 13:44:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC862E72F2
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Oct 2019 14:57:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389458AbfJ1Mnc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Oct 2019 08:43:32 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:37336 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389444AbfJ1Mnb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Oct 2019 08:43:31 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9SChUE9034373;
-        Mon, 28 Oct 2019 07:43:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1572266610;
-        bh=RjOxaFJF9928MExwXsThcLzcc0mTulOCLUMie9VmrpA=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=MSpMeR3C94Knhds1rQEhThX7xPi6ZtSwvVbqGp02NXI4Fkqcig9lrELGkDc6BgrFt
-         YszypclGnQOdKrcPhm05WLNYVy+qC9SmYK7CI+NnkhAB3h+gyxtX6Yr83kjP1WjV1T
-         eJwus7NTNAK391rb2ssBP+ud89SGvalyxKLEjxes=
-Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9SChUEr075731
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 28 Oct 2019 07:43:30 -0500
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Mon, 28
- Oct 2019 07:43:17 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Mon, 28 Oct 2019 07:43:29 -0500
-Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9SCgoh9063574;
-        Mon, 28 Oct 2019 07:43:27 -0500
-From:   Tero Kristo <t-kristo@ti.com>
-To:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
-        <linux-remoteproc@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <s-anna@ti.com>, Tero Kristo <t-kristo@ti.com>
-Subject: [PATCH 17/17] remoteproc/omap: fix auto-suspend failure warning during crashed state
-Date:   Mon, 28 Oct 2019 14:42:38 +0200
-Message-ID: <20191028124238.19224-18-t-kristo@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191028124238.19224-1-t-kristo@ti.com>
-References: <20191028124238.19224-1-t-kristo@ti.com>
+        id S1727567AbfJ1N5V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Oct 2019 09:57:21 -0400
+Received: from muru.com ([72.249.23.125]:40074 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727255AbfJ1N5V (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 28 Oct 2019 09:57:21 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 31E2D8043;
+        Mon, 28 Oct 2019 13:57:55 +0000 (UTC)
+Date:   Mon, 28 Oct 2019 06:57:16 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Tero Kristo <t-kristo@ti.com>, Stephen Boyd <sboyd@kernel.org>,
+        linux-clk@vger.kernel.org, mturquette@baylibre.com,
+        linux-omap@vger.kernel.org, aford173@gmail.com
+Subject: Re: [PATCH 0/4] clk: ti: re-work divider clock support
+Message-ID: <20191028135716.GZ5610@atomide.com>
+References: <20191002120611.26121-1-t-kristo@ti.com>
+ <1115e221-1523-1a60-02a3-1f1939170e64@ti.com>
+ <20191028095906.27043208C0@mail.kernel.org>
+ <9361d516-a92a-39cd-dbc8-10de10fe6295@ti.com>
+ <13533ed2-1a91-2255-5f69-a28e81fba0aa@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <13533ed2-1a91-2255-5f69-a28e81fba0aa@ti.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Suman Anna <s-anna@ti.com>
+* Tomi Valkeinen <tomi.valkeinen@ti.com> [191028 11:37]:
+> On 28/10/2019 12:23, Tero Kristo wrote:
+> > On 28/10/2019 11:59, Stephen Boyd wrote:
+> > > Quoting Tero Kristo (2019-10-24 01:03:20)
+> > > > On 02/10/2019 15:06, Tero Kristo wrote:
+> > > > > Hi,
+> > > > > 
+> > > > > The existing divider clock support appears to have an inherent bug
+> > > > > because of the bit field width implementation and limitation of divider
+> > > > > values based on this. The limitation by bit field only is not enough,
+> > > > > as we can have divider settings which accept only certain range of
+> > > > > dividers within the full range of the bit-field.
+> > > > > 
+> > > > > Because of this, the divider clock is re-implemented to use
+> > > > > min,max,mask
+> > > > > values instead of just the bit-field.
+> > > > 
+> > > > Queued this up for 5.4 fixes, thanks.
+> > > 
+> > > Is this a regression in 5.4-rc series? Please only send fixes for code
+> > > that is broken by code that went into the merge window, or is super
+> > > annoying and broken but we somehow didn't notice. If not, just let it
+> > > sit in -next until the next merge window and it may still be backported
+> > > to stable trees anyway.
+> > 
+> > Tony/Tomi, how much do you care which one this hits into?
+> 
+> Probably no hurry with this one, as the DSS side patch is enough to avoid
+> the bad divider.
 
-The runtime autosuspend on a OMAP remoteproc device is attempted when
-the suspend timer expires (autosuspend delay elapsed since the last
-time the device is busy). This is the normal autosuspend scenario
-for a device functioning normally. This timer can also expire during
-the debugging of a remoteproc crash when the remoteproc recovery is
-disabled. This is an invalid pre-condition though, so check for the
-RPROC_CRASHED state and bail out before the actual check for the
-RPROC_RUNNING state. The auto-suspend is also not re-attempted until
-the remoteproc is recovered and restored to normal functional state.
+OK good to hear. Yes I too think we can wait for the clock divider
+changes to trickle down to next. While they are regression fixes,
+this has clearly been broken for many years.
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
----
- drivers/remoteproc/omap_remoteproc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+However, the following patch should be merged during -rc as
+without it sometimes devices can fail:
 
-diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
-index 2eb05d7a4dec..1dfac82224f7 100644
---- a/drivers/remoteproc/omap_remoteproc.c
-+++ b/drivers/remoteproc/omap_remoteproc.c
-@@ -945,6 +945,11 @@ static int omap_rproc_runtime_suspend(struct device *dev)
- 	struct omap_rproc *oproc = rproc->priv;
- 	int ret;
- 
-+	if (rproc->state == RPROC_CRASHED) {
-+		dev_dbg(dev, "rproc cannot be runtime suspended when crashed!\n");
-+		return -EBUSY;
-+	}
-+
- 	if (WARN_ON(rproc->state != RPROC_RUNNING)) {
- 		dev_err(dev, "rproc cannot be runtime suspended when not running!\n");
- 		return -EBUSY;
--- 
-2.17.1
+clk: ti: clkctrl: Fix failed to enable error with double udelay timeout:
 
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Regards,
+
+Tony
