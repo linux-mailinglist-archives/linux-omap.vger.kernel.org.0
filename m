@@ -2,92 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB07BE73D9
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Oct 2019 15:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9628EE73E7
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Oct 2019 15:43:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390250AbfJ1OlB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Oct 2019 10:41:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39236 "EHLO mail.kernel.org"
+        id S2390273AbfJ1OnP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Oct 2019 10:43:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39666 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390235AbfJ1OlB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 28 Oct 2019 10:41:01 -0400
+        id S1727982AbfJ1OnP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 28 Oct 2019 10:43:15 -0400
 Received: from kernel.org (unknown [104.132.0.74])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 16AB321783;
-        Mon, 28 Oct 2019 14:41:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 11CFA21721;
+        Mon, 28 Oct 2019 14:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572273660;
-        bh=axoSaH+/ag7KHoYEGacTwTyxDf1dMkOkdtPW/9pcPzE=;
+        s=default; t=1572273795;
+        bh=BOflCilYti2drkMcOH9FYOtU0uFs1ARO5iv4EuX7X8U=;
         h=In-Reply-To:References:Cc:From:Subject:To:Date:From;
-        b=tHm10/pItpS9JLcwM2Gidig8ScpFMHVidlghWROUuf3GEnkPCoG0uVlPL9r908Ywx
-         QubfCZpmP+wJC/nGkzjPl6Zi+bSW6Nfi0RWIfaGeVp7E28Lgan3QW4dtLaY8VzLQ1E
-         wfBVTOZSwfZN7ZW2BioTEn/UdFQFv4tw55PAlFQo=
+        b=aWUWE+ZkmBGGqlagft8TjjyV1Ue2OaQYoQFsMPRtsmQA3qh7KxBv59imY/yXHuOKS
+         qp3RptX/qo4IAJ6eqzLV9oijkmQ0qdl9wI79gbueXEGTi3rUvb6xmZwKGPV2c31v3k
+         Zqolx7JJAo9Ou48tQ6tLNkJ8OMWEW7tCQdqvmW04=
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20190912132613.28093-4-t-kristo@ti.com>
-References: <20190912132613.28093-1-t-kristo@ti.com> <20190912132613.28093-4-t-kristo@ti.com>
-Cc:     tony@atomide.com, s-anna@ti.com
+In-Reply-To: <a88261a3-4012-1497-dd82-e41c0f328afd@ti.com>
+References: <20190912132613.28093-1-t-kristo@ti.com> <ef764d1c-8ebc-4b64-4543-7b296327e197@ti.com> <20191010143521.GX5610@atomide.com> <e37f9a2f-c554-300f-0866-8c8651941585@ti.com> <a88261a3-4012-1497-dd82-e41c0f328afd@ti.com>
+Cc:     linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
+        mturquette@baylibre.com, s-anna@ti.com
 From:   Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [PATCHv3 03/10] clk: ti: clkctrl: add new exported API for checking standby info
-To:     Tero Kristo <t-kristo@ti.com>, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org, mturquette@baylibre.com
+Subject: Re: [PATCHv3 00/10] clk: ti: remoteproc / iommu support patches
+To:     Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>
 User-Agent: alot/0.8.1
-Date:   Mon, 28 Oct 2019 07:40:59 -0700
-Message-Id: <20191028144100.16AB321783@mail.kernel.org>
+Date:   Mon, 28 Oct 2019 07:43:14 -0700
+Message-Id: <20191028144315.11CFA21721@mail.kernel.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Tero Kristo (2019-09-12 06:26:06)
-> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-> index d904a9a7626a..e3e0a66a6ce2 100644
-> --- a/drivers/clk/ti/clkctrl.c
-> +++ b/drivers/clk/ti/clkctrl.c
-> @@ -647,3 +650,33 @@ static void __init _ti_omap4_clkctrl_setup(struct de=
-vice_node *node)
->  }
->  CLK_OF_DECLARE(ti_omap4_clkctrl_clock, "ti,clkctrl",
->                _ti_omap4_clkctrl_setup);
-> +
-> +/**
-> + * ti_clk_is_in_standby - Check if clkctrl clock is in standby or not
-> + * @clk: clock to check standby status for
-> + *
-> + * Finds whether the provided clock is in standby mode or not. Returns
-> + * true if the provided clock is a clkctrl type clock and it is in stand=
-by,
-> + * false otherwise.
-> + */
-> +u32 ti_clk_is_in_standby(struct clk *clk)
-> +{
-> +       struct clk_hw *hw;
-> +       struct clk_hw_omap *hwclk;
-> +       u32 val;
-> +
-> +       hw =3D __clk_get_hw(clk);
-> +
-> +       if (!omap2_clk_is_hw_omap(hw))
-> +               return false;
-> +
-> +       hwclk =3D to_clk_hw_omap(hw);
-> +
-> +       val =3D ti_clk_ll_ops->clk_readl(&hwclk->enable_reg);
-> +
-> +       if (val & OMAP4_STBYST_MASK)
-> +               return true;
-> +
-> +       return false;
+Quoting Tero Kristo (2019-10-24 05:28:23)
+> On 10/10/2019 18:32, Tero Kristo wrote:
+> > On 10/10/2019 17:35, Tony Lindgren wrote:
+> >> * Tero Kristo <t-kristo@ti.com> [191010 08:34]:
+> >>> Stephen, any comments on this one or shall I just craft a=20
+> >>> pull-request for
+> >>> this and rest of the TI clock driver changes towards 5.5? There seems=
+=20
+> >>> to be
+> >>> a pile of them coming this time over...
+> >>
+> >> Sounds like we need an immutable branch for the clkctrl related
+> >> changes against v5.4-rc1 that I can also merge into omap-for-v5.5/prm
+> >> branch in addition to the immutable prm reset driver branch.
+> >>
+> >> Otherwise I can't apply any of the consumer device related dts
+> >> changes into that branch AFAIK.
+> >=20
+> > Well, the sgx patch you can probably merge, as it will fail silently an=
+d=20
+> > only cause issues if you actually try to enable the device.
+> >=20
+> > However, yes I agree, we should probably setup an immutable branch here.
+>=20
+> Queued this series towards 5.5, thanks.
+>=20
 
-This is returning true and false for a function that is returning u32...
-Why? Maybe just
+One minor comment. Otherwise looks fine. Thanks.
 
-	return val & OMAP4_STBYST_MASK;
-
-and then it will be a u32 for the bit if it's set or 0 if it's not set?
-Otherwise, change the return type to bool instead of u32?
-
-> +}
-> +EXPORT_SYMBOL_GPL(ti_clk_is_in_standby);
