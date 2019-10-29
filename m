@@ -2,28 +2,28 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 303D3E7E83
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2019 03:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1311AE880F
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2019 13:24:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728297AbfJ2CXW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Oct 2019 22:23:22 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:39518 "EHLO vps0.lunn.ch"
+        id S1732198AbfJ2MYs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Oct 2019 08:24:48 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:40154 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727987AbfJ2CXW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 28 Oct 2019 22:23:22 -0400
+        id S1727924AbfJ2MYr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 29 Oct 2019 08:24:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
         s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
         Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=weWtSFC8Dm8rRDFq7Ws7YUnkyjq/k0sSGCP9VGBKkyw=; b=fJVzoelD4VQgmU1U+f7c/xTlQ5
-        sNvBmfgwFgZ1JPMBhPUlhZdvJCN3484WQZFbgDu/hxD5WOBoL1rKBHhHw7VXRoCgqM0cln5ylX5WF
-        lnCX5riYaxwMGB21OgC97MCdQTdzWPkaGQ9c9zui7QlgA7bM7TgZ3MiOfStUM5RKTEvM=;
+        bh=xMtT1n7AGoA6K6DL5+Z4fPFRQg3Fuamc+hw6KUzP67Y=; b=zNhKyuRv6c3/TY+bX38MgSdr+I
+        7s0s1TX0blmE8PR+mGvXzmwk420bC2zv+5gvQ2ujcvf1luG4aE0+an1qdxxH5kHyExHXE/SD4qje/
+        oAYbVWaRPpQctx5Z5VT5LTP0a2dxe/yxELgl1ovPZgjp0IwoY9CFbexUnZJ27lxHxwDk=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.92.2)
         (envelope-from <andrew@lunn.ch>)
-        id 1iPHA1-0001NW-4d; Tue, 29 Oct 2019 03:23:05 +0100
-Date:   Tue, 29 Oct 2019 03:23:05 +0100
+        id 1iPQXu-00044i-Ft; Tue, 29 Oct 2019 13:24:22 +0100
+Date:   Tue, 29 Oct 2019 13:24:22 +0100
 From:   Andrew Lunn <andrew@lunn.ch>
 To:     Grygorii Strashko <grygorii.strashko@ti.com>
 Cc:     netdev@vger.kernel.org,
@@ -36,179 +36,73 @@ Cc:     netdev@vger.kernel.org,
         linux-omap@vger.kernel.org, Murali Karicheri <m-karicheri2@ti.com>,
         Ivan Vecera <ivecera@redhat.com>,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 net-next 05/12] dt-bindings: net: ti: add new cpsw
- switch driver bindings
-Message-ID: <20191029022305.GK15259@lunn.ch>
+Subject: Re: [PATCH v5 net-next 06/12] net: ethernet: ti: introduce cpsw
+  switchdev based driver part 1 - dual-emac
+Message-ID: <20191029122422.GL15259@lunn.ch>
 References: <20191024100914.16840-1-grygorii.strashko@ti.com>
- <20191024100914.16840-6-grygorii.strashko@ti.com>
+ <20191024100914.16840-7-grygorii.strashko@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191024100914.16840-6-grygorii.strashko@ti.com>
+In-Reply-To: <20191024100914.16840-7-grygorii.strashko@ti.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> +TI SoC Ethernet Switch Controller Device Tree Bindings (new)
-> +------------------------------------------------------
-> +
-> +The 3-port switch gigabit ethernet subsystem provides ethernet packet
-> +communication and can be configured as an ethernet switch.
+>  config TI_CPTS
+>  	bool "TI Common Platform Time Sync (CPTS) Support"
+> -	depends on TI_CPSW || TI_KEYSTONE_NETCP || COMPILE_TEST
+> +	depends on TI_CPSW || TI_KEYSTONE_NETCP || COMPILE_TEST || TI_CPSW_SWITCHDEV
 
-Hi Grygorii
+nit picking, but COMPILE_TEST is generally last on the line.
 
-Maybe referring it to a 3-port switch will cause confusion, since in
-this use case, it only has 2 ports, and you only list two ports in the
-device tree.
+> +/**
+> + * cpsw_set_mc - adds multicast entry to the table if it's not added or deletes
+> + * if it's not deleted
+> + * @ndev: device to sync
+> + * @addr: address to be added or deleted
+> + * @vid: vlan id, if vid < 0 set/unset address for real device
+> + * @add: add address if the flag is set or remove otherwise
+> + */
+> +static int cpsw_set_mc(struct net_device *ndev, const u8 *addr,
+> +		       int vid, int add)
+> +{
+> +	struct cpsw_priv *priv = netdev_priv(ndev);
+> +	struct cpsw_common *cpsw = priv->cpsw;
+> +	int slave_no = cpsw_slave_index(cpsw, priv);
+> +	int mask, flags, ret;
 
-> It provides the
-> +gigabit media independent interface (GMII),reduced gigabit media
-> +independent interface (RGMII), reduced media independent interface (RMII),
-> +the management data input output (MDIO) for physical layer device (PHY)
-> +management.
+David will complain about reverse Christmas tree. You need to move
+some of the assignments into the body of the function. This problems
+happens a few times in the code.
+
+> +static int cpsw_set_pauseparam(struct net_device *ndev,
+> +			       struct ethtool_pauseparam *pause)
+> +{
+> +	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
+> +	struct cpsw_priv *priv = netdev_priv(ndev);
 > +
-> +Required properties:
-> +- compatible : be one of the below:
-> +	  "ti,cpsw-switch" for backward compatible
-> +	  "ti,am335x-cpsw-switch" for AM335x controllers
-> +	  "ti,am4372-cpsw-switch" for AM437x controllers
-> +	  "ti,dra7-cpsw-switch" for DRA7x controllers
-> +- reg : physical base address and size of the CPSW module IO range
-> +- ranges : shall contain the CPSW module IO range available for child devices
-> +- clocks : should contain the CPSW functional clock
-> +- clock-names : should be "fck"
-> +	See bindings/clock/clock-bindings.txt
-> +- interrupts : should contain CPSW RX_THRESH, RX, TX, MISC interrupts
-> +- interrupt-names : should contain "rx_thresh", "rx", "tx", "misc"
-> +	See bindings/interrupt-controller/interrupts.txt
+> +	priv->rx_pause = pause->rx_pause ? true : false;
+> +	priv->tx_pause = pause->tx_pause ? true : false;
 > +
-> +Optional properties:
-> +- syscon : phandle to the system control device node which provides access to
-> +	efuse IO range with MAC addresses
-> +
-> +Required Sub-nodes:
-> +- ethernet-ports : contains CPSW external ports descriptions
-> +	Required properties:
-> +	- #address-cells : Must be 1
-> +	- #size-cells : Must be 0
-> +	- reg : CPSW port number. Should be 1 or 2
-> +	- phys : phandle on phy-gmii-sel PHY (see phy/ti-phy-gmii-sel.txt)
-> +	- phy-mode : See [1]
-> +	- phy-handle : See [1]
-> +
-> +	Optional properties:
-> +	- label : Describes the label associated with this port
-> +	- ti,dual-emac-pvid : Specifies default PORT VID to be used to segregate
-> +		ports. Default value - CPSW port number.
-> +	- mac-address : See [1]
-> +	- local-mac-address : See [1]
-> +
-> +- mdio : CPSW MDIO bus block description
-> +	- bus_freq : MDIO Bus frequency
-> +	See bindings/net/mdio.txt and davinci-mdio.txt
-> +
-> +- cpts : The Common Platform Time Sync (CPTS) module description
-> +	- clocks : should contain the CPTS reference clock
-> +	- clock-names : should be "cpts"
-> +	See bindings/clock/clock-bindings.txt
-> +
-> +	Optional properties - all ports:
-> +	- cpts_clock_mult : Numerator to convert input clock ticks into ns
-> +	- cpts_clock_shift : Denominator to convert input clock ticks into ns
-> +			  Mult and shift will be calculated basing on CPTS
-> +			  rftclk frequency if both cpts_clock_shift and
-> +			  cpts_clock_mult properties are not provided.
-> +
-> +[1] See Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> +
-> +Examples:
-> +
-> +mac_sw: switch@0 {
-> +	compatible = "ti,dra7-cpsw-switch","ti,cpsw-switch";
-> +	reg = <0x0 0x4000>;
-> +	ranges = <0 0 0x4000>;
-> +	clocks = <&gmac_main_clk>;
-> +	clock-names = "fck";
-> +	#address-cells = <1>;
-> +	#size-cells = <1>;
-> +	syscon = <&scm_conf>;
-> +	status = "disabled";
-> +
-> +	interrupts = <GIC_SPI 334 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 335 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 336 IRQ_TYPE_LEVEL_HIGH>,
-> +		     <GIC_SPI 337 IRQ_TYPE_LEVEL_HIGH>;
-> +	interrupt-names = "rx_thresh", "rx", "tx", "misc"
-> +
-> +	ethernet-ports {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		cpsw_port1: port@1 {
-> +			reg = <1>;
-> +			label = "port1";
-> +			/* Filled in by U-Boot */
-> +			mac-address = [ 00 00 00 00 00 00 ];
-> +			phys = <&phy_gmii_sel 1>;
-> +		};
-> +
-> +		cpsw_port2: port@2 {
-> +			reg = <2>;
-> +			label = "wan";
-> +			/* Filled in by U-Boot */
-> +			mac-address = [ 00 00 00 00 00 00 ];
-> +			phys = <&phy_gmii_sel 2>;
-> +		};
-> +	};
-> +
-> +	davinci_mdio_sw: mdio@1000 {
-> +		compatible = "ti,cpsw-mdio","ti,davinci_mdio";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		ti,hwmods = "davinci_mdio";
-> +		bus_freq = <1000000>;
-> +		reg = <0x1000 0x100>;
-> +	};
-> +
-> +	cpts {
-> +		clocks = <&gmac_clkctrl DRA7_GMAC_GMAC_CLKCTRL 25>;
-> +		clock-names = "cpts";
-> +	};
-> +};
-> +
-> +&mac_sw {
-> +	pinctrl-names = "default", "sleep";
-> +	status = "okay";
-> +};
-> +
-> +&cpsw_port1 {
-> +	phy-handle = <&ethphy0_sw>;
-> +	phy-mode = "rgmii";
-> +	ti,dual_emac_pvid = <1>;
-> +};
-> +
-> +&cpsw_port2 {
-> +	phy-handle = <&ethphy1_sw>;
-> +	phy-mode = "rgmii";
-> +	ti,dual_emac_pvid = <2>;
-> +};
-> +
-> +&davinci_mdio_sw {
-> +	ethphy0_sw: ethernet-phy@0 {
-> +		reg = <0>;
-> +	};
-> +
-> +	ethphy1_sw: ethernet-phy@1 {
-> +		reg = <1>;
-> +	};
+> +	return phy_restart_aneg(cpsw->slaves[priv->emac_port - 1].phy);
+> +}
+
+You should look at the value of pause.autoneg.
+
+> +static const struct devlink_ops cpsw_devlink_ops;
+
+It would be nice to avoid this forward declaration.
+
+> +static const struct devlink_param cpsw_devlink_params[] = {
+> +	DEVLINK_PARAM_DRIVER(CPSW_DL_PARAM_ALE_BYPASS,
+> +			     "ale_bypass", DEVLINK_PARAM_TYPE_BOOL,
+> +			     BIT(DEVLINK_PARAM_CMODE_RUNTIME),
+> +			     cpsw_dl_ale_ctrl_get, cpsw_dl_ale_ctrl_set, NULL),
 > +};
 
-In an example, it is unusual to split things up like this. I
-understand that parts of this will be in the dtsi file, and parts in
-the .dts file, but examples generally keep it all as one. And when you
-re-write this in YAML so it can be used to validated real DTs, you
-will have to combine it.
+Is this documented?
 
-     Andrew
+   Andrew
