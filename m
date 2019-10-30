@@ -2,108 +2,173 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31272EA1E7
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2019 17:39:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DD23EA1F9
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2019 17:45:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726680AbfJ3QjY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Oct 2019 12:39:24 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:30140 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726552AbfJ3QjY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Oct 2019 12:39:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1572453562;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=Dn40tVbbGhA5NczjSxQCCaGadlXd23pRkpE7OM8NH5A=;
-        b=fQ0EYHGnVog07STSSHN1xVxozHHsN1q4avo/yikt4Mxs6niBW/Cdu/5zgLCk+NknRz
-        SmNRpolDwU+UIeiqmzeCT+C3pSkjtOO/zj/9G147LyD6NkvbKecOWHn8y3f3K/BV6+SW
-        Aoe71lBhAUSOVyfPZ9N/LZq30ueX3+6pqPRy2dYvJC8PXvW/0bfxfUIJaljRVIkoWeKA
-        DxRucbYmwLKbIchByJSYqPL8lKXugDik8xh7XqG+iGMmEQrGEAfXlu5XA+IgSB0yB9fy
-        Qa4a9MmcRAs7qNT9p9WT1E22l1J04kZ/xRF1MRVCRA4SeSWhEalK3DuDGNQ2Zo07+NQy
-        SYaw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBp5hRw/qOxWRk4dCymhdRVSmPRBIbFC67m67z0KUz0RNG8vGE966zI"
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2001:16b8:2638:1d00:3142:f353:47a0:b4bd]
-        by smtp.strato.de (RZmta 44.29.0 AUTH)
-        with ESMTPSA id L09db3v9UGdC5Tu
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Wed, 30 Oct 2019 17:39:12 +0100 (CET)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH 1/7] dt-bindings: gpu: pvrsgx: add initial bindings
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20191030161604.GA5610@atomide.com>
-Date:   Wed, 30 Oct 2019 17:39:11 +0100
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        id S1727002AbfJ3Qo7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Oct 2019 12:44:59 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:36466 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726971AbfJ3Qo6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Oct 2019 12:44:58 -0400
+Received: by mail-ua1-f65.google.com with SMTP id f21so916929uan.3
+        for <linux-omap@vger.kernel.org>; Wed, 30 Oct 2019 09:44:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=p3/pbvedwS4IhZb4B6nbOhbMOZh2AXw7ndulwhv3TfM=;
+        b=uKbzD6z3ZGjc1fWALJKpEEB/bbWW4HPabd5njl25crREYFACWhI8l1Kir807xOxFpf
+         uaLa/jYOBB4myt492ky0Bm4YMaUYwzK/94ra2AKsk/hjtGfxyIUNsYZMw3k03FhB7aa+
+         D2OMDUrVDFG4lh3JnM9JNhFiNrQATzIWHgWWrsFo/gfWlZcp7D/KPuimOVmXF9dmZDOE
+         kqpQKHr+JjnMM9ArF0cPmyy5HSVupmLBQmTJ2rUO9BmpLiphAUI7CTD1n8sVbxM3f7P+
+         y4tJ9cXCf+NQfuudxvOK6UYmowPV5Kf2WNvQcUvzZdfMJCJXPEp22cQ//ywxY1dvTRRP
+         vp1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=p3/pbvedwS4IhZb4B6nbOhbMOZh2AXw7ndulwhv3TfM=;
+        b=M4PXkR0PwOpbLPD1dpqtXyowNrxh2dY4P6o33EmHIBf14AhaAbF7Ho9sTkegEFsWqm
+         6+9fmQ4QyG31A5HVrKTyc39OsmfuUcb3ioB8a+Vj80wsvV9zF7O+vpi0spxlIpnhQj2z
+         hzaFbRLIHFyqgQq5q+g4Kwyz1V6nlxqEey9C2qowSVFPvyI6u62gmhB9LtnQuN7JmWBu
+         pHbb46zG4uEyfElLqF9FdWOwbe3jg0Q3xvnhoI1lQ7K2eYmzy1h/cgpyJjroLVvp3+SK
+         7vK/i9rad6aaS9N3wbeSaJRYGBcYIkG32NhF9xPzo/rjhcHrq9yi6lMm0br1917vZ4od
+         Mc7Q==
+X-Gm-Message-State: APjAAAXMeA9/oDrs3aQLnVmlknETdNnIXhsMGGKajahsR+6Ofsucl1aE
+        GLQu8sNJccAnLsIQAs9rNPFeVJDnHvojtZHJaYkhhA==
+X-Google-Smtp-Source: APXvYqxJtN6SyNTtxvr9eHmowjOiNggxSentSJ3MZnyqcgsnfmMgt0WjJPDMGJJ+lnTYhFM/TEriRkTW1hDBpWXDXFc=
+X-Received: by 2002:ab0:2258:: with SMTP id z24mr367974uan.100.1572453897721;
+ Wed, 30 Oct 2019 09:44:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1571510481.git.hns@goldelico.com> <bec9d76e6da03d734649b9bdf76e9d575c57631a.1571510481.git.hns@goldelico.com>
+In-Reply-To: <bec9d76e6da03d734649b9bdf76e9d575c57631a.1571510481.git.hns@goldelico.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 30 Oct 2019 17:44:21 +0100
+Message-ID: <CAPDyKFrMQ3fBaeeAYVJfUdL8m=PDRU9Xt_9oGw6D1XOY68qDuQ@mail.gmail.com>
+Subject: Re: [PATCH v2 03/11] DTS: ARM: pandora-common: define wl1251 as child
+ node of mmc3
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <61AAD023-6B22-4F81-A3B3-7C9571F967B2@goldelico.com>
-References: <cover.1571424390.git.hns@goldelico.com> <f0fb68dc7bc027e5e911721852f6bc6fa2d77a63.1571424390.git.hns@goldelico.com> <20191030161604.GA5610@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+        Russell King <linux@armlinux.org.uk>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        "# 4.0+" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On Sat, 19 Oct 2019 at 20:42, H. Nikolaus Schaller <hns@goldelico.com> wrote:
+>
+> Since v4.7 the dma initialization requires that there is a
+> device tree property for "rx" and "tx" channels which is
+> not provided by the pdata-quirks initialization.
+>
+> By conversion of the mmc3 setup to device tree this will
+> finally allows to remove the OpenPandora wlan specific omap3
+> data-quirks.
+>
+> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
+>
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Cc: <stable@vger.kernel.org> # 4.7.0
+> ---
+>  arch/arm/boot/dts/omap3-pandora-common.dtsi | 37 +++++++++++++++++++--
+>  1 file changed, 35 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/arm/boot/dts/omap3-pandora-common.dtsi b/arch/arm/boot/dts/omap3-pandora-common.dtsi
+> index ec5891718ae6..c595b3eb314d 100644
+> --- a/arch/arm/boot/dts/omap3-pandora-common.dtsi
+> +++ b/arch/arm/boot/dts/omap3-pandora-common.dtsi
+> @@ -226,6 +226,18 @@
+>                 gpio = <&gpio6 4 GPIO_ACTIVE_HIGH>;     /* GPIO_164 */
+>         };
+>
+> +       /* wl1251 wifi+bt module */
+> +       wlan_en: fixed-regulator-wg7210_en {
+> +               compatible = "regulator-fixed";
+> +               regulator-name = "vwlan";
+> +               regulator-min-microvolt = <1800000>;
+> +               regulator-max-microvolt = <1800000>;
 
-> Am 30.10.2019 um 17:16 schrieb Tony Lindgren <tony@atomide.com>:
->=20
-> * H. Nikolaus Schaller <hns@goldelico.com> [191018 18:47]:
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/gpu/img,pvrsgx.txt
->> @@ -0,0 +1,76 @@
->> +Imagination PVR/SGX GPU
->> +
->> +Only the Imagination SGX530, SGX540 and SGX544 GPUs are currently =
-covered by this binding.
->> +
->> +Required properties:
->> +- compatible:	Should be one of
->> +		"img,sgx530-121", "img,sgx530", =
-"ti,omap-omap3-sgx530-121";
->> +		  - BeagleBoard ABC, OpenPandora 600MHz
->> +		"img,sgx530-125", "img,sgx530", =
-"ti,omap-omap3-sgx530-125";
->> +		  - BeagleBoard XM, GTA04, OpenPandora 1GHz
->> +		"img,sgx530-125", "img,sgx530", =
-"ti,omap-am3517-sgx530-125";
->> +		"img,sgx530-125", "img,sgx530", =
-"ti,omap-am335x-sgx530-125";
->> +		  - BeagleBone Black
->> +		"img,sgx540-120", "img,sgx540", =
-"ti,omap-omap4-sgx540-120";
->> +		  - Pandaboard (ES)
->> +		"img,sgx544-112", "img,sgx544", =
-"ti,omap-omap4-sgx544-112";
->> +		"img,sgx544-116", "img,sgx544", =
-"ti,omap-omap5-sgx544-116";
->> +		  - OMAP5 UEVM, Pyra Handheld
->> +		"img,sgx544-116", "img,sgx544", =
-"ti,omap-dra7-sgx544-116";
->=20
-> FYI, the compatible names above have unnecessary omap in them:
->=20
-> "ti,omap-omap3-sgx530-121" should be "ti,omap3-sgx530-121"
-> "ti,omap-am335x-sgx530-125" should be "ti,am335x-sgx530-125";
-> "ti,omap-dra7-sgx544-116" should be "ti,dra7-sgx544-116"
->=20
-> And so on.
+I doubt these are correct.
 
-Yes,
-Rob already noted a while ago and our latest private code has it fixed.
+I guess this should be in the range of 2.7V-3.6V.
 
-There is no progress towards a v2 since I am still fighting with the new
-yaml format he also requested...
+> +               startup-delay-us = <50000>;
+> +               regulator-always-on;
 
-BR and thanks,
-Nikolaus
+Always on?
 
+> +               enable-active-high;
+> +               gpio = <&gpio1 23 GPIO_ACTIVE_HIGH>;
+> +       };
+> +
+>         /* wg7210 (wifi+bt module) 32k clock buffer */
+>         wg7210_32k: fixed-regulator-wg7210_32k {
+>                 compatible = "regulator-fixed";
+> @@ -522,9 +534,30 @@
+>         /*wp-gpios = <&gpio4 31 GPIO_ACTIVE_HIGH>;*/    /* GPIO_127 */
+>  };
+>
+> -/* mmc3 is probed using pdata-quirks to pass wl1251 card data */
+>  &mmc3 {
+> -       status = "disabled";
+> +       vmmc-supply = <&wlan_en>;
+> +
+> +       bus-width = <4>;
+> +       non-removable;
+> +       ti,non-removable;
+> +       cap-power-off-card;
+> +
+> +       pinctrl-names = "default";
+> +       pinctrl-0 = <&mmc3_pins>;
+> +
+> +       #address-cells = <1>;
+> +       #size-cells = <0>;
+> +
+> +       wlan: wl1251@1 {
+> +               compatible = "ti,wl1251";
+> +
+> +               reg = <1>;
+> +
+> +               interrupt-parent = <&gpio1>;
+> +               interrupts = <21 IRQ_TYPE_LEVEL_HIGH>;  /* GPIO_21 */
+> +
+> +               ti,wl1251-has-eeprom;
+> +       };
+>  };
+>
+>  /* bluetooth*/
+> --
+> 2.19.1
+>
+
+Kind regards
+Uffe
