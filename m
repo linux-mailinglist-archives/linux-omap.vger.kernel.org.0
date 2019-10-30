@@ -2,187 +2,142 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8884BEA27C
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2019 18:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A21EA47F
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2019 20:59:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727398AbfJ3RZJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Oct 2019 13:25:09 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.83]:36708 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726488AbfJ3RZI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Oct 2019 13:25:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1572456304;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=OsLmgSiDV+hk5s0I2fH4l/LO42oMc8+hGzlfb+0mtak=;
-        b=FpH/F23pbV/WbTZSW3XOigRh0/E9t7gJlPbHiIUglPUO9b2kZQDtb8EJiDmcFT//+N
-        uqhlfa2ZN1eQgmR8oDu6PGfsji35jOpbgRYDzLVjcLLBz+Owp+WgAAkMnwagAyoQA8Yi
-        44mCxXxYj6LNxtXSGp7r/Eu/qAnNUnD0tg5q+hwVSZJI+4uSLapAUWKHvaZIceWtUOs0
-        PfTtORel9GdKJwze1Ra4ESxc3AMkp1yCJYORKX9KB6hryAxZTLXAqn5dge1RZYUazzXE
-        3Ahm/ya7FT/uhUpFwpXdHwQgQwljfUV2kiEllnTKf2Q4mMJOnptlNwsksFA8ZlF1ZBez
-        nK/A==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGHPrpwDvG"
-X-RZG-CLASS-ID: mo00
-Received: from mbp-13-nikolaus.fritz.box
-        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
-        with ESMTPSA id L09db3v9UHOp5p4
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Wed, 30 Oct 2019 18:24:51 +0100 (CET)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH v2 03/11] DTS: ARM: pandora-common: define wl1251 as child node of mmc3
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <CAPDyKFrMQ3fBaeeAYVJfUdL8m=PDRU9Xt_9oGw6D1XOY68qDuQ@mail.gmail.com>
-Date:   Wed, 30 Oct 2019 18:24:51 +0100
-Cc:     =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        "# 4.0+" <stable@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D9A82904-35BE-41F2-A308-9A49606428B1@goldelico.com>
-References: <cover.1571510481.git.hns@goldelico.com> <bec9d76e6da03d734649b9bdf76e9d575c57631a.1571510481.git.hns@goldelico.com> <CAPDyKFrMQ3fBaeeAYVJfUdL8m=PDRU9Xt_9oGw6D1XOY68qDuQ@mail.gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-X-Mailer: Apple Mail (2.3124)
+        id S1726513AbfJ3T76 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Oct 2019 15:59:58 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:37320 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726359AbfJ3T76 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Oct 2019 15:59:58 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9UJxsEL128265;
+        Wed, 30 Oct 2019 14:59:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1572465594;
+        bh=U2QtP3Ed+psrBFJ2n1R0lkpg2XmvpXzoG4kPn/+wXN0=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=HQvx/LCUDrAIZeTEGeSrWBm5GcXxYKNF7HXjbqypjC5OpMJ5bBja6S0FLWFtwU6yt
+         G3yZDWBVqKso8tR+4m7lpaPjWB/f2oKfpPXGbDJyaL5/ppxHol8Gt8zn2j+X0U1HIN
+         PTRmAKAwfGCgQ2ZyLunGlj3rVr+T6cetbkGjgyqA=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9UJxsng031763
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 30 Oct 2019 14:59:54 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 30
+ Oct 2019 14:59:41 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 30 Oct 2019 14:59:41 -0500
+Received: from ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with SMTP id x9UJxrdp060905;
+        Wed, 30 Oct 2019 14:59:53 -0500
+Date:   Wed, 30 Oct 2019 14:59:47 -0500
+From:   Benoit Parrot <bparrot@ti.com>
+To:     Tony Lindgren <tony@atomide.com>
+CC:     Tero Kristo <t-kristo@ti.com>, Rob Herring <robh+dt@kernel.org>,
+        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [Patch 1/3] ARM: dts: am43xx: add support for clkout1 clock
+Message-ID: <20191030195946.ouexmis632nb7lqj@ti.com>
+References: <20191016184954.14048-1-bparrot@ti.com>
+ <20191016184954.14048-2-bparrot@ti.com>
+ <20191022154816.GO5610@atomide.com>
+ <20191022162134.fpawonjdjvd5kxza@ti.com>
+ <586dcabb-0400-50d6-5488-16bddc059286@ti.com>
+ <20191022165516.GE5610@atomide.com>
+ <20191023155657.GL5610@atomide.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20191023155657.GL5610@atomide.com>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Tony Lindgren <tony@atomide.com> wrote on Wed [2019-Oct-23 08:56:57 -0700]:
+> * Tony Lindgren <tony@atomide.com> [191022 16:56]:
+> > * Tero Kristo <t-kristo@ti.com> [191022 16:48]:
+> > > On 22/10/2019 19:21, Benoit Parrot wrote:
+> > > > Tony Lindgren <tony@atomide.com> wrote on Tue [2019-Oct-22 08:48:16 -0700]:
+> > > > > * Benoit Parrot <bparrot@ti.com> [191016 18:47]:
+> > > > > > --- a/arch/arm/boot/dts/am43xx-clocks.dtsi
+> > > > > > +++ b/arch/arm/boot/dts/am43xx-clocks.dtsi
+> > > > > > @@ -704,6 +704,60 @@
+> > > > > >   		ti,bit-shift = <8>;
+> > > > > >   		reg = <0x2a48>;
+> > > > > >   	};
+> > > > > > +
+> > > > > > +	clkout1_osc_div_ck: clkout1_osc_div_ck {
+> > > > > > +		#clock-cells = <0>;
+> > > > > > +		compatible = "ti,divider-clock";
+> > > > > > +		clocks = <&sys_clkin_ck>;
+> > > > > > +		ti,bit-shift = <20>;
+> > > > > > +		ti,max-div = <4>;
+> > > > > > +		reg = <0x4100>;
+> > > > > > +	};
+> > > > > 
+> > > > > Here too please describe why the clock names are not generic.
+> > > > 
+> > > > Tero originally had this patch in the kernel so this is somewhat of a
+> > > > revert. Since these "clock" were removed. If the name syntax is no longer
+> > > > valid for some reason, then I will need a little more informations to
+> > > > proceed.
+> > > > 
+> > > > Tero, can you assist here?
+> > > 
+> > > This one is just following the naming convention of the rest of the clocks
+> > > atm.
+> > > 
+> > > If we need to fix all the underscore name clocks, that requires pretty much
+> > > complete revamp of both the dts data + clock data under the clock driver,
+> > > and it is not backwards compatible either. How should we tackle that one?
+> > > 
+> > > We could maybe add support code in kernel to do s/-/_/g for the "new" clocks
+> > > so that their parent-child relationships would be retained, and then convert
+> > > the clocks in phases.
+> > 
+> > Well some of them can be fixed by configuring things based
+> > on the compatible value and then the node name can be just
+> > clock like it should be.
+> > 
+> > Here too one option would be to add custom compatibles like:
+> > 
+> > compatible = "ti,clkout1-osc-div", "ti,divider-clock";
+> > 
+> > And then have match data configure the rest.
+> > 
+> > The other option would be to have lookup tables in the clock
+> > driver based on the SoC and reg address.
+> > 
+> > This is a hidden mine though.. We've hit it already several times,
+> > and any dts clean-up effort has a chance of breaking things.
+> 
+> Hmm maybe in this case just doing this is enough:
+> 
+> clkout1_osc_div_ck: clock@4100 {
+> 	... 
+> }
 
-> Am 30.10.2019 um 17:44 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
->=20
-> On Sat, 19 Oct 2019 at 20:42, H. Nikolaus Schaller <hns@goldelico.com> =
-wrote:
->>=20
->> Since v4.7 the dma initialization requires that there is a
->> device tree property for "rx" and "tx" channels which is
->> not provided by the pdata-quirks initialization.
->>=20
->> By conversion of the mmc3 setup to device tree this will
->> finally allows to remove the OpenPandora wlan specific omap3
->> data-quirks.
->>=20
->> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for =
-requesting DMA channel")
->>=20
->> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
->> Cc: <stable@vger.kernel.org> # 4.7.0
->> ---
->> arch/arm/boot/dts/omap3-pandora-common.dtsi | 37 =
-+++++++++++++++++++--
->> 1 file changed, 35 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/arch/arm/boot/dts/omap3-pandora-common.dtsi =
-b/arch/arm/boot/dts/omap3-pandora-common.dtsi
->> index ec5891718ae6..c595b3eb314d 100644
->> --- a/arch/arm/boot/dts/omap3-pandora-common.dtsi
->> +++ b/arch/arm/boot/dts/omap3-pandora-common.dtsi
->> @@ -226,6 +226,18 @@
->>                gpio =3D <&gpio6 4 GPIO_ACTIVE_HIGH>;     /* GPIO_164 =
-*/
->>        };
->>=20
->> +       /* wl1251 wifi+bt module */
->> +       wlan_en: fixed-regulator-wg7210_en {
->> +               compatible =3D "regulator-fixed";
->> +               regulator-name =3D "vwlan";
->> +               regulator-min-microvolt =3D <1800000>;
->> +               regulator-max-microvolt =3D <1800000>;
->=20
-> I doubt these are correct.
->=20
-> I guess this should be in the range of 2.7V-3.6V.
+But then we would end up with 6 clock node with the same name "clock@4100",
+doesn't pose a problem somewhere?
 
-Well, it is a gpio which enables some LDO inside the
-wifi chip. We do not really know the voltage it produces
-and it does not matter. The gpio voltage is 1.8V.
+Tero?
 
-Basically we use a fixed-regulator to "translate" a
-regulator into a control gpio because the mmc interface
-wants to see a vmmc-supply.
+Benoit
 
->=20
->> +               startup-delay-us =3D <50000>;
->> +               regulator-always-on;
->=20
-> Always on?
-
-Oops. Yes, that is something to check!
-
->=20
->> +               enable-active-high;
->> +               gpio =3D <&gpio1 23 GPIO_ACTIVE_HIGH>;
->> +       };
->> +
->>        /* wg7210 (wifi+bt module) 32k clock buffer */
->>        wg7210_32k: fixed-regulator-wg7210_32k {
->>                compatible =3D "regulator-fixed";
->> @@ -522,9 +534,30 @@
->>        /*wp-gpios =3D <&gpio4 31 GPIO_ACTIVE_HIGH>;*/    /* GPIO_127 =
-*/
->> };
->>=20
->> -/* mmc3 is probed using pdata-quirks to pass wl1251 card data */
->> &mmc3 {
->> -       status =3D "disabled";
->> +       vmmc-supply =3D <&wlan_en>;
->> +
->> +       bus-width =3D <4>;
->> +       non-removable;
->> +       ti,non-removable;
->> +       cap-power-off-card;
->> +
->> +       pinctrl-names =3D "default";
->> +       pinctrl-0 =3D <&mmc3_pins>;
->> +
->> +       #address-cells =3D <1>;
->> +       #size-cells =3D <0>;
->> +
->> +       wlan: wl1251@1 {
->> +               compatible =3D "ti,wl1251";
->> +
->> +               reg =3D <1>;
->> +
->> +               interrupt-parent =3D <&gpio1>;
->> +               interrupts =3D <21 IRQ_TYPE_LEVEL_HIGH>;  /* GPIO_21 =
-*/
->> +
->> +               ti,wl1251-has-eeprom;
->> +       };
->> };
->>=20
->> /* bluetooth*/
->> --
->> 2.19.1
->>=20
-
-BR and thanks,
-Nikolaus
-
+> 
+> Or do all the TI clocks we have have a dependency to the
+> node naming?
+> 
+> Regards,
+> 
+> Tony
+> 
