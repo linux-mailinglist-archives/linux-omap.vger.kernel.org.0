@@ -2,95 +2,157 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2C0E9B3B
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2019 13:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 600ABE9DC8
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2019 15:44:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726359AbfJ3MAx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Oct 2019 08:00:53 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:42304 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726242AbfJ3MAx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Oct 2019 08:00:53 -0400
-Received: by mail-io1-f65.google.com with SMTP id k1so2181404iom.9;
-        Wed, 30 Oct 2019 05:00:53 -0700 (PDT)
+        id S1726206AbfJ3Ood (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Oct 2019 10:44:33 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:44783 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726137AbfJ3Ood (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Oct 2019 10:44:33 -0400
+Received: by mail-io1-f66.google.com with SMTP id w12so2786713iol.11;
+        Wed, 30 Oct 2019 07:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=d4py8ng5wXpMr5cYgxc6n7h3nEMTISPpp6RpBa8PC14=;
-        b=MjKM6KjteLS5/1/dy3WtshPNenZKcsTFo9cByYcy1tUaj1+R3IAfey6+Zf7etAXxBG
-         A6nYspcZVEfGBzvgGIsMDmiaiB+KD0mByb/FdfrBULi/wy4Q0Nfmb8PDrOUJJWrNOy7L
-         VANA/3M+QsIvyCoXb+sQJndXbu7lTG2CYcYb6E5bC2QCnE2hSNu4nNchbS367xuI7XSu
-         VD7TI4heI/myB/whVGgeE2dB/gQvg0E8IJdFHSWRyaKtBuJZdJVvlWGzh27Wg9YnXh/c
-         mtpo1PHYR8G9WoOeFhlg+wLg/uf7mfO/JdtprlkIr4nduvboheVHa2qke7k/cHdXstKE
-         Dnhg==
+        bh=v69E/vAISH85pBxwVE2N7vhsH75pOHxu/fxiGY0QbeQ=;
+        b=jXjnRC/x0AeJB/QbSDoglLlI2mM7uoL59nA1SheOa24mpXYHVbx8ZGru91eHCOC5yI
+         SJ7vwR86I0EES8IlDT4BmaDC+tPi6otXqTk+VUUQQiYLCsCmtehR0jpFweGy7EDkdets
+         kUr2diEZfOmYvdliAUEOSVoTxDU+45JBI8xWqBWSRt8bxMK3LKc3fYZojC1uHE/Tlz9N
+         E8KOg3JZclRFc4rXl5LP83vK/QrmmmBVQp2o5mTvTyDf+dX3WPd4887MZPG8Yc7xsuco
+         oiVncDPY0nb1HmJ49VrFGHGIqvmcCr3BsVmxsXtwQYePRzEYveNrwfqIWRbnMbe3Rv8Z
+         S82w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=d4py8ng5wXpMr5cYgxc6n7h3nEMTISPpp6RpBa8PC14=;
-        b=Jb8dcsuVlrx00jHruCTAlDhZaMtXHEV+rf5MGwVybiVUw3S6Xyu8L/lNzfXdamdaOD
-         Z8r27GJDPsXmNu+I4EEFhViwFvsBmVa+Xugdj0pntkh5A8QRklqNsqD4q62rdkcqgFi1
-         1tdSmbFMAWvnZQn8PtfASX1AtJ8D40w048BOWiCRDSxhzQTPW2UWpzOweE8wzdjO5/fJ
-         Y0Kmz9/p4RNNWdgO+A9Hb0YM7yRffRLqElzG6GAex18hNqbLKy4u3d5Piko/y7x7TjAJ
-         XGMOmjHLHHreJaGuE4sj6/hVyU6QgmR6fRerK2swDDZoVqEjsXF2B/ypoMlE9ggw1S7b
-         RXJw==
-X-Gm-Message-State: APjAAAXsTRJCx6cvDi0sk6xfGgC4RYgsTfSH9DZEYav7Bs9aS3YQhEL5
-        V5f5Db9tGFpNo88lt3iB2QBUtpfHTT6JEu5YzCY=
-X-Google-Smtp-Source: APXvYqwSkWwC+grcku8GH8N7R5a02dES/ihI7RDUKgmMZTYHfpQmsAhtsVpl/3ezfNV9XV1vDzvM48nWPxXtEK6Bfw4=
-X-Received: by 2002:a5e:9245:: with SMTP id z5mr2660581iop.205.1572436852244;
- Wed, 30 Oct 2019 05:00:52 -0700 (PDT)
+        bh=v69E/vAISH85pBxwVE2N7vhsH75pOHxu/fxiGY0QbeQ=;
+        b=PbY+p/gIWZr8Fe45LLdvRhi2JWGNUKveD02P9sPNvwrVM6TyXQai1X3TdCpNLg7K8s
+         5vYI+NWF2TJeeoZFbBl5gkzbm6h2ImePkO7nDblT+FywB4pjpvfoLDDBS6Sz3VfKaKC7
+         QK2lBcqGPXHeeKLjIQ03C5dqiFloxosEqIlKtjG9I1RCUYQvG2gHJ/6LvKziI1MnSz11
+         Rt8orm0GDUs9sJoqWzz6Ph7pNV4Y7GPWEgHuTAJctEDgXkuSHJS9jQlP67rB3c4IuBoU
+         8AVun+X7TaXcdaIOs02NAY91Z+LdDIYAk26ztiQYO7pLzWgC4EeDByUSU2z1cxWmDWkV
+         cCcw==
+X-Gm-Message-State: APjAAAVahPdHEFL/emv/Pu7yb4wTTuQr7nURF81ZVjAopZ6RUB+NZpDQ
+        lO0HQgfcKI6Bfq8qXesa4a//b9U3jTHqTBTyImyDaw==
+X-Google-Smtp-Source: APXvYqz9ISkB3eGeL8FfMvO09xLvJ4YONlu+FugWEIXfRPeSrJQJUmxiQL8wy/pNoaUViiXqYAOHQtwSg3lnrA2NftI=
+X-Received: by 2002:a5e:9245:: with SMTP id z5mr87806iop.205.1572446672018;
+ Wed, 30 Oct 2019 07:44:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190913153714.30980-1-aford173@gmail.com> <B710D701-6311-4344-BF4E-F39157BBF2BD@goldelico.com>
- <CAHCN7xKU1v-BFkwiuZQx82+Cmdgj_1CH1j51bN0TaaduWcu8rQ@mail.gmail.com>
- <97204F98-FA33-4EBA-80AC-2FB3A6E78B2B@goldelico.com> <CAHCN7xJus=Unsm5rvgtccM9jpdiwGnJXrfjhavwkoswGbNd7qw@mail.gmail.com>
- <CAHCN7x+=O6f4Q0ps1d5KA+-E9L-8wr5B9XggzurJWtEnxEj7yg@mail.gmail.com>
- <FD6FED45-EF20-49D8-A2B2-012FB314DCC6@goldelico.com> <CAHCN7xLN+52ZW6tzCQPDvwqrdgaQaMrkhPFPotYDr7RdNwqeNA@mail.gmail.com>
- <C469028D-959D-4BD1-9226-C0190A197CE5@goldelico.com>
-In-Reply-To: <C469028D-959D-4BD1-9226-C0190A197CE5@goldelico.com>
+References: <20191016135147.7743-1-aford173@gmail.com>
+In-Reply-To: <20191016135147.7743-1-aford173@gmail.com>
 From:   Adam Ford <aford173@gmail.com>
-Date:   Wed, 30 Oct 2019 07:00:40 -0500
-Message-ID: <CAHCN7xL5sqLzaJ9b0721iAUeEb_pKB4QaeXfF94TZLQ7ZaS+bg@mail.gmail.com>
-Subject: Re: [RFC v2 1/2] ARM: dts: omap3: Add cpu trips and cooling map for
- omap3 family
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Date:   Wed, 30 Oct 2019 09:44:20 -0500
+Message-ID: <CAHCN7xJ-1b_OHXy_u8TvA5i4PuWGbci6YN3x1hUY_UaLxzu+QQ@mail.gmail.com>
+Subject: Re: [PATCH V5 1/3] drm/panel: simple: Add Logic PD Type 28 display support
+To:     dri-devel <dri-devel@lists.freedesktop.org>
 Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <adam.ford@logicpd.com>, Nishanth Menon <nm@ti.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Grazvydas Ignotas <notasas@gmail.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Oct 30, 2019 at 3:40 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+On Wed, Oct 16, 2019 at 8:52 AM Adam Ford <aford173@gmail.com> wrote:
 >
-> Hi Adam,
-> what is the status of this RFC/PATCH?
+> Previously, there was an omap panel-dpi driver that would
+> read generic timings from the device tree and set the display
+> timing accordingly.  This driver was removed so the screen
+> no longer functions.  This patch modifies the panel-simple
+> file to setup the timings to the same values previously used.
+>
+> Fixes: 8bf4b1621178 ("drm/omap: Remove panel-dpi driver")
+>
 
-I've submitted a formal 2-part patch [1] and [2], but Tony is
-concerned about power consumption.  As of right now, I don't have
-cycles to work on it.  My employer is about to release two new SOM's,
-and I'm writing up some documentation on some of the older ones to
-help some of the developers working on the new ones make their job go
-quicker.
+Will this be able to make it into linux-next for the 5.5 merge window?
+ I believe Tony has picked up the device tree portion in his omap
+tree, but I haven't seen any notifications on this series on whether
+or not it's being applied.  I also don't know which tree I need to
+look if it's already been applied.
 
-[1] - https://patchwork.kernel.org/patch/11178561/
-[2] - https://patchwork.kernel.org/patch/11178563/
+This fixes a regression introduced a while ago where the driver I was
+using for the display was removed.
 
-I requested if we could apply them as-is with 'status=disabled' for
-now until the bus is fixed, but I think there was some push-back.
-
-I'm trying to get to it.  I am hoping to find a little time this weekend.
+thank you,
 
 adam
+
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+> ---
+> V5:  No Change
+> V4:  No Change
+> V3:  No Change
+> V2:  No Change
 >
-> BR and thanks,
-> Nikolaus
+> diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+> index 5d487686d25c..72f69709f349 100644
+> --- a/drivers/gpu/drm/panel/panel-simple.c
+> +++ b/drivers/gpu/drm/panel/panel-simple.c
+> @@ -2061,6 +2061,40 @@ static const struct drm_display_mode mitsubishi_aa070mc01_mode = {
+>         .flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+>  };
+>
+> +static const struct drm_display_mode logicpd_type_28_mode = {
+> +       .clock = 9000,
+> +       .hdisplay = 480,
+> +       .hsync_start = 480 + 3,
+> +       .hsync_end = 480 + 3 + 42,
+> +       .htotal = 480 + 3 + 42 + 2,
+> +
+> +       .vdisplay = 272,
+> +       .vsync_start = 272 + 2,
+> +       .vsync_end = 272 + 2 + 11,
+> +       .vtotal = 272 + 2 + 11 + 3,
+> +       .vrefresh = 60,
+> +       .flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
+> +};
+> +
+> +static const struct panel_desc logicpd_type_28 = {
+> +       .modes = &logicpd_type_28_mode,
+> +       .num_modes = 1,
+> +       .bpc = 8,
+> +       .size = {
+> +               .width = 105,
+> +               .height = 67,
+> +       },
+> +       .delay = {
+> +               .prepare = 200,
+> +               .enable = 200,
+> +               .unprepare = 200,
+> +               .disable = 200,
+> +       },
+> +       .bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+> +       .bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE |
+> +                    DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE,
+> +};
+> +
+>  static const struct panel_desc mitsubishi_aa070mc01 = {
+>         .modes = &mitsubishi_aa070mc01_mode,
+>         .num_modes = 1,
+> @@ -3287,6 +3321,9 @@ static const struct of_device_id platform_of_match[] = {
+>         }, {
+>                 .compatible = "lg,lp129qe",
+>                 .data = &lg_lp129qe,
+> +       }, {
+> +               .compatible = "logicpd,type28",
+> +               .data = &logicpd_type_28,
+>         }, {
+>                 .compatible = "mitsubishi,aa070mc01-ca1",
+>                 .data = &mitsubishi_aa070mc01,
+> --
+> 2.17.1
 >
