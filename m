@@ -2,37 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0035CE954F
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2019 04:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B4C4E9715
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2019 08:15:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727006AbfJ3D3h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Oct 2019 23:29:37 -0400
-Received: from mga01.intel.com ([192.55.52.88]:43161 "EHLO mga01.intel.com"
+        id S1726198AbfJ3HPg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Oct 2019 03:15:36 -0400
+Received: from mga02.intel.com ([134.134.136.20]:65447 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726752AbfJ3D3h (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 29 Oct 2019 23:29:37 -0400
+        id S1725855AbfJ3HPg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 30 Oct 2019 03:15:36 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Oct 2019 20:29:35 -0700
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Oct 2019 00:15:35 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,245,1569308400"; 
-   d="gz'50?scan'50,208,50";a="193830330"
+X-IronPort-AV: E=Sophos;i="5.68,246,1569308400"; 
+   d="gz'50?scan'50,208,50";a="203106930"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 29 Oct 2019 20:29:33 -0700
+  by orsmga003.jf.intel.com with ESMTP; 30 Oct 2019 00:15:33 -0700
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
         (envelope-from <lkp@intel.com>)
-        id 1iPeft-000GEA-Cv; Wed, 30 Oct 2019 11:29:33 +0800
-Date:   Wed, 30 Oct 2019 11:29:14 +0800
+        id 1iPiCa-000E5J-Mk; Wed, 30 Oct 2019 15:15:32 +0800
+Date:   Wed, 30 Oct 2019 15:14:47 +0800
 From:   kbuild test robot <lkp@intel.com>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     kbuild-all@lists.01.org, linux-omap@vger.kernel.org
-Subject: [omap:droid4-pending-v5.4 16/26] include/linux/serdev-gsm.h:29:2:
- error: unknown type name 'atomic_t'
-Message-ID: <201910301113.EBit6IOu%lkp@intel.com>
+Subject: [omap:droid4-pending-v5.4 18/26]
+ include/linux/mfd/motorola-mdm.h:37:25: error: field 'gsm_dlci' has
+ incomplete type
+Message-ID: <201910301545.CAzKHCfb%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="3cqh2kbscwlkqjbk"
+Content-Type: multipart/mixed; boundary="kyb5l635hjxdy4e5"
 Content-Disposition: inline
 X-Patchwork-Hint: ignore
 User-Agent: NeoMutt/20170113 (1.7.2)
@@ -42,17 +43,17 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---3cqh2kbscwlkqjbk
+--kyb5l635hjxdy4e5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git droid4-pending-v5.4
 head:   3efaedc5ef6cde5bfde516b6db455b306b5ce5b7
-commit: 2d0f14db2d1621061c1cbc73bf22009577902f4c [16/26] tty: n_gsm: Add support for serdev drivers
+commit: ded039eb975c1014181e2a2b6b16ae7ffabe7350 [18/26] mfd: motmdm: Add Motorola TS 27.010 serdev driver for devices like droid4
 config: i386-randconfig-d002-201943 (attached as .config)
 compiler: gcc-7 (Debian 7.4.0-14) 7.4.0
 reproduce:
-        git checkout 2d0f14db2d1621061c1cbc73bf22009577902f4c
+        git checkout ded039eb975c1014181e2a2b6b16ae7ffabe7350
         # save the attached .config to linux build tree
         make ARCH=i386 
 
@@ -62,249 +63,93 @@ Reported-by: kbuild test robot <lkp@intel.com>
 All errors (new ones prefixed by >>):
 
    In file included from <command-line>:0:0:
->> include/linux/serdev-gsm.h:29:2: error: unknown type name 'atomic_t'
-     atomic_t asleep;
-     ^~~~~~~~
->> include/linux/serdev-gsm.h:37:40: error: unknown type name 'u8'
-     int (*output)(struct gsm_serdev *gsd, u8 *data, int len);
-                                           ^~
-   include/linux/serdev-gsm.h:39:14: error: unknown type name 'u8'
-           const u8 *buf, int len);
-                 ^~
->> include/linux/serdev-gsm.h:52:7: error: unknown type name 'size_t'
-          size_t len);
-          ^~~~~~
-   include/linux/serdev-gsm.h:53:1: warning: no semicolon at end of struct or union
-    };
-    ^
-   include/linux/serdev-gsm.h: In function 'gsm_serdev_register_device':
->> include/linux/serdev-gsm.h:172:10: error: 'ENODEV' undeclared (first use in this function)
-     return -ENODEV;
-             ^~~~~~
-   include/linux/serdev-gsm.h:172:10: note: each undeclared identifier is reported only once for each function it appears in
-   include/linux/serdev-gsm.h: At top level:
-   include/linux/serdev-gsm.h:180:51: warning: 'struct device' declared inside parameter list will not be visible outside of this definition or declaration
-    static inline void *gsm_serdev_get_drvdata(struct device *dev)
-                                                      ^~~~~~
-   include/linux/serdev-gsm.h: In function 'gsm_serdev_get_drvdata':
->> include/linux/serdev-gsm.h:182:9: error: 'NULL' undeclared (first use in this function)
-     return NULL;
-            ^~~~
-   include/linux/serdev-gsm.h: At top level:
-   include/linux/serdev-gsm.h:186:36: warning: 'struct device' declared inside parameter list will not be visible outside of this definition or declaration
-    void gsm_serdev_set_drvdata(struct device *dev, void *drvdata)
+>> include/linux/mfd/motorola-mdm.h:37:25: error: field 'gsm_dlci' has incomplete type
+     struct gsm_serdev_dlci gsm_dlci;
+                            ^~~~~~~~
+>> include/linux/mfd/motorola-mdm.h:38:19: error: field 'node' has incomplete type
+     struct list_head node;
+                      ^~~~
+>> include/linux/mfd/motorola-mdm.h:39:2: error: unknown type name 'wait_queue_head_t'
+     wait_queue_head_t read_queue;
+     ^~~~~~~~~~~~~~~~~
+>> include/linux/mfd/motorola-mdm.h:40:15: error: field 'read_fifo' has incomplete type
+     struct kfifo read_fifo;
+                  ^~~~~~~~~
+>> include/linux/mfd/motorola-mdm.h:42:2: error: unknown type name 'u16'
+     u16 id;
+     ^~~
+>> include/linux/mfd/motorola-mdm.h:45:8: error: unknown type name 'size_t'
+           size_t cmdlen,
+           ^~~~~~
+   include/linux/mfd/motorola-mdm.h:46:28: error: unknown type name 'size_t'
+           unsigned char *rsp, size_t rsplen);
+                               ^~~~~~
+   include/linux/mfd/motorola-mdm.h:48:36: error: unknown type name 'size_t'
+             const unsigned char *buf, size_t len);
                                        ^~~~~~
-   include/linux/serdev-gsm.h: In function 'gsm_serdev_get_config':
-   include/linux/serdev-gsm.h:193:10: error: 'ENODEV' undeclared (first use in this function)
-     return -ENODEV;
-             ^~~~~~
-   include/linux/serdev-gsm.h: In function 'gsm_serdev_set_config':
-   include/linux/serdev-gsm.h:199:10: error: 'ENODEV' undeclared (first use in this function)
-     return -ENODEV;
-             ^~~~~~
-   include/linux/serdev-gsm.h: In function 'gsm_serdev_register_dlci':
-   include/linux/serdev-gsm.h:206:10: error: 'ENODEV' undeclared (first use in this function)
-     return -ENODEV;
-             ^~~~~~
-   include/linux/serdev-gsm.h: At top level:
-   include/linux/serdev-gsm.h:217:14: error: unknown type name 'u8'
-           const u8 *buf, int len)
-                 ^~
-   include/linux/serdev-gsm.h: In function 'gsm_serdev_write':
-   include/linux/serdev-gsm.h:219:10: error: 'ENODEV' undeclared (first use in this function)
-     return -ENODEV;
-             ^~~~~~
+   include/linux/mfd/motorola-mdm.h:51:8: error: unknown type name 'size_t'
+           size_t len);
+           ^~~~~~
+   include/linux/mfd/motorola-mdm.h:53:45: error: unknown type name 'size_t'
+           int cmdid, const unsigned char *buf, size_t count);
+                                                ^~~~~~
+>> include/linux/mfd/motorola-mdm.h:55:19: error: field 'list' has incomplete type
+     struct list_head list;
+                      ^~~~
+   include/linux/mfd/motorola-mdm.h:60:33: warning: 'struct device' declared inside parameter list will not be visible outside of this definition or declaration
+    int motmdm_register_dlci(struct device *dev, struct motmdm_dlci *mot_dlci);
+                                    ^~~~~~
+   include/linux/mfd/motorola-mdm.h:61:36: warning: 'struct device' declared inside parameter list will not be visible outside of this definition or declaration
+    void motmdm_unregister_dlci(struct device *dev, struct motmdm_dlci *mot_dlci);
+                                       ^~~~~~
+   include/linux/mfd/motorola-mdm.h:66:4: error: unknown type name 'size_t'
+       size_t cmdlen, unsigned char *rsp, size_t rsplen)
+       ^~~~~~
+   include/linux/mfd/motorola-mdm.h:66:39: error: unknown type name 'size_t'
+       size_t cmdlen, unsigned char *rsp, size_t rsplen)
+                                          ^~~~~~
+   include/linux/mfd/motorola-mdm.h:78:30: error: unknown type name 'size_t'
+       const unsigned char *buf, size_t count)
+                                 ^~~~~~
 
-vim +/atomic_t +29 include/linux/serdev-gsm.h
+vim +/gsm_dlci +37 include/linux/mfd/motorola-mdm.h
 
-     8	
-     9	/**
-    10	 * struct gsm_serdev - serdev-gsm instance
-    11	 * @serdev:		serdev instance
-    12	 * @gsm:		ts 27.010 n_gsm instance
-    13	 * @asleep:		device is in idle state
-    14	 * @drvdata:		serdev-gsm consumer driver data
-    15	 * @get_config:		get ts 27.010 config
-    16	 * @set_config:		set ts 27.010 config
-    17	 * @register_dlci:	register ts 27.010 channel
-    18	 * @unregister_dlci:	unregister ts 27.010 channel
-    19	 * @output:		read data from ts 27.010 channel
-    20	 * @write:		write data to a ts 27.010 channel
-    21	 * @kick:		indicate more data is ready
-    22	 *
-    23	 * Currently only serdev and output must be initialized, the rest are
-    24	 * are initialized by gsm_serdev_register_dlci().
-    25	 */
-    26	struct gsm_serdev {
-    27		struct serdev_device *serdev;
-    28		struct gsm_mux *gsm;
-  > 29		atomic_t asleep;
-    30		void *drvdata;
-    31		int (*get_config)(struct gsm_serdev *gsd, struct gsm_config *c);
-    32		int (*set_config)(struct gsm_serdev *gsd, struct gsm_config *c);
-    33		int (*register_dlci)(struct gsm_serdev *gsd,
-    34				     struct gsm_serdev_dlci *ops);
-    35		void (*unregister_dlci)(struct gsm_serdev *gsd,
-    36					struct gsm_serdev_dlci *ops);
-  > 37		int (*output)(struct gsm_serdev *gsd, u8 *data, int len);
-    38		int (*write)(struct gsm_serdev *gsd, struct gsm_serdev_dlci *ops,
-    39			     const u8 *buf, int len);
-    40		void (*kick)(struct gsm_serdev *gsd);
-    41	};
-    42	
-    43	/**
-    44	 * struct gsm_serdev_dlci - serdev-gsm ts 27.010 channel data
-    45	 * @line:		ts 27.010 channel, control channel 0 is not available
-    46	 * @receive_buf:	function to handle data received for the channel
-    47	 */
-    48	struct gsm_serdev_dlci {
-    49		int line;
-    50		int (*receive_buf)(struct gsm_serdev_dlci *ops,
-    51				   const unsigned char *buf,
-  > 52				   size_t len);
-    53	};
-    54	
-    55	#ifdef CONFIG_SERIAL_DEV_BUS
-    56	
-    57	int gsm_serdev_register_device(struct gsm_serdev *gsd);
-    58	void gsm_serdev_unregister_device(struct gsm_serdev *gsd);
+    35	
+    36	struct motmdm_dlci {
+  > 37		struct gsm_serdev_dlci gsm_dlci;
+  > 38		struct list_head node;
+  > 39		wait_queue_head_t read_queue;
+  > 40		struct kfifo read_fifo;
+    41		int line;
+  > 42		u16 id;
+    43		int (*send_command)(struct device *dev, struct motmdm_dlci *mot_dlci,
+    44				    unsigned long timeout_ms, const unsigned char *cmd,
+  > 45				    size_t cmdlen,
+    46				    unsigned char *rsp, size_t rsplen);
+    47		int (*handle_command)(struct motmdm_dlci *mot_dlci, int id,
+  > 48				      const unsigned char *buf, size_t len);
+    49		int (*receive_data)(struct motmdm_dlci *mot_dlci,
+    50				    const unsigned char *buf,
+    51				    size_t len);
+    52		int (*write)(struct device *dev, struct motmdm_dlci *mot_dlci,
+    53			     int cmdid, const unsigned char *buf, size_t count);
+    54		int (*notify)(struct motmdm_dlci *mot_dlci, enum motmdm_state);
+  > 55		struct list_head list;
+    56		void *privdata;		/* Do not use, internal data */
+    57		void *drvdata;		/* Available for consumer drivers */
+    58	};
     59	
-    60	static inline void *gsm_serdev_get_drvdata(struct device *dev)
-    61	{
-    62		struct serdev_device *serdev = to_serdev_device(dev);
-    63		struct gsm_serdev *gsd = serdev_device_get_drvdata(serdev);
-    64	
-    65		if (gsd)
-    66			return gsd->drvdata;
-    67	
-    68		return NULL;
-    69	}
-    70	
-    71	static inline void gsm_serdev_set_drvdata(struct device *dev, void *drvdata)
-    72	{
-    73		struct serdev_device *serdev = to_serdev_device(dev);
-    74		struct gsm_serdev *gsd = serdev_device_get_drvdata(serdev);
-    75	
-    76		if (gsd)
-    77			gsd->drvdata = drvdata;
-    78	}
-    79	
-    80	/**
-    81	 * gsm_serdev_get_config - read ts 27.010 config
-    82	 * @gsd:	serdev-gsm instance
-    83	 * @c:		ts 27.010 config data
-    84	 *
-    85	 * See gsm_copy_config_values() for more information.
-    86	 */
-    87	static inline
-    88	int gsm_serdev_get_config(struct gsm_serdev *gsd, struct gsm_config *c)
-    89	{
-    90		return gsd->get_config(gsd, c);
-    91	}
-    92	
-    93	/**
-    94	 * gsm_serdev_set_config - set ts 27.010 config
-    95	 * @gsd:	serdev-gsm instance
-    96	 * @c:		ts 27.010 config data
-    97	 *
-    98	 * See gsm_config() for more information.
-    99	 */
-   100	static inline
-   101	int gsm_serdev_set_config(struct gsm_serdev *gsd, struct gsm_config *c)
-   102	{
-   103		if (gsd && gsd->set_config)
-   104			return gsd->set_config(gsd, c);
-   105	
-   106		return -ENODEV;
-   107	}
-   108	
-   109	/**
-   110	 * gsm_serdev_register_dlci - register a ts 27.010 channel
-   111	 * @gsd:	serdev-gsm instance
-   112	 * @ops:	channel ops
-   113	 */
-   114	static inline
-   115	int gsm_serdev_register_dlci(struct gsm_serdev *gsd,
-   116				     struct gsm_serdev_dlci *ops)
-   117	{
-   118		if (gsd && gsd->register_dlci)
-   119			return gsd->register_dlci(gsd, ops);
-   120	
-   121		return -ENODEV;
-   122	}
-   123	
-   124	/**
-   125	 * gsm_serdev_unregister_dlci - unregister a ts 27.010 channel
-   126	 * @gsd:	serdev-gsm instance
-   127	 * @ops:	channel ops
-   128	 */
-   129	static inline
-   130	void gsm_serdev_unregister_dlci(struct gsm_serdev *gsd,
-   131					struct gsm_serdev_dlci *ops)
-   132	{
-   133		if (gsd && gsd->unregister_dlci)
-   134			gsd->unregister_dlci(gsd, ops);
-   135	}
-   136	
-   137	/**
-   138	 * gsm_serdev_write - write data to a ts 27.010 channel
-   139	 * @gsd:	serdev-gsm instance
-   140	 * @ops:	channel ops
-   141	 * @buf:	write buffer
-   142	 * @len:	buffer length
-   143	 */
-   144	static inline
-   145	int gsm_serdev_write(struct gsm_serdev *gsd, struct gsm_serdev_dlci *ops,
-   146			     const u8 *buf, int len)
-   147	{
-   148		if (gsd && gsd->write)
-   149			return gsd->write(gsd, ops, buf, len);
-   150	
-   151		return -ENODEV;
-   152	}
-   153	
-   154	/**
-   155	 * gsm_serdev_data_kick - indicate more data can be trasmitted
-   156	 * @gsd:	serdev-gsm instance
-   157	 *
-   158	 * See gsm_data_kick() for more information.
-   159	 */
-   160	static inline
-   161	void gsm_serdev_data_kick(struct gsm_serdev *gsd)
-   162	{
-   163		if (gsd && gsd->kick)
-   164			gsd->kick(gsd);
-   165	}
-   166	
-   167	#else	/* CONFIG_SERIAL_DEV_BUS */
-   168	
-   169	static inline
-   170	int gsm_serdev_register_device(struct gsm_serdev *gsd)
-   171	{
- > 172		return -ENODEV;
-   173	}
-   174	
-   175	static inline
-   176	void gsm_serdev_unregister_device(struct gsm_serdev *gsd)
-   177	{
-   178	}
-   179	
-   180	static inline void *gsm_serdev_get_drvdata(struct device *dev)
-   181	{
- > 182		return NULL;
-   183	}
-   184	
 
 ---
 0-DAY kernel test infrastructure                Open Source Technology Center
 https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 
---3cqh2kbscwlkqjbk
+--kyb5l635hjxdy4e5
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICN75uF0AAy5jb25maWcAjFxbc9w2sn7Pr5hyXpLaSiJZsuJzTukBBEEOMgRBA+RIoxeU
+H4sICNMjuV0AAy5jb25maWcAjFxbc9w2sn7Pr5hyXpLaSiJZsuJzTukBBEEOMgRBA+RIoxeU
 Io+9qpUl70jaxP/+dAO8ACA43tQmK6Ib90b3143G/PjDjyvy+vL05fbl/u724eHb6vP+cX+4
 fdl/XH26f9j/3yqXq1q2K5bz9ldgru4fX//+7f7s/cXq3a/nv578crg7XW32h8f9w4o+PX66
 //wKte+fHn/48Qf4349Q+OUrNHT439Xnu7tffl/9lO//vL99XP1ua5+e/+z+Al4q64KXhlLD
@@ -803,4 +648,4 @@ rzKvGKMKP7TclmKGAZWbn6iEAi/ssgEig4wX3VfqGZhQkFtljVVNfmhmP6aE6GCVNOLFwU9i
 PECJcoDgFMCnROnKf3mbejB1wxAjoVf4HPk2V1Ai1dLq1eQeRasnrzjeZ5JTlP2UtJwdeNfW
 +xemWR7SL/tZvphnTEnE6zcZizB3ZywONUT+uDgp0Ti1/wV1GlGR0qMBAA==
 
---3cqh2kbscwlkqjbk--
+--kyb5l635hjxdy4e5--
