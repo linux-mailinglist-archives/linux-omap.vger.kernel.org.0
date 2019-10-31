@@ -2,142 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A21EA47F
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2019 20:59:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8290EB19E
+	for <lists+linux-omap@lfdr.de>; Thu, 31 Oct 2019 14:51:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbfJ3T76 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Oct 2019 15:59:58 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:37320 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726359AbfJ3T76 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Oct 2019 15:59:58 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9UJxsEL128265;
-        Wed, 30 Oct 2019 14:59:54 -0500
+        id S1727667AbfJaNvU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 31 Oct 2019 09:51:20 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:53800 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727511AbfJaNvU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Oct 2019 09:51:20 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9VDpFw5106464;
+        Thu, 31 Oct 2019 08:51:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1572465594;
-        bh=U2QtP3Ed+psrBFJ2n1R0lkpg2XmvpXzoG4kPn/+wXN0=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=HQvx/LCUDrAIZeTEGeSrWBm5GcXxYKNF7HXjbqypjC5OpMJ5bBja6S0FLWFtwU6yt
-         G3yZDWBVqKso8tR+4m7lpaPjWB/f2oKfpPXGbDJyaL5/ppxHol8Gt8zn2j+X0U1HIN
-         PTRmAKAwfGCgQ2ZyLunGlj3rVr+T6cetbkGjgyqA=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9UJxsng031763
+        s=ti-com-17Q1; t=1572529875;
+        bh=6aEe/wymX73PzcP7yQG1AORm30FRvewlwVASZRgDXfo=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Pv5LdDD4bOz4dWilnHSIOFSYRl1CUZUlUdPbGXa9TDSj1VGEm2/j8xWLyruSOhng3
+         TxLlFhjbCLJdNVyKz0lVxP6DHJa3RAdEM//PXTJK6NQ8L1Gix6dpgtMIHdVmEoTQfv
+         EaZ/6rLT8IQ33RaqTr96HPvJHka6EtjCbL+K1GbQ=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9VDpFDd007022
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 30 Oct 2019 14:59:54 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 30
- Oct 2019 14:59:41 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 31 Oct 2019 08:51:15 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 31
+ Oct 2019 08:51:01 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 30 Oct 2019 14:59:41 -0500
-Received: from ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with SMTP id x9UJxrdp060905;
-        Wed, 30 Oct 2019 14:59:53 -0500
-Date:   Wed, 30 Oct 2019 14:59:47 -0500
-From:   Benoit Parrot <bparrot@ti.com>
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Tero Kristo <t-kristo@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [Patch 1/3] ARM: dts: am43xx: add support for clkout1 clock
-Message-ID: <20191030195946.ouexmis632nb7lqj@ti.com>
-References: <20191016184954.14048-1-bparrot@ti.com>
- <20191016184954.14048-2-bparrot@ti.com>
- <20191022154816.GO5610@atomide.com>
- <20191022162134.fpawonjdjvd5kxza@ti.com>
- <586dcabb-0400-50d6-5488-16bddc059286@ti.com>
- <20191022165516.GE5610@atomide.com>
- <20191023155657.GL5610@atomide.com>
+ Frontend Transport; Thu, 31 Oct 2019 08:51:01 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9VDpBcF023327;
+        Thu, 31 Oct 2019 08:51:12 -0500
+Subject: Re: [PATCHv3 03/10] clk: ti: clkctrl: add new exported API for
+ checking standby info
+To:     Stephen Boyd <sboyd@kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <mturquette@baylibre.com>
+CC:     <tony@atomide.com>, <s-anna@ti.com>
+References: <20190912132613.28093-1-t-kristo@ti.com>
+ <20190912132613.28093-4-t-kristo@ti.com>
+ <20191028144100.16AB321783@mail.kernel.org>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <2c9c664e-27f5-5b90-70a2-8968bac07410@ti.com>
+Date:   Thu, 31 Oct 2019 15:51:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20191023155657.GL5610@atomide.com>
-User-Agent: NeoMutt/20171215
+In-Reply-To: <20191028144100.16AB321783@mail.kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Tony Lindgren <tony@atomide.com> wrote on Wed [2019-Oct-23 08:56:57 -0700]:
-> * Tony Lindgren <tony@atomide.com> [191022 16:56]:
-> > * Tero Kristo <t-kristo@ti.com> [191022 16:48]:
-> > > On 22/10/2019 19:21, Benoit Parrot wrote:
-> > > > Tony Lindgren <tony@atomide.com> wrote on Tue [2019-Oct-22 08:48:16 -0700]:
-> > > > > * Benoit Parrot <bparrot@ti.com> [191016 18:47]:
-> > > > > > --- a/arch/arm/boot/dts/am43xx-clocks.dtsi
-> > > > > > +++ b/arch/arm/boot/dts/am43xx-clocks.dtsi
-> > > > > > @@ -704,6 +704,60 @@
-> > > > > >   		ti,bit-shift = <8>;
-> > > > > >   		reg = <0x2a48>;
-> > > > > >   	};
-> > > > > > +
-> > > > > > +	clkout1_osc_div_ck: clkout1_osc_div_ck {
-> > > > > > +		#clock-cells = <0>;
-> > > > > > +		compatible = "ti,divider-clock";
-> > > > > > +		clocks = <&sys_clkin_ck>;
-> > > > > > +		ti,bit-shift = <20>;
-> > > > > > +		ti,max-div = <4>;
-> > > > > > +		reg = <0x4100>;
-> > > > > > +	};
-> > > > > 
-> > > > > Here too please describe why the clock names are not generic.
-> > > > 
-> > > > Tero originally had this patch in the kernel so this is somewhat of a
-> > > > revert. Since these "clock" were removed. If the name syntax is no longer
-> > > > valid for some reason, then I will need a little more informations to
-> > > > proceed.
-> > > > 
-> > > > Tero, can you assist here?
-> > > 
-> > > This one is just following the naming convention of the rest of the clocks
-> > > atm.
-> > > 
-> > > If we need to fix all the underscore name clocks, that requires pretty much
-> > > complete revamp of both the dts data + clock data under the clock driver,
-> > > and it is not backwards compatible either. How should we tackle that one?
-> > > 
-> > > We could maybe add support code in kernel to do s/-/_/g for the "new" clocks
-> > > so that their parent-child relationships would be retained, and then convert
-> > > the clocks in phases.
-> > 
-> > Well some of them can be fixed by configuring things based
-> > on the compatible value and then the node name can be just
-> > clock like it should be.
-> > 
-> > Here too one option would be to add custom compatibles like:
-> > 
-> > compatible = "ti,clkout1-osc-div", "ti,divider-clock";
-> > 
-> > And then have match data configure the rest.
-> > 
-> > The other option would be to have lookup tables in the clock
-> > driver based on the SoC and reg address.
-> > 
-> > This is a hidden mine though.. We've hit it already several times,
-> > and any dts clean-up effort has a chance of breaking things.
+On 28/10/2019 16:40, Stephen Boyd wrote:
+> Quoting Tero Kristo (2019-09-12 06:26:06)
+>> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+>> index d904a9a7626a..e3e0a66a6ce2 100644
+>> --- a/drivers/clk/ti/clkctrl.c
+>> +++ b/drivers/clk/ti/clkctrl.c
+>> @@ -647,3 +650,33 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
+>>   }
+>>   CLK_OF_DECLARE(ti_omap4_clkctrl_clock, "ti,clkctrl",
+>>                 _ti_omap4_clkctrl_setup);
+>> +
+>> +/**
+>> + * ti_clk_is_in_standby - Check if clkctrl clock is in standby or not
+>> + * @clk: clock to check standby status for
+>> + *
+>> + * Finds whether the provided clock is in standby mode or not. Returns
+>> + * true if the provided clock is a clkctrl type clock and it is in standby,
+>> + * false otherwise.
+>> + */
+>> +u32 ti_clk_is_in_standby(struct clk *clk)
+>> +{
+>> +       struct clk_hw *hw;
+>> +       struct clk_hw_omap *hwclk;
+>> +       u32 val;
+>> +
+>> +       hw = __clk_get_hw(clk);
+>> +
+>> +       if (!omap2_clk_is_hw_omap(hw))
+>> +               return false;
+>> +
+>> +       hwclk = to_clk_hw_omap(hw);
+>> +
+>> +       val = ti_clk_ll_ops->clk_readl(&hwclk->enable_reg);
+>> +
+>> +       if (val & OMAP4_STBYST_MASK)
+>> +               return true;
+>> +
+>> +       return false;
 > 
-> Hmm maybe in this case just doing this is enough:
+> This is returning true and false for a function that is returning u32...
+> Why? Maybe just
 > 
-> clkout1_osc_div_ck: clock@4100 {
-> 	... 
-> }
+> 	return val & OMAP4_STBYST_MASK;
+> 
+> and then it will be a u32 for the bit if it's set or 0 if it's not set?
+> Otherwise, change the return type to bool instead of u32?
+> 
+>> +}
+>> +EXPORT_SYMBOL_GPL(ti_clk_is_in_standby);
 
-But then we would end up with 6 clock node with the same name "clock@4100",
-doesn't pose a problem somewhere?
+Right, let me fix that by converting the return type to bool.
 
-Tero?
-
-Benoit
-
-> 
-> Or do all the TI clocks we have have a dependency to the
-> node naming?
-> 
-> Regards,
-> 
-> Tony
-> 
+-Tero
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
