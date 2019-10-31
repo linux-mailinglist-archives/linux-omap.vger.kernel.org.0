@@ -2,93 +2,189 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC79DEB287
-	for <lists+linux-omap@lfdr.de>; Thu, 31 Oct 2019 15:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5431CEB4A5
+	for <lists+linux-omap@lfdr.de>; Thu, 31 Oct 2019 17:24:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728182AbfJaOZS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 31 Oct 2019 10:25:18 -0400
-Received: from muru.com ([72.249.23.125]:40346 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727720AbfJaOZR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 31 Oct 2019 10:25:17 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AC50F8120;
-        Thu, 31 Oct 2019 14:25:51 +0000 (UTC)
-Date:   Thu, 31 Oct 2019 07:25:13 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     Benoit Parrot <bparrot@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [Patch 1/3] ARM: dts: am43xx: add support for clkout1 clock
-Message-ID: <20191031142513.GB5610@atomide.com>
-References: <20191016184954.14048-1-bparrot@ti.com>
- <20191016184954.14048-2-bparrot@ti.com>
- <20191022154816.GO5610@atomide.com>
- <20191022162134.fpawonjdjvd5kxza@ti.com>
- <586dcabb-0400-50d6-5488-16bddc059286@ti.com>
- <20191022165516.GE5610@atomide.com>
- <20191023155657.GL5610@atomide.com>
- <20191030195946.ouexmis632nb7lqj@ti.com>
- <39b79438-ad82-0840-b2a5-36856d0ac520@ti.com>
+        id S1728594AbfJaQYS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 31 Oct 2019 12:24:18 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:38262 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728561AbfJaQYS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Oct 2019 12:24:18 -0400
+Received: by mail-vs1-f67.google.com with SMTP id b184so938194vsc.5
+        for <linux-omap@vger.kernel.org>; Thu, 31 Oct 2019 09:24:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yPIDo2fSmnVpiauzvpAAbaK4lF2gIAi5NghO5p90Ozs=;
+        b=khzDIJIPRAGhIdZTay7i4L5qhMiwaisFOVhQwT9VB0W5RAwk50WnAC+s9lN4QBmjet
+         S7nW7xbAJsHQj/lREQfdyhdToFzSWNsG6Nmzoa8CYnhTNFRyVJzi8KdEOAiZagzomntK
+         SvI9itLHPv9NBi04RsumdCRqAEYfHRgcDUD7Ih2vFEfb0DBwd86oieQekamm/PIJQF9y
+         uHJdXeFqkylwDT+4BlpG1idBPSeXoomT0mr64+OlZ9yH9o9FDVe7dRR20+DP/cuCTObZ
+         l71VczynWJnlq6y4ZzHfL6HNCs+XxS4+9ksqEFfqGvufglrkApqnwWLEmTLZ9QkBcYv6
+         iEmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yPIDo2fSmnVpiauzvpAAbaK4lF2gIAi5NghO5p90Ozs=;
+        b=dDqZenIUddBHPxJtfbPCCBndQlzH7pogGePvuhXMM0czEJU0NV0KOCs5fr8bysR05V
+         JFeNPoCFq6CFNhZFrFYI7P7P5CR2NkRivoFuGThXNAuaRC92l7OSqsWhkq1jFtFc/7FE
+         uwYWpBWd8WDYmDRVMM3kNjIbdh8CqN8LsvrrG27EMwoIZxDSMcWO9a8e1fh7GXXVQWMH
+         BZTmsed6aF51EYnSnJN13IBlqC025XjhEnV4PdbIj71V/smc0RoByB/w3EvpJjUKUhv0
+         1UcYEbhuRDDUVyWZH+CvNnWv54McPWolTTy3jwbw5f18unDNZQnb//+V2hTzt7ancsak
+         r2FQ==
+X-Gm-Message-State: APjAAAXNp5xQy5/sPKXuovsEebl1w6cA92cY4PV6PzVtuCNQw1MuUhEY
+        YusDGaXlINrLoya4RPEsCTasGTA2mJbZWAoXBEFDmw==
+X-Google-Smtp-Source: APXvYqwALcYbrmJQuMMQV7datNl1JuMFD5T9xVx+oBGGYVorWljG30SurqydJbjDqFGCToghHd7hGUnpIqW5lZBfwrE=
+X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr3268985vsa.34.1572539056794;
+ Thu, 31 Oct 2019 09:24:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <39b79438-ad82-0840-b2a5-36856d0ac520@ti.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <cover.1571510481.git.hns@goldelico.com> <0887d84402f796d1e7361261b88ec6057fbb0065.1571510481.git.hns@goldelico.com>
+ <CAPDyKFp3EjTuCTj+HXhxf+Ssti0hW8eMDR-NrGYWDWSDmQz6Lw@mail.gmail.com> <607E3AE4-65BF-4003-86BE-C70646D53D09@goldelico.com>
+In-Reply-To: <607E3AE4-65BF-4003-86BE-C70646D53D09@goldelico.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 31 Oct 2019 17:23:40 +0100
+Message-ID: <CAPDyKFr3oh9HcExn4Sx0Cd2e0oBTsxz+L4tDvypRFP8=hQP=cg@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] mmc: host: omap_hsmmc: add code for special init
+ of wl1251 to get rid of pandora_wl1251_init_card
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        "# 4.0+" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tero Kristo <t-kristo@ti.com> [191031 14:07]:
-> On 30/10/2019 21:59, Benoit Parrot wrote:
-> > Tony Lindgren <tony@atomide.com> wrote on Wed [2019-Oct-23 08:56:57 -0700]:
-> > > Hmm maybe in this case just doing this is enough:
-> > > 
-> > > clkout1_osc_div_ck: clock@4100 {
-> > > 	...
-> > > }
-> > 
-> > But then we would end up with 6 clock node with the same name "clock@4100",
-> > doesn't pose a problem somewhere?
-> 
-> Yeah, clk core would not know which one to use then.
+On Wed, 30 Oct 2019 at 18:25, H. Nikolaus Schaller <hns@goldelico.com> wrote:
+>
+> Hi Ulf,
+>
+> > Am 30.10.2019 um 16:51 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
+> >
+> >> +
+> >> +               np = of_get_compatible_child(np, "ti,wl1251");
+> >> +               if (np) {
+> >> +                       /*
+> >> +                        * We have TI wl1251 attached to MMC3. Pass this information to
+> >> +                        * SDIO core because it can't be probed by normal methods.
+> >> +                        */
+> >> +
+> >> +                       dev_info(host->dev, "found wl1251\n");
+> >> +                       card->quirks |= MMC_QUIRK_NONSTD_SDIO;
+> >> +                       card->cccr.wide_bus = 1;
+> >> +                       card->cis.vendor = 0x104c;
+> >> +                       card->cis.device = 0x9066;
+> >> +                       card->cis.blksize = 512;
+> >> +                       card->cis.max_dtr = 24000000;
+> >> +                       card->ocr = 0x80;
+> >
+> > These things should really be figured out by the mmc core during SDIO
+> > card initialization itself, not via the host ops ->init_card()
+> > callback. That is just poor hack, which in the long run should go
+> > away.
+>
+> Yes, I agree.
+>
+> But I am just the poor guy who is trying to fix really broken code with
+> as low effort as possible.
 
-So we have two issues with the non-standard devicetree use
-for omap clocks:
+I see. Thanks for looking at this mess!
 
-1. Multiple clock nodes with the same reg property
+In general, as long as we improve the code, I am happy to move forward.
 
-This we sorted out for the clkctrl binding, but we still
-have other clocks with this issue.
+However, my main concern at this point, is to make sure we get the DT
+bindings and the DTS files updated correctly. We don't want to come
+back to this again.
 
-I guess some of them can be now removed if they are just
-legacy clkctrl clocks.
+>
+> I don't even have a significant clue what this code is exactly doing and what
+> the magic values mean. They were setup by pandora_wl1251_init_card() in the
+> same way so that I have just moved the code here and make it called in (almost)
+> the same situation.
 
-For the rest we could maybe group them under a node with
-just one reg property?
+Okay!
 
-The clocks could just look up the reg property from parent
-in this case.
+>
+> > Moreover, I think we should add a subnode to the host node in the DT,
+> > to describe the embedded SDIO card, rather than parsing the subnode
+> > for the SDIO func - as that seems wrong to me.
+>
+> You mean a second subnode?
+>
+> The wl1251 is the child node of the mmc node and describes the SDIO card.
+> We just check if it is a wl1251 or e.g. wl1837 or something else or even
+> no child.
 
-2. Dependency to using custom clock node names
+The reason why I brought this up, was because there are sometimes
+cases where an SDIO card is shared between more than one SDIO func.
+WiFi+Bluetooth for example, but if I am correct, that is not the case
+for wl1251?
 
-This can be sorted out by adding custom compatibles to
-the parent node for both clkctrl clock manger nodes and
-for the clocks grouped in step #1 above I think.
+That said, I am happy to continue with your approach.
 
-> > > Or do all the TI clocks we have have a dependency to the
-> > > node naming?
-> 
-> This is a feature of clock core. Clock parents need to have distinct names,
-> otherwise it won't work.
+>
+> > To add a subnode for the SDIO card, we already have a binding that I
+> > think we should extend. Please have a look at
+> > Documentation/devicetree/bindings/mmc/mmc-card.txt.
+> >
+> > If you want an example of how to implement this for your case, do a
+> > git grep "broken-hpi" in the driver/mmc/core/, I think it will tell
+> > you more of what I have in mind.
+>
+> So while I agree that it should be improved in the long run, we should
+> IMHO fix the hack first (broken since v4.9!), even if it remains a hack
+> for now. Improving this part seems to be quite independent and focussed
+> on the mmc subsystem, while the other patches involve other subsystems.
 
-With steps #1 and #2 above I think this issue would
-also disappear, the clock framework naming could be like
-what we already use for the clkctrl clocks.
+I agree.
 
-Regards,
+>
+> Maybe should we make a REVISIT note in the code? Or add something to
+> the commit message about the idea how it should be done right?
 
-Tony
+Just add a note that we should move this DT parsing of the subnode to
+the mmc core, but that we are leaving that as a future improvement.
+That's good enough. Then I can have a look as a second step, and when
+I get some time, to move this to the mmc core.
 
+However, there is one thing I would like you to add to the series. That is:
+
+In the struct omap_hsmmc_platform_data, there is an ->init_card()
+callback. Beyond the changes of this series, there is no longer any
+users of that, unless I am mistaken. Going forward, let's make sure it
+doesn't get used again, so can you please remove it!?
+
+[...]
+
+Kind regards
+Uffe
