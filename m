@@ -2,125 +2,148 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96AEAEB1BA
-	for <lists+linux-omap@lfdr.de>; Thu, 31 Oct 2019 14:58:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0899FEB220
+	for <lists+linux-omap@lfdr.de>; Thu, 31 Oct 2019 15:07:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727705AbfJaN6d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 31 Oct 2019 09:58:33 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:34522 "EHLO
+        id S1727774AbfJaOHG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 31 Oct 2019 10:07:06 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:35734 "EHLO
         lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727567AbfJaN6d (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Oct 2019 09:58:33 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9VDwVXZ014847;
-        Thu, 31 Oct 2019 08:58:31 -0500
+        with ESMTP id S1726642AbfJaOHG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Oct 2019 10:07:06 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9VE721j018372;
+        Thu, 31 Oct 2019 09:07:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1572530311;
-        bh=vgs2sY3lNnlt0h9nHIVlQcwMqmHA66X85kfE8pyTKSA=;
-        h=Subject:From:To:CC:References:Date:In-Reply-To;
-        b=utHzjVPbZGEv5PiIpLb2euKNvlxc1v5rj257Z+X/ytrqoIBvZXCqX6K7hpMZSt1R+
-         VWC1fQyzQxqX5daXOoAPW3WnAWpv2or5DG09Fsw7lFB4XfK+Lm2ZrQLn06XnfJ7bTq
-         9SMUR8ZTYy36/r+PZT7nYgqRrw5B3tXp4bzOrWJM=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9VDwVr0075579
+        s=ti-com-17Q1; t=1572530822;
+        bh=gXlDD/veFRApipmYmd4pB/kMLt9HDcd6FQb3Up3HhD8=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Lqpd/6vevC3PHl2R41apuC5tes6oO9pb6lTXLMH/IQI8Rmxhi17UYVsXTEzv8JZuh
+         OuTph8htEQ0X1glpsRb8c5l2aYwl5xwqE8xt6r7B4klGqnQb3qFo+nzsL5S9LAVOq6
+         dMsCtCkRotsrhtWfDyOyHyzhzTi59HI1ablT/o24=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9VE71ZG034519
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 31 Oct 2019 08:58:31 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 31 Oct 2019 09:07:02 -0500
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 31
- Oct 2019 08:58:17 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2019 09:06:49 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Thu, 31 Oct 2019 08:58:17 -0500
+ Frontend Transport; Thu, 31 Oct 2019 09:06:49 -0500
 Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9VDwSHF121432;
-        Thu, 31 Oct 2019 08:58:29 -0500
-Subject: Re: [GIT PULL] clk: ti: fixes for v5.4
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9VE6x5I089523;
+        Thu, 31 Oct 2019 09:07:00 -0500
+Subject: Re: [Patch 1/3] ARM: dts: am43xx: add support for clkout1 clock
+To:     Benoit Parrot <bparrot@ti.com>, Tony Lindgren <tony@atomide.com>
+CC:     Rob Herring <robh+dt@kernel.org>, <linux-omap@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20191016184954.14048-1-bparrot@ti.com>
+ <20191016184954.14048-2-bparrot@ti.com> <20191022154816.GO5610@atomide.com>
+ <20191022162134.fpawonjdjvd5kxza@ti.com>
+ <586dcabb-0400-50d6-5488-16bddc059286@ti.com>
+ <20191022165516.GE5610@atomide.com> <20191023155657.GL5610@atomide.com>
+ <20191030195946.ouexmis632nb7lqj@ti.com>
 From:   Tero Kristo <t-kristo@ti.com>
-To:     Stephen Boyd <sboyd@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>
-CC:     linux-clk <linux-clk@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-References: <fc8fa6fe-5050-ec41-6fdc-c8b726255860@ti.com>
-Message-ID: <51c37126-1b51-0f96-7ea0-14e64bfa5cd1@ti.com>
-Date:   Thu, 31 Oct 2019 15:58:28 +0200
+Message-ID: <39b79438-ad82-0840-b2a5-36856d0ac520@ti.com>
+Date:   Thu, 31 Oct 2019 16:06:59 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <fc8fa6fe-5050-ec41-6fdc-c8b726255860@ti.com>
+In-Reply-To: <20191030195946.ouexmis632nb7lqj@ti.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23/10/2019 15:35, Tero Kristo wrote:
-> Hi Stephen,
+On 30/10/2019 21:59, Benoit Parrot wrote:
+> Tony Lindgren <tony@atomide.com> wrote on Wed [2019-Oct-23 08:56:57 -0700]:
+>> * Tony Lindgren <tony@atomide.com> [191022 16:56]:
+>>> * Tero Kristo <t-kristo@ti.com> [191022 16:48]:
+>>>> On 22/10/2019 19:21, Benoit Parrot wrote:
+>>>>> Tony Lindgren <tony@atomide.com> wrote on Tue [2019-Oct-22 08:48:16 -0700]:
+>>>>>> * Benoit Parrot <bparrot@ti.com> [191016 18:47]:
+>>>>>>> --- a/arch/arm/boot/dts/am43xx-clocks.dtsi
+>>>>>>> +++ b/arch/arm/boot/dts/am43xx-clocks.dtsi
+>>>>>>> @@ -704,6 +704,60 @@
+>>>>>>>    		ti,bit-shift = <8>;
+>>>>>>>    		reg = <0x2a48>;
+>>>>>>>    	};
+>>>>>>> +
+>>>>>>> +	clkout1_osc_div_ck: clkout1_osc_div_ck {
+>>>>>>> +		#clock-cells = <0>;
+>>>>>>> +		compatible = "ti,divider-clock";
+>>>>>>> +		clocks = <&sys_clkin_ck>;
+>>>>>>> +		ti,bit-shift = <20>;
+>>>>>>> +		ti,max-div = <4>;
+>>>>>>> +		reg = <0x4100>;
+>>>>>>> +	};
+>>>>>>
+>>>>>> Here too please describe why the clock names are not generic.
+>>>>>
+>>>>> Tero originally had this patch in the kernel so this is somewhat of a
+>>>>> revert. Since these "clock" were removed. If the name syntax is no longer
+>>>>> valid for some reason, then I will need a little more informations to
+>>>>> proceed.
+>>>>>
+>>>>> Tero, can you assist here?
+>>>>
+>>>> This one is just following the naming convention of the rest of the clocks
+>>>> atm.
+>>>>
+>>>> If we need to fix all the underscore name clocks, that requires pretty much
+>>>> complete revamp of both the dts data + clock data under the clock driver,
+>>>> and it is not backwards compatible either. How should we tackle that one?
+>>>>
+>>>> We could maybe add support code in kernel to do s/-/_/g for the "new" clocks
+>>>> so that their parent-child relationships would be retained, and then convert
+>>>> the clocks in phases.
+>>>
+>>> Well some of them can be fixed by configuring things based
+>>> on the compatible value and then the node name can be just
+>>> clock like it should be.
+>>>
+>>> Here too one option would be to add custom compatibles like:
+>>>
+>>> compatible = "ti,clkout1-osc-div", "ti,divider-clock";
+>>>
+>>> And then have match data configure the rest.
+>>>
+>>> The other option would be to have lookup tables in the clock
+>>> driver based on the SoC and reg address.
+>>>
+>>> This is a hidden mine though.. We've hit it already several times,
+>>> and any dts clean-up effort has a chance of breaking things.
+>>
+>> Hmm maybe in this case just doing this is enough:
+>>
+>> clkout1_osc_div_ck: clock@4100 {
+>> 	...
+>> }
 > 
-> Please pull these fixes for 5.4.
+> But then we would end up with 6 clock node with the same name "clock@4100",
+> doesn't pose a problem somewhere?
+
+Yeah, clk core would not know which one to use then.
+
 > 
-> Thanks,
-> Tero
+> Tero?
+> 
+> Benoit
+> 
+>>
+>> Or do all the TI clocks we have have a dependency to the
+>> node naming?
 
-Please ignore this pull. Divider changes are moving out to v5.5.
-
-Stephen, about the other two patches, do you want to pick these as fixes 
-yourself or whats your preference for them?
+This is a feature of clock core. Clock parents need to have distinct 
+names, otherwise it won't work.
 
 -Tero
-
-> 
-> ---
-> 
-> The following changes since commit 
-> 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
-> 
->    Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
-> 
-> are available in the Git repository at:
-> 
->    git://git.kernel.org/pub/scm/linux/kernel/git/kristo/linux 
-> tags/ti-clk-fixes-for-5.4
-> 
-> for you to fetch changes up to 1c7630688a0fa0738688f987c48b6be412e200dd:
-> 
->    clk: ti: dra7-atl-clock: Remove ti_clk_add_alias call (2019-10-23 
-> 12:14:06 +0300)
-> 
-> ----------------------------------------------------------------
-> TI clock driver fixes for 5.4
-> 
-> - Divider clock fixes to accommodate max divider values properly
-> - Fix for certain clkctrl clocks failing to enable due to timeout
-> - Remove duplicate clock aliases for dra7-atl-clocks
-> 
-> ----------------------------------------------------------------
-> Peter Ujfalusi (1):
->        clk: ti: dra7-atl-clock: Remove ti_clk_add_alias call
-> 
-> Tero Kristo (4):
->        clk: ti: divider: cleanup _register_divider and ti_clk_get_div_table
->        clk: ti: divider: cleanup ti_clk_parse_divider_data API
->        clk: ti: divider: convert to use min,max,mask instead of width
->        ARM: dts: omap3: fix DPLL4 M4 divider max value
-> 
-> Tony Lindgren (1):
->        clk: ti: clkctrl: Fix failed to enable error with double udelay 
-> timeout
-> 
->   arch/arm/boot/dts/omap36xx-clocks.dtsi |   4 +
->   arch/arm/boot/dts/omap3xxx-clocks.dtsi |   2 +-
->   drivers/clk/ti/clk-dra7-atl.c          |   6 -
->   drivers/clk/ti/clkctrl.c               |   7 +-
->   drivers/clk/ti/clock.h                 |   7 +-
->   drivers/clk/ti/divider.c               | 282 
-> +++++++++++++--------------------
->   6 files changed, 127 insertions(+), 181 deletions(-)
-> -- 
-
 --
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
