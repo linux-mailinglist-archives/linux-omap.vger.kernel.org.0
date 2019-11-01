@@ -2,68 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7B47EC9BD
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Nov 2019 21:41:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27B5AEC9C9
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Nov 2019 21:46:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbfKAUlN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 Nov 2019 16:41:13 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:60726 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726477AbfKAUlN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Nov 2019 16:41:13 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xA1Kf5FQ034212;
-        Fri, 1 Nov 2019 15:41:05 -0500
+        id S1727736AbfKAUqS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Nov 2019 16:46:18 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:49190 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726477AbfKAUqS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Nov 2019 16:46:18 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xA1KkAFO125498;
+        Fri, 1 Nov 2019 15:46:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1572640865;
-        bh=DWoyQIOP+Dnx87nS7EMk/Arh6FOoKdD8LFrByX5asjs=;
+        s=ti-com-17Q1; t=1572641170;
+        bh=zybgR7hDF/o4db+iKiuX3H8IVivapUrRQjOn5yGa7K8=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=xdEUx+8PL+9YMPjp+pAT/YAwoCmNEMHbA4A3u3JtkTjVaqGLItvTuSZCbqAYvPQcM
-         n3AI+LRPFLedEtgonI1mVPsaOTsBaV+y9rSVm/3rpxLhLBzrWHNXExGHyei/871aeq
-         b2vF/o4snZc5g/B/v+rnLR+B6EJXs0CHCTxEPI3I=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xA1Kf4rG014068
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 1 Nov 2019 15:41:05 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+        b=otXhBIFK/UWifwkl7A3yKL1MaKFpvk1+SsSgCvQpHNfBhk8PnSMnhQEnZNzwgOFyF
+         xLYwYNBDB1UhUieFQKE+yzeXoGf3ni5chqRp2+k6XsXPq59N6FQUMQoMF5E2tEFnAD
+         WQ1xdXTH59r03zrOb+IUWXr1nwV4Puyqp3+QY3do=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xA1KkAJG041314;
+        Fri, 1 Nov 2019 15:46:10 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 1 Nov
- 2019 15:40:51 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ 2019 15:45:56 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 1 Nov 2019 15:40:51 -0500
+ Frontend Transport; Fri, 1 Nov 2019 15:45:56 -0500
 Received: from [10.250.98.116] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xA1Kf1GF114953;
-        Fri, 1 Nov 2019 15:41:02 -0500
-Subject: Re: [PATCH v5 net-next 05/12] dt-bindings: net: ti: add new cpsw
- switch driver bindings
-To:     Florian Fainelli <f.fainelli@gmail.com>, <netdev@vger.kernel.org>,
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xA1Kk6n3017157;
+        Fri, 1 Nov 2019 15:46:07 -0500
+Subject: Re: [PATCH v5 net-next 06/12] net: ethernet: ti: introduce cpsw
+ switchdev based driver part 1 - dual-emac
+To:     Andrew Lunn <andrew@lunn.ch>
+CC:     <netdev@vger.kernel.org>,
         Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
         "David S . Miller" <davem@davemloft.net>,
         Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        Jiri Pirko <jiri@resnulli.us>
-CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
         <linux-omap@vger.kernel.org>,
         Murali Karicheri <m-karicheri2@ti.com>,
         Ivan Vecera <ivecera@redhat.com>,
         Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
 References: <20191024100914.16840-1-grygorii.strashko@ti.com>
- <20191024100914.16840-6-grygorii.strashko@ti.com>
- <caf68306-46ce-f97d-b45a-0fc1cd5323f7@gmail.com>
- <6e64b70e-604a-b8c6-12ce-7977ffa4ed5a@ti.com>
- <5c286f76-d108-5d78-dd8f-19e1baf64396@gmail.com>
+ <20191024100914.16840-7-grygorii.strashko@ti.com>
+ <20191029122422.GL15259@lunn.ch>
+ <d87c72e1-cb91-04a2-c881-0d8eec4671e2@ti.com>
+ <20191101203913.GD31534@lunn.ch>
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <b81b6502-0e2b-d786-ae71-b40b0a1fab79@ti.com>
-Date:   Fri, 1 Nov 2019 22:40:59 +0200
+Message-ID: <8f3eb934-7dcd-b43a-de96-6a864ef67c92@ti.com>
+Date:   Fri, 1 Nov 2019 22:46:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <5c286f76-d108-5d78-dd8f-19e1baf64396@gmail.com>
+In-Reply-To: <20191101203913.GD31534@lunn.ch>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
@@ -72,65 +72,51 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 
 
-On 01/11/2019 19:36, Florian Fainelli wrote:
-> On 11/1/19 10:25 AM, Grygorii Strashko wrote:
->> Hi Florian,
->>
->> On 25/10/2019 20:47, Florian Fainelli wrote:
->>> On 10/24/19 3:09 AM, Grygorii Strashko wrote:
->>>> Add bindings for the new TI CPSW switch driver. Comparing to the legacy
->>>> bindings (net/cpsw.txt):
->>>> - ports definition follows DSA bindings (net/dsa/dsa.txt) and ports
->>>> can be
->>>> marked as "disabled" if not physically wired.
->>>> - all deprecated properties dropped;
->>>> - all legacy propertiies dropped which represent constant HW
->>>> cpapbilities
->>>> (cpdma_channels, ale_entries, bd_ram_size, mac_control, slaves,
->>>> active_slave)
->>>> - TI CPTS DT properties are reused as is, but grouped in "cpts" sub-node
->>>> - TI Davinci MDIO DT bindings are reused as is, because Davinci MDIO is
->>>> reused.
->>>>
->>>> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
->>>> ---
+On 01/11/2019 22:39, Andrew Lunn wrote:
+>>>> +static const struct devlink_ops cpsw_devlink_ops;
 >>>
->>> [snip]
->>>> +- mdio : CPSW MDIO bus block description
->>>> +    - bus_freq : MDIO Bus frequency
->>>
->>> clock-frequency is a more typical property to describe the bus clock's
->>> frequency, that is what i2c and spi do.
+>>> It would be nice to avoid this forward declaration.
 >>
->> The MDIO is re-used here unchanged (including bindings).
->> i think, I could try to add standard optional property "bus-frequency"
->> to MDIO bindings
->> as separate series, and deprecate "bus_freq".
+>> It's not declaration, it's definition of devlink_ops without any standard callbacks implemented.
 > 
-> What is wrong with 'clock-frequency'?
+> Ho Grygorii
 > 
-> Documentation/devicetree/bindings/i2c/i2c.txt:
+> Ah, yes.
 > 
-> - clock-frequency
->          frequency of bus clock in Hz.
+> How about
 > 
-> Documentation/devicetree/bindings/net/brcm,unimac-mdio.txt:
+> = {
+>    };
 > 
-> - clock-frequency: the MDIO bus clock that must be output by the MDIO bus
->    hardware, if absent, the default hardware values are used
-> 
-> Maybe this is a bit of a misnomer as it is usually considered a
-> replacement for the lack of a proper "clocks" property with a clock
-> provider, but we can flip the coin around any way we want, it looks
-> almost the same.
-> 
+> to make it clearer?
 
-I can do clock-frequency, but I like more bus-frequency (personally)
-due to more understandable meaning, and because in "Devicetree Specification v0.2"
-clock-frequency is defined as more related to clocks.
+NP
 
-Any way I hope you agree that it should be part separate discussion?
-
+> 
+>>>> +static const struct devlink_param cpsw_devlink_params[] = {
+>>>> +	DEVLINK_PARAM_DRIVER(CPSW_DL_PARAM_ALE_BYPASS,
+>>>> +			     "ale_bypass", DEVLINK_PARAM_TYPE_BOOL,
+>>>> +			     BIT(DEVLINK_PARAM_CMODE_RUNTIME),
+>>>> +			     cpsw_dl_ale_ctrl_get, cpsw_dl_ale_ctrl_set, NULL),
+>>>> +};
+>>>
+>>> Is this documented?
+>>
+>> In patch 9. But I'll update it and add standard devlink parameter definition, like:
+>>
+>> ale_bypass	[DEVICE, DRIVER-SPECIFIC]
+>> 		Allows to enable ALE_CONTROL(4).BYPASS mode for debug purposes
+>> 		Type: bool
+>> 		Configuration mode: runtime
+> 
+> And please you the standard file naming and location,
+> Documentation/networking/devlink-params-foo.txt
+Ok. I will.
+But I'd like to clarify:
+- drivers documentation placed in ./Documentation/networking/device_drivers/ti/
+so could you confirm pls, that you want me to add devlink-params documentation in separate file
+and palace it in ./Documentation/networking/ folder directly?
+   
 
 -- 
 Best regards,
