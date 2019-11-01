@@ -2,74 +2,150 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4096EC625
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Nov 2019 16:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A514EEC6AA
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Nov 2019 17:27:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729360AbfKAP4L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 Nov 2019 11:56:11 -0400
-Received: from mail-il1-f193.google.com ([209.85.166.193]:42584 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729144AbfKAP4K (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Nov 2019 11:56:10 -0400
-Received: by mail-il1-f193.google.com with SMTP id n18so2064955ilt.9
-        for <linux-omap@vger.kernel.org>; Fri, 01 Nov 2019 08:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=jkikiuxKNQxBjumG32R/xAOzBpTQzIQOGlQ9PlZMzROUxuROhIRW7LOTcmmKqgHbY3
-         GOAi1JnMWEnE/cHrGKrepuphWKFno/pbedjX9XbUWfuIb71+aWSjlL5ZBdl2tkqhPPKE
-         upGJ5iT/1C19qe7FISRldhXG8lpP7RchXgCPpOby1LewLJ9oB1SrBH33yMLjEi7ivjNF
-         o703S5ww1Ql1WeM1aVK41ldtWwBkirNy1eGYI9RnsPVvXaYfqhEH77U0dn8RQUxe2Nnp
-         f+7QOSjXXt7VdhDDkepSvRzDGCUBO3iHq8K6k3uKK4gkq+wr+4nHyD89dMwGRy4pl6Pa
-         lYoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=B53YSBE9Cx8Bk9Ll0TQTT8PVXoP5fmxjbHvIYkKVlec5aLWCApxMugWt2pTxj/ar4Q
-         r/CH/G3q0P6hQzNFfSJMCzayut/1grLvQnoYXhQy9k3giIv/T75fdgWXzk+PWge03ErB
-         nl6libYNmJhm5e0qXD0S6U36bt8AspJuBeh5SEZAB/FhAxSxEuIu9kchrnQsJWF1Vig+
-         Q1LG45xVdg8Lmj0OFOujXHJkxn2aXi7/srKp9uP4CMXWP/lirLNNW3KgXB5ngDyOErh+
-         0g5PXLUcJw/JqBwj13TiksOa+oYADT4GG5Lh5CZUlaqZLr1jGgr37SJT1NMIBgBm7ilC
-         FzPg==
-X-Gm-Message-State: APjAAAVjRLaIhvOeVkqOCBJFvuq3P6vjNpHiJxwNk6CL/1+Mw5BIGfBi
-        GmRxbg980SqNjEgSil3uaH9pXDYF1ZhSwLayG8mhbCQ=
-X-Google-Smtp-Source: APXvYqykJV+0/JwFtVH+nsMp7ykNvWlhcV0rRy9Az9oSoBx/tmbFcQXrrs+n9sPNEOpMU4VQknLk5nY+7hLQNduMfzM=
-X-Received: by 2002:a92:9ac2:: with SMTP id c63mr13404416ill.8.1572623769676;
- Fri, 01 Nov 2019 08:56:09 -0700 (PDT)
+        id S1727107AbfKAQ1Z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Nov 2019 12:27:25 -0400
+Received: from muru.com ([72.249.23.125]:40408 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726701AbfKAQ1Z (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 1 Nov 2019 12:27:25 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 294398140;
+        Fri,  1 Nov 2019 16:27:58 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Tero Kristo <t-kristo@ti.com>
+Cc:     devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org, Benoit Parrot <bparrot@ti.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: [PATCH] clk: ti: add clkctrl data dra7 sgx
+Date:   Fri,  1 Nov 2019 09:27:19 -0700
+Message-Id: <20191101162719.49781-1-tony@atomide.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:56:08 -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Mary Coster, I.M.F director-Benin" 
-        <info.zennitbankplcnigerian@gmail.com>
-Date:   Fri, 1 Nov 2019 16:56:08 +0100
-Message-ID: <CABHzvrmbRd3tt-E2+9AO2XvrMQFKQcn+kao_7DN4rb=grxZAcA@mail.gmail.com>
-Subject: Contact Money Gram international service-Benin to receive your
- payment funds US$2.500,000 Million
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Attn Dear,Funds Beneficiary.
-Contact Money Gram international service-Benin to receive your payment
-funds US$2.500,000 Million approved this morning through the UN
-payment settlement organization.
-Contact Person, Mr. John Dave.
-Official Director.Money Gram-Benin
-Email: moneygram.1820@outlook.fr
-Telephone +229 62619517
-Once you get intouch with Mr. John Dave, Money Gram Director, send to
-him your address including your phone numbers. He will be sending the
-transfer to you  $5000.00 USD daily until you received your complete
-payment $2.5m from the office.
-Note,I have paid the whole service fees for you but only small money
-you been required to send to this office is $23.00 only via Money Gram
-transfer.
-God bless
-Mary Coster, I.M.F director-Benin
-m.coster@aol.com
+This is similar to what we have for omap5 except the gpu_cm address is
+different, the mux clocks have one more source option, and there's no
+divider clock.
+
+Note that because of the current dts node name dependency for mapping to
+clock domain, we must still use "gpu-clkctrl@" naming instead of generic
+"clock@" naming for the node. And because of this, it's probably best to
+apply the dts node addition together along with the other clock changes.
+
+For accessing the GPU, we also need to configure the interconnect target
+module for GPU similar to what we have for omap5, I'll send that change
+separately.
+
+Cc: Benoit Parrot <bparrot@ti.com>
+Cc: "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc: Robert Nelson <robertcnelson@gmail.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/dra7xx-clocks.dtsi | 14 +++++++++++
+ drivers/clk/ti/clk-7xx.c             | 35 ++++++++++++++++++++++++++++
+ include/dt-bindings/clock/dra7.h     |  3 +++
+ 3 files changed, 52 insertions(+)
+
+diff --git a/arch/arm/boot/dts/dra7xx-clocks.dtsi b/arch/arm/boot/dts/dra7xx-clocks.dtsi
+--- a/arch/arm/boot/dts/dra7xx-clocks.dtsi
++++ b/arch/arm/boot/dts/dra7xx-clocks.dtsi
+@@ -1734,6 +1734,20 @@
+ 		};
+ 	};
+ 
++	gpu_cm: gpu-cm@1200 {
++		compatible = "ti,omap4-cm";
++		reg = <0x1200 0x100>;
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges = <0 0x1200 0x100>;
++
++		gpu_clkctrl: gpu-clkctrl@20 {
++			compatible = "ti,clkctrl";
++			reg = <0x20 0x4>;
++			#clock-cells = <2>;
++		};
++	};
++
+ 	l3init_cm: l3init-cm@1300 {
+ 		compatible = "ti,omap4-cm";
+ 		reg = <0x1300 0x100>;
+diff --git a/drivers/clk/ti/clk-7xx.c b/drivers/clk/ti/clk-7xx.c
+--- a/drivers/clk/ti/clk-7xx.c
++++ b/drivers/clk/ti/clk-7xx.c
+@@ -275,6 +275,40 @@ static const struct omap_clkctrl_reg_data dra7_dss_clkctrl_regs[] __initconst =
+ 	{ 0 },
+ };
+ 
++static const char * const dra7_gpu_core_mux_parents[] __initconst = {
++	"dpll_core_h14x2_ck",
++	"dpll_per_h14x2_ck",
++	"dpll_gpu_m2_ck",
++	NULL,
++};
++
++static const char * const dra7_gpu_hyd_mux_parents[] __initconst = {
++	"dpll_core_h14x2_ck",
++	"dpll_per_h14x2_ck",
++	"dpll_gpu_m2_ck",
++	NULL,
++};
++
++static const char * const dra7_gpu_sys_clk_parents[] __initconst = {
++	"sys_clkin",
++	NULL,
++};
++
++static const struct omap_clkctrl_div_data dra7_gpu_sys_clk_data __initconst = {
++	.max_div = 2,
++};
++
++static const struct omap_clkctrl_bit_data dra7_gpu_core_bit_data[] __initconst = {
++	{ 24, TI_CLK_MUX, dra7_gpu_core_mux_parents, NULL, },
++	{ 26, TI_CLK_MUX, dra7_gpu_hyd_mux_parents, NULL, },
++	{ 0 },
++};
++
++static const struct omap_clkctrl_reg_data dra7_gpu_clkctrl_regs[] __initconst = {
++	{ DRA7_GPU_CLKCTRL, dra7_gpu_core_bit_data, CLKF_SW_SUP, "gpu_cm:clk:0000:24", },
++	{ 0 },
++};
++
+ static const char * const dra7_mmc1_fclk_mux_parents[] __initconst = {
+ 	"func_128m_clk",
+ 	"dpll_per_m2x2_ck",
+@@ -778,6 +812,7 @@ const struct omap_clkctrl_data dra7_clkctrl_data[] __initconst = {
+ 	{ 0x4a008d20, dra7_l4cfg_clkctrl_regs },
+ 	{ 0x4a008e20, dra7_l3instr_clkctrl_regs },
+ 	{ 0x4a009120, dra7_dss_clkctrl_regs },
++	{ 0x4a009220, dra7_gpu_clkctrl_regs },
+ 	{ 0x4a009320, dra7_l3init_clkctrl_regs },
+ 	{ 0x4a0093b0, dra7_pcie_clkctrl_regs },
+ 	{ 0x4a0093d0, dra7_gmac_clkctrl_regs },
+diff --git a/include/dt-bindings/clock/dra7.h b/include/dt-bindings/clock/dra7.h
+--- a/include/dt-bindings/clock/dra7.h
++++ b/include/dt-bindings/clock/dra7.h
+@@ -78,6 +78,9 @@
+ #define DRA7_DSS_CORE_CLKCTRL	DRA7_CLKCTRL_INDEX(0x20)
+ #define DRA7_BB2D_CLKCTRL	DRA7_CLKCTRL_INDEX(0x30)
+ 
++/* gpu clocks */
++#define DRA7_GPU_CLKCTRL	DRA7_CLKCTRL_INDEX(0x20)
++
+ /* l3init clocks */
+ #define DRA7_MMC1_CLKCTRL	DRA7_CLKCTRL_INDEX(0x28)
+ #define DRA7_MMC2_CLKCTRL	DRA7_CLKCTRL_INDEX(0x30)
+-- 
+2.23.0
