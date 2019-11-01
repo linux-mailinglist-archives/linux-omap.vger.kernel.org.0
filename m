@@ -2,40 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3091FEC976
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Nov 2019 21:16:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C264EC9B1
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Nov 2019 21:35:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726846AbfKAUQs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 Nov 2019 16:16:48 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:41122 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726477AbfKAUQs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Nov 2019 16:16:48 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xA1KGdvH007674;
-        Fri, 1 Nov 2019 15:16:39 -0500
+        id S1727828AbfKAUfQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Nov 2019 16:35:16 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:60230 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726709AbfKAUfQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Nov 2019 16:35:16 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xA1KZ74i032411;
+        Fri, 1 Nov 2019 15:35:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1572639399;
-        bh=XckIMX9TOLpRUdwAePmoGCJdYT+5toAsS7w8nr/Ee6g=;
+        s=ti-com-17Q1; t=1572640507;
+        bh=p+dfw3N+D1l1+xg4adawidJ2KJs+uoZqMzJER8QjWMw=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=KR7VIPH0NTgTtD80kS210fYpguS9kMl4YdKPGmpZbtSTuuhRX2+XlvkcwHp+D+ix3
-         XODUzzhmCjJUQ+xaiMe9D2M0m13QBd8GqNq21rOee59yOBZVyzbSJECZgT9FokhvQk
-         z93jEJIge/VQlVzsVtrT5h2rNa+ES67pz0TZSScA=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xA1KGdwk109200
+        b=syh5xEUH/Q+eMM74SOHx9Spca5PozuY0lLj2Ec25f6OIfNp9ZrEbOizjjA+3pjL15
+         6tWF1rgOf63z0Bl/3E++z+QNiPsj0Zc5HxuGpKQDolfdUeJYHEPZpzafZB3RRV7jHl
+         7Rg+PRbQiFqeVtiQmkPTH/iMjo7WCMAW5GLCT+zE=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xA1KZ6Zs124477
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 1 Nov 2019 15:16:39 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 1 Nov 2019 15:35:07 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 1 Nov
- 2019 15:16:25 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ 2019 15:34:53 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Fri, 1 Nov 2019 15:16:25 -0500
+ Frontend Transport; Fri, 1 Nov 2019 15:35:06 -0500
 Received: from [10.250.98.116] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xA1KGZS0093218;
-        Fri, 1 Nov 2019 15:16:36 -0500
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xA1KZ3jC119024;
+        Fri, 1 Nov 2019 15:35:04 -0500
 Subject: Re: [PATCH v5 net-next 06/12] net: ethernet: ti: introduce cpsw
  switchdev based driver part 1 - dual-emac
 To:     Andrew Lunn <andrew@lunn.ch>
@@ -52,14 +52,14 @@ CC:     <netdev@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
 References: <20191024100914.16840-1-grygorii.strashko@ti.com>
  <20191024100914.16840-7-grygorii.strashko@ti.com>
- <20191029122422.GL15259@lunn.ch>
+ <20191029123230.GM15259@lunn.ch>
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <d87c72e1-cb91-04a2-c881-0d8eec4671e2@ti.com>
-Date:   Fri, 1 Nov 2019 22:16:34 +0200
+Message-ID: <24b1623d-48df-328a-eda7-4195e9df2b22@ti.com>
+Date:   Fri, 1 Nov 2019 22:34:57 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191029122422.GL15259@lunn.ch>
+In-Reply-To: <20191029123230.GM15259@lunn.ch>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -69,78 +69,66 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Andrew,
 
-On 29/10/2019 14:24, Andrew Lunn wrote:
->>   config TI_CPTS
->>   	bool "TI Common Platform Time Sync (CPTS) Support"
->> -	depends on TI_CPSW || TI_KEYSTONE_NETCP || COMPILE_TEST
->> +	depends on TI_CPSW || TI_KEYSTONE_NETCP || COMPILE_TEST || TI_CPSW_SWITCHDEV
-> 
-> nit picking, but COMPILE_TEST is generally last on the line.
-> 
->> +/**
->> + * cpsw_set_mc - adds multicast entry to the table if it's not added or deletes
->> + * if it's not deleted
->> + * @ndev: device to sync
->> + * @addr: address to be added or deleted
->> + * @vid: vlan id, if vid < 0 set/unset address for real device
->> + * @add: add address if the flag is set or remove otherwise
->> + */
->> +static int cpsw_set_mc(struct net_device *ndev, const u8 *addr,
->> +		       int vid, int add)
+
+On 29/10/2019 14:32, Andrew Lunn wrote:
+>> +static int cpsw_probe(struct platform_device *pdev)
 >> +{
->> +	struct cpsw_priv *priv = netdev_priv(ndev);
->> +	struct cpsw_common *cpsw = priv->cpsw;
->> +	int slave_no = cpsw_slave_index(cpsw, priv);
->> +	int mask, flags, ret;
-> 
-> David will complain about reverse Christmas tree. You need to move
-> some of the assignments into the body of the function. This problems
-> happens a few times in the code.
-> 
->> +static int cpsw_set_pauseparam(struct net_device *ndev,
->> +			       struct ethtool_pauseparam *pause)
->> +{
->> +	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
->> +	struct cpsw_priv *priv = netdev_priv(ndev);
+>> +	const struct soc_device_attribute *soc;
+>> +	struct device *dev = &pdev->dev;
+>> +	struct resource *ss_res;
+>> +	struct cpsw_common *cpsw;
+>> +	struct gpio_descs *mode;
+>> +	void __iomem *ss_regs;
+>> +	int ret = 0, ch;
+>> +	struct clk *clk;
+>> +	int irq;
 >> +
->> +	priv->rx_pause = pause->rx_pause ? true : false;
->> +	priv->tx_pause = pause->tx_pause ? true : false;
+> 
+> ...
+> 
 >> +
->> +	return phy_restart_aneg(cpsw->slaves[priv->emac_port - 1].phy);
->> +}
+>> +	/* setup netdevs */
+>> +	ret = cpsw_create_ports(cpsw);
+>> +	if (ret)
+>> +		goto clean_unregister_netdev;
 > 
-> You should look at the value of pause.autoneg.
-
-I'll use phy_validate_pause() and phy_set_asym_pause() here,
-and fix other comments.
-
+> At this point, the slave ports go live. If the kernel is configured
+> with NFS root etc, it will start using the interfaces.
 > 
->> +static const struct devlink_ops cpsw_devlink_ops;
+> +
+>> +	/* Grab RX and TX IRQs. Note that we also have RX_THRESHOLD and
+>> +	 * MISC IRQs which are always kept disabled with this driver so
+>> +	 * we will not request them.
+>> +	 *
+>> +	 * If anyone wants to implement support for those, make sure to
+>> +	 * first request and append them to irqs_table array.
+>> +	 */
+>> +
+>> +	ret = devm_request_irq(dev, cpsw->irqs_table[0], cpsw_rx_interrupt,
+>> +			       0, dev_name(dev), cpsw);
+>> +	if (ret < 0) {
+>> +		dev_err(dev, "error attaching irq (%d)\n", ret);
+>> +		goto clean_unregister_netdev;
+>> +	}
+>> +
+>> +	ret = devm_request_irq(dev, cpsw->irqs_table[1], cpsw_tx_interrupt,
+>> +			       0, dev_name(dev), cpsw);
+>> +	if (ret < 0) {
+>> +		dev_err(dev, "error attaching irq (%d)\n", ret);
+>> +		goto clean_unregister_netdev;
+>> +	}
 > 
-> It would be nice to avoid this forward declaration.
+> Are there any race conditions if the network starts using the devices
+> before interrupts are requested? To be safe, maybe this should be done
+> before the slaves are created?
 
-It's not declaration, it's definition of devlink_ops without any standard callbacks implemented.
+Usually during boot - there is no parallel probing (as opposite to modules loading by
+udev, for example). Also, there is barrier init call deferred_probe_initcall() to ensure all
+drivers probed before going to mount rootfs.
 
-> 
->> +static const struct devlink_param cpsw_devlink_params[] = {
->> +	DEVLINK_PARAM_DRIVER(CPSW_DL_PARAM_ALE_BYPASS,
->> +			     "ale_bypass", DEVLINK_PARAM_TYPE_BOOL,
->> +			     BIT(DEVLINK_PARAM_CMODE_RUNTIME),
->> +			     cpsw_dl_ale_ctrl_get, cpsw_dl_ale_ctrl_set, NULL),
->> +};
-> 
-> Is this documented?
-
-In patch 9. But I'll update it and add standard devlink parameter definition, like:
-
-ale_bypass	[DEVICE, DRIVER-SPECIFIC]
-		Allows to enable ALE_CONTROL(4).BYPASS mode for debug purposes
-		Type: bool
-		Configuration mode: runtime
-
-Thank you for review.
+So, i do not think this could cause any issue - max few packets will be delayed
+until kernel will switch back here, but the chances that ndo_open will be finished before probe ->0.
 
 -- 
 Best regards,
