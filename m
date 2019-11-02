@@ -2,66 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 38753ECDB5
-	for <lists+linux-omap@lfdr.de>; Sat,  2 Nov 2019 08:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ADD9ECEF8
+	for <lists+linux-omap@lfdr.de>; Sat,  2 Nov 2019 14:44:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726947AbfKBH5Z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 2 Nov 2019 03:57:25 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5251 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726044AbfKBH5Z (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 2 Nov 2019 03:57:25 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 09E422574E8412012078;
-        Sat,  2 Nov 2019 15:57:22 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Sat, 2 Nov 2019
- 15:57:12 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <edubezval@gmail.com>, <j-keerthy@ti.com>, <rui.zhang@intel.com>,
-        <daniel.lezcano@linaro.org>, <amit.kucheria@verdurent.com>
-CC:     <linux-pm@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] thermal: ti-soc-thermal: Remove dev_err() on platform_get_irq() failure
-Date:   Sat, 2 Nov 2019 15:56:54 +0800
-Message-ID: <20191102075654.36700-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1727104AbfKBNoI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 2 Nov 2019 09:44:08 -0400
+Received: from [211.53.128.215] ([211.53.128.215]:10497 "EHLO MAIL.isd.co.kr"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727090AbfKBNoI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 2 Nov 2019 09:44:08 -0400
+X-Greylist: delayed 338 seconds by postgrey-1.27 at vger.kernel.org; Sat, 02 Nov 2019 09:44:07 EDT
+Received: from 192.168.1.163 (217.217.179.17) by MAIL.isd.co.kr (10.10.10.22)
+ with Microsoft SMTP Server id 14.3.123.3; Sat, 2 Nov 2019 22:38:24 +0900
+Date:   Sat, 2 Nov 2019 14:38:21 +0100
+From:   Peter Wong <choimj@isd.co.kr>
+Reply-To: Peter Wong <pw178484@gmail.com>
+To:     <linux-omap@vger.kernel.org>
+Message-ID: <25506666.38065.1572701903524.JavaMail.cash@webmail.isd.co.kr>
+Subject: Your opportunity
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [217.217.179.17]
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-platform_get_irq() will call dev_err() itself on failure,
-so there is no need for the driver to also do this.
-This is detected by coccinelle.
+Greetings,
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/thermal/ti-soc-thermal/ti-bandgap.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Find this mail very confidential. reply for more details
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-index 2fa78f7..89c3ba7 100644
---- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-@@ -787,10 +787,9 @@ static int ti_bandgap_talert_init(struct ti_bandgap *bgp,
- 	int ret;
- 
- 	bgp->irq = platform_get_irq(pdev, 0);
--	if (bgp->irq < 0) {
--		dev_err(&pdev->dev, "get_irq failed\n");
-+	if (bgp->irq < 0)
- 		return bgp->irq;
--	}
-+
- 	ret = request_threaded_irq(bgp->irq, NULL,
- 				   ti_bandgap_talert_irq_handler,
- 				   IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
--- 
-2.7.4
+Thanks.
+Peter Wong
 
+
+
+
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
 
