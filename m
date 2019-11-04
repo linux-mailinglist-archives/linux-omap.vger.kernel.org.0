@@ -2,906 +2,459 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E08C3EE4D2
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2019 17:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50B21EE585
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2019 18:05:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728910AbfKDQj3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 Nov 2019 11:39:29 -0500
-Received: from foss.arm.com ([217.140.110.172]:46920 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728346AbfKDQj2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 4 Nov 2019 11:39:28 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DEE5B68D;
-        Mon,  4 Nov 2019 08:39:26 -0800 (PST)
-Received: from e119886-lin.cambridge.arm.com (unknown [10.37.6.20])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9FAFA3F71A;
-        Mon,  4 Nov 2019 08:39:17 -0800 (PST)
-From:   Andrew Murray <andrew.murray@arm.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Ley Foon Tan <lftan@altera.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Will Deacon <will@kernel.org>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
-        Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-        David Daney <david.daney@cavium.com>,
-        Jonathan Chocron <jonnyc@amazon.com>,
-        Andy Gross <agross@kernel.org>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Toan Le <toan@os.amperecomputing.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, rfi@lists.rocketboards.org,
-        linux-arm-kernel@axis.com, linux-mediatek@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v1 7/7] dt-bindings: PCI: Use IRQ flags for legacy PCI IRQ interrupts
-Date:   Mon,  4 Nov 2019 16:38:21 +0000
-Message-Id: <20191104163834.8932-8-andrew.murray@arm.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20191104163834.8932-1-andrew.murray@arm.com>
-References: <20191104163834.8932-1-andrew.murray@arm.com>
+        id S1727861AbfKDRFZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 4 Nov 2019 12:05:25 -0500
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:39094 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728216AbfKDRFY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Nov 2019 12:05:24 -0500
+Received: by mail-vs1-f66.google.com with SMTP id y129so11455743vsc.6
+        for <linux-omap@vger.kernel.org>; Mon, 04 Nov 2019 09:05:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=/sfJvuApJiYLkyexUK/FuARs4xcUQEx6SFT2IKGNyoY=;
+        b=WE4TAO9eHwQ5z21WrB7b1URuKpk77fTx9DeEej8xZGE5aUQBoL+OQSbF5Yq9Iex2V6
+         FS2JKlGis4GLiU2bVvhhi9mwDqdNHFxp7U0l1XDHxgcGgCofmXcWmztVCMYrnRT7BlB4
+         JTQXQx08K1JNc+zuAtnLy/1GgT1sioXXfbsCdmxqC/7dJCu7KKMutxc2dDHtSCNckTCw
+         KMyhVytYrdRwMYjGIS8TaGVv8oXKrehkqZ10FuAWP7uuU6mKPi2OLva5b9dSSO0+j8mq
+         haMsy8OpNGItTAco8XQpb9gm3XoIq5Qpk31AwqA1RZEmMZpIKo5Z6PMVwIwxnQvpCqOb
+         DHRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=/sfJvuApJiYLkyexUK/FuARs4xcUQEx6SFT2IKGNyoY=;
+        b=ApPxZiPTwupdLP5rNZFmZZWnoaVDs+hq1q8qO2Gd3dQh7qeOpQ8E8jVCD4N4icli+M
+         D4+tdxFbd+Kv86SErOnLymXgIIemUbkdl8zzO6PaWxJlyMQwGAhYHLOxUYUAexdVvbMv
+         ugiq6d3DicQz57N8QpVpViOLj36qHhbxv3mKyatuItpBhWt/KJQuhcciyXZ6/KO7jnhC
+         E0/+UMVXg3KDJQZ1NPP23Go2cl/GML95I8SU2zUaVUXCrCMmr8iPFvTcAV30WDbWHEyi
+         f8zTSAcZspGF8X87ZF0PrkrlcY/P0HymPlIXDivTDSP4GlhD/xDnfAavwUgpL9gUm/dR
+         TG2A==
+X-Gm-Message-State: APjAAAWMGLHOSs5c+yWNXDDTrDNeMv4dGuzJQ2OD2M2nKQmKErI2PnTx
+        IfM4iWe9p83G3JE/8VOgq5Kf/WqWM8J3kKRJe6O1ZA==
+X-Google-Smtp-Source: APXvYqy/k3YUUNuleSWpZXtiCJGCxe+M5ub3/NnkjmhlUAN8xydMKFqM4juyARGcbkjrxEKvDHDxdbqyD6Fe5fEnJM8=
+X-Received: by 2002:a67:e44c:: with SMTP id n12mr4742888vsm.200.1572887122774;
+ Mon, 04 Nov 2019 09:05:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191029135352.GA1486@techyauld.com> <CAJPHfYOxCS4oJ_aax-ZQUZsh4oLVqQgVuDz3w6RzubYGMFYLRA@mail.gmail.com>
+In-Reply-To: <CAJPHfYOxCS4oJ_aax-ZQUZsh4oLVqQgVuDz3w6RzubYGMFYLRA@mail.gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 4 Nov 2019 18:04:46 +0100
+Message-ID: <CAPDyKFrLFDhrqGY+AYHuGctxUMpK=CfOXUN48uWM5jj4zOd5SQ@mail.gmail.com>
+Subject: Re: [omap_hsmmc] run into dead loop
+To:     Yi Zheng <goodmenzy@gmail.com>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Zheng Yi <yzheng@techyauld.com>,
+        =?UTF-8?B?5aea5Y2a?= <byao@techyauld.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Replace magic numbers used to describe legacy PCI IRQ interrupts
-with #define.
+On Wed, 30 Oct 2019 at 01:05, Yi Zheng <goodmenzy@gmail.com> wrote:
+>
+> Hi,
+>
+>     I found that there may be a dead loop in omap-hsmmc driver:
+>     drivers/mmc/host/omap_hsmmc.c
+>
+>     My testing is on v4.19.58-0-g7a6bfa08b938, but the latest
+>     kernel(v5.4-rc5-19-g8005803a2ca0) has the same bug(I guess).
+>
+>     In omap_hsmmc_start_command(), the IRQ is enabled too early:
+>         omap_hsmmc_start_command(struct omap_hsmmc_host *host, struct
+> mmc_command *cmd,
+>                 struct mmc_data *data)
+>         {
+>                 /* ..................... */
+>                 omap_hsmmc_enable_irq(host, cmd);
+>
+>                 /* ..................... */
+>                 /*  If IRQ occurs here, we run in deadloop! */
+>
+>                 host->req_in_progress =3D 1;
+>
+>                 /* ..................... */
+>         }
+>
+>     In OMAP-HSMMC ISR, the C code is:
+>         static irqreturn_t omap_hsmmc_irq(int irq, void *dev_id)
+>         {
+>                 struct omap_hsmmc_host *host =3D dev_id;
+>                 int status;
+>
+>                 status =3D OMAP_HSMMC_READ(host->base, STAT);
+>                 while (status & (INT_EN_MASK | CIRQ_EN)) {
+>                         if (host->req_in_progress)
+>                                 omap_hsmmc_do_irq(host, status);
+>
+>                         if (status & CIRQ_EN)
+>                                 mmc_signal_sdio_irq(host->mmc);
+>
+>                         /* Flush posted write */
+>                         status =3D OMAP_HSMMC_READ(host->base, STAT);
+>                 }
+>
+>                 return IRQ_HANDLED;
+>         }
+>
+>     It checks the flag host->req_in_progress, only it is set,
+>     omap_hsmmc_do_irq() will be called.  The STAT register will be
+>     written in omap_hsmmc_do_irq(), that will cause the interrupts to
+>     be reset.
+>
+>     If MMC IRQ occurs in that danger time-window, my single core CPU
+>     will run into endless loop in the ISR omap_hsmmc_irq(), due to
+>     STAT register is never written to clean the IRQ.
+>
+>     Due to the small time-window, this bug is some what difficult to
+>     be found. I add some debug info dumpping in that two functions,
+>     that will cause the code slower, the bug will occur easier.  It is
+>     realy a bug. The debug version of the source and the debug log is
+>     some what tedious. I only add the snippet here:
+>
+>     The bug log:
+>         [   12.765560] omap_hsmmc_runtime_resume:2354: omap_hsmmc
+> 48060000.mmc: enabled
+>         [   12.773006] mmc_mrq_pr_debug:279: mmc0: starting CMD6 arg
+> 03200101 flags 0000049d
+>         [   12.780941] omap_hsmmc_start_command:853: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101
+>         [   12.790396] omap_hsmmc_start_command:859: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101, tracing
+>         [   12.800662] omap_hsmmc_start_command:862: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101, tracing
+>         [   12.811054] omap_hsmmc_start_command:871: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101, tracing
+>         [   12.821331] omap_hsmmc_start_command:878: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101, tracing
+>         [   12.831596] omap_hsmmc_start_command:888: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101, tracing
+>         [   12.841861] omap_hsmmc_start_command:919: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101, tracing
+>         [   12.852124] omap_hsmmc_start_command:923: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101, tracing
+>         [   12.862393] omap_hsmmc_irq:1207: omap_hsmmc 48060000.mmc:
+> mmc0: enter ISR, irq=3D34, status=3D1
+>         [   12.871155] omap_hsmmc_do_irq:1157: omap_hsmmc
+> 48060000.mmc: IRQ Status is 1
+>         [   12.878553] omap_hsmmc_irq:1226: omap_hsmmc 48060000.mmc:
+> mmc0: leave ISR, irq=3D34
+>         [   12.886450] omap_hsmmc_start_command:939: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, tracing
+>         [   12.894805] CPU: 0 PID: 95 Comm: kworker/0:1H Tainted: G
+>     W  O      4.19.58-0-g7a6bfa08b-cp5502 #25
+>         [   12.904878] Hardware name: Generic AM33XX (Flattened Device Tr=
+ee)
+>         [   12.911292] Workqueue: kblockd blk_mq_run_work_fn
+>         [   12.916316] [<c010f7fc>] (unwind_backtrace) from
+> [<c010ce4c>] (show_stack+0x18/0x1c)
+>         [   12.924506] [<c010ce4c>] (show_stack) from [<c0629cac>]
+> (omap_hsmmc_request+0x2b0/0x4b0)
+>         [   12.933014] [<c0629cac>] (omap_hsmmc_request) from
+> [<c06147b8>] (mmc_start_request+0xa4/0xb8)
+>         [   12.942015] [<c06147b8>] (mmc_start_request) from
+> [<c0614834>] (mmc_wait_for_req+0x68/0xd0)
+>         [   12.950828] [<c0614834>] (mmc_wait_for_req) from
+> [<c0614918>] (mmc_wait_for_cmd+0x7c/0xa4)
+>         [   12.959552] [<c0614918>] (mmc_wait_for_cmd) from
+> [<c061bbe0>] (__mmc_switch+0xe0/0x2cc)
+>         [   12.967998] [<c061bbe0>] (__mmc_switch) from [<c061bdf8>]
+> (mmc_switch+0x2c/0x34)
+>         [   12.975805] [<c061bdf8>] (mmc_switch) from [<c061be58>]
+> (mmc_flush_cache+0x58/0x84)
+>         [   12.983844] [<c061be58>] (mmc_flush_cache) from
+> [<c0626f84>] (mmc_blk_mq_issue_rq+0x5d8/0x76c)
+>         [   12.992927] [<c0626f84>] (mmc_blk_mq_issue_rq) from
+> [<c0627644>] (mmc_mq_queue_rq+0x158/0x1fc)
+>         [   13.002056] [<c0627644>] (mmc_mq_queue_rq) from
+> [<c0470590>] (blk_mq_dispatch_rq_list+0x384/0x4c4)
+>         [   13.011521] [<c0470590>] (blk_mq_dispatch_rq_list) from
+> [<c047531c>] (blk_mq_sched_dispatch_requests+0xfc/0x174)
+>         [   13.022248] [<c047531c>] (blk_mq_sched_dispatch_requests)
+> from [<c046f020>] (__blk_mq_run_hw_queue+0xcc/0x110)
+>         [   13.032793] [<c046f020>] (__blk_mq_run_hw_queue) from
+> [<c01520f0>] (process_one_work+0x364/0x64c)
+>         [   13.042142] omap_hsmmc_irq:1207: omap_hsmmc 48060000.mmc:
+> mmc0: enter ISR, irq=3D34, status=3D108000
+>         [   13.042156] omap_hsmmc_do_irq:1157: omap_hsmmc
+> 48060000.mmc: IRQ Status is 108000
+>         [   13.042173] omap_hsmmc_dbg_report_irq:1088: omap_hsmmc
+> 48060000.mmc: MMC IRQ 0x108000 : ERRI DTO
+>         [   13.042196] omap_hsmmc_irq:1226: omap_hsmmc 48060000.mmc:
+> mmc0: leave ISR, irq=3D34
+>         [   13.076452] [<c01520f0>] (process_one_work) from
+> [<c0153020>] (worker_thread+0x294/0x408)
+>         [   13.085089] [<c0153020>] (worker_thread) from [<c0158624>]
+> (kthread+0x140/0x15c)
+>         [   13.092861] [<c0158624>] (kthread) from [<c01010b4>]
+> (ret_from_fork+0x14/0x20)
+>         [   13.100482] Exception stack(0xdd179fb0 to 0xdd179ff8)
+>         [   13.105828] 9fa0:
+> 00000000 00000000 00000000 00000000
+>         [   13.114411] 9fc0: 00000000 00000000 00000000 00000000
+> 00000000 00000000 00000000 00000000
+>         [   13.123032] 9fe0: 00000000 00000000 00000000 00000000
+> 00000013 00000000
+>         [   13.130027] mmc_wait_for_req_done:433: mmc0: req failed
+> (CMD6): -110, cmd->retries=3D3, retrying...
+>         [   13.139390] omap_hsmmc_start_command:853: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101
+>         [   13.148839] omap_hsmmc_start_command:859: omap_hsmmc
+> 48060000.mmc: mmc0: CMD6, argument 0x03200101, tracing
+>         [   13.148855] omap_hsmmc_irq:1207: omap_hsmmc 48060000.mmc:
+> mmc0: enter ISR, irq=3D34, status=3D108000
+>         [   13.168274] omap_hsmmc 48060000.mmc: !! mmc0: ISR, irq=3D34,
+> update status: 108000, req_in_progress=3D0, loop=3D1
+>         [   13.178489] omap_hsmmc 48060000.mmc: !! mmc0: ISR, irq=3D34,
+> update status: 108000, req_in_progress=3D0, loop=3D2
+>         [   13.188704] omap_hsmmc 48060000.mmc: !! mmc0: ISR, irq=3D34,
+> update status: 108002, req_in_progress=3D0, loop=3D3
+>         [   13.198920] omap_hsmmc 48060000.mmc: !! mmc0: ISR, irq=3D34,
+> update status: 108002, req_in_progress=3D0, loop=3D4
+>         [   13.209135] omap_hsmmc 48060000.mmc: !! mmc0: ISR, irq=3D34,
+> update status: 108002, req_in_progress=3D0, loop=3D5
+>         [   13.219351] omap_hsmmc 48060000.mmc: !! mmc0: ISR, irq=3D34,
+> update status: 108002, req_in_progress=3D0, loop=3D6
+>         endless looping ..............
+>         [   26.754257] omap_hsmmc 48060000.mmc: !! mmc0: ISR, irq=3D34,
+> update status: 108002, req_in_progress=3D0, loop=3D1306
+>         yes, endless.....
+>
+>    The source code with line number(to be a reference to the log info)
+>  omap_hsmmc.c:
+>         847   =E2=94=82 static void
+>         848   =E2=94=82 omap_hsmmc_start_command(struct omap_hsmmc_host *=
+host,
+> struct mmc_command *cmd,
+>         849   =E2=94=82     struct mmc_data *data)
+>         850   =E2=94=82 {
+>         851   =E2=94=82     int cmdreg =3D 0, resptype =3D 0, cmdtype =3D=
+ 0;
+>         852   =E2=94=82
+>         853   =E2=94=82     dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d, argu=
+ment 0x%08x\n",
+>         854   =E2=94=82         mmc_hostname(host->mmc), cmd->opcode, cmd=
+->arg);
+>         855   =E2=94=82     host->cmd =3D cmd;
+>         856   =E2=94=82
+>         857   =E2=94=82     omap_hsmmc_enable_irq(host, cmd);
+>         858   =E2=94=82
+>         859   =E2=94=82     dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d, argu=
+ment
+> 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode, cmd->arg);
+>         860   =E2=94=82
+>         861   =E2=94=82     host->response_busy =3D 0;
+>         862   =E2=94=82     dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d, argu=
+ment
+> 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode, cmd->arg);
+>         863   =E2=94=82
+>         864   =E2=94=82     if (cmd->flags & MMC_RSP_PRESENT) {
+>         865   =E2=94=82         if (cmd->flags & MMC_RSP_136){
+>         866   =E2=94=82             resptype =3D 1;
+>         867   =E2=94=82             dev_vdbg(mmc_dev(host->mmc), "%s: CMD=
+%d,
+> argument 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode,
+> cmd->arg);
+>         868   =E2=94=82         }else if (cmd->flags & MMC_RSP_BUSY) {
+>         869   =E2=94=82             resptype =3D 3;
+>         870   =E2=94=82             host->response_busy =3D 1;
+>         871   =E2=94=82             dev_vdbg(mmc_dev(host->mmc), "%s: CMD=
+%d,
+> argument 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode,
+> cmd->arg);
+>         872   =E2=94=82         } else {
+>         873   =E2=94=82             resptype =3D 2;
+>         874   =E2=94=82             dev_vdbg(mmc_dev(host->mmc), "%s: CMD=
+%d,
+> argument 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode,
+> cmd->arg);
+>         875   =E2=94=82         }
+>         876   =E2=94=82     }
+>         877   =E2=94=82
+>         878   =E2=94=82     dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d, argu=
+ment
+> 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode, cmd->arg);
+>         879   =E2=94=82
+>         880   =E2=94=82     /*
+>         881   =E2=94=82      * Unlike OMAP1 controller, the cmdtype does =
+not
+> seem to be based on
+>         882   =E2=94=82      * ac, bc, adtc, bcr. Only commands ending an=
+ open
+> ended transfer need
+>         883   =E2=94=82      * a val of 0x3, rest 0x0.
+>         884   =E2=94=82      */
+>         885   =E2=94=82     if (cmd =3D=3D host->mrq->stop)
+>         886   =E2=94=82         cmdtype =3D 0x3;
+>         887   =E2=94=82
+>         888   =E2=94=82     dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d, argu=
+ment
+> 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode, cmd->arg);
+>         889   =E2=94=82
+>         890   =E2=94=82     cmdreg =3D (cmd->opcode << 24) | (resptype <<=
+ 16) |
+> (cmdtype << 22);
+>         891   =E2=94=82
+>         892   =E2=94=82     if ((host->flags & AUTO_CMD23) &&
+> mmc_op_multi(cmd->opcode) &&
+>         893   =E2=94=82         host->mrq->sbc) {
+>         894   =E2=94=82         cmdreg |=3D ACEN_ACMD23;
+>         895   =E2=94=82
+>         896   =E2=94=82         dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d,
+> argument 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode,
+> cmd->arg);
+>         897   =E2=94=82
+>         898   =E2=94=82         OMAP_HSMMC_WRITE(host->base, SDMASA,
+> host->mrq->sbc->arg);
+>         899   =E2=94=82
+>         900   =E2=94=82         dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d,
+> argument 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode,
+> cmd->arg);
+>         901   =E2=94=82     }
+>         902   =E2=94=82     if (data) {
+>         903   =E2=94=82         dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d,
+> argument 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode,
+> cmd->arg);
+>         904   =E2=94=82
+>         905   =E2=94=82         cmdreg |=3D DP_SELECT | MSBS | BCE;
+>         906   =E2=94=82         if (data->flags & MMC_DATA_READ)
+>         907   =E2=94=82             cmdreg |=3D DDIR;
+>         908   =E2=94=82         else
+>         909   =E2=94=82             cmdreg &=3D ~(DDIR);
+>         910   =E2=94=82
+>         911   =E2=94=82         dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d,
+> argument 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode,
+> cmd->arg);
+>         912   =E2=94=82     }
+>         913   =E2=94=82
+>         914   =E2=94=82     if (host->use_dma)
+>         915   =E2=94=82         cmdreg |=3D DMAE;
+>         916   =E2=94=82
+>         917   =E2=94=82     host->req_in_progress =3D 1;
+>         918   =E2=94=82
+>         919   =E2=94=82     dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d, argu=
+ment
+> 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode, cmd->arg);
+>         920   =E2=94=82
+>         921   =E2=94=82     OMAP_HSMMC_WRITE(host->base, ARG, cmd->arg);
+>         922   =E2=94=82
+>         923   =E2=94=82     dev_vdbg(mmc_dev(host->mmc), "%s: CMD%d, argu=
+ment
+> 0x%08x, tracing\n", mmc_hostname(host->mmc), cmd->opcode, cmd->arg);
+>         924   =E2=94=82
+>         925   =E2=94=82     OMAP_HSMMC_WRITE(host->base, CMD, cmdreg);
+>         926   =E2=94=82
+>         927   =E2=94=82     if(6 =3D=3D cmd->opcode){
+>         928   =E2=94=82 #define my_dynamic_dev_dbg(dev, fmt, ...)        =
+       \
+>         929   =E2=94=82         do {                            \
+>         930   =E2=94=82             DEFINE_DYNAMIC_DEBUG_METADATA(descrip=
+tor, fmt); \
+>         931   =E2=94=82             if (DYNAMIC_DEBUG_BRANCH(descriptor))=
+{      \
+>         932   =E2=94=82                 __dynamic_dev_dbg(&descriptor, de=
+v, fmt, \
+>         933   =E2=94=82                           ##__VA_ARGS__);   \
+>         934   =E2=94=82                 dump_stack();               \
+>         935   =E2=94=82             }                       \
+>         936   =E2=94=82         } while (0)
+>         937   =E2=94=82
+>         938   =E2=94=82         my_dynamic_dev_dbg(mmc_dev(host->mmc), "%=
+s:
+> CMD%d, tracing\n",
+>         939   =E2=94=82                    mmc_hostname(host->mmc), cmd->=
+opcode);
+>         940   =E2=94=82 #undef my_dynamic_dev_dbg
+>         941   =E2=94=82     }
+>         942   =E2=94=82 }
+>        ................
+>        1200   =E2=94=82 static irqreturn_t omap_hsmmc_irq(int irq, void *=
+dev_id)
+>        1201   =E2=94=82 {
+>        1202   =E2=94=82     struct omap_hsmmc_host *host =3D dev_id;
+>        1203   =E2=94=82     int status;
+>        1204   =E2=94=82     unsigned int  loop_count =3D 0;
+>        1205   =E2=94=82
+>        1206   =E2=94=82     status =3D OMAP_HSMMC_READ(host->base, STAT);
+>        1207   =E2=94=82     dev_vdbg(mmc_dev(host->mmc), "%s: enter ISR,
+> irq=3D%d, status=3D%x\n", mmc_hostname(host->mmc), irq, status);
+>        1208   =E2=94=82
+>        1209   =E2=94=82     while (status & (INT_EN_MASK | CIRQ_EN)) {
+>        1210   =E2=94=82         loop_count++;
+>        1211   =E2=94=82
+>        1212   =E2=94=82         if (host->req_in_progress)
+>        1213   =E2=94=82             omap_hsmmc_do_irq(host, status);
+>        1214   =E2=94=82
+>        1215   =E2=94=82         if (status & CIRQ_EN)
+>        1216   =E2=94=82             mmc_signal_sdio_irq(host->mmc);
+>        1217   =E2=94=82
+>        1218   =E2=94=82         /* Flush posted write */
+>        1219   =E2=94=82         status =3D OMAP_HSMMC_READ(host->base, ST=
+AT);
+>        1220   =E2=94=82         if(status){
+>        1221   =E2=94=82             dev_warn(mmc_dev(host->mmc), "!! %s: =
+ISR,
+> irq=3D%d, update status: %x, req_in_progress=3D%d, loop=3D%u\n",
+>        1222   =E2=94=82                  mmc_hostname(host->mmc), irq, st=
+atus,
+> host->req_in_progress, loop_count);
+>        1223   =E2=94=82         }
+>        1224   =E2=94=82     }
+>        1225   =E2=94=82
+>        1226   =E2=94=82     dev_vdbg(mmc_dev(host->mmc), "%s: leave ISR,
+> irq=3D%d\n", mmc_hostname(host->mmc), irq);
+>        1227   =E2=94=82     return IRQ_HANDLED;
+>        1228   =E2=94=82 }
+>
+>
+>
+>     My patch to fixup that bug is here:
+> diff -upr linux-git/drivers/mmc/host/omap_hsmmc.c
+> linux-fixup/drivers/mmc/host/omap_hsmmc.c
+> --- linux-git/drivers/mmc/host/omap_hsmmc.c     2019-10-29
+> 21:33:05.127638851 +0800
+> +++ linux-fixup/drivers/mmc/host/omap_hsmmc.c   2019-10-29
+> 21:37:44.957637473 +0800
+> @@ -852,8 +852,6 @@ omap_hsmmc_start_command(struct omap_hsm
+>                 mmc_hostname(host->mmc), cmd->opcode, cmd->arg);
+>         host->cmd =3D cmd;
+>
+> -       omap_hsmmc_enable_irq(host, cmd);
+> -
+>         host->response_busy =3D 0;
+>         if (cmd->flags & MMC_RSP_PRESENT) {
+>                 if (cmd->flags & MMC_RSP_136)
+> @@ -891,7 +889,8 @@ omap_hsmmc_start_command(struct omap_hsm
+>         if (host->use_dma)
+>                 cmdreg |=3D DMAE;
+>
+> -       host->req_in_progress =3D 1;
+> +       host->req_in_progress =3D 1; /* the flag must be set BEFORE irq e=
+nabled */
+> +       omap_hsmmc_enable_irq(host, cmd);
+>
+>         OMAP_HSMMC_WRITE(host->base, ARG, cmd->arg);
+>         OMAP_HSMMC_WRITE(host->base, CMD, cmdreg);
+>
 
-Signed-off-by: Andrew Murray <andrew.murray@arm.com>
----
- .../devicetree/bindings/pci/83xx-512x-pci.txt | 18 ++---
- .../devicetree/bindings/pci/aardvark-pci.txt  | 10 +--
- .../devicetree/bindings/pci/altera-pcie.txt   | 10 +--
- .../bindings/pci/axis,artpec6-pcie.txt        | 10 +--
- .../bindings/pci/cdns,cdns-pcie-host.txt      | 10 +--
- .../bindings/pci/faraday,ftpci100.txt         | 68 +++++++++----------
- .../bindings/pci/fsl,imx6q-pcie.txt           | 10 +--
- .../bindings/pci/hisilicon-pcie.txt           | 20 +++---
- .../bindings/pci/host-generic-pci.txt         | 10 +--
- .../devicetree/bindings/pci/kirin-pcie.txt    | 10 +--
- .../bindings/pci/layerscape-pci.txt           | 10 +--
- .../devicetree/bindings/pci/mediatek-pcie.txt | 40 +++++------
- .../devicetree/bindings/pci/mobiveil-pcie.txt |  8 +--
- .../devicetree/bindings/pci/pci-rcar-gen2.txt |  8 +--
- .../bindings/pci/pci-thunder-pem.txt          | 10 +--
- .../devicetree/bindings/pci/pcie-al.txt       |  4 +-
- .../devicetree/bindings/pci/qcom,pcie.txt     | 20 +++---
- .../bindings/pci/ralink,rt3883-pci.txt        | 18 ++---
- .../bindings/pci/rockchip-pcie-host.txt       | 10 +--
- .../devicetree/bindings/pci/ti-pci.txt        | 10 +--
- .../devicetree/bindings/pci/uniphier-pcie.txt | 10 +--
- .../bindings/pci/v3-v360epc-pci.txt           | 34 +++++-----
- .../devicetree/bindings/pci/versatile.txt     | 40 +++++------
- .../devicetree/bindings/pci/xgene-pci-msi.txt | 10 +--
- .../devicetree/bindings/pci/xgene-pci.txt     | 10 +--
- .../bindings/pci/xilinx-nwl-pcie.txt          | 10 +--
- .../devicetree/bindings/pci/xilinx-pcie.txt   | 20 +++---
- 27 files changed, 224 insertions(+), 224 deletions(-)
+Thanks for the detailed description to the problem.
 
-diff --git a/Documentation/devicetree/bindings/pci/83xx-512x-pci.txt b/Documentation/devicetree/bindings/pci/83xx-512x-pci.txt
-index 3abeecf4983f..cb80b9e49a2b 100644
---- a/Documentation/devicetree/bindings/pci/83xx-512x-pci.txt
-+++ b/Documentation/devicetree/bindings/pci/83xx-512x-pci.txt
-@@ -9,19 +9,19 @@ Freescale 83xx and 512x SOCs include the same PCI bridge core.
- 
- Example (MPC8313ERDB)
- 	pci0: pci@e0008500 {
--		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
-+		interrupt-map-mask = <0xf800 0x0 0x0 IRQ_INT_ALL>;
- 		interrupt-map = <
- 				/* IDSEL 0x0E -mini PCI */
--				 0x7000 0x0 0x0 0x1 &ipic 18 0x8
--				 0x7000 0x0 0x0 0x2 &ipic 18 0x8
--				 0x7000 0x0 0x0 0x3 &ipic 18 0x8
--				 0x7000 0x0 0x0 0x4 &ipic 18 0x8
-+				 0x7000 0x0 0x0 IRQ_INTA &ipic 18 0x8
-+				 0x7000 0x0 0x0 IRQ_INTB &ipic 18 0x8
-+				 0x7000 0x0 0x0 IRQ_INTC &ipic 18 0x8
-+				 0x7000 0x0 0x0 IRQ_INTD &ipic 18 0x8
- 
- 				/* IDSEL 0x0F - PCI slot */
--				 0x7800 0x0 0x0 0x1 &ipic 17 0x8
--				 0x7800 0x0 0x0 0x2 &ipic 18 0x8
--				 0x7800 0x0 0x0 0x3 &ipic 17 0x8
--				 0x7800 0x0 0x0 0x4 &ipic 18 0x8>;
-+				 0x7800 0x0 0x0 IRQ_INTA &ipic 17 0x8
-+				 0x7800 0x0 0x0 IRQ_INTB &ipic 18 0x8
-+				 0x7800 0x0 0x0 IRQ_INTC &ipic 17 0x8
-+				 0x7800 0x0 0x0 IRQ_INTD &ipic 18 0x8>;
- 		interrupt-parent = <&ipic>;
- 		interrupts = <66 0x8>;
- 		bus-range = <0x0 0x0>;
-diff --git a/Documentation/devicetree/bindings/pci/aardvark-pci.txt b/Documentation/devicetree/bindings/pci/aardvark-pci.txt
-index 310ef7145c47..ca8fe542edc9 100644
---- a/Documentation/devicetree/bindings/pci/aardvark-pci.txt
-+++ b/Documentation/devicetree/bindings/pci/aardvark-pci.txt
-@@ -43,11 +43,11 @@ Example:
- 		msi-parent = <&pcie0>;
- 		ranges = <0x82000000 0 0xe8000000   0 0xe8000000 0 0x1000000 /* Port 0 MEM */
- 			  0x81000000 0 0xe9000000   0 0xe9000000 0 0x10000>; /* Port 0 IO*/
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0 0 0 1 &pcie_intc 0>,
--				<0 0 0 2 &pcie_intc 1>,
--				<0 0 0 3 &pcie_intc 2>,
--				<0 0 0 4 &pcie_intc 3>;
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0 IRQ_INTA &pcie_intc 0>,
-+				<0 0 0 IRQ_INTB &pcie_intc 1>,
-+				<0 0 0 IRQ_INTC &pcie_intc 2>,
-+				<0 0 0 IRQ_INTD &pcie_intc 3>;
- 		pcie_intc: interrupt-controller {
- 			interrupt-controller;
- 			#interrupt-cells = <1>;
-diff --git a/Documentation/devicetree/bindings/pci/altera-pcie.txt b/Documentation/devicetree/bindings/pci/altera-pcie.txt
-index 816b244a221e..f9902dca1a03 100644
---- a/Documentation/devicetree/bindings/pci/altera-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/altera-pcie.txt
-@@ -40,11 +40,11 @@ Example
- 		msi-parent = <&msi_to_gic_gen_0>;
- 		#address-cells = <3>;
- 		#size-cells = <2>;
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0 0 0 1 &pcie_0 1>,
--			            <0 0 0 2 &pcie_0 2>,
--			            <0 0 0 3 &pcie_0 3>,
--			            <0 0 0 4 &pcie_0 4>;
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0 IRQ_INTA &pcie_0 1>,
-+			            <0 0 0 IRQ_INTB &pcie_0 2>,
-+			            <0 0 0 IRQ_INTC &pcie_0 3>,
-+			            <0 0 0 IRQ_INTD &pcie_0 4>;
- 		ranges = <0x82000000 0x00000000 0x00000000 0xc0000000 0x00000000 0x10000000
- 			  0x82000000 0x00000000 0x10000000 0xd0000000 0x00000000 0x10000000>;
- 	};
-diff --git a/Documentation/devicetree/bindings/pci/axis,artpec6-pcie.txt b/Documentation/devicetree/bindings/pci/axis,artpec6-pcie.txt
-index 979dc7b6cfe8..c71dbe94f0eb 100644
---- a/Documentation/devicetree/bindings/pci/axis,artpec6-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/axis,artpec6-pcie.txt
-@@ -41,10 +41,10 @@ Example:
- 		interrupts = <GIC_SPI 148 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-names = "msi";
- 		#interrupt-cells = <1>;
--		interrupt-map-mask = <0 0 0 0x7>;
--		interrupt-map = <0 0 0 1 &intc GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
--		                <0 0 0 2 &intc GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
--		                <0 0 0 3 &intc GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
--		                <0 0 0 4 &intc GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0 IRQ_INTA &intc GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
-+		                <0 0 0 IRQ_INTB &intc GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
-+		                <0 0 0 IRQ_INTC &intc GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
-+		                <0 0 0 IRQ_INTD &intc GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>;
- 		axis,syscon-pcie = <&syscon>;
- 	};
-diff --git a/Documentation/devicetree/bindings/pci/cdns,cdns-pcie-host.txt b/Documentation/devicetree/bindings/pci/cdns,cdns-pcie-host.txt
-index 91de69c713a9..67845103c8f0 100644
---- a/Documentation/devicetree/bindings/pci/cdns,cdns-pcie-host.txt
-+++ b/Documentation/devicetree/bindings/pci/cdns,cdns-pcie-host.txt
-@@ -52,12 +52,12 @@ pcie@fb000000 {
- 
- 	#interrupt-cells = <0x1>;
- 
--	interrupt-map = <0x0 0x0 0x0  0x1  &gic  0x0 0x0 0x0 14 0x1
--			 0x0 0x0 0x0  0x2  &gic  0x0 0x0 0x0 15 0x1
--			 0x0 0x0 0x0  0x3  &gic  0x0 0x0 0x0 16 0x1
--			 0x0 0x0 0x0  0x4  &gic  0x0 0x0 0x0 17 0x1>;
-+	interrupt-map = <0x0 0x0 0x0  IRQ_INTA  &gic  0x0 0x0 0x0 14 0x1
-+			 0x0 0x0 0x0  IRQ_INTB  &gic  0x0 0x0 0x0 15 0x1
-+			 0x0 0x0 0x0  IRQ_INTC  &gic  0x0 0x0 0x0 16 0x1
-+			 0x0 0x0 0x0  IRQ_INTD  &gic  0x0 0x0 0x0 17 0x1>;
- 
--	interrupt-map-mask = <0x0 0x0 0x0  0x7>;
-+	interrupt-map-mask = <0x0 0x0 0x0 IRQ_INT_ALL>;
- 
- 	msi-parent = <&its_pci>;
- 
-diff --git a/Documentation/devicetree/bindings/pci/faraday,ftpci100.txt b/Documentation/devicetree/bindings/pci/faraday,ftpci100.txt
-index 5f8cb4962f8d..b267d4853773 100644
---- a/Documentation/devicetree/bindings/pci/faraday,ftpci100.txt
-+++ b/Documentation/devicetree/bindings/pci/faraday,ftpci100.txt
-@@ -61,24 +61,24 @@ variant) interrupts assigns the default interrupt mapping/swizzling has
- typically been like this, doing the swizzling on the interrupt controller side
- rather than in the interconnect:
- 
--interrupt-map-mask = <0xf800 0 0 7>;
-+interrupt-map-mask = <0xf800 0 0 IRQ_INT_ALL>;
- interrupt-map =
--	<0x4800 0 0 1 &pci_intc 0>, /* Slot 9 */
--	<0x4800 0 0 2 &pci_intc 1>,
--	<0x4800 0 0 3 &pci_intc 2>,
--	<0x4800 0 0 4 &pci_intc 3>,
--	<0x5000 0 0 1 &pci_intc 1>, /* Slot 10 */
--	<0x5000 0 0 2 &pci_intc 2>,
--	<0x5000 0 0 3 &pci_intc 3>,
--	<0x5000 0 0 4 &pci_intc 0>,
--	<0x5800 0 0 1 &pci_intc 2>, /* Slot 11 */
--	<0x5800 0 0 2 &pci_intc 3>,
--	<0x5800 0 0 3 &pci_intc 0>,
--	<0x5800 0 0 4 &pci_intc 1>,
--	<0x6000 0 0 1 &pci_intc 3>, /* Slot 12 */
--	<0x6000 0 0 2 &pci_intc 0>,
--	<0x6000 0 0 3 &pci_intc 1>,
--	<0x6000 0 0 4 &pci_intc 2>;
-+	<0x4800 0 0 IRQ_INTA &pci_intc 0>, /* Slot 9 */
-+	<0x4800 0 0 IRQ_INTB &pci_intc 1>,
-+	<0x4800 0 0 IRQ_INTC &pci_intc 2>,
-+	<0x4800 0 0 IRQ_INTD &pci_intc 3>,
-+	<0x5000 0 0 IRQ_INTA &pci_intc 1>, /* Slot 10 */
-+	<0x5000 0 0 IRQ_INTB &pci_intc 2>,
-+	<0x5000 0 0 IRQ_INTC &pci_intc 3>,
-+	<0x5000 0 0 IRQ_INTD &pci_intc 0>,
-+	<0x5800 0 0 IRQ_INTA &pci_intc 2>, /* Slot 11 */
-+	<0x5800 0 0 IRQ_INTB &pci_intc 3>,
-+	<0x5800 0 0 IRQ_INTC &pci_intc 0>,
-+	<0x5800 0 0 IRQ_INTD &pci_intc 1>,
-+	<0x6000 0 0 IRQ_INTA &pci_intc 3>, /* Slot 12 */
-+	<0x6000 0 0 IRQ_INTB &pci_intc 0>,
-+	<0x6000 0 0 IRQ_INTC &pci_intc 1>,
-+	<0x6000 0 0 IRQ_INTD &pci_intc 2>;
- 
- Example:
- 
-@@ -108,24 +108,24 @@ pci@50000000 {
- 	/* 64MiB at 0x00000000-0x03ffffff */
- 	<0x02000000 0 0x00000000 0x00000000 0 0x04000000>;
- 
--	interrupt-map-mask = <0xf800 0 0 7>;
-+	interrupt-map-mask = <0xf800 0 0 IRQ_INT_ALL>;
- 	interrupt-map =
--		<0x4800 0 0 1 &pci_intc 0>, /* Slot 9 */
--		<0x4800 0 0 2 &pci_intc 1>,
--		<0x4800 0 0 3 &pci_intc 2>,
--		<0x4800 0 0 4 &pci_intc 3>,
--		<0x5000 0 0 1 &pci_intc 1>, /* Slot 10 */
--		<0x5000 0 0 2 &pci_intc 2>,
--		<0x5000 0 0 3 &pci_intc 3>,
--		<0x5000 0 0 4 &pci_intc 0>,
--		<0x5800 0 0 1 &pci_intc 2>, /* Slot 11 */
--		<0x5800 0 0 2 &pci_intc 3>,
--		<0x5800 0 0 3 &pci_intc 0>,
--		<0x5800 0 0 4 &pci_intc 1>,
--		<0x6000 0 0 1 &pci_intc 3>, /* Slot 12 */
--		<0x6000 0 0 2 &pci_intc 0>,
--		<0x6000 0 0 3 &pci_intc 0>,
--		<0x6000 0 0 4 &pci_intc 0>;
-+		<0x4800 0 0 IRQ_INTA &pci_intc 0>, /* Slot 9 */
-+		<0x4800 0 0 IRQ_INTB &pci_intc 1>,
-+		<0x4800 0 0 IRQ_INTC &pci_intc 2>,
-+		<0x4800 0 0 IRQ_INTD &pci_intc 3>,
-+		<0x5000 0 0 IRQ_INTA &pci_intc 1>, /* Slot 10 */
-+		<0x5000 0 0 IRQ_INTB &pci_intc 2>,
-+		<0x5000 0 0 IRQ_INTC &pci_intc 3>,
-+		<0x5000 0 0 IRQ_INTD &pci_intc 0>,
-+		<0x5800 0 0 IRQ_INTA &pci_intc 2>, /* Slot 11 */
-+		<0x5800 0 0 IRQ_INTB &pci_intc 3>,
-+		<0x5800 0 0 IRQ_INTC &pci_intc 0>,
-+		<0x5800 0 0 IRQ_INTD &pci_intc 1>,
-+		<0x6000 0 0 IRQ_INTA &pci_intc 3>, /* Slot 12 */
-+		<0x6000 0 0 IRQ_INTB &pci_intc 0>,
-+		<0x6000 0 0 IRQ_INTC &pci_intc 0>,
-+		<0x6000 0 0 IRQ_INTD &pci_intc 0>;
- 	pci_intc: interrupt-controller {
- 		interrupt-parent = <&intcon>;
- 		interrupt-controller;
-diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.txt b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.txt
-index de4b2baf91e8..dc331885124a 100644
---- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.txt
-@@ -77,11 +77,11 @@ Example:
- 		interrupts = <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>;
- 		interrupt-names = "msi";
- 		#interrupt-cells = <1>;
--		interrupt-map-mask = <0 0 0 0x7>;
--		interrupt-map = <0 0 0 1 &intc GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
--		                <0 0 0 2 &intc GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
--		                <0 0 0 3 &intc GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>,
--		                <0 0 0 4 &intc GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0 IRQ_INTA &intc GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
-+		                <0 0 0 IRQ_INTB &intc GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
-+		                <0 0 0 IRQ_INTC &intc GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>,
-+		                <0 0 0 IRQ_INTD &intc GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&clks 144>, <&clks 206>, <&clks 189>;
- 		clock-names = "pcie", "pcie_bus", "pcie_phy";
- 	};
-diff --git a/Documentation/devicetree/bindings/pci/hisilicon-pcie.txt b/Documentation/devicetree/bindings/pci/hisilicon-pcie.txt
-index 0dcb87d6554f..3e809c7d9b07 100644
---- a/Documentation/devicetree/bindings/pci/hisilicon-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/hisilicon-pcie.txt
-@@ -35,11 +35,11 @@ Hip05 Example (note that Hip06 is the same except compatible):
- 		num-lanes = <8>;
- 		port-id = <1>;
- 		#interrupt-cells = <1>;
--		interrupt-map-mask = <0xf800 0 0 7>;
--		interrupt-map = <0x0 0 0 1 &mbigen_pcie 1 10
--				 0x0 0 0 2 &mbigen_pcie 2 11
--				 0x0 0 0 3 &mbigen_pcie 3 12
--				 0x0 0 0 4 &mbigen_pcie 4 13>;
-+		interrupt-map-mask = <0xf800 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0x0 0 0 IRQ_INTA &mbigen_pcie 1 10
-+				 0x0 0 0 IRQ_INTB &mbigen_pcie 2 11
-+				 0x0 0 0 IRQ_INTC &mbigen_pcie 3 12
-+				 0x0 0 0 IRQ_INTD &mbigen_pcie 4 13>;
- 	};
- 
- HiSilicon Hip06/Hip07 PCIe host bridge DT (almost-ECAM) description.
-@@ -77,9 +77,9 @@ Example:
- 		ranges = <0x02000000 0 0xb2000000 0x0 0xb2000000 0 0x5ff0000
- 			  0x01000000 0 0 0 0xb7ff0000 0 0x10000>;
- 		#interrupt-cells = <1>;
--		interrupt-map-mask = <0xf800 0 0 7>;
--		interrupt-map = <0x0 0 0 1 &mbigen_pcie0 650 4
--				 0x0 0 0 2 &mbigen_pcie0 650 4
--				 0x0 0 0 3 &mbigen_pcie0 650 4
--				 0x0 0 0 4 &mbigen_pcie0 650 4>;
-+		interrupt-map-mask = <0xf800 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0x0 0 0 IRQ_INTA &mbigen_pcie0 650 4
-+				 0x0 0 0 IRQ_INTB &mbigen_pcie0 650 4
-+				 0x0 0 0 IRQ_INTC &mbigen_pcie0 650 4
-+				 0x0 0 0 IRQ_INTD &mbigen_pcie0 650 4>;
- 	};
-diff --git a/Documentation/devicetree/bindings/pci/host-generic-pci.txt b/Documentation/devicetree/bindings/pci/host-generic-pci.txt
-index 614b594f4e72..51a56ad3f1a9 100644
---- a/Documentation/devicetree/bindings/pci/host-generic-pci.txt
-+++ b/Documentation/devicetree/bindings/pci/host-generic-pci.txt
-@@ -91,11 +91,11 @@ pci {
-     #interrupt-cells = <0x1>;
- 
-     // PCI_DEVICE(3)  INT#(1)  CONTROLLER(PHANDLE)  CONTROLLER_DATA(3)
--    interrupt-map = <  0x0 0x0 0x0  0x1  &gic  0x0 0x4 0x1
--                     0x800 0x0 0x0  0x1  &gic  0x0 0x5 0x1
--                    0x1000 0x0 0x0  0x1  &gic  0x0 0x6 0x1
--                    0x1800 0x0 0x0  0x1  &gic  0x0 0x7 0x1>;
-+    interrupt-map = <  0x0 0x0 0x0 IRQ_INTA  &gic  0x0 0x4 0x1
-+                     0x800 0x0 0x0 IRQ_INTA  &gic  0x0 0x5 0x1
-+                    0x1000 0x0 0x0 IRQ_INTA  &gic  0x0 0x6 0x1
-+                    0x1800 0x0 0x0 IRQ_INTA  &gic  0x0 0x7 0x1>;
- 
-     // PCI_DEVICE(3)  INT#(1)
--    interrupt-map-mask = <0xf800 0x0 0x0  0x7>;
-+    interrupt-map-mask = <0xf800 0x0 0x0 IRQ_MAP_ALL>;
- }
-diff --git a/Documentation/devicetree/bindings/pci/kirin-pcie.txt b/Documentation/devicetree/bindings/pci/kirin-pcie.txt
-index 6bbe43818ad5..7da640d6578e 100644
---- a/Documentation/devicetree/bindings/pci/kirin-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/kirin-pcie.txt
-@@ -34,11 +34,11 @@ Example based on kirin960:
- 		ranges = <0x02000000 0x0 0x00000000 0x0 0xf5000000 0x0 0x2000000>;
- 		num-lanes = <1>;
- 		#interrupt-cells = <1>;
--		interrupt-map-mask = <0xf800 0 0 7>;
--		interrupt-map = <0x0 0 0 1 &gic 0 0 0  282 4>,
--				<0x0 0 0 2 &gic 0 0 0  283 4>,
--				<0x0 0 0 3 &gic 0 0 0  284 4>,
--				<0x0 0 0 4 &gic 0 0 0  285 4>;
-+		interrupt-map-mask = <0xf800 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0x0 0 0 IRQ_INTA &gic 0 0 0  282 4>,
-+				<0x0 0 0 IRQ_INTB &gic 0 0 0  283 4>,
-+				<0x0 0 0 IRQ_INTC &gic 0 0 0  284 4>,
-+				<0x0 0 0 IRQ_INTD &gic 0 0 0  285 4>;
- 		clocks = <&crg_ctrl HI3660_PCIEPHY_REF>,
- 			 <&crg_ctrl HI3660_CLK_GATE_PCIEAUX>,
- 			 <&crg_ctrl HI3660_PCLK_GATE_PCIE_PHY>,
-diff --git a/Documentation/devicetree/bindings/pci/layerscape-pci.txt b/Documentation/devicetree/bindings/pci/layerscape-pci.txt
-index e20ceaab9b38..1016e9f8982a 100644
---- a/Documentation/devicetree/bindings/pci/layerscape-pci.txt
-+++ b/Documentation/devicetree/bindings/pci/layerscape-pci.txt
-@@ -56,9 +56,9 @@ Example:
- 			  0xc2000000 0x0 0x20000000 0x40 0x20000000 0x0 0x20000000   /* prefetchable memory */
- 			  0x82000000 0x0 0x40000000 0x40 0x40000000 0x0 0x40000000>; /* non-prefetchable memory */
- 		#interrupt-cells = <1>;
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0000 0 0 1 &gic GIC_SPI 91  IRQ_TYPE_LEVEL_HIGH>,
--				<0000 0 0 2 &gic GIC_SPI 188 IRQ_TYPE_LEVEL_HIGH>,
--				<0000 0 0 3 &gic GIC_SPI 190 IRQ_TYPE_LEVEL_HIGH>,
--				<0000 0 0 4 &gic GIC_SPI 192 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0000 0 0 IRQ_INTA &gic GIC_SPI 91  IRQ_TYPE_LEVEL_HIGH>,
-+				<0000 0 0 IRQ_INTB &gic GIC_SPI 188 IRQ_TYPE_LEVEL_HIGH>,
-+				<0000 0 0 IRQ_INTC &gic GIC_SPI 190 IRQ_TYPE_LEVEL_HIGH>,
-+				<0000 0 0 IRQ_INTD &gic GIC_SPI 192 IRQ_TYPE_LEVEL_HIGH>;
- 	};
-diff --git a/Documentation/devicetree/bindings/pci/mediatek-pcie.txt b/Documentation/devicetree/bindings/pci/mediatek-pcie.txt
-index 7468d666763a..00728cdad957 100644
---- a/Documentation/devicetree/bindings/pci/mediatek-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/mediatek-pcie.txt
-@@ -169,11 +169,11 @@ Examples for MT2712:
- 			#size-cells = <2>;
- 			#interrupt-cells = <1>;
- 			ranges;
--			interrupt-map-mask = <0 0 0 7>;
--			interrupt-map = <0 0 0 1 &pcie_intc0 0>,
--					<0 0 0 2 &pcie_intc0 1>,
--					<0 0 0 3 &pcie_intc0 2>,
--					<0 0 0 4 &pcie_intc0 3>;
-+			interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+			interrupt-map = <0 0 0 IRQ_INTA &pcie_intc0 0>,
-+					<0 0 0 IRQ_INTB &pcie_intc0 1>,
-+					<0 0 0 IRQ_INTC &pcie_intc0 2>,
-+					<0 0 0 IRQ_INTD &pcie_intc0 3>;
- 			pcie_intc0: interrupt-controller {
- 				interrupt-controller;
- 				#address-cells = <0>;
-@@ -187,11 +187,11 @@ Examples for MT2712:
- 			#size-cells = <2>;
- 			#interrupt-cells = <1>;
- 			ranges;
--			interrupt-map-mask = <0 0 0 7>;
--			interrupt-map = <0 0 0 1 &pcie_intc1 0>,
--					<0 0 0 2 &pcie_intc1 1>,
--					<0 0 0 3 &pcie_intc1 2>,
--					<0 0 0 4 &pcie_intc1 3>;
-+			interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+			interrupt-map = <0 0 0 IRQ_INTA &pcie_intc1 0>,
-+					<0 0 0 IRQ_INTB &pcie_intc1 1>,
-+					<0 0 0 IRQ_INTC &pcie_intc1 2>,
-+					<0 0 0 IRQ_INTD &pcie_intc1 3>;
- 			pcie_intc1: interrupt-controller {
- 				interrupt-controller;
- 				#address-cells = <0>;
-@@ -240,11 +240,11 @@ Examples for MT7622:
- 			#size-cells = <2>;
- 			#interrupt-cells = <1>;
- 			ranges;
--			interrupt-map-mask = <0 0 0 7>;
--			interrupt-map = <0 0 0 1 &pcie_intc0 0>,
--					<0 0 0 2 &pcie_intc0 1>,
--					<0 0 0 3 &pcie_intc0 2>,
--					<0 0 0 4 &pcie_intc0 3>;
-+			interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+			interrupt-map = <0 0 0 IRQ_INTA &pcie_intc0 0>,
-+					<0 0 0 IRQ_INTB &pcie_intc0 1>,
-+					<0 0 0 IRQ_INTC &pcie_intc0 2>,
-+					<0 0 0 IRQ_INTD &pcie_intc0 3>;
- 			pcie_intc0: interrupt-controller {
- 				interrupt-controller;
- 				#address-cells = <0>;
-@@ -258,11 +258,11 @@ Examples for MT7622:
- 			#size-cells = <2>;
- 			#interrupt-cells = <1>;
- 			ranges;
--			interrupt-map-mask = <0 0 0 7>;
--			interrupt-map = <0 0 0 1 &pcie_intc1 0>,
--					<0 0 0 2 &pcie_intc1 1>,
--					<0 0 0 3 &pcie_intc1 2>,
--					<0 0 0 4 &pcie_intc1 3>;
-+			interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+			interrupt-map = <0 0 0 IRQ_INTA &pcie_intc1 0>,
-+					<0 0 0 IRQ_INTB &pcie_intc1 1>,
-+					<0 0 0 IRQ_INTC &pcie_intc1 2>,
-+					<0 0 0 IRQ_INTD &pcie_intc1 3>;
- 			pcie_intc1: interrupt-controller {
- 				interrupt-controller;
- 				#address-cells = <0>;
-diff --git a/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt b/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
-index 64156993e052..03070b3bfda1 100644
---- a/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/mobiveil-pcie.txt
-@@ -62,11 +62,11 @@ Example:
- 		interrupt-parent = <&gic>;
- 		#interrupt-cells = <1>;
- 		interrupts = < 0 89 4 >;
--		interrupt-map-mask = <0 0 0 7>;
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
- 		interrupt-map = <0 0 0 0 &pci_express 0>,
--				<0 0 0 1 &pci_express 1>,
--				<0 0 0 2 &pci_express 2>,
--				<0 0 0 3 &pci_express 3>;
-+				<0 0 0 IRQ_INTA &pci_express 1>,
-+				<0 0 0 IRQ_INTB &pci_express 2>,
-+				<0 0 0 IRQ_INTC &pci_express 3>;
- 		ranges = < 0x83000000 0 0x00000000 0xa8000000 0 0x8000000>;
- 
- 	};
-diff --git a/Documentation/devicetree/bindings/pci/pci-rcar-gen2.txt b/Documentation/devicetree/bindings/pci/pci-rcar-gen2.txt
-index b94078f58d8e..7c6a19e0b131 100644
---- a/Documentation/devicetree/bindings/pci/pci-rcar-gen2.txt
-+++ b/Documentation/devicetree/bindings/pci/pci-rcar-gen2.txt
-@@ -56,10 +56,10 @@ Example SoC configuration:
- 		#size-cells = <2>;
- 		#interrupt-cells = <1>;
- 		dma-ranges = <0x42000000 0 0x40000000 0 0x40000000 0 0x40000000>;
--		interrupt-map-mask = <0xff00 0 0 0x7>;
--		interrupt-map = <0x0000 0 0 1 &gic 0 108 IRQ_TYPE_LEVEL_HIGH
--				 0x0800 0 0 1 &gic 0 108 IRQ_TYPE_LEVEL_HIGH
--				 0x1000 0 0 2 &gic 0 108 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-map-mask = <0xff00 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0x0000 0 0 IRQ_INTA &gic 0 108 IRQ_TYPE_LEVEL_HIGH
-+				 0x0800 0 0 IRQ_INTA &gic 0 108 IRQ_TYPE_LEVEL_HIGH
-+				 0x1000 0 0 IRQ_INTB &gic 0 108 IRQ_TYPE_LEVEL_HIGH>;
- 
- 		usb@1,0 {
- 			reg = <0x800 0 0 0 0>;
-diff --git a/Documentation/devicetree/bindings/pci/pci-thunder-pem.txt b/Documentation/devicetree/bindings/pci/pci-thunder-pem.txt
-index f131faea3b7c..edfaedfe8c8c 100644
---- a/Documentation/devicetree/bindings/pci/pci-thunder-pem.txt
-+++ b/Documentation/devicetree/bindings/pci/pci-thunder-pem.txt
-@@ -35,9 +35,9 @@ Example:
- 		 <0x03000000 0x87e0 0xc2f00000 0x87e0 0xc2000000 0x00 0x00100000>; /* mem64 PEM BAR4 */
- 
- 	#interrupt-cells = <1>;
--	interrupt-map-mask = <0 0 0 7>;
--	interrupt-map = <0 0 0 1 &gic0 0 0 0 24 4>, /* INTA */
--			<0 0 0 2 &gic0 0 0 0 25 4>, /* INTB */
--			<0 0 0 3 &gic0 0 0 0 26 4>, /* INTC */
--			<0 0 0 4 &gic0 0 0 0 27 4>; /* INTD */
-+	interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+	interrupt-map = <0 0 0 IRQ_INTA &gic0 0 0 0 24 4>,
-+			<0 0 0 IRQ_INTB &gic0 0 0 0 25 4>,
-+			<0 0 0 IRQ_INTC &gic0 0 0 0 26 4>,
-+			<0 0 0 IRQ_INTD &gic0 0 0 0 27 4>;
-     };
-diff --git a/Documentation/devicetree/bindings/pci/pcie-al.txt b/Documentation/devicetree/bindings/pci/pcie-al.txt
-index 557a5089229d..8bb3d935d3fa 100644
---- a/Documentation/devicetree/bindings/pci/pcie-al.txt
-+++ b/Documentation/devicetree/bindings/pci/pcie-al.txt
-@@ -40,7 +40,7 @@ Example:
- 		#size-cells = <2>;
- 		#interrupt-cells = <1>;
- 		interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
--		interrupt-map-mask = <0x00 0 0 7>;
--		interrupt-map = <0x0000 0 0 1 &gic GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>; /* INTa */
-+		interrupt-map-mask = <0x00 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0x0000 0 0 IRQ_INTA &gic GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
- 		ranges = <0x02000000 0x0 0xc0010000 0x0 0xc0010000 0x0 0x07ff0000>;
- 	};
-diff --git a/Documentation/devicetree/bindings/pci/qcom,pcie.txt b/Documentation/devicetree/bindings/pci/qcom,pcie.txt
-index ada80b01bf0c..898599eed2e5 100644
---- a/Documentation/devicetree/bindings/pci/qcom,pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/qcom,pcie.txt
-@@ -251,11 +251,11 @@
- 		interrupts = <GIC_SPI 238 IRQ_TYPE_NONE>;
- 		interrupt-names = "msi";
- 		#interrupt-cells = <1>;
--		interrupt-map-mask = <0 0 0 0x7>;
--		interrupt-map = <0 0 0 1 &intc 0 36 IRQ_TYPE_LEVEL_HIGH>, /* int_a */
--				<0 0 0 2 &intc 0 37 IRQ_TYPE_LEVEL_HIGH>, /* int_b */
--				<0 0 0 3 &intc 0 38 IRQ_TYPE_LEVEL_HIGH>, /* int_c */
--				<0 0 0 4 &intc 0 39 IRQ_TYPE_LEVEL_HIGH>; /* int_d */
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0 IRQ_INTA &intc 0 36 IRQ_TYPE_LEVEL_HIGH>,
-+				<0 0 0 IRQ_INTB &intc 0 37 IRQ_TYPE_LEVEL_HIGH>,
-+				<0 0 0 IRQ_INTC &intc 0 38 IRQ_TYPE_LEVEL_HIGH>,
-+				<0 0 0 IRQ_INTD &intc 0 39 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&gcc PCIE_A_CLK>,
- 			 <&gcc PCIE_H_CLK>,
- 			 <&gcc PCIE_PHY_CLK>;
-@@ -289,11 +289,11 @@
- 		interrupts = <GIC_SPI 243 IRQ_TYPE_NONE>;
- 		interrupt-names = "msi";
- 		#interrupt-cells = <1>;
--		interrupt-map-mask = <0 0 0 0x7>;
--		interrupt-map = <0 0 0 1 &intc 0 244 IRQ_TYPE_LEVEL_HIGH>, /* int_a */
--				<0 0 0 2 &intc 0 245 IRQ_TYPE_LEVEL_HIGH>, /* int_b */
--				<0 0 0 3 &intc 0 247 IRQ_TYPE_LEVEL_HIGH>, /* int_c */
--				<0 0 0 4 &intc 0 248 IRQ_TYPE_LEVEL_HIGH>; /* int_d */
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0 IRQ_INTA &intc 0 244 IRQ_TYPE_LEVEL_HIGH>,
-+				<0 0 0 IRQ_INTB &intc 0 245 IRQ_TYPE_LEVEL_HIGH>,
-+				<0 0 0 IRQ_INTC &intc 0 247 IRQ_TYPE_LEVEL_HIGH>,
-+				<0 0 0 IRQ_INTD &intc 0 248 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&gcc GCC_PCIE_0_CFG_AHB_CLK>,
- 			 <&gcc GCC_PCIE_0_MSTR_AXI_CLK>,
- 			 <&gcc GCC_PCIE_0_SLV_AXI_CLK>,
-diff --git a/Documentation/devicetree/bindings/pci/ralink,rt3883-pci.txt b/Documentation/devicetree/bindings/pci/ralink,rt3883-pci.txt
-index ffba4f63d71f..09a4a28fb472 100644
---- a/Documentation/devicetree/bindings/pci/ralink,rt3883-pci.txt
-+++ b/Documentation/devicetree/bindings/pci/ralink,rt3883-pci.txt
-@@ -131,18 +131,18 @@
- 				0x01000000 0 0x00000000 0x10160000 0 0x00010000 /* io space */
- 			>;
- 
--			interrupt-map-mask = <0xf800 0 0 7>;
-+			interrupt-map-mask = <0xf800 0 0 IRQ_INT_ALL>;
- 			interrupt-map = <
- 				/* IDSEL 17 */
--				0x8800 0 0 1 &pciintc 18
--				0x8800 0 0 2 &pciintc 18
--				0x8800 0 0 3 &pciintc 18
--				0x8800 0 0 4 &pciintc 18
-+				0x8800 0 0 IRQ_INTA &pciintc 18
-+				0x8800 0 0 IRQ_INTB &pciintc 18
-+				0x8800 0 0 IRQ_INTC &pciintc 18
-+				0x8800 0 0 IRQ_INTD &pciintc 18
- 				/* IDSEL 18 */
--				0x9000 0 0 1 &pciintc 19
--				0x9000 0 0 2 &pciintc 19
--				0x9000 0 0 3 &pciintc 19
--				0x9000 0 0 4 &pciintc 19
-+				0x9000 0 0 IRQ_INTA &pciintc 19
-+				0x9000 0 0 IRQ_INTB &pciintc 19
-+				0x9000 0 0 IRQ_INTC &pciintc 19
-+				0x9000 0 0 IRQ_INTD &pciintc 19
- 			>;
- 
- 			pci-bridge@1 {
-diff --git a/Documentation/devicetree/bindings/pci/rockchip-pcie-host.txt b/Documentation/devicetree/bindings/pci/rockchip-pcie-host.txt
-index af34c65773fd..4538d18b4c3c 100644
---- a/Documentation/devicetree/bindings/pci/rockchip-pcie-host.txt
-+++ b/Documentation/devicetree/bindings/pci/rockchip-pcie-host.txt
-@@ -112,11 +112,11 @@ pcie0: pcie@f8000000 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pcie_clkreq>;
- 	#interrupt-cells = <1>;
--	interrupt-map-mask = <0 0 0 7>;
--	interrupt-map = <0 0 0 1 &pcie0_intc 0>,
--			<0 0 0 2 &pcie0_intc 1>,
--			<0 0 0 3 &pcie0_intc 2>,
--			<0 0 0 4 &pcie0_intc 3>;
-+	interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+	interrupt-map = <0 0 0 IRQ_INTA &pcie0_intc 0>,
-+			<0 0 0 IRQ_INTB &pcie0_intc 1>,
-+			<0 0 0 IRQ_INTC &pcie0_intc 2>,
-+			<0 0 0 IRQ_INTD &pcie0_intc 3>;
- 	pcie0_intc: interrupt-controller {
- 		interrupt-controller;
- 		#address-cells = <0>;
-diff --git a/Documentation/devicetree/bindings/pci/ti-pci.txt b/Documentation/devicetree/bindings/pci/ti-pci.txt
-index d5cbfe6b0d89..795b09755977 100644
---- a/Documentation/devicetree/bindings/pci/ti-pci.txt
-+++ b/Documentation/devicetree/bindings/pci/ti-pci.txt
-@@ -88,11 +88,11 @@ axi {
- 		ti,hwmods = "pcie1";
- 		phys = <&pcie1_phy>;
- 		phy-names = "pcie-phy0";
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0 0 0 1 &pcie_intc 1>,
--				<0 0 0 2 &pcie_intc 2>,
--				<0 0 0 3 &pcie_intc 3>,
--				<0 0 0 4 &pcie_intc 4>;
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0 IRQ_INTA &pcie_intc 1>,
-+				<0 0 0 IRQ_INTB &pcie_intc 2>,
-+				<0 0 0 IRQ_INTC &pcie_intc 3>,
-+				<0 0 0 IRQ_INTD &pcie_intc 4>;
- 		pcie_intc: interrupt-controller {
- 			interrupt-controller;
- 			#address-cells = <0>;
-diff --git a/Documentation/devicetree/bindings/pci/uniphier-pcie.txt b/Documentation/devicetree/bindings/pci/uniphier-pcie.txt
-index 1fa2c5906d4d..b5416798a638 100644
---- a/Documentation/devicetree/bindings/pci/uniphier-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/uniphier-pcie.txt
-@@ -66,11 +66,11 @@ Example:
- 		#interrupt-cells = <1>;
- 		interrupt-names = "dma", "msi";
- 		interrupts = <0 224 4>, <0 225 4>;
--		interrupt-map-mask = <0 0 0  7>;
--		interrupt-map = <0 0 0  1  &pcie_intc 0>,	/* INTA */
--				<0 0 0  2  &pcie_intc 1>,	/* INTB */
--				<0 0 0  3  &pcie_intc 2>,	/* INTC */
--				<0 0 0  4  &pcie_intc 3>;	/* INTD */
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0  IRQ_INTA  &pcie_intc 0>,
-+				<0 0 0  IRQ_INTB  &pcie_intc 1>,
-+				<0 0 0  IRQ_INTC  &pcie_intc 2>,
-+				<0 0 0  IRQ_INTD  &pcie_intc 3>;
- 
- 		pcie_intc: legacy-interrupt-controller {
- 			interrupt-controller;
-diff --git a/Documentation/devicetree/bindings/pci/v3-v360epc-pci.txt b/Documentation/devicetree/bindings/pci/v3-v360epc-pci.txt
-index 11063293f761..bfa37aa4933d 100644
---- a/Documentation/devicetree/bindings/pci/v3-v360epc-pci.txt
-+++ b/Documentation/devicetree/bindings/pci/v3-v360epc-pci.txt
-@@ -50,27 +50,27 @@ pci: pciv3@62000000 {
- 		0x20000000 0 0x20000000 /* 512 MB @ LB 20000000 1:1 */
- 		0x02000000 0 0x80000000 /* Core module alias memory */
- 		0x80000000 0 0x40000000>; /* 1GB @ LB 80000000 */
--	interrupt-map-mask = <0xf800 0 0 0x7>;
-+	interrupt-map-mask = <0xf800 0 0 IRQ_INT_ALL>;
- 	interrupt-map = <
- 	/* IDSEL 9 */
--	0x4800 0 0 1 &pic 13 /* INT A on slot 9 is irq 13 */
--	0x4800 0 0 2 &pic 14 /* INT B on slot 9 is irq 14 */
--	0x4800 0 0 3 &pic 15 /* INT C on slot 9 is irq 15 */
--	0x4800 0 0 4 &pic 16 /* INT D on slot 9 is irq 16 */
-+	0x4800 0 0 IRQ_INTA &pic 13 /* INT A on slot 9 is irq 13 */
-+	0x4800 0 0 IRQ_INTB &pic 14 /* INT B on slot 9 is irq 14 */
-+	0x4800 0 0 IRQ_INTC &pic 15 /* INT C on slot 9 is irq 15 */
-+	0x4800 0 0 IRQ_INTD &pic 16 /* INT D on slot 9 is irq 16 */
- 	/* IDSEL 10 */
--	0x5000 0 0 1 &pic 14 /* INT A on slot 10 is irq 14 */
--	0x5000 0 0 2 &pic 15 /* INT B on slot 10 is irq 15 */
--	0x5000 0 0 3 &pic 16 /* INT C on slot 10 is irq 16 */
--	0x5000 0 0 4 &pic 13 /* INT D on slot 10 is irq 13 */
-+	0x5000 0 0 IRQ_INTA &pic 14 /* INT A on slot 10 is irq 14 */
-+	0x5000 0 0 IRQ_INTB &pic 15 /* INT B on slot 10 is irq 15 */
-+	0x5000 0 0 IRQ_INTC &pic 16 /* INT C on slot 10 is irq 16 */
-+	0x5000 0 0 IRQ_INTD &pic 13 /* INT D on slot 10 is irq 13 */
- 	/* IDSEL 11 */
--	0x5800 0 0 1 &pic 15 /* INT A on slot 11 is irq 15 */
--	0x5800 0 0 2 &pic 16 /* INT B on slot 11 is irq 16 */
--	0x5800 0 0 3 &pic 13 /* INT C on slot 11 is irq 13 */
--	0x5800 0 0 4 &pic 14 /* INT D on slot 11 is irq 14 */
-+	0x5800 0 0 IRQ_INTA &pic 15 /* INT A on slot 11 is irq 15 */
-+	0x5800 0 0 IRQ_INTB &pic 16 /* INT B on slot 11 is irq 16 */
-+	0x5800 0 0 IRQ_INTC &pic 13 /* INT C on slot 11 is irq 13 */
-+	0x5800 0 0 IRQ_INTD &pic 14 /* INT D on slot 11 is irq 14 */
- 	/* IDSEL 12 */
--	0x6000 0 0 1 &pic 16 /* INT A on slot 12 is irq 16 */
--	0x6000 0 0 2 &pic 13 /* INT B on slot 12 is irq 13 */
--	0x6000 0 0 3 &pic 14 /* INT C on slot 12 is irq 14 */
--	0x6000 0 0 4 &pic 15 /* INT D on slot 12 is irq 15 */
-+	0x6000 0 0 IRQ_INTA &pic 16 /* INT A on slot 12 is irq 16 */
-+	0x6000 0 0 IRQ_INTB &pic 13 /* INT B on slot 12 is irq 13 */
-+	0x6000 0 0 IRQ_INTC &pic 14 /* INT C on slot 12 is irq 14 */
-+	0x6000 0 0 IRQ_INTD &pic 15 /* INT D on slot 12 is irq 15 */
- 	>;
- };
-diff --git a/Documentation/devicetree/bindings/pci/versatile.txt b/Documentation/devicetree/bindings/pci/versatile.txt
-index 0a702b13d2ac..a02c7b9683ac 100644
---- a/Documentation/devicetree/bindings/pci/versatile.txt
-+++ b/Documentation/devicetree/bindings/pci/versatile.txt
-@@ -36,24 +36,24 @@ pci-controller@10001000 {
- 		  0x02000000 0 0x50000000 0x50000000 0 0x10000000   /* non-prefetchable memory */
- 		  0x42000000 0 0x60000000 0x60000000 0 0x10000000>; /* prefetchable memory */
- 
--	interrupt-map-mask = <0x1800 0 0 7>;
--	interrupt-map = <0x1800 0 0 1 &sic 28
--			 0x1800 0 0 2 &sic 29
--			 0x1800 0 0 3 &sic 30
--			 0x1800 0 0 4 &sic 27
--
--			 0x1000 0 0 1 &sic 27
--			 0x1000 0 0 2 &sic 28
--			 0x1000 0 0 3 &sic 29
--			 0x1000 0 0 4 &sic 30
--
--			 0x0800 0 0 1 &sic 30
--			 0x0800 0 0 2 &sic 27
--			 0x0800 0 0 3 &sic 28
--			 0x0800 0 0 4 &sic 29
--
--			 0x0000 0 0 1 &sic 29
--			 0x0000 0 0 2 &sic 30
--			 0x0000 0 0 3 &sic 27
--			 0x0000 0 0 4 &sic 28>;
-+	interrupt-map-mask = <0x1800 0 0 IRQ_INT_ALL>;
-+	interrupt-map = <0x1800 0 0 IRQ_INTA &sic 28
-+			 0x1800 0 0 IRQ_INTB &sic 29
-+			 0x1800 0 0 IRQ_INTC &sic 30
-+			 0x1800 0 0 IRQ_INTD &sic 27
-+
-+			 0x1000 0 0 IRQ_INTA &sic 27
-+			 0x1000 0 0 IRQ_INTB &sic 28
-+			 0x1000 0 0 IRQ_INTC &sic 29
-+			 0x1000 0 0 IRQ_INTD &sic 30
-+
-+			 0x0800 0 0 IRQ_INTA &sic 30
-+			 0x0800 0 0 IRQ_INTB &sic 27
-+			 0x0800 0 0 IRQ_INTC &sic 28
-+			 0x0800 0 0 IRQ_INTD &sic 29
-+
-+			 0x0000 0 0 IRQ_INTA &sic 29
-+			 0x0000 0 0 IRQ_INTB &sic 30
-+			 0x0000 0 0 IRQ_INTC &sic 27
-+			 0x0000 0 0 IRQ_INTD &sic 28>;
- };
-diff --git a/Documentation/devicetree/bindings/pci/xgene-pci-msi.txt b/Documentation/devicetree/bindings/pci/xgene-pci-msi.txt
-index 85d9b95234f7..0e84e6621b4a 100644
---- a/Documentation/devicetree/bindings/pci/xgene-pci-msi.txt
-+++ b/Documentation/devicetree/bindings/pci/xgene-pci-msi.txt
-@@ -57,11 +57,11 @@ SoC DTSI:
- 			  0x02000000 0x00 0x80000000 0xe1 0x80000000 0x00 0x80000000>; /* mem */
- 		dma-ranges = <0x42000000 0x80 0x00000000 0x80 0x00000000 0x00 0x80000000
- 			      0x42000000 0x00 0x00000000 0x00 0x00000000 0x80 0x00000000>;
--		interrupt-map-mask = <0x0 0x0 0x0 0x7>;
--		interrupt-map = <0x0 0x0 0x0 0x1 &gic 0x0 0xc2 0x1
--				 0x0 0x0 0x0 0x2 &gic 0x0 0xc3 0x1
--				 0x0 0x0 0x0 0x3 &gic 0x0 0xc4 0x1
--				 0x0 0x0 0x0 0x4 &gic 0x0 0xc5 0x1>;
-+		interrupt-map-mask = <0x0 0x0 0x0 IRQ_INT_ALL>;
-+		interrupt-map = <0x0 0x0 0x0 IRQ_INTA &gic 0x0 0xc2 0x1
-+				 0x0 0x0 0x0 IRQ_INTB &gic 0x0 0xc3 0x1
-+				 0x0 0x0 0x0 IRQ_INTC &gic 0x0 0xc4 0x1
-+				 0x0 0x0 0x0 IRQ_INTD &gic 0x0 0xc5 0x1>;
- 		dma-coherent;
- 		clocks = <&pcie0clk 0>;
- 		msi-parent= <&msi>;
-diff --git a/Documentation/devicetree/bindings/pci/xgene-pci.txt b/Documentation/devicetree/bindings/pci/xgene-pci.txt
-index 92490330dc1c..0f0e3eb64101 100644
---- a/Documentation/devicetree/bindings/pci/xgene-pci.txt
-+++ b/Documentation/devicetree/bindings/pci/xgene-pci.txt
-@@ -39,11 +39,11 @@ Example:
- 			  0x02000000 0x00 0x80000000 0xe1 0x80000000 0x00 0x80000000>; /* mem */
- 		dma-ranges = <0x42000000 0x80 0x00000000 0x80 0x00000000 0x00 0x80000000
- 			      0x42000000 0x00 0x00000000 0x00 0x00000000 0x80 0x00000000>;
--		interrupt-map-mask = <0x0 0x0 0x0 0x7>;
--		interrupt-map = <0x0 0x0 0x0 0x1 &gic 0x0 0xc2 0x1
--				 0x0 0x0 0x0 0x2 &gic 0x0 0xc3 0x1
--				 0x0 0x0 0x0 0x3 &gic 0x0 0xc4 0x1
--				 0x0 0x0 0x0 0x4 &gic 0x0 0xc5 0x1>;
-+		interrupt-map-mask = <0x0 0x0 0x0 IRQ_INT_ALL>;
-+		interrupt-map = <0x0 0x0 0x0 IRQ_INTA &gic 0x0 0xc2 0x1
-+				 0x0 0x0 0x0 IRQ_INTB &gic 0x0 0xc3 0x1
-+				 0x0 0x0 0x0 IRQ_INTC &gic 0x0 0xc4 0x1
-+				 0x0 0x0 0x0 IRQ_INTD &gic 0x0 0xc5 0x1>;
- 		dma-coherent;
- 		clocks = <&pcie0clk 0>;
- 	};
-diff --git a/Documentation/devicetree/bindings/pci/xilinx-nwl-pcie.txt b/Documentation/devicetree/bindings/pci/xilinx-nwl-pcie.txt
-index 01bf7fdf4c19..5964fdf752bc 100644
---- a/Documentation/devicetree/bindings/pci/xilinx-nwl-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/xilinx-nwl-pcie.txt
-@@ -47,11 +47,11 @@ nwl_pcie: pcie@fd0e0000 {
- 	interrupt-parent = <&gic>;
- 	interrupts = <0 114 4>, <0 115 4>, <0 116 4>, <0 117 4>, <0 118 4>;
- 	interrupt-names = "msi0", "msi1", "intx", "dummy", "misc";
--	interrupt-map-mask = <0x0 0x0 0x0 0x7>;
--	interrupt-map = <0x0 0x0 0x0 0x1 &pcie_intc 0x1>,
--			<0x0 0x0 0x0 0x2 &pcie_intc 0x2>,
--			<0x0 0x0 0x0 0x3 &pcie_intc 0x3>,
--			<0x0 0x0 0x0 0x4 &pcie_intc 0x4>;
-+	interrupt-map-mask = <0x0 0x0 0x0 IRQ_INT_ALL>;
-+	interrupt-map = <0x0 0x0 0x0 IRQ_INTA &pcie_intc 0x1>,
-+			<0x0 0x0 0x0 IRQ_INTB &pcie_intc 0x2>,
-+			<0x0 0x0 0x0 IRQ_INTC &pcie_intc 0x3>,
-+			<0x0 0x0 0x0 IRQ_INTD &pcie_intc 0x4>;
- 
- 	msi-parent = <&nwl_pcie>;
- 	reg = <0x0 0xfd0e0000 0x0 0x1000>,
-diff --git a/Documentation/devicetree/bindings/pci/xilinx-pcie.txt b/Documentation/devicetree/bindings/pci/xilinx-pcie.txt
-index fd57a81180a4..82b7d07bda51 100644
---- a/Documentation/devicetree/bindings/pci/xilinx-pcie.txt
-+++ b/Documentation/devicetree/bindings/pci/xilinx-pcie.txt
-@@ -47,11 +47,11 @@ Zynq:
- 		reg = < 0x50000000 0x1000000 >;
- 		device_type = "pci";
- 		interrupts = < 0 52 4 >;
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0 0 0 1 &pcie_intc 1>,
--				<0 0 0 2 &pcie_intc 2>,
--				<0 0 0 3 &pcie_intc 3>,
--				<0 0 0 4 &pcie_intc 4>;
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0 IRQ_INTA &pcie_intc 1>,
-+				<0 0 0 IRQ_INTB &pcie_intc 2>,
-+				<0 0 0 IRQ_INTC &pcie_intc 3>,
-+				<0 0 0 IRQ_INTD &pcie_intc 4>;
- 		ranges = < 0x02000000 0 0x60000000 0x60000000 0 0x10000000 >;
- 
- 		pcie_intc: interrupt-controller {
-@@ -72,11 +72,11 @@ Microblaze:
- 		device_type = "pci";
- 		interrupt-parent = <&microblaze_0_intc>;
- 		interrupts = <1 2>;
--		interrupt-map-mask = <0 0 0 7>;
--		interrupt-map = <0 0 0 1 &pcie_intc 1>,
--				<0 0 0 2 &pcie_intc 2>,
--				<0 0 0 3 &pcie_intc 3>,
--				<0 0 0 4 &pcie_intc 4>;
-+		interrupt-map-mask = <0 0 0 IRQ_INT_ALL>;
-+		interrupt-map = <0 0 0 IRQ_INTA &pcie_intc 1>,
-+				<0 0 0 IRQ_INTB &pcie_intc 2>,
-+				<0 0 0 IRQ_INTC &pcie_intc 3>,
-+				<0 0 0 IRQ_INTD &pcie_intc 4>;
- 		ranges = <0x02000000 0x00000000 0x80000000 0x80000000 0x00000000 0x10000000>;
- 
- 		pcie_intc: interrupt-controller {
--- 
-2.21.0
+The patch above seems like a step in the right direction (I am fine to
+apply something along those lines), however, I does look a bit odd
+that ->host->req_in_progress isn't protected by a lock. Doesn't it?
 
+In any case, I suggest you to repost this as proper patch with a
+changelog. Also, please include some of the folkz from TI who has been
+contributing to the driver lately.
+
+Kind regards
+Uffe
