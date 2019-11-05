@@ -2,122 +2,161 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0765DF05E0
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Nov 2019 20:24:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90D0AF0A05
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2019 00:05:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390759AbfKETYa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 Nov 2019 14:24:30 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:36741 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390445AbfKETYa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Nov 2019 14:24:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1572981865;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=cyEeja1O/3HJ7qE8/eP52LA1r1YFJ2AT82sSlB3RwDQ=;
-        b=BLYVpH1X1u+Bh0du9niozUJ29UmdH/v5/P/UUhyEuNDQg531nrFlMr5ZC/jT9klPY3
-        /OgtszLKykmflBaH/YLF7hjgMcF4B4y6+mhTYVzc7Jg5syYf7NVzqwLxq3nL/OgWT5P1
-        h6aenWK/9y7R9aCFkVgX1drFwhXUhatZ/XHgB6bCQrI4DYLymkJiQ1UjewleDezpgPiF
-        Ev8YAl8qgXgkiXVtKIFYfqst3Jsgv2U3C3oMaYlQfbbpD/QcCYkvZ4MwLleKtCWyBKOk
-        P7ZgSPkLH6M+Y+tAPxKHiLHtHvlKpXOWUmeJgSCRcpwL+b0pjH0b2ns0732Kw/65qnCU
-        9QVw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlaZXA4Ef/k="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
-        with ESMTPSA id L09db3vA5JOFUrW
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Tue, 5 Nov 2019 20:24:15 +0100 (CET)
+        id S1730370AbfKEXFz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Nov 2019 18:05:55 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:34017 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730184AbfKEXFz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Nov 2019 18:05:55 -0500
+Received: by mail-oi1-f195.google.com with SMTP id l202so19217135oig.1;
+        Tue, 05 Nov 2019 15:05:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=LAi+qZUkuhq1d2wVLpPVPcbuNd2aQs6HwzUUOf0K5n0=;
+        b=CITCjdO58m2RvUsHCB9tbmJshOx0/BRDvJFf38Gyd69/OuIzbSUZNl15CaYPYq0LPC
+         7gPxdWWFk3O/QKnQA1rHAXKhFWiJT5zxUN6MYOM90GLGjvjoX76SS/OxJe2EDauxRTuR
+         QZOd8IbwUSG2lXrqy2zlIteAjCnbmvEX9ckD7NyxEao2nLNfJraEbgiN3XC3tHOXuHy7
+         oA3+EZxJkaTW/baq7Nmqi8zZcuLmWIAFPpkqM595GB8p6ur1wU5YjbyXtfa56DGvnbqe
+         R8rxRgPO69PfW2gTX0Zufd5by2POmde6g3dfiSyybxa1rhC2wBlGMmK+NZhttl3dtF+m
+         U2lg==
+X-Gm-Message-State: APjAAAVoJqpHYJ3XdDMYy4to7GdELWp8azZYfbkdlCf9R25sAJb9rfeN
+        /c1LDNegT+49u7adR9Do2tkYhgs=
+X-Google-Smtp-Source: APXvYqxhGYoDJXdpfnXNnhPdoaao9UI1xI0qHKyHXJT6+QFjo/BppkWuai5Qa9e9sgoNmpyOlN7Oew==
+X-Received: by 2002:aca:c4d5:: with SMTP id u204mr1189182oif.119.1572995153554;
+        Tue, 05 Nov 2019 15:05:53 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id q82sm1372503oif.11.2019.11.05.15.05.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2019 15:05:52 -0800 (PST)
+Date:   Tue, 5 Nov 2019 17:05:52 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Benoit Parrot <bparrot@ti.com>
+Cc:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Tony Lindgren <tony@atomide.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [Patch v2 1/5] dt-bindings: media: ti-vpe: Document VPE driver
+Message-ID: <20191105230552.GA25817@bogus>
+References: <20191104203841.3628-1-bparrot@ti.com>
+ <20191104203841.3628-2-bparrot@ti.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: Long Delay on startup of wl18xx Wireless chip
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <CAHCN7xK0Y7=Wr9Kq02CWCbQjWVOocU02LLEB=QsVB22yNNoQPw@mail.gmail.com>
-Date:   Tue, 5 Nov 2019 20:24:15 +0100
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>, kvalo@codeaurora.org,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev <netdev@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6D542255-6306-4982-9393-DCCC6D1961BB@goldelico.com>
-References: <CAHCN7xJiJKBgkiRm-MF9NpgQqfV4=zSVRShc5Sb5Lya2TAxU0g@mail.gmail.com> <CAHCN7xK0Y7=Wr9Kq02CWCbQjWVOocU02LLEB=QsVB22yNNoQPw@mail.gmail.com>
-To:     Adam Ford <aford173@gmail.com>
-X-Mailer: Apple Mail (2.3124)
+Content-Disposition: inline
+In-Reply-To: <20191104203841.3628-2-bparrot@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Adam,
+On Mon, Nov 04, 2019 at 02:38:37PM -0600, Benoit Parrot wrote:
+> Device Tree bindings for the Video Processing Engine (VPE).
+> 
+> Signed-off-by: Benoit Parrot <bparrot@ti.com>
+> ---
+>  .../devicetree/bindings/media/ti,vpe.yaml     | 64 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 65 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/media/ti,vpe.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/media/ti,vpe.yaml b/Documentation/devicetree/bindings/media/ti,vpe.yaml
+> new file mode 100644
+> index 000000000000..eb9f3e1b7f5f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/ti,vpe.yaml
+> @@ -0,0 +1,64 @@
+> +# SPDX-License-Identifier: (GPL-2.0)
 
-> Am 05.11.2019 um 19:55 schrieb Adam Ford <aford173@gmail.com>:
->=20
-> On Tue, Nov 5, 2019 at 12:25 PM Adam Ford <aford173@gmail.com> wrote:
->>=20
->> I am seeing a really long delay at startup of the wl18xx using the =
-5.4 kernel.
->>=20
->=20
-> Sorry I had to resend.  I forgot to do plaintext.  Google switched
-> settings on me and neglected to inform me.
->=20
->=20
->> [    7.895551] wl18xx_driver wl18xx.2.auto: Direct firmware load for =
-ti-connectivity/wl18xx-conf.bin failed with error -2
->> [    7.906416] wl18xx_driver wl18xx.2.auto: Falling back to sysfs =
-fallback for: ti-connectivity/wl18xx-conf.bin
->>=20
->> At this point in the sequence, I can login to Linux, but the WL18xx =
-is unavailable.
->>=20
->> [   35.032382] vwl1837: disabling
->> [   69.594874] wlcore: ERROR could not get configuration binary =
-ti-connectivity/wl18xx-conf.bin: -11
->> [   69.604013] wlcore: WARNING falling back to default config
->> [   70.174821] wlcore: wl18xx HW: 183x or 180x, PG 2.2 (ROM 0x11)
->> [   70.189003] wlcore: WARNING Detected unconfigured mac address in =
-nvs, derive from fuse instead.
->> [   70.197851] wlcore: WARNING This default nvs file can be removed =
-from the file system
->> [   70.218816] wlcore: loaded
->>=20
->> It is now at this point when the wl18xx is available.
->>=20
->> I have the wl18xx and wlcore setup as a module so it should load =
-after the filesystem is mounted.  I am not using a wl18xx-conf.bin, but =
-I never needed to use this before.
->>=20
->> It seems to me unreasonable to wait 60+ seconds after everything is =
-mounted for the wireless chip to become available.  Before I attempt to =
-bisect this, I was hoping someone might have seen this.  I am also =
-trying to avoid duplicating someone else's efforts.
->>=20
->> I know the 4.19 doesn't behave like this.
+For new bindings:
 
-I have with v5.4-rc6 on omap5 + wl1835
+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 
-root@letux:~# dmesg|fgrep wlcore
-[   10.268847] wl18xx_driver wl18xx.0.auto: Direct firmware load for =
-ti-connectivity/wl18xx-conf.bin failed with error -2
-[   10.291610] wlcore: ERROR could not get configuration binary =
-ti-connectivity/wl18xx-conf.bin: -2
-[   10.303839] wlcore: WARNING falling back to default config
-[   10.700055] wlcore: wl18xx HW: 183x or 180x, PG 2.2 (ROM 0x11)
-[   10.703469] wlcore: WARNING Detected unconfigured mac address in nvs, =
-derive from fuse instead.
-[   10.703478] wlcore: WARNING This default nvs file can be removed from =
-the file system
-[   12.738721] wlcore: loaded
-[   13.978498] wlcore: PHY firmware version: Rev 8.2.0.0.237
-[   14.073765] wlcore: firmware booted (Rev 8.9.0.0.70)
-[   14.096806] wlcore: down
-[   14.589917] wlcore: PHY firmware version: Rev 8.2.0.0.237
-[   14.693183] wlcore: firmware booted (Rev 8.9.0.0.70)
-root@letux:~#=20
+With that,
 
-Hope this helps.
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-BR,
-Nikolaus
-
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/ti,vpe.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments DRA7x Video Processing Engine (VPE) Device Tree Bindings
+> +
+> +maintainers:
+> +  - Benoit Parrot <bparrot@ti.com>
+> +
+> +description: |-
+> +  The Video Processing Engine (VPE) is a key component for image post
+> +  processing applications. VPE consist of a single memory to memory
+> +  path which can perform chroma up/down sampling, deinterlacing,
+> +  scaling and color space conversion.
+> +
+> +properties:
+> +  compatible:
+> +      const: ti,dra7-vpe
+> +
+> +  reg:
+> +    items:
+> +      - description: The VPE main register region
+> +      - description: Scaler (SC) register region
+> +      - description: Color Space Conversion (CSC) register region
+> +      - description: Video Port Direct Memory Access (VPDMA) register region
+> +
+> +  reg-names:
+> +    items:
+> +      - const: vpe_top
+> +      - const: sc
+> +      - const: csc
+> +      - const: vpdma
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    vpe: vpe@489d0000 {
+> +        compatible = "ti,dra7-vpe";
+> +        reg = <0x489d0000 0x120>,
+> +              <0x489d0700 0x80>,
+> +              <0x489d5700 0x18>,
+> +              <0x489dd000 0x400>;
+> +        reg-names = "vpe_top",
+> +                    "sc",
+> +                    "csc",
+> +                    "vpdma";
+> +        interrupts = <GIC_SPI 354 IRQ_TYPE_LEVEL_HIGH>;
+> +    };
+> +
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d360df48f9f2..baf3aac1ab7c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16316,6 +16316,7 @@ Q:	http://patchwork.linuxtv.org/project/linux-media/list/
+>  S:	Maintained
+>  F:	drivers/media/platform/ti-vpe/
+>  F:	Documentation/devicetree/bindings/media/ti,cal.yaml
+> +F:	Documentation/devicetree/bindings/media/ti,vpe.yaml
+>  
+>  TI WILINK WIRELESS DRIVERS
+>  L:	linux-wireless@vger.kernel.org
+> -- 
+> 2.17.1
+> 
