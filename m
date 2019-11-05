@@ -2,139 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD6EEF657
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Nov 2019 08:20:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15666EFB02
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Nov 2019 11:25:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387590AbfKEHUj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 Nov 2019 02:20:39 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:47840 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387484AbfKEHUj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Nov 2019 02:20:39 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xA57KYq9124809;
-        Tue, 5 Nov 2019 01:20:34 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1572938434;
-        bh=4hR507F9d9RQok/WuN1OZB6tXcsHF2sZDCLwM6d2xbs=;
-        h=To:CC:From:Subject:Date;
-        b=RTbcbA7RrYL1r24Lt3Ht1Ge4Q4uSqj7mxq+3vdMMHStWkB1Gr6Xrxwm5x+l+FMaQ6
-         IOVCpzMMmKepi0XQ5EQ8tO1nrJoBkEu9+dEVr9rETyWlBD90xsjzjsH2NXW331ymwR
-         +jamUZBvn1VaxrH3pJXDrs9Sp6lzk5YbUw1Nrjec=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xA57KYUO099171
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 5 Nov 2019 01:20:34 -0600
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 5 Nov
- 2019 01:20:19 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 5 Nov 2019 01:20:19 -0600
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xA57KWTW000999;
-        Tue, 5 Nov 2019 01:20:32 -0600
-To:     Stephen Boyd <sboyd@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        "tony@atomide.com" <tony@atomide.com>
-CC:     linux-clk <linux-clk@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-From:   Tero Kristo <t-kristo@ti.com>
-Subject: [GIT PULL] clk: ti: changes for 5.5 (take 2)
-Message-ID: <2e823d30-ce52-1275-c958-6b82666dc46f@ti.com>
-Date:   Tue, 5 Nov 2019 09:20:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S2387945AbfKEKZi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Nov 2019 05:25:38 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:45786 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388022AbfKEKZi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Nov 2019 05:25:38 -0500
+Received: by mail-lj1-f193.google.com with SMTP id n21so7544506ljg.12;
+        Tue, 05 Nov 2019 02:25:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ZIE7PHR5n6kkKpkKiiyu4APe9Fu8muktBLyL9wQHbZs=;
+        b=T/MgBrF8HqH0HavKNPg0BfFSIdhIhru9dR4Tp5HlufFedPpNd/9LdhmYUIVC4Yvsjc
+         cpQoCUn8cwmHS/sQtEaOXIkSboWkiiN5y2mEkM7gkbfeguxW7FuH44vESTwAFn0dctRZ
+         aLBu0i6spQSOArOzcy2TT+TP2EFqC27cIp6FPMmLvYt83EiBTjNGKT5r9I3PLMtYHeiJ
+         nn8Imwci4SPoh4gFO+IKhWIZGC8RHZ+lsF9pOMpGO6jKSvKtq49c4tbowJfyH7/NDy7Z
+         Elnl0tVfHePOhGeZR8AHc7MkUX/IQ4hh+Kqhb53tzZk01cHspo55X/fh97RMqyHvlF5/
+         Pcdg==
+X-Gm-Message-State: APjAAAXWwXX1PceKQYGK/FRYU+YuS7bLTgaMbK4Aq0TedekqcedWvKGS
+        SrwnHbri1f6Tko3hL1v2mTs=
+X-Google-Smtp-Source: APXvYqz6MruEmXlY92dMfYrIVsfqdShngh3dj/+yBjpkU/WTQDGGf2OC6O0LQkqz7fwWBx69iNptPg==
+X-Received: by 2002:a05:651c:20f:: with SMTP id y15mr7302098ljn.31.1572949536259;
+        Tue, 05 Nov 2019 02:25:36 -0800 (PST)
+Received: from localhost.localdomain ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id g23sm2586949lja.104.2019.11.05.02.25.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2019 02:25:35 -0800 (PST)
+Date:   Tue, 5 Nov 2019 12:25:26 +0200
+From:   Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+To:     matti.vaittinen@fi.rohmeurope.com, mazziesaccount@gmail.com
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 28/62] gpio: gpio-omap: Use new GPIO_LINE_DIRECTION
+Message-ID: <b27b35f4db5f05994e64e3bb78f0c632bef61e6f.1572945849.git.matti.vaittinen@fi.rohmeurope.com>
+References: <cover.1572945849.git.matti.vaittinen@fi.rohmeurope.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1572945849.git.matti.vaittinen@fi.rohmeurope.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Stephen,
+It's hard for occasional GPIO code reader/writer to know if values 0/1
+equal to IN or OUT. Use defined GPIO_LINE_DIRECTION_IN and
+GPIO_LINE_DIRECTION_OUT to help them out.
 
-This is a 2nd try of the TI clock changes towards 5.5. I added the 
-divider clock revamp into this pull, and also fixed the one commend you 
-had on the remoteproc support series.
-
-Tony, this is also available as a branch as for-5.5-ti-clk-v2.
-
--Tero
-
+Signed-off-by: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
 ---
+ drivers/gpio/gpio-omap.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index d0f27084a942..3bd8adaeed9e 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -805,8 +805,10 @@ static int omap_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
+ {
+ 	struct gpio_bank *bank = gpiochip_get_data(chip);
+ 
+-	return !!(readl_relaxed(bank->base + bank->regs->direction) &
+-		  BIT(offset));
++	if (readl_relaxed(bank->base + bank->regs->direction) & BIT(offset))
++		return GPIO_LINE_DIRECTION_IN;
++
++	return GPIO_LINE_DIRECTION_OUT;
+ }
+ 
+ static int omap_gpio_input(struct gpio_chip *chip, unsigned offset)
+-- 
+2.21.0
 
-   Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
 
-are available in the Git repository at:
+-- 
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/kristo/linux 
-tags/ti-clk-for-5.5-v2
-
-for you to fetch changes up to f5869190667951720f8c1ec4638bff4c682a3a4e:
-
-   ARM: dts: omap3: fix DPLL4 M4 divider max value (2019-10-31 15:33:26 
-+0200)
-
-----------------------------------------------------------------
-TI clock driver changes for 5.5
-
-As the clock and reset handling is tightly coupled on the hardware level
-on OMAP SoCs, we must ensure the events are sequenced properly. This
-series makes sure that the clock side is behaving properly, and the
-sequencing of the events is left for the bus driver (ti-sysc.)
-
-The series also includes revamp of the TI divider clock implementation
-to handle max divider values properly in cases where the max value is
-not limited by the bitfield of the IO register but instead limited to
-some arbitrary value. Previously this resulted in too high divider
-values to be used in some cases causing HW malfunction.
-
-Additionally, a couple of smaller changes needed by remoteproc support
-are added; checking of the standby status and some missing clkctrl data
-for omap5/dra7.
-
-----------------------------------------------------------------
-Suman Anna (2):
-       clk: ti: omap4: Drop idlest polling from IPU & DSP clkctrl clocks
-       clk: ti: omap5: Drop idlest polling from IPU & DSP clkctrl clocks
-
-Tero Kristo (14):
-       clk: ti: clkctrl: fix setting up clkctrl clocks
-       clk: ti: clkctrl: convert to use bit helper macros instead of bitops
-       clk: ti: clkctrl: add new exported API for checking standby info
-       dt-bindings: clk: add omap5 iva clkctrl definitions
-       clk: ti: omap5: add IVA subsystem clkctrl data
-       clk: ti: dra7xx: Drop idlest polling from IPU & DSP clkctrl clocks
-       clk: ti: am43xx: drop idlest polling from pruss clkctrl clock
-       clk: ti: am33xx: drop idlest polling from pruss clkctrl clock
-       clk: ti: am33xx: drop idlest polling from gfx clock
-       clk: ti: am43xx: drop idlest polling from gfx clock
-       clk: ti: divider: cleanup _register_divider and ti_clk_get_div_table
-       clk: ti: divider: cleanup ti_clk_parse_divider_data API
-       clk: ti: divider: convert to use min,max,mask instead of width
-       ARM: dts: omap3: fix DPLL4 M4 divider max value
-
-  arch/arm/boot/dts/omap36xx-clocks.dtsi |   4 +
-  arch/arm/boot/dts/omap3xxx-clocks.dtsi |   2 +-
-  drivers/clk/ti/clk-33xx.c              |   4 +-
-  drivers/clk/ti/clk-43xx.c              |   4 +-
-  drivers/clk/ti/clk-44xx.c              |   4 +-
-  drivers/clk/ti/clk-54xx.c              |  11 +-
-  drivers/clk/ti/clk-7xx.c               |   8 +-
-  drivers/clk/ti/clkctrl.c               |  45 +++++-
-  drivers/clk/ti/clock.h                 |   7 +-
-  drivers/clk/ti/divider.c               | 282 
-+++++++++++++--------------------
-  include/dt-bindings/clock/omap5.h      |   4 +
-  include/linux/clk/ti.h                 |   3 +-
-  12 files changed, 187 insertions(+), 191 deletions(-)
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =] 
