@@ -2,120 +2,141 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DDA0F1643
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2019 13:46:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0C5CF16F0
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2019 14:28:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729771AbfKFMqw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Nov 2019 07:46:52 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:34388 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728716AbfKFMqw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Nov 2019 07:46:52 -0500
-Received: by mail-io1-f66.google.com with SMTP id q83so5608675iod.1;
-        Wed, 06 Nov 2019 04:46:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dCWYOfZFN/44tRSynwvPgk+ZFvjc1PN3JD152ApZLIs=;
-        b=YO1PIviEFXcvMwOzcLr7W9j3tkNWjWmZVRmmbBwCVWdf4njxh8ZgcFR8HeDSF+hOLD
-         YNda4feo1wZI/GqtqfQb3wE+rpy8GQRkrY9Y7BeO5xWzJX9jW873TJ9JkPePEEdwqLAB
-         V6T6PjfnVIvHA2aI7PIq7vYu8t4/Hty1mcdF+1AbShBcG5RiDs225rDnEHQ/yEDhOXxF
-         lZJqMKWm609urv9jHt9sBXR/GrG9gJAy3E3TutUJ1lg9xQ6+H2oxXw2jKuX+JTULwy2U
-         xnQkZITICo0fohIxCUF4sREbMqKmbflNDM6gDys8ppM3sM5/RA45IMd0mxWkQvcRhe1j
-         cOTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dCWYOfZFN/44tRSynwvPgk+ZFvjc1PN3JD152ApZLIs=;
-        b=XKHEsiKN4dSjhv9I4x3sAZi5Dv5F35REpKU/5KFtS5WIJpqUZYQuTq+1OoDULopRw8
-         UBPPWyHKbk7dg8ZvY3NjiOReOTrHi0ViRPfK2Ycss9C1kLZBGK1pphiySfGEoFzCh2zm
-         tGOoXVGd5JlHeg0vEc8jirmxLb8+4Xxb62SsrzkwjbBKGYROGifbPDkLx0LPAOqUnpiZ
-         vIJshB8xWuaMbdPIzQq6BAv2QMSneGR15U6p8NRi3OZRSF+aIMqT9j4hpOE48RMasrwn
-         BSEFp7tqS+uAq/jGtlxuxHfQ2yjTfq39lOP54jIxkSzfDGjWdxON/oTc703nUYzVVBfP
-         BbYA==
-X-Gm-Message-State: APjAAAWc7i1OxlG1jTXvj6UnBw1AmyUQ3NnwyprjLk8X2CruRyVWA6U/
-        pu87lmemlbs8O7mSnJC7Sf8W1UnIavGpU++UHVZJHA==
-X-Google-Smtp-Source: APXvYqzFI1dHLVepv5uRK9hk93VcmoCXY+rvxbx+FnKtn7+KcUv21OtpZlFMta24GD0VFks496XYtMzzGKx3DX7/Ao4=
-X-Received: by 2002:a6b:6f16:: with SMTP id k22mr3436671ioc.205.1573044411187;
- Wed, 06 Nov 2019 04:46:51 -0800 (PST)
+        id S1728754AbfKFN2M (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Nov 2019 08:28:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49164 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726845AbfKFN2L (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 6 Nov 2019 08:28:11 -0500
+Received: from mail-yw1-f51.google.com (mail-yw1-f51.google.com [209.85.161.51])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 32FE921929;
+        Wed,  6 Nov 2019 13:28:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573046890;
+        bh=acqlbOW9KRReh2d7mpWhg+dFBYpnTyamFBP3xBgfnN4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=jZCC9XWTKGCvZag4+8V0UwjSYNo7v90srn98UNulQLavQBtfjW4BMQEgF1ASG6OsF
+         4+SuurrY3gyC0uZARvElUNvI0CXVruo3sPOoVx2IZdnzOS14D7P59a36nfD22tEEaG
+         Rpp5m08UYu/81Hv/79a0uZXLlHCbQVYhq+9zqHYc=
+Received: by mail-yw1-f51.google.com with SMTP id j137so3338668ywa.12;
+        Wed, 06 Nov 2019 05:28:10 -0800 (PST)
+X-Gm-Message-State: APjAAAX3VQdw0MzNnpbtIF1HeS1S9vB5DaCbiCBDjhMwOrotI4qi25HL
+        89Kp8ilWZB3E7//w/pqXWUzHL+UPnWcw+bSroQ==
+X-Google-Smtp-Source: APXvYqx8YEmGlOUOkomM0+9+OiizTTLGhZ01a7PA3/CuWEQJuLejHW9brVzu8Jzm5uL/IT1LYjYyaenn1W38v9BxxTE=
+X-Received: by 2002:a81:2748:: with SMTP id n69mr1363487ywn.281.1573046889250;
+ Wed, 06 Nov 2019 05:28:09 -0800 (PST)
 MIME-Version: 1.0
-References: <CAHCN7xJiJKBgkiRm-MF9NpgQqfV4=zSVRShc5Sb5Lya2TAxU0g@mail.gmail.com>
- <CAHCN7xK0Y7=Wr9Kq02CWCbQjWVOocU02LLEB=QsVB22yNNoQPw@mail.gmail.com>
- <87sgn1z467.fsf@codeaurora.org> <7BC95BF7-0E1D-4863-AB71-37BB6E8E297E@goldelico.com>
-In-Reply-To: <7BC95BF7-0E1D-4863-AB71-37BB6E8E297E@goldelico.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Wed, 6 Nov 2019 06:46:39 -0600
-Message-ID: <CAHCN7x+0KEQGztgn0+75kNNU87__zbatzCtuSX0_EMLxjTnvRg@mail.gmail.com>
-Subject: Re: Long Delay on startup of wl18xx Wireless chip
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev <netdev@vger.kernel.org>
+References: <20191028124238.19224-1-t-kristo@ti.com> <20191028124238.19224-2-t-kristo@ti.com>
+ <20191106032727.GA21162@bogus> <25d55648-1fad-7de2-0937-5efeee8672eb@ti.com>
+In-Reply-To: <25d55648-1fad-7de2-0937-5efeee8672eb@ti.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 6 Nov 2019 07:27:56 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJd_wDMVgFkMRZ7_+0hz93zqJFWEQXY-Sn+3tT-urzRKA@mail.gmail.com>
+Message-ID: <CAL_JsqJd_wDMVgFkMRZ7_+0hz93zqJFWEQXY-Sn+3tT-urzRKA@mail.gmail.com>
+Subject: Re: [PATCH 01/17] dt-bindings: remoteproc: Add OMAP remoteproc bindings
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
+        <linux-remoteproc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Suman Anna <s-anna@ti.com>, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Nov 6, 2019 at 4:38 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+On Wed, Nov 6, 2019 at 6:44 AM Tero Kristo <t-kristo@ti.com> wrote:
 >
+> On 06/11/2019 05:27, Rob Herring wrote:
+> > On Mon, Oct 28, 2019 at 02:42:22PM +0200, Tero Kristo wrote:
+> >> From: Suman Anna <s-anna@ti.com>
+> >>
+> >> Add the device tree bindings document for the IPU and DSP
+> >> remote processor devices on OMAP4+ SoCs.
+> >>
+> >> Cc: Rob Herring <robh@kernel.org>
+> >> Cc: devicetree@vger.kernel.org
+> >> Signed-off-by: Suman Anna <s-anna@ti.com>
+> >> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> >> ---
+> >>   .../remoteproc/ti,omap-remoteproc.txt         | 205 ++++++++++++++++++
+> >>   1 file changed, 205 insertions(+)
+> >>   create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.txt
+> >>
+> >
+> > Looks to be in pretty good shape, but how about doing a schema.
 >
-> > Am 06.11.2019 um 11:32 schrieb Kalle Valo <kvalo@codeaurora.org>:
-> >
-> > Adam Ford <aford173@gmail.com> writes:
-> >
-> >> On Tue, Nov 5, 2019 at 12:25 PM Adam Ford <aford173@gmail.com> wrote:
-> >>>
-> >>> I am seeing a really long delay at startup of the wl18xx using the 5.4 kernel.
-> >>>
-> >>
-> >> Sorry I had to resend.  I forgot to do plaintext.  Google switched
-> >> settings on me and neglected to inform me.
-> >>
-> >>
-> >>> [ 7.895551] wl18xx_driver wl18xx.2.auto: Direct firmware load for
-> >>> ti-connectivity/wl18xx-conf.bin failed with error -2
-> >>> [ 7.906416] wl18xx_driver wl18xx.2.auto: Falling back to sysfs
-> >>> fallback for: ti-connectivity/wl18xx-conf.bin
-> >>>
-> >>> At this point in the sequence, I can login to Linux, but the WL18xx is unavailable.
-> >>>
-> >>> [   35.032382] vwl1837: disabling
-> >>> [ 69.594874] wlcore: ERROR could not get configuration binary
-> >>> ti-connectivity/wl18xx-conf.bin: -11
-> >>> [   69.604013] wlcore: WARNING falling back to default config
-> >>> [   70.174821] wlcore: wl18xx HW: 183x or 180x, PG 2.2 (ROM 0x11)
-> >>> [ 70.189003] wlcore: WARNING Detected unconfigured mac address in
-> >>> nvs, derive from fuse instead.
-> >>> [   70.197851] wlcore: WARNING This default nvs file can be removed from the file system
-> >>> [   70.218816] wlcore: loaded
-> >>>
-> >>> It is now at this point when the wl18xx is available.
-> >>>
-> >>> I have the wl18xx and wlcore setup as a module so it should load
-> >>> after the filesystem is mounted. I am not using a wl18xx-conf.bin,
-> >>> but I never needed to use this before.
-> >>>
-> >>> It seems to me unreasonable to wait 60+ seconds after everything is
-> >>> mounted for the wireless chip to become available. Before I attempt
-> >>> to bisect this, I was hoping someone might have seen this. I am also
-> >>> trying to avoid duplicating someone else's efforts.
-> >>>
-> >>> I know the 4.19 doesn't behave like this.
-> >
-> > Try disabling CONFIG_FW_LOADER_USER_HELPER, that usually causes a 60
-> > second delay if the user space is not setup to handle the request. (Or
-> > something like that.)
+> iommu / mailbox is not in schema format, can I just convert this one to
+> schema without considering those? If yes, I can go ahead and do it.
 
-Thank you for the pointer on that.  It addressed my issue.
+The client side both have schema (in dt-schema repo).
 
-adam
+> >> diff --git a/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.txt b/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.txt
+> >> new file mode 100644
+> >> index 000000000000..e2bcfcab21c1
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.txt
+> >> @@ -0,0 +1,205 @@
+> >> +OMAP4+ Remoteproc Devices
+> >> +=========================
+> >> +
+> >> +The OMAP family of SoCs usually have one or more slave processor sub-systems
+> >> +that are used to offload some of the processor-intensive tasks, or to manage
+> >> +other hardware accelerators, for achieving various system level goals.
+> >> +
+> >> +The processor cores in the sub-system are usually behind an IOMMU, and may
+> >> +contain additional sub-modules like Internal RAM and/or ROMs, L1 and/or L2
+> >> +caches, an Interrupt Controller, a Cache Controller etc.
+> >> +
+> >> +The OMAP SoCs usually have a DSP processor sub-system and/or an IPU processor
+> >> +sub-system. The DSP processor sub-system can contain any of the TI's C64x,
+> >> +C66x or C67x family of DSP cores as the main execution unit. The IPU processor
+> >> +sub-system usually contains either a Dual-Core Cortex-M3 or Dual-Core Cortex-M4
+> >> +processors.
+> >> +
+> >> +Remote Processor Node:
+> >> +======================
+> >> +Each remote processor sub-system is represented as a single DT node. Each node
+> >> +has a number of required or optional properties that enable the OS running on
+> >> +the host processor (MPU) to perform the device management of the remote
+> >> +processor and to communicate with the remote processor. The various properties
+> >> +can be classified as constant or variable. The constant properties are dictated
+> >> +by the SoC and does not change from one board to another having the same SoC.
+> >> +Examples of constant properties include 'iommus', 'reg'. The variable properties
+> >> +are dictated by the system integration aspects such as memory on the board, or
+> >> +configuration used within the corresponding firmware image. Examples of variable
+> >> +properties include 'mboxes', 'memory-region', 'timers', 'watchdog-timers' etc.
+> >> +
+> >> +Required properties:
+> >> +--------------------
+> >> +The following are the mandatory properties:
+> >> +
+> >> +- compatible:       Should be one of the following,
+> >> +                "ti,omap4-dsp" for DSPs on OMAP4 SoCs
+> >> +                "ti,omap5-dsp" for DSPs on OMAP5 SoCs
+> >> +                "ti,dra7-dsp" for DSPs on DRA7xx/AM57xx SoCs
+> >> +                "ti,omap4-ipu" for IPUs on OMAP4 SoCs
+> >> +                "ti,omap5-ipu" for IPUs on OMAP5 SoCs
+> >> +                "ti,dra7-ipu" for IPUs on DRA7xx/AM57xx SoCs
+> >> +
+> >> +- iommus:   phandles to OMAP IOMMU nodes, that need to be programmed
+> >> +            for this remote processor to access any external RAM memory or
+> >> +            other peripheral device address spaces. This property usually
+> >> +            has only a single phandle. Multiple phandles are used only in
+> >> +            cases where the sub-system has different ports for different
+> >> +            sub-modules within the processor sub-system (eg: DRA7 DSPs),
+> >> +            and need the same programming in both the MMUs.
 >
-> I can confirm that I have it disabled in our config which seems to work.
->
-> BR,
-> Nikolaus
->
+> ^ the target of this is not in schema.
+
+You mean the OMAP IOMMU binding? That doesn't matter at all.
+
+Rob
