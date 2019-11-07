@@ -2,329 +2,311 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CB4EF30D3
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Nov 2019 15:05:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4F9FF3199
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Nov 2019 15:35:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389145AbfKGOFR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Nov 2019 09:05:17 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:40684 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731026AbfKGOFR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Nov 2019 09:05:17 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xA7E5Enf041605;
-        Thu, 7 Nov 2019 08:05:14 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1573135514;
-        bh=o/EqpNPNaEyYUZE15OnOVt0MoNYPXk67tjcgorCQZAo=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Rldw4LXqERkzBI5qJo19NuGyVyV0KxRAfbGkW1Ju+9mNR8ONei2stAwqVyKqqtSgd
-         fMlja1wsqgIjTCoIfv769pBPS8ZfVZtpjXXKUv0PKNlMD7ipmw8TJxStXIefiYhp1e
-         7GrEjDuu86XMhxDr6h6q0oxhAHuhoB9IIIkyKZK4=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xA7E5Efd118673
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 7 Nov 2019 08:05:14 -0600
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 7 Nov
- 2019 08:05:11 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 7 Nov 2019 08:04:55 -0600
-Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xA7E58To064114;
-        Thu, 7 Nov 2019 08:05:09 -0600
-From:   Tero Kristo <t-kristo@ti.com>
-To:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
-        <linux-remoteproc@vger.kernel.org>, <robh+dt@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <s-anna@ti.com>, <devicetree@vger.kernel.org>
-Subject: [PATCHv2 01/17] dt-bindings: remoteproc: Add OMAP remoteproc bindings
-Date:   Thu, 7 Nov 2019 16:05:08 +0200
-Message-ID: <20191107140508.32298-1-t-kristo@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191028124238.19224-2-t-kristo@ti.com>
-References: <20191028124238.19224-2-t-kristo@ti.com>
+        id S1727738AbfKGOfn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Nov 2019 09:35:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44782 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726754AbfKGOfm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 7 Nov 2019 09:35:42 -0500
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DF5092187F;
+        Thu,  7 Nov 2019 14:35:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573137341;
+        bh=wwLmrh0U00tbD/J8CgxKi0nU5QepQNXQI2i3g4NanWQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=AWCcCALH0IdprOT6EOBeEU2bRU74AF3nAR3TU+qhcwWqhk5AdhJUBTXXA3YrKyKDL
+         3d8mVl8+mx1evV26o9p+eJHp76Hqw26y5G8ca2dff3vbkeRbM7nz9j7ZcjgrvMvK64
+         gdyKMNy8gvUNajnjyzulJ9IqjLwI1awh3pXg2gqs=
+Received: by mail-qt1-f170.google.com with SMTP id y10so2617375qto.3;
+        Thu, 07 Nov 2019 06:35:40 -0800 (PST)
+X-Gm-Message-State: APjAAAVDWscfS84bfQssb8/vegV52JRll6a52RoDRFM4TN+bUC2zSekc
+        nrfn8mxflRLJZJRzb6I49xIgroTi0bvy33Cd8w==
+X-Google-Smtp-Source: APXvYqywGsSvcRTD5YG/9hLGCfgaArfaDxMX3Lkcr8Tk735sKkk8K0pZPwxkHFh8E/5JXs2wexLG2hxPzDM6/P4dwkc=
+X-Received: by 2002:ac8:73ce:: with SMTP id v14mr4149162qtp.136.1573137339809;
+ Thu, 07 Nov 2019 06:35:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <cover.1573124770.git.hns@goldelico.com> <4292cec1fd82cbd7d42742d749557adb01705574.1573124770.git.hns@goldelico.com>
+In-Reply-To: <4292cec1fd82cbd7d42742d749557adb01705574.1573124770.git.hns@goldelico.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 7 Nov 2019 08:35:27 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+ri3AXb=qhedBzQ6WufLm4aPrSqNxXiHd3_=mH3vJ8xw@mail.gmail.com>
+Message-ID: <CAL_Jsq+ri3AXb=qhedBzQ6WufLm4aPrSqNxXiHd3_=mH3vJ8xw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/8] RFC: dt-bindings: add img,pvrsgx.yaml for
+ Imagination GPUs
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        openpvrsgx-devgroup@letux.org,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        "open list:MIPS" <linux-mips@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Suman Anna <s-anna@ti.com>
+On Thu, Nov 7, 2019 at 5:06 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+>
+> The Imagination PVR/SGX GPU is part of several SoC from
+> multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo
+> and others.
+>
+> With this binding, we describe how the SGX processor is
+> interfaced to the SoC (registers, interrupt etc.).
+>
+> Clock, Reset and power management should be handled
+> by a parent node or elsewhere.
 
-Add the device tree bindings document for the IPU and DSP
-remote processor devices on OMAP4+ SoCs.
+That's probably TI specific...
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
-[t-kristo@ti.com: converted to schema]
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
----
- .../remoteproc/ti,omap-remoteproc.yaml        | 250 ++++++++++++++++++
- 1 file changed, 250 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
+> ---
+>
+> I have used the doc2yaml script to get a first veryion
+> but I am still stuggling with the yaml thing. My impression
+> is that while it is human readable, it is not very human
+> writable... Unfortunately I haven't found a good tutorial
+> for Dummies (like me) for bindings in YAML.
 
-diff --git a/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml b/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
-new file mode 100644
-index 000000000000..901ccf1024c2
---- /dev/null
-+++ b/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
-@@ -0,0 +1,249 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/remoteproc/ti,omap-remoteproc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: OMAP4+ Remoteproc Devices
-+
-+maintainers:
-+  - Suman Anna <s-anna@ti.com>
-+
-+description:
-+  The OMAP family of SoCs usually have one or more slave processor sub-systems
-+  that are used to offload some of the processor-intensive tasks, or to manage
-+  other hardware accelerators, for achieving various system level goals.
-+
-+  The processor cores in the sub-system are usually behind an IOMMU, and may
-+  contain additional sub-modules like Internal RAM and/or ROMs, L1 and/or L2
-+  caches, an Interrupt Controller, a Cache Controller etc.
-+
-+  The OMAP SoCs usually have a DSP processor sub-system and/or an IPU processor
-+  sub-system. The DSP processor sub-system can contain any of the TI's C64x,
-+  C66x or C67x family of DSP cores as the main execution unit. The IPU processor
-+  sub-system usually contains either a Dual-Core Cortex-M3 or Dual-Core
-+  Cortex-M4 processors.
-+
-+  Each remote processor sub-system is represented as a single DT node. Each node
-+  has a number of required or optional properties that enable the OS running on
-+  the host processor (MPU) to perform the device management of the remote
-+  processor and to communicate with the remote processor. The various properties
-+  can be classified as constant or variable. The constant properties are
-+  dictated by the SoC and does not change from one board to another having the
-+  same SoC. Examples of constant properties include 'iommus', 'reg'. The
-+  variable properties are dictated by the system integration aspects such as
-+  memory on the board, or configuration used within the corresponding firmware
-+  image. Examples of variable properties include 'mboxes', 'memory-region',
-+  'timers', 'watchdog-timers' etc.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,omap4-dsp
-+      - ti,omap5-dsp
-+      - ti,dra7-dsp
-+      - ti,omap4-ipu
-+      - ti,omap5-ipu
-+      - ti,dra7-ipu
-+
-+  iommus:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description: |
-+      phandles to OMAP IOMMU nodes, that need to be programmed
-+      for this remote processor to access any external RAM memory or
-+      other peripheral device address spaces. This property usually
-+      has only a single phandle. Multiple phandles are used only in
-+      cases where the sub-system has different ports for different
-+      sub-modules within the processor sub-system (eg: DRA7 DSPs),
-+      and need the same programming in both the MMUs.
-+
-+  mboxes:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description: |
-+      OMAP Mailbox specifier denoting the sub-mailbox, to be used for
-+      communication with the remote processor. The specifier format is
-+      as per the bindings,
-+      Documentation/devicetree/bindings/mailbox/omap-mailbox.txt
-+      This property should match with the sub-mailbox node used in
-+      the firmware image.
-+
-+# Optional properties:
-+# --------------------
-+# Some of these properties are mandatory on some SoCs, and some are optional
-+# depending on the configuration of the firmware image to be executed on the
-+# remote processor. The conditions are mentioned for each property.
-+#
-+# The following are the optional properties:
-+
-+  reg:
-+    minItems: 1
-+    maxItems: 3
-+    description: |
-+      Address space for any remoteproc memories present on
-+      the SoC. Should contain an entry for each value in
-+      'reg-names'. These are mandatory for all DSP and IPU
-+      processors that have them (OMAP4/OMAP5 DSPs do not have
-+      any RAMs)
-+
-+  reg-names:
-+    description: |
-+      Required names for each of the address spaces defined in
-+      the 'reg' property. Should contain a string from among
-+      the following names, each representing the corresponding
-+      internal RAM memory region.
-+    minItems: 1
-+    maxItems: 3
-+    items:
-+      - const: l2ram
-+      - const: l1pram
-+      - const: l1dram
-+
-+  ti,bootreg:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description: |
-+      Should be a pair of the phandle to the System Control
-+      Configuration region that contains the boot address
-+      register, and the register offset of the boot address
-+      register within the System Control module. This property
-+      is required for all the DSP instances on OMAP4, OMAP5
-+      and DRA7xx SoCs.
-+
-+  memory-region:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: |
-+      phandle to the reserved memory node to be associated
-+      with the remoteproc device. The reserved memory node
-+      can be a CMA memory node, and should be defined as
-+      per the bindings,
-+      Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
-+
-+  ti,timers:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description: |
-+      One or more phandles to OMAP DMTimer nodes, that serve
-+      as System/Tick timers for the OS running on the remote
-+      processors. This will usually be a single timer if the
-+      processor sub-system is running in SMP mode, or one per
-+      core in the processor sub-system. This can also be used
-+      to reserve specific timers to be dedicated to the
-+      remote processors.
-+
-+      This property is mandatory on remote processors requiring
-+      external tick wakeup, and to support Power Management
-+      features. The timers to be used should match with the
-+      timers used in the firmware image.
-+
-+  ti,watchdog-timers:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description: |
-+      One or more phandles to OMAP DMTimer nodes, used to
-+      serve as Watchdog timers for the processor cores. This
-+      will usually be one per executing processor core, even
-+      if the processor sub-system is running a SMP OS.
-+
-+      The timers to be used should match with the watchdog
-+      timers used in the firmware image.
-+
-+required:
-+  - compatible
-+  - iommus
-+  - mboxes
-+
-+examples:
-+  - |
-+
-+    //Example 1: OMAP4 DSP
-+
-+    /* DSP Reserved Memory node */
-+    reserved-memory {
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+
-+        dsp_memory_region: dsp-memory@98000000 {
-+            compatible = "shared-dma-pool";
-+            reg = <0x98000000 0x800000>;
-+            reusable;
-+        };
-+    };
-+
-+    /* DSP node */
-+    ocp {
-+        dsp: dsp {
-+            compatible = "ti,omap4-dsp";
-+            ti,bootreg = <&scm_conf 0x304>;
-+            iommus = <&mmu_dsp>;
-+            mboxes = <&mailbox &mbox_dsp>;
-+            memory-region = <&dsp_memory_region>;
-+            ti,timers = <&timer5>;
-+            ti,watchdog-timers = <&timer6>;
-+        };
-+    };
-+
-+  - |+
-+
-+    //Example 2: OMAP5 IPU
-+
-+    /* IPU Reserved Memory node */
-+    reserved-memory {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+
-+        ipu_memory_region: ipu-memory@95800000 {
-+            compatible = "shared-dma-pool";
-+            reg = <0 0x95800000 0 0x3800000>;
-+            reusable;
-+        };
-+    };
-+
-+    /* IPU node */
-+    ocp {
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+
-+        ipu: ipu@55020000 {
-+            compatible = "ti,omap5-ipu";
-+            reg = <0x55020000 0x10000>;
-+            reg-names = "l2ram";
-+            iommus = <&mmu_ipu>;
-+            mboxes = <&mailbox &mbox_ipu>;
-+            memory-region = <&ipu_memory_region>;
-+            ti,timers = <&timer3>, <&timer4>;
-+            ti,watchdog-timers = <&timer9>, <&timer11>;
-+        };
-+    };
-+
-+  - |+
-+
-+    //Example 3: DRA7xx/AM57xx DSP
-+
-+    /* DSP1 Reserved Memory node */
-+    reserved-memory {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+
-+        dsp1_memory_region: dsp1-memory@99000000 {
-+            compatible = "shared-dma-pool";
-+            reg = <0x0 0x99000000 0x0 0x4000000>;
-+            reusable;
-+        };
-+    };
-+
-+    /* DSP1 node */
-+    ocp {
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+
-+        dsp1: dsp@40800000 {
-+            compatible = "ti,dra7-dsp";
-+            reg = <0x40800000 0x48000>,
-+                  <0x40e00000 0x8000>,
-+                  <0x40f00000 0x8000>;
-+            reg-names = "l2ram", "l1pram", "l1dram";
-+            ti,bootreg = <&scm_conf 0x55c>;
-+            iommus = <&mmu0_dsp1>, <&mmu1_dsp1>;
-+            mboxes = <&mailbox5 &mbox_dsp1_ipc3x>;
-+            memory-region = <&dsp1_memory_region>;
-+            ti,timers = <&timer5>;
-+            ti,watchdog-timers = <&timer10>;
-+        };
-+    };
--- 
-2.17.1
+Did you read .../bindings/example-schema.yaml? It explains the common
+cases and what schema are doing. I recently added to it, so look at
+the version in linux-next.
 
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> The big problem is not the YAML syntax but what the schema
+> should contain and how to correctly formulate ideas in this
+> new language.
+>
+> Specific questions for this RFC:
+>
+> * formatting: is space/tab indentation correct?
+
+YAML requires spaces.
+
+> * are strings with "" correct or without?
+
+Generally only keys or values starting with '#' need quotes. There's
+other cases, but we simply don't hit them with DT. We tend to quote
+$ref values, but that's not strictly needed.
+
+> * how do I specify that there is a list of compatible strings required in a specific order?
+
+An 'items' list defines the order.
+
+> * but there are multiple such lists, and only one of them is to be chosen?
+
+                                                ^^^^^^
+'oneOf' is the schema keyword you are looking for.
+
+> * how can be described in the binding that there should be certain values in
+>   the parent node (ranges) to make it work?
+
+You can't. Schemas match on a node and work down from there. So you
+can do it, but it's more complicated. You'd need a custom 'select'
+select that matches on the parent node having the child node you are
+looking for (assuming the parent is something generic like
+'simple-bus' which you can't match on). However, based on the example,
+I'd say checking 'ranges' is outside the scope of schema checks.
+'ranges' doesn't have to be a certain value any more than every case
+of 'reg' (except maybe i2c devices with fixed addresses). It's up to
+the .dts author how exactly to do address translation.
+
+I would like to have more ranges/reg checks such as bounds checks and
+overlapping addresses, but I think we'd do those with code, not
+schema.
+
+> I was not able to run
+>
+>         make dt_binding_check dtbs_check
+>
+> due to some missing dependencies (which I did not want to
+> invest time to research them) on my build host, so I could
+> not get automated help from those.
+
+Dependencies are documented in Documentation/devicetree/writing-schema.rst.
+
+> ---
+>  .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 128 ++++++++++++++++++
+>  1 file changed, 128 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+> new file mode 100644
+> index 000000000000..b1b021601c47
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+> @@ -0,0 +1,128 @@
+> +# SPDX-License-Identifier: None
+
+Obviously not valid.
+
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/bindings/gpu/img,pvrsgx.yaml#
+
+This should have been correct with the script, but you need to drop 'bindings'.
+
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Imagination PVR/SGX GPU
+> +
+> +maintainers:
+> +  - H. Nikolaus Schaller <hns@goldelico.com>
+> +description: |+
+> +  This binding describes the Imagination SGX5 series of 3D accelerators which
+> +  are found in several different SoC like TI OMAP, Sitara, Ingenic JZ4780,
+> +  Allwinner A83, and Intel Poulsbo and CedarView.
+> +
+> +  Only the Imagination SGX530, SGX540 and SGX544 GPUs are currently covered by
+> +  this binding.
+> +
+> +  The SGX node is usually a child node of some DT node belonging to the SoC
+> +  which handles clocks, reset and general address space mapping of the SGX
+> +  register area.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - item:
+
+'item/items'
+
+> +        # BeagleBoard ABC, OpenPandora 600MHz
+> +        - const: "ti,omap3-sgx530-121", "img,sgx530-121", "img,sgx530", "img,sgx5"
+
+Not valid YAML nor json-schema. Each value needs to be list item with 'const:'
+
+Plenty of examples in bindings/arm/ with board/soc bindings.
+
+> +        # BeagleBoard XM, GTA04, OpenPandora 1GHz
+> +        - const: "ti,omap3-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"
+
+This needs to be a new 'items' list under 'oneOf'.
+
+> +        # BeagleBone Black
+> +        - const: "ti,am335x-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"
+> +        # Pandaboard (ES)
+> +        - const: "ti,omap4-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5"
+> +        - const "ti,omap4-sgx544-112", "img,sgx544-112", "img,sgx544", "img,sgx5"
+> +        # OMAP5 UEVM, Pyra Handheld
+> +        "ti,omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5"
+> +        "ti,dra7-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5"
+
+Just gave up on trying to write a schema here?
+
+> +        # CI20
+> +        "ingenic,jz4780-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5";
+> +
+> +  reg:
+> +    items:
+> +      - description: physical base address and length of the register area
+
+For single entries, just 'maxItems: 1' is enough. Unless you have
+something special about this device, you don't need a description
+here.
+
+> +
+> +  interrupts:
+> +     items:
+> +      - description: interrupt from SGX subsystem to core processor
+> +
+> +  clocks:
+> +     items:
+> +      - description: optional clocks
+> +
+> +  required:
+> +    - compatible
+> +    - reg
+> +    - interrupts
+> +
+> +examples: |
+> +  gpu@fe00 {
+> +       compatible = "ti,omap-omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
+> +       reg = <0xfe00 0x200>;
+> +       interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
+> +  };
+> +
+> +
+> +historical: |
+
+This should be dropped. It's just for reference as you write the schema.
+
+> +  Imagination PVR/SGX GPU
+> +
+> +  Only the Imagination SGX530, SGX540 and SGX544 GPUs are currently covered by this binding.
+> +
+> +  Required properties:
+> +  - compatible:        Should be one of
+> +               "ti,omap3-sgx530-121", "img,sgx530-121", "img,sgx530", "img,sgx5"; - BeagleBoard ABC, OpenPandora 600MHz
+> +               "ti,omap3-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"; - BeagleBoard XM, GTA04, OpenPandora 1GHz
+> +               "ti,am3517-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5";
+> +               "ti,am335x-sgx530-125", "img,sgx530-125", "img,sgx530", "img,sgx5"; - BeagleBone Black
+> +               "ti,omap4-sgx540-120", "img,sgx540-120", "img,sgx540", "img,sgx5"; - Pandaboard (ES)
+> +               "ti,omap4-sgx544-112", "img,sgx544-112", "img,sgx544", "img,sgx5";
+> +               "ti,omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5"; - OMAP5 UEVM, Pyra Handheld
+> +               "ti,dra7-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
+> +               "ti,am3517-sgx530-?", "img,sgx530-?", "img,sgx530", "img,sgx5";
+> +               "ti,am43xx-sgx530-?", "img,sgx530-?", "img,sgx530", "img,sgx5";
+> +               "ti,ti81xx-sgx530-?", "img,sgx530-?", "img,sgx530", "img,sgx5";
+> +               "img,jz4780-sgx540-?", "img,sgx540-?", "img,sgx540", "img,sgx5"; - CI20
+> +               "allwinner,sun8i-a83t-sgx544-?", "img,sgx544-116", "img,sgx544", "img,sgx5"; - Banana-Pi-M3 (Allwinner A83T)
+> +               "intel,poulsbo-gma500-sgx535", "img,sgx535-116", "img,sgx535", "img,sgx5"; - Atom Z5xx
+> +               "intel,medfield-gma-sgx540", "img,sgx540-116", "img,sgx540", "img,sgx5"; - Atom Z24xx
+> +               "intel,cedarview-gma3600-sgx545", "img,sgx545-116", "img,sgx545", "img,sgx5"; - Atom N2600, D2500
+> +
+> +               The "ti,omap..." entries are needed temporarily to handle SoC
+> +               specific builds of the kernel module.
+> +
+> +               In the long run, only the "img,sgx..." entry should suffice
+> +               to match a generic driver for all architectures and driver
+> +               code can dynamically find out on which SoC it is running.
+> +
+> +
+> +  - reg:               Physical base address and length of the register area.
+> +  - interrupts:        The interrupt numbers.
+> +
+> +  / {
+> +       ocp {
+> +               sgx_module: target-module@56000000 {
+> +                       compatible = "ti,sysc-omap4", "ti,sysc";
+> +                       reg = <0x5600fe00 0x4>,
+> +                             <0x5600fe10 0x4>;
+> +                       reg-names = "rev", "sysc";
+> +                       ti,sysc-midle = <SYSC_IDLE_FORCE>,
+> +                                       <SYSC_IDLE_NO>,
+> +                                       <SYSC_IDLE_SMART>;
+> +                       ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+> +                                       <SYSC_IDLE_NO>,
+> +                                       <SYSC_IDLE_SMART>;
+> +                       clocks = <&gpu_clkctrl OMAP5_GPU_CLKCTRL 0>;
+> +                       clock-names = "fck";
+> +                       #address-cells = <1>;
+> +                       #size-cells = <1>;
+> +                       ranges = <0 0x56000000 0x2000000>;
+> +
+> +                       gpu@fe00 {
+> +                               compatible = "ti,omap-omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
+> +                               reg = <0xfe00 0x200>;
+> +                               interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
+> +                       };
+> +               };
+> +       };
+> +  };
+> --
+> 2.23.0
+>
