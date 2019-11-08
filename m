@@ -2,92 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18C7AF59FB
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2019 22:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78D75F59E8
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2019 22:31:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731721AbfKHVdq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Nov 2019 16:33:46 -0500
-Received: from 6.mo7.mail-out.ovh.net ([188.165.39.218]:35301 "EHLO
-        6.mo7.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731601AbfKHVdq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Nov 2019 16:33:46 -0500
-X-Greylist: delayed 2396 seconds by postgrey-1.27 at vger.kernel.org; Fri, 08 Nov 2019 16:33:45 EST
-Received: from player763.ha.ovh.net (unknown [10.109.160.217])
-        by mo7.mail-out.ovh.net (Postfix) with ESMTP id 9DAED13D964
-        for <linux-omap@vger.kernel.org>; Fri,  8 Nov 2019 21:16:22 +0100 (CET)
-Received: from sk2.org (gw.sk2.org [88.186.243.14])
-        (Authenticated sender: steve@sk2.org)
-        by player763.ha.ovh.net (Postfix) with ESMTPSA id 0C47DBED04EE;
-        Fri,  8 Nov 2019 20:16:13 +0000 (UTC)
-Date:   Fri, 8 Nov 2019 21:17:54 +0100
-From:   Stephen Kitt <steve@sk2.org>
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] clk/ti/adpll: allocate room for terminating null
-Message-ID: <20191108211754.430d4c52@heffalump.sk2.org>
-In-Reply-To: <20191108170026.55DA52178F@mail.kernel.org>
-References: <20191019155441.2b1b349f@heffalump.sk2.org>
-        <20191019140634.15596-1-steve@sk2.org>
-        <20191108170026.55DA52178F@mail.kernel.org>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1731981AbfKHVb3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Nov 2019 16:31:29 -0500
+Received: from muru.com ([72.249.23.125]:41290 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726900AbfKHVb3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 8 Nov 2019 16:31:29 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 9FC5780D4;
+        Fri,  8 Nov 2019 21:32:04 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, Adam Ford <aford173@gmail.com>,
+        =?UTF-8?q?Filip=20Matijevi=C4=87?= <filip.matijevic.pz@gmail.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        moaz korena <moaz@korena.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        =?UTF-8?q?Pawe=C5=82=20Chmiel?= <pawel.mikolaj.chmiel@gmail.com>,
+        Philipp Rossak <embed3d@gmail.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: [PATCH] ARM: dts: Configure interconnect target module for am437x sgx
+Date:   Fri,  8 Nov 2019 13:31:25 -0800
+Message-Id: <20191108213125.58522-1-tony@atomide.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- boundary="Sig_/urfJBMy9eUwjFd6M5Ta2c=G"; protocol="application/pgp-signature"
-X-Ovh-Tracer-Id: 14777999228607679960
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedruddvuddgudefkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjqdffgfeufgfipdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkjghfofggtgesghdtreerredtvdenucfhrhhomhepufhtvghphhgvnhcumfhithhtuceoshhtvghvvgesshhkvddrohhrgheqnecukfhppedtrddtrddtrddtpdekkedrudekiedrvdegfedrudegnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejieefrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepshhtvghvvgesshhkvddrohhrghdprhgtphhtthhopehlihhnuhigqdhomhgrphesvhhgvghrrdhkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedt
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---Sig_/urfJBMy9eUwjFd6M5Ta2c=G
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+This seems to be similar to what we have for am335x. The following can be
+tested via sysfs with the to ensure the SGX module gets enabled and disabled
+properly:
 
-On Fri, 08 Nov 2019 09:00:25 -0800, Stephen Boyd <sboyd@kernel.org> wrote:
-> Quoting Stephen Kitt (2019-10-19 07:06:34)
-> > The buffer allocated in ti_adpll_clk_get_name doesn't account for the
-> > terminating null. This patch switches to devm_kasprintf to avoid
-> > overflowing.
-> >=20
-> > Signed-off-by: Stephen Kitt <steve@sk2.org>
-> > --- =20
->=20
-> Please don't send as replies to existing threads. It screws up my
-> tooling and makes it more manual to apply the patch. I guess I'll have
-> to go fix my scripts to ignore certain emails.
+# echo on > /sys/bus/platform/devices/5600fe00.target-module/power/control
+# rwmem 0x5600fe00              # revision register
+0x5600fe00 = 0x40000000
+# echo auto > /sys/bus/platform/devices/5600fe00.target-module/power/control
+# rwmem 0x5000fe00
+Bus error
 
-My bad, sorry about that, I misread the In-Reply-To section of
-submitting-patches :-(.
+Note that this patch depends on the PRM rstctrl driver that has
+been recently posted. If the child device driver(s) need to prevent
+rstctrl reset on PM runtime suspend, the drivers need to increase
+the usecount for the shared rstctrl reset that can be mapped also
+for the child device(s) or accessed via dev->parent.
 
-Regards,
+Cc: Adam Ford <aford173@gmail.com>
+Cc: Filip Matijević <filip.matijevic.pz@gmail.com>
+Cc: "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: moaz korena <moaz@korena.xyz>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Paweł Chmiel <pawel.mikolaj.chmiel@gmail.com>
+Cc: Philipp Rossak <embed3d@gmail.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/am4372.dtsi | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-Stephen
-
---Sig_/urfJBMy9eUwjFd6M5Ta2c=G
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAl3FzXIACgkQgNMC9Yht
-g5yOAhAAnGdI2emqN4a/GrokLIb57cKV63Y80R0avBz7ROKWLNIDr4LaZ9cB64Yw
-7cZCVIuMbrQHY/nPkVMZEi9Ay3d/BwxDeNOEpstOd5sgPcw89uJbQ7q/+INR6lt7
-REXx/NP4DTgkL+XIymdUPY0D5W7NvszWJy5XRE/UKCQZB/aPxolR+rFH23+wESdg
-P0NfyarVlcSfdjBBh5f+/BzWTpYvokzQEbq1CrIMgHKZrXKy4+Up7uXyiMNrlXUG
-uBcc1XrJFH80f/tRcldSsoaNBjnqtBljCfoXstvpEMs/sG6NCvOcxPH/fHfu4JLi
-9B0/C32B4vOdIzL+yHdXFBYZHq33eRjc3j9+Yj7gGKpRqHji3sDL+XDjbSvZxbf9
-adQ40ZQJvj/e1VDmjqT18pl8RSZnVGqGzXvVQ5WVkKvdIsHEHSlYKHmqmRwvwIMT
-jD5B2zH8lkKQwQMMT0URBSVw9uKyE0QzOWfIKvO+ZpDuE+LptBl7G5KGT0019oh3
-3pGYYype7J5XIs5dF0I7xVTsogwFR7X/fMK2N7yLefJbthPo1bbCx4akl5kIaXG7
-/aVU0RcZzX9ta5dJ6sE+KlWP9OaRo2MoTQmSfxfnWgLP9Bk99UgltFQk+FILXiHG
-+1JRD4bnI5BKUmshBpJ9Rk9h7QTYrJBmn6ed7FRxlwP0piEkFgQ=
-=ZIn8
------END PGP SIGNATURE-----
-
---Sig_/urfJBMy9eUwjFd6M5Ta2c=G--
+diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
+--- a/arch/arm/boot/dts/am4372.dtsi
++++ b/arch/arm/boot/dts/am4372.dtsi
+@@ -384,6 +384,26 @@
+ 				pool;
+ 			};
+ 		};
++
++		target-module@56000000 {
++			compatible = "ti,sysc-omap4", "ti,sysc";
++			reg = <0x5600fe00 0x4>,
++			      <0x5600fe10 0x4>;
++			reg-names = "rev", "sysc";
++			ti,sysc-midle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			clocks = <&gfx_l3_clkctrl AM4_GFX_L3_GFX_CLKCTRL 0>;
++			clock-names = "fck";
++			resets = <&prm_gfx 0>;
++			reset-names = "rstctrl";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0 0x56000000 0x1000000>;
++		};
+ 	};
+ };
+ 
+-- 
+2.23.0
