@@ -2,131 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06388F5C9A
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2019 02:03:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D18B7F5CFA
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2019 03:27:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725990AbfKIBDx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Nov 2019 20:03:53 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:42530 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725872AbfKIBDw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Nov 2019 20:03:52 -0500
-Received: by mail-pf1-f194.google.com with SMTP id s5so6201480pfh.9
-        for <linux-omap@vger.kernel.org>; Fri, 08 Nov 2019 17:03:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=3n63UIaSs1CPhi4wfKNUy+gqncGrK9W+HZZDV7Zttaw=;
-        b=OqonuB2pXRD4UC5y+YIWtS8XwsgZOkLk1FGLhfds97orzhnrwdfY31DGzGzORXY2AO
-         Igz3ztoYzSxCdv9G7iMm0hOm2yuL6yeyS87i1ej6RpLZSp2h/95h4+RMNbWm3k3RwTJU
-         ckpvZclF6dYDPgqqGG2zOui5iCS+emSUSq6Oi4+5EaoqRolH82PggmPUmgUGM0l0nMRp
-         YbieH5G0uOHkveF586dnDU3IEIAFlm0/1D2a71N18F9gx7hovOiUyQXS8Mgv5/yxGqpI
-         zZW4eox8joPY0rkstQe8zL8nDbauhUVh2B2T3U9xBjJwU5kOcm75G/bEVqqmduv3NOQE
-         8GSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=3n63UIaSs1CPhi4wfKNUy+gqncGrK9W+HZZDV7Zttaw=;
-        b=Ns9Tnn1PSF2yfasrgvVVk36NXfUmYTrZqcq3CRHXB7fh1ANTrpf91wO1dTkBooPIkS
-         /HPgCN8lQ7plnkD4a4ctOqLiykEd2WBaXrXcBeGl/HbrZfoCNRwiO9o8MTD2jfxeou3A
-         lm8XUYxiUTbWIYyXb37QVhi/sUuObxEMlkTUHX6ehIDPa3N8ob/tCpNgIB0m7M4g41iS
-         ejIHw3k4oCkYQhuEw3apUff5kSDRYAaUq304lva0JiPiy3VI9Rq3QbZ818T8LWYehJmM
-         1DgvcrZLiGNkmrNbWmQ87ydDkL1S26FNryr1GiUS/FSb3HNkx3Kp61UMXyHFGytd/GJ0
-         UfWw==
-X-Gm-Message-State: APjAAAUSJAVHAtxv2DE04UlSUPYy2aogYPuSTOBIYwq29ETNc5loFSwL
-        txVppyZZBg0KQA83rAgK7ga8LYw5NKg=
-X-Google-Smtp-Source: APXvYqwr/WG4ohtZ1QyXO7nAEnNK8soB4J7OXQsn5O2C4lmsT0qify/Bwh32NkM/h2x4eWLnWVxFXg==
-X-Received: by 2002:a62:108:: with SMTP id 8mr15876535pfb.53.1573261431933;
-        Fri, 08 Nov 2019 17:03:51 -0800 (PST)
-Received: from tuxbook-pro (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id s13sm5257597pfc.110.2019.11.08.17.03.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2019 17:03:51 -0800 (PST)
-Date:   Fri, 8 Nov 2019 17:03:48 -0800
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+        id S1726092AbfKIC1w (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Nov 2019 21:27:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58502 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725990AbfKIC1w (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 8 Nov 2019 21:27:52 -0500
+Received: from sol.localdomain (c-24-5-143-220.hsd1.ca.comcast.net [24.5.143.220])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1A48D214DA;
+        Sat,  9 Nov 2019 02:27:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573266471;
+        bh=mMesAn5bzqaMXFwOkfks3W22Wpyo5hJg1BB/Q5ylArM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TePygY9zSTjFoOkXjTbRPu9BHRSgLLowCiG9m2pbpfgF/Zm3Wo/wyaF/sjPQ8oI+1
+         KyRmQogswC95Zg6uCRfIsmsYprUimGf12TR6MbRM+Ixmq99Pm3ohmEUnkFsqhbwNJ+
+         X5kxZHatcgqTY60g27hZSEeS9hAwKN+1WPgoq6vo=
+Date:   Fri, 8 Nov 2019 18:27:49 -0800
+From:   Eric Biggers <ebiggers@kernel.org>
 To:     Tero Kristo <t-kristo@ti.com>
-Cc:     ohad@wizery.com, linux-remoteproc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        s-anna@ti.com
-Subject: Re: [PATCH 02/17] remoteproc/omap: Switch to SPDX license identifiers
-Message-ID: <20191109010348.GB5662@tuxbook-pro>
-References: <20191028124238.19224-1-t-kristo@ti.com>
- <20191028124238.19224-3-t-kristo@ti.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        David Miller <davem@davemloft.net>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-omap@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 09/10] crypto: add timeout to crypto_wait_req
+Message-ID: <20191109022749.GB9739@sol.localdomain>
+Mail-Followup-To: Tero Kristo <t-kristo@ti.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Gilad Ben-Yossef <gilad@benyossef.com>,
+        David Miller <davem@davemloft.net>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-omap@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+References: <20191017122549.4634-1-t-kristo@ti.com>
+ <20191017122549.4634-10-t-kristo@ti.com>
+ <CAOtvUMeBXjDBhSVgMOW=hshEx_AkNPg-Zk2c2jCDzY8vyXWW5g@mail.gmail.com>
+ <076f0bc6-ad04-9543-db02-d7c7060db036@ti.com>
+ <CAOtvUMc7pbtPAPUbEmz_MTHmB9LboQVdgG-t9tHCr=biEbFuUQ@mail.gmail.com>
+ <20191108022759.GB1140@sol.localdomain>
+ <d55c0182-5fb0-2ef9-f056-54b396fb0026@ti.com>
+ <20191108091608.i5fxt2vu2nwrybgn@gondor.apana.org.au>
+ <2ab94492-21e4-fbe0-41eb-e12b02511d7c@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191028124238.19224-3-t-kristo@ti.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <2ab94492-21e4-fbe0-41eb-e12b02511d7c@ti.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon 28 Oct 05:42 PDT 2019, Tero Kristo wrote:
-
-> From: Suman Anna <s-anna@ti.com>
+On Fri, Nov 08, 2019 at 11:22:48AM +0200, Tero Kristo wrote:
+> On 08/11/2019 11:16, Herbert Xu wrote:
+> > On Fri, Nov 08, 2019 at 09:40:57AM +0200, Tero Kristo wrote:
+> > > 
+> > > The problem is not detecting a hung task, the problem is determining what
+> > > caused the hang. Personally I don't care if the system dies if a crypto
+> > > accelerator self test has failed, as long as I get reported about the exact
+> > > nature of the failure. The failures are expected to happen only in
+> > > development phase of a crypto driver.
+> > > 
+> > > With the timeout patch in place, I get reported what exact crypto test case
+> > > failed and I can focus my debug efforts on that one.
+> > 
+> > If that's all you need then how about just making the wait killable?
 > 
-> Use the appropriate SPDX license identifiers in various OMAP remoteproc
-> source files and drop the previous boilerplate license text.
+> Yeah, that would be an alternative.
 > 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> ---
->  drivers/remoteproc/omap_remoteproc.h | 27 +--------------------------
->  1 file changed, 1 insertion(+), 26 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/omap_remoteproc.h b/drivers/remoteproc/omap_remoteproc.h
-> index f6d2036d383d..1e6fef753c4f 100644
-> --- a/drivers/remoteproc/omap_remoteproc.h
-> +++ b/drivers/remoteproc/omap_remoteproc.h
-> @@ -1,35 +1,10 @@
-> +/* SPDX-License-Identifier: (GPL-2.0 OR BSD-3-Clause) */
 
-Please confirm that you actually intend to change the license from BSD
-to dual here.
+I don't see how making crypto_wait_req killable would be any better than adding
+a timeout, since in both cases the crypto operation would still be proceeding in
+the background while things are being freed.
 
-Regards,
-Bjorn
+Would it help if the crypto self-tests printed a pr_debug() message when
+starting each test vector?  These wouldn't be shown by default, but it would be
+possible to enable them using dynamic-debug or by adding '#define DEBUG' to the
+top of the source file.
 
->  /*
->   * Remote processor messaging
->   *
->   * Copyright (C) 2011 Texas Instruments, Inc.
->   * Copyright (C) 2011 Google, Inc.
->   * All rights reserved.
-> - *
-> - * Redistribution and use in source and binary forms, with or without
-> - * modification, are permitted provided that the following conditions
-> - * are met:
-> - *
-> - * * Redistributions of source code must retain the above copyright
-> - *   notice, this list of conditions and the following disclaimer.
-> - * * Redistributions in binary form must reproduce the above copyright
-> - *   notice, this list of conditions and the following disclaimer in
-> - *   the documentation and/or other materials provided with the
-> - *   distribution.
-> - * * Neither the name Texas Instruments nor the names of its
-> - *   contributors may be used to endorse or promote products derived
-> - *   from this software without specific prior written permission.
-> - *
-> - * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-> - * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-> - * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-> - * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-> - * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-> - * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-> - * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-> - * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-> - * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-> - * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-> - * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
->   */
->  
->  #ifndef _OMAP_RPMSG_H
-> -- 
-> 2.17.1
-> 
-> --
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+- Eric
