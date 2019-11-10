@@ -2,99 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1702FF64C4
-	for <lists+linux-omap@lfdr.de>; Sun, 10 Nov 2019 04:02:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60F83F6B2B
+	for <lists+linux-omap@lfdr.de>; Sun, 10 Nov 2019 20:48:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729425AbfKJCtX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 9 Nov 2019 21:49:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58392 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727162AbfKJCtW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 9 Nov 2019 21:49:22 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D53B22583;
-        Sun, 10 Nov 2019 02:49:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573354161;
-        bh=ikEzlp6skgbt7ucgJUk6QMGS3qo27ru8EhTypd6fYVY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EWKofGFqq42s/otkwJyzehSIYgqPdl4FQx4gjvr2fDthFLn0UzzbOTCVpIbuc9RbF
-         MsgI+RRdZy5bhn1W27i23BzXa8XRAPilPCkBcID/PXnlJvBv7bntdhSygM8h89R8o3
-         9r0sZrNDhJbyNrpUE0gtp0wyQUrK39+K+j1LIQF8=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 18/66] ARM: dts: am335x-evm: fix number of cpsw
-Date:   Sat,  9 Nov 2019 21:47:57 -0500
-Message-Id: <20191110024846.32598-18-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191110024846.32598-1-sashal@kernel.org>
-References: <20191110024846.32598-1-sashal@kernel.org>
+        id S1726778AbfKJTso (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 10 Nov 2019 14:48:44 -0500
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:43228 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727042AbfKJTso (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 10 Nov 2019 14:48:44 -0500
+Received: by mail-qk1-f195.google.com with SMTP id z23so9464935qkj.10
+        for <linux-omap@vger.kernel.org>; Sun, 10 Nov 2019 11:48:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=C/jfUIdXt3gBHgimwgZMAzzV7792csREG8r1wi0X5Yk=;
+        b=c34omfHcIZ614pX2jhawMbmhLnveK5Zslt51AdIjiv06EmvtpBvtmIfIQHt/UkK+Zr
+         5OK3e/7DEcnActnIyjAK4oucHkefzM4skdw9/iNhHrJREOJPQj7GfYuy9pxfd//kE+iS
+         vlOuyJp3iWeqobS/Cf66NKa4pTebLBGg8kLXc281qco8eFGgod6ttlCPUgxb+oyP4Ylu
+         oWbA6KAyT5984iWJ+aC4a6NpS+MTKJQX+xSfMUK6ld2BHgyaqq/5hknEugHPZ6PsMsnZ
+         W/7dI8qbJodiOv+kAZjVUBBc8wPLcaKK4+kXiAnH5ZeFG+PuRwI/wcuvX7IN2ZQlqjlH
+         k+Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=C/jfUIdXt3gBHgimwgZMAzzV7792csREG8r1wi0X5Yk=;
+        b=pV4xIwuudARTijHe3kYKFE8IQQXvxuRjD/XCaylEqLWXwEFOs4C9WYPyOwGzB2wCll
+         R+J//t/zr+KEY0WBtpwqigscgkM8pq0hTfCaB24Glc0YBi7y6C6E9q1wJc+yMlmEN2Gq
+         dAiFZmFfPM7cPD/MqQFE1pOlkezjKbWCbHMXfImXMbHcZstWQHoS6Inkp0NpFvvqO1VF
+         pJ3rPl+B7PrpnMP8hjbBgm+512ySoa86RJ2QKq/kdVN21G5JYcqGJpR2hXDmRavKQ2R7
+         6HrG2F0md5UG5RMiPuN71roV0CzmBmSGfwryL7LtrqlZ7byAaiD5uYWzRkJPLZ60+KPU
+         E9cA==
+X-Gm-Message-State: APjAAAX25ISA63WTPrlzb/a//V3K6vzjoPwSiyAbSmjqpirSrXwELWGd
+        RlhbJcClkMuEB6P/Vx2x+LTVBzabwW+zWXnPFhY=
+X-Google-Smtp-Source: APXvYqzAhfblj0LwI0C8ADyMSsFGL2cekNU8jlwnpPblLZeKo4hfYOaB8fkDYx/oV+nGTR1g32OwuA5UvJhUH/LMr1w=
+X-Received: by 2002:a37:a84c:: with SMTP id r73mr7267661qke.443.1573415323306;
+ Sun, 10 Nov 2019 11:48:43 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Received: by 2002:aed:2da1:0:0:0:0:0 with HTTP; Sun, 10 Nov 2019 11:48:42
+ -0800 (PST)
+Reply-To: capt.donarldlarry@yahoo.com
+From:   FACT FINDING COMMISSION <sssmtcplgroup@gmail.com>
+Date:   Sun, 10 Nov 2019 11:48:42 -0800
+Message-ID: <CAOQ68suTSGxgXK6f_F_2SaTMEWHfX-MdOD1M+85pF4pYjmH5tg@mail.gmail.com>
+Subject: Dear Beneficiary,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Grygorii Strashko <grygorii.strashko@ti.com>
+Dear Beneficiary,
 
-[ Upstream commit dcbf6b18d81bcdc51390ca1b258c17e2e13b7d0c ]
+Following the resolution of the President and the senate to reduce our
+foreign debt profile, your payment has been listed among those to be
+released by next week and it is going to be by delivery by cash
+through the apex bank bonded courier service provider.
+In view of the above, kindly reconfirm your direct phone number and
+your address where the fund will be delivered. Note that the fund will
+be insured before delivery to avoid being declared as missing on
+transit.
 
-am335x-evm has only one CPSW external port physically wired, but DT defines
-2 ext. ports. As result, PHY connection failure reported for the second
-ext. port.
+I await your early response.
 
-Update DT to reflect am335x-evm board HW configuration, and, while here,
-switch to use phy-handle instead of phy_id.
+Regards,
 
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/boot/dts/am335x-evm.dts | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
-index e82432c79f85f..3f3ad09c7cd5f 100644
---- a/arch/arm/boot/dts/am335x-evm.dts
-+++ b/arch/arm/boot/dts/am335x-evm.dts
-@@ -701,6 +701,7 @@
- 	pinctrl-0 = <&cpsw_default>;
- 	pinctrl-1 = <&cpsw_sleep>;
- 	status = "okay";
-+	slaves = <1>;
- };
- 
- &davinci_mdio {
-@@ -708,15 +709,14 @@
- 	pinctrl-0 = <&davinci_mdio_default>;
- 	pinctrl-1 = <&davinci_mdio_sleep>;
- 	status = "okay";
--};
- 
--&cpsw_emac0 {
--	phy_id = <&davinci_mdio>, <0>;
--	phy-mode = "rgmii-txid";
-+	ethphy0: ethernet-phy@0 {
-+		reg = <0>;
-+	};
- };
- 
--&cpsw_emac1 {
--	phy_id = <&davinci_mdio>, <1>;
-+&cpsw_emac0 {
-+	phy-handle = <&ethphy0>;
- 	phy-mode = "rgmii-txid";
- };
- 
--- 
-2.20.1
-
+Donarld Larry.
+FACT FINDING COMMISSION
