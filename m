@@ -2,54 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A505AF632D
-	for <lists+linux-omap@lfdr.de>; Sun, 10 Nov 2019 03:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29DD4F62EA
+	for <lists+linux-omap@lfdr.de>; Sun, 10 Nov 2019 03:46:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727646AbfKJCuK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 9 Nov 2019 21:50:10 -0500
-Received: from static-dsl-170.87-197-152.telecom.sk ([87.197.152.170]:38404
-        "EHLO sldom.sldom" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729626AbfKJCuK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 9 Nov 2019 21:50:10 -0500
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-        by sldom.sldom (Postfix) with SMTP id 83BB924C8E4;
-        Fri,  8 Nov 2019 16:15:03 +0100 (CET)
-Received: from [54.47.63.171] by 127.0.0.1 SMTP id gQ6aW47bxySk0Y; Fri, 08 Nov 2019 20:05:17 +0500
-Message-ID: <o-3091--702-8d53d@v6wix>
-From:   "Simon Oliver" <olivia_simon@lihat.dds-akaun.com>
-Reply-To: "Simon Oliver" <olivia_simon@lihat.dds-akaun.com>
-To:     madialgbani@hotmail.com
-Subject: Seeking Investment Opportunities
-Date:   Fri, 08 Nov 19 20:05:17 GMT
-X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+        id S1728352AbfKJCqq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 9 Nov 2019 21:46:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50848 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729151AbfKJCqq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 9 Nov 2019 21:46:46 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2387A21D82;
+        Sun, 10 Nov 2019 02:46:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573354003;
+        bh=q4tBSuVCw5ZqWJJuSnB2wXUj3FJfplMx+MeJUnBneKM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=XQuOCCFPr2yXxeHy+Xz3xxRKyUbnJ6mORUCMBXYUBkPx8oTOHj4x94xnAeO4YFW2g
+         wJyo+SSinVTyaP2y+e9yl+cVxE4KzH3ewTB/feuJhk4p2t/OQJq/y1LVzzpgDIs/W4
+         yG2lIT2/m6hoyqcfgtqXYniNYvXQORaXoRbbExRk=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 030/109] ARM: dts: am335x-evm: fix number of cpsw
+Date:   Sat,  9 Nov 2019 21:44:22 -0500
+Message-Id: <20191110024541.31567-30-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191110024541.31567-1-sashal@kernel.org>
+References: <20191110024541.31567-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="9F_D1EA9D._"
-X-Priority: 3
-X-MSMail-Priority: Normal
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: Grygorii Strashko <grygorii.strashko@ti.com>
 
---9F_D1EA9D._
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit dcbf6b18d81bcdc51390ca1b258c17e2e13b7d0c ]
 
-I consider it very important to introduce to you my client who is interest=
-ed to invest $250 million to $500 million dollars in a reputable project  =
-investment, She is well known in her country holding a political office .
+am335x-evm has only one CPSW external port physically wired, but DT defines
+2 ext. ports. As result, PHY connection failure reported for the second
+ext. port.
 
-She deserve a secret investment outside her country without direct involve=
-ment.  she needs an experience individual or company that can profitably i=
-nvestment and manage the above funds for the period of 15 years or more.
+Update DT to reflect am335x-evm board HW configuration, and, while here,
+switch to use phy-handle instead of phy_id.
 
-Forward your details to me for further discussion (e.g)  Your name, Teleph=
-one number and Occupation.
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/boot/dts/am335x-evm.dts | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Thank you
-Oliver Simon
-
---9F_D1EA9D._--
+diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
+index 478434ebff92d..27ff3e689e96e 100644
+--- a/arch/arm/boot/dts/am335x-evm.dts
++++ b/arch/arm/boot/dts/am335x-evm.dts
+@@ -724,6 +724,7 @@
+ 	pinctrl-0 = <&cpsw_default>;
+ 	pinctrl-1 = <&cpsw_sleep>;
+ 	status = "okay";
++	slaves = <1>;
+ };
+ 
+ &davinci_mdio {
+@@ -731,15 +732,14 @@
+ 	pinctrl-0 = <&davinci_mdio_default>;
+ 	pinctrl-1 = <&davinci_mdio_sleep>;
+ 	status = "okay";
+-};
+ 
+-&cpsw_emac0 {
+-	phy_id = <&davinci_mdio>, <0>;
+-	phy-mode = "rgmii-txid";
++	ethphy0: ethernet-phy@0 {
++		reg = <0>;
++	};
+ };
+ 
+-&cpsw_emac1 {
+-	phy_id = <&davinci_mdio>, <1>;
++&cpsw_emac0 {
++	phy-handle = <&ethphy0>;
+ 	phy-mode = "rgmii-txid";
+ };
+ 
+-- 
+2.20.1
 
