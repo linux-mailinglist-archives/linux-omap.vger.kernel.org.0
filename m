@@ -2,41 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74439F79E0
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2019 18:27:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E54F7DB7
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2019 19:59:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726879AbfKKR1A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Nov 2019 12:27:00 -0500
-Received: from muru.com ([72.249.23.125]:41588 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726763AbfKKR1A (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 Nov 2019 12:27:00 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4423B8047;
-        Mon, 11 Nov 2019 17:27:33 +0000 (UTC)
-Date:   Mon, 11 Nov 2019 09:26:52 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        Jiri Pirko <jiri@resnulli.us>, Sekhar Nori <nsekhar@ti.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Ivan Vecera <ivecera@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 net-next 06/13] dt-bindings: net: ti: add new cpsw
- switch driver bindings
-Message-ID: <20191111172652.GV5610@atomide.com>
-References: <20191109151525.18651-1-grygorii.strashko@ti.com>
- <20191109151525.18651-7-grygorii.strashko@ti.com>
+        id S1728461AbfKKS7O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Nov 2019 13:59:14 -0500
+Received: from emh04.mail.saunalahti.fi ([62.142.5.110]:36790 "EHLO
+        emh04.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728535AbfKKS7N (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Nov 2019 13:59:13 -0500
+X-Greylist: delayed 488 seconds by postgrey-1.27 at vger.kernel.org; Mon, 11 Nov 2019 13:59:12 EST
+Received: from darkstar.musicnaut.iki.fi (85-76-35-58-nat.elisa-mobile.fi [85.76.35.58])
+        by emh04.mail.saunalahti.fi (Postfix) with ESMTP id 18B2A30088;
+        Mon, 11 Nov 2019 20:51:01 +0200 (EET)
+Date:   Mon, 11 Nov 2019 20:51:01 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] ARM: OMAP1: drop duplicated dependency on ARCH_OMAP1
+Message-ID: <20191111185101.GA27282@darkstar.musicnaut.iki.fi>
+References: <20191111171034.28896-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20191109151525.18651-7-grygorii.strashko@ti.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191111171034.28896-1-uwe@kleine-koenig.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
@@ -44,59 +36,183 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi,
 
-* Grygorii Strashko <grygorii.strashko@ti.com> [191109 15:17]:
-> +    mac_sw: switch@0 {
-> +        compatible = "ti,dra7-cpsw-switch","ti,cpsw-switch";
-> +        reg = <0x0 0x4000>;
-> +        ranges = <0 0 0x4000>;
-> +        clocks = <&gmac_main_clk>;
-> +        clock-names = "fck";
-> +        #address-cells = <1>;
-> +        #size-cells = <1>;
-> +        syscon = <&scm_conf>;
-> +        inctrl-names = "default", "sleep";
-> +
-> +        interrupts = <GIC_SPI 334 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 335 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 336 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 337 IRQ_TYPE_LEVEL_HIGH>;
-> +        interrupt-names = "rx_thresh", "rx", "tx", "misc";
+On Mon, Nov 11, 2019 at 06:10:34PM +0100, Uwe Kleine-König wrote:
+> All of arch/arm/mach-omap1/Kconfig is enclosed in a big "if ARCH_OMAP1"
+> and so every symbol already has a dependency on ARCH_OMAP1 even without
+> mentioning it in their list of dependencies.
+> 
+> Also dependencies on ARCH_OMAP can be dropped as it is selected by
+> ARCH_OMAP1.
+> 
+> Signed-off-by: Uwe Kleine-König <uwe@kleine-koenig.org>
 
-I think with the ti-sysc managing the interconnect target module as the
-parent of this, you should be able add all the modules as direct children
-of ti-sysc with minor fixups. This would simplify things, and makes it
-easier to update the driver later on when the child modules get
-changed/updated/moved around.
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-The child modules just need to call PM runtime to have access to their
-registers, and whatever cpsw control module part could be a separate
-driver providing Linux standard services for example for clock gating :)
+A.
 
-> +        davinci_mdio_sw: mdio@1000 {
-> +                compatible = "ti,cpsw-mdio","ti,davinci_mdio";
-> +                reg = <0x1000 0x100>;
-> +                clocks = <&gmac_clkctrl DRA7_GMAC_GMAC_CLKCTRL 0>;
-> +                clock-names = "fck";
-> +                #address-cells = <1>;
-> +                #size-cells = <0>;
-> +                bus_freq = <1000000>;
-> +
-> +                ethphy0_sw: ethernet-phy@0 {
-> +                        reg = <0>;
-> +                };
-> +
-> +                ethphy1_sw: ethernet-phy@1 {
-> +                        reg = <41>;
-> +                };
-> +        };
-
-And in this case, mdio above would just move up one level.
-
-This goes back to my earlier comments saying the cpsw is really just
-a private interconnect with a collection of various mostly independent
-modules. Sounds like you're heading that way already though at the
-driver level :)
-
-Regards,
-
-Tony
+> ---
+>  arch/arm/mach-omap1/Kconfig | 33 +++++++++++++--------------------
+>  1 file changed, 13 insertions(+), 20 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
+> index 2a17dc1d122c..948da556162e 100644
+> --- a/arch/arm/mach-omap1/Kconfig
+> +++ b/arch/arm/mach-omap1/Kconfig
+> @@ -4,30 +4,25 @@ if ARCH_OMAP1
+>  menu "TI OMAP1 specific features"
+>  
+>  comment "OMAP Core Type"
+> -	depends on ARCH_OMAP1
+>  
+>  config ARCH_OMAP730
+> -	depends on ARCH_OMAP1
+>  	bool "OMAP730 Based System"
+>  	select ARCH_OMAP_OTG
+>  	select CPU_ARM926T
+>  	select OMAP_MPU_TIMER
+>  
+>  config ARCH_OMAP850
+> -	depends on ARCH_OMAP1
+>  	bool "OMAP850 Based System"
+>  	select ARCH_OMAP_OTG
+>  	select CPU_ARM926T
+>  
+>  config ARCH_OMAP15XX
+> -	depends on ARCH_OMAP1
+>  	default y
+>  	bool "OMAP15xx Based System"
+>  	select CPU_ARM925T
+>  	select OMAP_MPU_TIMER
+>  
+>  config ARCH_OMAP16XX
+> -	depends on ARCH_OMAP1
+>  	bool "OMAP16xx Based System"
+>  	select ARCH_OMAP_OTG
+>  	select CPU_ARM926T
+> @@ -35,7 +30,6 @@ config ARCH_OMAP16XX
+>  
+>  config OMAP_MUX
+>  	bool "OMAP multiplexing support"
+> -	depends on ARCH_OMAP
+>  	default y
+>  	help
+>  	  Pin multiplexing support for OMAP boards. If your bootloader
+> @@ -60,25 +54,24 @@ config OMAP_MUX_WARNINGS
+>  	  printed, it's safe to deselect OMAP_MUX for your product.
+>  
+>  comment "OMAP Board Type"
+> -	depends on ARCH_OMAP1
+>  
+>  config MACH_OMAP_INNOVATOR
+>  	bool "TI Innovator"
+> -	depends on ARCH_OMAP1 && (ARCH_OMAP15XX || ARCH_OMAP16XX)
+> +	depends on ARCH_OMAP15XX || ARCH_OMAP16XX
+>  	help
+>            TI OMAP 1510 or 1610 Innovator board support. Say Y here if you
+>            have such a board.
+>  
+>  config MACH_OMAP_H2
+>  	bool "TI H2 Support"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP16XX
+> +	depends on ARCH_OMAP16XX
+>      	help
+>  	  TI OMAP 1610/1611B H2 board support. Say Y here if you have such
+>  	  a board.
+>  
+>  config MACH_OMAP_H3
+>  	bool "TI H3 Support"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP16XX
+> +	depends on ARCH_OMAP16XX
+>      	help
+>  	  TI OMAP 1710 H3 board support. Say Y here if you have such
+>  	  a board.
+> @@ -91,7 +84,7 @@ config MACH_HERALD
+>  
+>  config MACH_OMAP_OSK
+>  	bool "TI OSK Support"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP16XX
+> +	depends on ARCH_OMAP16XX
+>      	help
+>  	  TI OMAP 5912 OSK (OMAP Starter Kit) board support. Say Y here
+>            if you have such a board.
+> @@ -106,21 +99,21 @@ config OMAP_OSK_MISTRAL
+>  
+>  config MACH_OMAP_PERSEUS2
+>  	bool "TI Perseus2"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP730
+> +	depends on ARCH_OMAP730
+>      	help
+>  	  Support for TI OMAP 730 Perseus2 board. Say Y here if you have such
+>  	  a board.
+>  
+>  config MACH_OMAP_FSAMPLE
+>  	bool "TI F-Sample"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP730
+> +	depends on ARCH_OMAP730
+>      	help
+>  	  Support for TI OMAP 850 F-Sample board. Say Y here if you have such
+>  	  a board.
+>  
+>  config MACH_OMAP_PALMTE
+>  	bool "Palm Tungsten E"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP15XX
+> +	depends on ARCH_OMAP15XX
+>  	help
+>  	  Support for the Palm Tungsten E PDA.  To boot the kernel, you'll
+>  	  need a PalmOS compatible bootloader; check out
+> @@ -129,7 +122,7 @@ config MACH_OMAP_PALMTE
+>  
+>  config MACH_OMAP_PALMZ71
+>  	bool "Palm Zire71"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP15XX
+> +	depends on ARCH_OMAP15XX
+>  	help
+>  	 Support for the Palm Zire71 PDA. To boot the kernel,
+>  	 you'll need a PalmOS compatible bootloader; check out
+> @@ -138,7 +131,7 @@ config MACH_OMAP_PALMZ71
+>  
+>  config MACH_OMAP_PALMTT
+>  	bool "Palm Tungsten|T"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP15XX
+> +	depends on ARCH_OMAP15XX
+>  	help
+>  	  Support for the Palm Tungsten|T PDA. To boot the kernel, you'll
+>  	  need a PalmOS compatible bootloader (Garux); check out
+> @@ -147,7 +140,7 @@ config MACH_OMAP_PALMTT
+>  
+>  config MACH_SX1
+>  	bool "Siemens SX1"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP15XX
+> +	depends on ARCH_OMAP15XX
+>  	select I2C
+>  	help
+>  	  Support for the Siemens SX1 phone. To boot the kernel,
+> @@ -159,14 +152,14 @@ config MACH_SX1
+>  
+>  config MACH_NOKIA770
+>  	bool "Nokia 770"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP16XX
+> +	depends on ARCH_OMAP16XX
+>  	help
+>  	  Support for the Nokia 770 Internet Tablet. Say Y here if you
+>  	  have such a device.
+>  
+>  config MACH_AMS_DELTA
+>  	bool "Amstrad E3 (Delta)"
+> -	depends on ARCH_OMAP1 && ARCH_OMAP15XX
+> +	depends on ARCH_OMAP15XX
+>  	select FIQ
+>  	select GPIO_GENERIC_PLATFORM
+>  	select LEDS_GPIO_REGISTER
+> @@ -178,7 +171,7 @@ config MACH_AMS_DELTA
+>  
+>  config MACH_OMAP_GENERIC
+>  	bool "Generic OMAP board"
+> -	depends on ARCH_OMAP1 && (ARCH_OMAP15XX || ARCH_OMAP16XX)
+> +	depends on ARCH_OMAP15XX || ARCH_OMAP16XX
+>  	help
+>            Support for generic OMAP-1510, 1610 or 1710 board with
+>            no FPGA. Can be used as template for porting Linux to
+> -- 
+> 2.23.0
+> 
