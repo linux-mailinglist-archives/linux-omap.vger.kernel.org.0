@@ -2,61 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0408F818A
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2019 21:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B291F8194
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2019 21:53:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727058AbfKKUty (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Nov 2019 15:49:54 -0500
-Received: from muru.com ([72.249.23.125]:41700 "EHLO muru.com"
+        id S1726910AbfKKUxM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Nov 2019 15:53:12 -0500
+Received: from muru.com ([72.249.23.125]:41714 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726952AbfKKUty (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 Nov 2019 15:49:54 -0500
+        id S1726877AbfKKUxM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 11 Nov 2019 15:53:12 -0500
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 3C2F48047;
-        Mon, 11 Nov 2019 20:50:30 +0000 (UTC)
-Date:   Mon, 11 Nov 2019 12:49:50 -0800
+        by muru.com (Postfix) with ESMTPS id 1E7958047;
+        Mon, 11 Nov 2019 20:53:48 +0000 (UTC)
+Date:   Mon, 11 Nov 2019 12:53:08 -0800
 From:   Tony Lindgren <tony@atomide.com>
-To:     "Ben Dooks (Codethink)" <ben.dooks@codethink.co.uk>
-Cc:     linux-kernel@lists.codethink.co.uk,
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Russell King <linux@armlinux.org.uk>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] OMAP2: fixup doc comments in omap_device
-Message-ID: <20191111204950.GZ5610@atomide.com>
-References: <20191106115945.4298-1-ben.dooks@codethink.co.uk>
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ARM: OMAP2+: Add missing put_device() call in
+ omapdss_init_of()
+Message-ID: <20191111205308.GA5610@atomide.com>
+References: <112eb5b9-bca7-41ca-efc9-1104b6063f75@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191106115945.4298-1-ben.dooks@codethink.co.uk>
+In-Reply-To: <112eb5b9-bca7-41ca-efc9-1104b6063f75@web.de>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Ben Dooks (Codethink) <ben.dooks@codethink.co.uk> [191106 04:00]:
-> The documentation comments in this file are out of
-> date with the code, so fix this to avoid the
-> following warnings:
+* Markus Elfring <Markus.Elfring@web.de> [191109 08:38]:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sat, 9 Nov 2019 17:19:35 +0100
 > 
-> arch/arm/mach-omap2/omap_device.c:133: warning: Function parameter or member 'pdev' not described in 'omap_device_build_from_dt'
-> arch/arm/mach-omap2/omap_device.c:133: warning: Excess function parameter 'pdev_name' description in 'omap_device_build_from_dt'
-> arch/arm/mach-omap2/omap_device.c:133: warning: Excess function parameter 'pdev_id' description in 'omap_device_build_from_dt'
-> arch/arm/mach-omap2/omap_device.c:133: warning: Excess function parameter 'oh' description in 'omap_device_build_from_dt'
-> arch/arm/mach-omap2/omap_device.c:133: warning: Excess function parameter 'pdata' description in 'omap_device_build_from_dt'
-> arch/arm/mach-omap2/omap_device.c:133: warning: Excess function parameter 'pdata_len' description in 'omap_device_build_from_dt'
-> arch/arm/mach-omap2/omap_device.c:309: warning: Function parameter or member 'pdev' not described in 'omap_device_get_context_loss_count'
-> arch/arm/mach-omap2/omap_device.c:309: warning: Excess function parameter 'od' description in 'omap_device_get_context_loss_count'
-> arch/arm/mach-omap2/omap_device.c:335: warning: Function parameter or member 'ohs' not described in 'omap_device_alloc'
-> arch/arm/mach-omap2/omap_device.c:335: warning: Function parameter or member 'oh_cnt' not described in 'omap_device_alloc'
-> arch/arm/mach-omap2/omap_device.c:335: warning: Excess function parameter 'oh' description in 'omap_device_alloc'
-> arch/arm/mach-omap2/omap_device.c:335: warning: Excess function parameter 'pdata' description in 'omap_device_alloc'
-> arch/arm/mach-omap2/omap_device.c:335: warning: Excess function parameter 'pdata_len' description in 'omap_device_alloc'
-> arch/arm/mach-omap2/omap_device.c:659: warning: Function parameter or member 'pdev' not described in 'omap_device_register'
-> arch/arm/mach-omap2/omap_device.c:659: warning: Excess function parameter 'od' description in 'omap_device_register'
-> arch/arm/mach-omap2/omap_device.c:682: warning: Function parameter or member 'pdev' not described in 'omap_device_enable'
-> arch/arm/mach-omap2/omap_device.c:682: warning: Excess function parameter 'od' description in 'omap_device_enable'
-> arch/arm/mach-omap2/omap_device.c:713: warning: Function parameter or member 'pdev' not described in 'omap_device_idle'
-> arch/arm/mach-omap2/omap_device.c:713: warning: Excess function parameter 'od' description in 'omap_device_idle'
+> A coccicheck run provided information like the following.
+> 
+> arch/arm/mach-omap2/display.c:268:2-8: ERROR: missing put_device;
+> call of_find_device_by_node on line 258, but without a corresponding
+> object release within this function.
+> 
+> Generated by: scripts/coccinelle/free/put_device.cocci
+> 
+> Thus add the missed function call to fix the exception handling for
+> this function implementation.
 
 Thanks applying into omap-for-v5.5/soc.
 
