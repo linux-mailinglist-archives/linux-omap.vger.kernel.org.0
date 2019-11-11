@@ -2,55 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 35B01F8143
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2019 21:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5B55F8180
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2019 21:46:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726964AbfKKUcX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Nov 2019 15:32:23 -0500
-Received: from muru.com ([72.249.23.125]:41668 "EHLO muru.com"
+        id S1726927AbfKKUqB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Nov 2019 15:46:01 -0500
+Received: from muru.com ([72.249.23.125]:41686 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726877AbfKKUcX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 Nov 2019 15:32:23 -0500
+        id S1726877AbfKKUqA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 11 Nov 2019 15:46:00 -0500
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 838C38047;
-        Mon, 11 Nov 2019 20:32:59 +0000 (UTC)
-Date:   Mon, 11 Nov 2019 12:32:20 -0800
+        by muru.com (Postfix) with ESMTPS id F21F68047;
+        Mon, 11 Nov 2019 20:46:36 +0000 (UTC)
+Date:   Mon, 11 Nov 2019 12:45:57 -0800
 From:   Tony Lindgren <tony@atomide.com>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+To:     "Ben Dooks (Codethink)" <ben.dooks@codethink.co.uk>
+Cc:     linux-kernel@lists.codethink.co.uk,
+        Russell King <linux@armlinux.org.uk>,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] ARM: OMAP1: drop duplicated dependency on ARCH_OMAP1
-Message-ID: <20191111203220.GX5610@atomide.com>
-References: <20191111171034.28896-1-uwe@kleine-koenig.org>
- <20191111185101.GA27282@darkstar.musicnaut.iki.fi>
+Subject: Re: [PATCH] OMAP2: remove unused wakeup_cpu
+Message-ID: <20191111204557.GY5610@atomide.com>
+References: <20191106120605.11571-1-ben.dooks@codethink.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191111185101.GA27282@darkstar.musicnaut.iki.fi>
+In-Reply-To: <20191106120605.11571-1-ben.dooks@codethink.co.uk>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Aaro Koskinen <aaro.koskinen@iki.fi> [191111 18:51]:
-> Hi,
-> 
-> On Mon, Nov 11, 2019 at 06:10:34PM +0100, Uwe Kleine-König wrote:
-> > All of arch/arm/mach-omap1/Kconfig is enclosed in a big "if ARCH_OMAP1"
-> > and so every symbol already has a dependency on ARCH_OMAP1 even without
-> > mentioning it in their list of dependencies.
-> > 
-> > Also dependencies on ARCH_OMAP can be dropped as it is selected by
-> > ARCH_OMAP1.
-> > 
-> > Signed-off-by: Uwe Kleine-König <uwe@kleine-koenig.org>
-> 
-> Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Hi,
 
-Thanks applying into omap-for-5.5/omap1.
+* Ben Dooks (Codethink) <ben.dooks@codethink.co.uk> [191106 04:06]:
+> The wakeup_cpu variable in omap4_enter_lowpower() is set
+> but then is not used after this. Remove it to fix
+> the compiler warning:
+> 
+> arch/arm/mach-omap2/omap-mpuss-lowpower.c: In function âomap4_enter_lowpowerâ:
+> arch/arm/mach-omap2/omap-mpuss-lowpower.c:230:15: warning: variable âwakeup_cpuâ set but not used [-Wunused-but-set-variable]
 
-Regards,
+I have already queued up an earlier similar patch:
+
+5395b5557acb ("ARM: OMAP2+: Remove unused wakeup_cpu")
+
+Thanks,
 
 Tony
