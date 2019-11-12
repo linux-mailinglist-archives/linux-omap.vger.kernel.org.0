@@ -2,114 +2,141 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 441B0F887E
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 07:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8716F89B1
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 08:29:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725997AbfKLG2X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Nov 2019 01:28:23 -0500
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:33765 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725801AbfKLG2X (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Nov 2019 01:28:23 -0500
-Received: by mail-pg1-f193.google.com with SMTP id h27so11185936pgn.0
-        for <linux-omap@vger.kernel.org>; Mon, 11 Nov 2019 22:28:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=iAL+4Mb+bihLwcbbUJQManyIi0HMq8FS6irH7b5rRco=;
-        b=HR9AGHyYy2UyvvEwb96MgtYOJsg0vdjPcRAqywN8KNqqP4V6g+ZSCV/WD941rThPYl
-         MAiDAn47ObgTr175cJScgIpsBf9LZ8Bx5Jw4p5vr6HYg+i6En/TlpBsCZ05TjZTF3uQZ
-         xK5JAmH3TUZV7KekreIkJWeTAj+xuor82PCZc7LGvb3RT4fKF9OkaRA4wONEvhuPMnNS
-         Pi1qLSjmrTYGeu88D+mLRpoj3tmI8Bl+pai6mh2j8x32NyV2lfrb2b/NFo4a1+0ky8Bj
-         BfRHNloJSBoe2UUSJwEigmR8hfUfgqNIY2feikVGqCvlUUI3osAyerOOkNPGXm2KFIMv
-         ygkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=iAL+4Mb+bihLwcbbUJQManyIi0HMq8FS6irH7b5rRco=;
-        b=mAsKf4DjG5q7DwEHTtKY7OG/hcuQKcRnuwR/wTPIwd20cpnAcBsjd3jbe5vSzh+C+4
-         lOTVcCG5rrvNBvbcV4jZAZGxIK4lyoVzuQVRSpoobzlNsBc94P42cNlhtg7Z7oYJuLUQ
-         ljaruAaosL5ztCvM8u4Tg6Dh0rnU5/DVBvaU06aYEFDuHkCVAqLAhftLaoxEmT22fMTZ
-         qnTlKUFgY+PNisMgHzoglRJeIahCXB9CosBKREFB2QSB3E2YqgTqOYUlHDRjIIJ+1QXB
-         7SyfLaSvhhQNYfUqwW5P/vSV1MC5CIqyW+9ROi1k1NVA0ByJAuByPF0B5/1H9zJvJRqn
-         k3Hg==
-X-Gm-Message-State: APjAAAWd+5QsHBoudRiLZXes0ZCgwtxRQ73HsduSDXVLFy2zwNSCYRFn
-        errqWuxt3bXLwb2VesrQxK9cDw==
-X-Google-Smtp-Source: APXvYqwTFvsGpfht34NVHjjcAtJ51bzZyaVTKPPTGApX4yc+88RyqobogAUQBkRncC4z2VMigW6V2w==
-X-Received: by 2002:a63:cf45:: with SMTP id b5mr32848687pgj.36.1573540102283;
-        Mon, 11 Nov 2019 22:28:22 -0800 (PST)
-Received: from builder (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id j14sm15828464pfi.168.2019.11.11.22.28.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2019 22:28:21 -0800 (PST)
-Date:   Mon, 11 Nov 2019 22:28:19 -0800
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     ohad@wizery.com, linux-remoteproc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        s-anna@ti.com
-Subject: Re: [PATCH 17/17] remoteproc/omap: fix auto-suspend failure warning
- during crashed state
-Message-ID: <20191112062819.GQ3108315@builder>
-References: <20191028124238.19224-1-t-kristo@ti.com>
- <20191028124238.19224-18-t-kristo@ti.com>
+        id S1725853AbfKLH3t (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Nov 2019 02:29:49 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:36479 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725775AbfKLH3t (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Nov 2019 02:29:49 -0500
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iUQcG-0001qJ-9e; Tue, 12 Nov 2019 08:29:32 +0100
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iUQcA-0001xe-RB; Tue, 12 Nov 2019 08:29:26 +0100
+Date:   Tue, 12 Nov 2019 08:29:26 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-realtek-soc@lists.infradead.org,
+        Tony Lindgren <tony@atomide.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        linux-amlogic@lists.infradead.org,
+        Lee Jones <lee.jones@linaro.org>, linux-omap@vger.kernel.org,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH] base: soc: Export soc_device_to_device() helper
+Message-ID: <20191112072926.isjxfa4ci6akhx56@pengutronix.de>
+References: <20191103013645.9856-3-afaerber@suse.de>
+ <20191111045609.7026-1-afaerber@suse.de>
+ <20191111052741.GB3176397@kroah.com>
+ <586fa37c-6292-aca4-fa7c-73064858afaf@suse.de>
+ <20191111064040.GA3502217@kroah.com>
+ <a88442df-dc6b-07e5-8dee-9e308bdda450@suse.de>
+ <20191112052347.GA1197504@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20191028124238.19224-18-t-kristo@ti.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191112052347.GA1197504@kroah.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon 28 Oct 05:42 PDT 2019, Tero Kristo wrote:
-
-> From: Suman Anna <s-anna@ti.com>
+On Tue, Nov 12, 2019 at 06:23:47AM +0100, Greg Kroah-Hartman wrote:
+> On Mon, Nov 11, 2019 at 09:10:41PM +0100, Andreas Färber wrote:
+> > Am 11.11.19 um 07:40 schrieb Greg Kroah-Hartman:
+> > > On Mon, Nov 11, 2019 at 06:42:05AM +0100, Andreas Färber wrote:
+> > >> Hi Greg,
+> > >>
+> > >> Am 11.11.19 um 06:27 schrieb Greg Kroah-Hartman:
+> > >>> On Mon, Nov 11, 2019 at 05:56:09AM +0100, Andreas Färber wrote:
+> > >>>> Use of soc_device_to_device() in driver modules causes a build failure.
+> > >>>> Given that the helper is nicely documented in include/linux/sys_soc.h,
+> > >>>> let's export it as GPL symbol.
+> > >>>
+> > >>> I thought we were fixing the soc drivers to not need this.  What
+> > >>> happened to that effort?  I thought I had patches in my tree (or
+> > >>> someone's tree) that did some of this work already, such that this
+> > >>> symbol isn't needed anymore.
+> > >>
+> > >> I do still see this function used in next-20191108 in drivers/soc/.
+> > >>
+> > >> I'll be happy to adjust my RFC driver if someone points me to how!
+> > > 
+> > > Look at c31e73121f4c ("base: soc: Handle custom soc information sysfs
+> > > entries") for how you can just use the default attributes for the soc to
+> > > create the needed sysfs files, instead of having to do it "by hand"
+> > > which is racy and incorrect.
+> > 
+> > Unrelated.
+> > 
+> > >> Given the current struct layout, a type cast might work (but ugly).
+> > >> Or if we stay with my current RFC driver design, we could use the
+> > >> platform_device instead of the soc_device (which would clutter the
+> > >> screen more than "soc soc0:") or resort to pr_info() w/o device.
+> > > 
+> > > Ick, no, don't cast blindly.  What do you need the pointer for?  Is this
+> > > for in-tree code?
+> > 
+> > No, an RFC patchset: https://patchwork.kernel.org/cover/11224261/
+> > 
+> > As I indicated above, I used it for a dev_info(), which I can easily
+> > avoid by using pr_info() instead:
+> > 
+> > diff --git a/drivers/soc/realtek/chip.c b/drivers/soc/realtek/chip.c
+> > index e5078c6731fd..f9380e831659 100644
+> > --- a/drivers/soc/realtek/chip.c
+> > +++ b/drivers/soc/realtek/chip.c
+> > @@ -178,8 +178,7 @@ static int rtd_soc_probe(struct platform_device *pdev)
+> > 
+> >         platform_set_drvdata(pdev, soc_dev);
+> > 
+> > -       dev_info(soc_device_to_device(soc_dev),
+> > -               "%s %s (0x%08x) rev %s (0x%08x) detected\n",
+> > +       pr_info("%s %s (0x%08x) rev %s (0x%08x) detected\n",
+> >                 soc_dev_attr->family, soc_dev_attr->soc_id, chip_id,
+> >                 soc_dev_attr->revision, chip_rev);
 > 
-> The runtime autosuspend on a OMAP remoteproc device is attempted when
-> the suspend timer expires (autosuspend delay elapsed since the last
-> time the device is busy). This is the normal autosuspend scenario
-> for a device functioning normally. This timer can also expire during
-> the debugging of a remoteproc crash when the remoteproc recovery is
-> disabled. This is an invalid pre-condition though, so check for the
-> RPROC_CRASHED state and bail out before the actual check for the
-> RPROC_RUNNING state. The auto-suspend is also not re-attempted until
-> the remoteproc is recovered and restored to normal functional state.
-> 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> First off, the driver should not be spitting out noise for when all goes
+> well like this :)
 
-This should be folded back into the previous patch (which I have yet to
-review).
+I didn't follow the discussion closely, but I think I want to object
+here a bit. While I agree that each driver emitting some stuff to the
+log buffer is hardly helpful, seeing the exact SoC details is indeed
+useful at times. With my Debian kernel team member hat on, I'd say
+keep this information. This way the SoC details make it into kernel bug
+reports without effort on our side.
 
-Regards,
-Bjorn
+Best regards
+Uwe
 
-> ---
->  drivers/remoteproc/omap_remoteproc.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
-> index 2eb05d7a4dec..1dfac82224f7 100644
-> --- a/drivers/remoteproc/omap_remoteproc.c
-> +++ b/drivers/remoteproc/omap_remoteproc.c
-> @@ -945,6 +945,11 @@ static int omap_rproc_runtime_suspend(struct device *dev)
->  	struct omap_rproc *oproc = rproc->priv;
->  	int ret;
->  
-> +	if (rproc->state == RPROC_CRASHED) {
-> +		dev_dbg(dev, "rproc cannot be runtime suspended when crashed!\n");
-> +		return -EBUSY;
-> +	}
-> +
->  	if (WARN_ON(rproc->state != RPROC_RUNNING)) {
->  		dev_err(dev, "rproc cannot be runtime suspended when not running!\n");
->  		return -EBUSY;
-> -- 
-> 2.17.1
-> 
-> --
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
