@@ -2,128 +2,359 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CD7DF990A
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 19:47:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 937A7F9957
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 20:07:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726960AbfKLSrX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Nov 2019 13:47:23 -0500
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:51396 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726912AbfKLSrX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Nov 2019 13:47:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=fh7ErhK5kWtXa9xlJgNgIE+9NFeL2CofE3HNjsCnVy8=; b=WDofDLQ1RLSY
-        rYz6vxvpU+kmZCTkUokfnWmCx/CZPsVCTWem9oYwPRe+No8eblqXvpx+EkSZvHIKerX4q4idzt3Q6
-        MbGAc7bpkiMObDd8NLxEoEHS+dzuO6YiStoHSE8AG38P5utvyGUEz9NYik9WHgCod3l+9T2n7v9AZ
-        utOtc=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.co.uk>)
-        id 1iUbCB-00005V-1Q; Tue, 12 Nov 2019 18:47:19 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 7CE43274299F; Tue, 12 Nov 2019 18:47:18 +0000 (GMT)
-From:   Mark Brown <broonie@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
-        Luhua Xu <luhua.xu@mediatek.com>,
-        Mark Brown <broonie@kernel.org>, wsd_upstream@mediatek.com
-Subject: Applied "spi: Fix regression to return zero on success instead of positive value" to the spi tree
-In-Reply-To: <20191111195334.44833-1-tony@atomide.com>
-X-Patchwork-Hint: ignore
-Message-Id: <20191112184718.7CE43274299F@ypsilon.sirena.org.uk>
-Date:   Tue, 12 Nov 2019 18:47:18 +0000 (GMT)
+        id S1726978AbfKLTHB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Nov 2019 14:07:01 -0500
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:36487 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726952AbfKLTHB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Nov 2019 14:07:01 -0500
+Received: by mail-oi1-f193.google.com with SMTP id j7so15857209oib.3;
+        Tue, 12 Nov 2019 11:06:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ZbYRwN+7S2Z3fzFKODaK+X8nOcOEXmXKRrMF20np2Co=;
+        b=Sx3fiOX4zyfIS8QXulExKMgrbEkuVeqNLtHvcr0R1g6GtjPccPi3LKZISIq8bk3gdr
+         hHKKLDw7mN6FsaR29wH4BX3UJurUDPrPY0qDK2H6pxaYV9WBuN80j8ut4vCpX861Gr6c
+         mIK2Rq1LfPyuqeG2rRpeFSK21Ky8ox8VKqJRvrGQuItn5TlN0lWLq9sgS24e/j6xPOSy
+         9uH0+KHTbjCY3P3Vry986+voPxMwX0z08byyjThP/2et9RKRZ5nAytQqwfysmx9xwutz
+         NfLJEJVvgDuKnWDoJN0binAAd61YEUB45Gf7ciqKfF7RBHqi0zugdX7DW6/f6LO+KgA3
+         odIA==
+X-Gm-Message-State: APjAAAV0WxdYKuVlPI3aDUCVsBE80ptXmsr0JFKbAkjRlv8C7VJI7AP9
+        b+qOCZr563G0yuHqEXopzg==
+X-Google-Smtp-Source: APXvYqwDPWEDB92G/WShgIif6U2Pe5q4wctY8VhSkbJ2uVywbq4zTrHFod+Pon6ga4Z2t5cbWdCwGw==
+X-Received: by 2002:aca:fc0d:: with SMTP id a13mr432093oii.83.1573585618452;
+        Tue, 12 Nov 2019 11:06:58 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id n5sm4351536oie.16.2019.11.12.11.06.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2019 11:06:57 -0800 (PST)
+Date:   Tue, 12 Nov 2019 13:06:57 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+        Jiri Pirko <jiri@resnulli.us>, Sekhar Nori <nsekhar@ti.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Ivan Vecera <ivecera@redhat.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 net-next 06/13] dt-bindings: net: ti: add new cpsw
+ switch driver bindings
+Message-ID: <20191112190657.GA5578@bogus>
+References: <20191109151525.18651-1-grygorii.strashko@ti.com>
+ <20191109151525.18651-7-grygorii.strashko@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191109151525.18651-7-grygorii.strashko@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The patch
+On Sat, Nov 09, 2019 at 05:15:18PM +0200, Grygorii Strashko wrote:
+> Add bindings for the new TI CPSW switch driver. Comparing to the legacy
+> bindings (net/cpsw.txt):
+> - ports definition follows DSA bindings (net/dsa/dsa.txt) and ports can be
+> marked as "disabled" if not physically wired.
+> - all deprecated properties dropped;
+> - all legacy propertiies dropped which represent constant HW cpapbilities
+> (cpdma_channels, ale_entries, bd_ram_size, mac_control, slaves,
+> active_slave)
+> - TI CPTS DT properties are reused as is, but grouped in "cpts" sub-node
+> - TI Davinci MDIO DT bindings are reused as is, because Davinci MDIO is
+> reused.
+> 
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+> ---
+>  .../bindings/net/ti,cpsw-switch.yaml          | 245 ++++++++++++++++++
+>  1 file changed, 245 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml b/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml
+> new file mode 100644
+> index 000000000000..afeb6a4f1ada
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml
+> @@ -0,0 +1,245 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/ti,cpsw-switch.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: TI SoC Ethernet Switch Controller (CPSW) Device Tree Bindings
+> +
+> +maintainers:
+> +  - Grygorii Strashko <grygorii.strashko@ti.com>
+> +  - Sekhar Nori <nsekhar@ti.com>
+> +
+> +description:
+> +  The 3-port switch gigabit ethernet subsystem provides ethernet packet
+> +  communication and can be configured as an ethernet switch. It provides the
+> +  gigabit media independent interface (GMII),reduced gigabit media
+> +  independent interface (RGMII), reduced media independent interface (RMII),
+> +  the management data input output (MDIO) for physical layer device (PHY)
+> +  management.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: ti,cpsw-switch
+> +      - items:
+> +         - const: ti,am335x-cpsw-switch
+> +         - const: ti,cpsw-switch
+> +      - items:
+> +        - const: ti,am4372-cpsw-switch
+> +        - const: ti,cpsw-switch
+> +      - items:
+> +        - const: ti,dra7-cpsw-switch
+> +        - const: ti,cpsw-switch
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description:
+> +       The physical base address and size of full the CPSW module IO range
+> +
+> +  ranges: true
+> +
+> +  clocks:
+> +    maxItems: 1
+> +    description: CPSW functional clock
+> +
+> +  clock-names:
+> +    maxItems: 1
+> +    items:
+> +      - const: fck
+> +
+> +  interrupts:
+> +    maxItems: 4
 
-   spi: Fix regression to return zero on success instead of positive value
+Implied by 'items' list.
 
-has been applied to the spi tree at
+> +    items:
+> +      - description: RX_THRESH interrupt
+> +      - description: RX interrupt
+> +      - description: TX interrupt
+> +      - description: MISC interrupt
+> +
+> +  interrupt-names:
+> +    maxItems: 4
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+Implied by 'items' list.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> +    items:
+> +      - const: "rx_thresh"
+> +      - const: "rx"
+> +      - const: "tx"
+> +      - const: "misc"
+> +
+> +  pinctrl-names: true
+> +
+> +  syscon:
+> +    $ref: /schemas/types.yaml#definitions/phandle
+> +    maxItems: 1
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Not an array, so not needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> +    description:
+> +      Phandle to the system control device node which provides access to
+> +      efuse IO range with MAC addresses
+> +
+> +
+> +  ethernet-ports:
+> +    type: object
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +      '#size-cells':
+> +        const: 0
+> +
+> +    patternProperties:
+> +      "^port@[0-9]+$":
+> +          type: object
+> +          minItems: 1
+> +          maxItems: 2
+> +          description: CPSW external ports
+> +
+> +          allOf:
+> +            - $ref: ethernet-controller.yaml#
+> +
+> +          properties:
+> +            reg:
+> +              maxItems: 1
+> +              enum: [1, 2]
+> +              description: CPSW port number
+> +
+> +            phys:
+> +              $ref: /schemas/types.yaml#definitions/phandle-array
+> +              maxItems: 1
+> +              description:  phandle on phy-gmii-sel PHY
+> +
+> +            label:
+> +              $ref: /schemas/types.yaml#/definitions/string-array
+> +              maxItems: 1
+> +              description: label associated with this port
+> +
+> +            ti,dual-emac-pvid:
+> +              $ref: /schemas/types.yaml#/definitions/uint32
+> +              maxItems: 1
+> +              minimum: 1
+> +              maximum: 1024
+> +              description:
+> +                Specifies default PORT VID to be used to segregate
+> +                ports. Default value - CPSW port number.
+> +
+> +          required:
+> +            - reg
+> +            - phys
+> +
+> +  mdio:
+> +    type: object
+> +    allOf:
+> +      - $ref: "ti,davinci-mdio.yaml#"
+> +    description:
+> +      CPSW MDIO bus.
+> +
+> +  cpts:
+> +    type: object
+> +    description:
+> +      The Common Platform Time Sync (CPTS) module
+> +
+> +    properties:
+> +      clocks:
+> +        maxItems: 1
+> +        description: CPTS reference clock
+> +
+> +      clock-names:
+> +        maxItems: 1
+> +        items:
+> +          - const: cpts
+> +
+> +      cpts_clock_mult:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        maxItems: 1
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Not an array, so not needed.
 
-Thanks,
-Mark
+Is there a set or range of values you can define?
 
-From 57a9460705f105e1d79d1410c5cfe285beda8986 Mon Sep 17 00:00:00 2001
-From: Tony Lindgren <tony@atomide.com>
-Date: Mon, 11 Nov 2019 11:53:34 -0800
-Subject: [PATCH] spi: Fix regression to return zero on success instead of
- positive value
+> +        description:
+> +          Numerator to convert input clock ticks into ns
+> +
+> +      cpts_clock_shift:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        maxItems: 1
 
-Commit d948e6ca1899 ("spi: add power control when set_cs") added generic
-runtime PM handling, but also changed the return value to be 1 instead
-of 0 that we had earlier as pm_runtime_get functions return a positve
-value on success.
+Same comments here.
 
-This causes SPI devices to return errors for cases where they do:
+> +        description:
+> +          Denominator to convert input clock ticks into ns.
+> +          Mult and shift will be calculated basing on CPTS rftclk frequency if
+> +          both cpts_clock_shift and cpts_clock_mult properties are not provided.
+> +
+> +    required:
+> +      - clocks
+> +      - clock-names
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - ranges
+> +  - clocks
+> +  - clock-names
+> +  - interrupts
+> +  - interrupt-names
+> +  - '#address-cells'
+> +  - '#size-cells'
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/clock/dra7.h>
+> +
+> +    mac_sw: switch@0 {
+> +        compatible = "ti,dra7-cpsw-switch","ti,cpsw-switch";
+> +        reg = <0x0 0x4000>;
+> +        ranges = <0 0 0x4000>;
+> +        clocks = <&gmac_main_clk>;
+> +        clock-names = "fck";
+> +        #address-cells = <1>;
+> +        #size-cells = <1>;
+> +        syscon = <&scm_conf>;
+> +        inctrl-names = "default", "sleep";
+> +
+> +        interrupts = <GIC_SPI 334 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 335 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 336 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 337 IRQ_TYPE_LEVEL_HIGH>;
+> +        interrupt-names = "rx_thresh", "rx", "tx", "misc";
+> +
+> +        ethernet-ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                cpsw_port1: port@1 {
+> +                        reg = <1>;
+> +                        label = "port1";
+> +                        mac-address = [ 00 00 00 00 00 00 ];
+> +                        phys = <&phy_gmii_sel 1>;
+> +                        phy-handle = <&ethphy0_sw>;
+> +                        phy-mode = "rgmii";
+> +                        ti,dual_emac_pvid = <1>;
+> +                };
+> +
+> +                cpsw_port2: port@2 {
+> +                        reg = <2>;
+> +                        label = "wan";
+> +                        mac-address = [ 00 00 00 00 00 00 ];
+> +                        phys = <&phy_gmii_sel 2>;
+> +                        phy-handle = <&ethphy1_sw>;
+> +                        phy-mode = "rgmii";
+> +                        ti,dual_emac_pvid = <2>;
+> +                };
+> +        };
+> +
+> +        davinci_mdio_sw: mdio@1000 {
+> +                compatible = "ti,cpsw-mdio","ti,davinci_mdio";
+> +                reg = <0x1000 0x100>;
+> +                clocks = <&gmac_clkctrl DRA7_GMAC_GMAC_CLKCTRL 0>;
+> +                clock-names = "fck";
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +                bus_freq = <1000000>;
+> +
+> +                ethphy0_sw: ethernet-phy@0 {
+> +                        reg = <0>;
+> +                };
+> +
+> +                ethphy1_sw: ethernet-phy@1 {
+> +                        reg = <41>;
 
-ret = spi_setup(spi);
-if (ret)
-	return ret;
+make dt_binding_check fails:
 
-As in many cases the SPI devices do not check for if (ret < 0).
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/ti,cpsw-switch.example.dt.yaml: 
+mdio@1000: ethernet-phy@1:reg:0:0: 41 is greater than the maximum of 31
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/ti,cpsw-switch.example.dt.yaml: 
+ethernet-phy@1: reg:0:0: 41 is greater than the maximum of 31
 
-Let's fix this by setting the status to 0 on succeess after the
-runtime PM calls. Let's not return 0 at the end of the function
-as this might break again later on if the function changes and
-starts returning status again.
-
-Fixes: d948e6ca1899 ("spi: add power control when set_cs")
-Cc: Luhua Xu <luhua.xu@mediatek.com>
-Cc: wsd_upstream@mediatek.com
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20191111195334.44833-1-tony@atomide.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 294d0038eea6..0d40953b463c 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3269,6 +3269,15 @@ int spi_setup(struct spi_device *spi)
- 				status);
- 			return status;
- 		}
-+
-+		/*
-+		 * We do not want to return positive value from pm_runtime_get,
-+		 * there are many instances of devices calling spi_setup() and
-+		 * checking for a non-zero return value instead of a negative
-+		 * return value.
-+		 */
-+		status = 0;
-+
- 		spi_set_cs(spi, false);
- 		pm_runtime_mark_last_busy(spi->controller->dev.parent);
- 		pm_runtime_put_autosuspend(spi->controller->dev.parent);
--- 
-2.20.1
-
+> +                };
+> +        };
+> +
+> +        cpts {
+> +                clocks = <&gmac_clkctrl DRA7_GMAC_GMAC_CLKCTRL 25>;
+> +                clock-names = "cpts";
+> +        };
+> +    };
+> -- 
+> 2.17.1
+> 
