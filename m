@@ -2,54 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6F21F8A47
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 09:15:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57392F8A4F
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 09:16:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725834AbfKLIPD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Nov 2019 03:15:03 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:39052 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725775AbfKLIPC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Nov 2019 03:15:02 -0500
+        id S1725835AbfKLIQU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Nov 2019 03:16:20 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:39166 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725821AbfKLIQT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Nov 2019 03:16:19 -0500
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAC8Ex0u109278;
-        Tue, 12 Nov 2019 02:14:59 -0600
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAC8GHo7025729;
+        Tue, 12 Nov 2019 02:16:17 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1573546499;
-        bh=FsOVqKbljcnHgICqOdzhzNiPBNYuXWN1KLg4XT+reEw=;
+        s=ti-com-17Q1; t=1573546577;
+        bh=90PIXBNPPxoBh+X/S5ytuCw+cth895+fkNlDDDdfZ+8=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Ns3BeRqfXxRdfzQxIyW4OpvuhbMUih8f6ETFb5E/SgjUVsF8srHMpSXB7130gke+L
-         sULnflqQnWMubCRffB5PAmoIHVvfmPBbkEDf6dgwyjkB6vS+QQVqrdZeKqoopCPm36
-         I44hTbQUIGY6rrIMd//ekELAqENL2XpS+40N+tyc=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAC8ExHv013948
+        b=FeMJ77m5y3EVGtD6hxOuUSEawKpztgksem+syQxvD7uwIa9NDrMklb83EgddPLJG4
+         bued6byurwO8oIYb5vR4Bj5rF4+UTKCyMgcv5x3QW0IkmVEdMaq2T/wj33T+X5T1D6
+         Kq+b9jV2YPwdej//DbuggjvcpA0iCD/ywyYYGUzM=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAC8GHDt015929
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 12 Nov 2019 02:14:59 -0600
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 12 Nov 2019 02:16:17 -0600
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 12
- Nov 2019 02:14:41 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2019 02:15:59 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 12 Nov 2019 02:14:41 -0600
+ Frontend Transport; Tue, 12 Nov 2019 02:15:59 -0600
 Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAC8EuMt030332;
-        Tue, 12 Nov 2019 02:14:56 -0600
-Subject: Re: [PATCH 03/17] remoteproc/omap: Add device tree support
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAC8GD4P067663;
+        Tue, 12 Nov 2019 02:16:15 -0600
+Subject: Re: [PATCH 02/17] remoteproc/omap: Switch to SPDX license identifiers
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 CC:     <ohad@wizery.com>, <linux-remoteproc@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <s-anna@ti.com>, Tony Lindgren <tony@atomide.com>
+        <s-anna@ti.com>
 References: <20191028124238.19224-1-t-kristo@ti.com>
- <20191028124238.19224-4-t-kristo@ti.com> <20191111231650.GE3108315@builder>
+ <20191028124238.19224-3-t-kristo@ti.com> <20191109010348.GB5662@tuxbook-pro>
 From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <0698f722-c56f-005a-cd9f-51199d73bd12@ti.com>
-Date:   Tue, 12 Nov 2019 10:14:55 +0200
+Message-ID: <bed42f27-3a67-bfa7-fdcc-bf333233828f@ti.com>
+Date:   Tue, 12 Nov 2019 10:16:13 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191111231650.GE3108315@builder>
+In-Reply-To: <20191109010348.GB5662@tuxbook-pro>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -59,47 +59,34 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 12/11/2019 01:16, Bjorn Andersson wrote:
+On 09/11/2019 03:03, Bjorn Andersson wrote:
 > On Mon 28 Oct 05:42 PDT 2019, Tero Kristo wrote:
->> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
-> [..]
->> +static int omap_rproc_get_boot_data(struct platform_device *pdev,
->> +				    struct rproc *rproc)
->> +{
->> +	struct device_node *np = pdev->dev.of_node;
->> +	struct omap_rproc *oproc = rproc->priv;
->> +	int ret;
->> +
->> +	if (!of_device_is_compatible(np, "ti,omap4-dsp") &&
->> +	    !of_device_is_compatible(np, "ti,omap5-dsp"))
->> +		return 0;
 > 
-> I think it would be cleaner if you added a "has_bootreg" bool to your
-> omap_rproc_dev_data, do of_device_get_match_data() in omap_rproc_probe()
-> and pass that here.
-
-Hmm you are right. There seem to be couple of other similar checks 
-around the code, let me try to address those as well.
-
+>> From: Suman Anna <s-anna@ti.com>
+>>
+>> Use the appropriate SPDX license identifiers in various OMAP remoteproc
+>> source files and drop the previous boilerplate license text.
+>>
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>> ---
+>>   drivers/remoteproc/omap_remoteproc.h | 27 +--------------------------
+>>   1 file changed, 1 insertion(+), 26 deletions(-)
+>>
+>> diff --git a/drivers/remoteproc/omap_remoteproc.h b/drivers/remoteproc/omap_remoteproc.h
+>> index f6d2036d383d..1e6fef753c4f 100644
+>> --- a/drivers/remoteproc/omap_remoteproc.h
+>> +++ b/drivers/remoteproc/omap_remoteproc.h
+>> @@ -1,35 +1,10 @@
+>> +/* SPDX-License-Identifier: (GPL-2.0 OR BSD-3-Clause) */
 > 
->> +
->> +	oproc->boot_data = devm_kzalloc(&pdev->dev, sizeof(*oproc->boot_data),
->> +					GFP_KERNEL);
->> +	if (!oproc->boot_data)
->> +		return -ENOMEM;
->> +
->> +	if (!of_property_read_bool(np, "syscon-bootreg")) {
->> +		dev_err(&pdev->dev, "syscon-bootreg property is missing\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	oproc->boot_data->syscon =
->> +			syscon_regmap_lookup_by_phandle(np, "syscon-bootreg");
-> 
-> You updated the dt binding document, but this needs to be updated as
-> well.
+> Please confirm that you actually intend to change the license from BSD
+> to dual here.
 
-Yeah, was waiting for comments before updating the actual code.
+That is a very good point. Let me try to get clarification to this 
+internally, this series is anyways too late for 5.5 so there is no rush 
+to get this done anytime soon. Worst case I just drop this patch and 
+keep the existing license in place.
 
 -Tero
 
@@ -107,6 +94,45 @@ Yeah, was waiting for comments before updating the actual code.
 > Regards,
 > Bjorn
 > 
+>>   /*
+>>    * Remote processor messaging
+>>    *
+>>    * Copyright (C) 2011 Texas Instruments, Inc.
+>>    * Copyright (C) 2011 Google, Inc.
+>>    * All rights reserved.
+>> - *
+>> - * Redistribution and use in source and binary forms, with or without
+>> - * modification, are permitted provided that the following conditions
+>> - * are met:
+>> - *
+>> - * * Redistributions of source code must retain the above copyright
+>> - *   notice, this list of conditions and the following disclaimer.
+>> - * * Redistributions in binary form must reproduce the above copyright
+>> - *   notice, this list of conditions and the following disclaimer in
+>> - *   the documentation and/or other materials provided with the
+>> - *   distribution.
+>> - * * Neither the name Texas Instruments nor the names of its
+>> - *   contributors may be used to endorse or promote products derived
+>> - *   from this software without specific prior written permission.
+>> - *
+>> - * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+>> - * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+>> - * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+>> - * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+>> - * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+>> - * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+>> - * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+>> - * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+>> - * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+>> - * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+>> - * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+>>    */
+>>   
+>>   #ifndef _OMAP_RPMSG_H
+>> -- 
+>> 2.17.1
+>>
+>> --
 
 --
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
