@@ -2,63 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE018F8878
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 07:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 441B0F887E
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 07:28:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725801AbfKLG0q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Nov 2019 01:26:46 -0500
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:41120 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725775AbfKLG0q (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Nov 2019 01:26:46 -0500
-Received: by mail-pf1-f193.google.com with SMTP id p26so12600659pfq.8
-        for <linux-omap@vger.kernel.org>; Mon, 11 Nov 2019 22:26:45 -0800 (PST)
+        id S1725997AbfKLG2X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Nov 2019 01:28:23 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:33765 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725801AbfKLG2X (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Nov 2019 01:28:23 -0500
+Received: by mail-pg1-f193.google.com with SMTP id h27so11185936pgn.0
+        for <linux-omap@vger.kernel.org>; Mon, 11 Nov 2019 22:28:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=29y54PPjXheeJnkAIV+/9rtCAbjMmayyj5shoryCFWs=;
-        b=EUSRVio++bqwLyCrsbzAnGBh+zpVum1h4Tx8yIalq0oP530ikl+eefPueFj2aIvjQP
-         YpqB4V8LclH6h22+a4HR0SgbMnpd1xgyzo/2z5q2T89kO235UZ0XrLYCZ/eFCBe2ycoO
-         ZtHpc/+9n0bkfGbVB/DeTGjK9xfv9l247CvRf889HW5D53/09CFma2T5mi1QsBwcPz1q
-         8MOPhtL7orrl1a41RSkrk6p5mX0EV3m/TFBYxWe8HcSvG8Vl7vUFgzj3GxhvAf9r6qz3
-         t7aqg7wCrrkaDI+5kheSEhjvb177U+9R/ahpqEWgnk4G2wLXUHPSZ5qG8VILN9Lx/Y2K
-         dZCw==
+        bh=iAL+4Mb+bihLwcbbUJQManyIi0HMq8FS6irH7b5rRco=;
+        b=HR9AGHyYy2UyvvEwb96MgtYOJsg0vdjPcRAqywN8KNqqP4V6g+ZSCV/WD941rThPYl
+         MAiDAn47ObgTr175cJScgIpsBf9LZ8Bx5Jw4p5vr6HYg+i6En/TlpBsCZ05TjZTF3uQZ
+         xK5JAmH3TUZV7KekreIkJWeTAj+xuor82PCZc7LGvb3RT4fKF9OkaRA4wONEvhuPMnNS
+         Pi1qLSjmrTYGeu88D+mLRpoj3tmI8Bl+pai6mh2j8x32NyV2lfrb2b/NFo4a1+0ky8Bj
+         BfRHNloJSBoe2UUSJwEigmR8hfUfgqNIY2feikVGqCvlUUI3osAyerOOkNPGXm2KFIMv
+         ygkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=29y54PPjXheeJnkAIV+/9rtCAbjMmayyj5shoryCFWs=;
-        b=t+/9t3t3+Nzpld9K++LrKbLySmU0GqRdHz+2JpGH0wZoUsoUdtlQz0pIHQoHp8ooQV
-         sC5uSVTaq5A8Ze0SN8B3LzQ718qej1UF2dJJoCLJz9W8AJ77gaZUqeNBuxpWuZIodR6n
-         smXvkq2AIhq6+SNZutq09qJ1qZOvnvJO7Ho/r+o2kG6+vcJh0po1g+Icut6XXn7dfAOc
-         cU2YPAYVWNwWbTa8JiAy69+4p73riRAbkVK/3422G9yUZMFtKVJYYZ9yfc6kiV5pyXOR
-         6vZCJhkFkHgm51yexfRI9mgvyfkMFRWNN0loRrKHD8jPbyH4PILldt4r25VDb1L4iRxY
-         1Htg==
-X-Gm-Message-State: APjAAAVn2EoOYpoQuPSKsqhCxw1TlaE2RRmfIOn1k0aY7CxiIYoNMB0d
-        UHlWFMwBDjAta3hVaX/uNvZexQ==
-X-Google-Smtp-Source: APXvYqw8NSYCabsNjDVxITf+aai970UaPE8g9uaB51GTRrRgTmGQbTE8GazIEwa9XdAJeWtrwnOAmQ==
-X-Received: by 2002:a62:7dd2:: with SMTP id y201mr35491160pfc.90.1573540005185;
-        Mon, 11 Nov 2019 22:26:45 -0800 (PST)
+        bh=iAL+4Mb+bihLwcbbUJQManyIi0HMq8FS6irH7b5rRco=;
+        b=mAsKf4DjG5q7DwEHTtKY7OG/hcuQKcRnuwR/wTPIwd20cpnAcBsjd3jbe5vSzh+C+4
+         lOTVcCG5rrvNBvbcV4jZAZGxIK4lyoVzuQVRSpoobzlNsBc94P42cNlhtg7Z7oYJuLUQ
+         ljaruAaosL5ztCvM8u4Tg6Dh0rnU5/DVBvaU06aYEFDuHkCVAqLAhftLaoxEmT22fMTZ
+         qnTlKUFgY+PNisMgHzoglRJeIahCXB9CosBKREFB2QSB3E2YqgTqOYUlHDRjIIJ+1QXB
+         7SyfLaSvhhQNYfUqwW5P/vSV1MC5CIqyW+9ROi1k1NVA0ByJAuByPF0B5/1H9zJvJRqn
+         k3Hg==
+X-Gm-Message-State: APjAAAWd+5QsHBoudRiLZXes0ZCgwtxRQ73HsduSDXVLFy2zwNSCYRFn
+        errqWuxt3bXLwb2VesrQxK9cDw==
+X-Google-Smtp-Source: APXvYqwTFvsGpfht34NVHjjcAtJ51bzZyaVTKPPTGApX4yc+88RyqobogAUQBkRncC4z2VMigW6V2w==
+X-Received: by 2002:a63:cf45:: with SMTP id b5mr32848687pgj.36.1573540102283;
+        Mon, 11 Nov 2019 22:28:22 -0800 (PST)
 Received: from builder (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id b1sm1285492pjw.19.2019.11.11.22.26.44
+        by smtp.gmail.com with ESMTPSA id j14sm15828464pfi.168.2019.11.11.22.28.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2019 22:26:44 -0800 (PST)
-Date:   Mon, 11 Nov 2019 22:26:42 -0800
+        Mon, 11 Nov 2019 22:28:21 -0800 (PST)
+Date:   Mon, 11 Nov 2019 22:28:19 -0800
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
 To:     Tero Kristo <t-kristo@ti.com>
 Cc:     ohad@wizery.com, linux-remoteproc@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         s-anna@ti.com
-Subject: Re: [PATCH 15/17] remoteproc/omap: report device exceptions and
- trigger recovery
-Message-ID: <20191112062642.GP3108315@builder>
+Subject: Re: [PATCH 17/17] remoteproc/omap: fix auto-suspend failure warning
+ during crashed state
+Message-ID: <20191112062819.GQ3108315@builder>
 References: <20191028124238.19224-1-t-kristo@ti.com>
- <20191028124238.19224-16-t-kristo@ti.com>
+ <20191028124238.19224-18-t-kristo@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191028124238.19224-16-t-kristo@ti.com>
+In-Reply-To: <20191028124238.19224-18-t-kristo@ti.com>
 User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
@@ -69,45 +69,45 @@ On Mon 28 Oct 05:42 PDT 2019, Tero Kristo wrote:
 
 > From: Suman Anna <s-anna@ti.com>
 > 
-> The OMAP remote processors send a special mailbox message
-> (RP_MBOX_CRASH) when they crash and detect an internal device
-> exception.
+> The runtime autosuspend on a OMAP remoteproc device is attempted when
+> the suspend timer expires (autosuspend delay elapsed since the last
+> time the device is busy). This is the normal autosuspend scenario
+> for a device functioning normally. This timer can also expire during
+> the debugging of a remoteproc crash when the remoteproc recovery is
+> disabled. This is an invalid pre-condition though, so check for the
+> RPROC_CRASHED state and bail out before the actual check for the
+> RPROC_RUNNING state. The auto-suspend is also not re-attempted until
+> the remoteproc is recovered and restored to normal functional state.
 > 
-> Add support to the mailbox handling function upon detection of
-> this special message to report this crash to the remoteproc core.
-> The remoteproc core can trigger a recovery using the prevailing
-> recovery mechanism, already in use for MMU Fault recovery.
-> 
-> Signed-off-by: Subramaniam Chanderashekarapuram <subramaniam.ca@ti.com>
 > Signed-off-by: Suman Anna <s-anna@ti.com>
-
-You're missing a Co-developed-by
-
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-
 > Signed-off-by: Tero Kristo <t-kristo@ti.com>
+
+This should be folded back into the previous patch (which I have yet to
+review).
+
+Regards,
+Bjorn
+
 > ---
->  drivers/remoteproc/omap_remoteproc.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  drivers/remoteproc/omap_remoteproc.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
 > diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
-> index 8bd415c8fc86..6f797025bb6b 100644
+> index 2eb05d7a4dec..1dfac82224f7 100644
 > --- a/drivers/remoteproc/omap_remoteproc.c
 > +++ b/drivers/remoteproc/omap_remoteproc.c
-> @@ -360,8 +360,12 @@ static void omap_rproc_mbox_callback(struct mbox_client *client, void *data)
+> @@ -945,6 +945,11 @@ static int omap_rproc_runtime_suspend(struct device *dev)
+>  	struct omap_rproc *oproc = rproc->priv;
+>  	int ret;
 >  
->  	switch (msg) {
->  	case RP_MBOX_CRASH:
-> -		/* just log this for now. later, we'll also do recovery */
-> +		/*
-> +		 * remoteproc detected an exception, notify the rproc core.
-> +		 * The remoteproc core will handle the recovery.
-> +		 */
->  		dev_err(dev, "omap rproc %s crashed\n", name);
-> +		rproc_report_crash(oproc->rproc, RPROC_FATAL_ERROR);
->  		break;
->  	case RP_MBOX_ECHO_REPLY:
->  		dev_info(dev, "received echo reply from %s\n", name);
+> +	if (rproc->state == RPROC_CRASHED) {
+> +		dev_dbg(dev, "rproc cannot be runtime suspended when crashed!\n");
+> +		return -EBUSY;
+> +	}
+> +
+>  	if (WARN_ON(rproc->state != RPROC_RUNNING)) {
+>  		dev_err(dev, "rproc cannot be runtime suspended when not running!\n");
+>  		return -EBUSY;
 > -- 
 > 2.17.1
 > 
