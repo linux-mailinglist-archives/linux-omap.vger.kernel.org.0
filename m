@@ -2,141 +2,181 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAB61F83B5
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 00:39:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A867F852C
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 01:29:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727276AbfKKXjX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Nov 2019 18:39:23 -0500
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:42476 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727210AbfKKXjW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Nov 2019 18:39:22 -0500
-Received: by mail-pl1-f195.google.com with SMTP id j12so8488119plt.9
-        for <linux-omap@vger.kernel.org>; Mon, 11 Nov 2019 15:39:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=sErsJ0ZhudbfRpAYwJDEmRpwsxMH+bye+7/YvAD+etw=;
-        b=hXWWXrS60/qxiY6+onkC7XyAOKmoX074R8QgIvUJjZkHbcUErSEEakdF5RPuEFDEW/
-         bC8r4DVzDBaJ0Wz4aMmRvfnJFguB2MUskYTtxPATJeIgXtywKP1XeCfDLyiO1dbt1dtc
-         kk5hpCS/gYNOaYs9AOIjprrWeqhKxj5AdbvWh21qfb1PAHOUJ7kk4LU02pYtm6H/a5a0
-         PwzPjTlx9x/kT3lPlKuDrHfXD+COx+pHlksunanCPuoVm1NlcwrBiJFpilNIfRwfx0HU
-         4mVywu59H3zKXGQXSdJnxCwLovab4TZCaxSrHiNfHR7IuX87acYllkqAnY1Qa6JvyVGA
-         RykA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=sErsJ0ZhudbfRpAYwJDEmRpwsxMH+bye+7/YvAD+etw=;
-        b=Sv+EGTEA4qU/Za9RbjtmfWJEEUuUqnWTGtdRSHViWOTjQIN+XPuTtUtZAp5rUlLrIc
-         ues3fIGwV4mxDt1TiBAW+zgNJ4ZeQXwrpnO5uuqWYQ+XDBCtdSY3gSvszQ0fuNZi64+h
-         u7R314JyFcH2gKICgb8JEO87STO74+KKjRBxe5xQdnsQgjn9fLZt90of7TiBEvU/8l2A
-         TFkZyimYERkmKoHsRsGYK6RahIcM9oMGcAxQmeF3i+7KEIzc1VNuGr23u3tKiTgBq2yn
-         EXzX2hz+P6CtX8ellHJico3vIDKSsS+eG5uEotJ9Hujukjj5iw0omDkjXc2BDJQfcJf5
-         EjPw==
-X-Gm-Message-State: APjAAAXr1gP3qL/l5ufeSS6lt86KwJ4f/HsJlRJiz10xeg3LCgOTKAqw
-        73qyp5bXnPxxIEICurTfYQ9hiw==
-X-Google-Smtp-Source: APXvYqzRz3CUMhtim0beTLP4wGxk4PX9LoOj6oyLMTKQtrShP9NmwM6Zhd80Wm9YTi4IN5NGVZTf4Q==
-X-Received: by 2002:a17:902:8348:: with SMTP id z8mr9310686pln.57.1573515561985;
-        Mon, 11 Nov 2019 15:39:21 -0800 (PST)
-Received: from builder (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id z2sm14480053pgo.13.2019.11.11.15.39.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2019 15:39:21 -0800 (PST)
-Date:   Mon, 11 Nov 2019 15:39:19 -0800
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     ohad@wizery.com, linux-remoteproc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        s-anna@ti.com
-Subject: Re: [PATCH 11/17] remoteproc/omap: Check for undefined mailbox
- messages
-Message-ID: <20191111233919.GM3108315@builder>
-References: <20191028124238.19224-1-t-kristo@ti.com>
- <20191028124238.19224-12-t-kristo@ti.com>
+        id S1726908AbfKLA3N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Nov 2019 19:29:13 -0500
+Received: from mx2.suse.de ([195.135.220.15]:40000 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726887AbfKLA3N (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 11 Nov 2019 19:29:13 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id BCDE4B2C6;
+        Tue, 12 Nov 2019 00:29:09 +0000 (UTC)
+Subject: Re: [PATCH] base: soc: Export soc_device_to_device() helper
+From:   =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-realtek-soc@lists.infradead.org,
+        Tony Lindgren <tony@atomide.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        linux-amlogic@lists.infradead.org,
+        Lee Jones <lee.jones@linaro.org>, linux-omap@vger.kernel.org,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>
+References: <20191103013645.9856-3-afaerber@suse.de>
+ <20191111045609.7026-1-afaerber@suse.de> <20191111052741.GB3176397@kroah.com>
+ <586fa37c-6292-aca4-fa7c-73064858afaf@suse.de>
+ <20191111064040.GA3502217@kroah.com>
+ <a88442df-dc6b-07e5-8dee-9e308bdda450@suse.de>
+Organization: SUSE Software Solutions Germany GmbH
+Message-ID: <94db77d0-f7a3-2a16-6a5d-cd28f68fe5b2@suse.de>
+Date:   Tue, 12 Nov 2019 01:29:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191028124238.19224-12-t-kristo@ti.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <a88442df-dc6b-07e5-8dee-9e308bdda450@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon 28 Oct 05:42 PDT 2019, Tero Kristo wrote:
-
-> From: Suman Anna <s-anna@ti.com>
+Am 11.11.19 um 21:10 schrieb Andreas Färber:
+> Am 11.11.19 um 07:40 schrieb Greg Kroah-Hartman:
+>> On Mon, Nov 11, 2019 at 06:42:05AM +0100, Andreas Färber wrote:
+>>> Hi Greg,
+>>>
+>>> Am 11.11.19 um 06:27 schrieb Greg Kroah-Hartman:
+>>>> On Mon, Nov 11, 2019 at 05:56:09AM +0100, Andreas Färber wrote:
+>>>>> Use of soc_device_to_device() in driver modules causes a build failure.
+>>>>> Given that the helper is nicely documented in include/linux/sys_soc.h,
+>>>>> let's export it as GPL symbol.
+>>>>
+>>>> I thought we were fixing the soc drivers to not need this.  What
+>>>> happened to that effort?  I thought I had patches in my tree (or
+>>>> someone's tree) that did some of this work already, such that this
+>>>> symbol isn't needed anymore.
+>>>
+>>> I do still see this function used in next-20191108 in drivers/soc/.
+>>>
+>>> I'll be happy to adjust my RFC driver if someone points me to how!
+>>
+>> Look at c31e73121f4c ("base: soc: Handle custom soc information sysfs
+>> entries") for how you can just use the default attributes for the soc to
+>> create the needed sysfs files, instead of having to do it "by hand"
+>> which is racy and incorrect.
 > 
-> Add some checks in the mailbox callback function to limit
-> any processing in the mailbox callback function to only
-> certain currently valid messages, and drop all the remaining
-> messages. A debug message is added to print any such invalid
-> messages when the appropriate trace control is enabled.
+> Unrelated.
 > 
-> Signed-off-by: Subramaniam Chanderashekarapuram <subramaniam.ca@ti.com>
-> Signed-off-by: Suman Anna <s-anna@ti.com>
+>>> Given the current struct layout, a type cast might work (but ugly).
+>>> Or if we stay with my current RFC driver design, we could use the
+>>> platform_device instead of the soc_device (which would clutter the
+>>> screen more than "soc soc0:") or resort to pr_info() w/o device.
+>>
+>> Ick, no, don't cast blindly.  What do you need the pointer for?  Is this
+>> for in-tree code?
+> 
+> No, an RFC patchset: https://patchwork.kernel.org/cover/11224261/
+> 
+> As I indicated above, I used it for a dev_info(), which I can easily
+> avoid by using pr_info() instead:
+> 
+> diff --git a/drivers/soc/realtek/chip.c b/drivers/soc/realtek/chip.c
+> index e5078c6731fd..f9380e831659 100644
+> --- a/drivers/soc/realtek/chip.c
+> +++ b/drivers/soc/realtek/chip.c
+> @@ -178,8 +178,7 @@ static int rtd_soc_probe(struct platform_device *pdev)
+> 
+>         platform_set_drvdata(pdev, soc_dev);
+> 
+> -       dev_info(soc_device_to_device(soc_dev),
+> -               "%s %s (0x%08x) rev %s (0x%08x) detected\n",
+> +       pr_info("%s %s (0x%08x) rev %s (0x%08x) detected\n",
+>                 soc_dev_attr->family, soc_dev_attr->soc_id, chip_id,
+>                 soc_dev_attr->revision, chip_rev);
+> 
 
-This should either have a "Co-developed-by" or Suman should be the first
-one.
+Tested and squashed in my tree.
 
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> 
+> But as I said, there is still in-tree code using this helper:
+[snip]
+> So, not counting my unmerged Realtek driver,
+> * we have two cases of struct device being used for dev_info(), which
+> could be cleaned up with device-less pr_info(), I could post a patch,
 
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Patch sent: https://patchwork.kernel.org/patch/11237949/ (untested)
+
+> * frequent usage in arm/mach-* for of_platform_default_populate(), this
+> seems most difficult to replace if we neither want to cast nor expose
+> the struct,
+
+One clever way might be to implement a new of_soc_default_populate() in
+drivers/base/soc.c that takes a soc_device instead of device, doing the
+conversion inside soc.c and calling of_platform_default_populate() from
+there. Then we could convert present users to pass around soc_device
+instead of device, with a perspective to make soc_device_to_device()
+static inside base/soc.c.
+
+sys_soc.h does not presently #include any OF headers, so the declaration
+may need to go into of_platform.h and to consider CONFIG_SOC_BUS.
+
+Will require compile-testing for each platform and ideally some kbuild
+bot passes to get right, so not a quick shot.
+
+While at it, an of_soc_device_register() variant could fill
+soc_device_attribute::machine in common code instead of each platform
+duplicating to read this from the DT root node's model property.
+
+> * some simply unused, which could be refactored to return void, and
+
+Patch sent: https://patchwork.kernel.org/patch/11237971/ (untested)
+
+> * some for device_create_file(), which could probably be avoided with
+> custom_attr_group.
+> 
+> It also raises the question of whether new arm platforms such as RTD1195
+> (mach-realtek) should attempt to use of_platform_default_populate() with
+> the soc_device somehow, or if not, whether those platforms should be
+> refactored to consistently no longer do so?
+> 
+> I believe in the Broken Window Theory, i.e. fixing what we can before
+> mistakes get copied and propagate further in code; but here I don't see
+> a perspective for getting rid of soc_device_to_device() completely to
+> prevent new usages, nor can I test all of those platforms myself.
+> 
+> Has a cleanup based on custom_attr_group been attempted already and is
+> waiting on patches to get reviewed and merged through maintainer trees,
+> or do we need to prepare new cleanup patches here? A search for
+> "soc_device_to_device" on LAKML Patchwork shows only this patch of mine.
+
+Actually I don't find a single user of custom_attr_group in linux-next,
+which may be because the patch introducing it is from October and people
+are waiting on the next -rc1 before they can merge patches using it?
 
 Regards,
-Bjorn
+Andreas
 
-> ---
->  drivers/remoteproc/omap_remoteproc.c | 6 ++++++
->  drivers/remoteproc/omap_remoteproc.h | 7 +++++++
->  2 files changed, 13 insertions(+)
-> 
-> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
-> index e46bb4c790d7..016d5beda195 100644
-> --- a/drivers/remoteproc/omap_remoteproc.c
-> +++ b/drivers/remoteproc/omap_remoteproc.c
-> @@ -124,6 +124,12 @@ static void omap_rproc_mbox_callback(struct mbox_client *client, void *data)
->  		dev_info(dev, "received echo reply from %s\n", name);
->  		break;
->  	default:
-> +		if (msg >= RP_MBOX_READY && msg < RP_MBOX_END_MSG)
-> +			return;
-> +		if (msg > oproc->rproc->max_notifyid) {
-> +			dev_dbg(dev, "dropping unknown message 0x%x", msg);
-> +			return;
-> +		}
->  		/* msg contains the index of the triggered vring */
->  		if (rproc_vq_interrupt(oproc->rproc, msg) == IRQ_NONE)
->  			dev_dbg(dev, "no message was found in vqid %d\n", msg);
-> diff --git a/drivers/remoteproc/omap_remoteproc.h b/drivers/remoteproc/omap_remoteproc.h
-> index 1e6fef753c4f..18f522617683 100644
-> --- a/drivers/remoteproc/omap_remoteproc.h
-> +++ b/drivers/remoteproc/omap_remoteproc.h
-> @@ -31,6 +31,12 @@
->   *
->   * @RP_MBOX_ABORT_REQUEST: a "please crash" request, used for testing the
->   * recovery mechanism (to some extent).
-> + *
-> + * Introduce new message definitions if any here.
-> + *
-> + * @RP_MBOX_END_MSG: Indicates end of known/defined messages from remote core
-> + * This should be the last definition.
-> + *
->   */
->  enum omap_rp_mbox_messages {
->  	RP_MBOX_READY		= 0xFFFFFF00,
-> @@ -39,6 +45,7 @@ enum omap_rp_mbox_messages {
->  	RP_MBOX_ECHO_REQUEST	= 0xFFFFFF03,
->  	RP_MBOX_ECHO_REPLY	= 0xFFFFFF04,
->  	RP_MBOX_ABORT_REQUEST	= 0xFFFFFF05,
-> +	RP_MBOX_END_MSG		= 0xFFFFFF06,
->  };
->  
->  #endif /* _OMAP_RPMSG_H */
-> -- 
-> 2.17.1
-> 
-> --
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+-- 
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 Nürnberg, Germany
+GF: Felix Imendörffer
+HRB 36809 (AG Nürnberg)
