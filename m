@@ -2,37 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F05DFA661
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Nov 2019 03:28:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDC88FA552
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Nov 2019 03:22:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727341AbfKMBub (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Nov 2019 20:50:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37178 "EHLO mail.kernel.org"
+        id S1729163AbfKMCWO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Nov 2019 21:22:14 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43314 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727336AbfKMBub (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 12 Nov 2019 20:50:31 -0500
+        id S1728592AbfKMBxc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 12 Nov 2019 20:53:32 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D6E5C2245A;
-        Wed, 13 Nov 2019 01:50:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 17F66222CF;
+        Wed, 13 Nov 2019 01:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573609830;
-        bh=91aPh7xe+OemNnEsFGvvLgDTsY/relcPOztRIhK4tIM=;
+        s=default; t=1573610012;
+        bh=jaHaRyda7MXr3YsDxYA2f/RYFTQs0cy+RIHpbN7vCdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qVH9RHxcDZDlbPmawm/SFSTjTygkrzWhw033amhFEZQB42NjlnyyE6kbZjbMsuQDc
-         T+Nw4gwXV5A9+4FIH2EK4taoBQvO3eEQ+ul5i7jWfhOmzG+UO0uPDITw23xDMmGB/k
-         69OyAjm+jhhagAuqFiTkoMTiNcasMVHUTebdC+TM=
+        b=qZrqeph2rH/6fRP6PGfNwbP/5m+vd8Vr1DQYaO3V2kMdxmrvPBqapUN4B2rd8CKN3
+         2r3mVRUBVCd5wzfNt2bnbPhjtMPEDcvpvItnROoX7H+4R0fXAM5m94ZzCYUgOTJNBH
+         U8E1OTlnj2r1g27+6aRKzv7vD+yKimwnkyGLIz2Y=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Roger Quadros <rogerq@ti.com>,
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
         Tony Lindgren <tony@atomide.com>,
+        Wolfram Sang <wsa@the-dreams.de>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 004/209] ARM: dts: omap5: enable OTG role for DWC3 controller
-Date:   Tue, 12 Nov 2019 20:47:00 -0500
-Message-Id: <20191113015025.9685-4-sashal@kernel.org>
+        linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 116/209] i2c: omap: use core to detect 'no zero length' quirk
+Date:   Tue, 12 Nov 2019 20:48:52 -0500
+Message-Id: <20191113015025.9685-116-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
 References: <20191113015025.9685-1-sashal@kernel.org>
@@ -45,40 +46,54 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 656c1a65ab555ee5c7cd0d6aee8ab82ca3c1795f ]
+[ Upstream commit f37b2bb6ac3e6ebf855d9d4f05cc6932a8e5b463 ]
 
-Since SMPS10 and OTG cable detection extcon are described here, and
-work to enable OTG power when an OTG cable is plugged in, we can
-define OTG mode in the controller (which is disabled by default in
-omap5.dtsi).
+And don't reimplement in the driver.
 
-Tested on OMAP5EVM and Pyra.
-
-Suggested-by: Roger Quadros <rogerq@ti.com>
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Acked-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/omap5-board-common.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/busses/i2c-omap.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap5-board-common.dtsi b/arch/arm/boot/dts/omap5-board-common.dtsi
-index 8b8db9d8e9126..c2dc4199b4ec2 100644
---- a/arch/arm/boot/dts/omap5-board-common.dtsi
-+++ b/arch/arm/boot/dts/omap5-board-common.dtsi
-@@ -703,6 +703,10 @@
- 	vbus-supply = <&smps10_out1_reg>;
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index 2ac86096ddd95..cd9c65f3d404f 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -661,9 +661,6 @@ static int omap_i2c_xfer_msg(struct i2c_adapter *adap,
+ 	dev_dbg(omap->dev, "addr: 0x%04x, len: %d, flags: 0x%x, stop: %d\n",
+ 		msg->addr, msg->len, msg->flags, stop);
+ 
+-	if (msg->len == 0)
+-		return -EINVAL;
+-
+ 	omap->receiver = !!(msg->flags & I2C_M_RD);
+ 	omap_i2c_resize_fifo(omap, msg->len, omap->receiver);
+ 
+@@ -1179,6 +1176,10 @@ static const struct i2c_algorithm omap_i2c_algo = {
+ 	.functionality	= omap_i2c_func,
  };
  
-+&dwc3 {
-+	dr_mode = "otg";
++static const struct i2c_adapter_quirks omap_i2c_quirks = {
++	.flags = I2C_AQ_NO_ZERO_LEN,
 +};
 +
- &mcspi1 {
- 
- };
+ #ifdef CONFIG_OF
+ static struct omap_i2c_bus_platform_data omap2420_pdata = {
+ 	.rev = OMAP_I2C_IP_VERSION_1,
+@@ -1453,6 +1454,7 @@ omap_i2c_probe(struct platform_device *pdev)
+ 	adap->class = I2C_CLASS_DEPRECATED;
+ 	strlcpy(adap->name, "OMAP I2C adapter", sizeof(adap->name));
+ 	adap->algo = &omap_i2c_algo;
++	adap->quirks = &omap_i2c_quirks;
+ 	adap->dev.parent = &pdev->dev;
+ 	adap->dev.of_node = pdev->dev.of_node;
+ 	adap->bus_recovery_info = &omap_i2c_bus_recovery_info;
 -- 
 2.20.1
 
