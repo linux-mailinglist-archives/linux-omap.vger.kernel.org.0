@@ -2,38 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDC88FA552
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Nov 2019 03:22:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83510FA4BE
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Nov 2019 03:19:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729163AbfKMCWO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Nov 2019 21:22:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43314 "EHLO mail.kernel.org"
+        id S1729792AbfKMCRk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Nov 2019 21:17:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47974 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728592AbfKMBxc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 12 Nov 2019 20:53:32 -0500
+        id S1729277AbfKMBz7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 12 Nov 2019 20:55:59 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 17F66222CF;
-        Wed, 13 Nov 2019 01:53:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5DEBE22474;
+        Wed, 13 Nov 2019 01:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573610012;
-        bh=jaHaRyda7MXr3YsDxYA2f/RYFTQs0cy+RIHpbN7vCdE=;
+        s=default; t=1573610159;
+        bh=Yk0BthtfhCwG5HdWsol18bF1E9VmSioqlac3A/a++5w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qZrqeph2rH/6fRP6PGfNwbP/5m+vd8Vr1DQYaO3V2kMdxmrvPBqapUN4B2rd8CKN3
-         2r3mVRUBVCd5wzfNt2bnbPhjtMPEDcvpvItnROoX7H+4R0fXAM5m94ZzCYUgOTJNBH
-         U8E1OTlnj2r1g27+6aRKzv7vD+yKimwnkyGLIz2Y=
+        b=mNuzEANb/wLXvvYEq5GZfdOuVahIyEmuZDTqn+VsJRG/n2gXrkiCPqfuGHxkJFeCr
+         De4BMUO7r8zgOB8MHpy1hWGhKl79b9w1dlDRdnb6mimXP442YEq0zaXaEnvazFjMKQ
+         kTKV8pTEM2ngM9KEN4AK/Lhe+JlntUUp2rOcIvnY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
+Cc:     Roger Quadros <rogerq@ti.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
         Tony Lindgren <tony@atomide.com>,
-        Wolfram Sang <wsa@the-dreams.de>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        linux-i2c@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 116/209] i2c: omap: use core to detect 'no zero length' quirk
-Date:   Tue, 12 Nov 2019 20:48:52 -0500
-Message-Id: <20191113015025.9685-116-sashal@kernel.org>
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 202/209] ARM: dts: omap5: Fix dual-role mode on Super-Speed port
+Date:   Tue, 12 Nov 2019 20:50:18 -0500
+Message-Id: <20191113015025.9685-202-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
 References: <20191113015025.9685-1-sashal@kernel.org>
@@ -46,54 +45,37 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Roger Quadros <rogerq@ti.com>
 
-[ Upstream commit f37b2bb6ac3e6ebf855d9d4f05cc6932a8e5b463 ]
+[ Upstream commit a763ecc15d0e37c3a15ff6825183061209832685 ]
 
-And don't reimplement in the driver.
+OMAP5's Super-Speed USB port has a software mailbox register
+that needs to be fed with VBUS and ID events from an external
+VBUS/ID comparator.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+Without this, Host role will not work correctly.
+
+Fixes: 656c1a65ab55 ("ARM: dts: omap5: enable OTG role for DWC3 controller")
+Reported-by: H. Nikolaus Schaller <hns@goldelico.com>
+Signed-off-by: Roger Quadros <rogerq@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-omap.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/omap5-board-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-index 2ac86096ddd95..cd9c65f3d404f 100644
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -661,9 +661,6 @@ static int omap_i2c_xfer_msg(struct i2c_adapter *adap,
- 	dev_dbg(omap->dev, "addr: 0x%04x, len: %d, flags: 0x%x, stop: %d\n",
- 		msg->addr, msg->len, msg->flags, stop);
- 
--	if (msg->len == 0)
--		return -EINVAL;
--
- 	omap->receiver = !!(msg->flags & I2C_M_RD);
- 	omap_i2c_resize_fifo(omap, msg->len, omap->receiver);
- 
-@@ -1179,6 +1176,10 @@ static const struct i2c_algorithm omap_i2c_algo = {
- 	.functionality	= omap_i2c_func,
+diff --git a/arch/arm/boot/dts/omap5-board-common.dtsi b/arch/arm/boot/dts/omap5-board-common.dtsi
+index c2dc4199b4ec2..61a06f6add3ca 100644
+--- a/arch/arm/boot/dts/omap5-board-common.dtsi
++++ b/arch/arm/boot/dts/omap5-board-common.dtsi
+@@ -704,6 +704,7 @@
  };
  
-+static const struct i2c_adapter_quirks omap_i2c_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN,
-+};
-+
- #ifdef CONFIG_OF
- static struct omap_i2c_bus_platform_data omap2420_pdata = {
- 	.rev = OMAP_I2C_IP_VERSION_1,
-@@ -1453,6 +1454,7 @@ omap_i2c_probe(struct platform_device *pdev)
- 	adap->class = I2C_CLASS_DEPRECATED;
- 	strlcpy(adap->name, "OMAP I2C adapter", sizeof(adap->name));
- 	adap->algo = &omap_i2c_algo;
-+	adap->quirks = &omap_i2c_quirks;
- 	adap->dev.parent = &pdev->dev;
- 	adap->dev.of_node = pdev->dev.of_node;
- 	adap->bus_recovery_info = &omap_i2c_bus_recovery_info;
+ &dwc3 {
++	extcon = <&extcon_usb3>;
+ 	dr_mode = "otg";
+ };
+ 
 -- 
 2.20.1
 
