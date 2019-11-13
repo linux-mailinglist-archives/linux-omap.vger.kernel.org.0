@@ -2,96 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FD8DFB02F
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Nov 2019 13:06:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A32AFB15C
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Nov 2019 14:33:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726350AbfKMMGH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Nov 2019 07:06:07 -0500
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:46932 "EHLO
-        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725987AbfKMMGG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Nov 2019 07:06:06 -0500
-Received: by mail-yw1-f68.google.com with SMTP id i2so576848ywg.13
-        for <linux-omap@vger.kernel.org>; Wed, 13 Nov 2019 04:06:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=C4mO7kXfecbrOqwpRpob0D1OS3RYhi2WCm7nFkj76AQ=;
-        b=raL7N6jdcsjb08L5rrtpNwWz1xhxgPAfBx/URWS4ZgjI+1iPhAWS9/ety0eFND0rOx
-         fJ8zJ43E/6XvtcgYcf9mmi7Ot3UqP9BVKGgjoA9qxob0Dmc/SVF/+i1p5o/Du90g7jAf
-         tDdq8ayYJhAbDkAnOG7Plfd1Dn9QxjSLHU6WmGbooeLgxuBD+WvxJ+p3h52g77t6dPqQ
-         Fo8Mmf10W9ZdLbcIIOuH52sia/9CoVJZ2bYOqxCpoq5QkzMDPTvGmYuYo415HA0Ehu0A
-         Fa+pdWmzFOxLclYepjktjHHKe/LAtBKoTCPd+noYCvbIoQ4a02D9cp8VB25UyuMsFuYC
-         gPdQ==
+        id S1727104AbfKMNdl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 Nov 2019 08:33:41 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:35848 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726190AbfKMNdl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Nov 2019 08:33:41 -0500
+Received: by mail-ot1-f68.google.com with SMTP id f10so1607630oto.3;
+        Wed, 13 Nov 2019 05:33:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=C4mO7kXfecbrOqwpRpob0D1OS3RYhi2WCm7nFkj76AQ=;
-        b=Ak4AH/Vu2kuBclTvhRxl2IW+vttB6WRaWHKssbxhNXSh0vmX7uOomm92mNoi2RerQU
-         89W/jo9ljmw5XJ2jetBqw4t4sjX4dutHWw8sVJSwgCml5BMr9i4c24QZREss9P80ezK2
-         YeJxpMXwdKImThfk1B/7Y5Po6TuzQ9sd6EMOvf5KDKOGO4wfWI/52ds5LpEDNs5fd/Rq
-         d6CVoAC7oWM2R9YGcEtAaJkTttTg0Ycqa4W9fN+aEe+FsybvYCpWCav5gnHlm/tYKh/z
-         y+EhWyVVqEReZiSsG/1Vfyq0dmvuxMl+Hhzw5KEmCKSAvDa+rEoAi/MnRFzcUsFNS3Id
-         Ra+Q==
-X-Gm-Message-State: APjAAAUpFhgGC23tQCDy580ftnG7LbF0iqe7q9QFe5IzceBZMLO7eCW8
-        rDUeq7mu+XZcfzFYiRz+B/XhfyFTk+k=
-X-Google-Smtp-Source: APXvYqxjOqTPWb4fv0faU63o7lk+vO1Q3kskFC69U7swr/YbsCkTsfASKKJErdRHvCRdhjm3nNxxkQ==
-X-Received: by 2002:a0d:cb91:: with SMTP id n139mr1969515ywd.194.1573646764830;
-        Wed, 13 Nov 2019 04:06:04 -0800 (PST)
-Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id w126sm694659ywa.85.2019.11.13.04.06.03
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=JMGlC8/pif+jB1W9f7yADN5pub681PWuOZ+nengKGCU=;
+        b=Qr0ycIfWrnd1ks/W+lyYxxeqoxdTAsyK0QGm91lIBqgDFIbGyxBQUKLkJokB7kqv2i
+         74KkIUk5XJzWE0oYa3zhXx7HsFwVnimXSfJOsWUWTqx4naxfqSh20v9giThqoPXIazPx
+         nHSYi00nQ5/xRc15KUxC3BgGbrM/vDZuCXf0uwTk3tTCU9bA1lLjlFRWZWOBpD4g75cR
+         JYMegTN1CcOc8euP4zINJtxhM9TpJae+HG3FU/dyqR4Wxx5fbBkRjfmLV2wsV3+E0NUp
+         ZOcQiRizXOU17R+97u9QOMAv1Tk8IceLGCbCfc/FPTHrMfeU2CyM2Xqi1b3g3NRRlel/
+         K0XQ==
+X-Gm-Message-State: APjAAAXTnC4iCD++3kzuOt7FlHZQN6fVf5SgHzUS5KzWjT8RwJBcyHrL
+        K4LKe7Puokel2bTljoTxtg==
+X-Google-Smtp-Source: APXvYqxD6IWsewO9TdJ3bFTU+gY51WG3vNByXca8SVZxroh1OIj61piRW22xnKzAJ5FMxoSywmWh5A==
+X-Received: by 2002:a05:6830:1f4b:: with SMTP id u11mr2802561oth.60.1573652018588;
+        Wed, 13 Nov 2019 05:33:38 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id u204sm685118oig.35.2019.11.13.05.33.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2019 04:06:03 -0800 (PST)
-From:   Adam Ford <aford173@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     adam.ford@logicpd.com, Adam Ford <aford173@gmail.com>
-Subject: [PATCH] ARM: dts: logicpd-torpedo: Remove unnecessary notes/comments
-Date:   Wed, 13 Nov 2019 06:05:57 -0600
-Message-Id: <20191113120557.6438-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        Wed, 13 Nov 2019 05:33:37 -0800 (PST)
+Date:   Wed, 13 Nov 2019 07:33:37 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        devicetree@vger.kernel.org, letux-kernel@openphoenux.org,
+        linux-mmc@vger.kernel.org, kernel@pyra-handheld.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 01/12] Documentation: dt: wireless: update wl1251 for
+ sdio
+Message-ID: <20191113133337.GA3987@bogus>
+References: <cover.1573122644.git.hns@goldelico.com>
+ <17b12e91c878dcb74160e3df5f88bc8a9e3f7fce.1573122644.git.hns@goldelico.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17b12e91c878dcb74160e3df5f88bc8a9e3f7fce.1573122644.git.hns@goldelico.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There used to be a bug in the video driver that caused the timings
-for the LCD to calculate in a way on the DM3730 which made it hang.
+On Thu,  7 Nov 2019 11:30:34 +0100, "H. Nikolaus Schaller" wrote:
+> The standard method for sdio devices connected to
+> an sdio interface is to define them as a child node
+> like we can see with wlcore.
+> 
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+> ---
+>  .../bindings/net/wireless/ti,wl1251.txt       | 26 +++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
 
-The work around for this bug was to set
-CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=4 in the kernel.  This work around
-is no longer needed as the video drivers have been corrected.
-
-This patch removes the legacy note.
-
-Signed-off-by: Adam Ford <aford173@gmail.com>
-
-diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-index cdb89b3e2a9b..b5536132971f 100644
---- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-+++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit-28.dts
-@@ -11,6 +11,5 @@
- #include "logicpd-torpedo-37xx-devkit.dts"
- 
- &lcd0 {
--	/* To make it work, set CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=4 */
- 	compatible = "logicpd,type28";
- };
-diff --git a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
-index f51b472b91b9..054169a4a794 100644
---- a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
-+++ b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
-@@ -131,7 +131,6 @@
- 
- 	lcd0: display {
- 		/* This isn't the exact LCD, but the timings meet spec */
--		/* To make it work, set CONFIG_OMAP2_DSS_MIN_FCK_PER_PCK=4 */
- 		compatible = "newhaven,nhd-4.3-480272ef-atxl";
- 		label = "15";
- 		pinctrl-names = "default";
--- 
-2.20.1
-
+Reviewed-by: Rob Herring <robh@kernel.org>
