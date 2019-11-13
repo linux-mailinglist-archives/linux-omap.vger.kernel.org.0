@@ -2,54 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1F6DF9A49
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Nov 2019 21:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 027BFFA663
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Nov 2019 03:28:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbfKLUMI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Nov 2019 15:12:08 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:48918 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726388AbfKLUMI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Nov 2019 15:12:08 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 27653154D23BD;
-        Tue, 12 Nov 2019 12:12:07 -0800 (PST)
-Date:   Mon, 11 Nov 2019 14:38:30 -0800 (PST)
-Message-Id: <20191111.143830.839461521636004353.davem@davemloft.net>
-To:     grygorii.strashko@ti.com
-Cc:     f.fainelli@gmail.com, netdev@vger.kernel.org,
-        ilias.apalodimas@linaro.org, andrew@lunn.ch,
-        ivan.khoronzhuk@linaro.org, jiri@resnulli.us, nsekhar@ti.com,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        m-karicheri2@ti.com, ivecera@redhat.com, robh+dt@kernel.org,
+        id S1728204AbfKMC2m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Nov 2019 21:28:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37120 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727153AbfKMBu3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 12 Nov 2019 20:50:29 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B61232245C;
+        Wed, 13 Nov 2019 01:50:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573609829;
+        bh=Fu6r4iI/EH3NR5exTinCBhqZXfwVnxkpV+/zjpYld+Y=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=H3uWU0eSUbAnQfFjF+BLLz3nTwmTBZgb7E5lGApA5ILH7JU2O0NHj2tX9sopKhMV1
+         sPpDlMJ3Yf0CfrTSEcF802LXryfKU4GvXJvWqno6OLTk+3LNrQk45fej1FmYDKOGDT
+         M8QAZwsdOxB54K/93sJDp9tRDiy3v8N/BKzHhYwY=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Vignesh R <vigneshr@ti.com>, Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 net-next 02/13] net: ethernet: ti: cpsw: allow
- untagged traffic on host port
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191109151525.18651-3-grygorii.strashko@ti.com>
-References: <20191109151525.18651-1-grygorii.strashko@ti.com>
-        <20191109151525.18651-3-grygorii.strashko@ti.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 12 Nov 2019 12:12:07 -0800 (PST)
+Subject: [PATCH AUTOSEL 4.19 003/209] ARM: dts: dra7: Enable workaround for errata i870 in PCIe host mode
+Date:   Tue, 12 Nov 2019 20:46:59 -0500
+Message-Id: <20191113015025.9685-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
+References: <20191113015025.9685-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Grygorii Strashko <grygorii.strashko@ti.com>
-Date: Sat, 9 Nov 2019 17:15:14 +0200
+From: Vignesh R <vigneshr@ti.com>
 
-> +	ale->p0_untag_vid_mask =
-> +		devm_kmalloc_array(params->dev, BITS_TO_LONGS(VLAN_N_VID),
-> +				   sizeof(unsigned long),
-> +				   GFP_KERNEL);
-> +
+[ Upstream commit b830526f304764753fcb8b4a563a94080e982a6c ]
 
-devm_kmalloc_array() can fail and you must check the return value and
-cleanup with -ENOMEM if necessary.
+Add ti,syscon-unaligned-access property to PCIe RC nodes to set
+appropriate bits in CTRL_CORE_SMA_SW_7 register to enable workaround for
+errata i870.
+
+Signed-off-by: Vignesh R <vigneshr@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/boot/dts/dra7.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
+index 2cb45ddd2ae3b..fc50d6a8e51ab 100644
+--- a/arch/arm/boot/dts/dra7.dtsi
++++ b/arch/arm/boot/dts/dra7.dtsi
+@@ -336,6 +336,7 @@
+ 						<0 0 0 2 &pcie1_intc 2>,
+ 						<0 0 0 3 &pcie1_intc 3>,
+ 						<0 0 0 4 &pcie1_intc 4>;
++				ti,syscon-unaligned-access = <&scm_conf1 0x14 1>;
+ 				status = "disabled";
+ 				pcie1_intc: interrupt-controller {
+ 					interrupt-controller;
+@@ -387,6 +388,7 @@
+ 						<0 0 0 2 &pcie2_intc 2>,
+ 						<0 0 0 3 &pcie2_intc 3>,
+ 						<0 0 0 4 &pcie2_intc 4>;
++				ti,syscon-unaligned-access = <&scm_conf1 0x14 2>;
+ 				pcie2_intc: interrupt-controller {
+ 					interrupt-controller;
+ 					#address-cells = <0>;
+-- 
+2.20.1
+
