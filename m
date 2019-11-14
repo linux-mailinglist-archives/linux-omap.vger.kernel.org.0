@@ -2,126 +2,141 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BE8FFC3D1
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2019 11:17:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C64BEFC407
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2019 11:24:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726605AbfKNKRJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 14 Nov 2019 05:17:09 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:49850 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725977AbfKNKRI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Nov 2019 05:17:08 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAEAH53q072937;
-        Thu, 14 Nov 2019 04:17:05 -0600
+        id S1726930AbfKNKYJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 14 Nov 2019 05:24:09 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:52238 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726473AbfKNKYJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Nov 2019 05:24:09 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAEANurN005852;
+        Thu, 14 Nov 2019 04:23:56 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1573726625;
-        bh=HedHmovqwkx7XL1pCgXazCvoJ3PZTV/ZjyzHwJfLFFs=;
-        h=From:To:CC:Subject:Date;
-        b=C0IQY/oEy9eiBRhmiuLe6N3WW5FGNfxSPSk/X+bqzZ3StAjIzgGiOu3ImDn/326hh
-         FAHhIo0w+jHOPPL8tSHCco047Cd3+1s5t0n+XjSv7aom2CRmyLmkPAdIOPM+659obs
-         eDps0ZgLAywVgRAohSiFfPqA3M9EZEQQOfNgmano=
-Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAEAH4Nd053996;
-        Thu, 14 Nov 2019 04:17:04 -0600
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+        s=ti-com-17Q1; t=1573727037;
+        bh=2tStGcP9xDBxKwRIpbRobeYLj2PF1b/AtmDfTiE4sb4=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=j34WU2ZJOLmGiYCtNPaksHWKLeugq0tr5yZ3gnraSp+XSPTecplIWF65NvKXIt30H
+         BjSyVQa6nv5dngrwfh/rqaj3Tilu9/xPg36v56pN0+CFKottI8Q8nVepdWA7qVND+F
+         4SyK1LyZYhdJ9PFZy0P+tLcMtynDlSiKIB8FcF7A=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAEANuci111617
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 14 Nov 2019 04:23:56 -0600
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 14
- Nov 2019 04:17:04 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2019 04:23:55 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 14 Nov 2019 04:17:04 -0600
-Received: from feketebors.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAEAH195020127;
-        Thu, 14 Nov 2019 04:17:01 -0600
+ Frontend Transport; Thu, 14 Nov 2019 04:23:55 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAEANpg5030936;
+        Thu, 14 Nov 2019 04:23:52 -0600
+Subject: Re: [PATCH] bus: ti-sysc: Add module enable quirk for audio AESS
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20191113173702.57107-1-tony@atomide.com>
 From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-To:     <t-kristo@ti.com>, <mturquette@baylibre.com>, <robh+dt@kernel.org>
-CC:     <sboyd@kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <tony@atomide.com>, <devicetree@vger.kernel.org>
-Subject: [PATCH] dt-bindings: clock: Move ti-dra7-atl.h to dt-bindigs/clock
-Date:   Thu, 14 Nov 2019 12:18:17 +0200
-Message-ID: <20191114101817.20831-1-peter.ujfalusi@ti.com>
-X-Mailer: git-send-email 2.24.0
+Message-ID: <4188f17f-67ce-42f8-c9c0-b7d6c74173a1@ti.com>
+Date:   Thu, 14 Nov 2019 12:25:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
+In-Reply-To: <20191113173702.57107-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Most of the clock related dt-binding header files are located in
-dt-bindings/clock folder. It would be good to keep all the similar
-header files at a single location.
 
-Suggested-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
----
- Documentation/devicetree/bindings/clock/ti/dra7-atl.txt | 4 ++--
- arch/arm/boot/dts/dra7-evm-common.dtsi                  | 2 +-
- arch/arm/boot/dts/dra72-evm-common.dtsi                 | 2 +-
- include/dt-bindings/{clk => clock}/ti-dra7-atl.h        | 0
- 4 files changed, 4 insertions(+), 4 deletions(-)
- rename include/dt-bindings/{clk => clock}/ti-dra7-atl.h (100%)
 
-diff --git a/Documentation/devicetree/bindings/clock/ti/dra7-atl.txt b/Documentation/devicetree/bindings/clock/ti/dra7-atl.txt
-index 10f7047755f3..21c002d28b9b 100644
---- a/Documentation/devicetree/bindings/clock/ti/dra7-atl.txt
-+++ b/Documentation/devicetree/bindings/clock/ti/dra7-atl.txt
-@@ -43,7 +43,7 @@ Configuration of ATL instances:
- 	- aws : Audio word select signal selection
- };
- 
--For valid word select signals, see the dt-bindings/clk/ti-dra7-atl.h include
-+For valid word select signals, see the dt-bindings/clock/ti-dra7-atl.h include
- file.
- 
- Examples:
-@@ -83,7 +83,7 @@ atl: atl@4843c000 {
- 	clock-names = "fck";
- };
- 
--#include <dt-bindings/clk/ti-dra7-atl.h>
-+#include <dt-bindings/clock/ti-dra7-atl.h>
- 
- &atl {
- 
-diff --git a/arch/arm/boot/dts/dra7-evm-common.dtsi b/arch/arm/boot/dts/dra7-evm-common.dtsi
-index 82eeba8faef1..23244b5a9942 100644
---- a/arch/arm/boot/dts/dra7-evm-common.dtsi
-+++ b/arch/arm/boot/dts/dra7-evm-common.dtsi
-@@ -4,7 +4,7 @@
-  */
- 
- #include <dt-bindings/gpio/gpio.h>
--#include <dt-bindings/clk/ti-dra7-atl.h>
-+#include <dt-bindings/clock/ti-dra7-atl.h>
- #include <dt-bindings/input/input.h>
- 
- / {
-diff --git a/arch/arm/boot/dts/dra72-evm-common.dtsi b/arch/arm/boot/dts/dra72-evm-common.dtsi
-index 8641a3d7d8ad..9eabfd1502da 100644
---- a/arch/arm/boot/dts/dra72-evm-common.dtsi
-+++ b/arch/arm/boot/dts/dra72-evm-common.dtsi
-@@ -6,7 +6,7 @@
- 
- #include "dra72x.dtsi"
- #include <dt-bindings/gpio/gpio.h>
--#include <dt-bindings/clk/ti-dra7-atl.h>
-+#include <dt-bindings/clock/ti-dra7-atl.h>
- 
- / {
- 	compatible = "ti,dra72-evm", "ti,dra722", "ti,dra72", "ti,dra7";
-diff --git a/include/dt-bindings/clk/ti-dra7-atl.h b/include/dt-bindings/clock/ti-dra7-atl.h
-similarity index 100%
-rename from include/dt-bindings/clk/ti-dra7-atl.h
-rename to include/dt-bindings/clock/ti-dra7-atl.h
--- 
-Peter
+On 13/11/2019 19.37, Tony Lindgren wrote:
+> We must set the autogating bit on enable for AESS (Audio Engine SubSystem)
+> when probed with ti-sysc interconnect target module driver. Otherwise it
+> won't idle properly.
+> 
+> Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/bus/ti-sysc.c                 | 14 +++++++++++++-
+>  include/linux/platform_data/ti-sysc.h |  1 +
+>  2 files changed, 14 insertions(+), 1 deletion(-)
+
+Tested-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
+> @@ -1248,6 +1248,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+>  		   SYSC_QUIRK_SWSUP_SIDLE),
+>  
+>  	/* Quirks that need to be set based on detected module */
+> +	SYSC_QUIRK("aess", 0, 0, 0x10, -1, 0x40000000, 0xffffffff,
+> +		   SYSC_MODULE_QUIRK_AESS),
+>  	SYSC_QUIRK("hdq1w", 0, 0, 0x14, 0x18, 0x00000006, 0xffffffff,
+>  		   SYSC_MODULE_QUIRK_HDQ1W),
+>  	SYSC_QUIRK("hdq1w", 0, 0, 0x14, 0x18, 0x0000000a, 0xffffffff,
+> @@ -1276,7 +1278,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+>  #ifdef DEBUG
+>  	SYSC_QUIRK("adc", 0, 0, 0x10, -1, 0x47300001, 0xffffffff, 0),
+>  	SYSC_QUIRK("atl", 0, 0, -1, -1, 0x0a070100, 0xffffffff, 0),
+> -	SYSC_QUIRK("aess", 0, 0, 0x10, -1, 0x40000000, 0xffffffff, 0),
+>  	SYSC_QUIRK("cm", 0, 0, -1, -1, 0x40000301, 0xffffffff, 0),
+>  	SYSC_QUIRK("control", 0, 0, 0x10, -1, 0x40000900, 0xffffffff, 0),
+>  	SYSC_QUIRK("cpgmac", 0, 0x1200, 0x1208, 0x1204, 0x4edb1902,
+> @@ -1408,6 +1409,14 @@ static void sysc_clk_enable_quirk_hdq1w(struct sysc *ddata)
+>  	sysc_write(ddata, offset, val);
+>  }
+>  
+> +/* AESS (Audio Engine SubSystem) needs autogating set after enable */
+> +static void sysc_module_enable_quirk_aess(struct sysc *ddata)
+> +{
+> +	int offset = 0x7c;	/* AESS_AUTO_GATING_ENABLE */
+> +
+> +	sysc_write(ddata, offset, 1);
+> +}
+> +
+>  /* I2C needs extra enable bit toggling for reset */
+>  static void sysc_clk_quirk_i2c(struct sysc *ddata, bool enable)
+>  {
+> @@ -1490,6 +1499,9 @@ static void sysc_init_module_quirks(struct sysc *ddata)
+>  		return;
+>  	}
+>  
+> +	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_AESS)
+> +		ddata->module_enable_quirk = sysc_module_enable_quirk_aess;
+> +
+>  	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_SGX)
+>  		ddata->module_enable_quirk = sysc_module_enable_quirk_sgx;
+>  
+> diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
+> --- a/include/linux/platform_data/ti-sysc.h
+> +++ b/include/linux/platform_data/ti-sysc.h
+> @@ -49,6 +49,7 @@ struct sysc_regbits {
+>  	s8 emufree_shift;
+>  };
+>  
+> +#define SYSC_MODULE_QUIRK_AESS		BIT(19)
+>  #define SYSC_MODULE_QUIRK_SGX		BIT(18)
+>  #define SYSC_MODULE_QUIRK_HDQ1W		BIT(17)
+>  #define SYSC_MODULE_QUIRK_I2C		BIT(16)
+> 
+
+- Péter
 
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
 Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
