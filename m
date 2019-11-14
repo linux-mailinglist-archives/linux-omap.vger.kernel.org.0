@@ -2,65 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D8B5FBB72
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Nov 2019 23:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7959EFC3CC
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2019 11:16:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726969AbfKMWO7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Nov 2019 17:14:59 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:59588 "EHLO
+        id S1726410AbfKNKQK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 14 Nov 2019 05:16:10 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:49696 "EHLO
         fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726189AbfKMWO4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Nov 2019 17:14:56 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xADMEodx086252;
-        Wed, 13 Nov 2019 16:14:50 -0600
+        with ESMTP id S1725977AbfKNKQK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Nov 2019 05:16:10 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAEAG5gx072653;
+        Thu, 14 Nov 2019 04:16:05 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1573683290;
-        bh=MoVVMIm/tqY3PrtvmbkHheuw5YFQdQcT2+p9yspkVRs=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=j1+uqJIIzrqdH74VK+NDeLipAvwK4oCMRGtFbBKYvxmiwPsNwe+Rg4lDICmeb0XnC
-         jZ3fhucDHX3PV69Fv6NjkgL8qXGlyxLnAUFTkXkcRzw5z2v+muKcxbQOKgALHft4lJ
-         hngMUbCwhNndKi+zsCuQ21uQrtCznOeq5wMQ+UMM=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xADMEorM120248
+        s=ti-com-17Q1; t=1573726565;
+        bh=LspHk1aChH4ufLzmXgiqvdBWcKeyK8U16diJVB/oWIU=;
+        h=From:To:CC:Subject:Date;
+        b=Kob0uFVDJBQR/hu1uILa+de9/e9alHQc+MMf97iLVFHDk7W2GXFV0rH4LC3pDw5J/
+         0GgMpSODh891evB2MKYyFi3RRZeQ4MXsjb9B6XKvts6mQyOtvNNs0MCBWbfqScjYND
+         EynsIQnQWeZNNVc9PLYkgAXVcVEbraUMCkj/7CzI=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAEAG5Z0005854
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 13 Nov 2019 16:14:50 -0600
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 13
- Nov 2019 16:14:31 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 14 Nov 2019 04:16:05 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 14
+ Nov 2019 04:16:04 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 13 Nov 2019 16:14:31 -0600
-Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xADMEnfo071231;
-        Wed, 13 Nov 2019 16:14:49 -0600
-Received: from localhost (ulb0232989.dhcp.ti.com [128.247.59.95])
-        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id xADMEnu04426;
-        Wed, 13 Nov 2019 16:14:49 -0600 (CST)
-From:   Caleb Robey <c-robey@ti.com>
-To:     <linux-patch-review@list.ti.com>
-CC:     Jason Kridner <jkridner@gmail.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>, Jason Kridner <jdk@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        "Andreas Dannenberg" <dannenberg@ti.com>,
-        Jean-Jacques Hiblot <jjhiblot@ti.com>,
-        "Caleb Robey" <c-robey@ti.com>, Praneeth Bajjuri <praneeth@ti.com>,
-        "Andrew F . Davis" <afd@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>
-Subject: [uL PATCH 2/2] ARM: dts: am5729: beaglebone-ai: dra7 reqs in dts
-Date:   Wed, 13 Nov 2019 16:13:44 -0600
-Message-ID: <20191113221345.4795-3-c-robey@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191113221345.4795-1-c-robey@ti.com>
-References: <20191113221345.4795-1-c-robey@ti.com>
+ Frontend Transport; Thu, 14 Nov 2019 04:16:04 -0600
+Received: from feketebors.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAEAG2C8022278;
+        Thu, 14 Nov 2019 04:16:02 -0600
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+To:     <t-kristo@ti.com>, <mturquette@baylibre.com>
+CC:     <sboyd@kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <tony@atomide.com>
+Subject: [PATCH] clk: ti: dra7-atl: Remove pm_runtime_irq_safe()
+Date:   Thu, 14 Nov 2019 12:17:18 +0200
+Message-ID: <20191114101718.20619-1-peter.ujfalusi@ti.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
@@ -68,27 +54,31 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Small nomenclature change for beaglebone AI compatibility.
+This is not needed for anything, and prevents proper PM transitions for
+parent devices which is bad in case of ti-sysc; this effectively kills
+PM completely. Thus, remove the flag.
 
-Signed-off-by: Jason Kridner <jdk@ti.com>
-
+Suggested-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- arch/arm/boot/dts/dra7.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/ti/clk-dra7-atl.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
-index 953f0ffce2a9..563d64c69fd4 100644
---- a/arch/arm/boot/dts/dra7.dtsi
-+++ b/arch/arm/boot/dts/dra7.dtsi
-@@ -143,7 +143,7 @@
- 	 * the moment, just use a fake OCP bus entry to represent the whole bus
- 	 * hierarchy.
- 	 */
--	ocp {
-+	ocp: ocp {
- 		compatible = "ti,dra7-l3-noc", "simple-bus";
- 		#address-cells = <1>;
- 		#size-cells = <1>;
+diff --git a/drivers/clk/ti/clk-dra7-atl.c b/drivers/clk/ti/clk-dra7-atl.c
+index f65e16c4f3c4..8d4c08b034bd 100644
+--- a/drivers/clk/ti/clk-dra7-atl.c
++++ b/drivers/clk/ti/clk-dra7-atl.c
+@@ -233,7 +233,6 @@ static int of_dra7_atl_clk_probe(struct platform_device *pdev)
+ 	cinfo->iobase = of_iomap(node, 0);
+ 	cinfo->dev = &pdev->dev;
+ 	pm_runtime_enable(cinfo->dev);
+-	pm_runtime_irq_safe(cinfo->dev);
+ 
+ 	pm_runtime_get_sync(cinfo->dev);
+ 	atl_write(cinfo, DRA7_ATL_PCLKMUX_REG(0), DRA7_ATL_PCLKMUX);
 -- 
-2.17.1
+Peter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
 
