@@ -2,19 +2,19 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC791FDC11
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Nov 2019 12:16:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39F9DFDC87
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Nov 2019 12:49:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727171AbfKOLP7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 15 Nov 2019 06:15:59 -0500
-Received: from mx2.suse.de ([195.135.220.15]:42062 "EHLO mx1.suse.de"
+        id S1727265AbfKOLt2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 Nov 2019 06:49:28 -0500
+Received: from mx2.suse.de ([195.135.220.15]:57548 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727022AbfKOLP7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 15 Nov 2019 06:15:59 -0500
+        id S1726983AbfKOLt2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 15 Nov 2019 06:49:28 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 61B3EACEC;
-        Fri, 15 Nov 2019 11:15:56 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id AEDCEADCB;
+        Fri, 15 Nov 2019 11:49:25 +0000 (UTC)
 Subject: Re: Sense of soc bus? (was: [PATCH] base: soc: Export
  soc_device_to_device() helper)
 To:     Rob Herring <robh@kernel.org>
@@ -34,7 +34,7 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         NXP Linux Team <linux-imx@nxp.com>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        linux-amlogic@lists.infradead.org,
         Lee Jones <lee.jones@linaro.org>,
         linux-omap <linux-omap@vger.kernel.org>,
         Alexander Sverdlin <alexander.sverdlin@gmail.com>,
@@ -44,7 +44,7 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Shawn Guo <shawnguo@kernel.org>,
         Architecture Mailman List <boot-architecture@lists.linaro.org>,
-        U-Boot <u-boot@lists.denx.de>
+        DTML <devicetree@vger.kernel.org>
 References: <20191103013645.9856-3-afaerber@suse.de>
  <20191111045609.7026-1-afaerber@suse.de> <20191111052741.GB3176397@kroah.com>
  <586fa37c-6292-aca4-fa7c-73064858afaf@suse.de>
@@ -56,8 +56,8 @@ References: <20191103013645.9856-3-afaerber@suse.de>
  <CAL_JsqLr=fw6zxa=69rtgZ4oxzdw=cVDr3km5ya0pRGsNT1xLw@mail.gmail.com>
 From:   =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
 Organization: SUSE Software Solutions Germany GmbH
-Message-ID: <faa9924a-1c61-349c-9c35-da83fd0b3547@suse.de>
-Date:   Fri, 15 Nov 2019 12:15:50 +0100
+Message-ID: <8411cceb-56f1-bcb3-96b6-5a2aaedd18cf@suse.de>
+Date:   Fri, 15 Nov 2019 12:49:22 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
@@ -72,116 +72,65 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 Am 14.11.19 um 23:09 schrieb Rob Herring:
 > On Tue, Nov 12, 2019 at 4:47 AM Andreas Färber <afaerber@suse.de> wrote:
->> On the other hand, one might argue that such information should just be
->> parsed by EBBR-conformant bootloaders and be passed to the kernel via
->> standard UEFI interfaces and DMI tables. But I'm not aware of Barebox
->> having implemented any of that yet, and even for U-Boot (e.g., Realtek
->> based consumer devices...) not everyone has the GPL sources or tools to
->> update their bootloader. So, having the kernel we control gather
->> information relevant to kernel developers does make some sense to me.
+>> Finally, arch/arm seems unique in that it has the machine_desc mechanism
+>> that allows individual SoCs to force creating their soc_device early and
+>> using it as parent for further DT-created platform_devices. With arm64
+>> we've lost that ability, and nios2 is not using it either.
+>> A bad side effect (with SUSE hat on) is that this parent design pattern
+>> does not allow to build such drivers as modules, which means that distro
+>> configs using arm's multi-platform, e.g., CONFIG_ARCH_MULTI_V7 will get
+>> unnecessary code creep as new platforms get added over time (beyond the
+>> basic clk, pinctrl, tty and maybe timer).
+>> Even if it were possible to call into a driver module that early, using
+>> it as parent would seem to imply that all the references by its children
+>> would not allow to unload the module, which I'd consider a flawed design
+>> for such an "optional" read-once driver. If we want the device hierarchy
+>> to have a soc root then most DT based platforms will have a /soc DT node
+>> anyway (although no device_type = "soc") that we probably could have a
+>> device registered for in common code rather than each SoC platform
+>> handling that differently? That might then make soc_register_device()
+>> not the creator of the device (if pre-existent) but the supplier of data
+>> to that core device, which should then allow to unload the data provider
+>> with just the sysfs data disappearing until re-inserted (speeding up the
+>> develop-and-test cycle on say not-so-resource-constrained platforms).
 > 
-> UEFI and DMI are orthogonal, right. You can't expect DMI on a UEFI+DT system.
+> I for one would like to for this to be consistent. Either we always
+> have an SoC device parent or never. I wouldn't decide based on having
+> a DT node or not either.
 
-Not sure, that's why I CC'ed the EBBR folks for input. If it's not
-mandatory today, the next revision of EBBR could just require it - if
-that's the unified way between SBBR and EBBR. Little point in doing it
-only for EBBR.
+Sure, if we can always be consistent, that might be best.
 
-On my UEFI+DT based Raspberry Pi 3 Model B I do see it, note the
-non-filled Processor Information delivered by U-Boot:
+Where I was coming from here is that, if we're not supposed to use
+soc_device_to_device(), then we have no way to associate an of_node with
+the soc_device from the outside (and nobody was doing it today, as per
+my analysis). We'd either need a new helper of_soc_device_register()
+with additional argument for the node, or it would need to be done
+entirely in the infrastructure as I suggested, be it by looking for one
+hardcoded /soc node or for nodes with device_type = "soc".
 
-raspi3:~ # dmidecode
-# dmidecode 3.2
-Getting SMBIOS data from sysfs.
-SMBIOS 3.0 present.
-7 structures occupying 253 bytes.
-Table at 0x3CB3E020.
+Rob, in light of this discussion, should we start adding the latter
+property for new DTs such as my new Realtek SoCs, or was there a reason
+this has not been used consistently outside of powerpc and nios2?
+Intel/Altera appear to be the only two in arm64, with only three more in
+arm, none in mips.
 
-Handle 0x0000, DMI type 0, 24 bytes
-BIOS Information
-	Vendor: U-Boot
-	Version: 2019.10
-	Release Date: 10/26/2019
-	ROM Size: 64 kB
-	Characteristics:
-		PCI is supported
-		BIOS is upgradeable
-		Selectable boot is supported
-		I2O boot is supported
-		Targeted content distribution is supported
+(BTW my assumption was that we don't follow the booting-without-of.txt
+documented schema of soc<SOCname> so that we can share .dtsi across
+differently named SoCs, is that correct?)
 
-Handle 0x0001, DMI type 1, 27 bytes
-System Information
-	Manufacturer: raspberrypi
-	Product Name: rpi
-	Version: Not Specified
-	Serial Number: 00000000********
-	UUID: 30303030-3030-3030-6437-623461336666
-	Wake-up Type: Reserved
-	SKU Number: Not Specified
-	Family: Not Specified
+> Generally, we should always have MMIO devices
+> under a bus node and perhaps more than one, but that doesn't always
+> happen. I think building the drivers as modules is a good reason to do
+> away with the parent device.
+> 
+> It would also allow getting rid of remaining
+> of_platform_default_populate calls in arm platforms except for auxdata
+> cases. Pretty much that's the ones you list below in arch/arm/.
 
-Handle 0x0002, DMI type 2, 14 bytes
-Base Board Information
-	Manufacturer: raspberrypi
-	Product Name: rpi
-	Version: Not Specified
-	Serial Number: Not Specified
-	Asset Tag: Not Specified
-	Features:
-		Board is a hosting board
-	Location In Chassis: Not Specified
-	Chassis Handle: 0x0000
-	Type: Motherboard
+The majority was indeed passing in NULL, so yeah, we might clean that
+up, if someone could come up with a plan of where/how to implement it.
 
-Handle 0x0003, DMI type 3, 21 bytes
-Chassis Information
-	Manufacturer: raspberrypi
-	Type: Desktop
-	Lock: Not Present
-	Version: Not Specified
-	Serial Number: Not Specified
-	Asset Tag: Not Specified
-	Boot-up State: Safe
-	Power Supply State: Safe
-	Thermal State: Safe
-	Security Status: None
-	OEM Information: 0x00000000
-	Height: Unspecified
-	Number Of Power Cords: Unspecified
-	Contained Elements: 0
-
-Handle 0x0004, DMI type 4, 48 bytes
-Processor Information
-	Socket Designation: Not Specified
-	Type: Central Processor
-	Family: Unknown
-	Manufacturer: Unknown
-	ID: 00 00 00 00 00 00 00 00
-	Version: Unknown
-	Voltage: Unknown
-	External Clock: Unknown
-	Max Speed: Unknown
-	Current Speed: Unknown
-	Status: Unpopulated
-	Upgrade: None
-	L1 Cache Handle: Not Provided
-	L2 Cache Handle: Not Provided
-	L3 Cache Handle: Not Provided
-	Serial Number: Not Specified
-	Asset Tag: Not Specified
-	Part Number: Not Specified
-	Characteristics: None
-
-Handle 0x0005, DMI type 32, 11 bytes
-System Boot Information
-	Status: No errors detected
-
-Handle 0x0006, DMI type 127, 4 bytes
-End Of Table
-
-
-Regards,
+Cheers,
 Andreas
 
 -- 
