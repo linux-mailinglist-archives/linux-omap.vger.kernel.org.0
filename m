@@ -2,126 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3D0AFDDF8
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Nov 2019 13:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD340FE1D8
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Nov 2019 16:49:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727497AbfKOMfK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Fri, 15 Nov 2019 07:35:10 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:38854 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727496AbfKOMfK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 15 Nov 2019 07:35:10 -0500
-Received: by mail-ot1-f67.google.com with SMTP id z25so7888900oti.5;
-        Fri, 15 Nov 2019 04:35:07 -0800 (PST)
+        id S1727719AbfKOPtq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 Nov 2019 10:49:46 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:33646 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727698AbfKOPto (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 15 Nov 2019 10:49:44 -0500
+Received: by mail-io1-f67.google.com with SMTP id j13so10950620ioe.0
+        for <linux-omap@vger.kernel.org>; Fri, 15 Nov 2019 07:49:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
+        b=T96mBsWswYjsm0w7ecYkWpV509ib/ulk9bHbI0Xwo0rzkePegh7rSfOcmzGbyf8vTc
+         lns/HOXyf4/6jOYDVIgZ/CZyIfN2m2y88qVdmXSABhNsP0MXDIRsHGSOOd7wWkwuGiQx
+         ehcoBpFXp6INIFq3jwmveina1L3fsWjpzHRhMvlhwo8OJ8Dy4xuFXwCrYZiL/Ja/dmiU
+         sEvBblBcC09ww5H/W1Li3rJXBc1TYjMn46kjeboNwYGUiqFeNnjz46iJxarBlBzUTpau
+         7EU4w1MkRxjhgPFrJ2/ipVqnuE4IawmENFYcW1JVUg9OFLrEKZvfb77T8+3XayPV4Zd+
+         KrHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=weseOzPMtZu2Zkh9G1J+5ddsMGjRBKSp1rgb8MnewWI=;
-        b=Y8gMEmARIyyPz+5yibhUCCzAPO8+umg05BceZRw1lhRNI3WYVX4DoF1CpYG3mIO79c
-         6spRqeeWPCv3nLKnZjfHWVKFCbI1V/1QkpKj7r+cQ1ywtGsD9Bhe6QC5rfYqoSoVb3h3
-         rsdGDLWMsjl58Zxwl3Nn4DNWBvAnQxQMxfpcVp0NV1EOiMTlI850NHBR3C+6jh0oWYDF
-         ezTQikj6OS1Sv+fYoYPvY0cYAjc6W3Rjlzk1HphvRjRBDNy7CAc35HGRlfr2YFa8UNr0
-         9avmZa0xoj+HQgi+UFCOy+1xkRxjHQlgZ69gjNNYrulWLFSQgjFQ4uLo9/h1BqI+H6+p
-         Q2nQ==
-X-Gm-Message-State: APjAAAVEGi2hyVQP1mXyBRULe4XhdpBdwmTMgmazAmkhvw4+RZq2abJ2
-        EhilzH4vCKDUF7YNzV1fbsIxU/WVhISlQhPzARc=
-X-Google-Smtp-Source: APXvYqxQbOJhyQwpGQWBZF1hmsyHYrJBcMAR+hAoTdODxyYX/u2VKxAy7/eJUh/M6a4TbETYPv02VjN0xr9BlR4aCVA=
-X-Received: by 2002:a9d:5511:: with SMTP id l17mr2945702oth.145.1573821307279;
- Fri, 15 Nov 2019 04:35:07 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
+        b=GfZ6oNNtEQYWOCNaP/g0EaitHeSdYFpDy56tyaBxsq1r9B14xiGSvXXqr5JotVAZLQ
+         dER6hpmLvsf2SN9xiMm27Ad5CAa5+iaPAMM1ipxJ40eMEWzXKda5uLQKbNsYF9tDhDml
+         Bqtt6JYOKpq4ZgCeLgPiE/7FG5Xkd3VXcTc9YKLBbDVauvwzjwodUd5ZUXUOEOd897WG
+         ZP53wqQ8TnPQuFBBWFPhX+kDgr2VkuJrrnWYWex89mBUOiPAQR+zr93zoRF+gto8WvHb
+         Q/vu8SX6U3kTh5MJiwXQ40ej/Pzd492KDPJQH/otIzdjSETAzfehjOsAvPzW3RQB2kl3
+         UStg==
+X-Gm-Message-State: APjAAAUbv3DMxZ6MskGKzf7xcEZiIJft8UT1sSUeW+8Ad4SHL7At4TML
+        +XmqO8xtZ9A7s0GzeKfifdirE7UQ9JCMk7LyDg==
+X-Google-Smtp-Source: APXvYqxEj1beLI6zhjihT/lmX2Dk324PGcIr8veC5c+0F/PFQKT7AeNYgljOGh72OwNqCMMZvqGkvMbSAqCkDjgGkjg=
+X-Received: by 2002:a5e:8e02:: with SMTP id a2mr1343031ion.269.1573832982053;
+ Fri, 15 Nov 2019 07:49:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20191103013645.9856-3-afaerber@suse.de> <20191111045609.7026-1-afaerber@suse.de>
- <20191111052741.GB3176397@kroah.com> <586fa37c-6292-aca4-fa7c-73064858afaf@suse.de>
- <20191111064040.GA3502217@kroah.com> <a88442df-dc6b-07e5-8dee-9e308bdda450@suse.de>
- <20191112052347.GA1197504@kroah.com> <20191112072926.isjxfa4ci6akhx56@pengutronix.de>
- <aff81b8e-f041-73a5-6a95-d308fa07842c@suse.de> <c8572f70-5550-8cee-4381-fd7de7ae5af0@baylibre.com>
- <CAMuHMdWOWWQoJh5=07VMRhtrFR_Gc_qNhjTV4tCsvwvMn0kYfA@mail.gmail.com> <a0a6d71f-4fb7-51ce-fe33-74f9e588b791@suse.de>
-In-Reply-To: <a0a6d71f-4fb7-51ce-fe33-74f9e588b791@suse.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 15 Nov 2019 13:34:55 +0100
-Message-ID: <CAMuHMdU7EYHWRAR+s3ee4Wy6+6_MZON5xARszO7TDXZGyw8d5w@mail.gmail.com>
-Subject: Re: Sense of soc bus? (was: [PATCH] base: soc: Export
- soc_device_to_device() helper)
-To:     =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-realtek-soc@lists.infradead.org,
-        Tony Lindgren <tony@atomide.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Rob Herring <robh@kernel.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        boot-architecture@lists.linaro.org,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
-        <linux-omap@vger.kernel.org>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>
+Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 15 Nov 2019 07:49:41
+ -0800 (PST)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Ms.Mary Coster" <info.zennitbankplcnigerian@gmail.com>
+Date:   Fri, 15 Nov 2019 16:49:41 +0100
+Message-ID: <CABHzvrkUQbbmg0Gr7foD3OjAJiY7Fd37=SW3mU=fnOPOcOyNdQ@mail.gmail.com>
+Subject: Goodnews, I have deposited your transfer total amount US$4.8million
+ Dollars with Money Gram this morning. we agreed you will be receiving it
+ $5000.00 daily.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Andreas,
-
-On Fri, Nov 15, 2019 at 1:01 PM Andreas Färber <afaerber@suse.de> wrote:
-> Am 15.11.19 um 09:58 schrieb Geert Uytterhoeven:
-> > On Fri, Nov 15, 2019 at 9:52 AM Neil Armstrong <narmstrong@baylibre.com> wrote:
-> >> On 12/11/2019 11:47, Andreas Färber wrote:
-> >>> For example, RTD1295 will support LSADC only from revision B00
-> >>> on (and it's not the first time I'm seeing such things in the industry).
-> >>> So if a user complains, it will be helpful to see that information.
-> >>>
-> >>> Referencing your Amlogic review, with all due respect for its authors,
-> >>> the common framework here just lets that information evaporate into the
-> >>> deeps of sysfs.
-> >>
-> >> Hopefully we never had the case where needed to use the soc info in drivers,
-> >> but now we have one and having such infrastructure already in-place will help.
-> >>
-> >> Renesas platforms makes a extensive usage of the soc info infrastructure to
-> >> figure out plenty of HW parameters at runtime and lower their DT changes.
-> >
-> > We do our best to use it solely for detecting quirks in early SoC revisions.
->
-> Got a pointer? I fail to immediately understand how sysfs would help
-> drivers (as opposed to userspace) detect quirks: Parsing strings back
-> doesn't sound efficient, and I don't see you exporting any custom APIs
-> in drivers/soc/renesas/renesas-soc.c?
-
-We use soc_device_match(), inside kernel drivers.
-Exposure through sysfs is a side-effect of using soc_device_register(),
-and welcomed, as it allows the user to find out quickly which SoC and
-revision is being used.
-
-FTR, lshw (Ubuntu 18.04 has v2.18, which does seem to be the latest
-upstream version) does not parse /sys/devices/soc0/.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Attn, Dear
+Goodnews, I have deposited your transfer total amount US$4.8million
+Dollars with Money Gram this morning. we agreed you will be receiving
+it $5000.00 daily.
+Contact Mr. John Dave Director, Money Gram to pick up your first Money
+Gram payment $5000.00 today.
+Contact Person; Mr. John Dave Director, Money Gram,International
+Remittance-Benin
+Email; moneygram.1820@outlook.fr
+Telephone; +229 62619517
+Please re-confirm your address to him once again such as listed below.
+1.Your Full Name..............................
+2.Address.........................
+3.Country....................
+4.Sex.........................................
+5.Your telephone numbers..........................
+6. Copy of your ID...........................
+This is to avoid sending your funds to wrong person, He is waiting to
+hear from you urgent today.
+Let me know once you pick up your transfer $5000.00 today.
+Finally, Note I have paid for the service fees, but only money will
+send to him is $90.00 transfer fee before you can pick up the transfer
+today.
+Ask, Mr. John Dave Director, Money Gram to give you direction where to
+send your transfer fee $90.00 only to Him Immediately so that you can
+pick up $5000.00 us dollars today.
+Thanks for undrstanding.
+Mary Coster
+m.coster@aol.com
