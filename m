@@ -2,36 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B082FF394
-	for <lists+linux-omap@lfdr.de>; Sat, 16 Nov 2019 17:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85AB9FF2DF
+	for <lists+linux-omap@lfdr.de>; Sat, 16 Nov 2019 17:22:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728926AbfKPQ01 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 16 Nov 2019 11:26:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45264 "EHLO mail.kernel.org"
+        id S1728760AbfKPQVw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 16 Nov 2019 11:21:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47450 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727804AbfKPPlz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 16 Nov 2019 10:41:55 -0500
+        id S1728725AbfKPPn1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 16 Nov 2019 10:43:27 -0500
 Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D02F2075E;
-        Sat, 16 Nov 2019 15:41:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3EB142072D;
+        Sat, 16 Nov 2019 15:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573918914;
-        bh=cTbj6kOszfLz/oxz/9GOU8X8ThfPuqYFmp+Zf3cX2vg=;
+        s=default; t=1573919006;
+        bh=8dmS8o1S1OWyghfPQaJAbhcPEyv6AWCXgS+qPBjMVWE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uMJUzoFbOLWkXF0tTeIoqeDFDDnmQ0yWTv8ggkMJt7zaC9CWZxQdcuUV8Xv1vtqBJ
-         VxWjyh6Ft+mTsuewIDyV4c360LsoArH50cd9psPugFare7Zj462IoZeSBo8ZHorCKB
-         TSlwSnD9IsUWPUFcRBU5xXXTfG+MOEGh14SQtRKI=
+        b=SWFnamHmPeOpXYByNutqf8rIRd7MLsZRsOojIIy+4SGTcbCUx+3XdxgviAsrPOzc+
+         ffhb8sBp3R5SHEVS4UKMV1brNmPTy6RgjmSs5U47LlreWpTjNjU8FynlWGh9pZHhz1
+         rA7TxUyTVBE5xQxw+XBkjTk3in7Xbnp/pNcFXAtY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
         "David S . Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 037/237] net: ethernet: ti: cpsw: fix lost of mcast packets while rx_mode update
-Date:   Sat, 16 Nov 2019 10:37:52 -0500
-Message-Id: <20191116154113.7417-37-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 108/237] net: ethernet: ti: cpsw: unsync mcast entries while switch promisc mode
+Date:   Sat, 16 Nov 2019 10:39:03 -0500
+Message-Id: <20191116154113.7417-108-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191116154113.7417-1-sashal@kernel.org>
 References: <20191116154113.7417-1-sashal@kernel.org>
@@ -46,106 +47,38 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
 
-[ Upstream commit 5da1948969bc1991920987ce4361ea56046e5a98 ]
+[ Upstream commit 9737cc99dd14b5b8b9d267618a6061feade8ea68 ]
 
-Whenever kernel or user decides to call rx mode update, it clears
-every multicast entry from forwarding table and in some time adds
-it again. This time can be enough to drop incoming multicast packets.
+After flushing all mcast entries from the table, the ones contained in
+mc list of ndev are not restored when promisc mode is toggled off,
+because they are considered as synched with ALE, thus, in order to
+restore them after promisc mode - reset syncing info. This fix
+touches only switch mode devices, including single port boards
+like Beagle Bone.
 
-That's why clear only staled multicast entries and update or add new
-one afterwards.
+Fixes: commit 5da1948969bc
+("net: ethernet: ti: cpsw: fix lost of mcast packets while rx_mode update")
 
 Signed-off-by: Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>
+Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw.c | 46 +++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/ti/cpsw.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index 1afed85550c0a..ef79d2b6070b9 100644
+index ef79d2b6070b9..8f93ef74fa407 100644
 --- a/drivers/net/ethernet/ti/cpsw.c
 +++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -570,7 +570,7 @@ static inline int cpsw_get_slave_port(u32 slave_num)
- 	return slave_num + 1;
- }
+@@ -642,6 +642,7 @@ static void cpsw_set_promiscious(struct net_device *ndev, bool enable)
  
--static void cpsw_add_mcast(struct cpsw_priv *priv, u8 *addr)
-+static void cpsw_add_mcast(struct cpsw_priv *priv, const u8 *addr)
- {
- 	struct cpsw_common *cpsw = priv->cpsw;
+ 			/* Clear all mcast from ALE */
+ 			cpsw_ale_flush_multicast(ale, ALE_ALL_PORTS, -1);
++			__dev_mc_unsync(ndev, NULL);
  
-@@ -662,16 +662,35 @@ static void cpsw_set_promiscious(struct net_device *ndev, bool enable)
- 	}
- }
- 
--static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
-+static int cpsw_add_mc_addr(struct net_device *ndev, const u8 *addr)
-+{
-+	struct cpsw_priv *priv = netdev_priv(ndev);
-+
-+	cpsw_add_mcast(priv, addr);
-+	return 0;
-+}
-+
-+static int cpsw_del_mc_addr(struct net_device *ndev, const u8 *addr)
- {
- 	struct cpsw_priv *priv = netdev_priv(ndev);
- 	struct cpsw_common *cpsw = priv->cpsw;
--	int vid;
-+	int vid, flags;
- 
--	if (cpsw->data.dual_emac)
-+	if (cpsw->data.dual_emac) {
- 		vid = cpsw->slaves[priv->emac_port].port_vlan;
--	else
--		vid = cpsw->data.default_vlan;
-+		flags = ALE_VLAN;
-+	} else {
-+		vid = 0;
-+		flags = 0;
-+	}
-+
-+	cpsw_ale_del_mcast(cpsw->ale, addr, 0, flags, vid);
-+	return 0;
-+}
-+
-+static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
-+{
-+	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
- 
- 	if (ndev->flags & IFF_PROMISC) {
- 		/* Enable promiscuous mode */
-@@ -684,19 +703,9 @@ static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
- 	}
- 
- 	/* Restore allmulti on vlans if necessary */
--	cpsw_ale_set_allmulti(cpsw->ale, priv->ndev->flags & IFF_ALLMULTI);
--
--	/* Clear all mcast from ALE */
--	cpsw_ale_flush_multicast(cpsw->ale, ALE_ALL_PORTS, vid);
-+	cpsw_ale_set_allmulti(cpsw->ale, ndev->flags & IFF_ALLMULTI);
- 
--	if (!netdev_mc_empty(ndev)) {
--		struct netdev_hw_addr *ha;
--
--		/* program multicast address list into ALE register */
--		netdev_for_each_mc_addr(ha, ndev) {
--			cpsw_add_mcast(priv, ha->addr);
--		}
--	}
-+	__dev_mc_sync(ndev, cpsw_add_mc_addr, cpsw_del_mc_addr);
- }
- 
- static void cpsw_intr_enable(struct cpsw_common *cpsw)
-@@ -1956,6 +1965,7 @@ static int cpsw_ndo_stop(struct net_device *ndev)
- 	struct cpsw_common *cpsw = priv->cpsw;
- 
- 	cpsw_info(priv, ifdown, "shutting down cpsw device\n");
-+	__dev_mc_unsync(priv->ndev, cpsw_del_mc_addr);
- 	netif_tx_stop_all_queues(priv->ndev);
- 	netif_carrier_off(priv->ndev);
- 
+ 			/* Flood All Unicast Packets to Host port */
+ 			cpsw_ale_control_set(ale, 0, ALE_P0_UNI_FLOOD, 1);
 -- 
 2.20.1
 
