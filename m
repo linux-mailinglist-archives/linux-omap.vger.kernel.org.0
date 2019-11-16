@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3593FF147
-	for <lists+linux-omap@lfdr.de>; Sat, 16 Nov 2019 17:11:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82344FF022
+	for <lists+linux-omap@lfdr.de>; Sat, 16 Nov 2019 17:03:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731776AbfKPQLD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 16 Nov 2019 11:11:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56022 "EHLO mail.kernel.org"
+        id S1728632AbfKPPwD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 16 Nov 2019 10:52:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60910 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728791AbfKPPsp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 16 Nov 2019 10:48:45 -0500
+        id S1730964AbfKPPwD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 16 Nov 2019 10:52:03 -0500
 Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 80CCB207FA;
-        Sat, 16 Nov 2019 15:48:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B1F1E20857;
+        Sat, 16 Nov 2019 15:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573919324;
-        bh=lMd0ULnEjuLF1xXeEfYBsc42wu6keCNdLjOP6QIpqZ8=;
+        s=default; t=1573919523;
+        bh=20y6msOi7lmlQ6mQ3DWuL9/PRbBq+fbqGSZPVLo2ebQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qn2RmOn4IT31bTXc0snjuRFXn0t2SaEJ6xt77hti5cRcegMUaeJTzIJlnUvD3gEc0
-         onpc+oR+qwFbzTcGAAttRIun3Ac7AdScpeudib2GEVfkzSByKTLd/UAOBObXCeZK2H
-         VOY5gBhrFGLgqEzhaDgFlRIFoXsXTZIzp2u/zQjk=
+        b=1MounI3om4lsBd5TlhZISoV9L21Zc9G2m0T+V/y7XX8BHPonJe8/9VEEHo3Ih9y2C
+         Qy8TJVVyuM3HGxukFjLcklFsBNZ2wr8BgSKBDACSVDlfX4ebqmdwbvCisd7nUQUUGC
+         Gvfo5sOF20HAyKRqeG9vCosvYf1lmJ4Ot2EWgTBE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
@@ -30,12 +30,12 @@ Cc:     Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
         "David S . Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 066/150] net: ethernet: ti: cpsw: unsync mcast entries while switch promisc mode
-Date:   Sat, 16 Nov 2019 10:46:04 -0500
-Message-Id: <20191116154729.9573-66-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 44/99] net: ethernet: ti: cpsw: unsync mcast entries while switch promisc mode
+Date:   Sat, 16 Nov 2019 10:50:07 -0500
+Message-Id: <20191116155103.10971-44-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191116154729.9573-1-sashal@kernel.org>
-References: <20191116154729.9573-1-sashal@kernel.org>
+In-Reply-To: <20191116155103.10971-1-sashal@kernel.org>
+References: <20191116155103.10971-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -68,10 +68,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index 8cb44eabc2835..a44838aac97de 100644
+index d7cb205fe7e26..892b06852e150 100644
 --- a/drivers/net/ethernet/ti/cpsw.c
 +++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -601,6 +601,7 @@ static void cpsw_set_promiscious(struct net_device *ndev, bool enable)
+@@ -590,6 +590,7 @@ static void cpsw_set_promiscious(struct net_device *ndev, bool enable)
  
  			/* Clear all mcast from ALE */
  			cpsw_ale_flush_multicast(ale, ALE_ALL_PORTS, -1);
