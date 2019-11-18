@@ -2,64 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61A0D100262
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Nov 2019 11:30:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A25C41003A0
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Nov 2019 12:16:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726600AbfKRKaV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 Nov 2019 05:30:21 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6695 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726518AbfKRKaV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 18 Nov 2019 05:30:21 -0500
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id D197BD3C524BE13E6ED3;
-        Mon, 18 Nov 2019 18:30:18 +0800 (CST)
-Received: from huawei.com (10.90.53.225) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Mon, 18 Nov 2019
- 18:30:09 +0800
-From:   zhengbin <zhengbin13@huawei.com>
-To:     <tony@atomide.com>, <linux-omap@vger.kernel.org>
-CC:     <zhengbin13@huawei.com>
-Subject: [PATCH -next v2] bus: ti-sysc: Use PTR_ERR_OR_ZERO() to simplify code
-Date:   Mon, 18 Nov 2019 18:37:32 +0800
-Message-ID: <1574073452-23722-1-git-send-email-zhengbin13@huawei.com>
-X-Mailer: git-send-email 2.7.4
+        id S1726490AbfKRLQJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 Nov 2019 06:16:09 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:37396 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726460AbfKRLQJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 Nov 2019 06:16:09 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAIBG2Qi087504;
+        Mon, 18 Nov 2019 05:16:02 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1574075762;
+        bh=AJvnVF1CcG+/gURcJHJhczdZXGZag1iFxD+yTRdx1ZY=;
+        h=From:To:CC:Subject:Date;
+        b=ldFG0MXIw3w5DNnhOG7Qs4x1UgFodOZX9Pd6Xp+3DTSEc9LCWdXmO5LJKC/EPhUkq
+         LuqPJMHY703pBjeWQQFyP3HZ3sHj5BdD4XnqsBcDVNoqlXATK55Wv/gkyHaBsrP8Vn
+         s2X/v4m11oGHyNUd7Wl9wjyjGfrzYgdsgxBSGQSU=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAIBG1hu028365;
+        Mon, 18 Nov 2019 05:16:01 -0600
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 18
+ Nov 2019 05:16:01 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 18 Nov 2019 05:16:01 -0600
+Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAIBFw3a035927;
+        Mon, 18 Nov 2019 05:15:59 -0600
+From:   Faiz Abbas <faiz_abbas@ti.com>
+To:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+CC:     <mark.rutland@arm.com>, <robh+dt@kernel.org>, <tony@atomide.com>,
+        <bcousson@baylibre.com>, <faiz_abbas@ti.com>,
+        <robertcnelson@gmail.com>
+Subject: [PATCH] ARM: dts: am57xx-beagle-x15: Update pinmux name to ddr_3_3v
+Date:   Mon, 18 Nov 2019 16:46:54 +0530
+Message-ID: <20191118111654.9843-1-faiz_abbas@ti.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.90.53.225]
-X-CFilter-Loop: Reflected
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fixes coccicheck warning:
+am57xx-beagle-x15 revb1 and revc have 3.3V connected to the eMMC I/O
+lines. Update the pinmux name to reflect this.
 
-drivers/bus/ti-sysc.c:506:1-3: WARNING: PTR_ERR_OR_ZERO can be used
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: zhengbin <zhengbin13@huawei.com>
+Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
 ---
-v1->v2: remove empty line, sorry for the previous noise
- drivers/bus/ti-sysc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts | 2 +-
+ arch/arm/boot/dts/am57xx-beagle-x15-revc.dts  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 56887c6..aa55275 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -503,10 +503,8 @@ static int sysc_init_resets(struct sysc *ddata)
- {
- 	ddata->rsts =
- 		devm_reset_control_get_optional_shared(ddata->dev, "rstctrl");
--	if (IS_ERR(ddata->rsts))
--		return PTR_ERR(ddata->rsts);
-
--	return 0;
-+	return PTR_ERR_OR_ZERO(ddata->rsts);
- }
-
- /**
---
-2.7.4
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts b/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts
+index 7b113b52c3fb..39d1c4ff5749 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-revb1.dts
+@@ -24,7 +24,7 @@
+ };
+ 
+ &mmc2 {
+-	pinctrl-names = "default", "hs", "ddr_1_8v";
++	pinctrl-names = "default", "hs", "ddr_3_3v";
+ 	pinctrl-0 = <&mmc2_pins_default>;
+ 	pinctrl-1 = <&mmc2_pins_hs>;
+ 	pinctrl-2 = <&mmc2_pins_ddr_3_3v_rev11 &mmc2_iodelay_ddr_3_3v_rev11_conf>;
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts b/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts
+index 30c500b15b21..4187a9729f96 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-revc.dts
+@@ -24,7 +24,7 @@
+ };
+ 
+ &mmc2 {
+-	pinctrl-names = "default", "hs", "ddr_1_8v";
++	pinctrl-names = "default", "hs", "ddr_3_3v";
+ 	pinctrl-0 = <&mmc2_pins_default>;
+ 	pinctrl-1 = <&mmc2_pins_hs>;
+ 	pinctrl-2 = <&mmc2_pins_ddr_rev20>;
+-- 
+2.19.2
 
