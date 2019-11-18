@@ -2,52 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FC23100D6F
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Nov 2019 22:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98B67100E7A
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Nov 2019 22:58:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726695AbfKRVKF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 Nov 2019 16:10:05 -0500
-Received: from muru.com ([72.249.23.125]:42754 "EHLO muru.com"
+        id S1726895AbfKRV6C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 Nov 2019 16:58:02 -0500
+Received: from muru.com ([72.249.23.125]:42764 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726664AbfKRVKF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 18 Nov 2019 16:10:05 -0500
+        id S1726272AbfKRV6C (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 18 Nov 2019 16:58:02 -0500
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 1C25380BF;
-        Mon, 18 Nov 2019 21:10:41 +0000 (UTC)
-Date:   Mon, 18 Nov 2019 13:10:01 -0800
+        by muru.com (Postfix) with ESMTPS id 6AE9F80BF;
+        Mon, 18 Nov 2019 21:58:39 +0000 (UTC)
+Date:   Mon, 18 Nov 2019 13:57:59 -0800
 From:   Tony Lindgren <tony@atomide.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: dra7: fix cpsw mdio fck clock
-Message-ID: <20191118211001.GC35479@atomide.com>
-References: <20191118122016.22215-1-grygorii.strashko@ti.com>
- <20191118145000.GA35479@atomide.com>
- <3e4ebb75-52c0-883b-e2f2-1252dcbfff1f@ti.com>
+To:     "Andrew F. Davis" <afd@ti.com>
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: OMAP: Use ARM SMC Calling Convention when OP-TEE is
+ available
+Message-ID: <20191118215759.GD35479@atomide.com>
+References: <20191118165236.22136-1-afd@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3e4ebb75-52c0-883b-e2f2-1252dcbfff1f@ti.com>
+In-Reply-To: <20191118165236.22136-1-afd@ti.com>
 User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Grygorii Strashko <grygorii.strashko@ti.com> [191118 21:09]:
-> 
-> 
-> On 18/11/2019 16:50, Tony Lindgren wrote:
-> > * Grygorii Strashko <grygorii.strashko@ti.com> [191118 12:20]:
-> > > The DRA7 CPSW MDIO functional clock (gmac_clkctrl DRA7_GMAC_GMAC_CLKCTRL 0)
-> > > is specified incorrectly, which is caused incorrect MDIO bus clock
-> > > configuration MDCLK. The correct CPSW MDIO functional clock is
-> > > gmac_main_clk (125MHz), which is the same as CPSW fck. Hence fix it.
-> > 
-> > OK. Is this dra7 only, or are the other mdio clocks changed in commit
-> > 1faa415c9c6e wrong too?
-> 
-> only DRA7.
+Hi,
 
-OK thanks for confirming that.
+* Andrew F. Davis <afd@ti.com> [191118 08:53]:
+> +#define OMAP_SIP_SMC_STD_CALL_VAL(func_num) \
+> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_STD_CALL, ARM_SMCCC_SMC_32, \
+> +	ARM_SMCCC_OWNER_SIP, (func_num))
+> +
+> +void omap_smc1(u32 fn, u32 arg)
+> +{
+> +	struct device_node *optee;
+> +	struct arm_smccc_res res;
+> +
+> +	/*
+> +	 * If this platform has OP-TEE installed we use ARM SMC calls
+> +	 * otherwise fall back to the OMAP ROM style calls.
+> +	 */
+> +	optee = of_find_node_by_path("/firmware/optee");
+> +	if (optee) {
+> +		arm_smccc_smc(OMAP_SIP_SMC_STD_CALL_VAL(fn), arg,
+> +			      0, 0, 0, 0, 0, 0, &res);
+> +		WARN(res.a0, "Secure function call 0x%08x failed\n", fn);
+> +	} else {
+> +		_omap_smc1(fn, arg);
+> +	}
+> +}
+
+I think we're better off just making arm_smccc_smc() work properly.
+See cat arch/arm*/kernel/smccc-call.S.
+
+If quirk handling is needed, looks like ARM_SMCCC_QUIRK_STATE_OFFS
+can be used.
+
+AFAIK this should work both for optee and the current use cases.
+
+Regards,
 
 Tony
