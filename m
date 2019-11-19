@@ -2,82 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06EAD10210D
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2019 10:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E070810262C
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2019 15:17:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfKSJnC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Nov 2019 04:43:02 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:27917 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726170AbfKSJnB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Nov 2019 04:43:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1574156580;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=E9S56X5IWwYtL9QKYPNY8mvQJ4aCOIKX44C5DnIVBtc=;
-        b=k+KO2XnZ5ceOmssi8RsUNuzLFIX91PoGFHeRKTqnmytyPUIH/v8fNQgkojRJPRjef0
-        9TMwlToTF9UGgE7Wg0fk6Mr7/dzDaMZGbhHxce4kovDiN8D0l2kmSRhfl4pj7IX54UPo
-        NrgPI8WXY/OYbeo6R0GGKup5TmR6miWNyAN8ok0X3pmmpJIS8zj6TXwUETNrvgknM/KB
-        PUyy4jOsQW5m6H45+JUzZRMk/NBOMV0q3DBR5fBb91ouZpzNSh59onMmR3pilz+elshK
-        fh+1W18RzbuwJyBEb8dVMPLRiWT0ZtzINgXPt7UDwE0Go0VQ81WnXAwNZYFtpPvYYLXv
-        lJKA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmAvw43tJe0="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
-        with ESMTPSA id L09db3vAJ9guWgh
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Tue, 19 Nov 2019 10:42:56 +0100 (CET)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [RFCv1 32/42] drm/omap: dsi: convert to drm_panel
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <9681B365-9174-43CE-BCAE-ED986F182935@goldelico.com>
-Date:   Tue, 19 Nov 2019 10:42:55 +0100
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Merlijn Wajer <merlijn@wizzup.org>, linux-omap@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, kernel@collabora.com
-Content-Transfer-Encoding: 7bit
-Message-Id: <469800BA-25F8-4E0A-8194-50C197BC4BF5@goldelico.com>
-References: <20191117024028.2233-1-sebastian.reichel@collabora.com> <20191117024028.2233-33-sebastian.reichel@collabora.com> <D109D867-1C8E-44F6-9C91-AF55BCB3FDD3@goldelico.com> <20191118144558.abix5y555jk63szb@earth.universe> <9681B365-9174-43CE-BCAE-ED986F182935@goldelico.com>
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1727066AbfKSORC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Nov 2019 09:17:02 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:47260 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726682AbfKSORB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Nov 2019 09:17:01 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAJEH0cW128198;
+        Tue, 19 Nov 2019 08:17:00 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1574173020;
+        bh=nGL+xcmjiAdxXQX0bc5dlV6JtO6JcpMQGzaqANFB+WQ=;
+        h=From:To:CC:Subject:Date;
+        b=umOcv352EnUHeMSxZngvWydKwdkY+JUqNoxpITujezcrP9pqJAOdMe6uUcNf+yhSf
+         olKRUSN3jMHrU3arL0uvoCnZ1PaYOPVoxqzoqnCXfxrnYsEGM8n3QZas5BFgbL/Y6f
+         WBhN1Z6mLlSvQJwtLFwrxVE+IrnkRv8ElqCg26XM=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAJEH0iB099924
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 19 Nov 2019 08:17:00 -0600
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 19
+ Nov 2019 08:16:59 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 19 Nov 2019 08:16:59 -0600
+Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAJEGvYr027070;
+        Tue, 19 Nov 2019 08:16:58 -0600
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
+        <linux-remoteproc@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <s-anna@ti.com>
+Subject: [PATCHv2 00/15] Remoteproc: updates for OMAP remoteproc support
+Date:   Tue, 19 Nov 2019 16:16:30 +0200
+Message-ID: <20191119141645.19777-1-t-kristo@ti.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Sebastian,
+Hi,
 
-> Am 18.11.2019 um 15:51 schrieb H. Nikolaus Schaller <hns@goldelico.com>:
-> 
->> Ok, I tried not to break video mode support, but I do not have any
->> hardware. Make sure to set the MIPI_DSI_MODE_VIDEO flag in the panel
->> driver.
-> 
-> Indeed, this may be missing (can't look into the code at the moment)...
-> Or I did something wrong when refactoring the driver.
-> We will find out.
+This is v2 of the series [1], addressing comments from Bjorn and Rob.
+Bindings patch is funnily v2.5, as I posted v2 already and wanted to
+keep this somehow in sync. Individual patches contain comments about the
+changes, or Reviewed-by tags provided if there are no changes.
 
-Yes, MIPI_DSI_MODE_VIDEO was indeed missing/wrongly applied and some
-more bugs. But I still wasn't able to make it work.
+I also dropped the conversion patch to SPDX licensing until I can
+confirm the license we want to use. Lets just keep the existing in place
+until that.
 
-I also tried to fake the panel-orisetech-otm8009a.c DSI driver into
-my setup. It should not properly program the panel by DCS command
-but it should try to.
+This series still depends on the reset + clock patches posted earlier,
+but both of those dependencies are in linux-next now.
 
-Result is the same: I can see it being probed and calling get_modes
-but then:
+-Tero
 
-[drm] Cannot find any crtc or sizes
+[1] https://patchwork.kernel.org/cover/11215421/
 
-And I don't see calls to .enable or .prepare where DCS commands would
-be sent.
 
-BR and thanks,
-Nikolaus
 
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
