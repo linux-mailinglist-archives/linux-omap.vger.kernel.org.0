@@ -2,103 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2CF410178E
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2019 07:02:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06EAD10210D
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2019 10:43:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726132AbfKSGCR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Nov 2019 01:02:17 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:33780 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730642AbfKSFmf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Nov 2019 00:42:35 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAJ5gFrF029531;
-        Mon, 18 Nov 2019 23:42:15 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1574142136;
-        bh=bWtRsR/3TOxHAcS6XxIdxnEimos6cH+h2hRdBhT3N2Y=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=uZZdRHV1J4X6rWKntPyBWK+7mIq+22MIDQn3ch59qSF3uz5NVkCQGcjjuTwcFrXy3
-         FAFyJGs4A+kCKMH6+xZLlDWcOl+Q1MfTZe7GZHzpOJcD/I8bGAMFSkCoUkCaCQEITC
-         KaEB9FsgquaSvk2J2awolRWTIC3y/ANdAOpd72gY=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAJ5gF7t097443
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 18 Nov 2019 23:42:15 -0600
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 18
- Nov 2019 23:42:15 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Mon, 18 Nov 2019 23:42:15 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAJ5gCdl015366;
-        Mon, 18 Nov 2019 23:42:13 -0600
-Subject: Re: [RFCv1 33/42] drm/omap: dsi: use atomic helper for dirtyfb
-To:     Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-CC:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <kernel@collabora.com>
-References: <20191117024028.2233-1-sebastian.reichel@collabora.com>
- <20191117024028.2233-34-sebastian.reichel@collabora.com>
- <20191118230535.GG35479@atomide.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <e91c7fc9-18e0-cc22-4617-127fe9be2c1b@ti.com>
-Date:   Tue, 19 Nov 2019 07:42:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20191118230535.GG35479@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+        id S1726510AbfKSJnC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Nov 2019 04:43:02 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:27917 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726170AbfKSJnB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Nov 2019 04:43:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1574156580;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=E9S56X5IWwYtL9QKYPNY8mvQJ4aCOIKX44C5DnIVBtc=;
+        b=k+KO2XnZ5ceOmssi8RsUNuzLFIX91PoGFHeRKTqnmytyPUIH/v8fNQgkojRJPRjef0
+        9TMwlToTF9UGgE7Wg0fk6Mr7/dzDaMZGbhHxce4kovDiN8D0l2kmSRhfl4pj7IX54UPo
+        NrgPI8WXY/OYbeo6R0GGKup5TmR6miWNyAN8ok0X3pmmpJIS8zj6TXwUETNrvgknM/KB
+        PUyy4jOsQW5m6H45+JUzZRMk/NBOMV0q3DBR5fBb91ouZpzNSh59onMmR3pilz+elshK
+        fh+1W18RzbuwJyBEb8dVMPLRiWT0ZtzINgXPt7UDwE0Go0VQ81WnXAwNZYFtpPvYYLXv
+        lJKA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmAvw43tJe0="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
+        with ESMTPSA id L09db3vAJ9guWgh
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Tue, 19 Nov 2019 10:42:56 +0100 (CET)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [RFCv1 32/42] drm/omap: dsi: convert to drm_panel
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <9681B365-9174-43CE-BCAE-ED986F182935@goldelico.com>
+Date:   Tue, 19 Nov 2019 10:42:55 +0100
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Merlijn Wajer <merlijn@wizzup.org>, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, kernel@collabora.com
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Message-Id: <469800BA-25F8-4E0A-8194-50C197BC4BF5@goldelico.com>
+References: <20191117024028.2233-1-sebastian.reichel@collabora.com> <20191117024028.2233-33-sebastian.reichel@collabora.com> <D109D867-1C8E-44F6-9C91-AF55BCB3FDD3@goldelico.com> <20191118144558.abix5y555jk63szb@earth.universe> <9681B365-9174-43CE-BCAE-ED986F182935@goldelico.com>
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 19/11/2019 01:05, Tony Lindgren wrote:
-> * Sebastian Reichel <sebastian.reichel@collabora.com> [191117 07:11]:
->> We can simply use the atomic helper for
->> handling the dirtyfb callback.
-> ...
->> --- a/drivers/gpu/drm/omapdrm/omap_crtc.c
->> +++ b/drivers/gpu/drm/omapdrm/omap_crtc.c
->> -void omap_crtc_flush(struct drm_crtc *crtc)
->> +static void omap_crtc_flush(struct drm_crtc *crtc)
->>   {
->>   	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
->> -	struct omap_crtc_state *omap_state = to_omap_crtc_state(crtc->state);
->> -
->> -	if (!omap_state->manually_updated)
->> -		return;
->>   
->>   	if (!delayed_work_pending(&omap_crtc->update_work))
->>   		schedule_delayed_work(&omap_crtc->update_work, 0);
+Hi Sebastian,
+
+> Am 18.11.2019 um 15:51 schrieb H. Nikolaus Schaller <hns@goldelico.com>:
 > 
-> It would be nice if omap_crtc_flush() would become just some generic
-> void function with no need to pass it a crtc. I guess for that it
-> should know what panels are in manual command mode to refresh them.
+>> Ok, I tried not to break video mode support, but I do not have any
+>> hardware. Make sure to set the MIPI_DSI_MODE_VIDEO flag in the panel
+>> driver.
 > 
-> The reason I'm bringing this up is because it looks like we need
-> to also flush DSI command mode panels from omap_gem_op_finish()
-> for gles and the gem code probably should not need to know anything
-> about crtc, right?
+> Indeed, this may be missing (can't look into the code at the moment)...
+> Or I did something wrong when refactoring the driver.
+> We will find out.
 
-We haven't had omap_gem_op_finish() in the kernel for some years now...
+Yes, MIPI_DSI_MODE_VIDEO was indeed missing/wrongly applied and some
+more bugs. But I still wasn't able to make it work.
 
-Shouldn't a normal page flip, or if doing single-buffering, using the 
-dirtyfb ioctl, do the job?
+I also tried to fake the panel-orisetech-otm8009a.c DSI driver into
+my setup. It should not properly program the panel by DCS command
+but it should try to.
 
-  Tomi
+Result is the same: I can see it being probed and calling get_modes
+but then:
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+[drm] Cannot find any crtc or sizes
+
+And I don't see calls to .enable or .prepare where DCS commands would
+be sent.
+
+BR and thanks,
+Nikolaus
+
