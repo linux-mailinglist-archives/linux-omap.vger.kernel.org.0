@@ -2,47 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 128C4102636
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2019 15:17:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF280102639
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2019 15:17:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728014AbfKSORK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Nov 2019 09:17:10 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:58514 "EHLO
+        id S1728068AbfKSORN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Nov 2019 09:17:13 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:58518 "EHLO
         fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727991AbfKSORK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Nov 2019 09:17:10 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAJEH91c117164;
-        Tue, 19 Nov 2019 08:17:09 -0600
+        with ESMTP id S1728040AbfKSORM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Nov 2019 09:17:12 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAJEHBGI117175;
+        Tue, 19 Nov 2019 08:17:11 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1574173029;
-        bh=gzN+csH+cNpDlcV0eI0tAQ132xROOJb6F8eGF7m8GSg=;
+        s=ti-com-17Q1; t=1574173031;
+        bh=/riSbTGFb04QZzBqTbkVcs7lENw6NXmNR+s7C5cYK1I=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=CpP9mdpJG8tWHq3zEtO/Doo41lf62UO3+wgSDOYYYAW4u6cVBJXKGUstDcZgLTkDR
-         2nIrAKjOIMdRHjX7rhJQuJjDBIMTjkYlI+14t5fD7kX0mPNiZgh/tcksWFCGhqyO6I
-         hSImooPRZPJJcRlJD2RT0ReRZiPLNJ2tKMbqG8WM=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAJEH9D5083879;
-        Tue, 19 Nov 2019 08:17:09 -0600
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+        b=qtprrkhC8/zt7ANCSvodvCu90HnCNmDrBBFBCu9SxgrvainVvEpqW3KKbhHviFneD
+         L+3UT28wGwp9UewgWgGHWQOTV+y8c0XQtsYvzLPascLwg02B7QgLrzyQdv1WsBasGU
+         gcYqUe5EGVlaNsPiPmIh8nb2JYgDf5mKDDGFvDAU=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAJEHBq7022649
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 19 Nov 2019 08:17:11 -0600
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 19
- Nov 2019 08:17:08 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2019 08:17:10 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 19 Nov 2019 08:17:08 -0600
+ Frontend Transport; Tue, 19 Nov 2019 08:17:10 -0600
 Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAJEGvYv027070;
-        Tue, 19 Nov 2019 08:17:06 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAJEGvYw027070;
+        Tue, 19 Nov 2019 08:17:08 -0600
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
         <linux-remoteproc@vger.kernel.org>
 CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
         <s-anna@ti.com>, Tero Kristo <t-kristo@ti.com>
-Subject: [PATCHv2 04/15] remoteproc/omap: Add support to parse internal memories from DT
-Date:   Tue, 19 Nov 2019 16:16:34 +0200
-Message-ID: <20191119141645.19777-5-t-kristo@ti.com>
+Subject: [PATCHv2 05/15] remoteproc/omap: Add the rproc ops .da_to_va() implementation
+Date:   Tue, 19 Nov 2019 16:16:35 +0200
+Message-ID: <20191119141645.19777-6-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191119141645.19777-1-t-kristo@ti.com>
 References: <20191119141645.19777-1-t-kristo@ti.com>
@@ -56,188 +57,80 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Suman Anna <s-anna@ti.com>
 
-The OMAP remoteproc driver has been enhanced to parse and store
-the kernel mappings for different internal RAM memories that may
-be present within each remote processor IP subsystem. Different
-devices have varying memories present on current SoCs. The current
-support handles the L2RAM for all IPU devices on OMAP4+ SoCs. The
-DSPs on OMAP4/OMAP5 only have Unicaches and do not have any L1 or
-L2 RAM memories.
+An implementation for the rproc ops .da_to_va() has been added
+that provides the address translation between device addresses
+to kernel virtual addresses for internal RAMs present on that
+particular remote processor device. The implementation provides
+the translations based on the addresses parsed and stored during
+the probe.
 
-IPUs are expected to have the L2RAM at a fixed device address of
-0x20000000, based on the current limitations on Attribute MMU
-configurations.
-
-NOTE:
-The current logic doesn't handle the parsing of memories for DRA7
-remoteproc devices, and will be added alongside the DRA7 support.
+This ops gets invoked by the exported rproc_da_to_va() function
+and allows the remoteproc core's ELF loader to be able to load
+program data directly into the internal memories.
 
 Signed-off-by: Suman Anna <s-anna@ti.com>
-[t-kristo: converted to parse mem names / device addresses from pdata]
 Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
 v2:
- - add remote proc memory info under pdata, rather than doing extensive
-   OF compatible checks in code
+ - minor cleanups of code, fixed kerneldoc comments
 
- drivers/remoteproc/omap_remoteproc.c | 86 ++++++++++++++++++++++++++++
- 1 file changed, 86 insertions(+)
+ drivers/remoteproc/omap_remoteproc.c | 39 ++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
 diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
-index d80f5d7b5931..844703507a74 100644
+index 844703507a74..28f14e24b389 100644
 --- a/drivers/remoteproc/omap_remoteproc.c
 +++ b/drivers/remoteproc/omap_remoteproc.c
-@@ -39,11 +39,27 @@ struct omap_rproc_boot_data {
- 	unsigned int boot_reg;
- };
- 
-+/*
-+ * struct omap_rproc_mem - internal memory structure
-+ * @cpu_addr: MPU virtual address of the memory region
-+ * @bus_addr: bus address used to access the memory region
-+ * @dev_addr: device address of the memory region from DSP view
-+ * @size: size of the memory region
-+ */
-+struct omap_rproc_mem {
-+	void __iomem *cpu_addr;
-+	phys_addr_t bus_addr;
-+	u32 dev_addr;
-+	size_t size;
-+};
-+
- /**
-  * struct omap_rproc - omap remote processor state
-  * @mbox: mailbox channel handle
-  * @client: mailbox client to request the mailbox channel
-  * @boot_data: boot data structure for setting processor boot address
-+ * @mem: internal memory regions data
-+ * @num_mems: number of internal memory regions
-  * @rproc: rproc handle
-  * @reset: reset handle
-  */
-@@ -51,6 +67,8 @@ struct omap_rproc {
- 	struct mbox_chan *mbox;
- 	struct mbox_client client;
- 	struct omap_rproc_boot_data *boot_data;
-+	struct omap_rproc_mem *mem;
-+	int num_mems;
- 	struct rproc *rproc;
- 	struct reset_control *reset;
- };
-@@ -59,10 +77,14 @@ struct omap_rproc {
-  * struct omap_rproc_dev_data - device data for the omap remote processor
-  * @device_name: device name of the remote processor
-  * @has_bootreg: true if this remote processor has boot register
-+ * @mem_names: memory names for this remote processor
-+ * @dev_addrs: device addresses corresponding to the memory names
-  */
- struct omap_rproc_dev_data {
- 	const char *device_name;
- 	bool has_bootreg;
-+	const char * const *mem_names;
-+	const u32 *dev_addrs;
- };
- 
- /**
-@@ -216,6 +238,14 @@ static const struct rproc_ops omap_rproc_ops = {
- 	.kick		= omap_rproc_kick,
- };
- 
-+static const char * const ipu_mem_names[] = {
-+	"l2ram", NULL
-+};
-+
-+static const u32 ipu_dev_addrs[] = {
-+	0x20000000,
-+};
-+
- static const struct omap_rproc_dev_data omap4_dsp_dev_data = {
- 	.device_name	= "dsp",
- 	.has_bootreg	= true,
-@@ -223,6 +253,8 @@ static const struct omap_rproc_dev_data omap4_dsp_dev_data = {
- 
- static const struct omap_rproc_dev_data omap4_ipu_dev_data = {
- 	.device_name	= "ipu",
-+	.mem_names	= ipu_mem_names,
-+	.dev_addrs	= ipu_dev_addrs,
- };
- 
- static const struct omap_rproc_dev_data omap5_dsp_dev_data = {
-@@ -232,6 +264,8 @@ static const struct omap_rproc_dev_data omap5_dsp_dev_data = {
- 
- static const struct omap_rproc_dev_data omap5_ipu_dev_data = {
- 	.device_name	= "ipu",
-+	.mem_names	= ipu_mem_names,
-+	.dev_addrs	= ipu_dev_addrs,
- };
- 
- static const struct of_device_id omap_rproc_of_match[] = {
-@@ -311,6 +345,54 @@ static int omap_rproc_get_boot_data(struct platform_device *pdev,
+@@ -232,10 +232,49 @@ static int omap_rproc_stop(struct rproc *rproc)
  	return 0;
  }
  
-+static int omap_rproc_of_get_internal_memories(struct platform_device *pdev,
-+					       struct rproc *rproc)
++/**
++ * omap_rproc_da_to_va() - internal memory translation helper
++ * @rproc: remote processor to apply the address translation for
++ * @da: device address to translate
++ * @len: length of the memory buffer
++ *
++ * Custom function implementing the rproc .da_to_va ops to provide address
++ * translation (device address to kernel virtual address) for internal RAMs
++ * present in a DSP or IPU device). The translated addresses can be used
++ * either by the remoteproc core for loading, or by any rpmsg bus drivers.
++ * Returns the translated virtual address in kernel memory space, or NULL
++ * in failure.
++ */
++static void *omap_rproc_da_to_va(struct rproc *rproc, u64 da, int len)
 +{
 +	struct omap_rproc *oproc = rproc->priv;
-+	struct device *dev = &pdev->dev;
-+	const struct omap_rproc_dev_data *data;
-+	struct resource *res;
-+	int num_mems;
 +	int i;
++	u32 offset;
 +
-+	data = of_device_get_match_data(&pdev->dev);
-+	if (!data)
-+		return -ENODEV;
++	if (len <= 0)
++		return NULL;
 +
-+	if (!data->mem_names)
-+		return 0;
++	if (!oproc->num_mems)
++		return NULL;
 +
-+	for (num_mems = 0; data->mem_names[num_mems]; num_mems++)
-+		;
-+
-+	oproc->mem = devm_kcalloc(dev, num_mems, sizeof(*oproc->mem),
-+				  GFP_KERNEL);
-+	if (!oproc->mem)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < num_mems; i++) {
-+		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-+						   data->mem_names[i]);
-+		oproc->mem[i].cpu_addr = devm_ioremap_resource(dev, res);
-+		if (IS_ERR(oproc->mem[i].cpu_addr)) {
-+			dev_err(dev, "failed to parse and map %s memory\n",
-+				data->mem_names[i]);
-+			return PTR_ERR(oproc->mem[i].cpu_addr);
++	for (i = 0; i < oproc->num_mems; i++) {
++		if (da >= oproc->mem[i].dev_addr && da + len <=
++		    oproc->mem[i].dev_addr +  oproc->mem[i].size) {
++			offset = da -  oproc->mem[i].dev_addr;
++			/* __force to make sparse happy with type conversion */
++			return (__force void *)(oproc->mem[i].cpu_addr +
++						offset);
 +		}
-+		oproc->mem[i].bus_addr = res->start;
-+		oproc->mem[i].dev_addr = data->dev_addrs[i];
-+		oproc->mem[i].size = resource_size(res);
-+
-+		dev_dbg(dev, "memory %8s: bus addr %pa size 0x%x va %p da 0x%x\n",
-+			data->mem_names[i], &oproc->mem[i].bus_addr,
-+			oproc->mem[i].size, oproc->mem[i].cpu_addr,
-+			oproc->mem[i].dev_addr);
 +	}
-+	oproc->num_mems = num_mems;
 +
-+	return 0;
++	return NULL;
 +}
 +
- static int omap_rproc_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -350,6 +432,10 @@ static int omap_rproc_probe(struct platform_device *pdev)
- 	/* All existing OMAP IPU and DSP processors have an MMU */
- 	rproc->has_iommu = true;
+ static const struct rproc_ops omap_rproc_ops = {
+ 	.start		= omap_rproc_start,
+ 	.stop		= omap_rproc_stop,
+ 	.kick		= omap_rproc_kick,
++	.da_to_va	= omap_rproc_da_to_va,
+ };
  
-+	ret = omap_rproc_of_get_internal_memories(pdev, rproc);
-+	if (ret)
-+		goto free_rproc;
-+
- 	ret = omap_rproc_get_boot_data(pdev, rproc);
- 	if (ret)
- 		goto free_rproc;
+ static const char * const ipu_mem_names[] = {
 -- 
 2.17.1
 
