@@ -2,55 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2807710324F
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Nov 2019 04:48:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB2AA103257
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Nov 2019 04:50:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727415AbfKTDsY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Nov 2019 22:48:24 -0500
-Received: from muru.com ([72.249.23.125]:43010 "EHLO muru.com"
+        id S1727615AbfKTDuf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Nov 2019 22:50:35 -0500
+Received: from muru.com ([72.249.23.125]:43028 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727385AbfKTDsY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 19 Nov 2019 22:48:24 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 46949809B;
-        Wed, 20 Nov 2019 03:49:00 +0000 (UTC)
-Date:   Tue, 19 Nov 2019 19:48:20 -0800
+        id S1727415AbfKTDuf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 19 Nov 2019 22:50:35 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 60553809B;
+        Wed, 20 Nov 2019 03:51:12 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        kernel@collabora.com
-Subject: Re: [RFCv1 33/42] drm/omap: dsi: use atomic helper for dirtyfb
-Message-ID: <20191120034820.GR35479@atomide.com>
-References: <20191117024028.2233-1-sebastian.reichel@collabora.com>
- <20191117024028.2233-34-sebastian.reichel@collabora.com>
- <20191118230535.GG35479@atomide.com>
- <e91c7fc9-18e0-cc22-4617-127fe9be2c1b@ti.com>
- <20191119143243.GH35479@atomide.com>
- <edff7dfa-8b95-48ac-59e0-14553f3c8d39@ti.com>
- <20191119150643.GI35479@atomide.com>
- <46aba805-1d3a-2efc-23f6-d957bf6a44c3@ti.com>
+To:     linux-omap@vger.kernel.org
+Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
+Subject: [PATCH] ARM: dts: Fix vcsi regulator to be always-on for droid4 to prevent hangs
+Date:   Tue, 19 Nov 2019 19:50:30 -0800
+Message-Id: <20191120035030.50133-1-tony@atomide.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <46aba805-1d3a-2efc-23f6-d957bf6a44c3@ti.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tomi Valkeinen <tomi.valkeinen@ti.com> [191119 15:56]:
-> Afaik, Weston and X both handle page flips and/or dirtying the fb, so they
-> should work. Are there applications that do not work, and cannot be made to
-> work, except the few SGX test apps?
+In addition to using vcsi regulator for the display, looks like droid4 is
+using vcsi regulator to trigger off mode internally with the PMIC firmware
+when the SoC enters deeper idle states. This is configured in the Motorola
+Mapphone Linux kernel sources as "zerov_regulator".
 
-I'm not sure sure yet what all it affects, I'll do some more tests on it.
+As we currently don't support off mode during idle for omap4, we must
+prevent vcsi from being disabled when the display is blanked to prevent
+the PMIC change to off mode. Otherwise the device will hang on entering
+idle when the display is blanked.
 
-Regards,
+Before commit 089b3f61ecfc ("regulator: core: Let boot-on regulators be
+powered off"), the boot-on regulators never got disabled like they should
+and vcsi did not get turned off on idle.
 
-Tony
+Let's fix the issue by setting vcsi to always-on for now. Later on we may
+want to claim the vcsi regulator also in the PM code if needed.
+
+Fixes: 089b3f61ecfc ("regulator: core: Let boot-on regulators be powered off")
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
+--- a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
++++ b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
+@@ -162,12 +162,12 @@ vcam: VCAM {
+ 		regulator-enable-ramp-delay = <1000>;
+ 	};
+ 
+-	/* Used by DSS */
++	/* Used by DSS and is the "zerov_regulator" trigger for SoC off mode */
+ 	vcsi: VCSI {
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <1800000>;
+ 		regulator-enable-ramp-delay = <1000>;
+-		regulator-boot-on;
++		regulator-always-on;
+ 	};
+ 
+ 	vdac: VDAC {
+-- 
+2.24.0
