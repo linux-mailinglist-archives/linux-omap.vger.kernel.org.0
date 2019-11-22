@@ -2,34 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D832106370
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Nov 2019 07:10:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D509810633A
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Nov 2019 07:09:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729256AbfKVF4r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 Nov 2019 00:56:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34658 "EHLO mail.kernel.org"
+        id S1728732AbfKVF5K (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 22 Nov 2019 00:57:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729253AbfKVF4r (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 22 Nov 2019 00:56:47 -0500
+        id S1729374AbfKVF5J (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 22 Nov 2019 00:57:09 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EB75920659;
-        Fri, 22 Nov 2019 05:56:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C5D0D2072E;
+        Fri, 22 Nov 2019 05:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574402206;
-        bh=Z+GRDGXvde3IqbQAMR4FdDnPTDNca8lROt2Va9pj+gk=;
+        s=default; t=1574402229;
+        bh=tmPBE1L64k7gFUNouMWYajVti7VOhZkUSGOVv4eEhyg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KP+xTQ/2A5jFmlTREw9tUkCHZAPo1BB9g2jeekagtxhuLY+E8CTxDFJJvC+e4NQWE
-         mCwC6292JSvxwI4PyuZrILiIiZ/wibClBjT1gOxuYTX743epnBk3PV/IIDnnvOG9Ht
-         u8uzJIcIGnl4ykbnzBRWW5goEG/s8zCCQ3fAa/9g=
+        b=imJY0xb+c9mY7G1fIZU7IlwC+TLuq42+gyktNtn9Tm1pnznLqS8G24fQP52GH9iU6
+         32wpPY0DNUC1JqIWrNbkM4X/mhAgpp7Ou4KO3KlO22IdS8vISXKuPfqEP+LUIuovmY
+         EqpYC9ZFxZHV/9h9mU/k7+3TDM9U6Kl/DH504LeU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Kangjie Lu <kjlu@umn.edu>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 055/127] drivers/regulator: fix a missing check of return value
-Date:   Fri, 22 Nov 2019 00:54:33 -0500
-Message-Id: <20191122055544.3299-54-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 075/127] regulator: tps65910: fix a missing check of return value
+Date:   Fri, 22 Nov 2019 00:54:53 -0500
+Message-Id: <20191122055544.3299-74-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122055544.3299-1-sashal@kernel.org>
 References: <20191122055544.3299-1-sashal@kernel.org>
@@ -44,42 +44,34 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Kangjie Lu <kjlu@umn.edu>
 
-[ Upstream commit 966e927bf8cc6a44f8b72582a1d6d3ffc73b12ad ]
+[ Upstream commit cd07e3701fa6a4c68f8493ee1d12caa18d46ec6a ]
 
-If palmas_smps_read() fails, we should not use the read data in "reg"
-which may contain random value. The fix inserts a check for the return
-value of palmas_smps_read(): If it fails, we return the error code
-upstream and stop using "reg".
+tps65910_reg_set_bits() may fail. The fix checks if it fails, and if so,
+returns with its error code.
 
 Signed-off-by: Kangjie Lu <kjlu@umn.edu>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/palmas-regulator.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/regulator/tps65910-regulator.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/palmas-regulator.c b/drivers/regulator/palmas-regulator.c
-index bb5ab7d78895b..c2cc392a27d40 100644
---- a/drivers/regulator/palmas-regulator.c
-+++ b/drivers/regulator/palmas-regulator.c
-@@ -443,13 +443,16 @@ static int palmas_ldo_write(struct palmas *palmas, unsigned int reg,
- static int palmas_set_mode_smps(struct regulator_dev *dev, unsigned int mode)
- {
- 	int id = rdev_get_id(dev);
-+	int ret;
- 	struct palmas_pmic *pmic = rdev_get_drvdata(dev);
- 	struct palmas_pmic_driver_data *ddata = pmic->palmas->pmic_ddata;
- 	struct palmas_regs_info *rinfo = &ddata->palmas_regs_info[id];
- 	unsigned int reg;
- 	bool rail_enable = true;
+diff --git a/drivers/regulator/tps65910-regulator.c b/drivers/regulator/tps65910-regulator.c
+index 81672a58fcc23..194fa0cbbc048 100644
+--- a/drivers/regulator/tps65910-regulator.c
++++ b/drivers/regulator/tps65910-regulator.c
+@@ -1102,8 +1102,10 @@ static int tps65910_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, pmic);
  
--	palmas_smps_read(pmic->palmas, rinfo->ctrl_addr, &reg);
-+	ret = palmas_smps_read(pmic->palmas, rinfo->ctrl_addr, &reg);
-+	if (ret)
-+		return ret;
+ 	/* Give control of all register to control port */
+-	tps65910_reg_set_bits(pmic->mfd, TPS65910_DEVCTRL,
++	err = tps65910_reg_set_bits(pmic->mfd, TPS65910_DEVCTRL,
+ 				DEVCTRL_SR_CTL_I2C_SEL_MASK);
++	if (err < 0)
++		return err;
  
- 	reg &= ~PALMAS_SMPS12_CTRL_MODE_ACTIVE_MASK;
- 
+ 	switch (tps65910_chip_id(tps65910)) {
+ 	case TPS65910:
 -- 
 2.20.1
 
