@@ -2,40 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70D301065F3
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Nov 2019 07:29:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 400C21065C5
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Nov 2019 07:26:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727731AbfKVFu3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 Nov 2019 00:50:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55008 "EHLO mail.kernel.org"
+        id S1728124AbfKVG0g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 22 Nov 2019 01:26:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55610 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727725AbfKVFu3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 22 Nov 2019 00:50:29 -0500
+        id S1727867AbfKVFur (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 22 Nov 2019 00:50:47 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 459102070E;
-        Fri, 22 Nov 2019 05:50:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3FDAB20726;
+        Fri, 22 Nov 2019 05:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574401828;
-        bh=ifwruHAoHqHKLv+HjbF5JGJp7pgttRgm2PgncmfAWrs=;
+        s=default; t=1574401847;
+        bh=5NqZWv/lrf+4gV1AJubypYGwHZ9tJ+dRz9dCQ+jRxVE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VfaJo8jLZPKwwa0r//JrrvKBAgjxaNFkyNE4qqLAqDgshZ91g+LJ+dJ5kQfEuIwau
-         CwtLJWd28IDprh9rFlelG0ZF/+Dqivb2XdmQr2TUv/ZiQ5g0U24QBq36rhU+bd7QvX
-         pF4i96dpqaCBdRofT9naouugx1q+WvUmNaHvOWYo=
+        b=dXNXADBtlCp6WTkeO2bkbAJBQtoFyqxszwk3oLpjv17K/Yq1xBkfvN0YTVOarcvS5
+         UTXO0UreHZzj924LAsk3Qj+bnCxahhIzPUG0I3q114X27veM7WijYPW+hdVuPLbDUA
+         wua7edgmB88ooWSBJwceer4F48IFLlSk0vzCi6b0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Roger Quadros <rogerq@ti.com>, Johan Hovold <johan@kernel.org>,
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Ladislav Michl <ladis@linux-mips.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
         Tony Lindgren <tony@atomide.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 070/219] usb: ehci-omap: Fix deferred probe for phy handling
-Date:   Fri, 22 Nov 2019 00:46:42 -0500
-Message-Id: <20191122054911.1750-63-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 085/219] memory: omap-gpmc: Get the header of the enum
+Date:   Fri, 22 Nov 2019 00:46:57 -0500
+Message-Id: <20191122054911.1750-78-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122054911.1750-1-sashal@kernel.org>
 References: <20191122054911.1750-1-sashal@kernel.org>
@@ -48,54 +46,46 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Roger Quadros <rogerq@ti.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 8dc7623bf608495b6e6743e805807c7840673573 ]
+[ Upstream commit a0752e9c3097b2c4fccd618802938e0951038dfa ]
 
-PHY model is being used on omap5 platforms even if port mode
-is not OMAP_EHCI_PORT_MODE_PHY. So don't guess if PHY is required
-or not based on PHY mode.
+Commit 21abf103818a
+("gpio: Pass a flag to gpiochip_request_own_desc()")
+started to pass an enum gpiod_flags but this file is
+not including the header file that defines that enum
+and the compiler spits:
 
-If PHY is provided in device tree, it must be required. So, if
-devm_usb_get_phy_by_phandle() gives us an error code other
-than -ENODEV (no PHY) then error out.
+drivers/memory/omap-gpmc.c: In function
+			    'gpmc_probe_generic_child':
+drivers/memory/omap-gpmc.c:2174:9: error: type of formal
+				   parameter 4 is incomplete
+         0);
+         ^
 
-This fixes USB Ethernet on omap5-uevm if PHY happens to
-probe after EHCI thus causing a -EPROBE_DEFER.
-
-Cc: Johan Hovold <johan@kernel.org>
 Cc: Ladislav Michl <ladis@linux-mips.org>
-Reported-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Signed-off-by: Roger Quadros <rogerq@ti.com>
-Tested-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Fixes: 21abf103818a ("gpio: Pass a flag to gpiochip_request_own_desc()")
 Acked-by: Tony Lindgren <tony@atomide.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ehci-omap.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/memory/omap-gpmc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
-index 7e4c13346a1ee..7d20296cbe9f9 100644
---- a/drivers/usb/host/ehci-omap.c
-+++ b/drivers/usb/host/ehci-omap.c
-@@ -159,11 +159,12 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
- 		/* get the PHY device */
- 		phy = devm_usb_get_phy_by_phandle(dev, "phys", i);
- 		if (IS_ERR(phy)) {
--			/* Don't bail out if PHY is not absolutely necessary */
--			if (pdata->port_mode[i] != OMAP_EHCI_PORT_MODE_PHY)
-+			ret = PTR_ERR(phy);
-+			if (ret == -ENODEV) { /* no PHY */
-+				phy = NULL;
- 				continue;
-+			}
- 
--			ret = PTR_ERR(phy);
- 			if (ret != -EPROBE_DEFER)
- 				dev_err(dev, "Can't get PHY for port %d: %d\n",
- 					i, ret);
+diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+index c215287e80cf3..1c6a7c16e0c17 100644
+--- a/drivers/memory/omap-gpmc.c
++++ b/drivers/memory/omap-gpmc.c
+@@ -21,6 +21,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/io.h>
+ #include <linux/gpio/driver.h>
++#include <linux/gpio/consumer.h> /* GPIO descriptor enum */
+ #include <linux/interrupt.h>
+ #include <linux/irqdomain.h>
+ #include <linux/platform_device.h>
 -- 
 2.20.1
 
