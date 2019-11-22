@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ECD710601C
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Nov 2019 06:31:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F037106084
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Nov 2019 06:50:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727279AbfKVFa2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 Nov 2019 00:30:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48128 "EHLO mail.kernel.org"
+        id S1726985AbfKVFtf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 22 Nov 2019 00:49:35 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53708 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727270AbfKVFa0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 22 Nov 2019 00:30:26 -0500
+        id S1727112AbfKVFtf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 22 Nov 2019 00:49:35 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C3E1E20707;
-        Fri, 22 Nov 2019 05:30:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EB1CF2070E;
+        Fri, 22 Nov 2019 05:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574400625;
+        s=default; t=1574401774;
         bh=S/UYcjtquDy0CcPqAHpXYiJOsV3eqyYvXDEKlXM21iE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wetmbc8s8B0XKboCas9JwX6zcWMaX8nrpesCJfXWDWg5ZwbKrhuul9S5Y2L+uaegy
-         ZMDed3zV1y3C3WrmoNZMqNG7+0ox2ieu6zyvzk1lagCUioVNfkBr8c+ytHo7Zqfx/D
-         LwJKCs/KNe8YeGiyICnaK8hHr8F1JvLS0ydP6b4k=
+        b=dQv7R4a3mZ406EO6pURFQa76WFYgyVbt2fVavv3rgT1EnT417IuWLDLaoKHs0w5GV
+         NfaCm2tNhagPlsPr8XTjsi30XrTZwi86VmxxzNtjfqkatJacDmI8Hp+JtjDJgqugSi
+         0YHK/6IiJ0E8+J78GqA6kHGS0Yj5+WhaOSdMLXmU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>,
@@ -30,11 +30,11 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
 Subject: [PATCH AUTOSEL 4.19 024/219] ARM: dts: Fix hsi gdd range for omap4
-Date:   Fri, 22 Nov 2019 00:26:46 -0500
-Message-Id: <20191122053001.752-17-sashal@kernel.org>
+Date:   Fri, 22 Nov 2019 00:45:56 -0500
+Message-Id: <20191122054911.1750-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191122053001.752-1-sashal@kernel.org>
-References: <20191122053001.752-1-sashal@kernel.org>
+In-Reply-To: <20191122054911.1750-1-sashal@kernel.org>
+References: <20191122054911.1750-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
