@@ -2,50 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A0F3108E8A
+	by mail.lfdr.de (Postfix) with ESMTP id 73730108E8B
 	for <lists+linux-omap@lfdr.de>; Mon, 25 Nov 2019 14:11:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727208AbfKYNLU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 25 Nov 2019 08:11:20 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:38454 "EHLO
+        id S1727420AbfKYNLV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 25 Nov 2019 08:11:21 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:38464 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725823AbfKYNLU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 Nov 2019 08:11:20 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAPDBBCc126044;
-        Mon, 25 Nov 2019 07:11:11 -0600
+        with ESMTP id S1727026AbfKYNLV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 Nov 2019 08:11:21 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAPDBCI8126062;
+        Mon, 25 Nov 2019 07:11:12 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1574687471;
-        bh=/brRrE34NIQuy6Eaoa29ZOs7K/pstknRZIZTGEFZBIA=;
-        h=From:To:CC:Subject:Date;
-        b=FFozQXDrca5FwzxDkFzhSZOkAson+KgPA52fGPgZY270Sdho3c9nRBLu8eeHqrRPU
-         vcYQl4h9wn6rmfXKKh7pzGEaHoiTVEM8Tx5p98O/O2oi9I1bQ8xNK+KXtTexelOYyg
-         KXT9Y2rUdNiIYEkx1OWKjqK2mSFbAVjLAcBSXd68=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAPDBBl5024060
+        s=ti-com-17Q1; t=1574687472;
+        bh=agMY92W2bwaR6RtyoJZToavWwnkd24a1j8kvLzHdN3Y=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=pT7b1L03JH3AL788c+iiy6tBVoFRR49sN1ehmL6lcnh80MWtecUc+Zv0CUT41EAZE
+         tf3d1178t0Hj0rNwzYHXu/BFgIrfBGhpL9xA1A5Hfv/6oWdQ4CQnwkkoLvdXnSBecu
+         IGfAwj30f+8z9hcXQk7q9stngeSRUkOFgEekagHY=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAPDBCFv070827
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 25 Nov 2019 07:11:11 -0600
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 25 Nov 2019 07:11:12 -0600
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 25
- Nov 2019 07:11:10 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2019 07:11:12 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Mon, 25 Nov 2019 07:11:10 -0600
+ Frontend Transport; Mon, 25 Nov 2019 07:11:12 -0600
 Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAPDB7rk113038;
-        Mon, 25 Nov 2019 07:11:08 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAPDB7rl113038;
+        Mon, 25 Nov 2019 07:11:10 -0600
 From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
 To:     <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <tony@atomide.com>
 CC:     <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <dri-devel@lists.freedesktop.org>,
+        <dri-devel@lists.freedesktop.org>, Jyri Sarha <jsarha@ti.com>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH 1/4] ARM: dts: am437x-gp-evm: add HDMI support
-Date:   Mon, 25 Nov 2019 15:10:57 +0200
-Message-ID: <20191125131100.9839-1-tomi.valkeinen@ti.com>
+Subject: [PATCH 2/4] ARM: dts: am437x-epos-evm: add HDMI support
+Date:   Mon, 25 Nov 2019 15:10:58 +0200
+Message-ID: <20191125131100.9839-2-tomi.valkeinen@ti.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191125131100.9839-1-tomi.valkeinen@ti.com>
+References: <20191125131100.9839-1-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -54,44 +56,48 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add HDMI support for AM437x GP EVM. The HDMI uses SiI9022 HDMI encoder,
-and is mutually exclusive with the LCD. The choice between LCD and HDMI
-is made by booting either with am437x-gp-evm.dtb or
-am437x-gp-evm-hdmi.dtb.
+From: Jyri Sarha <jsarha@ti.com>
 
+Add HDMI support for AM43x EPOS EVM. The HDMI uses SiI9022 HDMI
+encoder for audio and display, and it is mutually exclusive with the
+LCD and analogue audio. The choice between LCD + analogue audio and
+HDMI + HDMI-audio is made by booting either with am43x-epos-evm.dtb or
+am43x-epos-evm-hdmi.dtb.
+
+Signed-off-by: Jyri Sarha <jsarha@ti.com>
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
 ---
- arch/arm/boot/dts/Makefile               |   1 +
- arch/arm/boot/dts/am437x-gp-evm-hdmi.dts | 112 +++++++++++++++++++++++
- 2 files changed, 113 insertions(+)
- create mode 100644 arch/arm/boot/dts/am437x-gp-evm-hdmi.dts
+ arch/arm/boot/dts/Makefile                |   1 +
+ arch/arm/boot/dts/am43x-epos-evm-hdmi.dts | 120 ++++++++++++++++++++++
+ 2 files changed, 121 insertions(+)
+ create mode 100644 arch/arm/boot/dts/am43x-epos-evm-hdmi.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index b21b3a64641a..612149069180 100644
+index 612149069180..43ba465596ad 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -779,6 +779,7 @@ dtb-$(CONFIG_SOC_AM43XX) += \
+@@ -777,6 +777,7 @@ dtb-$(CONFIG_ARCH_OMAP4) += \
+ 	omap4-var-stk-om44.dtb
+ dtb-$(CONFIG_SOC_AM43XX) += \
  	am43x-epos-evm.dtb \
++	am43x-epos-evm-hdmi.dtb \
  	am437x-cm-t43.dtb \
  	am437x-gp-evm.dtb \
-+	am437x-gp-evm-hdmi.dtb \
- 	am437x-idk-evm.dtb \
- 	am437x-sbc-t43.dtb \
- 	am437x-sk-evm.dtb
-diff --git a/arch/arm/boot/dts/am437x-gp-evm-hdmi.dts b/arch/arm/boot/dts/am437x-gp-evm-hdmi.dts
+ 	am437x-gp-evm-hdmi.dtb \
+diff --git a/arch/arm/boot/dts/am43x-epos-evm-hdmi.dts b/arch/arm/boot/dts/am43x-epos-evm-hdmi.dts
 new file mode 100644
-index 000000000000..580a1e3e0dcd
+index 000000000000..314e9e8c513c
 --- /dev/null
-+++ b/arch/arm/boot/dts/am437x-gp-evm-hdmi.dts
-@@ -0,0 +1,112 @@
++++ b/arch/arm/boot/dts/am43x-epos-evm-hdmi.dts
+@@ -0,0 +1,120 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2019 Texas Instruments Incorporated - http://www.ti.com/
 + */
 +
-+/* AM437x GP EVM with HDMI output */
++/* AM437x EPOS EVM with HDMI output */
 +
-+#include "am437x-gp-evm.dts"
++#include "am43x-epos-evm.dts"
 +
 +/delete-node/ &lcd0;
 +
@@ -145,18 +151,26 @@ index 000000000000..580a1e3e0dcd
 +	status = "disabled";
 +};
 +
-+&tlv320aic3106 {
++&tlv320aic3111 {
 +	status = "disabled";
 +};
 +
-+&i2c1 {
++&am43xx_pinmux {
++	sii9022_pins: sii9022_pins {
++		pinctrl-single,pins = <
++			AM4372_IOPAD(0x848, PIN_INPUT | MUX_MODE7)	/* gpmc_a2.gpio1_18 */
++		>;
++	};
++};
++
++&i2c2 {
 +	sii9022: sii9022@3b {
 +		#sound-dai-cells = <0>;
 +		compatible = "sil,sii9022";
 +		reg = <0x3b>;
 +
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <24 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-parent = <&gpio1>;
++		interrupts = <18 IRQ_TYPE_LEVEL_LOW>;
 +
 +		sil,i2s-data-lanes = < 0 >;
 +		clocks = <&sii9022_mclk>;
@@ -190,9 +204,9 @@ index 000000000000..580a1e3e0dcd
 +	data-lines = <24>;
 +};
 +
-+/* Override SelLCDorHDMI from am437x-gp-evm.dts to select HDMI */
-+&gpio5 {
-+	p8 {
++/* Override SelLCDorHDMI from am437x-epos-evm.dts to select HDMI */
++&gpio2 {
++	p1 {
 +		output-low;
 +	};
 +};
