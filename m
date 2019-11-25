@@ -2,114 +2,201 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E21A108470
-	for <lists+linux-omap@lfdr.de>; Sun, 24 Nov 2019 18:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A0F3108E8A
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Nov 2019 14:11:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726803AbfKXR7X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 24 Nov 2019 12:59:23 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:13949 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726802AbfKXR7X (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 24 Nov 2019 12:59:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1574618358;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=4Mtvhb9VEGOidBuJ+//uKm9nDMQCGArvHFXBCr1aqTg=;
-        b=cacKqSscy/SDcpWMhbpC2iHiXKLWbGnsbKxz7Db58VYLhExeVAfVsUTkpDVx1yqe7G
-        SqBLDplCfX6X3M1XjpcTEUHk0wKvsB54owNAUZs8eDBxwhaVb0FH98N2O+9rBhc5PUls
-        KLHgfP4Ea6s0zQRAHfTCs+exLC03Sy6MkzNWmEVKQkta7g20fuFnCN6jBeoQM2KZMGla
-        TeljN5VREAdTgJxaSOng25srljyXt5vHcJBu3Uiz/eodlopYLwJViOxt0E3A+gksj3wh
-        EE4jXZh6HHWFAg7cKencCdX4V/99u5GBDb67uC1ErAm0x/Y4b+FLsmAuS6ayHQb7IOQ1
-        JG/g==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlSfXA4NgJM="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
-        with ESMTPSA id L09db3vAOHx8wih
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
-        (Client did not present a certificate);
-        Sun, 24 Nov 2019 18:59:08 +0100 (CET)
-Content-Type: text/plain; charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH v3 8/8] MIPS: DTS: jz4780: add sgx gpu node
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20191124174837.GX35479@atomide.com>
-Date:   Sun, 24 Nov 2019 18:59:07 +0100
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        OpenPVRSGX Linux Driver Group <openpvrsgx-devgroup@letux.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        linux-mips@vger.kernel.org, Paul Boddie <paul@boddie.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FA810F13-BF2A-4849-9BAA-01FA2F768976@goldelico.com>
-References: <cover.1574595627.git.hns@goldelico.com> <c73e2cee4f818654f264b0b7b5458bfaa0ac6a7a.1574595627.git.hns@goldelico.com> <1574600246.3.0@crapouillou.net> <20191124174837.GX35479@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>,
-        Paul Cercueil <paul@crapouillou.net>
-X-Mailer: Apple Mail (2.3124)
+        id S1727208AbfKYNLU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 25 Nov 2019 08:11:20 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:38454 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725823AbfKYNLU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 Nov 2019 08:11:20 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAPDBBCc126044;
+        Mon, 25 Nov 2019 07:11:11 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1574687471;
+        bh=/brRrE34NIQuy6Eaoa29ZOs7K/pstknRZIZTGEFZBIA=;
+        h=From:To:CC:Subject:Date;
+        b=FFozQXDrca5FwzxDkFzhSZOkAson+KgPA52fGPgZY270Sdho3c9nRBLu8eeHqrRPU
+         vcYQl4h9wn6rmfXKKh7pzGEaHoiTVEM8Tx5p98O/O2oi9I1bQ8xNK+KXtTexelOYyg
+         KXT9Y2rUdNiIYEkx1OWKjqK2mSFbAVjLAcBSXd68=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAPDBBl5024060
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 25 Nov 2019 07:11:11 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 25
+ Nov 2019 07:11:10 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 25 Nov 2019 07:11:10 -0600
+Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAPDB7rk113038;
+        Mon, 25 Nov 2019 07:11:08 -0600
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+To:     <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <tony@atomide.com>
+CC:     <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <dri-devel@lists.freedesktop.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: [PATCH 1/4] ARM: dts: am437x-gp-evm: add HDMI support
+Date:   Mon, 25 Nov 2019 15:10:57 +0200
+Message-ID: <20191125131100.9839-1-tomi.valkeinen@ti.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Paul, Tony,
+Add HDMI support for AM437x GP EVM. The HDMI uses SiI9022 HDMI encoder,
+and is mutually exclusive with the LCD. The choice between LCD and HDMI
+is made by booting either with am437x-gp-evm.dtb or
+am437x-gp-evm-hdmi.dtb.
 
-> Am 24.11.2019 um 18:48 schrieb Tony Lindgren <tony@atomide.com>:
->=20
-> * Paul Cercueil <paul@crapouillou.net> [191124 12:58]:
->> Le dim., nov. 24, 2019 at 12:40, H. Nikolaus Schaller =
-<hns@goldelico.com> a
->> =C3=A9crit :
->>> and add interrupt and clocks.
-> ...
->>> --- a/arch/mips/boot/dts/ingenic/jz4780.dtsi
->>> +++ b/arch/mips/boot/dts/ingenic/jz4780.dtsi
->>> @@ -46,6 +46,17 @@
->>> 		#clock-cells =3D <1>;
->>> 	};
->>>=20
->>> +	gpu: gpu@13040000 {
->>=20
->> We try to keep the nodes ordered by address, could you move this node =
-where
->> it belongs?
-> ...
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+---
+ arch/arm/boot/dts/Makefile               |   1 +
+ arch/arm/boot/dts/am437x-gp-evm-hdmi.dts | 112 +++++++++++++++++++++++
+ 2 files changed, 113 insertions(+)
+ create mode 100644 arch/arm/boot/dts/am437x-gp-evm-hdmi.dts
 
-Yes, I have noted.
-
->=20
->>> +		compatible =3D "ingenic,jz4780-sgx540-120", =
-"img,sgx540-120",
->>> "img,sgx540", "img,sgx5";
->>> +		reg =3D <0x13040000 0x4000>;
->>> +
->>> +		clocks =3D <&cgu JZ4780_CLK_GPU>;
->>> +		clock-names =3D "gpu";
->=20
-> Just checking.. Is there something else to configure here
-> potentially in addition to the clocks?
-
-It doesn't look so. Unfortuantely there isn't much information
-except a v3.18 kernel supported by the vendor and that one also
-just has a gpu node with clock control.
-
-> That is, do we need to do some interconnect specific
-> configuration etc in addition to the clocks to have
-> runtime PM work for enabling and disabling sgx on
-> jz4780?
-
-I think we have to leave that open for further study.
-
-BR,
-Nikolaus
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index b21b3a64641a..612149069180 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -779,6 +779,7 @@ dtb-$(CONFIG_SOC_AM43XX) += \
+ 	am43x-epos-evm.dtb \
+ 	am437x-cm-t43.dtb \
+ 	am437x-gp-evm.dtb \
++	am437x-gp-evm-hdmi.dtb \
+ 	am437x-idk-evm.dtb \
+ 	am437x-sbc-t43.dtb \
+ 	am437x-sk-evm.dtb
+diff --git a/arch/arm/boot/dts/am437x-gp-evm-hdmi.dts b/arch/arm/boot/dts/am437x-gp-evm-hdmi.dts
+new file mode 100644
+index 000000000000..580a1e3e0dcd
+--- /dev/null
++++ b/arch/arm/boot/dts/am437x-gp-evm-hdmi.dts
+@@ -0,0 +1,112 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2019 Texas Instruments Incorporated - http://www.ti.com/
++ */
++
++/* AM437x GP EVM with HDMI output */
++
++#include "am437x-gp-evm.dts"
++
++/delete-node/ &lcd0;
++
++/ {
++	aliases {
++		display0 = &hdmi;
++	};
++
++	hdmi: connector {
++		compatible = "hdmi-connector";
++		label = "hdmi";
++
++		type = "b";
++
++		port {
++			hdmi_connector_in: endpoint {
++				remote-endpoint = <&sii9022_out>;
++			};
++		};
++	};
++
++	sound@1 {
++		compatible = "simple-audio-card";
++		simple-audio-card,name = "HDMI";
++		simple-audio-card,format = "i2s";
++		simple-audio-card,bitclock-master = <&hdmi_dailink_master>;
++		simple-audio-card,frame-master = <&hdmi_dailink_master>;
++		hdmi_dailink_master: simple-audio-card,cpu {
++			sound-dai = <&mcasp1>;
++			system-clock-frequency = <24000000>;
++			system-clock-direction-out;
++		};
++
++		simple-audio-card,codec {
++			sound-dai = <&sii9022>;
++		};
++	};
++
++	sii9022_mclk: sii9022_mclk {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <12000000>;
++	};
++};
++
++&lcd_bl {
++	status = "disabled";
++};
++
++&sound0 {
++	status = "disabled";
++};
++
++&tlv320aic3106 {
++	status = "disabled";
++};
++
++&i2c1 {
++	sii9022: sii9022@3b {
++		#sound-dai-cells = <0>;
++		compatible = "sil,sii9022";
++		reg = <0x3b>;
++
++		interrupt-parent = <&gpio3>;
++		interrupts = <24 IRQ_TYPE_LEVEL_LOW>;
++
++		sil,i2s-data-lanes = < 0 >;
++		clocks = <&sii9022_mclk>;
++		clock-names = "mclk";
++
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@0 {
++				reg = <0>;
++
++				sii9022_in: endpoint {
++					remote-endpoint = <&dpi_out>;
++				};
++			};
++
++			port@1 {
++				reg = <1>;
++
++				sii9022_out: endpoint {
++					remote-endpoint = <&hdmi_connector_in>;
++				};
++			};
++		};
++	};
++};
++
++&dpi_out {
++	remote-endpoint = <&sii9022_in>;
++	data-lines = <24>;
++};
++
++/* Override SelLCDorHDMI from am437x-gp-evm.dts to select HDMI */
++&gpio5 {
++	p8 {
++		output-low;
++	};
++};
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
 
