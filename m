@@ -2,64 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6B110B363
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Nov 2019 17:33:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4716910C4DD
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Nov 2019 09:21:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727071AbfK0QdX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 Nov 2019 11:33:23 -0500
-Received: from mga18.intel.com ([134.134.136.126]:6917 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727059AbfK0QdX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 27 Nov 2019 11:33:23 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 08:33:17 -0800
-X-IronPort-AV: E=Sophos;i="5.69,250,1571727600"; 
-   d="scan'208";a="292110496"
-Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 08:33:14 -0800
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc:     ville.syrjala@linux.intel.com, intel-gfx@lists.freedesktop.org,
-        jani.nikula@intel.com, linux-omap@vger.kernel.org
-Subject: [PATCH 07/13] video: omapfb: use const pointer for fb_ops
-Date:   Wed, 27 Nov 2019 18:32:03 +0200
-Message-Id: <609dbe6eefdfd0138aa5d2d4ceeb58684811dc6e.1574871797.git.jani.nikula@intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <cover.1574871797.git.jani.nikula@intel.com>
-References: <cover.1574871797.git.jani.nikula@intel.com>
+        id S1727408AbfK1IVg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Nov 2019 03:21:36 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:38946 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727437AbfK1IVe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Nov 2019 03:21:34 -0500
+Received: by mail-wr1-f68.google.com with SMTP id y11so26805069wrt.6
+        for <linux-omap@vger.kernel.org>; Thu, 28 Nov 2019 00:21:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=VOI036BPUwrbZowHT5GDUEXOWOhQmQWDUMNaY8GO7tI=;
+        b=aYsQAOKb1A7PKWIf5wGzlAze4eWPmdGPLKe1SsRZU2k+tm4SMPOV4cgWHesnBHGp+S
+         UhuJTmeX6pC8+bfFMrJo8ASo5EZgv85U5ojeERcDI6qYQAaU/NdssXIMa4sf40VLFh7d
+         7QRRyOvSR6Obq94UORxMiHh7CN+v/LEBj9X0XichLgfdrZezNY4/lhr9mI89UJcIWmN5
+         Gib8pPmxplFkJrhJLjiE8xQxxltLaNGhNaQwJbSxtz+OqQUxUJOfoWUpo4Y+8gVUi46T
+         qTLyVE8LlvEBsMD81mpln4RLMc4Gd7X3TvzNnjUotecTl3zoL1Ootn/mU1cM2egiLCeO
+         YEYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=VOI036BPUwrbZowHT5GDUEXOWOhQmQWDUMNaY8GO7tI=;
+        b=abJ0ALgk7P9//iyc6lJErTj0rb/peU/ebbX8rqflUhRrF52yZvyEiUGgCWQjZp7XFC
+         X1Cz/LMnl4ZPjNjTcS7efKw+/VLLA8iUiRACZ9iCG8tf5YmvfEvBTsEoPRmXZpZTPGHD
+         ijla/DU7MkmYk67Pe9PqXTJ6jN8YnVb9laWZcM+ygMikyPjZReFegH/XpcV8kyt3bIUK
+         ZA/02zTyY41NJGku/baAqlMcjZIFnfXo/T004h7j3jEonhM3xkdlQKZgQaHPK/QVij4W
+         3IGYtpd6oDLsR6gbQ5PDaJKWSkjplVaWPPJDvQ882Bg0jVTLIzXU+CxEfNaREsBsrfQG
+         IbeQ==
+X-Gm-Message-State: APjAAAXrt5XJGe7jFMtEhEvb/MPl6q7IabCFM9ibMf7URROJTXuM55Jf
+        BoLJYpAoaPkSOHXrvrw2CAdibw==
+X-Google-Smtp-Source: APXvYqwnYPAyBuUvcvS1pBiBRsm7B8Y/eawgeM5AHpFMzHjgdUnfsDOjjE//piFuuaBq8Ij9fBLegg==
+X-Received: by 2002:a5d:43c3:: with SMTP id v3mr38726407wrr.324.1574929290712;
+        Thu, 28 Nov 2019 00:21:30 -0800 (PST)
+Received: from apalos.home (athedsl-4476713.home.otenet.gr. [94.71.27.49])
+        by smtp.gmail.com with ESMTPSA id q3sm502890wrn.33.2019.11.28.00.21.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Nov 2019 00:21:30 -0800 (PST)
+Date:   Thu, 28 Nov 2019 10:21:27 +0200
+From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew@lunn.ch>, Sekhar Nori <nsekhar@ti.com>,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] net: ethernet: ti: ale: ensure vlan/mdb deleted when no
+ members
+Message-ID: <20191128082127.GA16359@apalos.home>
+References: <20191127155905.22921-1-grygorii.strashko@ti.com>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191127155905.22921-1-grygorii.strashko@ti.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use const for fb_ops to let us make the info->fbops pointer const in the
-future.
+On Wed, Nov 27, 2019 at 05:59:05PM +0200, Grygorii Strashko wrote:
+> The recently updated ALE APIs cpsw_ale_del_mcast() and
+> cpsw_ale_del_vlan_modify() have an issue and will not delete ALE entry even
+> if VLAN/mcast group has no more members. Hence fix it here and delete ALE
+> entry if !port_mask.
+> 
+> The issue affected only new cpsw switchdev driver.
+> 
+> Fixes: e85c14370783 ("net: ethernet: ti: ale: modify vlan/mdb api for switchdev")
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+> ---
+>  drivers/net/ethernet/ti/cpsw_ale.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+> index 929f3d3354e3..a5179ecfea05 100644
+> --- a/drivers/net/ethernet/ti/cpsw_ale.c
+> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
+> @@ -396,12 +396,14 @@ int cpsw_ale_del_mcast(struct cpsw_ale *ale, const u8 *addr, int port_mask,
+>  	if (port_mask) {
+>  		mcast_members = cpsw_ale_get_port_mask(ale_entry,
+>  						       ale->port_mask_bits);
+> -		mcast_members &= ~port_mask;
+> -		cpsw_ale_set_port_mask(ale_entry, mcast_members,
+> +		port_mask = mcast_members & ~port_mask;
+> +	}
+> +
+> +	if (port_mask)
+> +		cpsw_ale_set_port_mask(ale_entry, port_mask,
+>  				       ale->port_mask_bits);
+> -	} else {
+> +	else
+>  		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
+> -	}
 
-Cc: linux-fbdev@vger.kernel.org
-Cc: linux-omap@vger.kernel.org
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- drivers/video/fbdev/omap/omapfb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The code assumed calls cpsw_ale_del_mcast() should have a port mask '0' when
+deleting an entry. Do we want to have 'dual' functionality on it? 
+This will delete mcast entries if port mask is 0 or port mask matches exactly
+what's configured right?
 
-diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-index 702cca59bda1..e8a304f84ea8 100644
---- a/drivers/video/fbdev/omap/omapfb_main.c
-+++ b/drivers/video/fbdev/omap/omapfb_main.c
-@@ -1052,7 +1052,7 @@ static int omapfb_ioctl(struct fb_info *fbi, unsigned int cmd,
- {
- 	struct omapfb_plane_struct *plane = fbi->par;
- 	struct omapfb_device	*fbdev = plane->fbdev;
--	struct fb_ops		*ops = fbi->fbops;
-+	const struct fb_ops *ops = fbi->fbops;
- 	union {
- 		struct omapfb_update_window	update_window;
- 		struct omapfb_plane_info	plane_info;
--- 
-2.20.1
+>  	cpsw_ale_write(ale, idx, ale_entry);
+>  	return 0;
+> @@ -478,6 +480,10 @@ static void cpsw_ale_del_vlan_modify(struct cpsw_ale *ale, u32 *ale_entry,
+>  	members = cpsw_ale_get_vlan_member_list(ale_entry,
+>  						ale->vlan_field_bits);
+>  	members &= ~port_mask;
+> +	if (!members) {
+> +		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
+> +		return;
+> +	}
 
+This makes sense the call was missing 
+
+>  
+>  	untag = cpsw_ale_get_vlan_untag_force(ale_entry,
+>  					      ale->vlan_field_bits);
+> -- 
+> 2.17.1
+> 
+
+
+Thanks
+/Ilias
