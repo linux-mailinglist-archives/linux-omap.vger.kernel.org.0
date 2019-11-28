@@ -2,128 +2,226 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E7910C615
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Nov 2019 10:38:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6725510C845
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Nov 2019 12:55:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726670AbfK1JiL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Nov 2019 04:38:11 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:50637 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726296AbfK1JiK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Nov 2019 04:38:10 -0500
-Received: by mail-wm1-f67.google.com with SMTP id l17so10249792wmh.0
-        for <linux-omap@vger.kernel.org>; Thu, 28 Nov 2019 01:38:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=NhpLhJz6+GDF9m5U6zWuGMsno9FtNQ2w1q9YdXHXl14=;
-        b=osNXp1PoN1pNhtrxYjY6DcE8SZhJaS2KskPEeSN8ztSvahvxN4BpUC+7LeDoz9PO8Z
-         I0gzYdxQfGjXIb6/Z67XNwX3QDLs3Bz/j0HpJ5RwuZYlymTwqf7Sja4a+Shhg+fzbAjb
-         Mg3ztcaeZsf6itIt3xHy9QPDOkbR4/u+TceDQjSv2SQyMK1k5TBdBaoIekpL35fkBKtR
-         UdlcWvz4JdBQIl0U6bY46pQ2nL8qHBKyKKqeOCFBpL6v2l/n6WxtfAr8VdtFE8/esimq
-         Yu0xg8AOreQ1svph/X3j3/tDkjyh4QuCeAvYcfu+4YgAVJMnwa5ZCT9FJ3WFW2Z2FJXJ
-         SGZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=NhpLhJz6+GDF9m5U6zWuGMsno9FtNQ2w1q9YdXHXl14=;
-        b=OC9NIUhEBBf1G365uUPhQRHPGyDSEXWb0OOP+PGM+NtxsBz/BKGYwmlDOAoaesTwql
-         hiy2bMURKtrCNHE+WmsghR/CRZLzHNSDREILZ5aR/V7ePueEC7HM34qnZCYyK7q3VcpU
-         dx69rKMX+INKq4RG/f/0STos79soUnTMCOr7T1wEKhano4IEKkMYeXVkpwRp4bz8Dncl
-         biaDuCDC1yDRtpZQcQuLN8hW27GJfkvzxaUAy4WlrwzqUnTbhJQaiow+4saj08psNbiV
-         dL5AG8wpexZBtJri6Xdg7XItJowkoCyWc2RjCWq5E0PcE8gxPrteGNE4RgEUeHPQ7dE5
-         H5Mw==
-X-Gm-Message-State: APjAAAXyPbt9YML0h5SYin1rCNr8vVuPulREuMpioTr4d7jUqqL07d5v
-        NSIr+3ORAX8906x7JugBNY/QUw==
-X-Google-Smtp-Source: APXvYqxshxI1xLIjiArznE4nEZ0G3ax1Vs9ZBK7qgqy3CJVywQrE7TmI2c+oBXwRmIS83w6jJ6LDtA==
-X-Received: by 2002:a7b:cb89:: with SMTP id m9mr8563703wmi.141.1574933887456;
-        Thu, 28 Nov 2019 01:38:07 -0800 (PST)
-Received: from apalos.home (athedsl-4476713.home.otenet.gr. [94.71.27.49])
-        by smtp.gmail.com with ESMTPSA id f2sm3076753wmh.46.2019.11.28.01.38.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Nov 2019 01:38:06 -0800 (PST)
-Date:   Thu, 28 Nov 2019 11:38:04 +0200
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
-        Andrew Lunn <andrew@lunn.ch>, Sekhar Nori <nsekhar@ti.com>,
+        id S1726610AbfK1Lzu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Nov 2019 06:55:50 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:59724 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726191AbfK1Lzt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Nov 2019 06:55:49 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xASBtdj3129928;
+        Thu, 28 Nov 2019 05:55:39 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1574942139;
+        bh=3J+AVC3Pcb6Yw4883ZHaDaBKebxD+28yuArSAn5pnYs=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=DTxMyJ8IM+hI9lzEyMDfVjAXcgvEWo4yuQAAxh045FStAR9dwHNIf2D9heiAneEsk
+         KgNtb4oyXiqgYGAQQPahAyykbgZg1HRGSeS6M8Uh8MaXjetcrggR90rpEgG2MpZUiO
+         JM824LXxaS86t9zrzbLw+g5U1f7WF/YT6E+iMjxE=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xASBtc3d083362;
+        Thu, 28 Nov 2019 05:55:39 -0600
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 28
+ Nov 2019 05:55:38 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Thu, 28 Nov 2019 05:55:38 -0600
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xASBtYaM109133;
+        Thu, 28 Nov 2019 05:55:35 -0600
+Subject: Re: [PATCH v7 net-next 06/13] dt-bindings: net: ti: add new cpsw
+ switch driver bindings
+To:     Rob Herring <robh+dt@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+CC:     netdev <netdev@vger.kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
         Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] net: ethernet: ti: ale: ensure vlan/mdb deleted when no
- members
-Message-ID: <20191128093804.GA18633@apalos.home>
-References: <20191127155905.22921-1-grygorii.strashko@ti.com>
- <20191128082127.GA16359@apalos.home>
+        Jiri Pirko <jiri@resnulli.us>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Sekhar Nori <nsekhar@ti.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        <devicetree@vger.kernel.org>
+References: <20191119221925.28426-1-grygorii.strashko@ti.com>
+ <20191119221925.28426-7-grygorii.strashko@ti.com>
+ <CAL_JsqKfWOZeXXxqyKtH98cbccXUoV7djRtxzyoq0hA_qx-bpQ@mail.gmail.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <9dc06cb7-c875-6fc1-e755-3832e9f39a52@ti.com>
+Date:   Thu, 28 Nov 2019 13:55:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191128082127.GA16359@apalos.home>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <CAL_JsqKfWOZeXXxqyKtH98cbccXUoV7djRtxzyoq0hA_qx-bpQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Nov 28, 2019 at 10:21:27AM +0200, Ilias Apalodimas wrote:
-> On Wed, Nov 27, 2019 at 05:59:05PM +0200, Grygorii Strashko wrote:
-> > The recently updated ALE APIs cpsw_ale_del_mcast() and
-> > cpsw_ale_del_vlan_modify() have an issue and will not delete ALE entry even
-> > if VLAN/mcast group has no more members. Hence fix it here and delete ALE
-> > entry if !port_mask.
-> > 
-> > The issue affected only new cpsw switchdev driver.
-> > 
-> > Fixes: e85c14370783 ("net: ethernet: ti: ale: modify vlan/mdb api for switchdev")
-> > Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> > ---
-> >  drivers/net/ethernet/ti/cpsw_ale.c | 14 ++++++++++----
-> >  1 file changed, 10 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-> > index 929f3d3354e3..a5179ecfea05 100644
-> > --- a/drivers/net/ethernet/ti/cpsw_ale.c
-> > +++ b/drivers/net/ethernet/ti/cpsw_ale.c
-> > @@ -396,12 +396,14 @@ int cpsw_ale_del_mcast(struct cpsw_ale *ale, const u8 *addr, int port_mask,
-> >  	if (port_mask) {
-> >  		mcast_members = cpsw_ale_get_port_mask(ale_entry,
-> >  						       ale->port_mask_bits);
-> > -		mcast_members &= ~port_mask;
-> > -		cpsw_ale_set_port_mask(ale_entry, mcast_members,
-> > +		port_mask = mcast_members & ~port_mask;
-> > +	}
-> > +
-> > +	if (port_mask)
-> > +		cpsw_ale_set_port_mask(ale_entry, port_mask,
-> >  				       ale->port_mask_bits);
-> > -	} else {
-> > +	else
-> >  		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
-> > -	}
+Hi Rob,
+
+On 21/11/2019 21:24, Rob Herring wrote:
+> On Tue, Nov 19, 2019 at 4:19 PM Grygorii Strashko
+> <grygorii.strashko@ti.com> wrote:
+>>
+>> Add bindings for the new TI CPSW switch driver. Comparing to the legacy
+>> bindings (net/cpsw.txt):
+>> - ports definition follows DSA bindings (net/dsa/dsa.txt) and ports can be
+>> marked as "disabled" if not physically wired.
+>> - all deprecated properties dropped;
+>> - all legacy propertiies dropped which represent constant HW cpapbilities
+>> (cpdma_channels, ale_entries, bd_ram_size, mac_control, slaves,
+>> active_slave)
+>> - TI CPTS DT properties are reused as is, but grouped in "cpts" sub-node
+>> - TI Davinci MDIO DT bindings are reused as is, because Davinci MDIO is
+>> reused.
+>>
+>> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+>> ---
+>>   .../bindings/net/ti,cpsw-switch.yaml          | 240 ++++++++++++++++++
+>>   1 file changed, 240 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml
 > 
-> The code assumed calls cpsw_ale_del_mcast() should have a port mask '0' when
-> deleting an entry. Do we want to have 'dual' functionality on it? 
-> This will delete mcast entries if port mask is 0 or port mask matches exactly
-> what's configured right?
+> I see David has applied this already, but it still has numerous
+> problems. Please send a follow-up.
 > 
+>>
+>> diff --git a/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml b/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml
+>> new file mode 100644
+>> index 000000000000..81ae8cafabc1
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml
+>> @@ -0,0 +1,240 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+> 
+> For new bindings, please dual license:
+> 
+> (GPL-2.0-only OR BSD-2-Clause)
+> 
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/net/ti,cpsw-switch.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: TI SoC Ethernet Switch Controller (CPSW) Device Tree Bindings
+>> +
+>> +maintainers:
+>> +  - Grygorii Strashko <grygorii.strashko@ti.com>
+>> +  - Sekhar Nori <nsekhar@ti.com>
+>> +
+>> +description:
+>> +  The 3-port switch gigabit ethernet subsystem provides ethernet packet
+>> +  communication and can be configured as an ethernet switch. It provides the
+>> +  gigabit media independent interface (GMII),reduced gigabit media
+>> +  independent interface (RGMII), reduced media independent interface (RMII),
+>> +  the management data input output (MDIO) for physical layer device (PHY)
+>> +  management.
+>> +
+>> +properties:
+>> +  compatible:
+>> +    oneOf:
+>> +      - const: ti,cpsw-switch
+>> +      - items:
+>> +         - const: ti,am335x-cpsw-switch
+>> +         - const: ti,cpsw-switch
+>> +      - items:
+>> +        - const: ti,am4372-cpsw-switch
+>> +        - const: ti,cpsw-switch
+>> +      - items:
+>> +        - const: ti,dra7-cpsw-switch
+>> +        - const: ti,cpsw-switch
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +    description:
+>> +       The physical base address and size of full the CPSW module IO range
+>> +
+>> +  ranges: true
+>> +
+>> +  clocks:
+>> +    maxItems: 1
+>> +    description: CPSW functional clock
+>> +
+>> +  clock-names:
+>> +    maxItems: 1
+>> +    items:
+>> +      - const: fck
+>> +
+>> +  interrupts:
+>> +    items:
+>> +      - description: RX_THRESH interrupt
+>> +      - description: RX interrupt
+>> +      - description: TX interrupt
+>> +      - description: MISC interrupt
+>> +
+>> +  interrupt-names:
+>> +    items:
+>> +      - const: "rx_thresh"
+>> +      - const: "rx"
+>> +      - const: "tx"
+>> +      - const: "misc"
+>> +
+>> +  pinctrl-names: true
+>> +
+>> +  syscon:
+>> +    $ref: /schemas/types.yaml#definitions/phandle
+>> +    description:
+>> +      Phandle to the system control device node which provides access to
+>> +      efuse IO range with MAC addresses
+> 
+> Can't you use nvmem binding for this?
+> 
+I've sent patch to fix other comments except this one.
 
-Deleting the ALE entry if the port_mask matches execlty what's configured makes
-sense. Can we change it to something that doesn't change the function argument?
+About nvmem,I've been thinking about it for a long time already, but in our case
+MAC address is encoded in eFuse register in a different way for different SoCs.
 
-I think something like: 
-mcast_members = 0;
-if (port_mask) {
-	mcast_members = cpsw_ale_get_port_mask(ale_entry,
-											ale->port_mask_bits);
-	mcast_members &= ~port_mask;
-}
-if (mcast_members)
-	cpsw_ale_set_port_mask(ale_entry, mcast_members, ....)
-else
-	cpsw_ale_set_entry_type(....)
+So even if I'll try to use nvmem and define some MAC cell:
 
-is more readable?
+	efuse: efuse {
+		compatible = "...";
+		#address-cells = <1>;
+		#size-cells = <1>;
 
-Thanks
-/Ilias
+		eth_mac: eth_mac@34 {
+			reg = <0x34 0x10>;
+		};
+	};
+
+	portX {
+		...
+		nvmem-cells = <&eth_mac>;
+		nvmem-cell-names = "mac-address";
+	};
+
+the of_get_mac_address() will finally call
+   nvmem->reg_read(priv, offset, val, bytes);
+
+and at this point nvmem driver will have no knowledge about the type of the cell
+(MAC address), so no decoding can not be done and returned mac will be incorrect.
+
+Not sure how to proceed here. One of the ways is to pass cell info in
+struct nvmem_device .reg_read()/.reg_write() callbacks, cell name could be use
+to perform some actions.
+
+Another thing which need to be considered is - MAC can be assigned per port,
+so dev->of_node != port_of_node (and of_get_mac_addr_nvmem() will fail).
+
+
+
+-- 
+Best regards,
+grygorii
