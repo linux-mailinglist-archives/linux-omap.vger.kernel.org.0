@@ -2,108 +2,246 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A1010CA55
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Nov 2019 15:26:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C17B910D3F9
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Nov 2019 11:30:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfK1O0h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Nov 2019 09:26:37 -0500
-Received: from mail-io1-f65.google.com ([209.85.166.65]:44429 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726401AbfK1O0h (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Nov 2019 09:26:37 -0500
-Received: by mail-io1-f65.google.com with SMTP id j20so29073966ioo.11
-        for <linux-omap@vger.kernel.org>; Thu, 28 Nov 2019 06:26:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0+WjteUAT998rOCBDNGJh8RPbUATg9wdwPU0Ze60vXw=;
-        b=Jku9iG4ITdUeUkhF4WxOecCJ88cazu+6j5ud1xmQ24nfAWy1nnaXyJrYSlXadE+hHp
-         3HZmCLOb50wdfLt7uPMpjUIoloLzfk38h7uRAkEfPCKuxUM1vLUynEs/BKE4ZAxSGDtP
-         lrUAxiXkr/v6RgMmqicajSyX4wUxr34zpGX0Gq8sP16gFMXQ/VNtdlPw/B7IXEnP48BT
-         mbh+nqvymHg4hZ397aq000Zzx5c8RblVctjWL4fd16OmTIFUtd+2m5vhwceH42eD/931
-         WLJPHu/mveK28QYD2gQoXuVgUUTSsd78V3nYtpqEFA3xRHW4Ny+5B27Bm0IW76RLNwJl
-         NVKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0+WjteUAT998rOCBDNGJh8RPbUATg9wdwPU0Ze60vXw=;
-        b=ZcDjARskuAJsLSIlZfGCrbFf1SPghW3183cNkTHWRcnqqvdnAV3ZHoapGdAB5vAiqA
-         7Euw4ZoNcDzWLXGlVfvjbq6E3You+MEWgfdB1RgDKfY+84MTpFBBAtWx+TJAzFH/9+bv
-         9dXje9Ra7k5UKJIqteipJki50KmBYQ9jPRGCcMeS0EBQ4Vf28kzv5poxyrlugvQC6mEe
-         grpmFrZqLW9mnwr6Aj5rxyOOo2UqM7sY4RiYCnDtQFg+1pvhcQVOfD5IBe7ly3cEi35z
-         CnKs1wNCowsc8Xr2q2LaSiL+LdHwJwbYNH2qw4UyllmJsTEGUrEtKE31gPsOXIYU2/Dt
-         KV0g==
-X-Gm-Message-State: APjAAAXv6InlPpqs5yaXV4c3aXxJRI8pI+er41/FoQsB4080O8vJg1WZ
-        AGh14hr7KHXRl+v/psotILGnkscl+BsFCnquEPc=
-X-Google-Smtp-Source: APXvYqxrmmSnigHVjjJZQgdGqSiBjsg8TQuFven5eYUVYvOTCryr13wP6HsHOAxLWzC7fRfKp+oKvuRXxCxWWpO+sKU=
-X-Received: by 2002:a02:3309:: with SMTP id c9mr10332526jae.52.1574951194334;
- Thu, 28 Nov 2019 06:26:34 -0800 (PST)
+        id S1726785AbfK2KaA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 Nov 2019 05:30:00 -0500
+Received: from mga11.intel.com ([192.55.52.93]:27927 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725892AbfK2KaA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 29 Nov 2019 05:30:00 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Nov 2019 02:29:58 -0800
+X-IronPort-AV: E=Sophos;i="5.69,257,1571727600"; 
+   d="scan'208";a="203694628"
+Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Nov 2019 02:29:50 -0800
+From:   Jani Nikula <jani.nikula@intel.com>
+To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Cc:     intel-gfx@lists.freedesktop.org, jani.nikula@intel.com,
+        ville.syrjala@linux.intel.com,
+        Andy Walls <awalls@md.metrocast.net>,
+        Bernie Thompson <bernie@plugable.com>,
+        =?UTF-8?q?Bruno=20Pr=C3=A9mont?= <bonbons@linux-vserver.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Hans Verkuil <hverkuil@xs4all.nl>,
+        Jaya Kumar <jayalk@intworks.biz>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
+        =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+        Robin van der Gracht <robin@protonic.nl>,
+        Steve Glendinning <steve.glendinning@shawell.net>,
+        ivtv-devel@ivtvdriver.org, kvm@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v2 00/14] video, drm, etc: constify fbops in struct fb_info
+Date:   Fri, 29 Nov 2019 12:29:30 +0200
+Message-Id: <cover.1575022735.git.jani.nikula@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <trinity-3f97833c-0914-4f86-8e16-2bfb4ad6dab3-1574862737086@3c-app-gmx-bs22>
- <20191127161909.GA35479@atomide.com>
-In-Reply-To: <20191127161909.GA35479@atomide.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Thu, 28 Nov 2019 08:26:23 -0600
-Message-ID: <CAHCN7x+QX=P6b0JnsARK_pzbMjupwMy71JHEWi1NMxAmDLG6wA@mail.gmail.com>
-Subject: Re: twl: not initialized and twl6030_uv_to_vsel problems
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     deffo@gmx.de, Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Nov 27, 2019 at 10:19 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> Hi,
->
-> * deffo@gmx.de <deffo@gmx.de> [191127 13:53]:
-> > hi there!
-> >
-> > i'm using the TI OMAP4460 (VAR-SOM-OM44) and i get several errors in dmesg on the latest for-next branch:
-> >
-> > root@localhost:~# dmesg -l err
-> > [    1.146026] twl: not initialized
-> > [    1.146087] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 1375000 Vs max 1316660
-> > [    1.146087] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 1375000 Vs max 1316660
-> > [    1.146179] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 1375000 Vs max 1316660
-> > [    1.146209] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 1375000 Vs max 1316660
-> > [    1.146270] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 1375000 Vs max 1316660
-> > [    1.146301] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 1375000 Vs max 1316660
-> > [    1.146331] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 1410000 Vs max 1316660
-> > [    1.522979] omap_dm_timer_set_source: timer_sys_ck not found
->
-> Sounds like something needs fixing for sure. Similar messages seem to
-> appear for all omap4 with twl PMIC.
+This is v2 of https://patchwork.freedesktop.org/series/70119/
 
-Something similar happened to the twl4030 on omap3.  Check out the fix
-for it:   https://patchwork.kernel.org/patch/11094653/
+I wanted to make our struct fb_ops const because we don't modify
+it... and this is what I ended up with to fix it and a bunch of others.
 
-It't not exactly the same, but It might be useful in fixing the twl6030.
+I would appreciate acks to merge all this via the drm-misc tree. This is
+especially important for patches 1-8 to reasonably get the job
+done. Patches 9-14 are somewhat easier to merge at leisure afterwards,
+but there really isn't much conflict potential IMO.
 
-adam
+Daniel, please double-check me adding your Reviewed-by on the later
+patches wasn't overzealous.
 
->
-> > which probably leads to the problem, that the cpu cannot run with more than 920 mhz. is this a known problem?
->
-> Yes, see the drivers/cpufreq changes recently done for omap3:
->
-> $ git log v5.4..3fbeef397212046cc514fe9fcd07e67e6ca32163 drivers/cpufreq
->
-> Similar changes are also needed for omap4 to detect the supported rates.
->
-> And then we also need to add a regulator controller driver for cpufreq
-> to use that manages the voltage controller.
->
-> > i need to run the cpus with 1.5 ghz, as it was possible with the v3.4 kernel, how is this possible?
->
-> My guess is that v3.4 was missing some critical checks to protect
-> the SoC :) But please do check, maybe we're missing some code that
-> was there earlier.
->
-> Regards,
->
-> Tony
+BR,
+Jani.
+
+
+Cc: Andy Walls <awalls@md.metrocast.net>
+Cc: Bernie Thompson <bernie@plugable.com>
+Cc: Bruno Prémont <bonbons@linux-vserver.org>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: Jaya Kumar <jayalk@intworks.biz>
+Cc: Kirti Wankhede <kwankhede@nvidia.com>
+Cc: Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>
+Cc: Noralf Trønnes <noralf@tronnes.org>
+Cc: Robin van der Gracht <robin@protonic.nl>
+Cc: Steve Glendinning <steve.glendinning@shawell.net>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: ivtv-devel@ivtvdriver.org
+Cc: kvm@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: linux-input@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+
+
+Jani Nikula (14):
+  video: fb_defio: preserve user fb_ops
+  drm/fb-helper: don't preserve fb_ops across deferred IO use
+  video: smscufx: don't restore fb_mmap after deferred IO cleanup
+  video: udlfb: don't restore fb_mmap after deferred IO cleanup
+  video: fbdev: vesafb: modify the static fb_ops directly
+  video: fbmem: use const pointer for fb_ops
+  video: omapfb: use const pointer for fb_ops
+  video: fbdev: make fbops member of struct fb_info a const pointer
+  drm: constify fb ops across all drivers
+  video: constify fb ops across all drivers
+  HID: picoLCD: constify fb ops
+  media: constify fb ops across all drivers
+  samples: vfio-mdev: constify fb ops
+  auxdisplay: constify fb ops
+
+ drivers/auxdisplay/cfag12864bfb.c             |  2 +-
+ drivers/auxdisplay/ht16k33.c                  |  2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_fb.c        |  2 +-
+ drivers/gpu/drm/armada/armada_fbdev.c         |  2 +-
+ drivers/gpu/drm/drm_fb_helper.c               | 27 +++----------------
+ drivers/gpu/drm/exynos/exynos_drm_fbdev.c     |  2 +-
+ .../gpu/drm/hisilicon/hibmc/hibmc_drm_fbdev.c |  2 +-
+ drivers/gpu/drm/i915/display/intel_fbdev.c    |  2 +-
+ drivers/gpu/drm/msm/msm_fbdev.c               |  2 +-
+ drivers/gpu/drm/nouveau/nouveau_fbcon.c       |  4 +--
+ drivers/gpu/drm/omapdrm/omap_fbdev.c          |  2 +-
+ drivers/gpu/drm/radeon/radeon_fb.c            |  2 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_fbdev.c |  2 +-
+ drivers/gpu/drm/tegra/fb.c                    |  2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_fb.c            |  2 +-
+ drivers/hid/hid-picolcd_fb.c                  |  3 +--
+ drivers/media/pci/ivtv/ivtvfb.c               |  3 +--
+ drivers/media/platform/vivid/vivid-osd.c      |  3 +--
+ drivers/video/fbdev/68328fb.c                 |  2 +-
+ drivers/video/fbdev/acornfb.c                 |  2 +-
+ drivers/video/fbdev/amba-clcd.c               |  2 +-
+ drivers/video/fbdev/amifb.c                   |  2 +-
+ drivers/video/fbdev/arcfb.c                   |  2 +-
+ drivers/video/fbdev/arkfb.c                   |  2 +-
+ drivers/video/fbdev/asiliantfb.c              |  2 +-
+ drivers/video/fbdev/atmel_lcdfb.c             |  2 +-
+ drivers/video/fbdev/aty/aty128fb.c            |  2 +-
+ drivers/video/fbdev/aty/atyfb_base.c          |  2 +-
+ drivers/video/fbdev/aty/radeon_base.c         |  2 +-
+ drivers/video/fbdev/au1100fb.c                |  2 +-
+ drivers/video/fbdev/au1200fb.c                |  2 +-
+ drivers/video/fbdev/broadsheetfb.c            |  2 +-
+ drivers/video/fbdev/bw2.c                     |  2 +-
+ drivers/video/fbdev/carminefb.c               |  2 +-
+ drivers/video/fbdev/cg14.c                    |  2 +-
+ drivers/video/fbdev/cg3.c                     |  2 +-
+ drivers/video/fbdev/cg6.c                     |  2 +-
+ drivers/video/fbdev/chipsfb.c                 |  2 +-
+ drivers/video/fbdev/cirrusfb.c                |  2 +-
+ drivers/video/fbdev/clps711x-fb.c             |  2 +-
+ drivers/video/fbdev/cobalt_lcdfb.c            |  2 +-
+ drivers/video/fbdev/controlfb.c               |  2 +-
+ drivers/video/fbdev/core/fb_defio.c           |  3 ---
+ drivers/video/fbdev/core/fbmem.c              | 19 ++++++++-----
+ drivers/video/fbdev/cyber2000fb.c             |  2 +-
+ drivers/video/fbdev/da8xx-fb.c                |  2 +-
+ drivers/video/fbdev/dnfb.c                    |  2 +-
+ drivers/video/fbdev/efifb.c                   |  2 +-
+ drivers/video/fbdev/ep93xx-fb.c               |  2 +-
+ drivers/video/fbdev/fb-puv3.c                 |  2 +-
+ drivers/video/fbdev/ffb.c                     |  2 +-
+ drivers/video/fbdev/fm2fb.c                   |  2 +-
+ drivers/video/fbdev/fsl-diu-fb.c              |  2 +-
+ drivers/video/fbdev/g364fb.c                  |  2 +-
+ drivers/video/fbdev/gbefb.c                   |  2 +-
+ drivers/video/fbdev/geode/gx1fb_core.c        |  2 +-
+ drivers/video/fbdev/geode/gxfb_core.c         |  2 +-
+ drivers/video/fbdev/geode/lxfb_core.c         |  2 +-
+ drivers/video/fbdev/goldfishfb.c              |  2 +-
+ drivers/video/fbdev/grvga.c                   |  2 +-
+ drivers/video/fbdev/gxt4500.c                 |  2 +-
+ drivers/video/fbdev/hecubafb.c                |  2 +-
+ drivers/video/fbdev/hgafb.c                   |  2 +-
+ drivers/video/fbdev/hitfb.c                   |  2 +-
+ drivers/video/fbdev/hpfb.c                    |  2 +-
+ drivers/video/fbdev/hyperv_fb.c               |  2 +-
+ drivers/video/fbdev/i740fb.c                  |  2 +-
+ drivers/video/fbdev/imsttfb.c                 |  2 +-
+ drivers/video/fbdev/imxfb.c                   |  2 +-
+ drivers/video/fbdev/intelfb/intelfbdrv.c      |  2 +-
+ drivers/video/fbdev/kyro/fbdev.c              |  2 +-
+ drivers/video/fbdev/leo.c                     |  2 +-
+ drivers/video/fbdev/macfb.c                   |  2 +-
+ drivers/video/fbdev/matrox/matroxfb_crtc2.c   |  2 +-
+ drivers/video/fbdev/maxinefb.c                |  2 +-
+ drivers/video/fbdev/mb862xx/mb862xxfbdrv.c    |  2 +-
+ drivers/video/fbdev/mbx/mbxfb.c               |  2 +-
+ drivers/video/fbdev/metronomefb.c             |  2 +-
+ drivers/video/fbdev/mmp/fb/mmpfb.c            |  2 +-
+ drivers/video/fbdev/mx3fb.c                   |  5 ++--
+ drivers/video/fbdev/neofb.c                   |  2 +-
+ drivers/video/fbdev/nvidia/nvidia.c           |  2 +-
+ drivers/video/fbdev/ocfb.c                    |  2 +-
+ drivers/video/fbdev/offb.c                    |  2 +-
+ drivers/video/fbdev/omap/omapfb_main.c        |  2 +-
+ .../video/fbdev/omap2/omapfb/omapfb-main.c    |  2 +-
+ drivers/video/fbdev/p9100.c                   |  2 +-
+ drivers/video/fbdev/platinumfb.c              |  2 +-
+ drivers/video/fbdev/pm2fb.c                   |  2 +-
+ drivers/video/fbdev/pm3fb.c                   |  2 +-
+ drivers/video/fbdev/pmag-aa-fb.c              |  2 +-
+ drivers/video/fbdev/pmag-ba-fb.c              |  2 +-
+ drivers/video/fbdev/pmagb-b-fb.c              |  2 +-
+ drivers/video/fbdev/ps3fb.c                   |  2 +-
+ drivers/video/fbdev/pvr2fb.c                  |  2 +-
+ drivers/video/fbdev/pxa168fb.c                |  2 +-
+ drivers/video/fbdev/pxafb.c                   |  4 +--
+ drivers/video/fbdev/q40fb.c                   |  2 +-
+ drivers/video/fbdev/riva/fbdev.c              |  2 +-
+ drivers/video/fbdev/s3c-fb.c                  |  2 +-
+ drivers/video/fbdev/s3c2410fb.c               |  2 +-
+ drivers/video/fbdev/s3fb.c                    |  2 +-
+ drivers/video/fbdev/sa1100fb.c                |  2 +-
+ drivers/video/fbdev/savage/savagefb_driver.c  |  2 +-
+ drivers/video/fbdev/sh7760fb.c                |  2 +-
+ drivers/video/fbdev/sh_mobile_lcdcfb.c        |  4 +--
+ drivers/video/fbdev/simplefb.c                |  2 +-
+ drivers/video/fbdev/sis/sis_main.c            |  2 +-
+ drivers/video/fbdev/skeletonfb.c              |  2 +-
+ drivers/video/fbdev/sm712fb.c                 |  2 +-
+ drivers/video/fbdev/smscufx.c                 |  3 +--
+ drivers/video/fbdev/ssd1307fb.c               |  2 +-
+ drivers/video/fbdev/sstfb.c                   |  2 +-
+ drivers/video/fbdev/stifb.c                   |  2 +-
+ drivers/video/fbdev/sunxvr1000.c              |  2 +-
+ drivers/video/fbdev/sunxvr2500.c              |  2 +-
+ drivers/video/fbdev/sunxvr500.c               |  2 +-
+ drivers/video/fbdev/tcx.c                     |  2 +-
+ drivers/video/fbdev/tdfxfb.c                  |  2 +-
+ drivers/video/fbdev/tgafb.c                   |  2 +-
+ drivers/video/fbdev/tmiofb.c                  |  2 +-
+ drivers/video/fbdev/tridentfb.c               |  2 +-
+ drivers/video/fbdev/udlfb.c                   |  1 -
+ drivers/video/fbdev/uvesafb.c                 |  2 +-
+ drivers/video/fbdev/valkyriefb.c              |  2 +-
+ drivers/video/fbdev/vesafb.c                  |  6 ++---
+ drivers/video/fbdev/vfb.c                     |  2 +-
+ drivers/video/fbdev/vga16fb.c                 |  2 +-
+ drivers/video/fbdev/vt8500lcdfb.c             |  2 +-
+ drivers/video/fbdev/vt8623fb.c                |  2 +-
+ drivers/video/fbdev/w100fb.c                  |  2 +-
+ drivers/video/fbdev/wm8505fb.c                |  2 +-
+ drivers/video/fbdev/xen-fbfront.c             |  2 +-
+ drivers/video/fbdev/xilinxfb.c                |  2 +-
+ include/linux/fb.h                            |  2 +-
+ samples/vfio-mdev/mdpy-fb.c                   |  2 +-
+ 136 files changed, 156 insertions(+), 175 deletions(-)
+
+-- 
+2.20.1
+
