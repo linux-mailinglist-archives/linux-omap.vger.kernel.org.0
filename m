@@ -2,130 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAB6810D943
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Nov 2019 18:58:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 387A910DD72
+	for <lists+linux-omap@lfdr.de>; Sat, 30 Nov 2019 12:28:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727005AbfK2R6w (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 Nov 2019 12:58:52 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:58644 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727004AbfK2R6w (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Nov 2019 12:58:52 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xATHwltV058119;
-        Fri, 29 Nov 2019 11:58:47 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1575050327;
-        bh=zw3/H6QkElTXo6jVuCmTPMcqTN3zsUIuzuy9J4YYVWA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=uLdsnhCaZR5O3m31XcK5d6zbqjOkZ3Q21VrPuG0DgnLwmNzvkMVRAWMmGRWiUELUT
-         uEWym6cNl9kbKA2+CoN6zcngwpw9M2t7faEfIRySyFe0gveUmzGQsgYOEfhhWezygP
-         gVWDgzJaBqgjrlv1sbkZWpUXG44ovrv8S/RyV3ZI=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xATHwlnF027393;
-        Fri, 29 Nov 2019 11:58:47 -0600
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 29
- Nov 2019 11:58:47 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 29 Nov 2019 11:58:47 -0600
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xATHwi1t101026;
-        Fri, 29 Nov 2019 11:58:45 -0600
-Subject: Re: [PATCH] net: ethernet: ti: ale: ensure vlan/mdb deleted when no
- members
-To:     Ilias Apalodimas <ilias.apalodimas@linaro.org>
-CC:     <netdev@vger.kernel.org>, "David S . Miller" <davem@davemloft.net>,
+        id S1725947AbfK3L2Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 30 Nov 2019 06:28:16 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:43517 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725887AbfK3L2Q (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 30 Nov 2019 06:28:16 -0500
+Received: by mail-pf1-f194.google.com with SMTP id h14so5730168pfe.10
+        for <linux-omap@vger.kernel.org>; Sat, 30 Nov 2019 03:28:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=iai8gOE3z1MAnydfDZ/hmRICotLqvoUpCxmpbWuvdhk=;
+        b=zKRu7RrhrkiEUyF3rwVCcli7TCk2GVVka+2HLae++qjdDgoW5ghKokWGbfEKpWKDeE
+         IRO//NDvRDaIw17ehPbk139sjc5jOYG02HIePBbsIbdhv3CqZVl/bca9PDgqAxX4TNtm
+         3hw8q2Un1Bdv7oyXcuaphFIuqi4oTwHQRKMUN/Bxxi0MGj2v87zPVJdHeWQyz9RFhILw
+         Pv/iTTnxZnIxGQyq5db6gFK9EIDxDQHgsac7IFqK6ywlL0l/PZae9vAPvHJkvG8m7dp3
+         j2OgR4Z1Z5lt7OCqIcq52E5I7A/8mnYiTxMB3MHxeAW6V0Kmcx+9D35zVl/5foOVG1tq
+         J7lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=iai8gOE3z1MAnydfDZ/hmRICotLqvoUpCxmpbWuvdhk=;
+        b=FNjwTsxG3UqJGoGkc7gvm9KMml1Lv9BgG8mtSuQ4QVwhrX4yjW91PBuTCTINe9EMQO
+         d/rnH/vvw88tTC6qHqrip7YJ8qpPCYV7I0oofsGnahC6UiB7nU6+oxF3vA5b9ee+y5ce
+         29GiNGBHKIRPIgs6gBE/Rbr3ErnX9CIDBr9kh4sckSnRHTeQKVSWLBI6W4FpBn+4xU/E
+         82TKFMf9b6egENNsSV91VxoKYJo9XsmQfr5FeYzOf+k/N7O0DByw2o6Sf3STn4jFVpg1
+         l44fRLRcyYvAKka7yA1nAgt8wkqi+T7ytQJkbnwDjKTk6dx2Os3bjChzxEePh1GYdRKM
+         y2xQ==
+X-Gm-Message-State: APjAAAU19Gpbv2gm3UzsRY23os3iT7JuUkmocIHiaPpfpDqYhMn2G7Rk
+        rx+5RPbwAY7dZt9K8hU1SfnFWg==
+X-Google-Smtp-Source: APXvYqyG+ZhxvFRKoPJOQAjOuPGebTseFZQpHs4mycCxOnX53ohMvPGcUywJyK7N+GOAVkAq+GTdAA==
+X-Received: by 2002:a63:1c5c:: with SMTP id c28mr21374323pgm.241.1575113295143;
+        Sat, 30 Nov 2019 03:28:15 -0800 (PST)
+Received: from Iliass-MacBook-Pro.local ([50.225.178.238])
+        by smtp.gmail.com with ESMTPSA id 39sm18732330pjo.7.2019.11.30.03.28.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 30 Nov 2019 03:28:14 -0800 (PST)
+Date:   Sat, 30 Nov 2019 03:28:12 -0800
+From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
         Andrew Lunn <andrew@lunn.ch>, Sekhar Nori <nsekhar@ti.com>,
         Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>
-References: <20191127155905.22921-1-grygorii.strashko@ti.com>
- <20191128082127.GA16359@apalos.home> <20191128093804.GA18633@apalos.home>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <9068bff5-1542-f19a-e947-3b0be332e8e5@ti.com>
-Date:   Fri, 29 Nov 2019 19:58:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2] net: ethernet: ti: ale: ensure vlan/mdb deleted when
+ no members
+Message-ID: <20191130112812.GA2779@Iliass-MacBook-Pro.local>
+References: <20191129175809.815-1-grygorii.strashko@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20191128093804.GA18633@apalos.home>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191129175809.815-1-grygorii.strashko@ti.com>
+User-Agent: Mutt/1.9.5 (2018-04-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 28/11/2019 11:38, Ilias Apalodimas wrote:
-> On Thu, Nov 28, 2019 at 10:21:27AM +0200, Ilias Apalodimas wrote:
->> On Wed, Nov 27, 2019 at 05:59:05PM +0200, Grygorii Strashko wrote:
->>> The recently updated ALE APIs cpsw_ale_del_mcast() and
->>> cpsw_ale_del_vlan_modify() have an issue and will not delete ALE entry even
->>> if VLAN/mcast group has no more members. Hence fix it here and delete ALE
->>> entry if !port_mask.
->>>
->>> The issue affected only new cpsw switchdev driver.
->>>
->>> Fixes: e85c14370783 ("net: ethernet: ti: ale: modify vlan/mdb api for switchdev")
->>> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
->>> ---
->>>   drivers/net/ethernet/ti/cpsw_ale.c | 14 ++++++++++----
->>>   1 file changed, 10 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
->>> index 929f3d3354e3..a5179ecfea05 100644
->>> --- a/drivers/net/ethernet/ti/cpsw_ale.c
->>> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
->>> @@ -396,12 +396,14 @@ int cpsw_ale_del_mcast(struct cpsw_ale *ale, const u8 *addr, int port_mask,
->>>   	if (port_mask) {
->>>   		mcast_members = cpsw_ale_get_port_mask(ale_entry,
->>>   						       ale->port_mask_bits);
->>> -		mcast_members &= ~port_mask;
->>> -		cpsw_ale_set_port_mask(ale_entry, mcast_members,
->>> +		port_mask = mcast_members & ~port_mask;
->>> +	}
->>> +
->>> +	if (port_mask)
->>> +		cpsw_ale_set_port_mask(ale_entry, port_mask,
->>>   				       ale->port_mask_bits);
->>> -	} else {
->>> +	else
->>>   		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
->>> -	}
->>
->> The code assumed calls cpsw_ale_del_mcast() should have a port mask '0' when
->> deleting an entry. Do we want to have 'dual' functionality on it?
->> This will delete mcast entries if port mask is 0 or port mask matches exactly
->> what's configured right?
->>
+On Fri, Nov 29, 2019 at 07:58:09PM +0200, Grygorii Strashko wrote:
+> The recently updated ALE APIs cpsw_ale_del_mcast() and
+> cpsw_ale_del_vlan_modify() have an issue and will not delete ALE entry even
+> if VLAN/mcast group has no more members. Hence fix it here and delete ALE
+> entry if !port_mask.
 > 
-> Deleting the ALE entry if the port_mask matches execlty what's configured makes
-> sense. Can we change it to something that doesn't change the function argument?
+> The issue affected only new cpsw switchdev driver.
 > 
-> I think something like:
-> mcast_members = 0;
-> if (port_mask) {
-> 	mcast_members = cpsw_ale_get_port_mask(ale_entry,
-> 											ale->port_mask_bits);
-> 	mcast_members &= ~port_mask;
-> }
-> if (mcast_members)
-> 	cpsw_ale_set_port_mask(ale_entry, mcast_members, ....)
-> else
-> 	cpsw_ale_set_entry_type(....)
+> Fixes: e85c14370783 ("net: ethernet: ti: ale: modify vlan/mdb api for switchdev")
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+> ---
+>  drivers/net/ethernet/ti/cpsw_ale.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
 > 
-> is more readable?
+> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+> index 929f3d3354e3..ecdbde539eb7 100644
+> --- a/drivers/net/ethernet/ti/cpsw_ale.c
+> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
+> @@ -384,7 +384,7 @@ int cpsw_ale_del_mcast(struct cpsw_ale *ale, const u8 *addr, int port_mask,
+>  		       int flags, u16 vid)
+>  {
+>  	u32 ale_entry[ALE_ENTRY_WORDS] = {0, 0, 0};
+> -	int mcast_members;
+> +	int mcast_members = 0;
+>  	int idx;
+>  
+>  	idx = cpsw_ale_match_addr(ale, addr, (flags & ALE_VLAN) ? vid : 0);
+> @@ -397,11 +397,13 @@ int cpsw_ale_del_mcast(struct cpsw_ale *ale, const u8 *addr, int port_mask,
+>  		mcast_members = cpsw_ale_get_port_mask(ale_entry,
+>  						       ale->port_mask_bits);
+>  		mcast_members &= ~port_mask;
+> +	}
+> +
+> +	if (mcast_members)
+>  		cpsw_ale_set_port_mask(ale_entry, mcast_members,
+>  				       ale->port_mask_bits);
+> -	} else {
+> +	else
+>  		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
+> -	}
+>  
+>  	cpsw_ale_write(ale, idx, ale_entry);
+>  	return 0;
+> @@ -478,6 +480,10 @@ static void cpsw_ale_del_vlan_modify(struct cpsw_ale *ale, u32 *ale_entry,
+>  	members = cpsw_ale_get_vlan_member_list(ale_entry,
+>  						ale->vlan_field_bits);
+>  	members &= ~port_mask;
+> +	if (!members) {
+> +		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
+> +		return;
+> +	}
+>  
+>  	untag = cpsw_ale_get_vlan_untag_force(ale_entry,
+>  					      ale->vlan_field_bits);
+> -- 
+> 2.17.1
 > 
 
-Thank you. I've sent v2.	
-
-
--- 
-Best regards,
-grygorii
+Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
