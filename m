@@ -2,89 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 000D110E31F
-	for <lists+linux-omap@lfdr.de>; Sun,  1 Dec 2019 19:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1739510EA47
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2019 13:59:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727313AbfLAS3k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 1 Dec 2019 13:29:40 -0500
-Received: from mtax.cdmx.gob.mx ([187.141.35.197]:14583 "EHLO mtax.cdmx.gob.mx"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727297AbfLAS3j (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 1 Dec 2019 13:29:39 -0500
-X-Greylist: delayed 7076 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Dec 2019 13:29:38 EST
-X-NAI-Header: Modified by McAfee Email Gateway (4500)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cdmx.gob.mx; s=72359050-3965-11E6-920A-0192F7A2F08E;
-        t=1575217647; h=DKIM-Filter:X-Virus-Scanned:
-         Content-Type:MIME-Version:Content-Transfer-Encoding:
-         Content-Description:Subject:To:From:Date:Message-Id:
-         X-AnalysisOut:X-AnalysisOut:X-AnalysisOut:
-         X-AnalysisOut:X-AnalysisOut:X-SAAS-TrackingID:
-         X-NAI-Spam-Flag:X-NAI-Spam-Threshold:X-NAI-Spam-Score:
-         X-NAI-Spam-Rules:X-NAI-Spam-Version; bh=M
-        8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs4
-        8=; b=diCWYcT7gKcZ2k166RvQqWZzWe32HDQdhV8I50f3RC2q
-        +Stdcw2ETdG7AetUXD3v5JZBEcTnVyWgmOd+7ueEg1FerSc2gq
-        DOMUK1bMoOdbXO+A54jnfpTeXV43HN5rAjEyh4L4YiTMGjzBti
-        Ifc/6yOYs3d/PCtVOLb5xVrlxq8=
-Received: from cdmx.gob.mx (correo.cdmx.gob.mx [10.250.108.150]) by mtax.cdmx.gob.mx with smtp
-        (TLS: TLSv1/SSLv3,256bits,ECDHE-RSA-AES256-GCM-SHA384)
-         id 217f_64d4_6120ab37_5c7d_48fd_b138_3e10b31fc213;
-        Sun, 01 Dec 2019 10:27:26 -0600
-Received: from localhost (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTP id 65DA11E2F54;
-        Sun,  1 Dec 2019 10:18:52 -0600 (CST)
-Received: from cdmx.gob.mx ([127.0.0.1])
-        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id JSnKR5NDoQqW; Sun,  1 Dec 2019 10:18:52 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTP id D09791E2E43;
-        Sun,  1 Dec 2019 10:14:20 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx D09791E2E43
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
-        s=72359050-3965-11E6-920A-0192F7A2F08E; t=1575216860;
-        bh=M8rWdUYQ57RAYAgTWJQ4Rsch0kO0UXllaAVDzocOs48=;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
-         From:Date:Message-Id;
-        b=yvtYevK7yapTrqUIZnF912M3oFBzee/QIMhPnwAUuzrQ1pgsRYEIEcfVmH30WtEFm
-         7zgJPJka3JP5IL8HvCGAMUjjnJfinp/gYqeQfRnKA0DcxtcpX8DXlZf0mp8YKAmJos
-         VsLL7rva7ZrtBXI5MgIwhGmVcfYZhf7dVq+78fHk=
-X-Virus-Scanned: amavisd-new at cdmx.gob.mx
-Received: from cdmx.gob.mx ([127.0.0.1])
-        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id PpiMNpdjBNMe; Sun,  1 Dec 2019 10:14:20 -0600 (CST)
-Received: from [192.168.0.104] (unknown [188.125.168.160])
-        by cdmx.gob.mx (Postfix) with ESMTPSA id 36FEF1E2510;
-        Sun,  1 Dec 2019 10:05:36 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1727382AbfLBM7u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Dec 2019 07:59:50 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:58104 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727381AbfLBM7u (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Dec 2019 07:59:50 -0500
+Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 78715309;
+        Mon,  2 Dec 2019 13:59:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1575291588;
+        bh=1Jf/V8KWUkrH0agvEc/AiIJG6fg8GC6Pjz2UuUBgrF0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=O+02juee+1bW8PEI7y7vcaiKeu7G7DnWs6GRrslGVNUPWLGrSonRtjgNGJEiqawEK
+         HAGLGoGnF1Y2yqrTEjN5W3IOUJ2Mm7vWvOPpim+VSjjN7d6BeD8XcJbXNb7ah1JF9e
+         M2+xdrbcs7v5cRZLhKrhp/PUBbZLHcBIWZsNv3uI=
+Date:   Mon, 2 Dec 2019 14:59:41 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        Jyri Sarha <jsarha@ti.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: Re: Question about drm/omap: Remove panel-dpi driver
+Message-ID: <20191202125941.GF4929@pendragon.ideasonboard.com>
+References: <CAHCN7x+F9c-_0febeV1EdJqVBs8aOrqYLQdds26MT25t=Sa_Fg@mail.gmail.com>
+ <20190822020850.GC17402@pendragon.ideasonboard.com>
+ <CAHCN7xJdCBLo2Qop6gD1kRFXE-fxkH3OuN0XO6t9kUJ3HA-tRw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Congratulations
-To:     Recipients <aac-styfe@cdmx.gob.mx>
-From:   "Bishop Johnr" <aac-styfe@cdmx.gob.mx>
-Date:   Sun, 01 Dec 2019 17:05:28 +0100
-Message-Id: <20191201160537.36FEF1E2510@cdmx.gob.mx>
-X-AnalysisOut: [v=2.2 cv=HeFkdmM8 c=1 sm=1 tr=0 p=6K-Ig8iNAUou4E5wYCEA:9 p]
-X-AnalysisOut: [=zRI05YRXt28A:10 a=T6zFoIZ12MK39YzkfxrL7A==:117 a=9152RP8M]
-X-AnalysisOut: [6GQqDhC/mI/QXQ==:17 a=8nJEP1OIZ-IA:10 a=pxVhFHJ0LMsA:10 a=]
-X-AnalysisOut: [pGLkceISAAAA:8 a=wPNLvfGTeEIA:10 a=M8O0W8wq6qAA:10 a=Ygvjr]
-X-AnalysisOut: [iKHvHXA2FhpO6d-:22]
-X-SAAS-TrackingID: de9e3ed5.0.23902075.00-2363.40384561.s12p02m002.mxlogic.net
-X-NAI-Spam-Flag: NO
-X-NAI-Spam-Threshold: 3
-X-NAI-Spam-Score: -5000
-X-NAI-Spam-Rules: 1 Rules triggered
-        WHITELISTED=-5000
-X-NAI-Spam-Version: 2.3.0.9418 : core <6686> : inlines <7165> : streams
- <1840193> : uri <2949750>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHCN7xJdCBLo2Qop6gD1kRFXE-fxkH3OuN0XO6t9kUJ3HA-tRw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Money was donated to you by Mr and Mrs Allen and Violet Large, just contact=
- them with this email for more information =
+Hi Adam,
 
+(CC'ing Jyri and Tomi)
 
-EMail: allenandvioletlargeaward@gmail.com
+I'm sorry for the very late reply, your e-mail got burried in my inbox.
+
+On Wed, Aug 21, 2019 at 09:39:27PM -0500, Adam Ford wrote:
+> On Wed, Aug 21, 2019 at 9:08 PM Laurent Pinchart wrote:
+> > On Wed, Aug 21, 2019 at 08:14:43PM -0500, Adam Ford wrote:
+> > > I know it's been nearly 9 months this this was removed, but for those
+> > > of us who still define our displays in the device tree expecting the
+> > > dpi-panel, we're not getting video.
+> > >
+> > > The commit message only states:
+> > >
+> > >     Panels are now supported through the drm_panel infrastructure, remove
+> > >     the omapdrm-specific driver.
+> > >
+> > > It does not give examples of how to do this, and I feel like we should
+> > > have been given some warning or indication.  Is there an example I can
+> > > follow for linking a dpi panel into the omap DSS?
+> >
+> > Sorry to have left you with non-working systems :-(
+> 
+> I have really only been following the omap-linux mailing list and only
+> really focus on the LTS kernels because my employer uses the LTS
+> kernels as the basis for the their linux distributions. If there is a
+> different mailing list I should follow, let me know.  I just wish it
+> would have been marked as deprecated or something before just being
+> killed.
+> 
+> > If the panel is supported by a mainline DRM panel driver the change
+> > should be transparent (provided of course that the driver is compiled in
+> > the kernel or as a module). Most panels are supported by the
+> > panel-simple driver (CONFIG_DRM_PANEL_SIMPLE), with a few dozen of other
+> > panels supported by dedicated drivers (in drivers/gpu/drm/panel/)
+> >
+> > Could you point me to the DT sources of one (or all) of the affected
+> > systems ?
+> 
+> Sure,
+> The same panel is used on these these two boards:
+> logicpd-som-lv-baseboard.dtsi
+> logicpd-torpedo-37xx-devkit-28.dts
+> 
+> A second panel is used on:
+> logicpd-torpedo-37xx-devkit.dts which has the LCD timings defined in
+> logicpd-torpedo-baseboard.dtsi
+> The am3517-evm also uses the same timings, but the gpio enables are different.
+
+I see. The omap3-ha-lcd.dts is also affected. There are only two ways to
+fix this as far as I can tell:
+
+- Add a panel driver matching against the panel-dpi compatible string,
+  and parsing the panel timings from DT there. Thierry Reding, the DRM
+  panel maintainer, has rejected this option multiple times (but it
+  seems people are still trying).
+
+- Add the exact panel model to the above DT files (see omap3-thunder.dts
+  for an example), and make sure we have a kernel driver for those
+  panels (possibly extending the panel-simple driver). It seems that we
+  are also missing support in panel drivers for innolux,at070tn83,
+  osddisplays,osd057T0559-34ts, samsung,lte430wq-f0c and
+  startek,startek-kd050c.
+
+Tomi, which approach do you think is best at this point ?
+
+> The da850-evm uses the same panel as the am3517-evm, but it's not
+> using the same video driver, and I haven't had a chance to see if that
+> driver still exists or not.
+
+The tilcdc driver is still present in the kernel (I'm not aware of a
+plan to remove it), and uses a similar panel support hack as the omapdrm
+driver. I think it would make sense to fix it at some point, but I have
+no plan to do so myself at the moment.
+
+> Thanks for your quick response.
+> :-)
+
+Looks like I did a way worse job this time. Sorry again.
+
+> Sorry if my e-mail came across angrily, it wasn't my intention.
+
+No worries, and in any case you had reasons to be annoyed.
+
+-- 
+Regards,
+
+Laurent Pinchart
