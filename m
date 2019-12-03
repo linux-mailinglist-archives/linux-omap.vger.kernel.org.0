@@ -2,163 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 830CC1102F7
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2019 17:54:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1220F112063
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Dec 2019 00:43:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727070AbfLCQye (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Dec 2019 11:54:34 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:24930 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726473AbfLCQyd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Dec 2019 11:54:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1575392071;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=GNEqwNnWqE/8Qot7d9H4fL3t7NY8bPr8DWMHXiCXNdM=;
-        b=HNhoXdw2wRLImvHreZX/TJuGQuQRs529M8AmpXiAg/W43twA0FUaCdpCvTnMBz/J8H
-        GUEECYu6nHHpo0ZWQUyiwMZVdHmBHwvnkDxoaE6nC07FBGI5UMdQQ1cwYT3iQwI+ClsP
-        cvV57iTvcGxX4qCCCYP2amyAe1o60hcexhdGXLR8M4iZKUm5W60P6cSt58Oa4xl4pu59
-        CmStsQaWoN6SNoRERyuCFqiQo0ITKLONOwDgXnT44anhwm92WAs7udfciTrlt9t41Q2h
-        5UmtFTTnYMwVNpkTfn64muCHBZ4xpOejbg0+xiLHIm6i+pxx8judD7Rv+gFGycsVa8pC
-        FrSg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlacXAYPiQ=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 46.0.2 DYNA|AUTH)
-        with ESMTPSA id 6067eavB3GsN6cC
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Tue, 3 Dec 2019 17:54:23 +0100 (CET)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH] ARM: OMAP2+: Fix warnings with broken omap2_set_init_voltage()
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <5F430C0D-7F25-4680-87B9-2D65A08A9F83@goldelico.com>
-Date:   Tue, 3 Dec 2019 17:54:23 +0100
-Cc:     Nishanth Menon <nm@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FB42ED12-5DDB-4A9E-941A-ACBE2C10C36A@goldelico.com>
-References: <20190924233222.52757-1-tony@atomide.com> <8FFD44DB-73F8-4807-91E1-C97DA8F781BA@goldelico.com> <20191202213929.GB35479@atomide.com> <EE749881-C3DB-4BBE-85FE-E5AF3D34884F@goldelico.com> <BAF5B057-1017-4174-8C3F-4B49B31E2E0D@goldelico.com> <20191203154447.GC35479@atomide.com> <5F430C0D-7F25-4680-87B9-2D65A08A9F83@goldelico.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1726086AbfLCXnO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Dec 2019 18:43:14 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:57184 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725997AbfLCXnN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Dec 2019 18:43:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=OPqV2nFrcb2kveUIO3yew2jRvZwyS9xTFWvVWcs/spM=; b=iq0/EIA9iexEmIjjiLPdaYHs4
+        7BdmVMdoj3wljvzDO3pkZVaF1Wr0nxYgJgLm3fzx5EA5oSg+H3hMxQ302BVueNhBS+2AkjSGdRog8
+        TVyD5WtJiUIXVsHeLGp5wibrlD0aHaf0qlEmkm0MOUJNN+hBEovPsNViw+t59+Sowqng5rt+oip9D
+        gjUNPEFXB2RUoagAaA9p1uUBh/Js94QdDNn3/JbSK5TETsO90oTHighhyYgl2DRnGXc9E8kBZhCMz
+        P2zTagF5/f6w1g2Mz8pGi03vG6/Yt1MAjE1RXhCeNHF+7sI6h9EFzrmcyHal8J27DPH9WdJ+Ej+FH
+        zBpFDIvOQ==;
+Received: from [2601:1c0:6280:3f0::5a22]
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1icHp1-0003aR-6R; Tue, 03 Dec 2019 23:43:11 +0000
+Subject: Re: linux-next: Tree for Dec 3 (switchdev & TI_CPSW_SWITCHDEV)
+To:     Stephen Rothwell <sfr@canb.auug.org.au>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Ivan Vecera <ivecera@redhat.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-omap@vger.kernel.org
+References: <20191203155405.31404722@canb.auug.org.au>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <58aebf62-54f8-9084-147b-801ea65327bb@infradead.org>
+Date:   Tue, 3 Dec 2019 15:43:09 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
+MIME-Version: 1.0
+In-Reply-To: <20191203155405.31404722@canb.auug.org.au>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 12/2/19 8:54 PM, Stephen Rothwell wrote:
+> Hi all,
+> 
+> Please do not add any material for v5.6 to your linux-next included
+> trees until after v5.5-rc1 has been released.
+> 
+> Changes since 20191202:
 
-> Am 03.12.2019 um 16:58 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->=20
->=20
->> Am 03.12.2019 um 16:44 schrieb Tony Lindgren <tony@atomide.com>:
->>=20
->> * H. Nikolaus Schaller <hns@goldelico.com> [191203 12:31]:
->>> Ok, dev_pm_opp_find_freq_ceil() is doing what it should do and it
->>> returns the first OPP higher or equal than the frequency passed in.
->>>=20
->>> The real reason for the warning is that the same OPP table is used
->>> for vdd_mpu_iva and vdd_core and it appears as if "core" (l3_ick)
->>> runs at 200 MHz which does not correspond to a valid OPP.
->>=20
->> OK
->>=20
->>> So to silcence the warning it suffices to remove
->>>=20
->>> 	omap2_set_init_voltage("core", "l3_ick", "l3_main");
->>>=20
->>> The question is now what l3_ick has to do with the OPPs at all
->>> and how it should interwork with OPPs and cpufreq.
->>=20
->> So what changed then for iva in your configuration then?
->>=20
->> At least I'm getting errors for both for 34xx and dm3730 with
->> Linux next and reverted commit cf395f7ddb9e ("ARM: OMAP2+: Fix
->> warnings with broken omap2_set_init_voltage()"):
->>=20
->> omap2_set_init_voltage: unable to find boot up OPP for vdd_mpu_iva
->> omap2_set_init_voltage: unable to set vdd_mpu_iva
->> omap2_set_init_voltage: unable to find boot up OPP for vdd_core
->> omap2_set_init_voltage: unable to set vdd_core
->=20
-> Hm... Is there maybe a dependency on u-boot?
->=20
-> We are using a quite old version which may boot with vdd_mpu_iva
-> as 300 MHz while yours may have a different clock.
->=20
-> What we could do is augment the printk (or dev_err) to tell
-> in these warnings what it is looking for...
->=20
-> 	opp =3D dev_pm_opp_find_freq_ceil(dev, &freq);
-> 	if (IS_ERR(opp)) {
-> 		pr_err("%s: unable to find boot up OPP for vdd_%s freq =
-%ulHz\n",
-> 		__func__, vdd_name, freq);
-> 		goto exit;
-> 	}
+I am seeing this (happens to be on i386; I doubt that it matters):
+CONFIG_COMPILE_TEST=y
 
-Easier and always prints info:
 
-	freq =3D clk_get_rate(clk);
-	clk_put(clk);
+WARNING: unmet direct dependencies detected for NET_SWITCHDEV
+  Depends on [n]: NET [=y] && INET [=n]
+  Selected by [y]:
+  - TI_CPSW_SWITCHDEV [=y] && NETDEVICES [=y] && ETHERNET [=y] && NET_VENDOR_TI [=y] && (ARCH_DAVINCI || ARCH_OMAP2PLUS || COMPILE_TEST [=y])
 
-	pr_info("%s: vdd=3D%s clk=3D%s %luHz oh=3D%s\n", __func__, =
-vdd_name, clk_name, freq, oh_name);
+because TI_CPSW_SWITCHDEV blindly selects NET_SWITCHDEV even though
+INET is not set/enabled, while NET_SWITCHDEV depends on INET.
 
-	opp =3D dev_pm_opp_find_freq_ceil(dev, &freq);
+However, the build succeeds, including net/switchdev/*.
 
-I get this:
+So why does NET_SWITCHDEV depend on INET?
 
-[    2.908142] omap2_set_init_voltage: vdd=3Dmpu_iva clk=3Ddpll1_ck =
-1000000000Hz oh=3Dmpu
-[    2.930816] omap2_set_init_voltage: vdd=3Dcore clk=3Dl3_ick =
-200000000Hz oh=3Dl3_main
-[    2.946228] omap2_set_init_voltage: unable to find boot up OPP for =
-vdd_core
-[    2.953460] omap2_set_init_voltage: unable to set vdd_core
+It looks like TI_CPSW_SWITCHDEV should depend on INET (based on the
+Kconfig rules), but in practice it doesn't seem to matter to the build.
 
-Which means that cpufreq already has increased dpll1_ck to 1 GHz
-(I have removed the turbo-mode tags so that it already boots at
-full speed) and l3_ick runs at initial 200 MHz.
-
->=20
->> Then for fixing this code, seems like this can all happen from
->> a regular device driver init based on the dts data.. We've had
->> PM init completely ignore these errors already for years so
->> whatever dependency there might be seems non-critical :)
->>=20
->>> Or does all this mean we may need a second OPP fable for vdd_core
->>> and 200 MHz? But what would it be good for? I have not seen any
->>> reference for "core-OPPs" in the TRM.
->>=20
->> OK yeah sounds like all the domains need an opp table.
->>=20
->> Also, I recall some SoCs having a dependency between having to
->> run DSP at a lower rate for higher MPU rates, not sure if omap3
->> has such dependencies though.
->=20
-> Well, I not aware of documentation of such dependencies and there
-> is also some confusion what vdd_mpu_iva exactly is and what vdd_core =
-is.
-> twl4030 has vdd1 and vdd2 but their relationship isn't clear either.
->=20
-> Maybe Tero or Nisanth can clarify?
->=20
-> BR and thanks,
-> Nikolaus
->=20
->=20
-> _______________________________________________
-> http://projects.goldelico.com/p/gta04-kernel/
-> Letux-kernel mailing list
-> Letux-kernel@openphoenux.org
-> http://lists.goldelico.com/mailman/listinfo.cgi/letux-kernel
+thanks.
+-- 
+~Randy
 
