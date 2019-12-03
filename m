@@ -2,92 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52C0211017F
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2019 16:44:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F18271101A6
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2019 16:58:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726079AbfLCPow (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Dec 2019 10:44:52 -0500
-Received: from muru.com ([72.249.23.125]:44012 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726098AbfLCPow (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 3 Dec 2019 10:44:52 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id E047F804F;
-        Tue,  3 Dec 2019 15:45:28 +0000 (UTC)
-Date:   Tue, 3 Dec 2019 07:44:47 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Nishanth Menon <nm@ti.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
+        id S1726131AbfLCP6u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Dec 2019 10:58:50 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.164]:30871 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726105AbfLCP6t (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Dec 2019 10:58:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1575388727;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=rtHOM2pr5THkPaPjFp7PY8/XZ2kRx7eA36g2+Jz6rs8=;
+        b=C7GNhl/UgmjUSWvDbo18nGNiLcM72NgHLP6z2q6nbdL5kWAFuSDo9ToDAwfEb305YK
+        UMUf4CW5n7AEOPeTTUszVhhHG/AaYZ9inxCIQy2UpiPru/VGD+yUXfwinShHGo1HyvSt
+        J2wxOGRdrao/saA1Hb7xOBpwFuYzm9fdxTz85MDjZ9JxyQU7J6V0rONJHcNcwVmQDHZ4
+        XfknovXYa3cfGO9XLPfMWZSecdb8aO3DtZsQEbGEhI4k7RiGQxRBy54dNtUxYRQY3Kea
+        zckJgwoxTRmUoVzX1NolnMjdyFJdjyCl8UM4N480YFT/ZkPPt5S/O3tgpX6eV/TPGsJw
+        BU+g==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBp5hRw/qOxWRk4dCyiod0h4YszmWBgQhXwA+mYqVRc/0ppp+PaXh4="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2001:16b8:2678:d200:b5c8:3e51:552:ff8c]
+        by smtp.strato.de (RZmta 46.0.2 AUTH)
+        with ESMTPSA id 6067eavB3FwB6R5
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Tue, 3 Dec 2019 16:58:11 +0100 (CET)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [PATCH] ARM: OMAP2+: Fix warnings with broken omap2_set_init_voltage()
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20191203154447.GC35479@atomide.com>
+Date:   Tue, 3 Dec 2019 16:58:21 +0100
+Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Tero Kristo <t-kristo@ti.com>,
-        =?utf-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>,
+        =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
         Andreas Kemnade <andreas@kemnade.info>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
         Adam Ford <aford173@gmail.com>,
         arm-soc <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH] ARM: OMAP2+: Fix warnings with broken
- omap2_set_init_voltage()
-Message-ID: <20191203154447.GC35479@atomide.com>
-References: <20190924233222.52757-1-tony@atomide.com>
- <8FFD44DB-73F8-4807-91E1-C97DA8F781BA@goldelico.com>
- <20191202213929.GB35479@atomide.com>
- <EE749881-C3DB-4BBE-85FE-E5AF3D34884F@goldelico.com>
- <BAF5B057-1017-4174-8C3F-4B49B31E2E0D@goldelico.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BAF5B057-1017-4174-8C3F-4B49B31E2E0D@goldelico.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 7bit
+Message-Id: <5F430C0D-7F25-4680-87B9-2D65A08A9F83@goldelico.com>
+References: <20190924233222.52757-1-tony@atomide.com> <8FFD44DB-73F8-4807-91E1-C97DA8F781BA@goldelico.com> <20191202213929.GB35479@atomide.com> <EE749881-C3DB-4BBE-85FE-E5AF3D34884F@goldelico.com> <BAF5B057-1017-4174-8C3F-4B49B31E2E0D@goldelico.com> <20191203154447.GC35479@atomide.com>
+To:     Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
+        Tero Kristo <t-kristo@ti.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [191203 12:31]:
-> Ok, dev_pm_opp_find_freq_ceil() is doing what it should do and it
-> returns the first OPP higher or equal than the frequency passed in.
->
-> The real reason for the warning is that the same OPP table is used
-> for vdd_mpu_iva and vdd_core and it appears as if "core" (l3_ick)
-> runs at 200 MHz which does not correspond to a valid OPP.
 
-OK
-
-> So to silcence the warning it suffices to remove
+> Am 03.12.2019 um 16:44 schrieb Tony Lindgren <tony@atomide.com>:
 > 
-> 	omap2_set_init_voltage("core", "l3_ick", "l3_main");
+> * H. Nikolaus Schaller <hns@goldelico.com> [191203 12:31]:
+>> Ok, dev_pm_opp_find_freq_ceil() is doing what it should do and it
+>> returns the first OPP higher or equal than the frequency passed in.
+>> 
+>> The real reason for the warning is that the same OPP table is used
+>> for vdd_mpu_iva and vdd_core and it appears as if "core" (l3_ick)
+>> runs at 200 MHz which does not correspond to a valid OPP.
 > 
-> The question is now what l3_ick has to do with the OPPs at all
-> and how it should interwork with OPPs and cpufreq.
+> OK
+> 
+>> So to silcence the warning it suffices to remove
+>> 
+>> 	omap2_set_init_voltage("core", "l3_ick", "l3_main");
+>> 
+>> The question is now what l3_ick has to do with the OPPs at all
+>> and how it should interwork with OPPs and cpufreq.
+> 
+> So what changed then for iva in your configuration then?
+> 
+> At least I'm getting errors for both for 34xx and dm3730 with
+> Linux next and reverted commit cf395f7ddb9e ("ARM: OMAP2+: Fix
+> warnings with broken omap2_set_init_voltage()"):
+> 
+> omap2_set_init_voltage: unable to find boot up OPP for vdd_mpu_iva
+> omap2_set_init_voltage: unable to set vdd_mpu_iva
+> omap2_set_init_voltage: unable to find boot up OPP for vdd_core
+> omap2_set_init_voltage: unable to set vdd_core
 
-So what changed then for iva in your configuration then?
+Hm... Is there maybe a dependency on u-boot?
 
-At least I'm getting errors for both for 34xx and dm3730 with
-Linux next and reverted commit cf395f7ddb9e ("ARM: OMAP2+: Fix
-warnings with broken omap2_set_init_voltage()"):
+We are using a quite old version which may boot with vdd_mpu_iva
+as 300 MHz while yours may have a different clock.
 
-omap2_set_init_voltage: unable to find boot up OPP for vdd_mpu_iva
-omap2_set_init_voltage: unable to set vdd_mpu_iva
-omap2_set_init_voltage: unable to find boot up OPP for vdd_core
-omap2_set_init_voltage: unable to set vdd_core
+What we could do is augment the printk (or dev_err) to tell
+in these warnings what it is looking for...
 
-Then for fixing this code, seems like this can all happen from
-a regular device driver init based on the dts data.. We've had
-PM init completely ignore these errors already for years so
-whatever dependency there might be seems non-critical :)
+	opp = dev_pm_opp_find_freq_ceil(dev, &freq);
+	if (IS_ERR(opp)) {
+		pr_err("%s: unable to find boot up OPP for vdd_%s freq %ulHz\n",
+		__func__, vdd_name, freq);
+		goto exit;
+	}
 
-> Or does all this mean we may need a second OPP fable for vdd_core
-> and 200 MHz? But what would it be good for? I have not seen any
-> reference for "core-OPPs" in the TRM.
+> Then for fixing this code, seems like this can all happen from
+> a regular device driver init based on the dts data.. We've had
+> PM init completely ignore these errors already for years so
+> whatever dependency there might be seems non-critical :)
+> 
+>> Or does all this mean we may need a second OPP fable for vdd_core
+>> and 200 MHz? But what would it be good for? I have not seen any
+>> reference for "core-OPPs" in the TRM.
+> 
+> OK yeah sounds like all the domains need an opp table.
+> 
+> Also, I recall some SoCs having a dependency between having to
+> run DSP at a lower rate for higher MPU rates, not sure if omap3
+> has such dependencies though.
 
-OK yeah sounds like all the domains need an opp table.
+Well, I not aware of documentation of such dependencies and there
+is also some confusion what vdd_mpu_iva exactly is and what vdd_core is.
+twl4030 has vdd1 and vdd2 but their relationship isn't clear either.
 
-Also, I recall some SoCs having a dependency between having to
-run DSP at a lower rate for higher MPU rates, not sure if omap3
-has such dependencies though.
+Maybe Tero or Nisanth can clarify?
 
-Regards,
+BR and thanks,
+Nikolaus
 
-Tony
+
