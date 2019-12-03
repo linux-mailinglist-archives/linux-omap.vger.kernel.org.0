@@ -2,111 +2,155 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA05E10F2B9
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2019 23:15:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA45810F8B5
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2019 08:29:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725903AbfLBWPb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 Dec 2019 17:15:31 -0500
-Received: from mail.andi.de1.cc ([85.214.55.253]:51822 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725825AbfLBWPb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 2 Dec 2019 17:15:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=87DJGgaOP4OR26er35jT2d/3xlEOtUkjxl/DEu2Hv4A=; b=hJ2jxg0GQjdVMV90G3GTon9LzP
-        71+pbAIhRDz3VxHs5UvWw2oSaW56+b3e9zgmTUTcandElA+kNrbzsnGSsp9BNhIcjj/b9y0gS2U5y
-        86W+CopAbhsHmyZresdzs0aZ4nRuxZyZc6L6WiVP30w3R1dqcc6NTv1USIjxt/xdoCN8=;
-Received: from p200300ccff066f001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff06:6f00:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1ibtyV-0008V1-Oz; Mon, 02 Dec 2019 23:15:24 +0100
-Date:   Mon, 2 Dec 2019 23:15:22 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        Adam Ford <aford173@gmail.com>,
-        =?UTF-8?B?QW5kcsOp?= Roth <neolynx@gmail.com>,
-        Nishanth Menon <nm@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-Subject: Re: [PATCH] ARM: OMAP2+: Fix warnings with broken
- omap2_set_init_voltage()
-Message-ID: <20191202231522.5e7fe3f8@aktux>
-In-Reply-To: <8FFD44DB-73F8-4807-91E1-C97DA8F781BA@goldelico.com>
-References: <20190924233222.52757-1-tony@atomide.com>
-        <8FFD44DB-73F8-4807-91E1-C97DA8F781BA@goldelico.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727420AbfLCH3l (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Dec 2019 02:29:41 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:57262 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727386AbfLCH3l (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Dec 2019 02:29:41 -0500
+Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id C1BA7309;
+        Tue,  3 Dec 2019 08:29:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1575358179;
+        bh=7cZbYLONLyPLh46EPhOTsWVY7T7ktT6/ScSQB9363YY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Leqg0R6YUsSnpROUbCxEy4cfmiGkOCfTGZM43r+n1uEKkbWIRkUzyiD+ZwmPZv+2D
+         bUxAHCy4NgvqVM4tmy418aSLwIEH3jYkFVeI6UtOl5Kfo6RKPrzEueYrqlskH8QzTu
+         o7Tzgq8KrwIdS85VsaLK+h90k3XWrbPCAGYKMn5c=
+Date:   Tue, 3 Dec 2019 09:29:32 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Jyri Sarha <jsarha@ti.com>
+Cc:     dri-devel@lists.freedesktop.org, tony@atomide.com,
+        bcousson@baylibre.com, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, tomi.valkeinen@ti.com,
+        peter.ujfalusi@ti.com, bparrot@ti.com
+Subject: Re: [PATCH] ARM: dts: am335x-evm: Use drm simple-panel instead of
+ tilcdc-panel
+Message-ID: <20191203072932.GL4730@pendragon.ideasonboard.com>
+References: <20191202185729.12921-1-jsarha@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1.0 (-)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191202185729.12921-1-jsarha@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 2 Dec 2019 22:09:26 +0100
-"H. Nikolaus Schaller" <hns@goldelico.com> wrote:
+Hi Jyri,
 
-> Hi Tony,
->=20
-> > Am 25.09.2019 um 01:32 schrieb Tony Lindgren <tony@atomide.com>:
-> >=20
-> > This code is currently unable to find the dts opp tables as ti-cpufreq
-> > needs to set them up first based on speed binning.
-> >=20
-> > We stopped initializing the opp tables with platform code years ago for
-> > device tree based booting with commit 92d51856d740 ("ARM: OMAP3+: do not
-> > register non-dt OPP tables for device tree boot"), and all of mach-omap2
-> > is now booting using device tree.
-> >=20
-> > We currently get the following errors on init:
-> >=20
-> > omap2_set_init_voltage: unable to find boot up OPP for vdd_mpu
-> > omap2_set_init_voltage: unable to set vdd_mpu
-> > omap2_set_init_voltage: unable to find boot up OPP for vdd_core
-> > omap2_set_init_voltage: unable to set vdd_core
-> > omap2_set_init_voltage: unable to find boot up OPP for vdd_iva
-> > omap2_set_init_voltage: unable to set vdd_iva
-> >=20
-> > Let's just drop the unused code. Nowadays ti-cpufreq should be used to
-> > to initialize things properly.
-> >=20
-> > Cc: Adam Ford <aford173@gmail.com>
-> > Cc: Andr=C3=A9 Roth <neolynx@gmail.com>
-> > Cc: "H. Nikolaus Schaller" <hns@goldelico.com>
-> > Cc: Nishanth Menon <nm@ti.com>
-> > Cc: Tero Kristo <t-kristo@ti.com>
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> >=20
-> > Guys, please check and ack if we can really do this to get rid of some
-> > pointless dmesg -l3 errors without affecting the ongoing cpufreq and
-> > voltage work. =20
->=20
-> unfortunately we did not yet test in combination with the 1GHz OPP
-> patches for omap3630 (queued for v5.5-rc1) and it appears that this
-> patch breaks the 1GHz OPP.
->=20
-> The symptom is that it works fine on a dm3730 with 800MHz rating
-> but results in spurious kernel panics, stack corruption, virtual memory
-> failures, OneNAND DMA timeouts etc. on a dm3730 with 1GHz speed grade.
->=20
-I #if 0'ed the 1Ghz opp and found out that the OneNAND DMA timeouts
-are independant of 1Ghz. But the result is interesting:
-With this patch
-xxd /dev/mtd0 shows only ff
-without this patch gives content, it is slower.
-In both cases I see
-[  476.533477] omap2-onenand 4000000.onenand: timeout waiting for DMA
+Thank you for the patch.
 
+On Mon, Dec 02, 2019 at 08:57:29PM +0200, Jyri Sarha wrote:
+> Move to use the new drm panel support in tilcdc together with added
+> "tfc,s9700rtwv43tr-01b"-panel support in drm panel-simple.
+> 
+> Signed-off-by: Jyri Sarha <jsarha@ti.com>
+> Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> ---
+> "tfc,s9700rtwv43tr-01b" in panel-simple has been in for some time now
+> so it is about time to get this in too.
+> 
+>  arch/arm/boot/dts/am335x-evm.dts | 44 +++++++++++++-------------------
+>  1 file changed, 18 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
+> index a00145705c9b..0e286a1c9cc5 100644
+> --- a/arch/arm/boot/dts/am335x-evm.dts
+> +++ b/arch/arm/boot/dts/am335x-evm.dts
+> @@ -113,7 +113,7 @@
+>  		};
+>  	};
+>  
+> -	backlight {
+> +	backlight: backlight {
+>  		compatible = "pwm-backlight";
+>  		pwms = <&ecap0 0 50000 0>;
+>  		brightness-levels = <0 51 53 56 62 75 101 152 255>;
+> @@ -121,35 +121,19 @@
+>  	};
+>  
+>  	panel {
+> -		compatible = "ti,tilcdc,panel";
+> +		compatible = "tfc,s9700rtwv43tr-01b";
+> +
+>  		status = "okay";
+
+I think this can be dropped as it's implicit.
+
+> +
+>  		pinctrl-names = "default";
+>  		pinctrl-0 = <&lcd_pins_s0>;
+> -		panel-info {
+> -			ac-bias           = <255>;
+> -			ac-bias-intrpt    = <0>;
+> -			dma-burst-sz      = <16>;
+> -			bpp               = <32>;
+> -			fdd               = <0x80>;
+> -			sync-edge         = <0>;
+> -			sync-ctrl         = <1>;
+> -			raster-order      = <0>;
+> -			fifo-th           = <0>;
+> -		};
+>  
+> -		display-timings {
+> -			800x480p62 {
+> -				clock-frequency = <30000000>;
+> -				hactive = <800>;
+> -				vactive = <480>;
+> -				hfront-porch = <39>;
+> -				hback-porch = <39>;
+> -				hsync-len = <47>;
+> -				vback-porch = <29>;
+> -				vfront-porch = <13>;
+> -				vsync-len = <2>;
+> -				hsync-active = <1>;
+> -				vsync-active = <1>;
+> +		backlight = <&backlight>;
+
+I would add a blank line here.
+
+> +		ports {
+> +			port {
+> +				panel_0: endpoint@0 {
+> +					remote-endpoint = <&lcdc_0>;
+> +				};
+>  			};
+>  		};
+
+The outter ports node isn't required if there's a single port, up to
+you.
+
+>  	};
+> @@ -525,6 +509,14 @@
+>  	status = "okay";
+>  
+>  	blue-and-red-wiring = "crossed";
+> +
+> +	ports {
+> +		port {
+> +			lcdc_0: endpoint@0 {
+> +				remote-endpoint = <&panel_0>;
+> +			};
+> +		};
+> +	};
+
+Same here.
+
+With the above issues addressed as applicable,
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+>  };
+>  
+>  &elm {
+
+-- 
 Regards,
-Andreas
+
+Laurent Pinchart
