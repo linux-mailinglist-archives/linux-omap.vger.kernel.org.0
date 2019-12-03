@@ -2,239 +2,163 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7DF1102B3
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2019 17:42:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 830CC1102F7
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2019 17:54:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726821AbfLCQm2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Tue, 3 Dec 2019 11:42:28 -0500
-Received: from mga04.intel.com ([192.55.52.120]:9455 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726534AbfLCQm1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 3 Dec 2019 11:42:27 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Dec 2019 08:42:25 -0800
-X-IronPort-AV: E=Sophos;i="5.69,273,1571727600"; 
-   d="scan'208";a="205036965"
-Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.161])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Dec 2019 08:42:20 -0800
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Cc:     Steve Glendinning <steve.glendinning@shawell.net>,
-        Andy Walls <awalls@md.metrocast.net>, kvm@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        intel-gfx@lists.freedesktop.org,
-        Bernie Thompson <bernie@plugable.com>,
-        Kirti Wankhede <kwankhede@nvidia.com>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>,
-        Bruno =?utf-8?Q?Pr=C3=A9mont?= <bonbons@linux-vserver.org>,
-        Noralf =?utf-8?Q?Tr?= =?utf-8?Q?=C3=B8nnes?= 
-        <noralf@tronnes.org>, ivtv-devel@ivtvdriver.org,
-        linux-input@vger.kernel.org, linux-media@vger.kernel.org,
-        Jaya Kumar <jayalk@intworks.biz>
-Subject: Re: [Intel-gfx] [PATCH v3 00/12] video, drm, etc: constify fbops in struct fb_info
-In-Reply-To: <cover.1575390740.git.jani.nikula@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1575390740.git.jani.nikula@intel.com>
-Date:   Tue, 03 Dec 2019 18:42:17 +0200
-Message-ID: <87immxicnq.fsf@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+        id S1727070AbfLCQye (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Dec 2019 11:54:34 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:24930 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726473AbfLCQyd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Dec 2019 11:54:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1575392071;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=GNEqwNnWqE/8Qot7d9H4fL3t7NY8bPr8DWMHXiCXNdM=;
+        b=HNhoXdw2wRLImvHreZX/TJuGQuQRs529M8AmpXiAg/W43twA0FUaCdpCvTnMBz/J8H
+        GUEECYu6nHHpo0ZWQUyiwMZVdHmBHwvnkDxoaE6nC07FBGI5UMdQQ1cwYT3iQwI+ClsP
+        cvV57iTvcGxX4qCCCYP2amyAe1o60hcexhdGXLR8M4iZKUm5W60P6cSt58Oa4xl4pu59
+        CmStsQaWoN6SNoRERyuCFqiQo0ITKLONOwDgXnT44anhwm92WAs7udfciTrlt9t41Q2h
+        5UmtFTTnYMwVNpkTfn64muCHBZ4xpOejbg0+xiLHIm6i+pxx8judD7Rv+gFGycsVa8pC
+        FrSg==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlacXAYPiQ=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 46.0.2 DYNA|AUTH)
+        with ESMTPSA id 6067eavB3GsN6cC
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Tue, 3 Dec 2019 17:54:23 +0100 (CET)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [PATCH] ARM: OMAP2+: Fix warnings with broken omap2_set_init_voltage()
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <5F430C0D-7F25-4680-87B9-2D65A08A9F83@goldelico.com>
+Date:   Tue, 3 Dec 2019 17:54:23 +0100
+Cc:     Nishanth Menon <nm@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        =?utf-8?Q?Andr=C3=A9_Roth?= <neolynx@gmail.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Adam Ford <aford173@gmail.com>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FB42ED12-5DDB-4A9E-941A-ACBE2C10C36A@goldelico.com>
+References: <20190924233222.52757-1-tony@atomide.com> <8FFD44DB-73F8-4807-91E1-C97DA8F781BA@goldelico.com> <20191202213929.GB35479@atomide.com> <EE749881-C3DB-4BBE-85FE-E5AF3D34884F@goldelico.com> <BAF5B057-1017-4174-8C3F-4B49B31E2E0D@goldelico.com> <20191203154447.GC35479@atomide.com> <5F430C0D-7F25-4680-87B9-2D65A08A9F83@goldelico.com>
+To:     Tony Lindgren <tony@atomide.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 03 Dec 2019, Jani Nikula <jani.nikula@intel.com> wrote:
-> This is v3 of https://patchwork.freedesktop.org/series/70198/.
->
-> 0day reported some build failures, and I needed to add patches 1-5 and 7
 
-Should be, patches 1-4 and 7.
+> Am 03.12.2019 um 16:58 schrieb H. Nikolaus Schaller =
+<hns@goldelico.com>:
+>=20
+>=20
+>> Am 03.12.2019 um 16:44 schrieb Tony Lindgren <tony@atomide.com>:
+>>=20
+>> * H. Nikolaus Schaller <hns@goldelico.com> [191203 12:31]:
+>>> Ok, dev_pm_opp_find_freq_ceil() is doing what it should do and it
+>>> returns the first OPP higher or equal than the frequency passed in.
+>>>=20
+>>> The real reason for the warning is that the same OPP table is used
+>>> for vdd_mpu_iva and vdd_core and it appears as if "core" (l3_ick)
+>>> runs at 200 MHz which does not correspond to a valid OPP.
+>>=20
+>> OK
+>>=20
+>>> So to silcence the warning it suffices to remove
+>>>=20
+>>> 	omap2_set_init_voltage("core", "l3_ick", "l3_main");
+>>>=20
+>>> The question is now what l3_ick has to do with the OPPs at all
+>>> and how it should interwork with OPPs and cpufreq.
+>>=20
+>> So what changed then for iva in your configuration then?
+>>=20
+>> At least I'm getting errors for both for 34xx and dm3730 with
+>> Linux next and reverted commit cf395f7ddb9e ("ARM: OMAP2+: Fix
+>> warnings with broken omap2_set_init_voltage()"):
+>>=20
+>> omap2_set_init_voltage: unable to find boot up OPP for vdd_mpu_iva
+>> omap2_set_init_voltage: unable to set vdd_mpu_iva
+>> omap2_set_init_voltage: unable to find boot up OPP for vdd_core
+>> omap2_set_init_voltage: unable to set vdd_core
+>=20
+> Hm... Is there maybe a dependency on u-boot?
+>=20
+> We are using a quite old version which may boot with vdd_mpu_iva
+> as 300 MHz while yours may have a different clock.
+>=20
+> What we could do is augment the printk (or dev_err) to tell
+> in these warnings what it is looking for...
+>=20
+> 	opp =3D dev_pm_opp_find_freq_ceil(dev, &freq);
+> 	if (IS_ERR(opp)) {
+> 		pr_err("%s: unable to find boot up OPP for vdd_%s freq =
+%ulHz\n",
+> 		__func__, vdd_name, freq);
+> 		goto exit;
+> 	}
 
-> to address them. Patch 8 was amended accordingly (dropped some consts),
-> but the other patches remain the same from v2, except the ones I merged
-> already.
->
-> BR,
-> Jani.
->
->
-> Cc: Andy Walls <awalls@md.metrocast.net>
-> Cc: Bernie Thompson <bernie@plugable.com>
-> Cc: Bruno Prémont <bonbons@linux-vserver.org>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Hans Verkuil <hverkuil@xs4all.nl>
-> Cc: Jaya Kumar <jayalk@intworks.biz>
-> Cc: Kirti Wankhede <kwankhede@nvidia.com>
-> Cc: Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>
-> Cc: Noralf Trønnes <noralf@tronnes.org>
-> Cc: Robin van der Gracht <robin@protonic.nl>
-> Cc: Steve Glendinning <steve.glendinning@shawell.net>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: ivtv-devel@ivtvdriver.org
-> Cc: kvm@vger.kernel.org
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Cc: linux-omap@vger.kernel.org
->
-> Jani Nikula (12):
->   video: fbdev: atyfb: modify the static fb_ops directly
->   video: fbdev: mb862xx: modify the static fb_ops directly
->   video: fbdev: nvidia: modify the static fb_ops directly
->   video: fbdev: uvesafb: modify the static fb_ops directly
->   video: fbdev: make fbops member of struct fb_info a const pointer
->   drm: constify fb ops across all drivers
->   video: fbdev: intelfb: use const pointer for fb_ops
->   video: constify fb ops across all drivers
->   HID: picoLCD: constify fb ops
->   media: constify fb ops across all drivers
->   samples: vfio-mdev: constify fb ops
->   auxdisplay: constify fb ops
->
->  drivers/auxdisplay/cfag12864bfb.c             |  2 +-
->  drivers/auxdisplay/ht16k33.c                  |  2 +-
->  drivers/gpu/drm/amd/amdgpu/amdgpu_fb.c        |  2 +-
->  drivers/gpu/drm/armada/armada_fbdev.c         |  2 +-
->  drivers/gpu/drm/drm_fb_helper.c               |  2 +-
->  drivers/gpu/drm/exynos/exynos_drm_fbdev.c     |  2 +-
->  .../gpu/drm/hisilicon/hibmc/hibmc_drm_fbdev.c |  2 +-
->  drivers/gpu/drm/i915/display/intel_fbdev.c    |  2 +-
->  drivers/gpu/drm/msm/msm_fbdev.c               |  2 +-
->  drivers/gpu/drm/nouveau/nouveau_fbcon.c       |  4 ++--
->  drivers/gpu/drm/omapdrm/omap_fbdev.c          |  2 +-
->  drivers/gpu/drm/radeon/radeon_fb.c            |  2 +-
->  drivers/gpu/drm/rockchip/rockchip_drm_fbdev.c |  2 +-
->  drivers/gpu/drm/tegra/fb.c                    |  2 +-
->  drivers/gpu/drm/vmwgfx/vmwgfx_fb.c            |  2 +-
->  drivers/hid/hid-picolcd_fb.c                  |  3 +--
->  drivers/media/pci/ivtv/ivtvfb.c               |  3 +--
->  drivers/media/platform/vivid/vivid-osd.c      |  3 +--
->  drivers/video/fbdev/68328fb.c                 |  2 +-
->  drivers/video/fbdev/acornfb.c                 |  2 +-
->  drivers/video/fbdev/amba-clcd.c               |  2 +-
->  drivers/video/fbdev/amifb.c                   |  2 +-
->  drivers/video/fbdev/arcfb.c                   |  2 +-
->  drivers/video/fbdev/arkfb.c                   |  2 +-
->  drivers/video/fbdev/asiliantfb.c              |  2 +-
->  drivers/video/fbdev/atmel_lcdfb.c             |  2 +-
->  drivers/video/fbdev/aty/aty128fb.c            |  2 +-
->  drivers/video/fbdev/aty/atyfb.h               |  2 +-
->  drivers/video/fbdev/aty/atyfb_base.c          |  6 +++---
->  drivers/video/fbdev/aty/mach64_cursor.c       |  4 ++--
->  drivers/video/fbdev/aty/radeon_base.c         |  2 +-
->  drivers/video/fbdev/au1100fb.c                |  2 +-
->  drivers/video/fbdev/au1200fb.c                |  2 +-
->  drivers/video/fbdev/broadsheetfb.c            |  2 +-
->  drivers/video/fbdev/bw2.c                     |  2 +-
->  drivers/video/fbdev/carminefb.c               |  2 +-
->  drivers/video/fbdev/cg14.c                    |  2 +-
->  drivers/video/fbdev/cg3.c                     |  2 +-
->  drivers/video/fbdev/cg6.c                     |  2 +-
->  drivers/video/fbdev/chipsfb.c                 |  2 +-
->  drivers/video/fbdev/cirrusfb.c                |  2 +-
->  drivers/video/fbdev/clps711x-fb.c             |  2 +-
->  drivers/video/fbdev/cobalt_lcdfb.c            |  2 +-
->  drivers/video/fbdev/controlfb.c               |  2 +-
->  drivers/video/fbdev/cyber2000fb.c             |  2 +-
->  drivers/video/fbdev/da8xx-fb.c                |  2 +-
->  drivers/video/fbdev/dnfb.c                    |  2 +-
->  drivers/video/fbdev/efifb.c                   |  2 +-
->  drivers/video/fbdev/ep93xx-fb.c               |  2 +-
->  drivers/video/fbdev/fb-puv3.c                 |  2 +-
->  drivers/video/fbdev/ffb.c                     |  2 +-
->  drivers/video/fbdev/fm2fb.c                   |  2 +-
->  drivers/video/fbdev/fsl-diu-fb.c              |  2 +-
->  drivers/video/fbdev/g364fb.c                  |  2 +-
->  drivers/video/fbdev/gbefb.c                   |  2 +-
->  drivers/video/fbdev/geode/gx1fb_core.c        |  2 +-
->  drivers/video/fbdev/geode/gxfb_core.c         |  2 +-
->  drivers/video/fbdev/geode/lxfb_core.c         |  2 +-
->  drivers/video/fbdev/goldfishfb.c              |  2 +-
->  drivers/video/fbdev/grvga.c                   |  2 +-
->  drivers/video/fbdev/gxt4500.c                 |  2 +-
->  drivers/video/fbdev/hecubafb.c                |  2 +-
->  drivers/video/fbdev/hgafb.c                   |  2 +-
->  drivers/video/fbdev/hitfb.c                   |  2 +-
->  drivers/video/fbdev/hpfb.c                    |  2 +-
->  drivers/video/fbdev/hyperv_fb.c               |  2 +-
->  drivers/video/fbdev/i740fb.c                  |  2 +-
->  drivers/video/fbdev/imsttfb.c                 |  2 +-
->  drivers/video/fbdev/imxfb.c                   |  2 +-
->  drivers/video/fbdev/intelfb/intelfb.h         |  2 +-
->  drivers/video/fbdev/intelfb/intelfbdrv.c      |  2 +-
->  drivers/video/fbdev/kyro/fbdev.c              |  2 +-
->  drivers/video/fbdev/leo.c                     |  2 +-
->  drivers/video/fbdev/macfb.c                   |  2 +-
->  drivers/video/fbdev/matrox/matroxfb_crtc2.c   |  2 +-
->  drivers/video/fbdev/maxinefb.c                |  2 +-
->  drivers/video/fbdev/mb862xx/mb862xxfb.h       |  2 +-
->  drivers/video/fbdev/mb862xx/mb862xxfb_accel.c | 15 +++++++-------
->  drivers/video/fbdev/mb862xx/mb862xxfbdrv.c    |  4 +++-
->  drivers/video/fbdev/mbx/mbxfb.c               |  2 +-
->  drivers/video/fbdev/metronomefb.c             |  2 +-
->  drivers/video/fbdev/mmp/fb/mmpfb.c            |  2 +-
->  drivers/video/fbdev/mx3fb.c                   |  5 +++--
->  drivers/video/fbdev/neofb.c                   |  2 +-
->  drivers/video/fbdev/nvidia/nvidia.c           | 20 ++++++++++---------
->  drivers/video/fbdev/ocfb.c                    |  2 +-
->  drivers/video/fbdev/offb.c                    |  2 +-
->  .../video/fbdev/omap2/omapfb/omapfb-main.c    |  2 +-
->  drivers/video/fbdev/p9100.c                   |  2 +-
->  drivers/video/fbdev/platinumfb.c              |  2 +-
->  drivers/video/fbdev/pm2fb.c                   |  2 +-
->  drivers/video/fbdev/pm3fb.c                   |  2 +-
->  drivers/video/fbdev/pmag-aa-fb.c              |  2 +-
->  drivers/video/fbdev/pmag-ba-fb.c              |  2 +-
->  drivers/video/fbdev/pmagb-b-fb.c              |  2 +-
->  drivers/video/fbdev/ps3fb.c                   |  2 +-
->  drivers/video/fbdev/pvr2fb.c                  |  2 +-
->  drivers/video/fbdev/pxa168fb.c                |  2 +-
->  drivers/video/fbdev/pxafb.c                   |  4 ++--
->  drivers/video/fbdev/q40fb.c                   |  2 +-
->  drivers/video/fbdev/riva/fbdev.c              |  2 +-
->  drivers/video/fbdev/s3c-fb.c                  |  2 +-
->  drivers/video/fbdev/s3c2410fb.c               |  2 +-
->  drivers/video/fbdev/s3fb.c                    |  2 +-
->  drivers/video/fbdev/sa1100fb.c                |  2 +-
->  drivers/video/fbdev/savage/savagefb_driver.c  |  2 +-
->  drivers/video/fbdev/sh7760fb.c                |  2 +-
->  drivers/video/fbdev/sh_mobile_lcdcfb.c        |  4 ++--
->  drivers/video/fbdev/simplefb.c                |  2 +-
->  drivers/video/fbdev/sis/sis_main.c            |  2 +-
->  drivers/video/fbdev/skeletonfb.c              |  2 +-
->  drivers/video/fbdev/sm712fb.c                 |  2 +-
->  drivers/video/fbdev/smscufx.c                 |  2 +-
->  drivers/video/fbdev/ssd1307fb.c               |  2 +-
->  drivers/video/fbdev/sstfb.c                   |  2 +-
->  drivers/video/fbdev/stifb.c                   |  2 +-
->  drivers/video/fbdev/sunxvr1000.c              |  2 +-
->  drivers/video/fbdev/sunxvr2500.c              |  2 +-
->  drivers/video/fbdev/sunxvr500.c               |  2 +-
->  drivers/video/fbdev/tcx.c                     |  2 +-
->  drivers/video/fbdev/tdfxfb.c                  |  2 +-
->  drivers/video/fbdev/tgafb.c                   |  2 +-
->  drivers/video/fbdev/tmiofb.c                  |  2 +-
->  drivers/video/fbdev/tridentfb.c               |  2 +-
->  drivers/video/fbdev/uvesafb.c                 |  4 ++--
->  drivers/video/fbdev/valkyriefb.c              |  2 +-
->  drivers/video/fbdev/vfb.c                     |  2 +-
->  drivers/video/fbdev/vga16fb.c                 |  2 +-
->  drivers/video/fbdev/vt8500lcdfb.c             |  2 +-
->  drivers/video/fbdev/vt8623fb.c                |  2 +-
->  drivers/video/fbdev/w100fb.c                  |  2 +-
->  drivers/video/fbdev/wm8505fb.c                |  2 +-
->  drivers/video/fbdev/xen-fbfront.c             |  2 +-
->  drivers/video/fbdev/xilinxfb.c                |  2 +-
->  include/linux/fb.h                            |  2 +-
->  samples/vfio-mdev/mdpy-fb.c                   |  2 +-
->  136 files changed, 163 insertions(+), 162 deletions(-)
+Easier and always prints info:
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+	freq =3D clk_get_rate(clk);
+	clk_put(clk);
+
+	pr_info("%s: vdd=3D%s clk=3D%s %luHz oh=3D%s\n", __func__, =
+vdd_name, clk_name, freq, oh_name);
+
+	opp =3D dev_pm_opp_find_freq_ceil(dev, &freq);
+
+I get this:
+
+[    2.908142] omap2_set_init_voltage: vdd=3Dmpu_iva clk=3Ddpll1_ck =
+1000000000Hz oh=3Dmpu
+[    2.930816] omap2_set_init_voltage: vdd=3Dcore clk=3Dl3_ick =
+200000000Hz oh=3Dl3_main
+[    2.946228] omap2_set_init_voltage: unable to find boot up OPP for =
+vdd_core
+[    2.953460] omap2_set_init_voltage: unable to set vdd_core
+
+Which means that cpufreq already has increased dpll1_ck to 1 GHz
+(I have removed the turbo-mode tags so that it already boots at
+full speed) and l3_ick runs at initial 200 MHz.
+
+>=20
+>> Then for fixing this code, seems like this can all happen from
+>> a regular device driver init based on the dts data.. We've had
+>> PM init completely ignore these errors already for years so
+>> whatever dependency there might be seems non-critical :)
+>>=20
+>>> Or does all this mean we may need a second OPP fable for vdd_core
+>>> and 200 MHz? But what would it be good for? I have not seen any
+>>> reference for "core-OPPs" in the TRM.
+>>=20
+>> OK yeah sounds like all the domains need an opp table.
+>>=20
+>> Also, I recall some SoCs having a dependency between having to
+>> run DSP at a lower rate for higher MPU rates, not sure if omap3
+>> has such dependencies though.
+>=20
+> Well, I not aware of documentation of such dependencies and there
+> is also some confusion what vdd_mpu_iva exactly is and what vdd_core =
+is.
+> twl4030 has vdd1 and vdd2 but their relationship isn't clear either.
+>=20
+> Maybe Tero or Nisanth can clarify?
+>=20
+> BR and thanks,
+> Nikolaus
+>=20
+>=20
+> _______________________________________________
+> http://projects.goldelico.com/p/gta04-kernel/
+> Letux-kernel mailing list
+> Letux-kernel@openphoenux.org
+> http://lists.goldelico.com/mailman/listinfo.cgi/letux-kernel
+
