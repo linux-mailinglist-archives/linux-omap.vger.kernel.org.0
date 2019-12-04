@@ -2,83 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1220F112063
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Dec 2019 00:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 218D8112773
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Dec 2019 10:32:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726086AbfLCXnO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Dec 2019 18:43:14 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:57184 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725997AbfLCXnN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Dec 2019 18:43:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=OPqV2nFrcb2kveUIO3yew2jRvZwyS9xTFWvVWcs/spM=; b=iq0/EIA9iexEmIjjiLPdaYHs4
-        7BdmVMdoj3wljvzDO3pkZVaF1Wr0nxYgJgLm3fzx5EA5oSg+H3hMxQ302BVueNhBS+2AkjSGdRog8
-        TVyD5WtJiUIXVsHeLGp5wibrlD0aHaf0qlEmkm0MOUJNN+hBEovPsNViw+t59+Sowqng5rt+oip9D
-        gjUNPEFXB2RUoagAaA9p1uUBh/Js94QdDNn3/JbSK5TETsO90oTHighhyYgl2DRnGXc9E8kBZhCMz
-        P2zTagF5/f6w1g2Mz8pGi03vG6/Yt1MAjE1RXhCeNHF+7sI6h9EFzrmcyHal8J27DPH9WdJ+Ej+FH
-        zBpFDIvOQ==;
-Received: from [2601:1c0:6280:3f0::5a22]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1icHp1-0003aR-6R; Tue, 03 Dec 2019 23:43:11 +0000
-Subject: Re: linux-next: Tree for Dec 3 (switchdev & TI_CPSW_SWITCHDEV)
-To:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Ivan Vecera <ivecera@redhat.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        linux-omap@vger.kernel.org
-References: <20191203155405.31404722@canb.auug.org.au>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <58aebf62-54f8-9084-147b-801ea65327bb@infradead.org>
-Date:   Tue, 3 Dec 2019 15:43:09 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
-MIME-Version: 1.0
-In-Reply-To: <20191203155405.31404722@canb.auug.org.au>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1726679AbfLDJcK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Dec 2019 04:32:10 -0500
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:41602 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725922AbfLDJcK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Dec 2019 04:32:10 -0500
+Received: by mail-pl1-f193.google.com with SMTP id bd4so2928719plb.8;
+        Wed, 04 Dec 2019 01:32:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=wapcydPDKs4ATem7apogb2hwKUnmiMIRnx3wrHpv2Vc=;
+        b=ezOeH3YYam2iUzv7wncBkreQa5cVfhsq88wp5aX7kHDawBuYAyk02wiajKY/a3tYZf
+         nqZH5CS0cD5Z9XL9uyNsr4SONOZaqWfYHBI+5ds/PXu/WEqRaFSMxWXiY2UkFaQiDPv2
+         WyxMGf8e6L4nnM0SYrLWDlP+NkhLChoNycut0X5Eh1rNsAr7Cx4pkelmwJ6bTKm6I4ew
+         Gus02MFRm/t8pyNWchfUL+2CaaEJJrxrbbma1XmKuk3Le94kxxHm+WUk62zmp9goiF43
+         MqaVirKdj2CV9KSVKJYb027BHx01/jnolBp60CX66F/6sC+Lehn0fovuCV2TZ/2ualxl
+         wq+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=wapcydPDKs4ATem7apogb2hwKUnmiMIRnx3wrHpv2Vc=;
+        b=l4CCM3q7zyGKo5Cpiooy6zsmbEBCYK3pX90vP3WhE1t3Lpp5qmNx3e5CM9ACbuhNFb
+         snme/a/Q81cVgcFx9KrNZmkpfzojzRC+06czvEJbgADPWXI5zAxuXK+F2jatXreK3tDt
+         7N9i+t8fSgV0UIxwTwIRX5mXqP/0uo5RMlT7qmOnr7v8rcXt/ykRC5A7mtIowcD9UKSg
+         XoA0E+zlulamCQXw6IpGtVHlKttnXid/TzNz8bXmS61Onv1Kx5Z+m5U16eT2SgDwFUO0
+         tUhcksLrbq6m9wDUxsgQOXFus3fiO8HFMF7gHaBVEXlQ0SBWKGRSAMdns/9EAyrLFobO
+         6rBA==
+X-Gm-Message-State: APjAAAUxxtlvIrQl5WBVqr54z0P6UYnJiLZT3V5vhBwlNEHGD3NNmFau
+        9bP8XqvwEOAgQ0LWkFjywD0=
+X-Google-Smtp-Source: APXvYqyNYdgVXBoEpnbiHKkCqyjVhkl9ihFNqVY0Nj8cxidpirtNd/dNbz+JiJz5+xZEBMaslDtqsw==
+X-Received: by 2002:a17:902:fe98:: with SMTP id x24mr2471710plm.155.1575451929660;
+        Wed, 04 Dec 2019 01:32:09 -0800 (PST)
+Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
+        by smtp.gmail.com with ESMTPSA id 91sm2380086pjq.18.2019.12.04.01.32.07
+        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 04 Dec 2019 01:32:09 -0800 (PST)
+From:   Baolin Wang <baolin.wang7@gmail.com>
+To:     ohad@wizery.com, bjorn.andersson@linaro.org
+Cc:     baolin.wang7@gmail.com, linux-omap@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] Some improvements for OMAP hwspinlock
+Date:   Wed,  4 Dec 2019 17:31:28 +0800
+Message-Id: <cover.1575451463.git.baolin.wang7@gmail.com>
+X-Mailer: git-send-email 1.7.9.5
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 12/2/19 8:54 PM, Stephen Rothwell wrote:
-> Hi all,
-> 
-> Please do not add any material for v5.6 to your linux-next included
-> trees until after v5.5-rc1 has been released.
-> 
-> Changes since 20191202:
+This patch set did some optimization for OMAP hwlock controller with
+changing to use some devm_xxx APIs to simplify code.
 
-I am seeing this (happens to be on i386; I doubt that it matters):
-CONFIG_COMPILE_TEST=y
+Baolin Wang (3):
+  hwspinlock: omap: Change to use devm_platform_ioremap_resource()
+  hwspinlock: omap: Use devm_kzalloc() to allocate memory
+  hwspinlock: omap: Use devm_hwspin_lock_register() to register hwlock
+    controller
 
+ drivers/hwspinlock/omap_hwspinlock.c |   45 ++++++++++------------------------
+ 1 file changed, 13 insertions(+), 32 deletions(-)
 
-WARNING: unmet direct dependencies detected for NET_SWITCHDEV
-  Depends on [n]: NET [=y] && INET [=n]
-  Selected by [y]:
-  - TI_CPSW_SWITCHDEV [=y] && NETDEVICES [=y] && ETHERNET [=y] && NET_VENDOR_TI [=y] && (ARCH_DAVINCI || ARCH_OMAP2PLUS || COMPILE_TEST [=y])
-
-because TI_CPSW_SWITCHDEV blindly selects NET_SWITCHDEV even though
-INET is not set/enabled, while NET_SWITCHDEV depends on INET.
-
-However, the build succeeds, including net/switchdev/*.
-
-So why does NET_SWITCHDEV depend on INET?
-
-It looks like TI_CPSW_SWITCHDEV should depend on INET (based on the
-Kconfig rules), but in practice it doesn't seem to matter to the build.
-
-thanks.
 -- 
-~Randy
+1.7.9.5
 
