@@ -2,55 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75BE611277D
+	by mail.lfdr.de (Postfix) with ESMTP id 002E7112780
 	for <lists+linux-omap@lfdr.de>; Wed,  4 Dec 2019 10:32:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727437AbfLDJcQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Dec 2019 04:32:16 -0500
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:44425 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725922AbfLDJcP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Dec 2019 04:32:15 -0500
-Received: by mail-pj1-f67.google.com with SMTP id w5so2746321pjh.11;
-        Wed, 04 Dec 2019 01:32:15 -0800 (PST)
+        id S1725922AbfLDJcS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Dec 2019 04:32:18 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:35186 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727454AbfLDJcS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Dec 2019 04:32:18 -0500
+Received: by mail-pj1-f68.google.com with SMTP id w23so1678928pjd.2;
+        Wed, 04 Dec 2019 01:32:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :in-reply-to:references;
-        bh=4bkpUfs7eIWG8ngSeP18jBoFZdQNW5P5Kn+adde7u5o=;
-        b=aYYWZsJigk7358H8li+5bb4cvWZCvwhyy4sUdYUnIAHpojjw3tNOQ9f5pypQx0brQ4
-         rpMwoGcO/53e6RSpPMK1en7HhLg0/tAwYf2MW5zdDfEJbbBrfwrORJmCUWOrwShXNTAG
-         cpcQDN4fzFvlRsC67VO1wchoC214EttAXitoEIifRJUAIazP/Ua8EQKy4QaDDfWcdgwC
-         QZzrk4RXjMoVXicnO3VqVnjUINB8HTQW8rbTK8kNDOWOfNFb++aBEF63ZmvY8tD82jkt
-         CJ2ssKj31iDhPNkSaidt9KIz3UGO/RIhEAmONSo45G2ZPWUUGIiLOXXUHySSi4b/bwYR
-         cLBQ==
+        bh=MEMVCvrI0WADDr1Rd4hdPFBKPBKqjIAdQ9vka/nhGK8=;
+        b=i5K8zGAUTIUpBxiaHwEGM4D2YvA7SW9lgKdvu84Kv7sk9nI3myu3aIGn9ByrlMTlGq
+         FHNTHz9+fW0MMiDYmfQ0pO5F2ByyZ/ILSGS4Te8JT4wi+HtMqTJaChN9dxO2yUZ+ZF3+
+         BFfEbVJRZaxq2gu17xlBlzbGYcJaAB69MnE6h1a9+jVrozrNN1LHCES+jB607D9sH2bZ
+         FxLAEVnunzUWzZrwaJAe8lzVT0dr2EUo8NHbdRLXjmryXoFR3fPPl93iG94yGs9MC5/f
+         mHHMs9sIO13RmpPCmWSACa1Wn9K1cTg0+W29WKz7PwPNNCV06oBUiuCZNQUkHfBNbwlN
+         KwjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:in-reply-to:references;
-        bh=4bkpUfs7eIWG8ngSeP18jBoFZdQNW5P5Kn+adde7u5o=;
-        b=NKhZiPiCeABReBQREIDLsa+iNoQG8XTH/t6yj4gTmnV2a7CSft/LEqry8LM2QSlzrq
-         zssQ/3jO55e2SJlatFCHISCCZtF9cyDdnFl8ycaYYmKfY+dH8+xKlvJkIMlqwd3mPTua
-         Rnpal77JuOwGtHnXCpOou1DEWhpXDdzGctLbQJJraGs4wRiH8Fu2el1e6L45wtFvhnwQ
-         bmRkeuYdA4y6qRJws0Jq/bS8oHhd0QaZc4k1IwSv85ee+nfpBroWhxHmT8+c8vXoq2DX
-         a/y6yuC8f8B5mKab4t4k6aGgw4YjjSRjkwijaQjYFBJB5RGvwB4FgLw95V8qQBfIqz5P
-         PaJg==
-X-Gm-Message-State: APjAAAUgCLDQl+hU9MN3lYBq7w0J5P1hS+/OwFuyah3HjjHCvn5sn+B2
-        22aXulkHJQew1W8uf+R/1FA=
-X-Google-Smtp-Source: APXvYqwT1ol0b99BpJDvAiJGyCk7qvZShzlpOcFA6BtctrrvhieJ4pPjR1v6PMqf3Ibkk+CDNv/wVg==
-X-Received: by 2002:a17:90a:77c8:: with SMTP id e8mr2186745pjs.83.1575451934861;
-        Wed, 04 Dec 2019 01:32:14 -0800 (PST)
+        bh=MEMVCvrI0WADDr1Rd4hdPFBKPBKqjIAdQ9vka/nhGK8=;
+        b=tXZ5ULq10iYH6VL4I+fAefzfaseml0nRvZbaPSwiJlUnELoPUU/krGlRdhld63Tlza
+         5+6AnPGZnabdEqMHdBs0ZVWAhU0ZaMZwq+co2uYjQHDr3bSWzOmIsUhWQUBy/hqaoEor
+         NM6EomdZdDiHVJO1L+Ton1D6n3yHHZiy7TCdztz01c6NCWIcV2qCoI1POIGXuKuM0z4R
+         7M3dY/7vxlTIIn5oIyiRNUKtjB6nu2N35PxHxR9awJOjH0pJrvD123cf/2qWi3AvdBM7
+         zavzgmNAajEP8WJ6BqBVDX35959haWzptaT5Xw7zK0DKzPAg231irZ6Ux72CHoO5++Gx
+         ROjA==
+X-Gm-Message-State: APjAAAVid3CHu29vcwhQI/IfZkF1tlN++mzWblYV3URZ700qSp1hcWR5
+        s3GrdtDhvPEsOx+TSAYfkwU=
+X-Google-Smtp-Source: APXvYqwplGcbAvZMr4HiumdgY+xYjz5z42ip0t5oJwiw7gz+o0Z5pkzcOfWT+VscRPzzsiws9aDzuw==
+X-Received: by 2002:a17:90a:94cc:: with SMTP id j12mr2206532pjw.3.1575451937556;
+        Wed, 04 Dec 2019 01:32:17 -0800 (PST)
 Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id 91sm2380086pjq.18.2019.12.04.01.32.12
+        by smtp.gmail.com with ESMTPSA id 91sm2380086pjq.18.2019.12.04.01.32.15
         (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 04 Dec 2019 01:32:14 -0800 (PST)
+        Wed, 04 Dec 2019 01:32:17 -0800 (PST)
 From:   Baolin Wang <baolin.wang7@gmail.com>
 To:     ohad@wizery.com, bjorn.andersson@linaro.org
 Cc:     baolin.wang7@gmail.com, linux-omap@vger.kernel.org,
         linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] hwspinlock: omap: Use devm_kzalloc() to allocate memory
-Date:   Wed,  4 Dec 2019 17:31:30 +0800
-Message-Id: <a6611d028d9e48a3da967277ace31a5e7676e797.1575451463.git.baolin.wang7@gmail.com>
+Subject: [PATCH 3/3] hwspinlock: omap: Use devm_hwspin_lock_register() to register hwlock controller
+Date:   Wed,  4 Dec 2019 17:31:31 +0800
+Message-Id: <84ccc6ffd5269a725359ff42e131c5aedf087546.1575451463.git.baolin.wang7@gmail.com>
 X-Mailer: git-send-email 1.7.9.5
 In-Reply-To: <cover.1575451463.git.baolin.wang7@gmail.com>
 References: <cover.1575451463.git.baolin.wang7@gmail.com>
@@ -61,53 +61,45 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use devm_kzalloc() to allocate memory, which can simplify the error
-handling.
+Use devm_hwspin_lock_register() to register the hwlock controller instead of
+unregistering the hwlock controller explicitly when removing the device.
 
 Signed-off-by: Baolin Wang <baolin.wang7@gmail.com>
 ---
- drivers/hwspinlock/omap_hwspinlock.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/hwspinlock/omap_hwspinlock.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/hwspinlock/omap_hwspinlock.c b/drivers/hwspinlock/omap_hwspinlock.c
-index dbb1a4c..3b05560 100644
+index 3b05560..9e8a8c2 100644
 --- a/drivers/hwspinlock/omap_hwspinlock.c
 +++ b/drivers/hwspinlock/omap_hwspinlock.c
-@@ -119,7 +119,8 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
+@@ -131,8 +131,8 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
+ 	for (i = 0, hwlock = &bank->lock[0]; i < num_locks; i++, hwlock++)
+ 		hwlock->priv = io_base + LOCK_BASE_OFFSET + sizeof(u32) * i;
  
- 	num_locks = i * 32; /* actual number of locks in this device */
- 
--	bank = kzalloc(struct_size(bank, lock, num_locks), GFP_KERNEL);
-+	bank = devm_kzalloc(&pdev->dev, struct_size(bank, lock, num_locks),
-+			    GFP_KERNEL);
- 	if (!bank) {
- 		ret = -ENOMEM;
- 		goto runtime_err;
-@@ -133,15 +134,13 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
- 	ret = hwspin_lock_register(bank, &pdev->dev, &omap_hwspinlock_ops,
- 						base_id, num_locks);
+-	ret = hwspin_lock_register(bank, &pdev->dev, &omap_hwspinlock_ops,
+-						base_id, num_locks);
++	ret = devm_hwspin_lock_register(&pdev->dev, bank, &omap_hwspinlock_ops,
++					base_id, num_locks);
  	if (ret)
--		goto reg_fail;
-+		goto runtime_err;
+ 		goto runtime_err;
  
- 	dev_dbg(&pdev->dev, "Registered %d locks with HwSpinlock core\n",
- 		num_locks);
+@@ -148,15 +148,6 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
+ 
+ static int omap_hwspinlock_remove(struct platform_device *pdev)
+ {
+-	struct hwspinlock_device *bank = platform_get_drvdata(pdev);
+-	int ret;
+-
+-	ret = hwspin_lock_unregister(bank);
+-	if (ret) {
+-		dev_err(&pdev->dev, "%s failed: %d\n", __func__, ret);
+-		return ret;
+-	}
+-
+ 	pm_runtime_disable(&pdev->dev);
  
  	return 0;
- 
--reg_fail:
--	kfree(bank);
- runtime_err:
- 	pm_runtime_disable(&pdev->dev);
- 	return ret;
-@@ -159,7 +158,6 @@ static int omap_hwspinlock_remove(struct platform_device *pdev)
- 	}
- 
- 	pm_runtime_disable(&pdev->dev);
--	kfree(bank);
- 
- 	return 0;
- }
 -- 
 1.7.9.5
 
