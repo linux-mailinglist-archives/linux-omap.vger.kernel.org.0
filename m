@@ -2,139 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FE2C112A14
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Dec 2019 12:26:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1212E112B42
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Dec 2019 13:22:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727685AbfLDL0I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Dec 2019 06:26:08 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:56390 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727445AbfLDL0I (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Dec 2019 06:26:08 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xB4BQ1C9015599;
-        Wed, 4 Dec 2019 05:26:02 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1575458762;
-        bh=U9KwFUmtbhKcE0R5rk3qW4+wg7hHP+RvMDN9b8akF6E=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=B6v1uXZ2Bb5TkY2O/LztY2GiaAuKpkAVGfEmgcvVXZi6MrWybpCcjQglivQdRovGy
-         ZdZmIPn0DmHW5RfWQRkjnoQqqOSBmVcN1tJ3ELz+NF2/fksYeN5cKDIu5StthrcW/C
-         nKS0Yzgq+gk5VOnh0YW6WTYoMMT2Y+/i4XBivmME=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xB4BQ1GJ064727;
-        Wed, 4 Dec 2019 05:26:01 -0600
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 4 Dec
- 2019 05:26:00 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 4 Dec 2019 05:26:00 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xB4BPvwt123659;
-        Wed, 4 Dec 2019 05:25:58 -0600
-Subject: Re: [PATCH] ARM: dts: am335x-evmsk: Use drm simple-panel instead of
- tilcdc-panel
-To:     Jyri Sarha <jsarha@ti.com>, <dri-devel@lists.freedesktop.org>,
-        <tony@atomide.com>, <bcousson@baylibre.com>,
-        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>
-CC:     <tomi.valkeinen@ti.com>, <laurent.pinchart@ideasonboard.com>,
-        <bparrot@ti.com>
-References: <20191204105554.14212-1-jsarha@ti.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <1aa8c476-031a-e156-7648-c9740a98e3ee@ti.com>
-Date:   Wed, 4 Dec 2019 13:26:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1727838AbfLDMWS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Dec 2019 07:22:18 -0500
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:37768 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727554AbfLDMWS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Dec 2019 07:22:18 -0500
+Received: by mail-ed1-f67.google.com with SMTP id cy15so6473908edb.4
+        for <linux-omap@vger.kernel.org>; Wed, 04 Dec 2019 04:22:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
+        b=itksFv5A2JLOzo6XVqVzXmSzWKIpGqZTNHrb4xFvrqPmHJ7WwaeLkksg0/ZJSVtv31
+         pzvXZ3OHhHMsql2Vo9oheJQHErj5CDGd5ZvPVjxDn+I4JgVPrQl1nkJy5Nb7wvQoUvM+
+         46lpgbsOy0h7DJvRAy1OQQg0Oi/exT7Imiyfeu4Gtmu6VGYFysEjNlBfvwObnE6M1THW
+         GbhC/d5DVONSKdw6y/qH20L4wjeyxlxCBE+xa1i44NzWc0HgEODgSNCM/bGDvmjdXP55
+         pwYVn13D99Hhzzv+p4qHdhRZEM3zwIJF+S9QDszHcSxOoAqtygRSNU+xVzjWpE9QCD88
+         4SHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
+        b=t7Yl4ybrB1PBTlftDzeHcN0g2lHOhgjazCWDkY5UMnynBSk0OkvsiQ1K1S6oDNmm0N
+         HNvh7cR96AepKRjiG6CCoZ5x0g1MTPgdirBJiUAlfLZIfq4CuK+CciuintuxIgJjhFF9
+         mnSbwK/ypi0QQBYoVwLAAg0zRQXpXQRA9HyHKAi7Mv0ifPYwUAXjoVlSc9IU33fJ+D/0
+         9wniZY5yDd3KvyYxpI9QJqSnoSLtQmgTl+3beTHm70gcQdt6CCapXXmiViI4ZT6aYehp
+         mBzRDvF+xJ2u+OocHTygTDIjKcVwy2ZQVrr3vZYn4UQaGNwRDoUDxfRP9C+iAkxlMhx3
+         iBgg==
+X-Gm-Message-State: APjAAAWEdRlIz1WmgTYJA9kWjxtssNr/yOtq5SdZOK7OWNdlEq/qqVG/
+        3EDAimkBoK3587wOSr2IEVt10O7ptI+atfY38Rs=
+X-Google-Smtp-Source: APXvYqwlH4d/NgUk6+TTgeshJl/W0Z846j+vPwdmJMmvDKA5s5alEIOymc5OFboGvVzTvSBGNMpJNF0KpHbTN+gxpY4=
+X-Received: by 2002:aa7:d84b:: with SMTP id f11mr3689948eds.96.1575462136339;
+ Wed, 04 Dec 2019 04:22:16 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191204105554.14212-1-jsarha@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Received: by 2002:a05:6402:22dc:0:0:0:0 with HTTP; Wed, 4 Dec 2019 04:22:15
+ -0800 (PST)
+Reply-To: moneygram.1820@outlook.fr
+From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" <eco.bank1204@gmail.com>
+Date:   Wed, 4 Dec 2019 13:22:15 +0100
+Message-ID: <CAOE+jABwsq4QTifFZJGuzmZ8p9kMY_tMmS5N39hvEALE6d=OJw@mail.gmail.com>
+Subject: God has remembered your prayers I have already sent you Money Gram
+ payment of $5000.00 today, MG 1029-8096
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Attn, dear Beneficiary.
 
+God has remembered your prayers
+I have already sent you Money Gram payment of $5000.00 today, MG 1029-8096
+This is because we have finally concluded to effect your transfer
+funds of $4.8,000.000usd
+through MONEY GRAM International Fund transfer Service
+Each payment will be sending to you by $5000.00 daily until the
+($4.8,000.000usd) is completely transferred
+we have this morning sent  MONEY GRAM payment of $5,000.00 in your name today
+So contact the MONEY GRAM Agent to pick up this first payment of $5000 now
 
-On 04/12/2019 12.55, Jyri Sarha wrote:
-> Move to use the new drm panel support in tilcdc together with added
-> "newhaven,nhd-4.3-480272ef-atxl"-panel support in drm panel-simple.
+Contact person Mrs. Alan Ude
+Dir. MONEY GRAM Service,Benin
+Phone number: +229 98856728
+E-mail: moneygram.1820@outlook.fr
 
-Tested-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Ask him to give you the complete mtcn, sender name, question and
+answer to enable you
+pick up the $5000.00 sent today,
+Also you are instructed to re-confirm your information's
+to Mrs.Alan Ude as listed below to avoid wrong transactions.
 
-> Signed-off-by: Jyri Sarha <jsarha@ti.com>
-> ---
->  arch/arm/boot/dts/am335x-evmsk.dts | 38 ++++++++++--------------------
->  1 file changed, 12 insertions(+), 26 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/am335x-evmsk.dts b/arch/arm/boot/dts/am335x-evmsk.dts
-> index e28a5b82fdf3..b149e48520b4 100644
-> --- a/arch/arm/boot/dts/am335x-evmsk.dts
-> +++ b/arch/arm/boot/dts/am335x-evmsk.dts
-> @@ -183,36 +183,16 @@
->  	};
->  
->  	panel {
-> -		compatible = "ti,tilcdc,panel";
-> +		compatible = "newhaven,nhd-4.3-480272ef-atxl";
-> +
->  		pinctrl-names = "default", "sleep";
->  		pinctrl-0 = <&lcd_pins_default>;
->  		pinctrl-1 = <&lcd_pins_sleep>;
->  		backlight = <&lcd_bl>;
-> -		status = "okay";
-> -		panel-info {
-> -			ac-bias		= <255>;
-> -			ac-bias-intrpt	= <0>;
-> -			dma-burst-sz	= <16>;
-> -			bpp		= <32>;
-> -			fdd		= <0x80>;
-> -			sync-edge	= <0>;
-> -			sync-ctrl	= <1>;
-> -			raster-order	= <0>;
-> -			fifo-th		= <0>;
-> -		};
-> -		display-timings {
-> -			480x272 {
-> -				hactive		= <480>;
-> -				vactive		= <272>;
-> -				hback-porch	= <43>;
-> -				hfront-porch	= <8>;
-> -				hsync-len	= <4>;
-> -				vback-porch	= <12>;
-> -				vfront-porch	= <4>;
-> -				vsync-len	= <10>;
-> -				clock-frequency = <9000000>;
-> -				hsync-active	= <0>;
-> -				vsync-active	= <0>;
-> +
-> +		port {
-> +			panel_0: endpoint@0 {
-> +				remote-endpoint = <&lcdc_0>;
->  			};
->  		};
->  	};
-> @@ -750,6 +730,12 @@
->  	status = "okay";
->  
->  	blue-and-red-wiring = "crossed";
-> +
-> +	port {
-> +		lcdc_0: endpoint@0 {
-> +			remote-endpoint = <&panel_0>;
-> +		};
-> +	};
->  };
->  
->  &rtc {
-> 
+(1Your Full name:............................................
+(2 Phone number.....................................................
+(3 Contact address:.....................................
+(4 Age:..................................................................
+(5 Country..............................................
+(6) Sex .................................................................
+(7) your occupation...........................................
 
-- Péter
+(8)Passport/By Attach or Drivers License Number:
+Contact Mrs. Alan Ude for your MONEY GRAM payment of $4.8,000.000usd
+Note please: I have paid service fees for you but the only money you
+are required
+to send to Mrs. Alan Ude is $90.00 only Transfer fee before you can
+pick up your transfer today.
 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Send it to via Money Gram
+Receiver's Name-----Alan Ude
+Country----------Benin
+Address-----------Cotonou
+Quest--------Honest
+Ans-----------Trust
+
+I done all my best for you to receive your transfer now ok.
+We need your urgent reply
+Best Regards
+Rev.Dr Emmanuel Okoye
+CEO Ecobank-benin
+
+If we did not receive it urgent from you today,
+I will go ahead and release you funds to Mrs. Lyndia Ppaulson as your
+representative.
