@@ -2,157 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 995DE1154C3
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2019 17:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADF97115516
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2019 17:24:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726284AbfLFQA2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Dec 2019 11:00:28 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:44934 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726400AbfLFQA2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Dec 2019 11:00:28 -0500
-Received: by mail-wr1-f68.google.com with SMTP id q10so8295880wrm.11
-        for <linux-omap@vger.kernel.org>; Fri, 06 Dec 2019 08:00:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=newoldbits-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=rFIvByA81LFz7lfVmJWwdH83asL5XC8YFzmQ8CPDf+M=;
-        b=VRHS39ZKEQF6d1JgJtcM6SfYmjOG8APVHHlLzsDJRGbvPk5vJ7l7MwTEei6JGNZqaY
-         8riIjKsx2kfyKDmLp7kTo8usA9MdlKnl2cTJBR/tdOXBEp1GBLOsAz88JiiQYFmWLlOz
-         hnQjsKCrHIyrhqJd2gw4M99BXOWOKlvTuF9gY5/31bfP2lTXHPRAIe1BjzGqUoGmBkil
-         aZV8PniJHpdwqSQZS/GqCHsfXhEHa5hcvMBigX6jtEJpmNSlRymow+U/pww7SIHEAHDt
-         PPZhhJscj1NkVE7+S6LNFkcvHf3X5AV9n3ZpLoiX5wbCgvy4qNTcFVCGJ+yy0xXsqO11
-         5H1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=rFIvByA81LFz7lfVmJWwdH83asL5XC8YFzmQ8CPDf+M=;
-        b=DDzeBaTBU4IXdOWRKsmue+KFRWm28WwLiQRBV8BFZYi2wduUn21rHs4UxtWLwBt0GQ
-         gnkzk5jTGm9eQedw+m650ZECfD6aW4ci28pIZrvaNk0D7A1GSHtDKPrwN8xjfAjLvMOS
-         m/OUFC1VmbboSpKcxJnay8RQk8HiVl0vm+eObJq/kAuW2Lww81HnVKMThEu/pvuO9oxl
-         XCqHPjk7KnA1MzkceUVs9v5/SvWHcXzAgR+QlLJa4GMv88DwyJeRtBqTQg96l2jO9C7V
-         Alwpw1jNxAS8TOHGA5IlQf2+xyK9qk4B2oPhbNjfKKXzzkhGDKr/MUT3dE3tFGGic0mS
-         /dyQ==
-X-Gm-Message-State: APjAAAXv1SEnyy20qsqJX1ra2cjYP7Ik9raL/SXE95oD8lawlskKJArJ
-        SSEsWNO8vOmYOxUDiDlxuoYWVA==
-X-Google-Smtp-Source: APXvYqwsW9MIlkZXXKhO8CIVTJMfeF4j78dDHCcsdzZNu6m5M2Zbl2NHuLKYSrhMSxZSV+fbS2Z9QA==
-X-Received: by 2002:adf:c746:: with SMTP id b6mr15689207wrh.298.1575648026370;
-        Fri, 06 Dec 2019 08:00:26 -0800 (PST)
-Received: from msilabo.lan (241.33-200-80.adsl-dyn.isp.belgacom.be. [80.200.33.241])
-        by smtp.gmail.com with ESMTPSA id d19sm3891496wmd.38.2019.12.06.08.00.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Dec 2019 08:00:25 -0800 (PST)
-From:   Jean Pihet <jean.pihet@newoldbits.com>
-To:     Mark Brown <broonie@kernel.org>, Tero Kristo <t-kristo@ti.com>
-Cc:     linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
+        id S1726325AbfLFQYf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Dec 2019 11:24:35 -0500
+Received: from muru.com ([72.249.23.125]:44240 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726258AbfLFQYf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 6 Dec 2019 11:24:35 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 379BD8047;
+        Fri,  6 Dec 2019 16:25:13 +0000 (UTC)
+Date:   Fri, 6 Dec 2019 08:24:31 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Jean Pihet <jean.pihet@newoldbits.com>
+Cc:     Mark Brown <broonie@kernel.org>, Tero Kristo <t-kristo@ti.com>,
+        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
         Ryan Barnett <ryan.barnett@rockwellcollins.com>,
         Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
-        Jean Pihet <jean.pihet@newoldbits.com>
-Subject: [PATCH 3/3] TI QSPI: optimize transfers for dual and quad read
-Date:   Fri,  6 Dec 2019 17:00:07 +0100
-Message-Id: <20191206160007.331801-4-jean.pihet@newoldbits.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191206160007.331801-1-jean.pihet@newoldbits.com>
+        Vignesh R <vigneshr@ti.com>
+Subject: Re: [PATCH 1/3] TI QSPI: Fix fclk frequency
+Message-ID: <20191206162431.GF35479@atomide.com>
 References: <20191206160007.331801-1-jean.pihet@newoldbits.com>
+ <20191206160007.331801-2-jean.pihet@newoldbits.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191206160007.331801-2-jean.pihet@newoldbits.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-By reading the 32 bits data register and copy the contents to the
-receive buffer, according to the single/dual/quad read mode and
-the data length to read.
+Hi Jean,
 
-The speed improvement is 3.5x using quad read.
----
- drivers/spi/spi-ti-qspi.c | 48 ++++++++++++++++++++++++++-------------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+* Jean Pihet <jean.pihet@newoldbits.com> [191206 16:01]:
+> The QSPI IP is clocked by two clocks:
+> - CORE_CLKOUTM4 / 2 (L3) as interface clock,
+> - PER_CLKOUTM2 / 4 (L4) as functional clock, which is PER_CLKOUTM2
+>   divided by 4, so at 192Mhz / 4 = 48MHz.
+> 
+> Fix the use of the correct fclk by the driver and fix the frequency
+> value so that the divider is correctly programmed to generate the
+> desired frequency of QSPI_CLK.
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 13916232a959..65ec3bcb25ae 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -313,24 +313,25 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t,
- static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t,
- 			 int count)
- {
--	int wlen;
- 	unsigned int cmd;
-+	u32 rx;
- 	u8 *rxbuf;
-+	u8 xfer_len;
- 
- 	rxbuf = t->rx_buf;
- 	cmd = qspi->cmd;
-+	/* Optimize the transfers for dual and quad read */
- 	switch (t->rx_nbits) {
--	case SPI_NBITS_DUAL:
--		cmd |= QSPI_RD_DUAL;
--		break;
- 	case SPI_NBITS_QUAD:
--		cmd |= QSPI_RD_QUAD;
-+		cmd |= QSPI_RD_QUAD | QSPI_WLEN(32);
-+		break;
-+	case SPI_NBITS_DUAL:
-+		cmd |= QSPI_RD_DUAL | QSPI_WLEN(16);
- 		break;
- 	default:
--		cmd |= QSPI_RD_SNGL;
-+		cmd |= QSPI_RD_SNGL | QSPI_WLEN(8);
- 		break;
- 	}
--	wlen = t->bits_per_word >> 3;	/* in bytes */
- 
- 	while (count) {
- 		dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n", cmd, qspi->dc);
-@@ -342,19 +343,34 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t,
- 			dev_err(qspi->dev, "read timed out\n");
- 			return -ETIMEDOUT;
- 		}
--		switch (wlen) {
--		case 1:
--			*rxbuf = readb(qspi->base + QSPI_SPI_DATA_REG);
-+
-+		/* Optimize the transfers for dual and quad read */
-+		rx = readl(qspi->base + QSPI_SPI_DATA_REG);
-+		switch (t->rx_nbits) {
-+		case SPI_NBITS_QUAD:
-+			if (count >= 1)
-+				*rxbuf++ = rx >> 24;
-+			if (count >= 2)
-+				*rxbuf++ = rx >> 16;
-+			if (count >= 3)
-+				*rxbuf++ = rx >> 8;
-+			if (count >= 4)
-+				*rxbuf++ = rx;
-+			xfer_len = min(count, 4);
- 			break;
--		case 2:
--			*((u16 *)rxbuf) = readw(qspi->base + QSPI_SPI_DATA_REG);
-+		case SPI_NBITS_DUAL:
-+			if (count >= 1)
-+				*rxbuf++ = rx >> 8;
-+			if (count >= 2)
-+				*rxbuf++ = rx;
-+			xfer_len = min(count, 2);
- 			break;
--		case 4:
--			*((u32 *)rxbuf) = readl(qspi->base + QSPI_SPI_DATA_REG);
-+		default:
-+			*rxbuf++ = rx;
-+			xfer_len = 1;
- 			break;
- 		}
--		rxbuf += wlen;
--		count -= wlen;
-+		count -= xfer_len;
- 	}
- 
- 	return 0;
--- 
-2.23.0
+This source clock can be different between the SoC models, the
+related fck probably needs to be fixed in the SoC specific dtsi
+file.
 
+Currently qspi it's there only in dra7.dtsi, sounds like you
+are using it on am3/am4 based on the clock name?
+
+Regards,
+
+Tony
+
+> ---
+>  drivers/spi/spi-ti-qspi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+> index 3cb65371ae3b..4680dad38ab2 100644
+> --- a/drivers/spi/spi-ti-qspi.c
+> +++ b/drivers/spi/spi-ti-qspi.c
+> @@ -79,7 +79,7 @@ struct ti_qspi {
+>  
+>  #define QSPI_COMPLETION_TIMEOUT		msecs_to_jiffies(2000)
+>  
+> -#define QSPI_FCLK			192000000
+> +#define QSPI_FCLK			48000000
+>  
+>  /* Clock Control */
+>  #define QSPI_CLK_EN			(1 << 31)
+> @@ -748,7 +748,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+>  		}
+>  	}
+>  
+> -	qspi->fclk = devm_clk_get(&pdev->dev, "fck");
+> +	qspi->fclk = devm_clk_get(&pdev->dev, "dpll_per_m2_div4_ck");
+>  	if (IS_ERR(qspi->fclk)) {
+>  		ret = PTR_ERR(qspi->fclk);
+>  		dev_err(&pdev->dev, "could not get clk: %d\n", ret);
+> -- 
+> 2.23.0
+> 
