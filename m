@@ -2,86 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77573115497
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2019 16:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 830691154BC
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2019 17:00:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726256AbfLFPua (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Dec 2019 10:50:30 -0500
-Received: from muru.com ([72.249.23.125]:44222 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726251AbfLFPua (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 6 Dec 2019 10:50:30 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 05DB48047;
-        Fri,  6 Dec 2019 15:51:07 +0000 (UTC)
-Date:   Fri, 6 Dec 2019 07:50:26 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Randy Dunlap <rdunlap@infradead.org>, netdev@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Sekhar Nori <nsekhar@ti.com>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 2/2] arm: omap2plus_defconfig: enable NET_SWITCHDEV
-Message-ID: <20191206155026.GE35479@atomide.com>
-References: <20191204174533.32207-1-grygorii.strashko@ti.com>
- <20191204174533.32207-3-grygorii.strashko@ti.com>
- <c8058866-2be9-831c-19f6-31d17decb6f1@ti.com>
+        id S1726345AbfLFQAY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Dec 2019 11:00:24 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:38656 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726284AbfLFQAY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Dec 2019 11:00:24 -0500
+Received: by mail-wm1-f68.google.com with SMTP id p17so7851097wmi.3
+        for <linux-omap@vger.kernel.org>; Fri, 06 Dec 2019 08:00:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=newoldbits-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MIA0NWCCK4h1Z/JZPXdHERLAqtudgTBcQ16Z5dk400I=;
+        b=k+OCABUOgXU2D0H91QEc8C4MBpcCEGP4BtU3hy4jh+nQXUZhONkKwJvVhLEylHMIWe
+         4hL9OkcFNYRFW5O13eLzUsQ+6LCpgBnPusEFHz5FPKRgK5vtYn4a2QVARTJka2mLHekc
+         gu8I/LQDV9pRztsvXDcvIOHndW3RnPo1o1QfT8pZ/NDzuGXG+2t6UzOqsOrhhjWATi2Q
+         5p0WMHuaZ0lnfR7tzkQqDgg6hiBx4xkXLZp0EWYz0cPk5wtpVQpv6Ecl9/ww7GGvUvch
+         KXILmz55BX2btblZTaJL/HjFXZhciOuIo4+hbK0TFncZakBphZdJ7GK4nwQ+Uni7+YEM
+         CIdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MIA0NWCCK4h1Z/JZPXdHERLAqtudgTBcQ16Z5dk400I=;
+        b=OqTS9k7HlKmo9Gp71yoY0P6rHhKpqaNd14F5X1s2YVcyQqkfmivRioDmVI3sZp6RR6
+         wNVv48V4biSpSpOTlorFA9BCbb0/ZR2s5jbN3zbzD2W2MiCVfdUDnbuVDIDFLi4dMTxa
+         JLZC1q6Pl+JeQb2qDkRFeuT5YtnVj0n9GgnaSqj9n19MrlI/500mYjszW5KSSUkBhkVA
+         bQV1+v6b/RppTMmxbDxRldUEUhgBxYbn8B9Bq92dgAsBUiPmqERShNlgM5b2dRN5Q5f5
+         RyrRgITJkIpF8aoqLuqyxaIpVTCBwd8AcK0HhmBCNUYZPAI1T3DSwPSZwAlfFubgmBiJ
+         V9rg==
+X-Gm-Message-State: APjAAAWoZGKje+5F0iRa9J2nKnfo+DVPdXdBKqi1MbCIqW3ahl30o/A6
+        AC2ARwWd8wSI1ncOzTSx5pPFP/1nDr5bhg==
+X-Google-Smtp-Source: APXvYqw74RI7bZwglD8R2ii0dsT+fkEoVrUANmipbT37cvligxfRIUroUVQN1eZpKoeIMBQyb6Rcdw==
+X-Received: by 2002:a1c:f316:: with SMTP id q22mr11570892wmq.103.1575648022396;
+        Fri, 06 Dec 2019 08:00:22 -0800 (PST)
+Received: from msilabo.lan (241.33-200-80.adsl-dyn.isp.belgacom.be. [80.200.33.241])
+        by smtp.gmail.com with ESMTPSA id d19sm3891496wmd.38.2019.12.06.08.00.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Dec 2019 08:00:21 -0800 (PST)
+From:   Jean Pihet <jean.pihet@newoldbits.com>
+To:     Mark Brown <broonie@kernel.org>, Tero Kristo <t-kristo@ti.com>
+Cc:     linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
+        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
+        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
+        Jean Pihet <jean.pihet@newoldbits.com>
+Subject: [PATCH 0/3] TI QSPI: Add support for large flash devices
+Date:   Fri,  6 Dec 2019 17:00:04 +0100
+Message-Id: <20191206160007.331801-1-jean.pihet@newoldbits.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c8058866-2be9-831c-19f6-31d17decb6f1@ti.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Grygorii Strashko <grygorii.strashko@ti.com> [191206 11:08]:
-> Hi Tony,
-> 
-> On 04/12/2019 19:45, Grygorii Strashko wrote:
-> > The TI_CPSW_SWITCHDEV definition in Kconfig was changed from "select
-> > NET_SWITCHDEV" to "depends on NET_SWITCHDEV", and therefore it is required
-> > to explicitelly enable NET_SWITCHDEV config option in omap2plus_defconfig.
-> > 
-> > Fixes: 3727d259ddaf ("arm: omap2plus_defconfig: enable new cpsw switchdev driver")
-> > Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> > ---
-> >   arch/arm/configs/omap2plus_defconfig | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-> > index 89cce8d4bc6b..7bbef86a4e76 100644
-> > --- a/arch/arm/configs/omap2plus_defconfig
-> > +++ b/arch/arm/configs/omap2plus_defconfig
-> > @@ -92,6 +92,7 @@ CONFIG_IP_PNP_BOOTP=y
-> >   CONFIG_IP_PNP_RARP=y
-> >   CONFIG_NETFILTER=y
-> >   CONFIG_PHONET=m
-> > +CONFIG_NET_SWITCHDEV=y
-> >   CONFIG_CAN=m
-> >   CONFIG_CAN_C_CAN=m
-> >   CONFIG_CAN_C_CAN_PLATFORM=m
-> > @@ -182,6 +183,7 @@ CONFIG_SMSC911X=y
-> >   # CONFIG_NET_VENDOR_STMICRO is not set
-> >   CONFIG_TI_DAVINCI_EMAC=y
-> >   CONFIG_TI_CPSW=y
-> > +CONFIG_TI_CPSW_SWITCHDEV=y
-> >   CONFIG_TI_CPTS=y
-> >   # CONFIG_NET_VENDOR_VIA is not set
-> >   # CONFIG_NET_VENDOR_WIZNET is not set
-> > @@ -554,4 +556,3 @@ CONFIG_DEBUG_INFO_DWARF4=y
-> >   CONFIG_MAGIC_SYSRQ=y
-> >   CONFIG_SCHEDSTATS=y
-> >   # CONFIG_DEBUG_BUGVERBOSE is not set
-> > -CONFIG_TI_CPSW_SWITCHDEV=y
-> > 
-> 
-> Could it be applied as fix, as without it cpsw switch driver will not be built,
-> so no networking on am571x-idk
+Large devices are bigger than >64MB in size.
 
-OK I'll be applying it into fixes.
+- Fix the SPI clock generation in order to produce the desired
+  frequency.
+- Since the TI QSPI IP block only maps 64MB of MMIO, use MMIO
+  below the 64MB boundary and software generated transfers above.
+- Optimize the software generated transfers for dual and quad
+  I/O read operations. The speed-up is 3.5x for quad I/O reads.
 
-Thanks,
+Tested using raw accesses (mtd_debug) and JFFS2 FS read/write/erase;
+in single, dual and quad modes.
+All accesses have been checked on the logic analyzer.
 
-Tony
+Jean Pihet (3):
+  TI QSPI: Fix fclk frequency
+  TI QSPI: support large flash devices
+  TI QSPI: optimize transfers for dual and quad read
+
+ drivers/spi/spi-ti-qspi.c | 83 +++++++++++++++++++++++++++++----------
+ 1 file changed, 63 insertions(+), 20 deletions(-)
+
+-- 
+2.23.0
+
