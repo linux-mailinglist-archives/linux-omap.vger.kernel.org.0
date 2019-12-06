@@ -2,82 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC87311506F
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2019 13:29:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77573115497
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2019 16:50:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726140AbfLFM27 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Dec 2019 07:28:59 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:55850 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726124AbfLFM27 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Dec 2019 07:28:59 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xB6CSvjM074655;
-        Fri, 6 Dec 2019 06:28:57 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1575635337;
-        bh=M1+Y8KSGNeNG5arLgGnMLbnCLyRMTkpFUDsspvDH0Wc=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=XGhTLXlJfSIK4KNQwdok0tpOOdDmYDXTmKY73MAvrErEEFObq2iAepNPejt1lZsRd
-         jpJpvADN1wD+CpEKyf8iSCAEqQZWyjJWlMxFLf7sxHFY0r1C7SbXBwv63V56l1yQJ+
-         iaAjzYesivdA/zZuleRPXqJdVjyC7p3zytFUuChA=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xB6CSvUO031203;
-        Fri, 6 Dec 2019 06:28:57 -0600
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 6 Dec
- 2019 06:28:56 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 6 Dec 2019 06:28:56 -0600
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xB6CSscJ119732;
-        Fri, 6 Dec 2019 06:28:55 -0600
-Subject: Re: [PATCH] net: ethernet: ti: cpsw: fix extra rx interrupt
-To:     David Miller <davem@davemloft.net>
-CC:     <netdev@vger.kernel.org>, <nsekhar@ti.com>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>
-References: <20191205151817.1076-1-grygorii.strashko@ti.com>
- <20191205.124225.1227757906747730493.davem@davemloft.net>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <6f133a89-7ed9-85a6-9c4a-6249346d26b0@ti.com>
-Date:   Fri, 6 Dec 2019 14:28:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726256AbfLFPua (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Dec 2019 10:50:30 -0500
+Received: from muru.com ([72.249.23.125]:44222 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726251AbfLFPua (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 6 Dec 2019 10:50:30 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 05DB48047;
+        Fri,  6 Dec 2019 15:51:07 +0000 (UTC)
+Date:   Fri, 6 Dec 2019 07:50:26 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Randy Dunlap <rdunlap@infradead.org>, netdev@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        Sekhar Nori <nsekhar@ti.com>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 2/2] arm: omap2plus_defconfig: enable NET_SWITCHDEV
+Message-ID: <20191206155026.GE35479@atomide.com>
+References: <20191204174533.32207-1-grygorii.strashko@ti.com>
+ <20191204174533.32207-3-grygorii.strashko@ti.com>
+ <c8058866-2be9-831c-19f6-31d17decb6f1@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20191205.124225.1227757906747730493.davem@davemloft.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c8058866-2be9-831c-19f6-31d17decb6f1@ti.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Grygorii Strashko <grygorii.strashko@ti.com> [191206 11:08]:
+> Hi Tony,
+> 
+> On 04/12/2019 19:45, Grygorii Strashko wrote:
+> > The TI_CPSW_SWITCHDEV definition in Kconfig was changed from "select
+> > NET_SWITCHDEV" to "depends on NET_SWITCHDEV", and therefore it is required
+> > to explicitelly enable NET_SWITCHDEV config option in omap2plus_defconfig.
+> > 
+> > Fixes: 3727d259ddaf ("arm: omap2plus_defconfig: enable new cpsw switchdev driver")
+> > Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+> > ---
+> >   arch/arm/configs/omap2plus_defconfig | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+> > index 89cce8d4bc6b..7bbef86a4e76 100644
+> > --- a/arch/arm/configs/omap2plus_defconfig
+> > +++ b/arch/arm/configs/omap2plus_defconfig
+> > @@ -92,6 +92,7 @@ CONFIG_IP_PNP_BOOTP=y
+> >   CONFIG_IP_PNP_RARP=y
+> >   CONFIG_NETFILTER=y
+> >   CONFIG_PHONET=m
+> > +CONFIG_NET_SWITCHDEV=y
+> >   CONFIG_CAN=m
+> >   CONFIG_CAN_C_CAN=m
+> >   CONFIG_CAN_C_CAN_PLATFORM=m
+> > @@ -182,6 +183,7 @@ CONFIG_SMSC911X=y
+> >   # CONFIG_NET_VENDOR_STMICRO is not set
+> >   CONFIG_TI_DAVINCI_EMAC=y
+> >   CONFIG_TI_CPSW=y
+> > +CONFIG_TI_CPSW_SWITCHDEV=y
+> >   CONFIG_TI_CPTS=y
+> >   # CONFIG_NET_VENDOR_VIA is not set
+> >   # CONFIG_NET_VENDOR_WIZNET is not set
+> > @@ -554,4 +556,3 @@ CONFIG_DEBUG_INFO_DWARF4=y
+> >   CONFIG_MAGIC_SYSRQ=y
+> >   CONFIG_SCHEDSTATS=y
+> >   # CONFIG_DEBUG_BUGVERBOSE is not set
+> > -CONFIG_TI_CPSW_SWITCHDEV=y
+> > 
+> 
+> Could it be applied as fix, as without it cpsw switch driver will not be built,
+> so no networking on am571x-idk
 
+OK I'll be applying it into fixes.
 
-On 05/12/2019 22:42, David Miller wrote:
-> From: Grygorii Strashko <grygorii.strashko@ti.com>
-> Date: Thu, 5 Dec 2019 17:18:17 +0200
-> 
->> This is an old issue, but I can't specify Fixes tag.
-> 
-> This is never true, there is always an appropriate Fixes: tag
-> even it means specifying the tag that created Linus's GIT repo.
-> 
->> And, unfortunatelly,
->> it can't be backported as is even in v5.4.
-> 
-> This I always don't understand.
-> 
-> You must elaborate and specify a Fixes: tag.
-> 
+Thanks,
 
-Thank you for comments I've sent v2
-
--- 
-Best regards,
-grygorii
+Tony
