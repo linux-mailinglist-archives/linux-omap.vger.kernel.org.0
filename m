@@ -2,73 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F911174F5
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Dec 2019 19:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA23911782C
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Dec 2019 22:16:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726623AbfLIS4L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Dec 2019 13:56:11 -0500
-Received: from foss.arm.com ([217.140.110.172]:42086 "EHLO foss.arm.com"
+        id S1726787AbfLIVP5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Dec 2019 16:15:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52038 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726354AbfLIS4L (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 9 Dec 2019 13:56:11 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22EB2328;
-        Mon,  9 Dec 2019 10:56:11 -0800 (PST)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 978AF3F6CF;
-        Mon,  9 Dec 2019 10:56:10 -0800 (PST)
-Date:   Mon, 9 Dec 2019 18:56:09 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Jean Pihet <jean.pihet@newoldbits.com>
-Cc:     Tero Kristo <t-kristo@ti.com>, linux-omap@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>
-Subject: Re: [PATCH 3/3] TI QSPI: optimize transfers for dual and quad read
-Message-ID: <20191209185608.GJ5483@sirena.org.uk>
-References: <20191206160007.331801-1-jean.pihet@newoldbits.com>
- <20191206160007.331801-4-jean.pihet@newoldbits.com>
+        id S1726614AbfLIVP5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 9 Dec 2019 16:15:57 -0500
+Received: from localhost (mobile-166-170-223-177.mycingular.net [166.170.223.177])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2539E206D5;
+        Mon,  9 Dec 2019 21:15:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1575926156;
+        bh=9iHR0ajRnJxO+Uw4M+k9lqndy9j5D0Kb4OKxkFeJEvs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=cs6Y+ZzYcYvWBo3EjZvgj2iG4P1jzXx0C+HWCH2wjYA6OMzuJ9MbCN7EVmp5v+JGo
+         JVLOV5esOjEG4B0WEV7YHWOsWGRtq3gZyvlGOuWooPyPVzkv4GfyzTyRKZ/P6hAEW9
+         yIqwiYXuZVRJJsXjAktiII3G2Pfbyyu0vB19kj+0=
+Date:   Mon, 9 Dec 2019 15:15:54 -0600
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Murray <andrew.murray@arm.com>,
+        linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 05/13] PCI: cadence: Add read and write accessors to
+ perform only 32-bit accesses
+Message-ID: <20191209211554.GA217130@google.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bWEb1MG/o7IKOlQF"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191206160007.331801-4-jean.pihet@newoldbits.com>
-X-Cookie: We read to say that we have read.
+In-Reply-To: <20191209092147.22901-6-kishon@ti.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, Dec 09, 2019 at 02:51:39PM +0530, Kishon Vijay Abraham I wrote:
+> Certain platforms like TI's J721E allow only 32-bit register accesses.
+> Add read and write accessors to perform only 32-bit accesses in order to
+> support platfroms like TI's J721E.
 
---bWEb1MG/o7IKOlQF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Dec 06, 2019 at 05:00:07PM +0100, Jean Pihet wrote:
-> By reading the 32 bits data register and copy the contents to the
-> receive buffer, according to the single/dual/quad read mode and
-> the data length to read.
->=20
-> The speed improvement is 3.5x using quad read.
-> ---
-
-This is missing a Signed-off-by.
-
---bWEb1MG/o7IKOlQF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3umMgACgkQJNaLcl1U
-h9BbEQf9Fhh9PxSZGuuWSlzSAD2UMtGAHXmKzu4y97D8+j0BatW+Jtv3+POJEJEo
-pi4PdUl6XkeWkyuXn2KXIHTjY1p0KehlQvZt0xstoULsTR7n3BDixww7jxzXqz6b
-BR9+KW2oKmnaocXiL+82ZzIwMBOtyfvrUHVOA/nw8yws052Szymi3Z8L4VaNrINz
-qYIpBKKfNfVZKWwZDS7hl2I5S//u8ROBZXUEit09/PmifVVj+7PbW3wUG0uD4zKB
-sMOTgZzIuoWUH5D7ljar2BptN+cFbcUf0KimL0VkRaymsgf/lGs2gIShk+k1CPKP
-6LchNzvwhrRXLOFI78fNaaXAbXBU7g==
-=JM62
------END PGP SIGNATURE-----
-
---bWEb1MG/o7IKOlQF--
+s/platfroms/platforms/
