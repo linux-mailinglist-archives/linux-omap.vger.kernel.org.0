@@ -2,132 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71B0D116C71
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Dec 2019 12:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 595FA116F48
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Dec 2019 15:42:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727398AbfLILmz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Dec 2019 06:42:55 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:33800 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727326AbfLILmz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Dec 2019 06:42:55 -0500
-Received: by mail-lj1-f193.google.com with SMTP id m6so15265432ljc.1
-        for <linux-omap@vger.kernel.org>; Mon, 09 Dec 2019 03:42:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=newoldbits-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7k3HlCqaKFshxuRHlxcMcV65OGrK6r6/WLyijqH8PHM=;
-        b=wEs4Q4f4h9+mcGw8QXMG/lZm+jeZv1DlutXnCJjH5D4T75klWomlwNXYNZfWnI789T
-         3KaW7IeIbtbD/tr7DySCTwzxdJHgyptOh50d0VFK4ZRQcR3sgHB0BqhwCS7n8Td3SOlK
-         2mmDBKV+LVzO2vX6pzAGjH+tr1s3V1LKCBhMxDZLPlD26F6cxxSA/AkBqUbRFQczNE2i
-         NbORkEqkJQ8GdK7N4tTDb2/5Zq1DUJdP2298gZe+i6Q+0Q0mEN6yDX4cwW+X+Kc+CFAq
-         lmmffY01ZRU0Pr/HSyshuNdAjRp27WuBvkSSWlRRXGW5moYeFYcpImACTMHDYKSPo5lY
-         CENA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7k3HlCqaKFshxuRHlxcMcV65OGrK6r6/WLyijqH8PHM=;
-        b=IRTpTRD/J1zpzUqn4O/4gvkazoCf3o6mM9/X7NU3JKAD8qvDbQZYm4XXLhYP2PuXFW
-         BBBRd2AqVB6qg+l2dY3Wl28FtpA5Yy0hTy7LzR2xR+7xO+5duirWjFyxMStkGObSIVC3
-         UVRkx/8z54p8lYTTZmrPPFA0Sb2d2m25l5jkpg4UnGzd9EmnzYovTFjqGzb1qX+VgsnU
-         GX/IopZR7+5lqgExzZSNe3SXXZdwDPBNMamrpTCCevKjfO3ECWFLU148skLgyEetrK/s
-         CA58jWSfJOsqbGNuGKq7ZuFWRZrXh7MN3ULihO0AgO+8m/ksgp5TR5xrYyUaYO8kj6kt
-         9MRQ==
-X-Gm-Message-State: APjAAAXKPO+uIN4bNritkfj/r5RxUkRiMzRQMfQi5RNe66jEkgVAmim2
-        1pbATKarK+DOgR6LHnwhXbdLPZykD25X1zRFYtlzGA==
-X-Google-Smtp-Source: APXvYqw0T3/BP2qTUy5KZTJ24NlMl4YcGlVN5Q5PVe+W2NsYXmdjjq8UF3oOlfV1ZcItNT6zg5MOwofmdztViVzdWUg=
-X-Received: by 2002:a2e:99cd:: with SMTP id l13mr2437277ljj.243.1575891773189;
- Mon, 09 Dec 2019 03:42:53 -0800 (PST)
+        id S1727307AbfLIOmh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Dec 2019 09:42:37 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:57326 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727843AbfLIOmg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Dec 2019 09:42:36 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xB9EgK4k048715;
+        Mon, 9 Dec 2019 08:42:20 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1575902540;
+        bh=iIPdTi3vkObZXA5TwQ23lL3Sn4gIOMSE9/ixyE3RfWc=;
+        h=From:To:CC:Subject:Date;
+        b=ibA8c8hrTE5yVO7Bk4hpX8ew1i7BowlvdOLgBfo+pbE7G6qscbIKfGyNptot88Vc5
+         645l4Q77fe01tcKUDwpkCB+T+QgM/CdK1oMy+Iotw4oVCiBCCvnWyfbwaSbKMboHqN
+         cTe7fUa0auWNt/7a2XDz06FI7DQQCUxC2StSxrc0=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xB9EgKKl074901
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 9 Dec 2019 08:42:20 -0600
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 9 Dec
+ 2019 08:42:19 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 9 Dec 2019 08:42:19 -0600
+Received: from jadmar.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xB9EgGve122297;
+        Mon, 9 Dec 2019 08:42:17 -0600
+From:   Jyri Sarha <jsarha@ti.com>
+To:     <dri-devel@lists.freedesktop.org>, <tony@atomide.com>,
+        <sam@ravnborg.org>, <robh+dt@kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>
+CC:     <tomi.valkeinen@ti.com>, <laurent.pinchart@ideasonboard.com>,
+        <peter.ujfalusi@ti.com>, <bparrot@ti.com>
+Subject: [PATCH v2 0/3] drm/tilcdc: Remove "ti,tilcdc,tfp410" and mark "ti,tilcdc,panel" obsolete
+Date:   Mon, 9 Dec 2019 16:42:13 +0200
+Message-ID: <cover.1575901747.git.jsarha@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20191206160007.331801-1-jean.pihet@newoldbits.com>
- <20191206160007.331801-3-jean.pihet@newoldbits.com> <2ea31c73-13ee-a51e-e8b7-69cbe3b83c43@ti.com>
-In-Reply-To: <2ea31c73-13ee-a51e-e8b7-69cbe3b83c43@ti.com>
-From:   Jean Pihet <jean.pihet@newoldbits.com>
-Date:   Mon, 9 Dec 2019 12:42:42 +0100
-Message-ID: <CAORVsuX10LqQhf8t0x+=xJs2A9pA2eCT2uKUYb4TAhYn08=2ug@mail.gmail.com>
-Subject: Re: [PATCH 2/3] TI QSPI: support large flash devices
-To:     Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>, Tero Kristo <t-kristo@ti.com>,
-        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Vignesh,
+Since v1:
+- Add Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+  to "drm/tilcdc: Remove obsolete bundled tilcdc tfp410 driver"
+- Add "drm/tilcdc: panel: Add WARN() with a comment to tilcdc-panel probe"
 
-On Mon, Dec 9, 2019 at 11:27 AM Vignesh Raghavendra <vigneshr@ti.com> wrote:
->
->
->
-> On 06/12/19 9:30 pm, Jean Pihet wrote:
-> > The TI QSPI IP has limitations:
-> > - the MMIO region is 64MB in size
-> > - in non-MMIO mode, the transfer can handle 4096 words max.
-> >
-> > Add support for bigger devices.
-> > Use MMIO and DMA transfers below the 64MB boundary, use
-> > software generated transfers above.
->
-> Could you change the $subject prefix to be "spi: spi-ti-qspi:"
+Nobody should any more use the old tilcdc bundled drivers anymore. The
+driver is fully capable of using the generic drm bridge and panel
+drivers.  However, the obsolete "ti,tilcdc,panel" binding is still
+widely used in many mainline supported platforms that I do not have
+access to and who knows how many custom platforms. So I am afraid we
+have to keep the old bundled tilcdc panel driver around.
 
-Yes sure.
+I'll wait with merging the "ti,tilcdc,panel" patches until these
+patches have been merged:
+https://lists.freedesktop.org/archives/dri-devel/2019-December/247301.html
+https://lists.freedesktop.org/archives/dri-devel/2019-December/247594.html
+So I can refer to them as an example in the comments. 
 
->
->
-> [...]
->
-> > -574,6 +601,7 @@ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
-> >
-> >  static const struct spi_controller_mem_ops ti_qspi_mem_ops = {
-> >       .exec_op = ti_qspi_exec_mem_op,
-> > +     .adjust_op_size = ti_qspi_adjust_op_size,
-> >  };
-> >
-> >  static int ti_qspi_start_transfer_one(struct spi_master *master,
-> > @@ -599,12 +627,11 @@ static int ti_qspi_start_transfer_one(struct spi_master *master,
-> >       frame_len_words = 0;
-> >       list_for_each_entry(t, &m->transfers, transfer_list)
-> >               frame_len_words += t->len / (t->bits_per_word >> 3);
-> > -     frame_len_words = min_t(unsigned int, frame_len_words, QSPI_FRAME);
-> >
-> >       /* setup command reg */
-> >       qspi->cmd = 0;
-> >       qspi->cmd |= QSPI_EN_CS(spi->chip_select);
-> > -     qspi->cmd |= QSPI_FLEN(frame_len_words);
-> > +     qspi->cmd |= QSPI_FLEN(QSPI_FRAME);
-> >
->
-> Hmm, change itself is harmless. But what is the motivation behind the
-> change?
-Indeed this change does not hurt but is required to prevent an invalid
-FLEN value.
+But I'll merge "drm/tilcdc: Remove obsolete bundled tilcdc tfp410
+driver" trough drm-misc in couple days if I do not hear any
+objections.
 
-Here are the details:
-- t->len is in bytes,
-- the length passed to qspi_transfer_msg is in bytes,
-- frame_len_words is the number of words in the SPI model,
-- the words as used by the TI QSPI IP is not the same as
-frame_len_words. In TI QSPI the word size depends on the number of
-I/Os i in use (SPI_NBITS_xxx and op->data.buswidth).
+Jyri Sarha (3):
+  drm/tilcdc: Remove obsolete bundled tilcdc tfp410 driver
+  dt-bindings: display: Add obsolete note to "ti,tilcdc,panel" binding
+  drm/tilcdc: panel: Add WARN() with a comment to tilcdc-panel probe
 
-For example a quad I/O transfer with t->bits_per_word=8 generates 4
-bytes of data every 8 clock cycles. In this case frame_len_words =
-16384. The maximum of bytes transferred by TI QSPI is 4096 * 4 =
-16384. Setting FLEN to frame_len_words leads to an invalid value (max
-value is 0xFFF + 1).
+ .../bindings/display/tilcdc/panel.txt         |   6 +
+ .../bindings/display/tilcdc/tfp410.txt        |  21 -
+ drivers/gpu/drm/tilcdc/Makefile               |   1 -
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c           |   3 -
+ drivers/gpu/drm/tilcdc/tilcdc_panel.c         |  10 +
+ drivers/gpu/drm/tilcdc/tilcdc_tfp410.c        | 379 ------------------
+ drivers/gpu/drm/tilcdc/tilcdc_tfp410.h        |  15 -
+ 7 files changed, 16 insertions(+), 419 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/tilcdc/tfp410.txt
+ delete mode 100644 drivers/gpu/drm/tilcdc/tilcdc_tfp410.c
+ delete mode 100644 drivers/gpu/drm/tilcdc/tilcdc_tfp410.h
 
-So this changes takes the I/O mode into account by limiting the
-maximum number of bytes per frame in ti_qspi_adjust_op_size, by
-programming FLEN with the maximum allowed value and by stopping the
-transfer when the data is transferred.
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
 
-Does this make sense?
-
-Regards,
-Jean
