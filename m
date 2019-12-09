@@ -2,52 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA23911782C
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Dec 2019 22:16:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25C4F11789D
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Dec 2019 22:42:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726787AbfLIVP5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Dec 2019 16:15:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52038 "EHLO mail.kernel.org"
+        id S1726532AbfLIVmP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Dec 2019 16:42:15 -0500
+Received: from muru.com ([72.249.23.125]:44548 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726614AbfLIVP5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 9 Dec 2019 16:15:57 -0500
-Received: from localhost (mobile-166-170-223-177.mycingular.net [166.170.223.177])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2539E206D5;
-        Mon,  9 Dec 2019 21:15:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575926156;
-        bh=9iHR0ajRnJxO+Uw4M+k9lqndy9j5D0Kb4OKxkFeJEvs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=cs6Y+ZzYcYvWBo3EjZvgj2iG4P1jzXx0C+HWCH2wjYA6OMzuJ9MbCN7EVmp5v+JGo
-         JVLOV5esOjEG4B0WEV7YHWOsWGRtq3gZyvlGOuWooPyPVzkv4GfyzTyRKZ/P6hAEW9
-         yIqwiYXuZVRJJsXjAktiII3G2Pfbyyu0vB19kj+0=
-Date:   Mon, 9 Dec 2019 15:15:54 -0600
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Murray <andrew.murray@arm.com>,
-        linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 05/13] PCI: cadence: Add read and write accessors to
- perform only 32-bit accesses
-Message-ID: <20191209211554.GA217130@google.com>
+        id S1726522AbfLIVmP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 9 Dec 2019 16:42:15 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id D67C180CD;
+        Mon,  9 Dec 2019 21:42:53 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] ARM: omap2plus_defconfig: Add back DEBUG_FS
+Date:   Mon,  9 Dec 2019 13:42:12 -0800
+Message-Id: <20191209214212.18638-1-tony@atomide.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191209092147.22901-6-kishon@ti.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Dec 09, 2019 at 02:51:39PM +0530, Kishon Vijay Abraham I wrote:
-> Certain platforms like TI's J721E allow only 32-bit register accesses.
-> Add read and write accessors to perform only 32-bit accesses in order to
-> support platfroms like TI's J721E.
+Commit 0e4a459f56c3 ("tracing: Remove unnecessary DEBUG_FS dependency")
+removed select for DEBUG_FS but we still need it at least for enabling
+deeper idle states for the SoCs.
 
-s/platfroms/platforms/
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/configs/omap2plus_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -554,6 +554,7 @@ CONFIG_DEBUG_INFO=y
+ CONFIG_DEBUG_INFO_SPLIT=y
+ CONFIG_DEBUG_INFO_DWARF4=y
+ CONFIG_MAGIC_SYSRQ=y
++CONFIG_DEBUG_FS=y
+ CONFIG_SCHEDSTATS=y
+ # CONFIG_DEBUG_BUGVERBOSE is not set
+ CONFIG_TI_CPSW_SWITCHDEV=y
+-- 
+2.24.0
