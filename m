@@ -2,113 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E27B118D34
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Dec 2019 17:05:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9085C118D53
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Dec 2019 17:13:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727459AbfLJQFn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Dec 2019 11:05:43 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:33890 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727332AbfLJQFn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Dec 2019 11:05:43 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBAG5d3x125995;
-        Tue, 10 Dec 2019 10:05:39 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1575993939;
-        bh=q2n3cFOrDQaP41QLEGeRYUWXTWguYdSDrbzEbDG54gw=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=MU2k445pEA+Pk/6ydp5veGUcIgIyHDJ36ofUCeVwUed0mdX/UiDbI2fyTJuEEwPj+
-         0SNSriXVoWPEWmFVKLSLp5gkh7h+8WAZhLL9opyRMlcsR9QlICaPcopCOQFvVLI5Az
-         aS8ZU7XJO2DkE2q9QI7kVqrPo5C9CicKPbnH9jEU=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBAG5dg4055019
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 10 Dec 2019 10:05:39 -0600
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 10
- Dec 2019 10:05:38 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 10 Dec 2019 10:05:38 -0600
-Received: from [10.250.133.44] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBAG5ZJQ054939;
-        Tue, 10 Dec 2019 10:05:36 -0600
-Subject: Re: [PATCH 3/3] TI QSPI: optimize transfers for dual and quad read
-To:     Jean Pihet <jean.pihet@newoldbits.com>
-CC:     Mark Brown <broonie@kernel.org>, Tero Kristo <t-kristo@ti.com>,
-        <linux-omap@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>
-References: <20191206160007.331801-1-jean.pihet@newoldbits.com>
- <20191206160007.331801-4-jean.pihet@newoldbits.com>
- <2efd2981-73d1-6975-a385-871809ec43f1@ti.com>
- <CAORVsuU8b1-50STYAbY7CJ-VkLWXHbEz0dDCfLYfS4YM36vSgg@mail.gmail.com>
- <6d6808af-77b3-72b2-b247-58ed033cb4dc@ti.com>
- <CAORVsuXehEMi0xy6bm_OZuUowvx0K_Ogp2tXAjeruck3mYX=PQ@mail.gmail.com>
- <b56f079f-9fc0-c745-6c39-384e76896d21@ti.com>
- <CAORVsuUj2QFaATk2vvwLAqdyiUVhao8QMn9kSgZza_xSkzLm6w@mail.gmail.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <a1d36afe-1cf2-9c75-8993-916ae888cc48@ti.com>
-Date:   Tue, 10 Dec 2019 21:35:35 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1727455AbfLJQNq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Dec 2019 11:13:46 -0500
+Received: from muru.com ([72.249.23.125]:44632 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727431AbfLJQNq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Dec 2019 11:13:46 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 4935E80E1;
+        Tue, 10 Dec 2019 16:14:24 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] bus: ti-sysc: Implement quirk handling for CLKDM_NOAUTO
+Date:   Tue, 10 Dec 2019 08:13:42 -0800
+Message-Id: <20191210161342.15142-1-tony@atomide.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-In-Reply-To: <CAORVsuUj2QFaATk2vvwLAqdyiUVhao8QMn9kSgZza_xSkzLm6w@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+For dra7 dcan and dwc3 instances we need to block clockdomain autoidle.
+Let's do this with CLKDM_NOAUTO quirk flag and enable it for dcan and
+dwc3.
 
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Roger Quadros <rogerq@ti.com>
+Cc: Tero Kristo <t-kristo@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/bus/ti-sysc.c                 | 10 ++++++++--
+ include/linux/platform_data/ti-sysc.h |  1 +
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-On 12/10/2019 8:38 PM, Jean Pihet wrote:
-> Vignesh,
-> 
-> On Tue, Dec 10, 2019 at 2:17 PM Vignesh Raghavendra <vigneshr@ti.com> wrote:
-[...]
->> Ah, sorry, there is no CS toggle, so this case will work. Although its
->> less efficient as you could have set WLEN to 32 and read entire
->> QSPI_SPI_DATA_REG in one transaction.
->>
->> But this patch definitely changes the behvior when t->rx_nbits = 4 and
->> t->bits_per_word = 32. Previous code did:
->>
->>                *((u32 *)rxbuf) = readl(qspi->base + QSPI_SPI_DATA_REG);
->>
->> This patch does:
->>
->> +             rx = readl(qspi->base + QSPI_SPI_DATA_REG);
->>                 [...]
->> +             case SPI_NBITS_QUAD:
->> +                     if (count >= 1)
->> +                             *rxbuf++ = rx >> 24;
->> +                     if (count >= 2)
->> +                             *rxbuf++ = rx >> 16;
->> +                     if (count >= 3)
->> +                             *rxbuf++ = rx >> 8;
->> +                     if (count >= 4)
->> +                             *rxbuf++ = rx;
->>
->>
->> So there is change in the endianess...
-> Oh! The cases where bits_per_word is different than 8 definitely needs
-> more thinking. I have tested the patches
-> with SPI flash only. How to test it with 32 bits per word?
-> 
-
-My suggestion would be to restrict optimizations to just address SPI
-Flash usecase, i.e  t->bits_per_word == 8. And not touch any other word
-sizes.
-
-See qspi_write_msg() on how this can be done for Single bit mode, same
-can be extended for other modes.
-
-Regards
-Vignesh
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -473,7 +473,7 @@ static void sysc_clkdm_deny_idle(struct sysc *ddata)
+ {
+ 	struct ti_sysc_platform_data *pdata;
+ 
+-	if (ddata->legacy_mode)
++	if (ddata->legacy_mode || (ddata->cfg.quirks & SYSC_QUIRK_CLKDM_NOAUTO))
+ 		return;
+ 
+ 	pdata = dev_get_platdata(ddata->dev);
+@@ -485,7 +485,7 @@ static void sysc_clkdm_allow_idle(struct sysc *ddata)
+ {
+ 	struct ti_sysc_platform_data *pdata;
+ 
+-	if (ddata->legacy_mode)
++	if (ddata->legacy_mode || (ddata->cfg.quirks & SYSC_QUIRK_CLKDM_NOAUTO))
+ 		return;
+ 
+ 	pdata = dev_get_platdata(ddata->dev);
+@@ -1245,6 +1245,12 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 	/* Quirks that need to be set based on detected module */
+ 	SYSC_QUIRK("aess", 0, 0, 0x10, -1, 0x40000000, 0xffffffff,
+ 		   SYSC_MODULE_QUIRK_AESS),
++	SYSC_QUIRK("dcan", 0x48480000, 0x20, -1, -1, 0xa3170504, 0xffffffff,
++		   SYSC_QUIRK_CLKDM_NOAUTO),
++	SYSC_QUIRK("dwc3", 0x48880000, 0, 0x10, -1, 0x500a0200, 0xffffffff,
++		   SYSC_QUIRK_CLKDM_NOAUTO),
++	SYSC_QUIRK("dwc3", 0x488c0000, 0, 0x10, -1, 0x500a0200, 0xffffffff,
++		   SYSC_QUIRK_CLKDM_NOAUTO),
+ 	SYSC_QUIRK("hdq1w", 0, 0, 0x14, 0x18, 0x00000006, 0xffffffff,
+ 		   SYSC_MODULE_QUIRK_HDQ1W),
+ 	SYSC_QUIRK("hdq1w", 0, 0, 0x14, 0x18, 0x0000000a, 0xffffffff,
+diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
+--- a/include/linux/platform_data/ti-sysc.h
++++ b/include/linux/platform_data/ti-sysc.h
+@@ -49,6 +49,7 @@ struct sysc_regbits {
+ 	s8 emufree_shift;
+ };
+ 
++#define SYSC_QUIRK_CLKDM_NOAUTO		BIT(21)
+ #define SYSC_QUIRK_FORCE_MSTANDBY	BIT(20)
+ #define SYSC_MODULE_QUIRK_AESS		BIT(19)
+ #define SYSC_MODULE_QUIRK_SGX		BIT(18)
+-- 
+2.24.0
