@@ -2,75 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE19C11929F
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Dec 2019 22:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00002119479
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Dec 2019 22:16:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726683AbfLJVCE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Dec 2019 16:02:04 -0500
-Received: from muru.com ([72.249.23.125]:44888 "EHLO muru.com"
+        id S1727701AbfLJVN0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Dec 2019 16:13:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39610 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726522AbfLJVCE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:02:04 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7D9D9820B;
-        Tue, 10 Dec 2019 21:02:42 +0000 (UTC)
-Date:   Tue, 10 Dec 2019 13:02:00 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Jean Pihet <jean.pihet@newoldbits.com>
-Cc:     Tero Kristo <t-kristo@ti.com>, Mark Brown <broonie@kernel.org>,
-        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
-        Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH 1/3] TI QSPI: Fix fclk frequency
-Message-ID: <20191210210200.GN35479@atomide.com>
-References: <20191206160007.331801-1-jean.pihet@newoldbits.com>
- <20191206160007.331801-2-jean.pihet@newoldbits.com>
- <20191206162431.GF35479@atomide.com>
- <CAORVsuUBseM3vnZsSajMmUS1O6rEC4U_aa951HwMsGxyEm+t+g@mail.gmail.com>
- <20191206175731.GG35479@atomide.com>
- <CAORVsuXe7SyAmzLv4VoKMsf4jcYV1bKoCixhsgZ3U0rBHFJA4Q@mail.gmail.com>
- <20191210170329.GM35479@atomide.com>
- <CAORVsuX_bzzsjh+qg_i_sfc=GR6F=S2wgObZiQTdM=w=ghZ9BA@mail.gmail.com>
+        id S1729307AbfLJVNZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:13:25 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CE00321556;
+        Tue, 10 Dec 2019 21:13:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576012404;
+        bh=YaRFw59OtT6P7jbzbduuUwlOA6GgY/U8CP3IEaag63s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=JEnglAoCB1FWSYWsfKJpuzB1vEt5wRbgxQjx36dSQRn3xj8AhzI1q0uhqkHOjpWdq
+         2SEHjzirnzULDdZ74lnQ9Wo8ZL271P8NplfLDxYSv7X1wAfZUSgHV9uW9ej1p6LYW/
+         VBiZ51jpbU9bmcIG+IrmVH65EvXzTHZ1PA1b3Tv0=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 323/350] net: ethernet: ti: ale: clean ale tbl on init and intf restart
+Date:   Tue, 10 Dec 2019 16:07:08 -0500
+Message-Id: <20191210210735.9077-284-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
+References: <20191210210735.9077-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAORVsuX_bzzsjh+qg_i_sfc=GR6F=S2wgObZiQTdM=w=ghZ9BA@mail.gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Jean Pihet <jean.pihet@newoldbits.com> [191210 19:22]:
-> On Tue, Dec 10, 2019 at 6:03 PM Tony Lindgren <tony@atomide.com> wrote:
-> > Well can test again with the patch below to see if that is
-> > enough to make it work :)
-> 
-> This patch works OK! The correct clock is in use by the driver. The
-> hwmod warning shows up at boot:
-> [    0.103567] omap_hwmod: qspi: no dt node
-> [    0.103599] ------------[ cut here ]------------
-> [    0.103639] WARNING: CPU: 0 PID: 1 at
-> arch/arm/mach-omap2/omap_hwmod.c:2414 _init.constprop.29+0x198/0x4a0
-> [    0.103654] omap_hwmod: qspi: doesn't have mpu register target base
+From: Grygorii Strashko <grygorii.strashko@ti.com>
 
-OK good to hear. That warning will go away when the legacy platform
-data is removed. So the patch needs to initially still keep the
-"ti,hwmods" property until we remove the legacy platform data.
+[ Upstream commit 7fe579dfb90fcdf0c7722f33c772d5f0d1bc7cb6 ]
 
-> Glad to help to get to the final solution, please let me know how I
-> can help on that.
+Clean CPSW ALE on init and intf restart (up/down) to avoid reading obsolete
+or garbage entries from ALE table.
 
-Well is this needed as a fix or can it wait for the v5.6 merge window?
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/ti/cpsw_ale.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-If it's needed as a fix, some kind of description for the issue
-fixed is needed. Any ideas there?
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 84025dcc78d59..e7c24396933e9 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -779,6 +779,7 @@ void cpsw_ale_start(struct cpsw_ale *ale)
+ void cpsw_ale_stop(struct cpsw_ale *ale)
+ {
+ 	del_timer_sync(&ale->timer);
++	cpsw_ale_control_set(ale, 0, ALE_CLEAR, 1);
+ 	cpsw_ale_control_set(ale, 0, ALE_ENABLE, 0);
+ }
+ 
+@@ -862,6 +863,7 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
+ 					ALE_UNKNOWNVLAN_FORCE_UNTAG_EGRESS;
+ 	}
+ 
++	cpsw_ale_control_set(ale, 0, ALE_CLEAR, 1);
+ 	return ale;
+ }
+ 
+-- 
+2.20.1
 
-We know the right clock is not found by the driver, but I'm now
-wondering if this ever worked or has there been some bootloader
-dependency?
-
-Regards,
-
-Tony
