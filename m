@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 120D1119F79
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 00:35:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D8AF119F7B
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 00:35:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727545AbfLJXfc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Dec 2019 18:35:32 -0500
-Received: from muru.com ([72.249.23.125]:45154 "EHLO muru.com"
+        id S1727628AbfLJXff (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Dec 2019 18:35:35 -0500
+Received: from muru.com ([72.249.23.125]:45156 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727606AbfLJXfc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        id S1727595AbfLJXfc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
         Tue, 10 Dec 2019 18:35:32 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 1BB79820B;
-        Tue, 10 Dec 2019 23:36:10 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 71C158385;
+        Tue, 10 Dec 2019 23:36:11 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org, Keerthy <j-keerthy@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Tero Kristo <t-kristo@ti.com>
-Subject: [PATCH 3/9] ARM: OMAP2+: Drop legacy platform data for omap4 mcpdm
-Date:   Tue, 10 Dec 2019 15:35:18 -0800
-Message-Id: <20191210233524.46875-4-tony@atomide.com>
+Subject: [PATCH 4/9] ARM: OMAP2+: Drop legacy platform data for omap5 dmic
+Date:   Tue, 10 Dec 2019 15:35:19 -0800
+Message-Id: <20191210233524.46875-5-tony@atomide.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191210233524.46875-1-tony@atomide.com>
 References: <20191210233524.46875-1-tony@atomide.com>
@@ -46,35 +46,34 @@ Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Cc: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/omap4-l4-abe.dtsi        |  1 -
- arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 57 ----------------------
- 2 files changed, 58 deletions(-)
+ arch/arm/boot/dts/omap5-l4-abe.dtsi        |  1 -
+ arch/arm/mach-omap2/omap_hwmod_54xx_data.c | 43 ----------------------
+ 2 files changed, 44 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap4-l4-abe.dtsi b/arch/arm/boot/dts/omap4-l4-abe.dtsi
---- a/arch/arm/boot/dts/omap4-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4-abe.dtsi
-@@ -278,7 +278,6 @@ wdt3: wdt@0 {
+diff --git a/arch/arm/boot/dts/omap5-l4-abe.dtsi b/arch/arm/boot/dts/omap5-l4-abe.dtsi
+--- a/arch/arm/boot/dts/omap5-l4-abe.dtsi
++++ b/arch/arm/boot/dts/omap5-l4-abe.dtsi
+@@ -203,7 +203,6 @@ target-module@2a000 {			/* 0x4012a000, ap 10 0a.0 */
  
- 		mcpdm_module: target-module@32000 {	/* 0x40132000, ap 16 10.0 */
+ 		target-module@2e000 {			/* 0x4012e000, ap 12 0c.0 */
  			compatible = "ti,sysc-omap4", "ti,sysc";
--			ti,hwmods = "mcpdm";
- 			reg = <0x32000 0x4>,
- 			      <0x32010 0x4>;
+-			ti,hwmods = "dmic";
+ 			reg = <0x2e000 0x4>,
+ 			      <0x2e010 0x4>;
  			reg-names = "rev", "sysc";
-diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-@@ -1061,54 +1061,6 @@ static struct omap_hwmod omap44xx_kbd_hwmod = {
+diff --git a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c b/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
+@@ -278,40 +278,6 @@ static struct omap_hwmod omap54xx_dma_system_hwmod = {
+ 	.dev_attr	= &dma_dev_attr,
  };
  
- 
 -/*
-- * 'mcpdm' class
-- * multi channel pdm controller (proprietary interface with phoenix power
-- * ic)
+- * 'dmic' class
+- * digital microphone controller
 - */
 -
--static struct omap_hwmod_class_sysconfig omap44xx_mcpdm_sysc = {
+-static struct omap_hwmod_class_sysconfig omap54xx_dmic_sysc = {
 -	.rev_offs	= 0x0000,
 -	.sysc_offs	= 0x0010,
 -	.sysc_flags	= (SYSC_HAS_EMUFREE | SYSC_HAS_RESET_STATUS |
@@ -84,63 +83,50 @@ diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/om
 -	.sysc_fields	= &omap_hwmod_sysc_type2,
 -};
 -
--static struct omap_hwmod_class omap44xx_mcpdm_hwmod_class = {
--	.name	= "mcpdm",
--	.sysc	= &omap44xx_mcpdm_sysc,
+-static struct omap_hwmod_class omap54xx_dmic_hwmod_class = {
+-	.name	= "dmic",
+-	.sysc	= &omap54xx_dmic_sysc,
 -};
 -
--/* mcpdm */
--static struct omap_hwmod omap44xx_mcpdm_hwmod = {
--	.name		= "mcpdm",
--	.class		= &omap44xx_mcpdm_hwmod_class,
+-/* dmic */
+-static struct omap_hwmod omap54xx_dmic_hwmod = {
+-	.name		= "dmic",
+-	.class		= &omap54xx_dmic_hwmod_class,
 -	.clkdm_name	= "abe_clkdm",
--	/*
--	 * It's suspected that the McPDM requires an off-chip main
--	 * functional clock, controlled via I2C.  This IP block is
--	 * currently reset very early during boot, before I2C is
--	 * available, so it doesn't seem that we have any choice in
--	 * the kernel other than to avoid resetting it.
--	 *
--	 * Also, McPDM needs to be configured to NO_IDLE mode when it
--	 * is in used otherwise vital clocks will be gated which
--	 * results 'slow motion' audio playback.
--	 */
--	.flags		= HWMOD_EXT_OPT_MAIN_CLK | HWMOD_SWSUP_SIDLE,
--	.main_clk	= "pad_clks_ck",
+-	.main_clk	= "dmic_gfclk",
 -	.prcm = {
 -		.omap4 = {
--			.clkctrl_offs = OMAP4_CM1_ABE_PDM_CLKCTRL_OFFSET,
--			.context_offs = OMAP4_RM_ABE_PDM_CONTEXT_OFFSET,
+-			.clkctrl_offs = OMAP54XX_CM_ABE_DMIC_CLKCTRL_OFFSET,
+-			.context_offs = OMAP54XX_RM_ABE_DMIC_CONTEXT_OFFSET,
 -			.modulemode   = MODULEMODE_SWCTRL,
 -		},
 -	},
 -};
--
+ 
  /*
-  * 'mmu' class
-  * The memory management unit performs virtual to physical address translation
-@@ -2451,14 +2403,6 @@ static struct omap_hwmod_ocp_if omap44xx_l4_wkup__kbd = {
+  * 'dss' class
+@@ -1431,14 +1397,6 @@ static struct omap_hwmod_ocp_if omap54xx_l4_cfg__dma_system = {
  	.user		= OCP_USER_MPU | OCP_USER_SDMA,
  };
  
--/* l4_abe -> mcpdm */
--static struct omap_hwmod_ocp_if omap44xx_l4_abe__mcpdm = {
--	.master		= &omap44xx_l4_abe_hwmod,
--	.slave		= &omap44xx_mcpdm_hwmod,
--	.clk		= "ocp_abe_iclk",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-/* l4_abe -> dmic */
+-static struct omap_hwmod_ocp_if omap54xx_l4_abe__dmic = {
+-	.master		= &omap54xx_l4_abe_hwmod,
+-	.slave		= &omap54xx_dmic_hwmod,
+-	.clk		= "abe_iclk",
+-	.user		= OCP_USER_MPU,
 -};
 -
- /* l3_main_2 -> ocmc_ram */
- static struct omap_hwmod_ocp_if omap44xx_l3_main_2__ocmc_ram = {
- 	.master		= &omap44xx_l3_main_2_hwmod,
-@@ -2773,7 +2717,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
- 	/* &omap44xx_iva__sl2if, */
- 	&omap44xx_l3_main_2__iva,
- 	&omap44xx_l4_wkup__kbd,
--	&omap44xx_l4_abe__mcpdm,
- 	&omap44xx_l3_main_2__mmu_ipu,
- 	&omap44xx_l4_cfg__mmu_dsp,
- 	&omap44xx_l3_main_2__ocmc_ram,
+ /* l3_main_2 -> dss */
+ static struct omap_hwmod_ocp_if omap54xx_l3_main_2__dss = {
+ 	.master		= &omap54xx_l3_main_2_hwmod,
+@@ -1674,7 +1632,6 @@ static struct omap_hwmod_ocp_if *omap54xx_hwmod_ocp_ifs[] __initdata = {
+ 	&omap54xx_mpu__mpu_private,
+ 	&omap54xx_l4_wkup__counter_32k,
+ 	&omap54xx_l4_cfg__dma_system,
+-	&omap54xx_l4_abe__dmic,
+ 	&omap54xx_l4_cfg__mmu_dsp,
+ 	&omap54xx_l3_main_2__dss,
+ 	&omap54xx_l3_main_2__dss_dispc,
 -- 
 2.24.0
