@@ -2,39 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00002119479
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Dec 2019 22:16:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3E9011981D
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Dec 2019 22:39:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727701AbfLJVN0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Dec 2019 16:13:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39610 "EHLO mail.kernel.org"
+        id S1729238AbfLJVgi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Dec 2019 16:36:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41720 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729307AbfLJVNZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:13:25 -0500
+        id S1730359AbfLJVfo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:35:44 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CE00321556;
-        Tue, 10 Dec 2019 21:13:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 751A12465E;
+        Tue, 10 Dec 2019 21:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576012404;
-        bh=YaRFw59OtT6P7jbzbduuUwlOA6GgY/U8CP3IEaag63s=;
+        s=default; t=1576013744;
+        bh=BGi0EPv6fuETX3KGVnUuL5+ehW+2PD8GfO4R5XTcRE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JEnglAoCB1FWSYWsfKJpuzB1vEt5wRbgxQjx36dSQRn3xj8AhzI1q0uhqkHOjpWdq
-         2SEHjzirnzULDdZ74lnQ9Wo8ZL271P8NplfLDxYSv7X1wAfZUSgHV9uW9ej1p6LYW/
-         VBiZ51jpbU9bmcIG+IrmVH65EvXzTHZ1PA1b3Tv0=
+        b=KJE24nj5qYL9JbDrHIfCb0diqhC1eZL5hkqQd55PMdH2DwRmVNM17XxRMvf/tAFS1
+         k+pJi6xBjteVj8Gy/nLm74rOZUpCe1nRwUqIWdMYuAKLYOrrbwgQIFpIZb9sTMpNdO
+         dSsZ7Ti9th7pfj+BXJ8EVVzwiPkjNYRt9Tm2znGU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
         "David S . Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 323/350] net: ethernet: ti: ale: clean ale tbl on init and intf restart
-Date:   Tue, 10 Dec 2019 16:07:08 -0500
-Message-Id: <20191210210735.9077-284-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 166/177] net: ethernet: ti: ale: clean ale tbl on init and intf restart
+Date:   Tue, 10 Dec 2019 16:32:10 -0500
+Message-Id: <20191210213221.11921-166-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
-References: <20191210210735.9077-1-sashal@kernel.org>
+In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
+References: <20191210213221.11921-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -59,25 +59,25 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 84025dcc78d59..e7c24396933e9 100644
+index 5766225a4ce11..c245629a38c76 100644
 --- a/drivers/net/ethernet/ti/cpsw_ale.c
 +++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -779,6 +779,7 @@ void cpsw_ale_start(struct cpsw_ale *ale)
+@@ -793,6 +793,7 @@ EXPORT_SYMBOL_GPL(cpsw_ale_start);
  void cpsw_ale_stop(struct cpsw_ale *ale)
  {
  	del_timer_sync(&ale->timer);
 +	cpsw_ale_control_set(ale, 0, ALE_CLEAR, 1);
  	cpsw_ale_control_set(ale, 0, ALE_ENABLE, 0);
  }
- 
-@@ -862,6 +863,7 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
+ EXPORT_SYMBOL_GPL(cpsw_ale_stop);
+@@ -877,6 +878,7 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
  					ALE_UNKNOWNVLAN_FORCE_UNTAG_EGRESS;
  	}
  
 +	cpsw_ale_control_set(ale, 0, ALE_CLEAR, 1);
  	return ale;
  }
- 
+ EXPORT_SYMBOL_GPL(cpsw_ale_create);
 -- 
 2.20.1
 
