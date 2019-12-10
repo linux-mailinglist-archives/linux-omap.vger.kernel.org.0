@@ -2,157 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E029118E79
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Dec 2019 18:03:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74073118ECD
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Dec 2019 18:21:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727573AbfLJRDe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Dec 2019 12:03:34 -0500
-Received: from muru.com ([72.249.23.125]:44646 "EHLO muru.com"
+        id S1727780AbfLJRVP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Dec 2019 12:21:15 -0500
+Received: from muru.com ([72.249.23.125]:44658 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727568AbfLJRDd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Dec 2019 12:03:33 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 0AF2980E1;
-        Tue, 10 Dec 2019 17:04:10 +0000 (UTC)
-Date:   Tue, 10 Dec 2019 09:03:29 -0800
+        id S1727553AbfLJRVO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Dec 2019 12:21:14 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 1738280E1;
+        Tue, 10 Dec 2019 17:21:53 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Jean Pihet <jean.pihet@newoldbits.com>
-Cc:     Tero Kristo <t-kristo@ti.com>, Mark Brown <broonie@kernel.org>,
-        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
-        Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH 1/3] TI QSPI: Fix fclk frequency
-Message-ID: <20191210170329.GM35479@atomide.com>
-References: <20191206160007.331801-1-jean.pihet@newoldbits.com>
- <20191206160007.331801-2-jean.pihet@newoldbits.com>
- <20191206162431.GF35479@atomide.com>
- <CAORVsuUBseM3vnZsSajMmUS1O6rEC4U_aa951HwMsGxyEm+t+g@mail.gmail.com>
- <20191206175731.GG35479@atomide.com>
- <CAORVsuXe7SyAmzLv4VoKMsf4jcYV1bKoCixhsgZ3U0rBHFJA4Q@mail.gmail.com>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        Tero Kristo <t-kristo@ti.com>
+Cc:     devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH 0/5] Clock changes needed to probe rng on omap4 and 5
+Date:   Tue, 10 Dec 2019 09:21:03 -0800
+Message-Id: <20191210172108.38868-1-tony@atomide.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAORVsuXe7SyAmzLv4VoKMsf4jcYV1bKoCixhsgZ3U0rBHFJA4Q@mail.gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hi all,
 
-* Jean Pihet <jean.pihet@newoldbits.com> [191210 16:24]:
-> On Fri, Dec 6, 2019 at 6:57 PM Tony Lindgren <tony@atomide.com> wrote:
-> > Care to test with the patch below (without your changes) to see if
-> > something else is still needed?
-> 
-> With the patch applied fck still is the ick, not the L4 clock as required.
+We are currently missing the secure clocks for omap4 and 5, and that
+prevents us from adding rng and crypto accelerators to probe with
+ti-sysc interconnect target module driver.
 
-Hmm OK so I think we need fck at both the module level and qspi level.
+We also have a clkctrl clock driver issue where we must rely on the dts
+node names for the clocks to work, so we must first fix that before we
+can add the drivers. Otherwise a wrong clock domain will be used for the
+secure clocks.
 
-> Could both ick and fck be defined in the DT files, like here below?
->    clocks = <&l3s_clkctrl AM4_L3S_QSPI_CLKCTRL 0>,
->                  <&l4per2_clkctrl AM4_L4PER2_QSPI_CLKCTRL 0>;
->    clock-names = "ick", "fck";
-> The issue is that there is no l4_per for AM4.
+I'll be posting dts changes for the crypto accelerators in a separate
+series later on to keep things easier to review.
 
-Yes you can configure both fck and ick there, and also additional
-clocks. But the clkctrl clock is the fck clock gate for this module,
-and it's source can be the same as the interface clock for some
-modules.
-
-When I sent the experimental patch I confirmed that just the fck
-as <&l3s_clkctrl AM4_L3S_QSPI_CLKCTRL 0>, ti-sysc.c driver can
-read the qspi module revision register just fine. So that means
-that it's enough for the module, and the spi_clk is another
-clock specific to the child qspi IP in the module.
-
-So based on that, I think we should set up the clocks in the
-following way for the module and it's qspi child:
-
-target-module@47900000 {
-	...
-	clocks = <&l3s_clkctrl AM4_L3S_QSPI_CLKCTRL 0>;
-	clock-names = "fck";
-	...
-
-	qspi: spi@0 {
-		...
-		clocks = <&dpll_per_m2_div4_ck>;
-		clock-names = "fck";
-		...
-	};
-};
-
-That way the qspi driver can set the divider on it's fck based
-on "spi-max-frequency" dts property.
-
-> Looking at the DRA7 DT files there is an fck defined (in dra7.dtsi):
->    clocks = <&l4per2_clkctrl DRA7_L4PER2_QSPI_CLKCTRL 25>;
->    clock-names = "fck";
-
-Yeah so that's <&l3s_clkctrl AM4_L3S_QSPI_CLKCTRL 0> for
-am437x.
-
-> What is best to do from here?
-
-Well can test again with the patch below to see if that is
-enough to make it work :)
+For merging these after review, I suggest that Tero picks up the first
+three clock related patches and sets up an immutable branch against
+v5.5-rc1 that I can also merge in for the rng and crypto accelerator
+dts changes.
 
 Regards,
 
 Tony
 
-8< -------------------
-diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
---- a/arch/arm/boot/dts/am4372.dtsi
-+++ b/arch/arm/boot/dts/am4372.dtsi
-@@ -302,17 +302,35 @@ gpmc: gpmc@50000000 {
- 			status = "disabled";
- 		};
- 
--		qspi: spi@47900000 {
--			compatible = "ti,am4372-qspi";
--			reg = <0x47900000 0x100>,
--			      <0x30000000 0x4000000>;
--			reg-names = "qspi_base", "qspi_mmap";
-+		target-module@47900000 {
-+			compatible = "ti,sysc-omap4", "ti,sysc";
-+			//ti,hwmods = "qspi";
-+			reg = <0x47900000 0x4>,
-+			      <0x47900010 0x4>;
-+			reg-names = "rev", "sysc";
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>,
-+					<SYSC_IDLE_SMART_WKUP>;
-+			clocks = <&l3s_clkctrl AM4_L3S_QSPI_CLKCTRL 0>;
-+			clock-names = "fck";
- 			#address-cells = <1>;
--			#size-cells = <0>;
--			ti,hwmods = "qspi";
--			interrupts = <0 138 0x4>;
--			num-cs = <4>;
--			status = "disabled";
-+			#size-cells = <1>;
-+			ranges = <0x0 0x47900000 0x1000>,
-+				 <0x30000000 0x30000000 0x4000000>;
-+
-+			qspi: spi@0 {
-+				compatible = "ti,am4372-qspi";
-+				reg = <0 0x100>,
-+				      <0x30000000 0x4000000>;
-+				reg-names = "qspi_base", "qspi_mmap";
-+				clocks = <&dpll_per_m2_div4_ck>;
-+				clock-names = "fck";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				interrupts = <0 138 0x4>;
-+				num-cs = <4>;
-+			};
- 		};
- 
- 		dss: dss@4832a000 {
+
+Tony Lindgren (5):
+  clk: ti: clkctrl: Fix hidden dependency to node name
+  ARM: dts: Add missing omap4 secure clocks
+  ARM: dts: Add missing omap5 secure clocks
+  ARM: dts: Configure omap4 rng to probe with ti-sysc
+  ARM: dts: Configure omap5 rng to probe with ti-sysc
+
+ .../devicetree/bindings/clock/ti-clkctrl.txt  | 11 ++-
+ .../boot/dts/motorola-mapphone-common.dtsi    |  5 +
+ arch/arm/boot/dts/omap4-l4.dtsi               | 20 +++-
+ arch/arm/boot/dts/omap44xx-clocks.dtsi        | 11 ++-
+ arch/arm/boot/dts/omap5-l4.dtsi               | 20 +++-
+ arch/arm/boot/dts/omap54xx-clocks.dtsi        | 10 +-
+ drivers/clk/ti/clk-44xx.c                     | 13 +++
+ drivers/clk/ti/clk-54xx.c                     | 13 +++
+ drivers/clk/ti/clk.c                          |  4 +-
+ drivers/clk/ti/clkctrl.c                      | 96 ++++++++++++++++---
+ include/dt-bindings/clock/omap4.h             | 11 +++
+ include/dt-bindings/clock/omap5.h             | 11 +++
+ 12 files changed, 199 insertions(+), 26 deletions(-)
+
 -- 
 2.24.0
