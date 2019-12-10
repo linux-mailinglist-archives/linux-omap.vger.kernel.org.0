@@ -2,26 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BC3A119F3E
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 00:17:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7490A119F40
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 00:17:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727302AbfLJXRl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Dec 2019 18:17:41 -0500
-Received: from muru.com ([72.249.23.125]:45086 "EHLO muru.com"
+        id S1727312AbfLJXRm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Dec 2019 18:17:42 -0500
+Received: from muru.com ([72.249.23.125]:45092 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725999AbfLJXRl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Dec 2019 18:17:41 -0500
+        id S1725999AbfLJXRm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Dec 2019 18:17:42 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 34A648385;
-        Tue, 10 Dec 2019 23:18:19 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 911AB820B;
+        Tue, 10 Dec 2019 23:18:20 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org, Keerthy <j-keerthy@ti.com>,
         Tero Kristo <t-kristo@ti.com>
-Subject: [PATCH 12/14] ARM: OMAP2+: Drop legacy platform data for dra7 aes
-Date:   Tue, 10 Dec 2019 15:17:20 -0800
-Message-Id: <20191210231722.44215-13-tony@atomide.com>
+Subject: [PATCH 13/14] ARM: OMAP2+: Drop legacy platform data for am4 des
+Date:   Tue, 10 Dec 2019 15:17:21 -0800
+Message-Id: <20191210231722.44215-14-tony@atomide.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191210231722.44215-1-tony@atomide.com>
 References: <20191210231722.44215-1-tony@atomide.com>
@@ -44,112 +44,77 @@ Cc: Keerthy <j-keerthy@ti.com>
 Cc: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/dra7.dtsi               |  2 -
- arch/arm/mach-omap2/omap_hwmod_7xx_data.c | 60 -----------------------
- 2 files changed, 62 deletions(-)
+ arch/arm/boot/dts/am4372.dtsi              |  1 -
+ arch/arm/mach-omap2/omap_hwmod_43xx_data.c | 33 ----------------------
+ 2 files changed, 34 deletions(-)
 
-diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
---- a/arch/arm/boot/dts/dra7.dtsi
-+++ b/arch/arm/boot/dts/dra7.dtsi
-@@ -654,7 +654,6 @@ hdmi: encoder@58060000 {
+diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
+--- a/arch/arm/boot/dts/am4372.dtsi
++++ b/arch/arm/boot/dts/am4372.dtsi
+@@ -316,7 +316,6 @@ aes: aes@0 {
  
- 		aes1_target: target-module@4b500000 {
+ 		des_target: target-module@53701000 {
  			compatible = "ti,sysc-omap2", "ti,sysc";
--			ti,hwmods = "aes1";
- 			reg = <0x4b500080 0x4>,
- 			      <0x4b500084 0x4>,
- 			      <0x4b500088 0x4>;
-@@ -686,7 +685,6 @@ aes1: aes@0 {
- 
- 		aes2_target: target-module@4b700000 {
- 			compatible = "ti,sysc-omap2", "ti,sysc";
--			ti,hwmods = "aes2";
- 			reg = <0x4b700080 0x4>,
- 			      <0x4b700084 0x4>,
- 			      <0x4b700088 0x4>;
-diff --git a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
-@@ -626,48 +626,6 @@ static struct omap_hwmod dra7xx_dss_hdmi_hwmod = {
- 	.parent_hwmod	= &dra7xx_dss_hwmod,
+-			ti,hwmods = "des";
+ 			reg = <0x53701030 0x4>,
+ 			      <0x53701034 0x4>,
+ 			      <0x53701038 0x4>;
+diff --git a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+@@ -347,31 +347,6 @@ static struct omap_hwmod am43xx_adc_tsc_hwmod = {
+ 	},
  };
  
--/* AES (the 'P' (public) device) */
--static struct omap_hwmod_class_sysconfig dra7xx_aes_sysc = {
--	.rev_offs	= 0x0080,
--	.sysc_offs	= 0x0084,
--	.syss_offs	= 0x0088,
+-static struct omap_hwmod_class_sysconfig am43xx_des_sysc = {
+-	.rev_offs	= 0x30,
+-	.sysc_offs	= 0x34,
+-	.syss_offs	= 0x38,
 -	.sysc_flags	= SYSS_HAS_RESET_STATUS,
 -};
 -
--static struct omap_hwmod_class dra7xx_aes_hwmod_class = {
--	.name	= "aes",
--	.sysc	= &dra7xx_aes_sysc,
+-static struct omap_hwmod_class am43xx_des_hwmod_class = {
+-	.name		= "des",
+-	.sysc		= &am43xx_des_sysc,
 -};
 -
--/* AES1 */
--static struct omap_hwmod dra7xx_aes1_hwmod = {
--	.name		= "aes1",
--	.class		= &dra7xx_aes_hwmod_class,
--	.clkdm_name	= "l4sec_clkdm",
--	.main_clk	= "l3_iclk_div",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = DRA7XX_CM_L4SEC_AES1_CLKCTRL_OFFSET,
--			.context_offs = DRA7XX_RM_L4SEC_AES1_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_HWCTRL,
+-static struct omap_hwmod am43xx_des_hwmod = {
+-	.name		= "des",
+-	.class		= &am43xx_des_hwmod_class,
+-	.clkdm_name	= "l3_clkdm",
+-	.main_clk	= "l3_gclk",
+-	.prcm		= {
+-		.omap4	= {
+-			.clkctrl_offs	= AM43XX_CM_PER_DES_CLKCTRL_OFFSET,
+-			.modulemode	= MODULEMODE_SWCTRL,
 -		},
 -	},
 -};
 -
--/* AES2 */
--static struct omap_hwmod dra7xx_aes2_hwmod = {
--	.name		= "aes2",
--	.class		= &dra7xx_aes_hwmod_class,
--	.clkdm_name	= "l4sec_clkdm",
--	.main_clk	= "l3_iclk_div",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = DRA7XX_CM_L4SEC_AES2_CLKCTRL_OFFSET,
--			.context_offs = DRA7XX_RM_L4SEC_AES2_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_HWCTRL,
--		},
--	},
--};
+ /* dss */
  
- 
- /*
-@@ -1736,22 +1694,6 @@ static struct omap_hwmod_ocp_if dra7xx_l3_main_1__hdmi = {
- 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ static struct omap_hwmod am43xx_dss_core_hwmod = {
+@@ -711,13 +686,6 @@ static struct omap_hwmod_ocp_if am43xx_l4_ls__vpfe1 = {
+ 	.user           = OCP_USER_MPU | OCP_USER_SDMA,
  };
  
--/* l3_main_1 -> aes1 */
--static struct omap_hwmod_ocp_if dra7xx_l3_main_1__aes1 = {
--	.master		= &dra7xx_l3_main_1_hwmod,
--	.slave		= &dra7xx_aes1_hwmod,
--	.clk		= "l3_iclk_div",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-static struct omap_hwmod_ocp_if am43xx_l3_main__des = {
+-	.master		= &am33xx_l3_main_hwmod,
+-	.slave		= &am43xx_des_hwmod,
+-	.clk		= "l3_gclk",
+-	.user		= OCP_USER_MPU,
 -};
 -
--/* l3_main_1 -> aes2 */
--static struct omap_hwmod_ocp_if dra7xx_l3_main_1__aes2 = {
--	.master		= &dra7xx_l3_main_1_hwmod,
--	.slave		= &dra7xx_aes2_hwmod,
--	.clk		= "l3_iclk_div",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
--};
--
- /* l4_per1 -> elm */
- static struct omap_hwmod_ocp_if dra7xx_l4_per1__elm = {
- 	.master		= &dra7xx_l4_per1_hwmod,
-@@ -2121,8 +2063,6 @@ static struct omap_hwmod_ocp_if *dra7xx_hwmod_ocp_ifs[] __initdata = {
- 	&dra7xx_l3_main_1__dss,
- 	&dra7xx_l3_main_1__dispc,
- 	&dra7xx_l3_main_1__hdmi,
--	&dra7xx_l3_main_1__aes1,
--	&dra7xx_l3_main_1__aes2,
- 	&dra7xx_l4_per1__elm,
- 	&dra7xx_l3_main_1__gpmc,
- 	&dra7xx_l4_cfg__mpu,
+ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am33xx_l4_wkup__synctimer,
+ 	&am43xx_l4_ls__timer8,
+@@ -771,7 +739,6 @@ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am33xx_l3_main__tptc1,
+ 	&am33xx_l3_main__tptc2,
+ 	&am33xx_l3_main__ocmc,
+-	&am43xx_l3_main__des,
+ 	&am43xx_l4_ls__ocp2scp0,
+ 	&am43xx_l4_ls__ocp2scp1,
+ 	&am43xx_l3_s__usbotgss0,
 -- 
 2.24.0
