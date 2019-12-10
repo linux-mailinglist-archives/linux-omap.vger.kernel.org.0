@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA74E119F85
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 00:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6E60119F88
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 00:35:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727644AbfLJXfk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Dec 2019 18:35:40 -0500
-Received: from muru.com ([72.249.23.125]:45172 "EHLO muru.com"
+        id S1727652AbfLJXfm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Dec 2019 18:35:42 -0500
+Received: from muru.com ([72.249.23.125]:45178 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727629AbfLJXfj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Dec 2019 18:35:39 -0500
+        id S1727629AbfLJXfl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Dec 2019 18:35:41 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 5A40D820B;
-        Tue, 10 Dec 2019 23:36:16 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id A4D2A8385;
+        Tue, 10 Dec 2019 23:36:18 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org, Keerthy <j-keerthy@ti.com>,
         Tero Kristo <t-kristo@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 7/9] ARM: OMAP2+: Drop legacy platform data for omap5 timers except timer1
-Date:   Tue, 10 Dec 2019 15:35:22 -0800
-Message-Id: <20191210233524.46875-8-tony@atomide.com>
+Subject: [PATCH 8/9] ARM: OMAP2+: Drop legacy platform data for am3 and am4 timers except timer1 and 2
+Date:   Tue, 10 Dec 2019 15:35:23 -0800
+Message-Id: <20191210233524.46875-9-tony@atomide.com>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191210233524.46875-1-tony@atomide.com>
 References: <20191210233524.46875-1-tony@atomide.com>
@@ -45,384 +45,438 @@ Cc: Keerthy <j-keerthy@ti.com>
 Cc: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/omap5-l4-abe.dtsi        |   4 -
- arch/arm/boot/dts/omap5-l4.dtsi            |   6 -
- arch/arm/mach-omap2/omap_hwmod_54xx_data.c | 257 ---------------------
- 3 files changed, 267 deletions(-)
+ arch/arm/boot/dts/am33xx-l4.dtsi              |  5 --
+ arch/arm/boot/dts/am437x-l4.dtsi              |  9 --
+ .../omap_hwmod_33xx_43xx_common_data.h        | 10 ---
+ .../omap_hwmod_33xx_43xx_interconnect_data.c  | 40 ---------
+ .../omap_hwmod_33xx_43xx_ipblock_data.c       | 70 ---------------
+ arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |  5 --
+ arch/arm/mach-omap2/omap_hwmod_43xx_data.c    | 89 -------------------
+ 7 files changed, 228 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap5-l4-abe.dtsi b/arch/arm/boot/dts/omap5-l4-abe.dtsi
---- a/arch/arm/boot/dts/omap5-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/omap5-l4-abe.dtsi
-@@ -277,7 +277,6 @@ mcpdm: mcpdm@0 {
+diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+--- a/arch/arm/boot/dts/am33xx-l4.dtsi
++++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+@@ -1134,7 +1134,6 @@ timer2: timer@0 {
  
- 		target-module@38000 {			/* 0x40138000, ap 18 12.0 */
- 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
--			ti,hwmods = "timer5";
- 			reg = <0x38000 0x4>,
- 			      <0x38010 0x4>;
- 			reg-names = "rev", "sysc";
-@@ -309,7 +308,6 @@ timer5: timer@0 {
- 
- 		target-module@3a000 {			/* 0x4013a000, ap 20 14.0 */
- 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
--			ti,hwmods = "timer6";
- 			reg = <0x3a000 0x4>,
- 			      <0x3a010 0x4>;
- 			reg-names = "rev", "sysc";
-@@ -341,7 +339,6 @@ timer6: timer@0 {
- 
- 		target-module@3c000 {			/* 0x4013c000, ap 22 16.0 */
- 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
--			ti,hwmods = "timer7";
- 			reg = <0x3c000 0x4>,
- 			      <0x3c010 0x4>;
- 			reg-names = "rev", "sysc";
-@@ -372,7 +369,6 @@ timer7: timer@0 {
- 
- 		target-module@3e000 {			/* 0x4013e000, ap 24 18.0 */
- 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
--			ti,hwmods = "timer8";
- 			reg = <0x3e000 0x4>,
- 			      <0x3e010 0x4>;
- 			reg-names = "rev", "sysc";
-diff --git a/arch/arm/boot/dts/omap5-l4.dtsi b/arch/arm/boot/dts/omap5-l4.dtsi
---- a/arch/arm/boot/dts/omap5-l4.dtsi
-+++ b/arch/arm/boot/dts/omap5-l4.dtsi
-@@ -1061,7 +1061,6 @@ uart3: serial@0 {
- 
- 		target-module@32000 {			/* 0x48032000, ap 5 3e.0 */
- 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
--			ti,hwmods = "timer2";
- 			reg = <0x32000 0x4>,
- 			      <0x32010 0x4>;
- 			reg-names = "rev", "sysc";
-@@ -1089,7 +1088,6 @@ timer2: timer@0 {
- 
- 		target-module@34000 {			/* 0x48034000, ap 7 46.0 */
+ 		target-module@42000 {			/* 0x48042000, ap 24 1c.0 */
  			compatible = "ti,sysc-omap4-timer", "ti,sysc";
 -			ti,hwmods = "timer3";
- 			reg = <0x34000 0x4>,
- 			      <0x34010 0x4>;
- 			reg-names = "rev", "sysc";
-@@ -1117,7 +1115,6 @@ timer3: timer@0 {
+ 			reg = <0x42000 0x4>,
+ 			      <0x42010 0x4>,
+ 			      <0x42014 0x4>;
+@@ -1160,7 +1159,6 @@ timer3: timer@0 {
  
- 		target-module@36000 {			/* 0x48036000, ap 9 4e.0 */
+ 		target-module@44000 {			/* 0x48044000, ap 26 26.0 */
  			compatible = "ti,sysc-omap4-timer", "ti,sysc";
 -			ti,hwmods = "timer4";
- 			reg = <0x36000 0x4>,
- 			      <0x36010 0x4>;
- 			reg-names = "rev", "sysc";
-@@ -1145,7 +1142,6 @@ timer4: timer@0 {
+ 			reg = <0x44000 0x4>,
+ 			      <0x44010 0x4>,
+ 			      <0x44014 0x4>;
+@@ -1187,7 +1185,6 @@ timer4: timer@0 {
  
- 		target-module@3e000 {			/* 0x4803e000, ap 11 56.0 */
+ 		target-module@46000 {			/* 0x48046000, ap 28 28.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+-			ti,hwmods = "timer5";
+ 			reg = <0x46000 0x4>,
+ 			      <0x46010 0x4>,
+ 			      <0x46014 0x4>;
+@@ -1214,7 +1211,6 @@ timer5: timer@0 {
+ 
+ 		target-module@48000 {			/* 0x48048000, ap 30 22.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+-			ti,hwmods = "timer6";
+ 			reg = <0x48000 0x4>,
+ 			      <0x48010 0x4>,
+ 			      <0x48014 0x4>;
+@@ -1241,7 +1237,6 @@ timer6: timer@0 {
+ 
+ 		target-module@4a000 {			/* 0x4804a000, ap 85 60.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+-			ti,hwmods = "timer7";
+ 			reg = <0x4a000 0x4>,
+ 			      <0x4a010 0x4>,
+ 			      <0x4a014 0x4>;
+diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
+--- a/arch/arm/boot/dts/am437x-l4.dtsi
++++ b/arch/arm/boot/dts/am437x-l4.dtsi
+@@ -900,7 +900,6 @@ timer2: timer@0  {
+ 
+ 		target-module@42000 {			/* 0x48042000, ap 20 24.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+-			ti,hwmods = "timer3";
+ 			reg = <0x42000 0x4>,
+ 			      <0x42010 0x4>,
+ 			      <0x42014 0x4>;
+@@ -927,7 +926,6 @@ timer3: timer@0 {
+ 
+ 		target-module@44000 {			/* 0x48044000, ap 22 26.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+-			ti,hwmods = "timer4";
+ 			reg = <0x44000 0x4>,
+ 			      <0x44010 0x4>,
+ 			      <0x44014 0x4>;
+@@ -955,7 +953,6 @@ timer4: timer@0 {
+ 
+ 		target-module@46000 {			/* 0x48046000, ap 24 28.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+-			ti,hwmods = "timer5";
+ 			reg = <0x46000 0x4>,
+ 			      <0x46010 0x4>,
+ 			      <0x46014 0x4>;
+@@ -983,7 +980,6 @@ timer5: timer@0 {
+ 
+ 		target-module@48000 {			/* 0x48048000, ap 26 1a.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+-			ti,hwmods = "timer6";
+ 			reg = <0x48000 0x4>,
+ 			      <0x48010 0x4>,
+ 			      <0x48014 0x4>;
+@@ -1011,7 +1007,6 @@ timer6: timer@0 {
+ 
+ 		target-module@4a000 {			/* 0x4804a000, ap 71 48.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+-			ti,hwmods = "timer7";
+ 			reg = <0x4a000 0x4>,
+ 			      <0x4a010 0x4>,
+ 			      <0x4a014 0x4>;
+@@ -1527,7 +1522,6 @@ gpio3: gpio@0 {
+ 
+ 		target-module@c1000 {			/* 0x481c1000, ap 94 68.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+-			ti,hwmods = "timer8";
+ 			reg = <0xc1000 0x4>,
+ 			      <0xc1010 0x4>,
+ 			      <0xc1014 0x4>;
+@@ -2162,7 +2156,6 @@ target-module@2a000 {			/* 0x4832a000, ap 88 3c.0 */
+ 
+ 		target-module@3d000 {			/* 0x4833d000, ap 102 6e.0 */
  			compatible = "ti,sysc-omap4-timer", "ti,sysc";
 -			ti,hwmods = "timer9";
- 			reg = <0x3e000 0x4>,
- 			      <0x3e010 0x4>;
- 			reg-names = "rev", "sysc";
-@@ -1713,7 +1709,6 @@ i2c5: i2c@0 {
+ 			reg = <0x3d000 0x4>,
+ 			      <0x3d010 0x4>,
+ 			      <0x3d014 0x4>;
+@@ -2189,7 +2182,6 @@ timer9: timer@0 {
  
- 		target-module@86000 {			/* 0x48086000, ap 41 5e.0 */
+ 		target-module@3f000 {			/* 0x4833f000, ap 104 5c.0 */
  			compatible = "ti,sysc-omap4-timer", "ti,sysc";
 -			ti,hwmods = "timer10";
- 			reg = <0x86000 0x4>,
- 			      <0x86010 0x4>;
- 			reg-names = "rev", "sysc";
-@@ -1742,7 +1737,6 @@ timer10: timer@0 {
+ 			reg = <0x3f000 0x4>,
+ 			      <0x3f010 0x4>,
+ 			      <0x3f014 0x4>;
+@@ -2216,7 +2208,6 @@ timer10: timer@0 {
  
- 		target-module@88000 {			/* 0x48088000, ap 43 66.0 */
+ 		target-module@41000 {			/* 0x48341000, ap 106 76.0 */
  			compatible = "ti,sysc-omap4-timer", "ti,sysc";
 -			ti,hwmods = "timer11";
- 			reg = <0x88000 0x4>,
- 			      <0x88010 0x4>;
- 			reg-names = "rev", "sysc";
-diff --git a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c b/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
-@@ -776,21 +776,6 @@ static struct omap_hwmod_class omap54xx_timer_1ms_hwmod_class = {
- 	.sysc	= &omap54xx_timer_1ms_sysc,
+ 			reg = <0x41000 0x4>,
+ 			      <0x41010 0x4>,
+ 			      <0x41014 0x4>;
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h
+@@ -39,11 +39,6 @@ extern struct omap_hwmod_ocp_if am33xx_l4_ls__spinlock;
+ extern struct omap_hwmod_ocp_if am33xx_l4_ls__mcspi0;
+ extern struct omap_hwmod_ocp_if am33xx_l4_ls__mcspi1;
+ extern struct omap_hwmod_ocp_if am33xx_l4_ls__timer2;
+-extern struct omap_hwmod_ocp_if am33xx_l4_ls__timer3;
+-extern struct omap_hwmod_ocp_if am33xx_l4_ls__timer4;
+-extern struct omap_hwmod_ocp_if am33xx_l4_ls__timer5;
+-extern struct omap_hwmod_ocp_if am33xx_l4_ls__timer6;
+-extern struct omap_hwmod_ocp_if am33xx_l4_ls__timer7;
+ extern struct omap_hwmod_ocp_if am33xx_l3_main__tpcc;
+ extern struct omap_hwmod_ocp_if am33xx_l3_main__tptc0;
+ extern struct omap_hwmod_ocp_if am33xx_l3_main__tptc1;
+@@ -75,11 +70,6 @@ extern struct omap_hwmod am33xx_spi1_hwmod;
+ extern struct omap_hwmod am33xx_spinlock_hwmod;
+ extern struct omap_hwmod am33xx_timer1_hwmod;
+ extern struct omap_hwmod am33xx_timer2_hwmod;
+-extern struct omap_hwmod am33xx_timer3_hwmod;
+-extern struct omap_hwmod am33xx_timer4_hwmod;
+-extern struct omap_hwmod am33xx_timer5_hwmod;
+-extern struct omap_hwmod am33xx_timer6_hwmod;
+-extern struct omap_hwmod am33xx_timer7_hwmod;
+ extern struct omap_hwmod am33xx_tpcc_hwmod;
+ extern struct omap_hwmod am33xx_tptc0_hwmod;
+ extern struct omap_hwmod am33xx_tptc1_hwmod;
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
+@@ -190,46 +190,6 @@ struct omap_hwmod_ocp_if am33xx_l4_ls__timer2 = {
+ 	.user		= OCP_USER_MPU,
  };
  
--static struct omap_hwmod_class_sysconfig omap54xx_timer_sysc = {
--	.rev_offs	= 0x0000,
--	.sysc_offs	= 0x0010,
--	.sysc_flags	= (SYSC_HAS_EMUFREE | SYSC_HAS_RESET_STATUS |
--			   SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET),
--	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
--			   SIDLE_SMART_WKUP),
--	.sysc_fields	= &omap_hwmod_sysc_type2,
+-/* l4 per -> timer3 */
+-struct omap_hwmod_ocp_if am33xx_l4_ls__timer3 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am33xx_timer3_hwmod,
+-	.clk		= "l4ls_gclk",
+-	.user		= OCP_USER_MPU,
 -};
 -
--static struct omap_hwmod_class omap54xx_timer_hwmod_class = {
--	.name	= "timer",
--	.sysc	= &omap54xx_timer_sysc,
+-/* l4 per -> timer4 */
+-struct omap_hwmod_ocp_if am33xx_l4_ls__timer4 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am33xx_timer4_hwmod,
+-	.clk		= "l4ls_gclk",
+-	.user		= OCP_USER_MPU,
 -};
 -
- /* timer1 */
- static struct omap_hwmod omap54xx_timer1_hwmod = {
- 	.name		= "timer1",
-@@ -807,158 +792,6 @@ static struct omap_hwmod omap54xx_timer1_hwmod = {
+-/* l4 per -> timer5 */
+-struct omap_hwmod_ocp_if am33xx_l4_ls__timer5 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am33xx_timer5_hwmod,
+-	.clk		= "l4ls_gclk",
+-	.user		= OCP_USER_MPU,
+-};
+-
+-/* l4 per -> timer6 */
+-struct omap_hwmod_ocp_if am33xx_l4_ls__timer6 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am33xx_timer6_hwmod,
+-	.clk		= "l4ls_gclk",
+-	.user		= OCP_USER_MPU,
+-};
+-
+-/* l4 per -> timer7 */
+-struct omap_hwmod_ocp_if am33xx_l4_ls__timer7 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am33xx_timer7_hwmod,
+-	.clk		= "l4ls_gclk",
+-	.user		= OCP_USER_MPU,
+-};
+-
+ /* l3 main -> tpcc */
+ struct omap_hwmod_ocp_if am33xx_l3_main__tpcc = {
+ 	.master		= &am33xx_l3_main_hwmod,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
+@@ -586,66 +586,6 @@ struct omap_hwmod am33xx_timer2_hwmod = {
  	},
  };
  
--/* timer2 */
--static struct omap_hwmod omap54xx_timer2_hwmod = {
--	.name		= "timer2",
--	.class		= &omap54xx_timer_1ms_hwmod_class,
--	.clkdm_name	= "l4per_clkdm",
--	.main_clk	= "timer2_gfclk_mux",
--	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_L4PER_TIMER2_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_L4PER_TIMER2_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
--		},
--	},
--};
--
--/* timer3 */
--static struct omap_hwmod omap54xx_timer3_hwmod = {
+-struct omap_hwmod am33xx_timer3_hwmod = {
 -	.name		= "timer3",
--	.class		= &omap54xx_timer_hwmod_class,
--	.clkdm_name	= "l4per_clkdm",
--	.main_clk	= "timer3_gfclk_mux",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_L4PER_TIMER3_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_L4PER_TIMER3_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
+-	.class		= &am33xx_timer_hwmod_class,
+-	.clkdm_name	= "l4ls_clkdm",
+-	.main_clk	= "timer3_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.modulemode	= MODULEMODE_SWCTRL,
 -		},
 -	},
 -};
 -
--/* timer4 */
--static struct omap_hwmod omap54xx_timer4_hwmod = {
+-struct omap_hwmod am33xx_timer4_hwmod = {
 -	.name		= "timer4",
--	.class		= &omap54xx_timer_hwmod_class,
--	.clkdm_name	= "l4per_clkdm",
--	.main_clk	= "timer4_gfclk_mux",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_L4PER_TIMER4_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_L4PER_TIMER4_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
+-	.class		= &am33xx_timer_hwmod_class,
+-	.clkdm_name	= "l4ls_clkdm",
+-	.main_clk	= "timer4_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.modulemode	= MODULEMODE_SWCTRL,
 -		},
 -	},
 -};
 -
--/* timer5 */
--static struct omap_hwmod omap54xx_timer5_hwmod = {
+-struct omap_hwmod am33xx_timer5_hwmod = {
 -	.name		= "timer5",
--	.class		= &omap54xx_timer_hwmod_class,
--	.clkdm_name	= "abe_clkdm",
--	.main_clk	= "timer5_gfclk_mux",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_ABE_TIMER5_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_ABE_TIMER5_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
+-	.class		= &am33xx_timer_hwmod_class,
+-	.clkdm_name	= "l4ls_clkdm",
+-	.main_clk	= "timer5_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.modulemode	= MODULEMODE_SWCTRL,
 -		},
 -	},
 -};
 -
--/* timer6 */
--static struct omap_hwmod omap54xx_timer6_hwmod = {
+-struct omap_hwmod am33xx_timer6_hwmod = {
 -	.name		= "timer6",
--	.class		= &omap54xx_timer_hwmod_class,
--	.clkdm_name	= "abe_clkdm",
--	.main_clk	= "timer6_gfclk_mux",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_ABE_TIMER6_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_ABE_TIMER6_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
+-	.class		= &am33xx_timer_hwmod_class,
+-	.clkdm_name	= "l4ls_clkdm",
+-	.main_clk	= "timer6_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.modulemode	= MODULEMODE_SWCTRL,
 -		},
 -	},
 -};
 -
--/* timer7 */
--static struct omap_hwmod omap54xx_timer7_hwmod = {
+-struct omap_hwmod am33xx_timer7_hwmod = {
 -	.name		= "timer7",
--	.class		= &omap54xx_timer_hwmod_class,
--	.clkdm_name	= "abe_clkdm",
--	.main_clk	= "timer7_gfclk_mux",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_ABE_TIMER7_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_ABE_TIMER7_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
+-	.class		= &am33xx_timer_hwmod_class,
+-	.clkdm_name	= "l4ls_clkdm",
+-	.main_clk	= "timer7_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.modulemode	= MODULEMODE_SWCTRL,
 -		},
 -	},
 -};
 -
--/* timer8 */
--static struct omap_hwmod omap54xx_timer8_hwmod = {
--	.name		= "timer8",
--	.class		= &omap54xx_timer_hwmod_class,
--	.clkdm_name	= "abe_clkdm",
--	.main_clk	= "timer8_gfclk_mux",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_ABE_TIMER8_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_ABE_TIMER8_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
--		},
--	},
--};
--
--/* timer9 */
--static struct omap_hwmod omap54xx_timer9_hwmod = {
--	.name		= "timer9",
--	.class		= &omap54xx_timer_hwmod_class,
--	.clkdm_name	= "l4per_clkdm",
--	.main_clk	= "timer9_gfclk_mux",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_L4PER_TIMER9_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_L4PER_TIMER9_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
--		},
--	},
--};
--
--/* timer10 */
--static struct omap_hwmod omap54xx_timer10_hwmod = {
--	.name		= "timer10",
--	.class		= &omap54xx_timer_1ms_hwmod_class,
--	.clkdm_name	= "l4per_clkdm",
--	.main_clk	= "timer10_gfclk_mux",
--	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_L4PER_TIMER10_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_L4PER_TIMER10_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
--		},
--	},
--};
--
--/* timer11 */
--static struct omap_hwmod omap54xx_timer11_hwmod = {
--	.name		= "timer11",
--	.class		= &omap54xx_timer_hwmod_class,
--	.clkdm_name	= "l4per_clkdm",
--	.main_clk	= "timer11_gfclk_mux",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs = OMAP54XX_CM_L4PER_TIMER11_CLKCTRL_OFFSET,
--			.context_offs = OMAP54XX_RM_L4PER_TIMER11_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
--		},
--	},
--};
--
- /*
-  * 'usb_host_hs' class
-  * high-speed multi-port usb host controller
-@@ -1453,86 +1286,6 @@ static struct omap_hwmod_ocp_if omap54xx_l4_wkup__timer1 = {
- 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ /* tpcc */
+ static struct omap_hwmod_class am33xx_tpcc_hwmod_class = {
+ 	.name		= "tpcc",
+@@ -732,11 +672,6 @@ static void omap_hwmod_am33xx_clkctrl(void)
+ 	CLKCTRL(am33xx_spi1_hwmod, AM33XX_CM_PER_SPI1_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_spinlock_hwmod, AM33XX_CM_PER_SPINLOCK_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_timer2_hwmod, AM33XX_CM_PER_TIMER2_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer3_hwmod, AM33XX_CM_PER_TIMER3_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer4_hwmod, AM33XX_CM_PER_TIMER4_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer5_hwmod, AM33XX_CM_PER_TIMER5_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer6_hwmod, AM33XX_CM_PER_TIMER6_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer7_hwmod, AM33XX_CM_PER_TIMER7_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_smartreflex0_hwmod,
+ 		AM33XX_CM_WKUP_SMARTREFLEX0_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_smartreflex1_hwmod,
+@@ -784,11 +719,6 @@ static void omap_hwmod_am43xx_clkctrl(void)
+ 	CLKCTRL(am33xx_spi1_hwmod, AM43XX_CM_PER_SPI1_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_spinlock_hwmod, AM43XX_CM_PER_SPINLOCK_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_timer2_hwmod, AM43XX_CM_PER_TIMER2_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer3_hwmod, AM43XX_CM_PER_TIMER3_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer4_hwmod, AM43XX_CM_PER_TIMER4_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer5_hwmod, AM43XX_CM_PER_TIMER5_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer6_hwmod, AM43XX_CM_PER_TIMER6_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_timer7_hwmod, AM43XX_CM_PER_TIMER7_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_smartreflex0_hwmod,
+ 		AM43XX_CM_WKUP_SMARTREFLEX0_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_smartreflex1_hwmod,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+@@ -380,11 +380,6 @@ static struct omap_hwmod_ocp_if *am33xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am33xx_l4_per__dcan0,
+ 	&am33xx_l4_per__dcan1,
+ 	&am33xx_l4_ls__timer2,
+-	&am33xx_l4_ls__timer3,
+-	&am33xx_l4_ls__timer4,
+-	&am33xx_l4_ls__timer5,
+-	&am33xx_l4_ls__timer6,
+-	&am33xx_l4_ls__timer7,
+ 	&am33xx_l3_main__tpcc,
+ 	&am33xx_l4_ls__spinlock,
+ 	&am33xx_l4_ls__elm,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+@@ -112,58 +112,6 @@ static struct omap_hwmod am43xx_synctimer_hwmod = {
+ 	},
  };
  
--/* l4_per -> timer2 */
--static struct omap_hwmod_ocp_if omap54xx_l4_per__timer2 = {
--	.master		= &omap54xx_l4_per_hwmod,
--	.slave		= &omap54xx_timer2_hwmod,
--	.clk		= "l4_root_clk_div",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-static struct omap_hwmod am43xx_timer8_hwmod = {
+-	.name		= "timer8",
+-	.class		= &am33xx_timer_hwmod_class,
+-	.clkdm_name	= "l4ls_clkdm",
+-	.main_clk	= "timer8_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.clkctrl_offs	= AM43XX_CM_PER_TIMER8_CLKCTRL_OFFSET,
+-			.modulemode	= MODULEMODE_SWCTRL,
+-		},
+-	},
 -};
 -
--/* l4_per -> timer3 */
--static struct omap_hwmod_ocp_if omap54xx_l4_per__timer3 = {
--	.master		= &omap54xx_l4_per_hwmod,
--	.slave		= &omap54xx_timer3_hwmod,
--	.clk		= "l4_root_clk_div",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-static struct omap_hwmod am43xx_timer9_hwmod = {
+-	.name		= "timer9",
+-	.class		= &am33xx_timer_hwmod_class,
+-	.clkdm_name	= "l4ls_clkdm",
+-	.main_clk	= "timer9_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.clkctrl_offs	= AM43XX_CM_PER_TIMER9_CLKCTRL_OFFSET,
+-			.modulemode	= MODULEMODE_SWCTRL,
+-		},
+-	},
 -};
 -
--/* l4_per -> timer4 */
--static struct omap_hwmod_ocp_if omap54xx_l4_per__timer4 = {
--	.master		= &omap54xx_l4_per_hwmod,
--	.slave		= &omap54xx_timer4_hwmod,
--	.clk		= "l4_root_clk_div",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-static struct omap_hwmod am43xx_timer10_hwmod = {
+-	.name		= "timer10",
+-	.class		= &am33xx_timer_hwmod_class,
+-	.clkdm_name	= "l4ls_clkdm",
+-	.main_clk	= "timer10_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.clkctrl_offs	= AM43XX_CM_PER_TIMER10_CLKCTRL_OFFSET,
+-			.modulemode	= MODULEMODE_SWCTRL,
+-		},
+-	},
 -};
 -
--/* l4_abe -> timer5 */
--static struct omap_hwmod_ocp_if omap54xx_l4_abe__timer5 = {
--	.master		= &omap54xx_l4_abe_hwmod,
--	.slave		= &omap54xx_timer5_hwmod,
--	.clk		= "abe_iclk",
+-static struct omap_hwmod am43xx_timer11_hwmod = {
+-	.name		= "timer11",
+-	.class		= &am33xx_timer_hwmod_class,
+-	.clkdm_name	= "l4ls_clkdm",
+-	.main_clk	= "timer11_fck",
+-	.prcm		= {
+-		.omap4	= {
+-			.clkctrl_offs	= AM43XX_CM_PER_TIMER11_CLKCTRL_OFFSET,
+-			.modulemode	= MODULEMODE_SWCTRL,
+-		},
+-	},
+-};
+-
+ static struct omap_hwmod am43xx_epwmss3_hwmod = {
+ 	.name		= "epwmss3",
+ 	.class		= &am33xx_epwmss_hwmod_class,
+@@ -532,34 +480,6 @@ static struct omap_hwmod_ocp_if am33xx_l4_wkup__synctimer = {
+ 	.user		= OCP_USER_MPU,
+ };
+ 
+-static struct omap_hwmod_ocp_if am43xx_l4_ls__timer8 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am43xx_timer8_hwmod,
+-	.clk		= "l4ls_gclk",
 -	.user		= OCP_USER_MPU,
 -};
 -
--/* l4_abe -> timer6 */
--static struct omap_hwmod_ocp_if omap54xx_l4_abe__timer6 = {
--	.master		= &omap54xx_l4_abe_hwmod,
--	.slave		= &omap54xx_timer6_hwmod,
--	.clk		= "abe_iclk",
+-static struct omap_hwmod_ocp_if am43xx_l4_ls__timer9 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am43xx_timer9_hwmod,
+-	.clk		= "l4ls_gclk",
 -	.user		= OCP_USER_MPU,
 -};
 -
--/* l4_abe -> timer7 */
--static struct omap_hwmod_ocp_if omap54xx_l4_abe__timer7 = {
--	.master		= &omap54xx_l4_abe_hwmod,
--	.slave		= &omap54xx_timer7_hwmod,
--	.clk		= "abe_iclk",
+-static struct omap_hwmod_ocp_if am43xx_l4_ls__timer10 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am43xx_timer10_hwmod,
+-	.clk		= "l4ls_gclk",
 -	.user		= OCP_USER_MPU,
 -};
 -
--/* l4_abe -> timer8 */
--static struct omap_hwmod_ocp_if omap54xx_l4_abe__timer8 = {
--	.master		= &omap54xx_l4_abe_hwmod,
--	.slave		= &omap54xx_timer8_hwmod,
--	.clk		= "abe_iclk",
+-static struct omap_hwmod_ocp_if am43xx_l4_ls__timer11 = {
+-	.master		= &am33xx_l4_ls_hwmod,
+-	.slave		= &am43xx_timer11_hwmod,
+-	.clk		= "l4ls_gclk",
 -	.user		= OCP_USER_MPU,
 -};
 -
--/* l4_per -> timer9 */
--static struct omap_hwmod_ocp_if omap54xx_l4_per__timer9 = {
--	.master		= &omap54xx_l4_per_hwmod,
--	.slave		= &omap54xx_timer9_hwmod,
--	.clk		= "l4_root_clk_div",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
--};
--
--/* l4_per -> timer10 */
--static struct omap_hwmod_ocp_if omap54xx_l4_per__timer10 = {
--	.master		= &omap54xx_l4_per_hwmod,
--	.slave		= &omap54xx_timer10_hwmod,
--	.clk		= "l4_root_clk_div",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
--};
--
--/* l4_per -> timer11 */
--static struct omap_hwmod_ocp_if omap54xx_l4_per__timer11 = {
--	.master		= &omap54xx_l4_per_hwmod,
--	.slave		= &omap54xx_timer11_hwmod,
--	.clk		= "l4_root_clk_div",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
--};
--
- /* l4_cfg -> usb_host_hs */
- static struct omap_hwmod_ocp_if omap54xx_l4_cfg__usb_host_hs = {
- 	.master		= &omap54xx_l4_cfg_hwmod,
-@@ -1591,16 +1344,6 @@ static struct omap_hwmod_ocp_if *omap54xx_hwmod_ocp_ifs[] __initdata = {
- 	&omap54xx_l4_cfg__spinlock,
- 	&omap54xx_l4_cfg__ocp2scp1,
- 	&omap54xx_l4_wkup__timer1,
--	&omap54xx_l4_per__timer2,
--	&omap54xx_l4_per__timer3,
--	&omap54xx_l4_per__timer4,
--	&omap54xx_l4_abe__timer5,
--	&omap54xx_l4_abe__timer6,
--	&omap54xx_l4_abe__timer7,
--	&omap54xx_l4_abe__timer8,
--	&omap54xx_l4_per__timer9,
--	&omap54xx_l4_per__timer10,
--	&omap54xx_l4_per__timer11,
- 	&omap54xx_l4_cfg__usb_host_hs,
- 	&omap54xx_l4_cfg__usb_tll_hs,
- 	&omap54xx_l4_cfg__usb_otg_ss,
+ static struct omap_hwmod_ocp_if am43xx_l4_ls__epwmss3 = {
+ 	.master		= &am33xx_l4_ls_hwmod,
+ 	.slave		= &am43xx_epwmss3_hwmod,
+@@ -688,10 +608,6 @@ static struct omap_hwmod_ocp_if am43xx_l4_ls__vpfe1 = {
+ 
+ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am33xx_l4_wkup__synctimer,
+-	&am43xx_l4_ls__timer8,
+-	&am43xx_l4_ls__timer9,
+-	&am43xx_l4_ls__timer10,
+-	&am43xx_l4_ls__timer11,
+ 	&am43xx_l4_ls__epwmss3,
+ 	&am43xx_l4_ls__epwmss4,
+ 	&am43xx_l4_ls__epwmss5,
+@@ -721,11 +637,6 @@ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am33xx_l4_per__dcan0,
+ 	&am33xx_l4_per__dcan1,
+ 	&am33xx_l4_ls__timer2,
+-	&am33xx_l4_ls__timer3,
+-	&am33xx_l4_ls__timer4,
+-	&am33xx_l4_ls__timer5,
+-	&am33xx_l4_ls__timer6,
+-	&am33xx_l4_ls__timer7,
+ 	&am33xx_l3_main__tpcc,
+ 	&am33xx_l4_ls__spinlock,
+ 	&am33xx_l4_ls__elm,
 -- 
 2.24.0
