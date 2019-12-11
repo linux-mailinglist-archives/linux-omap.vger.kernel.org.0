@@ -2,26 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D46C711BC90
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 20:12:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5FDA11BC91
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 20:12:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbfLKTMM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Dec 2019 14:12:12 -0500
-Received: from muru.com ([72.249.23.125]:45798 "EHLO muru.com"
+        id S1727333AbfLKTMN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Dec 2019 14:12:13 -0500
+Received: from muru.com ([72.249.23.125]:45804 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726487AbfLKTMM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 11 Dec 2019 14:12:12 -0500
+        id S1726487AbfLKTMN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 11 Dec 2019 14:12:13 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 377B68185;
-        Wed, 11 Dec 2019 19:12:51 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 5A92A8198;
+        Wed, 11 Dec 2019 19:12:52 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org, Keerthy <j-keerthy@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Benoit Parrot <bparrot@ti.com>,
-        Bin Liu <b-liu@ti.com>, Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH 01/13] ARM: OMAP2+: Drop legacy platform data for am4 ocp2scp
-Date:   Wed, 11 Dec 2019 11:11:54 -0800
-Message-Id: <20191211191206.12190-2-tony@atomide.com>
+Cc:     linux-arm-kernel@lists.infradead.org, Bin Liu <b-liu@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Roger Quadros <rogerq@ti.com>,
+        Benoit Parrot <bparrot@ti.com>,
+        Sebastian Reichel <sre@kernel.org>
+Subject: [PATCH 02/13] ARM: OMAP2+: Drop legacy platform data for omap4 ocp2scp
+Date:   Wed, 11 Dec 2019 11:11:55 -0800
+Message-Id: <20191211191206.12190-3-tony@atomide.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20191211191206.12190-1-tony@atomide.com>
 References: <20191211191206.12190-1-tony@atomide.com>
@@ -40,101 +41,103 @@ As we're just dropping data, and the early platform data init
 is based on the custom ti,hwmods property, we want to drop both
 the platform data and ti,hwmods property in a single patch.
 
+Cc: Bin Liu <b-liu@ti.com>
 Cc: Keerthy <j-keerthy@ti.com>
 Cc: Roger Quadros <rogerq@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/am437x-l4.dtsi           |  2 -
- arch/arm/mach-omap2/omap_hwmod_43xx_data.c | 45 ----------------------
- 2 files changed, 47 deletions(-)
+ arch/arm/boot/dts/omap4-l4.dtsi            |  1 -
+ arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 54 ----------------------
+ 2 files changed, 55 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
---- a/arch/arm/boot/dts/am437x-l4.dtsi
-+++ b/arch/arm/boot/dts/am437x-l4.dtsi
-@@ -2332,7 +2332,6 @@ usb1: usb@10000 {
+diff --git a/arch/arm/boot/dts/omap4-l4.dtsi b/arch/arm/boot/dts/omap4-l4.dtsi
+--- a/arch/arm/boot/dts/omap4-l4.dtsi
++++ b/arch/arm/boot/dts/omap4-l4.dtsi
+@@ -420,7 +420,6 @@ usb_otg_hs: usb_otg_hs@0 {
  
- 		target-module@a8000 {			/* 0x483a8000, ap 125 6c.0 */
- 			compatible = "ti,sysc-omap4", "ti,sysc";
--			ti,hwmods = "ocp2scp0";
- 			reg = <0xa8000 0x4>;
- 			reg-names = "rev";
- 			/* Domains (P, C): per_pwrdm, l4ls_clkdm */
-@@ -2414,7 +2413,6 @@ usb2: usb@10000 {
- 
- 		target-module@e8000 {			/* 0x483e8000, ap 129 78.0 */
- 			compatible = "ti,sysc-omap4", "ti,sysc";
--			ti,hwmods = "ocp2scp1";
- 			reg = <0xe8000 0x4>;
- 			reg-names = "rev";
- 			/* Domains (P, C): per_pwrdm, l4ls_clkdm */
-diff --git a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
-@@ -112,35 +112,6 @@ static struct omap_hwmod am43xx_synctimer_hwmod = {
+ 		target-module@2d000 {			/* 0x4a0ad000, ap 88 0c.0 */
+ 			compatible = "ti,sysc-omap2", "ti,sysc";
+-			ti,hwmods = "ocp2scp_usb_phy";
+ 			reg = <0x2d000 0x4>,
+ 			      <0x2d010 0x4>,
+ 			      <0x2d014 0x4>;
+diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+@@ -1159,51 +1159,6 @@ static struct omap_hwmod omap44xx_ocmc_ram_hwmod = {
  	},
  };
  
--static struct omap_hwmod_class am43xx_ocp2scp_hwmod_class = {
+-/*
+- * 'ocp2scp' class
+- * bridge to transform ocp interface protocol to scp (serial control port)
+- * protocol
+- */
+-
+-static struct omap_hwmod_class_sysconfig omap44xx_ocp2scp_sysc = {
+-	.rev_offs	= 0x0000,
+-	.sysc_offs	= 0x0010,
+-	.syss_offs	= 0x0014,
+-	.sysc_flags	= (SYSC_HAS_AUTOIDLE | SYSC_HAS_SIDLEMODE |
+-			   SYSC_HAS_SOFTRESET | SYSS_HAS_RESET_STATUS),
+-	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+-	.sysc_fields	= &omap_hwmod_sysc_type1,
+-};
+-
+-static struct omap_hwmod_class omap44xx_ocp2scp_hwmod_class = {
 -	.name	= "ocp2scp",
+-	.sysc	= &omap44xx_ocp2scp_sysc,
 -};
 -
--static struct omap_hwmod am43xx_ocp2scp0_hwmod = {
--	.name		= "ocp2scp0",
--	.class		= &am43xx_ocp2scp_hwmod_class,
--	.clkdm_name	= "l4ls_clkdm",
--	.main_clk	= "l4ls_gclk",
+-/* ocp2scp_usb_phy */
+-static struct omap_hwmod omap44xx_ocp2scp_usb_phy_hwmod = {
+-	.name		= "ocp2scp_usb_phy",
+-	.class		= &omap44xx_ocp2scp_hwmod_class,
+-	.clkdm_name	= "l3_init_clkdm",
+-	/*
+-	 * ocp2scp_usb_phy_phy_48m is provided by the OMAP4 PRCM IP
+-	 * block as an "optional clock," and normally should never be
+-	 * specified as the main_clk for an OMAP IP block.  However it
+-	 * turns out that this clock is actually the main clock for
+-	 * the ocp2scp_usb_phy IP block:
+-	 * http://lists.infradead.org/pipermail/linux-arm-kernel/2012-September/119943.html
+-	 * So listing ocp2scp_usb_phy_phy_48m as a main_clk here seems
+-	 * to be the best workaround.
+-	 */
+-	.main_clk	= "ocp2scp_usb_phy_phy_48m",
 -	.prcm = {
 -		.omap4 = {
--			.clkctrl_offs = AM43XX_CM_PER_USBPHYOCP2SCP0_CLKCTRL_OFFSET,
--			.modulemode   = MODULEMODE_SWCTRL,
--		},
--	},
--};
--
--static struct omap_hwmod am43xx_ocp2scp1_hwmod = {
--	.name		= "ocp2scp1",
--	.class		= &am43xx_ocp2scp_hwmod_class,
--	.clkdm_name	= "l4ls_clkdm",
--	.main_clk	= "l4ls_gclk",
--	.prcm = {
--		.omap4 = {
--			.clkctrl_offs	= AM43XX_CM_PER_USBPHYOCP2SCP1_CLKCTRL_OFFSET,
--			.modulemode	= MODULEMODE_SWCTRL,
+-			.clkctrl_offs = OMAP4_CM_L3INIT_USBPHYOCP2SCP_CLKCTRL_OFFSET,
+-			.context_offs = OMAP4_RM_L3INIT_USBPHYOCP2SCP_CONTEXT_OFFSET,
+-			.modulemode   = MODULEMODE_HWCTRL,
 -		},
 -	},
 -};
  
- static struct omap_hwmod_class_sysconfig am43xx_usb_otg_ss_sysc = {
- 	.rev_offs	= 0x0000,
-@@ -363,20 +334,6 @@ static struct omap_hwmod_ocp_if am33xx_l4_wkup__synctimer = {
- 	.user		= OCP_USER_MPU,
+ /*
+  * 'prcm' class
+@@ -2169,14 +2124,6 @@ static struct omap_hwmod_ocp_if omap44xx_l3_main_2__ocmc_ram = {
+ 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
  };
  
--static struct omap_hwmod_ocp_if am43xx_l4_ls__ocp2scp0 = {
--	.master		= &am33xx_l4_ls_hwmod,
--	.slave		= &am43xx_ocp2scp0_hwmod,
--	.clk		= "l4ls_gclk",
--	.user		= OCP_USER_MPU,
+-/* l4_cfg -> ocp2scp_usb_phy */
+-static struct omap_hwmod_ocp_if omap44xx_l4_cfg__ocp2scp_usb_phy = {
+-	.master		= &omap44xx_l4_cfg_hwmod,
+-	.slave		= &omap44xx_ocp2scp_usb_phy_hwmod,
+-	.clk		= "l4_div_ck",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 -};
 -
--static struct omap_hwmod_ocp_if am43xx_l4_ls__ocp2scp1 = {
--	.master		= &am33xx_l4_ls_hwmod,
--	.slave		= &am43xx_ocp2scp1_hwmod,
--	.clk		= "l4ls_gclk",
--	.user		= OCP_USER_MPU,
--};
--
- static struct omap_hwmod_ocp_if am43xx_l3_s__usbotgss0 = {
- 	.master         = &am33xx_l3_s_hwmod,
- 	.slave          = &am43xx_usb_otg_ss0_hwmod,
-@@ -475,8 +432,6 @@ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
- 	&am33xx_l3_main__tptc1,
- 	&am33xx_l3_main__tptc2,
- 	&am33xx_l3_main__ocmc,
--	&am43xx_l4_ls__ocp2scp0,
--	&am43xx_l4_ls__ocp2scp1,
- 	&am43xx_l3_s__usbotgss0,
- 	&am43xx_l3_s__usbotgss1,
- 	&am43xx_dss__l3_main,
+ /* mpu_private -> prcm_mpu */
+ static struct omap_hwmod_ocp_if omap44xx_mpu_private__prcm_mpu = {
+ 	.master		= &omap44xx_mpu_private_hwmod,
+@@ -2389,7 +2336,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
+ 	&omap44xx_l3_main_2__mmu_ipu,
+ 	&omap44xx_l4_cfg__mmu_dsp,
+ 	&omap44xx_l3_main_2__ocmc_ram,
+-	&omap44xx_l4_cfg__ocp2scp_usb_phy,
+ 	&omap44xx_mpu_private__prcm_mpu,
+ 	&omap44xx_l4_wkup__cm_core_aon,
+ 	&omap44xx_l4_cfg__cm_core,
 -- 
 2.24.1
