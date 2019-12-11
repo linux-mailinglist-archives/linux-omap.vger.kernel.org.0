@@ -2,169 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B5511BD2E
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 20:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B595D11BDCC
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 21:24:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726986AbfLKTkR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Dec 2019 14:40:17 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:55159 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727185AbfLKTkR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Dec 2019 14:40:17 -0500
-Received: by mail-wm1-f68.google.com with SMTP id b11so8522627wmj.4
-        for <linux-omap@vger.kernel.org>; Wed, 11 Dec 2019 11:40:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=newoldbits-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=h6aD3ZwnsdG7TKWm0dgTcaqxnRc3IcXouy4MGbRCkRU=;
-        b=kujCsLCY1yor+FFFDqrEFqahY0s7rgN8LbecSpHECQVcTOTGtWjkUKa6pt+r2us32M
-         AkwZ7QR7aHetXsHPnC38l+eEf0dZ7YTi11We+jSvuGUUuaUs4xx2IB/7OJ8xKiLNhgp6
-         DnoRSbNzsGJO+S/1kui4C4dnq1f4l9Y7TJz5AMN6tB8wk8/KWlsLPaT2hb+5g4MFaQ06
-         dzAOuSWcx1/4noCq/3Mfem7hjyHbjFNpMVH9OjHRWnSmU2pnArKAYOH8ycQSkJvkILcj
-         aQ586rLsiAb7Vb/0c9i1np7i6eQ+wg+K571bWAGJO/x3n9T78S6QB34g0xrxmvmvRm1X
-         YOcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=h6aD3ZwnsdG7TKWm0dgTcaqxnRc3IcXouy4MGbRCkRU=;
-        b=iH4jZ6sGq71KGE8j8qs9+AWrJMR3tB/QOcgCHMW5zpTVQPaZqfVxVo/+HU/kP4oJzi
-         vrayBq1jFaLKfc7nmP2JQ74t3HPAHznF/ZYYaNUC+IjXTdn20ir5f+80MIm37QRlBlGT
-         8NdmPOkRhHkRy4C5r0fhsyRPp/eI2B//jpIOVo7x6E+gOb1uP1lVI/YqsusRLeUePVpe
-         U+4gGyqBppUIhJ/4VBNP+guHfA+Mimld+mTHtcrRwV0vj1opPk7nFSEGeOlBPInaL38f
-         6tBtU7+WMErWPJPfeYXi+ClRFdX97YMluYOoq+UT61XFvXInkXRVPZ4UtZ0Lz1oN+bqC
-         lCPQ==
-X-Gm-Message-State: APjAAAWL0WG4JYDDruplFbsiSzikXl6SdwWMiMwUZvdrpyIwbdLyxVgS
-        3ymhiNDIFGprf2cFnLQe+Q8s4g==
-X-Google-Smtp-Source: APXvYqyg62SDpqGnNqjiXv5hgkclclMtPjpRCK5K6TEYzFRcIhPUEoIj181s3viZTu+oR0ZQSuzYuw==
-X-Received: by 2002:a1c:5419:: with SMTP id i25mr1749923wmb.150.1576093215057;
-        Wed, 11 Dec 2019 11:40:15 -0800 (PST)
-Received: from msilabo.lan (241.33-200-80.adsl-dyn.isp.belgacom.be. [80.200.33.241])
-        by smtp.gmail.com with ESMTPSA id x1sm3309964wru.50.2019.12.11.11.40.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2019 11:40:14 -0800 (PST)
-From:   Jean Pihet <jean.pihet@newoldbits.com>
-To:     Mark Brown <broonie@kernel.org>, Tony Lindgren <tony@atomide.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
-        Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
-        Jean Pihet <jean.pihet@newoldbits.com>
-Subject: [PATCH 3/3] spi: spi-ti-qspi: optimize byte-transfers
-Date:   Wed, 11 Dec 2019 20:39:54 +0100
-Message-Id: <20191211193954.747745-4-jean.pihet@newoldbits.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191211193954.747745-1-jean.pihet@newoldbits.com>
-References: <20191211193954.747745-1-jean.pihet@newoldbits.com>
+        id S1726686AbfLKUYp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Dec 2019 15:24:45 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:34034 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726345AbfLKUYp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Dec 2019 15:24:45 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBBKOaU7106830;
+        Wed, 11 Dec 2019 14:24:36 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1576095876;
+        bh=XOokrT+freFORqVJ8mOrjS85/EC9e13R8A2WaBBWr8o=;
+        h=From:To:CC:Subject:Date;
+        b=SSE5Z1gpd8cEZ+Yv2G4LqsDhfgfhTaufX81SZc19PLwM5rD255jkhBFtT2zYZ6RJD
+         09npLkZxbY1L96PhL+Yadgt2rvAPvQGQmDGDKEpjZqE5CQq4kxF6PJ1DVRcNCOJFGE
+         qMsuEOM9u+rQzMgV9Oeq7GZbl0A+YUzXMWGjijwM=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBBKOaZZ011827
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 11 Dec 2019 14:24:36 -0600
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 11
+ Dec 2019 14:24:36 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 11 Dec 2019 14:24:36 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBBKOaew059579;
+        Wed, 11 Dec 2019 14:24:36 -0600
+From:   Dave Gerlach <d-gerlach@ti.com>
+To:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>
+CC:     Tony Lindgren <tony@atomide.com>, Dave Gerlach <d-gerlach@ti.com>
+Subject: [PATCH] ARM: OMAP2+: am43xx: Add lcdc clockdomain
+Date:   Wed, 11 Dec 2019 14:25:58 -0600
+Message-ID: <20191211202558.5988-1-d-gerlach@ti.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Optimize the 8-bit based transfers, as used by the SPI flash
-devices, by reading the data registers by 32 and 128 bits when
-possible and copy the contents to the receive buffer.
+As described in AM437x TRM, spruhl7h, Revised January 2018, there is
+an LCDC clockdomain present in the PER power domain. Although it is
+entirely unused on AM437x, it should be defined along with the other
+clockdomains so it can be shut off by Linux as there are no users.
 
-The speed improvement is 4.9x using quad read.
-
-Signed-off-by: Jean Pihet <jean.pihet@newoldbits.com>
-Cc: Ryan Barnett <ryan.barnett@rockwellcollins.com>
-Cc: Conrad Ratschan <conrad.ratschan@rockwellcollins.com>
-Cc: Arnout Vandecappelle <arnout.vandecappelle@essensium.com>
+Reported-by: Munan Xu <munan@ti.com>
+Signed-off-by: Dave Gerlach <d-gerlach@ti.com>
 ---
- drivers/spi/spi-ti-qspi.c | 54 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 51 insertions(+), 3 deletions(-)
+ arch/arm/mach-omap2/clockdomains43xx_data.c | 10 ++++++++++
+ arch/arm/mach-omap2/prcm43xx.h              |  1 +
+ 2 files changed, 11 insertions(+)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index aee4709d105e..d37306cafd8b 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -313,6 +313,8 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t,
- {
- 	int wlen;
- 	unsigned int cmd;
-+	u32 rx;
-+	u8 rxlen, rx_wlen;
- 	u8 *rxbuf;
+diff --git a/arch/arm/mach-omap2/clockdomains43xx_data.c b/arch/arm/mach-omap2/clockdomains43xx_data.c
+index 751708d727af..c96a2b1efbad 100644
+--- a/arch/arm/mach-omap2/clockdomains43xx_data.c
++++ b/arch/arm/mach-omap2/clockdomains43xx_data.c
+@@ -84,6 +84,15 @@ static struct clockdomain l3s_tsc_43xx_clkdm = {
+ 	.flags		  = CLKDM_CAN_SWSUP,
+ };
  
- 	rxbuf = t->rx_buf;
-@@ -335,14 +337,60 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t,
- 		if (qspi_is_busy(qspi))
- 			return -EBUSY;
- 
-+		switch (wlen) {
-+		case 1:
-+			/*
-+			 * Optimize the 8-bit words transfers, as used by
-+			 * the SPI flash devices.
-+			 */
-+			if (count >= QSPI_WLEN_MAX_BYTES) {
-+				rxlen = QSPI_WLEN_MAX_BYTES;
-+			} else {
-+				rxlen = min(count, 4);
-+			}
-+			rx_wlen = rxlen << 3;
-+			cmd &= ~QSPI_WLEN_MASK;
-+			cmd |= QSPI_WLEN(rx_wlen);
-+			break;
-+		default:
-+			rxlen = wlen;
-+			break;
-+		}
++static struct clockdomain lcdc_43xx_clkdm = {
++	.name		  = "lcdc_clkdm",
++	.pwrdm		  = { .name = "per_pwrdm" },
++	.prcm_partition	  = AM43XX_CM_PARTITION,
++	.cm_inst	  = AM43XX_CM_PER_INST,
++	.clkdm_offs	  = AM43XX_CM_PER_LCDC_CDOFFS,
++	.flags		  = CLKDM_CAN_SWSUP,
++};
 +
- 		ti_qspi_write(qspi, cmd, QSPI_SPI_CMD_REG);
- 		if (ti_qspi_poll_wc(qspi)) {
- 			dev_err(qspi->dev, "read timed out\n");
- 			return -ETIMEDOUT;
- 		}
-+
- 		switch (wlen) {
- 		case 1:
--			*rxbuf = readb(qspi->base + QSPI_SPI_DATA_REG);
-+			/*
-+			 * Optimize the 8-bit words transfers, as used by
-+			 * the SPI flash devices.
-+			 */
-+			if (count >= QSPI_WLEN_MAX_BYTES) {
-+				u32 *rxp = (u32 *) rxbuf;
-+				rx = readl(qspi->base + QSPI_SPI_DATA_REG_3);
-+				*rxp++ = be32_to_cpu(rx);
-+				rx = readl(qspi->base + QSPI_SPI_DATA_REG_2);
-+				*rxp++ = be32_to_cpu(rx);
-+				rx = readl(qspi->base + QSPI_SPI_DATA_REG_1);
-+				*rxp++ = be32_to_cpu(rx);
-+				rx = readl(qspi->base + QSPI_SPI_DATA_REG);
-+				*rxp++ = be32_to_cpu(rx);
-+			} else {
-+				u8 *rxp = rxbuf;
-+				rx = readl(qspi->base + QSPI_SPI_DATA_REG);
-+				if (rx_wlen >= 8)
-+					*rxp++ = rx >> (rx_wlen - 8);
-+				if (rx_wlen >= 16)
-+					*rxp++ = rx >> (rx_wlen - 16);
-+				if (rx_wlen >= 24)
-+					*rxp++ = rx >> (rx_wlen - 24);
-+				if (rx_wlen >= 32)
-+					*rxp++ = rx;
-+			}
- 			break;
- 		case 2:
- 			*((u16 *)rxbuf) = readw(qspi->base + QSPI_SPI_DATA_REG);
-@@ -351,8 +399,8 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t,
- 			*((u32 *)rxbuf) = readl(qspi->base + QSPI_SPI_DATA_REG);
- 			break;
- 		}
--		rxbuf += wlen;
--		count -= wlen;
-+		rxbuf += rxlen;
-+		count -= rxlen;
- 	}
- 
- 	return 0;
+ static struct clockdomain dss_43xx_clkdm = {
+ 	.name		  = "dss_clkdm",
+ 	.pwrdm		  = { .name = "per_pwrdm" },
+@@ -173,6 +182,7 @@ static struct clockdomain *clockdomains_am43xx[] __initdata = {
+ 	&pruss_ocp_43xx_clkdm,
+ 	&ocpwp_l3_43xx_clkdm,
+ 	&l3s_tsc_43xx_clkdm,
++	&lcdc_43xx_clkdm,
+ 	&dss_43xx_clkdm,
+ 	&l3_aon_43xx_clkdm,
+ 	&emif_43xx_clkdm,
+diff --git a/arch/arm/mach-omap2/prcm43xx.h b/arch/arm/mach-omap2/prcm43xx.h
+index e2ad14e77064..7078a61c1d3f 100644
+--- a/arch/arm/mach-omap2/prcm43xx.h
++++ b/arch/arm/mach-omap2/prcm43xx.h
+@@ -68,6 +68,7 @@
+ #define AM43XX_CM_PER_ICSS_CDOFFS			0x0300
+ #define AM43XX_CM_PER_L4LS_CDOFFS			0x0400
+ #define AM43XX_CM_PER_EMIF_CDOFFS			0x0700
++#define AM43XX_CM_PER_LCDC_CDOFFS			0x0800
+ #define AM43XX_CM_PER_DSS_CDOFFS			0x0a00
+ #define AM43XX_CM_PER_CPSW_CDOFFS			0x0b00
+ #define AM43XX_CM_PER_OCPWP_L3_CDOFFS			0x0c00
 -- 
-2.23.0
+2.20.1
 
