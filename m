@@ -2,156 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7FFB11BCC1
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 20:18:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9086711BD28
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 20:40:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726828AbfLKTSG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Dec 2019 14:18:06 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:41214 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726463AbfLKTSG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Dec 2019 14:18:06 -0500
-Received: by mail-lj1-f193.google.com with SMTP id h23so25324543ljc.8
-        for <linux-omap@vger.kernel.org>; Wed, 11 Dec 2019 11:18:05 -0800 (PST)
+        id S1726242AbfLKTkN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Dec 2019 14:40:13 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:46230 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726686AbfLKTkN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Dec 2019 14:40:13 -0500
+Received: by mail-wr1-f65.google.com with SMTP id z7so25285916wrl.13
+        for <linux-omap@vger.kernel.org>; Wed, 11 Dec 2019 11:40:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=newoldbits-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=PUVn6x+YmbLcVEGS+44vGZB1xImdawS2bJb4bjzB/Lo=;
-        b=d0Wtr6CEP2m8c26QMdPD3e7CCan6DC6h8yp6G19dle2Emr5AL5IkVH4cHqqvuIwnPW
-         ySJGJv5GWqK05mtTfWD48L9/dzwfodaAn1vSCIjmtbR6mFi94khuxp57veQwz8xkluzO
-         y+9TAXWCxvLKnNSqmcD09j4Xv323mVOZMVetUZk6aYJbhKbH0KlE7tsFBz6Il9vHLBa4
-         k6VJpDdkx1UCewkmahPD1D7qjROoTV0s+NYcaT9T20Ia+NnWk9/hPSCBDxQ20ilV7uXX
-         2UAkmPt5HUjghpLdj74kYCkDigPeCmFOt5f6WvqTFiu1R46O4hacqFHISK3EntGNOViI
-         gDUw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ylqoV41ZpzJJBrHRQMY0axmiPq/PYW8ywOAaGjDloD0=;
+        b=OyYfzPw91OOzrcop43fq30RAMDAuDuduk6aJkmv2GosZwSke0qrgH/8FOocGr9/ZY2
+         i95KhbbPCEW9TcuTeMRRqaIEzxrJPX4XZLFaFfE/fnRPMtpbDMbkm1VgBBh/0kABCAUZ
+         LY/aD65lEylqaA8MqXmo3ssNA1gOoncxpftSNCy2b0euo3hGTCNSReQa+rGFHQR9FV+h
+         majCPnKRmd2NnF6ejBrUEDdlX9d+GsVldyHk+MNK+L4CGJ78inH9DkN7W3i7qQcvsipD
+         RoNJU53jKYLzVWKal5ooB4LtN/8J5bYTVuRZK12eVOZImmeohqYk2zqMDHJJRk77XLsr
+         XyfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PUVn6x+YmbLcVEGS+44vGZB1xImdawS2bJb4bjzB/Lo=;
-        b=QTSpRpJo7bYsBgQhVJ7RUhA8VqGi0UKpH0uMsgdDOkypFR285Cw++zlw4KozmOBAKW
-         CaEDHlx6N98ep/iI4rL1syzdoLJYBnAA3WZw2c4xUfqC2WKQEEf3wBV4q1irLiUKJvNu
-         yCxPapYIlxcXBO7GrJ29xmKUrTpGcBY9QHGQWxDFKeRlirJkxdB8Yy2jv7CuIHPP40Ap
-         BYJGWiSqyhUzcsaiM2g5y+BGWOvzalSEubi7WsVsSeYY5VnFVCxSqytSqNtr509xTpAt
-         aAzKu7HC98jaOlC+7xC9znOJOa8pgR0soDZ4Pc5lDP4uXDXVyQAr1/O8hsVeATZX9igq
-         wF8g==
-X-Gm-Message-State: APjAAAVdhEJ4+7LQSAIAyjJFpSUVbghfC7hINumaZEbrU8vT8PTYMZ7S
-        I88tkueQFfsjMu75acgb3aV4oRCCHhz61YBBbmv19tGckKSZug==
-X-Google-Smtp-Source: APXvYqyjKbPaI3zT1yZniEuJJBcMQJnIP0RzCBZN0kh76f1QePOZ8LdtNvtzNT5Z+C7I7Y5gQOZshIEymKcgEVhyhJg=
-X-Received: by 2002:a2e:95c4:: with SMTP id y4mr3365973ljh.38.1576091884795;
- Wed, 11 Dec 2019 11:18:04 -0800 (PST)
-MIME-Version: 1.0
-References: <20191210215831.6199-1-tony@atomide.com> <20191210215831.6199-2-tony@atomide.com>
-In-Reply-To: <20191210215831.6199-2-tony@atomide.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ylqoV41ZpzJJBrHRQMY0axmiPq/PYW8ywOAaGjDloD0=;
+        b=D9hzNEQzA/00WOOX+MY/FVIWXsnnqs51RZczPvFN3TdQ7vWJtp0D40SXzynEi9aLP2
+         jj/7T+vOEvgtGuUfondLq4LDRtuck8VKqu7oZWuvVXmyAPfg2SPWOPdCJlst407H/yWl
+         NC7by7agTjb105E+LE4Y1Rq5F8OwhK22Acn67IOMaBFbaohkdbUsUqzoiyDVqqTckyIw
+         lYGcgrxXyzuQS1SxZgcYRuQXl6YDAIbRkvsDSFsKCOklkvWLhmU94vHWou8xRY3uzbUM
+         /2FIGR9c8rTt0BluUbWhNRqdq838wni3WmccAyKaVglQEydyBSncltLoT1kj4MM1lbxe
+         cNfw==
+X-Gm-Message-State: APjAAAX4904iQoUkwDe9Ho2XuiMWedTdJGQ/XOKFrJHPi18fhG0JPRjX
+        buAZmagustbQ/glDAEds1p7opA==
+X-Google-Smtp-Source: APXvYqzkB5HtLK+BYiPxFzJ9N1c83p/UCm0ALVMPCHvgV3EHZyv1TAyn6BSSLy6uXejtgqPx0kcjkg==
+X-Received: by 2002:a5d:6305:: with SMTP id i5mr1648048wru.119.1576093211172;
+        Wed, 11 Dec 2019 11:40:11 -0800 (PST)
+Received: from msilabo.lan (241.33-200-80.adsl-dyn.isp.belgacom.be. [80.200.33.241])
+        by smtp.gmail.com with ESMTPSA id x1sm3309964wru.50.2019.12.11.11.40.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Dec 2019 11:40:10 -0800 (PST)
 From:   Jean Pihet <jean.pihet@newoldbits.com>
-Date:   Wed, 11 Dec 2019 20:17:53 +0100
-Message-ID: <CAORVsuXXtCroRbXS0wBtkDqnefxtCJMG0+t7LG5AWtWvwrObQA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ARM: OMAP2+: Drop legacy platform data for am4 qspi
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+To:     Mark Brown <broonie@kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
+        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
+        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
+        Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
+        Jean Pihet <jean.pihet@newoldbits.com>
+Subject: [PATCH 0/3] spi: spi-ti-qspi: Support large NOR SPI flash
+Date:   Wed, 11 Dec 2019 20:39:51 +0100
+Message-Id: <20191211193954.747745-1-jean.pihet@newoldbits.com>
+X-Mailer: git-send-email 2.23.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Tony,
+v2 release.
 
-On Tue, Dec 10, 2019 at 10:58 PM Tony Lindgren <tony@atomide.com> wrote:
->
-> We can now probe devices with ti-sysc interconnect driver and dts
-> data. Let's drop the related platform data and custom ti,hwmods
-> dts property.
->
-> As we're just dropping data, and the early platform data init
-> is based on the custom ti,hwmods property, we want to drop both
-> the platform data and ti,hwmods property in a single patch.
+Large devices are bigger than >64MB in size.
 
-Tested OK on AM4376 QSPI. The correct fck is found and the hwmod
-warning is gone.
-Acked-by: Jean Pihet <jean.pihet@newoldbits.com>
+- Remove unused macro for fclk rate.
+- Since the TI QSPI IP block only maps 64MB of MMIO, use MMIO
+  below the 64MB boundary and software generated transfers above.
+- Optimize the software generated byte-transfers for dual and quad
+  I/O read operations. The speed-up is 4.9x for quad I/O reads.
 
-Thanks!
-Jean
+Note: depends on Tony's patches for hwmod cleanup, in order to get the
+desired QSPI clk rate:
+- [PATCH 1/2] ARM: dts: Configure interconnect target module for am4 qspi
+- [PATCH 2/2] ARM: OMAP2+: Drop legacy platform data for am4 qspi
 
->
-> Cc: Jean Pihet <jean.pihet@newoldbits.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  arch/arm/boot/dts/am4372.dtsi              |  1 -
->  arch/arm/mach-omap2/omap_hwmod_43xx_data.c | 34 ----------------------
->  2 files changed, 35 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
-> --- a/arch/arm/boot/dts/am4372.dtsi
-> +++ b/arch/arm/boot/dts/am4372.dtsi
-> @@ -307,7 +307,6 @@ gpmc: gpmc@50000000 {
->
->                 target-module@47900000 {
->                         compatible = "ti,sysc-omap4", "ti,sysc";
-> -                       ti,hwmods = "qspi";
->                         reg = <0x47900000 0x4>,
->                               <0x47900010 0x4>;
->                         reg-names = "rev", "sysc";
-> diff --git a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
-> --- a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
-> +++ b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
-> @@ -315,32 +315,6 @@ static struct omap_hwmod am43xx_usb_otg_ss1_hwmod = {
->         },
->  };
->
-> -static struct omap_hwmod_class_sysconfig am43xx_qspi_sysc = {
-> -       .rev_offs       = 0,
-> -       .sysc_offs      = 0x0010,
-> -       .sysc_flags     = SYSC_HAS_SIDLEMODE,
-> -       .idlemodes      = (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART |
-> -                               SIDLE_SMART_WKUP),
-> -       .sysc_fields    = &omap_hwmod_sysc_type2,
-> -};
-> -
-> -static struct omap_hwmod_class am43xx_qspi_hwmod_class = {
-> -       .name   = "qspi",
-> -       .sysc   = &am43xx_qspi_sysc,
-> -};
-> -
-> -static struct omap_hwmod am43xx_qspi_hwmod = {
-> -       .name           = "qspi",
-> -       .class          = &am43xx_qspi_hwmod_class,
-> -       .clkdm_name     = "l3s_clkdm",
-> -       .main_clk       = "l3s_gclk",
-> -       .prcm = {
-> -               .omap4 = {
-> -                       .clkctrl_offs = AM43XX_CM_PER_QSPI_CLKCTRL_OFFSET,
-> -                       .modulemode   = MODULEMODE_SWCTRL,
-> -               },
-> -       },
-> -};
->
->  /*
->   * 'adc/tsc' class
-> @@ -681,13 +655,6 @@ static struct omap_hwmod_ocp_if am43xx_l3_s__usbotgss1 = {
->         .user           = OCP_USER_MPU | OCP_USER_SDMA,
->  };
->
-> -static struct omap_hwmod_ocp_if am43xx_l3_s__qspi = {
-> -       .master         = &am33xx_l3_s_hwmod,
-> -       .slave          = &am43xx_qspi_hwmod,
-> -       .clk            = "l3s_gclk",
-> -       .user           = OCP_USER_MPU | OCP_USER_SDMA,
-> -};
-> -
->  static struct omap_hwmod_ocp_if am43xx_dss__l3_main = {
->         .master         = &am43xx_dss_core_hwmod,
->         .slave          = &am33xx_l3_main_hwmod,
-> @@ -783,7 +750,6 @@ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
->         &am43xx_l4_wkup__smartreflex1,
->         &am43xx_l4_wkup__timer1,
->         &am43xx_l4_wkup__adc_tsc,
-> -       &am43xx_l3_s__qspi,
->         &am33xx_l4_per__dcan0,
->         &am33xx_l4_per__dcan1,
->         &am33xx_l4_ls__timer2,
-> --
-> 2.24.0
+Tested using raw accesses (mtd_debug) and JFFS2 FS read/write/erase;
+in single, dual and quad modes.
+All accesses have been checked on the logic analyzer.
+
+Jean Pihet (3):
+  spi: spi-ti-qspi: Remove unused macro for fclk frequency
+  spi: spi-ti-qspi: support large flash devices
+  spi: spi-ti-qspi: optimize byte-transfers
+
+ drivers/spi/spi-ti-qspi.c | 84 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 79 insertions(+), 5 deletions(-)
+
+-- 
+2.23.0
+
