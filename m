@@ -2,73 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7186411AD1F
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 15:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B0CF11AE74
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 15:55:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729513AbfLKON4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Dec 2019 09:13:56 -0500
-Received: from mail-ed1-f46.google.com ([209.85.208.46]:41697 "EHLO
-        mail-ed1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727554AbfLKON4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Dec 2019 09:13:56 -0500
-Received: by mail-ed1-f46.google.com with SMTP id c26so19507151eds.8
-        for <linux-omap@vger.kernel.org>; Wed, 11 Dec 2019 06:13:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=gc7EFmgbjQ1RA9H25U93SZyl8HTMYpwnN8/k8P9Xxh8=;
-        b=IE73cy6e0QBiXaBiPeG6am4cpUlV1LgNqC6XVEKYxBbMhxUuQJZy2yvOAinDK9kYw5
-         Eu0nXncRscA1qF8E0h5zQiyRS/6TpURaTWauWN0XKQmgwT4mFSPEfYlEe9t1lwHODBQr
-         qFEsA8+kq53F3PBGAJHUH4h6Pm6O/YVB7F/QIaJjI3iq7ZuXPieTno7f+aD70WPMC61P
-         RGaZEpSQaRcRtiXMCtHDlxvn6B2jEwBtBTGYx+YfgptMNTaySavGtRnZc2qI2l8Cy2l1
-         HRB5ofXf7oaAjwOTySX+UrFrSuISurq40hnCJUmfucIHDfhF36G+DuFbC7NHIhF8Vq5Y
-         wBmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=gc7EFmgbjQ1RA9H25U93SZyl8HTMYpwnN8/k8P9Xxh8=;
-        b=fFcDmf5CXdEyu5poCoDMQabQakIF5iTnjVHAbgdCo8wZQTwPOXbd+WZSqutsZ+3EIt
-         JVUIULTwlpeD7NhZwvHTkCO0HdoJSWY5Qse7ix0ztT38N3sebt83goKwoAMK3mMK5flQ
-         F8LjYV061kQVvrRR8L2EaD1qjuOdhQ1W9iiM+0KtH6g5cBo1oq0hThZ+tRkepLt81t2M
-         dKr9XEScUMZ93+uVXYoKcqnJQYsTm2KjPDWDmubcVcIRWNpvYGpkGv2oBMJ6yDzRJyfv
-         WH8aGz+qWVjne0y0t7U8rv7PU/Z0ruz3e0f74B/R7JetdN9DXAE6HOnMG7WAXh/iCFPt
-         9Z1A==
-X-Gm-Message-State: APjAAAU4Z6H8oXEbc3qh0xrNbKaxGNlk/h8VKsXW2gpPGh6wFJpYBO8v
-        IaxngUspNh2TBAGsrtVhPaAFCmvA1V9y1s+dSFQ6iAj7
-X-Google-Smtp-Source: APXvYqzr4WFC3Q1OruYFVGDpxs97JDNVAQTuWzJPl1nJe9HZ4KmYwSTh82s/rjf+2kkfcBJiOP5fGwJkMIXE+DWSoT8=
-X-Received: by 2002:a05:6402:308f:: with SMTP id de15mr3446550edb.69.1576073633943;
- Wed, 11 Dec 2019 06:13:53 -0800 (PST)
+        id S1729611AbfLKOzP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Dec 2019 09:55:15 -0500
+Received: from muru.com ([72.249.23.125]:45526 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728370AbfLKOzP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 11 Dec 2019 09:55:15 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 0058680FA;
+        Wed, 11 Dec 2019 14:55:52 +0000 (UTC)
+Date:   Wed, 11 Dec 2019 06:55:11 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     "Andrew F. Davis" <afd@ti.com>, linux-omap@vger.kernel.org,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, Keerthy <j-keerthy@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Re: [PATCH 9/9] ARM: OMAP2+: Drop legacy platform data for dra7
+ timers except timer1 to 4
+Message-ID: <20191211145511.GP35479@atomide.com>
+References: <20191210233524.46875-1-tony@atomide.com>
+ <20191210233524.46875-10-tony@atomide.com>
+ <84c0944d-0e75-4c1f-9220-bf4eb9396040@ti.com>
+ <629f9571-d5d7-b85d-ff34-ef35f9fec821@ti.com>
 MIME-Version: 1.0
-From:   Adam Ford <aford173@gmail.com>
-Date:   Wed, 11 Dec 2019 08:13:44 -0600
-Message-ID: <CAHCN7xJa3D15b1WGznTMk6Nt4OPC77bnPUyri6knAdJw4D_uHw@mail.gmail.com>
-Subject: WL12/WL18 SDIO Regulator Question
-To:     Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <629f9571-d5d7-b85d-ff34-ef35f9fec821@ti.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I am not sure where to post this, but a bunch of omap boards uses
-either the WL12 or WL18xx Wireless chips, and I have a generic
-question regarding the 'regulators' we use to set the enable pin on
-the WiFi chips.
+* Tero Kristo <t-kristo@ti.com> [191211 13:00]:
+> On 11/12/2019 04:10, Andrew F. Davis wrote:
+> > On 12/10/19 6:35 PM, Tony Lindgren wrote:
+> > > We can now probe devices with ti-sysc interconnect driver and dts
+> > > data. Let's drop the related platform data and custom ti,hwmods
+> > > dts property.
+> > > 
+> > > As we're just dropping data, and the early platform data init
+> > > is based on the custom ti,hwmods property, we want to drop both
+> > > the platform data and ti,hwmods property in a single patch.
+...
 
-When digging around in the mmc drivers, I found a driver called
-"mmc-pwrseq-simple"
+> > > @@ -2069,12 +1783,6 @@ static struct omap_hwmod_ocp_if *dra7xx_hwmod_ocp_ifs[] __initdata = {
+> > >   	NULL,
+> > >   };
+> > > -/* GP-only hwmod links */
+> > > -static struct omap_hwmod_ocp_if *dra7xx_gp_hwmod_ocp_ifs[] __initdata = {
+> > > -	&dra7xx_l4_wkup__timer12,
+> > > -	NULL,
+> > > -};
+> > > -
+> > >   /* SoC variant specific hwmod links */
+> > >   static struct omap_hwmod_ocp_if *dra76x_hwmod_ocp_ifs[] __initdata = {
+> > >   	&dra7xx_l4_per3__usb_otg_ss4,
+> > > @@ -2124,8 +1832,5 @@ int __init dra7xx_hwmod_init(void)
+> > >   		}
+> > >   	}
+> > > -	if (!ret && omap_type() == OMAP2_DEVICE_TYPE_GP)
+> > > -		ret = omap_hwmod_register_links(dra7xx_gp_hwmod_ocp_ifs);
+> > > -
+> > 
+> > 
+> > Maybe I'm missing it but how is this logic getting replicated when using
+> > ti,sync? We runtime detect here if we are on an HS device and if so let
+> > the secure world manage these device's pm/clocks, without this the
+> > non-secure side managment will be unconditional.
+> 
+> This is handled by the clkctrl driver itself. timer12 is marked as NON-SEC
+> device supported only, so it doesn't get registered on HS chips.
+> 
+> I guess the lack of the clock fails the ti-sysc part of the registration
+> logic also. Tony?
 
-It appears to do exactly what we want (ie, turn on the WiFi chip)
-without having to create a separate fixed regulator, but it also has
-the added functionality of enabling an external clock signal.
+Yes it should bail out with a clock error. To avoid an error for that
+in dmesg the timer needs to be tagged with status = "disabled" though.
 
-This mmc-pwrseq-simple driver appears to be referenced from the MMC
-level with the reference like "mmc-pwrseq = <&usdhc1_pwrseq>;" or
-something similar.
+For drivers, we have soc_device_match() to use that should work for
+detecting SoCs type on boot. Maybe cat /sys/bus/soc/devices/soc0/type
+to confirm this as I don't think we're currently using it for
+detecting HS SoCs anywhere.
 
-Should we use this type of mechanism instead of the simple regulators
-to enable/disable the WL12 and/or WL18xx chips?  I am not sure of the
-OMAP MMC/SD controller utilizes the "mmc-pwrseq" entry in the node or
-not.
+Regards,
 
-adam
+Tony
+
+
