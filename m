@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F121C11CD7B
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Dec 2019 13:51:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DA7611CD7E
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Dec 2019 13:51:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729271AbfLLMvl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Dec 2019 07:51:41 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:49186 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729252AbfLLMvl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Dec 2019 07:51:41 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBCCpdoa109099;
-        Thu, 12 Dec 2019 06:51:39 -0600
+        id S1729281AbfLLMvn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Dec 2019 07:51:43 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:33158 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729244AbfLLMvn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Dec 2019 07:51:43 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBCCpe0a042272;
+        Thu, 12 Dec 2019 06:51:40 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576155099;
-        bh=TEr6SScWfvJ0lJeE6Waov2g8ftJ41ES/0yvum08aSVs=;
+        s=ti-com-17Q1; t=1576155100;
+        bh=0eKKUKb1+FCo4Bz8Ve5JRVMU/HQLBZnzbJ1HqqzcI/A=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=EXWxqrNt40U3Tu9Fw8Q7ee8LR76D69WKe04YQu2DHZMpXHbN1MvKzHvzK8vIN3Nwl
-         6IJrCUdJxt1NbBO0gWyN29C9dWoTQfUZeHhnI75vRyV4w3I0Y3Kgzlj/t7HUi4NFaI
-         1t3LR284ji750+SQTzWKumX2RvbkiCdOmiZMJq7U=
+        b=FxcX5LppZlvT1fJE1djKQ03g406Dp3pFJZ9fir9vNMAba8BzoTSwRb8bOlLVNyE5i
+         h78LM1UGlZsSjn6QLaCRgkJGJBbv+CzijXkyV47HfUHoLBDQUT7dBoHhEOco3LZ+vA
+         GXvCWnkNRoeLYuWhkCWY7iWyJg/DBeWDYf0RuBbY=
 Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBCCpdno078400
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBCCpeU8033980
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 12 Dec 2019 06:51:39 -0600
+        Thu, 12 Dec 2019 06:51:40 -0600
 Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE110.ent.ti.com
  (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 12
- Dec 2019 06:51:38 -0600
+ Dec 2019 06:51:40 -0600
 Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
  (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 12 Dec 2019 06:51:38 -0600
+ Frontend Transport; Thu, 12 Dec 2019 06:51:40 -0600
 Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBCCpWNf045158;
-        Thu, 12 Dec 2019 06:51:37 -0600
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBCCpWNg045158;
+        Thu, 12 Dec 2019 06:51:39 -0600
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <linux-omap@vger.kernel.org>, <tony@atomide.com>
 CC:     <devicetree@vger.kernel.org>, <bcousson@baylibre.com>
-Subject: [PATCH 3/6] ARM: dts: omap4: convert IOMMUs to use ti-sysc
-Date:   Thu, 12 Dec 2019 14:51:20 +0200
-Message-ID: <20191212125123.3465-4-t-kristo@ti.com>
+Subject: [PATCH 4/6] ARM: dts: omap5: convert IOMMUs to use ti-sysc
+Date:   Thu, 12 Dec 2019 14:51:21 +0200
+Message-ID: <20191212125123.3465-5-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191212125123.3465-1-t-kristo@ti.com>
 References: <20191212125123.3465-1-t-kristo@ti.com>
@@ -53,32 +53,32 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert omap4 IOMMUs to use ti-sysc instead of legacy omap-hwmod based
+Convert omap5 IOMMUs to use ti-sysc instead of legacy omap-hwmod based
 implementation. Enable the IOMMUs also while doing this.
 
 Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- arch/arm/boot/dts/omap4-l4.dtsi | 11 ++++++---
- arch/arm/boot/dts/omap4.dtsi    | 43 +++++++++++++++++++++------------
- 2 files changed, 36 insertions(+), 18 deletions(-)
+ arch/arm/boot/dts/omap5-l4.dtsi | 11 ++++++---
+ arch/arm/boot/dts/omap5.dtsi    | 40 +++++++++++++++++++++------------
+ 2 files changed, 34 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap4-l4.dtsi b/arch/arm/boot/dts/omap4-l4.dtsi
-index 83f803be8ee2..8a76b6b86a97 100644
---- a/arch/arm/boot/dts/omap4-l4.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4.dtsi
-@@ -321,7 +321,6 @@
+diff --git a/arch/arm/boot/dts/omap5-l4.dtsi b/arch/arm/boot/dts/omap5-l4.dtsi
+index 25aacf1ba708..a29261dea3e2 100644
+--- a/arch/arm/boot/dts/omap5-l4.dtsi
++++ b/arch/arm/boot/dts/omap5-l4.dtsi
+@@ -349,7 +349,6 @@
  
- 		target-module@66000 {			/* 0x4a066000, ap 25 26.0 */
+ 		target-module@66000 {			/* 0x4a066000, ap 23 0a.0 */
  			compatible = "ti,sysc-omap2", "ti,sysc";
 -			ti,hwmods = "mmu_dsp";
  			reg = <0x66000 0x4>,
  			      <0x66010 0x4>,
  			      <0x66014 0x4>;
-@@ -335,12 +334,18 @@
- 			/* Domains (V, P, C): iva, tesla_pwrdm, tesla_clkdm */
- 			clocks = <&tesla_clkctrl OMAP4_DSP_CLKCTRL 0>;
+@@ -364,12 +363,18 @@
+ 			/* Domains (V, P, C): mm, dsp_pwrdm, dsp_clkdm */
+ 			clocks = <&dsp_clkctrl OMAP5_MMU_DSP_CLKCTRL 0>;
  			clock-names = "fck";
-+			resets = <&prm_tesla 1>;
++			resets = <&prm_dsp 1>;
 +			reset-names = "rstctrl";
  			#address-cells = <1>;
  			#size-cells = <1>;
@@ -93,13 +93,13 @@ index 83f803be8ee2..8a76b6b86a97 100644
 +				#iommu-cells = <0>;
 +			};
  		};
- 	};
  
-diff --git a/arch/arm/boot/dts/omap4.dtsi b/arch/arm/boot/dts/omap4.dtsi
-index 2de8a6b53de9..af901fc6e909 100644
---- a/arch/arm/boot/dts/omap4.dtsi
-+++ b/arch/arm/boot/dts/omap4.dtsi
-@@ -173,14 +173,6 @@
+ 		target-module@70000 {			/* 0x4a070000, ap 79 2e.0 */
+diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
+index 1f6ad1debc90..d0ecf54d5a23 100644
+--- a/arch/arm/boot/dts/omap5.dtsi
++++ b/arch/arm/boot/dts/omap5.dtsi
+@@ -186,21 +186,33 @@
  			#gpio-cells = <2>;
  		};
  
@@ -110,21 +110,6 @@ index 2de8a6b53de9..af901fc6e909 100644
 -			ti,hwmods = "mmu_dsp";
 -			#iommu-cells = <0>;
 -		};
--
- 		target-module@52000000 {
- 			compatible = "ti,sysc-omap4", "ti,sysc";
- 			ti,hwmods = "iss";
-@@ -206,14 +198,35 @@
- 			/* No child device binding, driver in staging */
- 		};
- 
--		mmu_ipu: mmu@55082000 {
--			compatible = "ti,omap4-iommu";
--			reg = <0x55082000 0x100>;
--			interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
--			ti,hwmods = "mmu_ipu";
--			#iommu-cells = <0>;
--			ti,iommu-bus-err-back;
 +		target-module@55082000 {
 +			compatible = "ti,sysc-omap2", "ti,sysc";
 +			reg = <0x55082000 0x4>,
@@ -137,14 +122,21 @@ index 2de8a6b53de9..af901fc6e909 100644
 +			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
 +					 SYSC_OMAP2_SOFTRESET |
 +					 SYSC_OMAP2_AUTOIDLE)>;
-+			clocks = <&ducati_clkctrl OMAP4_IPU_CLKCTRL 0>;
++			clocks = <&ipu_clkctrl OMAP5_MMU_IPU_CLKCTRL 0>;
 +			clock-names = "fck";
 +			resets = <&prm_core 2>;
 +			reset-names = "rstctrl";
 +			ranges = <0x0 0x55082000 0x100>;
 +			#size-cells = <1>;
 +			#address-cells = <1>;
-+
+ 
+-		mmu_ipu: mmu@55082000 {
+-			compatible = "ti,omap4-iommu";
+-			reg = <0x55082000 0x100>;
+-			interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
+-			ti,hwmods = "mmu_ipu";
+-			#iommu-cells = <0>;
+-			ti,iommu-bus-err-back;
 +			mmu_ipu: mmu@0 {
 +				compatible = "ti,omap4-iommu";
 +				reg = <0x0 0x100>;
@@ -153,10 +145,8 @@ index 2de8a6b53de9..af901fc6e909 100644
 +				ti,iommu-bus-err-back;
 +			};
  		};
-+
- 		target-module@4012c000 {
- 			compatible = "ti,sysc-omap4", "ti,sysc";
- 			ti,hwmods = "slimbus1";
+ 
+ 		dmm@4e000000 {
 -- 
 2.17.1
 
