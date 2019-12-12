@@ -2,46 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DA7611CD7E
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Dec 2019 13:51:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5089511CD83
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Dec 2019 13:51:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729281AbfLLMvn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Dec 2019 07:51:43 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:33158 "EHLO
+        id S1729310AbfLLMvq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Dec 2019 07:51:46 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:33162 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729244AbfLLMvn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Dec 2019 07:51:43 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBCCpe0a042272;
-        Thu, 12 Dec 2019 06:51:40 -0600
+        with ESMTP id S1729244AbfLLMvo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Dec 2019 07:51:44 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBCCpgJ4042292;
+        Thu, 12 Dec 2019 06:51:42 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576155100;
-        bh=0eKKUKb1+FCo4Bz8Ve5JRVMU/HQLBZnzbJ1HqqzcI/A=;
+        s=ti-com-17Q1; t=1576155102;
+        bh=7Pu2Rw8bMwPn39DS0Vo9UroAA0vBhw1LWwnqjEokdtg=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=FxcX5LppZlvT1fJE1djKQ03g406Dp3pFJZ9fir9vNMAba8BzoTSwRb8bOlLVNyE5i
-         h78LM1UGlZsSjn6QLaCRgkJGJBbv+CzijXkyV47HfUHoLBDQUT7dBoHhEOco3LZ+vA
-         GXvCWnkNRoeLYuWhkCWY7iWyJg/DBeWDYf0RuBbY=
-Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBCCpeU8033980
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 12 Dec 2019 06:51:40 -0600
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+        b=RhsyYoUs25VsJPUKtrvAk/uEOpob4xn0Py4JnP+BwoRuVTGIrC0tJpG97Q5yqePVp
+         1e+qct8vCGYalvu4pDuXjQfBkQgg+H4psDgq2fuDkp5nWuhJHbbUJaoTiKHdhvSxu2
+         iV6gK6icHoqJKsBZ83LSsyHIi7zavKw001jSyxfE=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBCCpgxP017628;
+        Thu, 12 Dec 2019 06:51:42 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 12
- Dec 2019 06:51:40 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 06:51:41 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 12 Dec 2019 06:51:40 -0600
+ Frontend Transport; Thu, 12 Dec 2019 06:51:41 -0600
 Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBCCpWNg045158;
-        Thu, 12 Dec 2019 06:51:39 -0600
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBCCpWNh045158;
+        Thu, 12 Dec 2019 06:51:40 -0600
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <linux-omap@vger.kernel.org>, <tony@atomide.com>
 CC:     <devicetree@vger.kernel.org>, <bcousson@baylibre.com>
-Subject: [PATCH 4/6] ARM: dts: omap5: convert IOMMUs to use ti-sysc
-Date:   Thu, 12 Dec 2019 14:51:21 +0200
-Message-ID: <20191212125123.3465-5-t-kristo@ti.com>
+Subject: [PATCH 5/6] ARM: OMAP4: hwmod-data: remove OMAP4 IOMMU hwmod data
+Date:   Thu, 12 Dec 2019 14:51:22 +0200
+Message-ID: <20191212125123.3465-6-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191212125123.3465-1-t-kristo@ti.com>
 References: <20191212125123.3465-1-t-kristo@ti.com>
@@ -53,100 +52,119 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert omap5 IOMMUs to use ti-sysc instead of legacy omap-hwmod based
-implementation. Enable the IOMMUs also while doing this.
+IOMMUs are now supported via ti-sysc, so the legacy hwmod data can be
+removed.
 
 Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- arch/arm/boot/dts/omap5-l4.dtsi | 11 ++++++---
- arch/arm/boot/dts/omap5.dtsi    | 40 +++++++++++++++++++++------------
- 2 files changed, 34 insertions(+), 17 deletions(-)
+ arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 87 ----------------------
+ 1 file changed, 87 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap5-l4.dtsi b/arch/arm/boot/dts/omap5-l4.dtsi
-index 25aacf1ba708..a29261dea3e2 100644
---- a/arch/arm/boot/dts/omap5-l4.dtsi
-+++ b/arch/arm/boot/dts/omap5-l4.dtsi
-@@ -349,7 +349,6 @@
+diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+index 292f544bd62d..8196c5b3e736 100644
+--- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+@@ -1303,91 +1303,6 @@ static struct omap_hwmod omap44xx_mcpdm_hwmod = {
+ 	},
+ };
  
- 		target-module@66000 {			/* 0x4a066000, ap 23 0a.0 */
- 			compatible = "ti,sysc-omap2", "ti,sysc";
--			ti,hwmods = "mmu_dsp";
- 			reg = <0x66000 0x4>,
- 			      <0x66010 0x4>,
- 			      <0x66014 0x4>;
-@@ -364,12 +363,18 @@
- 			/* Domains (V, P, C): mm, dsp_pwrdm, dsp_clkdm */
- 			clocks = <&dsp_clkctrl OMAP5_MMU_DSP_CLKCTRL 0>;
- 			clock-names = "fck";
-+			resets = <&prm_dsp 1>;
-+			reset-names = "rstctrl";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x66000 0x1000>;
- 
--			/* mmu_dsp cannot be moved before reset driver */
--			status = "disabled";
-+			mmu_dsp: mmu@0 {
-+				compatible = "ti,omap4-iommu";
-+				reg = <0x0 0x100>;
-+				interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
-+				#iommu-cells = <0>;
-+			};
- 		};
- 
- 		target-module@70000 {			/* 0x4a070000, ap 79 2e.0 */
-diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
-index 1f6ad1debc90..d0ecf54d5a23 100644
---- a/arch/arm/boot/dts/omap5.dtsi
-+++ b/arch/arm/boot/dts/omap5.dtsi
-@@ -186,21 +186,33 @@
- 			#gpio-cells = <2>;
- 		};
- 
--		mmu_dsp: mmu@4a066000 {
--			compatible = "ti,omap4-iommu";
--			reg = <0x4a066000 0x100>;
--			interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
--			ti,hwmods = "mmu_dsp";
--			#iommu-cells = <0>;
--		};
-+		target-module@55082000 {
-+			compatible = "ti,sysc-omap2", "ti,sysc";
-+			reg = <0x55082000 0x4>,
-+			      <0x55082010 0x4>,
-+			      <0x55082014 0x4>;
-+			reg-names = "rev", "sysc", "syss";
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>;
-+			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
-+					 SYSC_OMAP2_SOFTRESET |
-+					 SYSC_OMAP2_AUTOIDLE)>;
-+			clocks = <&ipu_clkctrl OMAP5_MMU_IPU_CLKCTRL 0>;
-+			clock-names = "fck";
-+			resets = <&prm_core 2>;
-+			reset-names = "rstctrl";
-+			ranges = <0x0 0x55082000 0x100>;
-+			#size-cells = <1>;
-+			#address-cells = <1>;
- 
--		mmu_ipu: mmu@55082000 {
--			compatible = "ti,omap4-iommu";
--			reg = <0x55082000 0x100>;
--			interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
--			ti,hwmods = "mmu_ipu";
--			#iommu-cells = <0>;
--			ti,iommu-bus-err-back;
-+			mmu_ipu: mmu@0 {
-+				compatible = "ti,omap4-iommu";
-+				reg = <0x0 0x100>;
-+				interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
-+				#iommu-cells = <0>;
-+				ti,iommu-bus-err-back;
-+			};
- 		};
- 
- 		dmm@4e000000 {
+-/*
+- * 'mmu' class
+- * The memory management unit performs virtual to physical address translation
+- * for its requestors.
+- */
+-
+-static struct omap_hwmod_class_sysconfig mmu_sysc = {
+-	.rev_offs	= 0x000,
+-	.sysc_offs	= 0x010,
+-	.syss_offs	= 0x014,
+-	.sysc_flags	= (SYSC_HAS_CLOCKACTIVITY | SYSC_HAS_SIDLEMODE |
+-			   SYSC_HAS_SOFTRESET | SYSC_HAS_AUTOIDLE),
+-	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+-	.sysc_fields	= &omap_hwmod_sysc_type1,
+-};
+-
+-static struct omap_hwmod_class omap44xx_mmu_hwmod_class = {
+-	.name = "mmu",
+-	.sysc = &mmu_sysc,
+-};
+-
+-/* mmu ipu */
+-
+-static struct omap_hwmod omap44xx_mmu_ipu_hwmod;
+-static struct omap_hwmod_rst_info omap44xx_mmu_ipu_resets[] = {
+-	{ .name = "mmu_cache", .rst_shift = 2 },
+-};
+-
+-/* l3_main_2 -> mmu_ipu */
+-static struct omap_hwmod_ocp_if omap44xx_l3_main_2__mmu_ipu = {
+-	.master		= &omap44xx_l3_main_2_hwmod,
+-	.slave		= &omap44xx_mmu_ipu_hwmod,
+-	.clk		= "l3_div_ck",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+-static struct omap_hwmod omap44xx_mmu_ipu_hwmod = {
+-	.name		= "mmu_ipu",
+-	.class		= &omap44xx_mmu_hwmod_class,
+-	.clkdm_name	= "ducati_clkdm",
+-	.rst_lines	= omap44xx_mmu_ipu_resets,
+-	.rst_lines_cnt	= ARRAY_SIZE(omap44xx_mmu_ipu_resets),
+-	.main_clk	= "ducati_clk_mux_ck",
+-	.prcm = {
+-		.omap4 = {
+-			.clkctrl_offs = OMAP4_CM_DUCATI_DUCATI_CLKCTRL_OFFSET,
+-			.rstctrl_offs = OMAP4_RM_DUCATI_RSTCTRL_OFFSET,
+-			.context_offs = OMAP4_RM_DUCATI_DUCATI_CONTEXT_OFFSET,
+-			.modulemode   = MODULEMODE_HWCTRL,
+-		},
+-	},
+-};
+-
+-/* mmu dsp */
+-
+-static struct omap_hwmod omap44xx_mmu_dsp_hwmod;
+-static struct omap_hwmod_rst_info omap44xx_mmu_dsp_resets[] = {
+-	{ .name = "mmu_cache", .rst_shift = 1 },
+-};
+-
+-/* l4_cfg -> dsp */
+-static struct omap_hwmod_ocp_if omap44xx_l4_cfg__mmu_dsp = {
+-	.master		= &omap44xx_l4_cfg_hwmod,
+-	.slave		= &omap44xx_mmu_dsp_hwmod,
+-	.clk		= "l4_div_ck",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+-static struct omap_hwmod omap44xx_mmu_dsp_hwmod = {
+-	.name		= "mmu_dsp",
+-	.class		= &omap44xx_mmu_hwmod_class,
+-	.clkdm_name	= "tesla_clkdm",
+-	.rst_lines	= omap44xx_mmu_dsp_resets,
+-	.rst_lines_cnt	= ARRAY_SIZE(omap44xx_mmu_dsp_resets),
+-	.main_clk	= "dpll_iva_m4x2_ck",
+-	.prcm = {
+-		.omap4 = {
+-			.clkctrl_offs = OMAP4_CM_TESLA_TESLA_CLKCTRL_OFFSET,
+-			.rstctrl_offs = OMAP4_RM_TESLA_RSTCTRL_OFFSET,
+-			.context_offs = OMAP4_RM_TESLA_TESLA_CONTEXT_OFFSET,
+-			.modulemode   = MODULEMODE_HWCTRL,
+-		},
+-	},
+-};
+-
+ /*
+  * 'mpu' class
+  * mpu sub-system
+@@ -3012,8 +2927,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
+ 	&omap44xx_l3_main_2__iva,
+ 	&omap44xx_l4_wkup__kbd,
+ 	&omap44xx_l4_abe__mcpdm,
+-	&omap44xx_l3_main_2__mmu_ipu,
+-	&omap44xx_l4_cfg__mmu_dsp,
+ 	&omap44xx_l3_main_2__ocmc_ram,
+ 	&omap44xx_l4_cfg__ocp2scp_usb_phy,
+ 	&omap44xx_mpu_private__prcm_mpu,
 -- 
 2.17.1
 
