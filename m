@@ -2,47 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B595D11BDCC
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2019 21:24:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9A3411C486
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Dec 2019 05:02:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726686AbfLKUYp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Dec 2019 15:24:45 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:34034 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726345AbfLKUYp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Dec 2019 15:24:45 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBBKOaU7106830;
-        Wed, 11 Dec 2019 14:24:36 -0600
+        id S1727772AbfLLECI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Dec 2019 23:02:08 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:52544 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726769AbfLLECI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Dec 2019 23:02:08 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBC423Dl074522;
+        Wed, 11 Dec 2019 22:02:03 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576095876;
-        bh=XOokrT+freFORqVJ8mOrjS85/EC9e13R8A2WaBBWr8o=;
+        s=ti-com-17Q1; t=1576123323;
+        bh=G0MttXQxcSEe8MG9sVlpbE1rdRM5dXjay7Qfde/9HrI=;
         h=From:To:CC:Subject:Date;
-        b=SSE5Z1gpd8cEZ+Yv2G4LqsDhfgfhTaufX81SZc19PLwM5rD255jkhBFtT2zYZ6RJD
-         09npLkZxbY1L96PhL+Yadgt2rvAPvQGQmDGDKEpjZqE5CQq4kxF6PJ1DVRcNCOJFGE
-         qMsuEOM9u+rQzMgV9Oeq7GZbl0A+YUzXMWGjijwM=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBBKOaZZ011827
+        b=QtDrp3F6LGrLxU/ocoQZcnVMmJz6oG7juchJ3PJr6Sj2MolxZStHrgSX+l6RRZ8AN
+         6BosQ6r8RY6oJvQf/ZOCRQPQ2FMPbkd2EnHMNe0V0e8WHn/1qoVCPityluWyBP37Sx
+         0738N5GZ6kEp0EYEoJk/rCEhXscKf1ZwkybdC64g=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBC422pd064318
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 11 Dec 2019 14:24:36 -0600
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 11 Dec 2019 22:02:03 -0600
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 11
- Dec 2019 14:24:36 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE103.ent.ti.com
+ Dec 2019 22:02:00 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE103.ent.ti.com
  (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 11 Dec 2019 14:24:36 -0600
+ Frontend Transport; Wed, 11 Dec 2019 22:02:00 -0600
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBBKOaew059579;
-        Wed, 11 Dec 2019 14:24:36 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBC420xY065191;
+        Wed, 11 Dec 2019 22:02:00 -0600
 From:   Dave Gerlach <d-gerlach@ti.com>
-To:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>
-CC:     Tony Lindgren <tony@atomide.com>, Dave Gerlach <d-gerlach@ti.com>
-Subject: [PATCH] ARM: OMAP2+: am43xx: Add lcdc clockdomain
-Date:   Wed, 11 Dec 2019 14:25:58 -0600
-Message-ID: <20191211202558.5988-1-d-gerlach@ti.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Dave Gerlach <d-gerlach@ti.com>, Suman Anna <s-anna@ti.com>
+Subject: [PATCH] soc: ti: wkup_m3_ipc: Fix race condition with rproc_boot
+Date:   Wed, 11 Dec 2019 22:03:14 -0600
+Message-ID: <20191212040314.14753-1-d-gerlach@ti.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -53,58 +55,46 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-As described in AM437x TRM, spruhl7h, Revised January 2018, there is
-an LCDC clockdomain present in the PER power domain. Although it is
-entirely unused on AM437x, it should be defined along with the other
-clockdomains so it can be shut off by Linux as there are no users.
+Any user of wkup_m3_ipc calls wkup_m3_ipc_get to get a handle and this
+checks the value of the static variable m3_ipc_state to see if the
+wkup_m3 is ready. Currently this is populated during probe before
+rproc_boot has been called, meaning there is a window of time that
+wkup_m3_ipc_get can return a valid handle but the wkup_m3 itself is not
+ready, leading to invalid IPC calls to the wkup_m3 and system
+instability.
 
-Reported-by: Munan Xu <munan@ti.com>
+To avoid this, move the population of the m3_ipc_state variable until
+after rproc_boot has succeeded to guarantee a valid and usable handle
+is always returned.
+
+Reported-by: Suman Anna <s-anna@ti.com>
 Signed-off-by: Dave Gerlach <d-gerlach@ti.com>
 ---
- arch/arm/mach-omap2/clockdomains43xx_data.c | 10 ++++++++++
- arch/arm/mach-omap2/prcm43xx.h              |  1 +
- 2 files changed, 11 insertions(+)
+ drivers/soc/ti/wkup_m3_ipc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/clockdomains43xx_data.c b/arch/arm/mach-omap2/clockdomains43xx_data.c
-index 751708d727af..c96a2b1efbad 100644
---- a/arch/arm/mach-omap2/clockdomains43xx_data.c
-+++ b/arch/arm/mach-omap2/clockdomains43xx_data.c
-@@ -84,6 +84,15 @@ static struct clockdomain l3s_tsc_43xx_clkdm = {
- 	.flags		  = CLKDM_CAN_SWSUP,
- };
+diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
+index 378369d9364a..e9ece45d7a33 100644
+--- a/drivers/soc/ti/wkup_m3_ipc.c
++++ b/drivers/soc/ti/wkup_m3_ipc.c
+@@ -419,6 +419,8 @@ static void wkup_m3_rproc_boot_thread(struct wkup_m3_ipc *m3_ipc)
+ 	ret = rproc_boot(m3_ipc->rproc);
+ 	if (ret)
+ 		dev_err(dev, "rproc_boot failed\n");
++	else
++		m3_ipc_state = m3_ipc;
  
-+static struct clockdomain lcdc_43xx_clkdm = {
-+	.name		  = "lcdc_clkdm",
-+	.pwrdm		  = { .name = "per_pwrdm" },
-+	.prcm_partition	  = AM43XX_CM_PARTITION,
-+	.cm_inst	  = AM43XX_CM_PER_INST,
-+	.clkdm_offs	  = AM43XX_CM_PER_LCDC_CDOFFS,
-+	.flags		  = CLKDM_CAN_SWSUP,
-+};
-+
- static struct clockdomain dss_43xx_clkdm = {
- 	.name		  = "dss_clkdm",
- 	.pwrdm		  = { .name = "per_pwrdm" },
-@@ -173,6 +182,7 @@ static struct clockdomain *clockdomains_am43xx[] __initdata = {
- 	&pruss_ocp_43xx_clkdm,
- 	&ocpwp_l3_43xx_clkdm,
- 	&l3s_tsc_43xx_clkdm,
-+	&lcdc_43xx_clkdm,
- 	&dss_43xx_clkdm,
- 	&l3_aon_43xx_clkdm,
- 	&emif_43xx_clkdm,
-diff --git a/arch/arm/mach-omap2/prcm43xx.h b/arch/arm/mach-omap2/prcm43xx.h
-index e2ad14e77064..7078a61c1d3f 100644
---- a/arch/arm/mach-omap2/prcm43xx.h
-+++ b/arch/arm/mach-omap2/prcm43xx.h
-@@ -68,6 +68,7 @@
- #define AM43XX_CM_PER_ICSS_CDOFFS			0x0300
- #define AM43XX_CM_PER_L4LS_CDOFFS			0x0400
- #define AM43XX_CM_PER_EMIF_CDOFFS			0x0700
-+#define AM43XX_CM_PER_LCDC_CDOFFS			0x0800
- #define AM43XX_CM_PER_DSS_CDOFFS			0x0a00
- #define AM43XX_CM_PER_CPSW_CDOFFS			0x0b00
- #define AM43XX_CM_PER_OCPWP_L3_CDOFFS			0x0c00
+ 	do_exit(0);
+ }
+@@ -505,8 +507,6 @@ static int wkup_m3_ipc_probe(struct platform_device *pdev)
+ 		goto err_put_rproc;
+ 	}
+ 
+-	m3_ipc_state = m3_ipc;
+-
+ 	return 0;
+ 
+ err_put_rproc:
 -- 
 2.20.1
 
