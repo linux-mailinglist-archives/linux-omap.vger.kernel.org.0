@@ -2,57 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A247211CC58
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Dec 2019 12:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C049E11CD67
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Dec 2019 13:48:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728994AbfLLLg6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Dec 2019 06:36:58 -0500
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:40672 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728920AbfLLLg5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Dec 2019 06:36:57 -0500
-Received: by mail-qt1-f195.google.com with SMTP id t17so1988127qtr.7
-        for <linux-omap@vger.kernel.org>; Thu, 12 Dec 2019 03:36:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=2UStARTjZxf1MQo7SR8qAHSWTdIelxWKcXFIVcIgtxc=;
-        b=fDBY08mjyv+0fQb1NhP8zZlol+0tznzY1c+4RuZhveBDe4pmHUJe0y4puleggjv4Sh
-         QJH4MR7u2Ov1y9qF7z/jPRqjaxw7PQFMSMSUpVFnLFjOlFzmBrtG06jCNC245jcQvvwf
-         3+DB99t53Wf63U5FaST2Pyj3CMoYLoeWy8ez0+SRtUCo/W20/6YSFAui+JD988K3/XCK
-         HveCrSrsLV28hDr2CGjmf5TunGINIKNHYX+rmy47RwUqbyg9njw4/QN6DfjE6QgepC+1
-         YdFNvbkIH3Lq+0W0tsi7ZJ+6IQ4mZl/MllRmZTIzXfcYUKzUzeXkJzBWMeXOX8mTMCFU
-         PybA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=2UStARTjZxf1MQo7SR8qAHSWTdIelxWKcXFIVcIgtxc=;
-        b=JNiW16YYKc/OV2hu3qCrAxmdTGNtd9x3gqy12qc0bmeOqZ2j4PlkP4rhq5fvh7Z31b
-         AJ3uZCIewCXTBAPv5aBDpaGyFH7NAeBCfQjYlUi5Cz0mG1mfapWK/OFf92qaiLl5FPCn
-         NzmL7j2yY6VWizqPHugHaabq5O4IBZAicH+1T+F+QeGeXt/NH9wmPuOOTP4ipZvtrrE6
-         0iKrHT+5LWyVY7+JgpJVI8JlbXcNnVwiI/ZPZngmeq8hrv5tLjBdyb3dhiUgQP2GbV7U
-         JSoeSZAC1uDBCYdYauaf5irzCBDwVmV7eQRzxgQoUA4RfLCqNshG+/o5sa3uDsBNB0NW
-         Em6w==
-X-Gm-Message-State: APjAAAWONE324pRjBRVF9VFOZAh2z/yilvf3cj0Nss+cHwfbXFWDfQz/
-        BJpruFtfyENUsmd9OmIK7ECkTc0MCYxV01kSM0c=
-X-Google-Smtp-Source: APXvYqw09BDDR+jxuNS0qmmt8VeBNtYTywb7gkV3dgZ4vXIsRL8UNPbS9QXSRk6ajlVvJL7Z26EE13AZvz3UiM86Qdk=
-X-Received: by 2002:ac8:36ab:: with SMTP id a40mr1909580qtc.181.1576150616969;
- Thu, 12 Dec 2019 03:36:56 -0800 (PST)
+        id S1729157AbfLLMsD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Dec 2019 07:48:03 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:48794 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729092AbfLLMsD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Dec 2019 07:48:03 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBCClsoY107994;
+        Thu, 12 Dec 2019 06:47:54 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1576154874;
+        bh=MQ3QAf8DC18YNgiP5+JogVGUzlLL6GHx/Hd//IFV084=;
+        h=From:To:CC:Subject:Date;
+        b=x12My7tUk+Kj4IIdhu0xhNnHp0LQvoBpkywcGGJCCDWm4ZzhPdxCnwjMqQAx4g8S/
+         UFrAycQGpsbCp8hm3ioVrTN15xHVVdRYekRz9aWi5R7o1FXLFreXqdt4GHliNO/P/A
+         EpAjg7k2X64q4pIb9NgvtkeZ59maSfZdSZelz7eg=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBCClsVZ073571
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 12 Dec 2019 06:47:54 -0600
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 12
+ Dec 2019 06:47:53 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Thu, 12 Dec 2019 06:47:53 -0600
+Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBCClpeK038513;
+        Thu, 12 Dec 2019 06:47:52 -0600
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <linux-omap@vger.kernel.org>, <tony@atomide.com>
+CC:     <linux-arm-kernel@lists.infradead.org>, <s-anna@ti.com>
+Subject: [PATCH] bus: ti-sysc: Drop MMU quirks
+Date:   Thu, 12 Dec 2019 14:47:51 +0200
+Message-ID: <20191212124751.3400-1-t-kristo@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: by 2002:ac8:760c:0:0:0:0:0 with HTTP; Thu, 12 Dec 2019 03:36:56
- -0800 (PST)
-Reply-To: mrdavidkekeli01@gmail.com
-From:   "Mr.David Keller" <chiogb003@gmail.com>
-Date:   Thu, 12 Dec 2019 11:36:56 +0000
-Message-ID: <CABa6Gn=qdzoV_XSW9Z=wc7gofBz4fd9YkkLWEen+rQ=jQEwQAw@mail.gmail.com>
-Subject: i wait to hear from you
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer
-me.Kind Regards,Mr.David Keller.
+From: Suman Anna <s-anna@ti.com>
+
+The OMAP IOMMU driver no longer uses the pm_runtime_irq_safe() API
+after commit 1432ebbd6003 ("iommu/omap: remove pm_runtime_irq_safe
+flag for OMAP IOMMUs"), so the SYSC_QUIRK_LEGACY_IDLE quirk is no
+longer needed for MMU devices. Drop the same.
+
+Signed-off-by: Suman Anna <s-anna@ti.com>
+---
+ drivers/bus/ti-sysc.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 56887c6877a7..1c74f38110ac 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -1209,10 +1209,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 	/* These drivers need to be fixed to not use pm_runtime_irq_safe() */
+ 	SYSC_QUIRK("gpio", 0, 0, 0x10, 0x114, 0x50600801, 0xffff00ff,
+ 		   SYSC_QUIRK_LEGACY_IDLE | SYSC_QUIRK_OPT_CLKS_IN_RESET),
+-	SYSC_QUIRK("mmu", 0, 0, 0x10, 0x14, 0x00000020, 0xffffffff,
+-		   SYSC_QUIRK_LEGACY_IDLE),
+-	SYSC_QUIRK("mmu", 0, 0, 0x10, 0x14, 0x00000030, 0xffffffff,
+-		   SYSC_QUIRK_LEGACY_IDLE),
+ 	SYSC_QUIRK("sham", 0, 0x100, 0x110, 0x114, 0x40000c03, 0xffffffff,
+ 		   SYSC_QUIRK_LEGACY_IDLE),
+ 	SYSC_QUIRK("smartreflex", 0, -1, 0x24, -1, 0x00000000, 0xffffffff,
+-- 
+2.17.1
+
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
