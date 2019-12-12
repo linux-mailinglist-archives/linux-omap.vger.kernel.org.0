@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8614011CDCA
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Dec 2019 14:06:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88C2F11CDCC
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Dec 2019 14:06:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729359AbfLLNGU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Dec 2019 08:06:20 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:42820 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729297AbfLLNGT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Dec 2019 08:06:19 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBCD6EPi105801;
-        Thu, 12 Dec 2019 07:06:14 -0600
+        id S1729373AbfLLNGV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Dec 2019 08:06:21 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:34598 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729297AbfLLNGV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Dec 2019 08:06:21 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBCD6FjJ046822;
+        Thu, 12 Dec 2019 07:06:15 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576155974;
-        bh=ti51rTV6c8ZSMS8P9ZaZrX2hos6jao0jMbrGOB4FUbk=;
+        s=ti-com-17Q1; t=1576155975;
+        bh=dUt9cxzXT8ATche9ypvfUEfMBASy8mLvyF9jE25xr7I=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=kP0VI02D7shB2PJ+VamHrvEV3MSABBoVKktUX2cCdQoWaOwVLazROjboaBOiBRORS
-         V/at1jwjyMdRVgdHSkVsGKNoLJQZEcoAXBesh1nEugetnV/W4oFVoK5qY3yz+XFANb
-         j9LhXUHmKh+8As18NC9hk3z/jSbXDKqEjeEC1TBE=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBCD6ETS074439
+        b=EfTX/xOn3867wEpyy2klKs6fBoCflFkiZEHSo0HfTKE9s6DikcL4Cp/NXfVO1jFvw
+         yWoctgd/7PlwcJGaTdzD8UPRNWQoCt3AOsPfFp04Af1dfrTTxdViprD7E3yqA6yzCE
+         pDQO1nZOh9luicibwUUfukTDPHzBtmQ5vIEpYk+w=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBCD6FLW098104
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 12 Dec 2019 07:06:14 -0600
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 12 Dec 2019 07:06:15 -0600
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 12
- Dec 2019 07:06:13 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 07:06:15 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 12 Dec 2019 07:06:13 -0600
+ Frontend Transport; Thu, 12 Dec 2019 07:06:15 -0600
 Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBCD66KF069503;
-        Thu, 12 Dec 2019 07:06:12 -0600
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBCD66KG069503;
+        Thu, 12 Dec 2019 07:06:14 -0600
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <linux-omap@vger.kernel.org>, <tony@atomide.com>
 CC:     <linux-arm-kernel@lists.infradead.org>, <s-anna@ti.com>
-Subject: [PATCH 4/5] ARM: OMAP2+: omap-iommu.c conversion to ti-sysc
-Date:   Thu, 12 Dec 2019 15:05:40 +0200
-Message-ID: <20191212130541.3657-5-t-kristo@ti.com>
+Subject: [PATCH 5/5] ARM: OMAP2+: use separate IOMMU pdata to fix DRA7 IPU1 boot
+Date:   Thu, 12 Dec 2019 15:05:41 +0200
+Message-ID: <20191212130541.3657-6-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191212130541.3657-1-t-kristo@ti.com>
 References: <20191212130541.3657-1-t-kristo@ti.com>
@@ -53,153 +53,89 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert omap2 iommu platform code to use ti-sysc instead of legacy
-omap-device / hwmod interfaces.
+From: Suman Anna <s-anna@ti.com>
 
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
+The IPU1 MMU has been using common IOMMU pdata quirks defined and
+used by all IPU IOMMU devices on OMAP4 and beyond. Separate out the
+pdata for IPU1 MMU with the additional .set_pwrdm_constraint ops
+plugged in, so that the IPU1 power domain can be restricted to ON
+state during the boot and active period of the IPU1 remote processor.
+This eliminates the pre-conditions for the IPU1 boot issue as
+described in commit afe518400bdb ("iommu/omap: fix boot issue on
+remoteprocs with AMMU/Unicache").
+
+NOTE:
+1. RET is not a valid target power domain state on DRA7 platforms,
+   and IPU power domain is normally programmed for OFF. The IPU1
+   still fails to boot though, and an unclearable l3_noc error is
+   thrown currently on 4.14 kernel without this fix. This behavior
+   is slightly different from previous 4.9 LTS kernel.
+2. The fix is currently applied only to IPU1 on DRA7xx SoC, as the
+   other affected processors on OMAP4/OMAP5/DRA7 are in domains
+   that are not entering RET. IPU2 on DRA7 is in CORE power domain
+   which is only programmed for ON power state. The fix can be easily
+   scaled if these domains do hit RET in the future.
+3. The issue was not seen on current DRA7 platforms if any of the
+   DSP remote processors were booted and using one of the GPTimers
+   5, 6, 7 or 8 on previous 4.9 LTS kernel. This was due to the
+   errata fix for i874 implemented in commit 1cbabcb9807e ("ARM:
+   DRA7: clockdomain: Implement timer workaround for errata i874")
+   which keeps the IPU1 power domain from entering RET when the
+   timers are active. But the timer workaround did not make any
+   difference on 4.14 kernel, and an l3_noc error was seen still
+   without this fix.
+
+Signed-off-by: Suman Anna <s-anna@ti.com>
 ---
- arch/arm/mach-omap2/omap-iommu.c | 99 ++++++++++++++++++++++++++------
- 1 file changed, 80 insertions(+), 19 deletions(-)
+ arch/arm/mach-omap2/pdata-quirks.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/arch/arm/mach-omap2/omap-iommu.c b/arch/arm/mach-omap2/omap-iommu.c
-index 78247e6f4a72..54aff33e55e6 100644
---- a/arch/arm/mach-omap2/omap-iommu.c
-+++ b/arch/arm/mach-omap2/omap-iommu.c
-@@ -8,19 +8,27 @@
+diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
+index 88ca7f82510a..7c6e57e4bcb2 100644
+--- a/arch/arm/mach-omap2/pdata-quirks.c
++++ b/arch/arm/mach-omap2/pdata-quirks.c
+@@ -43,6 +43,17 @@ struct pdata_init {
+ static struct of_dev_auxdata omap_auxdata_lookup[];
+ static struct twl4030_gpio_platform_data twl_gpio_auxdata;
  
- #include <linux/platform_device.h>
- #include <linux/err.h>
-+#include <linux/clk.h>
-+#include <linux/list.h>
++#if IS_ENABLED(CONFIG_OMAP_IOMMU)
++int omap_iommu_set_pwrdm_constraint(struct platform_device *pdev, bool request,
++				    u8 *pwrst);
++#else
++static inline int omap_iommu_set_pwrdm_constraint(struct platform_device *pdev,
++						  bool request, u8 *pwrst)
++{
++	return 0;
++}
++#endif
++
+ #ifdef CONFIG_MACH_NOKIA_N8X0
+ static void __init omap2420_n8x0_legacy_init(void)
+ {
+@@ -276,6 +287,10 @@ static void __init omap5_uevm_legacy_init(void)
+ #endif
  
--#include "omap_hwmod.h"
--#include "omap_device.h"
- #include "clockdomain.h"
- #include "powerdomain.h"
- 
-+struct pwrdm_link {
-+	struct device *dev;
-+	struct powerdomain *pwrdm;
-+	struct list_head node;
+ #ifdef CONFIG_SOC_DRA7XX
++static struct iommu_platform_data dra7_ipu1_dsp_iommu_pdata = {
++	.set_pwrdm_constraint = omap_iommu_set_pwrdm_constraint,
 +};
 +
-+static DEFINE_SPINLOCK(iommu_lock);
-+static struct clockdomain *emu_clkdm;
-+static atomic_t emu_count;
-+
- static void omap_iommu_dra7_emu_swsup_config(struct platform_device *pdev,
- 					     bool enable)
- {
--	static struct clockdomain *emu_clkdm;
--	static DEFINE_SPINLOCK(emu_lock);
--	static atomic_t count;
- 	struct device_node *np = pdev->dev.of_node;
-+	unsigned long flags;
- 
- 	if (!of_device_is_compatible(np, "ti,dra7-dsp-iommu"))
- 		return;
-@@ -31,34 +39,87 @@ static void omap_iommu_dra7_emu_swsup_config(struct platform_device *pdev,
- 			return;
- 	}
- 
--	spin_lock(&emu_lock);
-+	spin_lock_irqsave(&iommu_lock, flags);
- 
--	if (enable && (atomic_inc_return(&count) == 1))
-+	if (enable && (atomic_inc_return(&emu_count) == 1))
- 		clkdm_deny_idle(emu_clkdm);
--	else if (!enable && (atomic_dec_return(&count) == 0))
-+	else if (!enable && (atomic_dec_return(&emu_count) == 0))
- 		clkdm_allow_idle(emu_clkdm);
- 
--	spin_unlock(&emu_lock);
-+	spin_unlock_irqrestore(&iommu_lock, flags);
-+}
-+
-+static struct powerdomain *_get_pwrdm(struct device *dev)
-+{
-+	struct clk *clk;
-+	struct clk_hw_omap *hwclk;
-+	struct clockdomain *clkdm;
-+	struct powerdomain *pwrdm = NULL;
-+	struct pwrdm_link *entry;
-+	unsigned long flags;
-+	static LIST_HEAD(cache);
-+
-+	spin_lock_irqsave(&iommu_lock, flags);
-+
-+	list_for_each_entry(entry, &cache, node) {
-+		if (entry->dev == dev) {
-+			pwrdm = entry->pwrdm;
-+			break;
-+		}
-+	}
-+
-+	spin_unlock_irqrestore(&iommu_lock, flags);
-+
-+	if (pwrdm)
-+		return pwrdm;
-+
-+	clk = of_clk_get(dev->of_node->parent, 0);
-+	if (!clk) {
-+		dev_err(dev, "no fck found\n");
-+		return NULL;
-+	}
-+
-+	hwclk = to_clk_hw_omap(__clk_get_hw(clk));
-+	clk_put(clk);
-+	if (!hwclk || !hwclk->clkdm_name) {
-+		dev_err(dev, "no hwclk data\n");
-+		return NULL;
-+	}
-+
-+	clkdm = clkdm_lookup(hwclk->clkdm_name);
-+	if (!clkdm) {
-+		dev_err(dev, "clkdm not found: %s\n", hwclk->clkdm_name);
-+		return NULL;
-+	}
-+
-+	pwrdm = clkdm_get_pwrdm(clkdm);
-+	if (!pwrdm) {
-+		dev_err(dev, "pwrdm not found: %s\n", clkdm->name);
-+		return NULL;
-+	}
-+
-+	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
-+	if (entry) {
-+		entry->dev = dev;
-+		entry->pwrdm = pwrdm;
-+		spin_lock_irqsave(&iommu_lock, flags);
-+		list_add(&entry->node, &cache);
-+		spin_unlock_irqrestore(&iommu_lock, flags);
-+	}
-+
-+	return pwrdm;
- }
- 
- int omap_iommu_set_pwrdm_constraint(struct platform_device *pdev, bool request,
- 				    u8 *pwrst)
- {
- 	struct powerdomain *pwrdm;
--	struct omap_device *od;
- 	u8 next_pwrst;
- 	int ret = 0;
- 
--	od = to_omap_device(pdev);
--	if (!od)
--		return -ENODEV;
--
--	if (od->hwmods_cnt != 1)
--		return -EINVAL;
--
--	pwrdm = omap_hwmod_get_pwrdm(od->hwmods[0]);
-+	pwrdm = _get_pwrdm(&pdev->dev);
- 	if (!pwrdm)
--		return -EINVAL;
-+		return -ENODEV;
- 
- 	if (request) {
- 		*pwrst = pwrdm_read_next_pwrst(pwrdm);
+ static struct omap_hsmmc_platform_data dra7_hsmmc_data_mmc1;
+ static struct omap_hsmmc_platform_data dra7_hsmmc_data_mmc2;
+ static struct omap_hsmmc_platform_data dra7_hsmmc_data_mmc3;
+@@ -499,6 +514,12 @@ static struct of_dev_auxdata omap_auxdata_lookup[] = {
+ 		       &dra7_hsmmc_data_mmc2),
+ 	OF_DEV_AUXDATA("ti,dra7-hsmmc", 0x480ad000, "480ad000.mmc",
+ 		       &dra7_hsmmc_data_mmc3),
++	OF_DEV_AUXDATA("ti,dra7-dsp-iommu", 0x40d01000, "40d01000.mmu",
++		       &dra7_ipu1_dsp_iommu_pdata),
++	OF_DEV_AUXDATA("ti,dra7-dsp-iommu", 0x41501000, "41501000.mmu",
++		       &dra7_ipu1_dsp_iommu_pdata),
++	OF_DEV_AUXDATA("ti,dra7-iommu", 0x58882000, "58882000.mmu",
++		       &dra7_ipu1_dsp_iommu_pdata),
+ #endif
+ 	/* Common auxdata */
+ 	OF_DEV_AUXDATA("ti,sysc", 0, NULL, &ti_sysc_pdata),
 -- 
 2.17.1
 
