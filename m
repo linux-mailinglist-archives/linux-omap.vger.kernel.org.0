@@ -2,56 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 044DE11DE28
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 07:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6951D11DE2E
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 07:16:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732027AbfLMGOh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Dec 2019 01:14:37 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:54650 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725875AbfLMGOh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 01:14:37 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBD6EXYB017976;
-        Fri, 13 Dec 2019 00:14:33 -0600
+        id S1732140AbfLMGQ3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Dec 2019 01:16:29 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:38834 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732139AbfLMGQ2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 01:16:28 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBD6GOn8021728;
+        Fri, 13 Dec 2019 00:16:24 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576217673;
-        bh=vzZiZBi+iqkKP3WW1Ho6MkNFYIGFrNW5R0pDMeKOzrI=;
+        s=ti-com-17Q1; t=1576217784;
+        bh=Haj50UpwjmFeakDyvaakkknPXa4Ts6+SeQaChvxGYs0=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=p5x9KSU8wmZYTLSnK60hBw/URMY3p+1sf1rB+Goj3hZs6/x/5yzW75YvrZ+FnUkpE
-         hcwEFa+S4Fq3ZqdsPiSKaFFEbcOBhVunI8AIwiBn0rcSzCA+EhGWmUBpiFX9FUq83b
-         EUcf6t37Vtfu7905fHJLw9/iTYJA2Dgf0HvXZ9HE=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBD6EXkb035783
+        b=vGyU2XFk04XI42xquqbH2jYcja/HkjrbTSsmX92HeJTqcNE4Rv48Wj46zAACcH+ZY
+         MSwCbcrFqKDGZxUVflPGDBvij9Z91RuKD859PlnVTD78HMqq7izjuoISoEqu/18Hav
+         U11KYObWTIOoROvjseVUOT3Onc/65Dt4BjXxotiI=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBD6GOo9117279
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 13 Dec 2019 00:14:33 -0600
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 13 Dec 2019 00:16:24 -0600
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 13
- Dec 2019 00:14:32 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 00:16:24 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 13 Dec 2019 00:14:32 -0600
+ Frontend Transport; Fri, 13 Dec 2019 00:16:24 -0600
 Received: from [10.24.69.174] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBD6EUhH095395;
-        Fri, 13 Dec 2019 00:14:31 -0600
-Subject: Re: [PATCH 00/14] Probe am3, am4 and dra7 crypto accelerators with
- ti-sysc
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBD6GLFH075866;
+        Fri, 13 Dec 2019 00:16:22 -0600
+Subject: Re: [PATCH 1/2] ARM: dts: Configure interconnect target module for
+ am4 qspi
 To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
 CC:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        <devicetree@vger.kernel.org>, Tero Kristo <t-kristo@ti.com>
-References: <20191210231722.44215-1-tony@atomide.com>
+        <devicetree@vger.kernel.org>,
+        Jean Pihet <jean.pihet@newoldbits.com>
+References: <20191210215831.6199-1-tony@atomide.com>
 From:   Keerthy <j-keerthy@ti.com>
 X-Pep-Version: 2.0
-Message-ID: <00205b89-30b2-74c5-d8f7-c6976ffd9cbf@ti.com>
-Date:   Fri, 13 Dec 2019 11:44:47 +0530
+Message-ID: <8797e41b-1182-6701-ecbd-e7b9e3cddd04@ti.com>
+Date:   Fri, 13 Dec 2019 11:46:38 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <20191210231722.44215-1-tony@atomide.com>
+In-Reply-To: <20191210215831.6199-1-tony@atomide.com>
 Content-Type: multipart/mixed;
-        boundary="------------B83D73C247ED7BD457FCB678"
+        boundary="------------C1AB340328A4A177B02881A9"
 Content-Language: en-US
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
@@ -59,69 +60,82 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---------------B83D73C247ED7BD457FCB678
+--------------C1AB340328A4A177B02881A9
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 11/12/19 4:47 am, Tony Lindgren wrote:
-> Hi,
->=20
-> This series updates crypto accelerators to probe with ti-sysc and devic=
-e tree
-> data for am3, am4 and dra7.
-
-Hi Tony,
-
-Boot tested on DRA72 & DRA76.
-
-Tested for RTC+DDR mode and DS0 mode on AM437x.
-Tested for DS0 on am335x-evm & am335x-beagle-bone-black.
-
-FWIW
+On 11/12/19 3:28 am, Tony Lindgren wrote:
+> We can now probe devices with device tree only configuration using
+> ti-sysc interconnect target module driver. Let's configure the
+> module, but keep the legacy "ti,hwmods" peroperty to avoid new boot
+> time warnings. The legacy property will be removed in later patches
+> together with the legacy platform data.
 
 Tested-by: Keerthy <j-keerthy@ti.com>
 
-- Keerthy
+>=20
+> Cc: Jean Pihet <jean.pihet@newoldbits.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  arch/arm/boot/dts/am4372.dtsi | 38 ++++++++++++++++++++++++++---------=
 
+>  1 file changed, 28 insertions(+), 10 deletions(-)
 >=20
-> Regards,
+> diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.d=
+tsi
+> --- a/arch/arm/boot/dts/am4372.dtsi
+> +++ b/arch/arm/boot/dts/am4372.dtsi
+> @@ -305,17 +305,35 @@ gpmc: gpmc@50000000 {
+>  			status =3D "disabled";
+>  		};
+> =20
+> -		qspi: spi@47900000 {
+> -			compatible =3D "ti,am4372-qspi";
+> -			reg =3D <0x47900000 0x100>,
+> -			      <0x30000000 0x4000000>;
+> -			reg-names =3D "qspi_base", "qspi_mmap";
+> -			#address-cells =3D <1>;
+> -			#size-cells =3D <0>;
+> +		target-module@47900000 {
+> +			compatible =3D "ti,sysc-omap4", "ti,sysc";
+>  			ti,hwmods =3D "qspi";
+> -			interrupts =3D <0 138 0x4>;
+> -			num-cs =3D <4>;
+> -			status =3D "disabled";
+> +			reg =3D <0x47900000 0x4>,
+> +			      <0x47900010 0x4>;
+> +			reg-names =3D "rev", "sysc";
+> +			ti,sysc-sidle =3D <SYSC_IDLE_FORCE>,
+> +					<SYSC_IDLE_NO>,
+> +					<SYSC_IDLE_SMART>,
+> +					<SYSC_IDLE_SMART_WKUP>;
+> +			clocks =3D <&l3s_clkctrl AM4_L3S_QSPI_CLKCTRL 0>;
+> +			clock-names =3D "fck";
+> +			#address-cells =3D <1>;
+> +			#size-cells =3D <1>;
+> +			ranges =3D <0x0 0x47900000 0x1000>,
+> +				 <0x30000000 0x30000000 0x4000000>;
+> +
+> +			qspi: spi@0 {
+> +				compatible =3D "ti,am4372-qspi";
+> +				reg =3D <0 0x100>,
+> +				      <0x30000000 0x4000000>;
+> +				reg-names =3D "qspi_base", "qspi_mmap";
+> +				clocks =3D <&dpll_per_m2_div4_ck>;
+> +				clock-names =3D "fck";
+> +				#address-cells =3D <1>;
+> +				#size-cells =3D <0>;
+> +				interrupts =3D <0 138 0x4>;
+> +				num-cs =3D <4>;
+> +			};
+>  		};
+> =20
+>  		dss: dss@4832a000 {
 >=20
-> Tony
->=20
->=20
-> Tony Lindgren (14):
->   ARM: dts: Configure interconnect target module for am3 sham
->   ARM: dts: Configure interconnect target module for am4 sham
->   ARM: dts: Configure interconnect target module for dra7 sham
->   ARM: dts: Configure interconnect target module for am3 aes
->   ARM: dts: Configure interconnect target module for am4 aes
->   ARM: dts: Configure interconnect target module for dra7 aes
->   ARM: dts: Configure interconnect target module for am4 des
->   ARM: dts: Configure interconnect target module for dra7 des
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 sham
->   ARM: OMAP2+: Drop legacy platform data for dra7 sham
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 aes
->   ARM: OMAP2+: Drop legacy platform data for dra7 aes
->   ARM: OMAP2+: Drop legacy platform data for am4 des
->   ARM: OMAP2+: Drop legacy platform data for dra7 des
->=20
->  arch/arm/boot/dts/am33xx.dtsi                 |  69 +++++++--
->  arch/arm/boot/dts/am4372.dtsi                 | 105 +++++++++++---
->  arch/arm/boot/dts/dra7-l4.dtsi                |  31 ++++
->  arch/arm/boot/dts/dra7.dtsi                   | 118 +++++++++++-----
->  .../omap_hwmod_33xx_43xx_common_data.h        |   4 -
->  .../omap_hwmod_33xx_43xx_interconnect_data.c  |  16 ---
->  .../omap_hwmod_33xx_43xx_ipblock_data.c       |  54 -------
->  arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |   2 -
->  arch/arm/mach-omap2/omap_hwmod_43xx_data.c    |  35 -----
->  arch/arm/mach-omap2/omap_hwmod_7xx_data.c     | 132 ------------------=
 
->  10 files changed, 250 insertions(+), 316 deletions(-)
->=20
-
---------------B83D73C247ED7BD457FCB678
+--------------C1AB340328A4A177B02881A9
 Content-Type: application/pgp-keys; name="pEpkey.asc"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: attachment; filename="pEpkey.asc"
@@ -268,4 +282,4 @@ Xpo=3D
 =3DNfsW
 -----END PGP PUBLIC KEY BLOCK-----
 
---------------B83D73C247ED7BD457FCB678--
+--------------C1AB340328A4A177B02881A9--
