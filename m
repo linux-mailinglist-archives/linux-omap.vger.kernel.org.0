@@ -2,106 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D01E11E219
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 11:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 056B711E235
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 11:41:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725793AbfLMKhD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Dec 2019 05:37:03 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:48542 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725747AbfLMKhD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 05:37:03 -0500
-Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 863019F4;
-        Fri, 13 Dec 2019 11:36:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1576233419;
-        bh=jwy8V32la/gbk1rg9AIOa9ojDpfNGVEao4L/0jvjxYc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KqUrGGff/NfA7HqTmXvE9Ld2qQ+GprK4M+mLKT/HJTmSCm37lu0wlfcsvJE3eD7Qq
-         obrr+X92bKjXgJO/Bqressdu0zqSDhaj9eYwYymhP4Zykww4Q1v7cv2mKuiNgfc+bE
-         ito566zT/eVFj67j0x5KGjko7axwc66+ff9ZxeMc=
-Date:   Fri, 13 Dec 2019 12:36:50 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Jyri Sarha <jsarha@ti.com>
-Cc:     dri-devel@lists.freedesktop.org, tony@atomide.com,
-        sam@ravnborg.org, robh+dt@kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, tomi.valkeinen@ti.com,
-        peter.ujfalusi@ti.com, bparrot@ti.com
-Subject: Re: [PATCH v2 2/3] dt-bindings: display: Add obsolete note to
- "ti,tilcdc,panel" binding
-Message-ID: <20191213103650.GA4860@pendragon.ideasonboard.com>
-References: <cover.1575901747.git.jsarha@ti.com>
- <459ed943fe0725200062171755bcfe5f73713d50.1575901747.git.jsarha@ti.com>
- <20191209145024.GB12841@pendragon.ideasonboard.com>
- <5f585e0b-be58-b474-f27b-875e254426a8@ti.com>
+        id S1726382AbfLMKl4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Dec 2019 05:41:56 -0500
+Received: from mout.gmx.net ([212.227.15.19]:57295 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725890AbfLMKlz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 13 Dec 2019 05:41:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1576233714;
+        bh=5ZkY1A/YEADPZaAHJi1eVCV+0m720qUQnVOg5aYU1nc=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=atZPR5bLRo+y6fzg2oSibjg9WnnE/AqaQGU8JPIpu3iVqHh5Ry37giVJ/xS6H21m+
+         pjLJb6ZU5/RLV/C5FURbo67bwkxEtz56dlmuRJWn2f33djAX2pEAi6E4a4k201xXXG
+         rWDr7vtxQ12MrsOlFu2EQ42VR31JCQzcjv6BF1iI=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [80.150.99.66] ([80.150.99.66]) by web-mail.gmx.net
+ (3c-app-gmx-bs17.server.lan [172.19.170.69]) (via HTTP); Fri, 13 Dec 2019
+ 11:41:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5f585e0b-be58-b474-f27b-875e254426a8@ti.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <trinity-8c439dd8-69cc-4bbc-812f-a063b15a9369-1576233714035@3c-app-gmx-bs17>
+From:   deffo@gmx.de
+To:     linux-omap@vger.kernel.org, aford173@gmail.com
+Cc:     tony@atomide.com
+Subject: Re: twl: not initialized and twl6030_uv_to_vsel problems
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 13 Dec 2019 11:41:54 +0100
+Importance: normal
+Sensitivity: Normal
+X-Priority: 3
+X-Provags-ID: V03:K1:y7dt3no9y0n1IcE4+jBrsYMyYemOAxZYRClYGFhnUSABBivdnztoP8KAGOHg+vs5eFkYa
+ 0nyDVskbRgkD8QTOqmSsF4mo1d7EoJtg7MA0lgYV7Q0WRRzxl37cdFscVm8UYVe2ztZw2F1kwTe/
+ l+X272PR6lxUEep+racB7byZ0SY7XoowTjub1XD99abSsDiy0OCCJ9KxnG5DZKms+ZWsAXnTyrh4
+ zCR06KYuLnxGYxgwD8rPUkWjFw6RXb0qg3f3hSyYyDmuAje16rstMr+WAQ2rXw7fEyehkxY7oKan
+ ss=
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Qs2kd+/0oQM=:ncqz3zaemGvsvrPwKZrtOo
+ QA+YnUkbPqaryVAKY0vVsqY8RkjWjYp6adIYcXrkLagMN4tragNFjhkAxahPYo45BPfJ73PiZ
+ 58b2BRJpdY8T+yS6NiiHlz2mEjYSJjpMmZJLqLGqNMSqGdy3e9f2G5/uyFbGarPJSQqX9taHC
+ v2o0wgeaGtAMdSyPTz2ldgVqxmdlwtg3GL89Ba5q+zmdEsFe+eVaBIlGVDg1A85PfI9SejZLp
+ GNahsRjXq2CIao735lDW07LHek8FHPvYUD7GLLYhS1mNrUio7DmcRsLePchAqyQI3LLthIGh4
+ +jWNtDx+AZGFHvwXyaKabxBhfmOAbwdfrsKLBajlLjTt1IOMNYqvxJsi614RI58cwhv5xE4c3
+ /1uNiygd/y4QMmBXaTDlInhV+mCcj3q4OMu4yn9O2DolwBNSmEtJdQMWPyumlv6BQe6MVDUQR
+ WbkMuZ7R/tkICTj7e2SMrskHiYNB8CBlbG1WZQ0+cqR93rpB9myGnIx2ng68ZAe34AdaD0yqF
+ RgbBKyi2wBBfnXREJS8Ns8ajtoqd/YCFEOc5uB/YUYTyVcUTu19YfRs4qH+4H+TQHOED0trlc
+ MjRH1reBCsleXuRiO1G4QPO125U+PD7l1znw9DSy60b/1SC9t34Ef69uLHlzBCopzcjk1VgQc
+ UUP7eZEsCCUVQMmTjIKlAd7Jiu+9wWiGZnKM7zfoellBCEQ==
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Jyri,
+Thanks for the link Adam, I fixed this on my local branch.
 
-On Fri, Dec 13, 2019 at 11:04:49AM +0200, Jyri Sarha wrote:
-> On 09/12/2019 16:50, Laurent Pinchart wrote:
-> > On Mon, Dec 09, 2019 at 04:42:15PM +0200, Jyri Sarha wrote:
-> >> The "ti,tilcdc,panel" binding should not be used anymore, since tilcdc
-> >> is fully capable of using generic drm panels like panel-simple and
-> >> panel-common binding. However, the obsolete binding is still widely
-> >> used in many mainline supported platforms that I do not have access to
-> >> and who knows how many custom platforms. So I am afraid we have to
-> >> keep the old bundled tilcdc panel driver around.
-> > 
-> > But can't we drop the bindings instead of marking them as obsolete, even
-> > if we keep the driver around for some time ?
-> > 
-> 
-> I guess that would be alright too.
-> 
-> > Also, would it make sense to set a date for the removal of the driver,
-> > and add it to the WARN() message in patch 3/3 ?
-> > 
-> 
-> Not sure about a date. I would feel quite uncomfortable of removing the
-> driver, while there is still mainline DTSes using "ti,tilcdc,panel". I
-> guess the next step would be putting the legacy panel driver behind a
-> default = N config option. Then I would probably hear something if there
-> are people actively using those DTSes. Maybe the date could be about
-> that too.
+Concerning the
 
-The mainline DTSes are not really an issue, they should be fixed in
-mainline to use new bindings, and all will be good. The problem is
-systems using out-of-tree DTSes, or systems that will upgrade the kernel
-but not the DT.
+[    2.318054] twl: not initialized
 
-> >> Signed-off-by: Jyri Sarha <jsarha@ti.com>
-> >> ---
-> >>  Documentation/devicetree/bindings/display/tilcdc/panel.txt | 6 ++++++
-> >>  1 file changed, 6 insertions(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/display/tilcdc/panel.txt b/Documentation/devicetree/bindings/display/tilcdc/panel.txt
-> >> index 808216310ea2..54963f9173cc 100644
-> >> --- a/Documentation/devicetree/bindings/display/tilcdc/panel.txt
-> >> +++ b/Documentation/devicetree/bindings/display/tilcdc/panel.txt
-> >> @@ -1,5 +1,11 @@
-> >>  Device-Tree bindings for tilcdc DRM generic panel output driver
-> >>  
-> >> +NOTE: This binding (and the related driver) is obsolete and should not
-> >> +      be used anymore. Please refer to drm panel-common binding (and
-> >> +      to a generic drm panel driver like panel-simple).
-> >> +      Documentation/devicetree/bindings/display/panel/panel-common.yaml
-> >> +      (drivers/gpu/drm/panel/panel-simple.c)
-> >> +
-> >>  Required properties:
-> >>   - compatible: value should be "ti,tilcdc,panel".
-> >>   - panel-info: configuration info to configure LCDC correctly for the panel
+error, this is due to the fact, that the twl itself is probed later:
 
--- 
-Regards,
+[    3.042114] twl_probe() called
 
-Laurent Pinchart
+So it cannot be available at this point. Might be a fundamental problem in=
+ the chronological order of init calls?
+
+On Wed, Nov 27, 2019 at 10:19 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> Hi,
+>
+> * deffo@gmx.de <deffo@gmx.de> [191127 13:53]:
+> > hi there!
+> >
+> > i'm using the TI OMAP4460 (VAR-SOM-OM44) and i get several errors in d=
+mesg on the latest for-next branch:
+> >
+> > root@localhost:~# dmesg -l err
+> > [    1.146026] twl: not initialized
+> > [    1.146087] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
+75000 Vs max 1316660
+> > [    1.146087] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
+75000 Vs max 1316660
+> > [    1.146179] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
+75000 Vs max 1316660
+> > [    1.146209] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
+75000 Vs max 1316660
+> > [    1.146270] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
+75000 Vs max 1316660
+> > [    1.146301] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
+75000 Vs max 1316660
+> > [    1.146331] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 14=
+10000 Vs max 1316660
+> > [    1.522979] omap_dm_timer_set_source: timer_sys_ck not found
+>
+> Sounds like something needs fixing for sure. Similar messages seem to
+> appear for all omap4 with twl PMIC.
+
+Something similar happened to the twl4030 on omap3.  Check out the fix
+for it:   https://patchwork.kernel.org/patch/11094653/
+
+It't not exactly the same, but It might be useful in fixing the twl6030.
+
+adam
+
+>
+> > which probably leads to the problem, that the cpu cannot run with more=
+ than 920 mhz. is this a known problem?
+>
+> Yes, see the drivers/cpufreq changes recently done for omap3:
+>
+> $ git log v5.4..3fbeef397212046cc514fe9fcd07e67e6ca32163 drivers/cpufreq
+>
+> Similar changes are also needed for omap4 to detect the supported rates.
+>
+> And then we also need to add a regulator controller driver for cpufreq
+> to use that manages the voltage controller.
+>
+> > i need to run the cpus with 1.5 ghz, as it was possible with the v3.4 =
+kernel, how is this possible?
+>
+> My guess is that v3.4 was missing some critical checks to protect
+> the SoC :) But please do check, maybe we're missing some code that
+> was there earlier.
+>
+> Regards,
+>
+> Tony
