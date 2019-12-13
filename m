@@ -2,57 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF04911DE26
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 07:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 044DE11DE28
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 07:14:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732124AbfLMGOH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Dec 2019 01:14:07 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:51064 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725875AbfLMGOG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 01:14:06 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBD6E2vj053010;
-        Fri, 13 Dec 2019 00:14:02 -0600
+        id S1732027AbfLMGOh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Dec 2019 01:14:37 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:54650 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725875AbfLMGOh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 01:14:37 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBD6EXYB017976;
+        Fri, 13 Dec 2019 00:14:33 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576217642;
-        bh=O7ysTC42p7Iy20KHMF68nRCqQvtAYZnggSd6tVfDVL4=;
+        s=ti-com-17Q1; t=1576217673;
+        bh=vzZiZBi+iqkKP3WW1Ho6MkNFYIGFrNW5R0pDMeKOzrI=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Vbdqvu1HK+1fEw51OY1Ls10R8XvZJFhBc8xvg/Bn9lpzQJMK/p8mI0PrEO53chjT0
-         uaGp3VSsnset3JUeR8WceJSA2Jts7Rv9vQ2s1T/8ifyg9kz6ruIxisefokJ+5a5wRy
-         rtFNlMg4VcDlgvCP0qFZRPyC4rQ7YUw1nIhFbVV8=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBD6E2Tu012122
+        b=p5x9KSU8wmZYTLSnK60hBw/URMY3p+1sf1rB+Goj3hZs6/x/5yzW75YvrZ+FnUkpE
+         hcwEFa+S4Fq3ZqdsPiSKaFFEbcOBhVunI8AIwiBn0rcSzCA+EhGWmUBpiFX9FUq83b
+         EUcf6t37Vtfu7905fHJLw9/iTYJA2Dgf0HvXZ9HE=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBD6EXkb035783
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 13 Dec 2019 00:14:02 -0600
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 13 Dec 2019 00:14:33 -0600
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 13
- Dec 2019 00:14:01 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 00:14:32 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 13 Dec 2019 00:14:01 -0600
+ Frontend Transport; Fri, 13 Dec 2019 00:14:32 -0600
 Received: from [10.24.69.174] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBD6DxU6087477;
-        Fri, 13 Dec 2019 00:14:00 -0600
-Subject: Re: [PATCH 0/9] Probe l4 abe and most timers with ti-sysc
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBD6EUhH095395;
+        Fri, 13 Dec 2019 00:14:31 -0600
+Subject: Re: [PATCH 00/14] Probe am3, am4 and dra7 crypto accelerators with
+ ti-sysc
 To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
 CC:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        <devicetree@vger.kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tero Kristo <t-kristo@ti.com>
-References: <20191210233524.46875-1-tony@atomide.com>
+        <devicetree@vger.kernel.org>, Tero Kristo <t-kristo@ti.com>
+References: <20191210231722.44215-1-tony@atomide.com>
 From:   Keerthy <j-keerthy@ti.com>
 X-Pep-Version: 2.0
-Message-ID: <571ed270-6e31-5970-cf94-c778b967b152@ti.com>
-Date:   Fri, 13 Dec 2019 11:44:15 +0530
+Message-ID: <00205b89-30b2-74c5-d8f7-c6976ffd9cbf@ti.com>
+Date:   Fri, 13 Dec 2019 11:44:47 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <20191210233524.46875-1-tony@atomide.com>
+In-Reply-To: <20191210231722.44215-1-tony@atomide.com>
 Content-Type: multipart/mixed;
-        boundary="------------86162ABA512FC4F0F5EEC1A1"
+        boundary="------------B83D73C247ED7BD457FCB678"
 Content-Language: en-US
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
@@ -60,33 +59,23 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---------------86162ABA512FC4F0F5EEC1A1
+--------------B83D73C247ED7BD457FCB678
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 11/12/19 5:05 am, Tony Lindgren wrote:
-> Hi all,
+On 11/12/19 4:47 am, Tony Lindgren wrote:
+> Hi,
 >=20
-> This series updates l4-abe devices and non-system timers to probe with
-> ti-sysc.
->=20
-> After this series we now have l4-abe instances with all devices probing=
-
-> with dts data and ti-sysc driver. So for omap4 and 5, l4-abe can now be=
-
-> used to experiment with adding genpd support to drivers/soc/ti/omap_prm=
-=2Ec
-> to power down the abe domain when not in use :)
->=20
-> Note that we cannot yet probe system timers with ti-sysc.
+> This series updates crypto accelerators to probe with ti-sysc and devic=
+e tree
+> data for am3, am4 and dra7.
 
 Hi Tony,
 
 Boot tested on DRA72 & DRA76.
 
-I believe this series does not impact am4/3 but still
 Tested for RTC+DDR mode and DS0 mode on AM437x.
 Tested for DS0 on am335x-evm & am335x-beagle-bone-black.
 
@@ -102,46 +91,37 @@ Tested-by: Keerthy <j-keerthy@ti.com>
 > Tony
 >=20
 >=20
-> Tony Lindgren (9):
->   ARM: OMAP2+: Drop legacy platform data for omap4 aess
->   ARM: OMAP2+: Drop legacy platform data for omap4 dmic
->   ARM: OMAP2+: Drop legacy platform data for omap4 mcpdm
->   ARM: OMAP2+: Drop legacy platform data for omap5 dmic
->   ARM: OMAP2+: Drop legacy platform data for omap5 mcpdm
->   ARM: OMAP2+: Drop legacy platform data for omap4 timers except timer1=
-
->   ARM: OMAP2+: Drop legacy platform data for omap5 timers except timer1=
-
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 timers except
->     timer1 and 2
->   ARM: OMAP2+: Drop legacy platform data for dra7 timers except timer1
->     to 4
+> Tony Lindgren (14):
+>   ARM: dts: Configure interconnect target module for am3 sham
+>   ARM: dts: Configure interconnect target module for am4 sham
+>   ARM: dts: Configure interconnect target module for dra7 sham
+>   ARM: dts: Configure interconnect target module for am3 aes
+>   ARM: dts: Configure interconnect target module for am4 aes
+>   ARM: dts: Configure interconnect target module for dra7 aes
+>   ARM: dts: Configure interconnect target module for am4 des
+>   ARM: dts: Configure interconnect target module for dra7 des
+>   ARM: OMAP2+: Drop legacy platform data for am3 and am4 sham
+>   ARM: OMAP2+: Drop legacy platform data for dra7 sham
+>   ARM: OMAP2+: Drop legacy platform data for am3 and am4 aes
+>   ARM: OMAP2+: Drop legacy platform data for dra7 aes
+>   ARM: OMAP2+: Drop legacy platform data for am4 des
+>   ARM: OMAP2+: Drop legacy platform data for dra7 des
 >=20
->  arch/arm/boot/dts/am33xx-l4.dtsi              |   5 -
->  arch/arm/boot/dts/am437x-l4.dtsi              |   9 -
->  arch/arm/boot/dts/dra7-l4.dtsi                |  12 -
->  arch/arm/boot/dts/omap4-l4-abe.dtsi           |   7 -
->  arch/arm/boot/dts/omap4-l4.dtsi               |   6 -
->  arch/arm/boot/dts/omap5-l4-abe.dtsi           |   6 -
->  arch/arm/boot/dts/omap5-l4.dtsi               |   6 -
->  arch/arm/mach-omap2/omap_hwmod.c              |  18 -
->  arch/arm/mach-omap2/omap_hwmod.h              |   3 -
->  .../omap_hwmod_33xx_43xx_common_data.h        |  10 -
->  .../omap_hwmod_33xx_43xx_interconnect_data.c  |  40 --
->  .../omap_hwmod_33xx_43xx_ipblock_data.c       |  70 ---
->  arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |   5 -
->  arch/arm/mach-omap2/omap_hwmod_43xx_data.c    |  89 ----
->  arch/arm/mach-omap2/omap_hwmod_44xx_data.c    | 421 ------------------=
+>  arch/arm/boot/dts/am33xx.dtsi                 |  69 +++++++--
+>  arch/arm/boot/dts/am4372.dtsi                 | 105 +++++++++++---
+>  arch/arm/boot/dts/dra7-l4.dtsi                |  31 ++++
+>  arch/arm/boot/dts/dra7.dtsi                   | 118 +++++++++++-----
+>  .../omap_hwmod_33xx_43xx_common_data.h        |   4 -
+>  .../omap_hwmod_33xx_43xx_interconnect_data.c  |  16 ---
+>  .../omap_hwmod_33xx_43xx_ipblock_data.c       |  54 -------
+>  arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |   2 -
+>  arch/arm/mach-omap2/omap_hwmod_43xx_data.c    |  35 -----
+>  arch/arm/mach-omap2/omap_hwmod_7xx_data.c     | 132 ------------------=
 
->  arch/arm/mach-omap2/omap_hwmod_54xx_data.c    | 357 ---------------
->  arch/arm/mach-omap2/omap_hwmod_7xx_data.c     | 295 ------------
->  arch/arm/mach-omap2/omap_hwmod_reset.c        |  24 -
->  include/sound/aess.h                          |  53 ---
->  19 files changed, 1436 deletions(-)
->  delete mode 100644 include/sound/aess.h
+>  10 files changed, 250 insertions(+), 316 deletions(-)
 >=20
 
---------------86162ABA512FC4F0F5EEC1A1
+--------------B83D73C247ED7BD457FCB678
 Content-Type: application/pgp-keys; name="pEpkey.asc"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: attachment; filename="pEpkey.asc"
@@ -288,4 +268,4 @@ Xpo=3D
 =3DNfsW
 -----END PGP PUBLIC KEY BLOCK-----
 
---------------86162ABA512FC4F0F5EEC1A1--
+--------------B83D73C247ED7BD457FCB678--
