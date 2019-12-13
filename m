@@ -2,88 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABBF111E86D
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 17:35:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF6BE11EBCE
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 21:24:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728178AbfLMQfu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Dec 2019 11:35:50 -0500
-Received: from muru.com ([72.249.23.125]:47150 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728244AbfLMQfu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 13 Dec 2019 11:35:50 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 615408186;
-        Fri, 13 Dec 2019 16:36:29 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] omap fixes for v5.5-rc cycle
-Date:   Fri, 13 Dec 2019 08:35:40 -0800
-Message-Id: <pull-1576254925-709310@atomide.com>
-X-Mailer: git-send-email 2.24.1
+        id S1729040AbfLMUYT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Dec 2019 15:24:19 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:34424 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728991AbfLMUYT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 15:24:19 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBDKNpgl067054;
+        Fri, 13 Dec 2019 14:23:51 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1576268631;
+        bh=sQLULXVT4AjiaBKiWEV7xPXBEYis+u7qmi7okgEmQfU=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=f0LGfpZQdoMN1qYM35SgsRdeinQyvo3di6zm7CPxLGLxGBz8J04e2xisTkHHR7un8
+         S+01GRg3QXwc1wCp6UkWNGPyf4k4XXV7eCg8uurMBkD4ZHVEFdJtnz/BRYLzchLM2U
+         oL5J+DkWhELRO+R2j8MasgYQlqLpRDqgmj0QTofU=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBDKNp4m042728;
+        Fri, 13 Dec 2019 14:23:51 -0600
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 13
+ Dec 2019 14:23:51 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Fri, 13 Dec 2019 14:23:51 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBDKNoix051357;
+        Fri, 13 Dec 2019 14:23:50 -0600
+Date:   Fri, 13 Dec 2019 14:23:14 -0600
+From:   Bin Liu <b-liu@ti.com>
+To:     Tony Lindgren <tony@atomide.com>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-usb@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Marcel Partap <mpartap@gmx.net>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Michael Scott <hashcode0f@gmail.com>,
+        NeKit <nekit1000@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>
+Subject: Re: [PATCHv2 0/7] musb host improvments mostly for omap2430 glue
+Message-ID: <20191213202314.GL16429@iaqt7>
+Mail-Followup-To: Bin Liu <b-liu@ti.com>, Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        Jacopo Mondi <jacopo@jmondi.org>, Marcel Partap <mpartap@gmx.net>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Michael Scott <hashcode0f@gmail.com>, NeKit <nekit1000@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
+References: <20191009212145.28495-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20191009212145.28495-1-tony@atomide.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+Hi,
 
-The following changes since commit e42617b825f8073569da76dc4510bfa019b1c35a:
+On Wed, Oct 09, 2019 at 02:21:37PM -0700, Tony Lindgren wrote:
+> Hi,
+> 
+> Here's v2 set of musb clean-up mostly for the 2430 glue layer.
+> 
+> Regards,
+> 
+> Tony
+> 
+> 
+> Changes since v1:
+> 
+> - Get rid of set_vbus stuff
+> 
+> 
+> Tony Lindgren (7):
+>   usb: musb: omap2430: Get rid of musb .set_vbus for omap2430 glue
+>   usb: musb: omap2430: Wait on enable to avoid babble
+>   usb: musb: omap2430: Handle multiple ID ground interrupts
+>   usb: musb: Add musb_set_host and peripheral and use them for omap2430
+>   usb: musb: omap2430: Clean up enable and remove devctl tinkering
+>   usb: musb: omap2430: Idle musb on init
+>   usb: musb: Get rid of omap2430_musb_set_vbus()
+> 
+>  drivers/usb/musb/musb_core.c | 103 ++++++++++++++++++++++
+>  drivers/usb/musb/musb_core.h |   3 +
+>  drivers/usb/musb/omap2430.c  | 164 ++++++++++-------------------------
+>  3 files changed, 152 insertions(+), 118 deletions(-)
 
-  Linux 5.5-rc1 (2019-12-08 14:57:55 -0800)
+The series is queued for -next. Thanks.
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.5/fixes-rc1-signed
-
-for you to fetch changes up to e709ed70d122e94cb426b1e1f905829eae19a009:
-
-  bus: ti-sysc: Fix missing reset delay handling (2019-12-12 08:20:10 -0800)
-
-----------------------------------------------------------------
-Fixes for omap variants for v5.5-rc1 cycle
-
-This series of changes contains fixes for issues recently noticed:
-
-- The ti-sysc interconnect target module driver needs fixes for
-  mstandby quirk handling and reset delay
-
-- We need to configure am335x-sancloud-bbe to use rgmii-id mode because of
-  the phy changes done earlier
-
-- NET_SWITCHDEV is no longer selected in Kconfig but a dependency and we
-  must enable CONFIG_NET_SWITCHDEV to have TI_CPSW_SWITCHDEV
-
-- We are still relying on DEBUG_FS at least for PM configuration, let's
-  add it back
-
-- We need to update compatible for am437x-gp/epos-evm because of the
-  recent changes to use generic panels
-
-----------------------------------------------------------------
-Grygorii Strashko (1):
-      ARM: omap2plus_defconfig: enable NET_SWITCHDEV
-
-Mans Rullgard (1):
-      ARM: dts: am335x-sancloud-bbe: fix phy mode
-
-Tomi Valkeinen (1):
-      ARM: dts: am437x-gp/epos-evm: fix panel compatible
-
-Tony Lindgren (3):
-      bus: ti-sysc: Fix missing force mstandby quirk handling
-      ARM: omap2plus_defconfig: Add back DEBUG_FS
-      bus: ti-sysc: Fix missing reset delay handling
-
- arch/arm/boot/dts/am335x-sancloud-bbe.dts | 2 +-
- arch/arm/boot/dts/am437x-gp-evm.dts       | 2 +-
- arch/arm/boot/dts/am43x-epos-evm.dts      | 2 +-
- arch/arm/configs/omap2plus_defconfig      | 4 +++-
- drivers/bus/ti-sysc.c                     | 7 ++++++-
- include/linux/platform_data/ti-sysc.h     | 1 +
- 6 files changed, 13 insertions(+), 5 deletions(-)
+-Bin.
