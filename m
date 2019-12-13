@@ -2,60 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8BB311DE1F
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 07:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99AA611DE21
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 07:11:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732040AbfLMGKh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Dec 2019 01:10:37 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:54248 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725875AbfLMGKh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 01:10:37 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBD6AUKC016745;
-        Fri, 13 Dec 2019 00:10:30 -0600
+        id S1726016AbfLMGLK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Dec 2019 01:11:10 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:50782 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725875AbfLMGLK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 01:11:10 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBD6B4dh052061;
+        Fri, 13 Dec 2019 00:11:04 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576217430;
-        bh=lxpyAYNxKZfa7ImT1KScnaeXY0/dG5yxbrcxzBOJAqo=;
+        s=ti-com-17Q1; t=1576217464;
+        bh=R7se8/t9MflGkAXnSQai3sRXG4U4CFURFyo8zcdiJF8=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=nNcNNrYlXja4QcbYo9XI5y5j+DO9ydaXPTpn/Li0FQpXCC5n0AQ0AL1VoGQ23woL/
-         cid3FFC0Jo15uF4ijhY1zliGPiWlDH7NA1CIcZSzBNEQVj0iriRjZ+BSZLkzKnAEYP
-         hEvkon/Ptf2FOZbMs9fHiqlXiwJL/bfpUA6l3uKc=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBD6AUwm007790
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 13 Dec 2019 00:10:30 -0600
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+        b=SwHSo1ZTOEpNgriyoaMYi7V6PrSfQPcgbtDfIiIRrFaaze4d+9fkapYuqyHM1kuGW
+         Jm2L7wfeQ4yp7u0+UuZxowPB/xXVErmeaIxnn1PLgdaqP+LbUrd0bIDGSjS1znmmgk
+         maiNClbXvaYmmEuDd+QjhvK+xvdaW+v3MfnxnE6k=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBD6B4Jd051660;
+        Fri, 13 Dec 2019 00:11:04 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 13
- Dec 2019 00:10:30 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 00:11:04 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 13 Dec 2019 00:10:30 -0600
+ Frontend Transport; Fri, 13 Dec 2019 00:11:04 -0600
 Received: from [10.24.69.174] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBD6ARvc082478;
-        Fri, 13 Dec 2019 00:10:27 -0600
-Subject: Re: [PATCH 00/16] Drop legacy platform data for various omap devices
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBD6Ax07082936;
+        Fri, 13 Dec 2019 00:11:00 -0600
+Subject: Re: [PATCH] bus: ti-sysc: Fix missing reset delay handling
 To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        "Andrew F. Davis" <afd@ti.com>,
-        Franklin S Cooper Jr <fcooper@ti.com>,
-        Jyri Sarha <jsarha@ti.com>, Roger Quadros <rogerq@ti.com>,
-        Suman Anna <s-anna@ti.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Vignesh R <vigneshr@ti.com>
-References: <20191211172014.35201-1-tony@atomide.com>
+CC:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20191211185901.9879-1-tony@atomide.com>
 From:   Keerthy <j-keerthy@ti.com>
 X-Pep-Version: 2.0
-Message-ID: <87376f9c-6900-612b-e96a-0e44d087d095@ti.com>
-Date:   Fri, 13 Dec 2019 11:40:43 +0530
+Message-ID: <3ffb7088-8a10-c75a-1ad5-27701fad18e0@ti.com>
+Date:   Fri, 13 Dec 2019 11:41:15 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <20191211172014.35201-1-tony@atomide.com>
+In-Reply-To: <20191211185901.9879-1-tony@atomide.com>
 Content-Type: multipart/mixed;
-        boundary="------------5E7BF3703CF31460EEA1C4C2"
+        boundary="------------950C312003D33B2A83474718"
 Content-Language: en-US
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
@@ -63,27 +63,22 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---------------5E7BF3703CF31460EEA1C4C2
+--------------950C312003D33B2A83474718
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 11/12/19 10:49 pm, Tony Lindgren wrote:
-> Hi all,
+On 12/12/19 12:29 am, Tony Lindgren wrote:
+> We have dts property for "ti,sysc-delay-us", and we're using it, but th=
+e
+> wait after OCP softreset only happens if devices are probed in legacy m=
+ode.
 >=20
-> In order to get the l4 instances closer to being usable with genpd, we
-> continue dropping legacy platform data for various devices.
->=20
-> Please test, some patches may depend on the earlier patches to drop
-> platform data to apply as they touch the same files.
+> Let's add a delay after writing the OCP softreset when specified.
+
 
 Hi Tony,
-
-As reported earlier patchh 12 of this series causes a crash at boot
-while probing the rtc.
-
-For the rest of the series:
 
 Boot tested on DRA72 & DRA76.
 
@@ -98,48 +93,31 @@ Tested-by: Keerthy <j-keerthy@ti.com>
 
 
 >=20
-> Regards,
+> Fixes: e0db94fe87da ("bus: ti-sysc: Make OCP reset work for sysstatus a=
+nd sysconfig reset bits")
+> Cc: Keerthy <j-keerthy@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/bus/ti-sysc.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >=20
-> Tony
->=20
->=20
-> Tony Lindgren (16):
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 epwmss
->   ARM: OMAP2+: Drop legacy platform data for dra7 epwmss
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 spinlock
->   ARM: OMAP2+: Drop legacy platform data for omap4 spinlock
->   ARM: OMAP2+: Drop legacy platform data for omap5 spinlock
->   ARM: OMAP2+: Drop legacy platform data for dra7 spinlock
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 spi
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 dcan
->   ARM: OMAP2+: Drop legacy platform data for dra7 dcan
->   ARM: OMAP2+: Drop legacy platform data for am3 adc_tsc
->   ARM: OMAP2+: Drop legacy platform data for am4 adc_tsc
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 rtc
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 elm
->   ARM: OMAP2+: Drop legacy platform data for omap4 elm
->   ARM: OMAP2+: Drop legacy platform data for dra7 elm
->   ARM: OMAP2+: Drop legacy platform data for am3 lcdc
->=20
->  arch/arm/boot/dts/am33xx-l4.dtsi              |  12 -
->  arch/arm/boot/dts/am437x-l4.dtsi              |  19 +-
->  arch/arm/boot/dts/am43x-epos-evm.dts          |   4 +
->  arch/arm/boot/dts/dra7-l4.dtsi                |   5 -
->  arch/arm/boot/dts/omap4-l4.dtsi               |   2 -
->  arch/arm/boot/dts/omap5-l4.dtsi               |   1 -
->  .../omap_hwmod_33xx_43xx_common_data.h        |  21 --
->  .../omap_hwmod_33xx_43xx_interconnect_data.c  |  76 ------
->  .../omap_hwmod_33xx_43xx_ipblock_data.c       | 247 ------------------=
-
->  arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |  85 ------
->  arch/arm/mach-omap2/omap_hwmod_43xx_data.c    | 183 -------------
->  arch/arm/mach-omap2/omap_hwmod_44xx_data.c    |  85 ------
->  arch/arm/mach-omap2/omap_hwmod_54xx_data.c    |  43 ---
->  arch/arm/mach-omap2/omap_hwmod_7xx_data.c     | 236 -----------------
->  14 files changed, 5 insertions(+), 1014 deletions(-)
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
+> @@ -1590,6 +1590,10 @@ static int sysc_reset(struct sysc *ddata)
+>  	sysc_val |=3D sysc_mask;
+>  	sysc_write(ddata, sysc_offset, sysc_val);
+> =20
+> +	if (ddata->cfg.srst_udelay)
+> +		usleep_range(ddata->cfg.srst_udelay,
+> +			     ddata->cfg.srst_udelay * 2);
+> +
+>  	if (ddata->clk_enable_quirk)
+>  		ddata->clk_enable_quirk(ddata);
+> =20
 >=20
 
---------------5E7BF3703CF31460EEA1C4C2
+--------------950C312003D33B2A83474718
 Content-Type: application/pgp-keys; name="pEpkey.asc"
 Content-Transfer-Encoding: quoted-printable
 Content-Disposition: attachment; filename="pEpkey.asc"
@@ -286,4 +264,4 @@ Xpo=3D
 =3DNfsW
 -----END PGP PUBLIC KEY BLOCK-----
 
---------------5E7BF3703CF31460EEA1C4C2--
+--------------950C312003D33B2A83474718--
