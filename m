@@ -2,131 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 056B711E235
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 11:41:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 555E611E237
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 11:42:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726382AbfLMKl4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Dec 2019 05:41:56 -0500
-Received: from mout.gmx.net ([212.227.15.19]:57295 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725890AbfLMKlz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 13 Dec 2019 05:41:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1576233714;
-        bh=5ZkY1A/YEADPZaAHJi1eVCV+0m720qUQnVOg5aYU1nc=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=atZPR5bLRo+y6fzg2oSibjg9WnnE/AqaQGU8JPIpu3iVqHh5Ry37giVJ/xS6H21m+
-         pjLJb6ZU5/RLV/C5FURbo67bwkxEtz56dlmuRJWn2f33djAX2pEAi6E4a4k201xXXG
-         rWDr7vtxQ12MrsOlFu2EQ42VR31JCQzcjv6BF1iI=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [80.150.99.66] ([80.150.99.66]) by web-mail.gmx.net
- (3c-app-gmx-bs17.server.lan [172.19.170.69]) (via HTTP); Fri, 13 Dec 2019
- 11:41:54 +0100
+        id S1726016AbfLMKmP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Dec 2019 05:42:15 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:49176 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725890AbfLMKmP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 05:42:15 -0500
+Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0C9329F4;
+        Fri, 13 Dec 2019 11:42:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1576233733;
+        bh=OPViJPaiwbV2JTOTiAegI/0110zI2wQylSeMT+FKqKc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TAyF7Whl+kY9pTyYAmxs4xi8h2VUSLM3YMhdxUWEQOO7hQc0M4nh6MYijxDDdm7Z/
+         O7WYfAhf8l+PVa6UOiU8R3Z+4hpPdUk+OgjJ6KSozylSIfXE0VYAY77NUYFaSbdoOz
+         lh8OYHg9PKMDczll7Yo6pI5bXdB3V2vbcRa0CA+4=
+Date:   Fri, 13 Dec 2019 12:42:04 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, dri-devel@lists.freedesktop.org,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/4] ARM: dts: am437x-gp-evm: add HDMI support
+Message-ID: <20191213104204.GB4860@pendragon.ideasonboard.com>
+References: <20191125131100.9839-1-tomi.valkeinen@ti.com>
+ <20191212172104.GY35479@atomide.com>
+ <20191212173110.GA35479@atomide.com>
+ <d09526b2-8435-bef2-0489-0c3c8173d451@ti.com>
 MIME-Version: 1.0
-Message-ID: <trinity-8c439dd8-69cc-4bbc-812f-a063b15a9369-1576233714035@3c-app-gmx-bs17>
-From:   deffo@gmx.de
-To:     linux-omap@vger.kernel.org, aford173@gmail.com
-Cc:     tony@atomide.com
-Subject: Re: twl: not initialized and twl6030_uv_to_vsel problems
-Content-Type: text/plain; charset=UTF-8
-Date:   Fri, 13 Dec 2019 11:41:54 +0100
-Importance: normal
-Sensitivity: Normal
-X-Priority: 3
-X-Provags-ID: V03:K1:y7dt3no9y0n1IcE4+jBrsYMyYemOAxZYRClYGFhnUSABBivdnztoP8KAGOHg+vs5eFkYa
- 0nyDVskbRgkD8QTOqmSsF4mo1d7EoJtg7MA0lgYV7Q0WRRzxl37cdFscVm8UYVe2ztZw2F1kwTe/
- l+X272PR6lxUEep+racB7byZ0SY7XoowTjub1XD99abSsDiy0OCCJ9KxnG5DZKms+ZWsAXnTyrh4
- zCR06KYuLnxGYxgwD8rPUkWjFw6RXb0qg3f3hSyYyDmuAje16rstMr+WAQ2rXw7fEyehkxY7oKan
- ss=
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Qs2kd+/0oQM=:ncqz3zaemGvsvrPwKZrtOo
- QA+YnUkbPqaryVAKY0vVsqY8RkjWjYp6adIYcXrkLagMN4tragNFjhkAxahPYo45BPfJ73PiZ
- 58b2BRJpdY8T+yS6NiiHlz2mEjYSJjpMmZJLqLGqNMSqGdy3e9f2G5/uyFbGarPJSQqX9taHC
- v2o0wgeaGtAMdSyPTz2ldgVqxmdlwtg3GL89Ba5q+zmdEsFe+eVaBIlGVDg1A85PfI9SejZLp
- GNahsRjXq2CIao735lDW07LHek8FHPvYUD7GLLYhS1mNrUio7DmcRsLePchAqyQI3LLthIGh4
- +jWNtDx+AZGFHvwXyaKabxBhfmOAbwdfrsKLBajlLjTt1IOMNYqvxJsi614RI58cwhv5xE4c3
- /1uNiygd/y4QMmBXaTDlInhV+mCcj3q4OMu4yn9O2DolwBNSmEtJdQMWPyumlv6BQe6MVDUQR
- WbkMuZ7R/tkICTj7e2SMrskHiYNB8CBlbG1WZQ0+cqR93rpB9myGnIx2ng68ZAe34AdaD0yqF
- RgbBKyi2wBBfnXREJS8Ns8ajtoqd/YCFEOc5uB/YUYTyVcUTu19YfRs4qH+4H+TQHOED0trlc
- MjRH1reBCsleXuRiO1G4QPO125U+PD7l1znw9DSy60b/1SC9t34Ef69uLHlzBCopzcjk1VgQc
- UUP7eZEsCCUVQMmTjIKlAd7Jiu+9wWiGZnKM7zfoellBCEQ==
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d09526b2-8435-bef2-0489-0c3c8173d451@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Thanks for the link Adam, I fixed this on my local branch.
+Hi Tomi,
 
-Concerning the
+On Fri, Dec 13, 2019 at 11:24:02AM +0200, Tomi Valkeinen wrote:
+> On 12/12/2019 19:31, Tony Lindgren wrote:
+> > * Tony Lindgren <tony@atomide.com> [191212 17:21]:
+> >> Hi,
+> >>
+> >> * Tomi Valkeinen <tomi.valkeinen@ti.com> [191125 05:11]:
+> >>> Add HDMI support for AM437x GP EVM. The HDMI uses SiI9022 HDMI encoder,
+> >>> and is mutually exclusive with the LCD. The choice between LCD and HDMI
+> >>> is made by booting either with am437x-gp-evm.dtb or
+> >>> am437x-gp-evm-hdmi.dtb.
+> >>
+> >> So Linux kernel needs a new board device tree file to toggle a GPIO line
+> >> to switch between LCD mode and HDMI?
+> >>
+> >> That does not sound very user friendly for something that's supposed
+> >> to be hot pluggabe :)
+> 
+> True. We've had this for a long time in the TI kernel. I don't know how to implement this better, 
+> except perhaps with DT overlays, but that's essentially the same method.
+> 
+> >>> +/* Override SelLCDorHDMI from am437x-gp-evm.dts to select HDMI */
+> >>> +&gpio5 {
+> >>> +	p8 {
+> >>> +		output-low;
+> >>> +	};
+> >>> +};
+> >>
+> >> How about just leave the gpio unconfigured and document that a userspace
+> >> tool or /sys/kernel/debug/gpio is needed to toggle between the modes?
+> 
+> That sounds much worse than two dts files. How does X or weston know about the gpio?
+> 
+> And the "external" gpio wouldn't work well with DRM. We need to add all the displays at probe time, 
+> so we'd have LCD and HDMI. The gpio makes one of those operable, but only the external parts. The 
+> display controller has just one output, and we'd have a conflict there too as both displays would be 
+> connected to that single output. And as the display controller driver doesn't know about the gpio, 
+> it would fail "randomly" for one of the displays if the other one is already enabled by the userspace.
+> 
+> I think the correct way would be to have DRM framework understand that we have two displays, which 
+> are mutually exclusive, and the display pipeline drivers would have the means to switch the gpio. 
+> And that the display setup could be communicated properly to the userspace, and the userspace would 
+> understand it. I don't think any of those exists.
 
-[    2.318054] twl: not initialized
+Isn't this what possible_clones in drm_encoder is for ? It notifies
+userspace of mutual exclusions between encoders.
 
-error, this is due to the fact, that the twl itself is probed later:
+> So, the only good solution I have figured out is to just say that we have a single display at 
+> runtime, defined by the dt file.
+> 
+> On some boards (k2g-evm, if I recall right) we have similar HW setup, but with a physical switch. We 
+> use the same method there, with two dts files. Again, if I recall right, the switch setting can be 
+> seen by the SW, so if there's a better solution to the AM4 case, probably similar could be used with 
+> k2g-evm, where the drivers would react to the user changing the switch.
 
-[    3.042114] twl_probe() called
+-- 
+Regards,
 
-So it cannot be available at this point. Might be a fundamental problem in=
- the chronological order of init calls?
-
-On Wed, Nov 27, 2019 at 10:19 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> Hi,
->
-> * deffo@gmx.de <deffo@gmx.de> [191127 13:53]:
-> > hi there!
-> >
-> > i'm using the TI OMAP4460 (VAR-SOM-OM44) and i get several errors in d=
-mesg on the latest for-next branch:
-> >
-> > root@localhost:~# dmesg -l err
-> > [    1.146026] twl: not initialized
-> > [    1.146087] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
-75000 Vs max 1316660
-> > [    1.146087] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
-75000 Vs max 1316660
-> > [    1.146179] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
-75000 Vs max 1316660
-> > [    1.146209] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
-75000 Vs max 1316660
-> > [    1.146270] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
-75000 Vs max 1316660
-> > [    1.146301] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 13=
-75000 Vs max 1316660
-> > [    1.146331] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 14=
-10000 Vs max 1316660
-> > [    1.522979] omap_dm_timer_set_source: timer_sys_ck not found
->
-> Sounds like something needs fixing for sure. Similar messages seem to
-> appear for all omap4 with twl PMIC.
-
-Something similar happened to the twl4030 on omap3.  Check out the fix
-for it:   https://patchwork.kernel.org/patch/11094653/
-
-It't not exactly the same, but It might be useful in fixing the twl6030.
-
-adam
-
->
-> > which probably leads to the problem, that the cpu cannot run with more=
- than 920 mhz. is this a known problem?
->
-> Yes, see the drivers/cpufreq changes recently done for omap3:
->
-> $ git log v5.4..3fbeef397212046cc514fe9fcd07e67e6ca32163 drivers/cpufreq
->
-> Similar changes are also needed for omap4 to detect the supported rates.
->
-> And then we also need to add a regulator controller driver for cpufreq
-> to use that manages the voltage controller.
->
-> > i need to run the cpus with 1.5 ghz, as it was possible with the v3.4 =
-kernel, how is this possible?
->
-> My guess is that v3.4 was missing some critical checks to protect
-> the SoC :) But please do check, maybe we're missing some code that
-> was there earlier.
->
-> Regards,
->
-> Tony
+Laurent Pinchart
