@@ -2,165 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87B9311E02C
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 10:05:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C1BC11E082
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 10:24:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725799AbfLMJFK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Dec 2019 04:05:10 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:52368 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725747AbfLMJFJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 04:05:09 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBD94rXb125790;
-        Fri, 13 Dec 2019 03:04:53 -0600
+        id S1725928AbfLMJYW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Dec 2019 04:24:22 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:46684 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725793AbfLMJYV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 04:24:21 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBD9O5OB120533;
+        Fri, 13 Dec 2019 03:24:05 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576227893;
-        bh=ttQBV4pScAqE9Q5W14IqurKxACH8gfNRqEPYyi+rNEo=;
+        s=ti-com-17Q1; t=1576229045;
+        bh=11ocqYIH8oHlulnnmzbnn8ms1756271GCd5ksM38j64=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=f4MB4TnPWPnpLQ4kG0V5lVEQjA8+KbznrtwRTAk5SJTtyRAq5CEKVjxQDDBpnoj7d
-         swyatbD+yFAtvV2Xtiq5hpGJV5SU2qUh4UXQF0QigOohzu0uuZSbFDWaFwRnm3SZj6
-         KlLLemoLZCGUpWZWEOuzfqTyPPO6Xu3B3I0v/MmU=
-Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBD94rQt112007
+        b=FQZd9y93cFlQDmcVTGtaY5Qk03gH4KvQBEfjq1PEmOXOFsZuZAyVS3BP5RMu2/qHK
+         GwlAO1cmNP9LuGjl4/uIW+PyZn7n5hzB0Wvd45wvO6pTkljjBR5sdcOESxNFGjOC8C
+         wI7atAwHntlnBXlBaz4B5XQAzV0OLTe2mKZsLXe4=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBD9O5jh051527
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 13 Dec 2019 03:04:53 -0600
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 13 Dec 2019 03:24:05 -0600
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 13
- Dec 2019 03:04:52 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 03:24:05 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 13 Dec 2019 03:04:52 -0600
-Received: from [10.1.3.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBD94oGE102633;
-        Fri, 13 Dec 2019 03:04:50 -0600
-Subject: Re: [PATCH v2 2/3] dt-bindings: display: Add obsolete note to
- "ti,tilcdc,panel" binding
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC:     <dri-devel@lists.freedesktop.org>, <tony@atomide.com>,
-        <sam@ravnborg.org>, <robh+dt@kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <tomi.valkeinen@ti.com>, <peter.ujfalusi@ti.com>, <bparrot@ti.com>
-References: <cover.1575901747.git.jsarha@ti.com>
- <459ed943fe0725200062171755bcfe5f73713d50.1575901747.git.jsarha@ti.com>
- <20191209145024.GB12841@pendragon.ideasonboard.com>
-From:   Jyri Sarha <jsarha@ti.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=jsarha@ti.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <5f585e0b-be58-b474-f27b-875e254426a8@ti.com>
-Date:   Fri, 13 Dec 2019 11:04:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ Frontend Transport; Fri, 13 Dec 2019 03:24:05 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBD9O3Bh067719;
+        Fri, 13 Dec 2019 03:24:03 -0600
+Subject: Re: [PATCH 1/4] ARM: dts: am437x-gp-evm: add HDMI support
+To:     Tony Lindgren <tony@atomide.com>
+CC:     <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <dri-devel@lists.freedesktop.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+References: <20191125131100.9839-1-tomi.valkeinen@ti.com>
+ <20191212172104.GY35479@atomide.com> <20191212173110.GA35479@atomide.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <d09526b2-8435-bef2-0489-0c3c8173d451@ti.com>
+Date:   Fri, 13 Dec 2019 11:24:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <20191209145024.GB12841@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191212173110.GA35479@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 09/12/2019 16:50, Laurent Pinchart wrote:
-> Hi Jyri,
-> 
-> Thank you for the patch.
-> 
-> On Mon, Dec 09, 2019 at 04:42:15PM +0200, Jyri Sarha wrote:
->> The "ti,tilcdc,panel" binding should not be used anymore, since tilcdc
->> is fully capable of using generic drm panels like panel-simple and
->> panel-common binding. However, the obsolete binding is still widely
->> used in many mainline supported platforms that I do not have access to
->> and who knows how many custom platforms. So I am afraid we have to
->> keep the old bundled tilcdc panel driver around.
-> 
-> But can't we drop the bindings instead of marking them as obsolete, even
-> if we keep the driver around for some time ?
-> 
-
-I guess that would be alright too.
-
-> Also, would it make sense to set a date for the removal of the driver,
-> and add it to the WARN() message in patch 3/3 ?
-> 
-
-Not sure about a date. I would feel quite uncomfortable of removing the
-driver, while there is still mainline DTSes using "ti,tilcdc,panel". I
-guess the next step would be putting the legacy panel driver behind a
-default = N config option. Then I would probably hear something if there
-are people actively using those DTSes. Maybe the date could be about
-that too.
-
-BR,
-Jyri
-
->> Signed-off-by: Jyri Sarha <jsarha@ti.com>
->> ---
->>  Documentation/devicetree/bindings/display/tilcdc/panel.txt | 6 ++++++
->>  1 file changed, 6 insertions(+)
+On 12/12/2019 19:31, Tony Lindgren wrote:
+> * Tony Lindgren <tony@atomide.com> [191212 17:21]:
+>> Hi,
 >>
->> diff --git a/Documentation/devicetree/bindings/display/tilcdc/panel.txt b/Documentation/devicetree/bindings/display/tilcdc/panel.txt
->> index 808216310ea2..54963f9173cc 100644
->> --- a/Documentation/devicetree/bindings/display/tilcdc/panel.txt
->> +++ b/Documentation/devicetree/bindings/display/tilcdc/panel.txt
->> @@ -1,5 +1,11 @@
->>  Device-Tree bindings for tilcdc DRM generic panel output driver
->>  
->> +NOTE: This binding (and the related driver) is obsolete and should not
->> +      be used anymore. Please refer to drm panel-common binding (and
->> +      to a generic drm panel driver like panel-simple).
->> +      Documentation/devicetree/bindings/display/panel/panel-common.yaml
->> +      (drivers/gpu/drm/panel/panel-simple.c)
->> +
->>  Required properties:
->>   - compatible: value should be "ti,tilcdc,panel".
->>   - panel-info: configuration info to configure LCDC correctly for the panel
-> 
+>> * Tomi Valkeinen <tomi.valkeinen@ti.com> [191125 05:11]:
+>>> Add HDMI support for AM437x GP EVM. The HDMI uses SiI9022 HDMI encoder,
+>>> and is mutually exclusive with the LCD. The choice between LCD and HDMI
+>>> is made by booting either with am437x-gp-evm.dtb or
+>>> am437x-gp-evm-hdmi.dtb.
+>>
+>> So Linux kernel needs a new board device tree file to toggle a GPIO line
+>> to switch between LCD mode and HDMI?
+>>
+>> That does not sound very user friendly for something that's supposed
+>> to be hot pluggabe :)
 
+True. We've had this for a long time in the TI kernel. I don't know how to implement this better, 
+except perhaps with DT overlays, but that's essentially the same method.
+
+>>> +/* Override SelLCDorHDMI from am437x-gp-evm.dts to select HDMI */
+>>> +&gpio5 {
+>>> +	p8 {
+>>> +		output-low;
+>>> +	};
+>>> +};
+>>
+>> How about just leave the gpio unconfigured and document that a userspace
+>> tool or /sys/kernel/debug/gpio is needed to toggle between the modes?
+
+That sounds much worse than two dts files. How does X or weston know about the gpio?
+
+And the "external" gpio wouldn't work well with DRM. We need to add all the displays at probe time, 
+so we'd have LCD and HDMI. The gpio makes one of those operable, but only the external parts. The 
+display controller has just one output, and we'd have a conflict there too as both displays would be 
+connected to that single output. And as the display controller driver doesn't know about the gpio, 
+it would fail "randomly" for one of the displays if the other one is already enabled by the userspace.
+
+I think the correct way would be to have DRM framework understand that we have two displays, which 
+are mutually exclusive, and the display pipeline drivers would have the means to switch the gpio. 
+And that the display setup could be communicated properly to the userspace, and the userspace would 
+understand it. I don't think any of those exists.
+
+So, the only good solution I have figured out is to just say that we have a single display at 
+runtime, defined by the dt file.
+
+On some boards (k2g-evm, if I recall right) we have similar HW setup, but with a physical switch. We 
+use the same method there, with two dts files. Again, if I recall right, the switch setting can be 
+seen by the SW, so if there's a better solution to the AM4 case, probably similar could be used with 
+k2g-evm, where the drivers would react to the user changing the switch.
+
+  Tomi
 
 -- 
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
