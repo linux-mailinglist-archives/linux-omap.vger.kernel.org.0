@@ -2,49 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CC3511E40C
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 13:57:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF8011E410
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2019 13:57:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727395AbfLMM4R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Dec 2019 07:56:17 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:48492 "EHLO
+        id S1727420AbfLMM4V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Dec 2019 07:56:21 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:48496 "EHLO
         lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727313AbfLMM4R (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 07:56:17 -0500
+        with ESMTP id S1727417AbfLMM4V (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Dec 2019 07:56:21 -0500
 Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBDCuFOX068982;
-        Fri, 13 Dec 2019 06:56:15 -0600
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBDCuJKZ068997;
+        Fri, 13 Dec 2019 06:56:19 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576241775;
-        bh=AQ0B5jw9HQqxEfttQOLTZY4PnRmM6mThulC0kGIUZ/o=;
+        s=ti-com-17Q1; t=1576241779;
+        bh=cZPUDLryljiTau+tMhgFn/36rTJMjWD1u8FWT9ke/dg=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=F3slO1ycN6mDAw+uzCVOzkJ5muFgZ/kCfNfbw4U9pyP50RMifio1ORoqz4qqtworG
-         Bzpl1Z8e8ZkFdqiJFR/wvRcQzkpKMze1C4EIf4ueXSSFD3i4zTTQnGGyA7kSVKEia6
-         W5145Z47eLmTMQBbR2CDNEEAmGyGmauZMP7SFvSo=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBDCuFS8071018
+        b=SLCch5ujnkucQnh3Tqin1Z803EelTj8t8v62HzwOCfXd4FpnXXvrDmmedHGbv0U61
+         yw9oQB2phu/PYL9ihOcfpI+8vQpC/yL5aIn6hgWYGPesm/wkJcA8jCJbh82/oL2aoE
+         2/vbI2q6mN6ewLwSUTBxZkxo7OTOXQIZLxEwrsoo=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBDCuIL3071054
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 13 Dec 2019 06:56:15 -0600
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 13 Dec 2019 06:56:18 -0600
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 13
- Dec 2019 06:56:13 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 06:56:15 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 13 Dec 2019 06:56:13 -0600
+ Frontend Transport; Fri, 13 Dec 2019 06:56:15 -0600
 Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBDCtwVL127295;
-        Fri, 13 Dec 2019 06:56:11 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBDCtwVM127295;
+        Fri, 13 Dec 2019 06:56:13 -0600
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
         <linux-remoteproc@vger.kernel.org>
 CC:     <linux-kernel@vger.kernel.org>, <mathieu.poirier@linaro.org>,
         <linux-omap@vger.kernel.org>, Suman Anna <s-anna@ti.com>,
         Tero Kristo <t-kristo@ti.com>
-Subject: [PATCHv3 06/15] remoteproc/omap: Initialize and assign reserved memory node
-Date:   Fri, 13 Dec 2019 14:55:28 +0200
-Message-ID: <20191213125537.11509-7-t-kristo@ti.com>
+Subject: [PATCHv3 07/15] remoteproc/omap: Add support for DRA7xx remote processors
+Date:   Fri, 13 Dec 2019 14:55:29 +0200
+Message-ID: <20191213125537.11509-8-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191213125537.11509-1-t-kristo@ti.com>
 References: <20191213125537.11509-1-t-kristo@ti.com>
@@ -58,71 +58,169 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Suman Anna <s-anna@ti.com>
 
-The reserved memory nodes are not assigned to platform devices by
-default in the driver core to avoid the lookup for every platform
-device and incur a penalty as the real users are expected to be
-only a few devices.
+DRA7xx/AM57xx SoCs have two IPU and up to two DSP processor subsystems
+for offloading different computation algorithms. The IPU processor
+subsystem contains dual-core ARM Cortex-M4 processors, and is very
+similar to those on OMAP5. The DSP processor subsystem is based on
+the TI's standard TMS320C66x DSP CorePac core.
 
-OMAP remoteproc devices fall into the above category and the OMAP
-remoteproc driver _requires_ specific CMA pools to be assigned
-for each device at the moment to align on the location of the
-vrings and vring buffers in the RTOS-side firmware images. So,
-use the of_reserved_mem_device_init/release() API appropriately
-to assign the corresponding reserved memory region to the OMAP
-remoteproc device. Note that only one region per device is
-allowed by the framework.
+Support has been added to the OMAP remoteproc driver through new
+DRA7xx specific compatibles for properly probing and booting all
+the different processor subsystem instances on DRA7xx/AM57xx
+SoCs - IPU1, IPU2, DSP1 & DSP2. A build dependency with SOC_DRA7XX
+is added to enable the driver to be built in DRA7xx-only configuration.
+
+The DSP boot address programming needed enhancement for DRA7xx as the
+boot register fields are different on DRA7 compared to OMAP4 and OMAP5
+SoCs. The register on DRA7xx contains additional fields within the
+register and the boot address bit-field is right-shifted by 10 bits.
+The internal memory parsing logic has also been updated to compute
+the device addresses for the L2 RAM for DSP devices using relative
+addressing logic, and to parse two additional RAMs at L1 level - L1P
+and L1D. This allows the remoteproc driver to support loading into
+these regions for a small subset of firmware images requiring as
+such. The most common usage would be to use the L1 programmable
+RAMs as L1 Caches.
+
+The firmware lookup logic also has to be adjusted for DRA7xx as
+there are (can be) more than one instance of both the IPU and DSP
+remote processors for the first time in OMAP4+ SoCs.
 
 Signed-off-by: Suman Anna <s-anna@ti.com>
+[t-kristo@ti.com: moved address translation quirks to pdata]
 Signed-off-by: Tero Kristo <t-kristo@ti.com>
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 ---
- drivers/remoteproc/omap_remoteproc.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/remoteproc/Kconfig           |  2 +-
+ drivers/remoteproc/omap_remoteproc.c | 44 +++++++++++++++++++++++++++-
+ 2 files changed, 44 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
+index 94afdde4bc9f..d6450d7fcf92 100644
+--- a/drivers/remoteproc/Kconfig
++++ b/drivers/remoteproc/Kconfig
+@@ -25,7 +25,7 @@ config IMX_REMOTEPROC
+ 
+ config OMAP_REMOTEPROC
+ 	tristate "OMAP remoteproc support"
+-	depends on ARCH_OMAP4 || SOC_OMAP5
++	depends on ARCH_OMAP4 || SOC_OMAP5 || SOC_DRA7XX
+ 	depends on OMAP_IOMMU
+ 	select MAILBOX
+ 	select OMAP2PLUS_MBOX
 diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
-index 28f14e24b389..3ad74c4b4071 100644
+index 3ad74c4b4071..6cf7f0a9ba9a 100644
 --- a/drivers/remoteproc/omap_remoteproc.c
 +++ b/drivers/remoteproc/omap_remoteproc.c
-@@ -17,6 +17,7 @@
- #include <linux/module.h>
- #include <linux/err.h>
- #include <linux/of_device.h>
-+#include <linux/of_reserved_mem.h>
- #include <linux/platform_device.h>
- #include <linux/dma-mapping.h>
- #include <linux/remoteproc.h>
-@@ -479,14 +480,22 @@ static int omap_rproc_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto free_rproc;
+@@ -34,10 +34,13 @@
+  * struct omap_rproc_boot_data - boot data structure for the DSP omap rprocs
+  * @syscon: regmap handle for the system control configuration module
+  * @boot_reg: boot register offset within the @syscon regmap
++ * @boot_reg_shift: bit-field shift required for the boot address value in
++ *		    @boot_reg
+  */
+ struct omap_rproc_boot_data {
+ 	struct regmap *syscon;
+ 	unsigned int boot_reg;
++	unsigned int boot_reg_shift;
+ };
  
-+	ret = of_reserved_mem_device_init(&pdev->dev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "device does not have specific CMA pool\n");
-+		goto free_rproc;
-+	}
+ /*
+@@ -78,12 +81,14 @@ struct omap_rproc {
+  * struct omap_rproc_dev_data - device data for the omap remote processor
+  * @device_name: device name of the remote processor
+  * @has_bootreg: true if this remote processor has boot register
++ * @boot_reg_shift: bit shift for the boot register mask
+  * @mem_names: memory names for this remote processor
+  * @dev_addrs: device addresses corresponding to the memory names
+  */
+ struct omap_rproc_dev_data {
+ 	const char *device_name;
+ 	bool has_bootreg;
++	int boot_reg_shift;
+ 	const char * const *mem_names;
+ 	const u32 *dev_addrs;
+ };
+@@ -153,6 +158,8 @@ static int omap_rproc_write_dsp_boot_addr(struct rproc *rproc)
+ 	struct omap_rproc *oproc = rproc->priv;
+ 	struct omap_rproc_boot_data *bdata = oproc->boot_data;
+ 	u32 offset = bdata->boot_reg;
++	u32 value;
++	u32 mask;
+ 
+ 	if (rproc->bootaddr & (SZ_1K - 1)) {
+ 		dev_err(dev, "invalid boot address 0x%x, must be aligned on a 1KB boundary\n",
+@@ -160,7 +167,10 @@ static int omap_rproc_write_dsp_boot_addr(struct rproc *rproc)
+ 		return -EINVAL;
+ 	}
+ 
+-	regmap_write(bdata->syscon, offset, rproc->bootaddr);
++	value = rproc->bootaddr >> bdata->boot_reg_shift;
++	mask = ~(SZ_1K - 1) >> bdata->boot_reg_shift;
 +
- 	platform_set_drvdata(pdev, rproc);
- 
- 	ret = rproc_add(rproc);
- 	if (ret)
--		goto free_rproc;
-+		goto release_mem;
- 
- 	return 0;
- 
-+release_mem:
-+	of_reserved_mem_device_release(&pdev->dev);
- free_rproc:
- 	rproc_free(rproc);
- 	return ret;
-@@ -498,6 +507,7 @@ static int omap_rproc_remove(struct platform_device *pdev)
- 
- 	rproc_del(rproc);
- 	rproc_free(rproc);
-+	of_reserved_mem_device_release(&pdev->dev);
++	regmap_update_bits(bdata->syscon, offset, mask, value);
  
  	return 0;
  }
+@@ -286,6 +296,14 @@ static const u32 ipu_dev_addrs[] = {
+ 	0x20000000,
+ };
+ 
++static const char * const dra7_dsp_mem_names[] = {
++	"l2ram", "l1pram", "l1dram", NULL
++};
++
++static const u32 dra7_dsp_dev_addrs[] = {
++	0x800000, 0xe00000, 0xf00000,
++};
++
+ static const struct omap_rproc_dev_data omap4_dsp_dev_data = {
+ 	.device_name	= "dsp",
+ 	.has_bootreg	= true,
+@@ -308,6 +326,20 @@ static const struct omap_rproc_dev_data omap5_ipu_dev_data = {
+ 	.dev_addrs	= ipu_dev_addrs,
+ };
+ 
++static const struct omap_rproc_dev_data dra7_dsp_dev_data = {
++	.device_name	= "dsp",
++	.has_bootreg	= true,
++	.boot_reg_shift	= 10,
++	.mem_names	= dra7_dsp_mem_names,
++	.dev_addrs	= dra7_dsp_dev_addrs,
++};
++
++static const struct omap_rproc_dev_data dra7_ipu_dev_data = {
++	.device_name	= "ipu",
++	.mem_names	= ipu_mem_names,
++	.dev_addrs	= ipu_dev_addrs,
++};
++
+ static const struct of_device_id omap_rproc_of_match[] = {
+ 	{
+ 		.compatible     = "ti,omap4-dsp",
+@@ -325,6 +357,14 @@ static const struct of_device_id omap_rproc_of_match[] = {
+ 		.compatible     = "ti,omap5-ipu",
+ 		.data           = &omap5_ipu_dev_data,
+ 	},
++	{
++		.compatible     = "ti,dra7-dsp",
++		.data           = &dra7_dsp_dev_data,
++	},
++	{
++		.compatible     = "ti,dra7-ipu",
++		.data           = &dra7_ipu_dev_data,
++	},
+ 	{
+ 		/* end */
+ 	},
+@@ -382,6 +422,8 @@ static int omap_rproc_get_boot_data(struct platform_device *pdev,
+ 		return -EINVAL;
+ 	}
+ 
++	oproc->boot_data->boot_reg_shift = data->boot_reg_shift;
++
+ 	return 0;
+ }
+ 
 -- 
 2.17.1
 
