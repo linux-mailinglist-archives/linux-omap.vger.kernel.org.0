@@ -2,135 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8E8111F1E1
-	for <lists+linux-omap@lfdr.de>; Sat, 14 Dec 2019 14:00:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 640D311F2BD
+	for <lists+linux-omap@lfdr.de>; Sat, 14 Dec 2019 17:03:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725895AbfLNNAB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 14 Dec 2019 08:00:01 -0500
-Received: from pandora.armlinux.org.uk ([78.32.30.218]:34498 "EHLO
-        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725884AbfLNNAA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 14 Dec 2019 08:00:00 -0500
+        id S1726762AbfLNQDe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 14 Dec 2019 11:03:34 -0500
+Received: from delivery.mailspamprotection.com ([108.178.13.118]:35873 "EHLO
+        delivery.mailspamprotection.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725900AbfLNQDe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 14 Dec 2019 11:03:34 -0500
+X-Greylist: delayed 3218 seconds by postgrey-1.27 at vger.kernel.org; Sat, 14 Dec 2019 11:03:33 EST
+Received: from ns1.sgp65.siteground.asia ([77.104.150.195] helo=sgp65.siteground.asia)
+        by se11.mailspamprotection.com with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <fantasie@fantasiechocolate.com>)
+        id 1ig936-0000tN-NZ; Sat, 14 Dec 2019 09:09:46 -0600
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        d=fantasiechocolate.com; s=default; h=Reply-To:Date:From:To:Subject:
+        Content-Description:Content-Transfer-Encoding:MIME-Version:Content-Type:
+        Sender:Message-ID:Cc:Content-ID:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
         List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=cVfsByPBGAH0nlXQRgx8tkvnwPRM93zqT8emFAC0MMo=; b=NYBnGKnByJHlzENS5UPOeXPvF
-        lDm53oKLDryplzcg2wtiqsmjk3vVDVik46mpm2X542ZB8jgKcPYXLegNwiMKoe4d/3zB/HFIpweM3
-        W9zQNX2o0ic0jH6Xf1nD2ANFnYiJlYjPoErAzdJGnDjLlJNXwP6FaMq4iNpGOlslXBp3lY4Q1YfNZ
-        w7c61lybarYqsCdd00nAaqbA6LMJjEqcOt3OUo2xgdSp0A6sZSEZU0regJQgOud95o2biPA9vHEu9
-        6z87usN65hGtdKwyFimNG1lclpP+feXTewWQLO1uyc6CFoN3NYiXmGfYCsCkUKChTdYYOtCTKUm45
-        Rj/NHc5jw==;
-Received: from shell.armlinux.org.uk ([2001:4d48:ad52:3201:5054:ff:fe00:4ec]:41234)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1ig71T-0002v6-Ew; Sat, 14 Dec 2019 12:59:51 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1ig71P-0000SH-FH; Sat, 14 Dec 2019 12:59:47 +0000
-Date:   Sat, 14 Dec 2019 12:59:47 +0000
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Stefan Wahren <wahrenst@gmx.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>
-Subject: Re: BUG - was: [GIT PULL 2/3] bcm2835-soc-next-2019-10-15
-Message-ID: <20191214125947.GD1337@shell.armlinux.org.uk>
-References: <1571159725-5090-1-git-send-email-wahrenst@gmx.net>
- <1571159725-5090-2-git-send-email-wahrenst@gmx.net>
- <12244E4E-A1A0-4EE9-ACD3-EA165D9A2C79@goldelico.com>
+         bh=G9LTS5QPxJ/s89LVw4V0N76a9Lg4GJG1FaRG84gTZKM=; b=VC6sIkzvVQNADIA7GQOkDd/52
+        ggzYeN2dqZN/ofNvvX+qvrkn5rrS1Z7U//NVIm11cJHrJRuIdb8gOpQxHJQzy/ZR1/2FkCDt4pHmz
+        ZNnvD/aY37M94g6IzDSQfaAWGYCmJSQ1Wz3amHKCe8iceR3yO69bgqpp2bB51XrX0ToxQZY/wzC1y
+        ATEXqX595nu6/TuNZ7o88xhiACR37UJO7ELjyQ4heVJEfoEJUv3fdN8TWabyYUwmhUR2+/5L/EwKf
+        qHNK1+uBUh6+U2AG4fqUs8SPTOBD7ST78l1teKjoVXARPGpU6ksfW5fX0ZpXpXOzLZidoiUACfA+s
+        k1BYpGcPw==;
+Received: from [41.215.171.102] (port=62564 helo=[192.168.1.2])
+        by sgp65.siteground.asia with esmtpa (Exim 4.90devstart-1178-b07e68e5-XX)
+        (envelope-from <fantasie@fantasiechocolate.com>)
+        id 1ig8yI-0008ta-VQ; Sat, 14 Dec 2019 23:04:43 +0800
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <12244E4E-A1A0-4EE9-ACD3-EA165D9A2C79@goldelico.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Hello
+To:     Recipients <fantasie@fantasiechocolate.com>
+From:   fantasie@fantasiechocolate.com
+Date:   Sat, 14 Dec 2019 10:04:18 -0500
+Reply-To: jackharg231@gmail.com
+Message-ID: <E1ig936-0000tN-NZ@se11.mailspamprotection.com>
+X-Originating-IP: 77.104.150.195
+X-SpamExperts-Domain: sgp65.siteground.asia
+X-SpamExperts-Username: 77.104.150.195
+Authentication-Results: mailspamprotection.com; auth=pass smtp.auth=77.104.150.195@sgp65.siteground.asia
+X-SpamExperts-Outgoing-Class: ham
+X-SpamExperts-Outgoing-Evidence: Combined (0.15)
+X-Recommended-Action: accept
+X-Filter-ID: Mvzo4OR0dZXEDF/gcnlw0fi3oD8HEy9ysrsB6Ile+oipSDasLI4SayDByyq9LIhVUZbR67CQ7/vm
+ /hHDJU4RXkTNWdUk1Ol2OGx3IfrIJKyP9eGNFz9TW9u+Jt8z2T3KhN8gB0UCtlKiDADMEO6fK0gH
+ UgOfZ93V5covVEKqb0Y3BEaqsouyH2JPupaK4GdPPybLiQyRWum4Qke8JxDXt1GbeR5Rzr89R6i1
+ 5BJmT4c+svYr+DKXW6ffa59udrIX25giF9M7gJWAl/5nWJMtsPOll4f8kWZfbm7sEYD22JZeXjSp
+ e3EPxcXRtJI70mhcpTqYQPoSw+uNgEPriCGGVktqqLQymt9ING1BZ9RAzU4r8WCGjuRR5BR5UDHw
+ q13WBSxNOxzIPy1yQgtYqFzVHklVTnyPbFIuz6vVj3T6m6r2YUxT5afkS4OQilu1kinw4pWx7WxW
+ FZpsjT/483ewgkWc4Mj+Q5mgf/xICRyR+RsuZ776uHuZaALzAKY8BmR1kxi2g6kxhuc2EktXlSJd
+ dD6qZfoa3cy5onUGweCshQjEOygmVS8JNKEmMM5/Gwy3sp2u/+Dor0gguhZcVyh35PmAFwfCxkjc
+ ZVHQ0okDst0lYcj4qaoz9norxIpK8WLiKdvTyBjtn1YZtaf24ZD2cbVJ3Fsp+X0HS6wzEu9olBd2
+ /rQUHM2a3mox2M6n7Xb3mr89pv0YVQhC/Sp+XTdU8H7KNmzQeIjNKbtlrCkjPH2q67EvYVcsvQ34
+ /NpuC88kNvRysn3lfZb4Rh+NqdC24dfD1D/d23d0xFdIJfiwViUKVDwra/DXU8hrrqrGi9pLnoJT
+ WK100RUrXmQxQp+Y8uvNceQr1UI+HGSmnZmh3dLfX8TdqEXkwxwMjsp2mNApQ95Gxa8k8I6yQov8
+ irQyyWWLX2ZbQb3UJKihEmoDuwjmTt0o0URDpBDAYhtJF4FPxMG6ogEEFop6lsYs6JBvdSZM8t9f
+ CBMU12l3eZ1CzYj74O4hBSz/kkmPgL+fgIguBNIsbfC/jLbTnTJbC5t39nmvH1DYfgO7D7Y/JGCD
+ 42O8zzKH2hQ3Ve2IDXy4YSwRw+auFRhe1Qs4yVlUek1P6W8HBTQAa2fFODpNGvpEAjBzLXMKZiSm
+ G+e9rsu95C3S0z6bhalFEM/pjPCQA+BAlp145fqpIMTjFaaDpGgnWLsIznNk2ibb5YJRIe0x6YKX
+ 8/j3T3ybaeC3MilL8EjWDVq0GNHGMUW6YkpwbFLasFYccBIk1Sag4dKiqCrF8eZZLd8WBKFLv720
+ D3T9ClsPTExvHlDG2Kbv6n8NmuDa7S7jfpMZETSvJYWeM1Y3FciG4HpLXvodlY2FrSxVsval1Owq
+ eELuJMPl/O1OgZpZqTZmAnLGi91oUOJsJcYiUNN7nHl2TRtBFGxCwNLr/WIXTv8laQem01LZN5TP
+ 6r1b0vL67KzTDKX3XqBJUd3nXdesg89YagDPKq8U0dLahem93w==
+X-Report-Abuse-To: spam@quarantine1.mailspamprotection.com
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Dec 14, 2019 at 11:54:19AM +0100, H. Nikolaus Schaller wrote:
-> Hi Stefan,
-> 
-> > Am 15.10.2019 um 19:15 schrieb Stefan Wahren <wahrenst@gmx.net>:
-> > 
-> > Hi Florian,
-> > 
-> > The following changes since commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c:
-> > 
-> >  Linux 5.4-rc1 (2019-09-30 10:35:40 -0700)
-> > 
-> > are available in the git repository at:
-> > 
-> >  git://github.com/anholt/linux tags/bcm2835-soc-next-2019-10-15
-> > 
-> > for you to fetch changes up to 781fa0a954240c8487683ddf837fb2c4ede8e7ca:
-> > 
-> >  ARM: bcm: Add support for BCM2711 SoC (2019-10-10 19:21:03 +0200)
-> 
-> this patch has finally arrived in v5.5-rc1 but it seems to break
-> multiplatform build.
-> 
-> We run a distribution kernel that supports OMAP3/4/5, i.MX6 and RasPi 3B+
-> but since rebasing to v5.5-rc1 the kernel hangs after "Starting Kernel ...".
-> On all ARM devices (incl. RasPi 3B+).
-> 
-> Playing with our defconfig did show that deconfiguring CONFIG_ARCH_BCM2835
-> makes the kernel work again.
-> 
-> After further analysis it turns out that reverting this patch also
-> makes the boards work again.
-> 
-> I am not exactly sure what the reason is, but it may have something to
-> do with the new auto-selection of CONFIG_ZONE_DMA which is not automatically
-> selected by OMAP and i.MX6.
-> 
-> To reproduce on some OMAP device (i.MX6 should be similar)
-> 
-> 1st test:
-> 
-> git checkout v5.5-rc1
-> make omap2plus_defconfig
-> 
-> => boots OMAP device
-> 
-> 2nd test:
-> 
-> ( echo CONFIG_ARCH_BCM2835=y; echo CONFIG_ARCH_BCM=y ) >>arch/arm/configs/omap2plus_defconfig
-> make omap2plus_defconfig
-> 
-> => fails to boot OMAP device
-> 
-> 3rd test:
-> 
-> git revert 781fa0a954240c8487683ddf837fb2c4ede8e7ca
-> make omap2plus_defconfig
-> 
-> => boots OMAP device
-> 
-> BTW: the RasPi 3B+ runs equally well without this patch. So what is it
-> good for?
-> 
-> So please check and fix this patch.
+Are you available?
 
-Enabling ZONE_DMA shouldn't cause this problem - but as it does, please
-enable memblock debugging and early console, and please send any boot
-messages you can get from the system when it fails to boot.  Also
-having a successful boot log may be useful.
 
-Thanks.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+Regards
+Jack Hargreaves
+Broker/Financial consortium
