@@ -2,78 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05BD911F6D0
-	for <lists+linux-omap@lfdr.de>; Sun, 15 Dec 2019 08:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CC2111F6D3
+	for <lists+linux-omap@lfdr.de>; Sun, 15 Dec 2019 08:49:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726039AbfLOHtM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 15 Dec 2019 02:49:12 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.165]:21406 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726049AbfLOHtL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 15 Dec 2019 02:49:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1576396149;
+        id S1726111AbfLOHtY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 15 Dec 2019 02:49:24 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.80]:27640 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726049AbfLOHtY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 15 Dec 2019 02:49:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1576396162;
         s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=td8yBsthjIkGZm9vmnRS/XjA43oNBnSXyXWeFGiQQZw=;
-        b=cLJpjjpIxOFSNOmiLtqzsQ6WBbR7oZ+EcMPkaREwllwyRGhUXiLHASK0UE3EwXSiQ1
-        bn717uLYiBqgdO2oNHoJ+ALhVr+ng5mULAwneqm8TPlJ/T6R+T9MOqwnh93nbFLP1Hb9
-        WTm6STEQGm3zlhF2w8ePF553dM5FAXOKFivvjPg8Ex5MYx27Cul7TiSU+VuHVhMk47zx
-        yp+yNbYi+/cOclIz6L3zsagnTnQBEPLoFXrlb4G3cQjWSX1zI6aprtvEbx2BqS50ULR+
-        JqUWae+rtNGAsE+D1P67YYIanwRLGQLNYRQlI3X14Wn22Tj3RNDB4Asggx8xGK5dZCi2
-        oIIw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/PgwDGiVw=="
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=LpDKj822zUyMoXRXIUjh14hwRFU++ehi8QyZ3hnuTeM=;
+        b=iLO1ZWXBJ+7uX7gEI7zFf0aBf3+FrmdAggJ4tFbf2ZO+A4vgKzzQTtZHjrvZSPNJHb
+        cTOKuWydC7bqNtnYllIwzH4+pN2iRoYM6d5ichTNlK412Ig7Dhv015uikmiHVnGxlvgJ
+        gbaw5PxuFaZ+bGVPmcmHDSDG3306jhYqE6oD5GlQbGJe0etP2AM59daU0Ap2bNIwoXZ5
+        NHmlJ3HDIjfj7KwGVsFVyXC5t4o4kbVqeY4vhcN6oiekJ/eH42ytzIbvwbdQbYpnMPBb
+        Zd1tElSHJ/07uE4BVp/12vbTOEwv8xCdc58eGriByIDkhBGVwhhhn6HRVOnetphKEXA/
+        Utaw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2M7Nk1c1UM="
 X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
+Received: from iMac.fritz.box
         by smtp.strato.de (RZmta 46.0.7 DYNA|AUTH)
-        with ESMTPSA id i03ca8vBF7moD4b
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        with ESMTPSA id i03ca8vBF7n2D4c
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-        Sun, 15 Dec 2019 08:48:50 +0100 (CET)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [PATCH v2] ARM: bcm: Fix support for BCM2711 SoC which breaks other ARM platforms
+        Sun, 15 Dec 2019 08:49:02 +0100 (CET)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <b209c3dd-0d20-05b1-6cbc-62f40623028c@gmail.com>
-Date:   Sun, 15 Dec 2019 08:48:50 +0100
-Cc:     Stefan Wahren <wahrenst@gmx.net>, Ray Jui <rjui@broadcom.com>,
+To:     Stefan Wahren <wahrenst@gmx.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
         Scott Branden <sbranden@broadcom.com>,
         bcm-kernel-feedback-list@broadcom.com,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        linux@armlinux.org.uk,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Cc:     linux@armlinux.org.uk,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-rpi-kernel@lists.infradead.org,
         arm-soc <linux-arm-kernel@lists.infradead.org>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
         Tony Lindgren <tony@atomide.com>, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com
-Content-Transfer-Encoding: 7bit
-Message-Id: <8330901D-84A6-4618-A509-477D04A93B7B@goldelico.com>
-References: <0d7bef0622d69bd4f1129afe26b358669e639ae8.1576361067.git.hns@goldelico.com> <b209c3dd-0d20-05b1-6cbc-62f40623028c@gmail.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-X-Mailer: Apple Mail (2.3124)
+        kernel@pyra-handheld.com,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: [PATCH v3] ARM: bcm: Add missing sentinel to bcm2711_compat[]
+Date:   Sun, 15 Dec 2019 08:49:02 +0100
+Message-Id: <b8f2060dacd4c4f27e0e1791cb12462ce740927d.1576396141.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.23.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Florian,
+commit 781fa0a95424 ("ARM: bcm: Add support for BCM2711 SoC")
 
-> Am 14.12.2019 um 23:49 schrieb Florian Fainelli <f.fainelli@gmail.com>:
-> 
-> This looks fine, I would just rephrase the commit subject as:
-> 
-> ARM: bcm: Add missing sentinel to bcm2711_compat[]
-> 
-> instead of indicating the breakage but not so much the fix, if that is
-> okay with you. 
+breaks boot of many other platforms (e.g. OMAP or i.MX6) if
+CONFIG_ARCH_BCM2835 is enabled in addition to some multiplatform
+config (e.g. omap2plus_defconfig). The symptom is that the OMAP
+based board does not show any activity beyond "Starting Kernel ..."
+even with earlycon.
 
-Yes, is okay and indeed better.
+Reverting the mentioned commit makes it work again.
 
-> -- 
-> Florian
+The real fix is to add the missing NULL sentinel to the
+bcm2711_compat[] variable-length array.
 
+Fixes: 781fa0a95424 ("ARM: bcm: Add support for BCM2711 SoC")
+Acked-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+---
+ arch/arm/mach-bcm/bcm2711.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-BR and thanks,
-Nikolaus
+diff --git a/arch/arm/mach-bcm/bcm2711.c b/arch/arm/mach-bcm/bcm2711.c
+index dbe296798647..fa0300d8c79d 100644
+--- a/arch/arm/mach-bcm/bcm2711.c
++++ b/arch/arm/mach-bcm/bcm2711.c
+@@ -13,6 +13,7 @@ static const char * const bcm2711_compat[] = {
+ #ifdef CONFIG_ARCH_MULTI_V7
+ 	"brcm,bcm2711",
+ #endif
++	NULL
+ };
+ 
+ DT_MACHINE_START(BCM2711, "BCM2711")
+-- 
+2.23.0
 
