@@ -2,114 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 130EB12078B
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2019 14:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49521120707
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2019 14:22:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727974AbfLPNsX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Dec 2019 08:48:23 -0500
-Received: from mail.andi.de1.cc ([85.214.55.253]:55490 "EHLO mail.andi.de1.cc"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727579AbfLPNsW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 16 Dec 2019 08:48:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Type:MIME-Version:References:
-        In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=QorfTf53SPvGZ9VQFNJd+vqD+nj6jSm+GwQ9JD/nM/o=; b=G3pdXgNq+2f7fsK2Uu37jr0pJ
-        q7bOvkfl+XV5qzxjRwnna5RtFdpakhFkjAA95cqb1Qpl31s5VKslR1DWVms7VSVGU7yCYS9Z4LukO
-        w2zFhNpn5+4C95F8IWRhU1mEe4YJXzM4teiyYqtqwSNLTUGoednDfI5ilO+VYMapyFhX4=;
-Received: from [2a02:790:ff:919:7ee9:d3ff:fe1f:a246] (helo=localhost)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1igqjR-0003hl-Dk; Mon, 16 Dec 2019 14:48:18 +0100
-Received: from [::1] (helo=localhost)
-        by eeepc with esmtp (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1igp8F-0006kt-JN; Mon, 16 Dec 2019 13:05:47 +0100
-Date:   Mon, 16 Dec 2019 13:05:36 +0100
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Evgeniy Polyakov <zbr@ioremap.net>,
+        id S1727807AbfLPNWB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Dec 2019 08:22:01 -0500
+Received: from mout.kundenserver.de ([212.227.17.13]:38087 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727716AbfLPNWB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Dec 2019 08:22:01 -0500
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1MGhi0-1iT9Ch3e2k-00DrdU; Mon, 16 Dec 2019 14:21:34 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Tony Lindgren <tony@atomide.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Tero Kristo <t-kristo@ti.com>,
+        Santosh Shilimkar <santosh.shilimkar@oracle.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Adam Ford <aford173@gmail.com>,
-        "Andrew F . Davis" <afd@ti.com>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH] w1: omap-hdq: Simplify driver with PM runtime
- autosuspend
-Message-ID: <20191216130536.5935a587@kemnade.info>
-In-Reply-To: <20191216031637.GM35479@atomide.com>
-References: <20191215173817.47918-1-tony@atomide.com>
-        <20191215230331.645b9064@aktux>
-        <20191216030948.GL35479@atomide.com>
-        <20191216031637.GM35479@atomide.com>
-X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; i686-pc-linux-gnu)
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: omap2plus: select RESET_CONTROLLER
+Date:   Mon, 16 Dec 2019 14:21:26 +0100
+Message-Id: <20191216132132.3330811-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/pTDkS8g+4Evpb4NGdmMSFgI"; protocol="application/pgp-signature"
-X-Spam-Score: -1.0 (-)
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:Wm5RTpZAgx5UpDGIoWv7v4EV7gdfDKQbLqHRuQjOl+FrgU30CXT
+ axQk9AW0xPd7KS/ckntU087e9UeSzC5puiBOhiDC2jXNCLtwnF7z+3SGrPJDn5SrDkCBSfJ
+ uaaXALhckSIy8qrY87GXPTv53Ehouq3yWA+xHHc9uk4WUVKG5qBHqn4arqcPnS1mAJ1LS67
+ 1beLDQLKqRcI96Xz4pJ3Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Hrhxfp/VpYg=:3otAal51aHHrkXXep6RH3D
+ 7F0TWQqaWvIE6pZWycdW0E94YlOXWPMFP6aMmQvxiv1V+yLiY2VWmBia32ctSmLwaqXqDfRon
+ pvhuknI9ImJtknZepqcWir9QoV61iyewoOYhWlh/TAb533Du5IpXnN+EpnZ/RLRbSfRNswjnv
+ SVeX3cGJZZUFTaQldEZ7dSukka3ZgyFdVELyWO9lbJTbNY2usV4AEZLs+cU7vEnkWX5SmKpV7
+ Wjh2GIYbkYJZgJXnHPLFS3IBzczQr9AR7supnUl1r5+QIx4P8QiPkyBgQL+ulfOG/TwHu+UT+
+ TAvzHq/vmlFxQVJbr+gPGUWz+bfZUTcJgySg0B6PYMSWsckQ3EwtzyfKq9rS1Tf4TEN41PbOd
+ 9MTGtmwxzpbsNOxYJXzm/3R/GWgSSj2Ws6No7WFdeSyG+o+qWPQrJvIBOjUPmQt/N5VgdSbsH
+ 9/UmgMUJlFPZRVfQwd2ksC34toKEjbL6Pj+pnrzrQQeAHJKFfnJ/en/nmx4ePAJNxDOaSi34t
+ n9k8kisZWjgEoL9UkqlPzN9PPKioK6KVWt8DPQVQo49jsJDIgUyfho/hWLQwOb2Oj2yiHpLPj
+ hs6J9TPJv+vc09ftQI2x2ar3Qo9Sf4K+X7gHcpSaSVmMQt+w1p18DEKsaKKik03Cm1AZx930O
+ FQsf7nrtKzqa57ux1XvcYb1qXkP4E5XKcnNm9TnE+KWVdu+xSAZVML3jAtPt2gH0pOZN3Vp0I
+ ZqcPfdT7utDoewzkX7bHJx7AgSFSny7N+OkdsgTiQwjJZnrbbdslnq5Z/yCMn7sIHsc7ZSxEg
+ eVaUCaX1Ulxe54UoREM+4uNOjYLy5HHCdVyPTpcff+DIoRgazBOxWn/vJICZcGIzMtY64yXYh
+ HWZNCOLHk4g6rke0sltg==
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---Sig_/pTDkS8g+4Evpb4NGdmMSFgI
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+With the new omap_prm driver added unconditionally, omap2 builds
+fail when the reset controller subsystem is disabled:
 
-On Sun, 15 Dec 2019 19:16:37 -0800
-Tony Lindgren <tony@atomide.com> wrote:
+drivers/soc/ti/omap_prm.o: In function `omap_prm_probe':
+omap_prm.c:(.text+0x2d4): undefined reference to `devm_reset_controller_register'
 
-> * Tony Lindgren <tony@atomide.com> [191216 03:10]:
-> > Hi,
-> >=20
-> > * Andreas Kemnade <andreas@kemnade.info> [191215 22:04]: =20
-> > > On Sun, 15 Dec 2019 09:38:17 -0800
-> > > If I remember correctly this thing is critical to get the hwmod out of
-> > > reset but I need to examine that again: =20
-> >=20
-> > Thanks for testing, yes that's what I thought might cause it
-> > too, but nope :)
-> >=20
-> > We currently disable interrupts for some reason after
-> > the first read. That won't play with runtime PM autosuspend
-> > at all as we never enable them again until the device has
-> > idled. Can you try the following additional patch on top? =20
->=20
-> And we should probably do the following too to make sure
-> the mode is initialized before we call runtime PM.
->=20
-CM_FCLKEN1/IDLEST1_CORE seem to behave, reading also works=20
+Fixes: 3e99cb214f03 ("soc: ti: add initial PRM driver with reset control support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/arm/mach-omap2/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-With these two additional patches this deserves a
-Tested-By: Andreas Kemnade <andreas@kemnade.info> # gta04
+diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
+index fe0f82efb1de..639bc38567a7 100644
+--- a/arch/arm/mach-omap2/Kconfig
++++ b/arch/arm/mach-omap2/Kconfig
+@@ -95,6 +95,7 @@ config ARCH_OMAP2PLUS
+ 	bool
+ 	select ARCH_HAS_BANDGAP
+ 	select ARCH_HAS_HOLES_MEMORYMODEL
++	select ARCH_HAS_RESET_CONTROLLER
+ 	select ARCH_OMAP
+ 	select CLKSRC_MMIO
+ 	select GENERIC_IRQ_CHIP
+@@ -105,11 +106,11 @@ config ARCH_OMAP2PLUS
+ 	select OMAP_DM_TIMER
+ 	select OMAP_GPMC
+ 	select PINCTRL
++	select RESET_CONTROLLER
+ 	select SOC_BUS
+ 	select TI_SYSC
+ 	select OMAP_IRQCHIP
+ 	select CLKSRC_TI_32K
+-	select ARCH_HAS_RESET_CONTROLLER
+ 	help
+ 	  Systems based on OMAP2, OMAP3, OMAP4 or OMAP5
+ 
+-- 
+2.20.0
 
-Regards,
-Andreas
-
---Sig_/pTDkS8g+4Evpb4NGdmMSFgI
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEPIWxmAFyOaBcwCpFl4jFM1s/ye8FAl33cxEACgkQl4jFM1s/
-ye+XJhAAwAP3mP015ttcaI0o1k+rWARDRYa6ZmIdenggQ1kVJC/wyz81oY+EYOhh
-+cjFOKGUHHXDJ8N2HZEqlEW/WamTeTOb94eDD4blf5xcFfqO7TlqcQkZxl++8lJy
-J37v+tT+I+7T9j3tA7XlGGy8j5TexKgT0BWXHE9BPryURsA5wANkhLm6jhMxNyWT
-ADrM2ey0kMuReKDjCQcJsOapxRs3wfaxKxMs0t93pe7S54Onqr1Eqi6WDEjkJOPD
-tClQ4WzEHKad70Whi6jiL/PozkNjB5E6MAaY+uENvHf3X1jcNeJI/63rScJfJGkq
-LneGTFeBQ7Bao2bQ/BahxXV9cX6jiZCY6Wsz+ZPizOok3+UWQG5pW0O/DsJ43Rpx
-3JEwjtRgyjboj3fH49jJx/5ayHYdbsqyarxoXh9oHpHpcpoU4GT4YPrCQn7QDenB
-waDGzKr7DYHZF4T1tA8nGw6uc5C3eSMSIgpwecVb2iBRzdyBRUJg1dPgIuAHQb4K
-KXBtkavGIu6mHcqMsCQ1yih8zvVIJnt/A1vo5/flpRY7AQjx+Bz35gZXDYFc/2iI
-Xj7SpP8WXDke53CgZLKhayuBRoH08t84w9vrNLA2x7jFmVxKta7T1eu6+j1VxnpC
-HdVIAu3bk5YSGE4kh4zg2Y+25hy2bSsQP/rboPD5/deCIFNP/XQ=
-=504B
------END PGP SIGNATURE-----
-
---Sig_/pTDkS8g+4Evpb4NGdmMSFgI--
