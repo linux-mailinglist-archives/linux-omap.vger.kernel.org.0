@@ -2,223 +2,166 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C3201219A5
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2019 20:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AEAE121B5B
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2019 21:56:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfLPTDd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Dec 2019 14:03:33 -0500
-Received: from mail-il1-f195.google.com ([209.85.166.195]:33061 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726390AbfLPTDd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Dec 2019 14:03:33 -0500
-Received: by mail-il1-f195.google.com with SMTP id r81so6328599ilk.0;
-        Mon, 16 Dec 2019 11:03:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ck1hLhwSHsxU4HX6xIBXPsVqEUK44VPQA89Rn8jGGuY=;
-        b=QMOYkt+Dgwg+QpYo9pIxOHMJ4twFhfGv+NutR3SmTq+VsYY5/eck7P8wJpL+9miaqW
-         QXjOwgO24Z1pmxfcbJEeuNYFP4SxqQ2POdx5FKclCw7BuNUMyDisYicACKoYvdSpqn8Q
-         95wXiNEWETEYSKm8bGHkaw+7DSX5rQ4LiHEXgAdzIcrgWyF++9DUc7UzoS814BbAzPx3
-         ZDhQMNsZJ/88XeOJ3Yd2h4lVv307j1byoqLevCUZJv9GLDc4p4hB4zvkhukLqc5NvUkS
-         H2RVhJuE4msKmT0grPiL4Vd7Tl0TLKSSwZUwdDcDlH4IXUEdJ/Vv3vycwronvNbmjfFd
-         nLOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ck1hLhwSHsxU4HX6xIBXPsVqEUK44VPQA89Rn8jGGuY=;
-        b=HkxJMCBzu5fUpnwJSt7ATWVfRHGImJxZ0OWN/YZWjwLUv/mLtBM3bNl5dTzcQvOKH7
-         7K02D5rOH+ETmfQRWfeLIs9jh7if2WXB/Kfhu1s9s1JU8THN9jhQnRln5/680rIpbvyM
-         YM/Wbkuk6oWNm8GSVrVaVo96meLFfjdtQSQqHrMQ/jUBFbhpZkANz/HciXDpKT7zUnoA
-         GeqfBX1ZaV29mQpoiQ9lKofhzQDq//Y+TZmfF0nmyW268iCxThUZhI+o5Eq7bFLZuxWM
-         Thddm5SmBHSMeoFKLWl/ZT7nywlDMADwITg8rVeSQrw+x2CzDKvoJf6f6ZOgNvMj8EGs
-         PnHw==
-X-Gm-Message-State: APjAAAUqWrsYI1mJnTrZtXiIjtaofX6oiK8WmI4NLPFb06TsoKfD0WIr
-        woJQbmK1Jm4xLwR5MNcAXZhrpa/C+q7Snu6QAf0=
-X-Google-Smtp-Source: APXvYqwO7oXYYv+mzV2pJaMp0PXw81S6LrL/BZmy2OSI1itMD2phWOB1PU9MCTuXBQuX3Po4snX73E+BpN2Cbf/IW/4=
-X-Received: by 2002:a92:dc91:: with SMTP id c17mr11266604iln.78.1576523012236;
- Mon, 16 Dec 2019 11:03:32 -0800 (PST)
-MIME-Version: 1.0
-References: <20191216145359.28219-1-tony@atomide.com> <20191216164335.GP35479@atomide.com>
-In-Reply-To: <20191216164335.GP35479@atomide.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Mon, 16 Dec 2019 13:03:20 -0600
-Message-ID: <CAHCN7xLYRm3Lstb=-r6hguDOrxwi-dT0nTzkhYM0S5GYtEzckw@mail.gmail.com>
-Subject: Re: [PATCHv2] w1: omap-hdq: Simplify driver with PM runtime autosuspend
+        id S1726275AbfLPU4e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Dec 2019 15:56:34 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:50890 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726530AbfLPU4e (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Dec 2019 15:56:34 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBGKuS7U072912;
+        Mon, 16 Dec 2019 14:56:28 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1576529788;
+        bh=HbeVMB6LPXMwO1eiEhfGjS8GhC3Lp6KRPVkA0Q8dXnY=;
+        h=Subject:From:To:CC:References:Date:In-Reply-To;
+        b=kdLKoTmcSpymDQMLowlHoKCYmsXTwfGshaG2OEOFQKxZiN5rudDLep+33WaUmpcFc
+         hPqcYwThgoJrQJsgVwRstNBff18Py4XL+obGQVu1PecRw+NmKYpHC1v+ywuKTakxwD
+         oog2eB7EqBM8SbO9V76DAT7Y5W4EevNllZa5MOHk=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBGKuSgk115333
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 16 Dec 2019 14:56:28 -0600
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 16
+ Dec 2019 14:56:27 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 16 Dec 2019 14:56:27 -0600
+Received: from [10.250.79.55] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBGKuR2c102326;
+        Mon, 16 Dec 2019 14:56:27 -0600
+Subject: Re: [PATCH] ARM: OMAP: Use ARM SMC Calling Convention when OP-TEE is
+ available
+From:   "Andrew F. Davis" <afd@ti.com>
 To:     Tony Lindgren <tony@atomide.com>
-Cc:     Evgeniy Polyakov <zbr@ioremap.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Andrew F . Davis" <afd@ti.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Vignesh R <vigneshr@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+CC:     Mark Rutland <mark.rutland@arm.com>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <6e009ae3-6aa2-409b-749f-4947303940d8@ti.com>
+ <20191119164227.GL35479@atomide.com> <20191119180546.GM35479@atomide.com>
+ <9e15c170-c9fa-778c-d998-bd1111a6390d@ti.com>
+ <20191119183247.GN35479@atomide.com>
+ <a351461a-f6a1-334b-6bdd-a56626914fb3@ti.com>
+ <20191119190721.GO35479@atomide.com>
+ <7fa11037-8d33-2274-c8cc-80e9630b38b0@ti.com>
+ <20191119192029.GP35479@atomide.com>
+ <0ad31b32-712e-5bef-5645-0336dfec99cc@ti.com>
+ <20191119194425.GQ35479@atomide.com>
+ <f2f53e5e-6c95-e32f-d67a-284bb88e73e0@ti.com>
+Message-ID: <1ff8ae4b-5de3-4fdf-7318-d33398dc7fc8@ti.com>
+Date:   Mon, 16 Dec 2019 15:56:27 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
+MIME-Version: 1.0
+In-Reply-To: <f2f53e5e-6c95-e32f-d67a-284bb88e73e0@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Dec 16, 2019 at 10:43 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> * Tony Lindgren <tony@atomide.com> [191216 14:54]:
-> > Vignesh, any comments on the ti,mode = "1w" and removal of the call to
-> > hdq_disable_interrupt()? Is there some specific section where we need
-> > to have interrupts disabled and then re-enabled?
->
-> OK I got "1w" mode working too now. We need to clear the irqstatus before
-> calling wait_event_timeout() on it, and we're now missing it in the
-> hdq_read_byte().
->
-> Looks like we should not tinker with the actual irstatus register though,
-> that's up to the hdq_isr() to manage.
->
-> So the following helper is probably what we want to do additionally.
-> I'll be posting v3 of the $subject patch.
+On 11/19/19 2:59 PM, Andrew F. Davis wrote:
+> On 11/19/19 2:44 PM, Tony Lindgren wrote:
+>> * Andrew F. Davis <afd@ti.com> [191119 19:36]:
+>>> On 11/19/19 2:20 PM, Tony Lindgren wrote:
+>>>> * Andrew F. Davis <afd@ti.com> [191119 19:13]:
+>>>>> On 11/19/19 2:07 PM, Tony Lindgren wrote:
+>>>>>> * Andrew F. Davis <afd@ti.com> [191119 18:51]:
+>>>>>>> On 11/19/19 1:32 PM, Tony Lindgren wrote:
+>>>>>>>> It would allow us to completely change over to using
+>>>>>>>> arm_smccc_smc() and forget the custom calls.
+>>>>>>>
+>>>>>>> We would need more than just the r12 quirk to replace all our custom SMC
+>>>>>>> handlers, we would need quirks for omap_smc2 which puts process ID in r1
+>>>>>>> and puts #0xff in r6, and omap_smc3 that uses smc #1. All of our legacy
+>>>>>>> SMC calls also trash r4-r11, that is very non SMCCC complaint as only
+>>>>>>> r4-r7 need be caller saved. I don't see arm_smccc_smc() working with
+>>>>>>> legacy ROM no matter how much we hack at it :(
+>>>>>>
+>>>>>> We would just have omap_smc2() call arm_smccc_smc() and in that
+>>>>>> case. And omap_smc2() would still deal with saving and restoring
+>>>>>> the registers.
+>>>>>
+>>>>> Then why call arm_smccc_smc()? omap_smc2() is already an assembly
+>>>>> function, all it needs to do after loading the registers and saving the
+>>>>> right ones is issue an "smc #0" instruction, why would we want to
+>>>>> instead call into some other function to re-save registers and issue the
+>>>>> exact same instruction?
+>>>>
+>>>> To use Linux generic API for smc calls where possible.
+>>>
+>>> But we are not using generic API calls, we are using omap_smcx() which
+>>> cannot call into arm_smccc_smc(). For all the above reasons plus
+>>> arm_smccc_smc() uses r12 to save the stack pointer, our ROM expects r12
+>>> to store the function ID.
+>>
+>> Saving and restoring r12 could be handled by the arm_smccc_smc() quirk
+>> for the non-optee case.
+>>
+>> Then we could get rid of omap_smc1() and arm_smccc_smc() should work
+>> for the optee case and non-optee case, right.
+>>
+> 
+> 
+> Yes, we could have both cases working if we could get the quirk in.
+> 
+> 
+>>>>>> Certainly the wrapper functions calling arm_smccc_smc() can deal
+>>>>>> with r12 too if the r12-quirk version and the plain version are
+>>>>>> never needed the same time on a booted SoC.
+>>>>>>
+>>>>>> Are they ever needed the same time on a booted SoC or not?
+>>
+>>> They should not be needed at the same time, either OP-TEE is on the
+>>> secure side or ROM is there.
+>>
+>> OK thanks. So we could just modify the code dynamically on boot
+>> based on if optee is found or not. The quirk could be done along
+>> the lines of the qcom quirk but only for the non-optee case:
+>>
+> 
+> 
+> We wouldn't have to patch anything if we could get the quirk in. One has
+> to state they wish to use the quirk version in a structure passed into
+> arm_smccc_smc_quirk(), in which case for all legacy user we just fill
+> out this quirk struct. OP-TEE uses the same arm_smccc_smc() but without
+> the quirk struct and so it uses the compliant call.
+> 
+> The issue is still the same, I tried adding this, I got NAKd, if you
+> want to convince Mark to change his mind and allow us the quirk then we
+> can go down this path. Otherwise this will remain a dead end.
+> 
 
-I manually attempted to apply the patches.  I 'think' I did it right.
 
-For testing, I ran:
-  watch cat /sys/devices/w1_bus_master1/01-000000000000/power_supply/bq27000-battery/voltage_now
+Hi Tony,
 
-I inserted and removed the power cable several times and observed the
-voltage readings with the battery connected.
-The numbers looked reasonable.
+Looks like the TI quirk idea is not moving forward, even the QCOM quirk
+looks like it may get kicked out. arm_smccc_smc() will remain only for
+SMCCC compliant calls, but it looks like a generic arm_smc() wouldn't be
+too opposed upstream.
 
-I then put the board to suspend, waited a few seconds and woke the
-board from sleep.  I resumed my 'watch' function from above and it
-worked just fine.
-If there is nothing else you want me to test, go ahead and add:
+Either way this patch would still be valid as when OP-TEE is present
+then arm_smccc_smc() will be the right call to make, how we handle the
+legacy calls can be sorted out later if a generic SMC call is implemented.
 
-Tested-by: Adam Ford <aford173@gmail.com> #logicpd-torpedo-37xx-devkit
+Thanks,
+Andrew
 
-adam
->
-> Regards,
->
-> Tony
->
-> 8< ----------------------
-> diff --git a/drivers/w1/masters/omap_hdq.c b/drivers/w1/masters/omap_hdq.c
-> --- a/drivers/w1/masters/omap_hdq.c
-> +++ b/drivers/w1/masters/omap_hdq.c
-> @@ -119,22 +119,24 @@ static int hdq_wait_for_flag(struct hdq_data *hdq_data, u32 offset,
->         return ret;
->  }
->
-> +/* Clear saved irqstatus after using an interrupt */
-> +static void hdq_reset_irqstatus(struct hdq_data *hdq_data)
-> +{
-> +       unsigned long irqflags;
-> +
-> +       spin_lock_irqsave(&hdq_data->hdq_spinlock, irqflags);
-> +       hdq_data->hdq_irqstatus = 0;
-> +       spin_unlock_irqrestore(&hdq_data->hdq_spinlock, irqflags);
-> +}
-> +
->  /* write out a byte and fill *status with HDQ_INT_STATUS */
->  static int hdq_write_byte(struct hdq_data *hdq_data, u8 val, u8 *status)
->  {
->         int ret;
->         u8 tmp_status;
-> -       unsigned long irqflags;
->
->         *status = 0;
->
-> -       spin_lock_irqsave(&hdq_data->hdq_spinlock, irqflags);
-> -       /* clear interrupt flags via a dummy read */
-> -       hdq_reg_in(hdq_data, OMAP_HDQ_INT_STATUS);
-> -       /* ISR loads it with new INT_STATUS */
-> -       hdq_data->hdq_irqstatus = 0;
-> -       spin_unlock_irqrestore(&hdq_data->hdq_spinlock, irqflags);
-> -
->         hdq_reg_out(hdq_data, OMAP_HDQ_TX_DATA, val);
->
->         /* set the GO bit */
-> @@ -168,6 +170,7 @@ static int hdq_write_byte(struct hdq_data *hdq_data, u8 val, u8 *status)
->         }
->
->  out:
-> +       hdq_reset_irqstatus(hdq_data);
->         return ret;
->  }
->
-> @@ -219,7 +222,6 @@ static int omap_hdq_break(struct hdq_data *hdq_data)
->  {
->         int ret = 0;
->         u8 tmp_status;
-> -       unsigned long irqflags;
->
->         ret = mutex_lock_interruptible(&hdq_data->hdq_mutex);
->         if (ret < 0) {
-> @@ -228,13 +230,6 @@ static int omap_hdq_break(struct hdq_data *hdq_data)
->                 goto rtn;
->         }
->
-> -       spin_lock_irqsave(&hdq_data->hdq_spinlock, irqflags);
-> -       /* clear interrupt flags via a dummy read */
-> -       hdq_reg_in(hdq_data, OMAP_HDQ_INT_STATUS);
-> -       /* ISR loads it with new INT_STATUS */
-> -       hdq_data->hdq_irqstatus = 0;
-> -       spin_unlock_irqrestore(&hdq_data->hdq_spinlock, irqflags);
-> -
->         /* set the INIT and GO bit */
->         hdq_reg_merge(hdq_data, OMAP_HDQ_CTRL_STATUS,
->                 OMAP_HDQ_CTRL_STATUS_INITIALIZATION | OMAP_HDQ_CTRL_STATUS_GO,
-> @@ -283,6 +278,7 @@ static int omap_hdq_break(struct hdq_data *hdq_data)
->                         " return to zero, %x", tmp_status);
->
->  out:
-> +       hdq_reset_irqstatus(hdq_data);
->         mutex_unlock(&hdq_data->hdq_mutex);
->  rtn:
->         return ret;
-> @@ -330,6 +326,7 @@ static int hdq_read_byte(struct hdq_data *hdq_data, u8 *val)
->         /* the data is ready. Read it in! */
->         *val = hdq_reg_in(hdq_data, OMAP_HDQ_RX_DATA);
->  out:
-> +       hdq_reset_irqstatus(hdq_data);
->         mutex_unlock(&hdq_data->hdq_mutex);
->  rtn:
->         return ret;
-> @@ -363,7 +360,6 @@ static u8 omap_w1_triplet(void *_hdq, u8 bdir)
->                 goto rtn;
->         }
->
-> -       hdq_data->hdq_irqstatus = 0;
->         /* read id_bit */
->         hdq_reg_merge(_hdq, OMAP_HDQ_CTRL_STATUS,
->                       ctrl | OMAP_HDQ_CTRL_STATUS_DIR, mask);
-> @@ -377,7 +373,9 @@ static u8 omap_w1_triplet(void *_hdq, u8 bdir)
->         }
->         id_bit = (hdq_reg_in(_hdq, OMAP_HDQ_RX_DATA) & 0x01);
->
-> -       hdq_data->hdq_irqstatus = 0;
-> +       /* Must clear irqstatus for another RXCOMPLETE interrupt */
-> +       hdq_reset_irqstatus(hdq_data);
-> +
->         /* read comp_bit */
->         hdq_reg_merge(_hdq, OMAP_HDQ_CTRL_STATUS,
->                       ctrl | OMAP_HDQ_CTRL_STATUS_DIR, mask);
-> @@ -420,6 +418,7 @@ static u8 omap_w1_triplet(void *_hdq, u8 bdir)
->                       OMAP_HDQ_CTRL_STATUS_SINGLE);
->
->  out:
-> +       hdq_reset_irqstatus(hdq_data);
->         mutex_unlock(&hdq_data->hdq_mutex);
->  rtn:
->         pm_runtime_mark_last_busy(hdq_data->dev);
-> @@ -460,7 +459,7 @@ static u8 omap_w1_read_byte(void *_hdq)
->         if (ret < 0) {
->                 pm_runtime_put_noidle(hdq_data->dev);
->
-> -               return ret;
-> +               return -1;
->         }
->
->         ret = hdq_read_byte(hdq_data, &val);
-> --
-> 2.24.1
+
+> Andrew
+> 
+> 
+>> $ git grep -C10 ARM_SMCCC_QUIRK_QCOM_A6
+>>
+>> Regards,
+>>
+>> Tony
+>>
