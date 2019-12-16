@@ -2,103 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F7B12077B
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2019 14:47:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0163A1207C1
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2019 15:00:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727925AbfLPNpb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Dec 2019 08:45:31 -0500
-Received: from foss.arm.com ([217.140.110.172]:55834 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727894AbfLPNpa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 16 Dec 2019 08:45:30 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E22C11FB;
-        Mon, 16 Dec 2019 05:45:29 -0800 (PST)
-Received: from localhost (unknown [10.37.6.20])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5412F3F718;
-        Mon, 16 Dec 2019 05:45:29 -0800 (PST)
-Date:   Mon, 16 Dec 2019 13:45:27 +0000
-From:   Andrew Murray <andrew.murray@arm.com>
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-pci@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 01/13] PCI: cadence: Remove stray "pm_runtime_put_sync()"
- in error path
-Message-ID: <20191216134526.GW24359@e119886-lin.cambridge.arm.com>
-References: <20191209092147.22901-1-kishon@ti.com>
- <20191209092147.22901-2-kishon@ti.com>
+        id S1728009AbfLPN51 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Dec 2019 08:57:27 -0500
+Received: from mail-il1-f195.google.com ([209.85.166.195]:33952 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727609AbfLPN50 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Dec 2019 08:57:26 -0500
+Received: by mail-il1-f195.google.com with SMTP id s15so2410255iln.1;
+        Mon, 16 Dec 2019 05:57:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2tBYGnK2Aq8T6hQ21qou143/hbgltxjW1oUM3LKKX4g=;
+        b=MfUuorgN62i/6BTeoViD+3wdtgGw8nhJoiV9dUU5aST/wEvSmP9/yBEBHUcamzHS1v
+         NHt/UdYJMolLAUVrm2pOKJvNlItPS+Piotp1TWH48w/9be3QPbhbwUTecGzffyEu0QjB
+         E/0had3gNGhzgLMcDLlXWnAdjlTaGfFLkzuiKGXlNC7LbBsImKSjA6w33izjwW2vt8vS
+         3Lvwp/rx+ZsPrdMFX9rYzO9y8vj0dNd/lFRVPWc6rn5WSGrNxTliy3b9s4rxgq4I+S+x
+         66B191iF6Dv31yjM+9nxyZefY9Ap94xN9NdAPE93XYqLcxzffVRnDlwHBguo/19Lsdpa
+         Tp7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2tBYGnK2Aq8T6hQ21qou143/hbgltxjW1oUM3LKKX4g=;
+        b=jIs+xTAEKMnC/4us/MKWmcSk8cn6GakYpK6cqgv4yjjGGh3MfRlY4qEvPsr6aUh+zb
+         Rof/4D8urVXbVb7aOKMkni1q574DfGb09LrNCu5E6v6omC9cnZtiKyNCBK/54/oP0+DQ
+         6N09zTiiZc9MZS3ru4uL6dKQOngFiAvXd8px4T/fnhEjR7sPcvFEaZCyA+cAlJ8CXgy7
+         Iv7Dn8HCg90D/acyHHKbzP4lXXjRfGvU2kwGJYCNNC/x/bneVa/Om0VVeGf0P5VsIvYe
+         cgJCKvaC2WRakwChuRISbErwq3coEsk0mt9pWMdakqBs5zFTJFHChRpmXwkLoBfRNEpP
+         UzKA==
+X-Gm-Message-State: APjAAAUI9aZdHMV1tUvvjqUN1o0T5pdiCi0rXYm6r6KChaanyNe4gtip
+        CFTMl4hiAES8iHdV8SXN0FWyE77qeiUGWykNd9k=
+X-Google-Smtp-Source: APXvYqz58Q517KTUKqWPVVGd8fh0ZfJdGDtUjFu0F4IqRF52csg1S96w6+T4loixYrF3aCQHOLwXpjulmsVQ+MeG96o=
+X-Received: by 2002:a92:4e:: with SMTP id 75mr11868466ila.276.1576504645520;
+ Mon, 16 Dec 2019 05:57:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191209092147.22901-2-kishon@ti.com>
-User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
+References: <20191215173817.47918-1-tony@atomide.com> <20191215230331.645b9064@aktux>
+ <20191216030948.GL35479@atomide.com> <20191216031637.GM35479@atomide.com> <20191216130536.5935a587@kemnade.info>
+In-Reply-To: <20191216130536.5935a587@kemnade.info>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Mon, 16 Dec 2019 07:57:14 -0600
+Message-ID: <CAHCN7xJ-ndGxz0DYSwnuDi+4Hu349RTCzHjsspx2evMvLDtDqA@mail.gmail.com>
+Subject: Re: [PATCH] w1: omap-hdq: Simplify driver with PM runtime autosuspend
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Evgeniy Polyakov <zbr@ioremap.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "Andrew F . Davis" <afd@ti.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Vignesh R <vigneshr@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Dec 09, 2019 at 02:51:35PM +0530, Kishon Vijay Abraham I wrote:
-> commit bd22885aa188f135fd9 ("PCI: cadence: Refactor driver to use
-> as a core library") while refactoring the Cadence PCIe driver to be
-> used as library, removed pm_runtime_get_sync() from cdns_pcie_ep_setup()
-> and cdns_pcie_host_setup() but missed to remove the corresponding
-> pm_runtime_put_sync() in the error path. Fix it here.
-> 
-> Fixes: commit bd22885aa188f135fd9 ("PCI: cadence: Refactor driver to use
+On Mon, Dec 16, 2019 at 7:48 AM Andreas Kemnade <andreas@kemnade.info> wrote:
+>
+> On Sun, 15 Dec 2019 19:16:37 -0800
+> Tony Lindgren <tony@atomide.com> wrote:
+>
+> > * Tony Lindgren <tony@atomide.com> [191216 03:10]:
+> > > Hi,
+> > >
+> > > * Andreas Kemnade <andreas@kemnade.info> [191215 22:04]:
+> > > > On Sun, 15 Dec 2019 09:38:17 -0800
+> > > > If I remember correctly this thing is critical to get the hwmod out of
+> > > > reset but I need to examine that again:
+> > >
+> > > Thanks for testing, yes that's what I thought might cause it
+> > > too, but nope :)
+> > >
+> > > We currently disable interrupts for some reason after
+> > > the first read. That won't play with runtime PM autosuspend
+> > > at all as we never enable them again until the device has
+> > > idled. Can you try the following additional patch on top?
+> >
+> > And we should probably do the following too to make sure
+> > the mode is initialized before we call runtime PM.
+> >
+> CM_FCLKEN1/IDLEST1_CORE seem to behave, reading also works
+>
+> With these two additional patches this deserves a
+> Tested-By: Andreas Kemnade <andreas@kemnade.info> # gta04
 
-As this is a fix, a commit subject starting with PCI: cadence: Fix ... may
-be more obvious.
+Tony,
 
-I'd suggest you use the shorter form of this, i.e. Fixes: %h (\"%s\"))
+Any way you can do a V2 patch with the other stuff added?  Pulling the
+patches from gmail doesn't work.  I think G-mail does something weird
+because they don't apply cleanly, so I have to download the patches
+from patchwork.  I should be able to test it today.
 
-Fixes: bd22885aa188 ("PCI: cadence: Refactor driver to use as a core library")
+thanks
 
-> as a core library")
-> 
-> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-> ---
->  drivers/pci/controller/cadence/pcie-cadence-ep.c   | 2 --
->  drivers/pci/controller/cadence/pcie-cadence-host.c | 2 --
->  2 files changed, 4 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-> index 1c173dad67d1..560f22b4d165 100644
-> --- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-> +++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-> @@ -473,7 +473,5 @@ int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
->  	pci_epc_mem_exit(epc);
->  
->   err_init:
-> -	pm_runtime_put_sync(dev);
-> -
->  	return ret;
->  }
-> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-> index 9b1c3966414b..ccf55e143e1d 100644
-> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-> @@ -275,7 +275,5 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
->  	pci_free_resource_list(&resources);
->  
->   err_init:
-> -	pm_runtime_put_sync(dev);
-> -
-
-There is probably more you can do here for both -host and -ep:
-
- - Remove the possibly now unused <linux/pm_runtime.h> include
- - Remove the err_init label and return directly from source.
-
-Thanks,
-
-Andrew Murray
-
->  	return ret;
->  }
-> -- 
-> 2.17.1
-> 
+adam
+>
+> Regards,
+> Andreas
