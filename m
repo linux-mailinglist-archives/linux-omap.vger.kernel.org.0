@@ -2,106 +2,257 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0163A1207C1
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2019 15:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D534F120827
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2019 15:10:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728009AbfLPN51 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Dec 2019 08:57:27 -0500
-Received: from mail-il1-f195.google.com ([209.85.166.195]:33952 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727609AbfLPN50 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Dec 2019 08:57:26 -0500
-Received: by mail-il1-f195.google.com with SMTP id s15so2410255iln.1;
-        Mon, 16 Dec 2019 05:57:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2tBYGnK2Aq8T6hQ21qou143/hbgltxjW1oUM3LKKX4g=;
-        b=MfUuorgN62i/6BTeoViD+3wdtgGw8nhJoiV9dUU5aST/wEvSmP9/yBEBHUcamzHS1v
-         NHt/UdYJMolLAUVrm2pOKJvNlItPS+Piotp1TWH48w/9be3QPbhbwUTecGzffyEu0QjB
-         E/0had3gNGhzgLMcDLlXWnAdjlTaGfFLkzuiKGXlNC7LbBsImKSjA6w33izjwW2vt8vS
-         3Lvwp/rx+ZsPrdMFX9rYzO9y8vj0dNd/lFRVPWc6rn5WSGrNxTliy3b9s4rxgq4I+S+x
-         66B191iF6Dv31yjM+9nxyZefY9Ap94xN9NdAPE93XYqLcxzffVRnDlwHBguo/19Lsdpa
-         Tp7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2tBYGnK2Aq8T6hQ21qou143/hbgltxjW1oUM3LKKX4g=;
-        b=jIs+xTAEKMnC/4us/MKWmcSk8cn6GakYpK6cqgv4yjjGGh3MfRlY4qEvPsr6aUh+zb
-         Rof/4D8urVXbVb7aOKMkni1q574DfGb09LrNCu5E6v6omC9cnZtiKyNCBK/54/oP0+DQ
-         6N09zTiiZc9MZS3ru4uL6dKQOngFiAvXd8px4T/fnhEjR7sPcvFEaZCyA+cAlJ8CXgy7
-         Iv7Dn8HCg90D/acyHHKbzP4lXXjRfGvU2kwGJYCNNC/x/bneVa/Om0VVeGf0P5VsIvYe
-         cgJCKvaC2WRakwChuRISbErwq3coEsk0mt9pWMdakqBs5zFTJFHChRpmXwkLoBfRNEpP
-         UzKA==
-X-Gm-Message-State: APjAAAUI9aZdHMV1tUvvjqUN1o0T5pdiCi0rXYm6r6KChaanyNe4gtip
-        CFTMl4hiAES8iHdV8SXN0FWyE77qeiUGWykNd9k=
-X-Google-Smtp-Source: APXvYqz58Q517KTUKqWPVVGd8fh0ZfJdGDtUjFu0F4IqRF52csg1S96w6+T4loixYrF3aCQHOLwXpjulmsVQ+MeG96o=
-X-Received: by 2002:a92:4e:: with SMTP id 75mr11868466ila.276.1576504645520;
- Mon, 16 Dec 2019 05:57:25 -0800 (PST)
+        id S1728117AbfLPOHd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Dec 2019 09:07:33 -0500
+Received: from foss.arm.com ([217.140.110.172]:56638 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727807AbfLPOHc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 16 Dec 2019 09:07:32 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E65101FB;
+        Mon, 16 Dec 2019 06:07:31 -0800 (PST)
+Received: from localhost (unknown [10.37.6.20])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5E7983F718;
+        Mon, 16 Dec 2019 06:07:31 -0800 (PST)
+Date:   Mon, 16 Dec 2019 14:07:29 +0000
+From:   Andrew Murray <andrew.murray@arm.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-pci@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 03/13] PCI: cadence: Add support to use custom read and
+ write accessors
+Message-ID: <20191216140729.GX24359@e119886-lin.cambridge.arm.com>
+References: <20191209092147.22901-1-kishon@ti.com>
+ <20191209092147.22901-4-kishon@ti.com>
 MIME-Version: 1.0
-References: <20191215173817.47918-1-tony@atomide.com> <20191215230331.645b9064@aktux>
- <20191216030948.GL35479@atomide.com> <20191216031637.GM35479@atomide.com> <20191216130536.5935a587@kemnade.info>
-In-Reply-To: <20191216130536.5935a587@kemnade.info>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Mon, 16 Dec 2019 07:57:14 -0600
-Message-ID: <CAHCN7xJ-ndGxz0DYSwnuDi+4Hu349RTCzHjsspx2evMvLDtDqA@mail.gmail.com>
-Subject: Re: [PATCH] w1: omap-hdq: Simplify driver with PM runtime autosuspend
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Evgeniy Polyakov <zbr@ioremap.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Andrew F . Davis" <afd@ti.com>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Vignesh R <vigneshr@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191209092147.22901-4-kishon@ti.com>
+User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Dec 16, 2019 at 7:48 AM Andreas Kemnade <andreas@kemnade.info> wrote:
->
-> On Sun, 15 Dec 2019 19:16:37 -0800
-> Tony Lindgren <tony@atomide.com> wrote:
->
-> > * Tony Lindgren <tony@atomide.com> [191216 03:10]:
-> > > Hi,
-> > >
-> > > * Andreas Kemnade <andreas@kemnade.info> [191215 22:04]:
-> > > > On Sun, 15 Dec 2019 09:38:17 -0800
-> > > > If I remember correctly this thing is critical to get the hwmod out of
-> > > > reset but I need to examine that again:
-> > >
-> > > Thanks for testing, yes that's what I thought might cause it
-> > > too, but nope :)
-> > >
-> > > We currently disable interrupts for some reason after
-> > > the first read. That won't play with runtime PM autosuspend
-> > > at all as we never enable them again until the device has
-> > > idled. Can you try the following additional patch on top?
-> >
-> > And we should probably do the following too to make sure
-> > the mode is initialized before we call runtime PM.
-> >
-> CM_FCLKEN1/IDLEST1_CORE seem to behave, reading also works
->
-> With these two additional patches this deserves a
-> Tested-By: Andreas Kemnade <andreas@kemnade.info> # gta04
+On Mon, Dec 09, 2019 at 02:51:37PM +0530, Kishon Vijay Abraham I wrote:
+> Add support to use custom read and write accessors. Platforms that
+> doesn't support half word or byte access or any other constraint
 
-Tony,
+s/doesn't/don't/
 
-Any way you can do a V2 patch with the other stuff added?  Pulling the
-patches from gmail doesn't work.  I think G-mail does something weird
-because they don't apply cleanly, so I have to download the patches
-from patchwork.  I should be able to test it today.
+> while accessing registers can use this feature to populate custom
+> read and write accessors. These custom accessors are used for both
+> standard register access and configuration space register access.
 
-thanks
+You can put the following sentence underneath a --- as it's not needed
+in the commit message (but may be helpful to reviewers).
 
-adam
->
-> Regards,
-> Andreas
+> This is in preparation for adding PCIe support in TI's J721E SoC which
+> uses Cadence PCIe core.
+> 
+> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> ---
+>  drivers/pci/controller/cadence/pcie-cadence.h | 99 +++++++++++++++++--
+>  1 file changed, 90 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+> index a2b28b912ca4..d0d91c69fa1d 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence.h
+> +++ b/drivers/pci/controller/cadence/pcie-cadence.h
+> @@ -223,6 +223,11 @@ enum cdns_pcie_msg_routing {
+>  	MSG_ROUTING_GATHER,
+>  };
+>  
+> +struct cdns_pcie_ops {
+> +	u32	(*read)(void __iomem *addr, int size);
+> +	void	(*write)(void __iomem *addr, int size, u32 value);
+> +};
+> +
+>  /**
+>   * struct cdns_pcie - private data for Cadence PCIe controller drivers
+>   * @reg_base: IO mapped register base
+> @@ -239,7 +244,7 @@ struct cdns_pcie {
+>  	int			phy_count;
+>  	struct phy		**phy;
+>  	struct device_link	**link;
+> -	const struct cdns_pcie_common_ops *ops;
+
+What was cdns_pcie_common_ops? It's not defined in the current tree is it?
+
+> +	const struct cdns_pcie_ops *ops;
+>  };
+>  
+>  /**
+> @@ -301,21 +306,47 @@ struct cdns_pcie_ep {
+>  /* Register access */
+>  static inline void cdns_pcie_writeb(struct cdns_pcie *pcie, u32 reg, u8 value)
+>  {
+> +	void __iomem *addr = pcie->reg_base + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x1, value);
+> +		return;
+> +	}
+> +
+>  	writeb(value, pcie->reg_base + reg);
+
+Can you use 'addr' here instead of 'pcie->reg_base + reg'? (And similar for the
+rest of them).
+
+Thanks,
+
+Andrew Murray
+
+
+>  }
+>  
+>  static inline void cdns_pcie_writew(struct cdns_pcie *pcie, u32 reg, u16 value)
+>  {
+> +	void __iomem *addr = pcie->reg_base + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x2, value);
+> +		return;
+> +	}
+> +
+>  	writew(value, pcie->reg_base + reg);
+>  }
+>  
+>  static inline void cdns_pcie_writel(struct cdns_pcie *pcie, u32 reg, u32 value)
+>  {
+> +	void __iomem *addr = pcie->reg_base + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x4, value);
+> +		return;
+> +	}
+> +
+>  	writel(value, pcie->reg_base + reg);
+>  }
+>  
+>  static inline u32 cdns_pcie_readl(struct cdns_pcie *pcie, u32 reg)
+>  {
+> +	void __iomem *addr = pcie->reg_base + reg;
+> +
+> +	if (pcie->ops && pcie->ops->read)
+> +		return pcie->ops->read(addr, 0x4);
+> +
+>  	return readl(pcie->reg_base + reg);
+>  }
+>  
+> @@ -323,47 +354,97 @@ static inline u32 cdns_pcie_readl(struct cdns_pcie *pcie, u32 reg)
+>  static inline void cdns_pcie_rp_writeb(struct cdns_pcie *pcie,
+>  				       u32 reg, u8 value)
+>  {
+> -	writeb(value, pcie->reg_base + CDNS_PCIE_RP_BASE + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_RP_BASE + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x1, value);
+> +		return;
+> +	}
+> +
+> +	writeb(value, addr);
+>  }
+>  
+>  static inline void cdns_pcie_rp_writew(struct cdns_pcie *pcie,
+>  				       u32 reg, u16 value)
+>  {
+> -	writew(value, pcie->reg_base + CDNS_PCIE_RP_BASE + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_RP_BASE + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x2, value);
+> +		return;
+> +	}
+> +
+> +	writew(value, addr);
+>  }
+>  
+>  /* Endpoint Function register access */
+>  static inline void cdns_pcie_ep_fn_writeb(struct cdns_pcie *pcie, u8 fn,
+>  					  u32 reg, u8 value)
+>  {
+> -	writeb(value, pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x1, value);
+> +		return;
+> +	}
+> +
+> +	writeb(value, addr);
+>  }
+>  
+>  static inline void cdns_pcie_ep_fn_writew(struct cdns_pcie *pcie, u8 fn,
+>  					  u32 reg, u16 value)
+>  {
+> -	writew(value, pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x2, value);
+> +		return;
+> +	}
+> +
+> +	writew(value, addr);
+>  }
+>  
+>  static inline void cdns_pcie_ep_fn_writel(struct cdns_pcie *pcie, u8 fn,
+>  					  u32 reg, u32 value)
+>  {
+> -	writel(value, pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x4, value);
+> +		return;
+> +	}
+> +
+> +	writel(value, addr);
+>  }
+>  
+>  static inline u8 cdns_pcie_ep_fn_readb(struct cdns_pcie *pcie, u8 fn, u32 reg)
+>  {
+> -	return readb(pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg;
+> +
+> +	if (pcie->ops && pcie->ops->read)
+> +		return pcie->ops->read(addr, 0x1);
+> +
+> +	return readb(addr);
+>  }
+>  
+>  static inline u16 cdns_pcie_ep_fn_readw(struct cdns_pcie *pcie, u8 fn, u32 reg)
+>  {
+> -	return readw(pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg;
+> +
+> +	if (pcie->ops && pcie->ops->read)
+> +		return pcie->ops->read(addr, 0x2);
+> +
+> +	return readw(addr);
+>  }
+>  
+>  static inline u32 cdns_pcie_ep_fn_readl(struct cdns_pcie *pcie, u8 fn, u32 reg)
+>  {
+> -	return readl(pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg;
+> +
+> +	if (pcie->ops && pcie->ops->read)
+> +		return pcie->ops->read(addr, 0x4);
+> +
+> +	return readl(addr);
+>  }
+>  
+>  #ifdef CONFIG_PCIE_CADENCE_HOST
+> -- 
+> 2.17.1
+> 
