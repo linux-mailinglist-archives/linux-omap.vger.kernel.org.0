@@ -2,99 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBA75122B67
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2019 13:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5DC9122B8D
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2019 13:32:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726709AbfLQMY3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 17 Dec 2019 07:24:29 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:40320 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726191AbfLQMY2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 Dec 2019 07:24:28 -0500
-Received: by mail-lj1-f196.google.com with SMTP id s22so10680025ljs.7
-        for <linux-omap@vger.kernel.org>; Tue, 17 Dec 2019 04:24:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=newoldbits-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MfDMe7NFk0G5MKHhMnGNpWFhGpiba1UDZAj67npG+BM=;
-        b=gmwQRvvuei5h+hof6n8vUwCrGcxrRF/Bk3dtRqx8uKhYMO4F6RzW2vzaGjF5XAgjBB
-         wdDOuLYiG/fCrrPgFncsN1ih3mHyEdUHKFtx421Dek++DBX5QQ9qbiYgG449BnuHIjo9
-         G58fVNv+nWvSygFUHcFHHP7B0Vkjuu7amiyeCgcpiRkNYeMpogkMVYBJqxxjbZi7ldAX
-         HhG0cMjougy0vtlWH/Xi8EVnkN7E5UvMVekJ87j3bNUGed9raYvwYC2/5RxfIaK8Tfj1
-         S/JOIHqTAfkHIxiZO5xUWkGOxSeglQpyp0JsBLfWTdBHXbWPy4Jd+bcjNFBotP4WIg1K
-         qosQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MfDMe7NFk0G5MKHhMnGNpWFhGpiba1UDZAj67npG+BM=;
-        b=kPINOGf7esC1W1VhYj4YOO7y3elmalNlMt8DZOU8NoAzMsAjgpjeM9tTvUeFhthhxa
-         /PCMR9P1gP7m3nKOr/nGtUDRoIKTR8Mjt0dGuNlZZl2YCn4WsCHctJR2qXTZWSgAsccz
-         PgNhc7sNsQUUv9FFR7ZmLgMngoLXpkCo7n57UOeLvH2EhjEW8EJEmzNl/LsRMjSxqojy
-         9hjJZSddLDtSnnVj2C2y/N4MmUaUxFVwsNhXnhahNxm2+MDe6Lr25NYOt3AovOp7bpvj
-         gBanNpLWYB+B3TjjFqasiW0klg107bzV5rgTKCPTgNycptQ0P/UL3U7HW+2OfTtRi9vk
-         z+tg==
-X-Gm-Message-State: APjAAAWNa7Q8zSDC9KJNJlCpy1WNF9nKpkZ/L2T+NgcOScG8vmtakakf
-        aWfeNJ8ZisrE2NvNBB9L3G05+jck7hcNtXONKL+tnw==
-X-Google-Smtp-Source: APXvYqz/kbRAG1F+DL6oUSfgtFAb77+ert0SOkKjupgGM00RRlH9eNuNkR4QLBuM51kVyO2+kAYH/cTZ5psPxcTpKmc=
-X-Received: by 2002:a2e:9cd8:: with SMTP id g24mr2335900ljj.243.1576585466995;
- Tue, 17 Dec 2019 04:24:26 -0800 (PST)
+        id S1727700AbfLQMct (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 17 Dec 2019 07:32:49 -0500
+Received: from foss.arm.com ([217.140.110.172]:35370 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727427AbfLQMcs (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 17 Dec 2019 07:32:48 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 053A531B;
+        Tue, 17 Dec 2019 04:32:48 -0800 (PST)
+Received: from localhost (unknown [10.37.6.20])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6FF5B3F718;
+        Tue, 17 Dec 2019 04:32:47 -0800 (PST)
+Date:   Tue, 17 Dec 2019 12:32:44 +0000
+From:   Andrew Murray <andrew.murray@arm.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-pci@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 06/13] PCI: cadence: Allow pci_host_bridge to have custom
+ pci_ops
+Message-ID: <20191217123243.GC24359@e119886-lin.cambridge.arm.com>
+References: <20191209092147.22901-1-kishon@ti.com>
+ <20191209092147.22901-7-kishon@ti.com>
 MIME-Version: 1.0
-References: <20191211193954.747745-1-jean.pihet@newoldbits.com>
-In-Reply-To: <20191211193954.747745-1-jean.pihet@newoldbits.com>
-From:   Jean Pihet <jean.pihet@newoldbits.com>
-Date:   Tue, 17 Dec 2019 13:24:15 +0100
-Message-ID: <CAORVsuUA3KTMFMiLJbFfSMMB3LupCZWm-2BBs46z6scGH45Vdw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] spi: spi-ti-qspi: Support large NOR SPI flash
-To:     Mark Brown <broonie@kernel.org>, Tony Lindgren <tony@atomide.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
-        Arnout Vandecappelle <arnout.vandecappelle@essensium.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191209092147.22901-7-kishon@ti.com>
+User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Mark, Tony, Vignesh,
+On Mon, Dec 09, 2019 at 02:51:40PM +0530, Kishon Vijay Abraham I wrote:
+> Certain platforms like TI's J721E allows only 32-bit configuration
+> space access. In such cases pci_generic_config_read and
+> pci_generic_config_write cannot be used. Add support in Cadence core
+> to let pci_host_bridge have custom pci_ops.
+> 
+> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> ---
+>  drivers/pci/controller/cadence/pcie-cadence-host.c | 7 ++++---
+>  drivers/pci/controller/cadence/pcie-cadence.h      | 8 ++++++++
+>  2 files changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> index 0929554f5a81..2efc33b1cade 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> @@ -12,8 +12,8 @@
+>  
+>  #include "pcie-cadence.h"
+>  
+> -static void __iomem *cdns_pci_map_bus(struct pci_bus *bus, unsigned int devfn,
+> -				      int where)
+> +void __iomem *cdns_pci_map_bus(struct pci_bus *bus, unsigned int devfn,
+> +			       int where)
+>  {
+>  	struct pci_host_bridge *bridge = pci_find_host_bridge(bus);
+>  	struct cdns_pcie_rc *rc = pci_host_bridge_priv(bridge);
+> @@ -289,7 +289,8 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+>  	list_splice_init(&resources, &bridge->windows);
+>  	bridge->dev.parent = dev;
+>  	bridge->busnr = pcie->bus;
+> -	bridge->ops = &cdns_pcie_host_ops;
+> +	if (!bridge->ops)
+> +		bridge->ops = &cdns_pcie_host_ops;
+>  	bridge->map_irq = of_irq_parse_and_map_pci;
+>  	bridge->swizzle_irq = pci_common_swizzle;
+>  
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+> index 5171d0da37da..c879dd3d2893 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence.h
+> +++ b/drivers/pci/controller/cadence/pcie-cadence.h
+> @@ -472,11 +472,19 @@ static inline bool cdns_pcie_is_link_up(struct cdns_pcie *pcie)
+>  
+>  #ifdef CONFIG_PCIE_CADENCE_HOST
+>  int cdns_pcie_host_setup(struct cdns_pcie_rc *rc);
+> +void __iomem *cdns_pci_map_bus(struct pci_bus *bus, unsigned int devfn,
+> +			       int where);
 
-Ping on this series V2. Can you please check the reworked patches?
+The commit message doesn't explain why this change in visibility is needed).
 
-BR,
-Jean
+>  #else
+>  static inline int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+>  {
+>  	return 0;
+>  }
+> +
+> +static inline void __iomem *cdns_pci_map_bus(struct pci_bus *bus,
+> +					     unsigned int devfn,
+> +					     int where)
+> +{
 
-On Wed, Dec 11, 2019 at 8:40 PM Jean Pihet <jean.pihet@newoldbits.com> wrote:
->
-> v2 release.
->
-> Large devices are bigger than >64MB in size.
->
-> - Remove unused macro for fclk rate.
-> - Since the TI QSPI IP block only maps 64MB of MMIO, use MMIO
->   below the 64MB boundary and software generated transfers above.
-> - Optimize the software generated byte-transfers for dual and quad
->   I/O read operations. The speed-up is 4.9x for quad I/O reads.
->
-> Note: depends on Tony's patches for hwmod cleanup, in order to get the
-> desired QSPI clk rate:
-> - [PATCH 1/2] ARM: dts: Configure interconnect target module for am4 qspi
-> - [PATCH 2/2] ARM: OMAP2+: Drop legacy platform data for am4 qspi
->
-> Tested using raw accesses (mtd_debug) and JFFS2 FS read/write/erase;
-> in single, dual and quad modes.
-> All accesses have been checked on the logic analyzer.
->
-> Jean Pihet (3):
->   spi: spi-ti-qspi: Remove unused macro for fclk frequency
->   spi: spi-ti-qspi: support large flash devices
->   spi: spi-ti-qspi: optimize byte-transfers
->
->  drivers/spi/spi-ti-qspi.c | 84 ++++++++++++++++++++++++++++++++++++---
->  1 file changed, 79 insertions(+), 5 deletions(-)
->
-> --
-> 2.23.0
->
+This still needs to return something right?
+
+Thanks,
+
+Andrew Murray
+
+> +}
+>  #endif
+>  
+>  #ifdef CONFIG_PCIE_CADENCE_EP
+> -- 
+> 2.17.1
+> 
