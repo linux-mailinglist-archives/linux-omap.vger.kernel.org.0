@@ -2,97 +2,162 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BA36122BE5
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2019 13:39:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92561122C08
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2019 13:41:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728225AbfLQMjl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 17 Dec 2019 07:39:41 -0500
-Received: from foss.arm.com ([217.140.110.172]:35688 "EHLO foss.arm.com"
+        id S1728018AbfLQMkz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 17 Dec 2019 07:40:55 -0500
+Received: from foss.arm.com ([217.140.110.172]:35756 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728051AbfLQMji (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 17 Dec 2019 07:39:38 -0500
+        id S1727029AbfLQMky (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 17 Dec 2019 07:40:54 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0941E328;
-        Tue, 17 Dec 2019 04:39:38 -0800 (PST)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7CE8C3F718;
-        Tue, 17 Dec 2019 04:39:37 -0800 (PST)
-Date:   Tue, 17 Dec 2019 12:39:35 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Jean Pihet <jean.pihet@newoldbits.com>
-Cc:     Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
-        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Applied "spi: spi-ti-qspi: Remove unused macro for fclk frequency" to the spi tree
-In-Reply-To: <20191211193954.747745-2-jean.pihet@newoldbits.com>
-Message-Id: <applied-20191211193954.747745-2-jean.pihet@newoldbits.com>
-X-Patchwork-Hint: ignore
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02C0C31B;
+        Tue, 17 Dec 2019 04:40:54 -0800 (PST)
+Received: from localhost (unknown [10.37.6.20])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7057C3F718;
+        Tue, 17 Dec 2019 04:40:53 -0800 (PST)
+Date:   Tue, 17 Dec 2019 12:40:51 +0000
+From:   Andrew Murray <andrew.murray@arm.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-pci@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 07/13] PCI: cadence: Add new *ops* for CPU addr fixup
+Message-ID: <20191217124050.GD24359@e119886-lin.cambridge.arm.com>
+References: <20191209092147.22901-1-kishon@ti.com>
+ <20191209092147.22901-8-kishon@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191209092147.22901-8-kishon@ti.com>
+User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The patch
+On Mon, Dec 09, 2019 at 02:51:41PM +0530, Kishon Vijay Abraham I wrote:
+> Cadence driver uses "mem" memory resource to obtain the offset of
+> configuration space address region, memory space address region and
+> message space address region. The obtained offset is used to program
+> the Address Translation Unit (ATU). However certain platforms like TI's
+> J721E SoC require the absolute address to be programmed in the ATU and not
+> just the offset.
+> 
+> The same problem was solved in designware driver using a platform specific
+> ops for CPU addr fixup in commit a660083eb06c5bb0 ("PCI: dwc: designware:
 
-   spi: spi-ti-qspi: Remove unused macro for fclk frequency
+Thanks for this reference, though this doesn't need to be in the commit
+log, please put such comments underneath a ---.
 
-has been applied to the spi tree at
+> Add new *ops* for CPU addr fixup"). Follow a similar mechanism in
+> Cadence too instead of directly using "mem" memory resource in Cadence
+> PCIe core.
+> 
+> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> ---
+>  .../pci/controller/cadence/pcie-cadence-host.c    | 15 ++++-----------
+>  drivers/pci/controller/cadence/pcie-cadence.c     |  8 ++++++--
+>  drivers/pci/controller/cadence/pcie-cadence.h     |  1 +
+>  3 files changed, 11 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> index 2efc33b1cade..cf817be237af 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> @@ -105,15 +105,14 @@ static int cdns_pcie_host_init_root_port(struct cdns_pcie_rc *rc)
+>  static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
+>  {
+>  	struct cdns_pcie *pcie = &rc->pcie;
+> -	struct resource *mem_res = pcie->mem_res;
+>  	struct resource *bus_range = rc->bus_range;
+>  	struct resource *cfg_res = rc->cfg_res;
+>  	struct device *dev = pcie->dev;
+>  	struct device_node *np = dev->of_node;
+>  	struct of_pci_range_parser parser;
+> +	u64 cpu_addr = cfg_res->start;
+>  	struct of_pci_range range;
+>  	u32 addr0, addr1, desc1;
+> -	u64 cpu_addr;
+>  	int r, err;
+>  
+>  	/*
+> @@ -126,7 +125,9 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
+>  	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_PCI_ADDR1(0), addr1);
+>  	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(0), desc1);
+>  
+> -	cpu_addr = cfg_res->start - mem_res->start;
+> +	if (pcie->ops->cpu_addr_fixup)
+> +		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+> +
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Won't this patch cause a breakage for existing users that won't have defined a
+cpu_addr_fixup? The offset isn't being calculated and so cpu_addr will be wrong?
 
 Thanks,
-Mark
 
-From c1795f7cee026b066485de794cff4e5bb9475a98 Mon Sep 17 00:00:00 2001
-From: Jean Pihet <jean.pihet@newoldbits.com>
-Date: Wed, 11 Dec 2019 20:39:52 +0100
-Subject: [PATCH] spi: spi-ti-qspi: Remove unused macro for fclk frequency
+Andrew Murray
 
-The fclk and its rate are retrieved from DT.
-
-Signed-off-by: Jean Pihet <jean.pihet@newoldbits.com>
-Cc: Ryan Barnett <ryan.barnett@rockwellcollins.com>
-Cc: Conrad Ratschan <conrad.ratschan@rockwellcollins.com>
-Cc: Arnout Vandecappelle <arnout.vandecappelle@essensium.com>
-Link: https://lore.kernel.org/r/20191211193954.747745-2-jean.pihet@newoldbits.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-ti-qspi.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 3cb65371ae3b..a18835128ad0 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -79,8 +79,6 @@ struct ti_qspi {
- 
- #define QSPI_COMPLETION_TIMEOUT		msecs_to_jiffies(2000)
- 
--#define QSPI_FCLK			192000000
--
- /* Clock Control */
- #define QSPI_CLK_EN			(1 << 31)
- #define QSPI_CLK_DIV_MAX		0xffff
--- 
-2.20.1
-
+>  	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(12) |
+>  		(lower_32_bits(cpu_addr) & GENMASK(31, 8));
+>  	addr1 = upper_32_bits(cpu_addr);
+> @@ -264,14 +265,6 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+>  	}
+>  	rc->cfg_res = res;
+>  
+> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mem");
+> -	if (!res) {
+> -		dev_err(dev, "missing \"mem\"\n");
+> -		return -EINVAL;
+> -	}
+> -
+> -	pcie->mem_res = res;
+> -
+>  	ret = cdns_pcie_start_link(pcie, true);
+>  	if (ret) {
+>  		dev_err(dev, "Failed to start link\n");
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
+> index de5b3b06f2d0..bd93d0f92f55 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence.c
+> @@ -113,7 +113,9 @@ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 fn,
+>  	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(r), desc1);
+>  
+>  	/* Set the CPU address */
+> -	cpu_addr -= pcie->mem_res->start;
+> +	if (pcie->ops->cpu_addr_fixup)
+> +		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+> +
+>  	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(nbits) |
+>  		(lower_32_bits(cpu_addr) & GENMASK(31, 8));
+>  	addr1 = upper_32_bits(cpu_addr);
+> @@ -140,7 +142,9 @@ void cdns_pcie_set_outbound_region_for_normal_msg(struct cdns_pcie *pcie, u8 fn,
+>  	}
+>  
+>  	/* Set the CPU address */
+> -	cpu_addr -= pcie->mem_res->start;
+> +	if (pcie->ops->cpu_addr_fixup)
+> +		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+> +
+>  	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(17) |
+>  		(lower_32_bits(cpu_addr) & GENMASK(31, 8));
+>  	addr1 = upper_32_bits(cpu_addr);
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+> index c879dd3d2893..ffa8b9f78ff8 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence.h
+> +++ b/drivers/pci/controller/cadence/pcie-cadence.h
+> @@ -233,6 +233,7 @@ struct cdns_pcie_ops {
+>  	void	(*write)(void __iomem *addr, int size, u32 value);
+>  	int	(*start_link)(struct cdns_pcie *pcie, bool start);
+>  	bool	(*is_link_up)(struct cdns_pcie *pcie);
+> +	u64     (*cpu_addr_fixup)(struct cdns_pcie *pcie, u64 cpu_addr);
+>  };
+>  
+>  /**
+> -- 
+> 2.17.1
+> 
