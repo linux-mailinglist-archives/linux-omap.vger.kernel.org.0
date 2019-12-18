@@ -2,28 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 194BE1253CB
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 21:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AB001253D0
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 21:49:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727671AbfLRUtY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Dec 2019 15:49:24 -0500
-Received: from mail.windriver.com ([147.11.1.11]:47858 "EHLO
+        id S1727722AbfLRUtc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Dec 2019 15:49:32 -0500
+Received: from mail.windriver.com ([147.11.1.11]:47879 "EHLO
         mail.windriver.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727608AbfLRUtX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 15:49:23 -0500
+        with ESMTP id S1727608AbfLRUta (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 15:49:30 -0500
 Received: from yow-cube1.wrs.com (yow-cube1.wrs.com [128.224.56.98])
-        by mail.windriver.com (8.15.2/8.15.2) with ESMTP id xBIKn0ii000214;
-        Wed, 18 Dec 2019 12:49:17 -0800 (PST)
+        by mail.windriver.com (8.15.2/8.15.2) with ESMTP id xBIKn0ij000214;
+        Wed, 18 Dec 2019 12:49:18 -0800 (PST)
 From:   Paul Gortmaker <paul.gortmaker@windriver.com>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     linux-kernel@vger.kernel.org,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
         Tony Lindgren <tony@atomide.com>,
-        Keshava Munegowda <keshava_mgowda@ti.com>,
-        Roger Quadros <rogerq@ti.com>, linux-omap@vger.kernel.org
-Subject: [PATCH 16/18] mfd: omap-usb-host: Make it explicitly non-modular
-Date:   Wed, 18 Dec 2019 15:48:55 -0500
-Message-Id: <1576702137-25905-17-git-send-email-paul.gortmaker@windriver.com>
+        Graeme Gregory <gg@slimlogic.co.uk>, linux-omap@vger.kernel.org
+Subject: [PATCH 17/18] mfd: palmas: Make it explicitly non-modular
+Date:   Wed, 18 Dec 2019 15:48:56 -0500
+Message-Id: <1576702137-25905-18-git-send-email-paul.gortmaker@windriver.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
 References: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
@@ -34,8 +33,8 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 The Kconfig currently controlling compilation of this code is:
 
-drivers/mfd/Kconfig:config MFD_OMAP_USB_HOST
-drivers/mfd/Kconfig:    bool "TI OMAP USBHS core and TLL driver"
+drivers/mfd/Kconfig:config MFD_PALMAS
+drivers/mfd/Kconfig:    bool "TI Palmas series chips"
 
 ...meaning that it currently is not being built as a module by anyone.
 
@@ -49,6 +48,9 @@ code for non-modular drivers.
 Since module_init was not in use by this code, the init ordering
 remains unchanged with this commit.
 
+We delete the include of module.h as well as an unused instance of
+moduleparam.h include as well.
+
 Also note that MODULE_DEVICE_TABLE is a no-op for non-modular code.
 
 We also delete the MODULE_LICENSE tag etc. since all that information
@@ -56,96 +58,92 @@ is already contained at the top of the file in the comments.
 
 Cc: Tony Lindgren <tony@atomide.com>
 Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Keshava Munegowda <keshava_mgowda@ti.com>
-Cc: Roger Quadros <rogerq@ti.com>
+Cc: Graeme Gregory <gg@slimlogic.co.uk>
 Cc: linux-omap@vger.kernel.org
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 ---
- drivers/mfd/omap-usb-host.c | 47 +++++----------------------------------------
- 1 file changed, 5 insertions(+), 42 deletions(-)
+ drivers/mfd/palmas.c | 36 +-----------------------------------
+ 1 file changed, 1 insertion(+), 35 deletions(-)
 
-diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-index 4798d9f3f9d5..118756d7be19 100644
---- a/drivers/mfd/omap-usb-host.c
-+++ b/drivers/mfd/omap-usb-host.c
-@@ -7,7 +7,7 @@
-  * Author: Roger Quadros <rogerq@ti.com>
+diff --git a/drivers/mfd/palmas.c b/drivers/mfd/palmas.c
+index f5b3fa973b13..0e96c5cd02c6 100644
+--- a/drivers/mfd/palmas.c
++++ b/drivers/mfd/palmas.c
+@@ -7,8 +7,6 @@
+  * Author: Graeme Gregory <gg@slimlogic.co.uk>
   */
- #include <linux/kernel.h>
+ 
 -#include <linux/module.h>
-+#include <linux/init.h>
- #include <linux/types.h>
+-#include <linux/moduleparam.h>
+ #include <linux/init.h>
  #include <linux/slab.h>
- #include <linux/delay.h>
-@@ -803,28 +803,6 @@ static int usbhs_omap_probe(struct platform_device *pdev)
+ #include <linux/i2c.h>
+@@ -500,7 +498,6 @@ static const struct of_device_id of_palmas_match_tbl[] = {
+ 	},
+ 	{ },
+ };
+-MODULE_DEVICE_TABLE(of, of_palmas_match_tbl);
+ 
+ static int palmas_i2c_probe(struct i2c_client *i2c,
+ 			    const struct i2c_device_id *id)
+@@ -700,26 +697,6 @@ static int palmas_i2c_probe(struct i2c_client *i2c,
  	return ret;
  }
  
--static int usbhs_omap_remove_child(struct device *dev, void *data)
+-static int palmas_i2c_remove(struct i2c_client *i2c)
 -{
--	dev_info(dev, "unregistering\n");
--	platform_device_unregister(to_platform_device(dev));
+-	struct palmas *palmas = i2c_get_clientdata(i2c);
+-	int i;
+-
+-	regmap_del_irq_chip(palmas->irq, palmas->irq_data);
+-
+-	for (i = 1; i < PALMAS_NUM_CLIENTS; i++) {
+-		if (palmas->i2c_clients[i])
+-			i2c_unregister_device(palmas->i2c_clients[i]);
+-	}
+-
+-	if (palmas == palmas_dev) {
+-		pm_power_off = NULL;
+-		palmas_dev = NULL;
+-	}
+-
 -	return 0;
 -}
 -
--/**
-- * usbhs_omap_remove - shutdown processing for UHH & TLL HCDs
-- * @pdev: USB Host Controller being removed
-- *
-- * Reverses the effect of usbhs_omap_probe().
-- */
--static int usbhs_omap_remove(struct platform_device *pdev)
--{
--	pm_runtime_disable(&pdev->dev);
--
--	/* remove children */
--	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
--	return 0;
--}
--
- static const struct dev_pm_ops usbhsomap_dev_pm_ops = {
- 	.runtime_suspend	= usbhs_runtime_suspend,
- 	.runtime_resume		= usbhs_runtime_resume,
-@@ -835,25 +813,16 @@ static const struct of_device_id usbhs_omap_dt_ids[] = {
- 	{ }
+ static const struct i2c_device_id palmas_i2c_id[] = {
+ 	{ "palmas", },
+ 	{ "twl6035", },
+@@ -727,15 +704,14 @@ static const struct i2c_device_id palmas_i2c_id[] = {
+ 	{ "tps65913", },
+ 	{ /* end */ }
  };
+-MODULE_DEVICE_TABLE(i2c, palmas_i2c_id);
  
--MODULE_DEVICE_TABLE(of, usbhs_omap_dt_ids);
--
--
- static struct platform_driver usbhs_omap_driver = {
+ static struct i2c_driver palmas_i2c_driver = {
  	.driver = {
--		.name		= (char *)usbhs_driver_name,
--		.pm		= &usbhsomap_dev_pm_ops,
--		.of_match_table = usbhs_omap_dt_ids,
-+		.name			= (char *)usbhs_driver_name,
-+		.pm			= &usbhsomap_dev_pm_ops,
-+		.of_match_table		= usbhs_omap_dt_ids,
-+		.suppress_bind_attr	= true,
+ 		   .name = "palmas",
+ 		   .of_match_table = of_palmas_match_tbl,
++		   .suppress_bind_attrs = true,
  	},
- 	.probe		= usbhs_omap_probe,
--	.remove		= usbhs_omap_remove,
+ 	.probe = palmas_i2c_probe,
+-	.remove = palmas_i2c_remove,
+ 	.id_table = palmas_i2c_id,
  };
  
--MODULE_AUTHOR("Keshava Munegowda <keshava_mgowda@ti.com>");
--MODULE_AUTHOR("Roger Quadros <rogerq@ti.com>");
--MODULE_ALIAS("platform:" USBHS_DRIVER_NAME);
--MODULE_LICENSE("GPL v2");
--MODULE_DESCRIPTION("usb host common core driver for omap EHCI and OHCI");
+@@ -745,13 +721,3 @@ static int __init palmas_i2c_init(void)
+ }
+ /* init early so consumer devices can complete system boot */
+ subsys_initcall(palmas_i2c_init);
 -
- static int omap_usbhs_drvinit(void)
- {
- 	return platform_driver_register(&usbhs_omap_driver);
-@@ -867,9 +836,3 @@ static int omap_usbhs_drvinit(void)
-  * usb tll driver
-  */
- fs_initcall_sync(omap_usbhs_drvinit);
--
--static void omap_usbhs_drvexit(void)
+-static void __exit palmas_i2c_exit(void)
 -{
--	platform_driver_unregister(&usbhs_omap_driver);
+-	i2c_del_driver(&palmas_i2c_driver);
 -}
--module_exit(omap_usbhs_drvexit);
+-module_exit(palmas_i2c_exit);
+-
+-MODULE_AUTHOR("Graeme Gregory <gg@slimlogic.co.uk>");
+-MODULE_DESCRIPTION("Palmas chip family multi-function driver");
+-MODULE_LICENSE("GPL");
 -- 
 2.7.4
 
