@@ -2,94 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A63D0124B2D
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 16:14:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F9D8124FA0
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 18:46:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727431AbfLRPOI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Dec 2019 10:14:08 -0500
-Received: from mail-io1-f67.google.com ([209.85.166.67]:45274 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727393AbfLRPOE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 10:14:04 -0500
-Received: by mail-io1-f67.google.com with SMTP id i11so2307079ioi.12
-        for <linux-omap@vger.kernel.org>; Wed, 18 Dec 2019 07:14:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=RfaUJbE64AqObBUWyZFAX00yFzfv+PMQBeMlfEbyOTSSIZSlP9dNPzblRe9C4/Xp5G
-         OOrfzjlEIPRCszaxaclLviha/Gl6J+8MNE2wJIlQr3g8uWJn+m5NNx6dyOIWXJDzHKAu
-         CFfw6ayoPSChbR+RAE0+B68G/pEf5o1uZqam8GCW/DM3JVJn1rrKg09G5nyaA4x8K46C
-         DidFmOGbhUnnebgzWtKvL2IYqcm0dJ4hRYsroJX5h4wZl5ygcdMBOrPylnEG0iZgtaC4
-         tctA6UVKTV1ZO7eaOpJeM3zJ9lY8Otzi6Az77Sm1wv6CYLTS/yvcKPbBaIHIL7wY9gk+
-         23sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=VNwt1nkTfNRfmmyZ29Nq/Ih2+CzysqNsqVbCgzc4C7ouX0QBc3F0r5KKb02zjXTizN
-         xvJZkDs1FKtXv6J9EglykslbF7c2dIAok8VNkKYd8SQuMpKVu1lHnjCqXe9fGvRpUnfO
-         2m4grulsVT4Lc6rf9vRrTcywV6cZNmoQFuT2dNsNu3KRY3fnjcVlJKC2wBk9Rx9rSWGM
-         ij3R9+Z6kMuln5SoBV3ohHFDFjaPkrlqrqqHUaoITHg+m2H6FA4sdIUJkavCTJwO3ure
-         sb82e5m3bgOtjnBL9W/WY5Nv8wO/LgYrW6UCCad+BkR/RAEfHGuWeg2wHWowcftFBryy
-         s3ZA==
-X-Gm-Message-State: APjAAAWRV/suor4y5RscsTZ1nDxfwOmBKlhSoo/mQCPfnkmVrMOq4G+L
-        svrR6aydYqC3HNMQ8w53Wvl+mVjBl8vuObaTaw==
-X-Google-Smtp-Source: APXvYqyIz9CrpHcrXivylieLEiE1VxRyGUw+E9DXz6VIYz+kYlOCef915g/qsmML8+OoqrwbsBK3G0eW6o6RBALrF/E=
-X-Received: by 2002:a05:6638:950:: with SMTP id f16mr2789501jad.107.1576682043767;
- Wed, 18 Dec 2019 07:14:03 -0800 (PST)
+        id S1727034AbfLRRq1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Dec 2019 12:46:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55470 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727025AbfLRRq1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 18 Dec 2019 12:46:27 -0500
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4549720665;
+        Wed, 18 Dec 2019 17:46:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576691186;
+        bh=8zXw6tjHGati9ef7QoVKO5LxBDc+7MUh7/cacqBUdvE=;
+        h=In-Reply-To:References:Cc:Subject:From:To:Date:From;
+        b=HNFhkTyNwgfuJ+fJLGE/zt7fG1h3JfQN2IM3/kNtqOctutemwVHvdF6nH59rNvnn4
+         SXrIiPgUsswhX4BMQ2kcXowye7vEDnYXIw6t9V3oF40QcZDUvV08y4vxSJkCzeI7hO
+         VE3wDwY9cMTzJdZHG5QTSl1M/6lYrj7UJ6h0hcv8=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:14:03
- -0800 (PST)
-Reply-To: dhl.expresscourier102156@outlook.fr
-From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
-Date:   Wed, 18 Dec 2019 16:14:03 +0100
-Message-ID: <CABHzvr=Pq7-TqhY8TPvFCsr+5-DhDQy=XOg-TM13qqbFWeemfQ@mail.gmail.com>
-Subject: =?UTF-8?Q?Urgent_delivery_Notification_of_your_ATM_MASTER_CARD?=
-        =?UTF-8?Q?_Amount=2C=2415=2E800=E2=80=99000=E2=80=9900=2C?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191109142017.10851-1-grygorii.strashko@ti.com>
+References: <20191109142017.10851-1-grygorii.strashko@ti.com>
+Cc:     linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: Re: [PATCH] clk: ti: dra7: fix parent for gmac_clkctrl
+From:   Stephen Boyd <sboyd@kernel.org>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>
+User-Agent: alot/0.8.1
+Date:   Wed, 18 Dec 2019 09:46:25 -0800
+Message-Id: <20191218174626.4549720665@mail.kernel.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Attn Dear.
+Quoting Grygorii Strashko (2019-11-09 06:20:17)
+> The parent clk for gmac clk ctrl has to be gmac_main_clk (125MHz) instead
+> of dpll_gmac_ck (1GHz). This is caused incorrect CPSW MDIO operation.
+> Hence, fix it.
+>=20
+> Fixes: commit dffa9051d546 ('clk: ti: dra7: add new clkctrl data')
 
-Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
-ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
-=9900, as
-approved this morning, Date, 18/12/2019. Through the Intruction from
-INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
+There shouldn't be 'commit' in a Fixes: line.
 
-REGISTRATION NO :EG58945
-PARCEL NUMBER: 140479
-Delivery Schuleded now,
-Finally all we required from you is your ATM Card Proccessing Delivery
-fees $19.00 only which you must send to this DHL service to enable us
-dispatch the parcel to your destination today.
-
-Here is our receiving payment details.
-You are advised to send it Via Money Gram Service.
-
-Receiver's Name--------Alan Ude
-Country-------Benin Republic.
-City/ Address--------Cotonou
-Test Question--------In God
-Answer-------We Trust
-Amount------------$US19.00 only
-Mtcn-------------
-Sender's Name-------
-
-Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
-Is Due for delivery to your address today upon confirmation of
-required fee from you asap.
-
-Call us on this phone number for any inquiry. +229 62819378
-Awaiting your urgent response.
-
-MS. MARYANNA B. THOMASON, Shipment director, DHL Express
-Courier Company-Benin
