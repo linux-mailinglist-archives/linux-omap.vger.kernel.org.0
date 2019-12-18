@@ -2,148 +2,202 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB001253D0
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 21:49:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F0E125474
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 22:16:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727722AbfLRUtc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Dec 2019 15:49:32 -0500
-Received: from mail.windriver.com ([147.11.1.11]:47879 "EHLO
-        mail.windriver.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727608AbfLRUta (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 15:49:30 -0500
-Received: from yow-cube1.wrs.com (yow-cube1.wrs.com [128.224.56.98])
-        by mail.windriver.com (8.15.2/8.15.2) with ESMTP id xBIKn0ij000214;
-        Wed, 18 Dec 2019 12:49:18 -0800 (PST)
-From:   Paul Gortmaker <paul.gortmaker@windriver.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        id S1726188AbfLRVQE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Dec 2019 16:16:04 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:38848 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725990AbfLRVQE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 16:16:04 -0500
+Received: by mail-ot1-f67.google.com with SMTP id h20so4180664otn.5;
+        Wed, 18 Dec 2019 13:16:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=VfRpHq+kS/2gCphHVcGTyf5xHe3uvLTiFdpuwlwHK/I=;
+        b=aVfK+sdGJEctKueujyLknlYnApVTuFuUYb+5WkaodXSoACDUjBnMk0BdJrbLwtWS7J
+         ttd2IzZe3LFfPskRc0K5/ylhXJD5vNWNoVvDcTI6RM+pCsl7AOtNeQvCMeI41c1oEz57
+         6s1YbvyFcymLEoVSeHRq8Cfb9WgU5Y9YtCJt//37DqL9Ffvd69k0Xx7R10+e1tC9atZy
+         ng7enARzIcgWeWl4HGVOHB8ZHaIRj04gs4et5gUlfGnS1ZgBhOVvKuwLMvPoeUJhWRvH
+         ohj6+LBiIzPoEhUkpTpFNcZe9lAqQroHB1cTk301kDobeIjW5q0+e1FRbyQb+GFg+rlA
+         S9kQ==
+X-Gm-Message-State: APjAAAVMfwb0I7VVOb0dxlhNO6U7RWQ0COsW7M0I5lc9cDlbaH68egxf
+        OoyUk2gS71nuKi1M0zVp7g==
+X-Google-Smtp-Source: APXvYqxbO7jTCnsX1zsL+WZp6+wZtSheMGnt7JACGcjSdKYJsIBRWBi5EqsXahLBqZf8vvk48VBQaA==
+X-Received: by 2002:a9d:784b:: with SMTP id c11mr4658325otm.246.1576703762925;
+        Wed, 18 Dec 2019 13:16:02 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id q5sm1216343oia.21.2019.12.18.13.16.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Dec 2019 13:16:02 -0800 (PST)
+Date:   Wed, 18 Dec 2019 15:16:01 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Graeme Gregory <gg@slimlogic.co.uk>, linux-omap@vger.kernel.org
-Subject: [PATCH 17/18] mfd: palmas: Make it explicitly non-modular
-Date:   Wed, 18 Dec 2019 15:48:56 -0500
-Message-Id: <1576702137-25905-18-git-send-email-paul.gortmaker@windriver.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
-References: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
+        Paul Cercueil <paul@crapouillou.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-mips@vger.kernel.org
+Subject: Re: [PATCH v4 1/8] dt-bindings: add img,pvrsgx.yaml for Imagination
+ GPUs
+Message-ID: <20191218211601.GA11411@bogus>
+References: <cover.1576605726.git.hns@goldelico.com>
+ <aedc895985d966cf709d153d5b0bed07f59bdcfd.1576605726.git.hns@goldelico.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aedc895985d966cf709d153d5b0bed07f59bdcfd.1576605726.git.hns@goldelico.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The Kconfig currently controlling compilation of this code is:
+On Tue, Dec 17, 2019 at 07:01:59PM +0100, H. Nikolaus Schaller wrote:
+> The Imagination PVR/SGX GPU is part of several SoC from
+> multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo
+> and others.
+> 
+> With this binding, we describe how the SGX processor is
+> interfaced to the SoC (registers, interrupt etc.).
+> 
+> In most cases, Clock, Reset and power management is handled
+> by a parent node or elsewhere.
+> 
+> Tested by make dt_binding_check dtbs_check
 
-drivers/mfd/Kconfig:config MFD_PALMAS
-drivers/mfd/Kconfig:    bool "TI Palmas series chips"
+I'm surprised that worked... (Not for long if it did).
 
-...meaning that it currently is not being built as a module by anyone.
+> 
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> ---
+>  .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 80 +++++++++++++++++++
+>  1 file changed, 80 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+> new file mode 100644
+> index 000000000000..44799774e34d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+> @@ -0,0 +1,80 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/gpu/img,pvrsgx.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Imagination PVR/SGX GPU
+> +
+> +maintainers:
+> +  - H. Nikolaus Schaller <hns@goldelico.com>
+> +
+> +description: |+
+> +  This binding describes the Imagination SGX5 series of 3D accelerators which
+> +  are found in several different SoC like TI OMAP, Sitara, Ingenic JZ4780,
+> +  Allwinner A83, and Intel Poulsbo and CedarView and more.
+> +
+> +  For an almost complete list see: https://en.wikipedia.org/wiki/PowerVR#Implementations
+> +  
+> +  Only the Imagination SGX530, SGX540 and SGX544 GPUs are currently covered by
+> +  this binding but the extension of the pattern is straightforward.
+> +  
+> +  The SGX node is usually a child node of some DT node belonging to the SoC
+> +  which handles clocks, reset and general address space mapping of the SGX
+> +  register area.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +    # Example: BeagleBoard A/B/C, OpenPandora 600MHz
+> +      - ti,omap3-sgx530-121, img,sgx530-121, img,sgx530
 
-Lets remove the modular code that is essentially orphaned, so that
-when reading the driver there is no doubt it is builtin-only.
+Didn't I comment before this is not valid. You are defining the 
+compatible string is: 'ti,omap3-sgx530-121, img,sgx530-121, img,sgx530'
 
-We explicitly disallow a driver unbind, since that doesn't have a
-sensible use case anyway, and it allows us to drop the ".remove"
-code for non-modular drivers.
+You need:
 
-Since module_init was not in use by this code, the init ordering
-remains unchanged with this commit.
+compatible:
+  oneOf:
+    - description: BeagleBoard A/B/C, OpenPandora 600MHz
+      items:
+        - const: ti,omap3-sgx530-121
+        - const: img,sgx530-121
+        - const: img,sgx530
 
-We delete the include of module.h as well as an unused instance of
-moduleparam.h include as well.
+And so on for each of the rest.
 
-Also note that MODULE_DEVICE_TABLE is a no-op for non-modular code.
+> +    # Example: BeagleBoard XM, GTA04, OpenPandora 1GHz
+> +      - ti,omap3-sgx530-125, img,sgx530-125, img,sgx530
+> +    # Example: BeagleBone Black
+> +      - ti,am3352-sgx530-125, img,sgx530-125, img,sgx530
 
-We also delete the MODULE_LICENSE tag etc. since all that information
-is already contained at the top of the file in the comments.
+These 2 could be combined using 'enum' for the first item. Basically, 
+you can group ones where the last 2 strings are the same.
 
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Graeme Gregory <gg@slimlogic.co.uk>
-Cc: linux-omap@vger.kernel.org
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
----
- drivers/mfd/palmas.c | 36 +-----------------------------------
- 1 file changed, 1 insertion(+), 35 deletions(-)
+> +    # Example: Pandaboard, Pandaboard ES
+> +      - ti,omap4-sgx540-120, img,sgx540-120, img,sgx540
+> +      - ti,omap4-sgx544-112, img,sgx544-112, img,sgx544
+> +    # Example: OMAP5 UEVM, Pyra Handheld
+> +      - ti,omap5-sgx544-116, img,sgx544-116, img,sgx544
+> +      - ti,dra7-sgx544-116, img,sgx544-116, img,sgx544
+> +    # Example: CI20
+> +      - ingenic,jz4780-sgx540-120, img,sgx540-120, img,sgx540
+> +    # the following entries are not validated with real hardware
 
-diff --git a/drivers/mfd/palmas.c b/drivers/mfd/palmas.c
-index f5b3fa973b13..0e96c5cd02c6 100644
---- a/drivers/mfd/palmas.c
-+++ b/drivers/mfd/palmas.c
-@@ -7,8 +7,6 @@
-  * Author: Graeme Gregory <gg@slimlogic.co.uk>
-  */
- 
--#include <linux/module.h>
--#include <linux/moduleparam.h>
- #include <linux/init.h>
- #include <linux/slab.h>
- #include <linux/i2c.h>
-@@ -500,7 +498,6 @@ static const struct of_device_id of_palmas_match_tbl[] = {
- 	},
- 	{ },
- };
--MODULE_DEVICE_TABLE(of, of_palmas_match_tbl);
- 
- static int palmas_i2c_probe(struct i2c_client *i2c,
- 			    const struct i2c_device_id *id)
-@@ -700,26 +697,6 @@ static int palmas_i2c_probe(struct i2c_client *i2c,
- 	return ret;
- }
- 
--static int palmas_i2c_remove(struct i2c_client *i2c)
--{
--	struct palmas *palmas = i2c_get_clientdata(i2c);
--	int i;
--
--	regmap_del_irq_chip(palmas->irq, palmas->irq_data);
--
--	for (i = 1; i < PALMAS_NUM_CLIENTS; i++) {
--		if (palmas->i2c_clients[i])
--			i2c_unregister_device(palmas->i2c_clients[i]);
--	}
--
--	if (palmas == palmas_dev) {
--		pm_power_off = NULL;
--		palmas_dev = NULL;
--	}
--
--	return 0;
--}
--
- static const struct i2c_device_id palmas_i2c_id[] = {
- 	{ "palmas", },
- 	{ "twl6035", },
-@@ -727,15 +704,14 @@ static const struct i2c_device_id palmas_i2c_id[] = {
- 	{ "tps65913", },
- 	{ /* end */ }
- };
--MODULE_DEVICE_TABLE(i2c, palmas_i2c_id);
- 
- static struct i2c_driver palmas_i2c_driver = {
- 	.driver = {
- 		   .name = "palmas",
- 		   .of_match_table = of_palmas_match_tbl,
-+		   .suppress_bind_attrs = true,
- 	},
- 	.probe = palmas_i2c_probe,
--	.remove = palmas_i2c_remove,
- 	.id_table = palmas_i2c_id,
- };
- 
-@@ -745,13 +721,3 @@ static int __init palmas_i2c_init(void)
- }
- /* init early so consumer devices can complete system boot */
- subsys_initcall(palmas_i2c_init);
--
--static void __exit palmas_i2c_exit(void)
--{
--	i2c_del_driver(&palmas_i2c_driver);
--}
--module_exit(palmas_i2c_exit);
--
--MODULE_AUTHOR("Graeme Gregory <gg@slimlogic.co.uk>");
--MODULE_DESCRIPTION("Palmas chip family multi-function driver");
--MODULE_LICENSE("GPL");
--- 
-2.7.4
+What am I supposed to do with that? You're just defining some strings. 
+If you're not sure they are okay, then don't define them.
 
+> +    # more TI SoC
+> +      - ti,am3517-sgx530-125, img,sgx530-125, img,sgx530
+> +      - ti,am4-sgx530-125, img,sgx530-125, img,sgx530
+> +      - ti,ti81xx-sgx530-125, img,sgx530-125, img,sgx530
+> +    # Example: Banana-Pi-M3 (Allwinner A83T)
+> +      - allwinner,sun8i-a83t-sgx544-116, img,sgx544-116, img,sgx544
+> +    # Example: Atom Z5xx
+> +      - intel,poulsbo-gma500-sgx535, img,sgx535-116, img,sgx535
+> +    # Example: Atom Z24xx
+> +      - intel,medfield-gma-sgx540, img,sgx540-116, img,sgx540
+> +    # Example: Atom N2600, D2500
+> +      - intel,cedarview-gma3600-sgx545, img,sgx545-116, img,sgx545
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |+
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    gpu@fe00 {
+> +      compatible = "ti,omap-omap5-sgx544-116", "img,sgx544-116", "img,sgx544", "img,sgx5";
+
+Doesn't match the schema.
+
+> +      reg = <0xfe00 0x200>;
+> +      interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
+> +    };
+> +
+> +...
+> -- 
+> 2.23.0
+> 
