@@ -2,29 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 637A61253DB
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 21:50:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F77C1253D9
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 21:50:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727276AbfLRUt4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Dec 2019 15:49:56 -0500
-Received: from mail.windriver.com ([147.11.1.11]:47848 "EHLO
+        id S1727615AbfLRUtV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Dec 2019 15:49:21 -0500
+Received: from mail.windriver.com ([147.11.1.11]:47846 "EHLO
         mail.windriver.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727395AbfLRUtV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 15:49:21 -0500
+        with ESMTP id S1727608AbfLRUtU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 15:49:20 -0500
 Received: from yow-cube1.wrs.com (yow-cube1.wrs.com [128.224.56.98])
-        by mail.windriver.com (8.15.2/8.15.2) with ESMTP id xBIKn0ic000214;
-        Wed, 18 Dec 2019 12:49:13 -0800 (PST)
+        by mail.windriver.com (8.15.2/8.15.2) with ESMTP id xBIKn0if000214;
+        Wed, 18 Dec 2019 12:49:15 -0800 (PST)
 From:   Paul Gortmaker <paul.gortmaker@windriver.com>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     linux-kernel@vger.kernel.org,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Misael Lopez Cruz <misael.lopez@ti.com>,
-        Jorge Eduardo Candelaria <jorge.candelaria@ti.com>,
-        linux-omap@vger.kernel.org
-Subject: [PATCH 10/18] mfd: twl6040: Make it explicitly non-modular
-Date:   Wed, 18 Dec 2019 15:48:49 -0500
-Message-Id: <1576702137-25905-11-git-send-email-paul.gortmaker@windriver.com>
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Subject: [PATCH 13/18] mfd: menelaus: Make it explicitly non-modular
+Date:   Wed, 18 Dec 2019 15:48:52 -0500
+Message-Id: <1576702137-25905-14-git-send-email-paul.gortmaker@windriver.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
 References: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
@@ -33,12 +30,10 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The Kconfig/Makefile controlling compilation of this code is:
+The Kconfig currently controlling compilation of this code is:
 
-drivers/mfd/Kconfig:config TWL6040_CORE
-drivers/mfd/Kconfig:    bool "TI TWL6040 audio codec"
-
-drivers/mfd/Makefile: obj-$(CONFIG_TWL6040_CORE)      += twl6040.o
+drivers/mfd/Kconfig:config MENELAUS
+drivers/mfd/Kconfig:    bool "TI TWL92330/Menelaus PM chip"
 
 ...meaning that it currently is not being built as a module by anyone.
 
@@ -60,71 +55,62 @@ is already contained at the top of the file in the comments.
 
 Cc: Tony Lindgren <tony@atomide.com>
 Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Misael Lopez Cruz <misael.lopez@ti.com>
-Cc: Jorge Eduardo Candelaria <jorge.candelaria@ti.com>
 Cc: linux-omap@vger.kernel.org
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 ---
- drivers/mfd/twl6040.c | 29 +++--------------------------
- 1 file changed, 3 insertions(+), 26 deletions(-)
+ drivers/mfd/menelaus.c | 24 ++++--------------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/mfd/twl6040.c b/drivers/mfd/twl6040.c
-index b9c6d94b4002..531eefb2fab5 100644
---- a/drivers/mfd/twl6040.c
-+++ b/drivers/mfd/twl6040.c
-@@ -9,7 +9,7 @@
-  * Copyright:	(C) 2011 Texas Instruments, Inc.
+diff --git a/drivers/mfd/menelaus.c b/drivers/mfd/menelaus.c
+index b64d3315a5e1..65a268d11aaa 100644
+--- a/drivers/mfd/menelaus.c
++++ b/drivers/mfd/menelaus.c
+@@ -18,7 +18,7 @@
+  * Copyright (C) 2005, 2006 Nokia Corporation
   */
  
 -#include <linux/module.h>
 +#include <linux/init.h>
- #include <linux/types.h>
- #include <linux/slab.h>
- #include <linux/kernel.h>
-@@ -808,41 +808,18 @@ static int twl6040_probe(struct i2c_client *client,
- 	return ret;
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/sched.h>
+@@ -1222,33 +1222,17 @@ static int menelaus_probe(struct i2c_client *client,
+ 	return err;
  }
  
--static int twl6040_remove(struct i2c_client *client)
+-static int menelaus_remove(struct i2c_client *client)
 -{
--	struct twl6040 *twl6040 = i2c_get_clientdata(client);
+-	struct menelaus_chip	*menelaus = i2c_get_clientdata(client);
 -
--	if (twl6040->power_count)
--		twl6040_power(twl6040, 0);
--
--	regmap_del_irq_chip(twl6040->irq, twl6040->irq_data);
--
--	mfd_remove_devices(&client->dev);
--
--	regulator_bulk_disable(TWL6040_NUM_SUPPLIES, twl6040->supplies);
--
+-	free_irq(client->irq, menelaus);
+-	flush_work(&menelaus->work);
+-	the_menelaus = NULL;
 -	return 0;
 -}
 -
- static const struct i2c_device_id twl6040_i2c_id[] = {
- 	{ "twl6040", 0, },
- 	{ "twl6041", 0, },
- 	{ },
+ static const struct i2c_device_id menelaus_id[] = {
+ 	{ "menelaus", 0 },
+ 	{ }
  };
--MODULE_DEVICE_TABLE(i2c, twl6040_i2c_id);
+-MODULE_DEVICE_TABLE(i2c, menelaus_id);
  
- static struct i2c_driver twl6040_driver = {
+ static struct i2c_driver menelaus_i2c_driver = {
  	.driver = {
- 		.name = "twl6040",
-+		.suppress_bind_attrs = true,
+-		.name		= DRIVER_NAME,
++		.name			= DRIVER_NAME,
++		.suppress_bind_attrs	= true,
  	},
- 	.probe		= twl6040_probe,
--	.remove		= twl6040_remove,
- 	.id_table	= twl6040_i2c_id,
+ 	.probe		= menelaus_probe,
+-	.remove		= menelaus_remove,
+ 	.id_table	= menelaus_id,
  };
 -
--module_i2c_driver(twl6040_driver);
+-module_i2c_driver(menelaus_i2c_driver);
 -
--MODULE_DESCRIPTION("TWL6040 MFD");
--MODULE_AUTHOR("Misael Lopez Cruz <misael.lopez@ti.com>");
--MODULE_AUTHOR("Jorge Eduardo Candelaria <jorge.candelaria@ti.com>");
+-MODULE_AUTHOR("Texas Instruments, Inc. (and others)");
+-MODULE_DESCRIPTION("I2C interface for Menelaus.");
 -MODULE_LICENSE("GPL");
-+builtin_i2c_driver(twl6040_driver);
++builtin_i2c_driver(menelaus_i2c_driver);
 -- 
 2.7.4
 
