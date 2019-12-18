@@ -2,152 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CEA01253DD
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 21:50:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B31181253D3
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 21:49:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727815AbfLRUuA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Dec 2019 15:50:00 -0500
-Received: from mail.windriver.com ([147.11.1.11]:47925 "EHLO
+        id S1727608AbfLRUtj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Dec 2019 15:49:39 -0500
+Received: from mail.windriver.com ([147.11.1.11]:47841 "EHLO
         mail.windriver.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727395AbfLRUt7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 15:49:59 -0500
+        with ESMTP id S1727553AbfLRUtd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 15:49:33 -0500
 Received: from yow-cube1.wrs.com (yow-cube1.wrs.com [128.224.56.98])
-        by mail.windriver.com (8.15.2/8.15.2) with ESMTP id xBIKn0iS000214;
-        Wed, 18 Dec 2019 12:49:00 -0800 (PST)
+        by mail.windriver.com (8.15.2/8.15.2) with ESMTP id xBIKn0ia000214;
+        Wed, 18 Dec 2019 12:49:11 -0800 (PST)
 From:   Paul Gortmaker <paul.gortmaker@windriver.com>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     linux-kernel@vger.kernel.org,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Daniel Ribeiro <drwyrm@gmail.com>,
-        Graeme Gregory <gg@slimlogic.co.uk>,
-        Haojian Zhuang <haojian.zhuang@marvell.com>,
-        Harald Welte <laforge@openezx.org>, Ian Molton <spyro@f2s.com>,
-        Jorge Eduardo Candelaria <jorge.candelaria@ti.com>,
-        Keshava Munegowda <keshava_mgowda@ti.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Mike Rapoport <mike@compulab.co.il>,
-        Milo Kim <milo.kim@ti.com>,
-        Misael Lopez Cruz <misael.lopez@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Rabin Vincent <rabin.vincent@stericsson.com>,
-        Roger Quadros <rogerq@ti.com>,
         Tony Lindgren <tony@atomide.com>,
-        Viresh Kumar <vireshk@kernel.org>, Yang@mail.windriver.com,
-        Bin <bin.yang@intel.com>, Zhu@mail.windriver.com,
-        Lejun <lejun.zhu@linux.intel.com>, linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH 00/18] mfd: demodularization of non-modular drivers
-Date:   Wed, 18 Dec 2019 15:48:39 -0500
-Message-Id: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH 08/18] mfd: twl4030-audio: Make it explicitly non-modular
+Date:   Wed, 18 Dec 2019 15:48:47 -0500
+Message-Id: <1576702137-25905-9-git-send-email-paul.gortmaker@windriver.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
+References: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This group of MFD drivers are all controlled by "bool" Kconfig settings,
-but contain module infrastructure like unused/orphaned "remove" and
-__exit functions, use of <linux/module.h> and/or MODULE_ macros that
-are no-ops in the non-modular case.
+The Kconfig currently controlling compilation of this code is:
 
-We can remove/replace all of the above.  We are trying to make driver
-code consistent with the Makefiles/Kconfigs that control them.  This
-means not using modular functions/macros for drivers that can never be
-built as a module.  Some of the downfalls this leads to are:
+drivers/mfd/Kconfig:config MFD_TWL4030_AUDIO
+drivers/mfd/Kconfig:    bool "TI TWL4030 Audio"
 
- (1) it is easy to accidentally write unused module_exit and remove code
- (2) it can be misleading when reading the source, thinking it can be
-     modular when the Makefile and/or Kconfig prohibit it
- (3) it requires the include of the module.h header file which in turn
-     includes nearly everything else, thus adding to CPP overhead.
- (4) it gets copied/replicated into other drivers and spreads quickly.
+...meaning that it currently is not being built as a module by anyone.
 
-We've integrated hundreds of these type cleanups already, as the git
-history will show.  This is just a continuation of that objective.
+Lets remove the modular code that is essentially orphaned, so that
+when reading the driver there is no doubt it is builtin-only.
 
-The ".remove" function linked into the device structure deserves an
-extra comment.  While the normal execution path would be from a module
-unload (if it was modular), it is theoretically possible that a person
-could use the core driver infrastructure to manually push the driver off
-the hardware; an "unbind" event -- which would run the ".remove" function.
+We explicitly disallow a driver unbind, since that doesn't have a
+sensible use case anyway, and it allows us to drop the ".remove"
+code for non-modular drivers.
 
-Given that, in this series, when we delete a ".remove" function from
-the driver struct, we also disable unbind.  Should there be a valid use
-case out there that has been overlooked, this will ensure we get to see
-it and can react/revert accordingly.
+Since module_platform_driver() uses the same init level priority as
+builtin_platform_driver() the init ordering remains unchanged with
+this commit.
 
-Build testing was done on drivers/mfd for allmodconfig on x86_64, ARM
-and ARM-64 (on linux-next).
+Also note that MODULE_DEVICE_TABLE is a no-op for non-modular code.
 
----
+We also delete the MODULE_LICENSE tag etc. since all that information
+is already contained at the top of the file in the comments.
 
-Cc: Alexandre Torgue <alexandre.torgue@st.com>
-Cc: Daniel Ribeiro <drwyrm@gmail.com>
-Cc: Graeme Gregory <gg@slimlogic.co.uk>
-Cc: Haojian Zhuang <haojian.zhuang@marvell.com>
-Cc: Harald Welte <laforge@openezx.org>
-Cc: Ian Molton <spyro@f2s.com>
-Cc: Jorge Eduardo Candelaria <jorge.candelaria@ti.com>
-Cc: Keshava Munegowda <keshava_mgowda@ti.com>
-Cc: Lee Jones <lee.jones@linaro.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Mike Rapoport <mike@compulab.co.il>
-Cc: Milo Kim <milo.kim@ti.com>
-Cc: Misael Lopez Cruz <misael.lopez@ti.com>
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc: Rabin Vincent <rabin.vincent@stericsson.com>
-Cc: Roger Quadros <rogerq@ti.com>
 Cc: Tony Lindgren <tony@atomide.com>
-Cc: Viresh Kumar <vireshk@kernel.org>
-Cc: Yang, Bin <bin.yang@intel.com>
-Cc: Zhu, Lejun <lejun.zhu@linux.intel.com>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Cc: linux-omap@vger.kernel.org
-Cc: linux-stm32@st-md-mailman.stormreply.com
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+---
+ drivers/mfd/twl4030-audio.c | 21 +++------------------
+ 1 file changed, 3 insertions(+), 18 deletions(-)
 
-Paul Gortmaker (18):
-  mfd: stmpe-spi: Make it explicitly non-modular
-  mfd: stmpe-i2c: Make it explicitly non-modular
-  mfd: ezx-pcap: Make it explicitly non-modular
-  mfd: 88pm860x-*: Make it explicitly non-modular
-  mfd: tc3589: Make it explicitly non-modular
-  mfd: tc6387xb: Make it explicitly non-modular
-  mfd: tc6393xb: Make it explicitly non-modular
-  mfd: twl4030-audio: Make it explicitly non-modular
-  mfd: twl4030-power: Make it explicitly non-modular
-  mfd: twl6040: Make it explicitly non-modular
-  mfd: t7l66xb: Make it explicitly non-modular
-  mfd: lp8788: Make it explicitly non-modular
-  mfd: menelaus: Make it explicitly non-modular
-  mfd: tps6586x: Make it explicitly non-modular
-  mfd: omap-usb-tll: Make it explicitly non-modular
-  mfd: omap-usb-host: Make it explicitly non-modular
-  mfd: palmas: Make it explicitly non-modular
-  mfd: intel_soc_pmic_core: Make it explicitly non-modular
-
- drivers/mfd/88pm860x-core.c       | 40 ++-------------------------------
- drivers/mfd/88pm860x-i2c.c        |  1 -
- drivers/mfd/ezx-pcap.c            | 42 +++-------------------------------
- drivers/mfd/intel_soc_pmic_core.c | 31 +++-----------------------
- drivers/mfd/lp8788.c              | 24 ++------------------
- drivers/mfd/menelaus.c            | 24 ++++----------------
- drivers/mfd/omap-usb-host.c       | 47 +++++----------------------------------
- drivers/mfd/omap-usb-tll.c        | 47 ++++-----------------------------------
- drivers/mfd/palmas.c              | 36 +-----------------------------
- drivers/mfd/stmpe-i2c.c           | 23 ++-----------------
- drivers/mfd/stmpe-spi.c           | 23 ++-----------------
- drivers/mfd/stmpe.c               | 14 ------------
- drivers/mfd/stmpe.h               |  1 -
- drivers/mfd/t7l66xb.c             | 37 ++++--------------------------
- drivers/mfd/tc3589x.c             | 26 ++--------------------
- drivers/mfd/tc6387xb.c            | 30 ++++---------------------
- drivers/mfd/tc6393xb.c            | 43 ++---------------------------------
- drivers/mfd/tps6586x.c            | 26 ++--------------------
- drivers/mfd/twl4030-audio.c       | 21 +++--------------
- drivers/mfd/twl4030-power.c       | 19 +++-------------
- drivers/mfd/twl6040.c             | 29 +++---------------------
- 21 files changed, 51 insertions(+), 533 deletions(-)
-
+diff --git a/drivers/mfd/twl4030-audio.c b/drivers/mfd/twl4030-audio.c
+index 4536d829b43e..7612997e3b86 100644
+--- a/drivers/mfd/twl4030-audio.c
++++ b/drivers/mfd/twl4030-audio.c
+@@ -8,7 +8,7 @@
+  * Copyright:   (C) 2009 Nokia Corporation
+  */
+ 
+-#include <linux/module.h>
++#include <linux/init.h>
+ #include <linux/types.h>
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+@@ -258,32 +258,17 @@ static int twl4030_audio_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int twl4030_audio_remove(struct platform_device *pdev)
+-{
+-	mfd_remove_devices(&pdev->dev);
+-	twl4030_audio_dev = NULL;
+-
+-	return 0;
+-}
+-
+ static const struct of_device_id twl4030_audio_of_match[] = {
+ 	{.compatible = "ti,twl4030-audio", },
+ 	{ },
+ };
+-MODULE_DEVICE_TABLE(of, twl4030_audio_of_match);
+ 
+ static struct platform_driver twl4030_audio_driver = {
+ 	.driver		= {
+ 		.name	= "twl4030-audio",
+ 		.of_match_table = twl4030_audio_of_match,
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe		= twl4030_audio_probe,
+-	.remove		= twl4030_audio_remove,
+ };
+-
+-module_platform_driver(twl4030_audio_driver);
+-
+-MODULE_AUTHOR("Peter Ujfalusi <peter.ujfalusi@ti.com>");
+-MODULE_DESCRIPTION("TWL4030 audio block MFD driver");
+-MODULE_LICENSE("GPL");
+-MODULE_ALIAS("platform:twl4030-audio");
++builtin_platform_driver(twl4030_audio_driver);
 -- 
 2.7.4
 
