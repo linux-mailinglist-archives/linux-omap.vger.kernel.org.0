@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 716AD1253CE
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 21:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 194BE1253CB
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Dec 2019 21:49:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726463AbfLRUt3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Dec 2019 15:49:29 -0500
-Received: from mail.windriver.com ([147.11.1.11]:47864 "EHLO
+        id S1727671AbfLRUtY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Dec 2019 15:49:24 -0500
+Received: from mail.windriver.com ([147.11.1.11]:47858 "EHLO
         mail.windriver.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727664AbfLRUt2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 15:49:28 -0500
+        with ESMTP id S1727608AbfLRUtX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Dec 2019 15:49:23 -0500
 Received: from yow-cube1.wrs.com (yow-cube1.wrs.com [128.224.56.98])
-        by mail.windriver.com (8.15.2/8.15.2) with ESMTP id xBIKn0ih000214;
-        Wed, 18 Dec 2019 12:49:16 -0800 (PST)
+        by mail.windriver.com (8.15.2/8.15.2) with ESMTP id xBIKn0ii000214;
+        Wed, 18 Dec 2019 12:49:17 -0800 (PST)
 From:   Paul Gortmaker <paul.gortmaker@windriver.com>
 To:     Lee Jones <lee.jones@linaro.org>
 Cc:     linux-kernel@vger.kernel.org,
@@ -21,9 +21,9 @@ Cc:     linux-kernel@vger.kernel.org,
         Tony Lindgren <tony@atomide.com>,
         Keshava Munegowda <keshava_mgowda@ti.com>,
         Roger Quadros <rogerq@ti.com>, linux-omap@vger.kernel.org
-Subject: [PATCH 15/18] mfd: omap-usb-tll: Make it explicitly non-modular
-Date:   Wed, 18 Dec 2019 15:48:54 -0500
-Message-Id: <1576702137-25905-16-git-send-email-paul.gortmaker@windriver.com>
+Subject: [PATCH 16/18] mfd: omap-usb-host: Make it explicitly non-modular
+Date:   Wed, 18 Dec 2019 15:48:55 -0500
+Message-Id: <1576702137-25905-17-git-send-email-paul.gortmaker@windriver.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
 References: <1576702137-25905-1-git-send-email-paul.gortmaker@windriver.com>
@@ -61,13 +61,13 @@ Cc: Roger Quadros <rogerq@ti.com>
 Cc: linux-omap@vger.kernel.org
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 ---
- drivers/mfd/omap-usb-tll.c | 47 ++++------------------------------------------
- 1 file changed, 4 insertions(+), 43 deletions(-)
+ drivers/mfd/omap-usb-host.c | 47 +++++----------------------------------------
+ 1 file changed, 5 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-index 265f5e350e1c..77c8d98a6731 100644
---- a/drivers/mfd/omap-usb-tll.c
-+++ b/drivers/mfd/omap-usb-tll.c
+diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
+index 4798d9f3f9d5..118756d7be19 100644
+--- a/drivers/mfd/omap-usb-host.c
++++ b/drivers/mfd/omap-usb-host.c
 @@ -7,7 +7,7 @@
   * Author: Roger Quadros <rogerq@ti.com>
   */
@@ -76,79 +76,76 @@ index 265f5e350e1c..77c8d98a6731 100644
 +#include <linux/init.h>
  #include <linux/types.h>
  #include <linux/slab.h>
- #include <linux/spinlock.h>
-@@ -269,46 +269,18 @@ static int usbtll_omap_probe(struct platform_device *pdev)
- 	return 0;
+ #include <linux/delay.h>
+@@ -803,28 +803,6 @@ static int usbhs_omap_probe(struct platform_device *pdev)
+ 	return ret;
  }
  
--/**
-- * usbtll_omap_remove - shutdown processing for UHH & TLL HCDs
-- * @pdev: USB Host Controller being removed
-- *
-- * Reverses the effect of usbtll_omap_probe().
-- */
--static int usbtll_omap_remove(struct platform_device *pdev)
+-static int usbhs_omap_remove_child(struct device *dev, void *data)
 -{
--	struct usbtll_omap *tll = platform_get_drvdata(pdev);
--	int i;
--
--	spin_lock(&tll_lock);
--	tll_dev = NULL;
--	spin_unlock(&tll_lock);
--
--	for (i = 0; i < tll->nch; i++) {
--		if (!IS_ERR(tll->ch_clk[i])) {
--			clk_unprepare(tll->ch_clk[i]);
--			clk_put(tll->ch_clk[i]);
--		}
--	}
--
--	pm_runtime_disable(&pdev->dev);
+-	dev_info(dev, "unregistering\n");
+-	platform_device_unregister(to_platform_device(dev));
 -	return 0;
 -}
 -
- static const struct of_device_id usbtll_omap_dt_ids[] = {
- 	{ .compatible = "ti,usbhs-tll" },
+-/**
+- * usbhs_omap_remove - shutdown processing for UHH & TLL HCDs
+- * @pdev: USB Host Controller being removed
+- *
+- * Reverses the effect of usbhs_omap_probe().
+- */
+-static int usbhs_omap_remove(struct platform_device *pdev)
+-{
+-	pm_runtime_disable(&pdev->dev);
+-
+-	/* remove children */
+-	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+-	return 0;
+-}
+-
+ static const struct dev_pm_ops usbhsomap_dev_pm_ops = {
+ 	.runtime_suspend	= usbhs_runtime_suspend,
+ 	.runtime_resume		= usbhs_runtime_resume,
+@@ -835,25 +813,16 @@ static const struct of_device_id usbhs_omap_dt_ids[] = {
  	{ }
  };
  
--MODULE_DEVICE_TABLE(of, usbtll_omap_dt_ids);
+-MODULE_DEVICE_TABLE(of, usbhs_omap_dt_ids);
 -
- static struct platform_driver usbtll_omap_driver = {
+-
+ static struct platform_driver usbhs_omap_driver = {
  	.driver = {
--		.name		= (char *)usbtll_driver_name,
--		.of_match_table = usbtll_omap_dt_ids,
-+		.name			= (char *)usbtll_driver_name,
-+		.of_match_table		= usbtll_omap_dt_ids,
-+		.suppress_bind_attrs	= true,
+-		.name		= (char *)usbhs_driver_name,
+-		.pm		= &usbhsomap_dev_pm_ops,
+-		.of_match_table = usbhs_omap_dt_ids,
++		.name			= (char *)usbhs_driver_name,
++		.pm			= &usbhsomap_dev_pm_ops,
++		.of_match_table		= usbhs_omap_dt_ids,
++		.suppress_bind_attr	= true,
  	},
- 	.probe		= usbtll_omap_probe,
--	.remove		= usbtll_omap_remove,
+ 	.probe		= usbhs_omap_probe,
+-	.remove		= usbhs_omap_remove,
  };
- 
- int omap_tll_init(struct usbhs_omap_platform_data *pdata)
-@@ -446,11 +418,6 @@ int omap_tll_disable(struct usbhs_omap_platform_data *pdata)
- }
- EXPORT_SYMBOL_GPL(omap_tll_disable);
  
 -MODULE_AUTHOR("Keshava Munegowda <keshava_mgowda@ti.com>");
 -MODULE_AUTHOR("Roger Quadros <rogerq@ti.com>");
+-MODULE_ALIAS("platform:" USBHS_DRIVER_NAME);
 -MODULE_LICENSE("GPL v2");
--MODULE_DESCRIPTION("usb tll driver for TI OMAP EHCI and OHCI controllers");
+-MODULE_DESCRIPTION("usb host common core driver for omap EHCI and OHCI");
 -
- static int __init omap_usbtll_drvinit(void)
+ static int omap_usbhs_drvinit(void)
  {
- 	return platform_driver_register(&usbtll_omap_driver);
-@@ -462,9 +429,3 @@ static int __init omap_usbtll_drvinit(void)
-  * the usbhs core driver probe function is called.
+ 	return platform_driver_register(&usbhs_omap_driver);
+@@ -867,9 +836,3 @@ static int omap_usbhs_drvinit(void)
+  * usb tll driver
   */
- fs_initcall(omap_usbtll_drvinit);
+ fs_initcall_sync(omap_usbhs_drvinit);
 -
--static void __exit omap_usbtll_drvexit(void)
+-static void omap_usbhs_drvexit(void)
 -{
--	platform_driver_unregister(&usbtll_omap_driver);
+-	platform_driver_unregister(&usbhs_omap_driver);
 -}
--module_exit(omap_usbtll_drvexit);
+-module_exit(omap_usbhs_drvexit);
 -- 
 2.7.4
 
