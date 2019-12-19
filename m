@@ -2,59 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4EEC126315
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Dec 2019 14:13:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0EA212634E
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Dec 2019 14:19:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726786AbfLSNNR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Dec 2019 08:13:17 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:56236 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726695AbfLSNNR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Dec 2019 08:13:17 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBJDD7UZ002286;
-        Thu, 19 Dec 2019 07:13:07 -0600
+        id S1726701AbfLSNTB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Dec 2019 08:19:01 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:34290 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726695AbfLSNTA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Dec 2019 08:19:00 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBJDIwD4121919;
+        Thu, 19 Dec 2019 07:18:58 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576761188;
-        bh=KpH/tH+NsOsRovCmkYgi/0I9FOPMrHG3B7b6JVEqIBE=;
+        s=ti-com-17Q1; t=1576761538;
+        bh=hKqAOCo/ma8q7kF4B46wVaSESSJX9CpZN2QLfa+H56g=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=GK1cbM7HGrsGlHyIwq3TvwgMootFKhnrfTJ6xdxhfI2jWttjRU+6bS7CvJJRMV6Ns
-         Fy1X2rit3h1sXjIBI1C0gsaOBHK8HIfj3LzDID3SnVFdV2L0SoCufpiVHa+d6XltYC
-         3ZxjXuWhR1bOHoPjfnpfAAvsJsISvV/xk8hyvqos=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBJDD7nb020647
+        b=feY/JA5gY4Kcli+l+ebZ97/xvgSYqZR0o6XVAGjSNwKRy0seyHf0tS/jc37VSO/Kf
+         NdvWMOc4SWO9ZsDwIr3Uer+PniTBY37VuYix+cQX/Ckfjr4GtRbwU0NevKGk2qVWAF
+         76UhW/cOWCT3y5ljF0u+PiQAME2yaIsVVYw/n9MM=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBJDIwuO097965
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 19 Dec 2019 07:13:07 -0600
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 19 Dec 2019 07:18:58 -0600
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 19
- Dec 2019 07:13:06 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 07:18:57 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 19 Dec 2019 07:13:06 -0600
-Received: from [10.24.69.159] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBJDD38D090087;
-        Thu, 19 Dec 2019 07:13:03 -0600
-Subject: Re: [PATCH 10/13] dt-bindings: PCI: Add EP mode dt-bindings for TI's
- J721E SoC
-To:     Rob Herring <robh@kernel.org>, Tom Joseph <tjoseph@cadence.com>
-CC:     Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Murray <andrew.murray@arm.com>,
-        <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>
-References: <20191209092147.22901-1-kishon@ti.com>
- <20191209092147.22901-11-kishon@ti.com> <20191219001408.GA20303@bogus>
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-Message-ID: <fb090674-abff-e2e1-492d-0585100980d0@ti.com>
-Date:   Thu, 19 Dec 2019 18:44:46 +0530
+ Frontend Transport; Thu, 19 Dec 2019 07:18:57 -0600
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBJDIt1Y106703;
+        Thu, 19 Dec 2019 07:18:55 -0600
+Subject: Re: [PATCHv3 05/15] remoteproc/omap: Add the rproc ops .da_to_va()
+ implementation
+To:     Mathieu Poirier <mathieu.poirier@linaro.org>
+CC:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
+        <linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, Suman Anna <s-anna@ti.com>
+References: <20191213125537.11509-1-t-kristo@ti.com>
+ <20191213125537.11509-6-t-kristo@ti.com> <20191218003815.GC16271@xps15>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <5869498f-086c-cea4-edcf-1b75fb22cf22@ti.com>
+Date:   Thu, 19 Dec 2019 15:18:54 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191219001408.GA20303@bogus>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20191218003815.GC16271@xps15>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -63,119 +60,107 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-+Tom
-
-On 19/12/19 5:44 am, Rob Herring wrote:
-> On Mon, Dec 09, 2019 at 02:51:44PM +0530, Kishon Vijay Abraham I wrote:
->> Add PCIe EP mode dt-bindings for TI's J721E SoC.
+On 18/12/2019 02:38, Mathieu Poirier wrote:
+> On Fri, Dec 13, 2019 at 02:55:27PM +0200, Tero Kristo wrote:
+>> From: Suman Anna <s-anna@ti.com>
 >>
->> Cc: Rob Herring <robh+dt@kernel.org>
->> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+>> An implementation for the rproc ops .da_to_va() has been added
+>> that provides the address translation between device addresses
+>> to kernel virtual addresses for internal RAMs present on that
+>> particular remote processor device. The implementation provides
+>> the translations based on the addresses parsed and stored during
+>> the probe.
+>>
+>> This ops gets invoked by the exported rproc_da_to_va() function
+>> and allows the remoteproc core's ELF loader to be able to load
+>> program data directly into the internal memories.
+>>
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
 >> ---
->>  .../bindings/pci/ti,j721e-pci-ep.yaml         | 113 ++++++++++++++++++
->>  1 file changed, 113 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+>>   drivers/remoteproc/omap_remoteproc.c | 39 ++++++++++++++++++++++++++++
+>>   1 file changed, 39 insertions(+)
 >>
->> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
->> new file mode 100644
->> index 000000000000..4e2af4733998
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
->> @@ -0,0 +1,113 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +# Copyright (C) 2019 Texas Instruments Incorporated - http://www.ti.com/
->> +%YAML 1.2
->> +---
->> +$id: "http://devicetree.org/schemas/pci/ti,j721e-pci-ep.yaml#"
->> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+>> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
+>> index 844703507a74..28f14e24b389 100644
+>> --- a/drivers/remoteproc/omap_remoteproc.c
+>> +++ b/drivers/remoteproc/omap_remoteproc.c
+>> @@ -232,10 +232,49 @@ static int omap_rproc_stop(struct rproc *rproc)
+>>   	return 0;
+>>   }
+>>   
+>> +/**
+>> + * omap_rproc_da_to_va() - internal memory translation helper
+>> + * @rproc: remote processor to apply the address translation for
+>> + * @da: device address to translate
+>> + * @len: length of the memory buffer
+>> + *
+>> + * Custom function implementing the rproc .da_to_va ops to provide address
+>> + * translation (device address to kernel virtual address) for internal RAMs
+>> + * present in a DSP or IPU device). The translated addresses can be used
+>> + * either by the remoteproc core for loading, or by any rpmsg bus drivers.
+>> + * Returns the translated virtual address in kernel memory space, or NULL
+>> + * in failure.
+>> + */
+>> +static void *omap_rproc_da_to_va(struct rproc *rproc, u64 da, int len)
+>> +{
+>> +	struct omap_rproc *oproc = rproc->priv;
+>> +	int i;
+>> +	u32 offset;
 >> +
->> +title: TI J721E PCI EP (PCIe Wrapper)
+>> +	if (len <= 0)
+>> +		return NULL;
 >> +
->> +maintainers:
->> +  - Kishon Vijay Abraham I <kishon@ti.com>
+>> +	if (!oproc->num_mems)
+>> +		return NULL;
 >> +
->> +properties:
->> +  compatible:
->> +      enum:
->> +          - ti,j721e-pcie-ep
+>> +	for (i = 0; i < oproc->num_mems; i++) {
+>> +		if (da >= oproc->mem[i].dev_addr && da + len <=
 > 
-> Indentation.
-> 
->> +
->> +  reg:
->> +    maxItems: 4
->> +
->> +  reg-names:
->> +    items:
->> +      - const: intd_cfg
->> +      - const: user_cfg
->> +      - const: reg
->> +      - const: mem
->> +
->> +  ti,syscon-pcie-ctrl:
->> +    description: Phandle to the SYSCON entry required for configuring PCIe mode
->> +                 and link speed.
->> +    allOf:
->> +      - $ref: /schemas/types.yaml#/definitions/phandle
->> +
->> +  max-link-speed:
->> +    minimum: 1
->> +    maximum: 3
->> +
->> +  num-lanes:
->> +    minimum: 1
->> +    maximum: 2
->> +
->> +  power-domains:
->> +    maxItems: 1
->> +
->> +  clocks:
->> +    maxItems: 1
->> +    description: clock-specifier to represent input to the PCIe
->> +
->> +  clock-names:
->> +    items:
->> +      - const: fck
->> +
->> +  cdns,max-outbound-regions:
->> +    description: As defined in
->> +                 Documentation/devicetree/bindings/pci/cdns,cdns-pcie-host.txt
->> +    allOf:
->> +      - $ref: /schemas/types.yaml#/definitions/int32
-> 
-> uint32
-> 
->> +      - enum: [16]
->> +
->> +  max-functions:
->> +    minimum: 1
->> +    maximum: 6
-> 
-> Needs a type ref. Or a common definition.
-> 
->> +
->> +  dma-coherent:
->> +    description: Indicates that the PCIe IP block can ensure the coherency
->> +
->> +  phys:
-> 
-> How many? Need to convert cdns,cdns-pcie-host.txt...
+> Shouldn't this be '<' rather than '<=' ?
 
+No, I think <= is correct. You need to consider the initial byte in the 
+range also. Consider a simple case where you provide the exact da + len 
+corresponding to a specific memory range.
 
-Tom, Can you convert cdns,cdns-pcie-host.txt to YAML binding?
 > 
->> +    description: As defined in
->> +                 Documentation/devicetree/bindings/pci/cdns,cdns-pcie-host.txt
+>> +		    oproc->mem[i].dev_addr +  oproc->mem[i].size) {
+> 
+> One space too many after the '+' .
+
+True, I wonder why checkpatch did not catch this.
+
+> 
+>> +			offset = da -  oproc->mem[i].dev_addr;
+> 
+> One space too many after then '-' .
+
+Same, will fix these two.
+
+-Tero
+
+> 
+>> +			/* __force to make sparse happy with type conversion */
+>> +			return (__force void *)(oproc->mem[i].cpu_addr +
+>> +						offset);
+>> +		}
+>> +	}
 >> +
->> +  phy-names:
->> +    description: As defined in
->> +                 Documentation/devicetree/bindings/pci/cdns,cdns-pcie-host.txt
-> 
-> For all the properties shared with host mode, it might make sense to 
-> define a common schema with all those properties and then include it in 
-> the host and endpoint schemas.
+>> +	return NULL;
+>> +}
+>> +
+>>   static const struct rproc_ops omap_rproc_ops = {
+>>   	.start		= omap_rproc_start,
+>>   	.stop		= omap_rproc_stop,
+>>   	.kick		= omap_rproc_kick,
+>> +	.da_to_va	= omap_rproc_da_to_va,
+>>   };
+>>   
+>>   static const char * const ipu_mem_names[] = {
+>> -- 
+>> 2.17.1
+>>
+>> --
 
-Sure.
-
-Thanks
-Kishon
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
