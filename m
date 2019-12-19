@@ -2,56 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D0EA212634E
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Dec 2019 14:19:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 432FE126349
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Dec 2019 14:17:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbfLSNTB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Dec 2019 08:19:01 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:34290 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726695AbfLSNTA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Dec 2019 08:19:00 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBJDIwD4121919;
-        Thu, 19 Dec 2019 07:18:58 -0600
+        id S1726855AbfLSNRr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Dec 2019 08:17:47 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:57998 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726695AbfLSNRq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Dec 2019 08:17:46 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBJDHdR9054319;
+        Thu, 19 Dec 2019 07:17:39 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576761538;
-        bh=hKqAOCo/ma8q7kF4B46wVaSESSJX9CpZN2QLfa+H56g=;
+        s=ti-com-17Q1; t=1576761459;
+        bh=2DtoSfwQF0HK6yLy59cfwpATaGf4HB72ZXQDZhbGl2s=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=feY/JA5gY4Kcli+l+ebZ97/xvgSYqZR0o6XVAGjSNwKRy0seyHf0tS/jc37VSO/Kf
-         NdvWMOc4SWO9ZsDwIr3Uer+PniTBY37VuYix+cQX/Ckfjr4GtRbwU0NevKGk2qVWAF
-         76UhW/cOWCT3y5ljF0u+PiQAME2yaIsVVYw/n9MM=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBJDIwuO097965
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 19 Dec 2019 07:18:58 -0600
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+        b=R5PjBEQOKxDt+PpPr87G052DkxfTxvOu3MtDbQn065YlSubStXr7K4hZB73OqtaFe
+         JwNVPEMoiMDd1/T7Gj7+BGcPtzp8NUBNPXj/3axcoE39K/5FlOuTgx0KovUghIYWGt
+         ZrTBgxHviOq2wqLla3e9uYgd/S3xp356LMSYsAI0=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBJDHdCb126202;
+        Thu, 19 Dec 2019 07:17:39 -0600
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 19
- Dec 2019 07:18:57 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 07:17:38 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 19 Dec 2019 07:18:57 -0600
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBJDIt1Y106703;
-        Thu, 19 Dec 2019 07:18:55 -0600
-Subject: Re: [PATCHv3 05/15] remoteproc/omap: Add the rproc ops .da_to_va()
- implementation
-To:     Mathieu Poirier <mathieu.poirier@linaro.org>
-CC:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
-        <linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, Suman Anna <s-anna@ti.com>
-References: <20191213125537.11509-1-t-kristo@ti.com>
- <20191213125537.11509-6-t-kristo@ti.com> <20191218003815.GC16271@xps15>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <5869498f-086c-cea4-edcf-1b75fb22cf22@ti.com>
-Date:   Thu, 19 Dec 2019 15:18:54 +0200
+ Frontend Transport; Thu, 19 Dec 2019 07:17:38 -0600
+Received: from [10.24.69.159] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBJDHZa3046472;
+        Thu, 19 Dec 2019 07:17:36 -0600
+Subject: Re: [PATCH 05/13] PCI: cadence: Add read and write accessors to
+ perform only 32-bit accesses
+To:     Arnd Bergmann <arnd@arndb.de>
+CC:     Andrew Murray <andrew.murray@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>
+References: <20191209092147.22901-1-kishon@ti.com>
+ <20191209092147.22901-6-kishon@ti.com>
+ <20191216144932.GY24359@e119886-lin.cambridge.arm.com>
+ <d1ee4579-a3da-6a73-3516-a6d264f80995@ti.com>
+ <CAK8P3a06XLSa-FHNGsN=b10JrddjbOKAvfU=iXdMa+0L43m5fA@mail.gmail.com>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <9b40e71a-c18c-a958-84fe-c5a126fe8272@ti.com>
+Date:   Thu, 19 Dec 2019 18:49:18 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191218003815.GC16271@xps15>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <CAK8P3a06XLSa-FHNGsN=b10JrddjbOKAvfU=iXdMa+0L43m5fA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -60,107 +67,33 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 18/12/2019 02:38, Mathieu Poirier wrote:
-> On Fri, Dec 13, 2019 at 02:55:27PM +0200, Tero Kristo wrote:
->> From: Suman Anna <s-anna@ti.com>
+Hi Arnd,
+
+On 19/12/19 5:33 pm, Arnd Bergmann wrote:
+> On Thu, Dec 19, 2019 at 12:54 PM Kishon Vijay Abraham I <kishon@ti.com> wrote:
 >>
->> An implementation for the rproc ops .da_to_va() has been added
->> that provides the address translation between device addresses
->> to kernel virtual addresses for internal RAMs present on that
->> particular remote processor device. The implementation provides
->> the translations based on the addresses parsed and stored during
->> the probe.
+>> Hi Andrew,
 >>
->> This ops gets invoked by the exported rproc_da_to_va() function
->> and allows the remoteproc core's ELF loader to be able to load
->> program data directly into the internal memories.
+>> On 16/12/19 8:19 pm, Andrew Murray wrote:
+>>> On Mon, Dec 09, 2019 at 02:51:39PM +0530, Kishon Vijay Abraham I wrote:
+>>>> Certain platforms like TI's J721E allow only 32-bit register accesses.
+>>>
+>>> When I first read this I thought you meant only 32-bit accesses are allowed
+>>> and not other sizes (such as 64-bit). However the limitation you address
+>>> here is that the J721E allows only 32-bit *aligned* register accesses.
 >>
->> Signed-off-by: Suman Anna <s-anna@ti.com>
->> Signed-off-by: Tero Kristo <t-kristo@ti.com>
->> ---
->>   drivers/remoteproc/omap_remoteproc.c | 39 ++++++++++++++++++++++++++++
->>   1 file changed, 39 insertions(+)
->>
->> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
->> index 844703507a74..28f14e24b389 100644
->> --- a/drivers/remoteproc/omap_remoteproc.c
->> +++ b/drivers/remoteproc/omap_remoteproc.c
->> @@ -232,10 +232,49 @@ static int omap_rproc_stop(struct rproc *rproc)
->>   	return 0;
->>   }
->>   
->> +/**
->> + * omap_rproc_da_to_va() - internal memory translation helper
->> + * @rproc: remote processor to apply the address translation for
->> + * @da: device address to translate
->> + * @len: length of the memory buffer
->> + *
->> + * Custom function implementing the rproc .da_to_va ops to provide address
->> + * translation (device address to kernel virtual address) for internal RAMs
->> + * present in a DSP or IPU device). The translated addresses can be used
->> + * either by the remoteproc core for loading, or by any rpmsg bus drivers.
->> + * Returns the translated virtual address in kernel memory space, or NULL
->> + * in failure.
->> + */
->> +static void *omap_rproc_da_to_va(struct rproc *rproc, u64 da, int len)
->> +{
->> +	struct omap_rproc *oproc = rproc->priv;
->> +	int i;
->> +	u32 offset;
->> +
->> +	if (len <= 0)
->> +		return NULL;
->> +
->> +	if (!oproc->num_mems)
->> +		return NULL;
->> +
->> +	for (i = 0; i < oproc->num_mems; i++) {
->> +		if (da >= oproc->mem[i].dev_addr && da + len <=
+>> It's both, it allows only 32-bit aligned accesses and the size should be
+>> only 32 bits. That's why I always use "readl" in the APIs below.
 > 
-> Shouldn't this be '<' rather than '<=' ?
+> In that case, can't you use the pci_generic_config_read32/write32
+> functions with a cadence specific .map_bus() function?
 
-No, I think <= is correct. You need to consider the initial byte in the 
-range also. Consider a simple case where you provide the exact da + len 
-corresponding to a specific memory range.
+pci_generic_config_read32() is for reading configuration space registers
+only. The accessors I added here are for the controller IP configuration.
 
-> 
->> +		    oproc->mem[i].dev_addr +  oproc->mem[i].size) {
-> 
-> One space too many after the '+' .
+For the configuration space access I use
+pci_generic_config_read32/write32()([PATCH 11/13] PCI: j721e: Add TI
+J721E PCIe driver).
 
-True, I wonder why checkpatch did not catch this.
-
-> 
->> +			offset = da -  oproc->mem[i].dev_addr;
-> 
-> One space too many after then '-' .
-
-Same, will fix these two.
-
--Tero
-
-> 
->> +			/* __force to make sparse happy with type conversion */
->> +			return (__force void *)(oproc->mem[i].cpu_addr +
->> +						offset);
->> +		}
->> +	}
->> +
->> +	return NULL;
->> +}
->> +
->>   static const struct rproc_ops omap_rproc_ops = {
->>   	.start		= omap_rproc_start,
->>   	.stop		= omap_rproc_stop,
->>   	.kick		= omap_rproc_kick,
->> +	.da_to_va	= omap_rproc_da_to_va,
->>   };
->>   
->>   static const char * const ipu_mem_names[] = {
->> -- 
->> 2.17.1
->>
->> --
-
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Thanks
+Kishon
