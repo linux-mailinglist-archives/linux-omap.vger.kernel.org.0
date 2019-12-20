@@ -2,175 +2,432 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B07A212720D
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Dec 2019 01:12:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34730127352
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Dec 2019 03:08:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726952AbfLTAMk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Dec 2019 19:12:40 -0500
-Received: from mail-il1-f195.google.com ([209.85.166.195]:37494 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726982AbfLTAMk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Dec 2019 19:12:40 -0500
-Received: by mail-il1-f195.google.com with SMTP id t8so6421438iln.4
-        for <linux-omap@vger.kernel.org>; Thu, 19 Dec 2019 16:12:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qs+Sa1+sjdzty0pSCITj5traxewzN9G4gEr6T5j5V9o=;
-        b=AB1vxyAhSPg1F6ndqplSaA8FVhn2Lc5356ua92meLm6LyrQ23o1YyQLCVWsOCjkemv
-         0RzNk6LZKO//2H5SpazVTDR1nQ66iwWrxj/n56XZZ0+HKXmPQe8/REQkeA1U0pW/bafh
-         KzYHlz0UMZ7b0Tx5VoRAm/y1jB8VpibJim9lYR+cHLkWmg4NRR01a0WLTvMXQF+4vgo1
-         D4idV7lc60ZDKjrXJfmRsmWCbvnPzLpES3ak6A4m+4xf+ACIyK73384Qn5ERdlwQ6IIm
-         /huR3RcIWvtvM+IL7Imwkyev4MyOX2iczJH0B4XTBc0xLsbb4Wzc64qb/9eLgiRSAbxL
-         Tx+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qs+Sa1+sjdzty0pSCITj5traxewzN9G4gEr6T5j5V9o=;
-        b=ZXrPko2oMMTk4YocPnIFk4EID+DLTGn+KEFXuqwvnLP8/KN9+tAkxydZnYDBy3Baqo
-         gbkOb70SigiyGlXkZmw3TgApEtiTxSGQOZvJzl3h3BNpFzIVtRIR/mfDFZdZSosIhH0r
-         25sivDgFYSDAzZ0YHVhPMeiczgSVTJCeYg0uTMDAsTQHpHxz2nUECpd6KMOQw44RKctN
-         Z9aHG7iBMA6+4XEnlsVrjnpoKSJVy3ojco23RgYVmr74wugZDBc9IWjDVgF4uAh64WkW
-         25L4LiYxu2bFxo+oYtMa7xFNs0hG9fKEBQErJ3quNXQsTQftA1QkM55fODNI5vO5csHk
-         eh8w==
-X-Gm-Message-State: APjAAAWX88X7f5AD7SA5bYDg8P/wY5ZjTSA+R8DIKFmqchQ6prNwJCCg
-        QcjJOIGEAkhKnHgST/eywO67b9Pbf4mL5gsnQCbXmw==
-X-Google-Smtp-Source: APXvYqwVkT3CPJ6BN3SwzlEKH987cMoOerm9iYmX3wpm0k/KDXdLWFripwK1aX2mpwPSzcGFK+Y/d/WLoT1WAt/xby8=
-X-Received: by 2002:a92:1711:: with SMTP id u17mr9937804ill.72.1576800759377;
- Thu, 19 Dec 2019 16:12:39 -0800 (PST)
+        id S1727229AbfLTCIU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Dec 2019 21:08:20 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:38606 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727128AbfLTCIU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Dec 2019 21:08:20 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBK28ExW057289;
+        Thu, 19 Dec 2019 20:08:14 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1576807694;
+        bh=Cb0/88MZYZciHePNGo8wBnm5HIHbC58cncn+wdc/s0A=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=oTGKKiRG62PAjGc3fC/bDsGpsTZCfjMgcSDGtuGkkmv81jpQ2SuhBCynavbbVyoDV
+         7lsZcTZttRng488LAHD3TjtNwA2ix1OT7WwUXNcbxumULr77F04Y9G0TpCIs3f3Jex
+         fuvGnFWtqAZqU7jr4PpBybJOTdDuPZk9Z6+dxODM=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBK28EKJ057011
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 19 Dec 2019 20:08:14 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 19
+ Dec 2019 20:08:13 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Thu, 19 Dec 2019 20:08:13 -0600
+Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBK28DeK040419;
+        Thu, 19 Dec 2019 20:08:13 -0600
+Subject: Re: [PATCHv3 02/15] remoteproc/omap: Add device tree support
+To:     Tero Kristo <t-kristo@ti.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+CC:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
+        <linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, Tony Lindgren <tony@atomide.com>
+References: <20191213125537.11509-1-t-kristo@ti.com>
+ <20191213125537.11509-3-t-kristo@ti.com> <20191217230141.GA16271@xps15>
+ <5f3369f2-c8e2-f00c-e0cb-3757129b03a2@ti.com>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <1d852c78-be6c-ed43-98c9-e5701a772746@ti.com>
+Date:   Thu, 19 Dec 2019 20:08:13 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <20191213125537.11509-1-t-kristo@ti.com> <20191213125537.11509-6-t-kristo@ti.com>
- <20191218003815.GC16271@xps15> <5869498f-086c-cea4-edcf-1b75fb22cf22@ti.com>
-In-Reply-To: <5869498f-086c-cea4-edcf-1b75fb22cf22@ti.com>
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
-Date:   Thu, 19 Dec 2019 17:12:28 -0700
-Message-ID: <CANLsYkz=ZV-AABXq2mSdwKkcdkQgFwStepteFnMBc4j=ahe4Dw@mail.gmail.com>
-Subject: Re: [PATCHv3 05/15] remoteproc/omap: Add the rproc ops .da_to_va() implementation
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        linux-remoteproc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org, Suman Anna <s-anna@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <5f3369f2-c8e2-f00c-e0cb-3757129b03a2@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 19 Dec 2019 at 06:18, Tero Kristo <t-kristo@ti.com> wrote:
->
-> On 18/12/2019 02:38, Mathieu Poirier wrote:
-> > On Fri, Dec 13, 2019 at 02:55:27PM +0200, Tero Kristo wrote:
-> >> From: Suman Anna <s-anna@ti.com>
-> >>
-> >> An implementation for the rproc ops .da_to_va() has been added
-> >> that provides the address translation between device addresses
-> >> to kernel virtual addresses for internal RAMs present on that
-> >> particular remote processor device. The implementation provides
-> >> the translations based on the addresses parsed and stored during
-> >> the probe.
-> >>
-> >> This ops gets invoked by the exported rproc_da_to_va() function
-> >> and allows the remoteproc core's ELF loader to be able to load
-> >> program data directly into the internal memories.
-> >>
-> >> Signed-off-by: Suman Anna <s-anna@ti.com>
-> >> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> >> ---
-> >>   drivers/remoteproc/omap_remoteproc.c | 39 ++++++++++++++++++++++++++++
-> >>   1 file changed, 39 insertions(+)
-> >>
-> >> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
-> >> index 844703507a74..28f14e24b389 100644
-> >> --- a/drivers/remoteproc/omap_remoteproc.c
-> >> +++ b/drivers/remoteproc/omap_remoteproc.c
-> >> @@ -232,10 +232,49 @@ static int omap_rproc_stop(struct rproc *rproc)
-> >>      return 0;
-> >>   }
-> >>
-> >> +/**
-> >> + * omap_rproc_da_to_va() - internal memory translation helper
-> >> + * @rproc: remote processor to apply the address translation for
-> >> + * @da: device address to translate
-> >> + * @len: length of the memory buffer
-> >> + *
-> >> + * Custom function implementing the rproc .da_to_va ops to provide address
-> >> + * translation (device address to kernel virtual address) for internal RAMs
-> >> + * present in a DSP or IPU device). The translated addresses can be used
-> >> + * either by the remoteproc core for loading, or by any rpmsg bus drivers.
-> >> + * Returns the translated virtual address in kernel memory space, or NULL
-> >> + * in failure.
-> >> + */
-> >> +static void *omap_rproc_da_to_va(struct rproc *rproc, u64 da, int len)
-> >> +{
-> >> +    struct omap_rproc *oproc = rproc->priv;
-> >> +    int i;
-> >> +    u32 offset;
-> >> +
-> >> +    if (len <= 0)
-> >> +            return NULL;
-> >> +
-> >> +    if (!oproc->num_mems)
-> >> +            return NULL;
-> >> +
-> >> +    for (i = 0; i < oproc->num_mems; i++) {
-> >> +            if (da >= oproc->mem[i].dev_addr && da + len <=
-> >
-> > Shouldn't this be '<' rather than '<=' ?
->
-> No, I think <= is correct. You need to consider the initial byte in the
-> range also. Consider a simple case where you provide the exact da + len
-> corresponding to a specific memory range.
+Hi Tero, Mathieu,
 
-For that specific case you are correct.  On the flip side if @da falls
-somewhere after @mem[i].dev_addr, there is a possibility to clobber
-the first byte of the next range if <= is used.
+On 12/19/19 5:54 AM, Tero Kristo wrote:
+> On 18/12/2019 01:01, Mathieu Poirier wrote:
+>> Hi Tero,
+>>
+>> On Fri, Dec 13, 2019 at 02:55:24PM +0200, Tero Kristo wrote:
+>>> From: Suman Anna <s-anna@ti.com>
+>>>
+>>> OMAP4+ SoCs support device tree boot only. The OMAP remoteproc
+>>> driver is enhanced to support remoteproc devices created through
+>>> Device Tree, support for legacy platform devices has been
+>>> deprecated. The current DT support handles the IPU and DSP
+>>> processor subsystems on OMAP4 and OMAP5 SoCs.
+>>>
+>>> The OMAP remoteproc driver relies on the ti-sysc, reset, and
+>>> syscon layers for performing clock, reset and boot vector
+>>> management (DSP remoteprocs only) of the devices, but some of
+>>> these are limited only to the machine-specific layers
+>>> in arch/arm. The dependency against control module API for boot
+>>> vector management of the DSP remoteprocs has now been removed
+>>> with added logic to parse the boot register from the DT node
+>>> and program it appropriately directly within the driver.
+>>>
+>>> The OMAP remoteproc driver expects the firmware names to be
+>>> provided via device tree entries (firmware-name.) These are used
+>>> to load the proper firmware during boot of the remote processor.
+>>>
+>>> Cc: Tony Lindgren <tony@atomide.com>
+>>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>>> [t-kristo@ti.com: converted to use ti-sysc framework]
+>>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>>> ---
+>>>   drivers/remoteproc/omap_remoteproc.c | 191 +++++++++++++++++++++++----
+>>>   1 file changed, 168 insertions(+), 23 deletions(-)
+>>>
+>>> diff --git a/drivers/remoteproc/omap_remoteproc.c
+>>> b/drivers/remoteproc/omap_remoteproc.c
+>>> index 6398194075aa..558634624590 100644
+>>> --- a/drivers/remoteproc/omap_remoteproc.c
+>>> +++ b/drivers/remoteproc/omap_remoteproc.c
+>>> @@ -2,7 +2,7 @@
+>>>   /*
+>>>    * OMAP Remote Processor driver
+>>>    *
+>>> - * Copyright (C) 2011 Texas Instruments, Inc.
+>>> + * Copyright (C) 2011-2019 Texas Instruments Incorporated -
+>>> http://www.ti.com/
+>>>    * Copyright (C) 2011 Google, Inc.
+>>>    *
+>>>    * Ohad Ben-Cohen <ohad@wizery.com>
+>>> @@ -16,27 +16,53 @@
+>>>   #include <linux/kernel.h>
+>>>   #include <linux/module.h>
+>>>   #include <linux/err.h>
+>>> +#include <linux/of_device.h>
+>>>   #include <linux/platform_device.h>
+>>>   #include <linux/dma-mapping.h>
+>>>   #include <linux/remoteproc.h>
+>>>   #include <linux/mailbox_client.h>
+>>>   #include <linux/omap-mailbox.h>
+>>> -
+>>> -#include <linux/platform_data/remoteproc-omap.h>
+>>> +#include <linux/regmap.h>
+>>> +#include <linux/mfd/syscon.h>
+>>> +#include <linux/reset.h>
+>>>     #include "omap_remoteproc.h"
+>>>   #include "remoteproc_internal.h"
+>>>   +/**
+>>> + * struct omap_rproc_boot_data - boot data structure for the DSP
+>>> omap rprocs
+>>> + * @syscon: regmap handle for the system control configuration module
+>>> + * @boot_reg: boot register offset within the @syscon regmap
+>>> + */
+>>> +struct omap_rproc_boot_data {
+>>> +    struct regmap *syscon;
+>>> +    unsigned int boot_reg;
+>>> +};
+>>> +
+>>>   /**
+>>>    * struct omap_rproc - omap remote processor state
+>>>    * @mbox: mailbox channel handle
+>>>    * @client: mailbox client to request the mailbox channel
+>>> + * @boot_data: boot data structure for setting processor boot address
+>>>    * @rproc: rproc handle
+>>> + * @reset: reset handle
+>>>    */
+>>>   struct omap_rproc {
+>>>       struct mbox_chan *mbox;
+>>>       struct mbox_client client;
+>>> +    struct omap_rproc_boot_data *boot_data;
+>>>       struct rproc *rproc;
+>>> +    struct reset_control *reset;
+>>> +};
+>>> +
+>>> +/**
+>>> + * struct omap_rproc_dev_data - device data for the omap remote
+>>> processor
+>>> + * @device_name: device name of the remote processor
+>>> + * @has_bootreg: true if this remote processor has boot register
+>>> + */
+>>> +struct omap_rproc_dev_data {
+>>> +    const char *device_name;
+>>> +    bool has_bootreg;
+>>>   };
+>>>     /**
+>>> @@ -92,6 +118,21 @@ static void omap_rproc_kick(struct rproc *rproc,
+>>> int vqid)
+>>>               ret);
+>>>   }
+>>>   +/**
+>>> + * omap_rproc_write_dsp_boot_addr - set boot address for a DSP
+>>> remote processor
+>>> + * @rproc: handle of a remote processor
+>>> + *
+>>> + * Set boot address for a supported DSP remote processor.
+>>> + */
+>>> +static void omap_rproc_write_dsp_boot_addr(struct rproc *rproc)
+>>> +{
+>>> +    struct omap_rproc *oproc = rproc->priv;
+>>> +    struct omap_rproc_boot_data *bdata = oproc->boot_data;
+>>> +    u32 offset = bdata->boot_reg;
+>>> +
+>>> +    regmap_write(bdata->syscon, offset, rproc->bootaddr);
+>>> +}
+>>> +
+>>>   /*
+>>>    * Power up the remote processor.
+>>>    *
+>>> @@ -103,13 +144,11 @@ static int omap_rproc_start(struct rproc *rproc)
+>>>   {
+>>>       struct omap_rproc *oproc = rproc->priv;
+>>>       struct device *dev = rproc->dev.parent;
+>>> -    struct platform_device *pdev = to_platform_device(dev);
+>>> -    struct omap_rproc_pdata *pdata = pdev->dev.platform_data;
+>>>       int ret;
+>>>       struct mbox_client *client = &oproc->client;
+>>>   -    if (pdata->set_bootaddr)
+>>> -        pdata->set_bootaddr(rproc->bootaddr);
+>>> +    if (oproc->boot_data)
+>>> +        omap_rproc_write_dsp_boot_addr(rproc);
+>>>         client->dev = dev;
+>>>       client->tx_done = NULL;
+>>> @@ -117,7 +156,7 @@ static int omap_rproc_start(struct rproc *rproc)
+>>>       client->tx_block = false;
+>>>       client->knows_txdone = false;
+>>>   -    oproc->mbox = omap_mbox_request_channel(client,
+>>> pdata->mbox_name);
+>>> +    oproc->mbox = mbox_request_channel(client, 0);
+>>>       if (IS_ERR(oproc->mbox)) {
+>>>           ret = -EBUSY;
+>>>           dev_err(dev, "mbox_request_channel failed: %ld\n",
+>>> @@ -138,11 +177,7 @@ static int omap_rproc_start(struct rproc *rproc)
+>>>           goto put_mbox;
+>>>       }
+>>>   -    ret = pdata->device_enable(pdev);
+>>> -    if (ret) {
+>>> -        dev_err(dev, "omap_device_enable failed: %d\n", ret);
+>>> -        goto put_mbox;
+>>> -    }
+>>> +    reset_control_deassert(oproc->reset);
+>>>         return 0;
+>>>   @@ -154,15 +189,9 @@ static int omap_rproc_start(struct rproc *rproc)
+>>>   /* power off the remote processor */
+>>>   static int omap_rproc_stop(struct rproc *rproc)
+>>>   {
+>>> -    struct device *dev = rproc->dev.parent;
+>>> -    struct platform_device *pdev = to_platform_device(dev);
+>>> -    struct omap_rproc_pdata *pdata = pdev->dev.platform_data;
+>>>       struct omap_rproc *oproc = rproc->priv;
+>>> -    int ret;
+>>>   -    ret = pdata->device_shutdown(pdev);
+>>> -    if (ret)
+>>> -        return ret;
+>>> +    reset_control_assert(oproc->reset);
 
-Thanks,
-Mathieu
+Any reasons for dropping the checks for the return status and wherever
+you replaced the pdata callbacks with the desired reset API?
 
->
-> >
-> >> +                oproc->mem[i].dev_addr +  oproc->mem[i].size) {
-> >
-> > One space too many after the '+' .
->
-> True, I wonder why checkpatch did not catch this.
->
-> >
-> >> +                    offset = da -  oproc->mem[i].dev_addr;
-> >
-> > One space too many after then '-' .
->
-> Same, will fix these two.
->
+>>>         mbox_free_channel(oproc->mbox);
+>>>   @@ -175,12 +204,122 @@ static const struct rproc_ops omap_rproc_ops
+>>> = {
+>>>       .kick        = omap_rproc_kick,
+>>>   };
+>>>   +static const struct omap_rproc_dev_data omap4_dsp_dev_data = {
+>>> +    .device_name    = "dsp",
+>>> +    .has_bootreg    = true,
+>>> +};
+>>> +
+>>> +static const struct omap_rproc_dev_data omap4_ipu_dev_data = {
+>>> +    .device_name    = "ipu",
+>>> +};
+>>> +
+>>> +static const struct omap_rproc_dev_data omap5_dsp_dev_data = {
+>>> +    .device_name    = "dsp",
+>>> +    .has_bootreg    = true,
+>>> +};
+>>> +
+>>> +static const struct omap_rproc_dev_data omap5_ipu_dev_data = {
+>>> +    .device_name    = "ipu",
+>>> +};
+>>> +
+>>> +static const struct of_device_id omap_rproc_of_match[] = {
+>>> +    {
+>>> +        .compatible     = "ti,omap4-dsp",
+>>> +        .data           = &omap4_dsp_dev_data,
+>>> +    },
+>>> +    {
+>>> +        .compatible     = "ti,omap4-ipu",
+>>> +        .data           = &omap4_ipu_dev_data,
+>>> +    },
+>>> +    {
+>>> +        .compatible     = "ti,omap5-dsp",
+>>> +        .data           = &omap5_dsp_dev_data,
+>>> +    },
+>>> +    {
+>>> +        .compatible     = "ti,omap5-ipu",
+>>> +        .data           = &omap5_ipu_dev_data,
+>>> +    },
+>>> +    {
+>>> +        /* end */
+>>> +    },
+>>> +};
+>>> +MODULE_DEVICE_TABLE(of, omap_rproc_of_match);
+>>> +
+>>> +static const char *omap_rproc_get_firmware(struct platform_device
+>>> *pdev)
+>>> +{
+>>> +    const char *fw_name;
+>>> +    int ret;
+>>> +
+>>> +    ret = of_property_read_string(pdev->dev.of_node, "firmware-name",
+>>> +                      &fw_name);
+>>> +    if (ret)
+>>> +        return ERR_PTR(ret);
+>>> +
+>>> +    return fw_name;
+>>> +}
+>>> +
+>>> +static int omap_rproc_get_boot_data(struct platform_device *pdev,
+>>> +                    struct rproc *rproc)
+>>> +{
+>>> +    struct device_node *np = pdev->dev.of_node;
+>>> +    struct omap_rproc *oproc = rproc->priv;
+>>> +    const struct omap_rproc_dev_data *data;
+>>> +    int ret;
+>>> +
+>>> +    data = of_device_get_match_data(&pdev->dev);
+>>> +    if (!data)
+>>> +        return -ENODEV;
+>>> +
+>>> +    if (!data->has_bootreg)
+>>> +        return 0;
+>>> +
+>>> +    oproc->boot_data = devm_kzalloc(&pdev->dev,
+>>> sizeof(*oproc->boot_data),
+>>> +                    GFP_KERNEL);
+>>> +    if (!oproc->boot_data)
+>>> +        return -ENOMEM;
+>>> +
+>>> +    if (!of_property_read_bool(np, "ti,bootreg")) {
+>>> +        dev_err(&pdev->dev, "ti,bootreg property is missing\n");
+>>> +        return -EINVAL;
+>>> +    }
+>>> +
+>>> +    oproc->boot_data->syscon =
+>>> +            syscon_regmap_lookup_by_phandle(np, "ti,bootreg");
+>>> +    if (IS_ERR(oproc->boot_data->syscon)) {
+>>> +        ret = PTR_ERR(oproc->boot_data->syscon);
+>>> +        return ret;
+>>> +    }
+>>> +
+>>> +    if (of_property_read_u32_index(np, "ti,bootreg", 1,
+>>> +                       &oproc->boot_data->boot_reg)) {
+>>> +        dev_err(&pdev->dev, "couldn't get the boot register\n");
+>>> +        return -EINVAL;
+>>> +    }
+>>> +
+>>> +    return 0;
+>>> +}
+>>> +
+>>>   static int omap_rproc_probe(struct platform_device *pdev)
+>>>   {
+>>> -    struct omap_rproc_pdata *pdata = pdev->dev.platform_data;
+>>> +    struct device_node *np = pdev->dev.of_node;
+>>>       struct omap_rproc *oproc;
+>>>       struct rproc *rproc;
+>>> +    const char *firmware;
+>>>       int ret;
+>>> +    struct reset_control *reset;
+>>> +
+>>> +    if (!np) {
+>>> +        dev_err(&pdev->dev, "only DT-based devices are supported\n");
+>>> +        return -ENODEV;
+>>> +    }
+>>> +
+>>> +    reset =
+>>> devm_reset_control_array_get_optional_exclusive(&pdev->dev);
+>>> +    if (IS_ERR(reset))
+>>> +        return PTR_ERR(reset);
+>>
+>> Definition of a reset is listed as "required" in the bindings but here
+>> it is
+>> optional.  If this is really what you want then adding a comment to
+>> exlain your
+>> choice is probably a good idea.
+> 
+> Right, I think I updated the binding to require this but forgot to
+> update the driver for this part. Will fix this.
+> 
 > -Tero
->
-> >
-> >> +                    /* __force to make sparse happy with type conversion */
-> >> +                    return (__force void *)(oproc->mem[i].cpu_addr +
-> >> +                                            offset);
-> >> +            }
-> >> +    }
-> >> +
-> >> +    return NULL;
-> >> +}
-> >> +
-> >>   static const struct rproc_ops omap_rproc_ops = {
-> >>      .start          = omap_rproc_start,
-> >>      .stop           = omap_rproc_stop,
-> >>      .kick           = omap_rproc_kick,
-> >> +    .da_to_va       = omap_rproc_da_to_va,
-> >>   };
-> >>
-> >>   static const char * const ipu_mem_names[] = {
-> >> --
-> >> 2.17.1
-> >>
-> >> --
->
-> --
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> 
+>>
+>>> +
+>>> +    firmware = omap_rproc_get_firmware(pdev);
+>>> +    if (IS_ERR(firmware))
+>>> +        return PTR_ERR(firmware);
+>>>         ret = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
+>>>       if (ret) {
+>>> @@ -188,16 +327,21 @@ static int omap_rproc_probe(struct
+>>> platform_device *pdev)
+>>>           return ret;
+>>>       }
+>>>   -    rproc = rproc_alloc(&pdev->dev, pdata->name, &omap_rproc_ops,
+>>> -                pdata->firmware, sizeof(*oproc));
+>>> +    rproc = rproc_alloc(&pdev->dev, dev_name(&pdev->dev),
+>>> &omap_rproc_ops,
+>>> +                firmware, sizeof(*oproc));
+>>>       if (!rproc)
+>>>           return -ENOMEM;
+>>>         oproc = rproc->priv;
+>>>       oproc->rproc = rproc;
+>>> +    oproc->reset = reset;
+>>>       /* All existing OMAP IPU and DSP processors have an MMU */
+>>>       rproc->has_iommu = true;
+>>>   +    ret = omap_rproc_get_boot_data(pdev, rproc);
+>>> +    if (ret)
+>>> +        goto free_rproc;
+>>> +
+>>>       platform_set_drvdata(pdev, rproc);
+>>>         ret = rproc_add(rproc);
+>>> @@ -226,6 +370,7 @@ static struct platform_driver omap_rproc_driver = {
+>>>       .remove = omap_rproc_remove,
+>>>       .driver = {
+>>>           .name = "omap-rproc",
+>>> +        .of_match_table = omap_rproc_of_match,
+>>
+>>                  .of_match_table = of_match_ptr(omap_rproc_of_match),
+
+I had dropped this sometime back intentionally as all our platforms are
+DT-only.
+
+regards
+Suman
+
+>>
+>> Thanks,
+>> Mathieu
+>>
+>>>       },
+>>>   };
+>>>   -- 
+>>> 2.17.1
+>>>
+>>> -- 
+> 
+> -- 
+> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
