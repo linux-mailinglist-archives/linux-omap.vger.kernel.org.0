@@ -2,55 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41E10128A76
-	for <lists+linux-omap@lfdr.de>; Sat, 21 Dec 2019 17:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A927128F34
+	for <lists+linux-omap@lfdr.de>; Sun, 22 Dec 2019 19:00:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726107AbfLUQlp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 21 Dec 2019 11:41:45 -0500
-Received: from muru.com ([72.249.23.125]:49252 "EHLO muru.com"
+        id S1726114AbfLVSA2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 22 Dec 2019 13:00:28 -0500
+Received: from muru.com ([72.249.23.125]:49300 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726976AbfLUQlp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 21 Dec 2019 11:41:45 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 15AED806C;
-        Sat, 21 Dec 2019 16:42:23 +0000 (UTC)
-Date:   Sat, 21 Dec 2019 08:41:41 -0800
+        id S1725922AbfLVSA1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 22 Dec 2019 13:00:27 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id A3F158117;
+        Sun, 22 Dec 2019 18:01:06 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Matthijs van Duin <matthijsvanduin@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>
-Subject: Re: [PATCH] drm/omap: gem: Fix tearing with BO_TILED
-Message-ID: <20191221164141.GI35479@atomide.com>
-References: <20191221005711.47314-1-tony@atomide.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, Jacopo Mondi <jacopo@jmondi.org>,
+        Marcel Partap <mpartap@gmx.net>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Michael Scott <hashcode0f@gmail.com>,
+        NeKit <nekit1000@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>
+Subject: [PATCHv2] phy: cpcap-usb: Fix flakey host idling and enumerating of devices
+Date:   Sun, 22 Dec 2019 10:00:19 -0800
+Message-Id: <20191222180019.55417-1-tony@atomide.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191221005711.47314-1-tony@atomide.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [191220 16:57]:
-> Looking around what might affect BO_TILED, I noticed Matthijs had this
-> change in his earlier pyra tiler patches. The earlier patch "XXX omapdrm:
-> force tiled buffers to be pinned and page-aligned" has no commit log
-> though, so I'm not sure what other issues this might fix.
-..
-> Matthijs, do you have some more info to add to the description?
+We must let the USB host idle things properly before we switch to debug
+UART mode. Otherwise the USB host may never idle after disconnecting
+devices, and that causes the next enumeration to be flakey.
 
-Also, I'm wondering if this change makes sense alone without the pinning
-changes for a fix, or if also the pinning changes are needed.
+Cc: Jacopo Mondi <jacopo@jmondi.org>
+Cc: Marcel Partap <mpartap@gmx.net>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Michael Scott <hashcode0f@gmail.com>
+Cc: NeKit <nekit1000@gmail.com>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Fixes: 6d6ce40f63af ("phy: cpcap-usb: Add CPCAP PMIC USB support")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
 
-For reference, the original related patch(es) are available at [0] below.
+Kishon, looks like the v1 patch sent in August got lost somewhere.
+Here's a resend update against your fixes branch.
 
-Regards,
 
-Tony
+ drivers/phy/motorola/phy-cpcap-usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-[0] https://github.com/mvduin/linux/commit/70593563f531a7ac4a3f6ebed0fc98ef86742b12
+diff --git a/drivers/phy/motorola/phy-cpcap-usb.c b/drivers/phy/motorola/phy-cpcap-usb.c
+--- a/drivers/phy/motorola/phy-cpcap-usb.c
++++ b/drivers/phy/motorola/phy-cpcap-usb.c
+@@ -283,13 +283,13 @@ static void cpcap_usb_detect(struct work_struct *work)
+ 		return;
+ 	}
+ 
++	cpcap_usb_try_musb_mailbox(ddata, MUSB_VBUS_OFF);
++
+ 	/* Default to debug UART mode */
+ 	error = cpcap_usb_set_uart_mode(ddata);
+ 	if (error)
+ 		goto out_err;
+ 
+-	cpcap_usb_try_musb_mailbox(ddata, MUSB_VBUS_OFF);
+-
+ 	dev_dbg(ddata->dev, "set UART mode\n");
+ 
+ 	return;
+-- 
+2.24.1
