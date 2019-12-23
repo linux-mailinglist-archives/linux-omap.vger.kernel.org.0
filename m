@@ -2,103 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB11128F6F
-	for <lists+linux-omap@lfdr.de>; Sun, 22 Dec 2019 19:51:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F0E129238
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Dec 2019 08:26:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727007AbfLVSu5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 22 Dec 2019 13:50:57 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:44635 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726943AbfLVSuv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 22 Dec 2019 13:50:51 -0500
-Received: by mail-pl1-f193.google.com with SMTP id az3so6311496plb.11;
-        Sun, 22 Dec 2019 10:50:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=obMvYqnbW6FnclvcaTw1U7yQPLStwyHiLSMoMgJ8DMo=;
-        b=RdmiiwF6babAQFWUpUGLy2DZqAwZAi8V33zgiNx7dj87h8phOlTYHtZOMDCQtXFOit
-         coQqalsXFCLZlPp6YJ4THC2t7m8EEi9PnxcIXgnqBv8YojpdwQ8b1z12w3XbHM6gRe2N
-         9cXHFVzTg5EsYmr3AiWsmm30sn/yrNbhfuYIlptfe1Mjzl/GJ0cPIIf7zQeTlWRApwyt
-         ceX5KsTvJkHVzT/jsg270BpkQa+0B9D2w9kYdnxox243iMIwwKPCl092zGtmcZOreNl2
-         ops0dZYFpd4iyt33sNOKbW/8D9fDi76pS+zAn59mN4DcCTF39VQKSGfc5uBhAnozFnSr
-         F3RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=obMvYqnbW6FnclvcaTw1U7yQPLStwyHiLSMoMgJ8DMo=;
-        b=G8PYNmtuMvR6IFaeFdzhSdc8bErBVwYddSXJNs9sGiXm8DFWCkIpqr3X5pU4S8agP1
-         jBky9OWRuIYr9C+ddhq5IYKTAlM4nARrJaddy1S6Fd0BCha08t92Mg0izesKZrv6KG6h
-         7CQN5HMFQokdrlJBU3DedCDc5XyTGCWmbPGrlhrF9ZfmKQk4xxKqSNWsAxIWcYRt4OYq
-         FlCOiNR7F+0krsWl8PxUujbHcSkHaOcxb9/Cty7IYngZIZWjZgOERoASiNLRa5FNmBgK
-         5kN/7M7EQL2dbN0mPCgWyuAV9q1srnNCOa4jE5/D8e6uVcDHFgggo/NoRG3uRHSwgCR+
-         6TxA==
-X-Gm-Message-State: APjAAAUOrQ+8mwvA+9oANuSbpUlFpmm342QAwKLAVR9gEee0kd3YcPYE
-        EpreUJaFfcvXs59AGN0FyS+dXIeY/no=
-X-Google-Smtp-Source: APXvYqynfZtZtMfgSs1bDem4Zo+v6lSrgRDKxVTy4vingOzHr5+fBrYwncpXVgh6n1vtEUTebtVYcQ==
-X-Received: by 2002:a17:902:6bc9:: with SMTP id m9mr26918356plt.260.1577040650351;
-        Sun, 22 Dec 2019 10:50:50 -0800 (PST)
-Received: from localhost ([2001:19f0:6001:12c8:5400:2ff:fe72:6403])
-        by smtp.gmail.com with ESMTPSA id x8sm21284906pfd.76.2019.12.22.10.50.49
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 22 Dec 2019 10:50:49 -0800 (PST)
-From:   Yangtao Li <tiny.windzz@gmail.com>
-To:     ssantosh@kernel.org, paul@crapouillou.net, matthias.bgg@gmail.com,
-        rogerq@ti.com, tony@atomide.com, lukasz.luba@arm.com,
-        kgene@kernel.org, krzk@kernel.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, allison@lohutok.net, tglx@linutronix.de,
-        yong.wu@mediatek.com, jroedel@suse.de, evgreen@chromium.org,
-        rfontana@redhat.com, digetx@gmail.com, pdeschrijver@nvidia.com,
-        john@phrozen.org, alexios.zavras@intel.com, sboyd@kernel.org,
-        kstewart@linuxfoundation.org, info@metux.net,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Cc:     Yangtao Li <tiny.windzz@gmail.com>
-Subject: [PATCH 9/9] memory: omap-gpmc: switch to platform_get_irq
-Date:   Sun, 22 Dec 2019 18:50:34 +0000
-Message-Id: <20191222185034.4665-9-tiny.windzz@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191222185034.4665-1-tiny.windzz@gmail.com>
+        id S1725953AbfLWH0W (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 23 Dec 2019 02:26:22 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:42226 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725811AbfLWH0W (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Dec 2019 02:26:22 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBN7PSNE092418;
+        Mon, 23 Dec 2019 01:25:28 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1577085928;
+        bh=TZCdQwanBajUmjnrjOmrqqKE92Iuel2n9DhlReItHps=;
+        h=Subject:To:References:From:Date:In-Reply-To;
+        b=hPz3RnaVl31ARYBIL0RBmD5SzKuqviJ1KkCDboXFBZxeOJ9IcZzvmsXZHdkQFxI6B
+         Oz2OLdqF2IrpsXzqxe/wyQ6tZKGMEnhZuTUXG072+jQU9lzBfvdxi3+C27Z7O3J3z1
+         A7WMeFB+ewaknC0/CBCcFJqM/AZiK2GJJxucI/+g=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBN7PSuh040126
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 23 Dec 2019 01:25:28 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 23
+ Dec 2019 01:25:27 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 23 Dec 2019 01:25:27 -0600
+Received: from [192.168.2.14] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBN7PL0n037979;
+        Mon, 23 Dec 2019 01:25:21 -0600
+Subject: Re: [PATCH 9/9] memory: omap-gpmc: switch to platform_get_irq
+To:     Yangtao Li <tiny.windzz@gmail.com>, <ssantosh@kernel.org>,
+        <paul@crapouillou.net>, <matthias.bgg@gmail.com>,
+        <tony@atomide.com>, <lukasz.luba@arm.com>, <kgene@kernel.org>,
+        <krzk@kernel.org>, <thierry.reding@gmail.com>,
+        <jonathanh@nvidia.com>, <allison@lohutok.net>,
+        <tglx@linutronix.de>, <yong.wu@mediatek.com>, <jroedel@suse.de>,
+        <evgreen@chromium.org>, <rfontana@redhat.com>, <digetx@gmail.com>,
+        <pdeschrijver@nvidia.com>, <john@phrozen.org>,
+        <alexios.zavras@intel.com>, <sboyd@kernel.org>,
+        <kstewart@linuxfoundation.org>, <info@metux.net>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>, <linux-omap@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>
 References: <20191222185034.4665-1-tiny.windzz@gmail.com>
+ <20191222185034.4665-9-tiny.windzz@gmail.com>
+From:   Roger Quadros <rogerq@ti.com>
+Message-ID: <7dc78b4c-d1a7-a990-669c-8d3ddbacee0d@ti.com>
+Date:   Mon, 23 Dec 2019 09:25:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
+MIME-Version: 1.0
+In-Reply-To: <20191222185034.4665-9-tiny.windzz@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-platform_get_resource(pdev, IORESOURCE_IRQ) is not recommended for
-requesting IRQ's resources, as they can be not ready yet. Using
-platform_get_irq() instead is preferred for getting IRQ even if it
-was not retrieved earlier.
 
-Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
----
- drivers/memory/omap-gpmc.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+On 22/12/2019 20:50, Yangtao Li wrote:
+> platform_get_resource(pdev, IORESOURCE_IRQ) is not recommended for
+> requesting IRQ's resources, as they can be not ready yet. Using
+> platform_get_irq() instead is preferred for getting IRQ even if it
+> was not retrieved earlier.
+> 
+> Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index eff26c1b1394..6dd19d168f75 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2366,13 +2366,9 @@ static int gpmc_probe(struct platform_device *pdev)
- 	if (IS_ERR(gpmc_base))
- 		return PTR_ERR(gpmc_base);
- 
--	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (!res) {
--		dev_err(&pdev->dev, "Failed to get resource: irq\n");
--		return -ENOENT;
--	}
--
--	gpmc->irq = res->start;
-+	gpmc->irq = platform_get_irq(pdev, 0);
-+	if (gpmc->irq < 0)
-+		return gpmc->irq;
- 
- 	gpmc_l3_clk = devm_clk_get(&pdev->dev, "fck");
- 	if (IS_ERR(gpmc_l3_clk)) {
+Acked-by: Roger Quadros <rogerq@ti.com>
+
+> ---
+>   drivers/memory/omap-gpmc.c | 10 +++-------
+>   1 file changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+> index eff26c1b1394..6dd19d168f75 100644
+> --- a/drivers/memory/omap-gpmc.c
+> +++ b/drivers/memory/omap-gpmc.c
+> @@ -2366,13 +2366,9 @@ static int gpmc_probe(struct platform_device *pdev)
+>   	if (IS_ERR(gpmc_base))
+>   		return PTR_ERR(gpmc_base);
+>   
+> -	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+> -	if (!res) {
+> -		dev_err(&pdev->dev, "Failed to get resource: irq\n");
+> -		return -ENOENT;
+> -	}
+> -
+> -	gpmc->irq = res->start;
+> +	gpmc->irq = platform_get_irq(pdev, 0);
+> +	if (gpmc->irq < 0)
+> +		return gpmc->irq;
+>   
+>   	gpmc_l3_clk = devm_clk_get(&pdev->dev, "fck");
+>   	if (IS_ERR(gpmc_l3_clk)) {
+> 
+
 -- 
-2.17.1
+cheers,
+-roger
 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
