@@ -2,75 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96212129278
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Dec 2019 08:47:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F01A1295A3
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Dec 2019 12:44:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726729AbfLWHrl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 23 Dec 2019 02:47:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55442 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725810AbfLWHrl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 23 Dec 2019 02:47:41 -0500
-Received: from localhost (unknown [223.226.34.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D7FD920709;
-        Mon, 23 Dec 2019 07:47:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577087260;
-        bh=4xIpyul81ZB6jziSHYOg8wZLR7P2OO3hPO/6T4WzP9I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=sj264GW4NWW558WLPO7JhumGISP1AW3mT83azNaMc30GCm41ZkGCwn45FLST/eDPC
-         qNag4qDsVEKOArRkvFq+0kXd2rzcZk2F7XDS6PkGixRFhdcuexZ0vPylIC/DYLaxHS
-         6IXXYXTNrWOAsQSIEGGu23cAyHBKsBi1glCbuHvs=
-Date:   Mon, 23 Dec 2019 13:17:36 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, Vinod Koul <vinod.koul@intel.com>,
-        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 12/14] dmaengine: ti: omap-dma: Use cpu notifier to block
- idle for omap2
-Message-ID: <20191223074736.GB2536@vkoul-mobl>
-References: <20191217001925.44558-1-tony@atomide.com>
- <20191217001925.44558-13-tony@atomide.com>
- <20191217002716.GT35479@atomide.com>
+        id S1726663AbfLWLoj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 23 Dec 2019 06:44:39 -0500
+Received: from outils.crapouillou.net ([89.234.176.41]:47076 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726257AbfLWLoj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Dec 2019 06:44:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1577101475; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uVdlO9cJhU3uZR9PsalU+9sk35dl6Zqn8751jyDz6hE=;
+        b=jX9LJcjWIqPnnuyZly5BdZOoj2/inQqbVjiES4HFwhniV6JNaGO+ALAE433xhQmOf7hoHr
+        74R9G8HAr3LeKzr0sbxjFJVOggyg28MPxpD0DHH9YfttM3lvpC+gmVq6n3+Ac/2Iy0eHBk
+        VXMTWUiAs8EHGfFQgFmRp6lvylZSZUE=
+Date:   Mon, 23 Dec 2019 12:44:26 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 2/9] memory: jz4780_nemc: convert to
+ devm_platform_ioremap_resource
+To:     Yangtao Li <tiny.windzz@gmail.com>
+Cc:     ssantosh@kernel.org, matthias.bgg@gmail.com, rogerq@ti.com,
+        tony@atomide.com, lukasz.luba@arm.com, kgene@kernel.org,
+        krzk@kernel.org, thierry.reding@gmail.com, jonathanh@nvidia.com,
+        allison@lohutok.net, tglx@linutronix.de, yong.wu@mediatek.com,
+        jroedel@suse.de, evgreen@chromium.org, rfontana@redhat.com,
+        digetx@gmail.com, pdeschrijver@nvidia.com, john@phrozen.org,
+        alexios.zavras@intel.com, sboyd@kernel.org,
+        kstewart@linuxfoundation.org, info@metux.net,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Message-Id: <1577101466.3.0@crapouillou.net>
+In-Reply-To: <20191222185034.4665-2-tiny.windzz@gmail.com>
+References: <20191222185034.4665-1-tiny.windzz@gmail.com>
+        <20191222185034.4665-2-tiny.windzz@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191217002716.GT35479@atomide.com>
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 16-12-19, 16:27, Tony Lindgren wrote:
-> * Tony Lindgren <tony@atomide.com> [191217 00:20]:
-> > diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
-> > --- a/drivers/dma/ti/omap-dma.c
-> > +++ b/drivers/dma/ti/omap-dma.c
-> > +	case CPU_CLUSTER_PM_ENTER:
-> > +		while (1) {
-> > +			lch = find_next_bit(od->lch_bitmap, od->lch_count,
-> > +					    lch + 1);
-> > +			if (lch >= od->lch_count)
-> > +				break;
-> > +			c = od->lch_map[lch];
-> > +			if (!c)
-> > +				continue;
-> > +			if (omap_dma_chan_read(c, CCR) & CCR_ENABLE) {
-> > +				pr_info("XXX %s: lch%i busy\n", __func__, lch);
-> > +				return NOTIFY_BAD;
-> 
-> Oops the pr_info line here can be dropped :)
+Hi,
 
-feel free to add my after after fixing :)
 
-Acked-by: Vinod Koul <vkoul@kernel.org>
+Le dim., d=E9c. 22, 2019 at 18:50, Yangtao Li <tiny.windzz@gmail.com> a=20
+=E9crit :
+> Use devm_platform_ioremap_resource() to simplify code.
+>=20
+> Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
 
--- 
-~Vinod
+Acked-by: Paul Cercueil <paul@crapouillou.net>
+
+Cheers,
+-Paul
+
+
+> ---
+>  drivers/memory/jz4780-nemc.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/memory/jz4780-nemc.c=20
+> b/drivers/memory/jz4780-nemc.c
+> index b232ed279fc3..857a9fa5cba5 100644
+> --- a/drivers/memory/jz4780-nemc.c
+> +++ b/drivers/memory/jz4780-nemc.c
+> @@ -269,7 +269,6 @@ static int jz4780_nemc_probe(struct=20
+> platform_device *pdev)
+>  {
+>  	struct device *dev =3D &pdev->dev;
+>  	struct jz4780_nemc *nemc;
+> -	struct resource *res;
+>  	struct device_node *child;
+>  	const __be32 *prop;
+>  	unsigned int bank;
+> @@ -287,8 +286,7 @@ static int jz4780_nemc_probe(struct=20
+> platform_device *pdev)
+>  	spin_lock_init(&nemc->lock);
+>  	nemc->dev =3D dev;
+>=20
+> -	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	nemc->base =3D devm_ioremap_resource(dev, res);
+> +	nemc->base =3D devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(nemc->base)) {
+>  		dev_err(dev, "failed to get I/O memory\n");
+>  		return PTR_ERR(nemc->base);
+> --
+> 2.17.1
+>=20
+
+=
+
