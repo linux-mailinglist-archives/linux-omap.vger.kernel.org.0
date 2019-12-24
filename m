@@ -2,58 +2,553 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74339129F4C
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Dec 2019 09:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F77712A324
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Dec 2019 17:22:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726184AbfLXIqA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 24 Dec 2019 03:46:00 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:34602 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726216AbfLXIp7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 24 Dec 2019 03:45:59 -0500
-Received: by mail-io1-f66.google.com with SMTP id z193so18559208iof.1
-        for <linux-omap@vger.kernel.org>; Tue, 24 Dec 2019 00:45:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=LcGU1mt+nAQIi3eKcWZpiy7DqrkNG23tK1MNYV9CB+M=;
-        b=oSNTlT55S3VMpFl+4fySqC3u4YoAoztGfoVSP3wFAPYFWsXQI1giXiHsJxeVgA8wKV
-         hwULOTryEx3lBfxk63gUH81C2gQlAZlpm+aJQe+/8QTFExYby4VXgAHOExxmkLh2JtdG
-         TiTDoeJwiEsRsob2+npOsu1HTE5l3KD8qzz/VgAKRx1Duv9MQ59SrgwEmUHNA+ZhhElO
-         FLyTrc29L41ygHkbyLYW+d4tggvOE/k3tBa1QgwGaKmT05FNAOOQsBLQoIO1VpMQ67Vd
-         aruBW7fco12liiTMGrdJ76u//KWiZN1ELjv5lB+Lg5aB3LosSk3HmcjI9v9Dl0cnEnaF
-         MVfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=LcGU1mt+nAQIi3eKcWZpiy7DqrkNG23tK1MNYV9CB+M=;
-        b=We2OJLid/md0JGIGLa8SZqkHfTZjoaZAMo7Zl+UM4RXS/ivRe6J0d+D1U4+S2tuDAy
-         UbIUc9sPaOPtz9iSe9qB++QpFiuCPu1y2DPKYWf+qKasgEd8zxgBap37Shz1qoq/H5Qp
-         mlBuSv7umtVdwY0haqxpJ4girK/lewS64X8i9bertgjMcomt03w+4qnS8MNsvEdhc12C
-         dBtwP/u6UDG14v2Cgtl71HTLq7hyYm28t/g4/hoHrW+0dcYF0XPAI/amWTArrN1HLnOS
-         RdazXD0JIhGwZoyeySOw4sl6dGd14VYCnQxlDkPl0MASW0xR+dLkAnUbZbp32KSeiOiq
-         ND6Q==
-X-Gm-Message-State: APjAAAXdzT3uSw8pdA5QLHnly+CQ3hlfXefxDcFFGyCFgFzY1hQP7nyc
-        dGM2I47cXQS0HGMIuH9ekrkDBp6E0H4AthICzic=
-X-Google-Smtp-Source: APXvYqzDXPiusXd90IvAVlyEbeO6jCMdOyb5CPbz+Z0EDnXal3aG8RcvJ2u/hlIr8XoTCaRoauJNJKQwlLXTh0fOni4=
-X-Received: by 2002:a5d:9158:: with SMTP id y24mr4336955ioq.298.1577177159339;
- Tue, 24 Dec 2019 00:45:59 -0800 (PST)
+        id S1726178AbfLXQWg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 24 Dec 2019 11:22:36 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:20121 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726171AbfLXQWg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 24 Dec 2019 11:22:36 -0500
+X-Greylist: delayed 710 seconds by postgrey-1.27 at vger.kernel.org; Tue, 24 Dec 2019 11:22:33 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1577204552;
+        s=strato-dkim-0002; d=dawncrow.de;
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=jd8HIQj/ubKtUx8YHbbLAuh5R4GnjEShJcHWuqyq1x0=;
+        b=B3nFyoMsxOOtYautXf/bK2TnowsynLWvAAFbL/IuiQIsawJ7xmRm4MGnQ59aH9NGSm
+        JimoBhK3V0K4EVwU1my/nG6lT0qdHcOu1cmTqxITgcgIKcZoRgnXTIa6M3qNRboEu5Tf
+        QzKMLr8ajPdPeEFClFv/fVY5X9zFNWkCzolGi7csMfd4HWPct266kiUebSYJcVAa0/Qd
+        VU0CjKdd3UTgQkbKQwZVnASRtnh5dlJCtvy7PlMnXtPrAiSggTV/Qar7ZcP6f/ychzqt
+        lKGpH+c9AquLp+29XvbOBRcFN7lu5ROvQ4qxwnkoWU3xbsW//Bw0QxnMu5QklClkOENy
+        36iQ==
+X-RZG-AUTH: ":ImkWY2CseuihIZy6ZWWciR6unPhpN+aXzZGGjY6ptdusOaLnXzn3ovD+FrFdXyk="
+X-RZG-CLASS-ID: mo00
+Received: from tesla.fritz.box
+        by smtp.strato.de (RZmta 46.1.3 DYNA|AUTH)
+        with ESMTPSA id I099d1vBOGAT3jc
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Tue, 24 Dec 2019 17:10:29 +0100 (CET)
+From:   =?UTF-8?q?Andr=C3=A9=20Hentschel?= <nerv@dawncrow.de>
+To:     webmaster@dawncrow.de, linux@arm.linux.org.uk, robh+dt@kernel.org,
+        mark.rutland@arm.com, bcousson@baylibre.com, tony@atomide.com,
+        linux-omap@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: dts: Add omap3-echo
+Date:   Tue, 24 Dec 2019 17:10:05 +0100
+Message-Id: <20191224161005.28083-1-nerv@dawncrow.de>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: by 2002:ac0:f302:0:0:0:0:0 with HTTP; Tue, 24 Dec 2019 00:45:58
- -0800 (PST)
-Reply-To: bethnatividad9@gmail.com
-From:   Beth Nat <clementidibia1960@gmail.com>
-Date:   Tue, 24 Dec 2019 08:45:58 +0000
-Message-ID: <CAEG=icH-SN5dpsQRSZpGxr6Zs1qfbZ=LtCEFq=gRxqcGeKyiKw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-How are you today my dear? i saw your profile and it interests me, i
-am a Military nurse from USA. Can we be friend? I want to know more
-about you.
+This is the first generation Amazon Echo from 2016.
+Audio support is not yet implemented.
+
+Signed-off-by: André Hentschel <nerv@dawncrow.de>
+---
+
+I have local patches for the microphone array, but cleaning that up will take some time.
+Audio output seems to be even harder work...
+You can find a tutorial on how to boot the Echo here:
+https://labs.f-secure.com/archive/alexa-are-you-listening/
+
+ arch/arm/boot/dts/Makefile       |   1 +
+ arch/arm/boot/dts/omap3-echo.dts | 466 +++++++++++++++++++++++++++++++
+ 2 files changed, 467 insertions(+)
+ create mode 100644 arch/arm/boot/dts/omap3-echo.dts
+
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index b21b3a64641a..923dabc09203 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -685,6 +685,7 @@ dtb-$(CONFIG_ARCH_OMAP3) += \
+ 	omap3-devkit8000.dtb \
+ 	omap3-devkit8000-lcd43.dtb \
+ 	omap3-devkit8000-lcd70.dtb \
++	omap3-echo.dtb \
+ 	omap3-evm.dtb \
+ 	omap3-evm-37xx.dtb \
+ 	omap3-gta04a3.dtb \
+diff --git a/arch/arm/boot/dts/omap3-echo.dts b/arch/arm/boot/dts/omap3-echo.dts
+new file mode 100644
+index 000000000000..751560b18f79
+--- /dev/null
++++ b/arch/arm/boot/dts/omap3-echo.dts
+@@ -0,0 +1,466 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2019 André Hentschel <nerv@dawncrow.de>
++ */
++/dts-v1/;
++
++#include "omap36xx.dtsi"
++
++#include <dt-bindings/input/input.h>
++
++/ {
++	model = "Amazon Echo (first generation)";
++	compatible = "amazon,omap3-echo", "ti,omap3630", "ti,omap3";
++
++	cpus {
++		cpu@0 {
++			cpu0-supply = <&vdd1_reg>;
++		};
++	};
++
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0x80000000 0xc600000>; /* 198 MB */
++	};
++
++	vcc5v: fixedregulator0 {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc5v";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-boot-on;
++		regulator-always-on;
++	};
++
++	vcc3v3: fixedregulator1 {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc3v3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-boot-on;
++		regulator-always-on;
++	};
++
++	vcc1v8: fixedregulator2 {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc1v8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-boot-on;
++		regulator-always-on;
++	};
++
++	sdio_pwrseq: sdio-pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		reset-gpios = <&gpio1 21 GPIO_ACTIVE_LOW>;
++		post-power-on-delay-ms = <40>;
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&button_pins>;
++
++		mute-button {
++			label = "mute";
++			linux,code = <KEY_MUTE>;
++			gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;	/* GPIO_70 */
++			wakeup-source;
++		};
++
++		help-button {
++			label = "help";
++			linux,code = <KEY_HELP>;
++			gpios = <&gpio3 8 GPIO_ACTIVE_LOW>;	/* GPIO_72 */
++			wakeup-source;
++		};
++	};
++
++	rotary: rotary-encoder {
++		compatible = "rotary-encoder";
++		gpios = <
++			&gpio3  5 GPIO_ACTIVE_HIGH /* GPIO_69 */
++			&gpio3 12 GPIO_ACTIVE_HIGH /* GPIO_76 */
++		>;
++		linux,axis = <REL_X>;
++		rotary-encoder,relative-axis;
++	};
++};
++
++&i2c1 {
++	clock-frequency = <400000>;
++
++	tps: tps@2d {
++		reg = <0x2d>;
++	};
++};
++
++&i2c2 {
++	clock-frequency = <400000>;
++
++	lp5523A: lp5523A@32 {
++		compatible = "national,lp5523";
++		label = "q1";
++		reg = <0x32>;
++		clock-mode = /bits/ 8 <0>; /* LP55XX_CLOCK_AUTO */
++		enable-gpio = <&gpio4 13 GPIO_ACTIVE_HIGH>; /* GPIO_109 */
++
++		chan0 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan1 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan2 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan3 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan4 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan5 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan6 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan7 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan8 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++	};
++
++	lp5523B: lp5523B@33 {
++		compatible = "national,lp5523";
++		label = "q3";
++		reg = <0x33>;
++		clock-mode = /bits/ 8 <0>; /* LP55XX_CLOCK_AUTO */
++
++		chan0 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan1 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan2 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan3 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan4 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan5 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan6 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan7 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan8 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++	};
++
++	lp5523C: lp5523C@34 {
++		compatible = "national,lp5523";
++		label = "q4";
++		reg = <0x34>;
++		clock-mode = /bits/ 8 <0>; /* LP55XX_CLOCK_AUTO */
++
++		chan0 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan1 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan2 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan3 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan4 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan5 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan6 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan7 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan8 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++	};
++
++	lp5523D: lp552D@35 {
++		compatible = "national,lp5523";
++		label = "q2";
++		reg = <0x35>;
++		clock-mode = /bits/ 8 <0>; /* LP55XX_CLOCK_AUTO */
++
++		chan0 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan1 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan2 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan3 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan4 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan5 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan6 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan7 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++		chan8 {
++			led-cur = /bits/ 8 <12>;
++			max-cur = /bits/ 8 <15>;
++		};
++	};
++};
++
++#include "tps65910.dtsi"
++
++&omap3_pmx_core {
++	tps_pins: pinmux_tps_pins {
++		pinctrl-single,pins = <
++			OMAP3_CORE1_IOPAD(0x21e0, PIN_INPUT_PULLUP | PIN_OFF_INPUT_PULLUP | PIN_OFF_OUTPUT_LOW | PIN_OFF_WAKEUPENABLE | MUX_MODE0) /* sys_nirq.sys_nirq */ 
++		>;
++	};
++
++	button_pins: pinmux_button_pins {
++		pinctrl-single,pins = <
++			OMAP3_CORE1_IOPAD(0x20dc, PIN_INPUT | MUX_MODE4)	/* dss_data0.gpio_70 */
++			OMAP3_CORE1_IOPAD(0x20e0, PIN_INPUT | MUX_MODE4)	/* dss_data2.gpio_72 */
++		>;
++	};
++
++	mmc1_pins: pinmux_mmc1_pins {
++		pinctrl-single,pins = <
++			OMAP3_CORE1_IOPAD(0x2144, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc1_clk.sdmmc1_clk */
++			OMAP3_CORE1_IOPAD(0x2146, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc1_cmd.sdmmc1_cmd */
++			OMAP3_CORE1_IOPAD(0x2148, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc1_dat0.sdmmc1_dat0 */
++			OMAP3_CORE1_IOPAD(0x214a, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc1_dat1.sdmmc1_dat1 */
++			OMAP3_CORE1_IOPAD(0x214c, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc1_dat2.sdmmc1_dat2 */
++			OMAP3_CORE1_IOPAD(0x214e, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc1_dat3.sdmmc1_dat3 */
++		>;
++	};
++
++	mmc2_pins: pinmux_mmc2_pins {
++		pinctrl-single,pins = <
++			OMAP3_CORE1_IOPAD(0x2158, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_clk.sdmmc2_clk */
++			OMAP3_CORE1_IOPAD(0x215a, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_cmd.sdmmc2_cmd */
++			OMAP3_CORE1_IOPAD(0x215c, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat0.sdmmc2_dat0 */
++			OMAP3_CORE1_IOPAD(0x215e, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat1.sdmmc2_dat1 */
++			OMAP3_CORE1_IOPAD(0x2160, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat2.sdmmc2_dat2 */
++			OMAP3_CORE1_IOPAD(0x2162, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat3.sdmmc2_dat3 */
++			OMAP3_CORE1_IOPAD(0x2164, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat4.sdmmc2_dat4 */
++			OMAP3_CORE1_IOPAD(0x2166, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat5.sdmmc2_dat5 */
++			OMAP3_CORE1_IOPAD(0x2168, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat6.sdmmc2_dat6 */
++			OMAP3_CORE1_IOPAD(0x216a, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat7.sdmmc2_dat7 */
++		>;
++	};
++};
++
++&omap3_pmx_core2 {
++	mmc3_pins: pinmux_mmc3_pins {
++		pinctrl-single,pins = <
++			OMAP3630_CORE2_IOPAD(0x25d8, PIN_INPUT_PULLUP | MUX_MODE2)	/* etk_clk.sdmmc3_clk */
++			OMAP3630_CORE2_IOPAD(0x25da, PIN_INPUT_PULLUP | MUX_MODE2)	/* etk_ctl.sdmmc3_cmd */
++			OMAP3630_CORE2_IOPAD(0x25e2, PIN_INPUT_PULLUP | MUX_MODE2)	/* etk_d3.sdmmc3_dat3 */
++			OMAP3630_CORE2_IOPAD(0x25e4, PIN_INPUT_PULLUP | MUX_MODE2)	/* etk_d4.sdmmc3_dat0 */
++			OMAP3630_CORE2_IOPAD(0x25e6, PIN_INPUT_PULLUP | MUX_MODE2)	/* etk_d5.sdmmc3_dat1 */
++			OMAP3630_CORE2_IOPAD(0x25e8, PIN_INPUT_PULLUP | MUX_MODE2)	/* etk_d6.sdmmc3_dat2 */
++		>;
++	};
++};
++
++&mmc1 {
++	status = "okay";
++	bus-width = <4>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&mmc1_pins>;
++	vmmc-supply = <&vmmc_reg>;
++};
++
++&mmc2 {
++	status = "okay";
++	bus-width = <8>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&mmc2_pins>;
++	vmmc-supply = <&vmmc_reg>;
++};
++
++&mmc3 {
++	status = "okay";
++	bus-width = <4>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&mmc3_pins>;
++	non-removable;
++	disable-wp;
++	mmc-pwrseq = <&sdio_pwrseq>;
++	vmmc-supply = <&vcc3v3>;
++	vqmmc-supply = <&vcc1v8>;
++};
++
++
++&tps {
++	pinctrl-names = "default";
++	pinctrl-0 = <&tps_pins>;
++
++	interrupts = <7>; /* SYS_NIRQ cascaded to intc */
++	interrupt-parent = <&intc>;
++
++	ti,en-ck32k-xtal;
++	ti,system-power-controller;
++
++	vcc1-supply = <&vcc5v>;
++	vcc2-supply = <&vcc5v>;
++	vcc3-supply = <&vcc5v>;
++	vcc4-supply = <&vcc5v>;
++	vcc5-supply = <&vcc5v>;
++	vcc6-supply = <&vcc5v>;
++	vcc7-supply = <&vcc5v>;
++	vccio-supply = <&vcc5v>;
++
++	regulators {
++
++		vio_reg: regulator@1 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-always-on;
++		};
++
++		vdd1_reg: regulator@2 {
++			regulator-name = "vdd_mpu";
++			regulator-min-microvolt = <600000>;
++			regulator-max-microvolt = <1500000>;
++			regulator-boot-on;
++			regulator-always-on;
++		};
++
++		vdd2_reg: regulator@3 {
++			regulator-name = "vdd_dsp";
++			regulator-min-microvolt = <600000>;
++			regulator-max-microvolt = <1500000>;
++			regulator-always-on;
++		};
++
++		vdd3_reg: regulator@4 {
++			regulator-name = "vdd_core";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			regulator-always-on;
++		};
++
++		vdig1_reg: regulator@5 {
++			regulator-min-microvolt = <1200000>;
++			regulator-max-microvolt = <2700000>;
++			regulator-always-on;
++		};
++
++		vdig2_reg: regulator@6 {
++			regulator-min-microvolt = <1000000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-always-on;
++		};
++
++		vpll_reg: regulator@7 {
++			regulator-min-microvolt = <1000000>;
++			regulator-max-microvolt = <2500000>;
++			regulator-always-on;
++		};
++
++		vdac_reg: regulator@8 {
++			regulator-min-microvolt = <1100000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-always-on;
++		};
++
++		vaux1_reg: regulator@9 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <2850000>;
++			regulator-always-on;
++		};
++
++		vaux2_reg: regulator@10 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-always-on;
++		};
++
++		vaux33_reg: regulator@11 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-always-on;
++		};
++
++		vmmc_reg: regulator@12 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <3000000>;
++			regulator-always-on;
++		};
++	};
++};
++
++&sgx_module {
++	status = "disabled";
++};
+-- 
+2.17.1
+
