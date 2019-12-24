@@ -2,182 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E1CA129860
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Dec 2019 16:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 727AC129EA9
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Dec 2019 08:53:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726881AbfLWPmn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 23 Dec 2019 10:42:43 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:40955 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726795AbfLWPmm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Dec 2019 10:42:42 -0500
-Received: by mail-lj1-f194.google.com with SMTP id u1so18130243ljk.7;
-        Mon, 23 Dec 2019 07:42:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=UfH6R7URisIBJYt/MBDGH5nz2k2vfj6ZWJ4j+/k+CPY=;
-        b=JcX2oVN3ptxY2GpvfCvva21mMZF0U/9nHZiLNdZES054N4kY1FycncMmQ/rwOj/BkL
-         1nIsIm4YqetOO5Lwr+SmkxRUlFh4evXomIl404VOhD/aG3IjcR3LdiS2ZzLgaDcaphJW
-         7Gr0EtkE+aGI7XhN7mYycGl+HUSFvNYWTucr+Vx7bQ/v0Jpbeg+BUT7BvFd104gzVdCt
-         T7fX0U9LACPJVbsdN4XKGh178cNa2spcOyu8cN9bGdJ84vYjTZr56AVRQlnoTSV96LB7
-         LjkolJ7dzOnp1NcKwdpm3w1o/wsuxNUroOQUGnQQvLgTyA4fH39pCbFC+wrnaH8IMLEE
-         s4GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=UfH6R7URisIBJYt/MBDGH5nz2k2vfj6ZWJ4j+/k+CPY=;
-        b=Adf+c3MDYzApuTL6L+Y/xYBz+vKyDNG44MJV36rN5eZLkMEAKfxwW7Xyr8FZnjqwZ4
-         YUAPHanpeJyzH4WNPeCHgwRc/OxSanHWKZwsHcALV1MnGxHC6ZiHCjaQD8jR04UHOsH5
-         NrO/y4UWqZGRlqcsXwfn6kkzE+T1myIAEk1QyMKxYG+4IHdSjYiwWt4gMTp38ricxwvf
-         JXf5UYxldC/0pqa/EFO8PolSPQxXkl0abucRg1OeXm2SqgctQZQ6LbXk9u+233FF544A
-         Qj58WgxrAJUJ88oWKdOkmwMm8vERa1fAJP6fbykLn2/wAd1zKaKSMjuxJoD0cgMtqrdx
-         uy4Q==
-X-Gm-Message-State: APjAAAXWqbeoSuuG+wMdlbWISZOraHezQLmIdEyOz5tnt3zDykRH4aja
-        QN22lkLNyzbsdiKRqszlDsLRVdnz
-X-Google-Smtp-Source: APXvYqxPpddbnO1oaHYjYKe79636XT0Af+JvtDZqrCXBmTftfr8pcshxfnvAxMJy3qrn5gr9oinTbQ==
-X-Received: by 2002:a2e:974b:: with SMTP id f11mr18478200ljj.173.1577115759073;
-        Mon, 23 Dec 2019 07:42:39 -0800 (PST)
-Received: from [192.168.2.145] (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
-        by smtp.googlemail.com with ESMTPSA id 21sm6953071ljv.19.2019.12.23.07.42.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Dec 2019 07:42:38 -0800 (PST)
-Subject: Re: [PATCH 4/9] memory: tegra: convert to
- devm_platform_ioremap_resource
-To:     Yangtao Li <tiny.windzz@gmail.com>, ssantosh@kernel.org,
-        paul@crapouillou.net, matthias.bgg@gmail.com, rogerq@ti.com,
-        tony@atomide.com, lukasz.luba@arm.com, kgene@kernel.org,
-        krzk@kernel.org, thierry.reding@gmail.com, jonathanh@nvidia.com,
-        allison@lohutok.net, tglx@linutronix.de, yong.wu@mediatek.com,
-        jroedel@suse.de, evgreen@chromium.org, rfontana@redhat.com,
-        pdeschrijver@nvidia.com, john@phrozen.org,
-        alexios.zavras@intel.com, sboyd@kernel.org,
-        kstewart@linuxfoundation.org, info@metux.net,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-References: <20191222185034.4665-1-tiny.windzz@gmail.com>
- <20191222185034.4665-4-tiny.windzz@gmail.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <04758814-8e22-79b9-8ed1-ac0c31762d21@gmail.com>
-Date:   Mon, 23 Dec 2019 18:42:36 +0300
+        id S1726068AbfLXHxD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 24 Dec 2019 02:53:03 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:40478 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725993AbfLXHxD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 24 Dec 2019 02:53:03 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBO7qtYc052132;
+        Tue, 24 Dec 2019 01:52:55 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1577173975;
+        bh=DSo8vFknEpkbqtsUZO2oI7O1ZVzRTdXlM9IFNn0XQ4M=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=zIOALSU7Glp1Up6yJ2SaEixzMaS7zjnhr62PGT75Ky1cqtwTp06cGoCL2wXiSkv3T
+         U5IFY0Ufhv+2NUWrLLJGDNsvb6uKb2yl+N9Pp8t+WebSVXLzt3kKYNjKBJYKkjnH3w
+         bslsluiA/F1zrs3lBdIgiN/0/QncbxJ5WeZkdcyk=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBO7qtRf051832;
+        Tue, 24 Dec 2019 01:52:55 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 24
+ Dec 2019 01:52:45 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 24 Dec 2019 01:52:45 -0600
+Received: from [192.168.2.14] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBO7qgPl037101;
+        Tue, 24 Dec 2019 01:52:43 -0600
+Subject: Re: [PATCH] bus: ti-sysc: Implement quirk handling for CLKDM_NOAUTO
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Suman Anna <s-anna@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20191210161342.15142-1-tony@atomide.com>
+From:   Roger Quadros <rogerq@ti.com>
+Message-ID: <e209a2ce-c26e-d689-48d1-7920a3052438@ti.com>
+Date:   Tue, 24 Dec 2019 09:52:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <20191222185034.4665-4-tiny.windzz@gmail.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20191210161342.15142-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-22.12.2019 21:50, Yangtao Li пишет:
-> Use devm_platform_ioremap_resource() to simplify code.
+
+
+On 10/12/2019 18:13, Tony Lindgren wrote:
+> For dra7 dcan and dwc3 instances we need to block clockdomain autoidle.
+> Let's do this with CLKDM_NOAUTO quirk flag and enable it for dcan and
+> dwc3.
 > 
-> Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
+> Cc: Keerthy <j-keerthy@ti.com>
+> Cc: Roger Quadros <rogerq@ti.com>
+> Cc: Tero Kristo <t-kristo@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+
+Acked-by: Roger Quadros <rogerq@ti.com>
+
 > ---
->  drivers/memory/tegra/mc.c           | 4 +---
->  drivers/memory/tegra/tegra124-emc.c | 4 +---
->  drivers/memory/tegra/tegra186.c     | 4 +---
->  drivers/memory/tegra/tegra20-emc.c  | 4 +---
->  4 files changed, 4 insertions(+), 12 deletions(-)
+>   drivers/bus/ti-sysc.c                 | 10 ++++++++--
+>   include/linux/platform_data/ti-sysc.h |  1 +
+>   2 files changed, 9 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/memory/tegra/mc.c b/drivers/memory/tegra/mc.c
-> index ec8403557ed4..71390d4ad809 100644
-> --- a/drivers/memory/tegra/mc.c
-> +++ b/drivers/memory/tegra/mc.c
-> @@ -593,7 +593,6 @@ static __maybe_unused irqreturn_t tegra20_mc_irq(int irq, void *data)
->  
->  static int tegra_mc_probe(struct platform_device *pdev)
->  {
-> -	struct resource *res;
->  	struct tegra_mc *mc;
->  	void *isr;
->  	u64 mask;
-> @@ -619,8 +618,7 @@ static int tegra_mc_probe(struct platform_device *pdev)
->  	/* length of MC tick in nanoseconds */
->  	mc->tick = 30;
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	mc->regs = devm_ioremap_resource(&pdev->dev, res);
-> +	mc->regs = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(mc->regs))
->  		return PTR_ERR(mc->regs);
->  
-> diff --git a/drivers/memory/tegra/tegra124-emc.c b/drivers/memory/tegra/tegra124-emc.c
-> index 464f0ceaee63..2c73260654ba 100644
-> --- a/drivers/memory/tegra/tegra124-emc.c
-> +++ b/drivers/memory/tegra/tegra124-emc.c
-> @@ -1085,7 +1085,6 @@ static int tegra_emc_probe(struct platform_device *pdev)
->  	struct platform_device *mc;
->  	struct device_node *np;
->  	struct tegra_emc *emc;
-> -	struct resource *res;
->  	u32 ram_code;
->  	int err;
->  
-> @@ -1095,8 +1094,7 @@ static int tegra_emc_probe(struct platform_device *pdev)
->  
->  	emc->dev = &pdev->dev;
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	emc->regs = devm_ioremap_resource(&pdev->dev, res);
-> +	emc->regs = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(emc->regs))
->  		return PTR_ERR(emc->regs);
->  
-> diff --git a/drivers/memory/tegra/tegra186.c b/drivers/memory/tegra/tegra186.c
-> index 441213a35930..226d2b16036d 100644
-> --- a/drivers/memory/tegra/tegra186.c
-> +++ b/drivers/memory/tegra/tegra186.c
-> @@ -534,7 +534,6 @@ static const struct tegra_mc_client tegra186_mc_clients[] = {
->  
->  static int tegra186_mc_probe(struct platform_device *pdev)
->  {
-> -	struct resource *res;
->  	struct tegra_mc *mc;
->  	unsigned int i;
->  	int err = 0;
-> @@ -543,8 +542,7 @@ static int tegra186_mc_probe(struct platform_device *pdev)
->  	if (!mc)
->  		return -ENOMEM;
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	mc->regs = devm_ioremap_resource(&pdev->dev, res);
-> +	mc->regs = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(mc->regs))
->  		return PTR_ERR(mc->regs);
->  
-> diff --git a/drivers/memory/tegra/tegra20-emc.c b/drivers/memory/tegra/tegra20-emc.c
-> index 1b23b1c34476..d2efd0c658c0 100644
-> --- a/drivers/memory/tegra/tegra20-emc.c
-> +++ b/drivers/memory/tegra/tegra20-emc.c
-> @@ -482,7 +482,6 @@ static int tegra_emc_probe(struct platform_device *pdev)
->  {
->  	struct device_node *np;
->  	struct tegra_emc *emc;
-> -	struct resource *res;
->  	int irq, err;
->  
->  	/* driver has nothing to do in a case of memory timing absence */
-> @@ -518,8 +517,7 @@ static int tegra_emc_probe(struct platform_device *pdev)
->  	if (err)
->  		return err;
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	emc->regs = devm_ioremap_resource(&pdev->dev, res);
-> +	emc->regs = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(emc->regs))
->  		return PTR_ERR(emc->regs);
->  
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
+> @@ -473,7 +473,7 @@ static void sysc_clkdm_deny_idle(struct sysc *ddata)
+>   {
+>   	struct ti_sysc_platform_data *pdata;
+>   
+> -	if (ddata->legacy_mode)
+> +	if (ddata->legacy_mode || (ddata->cfg.quirks & SYSC_QUIRK_CLKDM_NOAUTO))
+>   		return;
+>   
+>   	pdata = dev_get_platdata(ddata->dev);
+> @@ -485,7 +485,7 @@ static void sysc_clkdm_allow_idle(struct sysc *ddata)
+>   {
+>   	struct ti_sysc_platform_data *pdata;
+>   
+> -	if (ddata->legacy_mode)
+> +	if (ddata->legacy_mode || (ddata->cfg.quirks & SYSC_QUIRK_CLKDM_NOAUTO))
+>   		return;
+>   
+>   	pdata = dev_get_platdata(ddata->dev);
+> @@ -1245,6 +1245,12 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+>   	/* Quirks that need to be set based on detected module */
+>   	SYSC_QUIRK("aess", 0, 0, 0x10, -1, 0x40000000, 0xffffffff,
+>   		   SYSC_MODULE_QUIRK_AESS),
+> +	SYSC_QUIRK("dcan", 0x48480000, 0x20, -1, -1, 0xa3170504, 0xffffffff,
+> +		   SYSC_QUIRK_CLKDM_NOAUTO),
+> +	SYSC_QUIRK("dwc3", 0x48880000, 0, 0x10, -1, 0x500a0200, 0xffffffff,
+> +		   SYSC_QUIRK_CLKDM_NOAUTO),
+> +	SYSC_QUIRK("dwc3", 0x488c0000, 0, 0x10, -1, 0x500a0200, 0xffffffff,
+> +		   SYSC_QUIRK_CLKDM_NOAUTO),
+>   	SYSC_QUIRK("hdq1w", 0, 0, 0x14, 0x18, 0x00000006, 0xffffffff,
+>   		   SYSC_MODULE_QUIRK_HDQ1W),
+>   	SYSC_QUIRK("hdq1w", 0, 0, 0x14, 0x18, 0x0000000a, 0xffffffff,
+> diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
+> --- a/include/linux/platform_data/ti-sysc.h
+> +++ b/include/linux/platform_data/ti-sysc.h
+> @@ -49,6 +49,7 @@ struct sysc_regbits {
+>   	s8 emufree_shift;
+>   };
+>   
+> +#define SYSC_QUIRK_CLKDM_NOAUTO		BIT(21)
+>   #define SYSC_QUIRK_FORCE_MSTANDBY	BIT(20)
+>   #define SYSC_MODULE_QUIRK_AESS		BIT(19)
+>   #define SYSC_MODULE_QUIRK_SGX		BIT(18)
 > 
 
-Looks good, thanks!
-
-Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
