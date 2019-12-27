@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E272112B74F
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Dec 2019 18:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC56612B991
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Dec 2019 19:06:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728129AbfL0Rok (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Dec 2019 12:44:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42872 "EHLO mail.kernel.org"
+        id S1728284AbfL0SCx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Dec 2019 13:02:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59894 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728512AbfL0Roh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 27 Dec 2019 12:44:37 -0500
+        id S1728094AbfL0SCw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 27 Dec 2019 13:02:52 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 44111206CB;
-        Fri, 27 Dec 2019 17:44:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5DDE021927;
+        Fri, 27 Dec 2019 18:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577468677;
-        bh=2LVKP5wHC3Q3pLHcTk7kp0vNarcQe3gdDziwMZJxLoQ=;
+        s=default; t=1577469772;
+        bh=ZMe5PCi44onBsQSMmx6BzVqwcH/iyoiNk7gBWQzdsZE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L0TbfMoGVyEHSsqEKnis/AD/ETy01s4CBubu7ZcCHsgsbM8wZ5dn3t7mrByPqtU5m
-         C0cnZpZ6stPfqAVRdq/cJ5NbOip95S6blpXN1tNzlPvrU2uM/h0ssCmpM3Ncg65cQs
-         rtpbTiE9ADkKw2lbe2bHhu/2kuasgcwv27t6ojw4=
+        b=zPvrCdYqC5CRsXNeV1rSYi44n0lXpZsdDOsDJcCePn5+vVqOiDeDOQgMBnMYN16wO
+         eDWmCt5T7DFTXV3tQZ8GGsYoMGrp6wPS1puI3M2LGzy0TK/KcJt0oO8PkoZ9Tfx9vU
+         awx8zALydic10fwkmYqW+3gJ/VpqXvx/cL/FG/To=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
@@ -30,12 +30,12 @@ Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
         Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 36/84] ARM: dts: am437x-gp/epos-evm: fix panel compatible
-Date:   Fri, 27 Dec 2019 12:43:04 -0500
-Message-Id: <20191227174352.6264-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 23/57] ARM: dts: am437x-gp/epos-evm: fix panel compatible
+Date:   Fri, 27 Dec 2019 13:01:48 -0500
+Message-Id: <20191227180222.7076-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191227174352.6264-1-sashal@kernel.org>
-References: <20191227174352.6264-1-sashal@kernel.org>
+In-Reply-To: <20191227180222.7076-1-sashal@kernel.org>
+References: <20191227180222.7076-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,7 +66,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
-index 5b97c20c5ed4..8a17eca2bc97 100644
+index afb8eb0a0a16..051823b7e5a1 100644
 --- a/arch/arm/boot/dts/am437x-gp-evm.dts
 +++ b/arch/arm/boot/dts/am437x-gp-evm.dts
 @@ -83,7 +83,7 @@
@@ -77,9 +77,9 @@ index 5b97c20c5ed4..8a17eca2bc97 100644
 +		compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
  		label = "lcd";
  
- 		backlight = <&lcd_bl>;
+ 		panel-timing {
 diff --git a/arch/arm/boot/dts/am43x-epos-evm.dts b/arch/arm/boot/dts/am43x-epos-evm.dts
-index 6502d3397653..12735cf9674b 100644
+index 081fa68b6f98..c4279b0b9f12 100644
 --- a/arch/arm/boot/dts/am43x-epos-evm.dts
 +++ b/arch/arm/boot/dts/am43x-epos-evm.dts
 @@ -45,7 +45,7 @@
@@ -90,7 +90,7 @@ index 6502d3397653..12735cf9674b 100644
 +		compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
  		label = "lcd";
  
- 		backlight = <&lcd_bl>;
+ 		panel-timing {
 -- 
 2.20.1
 
