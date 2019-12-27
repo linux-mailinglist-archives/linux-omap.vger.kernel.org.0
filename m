@@ -2,37 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 859B812B851
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Dec 2019 18:55:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D11D612B829
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Dec 2019 18:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727859AbfL0Rmc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Dec 2019 12:42:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39406 "EHLO mail.kernel.org"
+        id S1727384AbfL0RyH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Dec 2019 12:54:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39730 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727874AbfL0Rmb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 27 Dec 2019 12:42:31 -0500
+        id S1727934AbfL0Rml (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 27 Dec 2019 12:42:41 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 87E8022525;
-        Fri, 27 Dec 2019 17:42:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 04D4520740;
+        Fri, 27 Dec 2019 17:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577468550;
-        bh=3tyyKQREqMsKu1Ee8ah4w/mCEkqxToX7uq09Ncf4VDM=;
+        s=default; t=1577468560;
+        bh=7/bEWBR228SG8GvLa5XKG2h7lDVFYZfEP4V+HyfEkUo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jU+93leMhy6yD5obFfFHgtm0utmY0pyP5Pea+XAl++IXUgKKuHXtn16fBVQVCtvj+
-         vOwN7b2RN2UfkfRFQzgwMtfmGFUh3AHOZGN/WYjLbHlEDlO/zGr8X3oOe+EHeShAJg
-         RR8SngXN5IwoDlADDbcharQaHbenmSlaYr6+HtW4=
+        b=ad7s9LOHvH5VwZdulAX8Kmn+q9Qpo/zB+8YJofykuyhFJDuA3Vzr8toqyZsf/v+fy
+         L/embmBIdVIzd+guWXZVn+uc0m+FbgboWQSt+0p/ZALIvSIrrqWGgoiBHg3c6NsiGG
+         8XxeWAdpWAK9IWc8SXMMUstoN9dwVwJQe4WB1iGU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 077/187] ARM: dts: am437x-gp/epos-evm: fix panel compatible
-Date:   Fri, 27 Dec 2019 12:39:05 -0500
-Message-Id: <20191227174055.4923-77-sashal@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>, Keerthy <j-keerthy@ti.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 086/187] bus: ti-sysc: Fix missing reset delay handling
+Date:   Fri, 27 Dec 2019 12:39:14 -0500
+Message-Id: <20191227174055.4923-86-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191227174055.4923-1-sashal@kernel.org>
 References: <20191227174055.4923-1-sashal@kernel.org>
@@ -45,52 +42,38 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tomi Valkeinen <tomi.valkeinen@ti.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit c6b16761c6908d3dc167a0a566578b4b0b972905 ]
+[ Upstream commit e709ed70d122e94cb426b1e1f905829eae19a009 ]
 
-The LCD panel on AM4 GP EVMs and ePOS boards seems to be
-osd070t1718-19ts. The current dts files say osd057T0559-34ts. Possibly
-the panel has changed since the early EVMs, or there has been a mistake
-with the panel type.
+We have dts property for "ti,sysc-delay-us", and we're using it, but the
+wait after OCP softreset only happens if devices are probed in legacy mode.
 
-Update the DT files accordingly.
+Let's add a delay after writing the OCP softreset when specified.
 
-Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Fixes: e0db94fe87da ("bus: ti-sysc: Make OCP reset work for sysstatus and sysconfig reset bits")
+Cc: Keerthy <j-keerthy@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am437x-gp-evm.dts  | 2 +-
- arch/arm/boot/dts/am43x-epos-evm.dts | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/bus/ti-sysc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
-index cae4500194fe..811c8cae315b 100644
---- a/arch/arm/boot/dts/am437x-gp-evm.dts
-+++ b/arch/arm/boot/dts/am437x-gp-evm.dts
-@@ -86,7 +86,7 @@
- 		};
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 2b6670daf7fc..34bd9bf4e68a 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -1594,6 +1594,10 @@ static int sysc_reset(struct sysc *ddata)
+ 	sysc_val |= sysc_mask;
+ 	sysc_write(ddata, sysc_offset, sysc_val);
  
- 	lcd0: display {
--		compatible = "osddisplays,osd057T0559-34ts", "panel-dpi";
-+		compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
- 		label = "lcd";
++	if (ddata->cfg.srst_udelay)
++		usleep_range(ddata->cfg.srst_udelay,
++			     ddata->cfg.srst_udelay * 2);
++
+ 	if (ddata->clk_enable_quirk)
+ 		ddata->clk_enable_quirk(ddata);
  
- 		backlight = <&lcd_bl>;
-diff --git a/arch/arm/boot/dts/am43x-epos-evm.dts b/arch/arm/boot/dts/am43x-epos-evm.dts
-index 95314121d111..078cb473fa7d 100644
---- a/arch/arm/boot/dts/am43x-epos-evm.dts
-+++ b/arch/arm/boot/dts/am43x-epos-evm.dts
-@@ -42,7 +42,7 @@
- 	};
- 
- 	lcd0: display {
--		compatible = "osddisplays,osd057T0559-34ts", "panel-dpi";
-+		compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
- 		label = "lcd";
- 
- 		backlight = <&lcd_bl>;
 -- 
 2.20.1
 
