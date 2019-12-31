@@ -2,110 +2,144 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1BE112D478
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Dec 2019 21:28:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDDAB12D695
+	for <lists+linux-omap@lfdr.de>; Tue, 31 Dec 2019 07:21:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727698AbfL3U2V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Dec 2019 15:28:21 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:28941 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727695AbfL3U2V (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Dec 2019 15:28:21 -0500
-X-Greylist: delayed 417 seconds by postgrey-1.27 at vger.kernel.org; Mon, 30 Dec 2019 15:28:19 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1577737698;
-        s=strato-dkim-0002; d=dawncrow.de;
-        h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=v/8MrpIUFBPW/f+lA2CtHfFaaqBCeq3F8gQxYbULoDY=;
-        b=q51U9gvtM1fPBStGUpvu5C94v+azCtDXqSEahobNODkHuRAfXLi/4J5mEqxBjn+Qlk
-        xyJEEYw/2HJA4DaENJKOB0lzOQENqkgEhBl7eBfnFNVJVDX4tEhJ1X9RF1iHNvXq8C7p
-        DN5W5RfF5yhaoul6GW9JADyjQbutsgyNhf9KoGAHkZ/wEdzW/Gayndevm4BKwkGNHoLE
-        XaqkhqwunQ+SriwWiNx5+kZxXD2hkY+HxMwKVfE/W+VG5GAaKGFGPzDpRi0WHeqxtLBu
-        TVGsYur41UstgPTYMWt+1lsMU3/+cAqih/j3sfBTRWcFNdcXKSB3g5NlC0ZRy5tNn5Mh
-        sXJQ==
-X-RZG-AUTH: ":ImkWY2CseuihIZy6ZWWciR6unPhpN+aXzZ6bi4rK0b8tGDimOzIxQbIOZSqtgWHzDs8="
-X-RZG-CLASS-ID: mo00
-Received: from [192.168.178.40]
-        by smtp.strato.de (RZmta 46.1.3 DYNA|AUTH)
-        with ESMTPSA id I099d1vBUKMGG84
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Mon, 30 Dec 2019 21:22:16 +0100 (CET)
-Subject: Re: [PATCH] ARM: dts: Add omap3-echo
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Adam Ford <aford173@gmail.com>, linux@arm.linux.org.uk,
-        robh+dt@kernel.org, mark.rutland@arm.com, bcousson@baylibre.com,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20191224161005.28083-1-nerv@dawncrow.de>
- <20191224184503.GK35479@atomide.com>
- <60412339-53BF-4DC1-8AF6-4FB0E75D429C@goldelico.com>
- <53e6cbbd-1094-cba2-4942-981502a738d4@dawncrow.de>
- <20191230172948.GL35479@atomide.com>
-From:   =?UTF-8?Q?Andr=c3=a9_Hentschel?= <nerv@dawncrow.de>
-Autocrypt: addr=nerv@dawncrow.de; prefer-encrypt=mutual; keydata=
- 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
- BZtrxq8dmex7tFXvQoJV4PIa20fGXq6S
-Message-ID: <56d6f5d9-1afb-9986-0c91-ba9b973f927e@dawncrow.de>
-Date:   Mon, 30 Dec 2019 21:22:15 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1725497AbfLaGVr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 31 Dec 2019 01:21:47 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:57534 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725536AbfLaGVr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 31 Dec 2019 01:21:47 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBV6Lgj7126289;
+        Tue, 31 Dec 2019 00:21:42 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1577773302;
+        bh=QOzGlFMu3l6LM63W0dy0AcQj0m8XZ1pqTFVD+hNHXfI=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=TOIJ/W/+aTdOiiqBJbOZuTOazNwaPuepxu2Kg+0z0AFcniDqy9nMvlDtu44hd9OdF
+         QOTaZF3XE+Yoa5JE7ypyXW2S8MX2YyUj6S7AqEMQsJi4UPYoGOVoNB06+TNxtYLc2Z
+         uJ0SFxq4q54gIc3GGFf5GOYlZ28nJrZ3LTXuz/r4=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBV6LgHv046007
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 31 Dec 2019 00:21:42 -0600
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 31
+ Dec 2019 00:21:40 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 31 Dec 2019 00:21:40 -0600
+Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBV6LcUj011774;
+        Tue, 31 Dec 2019 00:21:39 -0600
+Subject: Re: [PATCH v3 4/4] ARM: OMAP2+: sleep43xx: Call secure suspend/resume
+ handlers
+To:     "Andrew F. Davis" <afd@ti.com>, Tony Lindgren <tony@atomide.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20191230185004.32279-1-afd@ti.com>
+ <20191230185004.32279-5-afd@ti.com>
+From:   Lokesh Vutla <lokeshvutla@ti.com>
+Message-ID: <a29d1e78-9736-ea93-8a53-4600f8f48cde@ti.com>
+Date:   Tue, 31 Dec 2019 11:50:47 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20191230172948.GL35479@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: de-LU
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191230185004.32279-5-afd@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Am 30.12.19 um 18:29 schrieb Tony Lindgren:
-> * André Hentschel <nerv@dawncrow.de> [191227 14:29]:
->> For clarification this reduced table should help:
->>      DM3730 | DM3725 | AM3715 | AM3703
->> DSP    X    |   X    |        |    
->> SGX    X    |        |   X    |    
->>
->> Where X is "supported"
-> 
-> And let's also add minimal dm3725.dtsi, am3715.dtsi and am3703.dtsi
-> to make things simple. The device tree is supposed to describe the
-> hardware, and in most cases the SoC version is fixed and need no
-> dynamic detection.
-> 
-> André, can you please add those three dtsi files since you have at
-> least one test case? :)
 
-Done, but I'm not sure how to handle the DSP stuff, so I only sent the SGX changes as I understood you want them to be
+
+On 31/12/19 12:20 AM, Andrew F. Davis wrote:
+> During suspend CPU context may be lost in both non-secure and secure CPU
+> states. The kernel can handle saving and restoring the non-secure context
+> but must call into the secure side to allow it to save any context it may
+> lose. Add these calls here.
+> 
+> Note that on systems with OP-TEE available the suspend call is issued to
+> OP-TEE using the ARM SMCCC, but the resume call is always issued to the
+> ROM. This is because on waking from suspend the ROM is restored as the
+> secure monitor. It is this resume call that instructs the ROM to restore
+> OP-TEE, all subsequent calls will be handled by OP-TEE and should use the
+> ARM SMCCC.
+> 
+> Signed-off-by: Andrew F. Davis <afd@ti.com>
+> Acked-by: Dave Gerlach <d-gerlach@ti.com>
+> ---
+>  arch/arm/mach-omap2/omap-secure.h |  3 +++
+>  arch/arm/mach-omap2/pm33xx-core.c | 17 +++++++++++++++++
+>  2 files changed, 20 insertions(+)
+> 
+> diff --git a/arch/arm/mach-omap2/omap-secure.h b/arch/arm/mach-omap2/omap-secure.h
+> index 736e594365f4..ba8c486c0454 100644
+> --- a/arch/arm/mach-omap2/omap-secure.h
+> +++ b/arch/arm/mach-omap2/omap-secure.h
+> @@ -53,6 +53,9 @@
+>  #define OMAP4_PPA_L2_POR_INDEX		0x23
+>  #define OMAP4_PPA_CPU_ACTRL_SMP_INDEX	0x25
+>  
+> +#define AM43xx_PPA_SVC_PM_SUSPEND	0x71
+> +#define AM43xx_PPA_SVC_PM_RESUME	0x72
+> +
+>  /* Secure RX-51 PPA (Primary Protected Application) APIs */
+>  #define RX51_PPA_HWRNG			29
+>  #define RX51_PPA_L2_INVAL		40
+> diff --git a/arch/arm/mach-omap2/pm33xx-core.c b/arch/arm/mach-omap2/pm33xx-core.c
+> index f11442ed3eff..4a564f676ff9 100644
+> --- a/arch/arm/mach-omap2/pm33xx-core.c
+> +++ b/arch/arm/mach-omap2/pm33xx-core.c
+> @@ -28,6 +28,7 @@
+>  #include "prm33xx.h"
+>  #include "soc.h"
+>  #include "sram.h"
+> +#include "omap-secure.h"
+>  
+>  static struct powerdomain *cefuse_pwrdm, *gfx_pwrdm, *per_pwrdm, *mpu_pwrdm;
+>  static struct clockdomain *gfx_l4ls_clkdm;
+> @@ -166,6 +167,16 @@ static int am43xx_suspend(unsigned int state, int (*fn)(unsigned long),
+>  {
+>  	int ret = 0;
+>  
+> +	/* Suspend secure side on HS devices */
+> +	if (omap_type() != OMAP2_DEVICE_TYPE_GP) {
+> +		if (optee_available)
+> +			omap_smccc_smc(AM43xx_PPA_SVC_PM_SUSPEND, 0);
+> +		else
+> +			omap_secure_dispatcher(AM43xx_PPA_SVC_PM_SUSPEND,
+> +					       FLAG_START_CRITICAL,
+> +					       0, 0, 0, 0, 0);
+> +	}
+> +
+>  	amx3_pre_suspend_common();
+>  	scu_power_mode(scu_base, SCU_PM_POWEROFF);
+>  	ret = cpu_suspend(args, fn);
+> @@ -174,6 +185,12 @@ static int am43xx_suspend(unsigned int state, int (*fn)(unsigned long),
+>  	if (!am43xx_check_off_mode_enable())
+>  		amx3_post_suspend_common();
+>  
+> +	/* Resume secure side on HS devices */
+> +	if (omap_type() != OMAP2_DEVICE_TYPE_GP)
+> +		omap_secure_dispatcher(AM43xx_PPA_SVC_PM_RESUME,
+> +				       FLAG_START_CRITICAL,
+> +				       0, 0, 0, 0, 0);
+
+Don't you need to check optee_available here?
+
+Thanks and regards,
+Lokesh
+
+> +
+>  	return ret;
+>  }
+>  
+> 
