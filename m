@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDDAB12D695
-	for <lists+linux-omap@lfdr.de>; Tue, 31 Dec 2019 07:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2FD812D69B
+	for <lists+linux-omap@lfdr.de>; Tue, 31 Dec 2019 07:33:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725497AbfLaGVr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 31 Dec 2019 01:21:47 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:57534 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725536AbfLaGVr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 31 Dec 2019 01:21:47 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBV6Lgj7126289;
-        Tue, 31 Dec 2019 00:21:42 -0600
+        id S1725536AbfLaGdj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 31 Dec 2019 01:33:39 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:42742 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725468AbfLaGdj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 31 Dec 2019 01:33:39 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBV6XYo0022364;
+        Tue, 31 Dec 2019 00:33:34 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1577773302;
-        bh=QOzGlFMu3l6LM63W0dy0AcQj0m8XZ1pqTFVD+hNHXfI=;
+        s=ti-com-17Q1; t=1577774014;
+        bh=YbA1Qym2RVyrrVUhDtwgxhKRyf5pbUKxrxDqH7eoJzQ=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=TOIJ/W/+aTdOiiqBJbOZuTOazNwaPuepxu2Kg+0z0AFcniDqy9nMvlDtu44hd9OdF
-         QOTaZF3XE+Yoa5JE7ypyXW2S8MX2YyUj6S7AqEMQsJi4UPYoGOVoNB06+TNxtYLc2Z
-         uJ0SFxq4q54gIc3GGFf5GOYlZ28nJrZ3LTXuz/r4=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBV6LgHv046007
+        b=M8kl9BB2h4mOVPXLmB3Qg50XCDppTiuvBkkKQTrp0bwb44lUKla30CmlzmnAAuBEV
+         p4FjUh1Jo0uAsG+HESHvkodkFZAEaaruuWSaPf+aVWcs/VQ+D8LcN3lWXVJB0ELV8Y
+         8o6+qO+hTQ/BvoU7cxSKQsfsjVWIHDbMRLP6PvWs=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBV6XYfA029783
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 31 Dec 2019 00:21:42 -0600
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 31 Dec 2019 00:33:34 -0600
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 31
- Dec 2019 00:21:40 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2019 00:33:34 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 31 Dec 2019 00:21:40 -0600
+ Frontend Transport; Tue, 31 Dec 2019 00:33:34 -0600
 Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBV6LcUj011774;
-        Tue, 31 Dec 2019 00:21:39 -0600
-Subject: Re: [PATCH v3 4/4] ARM: OMAP2+: sleep43xx: Call secure suspend/resume
- handlers
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBV6XWRC001420;
+        Tue, 31 Dec 2019 00:33:33 -0600
+Subject: Re: [PATCH v3 2/4] ARM: OMAP2+: Introduce check for OP-TEE in
+ omap_secure_init()
 To:     "Andrew F. Davis" <afd@ti.com>, Tony Lindgren <tony@atomide.com>
 CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 References: <20191230185004.32279-1-afd@ti.com>
- <20191230185004.32279-5-afd@ti.com>
+ <20191230185004.32279-3-afd@ti.com>
 From:   Lokesh Vutla <lokeshvutla@ti.com>
-Message-ID: <a29d1e78-9736-ea93-8a53-4600f8f48cde@ti.com>
-Date:   Tue, 31 Dec 2019 11:50:47 +0530
+Message-ID: <b4773b91-9893-830d-7b1b-b63eb4077cf7@ti.com>
+Date:   Tue, 31 Dec 2019 12:02:41 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20191230185004.32279-5-afd@ti.com>
+In-Reply-To: <20191230185004.32279-3-afd@ti.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -61,85 +61,80 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 
 On 31/12/19 12:20 AM, Andrew F. Davis wrote:
-> During suspend CPU context may be lost in both non-secure and secure CPU
-> states. The kernel can handle saving and restoring the non-secure context
-> but must call into the secure side to allow it to save any context it may
-> lose. Add these calls here.
-> 
-> Note that on systems with OP-TEE available the suspend call is issued to
-> OP-TEE using the ARM SMCCC, but the resume call is always issued to the
-> ROM. This is because on waking from suspend the ROM is restored as the
-> secure monitor. It is this resume call that instructs the ROM to restore
-> OP-TEE, all subsequent calls will be handled by OP-TEE and should use the
-> ARM SMCCC.
+> This check and associated flag can be used to signal the presence
+> of OP-TEE on the platform. This can be used to determine which
+> SMC calls to make to perform secure operations.
 > 
 > Signed-off-by: Andrew F. Davis <afd@ti.com>
-> Acked-by: Dave Gerlach <d-gerlach@ti.com>
 > ---
+>  arch/arm/mach-omap2/omap-secure.c | 14 ++++++++++++++
 >  arch/arm/mach-omap2/omap-secure.h |  3 +++
->  arch/arm/mach-omap2/pm33xx-core.c | 17 +++++++++++++++++
->  2 files changed, 20 insertions(+)
+>  2 files changed, 17 insertions(+)
 > 
-> diff --git a/arch/arm/mach-omap2/omap-secure.h b/arch/arm/mach-omap2/omap-secure.h
-> index 736e594365f4..ba8c486c0454 100644
-> --- a/arch/arm/mach-omap2/omap-secure.h
-> +++ b/arch/arm/mach-omap2/omap-secure.h
-> @@ -53,6 +53,9 @@
->  #define OMAP4_PPA_L2_POR_INDEX		0x23
->  #define OMAP4_PPA_CPU_ACTRL_SMP_INDEX	0x25
+> diff --git a/arch/arm/mach-omap2/omap-secure.c b/arch/arm/mach-omap2/omap-secure.c
+> index e936732cdc4f..39d8070aede6 100644
+> --- a/arch/arm/mach-omap2/omap-secure.c
+> +++ b/arch/arm/mach-omap2/omap-secure.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/init.h>
+>  #include <linux/io.h>
+>  #include <linux/memblock.h>
+> +#include <linux/of.h>
 >  
-> +#define AM43xx_PPA_SVC_PM_SUSPEND	0x71
-> +#define AM43xx_PPA_SVC_PM_RESUME	0x72
+>  #include <asm/cacheflush.h>
+>  #include <asm/memblock.h>
+> @@ -20,6 +21,18 @@
+>  
+>  static phys_addr_t omap_secure_memblock_base;
+>  
+> +bool optee_available;
 > +
->  /* Secure RX-51 PPA (Primary Protected Application) APIs */
->  #define RX51_PPA_HWRNG			29
->  #define RX51_PPA_L2_INVAL		40
-> diff --git a/arch/arm/mach-omap2/pm33xx-core.c b/arch/arm/mach-omap2/pm33xx-core.c
-> index f11442ed3eff..4a564f676ff9 100644
-> --- a/arch/arm/mach-omap2/pm33xx-core.c
-> +++ b/arch/arm/mach-omap2/pm33xx-core.c
-> @@ -28,6 +28,7 @@
->  #include "prm33xx.h"
->  #include "soc.h"
->  #include "sram.h"
-> +#include "omap-secure.h"
->  
->  static struct powerdomain *cefuse_pwrdm, *gfx_pwrdm, *per_pwrdm, *mpu_pwrdm;
->  static struct clockdomain *gfx_l4ls_clkdm;
-> @@ -166,6 +167,16 @@ static int am43xx_suspend(unsigned int state, int (*fn)(unsigned long),
->  {
->  	int ret = 0;
->  
-> +	/* Suspend secure side on HS devices */
-> +	if (omap_type() != OMAP2_DEVICE_TYPE_GP) {
-> +		if (optee_available)
-> +			omap_smccc_smc(AM43xx_PPA_SVC_PM_SUSPEND, 0);
-> +		else
-> +			omap_secure_dispatcher(AM43xx_PPA_SVC_PM_SUSPEND,
-> +					       FLAG_START_CRITICAL,
-> +					       0, 0, 0, 0, 0);
-> +	}
+> +static void __init omap_optee_init_check(void)
+> +{
+> +	struct device_node *np;
 > +
->  	amx3_pre_suspend_common();
->  	scu_power_mode(scu_base, SCU_PM_POWEROFF);
->  	ret = cpu_suspend(args, fn);
-> @@ -174,6 +185,12 @@ static int am43xx_suspend(unsigned int state, int (*fn)(unsigned long),
->  	if (!am43xx_check_off_mode_enable())
->  		amx3_post_suspend_common();
->  
-> +	/* Resume secure side on HS devices */
-> +	if (omap_type() != OMAP2_DEVICE_TYPE_GP)
-> +		omap_secure_dispatcher(AM43xx_PPA_SVC_PM_RESUME,
-> +				       FLAG_START_CRITICAL,
-> +				       0, 0, 0, 0, 0);
+> +	np = of_find_node_by_path("/firmware/optee");
+> +	if (np && of_device_is_available(np))
 
-Don't you need to check optee_available here?
+This doesn't guarantee that optee driver is probed successfully or firmware
+installed correctly. Isn't there a better way to detect? Doesn't tee core layer
+exposes anything?
 
 Thanks and regards,
 Lokesh
 
+> +		optee_available = true;
+> +	of_node_put(np);
+> +}
 > +
->  	return ret;
->  }
+>  /**
+>   * omap_sec_dispatcher: Routine to dispatch low power secure
+>   * service routines
+> @@ -166,4 +179,5 @@ u32 rx51_secure_rng_call(u32 ptr, u32 count, u32 flag)
 >  
+>  void __init omap_secure_init(void)
+>  {
+> +	omap_optee_init_check();
+>  }
+> diff --git a/arch/arm/mach-omap2/omap-secure.h b/arch/arm/mach-omap2/omap-secure.h
+> index 9aeeb236a224..78a1c4f04bbe 100644
+> --- a/arch/arm/mach-omap2/omap-secure.h
+> +++ b/arch/arm/mach-omap2/omap-secure.h
+> @@ -10,6 +10,8 @@
+>  #ifndef OMAP_ARCH_OMAP_SECURE_H
+>  #define OMAP_ARCH_OMAP_SECURE_H
+>  
+> +#include <linux/types.h>
+> +
+>  /* Monitor error code */
+>  #define  API_HAL_RET_VALUE_NS2S_CONVERSION_ERROR	0xFFFFFFFE
+>  #define  API_HAL_RET_VALUE_SERVICE_UNKNWON		0xFFFFFFFF
+> @@ -72,6 +74,7 @@ extern u32 rx51_secure_dispatcher(u32 idx, u32 process, u32 flag, u32 nargs,
+>  extern u32 rx51_secure_update_aux_cr(u32 set_bits, u32 clear_bits);
+>  extern u32 rx51_secure_rng_call(u32 ptr, u32 count, u32 flag);
+>  
+> +extern bool optee_available;
+>  void omap_secure_init(void);
+>  
+>  #ifdef CONFIG_SOC_HAS_REALTIME_COUNTER
 > 
