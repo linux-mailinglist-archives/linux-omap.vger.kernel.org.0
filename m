@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 999B012E9FE
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Jan 2020 19:39:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B18812EA37
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Jan 2020 20:18:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727952AbgABSjl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Jan 2020 13:39:41 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:55798 "EHLO
+        id S1728195AbgABTSG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Jan 2020 14:18:06 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:59180 "EHLO
         jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727951AbgABSjk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Jan 2020 13:39:40 -0500
+        with ESMTP id S1728074AbgABTSG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Jan 2020 14:18:06 -0500
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B0E981C25EC; Thu,  2 Jan 2020 19:39:38 +0100 (CET)
-Date:   Thu, 2 Jan 2020 19:39:38 +0100
+        id 7F8F51C25EC; Thu,  2 Jan 2020 20:18:04 +0100 (CET)
+Date:   Thu, 2 Jan 2020 20:18:04 +0100
 From:   Pavel Machek <pavel@ucw.cz>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
@@ -24,7 +24,7 @@ Cc:     Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
         Marcel Partap <mpartap@gmx.net>, merlijn@wizzup.org,
         martin_rysavy@centrum.cz
 Subject: Re: Droid 4 regression in 5.5-rc1, armsoc-soc tree
-Message-ID: <20200102183938.4kazwvk3ecgfwvy7@ucw.cz>
+Message-ID: <20200102191804.nhnpd7q2eh4ul5a5@ucw.cz>
 References: <20191228162929.GA29269@duo.ucw.cz>
  <20191228193622.GA13047@duo.ucw.cz>
  <20191230173507.GM35479@atomide.com>
@@ -42,8 +42,6 @@ Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
-
-Hi!
 
 > * Arnd Bergmann <arnd@arndb.de> [200102 14:48]:
 > > On Thu, Jan 2, 2020 at 3:06 PM Pavel Machek <pavel@ucw.cz> wrote:
@@ -75,12 +73,9 @@ Hi!
 > stuff missing from the device tree meaning an old dtb will likely
 > be incomplete for many devices.
 
-Aha, thanks for a hint!
+Aha, so it works ok when using matching kernel + dtb.
 
-Yes, due to the kexec setup, I was using old dtb (5.3-rc?) with new
-kernel...
-
-Let me try with matching kernel+dtb combination.
+Is 5.5 kernel with 5.3 dtb situation worth debugging?
 
 Best regards,
 								Pavel
