@@ -2,87 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0820012EAA4
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Jan 2020 20:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9846A12EB1D
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Jan 2020 22:15:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728307AbgABTvN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Jan 2020 14:51:13 -0500
-Received: from muru.com ([72.249.23.125]:49978 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728260AbgABTvN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 2 Jan 2020 14:51:13 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 942208087;
-        Thu,  2 Jan 2020 19:51:52 +0000 (UTC)
-Date:   Thu, 2 Jan 2020 11:51:08 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?utf-8?B?QW5kcsOp?= Hentschel <nerv@dawncrow.de>,
-        Adam Ford <aford173@gmail.com>, linux@arm.linux.org.uk,
-        robh+dt@kernel.org, mark.rutland@arm.com, bcousson@baylibre.com,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: Add omap3-echo
-Message-ID: <20200102195108.GF16702@atomide.com>
-References: <20191224161005.28083-1-nerv@dawncrow.de>
- <20191224184503.GK35479@atomide.com>
- <60412339-53BF-4DC1-8AF6-4FB0E75D429C@goldelico.com>
- <53e6cbbd-1094-cba2-4942-981502a738d4@dawncrow.de>
- <20191230172948.GL35479@atomide.com>
- <55E6481C-2137-4086-ACDF-5F7D86E41A21@goldelico.com>
+        id S1726019AbgABVPi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Jan 2020 16:15:38 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.164]:17938 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725790AbgABVPi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Jan 2020 16:15:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1577999732;
+        s=strato-dkim-0002; d=dawncrow.de;
+        h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=/RFRtxHgJLOW/mYZm857emXRQ5DE6ixRmmVFe1r78O0=;
+        b=peHvGjwldR76mFL7oUTcumXgJHztJ62GDQeYa6TAd5JbEqXM8kYSVHCmXtIi3OS9gS
+        M0++9D8RGBOVvFgl9mKwIW4Ke5K/ROR9xIODA1feP6lkyV2D34pLOz1miJEnXnTD5Irx
+        Hai4bE/qXZ2rnlOBx5x2+HLuJ1/utgKLQ8RfQKDgd/5hzFqEGDOC7+YSbC4zf/DaTZNo
+        lEc8I5NvysLpLJbpaXXHRWCn+3m1X2fsTCbHoiJiTwyVhmZRgpBlQNGdBRaPckA5DA22
+        fh+Omkxj+rk8tyq17unH4ws45yFTOuXOoWPSfPdQs+kl30J8N1WXqBeTNJkW+fWCcmZS
+        Ba1g==
+X-RZG-AUTH: ":ImkWY2CseuihIZy6ZWWciR6unPhpN+aXzZ6bi4rK0b8tGDimOzIxQbIOZSqtgWHzDs8="
+X-RZG-CLASS-ID: mo00
+Received: from [192.168.178.40]
+        by smtp.strato.de (RZmta 46.1.3 DYNA|AUTH)
+        with ESMTPSA id I099d1w02LFDLMy
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Thu, 2 Jan 2020 22:15:13 +0100 (CET)
+Subject: Re: [PATCH v2 1/2] ARM: dts: Move interconnect target module for
+ omap3 sgx to separate dtsi files
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     mark.rutland@arm.com, devicetree@vger.kernel.org,
+        linux@arm.linux.org.uk, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, bcousson@baylibre.com,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20191230202037.28836-1-nerv@dawncrow.de>
+ <20200102193359.GE16702@atomide.com>
+From:   =?UTF-8?Q?Andr=c3=a9_Hentschel?= <nerv@dawncrow.de>
+Autocrypt: addr=nerv@dawncrow.de; prefer-encrypt=mutual; keydata=
+ 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
+ BZtrxq8dmex7tFXvQoJV4PIa20fGXq6S
+Message-ID: <9e39831c-bfa8-d497-7d3e-ff6ec04b8e52@dawncrow.de>
+Date:   Thu, 2 Jan 2020 22:15:13 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55E6481C-2137-4086-ACDF-5F7D86E41A21@goldelico.com>
+In-Reply-To: <20200102193359.GE16702@atomide.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-LU
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [191231 08:16]:
-> > Am 30.12.2019 um 18:29 schrieb Tony Lindgren <tony@atomide.com>:
-> > And let's also add minimal dm3725.dtsi, am3715.dtsi and am3703.dtsi
-> > to make things simple.
+Am 02.01.20 um 20:33 schrieb Tony Lindgren:
+> * André Hentschel <nerv@dawncrow.de> [191230 20:22]:
+>> Only dm3730 and am3715 come with SGX support
 > 
-> Well, is that "simple"?
-
-Well simple from "adding support for a new device in most case" point
-of view yes..
-
-> We also have to add omap3503, omap3515, omap3520, omap3530.dtsi.
-> And probably am3351,2,4,6,7,8,9 variants with different capabilities
-> (PRU, SGX, CAN, ZCZ ports to name some).
+> AFAIK dm3730 is just a marketing name for a catalog version of
+> omap3630. So using omap36xx.dtsi is correct and we should not
+> change that.
 > 
-> And to be correct, there should be a different "compatible".
+> Can you please just add a minimal dm3725.dtsi that your board dts
+> can include and avoid disabling sgx in the board specific file?
+> That is assuming you have dm3725 with dsp and isp but no sgx.
 
-..and yes the number of permutations quickly gets out of control :)
+I removed the sgx disable part already in 2/2.
+Consulting my table:
+     DM3730 | DM3725 | AM3715 | AM3703
+DSP    X    |   X    |        |    
+SGX    X    |        |   X    |    
+Where X is "supported"
 
-The SoC specific compatibles should be there though. So everybody,
-please keep adding them as we encounter the missing ones.
+So including omap63xx.dtsi seems right after this patch moves the
+sgx part to separate dtsi. Or do you want to have the sxg
+disabling in the dm3725.dtsi?
 
-Note that we don't seem to have much any feature detection for the
-newer TI parts. At least am4 and dra7 already rely on
-of_machine_is_compatible() checks for omap_hwmod_43xx_data.c and
-omap_hwmod_7xx_data.c.
-
-> Rob asked me when reviewing the pvrsgx bindings if the img,5xx variants
-> can be autodetected to reduce bindings complexity.
-
-Yes also dynamic detection is needed, and we do have that working
-for many SoCs. The use in ti-sysc driver is still missing though,
-and newer SoCs never had feature detection added.
-
-> > The device tree is supposed to describe the
-> > hardware, and in most cases the SoC version is fixed and need no
-> > dynamic detection.
+> You can read the detected SoC with:
 > 
-> There may be exactly the same board populated with either one since
-> they are drop-in pin compatible. So this may proliferate to the
-> board.dts files and u-boot can have to load different .dtb.
+> # cat /sys/bus/soc/devices/soc0/machine
 
-Yeah. I'm afraid we're already depending for bootloader picking
-the right dtb for many cases, such as capes etc.
-
-Regards,
-
-Tony
+# cat /sys/bus/soc/devices/soc0/machine
+DM3725
+# cat /sys/bus/soc/devices/soc0/revision 
+ES1.2
