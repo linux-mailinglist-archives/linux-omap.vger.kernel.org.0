@@ -2,115 +2,146 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B426212F806
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Jan 2020 13:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF2912F883
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Jan 2020 13:50:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727489AbgACMOL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Jan 2020 07:14:11 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:54249 "EHLO
+        id S1727742AbgACMuo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Jan 2020 07:50:44 -0500
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:36052 "EHLO
         mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727350AbgACMOL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Jan 2020 07:14:11 -0500
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200103121409euoutp023750e0526606f5e3067946f42ac3af98~mX28HyICd2023620236euoutp029
-        for <linux-omap@vger.kernel.org>; Fri,  3 Jan 2020 12:14:09 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200103121409euoutp023750e0526606f5e3067946f42ac3af98~mX28HyICd2023620236euoutp029
+        with ESMTP id S1727730AbgACMuo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Jan 2020 07:50:44 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200103125042euoutp02812061c3395d56d8f9120d141e3baca7~mYW2et_VL1002910029euoutp029
+        for <linux-omap@vger.kernel.org>; Fri,  3 Jan 2020 12:50:42 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200103125042euoutp02812061c3395d56d8f9120d141e3baca7~mYW2et_VL1002910029euoutp029
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1578053649;
-        bh=F5xn8C8mO5od4XXRPCeuooxSRNesDBnBt53jiPRnVS8=;
+        s=mail20170921; t=1578055842;
+        bh=0ZeVM/KjBET1JFzYLjy5seckIDWrndtGfSryu8ihgKs=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=k7ysTGsb+SSGwoiFM4ZiFoDZv6767sYgFcRqkTlbjWq3QBbw26WVPA/vs24o0A/Kc
-         lndB9iLpiJYIqVq5RHp7XC/5ppbOU/AXdYUVH3y1h7OXUT/+41nd1RqnDYEuCZeg2i
-         U4MnmJwV6M/Y6w2Zwhr9jcJCYlldT31okU+5Vy94=
+        b=cXOpPzu5PFuwE5VlgesZx/LMQ+3nxaqzMw/RLtLvDQBlRmOs7WpWv+mqPs0DdXd6e
+         rh44rsDrcQd+zB5ZGStbfkoFVcOarnxojd56FVoZcXVc68ynkvbgMy5JmdnnM/O54b
+         rWXvpjqv47MGVBIcb26j+VpQSAtPBVs9wR3OS+dw=
 Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
         eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200103121409eucas1p1fb62a8416cf17799b8ff02fe2185f041~mX27yqC6J0795507955eucas1p1b;
-        Fri,  3 Jan 2020 12:14:09 +0000 (GMT)
+        20200103125042eucas1p190d0d109ec05b856726b70e1e36f6719~mYW2SM93B1400814008eucas1p1r;
+        Fri,  3 Jan 2020 12:50:42 +0000 (GMT)
 Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 9F.46.60679.1103F0E5; Fri,  3
-        Jan 2020 12:14:09 +0000 (GMT)
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id BB.79.60679.2A83F0E5; Fri,  3
+        Jan 2020 12:50:42 +0000 (GMT)
 Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200103121409eucas1p2ca69ad02ed77474da487db7d0beee52c~mX27dRDOd3262832628eucas1p2B;
-        Fri,  3 Jan 2020 12:14:09 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200103125042eucas1p1bcd7c14d3bdf141992015c37db683b15~mYW1z_Phg1400814008eucas1p1q;
+        Fri,  3 Jan 2020 12:50:42 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
         eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200103121409eusmtrp283c58bd8c0cc28a411994cd236197597~mX27cGzyE2555325553eusmtrp2K;
-        Fri,  3 Jan 2020 12:14:09 +0000 (GMT)
-X-AuditID: cbfec7f4-0cbff7000001ed07-07-5e0f3011daaa
+        20200103125042eusmtrp282b436f048fa0636dfab60cc089be734~mYW1zUnIn1566015660eusmtrp2A;
+        Fri,  3 Jan 2020 12:50:42 +0000 (GMT)
+X-AuditID: cbfec7f4-0e5ff7000001ed07-a6-5e0f38a29d0d
 Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id FA.83.07950.1103F0E5; Fri,  3
-        Jan 2020 12:14:09 +0000 (GMT)
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 50.D6.08375.2A83F0E5; Fri,  3
+        Jan 2020 12:50:42 +0000 (GMT)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
         eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200103121408eusmtip267866366d0b68b73471ed8ed2544d6d0~mX266-F-90409104091eusmtip2d;
-        Fri,  3 Jan 2020 12:14:08 +0000 (GMT)
-Subject: Re: [PATCH -next] fbdev: omapfb: use
- devm_platform_ioremap_resource() to simplify code
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     tglx@linutronix.de, alexios.zavras@intel.com,
-        gregkh@linuxfoundation.org, allison@lohutok.net,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+        20200103125040eusmtip21c99b86af833f345b01fa301fb31bdd5~mYW0q4G8v2676126761eusmtip2n;
+        Fri,  3 Jan 2020 12:50:40 +0000 (GMT)
+Subject: Re: [PATCH] omapfb: reduce stack usage
+To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Ladislav Michl <ladis@linux-mips.org>,
+        Joe Perches <joe@perches.com>
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <3f75dae1-181f-3935-0b1d-40839392226e@samsung.com>
-Date:   Fri, 3 Jan 2020 13:14:08 +0100
+Message-ID: <f1c050c1-7ea8-e735-a552-e988ec3930ce@samsung.com>
+Date:   Fri, 3 Jan 2020 13:50:40 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190904115406.23880-1-yuehaibing@huawei.com>
+In-Reply-To: <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrAKsWRmVeSWpSXmKPExsWy7djP87qCBvxxBivuyVjsu7uP3WLliX8s
-        Fle+vmezaF68ns3iRN8HVovLu+awWcxe0s9isXnTVGaLO1+fszhwerQcecvqsXjPSyaPd+fO
-        sXvsn7uG3eN+93Emj49vnrB7fN4kF8AexWWTkpqTWZZapG+XwJXxrHcSY8FEzoo/i28yNzCe
-        Z+9i5OSQEDCRWL7jAXMXIxeHkMAKRont1xaxQThfGCX+7brLCuF8ZpRYeHY9I0zLmceTWEFs
-        IYHljBJTGyQhit4ySvTt6WMCSQgLJEqc2PMarEhEQE2i5dQWsB3MAvcZJeac/84GkmATsJKY
-        2L4KbCqvgJ3E7l3XwOIsAioS77ufgB0oKhAh8enBYVaIGkGJkzOfsIDYnALWEsdOnACLMwuI
-        S9x6Mp8JwpaX2P52DtgyCYFr7BJ/j+xjhjjbReLSnQ1QXwtLvDq+BcqWkfi/E6QZpGEdo8Tf
-        jhdQ3dsZJZZP/scGUWUtcefcLyCbA2iFpsT6XfoQYUeJaTs/sIKEJQT4JG68FYQ4gk9i0rbp
-        zBBhXomONiGIajWJDcs2sMGs7dq5knkCo9IsJK/NQvLOLCTvzELYu4CRZRWjeGppcW56arFR
-        Xmq5XnFibnFpXrpecn7uJkZgujr97/iXHYy7/iQdYhTgYFTi4U1Q5o8TYk0sK67MPcQowcGs
-        JMJbHsgbJ8SbklhZlVqUH19UmpNafIhRmoNFSZzXeNHLWCGB9MSS1OzU1ILUIpgsEwenVAOj
-        TGKR0pWAPTMtK3nMOKK4/I9caGST+H7h8qvoVym8R3ZOX9USZdw+MXSdyyEOhpe+QYZW+z1D
-        o/cl9jpMu+bHw8GRpbPQMYkp8/SsP5M0L798PEVWJHar6V7fJb7/Et6530uvffTBtalRftnb
-        Z7e879dufFlv/6bGUm6uq6jiicTfGiZTzrUosRRnJBpqMRcVJwIAZg3WEFMDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrIIsWRmVeSWpSXmKPExsVy+t/xe7qCBvxxBkv62S323d3HbrHyxD8W
-        iytf37NZNC9ez2Zxou8Dq8XlXXPYLGYv6Wex2LxpKrPFna/PWRw4PVqOvGX1WLznJZPHu3Pn
-        2D32z13D7nG/+ziTx8c3T9g9Pm+SC2CP0rMpyi8tSVXIyC8usVWKNrQw0jO0tNAzMrHUMzQ2
-        j7UyMlXSt7NJSc3JLEst0rdL0Mt41juJsWAiZ8WfxTeZGxjPs3cxcnJICJhInHk8ibWLkYtD
-        SGApo0TfxDvMXYwcQAkZiePryyBqhCX+XOtig6h5zSjxZM4lVpCEsECixNF928FsEQE1iZZT
-        W5hBipgF7jNKdL/6ywySEBLoY5RYsTMaxGYTsJKY2L6KEcTmFbCT2L3rGhuIzSKgIvG++wnY
-        RaICERKHd8yCqhGUODnzCQuIzSlgLXHsxAmwZcwC6hJ/5l1ihrDFJW49mc8EYctLbH87h3kC
-        o9AsJO2zkLTMQtIyC0nLAkaWVYwiqaXFuem5xUZ6xYm5xaV56XrJ+bmbGIHRue3Yzy07GLve
-        BR9iFOBgVOLh5VDkjxNiTSwrrsw9xCjBwawkwlseyBsnxJuSWFmVWpQfX1Sak1p8iNEU6LmJ
-        zFKiyfnAxJFXEm9oamhuYWlobmxubGahJM7bIXAwRkggPbEkNTs1tSC1CKaPiYNTqoFxwjIW
-        mSWK7ZbeF49/Ym9uCXZPTjrIll5gsm3tl/Nqj0qniSTsPPujLpX512bVJrVKxWi5ljkn84u8
-        pnQ9eLR3743Sh4Y1sne2V9hXfLrqKjufY9KZpJSdqXvczE4L1DLEuSxNsb198V/UOqv9jwLO
-        Ks786NTzuPaO8pK5r1cdjNvttvNU4wlxJZbijERDLeai4kQAO0/K4+QCAAA=
-X-CMS-MailID: 20200103121409eucas1p2ca69ad02ed77474da487db7d0beee52c
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrLKsWRmVeSWpSXmKPExsWy7djP87qLLPjjDJ68V7K48vU9m8Xs+49Z
+        LGavnMxkcaLvA6vF5V1zgGJL+lksDpyewuzA7rFz1l12j6Mr1zJ53O8+zuTxZdU1Zo/Pm+QC
+        WKO4bFJSczLLUov07RK4MhZO/Mde0CJT0b27mamBcYl4FyMnh4SAicT6870sXYxcHEICKxgl
+        Oi8cZ4ZwvjBK/Fx/gxXC+cwosfHVK0aYlo+7XkIlljNKLGxbAdXyllFi9fGtYFXCAvoSTU1r
+        WEBsEQEDibvrlrKDFDELHGGUeDd3MlgRm4CVxMT2VWA2r4CdxPH5k5hAbBYBFYnNEyeyg9ii
+        AhESnx4cZoWoEZQ4OfMJ2FBOAQeJty8ugsWZBcQlbj2ZzwRhy0tsfzsH7CIJgV3sEsumn2eD
+        uNtFYsGjf1C2sMSr41vYIWwZif87QZpBGtYxSvzteAHVvZ1RYvlkmA5riTvnfgHZHEArNCXW
+        79KHCDtKdH1qZQIJSwjwSdx4KwhxBJ/EpG3TmSHCvBIdbUIQ1WoSG5ZtYINZ27VzJfMERqVZ
+        SF6bheSdWUjemYWwdwEjyypG8dTS4tz01GKjvNRyveLE3OLSvHS95PzcTYzARHT63/EvOxh3
+        /Uk6xCjAwajEw5ugzB8nxJpYVlyZe4hRgoNZSYS3PJA3Tog3JbGyKrUoP76oNCe1+BCjNAeL
+        kjiv8aKXsUIC6YklqdmpqQWpRTBZJg5OqQZGnwcP2U9/3DuF1yL42ZRFkzJOP1I/EfVznXz3
+        46tMrRvFqt9mxdtKCW8Ju8h0r+ATNyNHqL7L5pxHy5b+Mt6h/FSnMET3rEpHmbljd/ly14M+
+        9wrvl0TzLjr32qHPXbL4XtsDp6lbwmd5B3b6Cy65GRhgEDTHlnV29/KgFz+ZTaOEds7n0tNW
+        YinOSDTUYi4qTgQAc5ndEkADAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLIsWRmVeSWpSXmKPExsVy+t/xe7qLLPjjDGYeZbG48vU9m8Xs+49Z
+        LGavnMxkcaLvA6vF5V1zgGJL+lksDpyewuzA7rFz1l12j6Mr1zJ53O8+zuTxZdU1Zo/Pm+QC
+        WKP0bIryS0tSFTLyi0tslaINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0MhZO
+        /Mde0CJT0b27mamBcYl4FyMnh4SAicTHXS9Zuxi5OIQEljJKPOl8wN7FyAGUkJE4vr4MokZY
+        4s+1LjYQW0jgNaNE3xxDEFtYQF+iqWkNC4gtImAgcXfdUnaQOcwCRxgllm5oYoQYOplR4vGp
+        h4wgVWwCVhIT21eB2bwCdhLH509iArFZBFQkNk+cyA5iiwpESBzeMQuqRlDi5MwnYBs4BRwk
+        3r64yApiMwuoS/yZd4kZwhaXuPVkPhOELS+x/e0c5gmMQrOQtM9C0jILScssJC0LGFlWMYqk
+        lhbnpucWG+oVJ+YWl+al6yXn525iBEbdtmM/N+9gvLQx+BCjAAejEg9vgjJ/nBBrYllxZe4h
+        RgkOZiUR3vJA3jgh3pTEyqrUovz4otKc1OJDjKZAz01klhJNzgcmhLySeENTQ3MLS0NzY3Nj
+        Mwslcd4OgYMxQgLpiSWp2ampBalFMH1MHJxSDYxzjBUnrq722C6dUnuiRWRT17v4Hat2s1k+
+        uls/zVv+8vnpQVqTrgeocHm+ji0692/zjSf7hPQ3LWA23e4duoBr/xyLt2I192VcnTkzF1f9
+        Vcz9dtv7waawpc80XrQbGjW/zVy02bL46dGVu68HPSw/FL7Q9tLthwdrV/3Q+XD865M5zr0l
+        6ypWKbEUZyQaajEXFScCAOw4Q4DQAgAA
+X-CMS-MailID: 20200103125042eucas1p1bcd7c14d3bdf141992015c37db683b15
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20190904115507epcas1p42d4d5b2f6ee58db0ccf3b1ee27063ac1
+X-RootMTR: 20191018163010epcas4p1a11973fbca0b3248dae6b5e87cdbf1f3
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20190904115507epcas1p42d4d5b2f6ee58db0ccf3b1ee27063ac1
-References: <CGME20190904115507epcas1p42d4d5b2f6ee58db0ccf3b1ee27063ac1@epcas1p4.samsung.com>
-        <20190904115406.23880-1-yuehaibing@huawei.com>
+X-CMS-RootMailID: 20191018163010epcas4p1a11973fbca0b3248dae6b5e87cdbf1f3
+References: <CGME20191018163010epcas4p1a11973fbca0b3248dae6b5e87cdbf1f3@epcas4p1.samsung.com>
+        <20191018163004.23498-1-sudipm.mukherjee@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
-On 9/4/19 1:54 PM, YueHaibing wrote:
-> Use devm_platform_ioremap_resource() to simplify the code a bit.
-> This is detected by coccinelle.
+On 10/18/19 6:30 PM, Sudip Mukherjee wrote:
+> The build of xtensa allmodconfig is giving a warning of:
+> In function 'dsi_dump_dsidev_irqs':
+> warning: the frame size of 1120 bytes is larger than 1024 bytes
 > 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Allocate the memory for 'struct dsi_irq_stats' dynamically instead
+> of assigning it in stack.
+> 
+> Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+> ---
+>  drivers/video/fbdev/omap2/omapfb/dss/dsi.c | 24 ++++++++++++++----------
+>  1 file changed, 14 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+> index d620376216e1..43402467bf40 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+> @@ -1536,22 +1536,25 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+>  {
+>  	struct dsi_data *dsi = dsi_get_dsidrv_data(dsidev);
+>  	unsigned long flags;
+> -	struct dsi_irq_stats stats;
+> +	struct dsi_irq_stats *stats;
+>  
+> +	stats = kmalloc(sizeof(*stats), GFP_KERNEL);
+> +	if (!stats)
+> +		return;
+>  	spin_lock_irqsave(&dsi->irq_stats_lock, flags);
+>  
+> -	stats = dsi->irq_stats;
+> +	memcpy(stats, &dsi->irq_stats, sizeof(*stats));
 
-Thanks, patch queued for v5.6 (also sorry for the delay).
+"stats" copy is only needed for generating debugfs information.
+
+We can probably reduce the stack usage and also simplify the driver
+by just accessing dsi->irq_stats directly before cleaning it
+(we would also need to extend coverage of spinlock but the code is
+debug only so this should not be a problem).
+
+Care to try this approach?
 
 Best regards,
 --
@@ -118,22 +149,52 @@ Bartlomiej Zolnierkiewicz
 Samsung R&D Institute Poland
 Samsung Electronics
 
-> ---
->  drivers/video/fbdev/omap2/omapfb/vrfb.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/omap2/omapfb/vrfb.c b/drivers/video/fbdev/omap2/omapfb/vrfb.c
-> index 819e0bc..ee0dd4c 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/vrfb.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/vrfb.c
-> @@ -339,9 +339,7 @@ static int __init vrfb_probe(struct platform_device *pdev)
->  	int i;
+>  	memset(&dsi->irq_stats, 0, sizeof(dsi->irq_stats));
+>  	dsi->irq_stats.last_reset = jiffies;
 >  
->  	/* first resource is the register res, the rest are vrfb contexts */
-> -
-> -	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	vrfb_base = devm_ioremap_resource(&pdev->dev, mem);
-> +	vrfb_base = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(vrfb_base))
->  		return PTR_ERR(vrfb_base);
+>  	spin_unlock_irqrestore(&dsi->irq_stats_lock, flags);
 >  
+>  	seq_printf(s, "period %u ms\n",
+> -			jiffies_to_msecs(jiffies - stats.last_reset));
+> +			jiffies_to_msecs(jiffies - stats->last_reset));
+>  
+> -	seq_printf(s, "irqs %d\n", stats.irq_count);
+> +	seq_printf(s, "irqs %d\n", stats->irq_count);
+>  #define PIS(x) \
+> -	seq_printf(s, "%-20s %10d\n", #x, stats.dsi_irqs[ffs(DSI_IRQ_##x)-1]);
+> +	seq_printf(s, "%-20s %10d\n", #x, stats->dsi_irqs[ffs(DSI_IRQ_##x)-1]);
+>  
+>  	seq_printf(s, "-- DSI%d interrupts --\n", dsi->module_id + 1);
+>  	PIS(VC0);
+> @@ -1575,10 +1578,10 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+>  
+>  #define PIS(x) \
+>  	seq_printf(s, "%-20s %10d %10d %10d %10d\n", #x, \
+> -			stats.vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
+> -			stats.vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
+> -			stats.vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
+> -			stats.vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
+> +			stats->vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
+> +			stats->vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
+> +			stats->vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
+> +			stats->vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
+>  
+>  	seq_printf(s, "-- VC interrupts --\n");
+>  	PIS(CS);
+> @@ -1594,7 +1597,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+>  
+>  #define PIS(x) \
+>  	seq_printf(s, "%-20s %10d\n", #x, \
+> -			stats.cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
+> +			stats->cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
+>  
+>  	seq_printf(s, "-- CIO interrupts --\n");
+>  	PIS(ERRSYNCESC1);
+> @@ -1618,6 +1621,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+>  	PIS(ULPSACTIVENOT_ALL0);
+>  	PIS(ULPSACTIVENOT_ALL1);
+>  #undef PIS
+> +	kfree(stats);
+>  }
+>  
+>  static void dsi1_dump_irqs(struct seq_file *s)
