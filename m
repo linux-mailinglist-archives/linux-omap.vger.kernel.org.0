@@ -2,102 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A71112F3E0
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Jan 2020 05:47:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA90612F584
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Jan 2020 09:33:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725972AbgACErg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Jan 2020 23:47:36 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:58874 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725890AbgACErg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Jan 2020 23:47:36 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0034lYFM075525;
-        Thu, 2 Jan 2020 22:47:34 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1578026854;
-        bh=YZjLSE0T1eqkPxpnffWq4p++uLHQvyUr3z1/GohK9LE=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=w0TbYF5WSHPTbeejCAWy1PnTPJYndVM9uqJeFnbcJD/jMX+MZ31qHfVbXVTK30OHI
-         3KoehMAPa2ReQ5OlYYbcTFLXpmHQ2nvbQ4KfZFtVouw8oomqM7JNyCN2LUIDUpS/XH
-         ZblSh1arcoT8Z36mynS56r1j1mUO7r7CV1kOKAMQ=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0034lYu4058726;
-        Thu, 2 Jan 2020 22:47:34 -0600
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 2 Jan
- 2020 22:47:33 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 2 Jan 2020 22:47:33 -0600
-Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0034lV8s027975;
-        Thu, 2 Jan 2020 22:47:32 -0600
-Subject: Re: [PATCH v4 0/4] Use ARM SMC Calling Convention when OP-TEE is
- available
-To:     "Andrew F. Davis" <afd@ti.com>, Tony Lindgren <tony@atomide.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20200102211943.20480-1-afd@ti.com>
-From:   Lokesh Vutla <lokeshvutla@ti.com>
-Message-ID: <4d45ed64-c3f5-4074-d95a-dd52f355a22b@ti.com>
-Date:   Fri, 3 Jan 2020 10:16:39 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1725890AbgACIdc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Jan 2020 03:33:32 -0500
+Received: from fgw23-4.mail.saunalahti.fi ([62.142.5.110]:48949 "EHLO
+        fgw23-4.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725972AbgACIdb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Jan 2020 03:33:31 -0500
+X-Greylist: delayed 962 seconds by postgrey-1.27 at vger.kernel.org; Fri, 03 Jan 2020 03:33:31 EST
+Received: from darkstar.musicnaut.iki.fi (85-76-105-219-nat.elisa-mobile.fi [85.76.105.219])
+        by fgw23.mail.saunalahti.fi (Halon) with ESMTP
+        id 7a28ac90-2e01-11ea-90c5-005056bdfda7;
+        Fri, 03 Jan 2020 10:17:27 +0200 (EET)
+Date:   Fri, 3 Jan 2020 10:17:26 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [BISECTED, REGRESSION] OMAP3 onenand/DMA broken
+Message-ID: <20200103081726.GD15023@darkstar.musicnaut.iki.fi>
 MIME-Version: 1.0
-In-Reply-To: <20200102211943.20480-1-afd@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi,
 
+When booting v5.4 (or v5.5-rc4) on N900, the console gets flooded with:
 
-On 03/01/20 2:49 AM, Andrew F. Davis wrote:
-> Hello all,
-> 
-> This is the reworked patch turned into a series to allow upstream kernels
-> to make use of OP-TEE on the OMAP2+ platform.
+[    8.335754] omap2-onenand 1000000.onenand: timeout waiting for DMA
+[    8.365753] omap2-onenand 1000000.onenand: timeout waiting for DMA
+[    8.395751] omap2-onenand 1000000.onenand: timeout waiting for DMA
+[    8.425750] omap2-onenand 1000000.onenand: timeout waiting for DMA
+[    8.455749] omap2-onenand 1000000.onenand: timeout waiting for DMA
+[    8.485748] omap2-onenand 1000000.onenand: timeout waiting for DMA
+[    8.515777] omap2-onenand 1000000.onenand: timeout waiting for DMA
+[    8.545776] omap2-onenand 1000000.onenand: timeout waiting for DMA
+[    8.575775] omap2-onenand 1000000.onenand: timeout waiting for DMA
 
-FWIW:
+making the system unusable.
 
-Reviewed-by: Lokesh Vutla <lokeshvutla@ti.com>
+Bisected to:
 
-Thanks and regards,
-Lokesh
+4689d35c765c696bdf0535486a990038b242a26b is the first bad commit
+commit 4689d35c765c696bdf0535486a990038b242a26b
+Author: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Date:   Tue Jul 16 11:24:59 2019 +0300
 
-> 
-> Thanks,
-> Andrew
-> 
-> Changes from v1:
->  - Split into logical patches
->  - Check for OP-TEE in DT only once
->  - Check the OP-TEE node is "okay"
-> 
-> Changes from v2:
->  - Add HS patch using 'optee_available'
-> 
-> Changes from v3:
->  - Add comments as suggested by Tony and Lokesh
-> 
-> Andrew F. Davis (4):
->   ARM: OMAP2+: Add omap_secure_init callback hook for secure
->     initialization
->   ARM: OMAP2+: Introduce check for OP-TEE in omap_secure_init()
->   ARM: OMAP2+: Use ARM SMC Calling Convention when OP-TEE is available
->   ARM: OMAP2+: sleep43xx: Call secure suspend/resume handlers
-> 
->  arch/arm/mach-omap2/common.h      |  2 +-
->  arch/arm/mach-omap2/io.c          | 11 +++++++
->  arch/arm/mach-omap2/omap-secure.c | 50 +++++++++++++++++++++++++++++++
->  arch/arm/mach-omap2/omap-secure.h | 10 +++++++
->  arch/arm/mach-omap2/omap-smc.S    |  6 ++--
->  arch/arm/mach-omap2/pm33xx-core.c | 24 +++++++++++++++
->  6 files changed, 99 insertions(+), 4 deletions(-)
-> 
+    dmaengine: ti: omap-dma: Improved memcpy polling support
+
+The commit does not revert cleanly anymore. Any ideas how to fix this?
+
+A.
