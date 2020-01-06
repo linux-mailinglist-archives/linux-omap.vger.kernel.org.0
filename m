@@ -2,105 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 943C8131A14
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2020 22:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D33ED131AF5
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2020 23:03:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726723AbgAFVHq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Jan 2020 16:07:46 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:45863 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726722AbgAFVHp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Jan 2020 16:07:45 -0500
-Received: by mail-io1-f66.google.com with SMTP id i11so50051725ioi.12
-        for <linux-omap@vger.kernel.org>; Mon, 06 Jan 2020 13:07:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lixom-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xRpwQviknb25UoZmbJMLN6EJGSP9FYuSxPxJ31clxVs=;
-        b=b3B5l/u9gjT+OpYHkhEegMK+pBwrPRkSjcRruBCbXIAjTmW48tye354OZERmQSamB4
-         Pjhy7cDKQeD0thwr0RaYeHK3mokcLMiTaSz73ClS8ThVz1b7Xh1glcIw/XliWXWe89aG
-         rlWq2dTdRX3UdRtC8BzSOc3OkazGkrp+7veIltbgQAIWHYw4eQVhAMmA5wygomf1G+dB
-         gUdpD85w9ZnSfpJ7rzTdVvEs4vpZOrZw6H2JE2k16gfkiogmGfY2yA29+1vfJw5CW0ep
-         iMhCompfFlJYZ8HF38JfyA7iOWkigqMftEDU4Kl7td+2HG3SbsZse6lbr0NRRRzF4APL
-         lxIw==
+        id S1726794AbgAFWDS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Jan 2020 17:03:18 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:36760 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726779AbgAFWDS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Jan 2020 17:03:18 -0500
+Received: by mail-ot1-f67.google.com with SMTP id 19so61049253otz.3
+        for <linux-omap@vger.kernel.org>; Mon, 06 Jan 2020 14:03:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xRpwQviknb25UoZmbJMLN6EJGSP9FYuSxPxJ31clxVs=;
-        b=dpoCUkuQb/BfemgxR/LFVGRBb+O9hGBsPS2meNpotx+b7a3ypvn1RrtylNrQNzkxPb
-         VzBIW85UhFjXkqKJe3NnefbN4xNQTkA/OqIOnrcpOk05TICdg86OPKIhFhyg53U0bmA+
-         qmuh5rWngRbaGSZKIB7heoAEdbpPrPFXYxhfvjSO1Oh/ef79moSu81ZfrWvlw2vWefCF
-         mCnCwNiUJ6GYlTtd0D2OhyRqnS7+A+uJTcw2IqUTFvN0t73mS1R4KlDMiioXZSdVPB81
-         VCl66xPBOXtJ1hA8+E84/GQRZVtmB82Mw56Cku9/enLVHkArnXONS6G0nRsIp/vwrmR6
-         8+ig==
-X-Gm-Message-State: APjAAAW7UQcynJK0aPu8UEA8Pc/V0juWBEr0VXifidhwttfPJmVg1gtt
-        SRKTiGmuvJ8NALanttXAxq3r2HbB2O9doYBIKHwJroCzxKXgHRjU
-X-Google-Smtp-Source: APXvYqzc+ndsPGVWQqd03R9vgmoEdYCbRH0T8wxQshOrpgT1uPAz0/P2devjATpA6jCfqYmFYGzlDY97JfI5jbp1ng0=
-X-Received: by 2002:a02:ce8a:: with SMTP id y10mr71794309jaq.21.1578344863555;
- Mon, 06 Jan 2020 13:07:43 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=whyVDgNs4KCm1yOjF/vWGK9b0ag3HJcP6pF9Jl+67Ao=;
+        b=OsIv0GbNClNtt2hlaaNg1bxFjK7r5z9CBoxAIDT7Dr/7P8US5+VhIdxjAp0xMYPp0X
+         rhj7IxfltBMSaPF2jf6Pu64GWo1zhh9Yp2HyojRQl+/FdNZc7uUCt/qbZv0gBriI8o8v
+         wGQH1YWvxjv7NLNL9AfZOAtL8Y8zdBb5vJlr/6IL88TRSOXRySKj5mgsmUevcOuHtLL/
+         Cp8CUcJA/STumAuFnZFVBIn2bqvzIXV+3r9EZ9QIe4p3uG+1O6FKCoE4OUAKJFzqcmvs
+         G0i9sEoTPftnA7y+zRQleP6PFkEqXxbcKnrrQptMZq6kDFq7UTweVz58VC9PukW+3ZnM
+         lLCA==
+X-Gm-Message-State: APjAAAUsKihW+uCinnvTywlk79d+JWGdoQPS83gIjkSXRqmjiLDq3ZEG
+        p15fAanAct6LMG+aWAVaWJ/ZueM=
+X-Google-Smtp-Source: APXvYqwAF8tPHKS9uCVmix2retvXiQWSNeyo1kvpomt6hrB4pnkUSPZITCzctVLNHzLTVpnIm7tq5g==
+X-Received: by 2002:a9d:806:: with SMTP id 6mr1260177oty.90.1578348196886;
+        Mon, 06 Jan 2020 14:03:16 -0800 (PST)
+Received: from rob-hp-laptop (ip-70-5-121-225.ftwttx.spcsdns.net. [70.5.121.225])
+        by smtp.gmail.com with ESMTPSA id u18sm24521020otq.26.2020.01.06.14.03.15
+        for <linux-omap@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2020 14:03:16 -0800 (PST)
+Received: from rob (uid 1000)
+        (envelope-from rob@rob-hp-laptop)
+        id 220d32
+        by rob-hp-laptop (DragonFly Mail Agent v0.11);
+        Mon, 06 Jan 2020 16:03:13 -0600
+Date:   Mon, 6 Jan 2020 16:03:13 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Faiz Abbas <faiz_abbas@ti.com>
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-mmc@vger.kernel.org,
+        kishon@ti.com, adrian.hunter@intel.com, mark.rutland@arm.com,
+        ulf.hansson@linaro.org, tony@atomide.com
+Subject: Re: [PATCH v4 08/11] dt-bindings: sdhci-omap: Add documentation for
+ ti,needs-special-reset property
+Message-ID: <20200106220313.GA6822@bogus>
+References: <20200106110133.13791-1-faiz_abbas@ti.com>
+ <20200106110133.13791-9-faiz_abbas@ti.com>
 MIME-Version: 1.0
-References: <20200106203700.21009-1-tony@atomide.com>
-In-Reply-To: <20200106203700.21009-1-tony@atomide.com>
-From:   Olof Johansson <olof@lixom.net>
-Date:   Mon, 6 Jan 2020 13:07:32 -0800
-Message-ID: <CAOesGMiNbyUXwPFsG-ipTn-xfEs+A2hG8Q8MTcSLz5794GCv0g@mail.gmail.com>
-Subject: Re: [PATCH] clocksource: timer-ti-dm: Fix regression
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Yangtao Li <tiny.windzz@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200106110133.13791-9-faiz_abbas@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jan 6, 2020 at 12:37 PM Tony Lindgren <tony@atomide.com> wrote:
->
-> Clean-up commit 8c82723414d5 ("clocksource/drivers/timer-ti-dm: Switch to
-> platform_get_irq") caused a regression where we now try to access
-> uninitialized data for timer:
->
-> drivers/clocksource/timer-ti-dm.c: In function 'omap_dm_timer_probe':
-> drivers/clocksource/timer-ti-dm.c:798:13: warning: 'timer' may be used
-> uninitialized in this function [-Wmaybe-uninitialized]
->
-> On boot we now get:
->
-> Unable to handle kernel NULL pointer dereference at virtual address
-> 00000004
-> ...
-> (omap_dm_timer_probe) from [<c061ac7c>] (platform_drv_probe+0x48/0x98)
-> (platform_drv_probe) from [<c0618c04>] (really_probe+0x1dc/0x348)
-> (really_probe) from [<c0618ef4>] (driver_probe_device+0x5c/0x160)
->
-> Let's fix the issue by moving platform_get_irq to happen after timer has
-> been allocated.
->
-> Fixes: 8c82723414d5 ("clocksource/drivers/timer-ti-dm: Switch to platform_get_irq")
-> Cc: Yangtao Li <tiny.windzz@gmail.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-
-Acked-by: Olof Johansson <olof@lixom.net>
-
+On Mon, Jan 06, 2020 at 04:31:30PM +0530, Faiz Abbas wrote:
+> Some controllers need a special software reset sequence. Document the
+> ti,needs-special-reset binding to indicate that a controller needs this.
+> 
+> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
 > ---
->
-> I did not notice simlar issue with other patches in the series, but
-> please do double check Yangtao.
+>  Documentation/devicetree/bindings/mmc/sdhci-omap.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt b/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
+> index 97efb01617dd..0f5389c72bda 100644
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
+> @@ -21,6 +21,7 @@ Optional properties:
+>  - dma-names:	List of DMA request names. These strings correspond 1:1 with the
+>  		DMA specifiers listed in dmas. The string naming is to be "tx"
+>  		and "rx" for TX and RX DMA requests, respectively.
+> +- ti,needs-special-reset: Requires a special softreset sequence
 
-Yeah, this even seems to be caught at build (but our builds have been
-so noisy with warnings lately that they're hard to spot):
+Why can't this be implied by the compatible string?
 
-/build/drivers/clocksource/timer-ti-dm.c: In function 'omap_dm_timer_probe':
-/build/drivers/clocksource/timer-ti-dm.c:798:13: warning: 'timer' may
-be used uninitialized in this function [-Wmaybe-uninitialized]
-  798 |  timer->irq = platform_get_irq(pdev, 0);
-      |  ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
--Olof
+Rob
