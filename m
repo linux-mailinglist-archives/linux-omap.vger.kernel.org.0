@@ -2,93 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C162132E85
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2020 19:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27B67132E8F
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2020 19:37:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728519AbgAGSc6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jan 2020 13:32:58 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:36054 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727925AbgAGSc6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jan 2020 13:32:58 -0500
-Received: by mail-lj1-f196.google.com with SMTP id r19so624912ljg.3;
-        Tue, 07 Jan 2020 10:32:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5yQ/2RN1Cvw3xM3qW2gJqwdhulzSTGRTZcA4yZwm3ec=;
-        b=szuMX3AMHYI0gSMY6RihsVSowNacVcfSjmGJO7Syk9LEwBnI+H7cvhmHchoj6oPnpf
-         CQgUt6FfdHpM9YDs9NRCCuvW2lMoxK8IfABvzZg2oAiIVrSeo8yp1de76qAwMtpnd3jo
-         KaAhWqFzKl8W65Ih9gTzURdlbNYLjD6YZvZ+odOSnsTzz9MURnl4L9DPAZrV+U8nTs7Z
-         HlH6YSQMlCDQEVt6lbIkSHxSiUHBI4PTZKt0jROYhjeLpny38tsMc1JVRvxWWWhx8oiF
-         oE8UUJnja9w5sFmrmhZ/FtRNuGJMcWzOu8XvHG4zqrRNZCDoFTDshhJ4CZwndmt6lgZz
-         7sNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5yQ/2RN1Cvw3xM3qW2gJqwdhulzSTGRTZcA4yZwm3ec=;
-        b=IfkHpe5d4tivewWodnZ+xSK4bd0I39XfEI/iu2xlGtXiVGR8BeLir77ymdfKzlFjH9
-         kaYzarWvHYnkPxCGHUuCFA7lX/NhrpSwvcw9uu2SPpCYOnpIuwklCwNARuCURgwoImcm
-         ru/sYYHXsmPgsCPDnhl4LM2sOLlIgxdwX6WZNfu5aIvf/V6spkI2xKRrmSjVbcM9cBD3
-         fBhRjHc1uWMuoKF6v1wMU3fpe2JdPvgzO/7kMzSBzeOFCrOeMALwuwB8oynMSdEfMri3
-         8R7CKybDMA/DdJR03t0Bmi6jbbwH2wJauznhAi2/g8F0QUbsgM4mowZx5RhxL6zXHtMe
-         El4w==
-X-Gm-Message-State: APjAAAXK8YE3SV1weHjp2obpxUY8tNDHuSgH0YgwR4RjV4t87AITZP+I
-        TYoddXNKdSbxZ5rLpbyk0/b4iZB58NEtNQb1FVk=
-X-Google-Smtp-Source: APXvYqymzxa0E0fR2E3OuAmc/FP9tlpw0cmDmDeoe9mooWQr78VIdEE1uYFCuSRmYe08wrAPc9giPkKWA8L17KRVvGg=
-X-Received: by 2002:a05:651c:1b0:: with SMTP id c16mr510355ljn.236.1578421976485;
- Tue, 07 Jan 2020 10:32:56 -0800 (PST)
+        id S1728358AbgAGShL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jan 2020 13:37:11 -0500
+Received: from muru.com ([72.249.23.125]:50430 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728235AbgAGShL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 7 Jan 2020 13:37:11 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 16E8B8022;
+        Tue,  7 Jan 2020 18:37:50 +0000 (UTC)
+Date:   Tue, 7 Jan 2020 10:37:06 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] mfd: motorola-cpcap: Do not hardcode SPI mode flags
+Message-ID: <20200107183706.GH5885@atomide.com>
+References: <20191204231931.21378-1-linus.walleij@linaro.org>
+ <20191219170409.GH35479@atomide.com>
+ <CACRpkdYm2b7G6dvmY5VCSSQCK6DMEYMYRqnoMpH6jaumkQL3Xg@mail.gmail.com>
+ <20200107182400.GG5885@atomide.com>
 MIME-Version: 1.0
-References: <20200106130909.7697-1-matwey@sai.msu.ru> <CAOCHtYgyN+qXXX1YeEcO+nvRFrAL1HAVVMvjfeJ5nvxVjtFKtg@mail.gmail.com>
- <CAJs94EbUL6o9sM+pwxwpqHVDkFqy7wFRirET-Vq3SNVd3grUsA@mail.gmail.com> <20200106210509.GF5885@atomide.com>
-In-Reply-To: <20200106210509.GF5885@atomide.com>
-From:   Robert Nelson <robertcnelson@gmail.com>
-Date:   Tue, 7 Jan 2020 12:32:30 -0600
-Message-ID: <CAOCHtYhKUyUwunnWDT1CuRTpzS78d7xKq3qB3Phys7RgUZnM3w@mail.gmail.com>
-Subject: Re: [PATCH] arm: dts: am335x-boneblack-common: fix memory size
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     "Matwey V. Kornilov" <matwey@sai.msu.ru>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "open list:OMAP DEVICE TREE SUPPORT" <linux-omap@vger.kernel.org>,
-        "open list:OMAP DEVICE TREE SUPPORT" <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200107182400.GG5885@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jan 6, 2020 at 3:05 PM Tony Lindgren <tony@atomide.com> wrote:
->
-> * Matwey V. Kornilov <matwey@sai.msu.ru> [200106 20:48]:
-> > =D0=BF=D0=BD, 6 =D1=8F=D0=BD=D0=B2. 2020 =D0=B3. =D0=B2 23:44, Robert N=
-elson <robertcnelson@gmail.com>:
-> > >
-> > > On Mon, Jan 6, 2020 at 7:10 AM Matwey V. Kornilov <matwey@sai.msu.ru>=
- wrote:
+* Tony Lindgren <tony@atomide.com> [200107 18:24]:
+> * Linus Walleij <linus.walleij@linaro.org> [200107 09:58]:
+> > On Thu, Dec 19, 2019 at 6:04 PM Tony Lindgren <tony@atomide.com> wrote:
+> > 
+> > > * Linus Walleij <linus.walleij@linaro.org> [700101 00:00]:
+> > > > The current use of mode flags to us SPI_MODE_0 and
+> > > > SPI_CS_HIGH is fragile: it overwrites anything already
+> > > > assigned by the SPI core. Change it thusly:
 > > > >
-> > > > BeagleBone Black series is equipped with 512MB RAM
-> > > > whereas only 256MB is included from am335x-bone-common.dtsi
+> > > > - Just |= the SPI_MODE_0 so we keep other flags
+> > > > - Assign ^= SPI_CS_HIGH since we might be active high
+> > > >   already, and that is usually the case with GPIOs used
+> > > >   for chip select, even if they are in practice active low.
+> > > >
+> > > > Add a comment clarifying why ^= SPI_CS_HIGH is the right
+> > > > choice here.
 > > >
-> > > FYI: While all versions from the factory are 512MB, some 3rd parties
-> > > offered 1GB reballing upgrades..
->
-> So what's the conclusion, is it safe to bump the default size to
-> 512MB then?
->
-> The custom ones could use their own dts file if bootloader is not
-> setting the RAM.
+> > > Looks like this breaks booting for droid4 with a cpcap
+> > > PMIC, probably as regulators won't work. There's no GPIO
+> > > controller involved in this case for the chip select, the
+> > > pins are directly controlled by the spi-omap2-mcspi.c
+> > > driver.
+> > >
+> > > From the pin muxing setup we see there's a pull-down on
+> > > mcspi1_cs0 pin meaning it's active high:
+> > >
+> > > /* 0x4a100138 mcspi1_cs0.mcspi1_cs0 ae23 */
+> > > OMAP4_IOPAD(0x138, PIN_INPUT_PULLDOWN | MUX_MODE0)
+> > >
+> > > My guess a similar issue is with similar patches for
+> > > all non-gpio spi controllers?
+> > >
+> > > Let me know if you want me to test some other changes,
+> > > or if this patch depends on some other changes.
+> > 
+> > So this must mean that something else is setting SPI_CS_HIGH
+> > for this driver, such as the device tree, right?
+> 
+> Hmm yes we have "spi-cs-high" property set in the dts.
+> 
+> But looking at drivers/spi/spi-omap2-mcspi.c, it also
+> provides an option to use a GPIO for chip select in
+> omap2_mcspi_setup(). That does not seem to be used though
+> based on a quick grep though.
+> 
+> > And the |= SPI_CS_HIGH assignment in the driver is just
+> > surplus and we should just delete this code instead.
+> > 
+> > Would that be right?
+> 
+> Sorry I don't know, maybe. If you have some test patch to
+> try I can easily test.
 
-Yeah this is safe for factory devices. Classic u-boot will update
-these for modified boards.
+Oh sorry, I guess you're suggesting we drop SPI_CS_HIGH from
+drivers/mfd/motorola-cpcap.c, and not from spi-omap2-mcspi.c..
+Too much glög over the holidays probably :)
+
+Anyways, removing SPI_CS_HIGH motorola-cpcap.c also causes
+mounting MMC to fail looks like. I wonder if we're missing
+of_property_read_bool() for spi-cs-high in spi-omap2-mcspi.c?
 
 Regards,
 
---=20
-Robert Nelson
-https://rcn-ee.com/
+Tony
