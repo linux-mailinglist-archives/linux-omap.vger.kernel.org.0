@@ -2,27 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC602132E16
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2020 19:14:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5B5B132E18
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2020 19:14:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727925AbgAGSOY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jan 2020 13:14:24 -0500
-Received: from muru.com ([72.249.23.125]:50392 "EHLO muru.com"
+        id S1728451AbgAGSOZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jan 2020 13:14:25 -0500
+Received: from muru.com ([72.249.23.125]:50398 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728364AbgAGSOY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 7 Jan 2020 13:14:24 -0500
+        id S1728364AbgAGSOZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 7 Jan 2020 13:14:25 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 362128022;
-        Tue,  7 Jan 2020 18:15:05 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 3538F810E;
+        Tue,  7 Jan 2020 18:15:06 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     soc@kernel.org
 Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 1/4] soc changes for omaps for v5.6
-Date:   Tue,  7 Jan 2020 10:14:16 -0800
-Message-Id: <pull-1578420398-290837@atomide.com>
+Subject: [GIT PULL 2/4] dts changes for omaps for v5.6
+Date:   Tue,  7 Jan 2020 10:14:17 -0800
+Message-Id: <pull-1578420398-290837@atomide.com-2>
 X-Mailer: git-send-email 2.24.1
+In-Reply-To: <pull-1578420398-290837@atomide.com>
+References: <pull-1578420398-290837@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -39,45 +41,42 @@ The following changes since commit e42617b825f8073569da76dc4510bfa019b1c35a:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.6/soc-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.6/dt-signed
 
-for you to fetch changes up to 4601832f40501efc3c2fd264a5a69bd1ac17d520:
+for you to fetch changes up to bfe0237dd6c441f0ba531755ab24579eaee99be7:
 
-  ARM: OMAP2+: use separate IOMMU pdata to fix DRA7 IPU1 boot (2019-12-17 09:57:09 -0800)
-
-----------------------------------------------------------------
-SoC changes for omaps for v5.6 merge window
-
-SoC related changes for omaps that mostly relate to making iommus
-to start probing with ti-sysc interconnect target module driver:
-
-- Add missing lcdc clockdomain for am43xx
-
-- Pass auxdata for reset control driver
-
-- Remove old pdata quirks for iommus
-
-- Add workaround for dra7 dsp mstandby errata
-
-- Convert iommu platform code to probe with ti-sysc
-
-- Use sperate iommu auxdata for ipu1
+  ARM: dts: am335x-icev2: Add support for OSD9616P0899-10 at i2c0 (2019-12-12 09:35:02 -0800)
 
 ----------------------------------------------------------------
-Dave Gerlach (1):
-      ARM: OMAP2+: am43xx: Add lcdc clockdomain
+Devicetree changes for omaps for v5.6 merge window
 
-Suman Anna (2):
-      ARM: OMAP2+: Add workaround for DRA7 DSP MStandby errata i879
-      ARM: OMAP2+: use separate IOMMU pdata to fix DRA7 IPU1 boot
+Devicetree changes for omaps for v5.6 to configure more
+devices and update boards to use generic lcd panels:
 
-Tero Kristo (3):
-      ARM: OMAP2+: pdata-quirks: add PRM data for reset support
-      ARM: OMAP4+: remove pdata quirks for omap4+ iommus
-      ARM: OMAP2+: omap-iommu.c conversion to ti-sysc
+- Configure HDMI for dra76-evm and am57xx-idk
 
- arch/arm/mach-omap2/clockdomains43xx_data.c |  10 +++
- arch/arm/mach-omap2/omap-iommu.c            | 128 ++++++++++++++++++++++++----
- arch/arm/mach-omap2/pdata-quirks.c          |  43 +++++++---
- arch/arm/mach-omap2/prcm43xx.h              |   1 +
- 4 files changed, 153 insertions(+), 29 deletions(-)
+- Correct node name for am3517 mdio
+
+- Convert am335x-evm, am335x-evmsk, and am335x-icev2 to use generic
+  panels
+
+----------------------------------------------------------------
+Grygorii Strashko (1):
+      ARM: dts: omap3: name mdio node properly
+
+Jyri Sarha (3):
+      ARM: dts: am335x-evm: Use drm simple-panel instead of tilcdc-panel
+      ARM: dts: am335x-evmsk: Use drm simple-panel instead of tilcdc-panel
+      ARM: dts: am335x-icev2: Add support for OSD9616P0899-10 at i2c0
+
+Tomi Valkeinen (2):
+      ARM: dts: dra76-evm: add HDMI output
+      ARM: dts: am57xx-idk-common: add HDMI to the common dtsi
+
+ arch/arm/boot/dts/am335x-evm.dts         | 40 +++++++------------
+ arch/arm/boot/dts/am335x-evmsk.dts       | 38 ++++++------------
+ arch/arm/boot/dts/am335x-icev2.dts       | 13 +++++++
+ arch/arm/boot/dts/am3517.dtsi            |  2 +-
+ arch/arm/boot/dts/am57xx-idk-common.dtsi | 59 ++++++++++++++++++++++++++++
+ arch/arm/boot/dts/dra76-evm.dts          | 66 ++++++++++++++++++++++++++++++++
+ 6 files changed, 164 insertions(+), 54 deletions(-)
