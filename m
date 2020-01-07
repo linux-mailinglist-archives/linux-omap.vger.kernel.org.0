@@ -2,84 +2,237 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D33ED131AF5
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2020 23:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB3C131FD6
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2020 07:34:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726794AbgAFWDS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Jan 2020 17:03:18 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:36760 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726779AbgAFWDS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Jan 2020 17:03:18 -0500
-Received: by mail-ot1-f67.google.com with SMTP id 19so61049253otz.3
-        for <linux-omap@vger.kernel.org>; Mon, 06 Jan 2020 14:03:17 -0800 (PST)
+        id S1725874AbgAGGer (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jan 2020 01:34:47 -0500
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:40901 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725781AbgAGGer (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jan 2020 01:34:47 -0500
+Received: by mail-qk1-f193.google.com with SMTP id c17so41758246qkg.7;
+        Mon, 06 Jan 2020 22:34:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hIJgplRJ76RhyxgWHzYQXLkzuycqS5KcOYNXCryb3pU=;
+        b=vf3JV4zocywSj93VGGe3LGCCRzY+Y4RmfNIF1doHnmWFKtBWXgaGTaKLn5Fl2ixRs+
+         L1cgw38VniG7VxFQIjgUavPesskrlETKwJ+d7l9PZb5rh6c6aV2FsOwvEfmaM8pxyEk1
+         wrgVfiP09rOgWbs+Oo7CoHelt6wHYEm8ggkyhlf0OAo4+6ArSWt73MfjMQovNbItl5X6
+         e3m8AVu8KMTOUm3nW44fDODiDJXQw3y2dD3Ol0z/8sSQOB5GcwuJiKTmvSJ1IO/mRdRu
+         B4swPnqTHnoOvSmP+9UH+x8Yz3Qrg4RpdoHpCwmZlEvT/YwY9jWlqaa2vjcNCWKNO2WJ
+         BUPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=whyVDgNs4KCm1yOjF/vWGK9b0ag3HJcP6pF9Jl+67Ao=;
-        b=OsIv0GbNClNtt2hlaaNg1bxFjK7r5z9CBoxAIDT7Dr/7P8US5+VhIdxjAp0xMYPp0X
-         rhj7IxfltBMSaPF2jf6Pu64GWo1zhh9Yp2HyojRQl+/FdNZc7uUCt/qbZv0gBriI8o8v
-         wGQH1YWvxjv7NLNL9AfZOAtL8Y8zdBb5vJlr/6IL88TRSOXRySKj5mgsmUevcOuHtLL/
-         Cp8CUcJA/STumAuFnZFVBIn2bqvzIXV+3r9EZ9QIe4p3uG+1O6FKCoE4OUAKJFzqcmvs
-         G0i9sEoTPftnA7y+zRQleP6PFkEqXxbcKnrrQptMZq6kDFq7UTweVz58VC9PukW+3ZnM
-         lLCA==
-X-Gm-Message-State: APjAAAUsKihW+uCinnvTywlk79d+JWGdoQPS83gIjkSXRqmjiLDq3ZEG
-        p15fAanAct6LMG+aWAVaWJ/ZueM=
-X-Google-Smtp-Source: APXvYqwAF8tPHKS9uCVmix2retvXiQWSNeyo1kvpomt6hrB4pnkUSPZITCzctVLNHzLTVpnIm7tq5g==
-X-Received: by 2002:a9d:806:: with SMTP id 6mr1260177oty.90.1578348196886;
-        Mon, 06 Jan 2020 14:03:16 -0800 (PST)
-Received: from rob-hp-laptop (ip-70-5-121-225.ftwttx.spcsdns.net. [70.5.121.225])
-        by smtp.gmail.com with ESMTPSA id u18sm24521020otq.26.2020.01.06.14.03.15
-        for <linux-omap@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2020 14:03:16 -0800 (PST)
-Received: from rob (uid 1000)
-        (envelope-from rob@rob-hp-laptop)
-        id 220d32
-        by rob-hp-laptop (DragonFly Mail Agent v0.11);
-        Mon, 06 Jan 2020 16:03:13 -0600
-Date:   Mon, 6 Jan 2020 16:03:13 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Faiz Abbas <faiz_abbas@ti.com>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-mmc@vger.kernel.org,
-        kishon@ti.com, adrian.hunter@intel.com, mark.rutland@arm.com,
-        ulf.hansson@linaro.org, tony@atomide.com
-Subject: Re: [PATCH v4 08/11] dt-bindings: sdhci-omap: Add documentation for
- ti,needs-special-reset property
-Message-ID: <20200106220313.GA6822@bogus>
-References: <20200106110133.13791-1-faiz_abbas@ti.com>
- <20200106110133.13791-9-faiz_abbas@ti.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hIJgplRJ76RhyxgWHzYQXLkzuycqS5KcOYNXCryb3pU=;
+        b=UIR7DgvJ0DqfTDndxwFehCR83Gh0+kA9Fwk9v8WJp7gNUrXVikbQltz9fOzhRZnHlm
+         7dk5855gcGgpGZq8Tx7hf29Ar1etwAZ0Dvy9Ie34y5G5XYnpARvl30FZTEiOtslep9N6
+         cV/M8PWPcbUSZx6xCmE5gFgXHIramfy4AjBTJBm3hAA0BISzxuaTGGLWQKIdIL9jUHEc
+         uxCeibSu9qtL0PUY6YR5EQgEsoPSOLRFfo5oryrU+ki0br0gEjSIOb9FEyoGJcjF3xws
+         N9+fQgJz0nw0SKCjMrLb9Pmo49t/oUms4QSWZjgPCJYMEz+uuJg38RB949NIWqiYOZo3
+         LzgQ==
+X-Gm-Message-State: APjAAAVdijiZXaLHEqRqHNbNwpiazGLWDnPzRV4oS5hYSzp3qKL2IJJF
+        Rnlu1DjHsjLHPMm+d9KypEI7rGOW/fE1cm+k5Wo=
+X-Google-Smtp-Source: APXvYqy/6QqapX3ChkaW3f+y6Y82dfEMw3gnR8ZvHF2xUUzeh/+SkQu1xakvfd6nPvrNB/s8A/AHkK3774z8iwCvyzM=
+X-Received: by 2002:a37:b601:: with SMTP id g1mr84298304qkf.114.1578378885720;
+ Mon, 06 Jan 2020 22:34:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200106110133.13791-9-faiz_abbas@ti.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200106110133.13791-1-faiz_abbas@ti.com> <20200106110133.13791-3-faiz_abbas@ti.com>
+In-Reply-To: <20200106110133.13791-3-faiz_abbas@ti.com>
+From:   Baolin Wang <baolin.wang7@gmail.com>
+Date:   Tue, 7 Jan 2020 14:34:34 +0800
+Message-ID: <CADBw62qR5F8h4YbpWfU2UESeoR3zXzS=eePMvQHuT7NQE5hdSA@mail.gmail.com>
+Subject: Re: [PATCH v4 02/11] mmc: sdhci: Factor out some operations set to
+ their own functions
+To:     Faiz Abbas <faiz_abbas@ti.com>
+Cc:     linux-omap@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        devicetree@vger.kernel.org, linux-mmc <linux-mmc@vger.kernel.org>,
+        kishon@ti.com, Adrian Hunter <adrian.hunter@intel.com>,
+        mark.rutland@arm.com, robh+dt@kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>, tony@atomide.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jan 06, 2020 at 04:31:30PM +0530, Faiz Abbas wrote:
-> Some controllers need a special software reset sequence. Document the
-> ti,needs-special-reset binding to indicate that a controller needs this.
-> 
+Hi Faiz,
+
+On Mon, Jan 6, 2020 at 7:01 PM Faiz Abbas <faiz_abbas@ti.com> wrote:
+>
+> In preparation for adding external dma support, factor out data initialization,
+> block info and mrq_done to their own functions.
+>
 > Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
 > ---
->  Documentation/devicetree/bindings/mmc/sdhci-omap.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt b/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
-> index 97efb01617dd..0f5389c72bda 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
-> @@ -21,6 +21,7 @@ Optional properties:
->  - dma-names:	List of DMA request names. These strings correspond 1:1 with the
->  		DMA specifiers listed in dmas. The string naming is to be "tx"
->  		and "rx" for TX and RX DMA requests, respectively.
-> +- ti,needs-special-reset: Requires a special softreset sequence
+>  drivers/mmc/host/sdhci.c | 96 +++++++++++++++++++++++-----------------
+>  1 file changed, 55 insertions(+), 41 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 1b1c26da3fe0..f6999054abcf 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -1025,18 +1025,9 @@ static void sdhci_set_timeout(struct sdhci_host *host, struct mmc_command *cmd)
+>         }
+>  }
+>
+> -static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
+> +static void sdhci_initialize_data(struct sdhci_host *host,
+> +                                 struct mmc_data *data)
+>  {
+> -       struct mmc_data *data = cmd->data;
+> -
+> -       host->data_timeout = 0;
+> -
+> -       if (sdhci_data_line_cmd(cmd))
+> -               sdhci_set_timeout(host, cmd);
+> -
+> -       if (!data)
+> -               return;
+> -
+>         WARN_ON(host->data);
+>
+>         /* Sanity checks */
+> @@ -1048,6 +1039,36 @@ static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
+>         host->data_early = 0;
+>         host->data->bytes_xfered = 0;
+>
 
-Why can't this be implied by the compatible string?
+Can you remove above redundant blank line?
 
-Rob
+> +}
+> +
+> +static inline void sdhci_set_block_info(struct sdhci_host *host,
+> +                                       struct mmc_data *data)
+> +{
+> +
+
+Ditto.
+
+Otherwise, please add my tested tag if feel free.
+
+Tested-by: Baolin Wang <baolin.wang7@gmail.com>
+
+> +       /* Set the DMA boundary value and block size */
+> +       sdhci_writew(host,
+> +                    SDHCI_MAKE_BLKSZ(host->sdma_boundary, host->data->blksz),
+> +                    SDHCI_BLOCK_SIZE);
+> +       /*
+> +        * For Version 4.10 onwards, if v4 mode is enabled, 32-bit Block Count
+> +        * can be supported, in that case 16-bit block count register must be 0.
+> +        */
+> +       if (host->version >= SDHCI_SPEC_410 && host->v4_mode &&
+> +           (host->quirks2 & SDHCI_QUIRK2_USE_32BIT_BLK_CNT)) {
+> +               if (sdhci_readw(host, SDHCI_BLOCK_COUNT))
+> +                       sdhci_writew(host, 0, SDHCI_BLOCK_COUNT);
+> +               sdhci_writew(host, host->data->blocks, SDHCI_32BIT_BLK_CNT);
+> +       } else {
+> +               sdhci_writew(host, host->data->blocks, SDHCI_BLOCK_COUNT);
+> +       }
+> +}
+> +
+> +static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
+> +{
+> +       struct mmc_data *data = cmd->data;
+> +
+> +       sdhci_initialize_data(host, data);
+> +
+>         if (host->flags & (SDHCI_USE_SDMA | SDHCI_USE_ADMA)) {
+>                 struct scatterlist *sg;
+>                 unsigned int length_mask, offset_mask;
+> @@ -1133,22 +1154,7 @@ static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
+>
+>         sdhci_set_transfer_irqs(host);
+>
+> -       /* Set the DMA boundary value and block size */
+> -       sdhci_writew(host, SDHCI_MAKE_BLKSZ(host->sdma_boundary, data->blksz),
+> -                    SDHCI_BLOCK_SIZE);
+> -
+> -       /*
+> -        * For Version 4.10 onwards, if v4 mode is enabled, 32-bit Block Count
+> -        * can be supported, in that case 16-bit block count register must be 0.
+> -        */
+> -       if (host->version >= SDHCI_SPEC_410 && host->v4_mode &&
+> -           (host->quirks2 & SDHCI_QUIRK2_USE_32BIT_BLK_CNT)) {
+> -               if (sdhci_readw(host, SDHCI_BLOCK_COUNT))
+> -                       sdhci_writew(host, 0, SDHCI_BLOCK_COUNT);
+> -               sdhci_writew(host, data->blocks, SDHCI_32BIT_BLK_CNT);
+> -       } else {
+> -               sdhci_writew(host, data->blocks, SDHCI_BLOCK_COUNT);
+> -       }
+> +       sdhci_set_block_info(host, data);
+>  }
+>
+>  static inline bool sdhci_auto_cmd12(struct sdhci_host *host,
+> @@ -1245,22 +1251,10 @@ static bool sdhci_needs_reset(struct sdhci_host *host, struct mmc_request *mrq)
+>                  (host->quirks & SDHCI_QUIRK_RESET_AFTER_REQUEST)));
+>  }
+>
+> -static void __sdhci_finish_mrq(struct sdhci_host *host, struct mmc_request *mrq)
+> +static void sdhci_set_mrq_done(struct sdhci_host *host, struct mmc_request *mrq)
+>  {
+>         int i;
+>
+> -       if (host->cmd && host->cmd->mrq == mrq)
+> -               host->cmd = NULL;
+> -
+> -       if (host->data_cmd && host->data_cmd->mrq == mrq)
+> -               host->data_cmd = NULL;
+> -
+> -       if (host->data && host->data->mrq == mrq)
+> -               host->data = NULL;
+> -
+> -       if (sdhci_needs_reset(host, mrq))
+> -               host->pending_reset = true;
+> -
+>         for (i = 0; i < SDHCI_MAX_MRQS; i++) {
+>                 if (host->mrqs_done[i] == mrq) {
+>                         WARN_ON(1);
+> @@ -1276,6 +1270,23 @@ static void __sdhci_finish_mrq(struct sdhci_host *host, struct mmc_request *mrq)
+>         }
+>
+>         WARN_ON(i >= SDHCI_MAX_MRQS);
+> +}
+> +
+> +static void __sdhci_finish_mrq(struct sdhci_host *host, struct mmc_request *mrq)
+> +{
+> +       if (host->cmd && host->cmd->mrq == mrq)
+> +               host->cmd = NULL;
+> +
+> +       if (host->data_cmd && host->data_cmd->mrq == mrq)
+> +               host->data_cmd = NULL;
+> +
+> +       if (host->data && host->data->mrq == mrq)
+> +               host->data = NULL;
+> +
+> +       if (sdhci_needs_reset(host, mrq))
+> +               host->pending_reset = true;
+> +
+> +       sdhci_set_mrq_done(host, mrq);
+>
+>         sdhci_del_timer(host, mrq);
+>
+> @@ -1390,12 +1401,15 @@ void sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
+>         }
+>
+>         host->cmd = cmd;
+> +       host->data_timeout = 0;
+>         if (sdhci_data_line_cmd(cmd)) {
+>                 WARN_ON(host->data_cmd);
+>                 host->data_cmd = cmd;
+> +               sdhci_set_timeout(host, cmd);
+>         }
+>
+> -       sdhci_prepare_data(host, cmd);
+> +       if (cmd->data)
+> +               sdhci_prepare_data(host, cmd);
+>
+>         sdhci_writel(host, cmd->arg, SDHCI_ARGUMENT);
+>
+> --
+> 2.19.2
+>
