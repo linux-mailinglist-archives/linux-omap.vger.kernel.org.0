@@ -2,104 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04F58133981
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2020 04:14:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BCB3133DBF
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2020 10:00:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726784AbgAHDOa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jan 2020 22:14:30 -0500
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:38261 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726757AbgAHDO2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jan 2020 22:14:28 -0500
-Received: by mail-pl1-f196.google.com with SMTP id f20so517917plj.5;
-        Tue, 07 Jan 2020 19:14:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :in-reply-to:references;
-        bh=MEMVCvrI0WADDr1Rd4hdPFBKPBKqjIAdQ9vka/nhGK8=;
-        b=cjA+8s6BieRSdKkZZL6r9MDFx2P3Rkf0tVFLPBVtAuVqIuiznU66SXDNOEYoLYV2GV
-         PavIpJ9NZm5cubQ08N4vO7fJ4qmEVVX/hVlcWWpyp2sfnDABnAZvaehqEQf6GIYbacVT
-         dkWxwGLTQMF7mWKRk26Oc6YWr42K0ajSp9fdCIobtPRmoUIk8EUuDygVgPEI6isxLY3+
-         gWhy8Bbd8uLAvGPNAh+bKsNZ+Tc2FZLpeTYPVxqD4MeueP5SmgZ84c6HUGZOCoPJxlTv
-         3KNUCCsXFlOrNMY91CnEev9qTghLF5v75bLrVUJsTQeGJqOVAvoC9G9+C9SvH/h6PBKP
-         yWtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:in-reply-to:references;
-        bh=MEMVCvrI0WADDr1Rd4hdPFBKPBKqjIAdQ9vka/nhGK8=;
-        b=CDxTkOUouFGvoB+3sf8bKbpmJ/xhqe9YuxkrIrvHhML+71FuWStkfFFNejj4R3yLKW
-         j0AOfoOFGPyZx/susWS8e5Cm7OcXtmCDPcnzaQ39d/xwKu/exuKBEcSmrYvPR0WEVEE0
-         M+FQsP9saNoOCe/RMTcdPABzAQvmbexzmwfsHt1aKn+QGBdcsNfgZW+3lePMq3C3XSPe
-         Zo3YPCwb8k33N4BGQZ0S1MXiw89A7PFGDse3O387mt4yUL2sv6LhXkEVhJsb31unxk6H
-         Zq/XrzlBbhYMLVC7zBzfzMQtXHqi36u5SM1iDDLM0YHrE6HDppsTmIJqhq5hqyBh5X26
-         PaaQ==
-X-Gm-Message-State: APjAAAW62jBW6vGcYsdhwXCrft01HXily2ebFGMAoxZ0gm46NKHmZfn8
-        oWwy5S9l25P8adX4gri/ICQ=
-X-Google-Smtp-Source: APXvYqyLt8wcr8zHu/gJz+x9jIYAWiQGf4diuYdoxJFt5UvVAKXJNb077Nb+ebThPHThkllp1h9Emg==
-X-Received: by 2002:a17:90b:145:: with SMTP id em5mr1990768pjb.20.1578453268158;
-        Tue, 07 Jan 2020 19:14:28 -0800 (PST)
-Received: from baolinwangubtpc.spreadtrum.com ([117.18.48.82])
-        by smtp.gmail.com with ESMTPSA id z4sm1016811pfn.42.2020.01.07.19.14.25
-        (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Tue, 07 Jan 2020 19:14:27 -0800 (PST)
-From:   Baolin Wang <baolin.wang7@gmail.com>
-To:     ohad@wizery.com, bjorn.andersson@linaro.org
-Cc:     baolin.wang7@gmail.com, linux-omap@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND 3/3] hwspinlock: omap: Use devm_hwspin_lock_register() to register hwlock controller
-Date:   Wed,  8 Jan 2020 11:14:01 +0800
-Message-Id: <315adcc5dfc6aa5c001448401dda4065e33deef2.1578453062.git.baolin.wang7@gmail.com>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <cover.1578453062.git.baolin.wang7@gmail.com>
-References: <cover.1578453062.git.baolin.wang7@gmail.com>
-In-Reply-To: <cover.1578453062.git.baolin.wang7@gmail.com>
-References: <cover.1578453062.git.baolin.wang7@gmail.com>
+        id S1727089AbgAHI77 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Jan 2020 03:59:59 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:9530 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726891AbgAHI77 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jan 2020 03:59:59 -0500
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDleVXA0PuFc="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 46.1.3 DYNA|AUTH)
+        with ESMTPSA id a09dafw088xje62
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Wed, 8 Jan 2020 09:59:45 +0100 (CET)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Subject: [BUG]: usb: dwc3: gadget: broken on OMAP5432
+Date:   Wed, 8 Jan 2020 09:59:44 +0100
+Message-Id: <703DD239-8E3B-405C-A531-FF7DEEED38DC@goldelico.com>
+Cc:     linux-usb@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+To:     Tejas Joglekar <Tejas.Joglekar@synopsys.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use devm_hwspin_lock_register() to register the hwlock controller instead of
-unregistering the hwlock controller explicitly when removing the device.
+Hi,
+I noticed that the usb ethernet gadget driver is broken since v5.5-rc2
+and 5.4.4, but only for our OMAP5 board. Our OMAP3 boards work with
+the same tree, kernel binary and user-space (Debian Stretch).
 
-Signed-off-by: Baolin Wang <baolin.wang7@gmail.com>
----
- drivers/hwspinlock/omap_hwspinlock.c |   13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+The symptom is that I can see the interface on the host PC being
+enumerated and IP addresses etc. are set up. But a ping in either
+direction fails/times out.
 
-diff --git a/drivers/hwspinlock/omap_hwspinlock.c b/drivers/hwspinlock/omap_hwspinlock.c
-index 3b05560..9e8a8c2 100644
---- a/drivers/hwspinlock/omap_hwspinlock.c
-+++ b/drivers/hwspinlock/omap_hwspinlock.c
-@@ -131,8 +131,8 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
- 	for (i = 0, hwlock = &bank->lock[0]; i < num_locks; i++, hwlock++)
- 		hwlock->priv = io_base + LOCK_BASE_OFFSET + sizeof(u32) * i;
- 
--	ret = hwspin_lock_register(bank, &pdev->dev, &omap_hwspinlock_ops,
--						base_id, num_locks);
-+	ret = devm_hwspin_lock_register(&pdev->dev, bank, &omap_hwspinlock_ops,
-+					base_id, num_locks);
- 	if (ret)
- 		goto runtime_err;
- 
-@@ -148,15 +148,6 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
- 
- static int omap_hwspinlock_remove(struct platform_device *pdev)
- {
--	struct hwspinlock_device *bank = platform_get_drvdata(pdev);
--	int ret;
--
--	ret = hwspin_lock_unregister(bank);
--	if (ret) {
--		dev_err(&pdev->dev, "%s failed: %d\n", __func__, ret);
--		return ret;
--	}
--
- 	pm_runtime_disable(&pdev->dev);
- 
- 	return 0;
--- 
-1.7.9.5
+After inspecting diffs I found some changes in dwc3:gadget
+and indeed omap3/twl4030 uses musb and omap5 uses dwc3.
+
+Reverting
+
+a7f7e61270f1 ("usb: dwc3: gadget: Fix logical condition");
+
+on v5.5-rc makes it work again.
+
+BTW: v4.19.90 works although it includes this logical condition fix.
+So the real difference between v4.19 and v5.5 may be elsewhere in
+newer kernels and only be revealed by the patch.
+
+If important: my setup is running with USB2 cable and speed
+only.
+
+So please check this and other recent dwc3 patches for introducing
+a stall of communication.
+
+BR and thanks,
+Nikolaus Schaller
+
 
