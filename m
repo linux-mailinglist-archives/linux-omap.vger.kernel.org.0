@@ -2,94 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6A3D134478
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2020 15:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D93B13486D
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2020 17:49:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727272AbgAHOCV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Wed, 8 Jan 2020 09:02:21 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.164]:16720 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726699AbgAHOCV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jan 2020 09:02:21 -0500
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDleVXA0PuFc="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 46.1.3 DYNA|AUTH)
-        with ESMTPSA id a09dafw08E2AfoE
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Wed, 8 Jan 2020 15:02:10 +0100 (CET)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: Re: [BUG]: usb: dwc3: gadget: broken on OMAP5432
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <7daf64ba-7efb-e2f1-a449-f5f3791a3c8e@synopsys.com>
-Date:   Wed, 8 Jan 2020 15:02:09 +0100
-Cc:     Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        "kernel@pyra-handheld.com" <kernel@pyra-handheld.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Transfer-Encoding: 8BIT
-Message-Id: <8E70227F-28DB-4C38-9EA4-FB5B0260C88F@goldelico.com>
-References: <703DD239-8E3B-405C-A531-FF7DEEED38DC@goldelico.com> <7daf64ba-7efb-e2f1-a449-f5f3791a3c8e@synopsys.com>
-To:     Tejas Joglekar <Tejas.Joglekar@synopsys.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1729410AbgAHQtZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Jan 2020 11:49:25 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:40494 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726401AbgAHQtY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jan 2020 11:49:24 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 008GnMhY098921;
+        Wed, 8 Jan 2020 10:49:22 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1578502162;
+        bh=RY2+pDL0Ybn6SAoSKXqWNf7C7aZKNuQoq94KgJgydn8=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=wIZ1auYOr+n4ggCmZNifI8nsb48C1L9mnN2DQVRkJMsPVsSN7e/QL2D2eWefDDcW1
+         6tqiTiStWi10VoCUOlBunkyrkDNAr6fPX5tllbRYCXtG1CLotXIGkSRl9kFNNd4eVX
+         2PZGWoOpc8Vw2NuQOqjUNe2+Fa30e5CCFyhIBfpk=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 008GnMrN021268
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 8 Jan 2020 10:49:22 -0600
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 8 Jan
+ 2020 10:49:21 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 8 Jan 2020 10:49:21 -0600
+Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 008GnLfN077466;
+        Wed, 8 Jan 2020 10:49:21 -0600
+Subject: Re: [RESEND PATCHv4 01/14] dt-bindings: remoteproc: Add OMAP
+ remoteproc bindings
+To:     Tero Kristo <t-kristo@ti.com>, <bjorn.andersson@linaro.org>,
+        <ohad@wizery.com>, <linux-remoteproc@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <mathieu.poirier@linaro.org>,
+        <linux-omap@vger.kernel.org>, Rob Herring <robh@kernel.org>,
+        <devicetree@vger.kernel.org>
+References: <20200102131845.12992-2-t-kristo@ti.com>
+ <20200102132512.13248-1-t-kristo@ti.com>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <f4ac066a-e5ee-f888-42bb-3f6d444747ee@ti.com>
+Date:   Wed, 8 Jan 2020 10:49:21 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20200102132512.13248-1-t-kristo@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hi Tero,
 
-> Am 08.01.2020 um 10:06 schrieb Tejas Joglekar <Tejas.Joglekar@synopsys.com>:
+On 1/2/20 7:25 AM, Tero Kristo wrote:
+> From: Suman Anna <s-anna@ti.com>
 > 
-> Hi,
-> On 1/8/2020 2:29 PM, H. Nikolaus Schaller wrote:
->> Hi,
->> I noticed that the usb ethernet gadget driver is broken since v5.5-rc2
->> and 5.4.4, but only for our OMAP5 board. Our OMAP3 boards work with
->> the same tree, kernel binary and user-space (Debian Stretch).
->> 
->> The symptom is that I can see the interface on the host PC being
->> enumerated and IP addresses etc. are set up. But a ping in either
->> direction fails/times out.
->> 
->> After inspecting diffs I found some changes in dwc3:gadget
->> and indeed omap3/twl4030 uses musb and omap5 uses dwc3.
->> 
->> Reverting
->> 
->> a7f7e61270f1 ("usb: dwc3: gadget: Fix logical condition");
->> 
->> on v5.5-rc makes it work again.
->> 
->> BTW: v4.19.90 works although it includes this logical condition fix.
->> So the real difference between v4.19 and v5.5 may be elsewhere in
->> newer kernels and only be revealed by the patch.
->> 
->> If important: my setup is running with USB2 cable and speed
->> only.
->> 
->> So please check this and other recent dwc3 patches for introducing
->> a stall of communication.
->> 
-> Another gadget driver issue was reported by Thinh after my fix, and he has submitted a patch for the same. You can refer the discussion https://patchwork.kernel.org/patch/11292087/.
-> Can you check if that patch works for you ?
+> Add the device tree bindings document for the IPU and DSP
+> remote processor devices on OMAP4+ SoCs.
+> 
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> [t-kristo@ti.com: converted to schema]
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> ---
+> v4: added ti,bootreg-shift and ti,autosuspend-delay properties
 
-Yes, it does!
+You missed out on my v3 comment on the firmware-name on Example 2. Can
+you please address it when you post the next version?
 
-So you can add my
+> 
+>  .../remoteproc/ti,omap-remoteproc.yaml        | 329 ++++++++++++++++++
+>  1 file changed, 329 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml b/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
+> new file mode 100644
+> index 000000000000..f53d58efaae3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
 
-Tested-By: H. Nikolaus Schaller <hns@goldelico.com>
+[snip]
 
-if possible (I can't reply to the original discussion).
+> +  - |+
+> +
+> +    //Example 2: OMAP5 IPU
+> +
+> +    /* IPU Reserved Memory node */
+> +    #include <dt-bindings/clock/omap5.h>
+> +    reserved-memory {
+> +        #address-cells = <2>;
+> +        #size-cells = <2>;
+> +
+> +        ipu_memory_region: ipu-memory@95800000 {
+> +            compatible = "shared-dma-pool";
+> +            reg = <0 0x95800000 0 0x3800000>;
+> +            reusable;
+> +        };
+> +    };
+> +
+> +    /* IPU node */
+> +    ocp {
+> +        #address-cells = <1>;
+> +        #size-cells = <1>;
+> +
+> +        ipu: ipu@55020000 {
+> +            compatible = "ti,omap5-ipu";
+> +            reg = <0x55020000 0x10000>;
+> +            reg-names = "l2ram";
+> +            iommus = <&mmu_ipu>;
+> +            mboxes = <&mailbox &mbox_ipu>;
+> +            memory-region = <&ipu_memory_region>;
+> +            ti,timers = <&timer3>, <&timer4>;
+> +            ti,watchdog-timers = <&timer9>, <&timer11>;
+> +            clocks = <&ipu_clkctrl OMAP5_MMU_IPU_CLKCTRL 0>;
+> +            resets = <&prm_core 2>;
+> +            firmware-name = "omap5-ipu-fw.xem";
+> +        };
+> +    };
 
-Would be nice if you can get it into 5.5-rc series and 5.4.y asap.
- 
-BR and thanks for the quick response and solution,
-Nikolaus Schaller
-
+regards
+Suman
