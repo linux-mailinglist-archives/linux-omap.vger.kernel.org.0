@@ -2,133 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D93B13486D
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2020 17:49:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A92F13489D
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2020 17:57:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729410AbgAHQtZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Jan 2020 11:49:25 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:40494 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726401AbgAHQtY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jan 2020 11:49:24 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 008GnMhY098921;
-        Wed, 8 Jan 2020 10:49:22 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1578502162;
-        bh=RY2+pDL0Ybn6SAoSKXqWNf7C7aZKNuQoq94KgJgydn8=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=wIZ1auYOr+n4ggCmZNifI8nsb48C1L9mnN2DQVRkJMsPVsSN7e/QL2D2eWefDDcW1
-         6tqiTiStWi10VoCUOlBunkyrkDNAr6fPX5tllbRYCXtG1CLotXIGkSRl9kFNNd4eVX
-         2PZGWoOpc8Vw2NuQOqjUNe2+Fa30e5CCFyhIBfpk=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 008GnMrN021268
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 8 Jan 2020 10:49:22 -0600
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 8 Jan
- 2020 10:49:21 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 8 Jan 2020 10:49:21 -0600
-Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 008GnLfN077466;
-        Wed, 8 Jan 2020 10:49:21 -0600
-Subject: Re: [RESEND PATCHv4 01/14] dt-bindings: remoteproc: Add OMAP
- remoteproc bindings
-To:     Tero Kristo <t-kristo@ti.com>, <bjorn.andersson@linaro.org>,
-        <ohad@wizery.com>, <linux-remoteproc@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <mathieu.poirier@linaro.org>,
-        <linux-omap@vger.kernel.org>, Rob Herring <robh@kernel.org>,
-        <devicetree@vger.kernel.org>
-References: <20200102131845.12992-2-t-kristo@ti.com>
- <20200102132512.13248-1-t-kristo@ti.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <f4ac066a-e5ee-f888-42bb-3f6d444747ee@ti.com>
-Date:   Wed, 8 Jan 2020 10:49:21 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1729562AbgAHQ5R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Jan 2020 11:57:17 -0500
+Received: from muru.com ([72.249.23.125]:50464 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727308AbgAHQ5R (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 8 Jan 2020 11:57:17 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 959CB80C5;
+        Wed,  8 Jan 2020 16:57:58 +0000 (UTC)
+Date:   Wed, 8 Jan 2020 08:57:14 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Merlijn Wajer <merlijn@wizzup.org>
+Subject: Re: [PATCH] drm/omap: gem: Fix tearing with BO_TILED
+Message-ID: <20200108165714.GI5885@atomide.com>
+References: <20191221005711.47314-1-tony@atomide.com>
+ <20191221164141.GI35479@atomide.com>
+ <20200104050950.GA11429@chinchilla>
+ <20200104055011.GA5885@atomide.com>
+ <20200105203704.GD5885@atomide.com>
+ <20200106180631.GA30670@chinchilla>
 MIME-Version: 1.0
-In-Reply-To: <20200102132512.13248-1-t-kristo@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200106180631.GA30670@chinchilla>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tero,
-
-On 1/2/20 7:25 AM, Tero Kristo wrote:
-> From: Suman Anna <s-anna@ti.com>
+* Matthijs van Duin <matthijsvanduin@gmail.com> [200106 10:07]:
+> On Sun, Jan 05, 2020 at 12:37:04PM -0800, Tony Lindgren wrote:
+> > 4. The issue I'm seeing with stellarium on droid4 may be a stride
+> >    issue as about one out of 3 or 4 frames is OK and aligning to
+> >    512 also fixes the issue maybe because it happens to make
+> >    multiple frames align to 4096
 > 
-> Add the device tree bindings document for the IPU and DSP
-> remote processor devices on OMAP4+ SoCs.
-> 
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> [t-kristo@ti.com: converted to schema]
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> ---
-> v4: added ti,bootreg-shift and ti,autosuspend-delay properties
+> Yeah if your buffers are 960 pixels wide (assuming the droid4's screen
+> is natively portrait) and 32bpp then 512-byte alignment suffices to
+> automatically make them 4KB alignment.
 
-You missed out on my v3 comment on the firmware-name on Example 2. Can
-you please address it when you post the next version?
+Hmm sounds like I need to retest this. But doesn't 512-byte alignment
+only make the 960 pixels case 2KB aligned?
 
-> 
->  .../remoteproc/ti,omap-remoteproc.yaml        | 329 ++++++++++++++++++
->  1 file changed, 329 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml b/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
-> new file mode 100644
-> index 000000000000..f53d58efaae3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
+> The most obvious thing I can think of that could do wrong is that it
+> might contiguously map the pages that cover each line, which is what
+> will happen if they use e.g. for_each_sg_page, but subsequently assume
+> that the stride in sgx virtual memory is ALIGN( width * cpp, PAGE_SIZE )
+> without taking the offset of the buffer inside the mapping into account.
 
-[snip]
+OK
 
-> +  - |+
-> +
-> +    //Example 2: OMAP5 IPU
-> +
-> +    /* IPU Reserved Memory node */
-> +    #include <dt-bindings/clock/omap5.h>
-> +    reserved-memory {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +
-> +        ipu_memory_region: ipu-memory@95800000 {
-> +            compatible = "shared-dma-pool";
-> +            reg = <0 0x95800000 0 0x3800000>;
-> +            reusable;
-> +        };
-> +    };
-> +
-> +    /* IPU node */
-> +    ocp {
-> +        #address-cells = <1>;
-> +        #size-cells = <1>;
-> +
-> +        ipu: ipu@55020000 {
-> +            compatible = "ti,omap5-ipu";
-> +            reg = <0x55020000 0x10000>;
-> +            reg-names = "l2ram";
-> +            iommus = <&mmu_ipu>;
-> +            mboxes = <&mailbox &mbox_ipu>;
-> +            memory-region = <&ipu_memory_region>;
-> +            ti,timers = <&timer3>, <&timer4>;
-> +            ti,watchdog-timers = <&timer9>, <&timer11>;
-> +            clocks = <&ipu_clkctrl OMAP5_MMU_IPU_CLKCTRL 0>;
-> +            resets = <&prm_core 2>;
-> +            firmware-name = "omap5-ipu-fw.xem";
-> +        };
-> +    };
+> If each line is at most 4KB (i.e. 1024 pixels @ 32bpp) but each line
+> straddles an MMU page boundary, then the result would be that the even
+> lines of the frame are written to the top half of the buffer, causing it
+> to be scaled to 50% vertically, while the odd lines are "lost" (written
+> outside the buffer, either to a different buffer or unmapped tiler
+> memory).  This sounds like what you described on irc?
 
-regards
-Suman
+Yes this sounds like what I've been seeing.
+
+Regards,
+
+Tony
