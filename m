@@ -2,140 +2,219 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92162133DCE
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2020 10:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED659133E30
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2020 10:19:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726921AbgAHJGq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Jan 2020 04:06:46 -0500
-Received: from smtprelay-out1.synopsys.com ([149.117.73.133]:53996 "EHLO
-        smtprelay-out1.synopsys.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726891AbgAHJGq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jan 2020 04:06:46 -0500
-Received: from mailhost.synopsys.com (badc-mailhost2.synopsys.com [10.192.0.18])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 883594016E;
-        Wed,  8 Jan 2020 09:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
-        t=1578474405; bh=5WU7s3fuKPSImRBkNVD6MJh/UOcuYXmgsl8ADr8fvgk=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-        b=bXKUEXfKzCZbQaHkkW/jcse2DTcLIMduLUk2hm+81RwkO0ZDkvLcyxjkbfRNbYt02
-         9uZVAVAjxf3+aqC0yrFokvswgvfsA1AVtCpGBYRqHfaXZN0XyLJOLN78ISz3gE3OB6
-         wrI+vS9GmAjTJlz6wHsrC9UyQD6crMtWLWo48pcmirAUiITREz6gTPwWAgew/RuvIa
-         G70u/RRslRhvnX/wICaiydk5k3R3gw0O5RoIfLvobvfsSAP7HqKSQASUfkWX7zudFj
-         hA+1fxiWY2YHwCEPQr5Spie5jsoET/ioGMCk9vHdWe835/BgsNaXI8v0+glYAZyqE/
-         oydqs6R6PZYew==
-Received: from US01WEHTC3.internal.synopsys.com (us01wehtc3.internal.synopsys.com [10.15.84.232])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mailhost.synopsys.com (Postfix) with ESMTPS id 2B4B0A006C;
-        Wed,  8 Jan 2020 09:06:42 +0000 (UTC)
-Received: from US01HYBRID2.internal.synopsys.com (10.15.246.24) by
- US01WEHTC3.internal.synopsys.com (10.15.84.232) with Microsoft SMTP Server
- (TLS) id 14.3.408.0; Wed, 8 Jan 2020 01:06:36 -0800
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (10.202.3.67) by
- mrs.synopsys.com (10.15.246.24) with Microsoft SMTP Server (TLS) id
- 14.3.408.0; Wed, 8 Jan 2020 01:06:36 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NJABM+RCwZ9/syV7YZw8Z+yHhy2/pZ7xtkmDBUg5Lh6xE37861sUTrpTvvLC7IcNf+ieOSXpWx+Ia80If6q2WkqOeEQRxSIKhHusgmVuO9ivj0yFF1938FSQW6tfbAdQpfBVdUJGQJvIxQhVLH5nMNf5duMA4a1ZlZgfR+2GLApNlJ6LEo9SATJnarcHrIBPQyRCEN7qz8kbpn2LHN1TzZfLKJym/49fvT/j3JnEjMQpMR9jws5+r1DW2X7k7fy5Ly1olwoYAzphni0+JBJKQzk4D8HL5VyKA5GJMrTYC+DwW0zbSMYfT2lyOb/SOvnF5XEGl1xR6PrmSzhcGIhRDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5WU7s3fuKPSImRBkNVD6MJh/UOcuYXmgsl8ADr8fvgk=;
- b=KWIszj4v40zInddRXpwAuBPXJAD+Ut1CmtiRZ/BrirYv/iu1ciBw6tLEoRHA/xCkxU1VWou4cAdoN2Zzif2cixf01EdMC5C4doWBfvCFvh7RH8hIgcVruds2da+6/4LT7mnWIGulY7OMmRQzItKU+q6OWUqKVIoIcWL2+Rc9ncxxp4GI0kwb0PkgEIv7jg6ymXKPeMZpeicpJpp/rkXfiYZAvC/eeaZ8fBcXOfJobVFHPGJtP/4XJVtdsoge3v/7pzeNfsZuGrdJaNFyw2nUWjUolmAD5yWyVoD8H4MPp/ZYNtuXAmZGICkrdUhD7BH9wQfWJA0NUMTBzCASj11QxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
- dkim=pass header.d=synopsys.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=synopsys.onmicrosoft.com; s=selector2-synopsys-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5WU7s3fuKPSImRBkNVD6MJh/UOcuYXmgsl8ADr8fvgk=;
- b=A8NA/g5+EfSKAkSNcKlrnky5TKDpvAl2+G/WDe26ZcPAxR5FAC7TFI8/NteD7PRxVew3nmLyMnM+ZtDAnbrLUB3Wf59ZhWWC7wOv3GVXW7GaDRaFe7jqjxoguuboMfmgc/dqr6kaOgiq8hgdJ3x+SPmNGlq0KA514W3DEh/HoRw=
-Received: from BN7PR12MB2802.namprd12.prod.outlook.com (20.176.27.97) by
- BN7PR12MB2755.namprd12.prod.outlook.com (20.176.178.139) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2602.10; Wed, 8 Jan 2020 09:06:34 +0000
-Received: from BN7PR12MB2802.namprd12.prod.outlook.com
- ([fe80::e420:5711:3657:f3ca]) by BN7PR12MB2802.namprd12.prod.outlook.com
- ([fe80::e420:5711:3657:f3ca%3]) with mapi id 15.20.2623.008; Wed, 8 Jan 2020
- 09:06:34 +0000
-From:   Tejas Joglekar <Tejas.Joglekar@synopsys.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tejas Joglekar <Tejas.Joglekar@synopsys.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        "Discussions about the Letux Kernel" <letux-kernel@openphoenux.org>,
-        "kernel@pyra-handheld.com" <kernel@pyra-handheld.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Subject: Re: [BUG]: usb: dwc3: gadget: broken on OMAP5432
-Thread-Topic: [BUG]: usb: dwc3: gadget: broken on OMAP5432
-Thread-Index: AQHVxgIdUvY8PDkJv0e4ULUpdkC8K6fgedIA
-Date:   Wed, 8 Jan 2020 09:06:34 +0000
-Message-ID: <7daf64ba-7efb-e2f1-a449-f5f3791a3c8e@synopsys.com>
-References: <703DD239-8E3B-405C-A531-FF7DEEED38DC@goldelico.com>
-In-Reply-To: <703DD239-8E3B-405C-A531-FF7DEEED38DC@goldelico.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=joglekar@synopsys.com; 
-x-originating-ip: [198.182.52.26]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 603c1523-1e4c-452d-3cc7-08d7941a0f6c
-x-ms-traffictypediagnostic: BN7PR12MB2755:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BN7PR12MB2755132D07B3FA466F3E4BF9A43E0@BN7PR12MB2755.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 02760F0D1C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(39860400002)(376002)(366004)(396003)(136003)(189003)(199004)(2906002)(54906003)(86362001)(26005)(6512007)(110136005)(6506007)(186003)(966005)(71200400001)(53546011)(66556008)(8936002)(81166006)(81156014)(66446008)(64756008)(5660300002)(76116006)(91956017)(478600001)(8676002)(2616005)(4326008)(31686004)(66946007)(31696002)(316002)(6486002)(66476007)(36756003);DIR:OUT;SFP:1102;SCL:1;SRVR:BN7PR12MB2755;H:BN7PR12MB2802.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: synopsys.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: QH8joqfYbsMGETjpTuRP9c6UzOnhEzTqtC/KjJ3p1YScMhdlvFWg/mfH4rmwyTurXW3XGHNjxG+my1NRQoIjl/q4ZdBU9r23zIiQPP7rPZtWPiEbBi2dcK0NkcxBxEQ8JhauS+3ZLNtcRKVq6aR7rCcvKvO04Uy19787lyFmnb9ufh4Yn31lQ6nP+hfpJ0zL5RnR3gIl1Cc4fasaHrRx5bkcPM7Y0O4sqJyzMHeEjTvaHQXYTmUbRL4mv7oLjomg1VowxdWkwEBGuHeK8+tqZufQVsQOAJM/vdvv9KbTywEWdtrKD21s5zG8r1P5JAZeA8cGiANsTw8OPlJoo/qGqRR8IZU91UIKwuUMf7Wr1KckbtKQgn+d8bstPCFaGWs7O2CFt1ujKzbYLnfhDsUdIExiTAlxAexACATqFf9bO2A5LXMnF/TfFYm+QldqsRWgflTLfknNEZCVjvxMjrOURi/w43F+63MccopZK9c2LHs=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <666903A83C10EE4E9B4A21EC16F6DBCE@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1727378AbgAHJTI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Jan 2020 04:19:08 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:33064 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727200AbgAHJTI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jan 2020 04:19:08 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0089IvJN082699;
+        Wed, 8 Jan 2020 03:18:57 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1578475137;
+        bh=0v/0GKYMhTFfSAd0G2N5wdNhwt5MxxLP4iA8zez90n4=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=IWkISoJrS1dVWl6DWs8Av4X40yFyhG4mDJCXpIjP7z61UYMZCvQ6WjYJfnH9mf+Xi
+         Rd7Dl4JpwTzCmgRx3Tx5ta/EW3gGr5gfvjYgtJZ2PBjZT6AiHugQao3THL0fJ1KS9D
+         AA/PV3amgpXXLc0jy8EirZbDafXfm4N1iFJJ/vj4=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0089Ivh8091876
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 8 Jan 2020 03:18:57 -0600
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 8 Jan
+ 2020 03:18:57 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 8 Jan 2020 03:18:57 -0600
+Received: from [172.24.190.4] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0089IrBV046357;
+        Wed, 8 Jan 2020 03:18:54 -0600
+Subject: Re: [PATCH v4 03/11] mmc: sdhci: add support for using external DMA
+ devices
+To:     Baolin Wang <baolin.wang7@gmail.com>
+CC:     <linux-omap@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>, <kishon@ti.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        <mark.rutland@arm.com>, <robh+dt@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>, <tony@atomide.com>
+References: <20200106110133.13791-1-faiz_abbas@ti.com>
+ <20200106110133.13791-4-faiz_abbas@ti.com>
+ <CADBw62onwxPmn=HmdL05hz+FOUe9crRPDO+CB5hDmaVeYMSTsQ@mail.gmail.com>
+From:   Faiz Abbas <faiz_abbas@ti.com>
+Message-ID: <48c10fdf-f2c7-a719-2f64-0f87895f3704@ti.com>
+Date:   Wed, 8 Jan 2020 14:50:27 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 603c1523-1e4c-452d-3cc7-08d7941a0f6c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jan 2020 09:06:34.3597
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zxOlL6skl9P32ieUmJ2kHGgipUzAU2hrho1lvtRMijf2R0Ro+DYZAYdlQBb04eXOkS58OsNCBVSxpeU+dXjpFQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR12MB2755
-X-OriginatorOrg: synopsys.com
+In-Reply-To: <CADBw62onwxPmn=HmdL05hz+FOUe9crRPDO+CB5hDmaVeYMSTsQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-SGksDQpPbiAxLzgvMjAyMCAyOjI5IFBNLCBILiBOaWtvbGF1cyBTY2hhbGxlciB3cm90ZToNCj4g
-SGksDQo+IEkgbm90aWNlZCB0aGF0IHRoZSB1c2IgZXRoZXJuZXQgZ2FkZ2V0IGRyaXZlciBpcyBi
-cm9rZW4gc2luY2UgdjUuNS1yYzINCj4gYW5kIDUuNC40LCBidXQgb25seSBmb3Igb3VyIE9NQVA1
-IGJvYXJkLiBPdXIgT01BUDMgYm9hcmRzIHdvcmsgd2l0aA0KPiB0aGUgc2FtZSB0cmVlLCBrZXJu
-ZWwgYmluYXJ5IGFuZCB1c2VyLXNwYWNlIChEZWJpYW4gU3RyZXRjaCkuDQo+IA0KPiBUaGUgc3lt
-cHRvbSBpcyB0aGF0IEkgY2FuIHNlZSB0aGUgaW50ZXJmYWNlIG9uIHRoZSBob3N0IFBDIGJlaW5n
-DQo+IGVudW1lcmF0ZWQgYW5kIElQIGFkZHJlc3NlcyBldGMuIGFyZSBzZXQgdXAuIEJ1dCBhIHBp
-bmcgaW4gZWl0aGVyDQo+IGRpcmVjdGlvbiBmYWlscy90aW1lcyBvdXQuDQo+IA0KPiBBZnRlciBp
-bnNwZWN0aW5nIGRpZmZzIEkgZm91bmQgc29tZSBjaGFuZ2VzIGluIGR3YzM6Z2FkZ2V0DQo+IGFu
-ZCBpbmRlZWQgb21hcDMvdHdsNDAzMCB1c2VzIG11c2IgYW5kIG9tYXA1IHVzZXMgZHdjMy4NCj4g
-DQo+IFJldmVydGluZw0KPiANCj4gYTdmN2U2MTI3MGYxICgidXNiOiBkd2MzOiBnYWRnZXQ6IEZp
-eCBsb2dpY2FsIGNvbmRpdGlvbiIpOw0KPiANCj4gb24gdjUuNS1yYyBtYWtlcyBpdCB3b3JrIGFn
-YWluLg0KPiANCj4gQlRXOiB2NC4xOS45MCB3b3JrcyBhbHRob3VnaCBpdCBpbmNsdWRlcyB0aGlz
-IGxvZ2ljYWwgY29uZGl0aW9uIGZpeC4NCj4gU28gdGhlIHJlYWwgZGlmZmVyZW5jZSBiZXR3ZWVu
-IHY0LjE5IGFuZCB2NS41IG1heSBiZSBlbHNld2hlcmUgaW4NCj4gbmV3ZXIga2VybmVscyBhbmQg
-b25seSBiZSByZXZlYWxlZCBieSB0aGUgcGF0Y2guDQo+IA0KPiBJZiBpbXBvcnRhbnQ6IG15IHNl
-dHVwIGlzIHJ1bm5pbmcgd2l0aCBVU0IyIGNhYmxlIGFuZCBzcGVlZA0KPiBvbmx5Lg0KPiANCj4g
-U28gcGxlYXNlIGNoZWNrIHRoaXMgYW5kIG90aGVyIHJlY2VudCBkd2MzIHBhdGNoZXMgZm9yIGlu
-dHJvZHVjaW5nDQo+IGEgc3RhbGwgb2YgY29tbXVuaWNhdGlvbi4NCj4gDQpBbm90aGVyIGdhZGdl
-dCBkcml2ZXIgaXNzdWUgd2FzIHJlcG9ydGVkIGJ5IFRoaW5oIGFmdGVyIG15IGZpeCwgYW5kIGhl
-IGhhcyBzdWJtaXR0ZWQgYSBwYXRjaCBmb3IgdGhlIHNhbWUuIFlvdSBjYW4gcmVmZXIgdGhlIGRp
-c2N1c3Npb24gaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xMTI5MjA4Ny8uDQpD
-YW4geW91IGNoZWNrIGlmIHRoYXQgcGF0Y2ggd29ya3MgZm9yIHlvdSA/DQoNCj4gQlIgYW5kIHRo
-YW5rcywNCj4gTmlrb2xhdXMgU2NoYWxsZXINCj4gDQo+IA0KDQpUaGFua3MgJiBSZWdhcmRzLA0K
-IFRlamFzIEpvZ2xla2FyDQo=
+Hi Baolin,
+
+On 08/01/20 6:58 am, Baolin Wang wrote:
+> Hi Faiz,
+> 
+> On Mon, Jan 6, 2020 at 7:01 PM Faiz Abbas <faiz_abbas@ti.com> wrote:
+>>
+>> From: Chunyan Zhang <zhang.chunyan@linaro.org>
+>>
+>> Some standard SD host controllers can support both external dma
+>> controllers as well as ADMA/SDMA in which the SD host controller
+>> acts as DMA master. TI's omap controller is the case as an example.
+>>
+>> Currently the generic SDHCI code supports ADMA/SDMA integrated in
+>> the host controller but does not have any support for external DMA
+>> controllers implemented using dmaengine, meaning that custom code is
+>> needed for any systems that use an external DMA controller with SDHCI.
+>>
+>> Fixes by Faiz Abbas <faiz_abbas@ti.com>:
+>> 1. Map scatterlists before dmaengine_prep_slave_sg()
+>> 2. Use dma_async() functions inside of the send_command() path and call
+>> terminate_sync() in non-atomic context in case of an error.
+>>
+>> Signed-off-by: Chunyan Zhang <zhang.chunyan@linaro.org>
+>> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
+>> ---
+>>  drivers/mmc/host/Kconfig |   3 +
+>>  drivers/mmc/host/sdhci.c | 228 ++++++++++++++++++++++++++++++++++++++-
+>>  drivers/mmc/host/sdhci.h |   8 ++
+>>  3 files changed, 237 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+>> index d06b2dfe3c95..adef971582a1 100644
+>> --- a/drivers/mmc/host/Kconfig
+>> +++ b/drivers/mmc/host/Kconfig
+>> @@ -1040,3 +1040,6 @@ config MMC_OWL
+>>         help
+>>           This selects support for the SD/MMC Host Controller on
+>>           Actions Semi Owl SoCs.
+>> +
+>> +config MMC_SDHCI_EXTERNAL_DMA
+>> +       bool
+>> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+>> index f6999054abcf..8cc78c76bc3d 100644
+>> --- a/drivers/mmc/host/sdhci.c
+>> +++ b/drivers/mmc/host/sdhci.c
+>> @@ -10,6 +10,7 @@
+>>   */
+>>
+>>  #include <linux/delay.h>
+>> +#include <linux/dmaengine.h>
+>>  #include <linux/ktime.h>
+>>  #include <linux/highmem.h>
+>>  #include <linux/io.h>
+>> @@ -1157,6 +1158,188 @@ static void sdhci_prepare_data(struct sdhci_host *host, struct mmc_command *cmd)
+>>         sdhci_set_block_info(host, data);
+>>  }
+>>
+>> +#if IS_ENABLED(CONFIG_MMC_SDHCI_EXTERNAL_DMA)
+>> +
+>> +static int sdhci_external_dma_init(struct sdhci_host *host)
+>> +{
+>> +       int ret = 0;
+>> +       struct mmc_host *mmc = host->mmc;
+>> +
+>> +       host->tx_chan = dma_request_chan(mmc->parent, "tx");
+>> +       if (IS_ERR(host->tx_chan)) {
+>> +               ret = PTR_ERR(host->tx_chan);
+>> +               if (ret != -EPROBE_DEFER)
+>> +                       pr_warn("Failed to request TX DMA channel.\n");
+>> +               host->tx_chan = NULL;
+>> +               return ret;
+>> +       }
+>> +
+>> +       host->rx_chan = dma_request_chan(mmc->parent, "rx");
+>> +       if (IS_ERR(host->rx_chan)) {
+>> +               if (host->tx_chan) {
+>> +                       dma_release_channel(host->tx_chan);
+>> +                       host->tx_chan = NULL;
+>> +               }
+>> +
+>> +               ret = PTR_ERR(host->rx_chan);
+>> +               if (ret != -EPROBE_DEFER)
+>> +                       pr_warn("Failed to request RX DMA channel.\n");
+>> +               host->rx_chan = NULL;
+>> +       }
+>> +
+>> +       return ret;
+>> +}
+>> +
+>> +static struct dma_chan *sdhci_external_dma_channel(struct sdhci_host *host,
+>> +                                                  struct mmc_data *data)
+>> +{
+>> +       return data->flags & MMC_DATA_WRITE ? host->tx_chan : host->rx_chan;
+>> +}
+>> +
+>> +static int sdhci_external_dma_setup(struct sdhci_host *host,
+>> +                                   struct mmc_command *cmd)
+>> +{
+>> +       int ret, i;
+>> +       struct dma_async_tx_descriptor *desc;
+>> +       struct mmc_data *data = cmd->data;
+>> +       struct dma_chan *chan;
+>> +       struct dma_slave_config cfg;
+>> +       dma_cookie_t cookie;
+>> +       int sg_cnt;
+>> +
+>> +       if (!host->mapbase)
+>> +               return -EINVAL;
+>> +
+>> +       cfg.src_addr = host->mapbase + SDHCI_BUFFER;
+>> +       cfg.dst_addr = host->mapbase + SDHCI_BUFFER;
+>> +       cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+>> +       cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+>> +       cfg.src_maxburst = data->blksz / 4;
+>> +       cfg.dst_maxburst = data->blksz / 4;
+>> +
+>> +       /* Sanity check: all the SG entries must be aligned by block size. */
+>> +       for (i = 0; i < data->sg_len; i++) {
+>> +               if ((data->sg + i)->length % data->blksz)
+>> +                       return -EINVAL;
+>> +       }
+>> +
+>> +       chan = sdhci_external_dma_channel(host, data);
+>> +
+>> +       ret = dmaengine_slave_config(chan, &cfg);
+>> +       if (ret)
+>> +               return ret;
+>> +
+>> +       sg_cnt = sdhci_pre_dma_transfer(host, data, COOKIE_MAPPED);
+>> +       if (sg_cnt <= 0)
+>> +               return -EINVAL;
+>> +
+>> +       desc = dmaengine_prep_slave_sg(chan, data->sg, data->sg_len,
+>> +                                      mmc_get_dma_dir(data),
+>> +                                      DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+>> +       if (!desc)
+>> +               return -EINVAL;
+>> +
+>> +       desc->callback = NULL;
+>> +       desc->callback_param = NULL;
+>> +
+>> +       cookie = dmaengine_submit(desc);
+>> +       if (cookie < 0)
+> 
+> We usually use the DMA engine standard API: dma_submit_error() to
+> validate the cookie.
+> 
+
+The if condition is doing the same thing as the API. Do we really
+require it?
+
+Thanks,
+Faiz
