@@ -2,83 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A7C813992B
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2020 19:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8543F13A984
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2020 13:41:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726878AbgAMSos (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Jan 2020 13:44:48 -0500
-Received: from muru.com ([72.249.23.125]:50794 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726435AbgAMSos (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 13 Jan 2020 13:44:48 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 2101B8047;
-        Mon, 13 Jan 2020 18:45:29 +0000 (UTC)
-Date:   Mon, 13 Jan 2020 10:44:44 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Faiz Abbas <faiz_abbas@ti.com>, Keerthy <j-keerthy@ti.com>,
-        Dave Gerlach <d-gerlach@ti.com>
-Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-mmc@vger.kernel.org,
-        mark.rutland@arm.com, robh+dt@kernel.org, bcousson@baylibre.com,
-        kishon@ti.com
-Subject: Re: [PATCH] arm: dts: Move am33xx and am43xx mmc nodes to sdhci-omap
- driver
-Message-ID: <20200113184444.GO5885@atomide.com>
-References: <20200106111517.15158-1-faiz_abbas@ti.com>
- <ab908007-fd7d-9dd5-c822-f4058c793d7d@ti.com>
+        id S1726195AbgANMlm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jan 2020 07:41:42 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:33742 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726053AbgANMlm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jan 2020 07:41:42 -0500
+Received: by mail-wm1-f66.google.com with SMTP id d139so2226176wmd.0
+        for <linux-omap@vger.kernel.org>; Tue, 14 Jan 2020 04:41:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=newoldbits-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vPAerjwfRTihubxHAn1HswyMzaCBBBc15AgIAvML+i0=;
+        b=pMLSCkzkZR/qtuYHhKICy4qYV7f5DCH2i1eljSbz/PMD2y4ILHDlLWR4bZUqnrzrUP
+         Bo6lEzARv9DE55skocechK0YfFFklzAEeRYeF74GeqZnuHjsAsWif3egu2E9Nj/J5YGf
+         kFZfMqG8YMSYsXnasTRh/g2PzC6Ps+u28bTEXlAKVdnn0lis8rJsMxTiGIi7LfgJv0ti
+         1WZprhp0gTZi4D3NBXOE/FeNK40be479x6K8+DehjoUwvC8pP4w9GxbqMSsw7+55KTiA
+         LA40XjA9ZR1xKt2QpiZfTiim9PI33zsVY1lH21nZRuH3EwvId5ZMcMtvnVTytmCk/GFS
+         32LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vPAerjwfRTihubxHAn1HswyMzaCBBBc15AgIAvML+i0=;
+        b=trFkhVAtdzp7EIWAKxVjhX1TgqfRoT/FXwiOuueQWjLlr1AHqNUhqwWtSxgGAPW9ZT
+         0xwu5vBfcPHNvYvYWO5qYT/ih6wEF/l1gWNK/17ov4bs6MUTIj62waV/VQyH9LLFJR5+
+         3NFcZX5OacveO8suq4gySqlBT3XlF4V1uiH26zR8AqoeMVjmLbyjoQKDz+0MaH1lgx1W
+         X5aXOAZq/OpcCIFGN8YLYf+Kjp/ttWDxKqIo/NRSJbTKldBmleSJ0lARORonsAlpxHO9
+         eW33FOyEVBDw/RuVB4IaUCgU1TlTkeJ0uOsXvzVBEzwfHvEvK29Eqc5RJz0y2JUQhWz5
+         XcFg==
+X-Gm-Message-State: APjAAAWqymdzTCaR+pQCOpPvbujOZ9FshbOjmF9rc3ws67+TC6EetznV
+        abLnkpbBYZdXZEe6bJp9CpGQ/Q==
+X-Google-Smtp-Source: APXvYqwF9RtBkXt7FzSGjLRK32ZPmaUicOnr40QiymdFrL/jb31oIzGt0fqHhlztilk00uDNT00htw==
+X-Received: by 2002:a1c:628b:: with SMTP id w133mr26195068wmb.25.1579005700230;
+        Tue, 14 Jan 2020 04:41:40 -0800 (PST)
+Received: from msilabo.lan (241.33-200-80.adsl-dyn.isp.belgacom.be. [80.200.33.241])
+        by smtp.gmail.com with ESMTPSA id i5sm18260185wml.31.2020.01.14.04.41.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2020 04:41:39 -0800 (PST)
+From:   Jean Pihet <jean.pihet@newoldbits.com>
+To:     Mark Brown <broonie@kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
+        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
+        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
+        Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
+        Jean Pihet <jean.pihet@newoldbits.com>
+Subject: [PATCH 0/2] spi: spi-ti-qspi: Support large NOR SPI flash
+Date:   Tue, 14 Jan 2020 13:41:23 +0100
+Message-Id: <20200114124125.361429-1-jean.pihet@newoldbits.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab908007-fd7d-9dd5-c822-f4058c793d7d@ti.com>
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+v3 release: fix compilation warnings.
 
-* Faiz Abbas <faiz_abbas@ti.com> [200109 13:57]:
-> Hi,
-> 
-> On 06/01/20 4:45 pm, Faiz Abbas wrote:
-> > Move mmc nodes to be compatible with the sdhci-omap driver. The following
-> > modifications are required for omap_hsmmc specific properties:
-> > 
-> > ti,non-removable: convert to the generic mmc non-removable
-> > ti,needs-special-reset:  co-opted into the sdhci-omap driver
-> > ti,dual-volt: removed. Legacy property not used in am335x or am43xx
-> > ti,needs-special-hs-handling: removed. Legacy property not used in am335x or am43xx
-> > 
-> > Also since the sdhci-omap driver does not support runtime PM, explicitly
-> > disable the mmc3 instance in the dtsi.
-> > 
-> > Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
-> > ---
-> > 
-> > Driver modifications have been posted separately:
-> > https://patchwork.kernel.org/project/linux-mmc/list/?series=224053
-> > 
-> > Tested on: am335x-evm, am335x-boneblack, am335x-sk, am335x-bone, am437x-idk,
-> > am43xx-gp-evm, am43xx-epos-evm.
-> > 
-> > I need some help with testing all other am335x variants and SDIO cards.
-> > 
-> > Here's a branch for testing: https://github.com/faizinator/linux/tree/sdhci-omap_v4_2
-> > 
-> 
-> Tony, can you help test some of these boards?
+Large devices are bigger than >64MB in size.
+- Since the TI QSPI IP block only maps 64MB of MMIO, use MMIO
+  below the 64MB boundary and software generated transfers above.
+- Optimize the software generated byte-transfers for dual and quad
+  I/O read operations. The speed-up is 4.9x for quad I/O reads.
 
-I have your branch above a quick boot test on bbb and am437x-idk and both
-detected MMC just fine :)
+Note: depends on Tony's patches for hwmod cleanup, in order to get the
+desired QSPI clk rate:
+- [PATCH 1/2] ARM: dts: Configure interconnect target module for am4 qspi
+- [PATCH 2/2] ARM: OMAP2+: Drop legacy platform data for am4 qspi
 
-I guess up to Dave and Keerthy to check if this conversion can be done
-without missing runtime PM support, any comments?
+Tested using raw accesses (mtd_debug) and JFFS2 FS read/write/erase;
+in single, dual and quad modes.
+All accesses have been checked on the logic analyzer.
 
-I guess it should not be hard implement runtime PM support for
-autosuspend in sdhci-omap.c?
+Jean Pihet (2):
+  spi: spi-ti-qspi: support large flash devices
+  spi: spi-ti-qspi: optimize byte-transfers
 
-Regards,
+ drivers/spi/spi-ti-qspi.c | 84 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 81 insertions(+), 3 deletions(-)
 
-Tony
+-- 
+2.24.1
 
