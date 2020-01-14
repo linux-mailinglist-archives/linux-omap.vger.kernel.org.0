@@ -2,84 +2,149 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F193213AE4C
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2020 17:04:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 924A113AE84
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2020 17:09:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726342AbgANQE0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Jan 2020 11:04:26 -0500
-Received: from muru.com ([72.249.23.125]:50908 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725904AbgANQE0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 14 Jan 2020 11:04:26 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 23E5D816C;
-        Tue, 14 Jan 2020 16:05:07 +0000 (UTC)
-Date:   Tue, 14 Jan 2020 08:04:22 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Benoit Parrot <bparrot@ti.com>
-Cc:     Tero Kristo <t-kristo@ti.com>, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [Patch v3 0/3] ARM: dts: am43x-vpfe/ov2659.patch
-Message-ID: <20200114160422.GQ5885@atomide.com>
-References: <20191211140720.10539-1-bparrot@ti.com>
- <20191212174123.GF35479@atomide.com>
- <c4ae58dc-3c81-f493-a665-6926baa0f04c@ti.com>
- <20191213152938.GK35479@atomide.com>
- <20200113165413.i6nbi2i7xyue4fti@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200113165413.i6nbi2i7xyue4fti@ti.com>
+        id S1729221AbgANQJi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jan 2020 11:09:38 -0500
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:37846 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729224AbgANQJd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jan 2020 11:09:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=M7yuBinsjirKHOYzzbb4lM9jyF9bZu+FBfBQGXsoMFI=; b=tmsQLS6hG97B
+        2H55jPd8fX6qJPgqujqwKQ3lBAT8PZtxmJBomsTmBn3CXxgGv4TkKesplMyShLNe9XiatsjoXx54q
+        +y3G5jYX7JWzfw84wd2Z4/3PAZ9nE8ftKP2/9bq5seE1M/rKj/l/T6nRl5Jl5t2TuJT4N+3XzBae7
+        s+kr8=;
+Received: from fw-tnat-cam7.arm.com ([217.140.106.55] helo=fitzroy.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1irOkv-0001ZL-Lu; Tue, 14 Jan 2020 16:09:25 +0000
+Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
+        id 60181D02C77; Tue, 14 Jan 2020 16:09:25 +0000 (GMT)
+From:   Mark Brown <broonie@kernel.org>
+To:     Jean Pihet <jean.pihet@newoldbits.com>
+Cc:     Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
+        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
+        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Applied "spi: spi-ti-qspi: support large flash devices" to the spi tree
+In-Reply-To: <20200114124125.361429-2-jean.pihet@newoldbits.com>
+Message-Id: <applied-20200114124125.361429-2-jean.pihet@newoldbits.com>
+X-Patchwork-Hint: ignore
+Date:   Tue, 14 Jan 2020 16:09:25 +0000 (GMT)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Benoit Parrot <bparrot@ti.com> [200113 16:51]:
-> Tony Lindgren <tony@atomide.com> wrote on Fri [2019-Dec-13 07:29:38 -0800]:
-> > * Tero Kristo <t-kristo@ti.com> [191213 07:43]:
-> > > On 12/12/2019 19:41, Tony Lindgren wrote:
-> > > > * Benoit Parrot <bparrot@ti.com> [191211 06:04]:
-> > > > > This patch series adds the missing camera endpoint (ov2659) as well as
-> > > > > the required source clocks nodes for the sensor.
-> > > > > 
-> > > > > On the am437x-sk-evm the camera sensor is sourced from clkout1 but that
-> > > > > clock nodes/tree was removed as it was unsed at the time, we are
-> > > > > re-adding the needed clock nodes here.
-> > > > 
-> > > > Tero, it seems I can already pick this series?
-> > > 
-> > > I believe it is ready if you approve the clkout1 clock patch.
-> > 
-> > OK yeah looks fine.
-> > 
-> > > > Or ou want to queue the changes to am43xx-clocks.dtsi along with all
-> > > > your other clock patches?
-> > > 
-> > > Well, I have actually never queued any omap2+ dts patches myself, and I
-> > > don't think there would be too many of those coming for next merge either.
-> > 
-> > OK will queue this series then. For the other ones from Benoit
-> > looks like we need an immutable clock branch before I can apply
-> > anything.
-> 
-> Tony, Tero,
-> 
-> Are these merged anyware now?
-> I still don't see any of these on linux-next?
+The patch
 
-Tero any news on getting some immutable clock changes branch done?
-Looks like there are quite a few pending clock patches right now,
-probably best to set them all into a branch that I can also merge
-in.
+   spi: spi-ti-qspi: support large flash devices
 
-> And by "these" I mean this one and both
->  ARM: dts: dra7: add vpe nodes
->  ARM: dts: dra7: add cal nodes
+has been applied to the spi tree at
 
-Yeah looks good to me other than the clock dependency.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
 
-Regards,
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Tony
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From e97f491450805fe6cbfd482b97b5427b21dec575 Mon Sep 17 00:00:00 2001
+From: Jean Pihet <jean.pihet@newoldbits.com>
+Date: Tue, 14 Jan 2020 13:41:24 +0100
+Subject: [PATCH] spi: spi-ti-qspi: support large flash devices
+
+The TI QSPI IP has limitations:
+- the MMIO region is 64MB in size
+- in non-MMIO mode, the transfer can handle 4096 words max.
+
+Add support for bigger devices.
+Use MMIO and DMA transfers below the 64MB boundary, use
+software generated transfers above.
+
+Signed-off-by: Jean Pihet <jean.pihet@newoldbits.com>
+Cc: Ryan Barnett <ryan.barnett@rockwellcollins.com>
+Cc: Conrad Ratschan <conrad.ratschan@rockwellcollins.com>
+Cc: Arnout Vandecappelle <arnout.vandecappelle@essensium.com>
+Link: https://lore.kernel.org/r/20200114124125.361429-2-jean.pihet@newoldbits.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-ti-qspi.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index ad2942b3d0a9..0334e2926998 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -525,6 +525,35 @@ static void ti_qspi_setup_mmap_read(struct spi_device *spi, u8 opcode,
+ 		      QSPI_SPI_SETUP_REG(spi->chip_select));
+ }
+ 
++static int ti_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
++{
++	struct ti_qspi *qspi = spi_controller_get_devdata(mem->spi->master);
++	size_t max_len;
++
++	if (op->data.dir == SPI_MEM_DATA_IN) {
++		if (op->addr.val < qspi->mmap_size) {
++			/* Limit MMIO to the mmaped region */
++			if (op->addr.val + op->data.nbytes > qspi->mmap_size) {
++				max_len = qspi->mmap_size - op->addr.val;
++				op->data.nbytes = min((size_t) op->data.nbytes,
++						      max_len);
++			}
++		} else {
++			/*
++			 * Use fallback mode (SW generated transfers) above the
++			 * mmaped region.
++			 * Adjust size to comply with the QSPI max frame length.
++			 */
++			max_len = QSPI_FRAME;
++			max_len -= 1 + op->addr.nbytes + op->dummy.nbytes;
++			op->data.nbytes = min((size_t) op->data.nbytes,
++					      max_len);
++		}
++	}
++
++	return 0;
++}
++
+ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
+ 			       const struct spi_mem_op *op)
+ {
+@@ -575,6 +604,7 @@ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
+ 
+ static const struct spi_controller_mem_ops ti_qspi_mem_ops = {
+ 	.exec_op = ti_qspi_exec_mem_op,
++	.adjust_op_size = ti_qspi_adjust_op_size,
+ };
+ 
+ static int ti_qspi_start_transfer_one(struct spi_master *master,
+-- 
+2.20.1
+
