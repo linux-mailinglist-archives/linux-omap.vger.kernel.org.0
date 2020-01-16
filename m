@@ -2,38 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EACA13EC23
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 18:56:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F1D613F180
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 19:29:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394145AbgAPRoW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jan 2020 12:44:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35290 "EHLO mail.kernel.org"
+        id S2392205AbgAPRZ7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Jan 2020 12:25:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34222 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394141AbgAPRoV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:44:21 -0500
+        id S2392201AbgAPRZ6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:25:58 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 318102474F;
-        Thu, 16 Jan 2020 17:44:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6A6DA246B7;
+        Thu, 16 Jan 2020 17:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579196661;
-        bh=GQCU0no0l5BLWAsjMwoqXKZkwUcKNtpdr0nZvy6+HE4=;
+        s=default; t=1579195558;
+        bh=mDixHwjOcnHctxECXlLRlUp6kSHl43tYYgYvP77bG6U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yu2U+IG9jmdquhqdRFquP14VNLRnSYWShFWNQsr713c0xH9YjzvlNYr+0GgFiHMxQ
-         K5XieArzjE5d1YFnERnCMieBtWhNuhtH2LS0yZSLVSPHDlcYhFueCtisGzbufxzIuT
-         cqbGVEDmMe5bjKZ4bh7leO4lyHPsBHX0C3phOzgk=
+        b=ZJkooszGgyC2Lb7h9UAHrPcBC9yD6O9vt/leRjx475ZxMPeHr/fO8a78sTXtM6R8i
+         OgArWwzvtCr9qmZgpQuDiz0srQ3kl9I1XLWeAPKMEHngwkR34buus9Jdy8aYsB5HBP
+         dxSFmIJLkFL6ZaaXsObUlNW6JSX4X27qHSe9GSTY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Paul Walmsley <paul@pwsan.com>,
         Tero Kristo <t-kristo@ti.com>, Sasha Levin <sashal@kernel.org>,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 4.4 065/174] ARM: OMAP2+: Fix potentially uninitialized return value for _setup_reset()
-Date:   Thu, 16 Jan 2020 12:41:02 -0500
-Message-Id: <20200116174251.24326-65-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 146/371] ARM: OMAP2+: Fix potentially uninitialized return value for _setup_reset()
+Date:   Thu, 16 Jan 2020 12:20:18 -0500
+Message-Id: <20200116172403.18149-89-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116174251.24326-1-sashal@kernel.org>
-References: <20200116174251.24326-1-sashal@kernel.org>
+In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
+References: <20200116172403.18149-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,10 +66,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
-index 36706d32d656..1bc87c29467b 100644
+index 45c8f2ef4e23..9274a484c6a3 100644
 --- a/arch/arm/mach-omap2/omap_hwmod.c
 +++ b/arch/arm/mach-omap2/omap_hwmod.c
-@@ -2563,7 +2563,7 @@ static void _setup_iclk_autoidle(struct omap_hwmod *oh)
+@@ -2530,7 +2530,7 @@ static void _setup_iclk_autoidle(struct omap_hwmod *oh)
   */
  static int _setup_reset(struct omap_hwmod *oh)
  {
