@@ -2,154 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1735613C82D
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Jan 2020 16:42:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAC2013D2DD
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 04:46:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728885AbgAOPmo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Jan 2020 10:42:44 -0500
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:33030 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728963AbgAOPmo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Jan 2020 10:42:44 -0500
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200115154242euoutp02691bfe8290c8baa1dc885c1ab318e713~qGccl6DIi1726017260euoutp02S
-        for <linux-omap@vger.kernel.org>; Wed, 15 Jan 2020 15:42:42 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200115154242euoutp02691bfe8290c8baa1dc885c1ab318e713~qGccl6DIi1726017260euoutp02S
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1579102962;
-        bh=5UcOrZcqA2Gc029OVzaqHjJku0OF8oexgVfZBcw5ALo=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=tApO0fcO2muxSsWhgxaWaMRThdd3/rOQoM2TD2/5J6IUXlWAywGl45oF2so7G6KK/
-         c+5sy0UCvijV0HuNBKRk19AhQTIIc1cAZtNEwWXkIWfzzsiwXoXbr5fcBq7RCKwwGo
-         V2XISi2FNk618NR3NZGPsseF0Kmn4ZywXMQJNW4g=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20200115154242eucas1p2028e091c4f5d6430591c9308c0313b96~qGccbKMcS0110001100eucas1p2Y;
-        Wed, 15 Jan 2020 15:42:42 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 32.E4.60698.2F23F1E5; Wed, 15
-        Jan 2020 15:42:42 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200115154241eucas1p21c72afb605f6ffc1620212d17d746ba3~qGccF34mD0110001100eucas1p2X;
-        Wed, 15 Jan 2020 15:42:41 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200115154241eusmtrp1f903b55d574667a5152c9417c323f023~qGccFQY412598225982eusmtrp1Q;
-        Wed, 15 Jan 2020 15:42:41 +0000 (GMT)
-X-AuditID: cbfec7f5-a29ff7000001ed1a-31-5e1f32f29a7b
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 43.D0.07950.1F23F1E5; Wed, 15
-        Jan 2020 15:42:41 +0000 (GMT)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200115154241eusmtip113989aba779e4c4827ea19af8343fba2~qGcbmTfEu3130831308eusmtip1k;
-        Wed, 15 Jan 2020 15:42:41 +0000 (GMT)
-Subject: Re: [PATCH] OMAP: DSS2: remove non-zero check on variable r
-To:     Colin King <colin.king@canonical.com>
-Cc:     Tomi Valkeinen <tomi.valkeinen@nokia.com>,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <6a3951c7-4b17-6371-24ab-17742aeaa464@samsung.com>
-Date:   Wed, 15 Jan 2020 16:42:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        id S1730350AbgAPDqW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Jan 2020 22:46:22 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:42470 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728905AbgAPDqW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Jan 2020 22:46:22 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00G3juIX021895;
+        Wed, 15 Jan 2020 21:45:56 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1579146356;
+        bh=EAWGUw6to/ESZc5OA1jCfqePdQbF3GCc4CH5c+/LZxA=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=eqtMMn49R9eTZdfJSOooXajiu+NjqJ2hOmHJkBxI6BbyuGOHzDIHSo8lsef8nxmRW
+         qWhquAZ2TdTHObKlbQs4W44NG+O7SlI47dfu7NMBJNf6TlgfRw3NKGQAY0S2G8ppq1
+         N5p5hOtnHbN2C/ALAm4eeeg4sOe9PydW6XISbnKA=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00G3juBY022009
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 15 Jan 2020 21:45:56 -0600
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 15
+ Jan 2020 21:45:55 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 15 Jan 2020 21:45:55 -0600
+Received: from [10.24.69.174] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00G3jpIZ039244;
+        Wed, 15 Jan 2020 21:45:52 -0600
+Subject: Re: [PATCH] clocksource: timer-ti-dm: Fix regression
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Tony Lindgren <tony@atomide.com>
+CC:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        open list <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Yangtao Li <tiny.windzz@gmail.com>
+References: <20200106203700.21009-1-tony@atomide.com>
+ <CA+G9fYvRNiFK54oiGt9hYP=RTfazf2E7rmnnkwP+ELMUYtJ7bQ@mail.gmail.com>
+From:   Keerthy <j-keerthy@ti.com>
+Message-ID: <3d6da16f-45e6-5acd-021c-bc87da99cdec@ti.com>
+Date:   Thu, 16 Jan 2020 09:16:09 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191204152847.1435188-1-colin.king@canonical.com>
+In-Reply-To: <CA+G9fYvRNiFK54oiGt9hYP=RTfazf2E7rmnnkwP+ELMUYtJ7bQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrKKsWRmVeSWpSXmKPExsWy7djPc7qfjOTjDP5eEbD4vbqXzeLK1/ds
-        FltvSVuc6PvAanF51xw2i9lL+lksVl/9yezA7jGroZfN4373cSaPu7cuMXl83iQXwBLFZZOS
-        mpNZllqkb5fAlXHo91S2grm8FS//7WdtYDzB1cXIySEhYCLx6tEXli5GLg4hgRWMEgeOLYFy
-        vjBKdH6/wQbhfGaUmNXxkx2mpfHtWiaIxHJGie/tN1khnLeMEo93XmYBqRIWcJE4sP4zYxcj
-        B4eIgKbE+XNFIDXMAqcYJfpmdTCD1LAJWElMbF8FVsMrYCex6Wk+SJhFQFXi2+VTYGNEBSIk
-        Pj04zApi8woISpyc+QQszingILGi/R0jiM0sIC5x68l8JghbXmL72znMILskBDaxSxz6+5cV
-        4moXiYW7VjFD2MISr45vgfpGRuL05B4WiIZ1jBJ/O15AdW9nlFg++R8bRJW1xJ1zv9hALmUG
-        +mb9Ln2IsKNEe/8ydpCwhACfxI23ghBH8ElM2jadGSLMK9HRJgRRrSaxYdkGNpi1XTtXMk9g
-        VJqF5LVZSN6ZheSdWQh7FzCyrGIUTy0tzk1PLTbOSy3XK07MLS7NS9dLzs/dxAhMPKf/Hf+6
-        g3Hfn6RDjAIcjEo8vBl/5OKEWBPLiitzDzFKcDArifCenCEbJ8SbklhZlVqUH19UmpNafIhR
-        moNFSZzXeNHLWCGB9MSS1OzU1ILUIpgsEwenVAPjHv/fzIkGso+9r3O4/t4qs02gqWPBCb6X
-        Hz++XfJEU0Sqpp/7Usmpt05Vn7lCJ3Z7byk3ZWKunxhtUiN+z2V2kMOMfAXbWe+8N6V9Dg+c
-        q5771FuJr+ncLV+vg6Lb81dqn9HrurI9XNp4wZoO3aI3Jx51XcxZNeON+r3FM9o5uGz499uH
-        W3YosRRnJBpqMRcVJwIARcJ8xjgDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGIsWRmVeSWpSXmKPExsVy+t/xu7ofjeTjDNZcNLT4vbqXzeLK1/ds
-        FltvSVuc6PvAanF51xw2i9lL+lksVl/9yezA7jGroZfN4373cSaPu7cuMXl83iQXwBKlZ1OU
-        X1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwea2VkqqRvZ5OSmpNZllqkb5egl3Ho91S2grm8
-        FS//7WdtYDzB1cXIySEhYCLR+HYtUxcjF4eQwFJGiSc/L7J3MXIAJWQkjq8vg6gRlvhzrYsN
-        ouY1o8TmP6tZQRLCAi4SB9Z/ZgSpFxHQlDh/rgikhlngFKPExtY+VoiGyYwSMy6eZQRpYBOw
-        kpjYvgqsgVfATmLT03yQMIuAqsS3y6dYQGxRgQiJwztmgZXzCghKnJz5BCzOKeAgsaL9HVic
-        WUBd4s+8S8wQtrjErSfzmSBseYntb+cwT2AUmoWkfRaSlllIWmYhaVnAyLKKUSS1tDg3PbfY
-        SK84Mbe4NC9dLzk/dxMjMM62Hfu5ZQdj17vgQ4wCHIxKPLwH/snFCbEmlhVX5h5ilOBgVhLh
-        PTlDNk6INyWxsiq1KD++qDQntfgQoynQcxOZpUST84EpIK8k3tDU0NzC0tDc2NzYzEJJnLdD
-        4GCMkEB6YklqdmpqQWoRTB8TB6dUA+POl/9erX+fo7Siq/GvbXnL9ckLDl44HK180oThoPfJ
-        sxLbXsy3qCxX1hBxa0kLM7tl7LuH8cmEJd98GyeHcnAbHvJ6eOPhPjaWKSLS9is3va2V+XD2
-        /KJyFv0dX9rrX0wy6kphnZP2Ybv4NDG/oMXHDA0C//EV9wXum9Vazqgx9XfwvU8xN6YqsRRn
-        JBpqMRcVJwIA7E4WqckCAAA=
-X-CMS-MailID: 20200115154241eucas1p21c72afb605f6ffc1620212d17d746ba3
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20191204152851epcas5p413006712eafa500de3013c2ce8a3bc02
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20191204152851epcas5p413006712eafa500de3013c2ce8a3bc02
-References: <CGME20191204152851epcas5p413006712eafa500de3013c2ce8a3bc02@epcas5p4.samsung.com>
-        <20191204152847.1435188-1-colin.king@canonical.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
-On 12/4/19 4:28 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Variable r is being initialized to zero, so the check of a non-zero
-> rv is redundant and can be removed.
-> 
-> It appears that the previous case statements set r to be -EINVAL
-> and the "Fallthrough" comment afterwards suggested it was going
-> to fall through to this non-zero check but won't because of the
-> break statement. Remove the confusion by removing the Fallthrough
-> comment too.
-> 
-> Addresses-Coverity: ("Logically dead code")
-> Fixes: b39a982ddecf ("OMAP: DSS2: omapfb driver")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Patch queued for v5.6, thanks.
- 
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
-
-> ---
->  drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 4 ----
->  1 file changed, 4 deletions(-)
+On 11/01/20 11:58 am, Naresh Kamboju wrote:
+> On Tue, 7 Jan 2020 at 02:07, Tony Lindgren <tony@atomide.com> wrote:
+>>
+>> Clean-up commit 8c82723414d5 ("clocksource/drivers/timer-ti-dm: Switch to
+>> platform_get_irq") caused a regression where we now try to access
+>> uninitialized data for timer:
+>>
+>> drivers/clocksource/timer-ti-dm.c: In function 'omap_dm_timer_probe':
+>> drivers/clocksource/timer-ti-dm.c:798:13: warning: 'timer' may be used
+>> uninitialized in this function [-Wmaybe-uninitialized]
+>>
+>> On boot we now get:
+>>
+>> Unable to handle kernel NULL pointer dereference at virtual address
+>> 00000004
+>> ...
+>> (omap_dm_timer_probe) from [<c061ac7c>] (platform_drv_probe+0x48/0x98)
+>> (platform_drv_probe) from [<c0618c04>] (really_probe+0x1dc/0x348)
+>> (really_probe) from [<c0618ef4>] (driver_probe_device+0x5c/0x160)
+>>
+>> Let's fix the issue by moving platform_get_irq to happen after timer has
+>> been allocated.
+>>
+>> Fixes: 8c82723414d5 ("clocksource/drivers/timer-ti-dm: Switch to platform_get_irq")
 > 
-> diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-> index 858c2c011d19..a2a2c1b205d9 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-> @@ -1154,16 +1154,12 @@ static int _setcolreg(struct fb_info *fbi, u_int regno, u_int red, u_int green,
->  		   r = fbdev->ctrl->setcolreg(regno, red, green, blue,
->  		   transp, update_hw_pal);
->  		   */
-> -		/* Fallthrough */
->  		r = -EINVAL;
->  		break;
->  	case OMAPFB_COLOR_RGB565:
->  	case OMAPFB_COLOR_RGB444:
->  	case OMAPFB_COLOR_RGB24P:
->  	case OMAPFB_COLOR_RGB24U:
-> -		if (r != 0)
-> -			break;
-> -
->  		if (regno < 16) {
->  			u32 pal;
->  			pal = ((red >> (16 - var->red.length)) <<
+> Thanks for fixing this issue.
+> I have noticed arm BeagleBoard-X15 boot failed on linux next tree
+> (5.5.0-rc5-next-20200110).
 > 
+> [    6.157822] 8<--- cut here ---
+> [    6.160911] Unable to handle kernel NULL pointer dereference at
+> virtual address 00000004
+> [    6.169120] pgd = 25d83e32
+> [    6.171903] [00000004] *pgd=80000080204003, *pmd=00000000
+> [    6.177358] Internal error: Oops: a06 [#1] SMP ARM
+> [    6.182179] Modules linked in:
+> [    6.185260] CPU: 0 PID: 1 Comm: swapper/0 Not tainted
+> 5.5.0-rc5-next-20200110 #1
+> [    6.192694] Hardware name: Generic DRA74X (Flattened Device Tree)
+> [    6.198832] PC is at omap_dm_timer_probe+0x48/0x310
 
+Tony/Daniel,
+
+This is still not in linux-next. Any idea when this will be pushed to 
+linux-next branch?
+
+- Keerthy
+> 
+> - Naresh
+> 
