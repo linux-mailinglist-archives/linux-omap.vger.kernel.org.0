@@ -2,77 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3677113F4E9
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 19:53:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A7B713F933
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 20:23:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388695AbgAPSwv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jan 2020 13:52:51 -0500
-Received: from muru.com ([72.249.23.125]:51332 "EHLO muru.com"
+        id S2389414AbgAPTX3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Jan 2020 14:23:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36790 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388673AbgAPSwu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 16 Jan 2020 13:52:50 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7722580FC;
-        Thu, 16 Jan 2020 18:53:31 +0000 (UTC)
-Date:   Thu, 16 Jan 2020 10:52:46 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org,
-        Matthijs van Duin <matthijsvanduin@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tero Kristo <t-kristo@ti.com>
-Subject: Re: [PATCH] ARM: dts: Configure omap5 AESS
-Message-ID: <20200116185246.GV5885@atomide.com>
-References: <20200114150937.18304-1-tony@atomide.com>
- <52905C15-A2D1-4372-9781-D602D0B274B6@goldelico.com>
- <20200114164613.GR5885@atomide.com>
- <D51230C4-2642-4388-959F-313A3382AB99@goldelico.com>
- <20200114171634.GS5885@atomide.com>
- <632E66D6-47EF-44CF-BF02-B0F5A215D904@goldelico.com>
- <ACB71118-B121-4CF7-934D-A88654366E8F@goldelico.com>
- <20200114210039.GT5885@atomide.com>
- <5E0BF30D-2723-4724-89E1-449230758EE2@goldelico.com>
+        id S1730688AbgAPQxK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 16 Jan 2020 11:53:10 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 824F0214AF;
+        Thu, 16 Jan 2020 16:53:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579193590;
+        bh=Z+ca/Va9xfC4txSFybMjsDEoHiJWx4ekssX8s8xihU4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=rU8d0fScclD6UQj6XCTtulu1s/iAKG03kZGgZIAoo+QVplfvqppIBbt4uBkTy92O+
+         YBhALFfFsFwgsZRpwb+rGIAywC+gJdPHmWbKWdQ4ppAvjUJvQvnGl9ggOFkcx1wKyV
+         JMy0aVxBStGx9Ovy4AuP9KeQQiLgB5xdluv3AXZg=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Markus Elfring <elfring@users.sourceforge.net>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.4 130/205] ARM: OMAP2+: Add missing put_device() call in omapdss_init_of()
+Date:   Thu, 16 Jan 2020 11:41:45 -0500
+Message-Id: <20200116164300.6705-130-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
+References: <20200116164300.6705-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5E0BF30D-2723-4724-89E1-449230758EE2@goldelico.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [200115 12:50]:
-> 
-> > Am 14.01.2020 um 22:00 schrieb Tony Lindgren <tony@atomide.com>:
-> > 
-> > * H. Nikolaus Schaller <hns@goldelico.com> [200114 18:40]:
-> >> I have checked our tree and it is already built into a separate module with
-> >> 
-> >> sound/soc/ti/aess/omap-aess-core.c:	{ .compatible = "ti,omap4-aess", },
-> >> 
-> >> So
-> >> 
-> >>> target-module@f1000 {			/* 0x401f1000, ap 32 20.0 */
-> >>> 	...
-> >>> 	aess: aess {
-> >>> 		compatible = "ti,omap4-aess";
-> >>> 		status = "disabled";
-> >>> 	};
-> >>> };
-> >> 
-> >> would be what we will need.
-> > 
-> > OK good to hear.
-> 
-> I have cleaned up my working tree and added your patches and the one
-> above (without status = "disabled" and could
-> a) boot well
-> b) see that the (non-working) aess driver module is loaded through child node
-> 
-> So you can add my Tested-by: Nikolaus Schaller <hns@goldelico.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-OK good to hear, thanks for testing!
+[ Upstream commit 0b491904f053e41685162af5c5411b85b18c97a7 ]
 
-Tony
+A coccicheck run provided information like the following.
+
+arch/arm/mach-omap2/display.c:268:2-8: ERROR: missing put_device;
+call of_find_device_by_node on line 258, but without a corresponding
+object release within this function.
+
+Generated by: scripts/coccinelle/free/put_device.cocci
+
+Thus add the missed function call to fix the exception handling for
+this function implementation.
+
+Fixes: e0c827aca0730b51f38081aa4e8ecf0912aab55f ("drm/omap: Populate DSS children in omapdss driver")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/mach-omap2/display.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/mach-omap2/display.c b/arch/arm/mach-omap2/display.c
+index 439e143cad7b..46012ca812f4 100644
+--- a/arch/arm/mach-omap2/display.c
++++ b/arch/arm/mach-omap2/display.c
+@@ -265,6 +265,7 @@ static int __init omapdss_init_of(void)
+ 	r = of_platform_populate(node, NULL, NULL, &pdev->dev);
+ 	if (r) {
+ 		pr_err("Unable to populate DSS submodule devices\n");
++		put_device(&pdev->dev);
+ 		return r;
+ 	}
+ 
+-- 
+2.20.1
+
