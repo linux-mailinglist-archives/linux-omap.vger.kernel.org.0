@@ -2,73 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04D9513F44B
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 19:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EFD913F4DD
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 19:53:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390002AbgAPSss (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jan 2020 13:48:48 -0500
-Received: from muru.com ([72.249.23.125]:51308 "EHLO muru.com"
+        id S2437091AbgAPSwV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Jan 2020 13:52:21 -0500
+Received: from muru.com ([72.249.23.125]:51316 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389814AbgAPSsr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 16 Jan 2020 13:48:47 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id A652081A1;
-        Thu, 16 Jan 2020 18:49:29 +0000 (UTC)
+        id S2389427AbgAPSwV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 16 Jan 2020 13:52:21 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 8115980FC;
+        Thu, 16 Jan 2020 18:53:02 +0000 (UTC)
+Date:   Thu, 16 Jan 2020 10:52:17 -0800
 From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 4/4] 
-Date:   Thu, 16 Jan 2020 10:48:13 -0800
-Message-Id: <pull-1579200367-372444@atomide.com-4>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <pull-1579200367-372444@atomide.com>
-References: <pull-1579200367-372444@atomide.com>
+To:     kbuild test robot <lkp@intel.com>
+Cc:     kbuild-all@lists.01.org, linux-omap@vger.kernel.org,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Matthijs van Duin <matthijsvanduin@gmail.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Tero Kristo <t-kristo@ti.com>
+Subject: Re: [PATCH] ARM: dts: Configure omap5 AESS
+Message-ID: <20200116185217.GU5885@atomide.com>
+References: <20200114150937.18304-1-tony@atomide.com>
+ <202001162346.4yVlrA8l%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202001162346.4yVlrA8l%lkp@intel.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+* kbuild test robot <lkp@intel.com> [200116 15:55]:
+> Hi Tony,
+> 
+> I love your patch! Yet something to improve:
+> 
+> [auto build test ERROR on robh/for-next]
+> [also build test ERROR on omap/for-next balbi-usb/next v5.5-rc6 next-20200115]
+> [if your patch is applied to the wrong git tree, please drop us a note to help
+> improve the system. BTW, we also suggest to use '--base' option to specify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Tony-Lindgren/ARM-dts-Configure-omap5-AESS/20200115-114737
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+> config: arm-defconfig (attached as .config)
+> compiler: arm-linux-gnueabi-gcc (GCC) 7.5.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.5.0 make.cross ARCH=arm 
+> 
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+> >> Error: arch/arm/boot/dts/omap5-l4-abe.dtsi:447.27-28 syntax error
+>    FATAL ERROR: Unable to parse input tree
 
-The following changes since commit bfe0237dd6c441f0ba531755ab24579eaee99be7:
+This patch has a dependency to a clock related patch as described in the
+original patch email so this error can be ignored.
 
-  ARM: dts: am335x-icev2: Add support for OSD9616P0899-10 at i2c0 (2019-12-12 09:35:02 -0800)
+Regards,
 
-are available in the Git repository at:
+Tony
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.6/dt-part2-signed
-
-for you to fetch changes up to 6bcc319fc6192cb03f3db41f0e266b796b0e424f:
-
-  ARM: dts: Add omap3-echo (2020-01-13 10:11:40 -0800)
-
-----------------------------------------------------------------
-More dts changes for omaps for v5.6 merge window
-
-Add basic support for first generation Amazon omap3-echo. This got
-applied rather late as we discussed how to deal with SoC variants
-with some accelerators unaccessible, and eventually ended up setting
-up few more SoC specific dtsi files. Eventually we'll need to also
-detect the disabled accelerators on driver init, but more patching
-is needed for that.
-
-----------------------------------------------------------------
-André Hentschel (2):
-      ARM: dts: Add dtsi files for AM3703, AM3715 and DM3725
-      ARM: dts: Add omap3-echo
-
- arch/arm/boot/dts/Makefile       |   1 +
- arch/arm/boot/dts/am3703.dtsi    |  14 ++
- arch/arm/boot/dts/am3715.dtsi    |  10 +
- arch/arm/boot/dts/dm3725.dtsi    |  10 +
- arch/arm/boot/dts/omap3-echo.dts | 461 +++++++++++++++++++++++++++++++++++++++
- 5 files changed, 496 insertions(+)
- create mode 100644 arch/arm/boot/dts/am3703.dtsi
- create mode 100644 arch/arm/boot/dts/am3715.dtsi
- create mode 100644 arch/arm/boot/dts/dm3725.dtsi
- create mode 100644 arch/arm/boot/dts/omap3-echo.dts
