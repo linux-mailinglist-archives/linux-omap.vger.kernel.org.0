@@ -2,26 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8792113F44E
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 19:48:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D9513F44B
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 19:48:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389814AbgAPSst (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jan 2020 13:48:49 -0500
-Received: from muru.com ([72.249.23.125]:51300 "EHLO muru.com"
+        id S2390002AbgAPSss (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Jan 2020 13:48:48 -0500
+Received: from muru.com ([72.249.23.125]:51308 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2436988AbgAPSsq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 16 Jan 2020 13:48:46 -0500
+        id S2389814AbgAPSsr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 16 Jan 2020 13:48:47 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id A3A19817C;
-        Thu, 16 Jan 2020 18:49:28 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id A652081A1;
+        Thu, 16 Jan 2020 18:49:29 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     soc@kernel.org
 Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 3/4] ti-sysc driver changes for omaps for v5.6
-Date:   Thu, 16 Jan 2020 10:48:12 -0800
-Message-Id: <pull-1579200367-372444@atomide.com-3>
+Subject: [GIT PULL 4/4] 
+Date:   Thu, 16 Jan 2020 10:48:13 -0800
+Message-Id: <pull-1579200367-372444@atomide.com-4>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <pull-1579200367-372444@atomide.com>
 References: <pull-1579200367-372444@atomide.com>
@@ -35,35 +35,40 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: "Tony Lindgren" <tony@atomide.com>
 
-The following changes since commit e709ed70d122e94cb426b1e1f905829eae19a009:
+The following changes since commit bfe0237dd6c441f0ba531755ab24579eaee99be7:
 
-  bus: ti-sysc: Fix missing reset delay handling (2019-12-12 08:20:10 -0800)
+  ARM: dts: am335x-icev2: Add support for OSD9616P0899-10 at i2c0 (2019-12-12 09:35:02 -0800)
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.6/ti-sysc-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.6/dt-part2-signed
 
-for you to fetch changes up to 3f2c420596be57e74719bd09333d3b5efe90341d:
+for you to fetch changes up to 6bcc319fc6192cb03f3db41f0e266b796b0e424f:
 
-  bus: ti-sysc: Use PTR_ERR_OR_ZERO() to simplify code (2019-12-12 09:06:40 -0800)
-
-----------------------------------------------------------------
-ti-sysc driver changes for omaps for v5.6 merge window
-
-Few changes to implement quirk handling for cases where we need to block
-clockdomain autoidle, drop old MMU specific quirks, and simplify the
-return code for sysc_init_resets().
+  ARM: dts: Add omap3-echo (2020-01-13 10:11:40 -0800)
 
 ----------------------------------------------------------------
-Suman Anna (1):
-      bus: ti-sysc: Drop MMU quirks
+More dts changes for omaps for v5.6 merge window
 
-Tony Lindgren (1):
-      bus: ti-sysc: Implement quirk handling for CLKDM_NOAUTO
+Add basic support for first generation Amazon omap3-echo. This got
+applied rather late as we discussed how to deal with SoC variants
+with some accelerators unaccessible, and eventually ended up setting
+up few more SoC specific dtsi files. Eventually we'll need to also
+detect the disabled accelerators on driver init, but more patching
+is needed for that.
 
-zhengbin (1):
-      bus: ti-sysc: Use PTR_ERR_OR_ZERO() to simplify code
+----------------------------------------------------------------
+André Hentschel (2):
+      ARM: dts: Add dtsi files for AM3703, AM3715 and DM3725
+      ARM: dts: Add omap3-echo
 
- drivers/bus/ti-sysc.c                 | 18 +++++++++---------
- include/linux/platform_data/ti-sysc.h |  1 +
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ arch/arm/boot/dts/Makefile       |   1 +
+ arch/arm/boot/dts/am3703.dtsi    |  14 ++
+ arch/arm/boot/dts/am3715.dtsi    |  10 +
+ arch/arm/boot/dts/dm3725.dtsi    |  10 +
+ arch/arm/boot/dts/omap3-echo.dts | 461 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 496 insertions(+)
+ create mode 100644 arch/arm/boot/dts/am3703.dtsi
+ create mode 100644 arch/arm/boot/dts/am3715.dtsi
+ create mode 100644 arch/arm/boot/dts/dm3725.dtsi
+ create mode 100644 arch/arm/boot/dts/omap3-echo.dts
