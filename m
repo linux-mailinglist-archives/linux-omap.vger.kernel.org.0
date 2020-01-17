@@ -2,152 +2,148 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 164A713F75F
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2020 20:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 510F814086F
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2020 11:54:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388636AbgAPTLY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jan 2020 14:11:24 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49726 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387721AbgAPRAQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:00:16 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 520C120730;
-        Thu, 16 Jan 2020 17:00:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579194015;
-        bh=XJsT8yuWRar5rcW9ic8cnSGX4AC8Y2NbaaCWvpdk/dw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0my1jBkrH9fyXVNW+PH7DtzMBsDo7AEI1BBZWZhxw0UtnNLhALnkWfAWJDwyjqtIS
-         1Hlsj41IwDfa5IuH/fcBXBN48OBS6f7Xn0yGr8vtxJZDb+am50Fopzj9TqI/x0WZxH
-         xgTt4lRmLBQaQwYlXr/mfNjsUwqLchEgbnv3TYLI=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Tero Kristo <t-kristo@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        linux-pwm@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 137/671] bus: ti-sysc: Fix timer handling with drop pm_runtime_irq_safe()
-Date:   Thu, 16 Jan 2020 11:50:46 -0500
-Message-Id: <20200116165940.10720-20-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116165940.10720-1-sashal@kernel.org>
-References: <20200116165940.10720-1-sashal@kernel.org>
+        id S1726479AbgAQKyp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jan 2020 05:54:45 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:40706 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726855AbgAQKyo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jan 2020 05:54:44 -0500
+Received: by mail-wr1-f68.google.com with SMTP id c14so22230497wrn.7
+        for <linux-omap@vger.kernel.org>; Fri, 17 Jan 2020 02:54:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=ZIor9gKMoZIiatH4TckXR6kw5rMM1XpWfkSuSCSgKXE=;
+        b=OWTd1xPAQY9tXJXOZoWIjFDzF/j5k4C12aIyvlJSkkdhXlVbD45jelTm6GVI3uVYL7
+         n9xkBrIBsIRyofHDfGxI/l2E5DARRbN+kNYjfXDlt0D2NMz3tS9otMH27qG8unAMXkVK
+         vbv+o0soDwEv+wngnnE6P2hSuYjaWEszgXFVB2E8sY/8BNNmwio0HXgTBeM5ojO90Xqz
+         eXsC84eVsPLNozUlGBGgx1RDyImJeajA48zW6/mFqj9bm+S8xvtQCF24bQIklM7kmSQd
+         UX9n+G82Jt0cw5vAEM+XOAz116BMbTc1FuSDri3NMDqzY9VqQE8QDk2hGTzsWxJxyW1O
+         /sRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=ZIor9gKMoZIiatH4TckXR6kw5rMM1XpWfkSuSCSgKXE=;
+        b=FMd3OqpQNR/voY7MJ0I3QwdQEMJmNUCDV2tuxxsyiTPYWZXdUD5vClQxwfnpi4nRIV
+         yrlStJcgFDxJD0LBH8AMyFK1tx768ozKJ77N7Z3SGe7aHDc7xloHaZP50Nqq6pA2Fw9E
+         JcNFcU9taFfXtEOgQ43LxuUNof2VVSQp5Z932FKHJZpb6stN7cKdkdt1iQjkwIcWwjl9
+         OT/s6Vuv/VN6ISkyGo+sT3+mSnaDXsVs385Yx+RaTFRuj0YeluEpA000tXMhma+FVoM9
+         ejvuDtpJuwqdx0gp5ROfVKhN0x25Z0PFh6HNiCa7YhfA5Fivqd7ZqZeotgjTEjaSEK6m
+         O0Cw==
+X-Gm-Message-State: APjAAAXlYHJnrwh9LGC17mz8jET+lEKiv1lnU/odTr9XwPBe6y69wT5V
+        5g07y+zmKPcGNrDgIaghQsRvbpfWEMh5dFe3
+X-Google-Smtp-Source: APXvYqxFsuT0KTxqOuP7M5Z4+OnjHn0WdKusB9YxUQXSRSUEjOMXSk8sV+Vlqk3Ea2XuYbdpzPevfg==
+X-Received: by 2002:a05:6000:1288:: with SMTP id f8mr2534273wrx.66.1579258481679;
+        Fri, 17 Jan 2020 02:54:41 -0800 (PST)
+Received: from google.com ([2a00:79e0:d:110:d6cc:2030:37c1:9964])
+        by smtp.gmail.com with ESMTPSA id b17sm33252857wrp.49.2020.01.17.02.54.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jan 2020 02:54:40 -0800 (PST)
+Date:   Fri, 17 Jan 2020 10:54:37 +0000
+From:   Quentin Perret <qperret@google.com>
+To:     lukasz.luba@arm.com
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com, Morten.Rasmussen@arm.com,
+        Dietmar.Eggemann@arm.com, Chris.Redpath@arm.com,
+        ionela.voinescu@arm.com, javi.merino@arm.com,
+        cw00.choi@samsung.com, b.zolnierkie@samsung.com, rjw@rjwysocki.net,
+        sudeep.holla@arm.com, viresh.kumar@linaro.org, nm@ti.com,
+        sboyd@kernel.org, rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+        kernel@pengutronix.de, khilman@kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, kernel-team@android.com
+Subject: Re: [PATCH 1/4] PM / EM: and devices to Energy Model
+Message-ID: <20200117105437.GA211774@google.com>
+References: <20200116152032.11301-1-lukasz.luba@arm.com>
+ <20200116152032.11301-2-lukasz.luba@arm.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200116152032.11301-2-lukasz.luba@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+Hey Lukasz,
 
-[ Upstream commit 9bd34c63f5536c490c152833c77fa47f59aeade3 ]
+Still reading through this, but with small changes, this looks pretty
+good to me.
 
-Commit 84badc5ec5fc ("ARM: dts: omap4: Move l4 child devices to probe
-them with ti-sysc") started producing a warning for pwm-omap-dmtimer:
+On Thursday 16 Jan 2020 at 15:20:29 (+0000), lukasz.luba@arm.com wrote:
+> +int em_register_perf_domain(struct device *dev, unsigned int nr_states,
+> +			struct em_data_callback *cb)
+>  {
+>  	unsigned long cap, prev_cap = 0;
+>  	struct em_perf_domain *pd;
+> -	int cpu, ret = 0;
+> +	struct em_device *em_dev;
+> +	cpumask_t *span = NULL;
+> +	int cpu, ret;
+>  
+> -	if (!span || !nr_states || !cb)
+> +	if (!dev || !nr_states || !cb || !cb->active_power)
 
-WARNING: CPU: 0 PID: 77 at drivers/bus/omap_l3_noc.c:147
-l3_interrupt_handler+0x2f8/0x388
-44000000.ocp:L3 Custom Error: MASTER MPU TARGET L4PER2 (Idle):
-Data Access in Supervisor mode during Functional access
-...
-__pm_runtime_idle
-omap_dm_timer_disable
-pwm_omap_dmtimer_start
-pwm_omap_dmtimer_enable
-pwm_apply_state
-pwm_vibrator_start
-pwm_vibrator_play_work
+Nit: you check !cb->active_power in em_create_pd() too I think, so only
+one of the two is needed.
 
-This is because the timer that pwm-omap-dmtimer is using is now being
-probed with ti-sysc interconnect target module instead of omap_device
-and the ti-sysc quirk for SYSC_QUIRK_LEGACY_IDLE is not fully
-compatible with what omap_device has been doing.
+>  		return -EINVAL;
+>  
+> -	/*
+> -	 * Use a mutex to serialize the registration of performance domains and
+> -	 * let the driver-defined callback functions sleep.
+> -	 */
+>  	mutex_lock(&em_pd_mutex);
+>  
+> -	for_each_cpu(cpu, span) {
+> -		/* Make sure we don't register again an existing domain. */
+> -		if (READ_ONCE(per_cpu(em_data, cpu))) {
+> +	if (_is_cpu_device(dev)) {
+> +		span = kzalloc(cpumask_size(), GFP_KERNEL);
+> +		if (!span) {
+> +			mutex_unlock(&em_pd_mutex);
+> +			return -ENOMEM;
+> +		}
+> +
+> +		ret = dev_pm_opp_get_sharing_cpus(dev, span);
+> +		if (ret)
+> +			goto free_cpumask;
 
-We could fix this by reverting the timer changes and have the timer
-probe again with omap_device. Or we could add more quirk handling to
-ti-sysc driver. But as these options don't work nicely as longer term
-solutions, let's just make timers probe with ti-sysc without any
-quirks.
+That I think should be changed. This creates some dependency on PM_OPP
+for the EM framework. And in fact, the reason we came up with PM_EM was
+precisely to not depend on PM_OPP which was deemed too Arm-specific.
 
-To do this, all we need to do is remove quirks for timers for ti-sysc,
-and drop the bogus pm_runtime_irq_safe() flag for timer-ti-dm.
+Suggested alternative: have two registration functions like so:
 
-We should not use pm_runtime_irq_safe() anyways for drivers as it will
-take a permanent use count on the parent device blocking the parent
-devices from idling and has been forcing ti-sysc driver to use a
-quirk flag.
+	int em_register_dev_pd(struct device *dev, unsigned int nr_states,
+			       struct em_data_callback *cb);
+	int em_register_cpu_pd(cpumask_t *span, unsigned int nr_states,
+			       struct em_data_callback *cb);
 
-Note that we will move the timer data to DEBUG section later on in
-clean-up patches.
+where em_register_cpu_pd() does the CPU-specific work and then calls
+em_register_dev_pd() (instead of having that big if (_is_cpu_device(dev))
+as you currently have). Would that work ?
 
-Fixes: 84badc5ec5fc ("ARM: dts: omap4: Move l4 child devices to probe them with ti-sysc")
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: H. Nikolaus Schaller <hns@goldelico.com>
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Ladislav Michl <ladis@linux-mips.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Cc: Tero Kristo <t-kristo@ti.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Reported-by: H. Nikolaus Schaller <hns@goldelico.com>
-Tested-By: Andreas Kemnade <andreas@kemnade.info>
-Tested-By: H. Nikolaus Schaller <hns@goldelico.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/bus/ti-sysc.c             | 4 ++--
- drivers/clocksource/timer-ti-dm.c | 1 -
- 2 files changed, 2 insertions(+), 3 deletions(-)
+Another possibility would be to query CPUFreq instead of PM_OPP to get
+the mask, but I'd need to look again at the driver registration path in
+CPUFreq to see if the policy masks have been populated when we enter
+PM_EM ... I am not sure if this is the case, but it's worth having a
+look too.
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 926c83398b27..2813f9ed57c0 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -888,10 +888,10 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 	SYSC_QUIRK("smartreflex", 0, -1, 0x38, -1, 0x00000000, 0xffffffff,
- 		   SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("timer", 0, 0, 0x10, 0x14, 0x00000015, 0xffffffff,
--		   SYSC_QUIRK_LEGACY_IDLE),
-+		   0),
- 	/* Some timers on omap4 and later */
- 	SYSC_QUIRK("timer", 0, 0, 0x10, -1, 0x4fff1301, 0xffffffff,
--		   SYSC_QUIRK_LEGACY_IDLE),
-+		   0),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x00000052, 0xffffffff,
- 		   SYSC_QUIRK_LEGACY_IDLE),
- 	/* Uarts on omap4 and later */
-diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-index 3ecf84706640..23414dddc3ba 100644
---- a/drivers/clocksource/timer-ti-dm.c
-+++ b/drivers/clocksource/timer-ti-dm.c
-@@ -868,7 +868,6 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
- 	timer->pdev = pdev;
- 
- 	pm_runtime_enable(dev);
--	pm_runtime_irq_safe(dev);
- 
- 	if (!timer->reserved) {
- 		ret = pm_runtime_get_sync(dev);
--- 
-2.20.1
-
+Thanks,
+Quentin
