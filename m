@@ -2,116 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A47140E25
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2020 16:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D39C140E37
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2020 16:47:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729332AbgAQPop (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Jan 2020 10:44:45 -0500
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:54166 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729281AbgAQPof (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jan 2020 10:44:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=tpRGY8braYYC4cmZ93sqnuMCgeJCOpcfO6gdfCvcFYM=; b=fUYGrIoZcm0K
-        t0P/zIJTf8R6u7jLBtsfTN0v1HAe/tUiF2D1zwN0BCN6vInZ/sSyhlsbrckahYJr1qySIgTnpY1OA
-        AYmg4fdcHuc+9cQKQBVhIXPHIn6dBRIPwDdTRsU7z+5zV+IZKxboCMfROovwy0xHqELP2n1Dja7fo
-        /W/H8=;
-Received: from fw-tnat-cam4.arm.com ([217.140.106.52] helo=fitzroy.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1isTnM-0006uX-Dt; Fri, 17 Jan 2020 15:44:24 +0000
-Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
-        id 278C1D02C26; Fri, 17 Jan 2020 15:44:24 +0000 (GMT)
-From:   Mark Brown <broonie@kernel.org>
-To:     Jean Pihet <jean.pihet@newoldbits.com>
-Cc:     Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
-        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Applied "spi: spi-ti-qspi: fix warning" to the spi tree
-In-Reply-To: <20200115100700.3357-1-jean.pihet@newoldbits.com>
-Message-Id: <applied-20200115100700.3357-1-jean.pihet@newoldbits.com>
-X-Patchwork-Hint: ignore
-Date:   Fri, 17 Jan 2020 15:44:24 +0000 (GMT)
+        id S1729203AbgAQPrK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jan 2020 10:47:10 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:53488 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728816AbgAQPrK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jan 2020 10:47:10 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00HFl6J7052056;
+        Fri, 17 Jan 2020 09:47:06 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1579276026;
+        bh=jjGw/ClHk77r7sY2T5/6sqsmol6P7vQEvxcBNUjaGRc=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=LY8W5jr6fWv4WeUmWOx9p8yc5PsBJNO0txLen98WrAxeJCflmSmNyBLHVv3z9Xoqi
+         mC3P3DNJYobEpiK09C3kMNbZDTHSuAi26HxUphd6EJvWAU2GB1uUNL/6C3SPMN/8p5
+         sS0Fkz+jfZpmixJ8rapWEArCfkifeEYtHmoVRmPM=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00HFl5dB016685
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 17 Jan 2020 09:47:06 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 17
+ Jan 2020 09:47:04 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Fri, 17 Jan 2020 09:47:04 -0600
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00HFl2x6099452;
+        Fri, 17 Jan 2020 09:47:02 -0600
+Subject: Re: [PATCH v2] clk: ti: dra7: fix parent for gmac_clkctrl
+To:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Stephen Boyd <sboyd@kernel.org>
+CC:     Sekhar Nori <nsekhar@ti.com>, <linux-clk@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+References: <20191221110004.9951-1-grygorii.strashko@ti.com>
+ <e1782af7-098e-4550-8c9c-9f90187df8f3@ti.com>
+ <b448c468-5216-f599-7add-cefaf4f557db@ti.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <6777c22e-51b6-582c-54ca-364e9094bed9@ti.com>
+Date:   Fri, 17 Jan 2020 17:47:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
+MIME-Version: 1.0
+In-Reply-To: <b448c468-5216-f599-7add-cefaf4f557db@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The patch
+On 17/01/2020 16:49, Grygorii Strashko wrote:
+> 
+> 
+> On 17/01/2020 16:05, Tero Kristo wrote:
+>> On 21/12/2019 13:00, Grygorii Strashko wrote:
+>>> The parent clk for gmac clk ctrl has to be gmac_main_clk (125MHz) 
+>>> instead
+>>> of dpll_gmac_ck (1GHz). This is caused incorrect CPSW MDIO operation.
+>>> Hence, fix it.
+>>>
+>>> Fixes: dffa9051d546 ('clk: ti: dra7: add new clkctrl data')
+>>> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+>>> ---
+>>>   drivers/clk/ti/clk-7xx.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/clk/ti/clk-7xx.c b/drivers/clk/ti/clk-7xx.c
+>>> index 9dd6185a4b4e..66e4b2b9ec60 100644
+>>> --- a/drivers/clk/ti/clk-7xx.c
+>>> +++ b/drivers/clk/ti/clk-7xx.c
+>>> @@ -405,7 +405,7 @@ static const struct omap_clkctrl_bit_data 
+>>> dra7_gmac_bit_data[] __initconst = {
+>>>   };
+>>>   static const struct omap_clkctrl_reg_data dra7_gmac_clkctrl_regs[] 
+>>> __initconst = {
+>>> -    { DRA7_GMAC_GMAC_CLKCTRL, dra7_gmac_bit_data, CLKF_SW_SUP, 
+>>> "dpll_gmac_ck" },
+>>> +    { DRA7_GMAC_GMAC_CLKCTRL, dra7_gmac_bit_data, CLKF_SW_SUP, 
+>>> "gmac_main_clk" },
+>>
+>> I think the gmac clk path is still somehow wrong after this change. 
+>> This only fixes it partially imo.
+>>
+>> Looking at TRM, gmac_main_clk is fed from dpll_gmac_x2_h12, 
+> 
+> No, it seems not.
+> DPLL_GMAC.CLKOUT_M2 -> GMAC_250M_CLK -> 1/2 -> GMAC_MAIN_CLK
 
-   spi: spi-ti-qspi: fix warning
+Hmm ok, yeah looking at the GMAC IP details shows how it actually goes, 
+I got confused with the clkdm mapping in 3.6.3.12.1. So no DT changes 
+needed after all and this patch alone is fine.
 
-has been applied to the spi tree at
+-Tero
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
+> 
+> http://www.ti.com/lit/ug/sprui30f/sprui30f.pdf
+> 3.6.3.12.1 DPLL_GMAC Overview
+> Figure 3-41. CM_CORE_AON Overview (b)
+> Figure 24-185. GMAC_SW Integration
+> 
+> but looking at the existing clock data, gmac_main_clk comes out from 
+> dpll_gmac_m2_ck. This potentially applies one extra divider to the path 
+> which appears wrong. Can you take a look at fixing the DTS side for this 
+> also?
+>>
+>> -Tero
+>> -- 
+> 
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 6925212f328bf2abde0c8f0d037fddd36751d489 Mon Sep 17 00:00:00 2001
-From: Jean Pihet <jean.pihet@newoldbits.com>
-Date: Wed, 15 Jan 2020 11:07:00 +0100
-Subject: [PATCH] spi: spi-ti-qspi: fix warning
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-drivers/spi/spi-ti-qspi.c: In function ‘ti_qspi_start_transfer_one’:
-drivers/spi/spi-ti-qspi.c:392:8: warning: ‘rx_wlen’ may be used uninitialized in this function [-Wmaybe-uninitialized]
-  392 |     if (rx_wlen >= 32)
-      |        ^
-drivers/spi/spi-ti-qspi.c:318:12: note: ‘rx_wlen’ was declared here
-  318 |  u8 rxlen, rx_wlen;
-      |            ^~~~~~~
-
-The warning is a false positive; it is not thrown by all compiler versions, e.g.
-Red Hat Cross 9.2.1-1 but not Linaro GCC 7.5-2019.12.
-
-Signed-off-by: Jean Pihet <jean.pihet@newoldbits.com>
-Link: https://lore.kernel.org/r/20200115100700.3357-1-jean.pihet@newoldbits.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-ti-qspi.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 858fda8ac73e..366a3e5cca6b 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -332,6 +332,7 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t,
- 		break;
- 	}
- 	wlen = t->bits_per_word >> 3;	/* in bytes */
-+	rx_wlen = wlen;
- 
- 	while (count) {
- 		dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n", cmd, qspi->dc);
--- 
-2.20.1
-
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
