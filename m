@@ -2,87 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 913D8141D90
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Jan 2020 12:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 295C0141F75
+	for <lists+linux-omap@lfdr.de>; Sun, 19 Jan 2020 19:44:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbgASLaB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 19 Jan 2020 06:30:01 -0500
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:44829 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726744AbgASLaB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 19 Jan 2020 06:30:01 -0500
-Received: by mail-pl1-f196.google.com with SMTP id d9so133980plo.11;
-        Sun, 19 Jan 2020 03:30:01 -0800 (PST)
+        id S1727123AbgASSoc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 19 Jan 2020 13:44:32 -0500
+Received: from mail-il1-f193.google.com ([209.85.166.193]:39261 "EHLO
+        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728682AbgASSoT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 19 Jan 2020 13:44:19 -0500
+Received: by mail-il1-f193.google.com with SMTP id x5so25495448ila.6
+        for <linux-omap@vger.kernel.org>; Sun, 19 Jan 2020 10:44:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=MGnExAerV3JssOOZACwzhm+zW2U1SumUHkN5NAnxS0Q=;
-        b=hwr9gpqQT3P2kQsR8YXzNLRLMkzjUx23Hx54nrlDIGbMd46ssImw5RROfQO85tnsV/
-         DIg591x/HIQrI730wfPYKOOnOLO0sMRHbW+MUkfBEqQgwlu4vaugQfP0mAdshEcX+0ur
-         UaDCBwxFFLDsmSPLB4GGTyiFWVe+ZFJxqOPSX1097YQ8X6IHSm/C1KJfgNq/FgEKux+y
-         //oELbxGNGdGy/wlr0ofLPKoXWa6Pbq9nATbCV+oaxqqrbVwf107uJpwwlqtNbFFANqj
-         mlTf3vOltWXMBuwPrFqx13N3FVISOUXg7WMy6dTlI0Qvxq7KmvZmzccU1zkcNjaGVPg8
-         jcJA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
+        b=MveYcniUJUB532f0dlOoihdmkjAHV60cDj8LBHI8M4h+3H+egt8ZCsWSnQoG7CEhld
+         h286H+k74rDzfRQOoY/f9M81WRQr88YRuubiH3HanhIDyXki4cyulA7bNdgdh/npcklQ
+         CvJo43u8PBPBkMgEH5HatRsI+u5tlB3wEJ1Th3FBUvpApZQxsvg7pL4HfvgLhjM/SAbt
+         Wln7BJPpvNYZtoiRQX3zkLZKrm4kgBMldFao5RktgQ8gLQFv0TsxI7xopop5Q61lnjsD
+         O+Nqof9tzp5qXVHsDImBQ0OOhN8D0ZvK4JC9Zw+KV08LpajVcASte5dFUKOIeqnCFHwC
+         Gp1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=MGnExAerV3JssOOZACwzhm+zW2U1SumUHkN5NAnxS0Q=;
-        b=FAmevLVgbl36VlVMsVC5eNX9Meg4jcTyKpI6/VadcG+rZiswJ7rv/49mKcXXu5t4Gy
-         asTK9AphjHteWt8llnsgwS/tIsLS6OigqXnYhm/cCwntlH+eOyJI2P/ZAPiEU38m25d+
-         3/Hmp6t2eNAPssX1yKzTbh4QmI7LKN3naLKEKmjswZTUhitunGsDEMlJrBPPUA1F4sKj
-         1s26z2XmD9883Z2U0t5ioAC+zhydArUZnHYnZveGks/VBL59jX6KWJ4KGPlcSzFPt9bR
-         YYHWV1jDIl19baW82iYBPNRhyI9N4PH/i6VZ7mIbIIPhBLZwh9Iy+M2oEKJlt5i9A4uI
-         DwAA==
-X-Gm-Message-State: APjAAAXRc8crRmy+WT71MhDiZA4FlOaHzt28hzv3re1fQNCatKHbi16C
-        3DABunnR4N0XXqqdhTAYGPg=
-X-Google-Smtp-Source: APXvYqzo++TpbfuUhlZ+uPgXY1tOjvMFpk1EWs5JAEdEXQOU62JdFbFh330RKhYkRdgyT8MuteUKqQ==
-X-Received: by 2002:a17:902:9005:: with SMTP id a5mr4915526plp.338.1579433400536;
-        Sun, 19 Jan 2020 03:30:00 -0800 (PST)
-Received: from localhost.localdomain ([219.91.191.70])
-        by smtp.gmail.com with ESMTPSA id q10sm36496600pfn.5.2020.01.19.03.29.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sun, 19 Jan 2020 03:29:59 -0800 (PST)
-From:   Raag Jadav <raagjadav@gmail.com>
-To:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
-        mark.rutland@arm.com
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Raag Jadav <raagjadav@gmail.com>
-Subject: [PATCH] ARM: dts: am43x-epos-evm: set data pin directions for spi0 and spi1
-Date:   Sun, 19 Jan 2020 16:58:59 +0530
-Message-Id: <1579433339-10663-1-git-send-email-raagjadav@gmail.com>
-X-Mailer: git-send-email 2.7.4
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/o+CA7VDRA7UR3HGeT8+/tYzwEnOXwq5B8ZHP2/HeYc=;
+        b=U360repGWRD1nNPegEURb5FT1s7/UNH1woSFZZAP3d3Y5kdbrZZTzna7vnDPArJCHT
+         qWfygwIQB5wLQY2sWf1aOrnEs46PyitdnT78j/5m4O8ypGf2h1p42qvEAMJhcR9RK/Z8
+         HK2ru5A7AgrTv0ol16gFZrgJqkV3KV54Jr6xI8th2KtOVQrQLgk5PY/aiqU1cGOQ4mIH
+         t++hCMfpux/seJ0bolp/79jbVjqwn19mzIOwZ48FquBfpkNHWj9wNVJEVGyY75Alu4Gw
+         d+n32Y3PrScR/irTAlqin/1VeQ14V+RkExywm5ilhYQMTpB/wojkCeZi386Vrc4NTwl5
+         33+g==
+X-Gm-Message-State: APjAAAXXfO05ypU5OIz/bI6inAvWmiFmZk7n0qzgBanC5kjvaEbALweN
+        3yLZgehkpZiu48biNCCoq3wneOxygOXXmF4FFpg=
+X-Google-Smtp-Source: APXvYqzrfoOpFYdPx6ke6uIX585SnMDBN6pXKvD7iN8x9MT//+KimK2aFC33ps3ZC6gjq3Pi1pIlacgfKiFCQZrpYZA=
+X-Received: by 2002:a92:d1c1:: with SMTP id u1mr7477573ilg.66.1579459459106;
+ Sun, 19 Jan 2020 10:44:19 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a02:95c8:0:0:0:0:0 with HTTP; Sun, 19 Jan 2020 10:44:18
+ -0800 (PST)
+Reply-To: favordens@email.com
+From:   Favor Desmond <contecindy5@gmail.com>
+Date:   Sun, 19 Jan 2020 18:44:18 +0000
+Message-ID: <CAOfCPNxgSoAU_ns0j9jYL-ArKfcD=i8NkJvHsR4-OGvFBVDMZg@mail.gmail.com>
+Subject: HELLO
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Set d0 and d1 pin directions for spi0 and spi1 as per their pinmux.
-
-Signed-off-by: Raag Jadav <raagjadav@gmail.com>
----
- arch/arm/boot/dts/am43x-epos-evm.dts | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/arm/boot/dts/am43x-epos-evm.dts b/arch/arm/boot/dts/am43x-epos-evm.dts
-index 078cb47..a6fbc08 100644
---- a/arch/arm/boot/dts/am43x-epos-evm.dts
-+++ b/arch/arm/boot/dts/am43x-epos-evm.dts
-@@ -848,6 +848,7 @@
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&spi0_pins_default>;
- 	pinctrl-1 = <&spi0_pins_sleep>;
-+	ti,pindir-d0-out-d1-in = <1>;
- };
- 
- &spi1 {
-@@ -855,6 +856,7 @@
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&spi1_pins_default>;
- 	pinctrl-1 = <&spi1_pins_sleep>;
-+	ti,pindir-d0-out-d1-in = <1>;
- };
- 
- &usb2_phy1 {
--- 
-2.7.4
-
+Hello Dear
+Greetings to you,I am Favor Desmond from Ivory coast currently living
+in  Togo Republic,I would like to know you more, so that i can tell
+you little amount myself and my photo, email address is
+favordens@email.com
+Thanks
+Favor
