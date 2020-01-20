@@ -2,24 +2,24 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DABA142F79
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Jan 2020 17:21:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16DD314316B
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Jan 2020 19:27:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729162AbgATQVC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Jan 2020 11:21:02 -0500
-Received: from foss.arm.com ([217.140.110.172]:34240 "EHLO foss.arm.com"
+        id S1726942AbgATS1g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jan 2020 13:27:36 -0500
+Received: from foss.arm.com ([217.140.110.172]:35484 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729146AbgATQVC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 20 Jan 2020 11:21:02 -0500
+        id S1726642AbgATS1f (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 20 Jan 2020 13:27:35 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4EDB731B;
-        Mon, 20 Jan 2020 08:21:01 -0800 (PST)
-Received: from [10.37.12.169] (unknown [10.37.12.169])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C2703F6C4;
-        Mon, 20 Jan 2020 08:20:51 -0800 (PST)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A249731B;
+        Mon, 20 Jan 2020 10:27:34 -0800 (PST)
+Received: from [192.168.0.7] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2843F3F68E;
+        Mon, 20 Jan 2020 10:27:28 -0800 (PST)
 Subject: Re: [PATCH 1/4] PM / EM: and devices to Energy Model
 To:     Quentin Perret <qperret@google.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>
+        Lukasz Luba <lukasz.luba@arm.com>
 Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
@@ -37,19 +37,20 @@ Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         bjorn.andersson@linaro.org, robh@kernel.org,
         matthias.bgg@gmail.com, steven.price@arm.com,
         tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
-        airlied@linux.ie, daniel@ffwll.ch, patrick.bellasi@matbug.net
+        airlied@linux.ie, daniel@ffwll.ch, kernel-team@android.com
 References: <20200116152032.11301-1-lukasz.luba@arm.com>
  <20200116152032.11301-2-lukasz.luba@arm.com>
- <17b77e0c-9455-0479-d37b-c57717c784c7@arm.com>
- <20200120152804.GB164543@google.com>
-From:   Lukasz Luba <lukasz.luba@arm.com>
-Message-ID: <453034e5-f7b9-20f7-4e26-5d0d7164edd1@arm.com>
-Date:   Mon, 20 Jan 2020 16:20:49 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ <20200117105437.GA211774@google.com>
+ <40587d98-0e8d-cbac-dbf5-d26501d47a8c@arm.com>
+ <20200120150918.GA164543@google.com>
+From:   Dietmar Eggemann <dietmar.eggemann@arm.com>
+Message-ID: <8332c4ac-2a7d-1e2d-76e9-7c979a666257@arm.com>
+Date:   Mon, 20 Jan 2020 19:27:26 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20200120152804.GB164543@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20200120150918.GA164543@google.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
@@ -57,54 +58,48 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 1/20/20 3:28 PM, Quentin Perret wrote:
-> On Monday 20 Jan 2020 at 15:53:35 (+0100), Dietmar Eggemann wrote:
->> Would be really nice if this wouldn't be required. We should really aim
->> for 1 framework == 1 set of interfaces.
->>
->> What happens if someone calls em_get_pd() on a CPU EM?
->>
->> E.g:
->>
->>   static struct perf_domain *pd_init(int cpu)
->>   {
->> -       struct em_perf_domain *obj = em_cpu_get(cpu);
->> +       struct device *dev = get_cpu_device(cpu);
->> +       struct em_perf_domain *obj = em_pd_get(dev);
->>          struct perf_domain *pd;
->>
->> Two versions of one functionality will confuse API user from the
->> beginning ...
+On 20/01/2020 16:09, Quentin Perret wrote:
+> Hey Lukasz,
 > 
-> Agreed, this looks a bit confusing. It should be trivial to make
-> em_dev_get() (or whatever we end up calling it) work for CPUs too,
-> though. And we could always have a em_cpu_get(int cpu) API that is a
-> basically a wrapper around em_dev_get() for convenience.
-
-The problem not only here is that we have a CPU index 'int cpu'
-and if we ask for device like:
-
-struct device *dev = get_cpu_device(cpu);
-
-It might be not the same device that was used during the
-registration, when we had i.e. 4 CPUs for the same policy:
-
-int cpu_id = cpumask_first(policy->cpus);
-struct device *cpu_dev = get_cpu_device(cpu_id);
-em_register_perf_domain(cpu_dev, nr_opp, &em_cb);
-
-That's why the em_cpu_get() is different than em_get_pd(), mainly by:
-if (cpumask_test_cpu(cpu, em_span_cpus(em_pd)))
-
-It won't be simple wrapper, let me think how it could be handled
-differently than it is now.
-
-Regards,
-Lukasz
-
+> On Monday 20 Jan 2020 at 14:52:07 (+0000), Lukasz Luba wrote:
+>> On 1/17/20 10:54 AM, Quentin Perret wrote:
+>>> Suggested alternative: have two registration functions like so:
+>>>
+>>> 	int em_register_dev_pd(struct device *dev, unsigned int nr_states,
+>>> 			       struct em_data_callback *cb);
+>>> 	int em_register_cpu_pd(cpumask_t *span, unsigned int nr_states,
+>>> 			       struct em_data_callback *cb);
+>>
+>> Interesting, in the internal review Dietmar asked me to remove these two
+>> functions. I had the same idea, which would simplify a bit the
+>> registration and it does not need to check the dev->bus if it is CPU.
+>>
+>> Unfortunately, we would need also two function in drivers/opp/of.c:
+>> dev_pm_opp_of_register_cpu_em(policy->cpus);
+>> and
+>> dev_pm_opp_of_register_dev_em(dev);
+>>
+>> Thus, I have created only one registration function, which you can see
+>> in this patch set.
 > 
-> Thanks,
-> Quentin
+> Right, I can see how having a unified API would be appealing, but the
+> OPP dependency is a nono, so we'll need to work around one way or
+> another.
 > 
+> FWIW, I don't think having separate APIs for CPUs and other devices is
+> that bad given that we already have entirely different frameworks to
+> drive their respective frequencies. And the _cpu variants are basically
+> just wrappers around the _dev ones, so not too bad either IMO :).
+
+It's true that we need the policy->cpus cpumask only for cpu devices and
+we have it available when we call em_register_perf_domain()
+[scmi-cpufreq.c driver] or the OPP wrapper dev_pm_opp_of_register_em()
+[e.g. cpufreq-dt.c driver].
+
+And we shouldn't make EM code dependent on OPP.
+
+But can't we add 'struct cpumask *mask' as an additional argument to
+both which can be set to NULL for (devfreq) devices?
+
+We can check in em_register_perf_domain() that we got a valid cpumask
+for a cpu device and ignore it for (devfreq) devices.
