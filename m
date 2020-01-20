@@ -2,119 +2,159 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2943A141FEA
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Jan 2020 21:11:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56182142E0F
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Jan 2020 15:52:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728741AbgASULg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 19 Jan 2020 15:11:36 -0500
-Received: from muru.com ([72.249.23.125]:51796 "EHLO muru.com"
+        id S1726885AbgATOwV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jan 2020 09:52:21 -0500
+Received: from foss.arm.com ([217.140.110.172]:33072 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727138AbgASULf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 19 Jan 2020 15:11:35 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id CB9FF8132;
-        Sun, 19 Jan 2020 20:12:17 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Sebastian Reichel <sre@kernel.org>
-Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
-        Merlijn Wajer <merlijn@wizzup.org>, Pavel Machek <pavel@ucw.cz>
-Subject: [PATCH 3/3] RFC: power: supply: cpcap-battery: Implement capacity percentage
-Date:   Sun, 19 Jan 2020 12:11:24 -0800
-Message-Id: <20200119201124.29620-3-tony@atomide.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200119201124.29620-1-tony@atomide.com>
-References: <20200119201124.29620-1-tony@atomide.com>
+        id S1726819AbgATOwV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 20 Jan 2020 09:52:21 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2545930E;
+        Mon, 20 Jan 2020 06:52:20 -0800 (PST)
+Received: from [10.37.12.169] (unknown [10.37.12.169])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D71C33F52E;
+        Mon, 20 Jan 2020 06:52:09 -0800 (PST)
+Subject: Re: [PATCH 1/4] PM / EM: and devices to Energy Model
+To:     Quentin Perret <qperret@google.com>
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com, Morten.Rasmussen@arm.com,
+        Dietmar.Eggemann@arm.com, Chris.Redpath@arm.com,
+        ionela.voinescu@arm.com, javi.merino@arm.com,
+        cw00.choi@samsung.com, b.zolnierkie@samsung.com, rjw@rjwysocki.net,
+        sudeep.holla@arm.com, viresh.kumar@linaro.org, nm@ti.com,
+        sboyd@kernel.org, rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+        kernel@pengutronix.de, khilman@kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, kernel-team@android.com
+References: <20200116152032.11301-1-lukasz.luba@arm.com>
+ <20200116152032.11301-2-lukasz.luba@arm.com>
+ <20200117105437.GA211774@google.com>
+From:   Lukasz Luba <lukasz.luba@arm.com>
+Message-ID: <40587d98-0e8d-cbac-dbf5-d26501d47a8c@arm.com>
+Date:   Mon, 20 Jan 2020 14:52:07 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200117105437.GA211774@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Based on the saved high and low states, we can estimate battery state
-based on the coulomb counter:
+Hi Quentin,
 
-# cat /sys/class/power_supply/battery/capacity
-...
+On 1/17/20 10:54 AM, Quentin Perret wrote:
+> Hey Lukasz,
+> 
+> Still reading through this, but with small changes, this looks pretty
+> good to me.
+> 
+> On Thursday 16 Jan 2020 at 15:20:29 (+0000), lukasz.luba@arm.com wrote:
+>> +int em_register_perf_domain(struct device *dev, unsigned int nr_states,
+>> +			struct em_data_callback *cb)
+>>   {
+>>   	unsigned long cap, prev_cap = 0;
+>>   	struct em_perf_domain *pd;
+>> -	int cpu, ret = 0;
+>> +	struct em_device *em_dev;
+>> +	cpumask_t *span = NULL;
+>> +	int cpu, ret;
+>>   
+>> -	if (!span || !nr_states || !cb)
+>> +	if (!dev || !nr_states || !cb || !cb->active_power)
+> 
+> Nit: you check !cb->active_power in em_create_pd() too I think, so only
+> one of the two is needed.
 
-Note that this too should probably be updated to use ocv-capacity-table.
+good point, thanks
 
-Also note that I have not verified the shown capacity is very accurate.
+> 
+>>   		return -EINVAL;
+>>   
+>> -	/*
+>> -	 * Use a mutex to serialize the registration of performance domains and
+>> -	 * let the driver-defined callback functions sleep.
+>> -	 */
+>>   	mutex_lock(&em_pd_mutex);
+>>   
+>> -	for_each_cpu(cpu, span) {
+>> -		/* Make sure we don't register again an existing domain. */
+>> -		if (READ_ONCE(per_cpu(em_data, cpu))) {
+>> +	if (_is_cpu_device(dev)) {
+>> +		span = kzalloc(cpumask_size(), GFP_KERNEL);
+>> +		if (!span) {
+>> +			mutex_unlock(&em_pd_mutex);
+>> +			return -ENOMEM;
+>> +		}
+>> +
+>> +		ret = dev_pm_opp_get_sharing_cpus(dev, span);
+>> +		if (ret)
+>> +			goto free_cpumask;
+> 
+> That I think should be changed. This creates some dependency on PM_OPP
+> for the EM framework. And in fact, the reason we came up with PM_EM was
+> precisely to not depend on PM_OPP which was deemed too Arm-specific.
+> 
+> Suggested alternative: have two registration functions like so:
+> 
+> 	int em_register_dev_pd(struct device *dev, unsigned int nr_states,
+> 			       struct em_data_callback *cb);
+> 	int em_register_cpu_pd(cpumask_t *span, unsigned int nr_states,
+> 			       struct em_data_callback *cb);
 
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Not-yet-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/power/supply/cpcap-battery.c | 35 ++++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
+Interesting, in the internal review Dietmar asked me to remove these two
+functions. I had the same idea, which would simplify a bit the
+registration and it does not need to check the dev->bus if it is CPU.
 
-diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/cpcap-battery.c
---- a/drivers/power/supply/cpcap-battery.c
-+++ b/drivers/power/supply/cpcap-battery.c
-@@ -504,6 +504,15 @@ static int cpcap_battery_get_rough_capacity(struct cpcap_battery_ddata *ddata)
- 	return capacity;
- }
- 
-+static int cpcap_battery_get_rough_percentage(struct cpcap_battery_ddata *ddata)
-+{
-+	int percentage = 0;
-+
-+	cpcap_battery_get_rough(ddata, NULL, &percentage);
-+
-+	return percentage;
-+}
-+
- static enum power_supply_property cpcap_battery_props[] = {
- 	POWER_SUPPLY_PROP_STATUS,
- 	POWER_SUPPLY_PROP_PRESENT,
-@@ -518,6 +527,7 @@ static enum power_supply_property cpcap_battery_props[] = {
- 	POWER_SUPPLY_PROP_CHARGE_COUNTER,
- 	POWER_SUPPLY_PROP_POWER_NOW,
- 	POWER_SUPPLY_PROP_POWER_AVG,
-+	POWER_SUPPLY_PROP_CAPACITY,
- 	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
- 	POWER_SUPPLY_PROP_SCOPE,
- 	POWER_SUPPLY_PROP_TEMP,
-@@ -528,10 +538,10 @@ static int cpcap_battery_get_property(struct power_supply *psy,
- 				      union power_supply_propval *val)
- {
- 	struct cpcap_battery_ddata *ddata = power_supply_get_drvdata(psy);
--	struct cpcap_battery_state_data *latest, *previous;
-+	struct cpcap_battery_state_data *latest, *previous, *low, *high;
- 	u32 sample;
- 	s32 accumulator;
--	int cached;
-+	int cached, delta, est;
- 	s64 tmp;
- 
- 	cached = cpcap_battery_update_status(ddata);
-@@ -608,6 +618,27 @@ static int cpcap_battery_get_property(struct power_supply *psy,
- 		tmp *= ((latest->voltage + previous->voltage) / 20000);
- 		val->intval = div64_s64(tmp, 100);
- 		break;
-+	case POWER_SUPPLY_PROP_CAPACITY:
-+		est = cpcap_battery_get_rough_percentage(ddata);
-+		high = cpcap_battery_get_highest(ddata);
-+		if (high->voltage) {
-+			delta = latest->counter_uah - high->counter_uah;
-+			val->intval = (ddata->config.info.charge_full_design -
-+				       delta) * 100;
-+			val->intval /= ddata->config.info.charge_full_design;
-+			delta = abs(val->intval - est);
-+			break;
-+		}
-+		low = cpcap_battery_get_lowest(ddata);
-+		if (low->voltage) {
-+			delta = low->counter_uah - latest->counter_uah;
-+			val->intval = (delta * 100) /
-+				ddata->config.info.charge_full_design;
-+			delta = abs(val->intval - est);
-+			break;
-+		}
-+		val->intval = est;
-+		break;
- 	case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
- 		val->intval = cpcap_battery_get_rough_capacity(ddata);
- 		break;
--- 
-2.24.1
+Unfortunately, we would need also two function in drivers/opp/of.c:
+dev_pm_opp_of_register_cpu_em(policy->cpus);
+and
+dev_pm_opp_of_register_dev_em(dev);
+
+Thus, I have created only one registration function, which you can see
+in this patch set.
+
+What do you think Dietmar?
+
+> 
+> where em_register_cpu_pd() does the CPU-specific work and then calls
+> em_register_dev_pd() (instead of having that big if (_is_cpu_device(dev))
+> as you currently have). Would that work ?
+
+Yes, I think you made a good point with this OPP dependency, which we
+could avoid when we implement these two registration functions.
+
+> 
+> Another possibility would be to query CPUFreq instead of PM_OPP to get
+> the mask, but I'd need to look again at the driver registration path in
+> CPUFreq to see if the policy masks have been populated when we enter
+> PM_EM ... I am not sure if this is the case, but it's worth having a
+> look too.
+
+The policy mask is populated, our registration function is called at
+the end of the init code of CPUfreq drivers. I will check this option.
+
+> 
+> Thanks,
+> Quentin
+> 
+
+Thank you for your comments.
+
+Regards,
+Lukasz
