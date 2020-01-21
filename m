@@ -2,94 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AF771437AE
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Jan 2020 08:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 293D9143928
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Jan 2020 10:10:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727508AbgAUHeI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Jan 2020 02:34:08 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:56108 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725890AbgAUHeI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jan 2020 02:34:08 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00L7Y5Ls021924;
-        Tue, 21 Jan 2020 01:34:05 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1579592045;
-        bh=/8wPkVg64Sb6ToRgyES8+yOo10uiXr+Dpe7wHqu2iU4=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=aQB9YH3t70lnrVELntTJR1P5X77Mw7RJUcgFPkk91+OUVyOFTCvI9HfR37JZ2g8xB
-         g0AunY3DsIeObMfjZo8WSQmo+T036yrC/abqBo7j4vQzB4AmdS9SPMq8EotOVwm/6M
-         z2Twk3pHmEixSep+tRwfhe2MFDiAYFseqZoNAAs8=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00L7Y4nu090858
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 21 Jan 2020 01:34:05 -0600
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 21
- Jan 2020 01:34:03 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 21 Jan 2020 01:34:03 -0600
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00L7Y1Og057892;
-        Tue, 21 Jan 2020 01:34:01 -0600
-Subject: Re: [PATCH v2] clk: ti: dra7: fix parent for gmac_clkctrl
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Stephen Boyd <sboyd@kernel.org>
-CC:     Sekhar Nori <nsekhar@ti.com>, <linux-clk@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>
-References: <20191221110004.9951-1-grygorii.strashko@ti.com>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <df59b0b4-abc0-bab1-78d4-35518c295e06@ti.com>
-Date:   Tue, 21 Jan 2020 09:34:00 +0200
+        id S1728816AbgAUJKZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Jan 2020 04:10:25 -0500
+Received: from foss.arm.com ([217.140.110.172]:39822 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727969AbgAUJKZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 21 Jan 2020 04:10:25 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 707D31FB;
+        Tue, 21 Jan 2020 01:10:24 -0800 (PST)
+Received: from [192.168.0.7] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED5023F6C4;
+        Tue, 21 Jan 2020 01:10:17 -0800 (PST)
+Subject: Re: [PATCH 1/4] PM / EM: and devices to Energy Model
+To:     Lukasz Luba <lukasz.luba@arm.com>,
+        Quentin Perret <qperret@google.com>
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com, Morten.Rasmussen@arm.com, Chris.Redpath@arm.com,
+        ionela.voinescu@arm.com, javi.merino@arm.com,
+        cw00.choi@samsung.com, b.zolnierkie@samsung.com, rjw@rjwysocki.net,
+        sudeep.holla@arm.com, viresh.kumar@linaro.org, nm@ti.com,
+        sboyd@kernel.org, rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+        kernel@pengutronix.de, khilman@kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, kernel-team@android.com
+References: <20200116152032.11301-1-lukasz.luba@arm.com>
+ <20200116152032.11301-2-lukasz.luba@arm.com>
+ <20200117105437.GA211774@google.com>
+ <40587d98-0e8d-cbac-dbf5-d26501d47a8c@arm.com>
+ <20200120150918.GA164543@google.com>
+ <8332c4ac-2a7d-1e2d-76e9-7c979a666257@arm.com>
+ <b02da0ed-9e0b-36db-9813-daa334cbf2ba@arm.com>
+From:   Dietmar Eggemann <dietmar.eggemann@arm.com>
+Message-ID: <c9910c74-ab47-0c78-a1c7-4f3978e1dd09@arm.com>
+Date:   Tue, 21 Jan 2020 10:10:16 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20191221110004.9951-1-grygorii.strashko@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <b02da0ed-9e0b-36db-9813-daa334cbf2ba@arm.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 21/12/2019 13:00, Grygorii Strashko wrote:
-> The parent clk for gmac clk ctrl has to be gmac_main_clk (125MHz) instead
-> of dpll_gmac_ck (1GHz). This is caused incorrect CPSW MDIO operation.
-> Hence, fix it.
+On 20/01/2020 19:38, Lukasz Luba wrote:
 > 
-> Fixes: dffa9051d546 ('clk: ti: dra7: add new clkctrl data')
-> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-
-Queued up for 5.6, thanks.
-
--Tero
-
-> ---
->   drivers/clk/ti/clk-7xx.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/clk/ti/clk-7xx.c b/drivers/clk/ti/clk-7xx.c
-> index 9dd6185a4b4e..66e4b2b9ec60 100644
-> --- a/drivers/clk/ti/clk-7xx.c
-> +++ b/drivers/clk/ti/clk-7xx.c
-> @@ -405,7 +405,7 @@ static const struct omap_clkctrl_bit_data dra7_gmac_bit_data[] __initconst = {
->   };
->   
->   static const struct omap_clkctrl_reg_data dra7_gmac_clkctrl_regs[] __initconst = {
-> -	{ DRA7_GMAC_GMAC_CLKCTRL, dra7_gmac_bit_data, CLKF_SW_SUP, "dpll_gmac_ck" },
-> +	{ DRA7_GMAC_GMAC_CLKCTRL, dra7_gmac_bit_data, CLKF_SW_SUP, "gmac_main_clk" },
->   	{ 0 },
->   };
->   
-> 
+> On 1/20/20 6:27 PM, Dietmar Eggemann wrote:
+>> On 20/01/2020 16:09, Quentin Perret wrote:
+>>> Hey Lukasz,
+>>>
+>>> On Monday 20 Jan 2020 at 14:52:07 (+0000), Lukasz Luba wrote:
+>>>> On 1/17/20 10:54 AM, Quentin Perret wrote:
 
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+[...]
+
+>> It's true that we need the policy->cpus cpumask only for cpu devices and
+>> we have it available when we call em_register_perf_domain()
+>> [scmi-cpufreq.c driver] or the OPP wrapper dev_pm_opp_of_register_em()
+>> [e.g. cpufreq-dt.c driver].
+>>
+>> And we shouldn't make EM code dependent on OPP.
+>>
+>> But can't we add 'struct cpumask *mask' as an additional argument to
+>> both which can be set to NULL for (devfreq) devices?
+>>
+>> We can check in em_register_perf_domain() that we got a valid cpumask
+>> for a cpu device and ignore it for (devfreq) devices.
+>>
+> 
+> I think we could avoid this additional argument 'cpumask'. I have
+> checked the cpufreq_cpu_get function, which should do be good for this:
+> 
+> ---------->8-------------------------
+> static int _get_sharing_cpus(struct device *cpu_dev, struct cpumask *span)
+> {
+>         struct cpufreq_policy *policy;
+> 
+>         policy = cpufreq_cpu_get(cpu_dev->id);
+>         if (policy) {
+>                 cpumask_copy(span, policy->cpus);
+>                 cpufreq_cpu_put(policy);
+>                 return 0;
+>         } else {
+>                 return -EINVAL;
+>         }
+> }
+> --------------------------8<-------------------------------
+> 
+> It would be a replacement for:
+> ret = dev_pm_opp_get_sharing_cpus(dev, span);
+
+True. But then we hard-code that a CPU device performance domain can
+only be a frequency domain (which is true today).
+
+The task scheduler (build_perf_domains()) and thermal are already using
+cpufreq_cpu_get() to access the cpufreq policy. Now the EM framework
+would too for CPU devices. I assume that could work with a couple of
+adaptations in Documentation/power/energy-model.rst.
+
+BTW, there is a similar interface cpufreq_get_policy() in cpufreq.c
+which is used less often?
