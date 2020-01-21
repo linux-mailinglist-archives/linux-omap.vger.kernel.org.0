@@ -2,82 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC49C143946
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Jan 2020 10:17:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6D74143982
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Jan 2020 10:32:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728456AbgAUJRU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Jan 2020 04:17:20 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:42548 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727360AbgAUJRU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jan 2020 04:17:20 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 68ED51C036D; Tue, 21 Jan 2020 10:17:18 +0100 (CET)
-Date:   Tue, 21 Jan 2020 10:17:17 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Merlijn Wajer <merlijn@wizzup.org>
-Subject: Re: [PATCH] ARM: dts: omap4-droid4: Enable hdq for droid4 ds250x
- 1-wire battery nvmem
-Message-ID: <20200121091717.GB6934@amd>
-References: <20200119195659.18273-1-tony@atomide.com>
+        id S1727360AbgAUJcH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Jan 2020 04:32:07 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:53594 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727220AbgAUJcF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jan 2020 04:32:05 -0500
+Received: by mail-wm1-f66.google.com with SMTP id m24so2149658wmc.3
+        for <linux-omap@vger.kernel.org>; Tue, 21 Jan 2020 01:32:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=imtrsyE4PqkfOuBH2bEU5/ycShpe5DgMQpGEtomyMa0=;
+        b=rtcJ+LQlDZ/dhGfo9Iu5OJd4+HKMy2yzD9iSGdalzOoIEncUjzsz5/aNNTd5RjsSc8
+         zO8R7IWeVumQmIJtNgo4RVZt7gUhd5yZRRBQqVDryoKs8BU04+PpGfSZJNvnjsH/62yj
+         utNq7GGLPGyTxTb1yb3mltp6nzJAjgAWU6qQKOTamwB12SgQZpUurDCVdShHDY4zSwRt
+         27hnYDJCXhMMgdvO1mW+7T9xCr4uphzvbjrusTEF0ylfATpdKENfYomQu6F+lwzn6RUS
+         UpDbh4WVRvpRmqp5fb/B2A+GM9Tidwg6k1/Hgf4wLH/tybPmLM/Hd8ve+be8A6ZldBH9
+         pQLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=imtrsyE4PqkfOuBH2bEU5/ycShpe5DgMQpGEtomyMa0=;
+        b=R99jb34hcYSutVFZHwpNUNppQSEZYwV+FPP/D6NdHXdEXoH7EweTPkJSPCuWtCyD9c
+         F8lF1Sh1K39Wu4FJpAWnRlSkiouCORdNM7Bk0CEbIryJQqjdmgUYubytvfaJ3/irCLhl
+         hA7hHpr4oa1by1c5+sJSG+ewLwMoYC4zivGSGvMkxtGZ9+2uoS/TFCVJPtzY42eR2Pd4
+         /08RFkejwViVac/UXNPLjAnH7yTTdXlq87CefN1m7MLOXNGLGJK1cDcKCRBTJI4D/QkF
+         R07o2IJMLe+ZTCYN3Xbp71gRZE3czUAygPkJ+NyQ4Jdxv39wJUvQv6Z/FUq36JZFDwVV
+         HbeA==
+X-Gm-Message-State: APjAAAWRi31hiRu+EIVipsJOCPFyjnRkmj2D6VeDZb9XUVcr2J3vFDFW
+        tr6gwTX3AHN7qUiFO7n3t1SH5w==
+X-Google-Smtp-Source: APXvYqxXLTNXCnqXFHWAqOhNn4BqFUdupPBlV6/fm+9Ho9HF0rYCv/gYw3ZqBCY91j9ikIx2kYRjiw==
+X-Received: by 2002:a1c:a584:: with SMTP id o126mr3199652wme.163.1579599122625;
+        Tue, 21 Jan 2020 01:32:02 -0800 (PST)
+Received: from google.com ([2a00:79e0:d:110:d6cc:2030:37c1:9964])
+        by smtp.gmail.com with ESMTPSA id g7sm51210925wrq.21.2020.01.21.01.32.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jan 2020 01:32:01 -0800 (PST)
+Date:   Tue, 21 Jan 2020 09:31:58 +0000
+From:   Quentin Perret <qperret@google.com>
+To:     Lukasz Luba <lukasz.luba@arm.com>
+Cc:     Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com, Morten.Rasmussen@arm.com, Chris.Redpath@arm.com,
+        ionela.voinescu@arm.com, javi.merino@arm.com,
+        cw00.choi@samsung.com, b.zolnierkie@samsung.com, rjw@rjwysocki.net,
+        sudeep.holla@arm.com, viresh.kumar@linaro.org, nm@ti.com,
+        sboyd@kernel.org, rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+        kernel@pengutronix.de, khilman@kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, kernel-team@android.com
+Subject: Re: [PATCH 1/4] PM / EM: and devices to Energy Model
+Message-ID: <20200121093158.GA154455@google.com>
+References: <20200116152032.11301-1-lukasz.luba@arm.com>
+ <20200116152032.11301-2-lukasz.luba@arm.com>
+ <20200117105437.GA211774@google.com>
+ <40587d98-0e8d-cbac-dbf5-d26501d47a8c@arm.com>
+ <20200120150918.GA164543@google.com>
+ <8332c4ac-2a7d-1e2d-76e9-7c979a666257@arm.com>
+ <b02da0ed-9e0b-36db-9813-daa334cbf2ba@arm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="1UWUbFP1cBYEclgG"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200119195659.18273-1-tony@atomide.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <b02da0ed-9e0b-36db-9813-daa334cbf2ba@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Monday 20 Jan 2020 at 18:38:41 (+0000), Lukasz Luba wrote:
+> I think we could avoid this additional argument 'cpumask'. I have
+> checked the cpufreq_cpu_get function, which should do be good for this:
+> 
+> ---------->8-------------------------
+> static int _get_sharing_cpus(struct device *cpu_dev, struct cpumask *span)
+> {
+>         struct cpufreq_policy *policy;
+> 
+>         policy = cpufreq_cpu_get(cpu_dev->id);
+>         if (policy) {
+>                 cpumask_copy(span, policy->cpus);
 
---1UWUbFP1cBYEclgG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+That should be with 'policy->related_cpus', but yes if the policy
+cpumasks have been populated this approach is OK I think.
 
-On Sun 2020-01-19 11:56:59, Tony Lindgren wrote:
-> With "[PATCHv3] w1: omap-hdq: Simplify driver with PM runtime autosuspend"
-> we can read the droid4 battery information over 1-wire with this patch
-> with something like:
->=20
-> # modprobe omap_hdq
-> # hd /sys/bus/w1/devices/89-*/89-*/nvmem
-> ...
->=20
-> Unfortunately the format of the battery data seems to be Motorola specific
-> and is currently unusable for battery charger unless somebody figures out
-> what it means.
->=20
-> Note that currently keeping omap_hdq module loaded will cause extra power
-> consumption as it seems to scan devices periodically.
->=20
-> Cc: Merlijn Wajer <merlijn@wizzup.org>
+>                 cpufreq_cpu_put(policy);
+>                 return 0;
+>         } else {
+>                 return -EINVAL;
+>         }
+> }
+> --------------------------8<-------------------------------
 
-Acked-by: Pavel Machek <pavel@ucw.cz>
-
-Not for stable.
-								Pavel
-							=09
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---1UWUbFP1cBYEclgG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl4mwZ0ACgkQMOfwapXb+vJ8egCfc2gRU+lYJZzSLf95Se8s4H5n
-clkAoKfl7tnelxQQqiCtAsEFfmIAgowj
-=d6KS
------END PGP SIGNATURE-----
-
---1UWUbFP1cBYEclgG--
+Thanks,
+Quentin
