@@ -2,83 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5961448CE
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2020 01:16:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01D8A1449DB
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2020 03:34:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728816AbgAVAQB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Jan 2020 19:16:01 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:54567 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728750AbgAVAQB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jan 2020 19:16:01 -0500
-Received: by mail-pj1-f66.google.com with SMTP id kx11so2192078pjb.4
-        for <linux-omap@vger.kernel.org>; Tue, 21 Jan 2020 16:16:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=AJgdk09nXreBwR2XdsLZzQRBLyEn8ggTyXdPCR3F/pk=;
-        b=DWQ4HXOBa9pQ0M8sOA2Sd3qHAHcrlQLTe2JrHuNdz18KafSyptiZE7RqdJi/nCE6IG
-         FpDiVn9w1MZnBYJvWSzzypf5v6M01bQwGrYqlao3JIdjlsEFn5rHShH/fx9FBzUF/sfZ
-         4hcAd/JPKjPr4VdY+eOfz3I9gQARiCYrK0HnLoVIHIqXL1cgky48U+sDQH7Db6cfu0zz
-         iTsgpdf7nEzqo9kSNy6naBMnvp38FUVLLGtglkmirVKk2Q5S4K2B0yuG5iLqBeAab0Np
-         7PxNVqIztcpaOp3Z2NTuCJ4unC6HnEmqoQoKKu4oZdfpoNNAnM4+F08JmOM6xoxdmQ+O
-         Co2Q==
+        id S1729014AbgAVCe5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Jan 2020 21:34:57 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:37203 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727590AbgAVCe5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jan 2020 21:34:57 -0500
+Received: by mail-oi1-f196.google.com with SMTP id z64so4724857oia.4;
+        Tue, 21 Jan 2020 18:34:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=AJgdk09nXreBwR2XdsLZzQRBLyEn8ggTyXdPCR3F/pk=;
-        b=foLgw1IQSSkpQrmg4UaM0ai18WhpTiwtgapauT429mQjfRh7sliO8j/WNdTTjPW/+E
-         0VnFc8cI/MWHCyNDi4b6qFzB7G7J2MPRk7YWYzWBoMk5fIiJwufrLyu75WuQKrop/DQM
-         GWJuLgbX+mIpgic3nthKBAk6OAFdEF2C5wgWK916nG3RdZpgPbPOBKu2s63ynIDUsQrl
-         ZhoZVeduIYgERSdSOvm9FXoTMg4qGTKUxUm/9UG5ZslXqEgklaJUNb7L/bemO1YKr+WQ
-         BSsRIK4VG4Q8VOJ6DA81TTXgBttpTQL+Qt+UP4ISCu3RUlbIfYI5DPoITBB+rzCocTkH
-         zYVQ==
-X-Gm-Message-State: APjAAAXt1cvU72q2b0pwIdZNMhtyG12TCtAvhYsBhCy3HgP2jc+BirKA
-        eOc64NIwZHMUYkkkInBwdg3Mu817cik=
-X-Google-Smtp-Source: APXvYqzUsYiT/dSZn4sUaakbc/TkX3nd1S+XLUr4HIKJyKmXU3QpumWaw6v1tUH4lDO9g8GhOJEhcw==
-X-Received: by 2002:a17:90a:f30d:: with SMTP id ca13mr1249187pjb.27.1579652160317;
-        Tue, 21 Jan 2020 16:16:00 -0800 (PST)
-Received: from builder (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id u26sm42602678pfn.46.2020.01.21.16.15.59
+        bh=xu4UVbzw5q/AJ/ohJxRSgN5x13BSP7On39rYAJwa4OE=;
+        b=rTTjT29rH51bRmWAXHjdC6SzAt/gCK4fHBxnCkftaAmZq0EDxxQLR3P4rTP6VjOw+n
+         n0z/FERX9ZAeela3QXRysG9Ob+pbc3xkdC8QSCtu8a8BjrrNDSCYpCW3bgIaoqq5PoQI
+         JhcVGywv1kfgRIv3LjWX9ARFXWchAe/L0h10XqAHymDHmFQ5zN4D3nC73iKnhEgzXS8H
+         B0yyFF2w4CJ9uhp21/uFkLnVSqqk6t9FCcaGmDjcAYMsDH3DCXZb7I4lfmuEpAsmri5y
+         QyM9ox5BQQS81lCjkYGO7uNh4S+6OmlW4wKhafpERtBgcEKXugn00CnhkYaVU3o4+7MI
+         jrxg==
+X-Gm-Message-State: APjAAAW96IHbNq7bwD4f08lvTH89//W2A4/GBzqFYQddn5V6tyy3IJmx
+        mWIIYxh2HFHKsIGJyL6SRQ==
+X-Google-Smtp-Source: APXvYqylhydEC5uYb2bBmyRcNJOYN2sHqUGX2MwoudpWA/8T3mi+kOtVZXjHOXNvoIp4vEhhVVyHpg==
+X-Received: by 2002:a05:6808:486:: with SMTP id z6mr5503344oid.117.1579660496379;
+        Tue, 21 Jan 2020 18:34:56 -0800 (PST)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id j10sm14215256otr.64.2020.01.21.18.34.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2020 16:15:59 -0800 (PST)
-Date:   Tue, 21 Jan 2020 16:15:57 -0800
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Baolin Wang <baolin.wang7@gmail.com>
-Cc:     ohad@wizery.com, linux-omap@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND 0/3] Some improvements for OMAP hwspinlock
-Message-ID: <20200122001557.GC14744@builder>
-References: <cover.1578453062.git.baolin.wang7@gmail.com>
+        Tue, 21 Jan 2020 18:34:55 -0800 (PST)
+Received: (nullmailer pid 5877 invoked by uid 1000);
+        Wed, 22 Jan 2020 02:34:54 -0000
+Date:   Tue, 21 Jan 2020 20:34:54 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     bjorn.andersson@linaro.org, ohad@wizery.com,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mathieu.poirier@linaro.org, s-anna@ti.com,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        Tero Kristo <t-kristo@ti.com>
+Subject: Re: [PATCHv5 01/14] dt-bindings: remoteproc: Add OMAP remoteproc
+ bindings
+Message-ID: <20200122023454.GA5809@bogus>
+References: <20200116135332.7819-1-t-kristo@ti.com>
+ <20200116135332.7819-2-t-kristo@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1578453062.git.baolin.wang7@gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <20200116135332.7819-2-t-kristo@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue 07 Jan 19:13 PST 2020, Baolin Wang wrote:
-
-> This patch set did some optimization for OMAP hwlock controller with
-> changing to use some devm_xxx APIs to simplify code.
+On Thu, 16 Jan 2020 15:53:19 +0200, Tero Kristo wrote:
+> From: Suman Anna <s-anna@ti.com>
+> 
+> Add the device tree bindings document for the IPU and DSP
+> remote processor devices on OMAP4+ SoCs.
+> 
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> [t-kristo@ti.com: converted to schema]
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> ---
+> v5:
+>   - enforced ordering of reg-names
+>   - removed ti,bootreg-shift, instead added this under ti,bootreg
+>     property
+>   - renamed ti,autosuspend-delay to ti,autosuspend-delay-ms
+>   - fixed required property handling
+>   - fixed the omap5 ipu example firmware name extension
+>   
+>  .../remoteproc/ti,omap-remoteproc.yaml        | 322 ++++++++++++++++++
+>  1 file changed, 322 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,omap-remoteproc.yaml
 > 
 
-Applied the first 2 patches, thanks.
-
-> Baolin Wang (3):
->   hwspinlock: omap: Change to use devm_platform_ioremap_resource()
->   hwspinlock: omap: Use devm_kzalloc() to allocate memory
->   hwspinlock: omap: Use devm_hwspin_lock_register() to register hwlock
->     controller
-> 
->  drivers/hwspinlock/omap_hwspinlock.c |   45 ++++++++++------------------------
->  1 file changed, 13 insertions(+), 32 deletions(-)
-> 
-> -- 
-> 1.7.9.5
-> 
+Reviewed-by: Rob Herring <robh@kernel.org>
