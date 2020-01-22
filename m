@@ -2,94 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0A7145B5A
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2020 19:09:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B335145D1E
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2020 21:28:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725933AbgAVSJP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Jan 2020 13:09:15 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:44790 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725802AbgAVSJP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Jan 2020 13:09:15 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00MI9CLo120991;
-        Wed, 22 Jan 2020 12:09:12 -0600
+        id S1726227AbgAVU2m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Jan 2020 15:28:42 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:37594 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726005AbgAVU2m (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Jan 2020 15:28:42 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00MKRnCR003143;
+        Wed, 22 Jan 2020 14:27:49 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1579716552;
-        bh=hudcEPFRSIGSIHw+jPyyUY7WSm950jM9wfPNiqe6x00=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=DXn9jhr4TeNjWgztoDvGranJ3NSoQfcy0zE9JKu3BUj9qFtpRQO3LxTYo67+YdaIP
-         E/XoJM/rOTt6U2vzDhnMgRhVSQKV9Zz/FbSYTvbjZ7hHafLs9PMerMFRMft7BS0lyj
-         S1lGEQQ70xeTAratzByyoG0wOMKqQQ458PnI7XVo=
+        s=ti-com-17Q1; t=1579724869;
+        bh=2FU5P01ZY091ON2H2bygulCb7TKRy/uYmsXy0jOAaA4=;
+        h=From:To:CC:Subject:Date;
+        b=ib6J3evVtYL8rgaM4RnzZ51gqsNYuhWPmtrnak8O4DC4ESrKjqStAq7vmLtIF2mRm
+         UIz1ug8fLZ4QP2GWbJJG3PNXL/sRXA2fKqK73LZEFAFccDPbM9L+98UDMMR54Oo0B2
+         77DbH170Dctx7eWvcxXeGXpxKz4cGVKZiXqy7bSw=
 Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00MI9CMt072058
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00MKRnsi088602
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 22 Jan 2020 12:09:12 -0600
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE115.ent.ti.com
+        Wed, 22 Jan 2020 14:27:49 -0600
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE115.ent.ti.com
  (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 22
- Jan 2020 12:09:11 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ Jan 2020 14:27:49 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 22 Jan 2020 12:09:11 -0600
-Received: from [10.250.65.13] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00MI9BUW069155;
-        Wed, 22 Jan 2020 12:09:11 -0600
-Subject: Re: [PATCH] ARM: OMAP2+: Fix undefined reference to omap_secure_init
-To:     "Andrew F. Davis" <afd@ti.com>, Tony Lindgren <tony@atomide.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20200122172017.4791-1-afd@ti.com>
-From:   Dan Murphy <dmurphy@ti.com>
-Message-ID: <f183f31e-32ae-3e9e-96b4-a6f40984cd6e@ti.com>
-Date:   Wed, 22 Jan 2020 12:06:04 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ Frontend Transport; Wed, 22 Jan 2020 14:27:49 -0600
+Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00MKRnEr096008;
+        Wed, 22 Jan 2020 14:27:49 -0600
+Received: from localhost (irmo.dhcp.ti.com [128.247.58.153])
+        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id 00MKRm304964;
+        Wed, 22 Jan 2020 14:27:48 -0600 (CST)
+From:   Suman Anna <s-anna@ti.com>
+To:     Lee Jones <lee.jones@linaro.org>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        David Lechner <david@lechnology.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Roger Quadros <rogerq@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, Suman Anna <s-anna@ti.com>
+Subject: [PATCH] mfd: syscon: Use a unique name with regmap_config
+Date:   Wed, 22 Jan 2020 14:27:46 -0600
+Message-ID: <20200122202746.30703-1-s-anna@ti.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20200122172017.4791-1-afd@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Andrew
+The DT node full name is currently being used in regmap_config
+which in turn is used to create the regmap debugfs directories.
+This name however is not guaranteed to be unique and the regmap
+debugfs registration can fail in the cases where the syscon nodes
+have the same unit-address but are present in different DT node
+hierarchies. Replace this logic using the syscon reg resource
+address instead (inspired from logic used while creating platform
+devices) to ensure a unique name is given for each syscon.
 
-On 1/22/20 11:20 AM, Andrew F. Davis wrote:
-> omap_secure_init() is now called from all OMAP2+ platforms during their
-> init_early() call. This function is in omap-secure.o so include that
-> in the build for these platforms.
->
-> Fixes: db711893eac8 ("ARM: OMAP2+: Add omap_secure_init callback hook for secure initialization")
-> Reported-by: Dan Murphy <dmurphy@ti.com>
-> Signed-off-by: Andrew F. Davis <afd@ti.com>
-> ---
->   arch/arm/mach-omap2/Makefile | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/arm/mach-omap2/Makefile b/arch/arm/mach-omap2/Makefile
-> index f07cfda85156..e1135b9d67c6 100644
-> --- a/arch/arm/mach-omap2/Makefile
-> +++ b/arch/arm/mach-omap2/Makefile
-> @@ -16,11 +16,11 @@ hwmod-common				= omap_hwmod.o omap_hwmod_reset.o \
->   clock-common				= clock.o
->   secure-common				= omap-smc.o omap-secure.o
->   
-> -obj-$(CONFIG_ARCH_OMAP2) += $(omap-2-3-common) $(hwmod-common)
-> +obj-$(CONFIG_ARCH_OMAP2) += $(omap-2-3-common) $(hwmod-common) $(secure-common)
->   obj-$(CONFIG_ARCH_OMAP3) += $(omap-2-3-common) $(hwmod-common) $(secure-common)
->   obj-$(CONFIG_ARCH_OMAP4) += $(hwmod-common) $(secure-common)
-> -obj-$(CONFIG_SOC_AM33XX) += $(hwmod-common)
-> -obj-$(CONFIG_SOC_OMAP5)	 += $(hwmod-common) $(secure-common)
-> +obj-$(CONFIG_SOC_AM33XX) += $(hwmod-common) $(secure-common)
-> +obj-$(CONFIG_SOC_OMAP5)  += $(hwmod-common) $(secure-common)
->   obj-$(CONFIG_SOC_AM43XX) += $(hwmod-common) $(secure-common)
->   obj-$(CONFIG_SOC_DRA7XX) += $(hwmod-common) $(secure-common)
->   
+Signed-off-by: Suman Anna <s-anna@ti.com>
+---
+Hi Lee,
 
+I ran into this issue while trying to add multiple different instances
+of the same IP using the ti-sysc node hierarchy on OMAP.
 
-Tested-by: Dan Murphy <dmurphy@ti.com>
+Not sure if you prefer to consider this as a fix or as an improvement.
+So, haven't added a Fixes tag.
+
+regards
+Suman
+
+ drivers/mfd/syscon.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index e22197c832e8..8915b35eef4f 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -101,12 +101,13 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+ 		}
+ 	}
+ 
+-	syscon_config.name = of_node_full_name(np);
++	syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%llx", np, res.start);
+ 	syscon_config.reg_stride = reg_io_width;
+ 	syscon_config.val_bits = reg_io_width * 8;
+ 	syscon_config.max_register = resource_size(&res) - reg_io_width;
+ 
+ 	regmap = regmap_init_mmio(NULL, base, &syscon_config);
++	kfree(syscon_config.name);
+ 	if (IS_ERR(regmap)) {
+ 		pr_err("regmap init failed\n");
+ 		ret = PTR_ERR(regmap);
+-- 
+2.23.0
 
