@@ -2,34 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A59F148A07
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2020 15:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A8B1148A0E
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2020 15:41:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390575AbgAXOSZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Jan 2020 09:18:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37726 "EHLO mail.kernel.org"
+        id S2390680AbgAXOS3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Jan 2020 09:18:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37816 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390527AbgAXOSZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 24 Jan 2020 09:18:25 -0500
+        id S2390657AbgAXOS3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 24 Jan 2020 09:18:29 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3B6112087E;
-        Fri, 24 Jan 2020 14:18:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 434C62087E;
+        Fri, 24 Jan 2020 14:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579875504;
-        bh=/L54vVnnNVCgLi+l/otzPqeZ9ozHFoiiQUcEnjPcDwE=;
+        s=default; t=1579875508;
+        bh=HLGLxSrsXy20mO7PpmbyNdO1rFVVjTyzEN2g0d2ZYoA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BR15FaAWgs/x8d3vN5Eqvk4gHLF7i06aRuyaOGRgpfGAIMHAFRQ2fElmSZxzLyoAW
-         XG+LApijnUc3bn7MxVbs2daen77pAUhIL0G01K5MRPTXCG23ejuVIhkrqc3JPgbZBo
-         HfgUNO8o4y/PnjPvKx/cxU0MKE8loPJj5AHK7Hs8=
+        b=OpcpCvFmciq7INya800Y+JT9ucmfoZcvUyT362+B+TcwA+gwnlVFyIHV0ytdBZqpU
+         V09mvoXnkidSXeHti9tRKAle0OgZqvIWRON0ykwkCigJJ2j4s0OZzZKhwnEn/IF9JV
+         tvzPRik9UOkPrnyw6QfyVrH7O+cSsHW7oexgThp0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 006/107] ARM: OMAP2+: Fix ti_sysc_find_one_clockdomain to check for to_clk_hw_omap
-Date:   Fri, 24 Jan 2020 09:16:36 -0500
-Message-Id: <20200124141817.28793-6-sashal@kernel.org>
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.4 009/107] ARM: dts: am57xx-beagle-x15/am57xx-idk: Remove "gpios" for  endpoint dt nodes
+Date:   Fri, 24 Jan 2020 09:16:39 -0500
+Message-Id: <20200124141817.28793-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200124141817.28793-1-sashal@kernel.org>
 References: <20200124141817.28793-1-sashal@kernel.org>
@@ -42,49 +44,68 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-[ Upstream commit 90bdfa0b05e3cc809a7c1aa3b1f162b46ea1b330 ]
+[ Upstream commit 81cc0877840f72210e809bbedd6346d686560fc1 ]
 
-We must bail out early if the clock is not hw_omap. Otherwise we will
-try to access invalid address with hwclk->clkdm_name:
+PERST# line in the PCIE connector is driven by the host mode and not
+EP mode. The gpios property here is used for driving the PERST# line.
+Remove gpios property from all endpoint device tree nodes.
 
-Unable to handle kernel paging request at virtual address ffffffff
-Internal error: Oops: 27 [#1] ARM
-...
-(strcmp) from [<c011b348>] (clkdm_lookup+0x40/0x60)
-[<c011b348>] (clkdm_lookup) from [<c011cb84>] (ti_sysc_clkdm_init+0x5c/0x64)
-[<c011cb84>] (ti_sysc_clkdm_init) from [<c03680a8>] (sysc_probe+0x948/0x117c)
-[<c03680a8>] (sysc_probe) from [<c03d0af4>] (platform_drv_probe+0x48/0x98)
-...
-
-Fixes: 2b2f7def058a ("bus: ti-sysc: Add support for missing clockdomain handling")
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/pdata-quirks.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/am571x-idk.dts                | 4 ----
+ arch/arm/boot/dts/am572x-idk-common.dtsi        | 4 ----
+ arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi | 4 ----
+ 3 files changed, 12 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
-index 1b7cf81ff0356..33688e1d9acf9 100644
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -368,10 +368,14 @@ static void __init dra7x_evm_mmc_quirk(void)
+diff --git a/arch/arm/boot/dts/am571x-idk.dts b/arch/arm/boot/dts/am571x-idk.dts
+index 0aaacea1d887b..975a6b1d3fc80 100644
+--- a/arch/arm/boot/dts/am571x-idk.dts
++++ b/arch/arm/boot/dts/am571x-idk.dts
+@@ -170,10 +170,6 @@
+ 	gpios = <&gpio3 23 GPIO_ACTIVE_HIGH>;
+ };
  
- static struct clockdomain *ti_sysc_find_one_clockdomain(struct clk *clk)
- {
-+	struct clk_hw *hw = __clk_get_hw(clk);
- 	struct clockdomain *clkdm = NULL;
- 	struct clk_hw_omap *hwclk;
+-&pcie1_ep {
+-	gpios = <&gpio3 23 GPIO_ACTIVE_HIGH>;
+-};
+-
+ &mmc1 {
+ 	pinctrl-names = "default", "hs";
+ 	pinctrl-0 = <&mmc1_pins_default_no_clk_pu>;
+diff --git a/arch/arm/boot/dts/am572x-idk-common.dtsi b/arch/arm/boot/dts/am572x-idk-common.dtsi
+index a064f13b38802..ddf123620e962 100644
+--- a/arch/arm/boot/dts/am572x-idk-common.dtsi
++++ b/arch/arm/boot/dts/am572x-idk-common.dtsi
+@@ -147,10 +147,6 @@
+ 	gpios = <&gpio3 23 GPIO_ACTIVE_HIGH>;
+ };
  
--	hwclk = to_clk_hw_omap(__clk_get_hw(clk));
-+	hwclk = to_clk_hw_omap(hw);
-+	if (!omap2_clk_is_hw_omap(hw))
-+		return NULL;
-+
- 	if (hwclk && hwclk->clkdm_name)
- 		clkdm = clkdm_lookup(hwclk->clkdm_name);
+-&pcie1_ep {
+-	gpios = <&gpio3 23 GPIO_ACTIVE_HIGH>;
+-};
+-
+ &mailbox5 {
+ 	status = "okay";
+ 	mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
+index bc76f1705c0f6..9a94c96b0350e 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
+@@ -547,10 +547,6 @@
+ 	gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
+ };
  
+-&pcie1_ep {
+-	gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
+-};
+-
+ &mcasp3 {
+ 	#sound-dai-cells = <0>;
+ 	assigned-clocks = <&l4per2_clkctrl DRA7_L4PER2_MCASP3_CLKCTRL 24>;
 -- 
 2.20.1
 
