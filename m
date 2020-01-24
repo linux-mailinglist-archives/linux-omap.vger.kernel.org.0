@@ -2,85 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BEDC1484FF
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2020 13:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3462B14882F
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2020 15:27:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731179AbgAXMLE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Jan 2020 07:11:04 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:33772 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729396AbgAXMLD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Jan 2020 07:11:03 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00OCAviN115358;
-        Fri, 24 Jan 2020 06:10:57 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1579867857;
-        bh=u8GDMQWkvTPZQR05J917eZkNCR3bRNJDSQNATGVb7H4=;
-        h=From:To:CC:Subject:Date;
-        b=QMhUnlNdyr1XLJd4FcqdkWT3mVGKkHdmMyi0AHZMbk6SaD6AkHyxKwJiBfj/ShwFD
-         Hl5T13rlsXSQGv3MkIr9TTvS9A2z5onRPdlWFHX4YmhIQq4iMQCeilxCXMIeH1qdiz
-         41ky8C9h/yffjhBYSkG+Tt1F+xJGQzS/9/PN/f1o=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00OCAvwP120718;
-        Fri, 24 Jan 2020 06:10:57 -0600
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 24
- Jan 2020 06:10:57 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 24 Jan 2020 06:10:57 -0600
-Received: from feketebors.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00OCAt7w065837;
-        Fri, 24 Jan 2020 06:10:55 -0600
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-To:     <bcousson@baylibre.com>, <tony@atomide.com>
-CC:     <robh+dt@kernel.org>, <linux-omap@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH] ARM: dts: dra7-evm: Rename evm_3v3 regulator to vsys_3v3
-Date:   Fri, 24 Jan 2020 14:11:39 +0200
-Message-ID: <20200124121139.28657-1-peter.ujfalusi@ti.com>
-X-Mailer: git-send-email 2.25.0
+        id S2390395AbgAXO1R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Jan 2020 09:27:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43092 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387457AbgAXOVZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 24 Jan 2020 09:21:25 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8A3C921556;
+        Fri, 24 Jan 2020 14:21:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579875684;
+        bh=4BulwQtBrg3DU3XdrFtI9JrA+USSSeddWgbxypc0wxk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=J5Q/0LgRMUDjUH0Hv0Mj6VHg9Uj1rx9C45AqsaVmSxyrxr4SUQxL1CFCDe5lpq0Dg
+         9MmzMf3g24iF63+E2sHfA63igdVN4VLDirGI/qCrhqEZya/C1q6OV0jhjU2ilXCfmQ
+         30FbjgdYuJB8AYybTqxzoUm8xBQCzAyrYl493l/4=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 4.14 04/32] ARM: dts: beagle-x15-common: Model 5V0 regulator
+Date:   Fri, 24 Jan 2020 09:20:51 -0500
+Message-Id: <20200124142119.30484-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200124142119.30484-1-sashal@kernel.org>
+References: <20200124142119.30484-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On the new schematics it is renamed and the same name is used on other
-dra7 boards.
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+[ Upstream commit e17e7c498d4f734df93c300441e100818ed58168 ]
+
+On am57xx-beagle-x15, 5V0 is connected to P16, P17, P18 and P19
+connectors. On am57xx-evm, 5V0 regulator is used to get 3V6 regulator
+which is connected to the COMQ port. Model 5V0 regulator here in order
+for it to be used in am57xx-evm to model 3V6 regulator.
+
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/dra7-evm.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../boot/dts/am57xx-beagle-x15-common.dtsi    | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/arch/arm/boot/dts/dra7-evm.dts b/arch/arm/boot/dts/dra7-evm.dts
-index de7f85efaa51..af06a55d1c5c 100644
---- a/arch/arm/boot/dts/dra7-evm.dts
-+++ b/arch/arm/boot/dts/dra7-evm.dts
-@@ -61,10 +61,10 @@ aic_dvdd: fixedregulator-aic_dvdd {
- 		regulator-max-microvolt = <1800000>;
+diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
+index 49aeecd312b4b..d578a9f7e1a0e 100644
+--- a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
++++ b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
+@@ -32,6 +32,27 @@
+ 		reg = <0x0 0x80000000 0x0 0x80000000>;
  	};
  
--	evm_3v3: fixedregulator-evm3v3 {
-+	vsys_3v3: fixedregulator-vsys3v3 {
- 		/* Output of Cntlr A of TPS43351-Q1 on dra7-evm */
++	main_12v0: fixedregulator-main_12v0 {
++		/* main supply */
++		compatible = "regulator-fixed";
++		regulator-name = "main_12v0";
++		regulator-min-microvolt = <12000000>;
++		regulator-max-microvolt = <12000000>;
++		regulator-always-on;
++		regulator-boot-on;
++	};
++
++	evm_5v0: fixedregulator-evm_5v0 {
++		/* Output of TPS54531D */
++		compatible = "regulator-fixed";
++		regulator-name = "evm_5v0";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&main_12v0>;
++		regulator-always-on;
++		regulator-boot-on;
++	};
++
+ 	vdd_3v3: fixedregulator-vdd_3v3 {
  		compatible = "regulator-fixed";
--		regulator-name = "evm_3v3";
-+		regulator-name = "vsys_3v3";
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
- 		vin-supply = <&evm_12v0>;
+ 		regulator-name = "vdd_3v3";
 -- 
-Peter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+2.20.1
 
