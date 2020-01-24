@@ -2,35 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8722C14766B
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2020 02:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABC14147660
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2020 02:19:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730627AbgAXBRf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jan 2020 20:17:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60668 "EHLO mail.kernel.org"
+        id S1729946AbgAXBTd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jan 2020 20:19:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60882 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730608AbgAXBRf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 23 Jan 2020 20:17:35 -0500
+        id S1730695AbgAXBRm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 23 Jan 2020 20:17:42 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8432522464;
-        Fri, 24 Jan 2020 01:17:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7572824655;
+        Fri, 24 Jan 2020 01:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579828654;
-        bh=CAoon06qVeetPHI+5B++oaz5xHfenwfMOdCiD1FwRPo=;
+        s=default; t=1579828662;
+        bh=/MsGUyie8WthYfpkbM9zdRl34allauhAsvBE1wCo43A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jxffk0OWsY9EZ7d0V8JZZVXi8/RGzyQgFXaTEyMqKJQLL3K/yV2vMKza5uNn+w4MI
-         lWMexYf5ki6PWMaSERT+kMrzc5HSRyF1g+rdPlyIYXSLtFedu2UHERu8x2xJXbwKvS
-         8ahli/fa8hmOdK1yj2PK6Nh9i8ZODcb6mbnoMblw=
+        b=FVBQFW2J0XkQXeSG3lwIH/UnPB8F+068jhJgyZph+h22rtxjRp4pwrc2MHJQqNcNk
+         jG3YzrZ0Oot6dZ7SwYhfe7FjIJLHWs5BRQScicVq+9tdocGMc7jXMtKVF08IC57Bvt
+         VId4LnjrqL828ZHFhDicGo/hag7PBUi71xh4+Yys=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 22/33] bus: ti-sysc: Add module enable quirk for audio AESS
-Date:   Thu, 23 Jan 2020 20:16:57 -0500
-Message-Id: <20200124011708.18232-22-sashal@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 29/33] bus: ti-sysc: Fix missing force mstandby quirk handling
+Date:   Thu, 23 Jan 2020 20:17:04 -0500
+Message-Id: <20200124011708.18232-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200124011708.18232-1-sashal@kernel.org>
 References: <20200124011708.18232-1-sashal@kernel.org>
@@ -45,79 +44,50 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 020003f763e24e4ed0bb3d8909f3940891536d5d ]
+[ Upstream commit 93c60483b5feefced92b869d5f97769495bc6313 ]
 
-We must set the autogating bit on enable for AESS (Audio Engine SubSystem)
-when probed with ti-sysc interconnect target module driver. Otherwise it
-won't idle properly.
+Commit 03856e928b0e ("bus: ti-sysc: Handle mstandby quirk and use it for
+musb") added quirk handling for mstandby quirk but did not consider that
+we also need a quirk variant for SYSC_QUIRK_FORCE_MSTANDBY.
 
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Tested-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+We need to use forced idle mode for both SYSC_QUIRK_SWSUP_MSTANDBY and
+SYSC_QUIRK_FORCE_MSTANDBY, but SYSC_QUIRK_SWSUP_MSTANDBY also need to
+additionally also configure no-idle mode when enabled.
+
+Fixes: 03856e928b0e ("bus: ti-sysc: Handle mstandby quirk and use it for musb")
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c                 | 14 +++++++++++++-
- include/linux/platform_data/ti-sysc.h |  1 +
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ drivers/bus/ti-sysc.c                 | 3 ++-
+ include/linux/platform_data/ti-sysc.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index c072a7fe709c3..6dc9d460e3065 100644
+index 6dc9d460e3065..52c2485498109 100644
 --- a/drivers/bus/ti-sysc.c
 +++ b/drivers/bus/ti-sysc.c
-@@ -1242,6 +1242,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 		   SYSC_QUIRK_SWSUP_SIDLE),
- 
- 	/* Quirks that need to be set based on detected module */
-+	SYSC_QUIRK("aess", 0, 0, 0x10, -1, 0x40000000, 0xffffffff,
-+		   SYSC_MODULE_QUIRK_AESS),
- 	SYSC_QUIRK("hdq1w", 0, 0, 0x14, 0x18, 0x00000006, 0xffffffff,
- 		   SYSC_MODULE_QUIRK_HDQ1W),
- 	SYSC_QUIRK("hdq1w", 0, 0, 0x14, 0x18, 0x0000000a, 0xffffffff,
-@@ -1270,7 +1272,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- #ifdef DEBUG
- 	SYSC_QUIRK("adc", 0, 0, 0x10, -1, 0x47300001, 0xffffffff, 0),
- 	SYSC_QUIRK("atl", 0, 0, -1, -1, 0x0a070100, 0xffffffff, 0),
--	SYSC_QUIRK("aess", 0, 0, 0x10, -1, 0x40000000, 0xffffffff, 0),
- 	SYSC_QUIRK("cm", 0, 0, -1, -1, 0x40000301, 0xffffffff, 0),
- 	SYSC_QUIRK("control", 0, 0, 0x10, -1, 0x40000900, 0xffffffff, 0),
- 	SYSC_QUIRK("cpgmac", 0, 0x1200, 0x1208, 0x1204, 0x4edb1902,
-@@ -1402,6 +1403,14 @@ static void sysc_clk_enable_quirk_hdq1w(struct sysc *ddata)
- 	sysc_write(ddata, offset, val);
- }
- 
-+/* AESS (Audio Engine SubSystem) needs autogating set after enable */
-+static void sysc_module_enable_quirk_aess(struct sysc *ddata)
-+{
-+	int offset = 0x7c;	/* AESS_AUTO_GATING_ENABLE */
-+
-+	sysc_write(ddata, offset, 1);
-+}
-+
- /* I2C needs extra enable bit toggling for reset */
- static void sysc_clk_quirk_i2c(struct sysc *ddata, bool enable)
- {
-@@ -1484,6 +1493,9 @@ static void sysc_init_module_quirks(struct sysc *ddata)
- 		return;
+@@ -981,7 +981,8 @@ static int sysc_disable_module(struct device *dev)
+ 		return ret;
  	}
  
-+	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_AESS)
-+		ddata->module_enable_quirk = sysc_module_enable_quirk_aess;
-+
- 	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_SGX)
- 		ddata->module_enable_quirk = sysc_module_enable_quirk_sgx;
+-	if (ddata->cfg.quirks & SYSC_QUIRK_SWSUP_MSTANDBY)
++	if (ddata->cfg.quirks & (SYSC_QUIRK_SWSUP_MSTANDBY) ||
++	    ddata->cfg.quirks & (SYSC_QUIRK_FORCE_MSTANDBY))
+ 		best_mode = SYSC_IDLE_FORCE;
  
+ 	reg &= ~(SYSC_IDLE_MASK << regbits->midle_shift);
 diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
-index b5b7a3423ca81..0b93804751444 100644
+index 0b93804751444..8cfe570fdece6 100644
 --- a/include/linux/platform_data/ti-sysc.h
 +++ b/include/linux/platform_data/ti-sysc.h
 @@ -49,6 +49,7 @@ struct sysc_regbits {
  	s8 emufree_shift;
  };
  
-+#define SYSC_MODULE_QUIRK_AESS		BIT(19)
++#define SYSC_QUIRK_FORCE_MSTANDBY	BIT(20)
+ #define SYSC_MODULE_QUIRK_AESS		BIT(19)
  #define SYSC_MODULE_QUIRK_SGX		BIT(18)
  #define SYSC_MODULE_QUIRK_HDQ1W		BIT(17)
- #define SYSC_MODULE_QUIRK_I2C		BIT(16)
 -- 
 2.20.1
 
