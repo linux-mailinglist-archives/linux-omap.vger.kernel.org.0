@@ -2,92 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABC14147660
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2020 02:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E3001478E9
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2020 08:22:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729946AbgAXBTd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jan 2020 20:19:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60882 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730695AbgAXBRm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 23 Jan 2020 20:17:42 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7572824655;
-        Fri, 24 Jan 2020 01:17:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579828662;
-        bh=/MsGUyie8WthYfpkbM9zdRl34allauhAsvBE1wCo43A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FVBQFW2J0XkQXeSG3lwIH/UnPB8F+068jhJgyZph+h22rtxjRp4pwrc2MHJQqNcNk
-         jG3YzrZ0Oot6dZ7SwYhfe7FjIJLHWs5BRQScicVq+9tdocGMc7jXMtKVF08IC57Bvt
-         VId4LnjrqL828ZHFhDicGo/hag7PBUi71xh4+Yys=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
-        linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 29/33] bus: ti-sysc: Fix missing force mstandby quirk handling
-Date:   Thu, 23 Jan 2020 20:17:04 -0500
-Message-Id: <20200124011708.18232-29-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200124011708.18232-1-sashal@kernel.org>
-References: <20200124011708.18232-1-sashal@kernel.org>
+        id S1730612AbgAXHWE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Jan 2020 02:22:04 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:52876 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725817AbgAXHWE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Jan 2020 02:22:04 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00O7M0Ei114290;
+        Fri, 24 Jan 2020 01:22:00 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1579850520;
+        bh=/+wlp8NWszHu9hwI5xbto1zIaBFloKdl6UogH/4mwhU=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=QiwhuVMUi/aTOpIug3SzDNZSwMB3gfgLc7V4ovistaSez/3RKNNue9MTbvUpxXJhY
+         jjhJAoqfiDELievWnkBOlJy+Jbjcx3jP2j5ANoPvVmIykvOW5M/qoXGYhMqPSey+Lx
+         qnD+K31pH9JqmMkEUyG1Hn2SlOwE9ZA7CEHVEXpE=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00O7LxS9129366
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 24 Jan 2020 01:21:59 -0600
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 24
+ Jan 2020 01:21:59 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Fri, 24 Jan 2020 01:21:59 -0600
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00O7Lu22064904;
+        Fri, 24 Jan 2020 01:21:57 -0600
+Subject: Re: [Patch v4 00/10] ARM: dts: dra7: add cal nodes
+To:     Tony Lindgren <tony@atomide.com>, Benoit Parrot <bparrot@ti.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20191211140558.10407-1-bparrot@ti.com>
+ <20200123171737.GB5885@atomide.com> <20200123172624.GE5885@atomide.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <668be3a7-d9be-6a2e-71ba-5631bf99dfae@ti.com>
+Date:   Fri, 24 Jan 2020 09:21:56 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200123172624.GE5885@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+On 23/01/2020 19:26, Tony Lindgren wrote:
+> * Tony Lindgren <tony@atomide.com> [200123 17:18]:
+>> * Benoit Parrot <bparrot@ti.com> [191211 06:03]:
+>>> This patch series adds the needed clkctrl and ty-sysc nodes for CAL module.
+>>> It also adds support for the module in related dtsi and dts for DRA72,
+>>> DRA76 and AM654 SoC.
+>>
+>> Applying these into omap-for-v5.6/ti-sysc-dt-cam on top of Tero's
+>> for-5.6-ti-clk branch. It might be too later for v5.6, but we'll
+>> see.
+> 
+> Actually I'll leave out the k3-am65 dts changes as I don't see
+> acks for those. Tero can pick up those later.
+> 
+> Regards,
+> 
+> Tony
+> 
 
-[ Upstream commit 93c60483b5feefced92b869d5f97769495bc6313 ]
+Right, I think I also missed the cal clkctrl patch in this series. This 
+series is imho applying against too many different trees (three if I am 
+not mistaken) and should be split up to avoid confusion / not to get 
+lost in mailboxes.
 
-Commit 03856e928b0e ("bus: ti-sysc: Handle mstandby quirk and use it for
-musb") added quirk handling for mstandby quirk but did not consider that
-we also need a quirk variant for SYSC_QUIRK_FORCE_MSTANDBY.
-
-We need to use forced idle mode for both SYSC_QUIRK_SWSUP_MSTANDBY and
-SYSC_QUIRK_FORCE_MSTANDBY, but SYSC_QUIRK_SWSUP_MSTANDBY also need to
-additionally also configure no-idle mode when enabled.
-
-Fixes: 03856e928b0e ("bus: ti-sysc: Handle mstandby quirk and use it for musb")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/bus/ti-sysc.c                 | 3 ++-
- include/linux/platform_data/ti-sysc.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 6dc9d460e3065..52c2485498109 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -981,7 +981,8 @@ static int sysc_disable_module(struct device *dev)
- 		return ret;
- 	}
- 
--	if (ddata->cfg.quirks & SYSC_QUIRK_SWSUP_MSTANDBY)
-+	if (ddata->cfg.quirks & (SYSC_QUIRK_SWSUP_MSTANDBY) ||
-+	    ddata->cfg.quirks & (SYSC_QUIRK_FORCE_MSTANDBY))
- 		best_mode = SYSC_IDLE_FORCE;
- 
- 	reg &= ~(SYSC_IDLE_MASK << regbits->midle_shift);
-diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
-index 0b93804751444..8cfe570fdece6 100644
---- a/include/linux/platform_data/ti-sysc.h
-+++ b/include/linux/platform_data/ti-sysc.h
-@@ -49,6 +49,7 @@ struct sysc_regbits {
- 	s8 emufree_shift;
- };
- 
-+#define SYSC_QUIRK_FORCE_MSTANDBY	BIT(20)
- #define SYSC_MODULE_QUIRK_AESS		BIT(19)
- #define SYSC_MODULE_QUIRK_SGX		BIT(18)
- #define SYSC_MODULE_QUIRK_HDQ1W		BIT(17)
--- 
-2.20.1
-
+-Tero
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
