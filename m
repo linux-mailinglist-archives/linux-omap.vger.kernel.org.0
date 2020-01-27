@@ -2,109 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B007149342
-	for <lists+linux-omap@lfdr.de>; Sat, 25 Jan 2020 05:10:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D095814AC71
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Jan 2020 00:13:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725821AbgAYEKj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Jan 2020 23:10:39 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:34616 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725765AbgAYEKj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Jan 2020 23:10:39 -0500
-Received: by mail-qt1-f196.google.com with SMTP id h12so3258444qtu.1;
-        Fri, 24 Jan 2020 20:10:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EQnf/PSLd8HxryhRA93XP/hJ3+nOlFDpb2z4kyJm/Bo=;
-        b=vK2YxIN1kHaMHhJo21y06yzQNwoStGIU0tl/cCu7Fplp/Ugkhc0fuLkgIBy5qLvC++
-         4UKFZBDNGUJ6mv3qsoNlP0gvoF+JwlaLS+WNpcJgMDYDYdCdj6MB6/6uMRWym87jZu58
-         cTxNXhkcwy8ZsIlJH5jwe1bdwUVieKBwYDAZQpl2A5oYRbYv0XLHk7rQkk2OHaLg8SuN
-         kX+pyp9sc7aBpTmLx9bJcdtkZCq7OcqR7w7nXPX5kI38Rw+YjesLdhLYAoUiGzRatBPD
-         lq2IqhYUAv5GNB2AWldQWB9daey4b/q2XFv5BWb6xTEVA+3WcI32xa3H+8AieBiXpw0L
-         AEYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EQnf/PSLd8HxryhRA93XP/hJ3+nOlFDpb2z4kyJm/Bo=;
-        b=I2KjkiaeCfj9uH0uZk1Zlpl1czMMYRfV/2vj7GX+UePPATaHSO1I7nl7LuTJ4OjqMh
-         7uSIP4k893OLMo7Eh7xo+1AoEconK/jgB3g+Ce8IfI7g+jDec3I0N9ijyA6+NWl7n6gJ
-         rByILS1OAeMCNmqKT5I5UQP2vfZzXcjIg0MkxhnJoOMJbi1lTUpMmITMC6ZJRiyWrI6a
-         rsfHE6x4KNmmYq/yhP+WDL4uNo9X8OPryG37nI8F34zv4Zep1F5sNpvh3x+vhK3tRkuE
-         DL01FkDzzxyFkakxqrubGv/SuBPpqY4Uo3FqpHtN6yyjvtr6Cx/iGNSH2jgAd4D+auDz
-         5DFA==
-X-Gm-Message-State: APjAAAUtKPr34e/wvRjppZ8KsoK1QN0qAF3K7+OAVclVwos5VJ3IeTib
-        rDg3gH1CYrisvM6o1OuAvVb74aVdlFUSYK62F4tS4g==
-X-Google-Smtp-Source: APXvYqwVOwJljtXKhX/pjQWfN+aWKsqH6HECj0rPeWGLxT7lpdjgHebAcy0EHgU11OuPR6qoEnF8P1PHOYBUcQW81aM=
-X-Received: by 2002:ac8:7b24:: with SMTP id l4mr5942604qtu.3.1579925437832;
- Fri, 24 Jan 2020 20:10:37 -0800 (PST)
+        id S1726240AbgA0XNR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Jan 2020 18:13:17 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:42686 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726101AbgA0XNR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jan 2020 18:13:17 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00RNCMVA097212;
+        Mon, 27 Jan 2020 17:12:22 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1580166742;
+        bh=bKQSCmNpSLcE+a5C2ZLhKG/0UmrBoP1GypsxyYXuj6o=;
+        h=From:To:CC:Subject:Date;
+        b=wbmiqAwK/RYRFGbmeyGO2i6ZipRj4UABdpPRWkv98e5q4wSzSSmjFox3hMVM7roM2
+         wghxQBV+MwUT6h3Rb2qu1p82nMLxxdaF3uELj05R+UciqXilxMgNUZzz6aUbmZm6vG
+         f1ubK0U/Yw8okG0unma1/WIxcy6WJo0skGqocAMo=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00RNCMI3046211
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 27 Jan 2020 17:12:22 -0600
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 27
+ Jan 2020 17:12:21 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 27 Jan 2020 17:12:21 -0600
+Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00RNCGJu042332;
+        Mon, 27 Jan 2020 17:12:16 -0600
+Received: from localhost (irmo.dhcp.ti.com [128.247.58.153])
+        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id 00RNCE302972;
+        Mon, 27 Jan 2020 17:12:15 -0600 (CST)
+From:   Suman Anna <s-anna@ti.com>
+To:     Lee Jones <lee.jones@linaro.org>
+CC:     Arnd Bergmann <arnd@arndb.de>,
+        David Lechner <david@lechnology.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Roger Quadros <rogerq@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, Suman Anna <s-anna@ti.com>
+Subject: [PATCH v2] mfd: syscon: Use a unique name with regmap_config
+Date:   Mon, 27 Jan 2020 17:12:08 -0600
+Message-ID: <20200127231208.1443-1-s-anna@ti.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-References: <cover.1578453062.git.baolin.wang7@gmail.com> <315adcc5dfc6aa5c001448401dda4065e33deef2.1578453062.git.baolin.wang7@gmail.com>
- <20200122001515.GA14744@builder>
-In-Reply-To: <20200122001515.GA14744@builder>
-From:   Baolin Wang <baolin.wang7@gmail.com>
-Date:   Sat, 25 Jan 2020 12:10:26 +0800
-Message-ID: <CADBw62okdejAcXcT23gUL4qLLFo5YhzisF8uSdoOOheoqv09-A@mail.gmail.com>
-Subject: Re: [PATCH RESEND 3/3] hwspinlock: omap: Use devm_hwspin_lock_register()
- to register hwlock controller
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Ohad Ben Cohen <ohad@wizery.com>, linux-omap@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Bjorn,
+The DT node full name is currently being used in regmap_config
+which in turn is used to create the regmap debugfs directories.
+This name however is not guaranteed to be unique and the regmap
+debugfs registration can fail in the cases where the syscon nodes
+have the same unit-address but are present in different DT node
+hierarchies. Replace this logic using the syscon reg resource
+address instead (inspired from logic used while creating platform
+devices) to ensure a unique name is given for each syscon.
 
-On Wed, Jan 22, 2020 at 8:15 AM Bjorn Andersson
-<bjorn.andersson@linaro.org> wrote:
->
-> On Tue 07 Jan 19:14 PST 2020, Baolin Wang wrote:
->
-> > Use devm_hwspin_lock_register() to register the hwlock controller instead of
-> > unregistering the hwlock controller explicitly when removing the device.
-> >
-> > Signed-off-by: Baolin Wang <baolin.wang7@gmail.com>
-> > ---
-> >  drivers/hwspinlock/omap_hwspinlock.c |   13 ++-----------
-> >  1 file changed, 2 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/drivers/hwspinlock/omap_hwspinlock.c b/drivers/hwspinlock/omap_hwspinlock.c
-> > index 3b05560..9e8a8c2 100644
-> > --- a/drivers/hwspinlock/omap_hwspinlock.c
-> > +++ b/drivers/hwspinlock/omap_hwspinlock.c
-> > @@ -131,8 +131,8 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
-> >       for (i = 0, hwlock = &bank->lock[0]; i < num_locks; i++, hwlock++)
-> >               hwlock->priv = io_base + LOCK_BASE_OFFSET + sizeof(u32) * i;
-> >
-> > -     ret = hwspin_lock_register(bank, &pdev->dev, &omap_hwspinlock_ops,
-> > -                                             base_id, num_locks);
-> > +     ret = devm_hwspin_lock_register(&pdev->dev, bank, &omap_hwspinlock_ops,
-> > +                                     base_id, num_locks);
-> >       if (ret)
-> >               goto runtime_err;
-> >
-> > @@ -148,15 +148,6 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
-> >
-> >  static int omap_hwspinlock_remove(struct platform_device *pdev)
-> >  {
-> > -     struct hwspinlock_device *bank = platform_get_drvdata(pdev);
-> > -     int ret;
-> > -
-> > -     ret = hwspin_lock_unregister(bank);
-> > -     if (ret) {
-> > -             dev_err(&pdev->dev, "%s failed: %d\n", __func__, ret);
-> > -             return ret;
-> > -     }
-> > -
->
-> Relying on devm_hwspin_lock_register() to hwspin_lock_unregister() will
-> mean that pm_runtime_disable() will now be called before the spinlocks
-> are unregistered.
+Signed-off-by: Suman Anna <s-anna@ti.com>
+---
+v2: Fix build warning reported by kbuild test bot
+v1: https://patchwork.kernel.org/patch/11346363/
 
-Yes, you are right. Thanks for catching this issue.
+ drivers/mfd/syscon.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index e22197c832e8..f0815d8e6e95 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -101,12 +101,14 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+ 		}
+ 	}
+ 
+-	syscon_config.name = of_node_full_name(np);
++	syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%llx", np,
++				       (u64)res.start);
+ 	syscon_config.reg_stride = reg_io_width;
+ 	syscon_config.val_bits = reg_io_width * 8;
+ 	syscon_config.max_register = resource_size(&res) - reg_io_width;
+ 
+ 	regmap = regmap_init_mmio(NULL, base, &syscon_config);
++	kfree(syscon_config.name);
+ 	if (IS_ERR(regmap)) {
+ 		pr_err("regmap init failed\n");
+ 		ret = PTR_ERR(regmap);
+-- 
+2.23.0
+
