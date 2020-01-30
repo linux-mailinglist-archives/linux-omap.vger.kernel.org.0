@@ -2,456 +2,312 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 366FA14E562
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Jan 2020 23:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B5414E555
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Jan 2020 23:06:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725908AbgA3WMw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Jan 2020 17:12:52 -0500
-Received: from smtprelay0114.hostedemail.com ([216.40.44.114]:43935 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725907AbgA3WMw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 30 Jan 2020 17:12:52 -0500
-X-Greylist: delayed 410 seconds by postgrey-1.27 at vger.kernel.org; Thu, 30 Jan 2020 17:12:50 EST
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave05.hostedemail.com (Postfix) with ESMTP id 9CA0C1802ACAB
-        for <linux-omap@vger.kernel.org>; Thu, 30 Jan 2020 22:06:01 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 0503849961A;
-        Thu, 30 Jan 2020 22:06:00 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,
-X-HE-Tag: heat78_8b0a421ba2a53
-X-Filterd-Recvd-Size: 11101
-Received: from XPS-9350.home (unknown [47.151.135.224])
-        (Authenticated sender: joe@perches.com)
-        by omf09.hostedemail.com (Postfix) with ESMTPA;
-        Thu, 30 Jan 2020 22:05:55 +0000 (UTC)
-Message-ID: <9f8a0a8e09893e7087d2212fb0eeb94a908b7be1.camel@perches.com>
-Subject: Re: [PATCH 2/2] ARM: configs: Cleanup old Kconfig options
-From:   Joe Perches <joe@perches.com>
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, openbmc@lists.ozlabs.org,
-        arm@kernel.org, soc@kernel.org
-Date:   Thu, 30 Jan 2020 14:04:49 -0800
-In-Reply-To: <20200130195525.4525-2-krzk@kernel.org>
-References: <20200130195525.4525-1-krzk@kernel.org>
-         <20200130195525.4525-2-krzk@kernel.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        id S1726622AbgA3WGh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Jan 2020 17:06:37 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:35300 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725855AbgA3WGg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Jan 2020 17:06:36 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00UM6ZXu060450;
+        Thu, 30 Jan 2020 16:06:35 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1580421995;
+        bh=I1W3Rcm1kjaDWtaABSVntnuxFGEk/nyberVs6bCgbFk=;
+        h=Subject:From:To:CC:References:Date:In-Reply-To;
+        b=BhOJAS17j56iVYTU8w0+PYes6W5FaJil8/YmVsjtLirVLTqB79iLxlnV/HnVcYEgk
+         7Ajs2ZFeq38nSx/jo1jfffMENe+8IXFbZ9iW9kQ/wf+zlbGM1hWlHK19OTaTAWcKrV
+         z2CHsIWD4wvIW7DScvTETksoDtVnN1IlhX7PGh0k=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00UM6Zkx123142
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 30 Jan 2020 16:06:35 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 30
+ Jan 2020 16:06:34 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Thu, 30 Jan 2020 16:06:35 -0600
+Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00UM6Ycs030121;
+        Thu, 30 Jan 2020 16:06:34 -0600
+Subject: Re: [PATCHv5 06/14] remoteproc/omap: Initialize and assign reserved
+ memory node
+From:   Suman Anna <s-anna@ti.com>
+To:     "Andrew F. Davis" <afd@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
+        <linux-remoteproc@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <mathieu.poirier@linaro.org>,
+        <linux-omap@vger.kernel.org>
+References: <20200116135332.7819-1-t-kristo@ti.com>
+ <20200116135332.7819-7-t-kristo@ti.com>
+ <249c293c-6a23-165f-1df5-4859ee47658a@ti.com>
+ <37db5d57-b1cd-1cec-2c9b-31c49e3bdc10@ti.com>
+ <a0e85451-7c05-884c-4997-b4e8c5684c3e@ti.com>
+ <2aaa4024-1e2c-5cab-c9f3-3be59c57e9ac@ti.com>
+ <be337641-b4ac-d2be-b814-55b7681cb91a@ti.com>
+ <7aed7a9f-3546-f622-37ac-34d33ddb4298@ti.com>
+ <50c69e97-034b-3160-e95e-97aec2e75cc6@ti.com>
+ <cf6fff1c-fde9-67b0-3173-7e019ce587cb@ti.com>
+ <127eff13-cc16-2b59-d8ce-06e61bb910bc@ti.com>
+ <39b3e536-26a9-e7da-a39a-db2853e0fe04@ti.com>
+ <a92ab534-1525-f7d6-d29b-361809e0cae1@ti.com>
+Message-ID: <279b6f35-a316-94dd-af62-2891815cf453@ti.com>
+Date:   Thu, 30 Jan 2020 16:06:34 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <a92ab534-1525-f7d6-d29b-361809e0cae1@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 2020-01-30 at 20:55 +0100, Krzysztof Kozlowski wrote:
-> CONFIG_MMC_BLOCK_BOUNCE is gone since commit c3dccb74be28 ("mmc: core:
-> Delete bounce buffer Kconfig option").
+On 1/30/20 3:57 PM, Suman Anna wrote:
+> On 1/30/20 3:50 PM, Andrew F. Davis wrote:
+>> On 1/30/20 4:39 PM, Suman Anna wrote:
+>>> On 1/30/20 3:19 PM, Andrew F. Davis wrote:
+>>>> On 1/30/20 3:39 PM, Suman Anna wrote:
+>>>>> On 1/30/20 2:22 PM, Andrew F. Davis wrote:
+>>>>>> On 1/30/20 2:55 PM, Suman Anna wrote:
+>>>>>>> On 1/30/20 1:42 PM, Tero Kristo wrote:
+>>>>>>>> On 30/01/2020 21:20, Andrew F. Davis wrote:
+>>>>>>>>> On 1/30/20 2:18 PM, Tero Kristo wrote:
+>>>>>>>>>> On 30/01/2020 20:11, Andrew F. Davis wrote:
+>>>>>>>>>>> On 1/16/20 8:53 AM, Tero Kristo wrote:
+>>>>>>>>>>>> From: Suman Anna <s-anna@ti.com>
+>>>>>>>>>>>>
+>>>>>>>>>>>> The reserved memory nodes are not assigned to platform devices by
+>>>>>>>>>>>> default in the driver core to avoid the lookup for every platform
+>>>>>>>>>>>> device and incur a penalty as the real users are expected to be
+>>>>>>>>>>>> only a few devices.
+>>>>>>>>>>>>
+>>>>>>>>>>>> OMAP remoteproc devices fall into the above category and the OMAP
+>>>>>>>>>>>> remoteproc driver _requires_ specific CMA pools to be assigned
+>>>>>>>>>>>> for each device at the moment to align on the location of the
+>>>>>>>>>>>> vrings and vring buffers in the RTOS-side firmware images. So,
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> Same comment as before, this is a firmware issue for only some
+>>>>>>>>>>> firmwares
+>>>>>>>>>>> that do not handle being assigned vring locations correctly and instead
+>>>>>>>>>>> hard-code them.
+>>>>>>>
+>>>>>>> As for this statement, this can do with some updating. Post 4.20,
+>>>>>>> because of the lazy allocation scheme used for carveouts including the
+>>>>>>> vrings, the resource tables now have to use FW_RSC_ADDR_ANY and will
+>>>>>>> have to wait for the vdev synchronization to happen.
+>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> I believe we discussed this topic in length in previous version but
+>>>>>>>>>> there was no conclusion on it.
+>>>>>>>>>>
+>>>>>>>>>> The commit desc might be a bit misleading, we are not actually forced to
+>>>>>>>>>> use specific CMA buffers, as we use IOMMU to map these to device
+>>>>>>>>>> addresses. For example IPU1/IPU2 use internally exact same memory
+>>>>>>>>>> addresses, iommu is used to map these to specific CMA buffer.
+>>>>>>>>>>
+>>>>>>>>>> CMA buffers are mostly used so that we get aligned large chunk of memory
+>>>>>>>>>> which can be mapped properly with the limited IOMMU OMAP family of chips
+>>>>>>>>>> have. Not sure if there is any sane way to get this done in any other
+>>>>>>>>>> manner.
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Why not use the default CMA area?
+>>>>>>>>
+>>>>>>>> I think using default CMA area getting the actual memory block is not
+>>>>>>>> guaranteed and might fail. There are other users for the memory, and it
+>>>>>>>> might get fragmented at the very late phase we are grabbing the memory
+>>>>>>>> (omap remoteproc driver probe time.) Some chunks we need are pretty large.
+>>>>>>>>
+>>>>>>>> I believe I could experiment with this a bit though and see, or Suman
+>>>>>>>> could maybe provide feedback why this was designed initially like this
+>>>>>>>> and why this would not be a good idea.
+>>>>>>>
+>>>>>>> I have given some explanation on this on v4 as well, but if it is not
+>>>>>>> clear, there are restrictions with using default CMA. Default CMA has
+>>>>>>> switched to be assigned from the top of the memory (higher addresses,
+>>>>>>> since 3.18 IIRC), and the MMUs on IPUs and DSPs can only address
+>>>>>>> 32-bits. So, we cannot blindly use the default CMA pool, and this will
+>>>>>>> definitely not work on boards > 2 GB RAM. And, if you want to add in any
+>>>>>>> firewall capability, then specific physical addresses becomes mandatory.
+>>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> If you need 32bit range allocations then
+>>>>>> dma_set_mask(dev, DMA_BIT_MASK(32));
+>>>>>>
+>>>>>> I'm not saying don't have support for carveouts, just make them
+>>>>>> optional, keystone_remoteproc.c does this:
+>>>>>>
+>>>>>> if (of_reserved_mem_device_init(dev))
+>>>>>> 	dev_warn(dev, "device does not have specific CMA pool\n");
+>>>>>>
+>>>>>> There doesn't even needs to be a warning but that is up to you.
+>>>>>
+>>>>> It is not exactly an apples to apples comparison. K2s do not have MMUs,
+>>>>> and most of our firmware images on K2 are actually running out of the
+>>>>> DSP internal memory.
+>>>>>
+>>>>
+>>>>
+>>>> So again we circle back to it being a firmware issue, if K2 can get away
+>>>> without needing carveouts and it doesn't even have an MMU then certainly
+>>>> OMAP/DRA7x class devices can handle it even better given they *do* have
+>>>> an IOMMU. Unless someone is hard-coding the IOMMU configuration.. In
+>>>> which case we are still just hacking around the problem here with
+>>>> mandatory specific address memory carveouts.
+>>>
+>>> Optional carveouts on OMAP remoteprocs can be an enhancement in the
+>>> future, but at the moment, we won't be able to run use-cases without
+>>> this. And I have already given some of the reasons for the same here and
+>>> on v4.
+>>>
+>>
+>>
+>> No reason to be dismissive, my questions are valid.
+>>
+>> What "use-cases" are we talking about, I have firmware that doesn't need
+>> specific carved-out addresses. 
 > 
-> CONFIG_LBDAF is gone since commit 72deb455b5ec ("block: remove
-> CONFIG_LBDAF").
+> I think you are well aware of all the usecases we provide with the TI
+> SDKs with IPUs and DSPs. And what is the firmware that you have and what
+> do you use it for?
 > 
-> CONFIG_IOSCHED_DEADLINE and CONFIG_IOSCHED_CFQ are gone since
-> commit f382fb0bcef4 ("block: remove legacy IO schedulers").
+> If you have misbehaving firmware that
+>> needs statically carved out memory addresses then you can have carveouts
+>> if you want, but it should be optional. 
+> If I don't want to pollute my
+>> system's memory space with a bunch of carveout holes then I shouldn't
+>> have to just because your specific firmware needs them.
 > 
-> The IOSCHED_DEADLINE was replaced by MQ_IOSCHED_DEADLINE and it will be
-> now enabled by default (along with MQ_IOSCHED_KYBER).
+> Further follow-up series like early-boot and late-attach will mandate
+> fixed carveouts actually. You cannot just run out of any random memory.
+
+Also, these are CMA pools ("reusable"), so they are not actual carveout
+holes ("no-map"). This is the preferred method in remoteproc mode so
+that the memory is available for kernel when remoteprocs are not in use.
+Customers can always choose to make these carveouts so that they do not
+run into memory allocation issues when changing firmwares and under
+stress conditions. These will have to be carveouts for early-boot usecases.
+
+regards
+Suman
+
 > 
-> The IOSCHED_BFQ seems to replace IOSCHED_CFQ so select it in configs
-> previously choosing the latter.
+> regards
+> Suman
 > 
-> CONFIG_CROSS_COMPILE is gone since commit f1089c92da79 ("kbuild: remove
-> CONFIG_CROSS_COMPILE support").
-
-Hi Krzysztof.
-
-There seems there are a lot more of these unused CONFIG_<foo>
-symbols in various defconfigs. (just for arm and treewide below)
-
-ARM defconfigs:
-
---------------------------------------------------------------------
-
-# find all defined config symbols in Kconfig files
-
-$ git grep -P -oh '^\s*(?:menu)?config\s+\w+' -- '*/Kconfig*' | \
-  sed -r -e 's/\s*config\s+//' -e 's/\s*menuconfig\s+//' | \
-  sort | uniq > config_symbols
-
-# find CONFIG_ symbols in arm defconfigs
-
-$ git grep -w -oh -P 'CONFIG_\w+' 'arch/arm*/*defconfig*' | \
-  sort | uniq > used_in_arm_defconfigs
-
-# find all the unused symbols
-
-$ cat used_in_arm_defconfigs | \
-  while read line ; do \
-    echo -n "$line " ; grep -w -c ${line/CONFIG_/} config_symbols ; \
-  done | \
-  grep " 0" | \
-  sed 's/ 0//'
-CONFIG_ARCH_AUTCPU12
-CONFIG_ARCH_CDB89712
-CONFIG_ARCH_CLEP7312
-CONFIG_ARCH_EDB7211
-CONFIG_ARCH_P720T
-CONFIG_ARCH_R8A7796
-CONFIG_BT_HCIBTUART
-CONFIG_CC_STACKPROTECTOR_REGULAR
-CONFIG_CHR_DEV_OSST
-CONFIG_CIFS_STATS
-CONFIG_CROSS_COMPILE
-CONFIG_DEBUG_SPINLOCK_SLEEP
-CONFIG_DETECT_SOFTLOCKUP
-CONFIG_DM9000_DEBUGLEVEL
-CONFIG_DRM_TINYDRM
-CONFIG_EXT3_DEFAULTS_TO_ORDERED
-CONFIG_EXT3_FS_XATTR
-CONFIG_FB_XGI
-CONFIG_GPIO_MOXART
-CONFIG_HOTPLUG
-CONFIG_INET6_XFRM_MODE_BEET
-CONFIG_INET6_XFRM_MODE_TRANSPORT
-CONFIG_INET6_XFRM_MODE_TUNNEL
-CONFIG_INET_XFRM_MODE_BEET
-CONFIG_INET_XFRM_MODE_TRANSPORT
-CONFIG_INET_XFRM_MODE_TUNNEL
-CONFIG_IOSCHED_CFQ
-CONFIG_IOSCHED_DEADLINE
-CONFIG_IP_NF_MATCH_ADDRTYPE
-CONFIG_IP_NF_TARGET_LOG
-CONFIG_IPX
-CONFIG_IRCOMM
-CONFIG_IRDA
-CONFIG_IRDA_CACHE_LAST_LSAP
-CONFIG_IRDA_DEBUG
-CONFIG_IRDA_FAST_RR
-CONFIG_IRDA_ULTRA
-CONFIG_IRLAN
-CONFIG_IRNET
-CONFIG_IRTTY_SIR
-CONFIG_KALLSYMS_EXTRA_PASS
-CONFIG_LBDAF
-CONFIG_LEDS_CPU
-CONFIG_LEDS_TIMER
-CONFIG_MAC80211_RC_PID
-CONFIG_MACH_BIGDISK
-CONFIG_MACH_D2NET
-CONFIG_MACH_DOVE_DT
-CONFIG_MACH_EDMINI_V2_DT
-CONFIG_MACH_LINKSTATION_LSCHL
-CONFIG_MACH_MSS2
-CONFIG_MACH_U300_SPIDUMMY
-CONFIG_MACH_VOICEBLUE
-CONFIG_MEDIA_TUNER_CUSTOMISE
-CONFIG_MMC_BLOCK_BOUNCE
-CONFIG_MMP_SPI
-CONFIG_MTD_DEBUG
-CONFIG_MTD_DEBUG_VERBOSE
-CONFIG_MTD_DOC2000
-CONFIG_MTD_DOC2001
-CONFIG_MTD_DOC2001PLUS
-CONFIG_MTD_DOCPROBE_ADDRESS
-CONFIG_MTD_DOCPROBE_ADVANCED
-CONFIG_MTD_DOCPROBE_HIGH
-CONFIG_MTD_M25P80
-CONFIG_NET_CADENCE
-CONFIG_NET_DMA
-CONFIG_NET_ETHERNET
-CONFIG_NET_PCI
-CONFIG_NET_PCMCIA
-CONFIG_NET_VENDOR_SMC
-CONFIG_NF_CONNTRACK_IPV4
-CONFIG_NF_CONNTRACK_IPV6
-CONFIG_PCIE_AXXIA
-CONFIG_PM_RUNTIME
-CONFIG_PROC_DEVICETREE
-CONFIG_PXA_FICP
-CONFIG_QCOM_ADSP_PIL
-CONFIG_QCOM_Q6V5_PIL
-CONFIG_SA1100_FIR
-CONFIG_SCSI_MULTI_LUN
-CONFIG_SMB_FS
-CONFIG_SMB_NLS_DEFAULT
-CONFIG_SOC_CAMERA_OV2640
-CONFIG_SOC_CAMERA_PLATFORM
-CONFIG_SOUND_DMAP
-CONFIG_SOUND_OSS
-CONFIG_SOUND_PRIME
-CONFIG_SOUND_TRACEINIT
-CONFIG_SOUND_VIDC
-CONFIG_SOUND_WAVEARTIST
-CONFIG_SOUND_YM3812
-CONFIG_SUSPEND_TIME
-CONFIG_SYSCTL_SYSCALL
-CONFIG_TIMER_STATS
-CONFIG_UID_STAT
-CONFIG_USB_CHIPIDEA_ULPI
-CONFIG_USB_EHCI_HCD_AXXIA
-CONFIG_USB_EHCI_MSM
-CONFIG_USB_GADGET_DUMMY_HCD
-CONFIG_USB_MSM_OTG
-CONFIG_V4L_USB_DRIVERS
-CONFIG_VIDEO_HELPER_CHIPS_AUTO
-CONFIG_WAN_ROUTER
-CONFIG_WAN_ROUTER_DRIVERS
-CONFIG_WINBOND_FIR
-
---------------------------------------------------------------------
-
-And treewide defconfigs:
-
-$ git grep -P -oh '^\s*(?:menu)?config\s+\w+' -- '*/Kconfig*' | \
-  sed -r -e 's/\s*config\s+//' -e 's/\s*menuconfig\s+//' | \
-  sort | uniq > config_symbols
-
-$ git grep -w -oh -P 'CONFIG_\w+' '*defconfig*' | \
-  sort | uniq >  used_in_defconfigs
-
-$ cat used_in_defconfigs | \
-  while read line ; do \
-    echo -n "$line " ; grep -w -c ${line/CONFIG_/} config_symbols ;  \
-  done | \
-  grep " 0" | \
-  sed 's/ 0//'
-CONFIG_ALI_FIR
-CONFIG_ARCH_AUTCPU12
-CONFIG_ARCH_CDB89712
-CONFIG_ARCH_CLEP7312
-CONFIG_ARCH_EDB7211
-CONFIG_ARCH_P720T
-CONFIG_ARCH_R8A7796
-CONFIG_ARCPGU_DISPTYPE
-CONFIG_ARCPGU_RGB888
-CONFIG_ARPD
-CONFIG_ATH79_MACH_AP121
-CONFIG_ATH79_MACH_AP136
-CONFIG_ATH79_MACH_AP81
-CONFIG_ATH79_MACH_DB120
-CONFIG_ATH79_MACH_PB44
-CONFIG_ATH79_MACH_UBNT_XM
-CONFIG_BLK_DEV_RAM_DAX
-CONFIG_BOARD_EVM6457
-CONFIG_BOARD_EVM6472
-CONFIG_BOARD_EVM6474
-CONFIG_BOARD_EVM6678
-CONFIG_BT_HCIBTUART
-CONFIG_CC_STACKPROTECTOR_REGULAR
-CONFIG_CFQ_GROUP_IOSCHED
-CONFIG_CGROUP_MEMCG
-CONFIG_CGROUP_MEMCG_SWAP
-CONFIG_CHR_DEV_OSST
-CONFIG_CIFS_STATS
-CONFIG_CROSS_COMPILE
-CONFIG_CRYPTO_AES_586
-CONFIG_CSKY_MPTIMER
-CONFIG_DEBUG_SPINLOCK_SLEEP
-CONFIG_DEFAULT_DEADLINE
-CONFIG_DEFAULT_NOOP
-CONFIG_DETECT_SOFTLOCKUP
-CONFIG_DEVPTS_MULTIPLE_INSTANCES
-CONFIG_DM9000_DEBUGLEVEL
-CONFIG_DRM_TINYDRM
-CONFIG_DSCC4
-CONFIG_DVB_FE_CUSTOMISE
-CONFIG_ENABLE_WARN_DEPRECATED
-CONFIG_EXOFS_FS
-CONFIG_EXPERIMENTAL
-CONFIG_EXT2_FS_XIP
-CONFIG_EXT3_DEFAULTS_TO_ORDERED
-CONFIG_EXT3_FS_XATTR
-CONFIG_FB_SH7785FB
-CONFIG_FB_XGI
-CONFIG_GPIO_MOXART
-CONFIG_HEADERS_CHECK
-CONFIG_HID_SUPPORT
-CONFIG_HOTPLUG
-CONFIG_I2C_PARPORT_LIGHT
-CONFIG_INET6_XFRM_MODE_BEET
-CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION
-CONFIG_INET6_XFRM_MODE_TRANSPORT
-CONFIG_INET6_XFRM_MODE_TUNNEL
-CONFIG_INET_LRO
-CONFIG_INET_XFRM_MODE_BEET
-CONFIG_INET_XFRM_MODE_TRANSPORT
-CONFIG_INET_XFRM_MODE_TUNNEL
-CONFIG_INFINIBAND_CXGB3
-CONFIG_IOSCHED_CFQ
-CONFIG_IOSCHED_DEADLINE
-CONFIG_IP_NF_MATCH_ADDRTYPE
-CONFIG_IP_NF_TARGET_LOG
-CONFIG_IPV6_PRIVACY
-CONFIG_IPX
-CONFIG_IRCOMM
-CONFIG_IRDA
-CONFIG_IRDA_CACHE_LAST_LSAP
-CONFIG_IRDA_DEBUG
-CONFIG_IRDA_FAST_RR
-CONFIG_IRDA_ULTRA
-CONFIG_IRLAN
-CONFIG_IRNET
-CONFIG_IRTTY_SIR
-CONFIG_KALLSYMS_EXTRA_PASS
-CONFIG_KINGSUN_DONGLE
-CONFIG_KS959_DONGLE
-CONFIG_KSDAZZLE_DONGLE
-CONFIG_LBDAF
-CONFIG_LEDS_CPU
-CONFIG_LEDS_TIMER
-CONFIG_MAC80211_RC_PID
-CONFIG_MACH_BIGDISK
-CONFIG_MACH_D2NET
-CONFIG_MACH_DOVE_DT
-CONFIG_MACH_EDMINI_V2_DT
-CONFIG_MACH_LINKSTATION_LSCHL
-CONFIG_MACH_MSS2
-CONFIG_MACH_U300_SPIDUMMY
-CONFIG_MACH_VOICEBLUE
-CONFIG_MCS_FIR
-CONFIG_MEDIA_TUNER_CUSTOMISE
-CONFIG_MFD_SH_MOBILE_SDHI
-CONFIG_MMC_BLOCK_BOUNCE
-CONFIG_MMP_SPI
-CONFIG_MTD_CHAR
-CONFIG_MTD_DEBUG
-CONFIG_MTD_DEBUG_VERBOSE
-CONFIG_MTD_DOC2000
-CONFIG_MTD_DOC2001
-CONFIG_MTD_DOC2001PLUS
-CONFIG_MTD_DOCPROBE_ADDRESS
-CONFIG_MTD_DOCPROBE_ADVANCED
-CONFIG_MTD_DOCPROBE_HIGH
-CONFIG_MTD_M25P80
-CONFIG_MTD_PARTITIONS
-CONFIG_NCP_FS
-CONFIG_NCPFS_EXTRAS
-CONFIG_NCPFS_IOCTL_LOCKING
-CONFIG_NCPFS_NFS_NS
-CONFIG_NCPFS_NLS
-CONFIG_NCPFS_OS2_NS
-CONFIG_NCPFS_PACKET_SIGNING
-CONFIG_NCPFS_SMALLDOS
-CONFIG_NCPFS_STRONG
-CONFIG_NET_CADENCE
-CONFIG_NET_DCCPPROBE
-CONFIG_NETDEV_1000
-CONFIG_NETDEV_10000
-CONFIG_NET_DMA
-CONFIG_NET_ETHERNET
-CONFIG_NET_PACKET_ENGINE
-CONFIG_NET_PCI
-CONFIG_NET_PCMCIA
-CONFIG_NET_TCPPROBE
-CONFIG_NET_VENDOR_EXAR
-CONFIG_NET_VENDOR_SMC
-CONFIG_NF_CONNTRACK_IPV4
-CONFIG_NF_CONNTRACK_IPV6
-CONFIG_NF_NAT_IPV4
-CONFIG_NF_NAT_IPV6
-CONFIG_NR_DMA_CHANNELS
-CONFIG_NR_DMA_CHANNELS_BOOL
-CONFIG_NSC_FIR
-CONFIG_OCTEON_ETHERNET
-CONFIG_OCTEON_USB
-CONFIG_PCIEASPM_DEBUG
-CONFIG_PCIE_AXXIA
-CONFIG_PCI_LEGACY
-CONFIG_PERF_COUNTERS
-CONFIG_PHONE
-CONFIG_PM_RUNTIME
-CONFIG_PROC_DEVICETREE
-CONFIG_PUV3_AC97
-CONFIG_PUV3_MMC
-CONFIG_PUV3_MUSB
-CONFIG_PUV3_NAND
-CONFIG_PUV3_UART
-CONFIG_PUV3_UMAL
-CONFIG_PXA_FICP
-CONFIG_QCOM_ADSP_PIL
-CONFIG_QCOM_Q6V5_PIL
-CONFIG_RCU_CPU_STALL_INFO
-CONFIG_SA1100_FIR
-CONFIG_SBC834x
-CONFIG_SCSI_MULTI_LUN
-CONFIG_SCSI_OSD_INITIATOR
-CONFIG_SCSI_OSD_ULD
-CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE
-CONFIG_SH_SIR
-CONFIG_SIGMATEL_FIR
-CONFIG_SMB_FS
-CONFIG_SMB_NLS_DEFAULT
-CONFIG_SMC_IRCC_FIR
-CONFIG_SND_FSI_AK4642
-CONFIG_SND_FSI_DA7210
-CONFIG_SOC_CAMERA_MT9T112
-CONFIG_SOC_CAMERA_OV2640
-CONFIG_SOC_CAMERA_OV772X
-CONFIG_SOC_CAMERA_PLATFORM
-CONFIG_SOC_CAMERA_TW9910
-CONFIG_SOUND_DMAP
-CONFIG_SOUND_OSS
-CONFIG_SOUND_PRIME
-CONFIG_SOUND_TRACEINIT
-CONFIG_SOUND_VIDC
-CONFIG_SOUND_WAVEARTIST
-CONFIG_SOUND_YM3812
-CONFIG_SPI_XILINX_PLTFM
-CONFIG_STAGING_EXCLUDE_BUILD
-CONFIG_SUSPEND_TIME
-CONFIG_SYSCTL_SYSCALL
-CONFIG_TIMER_STATS
-CONFIG_TOSHIBA_FIR
-CONFIG_TREE_PREEMPT_RCU
-CONFIG_UID_STAT
-CONFIG_UIO_PDRV
-CONFIG_USB_CHIPIDEA_ULPI
-CONFIG_USB_CMMB_INNOFIDEI
-CONFIG_USB_EHCI_HCD_AXXIA
-CONFIG_USB_EHCI_MSM
-CONFIG_USB_GADGET_DUMMY_HCD
-CONFIG_USB_GADGET_M66592
-CONFIG_USB_IRDA
-CONFIG_USB_MSM_OTG
-CONFIG_USB_WLAN_HED_AQ3
-CONFIG_V4L_USB_DRIVERS
-CONFIG_VIA_FIR
-CONFIG_VIDEO_ALLOW_V4L1
-CONFIG_VIDEO_HELPER_CHIPS_AUTO
-CONFIG_VIDEO_SH_MOBILE_CEU
-CONFIG_VLSI_FIR
-CONFIG_W1_SLAVE_DS2760
-CONFIG_WAN_ROUTER
-CONFIG_WAN_ROUTER_DRIVERS
-CONFIG_WINBOND_FIR
-CONFIG_WLAN_80211
-
+>>
+>> Andrew
+>>
+>>
+>>> regards
+>>> Suman
+>>>
+>>>>
+>>>> Andrew
+>>>>
+>>>>
+>>>>> regards
+>>>>> Suman
+>>>>>
+>>>>>>
+>>>>>> Andrew
+>>>>>>
+>>>>>>
+>>>>>>> regards
+>>>>>>> Suman
+>>>>>>>
+>>>>>>>>
+>>>>>>>> -Tero
+>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Andrew
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>>> -Tero
+>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> This is not a requirement of the remote processor itself and so it
+>>>>>>>>>>> should not fail to probe if a specific memory carveout isn't given.
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>>> use the of_reserved_mem_device_init/release() API appropriately
+>>>>>>>>>>>> to assign the corresponding reserved memory region to the OMAP
+>>>>>>>>>>>> remoteproc device. Note that only one region per device is
+>>>>>>>>>>>> allowed by the framework.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>>>>>>>>>>>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>>>>>>>>>>>> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+>>>>>>>>>>>> ---
+>>>>>>>>>>>> v5: no changes
+>>>>>>>>>>>>
+>>>>>>>>>>>>    drivers/remoteproc/omap_remoteproc.c | 12 +++++++++++-
+>>>>>>>>>>>>    1 file changed, 11 insertions(+), 1 deletion(-)
+>>>>>>>>>>>>
+>>>>>>>>>>>> diff --git a/drivers/remoteproc/omap_remoteproc.c
+>>>>>>>>>>>> b/drivers/remoteproc/omap_remoteproc.c
+>>>>>>>>>>>> index 0846839b2c97..194303b860b2 100644
+>>>>>>>>>>>> --- a/drivers/remoteproc/omap_remoteproc.c
+>>>>>>>>>>>> +++ b/drivers/remoteproc/omap_remoteproc.c
+>>>>>>>>>>>> @@ -17,6 +17,7 @@
+>>>>>>>>>>>>    #include <linux/module.h>
+>>>>>>>>>>>>    #include <linux/err.h>
+>>>>>>>>>>>>    #include <linux/of_device.h>
+>>>>>>>>>>>> +#include <linux/of_reserved_mem.h>
+>>>>>>>>>>>>    #include <linux/platform_device.h>
+>>>>>>>>>>>>    #include <linux/dma-mapping.h>
+>>>>>>>>>>>>    #include <linux/remoteproc.h>
+>>>>>>>>>>>> @@ -480,14 +481,22 @@ static int omap_rproc_probe(struct
+>>>>>>>>>>>> platform_device *pdev)
+>>>>>>>>>>>>        if (ret)
+>>>>>>>>>>>>            goto free_rproc;
+>>>>>>>>>>>>    +    ret = of_reserved_mem_device_init(&pdev->dev);
+>>>>>>>>>>>> +    if (ret) {
+>>>>>>>>>>>> +        dev_err(&pdev->dev, "device does not have specific CMA
+>>>>>>>>>>>> pool\n");
+>>>>>>>>>>>> +        goto free_rproc;
+>>>>>>>>>>>> +    }
+>>>>>>>>>>>> +
+>>>>>>>>>>>>        platform_set_drvdata(pdev, rproc);
+>>>>>>>>>>>>          ret = rproc_add(rproc);
+>>>>>>>>>>>>        if (ret)
+>>>>>>>>>>>> -        goto free_rproc;
+>>>>>>>>>>>> +        goto release_mem;
+>>>>>>>>>>>>          return 0;
+>>>>>>>>>>>>    +release_mem:
+>>>>>>>>>>>> +    of_reserved_mem_device_release(&pdev->dev);
+>>>>>>>>>>>>    free_rproc:
+>>>>>>>>>>>>        rproc_free(rproc);
+>>>>>>>>>>>>        return ret;
+>>>>>>>>>>>> @@ -499,6 +508,7 @@ static int omap_rproc_remove(struct
+>>>>>>>>>>>> platform_device *pdev)
+>>>>>>>>>>>>          rproc_del(rproc);
+>>>>>>>>>>>>        rproc_free(rproc);
+>>>>>>>>>>>> +    of_reserved_mem_device_release(&pdev->dev);
+>>>>>>>>>>>>          return 0;
+>>>>>>>>>>>>    }
+>>>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> -- 
+>>>>>>>>
+>>>>>>>> -- 
+>>>>>>>> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+>>>>>>>> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+>>>>>>>
+>>>>>
+>>>
+> 
 
