@@ -2,137 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E8AA15061E
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Feb 2020 13:25:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A55C015082E
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Feb 2020 15:16:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727339AbgBCMZr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Feb 2020 07:25:47 -0500
-Received: from mout.kundenserver.de ([217.72.192.75]:56091 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727074AbgBCMZr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Feb 2020 07:25:47 -0500
-Received: from mail-qk1-f170.google.com ([209.85.222.170]) by
- mrelayeu.kundenserver.de (mreue107 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1N7yuz-1jdEvy0FiF-0150X2; Mon, 03 Feb 2020 13:25:45 +0100
-Received: by mail-qk1-f170.google.com with SMTP id u19so6277011qku.8;
-        Mon, 03 Feb 2020 04:25:44 -0800 (PST)
-X-Gm-Message-State: APjAAAVsig5ayJqpiKY25ChbkwKG8B2i4S8N2jQsFADPbXJ25qZZzHaR
-        qsMyO9bGFEhTUo73T6fu0YHDFqXxy7aA0wWLF+A=
-X-Google-Smtp-Source: APXvYqx0ocLgdidrznoQ8Enyx2eLL3hOdlL2MjBSkguYuLYfdkmdQylLrutBTZG2BNKne5lK1uCb3UnyrUHgc1yB+DQ=
-X-Received: by 2002:a05:620a:909:: with SMTP id v9mr10712027qkv.138.1580732743857;
- Mon, 03 Feb 2020 04:25:43 -0800 (PST)
+        id S1728319AbgBCOQr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Feb 2020 09:16:47 -0500
+Received: from mail-lf1-f41.google.com ([209.85.167.41]:46123 "EHLO
+        mail-lf1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728075AbgBCOQr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Feb 2020 09:16:47 -0500
+Received: by mail-lf1-f41.google.com with SMTP id z26so9758591lfg.13
+        for <linux-omap@vger.kernel.org>; Mon, 03 Feb 2020 06:16:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=s8HN/ssfW3RrGfj5iOn18Wtg7GOj1L1nchbFe0O3XtE=;
+        b=xxf3hbaWq7V1P+it5KB8wcbCcFCotmfcg+NAH0x6Wy9SdhEhFcv6ono0niHnd6HLqY
+         jnVyLBB4qRwClW/4Ie2u8LE98KmeCtBHnnwq4r99g6PlSmPm/VaBN/ABAedO56zGjqOb
+         vUzERbQOxjASHgg/8lb6bL+g//KeqtgJL8yP9388ySSB47cXviHzJaUoOOjoVUbZjdRg
+         rR1bMwrB7lL3+akdmFdBeSMRxcWW9AYyAKqmmJyrfx90V3gl7/0E0dxJChgy6h3pSyLR
+         8d0MasMk7SKLpwRN9Vq+su0okTJG/hVqThERV2IKhz1x9VEMI4xCPayMeDuk7IUw8xli
+         IGxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=s8HN/ssfW3RrGfj5iOn18Wtg7GOj1L1nchbFe0O3XtE=;
+        b=XbyyqQHeYgw4buszx5HaH0I34RovzovZR7FjUqnA5vdduCDl3DQeKg98ZsqgWxrtF0
+         JHFLLJm64oU/fzVNlyxUoHvbK6c1dNXY+ldvJtiPCf5gvSBkdd7zeo1vF2+vhszzM2XP
+         J1oKd/nL+h+N2sMLaRPqgmayQTGUe90nGEtyLXeIfIg6Gaxl8KB6cQjW4+OLR1L7ibX7
+         W+gxGE4fnBQNrCdoYNL+qTPapau4NCVWOOnY/LdfPo0AkrJq11OF+ReaphS0z5weP9tB
+         fFvyw0MHCUynDxCfHT/m8T50UbklCaxc08+F8p1L4F5PkQ0iYSAOxWsb9RcJ0WINCYPU
+         bbXQ==
+X-Gm-Message-State: APjAAAXIbDQYF8dArTzAJw+KD8GU0Aqs//VDilo6cHF1YgDGD0x+BTWf
+        x4yehra3IixJOg3Cq9febKuD89Enh3nLgB8eNPBmxboox/w=
+X-Google-Smtp-Source: APXvYqxlH+MsUuRAcTfdFjXSPCXxa+6z6dX4MgpSyEhbTxumvWgRTMDWlXIst132BjcY9+0l4qdxd/lXkZbRE4+uk9E=
+X-Received: by 2002:ac2:5467:: with SMTP id e7mr11547220lfn.74.1580739405080;
+ Mon, 03 Feb 2020 06:16:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20200130195525.4525-1-krzk@kernel.org> <20200130195525.4525-2-krzk@kernel.org>
- <9f8a0a8e09893e7087d2212fb0eeb94a908b7be1.camel@perches.com> <CAJKOXPf5Mf4FCmtME5yJsBZeP8BkYJgcxkKzS2hd-gp-mq3nag@mail.gmail.com>
-In-Reply-To: <CAJKOXPf5Mf4FCmtME5yJsBZeP8BkYJgcxkKzS2hd-gp-mq3nag@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 3 Feb 2020 13:25:27 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3VxqKuPyoparMZQYNNic6K2QsuzHE2mHskBt56cjny=g@mail.gmail.com>
-Message-ID: <CAK8P3a3VxqKuPyoparMZQYNNic6K2QsuzHE2mHskBt56cjny=g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ARM: configs: Cleanup old Kconfig options
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Joe Perches <joe@perches.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Olof Johansson <olof@lixom.net>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
-        arm-soc <arm@kernel.org>, SoC Team <soc@kernel.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Mon, 3 Feb 2020 19:46:34 +0530
+Message-ID: <CA+G9fYvi8g=5MG4HzN0QPH+_LEX1xXo-m2xmbHRqdMJzaqBCFQ@mail.gmail.com>
+Subject: OF: ERROR: Bad of_node_put() on /ocp/interconnect
+To:     linux-omap@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Linux-Next Mailing List <linux-next@vger.kernel.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, bcousson@baylibre.com,
+        lkft-triage@lists.linaro.org
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:Z/o9hl+VbVFCd3JbFMrSX5q5pl1EGoe4TUEC+JYUrP0wfQufBCt
- x/tSoiBEU2+RFgpd5DRkEdhSBsimgXbMosZEhQwG00/NdJbNrh11Sbm/DeULFKlaCeVyeB5
- jcHDjtZgpX05iLKDnf4MAuciJQN3pjxGpydNJk2z7UPVXVle2k17FStyt0rJCs3NOo469iv
- ghOOcuDImLbuTdPVxsRQg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:LTIDGvjRHmQ=:+Cq4IdjiThj/pyKdrz+aZ5
- NEPm6iOhe4dr/KngwTqUhDIgfOi1FdeUuxDeiR/8cIt3yVDDN6B3WACw4uqsMlUgY4c77b3iu
- gElD4y/8VkSsdXCM/pYed4MgPGHq5eCCyE5uK20EYRzL04ssTZskfnT2VrWa76ie0ynDCn8c8
- eeXPuY7MmtuKm4jY+KkX5kgvjMgBK8OtzZ2RLYgjZqPOOHcuXriVmkdvoCJZdZAq+MaofmJGy
- k+A0bj7Si1cTiru9eupfeADcU8FAI3LuVdHgeVC/ZQbVMrjhlXcGb8NyXnmGlbT9BeRiOXG3Z
- aiM+PlQQPqRp84D2hH62/SETV3NBmRrh7P21KIvYWxOA9eoMTT22Lyrftu78euEHg/oioRQYR
- PTOSBbXaaANOxfY89g3Sdpq6XHZJTqZWkrW6YeuH3Fd0kPmlH6vANXiOqZ/mWMO0MfHLKgIuR
- FAlEfkGEDe7FiZGyhTJbpPvlFQ10XsS4ulDUQGqH/sIBsxqPQgqShvHbQOr9q88dvyR76O7kn
- TsECwZ0M3dPWp34ZoIqMO0ZWnfMRa8E+2/k2O+iekVYOXFj1VYo/0MsMTjuvcKByqne5hwbaZ
- QFWGYFgehhGWiVd/4Ozl5hhrX5XKEe7+KLRBN/rlsOg7KoGMK/BiAVego8K3dcRFgeg0E3PL5
- WU5tWfKPlXFZ6/TUN+hLOZbVTl0xSlZle/9aGGcifhHP66TeWwWoNCwY5YyGEPzadfaGNYHua
- VmBedHg+ed2vKsUWz3amSLXqXPRYoq3PPw639aVAh6HXoVxoztZiTC/qREn3BLIicS5Gc76Zl
- 0RPWL2QF/raRe/ihJd7aLmKj/oJwKYEj8qNK6mnlBo1PwXiYpM=
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Feb 3, 2020 at 12:53 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> On Thu, 30 Jan 2020 at 23:06, Joe Perches <joe@perches.com> wrote:
-> >
-> > On Thu, 2020-01-30 at 20:55 +0100, Krzysztof Kozlowski wrote:
-> > > CONFIG_MMC_BLOCK_BOUNCE is gone since commit c3dccb74be28 ("mmc: core:
-> > > Delete bounce buffer Kconfig option").
-> > >
-> > > CONFIG_LBDAF is gone since commit 72deb455b5ec ("block: remove
-> > > CONFIG_LBDAF").
-> > >
-> > > CONFIG_IOSCHED_DEADLINE and CONFIG_IOSCHED_CFQ are gone since
-> > > commit f382fb0bcef4 ("block: remove legacy IO schedulers").
-> > >
-> > > The IOSCHED_DEADLINE was replaced by MQ_IOSCHED_DEADLINE and it will be
-> > > now enabled by default (along with MQ_IOSCHED_KYBER).
-> > >
-> > > The IOSCHED_BFQ seems to replace IOSCHED_CFQ so select it in configs
-> > > previously choosing the latter.
-> > >
-> > > CONFIG_CROSS_COMPILE is gone since commit f1089c92da79 ("kbuild: remove
-> > > CONFIG_CROSS_COMPILE support").
+The following error/warning noticed on beagleboard x15 running linux
+next 5.5.0-next-20200203.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+metadata:
+  git branch: master
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+  git commit: cee5a42837d4a6c4189f06f7bf355b97a24c3c93
+  git describe: next-20200203
+  make_kernelversion: 5.5.0
+  kernel-config:
+http://snapshots.linaro.org/openembedded/lkft/lkft/sumo/am57xx-evm/lkft/linux-next/694/config
 
-> > Hi Krzysztof.
-> >
-> > There seems there are a lot more of these unused CONFIG_<foo>
-> > symbols in various defconfigs. (just for arm and treewide below)
 
-Feel free to pick any of these symbols and send patches for those.
-No need to do it one symbol at a time, but please group them like
-Krzysztof has done.
+[    0.000000] OF: ERROR: Bad of_node_put() on
+/ocp/interconnect@4a000000/segment@0/target-module@8000/cm_core@0/l4per-cm@1700/l4per-clkctrl@28
+[    0.000000] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W
+  5.5.0-next-20200203 #1
+[    0.000000] Hardware name: Generic DRA74X (Flattened Device Tree)
+[    0.000000] Backtrace:
+[    0.000000] [<c040fac4>] (dump_backtrace) from [<c040fdf8>]
+(show_stack+0x20/0x24)
+[    0.000000]  r7:c23f2e68 r6:00000000 r5:600000d3 r4:c23f2e68
+[    0.000000] [<c040fdd8>] (show_stack) from [<c14144d0>]
+(dump_stack+0xe8/0x114)
+[    0.000000] [<c14143e8>] (dump_stack) from [<c112b7cc>]
+(of_node_release+0xb4/0xcc)
+[    0.000000]  r10:efca9a44 r9:00000001 r8:00000000 r7:00000000
+r6:c23d2350 r5:efca9a44
+[    0.000000]  r4:efca9a70 r3:be2d277f
+[    0.000000] [<c112b718>] (of_node_release) from [<c1419c28>]
+(kobject_put+0x11c/0x23c)
+[    0.000000]  r5:c2422cb8 r4:efca9a70
+[    0.000000] [<c1419b0c>] (kobject_put) from [<c112aa98>]
+(of_node_put+0x24/0x28)
+[    0.000000]  r7:e98f7980 r6:c2201ef4 r5:00000000 r4:e98f7940
+[    0.000000] [<c112aa74>] (of_node_put) from [<c20474a0>]
+(of_clk_init+0x1a4/0x248)
+[    0.000000] [<c20472fc>] (of_clk_init) from [<c20140dc>]
+(omap_clk_init+0x4c/0x68)
+[    0.000000]  r10:efc8b8c0 r9:c2433054 r8:00000000 r7:c2208700
+r6:00000066 r5:c20dab64
+[    0.000000]  r4:c2434500
+[    0.000000] [<c2014090>] (omap_clk_init) from [<c2014afc>]
+(omap4_sync32k_timer_init+0x18/0x3c)
+[    0.000000]  r5:c20dab64 r4:c2433000
+[    0.000000] [<c2014ae4>] (omap4_sync32k_timer_init) from
+[<c2014de8>] (omap5_realtime_timer_init+0x1c/0x258)
+[    0.000000] [<c2014dcc>] (omap5_realtime_timer_init) from
+[<c2005954>] (time_init+0x30/0x44)
+[    0.000000]  r9:c2433054 r8:00000000 r7:c2208700 r6:00000066
+r5:c20dab64 r4:c2433000
+[    0.000000] [<c2005924>] (time_init) from [<c20012dc>]
+(start_kernel+0x590/0x720)
+[    0.000000] [<c2000d4c>] (start_kernel) from [<00000000>] (0x0)
+[    0.000000]  r10:30c5387d r9:412fc0f2 r8:8ffdc000 r7:00000000
+r6:30c0387d r5:00000000
+[    0.000000]  r4:c2000330
 
-> Nice finding! The trickier point is to nicely remove them because:
-> 1. The easiest is 'savedefconfig' but then some valuable options might
-> disappear (like recently happened with DEBUG_FS),
-> 2. They could be removed in automated way with a script. However in
-> such case what about replacements? If some symbol was replaced with
-> other (or just renamed), maybe we should enable the other one to
-> restore the desired functionality?
-> 3. Or maybe let's don't care about keeping defconfigs stable and just
-> clean them up automatically.
+full test log,
+https://lkft.validation.linaro.org/scheduler/job/1158386#L3677
 
-I don't see a good way to do it automatically. It would be good to check
-that we don't remove Kconfig symbols that are still used in defconfig
-files without changing those files as well. Cleaning up afterwards also
-works, but this always requires manual inspection for each symbol.
-
-     Arnd
+-- 
+Linaro LKFT
+https://lkft.linaro.org
