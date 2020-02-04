@@ -2,123 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A55C015082E
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Feb 2020 15:16:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CCB3151AA0
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Feb 2020 13:39:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728319AbgBCOQr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Feb 2020 09:16:47 -0500
-Received: from mail-lf1-f41.google.com ([209.85.167.41]:46123 "EHLO
-        mail-lf1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728075AbgBCOQr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Feb 2020 09:16:47 -0500
-Received: by mail-lf1-f41.google.com with SMTP id z26so9758591lfg.13
-        for <linux-omap@vger.kernel.org>; Mon, 03 Feb 2020 06:16:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=s8HN/ssfW3RrGfj5iOn18Wtg7GOj1L1nchbFe0O3XtE=;
-        b=xxf3hbaWq7V1P+it5KB8wcbCcFCotmfcg+NAH0x6Wy9SdhEhFcv6ono0niHnd6HLqY
-         jnVyLBB4qRwClW/4Ie2u8LE98KmeCtBHnnwq4r99g6PlSmPm/VaBN/ABAedO56zGjqOb
-         vUzERbQOxjASHgg/8lb6bL+g//KeqtgJL8yP9388ySSB47cXviHzJaUoOOjoVUbZjdRg
-         rR1bMwrB7lL3+akdmFdBeSMRxcWW9AYyAKqmmJyrfx90V3gl7/0E0dxJChgy6h3pSyLR
-         8d0MasMk7SKLpwRN9Vq+su0okTJG/hVqThERV2IKhz1x9VEMI4xCPayMeDuk7IUw8xli
-         IGxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=s8HN/ssfW3RrGfj5iOn18Wtg7GOj1L1nchbFe0O3XtE=;
-        b=XbyyqQHeYgw4buszx5HaH0I34RovzovZR7FjUqnA5vdduCDl3DQeKg98ZsqgWxrtF0
-         JHFLLJm64oU/fzVNlyxUoHvbK6c1dNXY+ldvJtiPCf5gvSBkdd7zeo1vF2+vhszzM2XP
-         J1oKd/nL+h+N2sMLaRPqgmayQTGUe90nGEtyLXeIfIg6Gaxl8KB6cQjW4+OLR1L7ibX7
-         W+gxGE4fnBQNrCdoYNL+qTPapau4NCVWOOnY/LdfPo0AkrJq11OF+ReaphS0z5weP9tB
-         fFvyw0MHCUynDxCfHT/m8T50UbklCaxc08+F8p1L4F5PkQ0iYSAOxWsb9RcJ0WINCYPU
-         bbXQ==
-X-Gm-Message-State: APjAAAXIbDQYF8dArTzAJw+KD8GU0Aqs//VDilo6cHF1YgDGD0x+BTWf
-        x4yehra3IixJOg3Cq9febKuD89Enh3nLgB8eNPBmxboox/w=
-X-Google-Smtp-Source: APXvYqxlH+MsUuRAcTfdFjXSPCXxa+6z6dX4MgpSyEhbTxumvWgRTMDWlXIst132BjcY9+0l4qdxd/lXkZbRE4+uk9E=
-X-Received: by 2002:ac2:5467:: with SMTP id e7mr11547220lfn.74.1580739405080;
- Mon, 03 Feb 2020 06:16:45 -0800 (PST)
+        id S1727151AbgBDMjT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 4 Feb 2020 07:39:19 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:53284 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727129AbgBDMjT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Feb 2020 07:39:19 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 014CXAo5070369;
+        Tue, 4 Feb 2020 12:39:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=/RNRaemTG1S+xgpa61Fs7I2XmnjFMf9zaCV1SIWk56Q=;
+ b=YQsa2f9CNUKYT1EHAaWFi0b+kyf7NzZiOJYs21XDdYQjXhFduLs1qfIE1f8lSa6ivQAa
+ yAH+w9Kf6t4B5x5mJA0LUf9qHUmnEA+sylENrz3OGqY6nFEzEw19TME5g1bo3WxnzTWX
+ B8mypKgiTYq6Yi6megd3LCJxhmO/SgL+ds4iKoU19XA1iHyjIEZotoy+2QOedvs0isAp
+ A+244VXITwE2DLjO//q0CKChY1XKnIHxr0y+8dTrRsZ3QQBqKJPGm5n1yWSxAcA8U825
+ jDt3ZF8+U4qFvGNVRoobbDmYkDNB5XycLXjbAVx5m32ZO530PTQ2Ix47mw7mNiStzqhj aw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2xw19qec9x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 04 Feb 2020 12:39:16 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 014CXZsI058986;
+        Tue, 4 Feb 2020 12:39:16 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 2xxw0wveu7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 04 Feb 2020 12:39:16 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 014CdFQQ022123;
+        Tue, 4 Feb 2020 12:39:15 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 04 Feb 2020 04:39:15 -0800
+Date:   Tue, 4 Feb 2020 15:39:09 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     tomi.valkeinen@ti.com
+Cc:     linux-omap@vger.kernel.org
+Subject: [bug report] omapfb: copy omapdss & displays for omapfb
+Message-ID: <20200204123909.3gyarjvlyz6yl4d6@kili.mountain>
 MIME-Version: 1.0
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Mon, 3 Feb 2020 19:46:34 +0530
-Message-ID: <CA+G9fYvi8g=5MG4HzN0QPH+_LEX1xXo-m2xmbHRqdMJzaqBCFQ@mail.gmail.com>
-Subject: OF: ERROR: Bad of_node_put() on /ocp/interconnect
-To:     linux-omap@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, bcousson@baylibre.com,
-        lkft-triage@lists.linaro.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9520 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=520
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2002040089
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9520 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=576 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2002040089
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The following error/warning noticed on beagleboard x15 running linux
-next 5.5.0-next-20200203.
+Hello Tomi Valkeinen,
 
-metadata:
-  git branch: master
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-  git commit: cee5a42837d4a6c4189f06f7bf355b97a24c3c93
-  git describe: next-20200203
-  make_kernelversion: 5.5.0
-  kernel-config:
-http://snapshots.linaro.org/openembedded/lkft/lkft/sumo/am57xx-evm/lkft/linux-next/694/config
+The patch f76ee892a99e: "omapfb: copy omapdss & displays for omapfb"
+from Dec 9, 2015, leads to the following static checker warning:
 
+	drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c:336 display_uninit_sysfs()
+	warn: passing freed memory 'dssdev'
 
-[    0.000000] OF: ERROR: Bad of_node_put() on
-/ocp/interconnect@4a000000/segment@0/target-module@8000/cm_core@0/l4per-cm@1700/l4per-clkctrl@28
-[    0.000000] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W
-  5.5.0-next-20200203 #1
-[    0.000000] Hardware name: Generic DRA74X (Flattened Device Tree)
-[    0.000000] Backtrace:
-[    0.000000] [<c040fac4>] (dump_backtrace) from [<c040fdf8>]
-(show_stack+0x20/0x24)
-[    0.000000]  r7:c23f2e68 r6:00000000 r5:600000d3 r4:c23f2e68
-[    0.000000] [<c040fdd8>] (show_stack) from [<c14144d0>]
-(dump_stack+0xe8/0x114)
-[    0.000000] [<c14143e8>] (dump_stack) from [<c112b7cc>]
-(of_node_release+0xb4/0xcc)
-[    0.000000]  r10:efca9a44 r9:00000001 r8:00000000 r7:00000000
-r6:c23d2350 r5:efca9a44
-[    0.000000]  r4:efca9a70 r3:be2d277f
-[    0.000000] [<c112b718>] (of_node_release) from [<c1419c28>]
-(kobject_put+0x11c/0x23c)
-[    0.000000]  r5:c2422cb8 r4:efca9a70
-[    0.000000] [<c1419b0c>] (kobject_put) from [<c112aa98>]
-(of_node_put+0x24/0x28)
-[    0.000000]  r7:e98f7980 r6:c2201ef4 r5:00000000 r4:e98f7940
-[    0.000000] [<c112aa74>] (of_node_put) from [<c20474a0>]
-(of_clk_init+0x1a4/0x248)
-[    0.000000] [<c20472fc>] (of_clk_init) from [<c20140dc>]
-(omap_clk_init+0x4c/0x68)
-[    0.000000]  r10:efc8b8c0 r9:c2433054 r8:00000000 r7:c2208700
-r6:00000066 r5:c20dab64
-[    0.000000]  r4:c2434500
-[    0.000000] [<c2014090>] (omap_clk_init) from [<c2014afc>]
-(omap4_sync32k_timer_init+0x18/0x3c)
-[    0.000000]  r5:c20dab64 r4:c2433000
-[    0.000000] [<c2014ae4>] (omap4_sync32k_timer_init) from
-[<c2014de8>] (omap5_realtime_timer_init+0x1c/0x258)
-[    0.000000] [<c2014dcc>] (omap5_realtime_timer_init) from
-[<c2005954>] (time_init+0x30/0x44)
-[    0.000000]  r9:c2433054 r8:00000000 r7:c2208700 r6:00000066
-r5:c20dab64 r4:c2433000
-[    0.000000] [<c2005924>] (time_init) from [<c20012dc>]
-(start_kernel+0x590/0x720)
-[    0.000000] [<c2000d4c>] (start_kernel) from [<00000000>] (0x0)
-[    0.000000]  r10:30c5387d r9:412fc0f2 r8:8ffdc000 r7:00000000
-r6:30c0387d r5:00000000
-[    0.000000]  r4:c2000330
+drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
+   332  void display_uninit_sysfs(struct platform_device *pdev)
+   333  {
+   334          struct omap_dss_device *dssdev = NULL;
+   335  
+   336          for_each_dss_dev(dssdev) {
+   337                  if (kobject_name(&dssdev->kobj) == NULL)
+   338                          continue;
+   339  
+   340                  kobject_del(&dssdev->kobj);
+   341                  kobject_put(&dssdev->kobj);
+   342  
+   343                  memset(&dssdev->kobj, 0, sizeof(dssdev->kobj));
 
-full test log,
-https://lkft.validation.linaro.org/scheduler/job/1158386#L3677
+Depending on the config options kobject_release() might delay clean up
+for 1-4 seconds so this memset() could lead to bugs.
 
--- 
-Linaro LKFT
-https://lkft.linaro.org
+   344          }
+   345  }
+
+regards,
+dan carpenter
