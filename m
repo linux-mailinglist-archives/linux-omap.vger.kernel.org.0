@@ -2,70 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62E431533B5
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Feb 2020 16:21:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E8E153CF6
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Feb 2020 03:31:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727231AbgBEPUk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Feb 2020 10:20:40 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:45159 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727052AbgBEPUk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Feb 2020 10:20:40 -0500
-Received: by mail-qk1-f196.google.com with SMTP id x1so2131969qkl.12
-        for <linux-omap@vger.kernel.org>; Wed, 05 Feb 2020 07:20:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=O7xjTlsrGGt8AilrvsCfe692gw21+JsTdoMX38JZb50=;
-        b=tR6oHwVnQvcka3Lr3PBSCqgYUDVxi/4MHBUErvsK5dKxKp3iSJxOlmKV9gGn2U8uNX
-         tGt8TqMVp+8pTgGh5GY7nou2qnS39B2jGXXIt5QIR1BTG5GjtCRRZSoY3lA7gOl5/dl5
-         KoKkdvrOzvcD6dKN7ydIVVG+JOfIJ2iqaPPVaCc7NeOqX4JwVokp4XCngtrKOhDmdpkA
-         iwdpD687vRAE9Iw3TN9/1mjZM7SjSVcnBn7u00WuKze3BHSPSmBzPvbF1DIQ51i5Obqs
-         JAbvVlzQ5bkYvldYlfYGBsXTlzcmfGEKCOCtRWWuKFngztPXFYDTGIFnsGzQdQkvmM+1
-         OYiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
-         :from:date:message-id:subject:to:content-transfer-encoding;
-        bh=O7xjTlsrGGt8AilrvsCfe692gw21+JsTdoMX38JZb50=;
-        b=ZT00AKZt4Daia0ar5piXdjC1NZpA8CXmAOY1wHa9ELM9x4dM7oWgKUdGWRGwGFjMO3
-         oyLUVKuHRkhGUh1YKu4AB/tnwYv/zTodRV+l+TP190hCA9TweKotVnqBUjEI0rk2rVJb
-         EqN8er9OMUsW4cdSj7WL+7cSlpkEDKBKCYM5T/C3svhud35bYA57zzBK1SaGexeYwf/Z
-         FXT5OK7gNqvPfyEw2zfLbxZ5ILJSnazPpFhP6EiGZmqEO7aSJy/WltYPTmbvfX7rBACn
-         9s8bP2EhimNo9UU3VbIMSOcoAq2mxSeU51+GCvyANN4H8a3NLsCJDDtbgRsd8bIsXtvW
-         O56w==
-X-Gm-Message-State: APjAAAWvwd5GfYknPAL5wiyhyOyzUQ7ucNyZujMDWo3sVmHOCfSQE9aF
-        +fLHj0/EKANP+mQ1Twt3vYslLHInyWLlz1P4EEM=
-X-Google-Smtp-Source: APXvYqyWldDMMtFT4HksZ5H2Q41y+5At39TCjPxBr9u96oijcnQ/okQfychGpzI8wQ8B2A+Y2xvTex5kUdfWIsh0Ol8=
-X-Received: by 2002:ae9:e70d:: with SMTP id m13mr33065164qka.245.1580916039601;
- Wed, 05 Feb 2020 07:20:39 -0800 (PST)
+        id S1727415AbgBFCbD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Feb 2020 21:31:03 -0500
+Received: from smtp4.tjgo.jus.br ([45.71.214.102]:45158 "EHLO mx2.tjgo.jus.br"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727307AbgBFCbD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 5 Feb 2020 21:31:03 -0500
+X-Greylist: delayed 399 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Feb 2020 21:31:02 EST
+Received: from sv-email-p02.tjgo.jus.br (sv-email-p02.tjgo.jus.br [45.71.214.97])
+        by mx2.tjgo.jus.br (Postfix) with ESMTPS id 094EF1B8118;
+        Wed,  5 Feb 2020 23:24:14 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by sv-email-p02.tjgo.ldc (Postfix) with ESMTP id 3E9626408F;
+        Wed,  5 Feb 2020 23:24:13 -0300 (-03)
+Received: from sv-email-p02.tjgo.jus.br ([127.0.0.1])
+        by localhost (sv-email-p02.tjgo.ldc [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id vxXMYpxAWvle; Wed,  5 Feb 2020 23:24:12 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by sv-email-p02.tjgo.ldc (Postfix) with ESMTP id 11533640AA;
+        Wed,  5 Feb 2020 23:24:11 -0300 (-03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 sv-email-p02.tjgo.ldc 11533640AA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tjgo.jus.br;
+        s=DB6EB6C0-19CB-11E9-B608-74AECE7D716B; t=1580955851;
+        bh=N7ic5LlI94J/87ZUuJbnr2MyW1XAh52HpvlLWUizZd4=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=k+XIEBVaBg+jiHtRrGcTtm5JYuUlYL5jWrGXy/x7ZUJ7B02yB+qMyYz2YSE+WU2Nh
+         Sa0oh/xqWrZbf38yvSkoOd68OtXmfYppXJpsphPiELS6ysbUMLyUarKZu/WwgqU4Di
+         XUa3srwKOFFpD0eNsi9URIUYZ3kFaUfnZq9d4yOQjUQUKk+LiUHjs9zeG3EhQjXNBQ
+         zx0j4sdE2QCdDxLVGwxjksjyYMHt6aJTaBmB4KKiMt0ib3TtBd6zAr9bYBQwNuMn1t
+         JwlP04apVemUdX9VI0fk7N8kGjWTvbaxtTDeSVLxA5rLv1e7Wj1dcQfKdZRE48pB1R
+         brVzqRplzj3iw==
+X-Virus-Scanned: amavisd-new at sv-email-p02.tjgo.ldc
+Received: from sv-email-p02.tjgo.jus.br ([127.0.0.1])
+        by localhost (sv-email-p02.tjgo.ldc [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id bY1aEiBKi6n8; Wed,  5 Feb 2020 23:24:10 -0300 (-03)
+Received: from sv-email-p00.tjgo.ldc (sv-email-p00.tjgo.ldc [45.71.214.95])
+        by sv-email-p02.tjgo.ldc (Postfix) with ESMTP id A50BE6396B;
+        Wed,  5 Feb 2020 23:24:06 -0300 (-03)
+Date:   Wed, 5 Feb 2020 23:24:06 -0300 (BRT)
+From:   Viviane Jose Pereira <vjpereira@tjgo.jus.br>
+Reply-To: Tom Crist <cristtom063@gmail.com>
+Message-ID: <1173890889.972674.1580955846426.JavaMail.zimbra@tjgo.jus.br>
+Subject: Re:
 MIME-Version: 1.0
-Received: by 2002:aed:2437:0:0:0:0:0 with HTTP; Wed, 5 Feb 2020 07:20:38 -0800 (PST)
-Reply-To: charlesdavids22@hotmail.com
-In-Reply-To: <CAKRLHgPc_dVQScZa+jXBYBr=7rv+YP-iJVFOVyHYoL5rMb=RQg@mail.gmail.com>
-References: <CAKRLHgPtJr1-Yxmq_K2s3Dc3YFRqEXfwpi__+u2cZZjg_XPDyA@mail.gmail.com>
- <CAKRLHgOXBwhwnx5n1q-z7xqcM_RMdLkOfzbODXLRGaJuekU-3g@mail.gmail.com>
- <CAKRLHgN4z6iyC_fr9_RDh+TymcHewd7M6GTx50p_5vAj15Y+6A@mail.gmail.com>
- <CAKRLHgN989TRgEHjXtMmEYM9nJc5Tnpsv3O2mpuDsGEeaFyiYQ@mail.gmail.com> <CAKRLHgPc_dVQScZa+jXBYBr=7rv+YP-iJVFOVyHYoL5rMb=RQg@mail.gmail.com>
-From:   jerry michael <jerryichqel@gmail.com>
-Date:   Wed, 5 Feb 2020 15:20:38 +0000
-Message-ID: <CAKRLHgOodbSCLcWGst7b=8Fz1H95Q1LFiQGzA=1=vCyp9xZAsQ@mail.gmail.com>
-Subject: Fwd:
-To:     jerryichqel <jerryichqel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [185.220.101.56]
+X-Mailer: Zimbra 8.8.15_GA_3829 (zclient/8.8.15_GA_3829)
+Thread-Index: tyCuo3BFHLoLJ74gIWjZGW6Qvok8UQ==
+Thread-Topic: 
+X-HSC-Mail_Inspector-From: vjpereira@tjgo.jus.br
+X-HSC-Mail_Inspector-IP: 45.71.214.97
+X-HSC-Mail_Inspector-Point: 2
+X-HSC-Mail_Inspector-ID: 094EF1B8118.AAB33
+X-HSC-Brasil-HSC_MailInspector: Mensagem OK
+X-HSC-Brasil-HSC_MailInspector-SpamCheck: Nao e SPAM,
+        HSC MailInspector (cached, Pontuacao=5.168, requerido 6,
+        BAYES_00 -3.00, DKIM_VALID_AU -0.10, HELO_NO_DOMAIN 0.00,
+        HSC_MAIL_REPUTATION 4.90, LOTS_OF_MONEY 0.00, MISSING_HEADERS 1.02,
+        RDNS_NONE 0.79, REPLYTO_WITHOUT_TO_CC 1.55)
+X-HSC-Brasil-HSC_MailInspector-SpamScore: 5
+X-HSC-Brasil-HSC_MailInspector-From: vjpereira@tjgo.jus.br
+X-Spam-Status: No
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-LS0tLS0tLS0tLSBGb3J3YXJkZWQgbWVzc2FnZSAtLS0tLS0tLS0tDQpGcm9tOiBqZXJyeSBtaWNo
-YWVsIDxqZXJyeWljaHFlbEBnbWFpbC5jb20+DQpEYXRlOiBXZWQsIDUgRmViIDIwMjAgMTU6MTI6
-MTEgKzAwMDANClN1YmplY3Q6IEZ3ZDoNClRvOiBqZXJyeWljaHFlbCA8amVycnlpY2hxZWxAZ21h
-aWwuY29tPg0KDQoNCtCX0LTRgNCw0LLRgdGC0LLRg9C5LCDQtNC+0YDQvtCz0L7QuSwNCg0K0JrQ
-sNC6INGC0LLQvtC4INC00LXQu9CwPyDQotGLINC/0L7Qu9GD0YfQuNC7INC80L7QtSDQv9C+0YHQ
-u9C10LTQvdC10LUg0L/QuNGB0YzQvNC+PyDQn9C+0LbQsNC70YPQudGB0YLQsCwg0YHRgNC+0YfQ
-vdC+DQrQvtGC0LLQtdGC0YwhINCh0L/QsNGB0LjQsdC+INC30LAg0L/QvtC90LjQvNCw0L3QuNC1
-Lg0KDQrQoSDQvdCw0LjQu9GD0YfRiNC40LzQuCDQv9C+0LbQtdC70LDQvdC40Y/QvNC4DQoNCtCc
-0LjRgdGC0LXRgCDQlNC20LXRgNGA0Lgg0JzQsNC50LrQuw0K
+
+
+--=20
+Hallo, ich entschuldige mich daf=C3=BCr, dass ich deine Privatsph=C3=A4re g=
+est=C3=B6rt habe. Ich kontaktiere Sie f=C3=BCr eine =C3=A4u=C3=9Ferst dring=
+ende und vertrauliche Angelegenheit.
+
+Ihnen wurde eine Spende von 15.000.000,00 EUR angeboten Kontakt: cristtom06=
+3@gmail.com f=C3=BCr weitere Informationen.
+
+Dies ist keine Spam-Nachricht, sondern eine wichtige Mitteilung an Sie. Ant=
+worten Sie auf die obige E-Mail, um immer mehr Informationen =C3=BCber die =
+Spende und den Erhalt von Geldern zu erhalten.
