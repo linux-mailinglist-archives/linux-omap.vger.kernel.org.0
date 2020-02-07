@@ -2,168 +2,253 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1C9D154899
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Feb 2020 16:55:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AC8115574D
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Feb 2020 13:04:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727609AbgBFPy4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 6 Feb 2020 10:54:56 -0500
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:48246 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727562AbgBFPyz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Feb 2020 10:54:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=06SZkkWNYV0dzpqU3VFXxiSszGgP4ghCFb22tKeSYmM=; b=uwgvbwIDXjy9
-        D8UI8zcbEAFNpuzzeTCEifBV2Iq+6znEoGHfULSLQp3iQBHg6hXr9V6BHbG2zc9jLYJ83zBVdUlYO
-        8OvEdh5OhzEbOuHMZMMOB/cA3yNqr+FofhcS2dj0Sllw+fjUDiDnBIP5ECNvxzgbHKsQFU2gSZgHH
-        EE7t4=;
-Received: from fw-tnat-cam2.arm.com ([217.140.106.50] helo=fitzroy.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1izjUQ-0002ld-Q7; Thu, 06 Feb 2020 15:54:50 +0000
-Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
-        id 81A80D02D58; Thu,  6 Feb 2020 15:54:50 +0000 (GMT)
-From:   Mark Brown <broonie@kernel.org>
-To:     Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-omap2-mcspi: Handle DMA size restriction on AM65x" to the spi tree
-In-Reply-To: <20200204124816.16735-2-vigneshr@ti.com>
-Message-Id: <applied-20200204124816.16735-2-vigneshr@ti.com>
-X-Patchwork-Hint: ignore
-Date:   Thu,  6 Feb 2020 15:54:50 +0000 (GMT)
+        id S1726890AbgBGMEj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 7 Feb 2020 07:04:39 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:51452 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726857AbgBGMEi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 Feb 2020 07:04:38 -0500
+Received: by mail-wm1-f65.google.com with SMTP id t23so2341306wmi.1
+        for <linux-omap@vger.kernel.org>; Fri, 07 Feb 2020 04:04:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=R5h5Hhfr0C30ek8CnrJ517u633l7rUglq+J5+Ky2pSU=;
+        b=TSdbH1Lsaj15vZh5emaVkjGWlxSCoTfeQeU3gLRTOwpLcnalRwRfArvK9g5tD84AOV
+         WzchK0g1R/Nf9Yh7XJ7gZdrKTnE5132QPOMWe1IMFEW1YVOlkqSD6Xq/h4ebN0X5R1uF
+         xgcBnxLit2Kbh011VO7HArzZ+pDTDnOJQNDegC5p9Ccon1asad7i++4EikadZCvIR67P
+         F4kWIKeFyJtka5J2x1HDSTUR1ygNZKGeEVglBen++7LlgN7+Uo89775vErlaxUjeRIlh
+         BbFXlo3pol7vA/SyXDgkEsk6a8HQehBiLNeUS7zEhsloDDmBcf0aVwezLGxLuJJLzy5L
+         0U7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=R5h5Hhfr0C30ek8CnrJ517u633l7rUglq+J5+Ky2pSU=;
+        b=N0Bo30DuFvXGBimMuV0U5/A1KJwY+1TGR6abPHEv7runSiP3f+Kp7I9tRy8M2TWrLJ
+         YHq9K8iEsUNVAddYwxfXxUxgnFpLq2tzRMN2AloEh0bKeA9BW39byUZLi97eem7OF3Xu
+         2D+WwWogcueThiSJkzE107OskNLiyc4ueidPxXjKKEzNfyyuaCAEqCZtGO+OzP4zAmSp
+         PXTyIUN9pP40J3oj04pLm3GL0OSUOe2H1Tl5l3OZqAHp+lLDa0ec6/7dBBWDclgOEawR
+         IBr1bLLZRChXib4H59PDMW3JKH+7E96ZHzA1V8jCQ5vq7PmV+MDdydds7tAxyUPlyzry
+         6W6Q==
+X-Gm-Message-State: APjAAAUQPzau7Il2EMYYJK6cI8NtlEgjtfyuxvkUD7KgflAmqHTRtU9a
+        YTUYjPVKqSUPhF1ei0RCQcMcRQ==
+X-Google-Smtp-Source: APXvYqwtC2bAQXniWiUc5oiGG0sJlgv9qLGg10xcRaZ8yTuXclNOUd0zGaxgEu16v3Q2wEfpyVEgZw==
+X-Received: by 2002:a7b:cf01:: with SMTP id l1mr4060275wmg.86.1581077074857;
+        Fri, 07 Feb 2020 04:04:34 -0800 (PST)
+Received: from google.com ([2a00:79e0:d:110:d6cc:2030:37c1:9964])
+        by smtp.gmail.com with ESMTPSA id e18sm3052153wrw.70.2020.02.07.04.04.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2020 04:04:33 -0800 (PST)
+Date:   Fri, 7 Feb 2020 12:04:30 +0000
+From:   Quentin Perret <qperret@google.com>
+To:     lukasz.luba@arm.com
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com, Morten.Rasmussen@arm.com,
+        Dietmar.Eggemann@arm.com, Chris.Redpath@arm.com,
+        ionela.voinescu@arm.com, javi.merino@arm.com,
+        cw00.choi@samsung.com, b.zolnierkie@samsung.com, rjw@rjwysocki.net,
+        sudeep.holla@arm.com, viresh.kumar@linaro.org, nm@ti.com,
+        sboyd@kernel.org, rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+        kernel@pengutronix.de, khilman@kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
+        lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net
+Subject: Re: [PATCH v2 1/4] PM / EM: add devices to Energy Model
+Message-ID: <20200207120430.GA242912@google.com>
+References: <20200206134640.11367-1-lukasz.luba@arm.com>
+ <20200206134640.11367-2-lukasz.luba@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200206134640.11367-2-lukasz.luba@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The patch
+On Thursday 06 Feb 2020 at 13:46:37 (+0000), lukasz.luba@arm.com wrote:
+>  2. Core APIs
+> @@ -70,14 +72,16 @@ CONFIG_ENERGY_MODEL must be enabled to use the EM framework.
+>  Drivers are expected to register performance domains into the EM framework by
+>  calling the following API::
+>  
+> -  int em_register_perf_domain(cpumask_t *span, unsigned int nr_states,
+> -			      struct em_data_callback *cb);
+> +  int em_register_perf_domain(struct device *dev, unsigned int nr_states,
+> +		struct em_data_callback *cb, cpumask_t *cpus);
+>  
+> -Drivers must specify the CPUs of the performance domains using the cpumask
+> +Drivers must specify the device pointer of the performance domains as first
 
-   spi: spi-omap2-mcspi: Handle DMA size restriction on AM65x
+I find this sentence a little odd no?
 
-has been applied to the spi tree at
+>  argument, and provide a callback function returning <frequency, power> tuples
+> -for each capacity state. The callback function provided by the driver is free
+> +for each performance state. The callback function provided by the driver is free
+>  to fetch data from any relevant location (DT, firmware, ...), and by any mean
+> -deemed necessary. See Section 3. for an example of driver implementing this
+> +deemed necessary. For other devices than CPUs the last argumant must be set to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
+s/argumant/argument
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> +NULL. Only for CPUfreq drivers it is obligatory to specify the cpumask.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Please note that as of today nothing mandates the caller to be a CPUFreq
+driver -- it could be anything in theory. I'd say 'only for CPU devices'
+instead.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+<snip>
+> @@ -24,51 +27,65 @@ struct em_cap_state {
+>  
+>  /**
+>   * em_perf_domain - Performance domain
+> - * @table:		List of capacity states, in ascending order
+> - * @nr_cap_states:	Number of capacity states
+> - * @cpus:		Cpumask covering the CPUs of the domain
+> + * @table:		List of performance states, in ascending order
+> + * @nr_perf_states:	Number of performance states
+> + * @priv:		In case of EM for CPU device it is a Cpumask
+> + *			covering the CPUs of the domain
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Could you turn @priv back into 'unsigned long priv[0];' and keep the
+allocation as it is today ? That is, append the cpumask to the struct.
+
+This empty pointer for non-CPU devices is just wasted space, and pointer
+chasing isn't good for your caches. Given that you pre-allocate the pd
+in em_create_pd() you could just have a special case for CPUs there I
+suppose. And _is_cpu_em() will have to check the bus like you did in v1.
+
+>   *
+> - * A "performance domain" represents a group of CPUs whose performance is
+> - * scaled together. All CPUs of a performance domain must have the same
+> - * micro-architecture. Performance domains often have a 1-to-1 mapping with
+> - * CPUFreq policies.
+> + * In case of CPU device, a "performance domain" represents a group of CPUs
+> + * whose performance is scaled together. All CPUs of a performance domain
+> + * must have the same micro-architecture. Performance domains often have
+> + * a 1-to-1 mapping with CPUFreq policies.
+> + * In case of other devices the 'priv' field is unused.
+>   */
+>  struct em_perf_domain {
+> -	struct em_cap_state *table;
+> -	int nr_cap_states;
+> -	unsigned long cpus[0];
+> +	struct em_perf_state *table;
+> +	int nr_perf_states;
+> +	void *priv;
+>  };
+
+<snip>
+>  struct em_data_callback {
+>  	/**
+> -	 * active_power() - Provide power at the next capacity state of a CPU
+> -	 * @power	: Active power at the capacity state in mW (modified)
+> -	 * @freq	: Frequency at the capacity state in kHz (modified)
+> -	 * @cpu		: CPU for which we do this operation
+> +	 * active_power() - Provide power at the next performance state of a
+> +	 *		    device
+> +	 * @power	: Active power at the performance state in mW (modified)
+> +	 * @freq	: Frequency at the performance state in kHz (modified)
+> +	 * @dev		: Device for which we do this operation (can be a CPU)
+>  	 *
+> -	 * active_power() must find the lowest capacity state of 'cpu' above
+> +	 * active_power() must find the lowest performance state of 'dev' above
+>  	 * 'freq' and update 'power' and 'freq' to the matching active power
+>  	 * and frequency.
+>  	 *
+> -	 * The power is the one of a single CPU in the domain, expressed in
+> -	 * milli-watts. It is expected to fit in the [0, EM_CPU_MAX_POWER]
+> -	 * range.
+> +	 * In case of CPUs, the power is the one of a single CPU in the domain,
+> +	 * expressed in milli-watts. It is expected to fit in the
+> +	 * [0, EM_MAX_POWER] range.
+>  	 *
+>  	 * Return 0 on success.
+>  	 */
+> -	int (*active_power)(unsigned long *power, unsigned long *freq, int cpu);
+> +	int (*active_power)(unsigned long *power, unsigned long *freq,
+> +			    struct device *dev);
+
+Given that you've made explicit in the doc of struct em_perf_state that
+'power' can be a 'total' value (static + dynamic), this could be renamed
+I suppose.
+
+<snip>
+>  /**
+>   * em_cpu_get() - Return the performance domain for a CPU
+>   * @cpu : CPU to find the performance domain for
+>   *
+> - * Return: the performance domain to which 'cpu' belongs, or NULL if it doesn't
+> + * Returns the performance domain to which 'cpu' belongs, or NULL if it doesn't
+>   * exist.
+>   */
+>  struct em_perf_domain *em_cpu_get(int cpu)
+>  {
+> -	return READ_ONCE(per_cpu(em_data, cpu));
+
+Since CPU perf domains are guaranteed to never go away, it'd be safe to
+keep that per-CPU variable and avoid the locking and list manipulation
+below. No strong opinion, though.
+
+> +	struct em_device *em_dev;
+> +
+> +	mutex_lock(&em_pd_mutex);
+> +
+> +	if (list_empty(&em_pd_dev_list))
+> +		goto unlock;
+> +
+> +	list_for_each_entry(em_dev, &em_pd_dev_list, em_dev_list) {
+> +		if (!_is_cpu_em(em_dev->em_pd))
+> +			continue;
+> +
+> +		if (cpumask_test_cpu(cpu, em_span_cpus(em_dev->em_pd))) {
+> +			mutex_unlock(&em_pd_mutex);
+> +			return em_dev->em_pd;
+> +		}
+> +	}
+> +
+> +unlock:
+> +	mutex_unlock(&em_pd_mutex);
+> +	return NULL;
+>  }
+>  EXPORT_SYMBOL_GPL(em_cpu_get);
+
+<snip>
+>  /**
+> - * em_register_perf_domain() - Register the Energy Model of a performance domain
+> - * @span	: Mask of CPUs in the performance domain
+> - * @nr_states	: Number of capacity states to register
+> + * em_register_perf_domain() - Register the Energy Model (EM) of a performance
+> + *		domain for the device
+> + * @dev		: Device for which the EM is to register
+> + * @nr_states	: Number of performance states to register
+>   * @cb		: Callback functions providing the data of the Energy Model
+> + * @cpus	: Pointer to cpumask_t, which in case of a CPU device is
+> + *		obligatory. It can be taken from i.e. 'policy->cpus'. For other
+
+It should be policy->related_cpus actually (or 'real_cpus' even) -- PM_EM
+ignores hotplug ATM. Perhaps we should document that somewhere ...
+
+> + *		type of devices this should be set to NULL.
+>   *
+>   * Create Energy Model tables for a performance domain using the callbacks
+>   * defined in cb.
+> @@ -196,63 +361,129 @@ EXPORT_SYMBOL_GPL(em_cpu_get);
 
 Thanks,
-Mark
-
-From e4e8276a4f652be2c7bb783a0155d4adb85f5d7d Mon Sep 17 00:00:00 2001
-From: Vignesh Raghavendra <vigneshr@ti.com>
-Date: Tue, 4 Feb 2020 18:18:15 +0530
-Subject: [PATCH] spi: spi-omap2-mcspi: Handle DMA size restriction on AM65x
-
-On AM654, McSPI can only support 4K - 1 bytes per transfer when DMA is
-enabled. Therefore populate master->max_transfer_size callback to
-inform client drivers of this restriction when DMA channels are
-available.
-
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/r/20200204124816.16735-2-vigneshr@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-omap2-mcspi.c                 | 26 +++++++++++++++++++
- include/linux/platform_data/spi-omap2-mcspi.h |  1 +
- 2 files changed, 27 insertions(+)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 7e2292c11d12..e9bc9cf984d6 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -130,6 +130,7 @@ struct omap2_mcspi {
- 	int			fifo_depth;
- 	bool			slave_aborted;
- 	unsigned int		pin_dir:1;
-+	size_t			max_xfer_len;
- };
- 
- struct omap2_mcspi_cs {
-@@ -1305,6 +1306,18 @@ static bool omap2_mcspi_can_dma(struct spi_master *master,
- 	return (xfer->len >= DMA_MIN_BYTES);
- }
- 
-+static size_t omap2_mcspi_max_xfer_size(struct spi_device *spi)
-+{
-+	struct omap2_mcspi *mcspi = spi_master_get_devdata(spi->master);
-+	struct omap2_mcspi_dma *mcspi_dma =
-+		&mcspi->dma_channels[spi->chip_select];
-+
-+	if (mcspi->max_xfer_len && mcspi_dma->dma_rx)
-+		return mcspi->max_xfer_len;
-+
-+	return SIZE_MAX;
-+}
-+
- static int omap2_mcspi_controller_setup(struct omap2_mcspi *mcspi)
- {
- 	struct spi_master	*master = mcspi->master;
-@@ -1373,6 +1386,11 @@ static struct omap2_mcspi_platform_config omap4_pdata = {
- 	.regs_offset = OMAP4_MCSPI_REG_OFFSET,
- };
- 
-+static struct omap2_mcspi_platform_config am654_pdata = {
-+	.regs_offset = OMAP4_MCSPI_REG_OFFSET,
-+	.max_xfer_len = SZ_4K - 1,
-+};
-+
- static const struct of_device_id omap_mcspi_of_match[] = {
- 	{
- 		.compatible = "ti,omap2-mcspi",
-@@ -1382,6 +1400,10 @@ static const struct of_device_id omap_mcspi_of_match[] = {
- 		.compatible = "ti,omap4-mcspi",
- 		.data = &omap4_pdata,
- 	},
-+	{
-+		.compatible = "ti,am654-mcspi",
-+		.data = &am654_pdata,
-+	},
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, omap_mcspi_of_match);
-@@ -1439,6 +1461,10 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 		mcspi->pin_dir = pdata->pin_dir;
- 	}
- 	regs_offset = pdata->regs_offset;
-+	if (pdata->max_xfer_len) {
-+		mcspi->max_xfer_len = pdata->max_xfer_len;
-+		master->max_transfer_size = omap2_mcspi_max_xfer_size;
-+	}
- 
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	mcspi->base = devm_ioremap_resource(&pdev->dev, r);
-diff --git a/include/linux/platform_data/spi-omap2-mcspi.h b/include/linux/platform_data/spi-omap2-mcspi.h
-index 0bf9fddb8306..3b400b1919a9 100644
---- a/include/linux/platform_data/spi-omap2-mcspi.h
-+++ b/include/linux/platform_data/spi-omap2-mcspi.h
-@@ -11,6 +11,7 @@ struct omap2_mcspi_platform_config {
- 	unsigned short	num_cs;
- 	unsigned int regs_offset;
- 	unsigned int pin_dir:1;
-+	size_t max_xfer_len;
- };
- 
- struct omap2_mcspi_device_config {
--- 
-2.20.1
-
+Quentin
