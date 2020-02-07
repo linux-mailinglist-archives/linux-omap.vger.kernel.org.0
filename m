@@ -2,117 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A6FF155F7C
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Feb 2020 21:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6CF1156008
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Feb 2020 21:44:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727012AbgBGUUj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 7 Feb 2020 15:20:39 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:38081 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726916AbgBGUUi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 Feb 2020 15:20:38 -0500
-Received: by mail-wr1-f68.google.com with SMTP id y17so400309wrh.5
-        for <linux-omap@vger.kernel.org>; Fri, 07 Feb 2020 12:20:36 -0800 (PST)
+        id S1727466AbgBGUoJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 7 Feb 2020 15:44:09 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:41528 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727005AbgBGUoJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 Feb 2020 15:44:09 -0500
+Received: by mail-ot1-f67.google.com with SMTP id r27so583826otc.8
+        for <linux-omap@vger.kernel.org>; Fri, 07 Feb 2020 12:44:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=to:cc:subject:references:date:mime-version
-         :content-transfer-encoding:from:message-id:in-reply-to:user-agent;
-        bh=wOintdNO5qmOQ/OOnHt/kUReZvUtbEkfFW92H/d8TMo=;
-        b=ObDpC7Ogck2QbVYZ7PNQnaoBTb4cpsU4RQTQ4MzfV3USG+n8srm53o8QoE/Sq/vyGq
-         P6iRSEjEenKBcSxMwAYMEpcbR9JZCXToogVFpdkAwRy2+U9xRp6Grpqxg914YkNJIAsc
-         XMdo0IlhHcMbuoeOp5GblyB0s+nDTkCEi5wi/0RQ4Bx0J1xxSS5EGfbh1xI/Qcoe1Sms
-         XjbJCvyXlf4fVnvbpk8pKcc+VQb697p4X9u2blYP3Kp8jN+gOhnjpx01ELYva+IuhRLI
-         UygL5YqyB5ILWOFwZaXNbY8eX8P8innyAXyUoU9Lbt7P7dZb9Qi4b+jfBH/qDr66AVrh
-         CLvw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=WJgFJ9PR0yBQ+ciD08Pby60OVZzn3dTgtieZ17slfRQssKmPnwQmAwZPgDIpR6heck
+         dDY9m0nAiR73dL1CtCDLlqWI9lV6barO9i6phYUUcmMyI9lhyUunotwwGjtLNjZZXHps
+         B+ZJy7kS8IDHqb+LatDXLkBcGkPTiMku+kX9Fb92ZmFsnK1n3liOHkc4TmrSz2VBzqpm
+         gOXxQUuwBna/l8aq9nu864h1RGE/T5vMQdJwoV4IagKfmqrsTX7n4WpDLnLJobosvK0X
+         9Z7fBUirFx02ZREq+PBFhuGxFcksAi/eOnsjoHpvtfcuXe3k+tw0qtyYWnKvHtkX+Drl
+         CMWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:subject:references:date:mime-version
-         :content-transfer-encoding:from:message-id:in-reply-to:user-agent;
-        bh=wOintdNO5qmOQ/OOnHt/kUReZvUtbEkfFW92H/d8TMo=;
-        b=owpJtsoIB8H4YdD+z50mTbB3jqY1H/yM7Ujn16flLrbCZICDX65HEmrM305QYguKgC
-         ZsqY08+asHbrS/0NoXGHsT8uv30CTlzjw4Xm1xU1we3Bnqq4Y2U5fkNJ5t/PLIHPBcjJ
-         GSbZasFWME1nbqxJBJBLNU+RUDKKRJEdQ23gm7qWEzlc7a3YW1j551EDUeXQykBzTZSN
-         Itq33MqfVootDI7ZD/RgQywSzoaFDNf9wU5gH6CiRFLiRztU/WgYjcutSzVmOFaAQZtY
-         k8rj15cTOkX5dnFXsjU9WIoWViFbjiofR1DROmT3JW+NKZwS7QE9D6asiT6G/DyfSmly
-         A56w==
-X-Gm-Message-State: APjAAAX0np83wguyXJad7k8BQ6AOid3DdclO4t/aDKPut87jKQPswWr4
-        D7wL9S1ga2dkzEtkidWNQeg=
-X-Google-Smtp-Source: APXvYqyPa8jUTVKZIjoy2uatt/mdJ6UFxZPgw1fK+xL52XaA3AtSDz1XeDU21jzpebkL/WCI6NgBIw==
-X-Received: by 2002:a5d:4b88:: with SMTP id b8mr712899wrt.343.1581106835759;
-        Fri, 07 Feb 2020 12:20:35 -0800 (PST)
-Received: from supervisor.net28 ([46.53.250.234])
-        by smtp.gmail.com with ESMTPSA id r6sm4843020wrq.92.2020.02.07.12.20.34
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Fri, 07 Feb 2020 12:20:34 -0800 (PST)
-Content-Type: text/plain; charset=utf-8; format=flowed; delsp=yes
-To:     "Merlijn Wajer" <merlijn@wizzup.org>,
-        "Tony Lindgren" <tony@atomide.com>
-Cc:     "Kees Cook" <keescook@chromium.org>,
-        "Nicolas Pitre" <nico@fluxnic.net>,
-        "Russell King" <rmk+kernel@armlinux.org.uk>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        "Ivaylo Dimitrov" <ivo.g.dimitrov.75@gmail.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        linux-arm-kernel@lists.infradead.org,
-        "Aaro Koskinen" <aaro.koskinen@iki.fi>
-Subject: Re: Nokia N900 on 5.4 and 5.5
-References: <79b91017-b52a-8aff-4b9c-913ae655f7bf@wizzup.org>
- <185CD173-C13C-4D56-B3DE-9A8D7784963C@goldelico.com>
- <20200207163623.GA64767@atomide.com>
- <da14d6bb-f241-2dd4-8e94-886217a40ed7@wizzup.org>
- <20200207165344.GB64767@atomide.com> <20200207170149.GC64767@atomide.com>
-Date:   Fri, 07 Feb 2020 23:20:33 +0300
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=MExlq4gPJKSJaDvoO7jeqA4P3a0VxK0OTpWsurKHwbAhfRPcguGSoi6Gij0f5tn7tC
+         x82qNrlEW9G0+vcoxKG84VReIOCRuGpPkCf1fgr8lDKj+QnKBa2Ifdsqe9w63cOTrp32
+         z4rgih3zjSnzvisGrrDRl9TIGfXCpUrlLIG2QrXcMPsmN+6IjOIOGdQGpzRYWrkN0AIB
+         eHS/uZaMjfJEXSbHa/PEIBp0FTjFIaQiF4yoWqvHfgNOqz0q/9cNHygNie8anKbclJaj
+         pyl6CdMOhm6e3FPPLE9s6+D+vkobcfwf91c3vL8H3asA7Jf/r4rU3tq7fTGV2BvnYSro
+         8s6Q==
+X-Gm-Message-State: APjAAAWTrdziTDRY8mtdFw+EYwrGliPxC1AJ9SMJD2SFHPjwAvOWRWJn
+        Qo6dakywgDxTqEwdCWhv3vzVVXpk1MnBVt88l7g=
+X-Google-Smtp-Source: APXvYqxZ0BHxezvYatUCwR5ujJY2IO6fZCUlpHww8WEnDHAAAY+0VvtiMdEe6JnWZWwDRH8AP8uVvx3q0Y+IviYPdhQ=
+X-Received: by 2002:a9d:7305:: with SMTP id e5mr948882otk.64.1581108248790;
+ Fri, 07 Feb 2020 12:44:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   "Arthur D." <spinal.by@gmail.com>
-Message-ID: <op.0fmv4jevhxa7s4@supervisor.net28>
-In-Reply-To: <20200207170149.GC64767@atomide.com>
-User-Agent: Opera Mail/12.16 (Linux)
+Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:44:08 -0800 (PST)
+Reply-To: auch197722@gmail.com
+From:   "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
+Date:   Fri, 7 Feb 2020 15:44:08 -0500
+Message-ID: <CAPNvSTj-8q7w5QPmnH26+_3xCKjEWyE+9xcb8QyQs9Xie+iYgg@mail.gmail.com>
+Subject: LETTER OF INQUIRY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi.
+Good Day,
 
-I was able to build linux-5.5 and run it on N900 with no problems.
-Even WiFi works, mmc0 is in place too. It seems you're doing something
-wrong.
+I work as a clerk in a Bank here in Nigeria, I have a very
+confidential Business Proposition for you. There is a said amount of
+money floating in the bank unclaimed, belonging to the bank Foreign
+customer who die with his family in the Ethiopian Airline crash of
+March 11, 2019.
 
-Were you able to build linux-5.1 with your scripts and run it on the
-phone? I mean the pure linux-5.1 without configs and changes done
-in https://github.com/maemo-leste/n9xx-linux.
+I seek your good collaboration to move the fund for our benefit. we
+have agreed that 40% be yours once you help claim.
 
-BTW, I didn't find STACKPROTECTOR_PER_TASK option to be enabled in
-omap2plus_defconfig.
+Do get back to with 1) Your Full Name: (2) Residential Address: (3)
+Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
+funds.
 
---
-Best regards, Spinal
-
-> * Tony Lindgren <tony@atomide.com> [200207 16:54]:
->> * Merlijn Wajer <merlijn@wizzup.org> [200207 16:47]:
->> > On 07/02/2020 17:36, Tony Lindgren wrote:
->> > >
->> > > Looks like there's a regression in general for appended dtb booting  
->> that
->> > > was caused by commit 9f671e58159a ("security: Create "kernel  
->> hardening"
->> > > config area"). With that change we now get STACKPROTECTOR_PER_TASK
->> > > selected by default with Kconfig.
->> > >
->> > > Merlijn, care to try to disable STACKPROTECTOR_PER_TASK in your
->> > > .config to see if that helps?
->> >
->> > Yes, this makes the kernel boot.
->>
->> OK good to hear. My guess is that having STACKPROTECTOR_PER_TASK
->> selected causes changes to include/generated/asm-offsets.h that
->> appended dtb booting does not like. But let's see what others
->> think.
->
-> I don't think this is an issue of CONFIG_STACKPROTECTOR + CONFIG_SMP
-> booted on UP machine as it only happens with appended dtb it seems.
->
-> Regards,
->
-> Tony
+Regards
+Theophilus Odadudu
