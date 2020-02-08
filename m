@@ -2,33 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BE6E156753
-	for <lists+linux-omap@lfdr.de>; Sat,  8 Feb 2020 20:17:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 775D51567E0
+	for <lists+linux-omap@lfdr.de>; Sat,  8 Feb 2020 22:43:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727490AbgBHTQ7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 8 Feb 2020 14:16:59 -0500
-Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:47072 "EHLO
+        id S1727492AbgBHVno (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 8 Feb 2020 16:43:44 -0500
+Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:48316 "EHLO
         hetgrotebos.org" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727471AbgBHTQ7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 8 Feb 2020 14:16:59 -0500
+        with ESMTP id S1727473AbgBHVno (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 8 Feb 2020 16:43:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
-         s=mail; h=Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:
-        References:Cc:To:Subject:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
-        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
-        :List-Post:List-Owner:List-Archive;
-        bh=VMn65HJB3gG9WAjttGYbmJpEaQ7OBBspfZNqt1TssxY=; b=jJ7hHBvW0Xqeo8DTujREPxrIpD
-        ReFpkPXQFPghNh8J+/dk3vn2cg96D+F3hW2/DV3r2ofCvfe9g8UlFO3kiU7jRwc7EflOERcJiNkUw
-        GBeBGYWr6ORztrcoFfES48H0PSz1qv7aNdtrc/A1J8OdT2sHAKb14l2tdZYgSglKlKFz9GFifKjxb
-        JGVEB4AYyjLRRdMPlA9JZUCBCG7ZOzW5K6gRjPGewbHlUVm21pJVG+3PYBCpM36hp+S2caE9tpUW9
-        npcUPwkcaWkUVvttqccWJ0lzbLITqsEXMzSkVkdfLEMBqK5WKslIBG8nVJcUFm27M2WXklBWBcrZF
-        1sGpEQSg==;
+         s=mail; h=Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:References:
+        Cc:To:From:Subject:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=HGHqTUsXd4L6eTvvOr3e6F4YRvt6vSHScDl1ebZIHq4=; b=GPbDX1nLYwpdw4nn9PZb90oiYm
+        hdc/LKjs9mIwaAJkYqf6J3h67HzSwV2FuCUxkipAYadthMUBwD9eyqC0tPfUxwMRH32TXhvMEkNxD
+        eQZ+lBxFU83dghhggHA2pLfFI9WWRQJk7opkKxry6tROql/4q5GweUxfwfi6JvgSQKz8ONBoaVDrk
+        KhSukGqqnpIoahhic528+owRc7Au1uJPdkTGAX73ViAuGm0pFyjtS67pNTYRWeRoubbWEMAaZlJyU
+        GNuhtq+QjjcmAOYzagWCIaVNYiaHiBtCnGmAqbfWBtw/1mAnDz662V6ifx5wRlhjjLUCFTmcD9iGH
+        h6oMY6UQ==;
 Received: from deepwater.fritz.box ([192.168.178.25] helo=[0.0.0.0])
         by hetgrotebos.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <merlijn@wizzup.org>)
-        id 1j0Vb5-0008Hz-EK; Sat, 08 Feb 2020 19:16:55 +0000
-Subject: Re: mmc0 on Nokia N900 on Linux 5.4.18
+        id 1j0Xt7-0008M8-At; Sat, 08 Feb 2020 21:43:41 +0000
+Subject: N900: Remove mmc1 "safety feature"? (was: Re: mmc0 on Nokia N900 on
+ Linux 5.4.18)
+From:   Merlijn Wajer <merlijn@wizzup.org>
 To:     Pavel Machek <pavel@ucw.cz>
 Cc:     linux-omap <linux-omap@vger.kernel.org>,
         Tony Lindgren <tony@atomide.com>,
@@ -36,7 +38,7 @@ Cc:     linux-omap <linux-omap@vger.kernel.org>,
         "Arthur D." <spinal.by@gmail.com>
 References: <5362c659-120f-5247-aaa5-7916229300bc@wizzup.org>
  <20200208190448.GA12984@amd>
-From:   Merlijn Wajer <merlijn@wizzup.org>
+ <270f27c9-afd6-171d-7dce-fe1d71dd8f9a@wizzup.org>
 Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
  mQINBFESzAkBEACuLy46KxYl4IfKuNhz3UWXSlA1GqMwgOhGUJw/ineKS6T1FiRqcbhO/Zj8
  oWobO5Mu743AY8PQtH9eo28jnz6Pg0vQLC2y6+3mtO4Ud+z+l06RadvgCH5F/6ibUqAdU2Eu
@@ -98,69 +100,119 @@ Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
  auuXY5GfVPDcxjPwzm4Yjj4YvbfRLpAiQOOciMgiJlbn4A+BhvSSS54scJMln1Jh7KkDgeqz
  aP0nj9EfQy1vMXGp1i0sYzhMKaM9nsmV/q1Iisqc8ojjpmR00jVnz/aSX3eHexXOlB3Y6Qs+
  /XslHw==
-Message-ID: <270f27c9-afd6-171d-7dce-fe1d71dd8f9a@wizzup.org>
-Date:   Sat, 8 Feb 2020 20:18:03 +0100
+Message-ID: <1eac0db3-17ce-8ebd-4997-8b1c282126e4@wizzup.org>
+Date:   Sat, 8 Feb 2020 22:44:49 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <20200208190448.GA12984@amd>
+In-Reply-To: <270f27c9-afd6-171d-7dce-fe1d71dd8f9a@wizzup.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="kmgpGVHVIQox3TvKNeb4s1LuIuChsK3yN"
+ boundary="3UrNbDU4ZycEPwssQWPTUWhghJlLTnQdb"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---kmgpGVHVIQox3TvKNeb4s1LuIuChsK3yN
-Content-Type: multipart/mixed; boundary="Godpv0TubRGtGgxbDycfxXVquR7hLmF7R"
+--3UrNbDU4ZycEPwssQWPTUWhghJlLTnQdb
+Content-Type: multipart/mixed; boundary="MBoO1g0WCW8I9EC53NJXdEQf7MVFTWKev"
 
---Godpv0TubRGtGgxbDycfxXVquR7hLmF7R
+--MBoO1g0WCW8I9EC53NJXdEQf7MVFTWKev
 Content-Type: text/plain; charset=windows-1252
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On 08/02/2020 20:04, Pavel Machek wrote:
-> Hi!
+On 08/02/2020 20:18, Merlijn Wajer wrote:
+> Hi,
 >=20
->> When booting Linux 5.4.18 with omap2plus_defconfig, I no longer get a
->> /dev/mmcblk0 device - the one corresponding to my microSD card, where
->> u-boot also loads the kernel from.
+> On 08/02/2020 20:04, Pavel Machek wrote:
+>> Hi!
 >>
->> This also likely seems to be a regression, but I haven't tried to hunt=
+>>> When booting Linux 5.4.18 with omap2plus_defconfig, I no longer get a=
 
->> it down yet.
+>>> /dev/mmcblk0 device - the one corresponding to my microSD card, where=
+
+>>> u-boot also loads the kernel from.
+>>>
+>>> This also likely seems to be a regression, but I haven't tried to hun=
+t
+>>> it down yet.
+>>>
+>>> Kernel log attached, below.
 >>
->> Kernel log attached, below.
+>> Do you have back cover attached? That's common trap...
 >=20
-> Do you have back cover attached? That's common trap...
+> Right.
+>=20
+> No, I did not, since I have the serial pins connected to my PC, and the=
 
-Right.
+> whole device is mounted on a piece of hardware for that. I thought that=
 
-No, I did not, since I have the serial pins connected to my PC, and the
-whole device is mounted on a piece of hardware for that. I thought that
-we fixed the problem where we require the cover to be on...
+> we fixed the problem where we require the cover to be on...
+
+Indeed, this was the problem.
+
+Is there really a reason to have this in the DTS? I have a hard time
+imagining a use case for not showing SD card to users or developers
+simply because the casing is open. If anything, this sounds like it
+should be a userspace thing.
+
+That said, any opposition to a patch to invert the logic - have users or
+developers specifically enable some code to *not* show the MMC card when
+the cover is open? Or perhaps just outright remove the check in the
+kernel? How about something like the patch below (which we currently ship=
+)?
 
 Cheers,
 Merlijn
 
 
---Godpv0TubRGtGgxbDycfxXVquR7hLmF7R--
+=46rom 9ce9bb2557208bb347909823d4710c9f93f65bf0 Mon Sep 17 00:00:00 2001
+From: Arthur Demchenkov <spinal.by@gmail.com>
+Date: Mon, 25 Mar 2019 01:44:23 +0300
+Subject: [PATCH] ARM: dts: n900: ignore mmc1 card detect gpio
 
---kmgpGVHVIQox3TvKNeb4s1LuIuChsK3yN
+Allow the device to boot from external MMC with back cover removed.
+
+See https://github.com/maemo-leste/bugtracker/issues/225
+---
+ arch/arm/boot/dts/omap3-n900.dts | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/omap3-n900.dts
+b/arch/arm/boot/dts/omap3-n900.dts
+index 7028a7cb2849e..03481302704de 100644
+--- a/arch/arm/boot/dts/omap3-n900.dts
++++ b/arch/arm/boot/dts/omap3-n900.dts
+@@ -805,10 +805,6 @@
+ 	pinctrl-0 =3D <&mmc1_pins>;
+ 	vmmc-supply =3D <&vmmc1>;
+ 	bus-width =3D <4>;
+-	/* For debugging, it is often good idea to remove this GPIO.
+-	   It means you can remove back cover (to reboot by removing
+-	   battery) and still use the MMC card. */
+-	cd-gpios =3D <&gpio6 0 GPIO_ACTIVE_LOW>; /* 160 */
+ };
+
+ /* most boards use vaux3, only some old versions use vmmc2 instead */
+
+
+--MBoO1g0WCW8I9EC53NJXdEQf7MVFTWKev--
+
+--3UrNbDU4ZycEPwssQWPTUWhghJlLTnQdb
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXj8JbQAKCRAGN09rynK8
-WkuvAP92aeI6v4uJelHIsAMscZFdCxHjD0IZxPtzpfBcUEMYygD/RQVAYQi6z9Wb
-QM/geCjOCGQHtZ2b/JRQAm4KH9MlCQk=
-=fUYw
+iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXj8r0QAKCRAGN09rynK8
+WknKAQCeAnnUCYOXeZHpUioYr38Mmvsgcj0C6GTqBvBAcMW/0wD/cXjzlpiRNSQa
+m2N7y2fitjTIJaPBpbi4aMyEcSOpegE=
+=VXih
 -----END PGP SIGNATURE-----
 
---kmgpGVHVIQox3TvKNeb4s1LuIuChsK3yN--
+--3UrNbDU4ZycEPwssQWPTUWhghJlLTnQdb--
