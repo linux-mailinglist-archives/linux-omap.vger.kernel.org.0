@@ -2,117 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61A481593C8
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Feb 2020 16:51:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F066E15944B
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Feb 2020 17:05:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729415AbgBKPvU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Feb 2020 10:51:20 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:52454 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727838AbgBKPvT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Feb 2020 10:51:19 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01BFpGJT118865;
-        Tue, 11 Feb 2020 09:51:16 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1581436276;
-        bh=vv4zoH/nm3fq4NMB86OifWyuiibLHNCHiWQsiTJUeFI=;
-        h=From:To:CC:Subject:Date;
-        b=O9ztT96Wpp251DqB8cqfs/QA6uCLhLollfo45U4lss+IW4oSzdsCvXWGlhV22e5ta
-         4IL6kQMNZZUSKFykD37kk4bZllm6CwTWzXWWYcM0lvWRUwZHhVABaKGxBFJiWm2X2F
-         bfD7WrOWiVXxwGZZ+umpf/5aEzQWMwO/eZEjyaf0=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01BFpGEN015469
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 11 Feb 2020 09:51:16 -0600
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 11
- Feb 2020 09:51:15 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 11 Feb 2020 09:51:16 -0600
-Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01BFpFtf084713;
-        Tue, 11 Feb 2020 09:51:16 -0600
-Received: from localhost (irmo.dhcp.ti.com [128.247.58.153])
-        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id 01BFpF300146;
-        Tue, 11 Feb 2020 09:51:15 -0600 (CST)
-From:   Suman Anna <s-anna@ti.com>
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Tero Kristo <t-kristo@ti.com>, <linux-omap@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Suman Anna <s-anna@ti.com>
-Subject: [PATCH] ARM: dts: dra7xx-clocks: Fixup IPU1 mux clock parent source
-Date:   Tue, 11 Feb 2020 09:51:03 -0600
-Message-ID: <20200211155103.23973-1-s-anna@ti.com>
-X-Mailer: git-send-email 2.23.0
+        id S1729841AbgBKQF2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Feb 2020 11:05:28 -0500
+Received: from muru.com ([72.249.23.125]:54650 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728102AbgBKQF2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 11 Feb 2020 11:05:28 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 2E6E680D4;
+        Tue, 11 Feb 2020 16:06:11 +0000 (UTC)
+Date:   Tue, 11 Feb 2020 08:05:24 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jyri Sarha <jsarha@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: [PATCH 2/3] ARM: dts: am437x-gp/epos-evm: drop unused panel
+ timings
+Message-ID: <20200211160524.GE64767@atomide.com>
+References: <20191114093950.4101-3-tomi.valkeinen@ti.com>
+ <20191202130459.GH4929@pendragon.ideasonboard.com>
+ <20191211165331.GC43123@atomide.com>
+ <45dae8f7-2f5e-6948-5a05-dc8a09ace1fa@ti.com>
+ <20191212203550.GB4892@pendragon.ideasonboard.com>
+ <add3d8af-6977-68e6-fb77-2fa748c4714a@ti.com>
+ <b39e52f1-3e73-5f26-6206-0956cf482631@ti.com>
+ <20200211110712.GB28355@pendragon.ideasonboard.com>
+ <3b4d10c6-7cb2-af53-3a39-31eef441bfdd@ti.com>
+ <98da360f-880b-af56-b285-4d9b39f8a342@wizzup.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <98da360f-880b-af56-b285-4d9b39f8a342@wizzup.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The IPU1 functional clock is the output of a mux clock (represented
-by ipu1_gfclk_mux previously) and the clock source for this has been
-updated to be sourced from dpll_core_h22x2_ck in commit 39879c7d963e
-("ARM: dts: dra7xx-clocks: Source IPU1 functional clock from CORE DPLL").
-ipu1_gfclk_mux is an obsolete clock now with the clkctrl conversion,
-and this clock source parenting is lost during the new clkctrl layout
-conversion.
+* Merlijn Wajer <merlijn@wizzup.org> [200211 12:54]:
+> Hi,
+> 
+> On 11/02/2020 12:08, Tomi Valkeinen wrote:
+> > On 11/02/2020 13:07, Laurent Pinchart wrote:
+> > 
+> >>> Hopefully soon (in five years? =) we can say that omapdrm supports all
+> >>> the boards, and we can deprecate omapfb.
+> >>
+> >> I'd love to send a patch to remove omapfb, but I'll let you do the
+> >> honours :-)
+> > 
+> > Not before we add DSI support to omapdrm...
 
-Remove this stale clock and fix up the clock source for this mux
-clock using the latest equivalent clkctrl clock. This restores the
-previous logic and ensures that the IPU1 continues to run at the
-same frequency of IPU2 and independent of the ABE DPLL.
+Hmm do your mean RFBI? The DSI support we already have :)
 
-Fixes: b5f8ffbb6fad ("ARM: dts: dra7: convert to use new clkctrl layout")
-Signed-off-by: Suman Anna <s-anna@ti.com>
----
-Hi Tony,
+> This is probably known, but for devices that would like use PowerVR SGX,
+> there sometimes is only userspace available that works with omap(l)fb,
+> and not with DRM. The Nokia N900 is such an example.
+> 
+> There might be a newer release of (closed) userspace coming for the
+> aging device(s), but as it stands, I don't think it's possible to do 3D
+> with PowerVR SGX on omapdrm currently.
+> 
+> But I might be wrong...
 
-Patch on top of 5.6-rc1. Appreciate it if you can include it for the 5.6-rc
-cycle.
+Yes SGX is a bottleneck currently for omap3 users. And I think
+RFBI is blocking n8x0 from moving to omapdrm and finally leaving
+drivers/video/fbdev/omap2 behind.
 
-regards
-Suman
+With those blockers fixed, I'd also be happy to just get rid of
+drivers/video/fbdev/omap2 as there should be no reason to
+keep using it.
 
- arch/arm/boot/dts/dra7xx-clocks.dtsi | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+Regards,
 
-diff --git a/arch/arm/boot/dts/dra7xx-clocks.dtsi b/arch/arm/boot/dts/dra7xx-clocks.dtsi
-index 55cef4cac5f1..dc0a93bccbf1 100644
---- a/arch/arm/boot/dts/dra7xx-clocks.dtsi
-+++ b/arch/arm/boot/dts/dra7xx-clocks.dtsi
-@@ -796,16 +796,6 @@
- 		clock-div = <1>;
- 	};
- 
--	ipu1_gfclk_mux: ipu1_gfclk_mux@520 {
--		#clock-cells = <0>;
--		compatible = "ti,mux-clock";
--		clocks = <&dpll_abe_m2x2_ck>, <&dpll_core_h22x2_ck>;
--		ti,bit-shift = <24>;
--		reg = <0x0520>;
--		assigned-clocks = <&ipu1_gfclk_mux>;
--		assigned-clock-parents = <&dpll_core_h22x2_ck>;
--	};
--
- 	dummy_ck: dummy_ck {
- 		#clock-cells = <0>;
- 		compatible = "fixed-clock";
-@@ -1564,6 +1554,8 @@
- 			compatible = "ti,clkctrl";
- 			reg = <0x20 0x4>;
- 			#clock-cells = <2>;
-+			assigned-clocks = <&ipu1_clkctrl DRA7_IPU1_MMU_IPU1_CLKCTRL 24>;
-+			assigned-clock-parents = <&dpll_core_h22x2_ck>;
- 		};
- 
- 		ipu_clkctrl: ipu-clkctrl@50 {
--- 
-2.23.0
+Tony
+
 
