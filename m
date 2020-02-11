@@ -2,96 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1CB615848B
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Feb 2020 22:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAC70158C4C
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Feb 2020 11:01:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727434AbgBJVEd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 10 Feb 2020 16:04:33 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:57344 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726563AbgBJVEd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 Feb 2020 16:04:33 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01AL4T2g017421;
-        Mon, 10 Feb 2020 15:04:29 -0600
+        id S1728090AbgBKKBn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Feb 2020 05:01:43 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:42994 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728083AbgBKKBn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Feb 2020 05:01:43 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01BA1YBq032540;
+        Tue, 11 Feb 2020 04:01:34 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1581368669;
-        bh=xVzc1mtWpAJafF8U/uk488p/4DSXP1+tfDnXeV8ljHk=;
-        h=From:To:CC:Subject:Date;
-        b=njpoTH+QGlGR4NcAR8+MtqkY0nb4ag20Q59hNN6OrfuJl6EQwCpMVDoZxjRyfcySo
-         k/iGWIVQ7CIMXDuxBdrrIIm7vz9pkO04gjzcorFP5sAAErs7YsyljtF7CK3qmDSjRF
-         GsWQDciKfTDrofGP5wPqo2hZHadH42ZXIP+VCKyY=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01AL4TZM051167
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 10 Feb 2020 15:04:29 -0600
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 10
- Feb 2020 15:04:29 -0600
+        s=ti-com-17Q1; t=1581415294;
+        bh=+ZcF4yo1eln9KhwQy1Qd6OUQAx//vdRlxtfqM27rgaU=;
+        h=Subject:From:To:CC:References:Date:In-Reply-To;
+        b=sUIBpp2WaQwT6eNvNRlhL4gP6jnNvR8/vq23Q0q84jJwFfnuAEe8u8YpqIdceX2X8
+         Bq0xIvCpURcVRDx5Qah8Xi9gE+IBZ+3PL4C/yGY2LVxE8LL+0JHht42DeVRuaAWcIR
+         IdSy+AmSU0CrFYUJaZZXWCCVWZIrLWP6mO0iqnLY=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01BA1YZG119993;
+        Tue, 11 Feb 2020 04:01:34 -0600
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 11
+ Feb 2020 04:01:33 -0600
 Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
  (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Mon, 10 Feb 2020 15:04:29 -0600
-Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01AL4StC101348;
-        Mon, 10 Feb 2020 15:04:28 -0600
-Received: from localhost (irmo.dhcp.ti.com [128.247.58.153])
-        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id 01AL4S325098;
-        Mon, 10 Feb 2020 15:04:28 -0600 (CST)
-From:   Suman Anna <s-anna@ti.com>
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Dave Gerlach <d-gerlach@ti.com>, Roger Quadros <rogerq@ti.com>,
-        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Suman Anna <s-anna@ti.com>
-Subject: [PATCH] ARM: dts: am437x-idk-evm: Fix incorrect OPP node names
-Date:   Mon, 10 Feb 2020 15:04:23 -0600
-Message-ID: <20200210210423.22424-1-s-anna@ti.com>
-X-Mailer: git-send-email 2.23.0
+ Frontend Transport; Tue, 11 Feb 2020 04:01:33 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01BA1VLH127621;
+        Tue, 11 Feb 2020 04:01:32 -0600
+Subject: Re: [PATCH 2/3] ARM: dts: am437x-gp/epos-evm: drop unused panel
+ timings
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+CC:     <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jyri Sarha <jsarha@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>
+References: <20191114093950.4101-1-tomi.valkeinen@ti.com>
+ <20191114093950.4101-3-tomi.valkeinen@ti.com>
+ <20191202130459.GH4929@pendragon.ideasonboard.com>
+ <20191211165331.GC43123@atomide.com>
+ <45dae8f7-2f5e-6948-5a05-dc8a09ace1fa@ti.com>
+ <20191212203550.GB4892@pendragon.ideasonboard.com>
+ <add3d8af-6977-68e6-fb77-2fa748c4714a@ti.com>
+Message-ID: <b39e52f1-3e73-5f26-6206-0956cf482631@ti.com>
+Date:   Tue, 11 Feb 2020 12:01:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+In-Reply-To: <add3d8af-6977-68e6-fb77-2fa748c4714a@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The commit 337c6c9a69af ("ARM: dts: am437x-idk-evm: Disable
-OPP50 for MPU") adjusts couple of OPP nodes defined in the
-common am4372.dtsi file, but used outdated node names. This
-results in these getting treated as new OPP nodes with missing
-properties.
+On 13/01/2020 14:01, Tomi Valkeinen wrote:
+> On 12/12/2019 22:35, Laurent Pinchart wrote:
+>> Hi Tomi,
+>>
+>> On Thu, Dec 12, 2019 at 11:37:51AM +0200, Tomi Valkeinen wrote:
+>>> On 11/12/2019 18:53, Tony Lindgren wrote:
+>>>> * Laurent Pinchart <laurent.pinchart@ideasonboard.com> [191202 13:05]:
+>>>>> Hi Tomi,
+>>>>>
+>>>>> Thank you for the patch.
+>>>>>
+>>>>> On Thu, Nov 14, 2019 at 11:39:49AM +0200, Tomi Valkeinen wrote:
+>>>>>> panel-simple now handled panel osd070t1718-19ts, and we no longer need
+>>>>>> the panel timings in the DT file. So remove them.
+>>>>>
+>>>>> Should you in that case drop the panel-dpi compatible string too, as the
+>>>>> panel-dpi bindings require panel timings in DT ?
+>>>>
+>>>> Yeah sounds like if panel-dpi is no longer usable for this device it
+>>>> should be dropped from the compatible list.
+>>>
+>>> Ok, I agree.
+>>>
+>>> Looking at the dts files, panel-dpi is used in a bunch of boards. But
+>>> we even have 3 dts files with panel-dpi, without the detailed panel
+>>> model in compatible...
+>>>
+>>> Fixing those will break the compatibility with old dtbs and new
+>>> kernel, unless we add timings-from-dt to a panel driver that handles
+>>> panel-dpi.
+>>
+>> I know, and I don't have a perfect answer for this :-( I don't see a
+>> third option, it's either breaking DT backward compatibility or adding
+>> timings parsing to a panel driver (either a new panel-dpi driver or to
+>> panel-simple). What's your preferred option ?
+> 
+> Hmm, I just realized that changing these will break omapfb. It relies on panel-dpi and timings from 
+> DT...
 
-Fix this properly by using the correct node names as updated in
-commit b9cb2ba71848 ("ARM: dts: Use - instead of @ for DT OPP
-entries for TI SoCs").
+If no one objects, I think we should just drop the timings from the .dts, and say that these boards 
+are no longer supported with omapfb. I don't think there's much point in trying to keep omapfb 
+working fine for boards that are fully supported by omapdrm.
 
-Reported-by: Roger Quadros <rogerq@ti.com>
-Fixes: 337c6c9a69af ("ARM: dts: am437x-idk-evm: Disable OPP50 for MPU")
-Signed-off-by: Suman Anna <s-anna@ti.com>
----
- arch/arm/boot/dts/am437x-idk-evm.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hopefully soon (in five years? =) we can say that omapdrm supports all the boards, and we can 
+deprecate omapfb.
 
-diff --git a/arch/arm/boot/dts/am437x-idk-evm.dts b/arch/arm/boot/dts/am437x-idk-evm.dts
-index f3ced6df0c9b..9f66f96d09c9 100644
---- a/arch/arm/boot/dts/am437x-idk-evm.dts
-+++ b/arch/arm/boot/dts/am437x-idk-evm.dts
-@@ -526,11 +526,11 @@
- 	 * Supply voltage supervisor on board will not allow opp50 so
- 	 * disable it and set opp100 as suspend OPP.
- 	 */
--	opp50@300000000 {
-+	opp50-300000000 {
- 		status = "disabled";
- 	};
- 
--	opp100@600000000 {
-+	opp100-600000000 {
- 		opp-suspend;
- 	};
- };
+  Tomi
+
 -- 
-2.23.0
-
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
