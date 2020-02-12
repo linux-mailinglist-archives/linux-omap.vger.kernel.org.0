@@ -2,48 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12C3B159E20
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 01:40:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27D1D159E21
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 01:40:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728130AbgBLAkZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Feb 2020 19:40:25 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:36778 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728134AbgBLAkZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Feb 2020 19:40:25 -0500
-Received: by mail-lj1-f195.google.com with SMTP id r19so278576ljg.3
-        for <linux-omap@vger.kernel.org>; Tue, 11 Feb 2020 16:40:23 -0800 (PST)
+        id S1728138AbgBLAk1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Feb 2020 19:40:27 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:37841 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728134AbgBLAk1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Feb 2020 19:40:27 -0500
+Received: by mail-lj1-f193.google.com with SMTP id v17so272166ljg.4
+        for <linux-omap@vger.kernel.org>; Tue, 11 Feb 2020 16:40:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=caDIr3rP6oosu1+kaTV/U9Y5uOqTsEJ+evHiz9URQq4=;
-        b=djVfoEvVfIrazuwClaIyoiPfUM8to2+bMx3D9Wv4DKZg4M3KNwM5B7lVFVi/ThZjuN
-         D/IOBS50MpHYmJZjx/r7OSCQXr+nqh5t1B3y37b8YsbDSSJF8A9rDU5d/WrrgLcwJwdt
-         rWCZkN2cP8KFl+zCY9Dv7sPv+L0id5nyDY/85pQKC4wwZZ/5gFWBmHZQAFEhFYmu8wpi
-         Jtl+3z6aCj5u9e5sAJuAonl4JDHDlgevY7zh6mi0cu884C5Y7c7Ru1Aj8ctqPWwUdtHe
-         ikstkQoiBMtzpL2T9jIZM75yaRcjhW5PnoJSYbEsJ8sdxcCk1jCCfszElMW+knCwvaWn
-         wB1Q==
+        bh=FJYKPthvZIFedIlxbcTRXaWUixnzV1+Q9RiZEPYQb/8=;
+        b=XRUOYw1FAkTzb6oW3oIsS8OrrN+JDesE+lr0Eg5RKKCAGYyMWyjwLUo6beSeizUGhq
+         RgMChJuxxMdMfwy1UX/UAcxmGlSym9l2K/JYczKwDWXjgaogauFOflQwjP50YXIlTZiU
+         DGMYFyU/qb0xujibkcIeA8KYFLwPt+VWN6Linlz47TdJyttGzGCM4BOVECZKTJ+CMfq+
+         /tlh+vLf+ycG/NXi3N+RgYjSn7A/7iUsj9CjpcboM+B6OvgvJCuXjwk6Fpzu2QVyTMLD
+         s1pInl6rcIeUO+t+aqUYwJ5g2apQ2wlLtneq1wUdwlH7CIlILApyrZMC+5NKd9QKyApy
+         TlMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=caDIr3rP6oosu1+kaTV/U9Y5uOqTsEJ+evHiz9URQq4=;
-        b=ggPilPfX3NbezDRTgsU3ysuaMhiRT/dTR/ob1Ps0Tn0AWpDPiVcWR6r375nUc1FQx5
-         QWDMNzxwSWrtLxdHFkcUfP5Tdt0F/2DbrKyk/s0fXooGTn8hu71sd57/DP4lTUnehR+l
-         xkZ2/ovh31lYH8Tj3/pDOd/VH14N2Tb3JfqhvfNbreJAy2CJ9A1GilRI8DiCHLaVqTj8
-         2bMw9gadAR2SJU1Gx2QCHgzKUPswa5m7rEDXe8HtFxGpDy7X3BPmENw/BtpViQgemtKb
-         ph0wd5g4K01vqwCs8PwsehDkUKi2eXlKPKmSDhuvo9QxJWqSbxZq2IU6cs4WGXhvYdeM
-         eldw==
-X-Gm-Message-State: APjAAAUmDLLdyKERa0aZvSr8D78X2gm/VJ9TMddpwHkGdl1vcqapEyRl
-        hdVZTwU6mUPzUOTOaAJZieA=
-X-Google-Smtp-Source: APXvYqy6JFvRC9NklpSqlYRY6lVX8UkHC9NOlwj40Nhm8KFKwboQJSVotTIA/W7iSbWh/4xCAN+43g==
-X-Received: by 2002:a2e:9596:: with SMTP id w22mr5753039ljh.21.1581468022989;
-        Tue, 11 Feb 2020 16:40:22 -0800 (PST)
+        bh=FJYKPthvZIFedIlxbcTRXaWUixnzV1+Q9RiZEPYQb/8=;
+        b=SJW8KJBFRTe4jH/oImeLgiSAe7i0totLP2gwePxuYT4evp7pJaxn23CD34tf1Xn7oG
+         qzfDgz5YGMve6Wdt3f1Nw7dWxvatOmMPpJ1r8wipM5apkqMHjQ1GqFEqngVUR8mlssjP
+         k0moNKCpPm4E69LYjRrz9U52PPEPCrtiAQj/fdR+U1LrtGnsEgRXSUh/dPO75v83jWLs
+         UxOD8EJ3ZDL58RQusgenTX+GZ7B2k+W99t9yJwoWDyMLKoMvxYMCPRPDdA0no0gcyfIX
+         hU3lKb+PhvpHXmWFva8r+2F1txqxzM5rX30ySWoQZu9rkDto/3ctzCzxynw2ZpRPgGgE
+         9sZQ==
+X-Gm-Message-State: APjAAAWQsqgEmob+iDlDWlx/TlihZ0BeRVL1NoXT4ffB1w7IZK6RHrZl
+        XGTta6x30X4AT3UgVhfbE6I9LLvc
+X-Google-Smtp-Source: APXvYqw8vOkP/end+TVMFx46dyQcENtXIweuu3keRWt1h/CrKYtPMYiEk3ELj0Qt93lVXrk/HH4MXg==
+X-Received: by 2002:a2e:b4e7:: with SMTP id s7mr6220313ljm.58.1581468024270;
+        Tue, 11 Feb 2020 16:40:24 -0800 (PST)
 Received: from z50.gdansk-morena.vectranet.pl (109241122244.gdansk.vectranet.pl. [109.241.122.244])
-        by smtp.gmail.com with ESMTPSA id e8sm3621935ljb.45.2020.02.11.16.40.21
+        by smtp.gmail.com with ESMTPSA id e8sm3621935ljb.45.2020.02.11.16.40.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2020 16:40:22 -0800 (PST)
+        Tue, 11 Feb 2020 16:40:23 -0800 (PST)
 From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>
@@ -53,9 +53,9 @@ Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         linux-mtd@lists.infradead.org,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Subject: [RFC PATCH 08/14] mtd: rawnand: ams-delta: Make read pulses optional
-Date:   Wed, 12 Feb 2020 01:39:23 +0100
-Message-Id: <20200212003929.6682-9-jmkrzyszt@gmail.com>
+Subject: [RFC PATCH 09/14] mtd: rawnand: ams-delta: Handle more GPIO pins as optional
+Date:   Wed, 12 Feb 2020 01:39:24 +0100
+Message-Id: <20200212003929.6682-10-jmkrzyszt@gmail.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200212003929.6682-1-jmkrzyszt@gmail.com>
 References: <20200212003929.6682-1-jmkrzyszt@gmail.com>
@@ -66,43 +66,38 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Allow platforms to omit NRE pin from device configuration by requesting
-that pin as optional.  In that case, also don't apply read pulse width
-from chip SDR timings.  There should be no need for further code
-adjustments as gpiolib can handle NULL GPIO descriptor pointers.
+In order to make the driver more useful on platforms other than Amstrad
+Delta, allow GPIO descriptor pointers of possibly non-critical NWP and
+NCE pins to be initialised as NULL.
 
 Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
 ---
- drivers/mtd/nand/raw/ams-delta.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/raw/ams-delta.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/nand/raw/ams-delta.c b/drivers/mtd/nand/raw/ams-delta.c
-index 11689218d23a..c481d73e3dcb 100644
+index c481d73e3dcb..0c88e94e9b71 100644
 --- a/drivers/mtd/nand/raw/ams-delta.c
 +++ b/drivers/mtd/nand/raw/ams-delta.c
-@@ -202,8 +202,10 @@ static int ams_delta_setup_data_interface(struct nand_chip *this, int csline,
- 	if (csline == NAND_DATA_IFACE_CHECK_ONLY)
- 		return 0;
+@@ -264,14 +264,16 @@ static int ams_delta_init(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, priv);
  
--	priv->tRP = DIV_ROUND_UP(sdr->tRP_min, 1000);
--	dev_dbg(dev, "using %u ns read pulse width\n", priv->tRP);
-+	if (priv->gpiod_nre) {
-+		priv->tRP = DIV_ROUND_UP(sdr->tRP_min, 1000);
-+		dev_dbg(dev, "using %u ns read pulse width\n", priv->tRP);
-+	}
- 
- 	priv->tWP = DIV_ROUND_UP(sdr->tWP_min, 1000);
- 	dev_dbg(dev, "using %u ns write pulse width\n", priv->tWP);
-@@ -276,7 +278,8 @@ static int ams_delta_init(struct platform_device *pdev)
+ 	/* Set chip enabled but write protected */
+-	priv->gpiod_nwp = devm_gpiod_get(&pdev->dev, "nwp", GPIOD_OUT_HIGH);
++	priv->gpiod_nwp = devm_gpiod_get_optional(&pdev->dev, "nwp",
++						  GPIOD_OUT_HIGH);
+ 	if (IS_ERR(priv->gpiod_nwp)) {
+ 		err = PTR_ERR(priv->gpiod_nwp);
+ 		dev_err(&pdev->dev, "NWP GPIO request failed (%d)\n", err);
  		return err;
  	}
  
--	priv->gpiod_nre = devm_gpiod_get(&pdev->dev, "nre", GPIOD_OUT_LOW);
-+	priv->gpiod_nre = devm_gpiod_get_optional(&pdev->dev, "nre",
+-	priv->gpiod_nce = devm_gpiod_get(&pdev->dev, "nce", GPIOD_OUT_LOW);
++	priv->gpiod_nce = devm_gpiod_get_optional(&pdev->dev, "nce",
 +						  GPIOD_OUT_LOW);
- 	if (IS_ERR(priv->gpiod_nre)) {
- 		err = PTR_ERR(priv->gpiod_nre);
- 		dev_err(&pdev->dev, "NRE GPIO request failed (%d)\n", err);
+ 	if (IS_ERR(priv->gpiod_nce)) {
+ 		err = PTR_ERR(priv->gpiod_nce);
+ 		dev_err(&pdev->dev, "NCE GPIO request failed (%d)\n", err);
 -- 
 2.24.1
 
