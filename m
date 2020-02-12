@@ -2,48 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27D1D159E21
+	by mail.lfdr.de (Postfix) with ESMTP id 95381159E22
 	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 01:40:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728138AbgBLAk1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Feb 2020 19:40:27 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:37841 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728134AbgBLAk1 (ORCPT
+        id S1728134AbgBLAk2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Feb 2020 19:40:28 -0500
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:45514 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728137AbgBLAk1 (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Feb 2020 19:40:27 -0500
-Received: by mail-lj1-f193.google.com with SMTP id v17so272166ljg.4
-        for <linux-omap@vger.kernel.org>; Tue, 11 Feb 2020 16:40:25 -0800 (PST)
+Received: by mail-lf1-f65.google.com with SMTP id 203so248858lfa.12
+        for <linux-omap@vger.kernel.org>; Tue, 11 Feb 2020 16:40:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=FJYKPthvZIFedIlxbcTRXaWUixnzV1+Q9RiZEPYQb/8=;
-        b=XRUOYw1FAkTzb6oW3oIsS8OrrN+JDesE+lr0Eg5RKKCAGYyMWyjwLUo6beSeizUGhq
-         RgMChJuxxMdMfwy1UX/UAcxmGlSym9l2K/JYczKwDWXjgaogauFOflQwjP50YXIlTZiU
-         DGMYFyU/qb0xujibkcIeA8KYFLwPt+VWN6Linlz47TdJyttGzGCM4BOVECZKTJ+CMfq+
-         /tlh+vLf+ycG/NXi3N+RgYjSn7A/7iUsj9CjpcboM+B6OvgvJCuXjwk6Fpzu2QVyTMLD
-         s1pInl6rcIeUO+t+aqUYwJ5g2apQ2wlLtneq1wUdwlH7CIlILApyrZMC+5NKd9QKyApy
-         TlMQ==
+        bh=brE3/g7u0N/gg2OgUxbSqylt9cNqdnoOIHKUd4Jqf/I=;
+        b=aUPEiqJkISxLDvjpf3W2bPilp4oLV1bN0j7U/z/pSsTs8ADP3MhrmBZ9ZqhBLdktug
+         oc5O/08eOSIqGfnJLCqBzkPj9k7pHITjd0WveqVhUx92RP4fP36iTF7SewsKAZbHo8eg
+         1Rmq6GSA9P1kfN5jQ6VTjSIvgnfmVNOkM6BI0VqJn+I3sOqIMloRVorlSjOMxQpfibfF
+         pzbuBM5fKGQsdrOlovubVn/nLSzXkpZ1oFL9BGEaLM2SY3BWJH3wpzH4GnVE7snPOkED
+         R8WiRvn5ll2wkCPeGklOt+tv1I948ov7R1zvoia5vIftzHh25c57BrVVieqHhNwsHh77
+         DYUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=FJYKPthvZIFedIlxbcTRXaWUixnzV1+Q9RiZEPYQb/8=;
-        b=SJW8KJBFRTe4jH/oImeLgiSAe7i0totLP2gwePxuYT4evp7pJaxn23CD34tf1Xn7oG
-         qzfDgz5YGMve6Wdt3f1Nw7dWxvatOmMPpJ1r8wipM5apkqMHjQ1GqFEqngVUR8mlssjP
-         k0moNKCpPm4E69LYjRrz9U52PPEPCrtiAQj/fdR+U1LrtGnsEgRXSUh/dPO75v83jWLs
-         UxOD8EJ3ZDL58RQusgenTX+GZ7B2k+W99t9yJwoWDyMLKoMvxYMCPRPDdA0no0gcyfIX
-         hU3lKb+PhvpHXmWFva8r+2F1txqxzM5rX30ySWoQZu9rkDto/3ctzCzxynw2ZpRPgGgE
-         9sZQ==
-X-Gm-Message-State: APjAAAWQsqgEmob+iDlDWlx/TlihZ0BeRVL1NoXT4ffB1w7IZK6RHrZl
-        XGTta6x30X4AT3UgVhfbE6I9LLvc
-X-Google-Smtp-Source: APXvYqw8vOkP/end+TVMFx46dyQcENtXIweuu3keRWt1h/CrKYtPMYiEk3ELj0Qt93lVXrk/HH4MXg==
-X-Received: by 2002:a2e:b4e7:: with SMTP id s7mr6220313ljm.58.1581468024270;
-        Tue, 11 Feb 2020 16:40:24 -0800 (PST)
+        bh=brE3/g7u0N/gg2OgUxbSqylt9cNqdnoOIHKUd4Jqf/I=;
+        b=eytFg2RNFKWFIyTAs4emsIe0Vchw4V6gQg1zTNWVMi2ksko+VMI2iCSyMtu1SpIb3v
+         Z0mp73tkTJNDRt+6DPrG1Zbqk0CL7WTXxLX1ZsyQtYXx1Frg9y6CYvRSj5wxtOKGa7BC
+         U8bGnpL7H4pDFBxnlv01EVIEUJI1bIkLTinRK+U/ld9C45GwQksjKRINj+g4hCMw5U0e
+         CJ3xzn4lecAN3SmPXS9fyGr3PY63ucYGZau9m7YiC4/77WbEGEZZnvSxHQkjiFAqOGD+
+         U81bpBHWQHgww/tbf2ssy1FvYfAgdJSRrT6td0QQsrIAxp0OVzRtIo1acoDGrps8sJp8
+         hfFQ==
+X-Gm-Message-State: APjAAAVsZ1FocLy7d34LUVRhxFGEW/NVGp0WSjzJHtomHr50XBN8UjEK
+        fGV9GKpsFAxAyBVEu5pFBHE=
+X-Google-Smtp-Source: APXvYqywmdJL4ETEOowYVGw711/cu1ENWKG7wwEqkKKOXa2c0GrDEFSOpOtQ6O6KBhMLMU76YfQIFQ==
+X-Received: by 2002:a19:740a:: with SMTP id v10mr5014210lfe.65.1581468025589;
+        Tue, 11 Feb 2020 16:40:25 -0800 (PST)
 Received: from z50.gdansk-morena.vectranet.pl (109241122244.gdansk.vectranet.pl. [109.241.122.244])
-        by smtp.gmail.com with ESMTPSA id e8sm3621935ljb.45.2020.02.11.16.40.23
+        by smtp.gmail.com with ESMTPSA id e8sm3621935ljb.45.2020.02.11.16.40.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2020 16:40:23 -0800 (PST)
+        Tue, 11 Feb 2020 16:40:25 -0800 (PST)
 From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>
@@ -53,9 +53,9 @@ Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         linux-mtd@lists.infradead.org,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Subject: [RFC PATCH 09/14] mtd: rawnand: ams-delta: Handle more GPIO pins as optional
-Date:   Wed, 12 Feb 2020 01:39:24 +0100
-Message-Id: <20200212003929.6682-10-jmkrzyszt@gmail.com>
+Subject: [RFC PATCH 10/14] mtd: rawnand: ams-delta: Add module device tables
+Date:   Wed, 12 Feb 2020 01:39:25 +0100
+Message-Id: <20200212003929.6682-11-jmkrzyszt@gmail.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200212003929.6682-1-jmkrzyszt@gmail.com>
 References: <20200212003929.6682-1-jmkrzyszt@gmail.com>
@@ -66,38 +66,49 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In order to make the driver more useful on platforms other than Amstrad
-Delta, allow GPIO descriptor pointers of possibly non-critical NWP and
-NCE pins to be initialised as NULL.
+In preparation for merging the driver with "gpio-nand", introduce
+module device tables where new device models can be accommodated as
+soon as respective support is added.
 
 Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
 ---
- drivers/mtd/nand/raw/ams-delta.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/ams-delta.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/drivers/mtd/nand/raw/ams-delta.c b/drivers/mtd/nand/raw/ams-delta.c
-index c481d73e3dcb..0c88e94e9b71 100644
+index 0c88e94e9b71..9857ce25debf 100644
 --- a/drivers/mtd/nand/raw/ams-delta.c
 +++ b/drivers/mtd/nand/raw/ams-delta.c
-@@ -264,14 +264,16 @@ static int ams_delta_init(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, priv);
+@@ -370,11 +370,29 @@ static int ams_delta_cleanup(struct platform_device *pdev)
+ 	return 0;
+ }
  
- 	/* Set chip enabled but write protected */
--	priv->gpiod_nwp = devm_gpiod_get(&pdev->dev, "nwp", GPIOD_OUT_HIGH);
-+	priv->gpiod_nwp = devm_gpiod_get_optional(&pdev->dev, "nwp",
-+						  GPIOD_OUT_HIGH);
- 	if (IS_ERR(priv->gpiod_nwp)) {
- 		err = PTR_ERR(priv->gpiod_nwp);
- 		dev_err(&pdev->dev, "NWP GPIO request failed (%d)\n", err);
- 		return err;
- 	}
++static const struct of_device_id gpio_nand_of_id_table[] = {
++	{
++		/* sentinel */
++	},
++};
++MODULE_DEVICE_TABLE(of, gpio_nand_of_id_table);
++
++static const struct platform_device_id gpio_nand_plat_id_table[] = {
++	{
++		.name	= "ams-delta-nand",
++	}, {
++		/* sentinel */
++	},
++};
++MODULE_DEVICE_TABLE(of, gpio_nand_plat_id_table);
++
+ static struct platform_driver ams_delta_nand_driver = {
+ 	.probe		= ams_delta_init,
+ 	.remove		= ams_delta_cleanup,
++	.id_table	= gpio_nand_plat_id_table,
+ 	.driver		= {
+ 		.name	= "ams-delta-nand",
++		.of_match_table = of_match_ptr(gpio_nand_of_id_table),
+ 	},
+ };
  
--	priv->gpiod_nce = devm_gpiod_get(&pdev->dev, "nce", GPIOD_OUT_LOW);
-+	priv->gpiod_nce = devm_gpiod_get_optional(&pdev->dev, "nce",
-+						  GPIOD_OUT_LOW);
- 	if (IS_ERR(priv->gpiod_nce)) {
- 		err = PTR_ERR(priv->gpiod_nce);
- 		dev_err(&pdev->dev, "NCE GPIO request failed (%d)\n", err);
 -- 
 2.24.1
 
