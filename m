@@ -2,264 +2,180 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0675715A477
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 10:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3BD115A99C
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 14:01:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728595AbgBLJSV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Feb 2020 04:18:21 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:46900 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728150AbgBLJSV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Feb 2020 04:18:21 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01C9HUD0122519;
-        Wed, 12 Feb 2020 03:17:30 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1581499050;
-        bh=0EymYGvIpJvAfLMY0dQEzt7Ae9rGKk87N8YDY2Ezya0=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=FpG0CLJyaMnudnSGTjkePddYSaxf5koEGruGmiS8xtM08ogqAYieEW6BiQtmzcICb
-         B2VDjsFu5ZnuV3goBlWhjNPyeziwpEETPhWWyw9fOpIi6r2+HwD24JwqB/D5rUkP94
-         lRqMZ6opqOuVMoGqY5uFjEdRJJhZmxXSV8eFf7Eg=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01C9HU4d004019
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 12 Feb 2020 03:17:30 -0600
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 12
- Feb 2020 03:17:30 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 12 Feb 2020 03:17:30 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01C9HRkR091947;
-        Wed, 12 Feb 2020 03:17:27 -0600
-Subject: Re: [PATCH] ASoC: cpcap: Implement set_tdm_slot for voice call
- support
-To:     Tony Lindgren <tony@atomide.com>, Mark Brown <broonie@kernel.org>
-CC:     Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, <alsa-devel@alsa-project.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        "Arthur D ." <spinal.by@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-References: <20200211181005.54008-1-tony@atomide.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <ae2b7d9e-d05e-54ac-4f18-27cc8c4e81a0@ti.com>
-Date:   Wed, 12 Feb 2020 11:17:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1727548AbgBLNBr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Feb 2020 08:01:47 -0500
+Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:35656 "EHLO
+        hetgrotebos.org" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726728AbgBLNBr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Feb 2020 08:01:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
+         s=mail; h=Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:
+        References:Cc:To:Subject:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+        :List-Post:List-Owner:List-Archive;
+        bh=OE+0eQLpObw2AWIb3EKhAjHzCqiAWRKCbSZfWZEwOpQ=; b=NrkinL/RiGaxDXml9OI5RsoPUu
+        4ryUMxeW/k7+qGgYnQeSES5ny66SPdAuP+CJPXUqtHDcm+LiIbNFPMLwJ/dvI4/WWxxWUyTQyhgRg
+        fx+2SL0amNWtIC+PmddV1RhB6hEkQosA6bsx3DborvHaqgrbP7qyr34GKLEzimfzhF0E5X7GifH6w
+        9Ei10CMlp8kZcgT+mo8i5mpEHmMa/tBWyetNxqHYxbWzcoUX2Vx+p6OJCQrCSGTbiTxa7mDc1bkvu
+        EChnnlWQeKY487FqjdQ9x8tcvSD+f//fyqCwi18qo4Ah3+ow2LVVNo5+EKadKLt8wRFEFlpO1M9ZA
+        KsinYyGQ==;
+Received: from deepwater.fritz.box ([192.168.178.25] helo=[0.0.0.0])
+        by hetgrotebos.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <merlijn@wizzup.org>)
+        id 1j1reA-0001gT-Uy; Wed, 12 Feb 2020 13:01:42 +0000
+Subject: Re: N900: Remove mmc1 "safety feature"? (was: Re: mmc0 on Nokia N900
+ on Linux 5.4.18)
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     Pavel Machek <pavel@ucw.cz>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        "Arthur D." <spinal.by@gmail.com>
+References: <5362c659-120f-5247-aaa5-7916229300bc@wizzup.org>
+ <20200208190448.GA12984@amd>
+ <270f27c9-afd6-171d-7dce-fe1d71dd8f9a@wizzup.org>
+ <1eac0db3-17ce-8ebd-4997-8b1c282126e4@wizzup.org>
+ <20200208220621.GA18161@amd>
+ <d2d6d6ac-c964-ac48-1616-6f1826219385@wizzup.org>
+ <20200210192714.GC14939@darkstar.musicnaut.iki.fi>
+From:   Merlijn Wajer <merlijn@wizzup.org>
+Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
+ 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
+ /XslHw==
+Message-ID: <8d0ecfcd-f9a7-9563-8a39-9793cfbeb893@wizzup.org>
+Date:   Wed, 12 Feb 2020 14:02:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <20200211181005.54008-1-tony@atomide.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20200210192714.GC14939@darkstar.musicnaut.iki.fi>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="PdQqh9EYD6JFCTHmHDJgejyoUTdPq8lQF"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--PdQqh9EYD6JFCTHmHDJgejyoUTdPq8lQF
+Content-Type: multipart/mixed; boundary="tj7PTIHMz0kSw1F5mQnlKG4GkV5IkLXXM"
+
+--tj7PTIHMz0kSw1F5mQnlKG4GkV5IkLXXM
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On 10/02/2020 20:27, Aaro Koskinen wrote:
+
+>>
+>> So how does this currently happen, the unmounting? Does the mmc1 card
+>> just disappear from /dev/ without any safe unmount? I don't understand=
+
+>> how the current setup can work from a userspace point of view.
+>>
+>> Userspace could react on kernel events that tell it the cover is open,=
+
+>> but I assume the kernel doesn't just decide to nuke the node from /dev=
+/,
+>> so in that case the current DTS setup still doesn't make sense, right?=
+
+>>
+>> What am I missing? Could you describe how this would work in a 'real
+>> life' scenario?
+>=20
+> I don't think it can work with the current mainline kernel.
+>=20
+> I recall the original Nokia kernel used the GPIO for "cover switch"
+> instead of card detect, and it was visible in sysfs, and this allowed
+> userspace to react on cover removal.. In the mainline kernel we have
+> this for older Nokia devices (770, N8x0), but not for N900. Still it
+> wouldn't help much for "safe unmount" as the unmount can take quite a
+> while, and user may remove the card too early.
+
+Shall I send in a patch removing this check from the device tree, then?
+
+Cheers,
+Merlijn
 
 
-On 11/02/2020 20.10, Tony Lindgren wrote:
-> For using cpcap for voice calls, we need to route audio directly from
-> the modem to cpcap for TDM (Time Division Multiplexing). The voice call
-> is direct data between the modem and cpcap with no CPU involvment. In
-> this mode, the cpcap related audio mixer controls work for the speaker
-> selection and volume though.
-> 
-> To do this, we need to implement standard snd_soc_dai_set_tdm_slot()
-> for cpcap. Then the modem codec driver can use snd_soc_dai_set_sysclk(),
-> snd_soc_dai_set_fmt(), and snd_soc_dai_set_tdm_slot() to configure a
-> voice call.
-> 
-> Let's add cpcap_voice_set_tdm_slot() for this, and cpcap_voice_call()
-> helper to configure the additional registers needed for voice call.
-> 
-> Let's also clear CPCAP_REG_VAUDIOC on init in case we have the bit for
-> CPCAP_BIT_VAUDIO_MODE0 set on init.
-> 
-> Cc: Arthur D. <spinal.by@gmail.com>
-> Cc: Merlijn Wajer <merlijn@wizzup.org>
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  sound/soc/codecs/cpcap.c | 123 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 123 insertions(+)
-> 
-> diff --git a/sound/soc/codecs/cpcap.c b/sound/soc/codecs/cpcap.c
-> --- a/sound/soc/codecs/cpcap.c
-> +++ b/sound/soc/codecs/cpcap.c
-> @@ -16,6 +16,14 @@
->  #include <sound/soc.h>
->  #include <sound/tlv.h>
->  
-> +/* Register 512 CPCAP_REG_VAUDIOC --- Audio Regulator and Bias Voltage */
-> +#define CPCAP_BIT_AUDIO_LOW_PWR           6
-> +#define CPCAP_BIT_AUD_LOWPWR_SPEED        5
-> +#define CPCAP_BIT_VAUDIOPRISTBY           4
-> +#define CPCAP_BIT_VAUDIO_MODE1            2
-> +#define CPCAP_BIT_VAUDIO_MODE0            1
-> +#define CPCAP_BIT_V_AUDIO_EN              0
-> +
->  /* Register 513 CPCAP_REG_CC     --- CODEC */
->  #define CPCAP_BIT_CDC_CLK2                15
->  #define CPCAP_BIT_CDC_CLK1                14
-> @@ -221,6 +229,7 @@ struct cpcap_reg_info {
->  };
->  
->  static const struct cpcap_reg_info cpcap_default_regs[] = {
-> +	{ CPCAP_REG_VAUDIOC, 0x003F, 0x0000 },
->  	{ CPCAP_REG_CC, 0xFFFF, 0x0000 },
->  	{ CPCAP_REG_CC, 0xFFFF, 0x0000 },
->  	{ CPCAP_REG_CDI, 0xBFFF, 0x0000 },
-> @@ -1370,6 +1379,119 @@ static int cpcap_voice_set_dai_fmt(struct snd_soc_dai *codec_dai,
->  	return 0;
->  }
->  
-> +/*
-> + * Configure codec for voice call if requested.
-> + *
-> + * We can configure most with snd_soc_dai_set_sysclk(), snd_soc_dai_set_fmt()
-> + * and snd_soc_dai_set_tdm_slot(). This function configures the rest of the
-> + * cpcap related hardware as CPU is not involved in the voice call.
-> + */
-> +static int cpcap_voice_call(struct cpcap_audio *cpcap, struct snd_soc_dai *dai,
-> +			    bool voice_call)
-> +{
-> +	int mask, err;
-> +
-> +	/* Modem to codec VAUDIO_MODE1 */
-> +	mask = BIT(CPCAP_BIT_VAUDIO_MODE1);
-> +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_VAUDIOC,
-> +				 mask, voice_call ? mask : 0);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Clear MIC1_MUX for call */
-> +	mask = BIT(CPCAP_BIT_MIC1_MUX);
-> +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_TXI,
-> +				 mask, voice_call ? 0 : mask);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Set MIC2_MUX for call */
-> +	mask = BIT(CPCAP_BIT_MB_ON1L) | BIT(CPCAP_BIT_MB_ON1R) |
-> +		BIT(CPCAP_BIT_MIC2_MUX) | BIT(CPCAP_BIT_MIC2_PGA_EN);
-> +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_TXI,
-> +				 mask, voice_call ? mask : 0);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Enable LDSP for call */
-> +	mask = BIT(CPCAP_BIT_A2_LDSP_L_EN) | BIT(CPCAP_BIT_A2_LDSP_R_EN);
-> +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_RXOA,
-> +				 mask, voice_call ? mask : 0);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Enable CPCAP_BIT_PGA_CDC_EN for call */
-> +	mask = BIT(CPCAP_BIT_PGA_CDC_EN);
-> +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_RXCOA,
-> +				 mask, voice_call ? mask : 0);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Unmute voice for call */
-> +	if (dai) {
-> +		err = snd_soc_dai_digital_mute(dai, !voice_call,
-> +					       SNDRV_PCM_STREAM_PLAYBACK);
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	/* Set modem to codec mic CDC and HPF for call */
-> +	mask = BIT(CPCAP_BIT_MIC2_CDC_EN) | BIT(CPCAP_BIT_CDC_EN_RX) |
-> +	       BIT(CPCAP_BIT_AUDOHPF_1) | BIT(CPCAP_BIT_AUDOHPF_0) |
-> +	       BIT(CPCAP_BIT_AUDIHPF_1) | BIT(CPCAP_BIT_AUDIHPF_0);
-> +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_CC,
-> +				 mask, voice_call ? mask : 0);
-> +	if (err)
-> +		return err;
-> +
-> +	/* Enable modem to codec CDC for call*/
-> +	mask = BIT(CPCAP_BIT_CDC_CLK_EN);
-> +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_CDI,
-> +				 mask, voice_call ? mask : 0);
-> +
-> +	return err;
-> +}
-> +
-> +static int cpcap_voice_set_tdm_slot(struct snd_soc_dai *dai,
-> +				    unsigned int tx_mask, unsigned int rx_mask,
-> +				    int slots, int slot_width)
-> +{
-> +	struct snd_soc_component *component = dai->component;
-> +	struct cpcap_audio *cpcap = snd_soc_component_get_drvdata(component);
-> +	int err, ts_mask, mask;
-> +	bool voice_call;
-> +
-> +	/*
-> +	 * Primitive test for voice call, probably needs more checks
-> +	 * later on for 16-bit calls detected, Bluetooth headset etc.
-> +	 */
-> +	if (tx_mask == 0 && rx_mask == 1 && slot_width == 8)
-> +		voice_call = true;
-> +	else
-> +		voice_call = false;
+--tj7PTIHMz0kSw1F5mQnlKG4GkV5IkLXXM--
 
-You only have voice call if only rx slot0 is in use?
-If you record mono on the voice DAI, then rx_mask is also 1, no?
+--PdQqh9EYD6JFCTHmHDJgejyoUTdPq8lQF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-> +
-> +	ts_mask = 0x7 << CPCAP_BIT_MIC2_TIMESLOT0;
-> +	ts_mask |= 0x7 << CPCAP_BIT_MIC1_RX_TIMESLOT0;
-> +
-> +	mask = (tx_mask & 0x7) << CPCAP_BIT_MIC2_TIMESLOT0;
-> +	mask |= (rx_mask & 0x7) << CPCAP_BIT_MIC1_RX_TIMESLOT0;
-> +
-> +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_CDI,
-> +				 ts_mask, mask);
-> +	if (err)
-> +		return err;
-> +
-> +	err = cpcap_set_samprate(cpcap, CPCAP_DAI_VOICE, slot_width * 1000);
-> +	if (err)
-> +		return err;
+-----BEGIN PGP SIGNATURE-----
 
-You will also set the sampling rate for voice in
-cpcap_voice_hw_params(), but that is for normal playback/capture, right?
+iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXkP3fgAKCRAGN09rynK8
+WqgfAP0bN1WmVycWlDJT9UdXWe/IX6I5vKQaR/tD2RgHxnNIpwD/Xc7EIEfp63Hn
+OsH47u7x4D1ILg7DFgElQMDWxFM9xw8=
+=mxtC
+-----END PGP SIGNATURE-----
 
-> +
-> +	err = cpcap_voice_call(cpcap, dai, voice_call);
-> +	if (err)
-> +		return err;
-
-It feels like that these should be done via DAPM with codec to codec route?
-
-> +
-> +	return 0;
-> +}
-> +
->  static int cpcap_voice_set_mute(struct snd_soc_dai *dai, int mute)
->  {
->  	struct snd_soc_component *component = dai->component;
-> @@ -1391,6 +1513,7 @@ static const struct snd_soc_dai_ops cpcap_dai_voice_ops = {
->  	.hw_params	= cpcap_voice_hw_params,
->  	.set_sysclk	= cpcap_voice_set_dai_sysclk,
->  	.set_fmt	= cpcap_voice_set_dai_fmt,
-> +	.set_tdm_slot	= cpcap_voice_set_tdm_slot,
->  	.digital_mute	= cpcap_voice_set_mute,
->  };
->  
-> 
-
-- Péter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+--PdQqh9EYD6JFCTHmHDJgejyoUTdPq8lQF--
