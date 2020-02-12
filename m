@@ -2,437 +2,245 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DBC215A298
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 09:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6728D15A2A7
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 09:03:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728445AbgBLIBj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Feb 2020 03:01:39 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:42554 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728192AbgBLIBj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Feb 2020 03:01:39 -0500
-Received: by mail-pg1-f196.google.com with SMTP id w21so775333pgl.9;
-        Wed, 12 Feb 2020 00:01:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=bp8GhH+lTv01Fj7emi77JJtm4UgQcmSv8y6hx+7VcaM=;
-        b=V6idpjeWbkdm3Yg9WsocEttNBMzG2tMCV7v/Jnkbmv4/1mib46u42IMshvuecDSvSf
-         2yOmAMxdZpFwtzksCp1LV9a3YGgQlOoUP4SbVF+wPlttoXbtqwM0I49vJS6ae4t0YZF1
-         Z1uqi8KJ6Zau4OUy3+MsydCGC1VDnR6pplZNzS6f5PRm/C7QdWLR2luKNrgUgfxoDk00
-         Mnu2M8v5Q4cbGSnXBDWZkPnqq5qDT+Uq/KETlGpkpqsS+EHPorvjMlK0D/WxcBdtvtHj
-         +3x7nastEvjNOZhinDexpYlJjaguSs0t0W2LcIkvRDpoWHUMgRtitGbR6FzUIg40eRn+
-         GkmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=bp8GhH+lTv01Fj7emi77JJtm4UgQcmSv8y6hx+7VcaM=;
-        b=RCEvu7U76hZJV/D/9vjpEivy1lmS2sfrFFs0amsbU/62wgHGhkhLalNo8jgBIADBtG
-         ZghR4ut9oFVXtjivYiLlje45KRt8UrEnPvTZjRth9gamxuXCFpAZ+lGwdLundn1SIwEn
-         90Q5oUhYCqk0UzUScYJY0cOyrPZs0XNZxBG3wdcZZ0xWSr741YUpzmh9GwDD9N3/HWeW
-         H/QaASLIJgX4Gi3GbZww2xbK7jSDZrNXOXyMymbVhnf1YciMGeOkFb83Ta5OiMv7uG/k
-         JYJVEM2mKwPmN8SMmK8PLn/tmsPVMsDxm88yNYCAbBrBgAow1fV0wJqDAWUorb8aC/x0
-         CMXA==
-X-Gm-Message-State: APjAAAWeprDwh2oFIfchdwIeAi9PlD8yX7dS6vnqX8NxjmGBcyoW+Gti
-        7qV1g+1wwvubQER3Nwyb788utl1I
-X-Google-Smtp-Source: APXvYqxnV3nb/q4uy+L2rUWwz9UZlvNCyFsUzxgcQG4BajmKp/4rH+WqeHW/QL79FLpx5lTeAmqV6A==
-X-Received: by 2002:a63:8f5c:: with SMTP id r28mr7323021pgn.351.1581494497731;
-        Wed, 12 Feb 2020 00:01:37 -0800 (PST)
-Received: from localhost ([106.51.21.91])
-        by smtp.gmail.com with ESMTPSA id t63sm7164236pfb.70.2020.02.12.00.01.36
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 12 Feb 2020 00:01:37 -0800 (PST)
-Date:   Wed, 12 Feb 2020 13:31:35 +0530
-From:   afzal mohammed <afzal.mohd.ma@gmail.com>
-To:     linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, x86@kernel.org,
-        linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-c6x-dev@linux-c6x.org, linux-omap@vger.kernel.org,
-        linux-alpha@vger.kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Michal Marek <michal.lkml@markovi.net>
-Subject: [PATCH 00/18] genirq: Remove setup_irq()
-Message-ID: <cover.1581478323.git.afzal.mohd.ma@gmail.com>
+        id S1728488AbgBLIDN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Feb 2020 03:03:13 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:59110 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728250AbgBLIDM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Feb 2020 03:03:12 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01C81xBJ095149;
+        Wed, 12 Feb 2020 02:01:59 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1581494519;
+        bh=NMTGmOJTTsRgJdge33dgFYwCOb7FpIs1fPjpfpLUBhM=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Szq2nQYzAVvT+ophs58XAJBCUwogpwmwVdiXQghZG5ljD+XDAXj1yQgiCxGUpkaRi
+         HYeV9e4Y8XNBSzCdW3NznHpqDpccIt5dfrPcpmX276vS34FBX1AhfVXo88ZCknfzWh
+         TSGbdN6dZrqBXJOMUYJ4Vv0JZNVu/RQIN0BXLkjw=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01C81xf1023194
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 12 Feb 2020 02:01:59 -0600
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 12
+ Feb 2020 02:01:59 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 12 Feb 2020 02:01:59 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01C81taM069601;
+        Wed, 12 Feb 2020 02:01:56 -0600
+Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
+ graph card
+To:     Tony Lindgren <tony@atomide.com>, Mark Brown <broonie@kernel.org>
+CC:     Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, <alsa-devel@alsa-project.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "Arthur D ." <spinal.by@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
+References: <20200211171645.41990-1-tony@atomide.com>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+Message-ID: <cd46c6ec-80e3-332f-4922-e58a3acbfc61@ti.com>
+Date:   Wed, 12 Feb 2020 10:02:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.3 (2018-01-21)
+In-Reply-To: <20200211171645.41990-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-While trying to understand internals of irq handling, came across a
-thread [1] in which tglx was referring to avoid usage of setup_irq().
-Existing callers of setup_irq() reached mostly via 'init_IRQ()' &
-'time_init()', while memory allocators are ready by 'mm_init()'.
-
-Hence instances of setup_irq() is replaced by request_irq() &
-setup_irq() (along with remove_irq()) definition deleted in the last
-patch.
-
-Seldom remove_irq() usage has been observed coupled with setup_irq(),
-wherever that has been found, it too has been replaced by free_irq().
-
-Build & boot tested on ARM & x86_64 platforms (ensured that on the
-machines used for testing there was an existing setup_irq()
-invocation occuring at runtime)
-
-Much of the changes were created using Coccinelle with an intention
-to learn it. spatch command was directly run w/ semantic patch below.
-But not everything could be automated.
-
-Searching with 'git grep -n '\Wsetup_irq('' & avoiding the irrelevant
-ones, 153 invocation's of setup_irq() were found. 112 could be replaced
-w/ cocci, of which in a few files some desired hunks were missing or
-not as expected, these were fixed up manually. Also the remaining 41
-had to be done manually.
-
-Although cocci could replace 112, because of line continue not
-happening at paranthesis for request_irq(), around 80 had to be
-manually aligned in the request_irq() statement. Problem was with my
-below cocci snippet,
-
-- setup_irq(E1,&act);
-+ if (request_irq(E1,f_handler,f_flags,f_name,f_dev_id))
-+ 	pr_err("request_irq() on %s failed\n", f_name);
-
-Instead of the above, if below is used, line continue happens exactly
-at paranthesis, but it lacks addition of printing on request_irq()
-failure where existing setup_irq() failure was not doing it.
-
-- setup_irq(E1,&act)
-+ request_irq(E1,f_handler,f_flags,f_name,f_dev_id)
-
-Above had an additional advantage of replacing instances of
-if (setup_irq()) & BUG(setup_irq()), but luckily those instances were
-very few.
-
-So though many changes could be automated, there are a considerable
-amount of manual changes, please review carefully especially mips &
-alpha.
-
-Usage of setup_percpu_irq() is untouched w/ this series.
-
-There are 2 checkpatch warning about usage of BUG() [which was already
-there w/ setup_irq()], they are left as is as it seems appropriate for
-tick timer interrupt.
-
-[1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
-
---->8---
-
-@r1@
-identifier ret;
-@@
-
-(
-setup_irq(...);
-|
-ret = setup_irq(...);
-)
 
 
-@r2 depends on r1@
-identifier act;
-@@
+On 11/02/2020 19.16, Tony Lindgren wrote:
+> We can have multiple connections on a single McBSP instance configured
+> with audio graph card when using TDM (Time Division Multiplexing). Let's
+> allow that by configuring dais dynamically.
 
-static struct irqaction act = {
-};
+It is still one DAI...
+If you have multiple codec connected to the same I2S lines, but the
+codecs communicate within different time slots, you still have one DAI
+on the CPU side, but multiple codecs (codec DAIs) with different TDM slot.
 
-@r11 depends on r2@
-identifier r2.act;
-identifier f_handler;
-@@
+> See Documentation/devicetree/bindings/sound/audio-graph-card.txt and
+> Documentation/devicetree/bindings/graph.txt for more details for
+> multiple endpoints.
 
-(
-- act.handler = f_handler;
-|
-static struct irqaction act = {
- .handler = f_handler,
-};
-)
+See the example for 'Multi DAI with DPCM' in audio-graph-card.txt
+The PCM3168a have 2 DAIs: playback and capture, but you can have
+multiple endpoints within a DAI.
 
-@r12 depends on r2@
-identifier r2.act;
-expression f_name;
-@@
+> I've tested this with droid4 where cpcap pmic and modem voice are both
+> both wired to mcbsp3. I've also tested this on droid4 both with and
+> without the pending modem audio codec driver that is waiting for n_gsm
+> serdev dependencies to clear.
 
-(
-- act.name = f_name;
-|
-static struct irqaction act = {
- .name = f_name,
-};
-)
+What this patch you effectively just creating dummy-dais on top of the
+real McBSP DAI.
+You also rename the DAIs, which might break ams-delta.
 
-@r15 depends on r2@
-identifier r2.act;
-expression f_dev_id;
-@@
+We still have legacy support in
+omap-twl4030.c
+omap3pandora.c
+osk5912.c
+rx51.c
 
-(
-- act.dev_id = f_dev_id;
-|
-static struct irqaction act = {
- .dev_id = f_dev_id,
-};
-)
+which will break with the renamed DAI. On the other hand I think the
+legacy support can be dropped from them.
 
-@r16 depends on r2@
-identifier r2.act;
-expression f_flags;
-@@
+I know it was discussed, but can not find the mail:
+Can you brief again on the audio connection?
+Do you have branch with working code?
 
-(
-- act.flags = f_flags;
-|
-static struct irqaction act = {
- .flags = f_flags,
-};
-)
+- Péter
 
-@r21 depends on r2@
-identifier r2.act;
-@@
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Arthur D. <spinal.by@gmail.com>
+> Cc: Jarkko Nikula <jarkko.nikula@bitmer.com>
+> Cc: Merlijn Wajer <merlijn@wizzup.org>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  sound/soc/ti/omap-mcbsp-priv.h |  2 +
+>  sound/soc/ti/omap-mcbsp.c      | 76 ++++++++++++++++++++++++----------
+>  2 files changed, 55 insertions(+), 23 deletions(-)
+> 
+> diff --git a/sound/soc/ti/omap-mcbsp-priv.h b/sound/soc/ti/omap-mcbsp-priv.h
+> --- a/sound/soc/ti/omap-mcbsp-priv.h
+> +++ b/sound/soc/ti/omap-mcbsp-priv.h
+> @@ -262,6 +262,8 @@ struct omap_mcbsp {
+>  	struct omap_mcbsp_platform_data *pdata;
+>  	struct omap_mcbsp_st_data *st_data;
+>  	struct omap_mcbsp_reg_cfg cfg_regs;
+> +	struct snd_soc_dai_driver *dais;
+> +	int dai_count;
+>  	struct snd_dmaengine_dai_dma_data dma_data[2];
+>  	unsigned int dma_req[2];
+>  	int dma_op_mode;
+> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+> --- a/sound/soc/ti/omap-mcbsp.c
+> +++ b/sound/soc/ti/omap-mcbsp.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/pm_runtime.h>
+>  #include <linux/of.h>
+>  #include <linux/of_device.h>
+> +#include <linux/of_graph.h>
+>  #include <sound/core.h>
+>  #include <sound/pcm.h>
+>  #include <sound/pcm_params.h>
+> @@ -1304,23 +1305,53 @@ static int omap_mcbsp_remove(struct snd_soc_dai *dai)
+>  	return 0;
+>  }
+>  
+> -static struct snd_soc_dai_driver omap_mcbsp_dai = {
+> -	.probe = omap_mcbsp_probe,
+> -	.remove = omap_mcbsp_remove,
+> -	.playback = {
+> -		.channels_min = 1,
+> -		.channels_max = 16,
+> -		.rates = OMAP_MCBSP_RATES,
+> -		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
+> -	},
+> -	.capture = {
+> -		.channels_min = 1,
+> -		.channels_max = 16,
+> -		.rates = OMAP_MCBSP_RATES,
+> -		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
+> -	},
+> -	.ops = &mcbsp_dai_ops,
+> -};
+> +static int omap_mcbsp_init_dais(struct omap_mcbsp *mcbsp)
+> +{
+> +	struct device_node *np = mcbsp->dev->of_node;
+> +	int i;
+> +
+> +	if (np)
+> +		mcbsp->dai_count = of_graph_get_endpoint_count(np);
+> +
+> +	if (!mcbsp->dai_count)
+> +		mcbsp->dai_count = 1;
+> +
+> +	mcbsp->dais = devm_kcalloc(mcbsp->dev, mcbsp->dai_count,
+> +				   sizeof(*mcbsp->dais), GFP_KERNEL);
+> +	if (!mcbsp->dais)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < mcbsp->dai_count; i++) {
+> +		struct snd_soc_dai_driver *dai = &mcbsp->dais[i];
+> +
+> +		dai->name = devm_kasprintf(mcbsp->dev, GFP_KERNEL, "%s-dai%i",
+> +					   dev_name(mcbsp->dev), i);
+> +
+> +		if (i == 0) {
+> +			dai->probe = omap_mcbsp_probe;
+> +			dai->remove = omap_mcbsp_remove;
+> +			dai->ops = &mcbsp_dai_ops;
+> +		}
+> +		dai->playback.channels_min = 1;
+> +		dai->playback.channels_max = 16;
+> +		dai->playback.rates = OMAP_MCBSP_RATES;
+> +		if (mcbsp->pdata->reg_size == 2)
+> +			dai->playback.formats = SNDRV_PCM_FMTBIT_S16_LE;
+> +		else
+> +			dai->playback.formats = SNDRV_PCM_FMTBIT_S16_LE |
+> +						SNDRV_PCM_FMTBIT_S32_LE;
+> +		dai->capture.channels_min = 1;
+> +		dai->capture.channels_max = 16;
+> +		dai->capture.rates = OMAP_MCBSP_RATES;
+> +		if (mcbsp->pdata->reg_size == 2)
+> +			dai->capture.formats = SNDRV_PCM_FMTBIT_S16_LE;
+> +		else
+> +			dai->capture.formats = SNDRV_PCM_FMTBIT_S16_LE |
+> +					       SNDRV_PCM_FMTBIT_S32_LE;
+> +	}
+> +
+> +	return 0;
+> +}
+>  
+>  static const struct snd_soc_component_driver omap_mcbsp_component = {
+>  	.name		= "omap-mcbsp",
+> @@ -1409,18 +1440,17 @@ static int asoc_mcbsp_probe(struct platform_device *pdev)
+>  	mcbsp->dev = &pdev->dev;
+>  	platform_set_drvdata(pdev, mcbsp);
+>  
+> -	ret = omap_mcbsp_init(pdev);
+> +	ret = omap_mcbsp_init_dais(mcbsp);
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (mcbsp->pdata->reg_size == 2) {
+> -		omap_mcbsp_dai.playback.formats = SNDRV_PCM_FMTBIT_S16_LE;
+> -		omap_mcbsp_dai.capture.formats = SNDRV_PCM_FMTBIT_S16_LE;
+> -	}
+> +	ret = omap_mcbsp_init(pdev);
+> +	if (ret)
+> +		return ret;
+>  
+>  	ret = devm_snd_soc_register_component(&pdev->dev,
+>  					      &omap_mcbsp_component,
+> -					      &omap_mcbsp_dai, 1);
+> +					      mcbsp->dais, mcbsp->dai_count);
+>  	if (ret)
+>  		return ret;
+>  
+> 
 
-- static struct irqaction act = {
-- ...
-- };
-
-@r22 depends on r2 && r11 && r12 && r15 && r16@
-identifier r2.act;
-identifier r11.f_handler;
-expression r12.f_name;
-expression r15.f_dev_id;
-expression r16.f_flags;
-expression E1;
-identifier ret;
-@@
-
-(
-- setup_irq(E1,&act);
-+ if (request_irq(E1,f_handler,f_flags,f_name,f_dev_id))
-+ 	pr_err("request_irq() on %s failed\n", f_name);
-|
-- ret = setup_irq(E1,&act);
-+ ret = request_irq(E1,f_handler,f_flags,f_name,f_dev_id);
-)
-
-@r23 depends on r2 && r11 && r12 && !r15 && r16@
-identifier r2.act;
-identifier r11.f_handler;
-expression r12.f_name;
-expression r16.f_flags;
-expression E1;
-identifier ret;
-@@
-
-(
-- setup_irq(E1,&act);
-+ if (request_irq(E1,f_handler,f_flags,f_name,NULL))
-+ 	pr_err("request_irq() on %s failed\n", f_name);
-|
-- ret = setup_irq(E1,&act);
-+ ret = request_irq(E1,f_handler,f_flags,f_name,NULL);
-)
-
-@r24 depends on r2 && r11 && r12 && r15 && !r16@
-identifier r2.act;
-identifier r11.f_handler;
-expression r12.f_name;
-expression r15.f_dev_id;
-expression E1;
-identifier ret;
-@@
-
-(
-- setup_irq(E1,&act);
-+ if (request_irq(E1,f_handler,0,f_name,f_dev_id))
-+ 	pr_err("request_irq() on %s failed\n", f_name);
-|
-- ret = setup_irq(E1,&act);
-+ ret = request_irq(E1,f_handler,0,f_name,f_dev_id);
-)
-
-@r25 depends on r2 && r11 && r12 && !r15 && !r16@
-identifier r2.act;
-identifier r11.f_handler;
-expression r12.f_name;
-expression E1;
-identifier ret;
-@@
-
-(
-- setup_irq(E1,&act);
-+ if (request_irq(E1,f_handler,0,f_name,NULL))
-+ 	pr_err("request_irq() on %s failed\n", f_name);
-|
-- ret = setup_irq(E1,&act);
-+ ret = request_irq(E1,f_handler,0,f_name,NULL);
-)
-
---->8---
-
-afzal mohammed (18):
-  alpha: replace setup_irq() by request_irq()
-  ARM: replace setup_irq() by request_irq()
-  c6x: replace setup_irq() by request_irq()
-  hexagon: replace setup_irq() by request_irq()
-  ia64: replace setup_irq() by request_irq()
-  m68k: Replace setup_irq() by request_irq()
-  microblaze: Replace setup_irq() by request_irq()
-  MIPS: Replace setup_irq() by request_irq()
-  parisc: Replace setup_irq() by request_irq()
-  powerpc: Replace setup_irq() by request_irq()
-  s390: replace setup_irq() by request_irq()
-  sh: replace setup_irq() by request_irq()
-  unicore32: replace setup_irq() by request_irq()
-  x86: Replace setup_irq() by request_irq()
-  xtensa: replace setup_irq() by request_irq()
-  clocksource: Replace setup_irq() by request_irq()
-  irqchip: Replace setup_irq() by request_irq()
-  genirq: Remove setup_irq() and remove_irq()
-
- arch/alpha/kernel/irq_alpha.c                 | 29 ++-------
- arch/alpha/kernel/irq_i8259.c                 |  8 +--
- arch/alpha/kernel/irq_impl.h                  |  7 +--
- arch/alpha/kernel/irq_pyxis.c                 |  3 +-
- arch/alpha/kernel/sys_alcor.c                 |  3 +-
- arch/alpha/kernel/sys_cabriolet.c             |  3 +-
- arch/alpha/kernel/sys_eb64p.c                 |  3 +-
- arch/alpha/kernel/sys_marvel.c                |  2 +-
- arch/alpha/kernel/sys_miata.c                 |  6 +-
- arch/alpha/kernel/sys_ruffian.c               |  3 +-
- arch/alpha/kernel/sys_rx164.c                 |  3 +-
- arch/alpha/kernel/sys_sx164.c                 |  3 +-
- arch/alpha/kernel/sys_wildfire.c              |  7 +--
- arch/alpha/kernel/time.c                      |  6 +-
- arch/arm/mach-cns3xxx/core.c                  | 10 +---
- arch/arm/mach-ebsa110/core.c                  | 10 +---
- arch/arm/mach-ep93xx/timer-ep93xx.c           | 12 ++--
- arch/arm/mach-footbridge/dc21285-timer.c      | 11 +---
- arch/arm/mach-footbridge/isa-irq.c            |  8 +--
- arch/arm/mach-footbridge/isa-timer.c          | 11 +---
- arch/arm/mach-iop32x/time.c                   | 12 ++--
- arch/arm/mach-mmp/time.c                      | 11 +---
- arch/arm/mach-omap1/pm.c                      | 22 ++++---
- arch/arm/mach-omap1/time.c                    | 10 +---
- arch/arm/mach-omap1/timer32k.c                | 10 +---
- arch/arm/mach-omap2/timer.c                   | 11 +---
- arch/arm/mach-rpc/time.c                      |  8 +--
- arch/arm/mach-spear/time.c                    |  9 +--
- arch/arm/plat-orion/time.c                    | 10 +---
- arch/c6x/platforms/timer64.c                  | 11 +---
- arch/hexagon/kernel/smp.c                     | 17 +++---
- arch/hexagon/kernel/time.c                    | 11 +---
- arch/ia64/kernel/irq_ia64.c                   | 42 +++++--------
- arch/ia64/kernel/mca.c                        | 51 +++++-----------
- arch/m68k/68000/timers.c                      |  9 +--
- arch/m68k/coldfire/pit.c                      |  9 +--
- arch/m68k/coldfire/sltimers.c                 | 19 ++----
- arch/m68k/coldfire/timers.c                   | 19 ++----
- arch/microblaze/kernel/timer.c                | 10 +---
- arch/mips/alchemy/common/time.c               | 11 +---
- arch/mips/ar7/irq.c                           | 18 +++---
- arch/mips/ath25/ar2315.c                      |  9 +--
- arch/mips/ath25/ar5312.c                      |  9 +--
- arch/mips/bcm63xx/irq.c                       | 38 +++++-------
- arch/mips/cobalt/irq.c                        | 14 ++---
- arch/mips/dec/setup.c                         | 59 ++++++++-----------
- arch/mips/emma/markeins/irq.c                 | 20 +++----
- arch/mips/include/asm/sni.h                   |  2 +-
- arch/mips/jazz/irq.c                          | 12 +---
- arch/mips/kernel/cevt-bcm1480.c               | 11 +---
- arch/mips/kernel/cevt-ds1287.c                |  9 +--
- arch/mips/kernel/cevt-gt641xx.c               |  9 +--
- arch/mips/kernel/cevt-r4k.c                   |  4 +-
- arch/mips/kernel/cevt-sb1250.c                | 11 +---
- arch/mips/kernel/cevt-txx9.c                  | 11 +---
- arch/mips/kernel/i8253.c                      | 10 +---
- arch/mips/kernel/rtlx-mt.c                    |  8 +--
- arch/mips/kernel/smp.c                        | 33 ++++-------
- arch/mips/lasat/interrupt.c                   | 10 +---
- arch/mips/loongson2ef/common/bonito-irq.c     |  9 +--
- .../loongson2ef/common/cs5536/cs5536_mfgpt.c  | 10 +---
- arch/mips/loongson2ef/fuloong-2e/irq.c        | 14 ++---
- arch/mips/loongson2ef/lemote-2f/irq.c         | 20 ++-----
- arch/mips/loongson32/common/irq.c             | 21 ++++---
- arch/mips/loongson32/common/time.c            | 12 ++--
- arch/mips/loongson64/hpet.c                   | 10 +---
- arch/mips/mti-malta/malta-int.c               | 10 +---
- arch/mips/netlogic/xlr/fmn.c                  |  9 +--
- arch/mips/pmcs-msp71xx/msp_irq.c              | 28 ++++-----
- arch/mips/pmcs-msp71xx/msp_smp.c              | 22 ++-----
- arch/mips/pmcs-msp71xx/msp_time.c             |  7 ++-
- arch/mips/ralink/cevt-rt3352.c                | 17 +++---
- arch/mips/sgi-ip22/ip22-eisa.c                |  8 +--
- arch/mips/sgi-ip22/ip22-int.c                 | 49 +++++----------
- arch/mips/sgi-ip32/ip32-irq.c                 | 18 ++----
- arch/mips/sni/a20r.c                          |  4 +-
- arch/mips/sni/irq.c                           |  8 +--
- arch/mips/sni/pcit.c                          |  8 ++-
- arch/mips/sni/rm200.c                         | 23 +++-----
- arch/mips/sni/time.c                          | 10 +---
- arch/mips/vr41xx/common/irq.c                 |  9 +--
- arch/parisc/kernel/irq.c                      | 21 ++-----
- arch/powerpc/platforms/85xx/mpc85xx_cds.c     | 10 +---
- arch/powerpc/platforms/8xx/cpm1.c             |  9 +--
- arch/powerpc/platforms/8xx/m8xx_setup.c       |  9 +--
- arch/powerpc/platforms/chrp/setup.c           | 14 ++---
- arch/powerpc/platforms/powermac/pic.c         | 31 ++++------
- arch/powerpc/platforms/powermac/smp.c         |  9 +--
- arch/s390/kernel/irq.c                        |  8 +--
- arch/sh/boards/mach-cayman/irq.c              | 18 ++----
- arch/sh/drivers/dma/dma-pvr2.c                |  9 +--
- arch/unicore32/kernel/time.c                  | 11 +---
- arch/x86/kernel/irqinit.c                     | 18 +++---
- arch/x86/kernel/time.c                        | 10 +---
- arch/xtensa/kernel/smp.c                      |  8 +--
- arch/xtensa/kernel/time.c                     | 10 +---
- drivers/clocksource/bcm2835_timer.c           |  8 +--
- drivers/clocksource/bcm_kona_timer.c          | 10 +---
- drivers/clocksource/dw_apb_timer.c            | 11 +---
- drivers/clocksource/exynos_mct.c              | 12 ++--
- drivers/clocksource/mxs_timer.c               | 10 +---
- drivers/clocksource/nomadik-mtu.c             | 11 +---
- drivers/clocksource/samsung_pwm_timer.c       | 12 ++--
- drivers/clocksource/timer-atlas7.c            | 50 ++++++++--------
- drivers/clocksource/timer-cs5535.c            | 10 +---
- drivers/clocksource/timer-efm32.c             | 10 +---
- drivers/clocksource/timer-fsl-ftm.c           | 10 +---
- drivers/clocksource/timer-imx-gpt.c           | 10 +---
- drivers/clocksource/timer-integrator-ap.c     | 11 +---
- drivers/clocksource/timer-meson6.c            | 11 +---
- drivers/clocksource/timer-orion.c             |  9 +--
- drivers/clocksource/timer-prima2.c            | 11 +---
- drivers/clocksource/timer-pxa.c               | 10 +---
- drivers/clocksource/timer-sp804.c             | 11 +---
- drivers/clocksource/timer-u300.c              |  9 +--
- drivers/clocksource/timer-vf-pit.c            | 10 +---
- drivers/clocksource/timer-vt8500.c            | 11 +---
- drivers/clocksource/timer-zevio.c             | 13 ++--
- drivers/irqchip/irq-i8259.c                   |  9 +--
- drivers/irqchip/irq-ingenic.c                 | 11 ++--
- drivers/parisc/eisa.c                         |  8 +--
- drivers/s390/cio/airq.c                       |  8 +--
- drivers/s390/cio/cio.c                        |  8 +--
- include/linux/dw_apb_timer.h                  |  1 -
- include/linux/irq.h                           |  2 -
- kernel/irq/manage.c                           | 44 --------------
- 126 files changed, 528 insertions(+), 1111 deletions(-)
-
-
-base-commit: v5.6-rc1
--- 
-2.24.1
-
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
