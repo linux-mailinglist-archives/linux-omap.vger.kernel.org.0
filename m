@@ -2,48 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFE4159E1B
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 01:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1363B159E1C
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 01:40:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728128AbgBLAkS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Feb 2020 19:40:18 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:33819 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728070AbgBLAkS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Feb 2020 19:40:18 -0500
-Received: by mail-lj1-f196.google.com with SMTP id x7so285899ljc.1
-        for <linux-omap@vger.kernel.org>; Tue, 11 Feb 2020 16:40:17 -0800 (PST)
+        id S1728129AbgBLAkU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Feb 2020 19:40:20 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:38328 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728103AbgBLAkU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Feb 2020 19:40:20 -0500
+Received: by mail-lj1-f195.google.com with SMTP id w1so267927ljh.5
+        for <linux-omap@vger.kernel.org>; Tue, 11 Feb 2020 16:40:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=jY/whPnhAuxzTC/NjaKtmOflD4QjDSvq1sNUEMZh1qc=;
-        b=XlSNMXMomGlL98MVH2Y38zJT3ch0ovUnYddswlRj7u5ofxM1PB+ri+IOw8xvPX4+cW
-         zpqqrQCEBXvephKadYoAWUNAB0t79nwBfEr/CM7bkwJcIrj6/EM+t5DLuJu1P2URhzNl
-         IpWbcXL/MfGXqrXPUalE/E1qu8Vbirx3jkfZxzj/DWddR1CI/BoH9S7h5TCWPL4i1SRP
-         Qew5KonrCxJbbetz5dLhj/79jC8qxtYICANMMs5VLxPHZCKINfLQaq21y/Nu2HIFfPD7
-         3qIl93NiAVU1oqeHJdRRXSLtdQeCeTxCKVb2wgaS9ey5OXNYq1o5Ss+G+6did3W0pMIv
-         eRRg==
+        bh=LKDP1hyiuSxJLJzh6PxtETHxlHhTQ3RNvBVBm9ROckc=;
+        b=TWER0fxRPSTs5r+v24XbrG3jeVC7fikohs6urpewgZ329P+lFVUPmGspl4I5MUzM76
+         XyA9DhMCVkyg6gxFfiOuRN8tviL6kEP9U4TpAoAZ79CQOuDU4tyOYwkPMHjhh7GAgkHy
+         xS2AH5iaJxI+IR0DStViI6ZqLf6n7fwHMes7KfTavO20xrces1xeWPi1ajjwNUdREz8/
+         PcqJevItqEi8/PB+RPGD2Qf6sQOwATSUy8J+hcoy/OyVF5bgZef6ZTQ6egA0T8Avn4/u
+         27aArAd4t87sKe+Dd6a2ApCQNEV2agN2JeOk+TXpdTsu8g75dHO82T+suDHD8lgTH1tA
+         I68A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=jY/whPnhAuxzTC/NjaKtmOflD4QjDSvq1sNUEMZh1qc=;
-        b=n3pwPXqHVhCaAzPs1pF4aFqobpXw2V1m5HK6ZF7RHrkI9j9yh6XpcoEYww9j0XDQdq
-         NyuD3lZ7MP0q1/VbglG3pDPTrbB4se7/COFYXriLhPpV0utAlFnBNBbJMHfor46t6q1y
-         +20AbkGCWRC8ZiHlKe4g1qdTwFXfxa//KVx4vYgEIHOLItpScF8iPKkBd8NoS7DtHUpj
-         TT494U94CiJ+0daVgO39K/UGKVGVAYzJtOEDHzPYzS029ulaUc8NJ/iUlNUSNDxA2Mjy
-         oyBMQhyEujQtW+QKGt9wDv+OadkPsW+IM1WiyEVBG+tVPOJbONHfTXRYKEOLULV4Euzq
-         593g==
-X-Gm-Message-State: APjAAAUIqudi13C0ob8T8+idUb1+kPgqHoJiPitmxiXwgHdgTOmGDt6N
-        IccV8I0bq6gIzJmw/ciTUgU=
-X-Google-Smtp-Source: APXvYqxe6yfLSQK+5DB76pAsO2JVz92J7q3+56L6/lV9a5KfPuaDfJSuV5dzIjVYQ/fXZ7JXD9vMcg==
-X-Received: by 2002:a05:651c:321:: with SMTP id b1mr5965696ljp.62.1581468016319;
-        Tue, 11 Feb 2020 16:40:16 -0800 (PST)
+        bh=LKDP1hyiuSxJLJzh6PxtETHxlHhTQ3RNvBVBm9ROckc=;
+        b=s9oruJWV/aCgJ/XhwyWzLkN3YEkbrdnX3IBPb3sjCLCtad/esQ3yszsamIn/yxgFxT
+         boOiMzuDb7OsnMA9FQRu9m8CL3bAyCqgRRNOequfdfq7rvSJv9NlnyUokRxYaG1VKhkQ
+         SHVFuD1wuKLw8mQ3y6SygzyBYrhoSi11PC9BTSnrw324tPaMkdGN9WRqGTHLqfBYJZVd
+         iBwjXZw+Obgib2sVJMREw0MuclYuLLFaTsUd9SO7BbC1VcR8RM9zIZdx6RLzuh9HFtqW
+         yPOyKdZ1Gh5uNSBCe7YYByKFn6dfX/mdk/NuNBm8RkOP94zQJ55cS2EyzKD0Y1RYrb3R
+         2yGw==
+X-Gm-Message-State: APjAAAX8g5MZ0fDciDA3ANLR0fqo8dDaNEadTifkfuXrZy/SNkM5luuZ
+        AjNKlAQg8tEFwE4VjGPe36M=
+X-Google-Smtp-Source: APXvYqzpKF76+7JafsOPb+hJUBKmkk6qQI4meZuR66EOWTQPQWrs9dxfJECmmgTjt7dnRy0P3ahykw==
+X-Received: by 2002:a2e:97cc:: with SMTP id m12mr5871701ljj.241.1581468017616;
+        Tue, 11 Feb 2020 16:40:17 -0800 (PST)
 Received: from z50.gdansk-morena.vectranet.pl (109241122244.gdansk.vectranet.pl. [109.241.122.244])
-        by smtp.gmail.com with ESMTPSA id e8sm3621935ljb.45.2020.02.11.16.40.14
+        by smtp.gmail.com with ESMTPSA id e8sm3621935ljb.45.2020.02.11.16.40.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2020 16:40:15 -0800 (PST)
+        Tue, 11 Feb 2020 16:40:17 -0800 (PST)
 From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>
@@ -53,9 +53,9 @@ Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         linux-mtd@lists.infradead.org,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Subject: [RFC PATCH 03/14] ARM: OMAP1: ams-delta: Provide board specific partition info
-Date:   Wed, 12 Feb 2020 01:39:18 +0100
-Message-Id: <20200212003929.6682-4-jmkrzyszt@gmail.com>
+Subject: [RFC PATCH 04/14 v4] mtd: rawnand: ams-delta: Drop board specific partition info
+Date:   Wed, 12 Feb 2020 01:39:19 +0100
+Message-Id: <20200212003929.6682-5-jmkrzyszt@gmail.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200212003929.6682-1-jmkrzyszt@gmail.com>
 References: <20200212003929.6682-1-jmkrzyszt@gmail.com>
@@ -66,71 +66,76 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Now as the Amstrad Delta NAND driver supports fetching information on
-MTD partitions from device platform data, add partition info to the
-NAND device configuration.
+Now as we support fetching partition info from device platform data and
+the Amstrad Delta board file provides that info, drop it from the
+driver code.
+
+v2: rebase on top of gpio_nand_platdata extension
 
 Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
 ---
- arch/arm/mach-omap1/board-ams-delta.c | 35 +++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+Changelog:
+v4: rebase on top of gpio_nand_platdata driver/board extensions,
+  - drop no longer required command line parser related bits,
+  - adjust commit description,
+  - move OF fix to a separate patch.
+v3: add information on the requirement for passing partition info via
+    kernel command line to the board Kconfig entry help text.
+v2: fix a typo poitned out by Aaro - thanks!,
+  - fix device_node not passed to OF parser via mtd_info,
+  - commit message reworded and reformatted a bit for better
+    readability.
 
-diff --git a/arch/arm/mach-omap1/board-ams-delta.c b/arch/arm/mach-omap1/board-ams-delta.c
-index a2aa7a12b374..f4d2ef97099e 100644
---- a/arch/arm/mach-omap1/board-ams-delta.c
-+++ b/arch/arm/mach-omap1/board-ams-delta.c
-@@ -17,6 +17,8 @@
- #include <linux/input.h>
- #include <linux/interrupt.h>
- #include <linux/leds.h>
-+#include <linux/mtd/nand-gpio.h>
-+#include <linux/mtd/partitions.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/consumer.h>
- #include <linux/regulator/fixed.h>
-@@ -294,9 +296,42 @@ struct modem_private_data {
- 
- static struct modem_private_data modem_priv;
- 
-+/*
-+ * Define partitions for flash device
-+ */
-+
-+static struct mtd_partition partition_info[] = {
-+	{ .name		= "Kernel",
-+	  .offset	= 0,
-+	  .size		= 3 * SZ_1M + SZ_512K },
-+	{ .name		= "u-boot",
-+	  .offset	= 3 * SZ_1M + SZ_512K,
-+	  .size		= SZ_256K },
-+	{ .name		= "u-boot params",
-+	  .offset	= 3 * SZ_1M + SZ_512K + SZ_256K,
-+	  .size		= SZ_256K },
-+	{ .name		= "Amstrad LDR",
-+	  .offset	= 4 * SZ_1M,
-+	  .size		= SZ_256K },
-+	{ .name		= "File system",
-+	  .offset	= 4 * SZ_1M + 1 * SZ_256K,
-+	  .size		= 27 * SZ_1M },
-+	{ .name		= "PBL reserved",
-+	  .offset	= 32 * SZ_1M - 3 * SZ_256K,
-+	  .size		=  3 * SZ_256K },
-+};
-+
-+static struct gpio_nand_platdata nand_platdata = {
-+	.parts		= partition_info,
-+	.num_parts	= ARRAY_SIZE(partition_info),
-+};
-+
- static struct platform_device ams_delta_nand_device = {
- 	.name	= "ams-delta-nand",
- 	.id	= -1,
-+	.dev	= {
-+		.platform_data = &nand_platdata,
-+	},
+ drivers/mtd/nand/raw/ams-delta.c | 29 ++---------------------------
+ 1 file changed, 2 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/mtd/nand/raw/ams-delta.c b/drivers/mtd/nand/raw/ams-delta.c
+index fbab7cc14607..25f121adea6f 100644
+--- a/drivers/mtd/nand/raw/ams-delta.c
++++ b/drivers/mtd/nand/raw/ams-delta.c
+@@ -42,31 +42,6 @@ struct ams_delta_nand {
+ 	bool			data_in;
  };
  
- #define OMAP_GPIO_LABEL		"gpio-0-15"
+-/*
+- * Define partitions for flash devices
+- */
+-
+-static const struct mtd_partition partition_info[] = {
+-	{ .name		= "Kernel",
+-	  .offset	= 0,
+-	  .size		= 3 * SZ_1M + SZ_512K },
+-	{ .name		= "u-boot",
+-	  .offset	= 3 * SZ_1M + SZ_512K,
+-	  .size		= SZ_256K },
+-	{ .name		= "u-boot params",
+-	  .offset	= 3 * SZ_1M + SZ_512K + SZ_256K,
+-	  .size		= SZ_256K },
+-	{ .name		= "Amstrad LDR",
+-	  .offset	= 4 * SZ_1M,
+-	  .size		= SZ_256K },
+-	{ .name		= "File system",
+-	  .offset	= 4 * SZ_1M + 1 * SZ_256K,
+-	  .size		= 27 * SZ_1M },
+-	{ .name		= "PBL reserved",
+-	  .offset	= 32 * SZ_1M - 3 * SZ_256K,
+-	  .size		=  3 * SZ_256K },
+-};
+-
+ static void ams_delta_write_commit(struct ams_delta_nand *priv)
+ {
+ 	gpiod_set_value(priv->gpiod_nwe, 0);
+@@ -222,8 +197,8 @@ static const struct nand_controller_ops ams_delta_ops = {
+ static int ams_delta_init(struct platform_device *pdev)
+ {
+ 	struct gpio_nand_platdata *pdata = dev_get_platdata(&pdev->dev);
+-	const struct mtd_partition *partitions = partition_info;
+-	int num_partitions = ARRAY_SIZE(partition_info);
++	const struct mtd_partition *partitions = NULL;
++	int num_partitions = 0;
+ 	struct ams_delta_nand *priv;
+ 	struct nand_chip *this;
+ 	struct mtd_info *mtd;
 -- 
 2.24.1
 
