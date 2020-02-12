@@ -2,112 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64AB715AB32
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 15:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4337315AB5D
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2020 15:52:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727101AbgBLOqZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Feb 2020 09:46:25 -0500
-Received: from muru.com ([72.249.23.125]:54896 "EHLO muru.com"
+        id S1727519AbgBLOv7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Feb 2020 09:51:59 -0500
+Received: from muru.com ([72.249.23.125]:54910 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727526AbgBLOqZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 12 Feb 2020 09:46:25 -0500
+        id S1727101AbgBLOv5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 12 Feb 2020 09:51:57 -0500
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4A8A680F6;
-        Wed, 12 Feb 2020 14:47:07 +0000 (UTC)
-Date:   Wed, 12 Feb 2020 06:46:20 -0800
+        by muru.com (Postfix) with ESMTPS id 276DF80F6;
+        Wed, 12 Feb 2020 14:52:41 +0000 (UTC)
+Date:   Wed, 12 Feb 2020 06:51:54 -0800
 From:   Tony Lindgren <tony@atomide.com>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        "Arthur D ." <spinal.by@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>
-Subject: Re: [PATCH] ASoC: cpcap: Implement set_tdm_slot for voice call
- support
-Message-ID: <20200212144620.GJ64767@atomide.com>
-References: <20200211181005.54008-1-tony@atomide.com>
- <ae2b7d9e-d05e-54ac-4f18-27cc8c4e81a0@ti.com>
+To:     Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-mtd@lists.infradead.org
+Subject: Re: [RFC PATCH 03/14] ARM: OMAP1: ams-delta: Provide board specific
+ partition info
+Message-ID: <20200212145154.GK64767@atomide.com>
+References: <20200212003929.6682-1-jmkrzyszt@gmail.com>
+ <20200212003929.6682-4-jmkrzyszt@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ae2b7d9e-d05e-54ac-4f18-27cc8c4e81a0@ti.com>
+In-Reply-To: <20200212003929.6682-4-jmkrzyszt@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Peter Ujfalusi <peter.ujfalusi@ti.com> [200212 09:18]:
-> On 11/02/2020 20.10, Tony Lindgren wrote:
-> > +static int cpcap_voice_set_tdm_slot(struct snd_soc_dai *dai,
-> > +				    unsigned int tx_mask, unsigned int rx_mask,
-> > +				    int slots, int slot_width)
-> > +{
-> > +	struct snd_soc_component *component = dai->component;
-> > +	struct cpcap_audio *cpcap = snd_soc_component_get_drvdata(component);
-> > +	int err, ts_mask, mask;
-> > +	bool voice_call;
-> > +
-> > +	/*
-> > +	 * Primitive test for voice call, probably needs more checks
-> > +	 * later on for 16-bit calls detected, Bluetooth headset etc.
-> > +	 */
-> > +	if (tx_mask == 0 && rx_mask == 1 && slot_width == 8)
-> > +		voice_call = true;
-> > +	else
-> > +		voice_call = false;
-> 
-> You only have voice call if only rx slot0 is in use?
+* Janusz Krzysztofik <jmkrzyszt@gmail.com> [200212 00:41]:
+> Now as the Amstrad Delta NAND driver supports fetching information on
+> MTD partitions from device platform data, add partition info to the
+> NAND device configuration.
 
-Yeah so it seems. Then there's the modem to wlcore bluetooth path that
-I have not looked at. But presumably that's again just configuring some
-tdm slot on the PMIC.
+Fine if you want hardcoded partition info :) Not sure if the partition
+info coming from bootloader is any better either.. Ideally there would
+be a partition table somewhere on the device like we have for disks..
 
-> If you record mono on the voice DAI, then rx_mask is also 1, no?
+Anyways, this is best merged together with the mtd patches so:
 
-It is above :) But maybe I don't follow what you're asking here and
-maybe you have some better check in mind.
-
-I have no idea where we would implement recording voice calls for
-example, I guess mcbsp could do that somewhere to dump out a tdm slot
-specific traffic.
-
-> > +
-> > +	ts_mask = 0x7 << CPCAP_BIT_MIC2_TIMESLOT0;
-> > +	ts_mask |= 0x7 << CPCAP_BIT_MIC1_RX_TIMESLOT0;
-> > +
-> > +	mask = (tx_mask & 0x7) << CPCAP_BIT_MIC2_TIMESLOT0;
-> > +	mask |= (rx_mask & 0x7) << CPCAP_BIT_MIC1_RX_TIMESLOT0;
-> > +
-> > +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_CDI,
-> > +				 ts_mask, mask);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	err = cpcap_set_samprate(cpcap, CPCAP_DAI_VOICE, slot_width * 1000);
-> > +	if (err)
-> > +		return err;
-> 
-> You will also set the sampling rate for voice in
-> cpcap_voice_hw_params(), but that is for normal playback/capture, right?
-
-Yeah so normal playback/capture is already working with cpcap codec driver
-with mainline Linux. The voice call needs to set rate to 8000.
-
-> > +
-> > +	err = cpcap_voice_call(cpcap, dai, voice_call);
-> > +	if (err)
-> > +		return err;
-> 
-> It feels like that these should be done via DAPM with codec to codec route?
-
-Sure if you have some better way of doing it :) Do you have an example to
-point me to?
-
-Regards,
-
-Tony
+Acked-by: Tony Lindgren <tony@atomide.com>
