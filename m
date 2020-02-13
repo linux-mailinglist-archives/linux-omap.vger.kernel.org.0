@@ -2,141 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8527915CD9A
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Feb 2020 22:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C6E215CDA6
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Feb 2020 22:57:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727896AbgBMVyy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Feb 2020 16:54:54 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:36926 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727845AbgBMVyy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Feb 2020 16:54:54 -0500
-Received: by mail-wm1-f67.google.com with SMTP id a6so8481400wme.2;
-        Thu, 13 Feb 2020 13:54:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=cc:references:subject:to:date:mime-version
-         :content-transfer-encoding:from:message-id:in-reply-to:user-agent;
-        bh=/H25Ntzq5GhZEzxDEWAUk2cWpXoHsQi11PWiKlH9h+Q=;
-        b=XIiVq9sNfiYBWhXPTTeOa3mYbejzfH7yYAutDvrsHNEnutkNt7xRJTbj8dw1e54jc+
-         Bu7ps6byEMh/oKpRo7PRH8jaC92i5V3dn+cu8EDfJUXaLK8pAeFZerZULXNQTMgc0cPU
-         SDR6OCQFjdSWNEXqeHbSEU9Oh4ka2EWhB64frK701HPWWfxc5oXi13oZtG0FHMZx91y4
-         mlesPlyk6jxf29dyfo/RrVnt5k2vykmvfZHi4HX3sh+VsxQR46jth8O1aQr1KD/IZOhN
-         8QPx8d47FliACI/KeJcEC43OLzGKBthKQn8tBc/RT30BtbVQv9tO9FqI7T2cMObVz02W
-         Fvjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:cc:references:subject:to:date:mime-version
-         :content-transfer-encoding:from:message-id:in-reply-to:user-agent;
-        bh=/H25Ntzq5GhZEzxDEWAUk2cWpXoHsQi11PWiKlH9h+Q=;
-        b=lZybpdNvnfs5VFJiErWZF/FqXoA71yjAGvPQjSxSk17ZACYzusSrePiiERi08JIqPe
-         FXQp/2pXoayQmThDWHbPYr+XpvtCWXaFykKP8NAj0QJmkEvQuaIBdVErp4pGi6oM4EU4
-         rOuQi6418BXcCUQchKuwZktZOF3nlMw9bsqrRVnWhB2+Pwd2ux65vSG0dCTDjAXfC2Jd
-         2v8fXiCKYzJp39MbYLW155DhWUl++jVYI7lEQF15xTjVq1USNiJRESB55gdXFRDtg/hh
-         l2lcs9FRhb1qoq4ytgnWM94mKx/C4j7oW+57hUUp3RM6ChAUmZ2u+9NaBgZ9GxpsD30r
-         3zLQ==
-X-Gm-Message-State: APjAAAVcacbIcLPGsQa7VmPXa0PLUMy+GdHnM37GGamzhMOz+wP7ouPC
-        0lvZP3NIorQ6mBslEGehXno=
-X-Google-Smtp-Source: APXvYqyVMW6smrU7FD6oXdtce0CP9biKgdLpKNSQz+uQRf7dSWWgjiJm71lhuPW7eYKvWtgD3yw2AQ==
-X-Received: by 2002:a7b:cb97:: with SMTP id m23mr117151wmi.37.1581630892601;
-        Thu, 13 Feb 2020 13:54:52 -0800 (PST)
-Received: from supervisor.net28 ([46.53.250.234])
-        by smtp.gmail.com with ESMTPSA id s139sm4805306wme.35.2020.02.13.13.54.51
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 13 Feb 2020 13:54:52 -0800 (PST)
-Content-Type: text/plain; charset=utf-8; format=flowed; delsp=yes
-Cc:     linux-bluetooth@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-References: <op.0fudjzcyhxa7s4@supervisor.net28>
- <20200211214705.GD16391@atomide.com> <op.0fuie5cdhxa7s4@supervisor.net28>
- <20200211232425.GE16391@atomide.com> <op.0fu85owhhxa7s4@supervisor.net28>
- <20200212150722.GF16391@atomide.com> <20200212162131.GI16391@atomide.com>
- <op.0fwkyxvihxa7s4@supervisor.net28> <20200213041112.GL16391@atomide.com>
- <op.0fw0oas5hxa7s4@supervisor.net28> <20200213161157.GN16391@atomide.com>
-Subject: Droid 4 WiFi firmware loading error
-To:     sre@kernel.org
-Date:   Fri, 14 Feb 2020 00:54:50 +0300
+        id S1727891AbgBMV54 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Feb 2020 16:57:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52962 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726780AbgBMV54 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 13 Feb 2020 16:57:56 -0500
+Received: from earth.universe (unknown [185.62.205.105])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6A6AD24680;
+        Thu, 13 Feb 2020 21:57:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581631074;
+        bh=R3sxgy+mdg91wW+6Haz7xIGPfOrm3a7jt0NPiy78oXs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AaThAp/E3n9sE1y/nfQxwj7a2ad1kqv6/94U62JPF+OMjk4D4LVrnnQaONZZMvUf4
+         ib5SF1kl+1R3mWxD1oqEr+AD2boAjT8df9f2eCqITcNxn4f+EIGXptWFDOBK+A4ZW5
+         GBmBwV3bJg+73/iwZfxW8tkDIT1Sb/o4zFsL6hpE=
+Received: by earth.universe (Postfix, from userid 1000)
+        id 00D9D3C0C83; Thu, 13 Feb 2020 22:57:51 +0100 (CET)
+Date:   Thu, 13 Feb 2020 22:57:51 +0100
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jyri Sarha <jsarha@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: [PATCH 2/3] ARM: dts: am437x-gp/epos-evm: drop unused panel
+ timings
+Message-ID: <20200213215751.tzkma6v7nkos6r5g@earth.universe>
+References: <20191212203550.GB4892@pendragon.ideasonboard.com>
+ <add3d8af-6977-68e6-fb77-2fa748c4714a@ti.com>
+ <b39e52f1-3e73-5f26-6206-0956cf482631@ti.com>
+ <20200211110712.GB28355@pendragon.ideasonboard.com>
+ <3b4d10c6-7cb2-af53-3a39-31eef441bfdd@ti.com>
+ <98da360f-880b-af56-b285-4d9b39f8a342@wizzup.org>
+ <20200211160524.GE64767@atomide.com>
+ <87b1111e-af06-1e2a-8baa-c3f9a15f1874@ti.com>
+ <20200211162719.GF64767@atomide.com>
+ <d7e51d54-ffb3-2792-8bdb-73fc627fd675@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   "Arthur D." <spinal.by@gmail.com>
-Message-ID: <op.0fx4hozhhxa7s4@supervisor.net28>
-In-Reply-To: <20200213161157.GN16391@atomide.com>
-User-Agent: Opera Mail/12.16 (Linux)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="7zwud3dbglg3r2xl"
+Content-Disposition: inline
+In-Reply-To: <d7e51d54-ffb3-2792-8bdb-73fc627fd675@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello.
 
-Some users have reported that they have issues with WiFi firmware
-loading on Droid 4. The fragment of dmesg for the issue follows
-at the bottom of this mail.
+--7zwud3dbglg3r2xl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-With the help of Tony Lindgren I have found that the root of the
-issue was Bluetooth firmware loaded before WiFi driver (wlcore).
+Hi,
 
-Now we need to change the kernel to make it load Bluetooth firmware
-only after WiFi firmware is loaded. So the bug will not be triggered.
+On Tue, Feb 11, 2020 at 07:22:14PM +0200, Tomi Valkeinen wrote:
+> On 11/02/2020 18:27, Tony Lindgren wrote:
+> > > We are still missing DSI command mode support, and moving it
+> > > to the common DRM model.
+> >=20
+> > Nope, DSI command mode support has been working just fine for
+> > a while now :) And Sebastian has a WIP git tree of the common DRM
+>=20
+> Indeed... It had been going on for so long that now my mind is
+> stuck at dsi-command-mode-not-yet-in =3D).
 
-Any ideas on how it should be done?
+Welcome in the future :)
 
-P.S. When I do "rmmod hci_uart" on Droid 4 device, I get something
-like endless loop of error reporting from kernel. The fragment of
-dmesg can be downloaded from https://dropmefiles.com/wCPMF
-I'm not sure where to report this one.
+> > model changes for it. I don't think we have devices with DSI
+> > command mode working for omapfb but not for omapdrm?
+>=20
+> Yes, I think that is true.
 
---
-Best regards, Arthur D.
+Note, that OMAP3 quirk is missing (IDK if its supported in omapfb,
+haven't used it for ages). I planned to have a look at OMAP3 once
+the patchset moving omapdrm DSI to common DRM is merged, which
+needs a non-trivial rebase.
 
+> > What got missed for v5.6-rc1 is the LCD backlight patch though,
+> > I think the only issue there is default-brightness vs more common
+> > default-brightness-value usage if you have any input to that.
+>=20
+> At least for some boards a power supply is needed, and I think
+> there was no conclusion on who should enable that. It didn't seem
+> to fit in anywhere...
+>=20
+> But need to check on the latest status. I wasn't following that
+> work closely, as JJ was working on it.
 
-[   15.951904] ------------[ cut here ]------------
-[   16.028137] WARNING: CPU: 1 PID: 23 at
-drivers/net/wireless/ti/wlcore/sdio.c:78 wl12xx_sdio_raw_read+0xcc/0x15c
-[wlcore_sdio]
-[   16.211669] Modules linked in: omapdrm drm_kms_helper cfbfillrect
-syscopyarea cfbimgblt sysfillrect sysimgblt fb_sys_fops cfbcopyarea
-snd_soc_omap_hdmi wl12xx wlcore mac80211 panel_dsi_cm libarc4
-sha256_generic libsha256 sha256_arm cfg80211 joydev mousedev evdev
-pwm_vibra snd_soc_audio_graph_card ff_memless phy_generic
-snd_soc_simple_card_utils phy_mapphone_mdm6600(+) led_bl cpufreq_dt
-gpio_keys pwm_omap_dmtimer connector_hdmi omapdss omapdss_base
-omap4_keypad drm matrix_keymap drm_panel_orientation_quirks cec
-omap_mailbox omap_sham omap_aes_driver omap2430 ohci_platform ohci_hcd
-ehci_omap ehci_hcd st_accel_spi st_sensors_spi st_accel_i2c st_sensors_i2c
-st_accel st_sensors industrialio_triggered_buffer kfifo_buf omap_des
-libdes crypto_engine omap_crypto wlcore_sdio omap_hdq wire cn
-phy_cpcap_usb musb_hdrc cpcap_adc udc_core cpcap_battery usbcore
-usb_common rtc_cpcap cpcap_pwrbutton cpcap_charger phy_omap_usb2
-industrialio snd_soc_cpcap leds_cpcap atmel_mxt_ts hci_uart btbcm lm75
-[   16.211669]  leds_lm3532
-[   16.226989] systemd-journald[105]: Compressed data object 989 -> 808
-using LZ4
-[   17.050018]  hwmon led_class bluetooth ecdh_generic ecc libaes
-motorola_mdm n_gsm snd_soc_omap_mcbsp snd_soc_ti_sdma snd_soc_core
-snd_pcm_dmaengine snd_pcm snd_timer omap_wdt watchdog snd soundcore autofs4
-[   17.144073] phy-mapphone-mdm6600 usb-phy@1: Waiting for power up
-request to complete..
-[   17.255035] CPU: 1 PID: 23 Comm: kworker/1:1 Tainted: G
-W         5.5.0-00039-gadd2f906e747-dirty #23
-[   17.657806] Hardware name: Generic OMAP4 (Flattened Device Tree)
-[   17.657867] Workqueue: events request_firmware_work_func
-[   17.861297] [<c0112b88>] (unwind_backtrace) from [<c010cafc>]
-(show_stack+0x10/0x14)
-[   17.861297] [<c010cafc>] (show_stack) from [<c090753c>]
-(dump_stack+0xb4/0xd0)
-[   17.861450] [<c090753c>] (dump_stack) from [<c013aaf0>]
-(__warn+0xd0/0xf8)
-[   17.861450] [<c013aaf0>] (__warn) from [<c013abbc>]
-(warn_slowpath_fmt+0xa4/0xb4)
-[   17.861450] [<c013abbc>] (warn_slowpath_fmt) from [<bf1bf418>]
-(wl12xx_sdio_raw_read+0xcc/0x15c [wlcore_sdio])
-[   17.861633] [<bf1bf418>] (wl12xx_sdio_raw_read [wlcore_sdio]) from
-[<bf525074>] (wl12xx_get_mac+0x150/0x324 [wl12xx])
-[   17.861938] [<bf525074>] (wl12xx_get_mac [wl12xx]) from [<bf410380>]
-(wlcore_nvs_cb+0x250/0xad8 [wlcore])
-[   17.862121] [<bf410380>] (wlcore_nvs_cb [wlcore]) from [<eccfdb00>]
-(0xeccfdb00)
-[   17.868988] ---[ end trace b49285f1f3a91e50 ]---
-[   17.868988] wl1271_sdio mmc4:0001:2: sdio read failed (-110)
-[   17.869079] wlcore: ERROR couldn't get hw info
+FWIW omapdrm's DSI driver is ready for that and omapfb is not :P
+
+-- Sebastian
+
+--7zwud3dbglg3r2xl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5FxlwACgkQ2O7X88g7
++pqvXA/8Df37jp3rBllH6fS56foegeRsSHQqA9OT3z7T/hNIOJK4yQ0sRefOv72Q
+ESnuruZy3O04dvEDN+5wc0OHpoaxYlWnHDUZXD2lSWn6pqGXTKPESDfE9eV3iX/w
+UbZH39t+l2aZz76rh2Ryln58orgg1XQLzQhw2G5s9Lqr3X1olzs/oDq4WgWboEix
+XZdbtn6XrCa5kotrGoBMpVKsxgXG17Y2gHPOQnBuDYUKNM1niHIUUteUgnz9w/YH
+pomiTehfhfg7INgWYZFCiovuPPs8KX37Ut9ZJkJ3FGwDRKWk76O8PYDSdmiNfYsr
+jqdTH6aEwJVEJKnFv9GTmxknU8WuSnkP5vXFtiy/wli/pczXwKOIoGOc+M+zwvAY
+3tbNMq9eXKFHV/QnDsszJDXn32KM1CPCrns+aD7OYV8YlJZekVUXgSwQqhQ6BZWs
+qAaZGS9VHybvtgGipNr1AZazfdUel5bmu+IQvJvVxg83lR50jBhKLTzl8AHf/SS+
+4zCOa8Nzx14EQ24iRe6YZyGkb7t6KZ3BUbLpZHq1THqmJW7LCYgIn8sSKoPPvwrx
+b+vPbZVdkH7W8GJOH+wVUQQbmrm55uhS53sMFpiBK1e6GN4uIfRr5TpFSk5JrWCd
+q+Q9XM4o3Cxr6KM8ycXg5h5SoaJDtdYPIYwXMS4G4SOjb/Ob2rs=
+=YggO
+-----END PGP SIGNATURE-----
+
+--7zwud3dbglg3r2xl--
