@@ -2,128 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6E215CDA6
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Feb 2020 22:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA65B15CF0B
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 01:33:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727891AbgBMV54 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Feb 2020 16:57:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52962 "EHLO mail.kernel.org"
+        id S1727848AbgBNAdX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Feb 2020 19:33:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34302 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726780AbgBMV54 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 13 Feb 2020 16:57:56 -0500
+        id S1727594AbgBNAdX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 13 Feb 2020 19:33:23 -0500
 Received: from earth.universe (unknown [185.62.205.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6A6AD24680;
-        Thu, 13 Feb 2020 21:57:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3435F20873;
+        Fri, 14 Feb 2020 00:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581631074;
-        bh=R3sxgy+mdg91wW+6Haz7xIGPfOrm3a7jt0NPiy78oXs=;
+        s=default; t=1581640402;
+        bh=iBOGAqiVcfh+KYc3OQ0CM7pQr/r16J+821VWjCxTaHo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AaThAp/E3n9sE1y/nfQxwj7a2ad1kqv6/94U62JPF+OMjk4D4LVrnnQaONZZMvUf4
-         ib5SF1kl+1R3mWxD1oqEr+AD2boAjT8df9f2eCqITcNxn4f+EIGXptWFDOBK+A4ZW5
-         GBmBwV3bJg+73/iwZfxW8tkDIT1Sb/o4zFsL6hpE=
+        b=nMULZ8TJpgdNVwzPWjHAX9Bp0zs1ITe373uCZTcEIgk4sNza7BB0Ji5ewpWtujW1P
+         EFM3Re+pewQRY27+rQKg1JiXIczWbKQ8kp6QhXrPQsG7/M0CQkTt2oMSWTtw9gJNHq
+         ngPBQY/naq3b0oz/q/V1NPjQX9gmUDHwxjbsP5+I=
 Received: by earth.universe (Postfix, from userid 1000)
-        id 00D9D3C0C83; Thu, 13 Feb 2020 22:57:51 +0100 (CET)
-Date:   Thu, 13 Feb 2020 22:57:51 +0100
+        id 4C4D33C0C83; Fri, 14 Feb 2020 01:33:19 +0100 (CET)
+Date:   Fri, 14 Feb 2020 01:33:19 +0100
 From:   Sebastian Reichel <sre@kernel.org>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         Thierry Reding <thierry.reding@gmail.com>,
         Jyri Sarha <jsarha@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>
+        Peter Ujfalusi <peter.ujfalusi@ti.com>
 Subject: Re: [PATCH 2/3] ARM: dts: am437x-gp/epos-evm: drop unused panel
  timings
-Message-ID: <20200213215751.tzkma6v7nkos6r5g@earth.universe>
-References: <20191212203550.GB4892@pendragon.ideasonboard.com>
+Message-ID: <20200214003319.kgoe5taaunibhfzq@earth.universe>
+References: <20191114093950.4101-3-tomi.valkeinen@ti.com>
+ <20191202130459.GH4929@pendragon.ideasonboard.com>
+ <20191211165331.GC43123@atomide.com>
+ <45dae8f7-2f5e-6948-5a05-dc8a09ace1fa@ti.com>
+ <20191212203550.GB4892@pendragon.ideasonboard.com>
  <add3d8af-6977-68e6-fb77-2fa748c4714a@ti.com>
  <b39e52f1-3e73-5f26-6206-0956cf482631@ti.com>
  <20200211110712.GB28355@pendragon.ideasonboard.com>
  <3b4d10c6-7cb2-af53-3a39-31eef441bfdd@ti.com>
- <98da360f-880b-af56-b285-4d9b39f8a342@wizzup.org>
- <20200211160524.GE64767@atomide.com>
- <87b1111e-af06-1e2a-8baa-c3f9a15f1874@ti.com>
- <20200211162719.GF64767@atomide.com>
- <d7e51d54-ffb3-2792-8bdb-73fc627fd675@ti.com>
+ <20200211111007.GC28355@pendragon.ideasonboard.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7zwud3dbglg3r2xl"
+        protocol="application/pgp-signature"; boundary="2wvlsewml42gsbth"
 Content-Disposition: inline
-In-Reply-To: <d7e51d54-ffb3-2792-8bdb-73fc627fd675@ti.com>
+In-Reply-To: <20200211111007.GC28355@pendragon.ideasonboard.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---7zwud3dbglg3r2xl
+--2wvlsewml42gsbth
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Tue, Feb 11, 2020 at 07:22:14PM +0200, Tomi Valkeinen wrote:
-> On 11/02/2020 18:27, Tony Lindgren wrote:
-> > > We are still missing DSI command mode support, and moving it
-> > > to the common DRM model.
+On Tue, Feb 11, 2020 at 01:10:07PM +0200, Laurent Pinchart wrote:
+> On Tue, Feb 11, 2020 at 01:08:12PM +0200, Tomi Valkeinen wrote:
+> > On 11/02/2020 13:07, Laurent Pinchart wrote:
 > >=20
-> > Nope, DSI command mode support has been working just fine for
-> > a while now :) And Sebastian has a WIP git tree of the common DRM
+> > >> Hopefully soon (in five years? =3D) we can say that omapdrm supports=
+ all
+> > >> the boards, and we can deprecate omapfb.
+> > >=20
+> > > I'd love to send a patch to remove omapfb, but I'll let you do the
+> > > honours :-)
+> >=20
+> > Not before we add DSI support to omapdrm...
 >=20
-> Indeed... It had been going on for so long that now my mind is
-> stuck at dsi-command-mode-not-yet-in =3D).
-
-Welcome in the future :)
-
-> > model changes for it. I don't think we have devices with DSI
-> > command mode working for omapfb but not for omapdrm?
+> Details, details ;-)
 >=20
-> Yes, I think that is true.
+> Seriously speaking, Sebastian's patches are on my todo list.
 
-Note, that OMAP3 quirk is missing (IDK if its supported in omapfb,
-haven't used it for ages). I planned to have a look at OMAP3 once
-the patchset moving omapdrm DSI to common DRM is merged, which
-needs a non-trivial rebase.
+The patches need to be rebased. My hack for supporting panel
+un/rebind stole connector and drm_dev pointer from drm_panel,
+which is no longer possible. I hoped this could be cleaned up
+once your and my omapdrm patches landed...
 
-> > What got missed for v5.6-rc1 is the LCD backlight patch though,
-> > I think the only issue there is default-brightness vs more common
-> > default-brightness-value usage if you have any input to that.
->=20
-> At least for some boards a power supply is needed, and I think
-> there was no conclusion on who should enable that. It didn't seem
-> to fit in anywhere...
->=20
-> But need to check on the latest status. I wasn't following that
-> work closely, as JJ was working on it.
+I do have a compile-tested-only WIP branch here, but I doubt
+I got this working on the first try:
 
-FWIW omapdrm's DSI driver is ready for that and omapfb is not :P
+https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-n900.git/log/?h=
+=3Domapdrm-dsi-drm-panel-5.6-rc1-wip
 
 -- Sebastian
 
---7zwud3dbglg3r2xl
+--2wvlsewml42gsbth
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5FxlwACgkQ2O7X88g7
-+pqvXA/8Df37jp3rBllH6fS56foegeRsSHQqA9OT3z7T/hNIOJK4yQ0sRefOv72Q
-ESnuruZy3O04dvEDN+5wc0OHpoaxYlWnHDUZXD2lSWn6pqGXTKPESDfE9eV3iX/w
-UbZH39t+l2aZz76rh2Ryln58orgg1XQLzQhw2G5s9Lqr3X1olzs/oDq4WgWboEix
-XZdbtn6XrCa5kotrGoBMpVKsxgXG17Y2gHPOQnBuDYUKNM1niHIUUteUgnz9w/YH
-pomiTehfhfg7INgWYZFCiovuPPs8KX37Ut9ZJkJ3FGwDRKWk76O8PYDSdmiNfYsr
-jqdTH6aEwJVEJKnFv9GTmxknU8WuSnkP5vXFtiy/wli/pczXwKOIoGOc+M+zwvAY
-3tbNMq9eXKFHV/QnDsszJDXn32KM1CPCrns+aD7OYV8YlJZekVUXgSwQqhQ6BZWs
-qAaZGS9VHybvtgGipNr1AZazfdUel5bmu+IQvJvVxg83lR50jBhKLTzl8AHf/SS+
-4zCOa8Nzx14EQ24iRe6YZyGkb7t6KZ3BUbLpZHq1THqmJW7LCYgIn8sSKoPPvwrx
-b+vPbZVdkH7W8GJOH+wVUQQbmrm55uhS53sMFpiBK1e6GN4uIfRr5TpFSk5JrWCd
-q+Q9XM4o3Cxr6KM8ycXg5h5SoaJDtdYPIYwXMS4G4SOjb/Ob2rs=
-=YggO
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5F6sgACgkQ2O7X88g7
++poH6A//aCQRXG/14j6TvwzTBtQoG3R4bgJWDJeKHsyBTfLqZNHw57/07MrXN1Fk
+bU7U7PegPu2OEw+gmFALyufYEFE9uI0BN8hKvBgKytAVoVfAILSPvYai7zgPR23q
+DbuZ/S4F7pjKQeN27H1ImJ+p6cyEOYZdWdqSSo58+DlsTd4MtDcushW6u+WRu294
+PQxH/EdlGjdIflbo9TX3ap0qU7mUrmp9uvCGhPPRjyh7y/UbLJXEvGb7Mmq/NN74
+e/p5422bG8J7yPOCkplmY4Ha4+KVrmT6FgyUgBs4MiwwwUCCKIfxtiRLyigKj4NO
+hVoxbWc75hreRWz6DcfBQ8LHhcs5/YLr5m9BOzCmgpexRRmzyrJBj4QVvlMWMkDK
+bV2f/WNIYpRLaCyuF8PABiJTahQ/zZCkkEcMj02GSZALHlKODmmP/sttxI6qWoeV
+2cMcp7jyVWD7px8Q4eaOs7LaEy3RmRSkzz52xFwRpSUdPAgE4mc7HUXPxagLtZJT
+WF322P/q0komaSJq0hwgaIhOy66qdEJdch6SuHaNEmZDO8H523jZYxCEs7tlTDa0
+3xTU/O90nsfcDxf2chF2NAKjcsVni0RN1gnoywxlOOF1/zQy9DGl49MkGdICh1nv
+kYAflX8XL0McduvDw590uIGZHhEI7mDo16sAIKrYtB9i5rKrFTo=
+=MEFj
 -----END PGP SIGNATURE-----
 
---7zwud3dbglg3r2xl--
+--2wvlsewml42gsbth--
