@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AADC15E0D2
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 17:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A07C15E6E5
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 17:51:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404140AbgBNQP2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Feb 2020 11:15:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45674 "EHLO mail.kernel.org"
+        id S2405105AbgBNQUD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Feb 2020 11:20:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53448 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404136AbgBNQP2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:15:28 -0500
+        id S2405100AbgBNQUC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:20:02 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D2681246F3;
-        Fri, 14 Feb 2020 16:15:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8510124717;
+        Fri, 14 Feb 2020 16:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581696927;
-        bh=vI7lV6bJSwFrfUSOqObJPGooulJ3EqcRpdA8ruW/WNQ=;
+        s=default; t=1581697201;
+        bh=rGHg/pgQkYQYY1T4HLJEp++QGMMYzcGnKf67BfVOhOU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cMPxhrj8NY85LPLC4l4DLAPQHb9uMyWl0vSgAO5crIXq6pPMB0XcdKjqedshTiE/6
-         dcNBFY3dwqannM9/EyADlbwGZPV3BiZCKv+aOjhdqtIln2rxq6QPKPl3fWo70r9nmw
-         Uujyv1UCUtscbRdJa8gJ6AXAwkQWrnUC8wBknH04=
+        b=V1zbE1813UxhPaZRD4HvJdGjyp+OSegH6+MRYW8sbukgl4YbgQ2FfbN2Y6PC5Uc1H
+         AhwO4EhELMJ6ym6Oev+0J0H38yD1/nrer+J21BCHPivo95DG8bPKhWTSMKqWg4kbvu
+         cdXJz24gxeYHN9xsBzkcVF2JU1/qMEXKUwBJDIoc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>,
@@ -30,12 +30,12 @@ Cc:     Tony Lindgren <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>, linux-usb@vger.kernel.org,
         linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 174/252] usb: musb: omap2430: Get rid of musb .set_vbus for omap2430 glue
-Date:   Fri, 14 Feb 2020 11:10:29 -0500
-Message-Id: <20200214161147.15842-174-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 129/186] usb: musb: omap2430: Get rid of musb .set_vbus for omap2430 glue
+Date:   Fri, 14 Feb 2020 11:16:18 -0500
+Message-Id: <20200214161715.18113-129-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214161147.15842-1-sashal@kernel.org>
-References: <20200214161147.15842-1-sashal@kernel.org>
+In-Reply-To: <20200214161715.18113-1-sashal@kernel.org>
+References: <20200214161715.18113-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -81,10 +81,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 deletions(-)
 
 diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
-index b1dd81fb5f55e..24e622c056383 100644
+index 456f3e6ecf034..26e69c2766f56 100644
 --- a/drivers/usb/musb/omap2430.c
 +++ b/drivers/usb/musb/omap2430.c
-@@ -361,8 +361,6 @@ static const struct musb_platform_ops omap2430_ops = {
+@@ -388,8 +388,6 @@ static const struct musb_platform_ops omap2430_ops = {
  	.init		= omap2430_musb_init,
  	.exit		= omap2430_musb_exit,
  
