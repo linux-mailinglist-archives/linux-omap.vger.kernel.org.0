@@ -2,169 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61CA815D87D
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 14:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD06415D947
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 15:19:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728557AbgBNNaZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Feb 2020 08:30:25 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:49914 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728427AbgBNNaZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Feb 2020 08:30:25 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01EDTKXa099510;
-        Fri, 14 Feb 2020 07:29:20 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1581686960;
-        bh=1YS7Dkb1NYS+Vzab+7zXb9xNzi0c4pGXQtzL6NFwZhc=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=h7/4yVPH0A6KJFxhyxVLluQi0F9+60YTXSitCcA0UnEgri/DNniNo6puJqBm9KDkj
-         kGx9TFADBxIQRs1X+KpBZ4IG9fDIMqj4aix+NUbc882FKAiGpCN7NQ/52GHtuaS04K
-         DPYIt+BEJdmvf8Ftta9sjdPFqI2slB/jOfEAazSQ=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01EDTKNn089420
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 14 Feb 2020 07:29:20 -0600
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 14
- Feb 2020 07:29:19 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 14 Feb 2020 07:29:19 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01EDTGm2035852;
-        Fri, 14 Feb 2020 07:29:17 -0600
-Subject: Re: [PATCH] ASoC: cpcap: Implement set_tdm_slot for voice call
- support
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, <alsa-devel@alsa-project.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        "Arthur D ." <spinal.by@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
+        id S1729359AbgBNOT3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Feb 2020 09:19:29 -0500
+Received: from muru.com ([72.249.23.125]:55194 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729336AbgBNOT2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 14 Feb 2020 09:19:28 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id D163D80E7;
+        Fri, 14 Feb 2020 14:20:11 +0000 (UTC)
+Date:   Fri, 14 Feb 2020 06:19:24 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc:     Merlijn Wajer <merlijn@wizzup.org>,
         Sebastian Reichel <sre@kernel.org>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>
-References: <20200211181005.54008-1-tony@atomide.com>
- <ae2b7d9e-d05e-54ac-4f18-27cc8c4e81a0@ti.com>
- <20200212144620.GJ64767@atomide.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <9a060430-5a3e-61e1-3d2c-f89819d9436f@ti.com>
-Date:   Fri, 14 Feb 2020 15:29:21 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Pavel Machek <pavel@ucw.cz>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "Arthur D." <spinal.by@gmail.com>
+Subject: Re: N900: Remove mmc1 "safety feature"?
+Message-ID: <20200214141924.GY64767@atomide.com>
+References: <5362c659-120f-5247-aaa5-7916229300bc@wizzup.org>
+ <20200208190448.GA12984@amd>
+ <270f27c9-afd6-171d-7dce-fe1d71dd8f9a@wizzup.org>
+ <1eac0db3-17ce-8ebd-4997-8b1c282126e4@wizzup.org>
+ <20200208220621.GA18161@amd>
+ <d2d6d6ac-c964-ac48-1616-6f1826219385@wizzup.org>
+ <20200210192714.GC14939@darkstar.musicnaut.iki.fi>
+ <8d0ecfcd-f9a7-9563-8a39-9793cfbeb893@wizzup.org>
+ <20200214013924.7wcama5ix2ivok2e@earth.universe>
+ <8774c76c-e5df-6126-657e-3ac55f241951@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200212144620.GJ64767@atomide.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <8774c76c-e5df-6126-657e-3ac55f241951@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
-
-On 12/02/2020 16.46, Tony Lindgren wrote:
-> * Peter Ujfalusi <peter.ujfalusi@ti.com> [200212 09:18]:
->> On 11/02/2020 20.10, Tony Lindgren wrote:
->>> +static int cpcap_voice_set_tdm_slot(struct snd_soc_dai *dai,
->>> +				    unsigned int tx_mask, unsigned int rx_mask,
->>> +				    int slots, int slot_width)
->>> +{
->>> +	struct snd_soc_component *component = dai->component;
->>> +	struct cpcap_audio *cpcap = snd_soc_component_get_drvdata(component);
->>> +	int err, ts_mask, mask;
->>> +	bool voice_call;
->>> +
->>> +	/*
->>> +	 * Primitive test for voice call, probably needs more checks
->>> +	 * later on for 16-bit calls detected, Bluetooth headset etc.
->>> +	 */
->>> +	if (tx_mask == 0 && rx_mask == 1 && slot_width == 8)
->>> +		voice_call = true;
->>> +	else
->>> +		voice_call = false;
->>
->> You only have voice call if only rx slot0 is in use?
+* Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com> [200214 05:52]:
+> Hi,
 > 
-> Yeah so it seems. Then there's the modem to wlcore bluetooth path that
-> I have not looked at. But presumably that's again just configuring some
-> tdm slot on the PMIC.
+> On 14.02.20 г. 3:39 ч., Sebastian Reichel wrote:
+> > Hi,
+> > 
+> > On Wed, Feb 12, 2020 at 02:02:53PM +0100, Merlijn Wajer wrote:
+> > > On 10/02/2020 20:27, Aaro Koskinen wrote:
+> > > > > So how does this currently happen, the unmounting? Does the mmc1 card
+> > > > > just disappear from /dev/ without any safe unmount? I don't understand
+> > > > > how the current setup can work from a userspace point of view.
+> > > > > 
+> > > > > Userspace could react on kernel events that tell it the cover is open,
+> > > > > but I assume the kernel doesn't just decide to nuke the node from /dev/,
+> > > > > so in that case the current DTS setup still doesn't make sense, right?
+> > > > > 
+> > > > > What am I missing? Could you describe how this would work in a 'real
+> > > > > life' scenario?
+> > > > 
+> > > > I don't think it can work with the current mainline kernel.
+> > > > 
+> > > > I recall the original Nokia kernel used the GPIO for "cover switch"
+> > > > instead of card detect, and it was visible in sysfs, and this allowed
+> > > > userspace to react on cover removal.. In the mainline kernel we have
+> > > > this for older Nokia devices (770, N8x0), but not for N900. Still it
+> > > > wouldn't help much for "safe unmount" as the unmount can take quite a
+> > > > while, and user may remove the card too early.
+> > > 
+> > > Shall I send in a patch removing this check from the device tree, then?
+> > 
+> > I agree it's mostly annoying and suggest to convert the GPIO
+> > into a gpio-key using a newly defined
+> > 
+> > SW_MACHINE_COVER /* set = cover closed */
+> > 
+> > Similar to the camera lens cover. It means userspace has a chance to
+> > show a warning, but system works generally. I think it's ok to
+> > assume that people running mainline on their N900 nowadays know what
+> > could happen when they hot-remove SD cards.
+> > 
 > 
->> If you record mono on the voice DAI, then rx_mask is also 1, no?
-> 
-> It is above :) But maybe I don't follow what you're asking here
+> That sounds way better to me than just removing the check.
 
-If you arecrod -Dvoice_pcm -c1 -fS8 > /dev/null
-then it is reasonable that the machine driver will set rx_mask = 1
+Sounds good to me too. The MMC card is there and usable when cover is
+off, so the cover GPIO is not the same as MMC detect GPIO.
 
-> and maybe you have some better check in mind.
+Regards,
 
-Not sure, but relying on set_tdm_slots to decide if we are in a call
-case does not sound right.
-
-> I have no idea where we would implement recording voice calls for
-> example, I guess mcbsp could do that somewhere to dump out a tdm slot
-> specific traffic.
-
-Need to check how things are wired and how they expected to work ;)
-
->>> +
->>> +	ts_mask = 0x7 << CPCAP_BIT_MIC2_TIMESLOT0;
->>> +	ts_mask |= 0x7 << CPCAP_BIT_MIC1_RX_TIMESLOT0;
->>> +
->>> +	mask = (tx_mask & 0x7) << CPCAP_BIT_MIC2_TIMESLOT0;
->>> +	mask |= (rx_mask & 0x7) << CPCAP_BIT_MIC1_RX_TIMESLOT0;
->>> +
->>> +	err = regmap_update_bits(cpcap->regmap, CPCAP_REG_CDI,
->>> +				 ts_mask, mask);
->>> +	if (err)
->>> +		return err;
->>> +
->>> +	err = cpcap_set_samprate(cpcap, CPCAP_DAI_VOICE, slot_width * 1000);
->>> +	if (err)
->>> +		return err;
->>
->> You will also set the sampling rate for voice in
->> cpcap_voice_hw_params(), but that is for normal playback/capture, right?
-> 
-> Yeah so normal playback/capture is already working with cpcap codec driver
-> with mainline Linux. The voice call needs to set rate to 8000.
-
-But if you have a voice call initiated should not the rate be set by the
-set_sysclk()?
-
-
->>> +
->>> +	err = cpcap_voice_call(cpcap, dai, voice_call);
->>> +	if (err)
->>> +		return err;
->>
->> It feels like that these should be done via DAPM with codec to codec route?
-> 
-> Sure if you have some better way of doing it :) Do you have an example to
-> point me to?
-
-Something along the lines of:
-https://mailman.alsa-project.org/pipermail/alsa-devel/2020-February/162915.html
-
-The it is a matter of building and connecting the DAPM routes between
-the two codec and with a flip of the switch you would have audio flowing
-between them.
-
-> 
-> Regards,
-> 
-> Tony
-> 
-
-- Péter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Tony
