@@ -2,68 +2,189 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D235715F4B2
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 19:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3481115F557
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 19:39:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405237AbgBNSXU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Fri, 14 Feb 2020 13:23:20 -0500
-Received: from coyote.holtmann.net ([212.227.132.17]:57282 "EHLO
-        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390047AbgBNSXP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Feb 2020 13:23:15 -0500
-Received: from marcel-macbook.fritz.box (p4FEFC5A7.dip0.t-ipconnect.de [79.239.197.167])
-        by mail.holtmann.org (Postfix) with ESMTPSA id 1A29FCECEA;
-        Fri, 14 Feb 2020 19:32:37 +0100 (CET)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.60.0.2.5\))
-Subject: Re: Droid 4 WiFi firmware loading error
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <20200214174548.GC64767@atomide.com>
-Date:   Fri, 14 Feb 2020 19:23:12 +0100
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        "Arthur D." <spinal.by@gmail.com>,
-        Bluez mailing list <linux-bluetooth@vger.kernel.org>,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org
-Content-Transfer-Encoding: 8BIT
-Message-Id: <3D50CC42-1201-4067-ACDE-E9B9F0DC5653@holtmann.org>
-References: <20200211232425.GE16391@atomide.com>
- <op.0fu85owhhxa7s4@supervisor.net28> <20200212150722.GF16391@atomide.com>
- <20200212162131.GI16391@atomide.com> <op.0fwkyxvihxa7s4@supervisor.net28>
- <20200213041112.GL16391@atomide.com> <op.0fw0oas5hxa7s4@supervisor.net28>
- <20200213161157.GN16391@atomide.com> <op.0fx4hozhhxa7s4@supervisor.net28>
- <20200214161100.b7aqb6wwsrxmx4ab@earth.universe>
- <20200214174548.GC64767@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3608.60.0.2.5)
+        id S1729963AbgBNScW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Feb 2020 13:32:22 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:41104 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729448AbgBNScW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Feb 2020 13:32:22 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01EIW6FW049974;
+        Fri, 14 Feb 2020 12:32:06 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1581705126;
+        bh=9JYMizinH2hk8xrhecX9Qq9awqbrX0eH4eIWvAG/GAQ=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=ts3RHCv3EO/ATymwAd98uW5uyntuDog7SsYKx5uEPyNs1b0fnEkKBYfXQ2CZn9TlK
+         ClylWeKcMm2NfzE5/p//Vr+kpqnKeCxFT9ti3a1aoGrXBlSCqiMGnl7EZPPpvrAWl3
+         oJ1o08keCcpZ4J05tMlILDN/GSPkR8XXORNZL+Mc=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01EIW6jl001763;
+        Fri, 14 Feb 2020 12:32:06 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 14
+ Feb 2020 12:32:05 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Fri, 14 Feb 2020 12:32:06 -0600
+Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01EIW50q000848;
+        Fri, 14 Feb 2020 12:32:05 -0600
+Subject: Re: [PATCH AUTOSEL 5.4 191/459] ARM: OMAP2+: Add workaround for DRA7
+ DSP MStandby errata i879
+To:     Sasha Levin <sashal@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+CC:     Tony Lindgren <tony@atomide.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>
+References: <20200214160149.11681-1-sashal@kernel.org>
+ <20200214160149.11681-191-sashal@kernel.org>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <eccdc72d-759f-d3d8-0801-38e8d8cfd371@ti.com>
+Date:   Fri, 14 Feb 2020 12:32:05 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20200214160149.11681-191-sashal@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+Hi Sasha,
 
->> WTF :(
->> 
->> Right now the BT driver and the WiFi driver are no aware of
->> each other. Actually the kernel is not even aware, that both
->> drivers are using the same chip. Unfortunately this will be
->> tricky to solve properly. Since a system may have two WiLink
->> devices, the only solution coming to my mind would be adding
->> a link from the BT device to the WiFi device in device tree.
->> Additionally we would need something in the WiLink driver to
->> check if driver has been initialized properly for a given DT
->> node.
+On 2/14/20 9:57 AM, Sasha Levin wrote:
+> From: Suman Anna <s-anna@ti.com>
 > 
-> Yeah exactly.. I think the best way would be to export something
-> like wlcore_register_bt/wlcore_unregister_bt.. And then have
-> wlcore_register_bt return -EAGAIN until wlcore is up.
+> [ Upstream commit 2f14101a1d760db72393910d481fbf7768c44530 ]
+> 
+> Errata Title:
+> i879: DSP MStandby requires CD_EMU in SW_WKUP
+> 
+> Description:
+> The DSP requires the internal emulation clock to be actively toggling
+> in order to successfully enter a low power mode via execution of the
+> IDLE instruction and PRCM MStandby/Idle handshake. This assumes that
+> other prerequisites and software sequence are followed.
+> 
+> Workaround:
+> The emulation clock to the DSP is free-running anytime CCS is connected
+> via JTAG debugger to the DSP subsystem or when the CD_EMU clock domain
+> is set in SW_WKUP mode. The CD_EMU domain can be set in SW_WKUP mode
+> via the CM_EMU_CLKSTCTRL [1:0]CLKTRCTRL field.
+> 
+> Implementation:
+> This patch implements this workaround by denying the HW_AUTO mode
+> for the EMU clockdomain during the power-up of any DSP processor
+> and re-enabling the HW_AUTO mode during the shutdown of the last
+> DSP processor (actually done during the enabling and disabling of
+> the respective DSP MDMA MMUs). Reference counting has to be used to
+> manage the independent sequencing between the multiple DSP processors.
+> 
+> This switching is done at runtime rather than a static clockdomain
+> flags value to meet the target power domain state for the EMU power
+> domain during suspend.
+> 
+> Note that the DSP MStandby behavior is not consistent across all
+> boards prior to this fix. Please see commit 45f871eec6c0 ("ARM:
+> OMAP2+: Extend DRA7 IPU1 MMU pdata quirks to DSP MDMA MMUs") for
+> details.
+> 
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-actually NO.
+You can drop this from the 5.4-stable queue. Mainline doesn't yet boot
+the processors, so this is not needed for stable queue.
 
-We have rejected this many times for all hardware manufacturers. Please fix the firmware instead.
+regards
+Suman
 
-Regards
-
-Marcel
+> ---
+>  arch/arm/mach-omap2/omap-iommu.c | 43 +++++++++++++++++++++++++++++---
+>  1 file changed, 40 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap2/omap-iommu.c b/arch/arm/mach-omap2/omap-iommu.c
+> index f1a6ece8108e4..78247e6f4a720 100644
+> --- a/arch/arm/mach-omap2/omap-iommu.c
+> +++ b/arch/arm/mach-omap2/omap-iommu.c
+> @@ -11,14 +11,43 @@
+>  
+>  #include "omap_hwmod.h"
+>  #include "omap_device.h"
+> +#include "clockdomain.h"
+>  #include "powerdomain.h"
+>  
+> +static void omap_iommu_dra7_emu_swsup_config(struct platform_device *pdev,
+> +					     bool enable)
+> +{
+> +	static struct clockdomain *emu_clkdm;
+> +	static DEFINE_SPINLOCK(emu_lock);
+> +	static atomic_t count;
+> +	struct device_node *np = pdev->dev.of_node;
+> +
+> +	if (!of_device_is_compatible(np, "ti,dra7-dsp-iommu"))
+> +		return;
+> +
+> +	if (!emu_clkdm) {
+> +		emu_clkdm = clkdm_lookup("emu_clkdm");
+> +		if (WARN_ON_ONCE(!emu_clkdm))
+> +			return;
+> +	}
+> +
+> +	spin_lock(&emu_lock);
+> +
+> +	if (enable && (atomic_inc_return(&count) == 1))
+> +		clkdm_deny_idle(emu_clkdm);
+> +	else if (!enable && (atomic_dec_return(&count) == 0))
+> +		clkdm_allow_idle(emu_clkdm);
+> +
+> +	spin_unlock(&emu_lock);
+> +}
+> +
+>  int omap_iommu_set_pwrdm_constraint(struct platform_device *pdev, bool request,
+>  				    u8 *pwrst)
+>  {
+>  	struct powerdomain *pwrdm;
+>  	struct omap_device *od;
+>  	u8 next_pwrst;
+> +	int ret = 0;
+>  
+>  	od = to_omap_device(pdev);
+>  	if (!od)
+> @@ -31,13 +60,21 @@ int omap_iommu_set_pwrdm_constraint(struct platform_device *pdev, bool request,
+>  	if (!pwrdm)
+>  		return -EINVAL;
+>  
+> -	if (request)
+> +	if (request) {
+>  		*pwrst = pwrdm_read_next_pwrst(pwrdm);
+> +		omap_iommu_dra7_emu_swsup_config(pdev, true);
+> +	}
+>  
+>  	if (*pwrst > PWRDM_POWER_RET)
+> -		return 0;
+> +		goto out;
+>  
+>  	next_pwrst = request ? PWRDM_POWER_ON : *pwrst;
+>  
+> -	return pwrdm_set_next_pwrst(pwrdm, next_pwrst);
+> +	ret = pwrdm_set_next_pwrst(pwrdm, next_pwrst);
+> +
+> +out:
+> +	if (!request)
+> +		omap_iommu_dra7_emu_swsup_config(pdev, false);
+> +
+> +	return ret;
+>  }
+> 
 
