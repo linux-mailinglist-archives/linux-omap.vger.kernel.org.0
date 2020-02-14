@@ -2,134 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B58115ED9B
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 18:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1719215EF20
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 18:46:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390284AbgBNQGB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Feb 2020 11:06:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56178 "EHLO mail.kernel.org"
+        id S2389822AbgBNRpx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Feb 2020 12:45:53 -0500
+Received: from muru.com ([72.249.23.125]:55312 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390278AbgBNQGB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:06:01 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 602442187F;
-        Fri, 14 Feb 2020 16:05:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581696360;
-        bh=V1uCnsEmX49LJ2ydtXkP/swSg4Sx68+/0ijzYCeDjIM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pu5AHOCpzxDcEIXZ7P/AUfbLNPucTwmA/mLlEyYNJF84JjFZ26xLezj7fy+HcAEdX
-         iPbKEkFAg7+PAJq1sFmsJ0XZ2XxNjiKDcVUWrP1j8gUL3lbsTpDUOSaZUYCPLUm1Dj
-         WC+FqkONfWHlhS6dBpqIEyIH9paT2p5ipFTVyRAk=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Suman Anna <s-anna@ti.com>, Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 192/459] ARM: OMAP2+: use separate IOMMU pdata to fix DRA7 IPU1 boot
-Date:   Fri, 14 Feb 2020 10:57:22 -0500
-Message-Id: <20200214160149.11681-192-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
-References: <20200214160149.11681-1-sashal@kernel.org>
+        id S2389513AbgBNRpw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 14 Feb 2020 12:45:52 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 4AF4780E7;
+        Fri, 14 Feb 2020 17:46:35 +0000 (UTC)
+Date:   Fri, 14 Feb 2020 09:45:48 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     "Arthur D." <spinal.by@gmail.com>, linux-bluetooth@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: Droid 4 WiFi firmware loading error
+Message-ID: <20200214174548.GC64767@atomide.com>
+References: <20200211232425.GE16391@atomide.com>
+ <op.0fu85owhhxa7s4@supervisor.net28>
+ <20200212150722.GF16391@atomide.com>
+ <20200212162131.GI16391@atomide.com>
+ <op.0fwkyxvihxa7s4@supervisor.net28>
+ <20200213041112.GL16391@atomide.com>
+ <op.0fw0oas5hxa7s4@supervisor.net28>
+ <20200213161157.GN16391@atomide.com>
+ <op.0fx4hozhhxa7s4@supervisor.net28>
+ <20200214161100.b7aqb6wwsrxmx4ab@earth.universe>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200214161100.b7aqb6wwsrxmx4ab@earth.universe>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Suman Anna <s-anna@ti.com>
+* Sebastian Reichel <sre@kernel.org> [200214 17:20]:
+> Hi,
+> 
+> WTF :(
+> 
+> Right now the BT driver and the WiFi driver are no aware of
+> each other. Actually the kernel is not even aware, that both
+> drivers are using the same chip. Unfortunately this will be
+> tricky to solve properly. Since a system may have two WiLink
+> devices, the only solution coming to my mind would be adding
+> a link from the BT device to the WiFi device in device tree.
+> Additionally we would need something in the WiLink driver to
+> check if driver has been initialized properly for a given DT
+> node.
 
-[ Upstream commit 4601832f40501efc3c2fd264a5a69bd1ac17d520 ]
+Yeah exactly.. I think the best way would be to export something
+like wlcore_register_bt/wlcore_unregister_bt.. And then have
+wlcore_register_bt return -EAGAIN until wlcore is up.
 
-The IPU1 MMU has been using common IOMMU pdata quirks defined and
-used by all IPU IOMMU devices on OMAP4 and beyond. Separate out the
-pdata for IPU1 MMU with the additional .set_pwrdm_constraint ops
-plugged in, so that the IPU1 power domain can be restricted to ON
-state during the boot and active period of the IPU1 remote processor.
-This eliminates the pre-conditions for the IPU1 boot issue as
-described in commit afe518400bdb ("iommu/omap: fix boot issue on
-remoteprocs with AMMU/Unicache").
+> On Fri, Feb 14, 2020 at 12:54:50AM +0300, Arthur D. wrote:
+> > Hello.
+> > 
+> > Some users have reported that they have issues with WiFi firmware
+> > loading on Droid 4. The fragment of dmesg for the issue follows
+> > at the bottom of this mail.
+> > 
+> > With the help of Tony Lindgren I have found that the root of the
+> > issue was Bluetooth firmware loaded before WiFi driver (wlcore).
+> > 
+> > Now we need to change the kernel to make it load Bluetooth firmware
+> > only after WiFi firmware is loaded. So the bug will not be triggered.
+> > 
+> > Any ideas on how it should be done?
+> > 
+> > P.S. When I do "rmmod hci_uart" on Droid 4 device, I get something
+> > like endless loop of error reporting from kernel. The fragment of
+> > dmesg can be downloaded from https://dropmefiles.com/wCPMF
+> > I'm not sure where to report this one.
 
-NOTE:
-1. RET is not a valid target power domain state on DRA7 platforms,
-   and IPU power domain is normally programmed for OFF. The IPU1
-   still fails to boot though, and an unclearable l3_noc error is
-   thrown currently on 4.14 kernel without this fix. This behavior
-   is slightly different from previous 4.9 LTS kernel.
-2. The fix is currently applied only to IPU1 on DRA7xx SoC, as the
-   other affected processors on OMAP4/OMAP5/DRA7 are in domains
-   that are not entering RET. IPU2 on DRA7 is in CORE power domain
-   which is only programmed for ON power state. The fix can be easily
-   scaled if these domains do hit RET in the future.
-3. The issue was not seen on current DRA7 platforms if any of the
-   DSP remote processors were booted and using one of the GPTimers
-   5, 6, 7 or 8 on previous 4.9 LTS kernel. This was due to the
-   errata fix for i874 implemented in commit 1cbabcb9807e ("ARM:
-   DRA7: clockdomain: Implement timer workaround for errata i874")
-   which keeps the IPU1 power domain from entering RET when the
-   timers are active. But the timer workaround did not make any
-   difference on 4.14 kernel, and an l3_noc error was seen still
-   without this fix.
+Yup I've seen rmmod hci_uart produce kernel oops, but I just tried
+to reproduce it again on v5.5 and it just took a long time to rmmod
+with no oops.
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/mach-omap2/pdata-quirks.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+Regards,
 
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
-index 2657752b90670..e13dcc0083a05 100644
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -45,6 +45,17 @@ struct pdata_init {
- static struct of_dev_auxdata omap_auxdata_lookup[];
- static struct twl4030_gpio_platform_data twl_gpio_auxdata;
- 
-+#if IS_ENABLED(CONFIG_OMAP_IOMMU)
-+int omap_iommu_set_pwrdm_constraint(struct platform_device *pdev, bool request,
-+				    u8 *pwrst);
-+#else
-+static inline int omap_iommu_set_pwrdm_constraint(struct platform_device *pdev,
-+						  bool request, u8 *pwrst)
-+{
-+	return 0;
-+}
-+#endif
-+
- #ifdef CONFIG_MACH_NOKIA_N8X0
- static void __init omap2420_n8x0_legacy_init(void)
- {
-@@ -337,6 +348,10 @@ static void __init omap5_uevm_legacy_init(void)
- #endif
- 
- #ifdef CONFIG_SOC_DRA7XX
-+static struct iommu_platform_data dra7_ipu1_dsp_iommu_pdata = {
-+	.set_pwrdm_constraint = omap_iommu_set_pwrdm_constraint,
-+};
-+
- static struct omap_hsmmc_platform_data dra7_hsmmc_data_mmc1;
- static struct omap_hsmmc_platform_data dra7_hsmmc_data_mmc2;
- static struct omap_hsmmc_platform_data dra7_hsmmc_data_mmc3;
-@@ -568,6 +583,12 @@ static struct of_dev_auxdata omap_auxdata_lookup[] = {
- 		       &dra7_hsmmc_data_mmc2),
- 	OF_DEV_AUXDATA("ti,dra7-hsmmc", 0x480ad000, "480ad000.mmc",
- 		       &dra7_hsmmc_data_mmc3),
-+	OF_DEV_AUXDATA("ti,dra7-dsp-iommu", 0x40d01000, "40d01000.mmu",
-+		       &dra7_ipu1_dsp_iommu_pdata),
-+	OF_DEV_AUXDATA("ti,dra7-dsp-iommu", 0x41501000, "41501000.mmu",
-+		       &dra7_ipu1_dsp_iommu_pdata),
-+	OF_DEV_AUXDATA("ti,dra7-iommu", 0x58882000, "58882000.mmu",
-+		       &dra7_ipu1_dsp_iommu_pdata),
- #endif
- 	/* Common auxdata */
- 	OF_DEV_AUXDATA("ti,sysc", 0, NULL, &ti_sysc_pdata),
--- 
-2.20.1
+Tony
 
+8< ---------------
+# dmesg -C; modprobe hci_uart; sleep 5; rmmod hci_uart; dmesg -c
+[  616.926422] Bluetooth: HCI UART driver ver 2.3
+[  616.926422] Bluetooth: HCI UART protocol H4 registered
+[  616.926422] Bluetooth: HCI UART protocol BCSP registered
+[  616.926513] Bluetooth: HCI UART protocol LL registered
+[  616.926635] Bluetooth: HCI UART protocol Three-wire (H5) registered
+[  616.927185] Bluetooth: HCI UART protocol Broadcom registered
+[  616.927764] hci-ti serial1-0: GPIO lookup for consumer enable
+[  616.927764] hci-ti serial1-0: using device tree for GPIO lookup
+[  616.927856] of_get_named_gpiod_flags: parsed 'enable-gpios' property of node '/ocp/interconnect@48000000/segment@0/target-module@6e000/serial@0/bluetooth[0]' - status (0)
+[  616.927886] gpio gpiochip6: Persistence not supported for GPIO 14
+[  624.002838] Bluetooth: hci0: command 0xff05 tx timeout
+[  632.572662] Bluetooth: hci0: send command failed
+[  632.572814] Bluetooth: hci0: download firmware failed, retrying...
+[  634.722991] Bluetooth: hci0: command 0x1001 tx timeout
+[  642.812652] Bluetooth: hci0: Reading TI version information failed (-110)
+[  642.812652] Bluetooth: hci0: download firmware failed, retrying...
+[  644.962707] Bluetooth: hci0: command 0x1001 tx timeout
+[  653.043151] Bluetooth: hci0: Reading TI version information failed (-110)
+[  653.043182] Bluetooth: hci0: download firmware failed, retrying...
+[  655.203582] Bluetooth: hci0: command 0x1001 tx timeout
+[  663.294372] Bluetooth: hci0: Reading TI version information failed (-110)
+[  663.294464] Bluetooth: hci0: download firmware failed, retrying...
