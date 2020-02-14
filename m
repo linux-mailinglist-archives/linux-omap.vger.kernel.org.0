@@ -2,23 +2,23 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F225715E94A
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 18:06:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACFD515E9DC
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 18:10:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394427AbgBNRGE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Feb 2020 12:06:04 -0500
-Received: from muru.com ([72.249.23.125]:55252 "EHLO muru.com"
+        id S2392261AbgBNRJ7 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Fri, 14 Feb 2020 12:09:59 -0500
+Received: from muru.com ([72.249.23.125]:55280 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394058AbgBNRGE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 14 Feb 2020 12:06:04 -0500
+        id S2394586AbgBNRJv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 14 Feb 2020 12:09:51 -0500
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id CF2AC80E7;
-        Fri, 14 Feb 2020 17:06:46 +0000 (UTC)
-Date:   Fri, 14 Feb 2020 09:05:59 -0800
+        by muru.com (Postfix) with ESMTPS id 0E82B80E7;
+        Fri, 14 Feb 2020 17:10:33 +0000 (UTC)
+Date:   Fri, 14 Feb 2020 09:09:46 -0800
 From:   Tony Lindgren <tony@atomide.com>
-To:     Mark Brown <broonie@kernel.org>
+To:     Sebastian Reichel <sre@kernel.org>
 Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Mark Brown <broonie@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>,
         Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
@@ -26,48 +26,63 @@ Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
         "Arthur D ." <spinal.by@gmail.com>,
         Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
+        Merlijn Wajer <merlijn@wizzup.org>, Pavel Machek <pavel@ucw.cz>
 Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
  graph card
-Message-ID: <20200214170559.GA64767@atomide.com>
+Message-ID: <20200214170946.GB64767@atomide.com>
 References: <20200211171645.41990-1-tony@atomide.com>
  <cd46c6ec-80e3-332f-4922-e58a3acbfc61@ti.com>
  <20200212143543.GI64767@atomide.com>
- <346dfd2b-23f8-87e0-6f45-27a5099b1066@ti.com>
- <20200214124920.GH4827@sirena.org.uk>
+ <20200214003452.xuadnylj2udqyljs@earth.universe>
+ <20200214013454.GX64767@atomide.com>
+ <20200214130428.gkhmr55ptmi2bh2x@earth.universe>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200214124920.GH4827@sirena.org.uk>
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20200214130428.gkhmr55ptmi2bh2x@earth.universe>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Mark Brown <broonie@kernel.org> [200214 12:50]:
-> On Fri, Feb 14, 2020 at 02:41:30PM +0200, Peter Ujfalusi wrote:
-> > On 12/02/2020 16.35, Tony Lindgren wrote:
+* Sebastian Reichel <sre@kernel.org> [200214 13:05]:
+> On Thu, Feb 13, 2020 at 05:34:54PM -0800, Tony Lindgren wrote:
+> > And bluetooth would be similar to cpcap_audio and mot_mdm6600_audio
+> > above.
 > 
-> > > Oops, that's not good. So should we just keep the old naming if there's
-> > > only one endpoint?
+> My understanding is, that CPU is not involved for calls (except for
+> setting up cpcap registers correctly). Basically McBSP3 should
+> remain idle for a call and data goes directly from modem to cpcap.
+> The same should work for modem <-> BT, except that CPCAP seems to
+> always provide the clock. That would imply a direct link between
+> modem and codec / BT?
+
+Yes the direct link is i2s. I'm ot sure if mcbsp can be idle during
+voice call though, I guess it should be doable since mcbsp is not
+the clock master :)
+
+> > My guess is that only cpcap registers and clock rate needs to be
+> > changed for bluetooth audio BTW, so if somebody havs a bluetooth
+> > headset just do the following in Android:
+> > 
+> > # cpcaprw --all > /tmp/before
+> > configure bluetooth headset for audio in android and start
+> > playing some music or make a phone call
+> > ...
+> > # cpcaprw --all > /tmp/after
+> > stop playing music or phone call
+> > ...
+> > diff -u /tmp/before /tmp/after
+> > 
+> > The registers will be different for a bluetooth phone call and
+> > playing music.
 > 
-> > That's an option, yes, if we really need extra dummy McBSP DAIs at all,
-> > again, let's hear from Morimoto-san or Mark.
-> 
-> We really shouldn't need dummy DAIs at all I think, if we do it feels
-> like there's a problem.  It's quite possible that there is actually a
-> problem here though...
+> I can provider register values once I find some time.
 
-It's dummy in the droid4 voice call case as mcbsp is not the clock-master
-and there's nothing to configure for mcbsp.
-
-But I guess in some cases mcbsp could be the clock-master and then the
-secondary DAI would have ops.
-
-I could be wrong though, this is just based on my experience with
-getting one device working.
+OK great.
 
 Regards,
 
 Tony
+
