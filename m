@@ -2,112 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1719215EF20
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 18:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A86CD15F41E
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 19:23:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389822AbgBNRpx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Feb 2020 12:45:53 -0500
-Received: from muru.com ([72.249.23.125]:55312 "EHLO muru.com"
+        id S2404900AbgBNSSg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Feb 2020 13:18:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55138 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389513AbgBNRpw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 14 Feb 2020 12:45:52 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4AF4780E7;
-        Fri, 14 Feb 2020 17:46:35 +0000 (UTC)
-Date:   Fri, 14 Feb 2020 09:45:48 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Sebastian Reichel <sre@kernel.org>
-Cc:     "Arthur D." <spinal.by@gmail.com>, linux-bluetooth@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: Droid 4 WiFi firmware loading error
-Message-ID: <20200214174548.GC64767@atomide.com>
-References: <20200211232425.GE16391@atomide.com>
- <op.0fu85owhhxa7s4@supervisor.net28>
- <20200212150722.GF16391@atomide.com>
- <20200212162131.GI16391@atomide.com>
- <op.0fwkyxvihxa7s4@supervisor.net28>
- <20200213041112.GL16391@atomide.com>
- <op.0fw0oas5hxa7s4@supervisor.net28>
- <20200213161157.GN16391@atomide.com>
- <op.0fx4hozhhxa7s4@supervisor.net28>
- <20200214161100.b7aqb6wwsrxmx4ab@earth.universe>
+        id S1730584AbgBNPup (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 14 Feb 2020 10:50:45 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DB56024650;
+        Fri, 14 Feb 2020 15:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581695444;
+        bh=bnoGaRoBD2hyStehWg8KD7v12K1AJXgloD4rRnFFQ/c=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=mHwKwiJUNv+7gk51nsD6A0KiE7lexBwEQdUtLhz+H03m+DUWGFZOv/+YhF/+cH32t
+         JgzSIKUYH2ahwf9Sn27WcoHM+80SVSkd4QDgQZcUZVcaDTQ6nD8IbAMRsC15pyofUr
+         5bhYXDTKBSKHZrY+WmYnJJ7OIwtoFGZUuBEzvQt8=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, Sasha Levin <sashal@kernel.org>,
+        linux-omap@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.5 085/542] clk: ti: dra7: fix parent for gmac_clkctrl
+Date:   Fri, 14 Feb 2020 10:41:17 -0500
+Message-Id: <20200214154854.6746-85-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200214154854.6746-1-sashal@kernel.org>
+References: <20200214154854.6746-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200214161100.b7aqb6wwsrxmx4ab@earth.universe>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Sebastian Reichel <sre@kernel.org> [200214 17:20]:
-> Hi,
-> 
-> WTF :(
-> 
-> Right now the BT driver and the WiFi driver are no aware of
-> each other. Actually the kernel is not even aware, that both
-> drivers are using the same chip. Unfortunately this will be
-> tricky to solve properly. Since a system may have two WiLink
-> devices, the only solution coming to my mind would be adding
-> a link from the BT device to the WiFi device in device tree.
-> Additionally we would need something in the WiLink driver to
-> check if driver has been initialized properly for a given DT
-> node.
+From: Grygorii Strashko <grygorii.strashko@ti.com>
 
-Yeah exactly.. I think the best way would be to export something
-like wlcore_register_bt/wlcore_unregister_bt.. And then have
-wlcore_register_bt return -EAGAIN until wlcore is up.
+[ Upstream commit 69e300283796dae7e8c2e6acdabcd31336c0c93e ]
 
-> On Fri, Feb 14, 2020 at 12:54:50AM +0300, Arthur D. wrote:
-> > Hello.
-> > 
-> > Some users have reported that they have issues with WiFi firmware
-> > loading on Droid 4. The fragment of dmesg for the issue follows
-> > at the bottom of this mail.
-> > 
-> > With the help of Tony Lindgren I have found that the root of the
-> > issue was Bluetooth firmware loaded before WiFi driver (wlcore).
-> > 
-> > Now we need to change the kernel to make it load Bluetooth firmware
-> > only after WiFi firmware is loaded. So the bug will not be triggered.
-> > 
-> > Any ideas on how it should be done?
-> > 
-> > P.S. When I do "rmmod hci_uart" on Droid 4 device, I get something
-> > like endless loop of error reporting from kernel. The fragment of
-> > dmesg can be downloaded from https://dropmefiles.com/wCPMF
-> > I'm not sure where to report this one.
+The parent clk for gmac clk ctrl has to be gmac_main_clk (125MHz) instead
+of dpll_gmac_ck (1GHz). This is caused incorrect CPSW MDIO operation.
+Hence, fix it.
 
-Yup I've seen rmmod hci_uart produce kernel oops, but I just tried
-to reproduce it again on v5.5 and it just took a long time to rmmod
-with no oops.
+Fixes: dffa9051d546 ('clk: ti: dra7: add new clkctrl data')
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/clk/ti/clk-7xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
+diff --git a/drivers/clk/ti/clk-7xx.c b/drivers/clk/ti/clk-7xx.c
+index 5f46782cebeb2..b656ba2abcf7e 100644
+--- a/drivers/clk/ti/clk-7xx.c
++++ b/drivers/clk/ti/clk-7xx.c
+@@ -405,7 +405,7 @@ static const struct omap_clkctrl_bit_data dra7_gmac_bit_data[] __initconst = {
+ };
+ 
+ static const struct omap_clkctrl_reg_data dra7_gmac_clkctrl_regs[] __initconst = {
+-	{ DRA7_GMAC_GMAC_CLKCTRL, dra7_gmac_bit_data, CLKF_SW_SUP, "dpll_gmac_ck" },
++	{ DRA7_GMAC_GMAC_CLKCTRL, dra7_gmac_bit_data, CLKF_SW_SUP, "gmac_main_clk" },
+ 	{ 0 },
+ };
+ 
+-- 
+2.20.1
 
-Tony
-
-8< ---------------
-# dmesg -C; modprobe hci_uart; sleep 5; rmmod hci_uart; dmesg -c
-[  616.926422] Bluetooth: HCI UART driver ver 2.3
-[  616.926422] Bluetooth: HCI UART protocol H4 registered
-[  616.926422] Bluetooth: HCI UART protocol BCSP registered
-[  616.926513] Bluetooth: HCI UART protocol LL registered
-[  616.926635] Bluetooth: HCI UART protocol Three-wire (H5) registered
-[  616.927185] Bluetooth: HCI UART protocol Broadcom registered
-[  616.927764] hci-ti serial1-0: GPIO lookup for consumer enable
-[  616.927764] hci-ti serial1-0: using device tree for GPIO lookup
-[  616.927856] of_get_named_gpiod_flags: parsed 'enable-gpios' property of node '/ocp/interconnect@48000000/segment@0/target-module@6e000/serial@0/bluetooth[0]' - status (0)
-[  616.927886] gpio gpiochip6: Persistence not supported for GPIO 14
-[  624.002838] Bluetooth: hci0: command 0xff05 tx timeout
-[  632.572662] Bluetooth: hci0: send command failed
-[  632.572814] Bluetooth: hci0: download firmware failed, retrying...
-[  634.722991] Bluetooth: hci0: command 0x1001 tx timeout
-[  642.812652] Bluetooth: hci0: Reading TI version information failed (-110)
-[  642.812652] Bluetooth: hci0: download firmware failed, retrying...
-[  644.962707] Bluetooth: hci0: command 0x1001 tx timeout
-[  653.043151] Bluetooth: hci0: Reading TI version information failed (-110)
-[  653.043182] Bluetooth: hci0: download firmware failed, retrying...
-[  655.203582] Bluetooth: hci0: command 0x1001 tx timeout
-[  663.294372] Bluetooth: hci0: Reading TI version information failed (-110)
-[  663.294464] Bluetooth: hci0: download firmware failed, retrying...
