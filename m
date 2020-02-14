@@ -2,233 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87AD515CF7B
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 02:35:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FEC815CF83
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 02:39:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728061AbgBNBfA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Feb 2020 20:35:00 -0500
-Received: from muru.com ([72.249.23.125]:55160 "EHLO muru.com"
+        id S1727988AbgBNBj2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Feb 2020 20:39:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49408 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728052AbgBNBfA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 13 Feb 2020 20:35:00 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 6A538804F;
-        Fri, 14 Feb 2020 01:35:41 +0000 (UTC)
-Date:   Thu, 13 Feb 2020 17:34:54 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Sebastian Reichel <sre@kernel.org>
-Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Arthur D ." <spinal.by@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Merlijn Wajer <merlijn@wizzup.org>, Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
- graph card
-Message-ID: <20200214013454.GX64767@atomide.com>
-References: <20200211171645.41990-1-tony@atomide.com>
- <cd46c6ec-80e3-332f-4922-e58a3acbfc61@ti.com>
- <20200212143543.GI64767@atomide.com>
- <20200214003452.xuadnylj2udqyljs@earth.universe>
+        id S1727955AbgBNBj2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 13 Feb 2020 20:39:28 -0500
+Received: from earth.universe (dyndsl-037-138-190-090.ewe-ip-backbone.de [37.138.190.90])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C59EF217F4;
+        Fri, 14 Feb 2020 01:39:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581644366;
+        bh=R+uvHmPDw6tAok37vBR5/eI6ga0my/lPOeNir3F9E/s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GkxWJfuQmrrqXHalF1xO4WNtze7P8KOxd3ehxYmAlo14MjNdFQd60g9qydeqrioAQ
+         hQthb8YoJ3aGNRbHwic4hllX91ySOEE34Crfiybh76OE5f3y3TzCJvrQ8gR9yVmYtg
+         d/+EvVg0IrMJ1AuXLrd6erDdnosA3jmW5OjvrWC0=
+Received: by earth.universe (Postfix, from userid 1000)
+        id 8C3FF3C0C83; Fri, 14 Feb 2020 02:39:24 +0100 (CET)
+Date:   Fri, 14 Feb 2020 02:39:24 +0100
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>, Pavel Machek <pavel@ucw.cz>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        "Arthur D." <spinal.by@gmail.com>
+Subject: Re: N900: Remove mmc1 "safety feature"? (was: Re: mmc0 on Nokia N900
+ on Linux 5.4.18)
+Message-ID: <20200214013924.7wcama5ix2ivok2e@earth.universe>
+References: <5362c659-120f-5247-aaa5-7916229300bc@wizzup.org>
+ <20200208190448.GA12984@amd>
+ <270f27c9-afd6-171d-7dce-fe1d71dd8f9a@wizzup.org>
+ <1eac0db3-17ce-8ebd-4997-8b1c282126e4@wizzup.org>
+ <20200208220621.GA18161@amd>
+ <d2d6d6ac-c964-ac48-1616-6f1826219385@wizzup.org>
+ <20200210192714.GC14939@darkstar.musicnaut.iki.fi>
+ <8d0ecfcd-f9a7-9563-8a39-9793cfbeb893@wizzup.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="uiikh7f4rkctkik7"
 Content-Disposition: inline
-In-Reply-To: <20200214003452.xuadnylj2udqyljs@earth.universe>
+In-Reply-To: <8d0ecfcd-f9a7-9563-8a39-9793cfbeb893@wizzup.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Sebastian Reichel <sre@kernel.org> [200214 00:35]:
-> On Wed, Feb 12, 2020 at 06:35:43AM -0800, Tony Lindgren wrote:
-> > Yes this should follow the audio-graph-card.txt example. We end up with
-> > mcbsp3 dts node as below on droid4:
-> > 
-> > &mcbsp3 {
-> >         #sound-dai-cells = <0>;
-> >         pinctrl-names = "default";
-> >         pinctrl-0 = <&mcbsp3_pins>;
-> >         status = "okay";
-> > 
-> >         ports {
-> >                 mcbsp3_port: port@0 {
-> >                         #address-cells = <1>;
-> >                         #size-cells = <0>;
-> > 
-> >                         cpu_dai3: endpoint@0 {
-> 
-> cpu_dai3_cpcap
-> 
-> >                                 reg = <0>;
-> >                                 dai-format = "dsp_a";
-> >                                 frame-master = <&cpcap_audio_codec1>;
-> >                                 bitclock-master = <&cpcap_audio_codec1>;
-> >                                 remote-endpoint = <&cpcap_audio_codec1>;
-> >                         };
-> > 
-> >                         cpu_dai_mdm: endpoint@1 {
-> 
-> cpu_dai3_mdm
 
-OK
+--uiikh7f4rkctkik7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> >                                 reg = <1>;
-> >                                 dai-format = "dsp_a";
-> >                                 frame-master = <&cpcap_audio_codec1>;
-> >                                 bitclock-master = <&cpcap_audio_codec1>;
-> >                                 remote-endpoint = <&mot_mdm6600_audio_codec0>;
-> >                         };
-> >                 };
-> >         };
-> > };
-> > 
-> > That is pretty much the same as the 'Multi DAI with DPCM' example, with
-> > dne dai, and multiple endpoints. I think we still have just one port
-> > for one i2s transport on the mcbsp :)
-> > 
-> > Does the above look as what you would expect based on the binding?
-> 
-> I haven't had a look at this for quite some time. I suppose the
-> cpcap voice DAI and the modem will also have two endpoints? So
-> once the BT support is added it will looks like this [simplified]?
+Hi,
 
-Well it will be even simpler, no need for extra endpoints at
-the codecs, see below.
- 
-> &mcbsp3 {
->     ports {
->         port@0 {
->             cpu_dai3_cpcap: endpoint@0 {};
->             cpu_dai3_modem: endpoint@1 {};
->             cpu_dai3_bt: endpoint@2 {};
->         };
->     };
-> };
+On Wed, Feb 12, 2020 at 02:02:53PM +0100, Merlijn Wajer wrote:
+> On 10/02/2020 20:27, Aaro Koskinen wrote:
+> >> So how does this currently happen, the unmounting? Does the mmc1 card
+> >> just disappear from /dev/ without any safe unmount? I don't understand
+> >> how the current setup can work from a userspace point of view.
+> >>
+> >> Userspace could react on kernel events that tell it the cover is open,
+> >> but I assume the kernel doesn't just decide to nuke the node from /dev=
+/,
+> >> so in that case the current DTS setup still doesn't make sense, right?
+> >>
+> >> What am I missing? Could you describe how this would work in a 'real
+> >> life' scenario?
+> >=20
+> > I don't think it can work with the current mainline kernel.
+> >=20
+> > I recall the original Nokia kernel used the GPIO for "cover switch"
+> > instead of card detect, and it was visible in sysfs, and this allowed
+> > userspace to react on cover removal.. In the mainline kernel we have
+> > this for older Nokia devices (770, N8x0), but not for N900. Still it
+> > wouldn't help much for "safe unmount" as the unmount can take quite a
+> > while, and user may remove the card too early.
+>=20
+> Shall I send in a patch removing this check from the device tree, then?
 
-But yes, bluetooth would be just added as above under mcbsp3.
+I agree it's mostly annoying and suggest to convert the GPIO
+into a gpio-key using a newly defined
 
-> &cpcap {
->     ports {
->         voice: port@1 {
->             cpcap_voice_cpu: endpoint@0 {};
->             cpcap_voice_modem: endpoint@1 {};
->             cpcap_voice_bt: endpoint@2 {};
->         };
->     };
-> };
+SW_MACHINE_COVER /* set =3D cover closed */
 
-But above there's no need to add anything under cpcap, it still
-only has the same two endpoints as it already has. So it's
-just as specified in the graph binding, just the #address-cells,
-#size-cells and reg added:
+Similar to the camera lens cover. It means userspace has a chance to
+show a warning, but system works generally. I think it's ok to
+assume that people running mainline on their N900 nowadays know what
+could happen when they hot-remove SD cards.
 
-cpcap_audio: audio-codec {
-	#sound-dai-cells = <1>;
-	#address-cells = <1>;
-	#size-cells = <0>;
-	port@0 {
-		reg = <0>;
-		cpcap_audio_codec0: endpoint {
-		};
-	};
-	port@1 {
-		reg = <1>;
-		cpcap_audio_codec1: endpoint {
-		};
-	};
-};
+-- Sebastian
 
-Then the modem codec looks like this:
+--uiikh7f4rkctkik7
+Content-Type: application/pgp-signature; name="signature.asc"
 
-mot_mdm6600_audio: audio-codec {
-	#address-cells = <1>;
-	#size-cells = <0>;
-	#sound-dai-cells = <1>;
+-----BEGIN PGP SIGNATURE-----
 
-	port@0 {
-		mot_mdm6600_audio_codec0: endpoint {
-			remote-endpoint = <&cpu_dai_mdm>;
-		};
-	};
-};
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5F+kkACgkQ2O7X88g7
++poCXhAAnBEcV5nOxp+Dp3eXkvRWoKVfXm3AvTm+qabCcmifOQD5RWTfIptZ7RCm
+0xzn+G8/FXSp17vmOElqV2Cybryqgb3xedQ3BRA+HsWPd4k0cuxcLNJVtSBuN3aI
++xadepRN8uxFXFI8xlYJHuF1ekEAaxu4y3LqEf+WazWPWuxnUbaVpj6IbNiG5ReH
+t+oJbxiy90757w8WcjJ3/0icbwCTfDDIrjs+HV4TPAZFshdUiE3nbQDdXRtENOaB
+ebVrzpNyvytRvyznl46qhmrzvCPta7vHk8qZT9/Ou/2RkPkeEL37temB7yotI1yy
+6++HmxRUq1yQhA25Y6DFe9GhQX8zrwG8+1IQLHSsyNeMnZEGmApozxFVLf9prm++
+6NdeeFA6s5KBAuys+4SkTsfPjfkBK6mIwoG/Dn1oTZzgZO2LE13zt5USEe9e1PAa
+dFgNI1UF23yZsk51noORDVfTEFkM66yC32t4UJTOJRa70VMCussE4wV87Sv3sPyB
+ZfLqzhM1PSJf4M8kxpbuN/DMfC5iaopQ1i793P1zG5Yd503EuHHOMIjPuDayqrqb
+0uehMp+2v3tzaWTAGX1RpjfoGRm9RSdwijEp89efm+y+fV4Ev2/BZnDZIjDjODWP
+k2HuElGcQ98s7HRwhUdXUBA3wtIX5eSQ3hYSkfsLBRPWiVewA2w=
+=Z2hN
+-----END PGP SIGNATURE-----
 
-> &bluetooth {
->     ports {
->         port@0 {
->             bt_dai_cpu: endpoint@0 {};
->             bt_dai_modem: endpoint@1 {};
->             bt_dai_cpcap: endpoint@2 {};
->         };
->     };
-> };
-
-And bluetooth would be similar to cpcap_audio and mot_mdm6600_audio
-above.
-
-My guess is that only cpcap registers and clock rate needs to be
-changed for bluetooth audio BTW, so if somebody havs a bluetooth
-headset just do the following in Android:
-
-# cpcaprw --all > /tmp/before
-configure bluetooth headset for audio in android and start
-playing some music or make a phone call
-...
-# cpcaprw --all > /tmp/after
-stop playing music or phone call
-...
-diff -u /tmp/before /tmp/after
-
-The registers will be different for a bluetooth phone call and
-playing music.
-
-> > > > I've tested this with droid4 where cpcap pmic and modem voice are both
-> > > > both wired to mcbsp3. I've also tested this on droid4 both with and
-> > > > without the pending modem audio codec driver that is waiting for n_gsm
-> > > > serdev dependencies to clear.
-> > > 
-> > > What this patch you effectively just creating dummy-dais on top of the
-> > > real McBSP DAI.
-> > 
-> > Yes I think this is needed for snd-soc-audio-graph-card, and this allows
-> > configuring whatever is needed for the i2s slot. But maybe you have some
-> > better way of doing it in mind?
-> > 
-> > > You also rename the DAIs, which might break ams-delta.
-> > 
-> > Oops, that's not good. So should we just keep the old naming if there's
-> > only one endpoint?
-> > 
-> > > We still have legacy support in
-> > > omap-twl4030.c
-> > > omap3pandora.c
-> > > osk5912.c
-> > > rx51.c
-> 
-> also n810.c
-
-OK
-
-> > > which will break with the renamed DAI. On the other hand I think the
-> > > legacy support can be dropped from them.
-> > 
-> > I'm not sure what all that would take.
-> 
-> rx51 and omap-twl4030 override the hardcoded paths with DT
-> information when DT is available (= always), so hardcoded paths
-> do not matter at all and could simply be removed (the patch
-> should also make DT mandatory).
-> 
-> For omap3pandora, n810 and osk5912 the hardcoded information seems
-> to be used and there does not seem to be any soundcard DT node for
-> them. I suppose it's a bit of work for those devices. n810
-> looks simple enough to just use simple-card.
-
-OK I'll just keep the old naming if there's only one child node.
-
-Regards,
-
-Tony
+--uiikh7f4rkctkik7--
