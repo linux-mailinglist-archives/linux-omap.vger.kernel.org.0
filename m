@@ -2,95 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DE6415F769
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Feb 2020 21:05:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD5A15FD83
+	for <lists+linux-omap@lfdr.de>; Sat, 15 Feb 2020 09:36:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389128AbgBNUFk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Feb 2020 15:05:40 -0500
-Received: from foss.arm.com ([217.140.110.172]:44532 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388703AbgBNUFk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 14 Feb 2020 15:05:40 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7094030E;
-        Fri, 14 Feb 2020 12:05:39 -0800 (PST)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E7C5E3F68F;
-        Fri, 14 Feb 2020 12:05:38 -0800 (PST)
-Date:   Fri, 14 Feb 2020 20:05:37 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Arthur D ." <spinal.by@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
- graph card
-Message-ID: <20200214200537.GR4827@sirena.org.uk>
-References: <20200211171645.41990-1-tony@atomide.com>
- <cd46c6ec-80e3-332f-4922-e58a3acbfc61@ti.com>
- <20200212143543.GI64767@atomide.com>
- <346dfd2b-23f8-87e0-6f45-27a5099b1066@ti.com>
- <20200214124920.GH4827@sirena.org.uk>
- <20200214170559.GA64767@atomide.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jTlsQtO0VwrbBARu"
-Content-Disposition: inline
-In-Reply-To: <20200214170559.GA64767@atomide.com>
-X-Cookie: Shipping not included.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1725901AbgBOIgs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 15 Feb 2020 03:36:48 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:39890 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725852AbgBOIgs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Feb 2020 03:36:48 -0500
+Received: by mail-pg1-f193.google.com with SMTP id j15so6324659pgm.6;
+        Sat, 15 Feb 2020 00:36:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=gdlMMEdpJPxo5mVfKeyoDxcxbBxcFHKvQ3B9vt6XO6A=;
+        b=fePvSzGDdD2OcKHA5afExkEARWEWj+vMtD5dXPGP5Tz/GZCjIfAqbBLGxBPLDq9PLd
+         lmqSjRNGNva5+5dZyPZmeuzgcc7dSkqiRJFRnGK7OyLdsS6r7tZwuNHwD/6wZcwWaaMr
+         FXJK2bnUAt0sS9Kv58qlE2PxNz/BA6PCz2r+F5T5NkImWRLZPNQVWzmoF66Dpdpo/hx+
+         Bdpgfypmo6NflDQvQfqlmkG/iuBd4uLn00rRqjRGtdVqwxdFR0wY9BacUAOEGmop8bwt
+         qmeTkkKWHYcoiRRhoG/KPN9Fy8Qz6BvFsmobuEtRTPkJ4KRcSBSFvRx4rohjZbXY2KrY
+         4x3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=gdlMMEdpJPxo5mVfKeyoDxcxbBxcFHKvQ3B9vt6XO6A=;
+        b=F3VY4fC6vWdzfzSCyr7DVNbxQ71nPXGdM9Q3WFNoHRbeWNu7vARgIMUoI2ycfVFuLf
+         TgRRDG/ll2h2JHQU+3A2zPhZHSjFRJkJPNQ0pKWb2A8n+qvz7x63FoVoQ61dE7leAq1N
+         chQLerPJ1tIHBSYNP+9A2gXomx/ulItns/o1IHn6TFsDmjwkLqToRWScGR/FM9AbvIQ7
+         1HMmai/ulNwAds+PWCHsHm7hZ/4+0MmQvOhqwgAyJsBHIERtXXBV/pjnE/wrgUPWqR2Q
+         GCDEnJAtVXgRqhgAt8RtIhPKyNOqljnBmcPbwo6e7l0Q1b5BWDTAzzNVRj9gBT6I1QOY
+         agzQ==
+X-Gm-Message-State: APjAAAUFWvIyOEWWHQvXDMeZeuJWiATLUFyeBTM3XBHOjAkBYAR2QU9u
+        fykdP0YjAvbZUCTCCXnWHL/ND0vC
+X-Google-Smtp-Source: APXvYqxQFpaibtzE274HNpD03heJLl1mF6Mg6IOEXWyaRLqbDHd/JxMxytqVjEqDZJHaHg/xMek42A==
+X-Received: by 2002:a63:5818:: with SMTP id m24mr7729022pgb.358.1581755807690;
+        Sat, 15 Feb 2020 00:36:47 -0800 (PST)
+Received: from localhost ([43.224.245.179])
+        by smtp.gmail.com with ESMTPSA id m12sm9555516pfh.37.2020.02.15.00.36.46
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sat, 15 Feb 2020 00:36:47 -0800 (PST)
+From:   qiwuchen55@gmail.com
+To:     vigneshr@ti.com, tony@atomide.com, aaro.koskinen@iki.fi
+Cc:     linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
+        chenqiwu <chenqiwu@xiaomi.com>
+Subject: [PATCH] i2c: omap: use devm_platform_ioremap_resource()
+Date:   Sat, 15 Feb 2020 16:36:43 +0800
+Message-Id: <1581755803-11242-1-git-send-email-qiwuchen55@gmail.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: chenqiwu <chenqiwu@xiaomi.com>
 
---jTlsQtO0VwrbBARu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Use a new API devm_platform_ioremap_resource() to simplify code.
 
-On Fri, Feb 14, 2020 at 09:05:59AM -0800, Tony Lindgren wrote:
-> * Mark Brown <broonie@kernel.org> [200214 12:50]:
+Signed-off-by: chenqiwu <chenqiwu@xiaomi.com>
+---
+ drivers/i2c/busses/i2c-omap.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-> > We really shouldn't need dummy DAIs at all I think, if we do it feels
-> > like there's a problem.  It's quite possible that there is actually a
-> > problem here though...
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index 2dfea35..47d994a 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1355,7 +1355,6 @@ static void omap_i2c_unprepare_recovery(struct i2c_adapter *adap)
+ {
+ 	struct omap_i2c_dev	*omap;
+ 	struct i2c_adapter	*adap;
+-	struct resource		*mem;
+ 	const struct omap_i2c_bus_platform_data *pdata =
+ 		dev_get_platdata(&pdev->dev);
+ 	struct device_node	*node = pdev->dev.of_node;
+@@ -1375,8 +1374,7 @@ static void omap_i2c_unprepare_recovery(struct i2c_adapter *adap)
+ 	if (!omap)
+ 		return -ENOMEM;
+ 
+-	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	omap->base = devm_ioremap_resource(&pdev->dev, mem);
++	omap->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(omap->base))
+ 		return PTR_ERR(omap->base);
+ 
+-- 
+1.9.1
 
-> It's dummy in the droid4 voice call case as mcbsp is not the clock-master
-> and there's nothing to configure for mcbsp.
-
-If the McBSP is doing anything at all it should still be properly
-represented with the actual device rather than a dummy otherwise we'll
-most likely get confused at some point.  If it's not doing anything then
-we shouldn't even need the dummy.  But perhaps I'm confused about this
-particular system, I remember some of the OMAP designs were a bit fun.
-
-> But I guess in some cases mcbsp could be the clock-master and then the
-> secondary DAI would have ops.
-
-It'd be a bit of an unusual clock design for a phone but yeah.
-
---jTlsQtO0VwrbBARu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5G/ZAACgkQJNaLcl1U
-h9CR+Qf9FPZ/Ad8y5xe0+tkWOFeKHsAJS6dhcJcsAkuHoO9VnHgr8uNfN1Pl6LQh
-W2bWc/5F07FYANvhVtVGyj23F2CnzPyewfjG6BGlToQRLZT3HGc0CPLNrnI4vDgb
-D+dK9EROqaeuDPppBbdxD0UiURFkB+OGKhIaFjQDhVDlLdr7hBvfPgDdzyilifh9
-K5wfAWGUPAjkNRW3IPVAfQZWuCoImOdkVmKTo9cUdxBqB052blAH/Dl6dCAIPXFH
-04abRiijYC91F2xNX/XU6XlOWgm2fUCrnmI6K44W71aHyGWPunQd3zhnZpyZXf5K
-+vKda5XCIvxFmrVHN4BnbN4qz/Xu0Q==
-=q3Lt
------END PGP SIGNATURE-----
-
---jTlsQtO0VwrbBARu--
