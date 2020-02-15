@@ -2,34 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D26E15FDBD
-	for <lists+linux-omap@lfdr.de>; Sat, 15 Feb 2020 10:02:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E38715FDC4
+	for <lists+linux-omap@lfdr.de>; Sat, 15 Feb 2020 10:12:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbgBOJCW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 15 Feb 2020 04:02:22 -0500
-Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:41144 "EHLO
+        id S1725937AbgBOJIO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 15 Feb 2020 04:08:14 -0500
+Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:41218 "EHLO
         hetgrotebos.org" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725882AbgBOJCV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Feb 2020 04:02:21 -0500
+        with ESMTP id S1725920AbgBOJIN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Feb 2020 04:08:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
          s=mail; h=Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:
         References:Cc:To:Subject:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
         :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
         Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
         :List-Post:List-Owner:List-Archive;
-        bh=hAsL6SNdm8O6Wf8bw2uGccXIuUdRAn5/VLXjgsiQZcY=; b=jGBAf09MeINeNkrIYi/egg7iYD
-        /57wo8VP+V3DpBomageCHyAh2Dmi02whN47iIJmdp7S0V/KBZFSrWd6GAr8ZqYVgsGAjYgFTuErc3
-        5c1OgfxdvsfQdik25C3vzp2yA6pq8LKDgBuFcFNOzig2C59lMuPr91h3Yj3oHS/BtepfU089QO5Ed
-        sINPDm6ueY7FdvbSiqwSa5J7uxNdZz/+vCpLZXHVhUxXy0lovhobRwG7pVeKpda6NwlfBd0Bhhs6c
-        IJqosy+xfVUMuJyW+s/iHiAbdNBetSYhxpk+lwsTReZ2IhY3KxG9TIxMHW4TOoGePlSPynAXrBmVK
-        tihfY9WA==;
+        bh=MfZMIJIKdCD3XlTZ9oHDTMe+Eqfx3zrxNliU75Iyx+0=; b=jz1q9wBzuHy5hoXgQM+RuWpBwc
+        cAS9UZhpYxrQu7jPB7GjDHqyXLNBs7HB0d6Y7EKMfNKGvpsHVy7aQBYs/szQqT1J6qCLIUj47ybso
+        P0itqNdPpBB/DC+Q5kUmERJ8cEPTDpd+JTay1hERywb5un2Y4XpLbpt6OJpgGK9UqxaryQ6W1L+AQ
+        WZ+YuT1s0UbGVR8oOGQBtkAU1zZOKZ9yTZVeBbiy+CEJgKa8T6V4F6Z0Qh4gTvoAD0TNzD6Z2PH/R
+        QHxov55iOst0Tx/r1443es1jokvCam9c0ih1ebfG8SGt0IMAV+uJqxqShFVC1AE1P6/bkgcT59Ido
+        p267HJGg==;
 Received: from deepwater.fritz.box ([192.168.178.25] helo=[0.0.0.0])
         by hetgrotebos.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <merlijn@wizzup.org>)
-        id 1j2tL8-00030P-W8; Sat, 15 Feb 2020 09:02:19 +0000
+        id 1j2tQo-00031D-Q6; Sat, 15 Feb 2020 09:08:10 +0000
 Subject: Re: [RFC PATCH 1/2] Input: add `SW_MACHINE_COVER`
-To:     Ladislav Michl <ladis@linux-mips.org>
+To:     Sebastian Reichel <sre@kernel.org>
 Cc:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -40,7 +40,8 @@ Cc:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
         linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
 References: <20200214130249.6845-1-merlijn@wizzup.org>
- <20200214130249.6845-2-merlijn@wizzup.org> <20200214191634.GA6251@lenoch>
+ <20200214130249.6845-2-merlijn@wizzup.org>
+ <20200214143857.msrkzzsss5hbb43l@earth.universe>
 From:   Merlijn Wajer <merlijn@wizzup.org>
 Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
  mQINBFESzAkBEACuLy46KxYl4IfKuNhz3UWXSlA1GqMwgOhGUJw/ineKS6T1FiRqcbhO/Zj8
@@ -103,57 +104,82 @@ Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
  auuXY5GfVPDcxjPwzm4Yjj4YvbfRLpAiQOOciMgiJlbn4A+BhvSSS54scJMln1Jh7KkDgeqz
  aP0nj9EfQy1vMXGp1i0sYzhMKaM9nsmV/q1Iisqc8ojjpmR00jVnz/aSX3eHexXOlB3Y6Qs+
  /XslHw==
-Message-ID: <7520b2d8-d960-e7de-0974-dfc7b708ed6b@wizzup.org>
-Date:   Sat, 15 Feb 2020 10:03:30 +0100
+Message-ID: <40ab03bb-4746-4414-f4e2-60740d539f3e@wizzup.org>
+Date:   Sat, 15 Feb 2020 10:09:22 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <20200214191634.GA6251@lenoch>
+In-Reply-To: <20200214143857.msrkzzsss5hbb43l@earth.universe>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="Ae0i3vRij5spopHGE2YcH6eNbPk3uWGI0"
+ boundary="dbnZehJWZ9pZpeEeDfZn1LGOxtE0Nw67n"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---Ae0i3vRij5spopHGE2YcH6eNbPk3uWGI0
-Content-Type: multipart/mixed; boundary="wW4AXA8pvVtlPFhsBqWB26rdmBD8K43HY"
+--dbnZehJWZ9pZpeEeDfZn1LGOxtE0Nw67n
+Content-Type: multipart/mixed; boundary="FqK2WXqfJEvjqQq2N0UuTDFTPGFcH6uvy"
 
---wW4AXA8pvVtlPFhsBqWB26rdmBD8K43HY
-Content-Type: text/plain; charset=utf-8
+--FqK2WXqfJEvjqQq2N0UuTDFTPGFcH6uvy
+Content-Type: text/plain; charset=windows-1252
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
 
-Hi Ladislav,
+Hi Sebastian,
 
-On 14/02/2020 20:16, Ladislav Michl wrote:
-> Hi Merlijn,
+On 14/02/2020 15:38, Sebastian Reichel wrote:
+> Hi,
 >=20
->> +#define SW_MACHINE_COVER	 0x10 /* set =3D cover closed */
->=20
-> There is an extra space above ^
+> On Fri, Feb 14, 2020 at 02:02:47PM +0100, Merlijn Wajer wrote:
+>> This event code represents the state of a removable cover of a device.=
 
-Thanks, will fix.
+>> Value 1 means that the cover is open or removed, value 0 means that th=
+e
+>> cover is closed.
+>=20
+> This is the opposit of what is being stated everywhere else. It does
+> not really matter, but it must be used consistently :)
+
+Oh, my bad. Indeed, value 1 means that the cover is closed, will fix.
+
+>> This can be used to preempt users removing a removable mmc card or eve=
+n
+>> the battery, allowing userspace to attempt to safely unmount a card.
+>=20
+> I would drop this sentence, since its very specific to the N900. The
+> name is generic enough to e.g. also apply for desktop machines, which
+> sometimes have a cover switch for doing a shutdown (because of poor
+> airflow when open).
+
+Fair enough.
+
+>> ---
+>=20
+> Missing Signed-off-by.=20
+
+Will add - thanks.
+
+> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
 Cheers,
 Merlijn
 
 
---wW4AXA8pvVtlPFhsBqWB26rdmBD8K43HY--
+--FqK2WXqfJEvjqQq2N0UuTDFTPGFcH6uvy--
 
---Ae0i3vRij5spopHGE2YcH6eNbPk3uWGI0
+--dbnZehJWZ9pZpeEeDfZn1LGOxtE0Nw67n
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXkez4gAKCRAGN09rynK8
-WtvgAPwOGefaWPi00Kuon7vC8PvgfT0C+olrfTsAjoze1buOLgD/UP6J/5yAqZxF
-GHt+4fKqEThSlioyKHaXr0+hIyAZEAI=
-=u1Yj
+iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXke1QgAKCRAGN09rynK8
+WkN5AP9/fgjhviBGOPOqV99ule4Fpnw5IW8iR4M8aANKD280IAEAgEJD2fhuL/Bd
+wxJYBAgkj6NO+PGkTbHzslRCcjs6Gw4=
+=ErhC
 -----END PGP SIGNATURE-----
 
---Ae0i3vRij5spopHGE2YcH6eNbPk3uWGI0--
+--dbnZehJWZ9pZpeEeDfZn1LGOxtE0Nw67n--
