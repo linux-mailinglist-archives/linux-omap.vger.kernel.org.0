@@ -2,33 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E38715FDC4
-	for <lists+linux-omap@lfdr.de>; Sat, 15 Feb 2020 10:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15D4215FDC5
+	for <lists+linux-omap@lfdr.de>; Sat, 15 Feb 2020 10:12:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725937AbgBOJIO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 15 Feb 2020 04:08:14 -0500
-Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:41218 "EHLO
+        id S1726090AbgBOJM0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 15 Feb 2020 04:12:26 -0500
+Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:41292 "EHLO
         hetgrotebos.org" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725920AbgBOJIN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Feb 2020 04:08:13 -0500
+        with ESMTP id S1725974AbgBOJM0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Feb 2020 04:12:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
          s=mail; h=Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:
         References:Cc:To:Subject:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
         :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
         Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
         :List-Post:List-Owner:List-Archive;
-        bh=MfZMIJIKdCD3XlTZ9oHDTMe+Eqfx3zrxNliU75Iyx+0=; b=jz1q9wBzuHy5hoXgQM+RuWpBwc
-        cAS9UZhpYxrQu7jPB7GjDHqyXLNBs7HB0d6Y7EKMfNKGvpsHVy7aQBYs/szQqT1J6qCLIUj47ybso
-        P0itqNdPpBB/DC+Q5kUmERJ8cEPTDpd+JTay1hERywb5un2Y4XpLbpt6OJpgGK9UqxaryQ6W1L+AQ
-        WZ+YuT1s0UbGVR8oOGQBtkAU1zZOKZ9yTZVeBbiy+CEJgKa8T6V4F6Z0Qh4gTvoAD0TNzD6Z2PH/R
-        QHxov55iOst0Tx/r1443es1jokvCam9c0ih1ebfG8SGt0IMAV+uJqxqShFVC1AE1P6/bkgcT59Ido
-        p267HJGg==;
+        bh=q53RwSv8wnX8geuj48t9lJtfvZUWujhqAgUnLp23UQc=; b=heFD53B6b8L/yUqvVqcugWs40B
+        u+9GWMEJk5h3LKbDJfGjI1MLSkbVM1/hzRNUwSlolOZt6TWoz4IIkm4ypEmeKJ8JJOKiLdGsXpuw9
+        YZA6p3/W/sEoUbKF6QXzHhr+rd4pzP8bjJziQiBqOOIAFSq+Do1vUz4LH6Uxsf6yy9hIKVAeTH6+W
+        NA6F72tEhYxwIz56XFMkIbuUqGAxKAuweAHXoW4n3cDc6JsPcFomCEidP2Cs9f/lRvGably7ES1Et
+        kkmvC8nM+8zeFVVB9573MYK/4ptd2hdq9j4pEpA4kRNCTMs0LsSu+oZ3urGFH6mN23aVlkmXI5c0v
+        WxrlhLcA==;
 Received: from deepwater.fritz.box ([192.168.178.25] helo=[0.0.0.0])
         by hetgrotebos.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <merlijn@wizzup.org>)
-        id 1j2tQo-00031D-Q6; Sat, 15 Feb 2020 09:08:10 +0000
-Subject: Re: [RFC PATCH 1/2] Input: add `SW_MACHINE_COVER`
+        id 1j2tUt-00031p-H8; Sat, 15 Feb 2020 09:12:23 +0000
+Subject: Re: [RFC PATCH 2/2] ARM: dts: n900: remove mmc1 card detect gpio
 To:     Sebastian Reichel <sre@kernel.org>
 Cc:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
@@ -40,8 +40,8 @@ Cc:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
         linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
 References: <20200214130249.6845-1-merlijn@wizzup.org>
- <20200214130249.6845-2-merlijn@wizzup.org>
- <20200214143857.msrkzzsss5hbb43l@earth.universe>
+ <20200214130249.6845-3-merlijn@wizzup.org>
+ <20200214144915.jnmnsqennc4jvvsv@earth.universe>
 From:   Merlijn Wajer <merlijn@wizzup.org>
 Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
  mQINBFESzAkBEACuLy46KxYl4IfKuNhz3UWXSlA1GqMwgOhGUJw/ineKS6T1FiRqcbhO/Zj8
@@ -104,82 +104,78 @@ Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
  auuXY5GfVPDcxjPwzm4Yjj4YvbfRLpAiQOOciMgiJlbn4A+BhvSSS54scJMln1Jh7KkDgeqz
  aP0nj9EfQy1vMXGp1i0sYzhMKaM9nsmV/q1Iisqc8ojjpmR00jVnz/aSX3eHexXOlB3Y6Qs+
  /XslHw==
-Message-ID: <40ab03bb-4746-4414-f4e2-60740d539f3e@wizzup.org>
-Date:   Sat, 15 Feb 2020 10:09:22 +0100
+Message-ID: <9b0b59bc-0c7c-ef41-8348-aaaa1ec3c78a@wizzup.org>
+Date:   Sat, 15 Feb 2020 10:13:35 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <20200214143857.msrkzzsss5hbb43l@earth.universe>
+In-Reply-To: <20200214144915.jnmnsqennc4jvvsv@earth.universe>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="dbnZehJWZ9pZpeEeDfZn1LGOxtE0Nw67n"
+ boundary="Zc0qq4PsXOdsYxSLQbG9E1al2ROekFnPN"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---dbnZehJWZ9pZpeEeDfZn1LGOxtE0Nw67n
-Content-Type: multipart/mixed; boundary="FqK2WXqfJEvjqQq2N0UuTDFTPGFcH6uvy"
+--Zc0qq4PsXOdsYxSLQbG9E1al2ROekFnPN
+Content-Type: multipart/mixed; boundary="ODTLRLWlkfEaZurDKYhF6WUM3YikBRHdD"
 
---FqK2WXqfJEvjqQq2N0UuTDFTPGFcH6uvy
+--ODTLRLWlkfEaZurDKYhF6WUM3YikBRHdD
 Content-Type: text/plain; charset=windows-1252
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
 
-Hi Sebastian,
+Hi,
 
-On 14/02/2020 15:38, Sebastian Reichel wrote:
+On 14/02/2020 15:49, Sebastian Reichel wrote:
 > Hi,
 >=20
-> On Fri, Feb 14, 2020 at 02:02:47PM +0100, Merlijn Wajer wrote:
->> This event code represents the state of a removable cover of a device.=
-
->> Value 1 means that the cover is open or removed, value 0 means that th=
-e
->> cover is closed.
+> On Fri, Feb 14, 2020 at 02:02:48PM +0100, Merlijn Wajer wrote:
+>> Instead, expose the key via the input framework, as SW_MACHINE_COVER
 >=20
-> This is the opposit of what is being stated everywhere else. It does
-> not really matter, but it must be used consistently :)
-
-Oh, my bad. Indeed, value 1 means that the cover is closed, will fix.
-
->> This can be used to preempt users removing a removable mmc card or eve=
-n
->> the battery, allowing userspace to attempt to safely unmount a card.
+> How about:
 >=20
-> I would drop this sentence, since its very specific to the N900. The
-> name is generic enough to e.g. also apply for desktop machines, which
-> sometimes have a cover switch for doing a shutdown (because of poor
-> airflow when open).
-
-Fair enough.
-
->> ---
+> The chip-detect GPIO is actually detecting if the cover is closed.
+> Technically it's possible to use the SD card with open cover. The
+> only downside is risk of battery falling out and user being able
+> to physically remove the card.
 >=20
-> Missing Signed-off-by.=20
+> The behaviour of SD card not being available when the device is
+> open is unexpected and creates more problems than it solves. There
+> is a high chance, that more people accidently break their rootfs
+> by opening the case without physically removing the card.
 
-Will add - thanks.
+Sounds good.
 
+> Missing SoB.
+
+Will add.
+
+> Patch itself is
+>=20
 > Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+
+Thanks.
 
 Cheers,
 Merlijn
 
 
---FqK2WXqfJEvjqQq2N0UuTDFTPGFcH6uvy--
+--ODTLRLWlkfEaZurDKYhF6WUM3YikBRHdD--
 
---dbnZehJWZ9pZpeEeDfZn1LGOxtE0Nw67n
+--Zc0qq4PsXOdsYxSLQbG9E1al2ROekFnPN
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXke1QgAKCRAGN09rynK8
-WkN5AP9/fgjhviBGOPOqV99ule4Fpnw5IW8iR4M8aANKD280IAEAgEJD2fhuL/Bd
-wxJYBAgkj6NO+PGkTbHzslRCcjs6Gw4=
-=ErhC
+iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXke2PwAKCRAGN09rynK8
+WhCPAQCcvGZYQQAti66eNhAwOS4p9w/Cg4BzeAAC2p4aUOZ3dQEA/boNM5tm4Zoj
+3KSuRZ4omYJ1wvZbBlWPA4JwA93/mgE=
+=0cvR
 -----END PGP SIGNATURE-----
 
---dbnZehJWZ9pZpeEeDfZn1LGOxtE0Nw67n--
+--Zc0qq4PsXOdsYxSLQbG9E1al2ROekFnPN--
