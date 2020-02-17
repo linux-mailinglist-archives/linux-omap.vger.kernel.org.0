@@ -2,63 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C65160CA3
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Feb 2020 09:13:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5EC3160DDA
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Feb 2020 09:55:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728011AbgBQIN2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Feb 2020 03:13:28 -0500
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:54735 "EHLO
-        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726932AbgBQIN1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 17 Feb 2020 03:13:27 -0500
-Received: from [109.168.11.45] (port=53996 helo=[192.168.101.73])
-        by hostingweb31.netsons.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <luca@lucaceresoli.net>)
-        id 1j3bWv-004PuW-4C; Mon, 17 Feb 2020 09:13:25 +0100
-Subject: Re: [PATCH] i2c: omap: use devm_platform_ioremap_resource()
-To:     qiwuchen55@gmail.com, vigneshr@ti.com, tony@atomide.com,
-        aaro.koskinen@iki.fi
-Cc:     linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
-        chenqiwu <chenqiwu@xiaomi.com>
-References: <1581755803-11242-1-git-send-email-qiwuchen55@gmail.com>
-From:   Luca Ceresoli <luca@lucaceresoli.net>
-Message-ID: <0e6c38d0-e3fd-de24-a24e-33aa4168bcee@lucaceresoli.net>
-Date:   Mon, 17 Feb 2020 09:13:24 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1728602AbgBQIzr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Feb 2020 03:55:47 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:23678 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728570AbgBQIzr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Feb 2020 03:55:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1581929745;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=eH23xUz7bTdqA4S1ozloDBOylhj7VC8PtsgSktH+a/w=;
+        b=Rg1DywqLaTkF5MjthtqqPkFas5Z4ZTN6aErgcIQpEApfugfp5BzRd0CBjhBfudEF63
+        Usy4Nul+mFTxWPXQDKHIDR023lxxPZg5qBuJdeFPXdkUvx1rqP88Mygv/yF24+4cFTmZ
+        R0UZ5J5P4HkPJCya9oeiVh/ieRYRfAtA9ekAMErpAmGQrTRyY3rYLdkmWRHYd3xy55q+
+        GvPO/Rr3LvtVLSUr/3Ek3AmwZkr1LqIlsn9fsOKppA+6rMbXLvj6eDhrFuBsKDkld00x
+        wm8DD8UMuK1nsE+8Y/2IrN/ytjM8ul67D6NCE362aD0iPER17bupDgT1SnF1oRzTe3/d
+        /nMA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXL8GTnsvhg="
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+        by smtp.strato.de (RZmta 46.1.12 DYNA|AUTH)
+        with ESMTPSA id U06217w1H8tgLO9
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Mon, 17 Feb 2020 09:55:42 +0100 (CET)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>
+Cc:     linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-omap@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: [PATCH] extcon: palmas: hide error messages if gpio returns -EPROBE_DEFER
+Date:   Mon, 17 Feb 2020 09:55:42 +0100
+Message-Id: <f65ad0ef2866e7d5b6743e13579c1efe8c572b4f.1581929741.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <1581755803-11242-1-git-send-email-qiwuchen55@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca+lucaceresoli.net/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+If the gpios are probed after this driver (e.g. if they
+come from an i2c expander) there is no need to print an
+error message.
 
-On 15/02/20 09:36, qiwuchen55@gmail.com wrote:
-> From: chenqiwu <chenqiwu@xiaomi.com>
-> 
-> Use a new API devm_platform_ioremap_resource() to simplify code.
-> 
-> Signed-off-by: chenqiwu <chenqiwu@xiaomi.com>
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+---
+ drivers/extcon/extcon-palmas.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Tested-by: Luca Ceresoli <luca@lucaceresoli.net>
-Reviewed-by: Luca Ceresoli <luca@lucaceresoli.net>
-
+diff --git a/drivers/extcon/extcon-palmas.c b/drivers/extcon/extcon-palmas.c
+index edc5016f46f1..9c6254c0531c 100644
+--- a/drivers/extcon/extcon-palmas.c
++++ b/drivers/extcon/extcon-palmas.c
+@@ -206,14 +206,16 @@ static int palmas_usb_probe(struct platform_device *pdev)
+ 	palmas_usb->id_gpiod = devm_gpiod_get_optional(&pdev->dev, "id",
+ 							GPIOD_IN);
+ 	if (IS_ERR(palmas_usb->id_gpiod)) {
+-		dev_err(&pdev->dev, "failed to get id gpio\n");
++		if (PTR_ERR(palmas_usb->id_gpiod) != -EPROBE_DEFER)
++			dev_err(&pdev->dev, "failed to get id gpio\n");
+ 		return PTR_ERR(palmas_usb->id_gpiod);
+ 	}
+ 
+ 	palmas_usb->vbus_gpiod = devm_gpiod_get_optional(&pdev->dev, "vbus",
+ 							GPIOD_IN);
+ 	if (IS_ERR(palmas_usb->vbus_gpiod)) {
+-		dev_err(&pdev->dev, "failed to get vbus gpio\n");
++		if (PTR_ERR(palmas_usb->vbus_gpiod) != -EPROBE_DEFER)
++			dev_err(&pdev->dev, "failed to get vbus gpio\n");
+ 		return PTR_ERR(palmas_usb->vbus_gpiod);
+ 	}
+ 
 -- 
-Luca
+2.23.0
+
