@@ -2,134 +2,183 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C293416297D
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2020 16:34:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 196C516298B
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2020 16:37:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726569AbgBRPee (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Feb 2020 10:34:34 -0500
-Received: from muru.com ([72.249.23.125]:55968 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726373AbgBRPee (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 18 Feb 2020 10:34:34 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id F4223812F;
-        Tue, 18 Feb 2020 15:35:16 +0000 (UTC)
-Date:   Tue, 18 Feb 2020 07:34:29 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Arthur D ." <spinal.by@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
- graph card
-Message-ID: <20200218153429.GJ35972@atomide.com>
-References: <20200211171645.41990-1-tony@atomide.com>
- <cd46c6ec-80e3-332f-4922-e58a3acbfc61@ti.com>
- <20200212143543.GI64767@atomide.com>
- <346dfd2b-23f8-87e0-6f45-27a5099b1066@ti.com>
- <20200214170322.GZ64767@atomide.com>
- <d9a43fcb-ed0f-5cd5-7e22-58924d571d17@ti.com>
- <20200217231001.GC35972@atomide.com>
- <20200217233623.GE35972@atomide.com>
- <07989190-e110-13c4-50ea-875431725b47@ti.com>
+        id S1726445AbgBRPhQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Feb 2020 10:37:16 -0500
+Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:51750 "EHLO
+        hetgrotebos.org" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726373AbgBRPhQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Feb 2020 10:37:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
+         s=mail; h=Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:
+        References:Cc:To:Subject:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+        :List-Post:List-Owner:List-Archive;
+        bh=LM1vSdJOJ3srTNh2LlFjyvUlq7aouFQ5AZ41dT/K+X0=; b=oSzquMK+NHk7f3OmPxXaXevOE5
+        bJ6RMyXharmh2hJTUJeNwcxgqRPiPabPD8T4O1I7vabbE6enuHEN8yYobLcYxGZdWS+UhIE2ve02A
+        Ql0sm4kv8gkLf9uK21hn54lK5QE0yPuwtGWs6nKEar8hIsQR5Gk1dKP7v8R3OPRVjCwf3beXdC6cW
+        7w1bjx1G5ZAaPeQKtwba9GfmYcWjOaqipVDLnRJX2bqAeSu91VK859ZZJXR/7EZMKueWiv4B69Aja
+        MhnUWUQOseCDM+l/UG2izt5X3kcC843NZYoTJ9aYIm/lzm1vSw350EEVt7heN+XX/POUOyxCnoWkt
+        XJLeM6jQ==;
+Received: from deepwater.fritz.box ([192.168.178.25] helo=[0.0.0.0])
+        by hetgrotebos.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <merlijn@wizzup.org>)
+        id 1j44vx-0004Du-D8; Tue, 18 Feb 2020 15:37:13 +0000
+Subject: Re: Droid 4 WiFi firmware loading error
+To:     Marcel Holtmann <marcel@holtmann.org>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        "Arthur D." <spinal.by@gmail.com>,
+        Bluez mailing list <linux-bluetooth@vger.kernel.org>,
+        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <20200211232425.GE16391@atomide.com>
+ <op.0fu85owhhxa7s4@supervisor.net28> <20200212150722.GF16391@atomide.com>
+ <20200212162131.GI16391@atomide.com> <op.0fwkyxvihxa7s4@supervisor.net28>
+ <20200213041112.GL16391@atomide.com> <op.0fw0oas5hxa7s4@supervisor.net28>
+ <20200213161157.GN16391@atomide.com> <op.0fx4hozhhxa7s4@supervisor.net28>
+ <20200214161100.b7aqb6wwsrxmx4ab@earth.universe>
+ <20200214174548.GC64767@atomide.com>
+ <3D50CC42-1201-4067-ACDE-E9B9F0DC5653@holtmann.org>
+From:   Merlijn Wajer <merlijn@wizzup.org>
+Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
+ 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
+ /XslHw==
+Message-ID: <680bc658-cc0d-360a-5837-6929a84efde2@wizzup.org>
+Date:   Tue, 18 Feb 2020 16:38:21 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <07989190-e110-13c4-50ea-875431725b47@ti.com>
+In-Reply-To: <3D50CC42-1201-4067-ACDE-E9B9F0DC5653@holtmann.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="qyvwhE5NZdxhoyL1d14t8JjuhOjdpysDY"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Peter Ujfalusi <peter.ujfalusi@ti.com> [200218 15:28]:
-> 
-> 
-> On 18/02/2020 1.36, Tony Lindgren wrote:
-> > * Tony Lindgren <tony@atomide.com> [200217 23:10]:
-> >> * Peter Ujfalusi <peter.ujfalusi@ti.com> [200217 12:10]:
-> >>> On 14/02/2020 19.03, Tony Lindgren wrote:
-> >>>> But right now in droid4 voice call case mcbsp is just the i2s transport,
-> >>>> and everything happens betwee the modem and the cpcap pmic.
-> >>>
-> >>> Iow you don't need McBSP DAI at all. If you would have added the dummy
-> >>> codec to McBSP !3 and use that, it would work in a same way, or to DMIC
-> >>> or McPDM...
-> >>>
-> >>> The McBSP ops are NULL for the dummy dai, so McBSP is turned off.
-> >>
-> >> Hmm yeah I don't know if the cpcap codec on the same mcbsp needs
-> >> mcbsp for voice call.
-> >>
-> >> According to Sebastian sounds like mcbsp can be idle at that point.
-> >>
-> >> But what about capture of voice call at the mcbsp from the
-> >> TDM slot? In that case mcbsp would be active.
-> > 
-> > Looks like only initializing only one mcbsp3 instance here
-> > instead of two will produce an oops as below.
-> > 
-> > I'm not sure how this is supposed to work for
-> > snd-soc-audio-graph-card with multipe endpoints connected
-> > to just one mcbsp dai instance?
-> > 
-> > Regards,
-> > 
-> > Tony
-> > 
-> > 8< -------------------
-> What is the kernel version?
-> The context is missing...
-> Who printed the line:
-> dev_err(dev, "ASoC: Failed to register DAIs: %d\n", ret);
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--qyvwhE5NZdxhoyL1d14t8JjuhOjdpysDY
+Content-Type: multipart/mixed; boundary="X8kbv6vUxnZQ2B0ibt3c0962NI0tcZ7av"
 
-Oh sorry, this was just a quick test with droid4-pending-v5.5 branch
-with only one mcbsp dai initialized.
+--X8kbv6vUxnZQ2B0ibt3c0962NI0tcZ7av
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
 
-> This is only possible if snd_soc_component_initialize() fail, which can
-> only fail if snd_soc_component_unique_name() fails.
-> 
-> > Internal error: Oops: 805 [#1] PREEMPT SMP ARM
-> > snd_soc_del_component_unlocked+0xf4/0x110
-> 
-> Not too helpful ;)
+Hi Marcel,
 
-Yeah I have not looked at it closer so far..
+On 14/02/2020 19:23, Marcel Holtmann wrote:
+> Hi Tony,
+>=20
+>>> WTF :(
+>>>
+>>> Right now the BT driver and the WiFi driver are no aware of
+>>> each other. Actually the kernel is not even aware, that both
+>>> drivers are using the same chip. Unfortunately this will be
+>>> tricky to solve properly. Since a system may have two WiLink
+>>> devices, the only solution coming to my mind would be adding
+>>> a link from the BT device to the WiFi device in device tree.
+>>> Additionally we would need something in the WiLink driver to
+>>> check if driver has been initialized properly for a given DT
+>>> node.
+>>
+>> Yeah exactly.. I think the best way would be to export something
+>> like wlcore_register_bt/wlcore_unregister_bt.. And then have
+>> wlcore_register_bt return -EAGAIN until wlcore is up.
+>=20
+> actually NO.
+>=20
+> We have rejected this many times for all hardware manufacturers. Please=
+ fix the firmware instead.
 
-Regards,
+That could be a real challenge, given that we don't have access to the
+firmware source. Are there other historic precedents besides "fix the
+firmware" that could be relevant here?
 
-Tony
+Currently we're stuck with either blacklisting the bluetooth modules all
+together, or potentially have out of tree patches -- neither are ideal
+for (my/our) "Mainline GNU/Linux" on a smartphone goal.
 
-> > ...
-> > [   39.616027] Backtrace:
-> > [   39.616149] [<bf3f6bc4>] (snd_soc_del_component_unlocked [snd_soc_core]) from [<bf3f8ff4>] (snd_soc_add_component+0x238/0x374 [snd_s)
-> > [   39.616149]  r7:00000002 r6:00000002 r5:ec9a0e78 r4:00000122
-> > [   39.678283] qmi_wwan 1-1:1.6: cdc-wdm1: USB WDM device
-> > [   39.739074] [<bf3f8dbc>] (snd_soc_add_component [snd_soc_core]) from [<bf3f9180>] (snd_soc_register_component+0x50/0x60 [snd_soc_cor)
-> > [   39.739074]  r10:bf4582d0 r9:ec9d0840 r8:00000002 r7:00000002 r6:ec9d0640 r5:bf4584ac
-> > [   39.800842] asoc-audio-graph-card soundcard: using device tree for GPIO lookup
-> > [   39.808685]  r4:eed52410
-> > [   39.862304] [<bf3f9130>] (snd_soc_register_component [snd_soc_core]) from [<bf4088b4>] (devm_snd_soc_register_component+0x54/0x90 [s)
-> > [   39.862304]  r7:ec9d0640 r6:bf4584ac r5:ec9d3040 r4:eed52410
-> > [   39.925048] qmi_wwan 1-1:1.6 wwan1: register 'qmi_wwan' at usb-4a064800.ohci-1, WWAN/QMI device, 2e:59:df:3f:4f:ef
-> > [   39.984558] [<bf408860>] (devm_snd_soc_register_component [snd_soc_core]) from [<bf456fb8>] (asoc_mcbsp_probe+0x3e8/0x574 [snd_soc_o)
-> > [   39.984558]  r9:ec9d0840 r8:ec9f4000 r7:eed52410 r6:00000000 r5:eed52400 r4:ec9d0840
-> > [   39.984588] [<bf456bd0>] (asoc_mcbsp_probe [snd_soc_omap_mcbsp]) from [<c068475c>] (platform_drv_probe+0x58/0xa8)
-> > [   39.984619]  r10:00000000 r9:0000002e r8:bf459014 r7:00000000 r6:bf459014 r5:00000000
-> > [   40.044342] of_get_named_gpiod_flags: can't parse 'pa-gpios' property of node '/soundcard[0]'
-> > [   40.051788]  r4:eed52410
-> > [   40.100769] [<c0684704>] (platform_drv_probe) from [<c06820ac>] (really_probe+0x1ec/0x358)
-> > 
-> 
-> - Péter
-> 
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Cheers,
+Merlijn
+
+
+--X8kbv6vUxnZQ2B0ibt3c0962NI0tcZ7av--
+
+--qyvwhE5NZdxhoyL1d14t8JjuhOjdpysDY
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXkwE7QAKCRAGN09rynK8
+WhZbAQC8a/Vq6/gU62QFoaS7Ow+n1aHplzDo/zvB66lVh4VfuwD/d+VOAU+0vtH8
+cJj5WT4v6c5S+z34Z1xfZ/iMPSyYCQU=
+=/ZZ3
+-----END PGP SIGNATURE-----
+
+--qyvwhE5NZdxhoyL1d14t8JjuhOjdpysDY--
