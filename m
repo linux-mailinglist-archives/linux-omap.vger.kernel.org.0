@@ -2,93 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 070BE162D35
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2020 18:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1CC91632A0
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2020 21:10:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726415AbgBRRnB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Feb 2020 12:43:01 -0500
-Received: from foss.arm.com ([217.140.110.172]:57216 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726403AbgBRRnA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 18 Feb 2020 12:43:00 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 74FC431B;
-        Tue, 18 Feb 2020 09:43:00 -0800 (PST)
-Received: from localhost (unknown [10.37.6.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EC5F53F703;
-        Tue, 18 Feb 2020 09:42:59 -0800 (PST)
-Date:   Tue, 18 Feb 2020 17:42:58 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        "Arthur D ." <spinal.by@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>
-Subject: Re: [PATCH] ASoC: cpcap: Implement set_tdm_slot for voice call
- support
-Message-ID: <20200218174258.GK4232@sirena.org.uk>
-References: <20200211181005.54008-1-tony@atomide.com>
- <ae2b7d9e-d05e-54ac-4f18-27cc8c4e81a0@ti.com>
- <20200212144620.GJ64767@atomide.com>
- <9a060430-5a3e-61e1-3d2c-f89819d9436f@ti.com>
- <20200217232325.GD35972@atomide.com>
- <8fc1dded-6d28-f5cd-f2f9-3a6810571119@ti.com>
- <20200218153211.GI35972@atomide.com>
- <20200218170628.r47xc3yydg6xx2yh@earth.universe>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="opg8F0UgoHELSI+9"
-Content-Disposition: inline
-In-Reply-To: <20200218170628.r47xc3yydg6xx2yh@earth.universe>
-X-Cookie: No alcohol, dogs or horses.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1727506AbgBRUJJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Feb 2020 15:09:09 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:55293 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726647AbgBRUJJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Feb 2020 15:09:09 -0500
+Received: by mail-wm1-f66.google.com with SMTP id n3so1883142wmk.4
+        for <linux-omap@vger.kernel.org>; Tue, 18 Feb 2020 12:09:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id;
+        bh=4O8UBMcWrJ0vW2xCQ1w086ifQXzUq/0Zcfzr3vmxCmU=;
+        b=hXAdbJg9t7Ac7RWs2LVmLNuhUWu7hjBhe1Z8zVbgf5MTlBwdMbUrvJRzRAOAQsDc0I
+         EUM8+Gww5mrY84CsItT7dvGCd3oXCNqqoUvzcU5nXhvJvaTEvmA+kvxVEYOxAXv/gGdc
+         ictOXLSgaUbnju48nPm5bLTfBSOlaU6fSu4BQuHA9qtPpiUYlr2FjaFJJxAGFqWrNmgb
+         lWogUfBylpH6gHl/gxg5kggzq3YYcAbCIskV+OYW2tTWvcOGoRDbwc4nk8AIafQpWExb
+         rHYi6sQSgdrP+P2gduAztJFiiVWpU0wOBi2rxLbXy04ZQ//c1jLI1VSRMmqBODLmu4bS
+         KxUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=4O8UBMcWrJ0vW2xCQ1w086ifQXzUq/0Zcfzr3vmxCmU=;
+        b=B+/pykQc76t0jEFg67z8o/WYj+CkzSxyDiZbOs0m9MXCEiUO4tMiFWhbQIMh494/0u
+         pQ2MBErD8FsfVmIngs2Ud+voNeVKt6aJgIki/Ktu1sEoPm0ZTzfABC3uGvBgKtWg2T/h
+         DAMg4YuHQLqVjuUqtITW+GqfnHFrMA/5T/qvwjC3kObFgp0Bh3h6pLUb/SgkkNBBpEVg
+         YaiwYRYaIE16Sq9jEzsJYsX5h40Wb/10WSmcj0IihVkj74SCujKOIq1wS0hjOYVUPwsj
+         4Xrv4UC0jl5THOJkI9whW6S89lb4AIxotW17qusWiNg9cRknEKeleNGqwsSishMfMiih
+         +s4g==
+X-Gm-Message-State: APjAAAV0/sCWXPvEBmdudVGlJJHCqlYwAuUsiKuKYZmjs3XvWl2Cb4n+
+        RcoXSvm1bjS86rSRRAhvnnt8Ow==
+X-Google-Smtp-Source: APXvYqyz8XCmBJQazBT3WrJL/40oe8aCs3Awx1JIxQFwy+25m3+8OEWhpJq7d8e2b6HSlTLRNYWFWA==
+X-Received: by 2002:a1c:1dc7:: with SMTP id d190mr5026741wmd.48.1582056546861;
+        Tue, 18 Feb 2020 12:09:06 -0800 (PST)
+Received: from localhost.localdomain ([51.15.160.169])
+        by smtp.googlemail.com with ESMTPSA id c74sm5043017wmd.26.2020.02.18.12.09.06
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Tue, 18 Feb 2020 12:09:06 -0800 (PST)
+From:   Corentin Labbe <clabbe@baylibre.com>
+To:     lee.jones@linaro.org, tony@atomide.com
+Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Corentin Labbe <clabbe@baylibre.com>
+Subject: [PATCH] mfd: omap: remove useless cast for driver.name
+Date:   Tue, 18 Feb 2020 20:09:01 +0000
+Message-Id: <1582056541-16973-1-git-send-email-clabbe@baylibre.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+device_driver name is const char pointer, so it not useful to cast
+xx_driver_name (which is already const char).
 
---opg8F0UgoHELSI+9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
+---
+ drivers/mfd/omap-usb-host.c | 2 +-
+ drivers/mfd/omap-usb-tll.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-On Tue, Feb 18, 2020 at 06:06:28PM +0100, Sebastian Reichel wrote:
+diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
+index 4798d9f3f9d5..1f4f01b02d98 100644
+--- a/drivers/mfd/omap-usb-host.c
++++ b/drivers/mfd/omap-usb-host.c
+@@ -840,7 +840,7 @@ MODULE_DEVICE_TABLE(of, usbhs_omap_dt_ids);
+ 
+ static struct platform_driver usbhs_omap_driver = {
+ 	.driver = {
+-		.name		= (char *)usbhs_driver_name,
++		.name		= usbhs_driver_name,
+ 		.pm		= &usbhsomap_dev_pm_ops,
+ 		.of_match_table = usbhs_omap_dt_ids,
+ 	},
+diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+index 265f5e350e1c..72f5a1cf867a 100644
+--- a/drivers/mfd/omap-usb-tll.c
++++ b/drivers/mfd/omap-usb-tll.c
+@@ -304,7 +304,7 @@ MODULE_DEVICE_TABLE(of, usbtll_omap_dt_ids);
+ 
+ static struct platform_driver usbtll_omap_driver = {
+ 	.driver = {
+-		.name		= (char *)usbtll_driver_name,
++		.name		= usbtll_driver_name,
+ 		.of_match_table = usbtll_omap_dt_ids,
+ 	},
+ 	.probe		= usbtll_omap_probe,
+-- 
+2.24.1
 
-> simple-graph-card is the current machine driver. We might have to
-> introduce a Droid 4 specific driver instead. I used simple(-graph)-card
-> instead of introducing a new driver, since the setup was simple enough
-> without modem and bluetooth. The simple card was perfect to test the CPCAP
-> codec driver. The TDM things might be complex enough to create
-> a new machine driver (as I mentioned in the original patchset
-> adding CPCAP codec support).
-
-I tend to agree here, phones are generally one of the most complicated
-classes of system for clocking and interconnects and the CODECs they use
-often the most complex too so they're really stretching the generic
-cards.  It'd be nice to be able to handle things with generic cards but
-it's likely you'll run into issues that it'd be unreasonable to force
-you to address for system enablement.  OTOH if you manage to get one of
-the generic cards working well that'd be excellent!
-
---opg8F0UgoHELSI+9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5MIiEACgkQJNaLcl1U
-h9D6Wgf+KODCNr6XeqdBCSDh3Rzl0aYLJntwETttXe5OX9SV2VAbUhheJKFsmhmK
-UN8bsVZNmhwC8qIAXznxkbwp+9BPnM72lmIuniA8KqRiNHGdMwHUYRqw4g9c53qX
-p2U5E9eZ35ilwDKYpb7SXn4r9pL02zAN7LqfcNs+v4CQ0LuGN/1xxsVKz7MlZ+t1
-J8iizIybXeDxYCIWEHOSQn9+Hq0kdzqziJKLnApzilqRqtB51QWUK/vU1nPtQBfd
-WPaGdaIa3qIh+R2PuhThKlJnQPaD/RRyM6TTApWjYrq8OfvfSvAC7f9r3P5yo3K3
-lT8+OH3w5S8ZHUAE2G1tfHCaNIRiuw==
-=tBdt
------END PGP SIGNATURE-----
-
---opg8F0UgoHELSI+9--
