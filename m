@@ -2,100 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B5E16209B
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2020 06:58:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 628D516246B
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2020 11:21:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726104AbgBRF57 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Feb 2020 00:57:59 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:50950 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725978AbgBRF57 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Feb 2020 00:57:59 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01I5vjwS080484;
-        Mon, 17 Feb 2020 23:57:45 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1582005465;
-        bh=nz+Gado79oO1FRYIr2KgSIcakRLc083x17+uZVM4+Fw=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=ACmQ44+bJvDDI/BItW00S3jOVmBEV2t42SRxQU1OzRW/cQnWXA3YDTdMFsRgFLRJy
-         bbaGMkgOu78/9P1KgwejNIGK6fiW4F3+QKxbBDMmHqCzN8p9XCpGWQW434wpjfRdkF
-         w3YiPP9V8xmRS8/9WECVHQGU4c6IoKUqSQGxtjAY=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01I5vj56129995
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 17 Feb 2020 23:57:45 -0600
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 17
- Feb 2020 23:57:45 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Mon, 17 Feb 2020 23:57:45 -0600
-Received: from [172.24.145.136] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01I5vc3L019831;
-        Mon, 17 Feb 2020 23:57:39 -0600
-Subject: Re: [PATCH] i2c: omap: use devm_platform_ioremap_resource()
-To:     <qiwuchen55@gmail.com>, <tony@atomide.com>, <aaro.koskinen@iki.fi>
-CC:     <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        chenqiwu <chenqiwu@xiaomi.com>
-References: <1581755803-11242-1-git-send-email-qiwuchen55@gmail.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <5f045d3c-d106-9f2d-1b2c-b7b6b04bfaba@ti.com>
-Date:   Tue, 18 Feb 2020 11:28:17 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+        id S1726323AbgBRKVo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Feb 2020 05:21:44 -0500
+Received: from eddie.linux-mips.org ([148.251.95.138]:46520 "EHLO
+        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726193AbgBRKVo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Feb 2020 05:21:44 -0500
+Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
+        (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
+        id S23990398AbgBRKVlVM4bN (ORCPT <rfc822;linux-omap@vger.kernel.org>
+        + 1 other); Tue, 18 Feb 2020 11:21:41 +0100
+Date:   Tue, 18 Feb 2020 11:21:40 +0100
+From:   Ladislav Michl <ladis@linux-mips.org>
+To:     Chanwoo Choi <cw00.choi@samsung.com>
+Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v3] extcon: palmas: hide error messages if gpio returns
+ -EPROBE_DEFER
+Message-ID: <20200218102140.GA193069@lenoch>
+References: <CGME20200217133832epcas1p329af393e88fa76189ca141d2534f9ad2@epcas1p3.samsung.com>
+ <d5c2826a5f00fcaee62f00662ae2a44dc4a5395d.1581946695.git.hns@goldelico.com>
+ <b2655a58-6541-a2c9-c44d-536e5cef1ee3@samsung.com>
 MIME-Version: 1.0
-In-Reply-To: <1581755803-11242-1-git-send-email-qiwuchen55@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2655a58-6541-a2c9-c44d-536e5cef1ee3@samsung.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 15/02/20 2:06 pm, qiwuchen55@gmail.com wrote:
-> From: chenqiwu <chenqiwu@xiaomi.com>
+On Tue, Feb 18, 2020 at 12:28:25PM +0900, Chanwoo Choi wrote:
+> On 2/17/20 10:38 PM, H. Nikolaus Schaller wrote:
+> > If the gpios are probed after this driver (e.g. if they
+> > come from an i2c expander) there is no need to print an
+> > error message.
+> > 
+> > Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> > ---
+> >  drivers/extcon/extcon-palmas.c | 8 ++++++--
+> >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/extcon/extcon-palmas.c b/drivers/extcon/extcon-palmas.c
+> > index edc5016f46f1..cea58d0cb457 100644
+> > --- a/drivers/extcon/extcon-palmas.c
+> > +++ b/drivers/extcon/extcon-palmas.c
+> > @@ -205,14 +205,18 @@ static int palmas_usb_probe(struct platform_device *pdev)
+> >  
+> >  	palmas_usb->id_gpiod = devm_gpiod_get_optional(&pdev->dev, "id",
+> >  							GPIOD_IN);
+> > -	if (IS_ERR(palmas_usb->id_gpiod)) {
+> > +	if (PTR_ERR(palmas_usb->id_gpiod) == -EPROBE_DEFER) {
+> > +		return -EPROBE_DEFER;
+> > +	} else if (IS_ERR(palmas_usb->id_gpiod)) {
+> >  		dev_err(&pdev->dev, "failed to get id gpio\n");
+> >  		return PTR_ERR(palmas_usb->id_gpiod);
+> >  	}
+> >  
+> >  	palmas_usb->vbus_gpiod = devm_gpiod_get_optional(&pdev->dev, "vbus",
+> >  							GPIOD_IN);
+> > -	if (IS_ERR(palmas_usb->vbus_gpiod)) {
+> > +	if (PTR_ERR(palmas_usb->vbus_gpiod) == -EPROBE_DEFER) {
+> > +		return -EPROBE_DEFER;
+> > +	} else if (IS_ERR(palmas_usb->vbus_gpiod)) {
+> >  		dev_err(&pdev->dev, "failed to get vbus gpio\n");
+> >  		return PTR_ERR(palmas_usb->vbus_gpiod);
+> >  	}
+> > 
 > 
-> Use a new API devm_platform_ioremap_resource() to simplify code.
+> I think that it is enough to handle the -EPROBE_DEFER.
+> Also, I prefer to use single if/else statement 
+> instead of the nested if/else statement.
 > 
-> Signed-off-by: chenqiwu <chenqiwu@xiaomi.com>
-> ---
+> Applied it.
 
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+Uh... As it is? Then it is matter of time it triggers someones cocci
+script pointing to else after return. Could you at least fix this?
 
->  drivers/i2c/busses/i2c-omap.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-> index 2dfea35..47d994a 100644
-> --- a/drivers/i2c/busses/i2c-omap.c
-> +++ b/drivers/i2c/busses/i2c-omap.c
-> @@ -1355,7 +1355,6 @@ static void omap_i2c_unprepare_recovery(struct i2c_adapter *adap)
->  {
->  	struct omap_i2c_dev	*omap;
->  	struct i2c_adapter	*adap;
-> -	struct resource		*mem;
->  	const struct omap_i2c_bus_platform_data *pdata =
->  		dev_get_platdata(&pdev->dev);
->  	struct device_node	*node = pdev->dev.of_node;
-> @@ -1375,8 +1374,7 @@ static void omap_i2c_unprepare_recovery(struct i2c_adapter *adap)
->  	if (!omap)
->  		return -ENOMEM;
->  
-> -	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	omap->base = devm_ioremap_resource(&pdev->dev, mem);
-> +	omap->base = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(omap->base))
->  		return PTR_ERR(omap->base);
->  
-> 
-
--- 
-Regards
-Vignesh
+Thanks,
+	ladis
