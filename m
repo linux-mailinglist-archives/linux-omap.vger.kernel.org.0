@@ -2,275 +2,438 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19777163499
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2020 22:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A3661636EE
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2020 00:10:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726427AbgBRVQg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Feb 2020 16:16:36 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41352 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726339AbgBRVQf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 18 Feb 2020 16:16:35 -0500
-Received: from earth.universe (unknown [185.62.205.105])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 608962176D;
-        Tue, 18 Feb 2020 21:16:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582060594;
-        bh=nHRe/OQ2NNaFnMFw+r3Zig6NYE3+s2YyUxjjdOPXYgE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=y7zAP7mI4BoxJuQNsqJptFo6ZghaJ17vMGaG6n5RelnvtoWt/526lB0/X+oDQk9ot
-         eOzzgdEv0ignCkP/sp10HHlz2ZVEOzmnJCFR5eIuMqoszSlrK8oFf/BFcEFrpWWWsy
-         tDV8eD6HOSCHhi8gZzbgeVNp3E8mRdqHJ8NquUYc=
-Received: by earth.universe (Postfix, from userid 1000)
-        id C514B3C0C83; Tue, 18 Feb 2020 22:16:31 +0100 (CET)
-Date:   Tue, 18 Feb 2020 22:16:31 +0100
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Arthur D ." <spinal.by@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Merlijn Wajer <merlijn@wizzup.org>, Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
- graph card
-Message-ID: <20200218211631.fxojsxzvttoidfed@earth.universe>
-References: <20200211171645.41990-1-tony@atomide.com>
- <cd46c6ec-80e3-332f-4922-e58a3acbfc61@ti.com>
- <20200212143543.GI64767@atomide.com>
- <346dfd2b-23f8-87e0-6f45-27a5099b1066@ti.com>
- <20200214170322.GZ64767@atomide.com>
- <d9a43fcb-ed0f-5cd5-7e22-58924d571d17@ti.com>
- <20200217231001.GC35972@atomide.com>
- <5402eba8-4f84-0973-e11b-6ab2667ada85@ti.com>
+        id S1726945AbgBRXKU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Feb 2020 18:10:20 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:39736 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726820AbgBRXKU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Feb 2020 18:10:20 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 686E91C0357; Wed, 19 Feb 2020 00:10:17 +0100 (CET)
+Date:   Wed, 19 Feb 2020 00:10:01 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        agx@sigxcpu.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        dri-devel@lists.freedesktop.org, tomi.valkeinen@ti.com,
+        jjhiblot@ti.com
+Subject: Re: LED backlight on Droid 4 and others
+Message-ID: <20200218231001.GA28817@amd>
+References: <20200105183202.GA17784@duo.ucw.cz>
+ <20200106084549.GA14821@dell>
+ <20200211172900.GH64767@atomide.com>
+ <20200212201638.GB20085@amd>
+ <20200218135219.GC3494@dell>
+ <20200218141452.GF35972@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="v2rxpqdecy453qod"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="dDRMvlgZJXvWKvBx"
 Content-Disposition: inline
-In-Reply-To: <5402eba8-4f84-0973-e11b-6ab2667ada85@ti.com>
+In-Reply-To: <20200218141452.GF35972@atomide.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---v2rxpqdecy453qod
-Content-Type: text/plain; charset=iso-8859-1
+--dDRMvlgZJXvWKvBx
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi!
 
-On Tue, Feb 18, 2020 at 02:43:19PM +0200, Peter Ujfalusi wrote:
-> On 18/02/2020 1.10, Tony Lindgren wrote:
-> > * Peter Ujfalusi <peter.ujfalusi@ti.com> [200217 12:10]:
-> >> On 14/02/2020 19.03, Tony Lindgren wrote:
-> >>> But right now in droid4 voice call case mcbsp is just the i2s transpo=
-rt,
-> >>> and everything happens betwee the modem and the cpcap pmic.
-> >>
-> >> Iow you don't need McBSP DAI at all. If you would have added the dummy
-> >> codec to McBSP !3 and use that, it would work in a same way, or to DMIC
-> >> or McPDM...
-> >>
-> >> The McBSP ops are NULL for the dummy dai, so McBSP is turned off.
+> > > > > > It would be good to get LED backlight to work in clean way for =
+5.6
+> > > > > > kernel.
+> > > > ...
+> > > > > > [If you have an idea what else is needed, it would be welcome; =
+it
+> > > > > > works for me in development tree but not in tree I'd like to
+> > > > > > upstream.]
+> > > > > >=20
+> > > > > > Lee, would you be willing to take "backlight: add led-backlight
+> > > > > > driver"? Would it help if I got "leds: Add managed API to get a=
+ LED
+> > > > > > from a device driver" and "leds: Add of_led_get() and led_put()=
+" into
+> > > > > > for_next tree of the LED subsystem?
+> > > > >=20
+> > > > > It looks like you have an open question from Tony on v10.
+> > > > >=20
+> > > > > Is that patch orthogonal, or are there depend{ants,encies}?
+> > > >=20
+> > > > Uhh looks like we messed up a bit with integration. Now droid4
+> > > > LCD backlight can no longer be enabled at all manually in v5.6-rc1
+> > > > without the "add led-backlight driver" patch.. Should we just
+> > > > merge it to fix it rather than start scrambling with other
+> > > > temporary hacks?
+> > >=20
+> > > We should just merge the "add led-backlight driver". Everything should
+> > > be ready for it. I'm sorry if I broke something working, I was not
+> > > aware it worked at all.
+> > >=20
+> > > Unfortunately, this is backlight code, not LED, so I can't just merge=
+ it.
 > >=20
-> > Hmm yeah I don't know if the cpcap codec on the same mcbsp needs
-> > mcbsp for voice call.
+> > Please go ahead.  Apply my Acked-by and merge away ASAP.
 > >=20
-> > According to Sebastian sounds like mcbsp can be idle at that point.
-> >=20
-> > But what about capture of voice call at the mcbsp from the
-> > TDM slot? In that case mcbsp would be active.
+> > Acked-by: Lee Jones <lee.jones@linaro.org>
 >=20
-> Sure, but with the dummy dai it won't....
+> OK best to merge the driver via the LED tree:
 >=20
-> If I understand correctly the HW setup:
-> McBSP2 -> CPCAP_hifi (only playback)
->
-> CPCAP_voice is the i2s clock master.
-> McBSP3, CPCAP_voice, MDM6600 and WL1285 are all connected together via
-> i2s lines.
->=20
-> In case of Voice call with analog mic/speaker only CPCAP_voice and
-> MDM6600 is used.
-> In case of Voice call with BT only MDM6600 and WL1285 is used (but
-> CPCAP_voice must provide the clocks?)
-> In case you would have any algorithm running on OMAP4 for the calls,
-> then you will have McBSP3 inserted and used between MDM6600 and
-> CPAC_voice/WL1285.
-> Similarly, if you would like to tap in and record the data from the bus
-> you will have McBSP3 enabled.
->=20
-> The simplest use cases you want to support:
-> A. McBSP3 <-> CPCAP_voice (playback/capture)
-> B. MDM6600 <-> CPCAP_voice (handset mic/speaker voice call)
-> C. MDM6600 <-> WL1285 (BT voice call)
-> D. McBSP3 <-> BT (VoIP?)
+> Acked-by: Tony Lindgren <tony@atomide.com>
+> Tested-by: Tony Lindgren <tony@atomide.com>
 
-Your description matches my understanding of the hardware setup.
+Is the patch below the one both of you are talking about?
 
-> I would not bother with recording the call as you would need tom
-> reconfigure the McBSP playback pin (is it even possible) as input to
-> OMAP4, I think..
->=20
-> B/C is codec2codec, McBSP3 is not involved at all.
-> A/D is when McBSP3 is used only.
->=20
-> Imho this can be represented as
-> McBSP2: 1 port
-> 	1.1: to CPCAP_hifi
->=20
-> McBSP3: 1 port, 2 endpoint
-> 	2.1: to CPCAP_voice
-> 	2.2: to WL1285
-> CPCAP: 2 ports
-> 	hifi:	3.1: to McBSP2
-> 	voice:	4.1: to McBSP3
-> 		4.2: to MDM6600
-> MDM6600: 2 ports
+Hmm. I should s/default-brightness-level/default-brightness/
+below.
 
-I suppose you mean 1 port, 2 endpoints?
+Lee, I can of course take it (thanks), but won't Kconfig/Makefile
+pieces cause rejects? It might be still better if you took it. I can
+hand-edit it and submit it in form for easy application... tommorow.
 
-> 	5.1: to CPAC_voice
-> 	5.2: to WL1285
-> WL1285: 2 ports
+Best regards,
 
-and here too?
+									Pavel
 
-> 	6.1: to McBSP3
-> 	6.2: to MDM6600
->=20
-> The machine driver should switch between the graph links based on the
-> use case for the interconnected devices:
-> A: 2.2 <-> 4.1
-> B: 4.2 <-> 5.1
-> C: 6.2 <-> 5.1
-> D: 2.2 <-> 6.1
->=20
-> Can a generic card provide such a functionality?
+commit 81a2daadf8dd6c8e0cbc3b60246932436be3c714
+Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Date:   Thu Oct 3 10:28:12 2019 +0200
 
-I suppose in the end its a question if generic card can provide TDM
-support.
+    backlight: add led-backlight driver
+   =20
+    This patch adds a led-backlight driver (led_bl), which is similar to
+    pwm_bl except the driver uses a LED class driver to adjust the
+    brightness in the HW. Multiple LEDs can be used for a single backlight.
+   =20
+    Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+    Signed-off-by: Jean-Jacques Hiblot <jjhiblot@ti.com>
+    Acked-by: Pavel Machek <pavel@ucw.cz>
+    Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
-> In case of B/C you should not have a running stream imho.
+diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kcon=
+fig
+index 4c8f73394aac..93836ef872f5 100644
+--- a/drivers/video/backlight/Kconfig
++++ b/drivers/video/backlight/Kconfig
+@@ -463,6 +463,13 @@ config BACKLIGHT_RAVE_SP
+ 	help
+ 	  Support for backlight control on RAVE SP device.
+=20
++config BACKLIGHT_LED
++	tristate "Generic LED based Backlight Driver"
++	depends on LEDS_CLASS && OF
++	help
++	  If you have a LCD backlight adjustable by LED class driver, say Y
++	  to enable this driver.
++
+ endif # BACKLIGHT_CLASS_DEVICE
+=20
+ endmenu
+diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Mak=
+efile
+index 961fb553b9c0..5e13242f31d6 100644
+--- a/drivers/video/backlight/Makefile
++++ b/drivers/video/backlight/Makefile
+@@ -60,3 +60,4 @@ obj-$(CONFIG_BACKLIGHT_TPS65217)	+=3D tps65217_bl.o
+ obj-$(CONFIG_BACKLIGHT_WM831X)		+=3D wm831x_bl.o
+ obj-$(CONFIG_BACKLIGHT_ARCXCNN) 	+=3D arcxcnn_bl.o
+ obj-$(CONFIG_BACKLIGHT_RAVE_SP)		+=3D rave-sp-backlight.o
++obj-$(CONFIG_BACKLIGHT_LED)		+=3D led_bl.o
+diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led=
+_bl.c
+new file mode 100644
+index 000000000000..3f66549997c8
+--- /dev/null
++++ b/drivers/video/backlight/led_bl.c
+@@ -0,0 +1,260 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2015-2019 Texas Instruments Incorporated -  http://www.ti=
+=2Ecom/
++ * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
++ *
++ * Based on pwm_bl.c
++ */
++
++#include <linux/backlight.h>
++#include <linux/leds.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++
++struct led_bl_data {
++	struct device		*dev;
++	struct backlight_device	*bl_dev;
++	struct led_classdev	**leds;
++	bool			enabled;
++	int			nb_leds;
++	unsigned int		*levels;
++	unsigned int		default_brightness;
++	unsigned int		max_brightness;
++};
++
++static void led_bl_set_brightness(struct led_bl_data *priv, int level)
++{
++	int i;
++	int bkl_brightness;
++
++	if (priv->levels)
++		bkl_brightness =3D priv->levels[level];
++	else
++		bkl_brightness =3D level;
++
++	for (i =3D 0; i < priv->nb_leds; i++)
++		led_set_brightness(priv->leds[i], bkl_brightness);
++
++	priv->enabled =3D true;
++}
++
++static void led_bl_power_off(struct led_bl_data *priv)
++{
++	int i;
++
++	if (!priv->enabled)
++		return;
++
++	for (i =3D 0; i < priv->nb_leds; i++)
++		led_set_brightness(priv->leds[i], LED_OFF);
++
++	priv->enabled =3D false;
++}
++
++static int led_bl_update_status(struct backlight_device *bl)
++{
++	struct led_bl_data *priv =3D bl_get_data(bl);
++	int brightness =3D bl->props.brightness;
++
++	if (bl->props.power !=3D FB_BLANK_UNBLANK ||
++	    bl->props.fb_blank !=3D FB_BLANK_UNBLANK ||
++	    bl->props.state & BL_CORE_FBBLANK)
++		brightness =3D 0;
++
++	if (brightness > 0)
++		led_bl_set_brightness(priv, brightness);
++	else
++		led_bl_power_off(priv);
++
++	return 0;
++}
++
++static const struct backlight_ops led_bl_ops =3D {
++	.update_status	=3D led_bl_update_status,
++};
++
++static int led_bl_get_leds(struct device *dev,
++			   struct led_bl_data *priv)
++{
++	int i, nb_leds, ret;
++	struct device_node *node =3D dev->of_node;
++	struct led_classdev **leds;
++	unsigned int max_brightness;
++	unsigned int default_brightness;
++
++	ret =3D of_count_phandle_with_args(node, "leds", NULL);
++	if (ret < 0) {
++		dev_err(dev, "Unable to get led count\n");
++		return -EINVAL;
++	}
++
++	nb_leds =3D ret;
++	if (nb_leds < 1) {
++		dev_err(dev, "At least one LED must be specified!\n");
++		return -EINVAL;
++	}
++
++	leds =3D devm_kzalloc(dev, sizeof(struct led_classdev *) * nb_leds,
++			    GFP_KERNEL);
++	if (!leds)
++		return -ENOMEM;
++
++	for (i =3D 0; i < nb_leds; i++) {
++		leds[i] =3D devm_of_led_get(dev, i);
++		if (IS_ERR(leds[i]))
++			return PTR_ERR(leds[i]);
++	}
++
++	/* check that the LEDs all have the same brightness range */
++	max_brightness =3D leds[0]->max_brightness;
++	for (i =3D 1; i < nb_leds; i++) {
++		if (max_brightness !=3D leds[i]->max_brightness) {
++			dev_err(dev, "LEDs must have identical ranges\n");
++			return -EINVAL;
++		}
++	}
++
++	/* get the default brightness from the first LED from the list */
++	default_brightness =3D leds[0]->brightness;
++
++	priv->nb_leds =3D nb_leds;
++	priv->leds =3D leds;
++	priv->max_brightness =3D max_brightness;
++	priv->default_brightness =3D default_brightness;
++
++	return 0;
++}
++
++static int led_bl_parse_levels(struct device *dev,
++			   struct led_bl_data *priv)
++{
++	struct device_node *node =3D dev->of_node;
++	int num_levels;
++	u32 value;
++	int ret;
++
++	if (!node)
++		return -ENODEV;
++
++	num_levels =3D of_property_count_u32_elems(node, "brightness-levels");
++	if (num_levels > 1) {
++		int i;
++		unsigned int db;
++		u32 *levels =3D NULL;
++
++		levels =3D devm_kzalloc(dev, sizeof(u32) * num_levels,
++				      GFP_KERNEL);
++		if (!levels)
++			return -ENOMEM;
++
++		ret =3D of_property_read_u32_array(node, "brightness-levels",
++						levels,
++						num_levels);
++		if (ret < 0)
++			return ret;
++
++		/*
++		 * Try to map actual LED brightness to backlight brightness
++		 * level
++		 */
++		db =3D priv->default_brightness;
++		for (i =3D 0 ; i < num_levels; i++) {
++			if ((i && db > levels[i-1]) && db <=3D levels[i])
++				break;
++		}
++		priv->default_brightness =3D i;
++		priv->max_brightness =3D num_levels - 1;
++		priv->levels =3D levels;
++	} else if (num_levels >=3D 0)
++		dev_warn(dev, "Not enough levels defined\n");
++
++	ret =3D of_property_read_u32(node, "default-brightness-level", &value);
++	if (!ret && value <=3D priv->max_brightness)
++		priv->default_brightness =3D value;
++	else if (!ret  && value > priv->max_brightness)
++		dev_warn(dev, "Invalid default brightness. Ignoring it\n");
++
++	return 0;
++}
++
++static int led_bl_probe(struct platform_device *pdev)
++{
++	struct backlight_properties props;
++	struct led_bl_data *priv;
++	int ret, i;
++
++	priv =3D devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	platform_set_drvdata(pdev, priv);
++
++	priv->dev =3D &pdev->dev;
++
++	ret =3D led_bl_get_leds(&pdev->dev, priv);
++	if (ret)
++		return ret;
++
++	ret =3D led_bl_parse_levels(&pdev->dev, priv);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to parse DT data\n");
++		return ret;
++	}
++
++	memset(&props, 0, sizeof(struct backlight_properties));
++	props.type =3D BACKLIGHT_RAW;
++	props.max_brightness =3D priv->max_brightness;
++	props.brightness =3D priv->default_brightness;
++	props.power =3D (priv->default_brightness > 0) ? FB_BLANK_POWERDOWN :
++		      FB_BLANK_UNBLANK;
++	priv->bl_dev =3D backlight_device_register(dev_name(&pdev->dev),
++			&pdev->dev, priv, &led_bl_ops, &props);
++	if (IS_ERR(priv->bl_dev)) {
++		dev_err(&pdev->dev, "Failed to register backlight\n");
++		return PTR_ERR(priv->bl_dev);
++	}
++
++	for (i =3D 0; i < priv->nb_leds; i++)
++		led_sysfs_disable(priv->leds[i]);
++
++	backlight_update_status(priv->bl_dev);
++
++	return 0;
++}
++
++static int led_bl_remove(struct platform_device *pdev)
++{
++	struct led_bl_data *priv =3D platform_get_drvdata(pdev);
++	struct backlight_device *bl =3D priv->bl_dev;
++	int i;
++
++	backlight_device_unregister(bl);
++
++	led_bl_power_off(priv);
++	for (i =3D 0; i < priv->nb_leds; i++)
++		led_sysfs_enable(priv->leds[i]);
++
++	return 0;
++}
++
++static const struct of_device_id led_bl_of_match[] =3D {
++	{ .compatible =3D "led-backlight" },
++	{ }
++};
++
++MODULE_DEVICE_TABLE(of, led_bl_of_match);
++
++static struct platform_driver led_bl_driver =3D {
++	.driver		=3D {
++		.name		=3D "led-backlight",
++		.of_match_table	=3D of_match_ptr(led_bl_of_match),
++	},
++	.probe		=3D led_bl_probe,
++	.remove		=3D led_bl_remove,
++};
++
++module_platform_driver(led_bl_driver);
++
++MODULE_DESCRIPTION("LED based Backlight Driver");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS("platform:led-backlight");
 
-I would expect, that MDM6600 codec marks itself as running/stopped
-based on call state. That should enable DAPM widgets automatically
-when CPCAP_voice is routed to MDM6600?
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
 
-> In all cases CPCAP_voice should be able to run the clocks on i2s,
-> even if it is not used by the audio setup.
-> Not sure if you can just turn Wl1285 as master, but it is possible
-> that it is master, but silent when it is not used?
-
-I provided CPCAP registers for BT call, which should be enough to
-figure this out (I did not yet analyze the results myself).
-
-> I'm not sure if we should span out dummy dais for endpoints within a
-> port. Imho the port _is_ the dai. Different endpoints might use
-> different TDM slots on the port (or the same slot, which makes them
-> exclusive).
-
-Makes sense to me.
-
--- Sebastian
-
-> >>>>>> I know it was discussed, but can not find the mail:
-> >>>>>> Can you brief again on the audio connection?
-> >>>>>
-> >>>>> Below is a link to a mailing list thread where Sebastian describes
-> >>>>> the audio connection:
-> >>>>>
-> >>>>> https://lkml.org/lkml/2018/3/28/881
-> >>>>
-> >>>> Thanks!
-> >>>> =20
-> >>>>>> Do you have branch with working code?
-> >>>>>
-> >>>>> Yeah I have slightly older set of the patches in my droid4-pending-=
-v5.5
-> >>>>> kernel.org git branch with voice calls working.
-> >>>>
-> >>>> I think I should put my droid4 out and try to get it working...
-> >>>> Do you have a link for dummies to follow to get started? ;)
-> >>>
-> >>> Probably the easiest one to use right now is the Maemo-leste devuan b=
-ased
-> >>> test image using v5.5 kernel + modem and audio patches:
-> >>>
-> >>> https://leste.maemo.org/Motorola_Droid_4
-> >>>
-> >>> Just use a decent speed micro-sd card rated "a1" for example.
-> >>
-> >> Cool. Now I can dual boot the droid4 :D
-> >> I needed to rewrite the /etc/shadow to get a known root password so I
-> >> can log in.
-> >=20
-> > Not sure if you mean password for the droid4-kexecboot or the
-> > Linux distro you installed..
->=20
-> It was for the maemo-leste.
-> Bringing up Gentoo will be a bit harder as I don't have wifi stuff in my
-> reference image...
->=20
-> > But for droid4-kexecboot, you
-> > can configure it to automatically download new kernels over wlan.
-> > There's some info on the machine specific password and how to
-> > configure wlan in the droid4-kexecboot buildroot commits here:
-> >=20
-> > https://github.com/tmlind/buildroot/commits/droid4-kexecboot-2017.11
-> >=20
-> >> Wifi is up, so in theory I can scp kernel/dtb to /boot/boot/ and update
-> >> the /boot/boot/boot.cfg to boot my kernel, right?
-> >=20
-> > Yeah you can update kernels and modules over wlan from the distro(s)
-> > you have configured, and also from droid4-kexecboot as above.
->=20
-> I need to try droid4-kexecboot's wifi support then.
->=20
-> > And note that kexecboot looks for a boot/boot.cfg file to use on
-> > every usable parition it finds and uses all the found entries
-> > based on the priority configured for the boot.cfg entry.
->=20
-> OK, thanks!
->=20
-> >=20
-> > Regards,
-> >=20
-> > Tony
-> >=20
->=20
-> - P=E9ter
->=20
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
---v2rxpqdecy453qod
+--dDRMvlgZJXvWKvBx
 Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5MVCwACgkQ2O7X88g7
-+prLEg/+LPnmQMNYZFn441eV+SUTJC1FrKxWZlFyXlsRtSFojK4ZttcG0R+h640J
-ZwgSmVpmwIKLk/Z4e/b9NmaP4f0b3KJj1IGYV7oAxDWetH+Bo1FbHs7NCYKszZ/H
-gEvuoWUktSAho9zK8cXF2p395wVsLUSEwIUWAKzrzQ+5P58Mh8Tn0bQlU4oSZmHh
-I+b23pxVNCdjb4O4SiwZDp1uccYLVCLW6Nj/qh4Aq9L1d8c/gDupPbnwd6JMZ8iL
-DuOzLykqmcJttxCw1IoXFmZDH3oA3hBP7vmQXwOYMcetCUKOpQYSCSgJISemIAj9
-FDgSR6f8+OhDHUwZLkmB5NZIEtsBFLMV9rYe7tTeNJezI4UNK8r0nNBBQUn7RmrF
-oFgVwdKBdHByFQQK6+I+3FuJHg8MN4fOO71BB+biI6PHEiyMcPx/DQRpONi98zKb
-FlFjSDJbAEpOlfHKbYj1q/yvxj5+jzpVuMwvaA4gpX0SUCLpttHA9AHA7F4LekdN
-Kh0QMVm8zKjBD6/DWReAYWY4nbB+Vo2ywzFshAmgJ+vOYY71RKOT7johmyFecZ66
-nF4lN4eiecv3Cr9EHmBHfnBW5K4mo25KNyFAzEXzuAsY+FYrWRhvIgw+vv+i7B6o
-7NUDeBmzSF6+/TyVflHwXatpbeQwZbVG+R7/2C/F9inEFcAbxR0=
-=mPEo
+iEYEARECAAYFAl5MbskACgkQMOfwapXb+vJPOgCfRPbwsYCnPqglmm26GB4cfPSN
+hlsAn16I3KGEcXZB16/neBQLfxWoyjUv
+=NDCD
 -----END PGP SIGNATURE-----
 
---v2rxpqdecy453qod--
+--dDRMvlgZJXvWKvBx--
