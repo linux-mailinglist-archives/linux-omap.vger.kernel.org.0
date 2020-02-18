@@ -2,141 +2,148 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5601116279F
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2020 15:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA6771627B1
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2020 15:08:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726647AbgBROEf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Feb 2020 09:04:35 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:52598 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726571AbgBROEf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Feb 2020 09:04:35 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id A615629138B
-Received: by earth.universe (Postfix, from userid 1000)
-        id F10E93C0C81; Tue, 18 Feb 2020 15:04:31 +0100 (CET)
-Date:   Tue, 18 Feb 2020 15:04:31 +0100
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Arthur D ." <spinal.by@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Merlijn Wajer <merlijn@wizzup.org>, Pavel Machek <pavel@ucw.cz>
-Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
- graph card
-Message-ID: <20200218140431.emrxgvckrpltmg2s@earth.universe>
-References: <20200211171645.41990-1-tony@atomide.com>
- <cd46c6ec-80e3-332f-4922-e58a3acbfc61@ti.com>
- <20200212143543.GI64767@atomide.com>
- <20200214003452.xuadnylj2udqyljs@earth.universe>
- <20200214013454.GX64767@atomide.com>
- <20200214130428.gkhmr55ptmi2bh2x@earth.universe>
- <20200214170946.GB64767@atomide.com>
+        id S1726411AbgBROIn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Feb 2020 09:08:43 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:47640 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726373AbgBROIn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Feb 2020 09:08:43 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01IE8aTe072394;
+        Tue, 18 Feb 2020 08:08:36 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1582034917;
+        bh=4BdW1JJPThl9i4+P6/loVm2QUGqngwrPUTpXVz+GMFI=;
+        h=From:To:CC:Subject:Date;
+        b=ZQs3yrtvLVTRF2HF+1U9f5fNjaCOdQwUWH7+mmvjg7di5RpeS3yZ+vogwfVnmWH+f
+         1Xrjj+HwGGjCn0MetPtQiQ4cN4knFTNR3jCD/bpCC1Tmtgz42JTNJbXqvxgLfoRlbp
+         kEGcIT4ufv893934slXJIA5iBygxezzZ0hqZHPAk=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01IE8aaE080194
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 18 Feb 2020 08:08:36 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 18
+ Feb 2020 08:08:36 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 18 Feb 2020 08:08:36 -0600
+Received: from a0230074-OptiPlex-7010.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01IE8Xqr096183;
+        Tue, 18 Feb 2020 08:08:34 -0600
+From:   Faiz Abbas <faiz_abbas@ti.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <adrian.hunter@intel.com>,
+        <kishon@ti.com>, <tony@atomide.com>, <faiz_abbas@ti.com>
+Subject: [PATCH] mmc: sdhci-omap: Add Support for Suspend/Resume
+Date:   Tue, 18 Feb 2020 19:40:18 +0530
+Message-ID: <20200218141018.24456-1-faiz_abbas@ti.com>
+X-Mailer: git-send-email 2.19.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7l4uy2pkqo77ymf7"
-Content-Disposition: inline
-In-Reply-To: <20200214170946.GB64767@atomide.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Add power management ops which save and restore the driver context and
+facilitate a system suspend and resume.
 
---7l4uy2pkqo77ymf7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
+---
+ drivers/mmc/host/sdhci-omap.c | 59 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-Hi,
+diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
+index 882053151a47..a524c01da8de 100644
+--- a/drivers/mmc/host/sdhci-omap.c
++++ b/drivers/mmc/host/sdhci-omap.c
+@@ -108,6 +108,11 @@ struct sdhci_omap_host {
+ 	struct pinctrl		*pinctrl;
+ 	struct pinctrl_state	**pinctrl_state;
+ 	bool			is_tuning;
++	/* Omap specific context save */
++	u32			con;
++	u32			hctl;
++	u32			sysctl;
++	u32			capa;
+ };
+ 
+ static void sdhci_omap_start_clock(struct sdhci_omap_host *omap_host);
+@@ -1233,11 +1238,65 @@ static int sdhci_omap_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static void sdhci_omap_context_save(struct sdhci_omap_host *omap_host)
++{
++	omap_host->con = sdhci_omap_readl(omap_host, SDHCI_OMAP_CON);
++	omap_host->hctl = sdhci_omap_readl(omap_host, SDHCI_OMAP_HCTL);
++	omap_host->sysctl = sdhci_omap_readl(omap_host, SDHCI_OMAP_SYSCTL);
++	omap_host->capa = sdhci_omap_readl(omap_host, SDHCI_OMAP_CAPA);
++}
++
++static void sdhci_omap_context_restore(struct sdhci_omap_host *omap_host)
++{
++	sdhci_omap_writel(omap_host, SDHCI_OMAP_CON, omap_host->con);
++	sdhci_omap_writel(omap_host, SDHCI_OMAP_HCTL, omap_host->hctl);
++	sdhci_omap_writel(omap_host, SDHCI_OMAP_SYSCTL, omap_host->sysctl);
++	sdhci_omap_writel(omap_host, SDHCI_OMAP_CAPA, omap_host->capa);
++}
++
++static int __maybe_unused sdhci_omap_suspend(struct device *dev)
++{
++	struct sdhci_host *host = dev_get_drvdata(dev);
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
++
++	sdhci_suspend_host(host);
++
++	sdhci_omap_context_save(omap_host);
++
++	pinctrl_pm_select_idle_state(dev);
++
++	pm_runtime_put_sync(dev);
++
++	return 0;
++}
++
++static int __maybe_unused sdhci_omap_resume(struct device *dev)
++{
++	struct sdhci_host *host = dev_get_drvdata(dev);
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
++
++	pm_runtime_get_sync(dev);
++
++	pinctrl_pm_select_default_state(dev);
++
++	sdhci_omap_context_restore(omap_host);
++
++	sdhci_resume_host(host);
++
++	return 0;
++}
++
++static SIMPLE_DEV_PM_OPS(sdhci_omap_dev_pm_ops, sdhci_omap_suspend,
++			 sdhci_omap_resume);
++
+ static struct platform_driver sdhci_omap_driver = {
+ 	.probe = sdhci_omap_probe,
+ 	.remove = sdhci_omap_remove,
+ 	.driver = {
+ 		   .name = "sdhci-omap",
++		   .pm = &sdhci_omap_dev_pm_ops,
+ 		   .of_match_table = omap_sdhci_match,
+ 		  },
+ };
+-- 
+2.19.2
 
-On Fri, Feb 14, 2020 at 09:09:46AM -0800, Tony Lindgren wrote:
-> * Sebastian Reichel <sre@kernel.org> [200214 13:05]:
-> > On Thu, Feb 13, 2020 at 05:34:54PM -0800, Tony Lindgren wrote:
-> > > And bluetooth would be similar to cpcap_audio and mot_mdm6600_audio
-> > > above.
-> >=20
-> > My understanding is, that CPU is not involved for calls (except for
-> > setting up cpcap registers correctly). Basically McBSP3 should
-> > remain idle for a call and data goes directly from modem to cpcap.
-> > The same should work for modem <-> BT, except that CPCAP seems to
-> > always provide the clock. That would imply a direct link between
-> > modem and codec / BT?
->=20
-> Yes the direct link is i2s. I'm ot sure if mcbsp can be idle during
-> voice call though, I guess it should be doable since mcbsp is not
-> the clock master :)
->=20
-> > > My guess is that only cpcap registers and clock rate needs to be
-> > > changed for bluetooth audio BTW, so if somebody havs a bluetooth
-> > > headset just do the following in Android:
-> > >=20
-> > > # cpcaprw --all > /tmp/before
-> > > configure bluetooth headset for audio in android and start
-> > > playing some music or make a phone call
-> > > ...
-> > > # cpcaprw --all > /tmp/after
-> > > stop playing music or phone call
-> > > ...
-> > > diff -u /tmp/before /tmp/after
-> > >=20
-> > > The registers will be different for a bluetooth phone call and
-> > > playing music.
-> >=20
-> > I can provider register values once I find some time.
-
-[NI] Normal idle (no BT headset connected)
-[BI] Bluetooth idle (with BT headset connected)
-[BC] Bluetooth call in progress
-[NC] Normal call in progress (BT headset disabled)
-
-                     [NI]  =3D>  [BI]  =3D>  [BC]  =3D>  [NC]
-CPCAP_REG_VAUDIOC   0x0065 =3D> 0x0065 =3D> 0x0065 =3D> 0x0025
-CPCAP_REG_CC        0x0000 =3D> 0x0000 =3D> 0x6000 =3D> 0x60df
-CPCAP_REG_CDI       0x0040 =3D> 0x0000 =3D> 0xaa40 =3D> 0xae0a
-CPCAP_REG_SDAC      -------------- 0x0000 --------------
-CPCAP_REG_SDACDI    -------------- 0x0004 --------------
-CPCAP_REG_TXI       0x0804 =3D> 0x0004 =3D> 0x0000 =3D> 0x0cc6
-CPCAP_REG_TXMP      0x079c =3D> 0x079c =3D> 0x0400 =3D> 0x0673
-CPCAP_REG_RXOA      0x0000 =3D> 0x0000 =3D> 0x0001 =3D> 0x0001
-CPCAP_REG_RXVC      0x0d34 =3D> 0x0d34 =3D> 0x0000 =3D> 0x0b2c
-CPCAP_REG_RXCOA     0x0000 =3D> 0x0000 =3D> 0x0000 =3D> 0x0601
-CPCAP_REG_RXSDOA    0x0000 =3D> 0x0000 =3D> 0x0600 =3D> 0x0600
-CPCAP_REG_RXEPOA    -------------- 0x0400 --------------
-CPCAP_REG_RXLL      -------------- 0x0000 --------------
-CPCAP_REG_A2LA      -------------- 0x0030 --------------
-CPCAP_REG_MIPIS1    -------------- 0x0000 --------------
-CPCAP_REG_MIPIS2    -------------- 0x0000 --------------
-CPCAP_REG_MIPIS3    -------------- 0x0000 --------------
-CPCAP_REG_LVAB      -------------- 0x0000 --------------
-
--- Sebastian
-
---7l4uy2pkqo77ymf7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5L7ukACgkQ2O7X88g7
-+poophAApJAJiKd6MJhkOGd7eW5g2hWtYr0qp9cVC99Z6POxm8vqSPa1uQvF6oz+
-WpT4x0lPj1qTxQJvcsm2MS+HHi3fMdodtfI96kXUxC/owAem23WGtIdggLvsna28
-uVoCqRrAVriUsqfyTZDIw7FQNe9rxfOLMilYLQz9KrPF+j+witt2i5hwKAQemXke
-wLpTEH3uaT1GgSEsXyu/YUlAY8f5f6lSkQgodG1sLbhrR16MUPDCrlmrHgNI07IK
-sXT/wm9urqjkBo5/KWVuLhmXR87TgY6RPx0UEDOSuz2k2a85CoX0dH9Of6dBexj1
-eQyOxQZQo+u2cBzBGqZFL9TaW9slOqfbFn8sV3i50sG/0B0UAyfvgtRdJpuZw9Y8
-hXuDeyhQ1fj7E2/GmH4+EJhgQ+9xYw8t1oqRDR9LxvtCzi8Kcf9wFRbGpEhunvUQ
-kG3HJfOwTtN/fyqkqrIkwxVvvVG0qMNheIsPXMswnYwRTySHypzzsYV+pxe1yxXt
-DZiHCB+yydiUzFOOec31nK/O29A5gdsLAtLk715eU75UbB5xz4zBcW+Jx9hnqVgd
-CZeolty1OMmDQBfWRlQEs75CAx6aSbWY4kANpxCc0WCq++HnG75m5sgSA2QGucfl
-2gCXCdMQoJxTOd+WptS0Hzv0Z8agrMJETT31lvgjXJ7ZH3MIz/w=
-=0V6p
------END PGP SIGNATURE-----
-
---7l4uy2pkqo77ymf7--
