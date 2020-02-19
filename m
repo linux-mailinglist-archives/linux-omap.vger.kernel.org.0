@@ -2,126 +2,216 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D06A16523C
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2020 23:13:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D126D165324
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Feb 2020 00:44:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727662AbgBSWNN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Feb 2020 17:13:13 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:41685 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727232AbgBSWNN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Feb 2020 17:13:13 -0500
-Received: by mail-oi1-f196.google.com with SMTP id i1so25433925oie.8;
-        Wed, 19 Feb 2020 14:13:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=QCDRXvFi+gR1oNSsjcXCHacRJtQD8q7DV4e37/61Byk=;
-        b=smef+T69eC9WkkzH2P5wIDQyYMnCrd3sj13Bweli4qiH0kH0xJEvbFt2kY7g6YFfcF
-         e6ffo4ZltG871JHoSK64NHJR2YhAqmCKiQK3yJVkYmhSRIlM3XJZYcATerpeZQ1Ea08k
-         8N5eSLFXDLeP2xbxllwPU5kujZCiW95MdLCJKJjLTivatwtPyP/43YuJv/3Xb++9+5a6
-         AWZps9F+1Z0kMgxQ5gBk4jJZNFcK6iAt8qYxWTlj87F5Ad82D57L/YFSw2m0yHoRRzKX
-         CfXFoZgbNWfIt5ro6XTTX0UTr5oWR3ifPv4r6CBY5OJ35wkVeAdD/HeMTVjsjODWPPil
-         SeiQ==
-X-Gm-Message-State: APjAAAUxDvzQ6b4kd9o/5QTIJJCkNAJnbR1O6wZ3xlJpGfZU5oZk0kL5
-        64k3PAVgLRA+hMfPoNS6wg==
-X-Google-Smtp-Source: APXvYqwLFvsnaggZIZ/FphpHVECAI3EPZlrYh7AiYB66zYzCl73IpPqpn2LPQw1Q8GLsGZZvQeYS7w==
-X-Received: by 2002:aca:4306:: with SMTP id q6mr6190796oia.54.1582150392520;
-        Wed, 19 Feb 2020 14:13:12 -0800 (PST)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id n25sm418938oic.6.2020.02.19.14.13.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2020 14:13:11 -0800 (PST)
-Received: (nullmailer pid 30690 invoked by uid 1000);
-        Wed, 19 Feb 2020 22:13:10 -0000
-Date:   Wed, 19 Feb 2020 16:13:10 -0600
-From:   Rob Herring <robh@kernel.org>
+        id S1726718AbgBSXol (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Feb 2020 18:44:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48530 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726680AbgBSXol (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 19 Feb 2020 18:44:41 -0500
+Received: from earth.universe (unknown [185.62.205.105])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1D9C121D56;
+        Wed, 19 Feb 2020 23:44:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582155880;
+        bh=7Jwhbeg3NW/b7zKtfeleuO14hiDLfK4BEl3N5Su5gl0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YkgX4bsYvHWMHYmBlyWxpFjKPR5cu4hbzmx05i0+WxrgHrLwOqK2Pj/2gdcEAE/2s
+         hH9P/IYxdRmjObD7kcM/CQGwLQGobex69sien3T4gjCaKZT7rQ0tIpUUffIlvYz3lq
+         N4taBPjSJ+DWFu6LgL/rN5LuZICRM1PbvtWuhz/o=
+Received: by earth.universe (Postfix, from userid 1000)
+        id A16013C0C83; Thu, 20 Feb 2020 00:44:37 +0100 (CET)
+Date:   Thu, 20 Feb 2020 00:44:37 +0100
+From:   Sebastian Reichel <sre@kernel.org>
 To:     Tony Lindgren <tony@atomide.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Jiri Slaby <jslaby@suse.cz>, Johan Hovold <johan@kernel.org>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] dt-bindings: mfd: motmdm: Add binding for
- motorola-mdm
-Message-ID: <20200219221310.GA26624@bogus>
-References: <20200210040107.10306-1-tony@atomide.com>
- <20200210040107.10306-4-tony@atomide.com>
+Cc:     Pavel Machek <pavel@ucw.cz>, Lee Jones <lee.jones@linaro.org>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, nekit1000@gmail.com, mpartap@gmx.net,
+        merlijn@wizzup.org, martin_rysavy@centrum.cz, agx@sigxcpu.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        dri-devel@lists.freedesktop.org, tomi.valkeinen@ti.com,
+        jjhiblot@ti.com
+Subject: Re: [PATCH] backlight: add led-backlight driver
+Message-ID: <20200219234437.l6ac7usebu7rnzsy@earth.universe>
+References: <20200219191412.GA15905@amd>
+ <20200219194540.GD37466@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="n6ehadolgogdw3bm"
 Content-Disposition: inline
-In-Reply-To: <20200210040107.10306-4-tony@atomide.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200219194540.GD37466@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Feb 09, 2020 at 08:01:05PM -0800, Tony Lindgren wrote:
-> Add a binding document for Motorola modems controllable by
-> TS 27.010 UART line discipline using serdev drivers.
-> 
+
+--n6ehadolgogdw3bm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Feb 19, 2020 at 11:45:40AM -0800, Tony Lindgren wrote:
+> * Pavel Machek <pavel@ucw.cz> [200219 19:15]:
+> > From: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> >=20
+> > This patch adds a led-backlight driver (led_bl), which is similar to
+> > pwm_bl except the driver uses a LED class driver to adjust the
+> > brightness in the HW. Multiple LEDs can be used for a single backlight.
+> >=20
+> > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> > Signed-off-by: Jean-Jacques Hiblot <jjhiblot@ti.com>
+> > Acked-by: Pavel Machek <pavel@ucw.cz>
+> > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+> > Acked-by: Lee Jones <lee.jones@linaro.org>
+> > Acked-by: Tony Lindgren <tony@atomide.com>
+> > Tested-by: Tony Lindgren <tony@atomide.com>
+> > Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> > ---
+> >  drivers/video/backlight/Kconfig  |   7 ++
+> >  drivers/video/backlight/Makefile |   1 +
+> >  drivers/video/backlight/led_bl.c | 260 +++++++++++++++++++++++++++++++=
+++++++++
+> >  3 files changed, 268 insertions(+)
+> >  create mode 100644 drivers/video/backlight/led_bl.c
+> >=20
+> > Hi!
+> >=20
+> > Here's the version of the driver I have. AFAICT
+> > default-brightness-level handling is ok, so does not need to be
+> > changed.
+> >=20
+> > Lee, it would be easiest for me if you could apply it to your tree and
+> > push, but given enough time I can push it to Linus, too.
+>=20
+> Oh you're using quoted-printable for patches.. Got it applied now,
+> and it still works. Below is also the related dts change that
+> I tested with.
+>=20
+> Feel free to pick the dts change too, naturally that should
+> not be applied before the driver.
+>=20
+> If you guys instead want me to pick these both into my fixes
+> branch, just let me know and I'll do the explaining why these
+> are needed as fixes. Basically we no longer have a way to enable
+> the LCD backlight for droid4 manually starting with v5.6-rc1
+> unlike earlier.
+>=20
+> Regards,
+>=20
+> Tony
+>=20
+> 8< ------------------
+> From tony Mon Sep 17 00:00:00 2001
+> From: Tony Lindgren <tony@atomide.com>
+> Date: Wed, 19 Feb 2020 11:25:27 -0800
+> Subject: [PATCH] ARM: dts: droid4: Configure LED backlight for lm3532
+>=20
+> With the LED backlight changes merged, we still need the dts configured
+> to have backlight working for droid4. Based on an earlier patch from
+> Pavel Machek <pavel@ucw.cz>, let's configure the backlight but update
+> the value range to be more usable.
+>=20
+> We have a range of 256 register values split into 8 steps, so we can
+> generate the brightness levels backwards with:
+>=20
+> $ for i in 0 1 2 3 4 5 6 7; do echo "255 - ${i} * (256 / 8)" | bc; done
+>=20
+> To avoid more confusion why the LCD backlight is still not on, let's
+> also enable LED backlight as a loadable module for omap2plus_defconfig.
+>=20
+> Cc: Merlijn Wajer <merlijn@wizzup.org>
+> Cc: Pavel Machek <pavel@ucw.cz>
 > Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
->  .../mfd/motorola,mapphone-mdm6600.yaml        | 37 +++++++++++++++++++
->  1 file changed, 37 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/motorola,mapphone-mdm6600.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/motorola,mapphone-mdm6600.yaml b/Documentation/devicetree/bindings/mfd/motorola,mapphone-mdm6600.yaml
-> new file mode 100644
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/motorola,mapphone-mdm6600.yaml
-> @@ -0,0 +1,37 @@
-> +# SPDX-License-Identifier: GPL-2.0
+>  arch/arm/boot/dts/motorola-mapphone-common.dtsi | 13 +++++++++++--
+>  arch/arm/configs/omap2plus_defconfig            |  1 +
+>  2 files changed, 12 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/b=
+oot/dts/motorola-mapphone-common.dtsi
+> --- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+> +++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+> @@ -182,6 +182,14 @@ vibrator {
+>  		pwm-names =3D "enable", "direction";
+>  		direction-duty-cycle-ns =3D <10000000>;
+>  	};
+> +
+> +	backlight: backlight {
+> +		compatible =3D "led-backlight";
+> +
+> +		leds =3D <&backlight_led>;
+> +		brightness-levels =3D <31 63 95 127 159 191 223 255>;
+> +		default-brightness-level =3D <6>;
+> +	};
+>  };
+> =20
+>  &dss {
+> @@ -205,6 +213,8 @@ lcd0: display {
+>  		vddi-supply =3D <&lcd_regulator>;
+>  		reset-gpios =3D <&gpio4 5 GPIO_ACTIVE_HIGH>;	/* gpio101 */
+> =20
+> +		backlight =3D <&backlight>;
+> +
+>  		width-mm =3D <50>;
+>  		height-mm =3D <89>;
+> =20
+> @@ -393,12 +403,11 @@ led-controller@38 {
+>  		ramp-up-us =3D <1024>;
+>  		ramp-down-us =3D <8193>;
+> =20
+> -		led@0 {
+> +		backlight_led: led@0 {
+>  			reg =3D <0>;
+>  			led-sources =3D <2>;
+>  			ti,led-mode =3D <0>;
+>  			label =3D ":backlight";
+> -			linux,default-trigger =3D "backlight";
+>  		};
+> =20
+>  		led@1 {
+> diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap=
+2plus_defconfig
+> --- a/arch/arm/configs/omap2plus_defconfig
+> +++ b/arch/arm/configs/omap2plus_defconfig
+> @@ -375,6 +375,7 @@ CONFIG_BACKLIGHT_GENERIC=3Dm
+>  CONFIG_BACKLIGHT_PWM=3Dm
+>  CONFIG_BACKLIGHT_PANDORA=3Dm
+>  CONFIG_BACKLIGHT_GPIO=3Dm
+> +CONFIG_BACKLIGHT_LED=3Dm
+>  CONFIG_FRAMEBUFFER_CONSOLE=3Dy
+>  CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
+>  CONFIG_LOGO=3Dy
 
-Dual license new bindings please:
+Finally :)
 
-(GPL-2.0-only OR BSD-2-Clause)
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/motorola,mapphone-mdm6600.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Motorola Mapphone MDM6600 Modem
-> +
-> +maintainers:
-> +  - Tony Lindgren <tony@atomide.com>
-> +
-> +allOf:
-> +  - $ref: "motorola,mapphone-mdm6600.yaml#"
+-- Sebastian
 
-Huh? A recursive include? I'm not sure how that didn't blow up.
+--n6ehadolgogdw3bm
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - const: motorola,mapphone-mdm6600-serial
-> +
-> +  phys:
-> +    maxItems: 1
-> +
-> +  phy-names:
-> +    const: usb
-> +
-> +required:
-> +  - compatible
-> +  - phys
-> +  - phy-names
-> +
-> +examples:
-> +  - |
-> +    modem {
-> +        compatible = "motorola,mapphone-mdm6600-serial";
-> +        phys = <&fsusb1_phy>;
-> +        phy-names = "usb";
-> +    };
-> -- 
-> 2.25.0
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5NyFcACgkQ2O7X88g7
++pr98Q/+JkurT+hW4mT1GQB8xFAJUfN0+tfx9gqKE2NeSjDY+IsZL0qQZOueskzl
+k139MC29XV8DRDjX2xjOXhitc24UeCyoqwCKQsECpZ1ihpJtZyl985HVndgTwCC4
+kA6FCjp1Pb4VY0gUwheILkGFZSEMJzQK7++mgeOy1xUsKx8iZhrvTfkkG3dNoTck
+3dC6HgheQkr6QxL6yyF1yQqyaqwJPqo5zpkNTlyNgjoj8nynRnUfFx84Y2OYDBBM
+8bdmMi1hlPQQttBHbQiO0ztkaZQy8QJFKoiTf5bIn5Kus9NJSZiSQjSzoR3L9ltD
+U588aumKE7WKO9qClZh0f/CV1FFBH6eewN9wMFk977q9mj1+O2vf4ljvic8+qLMz
+6hK+Di9WpBvK8YEpu+4f4vtJyafzugoi/+xPQa/M2au0Ifs3tXqstyZ6MxbpYCPs
+wYMD8c8rcynS6KXhMZLTKdVSS20DnOXMYM7+4o7nq++kE8Pq6hHy0mJdy1YXvfij
+YDWFovSU+5E2/4i5+v/r3VuCpfL8EY/49kXU/UsDVPTTEbZlysCWoPeJMrmgIBGo
+OXLHVaY4KjJLxaMQ1/ixiiiYU/3X+d4eiDjN6P/L5cesP1O5FMePAYNPUX/FP5Xo
+XRqBsnAyQtmADxHklBlbGMmgyb37MYi/Z5QSa1sS1Up0a9JMiZ0=
+=ErQY
+-----END PGP SIGNATURE-----
+
+--n6ehadolgogdw3bm--
