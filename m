@@ -2,107 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C0D11649FA
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2020 17:19:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A607164A10
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2020 17:21:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726996AbgBSQTi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Feb 2020 11:19:38 -0500
-Received: from muru.com ([72.249.23.125]:56018 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726882AbgBSQTi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 19 Feb 2020 11:19:38 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D5CCB80F3;
-        Wed, 19 Feb 2020 16:20:19 +0000 (UTC)
-Date:   Wed, 19 Feb 2020 08:19:32 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Pavel Machek <pavel@ucw.cz>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        agx@sigxcpu.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
-        dri-devel@lists.freedesktop.org, tomi.valkeinen@ti.com,
-        jjhiblot@ti.com
-Subject: Re: LED backlight on Droid 4 and others
-Message-ID: <20200219161932.GK35972@atomide.com>
-References: <20200105183202.GA17784@duo.ucw.cz>
- <20200106084549.GA14821@dell>
- <20200211172900.GH64767@atomide.com>
- <20200212201638.GB20085@amd>
- <20200218135219.GC3494@dell>
- <20200218141452.GF35972@atomide.com>
- <20200218231001.GA28817@amd>
- <20200219074730.GD3494@dell>
+        id S1726648AbgBSQVg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Feb 2020 11:21:36 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:41102 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726514AbgBSQVg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Feb 2020 11:21:36 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01JGLXoF115788;
+        Wed, 19 Feb 2020 10:21:33 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1582129293;
+        bh=2rM55LnHBCF5kOrJmBRTYav4czOoQDpFShDhWWp9Xlc=;
+        h=From:To:CC:Subject:Date;
+        b=nsGWNaQg5CieL9v+2Kx57V9Z705i52EF+uIhqnZXGZK8bEXIWBxW5bEtiJOZG1sXR
+         e1nt6iiy1lUkHXkWKZvfg/ljqDlwCBwj+LB+tMgkTJmCFYBUhzHsbyxAs53z2vV5zu
+         NhSgup6NAeuGScqBJm3wpHM+/lhxifGhf1d8Ak9M=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01JGLXR0043652
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 19 Feb 2020 10:21:33 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 19
+ Feb 2020 10:21:32 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 19 Feb 2020 10:21:32 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01JGLVIZ105359;
+        Wed, 19 Feb 2020 10:21:32 -0600
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     Tony Lindgren <tony@atomide.com>
+CC:     <linux-omap@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH] ARM: dts: dra7-l4: mark timer13-16 as pwm capable
+Date:   Wed, 19 Feb 2020 18:21:26 +0200
+Message-ID: <20200219162126.28671-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200219074730.GD3494@dell>
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Lee Jones <lee.jones@linaro.org> [200219 07:47]:
-> On Wed, 19 Feb 2020, Pavel Machek wrote:
-> 
-> > Hi!
-> > 
-> > > > > > > > It would be good to get LED backlight to work in clean way for 5.6
-> > > > > > > > kernel.
-> > > > > > ...
-> > > > > > > > [If you have an idea what else is needed, it would be welcome; it
-> > > > > > > > works for me in development tree but not in tree I'd like to
-> > > > > > > > upstream.]
-> > > > > > > > 
-> > > > > > > > Lee, would you be willing to take "backlight: add led-backlight
-> > > > > > > > driver"? Would it help if I got "leds: Add managed API to get a LED
-> > > > > > > > from a device driver" and "leds: Add of_led_get() and led_put()" into
-> > > > > > > > for_next tree of the LED subsystem?
-> > > > > > > 
-> > > > > > > It looks like you have an open question from Tony on v10.
-> > > > > > > 
-> > > > > > > Is that patch orthogonal, or are there depend{ants,encies}?
-> > > > > > 
-> > > > > > Uhh looks like we messed up a bit with integration. Now droid4
-> > > > > > LCD backlight can no longer be enabled at all manually in v5.6-rc1
-> > > > > > without the "add led-backlight driver" patch.. Should we just
-> > > > > > merge it to fix it rather than start scrambling with other
-> > > > > > temporary hacks?
-> > > > > 
-> > > > > We should just merge the "add led-backlight driver". Everything should
-> > > > > be ready for it. I'm sorry if I broke something working, I was not
-> > > > > aware it worked at all.
-> > > > > 
-> > > > > Unfortunately, this is backlight code, not LED, so I can't just merge it.
-> > > > 
-> > > > Please go ahead.  Apply my Acked-by and merge away ASAP.
-> > > > 
-> > > > Acked-by: Lee Jones <lee.jones@linaro.org>
-> > > 
-> > > OK best to merge the driver via the LED tree:
-> > > 
-> > > Acked-by: Tony Lindgren <tony@atomide.com>
-> > > Tested-by: Tony Lindgren <tony@atomide.com>
-> > 
-> > Is the patch below the one both of you are talking about?
-> > 
-> > Hmm. I should s/default-brightness-level/default-brightness/
-> > below.
-> > 
-> > Lee, I can of course take it (thanks), but won't Kconfig/Makefile
-> > pieces cause rejects? It might be still better if you took it. I can
-> > hand-edit it and submit it in form for easy application... tommorow.
-> 
-> My suggestion would be to send it to Linus ASAP.
-> 
-> Ideally it would get into the -rcs, as it 'fixes' things.
+DMTimers 13 - 16 are PWM capable and also can be used for CPTS input
+signals generation. Hence, mark them as "ti,timer-pwm".
 
-I agree. Pavel, the version of the patch you posted is all space
-trashed. Can you please post again so I can verify the related dts
-changes against it?
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+---
+ arch/arm/boot/dts/dra7-l4.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Regards,
+diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
+index fc418834890d..2119a78e9c15 100644
+--- a/arch/arm/boot/dts/dra7-l4.dtsi
++++ b/arch/arm/boot/dts/dra7-l4.dtsi
+@@ -3474,6 +3474,7 @@
+ 				clocks = <&l4per3_clkctrl DRA7_L4PER3_TIMER13_CLKCTRL 24>;
+ 				clock-names = "fck";
+ 				interrupts = <GIC_SPI 339 IRQ_TYPE_LEVEL_HIGH>;
++				ti,timer-pwm;
+ 			};
+ 		};
+ 
+@@ -3501,6 +3502,7 @@
+ 				clocks = <&l4per3_clkctrl DRA7_L4PER3_TIMER14_CLKCTRL 24>;
+ 				clock-names = "fck";
+ 				interrupts = <GIC_SPI 340 IRQ_TYPE_LEVEL_HIGH>;
++				ti,timer-pwm;
+ 			};
+ 		};
+ 
+@@ -3528,6 +3530,7 @@
+ 				clocks = <&l4per3_clkctrl DRA7_L4PER3_TIMER15_CLKCTRL 24>;
+ 				clock-names = "fck";
+ 				interrupts = <GIC_SPI 341 IRQ_TYPE_LEVEL_HIGH>;
++				ti,timer-pwm;
+ 			};
+ 		};
+ 
+@@ -3555,6 +3558,7 @@
+ 				clocks = <&l4per3_clkctrl DRA7_L4PER3_TIMER16_CLKCTRL 24>;
+ 				clock-names = "fck";
+ 				interrupts = <GIC_SPI 342 IRQ_TYPE_LEVEL_HIGH>;
++				ti,timer-pwm;
+ 			};
+ 		};
+ 
+-- 
+2.17.1
 
-Tony
