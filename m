@@ -2,20 +2,21 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BBCE164EA1
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2020 20:14:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8D18164F29
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2020 20:45:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726609AbgBSTOR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Feb 2020 14:14:17 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:45250 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726634AbgBSTOR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Feb 2020 14:14:17 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B82421C013D; Wed, 19 Feb 2020 20:14:13 +0100 (CET)
-Date:   Wed, 19 Feb 2020 20:14:12 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Tony Lindgren <tony@atomide.com>
+        id S1726648AbgBSTpp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Feb 2020 14:45:45 -0500
+Received: from muru.com ([72.249.23.125]:56154 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726634AbgBSTpp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 19 Feb 2020 14:45:45 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id CC44580F3;
+        Wed, 19 Feb 2020 19:46:27 +0000 (UTC)
+Date:   Wed, 19 Feb 2020 11:45:40 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@ucw.cz>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         kernel list <linux-kernel@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
@@ -24,368 +25,144 @@ Cc:     Lee Jones <lee.jones@linaro.org>,
         agx@sigxcpu.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
         dri-devel@lists.freedesktop.org, tomi.valkeinen@ti.com,
         jjhiblot@ti.com
-Subject: [PATCH] backlight: add led-backlight driver
-Message-ID: <20200219191412.GA15905@amd>
+Subject: Re: [PATCH] backlight: add led-backlight driver
+Message-ID: <20200219194540.GD37466@atomide.com>
+References: <20200219191412.GA15905@amd>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="Kj7319i9nmIyA2yE"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20200219191412.GA15905@amd>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Pavel Machek <pavel@ucw.cz> [200219 19:15]:
+> From: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> 
+> This patch adds a led-backlight driver (led_bl), which is similar to
+> pwm_bl except the driver uses a LED class driver to adjust the
+> brightness in the HW. Multiple LEDs can be used for a single backlight.
+> 
+> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Signed-off-by: Jean-Jacques Hiblot <jjhiblot@ti.com>
+> Acked-by: Pavel Machek <pavel@ucw.cz>
+> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+> Acked-by: Lee Jones <lee.jones@linaro.org>
+> Acked-by: Tony Lindgren <tony@atomide.com>
+> Tested-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> ---
+>  drivers/video/backlight/Kconfig  |   7 ++
+>  drivers/video/backlight/Makefile |   1 +
+>  drivers/video/backlight/led_bl.c | 260 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 268 insertions(+)
+>  create mode 100644 drivers/video/backlight/led_bl.c
+> 
+> Hi!
+> 
+> Here's the version of the driver I have. AFAICT
+> default-brightness-level handling is ok, so does not need to be
+> changed.
+> 
+> Lee, it would be easiest for me if you could apply it to your tree and
+> push, but given enough time I can push it to Linus, too.
 
---Kj7319i9nmIyA2yE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh you're using quoted-printable for patches.. Got it applied now,
+and it still works. Below is also the related dts change that
+I tested with.
 
-=46rom: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Feel free to pick the dts change too, naturally that should
+not be applied before the driver.
 
-This patch adds a led-backlight driver (led_bl), which is similar to
-pwm_bl except the driver uses a LED class driver to adjust the
-brightness in the HW. Multiple LEDs can be used for a single backlight.
+If you guys instead want me to pick these both into my fixes
+branch, just let me know and I'll do the explaining why these
+are needed as fixes. Basically we no longer have a way to enable
+the LCD backlight for droid4 manually starting with v5.6-rc1
+unlike earlier.
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Signed-off-by: Jean-Jacques Hiblot <jjhiblot@ti.com>
-Acked-by: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Acked-by: Lee Jones <lee.jones@linaro.org>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Pavel Machek <pavel@ucw.cz>
+Regards,
+
+Tony
+
+8< ------------------
+From tony Mon Sep 17 00:00:00 2001
+From: Tony Lindgren <tony@atomide.com>
+Date: Wed, 19 Feb 2020 11:25:27 -0800
+Subject: [PATCH] ARM: dts: droid4: Configure LED backlight for lm3532
+
+With the LED backlight changes merged, we still need the dts configured
+to have backlight working for droid4. Based on an earlier patch from
+Pavel Machek <pavel@ucw.cz>, let's configure the backlight but update
+the value range to be more usable.
+
+We have a range of 256 register values split into 8 steps, so we can
+generate the brightness levels backwards with:
+
+$ for i in 0 1 2 3 4 5 6 7; do echo "255 - ${i} * (256 / 8)" | bc; done
+
+To avoid more confusion why the LCD backlight is still not on, let's
+also enable LED backlight as a loadable module for omap2plus_defconfig.
+
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/video/backlight/Kconfig  |   7 ++
- drivers/video/backlight/Makefile |   1 +
- drivers/video/backlight/led_bl.c | 260 +++++++++++++++++++++++++++++++++++=
-++++
- 3 files changed, 268 insertions(+)
- create mode 100644 drivers/video/backlight/led_bl.c
+ arch/arm/boot/dts/motorola-mapphone-common.dtsi | 13 +++++++++++--
+ arch/arm/configs/omap2plus_defconfig            |  1 +
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-Hi!
-
-Here's the version of the driver I have. AFAICT
-default-brightness-level handling is ok, so does not need to be
-changed.
-
-Lee, it would be easiest for me if you could apply it to your tree and
-push, but given enough time I can push it to Linus, too.
-
-Thanks,
-								Pavel
-
-diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kcon=
-fig
-index 403707a3e503..0093bbd0d326 100644
---- a/drivers/video/backlight/Kconfig
-+++ b/drivers/video/backlight/Kconfig
-@@ -456,6 +456,13 @@ config BACKLIGHT_RAVE_SP
- 	help
- 	  Support for backlight control on RAVE SP device.
-=20
-+config BACKLIGHT_LED
-+	tristate "Generic LED based Backlight Driver"
-+	depends on LEDS_CLASS && OF
-+	help
-+	  If you have a LCD backlight adjustable by LED class driver, say Y
-+	  to enable this driver.
+diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+--- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+@@ -182,6 +182,14 @@ vibrator {
+ 		pwm-names = "enable", "direction";
+ 		direction-duty-cycle-ns = <10000000>;
+ 	};
 +
- endif # BACKLIGHT_CLASS_DEVICE
-=20
- endmenu
-diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Mak=
-efile
-index 6f8777037c37..0c1a1524627a 100644
---- a/drivers/video/backlight/Makefile
-+++ b/drivers/video/backlight/Makefile
-@@ -57,3 +57,4 @@ obj-$(CONFIG_BACKLIGHT_TPS65217)	+=3D tps65217_bl.o
- obj-$(CONFIG_BACKLIGHT_WM831X)		+=3D wm831x_bl.o
- obj-$(CONFIG_BACKLIGHT_ARCXCNN) 	+=3D arcxcnn_bl.o
- obj-$(CONFIG_BACKLIGHT_RAVE_SP)		+=3D rave-sp-backlight.o
-+obj-$(CONFIG_BACKLIGHT_LED)		+=3D led_bl.o
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led=
-_bl.c
-new file mode 100644
-index 000000000000..3f66549997c8
---- /dev/null
-+++ b/drivers/video/backlight/led_bl.c
-@@ -0,0 +1,260 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2015-2019 Texas Instruments Incorporated -  http://www.ti=
-=2Ecom/
-+ * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
-+ *
-+ * Based on pwm_bl.c
-+ */
++	backlight: backlight {
++		compatible = "led-backlight";
 +
-+#include <linux/backlight.h>
-+#include <linux/leds.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
++		leds = <&backlight_led>;
++		brightness-levels = <31 63 95 127 159 191 223 255>;
++		default-brightness-level = <6>;
++	};
+ };
+ 
+ &dss {
+@@ -205,6 +213,8 @@ lcd0: display {
+ 		vddi-supply = <&lcd_regulator>;
+ 		reset-gpios = <&gpio4 5 GPIO_ACTIVE_HIGH>;	/* gpio101 */
+ 
++		backlight = <&backlight>;
 +
-+struct led_bl_data {
-+	struct device		*dev;
-+	struct backlight_device	*bl_dev;
-+	struct led_classdev	**leds;
-+	bool			enabled;
-+	int			nb_leds;
-+	unsigned int		*levels;
-+	unsigned int		default_brightness;
-+	unsigned int		max_brightness;
-+};
-+
-+static void led_bl_set_brightness(struct led_bl_data *priv, int level)
-+{
-+	int i;
-+	int bkl_brightness;
-+
-+	if (priv->levels)
-+		bkl_brightness =3D priv->levels[level];
-+	else
-+		bkl_brightness =3D level;
-+
-+	for (i =3D 0; i < priv->nb_leds; i++)
-+		led_set_brightness(priv->leds[i], bkl_brightness);
-+
-+	priv->enabled =3D true;
-+}
-+
-+static void led_bl_power_off(struct led_bl_data *priv)
-+{
-+	int i;
-+
-+	if (!priv->enabled)
-+		return;
-+
-+	for (i =3D 0; i < priv->nb_leds; i++)
-+		led_set_brightness(priv->leds[i], LED_OFF);
-+
-+	priv->enabled =3D false;
-+}
-+
-+static int led_bl_update_status(struct backlight_device *bl)
-+{
-+	struct led_bl_data *priv =3D bl_get_data(bl);
-+	int brightness =3D bl->props.brightness;
-+
-+	if (bl->props.power !=3D FB_BLANK_UNBLANK ||
-+	    bl->props.fb_blank !=3D FB_BLANK_UNBLANK ||
-+	    bl->props.state & BL_CORE_FBBLANK)
-+		brightness =3D 0;
-+
-+	if (brightness > 0)
-+		led_bl_set_brightness(priv, brightness);
-+	else
-+		led_bl_power_off(priv);
-+
-+	return 0;
-+}
-+
-+static const struct backlight_ops led_bl_ops =3D {
-+	.update_status	=3D led_bl_update_status,
-+};
-+
-+static int led_bl_get_leds(struct device *dev,
-+			   struct led_bl_data *priv)
-+{
-+	int i, nb_leds, ret;
-+	struct device_node *node =3D dev->of_node;
-+	struct led_classdev **leds;
-+	unsigned int max_brightness;
-+	unsigned int default_brightness;
-+
-+	ret =3D of_count_phandle_with_args(node, "leds", NULL);
-+	if (ret < 0) {
-+		dev_err(dev, "Unable to get led count\n");
-+		return -EINVAL;
-+	}
-+
-+	nb_leds =3D ret;
-+	if (nb_leds < 1) {
-+		dev_err(dev, "At least one LED must be specified!\n");
-+		return -EINVAL;
-+	}
-+
-+	leds =3D devm_kzalloc(dev, sizeof(struct led_classdev *) * nb_leds,
-+			    GFP_KERNEL);
-+	if (!leds)
-+		return -ENOMEM;
-+
-+	for (i =3D 0; i < nb_leds; i++) {
-+		leds[i] =3D devm_of_led_get(dev, i);
-+		if (IS_ERR(leds[i]))
-+			return PTR_ERR(leds[i]);
-+	}
-+
-+	/* check that the LEDs all have the same brightness range */
-+	max_brightness =3D leds[0]->max_brightness;
-+	for (i =3D 1; i < nb_leds; i++) {
-+		if (max_brightness !=3D leds[i]->max_brightness) {
-+			dev_err(dev, "LEDs must have identical ranges\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	/* get the default brightness from the first LED from the list */
-+	default_brightness =3D leds[0]->brightness;
-+
-+	priv->nb_leds =3D nb_leds;
-+	priv->leds =3D leds;
-+	priv->max_brightness =3D max_brightness;
-+	priv->default_brightness =3D default_brightness;
-+
-+	return 0;
-+}
-+
-+static int led_bl_parse_levels(struct device *dev,
-+			   struct led_bl_data *priv)
-+{
-+	struct device_node *node =3D dev->of_node;
-+	int num_levels;
-+	u32 value;
-+	int ret;
-+
-+	if (!node)
-+		return -ENODEV;
-+
-+	num_levels =3D of_property_count_u32_elems(node, "brightness-levels");
-+	if (num_levels > 1) {
-+		int i;
-+		unsigned int db;
-+		u32 *levels =3D NULL;
-+
-+		levels =3D devm_kzalloc(dev, sizeof(u32) * num_levels,
-+				      GFP_KERNEL);
-+		if (!levels)
-+			return -ENOMEM;
-+
-+		ret =3D of_property_read_u32_array(node, "brightness-levels",
-+						levels,
-+						num_levels);
-+		if (ret < 0)
-+			return ret;
-+
-+		/*
-+		 * Try to map actual LED brightness to backlight brightness
-+		 * level
-+		 */
-+		db =3D priv->default_brightness;
-+		for (i =3D 0 ; i < num_levels; i++) {
-+			if ((i && db > levels[i-1]) && db <=3D levels[i])
-+				break;
-+		}
-+		priv->default_brightness =3D i;
-+		priv->max_brightness =3D num_levels - 1;
-+		priv->levels =3D levels;
-+	} else if (num_levels >=3D 0)
-+		dev_warn(dev, "Not enough levels defined\n");
-+
-+	ret =3D of_property_read_u32(node, "default-brightness-level", &value);
-+	if (!ret && value <=3D priv->max_brightness)
-+		priv->default_brightness =3D value;
-+	else if (!ret  && value > priv->max_brightness)
-+		dev_warn(dev, "Invalid default brightness. Ignoring it\n");
-+
-+	return 0;
-+}
-+
-+static int led_bl_probe(struct platform_device *pdev)
-+{
-+	struct backlight_properties props;
-+	struct led_bl_data *priv;
-+	int ret, i;
-+
-+	priv =3D devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, priv);
-+
-+	priv->dev =3D &pdev->dev;
-+
-+	ret =3D led_bl_get_leds(&pdev->dev, priv);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D led_bl_parse_levels(&pdev->dev, priv);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to parse DT data\n");
-+		return ret;
-+	}
-+
-+	memset(&props, 0, sizeof(struct backlight_properties));
-+	props.type =3D BACKLIGHT_RAW;
-+	props.max_brightness =3D priv->max_brightness;
-+	props.brightness =3D priv->default_brightness;
-+	props.power =3D (priv->default_brightness > 0) ? FB_BLANK_POWERDOWN :
-+		      FB_BLANK_UNBLANK;
-+	priv->bl_dev =3D backlight_device_register(dev_name(&pdev->dev),
-+			&pdev->dev, priv, &led_bl_ops, &props);
-+	if (IS_ERR(priv->bl_dev)) {
-+		dev_err(&pdev->dev, "Failed to register backlight\n");
-+		return PTR_ERR(priv->bl_dev);
-+	}
-+
-+	for (i =3D 0; i < priv->nb_leds; i++)
-+		led_sysfs_disable(priv->leds[i]);
-+
-+	backlight_update_status(priv->bl_dev);
-+
-+	return 0;
-+}
-+
-+static int led_bl_remove(struct platform_device *pdev)
-+{
-+	struct led_bl_data *priv =3D platform_get_drvdata(pdev);
-+	struct backlight_device *bl =3D priv->bl_dev;
-+	int i;
-+
-+	backlight_device_unregister(bl);
-+
-+	led_bl_power_off(priv);
-+	for (i =3D 0; i < priv->nb_leds; i++)
-+		led_sysfs_enable(priv->leds[i]);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id led_bl_of_match[] =3D {
-+	{ .compatible =3D "led-backlight" },
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(of, led_bl_of_match);
-+
-+static struct platform_driver led_bl_driver =3D {
-+	.driver		=3D {
-+		.name		=3D "led-backlight",
-+		.of_match_table	=3D of_match_ptr(led_bl_of_match),
-+	},
-+	.probe		=3D led_bl_probe,
-+	.remove		=3D led_bl_remove,
-+};
-+
-+module_platform_driver(led_bl_driver);
-+
-+MODULE_DESCRIPTION("LED based Backlight Driver");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:led-backlight");
---=20
-2.11.0
-
---Kj7319i9nmIyA2yE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl5NiQQACgkQMOfwapXb+vKB3wCeNwgawbpJG+QvA2Rqz79yDUXe
-9tMAnRooOFUO1I1Z5s5okmpqlDzsz9qJ
-=zfbl
------END PGP SIGNATURE-----
-
---Kj7319i9nmIyA2yE--
+ 		width-mm = <50>;
+ 		height-mm = <89>;
+ 
+@@ -393,12 +403,11 @@ led-controller@38 {
+ 		ramp-up-us = <1024>;
+ 		ramp-down-us = <8193>;
+ 
+-		led@0 {
++		backlight_led: led@0 {
+ 			reg = <0>;
+ 			led-sources = <2>;
+ 			ti,led-mode = <0>;
+ 			label = ":backlight";
+-			linux,default-trigger = "backlight";
+ 		};
+ 
+ 		led@1 {
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -375,6 +375,7 @@ CONFIG_BACKLIGHT_GENERIC=m
+ CONFIG_BACKLIGHT_PWM=m
+ CONFIG_BACKLIGHT_PANDORA=m
+ CONFIG_BACKLIGHT_GPIO=m
++CONFIG_BACKLIGHT_LED=m
+ CONFIG_FRAMEBUFFER_CONSOLE=y
+ CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
+ CONFIG_LOGO=y
+-- 
+2.25.1
