@@ -2,453 +2,161 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B5F5163E1F
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2020 08:47:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9258E163E61
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2020 09:02:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726663AbgBSHrI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Feb 2020 02:47:08 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:44503 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726664AbgBSHrH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Feb 2020 02:47:07 -0500
-Received: by mail-wr1-f65.google.com with SMTP id m16so26919858wrx.11
-        for <linux-omap@vger.kernel.org>; Tue, 18 Feb 2020 23:47:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=AySmLIYsWtvcCXv7Xaz2smxRH6W+EenMOBf4ub6ztI8=;
-        b=bFDgLtwjoQzbwuSl939RWSiJCf7qXnTYi0J3TsRl8Q64qWqIHnEoozze0OGlBaNA2L
-         Hu6Dn95vLs4YrPSQ6lOQNYtbM1BX35T9MTLO5pXucPrXZXcWrrD7n0SAV1YtSSk9VYI9
-         ePCo9MiBVrSvPbduguSJ53jWbFRMPRzm+g45/otQwLKJEEN/saxUnsJ1ikdLtfedylQ/
-         44gnnPDFBXiynrVqREHOMvmiULrL6/sjapj7Cfjp7JcZwBJP8KR4vW9tX1DCQvfDkNKl
-         ODXTOPJNkFw1tBwNPTrlIgQa/DIGmjQOyc62TcRWi3ntmeAJGx0CTshyr5G3kiCrXdUN
-         zeGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=AySmLIYsWtvcCXv7Xaz2smxRH6W+EenMOBf4ub6ztI8=;
-        b=dnOXf8fZPy1mz6Ajxh2zZw+XIsBtS6yNW3TjUa0Rrj4ylHNUGa/rZZHp/Vy2b9RDRK
-         ysbWXHa49cClIYfwGQaOBiGMsY7b3RvIbC6V6rTLUn2EUeO36esw4dONc4+3+8FUGfuX
-         FGMRlz3QfTCbmuWtfa2nyZttOvqkJufyiM8giJbbYSmVNpDBBi88FSSSR+a2tin6vcoV
-         8o+p//MC+ykgMZ7XCZRh7V5b3acZX8cDt3WIEoV8dsctN0BK7j8CInrCyZHn+i3Np6z3
-         RhMVxCQrEaUm6DJKS9WstW0KdgcqeNjPnjtbv9NzCmzb1xq7FP3aM3vmCXbul+XYBurq
-         jn2Q==
-X-Gm-Message-State: APjAAAVFek1+ojsY2FbCYV4TsWJ2l/a2v4aQdwMg2FMZ83lhQmdmbKZ5
-        bW2gQhoVJNhljShcwoW+lbfz2Q==
-X-Google-Smtp-Source: APXvYqwvdTSZ5Bz88iJbsZk5BCT+ScNenQ+7sUrT8+MLVN9AbvV14Ny/r2PnMQPMXPlx4S9+Fkil8Q==
-X-Received: by 2002:a5d:510f:: with SMTP id s15mr33886678wrt.408.1582098423177;
-        Tue, 18 Feb 2020 23:47:03 -0800 (PST)
-Received: from dell ([2.31.163.122])
-        by smtp.gmail.com with ESMTPSA id h10sm1853680wml.18.2020.02.18.23.47.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2020 23:47:02 -0800 (PST)
-Date:   Wed, 19 Feb 2020 07:47:30 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        agx@sigxcpu.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
-        dri-devel@lists.freedesktop.org, tomi.valkeinen@ti.com,
-        jjhiblot@ti.com
-Subject: Re: LED backlight on Droid 4 and others
-Message-ID: <20200219074730.GD3494@dell>
-References: <20200105183202.GA17784@duo.ucw.cz>
- <20200106084549.GA14821@dell>
- <20200211172900.GH64767@atomide.com>
- <20200212201638.GB20085@amd>
- <20200218135219.GC3494@dell>
- <20200218141452.GF35972@atomide.com>
- <20200218231001.GA28817@amd>
+        id S1726551AbgBSIBx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Feb 2020 03:01:53 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:60458 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726156AbgBSIBx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Feb 2020 03:01:53 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01J81ReD077111;
+        Wed, 19 Feb 2020 02:01:28 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1582099288;
+        bh=egg33giyK1clnWZ+akRjk/X3rHDMZjpzVNVhCybJGHU=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=IOXLHU1oopM3/4EIKrpLuN/m0a24GhzipSyOq/bUtwPp1Wzov0QwLHhiSiAW+zWQl
+         boHLYXIROgdQMLilFeUsxwWeloWqZXMNjM2ZKhi+u9Vg6ZdnnmDEhHbDR1FRObdmYJ
+         eEQYaUTfhgKXV/5PcIEqoJpm6aaXRIyeVvkkwvzM=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01J81Rgj036385;
+        Wed, 19 Feb 2020 02:01:27 -0600
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 19
+ Feb 2020 02:01:27 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 19 Feb 2020 02:01:27 -0600
+Received: from [10.24.69.159] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01J81OJC117502;
+        Wed, 19 Feb 2020 02:01:25 -0600
+Subject: Re: [PATCH] mmc: sdhci-omap: Add Support for Suspend/Resume
+To:     Faiz Abbas <faiz_abbas@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mmc@vger.kernel.org>, <linux-omap@vger.kernel.org>
+CC:     <ulf.hansson@linaro.org>, <adrian.hunter@intel.com>,
+        <tony@atomide.com>
+References: <20200218141018.24456-1-faiz_abbas@ti.com>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <52f4cb0c-2b4e-65bf-d669-b9b5cdc44cb7@ti.com>
+Date:   Wed, 19 Feb 2020 13:35:05 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200218231001.GA28817@amd>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200218141018.24456-1-faiz_abbas@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 19 Feb 2020, Pavel Machek wrote:
+Hi Faiz,
 
-> Hi!
+On 18/02/20 7:40 pm, Faiz Abbas wrote:
+> Add power management ops which save and restore the driver context and
+> facilitate a system suspend and resume.
 > 
-> > > > > > > It would be good to get LED backlight to work in clean way for 5.6
-> > > > > > > kernel.
-> > > > > ...
-> > > > > > > [If you have an idea what else is needed, it would be welcome; it
-> > > > > > > works for me in development tree but not in tree I'd like to
-> > > > > > > upstream.]
-> > > > > > > 
-> > > > > > > Lee, would you be willing to take "backlight: add led-backlight
-> > > > > > > driver"? Would it help if I got "leds: Add managed API to get a LED
-> > > > > > > from a device driver" and "leds: Add of_led_get() and led_put()" into
-> > > > > > > for_next tree of the LED subsystem?
-> > > > > > 
-> > > > > > It looks like you have an open question from Tony on v10.
-> > > > > > 
-> > > > > > Is that patch orthogonal, or are there depend{ants,encies}?
-> > > > > 
-> > > > > Uhh looks like we messed up a bit with integration. Now droid4
-> > > > > LCD backlight can no longer be enabled at all manually in v5.6-rc1
-> > > > > without the "add led-backlight driver" patch.. Should we just
-> > > > > merge it to fix it rather than start scrambling with other
-> > > > > temporary hacks?
-> > > > 
-> > > > We should just merge the "add led-backlight driver". Everything should
-> > > > be ready for it. I'm sorry if I broke something working, I was not
-> > > > aware it worked at all.
-> > > > 
-> > > > Unfortunately, this is backlight code, not LED, so I can't just merge it.
-> > > 
-> > > Please go ahead.  Apply my Acked-by and merge away ASAP.
-> > > 
-> > > Acked-by: Lee Jones <lee.jones@linaro.org>
-> > 
-> > OK best to merge the driver via the LED tree:
-> > 
-> > Acked-by: Tony Lindgren <tony@atomide.com>
-> > Tested-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
+> ---
+>  drivers/mmc/host/sdhci-omap.c | 59 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 59 insertions(+)
 > 
-> Is the patch below the one both of you are talking about?
-> 
-> Hmm. I should s/default-brightness-level/default-brightness/
-> below.
-> 
-> Lee, I can of course take it (thanks), but won't Kconfig/Makefile
-> pieces cause rejects? It might be still better if you took it. I can
-> hand-edit it and submit it in form for easy application... tommorow.
+> diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
+> index 882053151a47..a524c01da8de 100644
+> --- a/drivers/mmc/host/sdhci-omap.c
+> +++ b/drivers/mmc/host/sdhci-omap.c
+> @@ -108,6 +108,11 @@ struct sdhci_omap_host {
+>  	struct pinctrl		*pinctrl;
+>  	struct pinctrl_state	**pinctrl_state;
+>  	bool			is_tuning;
+> +	/* Omap specific context save */
+> +	u32			con;
+> +	u32			hctl;
+> +	u32			sysctl;
+> +	u32			capa;
 
-My suggestion would be to send it to Linus ASAP.
+Except CON register which is specific to OMAP, others are SDHCI
+registers. Shouldn't the save and restore of these registers be in
+sdhci.c? Doesn't set_ios() already take care of configuring HCTL, SYSCTL
+etc..?
 
-Ideally it would get into the -rcs, as it 'fixes' things.
+Thanks
+Kishon
 
-> Best regards,
-> 
-> 									Pavel
-> 
-> commit 81a2daadf8dd6c8e0cbc3b60246932436be3c714
-> Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Date:   Thu Oct 3 10:28:12 2019 +0200
-> 
->     backlight: add led-backlight driver
->     
->     This patch adds a led-backlight driver (led_bl), which is similar to
->     pwm_bl except the driver uses a LED class driver to adjust the
->     brightness in the HW. Multiple LEDs can be used for a single backlight.
->     
->     Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
->     Signed-off-by: Jean-Jacques Hiblot <jjhiblot@ti.com>
->     Acked-by: Pavel Machek <pavel@ucw.cz>
->     Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> 
-> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-> index 4c8f73394aac..93836ef872f5 100644
-> --- a/drivers/video/backlight/Kconfig
-> +++ b/drivers/video/backlight/Kconfig
-> @@ -463,6 +463,13 @@ config BACKLIGHT_RAVE_SP
->  	help
->  	  Support for backlight control on RAVE SP device.
+>  };
 >  
-> +config BACKLIGHT_LED
-> +	tristate "Generic LED based Backlight Driver"
-> +	depends on LEDS_CLASS && OF
-> +	help
-> +	  If you have a LCD backlight adjustable by LED class driver, say Y
-> +	  to enable this driver.
-> +
->  endif # BACKLIGHT_CLASS_DEVICE
+>  static void sdhci_omap_start_clock(struct sdhci_omap_host *omap_host);
+> @@ -1233,11 +1238,65 @@ static int sdhci_omap_remove(struct platform_device *pdev)
+>  	return 0;
+>  }
 >  
->  endmenu
-> diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Makefile
-> index 961fb553b9c0..5e13242f31d6 100644
-> --- a/drivers/video/backlight/Makefile
-> +++ b/drivers/video/backlight/Makefile
-> @@ -60,3 +60,4 @@ obj-$(CONFIG_BACKLIGHT_TPS65217)	+= tps65217_bl.o
->  obj-$(CONFIG_BACKLIGHT_WM831X)		+= wm831x_bl.o
->  obj-$(CONFIG_BACKLIGHT_ARCXCNN) 	+= arcxcnn_bl.o
->  obj-$(CONFIG_BACKLIGHT_RAVE_SP)		+= rave-sp-backlight.o
-> +obj-$(CONFIG_BACKLIGHT_LED)		+= led_bl.o
-> diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-> new file mode 100644
-> index 000000000000..3f66549997c8
-> --- /dev/null
-> +++ b/drivers/video/backlight/led_bl.c
-> @@ -0,0 +1,260 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2015-2019 Texas Instruments Incorporated -  http://www.ti.com/
-> + * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> + *
-> + * Based on pwm_bl.c
-> + */
-> +
-> +#include <linux/backlight.h>
-> +#include <linux/leds.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +
-> +struct led_bl_data {
-> +	struct device		*dev;
-> +	struct backlight_device	*bl_dev;
-> +	struct led_classdev	**leds;
-> +	bool			enabled;
-> +	int			nb_leds;
-> +	unsigned int		*levels;
-> +	unsigned int		default_brightness;
-> +	unsigned int		max_brightness;
-> +};
-> +
-> +static void led_bl_set_brightness(struct led_bl_data *priv, int level)
+> +static void sdhci_omap_context_save(struct sdhci_omap_host *omap_host)
 > +{
-> +	int i;
-> +	int bkl_brightness;
-> +
-> +	if (priv->levels)
-> +		bkl_brightness = priv->levels[level];
-> +	else
-> +		bkl_brightness = level;
-> +
-> +	for (i = 0; i < priv->nb_leds; i++)
-> +		led_set_brightness(priv->leds[i], bkl_brightness);
-> +
-> +	priv->enabled = true;
+> +	omap_host->con = sdhci_omap_readl(omap_host, SDHCI_OMAP_CON);
+> +	omap_host->hctl = sdhci_omap_readl(omap_host, SDHCI_OMAP_HCTL);
+> +	omap_host->sysctl = sdhci_omap_readl(omap_host, SDHCI_OMAP_SYSCTL);
+> +	omap_host->capa = sdhci_omap_readl(omap_host, SDHCI_OMAP_CAPA);
 > +}
 > +
-> +static void led_bl_power_off(struct led_bl_data *priv)
+> +static void sdhci_omap_context_restore(struct sdhci_omap_host *omap_host)
 > +{
-> +	int i;
-> +
-> +	if (!priv->enabled)
-> +		return;
-> +
-> +	for (i = 0; i < priv->nb_leds; i++)
-> +		led_set_brightness(priv->leds[i], LED_OFF);
-> +
-> +	priv->enabled = false;
+> +	sdhci_omap_writel(omap_host, SDHCI_OMAP_CON, omap_host->con);
+> +	sdhci_omap_writel(omap_host, SDHCI_OMAP_HCTL, omap_host->hctl);
+> +	sdhci_omap_writel(omap_host, SDHCI_OMAP_SYSCTL, omap_host->sysctl);
+> +	sdhci_omap_writel(omap_host, SDHCI_OMAP_CAPA, omap_host->capa);
 > +}
 > +
-> +static int led_bl_update_status(struct backlight_device *bl)
+> +static int __maybe_unused sdhci_omap_suspend(struct device *dev)
 > +{
-> +	struct led_bl_data *priv = bl_get_data(bl);
-> +	int brightness = bl->props.brightness;
+> +	struct sdhci_host *host = dev_get_drvdata(dev);
+> +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
 > +
-> +	if (bl->props.power != FB_BLANK_UNBLANK ||
-> +	    bl->props.fb_blank != FB_BLANK_UNBLANK ||
-> +	    bl->props.state & BL_CORE_FBBLANK)
-> +		brightness = 0;
+> +	sdhci_suspend_host(host);
 > +
-> +	if (brightness > 0)
-> +		led_bl_set_brightness(priv, brightness);
-> +	else
-> +		led_bl_power_off(priv);
+> +	sdhci_omap_context_save(omap_host);
+> +
+> +	pinctrl_pm_select_idle_state(dev);
+> +
+> +	pm_runtime_put_sync(dev);
 > +
 > +	return 0;
 > +}
 > +
-> +static const struct backlight_ops led_bl_ops = {
-> +	.update_status	= led_bl_update_status,
-> +};
-> +
-> +static int led_bl_get_leds(struct device *dev,
-> +			   struct led_bl_data *priv)
+> +static int __maybe_unused sdhci_omap_resume(struct device *dev)
 > +{
-> +	int i, nb_leds, ret;
-> +	struct device_node *node = dev->of_node;
-> +	struct led_classdev **leds;
-> +	unsigned int max_brightness;
-> +	unsigned int default_brightness;
+> +	struct sdhci_host *host = dev_get_drvdata(dev);
+> +	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> +	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
 > +
-> +	ret = of_count_phandle_with_args(node, "leds", NULL);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Unable to get led count\n");
-> +		return -EINVAL;
-> +	}
+> +	pm_runtime_get_sync(dev);
 > +
-> +	nb_leds = ret;
-> +	if (nb_leds < 1) {
-> +		dev_err(dev, "At least one LED must be specified!\n");
-> +		return -EINVAL;
-> +	}
+> +	pinctrl_pm_select_default_state(dev);
 > +
-> +	leds = devm_kzalloc(dev, sizeof(struct led_classdev *) * nb_leds,
-> +			    GFP_KERNEL);
-> +	if (!leds)
-> +		return -ENOMEM;
+> +	sdhci_omap_context_restore(omap_host);
 > +
-> +	for (i = 0; i < nb_leds; i++) {
-> +		leds[i] = devm_of_led_get(dev, i);
-> +		if (IS_ERR(leds[i]))
-> +			return PTR_ERR(leds[i]);
-> +	}
-> +
-> +	/* check that the LEDs all have the same brightness range */
-> +	max_brightness = leds[0]->max_brightness;
-> +	for (i = 1; i < nb_leds; i++) {
-> +		if (max_brightness != leds[i]->max_brightness) {
-> +			dev_err(dev, "LEDs must have identical ranges\n");
-> +			return -EINVAL;
-> +		}
-> +	}
-> +
-> +	/* get the default brightness from the first LED from the list */
-> +	default_brightness = leds[0]->brightness;
-> +
-> +	priv->nb_leds = nb_leds;
-> +	priv->leds = leds;
-> +	priv->max_brightness = max_brightness;
-> +	priv->default_brightness = default_brightness;
+> +	sdhci_resume_host(host);
 > +
 > +	return 0;
 > +}
 > +
-> +static int led_bl_parse_levels(struct device *dev,
-> +			   struct led_bl_data *priv)
-> +{
-> +	struct device_node *node = dev->of_node;
-> +	int num_levels;
-> +	u32 value;
-> +	int ret;
+> +static SIMPLE_DEV_PM_OPS(sdhci_omap_dev_pm_ops, sdhci_omap_suspend,
+> +			 sdhci_omap_resume);
 > +
-> +	if (!node)
-> +		return -ENODEV;
-> +
-> +	num_levels = of_property_count_u32_elems(node, "brightness-levels");
-> +	if (num_levels > 1) {
-> +		int i;
-> +		unsigned int db;
-> +		u32 *levels = NULL;
-> +
-> +		levels = devm_kzalloc(dev, sizeof(u32) * num_levels,
-> +				      GFP_KERNEL);
-> +		if (!levels)
-> +			return -ENOMEM;
-> +
-> +		ret = of_property_read_u32_array(node, "brightness-levels",
-> +						levels,
-> +						num_levels);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		/*
-> +		 * Try to map actual LED brightness to backlight brightness
-> +		 * level
-> +		 */
-> +		db = priv->default_brightness;
-> +		for (i = 0 ; i < num_levels; i++) {
-> +			if ((i && db > levels[i-1]) && db <= levels[i])
-> +				break;
-> +		}
-> +		priv->default_brightness = i;
-> +		priv->max_brightness = num_levels - 1;
-> +		priv->levels = levels;
-> +	} else if (num_levels >= 0)
-> +		dev_warn(dev, "Not enough levels defined\n");
-> +
-> +	ret = of_property_read_u32(node, "default-brightness-level", &value);
-> +	if (!ret && value <= priv->max_brightness)
-> +		priv->default_brightness = value;
-> +	else if (!ret  && value > priv->max_brightness)
-> +		dev_warn(dev, "Invalid default brightness. Ignoring it\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int led_bl_probe(struct platform_device *pdev)
-> +{
-> +	struct backlight_properties props;
-> +	struct led_bl_data *priv;
-> +	int ret, i;
-> +
-> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	platform_set_drvdata(pdev, priv);
-> +
-> +	priv->dev = &pdev->dev;
-> +
-> +	ret = led_bl_get_leds(&pdev->dev, priv);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = led_bl_parse_levels(&pdev->dev, priv);
-> +	if (ret < 0) {
-> +		dev_err(&pdev->dev, "Failed to parse DT data\n");
-> +		return ret;
-> +	}
-> +
-> +	memset(&props, 0, sizeof(struct backlight_properties));
-> +	props.type = BACKLIGHT_RAW;
-> +	props.max_brightness = priv->max_brightness;
-> +	props.brightness = priv->default_brightness;
-> +	props.power = (priv->default_brightness > 0) ? FB_BLANK_POWERDOWN :
-> +		      FB_BLANK_UNBLANK;
-> +	priv->bl_dev = backlight_device_register(dev_name(&pdev->dev),
-> +			&pdev->dev, priv, &led_bl_ops, &props);
-> +	if (IS_ERR(priv->bl_dev)) {
-> +		dev_err(&pdev->dev, "Failed to register backlight\n");
-> +		return PTR_ERR(priv->bl_dev);
-> +	}
-> +
-> +	for (i = 0; i < priv->nb_leds; i++)
-> +		led_sysfs_disable(priv->leds[i]);
-> +
-> +	backlight_update_status(priv->bl_dev);
-> +
-> +	return 0;
-> +}
-> +
-> +static int led_bl_remove(struct platform_device *pdev)
-> +{
-> +	struct led_bl_data *priv = platform_get_drvdata(pdev);
-> +	struct backlight_device *bl = priv->bl_dev;
-> +	int i;
-> +
-> +	backlight_device_unregister(bl);
-> +
-> +	led_bl_power_off(priv);
-> +	for (i = 0; i < priv->nb_leds; i++)
-> +		led_sysfs_enable(priv->leds[i]);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id led_bl_of_match[] = {
-> +	{ .compatible = "led-backlight" },
-> +	{ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, led_bl_of_match);
-> +
-> +static struct platform_driver led_bl_driver = {
-> +	.driver		= {
-> +		.name		= "led-backlight",
-> +		.of_match_table	= of_match_ptr(led_bl_of_match),
-> +	},
-> +	.probe		= led_bl_probe,
-> +	.remove		= led_bl_remove,
-> +};
-> +
-> +module_platform_driver(led_bl_driver);
-> +
-> +MODULE_DESCRIPTION("LED based Backlight Driver");
-> +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS("platform:led-backlight");
+>  static struct platform_driver sdhci_omap_driver = {
+>  	.probe = sdhci_omap_probe,
+>  	.remove = sdhci_omap_remove,
+>  	.driver = {
+>  		   .name = "sdhci-omap",
+> +		   .pm = &sdhci_omap_dev_pm_ops,
+>  		   .of_match_table = omap_sdhci_match,
+>  		  },
+>  };
 > 
-
-
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
