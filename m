@@ -2,94 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC9D916607E
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Feb 2020 16:09:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 24FF1166233
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Feb 2020 17:20:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728448AbgBTPJG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Feb 2020 10:09:06 -0500
-Received: from muru.com ([72.249.23.125]:56274 "EHLO muru.com"
+        id S1728384AbgBTQUQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Feb 2020 11:20:16 -0500
+Received: from muru.com ([72.249.23.125]:56326 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728176AbgBTPJG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 20 Feb 2020 10:09:06 -0500
+        id S1727868AbgBTQUP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 20 Feb 2020 11:20:15 -0500
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id DE1ED8080;
-        Thu, 20 Feb 2020 15:09:48 +0000 (UTC)
-Date:   Thu, 20 Feb 2020 07:09:01 -0800
+        by muru.com (Postfix) with ESMTPS id C46C78080;
+        Thu, 20 Feb 2020 16:20:59 +0000 (UTC)
+Date:   Thu, 20 Feb 2020 08:20:12 -0800
 From:   Tony Lindgren <tony@atomide.com>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Pavel Machek <pavel@ucw.cz>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        agx@sigxcpu.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
-        dri-devel@lists.freedesktop.org, tomi.valkeinen@ti.com,
-        jjhiblot@ti.com
-Subject: Re: [PATCH] backlight: add led-backlight driver
-Message-ID: <20200220150901.GG37466@atomide.com>
-References: <20200219191412.GA15905@amd>
- <20200219194540.GD37466@atomide.com>
- <20200220074849.GF3494@dell>
+To:     "Andrew F. Davis" <afd@ti.com>
+Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        kbuild test robot <lkp@intel.com>, linux-omap@vger.kernel.org
+Subject: Re: omap-secure.c:undefined reference to `__arm_smccc_smc'
+Message-ID: <20200220162012.GI37466@atomide.com>
+References: <202002131856.VeW4PhBJ%lkp@intel.com>
+ <20200220155429.GH37466@atomide.com>
+ <55ddcd29-ed8b-529e-dd54-cbac5cf74e42@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200220074849.GF3494@dell>
+In-Reply-To: <55ddcd29-ed8b-529e-dd54-cbac5cf74e42@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Lee Jones <lee.jones@linaro.org> [200220 07:49]:
-> On Wed, 19 Feb 2020, Tony Lindgren wrote:
+* Andrew F. Davis <afd@ti.com> [200220 16:04]:
+> On 2/20/20 10:54 AM, Tony Lindgren wrote:
+> > Andrew,
+> > 
+> > * kbuild test robot <lkp@intel.com> [200213 10:27]:
+> >> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> >> head:   0bf999f9c5e74c7ecf9dafb527146601e5c848b9
+> >> commit: c37baa06f8a970e4a533d41f7d33e5e57de5ad25 ARM: OMAP2+: Fix undefined reference to omap_secure_init
+> >> date:   3 weeks ago
+> >> config: arm-randconfig-a001-20200213 (attached as .config)
+> >> compiler: arm-linux-gnueabi-gcc (GCC) 7.5.0
+> >> reproduce:
+> >>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+> >>         chmod +x ~/bin/make.cross
+> >>         git checkout c37baa06f8a970e4a533d41f7d33e5e57de5ad25
+> >>         # save the attached .config to linux build tree
+> >>         GCC_VERSION=7.5.0 make.cross ARCH=arm 
+> >>
+> >> If you fix the issue, kindly add following tag
+> >> Reported-by: kbuild test robot <lkp@intel.com>
+> >>
+> >> All errors (new ones prefixed by >>):
+> >>
+> >>    arch/arm/mach-omap2/omap-secure.o: In function `omap_smccc_smc':
+> >>>> omap-secure.c:(.text+0x94): undefined reference to `__arm_smccc_smc'
+> > 
+> > Have you looked at this one? Looks like there's still an unhandled
+> > randconfig build case.
+> > 
 > 
-> > * Pavel Machek <pavel@ucw.cz> [200219 19:15]:
-> > > From: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > > 
-> > > This patch adds a led-backlight driver (led_bl), which is similar to
-> > > pwm_bl except the driver uses a LED class driver to adjust the
-> > > brightness in the HW. Multiple LEDs can be used for a single backlight.
-> > > 
-> > > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > > Signed-off-by: Jean-Jacques Hiblot <jjhiblot@ti.com>
-> > > Acked-by: Pavel Machek <pavel@ucw.cz>
-> > > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> > > Acked-by: Lee Jones <lee.jones@linaro.org>
-> > > Acked-by: Tony Lindgren <tony@atomide.com>
-> > > Tested-by: Tony Lindgren <tony@atomide.com>
-> > > Signed-off-by: Pavel Machek <pavel@ucw.cz>
-> > > ---
-> > >  drivers/video/backlight/Kconfig  |   7 ++
-> > >  drivers/video/backlight/Makefile |   1 +
-> > >  drivers/video/backlight/led_bl.c | 260 +++++++++++++++++++++++++++++++++++++++
-> > >  3 files changed, 268 insertions(+)
-> > >  create mode 100644 drivers/video/backlight/led_bl.c
-> > > 
-> > > Hi!
-> > > 
-> > > Here's the version of the driver I have. AFAICT
-> > > default-brightness-level handling is ok, so does not need to be
-> > > changed.
-> > > 
-> > > Lee, it would be easiest for me if you could apply it to your tree and
-> > > push, but given enough time I can push it to Linus, too.
-> > 
-> > Oh you're using quoted-printable for patches.. Got it applied now,
-> > and it still works. Below is also the related dts change that
-> > I tested with.
-> > 
-> > Feel free to pick the dts change too, naturally that should
-> > not be applied before the driver.
-> > 
-> > If you guys instead want me to pick these both into my fixes
-> > branch, just let me know and I'll do the explaining why these
-> > are needed as fixes. Basically we no longer have a way to enable
-> > the LCD backlight for droid4 manually starting with v5.6-rc1
-> > unlike earlier.
 > 
-> Please do.  You already have my Ack.
+> I've had a quick look, all the ARM config does:
+> 
+> select HAVE_ARM_SMCCC if CPU_V7
+> 
+> so I don't think this will happen in any real config, but if we want to
+> prevent randconfig issue this we could force ARCH_OMAP2PLUS to "depend"
+> on it.
 
-OK pushed out these two patches in omap-for-v5.6/droid4-lcd-fix.
+Seems to happen at least with omap2 only config where we don't have
+CPU_V7. Something like below seems to fix it.
 
-Thanks,
+If that looks OK to you, I'll send out a proper fix.
+
+Regards,
 
 Tony
+
+8< -----------------------
+diff --git a/arch/arm/mach-omap2/omap-secure.c b/arch/arm/mach-omap2/omap-secure.c
+--- a/arch/arm/mach-omap2/omap-secure.c
++++ b/arch/arm/mach-omap2/omap-secure.c
+@@ -77,6 +77,7 @@ u32 omap_secure_dispatcher(u32 idx, u32 flag, u32 nargs, u32 arg1, u32 arg2,
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_HAVE_ARM_SMCCC
+ void omap_smccc_smc(u32 fn, u32 arg)
+ {
+ 	struct arm_smccc_res res;
+@@ -85,6 +86,11 @@ void omap_smccc_smc(u32 fn, u32 arg)
+ 		      0, 0, 0, 0, 0, 0, &res);
+ 	WARN(res.a0, "Secure function call 0x%08x failed\n", fn);
+ }
++#else
++void omap_smccc_smc(u32 fn, u32 arg)
++{
++}
++#endif
+ 
+ void omap_smc1(u32 fn, u32 arg)
+ {
