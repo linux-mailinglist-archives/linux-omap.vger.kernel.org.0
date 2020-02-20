@@ -2,96 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1979016636E
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Feb 2020 17:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD0DA166411
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Feb 2020 18:13:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727979AbgBTQtp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Feb 2020 11:49:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47650 "EHLO mail.kernel.org"
+        id S1728712AbgBTRNJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Feb 2020 12:13:09 -0500
+Received: from muru.com ([72.249.23.125]:56378 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727233AbgBTQtp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 20 Feb 2020 11:49:45 -0500
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 24399207FD;
-        Thu, 20 Feb 2020 16:49:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582217384;
-        bh=7rYxqANQCf7hTl3tzhws3Y+kLKCxf80ReHi8QZQDs10=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TDwNjp21PuyTCYCua7hWSYoYD18e5SPNajumHDnNM286oKqCbkom/Z1svBBC8JJWQ
-         vCSSOxBgnAxu3PeSsQz00Rzbtfqtdf6CKAkgey1Oskxextr9dGhUn/SIEP4jrQQCUC
-         evHDOpyHD53SRuXW+m02mRFK8jGya4c4YPmySofA=
-Date:   Thu, 20 Feb 2020 11:49:43 -0500
-From:   Sasha Levin <sashal@kernel.org>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        id S1726871AbgBTRNJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 20 Feb 2020 12:13:09 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id EEC0C8080;
+        Thu, 20 Feb 2020 17:13:52 +0000 (UTC)
+Date:   Thu, 20 Feb 2020 09:13:05 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     "Andrew F. Davis" <afd@ti.com>
+Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        kbuild test robot <lkp@intel.com>,
+        linux-omap@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Marc Zyngier <maz@kernel.org>,
         linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 5.5 219/542] ARM: OMAP2+: use separate IOMMU
- pdata to fix DRA7 IPU1 boot
-Message-ID: <20200220164943.GF1734@sasha-vm>
-References: <20200214154854.6746-1-sashal@kernel.org>
- <20200214154854.6746-219-sashal@kernel.org>
- <a7666322-f931-63f1-a4c5-d44c2ba4ed0c@ti.com>
+Subject: Re: omap-secure.c:undefined reference to `__arm_smccc_smc'
+Message-ID: <20200220171305.GL37466@atomide.com>
+References: <202002131856.VeW4PhBJ%lkp@intel.com>
+ <20200220155429.GH37466@atomide.com>
+ <55ddcd29-ed8b-529e-dd54-cbac5cf74e42@ti.com>
+ <20200220162012.GI37466@atomide.com>
+ <d7b685b6-16a2-3743-1786-a5240726ed9c@ti.com>
+ <20200220163703.GK37466@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a7666322-f931-63f1-a4c5-d44c2ba4ed0c@ti.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200220163703.GK37466@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Feb 14, 2020 at 12:34:58PM -0600, Suman Anna wrote:
->Hi Sasha,
->
->On 2/14/20 9:43 AM, Sasha Levin wrote:
->> From: Suman Anna <s-anna@ti.com>
->>
->> [ Upstream commit 4601832f40501efc3c2fd264a5a69bd1ac17d520 ]
->>
->> The IPU1 MMU has been using common IOMMU pdata quirks defined and
->> used by all IPU IOMMU devices on OMAP4 and beyond. Separate out the
->> pdata for IPU1 MMU with the additional .set_pwrdm_constraint ops
->> plugged in, so that the IPU1 power domain can be restricted to ON
->> state during the boot and active period of the IPU1 remote processor.
->> This eliminates the pre-conditions for the IPU1 boot issue as
->> described in commit afe518400bdb ("iommu/omap: fix boot issue on
->> remoteprocs with AMMU/Unicache").
->>
->> NOTE:
->> 1. RET is not a valid target power domain state on DRA7 platforms,
->>    and IPU power domain is normally programmed for OFF. The IPU1
->>    still fails to boot though, and an unclearable l3_noc error is
->>    thrown currently on 4.14 kernel without this fix. This behavior
->>    is slightly different from previous 4.9 LTS kernel.
->> 2. The fix is currently applied only to IPU1 on DRA7xx SoC, as the
->>    other affected processors on OMAP4/OMAP5/DRA7 are in domains
->>    that are not entering RET. IPU2 on DRA7 is in CORE power domain
->>    which is only programmed for ON power state. The fix can be easily
->>    scaled if these domains do hit RET in the future.
->> 3. The issue was not seen on current DRA7 platforms if any of the
->>    DSP remote processors were booted and using one of the GPTimers
->>    5, 6, 7 or 8 on previous 4.9 LTS kernel. This was due to the
->>    errata fix for i874 implemented in commit 1cbabcb9807e ("ARM:
->>    DRA7: clockdomain: Implement timer workaround for errata i874")
->>    which keeps the IPU1 power domain from entering RET when the
->>    timers are active. But the timer workaround did not make any
->>    difference on 4.14 kernel, and an l3_noc error was seen still
->>    without this fix.
->>
->> Signed-off-by: Suman Anna <s-anna@ti.com>
->> Signed-off-by: Tony Lindgren <tony@atomide.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->And drop this one as well, since mainline doesn't yet boot
->the processors, so this is not needed for stable queue.
+* Tony Lindgren <tony@atomide.com> [200220 16:37]:
+> * Andrew F. Davis <afd@ti.com> [200220 16:24]:
+> > On 2/20/20 11:20 AM, Tony Lindgren wrote:
+> > > * Andrew F. Davis <afd@ti.com> [200220 16:04]:
+> > >> On 2/20/20 10:54 AM, Tony Lindgren wrote:
+> > >>> Andrew,
+> > >>>
+> > >>> * kbuild test robot <lkp@intel.com> [200213 10:27]:
+> > >>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> > >>>> head:   0bf999f9c5e74c7ecf9dafb527146601e5c848b9
+> > >>>> commit: c37baa06f8a970e4a533d41f7d33e5e57de5ad25 ARM: OMAP2+: Fix undefined reference to omap_secure_init
+> > >>>> date:   3 weeks ago
+> > >>>> config: arm-randconfig-a001-20200213 (attached as .config)
+> > >>>> compiler: arm-linux-gnueabi-gcc (GCC) 7.5.0
+> > >>>> reproduce:
+> > >>>>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+> > >>>>         chmod +x ~/bin/make.cross
+> > >>>>         git checkout c37baa06f8a970e4a533d41f7d33e5e57de5ad25
+> > >>>>         # save the attached .config to linux build tree
+> > >>>>         GCC_VERSION=7.5.0 make.cross ARCH=arm 
+> > >>>>
+> > >>>> If you fix the issue, kindly add following tag
+> > >>>> Reported-by: kbuild test robot <lkp@intel.com>
+> > >>>>
+> > >>>> All errors (new ones prefixed by >>):
+> > >>>>
+> > >>>>    arch/arm/mach-omap2/omap-secure.o: In function `omap_smccc_smc':
+> > >>>>>> omap-secure.c:(.text+0x94): undefined reference to `__arm_smccc_smc'
+> > >>>
+> > >>> Have you looked at this one? Looks like there's still an unhandled
+> > >>> randconfig build case.
+> > >>>
+> > >>
+> > >>
+> > >> I've had a quick look, all the ARM config does:
+> > >>
+> > >> select HAVE_ARM_SMCCC if CPU_V7
+> > >>
+> > >> so I don't think this will happen in any real config, but if we want to
+> > >> prevent randconfig issue this we could force ARCH_OMAP2PLUS to "depend"
+> > >> on it.
+> > > 
+> > > Seems to happen at least with omap2 only config where we don't have
+> > > CPU_V7. Something like below seems to fix it.
+> > > 
+> > > If that looks OK to you, I'll send out a proper fix.
+> > > 
+> > 
+> > 
+> > This looks fine to me.
+> > 
+> > A better later fix might be to later stub out the actual __arm_smccc_smc
+> > in common code if CONFIG_HAVE_ARM_SMCCC is not set, so any platform will
+> > get the fix.
+> 
+> Yeah seems that might be better. Adding Aaro and Marc to Cc.
 
-Now dropped, thank you.
+But if we can in theory have some arm11 machine with smccc, then this
+local ifdef below is probably the way to go.
 
--- 
-Thanks,
-Sasha
+Regards,
+
+Tony
+
+> > > 8< -----------------------
+> > > diff --git a/arch/arm/mach-omap2/omap-secure.c b/arch/arm/mach-omap2/omap-secure.c
+> > > --- a/arch/arm/mach-omap2/omap-secure.c
+> > > +++ b/arch/arm/mach-omap2/omap-secure.c
+> > > @@ -77,6 +77,7 @@ u32 omap_secure_dispatcher(u32 idx, u32 flag, u32 nargs, u32 arg1, u32 arg2,
+> > >  	return ret;
+> > >  }
+> > >  
+> > > +#ifdef CONFIG_HAVE_ARM_SMCCC
+> > >  void omap_smccc_smc(u32 fn, u32 arg)
+> > >  {
+> > >  	struct arm_smccc_res res;
+> > > @@ -85,6 +86,11 @@ void omap_smccc_smc(u32 fn, u32 arg)
+> > >  		      0, 0, 0, 0, 0, 0, &res);
+> > >  	WARN(res.a0, "Secure function call 0x%08x failed\n", fn);
+> > >  }
+> > > +#else
+> > > +void omap_smccc_smc(u32 fn, u32 arg)
+> > > +{
+> > > +}
+> > > +#endif
+> > >  
+> > >  void omap_smc1(u32 fn, u32 arg)
+> > >  {
+> > > 
