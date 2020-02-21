@@ -2,79 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39281167837
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 09:48:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 969EC167A71
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 11:19:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728298AbgBUHrq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Feb 2020 02:47:46 -0500
-Received: from eddie.linux-mips.org ([148.251.95.138]:56486 "EHLO
-        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728567AbgBUHrq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Feb 2020 02:47:46 -0500
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
-        (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S23993981AbgBUHrmjARU3 (ORCPT <rfc822;linux-omap@vger.kernel.org>
-        + 1 other); Fri, 21 Feb 2020 08:47:42 +0100
-Date:   Fri, 21 Feb 2020 08:47:40 +0100
-From:   Ladislav Michl <ladis@linux-mips.org>
-To:     Chanwoo Choi <cw00.choi@samsung.com>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v3] extcon: palmas: hide error messages if gpio returns
- -EPROBE_DEFER
-Message-ID: <20200221074740.GA44103@lenoch>
-References: <CGME20200217133832epcas1p329af393e88fa76189ca141d2534f9ad2@epcas1p3.samsung.com>
- <d5c2826a5f00fcaee62f00662ae2a44dc4a5395d.1581946695.git.hns@goldelico.com>
- <b2655a58-6541-a2c9-c44d-536e5cef1ee3@samsung.com>
- <20200218102140.GA193069@lenoch>
- <cbee6f0b-f268-2e77-f7b7-f19114fdf178@samsung.com>
- <20200218104810.GA194120@lenoch>
- <34f3cd11-321b-9aab-31a7-a3fb03691980@samsung.com>
+        id S1728294AbgBUKTz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Feb 2020 05:19:55 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:60398 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726989AbgBUKTz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Feb 2020 05:19:55 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01LAJrTI015219;
+        Fri, 21 Feb 2020 04:19:53 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1582280393;
+        bh=fzx9UZNviOKGYzgrbhDQuJU1OqfT2VTJO9LbMa1Qz+s=;
+        h=From:To:CC:Subject:Date;
+        b=sTiOX98Ekll9pqrYqBTlUMW1RVuyfAhYXN27cneNIl1R+MDXxgsYHYzW100J6WzGA
+         vbzm0jzN0fr1lJs1vg2mGD+kbJcI0j++ll8d+eooW6BVcSCnLjPUjTYcm7P4SbEDZq
+         jgCYsfjONuJ9AUDtUDJouSReTQDzSWWNf5m6wE9Y=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01LAJrmG115787
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 21 Feb 2020 04:19:53 -0600
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 21
+ Feb 2020 04:19:52 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Fri, 21 Feb 2020 04:19:52 -0600
+Received: from sokoban.bb.dnainternet.fi (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01LAJnwn034983;
+        Fri, 21 Feb 2020 04:19:50 -0600
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
+        <linux-remoteproc@vger.kernel.org>, <afd@ti.com>, <s-anna@ti.com>
+CC:     <linux-kernel@vger.kernel.org>, <mathieu.poirier@linaro.org>,
+        <linux-omap@vger.kernel.org>
+Subject: [PATCHv7 00/15] remoteproc: updates for omap remoteproc support
+Date:   Fri, 21 Feb 2020 12:19:21 +0200
+Message-ID: <20200221101936.16833-1-t-kristo@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <34f3cd11-321b-9aab-31a7-a3fb03691980@samsung.com>
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Feb 18, 2020 at 08:09:16PM +0900, Chanwoo Choi wrote:
-> On 2/18/20 7:48 PM, Ladislav Michl wrote:
-> > On Tue, Feb 18, 2020 at 07:35:47PM +0900, Chanwoo Choi wrote:
-> >> On 2/18/20 7:21 PM, Ladislav Michl wrote:
-> >>> On Tue, Feb 18, 2020 at 12:28:25PM +0900, Chanwoo Choi wrote:
-> >>>> On 2/17/20 10:38 PM, H. Nikolaus Schaller wrote:
-> >>>>> If the gpios are probed after this driver (e.g. if they
-> >>>>> come from an i2c expander) there is no need to print an
-> >>>>> error message.
-> >>>>>
-> >>>>> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> >>>>> ---
-> >>>>>  drivers/extcon/extcon-palmas.c | 8 ++++++--
-> >>>>>  1 file changed, 6 insertions(+), 2 deletions(-)
-> >>>>>
-> >>>>> diff --git a/drivers/extcon/extcon-palmas.c b/drivers/extcon/extcon-palmas.c
-> >>>>> index edc5016f46f1..cea58d0cb457 100644
-> >>>>> --- a/drivers/extcon/extcon-palmas.c
-> >>>>> +++ b/drivers/extcon/extcon-palmas.c
-> >>>>> @@ -205,14 +205,18 @@ static int palmas_usb_probe(struct platform_device *pdev)
-> >>>>>  
-> >>>>>  	palmas_usb->id_gpiod = devm_gpiod_get_optional(&pdev->dev, "id",
-> >>>>>  							GPIOD_IN);
-> >>>>> -	if (IS_ERR(palmas_usb->id_gpiod)) {
-> >>>>> +	if (PTR_ERR(palmas_usb->id_gpiod) == -EPROBE_DEFER) {
-> >>>>> +		return -EPROBE_DEFER;
-> > 
-> > Here we returned...
-> 
-> hmm. you better to suggest the result of cocci script
-> to understand why it is matter.
+Hi,
 
-You can browse similar fixes online :)
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=grep&q=else+after+return
+Sorry for one more spin... Hopefully this is the final revision of the
+series though.
 
-Best regards,
-	ladis
+Anyways, this version just contains one bigger change (patch #12),
+and then a number of minor cosmetic fixes only (patch #1-#3, #5, #10,
+#11, #14), and one new patch (#15).
+
+Patch #12 has the most extensive modifications to warp around the runtime
+PM support to the shape Suman wanted it. Rest of the cosmetic changes are
+pretty much originated from Suman also (we synced offline that this version
+of the series should be fine and contains all the changes he also wanted still
+in.) In addition to this, patch #15 was added for switching the omap
+remoteproc header to SPDX license identifier.
+
+-Tero
+
+
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
