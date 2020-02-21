@@ -2,86 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E202A1687BD
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 20:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C81B11687D3
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 20:53:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbgBUTsj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Feb 2020 14:48:39 -0500
-Received: from foss.arm.com ([217.140.110.172]:47106 "EHLO foss.arm.com"
+        id S1726707AbgBUTxH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Feb 2020 14:53:07 -0500
+Received: from muru.com ([72.249.23.125]:56834 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726443AbgBUTsi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 21 Feb 2020 14:48:38 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0ED8931B;
-        Fri, 21 Feb 2020 11:48:38 -0800 (PST)
-Received: from e123648.arm.com (unknown [10.37.12.243])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 234983F703;
-        Fri, 21 Feb 2020 11:48:26 -0800 (PST)
-From:   Lukasz Luba <lukasz.luba@arm.com>
-To:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        id S1726160AbgBUTxH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 21 Feb 2020 14:53:07 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id EB03B807E;
+        Fri, 21 Feb 2020 19:53:50 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-imx@nxp.com
-Cc:     Morten.Rasmussen@arm.com, Dietmar.Eggemann@arm.com,
-        javi.merino@arm.com, cw00.choi@samsung.com,
-        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
-        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
-        rui.zhang@intel.com, amit.kucheria@verdurent.com,
-        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
-        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
-        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
-        matthias.bgg@gmail.com, steven.price@arm.com,
-        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
-        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
-        lorenzo.pieralisi@arm.com, lukasz.luba@arm.com,
-        patrick.bellasi@matbug.net, orjan.eide@arm.com
-Subject: [PATCH v3 4/4] drm/panfrost: Register to the Energy Model with devfreq device
-Date:   Fri, 21 Feb 2020 19:47:31 +0000
-Message-Id: <20200221194731.13814-5-lukasz.luba@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200221194731.13814-1-lukasz.luba@arm.com>
-References: <20200221194731.13814-1-lukasz.luba@arm.com>
+        Adam Ford <aford173@gmail.com>,
+        =?UTF-8?q?Andr=C3=A9=20Hentschel?= <nerv@dawncrow.de>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: [PATCH 0/7] ti-sysc driver fix for hdq1w and few improvments
+Date:   Fri, 21 Feb 2020 11:52:49 -0800
+Message-Id: <20200221195256.54016-1-tony@atomide.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add device to the Energy Model framework. It will create a dedicated
-and unified data structures used i.e. in the thermal framework.
-The power model used in dev_pm_opp subsystem is simplified and created
-based on DT 'dynamic-power-coefficient', volatage and frequency. It is
-similar to the CPU model used in Energy Aware Scheduler.
+Hi all,
 
-Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
----
- drivers/gpu/drm/panfrost/panfrost_devfreq.c | 3 +++
- 1 file changed, 3 insertions(+)
+Here are some ti-sysc interconnect target module driver fixes and
+improvments.
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_devfreq.c b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
-index 413987038fbf..d527a5113950 100644
---- a/drivers/gpu/drm/panfrost/panfrost_devfreq.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
-@@ -105,6 +105,8 @@ int panfrost_devfreq_init(struct panfrost_device *pfdev)
- 	}
- 	pfdev->devfreq.devfreq = devfreq;
- 
-+	dev_pm_opp_of_register_em(dev, NULL);
-+
- 	cooling = of_devfreq_cooling_register(dev->of_node, devfreq);
- 	if (IS_ERR(cooling))
- 		DRM_DEV_INFO(dev, "Failed to register cooling device\n");
-@@ -118,6 +120,7 @@ void panfrost_devfreq_fini(struct panfrost_device *pfdev)
- {
- 	if (pfdev->devfreq.cooling)
- 		devfreq_cooling_unregister(pfdev->devfreq.cooling);
-+	dev_pm_opp_of_unregister_em(&pfdev->pdev->dev);
- 	dev_pm_opp_of_remove_table(&pfdev->pdev->dev);
- }
- 
+There's a fix for 1-wire reset, the rest can wait for v5.7 merge
+window.
+
+Regards,
+
+Tony
+
+
+
+Tony Lindgren (7):
+  bus: ti-sysc: Fix 1-wire reset quirk
+  bus: ti-sysc: Rename clk related quirks to pre_reset and post_reset
+    quirks
+  ti-sysc: Improve reset to work with modules with no sysconfig
+  bus: ti-sysc: Consider non-existing registers too when matching quirks
+  bus: ti-sysc: Don't warn about legacy property for nested ti-sysc
+    devices
+  bus: ti-sysc: Implement SoC revision handling
+  bus: ti-sysc: Handle module unlock quirk needed for some RTC
+
+ arch/arm/mach-omap2/pdata-quirks.c    |   6 +
+ drivers/bus/ti-sysc.c                 | 430 ++++++++++++++++++++------
+ include/linux/platform_data/ti-sysc.h |   2 +
+ 3 files changed, 348 insertions(+), 90 deletions(-)
+
 -- 
-2.17.1
-
+2.25.1
