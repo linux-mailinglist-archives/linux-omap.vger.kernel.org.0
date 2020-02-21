@@ -2,59 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBC6B1686F5
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 19:49:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B583416871C
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 19:58:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729454AbgBUSt0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Feb 2020 13:49:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43184 "EHLO mail.kernel.org"
+        id S1729397AbgBUS6i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Feb 2020 13:58:38 -0500
+Received: from muru.com ([72.249.23.125]:56822 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726150AbgBUSt0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 21 Feb 2020 13:49:26 -0500
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 80902208E4;
-        Fri, 21 Feb 2020 18:49:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582310965;
-        bh=Ls0R4Qe/IcctCXvAuXMBeYsY+8SGJkuitM+5W+PueKg=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=zG1EL/XfqmIsZXNzNzh/uxnJRX8DmMaUbAxsIUMpG6QXlGvZ/472Z//ta/RKq+PPE
-         /+SBlCLPajAxdEoo5f1eSfdMrzrUI4vtiS279H3BQp6xZe5v362h7GLOF0/89QGCEE
-         4bHxYm4WQ4jA3ag5hfTk7dXJxr/tiYtom38sqncM=
-Content-Type: text/plain; charset="utf-8"
+        id S1729355AbgBUS6i (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 21 Feb 2020 13:58:38 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id E003F807E;
+        Fri, 21 Feb 2020 18:59:22 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] ARM: OMAP2+: Improve handling of ti-sysc related sysc_fields
+Date:   Fri, 21 Feb 2020 10:58:33 -0800
+Message-Id: <20200221185833.40419-1-tony@atomide.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200221171030.39326-1-tony@atomide.com>
-References: <20200221171030.39326-1-tony@atomide.com>
-Subject: Re: [PATCH] clk: ti: am43xx: Fix clock parent for RTC clock
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>
-Date:   Fri, 21 Feb 2020 10:49:24 -0800
-Message-ID: <158231096467.258574.11716255621346536160@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Tony Lindgren (2020-02-21 09:10:30)
-> Currently enabling clkctrl clock on am4 can fail for RTC as the clock
-> parent is wrong for RTC.
->=20
-> Fixes: 76a1049b84dd ("clk: ti: am43xx: add new clkctrl data for am43xx")
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->=20
-> It is unclear if we can end up with RTC hung with the current mainline
-> kernel in some cases. Probing RTC with device tree data only seems to
-> trigger this every time.
+We can currently get a cryptic warning sysc_fields (ptrval) != (ptrval)
+if the legacy platform data has no sysc_fields defined while the newer
+dts data has them. This warning appears only when booting still with
+legacy "ti,hwmods" custom property set. This can happen at least with
+DSS related modules where we may not have sysc_fields defined in the
+in the legacy data.
 
-It's small enough and if it's annoying enough we can probably put it
-into clk-fixes to get it fixed for this release instead of waiting. Can
-Tero ack it?
+Let's not error out on missing legacy data sysc_fields, and show a more
+descriptive warning for other cases.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/mach-omap2/omap_hwmod.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -3148,15 +3148,14 @@ static int omap_hwmod_check_sysc(struct device *dev,
+ /**
+  * omap_hwmod_init_regbits - init sysconfig specific register bits
+  * @dev: struct device
++ * @oh: module
+  * @data: module data
+  * @sysc_fields: new sysc configuration
+  */
+-static int omap_hwmod_init_regbits(struct device *dev,
++static int omap_hwmod_init_regbits(struct device *dev, struct omap_hwmod *oh,
+ 				   const struct ti_sysc_module_data *data,
+ 				   struct sysc_regbits **sysc_fields)
+ {
+-	*sysc_fields = NULL;
+-
+ 	switch (data->cap->type) {
+ 	case TI_SYSC_OMAP2:
+ 	case TI_SYSC_OMAP2_TIMER:
+@@ -3191,6 +3190,12 @@ static int omap_hwmod_init_regbits(struct device *dev,
+ 		*sysc_fields = &omap_hwmod_sysc_type_usb_host_fs;
+ 		break;
+ 	default:
++		*sysc_fields = NULL;
++		if (!oh->class->sysc->sysc_fields)
++			return 0;
++
++		dev_err(dev, "sysc_fields not found\n");
++
+ 		return -EINVAL;
+ 	}
+ 
+@@ -3356,9 +3361,9 @@ static int omap_hwmod_check_module(struct device *dev,
+ 	if (!oh->class->sysc)
+ 		return -ENODEV;
+ 
+-	if (sysc_fields != oh->class->sysc->sysc_fields)
+-		dev_warn(dev, "sysc_fields %p != %p\n", sysc_fields,
+-			 oh->class->sysc->sysc_fields);
++	if (oh->class->sysc->sysc_fields &&
++	    sysc_fields != oh->class->sysc->sysc_fields)
++		dev_warn(dev, "sysc_fields mismatch\n");
+ 
+ 	if (rev_offs != oh->class->sysc->rev_offs)
+ 		dev_warn(dev, "rev_offs %08x != %08x\n", rev_offs,
+@@ -3574,7 +3579,7 @@ int omap_hwmod_init_module(struct device *dev,
+ 
+ 	cookie->data = oh;
+ 
+-	error = omap_hwmod_init_regbits(dev, data, &sysc_fields);
++	error = omap_hwmod_init_regbits(dev, oh, data, &sysc_fields);
+ 	if (error)
+ 		return error;
+ 
+-- 
+2.25.1
