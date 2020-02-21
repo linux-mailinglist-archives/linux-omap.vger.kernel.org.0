@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 936C81687DF
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 20:53:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A2CD1687E2
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 20:53:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728351AbgBUTxW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Feb 2020 14:53:22 -0500
-Received: from muru.com ([72.249.23.125]:56926 "EHLO muru.com"
+        id S1728396AbgBUTx0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Feb 2020 14:53:26 -0500
+Received: from muru.com ([72.249.23.125]:56940 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728019AbgBUTxV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 21 Feb 2020 14:53:21 -0500
+        id S1728019AbgBUTxZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 21 Feb 2020 14:53:25 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 4EF8E814A;
-        Fri, 21 Feb 2020 19:54:04 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 5DCD8807E;
+        Fri, 21 Feb 2020 19:54:07 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
@@ -26,330 +26,201 @@ Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
         linux-arm-kernel@lists.infradead.org,
         Adam Ford <aford173@gmail.com>,
         =?UTF-8?q?Andr=C3=A9=20Hentschel?= <nerv@dawncrow.de>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH 6/7] bus: ti-sysc: Implement SoC revision handling
-Date:   Fri, 21 Feb 2020 11:52:55 -0800
-Message-Id: <20200221195256.54016-7-tony@atomide.com>
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: [PATCH 7/7] bus: ti-sysc: Handle module unlock quirk needed for some RTC
+Date:   Fri, 21 Feb 2020 11:52:56 -0800
+Message-Id: <20200221195256.54016-8-tony@atomide.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200221195256.54016-1-tony@atomide.com>
 References: <20200221195256.54016-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We need to know SoC type and features for cases where the same SoC
-may be installed in various versions on the same board and would need
-a separate dts file otherwise for the different variants.
+The RTC modules on am3 and am4 need quirk handling to unlock and lock
+them for reset so let's add the quirk handling based on what we already
+have for legacy platform data. In later patches we will simply drop the
+RTC related platform data and the old quirk handling.
 
-For example, am3703 is pin compatible with omap3630, but has sgx and
-iva accelerators disabled. We must not try to access the sgx or iva
-module registers on am3703, and need to set the unavailable devices
-disabled early.
-
-Let's also detect omap3430 as that is needed for display subsystem
-(DSS) reset later on, and GP vs EMU or HS devices. Further SoC
-specific disabled device detection can be added as needed, such as
-dra71x vs dra76x rtc and usb4.
-
-Cc: Adam Ford <aford173@gmail.com>
-Cc: André Hentschel <nerv@dawncrow.de>
-Cc: H. Nikolaus Schaller <hns@goldelico.com>
-Cc: Keerthy <j-keerthy@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/mach-omap2/pdata-quirks.c    |   6 +
- drivers/bus/ti-sysc.c                 | 194 +++++++++++++++++++++++++-
- include/linux/platform_data/ti-sysc.h |   1 +
- 3 files changed, 200 insertions(+), 1 deletion(-)
+ drivers/bus/ti-sysc.c                 | 74 ++++++++++++++++++++++++---
+ include/linux/platform_data/ti-sysc.h |  1 +
+ 2 files changed, 69 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -397,10 +397,16 @@ static int ti_sysc_shutdown_module(struct device *dev,
- 	return omap_hwmod_shutdown(cookie->data);
- }
- 
-+static bool ti_sysc_soc_type_gp(void)
-+{
-+	return omap_type() == OMAP2_DEVICE_TYPE_GP;
-+}
-+
- static struct of_dev_auxdata omap_auxdata_lookup[];
- 
- static struct ti_sysc_platform_data ti_sysc_pdata = {
- 	.auxdata = omap_auxdata_lookup,
-+	.soc_type_gp = ti_sysc_soc_type_gp,
- 	.init_clockdomain = ti_sysc_clkdm_init,
- 	.clkdm_deny_idle = ti_sysc_clkdm_deny_idle,
- 	.clkdm_allow_idle = ti_sysc_clkdm_allow_idle,
 diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
 --- a/drivers/bus/ti-sysc.c
 +++ b/drivers/bus/ti-sysc.c
-@@ -7,6 +7,7 @@
- #include <linux/clk.h>
- #include <linux/clkdev.h>
- #include <linux/delay.h>
-+#include <linux/list.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/pm_domain.h>
-@@ -15,15 +16,47 @@
- #include <linux/of_address.h>
- #include <linux/of_platform.h>
- #include <linux/slab.h>
-+#include <linux/sys_soc.h>
- #include <linux/iopoll.h>
- 
- #include <linux/platform_data/ti-sysc.h>
- 
- #include <dt-bindings/bus/ti-sysc.h>
- 
-+#define DIS_ISP		BIT(2)
-+#define DIS_IVA		BIT(1)
-+#define DIS_SGX		BIT(0)
-+
-+#define SOC_FLAG(match, flag)	{ .machine = match, .data = (void *)(flag), }
-+
- #define MAX_MODULE_SOFTRESET_WAIT		10000
- 
--static const char * const reg_names[] = { "rev", "sysc", "syss", };
-+enum sysc_soc {
-+	SOC_UNKNOWN,
-+	SOC_2420,
-+	SOC_2430,
-+	SOC_3430,
-+	SOC_3630,
-+	SOC_4430,
-+	SOC_4460,
-+	SOC_4470,
-+	SOC_5430,
-+	SOC_AM3,
-+	SOC_AM4,
-+	SOC_DRA7,
-+};
-+
-+struct sysc_address {
-+	unsigned long base;
-+	struct list_head node;
-+};
-+
-+struct sysc_soc_info {
-+	unsigned long general_purpose:1;
-+	enum sysc_soc soc;
-+	struct mutex list_lock;			/* disabled modules list lock */
-+	struct list_head disabled_modules;
-+};
- 
- enum sysc_clocks {
- 	SYSC_FCK,
-@@ -39,6 +72,8 @@ enum sysc_clocks {
- 	SYSC_MAX_CLOCKS,
+@@ -110,6 +110,8 @@ static const char * const clock_names[SYSC_MAX_CLOCKS] = {
+  * @reset_done_quirk: module specific reset done quirk
+  * @module_enable_quirk: module specific enable quirk
+  * @module_disable_quirk: module specific disable quirk
++ * @module_unlock_quirk: module specific sysconfig unlock quirk
++ * @module_lock_quirk: module specific sysconfig lock quirk
+  */
+ struct sysc {
+ 	struct device *dev;
+@@ -137,6 +139,8 @@ struct sysc {
+ 	void (*reset_done_quirk)(struct sysc *sysc);
+ 	void (*module_enable_quirk)(struct sysc *sysc);
+ 	void (*module_disable_quirk)(struct sysc *sysc);
++	void (*module_unlock_quirk)(struct sysc *sysc);
++	void (*module_lock_quirk)(struct sysc *sysc);
  };
  
-+static struct sysc_soc_info *sysc_soc;
-+static const char * const reg_names[] = { "rev", "sysc", "syss", };
- static const char * const clock_names[SYSC_MAX_CLOCKS] = {
- 	"fck", "ick", "opt0", "opt1", "opt2", "opt3", "opt4",
- 	"opt5", "opt6", "opt7",
-@@ -2382,6 +2417,154 @@ static void ti_sysc_idle(struct work_struct *work)
- 		pm_runtime_put_sync(ddata->dev);
+ static void sysc_parse_dts_quirks(struct sysc *ddata, struct device_node *np,
+@@ -896,6 +900,22 @@ static void sysc_show_registers(struct sysc *ddata)
+ 		buf);
  }
  
-+/*
-+ * SoC model and features detection. Only needed for SoCs that need
-+ * special handling for quirks, no need to list others.
++/**
++ * sysc_write_sysconfig - handle sysconfig quirks for register write
++ * @ddata: device driver data
++ * @value: register value
 + */
-+static const struct soc_device_attribute sysc_soc_match[] = {
-+	SOC_FLAG("OMAP242*", SOC_2420),
-+	SOC_FLAG("OMAP243*", SOC_2430),
-+	SOC_FLAG("OMAP3[45]*", SOC_3430),
-+	SOC_FLAG("OMAP3[67]*", SOC_3630),
-+	SOC_FLAG("OMAP443*", SOC_4430),
-+	SOC_FLAG("OMAP446*", SOC_4460),
-+	SOC_FLAG("OMAP447*", SOC_4470),
-+	SOC_FLAG("OMAP54*", SOC_5430),
-+	SOC_FLAG("AM433", SOC_AM3),
-+	SOC_FLAG("AM43*", SOC_AM4),
-+	SOC_FLAG("DRA7*", SOC_DRA7),
-+
-+	{ /* sentinel */ },
-+};
-+
-+/*
-+ * List of SoCs variants with disabled features. By default we assume all
-+ * devices in the device tree are available so no need to list those SoCs.
-+ */
-+static const struct soc_device_attribute sysc_soc_feat_match[] = {
-+	/* OMAP3430/3530 and AM3517 variants with some accelerators disabled */
-+	SOC_FLAG("AM3505", DIS_SGX),
-+	SOC_FLAG("OMAP3525", DIS_SGX),
-+	SOC_FLAG("OMAP3515", DIS_IVA | DIS_SGX),
-+	SOC_FLAG("OMAP3503", DIS_ISP | DIS_IVA | DIS_SGX),
-+
-+	/* OMAP3630/DM3730 variants with some accelerators disabled */
-+	SOC_FLAG("AM3703", DIS_IVA | DIS_SGX),
-+	SOC_FLAG("DM3725", DIS_SGX),
-+	SOC_FLAG("OMAP3611", DIS_ISP | DIS_IVA | DIS_SGX),
-+	SOC_FLAG("OMAP3615/AM3715", DIS_IVA),
-+	SOC_FLAG("OMAP3621", DIS_ISP),
-+
-+	{ /* sentinel */ },
-+};
-+
-+static int sysc_add_disabled(unsigned long base)
++static void sysc_write_sysconfig(struct sysc *ddata, u32 value)
 +{
-+	struct sysc_address *disabled_module;
++	if (ddata->module_unlock_quirk)
++		ddata->module_unlock_quirk(ddata);
 +
-+	disabled_module = kzalloc(sizeof(*disabled_module), GFP_KERNEL);
-+	if (!disabled_module)
-+		return -ENOMEM;
++	sysc_write(ddata, ddata->offsets[SYSC_SYSCONFIG], value);
 +
-+	disabled_module->base = base;
-+
-+	mutex_lock(&sysc_soc->list_lock);
-+	list_add(&disabled_module->node, &sysc_soc->disabled_modules);
-+	mutex_unlock(&sysc_soc->list_lock);
-+
-+	return 0;
++	if (ddata->module_lock_quirk)
++		ddata->module_lock_quirk(ddata);
 +}
 +
-+/*
-+ * One time init to detect the booted SoC and disable unavailable features.
-+ * Note that we initialize static data shared across all ti-sysc instances
-+ * so ddata is only used for SoC type. This can be called from module_init
-+ * once we no longer need to rely on platform data.
-+ */
-+static int sysc_init_soc(struct sysc *ddata)
+ #define SYSC_IDLE_MASK	(SYSC_NR_IDLEMODES - 1)
+ #define SYSC_CLOCACT_ICK	2
+ 
+@@ -942,7 +962,7 @@ static int sysc_enable_module(struct device *dev)
+ 
+ 	reg &= ~(SYSC_IDLE_MASK << regbits->sidle_shift);
+ 	reg |= best_mode << regbits->sidle_shift;
+-	sysc_write(ddata, ddata->offsets[SYSC_SYSCONFIG], reg);
++	sysc_write_sysconfig(ddata, reg);
+ 
+ set_midle:
+ 	/* Set MIDLE mode */
+@@ -961,14 +981,14 @@ static int sysc_enable_module(struct device *dev)
+ 
+ 	reg &= ~(SYSC_IDLE_MASK << regbits->midle_shift);
+ 	reg |= best_mode << regbits->midle_shift;
+-	sysc_write(ddata, ddata->offsets[SYSC_SYSCONFIG], reg);
++	sysc_write_sysconfig(ddata, reg);
+ 
+ set_autoidle:
+ 	/* Autoidle bit must enabled separately if available */
+ 	if (regbits->autoidle_shift >= 0 &&
+ 	    ddata->cfg.sysc_val & BIT(regbits->autoidle_shift)) {
+ 		reg |= 1 << regbits->autoidle_shift;
+-		sysc_write(ddata, ddata->offsets[SYSC_SYSCONFIG], reg);
++		sysc_write_sysconfig(ddata, reg);
+ 	}
+ 
+ 	if (ddata->module_enable_quirk)
+@@ -1026,7 +1046,7 @@ static int sysc_disable_module(struct device *dev)
+ 
+ 	reg &= ~(SYSC_IDLE_MASK << regbits->midle_shift);
+ 	reg |= best_mode << regbits->midle_shift;
+-	sysc_write(ddata, ddata->offsets[SYSC_SYSCONFIG], reg);
++	sysc_write_sysconfig(ddata, reg);
+ 
+ set_sidle:
+ 	/* Set SIDLE mode */
+@@ -1049,7 +1069,7 @@ static int sysc_disable_module(struct device *dev)
+ 	if (regbits->autoidle_shift >= 0 &&
+ 	    ddata->cfg.sysc_val & BIT(regbits->autoidle_shift))
+ 		reg |= 1 << regbits->autoidle_shift;
+-	sysc_write(ddata, ddata->offsets[SYSC_SYSCONFIG], reg);
++	sysc_write_sysconfig(ddata, reg);
+ 
+ 	return 0;
+ }
+@@ -1301,6 +1321,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 	SYSC_QUIRK("gpu", 0x50000000, 0x14, -ENODEV, -ENODEV, 0x00010201, 0xffffffff, 0),
+ 	SYSC_QUIRK("gpu", 0x50000000, 0xfe00, 0xfe10, -ENODEV, 0x40000000 , 0xffffffff,
+ 		   SYSC_MODULE_QUIRK_SGX),
++	SYSC_QUIRK("rtc", 0, 0x74, 0x78, -ENODEV, 0x4eb01908, 0xffff00f0,
++		   SYSC_MODULE_QUIRK_RTC_UNLOCK),
+ 	SYSC_QUIRK("usb_otg_hs", 0, 0x400, 0x404, 0x408, 0x00000050,
+ 		   0xffffffff, SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
+ 	SYSC_QUIRK("usb_otg_hs", 0, 0, 0x10, -ENODEV, 0x4ea2080d, 0xffffffff,
+@@ -1356,7 +1378,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 	SYSC_QUIRK("slimbus", 0, 0, 0x10, -ENODEV, 0x40002903, 0xffffffff, 0),
+ 	SYSC_QUIRK("spinlock", 0, 0, 0x10, -ENODEV, 0x50020000, 0xffffffff, 0),
+ 	SYSC_QUIRK("rng", 0, 0x1fe0, 0x1fe4, -ENODEV, 0x00000020, 0xffffffff, 0),
+-	SYSC_QUIRK("rtc", 0, 0x74, 0x78, -ENODEV, 0x4eb01908, 0xffff00f0, 0),
+ 	SYSC_QUIRK("timer32k", 0, 0, 0x4, -ENODEV, 0x00000060, 0xffffffff, 0),
+ 	SYSC_QUIRK("usbhstll", 0, 0, 0x10, 0x14, 0x00000004, 0xffffffff, 0),
+ 	SYSC_QUIRK("usbhstll", 0, 0, 0x10, 0x14, 0x00000008, 0xffffffff, 0),
+@@ -1478,6 +1499,40 @@ static void sysc_post_reset_quirk_i2c(struct sysc *ddata)
+ 	sysc_clk_quirk_i2c(ddata, true);
+ }
+ 
++/* RTC on am3 and 4 needs to be unlocked and locked for sysconfig */
++static void sysc_quirk_rtc(struct sysc *ddata, bool lock)
 +{
-+	const struct soc_device_attribute *match;
-+	struct ti_sysc_platform_data *pdata;
-+	unsigned long features = 0;
++	u32 val, kick0_val = 0, kick1_val = 0;
++	unsigned long flags;
++	int error;
 +
-+	if (sysc_soc)
-+		return 0;
-+
-+	sysc_soc = kzalloc(sizeof(*sysc_soc), GFP_KERNEL);
-+	if (!sysc_soc)
-+		return -ENOMEM;
-+
-+	mutex_init(&sysc_soc->list_lock);
-+	INIT_LIST_HEAD(&sysc_soc->disabled_modules);
-+	sysc_soc->general_purpose = true;
-+
-+	pdata = dev_get_platdata(ddata->dev);
-+	if (pdata && pdata->soc_type_gp)
-+		sysc_soc->general_purpose = pdata->soc_type_gp();
-+
-+	match = soc_device_match(sysc_soc_match);
-+	if (match && match->data)
-+		sysc_soc->soc = (int)match->data;
-+
-+	match = soc_device_match(sysc_soc_feat_match);
-+	if (!match)
-+		return 0;
-+
-+	if (match->data)
-+		features = (unsigned long)match->data;
-+
-+	/*
-+	 * Add disabled devices to the list based on the module base.
-+	 * Note that this must be done before we attempt to access the
-+	 * device and have module revision checks working.
-+	 */
-+	if (features & DIS_ISP)
-+		sysc_add_disabled(0x480bd400);
-+	if (features & DIS_IVA)
-+		sysc_add_disabled(0x5d000000);
-+	if (features & DIS_SGX)
-+		sysc_add_disabled(0x50000000);
-+
-+	return 0;
-+}
-+
-+static void sysc_cleanup_soc(void)
-+{
-+	struct sysc_address *disabled_module;
-+	struct list_head *pos, *tmp;
-+
-+	if (!sysc_soc)
-+		return;
-+
-+	mutex_lock(&sysc_soc->list_lock);
-+	list_for_each_safe(pos, tmp, &sysc_soc->disabled_modules) {
-+		disabled_module = list_entry(pos, struct sysc_address, node);
-+		list_del(pos);
-+		kfree(disabled_module);
++	if (!lock) {
++		kick0_val = 0x83e70b13;
++		kick1_val = 0x95a4f1e0;
 +	}
-+	mutex_unlock(&sysc_soc->list_lock);
++
++	local_irq_save(flags);
++	/* RTC_STATUS BUSY bit may stay active for 1/32768 seconds (~30 usec) */
++	error = readl_poll_timeout(ddata->module_va + 0x44, val,
++				   !(val & BIT(0)), 100, 50);
++	if (error)
++		dev_warn(ddata->dev, "rtc busy timeout\n");
++	/* Now we have ~15 microseconds to read/write various registers */
++	sysc_write(ddata, 0x6c, kick0_val);
++	sysc_write(ddata, 0x70, kick1_val);
++	local_irq_restore(flags);
 +}
 +
-+static int sysc_check_disabled_devices(struct sysc *ddata)
++static void sysc_module_unlock_quirk_rtc(struct sysc *ddata)
 +{
-+	struct sysc_address *disabled_module;
-+	struct list_head *pos;
-+	int error = 0;
-+
-+	mutex_lock(&sysc_soc->list_lock);
-+	list_for_each(pos, &sysc_soc->disabled_modules) {
-+		disabled_module = list_entry(pos, struct sysc_address, node);
-+		if (ddata->module_pa == disabled_module->base) {
-+			dev_dbg(ddata->dev, "module disabled for this SoC\n");
-+			error = -ENODEV;
-+			break;
-+		}
-+	}
-+	mutex_unlock(&sysc_soc->list_lock);
-+
-+	return error;
++	sysc_quirk_rtc(ddata, false);
 +}
 +
- static const struct of_device_id sysc_match_table[] = {
- 	{ .compatible = "simple-bus", },
- 	{ /* sentinel */ },
-@@ -2400,6 +2583,10 @@ static int sysc_probe(struct platform_device *pdev)
- 	ddata->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, ddata);
- 
-+	error = sysc_init_soc(ddata);
-+	if (error)
-+		return error;
++static void sysc_module_lock_quirk_rtc(struct sysc *ddata)
++{
++	sysc_quirk_rtc(ddata, true);
++}
 +
- 	error = sysc_init_match(ddata);
- 	if (error)
- 		return error;
-@@ -2430,6 +2617,10 @@ static int sysc_probe(struct platform_device *pdev)
- 
- 	sysc_init_early_quirks(ddata);
- 
-+	error = sysc_check_disabled_devices(ddata);
-+	if (error)
-+		return error;
-+
- 	error = sysc_get_clocks(ddata);
- 	if (error)
- 		return error;
-@@ -2560,6 +2751,7 @@ static void __exit sysc_exit(void)
+ /* 36xx SGX needs a quirk for to bypass OCP IPG interrupt logic */
+ static void sysc_module_enable_quirk_sgx(struct sysc *ddata)
  {
- 	bus_unregister_notifier(&platform_bus_type, &sysc_nb);
- 	platform_driver_unregister(&sysc_driver);
-+	sysc_cleanup_soc();
- }
- module_exit(sysc_exit);
+@@ -1532,6 +1587,13 @@ static void sysc_init_module_quirks(struct sysc *ddata)
+ 	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_AESS)
+ 		ddata->module_enable_quirk = sysc_module_enable_quirk_aess;
+ 
++	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_RTC_UNLOCK) {
++		ddata->module_unlock_quirk = sysc_module_unlock_quirk_rtc;
++		ddata->module_lock_quirk = sysc_module_lock_quirk_rtc;
++
++		return;
++	}
++
+ 	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_SGX)
+ 		ddata->module_enable_quirk = sysc_module_enable_quirk_sgx;
  
 diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
 --- a/include/linux/platform_data/ti-sysc.h
 +++ b/include/linux/platform_data/ti-sysc.h
-@@ -141,6 +141,7 @@ struct clk;
+@@ -49,6 +49,7 @@ struct sysc_regbits {
+ 	s8 emufree_shift;
+ };
  
- struct ti_sysc_platform_data {
- 	struct of_dev_auxdata *auxdata;
-+	bool (*soc_type_gp)(void);
- 	int (*init_clockdomain)(struct device *dev, struct clk *fck,
- 				struct clk *ick, struct ti_sysc_cookie *cookie);
- 	void (*clkdm_deny_idle)(struct device *dev,
++#define SYSC_MODULE_QUIRK_RTC_UNLOCK	BIT(22)
+ #define SYSC_QUIRK_CLKDM_NOAUTO		BIT(21)
+ #define SYSC_QUIRK_FORCE_MSTANDBY	BIT(20)
+ #define SYSC_MODULE_QUIRK_AESS		BIT(19)
 -- 
 2.25.1
