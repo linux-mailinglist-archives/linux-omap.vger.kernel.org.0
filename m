@@ -2,19 +2,19 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 010231684E4
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 18:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1498E1685AB
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Feb 2020 18:55:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728576AbgBUR0g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Feb 2020 12:26:36 -0500
-Received: from muru.com ([72.249.23.125]:56738 "EHLO muru.com"
+        id S1729280AbgBURyy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Feb 2020 12:54:54 -0500
+Received: from muru.com ([72.249.23.125]:56764 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728103AbgBUR0f (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 21 Feb 2020 12:26:35 -0500
+        id S1729269AbgBURyy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 21 Feb 2020 12:54:54 -0500
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 90018807E;
-        Fri, 21 Feb 2020 17:27:19 +0000 (UTC)
-Date:   Fri, 21 Feb 2020 09:26:31 -0800
+        by muru.com (Postfix) with ESMTPS id 711B0807E;
+        Fri, 21 Feb 2020 17:55:37 +0000 (UTC)
+Date:   Fri, 21 Feb 2020 09:54:49 -0800
 From:   Tony Lindgren <tony@atomide.com>
 To:     "Andrew F. Davis" <afd@ti.com>
 Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
@@ -24,7 +24,7 @@ Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>
 Subject: Re: omap-secure.c:undefined reference to `__arm_smccc_smc'
-Message-ID: <20200221172631.GY37466@atomide.com>
+Message-ID: <20200221175449.GZ37466@atomide.com>
 References: <20200220155429.GH37466@atomide.com>
  <55ddcd29-ed8b-529e-dd54-cbac5cf74e42@ti.com>
  <20200220162012.GI37466@atomide.com>
@@ -48,6 +48,68 @@ X-Mailing-List: linux-omap@vger.kernel.org
 > On 2/20/20 1:11 PM, Tony Lindgren wrote:
 > > * Tony Lindgren <tony@atomide.com> [200220 17:58]:
 > >> * Andrew F. Davis <afd@ti.com> [200220 17:39]:
+> >>> On 2/20/20 12:13 PM, Tony Lindgren wrote:
+> >>>> * Tony Lindgren <tony@atomide.com> [200220 16:37]:
+> >>>>> * Andrew F. Davis <afd@ti.com> [200220 16:24]:
+> >>>>>> On 2/20/20 11:20 AM, Tony Lindgren wrote:
+> >>>>>>> * Andrew F. Davis <afd@ti.com> [200220 16:04]:
+> >>>>>>>> On 2/20/20 10:54 AM, Tony Lindgren wrote:
+> >>>>>>>>> Andrew,
+> >>>>>>>>>
+> >>>>>>>>> * kbuild test robot <lkp@intel.com> [200213 10:27]:
+> >>>>>>>>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> >>>>>>>>>> head:   0bf999f9c5e74c7ecf9dafb527146601e5c848b9
+> >>>>>>>>>> commit: c37baa06f8a970e4a533d41f7d33e5e57de5ad25 ARM: OMAP2+: Fix undefined reference to omap_secure_init
+> >>>>>>>>>> date:   3 weeks ago
+> >>>>>>>>>> config: arm-randconfig-a001-20200213 (attached as .config)
+> >>>>>>>>>> compiler: arm-linux-gnueabi-gcc (GCC) 7.5.0
+> >>>>>>>>>> reproduce:
+> >>>>>>>>>>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+> >>>>>>>>>>         chmod +x ~/bin/make.cross
+> >>>>>>>>>>         git checkout c37baa06f8a970e4a533d41f7d33e5e57de5ad25
+> >>>>>>>>>>         # save the attached .config to linux build tree
+> >>>>>>>>>>         GCC_VERSION=7.5.0 make.cross ARCH=arm 
+> >>>>>>>>>>
+> >>>>>>>>>> If you fix the issue, kindly add following tag
+> >>>>>>>>>> Reported-by: kbuild test robot <lkp@intel.com>
+> >>>>>>>>>>
+> >>>>>>>>>> All errors (new ones prefixed by >>):
+> >>>>>>>>>>
+> >>>>>>>>>>    arch/arm/mach-omap2/omap-secure.o: In function `omap_smccc_smc':
+> >>>>>>>>>>>> omap-secure.c:(.text+0x94): undefined reference to `__arm_smccc_smc'
+> >>>>>>>>>
+> >>>>>>>>> Have you looked at this one? Looks like there's still an unhandled
+> >>>>>>>>> randconfig build case.
+> >>>>>>>>>
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> I've had a quick look, all the ARM config does:
+> >>>>>>>>
+> >>>>>>>> select HAVE_ARM_SMCCC if CPU_V7
+> >>>>>>>>
+> >>>>>>>> so I don't think this will happen in any real config, but if we want to
+> >>>>>>>> prevent randconfig issue this we could force ARCH_OMAP2PLUS to "depend"
+> >>>>>>>> on it.
+> >>>>>>>
+> >>>>>>> Seems to happen at least with omap2 only config where we don't have
+> >>>>>>> CPU_V7. Something like below seems to fix it.
+> >>>>>>>
+> >>>>>>> If that looks OK to you, I'll send out a proper fix.
+> >>>>>>>
+> >>>>>>
+> >>>>>>
+> >>>>>> This looks fine to me.
+> >>>>>>
+> >>>>>> A better later fix might be to later stub out the actual __arm_smccc_smc
+> >>>>>> in common code if CONFIG_HAVE_ARM_SMCCC is not set, so any platform will
+> >>>>>> get the fix.
+> >>>>>
+> >>>>> Yeah seems that might be better. Adding Aaro and Marc to Cc.
+> >>>>
+> >>>> But if we can in theory have some arm11 machine with smccc, then this
+> >>>> local ifdef below is probably the way to go.
+> >>>>
+> >>>
 > >>> If the machine has SMCCC then it will also have the
 > >>> CONFIG_HAVE_ARM_SMCCC set and so nothing would change.
 > >>
@@ -88,8 +150,17 @@ X-Mailing-List: linux-omap@vger.kernel.org
 > making SMC calls then something is broken and it looks like it would
 > fail silently here.
 
-OK I'll add that and send out a  proper patch.
+Actually I'll go back to the earlier local fix. With above changes,
+we now start getting uninitialized struct arm_smccc_res res warning
+in omap_smccc_smc(). And it's a bit unclear if and with what value
+a0 should be initialized. Probably should be SMCCC_RET_NOT_SUPPORTED,
+but that then requires moving defines around too. And if it turns
+out being version specific define, then we keep piling up more code.
 
-Thanks,
+My guess is that it's only few SoCs that might have ARMv6 and v7
+both built, so it's not like we'd have to patch all over the place
+anyways.
+
+Regards,
 
 Tony
