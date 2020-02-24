@@ -2,20 +2,20 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 102E216B576
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 00:28:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E5116B52C
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 00:21:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728308AbgBXX2b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Feb 2020 18:28:31 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:60436 "EHLO
+        id S1728512AbgBXXVm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Feb 2020 18:21:42 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:59820 "EHLO
         bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727957AbgBXX2a (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Feb 2020 18:28:30 -0500
+        with ESMTP id S1728516AbgBXXVm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Feb 2020 18:21:42 -0500
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: sre)
-        with ESMTPSA id E9EDE2962FA
+        with ESMTPSA id 45C8F293E88
 Received: by earth.universe (Postfix, from userid 1000)
-        id 705AA3C0CA8; Tue, 25 Feb 2020 00:21:31 +0100 (CET)
+        id 755BB3C0CA9; Tue, 25 Feb 2020 00:21:31 +0100 (CET)
 From:   Sebastian Reichel <sebastian.reichel@collabora.com>
 To:     Sebastian Reichel <sre@kernel.org>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -26,9 +26,9 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Rob Herring <robh@kernel.org>, linux-omap@vger.kernel.org,
         dri-devel@lists.freedesktop.org, kernel@collabora.com,
         Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCHv2 37/56] drm/omap: dsi: implement check timings
-Date:   Tue, 25 Feb 2020 00:21:07 +0100
-Message-Id: <20200224232126.3385250-38-sebastian.reichel@collabora.com>
+Subject: [PATCHv2 38/56] drm/omap: panel-dsi-cm: use DEVICE_ATTR_RO
+Date:   Tue, 25 Feb 2020 00:21:08 +0100
+Message-Id: <20200224232126.3385250-39-sebastian.reichel@collabora.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
 References: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
@@ -39,144 +39,47 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Implement check timings, which will check if its possible to
-configure the clocks for the provided mode using the same code
-as the set_config() hook.
+Use DEVICE_ATTR_RO helper instead of plain DEVICE_ATTR,
+which makes the code a bit shorter and easier to read.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- drivers/gpu/drm/omapdrm/dss/dsi.c | 70 +++++++++++++++++++------------
- 1 file changed, 44 insertions(+), 26 deletions(-)
+ drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-index a399d6857c0d..acbfffe83b3e 100644
---- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-+++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-@@ -283,6 +283,11 @@ struct dsi_isr_tables {
- 	struct dsi_isr_data isr_table_cio[DSI_MAX_NR_ISRS];
+diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+index 803b7dada343..00dc7b0a349b 100644
+--- a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
++++ b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+@@ -219,7 +219,7 @@ static const struct backlight_ops dsicm_bl_ops = {
+ 	.update_status  = dsicm_bl_update_status,
  };
  
-+struct dsi_lp_clock_info {
-+	unsigned long lp_clk;
-+	u16 lp_clk_div;
-+};
-+
- struct dsi_clk_calc_ctx {
- 	struct dsi_data *dsi;
- 	struct dss_pll *pll;
-@@ -297,16 +302,12 @@ struct dsi_clk_calc_ctx {
- 
- 	struct dss_pll_clock_info dsi_cinfo;
- 	struct dispc_clock_info dispc_cinfo;
-+	struct dsi_lp_clock_info user_lp_cinfo;
- 
- 	struct videomode vm;
- 	struct omap_dss_dsi_videomode_timings dsi_vm;
- };
- 
--struct dsi_lp_clock_info {
--	unsigned long lp_clk;
--	u16 lp_clk_div;
--};
--
- struct dsi_module_id_data {
- 	u32 address;
- 	int id;
-@@ -4794,44 +4795,55 @@ static bool dsi_is_video_mode(struct omap_dss_device *dssdev)
- 	return (dsi->mode == OMAP_DSS_DSI_VIDEO_MODE);
+-static ssize_t dsicm_num_errors_show(struct device *dev,
++static ssize_t num_dsi_errors_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+ 	struct panel_drv_data *ddata = dev_get_drvdata(dev);
+@@ -239,7 +239,7 @@ static ssize_t dsicm_num_errors_show(struct device *dev,
+ 	return snprintf(buf, PAGE_SIZE, "%d\n", errors);
  }
  
--static int dsi_set_config(struct omap_dss_device *dssdev,
--		const struct drm_display_mode *mode)
-+static int __dsi_calc_config(struct dsi_data *dsi,
-+		const struct drm_display_mode *mode,
-+		struct dsi_clk_calc_ctx *ctx)
+-static ssize_t dsicm_hw_revision_show(struct device *dev,
++static ssize_t hw_revision_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
  {
--	struct dsi_data *dsi = to_dsi_data(dssdev);
--	struct dsi_clk_calc_ctx ctx;
--	struct videomode vm;
- 	struct omap_dss_dsi_config cfg = dsi->config;
-+	struct videomode vm;
- 	bool ok;
- 	int r;
- 
- 	drm_display_mode_to_videomode(mode, &vm);
--	cfg.vm = &vm;
--
--	mutex_lock(&dsi->lock);
- 
-+	cfg.vm = &vm;
- 	cfg.mode = dsi->mode;
- 	cfg.pixel_format = dsi->pix_fmt;
- 
- 	if (dsi->mode == OMAP_DSS_DSI_VIDEO_MODE)
--		ok = dsi_vm_calc(dsi, &cfg, &ctx);
-+		ok = dsi_vm_calc(dsi, &cfg, ctx);
- 	else
--		ok = dsi_cm_calc(dsi, &cfg, &ctx);
-+		ok = dsi_cm_calc(dsi, &cfg, ctx);
- 
--	if (!ok) {
--		DSSERR("failed to find suitable DSI clock settings\n");
--		r = -EINVAL;
--		goto err;
--	}
-+	if (!ok)
-+		return -EINVAL;
-+
-+	dsi_pll_calc_dsi_fck(dsi, &ctx->dsi_cinfo);
- 
--	dsi_pll_calc_dsi_fck(dsi, &ctx.dsi_cinfo);
-+	r = dsi_lp_clock_calc(ctx->dsi_cinfo.clkout[HSDIV_DSI],
-+		cfg.lp_clk_min, cfg.lp_clk_max, &ctx->user_lp_cinfo);
-+	if (r)
-+		return r;
-+
-+	return 0;
-+}
- 
--	r = dsi_lp_clock_calc(ctx.dsi_cinfo.clkout[HSDIV_DSI],
--		cfg.lp_clk_min, cfg.lp_clk_max, &dsi->user_lp_cinfo);
-+static int dsi_set_config(struct omap_dss_device *dssdev,
-+		const struct drm_display_mode *mode)
-+{
-+	struct dsi_data *dsi = to_dsi_data(dssdev);
-+	struct dsi_clk_calc_ctx ctx;
-+	int r;
-+
-+	mutex_lock(&dsi->lock);
-+
-+	r = __dsi_calc_config(dsi, mode, &ctx);
- 	if (r) {
--		DSSERR("failed to find suitable DSI LP clock settings\n");
-+		DSSERR("failed to find suitable DSI clock settings\n");
- 		goto err;
- 	}
- 
-+	dsi->user_lp_cinfo = ctx.user_lp_cinfo;
- 	dsi->user_dsi_cinfo = ctx.dsi_cinfo;
- 	dsi->user_dispc_cinfo = ctx.dispc_cinfo;
- 
-@@ -5008,11 +5020,17 @@ static void dsi_set_timings(struct omap_dss_device *dssdev,
- static int dsi_check_timings(struct omap_dss_device *dssdev,
- 			     struct drm_display_mode *mode)
- {
-+	struct dsi_data *dsi = to_dsi_data(dssdev);
-+	struct dsi_clk_calc_ctx ctx;
-+	int r;
-+
- 	DSSDBG("dsi_check_timings\n");
- 
--	/* TODO */
-+	mutex_lock(&dsi->lock);
-+	r = __dsi_calc_config(dsi, mode, &ctx);
-+	mutex_unlock(&dsi->lock);
- 
--	return 0;
-+	return r;
+ 	struct panel_drv_data *ddata = dev_get_drvdata(dev);
+@@ -259,8 +259,8 @@ static ssize_t dsicm_hw_revision_show(struct device *dev,
+ 	return snprintf(buf, PAGE_SIZE, "%02x.%02x.%02x\n", id1, id2, id3);
  }
  
- static int dsi_connect(struct omap_dss_device *src,
+-static DEVICE_ATTR(num_dsi_errors, S_IRUGO, dsicm_num_errors_show, NULL);
+-static DEVICE_ATTR(hw_revision, S_IRUGO, dsicm_hw_revision_show, NULL);
++static DEVICE_ATTR_RO(num_dsi_errors);
++static DEVICE_ATTR_RO(hw_revision);
+ 
+ static struct attribute *dsicm_attrs[] = {
+ 	&dev_attr_num_dsi_errors.attr,
 -- 
 2.25.0
 
