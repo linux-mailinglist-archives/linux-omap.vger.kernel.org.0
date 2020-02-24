@@ -2,20 +2,20 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C0C916B57F
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 00:28:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44F4F16B52D
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 00:22:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728423AbgBXX2e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Feb 2020 18:28:34 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:60612 "EHLO
+        id S1728523AbgBXXVs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Feb 2020 18:21:48 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:60134 "EHLO
         bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728206AbgBXX2d (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Feb 2020 18:28:33 -0500
+        with ESMTP id S1728530AbgBXXVm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Feb 2020 18:21:42 -0500
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: sre)
-        with ESMTPSA id 31017293602
+        with ESMTPSA id 65872293E91
 Received: by earth.universe (Postfix, from userid 1000)
-        id 8FDDE3C0CAE; Tue, 25 Feb 2020 00:21:31 +0100 (CET)
+        id 953893C0CAF; Tue, 25 Feb 2020 00:21:31 +0100 (CET)
 From:   Sebastian Reichel <sebastian.reichel@collabora.com>
 To:     Sebastian Reichel <sre@kernel.org>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -26,9 +26,9 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Rob Herring <robh@kernel.org>, linux-omap@vger.kernel.org,
         dri-devel@lists.freedesktop.org, kernel@collabora.com,
         Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCHv2 43/56] drm/omap: bind components with drm_device argument
-Date:   Tue, 25 Feb 2020 00:21:13 +0100
-Message-Id: <20200224232126.3385250-44-sebastian.reichel@collabora.com>
+Subject: [PATCHv2 44/56] drm/panel: Move OMAP's DSI command mode panel driver
+Date:   Tue, 25 Feb 2020 00:21:14 +0100
+Message-Id: <20200224232126.3385250-45-sebastian.reichel@collabora.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
 References: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
@@ -39,139 +39,106 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This fixes the omapdrm driver to call component_bind_all()
-with drm_device as data argument as recommended in the
-DRM component helper usage text.
-
-After this patch DRM functionality can be implemented directly
-in the components resulting in a simpler driver stack by removing
-one layer of abstraction.
+The panel driver is no longer using any OMAP specific APIs, so
+let's move it into the generic panel directory.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- drivers/gpu/drm/omapdrm/dss/dss.c     | 27 +++++++++++++++++----------
- drivers/gpu/drm/omapdrm/dss/omapdss.h |  3 +++
- drivers/gpu/drm/omapdrm/omap_drv.c    | 15 +++++++++++----
- 3 files changed, 31 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/omapdrm/Kconfig                        |  1 -
+ drivers/gpu/drm/omapdrm/Makefile                       |  1 -
+ drivers/gpu/drm/omapdrm/displays/Kconfig               | 10 ----------
+ drivers/gpu/drm/omapdrm/displays/Makefile              |  2 --
+ drivers/gpu/drm/panel/Kconfig                          |  9 +++++++++
+ drivers/gpu/drm/panel/Makefile                         |  1 +
+ .../gpu/drm/{omapdrm/displays => panel}/panel-dsi-cm.c |  0
+ 7 files changed, 10 insertions(+), 14 deletions(-)
+ delete mode 100644 drivers/gpu/drm/omapdrm/displays/Kconfig
+ delete mode 100644 drivers/gpu/drm/omapdrm/displays/Makefile
+ rename drivers/gpu/drm/{omapdrm/displays => panel}/panel-dsi-cm.c (100%)
 
-diff --git a/drivers/gpu/drm/omapdrm/dss/dss.c b/drivers/gpu/drm/omapdrm/dss/dss.c
-index 4438947326ea..a0b37d9b62ea 100644
---- a/drivers/gpu/drm/omapdrm/dss/dss.c
-+++ b/drivers/gpu/drm/omapdrm/dss/dss.c
-@@ -1301,26 +1301,35 @@ static const struct soc_device_attribute dss_soc_devices[] = {
- 	{ /* sentinel */ }
- };
+diff --git a/drivers/gpu/drm/omapdrm/Kconfig b/drivers/gpu/drm/omapdrm/Kconfig
+index 5417e7a47072..cea3f44ea6d4 100644
+--- a/drivers/gpu/drm/omapdrm/Kconfig
++++ b/drivers/gpu/drm/omapdrm/Kconfig
+@@ -12,6 +12,5 @@ config DRM_OMAP
+ if DRM_OMAP
  
-+int dss_bind_components(struct dss_device *dss, struct drm_device *drm_dev)
-+{
-+	struct platform_device *pdev = dss->pdev;
-+
-+	return component_bind_all(&pdev->dev, drm_dev);
-+}
-+EXPORT_SYMBOL(dss_bind_components);
-+
-+void dss_unbind_components(struct dss_device *dss, struct drm_device *drm_dev)
-+{
-+	struct platform_device *pdev = dss->pdev;
-+
-+	component_unbind_all(&pdev->dev, drm_dev);
-+}
-+EXPORT_SYMBOL(dss_unbind_components);
-+
- static int dss_bind(struct device *dev)
- {
- 	struct dss_device *dss = dev_get_drvdata(dev);
- 	struct platform_device *drm_pdev;
- 	struct dss_pdata pdata;
--	int r;
+ source "drivers/gpu/drm/omapdrm/dss/Kconfig"
+-source "drivers/gpu/drm/omapdrm/displays/Kconfig"
+ 
+ endif
+diff --git a/drivers/gpu/drm/omapdrm/Makefile b/drivers/gpu/drm/omapdrm/Makefile
+index f115253115c5..66a73eae6f7c 100644
+--- a/drivers/gpu/drm/omapdrm/Makefile
++++ b/drivers/gpu/drm/omapdrm/Makefile
+@@ -5,7 +5,6 @@
+ #
+ 
+ obj-y += dss/
+-obj-y += displays/
+ 
+ omapdrm-y := omap_drv.o \
+ 	omap_irq.o \
+diff --git a/drivers/gpu/drm/omapdrm/displays/Kconfig b/drivers/gpu/drm/omapdrm/displays/Kconfig
+deleted file mode 100644
+index f2be594c7eff..000000000000
+--- a/drivers/gpu/drm/omapdrm/displays/Kconfig
++++ /dev/null
+@@ -1,10 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-menu "OMAPDRM External Display Device Drivers"
 -
--	r = component_bind_all(dev, NULL);
--	if (r)
--		return r;
- 
- 	pm_set_vt_switch(0);
- 
- 	pdata.dss = dss;
- 	drm_pdev = platform_device_register_data(NULL, "omapdrm", 0,
- 						 &pdata, sizeof(pdata));
--	if (IS_ERR(drm_pdev)) {
--		component_unbind_all(dev, NULL);
-+	if (IS_ERR(drm_pdev))
- 		return PTR_ERR(drm_pdev);
--	}
- 
- 	dss->drm_pdev = drm_pdev;
- 
-@@ -1332,8 +1341,6 @@ static void dss_unbind(struct device *dev)
- 	struct dss_device *dss = dev_get_drvdata(dev);
- 
- 	platform_device_unregister(dss->drm_pdev);
+-config DRM_OMAP_PANEL_DSI_CM
+-	tristate "Generic DSI Command Mode Panel"
+-	depends on BACKLIGHT_CLASS_DEVICE
+-	help
+-	  Driver for generic DSI command mode panels.
 -
--	component_unbind_all(dev, NULL);
- }
+-endmenu
+diff --git a/drivers/gpu/drm/omapdrm/displays/Makefile b/drivers/gpu/drm/omapdrm/displays/Makefile
+deleted file mode 100644
+index 488ddf153613..000000000000
+--- a/drivers/gpu/drm/omapdrm/displays/Makefile
++++ /dev/null
+@@ -1,2 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-obj-$(CONFIG_DRM_OMAP_PANEL_DSI_CM) += panel-dsi-cm.o
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index da3b84602cdd..07ab75a66607 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -38,6 +38,15 @@ config DRM_PANEL_BOE_TV101WUM_NL6
+ 	  Say Y here if you want to support for BOE TV101WUM and AUO KD101N80
+ 	  45NA WUXGA PANEL DSI Video Mode panel
  
- static const struct component_master_ops dss_component_ops = {
-diff --git a/drivers/gpu/drm/omapdrm/dss/omapdss.h b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-index 9f8aefaadefe..45f5c46712eb 100644
---- a/drivers/gpu/drm/omapdrm/dss/omapdss.h
-+++ b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-@@ -526,4 +526,7 @@ const struct dispc_ops *dispc_get_ops(struct dss_device *dss);
- bool omapdss_stack_is_ready(void);
- void omapdss_gather_components(struct device *dev);
- 
-+int dss_bind_components(struct dss_device *dss, struct drm_device *drm_dev);
-+void dss_unbind_components(struct dss_device *dss, struct drm_device *drm_dev);
++config DRM_PANEL_DSI_CM
++	tristate "Generic DSI command mode panels"
++	depends on OF
++	depends on DRM_MIPI_DSI
++	depends on BACKLIGHT_CLASS_DEVICE
++	help
++	  DRM panel driver for DSI command mode panels with support for
++	  embedded and external backlights.
 +
- #endif /* __OMAP_DRM_DSS_H */
-diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
-index 579f9d80fec9..c47e63e94a2e 100644
---- a/drivers/gpu/drm/omapdrm/omap_drv.c
-+++ b/drivers/gpu/drm/omapdrm/omap_drv.c
-@@ -237,8 +237,6 @@ static int omap_modeset_init(struct drm_device *dev)
- 	if (!omapdss_stack_is_ready())
- 		return -EPROBE_DEFER;
- 
--	drm_mode_config_init(dev);
--
- 	ret = omap_modeset_init_properties(dev);
- 	if (ret < 0)
- 		return ret;
-@@ -605,10 +603,15 @@ static int omapdrm_init(struct omap_drm_private *priv, struct device *dev)
- 	ddev = drm_dev_alloc(&omap_drm_driver, dev);
- 	if (IS_ERR(ddev))
- 		return PTR_ERR(ddev);
--
--	priv->ddev = ddev;
- 	ddev->dev_private = priv;
- 
-+	drm_mode_config_init(ddev);
-+
-+	ret = dss_bind_components(pdata->dss, ddev);
-+	if (ret)
-+		goto err_ddev_deinit;
-+
-+	priv->ddev = ddev;
- 	priv->dev = dev;
- 	priv->dss = pdata->dss;
- 	priv->dispc = dispc_get_dispc(priv->dss);
-@@ -673,6 +676,8 @@ static int omapdrm_init(struct omap_drm_private *priv, struct device *dev)
- 	destroy_workqueue(priv->wq);
- 	omap_disconnect_pipelines(ddev);
- 	omap_crtc_pre_uninit(priv);
-+	dss_unbind_components(priv->dss, ddev);
-+err_ddev_deinit:
- 	drm_dev_put(ddev);
- 	return ret;
- }
-@@ -700,6 +705,8 @@ static void omapdrm_cleanup(struct omap_drm_private *priv)
- 	omap_disconnect_pipelines(ddev);
- 	omap_crtc_pre_uninit(priv);
- 
-+	dss_unbind_components(priv->dss, ddev);
-+
- 	drm_dev_put(ddev);
- }
- 
+ config DRM_PANEL_LVDS
+ 	tristate "Generic LVDS panel driver"
+ 	depends on OF
+diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
+index af1e2a3cc5fc..bb19cda8a619 100644
+--- a/drivers/gpu/drm/panel/Makefile
++++ b/drivers/gpu/drm/panel/Makefile
+@@ -2,6 +2,7 @@
+ obj-$(CONFIG_DRM_PANEL_ARM_VERSATILE) += panel-arm-versatile.o
+ obj-$(CONFIG_DRM_PANEL_BOE_HIMAX8279D) += panel-boe-himax8279d.o
+ obj-$(CONFIG_DRM_PANEL_BOE_TV101WUM_NL6) += panel-boe-tv101wum-nl6.o
++obj-$(CONFIG_DRM_PANEL_DSI_CM) += panel-dsi-cm.o
+ obj-$(CONFIG_DRM_PANEL_LVDS) += panel-lvds.o
+ obj-$(CONFIG_DRM_PANEL_SIMPLE) += panel-simple.o
+ obj-$(CONFIG_DRM_PANEL_FEIXIN_K101_IM2BA02) += panel-feixin-k101-im2ba02.o
+diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/panel/panel-dsi-cm.c
+similarity index 100%
+rename from drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+rename to drivers/gpu/drm/panel/panel-dsi-cm.c
 -- 
 2.25.0
 
