@@ -2,125 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED86E169F49
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Feb 2020 08:31:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E13D169F8F
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Feb 2020 08:53:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726709AbgBXHbO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Feb 2020 02:31:14 -0500
-Received: from eddie.linux-mips.org ([148.251.95.138]:52176 "EHLO
-        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725792AbgBXHbO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Feb 2020 02:31:14 -0500
-Received: (from localhost user: 'ladis' uid#1021 fake: STDIN
-        (ladis@eddie.linux-mips.org)) by eddie.linux-mips.org
-        id S23990678AbgBXHbLbR4t8 (ORCPT <rfc822;linux-omap@vger.kernel.org>
-        + 1 other); Mon, 24 Feb 2020 08:31:11 +0100
-Date:   Mon, 24 Feb 2020 08:31:10 +0100
-From:   Ladislav Michl <ladis@linux-mips.org>
-To:     Chanwoo Choi <cw00.choi@samsung.com>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v3] extcon: palmas: hide error messages if gpio returns
- -EPROBE_DEFER
-Message-ID: <20200224073110.GA58786@lenoch>
-References: <CGME20200217133832epcas1p329af393e88fa76189ca141d2534f9ad2@epcas1p3.samsung.com>
- <d5c2826a5f00fcaee62f00662ae2a44dc4a5395d.1581946695.git.hns@goldelico.com>
- <b2655a58-6541-a2c9-c44d-536e5cef1ee3@samsung.com>
- <20200218102140.GA193069@lenoch>
- <cbee6f0b-f268-2e77-f7b7-f19114fdf178@samsung.com>
- <20200218104810.GA194120@lenoch>
- <34f3cd11-321b-9aab-31a7-a3fb03691980@samsung.com>
- <20200221074740.GA44103@lenoch>
- <1cf484d9-572c-ea19-49d6-cd4cf61c9965@samsung.com>
+        id S1727239AbgBXHxF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Feb 2020 02:53:05 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:49479 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727197AbgBXHxF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Feb 2020 02:53:05 -0500
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1j68Y3-00081w-Ej; Mon, 24 Feb 2020 08:53:03 +0100
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1j68Y2-000422-7S; Mon, 24 Feb 2020 08:53:02 +0100
+Date:   Mon, 24 Feb 2020 08:53:02 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Lokesh Vutla <lokeshvutla@ti.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+        Sekhar Nori <nsekhar@ti.com>
+Subject: Re: [PATCH 1/4] pwm: omap-dmtimer: Drop unused header file
+Message-ID: <20200224075302.jd3vcrdl6fuqrkpb@pengutronix.de>
+References: <20200224052135.17278-1-lokeshvutla@ti.com>
+ <20200224052135.17278-2-lokeshvutla@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <1cf484d9-572c-ea19-49d6-cd4cf61c9965@samsung.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200224052135.17278-2-lokeshvutla@ti.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Feb 24, 2020 at 11:12:08AM +0900, Chanwoo Choi wrote:
-> On 2/21/20 4:47 PM, Ladislav Michl wrote:
-> > On Tue, Feb 18, 2020 at 08:09:16PM +0900, Chanwoo Choi wrote:
-> >> On 2/18/20 7:48 PM, Ladislav Michl wrote:
-> >>> On Tue, Feb 18, 2020 at 07:35:47PM +0900, Chanwoo Choi wrote:
-> >>>> On 2/18/20 7:21 PM, Ladislav Michl wrote:
-> >>>>> On Tue, Feb 18, 2020 at 12:28:25PM +0900, Chanwoo Choi wrote:
-> >>>>>> On 2/17/20 10:38 PM, H. Nikolaus Schaller wrote:
-> >>>>>>> If the gpios are probed after this driver (e.g. if they
-> >>>>>>> come from an i2c expander) there is no need to print an
-> >>>>>>> error message.
-> >>>>>>>
-> >>>>>>> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> >>>>>>> ---
-> >>>>>>>  drivers/extcon/extcon-palmas.c | 8 ++++++--
-> >>>>>>>  1 file changed, 6 insertions(+), 2 deletions(-)
-> >>>>>>>
-> >>>>>>> diff --git a/drivers/extcon/extcon-palmas.c b/drivers/extcon/extcon-palmas.c
-> >>>>>>> index edc5016f46f1..cea58d0cb457 100644
-> >>>>>>> --- a/drivers/extcon/extcon-palmas.c
-> >>>>>>> +++ b/drivers/extcon/extcon-palmas.c
-> >>>>>>> @@ -205,14 +205,18 @@ static int palmas_usb_probe(struct platform_device *pdev)
-> >>>>>>>  
-> >>>>>>>  	palmas_usb->id_gpiod = devm_gpiod_get_optional(&pdev->dev, "id",
-> >>>>>>>  							GPIOD_IN);
-> >>>>>>> -	if (IS_ERR(palmas_usb->id_gpiod)) {
-> >>>>>>> +	if (PTR_ERR(palmas_usb->id_gpiod) == -EPROBE_DEFER) {
-> >>>>>>> +		return -EPROBE_DEFER;
-> >>>
-> >>> Here we returned...
-> >>
-> >> hmm. you better to suggest the result of cocci script
-> >> to understand why it is matter.
-> > 
-> > You can browse similar fixes online :)
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=grep&q=else+after+return
-> > 
-> 
-> As you commented, please share the result
-> of cocci or checkpatch warning. It is simple to finish
-> this discussion. 
+Hello,
 
-What is happening here? Do we really need tools to see the obvious?
-See for example commit 09971adc33b ("staging: iio: addac: Remove unnecessary
-else after return"). Running script mentioned in above commit with
-"[PATCH v3] extcon: palmas: hide error messages if gpio returns"
-applied gives:
-~/src/linux$ spatch -sp_file s.cocci -in_place drivers/extcon/extcon-palmas.c
-init_defs_builtins: /usr/lib/coccinelle/standard.h
-HANDLING: drivers/extcon/extcon-palmas.c
-diff = 
---- drivers/extcon/extcon-palmas.c
-+++ /tmp/cocci-output-67907-55371b-extcon-palmas.c
-@@ -207,7 +207,7 @@ static int palmas_usb_probe(struct platf
- 							GPIOD_IN);
- 	if (PTR_ERR(palmas_usb->id_gpiod) == -EPROBE_DEFER) {
- 		return -EPROBE_DEFER;
--	} else if (IS_ERR(palmas_usb->id_gpiod)) {
-+	} if (IS_ERR(palmas_usb->id_gpiod)) {
- 		dev_err(&pdev->dev, "failed to get id gpio\n");
- 		return PTR_ERR(palmas_usb->id_gpiod);
- 	}
-@@ -216,7 +216,7 @@ static int palmas_usb_probe(struct platf
- 							GPIOD_IN);
- 	if (PTR_ERR(palmas_usb->vbus_gpiod) == -EPROBE_DEFER) {
- 		return -EPROBE_DEFER;
--	} else if (IS_ERR(palmas_usb->vbus_gpiod)) {
-+	} if (IS_ERR(palmas_usb->vbus_gpiod)) {
- 		dev_err(&pdev->dev, "failed to get vbus gpio\n");
- 		return PTR_ERR(palmas_usb->vbus_gpiod);
- 	}
+On Mon, Feb 24, 2020 at 10:51:32AM +0530, Lokesh Vutla wrote:
+> @@ -190,9 +190,8 @@ static int pwm_omap_dmtimer_config(struct pwm_chip *chip,
+>  		load_value, load_value,	match_value, match_value);
+>  
+>  	omap->pdata->set_pwm(omap->dm_timer,
+> -			      pwm_get_polarity(pwm) == PWM_POLARITY_INVERSED,
+> -			      true,
+> -			      PWM_OMAP_DMTIMER_TRIGGER_OVERFLOW_AND_COMPARE);
+> +			     pwm_get_polarity(pwm) == PWM_POLARITY_INVERSED,
+> +			     true, OMAP_TIMER_TRIGGER_OVERFLOW_AND_COMPARE);
 
-That's why I wrote previously: "Then it is matter of time it triggers
-someones cocci script pointing to else after return."
-Linux git history proves there are people running such a scripts
-and results of such a scripts gets applied.
+This is unrelated.
 
-I do not care too much, you are the one adding more work for
-yourself ;-)
+>  
+>  	/* If config was called while timer was running it must be reenabled. */
+>  	if (timer_active)
+> @@ -220,9 +219,8 @@ static int pwm_omap_dmtimer_set_polarity(struct pwm_chip *chip,
+>  	 */
+>  	mutex_lock(&omap->mutex);
+>  	omap->pdata->set_pwm(omap->dm_timer,
+> -			      polarity == PWM_POLARITY_INVERSED,
+> -			      true,
+> -			      PWM_OMAP_DMTIMER_TRIGGER_OVERFLOW_AND_COMPARE);
+> +			     polarity == PWM_POLARITY_INVERSED,
+> +			     true, OMAP_TIMER_TRIGGER_OVERFLOW_AND_COMPARE);
 
-	ladis
+ditto
+
+>  	mutex_unlock(&omap->mutex);
+>  
+>  	return 0;
+> @@ -244,7 +242,7 @@ static int pwm_omap_dmtimer_probe(struct platform_device *pdev)
+>  	struct pwm_omap_dmtimer_chip *omap;
+>  	struct dmtimer_platform_data *timer_pdata;
+>  	const struct omap_dm_timer_ops *pdata;
+> -	pwm_omap_dmtimer *dm_timer;
+> +	struct omap_dm_timer *dm_timer;
+>  	u32 v;
+>  	int ret = 0;
+>  
+
+Other than that looks fine.
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
