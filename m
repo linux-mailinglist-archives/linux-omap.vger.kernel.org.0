@@ -2,37 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B52316B007
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Feb 2020 20:13:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DCCD16B197
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Feb 2020 22:10:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727459AbgBXTMu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Feb 2020 14:12:50 -0500
-Received: from muru.com ([72.249.23.125]:57090 "EHLO muru.com"
+        id S1726996AbgBXVKH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Feb 2020 16:10:07 -0500
+Received: from muru.com ([72.249.23.125]:57108 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727444AbgBXTMt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 24 Feb 2020 14:12:49 -0500
+        id S1726980AbgBXVKH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 24 Feb 2020 16:10:07 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 0F8C481DB;
-        Mon, 24 Feb 2020 19:13:31 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 4CF8C8030;
+        Mon, 24 Feb 2020 21:10:51 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, Jyri Sarha <jsarha@ti.com>,
+Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, Jyri Sarha <jsarha@ti.com>,
+        Keerthy <j-keerthy@ti.com>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH 3/3] bus: ti-sysc: Implement display subsystem reset quirk
-Date:   Mon, 24 Feb 2020 11:12:30 -0800
-Message-Id: <20200224191230.30972-4-tony@atomide.com>
+        Sebastian Reichel <sre@kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: [PATCH 00/23] Drop platform data for omap DSS
+Date:   Mon, 24 Feb 2020 13:09:36 -0800
+Message-Id: <20200224210959.56146-1-tony@atomide.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200224191230.30972-1-tony@atomide.com>
-References: <20200224191230.30972-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
@@ -40,193 +33,69 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The display subsystem (DSS) needs the child outputs disabled for reset.
-In order to prepare to probe DSS without legacy platform data, let's
-implement sysc_pre_reset_quirk_dss() similar to what we have for the
-platform data with omap_dss_reset().
+Hi all,
 
-Note that we cannot directly use the old omap_dss_reset() without
-platform data callbacks and updating omap_dss_reset() to understand
-struct device. And we will be dropping omap_dss_reset() anyways when
-all the SoCs are probing with device tree, so let's not mess with the
-legacy code at all.
+This series configures dts data for omap display susbsystem (DSS)
+and then drops the legacy platform data.
 
-Cc: Jyri Sarha <jsarha@ti.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/bus/ti-sysc.c                 | 131 +++++++++++++++++++++++++-
- include/linux/platform_data/ti-sysc.h |   1 +
- 2 files changed, 129 insertions(+), 3 deletions(-)
+These patces are against v5.6-rc1, and depend on the following
+two patch series:
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1303,11 +1303,11 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 	SYSC_QUIRK("dcan", 0x48480000, 0x20, -ENODEV, -ENODEV, 0xa3170504, 0xffffffff,
- 		   SYSC_QUIRK_CLKDM_NOAUTO),
- 	SYSC_QUIRK("dss", 0x4832a000, 0, 0x10, 0x14, 0x00000020, 0xffffffff,
--		   SYSC_QUIRK_OPT_CLKS_IN_RESET),
-+		   SYSC_QUIRK_OPT_CLKS_IN_RESET | SYSC_MODULE_QUIRK_DSS_RESET),
- 	SYSC_QUIRK("dss", 0x58000000, 0, -ENODEV, 0x14, 0x00000040, 0xffffffff,
--		   SYSC_QUIRK_OPT_CLKS_IN_RESET),
-+		   SYSC_QUIRK_OPT_CLKS_IN_RESET | SYSC_MODULE_QUIRK_DSS_RESET),
- 	SYSC_QUIRK("dss", 0x58000000, 0, -ENODEV, 0x14, 0x00000061, 0xffffffff,
--		   SYSC_QUIRK_OPT_CLKS_IN_RESET),
-+		   SYSC_QUIRK_OPT_CLKS_IN_RESET | SYSC_MODULE_QUIRK_DSS_RESET),
- 	SYSC_QUIRK("dwc3", 0x48880000, 0, 0x10, -ENODEV, 0x500a0200, 0xffffffff,
- 		   SYSC_QUIRK_CLKDM_NOAUTO),
- 	SYSC_QUIRK("dwc3", 0x488c0000, 0, 0x10, -ENODEV, 0x500a0200, 0xffffffff,
-@@ -1468,6 +1468,128 @@ static void sysc_init_revision_quirks(struct sysc *ddata)
- 	}
- }
- 
-+/*
-+ * DSS needs dispc outputs disabled to reset modules. Returns mask of
-+ * enabled DSS interrupts. Eventually we may be able to do this on
-+ * dispc init rather than top-level DSS init.
-+ */
-+static u32 sysc_quirk_dispc(struct sysc *ddata, int dispc_offset,
-+			    bool disable)
-+{
-+	bool lcd_en, digit_en, lcd2_en = false, lcd3_en = false;
-+	const int lcd_en_mask = BIT(0), digit_en_mask = BIT(1);
-+	int manager_count;
-+	bool framedonetv_irq;
-+	u32 val, irq_mask = 0;
-+
-+	switch (sysc_soc->soc) {
-+	case SOC_2420 ... SOC_3630:
-+		manager_count = 2;
-+		framedonetv_irq = false;
-+		break;
-+	case SOC_4430 ... SOC_4470:
-+		manager_count = 3;
-+		break;
-+	case SOC_5430:
-+	case SOC_DRA7:
-+		manager_count = 4;
-+		break;
-+	case SOC_AM4:
-+		manager_count = 1;
-+		break;
-+	case SOC_UNKNOWN:
-+	default:
-+		return 0;
-+	};
-+
-+	/* Remap the whole module range to be able to reset dispc outputs */
-+	devm_iounmap(ddata->dev, ddata->module_va);
-+	ddata->module_va = devm_ioremap(ddata->dev,
-+					ddata->module_pa,
-+					ddata->module_size);
-+	if (!ddata->module_va)
-+		return -EIO;
-+
-+	/* DISP_CONTROL */
-+	val = sysc_read(ddata, dispc_offset + 0x40);
-+	lcd_en = val & lcd_en_mask;
-+	digit_en = val & digit_en_mask;
-+	if (lcd_en)
-+		irq_mask |= BIT(0);			/* FRAMEDONE */
-+	if (digit_en) {
-+		if (framedonetv_irq)
-+			irq_mask |= BIT(24);		/* FRAMEDONETV */
-+		else
-+			irq_mask |= BIT(2) | BIT(3);	/* EVSYNC bits */
-+	}
-+	if (disable & (lcd_en | digit_en))
-+		sysc_write(ddata, dispc_offset + 0x40,
-+			   val & ~(lcd_en_mask | digit_en_mask));
-+
-+	if (manager_count <= 2)
-+		return irq_mask;
-+
-+	/* DISPC_CONTROL2 */
-+	val = sysc_read(ddata, dispc_offset + 0x238);
-+	lcd2_en = val & lcd_en_mask;
-+	if (lcd2_en)
-+		irq_mask |= BIT(22);			/* FRAMEDONE2 */
-+	if (disable && lcd2_en)
-+		sysc_write(ddata, dispc_offset + 0x238,
-+			   val & ~lcd_en_mask);
-+
-+	if (manager_count <= 3)
-+		return irq_mask;
-+
-+	/* DISPC_CONTROL3 */
-+	val = sysc_read(ddata, dispc_offset + 0x848);
-+	lcd3_en = val & lcd_en_mask;
-+	if (lcd3_en)
-+		irq_mask |= BIT(30);			/* FRAMEDONE3 */
-+	if (disable && lcd3_en)
-+		sysc_write(ddata, dispc_offset + 0x848,
-+			   val & ~lcd_en_mask);
-+
-+	return irq_mask;
-+}
-+
-+/* DSS needs child outputs disabled and SDI registers cleared for reset */
-+static void sysc_pre_reset_quirk_dss(struct sysc *ddata)
-+{
-+	const int dispc_offset = 0x1000;
-+	int error;
-+	u32 irq_mask, val;
-+
-+	/* Get enabled outputs */
-+	irq_mask = sysc_quirk_dispc(ddata, dispc_offset, false);
-+	if (!irq_mask)
-+		return;
-+
-+	/* Clear IRQSTATUS */
-+	sysc_write(ddata, 0x1000 + 0x18, irq_mask);
-+
-+	/* Disable outputs */
-+	val = sysc_quirk_dispc(ddata, dispc_offset, true);
-+
-+	/* Poll IRQSTATUS */
-+	error = readl_poll_timeout(ddata->module_va + dispc_offset + 0x18,
-+				   val, val != irq_mask, 100, 50);
-+	if (error)
-+		dev_warn(ddata->dev, "%s: timed out %08x !+ %08x\n",
-+			 __func__, val, irq_mask);
-+
-+	if (sysc_soc->soc == SOC_3430) {
-+		/* Clear DSS_SDI_CONTROL */
-+		sysc_write(ddata, dispc_offset + 0x44, 0);
-+
-+		/* Clear DSS_PLL_CONTROL */
-+		sysc_write(ddata, dispc_offset + 0x48, 0);
-+	}
-+
-+	/* Clear DSS_CONTROL to switch DSS clock sources to PRCM if not */
-+	sysc_write(ddata, dispc_offset + 0x40, 0);
-+}
-+
- /* 1-wire needs module's internal clocks enabled for reset */
- static void sysc_pre_reset_quirk_hdq1w(struct sysc *ddata)
- {
-@@ -1606,6 +1728,9 @@ static void sysc_init_module_quirks(struct sysc *ddata)
- 	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_AESS)
- 		ddata->module_enable_quirk = sysc_module_enable_quirk_aess;
- 
-+	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_DSS_RESET)
-+		ddata->pre_reset_quirk = sysc_pre_reset_quirk_dss;
-+
- 	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_RTC_UNLOCK) {
- 		ddata->module_unlock_quirk = sysc_module_unlock_quirk_rtc;
- 		ddata->module_lock_quirk = sysc_module_lock_quirk_rtc;
-diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
---- a/include/linux/platform_data/ti-sysc.h
-+++ b/include/linux/platform_data/ti-sysc.h
-@@ -49,6 +49,7 @@ struct sysc_regbits {
- 	s8 emufree_shift;
- };
- 
-+#define SYSC_MODULE_QUIRK_DSS_RESET	BIT(23)
- #define SYSC_MODULE_QUIRK_RTC_UNLOCK	BIT(22)
- #define SYSC_QUIRK_CLKDM_NOAUTO		BIT(21)
- #define SYSC_QUIRK_FORCE_MSTANDBY	BIT(20)
+[PATCH 0/7] ti-sysc driver fix for hdq1w and few improvments
+[PATCH 0/3] ti-sysc changes for probing DSS with dts data
+
+To make testing easier, I've pushed out these patches into a
+temporary testing branch at [0][1] below.
+
+So far I've tested this on omap4 (dsi and hdmi), omap5 (hdmi),
+dra7 (hdmi) and am437x-sk-evm (dpi). Please test with your
+use cases too.
+
+Regards,
+
+Tony
+
+[0] git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git omap-for-v5.7/tmp-testing-drop-dss-pdata
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git/log/?h=omap-for-v5.7/tmp-testing-drop-dss-pdata
+
+Tony Lindgren (23):
+  ARM: dts: Configure interconnect target module for omap4 dss
+  ARM: dts: Configure interconnect target module for omap4 dispc
+  ARM: dts: Configure interconnect target module for omap4 rfbi
+  ARM: dts: Configure interconnect target module for omap4 venc
+  ARM: dts: Configure interconnect target module for omap4 dsi1
+  ARM: dts: Configure interconnect target module for omap4 dsi2
+  ARM: dts: Configure interconnect target module for omap4 hdmi
+  ARM: OMAP2+: Drop legacy platform data for omap4 dss
+  ARM: dts: Configure interconnect target module for omap5 dss
+  ARM: dts: Configure interconnect target module for omap5 dispc
+  ARM: dts: Configure interconnect target module for omap5 rfbi
+  ARM: dts: Configure interconnect target module for omap5 dsi1
+  ARM: dts: Configure interconnect target module for omap5 dsi2
+  ARM: dts: Configure interconnect target module for omap5 hdmi
+  ARM: OMAP2+: Drop legacy platform data for omap5 DSS
+  ARM: dts: Configure interconnect target module for dra7 dss
+  ARM: dts: Configure interconnect target module for dra7 dispc
+  ARM: dts: Configure interconnect target module for dra7 hdmi
+  ARM: OMAP2+: Drop legacy platform data for dra7 DSS
+  ARM: dts: Move am437x dss to the interconnect target module in l4
+  ARM: dts: Configure interconnect target module for am437x dispc
+  ARM: dts: Configure interconnect target module for am437x rfbi
+  ARM: OMAP2+: Drop legacy platform data for am437x DSS
+
+ arch/arm/boot/dts/am4372.dtsi              |  32 --
+ arch/arm/boot/dts/am437x-l4.dtsi           |  77 +++-
+ arch/arm/boot/dts/dra7.dtsi                | 123 +++++--
+ arch/arm/boot/dts/dra72x.dtsi              |   6 +-
+ arch/arm/boot/dts/dra74x.dtsi              |  10 +-
+ arch/arm/boot/dts/omap4-l4.dtsi            |   1 +
+ arch/arm/boot/dts/omap4.dtsi               | 278 ++++++++++----
+ arch/arm/boot/dts/omap5.dtsi               | 241 ++++++++----
+ arch/arm/mach-omap2/omap_hwmod_43xx_data.c | 101 ------
+ arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 404 ---------------------
+ arch/arm/mach-omap2/omap_hwmod_54xx_data.c | 288 ---------------
+ arch/arm/mach-omap2/omap_hwmod_7xx_data.c  | 163 ---------
+ 12 files changed, 550 insertions(+), 1174 deletions(-)
+
 -- 
 2.25.1
