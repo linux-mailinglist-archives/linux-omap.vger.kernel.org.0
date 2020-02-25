@@ -2,19 +2,19 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2838816F29E
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 23:34:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED72E16F2D0
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 23:59:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726827AbgBYWef (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Feb 2020 17:34:35 -0500
-Received: from muru.com ([72.249.23.125]:57552 "EHLO muru.com"
+        id S1728865AbgBYW7b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 Feb 2020 17:59:31 -0500
+Received: from muru.com ([72.249.23.125]:57572 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726421AbgBYWef (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 25 Feb 2020 17:34:35 -0500
+        id S1728806AbgBYW7b (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 25 Feb 2020 17:59:31 -0500
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 69221810E;
-        Tue, 25 Feb 2020 22:35:18 +0000 (UTC)
-Date:   Tue, 25 Feb 2020 14:34:30 -0800
+        by muru.com (Postfix) with ESMTPS id 98646810E;
+        Tue, 25 Feb 2020 23:00:14 +0000 (UTC)
+Date:   Tue, 25 Feb 2020 14:59:26 -0800
 From:   Tony Lindgren <tony@atomide.com>
 To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
 Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -24,42 +24,52 @@ Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Merlijn Wajer <merlijn@wizzup.org>, ruleh <ruleh@gmx.de>
 Subject: Re: [PATCH] drm/omap: Fix drm_handle_vblank() handling for command
  mode panels
-Message-ID: <20200225223430.GJ37466@atomide.com>
+Message-ID: <20200225225926.GK37466@atomide.com>
 References: <20200225183733.50875-1-tony@atomide.com>
  <20200225195258.GI37466@atomide.com>
+ <20200225223430.GJ37466@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200225195258.GI37466@atomide.com>
+In-Reply-To: <20200225223430.GJ37466@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [200225 19:53]:
-> * Tony Lindgren <tony@atomide.com> [200225 18:38]:
-> > Only lightly tested so far, please test. Also, I'm not sure if we
-> > should get the id from somewhere for drm_handle_vblank() instead of
-> > just using 0?
+* Tony Lindgren <tony@atomide.com> [200225 22:35]:
+> * Tony Lindgren <tony@atomide.com> [200225 19:53]:
+> > * Tony Lindgren <tony@atomide.com> [200225 18:38]:
+> > > Only lightly tested so far, please test. Also, I'm not sure if we
+> > > should get the id from somewhere for drm_handle_vblank() instead of
+> > > just using 0?
+> > 
+> > Also looks like we can now get WARN_ON(omap_crtc->pending)
+> > in omap_crtc_arm_event(), so obviously some changes are
+> > needed.
 > 
-> Also looks like we can now get WARN_ON(omap_crtc->pending)
-> in omap_crtc_arm_event(), so obviously some changes are
-> needed.
+> Below is an updated version that just returns early for
+> omap_crtc_arm_event() for manual update display if already
+> armed.
+> 
+> I'm now also passing the id from the interrupt handler, maybe
+> it's available somewhere locally but I just did not notice.
 
-Below is an updated version that just returns early for
-omap_crtc_arm_event() for manual update display if already
-armed.
+And we need to have drm_crtc_vblank_get and put paired to
+avoid more warnings.. Best to just have a single path for
+handling vblank interrupt and manual mode panels.
 
-I'm now also passing the id from the interrupt handler, maybe
-it's available somewhere locally but I just did not notice.
+Updated patch below again, this one seems to behave for
+me so far based on the issues I noticed with earlier
+attempts.
 
 Regards,
 
 Tony
 
-8< -----------------------
+8< ---------------------------
 diff --git a/drivers/gpu/drm/omapdrm/omap_crtc.c b/drivers/gpu/drm/omapdrm/omap_crtc.c
-index d0bc9614588f9..515b5c1520b98 100644
+index d0bc9614588f9..ed4abfef0536d 100644
 --- a/drivers/gpu/drm/omapdrm/omap_crtc.c
 +++ b/drivers/gpu/drm/omapdrm/omap_crtc.c
 @@ -325,23 +325,21 @@ void omap_crtc_vblank_irq(struct drm_crtc *crtc)
@@ -107,6 +117,49 @@ index d0bc9614588f9..515b5c1520b98 100644
  	WARN_ON(omap_crtc->pending);
  	omap_crtc->pending = true;
  
+@@ -455,17 +457,12 @@ static void omap_crtc_atomic_enable(struct drm_crtc *crtc,
+ {
+ 	struct omap_drm_private *priv = crtc->dev->dev_private;
+ 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
+-	struct omap_crtc_state *omap_state = to_omap_crtc_state(crtc->state);
+ 	int ret;
+ 
+ 	DBG("%s", omap_crtc->name);
+ 
+ 	priv->dispc_ops->runtime_get(priv->dispc);
+ 
+-	/* manual updated display will not trigger vsync irq */
+-	if (omap_state->manually_updated)
+-		return;
+-
+ 	spin_lock_irq(&crtc->dev->event_lock);
+ 	drm_crtc_vblank_on(crtc);
+ 	ret = drm_crtc_vblank_get(crtc);
+@@ -646,20 +643,14 @@ static void omap_crtc_atomic_flush(struct drm_crtc *crtc,
+ 
+ 	DBG("%s: GO", omap_crtc->name);
+ 
+-	if (omap_crtc_state->manually_updated) {
+-		/* send new image for page flips and modeset changes */
+-		spin_lock_irq(&crtc->dev->event_lock);
+-		omap_crtc_flush(crtc);
+-		omap_crtc_arm_event(crtc);
+-		spin_unlock_irq(&crtc->dev->event_lock);
+-		return;
+-	}
+-
+ 	ret = drm_crtc_vblank_get(crtc);
+ 	WARN_ON(ret != 0);
+ 
+ 	spin_lock_irq(&crtc->dev->event_lock);
+-	priv->dispc_ops->mgr_go(priv->dispc, omap_crtc->channel);
++	if (omap_crtc_state->manually_updated)
++		omap_crtc_flush(crtc);
++	else
++		priv->dispc_ops->mgr_go(priv->dispc, omap_crtc->channel);
+ 	omap_crtc_arm_event(crtc);
+ 	spin_unlock_irq(&crtc->dev->event_lock);
+ }
 diff --git a/drivers/gpu/drm/omapdrm/omap_crtc.h b/drivers/gpu/drm/omapdrm/omap_crtc.h
 index 2fd57751ae2b1..9221f8ef2e87f 100644
 --- a/drivers/gpu/drm/omapdrm/omap_crtc.h
