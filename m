@@ -2,161 +2,247 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 165A016BF92
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 12:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8A8616BFF2
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 12:50:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730081AbgBYL1D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Feb 2020 06:27:03 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:34504 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728965AbgBYL1D (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Feb 2020 06:27:03 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01PBQsPq071859;
-        Tue, 25 Feb 2020 05:26:54 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1582630015;
-        bh=YR8UHKTlWWxwot/NVci/5JdswMv6nWbcN4ohO7xw1d8=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=YYzovR34NIFVJ1k4dWp+/eCPgAmMQqZvzaYGCctFCJD2qWoQdM1BVhoONFvQ7a7g6
-         VYKmPjfaqa+4PLKvNPU59XrR2K6EznvSTSqiH+EAVSVKXCdPQreps3GxFWN74gWU1Z
-         EUdDr3SXOnQVR1O+N3nucjhKgDpEOZwB1GNsB614=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01PBQsTc112032
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 25 Feb 2020 05:26:54 -0600
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 25
- Feb 2020 05:26:54 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 25 Feb 2020 05:26:54 -0600
-Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01PBQpGq099372;
-        Tue, 25 Feb 2020 05:26:52 -0600
-Subject: Re: [PATCH 3/4] pwm: omap-dmtimer: Do not disable pwm before changing
- period/duty_cycle
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-CC:     Thierry Reding <thierry.reding@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
-        Sekhar Nori <nsekhar@ti.com>, <kernel@pengutronix.de>
-References: <20200224052135.17278-1-lokeshvutla@ti.com>
- <20200224052135.17278-4-lokeshvutla@ti.com>
- <20200224085531.zab5ewr2nfi2shem@pengutronix.de>
- <4aedb6d4-1823-ab46-b7e6-cc0b30f7747d@ti.com>
- <20200225064833.kmvaplfqqf53s3iy@pengutronix.de>
- <8e22912c-a65f-9efe-27e7-555cd144776f@ti.com>
- <20200225083846.4l4tnbjcpm6uggtl@pengutronix.de>
-From:   Lokesh Vutla <lokeshvutla@ti.com>
-Message-ID: <4d830367-403a-5cf5-abf0-7daccbece1ae@ti.com>
-Date:   Tue, 25 Feb 2020 16:56:02 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1729510AbgBYLuV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 Feb 2020 06:50:21 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:38704 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728965AbgBYLuV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Feb 2020 06:50:21 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 3DD8B294C05
+Received: by earth.universe (Postfix, from userid 1000)
+        id ED9313C0C83; Tue, 25 Feb 2020 12:50:14 +0100 (CET)
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Sebastian Reichel <sre@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Rob Herring <robh@kernel.org>, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, kernel@collabora.com,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCHv2.1 45/56] drm/omap: dsi: Register a drm_bridge
+Date:   Tue, 25 Feb 2020 12:50:13 +0100
+Message-Id: <20200225115013.3557409-1-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200224232126.3385250-46-sebastian.reichel@collabora.com>
+References: <20200224232126.3385250-46-sebastian.reichel@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <20200225083846.4l4tnbjcpm6uggtl@pengutronix.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Uwe,
+In order to integrate with a chain of drm_bridge, the internal DSI
+output has to expose its operations through the drm_bridge API.
+Register a bridge at initialisation time to do so and remove the
+omap_dss_device operations that are now unused.
 
-On 25/02/20 2:08 PM, Uwe Kleine-König wrote:
-> Hello Lokesh,
-> 
-> On Tue, Feb 25, 2020 at 01:29:57PM +0530, Lokesh Vutla wrote:
->> On 25/02/20 12:18 PM, Uwe Kleine-König wrote:
->>> On Tue, Feb 25, 2020 at 10:32:42AM +0530, Lokesh Vutla wrote:
->>>> On 24/02/20 2:25 PM, Uwe Kleine-König wrote:
->>>>> On Mon, Feb 24, 2020 at 10:51:34AM +0530, Lokesh Vutla wrote:
->>>>>>  	omap->pdata->set_load(omap->dm_timer, true, load_value);
->>>>>>  	omap->pdata->set_match(omap->dm_timer, true, match_value);
->>>>>
->>>>> (Without having looked into the depths of the driver I assume
->>>>> .set_load() sets the period of the PWM and .set_match() the duty cycle.)
->>>>
->>>> Right.
->>>>
->>>>>
->>>>> What happens on a running PWM if you change the period? Consider you
->>>>> change from duty_cycle = 1000, period = 5000 to duty_cycle = 4000,
->>>>> period = 10000. As you set the period first, can it happen the hardware
->>>>> produces a cycle with duty_cycle = 1000, period = 10000?
->>>>
->>>> No. So, the current cycle is un affected with duty_cycle = 1000 and period =
->>>> 5000. Starting from next cycle new settings gets reflected with duty_cycle =
->>>> 4000 and period = 10000.
->>>
->>> Is the reference manual for this hardware publically available?
->>
->> AM335x TRM [0] Section 20.1.3.5 Pulse-Width Modulation (Page 4445).
->>
->> [0] http://www.ti.com/lit/ug/spruh73q/spruh73q.pdf
-> 
-> Great. This is BTW an opportunity to increase your patch count: Create a
-> patch that adds a reference to this document at the top of the driver.
-> 
->>> So the .set_load callback just writes a shadow register and .set_match
->>> latches it into hardware atomically with its own register changes? A
->>> comment in the source code about this would be good. Also if .set_load
->>> doesn't work without .set_match I wonder if it is sane to put their
->>> logic in two different functions.
->>
->> Just to give a little bit of background:
-> 
-> Thanks, very appreciated.
-> 
->> - The omap timer is an upward counter that can be started and stopped at any time.
->> - Once the timer counter overflows, it gets loaded with a predefined load
->> value.(Or can be configured to not re load at all).
->> - Timer has a configurable output pin which can be toggled in the following two
->> cases:
->> 	- When the counter overflows
->> 	- When the counter matches with a predefined register(match register).
->>
->> Using this o/p pin the driver tries to generate a PWM with period = (OVERFLOW -
->> LOAD_VALUE) and duty_cycle = (MATCH_VALUE - LOAD_VALUE).
->>
->> .set_load will configure the load value .set_match will configure the match
->> value. The configured values gets effected only in the next cycle of PWM.
-> 
-> Ah, so back to my original question: If you change from
-> duty_cycle/period = 1000/5000 to duty_cycle/period = 4000/10000 and
-> after you set the period but before you set the duty_cycle a period
-> happens to end, you get indeed a cycle with mixed settings, right?
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+---
+PATCHv2 -> PATCHv2.1: Add missing drm_bridge_add() call
+---
+ drivers/gpu/drm/omapdrm/dss/dsi.c | 130 +++++++++++++++++++-----------
+ 1 file changed, 85 insertions(+), 45 deletions(-)
 
-hmm..you are right but the mixed period happens in a bit different case. Let me
-explain in bit more detail.
+diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+index f629e6b1025b..cde10c774b8b 100644
+--- a/drivers/gpu/drm/omapdrm/dss/dsi.c
++++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+@@ -36,6 +36,7 @@
+ #include <linux/sys_soc.h>
+ 
+ #include <video/mipi_display.h>
++#include <drm/drm_bridge.h>
+ #include <drm/drm_mipi_dsi.h>
+ #include <drm/drm_panel.h>
+ 
+@@ -440,6 +441,7 @@ struct dsi_data {
+ 	struct omap_dss_dsi_videomode_timings vm_timings;
+ 
+ 	struct omap_dss_device output;
++	struct drm_bridge bridge;
+ };
+ 
+ struct dsi_packet_sent_handler_data {
+@@ -452,6 +454,9 @@ static bool dsi_perf;
+ module_param(dsi_perf, bool, 0644);
+ #endif
+ 
++#define drm_bridge_to_dsi(bridge) \
++	container_of(bridge, struct dsi_data, bridge)
++
+ static inline struct dsi_data *to_dsi_data(struct omap_dss_device *dssdev)
+ {
+ 	return dev_get_drvdata(dssdev->dev);
+@@ -5010,50 +5015,7 @@ static int dsi_get_clocks(struct dsi_data *dsi)
+ 	return 0;
+ }
+ 
+-static void dsi_set_timings(struct omap_dss_device *dssdev,
+-			    const struct drm_display_mode *mode)
+-{
+-	DSSDBG("dsi_set_timings\n");
+-	dsi_set_config(dssdev, mode);
+-}
+-
+-static int dsi_check_timings(struct omap_dss_device *dssdev,
+-			     struct drm_display_mode *mode)
+-{
+-	struct dsi_data *dsi = to_dsi_data(dssdev);
+-	struct dsi_clk_calc_ctx ctx;
+-	int r;
+-
+-	DSSDBG("dsi_check_timings\n");
+-
+-	mutex_lock(&dsi->lock);
+-	r = __dsi_calc_config(dsi, mode, &ctx);
+-	mutex_unlock(&dsi->lock);
+-
+-	return r;
+-}
+-
+-static int dsi_connect(struct omap_dss_device *src,
+-		       struct omap_dss_device *dst)
+-{
+-	return omapdss_device_connect(dst->dss, dst, dst->next);
+-}
+-
+-static void dsi_disconnect(struct omap_dss_device *src,
+-			   struct omap_dss_device *dst)
+-{
+-	omapdss_device_disconnect(dst, dst->next);
+-}
+-
+ static const struct omap_dss_device_ops dsi_ops = {
+-	.connect = dsi_connect,
+-	.disconnect = dsi_disconnect,
+-	.enable = dsi_enable_video_outputs,
+-	.disable = dsi_disable_video_outputs,
+-
+-	.check_timings = dsi_check_timings,
+-	.set_timings = dsi_set_timings,
+-
+ 	.dsi = {
+ 		.update = dsi_update_all,
+ 		.is_video_mode = dsi_is_video_mode,
+@@ -5394,6 +5356,79 @@ static const struct component_ops dsi_component_ops = {
+ 	.unbind	= dsi_unbind,
+ };
+ 
++/* -----------------------------------------------------------------------------
++ * DRM Bridge Operations
++ */
++
++static int dsi_bridge_attach(struct drm_bridge *bridge,
++			     enum drm_bridge_attach_flags flags)
++{
++	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
++
++	if (!(flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR))
++		return -EINVAL;
++
++	return drm_bridge_attach(bridge->encoder, dsi->output.next_bridge,
++				 bridge, flags);
++}
++
++static enum drm_mode_status
++dsi_bridge_mode_valid(struct drm_bridge *bridge,
++		      const struct drm_display_mode *mode)
++{
++	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
++	struct dsi_clk_calc_ctx ctx;
++	int r;
++
++	mutex_lock(&dsi->lock);
++	r = __dsi_calc_config(dsi, mode, &ctx);
++	mutex_unlock(&dsi->lock);
++
++	return r ? MODE_CLOCK_RANGE : MODE_OK;
++}
++
++static void dsi_bridge_mode_set(struct drm_bridge *bridge,
++				const struct drm_display_mode *mode,
++				const struct drm_display_mode *adjusted_mode)
++{
++	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
++	dsi_set_config(&dsi->output, adjusted_mode);
++}
++
++static void dsi_bridge_enable(struct drm_bridge *bridge)
++{
++	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
++	dsi_enable_video_outputs(&dsi->output);
++}
++
++static void dsi_bridge_disable(struct drm_bridge *bridge)
++{
++	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
++	dsi_disable_video_outputs(&dsi->output);
++}
++
++static const struct drm_bridge_funcs dsi_bridge_funcs = {
++	.attach = dsi_bridge_attach,
++	.mode_valid = dsi_bridge_mode_valid,
++	.mode_set = dsi_bridge_mode_set,
++	.enable = dsi_bridge_enable,
++	.disable = dsi_bridge_disable,
++};
++
++static void dsi_bridge_init(struct dsi_data *dsi)
++{
++	dsi->bridge.funcs = &dsi_bridge_funcs;
++	dsi->bridge.of_node = dsi->host.dev->of_node;
++	dsi->bridge.type = DRM_MODE_CONNECTOR_DSI;
++
++	drm_bridge_add(&dsi->bridge);
++}
++
++static void dsi_bridge_cleanup(struct dsi_data *dsi)
++{
++       drm_bridge_remove(&dsi->bridge);
++}
++
+ /* -----------------------------------------------------------------------------
+  * Probe & Remove, Suspend & Resume
+  */
+@@ -5403,6 +5438,8 @@ static int dsi_init_output(struct dsi_data *dsi)
+ 	struct omap_dss_device *out = &dsi->output;
+ 	int r;
+ 
++	dsi_bridge_init(dsi);
++
+ 	out->dev = dsi->dev;
+ 	out->id = dsi->module_id == 0 ?
+ 			OMAP_DSS_OUTPUT_DSI1 : OMAP_DSS_OUTPUT_DSI2;
+@@ -5417,9 +5454,11 @@ static int dsi_init_output(struct dsi_data *dsi)
+ 		       | DRM_BUS_FLAG_DE_HIGH
+ 		       | DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE;
+ 
+-	r = omapdss_device_init_output(out, NULL);
+-	if (r < 0)
++	r = omapdss_device_init_output(out, &dsi->bridge);
++	if (r < 0) {
++		dsi_bridge_cleanup(dsi);
+ 		return r;
++	}
+ 
+ 	omapdss_device_register(out);
+ 
+@@ -5432,6 +5471,7 @@ static void dsi_uninit_output(struct dsi_data *dsi)
+ 
+ 	omapdss_device_unregister(out);
+ 	omapdss_device_cleanup_output(out);
++	dsi_bridge_cleanup(dsi);
+ }
+ 
+ static int dsi_probe_of(struct dsi_data *dsi)
+-- 
+2.25.0
 
-For omap dm timer, the load_value that gets set in the current period, will be
-reflected only in next cycle, as timer counter has to overflow to load this
-value. But in case of match register(which determines the duty cycle), the timer
-counter is continuously matched to it. So below are the cases where a mixed
-period can happen:
-1) When signal is high and new match value is > current timer counter. Then the
-duty cycle gets reflected in the current cycle.(Duty_cycle for current period=
-new match value -  previous load  value).
-2) When signal is high and new match value is < current timer counter. Then the
-period and duty cycle for the current cycle gets effected as well. Because the
-signal is pulled down only when counter matches with match register, and this
-happens only in the next cycle(after timer counter overflows). Then:
-	- new Period for current cycle = (current period + new period)
-	- new duty cycle for current cycle =  (current period + new duty_cycle).
-
-I am able to observe the above mentioned 2 behaviors on the scope using beagle
-bone black. So the problem is with updating duty cycle when the signal is high.
-but when signal is low, nothing gets effected to the current cycle.
-
-How do you want to go about this? Should we describe this as limitation in the
-driver as you asked?
-
-Thanks and regards,
-Lokesh
