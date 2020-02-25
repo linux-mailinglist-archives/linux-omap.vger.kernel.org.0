@@ -2,262 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 244D016B637
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 01:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D500316B652
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 01:10:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728544AbgBYABZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Feb 2020 19:01:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36156 "EHLO mail.kernel.org"
+        id S1728087AbgBYAKP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Feb 2020 19:10:15 -0500
+Received: from muru.com ([72.249.23.125]:57406 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728575AbgBYABW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 24 Feb 2020 19:01:22 -0500
-Received: from earth.universe (unknown [185.62.205.105])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A5F5A2072D;
-        Tue, 25 Feb 2020 00:01:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582588881;
-        bh=jluxUBv9+cjF3wCqUPvR1vimx2eoMtB9rmGJYI2AvPE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JZbTebstxDYehh/J0ZxVs38nEQ7caIX7JcBoZYxeTaQM5E/AyfapG+f/oynD4xhIt
-         t41naCOncZWFKIKF79Bz4Ps6LH83tsHo0gWcDTBO6/s1B2usr8NJNwYXG2ZCHQJZe1
-         AJ4oyKT945w3JskqKmwNM7o7zqdQHppCPRxPh+NQ=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 3046B3C0C82; Tue, 25 Feb 2020 01:01:19 +0100 (CET)
-Date:   Tue, 25 Feb 2020 01:01:19 +0100
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
+        id S1728011AbgBYAKP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 24 Feb 2020 19:10:15 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 1D6CE8030;
+        Tue, 25 Feb 2020 00:10:59 +0000 (UTC)
+Date:   Mon, 24 Feb 2020 16:10:11 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
         Merlijn Wajer <merlijn@wizzup.org>,
         "H. Nikolaus Schaller" <hns@goldelico.com>,
         Rob Herring <robh@kernel.org>, linux-omap@vger.kernel.org,
         dri-devel@lists.freedesktop.org, kernel@collabora.com
-Subject: Re: [PATCHv2 01/56] ARM: dts: omap: add channel to DSI panels
-Message-ID: <20200225000119.ppcd2nflzgcyql7q@earth.universe>
+Subject: Re: [PATCHv2 00/56] drm/omap: Convert DSI code to use drm_mipi_dsi
+ and drm_panel
+Message-ID: <20200225001011.GF37466@atomide.com>
 References: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
- <20200224232126.3385250-2-sebastian.reichel@collabora.com>
- <20200224233821.GH16163@pendragon.ideasonboard.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tz6dm6ay5nxvlsju"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200224233821.GH16163@pendragon.ideasonboard.com>
+In-Reply-To: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Sebastian Reichel <sebastian.reichel@collabora.com> [200224 23:22]:
+> This updates the existing omapdrm DSI code, so that it uses
+> common drm_mipi_dsi API and drm_panel.
+> 
+> The patchset has been tested with Droid 4 using Linux console, X.org and
+> Weston. The patchset is based on Laurent Pinchartl's patch series [0]
+> and removes the last custom panel driver, so quite a few cleanups on the
+> omapdrm codebase were possible.
+> 
+> [0] [PATCH v7 00/54] drm/omap: Replace custom display drivers with drm_bridge and drm_panel
+>     https://lore.kernel.org/dri-devel/20200222150106.22919-1-laurent.pinchart@ideasonboard.com/
+>     git://linuxtv.org/pinchartl/media.git omapdrm/bridge/devel
+> 
+> I pushed this patchset into the following branch:
+> 
+> git://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-n900.git omapdrm/bridge/devel-with-dsi
 
---tz6dm6ay5nxvlsju
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I gave your omapdrm/bridge/devel-with-dsi branch a quirk test
+on droid4, but get the following oops with mostly modular
+omap2_defconfig.
 
-Hi Laurent,
+BTW, I think there's also some refcount issue in general where
+the omapdrm related modules cannot be unloaded any longer?
 
-On Tue, Feb 25, 2020 at 01:38:21AM +0200, Laurent Pinchart wrote:
-> Hi Sebastian,
->=20
-> Thank you for the patch.
->=20
-> On Tue, Feb 25, 2020 at 12:20:31AM +0100, Sebastian Reichel wrote:
-> > The standard binding for DSI requires, that the channel number
-> > of the panel is encoded in DT. This adds the channel number in
-> > all OMAP3-5 boards, in preparation for using common infrastructure.
-> >=20
-> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> > ---
-> >  .../devicetree/bindings/display/panel/panel-dsi-cm.txt      | 4 +++-
-> >  arch/arm/boot/dts/motorola-mapphone-common.dtsi             | 3 ++-
-> >  arch/arm/boot/dts/omap3-n950.dts                            | 3 ++-
-> >  arch/arm/boot/dts/omap3.dtsi                                | 3 +++
-> >  arch/arm/boot/dts/omap4-sdp.dts                             | 6 ++++--
-> >  arch/arm/boot/dts/omap4.dtsi                                | 6 ++++++
-> >  arch/arm/boot/dts/omap5.dtsi                                | 6 ++++++
-> >  7 files changed, 26 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/display/panel/panel-dsi-=
-cm.txt b/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
-> > index dce48eb9db57..f92d5c9adfc5 100644
-> > --- a/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
-> > +++ b/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
-> > @@ -3,6 +3,7 @@ Generic MIPI DSI Command Mode Panel
-> > =20
-> >  Required properties:
-> >  - compatible: "panel-dsi-cm"
-> > +- reg: DSI channel number
-> > =20
-> >  Optional properties:
-> >  - label: a symbolic name for the panel
-> > @@ -15,9 +16,10 @@ Required nodes:
-> >  Example
-> >  -------
-> > =20
-> > -lcd0: display {
-> > +lcd0: panel@0 {
-> >  	compatible =3D "tpo,taal", "panel-dsi-cm";
-> >  	label =3D "lcd0";
-> > +	reg =3D <0>;
-> > =20
-> >  	reset-gpios =3D <&gpio4 6 GPIO_ACTIVE_HIGH>;
-> > =20
->=20
-> While at it, how about converting this to yaml ?
+Regards,
 
-Ack. I was waiting for the dsi-controller YAML bindings to land,
-which has happened in the meantime. I think it's better to do
-this in a separate patch though, so that this one can easily be
-backported.
+Tony
 
--- Sebastian
-
-> > diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm=
-/boot/dts/motorola-mapphone-common.dtsi
-> > index 85665506f4f8..a5e4ba7c8dab 100644
-> > --- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-> > +++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-> > @@ -199,8 +199,9 @@ dsi1_out_ep: endpoint {
-> >  		};
-> >  	};
-> > =20
-> > -	lcd0: display {
-> > +	lcd0: panel@0 {
-> >  		compatible =3D "panel-dsi-cm";
-> > +		reg =3D <0>;
-> >  		label =3D "lcd0";
-> >  		vddi-supply =3D <&lcd_regulator>;
-> >  		reset-gpios =3D <&gpio4 5 GPIO_ACTIVE_HIGH>;	/* gpio101 */
-> > diff --git a/arch/arm/boot/dts/omap3-n950.dts b/arch/arm/boot/dts/omap3=
--n950.dts
-> > index 31d47a1fad84..80cf4e1177da 100644
-> > --- a/arch/arm/boot/dts/omap3-n950.dts
-> > +++ b/arch/arm/boot/dts/omap3-n950.dts
-> > @@ -225,8 +225,9 @@ dsi_out_ep: endpoint {
-> >  		};
-> >  	};
-> > =20
-> > -	lcd0: display {
-> > +	lcd0: panel@0 {
-> >  		compatible =3D "nokia,himalaya", "panel-dsi-cm";
-> > +		reg =3D <0>;
-> >  		label =3D "lcd0";
-> > =20
-> >  		pinctrl-names =3D "default";
-> > diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
-> > index 634ea16a711e..409d434a9b18 100644
-> > --- a/arch/arm/boot/dts/omap3.dtsi
-> > +++ b/arch/arm/boot/dts/omap3.dtsi
-> > @@ -820,6 +820,9 @@ dsi: encoder@4804fc00 {
-> >  				ti,hwmods =3D "dss_dsi1";
-> >  				clocks =3D <&dss1_alwon_fck>, <&dss2_alwon_fck>;
-> >  				clock-names =3D "fck", "sys_clk";
-> > +
-> > +				#address-cells =3D <1>;
-> > +				#size-cells =3D <0>;
-> >  			};
-> > =20
-> >  			rfbi: encoder@48050800 {
-> > diff --git a/arch/arm/boot/dts/omap4-sdp.dts b/arch/arm/boot/dts/omap4-=
-sdp.dts
-> > index 91480ac1f328..8a8307517dab 100644
-> > --- a/arch/arm/boot/dts/omap4-sdp.dts
-> > +++ b/arch/arm/boot/dts/omap4-sdp.dts
-> > @@ -662,8 +662,9 @@ dsi1_out_ep: endpoint {
-> >  		};
-> >  	};
-> > =20
-> > -	lcd0: display {
-> > +	lcd0: panel@0 {
-> >  		compatible =3D "tpo,taal", "panel-dsi-cm";
-> > +		reg =3D <0>;
-> >  		label =3D "lcd0";
-> > =20
-> >  		reset-gpios =3D <&gpio4 6 GPIO_ACTIVE_HIGH>;	/* 102 */
-> > @@ -687,8 +688,9 @@ dsi2_out_ep: endpoint {
-> >  		};
-> >  	};
-> > =20
-> > -	lcd1: display {
-> > +	lcd1: panel@0 {
-> >  		compatible =3D "tpo,taal", "panel-dsi-cm";
-> > +		reg =3D <0>;
-> >  		label =3D "lcd1";
-> > =20
-> >  		reset-gpios =3D <&gpio4 8 GPIO_ACTIVE_HIGH>;	/* 104 */
-> > diff --git a/arch/arm/boot/dts/omap4.dtsi b/arch/arm/boot/dts/omap4.dtsi
-> > index 9a87440d0b9d..a75734065cac 100644
-> > --- a/arch/arm/boot/dts/omap4.dtsi
-> > +++ b/arch/arm/boot/dts/omap4.dtsi
-> > @@ -465,6 +465,9 @@ dsi1: encoder@58004000 {
-> >  				clocks =3D <&l3_dss_clkctrl OMAP4_DSS_CORE_CLKCTRL 8>,
-> >  					 <&l3_dss_clkctrl OMAP4_DSS_CORE_CLKCTRL 10>;
-> >  				clock-names =3D "fck", "sys_clk";
-> > +
-> > +				#address-cells =3D <1>;
-> > +				#size-cells =3D <0>;
-> >  			};
-> > =20
-> >  			dsi2: encoder@58005000 {
-> > @@ -479,6 +482,9 @@ dsi2: encoder@58005000 {
-> >  				clocks =3D <&l3_dss_clkctrl OMAP4_DSS_CORE_CLKCTRL 8>,
-> >  					 <&l3_dss_clkctrl OMAP4_DSS_CORE_CLKCTRL 10>;
-> >  				clock-names =3D "fck", "sys_clk";
-> > +
-> > +				#address-cells =3D <1>;
-> > +				#size-cells =3D <0>;
-> >  			};
-> > =20
-> >  			hdmi: encoder@58006000 {
-> > diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
-> > index d0ecf54d5a23..5c7462e04716 100644
-> > --- a/arch/arm/boot/dts/omap5.dtsi
-> > +++ b/arch/arm/boot/dts/omap5.dtsi
-> > @@ -333,6 +333,9 @@ dsi1: encoder@58004000 {
-> >  				clocks =3D <&dss_clkctrl OMAP5_DSS_CORE_CLKCTRL 8>,
-> >  					 <&dss_clkctrl OMAP5_DSS_CORE_CLKCTRL 10>;
-> >  				clock-names =3D "fck", "sys_clk";
-> > +
-> > +				#address-cells =3D <1>;
-> > +				#size-cells =3D <0>;
-> >  			};
-> > =20
-> >  			dsi2: encoder@58005000 {
-> > @@ -347,6 +350,9 @@ dsi2: encoder@58005000 {
-> >  				clocks =3D <&dss_clkctrl OMAP5_DSS_CORE_CLKCTRL 8>,
-> >  					 <&dss_clkctrl OMAP5_DSS_CORE_CLKCTRL 10>;
-> >  				clock-names =3D "fck", "sys_clk";
-> > +
-> > +				#address-cells =3D <1>;
-> > +				#size-cells =3D <0>;
-> >  			};
-> > =20
-> >  			hdmi: encoder@58060000 {
->=20
-> --=20
-> Regards,
->=20
-> Laurent Pinchart
-
---tz6dm6ay5nxvlsju
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5UY88ACgkQ2O7X88g7
-+pooSw//bHHvPnTNOJbPV6c5mY/sTD2UQo1wTM9ODddh6j5brkJ7C0A2LmCzXDRo
-VLr7CeO3Keo6LRIisno2OAhYRZldph/YdrdOn3obdw/8XuDdXJ9sqUVj0CMlMbZF
-pJWETB3gi5b/XeeRewOG+AQR+0YxsxFoVNwEEc8LukG1ZeukRrsUiDqrovI/ah1R
-fnfc8bUQXAxbXi+F3YdT5poaN0v/yBHTOyYXgazqoi4be/csMnwtSHdi0c+TbEhf
-g6QfBdbX27V2Kc/RZZCcfN1HtK1zH0tE15hDXXeFDluAq+/CWl0sgfGpknandxoY
-qCACc4deg8CRphmDn5PVXp47Glm31JmqBcKPp1Zqgs7Usizk7H6n8PUMzXJKxSty
-cwrXaaOnrJYQs0WBbf5X/cbF8Te1tUdJxIyMzPBKcFjiHj6fj9Rjq1bGY/z9s6rA
-BZLyjWD4jdx2RHmNNzzhkI8H0LJR8eJNIW070qLIJaawrtisfexC1NNYhW8wg7Od
-j9MHEQRCPJ5rTR6Nnou7NbkDaccxEA2Q5zsqTf/GZlScgjJNzFjmmCp61vinMctg
-XydGg+T+M8Ag+9bd4yJrS/7AISBGyl84rNVQo2fGacyds5DcsYtONy6nRxcAnzk8
-B2352jK93n8rbPb/0YalqYVAoClKxzKwVRx6KY5enarMgwmQCUo=
-=Oz7S
------END PGP SIGNATURE-----
-
---tz6dm6ay5nxvlsju--
+8< -------------------------
+Internal error: Oops: 805 [#1] PREEMPT SMP ARM
+Modules linked in: omapdss(+) omapdss_base drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops drm drm_panel_ors
+CPU: 0 PID: 811 Comm: modprobe Not tainted 5.6.0-rc2-00376-g163017c12d62a #1926
+Hardware name: Generic OMAP4 (Flattened Device Tree)
+PC is at drm_bridge_remove+0x24/0x40 [drm]
+LR is at drm_bridge_remove+0x14/0x40 [drm]
+pc : [<bf2a0cb4>]    lr : [<bf2a0ca4>]    psr: 60000013
+sp : edc6fc88  ip : eda3a100  fp : bf38a5b4
+r10: bf38c7d0  r9 : edc164b8  r8 : edc1606c
+r7 : edc1647c  r6 : edc93010  r5 : bf2dc428  r4 : edc164b8
+r3 : edc164fc  r2 : 00000000  r1 : 00000000  r0 : bf2dc428
+Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
+Control: 10c5387d  Table: adc7404a  DAC: 00000051
+Process modprobe (pid: 811, stack limit = 0x(ptrval))
+Stack: (0xedc6fc88 to 0xedc70000)
+fc80:                   edc16040 fffffdfb edc93010 bf37dfd0 00000080 edc2eb00
+fca0: edc16040 edc93010 edc93010 00000000 bf392178 00000000 00000000 bf392178
+fcc0: 0000001e c0624424 edc93010 c0efafa0 c0efafa4 00000000 00000000 c06222e4
+fce0: edc93010 bf392178 bf392178 c0622880 c06243a0 c06243dc c0e93210 c06225cc
+fd00: bf38c450 a0000013 bf38a5b4 edc93010 00000000 bf392178 c0622880 c06243a0
+fd20: c06243dc c0622878 00000000 bf392178 edc93010 c06228d8 edc94fb4 edc6e000
+fd40: bf392178 c062069c edc50eb8 ee8dae58 edc94fb4 d759a07d ee8dae6c bf392178
+fd60: edc50e80 c0e93210 00000000 c0621618 bf38f0c0 bf3922c0 00000006 bf392178
+fd80: bf3922c0 00000006 c0623db0 c062344c 00000002 bf3922c0 00000006 c06244fc
+fda0: bf38a5b0 bf38a5a8 000be666 c0ec0540 bf39a000 00000000 bf392308 00000002
+fdc0: edc2c300 c01dc694 edc6ff30 c0102fec c0ebbcf4 00000000 00000cc0 c0d75a70
+fde0: edc2c2c0 c02b4538 c0d75a70 a0000013 a0000013 00000008 c01de5bc 00000002
+fe00: 00000001 c01dc694 edc6ff30 d759a07d edbe7400 bf3922c0 00000002 d759a07d
+fe20: bf392308 bf3922c0 edbe7400 edc2c2c0 bf392308 c01de5f8 00000002 edc2c2c0
+fe40: bf3922c0 00000002 edc2c2c0 c01e0b1c bf3922cc 00007fff bf3922c0 c01dd34c
+fe60: bf3a44ee 004c1a8f bf3922c0 bf3923d4 bf3924b8 c0a05fa8 00000000 bf38d075
+fe80: 00000001 00000000 c0bddd78 c0bc76d8 bf38a03c 00000002 00000000 00000000
+fea0: 00000000 00000000 6e72656b 00006c65 00000000 00000000 00000000 00000000
+fec0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+fee0: 00000000 d759a07d 7fffffff edc6e000 00000000 00000003 004c1a8f 7fffffff
+ff00: 00000000 0000017b 004d56a0 c01e1050 7fffffff 00000000 00000003 c093c724
+ff20: 00000002 f1370000 000e3464 00000000 f138b0c6 f138f3c0 f1370000 000e3464
+ff40: f1452a3c f14527a4 f1425e58 00022000 00025680 0000a084 00027a0b 00000000
+ff60: 00000000 00000000 0000a074 0000003e 0000003f 00000021 00000025 00000018
+ff80: 00000000 d759a07d 004dcb80 64a54c46 b6f6a510 0000017b 0000017b c0101204
+ffa0: edc6e000 c0101000 64a54c46 b6f6a510 00000003 004c1a8f 00000000 004dcb80
+ffc0: 64a54c46 b6f6a510 0000017b 0000017b 004dcb80 00000001 00000000 004d56a0
+ffe0: 004dcb80 bea7ba90 0043d1a9 b6f1d0b8 60000030 00000003 00000000 00000000
+[<bf2a0cb4>] (drm_bridge_remove [drm]) from [<bf37dfd0>] (dsi_probe+0x3ac/0x55c [omapdss])
+[<bf37dfd0>] (dsi_probe [omapdss]) from [<c0624424>] (platform_drv_probe+0x48/0x98)
+[<c0624424>] (platform_drv_probe) from [<c06222e4>] (really_probe+0x1dc/0x340)
+[<c06222e4>] (really_probe) from [<c06225cc>] (driver_probe_device+0x5c/0x160)
+[<c06225cc>] (driver_probe_device) from [<c0622878>] (device_driver_attach+0x58/0x60)
+[<c0622878>] (device_driver_attach) from [<c06228d8>] (__driver_attach+0x58/0xcc)
+[<c06228d8>] (__driver_attach) from [<c062069c>] (bus_for_each_dev+0x78/0xb8)
+[<c062069c>] (bus_for_each_dev) from [<c0621618>] (bus_add_driver+0xf0/0x1d4)
+[<c0621618>] (bus_add_driver) from [<c062344c>] (driver_register+0x74/0x108)
+[<c062344c>] (driver_register) from [<c06244fc>] (__platform_register_drivers+0x54/0xd0)
+[<c06244fc>] (__platform_register_drivers) from [<c0102fec>] (do_one_initcall+0x44/0x2a8)
+[<c0102fec>] (do_one_initcall) from [<c01de5f8>] (do_init_module+0x5c/0x234)
+[<c01de5f8>] (do_init_module) from [<c01e0b1c>] (load_module+0x22c4/0x2580)
+[<c01e0b1c>] (load_module) from [<c01e1050>] (sys_finit_module+0xc4/0xe0)
+[<c01e1050>] (sys_finit_module) from [<c0101000>] (ret_fast_syscall+0x0/0x54)
+Exception stack(0xedc6ffa8 to 0xedc6fff0)
+ffa0:                   64a54c46 b6f6a510 00000003 004c1a8f 00000000 004dcb80
+ffc0: 64a54c46 b6f6a510 0000017b 0000017b 004dcb80 00000001 00000000 004d56a0
+ffe0: 004dcb80 bea7ba90 0043d1a9 b6f1d0b8
+Code: e5942048 e5941044 e2843044 e1a00005 (e5812004)
+---[ end trace 6213ab3cbabf9f59 ]---
