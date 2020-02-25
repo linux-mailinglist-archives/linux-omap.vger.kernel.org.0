@@ -2,122 +2,262 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAC9D16BBF4
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 09:38:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14C7016BC5B
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Feb 2020 09:51:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729106AbgBYIit (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Feb 2020 03:38:49 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:38857 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725783AbgBYIit (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Feb 2020 03:38:49 -0500
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1j6Vjs-0003He-0o; Tue, 25 Feb 2020 09:38:48 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1j6Vjq-00021D-FT; Tue, 25 Feb 2020 09:38:46 +0100
-Date:   Tue, 25 Feb 2020 09:38:46 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Lokesh Vutla <lokeshvutla@ti.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        id S1729605AbgBYIvx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 Feb 2020 03:51:53 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:46386 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729205AbgBYIvx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Feb 2020 03:51:53 -0500
+Received: by mail-lj1-f193.google.com with SMTP id x14so13060855ljd.13;
+        Tue, 25 Feb 2020 00:51:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=Kvje0WIw7KFHi5eXdBrKsbSHw9Uloy6b5E6xrY+Sd2Y=;
+        b=lRZUa9Kb6gO9KF75mdpX7XpLp+8KEQbH5WR5dCLu1CfYrlcEVvM8YADmF8ZWof/2dP
+         10Ah5WEbHcUsbdrJdYciM/+1l7OwzEy5yXTPvSolOkqcBQx5hUex9Cj63dYsdxeLT2eM
+         IL4FZ46crP4nSXLU8sSgNyR2ORpn1LQq6ktr2rQ/o2h4ObbkzkvodxeGAbVDDckVqPj9
+         FD67Wxq2Qd4gvVx8e48XY6k6CpEMNXQTx00/CsRuLglyBGqH88kOPumcgDDikGhP0VR0
+         CNu3/eGaBHunSG5YFFeLLsPe3xH+KTafSFcr0MKScRGztTJydOT1InngEtDeBldVJbOV
+         dDtw==
+X-Gm-Message-State: APjAAAXwk55lA7FELf0qPU7ACsTgQompkxs8b4cy4FpOT9zlind2r+iQ
+        FFCY0PhZibYwf8qqGaSmU6U=
+X-Google-Smtp-Source: APXvYqz7uZdBXFV64Wz9Uhk6CHJuqHjdgYBSYtnPSe438XEGhZW7urMt4TKhbEmaDjed40LoEOMtSQ==
+X-Received: by 2002:a2e:9d0f:: with SMTP id t15mr32683526lji.171.1582620710301;
+        Tue, 25 Feb 2020 00:51:50 -0800 (PST)
+Received: from localhost.localdomain ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id q10sm7408725ljj.60.2020.02.25.00.51.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2020 00:51:49 -0800 (PST)
+Date:   Tue, 25 Feb 2020 10:51:36 +0200
+From:   Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+To:     matti.vaittinen@fi.rohmeurope.com, mazziesaccount@gmail.com
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Andrei Stefanescu <andrei.stefanescu@microchip.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>, kernel@pengutronix.de
-Subject: Re: [PATCH 3/4] pwm: omap-dmtimer: Do not disable pwm before
- changing period/duty_cycle
-Message-ID: <20200225083846.4l4tnbjcpm6uggtl@pengutronix.de>
-References: <20200224052135.17278-1-lokeshvutla@ti.com>
- <20200224052135.17278-4-lokeshvutla@ti.com>
- <20200224085531.zab5ewr2nfi2shem@pengutronix.de>
- <4aedb6d4-1823-ab46-b7e6-cc0b30f7747d@ti.com>
- <20200225064833.kmvaplfqqf53s3iy@pengutronix.de>
- <8e22912c-a65f-9efe-27e7-555cd144776f@ti.com>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Sangbeom Kim <sbkim73@samsung.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        linux-pm@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Markus Laine <markus.laine@fi.rohmeurope.com>,
+        Mikko Mutanen <mikko.mutanen@fi.rohmeurope.com>
+Subject: [PATCH v4 0/9] Support ROHM BD99954 charger IC
+Message-ID: <cover.1582617178.git.matti.vaittinen@fi.rohmeurope.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8e22912c-a65f-9efe-27e7-555cd144776f@ti.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello Lokesh,
+Support ROHM BD99954 Battery Management IC
 
-On Tue, Feb 25, 2020 at 01:29:57PM +0530, Lokesh Vutla wrote:
-> On 25/02/20 12:18 PM, Uwe Kleine-König wrote:
-> > On Tue, Feb 25, 2020 at 10:32:42AM +0530, Lokesh Vutla wrote:
-> >> On 24/02/20 2:25 PM, Uwe Kleine-König wrote:
-> >>> On Mon, Feb 24, 2020 at 10:51:34AM +0530, Lokesh Vutla wrote:
-> >>>>  	omap->pdata->set_load(omap->dm_timer, true, load_value);
-> >>>>  	omap->pdata->set_match(omap->dm_timer, true, match_value);
-> >>>
-> >>> (Without having looked into the depths of the driver I assume
-> >>> .set_load() sets the period of the PWM and .set_match() the duty cycle.)
-> >>
-> >> Right.
-> >>
-> >>>
-> >>> What happens on a running PWM if you change the period? Consider you
-> >>> change from duty_cycle = 1000, period = 5000 to duty_cycle = 4000,
-> >>> period = 10000. As you set the period first, can it happen the hardware
-> >>> produces a cycle with duty_cycle = 1000, period = 10000?
-> >>
-> >> No. So, the current cycle is un affected with duty_cycle = 1000 and period =
-> >> 5000. Starting from next cycle new settings gets reflected with duty_cycle =
-> >> 4000 and period = 10000.
-> > 
-> > Is the reference manual for this hardware publically available?
-> 
-> AM335x TRM [0] Section 20.1.3.5 Pulse-Width Modulation (Page 4445).
-> 
-> [0] http://www.ti.com/lit/ug/spruh73q/spruh73q.pdf
+ROHM BD99954 is a Battery Management IC for 1-4 cell Lithium-Ion
+secondary battery. BD99954 is intended to be used in space-constraint
+equipment such as Low profile Notebook PC, Tablets and other
+applications.
 
-Great. This is BTW an opportunity to increase your patch count: Create a
-patch that adds a reference to this document at the top of the driver.
+Series extracts a "linear ranges" helper out of the regulator
+framework. Linear ranges helper is intended to help converting
+real-world values to register values when conversion is linear. I
+suspect this is useful also for power subsystem and possibly for clk.
 
-> > So the .set_load callback just writes a shadow register and .set_match
-> > latches it into hardware atomically with its own register changes? A
-> > comment in the source code about this would be good. Also if .set_load
-> > doesn't work without .set_match I wonder if it is sane to put their
-> > logic in two different functions.
-> 
-> Just to give a little bit of background:
+This version of series introduces new battry DT binding entries and
+adds the parsing in power_supply_get_battery_info().
 
-Thanks, very appreciated.
+Please note that regulator drivers have been compile tested (but not
+linked) after patch 5.
 
-> - The omap timer is an upward counter that can be started and stopped at any time.
-> - Once the timer counter overflows, it gets loaded with a predefined load
-> value.(Or can be configured to not re load at all).
-> - Timer has a configurable output pin which can be toggled in the following two
-> cases:
-> 	- When the counter overflows
-> 	- When the counter matches with a predefined register(match register).
-> 
-> Using this o/p pin the driver tries to generate a PWM with period = (OVERFLOW -
-> LOAD_VALUE) and duty_cycle = (MATCH_VALUE - LOAD_VALUE).
-> 
-> .set_load will configure the load value .set_match will configure the match
-> value. The configured values gets effected only in the next cycle of PWM.
+Please also note that only the BD71847 based regulator testing has
+been performed after the patch 6 - all testing is highly appreciated.
 
-Ah, so back to my original question: If you change from
-duty_cycle/period = 1000/5000 to duty_cycle/period = 4000/10000 and
-after you set the period but before you set the duty_cycle a period
-happens to end, you get indeed a cycle with mixed settings, right?
+Changelog v4:
+ generic:
+   - rebase and drop RFC.
+ DT-bindings:
+   - add I2C node address-cells and size-cells to fix yaml check errors
+   - uncomment multipleOf:
+ bd70528:
+   - add patch which renames driver internal linear_range struct to
+     avoid collision when regulator/driver.h (which gets included from
+     rohm generic header) introduces the linear_range struct.
+ regulators:
+   - rebase to v5.6-rc2 and convert also the two newly introduced
+     drivers to use linear_range struct instead of
+     regulator_linear_range.
+ linear_ranges:
+   - Fix kerneldoc.
 
-Best regards
-Uwe
+Changelog RFC-v3:
+ DT-bindings:
+   - fix the BD99954 binding (the *-microvolt Vs. *-microvolts issue is
+     still there. Not sure which one is correct)
+   - renabe tricklecharge-* binding to trickle-charge-* as suggested by
+     Rob.
+ - drop the linear-ranges helper which was written for BD70528 and
+   extract the linear-range code from regulator framework instead.
+ - refactor regulator framework to utilize extracted linear-ranges
+   code.
+ - change the struct regulator_linear_range to linear_range from
+   regulator drivers.
+ - refactor BD70528 to use regulator framework originated
+   linear-ranges code.
+ - change BD99954 to use linear-ranges code from regulator framework
+
+Changelog RFC-v2:
+ DT-bindings:
+   - Used the battery parameters described in battery.txt
+   - Added few new parameters to battery.txt
+   - Added ASCII art charging profile chart for BD99954 to explain
+     states and limits.
+ Linear ranges:
+   - Fixed division by zero error from linear-ranges code if step 0 is
+     used.
+ Power-supply core:
+   - Added parsing of new battery parameters.
+ BD99954 driver:
+   - converted to use battery parameters from battery node
+   - Added step 0 ranges for reg values which do not change voltage
+   - added dt-node to psy-config
+
+Patch 1:
+	DT binding docs for the new battery parameters
+Patch 2:
+	BD99954 charger DT binding docs
+Patch 3:
+	Linear ranges helpers
+Patch 4:
+	Rename driver internal struct linear_range from bd70528-power
+Patch 5:
+	Rename struct regulator_linear_range to struct linear_range and
+	convert regulator drivers to use renamed struct
+Patch 6:
+	Use linear-ranges helpers in regulator framework
+Patch 7:
+	Use linear-ranges helpers in bd70528 driver
+Patch 8:
+	Parsing of new battery parameters
+Patch 9:
+	ROHM BD99954 charger IC driver
+
+---
+
+Matti Vaittinen (9):
+  dt-bindings: battery: add new battery parameters
+  dt_bindings: ROHM BD99954 Charger
+  drivers: base: add linear ranges helpers
+  power: supply: bd70528: rename linear_range to avoid collision
+  regulator: rename regulator_linear_range to linear_range
+  regulator: use linear_ranges helper
+  power: supply: bd70528: use linear ranges
+  power: supply: add battery parameters
+  power: supply: Support ROHM bd99954 charger
+
+ .../bindings/power/supply/battery.txt         |    6 +
+ .../bindings/power/supply/rohm,bd9995x.yaml   |  155 +++
+ drivers/base/Kconfig                          |    3 +
+ drivers/base/Makefile                         |    1 +
+ drivers/base/linear_ranges.c                  |  246 ++++
+ drivers/power/supply/Kconfig                  |   11 +
+ drivers/power/supply/Makefile                 |    1 +
+ drivers/power/supply/bd70528-charger.c        |  140 +-
+ drivers/power/supply/bd99954-charger.c        | 1171 +++++++++++++++++
+ drivers/power/supply/power_supply_core.c      |    8 +
+ drivers/regulator/88pg86x.c                   |    4 +-
+ drivers/regulator/88pm800-regulator.c         |    4 +-
+ drivers/regulator/Kconfig                     |    1 +
+ drivers/regulator/act8865-regulator.c         |    4 +-
+ drivers/regulator/act8945a-regulator.c        |    2 +-
+ drivers/regulator/arizona-ldo1.c              |    2 +-
+ drivers/regulator/arizona-micsupp.c           |    4 +-
+ drivers/regulator/as3711-regulator.c          |    6 +-
+ drivers/regulator/as3722-regulator.c          |    4 +-
+ drivers/regulator/axp20x-regulator.c          |   16 +-
+ drivers/regulator/bcm590xx-regulator.c        |    8 +-
+ drivers/regulator/bd70528-regulator.c         |    8 +-
+ drivers/regulator/bd71828-regulator.c         |   10 +-
+ drivers/regulator/bd718x7-regulator.c         |   26 +-
+ drivers/regulator/da903x.c                    |    2 +-
+ drivers/regulator/helpers.c                   |  130 +-
+ drivers/regulator/hi6421-regulator.c          |    4 +-
+ drivers/regulator/lochnagar-regulator.c       |    4 +-
+ drivers/regulator/lp873x-regulator.c          |    4 +-
+ drivers/regulator/lp87565-regulator.c         |    2 +-
+ drivers/regulator/lp8788-buck.c               |    2 +-
+ drivers/regulator/max77650-regulator.c        |    2 +-
+ drivers/regulator/mcp16502.c                  |    4 +-
+ drivers/regulator/mp8859.c                    |    2 +-
+ drivers/regulator/mt6323-regulator.c          |    6 +-
+ drivers/regulator/mt6358-regulator.c          |    8 +-
+ drivers/regulator/mt6380-regulator.c          |    6 +-
+ drivers/regulator/mt6397-regulator.c          |    6 +-
+ drivers/regulator/palmas-regulator.c          |    4 +-
+ drivers/regulator/qcom-rpmh-regulator.c       |    2 +-
+ drivers/regulator/qcom_rpm-regulator.c        |   14 +-
+ drivers/regulator/qcom_smd-regulator.c        |   70 +-
+ drivers/regulator/rk808-regulator.c           |   10 +-
+ drivers/regulator/s2mps11.c                   |   14 +-
+ drivers/regulator/sky81452-regulator.c        |    2 +-
+ drivers/regulator/stpmic1_regulator.c         |   18 +-
+ drivers/regulator/tps65086-regulator.c        |   10 +-
+ drivers/regulator/tps65217-regulator.c        |    4 +-
+ drivers/regulator/tps65218-regulator.c        |    6 +-
+ drivers/regulator/tps65912-regulator.c        |    4 +-
+ drivers/regulator/twl-regulator.c             |    4 +-
+ drivers/regulator/twl6030-regulator.c         |    2 +-
+ drivers/regulator/wm831x-dcdc.c               |    2 +-
+ drivers/regulator/wm831x-ldo.c                |    4 +-
+ drivers/regulator/wm8350-regulator.c          |    2 +-
+ drivers/regulator/wm8400-regulator.c          |    2 +-
+ include/linux/linear_range.h                  |   48 +
+ include/linux/power/bd99954-charger.h         | 1075 +++++++++++++++
+ include/linux/power_supply.h                  |    4 +
+ include/linux/regulator/driver.h              |   27 +-
+ 60 files changed, 3007 insertions(+), 344 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/power/supply/rohm,bd9995x.yaml
+ create mode 100644 drivers/base/linear_ranges.c
+ create mode 100644 drivers/power/supply/bd99954-charger.c
+ create mode 100644 include/linux/linear_range.h
+ create mode 100644 include/linux/power/bd99954-charger.h
+
+
+base-commit 11a48a5a18c6 ("Linux 5.6-rc2")
+-- 
+2.21.0
+
 
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =] 
