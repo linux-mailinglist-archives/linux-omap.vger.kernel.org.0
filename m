@@ -2,115 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B9B3170B82
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 23:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8308170BA8
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 23:37:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727746AbgBZWZj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Feb 2020 17:25:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36792 "EHLO mail.kernel.org"
+        id S1727815AbgBZWht (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Feb 2020 17:37:49 -0500
+Received: from muru.com ([72.249.23.125]:57914 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727709AbgBZWZi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 26 Feb 2020 17:25:38 -0500
-Received: from earth.universe (unknown [185.62.205.105])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BA16924656;
-        Wed, 26 Feb 2020 22:25:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582755937;
-        bh=igfHD7faK6qtj0Bem9+JCiVb5arncfdfkwjHeRmHj0U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GCJAiicAvbMM7NH61BAA0jTrFbOCRpyMaXiivMJ+9WKNJe0vBk/zmXZXEJ3d6CqLf
-         zG1YkiiOdIxyVIWRUVNjOeFlBxbcPi1mp1oZ0BovXXBB0Gleq9L1G4OV69yVL9nLAc
-         ozlvO1QPLxFS3kOmPiAXrZhRy23G+oUFJxcVz8kM=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 480473C0C83; Wed, 26 Feb 2020 23:25:35 +0100 (CET)
-Date:   Wed, 26 Feb 2020 23:25:35 +0100
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Rob Herring <robh@kernel.org>, linux-omap@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, kernel@collabora.com
-Subject: Re: [PATCHv2 04/56] omap/drm: drop unused dsi.configure_pins
-Message-ID: <20200226222535.7lk2br3ccuzlrj5q@earth.universe>
-References: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
- <20200224232126.3385250-5-sebastian.reichel@collabora.com>
- <20200224234249.GI16163@pendragon.ideasonboard.com>
- <20200226212819.6d3sm4uor6xsgxsw@earth.universe>
- <20200226213630.GH4770@pendragon.ideasonboard.com>
+        id S1727709AbgBZWhs (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 26 Feb 2020 17:37:48 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 0FC8D8022;
+        Wed, 26 Feb 2020 22:38:32 +0000 (UTC)
+Date:   Wed, 26 Feb 2020 14:37:45 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 06/12] ARM: dts: am335x-bone-common: Enable PRU-ICSS
+ interconnect node
+Message-ID: <20200226223745.GA37466@atomide.com>
+References: <20200225204649.28220-1-s-anna@ti.com>
+ <20200225204649.28220-7-s-anna@ti.com>
+ <20200226182924.GU37466@atomide.com>
+ <af3965db-54b2-3e4f-414f-d27ca4b5ced1@ti.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zwsdibeujo5o6odi"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200226213630.GH4770@pendragon.ideasonboard.com>
+In-Reply-To: <af3965db-54b2-3e4f-414f-d27ca4b5ced1@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Suman Anna <s-anna@ti.com> [200226 20:35]:
+> On 2/26/20 12:29 PM, Tony Lindgren wrote:
+> > * Suman Anna <s-anna@ti.com> [200225 20:47]:
+> >> The PRU-ICSS target module node was left in disabled state in the base
+> >> am33xx-l4.dtsi file. Enable this node on all the AM335x beaglebone
+> >> boards as they mostly use a AM3358 or a AM3359 SoC which do contain
+> >> the PRU-ICSS IP.
+> > 
+> > Just get rid of the top level status = "disabled". The default
+> > is enabled, and the device is there for sure inside the SoC.
+> > And then there's no need for pointless status = "okay" tinkering
+> > in the board specific dts files so no need for this patch.
+> 
+> The IP is not available on all SoCs, and there are about 40 different
+> board files atm across AM33xx and AM437x, and am not sure what SoCs they
+> are actually using.
 
---zwsdibeujo5o6odi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh that issue again.. Maybe take a look at patch "[PATCH 2/3] bus: ti-sysc:
+Detect display subsystem related devices" if you can add runtime
+detection for the accelerators there similar to what I hadded for omap3.
+acclerators.
 
-Hi Laurent,
+Regards,
 
-On Wed, Feb 26, 2020 at 11:36:30PM +0200, Laurent Pinchart wrote:
-> > > I think you can drop the definition of the omap_dsi_pin_config struct=
-ure
-> > > earlier in this file too, as well as the OMAP_DSS_MAX_DSI_PINS macro.
-> > > With this fixed,
-> >=20
-> > No, the struct is still used by the code setting up the pins from
-> > DT.
->=20
-> Indeed, my bad. I think I'd pass the unsigned int num_pins and const int
-> *pins to dsi_configure_pins() directly to drop the structure, but that
-> can be done in a subsequent patch (maybe it is already :-)).
-
-I added quite some cleanups at the end of the series, but there is
-still quite a few cleanups possible within the DSI encoder
-(including this one). Cleaning up dsi.c takes some time and rebasing
-this code gets annoying.
-
-After this series the cleanups mostly are internal to dsi.c and
-should reduce merge conflict probability.  Also I feel a bit
-uncomfortable, since we currently have no DSI video mode user.
-Nikolaus Schaller is working on adding support for such a system, so
-it would be nice to get that supported first making it possible to
-do easy bisecting for issues introduced by refactoring. (This is not
-specifically about dsi_configure_pins of course)
-
-> > > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->=20
-> This tag holds.
-
-Thanks.
-
--- Sebastian
-
---zwsdibeujo5o6odi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5W8FwACgkQ2O7X88g7
-+poALxAAh6eJfUzRzPfAYGt0TnDZ+b51XydSJGHxkini56T53mK3FfjW7prwQihX
-5shPu/gIE0gVS07C7wNpInEXfhKjVdPbPRsYrnGGlVEk+tU6O8FHdU7qITRWAZFe
-HGfptvs/sDaXMIenyLN8H28lrQRmbQPdUvD429naidtbLZPWk+n3QyPqIxvatMdm
-4aLZNmmcNdmm8Nt36U5I9h2aicWTNixQtEQIJQ41X0eU/VWrrcWEpZXQoRAChYEy
-EASFBSC7S1hI69qMdV+lqH4J2F9O9OR5lA3RQr+vURAdfzVbbp8txAX5UufbxP1A
-wABpg36HjpsubCrd0y+Uru8oIk0SXeZQryFAeDC/FSpCupuYLpELsUG6lCt9EKZ8
-o9w94Zf3bNafFKMKlF/r5cD9Z4objq3uTZEwPt69ad1ayB9TWJO50KgVmpuz6o3/
-xbprhuGNiogifXc5IZumjeHhT6+/ePm/TKL3KGrwENLAZ00lJK+PDGuvALIIKxMo
-JcGjrJIndC/7djEdK09KQSz69smRaSILr9cP3TE6UU723TPatTIeJEjgD9+wMuOE
-e49Qvwhu/Y7rDI3QqkGNHQsuaGTaquwdbJ6g1NnQXWGJrqKWBPhGTU6ih4gKXJoo
-GEWWkKhmvKUYT9iWw8u8gibzMG6cMBSSWzZTWS/YHzqneNNJ/QY=
-=Puod
------END PGP SIGNATURE-----
-
---zwsdibeujo5o6odi--
+Tony
