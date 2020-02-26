@@ -2,113 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C5CE16F9E6
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 09:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CC3216F9F7
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 09:50:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727339AbgBZInB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Feb 2020 03:43:01 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:58810 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725872AbgBZInA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Feb 2020 03:43:00 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01Q8gwVW092872;
-        Wed, 26 Feb 2020 02:42:58 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1582706578;
-        bh=fbCYjN5xQhrCGo+fxGqzm3lDzWo/n0qXKgvniwZl8JU=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=E/4gv4fdmC2c1rMJduSHT8cUhu8huepnhandJQh4AMhcUv/BZe76TNVfw25RG3GDM
-         PXy/znwbYcN7Te7yGh20fuiwJVtp2W36KlMD14lLdAYmBliH5UkcNW7jA8ZGcUdsQO
-         REc6L0rz3hG8Rb55L6kcqRD+tV3w8HJHam5Ao5/4=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01Q8gwUQ003311;
-        Wed, 26 Feb 2020 02:42:58 -0600
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 26
- Feb 2020 02:42:57 -0600
-Received: from localhost.localdomain (10.64.41.19) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 26 Feb 2020 02:42:57 -0600
-Received: from [192.168.2.14] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by localhost.localdomain (8.15.2/8.15.2) with ESMTP id 01Q8gt8r058762;
-        Wed, 26 Feb 2020 02:42:56 -0600
-Subject: Re: [PATCH 01/12] dt-bindings: bus: ti-sysc: Add support for PRUSS
- SYSC type
-To:     Suman Anna <s-anna@ti.com>, Tony Lindgren <tony@atomide.com>
-CC:     Tero Kristo <t-kristo@ti.com>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-References: <20200225204649.28220-1-s-anna@ti.com>
- <20200225204649.28220-2-s-anna@ti.com>
-From:   Roger Quadros <rogerq@ti.com>
-Message-ID: <96ec493b-3615-e84d-ba30-cabbf750c874@ti.com>
-Date:   Wed, 26 Feb 2020 10:42:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1727335AbgBZIuj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Feb 2020 03:50:39 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:51121 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726408AbgBZIuj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Feb 2020 03:50:39 -0500
+Received: by mail-wm1-f67.google.com with SMTP id a5so2018434wmb.0
+        for <linux-omap@vger.kernel.org>; Wed, 26 Feb 2020 00:50:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=MKIikjrWAh3ZaV9e3QCweJwY98iejyVof89XU+edArg=;
+        b=LJ2xH127sLByQfhY8qMhzSJKbksxahprKmbpdqbGXuyF2vLbOLko8jIkVSDtmk1YdO
+         ziJzMdASMxG92+V0rrM7ujqymd+ESwXcm9tL1/h4PkQn8MalTwPEYjkQUXC3XsAIospc
+         R7ectLOaxHMnGvvIZClfsA5wFhDFZWhCf7FAino9V7frY8G6Gldxay72X8pBNaHqNujv
+         yVtvhNDy+lWlC7btU1HOXWxelk4p4nVwkctO9zELLr9HUektZFhSNt24FtzCNhKvfIPN
+         QmyFUJrvFrYw0FMScekIzWgRTpO+JTM+/panRDL/JfMVdHdOphJjV6+Y2g6PdaNqvYXn
+         D1FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=MKIikjrWAh3ZaV9e3QCweJwY98iejyVof89XU+edArg=;
+        b=lB8k7v2fxonoYftCJG62cg+Ja61RjMtYt3pORc2UstWk6A6LSzpwMA9o8EhkScOqxh
+         O/ec5cXGDQnA8EWMsGvkXZfkpHXy61iOq4TWkn0ukJc2FeOgBpNRFjF+gItyeXSy2zNZ
+         QIKpR6h3Qc+1xsk/yANYYusEZv+k4HI0Wg8b5p2JsE2a2dw0Ep9a+DFl85M0u3iX4nwO
+         ey5V2EbhG6fHhUTHtQD6mc0yMZWfIvyEK5KNqzPGAnd8Mi3LikoErsmZvb26K4q0bjT7
+         QVnw9u9kpsuWSZ8UVKCsdIa4/+93tYtGQGZDoEhhkKATzJMpV7ePTdjRMGB2bEMTsRry
+         XpoA==
+X-Gm-Message-State: APjAAAXrIHIZ2xnPVwqTeH8yP5k+/QbxvuZDynKExS1ibp6y0rZaVFIB
+        M6wwJKSC5c6svuhkqEJN2i1xRA==
+X-Google-Smtp-Source: APXvYqwCMu9qr2wKXq3e691TQhkDU5ouUWhrZXDRHQ0q4u5BCo8qYjvw+H3G8dgzdD919pA3Cuv0ow==
+X-Received: by 2002:a1c:e388:: with SMTP id a130mr4137687wmh.176.1582707037240;
+        Wed, 26 Feb 2020 00:50:37 -0800 (PST)
+Received: from dell ([2.31.163.122])
+        by smtp.gmail.com with ESMTPSA id b11sm2428996wrx.89.2020.02.26.00.50.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2020 00:50:36 -0800 (PST)
+Date:   Wed, 26 Feb 2020 08:51:08 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Corentin Labbe <clabbe@baylibre.com>
+Cc:     tony@atomide.com, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH] mfd: omap: remove useless cast for driver.name
+Message-ID: <20200226085108.GC3494@dell>
+References: <1582056541-16973-1-git-send-email-clabbe@baylibre.com>
 MIME-Version: 1.0
-In-Reply-To: <20200225204649.28220-2-s-anna@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1582056541-16973-1-git-send-email-clabbe@baylibre.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Suman,
+On Tue, 18 Feb 2020, Corentin Labbe wrote:
 
-On 25/02/2020 22:46, Suman Anna wrote:
-> From: Roger Quadros <rogerq@ti.com>
+> device_driver name is const char pointer, so it not useful to cast
+> xx_driver_name (which is already const char).
 > 
-> The PRUSS module has a SYSCFG which is unique. The SYSCFG
-> has two additional unique fields called STANDBY_INIT and
-> SUB_MWAIT in addition to regular IDLE_MODE and STANDBY_MODE
-> fields. Add the bindings for this new sysc type.
-> 
-> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: Suman Anna <s-anna@ti.com>
+> Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
 > ---
->   Documentation/devicetree/bindings/bus/ti-sysc.txt | 1 +
->   include/dt-bindings/bus/ti-sysc.h                 | 4 ++++
->   2 files changed, 5 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/bus/ti-sysc.txt b/Documentation/devicetree/bindings/bus/ti-sysc.txt
-> index 233eb8294204..c984143d08d2 100644
-> --- a/Documentation/devicetree/bindings/bus/ti-sysc.txt
-> +++ b/Documentation/devicetree/bindings/bus/ti-sysc.txt
-> @@ -38,6 +38,7 @@ Required standard properties:
->   		"ti,sysc-dra7-mcasp"
->   		"ti,sysc-usb-host-fs"
->   		"ti,sysc-dra7-mcan"
-> +		"ti,sysc-pruss"
->   
->   - reg		shall have register areas implemented for the interconnect
->   		target module in question such as revision, sysc and syss
-> diff --git a/include/dt-bindings/bus/ti-sysc.h b/include/dt-bindings/bus/ti-sysc.h
+>  drivers/mfd/omap-usb-host.c | 2 +-
+>  drivers/mfd/omap-usb-tll.c  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Did you intentionally leave this here? It should be part of 2nd patch?
-
-> index babd08a1d226..76b07826ed05 100644
-> --- a/include/dt-bindings/bus/ti-sysc.h
-> +++ b/include/dt-bindings/bus/ti-sysc.h
-> @@ -18,6 +18,10 @@
->   
->   #define SYSC_DRA7_MCAN_ENAWAKEUP	(1 << 4)
->   
-> +/* PRUSS sysc found on AM33xx/AM43xx/AM57xx */
-> +#define SYSC_PRUSS_SUB_MWAIT		(1 << 5)
-> +#define SYSC_PRUSS_STANDBY_INIT		(1 << 4)
-> +
->   /* SYSCONFIG STANDBYMODE/MIDLEMODE/SIDLEMODE supported by hardware */
->   #define SYSC_IDLE_FORCE			0
->   #define SYSC_IDLE_NO			1
-> 
+Applied, thanks.
 
 -- 
-cheers,
--roger
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog
