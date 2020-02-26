@@ -2,147 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0D33170432
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 17:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D22717046C
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 17:31:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726971AbgBZQV4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Feb 2020 11:21:56 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:54607 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726148AbgBZQVz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Feb 2020 11:21:55 -0500
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1j6zRa-0005Au-A1; Wed, 26 Feb 2020 17:21:54 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1j6zRZ-0001L4-HM; Wed, 26 Feb 2020 17:21:53 +0100
-Date:   Wed, 26 Feb 2020 17:21:53 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Lokesh Vutla <lokeshvutla@ti.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>
-Subject: Re: [PATCH 4/4] pwm: omap-dmtimer: Implement .apply callback
-Message-ID: <20200226162153.4vlx2z6wurpdy4az@pengutronix.de>
-References: <20200224052135.17278-1-lokeshvutla@ti.com>
- <20200224052135.17278-5-lokeshvutla@ti.com>
- <20200224090706.xsujpc3yiqlmmrmm@pengutronix.de>
- <cee31e10-17b4-1cfb-5c77-a58a142c338d@ti.com>
+        id S1727860AbgBZQbp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Feb 2020 11:31:45 -0500
+Received: from muru.com ([72.249.23.125]:57758 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726905AbgBZQbp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 26 Feb 2020 11:31:45 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 9BCE38022;
+        Wed, 26 Feb 2020 16:32:28 +0000 (UTC)
+Date:   Wed, 26 Feb 2020 08:31:40 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     afzal mohammed <afzal.mohd.ma@gmail.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, Krzysztof Halasa <khalasa@piap.pl>,
+        Russell King <linux@armlinux.org.uk>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Kevin Hilman <khilman@kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>, Enrico Weigelt <info@metux.net>
+Subject: Re: [PATCH v2 02/18] ARM: replace setup_irq() by request_irq()
+Message-ID: <20200226163140.GP37466@atomide.com>
+References: <cover.1582471508.git.afzal.mohd.ma@gmail.com>
+ <cbc4859788bd30d6ddc9d9483ed641d6f2d0fd42.1582471508.git.afzal.mohd.ma@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cee31e10-17b4-1cfb-5c77-a58a142c338d@ti.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+In-Reply-To: <cbc4859788bd30d6ddc9d9483ed641d6f2d0fd42.1582471508.git.afzal.mohd.ma@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello Lokesh,
-
-On Tue, Feb 25, 2020 at 10:31:45AM +0530, Lokesh Vutla wrote:
-> Hi Uwe,
+* afzal mohammed <afzal.mohd.ma@gmail.com> [200224 00:49]:
+> request_irq() is preferred over setup_irq(). The early boot setup_irq()
+> invocations happen either via 'init_IRQ()' or 'time_init()', while
+> memory allocators are ready by 'mm_init()'.
 > 
-> On 24/02/20 2:37 PM, Uwe Kleine-König wrote:
-> > On Mon, Feb 24, 2020 at 10:51:35AM +0530, Lokesh Vutla wrote:
-> >> Implement .apply callback and drop the legacy callbacks(enable, disable,
-> >> config, set_polarity).
-> >>
-> >> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
-> >> ---
-> >>  drivers/pwm/pwm-omap-dmtimer.c | 141 +++++++++++++++++++--------------
-> >>  1 file changed, 80 insertions(+), 61 deletions(-)
-> >>
+> Per tglx[1], setup_irq() existed in olden days when allocators were not
+> ready by the time early interrupts were initialized.
 > 
-> [..snip..]
+> Hence replace setup_irq() by request_irq().
 > 
-> >> -static int pwm_omap_dmtimer_set_polarity(struct pwm_chip *chip,
-> >> -					 struct pwm_device *pwm,
-> >> -					 enum pwm_polarity polarity)
-> >> +/**
-> >> + * pwm_omap_dmtimer_apply() - Changes the state of the pwm omap dm timer.
-> >> + * @chip:	Pointer to PWM controller
-> >> + * @pwm:	Pointer to PWM channel
-> >> + * @state:	New sate to apply
-> >> + *
-> >> + * Return 0 if successfully changed the state else appropriate error.
-> >> + */
-> >> +static int pwm_omap_dmtimer_apply(struct pwm_chip *chip,
-> >> +				  struct pwm_device *pwm,
-> >> +				  const struct pwm_state *state)
-> >>  {
-> >>  	struct pwm_omap_dmtimer_chip *omap = to_pwm_omap_dmtimer_chip(chip);
-> >> +	int ret = 0;
-> >>  
-> >> -	/*
-> >> -	 * PWM core will not call set_polarity while PWM is enabled so it's
-> >> -	 * safe to reconfigure the timer here without stopping it first.
-> >> -	 */
-> >>  	mutex_lock(&omap->mutex);
-> >> -	omap->pdata->set_pwm(omap->dm_timer,
-> >> -			     polarity == PWM_POLARITY_INVERSED,
-> >> -			     true, OMAP_TIMER_TRIGGER_OVERFLOW_AND_COMPARE);
-> >> +
-> >> +	if (pwm_is_enabled(pwm) && !state->enabled) {
-> > 
-> > In my book calling PWM API functions (designed for PWM consumers) is not
-> > so nice. I would prefer you checking the hardware registers or cache the
-> > state locally instead of relying on the core here.
+> Seldom remove_irq() usage has been observed coupled with setup_irq(),
+> wherever that has been found, it too has been replaced by free_irq().
 > 
-> .start and .stop apis does read the hardware registers and check the state
-> before making any changes. Do you want to drop off the pwm_is_enabled(pwm) check
-> here?
-
-The IMHO more natural approach would be to look into the hardware
-registers instead of asking the framework.
-
-> > It would be great to have a general description at the top of the driver
-> > (like for example drivers/pwm/pwm-sifive.c) that answers things like:
-> > 
-> >  - Does calling .stop completes the currently running period (it
-> >    should)?
+> [1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
 > 
-> Existing driver implementation abruptly stops the cycle. I can make changes such
-> that it completes the currently running period.
+> Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com> # EP93xx
+> Tested-by: Alexander Sverdlin <alexander.sverdlin@gmail.com> # EP93xx
 
-That would be good for correctness.
+Works for me:
 
-> >  - Does changing polarity, duty_cycle and period complete the running
-> >    period?
-> 
-> - Polarity can be changed only when the pwm is not running. Ill add extra guards
-> to reflect this behavior.
-> - Changing duty_cycle and period does complete the running period and new values
-> gets reflected in next cycle.
-
-Is there are race with the hardware? I.e. can it happen that when a new
-cycle starts just when you configured the new period but not the
-duty_cycle yet a mixed cycle is output?
-
-> >  - How does the hardware behave on disable? (i.e. does it output the
-> >    state the pin is at in that moment? Does it go High-Z?)
-> 
-> Now that I am making changes to complete the current period on disable, the pin
-> goes to Low after disabling(completing the cycle).
-> 
-> Ill add all these points as you mentioned in v2.
-
-Great
-
-Best regards
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Tested-by: Tony Lindgren <tony@atomide.com> # omap1 osk
