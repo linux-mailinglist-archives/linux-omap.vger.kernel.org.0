@@ -2,81 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CC3216F9F7
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 09:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6283416FE5B
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 12:56:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727335AbgBZIuj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Feb 2020 03:50:39 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:51121 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726408AbgBZIuj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Feb 2020 03:50:39 -0500
-Received: by mail-wm1-f67.google.com with SMTP id a5so2018434wmb.0
-        for <linux-omap@vger.kernel.org>; Wed, 26 Feb 2020 00:50:37 -0800 (PST)
+        id S1726476AbgBZLzT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Feb 2020 06:55:19 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:41318 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726752AbgBZLzT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Feb 2020 06:55:19 -0500
+Received: by mail-wr1-f68.google.com with SMTP id v4so2630381wrs.8
+        for <linux-omap@vger.kernel.org>; Wed, 26 Feb 2020 03:55:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to
          :user-agent;
-        bh=MKIikjrWAh3ZaV9e3QCweJwY98iejyVof89XU+edArg=;
-        b=LJ2xH127sLByQfhY8qMhzSJKbksxahprKmbpdqbGXuyF2vLbOLko8jIkVSDtmk1YdO
-         ziJzMdASMxG92+V0rrM7ujqymd+ESwXcm9tL1/h4PkQn8MalTwPEYjkQUXC3XsAIospc
-         R7ectLOaxHMnGvvIZClfsA5wFhDFZWhCf7FAino9V7frY8G6Gldxay72X8pBNaHqNujv
-         yVtvhNDy+lWlC7btU1HOXWxelk4p4nVwkctO9zELLr9HUektZFhSNt24FtzCNhKvfIPN
-         QmyFUJrvFrYw0FMScekIzWgRTpO+JTM+/panRDL/JfMVdHdOphJjV6+Y2g6PdaNqvYXn
-         D1FQ==
+        bh=N/HLqG1dDlxTZQOlF1kclM4FtV82gw6thx5C0eMWXL8=;
+        b=Jd4SW1MEdw3BSr+tOW0A+g5GDh/5NIN6p8HFxfdQD0AG53vvR26K+JTeoHXcVpncYU
+         a8ox8IpPTfE458plItqoaoD3it0krStsnGcVmXcAklK5U6tbeyxghsAfi+0JQds6MRF/
+         2M2uvLQC1wDniPmj7PvaeskE8u3HmsBuwWKViakuKMA9X3mHlF0GybGYFWvaPTp+RFiJ
+         GWMujk4YauLTNAMp6OaNsAaS6uVegu0B12PlP2CqTUh1pyeYiIT8NwP7ubtvFXjjZSht
+         Vz8kK1NRahOs3HqSl3LBnVDdoMtetjDvR8Z8trL0j5PY/mvwR07KlLeIxKKjyh08uD/F
+         qf5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to:user-agent;
-        bh=MKIikjrWAh3ZaV9e3QCweJwY98iejyVof89XU+edArg=;
-        b=lB8k7v2fxonoYftCJG62cg+Ja61RjMtYt3pORc2UstWk6A6LSzpwMA9o8EhkScOqxh
-         O/ec5cXGDQnA8EWMsGvkXZfkpHXy61iOq4TWkn0ukJc2FeOgBpNRFjF+gItyeXSy2zNZ
-         QIKpR6h3Qc+1xsk/yANYYusEZv+k4HI0Wg8b5p2JsE2a2dw0Ep9a+DFl85M0u3iX4nwO
-         ey5V2EbhG6fHhUTHtQD6mc0yMZWfIvyEK5KNqzPGAnd8Mi3LikoErsmZvb26K4q0bjT7
-         QVnw9u9kpsuWSZ8UVKCsdIa4/+93tYtGQGZDoEhhkKATzJMpV7ePTdjRMGB2bEMTsRry
-         XpoA==
-X-Gm-Message-State: APjAAAXrIHIZ2xnPVwqTeH8yP5k+/QbxvuZDynKExS1ibp6y0rZaVFIB
-        M6wwJKSC5c6svuhkqEJN2i1xRA==
-X-Google-Smtp-Source: APXvYqwCMu9qr2wKXq3e691TQhkDU5ouUWhrZXDRHQ0q4u5BCo8qYjvw+H3G8dgzdD919pA3Cuv0ow==
-X-Received: by 2002:a1c:e388:: with SMTP id a130mr4137687wmh.176.1582707037240;
-        Wed, 26 Feb 2020 00:50:37 -0800 (PST)
+        bh=N/HLqG1dDlxTZQOlF1kclM4FtV82gw6thx5C0eMWXL8=;
+        b=bFW3jGhVLY0hou90czBpNnMXpyTDT9YBgl28a/QwEqN2ws76DVSLBkTQSVpHDwn+NZ
+         YUAADFcssr2F50gzP/USX5VZHeRNNDcjG+WznpRtDv3QxOE9/2vpxksGJayU2eapsXr8
+         StiR2Z2V/T73gB3jlsf2E+q/6rOvOIRJS1nEx8CzHBQgZ9yoBjoF81Wpzqjejdl3gCjD
+         xgjL1/mtv+4e7z/8SBmgKVLprceX/SfHJdgrcssXwMzoPtge0ocrbhYGxKyziOsy3kzH
+         k9sY3gbFPLaAQKXSZmEZorGFnT54q54pgwTDL5r3IKa0+5Ss14zjCGSLqpVKX5Hi75hq
+         RfiQ==
+X-Gm-Message-State: APjAAAXVbs8O84CGrA5ARJ9AFgZoIZ7TZCFJgAypqck6oNLwUp6jue94
+        WmJymE3DyFrwIoOTbwDlX7BG1Q==
+X-Google-Smtp-Source: APXvYqyOyu7h7SWranUtz1CxDuJHk1JwDhHHx449iyciKg+Pc/m9qo1aavmL3kb/JkZa8Oq7/4G7iA==
+X-Received: by 2002:adf:df0c:: with SMTP id y12mr5159445wrl.257.1582718117234;
+        Wed, 26 Feb 2020 03:55:17 -0800 (PST)
 Received: from dell ([2.31.163.122])
-        by smtp.gmail.com with ESMTPSA id b11sm2428996wrx.89.2020.02.26.00.50.36
+        by smtp.gmail.com with ESMTPSA id a13sm2820475wrt.55.2020.02.26.03.55.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2020 00:50:36 -0800 (PST)
-Date:   Wed, 26 Feb 2020 08:51:08 +0000
+        Wed, 26 Feb 2020 03:55:16 -0800 (PST)
+Date:   Wed, 26 Feb 2020 11:55:48 +0000
 From:   Lee Jones <lee.jones@linaro.org>
-To:     Corentin Labbe <clabbe@baylibre.com>
-Cc:     tony@atomide.com, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] mfd: omap: remove useless cast for driver.name
-Message-ID: <20200226085108.GC3494@dell>
-References: <1582056541-16973-1-git-send-email-clabbe@baylibre.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Jiri Slaby <jslaby@suse.cz>, Johan Hovold <johan@kernel.org>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Rob Herring <robh@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] mfd: motmdm: Add Motorola TS 27.010 serdev modem
+ driver for droid4
+Message-ID: <20200226115548.GO3494@dell>
+References: <20200220195943.15314-1-tony@atomide.com>
+ <20200220195943.15314-3-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1582056541-16973-1-git-send-email-clabbe@baylibre.com>
+In-Reply-To: <20200220195943.15314-3-tony@atomide.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 18 Feb 2020, Corentin Labbe wrote:
+On Thu, 20 Feb 2020, Tony Lindgren wrote:
 
-> device_driver name is const char pointer, so it not useful to cast
-> xx_driver_name (which is already const char).
+> Many Motorola phones are controlling the modem using a custom variant
+> of TS 27.010 serial line discipline. Devices on these modems have a
+> dedicated TS 27.010 channel for features like audio mixer, GNSS, voice
+> modem, SIM card reader and so on.
 > 
-> Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
+> This driver allows using various devices on the modem. In order to do
+> that, we need to take care of the following three things:
+> 
+> 1. Provide /dev/motmdm* character devices for apps to use for talking
+>    to the various devices on the modem
+> 
+> 2. Handle Motorola custom protocol over TS 27.010 to make the channels
+>    usable for userspace
+> 
+> 3. Coordinate PM runtime with the USB PHY because of shared GPIO pins
+>    with the USB PHY
+> 
+> With this patch, folks with droid4 can place a voice call with just:
+> 
+> $ printf "ATD%s,0\r" "${phone_number}" > /dev/motmdm1
+> D:OK
+> ~+CIEV=1,1,0
+> ...
+> $ printf "ATH\r" > /dev/motmdm1
+> H:OK
+> 
+> Also SMS can be sent with this patch using /dev/motmdm3 for sending,
+> and /dev/motmdm9 for receiving messages.
+> 
+> Note that the audio mixer needs additional patches though. I will be
+> sending those as a separate series of patches.
+> 
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
->  drivers/mfd/omap-usb-host.c | 2 +-
->  drivers/mfd/omap-usb-tll.c  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/mfd/Kconfig        |    9 +
+>  drivers/mfd/Makefile       |    1 +
+>  drivers/mfd/motorola-mdm.c | 1200 ++++++++++++++++++++++++++++++++++++
 
-Applied, thanks.
+I'm not even going to start reviewing this as I can see, without even
+looking at the code, that this has too much functionality (stuff that
+does stuff) contained.
+
+Please move as much functionality out into the subsystems as
+possible.  Ideally, MFDs should be responsible for obtaining and
+registering shared resources and registering child devices.  Anything
+else should be shifted out to an appropriate subsystem.
+
+MFD is not Misc.
+
+>  3 files changed, 1210 insertions(+)
+>  create mode 100644 drivers/mfd/motorola-mdm.c
 
 -- 
 Lee Jones [李琼斯]
