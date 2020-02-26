@@ -2,153 +2,292 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A48316F3DF
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 00:52:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7B2016F8C3
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Feb 2020 08:48:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729586AbgBYXws (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Feb 2020 18:52:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47496 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729277AbgBYXwq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 25 Feb 2020 18:52:46 -0500
-Received: from earth.universe (unknown [185.62.205.105])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8F5A82467A;
-        Tue, 25 Feb 2020 23:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582674765;
-        bh=wKBCNSbyYVBJJwkuzCWN2duSTMywEgXG/EXJhIhpDcc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yHG/9vLmvz9nSxA3M/e93dJxrc+U8EWmTE/Im27WUNj8eI2rkeMipWpXEVig16mhT
-         pC4V5U0MJU+ihWDPSnDNzgTvEo94NoySJOozCzGXQCOk9whzd6ToS9WWgem+D8uMdw
-         vCuaNsjMot8yUwkLZ9oMm3Edn/2wtvXC2x2MLsYE=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 1F2F83C0C83; Wed, 26 Feb 2020 00:52:43 +0100 (CET)
-Date:   Wed, 26 Feb 2020 00:52:43 +0100
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Rob Herring <robh@kernel.org>, linux-omap@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, kernel@collabora.com
-Subject: Re: [PATCHv2 00/56] drm/omap: Convert DSI code to use drm_mipi_dsi
- and drm_panel
-Message-ID: <20200225235243.dr2apisbxzugj34u@earth.universe>
-References: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
- <20200225001011.GF37466@atomide.com>
- <20200225022822.wh7omykthv7skojy@earth.universe>
- <20200225154237.GH37466@atomide.com>
- <20200225230124.fkt35ihyjnokb2ng@earth.universe>
- <20200225230937.GL37466@atomide.com>
+        id S1727129AbgBZHsv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Feb 2020 02:48:51 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:55582 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727223AbgBZHsu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Feb 2020 02:48:50 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01Q7mmql058259;
+        Wed, 26 Feb 2020 01:48:48 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1582703328;
+        bh=6XZF2kozMX2IRgvS1AiatX1S6WIW//4tM8Ve7tdXOB8=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=ZUNb/YBubV/HQF3FFYmRDnGM8MH9tGsb5OZeCoQRz2J0m9Y1c5dFzXfmQv5bb/PyR
+         pnojAHbMZ2wOwfkCzgqJE0T2n//gPrvky6M9CpVnRP7oz4ja/QIYwSwt+zu7xeeyc/
+         t7rDMVwsOM4lYmIGMdCGBUSn9ZkBBOFj6f2Brr2o=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01Q7mmb8090023
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 Feb 2020 01:48:48 -0600
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 26
+ Feb 2020 01:48:48 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 26 Feb 2020 01:48:47 -0600
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01Q7mjXY082769;
+        Wed, 26 Feb 2020 01:48:46 -0600
+Subject: Re: [PATCHv7 04/15] remoteproc/omap: Add support to parse internal
+ memories from DT
+To:     "Andrew F. Davis" <afd@ti.com>, <bjorn.andersson@linaro.org>,
+        <ohad@wizery.com>, <linux-remoteproc@vger.kernel.org>,
+        <s-anna@ti.com>
+CC:     <linux-kernel@vger.kernel.org>, <mathieu.poirier@linaro.org>,
+        <linux-omap@vger.kernel.org>
+References: <20200221101936.16833-1-t-kristo@ti.com>
+ <20200221101936.16833-5-t-kristo@ti.com>
+ <7de4914a-a5c6-b108-af10-45283aabddc7@ti.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <64429c91-cb80-52ce-0906-180ad109d5fb@ti.com>
+Date:   Wed, 26 Feb 2020 09:48:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6payldeld37nof6m"
-Content-Disposition: inline
-In-Reply-To: <20200225230937.GL37466@atomide.com>
+In-Reply-To: <7de4914a-a5c6-b108-af10-45283aabddc7@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 24/02/2020 16:15, Andrew F. Davis wrote:
+> On 2/21/20 5:19 AM, Tero Kristo wrote:
+>> From: Suman Anna <s-anna@ti.com>
+>>
+>> The OMAP remoteproc driver has been enhanced to parse and store
+>> the kernel mappings for different internal RAM memories that may
+>> be present within each remote processor IP subsystem. Different
+>> devices have varying memories present on current SoCs. The current
+>> support handles the L2RAM for all IPU devices on OMAP4+ SoCs. The
+>> DSPs on OMAP4/OMAP5 only have Unicaches and do not have any L1 or
+>> L2 RAM memories.
+>>
+>> IPUs are expected to have the L2RAM at a fixed device address of
+>> 0x20000000, based on the current limitations on Attribute MMU
+>> configurations.
+>>
+>> NOTE:
+>> The current logic doesn't handle the parsing of memories for DRA7
+>> remoteproc devices, and will be added alongside the DRA7 support.
+>>
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> [t-kristo: converted to parse mem names / device addresses from pdata]
+>> Signed-off-by: Tero Kristo <t-kristo@ti.com>
+>> ---
+>>   drivers/remoteproc/omap_remoteproc.c | 89 ++++++++++++++++++++++++++++
+>>   1 file changed, 89 insertions(+)
+>>
+>> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
+>> index 64b559caadff..4f92b069f5d0 100644
+>> --- a/drivers/remoteproc/omap_remoteproc.c
+>> +++ b/drivers/remoteproc/omap_remoteproc.c
+>> @@ -39,11 +39,27 @@ struct omap_rproc_boot_data {
+>>   	unsigned int boot_reg;
+>>   };
+>>   
+>> +/**
+>> + * struct omap_rproc_mem - internal memory structure
+>> + * @cpu_addr: MPU virtual address of the memory region
+>> + * @bus_addr: bus address used to access the memory region
+>> + * @dev_addr: device address of the memory region from DSP view
+>> + * @size: size of the memory region
+>> + */
+>> +struct omap_rproc_mem {
+>> +	void __iomem *cpu_addr;
+>> +	phys_addr_t bus_addr;
+>> +	u32 dev_addr;
+>> +	size_t size;
+>> +};
+>> +
+>>   /**
+>>    * struct omap_rproc - omap remote processor state
+>>    * @mbox: mailbox channel handle
+>>    * @client: mailbox client to request the mailbox channel
+>>    * @boot_data: boot data structure for setting processor boot address
+>> + * @mem: internal memory regions data
+>> + * @num_mems: number of internal memory regions
+>>    * @rproc: rproc handle
+>>    * @reset: reset handle
+>>    */
+>> @@ -51,16 +67,30 @@ struct omap_rproc {
+>>   	struct mbox_chan *mbox;
+>>   	struct mbox_client client;
+>>   	struct omap_rproc_boot_data *boot_data;
+>> +	struct omap_rproc_mem *mem;
+>> +	int num_mems;
+>>   	struct rproc *rproc;
+>>   	struct reset_control *reset;
+>>   };
+>>   
+>> +/**
+>> + * struct omap_rproc_mem_data - memory definitions for an omap remote processor
+>> + * @name: name for this memory entry
+>> + * @dev_addr: device address for the memory entry
+>> + */
+>> +struct omap_rproc_mem_data {
+>> +	const char *name;
+>> +	const u32 dev_addr;
+>> +};
+>> +
+>>   /**
+>>    * struct omap_rproc_dev_data - device data for the omap remote processor
+>>    * @device_name: device name of the remote processor
+>> + * @mems: memory definitions for this remote processor
+>>    */
+>>   struct omap_rproc_dev_data {
+>>   	const char *device_name;
+>> +	const struct omap_rproc_mem_data *mems;
+>>   };
+>>   
+>>   /**
+>> @@ -223,12 +253,18 @@ static const struct rproc_ops omap_rproc_ops = {
+>>   	.kick		= omap_rproc_kick,
+>>   };
+>>   
+>> +static const struct omap_rproc_mem_data ipu_mems[] = {
+>> +	{ .name = "l2ram", .dev_addr = 0x20000000 },
+>> +	{ },
+>> +};
+>> +
+>>   static const struct omap_rproc_dev_data omap4_dsp_dev_data = {
+>>   	.device_name	= "dsp",
+>>   };
+>>   
+>>   static const struct omap_rproc_dev_data omap4_ipu_dev_data = {
+>>   	.device_name	= "ipu",
+>> +	.mems		= ipu_mems,
+>>   };
+>>   
+>>   static const struct omap_rproc_dev_data omap5_dsp_dev_data = {
+>> @@ -237,6 +273,7 @@ static const struct omap_rproc_dev_data omap5_dsp_dev_data = {
+>>   
+>>   static const struct omap_rproc_dev_data omap5_ipu_dev_data = {
+>>   	.device_name	= "ipu",
+>> +	.mems		= ipu_mems,
+>>   };
+>>   
+>>   static const struct of_device_id omap_rproc_of_match[] = {
+>> @@ -311,6 +348,54 @@ static int omap_rproc_get_boot_data(struct platform_device *pdev,
+>>   	return 0;
+>>   }
+>>   
+>> +static int omap_rproc_of_get_internal_memories(struct platform_device *pdev,
+>> +					       struct rproc *rproc)
+>> +{
+>> +	struct omap_rproc *oproc = rproc->priv;
+> 
+> 
+> 'rproc' is only used to get 'oproc', why not just pass in 'oproc'?
 
---6payldeld37nof6m
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is mostly to keep the driver internal APIs homogenous, nothing much 
+else passes oproc directly (just the standby status API.) If you pass 
+oproc in some and rproc in others, you get confused really easily.
 
-Hi,
+> 
+> 
+>> +	struct device *dev = &pdev->dev;
+>> +	const struct omap_rproc_dev_data *data;
+>> +	struct resource *res;
+>> +	int num_mems;
+>> +	int i;
+>> +
+>> +	data = of_device_get_match_data(&pdev->dev);
+> 
+> 
+> just use 'dev'
 
-On Tue, Feb 25, 2020 at 03:09:37PM -0800, Tony Lindgren wrote:
-> * Sebastian Reichel <sre@kernel.org> [200225 23:03]:
-> > Hi,
-> >=20
-> > On Tue, Feb 25, 2020 at 07:42:37AM -0800, Tony Lindgren wrote:
-> > > * Sebastian Reichel <sre@kernel.org> [200225 02:29]:
-> > > > On Mon, Feb 24, 2020 at 04:10:11PM -0800, Tony Lindgren wrote:
-> > > > > BTW, I think there's also some refcount issue in general where
-> > > > > the omapdrm related modules cannot be unloaded any longer?
-> > > >=20
-> > > > I wouldn't be too surprised. The dependencies are quite interesting
-> > > > at the moment with omapdss registering omapdrm and then omapdrm
-> > > > registers the drm_device, which references the encoders from
-> > > > omapdss. I think this is something to look at once Laurent's and
-> > > > my branch have been merged to avoid increasing the complexity.
-> > > > Technically it should be possible to link everything into one
-> > > > module.
-> > >=20
-> > > Well the DSS is really DOSSI for Display Output SubSystem
-> > > Interconnect :) The devices on the interconnect are mostly
-> > > independent and ideally the toplevel dss driver would just
-> > > provide Linux generic resources to dispc and various output
-> > > drivers. So probably not a good idea to try to build it all
-> > > into a single module.
-> >=20
-> > All the output drivers and dispc are already in a single module:
-> > omapdss.ko. There is omapdss-base.ko, omapdss.ko and omapdrm.ko
-> > module. omapdss-base.ko contains a few helpers, omapdss.ko contains
-> > dispc and all output encoders, omapdrm has the tiler code and
-> > wraps some of the custom DSS APIs to DRM APIs. I think the best
-> > way forward is to eliminate the custom API and use common DRM
-> > APIs directly. Then merge all 3 modules into one module.
-> >=20
-> > In theory one could add modules for each encoder, but practically
-> > this only increases complexity. DRM cannnot hotplug encoders, so
-> > removing any module results in complete loss of DRM. Also during
-> > probe we need to load all modules, since something might be
-> > connected. So having extra modules is not really useful?
->=20
-> Well my main concern here is that we should use generic
-> Linux frameworks between the devices within DSS where possible.
+Heh, valid cosmetic change, I would not want to re-post the patch just 
+because of this though.
 
-Ack.
+> 
+>> +	if (!data)
+>> +		return -ENODEV;
+>> +
+>> +	if (!data->mems)
+>> +		return 0;
+>> +
+>> +	for (num_mems = 0; data->mems[num_mems].name; num_mems++)
+>> +		;
+>> +
+>> +	oproc->mem = devm_kcalloc(dev, num_mems, sizeof(*oproc->mem),
+>> +				  GFP_KERNEL);
+>> +	if (!oproc->mem)
+>> +		return -ENOMEM;
+>> +
+>> +	for (i = 0; i < num_mems; i++) {
+>> +		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+>> +						   data->mems[i].name);
+>> +		oproc->mem[i].cpu_addr = devm_ioremap_resource(dev, res);
+>> +		if (IS_ERR(oproc->mem[i].cpu_addr)) {
+>> +			dev_err(dev, "failed to parse and map %s memory\n",
+>> +				data->mems[i].name);
+>> +			return PTR_ERR(oproc->mem[i].cpu_addr);
+>> +		}
+>> +		oproc->mem[i].bus_addr = res->start;
+>> +		oproc->mem[i].dev_addr = data->mems[i].dev_addr;
+>> +		oproc->mem[i].size = resource_size(res);
+>> +
+>> +		dev_dbg(dev, "memory %8s: bus addr %pa size 0x%x va %pK da 0x%x\n",
+>> +			data->mems[i].name, &oproc->mem[i].bus_addr,
+>> +			oproc->mem[i].size, oproc->mem[i].cpu_addr,
+> 
+> 
+> I'm not a fan of printing kernel virtual addresses, but not a blocker.
+> 
+> 
+>> +			oproc->mem[i].dev_addr);
+>> +	}
+>> +	oproc->num_mems = num_mems;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   static int omap_rproc_probe(struct platform_device *pdev)
+>>   {
+>>   	struct device_node *np = pdev->dev.of_node;
+>> @@ -350,6 +435,10 @@ static int omap_rproc_probe(struct platform_device *pdev)
+>>   	/* All existing OMAP IPU and DSP processors have an MMU */
+>>   	rproc->has_iommu = true;
+>>   
+>> +	ret = omap_rproc_of_get_internal_memories(pdev, rproc);
+> 
+> 
+> This only looks to be used for the da_to_va() in the next patch, could
+> these be combined?
 
-> I can see a single driver pile of code quickly turn into a
-> spaghetti of internal calls instead.
+Well, they are kinda separate entities, but potentially could be 
+squashed if someone really wants it done.
 
-I was only talking about generating a single module, it contains
-multiple drivers. And we already have the spaghetti of internal
-calls between omapdrm and omapdss. With the modules it only means,
-that functions are either exported or accessed via callbacks.
+> 
+> As above not a big deal, so for this patch and the whole series:
+> 
+> Reviewed-by: Andrew F. Davis <afd@ti.com>
 
-> Also each devices on the DSS interconnect needs to do
-> pm_runtime_get for it's struct device naturally.
+Thanks Andrew.
 
-Sure, but you are talking about things that are already part of a
-single module (omapdss.ko). omapdss-base.ko and omapdrm.ko do not
-directly access hardware.
+-Tero
 
-> If you can avoid the issues above, then I have no objections
-> of just having one module.
+> 
+> 
+>> +	if (ret)
+>> +		goto free_rproc;
+>> +
+>>   	ret = omap_rproc_get_boot_data(pdev, rproc);
+>>   	if (ret)
+>>   		goto free_rproc;
+>>
 
-Well for now let's get Laurent's and my series forward. I think
-the next step would be to get rid of omap_encoder by moving the
-encoder init into the DSS output code. Technically we are already
-merging omapdrm and omapdss, e.g. omap_connector is gone from
-omapdrm after the series.
-
--- Sebastian
-
---6payldeld37nof6m
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5Vs0cACgkQ2O7X88g7
-+pqQNQ//WtYUISiPc3FG3Q4LaljgfiXLE8KccPv2sGH0s5rjJidc7ICmrAPMic7a
-B5Ve2bH86DLOKqGaTje0y5rwedBAb80d7SnbhtZAnuFwJ5R0QrPZUa7uSNAo/qDn
-7Qggc2qlorvUMNIQi/uTxRCGYkoW4sP60hDRcxEFzLd1OHfjPhsNkGL7a5G+EaCp
-szARh3bT7i63jZ3CqNPAU89GFkX/E4leiGlHYVXiBn4oE46aL+WvMZClleaZhcvL
-2xp8xokJm/NRXTNOaMClIJvuUmr0YYmmTWviiGDFCSi0DzSzyBqJcZm1AmUnsSmM
-SslC4rwscB7t9E4i4eg6F2ze+GBSlB6Y3M7SdbNoZgiIwtKMKyEr1mgTMSpIl0Di
-ZjptIyoeocI24OAolaIuPipAWdN0L+A6hw+S4TgTHG0HkWwziM20f0DRddPy/4vc
-wKfzGzBYJ3Z0oHwzi0q97OhA/GhvczCHMv30HibWD2ZGw/YcAHe2dOaQRrZqGCHt
-mTIfHww0AtY+/YkUAq6aBwQCH7w6/rHPOReJYXpNKNpB4EYH22crRZdL4E/f5a1Q
-L42kz1F038WULvDvuxrCYUrJHTwFpwmAjzUzrTjoSDpUn+HVvBXoLlz86fNs2lc4
-7rypyRebwyMtshZfqZIpo0nPbFb6qCWaQcMNq7cxfhNy+mB5scE=
-=gdcA
------END PGP SIGNATURE-----
-
---6payldeld37nof6m--
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
