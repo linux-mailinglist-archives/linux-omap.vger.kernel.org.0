@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A496172B3C
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 23:30:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 488D0172B35
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 23:30:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730416AbgB0W3D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 Feb 2020 17:29:03 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:46710 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729935AbgB0W2x (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Feb 2020 17:28:53 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01RMSob7006384;
+        id S1730340AbgB0W2z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Feb 2020 17:28:55 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:41222 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730293AbgB0W2y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Feb 2020 17:28:54 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01RMSoXu106637;
         Thu, 27 Feb 2020 16:28:50 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
         s=ti-com-17Q1; t=1582842530;
-        bh=pgRhKalkOllxbmNpMnFHKJTJfFq9jJAY9x22lK0bkEg=;
+        bh=jzIJRcVXGg56lh4wpxg3DO2Gscg2H+zIF2k2SSUW4Aw=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=GLFZo7eG61HL4IO95ptagmIanA5ImGeL0z231m/it9nTaJFMhwcBA2Q1MJYYSr9Al
-         jfKoXTmsY13TKjKzJix1LnDudJs9IVkLsRiekTEK2kJPT6JskwQM766ST4mZNeK41e
-         tHHkVsMlRkEWawFaa8kdBUH9DPJs2ts/ByO4w7bE=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01RMSo8O077899
+        b=TFrcXta830h5plXX03l2X4I3jvhOFOAO8SKKzJ7M8eZT1ueWaXJWdTOed50FSU9JE
+         ExHTi0zXJOkYqXnYCxnTHGDfSYiY4tR51yhb4/9leK8HxoIj9HzNTOWH4GKzUHR/YU
+         v3vZQYUhTi4BxtxhbK5oNh9tMLuiUOs9P2M8dWbk=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01RMSoCe084652
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
         Thu, 27 Feb 2020 16:28:50 -0600
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 27
- Feb 2020 16:28:49 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ Feb 2020 16:28:50 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 27 Feb 2020 16:28:49 -0600
+ Frontend Transport; Thu, 27 Feb 2020 16:28:50 -0600
 Received: from fllv0103.dal.design.ti.com (fllv0103.dal.design.ti.com [10.247.120.73])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01RMSnGl121967;
-        Thu, 27 Feb 2020 16:28:49 -0600
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01RMSouP121976;
+        Thu, 27 Feb 2020 16:28:50 -0600
 Received: from localhost (irmo.dhcp.ti.com [128.247.58.153])
-        by fllv0103.dal.design.ti.com (8.14.7/8.14.7) with ESMTP id 01RMSnFI087070;
-        Thu, 27 Feb 2020 16:28:49 -0600
+        by fllv0103.dal.design.ti.com (8.14.7/8.14.7) with ESMTP id 01RMSo25087087;
+        Thu, 27 Feb 2020 16:28:50 -0600
 From:   Suman Anna <s-anna@ti.com>
 To:     Tony Lindgren <tony@atomide.com>
 CC:     Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
         <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <devicetree@vger.kernel.org>, Suman Anna <s-anna@ti.com>
-Subject: [PATCH v2 2/5] bus: ti-sysc: Add support for PRUSS SYSC type
-Date:   Thu, 27 Feb 2020 16:28:34 -0600
-Message-ID: <20200227222837.7329-3-s-anna@ti.com>
+Subject: [PATCH v2 3/5] ARM: dts: AM33xx-l4: Update PRUSS interconnect target-module node
+Date:   Thu, 27 Feb 2020 16:28:35 -0600
+Message-ID: <20200227222837.7329-4-s-anna@ti.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200227222837.7329-1-s-anna@ti.com>
 References: <20200227222837.7329-1-s-anna@ti.com>
@@ -59,120 +59,60 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The PRU-ICSS present on AM33xx/AM43xx/AM57xx has a very unique
-SYSCFG register. The register follows the OMAP4-style SYSC_TYPE3
-for Master Standby and Slave Idle, but also has two additional
-unique fields - STANDBY_INIT and SUB_MWAIT. The STANDBY_INIT is
-a control bit that is used to initiate a Standby sequence (when
-set) and trigger a MStandby request to the SoC's PRCM module. This
-same bit is also used to enable the OCP master ports (when cleared)
-to allow the PRU cores to access any peripherals or memory beyond
-the PRU subsystem. The SUB_MWAIT is a ready status field for the
-external access.
+The PRU-ICSS present on some AM33xx SoCs has a very unique SYSC
+register. The IP also uses a hard-reset line, and requires this
+PRCM reset to be deasserted to be able to access any registers.
+Update the existing PRUSS interconnect target-module with all
+the required properties.
 
-Add support for this SYSC type. The STANDBY_INIT has to be set
-during suspend, without which it results in a hang in the resume
-sequence on AM33xx/AM43xx boards and requires a board reset to
-come out of the hang. Any PRU applications requiring external
-access are supposed to clear the STANDBY_INIT bit. Note that
-the PRUSS context is lost during a suspend sequence because the
-PRUSS module is reset and/or disabled.
+The PRUSS device itself shall be added as a child node to this
+interconnect node in the future. PRU-ICSS is not supported on
+AM3351/AM3352/AM3354 SoCs though in the AM33xx family, so the
+target module node should be disabled in derivative board files
+that use any of these SoCs.
 
 Signed-off-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: Roger Quadros <rogerq@ti.com>
 ---
-v2: No changes
+v2: Revise patch description, no code changes
 
- drivers/bus/ti-sysc.c                 | 27 +++++++++++++++++++++++++++
- include/linux/platform_data/ti-sysc.h |  2 ++
- 2 files changed, 29 insertions(+)
+ arch/arm/boot/dts/am33xx-l4.dtsi | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index f702c85c81b6..855f851e99be 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1272,6 +1272,9 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
- 	SYSC_QUIRK("wdt", 0, 0, 0x10, 0x14, 0x502a0500, 0xfffff0f0,
- 		   SYSC_MODULE_QUIRK_WDT),
-+	/* PRUSS on am3, am4 and am5 */
-+	SYSC_QUIRK("pruss", 0, 0x26000, 0x26004, -1, 0x47000000, 0xff000000,
-+		   SYSC_MODULE_QUIRK_PRUSS),
- 	/* Watchdog on am3 and am4 */
- 	SYSC_QUIRK("wdt", 0x44e35000, 0, 0x10, 0x14, 0x502a0500, 0xfffff0f0,
- 		   SYSC_MODULE_QUIRK_WDT | SYSC_QUIRK_SWSUP_SIDLE),
-@@ -1482,6 +1485,16 @@ static void sysc_reset_done_quirk_wdt(struct sysc *ddata)
- 		dev_warn(ddata->dev, "wdt disable step2 failed\n");
- }
+diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+index 4e2986f0c604..5ed7f3c58c0f 100644
+--- a/arch/arm/boot/dts/am33xx-l4.dtsi
++++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+@@ -759,12 +759,27 @@
+ 			ranges = <0x0 0x200000 0x80000>;
+ 		};
  
-+/* PRUSS needs to set MSTANDBY_INIT inorder to idle properly */
-+static void sysc_module_disable_quirk_pruss(struct sysc *ddata)
-+{
-+	u32 reg;
-+
-+	reg = sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
-+	reg |= SYSC_PRUSS_STANDBY_INIT;
-+	sysc_write(ddata, ddata->offsets[SYSC_SYSCONFIG], reg);
-+}
-+
- static void sysc_init_module_quirks(struct sysc *ddata)
- {
- 	if (ddata->legacy_mode || !ddata->name)
-@@ -1510,6 +1523,9 @@ static void sysc_init_module_quirks(struct sysc *ddata)
- 		ddata->reset_done_quirk = sysc_reset_done_quirk_wdt;
- 		ddata->module_disable_quirk = sysc_reset_done_quirk_wdt;
- 	}
-+
-+	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_PRUSS)
-+		ddata->module_disable_quirk = sysc_module_disable_quirk_pruss;
- }
- 
- static int sysc_clockdomain_init(struct sysc *ddata)
-@@ -2313,6 +2329,16 @@ static const struct sysc_capabilities sysc_dra7_mcan = {
- 	.mod_quirks = SYSS_QUIRK_RESETDONE_INVERTED,
+-		target-module@300000 {			/* 0x4a300000, ap 9 04.0 */
+-			compatible = "ti,sysc";
+-			status = "disabled";
++		pruss_tm: target-module@300000 {	/* 0x4a300000, ap 9 04.0 */
++			compatible = "ti,sysc-pruss", "ti,sysc";
++			reg = <0x326000 0x4>,
++			      <0x326004 0x4>;
++			reg-names = "rev", "sysc";
++			ti,sysc-mask = <(SYSC_PRUSS_STANDBY_INIT |
++					 SYSC_PRUSS_SUB_MWAIT)>;
++			ti,sysc-midle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			clocks = <&pruss_ocp_clkctrl AM3_PRUSS_OCP_PRUSS_CLKCTRL 0>;
++			clock-names = "fck";
++			resets = <&prm_per 1>;
++			reset-names = "rstctrl";
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges = <0x0 0x300000 0x80000>;
++			status = "disabled";
+ 		};
+ 	};
  };
- 
-+/*
-+ * PRUSS found on some AM33xx, AM437x and AM57xx SoCs
-+ */
-+static const struct sysc_capabilities sysc_pruss = {
-+	.type = TI_SYSC_PRUSS,
-+	.sysc_mask = SYSC_PRUSS_STANDBY_INIT | SYSC_PRUSS_SUB_MWAIT,
-+	.regbits = &sysc_regbits_omap4_simple,
-+	.mod_quirks = SYSC_MODULE_QUIRK_PRUSS,
-+};
-+
- static int sysc_init_pdata(struct sysc *ddata)
- {
- 	struct ti_sysc_platform_data *pdata = dev_get_platdata(ddata->dev);
-@@ -2538,6 +2564,7 @@ static const struct of_device_id sysc_match[] = {
- 	{ .compatible = "ti,sysc-usb-host-fs",
- 	  .data = &sysc_omap4_usb_host_fs, },
- 	{ .compatible = "ti,sysc-dra7-mcan", .data = &sysc_dra7_mcan, },
-+	{ .compatible = "ti,sysc-pruss", .data = &sysc_pruss, },
- 	{  },
- };
- MODULE_DEVICE_TABLE(of, sysc_match);
-diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
-index 2cbde6542849..b04575fb9f73 100644
---- a/include/linux/platform_data/ti-sysc.h
-+++ b/include/linux/platform_data/ti-sysc.h
-@@ -17,6 +17,7 @@ enum ti_sysc_module_type {
- 	TI_SYSC_OMAP4_MCASP,
- 	TI_SYSC_OMAP4_USB_HOST_FS,
- 	TI_SYSC_DRA7_MCAN,
-+	TI_SYSC_PRUSS,
- };
- 
- struct ti_sysc_cookie {
-@@ -49,6 +50,7 @@ struct sysc_regbits {
- 	s8 emufree_shift;
- };
- 
-+#define SYSC_MODULE_QUIRK_PRUSS		BIT(22)
- #define SYSC_QUIRK_CLKDM_NOAUTO		BIT(21)
- #define SYSC_QUIRK_FORCE_MSTANDBY	BIT(20)
- #define SYSC_MODULE_QUIRK_AESS		BIT(19)
 -- 
 2.23.0
 
