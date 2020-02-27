@@ -2,150 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C5E4170E2D
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 03:04:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F30B8170E34
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 03:07:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728317AbgB0CEO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Feb 2020 21:04:14 -0500
-Received: from muru.com ([72.249.23.125]:57994 "EHLO muru.com"
+        id S1728236AbgB0CHR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Feb 2020 21:07:17 -0500
+Received: from muru.com ([72.249.23.125]:58004 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728243AbgB0CEO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 26 Feb 2020 21:04:14 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 18AF7819C;
-        Thu, 27 Feb 2020 02:04:58 +0000 (UTC)
+        id S1728229AbgB0CHR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 26 Feb 2020 21:07:17 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A340F8022;
+        Thu, 27 Feb 2020 02:08:01 +0000 (UTC)
+Date:   Wed, 26 Feb 2020 18:07:13 -0800
 From:   Tony Lindgren <tony@atomide.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Arthur Demchenkov <spinal.by@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH 2/2] Input: omap4-keypad - check state again for lost key-up interrupts
-Date:   Wed, 26 Feb 2020 18:04:07 -0800
-Message-Id: <20200227020407.17276-2-tony@atomide.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200227020407.17276-1-tony@atomide.com>
-References: <20200227020407.17276-1-tony@atomide.com>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 06/12] ARM: dts: am335x-bone-common: Enable PRU-ICSS
+ interconnect node
+Message-ID: <20200227020713.GE37466@atomide.com>
+References: <20200225204649.28220-1-s-anna@ti.com>
+ <20200225204649.28220-7-s-anna@ti.com>
+ <20200226182924.GU37466@atomide.com>
+ <af3965db-54b2-3e4f-414f-d27ca4b5ced1@ti.com>
+ <20200226223745.GA37466@atomide.com>
+ <20200226223921.GB37466@atomide.com>
+ <b1fe18b5-f779-aea5-8c66-41c0de66c39f@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b1fe18b5-f779-aea5-8c66-41c0de66c39f@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We only have partial errata i689 implemented with Commit 6c3516fed7b6
-("Input: omap-keypad - fix keyboard debounce configuration"). We are
-still missing the check for lost key-up interrupts as described in the
-omap4 silicon errata documentation as Errata ID i689 "1.32 Keyboard Key
-Up Event Can Be Missed":
+* Suman Anna <s-anna@ti.com> [200227 00:59]:
+> Hi Tony,
+> 
+> On 2/26/20 4:39 PM, Tony Lindgren wrote:
+> > * Tony Lindgren <tony@atomide.com> [200226 22:38]:
+> >> * Suman Anna <s-anna@ti.com> [200226 20:35]:
+> >>> On 2/26/20 12:29 PM, Tony Lindgren wrote:
+> >>>> * Suman Anna <s-anna@ti.com> [200225 20:47]:
+> >>>>> The PRU-ICSS target module node was left in disabled state in the base
+> >>>>> am33xx-l4.dtsi file. Enable this node on all the AM335x beaglebone
+> >>>>> boards as they mostly use a AM3358 or a AM3359 SoC which do contain
+> >>>>> the PRU-ICSS IP.
+> >>>>
+> >>>> Just get rid of the top level status = "disabled". The default
+> >>>> is enabled, and the device is there for sure inside the SoC.
+> >>>> And then there's no need for pointless status = "okay" tinkering
+> >>>> in the board specific dts files so no need for this patch.
+> >>>
+> >>> The IP is not available on all SoCs, and there are about 40 different
+> >>> board files atm across AM33xx and AM437x, and am not sure what SoCs they
+> >>> are actually using.
+> >>
+> >> Oh that issue again.. Maybe take a look at patch "[PATCH 2/3] bus: ti-sysc:
+> >> Detect display subsystem related devices" if you can add runtime
+> >> detection for the accelerators there similar to what I hadded for omap3.
+> >> acclerators.
+> > 
+> > Sorry I meant instead patch "[PATCH 6/7] bus: ti-sysc: Implement SoC
+> > revision handling".
+> 
+> OK, looked down that path a bit more and looking through mach-omap2/id.c
+>  and soc.h, I see some of the part number infrastructure build on top of
+> DEV_FEATURE bits for some SoCs. The DEVICE_ID registers only have the
+> generic family and the Silicon Revision number for AM33xx and AM437x and
+> we currently do not have any infrastructure around exact SoC
+> identification for AM33xx and AM437x atleast.
+> 
+> Do you have the bit-field split for the DEV_FEATURE bits somewhere,
+> because I couldn't find any in either the DM or the TRM. On AM437x,
+> there is no difference between AM4372 and AM4376 DEV_FEATURE value even
+> though the former doesn't have the PRUSS. On AM335x, may be bit 0
+> signifies the presence of PRUSS??
 
-"When a key is released for a time shorter than the debounce time,
- in-between 2 key press (KP1 and KP2), the keyboard state machine will go
- to idle mode and will never detect the key release (after KP1, and also
- after KP2), and thus will never generate a new IRQ indicating the key
- release."
+OK not sure how that could be detected. Maybe check the efuses on
+the newer SoCs?
 
-Let's just check the keyboard state one more time after no more key
-press events.
+Regards,
 
-Cc: Arthur Demchenkov <spinal.by@gmail.com>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
-
-Can you guys test if you're still seeing stuck keys here and there
-with this patch applied? Seems to behave for me based on very brief
-testing so not sure if I got it right..
-
----
- drivers/input/keyboard/omap4-keypad.c | 37 ++++++++++++++++++++++++---
- 1 file changed, 33 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/input/keyboard/omap4-keypad.c b/drivers/input/keyboard/omap4-keypad.c
---- a/drivers/input/keyboard/omap4-keypad.c
-+++ b/drivers/input/keyboard/omap4-keypad.c
-@@ -11,6 +11,7 @@
- #include <linux/module.h>
- #include <linux/interrupt.h>
- #include <linux/platform_device.h>
-+#include <linux/delay.h>
- #include <linux/errno.h>
- #include <linux/io.h>
- #include <linux/of.h>
-@@ -57,8 +58,10 @@
- #define OMAP4_KEYPAD_PTV_DIV_128        0x6
- #define OMAP4_KEYPAD_DEBOUNCINGTIME_MS(dbms, ptv)     \
- 	((((dbms) * 1000) / ((1 << ((ptv) + 1)) * (1000000 / 32768))) - 1)
-+#define OMAP4_DEBOUNCE_MS		16	/* In milliseconds */
- #define OMAP4_VAL_DEBOUNCINGTIME_16MS					\
--	OMAP4_KEYPAD_DEBOUNCINGTIME_MS(16, OMAP4_KEYPAD_PTV_DIV_128)
-+	OMAP4_KEYPAD_DEBOUNCINGTIME_MS(OMAP4_DEBOUNCE_MS, \
-+				       OMAP4_KEYPAD_PTV_DIV_128)
- 
- enum {
- 	KBD_REVISION_OMAP4 = 0,
-@@ -119,13 +122,13 @@ static irqreturn_t omap4_keypad_irq_handler(int irq, void *dev_id)
- 	return IRQ_NONE;
- }
- 
--static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
-+static int omap4_keypad_scan_keys(struct omap4_keypad *keypad_data)
- {
--	struct omap4_keypad *keypad_data = dev_id;
- 	struct input_dev *input_dev = keypad_data->input;
- 	unsigned char key_state[ARRAY_SIZE(keypad_data->key_state)];
- 	unsigned int col, row, code, changed;
- 	u32 *new_state = (u32 *) key_state;
-+	int key_down, keys_pressed = 0;
- 
- 	*new_state = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE31_0);
- 	*(new_state + 1) = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE63_32);
-@@ -140,9 +143,12 @@ static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
- 				code = MATRIX_SCAN_CODE(row, col,
- 						keypad_data->row_shift);
- 				input_event(input_dev, EV_MSC, MSC_SCAN, code);
-+				key_down = key_state[row] & (1 << col);
- 				input_report_key(input_dev,
- 						 keypad_data->keymap[code],
--						 key_state[row] & (1 << col));
-+						 key_down);
-+				if (key_down)
-+					keys_pressed++;
- 			}
- 		}
- 	}
-@@ -152,6 +158,29 @@ static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
- 	memcpy(keypad_data->key_state, key_state,
- 		sizeof(keypad_data->key_state));
- 
-+	return keys_pressed;
-+}
-+
-+static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
-+{
-+	struct omap4_keypad *keypad_data = dev_id;
-+	int new_keys_pressed;
-+
-+	/*
-+	 * Errata ID i689 "1.32 Keyboard Key Up Event Can Be Missed"
-+	 * check keyboard state again for lost key-up interrupts.
-+	 */
-+	do {
-+		new_keys_pressed = omap4_keypad_scan_keys(keypad_data);
-+
-+		/* Check once after debounce time when no more keys down */
-+		if (!new_keys_pressed) {
-+			usleep_range(OMAP4_DEBOUNCE_MS * 1000 * 2,
-+				     OMAP4_DEBOUNCE_MS * 1000 * 3);
-+			new_keys_pressed = omap4_keypad_scan_keys(keypad_data);
-+		}
-+	} while (new_keys_pressed);
-+
- 	/* clear pending interrupts */
- 	kbd_write_irqreg(keypad_data, OMAP4_KBD_IRQSTATUS,
- 			 kbd_read_irqreg(keypad_data, OMAP4_KBD_IRQSTATUS));
--- 
-2.25.1
+Tony
