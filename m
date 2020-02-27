@@ -2,318 +2,185 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F53170C9E
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 00:34:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12C4E170D39
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 01:28:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727986AbgBZXef (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Feb 2020 18:34:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55710 "EHLO mail.kernel.org"
+        id S1728054AbgB0A2s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Feb 2020 19:28:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41522 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727980AbgBZXee (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 26 Feb 2020 18:34:34 -0500
+        id S1728012AbgB0A2s (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 26 Feb 2020 19:28:48 -0500
 Received: from earth.universe (unknown [185.62.205.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 988C324670;
-        Wed, 26 Feb 2020 23:34:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 48C6521D7E;
+        Thu, 27 Feb 2020 00:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582760073;
-        bh=fZobbN6MJ6wCSI/9I2owrnCn7ucfi8JgoS7AnIPsNag=;
+        s=default; t=1582763326;
+        bh=BLDNweZa4XLR3Jexr+qfyUpfZnlcYHo2Os3v5UHZzhc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CDlW12V2TE/tWheRwikWML3/26TfteTWdmXl4g2nwJn8iIcM+TQ7FCWSwfz4lxOUx
-         387D4sdS1Amem3TecZ3yeC+GICQgnSjlTLLNrnflYBOEhd/4FeecE1TodAwUfdCyGq
-         oDjaJviTDS09GsqMVvhOnMibRfS+jhZt1WF8HhOA=
+        b=NrwwengND71qT3HpHcnyYJcbNhL9ZR0PKb5Ud9oKQf51xPRhBson+teHrXNPzmYqM
+         8uGeGf8aVfSn8jWxfiiWb0VeZqFTHH5XOrpuKaNwVxgt6BUvwVB7QJbQyhuS9rDgG5
+         JD31xpCQRvSds0m6FZMJhPnbMSrehjSS2iUzN7ok=
 Received: by earth.universe (Postfix, from userid 1000)
-        id 214643C0C83; Thu, 27 Feb 2020 00:34:31 +0100 (CET)
-Date:   Thu, 27 Feb 2020 00:34:31 +0100
+        id D3F343C0C83; Thu, 27 Feb 2020 01:28:43 +0100 (CET)
+Date:   Thu, 27 Feb 2020 01:28:43 +0100
 From:   Sebastian Reichel <sre@kernel.org>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Tony Lindgren <tony@atomide.com>,
         Merlijn Wajer <merlijn@wizzup.org>,
         "H. Nikolaus Schaller" <hns@goldelico.com>,
         Rob Herring <robh@kernel.org>, linux-omap@vger.kernel.org,
         dri-devel@lists.freedesktop.org, kernel@collabora.com
-Subject: Re: [PATCHv2 13/56] drm/omap: dsi: switch dsi_vc_send_long/short to
- mipi_dsi_msg
-Message-ID: <20200226233431.c7spyx6kem4tr7xw@earth.universe>
+Subject: Re: [PATCHv2 00/56] drm/omap: Convert DSI code to use drm_mipi_dsi
+ and drm_panel
+Message-ID: <20200227002843.7ea73mewcr4rmzli@earth.universe>
 References: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
- <20200224232126.3385250-14-sebastian.reichel@collabora.com>
- <20200225163001.GN4764@pendragon.ideasonboard.com>
+ <74217b2c-a6cf-4a85-c18a-62ca892b7a0d@ti.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4gorsnrfznbfjk6b"
+        protocol="application/pgp-signature"; boundary="5pomv55ucfpod6lu"
 Content-Disposition: inline
-In-Reply-To: <20200225163001.GN4764@pendragon.ideasonboard.com>
+In-Reply-To: <74217b2c-a6cf-4a85-c18a-62ca892b7a0d@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---4gorsnrfznbfjk6b
+--5pomv55ucfpod6lu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Laurent,
+Hi,
 
-On Tue, Feb 25, 2020 at 06:30:01PM +0200, Laurent Pinchart wrote:
-> On Tue, Feb 25, 2020 at 12:20:43AM +0100, Sebastian Reichel wrote:
-> > Simplify the DSI encoder by using mipi_dsi_msg for
-> > dsi_vc_send_long and dsi_vc_send_short. Further improvements
-> > require cleaning up the channel allocation code first.
+On Wed, Feb 26, 2020 at 02:28:23PM +0200, Tomi Valkeinen wrote:
+> On 25/02/2020 01:20, Sebastian Reichel wrote:
+> > This updates the existing omapdrm DSI code, so that it uses
+> > common drm_mipi_dsi API and drm_panel.
 > >=20
-> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> > ---
-> >  drivers/gpu/drm/omapdrm/dss/dsi.c | 92 +++++++++++++++----------------
-> >  1 file changed, 45 insertions(+), 47 deletions(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdr=
-m/dss/dsi.c
-> > index 9b5b078beb6d..4899bfa2d76f 100644
-> > --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-> > +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> > @@ -2599,30 +2599,36 @@ static inline void dsi_vc_write_long_payload(st=
-ruct dsi_data *dsi, int channel,
-> >  	dsi_write_reg(dsi, DSI_VC_LONG_PACKET_PAYLOAD(channel), val);
-> >  }
-> > =20
-> > -static int dsi_vc_send_long(struct dsi_data *dsi, int channel, u8 data=
-_type,
-> > -			    const u8 *data, u16 len, u8 ecc)
-> > +static int dsi_vc_send_long(struct dsi_data *dsi,
-> > +			    const struct mipi_dsi_msg *msg)
-> >  {
-> > +	struct mipi_dsi_packet pkg;
-> >  	/*u32 val; */
-> >  	int i;
-> >  	const u8 *p;
-> >  	int r =3D 0;
-> >  	u8 b1, b2, b3, b4;
-> > =20
-> > +	r =3D mipi_dsi_create_packet(&pkg, msg);
-> > +	if (r < 0)
-> > +		return r;
-> > +
-> >  	if (dsi->debug_write)
-> > -		DSSDBG("dsi_vc_send_long, %d bytes\n", len);
-> > +		DSSDBG("dsi_vc_send_long, %d bytes\n", msg->tx_len);
-> > =20
-> >  	/* len + header */
-> > -	if (dsi->vc[channel].tx_fifo_size * 32 * 4 < len + 4) {
-> > +	if (dsi->vc[msg->channel].tx_fifo_size * 32 * 4 < msg->tx_len + 4) {
-> >  		DSSERR("unable to send long packet: packet too long.\n");
-> >  		return -EINVAL;
-> >  	}
-> > =20
-> > -	dsi_vc_config_source(dsi, channel, DSI_VC_SOURCE_L4);
-> > +	dsi_vc_config_source(dsi, msg->channel, DSI_VC_SOURCE_L4);
-> > =20
-> > -	dsi_vc_write_long_header(dsi, channel, data_type, len, ecc);
-> > +	dsi_vc_write_long_header(dsi, msg->channel, msg->type, msg->tx_len,
-> > +				 pkg.header[3]);
+> > The patchset has been tested with Droid 4 using Linux console, X.org and
+> > Weston. The patchset is based on Laurent Pinchartl's patch series [0]
+> > and removes the last custom panel driver, so quite a few cleanups on the
+> > omapdrm codebase were possible.
 >=20
-> mipi_dsi_create_packet() never sets header[3]. I suppose that's not an
-> issue as we were always passing ecc as 0 to this function, but you may
-> want to drop mipi_dsi_create_packet() above and just hardcode 0 here.
-
-sure.
-
-> > =20
-> > -	p =3D data;
-> > -	for (i =3D 0; i < len >> 2; i++) {
-> > +	p =3D msg->tx_buf;
-> > +	for (i =3D 0; i < msg->tx_len >> 2; i++) {
-> >  		if (dsi->debug_write)
-> >  			DSSDBG("\tsending full packet %d\n", i);
-> > =20
-> > @@ -2631,10 +2637,10 @@ static int dsi_vc_send_long(struct dsi_data *ds=
-i, int channel, u8 data_type,
-> >  		b3 =3D *p++;
-> >  		b4 =3D *p++;
-> > =20
-> > -		dsi_vc_write_long_payload(dsi, channel, b1, b2, b3, b4);
-> > +		dsi_vc_write_long_payload(dsi, msg->channel, b1, b2, b3, b4);
-> >  	}
-> > =20
-> > -	i =3D len % 4;
-> > +	i =3D msg->tx_len % 4;
-> >  	if (i) {
-> >  		b1 =3D 0; b2 =3D 0; b3 =3D 0;
-> > =20
-> > @@ -2656,64 +2662,64 @@ static int dsi_vc_send_long(struct dsi_data *ds=
-i, int channel, u8 data_type,
-> >  			break;
-> >  		}
-> > =20
-> > -		dsi_vc_write_long_payload(dsi, channel, b1, b2, b3, 0);
-> > +		dsi_vc_write_long_payload(dsi, msg->channel, b1, b2, b3, 0);
-> >  	}
-> > =20
-> >  	return r;
-> >  }
-> > =20
-> > -static int dsi_vc_send_short(struct dsi_data *dsi, int channel, u8 dat=
-a_type,
-> > -			     u16 data, u8 ecc)
-> > +static int dsi_vc_send_short(struct dsi_data *dsi,
-> > +			     const struct mipi_dsi_msg *msg)
-> >  {
-> > +	struct mipi_dsi_packet pkg;
+> I haven't done any reviews yet, but applied these (and the one
+> v2.1 patch) on top of Laurent's. I booted up AM5 EVM and loaded
+> the modules:
 >=20
-> s/pkg/pkt/ (or packet)
+> [   17.261560] WARNING: CPU: 0 PID: 419 at drivers/base/component.c:636 c=
+omponent_bind_all+0x1f4/0x258
 
-Ack.
+I did not see that warning for some reason. I guess I was always
+lucky, since its a race condition introduced by "drm/omap: bind
+components with drm_device argument". That patch moves
+component_bind_all from dss_bind() to omapdrm's probe() to get
+access to drm_dev. Currently omapdrm is the only DRM driver not
+supplying that as parameter and its required to move encoder init
+into the DSS output drivers. I assumed that it would be ok, since
+it just postpones the call a little bit. Unfortunately it also
+moves it out of the lock protection from dss_bind().
+
+The only fix, that I see is to register the drm_dev is dss_bind
+and then supply it to omapdrm via pdata. But I think we could
+actually get rid of the omapdrm platform device completly and
+just use its parent "omapdss_dss". I suppose a follow-up patchset
+could merge the code into one module and do this merge.
+
+Probably it's the best to drop that patch for now. It's not yet
+used in the patches, that I sent.
+
+> [   17.270811] Modules linked in: omapdrm(+) omapdss omapdss_base panel_o=
+sd_osd101t2587_53ts panel_simple simple_bridge ti_tpd12s015 display_connec
+> tor tc358767 tc358768 sii902x ti_tfp410 drm_kms_helper drm drm_panel_orie=
+ntation_quirks cfbfillrect cfbimgblt cfbcopyarea cec
+> [   17.295521] CPU: 0 PID: 419 Comm: insmod Not tainted 5.6.0-rc2-00375-g=
+66c4203ed9d4 #2
+> [   17.303387] Hardware name: Generic DRA74X (Flattened Device Tree)
+> [   17.309520] [<c011431c>] (unwind_backtrace) from [<c010dc20>] (show_st=
+ack+0x10/0x14)
+> [   17.317306] [<c010dc20>] (show_stack) from [<c09acca4>] (dump_stack+0x=
+b4/0xd0)
+> [   17.324567] [<c09acca4>] (dump_stack) from [<c013a33c>] (__warn+0xc0/0=
+xf8)
+> [   17.331477] [<c013a33c>] (__warn) from [<c013a700>] (warn_slowpath_fmt=
++0x58/0xb8)
+> [   17.338998] [<c013a700>] (warn_slowpath_fmt) from [<c0630698>] (compon=
+ent_bind_all+0x1f4/0x258)
+> [   17.347768] [<c0630698>] (component_bind_all) from [<bf11b52c>] (pdev_=
+probe+0xe0/0x7a0 [omapdrm])
+> [   17.356709] [<bf11b52c>] (pdev_probe [omapdrm]) from [<c063a198>] (pla=
+tform_drv_probe+0x48/0x98)
+> [   17.365537] [<c063a198>] (platform_drv_probe) from [<c0637c1c>] (reall=
+y_probe+0x200/0x478)
+> [   17.373841] [<c0637c1c>] (really_probe) from [<c0638060>] (driver_prob=
+e_device+0x6c/0x1b4)
+> [   17.382145] [<c0638060>] (driver_probe_device) from [<c06383f0>] (devi=
+ce_driver_attach+0x58/0x60)
+> [   17.391060] [<c06383f0>] (device_driver_attach) from [<c063849c>] (__d=
+river_attach+0xa4/0x148)
+> [   17.399713] [<c063849c>] (__driver_attach) from [<c0635af8>] (bus_for_=
+each_dev+0x70/0xb4)
+> [   17.407930] [<c0635af8>] (bus_for_each_dev) from [<c0636d60>] (bus_add=
+_driver+0x100/0x204)
+> [   17.416233] [<c0636d60>] (bus_add_driver) from [<c0639078>] (driver_re=
+gister+0x74/0x108)
+> [   17.424361] [<c0639078>] (driver_register) from [<c063a2a8>] (__platfo=
+rm_register_drivers+0x58/0x150)
+> [   17.433628] [<c063a2a8>] (__platform_register_drivers) from [<c0102ff8=
+>] (do_one_initcall+0x48/0x2a0)
+> [   17.442893] [<c0102ff8>] (do_one_initcall) from [<c01e2efc>] (do_init_=
+module+0x5c/0x234)
+> [   17.451022] [<c01e2efc>] (do_init_module) from [<c01e5668>] (load_modu=
+le+0x250c/0x28a4)
+> [   17.459064] [<c01e5668>] (load_module) from [<c01e5cb8>] (sys_finit_mo=
+dule+0xcc/0x110)
+> [   17.467020] [<c01e5cb8>] (sys_finit_module) from [<c0101000>] (ret_fas=
+t_syscall+0x0/0x54)
+> [   17.475233] Exception stack(0xea84bfa8 to 0xea84bff0)
+> [   17.480307] bfa0:                   00000002 00000000 00000003 0002a89=
+4 00000000 bebd2d74
+> [   17.488524] bfc0: 00000002 00000000 00028424 0000017b 0003eeb0 0000000=
+2 b6ffe000 00000000
+> [   17.496738] bfe0: bebd2bb8 bebd2ba8 00020d7c b6edb0b0
+> [   17.502365] ---[ end trace c20802296d6b2775 ]---
+> [   17.508567] omapdss_dss 58000000.dss: bound 58001000.dispc (ops dsi_fr=
+amedone_timeout_work_callback [omapdss])
+> [   17.520358] omapdss_dss 58000000.dss: bound 58040000.encoder (ops dsi_=
+framedone_timeout_work_callback [omapdss])
+> [   17.559728] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+> [   17.574544] [drm] Enabling DMM ywrap scrolling
+> [   17.580606] omapdrm omapdrm.0: fb0: omapdrmdrmfb frame buffer device
+> [   17.625099] [drm] Initialized omapdrm 1.0.0 20110917 for omapdrm.0 on =
+minor 0
+>=20
+> Similar warning on module unload. The display works, though.
+
+same problem, with dss_unbind() and omapdrm's remove function.
 
 -- Sebastian
 
-> >  	u32 r;
-> > -	u8 data_id;
-> > +
-> > +	r =3D mipi_dsi_create_packet(&pkg, msg);
-> > +	if (r < 0)
-> > +		return r;
-> > =20
-> >  	WARN_ON(!dsi_bus_is_locked(dsi));
-> > =20
-> >  	if (dsi->debug_write)
-> >  		DSSDBG("dsi_vc_send_short(ch%d, dt %#x, b1 %#x, b2 %#x)\n",
-> > -				channel,
-> > -				data_type, data & 0xff, (data >> 8) & 0xff);
-> > +				msg->channel,
-> > +				msg->type, pkg.header[1], pkg.header[2]);
-> > =20
-> > -	dsi_vc_config_source(dsi, channel, DSI_VC_SOURCE_L4);
-> > +	dsi_vc_config_source(dsi, msg->channel, DSI_VC_SOURCE_L4);
-> > =20
-> > -	if (FLD_GET(dsi_read_reg(dsi, DSI_VC_CTRL(channel)), 16, 16)) {
-> > +	if (FLD_GET(dsi_read_reg(dsi, DSI_VC_CTRL(msg->channel)), 16, 16)) {
-> >  		DSSERR("ERROR FIFO FULL, aborting transfer\n");
-> >  		return -EINVAL;
-> >  	}
-> > =20
-> > -	data_id =3D data_type | channel << 6;
-> > -
-> > -	r =3D (data_id << 0) | (data << 8) | (ecc << 24);
-> > +	r =3D pkg.header[3] << 24 | pkg.header[2] << 16 | pkg.header[1] << 8 |
-> > +	    pkg.header[0];
->=20
-> OK, this justifies using mipi_dsi_create_packet(), so you can skip the
-> related comments in earlier patches.
->=20
-> > -	dsi_write_reg(dsi, DSI_VC_SHORT_PACKET_HEADER(channel), r);
-> > +	dsi_write_reg(dsi, DSI_VC_SHORT_PACKET_HEADER(msg->channel), r);
-> > =20
-> >  	return 0;
-> >  }
-> > =20
-> >  static int dsi_vc_send_null(struct dsi_data *dsi, int channel)
-> >  {
-> > -	return dsi_vc_send_long(dsi, channel, MIPI_DSI_NULL_PACKET, NULL, 0, =
-0);
-> > +	const struct mipi_dsi_msg msg =3D {
-> > +		.channel =3D channel,
-> > +		.type =3D MIPI_DSI_NULL_PACKET,
-> > +	};
-> > +
-> > +	return dsi_vc_send_long(dsi, &msg);
-> >  }
-> > =20
-> >  static int dsi_vc_write_common(struct omap_dss_device *dssdev,
-> >  			       const struct mipi_dsi_msg *msg)
-> >  {
-> >  	struct dsi_data *dsi =3D to_dsi_data(dssdev);
-> > -	struct mipi_dsi_packet packet;
-> >  	int r;
-> > =20
-> > -	r =3D mipi_dsi_create_packet(&packet, msg);
-> > -	if (r < 0)
-> > -		return r;
-> > -
-> > -	if (mipi_dsi_packet_format_is_short(msg->type)) {
-> > -		u16 data =3D packet.header[1] | (packet.header[2] << 8);
-> > -		r =3D dsi_vc_send_short(dsi, msg->channel, msg->type, data, 0);
-> > -	} else {
-> > -		r =3D dsi_vc_send_long(dsi, msg->channel, msg->type,
-> > -						   msg->tx_buf, msg->tx_len, 0);
-> > -	}
-> > +	if (mipi_dsi_packet_format_is_short(msg->type))
-> > +		r =3D dsi_vc_send_short(dsi, msg);
-> > +	else
-> > +		r =3D dsi_vc_send_long(dsi, msg);
-> > =20
-> >  	if (r < 0)
-> >  		return r;
-> > @@ -2853,10 +2859,10 @@ static int dsi_vc_dcs_read(struct omap_dss_devi=
-ce *dssdev,
-> >  			   const struct mipi_dsi_msg *msg)
-> >  {
-> >  	struct dsi_data *dsi =3D to_dsi_data(dssdev);
-> > +	u8 cmd =3D ((u8*) msg->tx_buf)[0];
-> >  	int r;
-> > -	u8 dcs_cmd =3D ((u8*) msg->tx_buf)[0];
-> > =20
-> > -	r =3D dsi_vc_send_short(dsi, msg->channel, MIPI_DSI_DCS_READ, dcs_cmd=
-, 0);
-> > +	r =3D dsi_vc_send_short(dsi, msg);
-> >  	if (r)
-> >  		goto err;
-> > =20
-> > @@ -2877,7 +2883,7 @@ static int dsi_vc_dcs_read(struct omap_dss_device=
- *dssdev,
-> >  	return 0;
-> >  err:
-> >  	DSSERR("dsi_vc_dcs_read(ch %d, cmd 0x%02x) failed\n",
-> > -		msg->channel, dcs_cmd);
-> > +		msg->channel, cmd);
-> >  	return r;
-> >  }
-> > =20
-> > @@ -2885,17 +2891,9 @@ static int dsi_vc_generic_read(struct omap_dss_d=
-evice *dssdev,
-> >  			       const struct mipi_dsi_msg *msg)
-> >  {
-> >  	struct dsi_data *dsi =3D to_dsi_data(dssdev);
-> > -	struct mipi_dsi_packet packet;
-> > -	u16 data;
-> >  	int r;
-> > =20
-> > -	r =3D mipi_dsi_create_packet(&packet, msg);
-> > -	if (r < 0)
-> > -		goto err;
-> > -
-> > -	data =3D packet.header[1] | (packet.header[2] << 8);
-> > -
-> > -	r =3D dsi_vc_send_short(dsi, msg->channel, msg->type, data, 0);
-> > +	r =3D dsi_vc_send_short(dsi, msg);
-> >  	if (r)
-> >  		goto err;
-> > =20
->=20
-> --=20
-> Regards,
->=20
-> Laurent Pinchart
-
---4gorsnrfznbfjk6b
+--5pomv55ucfpod6lu
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5XAIMACgkQ2O7X88g7
-+poxzA//UZBM7jbq5LR2YDY7HEU1dcllne8cOvDMEspcCbWkEkxVVbnsMjuh1fIk
-rdsooFZ+itVNxCYysADwaYkiAuvO53Oycfv+ID83T6m2QwVVp/Zirsq7U88ZZhmq
-DFeBW/RH70xKGAQa6eQZctP5zLUvHEpLgUzqwaNPLq8UPUvtJZ4alDO5utH4KcX0
-Gj/K9J9yMl/7yLqBnEYlu8P23ikdHJTFlUlvdZC3ScStqokJov5UsZmUZ3Bfnvrx
-tAdWStNWMOB61Jk/r3fnrDbTQMUJRdihlUCJMryarCnpbXx1dME7pL1p+aJ3DqZb
-VgRDW0NhKvo0YVzWubEs+CQbwY/xODWlVatrvhX357dNQ71Tt2ZGx3t4LkuuK82K
-u+nOqC6mDMUS3tD3qznfm8NsKMc1SxQSX4t9Lxm69cSQA2ODM6PgTozGtgycjvvh
-w3XIxeM0eFV7LwvIEUSlEXmoymJK4qh457tM965FxyemOTVJGsPh5GRK6VAVmsIo
-2w1UlnwTQXRt41DprHiXdVTU5V9PayvHxQSZeUZJQS4zMWTHOxGTVPgSP3jdvArQ
-La5MiE/tUAhYgJ9ZeOYOOlQmL14oDBezclkznU1kgnz5Ss6kdt0/GXivkWmGa0aJ
-26Op7n/I7VrrIJylvEDSl4D09GQHnL5ENUwntrxP3Etg4Ox5HtM=
-=pzq/
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5XDTgACgkQ2O7X88g7
++prWhw//UTrXUWRGqZYDv4bEnQhzIELiZLR/WbqECIvAP/RXpvAPACy9eiMe54Tk
+/RI+7XkPLlKKUGSI+EoYQd/FUUIICz4lXhYxqxoIEjNLavFsB3YIUnWa5M2seju8
+d4Ol9Q/dWe2UU954j6DaWW+Dn95RF0UJpTg3onH/Do/e7cEQwN0Wu3p0ZFQ/Dakb
+euIKgOUq8t5tYFdSFe7zVFrAE91a8zTYfGPx1OU6gOuvs3o4e8h+TsePz2xN7W9M
+mBZh7ag6aayvbAQvPznani0s+gy7S/f5TE7vbsp47Hnh4RWrelZObOLJWq53WmeI
+Yp2j/fPbLwEPWDW6N3f+LGrtcuTt5SlCBor/BVi8mewf8GExO+71eV0o16UztCp9
+FBXcl3UkxoLi8FmAbbdGmEZbCxKwEXEhzODXwbqJAki3kQWjNwRrFOn+okEvkMoi
+14pSm8Z5VCLFjO4v7qeyVw/VZh2fCRj2df0kLNaELtDe8YZXu721/oBNUFWQMBKh
+ECF9TAvfe4fDQoLTDixStL0SZg97vhrUEG5wbTPJ45wgpd6tSo2Yqlf0BIEHWg39
+sgADYnjMZrj5HrPOl5AHHUjyYGZEyJAT6abp1D0xAAiINdoaOP1a03NIvFY/5EOT
+W+CnFPZ88Xod0TH0AKhp3Yawo+2andluHE4AsqTmIgjeNIs02CI=
+=NLga
 -----END PGP SIGNATURE-----
 
---4gorsnrfznbfjk6b--
+--5pomv55ucfpod6lu--
