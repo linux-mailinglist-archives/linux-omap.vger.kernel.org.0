@@ -2,248 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF66D172980
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 21:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BABA7172A20
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 22:29:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729421AbgB0Uf2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 Feb 2020 15:35:28 -0500
-Received: from asavdk3.altibox.net ([109.247.116.14]:51900 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729351AbgB0Uf2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Feb 2020 15:35:28 -0500
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id B126920031;
-        Thu, 27 Feb 2020 21:35:22 +0100 (CET)
-Date:   Thu, 27 Feb 2020 21:35:21 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>, kernel@collabora.com,
-        Tony Lindgren <tony@atomide.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv2 57/56] dt-bindings: display: panel-dsi-cm: convert to
- YAML
-Message-ID: <20200227203521.GC27592@ravnborg.org>
-References: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
- <20200225115341.3558245-1-sebastian.reichel@collabora.com>
+        id S1729907AbgB0V2y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Feb 2020 16:28:54 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:52888 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726460AbgB0V2x (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Feb 2020 16:28:53 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 01RLSoFZ065308;
+        Thu, 27 Feb 2020 15:28:50 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1582838930;
+        bh=nPQq3L7Fs1cwFTI6ZvMes6py+WF+yLyk55XfqWxBlNU=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=BIhxXBGXxkMK5H7F2jvvEPSEsKZZSnkEkR2pUneTpp0c9wK86zpreFRwfASIoETDQ
+         f4eR+4MhttrDRO/Z+TgpFjMLK5iDSOnGgQUhGsjyGdIayNRclyjQ1W+1DwUJXV6blq
+         GQ6dYqSQui07LQ/XOB720vpIkNbq2K9CKp9QUB7o=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 01RLSo9a126498
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 27 Feb 2020 15:28:50 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 27
+ Feb 2020 15:28:50 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Thu, 27 Feb 2020 15:28:50 -0600
+Received: from [128.247.58.153] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 01RLSoqD011631;
+        Thu, 27 Feb 2020 15:28:50 -0600
+Subject: Re: [PATCH 06/12] ARM: dts: am335x-bone-common: Enable PRU-ICSS
+ interconnect node
+To:     Tony Lindgren <tony@atomide.com>
+CC:     Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+References: <20200225204649.28220-1-s-anna@ti.com>
+ <20200225204649.28220-7-s-anna@ti.com> <20200226182924.GU37466@atomide.com>
+ <af3965db-54b2-3e4f-414f-d27ca4b5ced1@ti.com>
+ <20200226223745.GA37466@atomide.com> <20200226223921.GB37466@atomide.com>
+ <b1fe18b5-f779-aea5-8c66-41c0de66c39f@ti.com>
+ <20200227020713.GE37466@atomide.com>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <28724629-2872-545a-309f-5a3208221b33@ti.com>
+Date:   Thu, 27 Feb 2020 15:28:50 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200225115341.3558245-1-sebastian.reichel@collabora.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=eMA9ckh1 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=QX4gbG5DAAAA:8
-        a=gEfo2CItAAAA:8 a=sozttTNsAAAA:8 a=VwQbUJbxAAAA:8 a=7gkXJVJtAAAA:8
-        a=e5mUnYsNAAAA:8 a=U1h6ImBIMqCLHhaAV2QA:9 a=GY7t_A-vK1nk_CmV:21
-        a=ECjuDdCVLqgy28Y1:21 a=CjuIK1q_8ugA:10 a=AbAUZ8qAyYyZVLSsDulk:22
-        a=sptkURWiP4Gy88Gu7hUp:22 a=aeg5Gbbo78KNqacMgKqU:22
-        a=AjGcO6oz07-iQ99wixmX:22 a=E9Po1WZjFZOl8hwRPBS3:22
-        a=Vxmtnl_E_bksehYqCbjh:22
+In-Reply-To: <20200227020713.GE37466@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Sebastian.
-
-On Tue, Feb 25, 2020 at 12:53:41PM +0100, Sebastian Reichel wrote:
-> Convert panel-dsi-cm bindings to YAML and add
-> missing properties while at it.
+On 2/26/20 8:07 PM, Tony Lindgren wrote:
+> * Suman Anna <s-anna@ti.com> [200227 00:59]:
+>> Hi Tony,
+>>
+>> On 2/26/20 4:39 PM, Tony Lindgren wrote:
+>>> * Tony Lindgren <tony@atomide.com> [200226 22:38]:
+>>>> * Suman Anna <s-anna@ti.com> [200226 20:35]:
+>>>>> On 2/26/20 12:29 PM, Tony Lindgren wrote:
+>>>>>> * Suman Anna <s-anna@ti.com> [200225 20:47]:
+>>>>>>> The PRU-ICSS target module node was left in disabled state in the base
+>>>>>>> am33xx-l4.dtsi file. Enable this node on all the AM335x beaglebone
+>>>>>>> boards as they mostly use a AM3358 or a AM3359 SoC which do contain
+>>>>>>> the PRU-ICSS IP.
+>>>>>>
+>>>>>> Just get rid of the top level status = "disabled". The default
+>>>>>> is enabled, and the device is there for sure inside the SoC.
+>>>>>> And then there's no need for pointless status = "okay" tinkering
+>>>>>> in the board specific dts files so no need for this patch.
+>>>>>
+>>>>> The IP is not available on all SoCs, and there are about 40 different
+>>>>> board files atm across AM33xx and AM437x, and am not sure what SoCs they
+>>>>> are actually using.
+>>>>
+>>>> Oh that issue again.. Maybe take a look at patch "[PATCH 2/3] bus: ti-sysc:
+>>>> Detect display subsystem related devices" if you can add runtime
+>>>> detection for the accelerators there similar to what I hadded for omap3.
+>>>> acclerators.
+>>>
+>>> Sorry I meant instead patch "[PATCH 6/7] bus: ti-sysc: Implement SoC
+>>> revision handling".
+>>
+>> OK, looked down that path a bit more and looking through mach-omap2/id.c
+>>  and soc.h, I see some of the part number infrastructure build on top of
+>> DEV_FEATURE bits for some SoCs. The DEVICE_ID registers only have the
+>> generic family and the Silicon Revision number for AM33xx and AM437x and
+>> we currently do not have any infrastructure around exact SoC
+>> identification for AM33xx and AM437x atleast.
+>>
+>> Do you have the bit-field split for the DEV_FEATURE bits somewhere,
+>> because I couldn't find any in either the DM or the TRM. On AM437x,
+>> there is no difference between AM4372 and AM4376 DEV_FEATURE value even
+>> though the former doesn't have the PRUSS. On AM335x, may be bit 0
+>> signifies the presence of PRUSS??
 > 
-> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> OK not sure how that could be detected. Maybe check the efuses on
+> the newer SoCs?
 
-As saind in previous mail - I prefer to convert ann then patch.
-But end result is the same so OK.
+OK, latest datasheeet has fixed these values up, and they are no longer
+identical. In anycase, none of the current AM437x board dts files in the
+kernel use AM4372, so atleast for AM4372, I can drop the status=disabled
+even without adding any SoC name support.
 
-> ---
->  .../bindings/display/panel/panel-dsi-cm.txt   | 31 ------
->  .../bindings/display/panel/panel-dsi-cm.yaml  | 97 +++++++++++++++++++
->  2 files changed, 97 insertions(+), 31 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
->  create mode 100644 Documentation/devicetree/bindings/display/panel/panel-dsi-cm.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt b/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
-> deleted file mode 100644
-> index f92d5c9adfc5..000000000000
-> --- a/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
-> +++ /dev/null
-> @@ -1,31 +0,0 @@
-> -Generic MIPI DSI Command Mode Panel
-> -===================================
-> -
-> -Required properties:
-> -- compatible: "panel-dsi-cm"
-> -- reg: DSI channel number
-> -
-> -Optional properties:
-> -- label: a symbolic name for the panel
-> -- reset-gpios: panel reset gpio
-> -- te-gpios: panel TE gpio
-> -
-> -Required nodes:
-> -- Video port for DSI input
-> -
-> -Example
-> --------
-> -
-> -lcd0: panel@0 {
-> -	compatible = "tpo,taal", "panel-dsi-cm";
-> -	label = "lcd0";
-> -	reg = <0>;
-> -
-> -	reset-gpios = <&gpio4 6 GPIO_ACTIVE_HIGH>;
-> -
-> -	port {
-> -		lcd0_in: endpoint {
-> -			remote-endpoint = <&dsi1_out_ep>;
-> -		};
-> -	};
-> -};
-> diff --git a/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.yaml b/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.yaml
-> new file mode 100644
-> index 000000000000..ca61171ae145
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.yaml
-> @@ -0,0 +1,97 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/panel/panel-dsi-cm.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: DSI command mode panels
-> +
-> +maintainers:
-> +  - Tomi Valkeinen <tomi.valkeinen@ti.com>
-> +  - Sebastian Reichel <sre@kernel.org>
-> +
-> +description: |
-> +  This binding file is a collection of the DSI panels that
-> +  are usually driven in command mode. If no backlight is
-> +  referenced via the optional backlight property, the DSI
-> +  panel is assumed to have native backlight support.
-> +  The panel may use an OF graph binding for the association
-> +  to the display, or it may be a direct child node of the
-> +  display.
-> +
-> +allOf:
-> +  - $ref: panel-common.yaml#
-> +
-> +properties:
-> +
-> +  compatible:
-> +    enum:
-> +      # compatible must be listed in alphabetical order, ordered by compatible.
-> +      # The description in the comment is mandatory for each compatible.
-> +      - motorola,droid4-panel, panel-dsi-cm
-> +      - nokia,himalaya, panel-dsi-cm
-> +      - tpo,taal, panel-dsi-cm
-Please consider to use the following syntax (from memory - may require
-an enum:):
-
-  compatible:
-    description:
-      Shall contain a panel specific compatible and "panel-dsi-cm"
-      in that order.
-    items:
-      - oneOf:
-          # Maybe add a short description of this panel
-        - motorola,droid4-panel
-          # Maybe add a short description of this panel
-	- nokia,himalaya
-          # Maybe add a short description of this panel
-	- tpo,taal
-
-      - const: panel-dsi-cm
-
-Then panel-dsi-cm is always specified as a second mandatory compatible.
-
-
-
-> +
-> +  reg:
-> +    maxItems: 1
-> +    description: DSI virtual channel
-> +
-> +  te-gpios:
-> +    maxItems: 1
-> +    description:
-> +      Specifier for a GPIO connected to the panel TE (tearing event) signal.
-> +      The GPIO informs the system, that data should be sent to the display
-> +      on rising edges of the GPIO to avoid (or reduce) tearing effects.
-> +      Falling edge can be supported by inverting the GPIO specifier polarity
-> +      flag.
-te-gpios is used by several panels.
-Please add it to panel-common with your nice description.
-
-With the above addressed:
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-
-
-	Sam
-
-> +
-> +  vddi-supply:
-> +    description:
-> +      Display panels require power to be supplied. While several panels need
-> +      more than one power supply with panel-specific constraints governing the
-> +      order and timings of the power supplies, in many cases a single power
-> +      supply is sufficient, either because the panel has a single power rail, or
-> +      because all its power rails can be driven by the same supply. In that case
-> +      the vddi-supply property specifies the supply powering the panel as a
-> +      phandle to a regulator.
-> +
-> +  vpnl-supply:
-> +    description:
-> +      When the display panel needs a second power supply, this property can be
-> +      used in addition to vddi-supply. Both supplies will be enabled at the
-> +      same time before the panel is being accessed.
-> +
-> +  width-mm: true
-> +  height-mm: true
-> +  label: true
-> +  rotation: true
-> +  panel-timing: true
-> +  port: true
-> +  reset-gpios: true
-> +  backlight: true
-> +
-> +additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - port
-> +  - reg
-> +
-> +examples:
-> +  - |
-> +    dsi1@12345678 {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +      panel@0 {
-> +        compatible = "tpo,taal", "panel-dsi-cm";
-> +        label = "lcd0";
-> +        reg = <0>;
-> +        reset-gpios = <&gpio4 6 GPIO_ACTIVE_HIGH>;
-> +
-> +        port {
-> +          panel: endpoint {
-> +            remote-endpoint = <&dsi1_out_ep>;
-> +          };
-> +        };
-> +      };
-> +    };
-> -- 
-> 2.25.0
-> 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+regards
+Suman
