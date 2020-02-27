@@ -2,89 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F30B8170E34
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 03:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36957170EE3
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Feb 2020 04:17:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728236AbgB0CHR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Feb 2020 21:07:17 -0500
-Received: from muru.com ([72.249.23.125]:58004 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728229AbgB0CHR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 26 Feb 2020 21:07:17 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id A340F8022;
-        Thu, 27 Feb 2020 02:08:01 +0000 (UTC)
-Date:   Wed, 26 Feb 2020 18:07:13 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 06/12] ARM: dts: am335x-bone-common: Enable PRU-ICSS
- interconnect node
-Message-ID: <20200227020713.GE37466@atomide.com>
-References: <20200225204649.28220-1-s-anna@ti.com>
- <20200225204649.28220-7-s-anna@ti.com>
- <20200226182924.GU37466@atomide.com>
- <af3965db-54b2-3e4f-414f-d27ca4b5ced1@ti.com>
- <20200226223745.GA37466@atomide.com>
- <20200226223921.GB37466@atomide.com>
- <b1fe18b5-f779-aea5-8c66-41c0de66c39f@ti.com>
+        id S1728255AbgB0DRf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Feb 2020 22:17:35 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:52859 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728173AbgB0DRf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Feb 2020 22:17:35 -0500
+Received: by mail-wm1-f65.google.com with SMTP id p9so1844515wmc.2
+        for <linux-omap@vger.kernel.org>; Wed, 26 Feb 2020 19:17:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=t0TLC5mt6zw20J38nO6UV1Kz+5E95WBtIXeRkoxQ4a0=;
+        b=ihcZFD3BM82Nodw/U9GNhSUm+JXeZGU3lSIVkeWU9q2iegtVf4XY8r0oismBDChX7i
+         VfJlLpZlQVHdSSeweV1eyS6vefZXU8ueNnoJXBUmL69T2B7XEW/ekTfErjxxKkzHNnMN
+         XLhgYHlW0WiTrXN8saPiAVtSfZuyMbpZS07YGoMEkaTRjmeEnO3hr1r+iIKEPCKcNgfe
+         nEJjASqGGrwHpeGbqEakjQmNhk8sZ9KWxRxpA1UfOlJW6TlroVX+vNju4hpcf/J6GStE
+         uy1kXtPDSQsbbp9XRcMRXnGgMV45E3UZ6oMzqMBBAU/7I55m8/4GXJ3s+xTbkc+7SfxT
+         Cl/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=t0TLC5mt6zw20J38nO6UV1Kz+5E95WBtIXeRkoxQ4a0=;
+        b=POz/kWJuIwBg9YrGAlzzZO/0HmNtD2By0foWpP4QC/dbBC9tCuReCdrxLNoKS9cylx
+         t3Zuvav4sSI1T1GQ/3vmrDUn1NUjIl5ludjT6eWY8OTUywUheQTIJ3OFpAdS3jXU9PhC
+         KX/7arE4dNDY+UIlUG3/YmP8tFnd0drhjw8M+EAufBrrvLNUl9568IoK7I+ohXl7nJcY
+         HOlLcQiBR+QxUZVtWbHCxP2t7jwYumPzigvZrxmF2b7jo2r1dVWI2dxysMaDFZAure9w
+         A6BzNSdlrZZ/8je2vLL4ZdgjrdmP9mSZUhpJR+My8XzQ1ecHFhj3vxTx5Z/6ocG/LWLx
+         URmw==
+X-Gm-Message-State: APjAAAWbEcsXnFoO8O6uKWmYzj7/fCroXQJgormQj2VLmFr1S7m+/Tu9
+        6RApL/stkLenLPydWFlH6A3yjx46TJzb0XarU9I=
+X-Google-Smtp-Source: APXvYqwP43r8O2ePpYxco9pkQ8LPorHP3seAZwmx4YpCuLUFiasuIwkMZodXHupXZxwP8ez21BycGEssivrj9NbSNnc=
+X-Received: by 2002:a7b:c204:: with SMTP id x4mr2359538wmi.20.1582773453543;
+ Wed, 26 Feb 2020 19:17:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b1fe18b5-f779-aea5-8c66-41c0de66c39f@ti.com>
+Reply-To: mrsanna.h.bruun119@gmail.com
+Received: by 2002:a05:600c:149:0:0:0:0 with HTTP; Wed, 26 Feb 2020 19:17:32
+ -0800 (PST)
+From:   "Mrs. Anna H. Bruun" <mrsanna.h.bruun119@gmail.com>
+Date:   Wed, 26 Feb 2020 19:17:32 -0800
+X-Google-Sender-Auth: xSKv3xW_wS3HxM1qd6Oqp_mGDnA
+Message-ID: <CAD3OtNpobt8wahDp-PO=a56WERZ9=T_qoaEdi-Y-fuOUoHRnOQ@mail.gmail.com>
+Subject: My Greetings
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Suman Anna <s-anna@ti.com> [200227 00:59]:
-> Hi Tony,
-> 
-> On 2/26/20 4:39 PM, Tony Lindgren wrote:
-> > * Tony Lindgren <tony@atomide.com> [200226 22:38]:
-> >> * Suman Anna <s-anna@ti.com> [200226 20:35]:
-> >>> On 2/26/20 12:29 PM, Tony Lindgren wrote:
-> >>>> * Suman Anna <s-anna@ti.com> [200225 20:47]:
-> >>>>> The PRU-ICSS target module node was left in disabled state in the base
-> >>>>> am33xx-l4.dtsi file. Enable this node on all the AM335x beaglebone
-> >>>>> boards as they mostly use a AM3358 or a AM3359 SoC which do contain
-> >>>>> the PRU-ICSS IP.
-> >>>>
-> >>>> Just get rid of the top level status = "disabled". The default
-> >>>> is enabled, and the device is there for sure inside the SoC.
-> >>>> And then there's no need for pointless status = "okay" tinkering
-> >>>> in the board specific dts files so no need for this patch.
-> >>>
-> >>> The IP is not available on all SoCs, and there are about 40 different
-> >>> board files atm across AM33xx and AM437x, and am not sure what SoCs they
-> >>> are actually using.
-> >>
-> >> Oh that issue again.. Maybe take a look at patch "[PATCH 2/3] bus: ti-sysc:
-> >> Detect display subsystem related devices" if you can add runtime
-> >> detection for the accelerators there similar to what I hadded for omap3.
-> >> acclerators.
-> > 
-> > Sorry I meant instead patch "[PATCH 6/7] bus: ti-sysc: Implement SoC
-> > revision handling".
-> 
-> OK, looked down that path a bit more and looking through mach-omap2/id.c
->  and soc.h, I see some of the part number infrastructure build on top of
-> DEV_FEATURE bits for some SoCs. The DEVICE_ID registers only have the
-> generic family and the Silicon Revision number for AM33xx and AM437x and
-> we currently do not have any infrastructure around exact SoC
-> identification for AM33xx and AM437x atleast.
-> 
-> Do you have the bit-field split for the DEV_FEATURE bits somewhere,
-> because I couldn't find any in either the DM or the TRM. On AM437x,
-> there is no difference between AM4372 and AM4376 DEV_FEATURE value even
-> though the former doesn't have the PRUSS. On AM335x, may be bit 0
-> signifies the presence of PRUSS??
+My Dear
 
-OK not sure how that could be detected. Maybe check the efuses on
-the newer SoCs?
+My Name is Mrs. Anna H. Bruun, from Norway. I know that this message
+will be a surprise to you. Firstly, I am married to Mr. Patrick Bruun,
+A gold merchant who owns a small gold Mine in Burkina Faso; He died of
+Cardiovascular Disease in mid-March 2011. During his life time he
+deposited the sum of =E2=82=AC 8.5 Million Euro) Eight million, Five hundre=
+d
+thousand Euros in a bank in Ouagadougou the capital city of Burkina
+Faso. The deposited money was from the sale of the shares, death
+benefits payment and entitlements of my deceased husband by his
+company.
 
-Regards,
+I am sending this message to you praying that it will reach you in
+good health, since I am not in good health condition in which I sleep
+every night without knowing if I may be alive to see the next day. I
+am suffering from long time cancer and presently i am partially
+suffering from a stroke illness which has become almost impossible for
+me to move around. I am married to my late husband for over 4 years
+before he died and is unfortunately that we don't have a child, my
+doctor confided in me that i have less chance to live. Having known my
+health condition, I decided to contact you to claim the fund since I
+don't have any relation I grew up from the orphanage home,
 
-Tony
+I have decided to donate what I have to you for the support of helping
+Motherless babies/Less privileged/Widows' because I am dying and
+diagnosed of cancer for about 2 years ago. I have been touched by God
+Almighty to donate from what I have inherited from my late husband to
+you for good work of God Almighty. I have asked Almighty God to
+forgive me and believe he has, because He is a Merciful God I will be
+going in for an operation surgery soon
+
+This is the reason i need your services to stand as my next of kin or
+an executor to claim the funds for charity purposes. If this money
+remains unclaimed after my death, the bank executives or the
+government will take the money as unclaimed fund and maybe use it for
+selfish and worthless ventures, I need a very honest person who can
+claim this money and use it for Charity works, for orphanages, widows
+and also build schools for less privilege that will be named after my
+late husband and my name; I need your urgent answer to know if you
+will be able to execute this project, and I will give you more
+Information on how the fund will be transferred to your bank account.
+
+Thanks
+Mrs. Anna H.
