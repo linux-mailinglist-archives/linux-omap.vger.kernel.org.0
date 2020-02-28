@@ -2,32 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0296173E09
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Feb 2020 18:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD3A6173E2D
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Feb 2020 18:17:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726894AbgB1RMc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 Feb 2020 12:12:32 -0500
-Received: from muru.com ([72.249.23.125]:58232 "EHLO muru.com"
+        id S1726527AbgB1RRC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 Feb 2020 12:17:02 -0500
+Received: from muru.com ([72.249.23.125]:58258 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726674AbgB1RMc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 28 Feb 2020 12:12:32 -0500
+        id S1725730AbgB1RRC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 28 Feb 2020 12:17:02 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 69D4281CC;
-        Fri, 28 Feb 2020 17:13:16 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 199B9806C;
+        Fri, 28 Feb 2020 17:17:45 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Arthur Demchenkov <spinal.by@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>, ruleh <ruleh@gmx.de>
-Subject: [PATCH 3/3] Input: omap4-keypad - check state again for lost key-up interrupts
-Date:   Fri, 28 Feb 2020 09:12:23 -0800
-Message-Id: <20200228171223.11444-4-tony@atomide.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>, ruleh <ruleh@gmx.de>
+Subject: [PATCHv2] drm/omap: Fix drm_handle_vblank() handling for command mode panels
+Date:   Fri, 28 Feb 2020 09:16:57 -0800
+Message-Id: <20200228171657.11884-1-tony@atomide.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200228171223.11444-1-tony@atomide.com>
-References: <20200228171223.11444-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
@@ -35,134 +32,170 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We only have partial errata i689 implemented with Commit 6c3516fed7b6
-("Input: omap-keypad - fix keyboard debounce configuration"). We are
-still missing the check for lost key-up interrupts as described in the
-omap4 silicon errata documentation as Errata ID i689 "1.32 Keyboard Key
-Up Event Can Be Missed":
+When trying to run weston on droid4 with the updated sgx blobs, the LCD
+is just black and not updating. Weston also displays the following on
+startup:
 
-"When a key is released for a time shorter than the debounce time,
- in-between 2 key press (KP1 and KP2), the keyboard state machine will go
- to idle mode and will never detect the key release (after KP1, and also
- after KP2), and thus will never generate a new IRQ indicating the key
- release."
+Warning: computed repaint delay is insane: -205475 msec
 
-Let's check the keyboard state with delayed_work after each event. And
-if the problem state is detect, let's clear all events.
+Weston runs fine on the HDMI alone though, and the issue was narrowed
+down to an issue with vblank as suggested by ruleh <ruleh@gmx.de>.
 
-Cc: Arthur Demchenkov <spinal.by@gmail.com>
+Turns out that for command mode displays, we're not currently calling
+drm_handle_vblank() at all since omap_irq_handler() won't do it for
+us since we get no vblank interrupts. Let's fix the issue by calling
+drm_handle_vblank() and omap_crtc_vblank_irq() for command mode
+displays from omap_crtc_framedone_irq() and make the vblank handling
+the same for command mode panels as it is for normal displays.
+
+For reference, below is my current weston.ini. The repaint-window is
+maxed out to force immediate repaint instead of the default 7 ms.
+Otherwise it seems that the repaint is happening at about 60 fps with
+es2gears_wayland compared to about 130 fps where it seems to max out.
+
+[core]
+xwayland=true
+backend=drm-backend.so
+repaint-window=1000
+pageflip-timeout=1000
+
+[libinput]
+rotation=0
+
+[output]
+name=DSI-1
+transform=90
+
+[output]
+name=HDMI-1
+mode=1024x768@60
+
+Fixes: 47103a80f55a ("drm/omap: add framedone interrupt support")
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
 Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
 Cc: Sebastian Reichel <sre@kernel.org>
+Cc: ruleh <ruleh@gmx.de>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/input/keyboard/omap4-keypad.c | 56 ++++++++++++++++++++++++---
- 1 file changed, 50 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/omapdrm/omap_crtc.c | 41 +++++++++++------------------
+ drivers/gpu/drm/omapdrm/omap_crtc.h |  2 +-
+ drivers/gpu/drm/omapdrm/omap_irq.c  |  2 +-
+ 3 files changed, 18 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/input/keyboard/omap4-keypad.c b/drivers/input/keyboard/omap4-keypad.c
---- a/drivers/input/keyboard/omap4-keypad.c
-+++ b/drivers/input/keyboard/omap4-keypad.c
-@@ -71,6 +71,8 @@ struct omap4_keypad {
- 	void __iomem *base;
- 	bool irq_wake_enabled;
- 	unsigned int irq;
-+	struct delayed_work key_work;
-+	struct mutex lock;		/* for key scan */
- 
- 	unsigned int rows;
- 	unsigned int cols;
-@@ -119,16 +121,22 @@ static irqreturn_t omap4_keypad_irq_handler(int irq, void *dev_id)
- 	return IRQ_NONE;
+diff --git a/drivers/gpu/drm/omapdrm/omap_crtc.c b/drivers/gpu/drm/omapdrm/omap_crtc.c
+--- a/drivers/gpu/drm/omapdrm/omap_crtc.c
++++ b/drivers/gpu/drm/omapdrm/omap_crtc.c
+@@ -325,23 +325,21 @@ void omap_crtc_vblank_irq(struct drm_crtc *crtc)
+ 	DBG("%s: apply done", omap_crtc->name);
  }
  
--static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
-+static bool omap4_keypad_scan_keys(struct omap4_keypad *keypad_data, bool clear)
+-void omap_crtc_framedone_irq(struct drm_crtc *crtc, uint32_t irqstatus)
++void omap_crtc_framedone_irq(struct drm_crtc *crtc, int id, uint32_t irqstatus)
  {
--	struct omap4_keypad *keypad_data = dev_id;
- 	struct input_dev *input_dev = keypad_data->input;
- 	unsigned char key_state[ARRAY_SIZE(keypad_data->key_state)];
- 	unsigned int col, row, code, changed;
--	u32 *new_state = (u32 *) key_state;
++	struct omap_crtc_state *omap_state = to_omap_crtc_state(crtc->state);
+ 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
++	struct drm_device *dev = crtc->dev;
+ 
+ 	if (!omap_crtc->framedone_handler)
+ 		return;
+ 
+-	omap_crtc->framedone_handler(omap_crtc->framedone_handler_data);
 -
--	*new_state = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE31_0);
--	*(new_state + 1) = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE63_32);
-+	u32 *rows_lo = (u32 *)key_state;
-+	u32 *rows_hi = rows_lo + 1;
+-	spin_lock(&crtc->dev->event_lock);
+-	/* Send the vblank event if one has been requested. */
+-	if (omap_crtc->event) {
+-		drm_crtc_send_vblank_event(crtc, omap_crtc->event);
+-		omap_crtc->event = NULL;
++	if (omap_state->manually_updated) {
++		drm_handle_vblank(dev, id);
++		omap_crtc_vblank_irq(crtc);
+ 	}
+-	omap_crtc->pending = false;
+-	spin_unlock(&crtc->dev->event_lock);
 +
-+	mutex_lock(&keypad_data->lock);
-+	if (clear) {
-+		*rows_lo = 0;
-+		*rows_hi = 0;
-+	} else {
-+		*rows_lo = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE31_0);
-+		*rows_hi = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE63_32);
-+	}
++	omap_crtc->framedone_handler(omap_crtc->framedone_handler_data);
  
- 	for (row = 0; row < keypad_data->rows; row++) {
- 		changed = key_state[row] ^ keypad_data->key_state[row];
-@@ -151,6 +159,20 @@ static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
+ 	/* Wake up omap_atomic_complete. */
+ 	wake_up(&omap_crtc->pending_wait);
+@@ -439,8 +437,12 @@ static void omap_crtc_destroy(struct drm_crtc *crtc)
  
- 	memcpy(keypad_data->key_state, key_state,
- 		sizeof(keypad_data->key_state));
-+	mutex_unlock(&keypad_data->lock);
-+
-+	return *rows_lo || *rows_hi;
-+}
-+
-+static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
-+{
-+	struct omap4_keypad *keypad_data = dev_id;
-+	bool events;
-+
-+	events = omap4_keypad_scan_keys(keypad_data, false);
-+	if (events)
-+		schedule_delayed_work(&keypad_data->key_work,
-+				      msecs_to_jiffies(50));
+ static void omap_crtc_arm_event(struct drm_crtc *crtc)
+ {
++	struct omap_crtc_state *omap_crtc_state = to_omap_crtc_state(crtc->state);
+ 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
  
- 	/* clear pending interrupts */
- 	kbd_write_irqreg(keypad_data, OMAP4_KBD_IRQSTATUS,
-@@ -159,6 +181,25 @@ static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
-+/*
-+ * Errata ID i689 "1.32 Keyboard Key Up Event Can Be Missed".
-+ * Interrupt may not happen for key-up events.
-+ */
-+static void omap4_keypad_work(struct work_struct *work)
-+{
-+	struct omap4_keypad *keypad_data =
-+		container_of(work, struct omap4_keypad, key_work.work);
-+	bool events;
-+	u32 active;
-+
-+	active = kbd_readl(keypad_data, OMAP4_KBD_STATEMACHINE);
-+	if (active)
++	if (omap_crtc->pending && omap_crtc_state->manually_updated)
 +		return;
 +
-+	dev_dbg(keypad_data->input->dev.parent, "idle with events\n");
-+	events = omap4_keypad_scan_keys(keypad_data, true);
-+}
-+
- static int omap4_keypad_open(struct input_dev *input)
+ 	WARN_ON(omap_crtc->pending);
+ 	omap_crtc->pending = true;
+ 
+@@ -455,17 +457,12 @@ static void omap_crtc_atomic_enable(struct drm_crtc *crtc,
  {
- 	struct omap4_keypad *keypad_data = input_get_drvdata(input);
-@@ -251,6 +292,8 @@ static int omap4_keypad_probe(struct platform_device *pdev)
+ 	struct omap_drm_private *priv = crtc->dev->dev_private;
+ 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
+-	struct omap_crtc_state *omap_state = to_omap_crtc_state(crtc->state);
+ 	int ret;
+ 
+ 	DBG("%s", omap_crtc->name);
+ 
+ 	priv->dispc_ops->runtime_get(priv->dispc);
+ 
+-	/* manual updated display will not trigger vsync irq */
+-	if (omap_state->manually_updated)
+-		return;
+-
+ 	spin_lock_irq(&crtc->dev->event_lock);
+ 	drm_crtc_vblank_on(crtc);
+ 	ret = drm_crtc_vblank_get(crtc);
+@@ -646,20 +643,14 @@ static void omap_crtc_atomic_flush(struct drm_crtc *crtc,
+ 
+ 	DBG("%s: GO", omap_crtc->name);
+ 
+-	if (omap_crtc_state->manually_updated) {
+-		/* send new image for page flips and modeset changes */
+-		spin_lock_irq(&crtc->dev->event_lock);
+-		omap_crtc_flush(crtc);
+-		omap_crtc_arm_event(crtc);
+-		spin_unlock_irq(&crtc->dev->event_lock);
+-		return;
+-	}
+-
+ 	ret = drm_crtc_vblank_get(crtc);
+ 	WARN_ON(ret != 0);
+ 
+ 	spin_lock_irq(&crtc->dev->event_lock);
+-	priv->dispc_ops->mgr_go(priv->dispc, omap_crtc->channel);
++	if (omap_crtc_state->manually_updated)
++		omap_crtc_flush(crtc);
++	else
++		priv->dispc_ops->mgr_go(priv->dispc, omap_crtc->channel);
+ 	omap_crtc_arm_event(crtc);
+ 	spin_unlock_irq(&crtc->dev->event_lock);
+ }
+diff --git a/drivers/gpu/drm/omapdrm/omap_crtc.h b/drivers/gpu/drm/omapdrm/omap_crtc.h
+--- a/drivers/gpu/drm/omapdrm/omap_crtc.h
++++ b/drivers/gpu/drm/omapdrm/omap_crtc.h
+@@ -30,7 +30,7 @@ struct drm_crtc *omap_crtc_init(struct drm_device *dev,
+ int omap_crtc_wait_pending(struct drm_crtc *crtc);
+ void omap_crtc_error_irq(struct drm_crtc *crtc, u32 irqstatus);
+ void omap_crtc_vblank_irq(struct drm_crtc *crtc);
+-void omap_crtc_framedone_irq(struct drm_crtc *crtc, uint32_t irqstatus);
++void omap_crtc_framedone_irq(struct drm_crtc *crtc, int id, uint32_t irqstatus);
+ void omap_crtc_flush(struct drm_crtc *crtc);
+ 
+ #endif /* __OMAPDRM_CRTC_H__ */
+diff --git a/drivers/gpu/drm/omapdrm/omap_irq.c b/drivers/gpu/drm/omapdrm/omap_irq.c
+--- a/drivers/gpu/drm/omapdrm/omap_irq.c
++++ b/drivers/gpu/drm/omapdrm/omap_irq.c
+@@ -232,7 +232,7 @@ static irqreturn_t omap_irq_handler(int irq, void *arg)
+ 			omap_crtc_error_irq(crtc, irqstatus);
+ 
+ 		if (irqstatus & priv->dispc_ops->mgr_get_framedone_irq(priv->dispc, channel))
+-			omap_crtc_framedone_irq(crtc, irqstatus);
++			omap_crtc_framedone_irq(crtc, id, irqstatus);
  	}
  
- 	keypad_data->irq = irq;
-+	mutex_init(&keypad_data->lock);
-+	INIT_DELAYED_WORK(&keypad_data->key_work, omap4_keypad_work);
- 
- 	error = omap4_keypad_parse_dt(&pdev->dev, keypad_data);
- 	if (error)
-@@ -387,6 +430,7 @@ static int omap4_keypad_remove(struct platform_device *pdev)
- 	struct resource *res;
- 
- 	free_irq(keypad_data->irq, keypad_data);
-+	cancel_delayed_work_sync(&keypad_data->key_work);
- 
- 	pm_runtime_disable(&pdev->dev);
- 
+ 	omap_irq_ocp_error_handler(dev, irqstatus);
 -- 
 2.25.1
