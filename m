@@ -2,123 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B056177AF6
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 16:50:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C234A177BF8
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 17:33:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728022AbgCCPt6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Mar 2020 10:49:58 -0500
-Received: from muru.com ([72.249.23.125]:58594 "EHLO muru.com"
+        id S1729235AbgCCQdE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Mar 2020 11:33:04 -0500
+Received: from muru.com ([72.249.23.125]:58612 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727683AbgCCPt6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 3 Mar 2020 10:49:58 -0500
+        id S1727989AbgCCQdE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 3 Mar 2020 11:33:04 -0500
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7847080EE;
-        Tue,  3 Mar 2020 15:50:41 +0000 (UTC)
-Date:   Tue, 3 Mar 2020 07:49:53 -0800
+        by muru.com (Postfix) with ESMTPS id 86D4180EE;
+        Tue,  3 Mar 2020 16:33:47 +0000 (UTC)
+Date:   Tue, 3 Mar 2020 08:32:59 -0800
 From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     linux-omap@vger.kernel.org, "Andrew F . Davis" <afd@ti.com>,
-        Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, Jyri Sarha <jsarha@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 3/3] bus: ti-sysc: Implement display subsystem reset quirk
-Message-ID: <20200303154953.GT37466@atomide.com>
-References: <20200224191230.30972-1-tony@atomide.com>
- <20200224191230.30972-4-tony@atomide.com>
- <7d4af3b5-5dd7-76b3-4d3f-4698bfde288c@ti.com>
- <20200303151349.GQ37466@atomide.com>
+To:     Lokesh Vutla <lokeshvutla@ti.com>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-pwm@vger.kernel.org,
+        Sekhar Nori <nsekhar@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Dave Gerlach <d-gerlach@ti.com>
+Subject: Re: [PATCH v2 2/5] clocksource: timer-ti-dm: Implement cpu_pm
+ notifier for context save and restore
+Message-ID: <20200303163259.GU37466@atomide.com>
+References: <20200228095346.32177-1-lokeshvutla@ti.com>
+ <20200228095346.32177-3-lokeshvutla@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200303151349.GQ37466@atomide.com>
+In-Reply-To: <20200228095346.32177-3-lokeshvutla@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [200303 15:14]:
-> * Tomi Valkeinen <tomi.valkeinen@ti.com> [200303 06:03]:
-> > On 24/02/2020 21:12, Tony Lindgren wrote:
-> > > +	if (sysc_soc->soc == SOC_3430) {
-> > > +		/* Clear DSS_SDI_CONTROL */
-> > > +		sysc_write(ddata, dispc_offset + 0x44, 0);
-> > > +
-> > > +		/* Clear DSS_PLL_CONTROL */
-> > > +		sysc_write(ddata, dispc_offset + 0x48, 0);
-> > 
-> > These are not dispc registers, but dss registers.
-> 
-> Ouch. Thanks for catching this, will include in the fix.
-> 
-> > > +	}
-> > > +
-> > > +	/* Clear DSS_CONTROL to switch DSS clock sources to PRCM if not */
-> > > +	sysc_write(ddata, dispc_offset + 0x40, 0);
-> > 
-> > Same here.
+Hi,
 
-Below is a fix using dispc offset for dss registers.
+* Lokesh Vutla <lokeshvutla@ti.com> [200228 09:55]:
+> omap_dm_timer_enable() restores the entire context(including counter)
+> based on 2 conditions:
+> - If get_context_loss_count is populated and context is lost.
+> - If get_context_loss_count is not populated update unconditionally.
+> 
+> Case2 has a side effect of updating the counter register even though
+> context is not lost. When timer is configured in pwm mode, this is
+> causing undesired behaviour in the pwm period.
+> 
+> Instead of using get_context_loss_count call back, implement cpu_pm
+> notifier with context save and restore support. And delete the
+> get_context_loss_count callback all together.
+
+Thanks for getting this going.
+
+I noticed system timers are not working properly now though. Not
+sure what might cause that, but I spotted few issues below.
+
+> --- a/drivers/clocksource/timer-ti-dm.c
+> +++ b/drivers/clocksource/timer-ti-dm.c
+...
+> +static void omap_timer_save_context(struct omap_dm_timer *timer)
+> +{
+> +	pm_runtime_get_sync(&timer->pdev->dev);
+> +	timer->context.tclr =
+> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_CTRL_REG);
+> +	timer->context.twer =
+> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_WAKEUP_EN_REG);
+> +	timer->context.tldr =
+> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_LOAD_REG);
+> +	timer->context.tmar =
+> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_MATCH_REG);
+> +	timer->context.tier = readl_relaxed(timer->irq_ena);
+> +	timer->context.tsicr =
+> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_IF_CTRL_REG);
+> +	pm_runtime_put_sync(&timer->pdev->dev);
+> +}
+
+We must not use pm_runtime functions here, these notifiers run
+at a point when runtime PM is out of the picture already. And
+we really don't want to tag any modules with pm_runtime_irq_safe()
+as it takes a permanent use count on the parent device.
+
+Instead, just add atomic_t awake that runtime_resume sets at the end,
+and runtime_suspend clears first thing. Then you can check for awake
+here, and there's nothing to do here if !awake.
+
+And then runtime_suspend should save the context too and
+runtime_resume restore it :)
+
+> @@ -827,6 +830,8 @@ static int omap_dm_timer_remove(struct platform_device *pdev)
+>  	list_for_each_entry(timer, &omap_timer_list, node)
+>  		if (!strcmp(dev_name(&timer->pdev->dev),
+>  			    dev_name(&pdev->dev))) {
+> +			if (!(timer->capability & OMAP_TIMER_ALWON))
+> +				cpu_pm_unregister_notifier(&timer->nb);
+>  			list_del(&timer->node);
+>  			ret = 0;
+>  			break;
+
+For the OMAP_TIMER_ALWON checks, I believe am335x and am437x have
+OMAP_TIMER_ALWON set for timers but will still have context lost
+in deeper idle states as only the PMIC is enabled.
+
+For those cases, at least runtime_suspend and resume functions
+need to save and restore context based on setting some flag
+maybe based on of_machine_is_compatible() or soc_device_match().
+
+I guess with recent cpuidle patches, this needs to be also done
+during runtime for am335x and am437x. Maybe Dave or Keerthy have
+more comments on that part?
 
 Regards,
 
 Tony
-
-8< ----------------------
-From tony Mon Sep 17 00:00:00 2001
-From: Tony Lindgren <tony@atomide.com>
-Date: Tue, 3 Mar 2020 07:17:43 -0800
-Subject: [PATCH] bus: ti-sysc: Fix wrong offset for display subsystem
- reset quirk
-
-Commit 7324a7a0d5e2 ("bus: ti-sysc: Implement display subsystem reset
-quirk") added support for DSS reset, but is using dispc offset also for
-DSS also registers as reported by Tomi Valkeinen <tomi.valkeinen@ti.com>.
-Also, we're not using dispc_offset for dispc IRQSTATUS register so let's
-fix that too.
-
-Fixes: 7324a7a0d5e2 ("bus: ti-sysc: Implement display subsystem reset quirk")
-Reported-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/bus/ti-sysc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1566,7 +1566,7 @@ static void sysc_pre_reset_quirk_dss(struct sysc *ddata)
- 		return;
- 
- 	/* Clear IRQSTATUS */
--	sysc_write(ddata, 0x1000 + 0x18, irq_mask);
-+	sysc_write(ddata, dispc_offset + 0x18, irq_mask);
- 
- 	/* Disable outputs */
- 	val = sysc_quirk_dispc(ddata, dispc_offset, true);
-@@ -1580,14 +1580,14 @@ static void sysc_pre_reset_quirk_dss(struct sysc *ddata)
- 
- 	if (sysc_soc->soc == SOC_3430) {
- 		/* Clear DSS_SDI_CONTROL */
--		sysc_write(ddata, dispc_offset + 0x44, 0);
-+		sysc_write(ddata, 0x44, 0);
- 
- 		/* Clear DSS_PLL_CONTROL */
--		sysc_write(ddata, dispc_offset + 0x48, 0);
-+		sysc_write(ddata, 0x48, 0);
- 	}
- 
- 	/* Clear DSS_CONTROL to switch DSS clock sources to PRCM if not */
--	sysc_write(ddata, dispc_offset + 0x40, 0);
-+	sysc_write(ddata, 0x40, 0);
- }
- 
- /* 1-wire needs module's internal clocks enabled for reset */
--- 
-2.25.1
