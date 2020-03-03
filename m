@@ -2,119 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C234A177BF8
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 17:33:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B426E1781A6
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 20:02:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729235AbgCCQdE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Mar 2020 11:33:04 -0500
-Received: from muru.com ([72.249.23.125]:58612 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727989AbgCCQdE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 3 Mar 2020 11:33:04 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 86D4180EE;
-        Tue,  3 Mar 2020 16:33:47 +0000 (UTC)
-Date:   Tue, 3 Mar 2020 08:32:59 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Lokesh Vutla <lokeshvutla@ti.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-pwm@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Dave Gerlach <d-gerlach@ti.com>
-Subject: Re: [PATCH v2 2/5] clocksource: timer-ti-dm: Implement cpu_pm
- notifier for context save and restore
-Message-ID: <20200303163259.GU37466@atomide.com>
-References: <20200228095346.32177-1-lokeshvutla@ti.com>
- <20200228095346.32177-3-lokeshvutla@ti.com>
+        id S2387953AbgCCSEw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Mar 2020 13:04:52 -0500
+Received: from mail-io1-f66.google.com ([209.85.166.66]:35459 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731580AbgCCSEv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Mar 2020 13:04:51 -0500
+Received: by mail-io1-f66.google.com with SMTP id h8so4667170iob.2
+        for <linux-omap@vger.kernel.org>; Tue, 03 Mar 2020 10:04:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=GPvB5JmBG6z+pe9bFE2CGNcC5x/6xLw5Qd7XSn1ySMNKEs7MCW9qI0byaT6yZeMjO1
+         abdqfj6hfSuoEadcnqDGawgUf7qVE7UyRd+zzL+/N1fQj7L8zpPk/epjEZ5e6apyMo8n
+         YwljgmTWVMnKbEM82OVnpEttSV0ml97qqPO3HYSGg1I3Kd5jgZTQPgc3StS96bsuF30n
+         b9qB0KRAO87x8Q/JUgUAa4TkmIlXfA7s6DvLkNkpHBjKpr5y0QhZdAxXsngTCFFInTQm
+         DPVW4KWdHeFisgBsfx9nAO7sdjvuuHl6RhiNXKKAT/H5d1oIyOuQED7dl99qe58JYB+g
+         uzew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=oeKVAyQCloVTgPdiO72fJle8lg614UPs2F+ApfKmcrFXUVe2WmIsrrTeJpj97K1cCF
+         K/5dMsS30nkZuPibc69jlrtEDqm4ZVQZyPGXHq5+GvIgmJxnyH60iP1XLbQWR4+nNcoW
+         FL/R35/pj3ousXugyQk6d64k2WojypobF6z3OHBBpRpiEF2KYpts0/rDL5/vuS9HRcW5
+         ohzqEnpBG8ut8dT8rN6kIzZh5ak9PsqIpFK6IdbE6X/qBHGOB9d5stDJ3Ld8FCrYRx8Y
+         D2qs1AvREdFDS4LbEU19AvebD87El4ziUtEoE/Beyv+S4cGXrEg3C6rw4rNGFO1DSZeB
+         ltxA==
+X-Gm-Message-State: ANhLgQ1l6/9TMa+J+IMcANAtZ5wT9CjoxkLUkJyU5Ns+UL28azYdMthN
+        zfr0NOMb/ZUGv2CDrrsOZ7QaUaV0lcp5uKI/5rI=
+X-Google-Smtp-Source: ADFU+vutdGkttcd/hJiYb4y4WaLsQb+Ssp4duakHuqrwHsgihD/STxYnXQ2eaP0HScY08dpIDqMuSQWRqagDw9j+73Q=
+X-Received: by 2002:a6b:bd04:: with SMTP id n4mr5037642iof.196.1583258691267;
+ Tue, 03 Mar 2020 10:04:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200228095346.32177-3-lokeshvutla@ti.com>
+Received: by 2002:a02:9f04:0:0:0:0:0 with HTTP; Tue, 3 Mar 2020 10:04:50 -0800 (PST)
+Reply-To: dr.challynoah@gmail.com
+From:   DR CHALLY NOAH <mayorabrahamedge404@gmail.com>
+Date:   Tue, 3 Mar 2020 19:04:50 +0100
+Message-ID: <CALqVJWe4D9esyruFy8y2AdEPnwWEwx4zKUkPS8=sPcixGTNzGA@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Lokesh Vutla <lokeshvutla@ti.com> [200228 09:55]:
-> omap_dm_timer_enable() restores the entire context(including counter)
-> based on 2 conditions:
-> - If get_context_loss_count is populated and context is lost.
-> - If get_context_loss_count is not populated update unconditionally.
-> 
-> Case2 has a side effect of updating the counter register even though
-> context is not lost. When timer is configured in pwm mode, this is
-> causing undesired behaviour in the pwm period.
-> 
-> Instead of using get_context_loss_count call back, implement cpu_pm
-> notifier with context save and restore support. And delete the
-> get_context_loss_count callback all together.
-
-Thanks for getting this going.
-
-I noticed system timers are not working properly now though. Not
-sure what might cause that, but I spotted few issues below.
-
-> --- a/drivers/clocksource/timer-ti-dm.c
-> +++ b/drivers/clocksource/timer-ti-dm.c
-...
-> +static void omap_timer_save_context(struct omap_dm_timer *timer)
-> +{
-> +	pm_runtime_get_sync(&timer->pdev->dev);
-> +	timer->context.tclr =
-> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_CTRL_REG);
-> +	timer->context.twer =
-> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_WAKEUP_EN_REG);
-> +	timer->context.tldr =
-> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_LOAD_REG);
-> +	timer->context.tmar =
-> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_MATCH_REG);
-> +	timer->context.tier = readl_relaxed(timer->irq_ena);
-> +	timer->context.tsicr =
-> +			omap_dm_timer_read_reg(timer, OMAP_TIMER_IF_CTRL_REG);
-> +	pm_runtime_put_sync(&timer->pdev->dev);
-> +}
-
-We must not use pm_runtime functions here, these notifiers run
-at a point when runtime PM is out of the picture already. And
-we really don't want to tag any modules with pm_runtime_irq_safe()
-as it takes a permanent use count on the parent device.
-
-Instead, just add atomic_t awake that runtime_resume sets at the end,
-and runtime_suspend clears first thing. Then you can check for awake
-here, and there's nothing to do here if !awake.
-
-And then runtime_suspend should save the context too and
-runtime_resume restore it :)
-
-> @@ -827,6 +830,8 @@ static int omap_dm_timer_remove(struct platform_device *pdev)
->  	list_for_each_entry(timer, &omap_timer_list, node)
->  		if (!strcmp(dev_name(&timer->pdev->dev),
->  			    dev_name(&pdev->dev))) {
-> +			if (!(timer->capability & OMAP_TIMER_ALWON))
-> +				cpu_pm_unregister_notifier(&timer->nb);
->  			list_del(&timer->node);
->  			ret = 0;
->  			break;
-
-For the OMAP_TIMER_ALWON checks, I believe am335x and am437x have
-OMAP_TIMER_ALWON set for timers but will still have context lost
-in deeper idle states as only the PMIC is enabled.
-
-For those cases, at least runtime_suspend and resume functions
-need to save and restore context based on setting some flag
-maybe based on of_machine_is_compatible() or soc_device_match().
-
-I guess with recent cpuidle patches, this needs to be also done
-during runtime for am335x and am437x. Maybe Dave or Keerthy have
-more comments on that part?
-
-Regards,
-
-Tony
+Hello Dear,
+What Have Kept You Waiting To Claim Your $600,000.00 USD Compensation Award?
+This said fund was issued out by the UNITED NATIONS To compensate
+you.Please If You Have Not Claim Your Fund (Award),Kindly contact me
+at   DR.CHALLYNOAH@GMAIL.COM   for further details on how to proceed your
+fund (award)release to you or better still reply back Immediately You
+Receive This Information For An Urgent Confirmation And Release Of Your
+Fund To You Without Delays, as your email was listed among those to be
+compensated this year.Congratulations..
+Best Regards,
+Dr Chally Noah.
+Minister Of Finance On Foreign Remittance:
