@@ -2,188 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15589178575
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 23:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62F841785C4
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 23:40:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727837AbgCCWPy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Mar 2020 17:15:54 -0500
-Received: from muru.com ([72.249.23.125]:58728 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727769AbgCCWPx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 3 Mar 2020 17:15:53 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 5447880EE;
-        Tue,  3 Mar 2020 22:16:38 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 14/14] ARM: OMAP2+: Drop legacy platform data for dra7 edma
-Date:   Tue,  3 Mar 2020 14:15:28 -0800
-Message-Id: <20200303221528.49099-15-tony@atomide.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200303221528.49099-1-tony@atomide.com>
-References: <20200303221528.49099-1-tony@atomide.com>
+        id S1727429AbgCCWkS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Mar 2020 17:40:18 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:40629 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726747AbgCCWkR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Mar 2020 17:40:17 -0500
+Received: by mail-oi1-f194.google.com with SMTP id j80so57773oih.7;
+        Tue, 03 Mar 2020 14:40:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=BqQd81PxAorJe3DrcyYS0OjbqqCAv2eTRW7X1U9wEb0=;
+        b=lrSRooupdwoviV9rGvjj/NYDE8E3Uu8TMAyzyrcixaEyw1WcgkCnZImy5XH2067lZd
+         FdjayrkCVPdPVjTcg93Udy92fB9IgS08RxhB+6ts0ZN3JGo+AcV7WWeKfB7MjImRUpzV
+         QihiE6lkr0q0Iwd0EC/Vu/ZPWBHsdXzzF1Vde/bqLRyvOwv2AMZf4QEpG1bf/k+s1eJv
+         l7Bruxsx/kw+t1OI9j/2IQqTB3fqpkdDTDTOWlfhHxP7Dfpm6JZ9D1Rfk5mvkuJpos3J
+         IXAhXk8E/as68YlmX5eOG4iyCxI1LNWlQ2Aa6DoRHx3aGkz1IbMJBZ2N2JQkSVWbfAUH
+         5mag==
+X-Gm-Message-State: ANhLgQ0ijXKRMSGVC1IYldNUllCePQBRyRoK+s11k+NSjkmqkVnhzTrR
+        hB7HJtCNZTOWi8+H3nE3+g==
+X-Google-Smtp-Source: ADFU+vvr+K/q3LLOjA4PSsa3d6cNVzDbNdbXQcAvWmfJnwY3zuI0TCoJfLaefQAtE4lFsIxCgCk4bA==
+X-Received: by 2002:aca:2104:: with SMTP id 4mr554313oiz.127.1583275215922;
+        Tue, 03 Mar 2020 14:40:15 -0800 (PST)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id g7sm8388947otk.17.2020.03.03.14.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2020 14:40:15 -0800 (PST)
+Received: (nullmailer pid 22805 invoked by uid 1000);
+        Tue, 03 Mar 2020 22:40:14 -0000
+Date:   Tue, 3 Mar 2020 16:40:14 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Tony Lindgren <tony@atomide.com>, Roger Quadros <rogerq@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Suman Anna <s-anna@ti.com>
+Subject: Re: [PATCH v2 1/5] dt-bindings: bus: ti-sysc: Add support for PRUSS
+ SYSC type
+Message-ID: <20200303224014.GA22749@bogus>
+References: <20200227222837.7329-1-s-anna@ti.com>
+ <20200227222837.7329-2-s-anna@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200227222837.7329-2-s-anna@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can now probe devices with ti-sysc interconnect driver and dts
-data. Let's drop the related platform data and custom ti,hwmods
-dts property.
+On Thu, 27 Feb 2020 16:28:33 -0600, Suman Anna wrote:
+> From: Roger Quadros <rogerq@ti.com>
+> 
+> The PRUSS module has a SYSCFG which is unique. The SYSCFG
+> has two additional unique fields called STANDBY_INIT and
+> SUB_MWAIT in addition to regular IDLE_MODE and STANDBY_MODE
+> fields. Add the bindings for this new sysc type.
+> 
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Signed-off-by: Roger Quadros <rogerq@ti.com>
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> ---
+> v2: No changes
+> 
+>  Documentation/devicetree/bindings/bus/ti-sysc.txt | 1 +
+>  include/dt-bindings/bus/ti-sysc.h                 | 4 ++++
+>  2 files changed, 5 insertions(+)
+> 
 
-As we're just dropping data, and the early platform data init
-is based on the custom ti,hwmods property, we want to drop both
-the platform data and ti,hwmods property in a single patch.
-
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/dra7.dtsi               |  3 -
- arch/arm/mach-omap2/omap_hwmod_7xx_data.c | 88 -----------------------
- 2 files changed, 91 deletions(-)
-
-diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
---- a/arch/arm/boot/dts/dra7.dtsi
-+++ b/arch/arm/boot/dts/dra7.dtsi
-@@ -333,7 +333,6 @@ dra7_iodelay_core: padconf@4844a000 {
- 
- 		target-module@43300000 {
- 			compatible = "ti,sysc-omap4", "ti,sysc";
--			ti,hwmods = "tpcc";
- 			reg = <0x43300000 0x4>;
- 			reg-names = "rev";
- 			clocks = <&l3main1_clkctrl DRA7_L3MAIN1_TPCC_CLKCTRL 0>;
-@@ -367,7 +366,6 @@ edma: dma@0 {
- 
- 		target-module@43400000 {
- 			compatible = "ti,sysc-omap4", "ti,sysc";
--			ti,hwmods = "tptc0";
- 			reg = <0x43400000 0x4>;
- 			reg-names = "rev";
- 			clocks = <&l3main1_clkctrl DRA7_L3MAIN1_TPTC0_CLKCTRL 0>;
-@@ -386,7 +384,6 @@ edma_tptc0: dma@0 {
- 
- 		target-module@43500000 {
- 			compatible = "ti,sysc-omap4", "ti,sysc";
--			ti,hwmods = "tptc1";
- 			reg = <0x43500000 0x4>;
- 			reg-names = "rev";
- 			clocks = <&l3main1_clkctrl DRA7_L3MAIN1_TPTC1_CLKCTRL 0>;
-diff --git a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
-@@ -276,67 +276,6 @@ static struct omap_hwmod dra7xx_ctrl_module_wkup_hwmod = {
- 	},
- };
- 
--/*
-- * 'tpcc' class
-- *
-- */
--static struct omap_hwmod_class dra7xx_tpcc_hwmod_class = {
--	.name		= "tpcc",
--};
--
--static struct omap_hwmod dra7xx_tpcc_hwmod = {
--	.name		= "tpcc",
--	.class		= &dra7xx_tpcc_hwmod_class,
--	.clkdm_name	= "l3main1_clkdm",
--	.main_clk	= "l3_iclk_div",
--	.prcm		= {
--		.omap4	= {
--			.clkctrl_offs = DRA7XX_CM_L3MAIN1_TPCC_CLKCTRL_OFFSET,
--			.context_offs = DRA7XX_RM_L3MAIN1_TPCC_CONTEXT_OFFSET,
--		},
--	},
--};
--
--/*
-- * 'tptc' class
-- *
-- */
--static struct omap_hwmod_class dra7xx_tptc_hwmod_class = {
--	.name		= "tptc",
--};
--
--/* tptc0 */
--static struct omap_hwmod dra7xx_tptc0_hwmod = {
--	.name		= "tptc0",
--	.class		= &dra7xx_tptc_hwmod_class,
--	.clkdm_name	= "l3main1_clkdm",
--	.flags		= HWMOD_SWSUP_SIDLE | HWMOD_SWSUP_MSTANDBY,
--	.main_clk	= "l3_iclk_div",
--	.prcm		= {
--		.omap4	= {
--			.clkctrl_offs = DRA7XX_CM_L3MAIN1_TPTC1_CLKCTRL_OFFSET,
--			.context_offs = DRA7XX_RM_L3MAIN1_TPTC1_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_HWCTRL,
--		},
--	},
--};
--
--/* tptc1 */
--static struct omap_hwmod dra7xx_tptc1_hwmod = {
--	.name		= "tptc1",
--	.class		= &dra7xx_tptc_hwmod_class,
--	.clkdm_name	= "l3main1_clkdm",
--	.flags		= HWMOD_SWSUP_SIDLE | HWMOD_SWSUP_MSTANDBY,
--	.main_clk	= "l3_iclk_div",
--	.prcm		= {
--		.omap4	= {
--			.clkctrl_offs = DRA7XX_CM_L3MAIN1_TPTC2_CLKCTRL_OFFSET,
--			.context_offs = DRA7XX_RM_L3MAIN1_TPTC2_CONTEXT_OFFSET,
--			.modulemode   = MODULEMODE_HWCTRL,
--		},
--	},
--};
--
- /*
-  * 'gpmc' class
-  *
-@@ -941,30 +880,6 @@ static struct omap_hwmod_ocp_if dra7xx_l4_wkup__ctrl_module_wkup = {
- 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
- };
- 
--/* l3_main_1 -> tpcc */
--static struct omap_hwmod_ocp_if dra7xx_l3_main_1__tpcc = {
--	.master		= &dra7xx_l3_main_1_hwmod,
--	.slave		= &dra7xx_tpcc_hwmod,
--	.clk		= "l3_iclk_div",
--	.user		= OCP_USER_MPU,
--};
--
--/* l3_main_1 -> tptc0 */
--static struct omap_hwmod_ocp_if dra7xx_l3_main_1__tptc0 = {
--	.master		= &dra7xx_l3_main_1_hwmod,
--	.slave		= &dra7xx_tptc0_hwmod,
--	.clk		= "l3_iclk_div",
--	.user		= OCP_USER_MPU,
--};
--
--/* l3_main_1 -> tptc1 */
--static struct omap_hwmod_ocp_if dra7xx_l3_main_1__tptc1 = {
--	.master		= &dra7xx_l3_main_1_hwmod,
--	.slave		= &dra7xx_tptc1_hwmod,
--	.clk		= "l3_iclk_div",
--	.user		= OCP_USER_MPU,
--};
--
- /* l3_main_1 -> gpmc */
- static struct omap_hwmod_ocp_if dra7xx_l3_main_1__gpmc = {
- 	.master		= &dra7xx_l3_main_1_hwmod,
-@@ -1149,9 +1064,6 @@ static struct omap_hwmod_ocp_if *dra7xx_hwmod_ocp_ifs[] __initdata = {
- 	&dra7xx_l3_main_1__bb2d,
- 	&dra7xx_l4_wkup__counter_32k,
- 	&dra7xx_l4_wkup__ctrl_module_wkup,
--	&dra7xx_l3_main_1__tpcc,
--	&dra7xx_l3_main_1__tptc0,
--	&dra7xx_l3_main_1__tptc1,
- 	&dra7xx_l3_main_1__gpmc,
- 	&dra7xx_l4_cfg__mpu,
- 	&dra7xx_l3_main_1__pciess1,
--- 
-2.25.1
+Acked-by: Rob Herring <robh@kernel.org>
