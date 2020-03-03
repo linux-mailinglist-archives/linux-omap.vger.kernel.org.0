@@ -2,112 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D25617723B
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 10:19:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87870177A28
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 16:13:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727604AbgCCJTI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Mar 2020 04:19:08 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:41518 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725840AbgCCJTI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Mar 2020 04:19:08 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0239Irjt116537;
-        Tue, 3 Mar 2020 03:18:53 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1583227133;
-        bh=QIoU5X0rCsPLgh6f6hX/m3Rq6EJWCP9dyqJ6Kiv4p2E=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=vAo/Y/csINLFU/q9QAPYTZ2JEwIeZJ4Y8IizD4GSMIueqqQDl4N0j5diJFBSGWrXK
-         fOev58YKdHMS+vgGx81vAH77X+fLrdnIW+0tBpV8PdLeVf4Uc1yOgIvHrD9ROoVnRb
-         PFA4ZnXCbJ6pFCABixP8qLsnZ5QlZd35ioPRr5B4=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0239IrMv043566
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 3 Mar 2020 03:18:53 -0600
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 3 Mar
- 2020 03:18:52 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 3 Mar 2020 03:18:52 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0239Ilcc029377;
-        Tue, 3 Mar 2020 03:18:49 -0600
-Subject: Re: [PATCH 1/3] drm/omap: Prepare DSS for probing without legacy
- platform data
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
-CC:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        id S1727862AbgCCPNy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Mar 2020 10:13:54 -0500
+Received: from muru.com ([72.249.23.125]:58542 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727079AbgCCPNy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 3 Mar 2020 10:13:54 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 9BD6180EE;
+        Tue,  3 Mar 2020 15:14:37 +0000 (UTC)
+Date:   Tue, 3 Mar 2020 07:13:49 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     linux-omap@vger.kernel.org, "Andrew F . Davis" <afd@ti.com>,
+        Dave Gerlach <d-gerlach@ti.com>,
         Faiz Abbas <faiz_abbas@ti.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <dri-devel@lists.freedesktop.org>, Jyri Sarha <jsarha@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, Jyri Sarha <jsarha@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 3/3] bus: ti-sysc: Implement display subsystem reset quirk
+Message-ID: <20200303151349.GQ37466@atomide.com>
 References: <20200224191230.30972-1-tony@atomide.com>
- <20200224191230.30972-2-tony@atomide.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <d5ce999e-3b26-334e-fc62-adee4753a3ed@ti.com>
-Date:   Tue, 3 Mar 2020 11:18:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ <20200224191230.30972-4-tony@atomide.com>
+ <7d4af3b5-5dd7-76b3-4d3f-4698bfde288c@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20200224191230.30972-2-tony@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7d4af3b5-5dd7-76b3-4d3f-4698bfde288c@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 24/02/2020 21:12, Tony Lindgren wrote:
-> In order to probe display subsystem (DSS) components with ti-sysc
-> interconnect target module without legacy platform data and using
-> devicetree, we need to update dss probing a bit.
-> 
-> In the device tree, we will be defining the data also for the interconnect
-> target modules as DSS really is a private interconnect. There is some
-> information about that in 4460 TRM in "Figure 10-3. DSS Integration" for
-> example where it mentions "32-bit interconnect (SLX)".
-> 
-> The changes we need to make are:
-> 
-> 1. Parse also device tree subnodes for the compatible property fixup
-> 
-> 2. Update the component code to consider device tree subnodes
-> 
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: Jyri Sarha <jsarha@ti.com>
-> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
-> 
-> This is needed for dropping DSS platform data that I'll be posting
-> seprately. If this looks OK, can you guys please test and ack?
-> 
-> ---
->   drivers/gpu/drm/omapdrm/dss/dss.c             | 25 ++++++++++++++++---
->   .../gpu/drm/omapdrm/dss/omapdss-boot-init.c   | 25 +++++++++++++------
->   2 files changed, 39 insertions(+), 11 deletions(-)
+Hi,
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+* Tomi Valkeinen <tomi.valkeinen@ti.com> [200303 06:03]:
+> On 24/02/2020 21:12, Tony Lindgren wrote:
+> > +	/* Remap the whole module range to be able to reset dispc outputs */
+> > +	devm_iounmap(ddata->dev, ddata->module_va);
+> > +	ddata->module_va = devm_ioremap(ddata->dev,
+> > +					ddata->module_pa,
+> > +					ddata->module_size);
+> 
+> Why is this needed? The range is not mapped when sysc_pre_reset_quirk_dss()
+> is called? This will unmap and remap twice, as this function is called
+> twice. And then left mapped.
 
-This doesn't conflict with drm-next (with Laurent's recent patches), so it should be fine for you to 
-have this in your branch.
+That's because by default we only ioremap the module revision, sysconfig
+and sysstatus register are and provide the rest as a range for the child
+nodes.
 
-And not a biggie, but I wonder if the changes to these two files should be in separate patches, due 
-to omapdss-boot-init going away. Well, probably doesn't matter.
+In the dss quirk case we need to tinker with registers also in the dispc
+range, and at the parent dss probe time dispc has not probed yet.
 
-  Tomi
+We may be able to eventually move the reset quirk to dispc, but then
+it won't happen in the current setup until after dss top level driver
+has loaded.
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+We leave the module range ioremapped as we still need to access
+sysconfig related registers for PM runtime.
+
+> > +	if (!ddata->module_va)
+> > +		return -EIO;
+> > +
+> > +	/* DISP_CONTROL */
+> > +	val = sysc_read(ddata, dispc_offset + 0x40);
+> 
+> Defines for dss/dispc register offsets could have been copied from the
+> platform display.c and used in this file.
+
+Yeah I though about that, but decided to keep everything local to
+the quirk handling. We could have them defined in some dss header
+though.
+
+> > +	/* Clear IRQSTATUS */
+> > +	sysc_write(ddata, 0x1000 + 0x18, irq_mask);
+> 
+> dispc_offset instead of 0x1000.
+
+OK
+
+> > +
+> > +	/* Disable outputs */
+> > +	val = sysc_quirk_dispc(ddata, dispc_offset, true);
+> > +
+> > +	/* Poll IRQSTATUS */
+> > +	error = readl_poll_timeout(ddata->module_va + dispc_offset + 0x18,
+> > +				   val, val != irq_mask, 100, 50);
+> > +	if (error)
+> > +		dev_warn(ddata->dev, "%s: timed out %08x !+ %08x\n",
+> > +			 __func__, val, irq_mask);
+> > +
+> > +	if (sysc_soc->soc == SOC_3430) {
+> > +		/* Clear DSS_SDI_CONTROL */
+> > +		sysc_write(ddata, dispc_offset + 0x44, 0);
+> > +
+> > +		/* Clear DSS_PLL_CONTROL */
+> > +		sysc_write(ddata, dispc_offset + 0x48, 0);
+> 
+> These are not dispc registers, but dss registers.
+
+Ouch. Thanks for catching this, will include in the fix.
+
+> > +	}
+> > +
+> > +	/* Clear DSS_CONTROL to switch DSS clock sources to PRCM if not */
+> > +	sysc_write(ddata, dispc_offset + 0x40, 0);
+> 
+> Same here.
+
+OK
+
+Regards,
+
+Tony
