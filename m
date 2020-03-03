@@ -2,25 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70FA017855F
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 23:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CD67178561
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Mar 2020 23:15:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727502AbgCCWPl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Mar 2020 17:15:41 -0500
-Received: from muru.com ([72.249.23.125]:58670 "EHLO muru.com"
+        id S1727576AbgCCWPm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Mar 2020 17:15:42 -0500
+Received: from muru.com ([72.249.23.125]:58678 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726809AbgCCWPl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 3 Mar 2020 17:15:41 -0500
+        id S1726809AbgCCWPm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 3 Mar 2020 17:15:42 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id C668981C1;
-        Tue,  3 Mar 2020 22:16:26 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id B501680EE;
+        Tue,  3 Mar 2020 22:16:27 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org, Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 03/14] ARM: dts: Configure interconnect target module for am3 tptc0
-Date:   Tue,  3 Mar 2020 14:15:17 -0800
-Message-Id: <20200303221528.49099-4-tony@atomide.com>
+Subject: [PATCH 04/14] ARM: dts: Configure interconnect target module for am3 tptc1
+Date:   Tue,  3 Mar 2020 14:15:18 -0800
+Message-Id: <20200303221528.49099-5-tony@atomide.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200303221528.49099-1-tony@atomide.com>
 References: <20200303221528.49099-1-tony@atomide.com>
@@ -48,39 +48,39 @@ Signed-off-by: Tony Lindgren <tony@atomide.com>
 diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
 --- a/arch/arm/boot/dts/am33xx.dtsi
 +++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -221,12 +221,28 @@ edma: dma@0 {
+@@ -245,12 +245,28 @@ edma_tptc0: dma@0 {
  			};
  		};
  
--		edma_tptc0: tptc@49800000 {
+-		edma_tptc1: tptc@49900000 {
 -			compatible = "ti,edma3-tptc";
-+		target-module@49800000 {
++		target-module@49900000 {
 +			compatible = "ti,sysc-omap4", "ti,sysc";
- 			ti,hwmods = "tptc0";
--			reg =	<0x49800000 0x100000>;
--			interrupts = <112>;
+ 			ti,hwmods = "tptc1";
+-			reg =	<0x49900000 0x100000>;
+-			interrupts = <113>;
 -			interrupt-names = "edma3_tcerrint";
-+			reg = <0x49800000 0x4>,
-+			      <0x49800010 0x4>;
++			reg = <0x49900000 0x4>,
++			      <0x49900010 0x4>;
 +			reg-names = "rev", "sysc";
 +			ti,sysc-mask = <SYSC_OMAP4_SOFTRESET>;
 +			ti,sysc-midle = <SYSC_IDLE_FORCE>;
 +			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
 +					<SYSC_IDLE_SMART>;
-+			clocks = <&l3_clkctrl AM3_L3_TPTC0_CLKCTRL 0>;
++			clocks = <&l3_clkctrl AM3_L3_TPTC1_CLKCTRL 0>;
 +			clock-names = "fck";
 +			#address-cells = <1>;
 +			#size-cells = <1>;
-+			ranges = <0x0 0x49800000 0x100000>;
++			ranges = <0x0 0x49900000 0x100000>;
 +
-+			edma_tptc0: dma@0 {
++			edma_tptc1: dma@0 {
 +				compatible = "ti,edma3-tptc";
 +				reg = <0 0x100000>;
-+				interrupts = <112>;
++				interrupts = <113>;
 +				interrupt-names = "edma3_tcerrint";
 +			};
  		};
  
- 		edma_tptc1: tptc@49900000 {
+ 		edma_tptc2: tptc@49a00000 {
 -- 
 2.25.1
