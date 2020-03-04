@@ -2,274 +2,430 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F63D1798A0
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Mar 2020 20:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F9721799AB
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Mar 2020 21:24:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730055AbgCDTIN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Mar 2020 14:08:13 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:52098 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729702AbgCDTIN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Mar 2020 14:08:13 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 024J8Aeg110938;
-        Wed, 4 Mar 2020 13:08:10 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1583348890;
-        bh=P5aIg4NXmcAVM1iCQgBoIzJYdeBCCLe5HapuwYRNjck=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=eC21OGjcnMbMSZX+84rM5u8OGBxDVSutn+cufBvVOKVAM1CWXoxokTOntG4Iy2UqW
-         +ZaUQHUTqND56bpQn3dwj9K6UljuyaW9bzYaILdmt3Dq+wLQUj8qzzvnkXPEynBpy5
-         8vMSDVf9alS3PuiN+AI+/I32Abnga878DwN9sj8I=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 024J8Aff028016
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 4 Mar 2020 13:08:10 -0600
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 4 Mar
- 2020 13:08:10 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 4 Mar 2020 13:08:10 -0600
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 024J87Cx111603;
-        Wed, 4 Mar 2020 13:08:08 -0600
-Subject: Re: [PATCHv7 04/15] remoteproc/omap: Add support to parse internal
- memories from DT
-To:     Mathieu Poirier <mathieu.poirier@linaro.org>
-CC:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
-        <linux-remoteproc@vger.kernel.org>, <afd@ti.com>, <s-anna@ti.com>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>
+        id S1728614AbgCDUYb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Mar 2020 15:24:31 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:39819 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728482AbgCDUYb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Mar 2020 15:24:31 -0500
+Received: by mail-pf1-f196.google.com with SMTP id l7so1527634pff.6
+        for <linux-omap@vger.kernel.org>; Wed, 04 Mar 2020 12:24:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=tPhxJRQEDfC+ycctJKnUONogvExY0vwhGDzHUA4kHyo=;
+        b=GWQ8fn7Y1XV3ERi08K3HEG/O0eITnwPEx7hR3rUtjDB+9AZtgcXAbw4e6g+kwoj4+/
+         yNvsHziZ1jlsOl51XnHBuRolNDArvSmO/VcYGZA7P4ShtLVwDqWHh2KW1cHSiUQ96BXu
+         43BioQkNrs9gIlQaFOwsrsdq5QEqq1SZCszKQumsFf5B+zOggKmEt+YsNhS2NFHF7GPd
+         dqhjYsisBOeBPFYuZcuub/R3mEfLNQPQG+zGLZBsuf1rwTYGR/Y3K9I1mFLyHbS0RPux
+         LK6C9uWqtsORigmQ94zyuFWK/ArW8H/4IKg/M7JYgmk/5vV2XtJArg1hxCwOO/he6/MT
+         kvRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=tPhxJRQEDfC+ycctJKnUONogvExY0vwhGDzHUA4kHyo=;
+        b=nU48F0JyVvbQHBWm4FFJIwULPGRpoHKdn9sSPWamT0Byy9+wSG9AiXUGI70J7k6JB6
+         PjJmtCzZ5wW6SIMnmLjg6ZfEJc8R163IRFMYfZOalgUNroTwPmX2Wzcz24FioL8d6ej2
+         bM3DGNrgJeDYV6YCtHkbQOhHa7pyFflR8Bwi01X9nK2Gm8bHAU8Wnkfv2srt+4+zNSOo
+         eUmIoaT9QrdTOJ9MAZUS7L7QILnzinHLXGU2bBrfEDjSJhTmwSGl1nWRMP/lFbk9UMFD
+         xryZO2+raqIuvA594PuaPUe7AUlTBAKN8yMgaWW1nBcDWWRo+QRruG77oEOJ2eAyRQN9
+         S24Q==
+X-Gm-Message-State: ANhLgQ3FfuJP2de/Vzr8RGmeHC2e4rd9AHGeW/x9kJgjZuNSqL4qKdcr
+        wouBnvXKaZHl7D7hHbRnUHWZhQ==
+X-Google-Smtp-Source: ADFU+vv4ZmEGbj95iisHk7uUIWuGNBrMkEiChffe4nMDlrfUQoXmd/KFj4r7ARWQcAgF0UVRB27nKw==
+X-Received: by 2002:a62:5c2:: with SMTP id 185mr4678906pff.175.1583353469720;
+        Wed, 04 Mar 2020 12:24:29 -0800 (PST)
+Received: from xps15 (S0106002369de4dac.cg.shawcable.net. [68.147.8.254])
+        by smtp.gmail.com with ESMTPSA id w19sm21698539pgm.27.2020.03.04.12.24.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2020 12:24:29 -0800 (PST)
+Date:   Wed, 4 Mar 2020 13:24:26 -0700
+From:   Mathieu Poirier <mathieu.poirier@linaro.org>
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     bjorn.andersson@linaro.org, ohad@wizery.com,
+        linux-remoteproc@vger.kernel.org, afd@ti.com, s-anna@ti.com,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCHv7 11/15] remoteproc/omap: Add support for system
+ suspend/resume
+Message-ID: <20200304202426.GJ8197@xps15>
 References: <20200221101936.16833-1-t-kristo@ti.com>
- <20200221101936.16833-5-t-kristo@ti.com> <20200304173207.GC8197@xps15>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <12cfb0db-f86e-3cd8-5010-d96daa91c184@ti.com>
-Date:   Wed, 4 Mar 2020 21:08:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ <20200221101936.16833-12-t-kristo@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20200304173207.GC8197@xps15>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200221101936.16833-12-t-kristo@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 04/03/2020 19:32, Mathieu Poirier wrote:
-> On Fri, Feb 21, 2020 at 12:19:25PM +0200, Tero Kristo wrote:
->> From: Suman Anna <s-anna@ti.com>
->>
->> The OMAP remoteproc driver has been enhanced to parse and store
->> the kernel mappings for different internal RAM memories that may
->> be present within each remote processor IP subsystem. Different
->> devices have varying memories present on current SoCs. The current
->> support handles the L2RAM for all IPU devices on OMAP4+ SoCs. The
->> DSPs on OMAP4/OMAP5 only have Unicaches and do not have any L1 or
->> L2 RAM memories.
->>
->> IPUs are expected to have the L2RAM at a fixed device address of
->> 0x20000000, based on the current limitations on Attribute MMU
->> configurations.
->>
->> NOTE:
->> The current logic doesn't handle the parsing of memories for DRA7
->> remoteproc devices, and will be added alongside the DRA7 support.
->>
->> Signed-off-by: Suman Anna <s-anna@ti.com>
->> [t-kristo: converted to parse mem names / device addresses from pdata]
->> Signed-off-by: Tero Kristo <t-kristo@ti.com>
->> ---
->>   drivers/remoteproc/omap_remoteproc.c | 89 ++++++++++++++++++++++++++++
->>   1 file changed, 89 insertions(+)
->>
->> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
->> index 64b559caadff..4f92b069f5d0 100644
->> --- a/drivers/remoteproc/omap_remoteproc.c
->> +++ b/drivers/remoteproc/omap_remoteproc.c
->> @@ -39,11 +39,27 @@ struct omap_rproc_boot_data {
->>   	unsigned int boot_reg;
->>   };
->>   
->> +/**
->> + * struct omap_rproc_mem - internal memory structure
->> + * @cpu_addr: MPU virtual address of the memory region
->> + * @bus_addr: bus address used to access the memory region
->> + * @dev_addr: device address of the memory region from DSP view
->> + * @size: size of the memory region
->> + */
->> +struct omap_rproc_mem {
->> +	void __iomem *cpu_addr;
->> +	phys_addr_t bus_addr;
->> +	u32 dev_addr;
->> +	size_t size;
->> +};
->> +
->>   /**
->>    * struct omap_rproc - omap remote processor state
->>    * @mbox: mailbox channel handle
->>    * @client: mailbox client to request the mailbox channel
->>    * @boot_data: boot data structure for setting processor boot address
->> + * @mem: internal memory regions data
->> + * @num_mems: number of internal memory regions
->>    * @rproc: rproc handle
->>    * @reset: reset handle
->>    */
->> @@ -51,16 +67,30 @@ struct omap_rproc {
->>   	struct mbox_chan *mbox;
->>   	struct mbox_client client;
->>   	struct omap_rproc_boot_data *boot_data;
->> +	struct omap_rproc_mem *mem;
->> +	int num_mems;
->>   	struct rproc *rproc;
->>   	struct reset_control *reset;
->>   };
->>   
->> +/**
->> + * struct omap_rproc_mem_data - memory definitions for an omap remote processor
->> + * @name: name for this memory entry
->> + * @dev_addr: device address for the memory entry
->> + */
->> +struct omap_rproc_mem_data {
->> +	const char *name;
->> +	const u32 dev_addr;
->> +};
->> +
->>   /**
->>    * struct omap_rproc_dev_data - device data for the omap remote processor
->>    * @device_name: device name of the remote processor
->> + * @mems: memory definitions for this remote processor
->>    */
->>   struct omap_rproc_dev_data {
->>   	const char *device_name;
->> +	const struct omap_rproc_mem_data *mems;
->>   };
->>   
->>   /**
->> @@ -223,12 +253,18 @@ static const struct rproc_ops omap_rproc_ops = {
->>   	.kick		= omap_rproc_kick,
->>   };
->>   
->> +static const struct omap_rproc_mem_data ipu_mems[] = {
->> +	{ .name = "l2ram", .dev_addr = 0x20000000 },
->> +	{ },
->> +};
->> +
->>   static const struct omap_rproc_dev_data omap4_dsp_dev_data = {
->>   	.device_name	= "dsp",
->>   };
->>   
->>   static const struct omap_rproc_dev_data omap4_ipu_dev_data = {
->>   	.device_name	= "ipu",
->> +	.mems		= ipu_mems,
->>   };
->>   
->>   static const struct omap_rproc_dev_data omap5_dsp_dev_data = {
->> @@ -237,6 +273,7 @@ static const struct omap_rproc_dev_data omap5_dsp_dev_data = {
->>   
->>   static const struct omap_rproc_dev_data omap5_ipu_dev_data = {
->>   	.device_name	= "ipu",
->> +	.mems		= ipu_mems,
->>   };
->>   
->>   static const struct of_device_id omap_rproc_of_match[] = {
->> @@ -311,6 +348,54 @@ static int omap_rproc_get_boot_data(struct platform_device *pdev,
->>   	return 0;
->>   }
->>   
->> +static int omap_rproc_of_get_internal_memories(struct platform_device *pdev,
->> +					       struct rproc *rproc)
->> +{
->> +	struct omap_rproc *oproc = rproc->priv;
->> +	struct device *dev = &pdev->dev;
->> +	const struct omap_rproc_dev_data *data;
->> +	struct resource *res;
->> +	int num_mems;
->> +	int i;
->> +
->> +	data = of_device_get_match_data(&pdev->dev);
->> +	if (!data)
->> +		return -ENODEV;
->> +
->> +	if (!data->mems)
->> +		return 0;
->> +
->> +	for (num_mems = 0; data->mems[num_mems].name; num_mems++)
->> +		;
+On Fri, Feb 21, 2020 at 12:19:32PM +0200, Tero Kristo wrote:
+> From: Suman Anna <s-anna@ti.com>
 > 
-> Please use of_property_count_elems_of_size() as it was done in omap_hwmod.c [1]
-
-There is reason why it was not done like that here. We want to make sure 
-all the memories required for the remoteproc are in place, missing any 
-one of them is a fatal error as you see in the code few lines below (my 
-comment.)
-
+> This patch adds the support for system suspend/resume to the
+> OMAP remoteproc driver so that the OMAP remoteproc devices can
+> be suspended/resumed during a system suspend/resume. The support
+> is added through the driver PM .suspend/.resume callbacks, and
+> requires appropriate support from the OS running on the remote
+> processors.
 > 
-> [1]. https://elixir.bootlin.com/linux/v5.6-rc4/source/arch/arm/mach-omap2/omap_hwmod.c#L717
+> The IPU & DSP remote processors typically have their own private
+> modules like registers, internal memories, caches etc. The context
+> of these modules need to be saved and restored properly for a
+> suspend/resume to work. These are in general not accessible from
+> the MPU, so the remote processors themselves have to implement
+> the logic for the context save & restore of these modules.
 > 
-> With the above:
+> The OMAP remoteproc driver initiates a suspend by sending a mailbox
+> message requesting the remote processor to save its context and
+> enter into an idle/standby state. The remote processor should
+> usually stop whatever processing it is doing to switch to a context
+> save mode. The OMAP remoteproc driver detects the completion of
+> the context save by checking the module standby status for the
+> remoteproc device. It also stops any resources used by the remote
+> processors like the timers. The timers need to be running only
+> when the processor is active and executing, and need to be stopped
+> otherwise to allow the timer driver to reach low-power states. The
+> IOMMUs are automatically suspended by the PM core during the late
+> suspend stage, after the remoteproc suspend process is completed by
+> putting the remote processor cores into reset. Thereafter, the Linux
+> kernel can put the domain into further lower power states as possible.
 > 
-> Acked-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> The resume sequence undoes the operations performed in the PM suspend
+> callback, by starting the timers and finally releasing the processors
+> from reset. This requires that the remote processor side OS be able to
+> distinguish a power-resume boot from a power-on/cold boot, restore the
+> context of its private modules saved during the suspend phase, and
+> resume executing code from where it was suspended. The IOMMUs would
+> have been resumed by the PM core during early resume, so they are
+> already enabled by the time remoteproc resume callback gets invoked.
 > 
+> The remote processors should save their context into System RAM (DDR),
+> as any internal memories are not guaranteed to retain context as it
+> depends on the lowest power domain that the remote processor device
+> is put into. The management of the DDR contents will be managed by
+> the Linux kernel.
 > 
->> +
->> +	oproc->mem = devm_kcalloc(dev, num_mems, sizeof(*oproc->mem),
->> +				  GFP_KERNEL);
->> +	if (!oproc->mem)
->> +		return -ENOMEM;
->> +
->> +	for (i = 0; i < num_mems; i++) {
->> +		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
->> +						   data->mems[i].name);
->> +		oproc->mem[i].cpu_addr = devm_ioremap_resource(dev, res);
->> +		if (IS_ERR(oproc->mem[i].cpu_addr)) {
->> +			dev_err(dev, "failed to parse and map %s memory\n",
->> +				data->mems[i].name);
->> +			return PTR_ERR(oproc->mem[i].cpu_addr);
->> +		}
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> [t-kristo@ti.com: converted to use ti-sysc instead of hwmod]
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
 
-We check here that all the memories required are defined for the 
-remoteproc. If we use of_property_count_elems_of_size, we only get the 
-number of memories defined in DT.
+Acked-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 
--Tero
-
->> +		oproc->mem[i].bus_addr = res->start;
->> +		oproc->mem[i].dev_addr = data->mems[i].dev_addr;
->> +		oproc->mem[i].size = resource_size(res);
->> +
->> +		dev_dbg(dev, "memory %8s: bus addr %pa size 0x%x va %pK da 0x%x\n",
->> +			data->mems[i].name, &oproc->mem[i].bus_addr,
->> +			oproc->mem[i].size, oproc->mem[i].cpu_addr,
->> +			oproc->mem[i].dev_addr);
->> +	}
->> +	oproc->num_mems = num_mems;
->> +
->> +	return 0;
->> +}
->> +
->>   static int omap_rproc_probe(struct platform_device *pdev)
->>   {
->>   	struct device_node *np = pdev->dev.of_node;
->> @@ -350,6 +435,10 @@ static int omap_rproc_probe(struct platform_device *pdev)
->>   	/* All existing OMAP IPU and DSP processors have an MMU */
->>   	rproc->has_iommu = true;
->>   
->> +	ret = omap_rproc_of_get_internal_memories(pdev, rproc);
->> +	if (ret)
->> +		goto free_rproc;
->> +
->>   	ret = omap_rproc_get_boot_data(pdev, rproc);
->>   	if (ret)
->>   		goto free_rproc;
->> -- 
->> 2.17.1
->>
->> --
-
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> ---
+> v7: couple of cosmetic fixes
+> 
+>  drivers/remoteproc/omap_remoteproc.c | 191 +++++++++++++++++++++++++++
+>  drivers/remoteproc/omap_remoteproc.h |  18 ++-
+>  2 files changed, 207 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
+> index b44b470d570b..0d45af1fb0e3 100644
+> --- a/drivers/remoteproc/omap_remoteproc.c
+> +++ b/drivers/remoteproc/omap_remoteproc.c
+> @@ -15,13 +15,17 @@
+>  
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/clk.h>
+> +#include <linux/clk/ti.h>
+>  #include <linux/err.h>
+> +#include <linux/io.h>
+>  #include <linux/of_device.h>
+>  #include <linux/of_reserved_mem.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/remoteproc.h>
+>  #include <linux/mailbox_client.h>
+> +#include <linux/omap-iommu.h>
+>  #include <linux/omap-mailbox.h>
+>  #include <linux/regmap.h>
+>  #include <linux/mfd/syscon.h>
+> @@ -81,6 +85,9 @@ struct omap_rproc_timer {
+>   * @timers: timer(s) info used by rproc
+>   * @rproc: rproc handle
+>   * @reset: reset handle
+> + * @pm_comp: completion primitive to sync for suspend response
+> + * @fck: functional clock for the remoteproc
+> + * @suspend_acked: state machine flag to store the suspend request ack
+>   */
+>  struct omap_rproc {
+>  	struct mbox_chan *mbox;
+> @@ -92,6 +99,9 @@ struct omap_rproc {
+>  	struct omap_rproc_timer *timers;
+>  	struct rproc *rproc;
+>  	struct reset_control *reset;
+> +	struct completion pm_comp;
+> +	struct clk *fck;
+> +	bool suspend_acked;
+>  };
+>  
+>  /**
+> @@ -371,6 +381,12 @@ static void omap_rproc_mbox_callback(struct mbox_client *client, void *data)
+>  	case RP_MBOX_ECHO_REPLY:
+>  		dev_info(dev, "received echo reply from %s\n", name);
+>  		break;
+> +	case RP_MBOX_SUSPEND_ACK:
+> +		/* Fall through */
+> +	case RP_MBOX_SUSPEND_CANCEL:
+> +		oproc->suspend_acked = msg == RP_MBOX_SUSPEND_ACK;
+> +		complete(&oproc->pm_comp);
+> +		break;
+>  	default:
+>  		if (msg >= RP_MBOX_READY && msg < RP_MBOX_END_MSG)
+>  			return;
+> @@ -562,6 +578,168 @@ static const struct rproc_ops omap_rproc_ops = {
+>  	.da_to_va	= omap_rproc_da_to_va,
+>  };
+>  
+> +#ifdef CONFIG_PM
+> +static bool _is_rproc_in_standby(struct omap_rproc *oproc)
+> +{
+> +	return ti_clk_is_in_standby(oproc->fck);
+> +}
+> +
+> +/* 1 sec is long enough time to let the remoteproc side suspend the device */
+> +#define DEF_SUSPEND_TIMEOUT 1000
+> +static int _omap_rproc_suspend(struct rproc *rproc)
+> +{
+> +	struct device *dev = rproc->dev.parent;
+> +	struct omap_rproc *oproc = rproc->priv;
+> +	unsigned long to = msecs_to_jiffies(DEF_SUSPEND_TIMEOUT);
+> +	unsigned long ta = jiffies + to;
+> +	int ret;
+> +
+> +	reinit_completion(&oproc->pm_comp);
+> +	oproc->suspend_acked = false;
+> +	ret = mbox_send_message(oproc->mbox, (void *)RP_MBOX_SUSPEND_SYSTEM);
+> +	if (ret < 0) {
+> +		dev_err(dev, "PM mbox_send_message failed: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = wait_for_completion_timeout(&oproc->pm_comp, to);
+> +	if (!oproc->suspend_acked)
+> +		return -EBUSY;
+> +
+> +	/*
+> +	 * The remoteproc side is returning the ACK message before saving the
+> +	 * context, because the context saving is performed within a SYS/BIOS
+> +	 * function, and it cannot have any inter-dependencies against the IPC
+> +	 * layer. Also, as the SYS/BIOS needs to preserve properly the processor
+> +	 * register set, sending this ACK or signalling the completion of the
+> +	 * context save through a shared memory variable can never be the
+> +	 * absolute last thing to be executed on the remoteproc side, and the
+> +	 * MPU cannot use the ACK message as a sync point to put the remoteproc
+> +	 * into reset. The only way to ensure that the remote processor has
+> +	 * completed saving the context is to check that the module has reached
+> +	 * STANDBY state (after saving the context, the SYS/BIOS executes the
+> +	 * appropriate target-specific WFI instruction causing the module to
+> +	 * enter STANDBY).
+> +	 */
+> +	while (!_is_rproc_in_standby(oproc)) {
+> +		if (time_after(jiffies, ta))
+> +			return -ETIME;
+> +		schedule();
+> +	}
+> +
+> +	ret = reset_control_assert(oproc->reset);
+> +	if (ret) {
+> +		dev_err(dev, "reset assert during suspend failed %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = omap_rproc_disable_timers(rproc, false);
+> +	if (ret) {
+> +		dev_err(dev, "disabling timers during suspend failed %d\n",
+> +			ret);
+> +		goto enable_device;
+> +	}
+> +
+> +	return 0;
+> +
+> +enable_device:
+> +	reset_control_deassert(oproc->reset);
+> +	return ret;
+> +}
+> +
+> +static int _omap_rproc_resume(struct rproc *rproc)
+> +{
+> +	struct device *dev = rproc->dev.parent;
+> +	struct omap_rproc *oproc = rproc->priv;
+> +	int ret;
+> +
+> +	/* boot address could be lost after suspend, so restore it */
+> +	if (oproc->boot_data) {
+> +		ret = omap_rproc_write_dsp_boot_addr(rproc);
+> +		if (ret) {
+> +			dev_err(dev, "boot address restore failed %d\n", ret);
+> +			goto out;
+> +		}
+> +	}
+> +
+> +	ret = omap_rproc_enable_timers(rproc, false);
+> +	if (ret) {
+> +		dev_err(dev, "enabling timers during resume failed %d\n", ret);
+> +		goto out;
+> +	}
+> +
+> +	ret = reset_control_deassert(oproc->reset);
+> +	if (ret) {
+> +		dev_err(dev, "reset deassert during resume failed %d\n", ret);
+> +		goto disable_timers;
+> +	}
+> +
+> +	return 0;
+> +
+> +disable_timers:
+> +	omap_rproc_disable_timers(rproc, false);
+> +out:
+> +	return ret;
+> +}
+> +
+> +static int __maybe_unused omap_rproc_suspend(struct device *dev)
+> +{
+> +	struct platform_device *pdev = to_platform_device(dev);
+> +	struct rproc *rproc = platform_get_drvdata(pdev);
+> +	int ret = 0;
+> +
+> +	mutex_lock(&rproc->lock);
+> +	if (rproc->state == RPROC_OFFLINE)
+> +		goto out;
+> +
+> +	if (rproc->state == RPROC_SUSPENDED)
+> +		goto out;
+> +
+> +	if (rproc->state != RPROC_RUNNING) {
+> +		ret = -EBUSY;
+> +		goto out;
+> +	}
+> +
+> +	ret = _omap_rproc_suspend(rproc);
+> +	if (ret) {
+> +		dev_err(dev, "suspend failed %d\n", ret);
+> +		goto out;
+> +	}
+> +
+> +	rproc->state = RPROC_SUSPENDED;
+> +out:
+> +	mutex_unlock(&rproc->lock);
+> +	return ret;
+> +}
+> +
+> +static int __maybe_unused omap_rproc_resume(struct device *dev)
+> +{
+> +	struct platform_device *pdev = to_platform_device(dev);
+> +	struct rproc *rproc = platform_get_drvdata(pdev);
+> +	int ret = 0;
+> +
+> +	mutex_lock(&rproc->lock);
+> +	if (rproc->state == RPROC_OFFLINE)
+> +		goto out;
+> +
+> +	if (rproc->state != RPROC_SUSPENDED) {
+> +		ret = -EBUSY;
+> +		goto out;
+> +	}
+> +
+> +	ret = _omap_rproc_resume(rproc);
+> +	if (ret) {
+> +		dev_err(dev, "resume failed %d\n", ret);
+> +		goto out;
+> +	}
+> +
+> +	rproc->state = RPROC_RUNNING;
+> +out:
+> +	mutex_unlock(&rproc->lock);
+> +	return ret;
+> +}
+> +#endif /* CONFIG_PM */
+> +
+>  static const struct omap_rproc_mem_data ipu_mems[] = {
+>  	{ .name = "l2ram", .dev_addr = 0x20000000 },
+>  	{ },
+> @@ -804,6 +982,14 @@ static int omap_rproc_probe(struct platform_device *pdev)
+>  			oproc->num_timers);
+>  	}
+>  
+> +	init_completion(&oproc->pm_comp);
+> +
+> +	oproc->fck = devm_clk_get(&pdev->dev, 0);
+> +	if (IS_ERR(oproc->fck)) {
+> +		ret = PTR_ERR(oproc->fck);
+> +		goto free_rproc;
+> +	}
+> +
+>  	ret = of_reserved_mem_device_init(&pdev->dev);
+>  	if (ret) {
+>  		dev_warn(&pdev->dev, "device does not have specific CMA pool.\n");
+> @@ -837,11 +1023,16 @@ static int omap_rproc_remove(struct platform_device *pdev)
+>  	return 0;
+>  }
+>  
+> +static const struct dev_pm_ops omap_rproc_pm_ops = {
+> +	SET_SYSTEM_SLEEP_PM_OPS(omap_rproc_suspend, omap_rproc_resume)
+> +};
+> +
+>  static struct platform_driver omap_rproc_driver = {
+>  	.probe = omap_rproc_probe,
+>  	.remove = omap_rproc_remove,
+>  	.driver = {
+>  		.name = "omap-rproc",
+> +		.pm = &omap_rproc_pm_ops,
+>  		.of_match_table = omap_rproc_of_match,
+>  	},
+>  };
+> diff --git a/drivers/remoteproc/omap_remoteproc.h b/drivers/remoteproc/omap_remoteproc.h
+> index 72f656c93caa..13f17d9135c0 100644
+> --- a/drivers/remoteproc/omap_remoteproc.h
+> +++ b/drivers/remoteproc/omap_remoteproc.h
+> @@ -1,7 +1,7 @@
+>  /*
+>   * Remote processor messaging
+>   *
+> - * Copyright (C) 2011 Texas Instruments, Inc.
+> + * Copyright (C) 2011-2020 Texas Instruments, Inc.
+>   * Copyright (C) 2011 Google, Inc.
+>   * All rights reserved.
+>   *
+> @@ -57,6 +57,16 @@
+>   * @RP_MBOX_ABORT_REQUEST: a "please crash" request, used for testing the
+>   * recovery mechanism (to some extent).
+>   *
+> + * @RP_MBOX_SUSPEND_AUTO: auto suspend request for the remote processor
+> + *
+> + * @RP_MBOX_SUSPEND_SYSTEM: system suspend request for the remote processor
+> + *
+> + * @RP_MBOX_SUSPEND_ACK: successful response from remote processor for a
+> + * suspend request
+> + *
+> + * @RP_MBOX_SUSPEND_CANCEL: a cancel suspend response from a remote processor
+> + * on a suspend request
+> + *
+>   * Introduce new message definitions if any here.
+>   *
+>   * @RP_MBOX_END_MSG: Indicates end of known/defined messages from remote core
+> @@ -70,7 +80,11 @@ enum omap_rp_mbox_messages {
+>  	RP_MBOX_ECHO_REQUEST	= 0xFFFFFF03,
+>  	RP_MBOX_ECHO_REPLY	= 0xFFFFFF04,
+>  	RP_MBOX_ABORT_REQUEST	= 0xFFFFFF05,
+> -	RP_MBOX_END_MSG		= 0xFFFFFF06,
+> +	RP_MBOX_SUSPEND_AUTO	= 0xFFFFFF10,
+> +	RP_MBOX_SUSPEND_SYSTEM	= 0xFFFFFF11,
+> +	RP_MBOX_SUSPEND_ACK	= 0xFFFFFF12,
+> +	RP_MBOX_SUSPEND_CANCEL	= 0xFFFFFF13,
+> +	RP_MBOX_END_MSG		= 0xFFFFFF14,
+>  };
+>  
+>  #endif /* _OMAP_RPMSG_H */
+> -- 
+> 2.17.1
+> 
+> --
+> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
