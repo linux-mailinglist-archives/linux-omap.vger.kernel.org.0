@@ -2,56 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1943179CB6
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Mar 2020 01:13:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B88C179CBD
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Mar 2020 01:20:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388476AbgCEANq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Mar 2020 19:13:46 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:41838 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388407AbgCEANp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Mar 2020 19:13:45 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0250DhLT049972;
-        Wed, 4 Mar 2020 18:13:43 -0600
+        id S2388407AbgCEAUS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Mar 2020 19:20:18 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:53610 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388389AbgCEAUS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Mar 2020 19:20:18 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0250KGmj041465;
+        Wed, 4 Mar 2020 18:20:16 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1583367223;
-        bh=PT0DBkqVfg3AnF7Dij0yYcn1BW8ztJDfTsHhFgVc3RA=;
+        s=ti-com-17Q1; t=1583367616;
+        bh=lgEUV0MrAFxsQeJolPyBTW2t+eFm4Sx9nzggaCmbNN4=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=ZlCTRMpJGnok+9+WDsON9+SMsXSMtZgb9F/Se2l/1++T8SqlrVcTFEieMDgxJYqvT
-         SlUl0dXq3K7M1OvXnHXqOCqNUzPAp9loYUEvZ3XpIpBjUSZsTYEwTRwv43BGM+n9NA
-         Ow9d1hzoI/kTz+eMYs+NCQIFUvWDgfLQnWV6AsKI=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0250DheP004036
+        b=ve0hIeVD//vCE5Nod7MirohrmgqcInBpOw10LFAHHvfh+qYzNtpZhfB85NPMwGXvu
+         sg6DVUP4XROjkLMmNFUa4Z4x+SD52mcR3oAd20LKR9vx8gJtTvmiv3BxRUi1BFDOs8
+         Q18ILAqC0ByaItv6IQZQTRiteGuEV44WnTb9IMzk=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0250KGdk041836
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 4 Mar 2020 18:13:43 -0600
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 4 Mar 2020 18:20:16 -0600
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 4 Mar
- 2020 18:13:43 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 18:20:15 -0600
+Received: from localhost.localdomain (10.64.41.19) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 4 Mar 2020 18:13:43 -0600
+ Frontend Transport; Wed, 4 Mar 2020 18:20:15 -0600
 Received: from [128.247.81.254] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0250Dgfi129947;
-        Wed, 4 Mar 2020 18:13:43 -0600
-Subject: Re: [PATCHv7 12/15] remoteproc/omap: Add support for runtime
- auto-suspend/resume
+        by localhost.localdomain (8.15.2/8.15.2) with ESMTP id 0250KF6P031895;
+        Wed, 4 Mar 2020 18:20:15 -0600
+Subject: Re: [PATCHv7 14/15] remoteproc/omap: Add watchdog functionality for
+ remote processors
 To:     Mathieu Poirier <mathieu.poirier@linaro.org>,
         Tero Kristo <t-kristo@ti.com>
 CC:     <bjorn.andersson@linaro.org>, <ohad@wizery.com>,
         <linux-remoteproc@vger.kernel.org>, <afd@ti.com>,
         <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>
 References: <20200221101936.16833-1-t-kristo@ti.com>
- <20200221101936.16833-13-t-kristo@ti.com> <20200304213503.GK8197@xps15>
+ <20200221101936.16833-15-t-kristo@ti.com> <20200304223300.GB2799@xps15>
 From:   Suman Anna <s-anna@ti.com>
-Message-ID: <5038e22c-52e4-362e-3445-ebd4291ee69d@ti.com>
-Date:   Wed, 4 Mar 2020 18:13:42 -0600
+Message-ID: <df8ae0a4-968d-c0f8-940d-78d848816e11@ti.com>
+Date:   Wed, 4 Mar 2020 18:20:15 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20200304213503.GK8197@xps15>
+In-Reply-To: <20200304223300.GB2799@xps15>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -61,470 +61,362 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 3/4/20 3:35 PM, Mathieu Poirier wrote:
-> On Fri, Feb 21, 2020 at 12:19:33PM +0200, Tero Kristo wrote:
+On 3/4/20 4:33 PM, Mathieu Poirier wrote:
+> On Fri, Feb 21, 2020 at 12:19:35PM +0200, Tero Kristo wrote:
 >> From: Suman Anna <s-anna@ti.com>
 >>
->> This patch enhances the PM support in the OMAP remoteproc driver to
->> support the runtime auto-suspend. A remoteproc may not be required to
->> be running all the time, and typically will need to be active only
->> during certain usecases. As such, to save power, it should be turned
->> off during potential long periods of inactivity between usecases.
->> This suspend and resume of the device is a relatively heavy process
->> in terms of latencies, so a remoteproc should be suspended only after
->> a certain period of prolonged inactivity. The OMAP remoteproc driver
->> leverages the runtime pm framework's auto_suspend feature to accomplish
->> this functionality. This feature is automatically enabled when a remote
->> processor has successfully booted. The 'autosuspend_delay_ms' for each
->> device dictates the inactivity period/time to wait for before
->> suspending the device.
+>> Remote processors can be stuck in a loop, and may not be recoverable
+>> if they do not have a built-in watchdog. The watchdog implementation
+>> for OMAP remote processors uses external gptimers that can be used
+>> to interrupt both the Linux host as well as the remote processor.
 >>
->> The runtime auto-suspend design relies on marking the last busy time
->> on every communication (virtqueue kick) to and from the remote processor.
->> When there has been no activity for 'autosuspend_delay_ms' time, the
->> runtime PM framework invokes the driver's runtime pm suspend callback
->> to suspend the device. The remote processor will be woken up on the
->> initiation of the next communication message through the runtime pm
->> resume callback. The current auto-suspend design also allows a remote
->> processor to deny a auto-suspend attempt, if it wishes to, by sending a
->> NACK response to the initial suspend request message sent to the remote
->> processor as part of the suspend process. The auto-suspend request is
->> also only attempted if the remote processor is idled and in standby at
->> the time of inactivity timer expiry. This choice is made to avoid
->> unnecessary messaging, and the auto-suspend is simply rescheduled to
->> be attempted again after a further lapse of autosuspend_delay_ms.
+>> Each remote processor is responsible for refreshing the timer during
+>> normal behavior - during OS task scheduling or entering the idle loop
+>> properly. During a watchdog condition (executing a tight loop causing
+>> no scheduling), the host processor gets interrupts and schedules a
+>> recovery for the corresponding remote processor. The remote processor
+>> may also get interrupted to be able to print a back trace.
 >>
->> The runtime pm callbacks functionality in this patch reuses most of the
->> core logic from the suspend/resume support code, and make use of an
->> additional auto_suspend flag to differentiate the logic in common code
->> from system suspend. The system suspend/resume sequences are also updated
->> to reflect the proper pm_runtime statuses, and also to really perform a
->> suspend/resume only if the remoteproc has not been auto-suspended at the
->> time of request. The remote processor is left in suspended state on a
->> system resume if it has been auto-suspended before, and will be woken up
->> only when a usecase needs to run.
->>
->> The OMAP remoteproc driver currently uses a default value of 10 seconds
->> for all OMAP remoteprocs, and a different value can be chosen either by
->> choosing a positive value for the 'ti,autosuspend-delay-ms' under DT or
->> by updating the 'autosuspend_delay_ms' field at runtime through the
->> sysfs interface. A negative value is equivalent to disabling the runtime
->> suspend.
->>     Eg: To use 25 seconds for IPU2 on DRA7xx,
->>       echo 25000 > /sys/bus/platform/devices/55020000.ipu/power/autosuspend_delay_ms
->>
->> The runtime suspend feature can also be similarly enabled or disabled by
->> writing 'auto' or 'on' to the device's 'control' power field. The default
->> is enabled.
->>     Eg: To disable auto-suspend for IPU2 on DRA7xx SoC,
->>       echo on > /sys/bus/platform/devices/55020000.ipu/power/control
+>> A menuconfig option has also been added to enable/disable the Watchdog
+>> functionality, with the default as disabled.
 >>
 >> Signed-off-by: Suman Anna <s-anna@ti.com>
->> [t-kristo@ti.com: converted to use ti-sysc instead of hwmod]
 >> Signed-off-by: Tero Kristo <t-kristo@ti.com>
 >> ---
 >> v7:
->>   - fixed the broken behavior for timers during runtime suspend
->>   - revamped the runtime PM handling code back towards the initial
->>     implementation, Suman reported some issues which seemed to have
->>     been introduced by my attempts to clean-up the code a bit.
+>>   - minor kerneldoc updates
 >>
->>  drivers/remoteproc/omap_remoteproc.c | 202 +++++++++++++++++++++++++--
->>  1 file changed, 193 insertions(+), 9 deletions(-)
+>>  drivers/remoteproc/Kconfig           |  12 +++
+>>  drivers/remoteproc/omap_remoteproc.c | 153 ++++++++++++++++++++++++---
+>>  2 files changed, 153 insertions(+), 12 deletions(-)
 >>
+>> diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
+>> index b52abc2268cc..5f33358eb2f1 100644
+>> --- a/drivers/remoteproc/Kconfig
+>> +++ b/drivers/remoteproc/Kconfig
+>> @@ -52,6 +52,18 @@ config OMAP_REMOTEPROC
+>>  	  It's safe to say N here if you're not interested in multimedia
+>>  	  offloading or just want a bare minimum kernel.
+>>  
+>> +config OMAP_REMOTEPROC_WATCHDOG
+>> +	bool "OMAP remoteproc watchdog timer"
+>> +	depends on OMAP_REMOTEPROC
+>> +	default n
+>> +	help
+>> +	  Say Y here to enable watchdog timer for remote processors.
+>> +
+>> +	  This option controls the watchdog functionality for the remote
+>> +	  processors in OMAP. Dedicated OMAP DMTimers are used by the remote
+>> +	  processors and triggers the timer interrupt upon a watchdog
+>> +	  detection.
+>> +
+>>  config WKUP_M3_RPROC
+>>  	tristate "AMx3xx Wakeup M3 remoteproc support"
+>>  	depends on SOC_AM33XX || SOC_AM43XX
 >> diff --git a/drivers/remoteproc/omap_remoteproc.c b/drivers/remoteproc/omap_remoteproc.c
->> index 0d45af1fb0e3..1ac270df4d66 100644
+>> index 7dcb5da0d940..bae01a9f8afc 100644
 >> --- a/drivers/remoteproc/omap_remoteproc.c
 >> +++ b/drivers/remoteproc/omap_remoteproc.c
->> @@ -22,6 +22,7 @@
->>  #include <linux/of_device.h>
->>  #include <linux/of_reserved_mem.h>
+>> @@ -24,6 +24,7 @@
 >>  #include <linux/platform_device.h>
->> +#include <linux/pm_runtime.h>
+>>  #include <linux/pm_runtime.h>
 >>  #include <linux/dma-mapping.h>
+>> +#include <linux/interrupt.h>
 >>  #include <linux/remoteproc.h>
 >>  #include <linux/mailbox_client.h>
->> @@ -37,6 +38,9 @@
->>  #include "omap_remoteproc.h"
->>  #include "remoteproc_internal.h"
+>>  #include <linux/omap-iommu.h>
+>> @@ -72,10 +73,12 @@ struct omap_rproc_mem {
+>>   * struct omap_rproc_timer - data structure for a timer used by a omap rproc
+>>   * @odt: timer pointer
+>>   * @timer_ops: OMAP dmtimer ops for @odt timer
+>> + * @irq: timer irq
+>>   */
+>>  struct omap_rproc_timer {
+>>  	struct omap_dm_timer *odt;
+>>  	const struct omap_dm_timer_ops *timer_ops;
+>> +	int irq;
+>>  };
 >>  
->> +/* default auto-suspend delay (ms) */
->> +#define DEFAULT_AUTOSUSPEND_DELAY		10000
->> +
 >>  /**
->>   * struct omap_rproc_boot_data - boot data structure for the DSP omap rprocs
->>   * @syscon: regmap handle for the system control configuration module
->> @@ -83,6 +87,8 @@ struct omap_rproc_timer {
+>> @@ -86,6 +89,7 @@ struct omap_rproc_timer {
+>>   * @mem: internal memory regions data
 >>   * @num_mems: number of internal memory regions
 >>   * @num_timers: number of rproc timer(s)
+>> + * @num_wd_timers: number of rproc watchdog timers
 >>   * @timers: timer(s) info used by rproc
->> + * @autosuspend_delay: auto-suspend delay value to be used for runtime pm
->> + * @need_resume: if true a resume is needed in the system resume callback
->>   * @rproc: rproc handle
->>   * @reset: reset handle
->>   * @pm_comp: completion primitive to sync for suspend response
->> @@ -97,6 +103,8 @@ struct omap_rproc {
+>>   * @autosuspend_delay: auto-suspend delay value to be used for runtime pm
+>>   * @need_resume: if true a resume is needed in the system resume callback
+>> @@ -102,6 +106,7 @@ struct omap_rproc {
+>>  	struct omap_rproc_mem *mem;
 >>  	int num_mems;
 >>  	int num_timers;
+>> +	int num_wd_timers;
 >>  	struct omap_rproc_timer *timers;
->> +	int autosuspend_delay;
->> +	bool need_resume;
->>  	struct rproc *rproc;
->>  	struct reset_control *reset;
->>  	struct completion pm_comp;
->> @@ -407,11 +415,23 @@ static void omap_rproc_kick(struct rproc *rproc, int vqid)
->>  	struct device *dev = rproc->dev.parent;
->>  	int ret;
->>  
->> +	/* wake up the rproc before kicking it */
->> +	ret = pm_runtime_get_sync(dev);
->> +	if (WARN_ON(ret < 0)) {
->> +		dev_err(dev, "pm_runtime_get_sync() failed during kick, ret = %d\n",
->> +			ret);
->> +		pm_runtime_put_noidle(dev);
->> +		return;
->> +	}
->> +
->>  	/* send the index of the triggered virtqueue in the mailbox payload */
->>  	ret = mbox_send_message(oproc->mbox, (void *)vqid);
->>  	if (ret < 0)
->>  		dev_err(dev, "failed to send mailbox message, status = %d\n",
->>  			ret);
->> +
->> +	pm_runtime_mark_last_busy(dev);
->> +	pm_runtime_put_autosuspend(dev);
+>>  	int autosuspend_delay;
+>>  	bool need_resume;
+>> @@ -219,6 +224,79 @@ static inline int omap_rproc_release_timer(struct omap_rproc_timer *timer)
+>>  	return timer->timer_ops->free(timer->odt);
 >>  }
 >>  
->>  /**
->> @@ -504,6 +524,18 @@ static int omap_rproc_start(struct rproc *rproc)
->>  		goto disable_timers;
->>  	}
->>  
->> +	/*
->> +	 * remote processor is up, so update the runtime pm status and
->> +	 * enable the auto-suspend. The device usage count is incremented
->> +	 * manually for balancing it for auto-suspend
->> +	 */
->> +	pm_runtime_set_active(dev);
->> +	pm_runtime_use_autosuspend(dev);
->> +	pm_runtime_get_noresume(dev);
->> +	pm_runtime_enable(dev);
->> +	pm_runtime_mark_last_busy(dev);
->> +	pm_runtime_put_autosuspend(dev);
+>> +/**
+>> + * omap_rproc_get_timer_irq() - get the irq for a timer
+>> + * @timer: handle to a OMAP rproc timer
+>> + *
+>> + * This function is used to get the irq associated with a watchdog timer. The
+>> + * function is called by the OMAP remoteproc driver to register a interrupt
+>> + * handler to handle watchdog events on the remote processor.
+>> + *
+>> + * Return: irq id on success, otherwise a failure as returned by DMTimer ops
+>> + */
+>> +static inline int omap_rproc_get_timer_irq(struct omap_rproc_timer *timer)
+>> +{
+>> +	return timer->timer_ops->get_irq(timer->odt);
+>> +}
 >> +
->>  	return 0;
->>  
->>  disable_timers:
->> @@ -516,20 +548,52 @@ static int omap_rproc_start(struct rproc *rproc)
->>  /* power off the remote processor */
->>  static int omap_rproc_stop(struct rproc *rproc)
->>  {
+>> +/**
+>> + * omap_rproc_ack_timer_irq() - acknowledge a timer irq
+>> + * @timer: handle to a OMAP rproc timer
+>> + *
+>> + * This function is used to clear the irq associated with a watchdog timer. The
+>> + * The function is called by the OMAP remoteproc upon a watchdog event on the
+>> + * remote processor to clear the interrupt status of the watchdog timer.
+>> + */
+>> +static inline void omap_rproc_ack_timer_irq(struct omap_rproc_timer *timer)
+>> +{
+>> +	timer->timer_ops->write_status(timer->odt, OMAP_TIMER_INT_OVERFLOW);
+>> +}
+>> +
+>> +/**
+>> + * omap_rproc_watchdog_isr() - Watchdog ISR handler for remoteproc device
+>> + * @irq: IRQ number associated with a watchdog timer
+>> + * @data: IRQ handler data
+>> + *
+>> + * This ISR routine executes the required necessary low-level code to
+>> + * acknowledge a watchdog timer interrupt. There can be multiple watchdog
+>> + * timers associated with a rproc (like IPUs which have 2 watchdog timers,
+>> + * one per Cortex M3/M4 core), so a lookup has to be performed to identify
+>> + * the timer to acknowledge its interrupt.
+>> + *
+>> + * The function also invokes rproc_report_crash to report the watchdog event
+>> + * to the remoteproc driver core, to trigger a recovery.
+>> + *
+>> + * Return: IRQ_HANDLED on success, otherwise IRQ_NONE
+>> + */
+>> +static irqreturn_t omap_rproc_watchdog_isr(int irq, void *data)
+>> +{
+>> +	struct rproc *rproc = data;
+>> +	struct omap_rproc *oproc = rproc->priv;
 >> +	struct device *dev = rproc->dev.parent;
->>  	struct omap_rproc *oproc = rproc->priv;
->>  	int ret;
->>  
->> +	/*
->> +	 * cancel any possible scheduled runtime suspend by incrementing
->> +	 * the device usage count, and resuming the device. The remoteproc
->> +	 * also needs to be woken up if suspended, to avoid the remoteproc
->> +	 * OS to continue to remember any context that it has saved, and
->> +	 * avoid potential issues in misindentifying a subsequent device
->> +	 * reboot as a power restore boot
->> +	 */
->> +	ret = pm_runtime_get_sync(dev);
->> +	if (ret < 0) {
->> +		pm_runtime_put_noidle(dev);
->> +		return ret;
+>> +	struct omap_rproc_timer *timers = oproc->timers;
+>> +	struct omap_rproc_timer *wd_timer = NULL;
+>> +	int num_timers = oproc->num_timers + oproc->num_wd_timers;
+>> +	int i;
+>> +
+>> +	for (i = oproc->num_timers; i < num_timers; i++) {
+>> +		if (timers[i].irq > 0 && irq == timers[i].irq) {
+>> +			wd_timer = &timers[i];
+>> +			break;
+>> +		}
 >> +	}
 >> +
->>  	ret = reset_control_assert(oproc->reset);
->>  	if (ret)
->> -		return ret;
->> +		goto out;
->>  
->>  	ret = omap_rproc_disable_timers(rproc, true);
->>  	if (ret)
->> -		return ret;
->> +		goto enable_device;
->>  
->>  	mbox_free_channel(oproc->mbox);
->>  
->> +	/*
->> +	 * update the runtime pm states and status now that the remoteproc
->> +	 * has stopped
->> +	 */
->> +	pm_runtime_disable(dev);
->> +	pm_runtime_dont_use_autosuspend(dev);
->> +	pm_runtime_put_noidle(dev);
->> +	pm_runtime_set_suspended(dev);
+>> +	if (!wd_timer) {
+>> +		dev_err(dev, "invalid timer\n");
+>> +		return IRQ_NONE;
+>> +	}
 >> +
->>  	return 0;
+>> +	omap_rproc_ack_timer_irq(wd_timer);
 >> +
->> +enable_device:
->> +	reset_control_deassert(oproc->reset);
->> +out:
->> +	/* schedule the next auto-suspend */
->> +	pm_runtime_mark_last_busy(dev);
->> +	pm_runtime_put_autosuspend(dev);
->> +	return ret;
->>  }
->>  
+>> +	rproc_report_crash(rproc, RPROC_WATCHDOG);
+>> +
+>> +	return IRQ_HANDLED;
+>> +}
+>> +
 >>  /**
->> @@ -586,17 +650,19 @@ static bool _is_rproc_in_standby(struct omap_rproc *oproc)
->>  
->>  /* 1 sec is long enough time to let the remoteproc side suspend the device */
->>  #define DEF_SUSPEND_TIMEOUT 1000
->> -static int _omap_rproc_suspend(struct rproc *rproc)
->> +static int _omap_rproc_suspend(struct rproc *rproc, bool auto_suspend)
->>  {
+>>   * omap_rproc_enable_timers() - enable the timers for a remoteproc
+>>   * @rproc: handle of a remote processor
+>> @@ -242,19 +320,26 @@ static int omap_rproc_enable_timers(struct rproc *rproc, bool configure)
+>>  	struct omap_rproc_timer *timers = oproc->timers;
 >>  	struct device *dev = rproc->dev.parent;
->>  	struct omap_rproc *oproc = rproc->priv;
->>  	unsigned long to = msecs_to_jiffies(DEF_SUSPEND_TIMEOUT);
->>  	unsigned long ta = jiffies + to;
->> +	u32 suspend_msg = auto_suspend ?
->> +				RP_MBOX_SUSPEND_AUTO : RP_MBOX_SUSPEND_SYSTEM;
->>  	int ret;
+>>  	struct device_node *np = NULL;
+>> +	int num_timers = oproc->num_timers + oproc->num_wd_timers;
 >>  
->>  	reinit_completion(&oproc->pm_comp);
->>  	oproc->suspend_acked = false;
->> -	ret = mbox_send_message(oproc->mbox, (void *)RP_MBOX_SUSPEND_SYSTEM);
->> +	ret = mbox_send_message(oproc->mbox, (void *)suspend_msg);
->>  	if (ret < 0) {
->>  		dev_err(dev, "PM mbox_send_message failed: %d\n", ret);
->>  		return ret;
->> @@ -640,32 +706,62 @@ static int _omap_rproc_suspend(struct rproc *rproc)
->>  		goto enable_device;
+>> -	if (!oproc->num_timers)
+>> +	if (!num_timers)
+>>  		return 0;
+>>  
+>>  	if (!configure)
+>>  		goto start_timers;
+>>  
+>> -	for (i = 0; i < oproc->num_timers; i++) {
+>> -		np = of_parse_phandle(dev->of_node, "ti,timers", i);
+>> +	for (i = 0; i < num_timers; i++) {
+>> +		if (i < oproc->num_timers)
+>> +			np = of_parse_phandle(dev->of_node, "ti,timers", i);
+>> +		else
+>> +			np = of_parse_phandle(dev->of_node,
+>> +					      "ti,watchdog-timers",
+>> +					      (i - oproc->num_timers));
+>>  		if (!np) {
+>>  			ret = -ENXIO;
+>>  			dev_err(dev, "device node lookup for timer at index %d failed: %d\n",
+>> -				i, ret);
+>> +				i < oproc->num_timers ? i :
+>> +				i - oproc->num_timers, ret);
+>>  			goto free_timers;
+>>  		}
+>>  
+>> @@ -277,12 +362,14 @@ static int omap_rproc_enable_timers(struct rproc *rproc, bool configure)
+>>  		if (!timer_ops || !timer_ops->request_by_node ||
+>>  		    !timer_ops->set_source || !timer_ops->set_load ||
+>>  		    !timer_ops->free || !timer_ops->start ||
+>> -		    !timer_ops->stop) {
+>> +		    !timer_ops->stop || !timer_ops->get_irq ||
+>> +		    !timer_ops->write_status) {
+>>  			ret = -EINVAL;
+>>  			dev_err(dev, "device does not have required timer ops\n");
+>>  			goto put_node;
+>>  		}
+>>  
+>> +		timers[i].irq = -1;
+>>  		timers[i].timer_ops = timer_ops;
+>>  		ret = omap_rproc_request_timer(dev, np, &timers[i]);
+>>  		if (ret) {
+>> @@ -291,10 +378,33 @@ static int omap_rproc_enable_timers(struct rproc *rproc, bool configure)
+>>  			goto put_node;
+>>  		}
+>>  		of_node_put(np);
+>> +
+>> +		if (i >= oproc->num_timers) {
+> 
+> We already have num_wd_timers and oproc->timers is allocated via
+> devm_kcalloc()...  I think the code would be much easier to ready and maintain
+> if watchdog timers where held in their own array.
+
+The only special thing about watchdog timers is that we register for an
+interrupt, and that's what this condition is doing, but otherwise almost
+all the operations are identical and need to be performed on all the
+timers. So, you would have to use two for loops everywhere if you
+separate them out. So. I still think this keeps the code dealing with
+timers simpler.
+
+> 
+>> +			timers[i].irq = omap_rproc_get_timer_irq(&timers[i]);
+>> +			if (timers[i].irq < 0) {
+>> +				dev_err(dev, "get_irq for timer %p failed: %d\n",
+>> +					np, timers[i].irq);
+>> +				ret = -EBUSY;
+>> +				goto free_timers;
+>> +			}
+>> +
+>> +			ret = request_irq(timers[i].irq,
+>> +					  omap_rproc_watchdog_isr, IRQF_SHARED,
+>> +					  "rproc-wdt", rproc);
+>> +			if (ret) {
+>> +				dev_err(dev, "error requesting irq for timer %p\n",
+>> +					np);
+>> +				omap_rproc_release_timer(&timers[i]);
+>> +				timers[i].odt = NULL;
+>> +				timers[i].timer_ops = NULL;
+>> +				timers[i].irq = -1;
+>> +				goto free_timers;
+>> +			}
+>> +		}
 >>  	}
 >>  
->> +	/*
->> +	 * IOMMUs would have to be disabled specifically for runtime suspend.
->> +	 * They are handled automatically through System PM callbacks for
->> +	 * regular system suspend
->> +	 */
->> +	if (auto_suspend) {
->> +		ret = omap_iommu_domain_deactivate(rproc->domain);
->> +		if (ret) {
->> +			dev_err(dev, "iommu domain deactivate failed %d\n",
->> +				ret);
->> +			goto enable_timers;
->> +		}
->> +	}
->> +
->>  	return 0;
->>  
->> +enable_timers:
->> +	/* ignore errors on re-enabling code */
->> +	omap_rproc_enable_timers(rproc, false);
->>  enable_device:
->>  	reset_control_deassert(oproc->reset);
->>  	return ret;
->>  }
->>  
->> -static int _omap_rproc_resume(struct rproc *rproc)
->> +static int _omap_rproc_resume(struct rproc *rproc, bool auto_suspend)
->>  {
->>  	struct device *dev = rproc->dev.parent;
->>  	struct omap_rproc *oproc = rproc->priv;
->>  	int ret;
->>  
->> +	/*
->> +	 * IOMMUs would have to be enabled specifically for runtime resume.
->> +	 * They would have been already enabled automatically through System
->> +	 * PM callbacks for regular system resume
->> +	 */
->> +	if (auto_suspend) {
->> +		ret = omap_iommu_domain_activate(rproc->domain);
->> +		if (ret) {
->> +			dev_err(dev, "omap_iommu activate failed %d\n", ret);
->> +			goto out;
->> +		}
->> +	}
->> +
->>  	/* boot address could be lost after suspend, so restore it */
->>  	if (oproc->boot_data) {
->>  		ret = omap_rproc_write_dsp_boot_addr(rproc);
+>>  start_timers:
+>> -	for (i = 0; i < oproc->num_timers; i++) {
+>> +	for (i = 0; i < num_timers; i++) {
+>>  		ret = omap_rproc_start_timer(&timers[i]);
 >>  		if (ret) {
->>  			dev_err(dev, "boot address restore failed %d\n", ret);
->> -			goto out;
->> +			goto suspend_iommu;
+>>  			dev_err(dev, "start timer %p failed failed: %d\n", np,
+>> @@ -316,9 +426,12 @@ static int omap_rproc_enable_timers(struct rproc *rproc, bool configure)
+>>  		of_node_put(np);
+>>  free_timers:
+>>  	while (i--) {
+>> +		if (i >= oproc->num_timers)
+>> +			free_irq(timers[i].irq, rproc);
+>>  		omap_rproc_release_timer(&timers[i]);
+>>  		timers[i].odt = NULL;
+>>  		timers[i].timer_ops = NULL;
+>> +		timers[i].irq = -1;
+>>  	}
+>>  
+>>  	return ret;
+>> @@ -341,16 +454,20 @@ static int omap_rproc_disable_timers(struct rproc *rproc, bool configure)
+>>  	int i;
+>>  	struct omap_rproc *oproc = rproc->priv;
+>>  	struct omap_rproc_timer *timers = oproc->timers;
+>> +	int num_timers = oproc->num_timers + oproc->num_wd_timers;
+>>  
+>> -	if (!oproc->num_timers)
+>> +	if (!num_timers)
+>>  		return 0;
+>>  
+>> -	for (i = 0; i < oproc->num_timers; i++) {
+>> +	for (i = 0; i < num_timers; i++) {
+>>  		omap_rproc_stop_timer(&timers[i]);
+>>  		if (configure) {
+>> +			if (i >= oproc->num_timers)
+>> +				free_irq(timers[i].irq, rproc);
+>>  			omap_rproc_release_timer(&timers[i]);
+>>  			timers[i].odt = NULL;
+>>  			timers[i].timer_ops = NULL;
+>> +			timers[i].irq = -1;
 >>  		}
 >>  	}
 >>  
->>  	ret = omap_rproc_enable_timers(rproc, false);
->>  	if (ret) {
->>  		dev_err(dev, "enabling timers during resume failed %d\n", ret);
->> -		goto out;
->> +		goto suspend_iommu;
+>> @@ -1097,6 +1214,7 @@ static int omap_rproc_probe(struct platform_device *pdev)
+>>  	struct omap_rproc *oproc;
+>>  	struct rproc *rproc;
+>>  	const char *firmware;
+>> +	int num_timers;
+>>  	int ret;
+>>  	struct reset_control *reset;
+>>  
+>> @@ -1149,8 +1267,19 @@ static int omap_rproc_probe(struct platform_device *pdev)
+>>  		oproc->num_timers = 0;
 >>  	}
 >>  
->>  	ret = reset_control_deassert(oproc->reset);
->> @@ -678,6 +774,9 @@ static int _omap_rproc_resume(struct rproc *rproc)
->>  
->>  disable_timers:
->>  	omap_rproc_disable_timers(rproc, false);
->> +suspend_iommu:
->> +	if (auto_suspend)
->> +		omap_iommu_domain_deactivate(rproc->domain);
->>  out:
->>  	return ret;
->>  }
->> @@ -686,6 +785,7 @@ static int __maybe_unused omap_rproc_suspend(struct device *dev)
->>  {
->>  	struct platform_device *pdev = to_platform_device(dev);
->>  	struct rproc *rproc = platform_get_drvdata(pdev);
->> +	struct omap_rproc *oproc = rproc->priv;
->>  	int ret = 0;
->>  
->>  	mutex_lock(&rproc->lock);
->> @@ -700,13 +800,19 @@ static int __maybe_unused omap_rproc_suspend(struct device *dev)
->>  		goto out;
->>  	}
->>  
->> -	ret = _omap_rproc_suspend(rproc);
->> +	ret = _omap_rproc_suspend(rproc, false);
->>  	if (ret) {
->>  		dev_err(dev, "suspend failed %d\n", ret);
->>  		goto out;
->>  	}
->>  
->> +	/*
->> +	 * remoteproc is running at the time of system suspend, so remember
->> +	 * it so as to wake it up during system resume
->> +	 */
->> +	oproc->need_resume = true;
->>  	rproc->state = RPROC_SUSPENDED;
->> +
->>  out:
->>  	mutex_unlock(&rproc->lock);
->>  	return ret;
->> @@ -716,6 +822,7 @@ static int __maybe_unused omap_rproc_resume(struct device *dev)
->>  {
->>  	struct platform_device *pdev = to_platform_device(dev);
->>  	struct rproc *rproc = platform_get_drvdata(pdev);
->> +	struct omap_rproc *oproc = rproc->priv;
->>  	int ret = 0;
->>  
->>  	mutex_lock(&rproc->lock);
->> @@ -727,17 +834,86 @@ static int __maybe_unused omap_rproc_resume(struct device *dev)
->>  		goto out;
->>  	}
->>  
->> -	ret = _omap_rproc_resume(rproc);
->> +	/*
->> +	 * remoteproc was auto-suspended at the time of system suspend,
->> +	 * so no need to wake-up the processor (leave it in suspended
->> +	 * state, will be woken up during a subsequent runtime_resume)
->> +	 */
->> +	if (!oproc->need_resume)
->> +		goto out;
->> +
->> +	ret = _omap_rproc_resume(rproc, false);
->>  	if (ret) {
->>  		dev_err(dev, "resume failed %d\n", ret);
->>  		goto out;
->>  	}
->>  
->> +	oproc->need_resume = false;
->>  	rproc->state = RPROC_RUNNING;
->> +
->> +	pm_runtime_mark_last_busy(dev);
->>  out:
->>  	mutex_unlock(&rproc->lock);
->>  	return ret;
->>  }
->> +
->> +static int omap_rproc_runtime_suspend(struct device *dev)
->> +{
->> +	struct rproc *rproc = dev_get_drvdata(dev);
->> +	struct omap_rproc *oproc = rproc->priv;
->> +	int ret;
->> +
+>> -	if (oproc->num_timers) {
+>> -		oproc->timers = devm_kcalloc(&pdev->dev, oproc->num_timers,
+>> +#ifdef CONFIG_OMAP_REMOTEPROC_WATCHDOG
+>> +	oproc->num_wd_timers =
+>> +		of_count_phandle_with_args(np, "ti,watchdog-timers", NULL);
+>> +	if (oproc->num_wd_timers <= 0) {
+>> +		dev_dbg(&pdev->dev, "device does not have watchdog timers, status = %d\n",
+>> +			oproc->num_wd_timers);
+>> +		oproc->num_wd_timers = 0;
+>> +	}
+>> +#endif
 > 
-> Shouldn't the rproc->lock be held here?  Same for omap_rproc_runtime_resume().
+> Please turn this into a function with the implementation conditional on the
+> #ifdef.
+> 
 
-Yeah, we can add them like in the regular suspend/resume functions.
+We can probably move the entire timer parse and logic into a separate
+function.
 
 regards
 Suman
 
-
-> 
->> +	if (rproc->state == RPROC_CRASHED) {
->> +		dev_dbg(dev, "rproc cannot be runtime suspended when crashed!\n");
->> +		return -EBUSY;
->> +	}
 >> +
->> +	if (WARN_ON(rproc->state != RPROC_RUNNING)) {
->> +		dev_err(dev, "rproc cannot be runtime suspended when not running!\n");
->> +		return -EBUSY;
->> +	}
->> +
->> +	/*
->> +	 * do not even attempt suspend if the remote processor is not
->> +	 * idled for runtime auto-suspend
->> +	 */
->> +	if (!_is_rproc_in_standby(oproc)) {
->> +		ret = -EBUSY;
->> +		goto abort;
->> +	}
->> +
->> +	ret = _omap_rproc_suspend(rproc, true);
->> +	if (ret)
->> +		goto abort;
->> +
->> +	rproc->state = RPROC_SUSPENDED;
->> +	return 0;
->> +
->> +abort:
->> +	pm_runtime_mark_last_busy(dev);
->> +	return ret;
->> +}
->> +
->> +static int omap_rproc_runtime_resume(struct device *dev)
->> +{
->> +	struct rproc *rproc = dev_get_drvdata(dev);
->> +	int ret;
->> +
->> +	if (WARN_ON(rproc->state != RPROC_SUSPENDED)) {
->> +		dev_err(dev, "rproc cannot be runtime resumed if not suspended! state=%d\n",
->> +			rproc->state);
->> +		return -EBUSY;
->> +	}
->> +
->> +	ret = _omap_rproc_resume(rproc, true);
->> +	if (ret) {
->> +		dev_err(dev, "runtime resume failed %d\n", ret);
->> +		return ret;
->> +	}
->> +
->> +	rproc->state = RPROC_RUNNING;
->> +	return 0;
->> +}
->>  #endif /* CONFIG_PM */
+>> +	if (oproc->num_timers || oproc->num_wd_timers) {
+>> +		num_timers = oproc->num_timers + oproc->num_wd_timers;
+>> +		oproc->timers = devm_kcalloc(&pdev->dev, num_timers,
+>>  					     sizeof(*oproc->timers),
+>>  					     GFP_KERNEL);
+>>  		if (!oproc->timers) {
+>> @@ -1158,8 +1287,8 @@ static int omap_rproc_probe(struct platform_device *pdev)
+>>  			goto free_rproc;
+>>  		}
 >>  
->>  static const struct omap_rproc_mem_data ipu_mems[] = {
->> @@ -983,6 +1159,12 @@ static int omap_rproc_probe(struct platform_device *pdev)
+>> -		dev_dbg(&pdev->dev, "device has %d tick timers\n",
+>> -			oproc->num_timers);
+>> +		dev_dbg(&pdev->dev, "device has %d tick timers and %d watchdog timers\n",
+>> +			oproc->num_timers, oproc->num_wd_timers);
 >>  	}
 >>  
 >>  	init_completion(&oproc->pm_comp);
->> +	oproc->autosuspend_delay = DEFAULT_AUTOSUSPEND_DELAY;
->> +
->> +	of_property_read_u32(pdev->dev.of_node, "ti,autosuspend-delay-ms",
->> +			     &oproc->autosuspend_delay);
->> +
->> +	pm_runtime_set_autosuspend_delay(&pdev->dev, oproc->autosuspend_delay);
->>  
->>  	oproc->fck = devm_clk_get(&pdev->dev, 0);
->>  	if (IS_ERR(oproc->fck)) {
->> @@ -1025,6 +1207,8 @@ static int omap_rproc_remove(struct platform_device *pdev)
->>  
->>  static const struct dev_pm_ops omap_rproc_pm_ops = {
->>  	SET_SYSTEM_SLEEP_PM_OPS(omap_rproc_suspend, omap_rproc_resume)
->> +	SET_RUNTIME_PM_OPS(omap_rproc_runtime_suspend,
->> +			   omap_rproc_runtime_resume, NULL)
->>  };
->>  
->>  static struct platform_driver omap_rproc_driver = {
 >> -- 
 >> 2.17.1
 >>
