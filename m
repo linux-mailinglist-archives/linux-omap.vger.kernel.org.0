@@ -2,91 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 621ED17B2F7
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Mar 2020 01:30:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF2517BCCE
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Mar 2020 13:34:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726178AbgCFAao (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Mar 2020 19:30:44 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:34288 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726173AbgCFAao (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Mar 2020 19:30:44 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0260TlG3004717;
-        Thu, 5 Mar 2020 18:29:47 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1583454587;
-        bh=MM2TeeUzDkVH6Jaz3FdkOyWt+8KGCQgxym5sFOmIbNs=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=GdI9kNUeGDoFFbibWxDSVaNzrnMVGFT/xtGPZBrcWLPKJxInG3mPNOMNoigiSxOXv
-         G/bKnj3DQmj+jGX9fFSWJbGDq7UsbYzvXp1CMKMoRINYiR2MKOg/wBxDVrT4zLgUS6
-         btNdiIem06vdcaTKvZhjlRymM0MrljUjKN3KarKw=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0260TlFw126586
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 5 Mar 2020 18:29:47 -0600
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 5 Mar
- 2020 18:29:47 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 5 Mar 2020 18:29:47 -0600
-Received: from [128.247.81.254] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0260Tlg3085113;
-        Thu, 5 Mar 2020 18:29:47 -0600
-Subject: Re: [PATCH v2] mfd: syscon: Use a unique name with regmap_config
-To:     Lee Jones <lee.jones@linaro.org>, Arnd Bergmann <arnd@arndb.de>
-CC:     David Lechner <david@lechnology.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Roger Quadros <rogerq@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>
-References: <20200127231208.1443-1-s-anna@ti.com> <20200224100037.GK3494@dell>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <5efbb3c4-044d-0a8e-630a-0dd559f20669@ti.com>
-Date:   Thu, 5 Mar 2020 18:29:47 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726314AbgCFMeq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Mar 2020 07:34:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49816 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726162AbgCFMep (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 6 Mar 2020 07:34:45 -0500
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D3D22072A;
+        Fri,  6 Mar 2020 12:34:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583498085;
+        bh=50FsvEWhVLCsXiT3fYUpxYQIEwnyRkjX2gQrIJs9pYk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MqS88dhL/XPiRJyhwQhpkh7U1ms/rZrTIJRsbADkPAKs9VTrlUcomFIxcDhFhjiaX
+         dnkB3CKGI+o0dgziPDIdgCiwUNXxIXGkAHBXBtpCO7DrjMUEHrYprqhrzYGFfDOdL3
+         W3CkeTz40TJ5zLMZ7CdvG6sL6igocRd5BtK/jyfQ=
+Date:   Fri, 6 Mar 2020 13:34:40 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Jiri Slaby <jslaby@suse.cz>, Johan Hovold <johan@kernel.org>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Rob Herring <robh@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] mfd: motmdm: Add Motorola TS 27.010 serdev modem
+ driver for droid4
+Message-ID: <20200306123440.GA3691382@kroah.com>
+References: <20200220195943.15314-1-tony@atomide.com>
+ <20200220195943.15314-3-tony@atomide.com>
+ <20200226115548.GO3494@dell>
+ <20200226144308.GM37466@atomide.com>
 MIME-Version: 1.0
-In-Reply-To: <20200224100037.GK3494@dell>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200226144308.GM37466@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2/24/20 4:00 AM, Lee Jones wrote:
-> On Mon, 27 Jan 2020, Suman Anna wrote:
+On Wed, Feb 26, 2020 at 06:43:08AM -0800, Tony Lindgren wrote:
+> * Lee Jones <lee.jones@linaro.org> [200226 11:56]:
+> > On Thu, 20 Feb 2020, Tony Lindgren wrote:
+> > 
+> > > Many Motorola phones are controlling the modem using a custom variant
+> > > of TS 27.010 serial line discipline. Devices on these modems have a
+> > > dedicated TS 27.010 channel for features like audio mixer, GNSS, voice
+> > > modem, SIM card reader and so on.
+> > > 
+> > > This driver allows using various devices on the modem. In order to do
+> > > that, we need to take care of the following three things:
+> > > 
+> > > 1. Provide /dev/motmdm* character devices for apps to use for talking
+> > >    to the various devices on the modem
+> > > 
+> > > 2. Handle Motorola custom protocol over TS 27.010 to make the channels
+> > >    usable for userspace
+> > > 
+> > > 3. Coordinate PM runtime with the USB PHY because of shared GPIO pins
+> > >    with the USB PHY
+> ...
+> > > ---
+> > >  drivers/mfd/Kconfig        |    9 +
+> > >  drivers/mfd/Makefile       |    1 +
+> > >  drivers/mfd/motorola-mdm.c | 1200 ++++++++++++++++++++++++++++++++++++
+> > 
+> > I'm not even going to start reviewing this as I can see, without even
+> > looking at the code, that this has too much functionality (stuff that
+> > does stuff) contained.
+> > 
+> > Please move as much functionality out into the subsystems as
+> > possible.  Ideally, MFDs should be responsible for obtaining and
+> > registering shared resources and registering child devices.  Anything
+> > else should be shifted out to an appropriate subsystem.
+> > 
+> > MFD is not Misc.
 > 
->> The DT node full name is currently being used in regmap_config
->> which in turn is used to create the regmap debugfs directories.
->> This name however is not guaranteed to be unique and the regmap
->> debugfs registration can fail in the cases where the syscon nodes
->> have the same unit-address but are present in different DT node
->> hierarchies. Replace this logic using the syscon reg resource
->> address instead (inspired from logic used while creating platform
->> devices) to ensure a unique name is given for each syscon.
->>
->> Signed-off-by: Suman Anna <s-anna@ti.com>
->> ---
->> v2: Fix build warning reported by kbuild test bot
->> v1: https://patchwork.kernel.org/patch/11346363/
->>
->>  drivers/mfd/syscon.c | 4 +++-
->>  1 file changed, 3 insertions(+), 1 deletion(-)
+> OK good point. So this is a serdev consumer driver that eventually will
+> also provide serdev style access to few device drivers too for the
+> device within the modem after decoding the Motorola specific protocol.
+> No special need for this driver to be under drivers/mfd though.
 > 
-> Waiting for Arnd to review.
-> 
+> How about we add drivers/tty/serdev/protocol or similar directory for
+> drivers like this?
 
-Hi Arnd,
-
-Gentle ping, any comments?
-
-regards
-Suman
+Sure, that seems sane.
 
