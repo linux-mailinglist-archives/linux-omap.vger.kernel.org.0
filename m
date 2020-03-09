@@ -2,148 +2,138 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 201EC17D5D0
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Mar 2020 20:20:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AFAE17D8A7
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Mar 2020 05:53:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726322AbgCHTUo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Mar 2020 15:20:44 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:43827 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726292AbgCHTUo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Mar 2020 15:20:44 -0400
-Received: by mail-wr1-f66.google.com with SMTP id v9so8395668wrf.10;
-        Sun, 08 Mar 2020 12:20:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=qALcG3CGuBaboVD1Vu6sKa7UNKTJMIZmbr5ctcnIjvQ=;
-        b=KuTzOrLQIYKb2aSSDndfU+R4OkG8+39CunsygU0n4TfXkT3rs607w8JdEwc7EkhXsh
-         SUI5U4xuqaM9u2kio3yF8L+iH80FaSzYKojyVif5EOGrwXyEC0Gkbe8H9x+6I9uVWaUI
-         RT/td7r6E8m4X97pUhBUDriTf1zOhmskFBfaaLvSXV09uCRoeWeGCxvzjDVCvADrX0m4
-         OGajyiizFLDGpLeKePswPh2ZPdrG2VOjhvLszoQZn4RX7Ym4zRLpiXb393YGlng3qaUl
-         NNvgvs6yjZUeroVVwUj2aJvhGwQCRM6pQEpwXfS1MoFKGf14J3Kxm6LJzSHPh6b6Dsqc
-         HcAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=qALcG3CGuBaboVD1Vu6sKa7UNKTJMIZmbr5ctcnIjvQ=;
-        b=sg/JXf+KfmImKXo5DzZnUEwJbgMHkwVBwlCxFmJrQu6qKTwd6zcdwwSzms6N1AR86d
-         7XxBFArRTkP++/lbi2PfrhzdGnA5A8MvW/XivXsiREDgfA+QdOAXzghYMsuoXxPw4QhM
-         RrJ6taRqva78EObGHG8Y3gaKPLVl0jMWrhL8GxURTWF/CfFDXzzIIJxNVqzVxzXlW5Dv
-         cXbkQPPA5bhbftZ3sfdDjjsTp/V8rlr23PKeKwwSnxJffsde8/f8ZDjv0ikEYBq9DGLD
-         qNFbT+RLJKpl1iRzGx9P+S920+KSZHay+zDYYpoVxz0nv6UJAzTGkLPP33yqwKxNqhZ1
-         lN+A==
-X-Gm-Message-State: ANhLgQ3OI0qcKFk+kp9WD9s2tAKpT+TCBx+cvxIZLmOJEEOPs4I+fdBf
-        HG5w2NWhOaG7z/ZF95s7mZk=
-X-Google-Smtp-Source: ADFU+vv3rcWG5MMYWXUHe4T6UqDBb1TBfzXy2V9IGq5bFXchWpdP6YGsyWHg0RWNUP8FI7gV+0nbcA==
-X-Received: by 2002:adf:e98f:: with SMTP id h15mr16675277wrm.263.1583695241942;
-        Sun, 08 Mar 2020 12:20:41 -0700 (PDT)
-Received: from supervisor.net28 ([46.53.253.27])
-        by smtp.gmail.com with ESMTPSA id f127sm23281865wma.4.2020.03.08.12.20.20
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 08 Mar 2020 12:20:41 -0700 (PDT)
-From:   Arthur Demchenkov <spinal.by@gmail.com>
-Cc:     Arthur Demchenkov <spinal.by@gmail.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: OMAP: DTS: N900: fix onenand timings
-Date:   Sun,  8 Mar 2020 22:19:33 +0300
-Message-Id: <20200308191934.8263-1-spinal.by@gmail.com>
-X-Mailer: git-send-email 2.11.0
-To:     unlisted-recipients:; (no To-header on input)
+        id S1726402AbgCIExG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Mar 2020 00:53:06 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:48268 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725811AbgCIExG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Mar 2020 00:53:06 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0294qvxj077105;
+        Sun, 8 Mar 2020 23:52:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1583729577;
+        bh=19GEtNMqbK7WwV7Ny6Ssf+Ax9DfoQ90Ggv3gqxaS+eE=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=GRlmZKSZUc1pqJDE/KxnuKjd4pauy6qi9sKNfWMMlnbkezgXoNDPgtgIBRW8VK8aP
+         cac3T7/UrjaFl14g3A8+cOl/ok9R2UP7N/0hT1306T+47bCkV1wlmFufj0uqcXCZtX
+         aRBk9wYjFV2HtTYyrsHiaUcov5As9RT5SsBDnW1E=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0294qvNG108367
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 8 Mar 2020 23:52:57 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Sun, 8 Mar
+ 2020 23:52:57 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Sun, 8 Mar 2020 23:52:57 -0500
+Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0294qsnq052533;
+        Sun, 8 Mar 2020 23:52:54 -0500
+Subject: Re: [PATCH v2 4/6] pwm: omap-dmtimer: Fix pwm disabling sequence
+To:     Tony Lindgren <tony@atomide.com>
+CC:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>,
+        Sebastian Reichel <sre@kernel.org>
+References: <20200228095651.32464-1-lokeshvutla@ti.com>
+ <20200228095651.32464-5-lokeshvutla@ti.com>
+ <20200306181443.GJ37466@atomide.com>
+From:   Lokesh Vutla <lokeshvutla@ti.com>
+Message-ID: <9129d4fe-a17e-2fa6-764c-6a746fa5096d@ti.com>
+Date:   Mon, 9 Mar 2020 10:21:59 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <20200306181443.GJ37466@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Commit a758f50f10cf ("mtd: onenand: omap2: Configure driver from DT")
-started using DT specified timings for GPMC, and as a result the
-OneNAND stopped working on N900 as we had wrong values in the DT.
-Fix by updating the values to bootloader timings that have been tested
-to be working on Nokia N900 with OneNAND manufacturers: Samsung,
-Numonyx.
+Hi Tony,
 
-Fixes: a758f50f10cf ("mtd: onenand: omap2: Configure driver from DT")
-Signed-off-by: Arthur Demchenkov <spinal.by@gmail.com>
----
- arch/arm/boot/dts/omap3-n900.dts | 44 +++++++++++++++++++++++++---------------
- 1 file changed, 28 insertions(+), 16 deletions(-)
+On 06/03/20 11:44 PM, Tony Lindgren wrote:
+> * Lokesh Vutla <lokeshvutla@ti.com> [200228 09:58]:
+>> pwm_omap_dmtimer_disable() calls .stop callback which abruptly stops the
+>> timer counter. This doesn't complete the current pwm cycle and
+>> immediately disables the pwm. Instead disable the auto reload
+>> functionality which allows to complete the current pwm cycle and then
+>> disables the timer.
+>>
+>> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+>> ---
+>>  drivers/pwm/pwm-omap-dmtimer.c | 10 +++++++++-
+>>  1 file changed, 9 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/pwm/pwm-omap-dmtimer.c b/drivers/pwm/pwm-omap-dmtimer.c
+>> index bc338619232d..89b3c25d02b8 100644
+>> --- a/drivers/pwm/pwm-omap-dmtimer.c
+>> +++ b/drivers/pwm/pwm-omap-dmtimer.c
+>> @@ -93,8 +93,16 @@ static void pwm_omap_dmtimer_disable(struct pwm_chip *chip,
+>>  {
+>>  	struct pwm_omap_dmtimer_chip *omap = to_pwm_omap_dmtimer_chip(chip);
+>>  
+>> +	/*
+>> +	 * Disable auto reload so that the current cycle gets completed and
+>> +	 * then the counter stops.
+>> +	 */
+>>  	mutex_lock(&omap->mutex);
+>> -	omap->pdata->stop(omap->dm_timer);
+>> +	omap->pdata->set_pwm(omap->dm_timer,
+>> +			     pwm_get_polarity(pwm) == PWM_POLARITY_INVERSED,
+>> +			     true, OMAP_TIMER_TRIGGER_OVERFLOW_AND_COMPARE,
+>> +			     false);
+>> +
+>>  	mutex_unlock(&omap->mutex);
+>>  }
+> 
+> I'm seeing an issue with this patch where after use something is
+> left on and power consumption stays higher by about 30 mW after
+> use.
 
-diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
-index c3c6d7d04a76..4089d97405c9 100644
---- a/arch/arm/boot/dts/omap3-n900.dts
-+++ b/arch/arm/boot/dts/omap3-n900.dts
-@@ -854,34 +854,46 @@
- 		compatible = "ti,omap2-onenand";
- 		reg = <0 0 0x20000>;	/* CS0, offset 0, IO size 128K */
- 
-+		/*
-+		 * These timings are based on CONFIG_OMAP_GPMC_DEBUG=y reported
-+		 * bootloader set values when booted with v5.1
-+		 * (OneNAND Manufacturer: Samsung):
-+		 *
-+		 *   cs0 GPMC_CS_CONFIG1: 0xfb001202
-+		 *   cs0 GPMC_CS_CONFIG2: 0x00111100
-+		 *   cs0 GPMC_CS_CONFIG3: 0x00020200
-+		 *   cs0 GPMC_CS_CONFIG4: 0x11001102
-+		 *   cs0 GPMC_CS_CONFIG5: 0x03101616
-+		 *   cs0 GPMC_CS_CONFIG6: 0x90060000
-+		 */
- 		gpmc,sync-read;
- 		gpmc,sync-write;
- 		gpmc,burst-length = <16>;
- 		gpmc,burst-read;
- 		gpmc,burst-wrap;
- 		gpmc,burst-write;
--		gpmc,device-width = <2>; /* GPMC_DEVWIDTH_16BIT */
--		gpmc,mux-add-data = <2>; /* GPMC_MUX_AD */
-+		gpmc,device-width = <2>;
-+		gpmc,mux-add-data = <2>;
- 		gpmc,cs-on-ns = <0>;
--		gpmc,cs-rd-off-ns = <87>;
--		gpmc,cs-wr-off-ns = <87>;
-+		gpmc,cs-rd-off-ns = <102>;
-+		gpmc,cs-wr-off-ns = <102>;
- 		gpmc,adv-on-ns = <0>;
--		gpmc,adv-rd-off-ns = <10>;
--		gpmc,adv-wr-off-ns = <10>;
--		gpmc,oe-on-ns = <15>;
--		gpmc,oe-off-ns = <87>;
-+		gpmc,adv-rd-off-ns = <12>;
-+		gpmc,adv-wr-off-ns = <12>;
-+		gpmc,oe-on-ns = <12>;
-+		gpmc,oe-off-ns = <102>;
- 		gpmc,we-on-ns = <0>;
--		gpmc,we-off-ns = <87>;
--		gpmc,rd-cycle-ns = <112>;
--		gpmc,wr-cycle-ns = <112>;
--		gpmc,access-ns = <81>;
--		gpmc,page-burst-access-ns = <15>;
-+		gpmc,we-off-ns = <102>;
-+		gpmc,rd-cycle-ns = <132>;
-+		gpmc,wr-cycle-ns = <132>;
-+		gpmc,access-ns = <96>;
-+		gpmc,page-burst-access-ns = <18>;
- 		gpmc,bus-turnaround-ns = <0>;
- 		gpmc,cycle2cycle-delay-ns = <0>;
- 		gpmc,wait-monitoring-ns = <0>;
--		gpmc,clk-activation-ns = <5>;
--		gpmc,wr-data-mux-bus-ns = <30>;
--		gpmc,wr-access-ns = <81>;
-+		gpmc,clk-activation-ns = <6>;
-+		gpmc,wr-data-mux-bus-ns = <36>;
-+		gpmc,wr-access-ns = <96>;
- 		gpmc,sync-clk-ps = <15000>;
- 
- 		/*
--- 
-2.11.0
+Interesting...What is the PWM period and duty cycle in the test case?
+Can you dump the following registers before and after disabling:
+- TLDR
+- TMAR
+- TCLR
 
+> 
+> I can reproduce this easily on droid4 with Sebastian's rumble-test
+> app[0]. After use, I sometimes also hear the vibrator keep chirping
+> quietly, so there seems to be some pwm still happening after disable :)
+
+hmm..The line clearly goes down on the scope after the current pwm duty cycle is
+done and never comes back.
+
+> 
+> Reloading modules for pwm-vibra and pwm-omap-dmtimer make the power
+> consumption go back down again.
+> 
+> If you have a scope set up, maybe check the lines are quiet after
+> disable after this patch?
+> 
+> Regards,
+> 
+> Tony
+> 
+> 
+> [0] https://git.collabora.com/cgit/user/sre/rumble-test.git/plain/rumble-test.c
+
+This is redirecting to collabora.com. Is this code available in github or some
+public repo?
+
+Thanks and regards,
+Lokesh
