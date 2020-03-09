@@ -2,97 +2,153 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3960517E045
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Mar 2020 13:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB1F817E172
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Mar 2020 14:42:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726464AbgCIMaH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Mar 2020 08:30:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52162 "EHLO mail.kernel.org"
+        id S1726548AbgCINlk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Mar 2020 09:41:40 -0400
+Received: from foss.arm.com ([217.140.110.172]:52334 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726368AbgCIMaH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 9 Mar 2020 08:30:07 -0400
-Received: from earth.universe (dyndsl-095-033-170-219.ewe-ip-backbone.de [95.33.170.219])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 83EA02072A;
-        Mon,  9 Mar 2020 12:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583757006;
-        bh=diq25L1IPlx433ZM3VoDc5SJPfrMcgY8a1nf8LbuVPk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=y11VkzV4imOBaLXieqJLXLqJyBpp8d3exizNybEUy/71PcBs+5HBbLVQ7LHhqQVo1
-         axJkhGWGL45ws/yvks/CkQ2muH41PHWRXnZbFdHIMei2VIbZfG4fdh5PFtWFl0rICo
-         ZCLF/27wogqmRkos2xg99GZ8weKkUqKlTGhD7puM=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 6652D3C0C82; Mon,  9 Mar 2020 13:30:02 +0100 (CET)
-Date:   Mon, 9 Mar 2020 13:30:02 +0100
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Lokesh Vutla <lokeshvutla@ti.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v2 4/6] pwm: omap-dmtimer: Fix pwm disabling sequence
-Message-ID: <20200309123002.dy3jqqcm2us4ygpo@earth.universe>
-References: <20200228095651.32464-1-lokeshvutla@ti.com>
- <20200228095651.32464-5-lokeshvutla@ti.com>
- <20200306181443.GJ37466@atomide.com>
- <9129d4fe-a17e-2fa6-764c-6a746fa5096d@ti.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="eosgsryqn2a77iww"
-Content-Disposition: inline
-In-Reply-To: <9129d4fe-a17e-2fa6-764c-6a746fa5096d@ti.com>
+        id S1726518AbgCINlk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 9 Mar 2020 09:41:40 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3A01830E;
+        Mon,  9 Mar 2020 06:41:39 -0700 (PDT)
+Received: from e123648.arm.com (unknown [10.37.12.74])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6F7213F67D;
+        Mon,  9 Mar 2020 06:41:28 -0700 (PDT)
+From:   Lukasz Luba <lukasz.luba@arm.com>
+To:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com
+Cc:     Morten.Rasmussen@arm.com, Dietmar.Eggemann@arm.com,
+        javi.merino@arm.com, cw00.choi@samsung.com,
+        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
+        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
+        rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
+        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
+        lorenzo.pieralisi@arm.com, lukasz.luba@arm.com,
+        patrick.bellasi@matbug.net, orjan.eide@arm.com,
+        rdunlap@infradead.org
+Subject: [PATCH v4 0/4] Add support for devices in the Energy Model
+Date:   Mon,  9 Mar 2020 13:41:13 +0000
+Message-Id: <20200309134117.2331-1-lukasz.luba@arm.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi all,
 
---eosgsryqn2a77iww
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch set introduces support for devices in the Energy Model (EM)
+framework. It will unify the power model for thermal subsystem and make it
+simpler. The 1st patch refactors EM framework and adds support for devices.
+The 2nd patch changes dev_pm_opp_of_register_em() in OPP/OF which now should
+take as an argument struct device pointer. It touches a few trees
+(OMAP, NXP, Mediatek) updating their CPUfreq drivers to the new interface.
+Patch 3/4 changes thermal devfreq cooling removing old code for calculating
+local power table. It simplifies the code and uses EM for requested power
+calculation. Last patch 4/4 adds EM to Panfrost driver.
 
-Hi,
+The patch set is based on linux-next tag next-20200306.
 
-On Mon, Mar 09, 2020 at 10:21:59AM +0530, Lokesh Vutla wrote:
-> > [0] https://git.collabora.com/cgit/user/sre/rumble-test.git/plain/rumbl=
-e-test.c
->=20
-> This is redirecting to collabora.com. Is this code available in github or=
- some
-> public repo?
->=20
-> Thanks and regards,
-> Lokesh
+Changes:
+v4:
+- devfreq cooling: added two new registration functions, which will take care
+  of registering EM for the device and simplify drivers code
+  (suggested by Robin and Rob)
+- Energy Model: changed unregistering code, added kref to track usage, added
+  code freeing tables, added helper function
+- added return value to function dev_pm_opp_of_register_em() and updated
+  CPUFreq drivers code, added debug prints in case of failure (which might
+  help in case CPU cooling was expecting EM)
+- updated comments in devfreq cooling removing statement that only
+  simple_ondemand devfreq governor is supported to work with power extensions
+- fixed spelling in the documentation (reported by Randy)
+v3 [3]:
+- added back the cpumask 'cpus' in the em_perf_domain due potential cache misses
+- removed _is_cpu_em() since there is no need for it
+- changed function name from em_pd_energy() to em_cpu_energy(), which is
+  optimized for usage from the scheduler making some assumptions and not
+  validating arguments to speed-up, there is a comment stressing that it should
+  be used only for CPUs em_perf_domain
+- changed em_get_pd() to em_pd_get() which is now aligned with em_cpu_get()
+  naming
+- Energy Model: add code which checks if the EM is already registered for the
+  devfreq device
+- extended comment in em_cpu_get() describing the need for this function
+- fixed build warning reported on x86 by kbuild test robot in devfreq_cooling.c
+- updated documentation in the energy-model.rst
+- changed print messages from 'energy_model' to 'EM'
+- changed dev_warn to dev_dbg, should calm down test scripts in case the
+  platform has OPPs less efficient in the OPP table (some of them are there for
+  cooling reasons, we shouldn't warn in this case, debug info is enough)
+v2 [2]:
+- changed EM API em_register_perf_domain() adding cpumask_t pointer
+  as last argument (which was discussed with Dietmar and Quentin)
+- removed dependency on PM_OPP, thanks to the cpumask_t argument
+- removed enum em_type and em->type dependent code
+- em_get_pd() can handle CPU device as well as devfreq device
+- updated EM documentation
+- in devfreq cooling added code which prevents from race condition with
+  devfreq governors which are trying to use OPPs while thermal is in the middle
+  of disabling them.
+- in devfreq cooling added code which updates state of the devfreq device to
+  avoid working on stale data when governor has not updated it for a long time
+- in devfreq cooling added backward compatibility frequency table for drivers
+  which did not provide EM
+- added Steven's Reviewed-by to trace code in thermal
+- added another CPUFreq driver which needs to be updated to the new API
 
-Sorry, we migrated to gitlab under different domain. I pushed it
-here now: https://github.com/sre/rumble-test
+The v1 can be found here [1].
 
--- Sebastian
+Regards,
+Lukasz Luba
 
---eosgsryqn2a77iww
-Content-Type: application/pgp-signature; name="signature.asc"
+[1] https://lkml.org/lkml/2020/1/16/619
+[2] https://lkml.org/lkml/2020/2/6/377
+[3] https://lkml.org/lkml/2020/2/21/1910
 
------BEGIN PGP SIGNATURE-----
+Lukasz Luba (4):
+  PM / EM: add devices to Energy Model
+  OPP: change parameter to device pointer in dev_pm_opp_of_register_em()
+  thermal: devfreq_cooling: Refactor code and switch to use Energy Model
+  drm/panfrost: Register devfreq cooling and attempt to add Energy Model
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl5mNrIACgkQ2O7X88g7
-+ppmFRAAmZJVN7L3IfK3pDbnpFFcwSlwwZC88ezxxQML6+PgbESuKJ/ku3Y1JQ6T
-FYJzl25NvaMjPWKKXrPhMhd08J3nY08OerY/R6g6jJ3YktXuDN93EScwlOQ4Lifq
-+lW7gB8GLh23ddSdVuzoPv55/8/rAsBGpwj1MFLddSJvtSC6KDKqd+ZO1+/W5kK5
-d+6ZtPrLTEwBC7jC4swzTRYGKWgqTitulTloq9snCMoa7lerisacaplmv0L7G3Mp
-MhnLhyrYvw9p5X8JK6Is+BkMctlTgMaq75jXZ5tj+YMY17+9tAOyfdzQnmeJVsUq
-hZjcyqHWCX3HWYQdjQONG/4Yxrgz64mlyYARzm9hoREPdvLpUyRtGpDlJtHDw6u6
-8XkAeIdVn6FKbm+WT2dTDGju4W7GN4kUs9VvF4enwVX4clYO2VMvtOIkP9BSWZUZ
-6ODkheoCultJGLEmTnnO+b86cclhPb3c/S2qqnZz3K4jH7kJH+V5CGc057R/FDKC
-NeREUSbYo0dIujnEq3i0+NmsTaEkB5a47Z2+gfKrvkbM3uRXzKsBmunGnoy1BHxh
-rLjLn+BdqAHAgx2OsU3UVWi34It7Av7mzdoRohJEleXUPmT6SRHmR6PpNM0yicM/
-qyJ6gCH51Q4lwEQ2ro24fyc2V3w0TK/BFat2M0WC3w3z0FnMWOQ=
-=MhfD
------END PGP SIGNATURE-----
+ Documentation/power/energy-model.rst        | 133 ++---
+ Documentation/scheduler/sched-energy.rst    |   2 +-
+ drivers/cpufreq/cpufreq-dt.c                |   4 +-
+ drivers/cpufreq/imx6q-cpufreq.c             |   7 +-
+ drivers/cpufreq/mediatek-cpufreq.c          |   5 +-
+ drivers/cpufreq/omap-cpufreq.c              |   6 +-
+ drivers/cpufreq/qcom-cpufreq-hw.c           |   4 +-
+ drivers/cpufreq/scmi-cpufreq.c              |  13 +-
+ drivers/cpufreq/scpi-cpufreq.c              |   4 +-
+ drivers/cpufreq/vexpress-spc-cpufreq.c      |   4 +-
+ drivers/gpu/drm/panfrost/panfrost_devfreq.c |   2 +-
+ drivers/opp/of.c                            |  57 ++-
+ drivers/thermal/cpufreq_cooling.c           |  10 +-
+ drivers/thermal/devfreq_cooling.c           | 506 +++++++++++---------
+ include/linux/devfreq_cooling.h             |  39 +-
+ include/linux/energy_model.h                | 111 +++--
+ include/linux/pm_opp.h                      |  15 +-
+ include/trace/events/thermal.h              |  19 +-
+ kernel/power/energy_model.c                 | 463 ++++++++++++++----
+ kernel/sched/fair.c                         |   2 +-
+ kernel/sched/topology.c                     |   4 +-
+ 21 files changed, 909 insertions(+), 501 deletions(-)
 
---eosgsryqn2a77iww--
+-- 
+2.17.1
+
