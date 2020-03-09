@@ -2,42 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0B6E17DB57
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Mar 2020 09:41:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FE8F17DC05
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Mar 2020 10:01:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726512AbgCIIll (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Mar 2020 04:41:41 -0400
-Received: from [104.211.176.144] ([104.211.176.144]:57787 "EHLO
-        INMUDMS02.bharucha.in" rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1725956AbgCIIlk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Mar 2020 04:41:40 -0400
-Received: from User ([23.106.124.229]) by INMUDMS02.bharucha.in with Microsoft SMTPSVC(10.0.14393.0);
-         Mon, 9 Mar 2020 14:11:33 +0530
-Reply-To: <abulkareem461@gmail.com>
-From:   "Abdul Kareem" <admin@supply.org>
-Subject: BUSINESS PROPOSAL !!!
-Date:   Mon, 9 Mar 2020 01:41:33 -0700
+        id S1726518AbgCIJBS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Mar 2020 05:01:18 -0400
+Received: from paleo.ru ([195.178.204.132]:48374 "EHLO mail.paleo.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726488AbgCIJBS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 9 Mar 2020 05:01:18 -0400
+X-Greylist: delayed 638 seconds by postgrey-1.27 at vger.kernel.org; Mon, 09 Mar 2020 05:01:18 EDT
+Received: from mail.paleo.ru (paleo.ru [195.178.204.132])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.paleo.ru (Postfix) with ESMTPSA id 21F3D1E9F2C;
+        Mon,  9 Mar 2020 08:43:14 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <INMUDMS02X0nmR1sjVf000011e1@INMUDMS02.bharucha.in>
-X-OriginalArrivalTime: 09 Mar 2020 08:41:33.0232 (UTC) FILETIME=[89544300:01D5F5EE]
-To:     unlisted-recipients:; (no To-header on input)
+Date:   Mon, 09 Mar 2020 10:43:13 +0200
+From:   "Michael J. Weirsky" <mikhailov@paleo.ru>
+To:     undisclosed-recipients:;
+Reply-To: micjsky@aol.com
+Mail-Reply-To: micjsky@aol.com
+Message-ID: <439332109190a0bfa8e9e13a753004aa@paleo.ru>
+X-Sender: mikhailov@paleo.ru
+User-Agent: Roundcube Webmail/1.3.9
+X-Spam: Yes
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dearest Friend
 
-I am Mr Abdul Kareem working with Emirate NBD Bank Dubai,United Arab Emirate as Finance Manager.
-I have a very profitable Business that relate to you and will benefit both of us after completion.
-Kindly get back to me for more details.
-Awaiting your response.
-Regards
-Abdul Kareem
+
+-- 
+My name is Michael J. Weirsky, I'm an unemployed Handy man , winner of 
+$273million Jackpot in March 8, 2019. I donate $1.000.000,00 to you. 
+Contact me via email: micjsky@aol.com for info / claim.
+Continue reading: 
+https://abcnews.go.com/WNT/video/jersey-handyman-forward-273m-lottery-winner-61544244
