@@ -2,82 +2,144 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1EBA1802F7
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Mar 2020 17:16:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A83C1803CB
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Mar 2020 17:43:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727007AbgCJQQT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Mar 2020 12:16:19 -0400
-Received: from foss.arm.com ([217.140.110.172]:39112 "EHLO foss.arm.com"
+        id S1726269AbgCJQnv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Mar 2020 12:43:51 -0400
+Received: from muru.com ([72.249.23.125]:59538 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726395AbgCJQQS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Mar 2020 12:16:18 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5FF9F1FB;
-        Tue, 10 Mar 2020 09:16:18 -0700 (PDT)
-Received: from [10.1.196.37] (e121345-lin.cambridge.arm.com [10.1.196.37])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C81913F67D;
-        Tue, 10 Mar 2020 09:16:16 -0700 (PDT)
-Subject: Re: [PATCH] ARM: dts: dra7: Add bus_dma_limit for L3 bus
-To:     Tony Lindgren <tony@atomide.com>, Tero Kristo <t-kristo@ti.com>
-Cc:     Roger Quadros <rogerq@ti.com>, hch@lst.de, robh+dt@kernel.org,
-        nm@ti.com, nsekhar@ti.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200310115309.31354-1-rogerq@ti.com>
- <e7df4db7-6fe1-cfa4-841b-ddd395864bb8@ti.com>
- <20200310154829.GS37466@atomide.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <b405ca5e-4abd-7ddc-ff76-560b6c7abf86@arm.com>
-Date:   Tue, 10 Mar 2020 16:16:14 +0000
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726669AbgCJQnu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Mar 2020 12:43:50 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 58E9F810A;
+        Tue, 10 Mar 2020 16:44:35 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL] drop more legacy platform data for omaps for v5.7
+Date:   Tue, 10 Mar 2020 09:43:46 -0700
+Message-Id: <pull-1583858385-416921@atomide.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200310154829.GS37466@atomide.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/03/2020 3:48 pm, Tony Lindgren wrote:
-> * Tero Kristo <t-kristo@ti.com> [200310 14:46]:
->> On 10/03/2020 13:53, Roger Quadros wrote:
->>> The L3 interconnect can access only 32-bits of address.
->>> Add the dma-ranges property to reflect this limit.
->>>
->>> This will ensure that no device under L3 is
->>> given > 32-bit address for DMA.
->>>
->>> Issue was observed only with SATA on DRA7-EVM with 4GB RAM
->>> and CONFIG_ARM_LPAE enabled. This is because the controller
->>> can perform 64-bit DMA and was setting the dma_mask to 64-bit.
->>>
->>> Setting the correct bus_dma_limit fixes the issue.
->>
->> This seems kind of messy to modify almost every DT node because of this....
->> Are you sure this is the only way to get it done? No way to modify the sata
->> node only which is impacted somehow?
->>
->> Also, what if you just pass 0xffffffff to the dma-ranges property? That
->> would avoid modifying every node I guess.
-> 
-> Also, I think these interconnects are not limited to 32-bit access.
-> So yeah I too would prefer a top level dma-ranges property assuming
-> that works.
-> 
-> I guess there dma-ranges should not be 0xffffffff though if
-> limited to 2GB :)
+From: "Tony Lindgren" <tony@atomide.com>
 
-It should work fine to just describe the Q3 and Q4 DDR regions as the 
-DMA range, i.e.:
+The following changes since commit b2745d92bb015cc4454d4195c4ce6e2852db397e:
 
-	ocp {
-		...
-		dma-ranges = <0x80000000 0 0x80000000 0x80000000>;
-		...
-	};
+  bus: ti-sysc: Add support for PRUSS SYSC type (2020-03-04 07:54:57 -0800)
 
-That would certainly be far less invasive :)
+are available in the Git repository at:
 
-Robin.
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.7/ti-sysc-drop-pdata-signed
+
+for you to fetch changes up to 104d56b3e3766931ff1a1d786d2fcce908daaaf7:
+
+  ARM: OMAP2+: Drop legacy platform data for dra7 edma (2020-03-06 07:20:04 -0800)
+
+----------------------------------------------------------------
+Drop legacy platform data for omaps for v5.7
+
+This series of changes continues dropping legacy platform data for
+omaps by updating devices to probe with ti-sysc interconnect target
+module driver:
+
+- Update omap4, omap5, am437x, and dra7 display subsystem (DSS)
+  to probe with device tree data only
+
+- Update am335x, am437x and dra7 to probe EDMA to probe with
+  device tree data only
+
+- Drop legacy platform data for am335x and am437x PRUSS as the
+  current code just keeps the devices in reset
+
+- Drop legacy platform data for omap4 DSP and IPU as the current
+  code just keeps the devices in reset
+
+- Configure am437x and dra7 PRU-ICSS to probe with device tree
+  data
+
+For the dropped omap4 DSP and IPU platform data, there will be patches
+coming later on to configure the accelerators using the omap remoteproc
+bindings so hopefully folks can actually use these devices eventually.
+
+----------------------------------------------------------------
+Suman Anna (6):
+      ARM: OMAP2+: Drop hwmod data for am3 and am4 PRUSS
+      ARM: OMAP2+: Drop legacy platform data for OMAP4 DSP
+      ARM: OMAP4: hwmod_data: Remove OMAP4 IPU hwmod data
+      ARM: dts: AM33xx-l4: Update PRUSS interconnect target-module node
+      ARM: dts: AM4372: Add the PRU-ICSS interconnect target-module node
+      ARM: dts: dra7: Add PRU-ICSS interconnect target-module nodes
+
+Tony Lindgren (37):
+      ARM: dts: Configure interconnect target module for omap4 dss
+      ARM: dts: Configure interconnect target module for omap4 dispc
+      ARM: dts: Configure interconnect target module for omap4 rfbi
+      ARM: dts: Configure interconnect target module for omap4 venc
+      ARM: dts: Configure interconnect target module for omap4 dsi1
+      ARM: dts: Configure interconnect target module for omap4 dsi2
+      ARM: dts: Configure interconnect target module for omap4 hdmi
+      ARM: dts: Configure interconnect target module for omap5 dss
+      ARM: dts: Configure interconnect target module for omap5 dispc
+      ARM: dts: Configure interconnect target module for omap5 rfbi
+      ARM: dts: Configure interconnect target module for omap5 dsi1
+      ARM: dts: Configure interconnect target module for omap5 dsi2
+      ARM: dts: Configure interconnect target module for omap5 hdmi
+      ARM: dts: Configure interconnect target module for dra7 dss
+      ARM: dts: Configure interconnect target module for dra7 dispc
+      ARM: dts: Configure interconnect target module for dra7 hdmi
+      ARM: dts: Move am437x dss to the interconnect target module in l4
+      ARM: dts: Configure interconnect target module for am437x dispc
+      ARM: dts: Configure interconnect target module for am437x rfbi
+      ARM: OMAP2+: Drop legacy platform data for omap4 dss
+      ARM: OMAP2+: Drop legacy platform data for omap5 DSS
+      ARM: OMAP2+: Drop legacy platform data for dra7 DSS
+      ARM: OMAP2+: Drop legacy platform data for am437x DSS
+      Merge branch 'omap-for-v5.7/accelerators' into omap-for-v5.7/ti-sysc-drop-pdata
+      ARM: dts: Configure interconnect target module for am3 tpcc
+      ARM: dts: Configure interconnect target module for am3 tptc0
+      ARM: dts: Configure interconnect target module for am3 tptc1
+      ARM: dts: Configure interconnect target module for am3 tptc2
+      ARM: dts: Configure interconnect target module for am4 tpcc
+      ARM: dts: Configure interconnect target module for am4 tptc0
+      ARM: dts: Configure interconnect target module for am4 tptc1
+      ARM: dts: Configure interconnect target module for am4 tptc2
+      ARM: dts: Configure interconnect target module for dra7 tpcc
+      ARM: dts: Configure interconnect target module for dra7 tptc0
+      ARM: dts: Configure interconnect target module for dra7 tptc1
+      ARM: OMAP2+: Drop legacy platform data for am3 and am4 edma
+      ARM: OMAP2+: Drop legacy platform data for dra7 edma
+
+ arch/arm/boot/dts/am33xx-l4.dtsi                   |  21 +-
+ arch/arm/boot/dts/am33xx.dtsi                      | 121 +++--
+ arch/arm/boot/dts/am4372.dtsi                      | 179 ++++---
+ arch/arm/boot/dts/am437x-l4.dtsi                   |  77 ++-
+ arch/arm/boot/dts/am57-pruss.dtsi                  |  50 ++
+ arch/arm/boot/dts/am5718.dtsi                      |   1 +
+ arch/arm/boot/dts/am5728.dtsi                      |   1 +
+ arch/arm/boot/dts/am5748.dtsi                      |   1 +
+ arch/arm/boot/dts/dra7.dtsi                        | 219 ++++++---
+ arch/arm/boot/dts/dra72x.dtsi                      |   6 +-
+ arch/arm/boot/dts/dra74x.dtsi                      |  10 +-
+ arch/arm/boot/dts/omap4-l4.dtsi                    |   1 +
+ arch/arm/boot/dts/omap4.dtsi                       | 279 ++++++++---
+ arch/arm/boot/dts/omap5.dtsi                       | 241 +++++++---
+ .../mach-omap2/omap_hwmod_33xx_43xx_common_data.h  |  10 -
+ .../omap_hwmod_33xx_43xx_interconnect_data.c       |  40 --
+ .../mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c | 115 -----
+ arch/arm/mach-omap2/omap_hwmod_33xx_data.c         |  14 -
+ arch/arm/mach-omap2/omap_hwmod_43xx_data.c         | 114 -----
+ arch/arm/mach-omap2/omap_hwmod_44xx_data.c         | 531 ---------------------
+ arch/arm/mach-omap2/omap_hwmod_54xx_data.c         | 288 -----------
+ arch/arm/mach-omap2/omap_hwmod_7xx_data.c          | 251 ----------
+ 22 files changed, 884 insertions(+), 1686 deletions(-)
+ create mode 100644 arch/arm/boot/dts/am57-pruss.dtsi
