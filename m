@@ -2,119 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B486C180D0A
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Mar 2020 01:58:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F87180EDC
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Mar 2020 05:13:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727685AbgCKA6o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Mar 2020 20:58:44 -0400
-Received: from mga05.intel.com ([192.55.52.43]:51967 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727648AbgCKA6o (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Mar 2020 20:58:44 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Mar 2020 17:58:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,518,1574150400"; 
-   d="scan'208";a="321987068"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 10 Mar 2020 17:58:42 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jBphp-000Fun-DH; Wed, 11 Mar 2020 08:58:41 +0800
-Date:   Wed, 11 Mar 2020 08:57:57 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Jassi Brar <jaswinder.singh@linaro.org>
-Cc:     kbuild-all@lists.01.org, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Felipe Balbi <balbi@kernel.org>
-Subject: [balbi-usb:testing/next 3/11]
- drivers/usb/gadget/udc/max3420_udc.c:570:16: sparse: sparse: incorrect type
- in assignment (different base types)
-Message-ID: <202003110854.PVZUBn32%lkp@intel.com>
+        id S1725958AbgCKENu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Mar 2020 00:13:50 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:41052 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725379AbgCKENu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Mar 2020 00:13:50 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02B4Dblu125647;
+        Tue, 10 Mar 2020 23:13:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1583900017;
+        bh=5ofOG+gfPhoCmIZuODzbDvCrnXBGO1iU4BMFVihuZv0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=HHqxNgTAkdPmlgBcyBRt8vw4//wXk7a+cDh/MitEhOTQUXnWyREtXboOtlrv8B46H
+         H26TH35w5hXSwBZzdV0/ivFV1v6FhXBO1KDVuXPEdre4UZSFSbAiF77QZHZvsKgwuJ
+         cFdOGixee9bWYIwry8zbwCXt7izizSgNEczcD2EU=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02B4DbpB127963
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 10 Mar 2020 23:13:37 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 10
+ Mar 2020 23:13:37 -0500
+Received: from localhost.localdomain (10.64.41.19) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 10 Mar 2020 23:13:37 -0500
+Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by localhost.localdomain (8.15.2/8.15.2) with ESMTP id 02B4DY32014325;
+        Tue, 10 Mar 2020 23:13:35 -0500
+Subject: Re: [PATCH v2 4/6] pwm: omap-dmtimer: Fix pwm disabling sequence
+To:     Tony Lindgren <tony@atomide.com>
+CC:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>,
+        Sebastian Reichel <sre@kernel.org>
+References: <20200228095651.32464-1-lokeshvutla@ti.com>
+ <20200228095651.32464-5-lokeshvutla@ti.com>
+ <20200306181443.GJ37466@atomide.com>
+ <9129d4fe-a17e-2fa6-764c-6a746fa5096d@ti.com>
+ <20200309180123.GP37466@atomide.com>
+ <666dbb7a-db98-d16a-ee73-27d353d2a317@ti.com>
+ <20200310155242.GT37466@atomide.com>
+From:   Lokesh Vutla <lokeshvutla@ti.com>
+Message-ID: <296e28b7-7925-5dfa-ce5a-c0b2a2f1c2e0@ti.com>
+Date:   Wed, 11 Mar 2020 09:42:39 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200310155242.GT37466@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git testing/next
-head:   36d292c6ddd3248d5a8e465e51a4e3b76de93a91
-commit: 0dac4567e8c4c4b3ba72d22ab6cd67267910d105 [3/11] usb: gadget: add udc driver for max3420
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.1-174-g094d5a94-dirty
-        git checkout 0dac4567e8c4c4b3ba72d22ab6cd67267910d105
-        make ARCH=x86_64 allmodconfig
-        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
-
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
 
 
-sparse warnings: (new ones prefixed by >>)
+On 10/03/20 9:22 PM, Tony Lindgren wrote:
+> * Lokesh Vutla <lokeshvutla@ti.com> [200310 07:06]:
+>> Hi Tony,
+>>
+>> [...snip...]
+>>
+>>>>>>  
+>>>>>> +	/*
+>>>>>> +	 * Disable auto reload so that the current cycle gets completed and
+>>>>>> +	 * then the counter stops.
+>>>>>> +	 */
+>>>>>>  	mutex_lock(&omap->mutex);
+>>>>>> -	omap->pdata->stop(omap->dm_timer);
+>>>>>> +	omap->pdata->set_pwm(omap->dm_timer,
+>>>>>> +			     pwm_get_polarity(pwm) == PWM_POLARITY_INVERSED,
+>>>>>> +			     true, OMAP_TIMER_TRIGGER_OVERFLOW_AND_COMPARE,
+>>>>>> +			     false);
+>>>>>> +
+>>>>>>  	mutex_unlock(&omap->mutex);
+>>>>>>  }
+>>>>>
+>>>>> I'm seeing an issue with this patch where after use something is
+>>>>> left on and power consumption stays higher by about 30 mW after
+>>>>> use.
+>>>>
+>>>> Interesting...What is the PWM period and duty cycle in the test case?
+>>>> Can you dump the following registers before and after disabling:
+>>>> - TLDR
+>>>> - TMAR
+>>>> - TCLR
+>>>
+>>> Here's the state dumped before and after in omap_dm_timer_set_pwm():
+>>>
+>>> omap_timer 4803e000.timer: XXX set_pwm before: tldr: fffffeb8 tmar: fffffffe tclr: 00000040
+>>> omap_timer 4803e000.timer: XXX set_pwm after: tldr: fffffeb8 tmar: fffffffe tclr: 00001842
+>>> omap_timer 4013e000.timer: XXX set_pwm before: tldr: fffffeb8 tmar: fffffffe tclr: 00000040
+>>> omap_timer 4013e000.timer: XXX set_pwm after: tldr: fffffeb8 tmar: fffffffe tclr: 00001842
+>>> omap_timer 4013e000.timer: XXX set_pwm before: tldr: fffffeb8 tmar: fffffffe tclr: 00001843
+>>> omap_timer 4013e000.timer: XXX set_pwm after: tldr: fffffeb8 tmar: fffffffe tclr: 00001841
+>>> omap_timer 4803e000.timer: XXX set_pwm before: tldr: fffffeb8 tmar: fffffffe tclr: 00001843
+>>> omap_timer 4803e000.timer: XXX set_pwm after: tldr: fffffeb8 tmar: fffffffe tclr: 00001841
+>>>
+>>
+>> Looking at the registers:
+>> period = 327 *(1000/clk_freq in MHz) ns
+>> duty_cycle =  perioid.
+>>
+>> I did simulate this behavior on BeagleBoneBlack on timer7. PWM is going down
+>> after disabling.
+>>
+>>> So looks like the start bit is still enabled after use?
+>>
+>> Right, that is expected. The start bit gets disabled automatically once the pwm
+>> period completes. This is because auto reload bit is off. That's the main idea
+>> of this patch so that PWM period is completed after disabling, else PWM is
+>> stopped abruptly.
+> 
+> OK
+> 
+>> Not sure why it is not happening in your case. If you think it is not needed, I
+>> can drop this patch and add a limitation saying that PWM gets disabled
+>> immediately without completing the current cycle.
+> 
+> Could it be that we now have the cpu_pm notifier restore something
+> invalid after exiting idle that restarts the counter?
 
-   drivers/usb/gadget/udc/max3420_udc.c:555:41: sparse: sparse: restricted __le16 degrades to integer
-   drivers/usb/gadget/udc/max3420_udc.c:556:31: sparse: sparse: restricted __le16 degrades to integer
->> drivers/usb/gadget/udc/max3420_udc.c:570:16: sparse: sparse: incorrect type in assignment (different base types) @@    expected unsigned short [assigned] [usertype] status @@    got  short [assigned] [usertype] status @@
-   drivers/usb/gadget/udc/max3420_udc.c:570:16: sparse:    expected unsigned short [assigned] [usertype] status
-   drivers/usb/gadget/udc/max3420_udc.c:570:16: sparse:    got restricted __le16 [usertype]
-   drivers/usb/gadget/udc/max3420_udc.c:588:31: sparse: sparse: restricted __le16 degrades to integer
-   drivers/usb/gadget/udc/max3420_udc.c:602:32: sparse: sparse: restricted __le16 degrades to integer
-   drivers/usb/gadget/udc/max3420_udc.c:631:29: sparse: sparse: cast from restricted __le16
-   drivers/usb/gadget/udc/max3420_udc.c:632:29: sparse: sparse: cast from restricted __le16
-   drivers/usb/gadget/udc/max3420_udc.c:633:30: sparse: sparse: cast from restricted __le16
+If that's the case, mis behavior should have happened without this patch as well.
 
-vim +570 drivers/usb/gadget/udc/max3420_udc.c
+Is it possible for you to dump the registers when you are observing higher power
+consumption after the use?
 
-   538	
-   539	static void max3420_getstatus(struct max3420_udc *udc)
-   540	{
-   541		struct max3420_ep *ep;
-   542		u16 status = 0;
-   543	
-   544		switch (udc->setup.bRequestType & USB_RECIP_MASK) {
-   545		case USB_RECIP_DEVICE:
-   546			/* Get device status */
-   547			status = udc->gadget.is_selfpowered << USB_DEVICE_SELF_POWERED;
-   548			status |= (udc->remote_wkp << USB_DEVICE_REMOTE_WAKEUP);
-   549			break;
-   550		case USB_RECIP_INTERFACE:
-   551			if (udc->driver->setup(&udc->gadget, &udc->setup) < 0)
-   552				goto stall;
-   553			break;
-   554		case USB_RECIP_ENDPOINT:
-   555			ep = &udc->ep[udc->setup.wIndex & USB_ENDPOINT_NUMBER_MASK];
-   556			if (udc->setup.wIndex & USB_DIR_IN) {
-   557				if (!ep->ep_usb.caps.dir_in)
-   558					goto stall;
-   559			} else {
-   560				if (!ep->ep_usb.caps.dir_out)
-   561					goto stall;
-   562			}
-   563			if (ep->halted)
-   564				status = 1 << USB_ENDPOINT_HALT;
-   565			break;
-   566		default:
-   567			goto stall;
-   568		}
-   569	
- > 570		status = cpu_to_le16(status);
-   571		spi_wr_buf(udc, MAX3420_REG_EP0FIFO, &status, 2);
-   572		spi_wr8_ack(udc, MAX3420_REG_EP0BC, 2, 1);
-   573		return;
-   574	stall:
-   575		dev_err(udc->dev, "Can't respond to getstatus request\n");
-   576		spi_wr8(udc, MAX3420_REG_EPSTALLS, STLEP0IN | STLEP0OUT | STLSTAT);
-   577	}
-   578	
+However, I see an issue with the patch itself as pm_runtime is not disabled
+after the pwm is stopped. Not sure how that could be nullified with this approach.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+
+Thanks and regards,
+Lokesh
