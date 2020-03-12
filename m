@@ -2,100 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07756182B89
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Mar 2020 09:47:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FD9E182E17
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Mar 2020 11:45:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726000AbgCLIrm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Mar 2020 04:47:42 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:54553 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725268AbgCLIrm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Mar 2020 04:47:42 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jCJVE-0005vC-HJ; Thu, 12 Mar 2020 09:47:40 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jCJVD-0008Pf-Cx; Thu, 12 Mar 2020 09:47:39 +0100
-Date:   Thu, 12 Mar 2020 09:47:39 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Lokesh Vutla <lokeshvutla@ti.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>,
-        kernel@pengutronix.de
+        id S1726873AbgCLKpc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Mar 2020 06:45:32 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:46766 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725268AbgCLKpc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Mar 2020 06:45:32 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02CAjNee065463;
+        Thu, 12 Mar 2020 05:45:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1584009923;
+        bh=KD36+jDsPV+sll5Mg8prcB177U8BNxBxUQWZLYSafHM=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=cRhj9sRnb/wglP9uwXWbBQ/rcA1CeNDcHfyICtFboyzkWasnZlNE1ON46uDl9r7t0
+         MoMGDwzPiJc4zaeYld0hnAvuSc4r0b9MBKdYKsyt23pIpB29PiUrcT/f7BF/hhkwex
+         CzuuOp99gej9niGzqHuXfBmiJ4ez4SVVJJnw2r7Q=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02CAjNUi076794
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 12 Mar 2020 05:45:23 -0500
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 12
+ Mar 2020 05:45:23 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Thu, 12 Mar 2020 05:45:23 -0500
+Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02CAjKuZ044598;
+        Thu, 12 Mar 2020 05:45:20 -0500
 Subject: Re: [PATCH v3 4/5] pwm: omap-dmtimer: Do not disable pwm before
  changing period/duty_cycle
-Message-ID: <20200312084739.isixgdo3txr6rjzg@pengutronix.de>
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+CC:     Thierry Reding <thierry.reding@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>,
+        <kernel@pengutronix.de>
 References: <20200312042210.17344-1-lokeshvutla@ti.com>
  <20200312042210.17344-5-lokeshvutla@ti.com>
  <20200312064042.p7himm3odxjyzroi@pengutronix.de>
  <f250549f-1e7c-06d6-b2a4-7ae01c06725b@ti.com>
+ <20200312084739.isixgdo3txr6rjzg@pengutronix.de>
+From:   Lokesh Vutla <lokeshvutla@ti.com>
+Message-ID: <2a5a06cd-7aca-c450-b048-33329d058eca@ti.com>
+Date:   Thu, 12 Mar 2020 16:14:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <20200312084739.isixgdo3txr6rjzg@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f250549f-1e7c-06d6-b2a4-7ae01c06725b@ti.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 01:35:32PM +0530, Lokesh Vutla wrote:
-> On 12/03/20 12:10 PM, Uwe Kleine-König wrote:
-> > On Thu, Mar 12, 2020 at 09:52:09AM +0530, Lokesh Vutla wrote:
-> >> Only the Timer control register(TCLR) cannot be updated when the timer
-> >> is running. Registers like Counter register(TCRR), loader register(TLDR),
-> >> match register(TMAR) can be updated when the counter is running. Since
-> >> TCLR is not updated in pwm_omap_dmtimer_config(), do not stop the
-> >> timer for period/duty_cycle update.
-> > 
-> > I'm not sure what is sensible here. Stopping the PWM for a short period
-> > is bad, but maybe emitting a wrong period isn't better. You can however
-> > optimise it if only one of period or duty_cycle changes.
-> > 
-> > @Thierry, what is your position here? I tend to say a short stop is
-> > preferable.
+Hi Uwe,
+
+On 12/03/20 2:17 PM, Uwe Kleine-KÃ¶nig wrote:
+> On Thu, Mar 12, 2020 at 01:35:32PM +0530, Lokesh Vutla wrote:
+>> On 12/03/20 12:10 PM, Uwe Kleine-KÃ¶nig wrote:
+>>> On Thu, Mar 12, 2020 at 09:52:09AM +0530, Lokesh Vutla wrote:
+>>>> Only the Timer control register(TCLR) cannot be updated when the timer
+>>>> is running. Registers like Counter register(TCRR), loader register(TLDR),
+>>>> match register(TMAR) can be updated when the counter is running. Since
+>>>> TCLR is not updated in pwm_omap_dmtimer_config(), do not stop the
+>>>> timer for period/duty_cycle update.
+>>>
+>>> I'm not sure what is sensible here. Stopping the PWM for a short period
+>>> is bad, but maybe emitting a wrong period isn't better. You can however
+>>> optimise it if only one of period or duty_cycle changes.
+>>>
+>>> @Thierry, what is your position here? I tend to say a short stop is
+>>> preferable.
+>>
+>> Short stop has side effects especially in the case where 1PPS is generated using
+>> this PWM. In this case where PWM period is continuously synced with PTP clock,
+>> cannot expect any breaks in PWM. This doesn't fall in the above limitations as
+>> well. as duty_cycle is not a worry and only the rising edge is all that matters.
+>>
+>> Also any specific reason why you wanted to stop rather than having the mentioned
+>> limitation? it is just a corner anyway and doesn't happen all the time.
 > 
-> Short stop has side effects especially in the case where 1PPS is generated using
-> this PWM. In this case where PWM period is continuously synced with PTP clock,
-> cannot expect any breaks in PWM. This doesn't fall in the above limitations as
-> well. as duty_cycle is not a worry and only the rising edge is all that matters.
+> I'm a bit torn here. Which of the two steps out of line is worse depends
+> on what is driven by the PWM in question. And also I think ignoring
+> "just corner cases" is a reliable way into trouble.
+
+I do agree that corner cases should not be ignored. But in this particular
+driver, just trying to explain the effect of this corner case. On dynamic pwm
+period update, the current pwm cycle might generate a period with mixed
+settings. IMHO, it is okay to live with it and mark it as a limitation as you
+pointed out in case of sifive driver[0].
+
+
 > 
-> Also any specific reason why you wanted to stop rather than having the mentioned
-> limitation? it is just a corner anyway and doesn't happen all the time.
+> The usual PWM contributer (understandably) cares mostly about their own
+> problem they have to solve. If however you take a step back and care
+> about the PWM framework as a whole to be capable to solve problems in
+> general, such that any consumer just has to know that there is a PWM and
+> start requesting specific settings for their work to get done, it gets
+> obvious that you want some kind of uniform behaviour of each hardware
+> driver. And then a short inactive break between two periods is more
+> common and better understandable than a mixed period.
 
-I'm a bit torn here. Which of the two steps out of line is worse depends
-on what is driven by the PWM in question. And also I think ignoring
-"just corner cases" is a reliable way into trouble.
+But the problem here is that inactive breaks between two periods is not desired.
+Because the pwm is used to generate a 1PPS signal and is continuously
+synchronized with PTP clock.
 
-The usual PWM contributer (understandably) cares mostly about their own
-problem they have to solve. If however you take a step back and care
-about the PWM framework as a whole to be capable to solve problems in
-general, such that any consumer just has to know that there is a PWM and
-start requesting specific settings for their work to get done, it gets
-obvious that you want some kind of uniform behaviour of each hardware
-driver. And then a short inactive break between two periods is more
-common and better understandable than a mixed period.
+I am up if this can be solved generically. But updating period is very specific
+to hardware implementation. Not sure what generic solution can be brought out of
+this. Please correct me if I am wrong.
 
-Also being a corner case that only happens (say) once in 100000 cases
-isn't a clear upside. This just results in a machine leaving the development
-department, passing the production test and then behave unexpected once
-per year in the field.
+[0]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pwm/pwm-sifive.c#n7
 
-Best regards
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Thanks and regards,
+Lokesh
