@@ -2,96 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A27B1832BA
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Mar 2020 15:21:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C16D5183726
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Mar 2020 18:15:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727606AbgCLOVa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Mar 2020 10:21:30 -0400
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:39706 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727340AbgCLOVa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Mar 2020 10:21:30 -0400
-Received: by mail-pj1-f67.google.com with SMTP id d8so2721711pje.4;
-        Thu, 12 Mar 2020 07:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=xA6hYZYQHhZOK5w4gl5vlgvd5UjngUj1HWav2zK4YIE=;
-        b=elAvbo1K35UXfjiU7s7C6Fr9ny3r+zuq45aGb0obKM6MUmebz83Om5sR5EldQ2SDgz
-         Og0VcNpXOI9i+t4VR3d7CMdNkJus2nXmDWCBFyVCIl4V8DrooAAFnWMis1sxuv53Y0B+
-         ku1ZKLsP0J8dg8z3MBUH+p1Q1SxXHFZXQ6PdsRVVhAAMSF0Uf9EnvNeh0bYSu4Rrom8i
-         UhZMG8hOG8pEczd9Ogd+3+Q8DE0JK3rn8ERKhEgv03HyVQ7oaawEy0Afd2Chbmdhb53W
-         QeJQh4lX+sN6H2dX6bUnRWq8OJmv+OV+m3ZmAdSqDwq0awnF2/tMa9LC60qbWSBqG+EG
-         5kwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=xA6hYZYQHhZOK5w4gl5vlgvd5UjngUj1HWav2zK4YIE=;
-        b=Co1KgQkYuoQZkghdr6t2Wc0ivrIWtxAM3QaxC527cfPov27oj1/jjsFyQjP2EbIDLj
-         94Or81YhHE62q57LJhdsj5TqRQcQK2td+JaFpew6DIjfXDHtsZQ0ZxLkEazU52ZBFLi6
-         b5ZEWHNsdUgsrUDHNR5Dr0gtPGa+NLUMnjDZZxczq9dWjw1+F4OY6aSrGssznQgWNEYJ
-         +Gb0NirMg6LnFVKu+8rJDm6HpQsly31qlleG+Dr0GKWxWk+ggLncyslKGONWtsE1X14n
-         Wn+37tnrr85W3nIgMANc0QPW6HGEguO7e58ZfYx6WAta4/BoYfkEmvufPdtAu6Nfg4Mf
-         qzVw==
-X-Gm-Message-State: ANhLgQ0uhAZX19MuB85vJNyEqt4GWRAm6XQumrAz8k7NbxRRNY75bvhc
-        SbBsQkFkIGAqd6Q0erMF0HoNQ5wI
-X-Google-Smtp-Source: ADFU+vsTQyN4Pfu6NQPzwD6SbwLEp4VXwcjudj3agC6kETt85Aq0K0JBWrXCGhcDemgNyIORo3UffQ==
-X-Received: by 2002:a17:902:bcc5:: with SMTP id o5mr8187811pls.174.1584022889113;
-        Thu, 12 Mar 2020 07:21:29 -0700 (PDT)
-Received: from localhost (c-73-241-114-122.hsd1.ca.comcast.net. [73.241.114.122])
-        by smtp.gmail.com with ESMTPSA id 15sm49441428pfp.125.2020.03.12.07.21.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Mar 2020 07:21:28 -0700 (PDT)
-Date:   Thu, 12 Mar 2020 07:21:26 -0700
-From:   Richard Cochran <richardcochran@gmail.com>
-To:     Lokesh Vutla <lokeshvutla@ti.com>
-Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
+        id S1726539AbgCLRPJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Mar 2020 13:15:09 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:49094 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726535AbgCLRPI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Mar 2020 13:15:08 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02CHEvi2118683;
+        Thu, 12 Mar 2020 12:14:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1584033297;
+        bh=F1Bl5KRdM8p1lw3n/IaD14JUKZw+gIocUSbFL8V0++U=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=yuwAX0WVPIo2mKAaXZuNoh0A2oc3iOPOXloIX3p1ONeV9BMBZyFVdh50Oda7HAz9r
+         43iycFz2a381YE90mGwTuVq6Ffr6hwa/rFFh1yzxC3KHOo+nd/6pzjeiRJLipdGs70
+         iO6nlfes39FPFm16fF/XXOSp8CAxZAUaxWy/RAlk=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02CHEvwm123158
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 12 Mar 2020 12:14:57 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 12
+ Mar 2020 12:14:57 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Thu, 12 Mar 2020 12:14:57 -0500
+Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02CHErSN096128;
+        Thu, 12 Mar 2020 12:14:54 -0500
+Subject: Re: [PATCH v3 4/5] pwm: omap-dmtimer: Do not disable pwm before
+ changing period/duty_cycle
+To:     Richard Cochran <richardcochran@gmail.com>
+CC:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
         Thierry Reding <thierry.reding@gmail.com>,
         Tony Lindgren <tony@atomide.com>,
         Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
         Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>,
-        kernel@pengutronix.de
-Subject: Re: [PATCH v3 4/5] pwm: omap-dmtimer: Do not disable pwm before
- changing period/duty_cycle
-Message-ID: <20200312142126.GB2466@localhost>
+        <kernel@pengutronix.de>
 References: <20200312042210.17344-1-lokeshvutla@ti.com>
  <20200312042210.17344-5-lokeshvutla@ti.com>
  <20200312064042.p7himm3odxjyzroi@pengutronix.de>
  <f250549f-1e7c-06d6-b2a4-7ae01c06725b@ti.com>
  <20200312084739.isixgdo3txr6rjzg@pengutronix.de>
  <2a5a06cd-7aca-c450-b048-33329d058eca@ti.com>
+ <20200312142126.GB2466@localhost>
+From:   Lokesh Vutla <lokeshvutla@ti.com>
+Message-ID: <b8750b79-8703-5d8f-eacf-b3a67cedd252@ti.com>
+Date:   Thu, 12 Mar 2020 22:44:08 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2a5a06cd-7aca-c450-b048-33329d058eca@ti.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200312142126.GB2466@localhost>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 04:14:34PM +0530, Lokesh Vutla wrote:
-> But the problem here is that inactive breaks between two periods is not desired.
-> Because the pwm is used to generate a 1PPS signal and is continuously
-> synchronized with PTP clock.
+Hi Richard,
 
-The 1-PPS case is the "easy" one.  If the PWM is adjustable on the
-fly, then people will use it with higher frequency signals.
- 
-> I am up if this can be solved generically. But updating period is very specific
-> to hardware implementation. Not sure what generic solution can be brought out of
-> this. Please correct me if I am wrong.
+On 12/03/20 7:51 PM, Richard Cochran wrote:
+> On Thu, Mar 12, 2020 at 04:14:34PM +0530, Lokesh Vutla wrote:
+>> But the problem here is that inactive breaks between two periods is not desired.
+>> Because the pwm is used to generate a 1PPS signal and is continuously
+>> synchronized with PTP clock.
+> 
+> The 1-PPS case is the "easy" one.  If the PWM is adjustable on the
+> fly, then people will use it with higher frequency signals.
 
-What happens today when the PWM frequency or duty cycle are changed
-while the signal is enabled?
+Yes, PWM can be adjusted on the fly. TRM does specify that corresponding
+registers(TLDR, TMAR, TCRR) registers can be updated when timer is active.
 
-Do different PWM devices/drivers behave the same way?
+>  
+>> I am up if this can be solved generically. But updating period is very specific
+>> to hardware implementation. Not sure what generic solution can be brought out of
+>> this. Please correct me if I am wrong.
+> 
+> What happens today when the PWM frequency or duty cycle are changed
+> while the signal is enabled?
 
-Does this series change the behavior of the am335x and friends?
+Today, PWM is stopped and then period/duty_cycle are updated.
 
-Thanks,
-Richard
+> 
+> Do different PWM devices/drivers behave the same way?
+> 
+> Does this series change the behavior of the am335x and friends?
+
+Yes, this series  is applicable on all TI OMAP2+ devices with DMTIMER.
+
+[0] http://www.ti.com/lit/ug/spruh73q/spruh73q.pdf Section 20.1.1.1 DMTIMER
+overview Page 4436.
+
+Thanks and regards,
+Lokesh
