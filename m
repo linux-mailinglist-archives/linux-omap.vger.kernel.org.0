@@ -2,49 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E062618444B
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Mar 2020 11:05:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E52DA184491
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Mar 2020 11:15:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbgCMKFX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Mar 2020 06:05:23 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:44387 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726492AbgCMKFX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Mar 2020 06:05:23 -0400
-Received: by mail-wr1-f67.google.com with SMTP id l18so11226925wru.11
-        for <linux-omap@vger.kernel.org>; Fri, 13 Mar 2020 03:05:21 -0700 (PDT)
+        id S1726364AbgCMKPb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Mar 2020 06:15:31 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:54679 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726216AbgCMKPa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Mar 2020 06:15:30 -0400
+Received: by mail-wm1-f68.google.com with SMTP id n8so9252319wmc.4
+        for <linux-omap@vger.kernel.org>; Fri, 13 Mar 2020 03:15:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=DkgtdvOLhPq5sUtjHRHCpYAFEd/88KxYCJ5Q/7OZdAA=;
-        b=WL8rtzOewU/9s+K0tvQpcOMXbr6z8K1b/4xg47mX7DzD3tGkqmlitudW6dcgGxCTUy
-         ZnhpdCWiUyndV3kwVLwm4Kz9Y1OafWLeQQiRN9Ja3dy85aJ3z2Fwl+xp3bCkdryfSF4x
-         EeZT+N7l9jLcATyhvvHXnq2+ggmZ4axNP8ELE8a5MrgQ0/h8zkmE+SDyru4TbGb+dlKl
-         wE5mVpwdcjsn1PwQd7Ft03lUgseGNgXRaKYBNTIdaMVrLI8FuXLpZRiEa/NsJaaOZuob
-         0Z4A10T7fdFLYy82VZu/Ld6XKr/AEabGd3ymvJgaiGCAUPA9VL/qJUVbEIiFc5tPB0aA
-         bxiA==
+        bh=A2S0VguwI+vPRoafp0n7H/FnoxCrEJkQC7JvYKj1Y0s=;
+        b=GVMDp2vZE2aQwlKRTXncVtfN/X+6h48E0TlmseeRuAA107vTByb4SPEwMedGts2FpH
+         0TL7glG8mEnbMDZ+queQzD2z8DhUOZNdJH7ieZjOQnso4/ztWA4Zn75c65eSChADubSd
+         0cXZHBjArc0TCK17CXch9WBT9JSoawEIY9faPIiTiyZVLh7CB+EXTkP4tDkHsfeB1+R2
+         YXRhfNpkpNTIcVQmQ/Elu9NY3FwXfyvYutM+MW2tImKrOwQKW22UE3kEC/U09RRMs36N
+         k87s/4AcSbJhgTuxTtpxn6vzTgZzEV/FulMOW4LM8nYmHWyTFOvERzjfZVu+JYlP2r9S
+         epPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=DkgtdvOLhPq5sUtjHRHCpYAFEd/88KxYCJ5Q/7OZdAA=;
-        b=pRsUsMyiLQwjMzTDAZ1i6j7nKg+sjsR+4Y/4aoWAIzA34Esevp7hrXRJrmMe5bwPxb
-         BujNmNnKjKhnPDbQJ/TAc16ni46OjVsvDXIj31TqdE4mF9cORrBXHuZBivXoQlnFjg1c
-         X1VExaIVDdwrxzlW7JdXqjR4ePrYAH3D49vlSkcleQVASFt8wU7V+lap7zmF0IiJbhP4
-         YOfFcSIEg03kz10lmRGju3hNGjIdENfT3TPfhlmq4g21sgSG8D/D7N3sssGqaefEkn6e
-         DXnothmrwgnAdL0NVgGvCkA7pOrZu80j/DAyyUKvDJ9j1ginhQIpgTY+ADyE0c9dbSHa
-         1yhQ==
-X-Gm-Message-State: ANhLgQ1wlqNCunkQvddzYMC14zzF6gQ0cThPrReopjoQgZhangghAp8S
-        PqalnW3h4cqfEaxPROBy+V4SGQ==
-X-Google-Smtp-Source: ADFU+vuTRDG0n/eB58imQFTmEl0YspJzXhA4oFvRnCi/L172+s9nTOf1O8dWmim1NZPCcDnu+tPD+g==
-X-Received: by 2002:a5d:5545:: with SMTP id g5mr965179wrw.290.1584093920811;
-        Fri, 13 Mar 2020 03:05:20 -0700 (PDT)
+        bh=A2S0VguwI+vPRoafp0n7H/FnoxCrEJkQC7JvYKj1Y0s=;
+        b=CtRwRmpm7Xx0pQCOZ2oYwBjSuOgOMNFZcjWFW34D7amQqvfU8eeFV/Gfj0CqcvaZBO
+         UcDgpBUas9J6SBsh7ZvLyikT5DyDjTho/qoA739pVjcAlk2QBDwKhnahL2hEzlQK1fmg
+         d63+YHGgRTlLQCltsVrE+uHO+VUg9m0yO5FhD3tsR3HdSp2hWGVaoY1tWr3TSD91OQbv
+         fecO+bkGpQssLE/RxJqPVA2O2Cs9DBlxf0+Gscrld9bGNuX/RKtDNE340RqhswtD/pn7
+         2Gs/P+D6C3Q4I7COVc4WjBsdvcccvCu+8S1NZRPNsFJ706+zltJ7B9yvJhqLxxm38NnV
+         MHjQ==
+X-Gm-Message-State: ANhLgQ0DyziJf0rErYiYksjQsT/jB0Fm8usRLxTcF7ronCPyiyiPVeka
+        +mFivbUYym5p6DqV1cuN/cNAOg==
+X-Google-Smtp-Source: ADFU+vvfNiM0lhbIk+4DF69YACHaSoOD2UzvSXjcbL/Yevz/3tgRAyjOYY4bwXeZHBIHemSgOn8+hQ==
+X-Received: by 2002:a1c:9e85:: with SMTP id h127mr9702121wme.145.1584094528850;
+        Fri, 13 Mar 2020 03:15:28 -0700 (PDT)
 Received: from google.com ([2a00:79e0:d:110:d6cc:2030:37c1:9964])
-        by smtp.gmail.com with ESMTPSA id x13sm16642987wmj.5.2020.03.13.03.05.19
+        by smtp.gmail.com with ESMTPSA id a73sm280921wme.47.2020.03.13.03.15.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2020 03:05:20 -0700 (PDT)
-Date:   Fri, 13 Mar 2020 10:05:16 +0000
+        Fri, 13 Mar 2020 03:15:28 -0700 (PDT)
+Date:   Fri, 13 Mar 2020 10:15:24 +0000
 From:   Quentin Perret <qperret@google.com>
 To:     Lukasz Luba <lukasz.luba@arm.com>
 Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
@@ -67,24 +67,43 @@ Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
         lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net,
         orjan.eide@arm.com, rdunlap@infradead.org
-Subject: Re: [PATCH v4 1/4] PM / EM: add devices to Energy Model
-Message-ID: <20200313100516.GB144499@google.com>
+Subject: Re: [PATCH v4 2/4] OPP: change parameter to device pointer in
+ dev_pm_opp_of_register_em()
+Message-ID: <20200313101524.GA150397@google.com>
 References: <20200309134117.2331-1-lukasz.luba@arm.com>
- <20200309134117.2331-2-lukasz.luba@arm.com>
- <20200313100407.GA144499@google.com>
+ <20200309134117.2331-3-lukasz.luba@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200313100407.GA144499@google.com>
+In-Reply-To: <20200309134117.2331-3-lukasz.luba@arm.com>
 User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Friday 13 Mar 2020 at 10:04:07 (+0000), Quentin Perret wrote:
-> Not easy to figure out which device has a problem with this. I'm
-> guessing you went that way since this is called before ida_simple_get() ?
-> Could that be refactored to make the error message more useful ?
+On Monday 09 Mar 2020 at 13:41:15 (+0000), Lukasz Luba wrote:
+> diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
+> index d2b5f062a07b..676b56424886 100644
+> --- a/drivers/cpufreq/cpufreq-dt.c
+> +++ b/drivers/cpufreq/cpufreq-dt.c
+> @@ -275,7 +275,9 @@ static int cpufreq_init(struct cpufreq_policy *policy)
+>  	policy->cpuinfo.transition_latency = transition_latency;
+>  	policy->dvfs_possible_from_any_cpu = true;
+>  
+> -	dev_pm_opp_of_register_em(policy->cpus);
+> +	ret = dev_pm_opp_of_register_em(cpu_dev, policy->cpus);
+> +	if (ret)
+> +		dev_dbg(cpu_dev, "Couldn't register Energy Model %d\n", ret);
+>  
+>  	return 0;
 
-Bah, forget that one :)
+Ah, that answers my comment on patch 01. You're adding the error
+messages here.
+
+Isn't this more boilerplate for the drivers ? All they do is print the
+same debug message. Maybe just move it inside dev_pm_opp_of_register_em
+directly ?
+
+Thanks,
+Quentin
