@@ -2,123 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96AC318404B
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Mar 2020 06:23:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36DFF18440A
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Mar 2020 10:47:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbgCMFX2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Mar 2020 01:23:28 -0400
-Received: from mail-wr1-f52.google.com ([209.85.221.52]:44731 "EHLO
-        mail-wr1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726642AbgCMFX2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Mar 2020 01:23:28 -0400
-Received: by mail-wr1-f52.google.com with SMTP id l18so10419906wru.11
-        for <linux-omap@vger.kernel.org>; Thu, 12 Mar 2020 22:23:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mrcDIsFA3/Ta2hSNkBuRQyW3SXqePmFTf5/RuwyDgf0=;
-        b=T033ZgKZpnqFjHfXAEFb0AEsRtRaYebeV9C1f2YT14kIgYN+8PTQoAU0w+haEbxL8y
-         DXCxtkDjXHhvfpTxIlAb28RhlckBsfTmsbQzy6ENDO0RyxJ0lHSBqI/xuYnBZoSzQOM7
-         KRybo2ev0s+wtQmlA046zJefT0ztT4EgIDc/a2nTgWEAu+WXI3Ng9LjBYz43sdUwb9vB
-         XthnUncXLvYxEJIrXDMtX+RARF8ouAa5WloaLsdcTDj+k7X+H5zfHLId5OFQjx0OgEvd
-         UUxpClGXIa5nN+K6BKvSJQhyREaZgTfXYLvYJLUHO+KUh2MGWUeuuGjx3BkxM16m3Ag4
-         inwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mrcDIsFA3/Ta2hSNkBuRQyW3SXqePmFTf5/RuwyDgf0=;
-        b=mpIn8wl5kGqIqWVO7eBEWorRIAs87hdHnlulrFSg+LILWz1GQpvGIMk2mxMj1/yH5H
-         tHwjaWYvSPhOGoSyfKhX33YPY8u/2SY89FRBpdF7MmScAbmCBEPlknTuYZRChjcPVPBk
-         LoKfjvNFYXX/SRp88/pVavBET8WZVtPzgEiDKMPYxGeEsBnKnTLakUf8cJ1E6lAKamyM
-         +tM8sWbFgGYdJ3jiRkq+On/Otmp4r7sVcWnBy6KP1+7Uf4SHzQajdwBQ3DTGpx9SAAy4
-         naGUkSBS5nUCcs5xfAAlL5ICa5HSsZn3UlmON9lpjpR3df8UioPzqpfLWoMF2CrITQ5l
-         /3jw==
-X-Gm-Message-State: ANhLgQ1WykeGLFT5hh/ufJKzOVy5hWFwIZpqK4febdLqrTQ8XLDnDYxY
-        EHclRX7WbBjzGIdgHeJNv+XW2h76bPvZPOzvtdp+7w==
-X-Google-Smtp-Source: ADFU+vu8XbuHhTjM2eMcjPe1xL331sZ9RctJL1gttvaszdk47W25THe5EffgXN+vdgE8ZJeTHmOkppyis+f41CbjibI=
-X-Received: by 2002:a05:6000:10c5:: with SMTP id b5mr15708804wrx.203.1584077006978;
- Thu, 12 Mar 2020 22:23:26 -0700 (PDT)
+        id S1726462AbgCMJrb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Mar 2020 05:47:31 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:38200 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726055AbgCMJrb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Mar 2020 05:47:31 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02D9lM2A008991;
+        Fri, 13 Mar 2020 04:47:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1584092842;
+        bh=mFzRNpBAm8x3OIHFlE8PDdI7a4X4HaLXzV5MEkFtlhc=;
+        h=From:To:CC:Subject:Date;
+        b=W0rvU+KLaYvI7S2b8FRlhtGfW1Q/C/VchZIVjvSBWkjjJq+0q4sXU40yJFRSSJIgw
+         HaFgmWwOYPMnjx+IrY6UnYHjh8lu+l5Wo+aH+9GWF8pKYCOuduk0HVOyGsMM22PwnT
+         lFrfA5K85HOlSwLrvgRJHyPtvleIZWb1KYSXFe9w=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02D9lMsN019353;
+        Fri, 13 Mar 2020 04:47:22 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 13
+ Mar 2020 04:47:21 -0500
+Received: from localhost.localdomain (10.64.41.19) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Fri, 13 Mar 2020 04:47:21 -0500
+Received: from lta0400828a.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by localhost.localdomain (8.15.2/8.15.2) with ESMTP id 02D9lInb126551;
+        Fri, 13 Mar 2020 04:47:18 -0500
+From:   Roger Quadros <rogerq@ti.com>
+To:     <tony@atomide.com>
+CC:     <hch@lst.de>, <robin.murphy@arm.com>, <robh+dt@kernel.org>,
+        <nm@ti.com>, <t-kristo@ti.com>, <nsekhar@ti.com>,
+        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Roger Quadros <rogerq@ti.com>,
+        <stable@kernel.org>
+Subject: [PATCH v2] ARM: dts: dra7: Add bus_dma_limit for L3 bus
+Date:   Fri, 13 Mar 2020 11:47:17 +0200
+Message-ID: <20200313094717.6671-1-rogerq@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <CAEf4M_Du6Egn-3nZHtSnMMwohc+-DyEdtWU5DqSJi71+nDthFw@mail.gmail.com>
- <CACRpkdaPoMGZ7jGh6j4dYexx+qCcoMQ37vS7kbpf=3TtcA9zQQ@mail.gmail.com> <CAEf4M_B_sxOiKFnEVUrx00RE2MaMA98LpijNhp0EVY11eRAXHg@mail.gmail.com>
-In-Reply-To: <CAEf4M_B_sxOiKFnEVUrx00RE2MaMA98LpijNhp0EVY11eRAXHg@mail.gmail.com>
-From:   Haojian Zhuang <haojian.zhuang@linaro.org>
-Date:   Fri, 13 Mar 2020 13:23:15 +0800
-Message-ID: <CAD6h2NT840zMfwaJatfKzai8QjZEQmF5v0xgE+9ngSJJ+Qy+6g@mail.gmail.com>
-Subject: Re: gpio-omap: add support gpiolib bias (pull-up/down) flags?
-To:     Drew Fustini <pdp7pdp7@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Drew Fustini <drew@beagleboard.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 13 Mar 2020 at 08:38, Drew Fustini <pdp7pdp7@gmail.com> wrote:
->
-> On Thu, Mar 12, 2020 at 1:43 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> > Do we have a datasheet for this GPIO block somewhere? Should
-> > be the datasheet for the ASIC.
->
-> I am looking at the AM335x reference manual [0] but I can not actually
-> find any references to pull-up/down or bias for GPIO pins.  I guess I
-> was making of the mistake of assuming this would be something the gpio
-> pins support.
->
-> > We already have the required .set_config() callback on the OMAP
-> > driver, it's just that it only uses it for debounce.
-> >
-> > The driver is a bit convoluted with register offsets in a struct
-> > omap_gpio_reg_offs depending on variant, but if they have
-> > a register for this I'd say just get hacking.
-> >
-> > If the GPIO driver is using pin control as back-end you are
-> > looking at something more complex similar to what Intel is
-> > doing inside drivers/pinctrl/intel/pinctrl-intel.c: this driver
-> > is just calling up to gpiochip_generic_config() which will
-> > try to configure the lines behind the GPIO using pin config,
-> > which works if the proper ranges are defined so the
-> > framework can map a GPIO line to a pin control pin.
->
-> Thank you for the feedback, Linus.
->
-> Upon further review of drivers/pinctrl/pinctrl-single.c, I am not
-> certain it actually supports pull-up/down.
->
-> I see there is pcs_pinconf_clear_bias() and pcs_pinconf_bias_disable()
-> but I don't see a place where the PIN_CONFIG_BIAS_PULL_DOWN or
-> PIN_CONFIG_BIAS_PULL_UP get set.
->
+The L3 interconnect's memory map is from 0x0 to
+0xffffffff. Out of this, System memory (SDRAM) can be
+accessed from 0x80000000 to 0xffffffff (2GB)
 
-                        /* 4 parameters */
-                        case PIN_CONFIG_BIAS_DISABLE:
-                                pcs_pinconf_clear_bias(pctldev, pin);
-                                break;
-                        case PIN_CONFIG_BIAS_PULL_DOWN:
-                        case PIN_CONFIG_BIAS_PULL_UP:
-                                if (arg)
-                                        pcs_pinconf_clear_bias(pctldev, pin);
-                                /* fall through */
-                        case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
-                                data &= ~func->conf[i].mask;
-                                if (arg)
-                                        data |= func->conf[i].enable;
-                                else
-                                        data |= func->conf[i].disable;
-                                break;
+DRA7 does support 4GB of SDRAM but upper 2GB can only be
+accessed by the MPU subsystem.
 
-Because it does fall through, pullup/pulldown is set in the snippet of
-"PIN_CONFIG_INPUT_SCHMITT_ENABLE".
+Add the dma-ranges property to reflect the physical address limit
+of the L3 bus.
 
-Best Regards
-Haojian
+Issues ere observed only with SATA on DRA7-EVM with 4GB RAM
+and CONFIG_ARM_LPAE enabled. This is because the controller
+supports 64-bit DMA and its driver sets the dma_mask to 64-bit
+thus resulting in DMA accesses beyond L3 limit of 2G.
+
+Setting the correct bus_dma_limit fixes the issue.
+
+Signed-off-by: Roger Quadros <rogerq@ti.com>
+Cc: stable@kernel.org
+---
+
+Changelog:
+v2:
+- Revised patch with minimal intrusion. i.e. don't change #size-cells
+  of device node.
+
+ arch/arm/boot/dts/dra7.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
+index d78b684e7fca..058b8cbb8ef3 100644
+--- a/arch/arm/boot/dts/dra7.dtsi
++++ b/arch/arm/boot/dts/dra7.dtsi
+@@ -148,6 +148,7 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		ranges = <0x0 0x0 0x0 0xc0000000>;
++		dma-ranges = <0x80000000 0x0 0x80000000 0x80000000>;
+ 		ti,hwmods = "l3_main_1", "l3_main_2";
+ 		reg = <0x0 0x44000000 0x0 0x1000000>,
+ 		      <0x0 0x45000000 0x0 0x1000>;
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
