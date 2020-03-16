@@ -2,39 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A653E1861F9
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Mar 2020 03:35:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7094D186271
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Mar 2020 03:38:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730055AbgCPCfB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 15 Mar 2020 22:35:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39004 "EHLO mail.kernel.org"
+        id S1730084AbgCPChP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 15 Mar 2020 22:37:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39852 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730051AbgCPCfA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 15 Mar 2020 22:35:00 -0400
+        id S1730155AbgCPCfZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 15 Mar 2020 22:35:25 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A13D420748;
-        Mon, 16 Mar 2020 02:34:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 051EA20739;
+        Mon, 16 Mar 2020 02:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584326100;
-        bh=RU0Lq8UlK/cuo32sdGpDmu2ST0CReyarNIWqqjH87Vw=;
+        s=default; t=1584326124;
+        bh=bnIZ+VDJdYnoXNs28ppMqKW5Lgz6HtETtN+RlPx/diQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dro+jyiVDRlIrXuhT0a46nkS+UEkQ3V6Ff6qoE4BojPBxrXRnUDVkHUNcS5UCCY7y
-         4b+bTbjoEpuJup1Sz7svJBj57astcA70wNfItNufYvfJ/8Y/OjdcHdNQLEpxrYn68L
-         SE0QR/wSo8fv+VvAerBxBX9bDKfj9A8xXp+d3RYc=
+        b=kC9rhE/Cd4ayPgmuAM4GZblJXwGXjL7Vsys9U/RFU17e8zSdxO3efgilmJAc2PJfz
+         7BzGNTnYOAvDEVjIxfJONx7gFPaAR88X8f6L8qXsZU1GU8Q2hCujEuB+5LUl8OOh1I
+         hSrNhzEjMLgO6Rp4q430poBuTHS/AsdXpB6bxILE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
         Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 05/20] ARM: dts: dra7: Add "dma-ranges" property to PCIe RC DT nodes
-Date:   Sun, 15 Mar 2020 22:34:38 -0400
-Message-Id: <20200316023453.1800-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 04/15] ARM: dts: dra7: Add "dma-ranges" property to PCIe RC DT nodes
+Date:   Sun, 15 Mar 2020 22:35:08 -0400
+Message-Id: <20200316023519.2050-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200316023453.1800-1-sashal@kernel.org>
-References: <20200316023453.1800-1-sashal@kernel.org>
+In-Reply-To: <20200316023519.2050-1-sashal@kernel.org>
+References: <20200316023519.2050-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -63,10 +63,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
-index 7ce24b282d421..c1ef3201950ae 100644
+index fec965009b9fc..a40a7af85d020 100644
 --- a/arch/arm/boot/dts/dra7.dtsi
 +++ b/arch/arm/boot/dts/dra7.dtsi
-@@ -324,6 +324,7 @@
+@@ -302,6 +302,7 @@
  				device_type = "pci";
  				ranges = <0x81000000 0 0          0x03000 0 0x00010000
  					  0x82000000 0 0x20013000 0x13000 0 0xffed000>;
@@ -74,7 +74,7 @@ index 7ce24b282d421..c1ef3201950ae 100644
  				bus-range = <0x00 0xff>;
  				#interrupt-cells = <1>;
  				num-lanes = <1>;
-@@ -376,6 +377,7 @@
+@@ -356,6 +357,7 @@
  				device_type = "pci";
  				ranges = <0x81000000 0 0          0x03000 0 0x00010000
  					  0x82000000 0 0x30013000 0x13000 0 0xffed000>;
