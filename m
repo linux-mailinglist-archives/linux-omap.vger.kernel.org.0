@@ -2,86 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57C6E186247
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Mar 2020 03:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C7218669B
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Mar 2020 09:35:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729525AbgCPCfx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 15 Mar 2020 22:35:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40714 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729530AbgCPCfw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 15 Mar 2020 22:35:52 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 628F920739;
-        Mon, 16 Mar 2020 02:35:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584326152;
-        bh=gjhoOloQBD59gFMnNazCDCwzPSf+vl9lMqmIUM7SoHY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zUSGAVvLaWl7LoNMbRa6AT7C5+0flsdp2HQzxg0GMsreQMTrLVLnaY3KeIJ3abcZb
-         TSaGRrXDkhe1BEx/TKfQghXHcHYca347KWH4fcFDwntuS6YconYGV5nkkdk5PGk9b5
-         G/rnKt0nzPtdtvsdX21UyuLJ+WtyN6yF7pfwn/bY=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 3/7] ARM: dts: dra7: Add "dma-ranges" property to PCIe RC DT nodes
-Date:   Sun, 15 Mar 2020 22:35:43 -0400
-Message-Id: <20200316023548.2347-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200316023548.2347-1-sashal@kernel.org>
-References: <20200316023548.2347-1-sashal@kernel.org>
+        id S1730098AbgCPIf0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Mar 2020 04:35:26 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:54196 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730093AbgCPIfZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Mar 2020 04:35:25 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02G8ZCHV119533;
+        Mon, 16 Mar 2020 03:35:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1584347712;
+        bh=MgFuGjQkGz/Sjek2G2qQ48zyNfLj9re2PMkPGckXc7w=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=CynyFhO1hkQp7jl9YKphqrbx49ET66H2l/rxgn1ekIjMTYFEn0ixnE9sIAlFcWgG2
+         /PQVbOqWf7qdI+kQoBkukpFrTr/vNwmFJUWuKExyGHhBFAX1aS6/p8zoZs0Fecev9J
+         AUwNy3QHILQNanieFejhORdlWeG+eKmUfrljKxqE=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02G8ZC6P033845;
+        Mon, 16 Mar 2020 03:35:12 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 16
+ Mar 2020 03:35:10 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 16 Mar 2020 03:35:10 -0500
+Received: from [192.168.2.14] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02G8Z6OO023529;
+        Mon, 16 Mar 2020 03:35:07 -0500
+Subject: Re: [PATCH v2] ARM: dts: dra7: Add bus_dma_limit for L3 bus
+To:     Tony Lindgren <tony@atomide.com>,
+        Robin Murphy <robin.murphy@arm.com>
+CC:     <hch@lst.de>, <robh+dt@kernel.org>, <nm@ti.com>, <t-kristo@ti.com>,
+        <nsekhar@ti.com>, <linux-omap@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@kernel.org>
+References: <20200313094717.6671-1-rogerq@ti.com>
+ <fb916d06-1521-25a5-2eae-94244a3f9d06@arm.com>
+ <20200313151516.GB37466@atomide.com>
+From:   Roger Quadros <rogerq@ti.com>
+Message-ID: <44e2fff3-f95a-dc75-06f7-3a44ea8b7461@ti.com>
+Date:   Mon, 16 Mar 2020 10:35:05 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200313151516.GB37466@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Kishon Vijay Abraham I <kishon@ti.com>
 
-[ Upstream commit 27f13774654ea6bd0b6fc9b97cce8d19e5735661 ]
 
-'dma-ranges' in a PCI bridge node does correctly set dma masks for PCI
-devices not described in the DT. Certain DRA7 platforms (e.g., DRA76)
-has RAM above 32-bit boundary (accessible with LPAE config) though the
-PCIe bridge will be able to access only 32-bits. Add 'dma-ranges'
-property in PCIe RC DT nodes to indicate the host bridge can access
-only 32 bits.
+On 13/03/2020 17:15, Tony Lindgren wrote:
+> * Robin Murphy <robin.murphy@arm.com> [200313 15:06]:
+>> On 2020-03-13 9:47 am, Roger Quadros wrote:
+>>> The L3 interconnect's memory map is from 0x0 to
+>>> 0xffffffff. Out of this, System memory (SDRAM) can be
+>>> accessed from 0x80000000 to 0xffffffff (2GB)
+>>>
+>>> DRA7 does support 4GB of SDRAM but upper 2GB can only be
+>>> accessed by the MPU subsystem.
+>>>
+>>> Add the dma-ranges property to reflect the physical address limit
+>>> of the L3 bus.
+>>>
+>>> Issues ere observed only with SATA on DRA7-EVM with 4GB RAM
+>>> and CONFIG_ARM_LPAE enabled. This is because the controller
+>>> supports 64-bit DMA and its driver sets the dma_mask to 64-bit
+>>> thus resulting in DMA accesses beyond L3 limit of 2G.
+>>>
+>>> Setting the correct bus_dma_limit fixes the issue.
+>>
+>> Neat! In principle you should no longer need the specific dma-ranges on the
+>> PCIe nodes, since AIUI those really only represent a subset of this general
+>> limitation, but given the other inheritance issue you saw it's probably
+>> safer to leave them as-is for now.
+> 
+> Also, Roger, I think omap5 needs a similar patch too, right?
+> At least pyra has omap5 with 4GB and SATA connector.
 
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/boot/dts/dra7.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+Yes Tony, I'll send a patch for omap5 as well.
 
-diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
-index e6a3a94bac693..2cdaa38c114e8 100644
---- a/arch/arm/boot/dts/dra7.dtsi
-+++ b/arch/arm/boot/dts/dra7.dtsi
-@@ -227,6 +227,7 @@
- 				device_type = "pci";
- 				ranges = <0x81000000 0 0          0x03000 0 0x00010000
- 					  0x82000000 0 0x20013000 0x13000 0 0xffed000>;
-+				dma-ranges = <0x02000000 0x0 0x00000000 0x00000000 0x1 0x00000000>;
- 				bus-range = <0x00 0xff>;
- 				#interrupt-cells = <1>;
- 				num-lanes = <1>;
-@@ -263,6 +264,7 @@
- 				device_type = "pci";
- 				ranges = <0x81000000 0 0          0x03000 0 0x00010000
- 					  0x82000000 0 0x30013000 0x13000 0 0xffed000>;
-+				dma-ranges = <0x02000000 0x0 0x00000000 0x00000000 0x1 0x00000000>;
- 				bus-range = <0x00 0xff>;
- 				#interrupt-cells = <1>;
- 				num-lanes = <1>;
+> 
+>> FWIW,
+>>
+>> Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+> 
+> Sorry missed that as I just pushed out the fix.
+> 
+> Regards,
+> 
+> Tony
+> 
+
 -- 
-2.20.1
-
+cheers,
+-roger
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
