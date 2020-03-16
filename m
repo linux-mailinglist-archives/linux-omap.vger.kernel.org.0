@@ -2,85 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9226186DC3
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Mar 2020 15:48:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1CFF186F8A
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Mar 2020 17:03:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731597AbgCPOsl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Mar 2020 10:48:41 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:40664 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731549AbgCPOsl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Mar 2020 10:48:41 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02GEmaY5092372;
-        Mon, 16 Mar 2020 09:48:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1584370116;
-        bh=UooX8ZNh9tr7y4gxXLpPFHF5TDh2m19GWAc6UYXvUo0=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=oV18zW7FS2UjKbHiEMKyD9jTTTDsLv8Jt25tv0xLNCgqPgf8Zg0S0YJA/l9yB7Gca
-         HgsFBwXLEA6MdCrR0Nexw/eT7EkonthCWD7CubrJ1iCrxFTSFh5zS3CxopWh4b/MAe
-         11wUDTI6Rzie0jfI5j2kvXoOyTqjw8KCohun8r2k=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02GEma1A055336
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 16 Mar 2020 09:48:36 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 16
- Mar 2020 09:48:34 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Mon, 16 Mar 2020 09:48:34 -0500
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02GEmVxO027810;
-        Mon, 16 Mar 2020 09:48:32 -0500
-Subject: Re: [PATCH] clk: ti: am43xx: Fix clock parent for RTC clock
-To:     Stephen Boyd <sboyd@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>
-CC:     <devicetree@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>
-References: <20200221171030.39326-1-tony@atomide.com>
- <158231096467.258574.11716255621346536160@swboyd.mtv.corp.google.com>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <831d632e-78da-07c4-f8c7-14d17ba1ef28@ti.com>
-Date:   Mon, 16 Mar 2020 16:48:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1731672AbgCPQC7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Mar 2020 12:02:59 -0400
+Received: from muru.com ([72.249.23.125]:60608 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731618AbgCPQC7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 16 Mar 2020 12:02:59 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A658F80AA;
+        Mon, 16 Mar 2020 16:03:44 +0000 (UTC)
+Date:   Mon, 16 Mar 2020 09:02:55 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     "Arthur D." <spinal.by@gmail.com>
+Cc:     Pavel Machek <pavel@ucw.cz>, Merlijn Wajer <merlijn@wizzup.org>,
+        sre@kernel.org, linux-pm@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 01/15] power: supply: cpcap-battery: Fix battery full
+ status reporting
+Message-ID: <20200316160255.GL37466@atomide.com>
+References: <20200315151206.30909-1-spinal.by@gmail.com>
+ <20200315185857.GA4914@amd>
+ <op.0hjf7fb5hxa7s4@supervisor.net28>
+ <20200315215949.GK37466@atomide.com>
+ <op.0hjs4kk2hxa7s4@supervisor.net28>
 MIME-Version: 1.0
-In-Reply-To: <158231096467.258574.11716255621346536160@swboyd.mtv.corp.google.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <op.0hjs4kk2hxa7s4@supervisor.net28>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 21/02/2020 20:49, Stephen Boyd wrote:
-> Quoting Tony Lindgren (2020-02-21 09:10:30)
->> Currently enabling clkctrl clock on am4 can fail for RTC as the clock
->> parent is wrong for RTC.
->>
->> Fixes: 76a1049b84dd ("clk: ti: am43xx: add new clkctrl data for am43xx")
->> Signed-off-by: Tony Lindgren <tony@atomide.com>
->> ---
->>
->> It is unclear if we can end up with RTC hung with the current mainline
->> kernel in some cases. Probing RTC with device tree data only seems to
->> trigger this every time.
+* Arthur D. <spinal.by@gmail.com> [200316 01:31]:
+> Hi, Tony.
 > 
-> It's small enough and if it's annoying enough we can probably put it
-> into clk-fixes to get it fixed for this release instead of waiting. Can
-> Tero ack it?
+> It seems like a misunderstanding here. There's no problem in detecting
+> if the charging is in progress. The green led is switched off and
+> the battery current sign is changed from "-" to "+" (which means
+> that the battery is being discharged). So there's no need in additional
+> checks. For cpcap-battery this situation seems like a battery stopped
+> charging. And it doesn't matter if that was a user who disconnected
+> the charger or it was done somewhere in a driver/firmware/hardware.
 > 
+> The problem is that the charging current cant get to the point <100 mA,
+> not talking about <50 mA. And that's why I set the value of 112 mA for
+> the end of charge current: to help the kernel to detect this plateau and
+> to stop the calibration cycle, so the userspace can get all the battery
+> parameters I mentioned in the previous mail.
 
-Sure,
+OK I guess that's easy to change if we figure out something better :)
+Maybe add some define for it like CPCAP_BATTERY_FULL_CHARGE_CURRENT or
+similar?
 
-Acked-by: Tero Kristo <t-kristo@ti.com>
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> Please note, that the behaviour I mentioned was observed only when the
+> conditions written in my last mail were met. The important one was:
+> > 2) the display backlight is off
+> 
+> Because when I unlocked the display the charging current was able
+> to go below 112 mA. Of course I couldn't rely on something like this:
+> the user should stay with backlight on to have the battery calibrated.
+> Think about it: waiting for the charging current to drop from 100 mA
+> to 50 mA can take dozens of minutes (it depends on the age of battery -
+> the older the battery the longer it will take), and the user should
+> force somehow the device to not switch off the display hightlight
+> until the battery is calibrated.
+> 
+> Of course it's unacceptable, so I decided to set the end of charge
+> current limit to 112 mA. Which allows the user to just put the device
+> on a table and to wait until it's fully charged without a need
+> to interfere the charging process with some action from the user.
+
+Yeah OK thanks.
+
+Tony
