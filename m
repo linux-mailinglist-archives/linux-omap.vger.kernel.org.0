@@ -2,87 +2,185 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C1CD1868FB
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Mar 2020 11:27:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80A0D186977
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Mar 2020 11:51:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730580AbgCPK1r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Mar 2020 06:27:47 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:37436 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730550AbgCPK1r (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Mar 2020 06:27:47 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02GARc2X015637;
-        Mon, 16 Mar 2020 05:27:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1584354458;
-        bh=cM3M0WhMJb1kHAJscz665SQ5kqkj1mspK4tHy4EMD1A=;
-        h=From:To:CC:Subject:Date;
-        b=bn0D8HiP6PPr9ULgYGQwSixr07CWkBFxpuskovMMSGZ4+Gm9/5RF+ZcmwqyfjFpgR
-         Hy/ylBE+iBt8EPRNZJbXQBi47yN9GFuhuubUHA0S6ueJpv2/OuVoV4B30w4o75Gf3T
-         bbE8D0Zwntw9XRGVRfnxeLA87wBqYWgtSB5/JxZA=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02GARcrZ060549;
-        Mon, 16 Mar 2020 05:27:38 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 16
- Mar 2020 05:27:38 -0500
-Received: from localhost.localdomain (10.64.41.19) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Mon, 16 Mar 2020 05:27:38 -0500
-Received: from lta0400828a.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by localhost.localdomain (8.15.2/8.15.2) with ESMTP id 02GARWNu121191;
-        Mon, 16 Mar 2020 05:27:33 -0500
-From:   Roger Quadros <rogerq@ti.com>
-To:     <tony@atomide.com>
-CC:     <hch@lst.de>, <robin.murphy@arm.com>, <robh+dt@kernel.org>,
-        <nm@ti.com>, <t-kristo@ti.com>, <nsekhar@ti.com>,
-        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Roger Quadros <rogerq@ti.com>,
-        <stable@kernel.org>
-Subject: [PATCH] ARM: dts: omap5: Add bus_dma_limit for L3 bus
-Date:   Mon, 16 Mar 2020 12:27:31 +0200
-Message-ID: <20200316102731.15467-1-rogerq@ti.com>
-X-Mailer: git-send-email 2.17.1
+        id S1730497AbgCPKvl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Mar 2020 06:51:41 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:35245 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730612AbgCPKvl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Mar 2020 06:51:41 -0400
+Received: by mail-wm1-f68.google.com with SMTP id m3so17453839wmi.0
+        for <linux-omap@vger.kernel.org>; Mon, 16 Mar 2020 03:51:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=nidoOoOuGAG+2czC5MfcLDZfkrE7iEbyovUBFwN1rwI=;
+        b=dXdItexkHNDuhNzUc30jfkl8tJPnU6X2pWnCWqtY+Jid2v1ZdehA/sRs1JgNb+l1il
+         Ixfh3eZUQzHqFlk8JII8xxArEVpg3Z77p9qg8fDkR5UIEPJwgDTVV3QAGv8Pc3R4PE/8
+         jTLIMBz+uioj5152OyOKxthN7w4xzMgb9Iu7CqpxoZivzwjO76e9bxYkFvUCdu9uPTqT
+         0FO152jmRhxJzIhFZReJGzQNMv1JeOpL1Gj+Cu8usFxaWLnbbYUE9KwyxLp+dr6Xsykb
+         jknQcBSq2CJVQwANIvfDBR8MuPv6BYatk9gN5I5h1Bvo4gsjMQC1taSRaR4lszFFRZKu
+         Rgmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=nidoOoOuGAG+2czC5MfcLDZfkrE7iEbyovUBFwN1rwI=;
+        b=p/b2fDOYXXKdaxa15DG9yZ4YYIH5am2L2uEE1QGQAN6sJPc78+odoUB2Oce4ll0DKo
+         j2clZGNKuvn5SvnSFJ9/qUEGxvB826ofDb9x3GdL6Bpo2trEhWaksSaBb9SYlLQYagx2
+         CbyRsCt7WLpEck1OOxciU++xloafZYD5JAJymktfiyl5pcV4QKj2AGvioOu8gchOquPZ
+         JAnny0Dvm93o9xUKE2q9hf7JvUF1U+rFVOFMIkhlLjm8WIIgpNO7oNW7GYZg+hP3dcdc
+         krCAqDYAZP3d2mVzTMsHb6i6oj3R6jA2Dn5/+n4GRKgFbeVjSjM7OLjgYQCl2BCwITjo
+         swYg==
+X-Gm-Message-State: ANhLgQ2KsjzvI9kESDmP+4ASWYnsMNE5/EXYG9Vb1MFogFz9vriTT3sy
+        ZI18SaCrTY8GwaOCEyC48CFF0rTKqXU=
+X-Google-Smtp-Source: ADFU+vvbM4lYcyOpSCa26oS/kVEssmWydFIemNDeb5yA992UsqHs9/XOPlRWfFzSZKk+TggrwQ+XWw==
+X-Received: by 2002:a1c:4d14:: with SMTP id o20mr27266059wmh.17.1584355897774;
+        Mon, 16 Mar 2020 03:51:37 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:f835:499f:9553:971a? ([2a01:e34:ed2f:f020:f835:499f:9553:971a])
+        by smtp.googlemail.com with ESMTPSA id c23sm30147583wme.39.2020.03.16.03.51.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Mar 2020 03:51:37 -0700 (PDT)
+Subject: Re: [PATCH v3 3/6] clocksource: timer-ti-dm: Implement cpu_pm
+ notifier for context save and restore
+To:     Lokesh Vutla <lokeshvutla@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        linux-pwm@vger.kernel.org, Sekhar Nori <nsekhar@ti.com>,
+        Tero Kristo <t-kristo@ti.com>
+References: <20200305082715.15861-1-lokeshvutla@ti.com>
+ <20200305082715.15861-4-lokeshvutla@ti.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Autocrypt: addr=daniel.lezcano@linaro.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <5b7bd5f8-f4e3-b851-da3e-8f05386dce09@linaro.org>
+Date:   Mon, 16 Mar 2020 11:51:35 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20200305082715.15861-4-lokeshvutla@ti.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The L3 interconnect's memory map is from 0x0 to
-0xffffffff. Out of this, System memory (SDRAM) can be
-accessed from 0x80000000 to 0xffffffff (2GB)
+On 05/03/2020 09:27, Lokesh Vutla wrote:
+> omap_dm_timer_enable() restores the entire context(including counter)
+> based on 2 conditions:
+> - If get_context_loss_count is populated and context is lost.
+> - If get_context_loss_count is not populated update unconditionally.
+> 
+> Case2 has a side effect of updating the counter register even though
+> context is not lost. When timer is configured in pwm mode, this is
+> causing undesired behaviour in the pwm period.
+> 
+> Instead of using get_context_loss_count call back, implement cpu_pm
+> notifier with context save and restore support. And delete the
+> get_context_loss_count callback all together.
+> 
+> Suggested-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+> [tony@atomide.com: removed pm_runtime calls from cpuidle calls]
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
 
-OMAP5 does support 4GB of SDRAM but upper 2GB can only be
-accessed by the MPU subsystem.
+[ ... ]
 
-Add the dma-ranges property to reflect the physical address limit
-of the L3 bus.
+> @@ -725,6 +728,12 @@ static int __maybe_unused omap_dm_timer_runtime_suspend(struct device *dev)
+>  
+>  	atomic_set(&timer->enabled, 0);
+>  
+> +	if (timer->capability & OMAP_TIMER_ALWON ||
+> +	    !timer->func_base)
+> +	    return 0;
 
-Cc: stable@kernel.org
-Signed-off-by: Roger Quadros <rogerq@ti.com>
----
- arch/arm/boot/dts/omap5.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+WARNING: suspect code indent for conditional statements (8, 12)
+#168: FILE: drivers/clocksource/timer-ti-dm.c:762:
++	if (timer->capability & OMAP_TIMER_ALWON ||
+[...]
++	    return 0;
 
-diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
-index d0ecf54d5a23..a7562d3deb1a 100644
---- a/arch/arm/boot/dts/omap5.dtsi
-+++ b/arch/arm/boot/dts/omap5.dtsi
-@@ -143,6 +143,7 @@
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		ranges = <0 0 0 0xc0000000>;
-+		dma-ranges = <0x80000000 0x0 0x80000000 0x80000000>;
- 		ti,hwmods = "l3_main_1", "l3_main_2", "l3_main_3";
- 		reg = <0 0x44000000 0 0x2000>,
- 		      <0 0x44800000 0 0x3000>,
+
+WARNING: Statements should start on a tabstop
+#170: FILE: drivers/clocksource/timer-ti-dm.c:764:
++	    return 0;
+
+[ ... ]
+
+
+Mind to resend this patch with the warning fixed?
+
+Thanks
+
+  -- Daniel
+
 -- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
