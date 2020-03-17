@@ -2,69 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42355187253
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Mar 2020 19:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5884F18769B
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Mar 2020 01:11:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732360AbgCPS2h (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Mar 2020 14:28:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58030 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732266AbgCPS2h (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 16 Mar 2020 14:28:37 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7DD3620409;
-        Mon, 16 Mar 2020 18:28:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584383316;
-        bh=mSIcRXbQR93F5mXG6L77T9yTvkpVt+N3gWe1Hs4i1r8=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=lMnXH/3ZzggPbtxMb+l9j6nT9+iwx7dhmcjP12rFmgnDWcku1D7JVym6u/ruk6J70
-         jwq1gEGmYXFAiPz4/ULUZQ0Kzc/KWpFzQbijdEHU8XgLV/+w/p2IIkan0TPhI8/Qvd
-         tzi7CoO0JMQpkvDCy+AJUbuWnk532d8smDISP87g=
-Content-Type: text/plain; charset="utf-8"
+        id S1733077AbgCQALn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Mar 2020 20:11:43 -0400
+Received: from mail.uic.edu.hk ([61.143.62.86]:48979 "EHLO umgp.uic.edu.hk"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1733047AbgCQALn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 16 Mar 2020 20:11:43 -0400
+X-IronPort-AV: E=Sophos;i="5.43,368,1503331200"; 
+   d="scan'208";a="17243176"
+Received: from unknown (HELO zpmail.uic.edu.hk) ([192.168.111.249])
+  by umgp.uic.edu.hk with ESMTP; 17 Mar 2020 08:11:35 +0800
+Received: from zpmail.uic.edu.hk (localhost [127.0.0.1])
+        by zpmail.uic.edu.hk (Postfix) with ESMTPS id D96D941C05A3;
+        Tue, 17 Mar 2020 08:11:32 +0800 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by zpmail.uic.edu.hk (Postfix) with ESMTP id D554341C0957;
+        Tue, 17 Mar 2020 08:11:31 +0800 (CST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zpmail.uic.edu.hk D554341C0957
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uic.edu.hk;
+        s=6465647E-9D7B-11E8-B17B-42130C7FA3B9; t=1584403892;
+        bh=Wn2BcVyAdGxyDvB/5AnVfCr/iJTzisyuX4dwKssec6E=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=N1pNhkd2l8zz69kDtEsPH5n7SDL70Ak/Rgb/NYqC0+ZCBZFg/G0QkldxXmMRPmztz
+         HwkJ6HHAibMur3rytYhnqKeG349hpGDQCbhvoJdZWkvkFCa93STWbitRqMynzR+Wj5
+         wLEdN7i9CyVDDhspocQMykx6lSGq645dTckJSCrsFHg+uR95rTW6kz2/3F5tST7+Uo
+         ELvvW8oTRw+C3DdE82L8ao85KfwNAx6BRhhB+sNBssPbo3CqQ69/PO1/J9gy3aGO+s
+         FwDrxpCEm2RIo68N7oaYrAjY/FUGCbKk/MsqrV+VDqizldOqfTDFamlvQc82rVkjYy
+         rx6v80NBgwdtg==
+Received: from zpmail.uic.edu.hk ([127.0.0.1])
+        by localhost (zpmail.uic.edu.hk [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id gCmMIXxwS0HE; Tue, 17 Mar 2020 08:11:31 +0800 (CST)
+Received: from zpmail.uic.edu.hk (zpmail.uic.edu.hk [192.168.111.249])
+        by zpmail.uic.edu.hk (Postfix) with ESMTP id 1549641C058D;
+        Tue, 17 Mar 2020 08:11:27 +0800 (CST)
+Date:   Tue, 17 Mar 2020 08:11:26 +0800 (CST)
+From:   David Ibe <ylawrence@uic.edu.hk>
+Reply-To: David Ibe <davidibe718@gmail.com>
+Message-ID: <2065446646.63699156.1584403886963.JavaMail.zimbra@uic.edu.hk>
+Subject: 
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <831d632e-78da-07c4-f8c7-14d17ba1ef28@ti.com>
-References: <20200221171030.39326-1-tony@atomide.com> <158231096467.258574.11716255621346536160@swboyd.mtv.corp.google.com> <831d632e-78da-07c4-f8c7-14d17ba1ef28@ti.com>
-Subject: Re: [PATCH] clk: ti: am43xx: Fix clock parent for RTC clock
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@codeaurora.org>,
-        Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>
-Date:   Mon, 16 Mar 2020 11:28:35 -0700
-Message-ID: <158438331569.88485.562432552826260475@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.111.160]
+X-Mailer: Zimbra 8.8.15_GA_3829 (ZimbraWebClient - GC80 (Win)/8.8.15_GA_3829)
+Thread-Index: 8IMjdxPQWBZshE+F+QJEttpRaFVxcQ==
+Thread-Topic: 
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Tero Kristo (2020-03-16 07:48:30)
-> On 21/02/2020 20:49, Stephen Boyd wrote:
-> > Quoting Tony Lindgren (2020-02-21 09:10:30)
-> >> Currently enabling clkctrl clock on am4 can fail for RTC as the clock
-> >> parent is wrong for RTC.
-> >>
-> >> Fixes: 76a1049b84dd ("clk: ti: am43xx: add new clkctrl data for am43xx=
-")
-> >> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> >> ---
-> >>
-> >> It is unclear if we can end up with RTC hung with the current mainline
-> >> kernel in some cases. Probing RTC with device tree data only seems to
-> >> trigger this every time.
-> >=20
-> > It's small enough and if it's annoying enough we can probably put it
-> > into clk-fixes to get it fixed for this release instead of waiting. Can
-> > Tero ack it?
-> >=20
->=20
-> Sure,
->=20
-> Acked-by: Tero Kristo <t-kristo@ti.com>
 
-Woops, hit send too fast. Thanks! Picked it into clk-fixes.
+
+Good Day,                
+
+I am Mr. David Ibe, I work with the International Standards on Auditing, I have seen on records, that several times people has divert your funds into their own personal accounts.
+
+Now I am writing to you in respect of the amount which I have been able to send to you through our International United Nations accredited and approved Diplomat, who has arrived Africa, I want you to know that the diplomat would deliver the funds which I have packaged as a diplomatic compensation to you and the amount in the consignment is  $10,000,000.00 United State Dollars.
+
+I did not disclose the contents to the diplomat, but I told him that it is your compensation from the Auditing Corporate Governance and Stewardship, Auditing and Assurance Standards Board. I want you to know that these funds would help with your financial status as I have seen in records that you have spent a lot trying to receive these funds and I am not demanding so much from you but only 30% for my stress and logistics.
+
+I would like you to get back to me with your personal contact details, so that I can give you the contact information's of the diplomat who has arrived Africa and has been waiting to get your details so that he can proceed with the delivery to you.
+
+Yours Sincerely,
+Kindly forward your details to: mrdavidibe966@gmail.com
+Mr. David Ibe
+International Auditor,
+Corporate Governance and Stewardship
