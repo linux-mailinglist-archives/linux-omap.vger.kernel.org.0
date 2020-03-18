@@ -2,139 +2,173 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE1F3189504
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Mar 2020 05:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B04E5189AFA
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Mar 2020 12:46:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726550AbgCRElg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Mar 2020 00:41:36 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:46840 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726227AbgCRElg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Mar 2020 00:41:36 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02I4fTiH070612;
-        Tue, 17 Mar 2020 23:41:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1584506489;
-        bh=LoiZ6h8ajGkis0ecLv9Oq8+1K9qCoWExGRKwcLAtTJ0=;
-        h=Subject:From:To:CC:References:Date:In-Reply-To;
-        b=lgprW6NdXpMlSIhwZrRHCmav/dErsb0lZDEwnDEDpKhJrUyzAL1wq1c2wG168x+hR
-         VdEB2v1w0QOnlT1/zjWulJ/LXWRJDOYZQlPTmgoQ8u24NrhBjQhcOrcvaJ7u06xZTo
-         leJA9xftRaiGmI3M00S89aOo4ZU+csQsS1fuU1AM=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02I4fTah100007;
-        Tue, 17 Mar 2020 23:41:29 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 17
- Mar 2020 23:41:29 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 17 Mar 2020 23:41:29 -0500
-Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02I4fQBT096749;
-        Tue, 17 Mar 2020 23:41:26 -0500
-Subject: Re: [PATCH v3 4/5] pwm: omap-dmtimer: Do not disable pwm before
- changing period/duty_cycle
-From:   Lokesh Vutla <lokeshvutla@ti.com>
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-CC:     Thierry Reding <thierry.reding@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
-        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>,
-        <kernel@pengutronix.de>
-References: <20200312042210.17344-1-lokeshvutla@ti.com>
- <20200312042210.17344-5-lokeshvutla@ti.com>
- <20200312064042.p7himm3odxjyzroi@pengutronix.de>
- <f250549f-1e7c-06d6-b2a4-7ae01c06725b@ti.com>
- <20200312084739.isixgdo3txr6rjzg@pengutronix.de>
- <2a5a06cd-7aca-c450-b048-33329d058eca@ti.com>
-Message-ID: <12f9a721-efd5-d5c0-1468-995b5674ff13@ti.com>
-Date:   Wed, 18 Mar 2020 10:10:37 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
-MIME-Version: 1.0
-In-Reply-To: <2a5a06cd-7aca-c450-b048-33329d058eca@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S1727212AbgCRLqW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Mar 2020 07:46:22 -0400
+Received: from foss.arm.com ([217.140.110.172]:48860 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726586AbgCRLqW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 18 Mar 2020 07:46:22 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ABDB81FB;
+        Wed, 18 Mar 2020 04:46:21 -0700 (PDT)
+Received: from e123648.arm.com (unknown [10.37.12.57])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 04D633F534;
+        Wed, 18 Mar 2020 04:46:09 -0700 (PDT)
+From:   Lukasz Luba <lukasz.luba@arm.com>
+To:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com
+Cc:     Morten.Rasmussen@arm.com, Dietmar.Eggemann@arm.com,
+        javi.merino@arm.com, cw00.choi@samsung.com,
+        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
+        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
+        rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
+        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
+        lorenzo.pieralisi@arm.com, lukasz.luba@arm.com,
+        patrick.bellasi@matbug.net, orjan.eide@arm.com,
+        rdunlap@infradead.org, mka@chromium.org
+Subject: [PATCH v5 0/5] Add support for devices in the Energy Model
+Date:   Wed, 18 Mar 2020 11:45:43 +0000
+Message-Id: <20200318114548.19916-1-lukasz.luba@arm.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Uwe,
+Hi all,
 
-On 12/03/20 4:14 PM, Lokesh Vutla wrote:
-> Hi Uwe,
-> 
-> On 12/03/20 2:17 PM, Uwe Kleine-König wrote:
->> On Thu, Mar 12, 2020 at 01:35:32PM +0530, Lokesh Vutla wrote:
->>> On 12/03/20 12:10 PM, Uwe Kleine-König wrote:
->>>> On Thu, Mar 12, 2020 at 09:52:09AM +0530, Lokesh Vutla wrote:
->>>>> Only the Timer control register(TCLR) cannot be updated when the timer
->>>>> is running. Registers like Counter register(TCRR), loader register(TLDR),
->>>>> match register(TMAR) can be updated when the counter is running. Since
->>>>> TCLR is not updated in pwm_omap_dmtimer_config(), do not stop the
->>>>> timer for period/duty_cycle update.
->>>>
->>>> I'm not sure what is sensible here. Stopping the PWM for a short period
->>>> is bad, but maybe emitting a wrong period isn't better. You can however
->>>> optimise it if only one of period or duty_cycle changes.
->>>>
->>>> @Thierry, what is your position here? I tend to say a short stop is
->>>> preferable.
->>>
->>> Short stop has side effects especially in the case where 1PPS is generated using
->>> this PWM. In this case where PWM period is continuously synced with PTP clock,
->>> cannot expect any breaks in PWM. This doesn't fall in the above limitations as
->>> well. as duty_cycle is not a worry and only the rising edge is all that matters.
->>>
->>> Also any specific reason why you wanted to stop rather than having the mentioned
->>> limitation? it is just a corner anyway and doesn't happen all the time.
->>
->> I'm a bit torn here. Which of the two steps out of line is worse depends
->> on what is driven by the PWM in question. And also I think ignoring
->> "just corner cases" is a reliable way into trouble.
-> 
-> I do agree that corner cases should not be ignored. But in this particular
-> driver, just trying to explain the effect of this corner case. On dynamic pwm
-> period update, the current pwm cycle might generate a period with mixed
-> settings. IMHO, it is okay to live with it and mark it as a limitation as you
-> pointed out in case of sifive driver[0].
+This patch set introduces support for devices in the Energy Model (EM)
+framework. It will unify the power model for thermal subsystem and make it
+simpler. The 1st patch refactors EM framework and adds support for devices.
+The 2nd patch changes dev_pm_opp_of_register_em() in OPP/OF which now should
+take as an argument struct device pointer. It touches a few trees
+(OMAP, NXP, Mediatek) updating their CPUfreq drivers to the new interface.
+Patch 4/5 changes thermal devfreq cooling removing old code for calculating
+local power table. It simplifies the code and uses EM for requested power
+calculation. Last patch 5/5 adds EM to Panfrost driver.
 
-Not sure what is the conclusion here. If there are no objections on this series,
-can it be merged?
+The patch set is based on linux-next tag next-20200317. I have decided to add
+a pending patch developed by Matthias [5]. It introduces PM QoS limits in
+devfreq cooling, to not break the build test. When it lands into
+thermal/linux-next and then in linux-next, I'll drop it from this series.
 
-Thanks and regards,
-Lokesh
+Changes:
+v5:
+- devfreq cooling: rebased on top of pending patch introducing PM QoS limits
+- devfreq cooling: added Matthias's patch to make this series build check pass
+- devfreq cooling: removed OPP disable code and switched to PM QoS
+- devfreq cooling: since thermal code always used a pointer to devfreq_dev_status,
+  switched to work on a local copy and avoid potential race when either busy_time or
+  total_time could change in the background
+- devfreq cooling: added _normalize_load() and handle all scenarios when
+  busy_time and total_time could have odd values (even raw counters)
+- Energy Model patch 2/4: removed prints from cpufreq drivers and added print inside
+  dev_pm_opp_of_register_em()
+- update patch 2/4 description to better reflect upcoming changes
+- collected ACK from Quentin for patch 1/4 and Reviewed-by from Steven for 4/4
+v4 [4]:
+- devfreq cooling: added two new registration functions, which will take care
+  of registering EM for the device and simplify drivers code
+  (suggested by Robin and Rob)
+- Energy Model: changed unregistering code, added kref to track usage, added
+  code freeing tables, added helper function
+- added return value to function dev_pm_opp_of_register_em() and updated
+  CPUFreq drivers code, added debug prints in case of failure
+- updated comments in devfreq cooling removing statement that only
+  simple_ondemand devfreq governor is supported to work with power extentions
+- fixed spelling in the documentation (reported by Randy)
+v3 [3]:
+- added back the cpumask 'cpus' in the em_perf_domain due potential cache misses
+- removed _is_cpu_em() since there is no need for it
+- changed function name from em_pd_energy() to em_cpu_energy(), which is
+  optimized for usage from the scheduler making some assumptions and not
+  validating arguments to speed-up, there is a comment stressing that it should
+  be used only for CPUs em_perf_domain
+- changed em_get_pd() to em_pd_get() which is now aligned with em_cpu_get()
+  naming
+- Energy Model: add code which checks if the EM is already registered for the
+  devfreq device
+- extended comment in em_cpu_get() describing the need for this function
+- fixed build warning reported on x86 by kbuild test robot in devfreq_cooling.c
+- updated documentation in the energy-model.rst
+- changed print messages from 'energy_model' to 'EM'
+- changed dev_warn to dev_dbg, should calm down test scripts in case the
+  platform has OPPs less efficient in the OPP table (some of them are there for
+  cooling reasons, we shouldn't warn in this case, debug info is enough)
+v2 [2]:
+- changed EM API em_register_perf_domain() adding cpumask_t pointer
+  as last argument (which was discussed with Dietmar and Quentin)
+- removed dependency on PM_OPP, thanks to the cpumask_t argument
+- removed enum em_type and em->type dependent code
+- em_get_pd() can handle CPU device as well as devfreq device
+- updated EM documentation
+- in devfreq cooling added code which prevents from race condition with
+  devfreq governors which are trying to use OPPs while thermal is in the middle
+  of disabling them.
+- in devfreq cooling added code which updates state of the devfreq device to
+  avoid working on stale data when governor has not updated it for a long time
+- in devfreq cooling added backward compatibility frequency table for drivers
+  which did not provide EM
+- added Steven's Reviewed-by to trace code in thermal
+- added another CPUFreq driver which needs to be updated to the new API
 
-> 
-> 
->>
->> The usual PWM contributer (understandably) cares mostly about their own
->> problem they have to solve. If however you take a step back and care
->> about the PWM framework as a whole to be capable to solve problems in
->> general, such that any consumer just has to know that there is a PWM and
->> start requesting specific settings for their work to get done, it gets
->> obvious that you want some kind of uniform behaviour of each hardware
->> driver. And then a short inactive break between two periods is more
->> common and better understandable than a mixed period.
-> 
-> But the problem here is that inactive breaks between two periods is not desired.
-> Because the pwm is used to generate a 1PPS signal and is continuously
-> synchronized with PTP clock.
-> 
-> I am up if this can be solved generically. But updating period is very specific
-> to hardware implementation. Not sure what generic solution can be brought out of
-> this. Please correct me if I am wrong.
-> 
-> [0]
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pwm/pwm-sifive.c#n7
-> 
-> Thanks and regards,
-> Lokesh
-> 
+The v1 can be found here [1].
+
+Regards,
+Lukasz Luba
+
+[1] https://lkml.org/lkml/2020/1/16/619
+[2] https://lkml.org/lkml/2020/2/6/377
+[3] https://lkml.org/lkml/2020/2/21/1910
+[4] https://lkml.org/lkml/2020/3/9/471
+[5] https://patchwork.kernel.org/patch/11435217/
+
+Lukasz Luba (4):
+  PM / EM: add devices to Energy Model
+  OPP: refactor dev_pm_opp_of_register_em() and update related drivers
+  thermal: devfreq_cooling: Refactor code and switch to use Energy Model
+  drm/panfrost: Register devfreq cooling and attempt to add Energy Model
+
+Matthias Kaehlcke (1):
+  thermal: devfreq_cooling: Use PM QoS to set frequency limits
+
+ Documentation/power/energy-model.rst        | 133 ++---
+ Documentation/scheduler/sched-energy.rst    |   2 +-
+ drivers/cpufreq/cpufreq-dt.c                |   2 +-
+ drivers/cpufreq/imx6q-cpufreq.c             |   2 +-
+ drivers/cpufreq/mediatek-cpufreq.c          |   2 +-
+ drivers/cpufreq/omap-cpufreq.c              |   2 +-
+ drivers/cpufreq/qcom-cpufreq-hw.c           |   2 +-
+ drivers/cpufreq/scmi-cpufreq.c              |  13 +-
+ drivers/cpufreq/scpi-cpufreq.c              |   2 +-
+ drivers/cpufreq/vexpress-spc-cpufreq.c      |   2 +-
+ drivers/gpu/drm/panfrost/panfrost_devfreq.c |   2 +-
+ drivers/opp/of.c                            |  76 +--
+ drivers/thermal/cpufreq_cooling.c           |  12 +-
+ drivers/thermal/devfreq_cooling.c           | 536 ++++++++++----------
+ include/linux/devfreq_cooling.h             |  39 +-
+ include/linux/energy_model.h                | 111 ++--
+ include/linux/pm_opp.h                      |  15 +-
+ include/trace/events/thermal.h              |  19 +-
+ kernel/power/energy_model.c                 | 465 +++++++++++++----
+ kernel/sched/fair.c                         |   2 +-
+ kernel/sched/topology.c                     |   4 +-
+ 21 files changed, 901 insertions(+), 542 deletions(-)
+
+-- 
+2.17.1
+
