@@ -2,83 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57AE018A97D
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Mar 2020 00:50:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7036F18B1EE
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Mar 2020 12:03:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726913AbgCRXun (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Mar 2020 19:50:43 -0400
-Received: from muru.com ([72.249.23.125]:60880 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726903AbgCRXun (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 18 Mar 2020 19:50:43 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id D202380B6;
-        Wed, 18 Mar 2020 23:51:29 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] defconfig updates for omaps for v5.7
-Date:   Wed, 18 Mar 2020 16:50:40 -0700
-Message-Id: <pull-1584575344-983293@atomide.com>
-X-Mailer: git-send-email 2.25.1
+        id S1726881AbgCSLDU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Mar 2020 07:03:20 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:55636 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726663AbgCSLDU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Mar 2020 07:03:20 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02JB3FlX032613;
+        Thu, 19 Mar 2020 06:03:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1584615795;
+        bh=n8cOACPz24iLv+TXfntFcziSsLRS8NmLUcjVq/avlzY=;
+        h=From:To:CC:Subject:Date;
+        b=iwJJp6PIyhPtChWN5Sx5TQOCEnOKQ4gioUUBRDkEBVQ5ogwYjrIPwvw6yXmpz/SBJ
+         1b2OQlE8mM+p4jBcSyUOmzS8PbpZREytxBVl3mMKdUo7M7jEOdGF3+niosimmvifAV
+         BCWf/yFQ/br9OMSl8xjIiEK8hq8DZ0qvv3hxlbBE=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02JB3F2S038774;
+        Thu, 19 Mar 2020 06:03:15 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 19
+ Mar 2020 06:03:15 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Thu, 19 Mar 2020 06:03:14 -0500
+Received: from a0132425.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02JB3C7l119908;
+        Thu, 19 Mar 2020 06:03:13 -0500
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>
+CC:     Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-serial@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 0/6] 8250_omap: Add DMA for AM654/J721e type UARTs
+Date:   Thu, 19 Mar 2020 16:33:38 +0530
+Message-ID: <20200319110344.21348-1-vigneshr@ti.com>
+X-Mailer: git-send-email 2.25.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+This series add DMA support for UARTs on AM654 and J721e SoCs. These
+UARTs are modified version of older generation UARTs on OMAP SoCs.
 
-The following changes since commit bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9:
+With new version of IP, it is possible to support longer DMA bursts per
+request. There are also differences wrt DMA integration.
 
-  Linux 5.6-rc1 (2020-02-09 16:08:48 -0800)
+First 4 patches update driver to work with AM654 DMA differences. Patch
+5 implements errata workaround and Patch 6 adds the actual support for
+DMA.
 
-are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.7/defconfig-signed
+Peter Ujfalusi (1):
+  serial: 8250: 8250_omap: Move locking out from __dma_rx_do_complete()
 
-for you to fetch changes up to 98c2cc359f8fa67992eb715f89f19390d70e135d:
+Vignesh Raghavendra (5):
+  serial: 8250: 8250_omap: Terminate DMA before pushing data on RX
+    timeout
+  serial: 8250: 8250_omap: Account for data in flight during DMA
+    teardown
+  serial: 8250: 8250_omap: Extend driver data to pass FIFO trigger info
+  serial: 8250: 8250_omap: Work around errata causing spurious IRQs with
+    DMA
+  serial: 8250: 8250_omap: Add DMA support for UARTs on K3 SoCs
 
-  ARM: omap2plus_defconfig: Update for moved and dropped options (2020-03-17 09:37:53 -0700)
+ drivers/tty/serial/8250/8250_omap.c | 222 ++++++++++++++++++++++------
+ 1 file changed, 176 insertions(+), 46 deletions(-)
 
-Note that this causes a minor merge conflict in next with the dss
-panel changes.
+-- 
+2.25.2
 
-----------------------------------------------------------------
-Defconfig changes for omaps for v5.7 merge window
-
-We want to enable some more features for omap2plus_defconfig to make it
-more usable:
-
-- Enable scururity for ext4 so setcap works
-
-- Enable simple-pm-bus so it can be later on be configured in the dts
-  files as needed
-
-- Enable zram as loadable modules as we do have devices using it
-
-- Enable more devices for droid4 for 1-wire battery eeprom and isl29028
-  proximity sensor
-
-- Enable mcpdm clocks from the PMIC as loadable modules
-
-- Enable ina2xx_adc as loadable module
-
-- And finally let's also  omap2plus_deconfig for moved and dropped options
-
-----------------------------------------------------------------
-Tony Lindgren (7):
-      ARM: omap2plus_defconfig: Enable ext4 security for setcap
-      ARM: omap2plus_defconfig: Enable simple-pm-bus
-      ARM: omap2plus_defconfig: Enable zram as loadable modules
-      ARM: omap2plus_defconfig: Enable more droid4 devices as loadable modules
-      ARM: omap2plus_defconfig: Enable McPDM optional PMIC clock as modules
-      ARM: omap2plus_defconfig: Enable ina2xx_adc as a loadable module
-      ARM: omap2plus_defconfig: Update for moved and dropped options
-
- arch/arm/configs/omap2plus_defconfig | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
