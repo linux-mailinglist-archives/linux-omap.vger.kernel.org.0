@@ -2,83 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA71818CC46
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Mar 2020 12:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D20AC18CCA7
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Mar 2020 12:20:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726894AbgCTLIN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 Mar 2020 07:08:13 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:43806 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726912AbgCTLIN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Mar 2020 07:08:13 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02KB88I5035120;
-        Fri, 20 Mar 2020 06:08:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1584702488;
-        bh=9WUktMUqDa4d61QWvx1cJ9oQzyaLfT2wrs3FrV4yau0=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=qpHxPDQtSGCzq7nwtJi21Kj85nQAHGe1Ep4qiyAwoqZmfjavHAXJywIxnw69bkplA
-         ZTJYC0+T5z84AnmxIkPtCG2r8y7TSXz4jwSAhoSDJQc20sDzfVicV3nj3LhaUidYe1
-         B6mzr9v9NYFPL3QGuICcNZT+Fe3rp0n+jWSB8qr4=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02KB88kC047568
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 20 Mar 2020 06:08:08 -0500
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 20
- Mar 2020 06:08:07 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Fri, 20 Mar 2020 06:08:07 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02KB84gh053481;
-        Fri, 20 Mar 2020 06:08:05 -0500
-Subject: Re: [PATCH net-next v2 00/10] net: ethernet: ti: cpts: add irq and
- HW_TS_PUSH events
-To:     "David S . Miller" <davem@davemloft.net>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tony Lindgren <tony@atomide.com>
-CC:     Sekhar Nori <nsekhar@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        netdev <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20200319165802.30898-1-grygorii.strashko@ti.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <6975cb4d-8077-60ac-05b5-27a9aa67bf30@ti.com>
-Date:   Fri, 20 Mar 2020 13:07:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1726974AbgCTLUf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Mar 2020 07:20:35 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:39559 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727016AbgCTLUf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Mar 2020 07:20:35 -0400
+Received: by mail-oi1-f193.google.com with SMTP id d63so6057131oig.6
+        for <linux-omap@vger.kernel.org>; Fri, 20 Mar 2020 04:20:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
+        b=b8+G2njQqFgR3u/XDAahViXG5L4HmPoG2PmkzL7YKwFpy/V6B4NnAxwBi4j1wD6toy
+         RYUqv0ZFsK+MeWJg7fZsozqwofYYbgcIW7fXQFboB3lhkgBNfSLWG09xlafT0HR1GJ1n
+         +Zn1Vp7CyTUWDoX87E9pqhmS5rohRxFPsywnmnJ5z3M2fQfK5WA8RWnLeA+s+mG+IV53
+         xOGvQAzWluZ0J0/5Aj/QNSzCrsouQwdnYfkYVk6RcqJ4erlIxpDl9iAzMsUrp1xN+d7x
+         CLhZWaTW9qfYBk+Jg8449OEleJ7ebnb+pprHwKU7FysRzJq0x0TscPAB3adufsCMf0fI
+         dHnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
+        b=htF1yT4mXOepcHmP6AeWGyaQkXg1WLYAyif+h4bEEJzvmrd3mXoZVJ/xVYxUHneB7L
+         qUAZnkGi7cmFGGZAWT3YXf3ghlQTJnZq5eYDy446K+pCimMzD8TmTr+SLwmGI8Eo3iNz
+         ihIJdDhBG7P8o4JRkpw9mCRegktCAdeCTycIRqVVLmaJanhjrQvRvXEPwyTAWZF7s5yV
+         3UBvanmPPkA/m1dhIjGZCDbQzyJQVj9K6bwew4rRfDEKq97PASaYcAPcaRkVXNFomQfl
+         dpWctb7RE+HWRh/JN6jy/vM5QW5JOhVQxB7/zRauyx+9QVNJ0XG6z34J6PIGbQswBKfK
+         lFqA==
+X-Gm-Message-State: ANhLgQ3PFMllruvENWU5vKXz056S2u7o2qylYD306XQPQtt1ttEHKtbn
+        zvXHn7kbjF1nMiBjvkwVu2bduFgMhcg5iC4c2q4=
+X-Google-Smtp-Source: ADFU+vsCtos93dCK8qGfhdkwOdud3ZjpanDjCbS9pa1TE55XirRXOvMyx1WKFGFiuClJ66yyICApJJD0HMfc1CYsXP8=
+X-Received: by 2002:aca:210c:: with SMTP id 12mr5677632oiz.0.1584703234460;
+ Fri, 20 Mar 2020 04:20:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200319165802.30898-1-grygorii.strashko@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Received: by 2002:a05:6838:40c6:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:20:34
+ -0700 (PDT)
+From:   ECOWAS COMMITEE <ecowasmonitoringcommitteeabj@gmail.com>
+Date:   Fri, 20 Mar 2020 11:20:34 +0000
+Message-ID: <CAHHubrbE-eXijJvb-yMhHf_zMtqHatZECXC7fpgS=r7y6kGzGQ@mail.gmail.com>
+Subject: HAPPY SURVIVAL OF CORONAVIRUS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Dear Sir/Madam
 
+HAPPY SURVIVAL OF CORONAVIRUS
 
-On 19/03/2020 18:57, Grygorii Strashko wrote:
-> Hi Richard, All,
-> 
-> v2: no functional changes.
-> 
-> This is re-spin of patches to add CPSW IRQ and HW_TS_PUSH events support I've
-> sent long time ago [1]. In this series, I've tried to restructure and split changes,
-> and also add few additional optimizations comparing to initial RFC submission [1].
-> 
+We the West African Monitoring Committee of the West African Economic
+Community(ECOWAS)are contacting you for a business transaction which
+we feel will be of great interest to you.
 
-Pls, ignore this submission. Sent by mistake.
+Our duty is to see to the coming in and out of funds into this sub
+region.There is a fund which we confiscated worth of $12.5 million
+dollars.We will like you to receive this fund on your name in your
+account and as well helping us in the investment.
 
-Sorry for this.
+You are advised to contact us as soon as you get this message for
+details of the transaction if you find it interesting.
 
--- 
-Best regards,
-grygorii
+Best Regards,
+
+Mr John Aka
+
+Chairman
+ECOWAS
+West African Monitoring Committee
+Tel 00225 6716 6756
+Abidjan Cote D'Ivoire
