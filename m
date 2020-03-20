@@ -2,161 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26F8318CB0B
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Mar 2020 11:02:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA71818CC46
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Mar 2020 12:08:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726602AbgCTKCz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 Mar 2020 06:02:55 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:38406 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726527AbgCTKCy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Mar 2020 06:02:54 -0400
-Received: by mail-ed1-f66.google.com with SMTP id h5so6445707edn.5;
-        Fri, 20 Mar 2020 03:02:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=yKhEFD0HDc489I3cxzxcRx7nCJ4icJCiGjR0lWOPd2k=;
-        b=m0yWlKwpPPS1pBzUL5NnkA5mvuLbPIDdPqWMwWiDARWIoLNWkrc7SIYeRA+xASdqMC
-         KxCWT1RUD9yR+r5rzYrf4ZaxO1JMtYsYT2rrAohor/ptAzgmtvW4+8WlngVxGhhN+MdT
-         Fh+llBMH0889nhVKUbx+xTZiK2/I2BZ2EqnLSvBT5XliZVDAzKQxl1jZp6keYHBnV3XE
-         DvuVC/c9xRZTb2HKs5JJLZc7wY8vrP3F+S6rtRuJCZ1BZAJFUEmrcF8dJRJiHkSpvFFp
-         NHFLabftPUjMyH54qtF7YYAUnqgE11mPpCFrJMMXISZedAK42TcEPotSCk+UjnQZJt9O
-         +IBw==
-X-Gm-Message-State: ANhLgQ1IZts2jDJQKOKJ2qcCw7VAIZzOMMMJyg2Zb6FfZlVF+ZVvFFF/
-        Z1UJm4df8341Wdyvbjs+2qk=
-X-Google-Smtp-Source: ADFU+vtTJo8GuuHT33eJ8VISdzNZK+dw+AG9XHRSiOF+v3/TwxvILo+kc3y2aVtBOdqG/TC06c4U9g==
-X-Received: by 2002:a17:906:80d5:: with SMTP id a21mr7612042ejx.240.1584698571643;
-        Fri, 20 Mar 2020 03:02:51 -0700 (PDT)
-Received: from pi3 ([194.230.155.125])
-        by smtp.googlemail.com with ESMTPSA id e16sm319824ejx.53.2020.03.20.03.02.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2020 03:02:50 -0700 (PDT)
-Date:   Fri, 20 Mar 2020 11:02:43 +0100
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
-Cc:     devicetree@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Paul Barker <pbarker@konsulko.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Igor Opaniuk <igor.opaniuk@toradex.com>,
-        Philippe Schenker <philippe.schenker@toradex.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        David Lechner <david@lechnology.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Peter Rosin <peda@axentia.se>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Sekhar Nori <nsekhar@ti.com>, Shawn Guo <shawnguo@kernel.org>,
-        Stefan Agner <stefan@agner.ch>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: Re: [RFC PATCH 7/7] arm: dts: pwm: replace polarity constant with
- macro
-Message-ID: <20200320100243.GA16931@pi3>
-References: <20200317123231.2843297-1-oleksandr.suvorov@toradex.com>
- <20200317123231.2843297-8-oleksandr.suvorov@toradex.com>
+        id S1726894AbgCTLIN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Mar 2020 07:08:13 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:43806 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726912AbgCTLIN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Mar 2020 07:08:13 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02KB88I5035120;
+        Fri, 20 Mar 2020 06:08:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1584702488;
+        bh=9WUktMUqDa4d61QWvx1cJ9oQzyaLfT2wrs3FrV4yau0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=qpHxPDQtSGCzq7nwtJi21Kj85nQAHGe1Ep4qiyAwoqZmfjavHAXJywIxnw69bkplA
+         ZTJYC0+T5z84AnmxIkPtCG2r8y7TSXz4jwSAhoSDJQc20sDzfVicV3nj3LhaUidYe1
+         B6mzr9v9NYFPL3QGuICcNZT+Fe3rp0n+jWSB8qr4=
+Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02KB88kC047568
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 20 Mar 2020 06:08:08 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Fri, 20
+ Mar 2020 06:08:07 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Fri, 20 Mar 2020 06:08:07 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02KB84gh053481;
+        Fri, 20 Mar 2020 06:08:05 -0500
+Subject: Re: [PATCH net-next v2 00/10] net: ethernet: ti: cpts: add irq and
+ HW_TS_PUSH events
+To:     "David S . Miller" <davem@davemloft.net>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tony Lindgren <tony@atomide.com>
+CC:     Sekhar Nori <nsekhar@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        netdev <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20200319165802.30898-1-grygorii.strashko@ti.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <6975cb4d-8077-60ac-05b5-27a9aa67bf30@ti.com>
+Date:   Fri, 20 Mar 2020 13:07:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200317123231.2843297-8-oleksandr.suvorov@toradex.com>
+In-Reply-To: <20200319165802.30898-1-grygorii.strashko@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Mar 17, 2020 at 02:32:31PM +0200, Oleksandr Suvorov wrote:
-> There is the PWM_POLARITY_NORMAL defined and describled in
-> <dt-bindings/pwm/pwm.h> and used by pwm drivers.
-> 
-> This patch converts all '0' constant in pwms parameters into
-> PWM_POLARITY_NORMAL.
-> 
-> Replace with sed regexp:
-> 's/(pwms = <&[a-zA-Z_0-9]+ [0-9]+ [0-9]+) 0>/\1 PWM_POLARITY_NORMAL>/'
-> 
-> Then:
-> - included pwm.h in some dts/dtsi to fix building errors about undefined
->   symbols.
-> - fixed the patman warnings about the code format;
-> 
-> Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
-> ---
-> 
->  arch/arm/boot/dts/am335x-cm-t335.dts               | 2 +-
->  arch/arm/boot/dts/am335x-evm.dts                   | 2 +-
->  arch/arm/boot/dts/am3517-evm.dts                   | 2 +-
->  arch/arm/boot/dts/at91-dvk_su60_somc_lcm.dtsi      | 2 +-
->  arch/arm/boot/dts/at91-kizbox2-common.dtsi         | 6 +++---
->  arch/arm/boot/dts/at91-kizbox3_common.dtsi         | 8 ++++----
->  arch/arm/boot/dts/at91-kizboxmini-common.dtsi      | 6 +++---
->  arch/arm/boot/dts/at91-nattis-2-natte-2.dts        | 2 +-
->  arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts        | 2 +-
->  arch/arm/boot/dts/at91sam9n12ek.dts                | 2 +-
->  arch/arm/boot/dts/at91sam9x5dm.dtsi                | 2 +-
->  arch/arm/boot/dts/berlin2cd-google-chromecast.dts  | 4 ++--
->  arch/arm/boot/dts/da850-evm.dts                    | 2 +-
->  arch/arm/boot/dts/da850-lego-ev3.dts               | 4 ++--
->  arch/arm/boot/dts/exynos4412-midas.dtsi            | 2 +-
->  arch/arm/boot/dts/exynos4412-odroidu3.dts          | 2 +-
->  arch/arm/boot/dts/exynos5250-snow-common.dtsi      | 2 +-
->  arch/arm/boot/dts/exynos5410-odroidxu.dts          | 2 +-
->  arch/arm/boot/dts/exynos5420-peach-pit.dts         | 2 +-
->  arch/arm/boot/dts/exynos5422-odroidhc1.dts         | 2 +-
->  arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi | 2 +-
->  arch/arm/boot/dts/exynos5422-odroidxu4.dts         | 2 +-
->  arch/arm/boot/dts/exynos54xx-odroidxu-leds.dtsi    | 4 ++--
->  arch/arm/boot/dts/exynos5800-peach-pi.dts          | 2 +-
->  arch/arm/boot/dts/imx53-tx53-x13x.dts              | 5 +++--
->  arch/arm/boot/dts/imx6dl-tx6dl-comtft.dts          | 2 +-
->  arch/arm/boot/dts/imx6q-display5.dtsi              | 2 +-
->  arch/arm/boot/dts/imx6q-tx6q-1010-comtft.dts       | 2 +-
->  arch/arm/boot/dts/imx6q-tx6q-1020-comtft.dts       | 2 +-
->  arch/arm/boot/dts/imx6qdl-tx6-lvds.dtsi            | 4 ++--
->  arch/arm/boot/dts/imx7-colibri.dtsi                | 4 +++-
->  arch/arm/boot/dts/imx7d-nitrogen7.dts              | 3 ++-
->  arch/arm/boot/dts/imx7d-pico.dtsi                  | 3 ++-
->  arch/arm/boot/dts/imx7d-sdb.dts                    | 3 ++-
->  arch/arm/boot/dts/imx7ulp-evk.dts                  | 3 ++-
->  arch/arm/boot/dts/iwg20d-q7-common.dtsi            | 2 +-
->  arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi   | 2 +-
->  arch/arm/boot/dts/meson8b-ec100.dts                | 4 ++--
->  arch/arm/boot/dts/meson8b-mxq.dts                  | 4 ++--
->  arch/arm/boot/dts/meson8b-odroidc1.dts             | 4 ++--
->  arch/arm/boot/dts/motorola-mapphone-common.dtsi    | 3 ++-
->  arch/arm/boot/dts/omap3-gta04.dtsi                 | 2 +-
->  arch/arm/boot/dts/omap3-n900.dts                   | 2 +-
->  arch/arm/boot/dts/rk3288-veyron-edp.dtsi           | 2 +-
->  arch/arm/boot/dts/rk3288-veyron.dtsi               | 2 +-
->  arch/arm/boot/dts/rv1108-evb.dts                   | 2 +-
->  arch/arm/boot/dts/s3c6410-mini6410.dts             | 2 +-
->  arch/arm/boot/dts/s5pv210-aries.dtsi               | 2 +-
->  arch/arm/boot/dts/s5pv210-smdkv210.dts             | 2 +-
 
-For Exynos/S3C/S5P:
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
 
+On 19/03/2020 18:57, Grygorii Strashko wrote:
+> Hi Richard, All,
+> 
+> v2: no functional changes.
+> 
+> This is re-spin of patches to add CPSW IRQ and HW_TS_PUSH events support I've
+> sent long time ago [1]. In this series, I've tried to restructure and split changes,
+> and also add few additional optimizations comparing to initial RFC submission [1].
+> 
+
+Pls, ignore this submission. Sent by mistake.
+
+Sorry for this.
+
+-- 
 Best regards,
-Krzysztof
+grygorii
