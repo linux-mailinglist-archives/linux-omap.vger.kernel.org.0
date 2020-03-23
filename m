@@ -2,93 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1207218ED0B
-	for <lists+linux-omap@lfdr.de>; Sun, 22 Mar 2020 23:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEDEA18F3A9
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Mar 2020 12:30:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726816AbgCVWmd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 22 Mar 2020 18:42:33 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:58798 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726809AbgCVWmd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 22 Mar 2020 18:42:33 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 3991D1C033E; Sun, 22 Mar 2020 23:42:31 +0100 (CET)
-Date:   Sun, 22 Mar 2020 23:42:30 +0100
-From:   Pavel Machek <pavel@denx.de>
-To:     Tony Lindgren <tony@atomide.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz
-Cc:     Merlijn Wajer <merlijn@wizzup.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Droid 4 in -next -- still no backlight was Re: [PATCH 1/4] tty:
- n_gsm: Add support for serdev drivers
-Message-ID: <20200322224230.GB28082@amd>
-References: <20200319173755.65082-1-tony@atomide.com>
- <20200319173755.65082-2-tony@atomide.com>
+        id S1727797AbgCWLaa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 23 Mar 2020 07:30:30 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:51426 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727658AbgCWLaa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Mar 2020 07:30:30 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02NBULbc122352;
+        Mon, 23 Mar 2020 06:30:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1584963021;
+        bh=SvZEk0kF+xXLC23PlsMzzjUziFI9pRar16wxl8TII6g=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Zo1yalVtoEaB5tFIsjBmAkmnkpzZnGj5w6Rkk1p55dm58UeyWqHwIYII/MIfAgRYx
+         elzBMBWoQa67uJE61S7LWn6QkG7VbcV3xOf4sTuw8U1rRboFR2jJtLdUIPtuckw5hK
+         LBC6p/FqcTxsR01FV3Vn4d68bXOpr5hxXPVPaeAE=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02NBUKpY087302
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 23 Mar 2020 06:30:20 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 23
+ Mar 2020 06:30:16 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 23 Mar 2020 06:30:16 -0500
+Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02NBUDtI076876;
+        Mon, 23 Mar 2020 06:30:14 -0500
+Subject: Re: [PATCH v3 0/5] pwm: omap-dmtimer: Allow for dynamic pwm period
+ updates
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+CC:     Tony Lindgren <tony@atomide.com>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>
+References: <20200312042210.17344-1-lokeshvutla@ti.com>
+From:   Lokesh Vutla <lokeshvutla@ti.com>
+Message-ID: <09dac13d-44b0-80c6-fdbb-54bfc6f48e36@ti.com>
+Date:   Mon, 23 Mar 2020 17:00:13 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="R3G7APHDIzY6R/pk"
-Content-Disposition: inline
-In-Reply-To: <20200319173755.65082-2-tony@atomide.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20200312042210.17344-1-lokeshvutla@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi All,
 
---R3G7APHDIzY6R/pk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 12/03/20 9:52 AM, Lokesh Vutla wrote:
+> This series fixes minor issues in config callback and allows for on the
+> fly updates for pwm period and duty cycle. This is mainly intended to
+> allow pwm omap dmtimer to be used for generating a 1PPS signal that can be
+> syncronized to PTP clock in CPTS module available in AM335x and AM57xx SoCs.
+> 
+> Series depends on the following series:
+> - https://patchwork.kernel.org/patch/11379875/
+> - https://patchwork.kernel.org/project/linux-omap/list/?series=251691
 
-Hi!
+Gentle ping on this series :) The above dependencies are merged into timer tree
+and below is the immutable branch:
 
-> We can make use of serdev drivers to do simple device drivers for
-> TS 27.010 chanels, and we can handle vendor specific protocols on top
-> of TS 27.010 with serdev drivers.
+https://git.linaro.org/people/dlezcano/linux.git/log/?h=timers/drivers/timer-ti-dm
 
-I took all three series (
-
-[PATCHv3 0/3] Lost key-up interrupt handling for omap4-keypa
-[PATCH 1/3] Input: atmel_mxt_ts - use runtime PM instead of
-[PATCHv5 0/4] n_gsm serdev support and protocol driver for d
-
-) and applied them on top of next-20200320.
-
-Good news is that result boots. (So I did partial testing of the patches).
-
-Bad news is that I still don't have working backlight. I do have LED
-and there's backlight device connected to the LED, so I can't control
-the LED directly, but the screen is black (and I don't see boot
-messages either).
-
-Before I start debugging, does screen work for you in -next, or do you
-have some fixes I could try?
-
-Thanks and best regards,
-									Pavel
-
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---R3G7APHDIzY6R/pk
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl536dYACgkQMOfwapXb+vKBJQCeIUN5N8vMzmkvY9E6nubpW6wN
-P7IAoKaO0YTconM1rcr4rigfmHCyJeJk
-=q+Wl
------END PGP SIGNATURE-----
-
---R3G7APHDIzY6R/pk--
+Thanks and regards,
+Lokesh
