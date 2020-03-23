@@ -2,81 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEDEA18F3A9
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Mar 2020 12:30:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CF1A18F625
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Mar 2020 14:50:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727797AbgCWLaa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 23 Mar 2020 07:30:30 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:51426 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727658AbgCWLaa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 Mar 2020 07:30:30 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02NBULbc122352;
-        Mon, 23 Mar 2020 06:30:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1584963021;
-        bh=SvZEk0kF+xXLC23PlsMzzjUziFI9pRar16wxl8TII6g=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Zo1yalVtoEaB5tFIsjBmAkmnkpzZnGj5w6Rkk1p55dm58UeyWqHwIYII/MIfAgRYx
-         elzBMBWoQa67uJE61S7LWn6QkG7VbcV3xOf4sTuw8U1rRboFR2jJtLdUIPtuckw5hK
-         LBC6p/FqcTxsR01FV3Vn4d68bXOpr5hxXPVPaeAE=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02NBUKpY087302
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 23 Mar 2020 06:30:20 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 23
- Mar 2020 06:30:16 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Mon, 23 Mar 2020 06:30:16 -0500
-Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02NBUDtI076876;
-        Mon, 23 Mar 2020 06:30:14 -0500
-Subject: Re: [PATCH v3 0/5] pwm: omap-dmtimer: Allow for dynamic pwm period
- updates
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-CC:     Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
-        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>
-References: <20200312042210.17344-1-lokeshvutla@ti.com>
-From:   Lokesh Vutla <lokeshvutla@ti.com>
-Message-ID: <09dac13d-44b0-80c6-fdbb-54bfc6f48e36@ti.com>
-Date:   Mon, 23 Mar 2020 17:00:13 +0530
+        id S1728446AbgCWNug (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 23 Mar 2020 09:50:36 -0400
+Received: from foss.arm.com ([217.140.110.172]:49328 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728384AbgCWNug (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 23 Mar 2020 09:50:36 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C7DB61FB;
+        Mon, 23 Mar 2020 06:50:35 -0700 (PDT)
+Received: from [10.37.12.102] (unknown [10.37.12.102])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 855B83F52E;
+        Mon, 23 Mar 2020 06:50:25 -0700 (PDT)
+Subject: Re: [PATCH v5 5/5] drm/panfrost: Register devfreq cooling and attempt
+ to add Energy Model
+To:     Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com, Morten.Rasmussen@arm.com,
+        Dietmar.Eggemann@arm.com, javi.merino@arm.com,
+        cw00.choi@samsung.com, b.zolnierkie@samsung.com, rjw@rjwysocki.net,
+        sudeep.holla@arm.com, viresh.kumar@linaro.org, nm@ti.com,
+        sboyd@kernel.org, rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
+        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, airlied@linux.ie, daniel@ffwll.ch,
+        liviu.dudau@arm.com, lorenzo.pieralisi@arm.com,
+        patrick.bellasi@matbug.net, orjan.eide@arm.com,
+        rdunlap@infradead.org, mka@chromium.org
+References: <20200318114548.19916-1-lukasz.luba@arm.com>
+ <20200318114548.19916-6-lukasz.luba@arm.com> <20200318131114.GA1812@kevin>
+From:   Lukasz Luba <lukasz.luba@arm.com>
+Message-ID: <4bc1cf2f-e5ea-6265-d685-167d7a92da56@arm.com>
+Date:   Mon, 23 Mar 2020 13:50:23 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200312042210.17344-1-lokeshvutla@ti.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20200318131114.GA1812@kevin>
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi All,
 
-On 12/03/20 9:52 AM, Lokesh Vutla wrote:
-> This series fixes minor issues in config callback and allows for on the
-> fly updates for pwm period and duty cycle. This is mainly intended to
-> allow pwm omap dmtimer to be used for generating a 1PPS signal that can be
-> syncronized to PTP clock in CPTS module available in AM335x and AM57xx SoCs.
-> 
-> Series depends on the following series:
-> - https://patchwork.kernel.org/patch/11379875/
-> - https://patchwork.kernel.org/project/linux-omap/list/?series=251691
 
-Gentle ping on this series :) The above dependencies are merged into timer tree
-and below is the immutable branch:
+On 3/18/20 1:11 PM, Alyssa Rosenzweig wrote:
+> Reviewed-by: Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>
 
-https://git.linaro.org/people/dlezcano/linux.git/log/?h=timers/drivers/timer-ti-dm
+Thank you Alyssa for the review.
 
-Thanks and regards,
-Lokesh
+Regards,
+Lukasz
