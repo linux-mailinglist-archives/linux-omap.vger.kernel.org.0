@@ -2,96 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A95D191701
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Mar 2020 17:54:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB517191722
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Mar 2020 18:02:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727320AbgCXQyU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 24 Mar 2020 12:54:20 -0400
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:38267 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727273AbgCXQyU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 24 Mar 2020 12:54:20 -0400
-Received: by mail-pj1-f67.google.com with SMTP id m15so1715412pje.3;
-        Tue, 24 Mar 2020 09:54:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=rPZBl+QbGFAFlz2fLf98Z5n8K3I+qd2EtNADkBNRMLw=;
-        b=UWo5YyX/rz4iT22TlUFvMncYW1HL4F8dFNN2Pn6WdGpvsGKs7lRciWnF92mV3MrHXt
-         g9G8ed0fy9z8RVLHDli/tFxC3mdwGVVW2GsLGtBC5d37nzjvaMo+9ZOdpDp96qeNtqrs
-         CsVV5RX+XdgMbCB2HOYg5pK+q2Nyab6kDG8jbCUdlceMncwfXrCuJDlTFiiPfa2PBEkt
-         eKWxH0c0T5nOS+/UvxLM5qEVXPEbvWXIUFX3aVPP1L/BO7ZYnwewjGGZxW79s7XV/y1z
-         Hif8WRbKqmEisX7as5ZgPCdUdDXUY9bUHS9/9w+BegZ6VvoWfR0NiMIeh/K0Tmyxg5y5
-         UCpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=rPZBl+QbGFAFlz2fLf98Z5n8K3I+qd2EtNADkBNRMLw=;
-        b=q0dOQgLdBal38HyppEhhlO8qoTULaTS1JwtPGaxxoDRg/018UYRW02WvQVpAIWM/Cc
-         Nprz+JrFhTFhhsS7WUAT3jQAbvI7CKT/4MbfsjUiChNvFao7NGSX7h7oBFgjgvXnVK+N
-         XYkFiQv+YNqadLu5iL0jylGCovjso+7DjX1EVRT27fSvgUYaV7FqP2xcb4kNZL6y7QHx
-         Df6gYcYHAt9CBhOJFGU23GdS2l3vpkWOadZdrM0Ap7u5XpgAQGEHgED7IFDKrI5AcYXZ
-         CKV14kEeTmdzgYBzqwYwXtRYvcLYJVScmAx5kMP6fsNkZHuOEQZ7RB1e+m/SQRUbMAAF
-         yMmA==
-X-Gm-Message-State: ANhLgQ2rfRzXXMbNf8ZjP4L6CNooEJKQMWT4Jwm+Um4fwHcepZu5muqS
-        dk6H8/IwLvkT45cUrIjTbaU=
-X-Google-Smtp-Source: ADFU+vvVT3/hBoL79iWLOhKZfIHg0UIA7zdlV4T9CvIkuEaERJ0ookWRmQeJVoKdWNDIJKR+yO5Owg==
-X-Received: by 2002:a17:90a:bd0c:: with SMTP id y12mr6554330pjr.82.1585068857320;
-        Tue, 24 Mar 2020 09:54:17 -0700 (PDT)
-Received: from localhost (c-73-241-114-122.hsd1.ca.comcast.net. [73.241.114.122])
-        by smtp.gmail.com with ESMTPSA id n30sm8678428pgc.36.2020.03.24.09.54.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2020 09:54:16 -0700 (PDT)
-Date:   Tue, 24 Mar 2020 09:54:14 -0700
-From:   Richard Cochran <richardcochran@gmail.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        netdev <netdev@vger.kernel.org>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 08/11] net: ethernet: ti: cpts: move rx
- timestamp processing to ptp worker only
-Message-ID: <20200324165414.GA30483@localhost>
-References: <20200320194244.4703-1-grygorii.strashko@ti.com>
- <20200320194244.4703-9-grygorii.strashko@ti.com>
- <20200324134343.GD18149@localhost>
- <13dd9d58-7417-2f39-aa7d-dceae946482c@ti.com>
+        id S1727320AbgCXRBP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 24 Mar 2020 13:01:15 -0400
+Received: from muru.com ([72.249.23.125]:33112 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727314AbgCXRBP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 24 Mar 2020 13:01:15 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id CE63E81CA;
+        Tue, 24 Mar 2020 17:02:00 +0000 (UTC)
+Date:   Tue, 24 Mar 2020 10:01:10 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@denx.de>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        Peter Hurley <peter@hurleysoftware.com>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: Droid 4 in -next -- still no backlight was Re: [PATCH 1/4] tty:
+ n_gsm: Add support for serdev drivers
+Message-ID: <20200324170110.GB37466@atomide.com>
+References: <20200319173755.65082-1-tony@atomide.com>
+ <20200319173755.65082-2-tony@atomide.com>
+ <20200322224230.GB28082@amd>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <13dd9d58-7417-2f39-aa7d-dceae946482c@ti.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200322224230.GB28082@amd>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 05:34:34PM +0200, Grygorii Strashko wrote:
-> I tested both ways and kept this version as i'v not seen any degradation,
-> but, of course, i'll redo the test (or may be you can advise what test to run).
+* Pavel Machek <pavel@denx.de> [200322 22:43]:
+> Hi!
+> 
+> > We can make use of serdev drivers to do simple device drivers for
+> > TS 27.010 chanels, and we can handle vendor specific protocols on top
+> > of TS 27.010 with serdev drivers.
+> 
+> I took all three series (
+> 
+> [PATCHv3 0/3] Lost key-up interrupt handling for omap4-keypa
+> [PATCH 1/3] Input: atmel_mxt_ts - use runtime PM instead of
+> [PATCHv5 0/4] n_gsm serdev support and protocol driver for d
+> 
+> ) and applied them on top of next-20200320.
+> 
+> Good news is that result boots. (So I did partial testing of the patches).
+> 
+> Bad news is that I still don't have working backlight. I do have LED
+> and there's backlight device connected to the LED, so I can't control
+> the LED directly, but the screen is black (and I don't see boot
+> messages either).
+> 
+> Before I start debugging, does screen work for you in -next, or do you
+> have some fixes I could try?
 
-Measure the time delay from when the frame arrives in the stack until
-that frame+RxTimestamp arrives in the application.  I expect the round
-about way via kthread takes longer. 
- 
-> My thoughts were - network stack might not immediately deliver packet to the application
+Yes the backlight works for me now just fine with current v5.6-rc.
 
-The network stack always delivers the packet, but you artificially
-delay that delivery by calling netif_receive_skb() later on from
-cpts_match_rx_ts().
+But yeah, looks like LCD is again broken in current Linux next,
+maybe Laurent and Sebastian have some clues?
 
-> and PTP worker can be tuned (pri and smp_affinity),
+Regards,
 
-That won't avoid the net softirq.
-
-> resulted code will be more structured,
-
-I am afraid people will copy this pattern in new drivers.  It really
-does not make much sense.
-
-Thanks,
-Richard
+Tony
