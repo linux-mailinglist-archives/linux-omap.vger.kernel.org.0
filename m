@@ -2,96 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5C7D19147F
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Mar 2020 16:34:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D046A191681
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Mar 2020 17:35:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727544AbgCXPeo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 24 Mar 2020 11:34:44 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:48900 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727216AbgCXPeo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 24 Mar 2020 11:34:44 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02OFYc1E035547;
-        Tue, 24 Mar 2020 10:34:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1585064078;
-        bh=dvT9zIe0HW8eK6lubfuxUENKvXb1n0fXjwpBdTggZFE=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=eOYTtfo2N3zZmjmIBQj120udaJv32/dlX0mgjvFl1n/OxqqCA058Uu9N+k3aNyaTg
-         GzNN7qLG9GP/H5UhCCu2lOyh+nS+P0A1Al4kDGShTnF0pWYLD6qzuFZf1SLBDszYoO
-         qm1MgJe6qCzHC7xeQpB6QwGyHmvtbO5MTpaxwrEo=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02OFYcrU114939
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 24 Mar 2020 10:34:38 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 24
- Mar 2020 10:34:38 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 24 Mar 2020 10:34:38 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02OFYY1E107017;
-        Tue, 24 Mar 2020 10:34:35 -0500
-Subject: Re: [PATCH net-next v3 08/11] net: ethernet: ti: cpts: move rx
- timestamp processing to ptp worker only
-To:     Richard Cochran <richardcochran@gmail.com>
-CC:     "David S . Miller" <davem@davemloft.net>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        netdev <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20200320194244.4703-1-grygorii.strashko@ti.com>
- <20200320194244.4703-9-grygorii.strashko@ti.com>
- <20200324134343.GD18149@localhost>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <13dd9d58-7417-2f39-aa7d-dceae946482c@ti.com>
-Date:   Tue, 24 Mar 2020 17:34:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1725767AbgCXQeR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Tue, 24 Mar 2020 12:34:17 -0400
+Received: from muru.com ([72.249.23.125]:33060 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727257AbgCXQeR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 24 Mar 2020 12:34:17 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 1C43480E1;
+        Tue, 24 Mar 2020 16:35:02 +0000 (UTC)
+Date:   Tue, 24 Mar 2020 09:34:12 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@denx.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Johan Hovold <johan@kernel.org>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 2/4] serdev: ngsm-motmdm: Add Motorola TS 27.010 serdev
+ modem driver for droid4
+Message-ID: <20200324163412.GZ37466@atomide.com>
+References: <20200319173755.65082-1-tony@atomide.com>
+ <20200319173755.65082-3-tony@atomide.com>
+ <20200322220903.GA28082@amd>
 MIME-Version: 1.0
-In-Reply-To: <20200324134343.GD18149@localhost>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20200322220903.GA28082@amd>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 24/03/2020 15:43, Richard Cochran wrote:
-> On Fri, Mar 20, 2020 at 09:42:41PM +0200, Grygorii Strashko wrote:
->> Once CPTS IRQ will be enabled the CPTS irq handler may compete with netif
->> RX sofirq path and so RX timestamp might not be ready at the moment packet
->> is processed. As result, packet has to be deferred and processed later.
+* Pavel Machek <pavel@denx.de> [200322 22:09]:
+> Hi!
 > 
-> This change is not necessary.  The Rx path can simply take a spinlock,
-> check the event list and the HW queue.
->   
->> This patch moves RX timestamp processing tx timestamp processing to PTP
->> worker always the same way as it's been done for TX timestamps.
+> > Many Motorola phones are controlling the modem using a custom variant
+> > of TS 27.010 serial line discipline. Devices on these modems have a
+> > dedicated TS 27.010 channel for features like audio mixer, GNSS, voice
+> > modem, SIM card reader and so on.
 > 
-> There is no advantage to delaying Rx time stamp delivery.  In fact, it
-> can degrade synchronization performance.  The only reason the
-> implementation delays Tx time stamps delivery is because there is no
-> other way.
+> I get warning here while applying:
+> 
+> Applying: serdev: ngsm-motmdm: Add Motorola TS 27.010 serdev modem
+> driver for droid4
+> .git/rebase-apply/patch:22: new blank line at EOF.
+> +
 
-I tested both ways and kept this version as i'v not seen any degradation,
-but, of course, i'll redo the test (or may be you can advise what test to run).
+Thanks yes looks like an extra empty line added to Kconfig.
 
-My thoughts were - network stack might not immediately deliver packet to the application
-and PTP worker can be tuned (pri and smp_affinity), resulted code will be more structured,
-less locks and less time spent in softirq context.
+Regards,
 
-I also can drop it.
-
--- 
-Best regards,
-grygorii
+Tony
