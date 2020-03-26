@@ -2,101 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9BA1193DB9
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Mar 2020 12:15:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B71B1940DC
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Mar 2020 15:04:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727743AbgCZLPz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 26 Mar 2020 07:15:55 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:51098 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727688AbgCZLPz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Mar 2020 07:15:55 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 02QBFn1A042315;
-        Thu, 26 Mar 2020 06:15:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1585221349;
-        bh=bOS94acSo/exyAvWv52I6FnDJtwIpP6T6a3M0B2Qwfs=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=dpziWW8nx8O6lTnhDun9JvqMKJi4E8EcElHif4A2e/wzthkO3PPT2nr+OSIDXOTbu
-         72O/XkLJo+8auZ5qX1/TG7S9qLOsm7Kl89sSCDCdq2MQQwfHLDObyuYo6cuEeqrb8e
-         Lb/e9Ysglfapti9bWLGhQ3ZIXunhKted90EuD2ZU=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 02QBFnZ1018085
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 26 Mar 2020 06:15:49 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 26
- Mar 2020 06:15:49 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 26 Mar 2020 06:15:49 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 02QBFkp6048362;
-        Thu, 26 Mar 2020 06:15:47 -0500
-Subject: Re: [PATCH net-next v3 08/11] net: ethernet: ti: cpts: move rx
- timestamp processing to ptp worker only
-To:     Richard Cochran <richardcochran@gmail.com>
-CC:     "David S . Miller" <davem@davemloft.net>,
+        id S1728340AbgCZOEB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 26 Mar 2020 10:04:01 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:44132 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728304AbgCZOD4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Mar 2020 10:03:56 -0400
+Received: by mail-pg1-f193.google.com with SMTP id 142so2904706pgf.11;
+        Thu, 26 Mar 2020 07:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=17tMX3H9Sdcq+0ONAuGblCc3JhNQf2xB0k0+J4gQv5w=;
+        b=vCtMDfHQ5Cvsc6sUODmXa4WM9QXhZZJsWuKwaH0pkh9ZkNZeQw/5z3AlMs6vGFwHyk
+         +855UUdV5Rr7orSl0aK6F10moKt3nwlL9kJCDqMH7zEn3Sh5R5Oc3gFWZ71nHHIzuNKc
+         yj9puVwQYwsJDVv40DcfzGl8K/s2n8Zj2/xhK/AJndlIr1XSqTQIy7VDvnGRaXfueq0N
+         nX0+5nAqmThDz2w4LrDZwqO+cUVCZDFlNFqaxDY1rzRQIDlB5d10Z+YpyxDyG75uy5So
+         AeyaKePMzJu/myLvJElrCPgdElk+8/1ZNV0eQUc2Q3QShNrelHWxNWgvJVA+itxQMUV+
+         ln9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=17tMX3H9Sdcq+0ONAuGblCc3JhNQf2xB0k0+J4gQv5w=;
+        b=TXgZKcGnmGvq6fqvM0mdhbNGVnStjmrjE7JwmziMElqQOiw6ILJfp/LVrs0Rs/7F4D
+         Ks1UADnP/shhU3QaUyOI5N8Y2GxwP/8vJx/K8Rg6zuhsN7EPDjoePl8V9MslHg5yZX3K
+         lwjWfAigk5pqb3WwPnpvMqadxiSWwhiHf5aB9UHSLSGTfx+Z79KNRMsY8TkKIhoeUCxB
+         DHOEpkPQfaNuhE5bEiNRzQoywfNrDTrSibyc6bkZ8AfXPRmfdBKKToxjQOSTpUt3q+8R
+         pIWCysqv90lF4d19OzHLh4H8BwziOk9qipcC4/H6ssD7OLozcGanKKuLIBufeb7u95rd
+         Wodw==
+X-Gm-Message-State: ANhLgQ35oGszXrXnGK6aYklKOUPxYl1BcOT8qQp4divCj7zzY4hJc49a
+        6Xmjk6VAiX/Rxx0dH6r2lZ8=
+X-Google-Smtp-Source: ADFU+vtdRRGcpFSi9InB6187asoRCJ2tCcZCL55pt1JZiXLIagZ/Fpb5kuHhPGJAztT5ef5nj0jxhw==
+X-Received: by 2002:a62:2b8a:: with SMTP id r132mr9650099pfr.56.1585231435769;
+        Thu, 26 Mar 2020 07:03:55 -0700 (PDT)
+Received: from localhost (c-73-241-114-122.hsd1.ca.comcast.net. [73.241.114.122])
+        by smtp.gmail.com with ESMTPSA id q123sm1853036pfb.54.2020.03.26.07.03.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Mar 2020 07:03:55 -0700 (PDT)
+Date:   Thu, 26 Mar 2020 07:03:53 -0700
+From:   Richard Cochran <richardcochran@gmail.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
         Lokesh Vutla <lokeshvutla@ti.com>,
         Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
         Murali Karicheri <m-karicheri2@ti.com>,
-        netdev <netdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+        netdev <netdev@vger.kernel.org>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 01/11] net: ethernet: ti: cpts: use dev_yy()
+ api for logs
+Message-ID: <20200326140353.GB20841@localhost>
 References: <20200320194244.4703-1-grygorii.strashko@ti.com>
- <20200320194244.4703-9-grygorii.strashko@ti.com>
- <20200324134343.GD18149@localhost>
- <13dd9d58-7417-2f39-aa7d-dceae946482c@ti.com>
- <20200324165414.GA30483@localhost>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <7fe92a12-798b-c008-5578-b34411717c5e@ti.com>
-Date:   Thu, 26 Mar 2020 13:15:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ <20200320194244.4703-2-grygorii.strashko@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20200324165414.GA30483@localhost>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200320194244.4703-2-grygorii.strashko@ti.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Richard
+On Fri, Mar 20, 2020 at 09:42:34PM +0200, Grygorii Strashko wrote:
+> @@ -150,7 +150,7 @@ static int cpts_fifo_read(struct cpts *cpts, int match)
+>  			break;
+>  
+>  		if (list_empty(&cpts->pool) && cpts_purge_events(cpts)) {
+> -			pr_err("cpts: event pool empty\n");
+> +			dev_info(cpts->dev, "cpts: event pool empty\n");
 
-On 24/03/2020 18:54, Richard Cochran wrote:
-> On Tue, Mar 24, 2020 at 05:34:34PM +0200, Grygorii Strashko wrote:
->> I tested both ways and kept this version as i'v not seen any degradation,
->> but, of course, i'll redo the test (or may be you can advise what test to run).
-> 
-> Measure the time delay from when the frame arrives in the stack until
-> that frame+RxTimestamp arrives in the application.  I expect the round
-> about way via kthread takes longer.
->   
->> My thoughts were - network stack might not immediately deliver packet to the application
-> 
-> The network stack always delivers the packet, but you artificially
-> delay that delivery by calling netif_receive_skb() later on from
-> cpts_match_rx_ts().
-> 
->> and PTP worker can be tuned (pri and smp_affinity),
-> 
-> That won't avoid the net softirq.
-> 
->> resulted code will be more structured,
-> 
-> I am afraid people will copy this pattern in new drivers.  It really
-> does not make much sense.
+You changed err into info.  Was that on purpose?
 
-I did additional testing and will drop this patch.
-Any other comments from you side?
+The size of the pool is hard coded, but it should be large enough for
+any use case.  If the pool size turns out to be too small at run time,
+then I think the message deserves at least the level of warning.
 
-Thank you.
-
--- 
-Best regards,
-grygorii
+Thanks,
+Richard
