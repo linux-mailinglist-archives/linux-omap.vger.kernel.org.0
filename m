@@ -2,49 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72BE0194E60
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Mar 2020 02:26:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4645194E6D
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Mar 2020 02:28:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727685AbgC0B0L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 26 Mar 2020 21:26:11 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:37923 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727122AbgC0B0L (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Mar 2020 21:26:11 -0400
-Received: by mail-pf1-f196.google.com with SMTP id c21so3047425pfo.5;
-        Thu, 26 Mar 2020 18:26:10 -0700 (PDT)
+        id S1727769AbgC0B22 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 26 Mar 2020 21:28:28 -0400
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:45680 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727696AbgC0B22 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Mar 2020 21:28:28 -0400
+Received: by mail-pg1-f193.google.com with SMTP id o26so3792831pgc.12;
+        Thu, 26 Mar 2020 18:28:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=6Sl9e1fpV3n/PUpys52AurBxrK0AUmZ3suddAnYhqks=;
-        b=BeVatET+VO+W+d6njIuSybcLG2ueAPEpR7q+hJfQpIITnInalrOAqMeQcUOvY7pQp+
-         dg3SWej0qU7JLF6MxUWvKl3fXoUhMzLHyLSXZixz0QwvdN+nB97C4Fpj9uKDv9mZDJME
-         lFOEZ7PjF2pf/K13P2L2bUhh4/kIFmKQdRcsUN22SNYbL/cSc3RpoMY1uWt6BhJTufYw
-         btBwoAjUIJ9O0NoFAW1T9FfJCMI8wja/cMLn7iMMn2k45amz+mGrmLRFJtjosFA7KxHa
-         fLf9OlKbDJJODH6csvWhn9NInOd0IDdMbUgArn6E4nq4XwRKJdgawhmbFNjgj9L4UjoO
-         G37Q==
+        bh=tU4XA8irroYMzripT/awkGxqg4KUUGMF4aMQNnVQrEc=;
+        b=HuWKfMMp13GcvvShQD4GZ6Lo/bkghLBF2++b2dcgInZA0LVD1yZomRML9odZu51CAT
+         SZVFC57nqCpJ/AuVM4cMjWqK6bI/J3lnQ3y7frAGxd2Cbntuc9JjmZlmnSKoRnS0VyM/
+         nnk5K9g1ol4aEg8UXyI+K+yqnJnhikQ/JHkQaVZKBzpMVe8f0wEyslwaw7bWB2X1Cv+f
+         k3cjIwyBLJz4kuYrQzuUs04aESGP1e0D+GKTTS+oxVGd4e/nttc+DsyXcrBO0mYSDAvZ
+         hLevwAPRd7okUy6LT0Ocn9XxsXsIRhuiR35/g8F/IGYE73uwOycfLvPXzt3DqOGetry1
+         t9Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=6Sl9e1fpV3n/PUpys52AurBxrK0AUmZ3suddAnYhqks=;
-        b=KvXq473S+T2XVCtmxVRbiuUSlPhDCHUvICgZXfhUAmXOoUDuJeVdxlaoQGqtzqy4/B
-         uNyDSokUfNS2Ow8hAV0mYza3GkpVWm05+fzzpoIpCLxpP75rXILKYKq4XdkC2OPMMxN+
-         oImqvsL25cYyTmxL/HxUSDJ0ZeViHIlRW/oyiv8Gic3BW2fEpL7naUbU7JoFnqhsbUpk
-         Ig1SFAxNDDru10e3c8N/E26mEM8ajX+6eiT6iJpYHVlS5QiRRg38ApZF0vs7NIZJCuj6
-         3vmHq5RNnX1j2fvzg003OGgVL4+GFNJpuXyNl5a2JJK2KkZNjyIdmjuxKkKZWWFrYZEa
-         519g==
-X-Gm-Message-State: ANhLgQ0qi7GTxIgZNUp1OAe0Mn+YhwteB3Ecu7vAMF6yNdNzA7dvd7aK
-        G3ArsbSFfrA90cxBDIXf4ZU=
-X-Google-Smtp-Source: ADFU+vtL88oQlNeFSjMNkmS7nCbdPob1bFnZKbDmOLBXFNOJ2mLvWafcaKDgmiB2Iu82JsgI/qK+hQ==
-X-Received: by 2002:a63:100c:: with SMTP id f12mr11260613pgl.185.1585272369760;
-        Thu, 26 Mar 2020 18:26:09 -0700 (PDT)
+        bh=tU4XA8irroYMzripT/awkGxqg4KUUGMF4aMQNnVQrEc=;
+        b=Egw8WQbFKGQVbwcc3aTofml9mZZIQc1R0uZ5U+bWi2dreHnas57fzotN2dpO5eJD84
+         ryErC7Oqjg4RHGyY6aDVcnWGvtWroMbv4B55qLAhsLvobbQCi5extAbVBkDCwTMNsU1o
+         MkIMr1I0b07OCdz9NU3c19ZC0/mYhorfm79OSsP51G/QIdek+32CqIKzQOxSUHohD3qY
+         YkP1P1hTAZojqtDGyUxrhu5PGnCfO4zd8FPqQJb4aiCQ7leZ2/hSW7GUYqFbjYZO0Bb4
+         gSmHkoSCSIHX9r6LEIGt097KPRa45fBVDA34yU8WDblo67pN1wApZ47SToutHgH+AcLI
+         SIVg==
+X-Gm-Message-State: ANhLgQ1PoCL8nriWz8UmILACoF1d4/h6+jGwwYCkIxztizwk/21Lis4N
+        J3miTmuUlZNhCW9fVd9WssA=
+X-Google-Smtp-Source: ADFU+vvbJ14huQcPZe5YKPn+wUwRWgJM6wzrP5DkgRQsjFgr5CroWbeCJn+kp820/djlDMuzK9TdhA==
+X-Received: by 2002:aa7:87c1:: with SMTP id i1mr11486026pfo.44.1585272507083;
+        Thu, 26 Mar 2020 18:28:27 -0700 (PDT)
 Received: from localhost (c-73-241-114-122.hsd1.ca.comcast.net. [73.241.114.122])
-        by smtp.gmail.com with ESMTPSA id i4sm2549027pjg.4.2020.03.26.18.26.08
+        by smtp.gmail.com with ESMTPSA id e6sm2649643pgu.44.2020.03.26.18.28.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Mar 2020 18:26:09 -0700 (PDT)
-Date:   Thu, 26 Mar 2020 18:26:06 -0700
+        Thu, 26 Mar 2020 18:28:26 -0700 (PDT)
+Date:   Thu, 26 Mar 2020 18:28:24 -0700
 From:   Richard Cochran <richardcochran@gmail.com>
 To:     Grygorii Strashko <grygorii.strashko@ti.com>
 Cc:     "David S . Miller" <davem@davemloft.net>,
@@ -53,28 +53,27 @@ Cc:     "David S . Miller" <davem@davemloft.net>,
         Murali Karicheri <m-karicheri2@ti.com>,
         netdev <netdev@vger.kernel.org>, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 03/11] net: ethernet: ti: cpts: move tc mult
- update in cpts_fifo_read()
-Message-ID: <20200327012606.GA9677@localhost>
+Subject: Re: [PATCH net-next v3 07/11] net: ethernet: ti: cpts: rework locking
+Message-ID: <20200327012824.GB9677@localhost>
 References: <20200320194244.4703-1-grygorii.strashko@ti.com>
- <20200320194244.4703-4-grygorii.strashko@ti.com>
- <20200326142049.GD20841@localhost>
- <f91001c9-2b11-53ac-84a7-11e1e94c5dc9@ti.com>
+ <20200320194244.4703-8-grygorii.strashko@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f91001c9-2b11-53ac-84a7-11e1e94c5dc9@ti.com>
+In-Reply-To: <20200320194244.4703-8-grygorii.strashko@ti.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Mar 26, 2020 at 10:18:18PM +0200, Grygorii Strashko wrote:
-> I've been thinking to squash them. What's your opinion.
+On Fri, Mar 20, 2020 at 09:42:40PM +0200, Grygorii Strashko wrote:
+> Now spinlock is used to synchronize everything which is not required. Add
+> mutex and use to sync access to PTP interface and PTP worker and use
+> spinlock only to sync FIFO/events processing.
 
-I favor small, incremental patches.  Just the motivation for the first
-patch was missing, that's all.
+If you haven't already, I suggest testing this change with lockdep
+enabled.
 
 Thanks,
 Richard
