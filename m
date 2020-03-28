@@ -2,102 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCD96196330
-	for <lists+linux-omap@lfdr.de>; Sat, 28 Mar 2020 03:49:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C0371963F1
+	for <lists+linux-omap@lfdr.de>; Sat, 28 Mar 2020 07:30:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727126AbgC1Cs5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Mar 2020 22:48:57 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:57998 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727104AbgC1Cs5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 27 Mar 2020 22:48:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585363736; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
- To: From: Reply-To: Sender;
- bh=+WpPnB0uFYRHxbJdTSXbZ3CsA3rPO9kHVEIdO35S7As=; b=vwPJhjm0j/vLl3nHGUqvZITFLtkH8Y6wN+XfVyJCpJUEr2CS8X4TVmKOteAk6PhRCCbhef83
- fCy6ic9rbBoHo/G1pSfBX9pF/WyyLk4XyTliJKnapmyqpUmCn4OZNHY9sOOhvd6AIcZMYEr0
- Ywc46HyYYNbrB7yMh3m9fd4oPnk=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyIwZGJlNiIsICJsaW51eC1vbWFwQHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e7ebb0a.7f57878b4260-smtp-out-n02;
- Sat, 28 Mar 2020 02:48:42 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0E01CC4478C; Sat, 28 Mar 2020 02:48:41 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: *
-X-Spam-Status: No, score=1.5 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        SUSPICIOUS_RECIPS autolearn=no autolearn_force=no version=3.4.0
-Received: from BCAIN (104-54-226-75.lightspeed.austtx.sbcglobal.net [104.54.226.75])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: bcain)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A7892C433F2;
-        Sat, 28 Mar 2020 02:48:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A7892C433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=bcain@codeaurora.org
-Reply-To: <bcain@codeaurora.org>
-From:   "Brian Cain" <bcain@codeaurora.org>
-To:     "'afzal mohammed'" <afzal.mohd.ma@gmail.com>,
-        "'Thomas Gleixner'" <tglx@linutronix.de>
-Cc:     <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-samsung-soc@vger.kernel.org>, <x86@kernel.org>,
-        <linux-sh@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-parisc@vger.kernel.org>,
-        <linux-mips@vger.kernel.org>, <linux-m68k@lists.linux-m68k.org>,
-        <linux-ia64@vger.kernel.org>, <linux-hexagon@vger.kernel.org>,
-        <linux-c6x-dev@linux-c6x.org>, <linux-omap@vger.kernel.org>,
-        <linux-alpha@vger.kernel.org>
-References: <20200321174303.GA7930@afzalpc> <cover.1585320721.git.afzal.mohd.ma@gmail.com>
-In-Reply-To: <cover.1585320721.git.afzal.mohd.ma@gmail.com>
-Subject: RE: [PATCH 0/6] Kill setup_irq()
-Date:   Fri, 27 Mar 2020 21:48:38 -0500
-Message-ID: <059b01d604ab$637355b0$2a5a0110$@codeaurora.org>
+        id S1725865AbgC1Gaj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 28 Mar 2020 02:30:39 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:39097 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725810AbgC1Gaj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 28 Mar 2020 02:30:39 -0400
+Received: by mail-wm1-f68.google.com with SMTP id e9so3150429wme.4
+        for <linux-omap@vger.kernel.org>; Fri, 27 Mar 2020 23:30:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=VQgRiL13w2lnC5yZKNcbg2HiB3UGZa2RAJWpzb90ZSA=;
+        b=ktLNqMiNmaeO7w5pofyqvmYDeA/jU5pK2dgfqQoMhjpR+k2vuUJG6e47qKa94aKd0D
+         PFQBsNgGchV58gK2Yp/OGuks+HYp2F+YojAWnGAs/L/JUMIqf3ILsoYfMXkTrhlXdIRC
+         3QOPdOYEKI05T69g66TmufNJfAd8PyXSu3hJxNrYv7vEjH9YoHyCHx1wE2o+zitX79KI
+         io35UE0tGR83V0yntl/KuOBqbbxDeHkMh8lCpqPJhQHm+C0CPTQ4amSjgDxC1IR04n6K
+         V5v7cwLOr79ptfjoNg2/+WoULmKd2DCOR6KPQnm3NGJhiq/H0pKpGDa3vLIMxCInLC9d
+         mKMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=VQgRiL13w2lnC5yZKNcbg2HiB3UGZa2RAJWpzb90ZSA=;
+        b=FhD+NprbS0ZrFbrS49BhWf9o7fn8CPz52iE4z9Hp3SXdKlET0ROB+wxC+4FcWC1Y5d
+         Ty94iu8uD75rnVUC305uBk0SUUmSpOhTFFG2vuYHvM1vIQ+YTm/Y+DxnrXKpVwIV1dRo
+         Vq1TecGh/Yoj2BTS5+IhedToTFVH2l5oZPr4tKW/8hFv2l8/MJuqbZY8V8vz9anGH86e
+         X62BuBTDr1Oco7wWxOVswNPYo36/idOCN2+Q7qv0NmaCsgdZ5MdroYeAabMi5hP6knhw
+         WqUo1UbKy+chpI+3SQ23oTg/vhm0wKNmQpNmthFfjDTN+tm6U1sbIIT58HOVS6trhKfv
+         HmIw==
+X-Gm-Message-State: ANhLgQ15tFLsd+Q97oHfnIzybyrnvXQHgv2FEdvWBXNDlkB2G+Lz1+lo
+        D8wW5g2fkQ/nGiMGfML2H4uxGY/yWgvPoP/vzHo=
+X-Google-Smtp-Source: ADFU+vsOKhqbLud4TF+NAj4tiE4Mfhsp8b4DIgJO9FYdePpoZSr3OlBh0h55EbfJLNv4IHi2S+QKYyrTFQcJyjwg+HQ=
+X-Received: by 2002:a1c:f70a:: with SMTP id v10mr2389603wmh.72.1585377038131;
+ Fri, 27 Mar 2020 23:30:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-us
-Thread-Index: AQH+2owB65JuA03jeOLwO39OK5TmSwJQWNztp/kerbA=
+Received: by 2002:a5d:4052:0:0:0:0:0 with HTTP; Fri, 27 Mar 2020 23:30:37
+ -0700 (PDT)
+Reply-To: LishaHaman225@gmail.com
+From:   "Mrs. Lisha Haman" <mohamadimustafa267@gmail.com>
+Date:   Fri, 27 Mar 2020 23:30:37 -0700
+Message-ID: <CAOybtirOV97rv87UkpJ5XwbX1onZJty3yZa-g33Tc2sA=N=svQ@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> -----Original Message-----
-> From: linux-hexagon-owner@vger.kernel.org <linux-hexagon-
-> owner@vger.kernel.org> On Behalf Of afzal mohammed
-> Sent: Friday, March 27, 2020 11:08 AM
-> To: Thomas Gleixner <tglx@linutronix.de>
-> Cc: linux-kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> linux-samsung-soc@vger.kernel.org; x86@kernel.org; linux-
-> sh@vger.kernel.org; linux-s390@vger.kernel.org; linuxppc-
-> dev@lists.ozlabs.org; linux-parisc@vger.kernel.org; linux-
-> mips@vger.kernel.org; linux-m68k@lists.linux-m68k.org; linux-
-> ia64@vger.kernel.org; linux-hexagon@vger.kernel.org; linux-c6x-dev@linux-
-> c6x.org; linux-omap@vger.kernel.org; linux-alpha@vger.kernel.org
-> Subject: [PATCH 0/6] Kill setup_irq()
-...
-> Note 1: sh toolchain is available, but that will not make the  relevant
-changes
-> compile as it has dependency of 64bit arch toolchain,  did try a Kconfig
-hack
-> to make it compile w/ 32bit sh toolchain, but it  failed due to other
-reasons
-> (unknown operands), so gave up on that.
-> Note 2: hexagon final image creation fails even w/o my patch, but it  has
-> been ensured that w/ my changes relevant object files are getting  built
-w/o
-> warnings.
-
-Afzal,
-
-	What's the nature of the failure in "Note 2"?
-
--Brian
+Hello Dear
+my name is Lisha Haman, How are you today hope all is well with you,
+Please I will need your urgent attention regarding this important discussion
+Kindly write me back here: LishaHaman225@gmail.com  for more details.
+Thanks,
+Lisha Haman
