@@ -2,47 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58590196E23
-	for <lists+linux-omap@lfdr.de>; Sun, 29 Mar 2020 17:15:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99F63196E17
+	for <lists+linux-omap@lfdr.de>; Sun, 29 Mar 2020 17:10:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727942AbgC2PPt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 29 Mar 2020 11:15:49 -0400
-Received: from mo4-p05-ob.smtp.rzone.de ([81.169.146.180]:17929 "EHLO
-        mo4-p05-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727933AbgC2PPt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 29 Mar 2020 11:15:49 -0400
-X-Greylist: delayed 1683 seconds by postgrey-1.27 at vger.kernel.org; Sun, 29 Mar 2020 11:15:48 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1585494947;
-        s=strato-dkim-0002; d=dsitri.de;
-        h=To:Message-Id:Cc:Date:From:Subject:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        id S1727816AbgC2PKI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 29 Mar 2020 11:10:08 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.218]:13997 "EHLO
+        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727729AbgC2PKH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 29 Mar 2020 11:10:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1585494606;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:Cc:Message-Id:Date:Subject:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
         Subject:Sender;
         bh=s9z5WMgFJ0O3EBetgeyB74TczZ+CT+5YgZe3Zc8q8KQ=;
-        b=gjM2T66e6j545sFmbFspJArC/kFep1vmwNAnFKQjKZ/saFOzn6zL4h5do1/purlob+
-        YNYMRyny2quozVUVJnV0+P9uP3ZZeWciQImmjFQzI1+dmSzftZb5C93SKNbvxyfLKOEy
-        Umy3XyQvS2IbOx7iU++X7Y373bf0V0KgBIX5kKBj48iGgpuVd8zNmIA05dONZjl6b4RO
-        ri6KFwDvNzYw4vXR1rjkuesd1vQrce7gHNGVKMWB34bgCISaXgogA4NviZiq9hbOKCGb
-        H8unhYZVUAXtov2deKC5I/DDJarO20PBuwwq8WhJRPRQe26bnD1YAf/VgfFjCu68TUty
-        YKOQ==
+        b=ohinpD16cV/I7TZW6tpaCy32clUht3QiAfKX/KlVXljBAxeLpQgEhprlRX3gi/KVEi
+        0Zb8VADdmxJC9srzwI4RPK0qMxTr2E7BQESpzkyfu12z9JCMjYBDK5Xgj9j7jH1Omnh5
+        7nwKcXUvKVa6R5QK1Jm/Nzo6FLfALBEErpe+xgqymqTCR+mdux6sYBLSitr/Kgxw8vAW
+        4tB2IM6rsactqHEjFs3/No9Vgh0fUwAs15hIDA1cK4HsZOU97wZR1x0nVuLx9mIr6LGj
+        vazP5XcQ9icELzBNJDtka3uPbsb6kwlxSaY8AggNGN9yLpDyg2mQDjdJ8Z/2i9kauGCP
+        xM+w==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmMiw43sRNQ="
-X-RZG-CLASS-ID: mo05
+X-RZG-CLASS-ID: mo00
 Received: from imac.fritz.box
         by smtp.strato.de (RZmta 46.2.1 DYNA|AUTH)
-        with ESMTPSA id m02241w2TEZiB1v
+        with ESMTPSA id m02241w2TEw1B4O
         (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
         (Client did not present a certificate);
-        Sun, 29 Mar 2020 16:35:44 +0200 (CEST)
+        Sun, 29 Mar 2020 16:58:01 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
 Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Transfer-Encoding: quoted-printable
 Subject: PVR/SGX DDK 1.17 on JZ4780/CI20
-From:   "H. Nikolaus Schaller" <nikolaus.schaller@modiblast.com>
-Date:   Sun, 29 Mar 2020 16:35:44 +0200
+Date:   Sun, 29 Mar 2020 16:58:00 +0200
+Message-Id: <BDD81F92-79F3-4B48-B21B-705AE435AF4B@goldelico.com>
 Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
         MIPS Creator CI20 Development 
         <mips-creator-ci20-dev@googlegroups.com>,
         linux-omap <linux-omap@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5A124F2F-3B54-4604-953A-8559F033A2A2@modiblast.com>
 To:     OpenPVRSGX Linux Driver Group <openpvrsgx-devgroup@letux.org>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
 X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
