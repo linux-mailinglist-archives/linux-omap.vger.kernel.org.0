@@ -2,139 +2,251 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55D85197E1D
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Mar 2020 16:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B802198123
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Mar 2020 18:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728814AbgC3OOm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Mar 2020 10:14:42 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:33343 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727874AbgC3OOm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Mar 2020 10:14:42 -0400
-Received: by mail-wr1-f67.google.com with SMTP id a25so21877891wrd.0;
-        Mon, 30 Mar 2020 07:14:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=RtcLEemr+obH6OpM9c5eqIcZq8owabr5tq+2H2uVvlA=;
-        b=lqmC2I1rwnrjBnMkn1e5xQmpq5gYI/BckW5kerKBCuO1K8baOJaHPsLT9rxeSMPoWL
-         AttyDaFlNQbbr4wAssV+I8/yDSaBJmITDMTKXDEvMx/kOKwoFj5smf3at7kOsHV10BU2
-         ZgATNKQ7Sw/ZIqBE4RCLjrDIck2TbtS6uDJ/ZMrEjwhipjm642ksDkw4Yk4KwaXWvFs+
-         HWx+etS4+v8c3z9cxCw9WsdxpKAObWhS+gZo5Z/9KY+iprUa+IOjh45FO5Xp/HPIm08h
-         hGKLAxSqd/sq5TDUIjC8VbUeWmCejyKKOdL1AFZ6iHom5S3Sn6Frze1h34n9C5fq2aha
-         AnlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=RtcLEemr+obH6OpM9c5eqIcZq8owabr5tq+2H2uVvlA=;
-        b=tK1lbuzWE1jjABUG3siG5oMjTrzwnDk7Yylel1+7oL1CEmJnjgbW/K2XvhyNo3DBFi
-         s2zHpoEEdQ66oho/gbQ6Qo8/kKa96BG6WX5Txisxmd9zILIPoT36XWtc3G7e5Q8U0E1/
-         JoeO7fE/fI0tbSfbx7UK0Km9NUA55Lo8qf8xDow86eGgcYEl9CeloCZmxGObdwrtqtx3
-         0aj42GAefIikRA+FeDqmbcw2J7+1QbB8qjTeUUm08EY7sbnLnXU6WLMq5cKcwp7K5q73
-         MrudVP0p0hRZ/YO1cQg5jUJpoWmlj0Sj/FvgLCLsOR7mBrRryqH6q/NSXi3NnBPVMKyd
-         k1OQ==
-X-Gm-Message-State: ANhLgQ0JEn/ZMtrlPVh5UlO9d6GcWQLb1dnDtRrcSj8YFYvtDPEnGQvq
-        3GM2xIRDEmzZS2/1nI7C3BnsRLhp
-X-Google-Smtp-Source: ADFU+vsblrGgxy9v7hs+fCi00rURiGjaC1NJU6y5ByzBhD1iKasmhmLhIloq/aLfxXlpjZ7vUZiZvg==
-X-Received: by 2002:a5d:6104:: with SMTP id v4mr16189125wrt.213.1585577680531;
-        Mon, 30 Mar 2020 07:14:40 -0700 (PDT)
-Received: from localhost (pD9E51CDC.dip0.t-ipconnect.de. [217.229.28.220])
-        by smtp.gmail.com with ESMTPSA id u16sm22923895wro.23.2020.03.30.07.14.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2020 07:14:37 -0700 (PDT)
-Date:   Mon, 30 Mar 2020 16:14:36 +0200
-From:   Thierry Reding <thierry.reding@gmail.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Lokesh Vutla <lokeshvutla@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v3 4/5] pwm: omap-dmtimer: Do not disable pwm before
- changing period/duty_cycle
-Message-ID: <20200330141436.GG2431644@ulmo>
-References: <20200312042210.17344-1-lokeshvutla@ti.com>
- <20200312042210.17344-5-lokeshvutla@ti.com>
- <20200312064042.p7himm3odxjyzroi@pengutronix.de>
+        id S1729999AbgC3QYY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Mar 2020 12:24:24 -0400
+Received: from mga04.intel.com ([192.55.52.120]:31768 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727919AbgC3QYY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 30 Mar 2020 12:24:24 -0400
+IronPort-SDR: H03sFF/sy9M6DSHmmC8n8GNwVRpxx2E0LJfQWexSIoESZFExaYFqam5Cax3AVxn+X6LlNWfoqR
+ 95jP5fBg0tNQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 09:24:24 -0700
+IronPort-SDR: S/virMh686Y6eNFV0BQSJ7Er8C1mPeJL0f8zavcv/Gng3W7m9WMdRUOSO74xqZOCMxFW31INXx
+ ukK4PUY2qGhw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,325,1580803200"; 
+   d="scan'208";a="294647223"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 30 Mar 2020 09:24:22 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jIxD3-000ECS-Qq; Tue, 31 Mar 2020 00:24:21 +0800
+Date:   Tue, 31 Mar 2020 00:23:47 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/next] BUILD REGRESSION
+ d1e82ccf2fc413beba40c1472ad33540991f567a
+Message-ID: <5e821d13.gPQvbRdP/WpIPniJ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="NY6JkbSqL3W9mApi"
-Content-Disposition: inline
-In-Reply-To: <20200312064042.p7himm3odxjyzroi@pengutronix.de>
-User-Agent: Mutt/1.13.1 (2019-12-14)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
+branch HEAD: d1e82ccf2fc413beba40c1472ad33540991f567a  usb: dwc3: gadget: WARN on no-resource status
 
---NY6JkbSqL3W9mApi
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Regressions in current branch:
 
-On Thu, Mar 12, 2020 at 07:40:42AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> On Thu, Mar 12, 2020 at 09:52:09AM +0530, Lokesh Vutla wrote:
-> > Only the Timer control register(TCLR) cannot be updated when the timer
-> > is running. Registers like Counter register(TCRR), loader register(TLDR=
-),
-> > match register(TMAR) can be updated when the counter is running. Since
-> > TCLR is not updated in pwm_omap_dmtimer_config(), do not stop the
-> > timer for period/duty_cycle update.
->=20
-> I'm not sure what is sensible here. Stopping the PWM for a short period
-> is bad, but maybe emitting a wrong period isn't better. You can however
-> optimise it if only one of period or duty_cycle changes.
->=20
-> @Thierry, what is your position here? I tend to say a short stop is
-> preferable.
+drivers/usb/gadget/udc/max3420_udc.c:1065:5-6: ERROR: invalid reference to the index variable of the iterator on line 1057
+drivers/usb/gadget/udc/max3420_udc.c:570:16: sparse: sparse: incorrect type in assignment (different base types)
 
-It's not clear to me from the above description how exactly the device
-behaves, but I suspect that it may latch the values in those registers
-and only update the actual signal output once a period has finished. I
-know of a couple of other devices that do that, so it wouldn't be
-surprising.
+Error ids grouped by kconfigs:
 
-Even if that was not the case, I think this is just the kind of thing
-that we have to live with. Sometimes it just isn't possible to have all
-supported devices adhere strictly to an API. So I think the best we can
-do is have an API that loosely defines what's supposed to happen and
-make a best effort to implement those semantics. If a device deviates
-slightly from those expectations, we can always cross fingers and hope
-that things still work. And it looks like they are.
+recent_errors
+|-- i386-allmodconfig
+|   `-- drivers-usb-gadget-udc-max3420_udc.c:ERROR:invalid-reference-to-the-index-variable-of-the-iterator-on-line
+|-- m68k-allyesconfig
+|   `-- drivers-usb-gadget-udc-max3420_udc.c:ERROR:invalid-reference-to-the-index-variable-of-the-iterator-on-line
+|-- sparc-allyesconfig
+|   `-- drivers-usb-gadget-udc-max3420_udc.c:ERROR:invalid-reference-to-the-index-variable-of-the-iterator-on-line
+|-- x86_64-allmodconfig
+|   `-- drivers-usb-gadget-udc-max3420_udc.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-unsigned-short-assigned-usertype-status-got-short-assigned-usertype-status
+`-- x86_64-allyesconfig
+    |-- drivers-usb-gadget-udc-max3420_udc.c:ERROR:invalid-reference-to-the-index-variable-of-the-iterator-on-line
+    `-- drivers-usb-gadget-udc-max3420_udc.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-unsigned-short-assigned-usertype-status-got-short-assigned-usertype-status
 
-So I think if Lokesh and Tony agree that this is the right thing to do
-and have verified that things still work after this, that's about as
-good as it's going to get.
+elapsed time: 483m
 
-I know this is perhaps cheating a little, or turning a blind eye, but I
-don't know what the alternative would be. Do we want to tell people that
-a given PWM controller can't be used if it doesn't work according to our
-expectations? That's hard to argue if that controller works just fine
-for all known use-cases.
+configs tested: 175
+configs skipped: 0
 
-Thierry
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                               defconfig
+sparc                            allyesconfig
+sh                            titan_defconfig
+ia64                             allmodconfig
+microblaze                      mmu_defconfig
+sh                                allnoconfig
+riscv                               defconfig
+c6x                              allyesconfig
+i386                              allnoconfig
+i386                             alldefconfig
+i386                             allyesconfig
+i386                                defconfig
+ia64                             alldefconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                                defconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                       common_defconfig
+xtensa                          iss_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                     edosk2674_defconfig
+h8300                    h8300h-sim_defconfig
+h8300                       h8s-sim_defconfig
+m68k                             allmodconfig
+m68k                       m5475evb_defconfig
+m68k                          multi_defconfig
+m68k                           sun3_defconfig
+arc                              allyesconfig
+arc                                 defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                generic-32bit_defconfig
+parisc                generic-64bit_defconfig
+x86_64               randconfig-a003-20200330
+x86_64               randconfig-a002-20200330
+i386                 randconfig-a001-20200330
+i386                 randconfig-a002-20200330
+i386                 randconfig-a003-20200330
+x86_64               randconfig-a001-20200330
+nds32                randconfig-a001-20200329
+mips                 randconfig-a001-20200329
+parisc               randconfig-a001-20200329
+m68k                 randconfig-a001-20200329
+alpha                randconfig-a001-20200329
+riscv                randconfig-a001-20200329
+alpha                randconfig-a001-20200330
+m68k                 randconfig-a001-20200330
+mips                 randconfig-a001-20200330
+nds32                randconfig-a001-20200330
+parisc               randconfig-a001-20200330
+riscv                randconfig-a001-20200330
+microblaze           randconfig-a001-20200330
+h8300                randconfig-a001-20200330
+nios2                randconfig-a001-20200330
+c6x                  randconfig-a001-20200330
+sparc64              randconfig-a001-20200330
+csky                 randconfig-a001-20200330
+openrisc             randconfig-a001-20200330
+s390                 randconfig-a001-20200330
+sh                   randconfig-a001-20200330
+xtensa               randconfig-a001-20200330
+s390                 randconfig-a001-20200329
+xtensa               randconfig-a001-20200329
+csky                 randconfig-a001-20200329
+openrisc             randconfig-a001-20200329
+sh                   randconfig-a001-20200329
+x86_64               randconfig-b003-20200330
+i386                 randconfig-b003-20200330
+i386                 randconfig-b002-20200330
+i386                 randconfig-b001-20200330
+x86_64               randconfig-b002-20200330
+x86_64               randconfig-b001-20200330
+i386                 randconfig-c003-20200330
+x86_64               randconfig-c003-20200330
+x86_64               randconfig-c002-20200330
+i386                 randconfig-c002-20200330
+x86_64               randconfig-c001-20200330
+i386                 randconfig-c001-20200330
+i386                 randconfig-d003-20200330
+i386                 randconfig-d001-20200330
+i386                 randconfig-d002-20200330
+x86_64               randconfig-d001-20200330
+x86_64               randconfig-d003-20200330
+x86_64               randconfig-d002-20200330
+x86_64               randconfig-e001-20200330
+i386                 randconfig-e002-20200330
+x86_64               randconfig-e003-20200330
+i386                 randconfig-e003-20200330
+x86_64               randconfig-e002-20200330
+i386                 randconfig-e001-20200330
+i386                 randconfig-f001-20200330
+i386                 randconfig-f003-20200330
+i386                 randconfig-f002-20200330
+x86_64               randconfig-f002-20200330
+x86_64               randconfig-f001-20200330
+x86_64               randconfig-f003-20200330
+x86_64               randconfig-g001-20200330
+x86_64               randconfig-g002-20200330
+x86_64               randconfig-g003-20200330
+i386                 randconfig-g001-20200330
+i386                 randconfig-g002-20200330
+i386                 randconfig-g003-20200330
+x86_64               randconfig-h001-20200330
+x86_64               randconfig-h002-20200330
+x86_64               randconfig-h003-20200330
+i386                 randconfig-h001-20200330
+i386                 randconfig-h002-20200330
+i386                 randconfig-h003-20200330
+sparc                randconfig-a001-20200330
+arm64                randconfig-a001-20200330
+ia64                 randconfig-a001-20200330
+arc                  randconfig-a001-20200330
+arm                  randconfig-a001-20200330
+powerpc              randconfig-a001-20200330
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                                defconfig
+s390                       zfcpdump_defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                  sh7785lcr_32bit_defconfig
+sparc                               defconfig
+sparc64                          allmodconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                             defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
 
---NY6JkbSqL3W9mApi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl6B/soACgkQ3SOs138+
-s6F2WxAAp3bIGtRCKqt67F7d3JG708w1+creHUOXONHOapSQCaWuU1SSJgI73p2P
-AHdNHXR/YURCBKVTVrLizfkqAR6rQ1EE3ovlSuu5ZkaCMx1brw92l6MoVIHxlLQ1
-XchiOycQgdI4BM03ENpihJi73/HHm30/SeAJ/pTgFMr3S0pr7iNvxI+AzLfiD0c/
-7Y8tNjcDtMOesdLym/jMNelCxYovlQyB1gDYGPm65xrFb4cqWHuzuro1s71OqJzX
-l3J9qYjcKF7XPNHze3Q75BP/wZc0+aztBja4N6ZqoR1nvkKLPAAuDBDPI87RD5LR
-j4xBM/J7QSUhlh/anUfdbPxOx9YJswvfCswcifzIEwmzb7EOwpq2Yqh3BVyp4DoS
-4027Z5g3sRwdR4OiNkTYHezpwp/qz1Wxrh9LWP8wqpoounrCYqTX5QDhiHSu9cr+
-jfAaQGi0EgILeQjsAv3BqjoHnVjgMSVAtNV720U40J0MxkZKSf73Ak2/Jduk1dQv
-j1jTJL+WYGZtFBBojS73HOkSHRk4sFNvab5iotVYaro8JaCTYGNWLohJvhG+bw5X
-AfLthkohTXarCOkcHET4YI6PcDtzhU++HiCSfRZ+TBAiE5W2ZF5rKjFYCcBQuPCo
-dnAbijxeDHJ33fRP905WbK6B+GhvcgyWIDI9mJxm3FhZf+1onT0=
-=T9wd
------END PGP SIGNATURE-----
-
---NY6JkbSqL3W9mApi--
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
