@@ -2,215 +2,145 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C97FE1985E7
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Mar 2020 22:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5513419861F
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Mar 2020 23:12:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728376AbgC3U7j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Mar 2020 16:59:39 -0400
-Received: from mga17.intel.com ([192.55.52.151]:64894 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728317AbgC3U7j (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 30 Mar 2020 16:59:39 -0400
-IronPort-SDR: 87RY5cMU+dKJ1aKlM/XGuYhI5XAKvg3CRUOvPOA26kMqWFd9FSRLC+lRo5FFJ73qk7joEwuu4U
- mxx2Folhf6TA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 13:59:38 -0700
-IronPort-SDR: +hDKRKS+hsZFbkqS4mY0A/5hDcmEifH4meR06OmGkASluGomrQw2Lpsx0p8/gHW/PXFmCMSZxy
- GrWtv2ygp8mQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,325,1580803200"; 
-   d="scan'208";a="449926141"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 30 Mar 2020 13:59:36 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jJ1VQ-000EqB-99; Tue, 31 Mar 2020 04:59:36 +0800
-Date:   Tue, 31 Mar 2020 04:58:59 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
- 69a1e68d957a0ff7ee5797bafc5b4acc1ac911fe
-Message-ID: <5e825d93.Tx1xghBX5sH1Z7BQ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1728376AbgC3VMT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Mar 2020 17:12:19 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59781 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728317AbgC3VMT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Mar 2020 17:12:19 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jJ1hb-0005xs-Tn; Mon, 30 Mar 2020 23:12:12 +0200
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id 08337101175; Mon, 30 Mar 2020 23:12:11 +0200 (CEST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Andrew Murray <amurray@thegoodpenguin.co.uk>,
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v4] PCI: dwc: pci-dra7xx: Fix MSI IRQ handling
+In-Reply-To: <20200330162928.GA55054@google.com>
+References: <20200330162928.GA55054@google.com>
+Date:   Mon, 30 Mar 2020 23:12:10 +0200
+Message-ID: <87zhbxv979.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
-branch HEAD: 69a1e68d957a0ff7ee5797bafc5b4acc1ac911fe  dt-bindings: usb: renesas,usb3-peri: add r8a77961 support
+Bjorn,
 
-elapsed time: 755m
+Bjorn Helgaas <helgaas@kernel.org> writes:
+> On Fri, Mar 27, 2020 at 03:24:34PM +0530, Vignesh Raghavendra wrote:
+>> Due an issue with PCIe wrapper around DWC PCIe IP on dra7xx, driver
+>> needs to ensure that there are no pending MSI IRQ vector set (i.e
+>> PCIE_MSI_INTR0_STATUS reads 0 at least once) before exiting IRQ handler.
+>> Else, the dra7xx PCIe wrapper will not register new MSI IRQs even though
+>> PCIE_MSI_INTR0_STATUS shows IRQs are pending.
+>
+> I'm not an IRQ guy (real IRQ guys CC'd), but I'm wondering if this is
+> really a symptom of a problem in the generic DWC IRQ handling, not a
+> problem in dra7xx itself.
+>
+> I thought it was sort of standard behavior that a device would not
+> send a new MSI unless there was a transition from "no status bits set"
+> to "at least one status bit set".  I'm looking at this text from the
+> PCIe r5.0 spec, sec 6.7.3.4:
 
-configs tested: 156
-configs skipped: 0
+That's for the device side. But this is the host side and that consists
+of two components:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+     1) The actual PCIe host controller (DWC)
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-sparc                            allyesconfig
-mips                              allnoconfig
-c6x                              allyesconfig
-parisc                generic-64bit_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-m68k                       m5475evb_defconfig
-m68k                             allmodconfig
-h8300                    h8300h-sim_defconfig
-m68k                           sun3_defconfig
-m68k                          multi_defconfig
-arc                                 defconfig
-arc                              allyesconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-x86_64               randconfig-a003-20200330
-x86_64               randconfig-a002-20200330
-i386                 randconfig-a001-20200330
-i386                 randconfig-a002-20200330
-i386                 randconfig-a003-20200330
-x86_64               randconfig-a001-20200330
-c6x                  randconfig-a001-20200330
-h8300                randconfig-a001-20200330
-microblaze           randconfig-a001-20200330
-nios2                randconfig-a001-20200330
-sparc64              randconfig-a001-20200330
-s390                 randconfig-a001-20200329
-xtensa               randconfig-a001-20200329
-csky                 randconfig-a001-20200329
-openrisc             randconfig-a001-20200329
-sh                   randconfig-a001-20200329
-x86_64               randconfig-b001-20200330
-x86_64               randconfig-b002-20200330
-x86_64               randconfig-b003-20200330
-i386                 randconfig-b001-20200330
-i386                 randconfig-b002-20200330
-i386                 randconfig-b003-20200330
-x86_64               randconfig-b001-20200331
-x86_64               randconfig-b002-20200331
-x86_64               randconfig-b003-20200331
-i386                 randconfig-b001-20200331
-i386                 randconfig-b002-20200331
-i386                 randconfig-b003-20200331
-i386                 randconfig-c003-20200330
-x86_64               randconfig-c003-20200330
-x86_64               randconfig-c002-20200330
-i386                 randconfig-c002-20200330
-x86_64               randconfig-c001-20200330
-i386                 randconfig-c001-20200330
-x86_64               randconfig-d001-20200330
-x86_64               randconfig-d002-20200330
-x86_64               randconfig-d003-20200330
-i386                 randconfig-d001-20200330
-i386                 randconfig-d002-20200330
-i386                 randconfig-d003-20200330
-x86_64               randconfig-e001-20200330
-x86_64               randconfig-e002-20200330
-x86_64               randconfig-e003-20200330
-i386                 randconfig-e001-20200330
-i386                 randconfig-e002-20200330
-i386                 randconfig-e003-20200330
-x86_64               randconfig-f001-20200330
-x86_64               randconfig-f002-20200330
-x86_64               randconfig-f003-20200330
-i386                 randconfig-f001-20200330
-i386                 randconfig-f002-20200330
-i386                 randconfig-f003-20200330
-x86_64               randconfig-g001-20200330
-x86_64               randconfig-g002-20200330
-x86_64               randconfig-g003-20200330
-i386                 randconfig-g001-20200330
-i386                 randconfig-g002-20200330
-i386                 randconfig-g003-20200330
-x86_64               randconfig-h001-20200330
-x86_64               randconfig-h002-20200330
-x86_64               randconfig-h003-20200330
-i386                 randconfig-h001-20200330
-i386                 randconfig-h002-20200330
-i386                 randconfig-h003-20200330
-arc                  randconfig-a001-20200330
-arm                  randconfig-a001-20200330
-arm64                randconfig-a001-20200330
-ia64                 randconfig-a001-20200330
-powerpc              randconfig-a001-20200330
-sparc                randconfig-a001-20200330
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                                allnoconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
+     2) Some hardware wrapper around #1 to glue the host controller IP
+        into the TI SoC.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+#1 contains a MSI message receiver unit. PCIE_MSI_INTR0_STATUS is part
+that.
+
+If there is a MSI message sent to the host then the bit which is
+corresponding to the sent message (vector) is set in the status
+register. If a bit is set in the status register then the host
+controller raises an interrupt at its output.
+
+Here, if I deciphered the above changelog correctly, comes the wrapper
+glue #2 into play, which seems to be involved in forwarding the host
+controller interrupt to the CPU's interrupt controller (GIC) and that
+forwarding mechanism seems to have some issue.
+
+The changelog is unspecific enough, so I can't explain for sure how the
+wrapper hardware confuses itself.
+
+My assumption is that after the host controller raised an interrupt at
+the input of the wrapper logic the wrapper logic requires a transition
+back to quiescent state before it can raise another interrupt in the
+GIC. And that seems to require that all bits of PCIE_MSI_INTR0_STATUS
+are cleared.
+
+If my interpretation is correct, then the DWC side is not at fault and
+it's soleley the TI specific hardware glue which makes this thing
+misbehave.
+
+Of course I might be completely wrong, but the TI folks should be able
+to tell.
+
+OTOH, what I do not understand in the patch is the reimplementation of
+the interrupt chip. All functions are copies, except for the actual
+register writes.
+
+The drax version uses dw_pcie_writel_dbi() which invokes
+dw_pcie_write_dbi() and that function does:
+
+void dw_pcie_write_dbi(struct dw_pcie *pci, u32 reg, size_t size, u32 val)
+{
+	int ret;
+
+	if (pci->ops->write_dbi) {
+		pci->ops->write_dbi(pci, pci->dbi_base, reg, size, val);
+		return;
+	}
+
+	ret = dw_pcie_write(pci->dbi_base + reg, size, val);
+	if (ret)
+		dev_err(pci->dev, "Write DBI address failed\n");
+}
+
+The dwc version uses dw_pcie_wr_own_conf() which does:
+
+static int dw_pcie_wr_own_conf(struct pcie_port *pp, int where, int size,
+			       u32 val)
+{
+	struct dw_pcie *pci;
+
+	if (pp->ops->wr_own_conf)
+		return pp->ops->wr_own_conf(pp, where, size, val);
+
+	pci = to_dw_pcie_from_pp(pp);
+	return dw_pcie_write(pci->dbi_base + where, size, val);
+}
+
+As dra7xx does neither implement pp->ops->wr_own_conf() nor
+pci->ops->write_dbi. Ergo the interrupt chip is just a copy with some
+obfuscation.
+
+I might be missing some detail, but asided of the actual interrupt
+service routine, this looks like a massive copy and paste orgy.
+
+Thanks,
+
+        tglx
+
+
