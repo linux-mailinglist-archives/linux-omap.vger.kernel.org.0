@@ -2,115 +2,215 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C33819840B
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Mar 2020 21:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C97FE1985E7
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Mar 2020 22:59:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726781AbgC3TQ5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Mar 2020 15:16:57 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:35597 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726672AbgC3TQ5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Mar 2020 15:16:57 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jIzu3-0005Tx-LK; Mon, 30 Mar 2020 21:16:55 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jIzu2-00066n-JR; Mon, 30 Mar 2020 21:16:54 +0200
-Date:   Mon, 30 Mar 2020 21:16:54 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     Lokesh Vutla <lokeshvutla@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCH v3 4/5] pwm: omap-dmtimer: Do not disable pwm before
- changing period/duty_cycle
-Message-ID: <20200330191654.waoocllctanh5nk5@pengutronix.de>
-References: <20200312042210.17344-1-lokeshvutla@ti.com>
- <20200312042210.17344-5-lokeshvutla@ti.com>
- <20200312064042.p7himm3odxjyzroi@pengutronix.de>
- <20200330141436.GG2431644@ulmo>
+        id S1728376AbgC3U7j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Mar 2020 16:59:39 -0400
+Received: from mga17.intel.com ([192.55.52.151]:64894 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728317AbgC3U7j (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 30 Mar 2020 16:59:39 -0400
+IronPort-SDR: 87RY5cMU+dKJ1aKlM/XGuYhI5XAKvg3CRUOvPOA26kMqWFd9FSRLC+lRo5FFJ73qk7joEwuu4U
+ mxx2Folhf6TA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 13:59:38 -0700
+IronPort-SDR: +hDKRKS+hsZFbkqS4mY0A/5hDcmEifH4meR06OmGkASluGomrQw2Lpsx0p8/gHW/PXFmCMSZxy
+ GrWtv2ygp8mQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,325,1580803200"; 
+   d="scan'208";a="449926141"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 30 Mar 2020 13:59:36 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jJ1VQ-000EqB-99; Tue, 31 Mar 2020 04:59:36 +0800
+Date:   Tue, 31 Mar 2020 04:58:59 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
+ 69a1e68d957a0ff7ee5797bafc5b4acc1ac911fe
+Message-ID: <5e825d93.Tx1xghBX5sH1Z7BQ%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200330141436.GG2431644@ulmo>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello Thierry,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
+branch HEAD: 69a1e68d957a0ff7ee5797bafc5b4acc1ac911fe  dt-bindings: usb: renesas,usb3-peri: add r8a77961 support
 
-On Mon, Mar 30, 2020 at 04:14:36PM +0200, Thierry Reding wrote:
-> On Thu, Mar 12, 2020 at 07:40:42AM +0100, Uwe Kleine-König wrote:
-> > On Thu, Mar 12, 2020 at 09:52:09AM +0530, Lokesh Vutla wrote:
-> > > Only the Timer control register(TCLR) cannot be updated when the timer
-> > > is running. Registers like Counter register(TCRR), loader register(TLDR),
-> > > match register(TMAR) can be updated when the counter is running. Since
-> > > TCLR is not updated in pwm_omap_dmtimer_config(), do not stop the
-> > > timer for period/duty_cycle update.
-> > 
-> > I'm not sure what is sensible here. Stopping the PWM for a short period
-> > is bad, but maybe emitting a wrong period isn't better. You can however
-> > optimise it if only one of period or duty_cycle changes.
-> > 
-> > @Thierry, what is your position here? I tend to say a short stop is
-> > preferable.
-> 
-> It's not clear to me from the above description how exactly the device
-> behaves, but I suspect that it may latch the values in those registers
-> and only update the actual signal output once a period has finished. I
-> know of a couple of other devices that do that, so it wouldn't be
-> surprising.
-> 
-> Even if that was not the case, I think this is just the kind of thing
-> that we have to live with. Sometimes it just isn't possible to have all
-> supported devices adhere strictly to an API. So I think the best we can
-> do is have an API that loosely defines what's supposed to happen and
-> make a best effort to implement those semantics. If a device deviates
-> slightly from those expectations, we can always cross fingers and hope
-> that things still work. And it looks like they are.
-> 
-> So I think if Lokesh and Tony agree that this is the right thing to do
-> and have verified that things still work after this, that's about as
-> good as it's going to get.
+elapsed time: 755m
 
-I'd say this isn't for the platform people to decide. My position here
-is that the PWM drivers should behave as uniform as possible to minimize
-surprises for consumers. And so it's a "PWM decision" that is to be made
-here, not an "omap decision".
+configs tested: 156
+configs skipped: 0
 
-> I know this is perhaps cheating a little, or turning a blind eye, but I
-> don't know what the alternative would be. Do we want to tell people that
-> a given PWM controller can't be used if it doesn't work according to our
-> expectations? That's hard to argue if that controller works just fine
-> for all known use-cases.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I'd like have some official policy here which of the alternatives is the
-preferred cheat.
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+sparc                            allyesconfig
+mips                              allnoconfig
+c6x                              allyesconfig
+parisc                generic-64bit_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+h8300                    h8300h-sim_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+parisc                            allnoconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+x86_64               randconfig-a003-20200330
+x86_64               randconfig-a002-20200330
+i386                 randconfig-a001-20200330
+i386                 randconfig-a002-20200330
+i386                 randconfig-a003-20200330
+x86_64               randconfig-a001-20200330
+c6x                  randconfig-a001-20200330
+h8300                randconfig-a001-20200330
+microblaze           randconfig-a001-20200330
+nios2                randconfig-a001-20200330
+sparc64              randconfig-a001-20200330
+s390                 randconfig-a001-20200329
+xtensa               randconfig-a001-20200329
+csky                 randconfig-a001-20200329
+openrisc             randconfig-a001-20200329
+sh                   randconfig-a001-20200329
+x86_64               randconfig-b001-20200330
+x86_64               randconfig-b002-20200330
+x86_64               randconfig-b003-20200330
+i386                 randconfig-b001-20200330
+i386                 randconfig-b002-20200330
+i386                 randconfig-b003-20200330
+x86_64               randconfig-b001-20200331
+x86_64               randconfig-b002-20200331
+x86_64               randconfig-b003-20200331
+i386                 randconfig-b001-20200331
+i386                 randconfig-b002-20200331
+i386                 randconfig-b003-20200331
+i386                 randconfig-c003-20200330
+x86_64               randconfig-c003-20200330
+x86_64               randconfig-c002-20200330
+i386                 randconfig-c002-20200330
+x86_64               randconfig-c001-20200330
+i386                 randconfig-c001-20200330
+x86_64               randconfig-d001-20200330
+x86_64               randconfig-d002-20200330
+x86_64               randconfig-d003-20200330
+i386                 randconfig-d001-20200330
+i386                 randconfig-d002-20200330
+i386                 randconfig-d003-20200330
+x86_64               randconfig-e001-20200330
+x86_64               randconfig-e002-20200330
+x86_64               randconfig-e003-20200330
+i386                 randconfig-e001-20200330
+i386                 randconfig-e002-20200330
+i386                 randconfig-e003-20200330
+x86_64               randconfig-f001-20200330
+x86_64               randconfig-f002-20200330
+x86_64               randconfig-f003-20200330
+i386                 randconfig-f001-20200330
+i386                 randconfig-f002-20200330
+i386                 randconfig-f003-20200330
+x86_64               randconfig-g001-20200330
+x86_64               randconfig-g002-20200330
+x86_64               randconfig-g003-20200330
+i386                 randconfig-g001-20200330
+i386                 randconfig-g002-20200330
+i386                 randconfig-g003-20200330
+x86_64               randconfig-h001-20200330
+x86_64               randconfig-h002-20200330
+x86_64               randconfig-h003-20200330
+i386                 randconfig-h001-20200330
+i386                 randconfig-h002-20200330
+i386                 randconfig-h003-20200330
+arc                  randconfig-a001-20200330
+arm                  randconfig-a001-20200330
+arm64                randconfig-a001-20200330
+ia64                 randconfig-a001-20200330
+powerpc              randconfig-a001-20200330
+sparc                randconfig-a001-20200330
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                                defconfig
+s390                       zfcpdump_defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                          allmodconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                             defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
 
-The situation here is that period and duty_cycle cannot be updated
-atomically. So the two options are:
-
- - stop shortly
- - update with hardware running and maybe emit a broken period
-
-I tend to say "stop shortly" is the better alternative.
-
-Best regards
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
