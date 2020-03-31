@@ -2,90 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16FFF199AFA
-	for <lists+linux-omap@lfdr.de>; Tue, 31 Mar 2020 18:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 021FE199E23
+	for <lists+linux-omap@lfdr.de>; Tue, 31 Mar 2020 20:38:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730672AbgCaQJT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 31 Mar 2020 12:09:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58952 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730149AbgCaQJS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 31 Mar 2020 12:09:18 -0400
-Received: from localhost (mobile-166-175-186-165.mycingular.net [166.175.186.165])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5DA96206CC;
-        Tue, 31 Mar 2020 16:09:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585670958;
-        bh=g+2oQeN73eEpy7w1yZdo/plA5ttpFIkMcxGJMp+J8EI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=XnVGAD3lzsW/4E34B1uA2eyIxvIa7GOt8B0+kyEBgjwDT22t1cnHQuB5Vs1zOl+ud
-         qTJq+rNCXthCe6JvZQWLss5ZQpIHi8Z5SFEE0glMC1UllBOaJsNvHwys5kXf2qOdGX
-         K5SAnY1zIZpQsP6p2nvqEpFRdELJHLRoIzo1ASQw=
-Date:   Tue, 31 Mar 2020 11:09:14 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Andrew Murray <amurray@thegoodpenguin.co.uk>,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH v4] PCI: dwc: pci-dra7xx: Fix MSI IRQ handling
-Message-ID: <20200331160914.GA195472@google.com>
+        id S1726295AbgCaSiL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 31 Mar 2020 14:38:11 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:46280 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726170AbgCaSiK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 31 Mar 2020 14:38:10 -0400
+Received: by mail-lj1-f196.google.com with SMTP id r7so15405323ljg.13;
+        Tue, 31 Mar 2020 11:38:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=d/jwDOe+5jnEC+le3jpCg1Ia6gNwhPXykp3nmWWhaOs=;
+        b=efL3HT8pfTGSmpyjNAyFLdEXEf+iJsj0as5yEpNO7JudauMQa/KZj6D7xFxcKKnjhV
+         iPsBeft+PnbfJC+Vp6nLBwnlZ5tKQ+8ZBNF9YgWR7+3eFhLFJVkmXf+5gj2SEd4dqa3s
+         lkgGvPRBtmheVxe7N6FgijtF4pjZ9WlVZMf8zzO5uaB3URHQiV8pFOwzP1Rvzbdv9Tr9
+         Pd3REBTMmX+KxQgz/+GobUY/Nl/bjrmfSreT2c2ZkyqAMIIyNTUESippgbxRjAskm82a
+         cb7RqxivclSsiqz92iezds6lQlwNzWvgnITilpL2P9XR8heTGadXxSI7dCJihYX/6iMf
+         HvyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=d/jwDOe+5jnEC+le3jpCg1Ia6gNwhPXykp3nmWWhaOs=;
+        b=Il+9K3N2EH3lr64ps1nFPg4bqyNfRoi6lOSP6Vg+jrvv1S/9c+T4RgONi48CnhAlCi
+         4h9+fD67Xw2n9LVkVtmntwPWgTYjqeOjDGbzobUCo+LjnO6Yr4hpiKfbn3H+T2Dh6upV
+         9mfQcFWHZaNjXqivkydT9pfhfIOQBPdVRqpOYRhf2AADsNU9USx0xo51tXLV04OhdLDg
+         b0uMqB9IgJi1Q6Q6c7DFjnbYRy1FGkmAtpZfSWN4CRhDzCaix1K0p3IPcE0z5cNxJ6KZ
+         SDoLluUi9RS3ybfuDbj5dtrG0Xn8zViJvoq4wqIg1Day9YPILJ4HhRn4EEGkC+XZj9xW
+         Hlqw==
+X-Gm-Message-State: AGi0PuYOqDW7bRTOoKDcudl4f2tIcXLcgt9tOZa97CVNuNl4CiA9f9E6
+        Jy//MEwFFQ5nd8b0JPuBg4VeUTIbC8nJxWEdj1E=
+X-Google-Smtp-Source: APiQypKLpnll7mCTK5hJByNZ+I2zToNbaBev7/ujZB1Z7zORv+AAXOLY5C1GQuLB78hus+630w3uQzds8XU6gpqabLM=
+X-Received: by 2002:a2e:3c0a:: with SMTP id j10mr10921764lja.205.1585679888664;
+ Tue, 31 Mar 2020 11:38:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87zhbxv979.fsf@nanos.tec.linutronix.de>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+References: <20191120220559.18914-1-c-robey@ti.com> <41c73bc1-99ae-6797-5bb7-7acc0f6518c0@ti.com>
+ <20191212170452.GV35479@atomide.com>
+In-Reply-To: <20191212170452.GV35479@atomide.com>
+From:   Drew Fustini <pdp7pdp7@gmail.com>
+Date:   Tue, 31 Mar 2020 20:38:38 +0200
+Message-ID: <CAEf4M_C05Hwc_BEL6MaFNNEW0Cf2kc-LvMi9qdKxL7hVAFFDGQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ARM: dts: am5729: beaglebone-ai: adding device tree
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Caleb Robey <c-robey@ti.com>, linux-omap@vger.kernel.org,
+        Jason Kridner <jkridner@gmail.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>, Jason Kridner <jdk@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Andreas Dannenberg <dannenberg@ti.com>,
+        Jean-Jacques Hiblot <jjhiblot@ti.com>,
+        Praneeth Bajjuri <praneeth@ti.com>,
+        "Andrew F . Davis" <afd@ti.com>, Tom Rini <trini@konsulko.com>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Drew Fustini <drew@beagleboard.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Mar 30, 2020 at 11:12:10PM +0200, Thomas Gleixner wrote:
-> Bjorn Helgaas <helgaas@kernel.org> writes:
-> > On Fri, Mar 27, 2020 at 03:24:34PM +0530, Vignesh Raghavendra wrote:
-> >> Due an issue with PCIe wrapper around DWC PCIe IP on dra7xx, driver
-> >> needs to ensure that there are no pending MSI IRQ vector set (i.e
-> >> PCIE_MSI_INTR0_STATUS reads 0 at least once) before exiting IRQ handler.
-> >> Else, the dra7xx PCIe wrapper will not register new MSI IRQs even though
-> >> PCIE_MSI_INTR0_STATUS shows IRQs are pending.
+On Thu, Dec 12, 2019 at 6:06 PM Tony Lindgren <tony@atomide.com> wrote:
+> > On 21/11/2019 00:05, Caleb Robey wrote:
+> > > From: Jason Kridner <jdk@ti.com>
+> > >
+> > > BeagleBoard.org BeagleBone AI is an open source hardware single
+> > > board computer based on the Texas Instruments AM5729 SoC featuring
+> > > dual-core 1.5GHz Arm Cortex-A15 processor, dual-core C66 digital
+> > > signal processor (DSP), quad-core embedded vision engine (EVE),
+> > > Arm Cortex-M4 processors, dual programmable realtime unit
+> > > industrial control subsystems and more. The board features 1GB
+> > > DDR3L, USB3.0 Type-C, USB HS Type-A, microHDMI, 16GB eMMC flash,
+> > > 1G Ethernet, 802.11ac 2/5GHz, Bluetooth, and BeagleBone expansion
+> > > headers.
+> > >
+> > > For more information, refer to:
+> > > https://beaglebone.ai
+> > >
+> > > This patch introduces the BeagleBone AI device tree.
+> > >
+> > > Note that the device use the "ti,tpd12s016" component which is
+> > > software compatible with "ti,tpd12s015". Thus we only use the
+> > > latter driver.
 > >
-> > I'm not an IRQ guy (real IRQ guys CC'd), but I'm wondering if this is
-> > really a symptom of a problem in the generic DWC IRQ handling, not a
-> > problem in dra7xx itself.
-> >
-> > I thought it was sort of standard behavior that a device would not
-> > send a new MSI unless there was a transition from "no status bits set"
-> > to "at least one status bit set".  I'm looking at this text from the
-> > PCIe r5.0 spec, sec 6.7.3.4:
-> 
-> That's for the device side. But this is the host side and that consists
-> of two components:
-> 
->      1) The actual PCIe host controller (DWC)
-> 
->      2) Some hardware wrapper around #1 to glue the host controller IP
->         into the TI SoC.
-> 
-> #1 contains a MSI message receiver unit. PCIE_MSI_INTR0_STATUS is part
-> that.
-> 
-> If there is a MSI message sent to the host then the bit which is
-> corresponding to the sent message (vector) is set in the status
-> register. If a bit is set in the status register then the host
-> controller raises an interrupt at its output.
-> 
-> Here, if I deciphered the above changelog correctly, comes the wrapper
-> glue #2 into play, which seems to be involved in forwarding the host
-> controller interrupt to the CPU's interrupt controller (GIC) and that
-> forwarding mechanism seems to have some issue.
+> > Ah. thanks. I see my comments resolved here.
+> > no more comments to net part from my side.
+>
+> Just FYI, Jason had one pending comment on the earlier version
+> about the compatible property to use.
+>
+> So I'm assuming there will be a new version posted, tagging
+> this one as read.
 
-Sorry for muddying the waters, and thanks for clarifying it, Thomas.
+It came to my attention today when talking with Jason Kridner and
+Robert Nelson that we did not get the BeagleBone AI device tree
+upstream yet.
 
-This patch is on its way to v5.7, and I guess we'll worry about
-whether the interrupt chip reimplementation is overkill later.
+I am having trouble identifying what the pending comment was from the
+original patch series.
 
-Bjorn
+Was it related to this compatible string?
+
+> +       compatible = "beagleboard.org,am5729-beagleboneai", "ti,am5728",
+
+thanks,
+drew
+
+--
+Drew Fustini
+BeagleBoard.org Foundation
+https://beagleboard.org/about
