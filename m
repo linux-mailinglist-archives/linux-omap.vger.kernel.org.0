@@ -2,58 +2,150 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D57219ADD8
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Apr 2020 16:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C0319A940
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Apr 2020 12:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732976AbgDAOaN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Apr 2020 10:30:13 -0400
-Received: from mx0a-003e4a01.pphosted.com ([205.220.161.136]:17124 "EHLO
-        mx0a-003e4a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732856AbgDAOaN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Apr 2020 10:30:13 -0400
-X-Greylist: delayed 17412 seconds by postgrey-1.27 at vger.kernel.org; Wed, 01 Apr 2020 10:30:12 EDT
-Received: from pps.filterd (m0187933.ppops.net [127.0.0.1])
-        by mx0a-003e4a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0319aTR6017641;
-        Wed, 1 Apr 2020 04:39:59 -0500
-Received: from susilcesmtp5.fcstone.com (secureauth06.atidft.net [216.111.165.250] (may be forged))
-        by mx0a-003e4a01.pphosted.com with ESMTP id 30205adt4r-1;
-        Wed, 01 Apr 2020 04:39:59 -0500
-Received: from User ([10.40.13.245]) by SUSILCESMTP5.FCStone.com with Microsoft SMTPSVC(10.0.17763.1);
-         Wed, 1 Apr 2020 04:39:58 -0500
-Reply-To: <abukareem461@gmail.com>
-From:   "Abdul Kareem" <admin@abdulkareem.org>
-Subject: BUSINESS PROPOSAL !!!
-Date:   Wed, 1 Apr 2020 02:39:35 -0700
+        id S1726335AbgDAKPT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Apr 2020 06:15:19 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:57998 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725860AbgDAKPS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Apr 2020 06:15:18 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 031AFB50074640;
+        Wed, 1 Apr 2020 05:15:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1585736111;
+        bh=VHWDppBeZMnct+fmlb85sd/m6PVJpfigJspsPqyup8Y=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=QSpSRc4hvstCrq8bCBJgAGMf+nwXD9BVZFiWhDPTG8iTSasO43GTpmRL5uCpgNDOv
+         JQAdqyVILFKk97QretLTYP9rYwnhjv9EH6SxaZszW8Whs6D5mD6zA96DAOTe7hzxY6
+         k3G1CDcHs+GXkYZoiJuUFvlXlAgyt/cOISrEdmAc=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 031AFAVn071292
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 1 Apr 2020 05:15:11 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 1 Apr
+ 2020 05:15:10 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 1 Apr 2020 05:15:10 -0500
+Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 031AF7q6122698;
+        Wed, 1 Apr 2020 05:15:08 -0500
+Subject: Re: [PATCH v3 4/5] pwm: omap-dmtimer: Do not disable pwm before
+ changing period/duty_cycle
+To:     Thierry Reding <thierry.reding@gmail.com>
+CC:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>
+References: <20200312042210.17344-1-lokeshvutla@ti.com>
+ <20200312042210.17344-5-lokeshvutla@ti.com>
+ <20200312064042.p7himm3odxjyzroi@pengutronix.de>
+ <20200330141436.GG2431644@ulmo> <638d7136-6a74-8069-5331-b2248c948ed4@ti.com>
+ <20200331201014.GA2954599@ulmo>
+From:   Lokesh Vutla <lokeshvutla@ti.com>
+Message-ID: <57ce30f0-00e1-cbe6-8412-5461b412b361@ti.com>
+Date:   Wed, 1 Apr 2020 15:45:07 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <SUSILCESMTP5cEPt0nl0000b69c@SUSILCESMTP5.FCStone.com>
-X-OriginalArrivalTime: 01 Apr 2020 09:39:58.0923 (UTC) FILETIME=[826281B0:01D60809]
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-03-31_07:2020-03-31,2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound score=100 clxscore=1034
- spamscore=100 malwarescore=0 suspectscore=0 impostorscore=0 adultscore=0
- mlxlogscore=-999 bulkscore=99 phishscore=0 priorityscore=1501 mlxscore=100
- lowpriorityscore=99 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004010088
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20200331201014.GA2954599@ulmo>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dearest Friend
+Hi Thierry,
 
-I am Abdul Kareem Working with Emirate NBD Bank Dubai,United Arab Emirate as Finance Manager,I am pleased to get across to you for a very urgent and profitable business proposal which I believe will profit the both of us after completion,I have been in search of someone with this last name as yours,when I saw your name I was pushed to contact you and see how best we can assist each other believing that you will not betray me, My late client citizen of your country who is the founder of (ALF Emirate Gold Refinery DMCC) made a fixed deposit with my bank in January 2009 for 36 calendar months, valued at (US$37,500,000)Thirty Seven Million,Five Hundred Thousand United State Dollars Only,The due date for this deposit contract was the 2nd of April 2012,He met his untimely death in the Japan earthquake and tsunami Friday 11 March 2011 on a business trip.
+On 01/04/20 1:40 AM, Thierry Reding wrote:
+> On Tue, Mar 31, 2020 at 08:59:47PM +0530, Lokesh Vutla wrote:
+>> Hi Thierry,
+>>
+>> On 30/03/20 7:44 PM, Thierry Reding wrote:
+>>> On Thu, Mar 12, 2020 at 07:40:42AM +0100, Uwe Kleine-König wrote:
+>>>> On Thu, Mar 12, 2020 at 09:52:09AM +0530, Lokesh Vutla wrote:
+>>>>> Only the Timer control register(TCLR) cannot be updated when the timer
+>>>>> is running. Registers like Counter register(TCRR), loader register(TLDR),
+>>>>> match register(TMAR) can be updated when the counter is running. Since
+>>>>> TCLR is not updated in pwm_omap_dmtimer_config(), do not stop the
+>>>>> timer for period/duty_cycle update.
+>>>>
+>>>> I'm not sure what is sensible here. Stopping the PWM for a short period
+>>>> is bad, but maybe emitting a wrong period isn't better. You can however
+>>>> optimise it if only one of period or duty_cycle changes.
+>>>>
+>>>> @Thierry, what is your position here? I tend to say a short stop is
+>>>> preferable.
+>>>
+>>> It's not clear to me from the above description how exactly the device
+>>> behaves, but I suspect that it may latch the values in those registers
+>>> and only update the actual signal output once a period has finished. I
+>>> know of a couple of other devices that do that, so it wouldn't be
+>>> surprising.
+>>>
+>>> Even if that was not the case, I think this is just the kind of thing
+>>> that we have to live with. Sometimes it just isn't possible to have all
+>>> supported devices adhere strictly to an API. So I think the best we can
+>>> do is have an API that loosely defines what's supposed to happen and
+>>> make a best effort to implement those semantics. If a device deviates
+>>> slightly from those expectations, we can always cross fingers and hope
+>>> that things still work. And it looks like they are.
+>>>
+>>> So I think if Lokesh and Tony agree that this is the right thing to do
+>>> and have verified that things still work after this, that's about as
+>>> good as it's going to get.
+>>
+>> Yes this is needed especially in the use-case[0] that I am trying to enable
+>> using PWM. In this case PWM cannot be stopped in between and needs to be updated
+>> dynamically. Also hardware doesn't provide any restrictions on updating the
+>> period. So IMHO, this might be the right thing to do.
+>>
+>> Tony did provide tested-by and I measured PWM signals on scope with these
+>> changes. Let me know if any thing else is required?
+>>
+>> [0] https://sourceforge.net/p/linuxptp/mailman/message/36943248/
+> 
+> From you measurements, can you tell whether or not the signal actually
+> gets updated in the middle of a period, or does it only get updated at
+> the end of a full period?
 
-My bank management is yet to know about his death, I knew about it because he was my friend and I was his Account Officer and he did not mention any Next of Kin/ Heir when the account was opened,he was a widowed and no children,I am seeking your co-operation to present you as the Next of Kin/ Heir to the account, since you are a foreigner and my bank  will release the funds to you,There is no risk involved, the transaction will be executed under a legitimate arrangement that will protect us from any breach of law,I am not a greedy person, so I am suggesting we share the funds in this ratio, 50/50% ,Let me know your mind on this and please do treat this information highly confidential, We shall go over the details once I receive your urgent response.
+There is a corner case where period/duty-cycle gets updated in the middle of the
+cycle. So let me give more details on how it works:
 
-Anticipating your response
+OMAP dual-mode timers with a upward  timer counter, can be configured in PWM
+mode. When the timer counter overflows it gets reloaded with the load value(Load
+register) and the pwm output goes up. When counter matches with match register,
+the output goes down. So the load register is used to calculate the period and
+similarly match register for duty cycle.
 
-Sincerely Yours
-Abdul Kareem
+When PWM is running and changing both duty cycle and period, we cannot prevent
+in software that the output might produce a period with mixed settings.
+Especially when the PWM signal is high the following cases can happen:
+1) When signal is high and new match value is > current timer counter. Then the
+duty cycle gets reflected in the current cycle.(Duty_cycle for current period=
+new match value -  previous load  value).
+2) When signal is high and new match value is < current timer counter. Then the
+period and duty cycle for the current cycle gets effected as well. Because the
+signal is pulled down only when counter matches with match register, and this
+happens only in the next cycle(after timer counter overflows). Then:
+	- new Period for current cycle = (current period + new period)
+	- new duty cycle for current cycle =  (current period + new duty_cycle).
+
+Rest all the cases the values gets reflected in the next cycle.
+
+As advised by Uwe, I have updated all these details in driver.
+
+Thanks and regards,
+Lokesh
+
+
