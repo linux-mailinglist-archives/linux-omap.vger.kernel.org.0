@@ -2,41 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A713819AB54
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Apr 2020 14:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86BAE19AB97
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Apr 2020 14:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732378AbgDAMJr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Apr 2020 08:09:47 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:37174 "EHLO
+        id S1732253AbgDAMX6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Apr 2020 08:23:58 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:38380 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732273AbgDAMJr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Apr 2020 08:09:47 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 031C9P8a091776;
-        Wed, 1 Apr 2020 07:09:25 -0500
+        with ESMTP id S1726804AbgDAMX6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Apr 2020 08:23:58 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 031CNmac094694;
+        Wed, 1 Apr 2020 07:23:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1585742965;
-        bh=5IaTEDrQgJjdu/7yF0s5OsEdojoFFxCD6wr2zUPxmbo=;
+        s=ti-com-17Q1; t=1585743828;
+        bh=U3aEUgKICYKpbqDjPtLZKLQC/R6IQxmLct6xsxQgjf4=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=K8iDVkcP72xHpSYe/uDdwDm5ZXgsOu1gOzn3PcdLALA0EwRtbuDL+KSSYr5WuzuYe
-         1xCUL3gCNSuXIQ1rrW6vtuIKdhwU5mcBVNPCPW87bHLTkOvs3P2LjkWw6BHfykSfHl
-         3V3KCzsShc253JQLykbFgbk3C4aoeYw1u5GoQWi0=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 031C9PhF104321;
-        Wed, 1 Apr 2020 07:09:25 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+        b=jDv7n+9bf55J5YE8TM20Zv45RBt5SfcNyryJ00Vw+sjAtIZsjkMRctkr+lpcL0awF
+         iirEkQcKNxNWC4gNsFJVoZYyCXKVwTLX4cdFyAeY4Z3XOK0XXas5HkE3AvWh8yu3Ux
+         jP3XDrvPoq+vRA+Zhtz0c1aKCVa5xhrUeatUPpGU=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 031CNmRH117071
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 1 Apr 2020 07:23:48 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 1 Apr
- 2020 07:09:25 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 07:23:47 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 1 Apr 2020 07:09:25 -0500
+ Frontend Transport; Wed, 1 Apr 2020 07:23:47 -0500
 Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 031C9M50101834;
-        Wed, 1 Apr 2020 07:09:23 -0500
-Subject: Re: [PATCHv2 18/56] drm/omap: panel-dsi-cm: use common MIPI DCS 1.3
- defines
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 031CNii7004464;
+        Wed, 1 Apr 2020 07:23:45 -0500
+Subject: Re: [PATCHv2 41/56] drm/omap: dsi: return proper error code from
+ dsi_update_all()
 To:     Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sebastian Reichel <sre@kernel.org>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>
@@ -46,14 +47,14 @@ CC:     Tony Lindgren <tony@atomide.com>,
         Rob Herring <robh@kernel.org>, <linux-omap@vger.kernel.org>,
         <dri-devel@lists.freedesktop.org>, <kernel@collabora.com>
 References: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
- <20200224232126.3385250-19-sebastian.reichel@collabora.com>
+ <20200224232126.3385250-42-sebastian.reichel@collabora.com>
 From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <2ce834ec-6025-24c9-2045-9949562bf828@ti.com>
-Date:   Wed, 1 Apr 2020 15:09:22 +0300
+Message-ID: <d657f47f-5960-24d5-76dd-06f074e22a84@ti.com>
+Date:   Wed, 1 Apr 2020 15:23:44 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20200224232126.3385250-19-sebastian.reichel@collabora.com>
+In-Reply-To: <20200224232126.3385250-42-sebastian.reichel@collabora.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -63,15 +64,28 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 25/02/2020 01:20, Sebastian Reichel wrote:
-> Drop local definition of common MIPI DCS 1.3 defines.
-> 
-> Signed-off-by: Sebastian Reichel <sre@kernel.org>
+On 25/02/2020 01:21, Sebastian Reichel wrote:
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 > ---
->   drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
+>   drivers/gpu/drm/omapdrm/dss/dsi.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> index acbfffe83b3e..f629e6b1025b 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> @@ -3987,7 +3987,7 @@ static int dsi_update_all(struct omap_dss_device *dssdev)
+>   			return r;
+>   	}
+>   
+> -	return 0;
+> +	return r;
+>   }
+>   
+>   /* Display funcs */
+> 
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Shouldn't this be squashed to earlier patch?
 
   Tomi
 
