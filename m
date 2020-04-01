@@ -2,124 +2,231 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E019019AAFE
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Apr 2020 13:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD19319AB11
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Apr 2020 13:48:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732234AbgDALnT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Apr 2020 07:43:19 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:37694 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732205AbgDALnT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Apr 2020 07:43:19 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 031Bh8kn094999;
-        Wed, 1 Apr 2020 06:43:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1585741388;
-        bh=SnzHlBHXR9fQtbILp3Hc/83R7QzMDB7i2qGvGzjI03s=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=WD0GplFP/jNkeNnH0jxGSNB1VVGU0/i+BXRqs3qLhlbegfomss0I4mFKCqbYjsmN/
-         Fp7e8ySsgT0rg7npadjK23mrw73KKXxlzKo8tYXAmXEDkgRiJJABKhr5IbisZ4kTLg
-         FlMgccyR3QZZzAJYAUHhW2mBvMGqSbBZABfychfo=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 031Bh8rK053121
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 1 Apr 2020 06:43:08 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 1 Apr
- 2020 06:43:07 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 1 Apr 2020 06:43:07 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 031Bh4ld011145;
-        Wed, 1 Apr 2020 06:43:05 -0500
-Subject: Re: [PATCHv2 10/56] drm/omap: dsi: drop virtual channel logic
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC:     Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sebastian Reichel <sre@kernel.org>,
+        id S1732314AbgDALrf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Apr 2020 07:47:35 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:35821 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726427AbgDALrf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Apr 2020 07:47:35 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1jJbqH-0005t0-Ev; Wed, 01 Apr 2020 13:47:33 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1jJbqG-0007Yi-HE; Wed, 01 Apr 2020 13:47:32 +0200
+Date:   Wed, 1 Apr 2020 13:47:32 +0200
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Lokesh Vutla <lokeshvutla@ti.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Tony Lindgren <tony@atomide.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Rob Herring <robh@kernel.org>, <linux-omap@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <kernel@collabora.com>
-References: <20200224232126.3385250-1-sebastian.reichel@collabora.com>
- <20200224232126.3385250-11-sebastian.reichel@collabora.com>
- <20200225150117.GI4764@pendragon.ideasonboard.com>
- <b3742008-1ac9-cf4d-62b2-b4afd904f2f9@ti.com>
- <20200401113333.GB4876@pendragon.ideasonboard.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <18e5c1a3-3d12-af6a-5b93-f08ccab96831@ti.com>
-Date:   Wed, 1 Apr 2020 14:43:04 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>,
+        kernel@pengutronix.de
+Subject: Re: [PATCH v3 4/5] pwm: omap-dmtimer: Do not disable pwm before
+ changing period/duty_cycle
+Message-ID: <20200401114732.cxy3fsluzag7pxff@pengutronix.de>
+References: <20200312042210.17344-1-lokeshvutla@ti.com>
+ <20200312042210.17344-5-lokeshvutla@ti.com>
+ <20200312064042.p7himm3odxjyzroi@pengutronix.de>
+ <20200330141436.GG2431644@ulmo>
+ <20200330191654.waoocllctanh5nk5@pengutronix.de>
+ <20200331204559.GB2954599@ulmo>
+ <20200401082227.sxtarbttsmmhs2of@pengutronix.de>
+ <c1785cf8-4231-feb5-9a54-2374df85c33b@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20200401113333.GB4876@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c1785cf8-4231-feb5-9a54-2374df85c33b@ti.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 01/04/2020 14:33, Laurent Pinchart wrote:
-> Hi Tomi,
+On Wed, Apr 01, 2020 at 03:52:21PM +0530, Lokesh Vutla wrote:
+> Hi Uwe,
 > 
-> On Wed, Apr 01, 2020 at 02:30:25PM +0300, Tomi Valkeinen wrote:
->> On 25/02/2020 17:01, Laurent Pinchart wrote:
->>> On Tue, Feb 25, 2020 at 12:20:40AM +0100, Sebastian Reichel wrote:
->>>> This drops the virtual channel logic. Afterwards DSI clients
->>>> request their channel number and get the virtual channel with
->>>> the same number or -EBUSY if already in use.
->>>
->>> I wonder why this level of indirection was used, allocating "virtual
->>> VCs". A single virtual indirection should be enough :-) I may be missing
->>> some context though, I'll defer that to Tomi, but for me,
->>
->> I haven't reviewed the code yet, and it's been a long time since I wrote this code. But maybe this
->> explains at least some:
->>
->> (I hope I remember this right)
->>
->> DSI packets have virtual channel IDs (VCID). That's number 0-3 that needs to be in the packets.
->>
->> DSI IP has virtual channel "blocks" (VC), with associated registers. So 4 VC register blocks. These
->> are not related to DSI virtual channel IDs in any way.
->>
->> To do DSI transactions, you choose a VC, and program it. A VC can send data via video pipeline, or
->> transmit and receive data messages created with CPU. And in both cases, you need to include the VCID
->> in the transmissions, of course.
->>
->> So, I think a normal use case could be a single panel, with VCID 0. To send video data and control
->> messages, you would use VC0 and VC1. VC0 would be configured for video data, and VC1 would be
->> configured for control messages.
->>
->> And if I recall right, currently you first request a free VC from the IP with request_vc(). Then you
->> use set_vc_id(channel, id) to set the VCID, used when doing transactions with that VC.
->>
->> So the virtual channel naming is pretty confusing in the DSI IP, in my opinion.
+> On 01/04/20 1:52 PM, Uwe Kleine-König wrote:
+> > Hello Thierry,
+> > 
+> > On Tue, Mar 31, 2020 at 10:45:59PM +0200, Thierry Reding wrote:
+> >> On Mon, Mar 30, 2020 at 09:16:54PM +0200, Uwe Kleine-König wrote:
+> >>> On Mon, Mar 30, 2020 at 04:14:36PM +0200, Thierry Reding wrote:
+> >>>> On Thu, Mar 12, 2020 at 07:40:42AM +0100, Uwe Kleine-König wrote:
+> >>>>> On Thu, Mar 12, 2020 at 09:52:09AM +0530, Lokesh Vutla wrote:
+> >>>>>> Only the Timer control register(TCLR) cannot be updated when the timer
+> >>>>>> is running. Registers like Counter register(TCRR), loader register(TLDR),
+> >>>>>> match register(TMAR) can be updated when the counter is running. Since
+> >>>>>> TCLR is not updated in pwm_omap_dmtimer_config(), do not stop the
+> >>>>>> timer for period/duty_cycle update.
+> >>>>>
+> >>>>> I'm not sure what is sensible here. Stopping the PWM for a short period
+> >>>>> is bad, but maybe emitting a wrong period isn't better. You can however
+> >>>>> optimise it if only one of period or duty_cycle changes.
+> >>>>>
+> >>>>> @Thierry, what is your position here? I tend to say a short stop is
+> >>>>> preferable.
+> >>>>
+> >>>> It's not clear to me from the above description how exactly the device
+> >>>> behaves, but I suspect that it may latch the values in those registers
+> >>>> and only update the actual signal output once a period has finished. I
+> >>>> know of a couple of other devices that do that, so it wouldn't be
+> >>>> surprising.
+> >>>>
+> >>>> Even if that was not the case, I think this is just the kind of thing
+> >>>> that we have to live with. Sometimes it just isn't possible to have all
+> >>>> supported devices adhere strictly to an API. So I think the best we can
+> >>>> do is have an API that loosely defines what's supposed to happen and
+> >>>> make a best effort to implement those semantics. If a device deviates
+> >>>> slightly from those expectations, we can always cross fingers and hope
+> >>>> that things still work. And it looks like they are.
+> >>>>
+> >>>> So I think if Lokesh and Tony agree that this is the right thing to do
+> >>>> and have verified that things still work after this, that's about as
+> >>>> good as it's going to get.
+> >>>
+> >>> I'd say this isn't for the platform people to decide. My position here
+> >>> is that the PWM drivers should behave as uniform as possible to minimize
+> >>> surprises for consumers. And so it's a "PWM decision" that is to be made
+> >>> here, not an "omap decision".
+> >>
+> >> I think there's a fine line to be walked here. I agree that we should
+> >> aim to have as much consistency between drivers as possible. At the same
+> >> time I think we need to be pragmatic. As Lokesh said, the particular use
+> >> case here requires this type of on-the-fly adjustment of the PWM period
+> >> without stopping and restarting the PWM. It doesn't work otherwise. So
+> >> th alternative that you're proposing is to say that we don't support
+> >> that use-case, even though it works just fine given this particular
+> >> hardware. That's not really an option.
+> > 
+> > I understand your opinion here. The situation now is that in current
+> > mainline the driver stops the hardware for reconfiguration and it
+> > doesn't fit Lokesh's use case so he changed to on-the-fly update
+> > (accepting that maybe a wrong period is emitted). What if someone relies
+> > on the old behaviour? What if in a year someone comes and claims the
+> > wrong period is bad for their usecase and changes back to
+> > stop-to-update?
+> > 
+> > When I write a consumer driver, do I have a chance to know how the PWM,
+> > that I happen to use, behaves? To be able to get my consumer driver
+> > reliable I might need to know that however.
+> > 
+> >>>> I know this is perhaps cheating a little, or turning a blind eye, but I
+> >>>> don't know what the alternative would be. Do we want to tell people that
+> >>>> a given PWM controller can't be used if it doesn't work according to our
+> >>>> expectations? That's hard to argue if that controller works just fine
+> >>>> for all known use-cases.
+> >>>
+> >>> I'd like have some official policy here which of the alternatives is the
+> >>> preferred cheat.
+> >>>
+> >>> The situation here is that period and duty_cycle cannot be updated
+> >>> atomically. So the two options are:
+> >>>
+> >>>  - stop shortly
+> >>>  - update with hardware running and maybe emit a broken period
+> >>
+> >> I think we can already support both of those with the existing API. If
+> >> a consumer wants to stop the PWM while reconfiguring, they should be
+> >> able to do pwm_enable(), pwm_config(), pwm_enable() (or the atomic
+> >> equivalent) and for the second case they can just do pwm_config() (or
+> >> the atomic equivalent).
+> > 
+> > Yes, the consumer can force the stop and update. But assume I'm "only" a
+> > consumer driver author and I want: atomic update and if this is not
+> > possible I prefer "stop-to-update" over "on-the-fly-and-maybe-faulty".
+> > So I cannot benefit from a good driver/hardware that can do atomic
+> > updates? Or I have to patch each driver that I actually use to use
+> > stop-to-update?
+> > 
+> >> Some hardware may actually require the PWM to be disabled before
+> >> reconfiguring, so they won't be able to strictly adhere to the second
+> >> use-case.
+> >>
+> >> But as discussed above, I don't want to strive for a lowest common
+> >> denominator that would preclude some more specific use-cases from
+> >> working if the hardware supports it.
+> >>
+> >> So I think we should aim for drivers to implement the semantics as
+> >> closely as possible. If the hardware doesn't support some of these
+> >> requirements strictly while a particular use-case depends on that, then
+> >> that just means that the hardware isn't compatible with that use-case.
+> >> Chances are that the system just isn't going to be designed to support
+> >> that use-case in the first place if the hardware can't do it.
+> >>
+> >> The sysfs interface is a bit of a special case here because it isn't
+> >> possible to know what use-cases people are going to come up with.
+> > 
+> > In my eyes the sysfs interface isn't special here. You also don't know
+> > what the OMAP PWM hardware is used for.
+> > 
+> >> It's most likely that they'll try something and if it doesn't work
+> >> they can see if a driver patch can improve things.
+> > 
+> > So either the group who prefers "stop-to-update" or the group who
+> > prefers "on-the-fly-and-maybe-faulty" has to carry a system specific
+> > driver patch?
+> > 
+> >> One possible extension that I can imagine would be to introduce some
+> >> sort of capability structure that drivers can fill in to describe the
+> >> behaviour of the hardware. Drivers like pwm-omap-dmtimer, for example,
+> >> could describe that they are able to change the period and/or duty cycle
+> >> while the PWM is on. There could be another capability bit that says
+> >> that the current period will finish before new settings are applied. Yet
+> >> another capability could describe that duty-cycle and period can be
+> >> applied atomically. Consumers could then check those capabilities to see
+> >> if they match their requirements.
+> >>
+> >> But then again, I think that would just make things overly complicated.
+> >> None of the existing consumers need that, so it doesn't seem like there
+> >> is much demand for that feature. In practice I suspect most consumers
+> >> work fine despite potentially small deviations in how the PWM behaves.
+> > 
+> > I think the status quo is what I asked about above: People use sysfs and
+> > if the PWM behaves different than needed, the driver is patched and most
+> > of the time not mainlined. If your focus is to support a certain
+> > industrial system with a defined use case, this is fine. If however you
+> > target for an universal framework that works for any combination of
+> > consumer + lowlevel driver without patching (that at least is able to
+> > diagnose: This PWM cannot provide what my consumer needs), this is bad.
+> > Also this means that whenever a system designer changes something on
+> > their machine (kernel update, different hardware, an new usecase for a
+> > PWM) they might have to reverify if the given PWM driver behaves as
+> > needed.
+> > 
+> > My suggestion for now is to start documenting how the drivers behave
+> > expanding how limitations are documented in some drivers. So maybe
+> > change from "Limitations" to "Implementation and Hardware Details"?
 > 
-> I wasn't aware of those details, thank you for the explanation. It's
-> quite confusing indeed, let's try to document the architecture in a
-> comment block at the beginning of the dsi.c file for later reference.
+> Does it help if a new DT property is introduced across PWM subsystem,
+> representing dynamic period/duty-cycle updates. Based on this property driver
+> can handle the updates. If the property is not present existing behaviour can be
+> restored. This way based on the use-case things can be changed and need not
+> patch the driver :). Does this sound good or you have other thoughts?
 
-But also, I think there's much room for cleanups and improvements. I don't think we have ever really 
-supported multiple DSI peripherals, even in theory. So just one peripheral, with VCID always 0.
+That's something that I'd rather see in the pwm API. (Either by a rule
+that drivers should prefer one or the other, or by making it
+configurable.) IMHO this property doesn't belong into the hardware
+description as it is a software property.
 
-Even if we need two VCs to manage that single peripheral (I think that's often the case, we want one 
-VC for video, one for control), we could fully hide that detail into the driver. This won't work 
-with more than 2 DSI peripherals, but I think we can just say the driver supports a single 
-peripheral, and that's it.
+That's not constructive though as I don't have an idea how to map this
+into the API.
 
-But with a quick browsing of this patch, I don't think it does it right, as it looks to me that the 
-patch makes VCID == VC.
-
-  Tomi
+Best regards
+Uwe
 
 -- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
