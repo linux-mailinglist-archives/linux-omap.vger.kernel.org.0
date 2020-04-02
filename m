@@ -2,109 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7962719C45A
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Apr 2020 16:36:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D64219C566
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Apr 2020 17:04:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727734AbgDBOgV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Apr 2020 10:36:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52850 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727412AbgDBOgV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 2 Apr 2020 10:36:21 -0400
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S2388959AbgDBPDy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Apr 2020 11:03:54 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:17979 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2389038AbgDBPDy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Apr 2020 11:03:54 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585839833; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Reply-To: Sender;
+ bh=MFdcBokfw79s+7lRCHgLw9NzMSmYZr6xzGhOl6ZSO68=; b=FdqVeXvhvEYQ50L7BowSwScBHq4Eu7XSG84Bk22xUzGWB07sPwoa1ND2elAZ+3d210Qr4QFs
+ J9VVxJHQzt520N0cDNmze3h582q2CKtWno361qopMpjhpxE5lbeSkWvRy6JFpupU49hLsEo/
+ UnhWBEbJyD2Z0bWGt5agg97VYHI=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyIwZGJlNiIsICJsaW51eC1vbWFwQHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e85fec5.7f860c730110-smtp-out-n01;
+ Thu, 02 Apr 2020 15:03:33 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5C71DC433F2; Thu,  2 Apr 2020 15:03:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        SUSPICIOUS_RECIPS autolearn=no autolearn_force=no version=3.4.0
+Received: from BCAIN (104-54-226-75.lightspeed.austtx.sbcglobal.net [104.54.226.75])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CA3652074D;
-        Thu,  2 Apr 2020 14:36:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585838179;
-        bh=hgqNTt2kKMNGHqP+Km3jz9TvPzM2T4GaVOuSBURhUvs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Xea48Y7rVx7bKJXai1/rCZV02PKwdZb4NtyEvbGgM3eK43U6ZAC4N4R5Dzhu/tpgZ
-         Ix/acFtoFs6RiiUvxog1xUiHsMKNCC4kJfqpbdKlGwGBb87JV6h20pa2q195oUMJoZ
-         hsriSvjosxbqeD+R/0eO72SAMOgSI4V4mocJgaho=
-Received: by mail-il1-f181.google.com with SMTP id n13so3803217ilm.5;
-        Thu, 02 Apr 2020 07:36:19 -0700 (PDT)
-X-Gm-Message-State: AGi0PuYVkkH4P4W2Q6zs9x0Up8lvfPxYccKUSFz5txRfncp/smthyakU
-        G3So/1RCSCnr4vSlQKX8gBMgRXt3mF3mR1uEY9Q=
-X-Google-Smtp-Source: APiQypK/ccv9NRSETRVTWozAv5jSrWGxRlqM/ygFo4EjfN+UAGVGv17+NG3gieCqXQN2oci7WqN0P+0T4tCB/gk2P3w=
-X-Received: by 2002:a92:dcd1:: with SMTP id b17mr3620113ilr.80.1585838179188;
- Thu, 02 Apr 2020 07:36:19 -0700 (PDT)
+        (Authenticated sender: bcain)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 866DFC43636;
+        Thu,  2 Apr 2020 15:03:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 866DFC43636
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=bcain@codeaurora.org
+Reply-To: <bcain@codeaurora.org>
+From:   "Brian Cain" <bcain@codeaurora.org>
+To:     "'afzal mohammed'" <afzal.mohd.ma@gmail.com>
+Cc:     "'Thomas Gleixner'" <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>, <x86@kernel.org>,
+        <linux-sh@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-parisc@vger.kernel.org>,
+        <linux-mips@vger.kernel.org>, <linux-m68k@lists.linux-m68k.org>,
+        <linux-ia64@vger.kernel.org>, <linux-hexagon@vger.kernel.org>,
+        <linux-c6x-dev@linux-c6x.org>, <linux-omap@vger.kernel.org>,
+        <linux-alpha@vger.kernel.org>
+References: <20200321174303.GA7930@afzalpc> <cover.1585320721.git.afzal.mohd.ma@gmail.com> <059b01d604ab$637355b0$2a5a0110$@codeaurora.org> <20200328073253.GA5250@afzalpc>
+In-Reply-To: <20200328073253.GA5250@afzalpc>
+Subject: RE: [PATCH 0/6] Kill setup_irq()
+Date:   Thu, 2 Apr 2020 10:03:28 -0500
+Message-ID: <0fc601d608ff$df0ea550$9d2beff0$@codeaurora.org>
 MIME-Version: 1.0
-References: <5a6807f19fd69f2de6622c794639cc5d70b9563a.1585513949.git.stefan@agner.ch>
- <CAKwvOdkyOW6RXTOCt1xMp2H+uH28ofByQOjyx776t8RDxTED2w@mail.gmail.com>
- <CAMj1kXGYiMobkue642iDRdOjEHQK=KXpp=Urrgik9UU-eWWibQ@mail.gmail.com>
- <DBBPR08MB4823129E272220712B470716F8C60@DBBPR08MB4823.eurprd08.prod.outlook.com>
- <CAMj1kXEQ4v9e6386ogPdy+s+++9H02DMPnDpTq0WSY2e78ts+Q@mail.gmail.com> <e0c125ea492670c7069c407b6b0c5958@agner.ch>
-In-Reply-To: <e0c125ea492670c7069c407b6b0c5958@agner.ch>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 2 Apr 2020 16:36:08 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEe835GbXU5qgX-QQ5n4SmwQO1nAoAZw5pUVCbR=J8XmQ@mail.gmail.com>
-Message-ID: <CAMj1kXEe835GbXU5qgX-QQ5n4SmwQO1nAoAZw5pUVCbR=J8XmQ@mail.gmail.com>
-Subject: Re: [PATCH] ARM: OMAP2+: drop unnecessary adrl
-To:     Stefan Agner <stefan@agner.ch>
-Cc:     linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Peter Smith <Peter.Smith@arm.com>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        Russell King <linux@armlinux.org.uk>, nd <nd@arm.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+        charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-us
+Thread-Index: AQH+2owB65JuA03jeOLwO39OK5TmSwJQWNztApEZe3IB1U/c2KfelGEA
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 2 Apr 2020 at 16:34, Stefan Agner <stefan@agner.ch> wrote:
->
-> On 2020-04-02 14:05, Ard Biesheuvel wrote:
-> > On Thu, 2 Apr 2020 at 13:50, Peter Smith <Peter.Smith@arm.com> wrote:
-> >>
-> >> > I take it this implies that the LLVM linker does not support the
-> >> > R_ARM_ALU_PC_Gn relocations? Since otherwise, adrl could simply be
-> >> > expanded to a pair of adds with the appropriate relocations, letting
-> >> > the linker fix up the immediates (and the ADD vs SUB bits)
-> >>
-> >> Not at the moment. I have a patch in review to add the G0 variants for=
- these in Arm state at reviews.llvm.org/D75349 . As far as I know LLVM MC d=
-oes not have support for generating the relocations either. This could be a=
-dded though. I agree that using the G* relocations with a pair of add/sub i=
-nstructions would be the ideal solution. The adrl psuedo is essentially tha=
-t but implemented at assembly time. I think it would be possible to impleme=
-nt in LLVM but at the time (4+ years ago) I wasn't confident in finding som=
-eone that would think that adrl support was worth the disruption, for examp=
-le the current Arm assembly backend can only produce 1 instruction as outpu=
-t and adrl requires two.
-> >>
-> >> I'd be happy to look at group relocation support in LLD, I haven't got=
- a lot of spare time so progress is likely to be slow though.
-> >>
-> >
-> > For Linux, I have proposed another approach in the past, which is to
-> > define a (Linux-local) adr_l macro with unlimited range [0], which
-> > basically comes down to place relative movw/movt pairs for v7+, and
-> > something along the lines of
-> >
-> >         ldr <reg>, 222f
-> > 111:    add <reg>, <reg>, pc
-> >         .subsection 1
-> > 222:    .long <sym> - (111b + 8)
-> >         .previous
->
-> Just to confirm: The instance at hand today seems to be working fine
-> without adrl, so I guess we are fine here, do you agree?
->
+> -----Original Message-----
+> From: linux-hexagon-owner@vger.kernel.org <linux-hexagon-
+> owner@vger.kernel.org> On Behalf Of afzal mohammed
+...
+> On Fri, Mar 27, 2020 at 09:48:38PM -0500, Brian Cain wrote:
+> 
+> > > Note 2: hexagon final image creation fails even w/o my patch
+> 
+> > 	What's the nature of the failure in "Note 2"?
+> 
+> drivers/base/firmware_loader/main.o: In function `fw_is_builtin_firmware':
+> /devel/src/kernel6/drivers/base/firmware_loader/main.c:132:(.text+0xc8):
+> relocation truncated to fit: R_HEX_16_X against symbol
+`__start_builtin_fw'
+> defined in .modinfo section in .tmp_vmlinux1
+> Makefile:1077: recipe for target 'vmlinux' failed
+> make: *** [vmlinux] Error 1
 
-I agree. Apologies for hijacking the thread :-)
+Thanks for reporting it -- I will make a patch to fix it.
 
-> There are a couple more instances of adrl in arch/arm/crypto/, maybe
-> that is where the adr_l macro could come in.
->
-
-There are various places in the arch code that could be cleaned up
-along these lines.
-
-But you're right - this is a separate discussion that deserves a
-thread of its own. I was just satisfying my own curiosity.
+-Brian
