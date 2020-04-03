@@ -2,129 +2,204 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F196D19D847
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Apr 2020 15:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F54F19DAC5
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Apr 2020 18:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728023AbgDCN7m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Apr 2020 09:59:42 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:57243 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390984AbgDCN7m (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Apr 2020 09:59:42 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jKMrE-0005V1-3h; Fri, 03 Apr 2020 15:59:40 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1jKMrD-000573-17; Fri, 03 Apr 2020 15:59:39 +0200
-Date:   Fri, 3 Apr 2020 15:59:38 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Lokesh Vutla <lokeshvutla@ti.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>, Vignesh R <vigneshr@ti.com>,
-        kernel@pengutronix.de
-Subject: Re: [PATCH v3 4/5] pwm: omap-dmtimer: Do not disable pwm before
- changing period/duty_cycle
-Message-ID: <20200403135938.qmrvhclm6evfibqj@pengutronix.de>
-References: <20200312064042.p7himm3odxjyzroi@pengutronix.de>
- <20200330141436.GG2431644@ulmo>
- <20200330191654.waoocllctanh5nk5@pengutronix.de>
- <20200331204559.GB2954599@ulmo>
- <20200401082227.sxtarbttsmmhs2of@pengutronix.de>
- <20200401182833.GB2978178@ulmo>
- <20200401203156.d7x5ynnnhob3jyoo@pengutronix.de>
- <20200401213738.GA3052587@ulmo>
- <20200402140221.bjbol77uegjma6oz@pengutronix.de>
- <5dbdbc15-ff29-f577-0632-6a28378b0104@ti.com>
+        id S1728351AbgDCQFJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Apr 2020 12:05:09 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:43484 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728117AbgDCQFJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Apr 2020 12:05:09 -0400
+Received: by mail-wr1-f66.google.com with SMTP id w15so2912548wrv.10
+        for <linux-omap@vger.kernel.org>; Fri, 03 Apr 2020 09:05:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:subject:to:cc:references:autocrypt:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=hs0Zr8WZnTnP6QA5uGZABigWsl4xm1HLGUjuTk55zko=;
+        b=RMb5dqzVzEpKpbcC3UUqr8R9o61kVbkm8nwzw/HPFWg+wEIJxdfJ3k+rnkkqUSUhJM
+         9EvxMV2iSSDfBIFwo6KAJgdbkdEq/vHxsLNu2bgEtSQmAOpPOevBDsaagLSbPk/+R4io
+         2gK3m/sXLldiBl7TtiJoTSDEa8R6nqbajnWTyjLaNa10vPHJZC361JQ7Rn8jJYBD7GcT
+         QeteoxJIUpfPAs+WUwdkFQa9kPchWJBwCr+kY8X7RbjC1cQ/HDTQEiZCiPZdTSo9LmX/
+         URvcMd1hv1yRNHkhtd+7QSprcYQ09Y8WFik1OKQurnFM3fMotdcRe2Ly216wx7IKuCsa
+         OD8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:references:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=hs0Zr8WZnTnP6QA5uGZABigWsl4xm1HLGUjuTk55zko=;
+        b=gwgpHtvpFjt8rr6kdzFVAuZ98nR0RnvbTquEkqtBpKnu0bQ2tc0h7w9xImFU0+I9nt
+         PS+ZuvCn7hiqmJalTxh7IYhnHHDlfNH0lveCPE4YrhrmTXTt+sHoSFmwMdLbHOZg1W0o
+         tYjcy36+lqBHqDkjt312hL9lFRFShJhC5wbU/VHV8ONtPfgsx5JxhpK0waAGtCE6Xdn5
+         Qv7lHFIHczrXshxZq8amcBf7hF5sYdBUD3zpw+v9XtEePjdwwg2IvubMHOlnPT1Q5sOh
+         dlGECxFcGxxc/5eaLe8QImUBvp1Kp2tqqJO82WRe9jx1JecPeBagoS9SrA4NxuEBfEBR
+         kxrA==
+X-Gm-Message-State: AGi0PuasaGxyE6wGYKfIJBsAYPJtVCmcuaJBpUNhRyE8MJEPzjB6XXLz
+        ioshNRSzHfkAHKWIt8ucVhj/2g==
+X-Google-Smtp-Source: APiQypK8nMsyaQBEIkRVEiPjmWw1a8hEY7TV2tBksz5wl+xU09p0+hlwPEYhClfXWDdYmeMsP1Cr0A==
+X-Received: by 2002:adf:904a:: with SMTP id h68mr9057628wrh.291.1585929906278;
+        Fri, 03 Apr 2020 09:05:06 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:cc78:8018:8980:25d8? ([2a01:e34:ed2f:f020:cc78:8018:8980:25d8])
+        by smtp.googlemail.com with ESMTPSA id p10sm12170013wre.15.2020.04.03.09.05.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Apr 2020 09:05:05 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: Re: [PATCH v5 1/5] PM / EM: add devices to Energy Model
+To:     Lukasz Luba <lukasz.luba@arm.com>, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com
+Cc:     Morten.Rasmussen@arm.com, Dietmar.Eggemann@arm.com,
+        javi.merino@arm.com, cw00.choi@samsung.com,
+        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
+        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
+        rui.zhang@intel.com, amit.kucheria@verdurent.com, mingo@redhat.com,
+        peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, rostedt@goodmis.org,
+        qperret@google.com, bsegall@google.com, mgorman@suse.de,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+        kernel@pengutronix.de, khilman@kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
+        lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net,
+        orjan.eide@arm.com, rdunlap@infradead.org, mka@chromium.org
+References: <20200318114548.19916-1-lukasz.luba@arm.com>
+ <20200318114548.19916-2-lukasz.luba@arm.com>
+Autocrypt: addr=daniel.lezcano@linaro.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <09b680a5-a118-8c6e-0ae1-03ab5f10c573@linaro.org>
+Date:   Fri, 3 Apr 2020 18:05:03 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <20200318114548.19916-2-lukasz.luba@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5dbdbc15-ff29-f577-0632-6a28378b0104@ti.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
 
-On Fri, Apr 03, 2020 at 02:21:38PM +0530, Lokesh Vutla wrote:
-> On 02/04/20 7:32 PM, Uwe Kleine-König wrote:
-> > Having said that I don't know how critical this really is. Given that
-> > the PWM under discussion doesn't complete periods on stop, it probably
-> > isn't.
-> 
-> It is a limitation with the existing driver as well. Nothing is being changed
-> regarding stopping of PWM. The same is marked under the limitations in the driver.
+Hi Lukasz,
 
-What I wrote was ambiguous and I think you understood the meaning I
-didn't intend. What I wanted to say is: Given that the PWM stops
-abruptly there is only little (if any at all) advantage of
-"stop-to-update" over "racy-atomic-update" as we see broken cycles no
-matter which alternative we pick.
 
-> > I spend some time thinking about when the glitch actually happens.
-> > Currently the load value is written first and then the match value.
-> > If no period ends between the two writes there is only a problem when in
-> > the currently running period the match event didn't happen yet. Then we
-> > see a cycle with
-> > 
-> >    .period = oldperiod + newperiod
-> >    .dutycycle = oldperiod + newdutycycle
-> > 
-> > (if the new match value isn't hit in the current cycle) or one with
-> > 
-> >    .period = oldperiod
-> >    .duty_cycle = newdutycycle + (oldperiod - newperiod)
-> > 
-> > (if the new match value is hit in the current cycle). The probability
-> > that one of the two happen is: olddutycycle / oldperiod which is quite
-> > probable. (With olddutycycle = oldperiod there is no problem though.)
-> > 
-> > If after writing the new load value and before writing the new match
-> > value a period ends it might happen that we see a cycle with
-> > 
-> >   .period = newperiod
-> >   .dutycycle = olddutycycle + (newperiod - oldperiod)
-> > 
-> > (if the previous match value is used) or one with
-> > 
-> >   .period = 2 * newperiod
-> >   .dutycycle = newperiod + newdutycycle
-> > 
-> > (if new match value is written too late for the first cycle with the new
-> > period).
-> 
-> That's exactly why we have marked in the Limitations sections that the current
-> period might produce a cycle with mixed settings.  Frankly, I'm a bit torn here.
-> There are other PWMs inside Linux with  similar limitations and documented
-> similarly. If there is an overall objection for such hardware, the entire policy
-> should be changed or the framework should be updated to allow user to choose for
-> dynamic updates. IMHO, this series should not be blocked for this decision.
+On 18/03/2020 12:45, Lukasz Luba wrote:
+> Add support of other devices into the Energy Model framework not only the
+> CPUs. Change the interface to be more unified which can handle other
+> devices as well.
 
-Yes, there are other drivers that have similar "problems" and the status
-quo is that depending on the driver author one or the other workaround
-is chosen. I think the PWM framework would benefit if there were a
-common guideline which path to choose in such a situation.
+thanks for taking care of that. Overall I like the changes in this patch
+but it hard to review in details because the patch is too big :/
 
-> Please consider it for the coming merge window.
+Could you split this patch into smaller ones?
 
-It's already in next, so I assume it will be merged.
+eg. (at your convenience)
 
-Best regards
-Uwe
+ - One patch renaming s/cap/perf/
+
+ - One patch adding a new function:
+
+    em_dev_register_perf_domain(struct device *dev,
+				unsigned int nr_states,
+				struct em_data_callback *cb);
+
+   (+ EXPORT_SYMBOL_GPL)
+
+    And em_register_perf_domain() using it.
+
+ - One converting the em_register_perf_domain() user to
+	em_dev_register_perf_domain
+
+ - One adding the different new 'em' functions
+
+ - And finally one removing em_register_perf_domain().
+
+
+> Acked-by: Quentin Perret <qperret@google.com>
+> Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+> ---
+
+[ ... ]
+
+>  2. Core APIs
+> @@ -70,14 +72,16 @@ CONFIG_ENERGY_MODEL must be enabled to use the EM framework.
+>  Drivers are expected to register performance domains into the EM framework by
+>  calling the following API::
+>  
+> -  int em_register_perf_domain(cpumask_t *span, unsigned int nr_states,
+> -			      struct em_data_callback *cb);
+> +  int em_register_perf_domain(struct device *dev, unsigned int nr_states,
+> +		struct em_data_callback *cb, cpumask_t *cpus);
+
+Isn't possible to get rid of this cpumask by using
+cpufreq_cpu_get() which returns the cpufreq's policy and from their get
+the related cpus ?
+
+[ ... ]
+
 
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+<http://www.linaro.org/> Linaro.org â”‚ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
