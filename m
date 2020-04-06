@@ -2,23 +2,23 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBBBE19F703
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Apr 2020 15:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 291D319F785
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Apr 2020 16:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728473AbgDFNfS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Apr 2020 09:35:18 -0400
-Received: from foss.arm.com ([217.140.110.172]:45810 "EHLO foss.arm.com"
+        id S1728539AbgDFOF4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Apr 2020 10:05:56 -0400
+Received: from foss.arm.com ([217.140.110.172]:46148 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728451AbgDFNfS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 6 Apr 2020 09:35:18 -0400
+        id S1728086AbgDFOFz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 6 Apr 2020 10:05:55 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BEA2F7FA;
-        Mon,  6 Apr 2020 06:35:17 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F809106F;
+        Mon,  6 Apr 2020 07:05:53 -0700 (PDT)
 Received: from [10.37.12.4] (unknown [10.37.12.4])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8230E3F52E;
-        Mon,  6 Apr 2020 06:35:07 -0700 (PDT)
-Subject: Re: [PATCH v5 4/5] thermal: devfreq_cooling: Refactor code and switch
- to use Energy Model
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA1043F73D;
+        Mon,  6 Apr 2020 07:05:42 -0700 (PDT)
+Subject: Re: [PATCH v5 2/5] OPP: refactor dev_pm_opp_of_register_em() and
+ update related drivers
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
@@ -42,15 +42,15 @@ Cc:     Morten.Rasmussen@arm.com, Dietmar.Eggemann@arm.com,
         lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net,
         orjan.eide@arm.com, rdunlap@infradead.org, mka@chromium.org
 References: <20200318114548.19916-1-lukasz.luba@arm.com>
- <20200318114548.19916-5-lukasz.luba@arm.com>
- <f3e9f127-47b1-9f30-2148-3c95a5933a92@linaro.org>
+ <20200318114548.19916-3-lukasz.luba@arm.com>
+ <3ee5dc1a-fdfe-da17-9a62-a5182c1f4d3e@linaro.org>
 From:   Lukasz Luba <lukasz.luba@arm.com>
-Message-ID: <4bf6cc66-8df4-3224-418d-0549026a3672@arm.com>
-Date:   Mon, 6 Apr 2020 14:35:05 +0100
+Message-ID: <00c839d1-2f03-2d3b-5746-95deae30bee3@arm.com>
+Date:   Mon, 6 Apr 2020 15:05:41 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <f3e9f127-47b1-9f30-2148-3c95a5933a92@linaro.org>
+In-Reply-To: <3ee5dc1a-fdfe-da17-9a62-a5182c1f4d3e@linaro.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -59,56 +59,42 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 4/3/20 6:44 PM, Daniel Lezcano wrote:
-> On 18/03/2020 12:45, Lukasz Luba wrote:
->> The overhauled Energy Model (EM) framework support also devfreq devices.
->> The unified API interface of the EM can be used in the thermal subsystem to
->> not duplicate code. The power table now is taken from EM structure and
->> there is no need to maintain calculation for it locally. In case when the
->> EM is not provided by the device a simple interface for cooling device is
->> used.
->>
->> There is also an improvement in code related to enabling/disabling OPPs,
->> which prevents from race condition with devfreq governors.
->>
->> [lkp: Reported the build warning]
->> Reported-by: kbuild test robot <lkp@intel.com>
->> Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org> # for tracing code
->> Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
-> 
-> The changes are too big, please split this patch into smaller chunks.
-
-OK, I will split it and re-base on top of thermal testing.
-
-> 
->> ---
->>   drivers/thermal/devfreq_cooling.c | 474 ++++++++++++++++--------------
->>   include/linux/devfreq_cooling.h   |  39 +--
->>   include/trace/events/thermal.h    |  19 +-
->>   3 files changed, 277 insertions(+), 255 deletions(-)
->>
->> diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
-> 
-> [ ... ]
-> 
->>   struct devfreq_cooling_device {
->>   	int id;
->>   	struct thermal_cooling_device *cdev;
->>   	struct devfreq *devfreq;
->>   	unsigned long cooling_state;
->> -	u32 *power_table;
->>   	u32 *freq_table;
->> -	size_t freq_table_size;
->> +	size_t max_level;
-> 
-> Could you rename it to 'max_state' ?
-
-Yes.
+Hi Daniel,
 
 Thank you for your comments.
 
+On 4/3/20 5:21 PM, Daniel Lezcano wrote:
+> On 18/03/2020 12:45, Lukasz Luba wrote:
+>> The Energy Model framework supports both: CPUs and devfreq devices. Drop
+>> the CPU specific interface with cpumask and add struct device. Add also a
+>> return value. This new interface provides easy way to create a simple
+>> Energy Model, which then might be used in i.e. thermal subsystem.
+> 
+> This patch contains too many different changes.
+
+OK, I will create 4 patches:
+1) change with new argument in API function:
+    void dev_pm_opp_of_register_em(dev, cpumask)
+   and updated drivers
+2) changes with _get_cpu_power --> _get_power
+3) changes adding int return in dev_pm_opp_of_register_em()
+    and updating error handling path inside
+4) header changes with new dev_pm_opp_of_unregister_em()
+
+> 
+> There are fixes and traces added in addition to a function prototype change. >
+> Please provide patches separated by logical changes.
+
+I will try to make this API change in a safe way, which
+won't break cpufreq drivers compilation.
+
+> 
+> If the cpumask is extracted in the underlying function
+> em_register_perf_domain() as suggested in the previous patch 1/5,
+> dev_pm_opp_of_register_em() can be struct device centric only.
+
+That would be ideal situation but unfortunately not possible to
+implement (as responded in 1/5).
+
 Regards,
 Lukasz
-
