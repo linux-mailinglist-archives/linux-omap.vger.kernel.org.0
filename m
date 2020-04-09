@@ -2,162 +2,240 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E84B41A33EA
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Apr 2020 14:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CB821A3986
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Apr 2020 20:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726582AbgDIMPC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Apr 2020 08:15:02 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:46250 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725971AbgDIMPC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Apr 2020 08:15:02 -0400
-Received: by mail-ed1-f68.google.com with SMTP id dk4so1561741edb.13;
-        Thu, 09 Apr 2020 05:15:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=gYvBs+A4oEEcIMW3rEpNzM655tFmA/5YHjSipVpMudE=;
-        b=KNpAMrlizzkRUjdtArRcZnepHKNbBBN3N29ICe8f+8u6zOuwzgheP2XUgCe+44NkIR
-         mQLi0LbDma0eJfXyOWBKcbI2n8ancJall5BX2XkJNVRNNTKMoc9a5b/UIpi2u5H8OdAL
-         wApHdYZ1LSSr/6trI/dFG30x/Qyr6p7NIUqAv1DOYTzLuPrY0sPMLn94+uwoMPyEWaBW
-         iVEgmf1Qbe3qa84zsIAGGS/pv73wUuLRlgOQEiKqf0CFJrzUUWOVeXsAEFJhh97kXPyr
-         GZyGrCIrhxxiIcOrNhwBEE1X+Y+gwd4BQvdD7blpBMPJQIY5Zp2FVyy0J6fa9RShslsv
-         euOw==
-X-Gm-Message-State: AGi0PuZNdCjWjEQGXtYtDzyb1AFiyKSVK99JM7iY3Sjepioh9ROim5x1
-        yUJDf1ERp7TF+bavcIpO8i0=
-X-Google-Smtp-Source: APiQypJUJiiLoo3HAf51vgJTKYVBHwPZEVH7hjM1r+1VFWyM0ypQpU23tWpSatmkBm3yArwlL/zmtg==
-X-Received: by 2002:a17:906:66c1:: with SMTP id k1mr11490807ejp.208.1586434500891;
-        Thu, 09 Apr 2020 05:15:00 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.125])
-        by smtp.googlemail.com with ESMTPSA id m1sm532752ejr.81.2020.04.09.05.14.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 09 Apr 2020 05:14:59 -0700 (PDT)
-Date:   Thu, 9 Apr 2020 14:14:56 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
-Cc:     devicetree@vger.kernel.org, Paul Barker <pbarker@konsulko.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Igor Opaniuk <igor.opaniuk@toradex.com>,
-        Philippe Schenker <philippe.schenker@toradex.com>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        David Lechner <david@lechnology.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Peter Rosin <peda@axentia.se>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Sekhar Nori <nsekhar@ti.com>, Shawn Guo <shawnguo@kernel.org>,
-        Stefan Agner <stefan@agner.ch>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: Re: [RFC PATCH v2 6/6] arm: dts: pwm: replace flag 0 with PWM_NOFLAGS
-Message-ID: <20200409121456.GB802@kozik-lap>
-References: <20200405192246.3741784-1-oleksandr.suvorov@toradex.com>
- <20200405192246.3741784-7-oleksandr.suvorov@toradex.com>
+        id S1726594AbgDISEN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Apr 2020 14:04:13 -0400
+Received: from mga02.intel.com ([134.134.136.20]:39602 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726477AbgDISEN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 9 Apr 2020 14:04:13 -0400
+IronPort-SDR: k1Q9yiYpfvd6TMSmxREKXjoKp1X6ns9SQRXIcp+CdQCjuyhZznlE0tpw24amoOcaD0qR18lrvS
+ D96pnUZCgK3Q==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2020 11:04:09 -0700
+IronPort-SDR: LNHchKAGg03hjtMuLtMALoA21jxRu1NzkmM+/fjpmwm1HpfeDhjCXyL9qioGWT/JMbib5V1kXJ
+ A6IdAOXXFVNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,363,1580803200"; 
+   d="scan'208";a="270161200"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 09 Apr 2020 11:04:08 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jMbX5-000BtG-Gp; Fri, 10 Apr 2020 02:04:07 +0800
+Date:   Fri, 10 Apr 2020 02:03:50 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/next] BUILD SUCCESS
+ 4be0864a2f4a7f3c7099790d12be9f0218ba8ca1
+Message-ID: <5e8f6386.g3wU8XUAiAJUMBpL%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200405192246.3741784-7-oleksandr.suvorov@toradex.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Apr 05, 2020 at 10:22:46PM +0300, Oleksandr Suvorov wrote:
-> The raw value '0' in the 3rd cell of the "pwms" property means there are
-> no flags to be set.
-> 
-> This patch converts '0' value into PWM_NOFLAGS.
-> 
-> Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
-> ---
-> 
-> Changes in v2:
-> - remove the driver part of patchset as dangerous and senseless.
-> - use PWM_NOFLAGS instead of PWM_POLARITY_NORMAL to avoid possible
->   conflict with enum pwm_polarity in <linux/pwm.h>. Also, this name
->   reflects the sense of this value more precisely.
-> 
->  arch/arm/boot/dts/am335x-cm-t335.dts               | 2 +-
->  arch/arm/boot/dts/am335x-evm.dts                   | 2 +-
->  arch/arm/boot/dts/am3517-evm.dts                   | 2 +-
->  arch/arm/boot/dts/at91-dvk_su60_somc_lcm.dtsi      | 2 +-
->  arch/arm/boot/dts/at91-kizbox2-common.dtsi         | 6 +++---
->  arch/arm/boot/dts/at91-kizbox3_common.dtsi         | 8 ++++----
->  arch/arm/boot/dts/at91-kizboxmini-common.dtsi      | 6 +++---
->  arch/arm/boot/dts/at91-nattis-2-natte-2.dts        | 2 +-
->  arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts        | 2 +-
->  arch/arm/boot/dts/at91sam9n12ek.dts                | 2 +-
->  arch/arm/boot/dts/at91sam9x5dm.dtsi                | 2 +-
->  arch/arm/boot/dts/berlin2cd-google-chromecast.dts  | 4 ++--
->  arch/arm/boot/dts/da850-evm.dts                    | 2 +-
->  arch/arm/boot/dts/da850-lego-ev3.dts               | 4 ++--
->  arch/arm/boot/dts/exynos4412-midas.dtsi            | 2 +-
->  arch/arm/boot/dts/exynos4412-odroidu3.dts          | 2 +-
->  arch/arm/boot/dts/exynos5250-snow-common.dtsi      | 2 +-
->  arch/arm/boot/dts/exynos5410-odroidxu.dts          | 2 +-
->  arch/arm/boot/dts/exynos5420-peach-pit.dts         | 2 +-
->  arch/arm/boot/dts/exynos5422-odroidhc1.dts         | 2 +-
->  arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi | 2 +-
->  arch/arm/boot/dts/exynos5422-odroidxu4.dts         | 2 +-
->  arch/arm/boot/dts/exynos54xx-odroidxu-leds.dtsi    | 4 ++--
->  arch/arm/boot/dts/exynos5800-peach-pi.dts          | 2 +-
->  arch/arm/boot/dts/imx53-tx53-x13x.dts              | 5 +++--
->  arch/arm/boot/dts/imx6dl-tx6dl-comtft.dts          | 2 +-
->  arch/arm/boot/dts/imx6q-display5.dtsi              | 2 +-
->  arch/arm/boot/dts/imx6q-tx6q-1010-comtft.dts       | 2 +-
->  arch/arm/boot/dts/imx6q-tx6q-1020-comtft.dts       | 2 +-
->  arch/arm/boot/dts/imx6qdl-tx6-lvds.dtsi            | 4 ++--
->  arch/arm/boot/dts/imx7-colibri.dtsi                | 4 +++-
->  arch/arm/boot/dts/imx7d-nitrogen7.dts              | 3 ++-
->  arch/arm/boot/dts/imx7d-pico.dtsi                  | 3 ++-
->  arch/arm/boot/dts/imx7d-sdb.dts                    | 3 ++-
->  arch/arm/boot/dts/imx7ulp-evk.dts                  | 3 ++-
->  arch/arm/boot/dts/iwg20d-q7-common.dtsi            | 2 +-
->  arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi   | 2 +-
->  arch/arm/boot/dts/meson8b-ec100.dts                | 4 ++--
->  arch/arm/boot/dts/meson8b-mxq.dts                  | 4 ++--
->  arch/arm/boot/dts/meson8b-odroidc1.dts             | 4 ++--
->  arch/arm/boot/dts/motorola-mapphone-common.dtsi    | 3 ++-
->  arch/arm/boot/dts/omap3-gta04.dtsi                 | 2 +-
->  arch/arm/boot/dts/omap3-n900.dts                   | 2 +-
->  arch/arm/boot/dts/rk3288-veyron-edp.dtsi           | 2 +-
->  arch/arm/boot/dts/rk3288-veyron.dtsi               | 2 +-
->  arch/arm/boot/dts/rv1108-evb.dts                   | 2 +-
->  arch/arm/boot/dts/s3c6410-mini6410.dts             | 2 +-
->  arch/arm/boot/dts/s5pv210-aries.dtsi               | 2 +-
->  arch/arm/boot/dts/s5pv210-smdkv210.dts             | 2 +-
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
+branch HEAD: 4be0864a2f4a7f3c7099790d12be9f0218ba8ca1  usb: dwc3: gadget: WARN on no-resource status
 
+Warning in current branch:
 
-I understand you are going to push it through arm-soc, so:
-For Exynos/S3C/S5P:
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+drivers/usb/dwc3/drd.c:578:11: warning: Condition 'ret<0' is always false [knownConditionTrueFalse]
+drivers/usb/dwc3/dwc3-meson-g12a.c:529:11: warning: 'base' is of type 'void *'. When using void pointers in calculations, the behaviour is undefined. [arithOperationsOnVoidPointer]
 
-Otherwise if you expect individual maintainers to pick it up, please
-split per architecture.
+Warning ids grouped by kconfigs:
 
-Best regards,
-Krzysztof
+recent_errors
+|-- i386-allmodconfig
+|   |-- drivers-usb-dwc3-drd.c:warning:Condition-ret-is-always-false-knownConditionTrueFalse
+|   `-- drivers-usb-dwc3-dwc3-meson-g12a.c:warning:base-is-of-type-void-.-When-using-void-pointers-in-calculations-the-behaviour-is-undefined.-arithOperationsOnVoidPointer
+`-- x86_64-allyesconfig
+    |-- drivers-usb-dwc3-drd.c:warning:Condition-ret-is-always-false-knownConditionTrueFalse
+    `-- drivers-usb-dwc3-dwc3-meson-g12a.c:warning:base-is-of-type-void-.-When-using-void-pointers-in-calculations-the-behaviour-is-undefined.-arithOperationsOnVoidPointer
+
+elapsed time: 484m
+
+configs tested: 166
+configs skipped: 0
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+i386                              allnoconfig
+riscv                             allnoconfig
+sh                            titan_defconfig
+m68k                             allmodconfig
+s390                          debug_defconfig
+ia64                                defconfig
+powerpc                             defconfig
+microblaze                      mmu_defconfig
+sh                               allmodconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             alldefconfig
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                       common_defconfig
+xtensa                          iss_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                     edosk2674_defconfig
+h8300                    h8300h-sim_defconfig
+h8300                       h8s-sim_defconfig
+m68k                       m5475evb_defconfig
+m68k                          multi_defconfig
+m68k                           sun3_defconfig
+arc                              allyesconfig
+arc                                 defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+x86_64               randconfig-a001-20200409
+x86_64               randconfig-a002-20200409
+x86_64               randconfig-a003-20200409
+i386                 randconfig-a001-20200409
+i386                 randconfig-a002-20200409
+i386                 randconfig-a003-20200409
+alpha                randconfig-a001-20200409
+m68k                 randconfig-a001-20200409
+mips                 randconfig-a001-20200409
+nds32                randconfig-a001-20200409
+parisc               randconfig-a001-20200409
+riscv                randconfig-a001-20200409
+sparc64              randconfig-a001-20200409
+h8300                randconfig-a001-20200409
+nios2                randconfig-a001-20200409
+microblaze           randconfig-a001-20200409
+c6x                  randconfig-a001-20200409
+csky                 randconfig-a001-20200409
+openrisc             randconfig-a001-20200409
+s390                 randconfig-a001-20200409
+sh                   randconfig-a001-20200409
+xtensa               randconfig-a001-20200409
+x86_64               randconfig-b001-20200409
+x86_64               randconfig-b002-20200409
+x86_64               randconfig-b003-20200409
+i386                 randconfig-b001-20200409
+i386                 randconfig-b002-20200409
+i386                 randconfig-b003-20200409
+x86_64               randconfig-c001-20200409
+x86_64               randconfig-c002-20200409
+x86_64               randconfig-c003-20200409
+i386                 randconfig-c001-20200409
+i386                 randconfig-c002-20200409
+i386                 randconfig-c003-20200409
+x86_64               randconfig-d001-20200409
+x86_64               randconfig-d002-20200409
+x86_64               randconfig-d003-20200409
+i386                 randconfig-d001-20200409
+i386                 randconfig-d002-20200409
+i386                 randconfig-d003-20200409
+x86_64               randconfig-e001-20200409
+x86_64               randconfig-e002-20200409
+x86_64               randconfig-e003-20200409
+i386                 randconfig-e001-20200409
+i386                 randconfig-e002-20200409
+i386                 randconfig-e003-20200409
+x86_64               randconfig-f001-20200409
+x86_64               randconfig-f002-20200409
+x86_64               randconfig-f003-20200409
+i386                 randconfig-f001-20200409
+i386                 randconfig-f002-20200409
+i386                 randconfig-f003-20200409
+x86_64               randconfig-g001-20200409
+x86_64               randconfig-g002-20200409
+x86_64               randconfig-g003-20200409
+i386                 randconfig-g001-20200409
+i386                 randconfig-g002-20200409
+i386                 randconfig-g003-20200409
+x86_64               randconfig-h001-20200409
+x86_64               randconfig-h002-20200409
+x86_64               randconfig-h003-20200409
+i386                 randconfig-h001-20200409
+i386                 randconfig-h002-20200409
+i386                 randconfig-h003-20200409
+arc                  randconfig-a001-20200409
+arm                  randconfig-a001-20200409
+arm64                randconfig-a001-20200409
+ia64                 randconfig-a001-20200409
+powerpc              randconfig-a001-20200409
+sparc                randconfig-a001-20200409
+riscv                            allmodconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                                defconfig
+s390                       zfcpdump_defconfig
+sh                                allnoconfig
+sh                          rsk7269_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sparc                               defconfig
+sparc64                          allmodconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                             defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
