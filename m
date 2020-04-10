@@ -2,240 +2,198 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB821A3986
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Apr 2020 20:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23F761A43A0
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Apr 2020 10:42:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726594AbgDISEN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Apr 2020 14:04:13 -0400
-Received: from mga02.intel.com ([134.134.136.20]:39602 "EHLO mga02.intel.com"
+        id S1725914AbgDJIm3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Apr 2020 04:42:29 -0400
+Received: from foss.arm.com ([217.140.110.172]:58752 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726477AbgDISEN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 9 Apr 2020 14:04:13 -0400
-IronPort-SDR: k1Q9yiYpfvd6TMSmxREKXjoKp1X6ns9SQRXIcp+CdQCjuyhZznlE0tpw24amoOcaD0qR18lrvS
- D96pnUZCgK3Q==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2020 11:04:09 -0700
-IronPort-SDR: LNHchKAGg03hjtMuLtMALoA21jxRu1NzkmM+/fjpmwm1HpfeDhjCXyL9qioGWT/JMbib5V1kXJ
- A6IdAOXXFVNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,363,1580803200"; 
-   d="scan'208";a="270161200"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 09 Apr 2020 11:04:08 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jMbX5-000BtG-Gp; Fri, 10 Apr 2020 02:04:07 +0800
-Date:   Fri, 10 Apr 2020 02:03:50 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/next] BUILD SUCCESS
- 4be0864a2f4a7f3c7099790d12be9f0218ba8ca1
-Message-ID: <5e8f6386.g3wU8XUAiAJUMBpL%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+        id S1725858AbgDJIm3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 10 Apr 2020 04:42:29 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BDA131B;
+        Fri, 10 Apr 2020 01:42:28 -0700 (PDT)
+Received: from e123648.arm.com (unknown [10.37.12.30])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4884D3F68F;
+        Fri, 10 Apr 2020 01:42:18 -0700 (PDT)
+From:   Lukasz Luba <lukasz.luba@arm.com>
+To:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com
+Cc:     Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
+        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
+        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
+        rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
+        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
+        lorenzo.pieralisi@arm.com, lukasz.luba@arm.com,
+        patrick.bellasi@matbug.net, orjan.eide@arm.com,
+        rdunlap@infradead.org, mka@chromium.org
+Subject: [PATCH v6 00/10] Add support for devices in the Energy Model
+Date:   Fri, 10 Apr 2020 09:42:00 +0100
+Message-Id: <20200410084210.24932-1-lukasz.luba@arm.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
-branch HEAD: 4be0864a2f4a7f3c7099790d12be9f0218ba8ca1  usb: dwc3: gadget: WARN on no-resource status
+Hi all,
 
-Warning in current branch:
+This patch set introduces support for devices in the Energy Model (EM)
+framework. It will unify the power model for thermal subsystem. It will
+make simpler to add support for new devices willing to use more
+advanced features (like Intelligent Power Allocation). Now it should
+require less knowledge and effort for driver developer to add e.g.
+GPU driver with simple energy model. A more sophisticated energy model
+in the thermal framework is also possible, driver needs to provide
+a dedicated callback function. More information can be found in the
+updated documentation file.
 
-drivers/usb/dwc3/drd.c:578:11: warning: Condition 'ret<0' is always false [knownConditionTrueFalse]
-drivers/usb/dwc3/dwc3-meson-g12a.c:529:11: warning: 'base' is of type 'void *'. When using void pointers in calculations, the behaviour is undefined. [arithOperationsOnVoidPointer]
+First 7 patches are refactoring Energy Model framework to add support
+of other devices that CPUs. They change:
+- naming convention from 'capacity' to 'performance' state,
+- API arguments adding device pointer and not rely only on cpumask,
+- change naming when 'cpu' was used, now it's a 'device'
+- internal structure to maintain registered devices
+- update users to the new API
+Patch 8 updates OPP framework helper function to be more generic, not
+CPU specific.
+Patch 9 changes devfreq cooling, dropping part of old power model and
+adding registration with Energy Model via exported GPL function. It uses
+as a base the new PM QoS mechanism which is now in thermal-next.
+Patch 10 is a simple change for Panfrost GPU driver.
 
-Warning ids grouped by kconfigs:
+The patch set is based on linux-next tag next-20200409.
 
-recent_errors
-|-- i386-allmodconfig
-|   |-- drivers-usb-dwc3-drd.c:warning:Condition-ret-is-always-false-knownConditionTrueFalse
-|   `-- drivers-usb-dwc3-dwc3-meson-g12a.c:warning:base-is-of-type-void-.-When-using-void-pointers-in-calculations-the-behaviour-is-undefined.-arithOperationsOnVoidPointer
-`-- x86_64-allyesconfig
-    |-- drivers-usb-dwc3-drd.c:warning:Condition-ret-is-always-false-knownConditionTrueFalse
-    `-- drivers-usb-dwc3-dwc3-meson-g12a.c:warning:base-is-of-type-void-.-When-using-void-pointers-in-calculations-the-behaviour-is-undefined.-arithOperationsOnVoidPointer
+Changes:
+v6:
+- split patch 1/5 from v5 into smaller patches as requested by Daniel
+  and dropped ACK from Quentin which was in the old there
+- added function em_dev_register_perf_domain as suggested by Daniel, which
+  would help transition into the new API
+- changed 'cs' (capacity state) in different places into 'ps' (performance state),
+  since now there are many smaller patches (previously skipped because
+  of too big size of the patch with main features and left to do later)
+- changed cpumask_equal() to cpumask_intersects() when checking if 'cpus' coming
+  as an argument to registration function might overlap with already known;
+  this shouldn't be an issue when cpufreq policy is OK, but a check doesn't harm
+- added Reviewed-by from Alyssa into Panfrost related patch
+- dropped Matthias patch with PM QoS from the series since it's in the next now
+v5 [5]:
+- devfreq cooling: rebased on top of pending patch introducing PM QoS limits
+- devfreq cooling: added Matthias's patch to make this series build check pass
+- devfreq cooling: removed OPP disable code and switched to PM QoS
+- devfreq cooling: since thermal code always used a pointer to devfreq_dev_status,
+  switched to work on a local copy and avoid potential race when either busy_time or
+  total_time could change in the background
+- devfreq cooling: added _normalize_load() and handle all scenarios when
+  busy_time and total_time could have odd values (even raw counters)
+- Energy Model patch 2/4: removed prints from cpufreq drivers and added print inside
+  dev_pm_opp_of_register_em()
+- update patch 2/4 description to better reflect upcoming changes
+- collected ACK from Quentin for patch 1/4 and Reviewed-by from Steven for 4/4
+v4 [4]:
+- devfreq cooling: added two new registration functions, which will take care
+  of registering EM for the device and simplify drivers code
+  (suggested by Robin and Rob)
+- Energy Model: changed unregistering code, added kref to track usage, added
+  code freeing tables, added helper function
+- added return value to function dev_pm_opp_of_register_em() and updated
+  CPUFreq drivers code, added debug prints in case of failure
+- updated comments in devfreq cooling removing statement that only
+  simple_ondemand devfreq governor is supported to work with power extentions
+- fixed spelling in the documentation (reported by Randy)
+v3 [3]:
+- added back the cpumask 'cpus' in the em_perf_domain due potential cache misses
+- removed _is_cpu_em() since there is no need for it
+- changed function name from em_pd_energy() to em_cpu_energy(), which is
+  optimized for usage from the scheduler making some assumptions and not
+  validating arguments to speed-up, there is a comment stressing that it should
+  be used only for CPUs em_perf_domain
+- changed em_get_pd() to em_pd_get() which is now aligned with em_cpu_get()
+  naming
+- Energy Model: add code which checks if the EM is already registered for the
+  devfreq device
+- extended comment in em_cpu_get() describing the need for this function
+- fixed build warning reported on x86 by kbuild test robot in devfreq_cooling.c
+- updated documentation in the energy-model.rst
+- changed print messages from 'energy_model' to 'EM'
+- changed dev_warn to dev_dbg, should calm down test scripts in case the
+  platform has OPPs less efficient in the OPP table (some of them are there for
+  cooling reasons, we shouldn't warn in this case, debug info is enough)
+v2 [2]:
+- changed EM API em_register_perf_domain() adding cpumask_t pointer
+  as last argument (which was discussed with Dietmar and Quentin)
+- removed dependency on PM_OPP, thanks to the cpumask_t argument
+- removed enum em_type and em->type dependent code
+- em_get_pd() can handle CPU device as well as devfreq device
+- updated EM documentation
+- in devfreq cooling added code which prevents from race condition with
+  devfreq governors which are trying to use OPPs while thermal is in the middle
+  of disabling them.
+- in devfreq cooling added code which updates state of the devfreq device to
+  avoid working on stale data when governor has not updated it for a long time
+- in devfreq cooling added backward compatibility frequency table for drivers
+  which did not provide EM
+- added Steven's Reviewed-by to trace code in thermal
+- added another CPUFreq driver which needs to be updated to the new API
 
-elapsed time: 484m
+The v1 can be found here [1].
 
-configs tested: 166
-configs skipped: 0
+Regards,
+Lukasz Luba
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+[1] https://lkml.org/lkml/2020/1/16/619
+[2] https://lkml.org/lkml/2020/2/6/377
+[3] https://lkml.org/lkml/2020/2/21/1910
+[4] https://lkml.org/lkml/2020/3/9/471
+[5] https://lkml.org/lkml/2020/3/18/351
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                        shmobile_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                           sunxi_defconfig
-arm                        multi_v7_defconfig
-sparc                            allyesconfig
-i386                              allnoconfig
-riscv                             allnoconfig
-sh                            titan_defconfig
-m68k                             allmodconfig
-s390                          debug_defconfig
-ia64                                defconfig
-powerpc                             defconfig
-microblaze                      mmu_defconfig
-sh                               allmodconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                 simple_smp_defconfig
-xtensa                       common_defconfig
-xtensa                          iss_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-x86_64               randconfig-a001-20200409
-x86_64               randconfig-a002-20200409
-x86_64               randconfig-a003-20200409
-i386                 randconfig-a001-20200409
-i386                 randconfig-a002-20200409
-i386                 randconfig-a003-20200409
-alpha                randconfig-a001-20200409
-m68k                 randconfig-a001-20200409
-mips                 randconfig-a001-20200409
-nds32                randconfig-a001-20200409
-parisc               randconfig-a001-20200409
-riscv                randconfig-a001-20200409
-sparc64              randconfig-a001-20200409
-h8300                randconfig-a001-20200409
-nios2                randconfig-a001-20200409
-microblaze           randconfig-a001-20200409
-c6x                  randconfig-a001-20200409
-csky                 randconfig-a001-20200409
-openrisc             randconfig-a001-20200409
-s390                 randconfig-a001-20200409
-sh                   randconfig-a001-20200409
-xtensa               randconfig-a001-20200409
-x86_64               randconfig-b001-20200409
-x86_64               randconfig-b002-20200409
-x86_64               randconfig-b003-20200409
-i386                 randconfig-b001-20200409
-i386                 randconfig-b002-20200409
-i386                 randconfig-b003-20200409
-x86_64               randconfig-c001-20200409
-x86_64               randconfig-c002-20200409
-x86_64               randconfig-c003-20200409
-i386                 randconfig-c001-20200409
-i386                 randconfig-c002-20200409
-i386                 randconfig-c003-20200409
-x86_64               randconfig-d001-20200409
-x86_64               randconfig-d002-20200409
-x86_64               randconfig-d003-20200409
-i386                 randconfig-d001-20200409
-i386                 randconfig-d002-20200409
-i386                 randconfig-d003-20200409
-x86_64               randconfig-e001-20200409
-x86_64               randconfig-e002-20200409
-x86_64               randconfig-e003-20200409
-i386                 randconfig-e001-20200409
-i386                 randconfig-e002-20200409
-i386                 randconfig-e003-20200409
-x86_64               randconfig-f001-20200409
-x86_64               randconfig-f002-20200409
-x86_64               randconfig-f003-20200409
-i386                 randconfig-f001-20200409
-i386                 randconfig-f002-20200409
-i386                 randconfig-f003-20200409
-x86_64               randconfig-g001-20200409
-x86_64               randconfig-g002-20200409
-x86_64               randconfig-g003-20200409
-i386                 randconfig-g001-20200409
-i386                 randconfig-g002-20200409
-i386                 randconfig-g003-20200409
-x86_64               randconfig-h001-20200409
-x86_64               randconfig-h002-20200409
-x86_64               randconfig-h003-20200409
-i386                 randconfig-h001-20200409
-i386                 randconfig-h002-20200409
-i386                 randconfig-h003-20200409
-arc                  randconfig-a001-20200409
-arm                  randconfig-a001-20200409
-arm64                randconfig-a001-20200409
-ia64                 randconfig-a001-20200409
-powerpc              randconfig-a001-20200409
-sparc                randconfig-a001-20200409
-riscv                            allmodconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
+Lukasz Luba (10):
+  PM / EM: change naming convention from 'capacity' to 'performance'
+  PM / EM: introduce em_dev_register_perf_domain function
+  PM / EM: update callback structure and add device pointer
+  PM / EM: add support for other devices than CPUs in Energy Model
+  PM / EM: remove em_register_perf_domain
+  PM / EM: change name of em_pd_energy to em_cpu_energy
+  Documentation: power: update Energy Model description
+  OPP: refactor dev_pm_opp_of_register_em() and update related drivers
+  thermal: devfreq_cooling: Refactor code and switch to use Energy Model
+  drm/panfrost: Register devfreq cooling and attempt to add Energy Model
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ Documentation/power/energy-model.rst        | 135 +++---
+ drivers/cpufreq/cpufreq-dt.c                |   2 +-
+ drivers/cpufreq/imx6q-cpufreq.c             |   2 +-
+ drivers/cpufreq/mediatek-cpufreq.c          |   2 +-
+ drivers/cpufreq/omap-cpufreq.c              |   2 +-
+ drivers/cpufreq/qcom-cpufreq-hw.c           |   2 +-
+ drivers/cpufreq/scmi-cpufreq.c              |  11 +-
+ drivers/cpufreq/scpi-cpufreq.c              |   2 +-
+ drivers/cpufreq/vexpress-spc-cpufreq.c      |   2 +-
+ drivers/gpu/drm/panfrost/panfrost_devfreq.c |   2 +-
+ drivers/opp/of.c                            |  76 ++--
+ drivers/thermal/cpufreq_cooling.c           |  12 +-
+ drivers/thermal/devfreq_cooling.c           | 474 +++++++++----------
+ include/linux/devfreq_cooling.h             |  39 +-
+ include/linux/energy_model.h                | 152 ++++---
+ include/linux/pm_opp.h                      |  15 +-
+ include/trace/events/thermal.h              |  19 +-
+ kernel/power/energy_model.c                 | 477 ++++++++++++++++----
+ kernel/sched/fair.c                         |   2 +-
+ kernel/sched/topology.c                     |  20 +-
+ 20 files changed, 918 insertions(+), 530 deletions(-)
+
+-- 
+2.17.1
+
