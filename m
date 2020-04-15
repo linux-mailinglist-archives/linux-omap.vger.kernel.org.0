@@ -2,38 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16D3D1A96D4
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 10:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AD651A9754
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 10:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2894693AbgDOIia (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Apr 2020 04:38:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40646 "EHLO
+        id S2895037AbgDOIra (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Apr 2020 04:47:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2894685AbgDOIiY (ORCPT
+        by vger.kernel.org with ESMTP id S2895026AbgDOIrY (ORCPT
         <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 15 Apr 2020 04:38:24 -0400
-Received: from mo6-p03-ob.smtp.rzone.de (mo6-p03-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5303::4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BA27C061A0E;
-        Wed, 15 Apr 2020 01:38:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1586939902;
+        Wed, 15 Apr 2020 04:47:24 -0400
+Received: from mo6-p04-ob.smtp.rzone.de (mo6-p04-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5304::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65B21C061A0E;
+        Wed, 15 Apr 2020 01:47:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1586940441;
         s=strato-dkim-0002; d=goldelico.com;
         h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
         X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=Snu2lfs5+eWozVmWM7qfzq3eVbADpaPGPxUvfNGf0AI=;
-        b=I4GXSDw+FRKiJRdHNVWojgCMnBWtMMSLqkP43CGgillOcfZGQlwmekyhfYkRDjjMDD
-        S3yBsny+xC76Heq8zoqNbROgdWfgDlyJiBAN7B26u4wF1bxJUmI10UwEw8Am4U5X3M+7
-        7/5WaKZecTzn/RPza6+v0zKun7MatOcZUFpH66GPUXvOFpnJ0GtZ7kTj4vId5NrrfQjs
-        C9nK/Myvs8Wo0zIMrOiNFJVVU3CYQP7Sfm7aAblKeAwgA7OtoU8/vYm7NZPerQzftyhD
-        5Q8uO5Qj5xjZfeYc/j2GbetWg9qPvIOSFeB2vUdZl9t3qb0xOcuAISP2qt09/PFaNfUC
-        2h+w==
+        bh=6++awsC9MQ9UWUKEnojY9Xy95sI3Ppl7eM2gLntDGuI=;
+        b=o7ukuLz9EHLhwERjjgs9jCRXeIOnEX+Kje+jM9ZN+JGunR4MLTeAMRO+k9SVjActJk
+        FRxHvrivmqKIkyh+nzU311GU7uEeLU4R2E5avHiZex0S8c8Zc3N2n+5gfwIVfXXOsyi4
+        SDeOdaMAZay+MAePKM4dKNk8S3Vy+M9dp75fO+8GCM6FGXDrjjcB6TdBLimWMYNO4R3C
+        IzxjKAWGz2q7IKtpmnXU+lRfRj9I781tvMI11r5KoaESk2WC50XADIBHWIMmwUP66Qbu
+        5iJSsX6mQ6vlXAdDAgqHEIR4b8BIY/cytulUusPk9PV+My3VM9VRl0KvYA41y0IBwwn1
+        ipxQ==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2M7O2CKN9ej"
 X-RZG-CLASS-ID: mo00
 Received: from iMac.fritz.box
         by smtp.strato.de (RZmta 46.4.0 DYNA|AUTH)
-        with ESMTPSA id 6028a2w3F8ZO0Iq
+        with ESMTPSA id 6028a2w3F8ZP0Ir
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-        Wed, 15 Apr 2020 10:35:24 +0200 (CEST)
+        Wed, 15 Apr 2020 10:35:25 +0200 (CEST)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
 To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -56,9 +56,9 @@ Cc:     Philipp Rossak <embed3d@gmail.com>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v6 05/12] ARM: DTS: omap36xx: add sgx gpu child node
-Date:   Wed, 15 Apr 2020 10:35:12 +0200
-Message-Id: <c47e1d9256392fcf69ae399558008bfe1f5b302d.1586939718.git.hns@goldelico.com>
+Subject: [PATCH v6 06/12] ARM: DTS: omap4: add sgx gpu child node
+Date:   Wed, 15 Apr 2020 10:35:13 +0200
+Message-Id: <dc8ff147e82d9b7862f0122801d30600a80f314c.1586939718.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1586939718.git.hns@goldelico.com>
 References: <cover.1586939718.git.hns@goldelico.com>
@@ -71,32 +71,69 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 and add interrupt.
 
-Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # GTA04, BeagleBoard XM
+Since omap4420/30/60 and omap4470 come with different SGX variants
+we need to introduce a new omap4470.dtsi. If an omap4470 board
+does not want to use SGX it is no problem to still include
+omap4460.dtsi.
+
+Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # PandaBoard ES
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- arch/arm/boot/dts/omap36xx.dtsi | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/omap4.dtsi   | 11 ++++++-----
+ arch/arm/boot/dts/omap4470.dts | 15 +++++++++++++++
+ 2 files changed, 21 insertions(+), 5 deletions(-)
+ create mode 100644 arch/arm/boot/dts/omap4470.dts
 
-diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
-index 71f3c8f1f924..b308dbb3b1bb 100644
---- a/arch/arm/boot/dts/omap36xx.dtsi
-+++ b/arch/arm/boot/dts/omap36xx.dtsi
-@@ -211,10 +211,11 @@ sgx_module: target-module@50000000 {
+diff --git a/arch/arm/boot/dts/omap4.dtsi b/arch/arm/boot/dts/omap4.dtsi
+index 763bdea8c829..15ff3d7146af 100644
+--- a/arch/arm/boot/dts/omap4.dtsi
++++ b/arch/arm/boot/dts/omap4.dtsi
+@@ -389,7 +389,7 @@ abb_iva: regulator-abb-iva {
+ 			status = "disabled";
+ 		};
+ 
+-		target-module@56000000 {
++		sgx_module: target-module@56000000 {
+ 			compatible = "ti,sysc-omap4", "ti,sysc";
+ 			reg = <0x5600fe00 0x4>,
+ 			      <0x5600fe10 0x4>;
+@@ -408,10 +408,11 @@ target-module@56000000 {
  			#size-cells = <1>;
- 			ranges = <0 0x50000000 0x2000000>;
+ 			ranges = <0 0x56000000 0x2000000>;
  
 -			/*
 -			 * Closed source PowerVR driver, no child device
 -			 * binding or driver in mainline
 -			 */
 +			gpu: gpu@0 {
-+				compatible = "ti,omap3-sgx530-125", "img,sgx530-125", "img,sgx530";
-+				reg = <0x0 0x10000>;	/* 64kB */
-+				interrupts = <21>;
++				compatible = "ti,omap4-sgx540-120", "img,sgx540-120", "img,sgx540";
++				reg = <0x0 0x2000000>;	/* 32MB */
++				interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
 +			};
  		};
- 	};
  
+ 		/*
+diff --git a/arch/arm/boot/dts/omap4470.dts b/arch/arm/boot/dts/omap4470.dts
+new file mode 100644
+index 000000000000..f29c581300bf
+--- /dev/null
++++ b/arch/arm/boot/dts/omap4470.dts
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Device Tree Source for OMAP4470 SoC
++ *
++ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
++ *
++ * This file is licensed under the terms of the GNU General Public License
++ * version 2.  This program is licensed "as is" without any warranty of any
++ * kind, whether express or implied.
++ */
++#include "omap4460.dtsi"
++
++&sgx {
++	compatible = "ti,omap4470-sgx544-112", "img,sgx544-112", "img,sgx544";
++};
 -- 
 2.25.1
 
