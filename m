@@ -2,279 +2,161 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF9271A93DE
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 09:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6976E1A96DB
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 10:39:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404578AbgDOHKL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Apr 2020 03:10:11 -0400
-Received: from mga07.intel.com ([134.134.136.100]:33423 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404013AbgDOHKK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 15 Apr 2020 03:10:10 -0400
-IronPort-SDR: rJ4/2qRFSzOaCOLQSP6C51w0mrzojJQ62716UQw2ageAlTbqgxuHa9jPvUEsaqUcJzxyKhQWVv
- v6JWDr5TsFOg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2020 00:10:08 -0700
-IronPort-SDR: dr8GalqDGKM8LCHEbfa++Ues23gDpGhIpFp05FJbCHhBO7b2F1qrT4hiVFFMH9K+TxFkekVFyO
- qDZ0twHeoJ3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,386,1580803200"; 
-   d="scan'208";a="271646985"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 15 Apr 2020 00:10:07 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jOcBS-000IdH-Ks; Wed, 15 Apr 2020 15:10:06 +0800
-Date:   Wed, 15 Apr 2020 15:09:04 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/next] BUILD SUCCESS
- 37d27d53d32b4fd884524dfe3374d6885877b977
-Message-ID: <5e96b310.8RD+oIR75QvwRxU1%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S2894703AbgDOIie (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Apr 2020 04:38:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40666 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2894691AbgDOIi3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 15 Apr 2020 04:38:29 -0400
+Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5302::12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75BEDC0610D5;
+        Wed, 15 Apr 2020 01:38:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1586939907;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=CAfnoN4m17go8Dw967b1uy/r86HBAZtFzBXJuBT/KA0=;
+        b=roeyIgbu1keIxdyZi0b0NyFWWGcdJ9lG+3j1/3daPq3pkJRmpAJR+ZhCf5B+z+zY9f
+        HTuwScCxikCKou5fl+yKLlF/pY2V7s1NZdL5lcTtyaF4+qTxREoTVz+/DWTgFyiIbFdX
+        lHy/rgD4T5KPH0BdEa7677W6x2DXqAjwRoNAlNXoMJ0/qd39ZpeXqlklh53CdmDXYawc
+        Gfuw32aV2QabeX00Yhg84ev3zog6FsRwNbUgjXPOJzRj+H5GJOQD7wov1UJ9FNH1eKrI
+        UpMposDg7wIQ2BZPaQ2QFnKmxdHPQvlkwUrzNI5iCLK8RRVCnVxlvoUMwgOOdH03kmTn
+        ixSw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2M7O2CKN9ej"
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+        by smtp.strato.de (RZmta 46.4.0 DYNA|AUTH)
+        with ESMTPSA id 6028a2w3F8ZJ0Ih
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Wed, 15 Apr 2020 10:35:19 +0200 (CEST)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     Philipp Rossak <embed3d@gmail.com>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: [PATCH v6 00/12] ARM/MIPS: DTS: add child nodes describing the PVRSGX GPU present in some OMAP SoC and JZ4780 (and many more)
+Date:   Wed, 15 Apr 2020 10:35:07 +0200
+Message-Id: <cover.1586939718.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
-branch HEAD: 37d27d53d32b4fd884524dfe3374d6885877b977  usb: dwc3: gadget: WARN on no-resource status
+* rebased to v5.7-rc1
+* added DTS for for a31, a31s, a83t - by Philipp Rossak <embed3d@gmail.com>
+* added DTS for "samsung,s5pv210-sgx540-120" - by Jonathan Bakker <xc-racer2@live.ca>
+* bindings.yaml fixes:
+  - added a31, a31
+  - fixes for omap4470
+  - jz4780 contains an sgx540-130 and not -120
+  - a83t contains an sgx544-115 and not -116
+  - removed "additionalProperties: false" because some SoC may need additional properties
 
-elapsed time: 1464m
+PATCH V5 2020-03-29 19:38:32:
+* reworked YAML bindings to pass dt_binding_check and be better grouped
+* rename all nodes to "gpu: gpu@<address>"
+* removed "img,sgx5" from example - suggested by Rob Herring <robh+dt@kernel.org>
 
-configs tested: 220
-configs skipped: 0
+PATCH V4 2019-12-17 19:02:11:
+* MIPS: DTS: jz4780: removed "img,sgx5" from bindings
+* YAML bindings: updated according to suggestions by Rob Herring
+* MIPS: DTS: jz4780: insert-sorted gpu node by register address - suggested by Paul Cercueil
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+PATCH V3 2019-11-24 12:40:33:
+* reworked YAML format with help by Rob Herring
+* removed .txt binding document
+* change compatible "ti,am335x-sgx" to "ti,am3352-sgx" - suggested by Tony Lindgren
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-nds32                               defconfig
-powerpc                             defconfig
-riscv                               defconfig
-m68k                       m5475evb_defconfig
-sh                  sh7785lcr_32bit_defconfig
-powerpc                       ppc64_defconfig
-um                                  defconfig
-ia64                                defconfig
-mips                      malta_kvm_defconfig
-i386                              allnoconfig
-i386                             alldefconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                                defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                 simple_smp_defconfig
-xtensa                       common_defconfig
-xtensa                          iss_defconfig
-alpha                               defconfig
-csky                                defconfig
-nds32                             allnoconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-parisc                            allnoconfig
-parisc                           allyesconfig
-parisc                generic-32bit_defconfig
-parisc                generic-64bit_defconfig
-x86_64               randconfig-a001-20200414
-x86_64               randconfig-a002-20200414
-x86_64               randconfig-a003-20200414
-i386                 randconfig-a001-20200414
-i386                 randconfig-a002-20200414
-i386                 randconfig-a003-20200414
-i386                 randconfig-a002-20200415
-x86_64               randconfig-a001-20200415
-x86_64               randconfig-a002-20200415
-i386                 randconfig-a003-20200415
-i386                 randconfig-a001-20200415
-x86_64               randconfig-a003-20200415
-alpha                randconfig-a001-20200414
-m68k                 randconfig-a001-20200414
-nds32                randconfig-a001-20200414
-parisc               randconfig-a001-20200414
-riscv                randconfig-a001-20200414
-mips                 randconfig-a001-20200414
-mips                 randconfig-a001-20200415
-nds32                randconfig-a001-20200415
-m68k                 randconfig-a001-20200415
-riscv                randconfig-a001-20200415
-alpha                randconfig-a001-20200415
-parisc               randconfig-a001-20200415
-c6x                  randconfig-a001-20200414
-h8300                randconfig-a001-20200414
-microblaze           randconfig-a001-20200414
-nios2                randconfig-a001-20200414
-sparc64              randconfig-a001-20200414
-c6x                  randconfig-a001-20200415
-h8300                randconfig-a001-20200415
-microblaze           randconfig-a001-20200415
-nios2                randconfig-a001-20200415
-sparc64              randconfig-a001-20200415
-csky                 randconfig-a001-20200414
-openrisc             randconfig-a001-20200414
-s390                 randconfig-a001-20200414
-sh                   randconfig-a001-20200414
-xtensa               randconfig-a001-20200414
-s390                 randconfig-a001-20200415
-xtensa               randconfig-a001-20200415
-sh                   randconfig-a001-20200415
-openrisc             randconfig-a001-20200415
-csky                 randconfig-a001-20200415
-x86_64               randconfig-b001-20200415
-x86_64               randconfig-b002-20200415
-x86_64               randconfig-b003-20200415
-i386                 randconfig-b001-20200415
-i386                 randconfig-b002-20200415
-i386                 randconfig-b003-20200415
-x86_64               randconfig-b001-20200414
-x86_64               randconfig-b002-20200414
-x86_64               randconfig-b003-20200414
-i386                 randconfig-b001-20200414
-i386                 randconfig-b002-20200414
-i386                 randconfig-b003-20200414
-x86_64               randconfig-c001-20200414
-x86_64               randconfig-c002-20200414
-x86_64               randconfig-c003-20200414
-i386                 randconfig-c001-20200414
-i386                 randconfig-c002-20200414
-i386                 randconfig-c003-20200414
-x86_64               randconfig-c003-20200415
-i386                 randconfig-c003-20200415
-x86_64               randconfig-c002-20200415
-i386                 randconfig-c002-20200415
-x86_64               randconfig-c001-20200415
-i386                 randconfig-c001-20200415
-i386                 randconfig-d002-20200415
-x86_64               randconfig-d003-20200415
-i386                 randconfig-d003-20200415
-x86_64               randconfig-d001-20200415
-i386                 randconfig-d001-20200415
-x86_64               randconfig-d002-20200415
-x86_64               randconfig-e001-20200415
-x86_64               randconfig-e002-20200415
-x86_64               randconfig-e003-20200415
-i386                 randconfig-e001-20200415
-i386                 randconfig-e002-20200415
-i386                 randconfig-e003-20200415
-i386                 randconfig-f003-20200415
-i386                 randconfig-f002-20200415
-i386                 randconfig-f001-20200415
-x86_64               randconfig-f001-20200414
-x86_64               randconfig-f002-20200414
-x86_64               randconfig-f003-20200414
-i386                 randconfig-f001-20200414
-i386                 randconfig-f002-20200414
-i386                 randconfig-f003-20200414
-x86_64               randconfig-g001-20200414
-x86_64               randconfig-g002-20200414
-x86_64               randconfig-g003-20200414
-i386                 randconfig-g001-20200414
-i386                 randconfig-g002-20200414
-i386                 randconfig-g003-20200414
-x86_64               randconfig-g003-20200415
-i386                 randconfig-g003-20200415
-x86_64               randconfig-g001-20200415
-x86_64               randconfig-g002-20200415
-i386                 randconfig-g002-20200415
-i386                 randconfig-g001-20200415
-x86_64               randconfig-h001-20200415
-i386                 randconfig-h003-20200415
-i386                 randconfig-h002-20200415
-i386                 randconfig-h001-20200415
-x86_64               randconfig-h002-20200415
-x86_64               randconfig-h001-20200414
-x86_64               randconfig-h002-20200414
-x86_64               randconfig-h003-20200414
-i386                 randconfig-h001-20200414
-i386                 randconfig-h002-20200414
-i386                 randconfig-h003-20200414
-arc                  randconfig-a001-20200414
-arm                  randconfig-a001-20200414
-arm64                randconfig-a001-20200414
-ia64                 randconfig-a001-20200414
-powerpc              randconfig-a001-20200414
-sparc                randconfig-a001-20200414
-powerpc              randconfig-a001-20200415
-arm64                randconfig-a001-20200415
-ia64                 randconfig-a001-20200415
-arc                  randconfig-a001-20200415
-arm                  randconfig-a001-20200415
-sparc                randconfig-a001-20200415
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                               allmodconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                            titan_defconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
+PATCH V2 2019-11-07 12:06:17:
+* tried to convert bindings to YAML format - suggested by Rob Herring
+* added JZ4780 DTS node (proven to load the driver)
+* removed timer and img,cores properties until we know we really need them - suggested by Rob Herring
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+PATCH V1 2019-10-18 20:46:35:
+
+This patch series defines child nodes for the SGX5xx interface inside
+different SoC so that a driver can be found and probed by the
+compatible strings and can retrieve information about the SGX revision
+that is included in a specific SoC. It also defines the interrupt number
+to be used by the SGX driver.
+
+There is currently no mainline driver for these GPUs, but a project [1]
+is ongoing with the goal to get the open-source part as provided by TI/IMG
+and others into drivers/gpu/drm/pvrsgx.
+
+The kernel modules built from this project have successfully demonstrated
+to work with the DTS definitions from this patch set on AM335x BeagleBone
+Black, DM3730 and OMAP5 Pyra and Droid 4. They partially work on OMAP3530 and
+PandaBoard ES but that is likely a problem in the kernel driver or the
+(non-free) user-space libraries and binaries.
+
+Wotk for JZ4780 (CI20 board) is in progress and there is potential to extend
+this work to e.g. BananaPi-M3 (A83) and  some Intel Poulsbo and CedarView
+devices.
+
+[1]: https://github.com/openpvrsgx-devgroup
+
+
+H. Nikolaus Schaller (8):
+  dt-bindings: add img,pvrsgx.yaml for Imagination GPUs
+  ARM: DTS: am33xx: add sgx gpu child node
+  ARM: DTS: am3517: add sgx gpu child node
+  ARM: DTS: omap34xx: add sgx gpu child node
+  ARM: DTS: omap36xx: add sgx gpu child node
+  ARM: DTS: omap4: add sgx gpu child node
+  ARM: DTS: omap5: add sgx gpu child node
+  MIPS: DTS: jz4780: add sgx gpu node
+
+Jonathan Bakker (1):
+  arm: dts: s5pv210: Add G3D node
+
+Philipp Rossak (3):
+  ARM: dts: sun6i: a31: add sgx gpu child node
+  ARM: dts: sun6i: a31s: add sgx gpu child node
+  ARM: dts: sun8i: a83t: add sgx gpu child node
+
+ .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 122 ++++++++++++++++++
+ arch/arm/boot/dts/am33xx.dtsi                 |  11 +-
+ arch/arm/boot/dts/am3517.dtsi                 |   9 +-
+ arch/arm/boot/dts/omap34xx.dtsi               |  11 +-
+ arch/arm/boot/dts/omap36xx.dtsi               |   9 +-
+ arch/arm/boot/dts/omap4.dtsi                  |  11 +-
+ arch/arm/boot/dts/omap4470.dts                |  15 +++
+ arch/arm/boot/dts/omap5.dtsi                  |  11 +-
+ arch/arm/boot/dts/s5pv210.dtsi                |  15 +++
+ arch/arm/boot/dts/sun6i-a31.dtsi              |  11 ++
+ arch/arm/boot/dts/sun6i-a31s.dtsi             |  10 ++
+ arch/arm/boot/dts/sun8i-a83t.dtsi             |  11 ++
+ arch/mips/boot/dts/ingenic/jz4780.dtsi        |  11 ++
+ 13 files changed, 229 insertions(+), 28 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+ create mode 100644 arch/arm/boot/dts/omap4470.dts
+
+-- 
+2.25.1
+
