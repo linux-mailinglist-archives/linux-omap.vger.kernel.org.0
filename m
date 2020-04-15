@@ -2,60 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A495B1A982B
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 11:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B94AB1A98D0
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 11:27:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2894721AbgDOJPe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Apr 2020 05:15:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46466 "EHLO
+        id S2895506AbgDOJ05 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Apr 2020 05:26:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2635969AbgDOJPa (ORCPT
+        by vger.kernel.org with ESMTP id S2895494AbgDOJ04 (ORCPT
         <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 15 Apr 2020 05:15:30 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DDEC061A0C
-        for <linux-omap@vger.kernel.org>; Wed, 15 Apr 2020 02:15:29 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id u15so2880355ljd.3
-        for <linux-omap@vger.kernel.org>; Wed, 15 Apr 2020 02:15:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=69T9ZGqlIy7aImGgwrs75/hfGvsilwincFfwWiQFobg=;
-        b=QmYfPFaxi91fzgnYBmzUnbNLZxOG0Qvv9XHtQXYm/D+sTky/Yc25iONfxBlY/7wqsB
-         fRtQYUCgyxgK4p3vjoCdR1E4K1nsTfSz3bWGNyVBA7FGlzJ7W7xAZUor5i5MsgsA0hU6
-         1sVmcbUlUP1cDxtb+3jC+HIaRfadnrNzRFcNUoV22EicSEE5dlVf6RJieO6E9yC3PemP
-         qMb4hRiVMAXxE1MiwCuSopLulXmT+VCKUbpRSEH+BCrvLMZ4tKOYKabhdtdCWnXgNuRk
-         9lpcy+vti6/lVgJJk2gVDZg/BOarCjaD0Ak6NlGy7RcdUdyYk3SImWtP+7AMtEZqo2NA
-         +piQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=69T9ZGqlIy7aImGgwrs75/hfGvsilwincFfwWiQFobg=;
-        b=qclmvKoFG5dxjqE5HBxOPu8WQjwZhYHu8/ddmBFihHqN0d2zrM1KIX0KKF7i60dI56
-         /gVD/gq7aJNhZsNMb/4GBzpolaTSH/4f8wp5HLC4PnIYyK0HxeXfnP4GDsBqJETa5z/u
-         Bq9FR8xZ+GAR2rtA75KxmvOG4+cxUBnigpnVlNgDsjjJtoyzAv2t7KSfLEsPCu+SHALz
-         MwmG5/ab4fHyT3nCcBZdg3hwQGrQNReOu5YB5L+dIE5MG9+7VddrStetM9QJGMQ3YTVA
-         q4wYj5crrrBaRgtQpuaIMcPGyZmcY2rHxseU8Ozj/YfbpOp2LW/eGj7WrA7pJnGJUQ64
-         24Lg==
-X-Gm-Message-State: AGi0Pub1IacNzrFulEEIH3vLEN1NusCa00tI+zeA9ju1kyyqhh/aT77j
-        mk+g8x+maGT1ng4QDmoVOJ6NSfKDGKwp1A==
-X-Google-Smtp-Source: APiQypJt4bgg1yrZutHX1jnCNUTiEGk5PA6dcO1xYRoqGEwzcnoywOgKJNgJRfEssnCyTOQijG6tmA==
-X-Received: by 2002:a2e:6c0a:: with SMTP id h10mr2542581ljc.195.1586942127891;
-        Wed, 15 Apr 2020 02:15:27 -0700 (PDT)
-Received: from ?IPv6:2a00:1fa0:81b:6e8d:a1dd:9870:4166:dead? ([2a00:1fa0:81b:6e8d:a1dd:9870:4166:dead])
-        by smtp.gmail.com with ESMTPSA id m13sm12192031lfk.12.2020.04.15.02.15.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Apr 2020 02:15:27 -0700 (PDT)
+        Wed, 15 Apr 2020 05:26:56 -0400
+Received: from mo6-p04-ob.smtp.rzone.de (mo6-p04-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5304::12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B167EC061A0C;
+        Wed, 15 Apr 2020 02:26:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1586942812;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=QSUY1yUiWe9X6ZGNIO1eH3insGRwBB0CwHRK6fHg7uQ=;
+        b=qlAD48FijIaBoAx9ezb9opMkPMPwJpEBYm7kVCbfB14p09Yq5qj0+PrIOI7a5QHsgS
+        A6f7DumiHE8MZ4Bo5cP5+BCuQgzTgomwBDVFdtGkDE5Cas7onZSDZ85F05pGoTMlAxyr
+        o1LOgQmVrSwLM4o0aG4m39+j+V2AbyNlWeebGdnWol/VOo2Xw3gDGvmqBE03mzYFR4Yz
+        9+vSGEkqV1JQuahiBJ/M3qTRyW4OT9CgiNG5DWNJKMWUWl/KL4Ab3LCzpg3nngAb6skv
+        eBcjdzHVUAChMfWwzgBgWVFfWTgedno9mf8idJn84ToAR47waXQBwCu0Zd+LNHYRY+O7
+        XlGQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/PtwDConyM="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 46.4.0 DYNA|AUTH)
+        with ESMTPSA id 6028a2w3F9Qa0oW
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Wed, 15 Apr 2020 11:26:36 +0200 (CEST)
 Subject: Re: [PATCH v6 08/12] arm: dts: s5pv210: Add G3D node
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=us-ascii
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <b6ffa74a-acef-f329-0d9e-981483499e16@cogentembedded.com>
+Date:   Wed, 15 Apr 2020 11:26:35 +0200
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -64,8 +52,8 @@ To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
         Krzysztof Kozlowski <krzk@kernel.org>,
         Maxime Ripard <mripard@kernel.org>,
         Chen-Yu Tsai <wens@csie.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:     Philipp Rossak <embed3d@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Philipp Rossak <embed3d@gmail.com>,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
@@ -73,50 +61,56 @@ Cc:     Philipp Rossak <embed3d@gmail.com>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         Jonathan Bakker <xc-racer2@live.ca>
-References: <cover.1586939718.git.hns@goldelico.com>
- <b6733f80546bf3e6b3799f716b9c8e0f407de03d.1586939718.git.hns@goldelico.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <b6ffa74a-acef-f329-0d9e-981483499e16@cogentembedded.com>
-Date:   Wed, 15 Apr 2020 12:15:17 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <b6733f80546bf3e6b3799f716b9c8e0f407de03d.1586939718.git.hns@goldelico.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B1E898A7-73BB-4C20-98D2-2D32F0DC170F@goldelico.com>
+References: <cover.1586939718.git.hns@goldelico.com> <b6733f80546bf3e6b3799f716b9c8e0f407de03d.1586939718.git.hns@goldelico.com> <b6ffa74a-acef-f329-0d9e-981483499e16@cogentembedded.com>
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Jonathan Bakker <xc-racer2@live.ca>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello!
+Hi Sergei and Jonathan,
 
-On 15.04.2020 11:35, H. Nikolaus Schaller wrote:
+> Am 15.04.2020 um 11:15 schrieb Sergei Shtylyov =
+<sergei.shtylyov@cogentembedded.com>:
+>=20
+> Hello!
+>=20
+> On 15.04.2020 11:35, H. Nikolaus Schaller wrote:
+>=20
+>> From: Jonathan Bakker <xc-racer2@live.ca>
+>> to add support for SGX540 GPU.
+>> Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
+>> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+>> ---
+>>  arch/arm/boot/dts/s5pv210.dtsi | 15 +++++++++++++++
+>>  1 file changed, 15 insertions(+)
+>> diff --git a/arch/arm/boot/dts/s5pv210.dtsi =
+b/arch/arm/boot/dts/s5pv210.dtsi
+>> index 2ad642f51fd9..e7fc709c0cca 100644
+>> --- a/arch/arm/boot/dts/s5pv210.dtsi
+>> +++ b/arch/arm/boot/dts/s5pv210.dtsi
+>> @@ -512,6 +512,21 @@ vic3: interrupt-controller@f2300000 {
+>>  			#interrupt-cells =3D <1>;
+>>  		};
+>>  +		g3d: g3d@f3000000 {
+>=20
+>   Should be named generically, "gpu@f3000000", according to the DT =
+spec 0.2, section 2.2.2. It's either "gpu" or "display" TTBOMK...
 
-> From: Jonathan Bakker <xc-racer2@live.ca>
-> 
-> to add support for SGX540 GPU.
-> 
-> Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
->   arch/arm/boot/dts/s5pv210.dtsi | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/s5pv210.dtsi b/arch/arm/boot/dts/s5pv210.dtsi
-> index 2ad642f51fd9..e7fc709c0cca 100644
-> --- a/arch/arm/boot/dts/s5pv210.dtsi
-> +++ b/arch/arm/boot/dts/s5pv210.dtsi
-> @@ -512,6 +512,21 @@ vic3: interrupt-controller@f2300000 {
->   			#interrupt-cells = <1>;
->   		};
->   
-> +		g3d: g3d@f3000000 {
+Yes, you are right and we have named it such for all other
+devices in this series. I just missed that.
 
-    Should be named generically, "gpu@f3000000", according to the DT spec 0.2, 
-section 2.2.2. It's either "gpu" or "display" TTBOMK...
+Jonathan, if you are ok, I'll fix that.
 
-[...]
+>=20
+> [...]
+>=20
+> MBR, Sergei
 
-MBR, Sergei
+BR and thanks,
+Nikolaus
+
