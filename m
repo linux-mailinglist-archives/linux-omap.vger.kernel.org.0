@@ -2,71 +2,279 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ACBB1A8F98
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 02:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF9271A93DE
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 09:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392314AbgDOANR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Apr 2020 20:13:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36960 "EHLO mail.kernel.org"
+        id S2404578AbgDOHKL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Apr 2020 03:10:11 -0400
+Received: from mga07.intel.com ([134.134.136.100]:33423 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392311AbgDOANP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 14 Apr 2020 20:13:15 -0400
-Received: from localhost (mobile-166-175-184-103.mycingular.net [166.175.184.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0CC3120774;
-        Wed, 15 Apr 2020 00:13:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586909593;
-        bh=dRngsPvuG+kETgs2smktXaw9v1l2uk2emjkFea1ZosU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JNc70G7YwSQcq2MM9qgM51emm22lpt/Tuq/i8nVHyR/l+0y5zCxciz4rG1GVYkmKj
-         pUBkZ4veIBiIho+l1qIauTrjurx2Pt/rtbf2BZMIQRMLtDj8bjmTc/esrjKJk6Cczd
-         2DETdj5iD/rHgC9jtVpQ90O9wrblPLZxrC1g86Sg=
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     linux-pci@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        linux-omap@vger.kernel.org
-Subject: [PATCH 1/4] PCI: dra7xx: Don't select CONFIG_PCI_DRA7XX_HOST by default
-Date:   Tue, 14 Apr 2020 19:12:41 -0500
-Message-Id: <20200415001244.144623-2-helgaas@kernel.org>
-X-Mailer: git-send-email 2.26.0.110.g2183baf09c-goog
-In-Reply-To: <20200415001244.144623-1-helgaas@kernel.org>
-References: <20200415001244.144623-1-helgaas@kernel.org>
+        id S2404013AbgDOHKK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 15 Apr 2020 03:10:10 -0400
+IronPort-SDR: rJ4/2qRFSzOaCOLQSP6C51w0mrzojJQ62716UQw2ageAlTbqgxuHa9jPvUEsaqUcJzxyKhQWVv
+ v6JWDr5TsFOg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2020 00:10:08 -0700
+IronPort-SDR: dr8GalqDGKM8LCHEbfa++Ues23gDpGhIpFp05FJbCHhBO7b2F1qrT4hiVFFMH9K+TxFkekVFyO
+ qDZ0twHeoJ3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,386,1580803200"; 
+   d="scan'208";a="271646985"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 15 Apr 2020 00:10:07 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jOcBS-000IdH-Ks; Wed, 15 Apr 2020 15:10:06 +0800
+Date:   Wed, 15 Apr 2020 15:09:04 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/next] BUILD SUCCESS
+ 37d27d53d32b4fd884524dfe3374d6885877b977
+Message-ID: <5e96b310.8RD+oIR75QvwRxU1%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
+branch HEAD: 37d27d53d32b4fd884524dfe3374d6885877b977  usb: dwc3: gadget: WARN on no-resource status
 
-Drivers should not be selected by default because that bloats the kernel
-for people who don't need them.
+elapsed time: 1464m
 
-Remove the "default y" for CONFIG_PCI_DRA7XX_HOST.
+configs tested: 220
+configs skipped: 0
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Kishon Vijay Abraham I <kishon@ti.com>
-Cc: linux-omap@vger.kernel.org
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                               defconfig
+sparc                            allyesconfig
+nds32                               defconfig
+powerpc                             defconfig
+riscv                               defconfig
+m68k                       m5475evb_defconfig
+sh                  sh7785lcr_32bit_defconfig
+powerpc                       ppc64_defconfig
+um                                  defconfig
+ia64                                defconfig
+mips                      malta_kvm_defconfig
+i386                              allnoconfig
+i386                             alldefconfig
+i386                             allyesconfig
+i386                              debian-10.3
+i386                                defconfig
+ia64                             alldefconfig
+ia64                             allmodconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                       common_defconfig
+xtensa                          iss_defconfig
+alpha                               defconfig
+csky                                defconfig
+nds32                             allnoconfig
+h8300                     edosk2674_defconfig
+h8300                    h8300h-sim_defconfig
+h8300                       h8s-sim_defconfig
+m68k                             allmodconfig
+m68k                          multi_defconfig
+m68k                           sun3_defconfig
+arc                              allyesconfig
+arc                                 defconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+powerpc                          rhel-kconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                generic-32bit_defconfig
+parisc                generic-64bit_defconfig
+x86_64               randconfig-a001-20200414
+x86_64               randconfig-a002-20200414
+x86_64               randconfig-a003-20200414
+i386                 randconfig-a001-20200414
+i386                 randconfig-a002-20200414
+i386                 randconfig-a003-20200414
+i386                 randconfig-a002-20200415
+x86_64               randconfig-a001-20200415
+x86_64               randconfig-a002-20200415
+i386                 randconfig-a003-20200415
+i386                 randconfig-a001-20200415
+x86_64               randconfig-a003-20200415
+alpha                randconfig-a001-20200414
+m68k                 randconfig-a001-20200414
+nds32                randconfig-a001-20200414
+parisc               randconfig-a001-20200414
+riscv                randconfig-a001-20200414
+mips                 randconfig-a001-20200414
+mips                 randconfig-a001-20200415
+nds32                randconfig-a001-20200415
+m68k                 randconfig-a001-20200415
+riscv                randconfig-a001-20200415
+alpha                randconfig-a001-20200415
+parisc               randconfig-a001-20200415
+c6x                  randconfig-a001-20200414
+h8300                randconfig-a001-20200414
+microblaze           randconfig-a001-20200414
+nios2                randconfig-a001-20200414
+sparc64              randconfig-a001-20200414
+c6x                  randconfig-a001-20200415
+h8300                randconfig-a001-20200415
+microblaze           randconfig-a001-20200415
+nios2                randconfig-a001-20200415
+sparc64              randconfig-a001-20200415
+csky                 randconfig-a001-20200414
+openrisc             randconfig-a001-20200414
+s390                 randconfig-a001-20200414
+sh                   randconfig-a001-20200414
+xtensa               randconfig-a001-20200414
+s390                 randconfig-a001-20200415
+xtensa               randconfig-a001-20200415
+sh                   randconfig-a001-20200415
+openrisc             randconfig-a001-20200415
+csky                 randconfig-a001-20200415
+x86_64               randconfig-b001-20200415
+x86_64               randconfig-b002-20200415
+x86_64               randconfig-b003-20200415
+i386                 randconfig-b001-20200415
+i386                 randconfig-b002-20200415
+i386                 randconfig-b003-20200415
+x86_64               randconfig-b001-20200414
+x86_64               randconfig-b002-20200414
+x86_64               randconfig-b003-20200414
+i386                 randconfig-b001-20200414
+i386                 randconfig-b002-20200414
+i386                 randconfig-b003-20200414
+x86_64               randconfig-c001-20200414
+x86_64               randconfig-c002-20200414
+x86_64               randconfig-c003-20200414
+i386                 randconfig-c001-20200414
+i386                 randconfig-c002-20200414
+i386                 randconfig-c003-20200414
+x86_64               randconfig-c003-20200415
+i386                 randconfig-c003-20200415
+x86_64               randconfig-c002-20200415
+i386                 randconfig-c002-20200415
+x86_64               randconfig-c001-20200415
+i386                 randconfig-c001-20200415
+i386                 randconfig-d002-20200415
+x86_64               randconfig-d003-20200415
+i386                 randconfig-d003-20200415
+x86_64               randconfig-d001-20200415
+i386                 randconfig-d001-20200415
+x86_64               randconfig-d002-20200415
+x86_64               randconfig-e001-20200415
+x86_64               randconfig-e002-20200415
+x86_64               randconfig-e003-20200415
+i386                 randconfig-e001-20200415
+i386                 randconfig-e002-20200415
+i386                 randconfig-e003-20200415
+i386                 randconfig-f003-20200415
+i386                 randconfig-f002-20200415
+i386                 randconfig-f001-20200415
+x86_64               randconfig-f001-20200414
+x86_64               randconfig-f002-20200414
+x86_64               randconfig-f003-20200414
+i386                 randconfig-f001-20200414
+i386                 randconfig-f002-20200414
+i386                 randconfig-f003-20200414
+x86_64               randconfig-g001-20200414
+x86_64               randconfig-g002-20200414
+x86_64               randconfig-g003-20200414
+i386                 randconfig-g001-20200414
+i386                 randconfig-g002-20200414
+i386                 randconfig-g003-20200414
+x86_64               randconfig-g003-20200415
+i386                 randconfig-g003-20200415
+x86_64               randconfig-g001-20200415
+x86_64               randconfig-g002-20200415
+i386                 randconfig-g002-20200415
+i386                 randconfig-g001-20200415
+x86_64               randconfig-h001-20200415
+i386                 randconfig-h003-20200415
+i386                 randconfig-h002-20200415
+i386                 randconfig-h001-20200415
+x86_64               randconfig-h002-20200415
+x86_64               randconfig-h001-20200414
+x86_64               randconfig-h002-20200414
+x86_64               randconfig-h003-20200414
+i386                 randconfig-h001-20200414
+i386                 randconfig-h002-20200414
+i386                 randconfig-h003-20200414
+arc                  randconfig-a001-20200414
+arm                  randconfig-a001-20200414
+arm64                randconfig-a001-20200414
+ia64                 randconfig-a001-20200414
+powerpc              randconfig-a001-20200414
+sparc                randconfig-a001-20200414
+powerpc              randconfig-a001-20200415
+arm64                randconfig-a001-20200415
+ia64                 randconfig-a001-20200415
+arc                  randconfig-a001-20200415
+arm                  randconfig-a001-20200415
+sparc                randconfig-a001-20200415
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                                defconfig
+s390                       zfcpdump_defconfig
+sh                               allmodconfig
+sh                                allnoconfig
+sh                          rsk7269_defconfig
+sh                            titan_defconfig
+sparc                               defconfig
+sparc64                          allmodconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                             defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+
 ---
- drivers/pci/controller/dwc/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
-index 03dcaf65d159..ea335ee7ca8e 100644
---- a/drivers/pci/controller/dwc/Kconfig
-+++ b/drivers/pci/controller/dwc/Kconfig
-@@ -26,7 +26,6 @@ config PCI_DRA7XX_HOST
- 	depends on OF && HAS_IOMEM && TI_PIPE3
- 	select PCIE_DW_HOST
- 	select PCI_DRA7XX
--	default y
- 	help
- 	  Enables support for the PCIe controller in the DRA7xx SoC to work in
- 	  host mode. There are two instances of PCIe controller in DRA7xx.
--- 
-2.26.0.110.g2183baf09c-goog
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
