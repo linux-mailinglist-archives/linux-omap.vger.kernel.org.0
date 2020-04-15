@@ -2,91 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD5C1AA43B
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 15:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EA631AA469
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 15:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2506329AbgDONUt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Apr 2020 09:20:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2506324AbgDONUo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 15 Apr 2020 09:20:44 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FE40C061A0C;
-        Wed, 15 Apr 2020 06:20:44 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id f2so3235028ilq.7;
-        Wed, 15 Apr 2020 06:20:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GuE7zCB+kjCMQSC6KSQqFmUyUFjxP8ZpVQ5YkoMnnCY=;
-        b=BiByiI5NznJ9Z0cSJAHIWIzEBySLeI4D5xFoSXWo+Fpt8MAr1tc4M11yneh4IRo/XS
-         aCUdjX4soeKLhhkZzga37LK0G6mDSKSryn5WkLjCtzwBM5ucWhTBPfIB6GNPB7f7qN5B
-         IifDOW5K1uy8/vcADYtehFfrixrAUDVoPyH7ulZ9xR/bidhBqupM+f6DdFptN6ykHsGP
-         DnYBrALROCLSf3AZQNw0P8Pz8t7sns6XCt64BJ+S8YxiTG2Ubi0laB0PPY0LQH+hjEx6
-         C5ehiub6PvCtKLZR6RviM6GDgy34P6mt+RXkD0YhkKWrPdZ0gidPOxVkKubrkjQsEWB4
-         aFDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GuE7zCB+kjCMQSC6KSQqFmUyUFjxP8ZpVQ5YkoMnnCY=;
-        b=ewMTuz4MyEnCQ38eYmCnbH4jFuS+30Po3DvUbLpSsHwymYZwFVaD+oZrHz3+8OnYpe
-         Lxgj3D3BhI2dIiFZi68+oLHhg92lNrQqIszMFYGOcjbWp64ROsYZFWCco23j0CpBARF7
-         DYK0QTHFuyMhPZSdG47ND9zOPntSMm8yWEfbCPGlDQUF8egm8/D1MR4yzxKLM9xENexL
-         Na837WOYtdiIPsD5qvWNoG2/Y5jicvefVixs+iKl4Rdytyg3vrhNblVah9gC8VIGTmAk
-         ZHSqB+C3b3M1DDkuJKon0eVSZGTpaxEjOJ5jqbWJCHAWWro81gWxTZkyqPOiSGdjOy9O
-         MofA==
-X-Gm-Message-State: AGi0PuasdNWJzHkTKyqn+S3HIJIju7YNZ+4w98mc/hQg9bAKOKeltRMg
-        f6pt4frZ7yrzVdpMX775PSaNVsfHp2bP5NssByc=
-X-Google-Smtp-Source: APiQypJcBc6S+JZCO0dPRaM0Nepcud4QLmwXVj9dY0ATI7R4HYmWzmYNGc67EXDuHehVfrI02wOOMwXqSg5/v/t9YhY=
-X-Received: by 2002:a92:86da:: with SMTP id l87mr5449555ilh.292.1586956843901;
- Wed, 15 Apr 2020 06:20:43 -0700 (PDT)
+        id S2636073AbgDONYQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Apr 2020 09:24:16 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2331 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2636065AbgDONYN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 15 Apr 2020 09:24:13 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 19845F6C67779E3BA95F;
+        Wed, 15 Apr 2020 21:24:10 +0800 (CST)
+Received: from localhost (10.173.223.234) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Wed, 15 Apr 2020
+ 21:24:00 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <b.zolnierkie@samsung.com>, <allison@lohutok.net>
+CC:     <linux-omap@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH -next] omapfb/dss: remove unused varible 'venc_config_pal_bdghi'
+Date:   Wed, 15 Apr 2020 21:23:50 +0800
+Message-ID: <20200415132350.33088-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-References: <CAEf4M_Du6Egn-3nZHtSnMMwohc+-DyEdtWU5DqSJi71+nDthFw@mail.gmail.com>
- <CACRpkdaPoMGZ7jGh6j4dYexx+qCcoMQ37vS7kbpf=3TtcA9zQQ@mail.gmail.com>
- <CAEf4M_B_sxOiKFnEVUrx00RE2MaMA98LpijNhp0EVY11eRAXHg@mail.gmail.com>
- <CAD6h2NT840zMfwaJatfKzai8QjZEQmF5v0xgE+9ngSJJ+Qy+6g@mail.gmail.com>
- <20200413123921.GA32586@x1> <578a51c3-9cb4-91f9-4735-c512bf75553c@ti.com>
-In-Reply-To: <578a51c3-9cb4-91f9-4735-c512bf75553c@ti.com>
-From:   Robert Nelson <robertcnelson@gmail.com>
-Date:   Wed, 15 Apr 2020 08:20:18 -0500
-Message-ID: <CAOCHtYg=rM_zP6Wr3bWKfvGpeK7sXLj6GLN3DXSh8JgfqDTcCA@mail.gmail.com>
-Subject: Re: gpio-omap: add support gpiolib bias (pull-up/down) flags?
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Drew Fustini <drew@pdp7.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Drew Fustini <pdp7pdp7@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Drew Fustini <drew@beagleboard.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-omap <linux-omap@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.223.234]
+X-CFilter-Loop: Reflected
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Grygorii,
+drivers/video/fbdev/omap2/omapfb/dss/venc.c:212:33:
+ warning: ‘venc_config_pal_bdghi’ defined but not used [-Wunused-const-variable=]
+ static const struct venc_config venc_config_pal_bdghi = {
+                                 ^~~~~~~~~~~~~~~~~~~~~
 
-On Wed, Apr 15, 2020 at 8:15 AM Grygorii Strashko
-<grygorii.strashko@ti.com> wrote:
->
-> For this platforms the dynamic GPIO muxing/configuration is not supported, and GPIO block by itself
-> does not provide such functions as pullup/pulldown.
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/venc.c | 43 ---------------------
+ 1 file changed, 43 deletions(-)
 
-Correct, that's the state today, while Drew is investing time into
-trying to figure out how to properly extend this feature into our
-platform.
-
-Regards,
-
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+index f81e2a46366d..d5404d56c922 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+@@ -209,49 +209,6 @@ static const struct venc_config venc_config_ntsc_trm = {
+ 	.gen_ctrl				= 0x00F90000,
+ };
+ 
+-static const struct venc_config venc_config_pal_bdghi = {
+-	.f_control				= 0,
+-	.vidout_ctrl				= 0,
+-	.sync_ctrl				= 0,
+-	.hfltr_ctrl				= 0,
+-	.x_color				= 0,
+-	.line21					= 0,
+-	.ln_sel					= 21,
+-	.htrigger_vtrigger			= 0,
+-	.tvdetgp_int_start_stop_x		= 0x00140001,
+-	.tvdetgp_int_start_stop_y		= 0x00010001,
+-	.gen_ctrl				= 0x00FB0000,
+-
+-	.llen					= 864-1,
+-	.flens					= 625-1,
+-	.cc_carr_wss_carr			= 0x2F7625ED,
+-	.c_phase				= 0xDF,
+-	.gain_u					= 0x111,
+-	.gain_v					= 0x181,
+-	.gain_y					= 0x140,
+-	.black_level				= 0x3e,
+-	.blank_level				= 0x3e,
+-	.m_control				= 0<<2 | 1<<1,
+-	.bstamp_wss_data			= 0x42,
+-	.s_carr					= 0x2a098acb,
+-	.l21__wc_ctl				= 0<<13 | 0x16<<8 | 0<<0,
+-	.savid__eavid				= 0x06A70108,
+-	.flen__fal				= 23<<16 | 624<<0,
+-	.lal__phase_reset			= 2<<17 | 310<<0,
+-	.hs_int_start_stop_x			= 0x00920358,
+-	.hs_ext_start_stop_x			= 0x000F035F,
+-	.vs_int_start_x				= 0x1a7<<16,
+-	.vs_int_stop_x__vs_int_start_y		= 0x000601A7,
+-	.vs_int_stop_y__vs_ext_start_x		= 0x01AF0036,
+-	.vs_ext_stop_x__vs_ext_start_y		= 0x27101af,
+-	.vs_ext_stop_y				= 0x05,
+-	.avid_start_stop_x			= 0x03530082,
+-	.avid_start_stop_y			= 0x0270002E,
+-	.fid_int_start_x__fid_int_start_y	= 0x0005008A,
+-	.fid_int_offset_y__fid_ext_start_x	= 0x002E0138,
+-	.fid_ext_start_y__fid_ext_offset_y	= 0x01380005,
+-};
+-
+ const struct omap_video_timings omap_dss_pal_timings = {
+ 	.x_res		= 720,
+ 	.y_res		= 574,
 -- 
-Robert Nelson
-https://rcn-ee.com/
+2.17.1
+
+
