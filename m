@@ -2,104 +2,196 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D45C51AA31E
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 15:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 398BA1AA3FF
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 15:23:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2505856AbgDONE1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Apr 2020 09:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53792 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2505845AbgDONES (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 15 Apr 2020 09:04:18 -0400
-Received: from mo6-p03-ob.smtp.rzone.de (mo6-p03-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5303::12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3063C061A0C;
-        Wed, 15 Apr 2020 06:04:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1586955856;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=CdHAABA4O4WBpGafReQS38iVaIL+NYE+i3qxsiPxeAo=;
-        b=F+hKm3C3XOqEnTBDZBXnjx3O3HH1Va/Qp8roEBX1UbgZttATFHbN4Z6n8DeoxdWTID
-        LJW0Tz+xqOF5eiUenpEg39HyhB4YVGuKG7nPH45zfd6e5co8uV9GDaIUvxSqHnV7Lmlh
-        cqmyt+YYneMN4Z/MXySw4m6Z8JTipneBQhEUNqz/lDMoys2y7p4jo4kQ+G1LeM4UCk7g
-        J0bv6y19KvyWs0lg2w9Mm8jSTCVwDIufJQuC/bxYXJ9b7awJva1WNigZ2mPoa065vCYb
-        7MFcCXXaquEqHUM44jLoxQ0oTVu3cvh0WGOeJKKuifCM/taOOuJFEufUSGelk+cpm6V8
-        06oQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/PtwDConyM="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 46.4.0 DYNA|AUTH)
-        with ESMTPSA id 6028a2w3FD47231
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Wed, 15 Apr 2020 15:04:07 +0200 (CEST)
-Subject: Re: [PATCH v6 00/12] ARM/MIPS: DTS: add child nodes describing the PVRSGX GPU present in some OMAP SoC and JZ4780 (and many more)
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20200415130233.rgn7xrtwqicptke2@gilmour.lan>
-Date:   Wed, 15 Apr 2020 15:04:07 +0200
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        OpenPVRSGX Linux Driver Group <openpvrsgx-devgroup@letux.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        linux-mips@vger.kernel.org,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        linux-samsung-soc@vger.kernel.org
+        id S2506208AbgDONPt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Apr 2020 09:15:49 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:49160 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2505099AbgDONPn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Apr 2020 09:15:43 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03FDFW7K072672;
+        Wed, 15 Apr 2020 08:15:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1586956532;
+        bh=ZoOgY9+C5dQVf6mcmFiWsFaUClaZkhoQYaPRtZS4H4A=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=fXoHUS+faSbW95u/pTN/NLlCXB+MKDjLVruwONhJr/N4pbqCYchG/J6Bl77NDzrXq
+         Ozezi0DXpffJDJ0UVhH1FoQbzy8NE6ZWo6w2IdwThlYwKzQu4Z3NSTSeDY9Q6GkMMr
+         n0KQ1LVZhMzRmNo7ywD5sL2k1qWelihDdc7HGAAA=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03FDFWDj119718
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 15 Apr 2020 08:15:32 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 15
+ Apr 2020 08:15:32 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 15 Apr 2020 08:15:32 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03FDFS3o011255;
+        Wed, 15 Apr 2020 08:15:29 -0500
+Subject: Re: gpio-omap: add support gpiolib bias (pull-up/down) flags?
+To:     Drew Fustini <drew@pdp7.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>
+CC:     Drew Fustini <pdp7pdp7@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Drew Fustini <drew@beagleboard.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@beagleboard.org>,
+        Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+References: <CAEf4M_Du6Egn-3nZHtSnMMwohc+-DyEdtWU5DqSJi71+nDthFw@mail.gmail.com>
+ <CACRpkdaPoMGZ7jGh6j4dYexx+qCcoMQ37vS7kbpf=3TtcA9zQQ@mail.gmail.com>
+ <CAEf4M_B_sxOiKFnEVUrx00RE2MaMA98LpijNhp0EVY11eRAXHg@mail.gmail.com>
+ <CAD6h2NT840zMfwaJatfKzai8QjZEQmF5v0xgE+9ngSJJ+Qy+6g@mail.gmail.com>
+ <20200413123921.GA32586@x1>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <578a51c3-9cb4-91f9-4735-c512bf75553c@ti.com>
+Date:   Wed, 15 Apr 2020 16:15:22 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20200413123921.GA32586@x1>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Message-Id: <C589D06E-435E-4316-AD0A-8498325039E3@goldelico.com>
-References: <cover.1586939718.git.hns@goldelico.com> <20200415101008.zxzxca2vlfsefpdv@gilmour.lan> <2E3401F1-A106-4396-8FE6-51CAB72926A4@goldelico.com> <20200415130233.rgn7xrtwqicptke2@gilmour.lan>
-To:     Maxime Ripard <maxime@cerno.tech>,
-        Philipp Rossak <embed3d@gmail.com>
-X-Mailer: Apple Mail (2.3124)
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
-> Am 15.04.2020 um 15:02 schrieb Maxime Ripard <maxime@cerno.tech>:
+
+On 13/04/2020 15:39, Drew Fustini wrote:
+> On Fri, Mar 13, 2020 at 01:23:15PM +0800, Haojian Zhuang wrote:
+>> On Fri, 13 Mar 2020 at 08:38, Drew Fustini <pdp7pdp7@gmail.com> wrote:
+>>>
+>>> On Thu, Mar 12, 2020 at 1:43 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+>>>> Do we have a datasheet for this GPIO block somewhere? Should
+>>>> be the datasheet for the ASIC.
+>>>
+>>> I am looking at the AM335x reference manual [0] but I can not actually
+>>> find any references to pull-up/down or bias for GPIO pins.  I guess I
+>>> was making of the mistake of assuming this would be something the gpio
+>>> pins support.
+>>>
+>>>> We already have the required .set_config() callback on the OMAP
+>>>> driver, it's just that it only uses it for debounce.
+>>>>
+>>>> The driver is a bit convoluted with register offsets in a struct
+>>>> omap_gpio_reg_offs depending on variant, but if they have
+>>>> a register for this I'd say just get hacking.
+>>>>
+>>>> If the GPIO driver is using pin control as back-end you are
+>>>> looking at something more complex similar to what Intel is
+>>>> doing inside drivers/pinctrl/intel/pinctrl-intel.c: this driver
+>>>> is just calling up to gpiochip_generic_config() which will
+>>>> try to configure the lines behind the GPIO using pin config,
+>>>> which works if the proper ranges are defined so the
+>>>> framework can map a GPIO line to a pin control pin.
+>>>
+>>> Thank you for the feedback, Linus.
+>>>
+>>> Upon further review of drivers/pinctrl/pinctrl-single.c, I am not
+>>> certain it actually supports pull-up/down.
+>>>
+>>> I see there is pcs_pinconf_clear_bias() and pcs_pinconf_bias_disable()
+>>> but I don't see a place where the PIN_CONFIG_BIAS_PULL_DOWN or
+>>> PIN_CONFIG_BIAS_PULL_UP get set.
+>>>
+>>
+>>                          /* 4 parameters */
+>>                          case PIN_CONFIG_BIAS_DISABLE:
+>>                                  pcs_pinconf_clear_bias(pctldev, pin);
+>>                                  break;
+>>                          case PIN_CONFIG_BIAS_PULL_DOWN:
+>>                          case PIN_CONFIG_BIAS_PULL_UP:
+>>                                  if (arg)
+>>                                          pcs_pinconf_clear_bias(pctldev, pin);
+>>                                  /* fall through */
+>>                          case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
+>>                                  data &= ~func->conf[i].mask;
+>>                                  if (arg)
+>>                                          data |= func->conf[i].enable;
+>>                                  else
+>>                                          data |= func->conf[i].disable;
+>>                                  break;
+>>
+>> Because it does fall through, pullup/pulldown is set in the snippet of
+>> "PIN_CONFIG_INPUT_SCHMITT_ENABLE".
+>>
+>> Best Regards
+>> Haojian
 > 
-> On Wed, Apr 15, 2020 at 02:41:52PM +0200, H. Nikolaus Schaller wrote:
->>>> The kernel modules built from this project have successfully
->>>> demonstrated to work with the DTS definitions from this patch set on
->>>> AM335x BeagleBone Black, DM3730 and OMAP5 Pyra and Droid 4. They
->>>> partially work on OMAP3530 and PandaBoard ES but that is likely a
->>>> problem in the kernel driver or the (non-free) user-space libraries
->>>> and binaries.
->>>> 
->>>> Wotk for JZ4780 (CI20 board) is in progress and there is potential
->>>> to extend this work to e.g. BananaPi-M3 (A83) and some Intel Poulsbo
->>>> and CedarView devices.
->>> 
->>> If it's not been tested on any Allwinner board yet, I'll leave it
->>> aside until it's been properly shown to work.
->> 
->> Phillip has tested something on a83.
+> Thank you for the insights, Haojian and Linus.
 > 
-> I'm a bit skeptical on that one since it doesn't even list the
-> interrupts connected to the GPU that the binding mandates.
+> I've added debug print statements and it seems that pcs_pinconf_set()
+> is never called on the BeagleBone (TI AM3358) either during boot or
+> when gpiomon runs with bias switch that invokes GPIO_GET_LINEEVENT_IOCTL
+> with GPIOHANDLE_REQUEST_BIAS_PULL_UP flag.
+> 
+> The pinctrl-single driver and gpio-omap driver bind as a result of these
+> device tree nodes in arch/arm/boot/dts/am33xx-l4.dtsi:
+> 
+>      am33xx_pinmux: pinmux@800 {
+>          compatible = "pinctrl-single";
+>          reg = <0x800 0x238>;
+>          #pinctrl-cells = <1>;
+>          pinctrl-single,register-width = <32>;
+>          pinctrl-single,function-mask = <0x7f>;
+>      };
+> 
+>      gpio0: gpio@0 {
+>          compatible = "ti,omap4-gpio";
+>          gpio-controller;
+>          #gpio-cells = <2>;
+>          interrupt-controller;
+>          #interrupt-cells = <2>;
+>          reg = <0x0 0x1000>;
+>          interrupts = <96>;
+>          gpio-line-names =
+>          "MDIO_DATA",    // 0
+>          <snip>
+> 
+> I see in Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
+> 
+>      "pinctrl-single" means that pinconf isn't supported.
+> 
+> I believe this is why pcs_pinconf_set() never gets called.
+> 
+> Any suggestions as to how I could proceed?
+> 
+> Is it reasonable to change the compatible to "pinconf-single"?
 
-I think he left it out for a future update.
-But best he comments himself.
+For this platforms the dynamic GPIO muxing/configuration is not supported, and GPIO block by itself
+does not provide such functions as pullup/pulldown.
 
-BR and thanks,
-Nikolaus
+Before use the pin has to be configured like;
+&am33xx_pinmux {
 
+	user_leds_s0: user_leds_s0 {
+		pinctrl-single,pins = <
+			AM33XX_PADCONF(AM335X_PIN_GPMC_A5, PIN_OUTPUT_PULLDOWN, MUX_MODE7)	/* gpmc_a5.gpio1_21 */
+			AM33XX_PADCONF(AM335X_PIN_GPMC_A6, PIN_OUTPUT_PULLUP, MUX_MODE7)	/* gpmc_a6.gpio1_22 */
+			AM33XX_PADCONF(AM335X_PIN_GPMC_A7, PIN_OUTPUT_PULLDOWN, MUX_MODE7)	/* gpmc_a7.gpio1_23 */
+			AM33XX_PADCONF(AM335X_PIN_GPMC_A8, PIN_OUTPUT_PULLUP, MUX_MODE7)	/* gpmc_a8.gpio1_24 */
+		>;
+	};
+
+	mmc1_pins: pinmux_mmc1_pins {
+		pinctrl-single,pins = <
+			AM33XX_PADCONF(AM335X_PIN_SPI0_CS1, PIN_INPUT, MUX_MODE7)		/* spio0_cs1.gpio0_6 */
+
+
+-- 
+Best regards,
+grygorii
