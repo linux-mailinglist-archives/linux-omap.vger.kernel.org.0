@@ -2,38 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F11B51A96D6
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 10:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 110E51A96E5
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 10:39:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2894697AbgDOIib (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Apr 2020 04:38:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40656 "EHLO
+        id S2894706AbgDOIiv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Apr 2020 04:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2894689AbgDOIi0 (ORCPT
+        by vger.kernel.org with ESMTP id S2894686AbgDOIiY (ORCPT
         <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 15 Apr 2020 04:38:26 -0400
-Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5302::12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5997CC061A41;
-        Wed, 15 Apr 2020 01:38:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1586939903;
+        Wed, 15 Apr 2020 04:38:24 -0400
+Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5302::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD886C061A0F;
+        Wed, 15 Apr 2020 01:38:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1586939902;
         s=strato-dkim-0002; d=goldelico.com;
         h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
         X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=gHzxZHsGJIjzLCfNxfA2uNhMWdRyM/UbwoNGCYKWho8=;
-        b=QLknKDK3hfJJM14njG3MD3/Cus1576b34wXOowNcV+McMULk7YRSEO7x6A/DTSiBi1
-        R5Vrb5oB5XvSa+ThqpZXNVLjQ6bL6CLE66APZPCCK5pN56xKl8EITyVDc8r0m3kJm5/F
-        ELyVefP8Zfd7YV02wH3imth1qw0WI9VBtmCB7f9BCfWiudJihaMOYPu2Ca1kPTeseIGI
-        BbVtw4fCMwajNHySbQeh24PYXNnnqj3GvxBzFdV5UZsjmFWPALkdrs8DikuUR7Zz181i
-        xpK1eojVRRYiWJZqj6Y+dBVlAIGNiifNBqBbZaY59aW0IopHLT9mpiQmmic91OmWQSEa
-        nKOw==
+        bh=kx2ITlPV23EEzM+XlbM4QyUR8AdpKuXysa3RAUlC5io=;
+        b=fUG8x77rhGcUyqzk0tO1p3JJe9JOjQ7Q0GHEPLIdMDW8dd+nvUHpG3ytlpI+9rHfDf
+        jjgS4tx+px8fkDGku5bXfOazyN0V/D9RvlkKgCkQ8UR5IBuoJhxoPqojLbXSJZ7lqKTM
+        6ij9WHRovU4MGQZoJbLicHHl3/om/d4Tro47XKM95xXlSb66LpzJa1TqnsT26Q7XjhZy
+        HLf7nplVUZkcZ4X1uAWgi/o5YEK9UqqFLeMMJIVCY5Y5mFyy+/mlPhMJO83qr4CUtnR4
+        wgWqRIe0fWz4CLkuKuRGoxSspt7HNVAAt0OFwwRl681TRHMeyc4RLFuOm8ukgqNToWLr
+        5CSw==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2M7O2CKN9ej"
 X-RZG-CLASS-ID: mo00
 Received: from iMac.fritz.box
         by smtp.strato.de (RZmta 46.4.0 DYNA|AUTH)
-        with ESMTPSA id 6028a2w3F8ZL0Ii
+        with ESMTPSA id 6028a2w3F8ZM0Ij
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-        Wed, 15 Apr 2020 10:35:21 +0200 (CEST)
+        Wed, 15 Apr 2020 10:35:22 +0200 (CEST)
 From:   "H. Nikolaus Schaller" <hns@goldelico.com>
 To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -56,9 +56,9 @@ Cc:     Philipp Rossak <embed3d@gmail.com>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org,
         "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v6 01/12] dt-bindings: add img,pvrsgx.yaml for Imagination GPUs
-Date:   Wed, 15 Apr 2020 10:35:08 +0200
-Message-Id: <06fb6569259bb9183d0a0d0fe70ec4f3033b8aab.1586939718.git.hns@goldelico.com>
+Subject: [PATCH v6 02/12] ARM: DTS: am33xx: add sgx gpu child node
+Date:   Wed, 15 Apr 2020 10:35:09 +0200
+Message-Id: <0d1fea5a12cd59e1ebbbd7522a5dd0c7b74821cf.1586939718.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1586939718.git.hns@goldelico.com>
 References: <cover.1586939718.git.hns@goldelico.com>
@@ -69,152 +69,43 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The Imagination PVR/SGX GPU is part of several SoC from
-multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo,
-Allwinner A83 and others.
+and add interrupt.
 
-With this binding, we describe how the SGX processor is
-interfaced to the SoC (registers, interrupt etc.).
-
-In most cases, Clock, Reset and power management is handled
-by a parent node or elsewhere (e.g. code in the driver).
-
-Tested by make dt_binding_check dtbs_check
-
+Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # BeagleBone Black
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 122 ++++++++++++++++++
- 1 file changed, 122 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+ arch/arm/boot/dts/am33xx.dtsi | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
-new file mode 100644
-index 000000000000..e3a4208dfab1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
-@@ -0,0 +1,122 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/gpu/img,pvrsgx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Imagination PVR/SGX GPU
-+
-+maintainers:
-+  - H. Nikolaus Schaller <hns@goldelico.com>
-+
-+description: |+
-+  This binding describes the Imagination SGX5 series of 3D accelerators which
-+  are found in several different SoC like TI OMAP, Sitara, Ingenic JZ4780,
-+  Allwinner A83, and Intel Poulsbo and CedarView and more.
-+
-+  For an extensive list see: https://en.wikipedia.org/wiki/PowerVR#Implementations
-+
-+  The SGX node is usually a child node of some DT node belonging to the SoC
-+  which handles clocks, reset and general address space mapping of the SGX
-+  register area.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - description: SGX530-121 based SoC
-+        items:
-+          - enum:
-+            - ti,omap3-sgx530-121 # BeagleBoard A/B/C, OpenPandora 600MHz and similar
-+          - const: img,sgx530-121
-+          - const: img,sgx530
-+
-+      - description: SGX530-125 based SoC
-+        items:
-+          - enum:
-+            - ti,am3352-sgx530-125 # BeagleBone Black
-+            - ti,am3517-sgx530-125
-+            - ti,am4-sgx530-125
-+            - ti,omap3-sgx530-125 # BeagleBoard XM, GTA04, OpenPandora 1GHz and similar
-+            - ti,ti81xx-sgx530-125
-+          - const: ti,omap3-sgx530-125
-+          - const: img,sgx530-125
-+          - const: img,sgx530
-+
-+      - description: SGX535-116 based SoC
-+        items:
-+          - const: intel,poulsbo-gma500-sgx535 # Atom Z5xx
-+          - const: img,sgx535-116
-+          - const: img,sgx535
-+
-+      - description: SGX540-116 based SoC
-+        items:
-+          - const: intel,medfield-gma-sgx540 # Atom Z24xx
-+          - const: img,sgx540-116
-+          - const: img,sgx540
-+
-+      - description: SGX540-120 based SoC
-+        items:
-+          - enum:
-+            - samsung,s5pv210-sgx540-120
-+            - ti,omap4-sgx540-120 # Pandaboard, Pandaboard ES and similar
-+          - const: img,sgx540-120
-+          - const: img,sgx540
-+
-+      - description: SGX540-130 based SoC
-+        items:
-+          - enum:
-+            - ingenic,jz4780-sgx540-130 # CI20
-+          - const: img,sgx540-130
-+          - const: img,sgx540
-+
-+      - description: SGX544-112 based SoC
-+        items:
-+          - const: "ti,omap4470-sgx544-112
-+          - const: img,sgx544-112
-+          - const: img,sgx544
-+
-+      - description: SGX544-115 based SoC
-+        items:
-+          - enum:
-+            - allwinner,sun8i-a31-sgx544-115
-+            - allwinner,sun8i-a31s-sgx544-115
-+            - allwinner,sun8i-a83t-sgx544-115 # Banana-Pi-M3 (Allwinner A83T) and similar
-+          - const: img,sgx544-115
-+          - const: img,sgx544
-+
-+      - description: SGX544-116 based SoC
-+        items:
-+          - enum:
-+            - ti,dra7-sgx544-116 # DRA7
-+            - ti,omap5-sgx544-116 # OMAP5 UEVM, Pyra Handheld and similar
-+          - const: img,sgx544-116
-+          - const: img,sgx544
-+
-+      - description: SGX545 based SoC
-+        items:
-+          - const: intel,cedarview-gma3600-sgx545 # Atom N2600, D2500
-+          - const: img,sgx545-116
-+          - const: img,sgx545
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+examples:
-+  - |+
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    gpu: gpu@fe00 {
-+      compatible = "ti,omap5-sgx544-116", "img,sgx544-116", "img,sgx544";
-+      reg = <0xfe00 0x200>;
-+      interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
-+    };
-+
-+...
+diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+index a35f5052d76f..155424d87156 100644
+--- a/arch/arm/boot/dts/am33xx.dtsi
++++ b/arch/arm/boot/dts/am33xx.dtsi
+@@ -564,7 +564,7 @@ aes: aes@0 {
+ 			};
+ 		};
+ 
+-		target-module@56000000 {
++		sgx_module: target-module@56000000 {
+ 			compatible = "ti,sysc-omap4", "ti,sysc";
+ 			reg = <0x5600fe00 0x4>,
+ 			      <0x5600fe10 0x4>;
+@@ -583,10 +583,11 @@ target-module@56000000 {
+ 			#size-cells = <1>;
+ 			ranges = <0 0x56000000 0x1000000>;
+ 
+-			/*
+-			 * Closed source PowerVR driver, no child device
+-			 * binding or driver in mainline
+-			 */
++			gpu: gpu@0 {
++				compatible = "ti,am3352-sgx530-125", "img,sgx530-125", "img,sgx530";
++				reg = <0x00 0x1000000>;	/* 16 MB */
++				interrupts = <37>;
++			};
+ 		};
+ 	};
+ };
 -- 
 2.25.1
 
