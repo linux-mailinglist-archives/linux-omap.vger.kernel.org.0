@@ -2,108 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D28231AA901
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 15:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54ECF1AA94D
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 16:02:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2636253AbgDONsE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Apr 2020 09:48:04 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:36671 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2633569AbgDONsA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Apr 2020 09:48:00 -0400
-Received: by mail-ed1-f67.google.com with SMTP id i7so4907187edq.3;
-        Wed, 15 Apr 2020 06:47:59 -0700 (PDT)
+        id S2636390AbgDON7o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Apr 2020 09:59:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34194 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2633864AbgDON7g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 15 Apr 2020 09:59:36 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C9C6C061A0C;
+        Wed, 15 Apr 2020 06:59:36 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id e127so1880499iof.6;
+        Wed, 15 Apr 2020 06:59:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pRjxl/RxXao+nWAMBe76BIw01PxwjbmGR4bmrWJXa/U=;
+        b=OHyRXv+EJe89bKlBtMIRcIy6iGVeg4+1BLUU7F45NUrTBpB2u/gXtdnigUcSXXpabv
+         0PEHLmSAs+VjQqxE2VA+r0z867D5opqanJSHqaEZCiHRhuAHlBnMGyF7XML6Jx9R7aeo
+         EGL8BOA/hRwlm2RsJ61XfQQJxwpxLIVFF/phNaIqd1YOA5kO960q45a6Uq+ydaF2N9ju
+         wZXKvL+1UrhIeVVBHfoD7bLX5j5uRuIBVGXNeA6LHtFhdER2isPGl524mlURGA0qddqz
+         8sBvv1BIPxFX3atJlXidBYRZN1b8BGV80dTsvd3hrqOa/oNQlf5+IG1lZNsJfX3dvP46
+         vyXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=mIOZ/sd96Rx46ThWOAXmWIaAK4iqfwYtds7TxEtsnA0=;
-        b=b65oEdfKBbQENn+m6r1YGJMnQQK5bSe4g1HPaD3KzwgECpObb3/ACMCvwfhpuEcPQj
-         KF89eStc3t0zv4U+T9zsDUbnT2GnrJOmEHGN8wyEf8wX+p/H+Jn6yQiQLAaQmmW4TVAV
-         4bHmw205FEzwXRexi12XK4wWpeYDtL3ZA8KuggwqI/XvALFXT+9PehUCAr2e+kaAE5FV
-         Tc3LllCimCp+J0jG3XVup0qKyH3A/jZpwrhYDM+PyQmxOLGoBmmTVu5xIYqRFC/wgwrY
-         708HaR3jBZD9POXaX4cpG18kxrzisNG0G4+BNvvsiIxzhmIugnwLU29fBH8idXJH1hco
-         C+ng==
-X-Gm-Message-State: AGi0PuZdk/gYNsO0DBCI0AgfaOWgGe1zQJXZWlq/N8GDNvq2ZHlS7ZyR
-        1BgDX/jcGj1pfYxjK3gTSjU=
-X-Google-Smtp-Source: APiQypL993rtIwMeMfH5wHZyMs+H8Y65XYCjw99y7Fo0rlwZe8pf8YowOuo4m22Vp9YytQslngDtFA==
-X-Received: by 2002:aa7:c2c3:: with SMTP id m3mr18170324edp.10.1586958478322;
-        Wed, 15 Apr 2020 06:47:58 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.125])
-        by smtp.googlemail.com with ESMTPSA id gf12sm2524950ejb.62.2020.04.15.06.47.56
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 15 Apr 2020 06:47:57 -0700 (PDT)
-Date:   Wed, 15 Apr 2020 15:47:54 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Philipp Rossak <embed3d@gmail.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org, openpvrsgx-devgroup@letux.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>
-Subject: Re: [PATCH v6 07/12] ARM: DTS: omap5: add sgx gpu child node
-Message-ID: <20200415134754.GB21120@kozik-lap>
-References: <cover.1586939718.git.hns@goldelico.com>
- <004611c9660943759b635a87484932869927cf74.1586939718.git.hns@goldelico.com>
- <CAJKOXPdEkWniffmGZmf=S6E5UxWTdVGXnycqTFftXwo_45rz3w@mail.gmail.com>
- <EFA7F2F0-96EA-45D9-B8C8-00DC8C72344D@goldelico.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pRjxl/RxXao+nWAMBe76BIw01PxwjbmGR4bmrWJXa/U=;
+        b=BLBnOF0OzH8BkjBjeLHMlCGOuG8XgTopFmucrwbUhASviy+HpLwHrBCJITeZkjQNfZ
+         iPG0JYMgNzJ3TrYpfc2+lGm2oa1I8FLGxjL1etl2Mv/rmNkcvNtM3ESXnMCbzyUmcg9I
+         /SeO0EZjrDE+JaAtTzIvunsiya9VKf2Fs3G78J9oKG8SOh4QYsrCRaHiG35UYIvmofjg
+         0YqJkBMk3Vk+5i6UNxmRdXmCN4sqV1dy6cBMUJyjDdqDwgQuylEkajoO+h/Wc4DS2MuN
+         eggsZIh/35f0wrFbvvIjKgAvBO0iuQyyCm8jaUIYNOCEx0/qbEGSDmh1Aid7vMzdM1QA
+         KuCQ==
+X-Gm-Message-State: AGi0PuYinoZGwMu3aF/6Ma7PJH683rnd+F5TJaqT05YKNWXZXlm0qoDs
+        UCkEGBs/Z1IWQT+xDouotBMRIA6VUX4NV4D8CXHHzGXP
+X-Google-Smtp-Source: APiQypJ286KN3sPSWcXgZn5QQ32WFZCxO4SYT200TvkoL37eT//ErBTsACHHeQnxbpKmd+hJ2nunH5r/JqJOZNtShMQ=
+X-Received: by 2002:a05:6602:199:: with SMTP id m25mr26299437ioo.13.1586959175477;
+ Wed, 15 Apr 2020 06:59:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <EFA7F2F0-96EA-45D9-B8C8-00DC8C72344D@goldelico.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <CAEf4M_Du6Egn-3nZHtSnMMwohc+-DyEdtWU5DqSJi71+nDthFw@mail.gmail.com>
+ <CACRpkdaPoMGZ7jGh6j4dYexx+qCcoMQ37vS7kbpf=3TtcA9zQQ@mail.gmail.com>
+ <CAEf4M_B_sxOiKFnEVUrx00RE2MaMA98LpijNhp0EVY11eRAXHg@mail.gmail.com>
+ <CAD6h2NT840zMfwaJatfKzai8QjZEQmF5v0xgE+9ngSJJ+Qy+6g@mail.gmail.com>
+ <20200413123921.GA32586@x1> <578a51c3-9cb4-91f9-4735-c512bf75553c@ti.com>
+ <CAOCHtYg=rM_zP6Wr3bWKfvGpeK7sXLj6GLN3DXSh8JgfqDTcCA@mail.gmail.com> <db5e49dc-41b4-2ba5-87b3-f345749d7984@ti.com>
+In-Reply-To: <db5e49dc-41b4-2ba5-87b3-f345749d7984@ti.com>
+From:   Robert Nelson <robertcnelson@gmail.com>
+Date:   Wed, 15 Apr 2020 08:59:09 -0500
+Message-ID: <CAOCHtYgNH-OUWdKgKLr7U8Zy2OZb=P9Rpsv4mFii+VwU7h-vGA@mail.gmail.com>
+Subject: Re: gpio-omap: add support gpiolib bias (pull-up/down) flags?
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Drew Fustini <drew@pdp7.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Drew Fustini <pdp7pdp7@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Drew Fustini <drew@beagleboard.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-omap <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Apr 15, 2020 at 01:46:06PM +0200, H. Nikolaus Schaller wrote:
-> Hi Krzysztof,
-> 
-> > Am 15.04.2020 um 13:38 schrieb Krzysztof Kozlowski <krzk@kernel.org>:
-> > 
-> > On Wed, 15 Apr 2020 at 10:36, H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> >> 
-> >> and add interrupt.
-> >> 
-> >> Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # Pyra-Handheld.
-> > 
-> > Don't add your own Tested-by tags. These are implied by authorship,
-> > otherwise all patches people make should have such tag.
-> 
-> Ok I see. AFAIR it originates in several phases of editing to report on which device it was tested.
-> 
-> Is there a canonical way of writing "tested-on: ${HARDWARE}"?
-> 
-> E.g. would this be ok?
-> 
-> Signed-off: H. Nikolaus Schaller <hns@goldelico.com> # tested on Pyra-Handheld
+On Wed, Apr 15, 2020 at 8:47 AM Grygorii Strashko
+<grygorii.strashko@ti.com> wrote:
+>
+>
+>
+> On 15/04/2020 16:20, Robert Nelson wrote:
+> > Hi Grygorii,
+> >
+> > On Wed, Apr 15, 2020 at 8:15 AM Grygorii Strashko
+> > <grygorii.strashko@ti.com> wrote:
+> >>
+> >> For this platforms the dynamic GPIO muxing/configuration is not supported, and GPIO block by itself
+> >> does not provide such functions as pullup/pulldown.
+> >
+> > Correct, that's the state today, while Drew is investing time into
+> > trying to figure out how to properly extend this feature into our
+> > platform.
+>
+> Sry, but it's not clear what's the final target (at least from public part of this thread).
 
-If you think tested platform is worth mentioning in the commit msg
-(it will stay there forever, ever, ever) then just add a line like:
+We are mainly targeting am335x based devices.  Today (well last few
+years) we've utilized a "hack-ish" kernel module (bone-pinmux-helper)
+to allow users to overide/change the pinmux-ing directly from
+user-space...  (This evil module allows us to specify a list of
+options for each pin, thus users can easily configure specifies of the
+pin, aka gpio_pd/gpio_pu/etc from user-space...).  Since that time,
+mainline has now grown a generic gpio pull-up/pull-down functionality,
+with the ability to re-control these values directly from a generic
+gpio library (libgpiod).
 
-"Add SGX GPU node. Tested on Pyra-Handheld."
+Regards,
 
-From time to time we add such information to note that only one platform
-was actually tested.  I am not sure what benefit it brings to most
-cases... but your commit msg is so short that adding one more sentence
-seems reasonable. :)
-
-Best regards,
-Krzysztof
-
+-- 
+Robert Nelson
+https://rcn-ee.com/
