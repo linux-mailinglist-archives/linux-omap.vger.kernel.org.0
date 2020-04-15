@@ -2,125 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FCA21A9A32
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 12:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7049B1A9CCC
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Apr 2020 13:39:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2896359AbgDOKNC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Apr 2020 06:13:02 -0400
-Received: from new2-smtp.messagingengine.com ([66.111.4.224]:54001 "EHLO
-        new2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2896351AbgDOKM4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 15 Apr 2020 06:12:56 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 4DB285800D5;
-        Wed, 15 Apr 2020 06:12:55 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Wed, 15 Apr 2020 06:12:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=s0d/RgblpxRTpjT4bbVue6KEZrZ
-        fSGVOQKbJKOBuu9A=; b=BaShE054Cu8Fnh/acc0XEM6aGr2IdsHSkCR9zQQPoWq
-        /aTmayYFa1i876Z7z82YolyKSCv+sSCevnTUFtxinPBkn8GKyebYvCT6pPJ9zRFr
-        +NJTV6cEhOa7ffWGY8hX8Qs8DSR/P/9odcyi/uCy/D6n9FbxLtigv5q+MvXjCQh/
-        ts+GP1GwXvzH9hoKVZUpDYB3VmicdPXaGhKrXUPsyACGXlU3xfHbxGb3MytL2eOB
-        ekvCku+QNFJQgDMw//fevXI8+zwzbY6vlSIIxg8yg4HK+X3u5VoHUa9bReq0Q0TP
-        YDFUvMiQW9A4UiSCoCOmSKv6rJ88u56CqdSmWl+Zaow==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=s0d/Rg
-        blpxRTpjT4bbVue6KEZrZfSGVOQKbJKOBuu9A=; b=oLHqxo4uH7p4gID2Qfnx+n
-        xTsOExk6MG4B0jJvQekYdqA0zg+qiJN/dSMI8PXd059NTmcBvXzqFaAQWsCvnnVE
-        r+QzsD4lKzgSnGO5DyJvru3RA0X5Iz4aHbpMe57n1iiY3z/99OPYCWFys2qZ+Uig
-        cTMw/2nF0nW/xekuYY04A3l9YlNpaNsJpDJGuHpuRtLscLwQbmUYzvrxutiIbsr6
-        oKVP1afJWmj/IwNwClKoABb1nQVSOPgQZC8fuhifL8oNF25OWpnxiWybTwUm9gnw
-        ojVbNiUrtarBNMy3BBcCCXPsfUd7SrGyLttkc8OvuckbN18ZCU4Yl4/+mTTH7apw
-        ==
-X-ME-Sender: <xms:JN6WXkp19ZHWXzjjhwwmwbdOPcn0MVPAoGysA4CHDf6qu7mq_HtyOQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrfeefgddugecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepofgrgihimhgv
-    ucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucfkphepledtrd
-    ekledrieekrdejieenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhl
-    fhhrohhmpehmrgigihhmvgestggvrhhnohdrthgvtghh
-X-ME-Proxy: <xmx:JN6WXod6O9K8OpB2X5BQN7PGUGIJznWSSS6cdbBC5H0J7w-kqNbZYA>
-    <xmx:JN6WXjqrHaeqthMijteG5ve3Eny-UFarS3pVNI9vFRFqYd7YHy2Dqw>
-    <xmx:JN6WXpFRhkOqF7jbtSROO4HBcn7D2xf4JnjK_iBuz8tNwSN2k6bYZA>
-    <xmx:J96WXrRWOVF0KWZkQ3adnheXFK8UNYgZRjktsI970Lrnzt5ahKFV-A>
-Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 3FE073060060;
-        Wed, 15 Apr 2020 06:12:52 -0400 (EDT)
-Date:   Wed, 15 Apr 2020 12:12:51 +0200
-From:   Maxime Ripard <maxime@cerno.tech>
+        id S2897275AbgDOLis (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Apr 2020 07:38:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58644 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2897264AbgDOLij (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 15 Apr 2020 07:38:39 -0400
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3B603216FD;
+        Wed, 15 Apr 2020 11:38:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586950718;
+        bh=R43hO9Q3If9QrtnZ5K9TcR/a0ZvrCDhZjgGwgzT0xFE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=E5odArf/RDc2lUAWXYieDSICfp9q8nBXEpH8oGXMbl511ftW6vzpHvHktcBE2iKiC
+         CKixYDKgMb9QlA1aORiC5Eu+aRqxfTt+PKHC5/btAAOBgUVlxZbVPCpfvrqokmXOdZ
+         CbKDC6mtkLWOW1EL3z3pC7fdPh/RNVXyWZm30v4k=
+Received: by mail-lf1-f46.google.com with SMTP id r17so2379370lff.2;
+        Wed, 15 Apr 2020 04:38:38 -0700 (PDT)
+X-Gm-Message-State: AGi0PuZ9WSJnSO6AYiy7Kf5ZdRr9MshNvCwTwoSrOMpD4NZ/hdI+9w6u
+        soXlwgfAXMZs8mj1E5+u2Lxe0ZW+kPRqhjbIrKM=
+X-Google-Smtp-Source: APiQypI+VI3dpF2YbI7yVr/aHwnSBVAysHwaY+SScdUs4Jyyh+GbDgIy/bRBbEhJiawYLq4RWaZKVJOwvX1RTOgkOWY=
+X-Received: by 2002:a19:ae16:: with SMTP id f22mr2914229lfc.2.1586950716265;
+ Wed, 15 Apr 2020 04:38:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1586939718.git.hns@goldelico.com> <004611c9660943759b635a87484932869927cf74.1586939718.git.hns@goldelico.com>
+In-Reply-To: <004611c9660943759b635a87484932869927cf74.1586939718.git.hns@goldelico.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Wed, 15 Apr 2020 13:38:25 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPdEkWniffmGZmf=S6E5UxWTdVGXnycqTFftXwo_45rz3w@mail.gmail.com>
+Message-ID: <CAJKOXPdEkWniffmGZmf=S6E5UxWTdVGXnycqTFftXwo_45rz3w@mail.gmail.com>
+Subject: Re: [PATCH v6 07/12] ARM: DTS: omap5: add sgx gpu child node
 To:     "H. Nikolaus Schaller" <hns@goldelico.com>
 Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paulburton@kernel.org>,
         James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
         Chen-Yu Tsai <wens@csie.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Philipp Rossak <embed3d@gmail.com>,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH v6 01/12] dt-bindings: add img,pvrsgx.yaml for
- Imagination GPUs
-Message-ID: <20200415101251.o3wi5t6xvf56xmhq@gilmour.lan>
-References: <cover.1586939718.git.hns@goldelico.com>
- <06fb6569259bb9183d0a0d0fe70ec4f3033b8aab.1586939718.git.hns@goldelico.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="jbdyoswmyxbgpiz2"
-Content-Disposition: inline
-In-Reply-To: <06fb6569259bb9183d0a0d0fe70ec4f3033b8aab.1586939718.git.hns@goldelico.com>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-omap@vger.kernel.org, openpvrsgx-devgroup@letux.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
---jbdyoswmyxbgpiz2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Hi,
-
-On Wed, Apr 15, 2020 at 10:35:08AM +0200, H. Nikolaus Schaller wrote:
-> The Imagination PVR/SGX GPU is part of several SoC from
-> multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo,
-> Allwinner A83 and others.
+On Wed, 15 Apr 2020 at 10:36, H. Nikolaus Schaller <hns@goldelico.com> wrote:
 >
-> With this binding, we describe how the SGX processor is
-> interfaced to the SoC (registers, interrupt etc.).
+> and add interrupt.
 >
-> In most cases, Clock, Reset and power management is handled
-> by a parent node or elsewhere (e.g. code in the driver).
+> Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # Pyra-Handheld.
 
-Wouldn't the "code in the driver" still require the clock / reset /
-power domain to be set in the DT?
+Don't add your own Tested-by tags. These are implied by authorship,
+otherwise all patches people make should have such tag.
 
-Maxime
-
---jbdyoswmyxbgpiz2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXpbeIwAKCRDj7w1vZxhR
-xU7VAP0ctDLTdRYVZSwO4CYzL5No4vlTBQEUBes1IQ1qFIdPwwD/XfAzl1dg/Sh8
-EZ+Ln+utszFGNQD3stVRlNmI74tEyAs=
-=V+IJ
------END PGP SIGNATURE-----
-
---jbdyoswmyxbgpiz2--
+Best regards,
+Krzysztof
