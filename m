@@ -2,34 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AF791AE29F
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 18:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 316761AE2A1
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 18:55:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728052AbgDQQzl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Apr 2020 12:55:41 -0400
-Received: from muru.com ([72.249.23.125]:50050 "EHLO muru.com"
+        id S1728122AbgDQQzo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Apr 2020 12:55:44 -0400
+Received: from muru.com ([72.249.23.125]:50064 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728020AbgDQQzl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 17 Apr 2020 12:55:41 -0400
+        id S1728020AbgDQQzn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Apr 2020 12:55:43 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id BF0B08047;
-        Fri, 17 Apr 2020 16:56:27 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id C80A58160;
+        Fri, 17 Apr 2020 16:56:29 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Tero Kristo <t-kristo@ti.com>,
+Cc:     linux-arm-kernel@lists.infradead.org, Keerthy <j-keerthy@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
         "H. Nikolaus Schaller" <hns@goldelico.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
         Adam Ford <aford173@gmail.com>,
         Andreas Kemnade <andreas@kemnade.info>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Keerthy <j-keerthy@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 03/14] clk: ti: dm816: enable sysclk6_ck on init
-Date:   Fri, 17 Apr 2020 09:55:08 -0700
-Message-Id: <20200417165519.4979-4-tony@atomide.com>
+        devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 04/14] bus: ti-sysc: Ignore timer12 on secure omap3
+Date:   Fri, 17 Apr 2020 09:55:09 -0700
+Message-Id: <20200417165519.4979-5-tony@atomide.com>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20200417165519.4979-1-tony@atomide.com>
 References: <20200417165519.4979-1-tony@atomide.com>
@@ -40,30 +42,39 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We need sysclk6_ck enabled early as it is needed by l4_ls and system
-timers early on boot. This removes the dependency of system timers to
-the interconnect related code that can be then probed later on when
-suitable at module_init time.
+Some early omap3 boards use timer12 for system timer, but for secure
+SoCs like on n900 it's not accessible. Likely we will be configuring
+unavailable devices for other SoCs too based on runtime SoC detection,
+so let's use a switch to start with.
 
-Cc: linux-clk@vger.kernel.org
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Lokesh Vutla <lokeshvutla@ti.com>
 Cc: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/clk/ti/clk-816x.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bus/ti-sysc.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/clk/ti/clk-816x.c b/drivers/clk/ti/clk-816x.c
---- a/drivers/clk/ti/clk-816x.c
-+++ b/drivers/clk/ti/clk-816x.c
-@@ -73,6 +73,7 @@ static const char *enable_init_clks[] = {
- 	"ddr_pll_clk1",
- 	"ddr_pll_clk2",
- 	"ddr_pll_clk3",
-+	"sysclk6_ck",
- };
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -2744,6 +2744,17 @@ static int sysc_init_soc(struct sysc *ddata)
+ 	if (match && match->data)
+ 		sysc_soc->soc = (int)match->data;
  
- int __init dm816x_dt_clk_init(void)
++	/* Ignore devices that are not available on HS and EMU SoCs */
++	if (!sysc_soc->general_purpose) {
++		switch (sysc_soc->soc) {
++		case SOC_3430 ... SOC_3630:
++			sysc_add_disabled(0x48304000);	/* timer12 */
++			break;
++		default:
++			break;
++		};
++	}
++
+ 	match = soc_device_match(sysc_soc_feat_match);
+ 	if (!match)
+ 		return 0;
 -- 
 2.26.1
