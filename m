@@ -2,105 +2,136 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 500BB1AD159
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Apr 2020 22:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 877C01AD43E
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 03:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728244AbgDPUmU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Apr 2020 16:42:20 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:41470 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731844AbgDPUmB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Apr 2020 16:42:01 -0400
-Received: by mail-ot1-f68.google.com with SMTP id c3so153569otp.8;
-        Thu, 16 Apr 2020 13:42:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=anW0cTk2V2JJay0BG4lZbAZX39UmWgVy33oQofhYL+o=;
-        b=TrOIgi/Psi9lHEQb0p80KCPztg6udz4+rr0XyCa8Wkt57hera+PoysMJRclxDiM/7t
-         tCUFQiKwFGtZFk80IsqoxTrrcKd3YsUVaKvd0io//86RBx7n0MgbwjXTEc/HorcO3N+1
-         DsXgZjF2jNj7U0ZTHpTulxAHeKStOIRo4atSFMyMw7q8XarNxhspS4czCwzi9VgTL1UC
-         FaH4zzO2AbA3QrHhKiO2rDseQbzJ60KIHsWCC5ECKMtBKG2oqUBb+KpSWfFyvgZL2OC/
-         K9k/7P4X3YN8FJXAid1NOJn1DFJHpR4c3pJxYfuky4mWsPRn2ORllT7NvbWEqkcz9+EN
-         ODcQ==
-X-Gm-Message-State: AGi0PuZzUWvCP681alK6PrRPA81k8SRaaWAKc8BzuZhL+W1YFJIFBTK6
-        sk6bY7VySAvn4HXqL0KCDg==
-X-Google-Smtp-Source: APiQypLW3db/YOgTAVu/J1ZAay4EFYrxFtuax8O/ijjNSMUub8dIEYBEUvJBFYL72MQmqT4sac6WuA==
-X-Received: by 2002:a9d:6644:: with SMTP id q4mr39174otm.229.1587069719796;
-        Thu, 16 Apr 2020 13:41:59 -0700 (PDT)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id s13sm8064384oov.28.2020.04.16.13.41.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2020 13:41:59 -0700 (PDT)
-Received: (nullmailer pid 13530 invoked by uid 1000);
-        Thu, 16 Apr 2020 20:41:58 -0000
-Date:   Thu, 16 Apr 2020 15:41:58 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Philipp Rossak <embed3d@gmail.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [PATCH v6 01/12] dt-bindings: add img,pvrsgx.yaml for
- Imagination GPUs
-Message-ID: <20200416204158.GA1006@bogus>
-References: <cover.1586939718.git.hns@goldelico.com>
- <06fb6569259bb9183d0a0d0fe70ec4f3033b8aab.1586939718.git.hns@goldelico.com>
+        id S1728788AbgDQBtz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Apr 2020 21:49:55 -0400
+Received: from mga03.intel.com ([134.134.136.65]:22893 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725800AbgDQBtz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 16 Apr 2020 21:49:55 -0400
+IronPort-SDR: THI8LYAKyoP+WRwueWApHxT4W1CaYiuP40lOuUDQjn2gPEfNqUK39B0qnA3oU2TPMEQWjIY4Cu
+ UOWbKH9f8Fdg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 18:49:53 -0700
+IronPort-SDR: BekUl4lpQXQBvXzxABWgHL5hNaPYataadGAU1da+CQ7tOJ4urvR4a8++JZJTQoy6Bb483OE6rD
+ vCrhHWrsaDKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,393,1580803200"; 
+   d="scan'208";a="272269437"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 16 Apr 2020 18:49:51 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jPG8d-0002kr-1F; Fri, 17 Apr 2020 09:49:51 +0800
+Date:   Fri, 17 Apr 2020 09:49:00 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
+ d0550cd20e52558ecf6847a0f96ebd5d944c17e4
+Message-ID: <5e990b0c.OjgmCg/sSIlL/0Nq%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <06fb6569259bb9183d0a0d0fe70ec4f3033b8aab.1586939718.git.hns@goldelico.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 15 Apr 2020 10:35:08 +0200, "H. Nikolaus Schaller" wrote:
-> The Imagination PVR/SGX GPU is part of several SoC from
-> multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo,
-> Allwinner A83 and others.
-> 
-> With this binding, we describe how the SGX processor is
-> interfaced to the SoC (registers, interrupt etc.).
-> 
-> In most cases, Clock, Reset and power management is handled
-> by a parent node or elsewhere (e.g. code in the driver).
-> 
-> Tested by make dt_binding_check dtbs_check
-> 
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
->  .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 122 ++++++++++++++++++
->  1 file changed, 122 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
+branch HEAD: d0550cd20e52558ecf6847a0f96ebd5d944c17e4  usb: dwc3: gadget: Do link recovery for SS and SSP
 
-My bot found errors running 'make dt_binding_check' on your patch:
+elapsed time: 752m
 
-Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml:  while parsing a block mapping
-  in "<unicode string>", line 74, column 13
-did not find expected key
-  in "<unicode string>", line 117, column 21
-Documentation/devicetree/bindings/Makefile:12: recipe for target 'Documentation/devicetree/bindings/gpu/img,pvrsgx.example.dts' failed
-make[1]: *** [Documentation/devicetree/bindings/gpu/img,pvrsgx.example.dts] Error 1
-make[1]: *** Waiting for unfinished jobs....
-Makefile:1264: recipe for target 'dt_binding_check' failed
-make: *** [dt_binding_check] Error 2
+configs tested: 77
+configs skipped: 0
 
-See https://patchwork.ozlabs.org/patch/1270997
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure dt-schema is up to date:
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+sparc                            allyesconfig
+sparc64                          allmodconfig
+arm                          exynos_defconfig
+riscv                          rv32_defconfig
+riscv                            allyesconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+i386                              debian-10.3
+i386                              allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                        generic_defconfig
+ia64                          tiger_defconfig
+ia64                         bigsur_defconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+c6x                              allyesconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                            ar7_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                generic-64bit_defconfig
+parisc                generic-32bit_defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+i386                 randconfig-a002-20200416
+x86_64               randconfig-a001-20200416
+x86_64               randconfig-a002-20200416
+i386                 randconfig-a003-20200416
+i386                 randconfig-a001-20200416
+x86_64               randconfig-a003-20200416
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                       zfcpdump_defconfig
+s390                          debug_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                                allnoconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
 
-pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
-
-Please check and re-submit.
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
