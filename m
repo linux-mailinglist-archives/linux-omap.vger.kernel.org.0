@@ -2,136 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 877C01AD43E
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 03:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAC5B1AD59E
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 07:18:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728788AbgDQBtz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Apr 2020 21:49:55 -0400
-Received: from mga03.intel.com ([134.134.136.65]:22893 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725800AbgDQBtz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 16 Apr 2020 21:49:55 -0400
-IronPort-SDR: THI8LYAKyoP+WRwueWApHxT4W1CaYiuP40lOuUDQjn2gPEfNqUK39B0qnA3oU2TPMEQWjIY4Cu
- UOWbKH9f8Fdg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2020 18:49:53 -0700
-IronPort-SDR: BekUl4lpQXQBvXzxABWgHL5hNaPYataadGAU1da+CQ7tOJ4urvR4a8++JZJTQoy6Bb483OE6rD
- vCrhHWrsaDKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,393,1580803200"; 
-   d="scan'208";a="272269437"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 16 Apr 2020 18:49:51 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jPG8d-0002kr-1F; Fri, 17 Apr 2020 09:49:51 +0800
-Date:   Fri, 17 Apr 2020 09:49:00 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
- d0550cd20e52558ecf6847a0f96ebd5d944c17e4
-Message-ID: <5e990b0c.OjgmCg/sSIlL/0Nq%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726695AbgDQFSS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Apr 2020 01:18:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34194 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726026AbgDQFSR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Apr 2020 01:18:17 -0400
+X-Greylist: delayed 1527 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Apr 2020 22:18:17 PDT
+Received: from fbk21.megaegg.ne.jp (fbk21.megaegg.ne.jp [IPv6:2402:bc00:0:a216::19:131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B797AC061A0C;
+        Thu, 16 Apr 2020 22:18:17 -0700 (PDT)
+Received: from zmta22.megaegg.ne.jp (zmta22-snat.megaegg.ne.jp.internal [10.62.19.122])
+        by fbk21.megaegg.ne.jp (Postfix) with ESMTP id 550CB686575;
+        Fri, 17 Apr 2020 13:52:55 +0900 (JST)
+Received: from vss21.megaegg.ne.jp.internal (vss21-snat.megaegg.ne.jp.internal [10.62.19.91])
+        by zmta22.megaegg.ne.jp.internal (Postfix) with ESMTP id DBFAFE0395;
+        Fri, 17 Apr 2020 13:51:58 +0900 (JST)
+Received: from smtp22.megaegg.ne.jp (smtp22-snat.megaegg.ne.jp.internal [10.62.19.102])
+        by vss21.megaegg.ne.jp.internal (Postfix) with ESMTP id AB547DF947;
+        Fri, 17 Apr 2020 13:51:58 +0900 (JST)
+Received: from zmbs22.megaegg.ne.jp.internal (zmbs22-snat.megaegg.ne.jp.internal [10.62.19.152])
+        by smtp22.megaegg.ne.jp (Postfix) with ESMTP id EC84CC0055;
+        Fri, 17 Apr 2020 13:51:57 +0900 (JST)
+Date:   Fri, 17 Apr 2020 13:51:57 +0900 (JST)
+From:   Bill Lawrence <w2u42su8@ene.megaegg.ne.jp>
+Reply-To: Bill Lawrence <bill_lawrence01@aol.com>
+Message-ID: <215788864.53429917.1587099117909.JavaMail.zimbra@ene.megaegg.ne.jp>
+Subject: Re: I HAVE $2MILLION DONATION FOR YOU.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [::ffff:105.163.128.152]
+X-Mailer: Zimbra 8.0.4_GA_5740 (ZimbraWebClient - GC55 (Win)/8.0.4_GA_5737)
+Thread-Topic: I HAVE $2MILLION DONATION FOR YOU.
+Thread-Index: AU/QbHitqecFaTbNB3qJcGhuz0tt7Q==
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
-branch HEAD: d0550cd20e52558ecf6847a0f96ebd5d944c17e4  usb: dwc3: gadget: Do link recovery for SS and SSP
 
-elapsed time: 752m
 
-configs tested: 77
-configs skipped: 0
+We bring greetings to you in the name of the lord. This message is sent to you as a notification that you have been chosen to benefit from our charity project aimed at touching lives and helping those that we can across the world as God has blessed us.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I won the Powerball lottery of $150Million on December 16, 2019 and I have voluntarily decided to donate the sum of $10Million to charity, I try to reach people randomly from different sources and modes so as to touch lives from different angles, Hence you are getting a message here.
 
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm                              allmodconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-sparc                            allyesconfig
-sparc64                          allmodconfig
-arm                          exynos_defconfig
-riscv                          rv32_defconfig
-riscv                            allyesconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-i386                              debian-10.3
-i386                              allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                        generic_defconfig
-ia64                          tiger_defconfig
-ia64                         bigsur_defconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-mips                            ar7_defconfig
-mips                             allyesconfig
-mips                         64r6el_defconfig
-mips                              allnoconfig
-mips                           32r2_defconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-i386                 randconfig-a002-20200416
-x86_64               randconfig-a001-20200416
-x86_64               randconfig-a002-20200416
-i386                 randconfig-a003-20200416
-i386                 randconfig-a001-20200416
-x86_64               randconfig-a003-20200416
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                             alldefconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                                allnoconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
+You have been listed as one of the lucky recipients to receive $2M This donation is made out to you so to enable you strengthen your personal issues and mostly to generously help us extend hands of giving to the less privileged, orphans and charity organizations within your locality
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+To verify
+https://www.powerball.com/winner-story/150-million-powerball-ticket-claimed
+
+Get back to me on how to receive the donation
+
+Thanks
+Bill Lawrence
+
+
