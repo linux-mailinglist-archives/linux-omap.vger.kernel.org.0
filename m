@@ -2,60 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A40A21AE0D0
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 17:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ECBF1AE104
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 17:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728365AbgDQPOu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Apr 2020 11:14:50 -0400
-Received: from muru.com ([72.249.23.125]:49904 "EHLO muru.com"
+        id S1728590AbgDQPXj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Apr 2020 11:23:39 -0400
+Received: from muru.com ([72.249.23.125]:49920 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728272AbgDQPOu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 17 Apr 2020 11:14:50 -0400
+        id S1728376AbgDQPXi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Apr 2020 11:23:38 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id E075B8047;
-        Fri, 17 Apr 2020 15:15:37 +0000 (UTC)
-Date:   Fri, 17 Apr 2020 08:14:47 -0700
+        by muru.com (Postfix) with ESMTPS id 7F05E8047;
+        Fri, 17 Apr 2020 15:24:24 +0000 (UTC)
+Date:   Fri, 17 Apr 2020 08:23:34 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Andreas Kemnade <andreas@kemnade.info>,
-        Evgeniy Polyakov <zbr@ioremap.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        "Andrew F . Davis" <afd@ti.com>, Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCHv3] w1: omap-hdq: Simplify driver with PM runtime
- autosuspend
-Message-ID: <20200417151447.GM37466@atomide.com>
-References: <20191217004048.46298-1-tony@atomide.com>
- <7B8C7DD9-095B-48FC-9642-695D07B79E97@goldelico.com>
- <20200416184638.GI37466@atomide.com>
- <3197C3F0-DEB9-4221-AFBD-4F2A08C84C4C@goldelico.com>
- <20200417164340.3d9043d1@aktux>
- <6430AF54-849E-456B-8DB0-B4478BBDB78D@goldelico.com>
- <20200417150721.GL37466@atomide.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Stefan Agner <stefan@agner.ch>, linux-omap@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Peter Smith <Peter.Smith@arm.com>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Russell King <linux@armlinux.org.uk>, nd <nd@arm.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH] ARM: OMAP2+: drop unnecessary adrl
+Message-ID: <20200417152334.GN37466@atomide.com>
+References: <5a6807f19fd69f2de6622c794639cc5d70b9563a.1585513949.git.stefan@agner.ch>
+ <CAKwvOdkyOW6RXTOCt1xMp2H+uH28ofByQOjyx776t8RDxTED2w@mail.gmail.com>
+ <CAMj1kXGYiMobkue642iDRdOjEHQK=KXpp=Urrgik9UU-eWWibQ@mail.gmail.com>
+ <DBBPR08MB4823129E272220712B470716F8C60@DBBPR08MB4823.eurprd08.prod.outlook.com>
+ <CAMj1kXEQ4v9e6386ogPdy+s+++9H02DMPnDpTq0WSY2e78ts+Q@mail.gmail.com>
+ <e0c125ea492670c7069c407b6b0c5958@agner.ch>
+ <CAMj1kXEe835GbXU5qgX-QQ5n4SmwQO1nAoAZw5pUVCbR=J8XmQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200417150721.GL37466@atomide.com>
+In-Reply-To: <CAMj1kXEe835GbXU5qgX-QQ5n4SmwQO1nAoAZw5pUVCbR=J8XmQ@mail.gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [200417 15:08]:
-> Maybe the PM runtime usecounts get unbalanced somewhere in the
-> driver where we end up with driver permanently in disabled state?
+* Ard Biesheuvel <ardb@kernel.org> [200402 14:37]:
+> On Thu, 2 Apr 2020 at 16:34, Stefan Agner <stefan@agner.ch> wrote:
+> > Just to confirm: The instance at hand today seems to be working fine
+> > without adrl, so I guess we are fine here, do you agree?
+> >
+> 
+> I agree. Apologies for hijacking the thread :-)
 
-Or it could be that with omap_hdq.c no longer blocking SoC
-deeper idle states, omap_hdq.c now loses context if you have
-omap3 off mode enabled during idle?
+Yes this seems to work just fine based on a quick test, will
+be applying for v5.8.
 
-If so, this can easily be fixed by adding a cpu_pm notifier
-along the lines of what we already have for few drivers:
-
-$ git grep -e CLUSTER_PM_ENTER -e CLUSTER_PM_EXIT
-
-Regards,
+Thanks,
 
 Tony
