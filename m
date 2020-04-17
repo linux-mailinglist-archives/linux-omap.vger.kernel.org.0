@@ -2,25 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE16A1AE2C7
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 18:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BAD51AE2D6
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 18:57:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728312AbgDQQ4G (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Apr 2020 12:56:06 -0400
-Received: from muru.com ([72.249.23.125]:50232 "EHLO muru.com"
+        id S1726725AbgDQQ40 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Apr 2020 12:56:26 -0400
+Received: from muru.com ([72.249.23.125]:50238 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728304AbgDQQ4F (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 17 Apr 2020 12:56:05 -0400
+        id S1728320AbgDQQ4H (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Apr 2020 12:56:07 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 924738047;
-        Fri, 17 Apr 2020 16:56:51 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 963158160;
+        Fri, 17 Apr 2020 16:56:53 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
         Keerthy <j-keerthy@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
         Tero Kristo <t-kristo@ti.com>,
         "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
         Adam Ford <aford173@gmail.com>,
         Andreas Kemnade <andreas@kemnade.info>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
@@ -28,9 +28,9 @@ Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
         Stephen Boyd <sboyd@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 11/14] ARM: dts: Configure system timers for ti81xx
-Date:   Fri, 17 Apr 2020 09:55:16 -0700
-Message-Id: <20200417165519.4979-12-tony@atomide.com>
+Subject: [PATCH 12/14] ARM: dts: Configure system timers for omap2
+Date:   Fri, 17 Apr 2020 09:55:17 -0700
+Message-Id: <20200417165519.4979-13-tony@atomide.com>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20200417165519.4979-1-tony@atomide.com>
 References: <20200417165519.4979-1-tony@atomide.com>
@@ -55,318 +55,473 @@ source, let's also configure the SoC specific default values. The
 board specific dts files can reconfigure these with assigned-clocks
 and assigned-clock-parents as needed.
 
-Note that for ti81xx, also timer1 is of type 2 unlike on am335x
-where timer1 is type1 while the rest of the timers are type 2.
+Let's also update the dts file to use #include while at it.
 
 Cc: devicetree@vger.kernel.org
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
 Cc: Keerthy <j-keerthy@ti.com>
 Cc: Lokesh Vutla <lokeshvutla@ti.com>
 Cc: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/dm814x.dtsi              | 66 +++++++++++++++----
- arch/arm/boot/dts/dm816x.dtsi              | 70 ++++++++++++++++----
- arch/arm/mach-omap2/board-generic.c        |  4 +-
- arch/arm/mach-omap2/omap_hwmod_81xx_data.c | 74 ----------------------
- 4 files changed, 114 insertions(+), 100 deletions(-)
+ arch/arm/boot/dts/omap2.dtsi                  | 38 +++++++++--
+ arch/arm/boot/dts/omap2420.dtsi               | 65 +++++++++++++++----
+ arch/arm/boot/dts/omap2430.dtsi               | 65 +++++++++++++++----
+ arch/arm/mach-omap2/board-generic.c           |  4 +-
+ arch/arm/mach-omap2/omap_hwmod_2420_data.c    | 20 ------
+ arch/arm/mach-omap2/omap_hwmod_2430_data.c    | 19 ------
+ .../omap_hwmod_2xxx_interconnect_data.c       |  8 ---
+ .../mach-omap2/omap_hwmod_2xxx_ipblock_data.c | 47 --------------
+ arch/arm/mach-omap2/omap_hwmod_common_data.h  |  3 -
+ 9 files changed, 141 insertions(+), 128 deletions(-)
 
-diff --git a/arch/arm/boot/dts/dm814x.dtsi b/arch/arm/boot/dts/dm814x.dtsi
---- a/arch/arm/boot/dts/dm814x.dtsi
-+++ b/arch/arm/boot/dts/dm814x.dtsi
-@@ -308,14 +308,30 @@ mcspi4: spi@1a4000 {
- 				ti,hwmods = "mcspi4";
- 			};
- 
--			timer1: timer@2e000 {
--				compatible = "ti,dm814-timer";
--				reg = <0x2e000 0x2000>;
--				interrupts = <67>;
--				ti,hwmods = "timer1";
--				ti,timer-alwon;
-+			target-module@2e000 {
-+				compatible = "ti,sysc-omap4-timer", "ti,sysc";
-+				reg = <0x2e000 0x4>,
-+				      <0x2e010 0x4>;
-+				reg-names = "rev", "sysc";
-+				ti,sysc-mask = <SYSC_OMAP4_SOFTRESET>;
-+				ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+						<SYSC_IDLE_NO>,
-+						<SYSC_IDLE_SMART>,
-+						<SYSC_IDLE_SMART_WKUP>;
- 				clocks = <&timer1_fck>;
- 				clock-names = "fck";
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				ranges = <0x0 0x2e000 0x1000>;
-+
-+				timer1: timer@0 {
-+					compatible = "ti,am335x-timer-1ms";
-+					reg = <0x0 0x400>;
-+					interrupts = <67>;
-+					ti,timer-alwon;
-+					clocks = <&timer1_fck>;
-+					clock-names = "fck";
-+				};
- 			};
- 
- 			uart1: uart@20000 {
-@@ -348,13 +364,29 @@ uart3: uart@24000 {
- 				dma-names = "tx", "rx";
- 			};
- 
--			timer2: timer@40000 {
--				compatible = "ti,dm814-timer";
--				reg = <0x40000 0x2000>;
--				interrupts = <68>;
--				ti,hwmods = "timer2";
-+			target-module@40000 {
-+				compatible = "ti,sysc-omap4-timer", "ti,sysc";
-+				reg = <0x40000 0x4>,
-+				      <0x40010 0x4>;
-+				reg-names = "rev", "sysc";
-+				ti,sysc-mask = <SYSC_OMAP4_SOFTRESET>;
-+				ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+						<SYSC_IDLE_NO>,
-+						<SYSC_IDLE_SMART>,
-+						<SYSC_IDLE_SMART_WKUP>;
- 				clocks = <&timer2_fck>;
- 				clock-names = "fck";
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				ranges = <0x0 0x40000 0x1000>;
-+
-+				timer2: timer@0 {
-+					compatible = "ti,dm814-timer";
-+					reg = <0 0x1000>;
-+					interrupts = <68>;
-+					clocks = <&timer2_fck>;
-+					clock-names = "fck";
-+				};
- 			};
- 
- 			timer3: timer@42000 {
-@@ -735,3 +767,15 @@ gpmc: gpmc@50000000 {
- };
- 
- #include "dm814x-clocks.dtsi"
-+
-+&timer1 {
-+	compatible = "ti,dmtimer-clocksource";
-+	assigned-clocks = <&timer1_fck>;
-+	assigned-clock-parents = <&devosc_ck>;
-+};
-+
-+&timer2 {
-+	compatible = "ti,dmtimer-clockevent";
-+	assigned-clocks = <&timer2_fck>;
-+	assigned-clock-parents = <&devosc_ck>;
-+};
-diff --git a/arch/arm/boot/dts/dm816x.dtsi b/arch/arm/boot/dts/dm816x.dtsi
---- a/arch/arm/boot/dts/dm816x.dtsi
-+++ b/arch/arm/boot/dts/dm816x.dtsi
-@@ -440,23 +440,55 @@ mmc1: mmc@48060000 {
- 			dma-names = "tx", "rx";
+diff --git a/arch/arm/boot/dts/omap2.dtsi b/arch/arm/boot/dts/omap2.dtsi
+--- a/arch/arm/boot/dts/omap2.dtsi
++++ b/arch/arm/boot/dts/omap2.dtsi
+@@ -201,11 +201,32 @@ uart3: serial@4806e000 {
+ 			clock-frequency = <48000000>;
  		};
  
--		timer1: timer@4802e000 {
--			compatible = "ti,dm816-timer";
--			reg = <0x4802e000 0x2000>;
--			interrupts = <67>;
+-		timer2: timer@4802a000 {
+-			compatible = "ti,omap2420-timer";
+-			reg = <0x4802a000 0x400>;
+-			interrupts = <38>;
+-			ti,hwmods = "timer2";
++		target-module@4802a000 {
++			compatible = "ti,sysc-omap2-timer", "ti,sysc";
++			reg = <0x4802a000 0x4>,
++			      <0x4802a010 0x4>,
++			      <0x4802a014 0x4>;
++			reg-names = "rev", "sysc", "syss";
++			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
++					 SYSC_OMAP2_EMUFREE |
++					 SYSC_OMAP2_ENAWAKEUP |
++					 SYSC_OMAP2_SOFTRESET |
++					 SYSC_OMAP2_AUTOIDLE)>;
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ti,syss-mask = <1>;
++			clocks = <&gpt2_fck>, <&gpt2_ick>;
++			clock-names = "fck", "ick";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0x0 0x4802a000 0x1000>;
++
++			timer2: timer@0 {
++				compatible = "ti,omap2420-timer";
++				reg = <0 0x400>;
++				interrupts = <38>;
++			};
+ 		};
+ 
+ 		timer3: timer@48078000 {
+@@ -318,3 +339,10 @@ venc: encoder@48050c00 {
+ 		};
+ 	};
+ };
++#if 0
++&timer2 {
++	compatible = "ti,dmtimer-clocksource";
++	assigned-clocks = <&gpt2_fck>;
++	assigned-clock-parents = <&sys_ck>;
++};
++#endif
+diff --git a/arch/arm/boot/dts/omap2420.dtsi b/arch/arm/boot/dts/omap2420.dtsi
+--- a/arch/arm/boot/dts/omap2420.dtsi
++++ b/arch/arm/boot/dts/omap2420.dtsi
+@@ -68,10 +68,23 @@ scm_clockdomains: clockdomains {
+ 				};
+ 			};
+ 
+-			counter32k: counter@4000 {
+-				compatible = "ti,omap-counter32k";
+-				reg = <0x4000 0x20>;
+-				ti,hwmods = "counter_32k";
++			target-module@4000 {
++				compatible = "ti,sysc-omap2", "ti,sysc";
++				reg = <0x4000 0x4>,
++				      <0x4004 0x4>;
++				reg-names = "rev", "sysc";
++				ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++						<SYSC_IDLE_NO>;
++				clocks = <&func_32k_ck>;
++				clock-names = "fck";
++				#address-cells = <1>;
++				#size-cells = <1>;
++				ranges = <0x0 0x4000 0x1000>;
++
++				counter32k: counter@0 {
++					compatible = "ti,omap-counter32k";
++					reg = <0 0x20>;
++				};
+ 			};
+ 		};
+ 
+@@ -194,12 +207,33 @@ mbox_iva: iva {
+ 			};
+ 		};
+ 
+-		timer1: timer@48028000 {
+-			compatible = "ti,omap2420-timer";
+-			reg = <0x48028000 0x400>;
+-			interrupts = <37>;
 -			ti,hwmods = "timer1";
 -			ti,timer-alwon;
--			clocks = <&timer1_fck>;
-+		target-module@4802e000 {
-+			compatible = "ti,sysc-omap4-timer", "ti,sysc";
-+			reg = <0x4802e000 0x4>,
-+			      <0x4802e010 0x4>;
-+			reg-names = "rev", "sysc";
-+			ti,sysc-mask = <SYSC_OMAP4_SOFTRESET>;
++		target-module@48028000 {
++			compatible = "ti,sysc-omap2-timer", "ti,sysc";
++			reg = <0x48028000 0x4>,
++			      <0x48028010 0x4>,
++			      <0x48028014 0x4>;
++			reg-names = "rev", "sysc", "syss";
++			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
++					 SYSC_OMAP2_EMUFREE |
++					 SYSC_OMAP2_ENAWAKEUP |
++					 SYSC_OMAP2_SOFTRESET |
++					 SYSC_OMAP2_AUTOIDLE)>;
 +			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
 +					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>,
-+					<SYSC_IDLE_SMART_WKUP>;
-+			clocks = <&alwon_clkctrl DM816_TIMER1_CLKCTRL 0>;
- 			clock-names = "fck";
++					<SYSC_IDLE_SMART>;
++			ti,syss-mask = <1>;
++			clocks = <&gpt1_fck>, <&gpt1_ick>;
++			clock-names = "fck", "ick";
 +			#address-cells = <1>;
 +			#size-cells = <1>;
-+			ranges = <0x0 0x4802e000 0x1000>;
++			ranges = <0x0 0x48028000 0x1000>;
 +
 +			timer1: timer@0 {
-+				compatible = "ti,dm816-timer";
-+				reg = <0 0x1000>;
-+				interrupts = <67>;
++				compatible = "ti,omap2420-timer";
++				reg = <0 0x400>;
++				interrupts = <37>;
 +				ti,timer-alwon;
-+				clocks = <&alwon_clkctrl DM816_TIMER1_CLKCTRL 0>;
-+				clock-names = "fck";
 +			};
  		};
  
--		timer2: timer@48040000 {
--			compatible = "ti,dm816-timer";
--			reg = <0x48040000 0x2000>;
--			interrupts = <68>;
--			ti,hwmods = "timer2";
--			clocks = <&timer2_fck>;
-+		target-module@48040000 {
-+			compatible = "ti,sysc-omap4-timer", "ti,sysc";
-+			reg = <0x48040000 0x4>,
-+			      <0x48040010 0x4>;
-+			reg-names = "rev", "sysc";
-+			ti,sysc-mask = <SYSC_OMAP4_SOFTRESET>;
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>,
-+					<SYSC_IDLE_SMART_WKUP>;
-+			clocks = <&alwon_clkctrl DM816_TIMER2_CLKCTRL 0>;
- 			clock-names = "fck";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0x0 0x48040000 0x1000>;
-+
-+			timer2: timer@ {
-+				compatible = "ti,dm816-timer";
-+				reg = <0 0x1000>;
-+				interrupts = <68>;
-+				clocks = <&alwon_clkctrl DM816_TIMER2_CLKCTRL 0>;
-+				clock-names = "fck";
-+			};
- 		};
- 
- 		timer3: timer@48042000 {
-@@ -642,3 +674,15 @@ wd_timer2: wd_timer@480c2000 {
+ 		wd_timer2: wdt@48022000 {
+@@ -218,5 +252,12 @@ &i2c2 {
+ 	compatible = "ti,omap2420-i2c";
  };
  
- #include "dm816x-clocks.dtsi"
+-/include/ "omap24xx-clocks.dtsi"
+-/include/ "omap2420-clocks.dtsi"
++#include "omap24xx-clocks.dtsi"
++#include "omap2420-clocks.dtsi"
 +
 +&timer1 {
-+	compatible = "ti,dmtimer-clocksource";
-+	assigned-clocks = <&timer1_fck>;
-+	assigned-clock-parents = <&sys_clkin_ck>;
++	compatible = "ti,dmtimer-clockevent";
++	assigned-clocks = <&gpt1_fck>;
++	assigned-clock-parents = <&func_32k_ck>;
 +};
 +
-+&timer2 {
+diff --git a/arch/arm/boot/dts/omap2430.dtsi b/arch/arm/boot/dts/omap2430.dtsi
+--- a/arch/arm/boot/dts/omap2430.dtsi
++++ b/arch/arm/boot/dts/omap2430.dtsi
+@@ -81,10 +81,23 @@ scm_clockdomains: clockdomains {
+ 				};
+ 			};
+ 
+-			counter32k: counter@20000 {
+-				compatible = "ti,omap-counter32k";
+-				reg = <0x20000 0x20>;
+-				ti,hwmods = "counter_32k";
++			target-module@20000 {
++				compatible = "ti,sysc-omap2", "ti,sysc";
++				reg = <0x20000 0x4>,
++				      <0x20004 0x4>;
++				reg-names = "rev", "sysc";
++				ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++						<SYSC_IDLE_NO>;
++				clocks = <&func_32k_ck>;
++				clock-names = "fck";
++				#address-cells = <1>;
++				#size-cells = <1>;
++				ranges = <0x0 0x20000 0x1000>;
++
++				counter32k: counter@0 {
++					compatible = "ti,omap-counter32k";
++					reg = <0 0x20>;
++				};
+ 			};
+ 		};
+ 
+@@ -277,12 +290,33 @@ mbox_dsp: dsp {
+ 			};
+ 		};
+ 
+-		timer1: timer@49018000 {
+-			compatible = "ti,omap2420-timer";
+-			reg = <0x49018000 0x400>;
+-			interrupts = <37>;
+-			ti,hwmods = "timer1";
+-			ti,timer-alwon;
++		target-module@49018000 {
++			compatible = "ti,sysc-omap2-timer", "ti,sysc";
++			reg = <0x49018000 0x4>,
++			      <0x49018010 0x4>,
++			      <0x49018014 0x4>;
++			reg-names = "rev", "sysc", "syss";
++			ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
++					 SYSC_OMAP2_EMUFREE |
++					 SYSC_OMAP2_ENAWAKEUP |
++					 SYSC_OMAP2_SOFTRESET |
++					 SYSC_OMAP2_AUTOIDLE)>;
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ti,syss-mask = <1>;
++			clocks = <&gpt1_fck>, <&gpt1_ick>;
++			clock-names = "fck", "ick";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0x0 0x49018000 0x1000>;
++
++			timer1: timer@0 {
++				compatible = "ti,omap2420-timer";
++				reg = <0 0x400>;
++				interrupts = <37>;
++				ti,timer-alwon;
++			};
+ 		};
+ 
+ 		mcspi3: spi@480b8000 {
+@@ -321,5 +355,12 @@ &i2c2 {
+ 	compatible = "ti,omap2430-i2c";
+ };
+ 
+-/include/ "omap24xx-clocks.dtsi"
+-/include/ "omap2430-clocks.dtsi"
++#include "omap24xx-clocks.dtsi"
++#include "omap2430-clocks.dtsi"
++
++&timer1 {
 +	compatible = "ti,dmtimer-clockevent";
-+	assigned-clocks = <&timer2_fck>;
-+	assigned-clock-parents = <&sys_clkin_ck>;
++	assigned-clocks = <&gpt1_fck>;
++	assigned-clock-parents = <&func_32k_ck>;
 +};
++
 diff --git a/arch/arm/mach-omap2/board-generic.c b/arch/arm/mach-omap2/board-generic.c
 --- a/arch/arm/mach-omap2/board-generic.c
 +++ b/arch/arm/mach-omap2/board-generic.c
-@@ -201,7 +201,7 @@ DT_MACHINE_START(TI814X_DT, "Generic ti814x (Flattened Device Tree)")
- 	.init_early	= ti814x_init_early,
+@@ -50,7 +50,7 @@ DT_MACHINE_START(OMAP242X_DT, "Generic OMAP2420 (Flattened Device Tree)")
+ 	.map_io		= omap242x_map_io,
+ 	.init_early	= omap2420_init_early,
  	.init_machine	= omap_generic_init,
- 	.init_late	= ti81xx_init_late,
--	.init_time	= omap3_gptimer_timer_init,
+-	.init_time	= omap_init_time,
 +	.init_time	= omap_init_time_of,
- 	.dt_compat	= ti814x_boards_compat,
- 	.restart	= ti81xx_restart,
+ 	.dt_compat	= omap242x_boards_compat,
+ 	.restart	= omap2xxx_restart,
  MACHINE_END
-@@ -218,7 +218,7 @@ DT_MACHINE_START(TI816X_DT, "Generic ti816x (Flattened Device Tree)")
- 	.init_early	= ti816x_init_early,
+@@ -67,7 +67,7 @@ DT_MACHINE_START(OMAP243X_DT, "Generic OMAP2430 (Flattened Device Tree)")
+ 	.map_io		= omap243x_map_io,
+ 	.init_early	= omap2430_init_early,
  	.init_machine	= omap_generic_init,
- 	.init_late	= ti81xx_init_late,
--	.init_time	= omap3_gptimer_timer_init,
+-	.init_time	= omap_init_time,
 +	.init_time	= omap_init_time_of,
- 	.dt_compat	= ti816x_boards_compat,
- 	.restart	= ti81xx_restart,
+ 	.dt_compat	= omap243x_boards_compat,
+ 	.restart	= omap2xxx_restart,
  MACHINE_END
-diff --git a/arch/arm/mach-omap2/omap_hwmod_81xx_data.c b/arch/arm/mach-omap2/omap_hwmod_81xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_81xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_81xx_data.c
-@@ -690,76 +690,6 @@ static struct omap_hwmod_class dm816x_timer_hwmod_class = {
- 	.sysc = &dm816x_timer_sysc,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_2420_data.c b/arch/arm/mach-omap2/omap_hwmod_2420_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_2420_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_2420_data.c
+@@ -264,14 +264,6 @@ static struct omap_hwmod_ocp_if omap2420_l3__dsp = {
+ 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
  };
  
--static struct omap_hwmod dm814x_timer1_hwmod = {
--	.name		= "timer1",
--	.clkdm_name	= "alwon_l3s_clkdm",
--	.main_clk	= "timer1_fck",
--	.class		= &dm816x_timer_hwmod_class,
--	.flags		= HWMOD_NO_IDLEST,
+-/* l4_wkup -> timer1 */
+-static struct omap_hwmod_ocp_if omap2420_l4_wkup__timer1 = {
+-	.master		= &omap2xxx_l4_wkup_hwmod,
+-	.slave		= &omap2xxx_timer1_hwmod,
+-	.clk		= "gpt1_ick",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 -};
 -
--static struct omap_hwmod_ocp_if dm814x_l4_ls__timer1 = {
--	.master		= &dm81xx_l4_ls_hwmod,
--	.slave		= &dm814x_timer1_hwmod,
--	.clk		= "sysclk6_ck",
--	.user		= OCP_USER_MPU,
+ /* l4_wkup -> wd_timer2 */
+ static struct omap_hwmod_ocp_if omap2420_l4_wkup__wd_timer2 = {
+ 	.master		= &omap2xxx_l4_wkup_hwmod,
+@@ -352,15 +344,6 @@ static struct omap_hwmod_ocp_if omap2420_l4_core__hdq1w = {
+ 	.flags		= OMAP_FIREWALL_L4 | OCPIF_SWSUP_IDLE,
+ };
+ 
+-
+-/* l4_wkup -> 32ksync_counter */
+-static struct omap_hwmod_ocp_if omap2420_l4_wkup__counter_32k = {
+-	.master		= &omap2xxx_l4_wkup_hwmod,
+-	.slave		= &omap2xxx_counter_32k_hwmod,
+-	.clk		= "sync_32k_ick",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 -};
 -
--static struct omap_hwmod dm816x_timer1_hwmod = {
+ static struct omap_hwmod_ocp_if omap2420_l3__gpmc = {
+ 	.master		= &omap2xxx_l3_main_hwmod,
+ 	.slave		= &omap2xxx_gpmc_hwmod,
+@@ -382,8 +365,6 @@ static struct omap_hwmod_ocp_if *omap2420_hwmod_ocp_ifs[] __initdata = {
+ 	&omap2420_l4_core__i2c2,
+ 	&omap2420_l3__iva,
+ 	&omap2420_l3__dsp,
+-	&omap2420_l4_wkup__timer1,
+-	&omap2xxx_l4_core__timer2,
+ 	&omap2xxx_l4_core__timer3,
+ 	&omap2xxx_l4_core__timer4,
+ 	&omap2xxx_l4_core__timer5,
+@@ -411,7 +392,6 @@ static struct omap_hwmod_ocp_if *omap2420_hwmod_ocp_ifs[] __initdata = {
+ 	&omap2xxx_l4_core__sham,
+ 	&omap2xxx_l4_core__aes,
+ 	&omap2420_l4_core__hdq1w,
+-	&omap2420_l4_wkup__counter_32k,
+ 	&omap2420_l3__gpmc,
+ 	NULL,
+ };
+diff --git a/arch/arm/mach-omap2/omap_hwmod_2430_data.c b/arch/arm/mach-omap2/omap_hwmod_2430_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_2430_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_2430_data.c
+@@ -436,14 +436,6 @@ static struct omap_hwmod_ocp_if omap2430_l3__iva = {
+ 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ };
+ 
+-/* l4_wkup -> timer1 */
+-static struct omap_hwmod_ocp_if omap2430_l4_wkup__timer1 = {
+-	.master		= &omap2xxx_l4_wkup_hwmod,
+-	.slave		= &omap2xxx_timer1_hwmod,
+-	.clk		= "gpt1_ick",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+ /* l4_wkup -> wd_timer2 */
+ static struct omap_hwmod_ocp_if omap2430_l4_wkup__wd_timer2 = {
+ 	.master		= &omap2xxx_l4_wkup_hwmod,
+@@ -548,14 +540,6 @@ static struct omap_hwmod_ocp_if omap2430_l4_core__hdq1w = {
+ 	.flags		= OMAP_FIREWALL_L4 | OCPIF_SWSUP_IDLE,
+ };
+ 
+-/* l4_wkup -> 32ksync_counter */
+-static struct omap_hwmod_ocp_if omap2430_l4_wkup__counter_32k = {
+-	.master		= &omap2xxx_l4_wkup_hwmod,
+-	.slave		= &omap2xxx_counter_32k_hwmod,
+-	.clk		= "sync_32k_ick",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+ static struct omap_hwmod_ocp_if omap2430_l3__gpmc = {
+ 	.master		= &omap2xxx_l3_main_hwmod,
+ 	.slave		= &omap2xxx_gpmc_hwmod,
+@@ -581,8 +565,6 @@ static struct omap_hwmod_ocp_if *omap2430_hwmod_ocp_ifs[] __initdata = {
+ 	&omap2xxx_l4_core__mcspi2,
+ 	&omap2430_l4_core__mcspi3,
+ 	&omap2430_l3__iva,
+-	&omap2430_l4_wkup__timer1,
+-	&omap2xxx_l4_core__timer2,
+ 	&omap2xxx_l4_core__timer3,
+ 	&omap2xxx_l4_core__timer4,
+ 	&omap2xxx_l4_core__timer5,
+@@ -613,7 +595,6 @@ static struct omap_hwmod_ocp_if *omap2430_hwmod_ocp_ifs[] __initdata = {
+ 	&omap2xxx_l4_core__rng,
+ 	&omap2xxx_l4_core__sham,
+ 	&omap2xxx_l4_core__aes,
+-	&omap2430_l4_wkup__counter_32k,
+ 	&omap2430_l3__gpmc,
+ 	NULL,
+ };
+diff --git a/arch/arm/mach-omap2/omap_hwmod_2xxx_interconnect_data.c b/arch/arm/mach-omap2/omap_hwmod_2xxx_interconnect_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_2xxx_interconnect_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_2xxx_interconnect_data.c
+@@ -95,14 +95,6 @@ struct omap_hwmod_ocp_if omap2xxx_l4_core__mcspi2 = {
+ 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ };
+ 
+-/* l4_core -> timer2 */
+-struct omap_hwmod_ocp_if omap2xxx_l4_core__timer2 = {
+-	.master		= &omap2xxx_l4_core_hwmod,
+-	.slave		= &omap2xxx_timer2_hwmod,
+-	.clk		= "gpt2_ick",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+ /* l4_core -> timer3 */
+ struct omap_hwmod_ocp_if omap2xxx_l4_core__timer3 = {
+ 	.master		= &omap2xxx_l4_core_hwmod,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_2xxx_ipblock_data.c b/arch/arm/mach-omap2/omap_hwmod_2xxx_ipblock_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_2xxx_ipblock_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_2xxx_ipblock_data.c
+@@ -195,36 +195,6 @@ struct omap_hwmod omap2xxx_iva_hwmod = {
+ 	.class		= &iva_hwmod_class,
+ };
+ 
+-/* timer1 */
+-struct omap_hwmod omap2xxx_timer1_hwmod = {
 -	.name		= "timer1",
--	.clkdm_name	= "alwon_l3s_clkdm",
--	.main_clk	= "timer1_fck",
+-	.main_clk	= "gpt1_fck",
 -	.prcm		= {
--		.omap4 = {
--			.clkctrl_offs = DM816X_CM_ALWON_TIMER_1_CLKCTRL,
--			.modulemode = MODULEMODE_SWCTRL,
+-		.omap2 = {
+-			.module_offs = WKUP_MOD,
+-			.idlest_reg_id = 1,
+-			.idlest_idle_bit = OMAP24XX_ST_GPT1_SHIFT,
 -		},
 -	},
--	.class		= &dm816x_timer_hwmod_class,
+-	.class		= &omap2xxx_timer_hwmod_class,
+-	.flags          = HWMOD_SET_DEFAULT_CLOCKACT,
 -};
 -
--static struct omap_hwmod_ocp_if dm816x_l4_ls__timer1 = {
--	.master		= &dm81xx_l4_ls_hwmod,
--	.slave		= &dm816x_timer1_hwmod,
--	.clk		= "sysclk6_ck",
--	.user		= OCP_USER_MPU,
--};
--
--static struct omap_hwmod dm814x_timer2_hwmod = {
+-/* timer2 */
+-struct omap_hwmod omap2xxx_timer2_hwmod = {
 -	.name		= "timer2",
--	.clkdm_name	= "alwon_l3s_clkdm",
--	.main_clk	= "timer2_fck",
--	.class		= &dm816x_timer_hwmod_class,
--	.flags		= HWMOD_NO_IDLEST,
--};
--
--static struct omap_hwmod_ocp_if dm814x_l4_ls__timer2 = {
--	.master		= &dm81xx_l4_ls_hwmod,
--	.slave		= &dm814x_timer2_hwmod,
--	.clk		= "sysclk6_ck",
--	.user		= OCP_USER_MPU,
--};
--
--static struct omap_hwmod dm816x_timer2_hwmod = {
--	.name		= "timer2",
--	.clkdm_name	= "alwon_l3s_clkdm",
--	.main_clk	= "timer2_fck",
+-	.main_clk	= "gpt2_fck",
 -	.prcm		= {
--		.omap4 = {
--			.clkctrl_offs = DM816X_CM_ALWON_TIMER_2_CLKCTRL,
--			.modulemode = MODULEMODE_SWCTRL,
+-		.omap2 = {
+-			.module_offs = CORE_MOD,
+-			.idlest_reg_id = 1,
+-			.idlest_idle_bit = OMAP24XX_ST_GPT2_SHIFT,
 -		},
 -	},
--	.class		= &dm816x_timer_hwmod_class,
+-	.class		= &omap2xxx_timer_hwmod_class,
+-	.flags          = HWMOD_SET_DEFAULT_CLOCKACT,
 -};
 -
--static struct omap_hwmod_ocp_if dm816x_l4_ls__timer2 = {
--	.master		= &dm81xx_l4_ls_hwmod,
--	.slave		= &dm816x_timer2_hwmod,
--	.clk		= "sysclk6_ck",
--	.user		= OCP_USER_MPU,
--};
--
- static struct omap_hwmod dm816x_timer3_hwmod = {
+ /* timer3 */
+ struct omap_hwmod omap2xxx_timer3_hwmod = {
  	.name		= "timer3",
- 	.clkdm_name	= "alwon_l3s_clkdm",
-@@ -1288,8 +1218,6 @@ static struct omap_hwmod_ocp_if *dm814x_hwmod_ocp_ifs[] __initdata = {
- 	&dm814x_l4_ls__mmc1,
- 	&dm814x_l4_ls__mmc2,
- 	&ti81xx_l4_ls__rtc,
--	&dm814x_l4_ls__timer1,
--	&dm814x_l4_ls__timer2,
- 	&dm81xx_alwon_l3_slow__gpmc,
- 	&dm814x_default_l3_slow__usbss,
- 	&dm814x_alwon_l3_med__mmc3,
-@@ -1318,8 +1246,6 @@ static struct omap_hwmod_ocp_if *dm816x_hwmod_ocp_ifs[] __initdata = {
- 	&dm81xx_l4_ls__elm,
- 	&ti81xx_l4_ls__rtc,
- 	&dm816x_l4_ls__mmc1,
--	&dm816x_l4_ls__timer1,
--	&dm816x_l4_ls__timer2,
- 	&dm816x_l4_ls__timer3,
- 	&dm816x_l4_ls__timer4,
- 	&dm816x_l4_ls__timer5,
+@@ -595,23 +565,6 @@ struct omap_hwmod omap2xxx_mcspi2_hwmod = {
+ 	.class		= &omap2xxx_mcspi_class,
+ };
+ 
+-static struct omap_hwmod_class omap2xxx_counter_hwmod_class = {
+-	.name	= "counter",
+-};
+-
+-struct omap_hwmod omap2xxx_counter_32k_hwmod = {
+-	.name		= "counter_32k",
+-	.main_clk	= "func_32k_ck",
+-	.prcm		= {
+-		.omap2	= {
+-			.module_offs = WKUP_MOD,
+-			.idlest_reg_id = 1,
+-			.idlest_idle_bit = OMAP24XX_ST_32KSYNC_SHIFT,
+-		},
+-	},
+-	.class		= &omap2xxx_counter_hwmod_class,
+-};
+-
+ /* gpmc */
+ struct omap_hwmod omap2xxx_gpmc_hwmod = {
+ 	.name		= "gpmc",
+diff --git a/arch/arm/mach-omap2/omap_hwmod_common_data.h b/arch/arm/mach-omap2/omap_hwmod_common_data.h
+--- a/arch/arm/mach-omap2/omap_hwmod_common_data.h
++++ b/arch/arm/mach-omap2/omap_hwmod_common_data.h
+@@ -21,8 +21,6 @@ extern struct omap_hwmod omap2xxx_l4_core_hwmod;
+ extern struct omap_hwmod omap2xxx_l4_wkup_hwmod;
+ extern struct omap_hwmod omap2xxx_mpu_hwmod;
+ extern struct omap_hwmod omap2xxx_iva_hwmod;
+-extern struct omap_hwmod omap2xxx_timer1_hwmod;
+-extern struct omap_hwmod omap2xxx_timer2_hwmod;
+ extern struct omap_hwmod omap2xxx_timer3_hwmod;
+ extern struct omap_hwmod omap2xxx_timer4_hwmod;
+ extern struct omap_hwmod omap2xxx_timer5_hwmod;
+@@ -47,7 +45,6 @@ extern struct omap_hwmod omap2xxx_gpio3_hwmod;
+ extern struct omap_hwmod omap2xxx_gpio4_hwmod;
+ extern struct omap_hwmod omap2xxx_mcspi1_hwmod;
+ extern struct omap_hwmod omap2xxx_mcspi2_hwmod;
+-extern struct omap_hwmod omap2xxx_counter_32k_hwmod;
+ extern struct omap_hwmod omap2xxx_gpmc_hwmod;
+ extern struct omap_hwmod omap2xxx_rng_hwmod;
+ extern struct omap_hwmod omap2xxx_sham_hwmod;
 -- 
 2.26.1
