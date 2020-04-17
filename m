@@ -2,117 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B97D1AE149
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 17:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DACC1AE299
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Apr 2020 18:55:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729174AbgDQPgw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Apr 2020 11:36:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45826 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728956AbgDQPgw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 17 Apr 2020 11:36:52 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56E88C061A0C;
-        Fri, 17 Apr 2020 08:36:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=vcwymhpAC/15yRZg8+DeqjyOHNYHJOED4/yGfBW+CMM=; b=OdW7KdXpbReAT9Bswx0vdyF4Bg
-        6QpD7/O0aVes/1sBIYlgy4IqVSSIqFm2hyOgN0xDYJ4Y5kND5Lyqvi2JfBk+I8YL5jwoy+FMS0G6X
-        PJaGK1/olpjxt0QG2APOlf86lc9vkTimQVdq1rB5+SO6naKsk199jtwlNw3Gyz7Nl8ZE=;
-Received: from p200300ccff0bc3001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0b:c300:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1jPT2r-0008JZ-I8; Fri, 17 Apr 2020 17:36:46 +0200
-Date:   Fri, 17 Apr 2020 17:36:44 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Evgeniy Polyakov <zbr@ioremap.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
+        id S1727932AbgDQQzc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Apr 2020 12:55:32 -0400
+Received: from muru.com ([72.249.23.125]:49980 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727840AbgDQQzc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Apr 2020 12:55:32 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 3D9B48047;
+        Fri, 17 Apr 2020 16:56:17 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
         Adam Ford <aford173@gmail.com>,
-        "Andrew F . Davis" <afd@ti.com>, Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCHv3] w1: omap-hdq: Simplify driver with PM runtime
- autosuspend
-Message-ID: <20200417173644.03c99166@aktux>
-In-Reply-To: <20200417151447.GM37466@atomide.com>
-References: <20191217004048.46298-1-tony@atomide.com>
-        <7B8C7DD9-095B-48FC-9642-695D07B79E97@goldelico.com>
-        <20200416184638.GI37466@atomide.com>
-        <3197C3F0-DEB9-4221-AFBD-4F2A08C84C4C@goldelico.com>
-        <20200417164340.3d9043d1@aktux>
-        <6430AF54-849E-456B-8DB0-B4478BBDB78D@goldelico.com>
-        <20200417150721.GL37466@atomide.com>
-        <20200417151447.GM37466@atomide.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Andreas Kemnade <andreas@kemnade.info>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Keerthy <j-keerthy@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Tero Kristo <t-kristo@ti.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 00/14] Update omaps to use drivers/clocksource timers
+Date:   Fri, 17 Apr 2020 09:55:05 -0700
+Message-Id: <20200417165519.4979-1-tony@atomide.com>
+X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 17 Apr 2020 08:14:47 -0700
-Tony Lindgren <tony@atomide.com> wrote:
+Hi all,
 
-> * Tony Lindgren <tony@atomide.com> [200417 15:08]:
-> > Maybe the PM runtime usecounts get unbalanced somewhere in the
-> > driver where we end up with driver permanently in disabled state?  
-> 
-> Or it could be that with omap_hdq.c no longer blocking SoC
-> deeper idle states, omap_hdq.c now loses context if you have
-> omap3 off mode enabled during idle?
-> 
-I run twice (to get mmc access cached):
+Here's a series of changes to udpate omaps to use drivers/clocksource
+timers for the 32k counter and dmtimer and to remove the old legacy
+platform code. Please review and test.
 
-root@(none):/# sleep 15 ; /usr/local/bin/idledump >/run/idledump ; cat /sys/cla
-ss/power_supply/bq27000-battery/current_now ; cat /run/idledump 
-32665
-     CM_IDLEST1_CORE 00000042
-     CM_IDLEST3_CORE 00000000
-     CM_FCLKEN1_CORE 00000000
-     CM_FCLKEN3_CORE 00000002
-     CM_CLKSTST_CORE 00000003
-     CM_IDLEST_CKGEN 00000001
-    CM_IDLEST2_CKGEN 00000000
-       CM_FCLKEN_DSS 00000000
-       CM_IDLEST_DSS 00000000
-       CM_FCLKEN_CAM 00000000
-       CM_IDLEST_CAM 00000000
-       CM_FCLKEN_PER 00000000
-       CM_IDLEST_PER 00030000
-root@(none):/# 
-root@(none):/# cat /sys/kernel/debug/pm_debug/count 
-usbhost_pwrdm (ON),OFF:754,RET:9148,INA:0,ON:9903,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-sgx_pwrdm (OFF),OFF:1,RET:0,INA:1,ON:2,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-core_pwrdm (ON),OFF:0,RET:0,INA:0,ON:1,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0,RET-MEMBANK2-OFF:0
-per_pwrdm (ON),OFF:237,RET:1202,INA:0,ON:1440,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-dss_pwrdm (ON),OFF:754,RET:9148,INA:0,ON:9903,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-cam_pwrdm (OFF),OFF:1,RET:1,INA:0,ON:2,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-neon_pwrdm (ON),OFF:638,RET:9015,INA:250,ON:9904,RET-LOGIC-OFF:0
-mpu_pwrdm (ON),OFF:638,RET:9014,INA:250,ON:9903,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-iva2_pwrdm (OFF),OFF:1,RET:1,INA:0,ON:2,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0,RET-MEMBANK2-OFF:0,RET-MEMBANK3-OFF:0,RET-MEMBANK4-OFF:0
-usbhost_clkdm->usbhost_pwrdm (1)
-sgx_clkdm->sgx_pwrdm (0)
-per_clkdm->per_pwrdm (16)
-cam_clkdm->cam_pwrdm (0)
-dss_clkdm->dss_pwrdm (1)
-d2d_clkdm->core_pwrdm (0)
-iva2_clkdm->iva2_pwrdm (0)
-mpu_clkdm->mpu_pwrdm (0)
-core_l4_clkdm->core_pwrdm (21)
-core_l3_clkdm->core_pwrdm (1)
-neon_clkdm->neon_pwrdm (0)
+Daniel, if the the first two patches look OK after review, maybe you
+can again set up an immutable branch for the first two patches against
+v5.7-rc1 that I can merge in?
 
 Regards,
-Andreas
 
+Tony
+
+
+Tony Lindgren (14):
+  clocksource/drivers/timer-ti-32k: Add support for initializing
+    directly
+  clocksource/drivers/timer-ti-dm: Add clockevent and clocksource
+    support
+  clk: ti: dm816: enable sysclk6_ck on init
+  bus: ti-sysc: Ignore timer12 on secure omap3
+  ARM: OMAP2+: Add omap_init_time_of()
+  ARM: dts: Configure system timers for am335x
+  ARM: dts: Configure system timers for am437x
+  ARM: dts: Configure system timers for omap4
+  ARM: dts: Configure system timers for omap5 and dra7
+  ARM: dts: Configure system timers for omap3
+  ARM: dts: Configure system timers for ti81xx
+  ARM: dts: Configure system timers for omap2
+  ARM: OMAP2+: Drop old timer code for dmtimer and 32k counter
+  bus: ti-sysc: Timers no longer need legacy quirk handling
+
+ .../devicetree/bindings/timer/ti,timer.txt    |   2 +
+ arch/arm/boot/dts/am33xx-l4.dtsi              |   2 -
+ arch/arm/boot/dts/am33xx.dtsi                 |  12 +
+ arch/arm/boot/dts/am3517.dtsi                 |  16 +-
+ arch/arm/boot/dts/am4372.dtsi                 |  12 +
+ arch/arm/boot/dts/am437x-l4.dtsi              |   3 -
+ arch/arm/boot/dts/dm814x.dtsi                 |  66 +-
+ arch/arm/boot/dts/dm816x.dtsi                 |  70 ++-
+ arch/arm/boot/dts/dra7-l4.dtsi                |   5 -
+ arch/arm/boot/dts/dra7.dtsi                   |   6 +
+ arch/arm/boot/dts/omap2.dtsi                  |  38 +-
+ arch/arm/boot/dts/omap2420.dtsi               |  65 +-
+ arch/arm/boot/dts/omap2430.dtsi               |  65 +-
+ arch/arm/boot/dts/omap3-beagle.dts            |  16 +
+ arch/arm/boot/dts/omap3-devkit8000.dts        |  16 +
+ arch/arm/boot/dts/omap3.dtsi                  | 130 +++-
+ arch/arm/boot/dts/omap4-l4.dtsi               |   2 -
+ arch/arm/boot/dts/omap4.dtsi                  |   6 +
+ arch/arm/boot/dts/omap5-l4.dtsi               |   2 -
+ arch/arm/boot/dts/omap5.dtsi                  |   6 +
+ arch/arm/mach-omap2/Makefile                  |   4 +-
+ arch/arm/mach-omap2/board-generic.c           |  32 +-
+ arch/arm/mach-omap2/common.h                  |   7 +
+ arch/arm/mach-omap2/omap_hwmod_2420_data.c    |  20 -
+ arch/arm/mach-omap2/omap_hwmod_2430_data.c    |  19 -
+ .../omap_hwmod_2xxx_interconnect_data.c       |   8 -
+ .../mach-omap2/omap_hwmod_2xxx_ipblock_data.c |  47 --
+ .../omap_hwmod_33xx_43xx_common_data.h        |   2 -
+ .../omap_hwmod_33xx_43xx_interconnect_data.c  |   8 -
+ .../omap_hwmod_33xx_43xx_ipblock_data.c       |  62 --
+ arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |  10 -
+ arch/arm/mach-omap2/omap_hwmod_3xxx_data.c    | 146 +----
+ arch/arm/mach-omap2/omap_hwmod_43xx_data.c    |  45 --
+ arch/arm/mach-omap2/omap_hwmod_44xx_data.c    |  90 ---
+ arch/arm/mach-omap2/omap_hwmod_54xx_data.c    |  89 ---
+ arch/arm/mach-omap2/omap_hwmod_7xx_data.c     | 176 ------
+ arch/arm/mach-omap2/omap_hwmod_81xx_data.c    |  74 ---
+ arch/arm/mach-omap2/omap_hwmod_common_data.h  |   3 -
+ arch/arm/mach-omap2/timer.c                   | 568 +-----------------
+ drivers/bus/ti-sysc.c                         |  25 +-
+ drivers/clk/ti/clk-816x.c                     |   1 +
+ drivers/clocksource/Makefile                  |   1 +
+ drivers/clocksource/timer-ti-32k.c            |  48 +-
+ drivers/clocksource/timer-ti-dm-systimer.c    | 468 +++++++++++++++
+ include/clocksource/timer-ti-dm.h             |   1 +
+ 45 files changed, 1016 insertions(+), 1478 deletions(-)
+ create mode 100644 drivers/clocksource/timer-ti-dm-systimer.c
+
+-- 
+2.26.1
