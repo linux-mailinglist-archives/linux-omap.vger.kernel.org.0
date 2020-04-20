@@ -2,225 +2,191 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E81B1AF5CA
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Apr 2020 01:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9417E1B033E
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Apr 2020 09:38:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725939AbgDRXDE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 18 Apr 2020 19:03:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53218 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725804AbgDRXDD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 18 Apr 2020 19:03:03 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93409C061A0C;
-        Sat, 18 Apr 2020 16:03:03 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id a81so7034442wmf.5;
-        Sat, 18 Apr 2020 16:03:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=YxE3j3NIn1PoG9VELum1qGBU2eSWHDyuQMMYU6AQHhI=;
-        b=sPjMwQZPf8EtRgmX9wyO26jKftktwCwkj1YHzEvKKwUgseGwdo27mZQtlOljPQ0Uky
-         d3b7oLY6RlVZjGMEbr5iyqbcIoQaCuiGoJ/1Wkaf2uaDXeXE4kXWe84GM4hHFn8oX+bq
-         ZQbNmJBZLb7Pt1mK8jWi/T9kXH0/JHnrODY4eNYRbpdGOBQhL3yhJysqP43RST4n9bw7
-         c+tHv5v3Ikhq2oK5iLt1pxgHTy+O2pZg9fAC/v0Eu+L0K74rWpv7/DHBmRvjwqDDDblo
-         6zjRvHmpttTIIm2aMTM+WuQKsyK2H8O1kzGzRvMrHVimUFbJecuTMVUFngmsonN1sKBM
-         PqTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=YxE3j3NIn1PoG9VELum1qGBU2eSWHDyuQMMYU6AQHhI=;
-        b=Y1xDRb1vzR7WVaVRUE9FlJRSfw1j4SOW0gq3O2RosLu8pXNPsT9kZvF/hMJAeIPfT/
-         TFv4PQeX4ddWVzcGRZQVS9AV/xfaNJNeaiXK9wlSLkOqMv//CcAH/liBAjctpa+UPxkS
-         vEIbmzfuMasczMXmGd4HMWvqrw/louJlK2oHW4oQ55x2FYrKOkvE9bAFRVdMQpMXPSSD
-         jeNAzcTXiUyNzXeQPcrLfcX8yHerMV6ldfX7Jb2fhG+6jci6MsjGwl29O73GiV2k7HYE
-         6hq+mElDV9LQnkJ+K78t/jXlM10EuKaLjVqn5gJIy8KbVDMjK0E/ZVLaK01IE2DAxwXW
-         5Vxw==
-X-Gm-Message-State: AGi0PubMW+EzGxoVvp6UwXAAMklHdsfgpNqPod9Mg++2AUBg3DGlJ5Zo
-        oyLTjssTnIa8tW0FnN6Au0O3kjpz
-X-Google-Smtp-Source: APiQypIO6mkIJ9hjSrjzSJzBpVZvH5H7mcYgD03oI7sRFKNXXQ0RN49LPX1QPLO3qyvMOa0viArMAw==
-X-Received: by 2002:a1c:66d5:: with SMTP id a204mr10170935wmc.69.1587250982011;
-        Sat, 18 Apr 2020 16:03:02 -0700 (PDT)
-Received: from ?IPv6:2a02:810d:340:2e50:e521:8087:8b5d:7bae? ([2a02:810d:340:2e50:e521:8087:8b5d:7bae])
-        by smtp.gmail.com with ESMTPSA id p10sm36735344wrm.6.2020.04.18.16.03.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Apr 2020 16:03:01 -0700 (PDT)
-Subject: Re: [PATCH v6 01/12] dt-bindings: add img, pvrsgx.yaml for
- Imagination GPUs
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Maxime Ripard <maxime@cerno.tech>
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        Mark Rutland <mark.rutland@arm.com>,
+        id S1726048AbgDTHit (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Apr 2020 03:38:49 -0400
+Received: from new1-smtp.messagingengine.com ([66.111.4.221]:38743 "EHLO
+        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725773AbgDTHis (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 20 Apr 2020 03:38:48 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.nyi.internal (Postfix) with ESMTP id C558658021E;
+        Mon, 20 Apr 2020 03:38:46 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Mon, 20 Apr 2020 03:38:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm2; bh=5Sw64u1dSQy+/AZPUD2ocyiGqku
+        gbFqYdfvxed0EDRY=; b=YynSS5+9xuhmRiG56G7GdbYPCW8jO8KOD4IoTjNhpnV
+        TXKPXqmua83B8ei57HL3DaYlRJtfUMcPxYtn08/hp3mXUdF2d25A/1X3KKbAkRlK
+        ghitZz0zjSvzOfK/R2z0rKR1g5H4w904f+KY6Jqs1ZRt+O1pAwUEoNgsFaBAFrI9
+        58LgC7+dI3pGibuVGwzVop5UyctI++7yP9IwO5IwhmwOfBE8U1/d9CdNS/s/KbUS
+        3gW79VGBNMpAwFOG7/O+ptXcq4Qfkbt50JVeeKk5Nq9o+DrjpD5KaKA9K47176hS
+        R0/LMSSildCA/fbL0E+dhzbGYYYMY9tEtqMlg3hek2w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=5Sw64u
+        1dSQy+/AZPUD2ocyiGqkugbFqYdfvxed0EDRY=; b=HLp4uB1Tle4K92shgr1Z4o
+        I6IqDdPkOLErhagBFdX0SF7qQYacnanlpFk3AnPXZjZNzAX2Trij5GpfMMfK4oXY
+        0u/0BGBFXezH6WZfumh/kyWtXSARqqBRhQiU+h1HDBav7AUTmGgBgGp+HuFQZZ8L
+        OSuKN0+yXX5SHYcom3W2ZsRh+SkdTZWTWq9EuA1FR/Uv5nHrXv6v57k+Au2MM441
+        wB1yetUvg9Wy0v9RFu3TbmxS+IboXoiUwyoYuba+stcj46e9q68I1duMo9hIGMfx
+        NGLcimcFtLWubDIovljxJYdAd+6CIjyfSceHn47wJ6TxfjZr2nf0jFog8A9MYQbw
+        ==
+X-ME-Sender: <xms:hFGdXqSLF4RpRYkTefunXLy68Ah9GyhS0RKRLmpBwtI_hJTAszptjw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrgedvgdduvddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpeforgigihhm
+    vgcutfhiphgrrhguuceomhgrgihimhgvsegtvghrnhhordhtvggthheqnecukfhppeeltd
+    drkeelrdeikedrjeeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
+    lhhfrhhomhepmhgrgihimhgvsegtvghrnhhordhtvggthh
+X-ME-Proxy: <xmx:hFGdXuS5lZijoMyt14sVshcQo6T4aTzHUJEVa3IzCfMJcuGJjNB-pA>
+    <xmx:hFGdXgP06PsbO8XuzzC0aJZhlbh5ZY10dnOrooV5_FkdXCbT0y5ztQ>
+    <xmx:hFGdXn2rcXlRRicCiP5MqsSec5lFGRnU2audJYs15o6DDLkM4mq0eQ>
+    <xmx:hlGdXtusGVYKKvBUw4w6T_rD-GJekUI0m6eZa8s1_ntY-dlevIq47A>
+Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 5B36A3280069;
+        Mon, 20 Apr 2020 03:38:44 -0400 (EDT)
+Date:   Mon, 20 Apr 2020 09:38:42 +0200
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Philipp Rossak <embed3d@gmail.com>
+Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
         David Airlie <airlied@linux.ie>,
-        James Hogan <jhogan@kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        linux-mips@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
-        linux-samsung-soc@vger.kernel.org,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Paul Burton <paulburton@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, Chen-Yu Tsai <wens@csie.org>,
-        Kukjin Kim <kgene@kernel.org>, devicetree@vger.kernel.org,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        openpvrsgx-devgroup@letux.org, linux-kernel@vger.kernel.org,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Paul Cercueil <paul@crapouillou.net>,
         Ralf Baechle <ralf@linux-mips.org>,
-        Daniel Vetter <daniel@ffwll.ch>, kernel@pyra-handheld.com
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        OpenPVRSGX Linux Driver Group <openpvrsgx-devgroup@letux.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        linux-mips@vger.kernel.org,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        linux-samsung-soc@vger.kernel.org
+Subject: Re: [PATCH v6 00/12] ARM/MIPS: DTS: add child nodes describing the
+ PVRSGX GPU present in some OMAP SoC and JZ4780 (and many more)
+Message-ID: <20200420073842.nx4xb3zqvu23arkc@gilmour.lan>
 References: <cover.1586939718.git.hns@goldelico.com>
- <06fb6569259bb9183d0a0d0fe70ec4f3033b8aab.1586939718.git.hns@goldelico.com>
- <20200415101251.o3wi5t6xvf56xmhq@gilmour.lan>
- <72919514-0657-4B71-902F-3E775E528F64@goldelico.com>
- <f4fdca8a-d18c-a8d2-7f51-d1ebbbab3647@baylibre.com>
- <535CAEBE-F43E-4BFC-B989-612C81F0D7EF@goldelico.com>
- <20200415142124.yzfh6mtqq7cdq22e@gilmour.lan>
- <DC0A2DE2-3D77-46F8-8DE1-55050FDACC9B@goldelico.com>
- <20200415162151.rwym4ioqz27migfn@gilmour.lan>
- <45F411C0-150B-4FBA-A0E1-B863B3F36DF6@goldelico.com>
- <20200417102500.erayf6quenp3cvn3@gilmour.lan>
- <C8816F10-8773-4ECD-B42D-6EEF642476EB@goldelico.com>
-From:   Philipp Rossak <embed3d@gmail.com>
-Message-ID: <9f33a2ae-2825-bc2d-6e3b-c09a5d226e81@gmail.com>
-Date:   Sun, 19 Apr 2020 01:02:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ <20200415101008.zxzxca2vlfsefpdv@gilmour.lan>
+ <2E3401F1-A106-4396-8FE6-51CAB72926A4@goldelico.com>
+ <20200415130233.rgn7xrtwqicptke2@gilmour.lan>
+ <C589D06E-435E-4316-AD0A-8498325039E3@goldelico.com>
+ <10969e64-fe1f-d692-4984-4ba916bd2161@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <C8816F10-8773-4ECD-B42D-6EEF642476EB@goldelico.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="nd4xfztpubexblrg"
+Content-Disposition: inline
+In-Reply-To: <10969e64-fe1f-d692-4984-4ba916bd2161@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Nikolaus,
-Hi Maxime,
 
->>> TI SoC seem to be the broadest number of available users
->>> of sgx5xx in the past and nowadays. Others are more the exception.
->>
->> And maybe TI has some complicated stuff around the GPU that others don't have?
-> 
-> Looks so.
+--nd4xfztpubexblrg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I can only agree on this.
+Hi,
 
-> 
->>
->>> What I also assume is that developers of DTS know what they do.
->>> So the risk that there is different semantics is IMHO very low.
->>
->> Well, they know what they do if you document the binding. Let's say I have two
->> clocks now on my SoC, and you just document that you want a clocks property,
->> with a generic name in clock-names like "gpu".
-> 
-> Yes, that is what I want to propose for v7:
-> 
->    clocks:
->      maxItems: 1
-> 
->    clock-names:
->      maxItems: 1
->      items:
->        - const: gpu
-> 
->>
->>> If you agree I can add the clocks/clock-names property as an
->>> optional property. This should solve omap and all others.
->>
->> With the above example, what clock should I put in there? In which order? This
->> isn't some random example pulled out of nowhere. The Allwinner A31 has (at
->> least) 4 clocks for the GPU, 1 reset line and 1 regulator, so I can only assume
->> that the GPU actually needs at least that amount to be properly integrated into
->> an SoC.
-> 
-> Ah, now I understand your motivation: you have access and experience with
-> the A31 and you know that our proposal doesn't fit to it.
-> 
->  From what I know from your description is that the A31 is quite special with
-> 4 GPU clocks... Are they all really for the GPU or 3 of them for the interface
-> logic (like on OMAP which separates between "functional clocks" and "interface
-> clocks")? Or are there 4 groups of GPU cores with a separate clock for each one?
-> 
-> So what would be your proposal for the A31 DT?
-> 
-> Then I get a chance to compare DT snippets and try to make a mixture for
-> the bindings.
-> 
+On Fri, Apr 17, 2020 at 02:09:06PM +0200, Philipp Rossak wrote:
+> > > I'm a bit skeptical on that one since it doesn't even list the
+> > > interrupts connected to the GPU that the binding mandates.
+> >=20
+> > I think he left it out for a future update.
+> > But best he comments himself.
+>=20
+> I'm currently working on those bindings. They are now 90% done, but they =
+are
+> not finished till now. Currently there is some mainline support missing to
+> add the full binding. The A83T and also the A31/A31s have a GPU Power Off
+> Gating Register in the R_PRCM module, that is not supported right now in
+> Mainline. The Register need to be written when the GPU is powered on and
+> off.
+>=20
+> @Maxime: I totally agree on your point that a demo needs to be provided
+> before the related DTS patches should be provided. That's the reason why I
+> added the gpu placeholder patches.
+> Do you have an idea how a driver for the R_PRCM stuff can look like? I'm =
+not
+> that experienced with the clock driver framework.
 
-This is my current binding for the A83T, the A31 looks similar but there 
-is still something missing, since some parts are not mainlined yet:
+It looks like a power-domain to me, so you'd rather plug that into the genpd
+framework.
 
-sun8i-a83t.dtsi:
-gpu: gpu@1c400000 {
-	compatible = "allwinner,sun8i-a83t-sgx544-115",
-		     "img,sgx544-115", "img,sgx544";
-	reg = <0x01c40000 0x10000>;
-	interrupts = <GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>;
-	clocks = <&ccu CLK_BUS_GPU>, <&ccu CLK_GPU_CORE>,
-		 <&ccu CLK_GPU_MEMORY>, <&ccu CLK_GPU_HYD>;
-	clock-names = "bus", "core", "memory", "hyd";
+> The big question is right now how to proceed with the A83T and A31s patch=
+es.
+> I see there three options, which one do you prefer?:
+>=20
+> 1. Provide now placeholder patches and send new patches, if everything is
+> clear and other things are mainlined
+> 2. Provide now patches as complete as possible and provide later patches =
+to
+> complete them when the R_PRCM things are mainlined
+> 3. Leave them out, till the related work is mainlined and the bindings are
+> final.
 
-	resets = <&ccu RST_BUS_GPU>;
-};
+Like I said, the DT *has* to be backward-compatible, so for any DT patch th=
+at
+you are asking to be merged, you should be prepared to support it indefinit=
+ely
+and be able to run from it, and you won't be able to change the bindings la=
+ter
+on.
 
-sun8i-a83t-bananapi-m3.dts:
-&gpu {
-	gpu-supply = <&reg_dcdc4>;
-};
+> Since this GPU IP core is very flexible and the SOC manufactures can
+> configure it on their needs, I think the binding will extend in the futur=
+e.
+> For example the SGX544 GPU is available in different configurations: there
+> is a SGX544 core and SGX544MPx core. The x stands for the count of the US=
+SE
+> (Universal Scalable Shader Engine) cores. For example the GPU in the A83T=
+ is
+> a MP1 and the A31/A31s a MP2.
 
+Mali is in the same situation and it didn't cause much trouble.
 
-> 
->> But given that the current state on the Allwinner SoCs (at least) is that you
->> can't even read a register, it might be a good idea to delay the introduction of
->> that binding until you have something that works to avoid drowning under the
->> number of special cases to deal with backward compatibility.
-> 
+> In addition to that some of the GPU's have also a 2D engine.
 
-Maxime is right. Even if you enable the regulator, write 0x0 to the GPU 
-Power Off Gating Register, deassert the reset and enable the clocks you 
-are not able to read the register.
-You must first run: pvrsrvctl --no-module --start (user space binaries) 
-to access registers otherwise the system will stuck with the following 
-message when accessing them:
+In the same memory region, running from the same interrupts, or is it a
+completely separate IP that happens to be sold by the same vendor?
 
-./devmem2 0x01C40024
-/dev/mem opened.
+> There might be even more differences in the GPU's that we don't know right
+> now and should be described in the Devicetree, but that's a different top=
+ic
+> that we should keep in mind.
 
-> Philipp has something minimal working on the A83 which works with the proposed
-> binding and enabled him to read out the sgx revision register.
-> 
-This is not correct. In the other mail I talked about my reference 
-system. This is an old 3.4.39 kernel, modified by allwinner to run on 
-their SOC's which don't use the common kernel techniques. So it's very 
-hacky, but they got the gpu running. I'm using this system for 
-comparison, to read out registers and for reverse engineering.
+Like I said, it's not a completely different topic.
 
-My current kernel module behaves similar like the reference design, but 
-right now I'm not able to run "pvrsrvctl --no-module --start" without 
-errors. So the initialization never get's finalized and I see the issue 
-described above.
+Maxime
 
-> So if you are a specialist for the A31 SGX, please make a proposal for a binding
-> that covers all the A31 needs and all other SoC we know. Or define a separate
-> bindings for the A31.
+--nd4xfztpubexblrg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The A31 and the A31s have some additional clocks mentioned in their 
-datasheet (@ System Control Register/SRAM Controler). Those are not 
-available in the A83T datasheet, but might be there since the memory map 
-looks similar and allwinner might use the same userspace binaries for 
-their devices.
+-----BEGIN PGP SIGNATURE-----
 
- From the knowledge I gained the last 3 days, we should delay the 
-patches for the A83T, A31 and A31s.
-The idea of the placeholder patches was to show that from this binding 
-also other devices could benefit.
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXp1RggAKCRDj7w1vZxhR
+xUoGAQD6t2KhRl/JXPpcbOq2qYAidBLKV4Lqvkk8MmRHUxeoNQEAt6SP6CIMrrfb
+nDX66jY4FpmurrYXbFF39NVW4Y9HWw8=
+=Wz+7
+-----END PGP SIGNATURE-----
 
-Cheers,
-Philipp
+--nd4xfztpubexblrg--
