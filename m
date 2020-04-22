@@ -2,114 +2,202 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CDDA1B421F
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Apr 2020 12:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C0621B4850
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Apr 2020 17:13:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728039AbgDVK6N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Apr 2020 06:58:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60752 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728021AbgDVKE3 (ORCPT
+        id S1726079AbgDVPNj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Apr 2020 11:13:39 -0400
+Received: from new1-smtp.messagingengine.com ([66.111.4.221]:40675 "EHLO
+        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725779AbgDVPNi (ORCPT
         <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 22 Apr 2020 06:04:29 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98AECC03C1A8;
-        Wed, 22 Apr 2020 03:04:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=xjPeTaJb6fDrWwRoeW49VkZts+eKBc+WVFAQnP6cFZM=; b=Wt31SlMc19Z0O6lY8IZJYheFde
-        oPfDUlaW46nJbFfm3gQ0kbJkR1RuLcrCT2GDTLcFfYwReBZFcSosQ40yi3chPXHqvXSrCdY8aX6xC
-        b6DkCSwnw6Aaeh+/fMad49xxZbNFRpCe07fN8+c2vc9QePrybW79oDED6Dl2FaJ5UBZI=;
-Received: from p200300ccff0a5d001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0a:5d00:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1jRCEt-0004YJ-At; Wed, 22 Apr 2020 12:04:19 +0200
-Date:   Wed, 22 Apr 2020 12:04:18 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
+        Wed, 22 Apr 2020 11:13:38 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 91DD65800DD;
+        Wed, 22 Apr 2020 11:13:36 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Wed, 22 Apr 2020 11:13:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm2; bh=/ftWw9tHlitciumaaug4a1Czrh7
+        36GE3jEJuWgmD3SY=; b=tbwhr2e9IectRyCHdVrQk9XLSpGKO6zc9jdte3x5eKI
+        sy8rt00KrKw5fVcnWrZz6/Vg/BfNuEhQyZwrlAXZNp/4BLSPEhyHMJrev0eiWq9T
+        PGDheS8Aj9EaKjnj2Rj8abBAktYTjqE3jI+E+JPO0Ef3HjnK+qarV8do007cCviK
+        AqBIbW/exkVD7DfQbAmUZAeH+dHfZgRYLkLddFp+1tNhexzgvILBhSpzgQYUxJMp
+        i0Pk5VGK42WWdThariqK+N3mhnRLknIwjhTWzGNdmp+onIo4tAD/2B0i6IE4tW17
+        r4eTEIpARnksJO0lhIrwzomO8Zq/VLJ8MGTkYFE7DGw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=/ftWw9
+        tHlitciumaaug4a1Czrh736GE3jEJuWgmD3SY=; b=bse4Moqzfl9bRZmpeMKwID
+        +adLbBq6TvV7yZkdrsx4H5E6vrYt6vRuT4wmbdHsIwgoZJ2/49MLuCpgJNu7OegP
+        JF6KaANRzn80w0ye3onNFi2jElrQmMu14F3UcUdoBI8XMWWup4zdqsqLAKYLDOGr
+        34YnDDLkzz6s6/rmKzgk1NbXHNjCiQwN8CJa0zZW30Vixn7wiV31o7eH4AbM5mQi
+        3RI1mPho3FdOAqAE2JCqcLcX41rPEbvQrYAX68V9w2kdHmZI2Fy0xC3gvWip6DjT
+        27HC/zTnnYCvHO7L4XCH+Pc0IqmRdinX3cFmc9K1UZUCxEZiE2cmbP5E9hsXjf6A
+        ==
+X-ME-Sender: <xms:Gl-gXghEoq-o-n5nwsG1IKrj0JWzudlgpH6yLlXPty2TyAoB68C_8g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrgeejgdejlecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesghdtreertddtvdenucfhrhhomhepofgrgihimhgv
+    ucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucfkphepledtrd
+    ekledrieekrdejieenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhl
+    fhhrohhmpehmrgigihhmvgestggvrhhnohdrthgvtghh
+X-ME-Proxy: <xmx:Gl-gXsQHg22AOERE85yCpjhFXTKZXMp9oVSpayV_m_ygC_0sXGwKfA>
+    <xmx:Gl-gXutctsLbbOSAuoWkag-wuB64l7CIOa8b_-hySmQE9JfsQIgtgg>
+    <xmx:Gl-gXkn1vTZZxkYuwLgB-85wA1D7KCrx7wMTwtD3jCFuYHOUaWUVyg>
+    <xmx:IF-gXggCCQFHcUcvNnWqcdFSVFP7l3urmIa4aTlNEv39JTfX-8TrxQ>
+Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
+        by mail.messagingengine.com (Postfix) with ESMTPA id E8B423280068;
+        Wed, 22 Apr 2020 11:13:29 -0400 (EDT)
+Date:   Wed, 22 Apr 2020 17:13:28 +0200
+From:   Maxime Ripard <maxime@cerno.tech>
 To:     "H. Nikolaus Schaller" <hns@goldelico.com>
 Cc:     Tony Lindgren <tony@atomide.com>,
-        Evgeniy Polyakov <zbr@ioremap.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Philipp Rossak <embed3d@gmail.com>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-omap <linux-omap@vger.kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        "Andrew F . Davis" <afd@ti.com>, Vignesh R <vigneshr@ti.com>
-Subject: Re: [PATCHv3] w1: omap-hdq: Simplify driver with PM runtime
- autosuspend
-Message-ID: <20200422120418.49a40c75@aktux>
-In-Reply-To: <D3E40A6A-39B8-4F3F-9ABC-28EAE8D623A6@goldelico.com>
-References: <3197C3F0-DEB9-4221-AFBD-4F2A08C84C4C@goldelico.com>
-        <20200417164340.3d9043d1@aktux>
-        <6430AF54-849E-456B-8DB0-B4478BBDB78D@goldelico.com>
-        <20200417150721.GL37466@atomide.com>
-        <8E062482-5D5D-4837-9980-D6C708DD24D4@goldelico.com>
-        <20200420150802.GR37466@atomide.com>
-        <D1A77603-11FB-407F-B480-82C57E742C51@goldelico.com>
-        <20200421085336.32cf8ffe@aktux>
-        <20200421180220.GB37466@atomide.com>
-        <70F19A6E-7B36-4873-9364-F284A14EE3A0@goldelico.com>
-        <20200421182017.GC37466@atomide.com>
-        <D3E40A6A-39B8-4F3F-9ABC-28EAE8D623A6@goldelico.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        OpenPVRSGX Linux Driver Group <openpvrsgx-devgroup@letux.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        linux-mips@vger.kernel.org,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        linux-samsung-soc@vger.kernel.org
+Subject: Re: [PATCH v6 00/12] ARM/MIPS: DTS: add child nodes describing the
+ PVRSGX GPU present in some OMAP SoC and JZ4780 (and many more)
+Message-ID: <20200422151328.2oyqz7gqkbunmd6o@gilmour.lan>
+References: <20200415130233.rgn7xrtwqicptke2@gilmour.lan>
+ <C589D06E-435E-4316-AD0A-8498325039E3@goldelico.com>
+ <10969e64-fe1f-d692-4984-4ba916bd2161@gmail.com>
+ <20200420073842.nx4xb3zqvu23arkc@gilmour.lan>
+ <b5a06c19-7a3e-bcb8-5ae3-76901b9c6c35@gmail.com>
+ <20200421112129.zjmkmzo3aftksgka@gilmour.lan>
+ <20200421141543.GU37466@atomide.com>
+ <D9D4D057-A73D-485F-898D-5C05E89C16B7@goldelico.com>
+ <20200422065859.quy6ane5v7vsy5tf@gilmour.lan>
+ <1AA57A0C-48E6-49BB-BB9A-2AAFFB371BCD@goldelico.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="rleqzgonq2kd6jcq"
+Content-Disposition: inline
+In-Reply-To: <1AA57A0C-48E6-49BB-BB9A-2AAFFB371BCD@goldelico.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 21 Apr 2020 22:40:39 +0200
-"H. Nikolaus Schaller" <hns@goldelico.com> wrote:
 
-> Hi Tony,
-> 
-> > Am 21.04.2020 um 20:20 schrieb Tony Lindgren <tony@atomide.com>:
-> >   
-> >> Well, what helps is reverting the patch and using the old driver
-> >> (which did work for several years). So I would not assume that
-> >> there is a hardware influence. It seems to be something the new
-> >> driver is doing differently.  
-> > 
-> > Well earlier hdq1w.c did not idle, now it does.  
-> 
-> Ah, I see!
-> 
-> > If you just want to keep it enabled like earlier, you can just add something like:  
-> 
-> Well, I don't want it enabled, it just should work as before.
-> Ideally including all improvements :)
-> 
-> > 
-> > &hdqw1w {
-> > 	ti,no-idle;
-> > };  
-> 
-> I have added that and there might be a slightly different pattern
-> (unless that is just by luck): the first two or three attempts to
-> read the bq27xx/uevent did still time out. But then the next ones
-> worked fine (with a response time of ca. 65 .. 230 ms).
-> 
-> So as if something needs to be shaken into the right position after
-> boot until it works.
-> 
+--rleqzgonq2kd6jcq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-What about reading battery with just omap_hdq loaded and then continue
-booting as usual, e.g. something like:
+On Wed, Apr 22, 2020 at 09:10:57AM +0200, H. Nikolaus Schaller wrote:
+> > Am 22.04.2020 um 08:58 schrieb Maxime Ripard <maxime@cerno.tech>:
+> >=20
+> > On Tue, Apr 21, 2020 at 07:29:32PM +0200, H. Nikolaus Schaller wrote:
+> >>=20
+> >>> Am 21.04.2020 um 16:15 schrieb Tony Lindgren <tony@atomide.com>:
+> >>>=20
+> >>> * Maxime Ripard <maxime@cerno.tech> [200421 11:22]:
+> >>>> On Tue, Apr 21, 2020 at 11:57:33AM +0200, Philipp Rossak wrote:
+> >>>>> I had a look on genpd and I'm not really sure if that fits.
+> >>>>>=20
+> >>>>> It is basically some bit that verify that the clocks should be enab=
+led or
+> >>>>> disabled.
+> >>>>=20
+> >>>> No, it can do much more than that. It's a framework to control the S=
+oCs power
+> >>>> domains, so clocks might be a part of it, but most of the time it's =
+going to be
+> >>>> about powering up a particular device.
+> >>>=20
+> >>> Note that on omaps there are actually SoC module specific registers.
+> >>=20
+> >> Ah, I see. This is of course a difference that the TI glue logic has
+> >> its own registers in the same address range as the sgx and this can't
+> >> be easily handled by a common sgx driver.
+> >>=20
+> >> This indeed seems to be unique with omap.
+> >>=20
+> >>> And there can be multiple devices within a single target module on
+> >>> omaps. So the extra dts node and device is justified there.
+> >>>=20
+> >>> For other SoCs, the SGX clocks are probably best handled directly
+> >>> in pvr-drv.c PM runtime functions unless a custom hardware wrapper
+> >>> with SoC specific registers exists.
+> >>=20
+> >> That is why we need to evaluate what the better strategy is.
+> >>=20
+> >> So we have
+> >> a) omap which has a custom wrapper around the sgx
+> >> b) others without, i.e. an empty (or pass-through) wrapper
+> >>=20
+> >> Which one do we make the "standard" and which one the "exception"?
+> >> What are good reasons for either one?
+> >>=20
+> >>=20
+> >> I am currently in strong favour of a) being standard because it
+> >> makes the pvr-drv.c simpler and really generic (independent of
+> >> wrapping into any SoC).
+> >>=20
+> >> This will likely avoid problems if we find more SoC with yet another
+> >> scheme how the SGX clocks are wrapped.
+> >>=20
+> >> It also allows to handle different number of clocks (A31 seems to
+> >> need 4, Samsung, A83 and JZ4780 one) without changing the sgx bindings
+> >> or making big lists of conditionals. This variance would be handled
+> >> outside the sgx core bindings and driver.
+> >=20
+> > I disagree. Every other GPU binding and driver is handling that just fi=
+ne, and
+> > the SGX is not special in any case here.
+>=20
+> Can you please better explain this? With example or a description
+> or a proposal?
 
-have script init-bat.sh
-#!/bin/sh
-modprobe omap_hdq
-cat /sys/class/power_supply/bq27000_battery/uevent
-exec /sbin/init "$@"
+I can't, I don't have any knowledge about this GPU.
 
-and then append to kernel parameters init=/init-bat.sh
+> I simply do not have your experience with "every other GPU" as you have.
+> And I admit that I can't read from your statement what we should do
+> to bring this topic forward.
+>=20
+> So please make a proposal how it should be in your view.
 
-Regards,
-Andreas
+If you need some inspiration, I guess you could look at the mali and vivante
+bindings once you have an idea of what the GPU needs across the SoCs it's
+integrated in.
+
+Maxime
+
+--rleqzgonq2kd6jcq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHQEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXqBfGAAKCRDj7w1vZxhR
+xVRsAPYpkPvaPx/Gv4bZtD3Q7LlR8I4ICX5CAiGURBKX85mvAQCaSeZMVEC2ANUR
+ZQ5hvxKQcP4oYw7VwmIsM46WtpHQDg==
+=lYBS
+-----END PGP SIGNATURE-----
+
+--rleqzgonq2kd6jcq--
