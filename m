@@ -2,55 +2,24 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 890411B5ED8
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Apr 2020 17:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5889A1B5F26
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Apr 2020 17:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729110AbgDWPOJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Apr 2020 11:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50740 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729018AbgDWPOI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 23 Apr 2020 11:14:08 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1F9C08E934
-        for <linux-omap@vger.kernel.org>; Thu, 23 Apr 2020 08:14:08 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id t63so6798825wmt.3
-        for <linux-omap@vger.kernel.org>; Thu, 23 Apr 2020 08:14:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=v46Ikk3Jz0r+b0XX/bOEpsMp0yxP+bghxd3vH+HYhPc=;
-        b=MIWxKE/qjLCX/xGHYA9pPPU0BNfKH43CNGFsg6DeK/Mru9tvWVDKwiaZOn1XHjMoVE
-         i4PYlH8O7bplYaTQeMICT+fzY8fnWvVzPWCE5yQuez2xPFjAeqSQYiNf0Uh7R/Wo38Lg
-         Z6hX1p59FRmd8cXRcaKNBTpSFrbXarSJk9IonBz+osP259UyeH0oOSynqm+2NZi2Ahkn
-         mHD1tRQfsYU56pVs27oV5Y7kgyFt8LHsXNWTr7pGFlFyAJIxKMc0HJpPsylF6zrtlQY4
-         5pwVLUZ8W5eDfGynjFnJROYgC6aT3odwPB41c02RsLfkH8QAoKuW6rYRcLWEg9G1cGkc
-         OQaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=v46Ikk3Jz0r+b0XX/bOEpsMp0yxP+bghxd3vH+HYhPc=;
-        b=Mh1JHd1o32DPilLBNGnQ1GFvlFo2/VzrkFwLwrTaAOD5z1RLXq1vacjqH7b0T1Elu8
-         NegoVtSrBZO4vvOE1C/3lGc15LqR7JCQQC4e8b2Pci6ebSwZ6SHbRFZkMoerpx/jsSTl
-         04+O31n6B57aPZn9ITs3pc4OovAV0M74rk0zIqv4ELn729IJugLqS6HerljRMlwNkFQd
-         Q0sj4uC8xoYMG8C1LlRBV7UhXbKmTpUZpuAJkaYUpQCEI/wPhu6DfPbSZTgT7z88d1bX
-         i2PZpSjp/L/DrRLxfpUMm0zE9me/8tQwvKICJiW477VvTmHV9Bj7VqCokUIWfBWGAqo/
-         nR0w==
-X-Gm-Message-State: AGi0PubxKlaqi9WpSewxxPCtfCKyLd/FzY1FuNyntx/N/hjiRufkgp9X
-        4c87Ul3OSJPuIjU7JfIjn3DcoA==
-X-Google-Smtp-Source: APiQypKEu5s0OhD4gtUwKlNwoPw/ork7gNul9QoWfqC2s5n+wpnmvRh1OKW8lXO0WhhFY70e5NcqhA==
-X-Received: by 2002:a1c:64c5:: with SMTP id y188mr4587343wmb.130.1587654846044;
-        Thu, 23 Apr 2020 08:14:06 -0700 (PDT)
-Received: from linaro.org ([37.167.216.250])
-        by smtp.gmail.com with ESMTPSA id x18sm4083518wrs.11.2020.04.23.08.14.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2020 08:14:05 -0700 (PDT)
-Date:   Thu, 23 Apr 2020 17:14:00 +0200
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     Lukasz Luba <lukasz.luba@arm.com>
+        id S1729130AbgDWP2r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Apr 2020 11:28:47 -0400
+Received: from foss.arm.com ([217.140.110.172]:42290 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729014AbgDWP2r (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 23 Apr 2020 11:28:47 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3B5E031B;
+        Thu, 23 Apr 2020 08:28:46 -0700 (PDT)
+Received: from [10.37.12.89] (unknown [10.37.12.89])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E87B3F6CF;
+        Thu, 23 Apr 2020 08:28:21 -0700 (PDT)
+Subject: Re: [PATCH v6 03/10] PM / EM: update callback structure and add
+ device pointer
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
@@ -70,24 +39,83 @@ Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
         lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net,
         orjan.eide@arm.com, rdunlap@infradead.org, mka@chromium.org
-Subject: Re: [PATCH v6 05/10] PM / EM: remove em_register_perf_domain
-Message-ID: <20200423151400.GC65632@linaro.org>
 References: <20200410084210.24932-1-lukasz.luba@arm.com>
- <20200410084210.24932-6-lukasz.luba@arm.com>
+ <20200410084210.24932-4-lukasz.luba@arm.com>
+ <20200423132243.GA65632@linaro.org>
+From:   Lukasz Luba <lukasz.luba@arm.com>
+Message-ID: <245720a0-c812-ccc8-235e-6eed6f216e4b@arm.com>
+Date:   Thu, 23 Apr 2020 16:28:18 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200410084210.24932-6-lukasz.luba@arm.com>
+In-Reply-To: <20200423132243.GA65632@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Apr 10, 2020 at 09:42:05AM +0100, Lukasz Luba wrote:
-> Remove old function em_register_perf_domain which is no longer needed.
-> There is em_dev_register_perf_domain that covers old use cases and new as
-> well.
-> 
-> Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+Hi Daniel,
 
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+On 4/23/20 2:22 PM, Daniel Lezcano wrote:
+> On Fri, Apr 10, 2020 at 09:42:03AM +0100, Lukasz Luba wrote:
+>> The Energy Model framework is going to support devices other that CPUs. In
+>> order to make this happen change the callback function and add pointer to
+>> a device as an argument.
+>>
+>> Update the related users to use new function and new callback from the
+>> Energy Model.
+>>
+>> Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+>> ---
+> 
+> [ ... ]
+> 
+>> +static struct em_perf_domain *
+>> +em_create_pd(struct device *dev, int nr_states, struct em_data_callback *cb,
+>> +	     cpumask_t *span)
+>>   {
+>>   	unsigned long opp_eff, prev_opp_eff = ULONG_MAX;
+>>   	unsigned long power, freq, prev_freq = 0;
+>> @@ -106,7 +107,7 @@ static struct em_perf_domain *em_create_pd(cpumask_t *span, int nr_states,
+>>   		 * lowest performance state of 'cpu' above 'freq' and updates
+>>   		 * 'power' and 'freq' accordingly.
+>>   		 */
+>> -		ret = cb->active_power(&power, &freq, cpu);
+>> +		ret = cb->active_power(&power, &freq, dev);
+>>   		if (ret) {
+>>   			pr_err("pd%d: invalid perf. state: %d\n", cpu, ret);
+>>   			goto free_ps_table;
+> 
+> Why are the changes 'cpu' to 'dev' in the patch 4/10 instead of this one ?
+
+The patch 4/10 is quite big and I didn't want to put also this change in
+there. I thought for readability it would be better to have a separate
+patch with self-contained change (or I got your suggestion too strict).
+
+In this patch I just wanted to show more precisely that this function
+callback 'active_power' which is used by 2 users (currently):
+cpufreq/scmi-cpufreq.c and opp/of.c
+is going to change an argument and these files are affected.
+
+The 4/10 changes a lot lines, while first 3 patches can be treated as
+a preparation for the upcoming major change (4/10).
+
+Thank you for the review.
+
+Regards,
+Lukasz
+
+> 
+>> @@ -237,7 +238,7 @@ int em_dev_register_perf_domain(struct device *dev, unsigned int nr_states,
+>>   	}
+>>   
+>>   	/* Create the performance domain and add it to the Energy Model. */
+>> -	pd = em_create_pd(span, nr_states, cb);
+>> +	pd = em_create_pd(dev, nr_states, cb, span);
+>>   	if (!pd) {
+>>   		ret = -EINVAL;
+>>   		goto unlock;
+> 
