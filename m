@@ -2,93 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6AD51B5DC6
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Apr 2020 16:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDDA91B5DD6
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Apr 2020 16:31:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726181AbgDWO3g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Apr 2020 10:29:36 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:59234 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726060AbgDWO3g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Apr 2020 10:29:36 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03NETSot078418;
-        Thu, 23 Apr 2020 09:29:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1587652168;
-        bh=wBBGLm/GU/IWOc28k0N2zTqFLwnTT77BHKEVRmH7rpE=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=DsQ1WXaV6Zy/vKf7bEWUOT4pa1hMMKm7faDpkefg40mq0UGDL47aMaB6ibu1B1s2s
-         2U23jQohIFFs6FN2fXpf6mz8N2KR5k5AqFdYcdO04IvBEzAQ66s8Cd+4KJ3Bc+ZbUV
-         wExBr+lr67BwPqsO7kzYvnlwfSVU/UVXetoqeecc=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03NETS0x053944
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 23 Apr 2020 09:29:28 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 23
- Apr 2020 09:29:28 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 23 Apr 2020 09:29:28 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03NETP4k112639;
-        Thu, 23 Apr 2020 09:29:26 -0500
-Subject: Re: [PATCH net-next v4 00/10] net: ethernet: ti: cpts: add irq and
- HW_TS_PUSH events
-To:     David Miller <davem@davemloft.net>
-CC:     <richardcochran@gmail.com>, <lokeshvutla@ti.com>,
-        <tony@atomide.com>, <netdev@vger.kernel.org>, <nsekhar@ti.com>,
-        <linux-kernel@vger.kernel.org>, <m-karicheri2@ti.com>,
-        <linux-omap@vger.kernel.org>
-References: <20200422201254.15232-1-grygorii.strashko@ti.com>
- <20200422.195705.2021017077827664261.davem@davemloft.net>
- <20200422.195947.725312745030873910.davem@davemloft.net>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <8f7954ce-566a-1968-9800-bd0ee75959c0@ti.com>
-Date:   Thu, 23 Apr 2020 17:29:21 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1728220AbgDWObo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Apr 2020 10:31:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44020 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727921AbgDWObg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 23 Apr 2020 10:31:36 -0400
+Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6719AC08ED7D
+        for <linux-omap@vger.kernel.org>; Thu, 23 Apr 2020 07:31:35 -0700 (PDT)
+Received: by mail-ua1-x943.google.com with SMTP id u12so5843138uau.10
+        for <linux-omap@vger.kernel.org>; Thu, 23 Apr 2020 07:31:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=verdurent-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=W6zpFn1zJVrYQizk9f7+ghPBLR7OHw9eoL9Fn3H2lbA=;
+        b=dJcp7coCzFdfdbkaEsBKqU3CIF7bXl3qmif1RGgpbk4rfIPYRnaH3M4coOmrH7v7tz
+         vZY+9NQ+38MKGaIAbfDmJsvL//NhG0o1svW52qxQH68xocUvRdHcgSEu1xmzT1MctZ8Y
+         z7bjlvCQR6sCr+JkorL0wNtOzOl1lTedp+fyRGvhz3QrDZg154Ou814jLRD6eNDXMUKu
+         lDQg9w218VNTx8ipNLtlfudR7TGhq+LkQw9eyvZmqkrfyw+QaeB962JUVEbTOTgD3Ino
+         5XmrW7tUjUz7cbbIE3IkG9z6NAZbtVP9IWy1IiRiSUeTzNZqS8256q8OD8wT6Zqp3s/J
+         g6Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=W6zpFn1zJVrYQizk9f7+ghPBLR7OHw9eoL9Fn3H2lbA=;
+        b=ddGfB+3JlwAdOlJj6Wx+2bJ7ah1VLbQx/lr0HW9d1K1ju77Cvcv1UdctgZOlkcy7aj
+         RzcPfYvXSSzDs1JBfHeJDhNYSjgocndzz1ZGvWbM8kQ9K2FHU1j4y/eW86PeuxRTbfx5
+         lrb0hWnKAzn/HV9Evp55QbkVJzjelpYZ7Sid7bgLSemuG5f1jCBHTFVs9wDs4XTb3xGe
+         bSUE7GjgsiMK2CHp3AC8q/aVLP721Dk8+oQMuZ9ULXsnNHqus7PSJbUOiLroQc7OcYjW
+         CVSTrkxz9OWO68uWLvPEhHJrqIThlib5fANBdUfN5YTJR2OKMh0RQWL5MICsl4TusnIo
+         aN+g==
+X-Gm-Message-State: AGi0PuY3kk3Tkb7UrzPvQbALZWbb/npc1IjKQ96fq732Mdst+vrs/LWx
+        WJe1Dkpf4AriML17Hc7islhMiec7S5ezDHNhEKNeQg==
+X-Google-Smtp-Source: APiQypLj7+UHWWr7l19cHjaedxQUwCnANkyx2Oxglcx9VhHQg+KFxhHNZ0hR6id8hEFLijzaPhwicBS2Wc3omEh9rnY=
+X-Received: by 2002:a67:4242:: with SMTP id p63mr3000372vsa.159.1587652294393;
+ Thu, 23 Apr 2020 07:31:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200422.195947.725312745030873910.davem@davemloft.net>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20200423125757.14057-1-sudipm.mukherjee@gmail.com>
+In-Reply-To: <20200423125757.14057-1-sudipm.mukherjee@gmail.com>
+From:   Amit Kucheria <amit.kucheria@verdurent.com>
+Date:   Thu, 23 Apr 2020 20:01:10 +0530
+Message-ID: <CAHLCerOTruxM_nJHVhjqq--gczi_MQRWGQN2zKF_BXpaz02ovw@mail.gmail.com>
+Subject: Re: [PATCH] thermal: ti-soc-thermal: avoid dereferencing ERR_PTR
+To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, Apr 23, 2020 at 6:27 PM Sudip Mukherjee
+<sudipm.mukherjee@gmail.com> wrote:
+>
+> On error the function ti_bandgap_get_sensor_data() returns the error
+> code in ERR_PTR() but we only checked if the return value is NULL or
+> not. And, so we can dereference a error code inside ERR_PTR.
+
+Typo, s/a error/an error/
+
+I see other uses of ti_bandgap_set_sensor_data() in the same file that
+could use similar checks.
+
+e.g. ti_thermal_unregister_cpu_cooling, possibly
+ti_thermal_report_sensor_temperature?
+
+>
+> Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
 
 
-On 23/04/2020 05:59, David Miller wrote:
-> From: David Miller <davem@davemloft.net>
-> Date: Wed, 22 Apr 2020 19:57:05 -0700 (PDT)
-> 
->> From: Grygorii Strashko <grygorii.strashko@ti.com>
->> Date: Wed, 22 Apr 2020 23:12:44 +0300
->>
->>> This is re-spin of patches to add CPSW IRQ and HW_TS_PUSH events support I've
->>> sent long time ago [1]. In this series, I've tried to restructure and split changes,
->>> and also add few additional optimizations comparing to initial RFC submission [1].
->>   ...
->>
->> Series applied, thanks.
-> 
-> Actually I had to revert, this breaks the build:
-> 
-> [davem@localhost net-next]$ make -s -j14
-> ERROR: modpost: "cpts_misc_interrupt" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
-> ERROR: modpost: "cpts_misc_interrupt" [drivers/net/ethernet/ti/ti_cpsw.ko] undefined!
-> make[1]: *** [scripts/Makefile.modpost:94: __modpost] Error 1
-> make: *** [Makefile:1319: modules] Error 2
-> 
-
-Fixed and resent.
-
--- 
-Best regards,
-grygorii
+> ---
+>  drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> index d3e959d01606..1e2bf1f22dd1 100644
+> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> @@ -196,7 +196,7 @@ int ti_thermal_remove_sensor(struct ti_bandgap *bgp, int id)
+>
+>         data = ti_bandgap_get_sensor_data(bgp, id);
+>
+> -       if (data && data->ti_thermal) {
+> +       if (!IS_ERR_OR_NULL(data) && data->ti_thermal) {
+>                 if (data->our_zone)
+>                         thermal_zone_device_unregister(data->ti_thermal);
+>         }
+> --
+> 2.11.0
+>
