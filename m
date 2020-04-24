@@ -2,172 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9221C1B7D45
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 19:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78DCE1B7EE4
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 21:30:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727059AbgDXRtu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Apr 2020 13:49:50 -0400
-Received: from muru.com ([72.249.23.125]:51280 "EHLO muru.com"
+        id S1726908AbgDXTaK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Apr 2020 15:30:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35624 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727123AbgDXRtt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 24 Apr 2020 13:49:49 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 3C75E80E7;
-        Fri, 24 Apr 2020 17:50:35 +0000 (UTC)
-Date:   Fri, 24 Apr 2020 10:49:44 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Drew Fustini <drew@pdp7.com>
-Cc:     Robert Nelson <robertcnelson@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Kent Gibson <warthog618@gmail.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: gpio-omap: add support gpiolib bias (pull-up/down) flags?
-Message-ID: <20200424174944.GL37466@atomide.com>
-References: <20200413123921.GA32586@x1>
- <578a51c3-9cb4-91f9-4735-c512bf75553c@ti.com>
- <CAOCHtYg=rM_zP6Wr3bWKfvGpeK7sXLj6GLN3DXSh8JgfqDTcCA@mail.gmail.com>
- <db5e49dc-41b4-2ba5-87b3-f345749d7984@ti.com>
- <CAOCHtYgNH-OUWdKgKLr7U8Zy2OZb=P9Rpsv4mFii+VwU7h-vGA@mail.gmail.com>
- <20200415233712.GA16167@x1>
- <20200416163215.GH37466@atomide.com>
- <20200423131738.GA16584@x1>
- <20200423164208.GF37466@atomide.com>
- <20200424173242.GA25624@x1>
+        id S1725970AbgDXTaK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 24 Apr 2020 15:30:10 -0400
+Received: from localhost (mobile-166-175-187-210.mycingular.net [166.175.187.210])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BD95A2075A;
+        Fri, 24 Apr 2020 19:30:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587756610;
+        bh=QaWXr2oWtPWMdw0bfTG0RG9QMElIUw6uG1iNTqEcQP4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=yU4T3NuXKJSzFqNnh5ZE+IVrif5gAts0WvnOYkC9fcJl9GxBxv6CYAdmwUuHO45ij
+         SYBGzYRStCtxEOwmGrv5G0VGo7/JwnWbXzYz1otZjm8BMZfDl3ofkmAc6zmSf3PPWw
+         QV2u6ogb0JN7wSvWvZXnlAePz7BQJEd2FUEPlOa4=
+Date:   Fri, 24 Apr 2020 14:30:08 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Rob Herring <robherring2@gmail.com>
+Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 1/4] PCI: dra7xx: Don't select CONFIG_PCI_DRA7XX_HOST by
+ default
+Message-ID: <20200424193008.GA177667@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200424173242.GA25624@x1>
+In-Reply-To: <20200422192957.6lwr3aig4a3dcynr@rob-hp-laptop>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Drew Fustini <drew@pdp7.com> [200424 17:32]:
-> On Thu, Apr 23, 2020 at 09:42:08AM -0700, Tony Lindgren wrote:
-> > * Drew Fustini <drew@pdp7.com> [200423 13:17]:
-> > > Thanks, Tony.  I was able to apply your patch cleanly to 5.5.9 kernel
-> > > and boot it ok on the PocketBeagle (AM3358) which is what I'm currently
-> > > testing with.  I can switch to 5.7.x but I just happened to be on 5.5.x
-> > > because that is when bias flags were added to gpiolib uapi.
+On Wed, Apr 22, 2020 at 02:29:57PM -0500, Rob Herring wrote:
+> On Tue, Apr 14, 2020 at 07:12:41PM -0500, Bjorn Helgaas wrote:
+> > From: Bjorn Helgaas <bhelgaas@google.com>
 > > 
-> > OK. BTW, with PocketBeagle and mainline v5.6 kernel, I see the micro-USB
-> > connection always get disconnected after few hours of use. Are you aware
-> > ofthat?
+> > Drivers should not be selected by default because that bloats the kernel
+> > for people who don't need them.
 > > 
-> > This is with the micro-USB configured as acm and ecm gadget via configfs.
-> 
-> I've been rebooting often as I build new kernels with debug output but I
-> will do a test with 5.6 by leaving it running overnight and see if it gets
-> disrupted.  I use the PocketBeagle with the TechLab PocketCape [0] for
-> kernel development as there is no eMMC to confuse the boot sequence and
-> the TechLab has a seperate USB to serial converter so I can easily see
-> u-boot and kernel console.
-
-Oh OK that looks like a nice cape :)
-
-> I asked Robert Nelson if he'd heard of this issue and he had not.  But he
-> asked how you are powering the board as any blip would probably reset the
-> board instantly as not enough cap's on the PocketBeagle's USB power rail.  
-
-Hmm good point. I recall the pocketbeagle uptime being many days with
-USB stopping enumerating. But yes, this is powered over USB.
-
-> > > I'm a somewhat confused about the difference between the "gpio-ranges"
-> > > property for the gpio[0-3] nodes and the "pinctrl-single,gpio-range"
-> > > property for the am33xx_pinmux node.
-> > > 
-> > > For a test, I tried adding "gpio-ranges" to arch/arm/boot/dts/am33xx-l4.dtsi:
-> > > 
-> > >                         gpio0: gpio@0 {
-> > >                                 compatible = "ti,omap4-gpio";
-> > >                                 gpio-controller;
-> > >                                 #gpio-cells = <2>;
-> > >                                 interrupt-controller;
-> > >                                 #interrupt-cells = <2>;
-> > >                                 reg = <0x0 0x1000>;
-> > >                                 interrupts = <96>;
-> > >                                 gpio-ranges = <&am33xx_pinmux 0 0 1>;
-> > > 			}
+> > Remove the "default y" for CONFIG_PCI_DRA7XX_HOST.
 > > 
-> > So the gpio-ranges tells the gpio contorller what pinctrl device pin
-> > to use for configuring things.
-> 
-> Thanks, that makes sense. 
-> 
-> But in this case, pinctrl-single also needs to parse "gpio-ranges"
-> property from the gpio nodes?
-
-Hmm not sure but don't think so, I think that information comes from
-the calls from gpio-omap.c to pinctrl-single.c.
-
-> > > and "pinctrl-single,gpio-range" like this:
-> > > 
-> > >                                 am33xx_pinmux: pinmux@800 {
-> > >                                         compatible = "pinctrl-single";
-> > >                                         reg = <0x800 0x238>;
-> > >                                         #pinctrl-cells = <1>;
-> > >                                         pinctrl-single,register-width = <32>;
-> > >                                         pinctrl-single,function-mask = <0x7f>;
-> > > 
-> > >                                         pinctrl-single,gpio-range = <&range 0 1 0>;
-> > > 
-> > >                                         range: gpio-range {
-> > >                                                 #pinctrl-single,gpio-range-cells = <3>;
-> > >                                         };
-> > >                                 };
-> > > 
-> > > Do you think both of those properties would be needed?
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: Kishon Vijay Abraham I <kishon@ti.com>
+> > Cc: linux-omap@vger.kernel.org
+> > ---
+> >  drivers/pci/controller/dwc/Kconfig | 1 -
+> >  1 file changed, 1 deletion(-)
 > > 
-> > No I don't think so. The pinctrl-single could be additionally
-> > configured for gpio functionality too. For omaps, that gpio
-> > functionality would be mostly limited to output toggling using the
-> > internal pulls. Would be still usable on some systems though.
+> > diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
+> > index 03dcaf65d159..ea335ee7ca8e 100644
+> > --- a/drivers/pci/controller/dwc/Kconfig
+> > +++ b/drivers/pci/controller/dwc/Kconfig
+> > @@ -26,7 +26,6 @@ config PCI_DRA7XX_HOST
+> >  	depends on OF && HAS_IOMEM && TI_PIPE3
+> >  	select PCIE_DW_HOST
+> >  	select PCI_DRA7XX
+> > -	default y
 > 
-> What woud it mean for the pinctrl-single to be configured for gpio
-> functionality?
+> Perhaps 'default y if SOC_DRA7XX'?
 
-That would mean that you can also use pinctrl-single as a gp(i)o
-controller in some cases with the pulls instead of gpio-omap.
-
-> Would that be needed for pinctrl_gpio_request() to succeed?
-
-No, that's a separate feature.
-
-> > Also, it's been a while so I don't remember where I started running
-> > into addressing issues though.. My guess is that you will soon hit
-> > them too and notice :)
-> > 
-> > But basically we want to reference the pinctrl pins based on their
-> > physical offset from the padconf base register, and not based on an
-> > invented number in the dts. Well maybe you can describe the problem
-> > further for us to discuss when you see it :)
-> 
-> Wouldn't the pinctrl pin numbering be from 0 to pcs_device.size /
-> pcs_device.width ?  
-
-Yes. And ideally we'd specify the real register offset rather
-than the index number for the pin also in the dts.
-
-If that does not work for some reason, then it's best to set up a
-macro to avoid confusion with figuring out the pin index rather
-than look up the register offset in the TRM. But we can figure
-that out once you have something working.
-
-> That index number of the pin plus pcs_device would give the physical
-> address of the padconf register.
-
-Right, I'm more concerned what gets put into the dts files
-as that's an ABI.
-
-Regards,
-
-Tony
-
-> [0] https://beagleboard.org/techlab
+Good idea, I did that.
