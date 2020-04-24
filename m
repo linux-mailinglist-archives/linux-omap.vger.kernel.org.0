@@ -2,46 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A188B1B7925
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 17:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 862521B7927
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 17:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727839AbgDXPN0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Apr 2020 11:13:26 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:54176 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726908AbgDXPN0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Apr 2020 11:13:26 -0400
+        id S1728090AbgDXPN3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Apr 2020 11:13:29 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:50462 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726908AbgDXPN3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Apr 2020 11:13:29 -0400
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03OFDLIn102874;
-        Fri, 24 Apr 2020 10:13:21 -0500
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03OFDNUb051974;
+        Fri, 24 Apr 2020 10:13:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1587741201;
-        bh=pRqmNUGyBPw4gYHrvhoqtHKP4Q74hDU2V/SRdI0u1qA=;
+        s=ti-com-17Q1; t=1587741203;
+        bh=P8ZmpQjmczswA6Ei2TXEgbRC/mMssBRFI2xJIoa9u0I=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Ku8bwvrg+TAPEVlEsGkyTvjpH3YdYjZvSa3kSyoxWpm83dktkEeKjlApawLt32FmE
-         xWoNtjINsxTVTA0F0i3NGGbB0EQEU6UbkKCGZlo7Z8FVmOKdxNFIE3G6ViIE6fSMfG
-         3m7ThTHX1JUjWY+X66awk2gOKF8hPBpLem4RaCLM=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03OFDLkn092275
+        b=Pn9SH0RQDazcGUb6lfDCDoWPXVkKMrQCY4nZuXYWoDGUTMcLzHo3kRdjxbKW6lHvw
+         XaXlmezR0yh0vkX4taqe/LLDZ4y53KbLenQwan/4mkerYEotsMuFbvtTGQx4uPwaQB
+         Bdmf+X2iVkt2XDW77arOHQkj8w8GSRe+SXHG0Qhg=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03OFDNMR092288
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 24 Apr 2020 10:13:21 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 24 Apr 2020 10:13:23 -0500
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 24
- Apr 2020 10:13:21 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ Apr 2020 10:13:23 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 24 Apr 2020 10:13:21 -0500
+ Frontend Transport; Fri, 24 Apr 2020 10:13:23 -0500
 Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03OFCu7O122378;
-        Fri, 24 Apr 2020 10:13:20 -0500
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03OFCu7P122378;
+        Fri, 24 Apr 2020 10:13:21 -0500
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <linux-omap@vger.kernel.org>, <tony@atomide.com>
-CC:     <s-anna@ti.com>, <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH 16/17] ARM: dts: am571x-idk: Add CMA pools and enable IPUs & DSP1 rprocs
-Date:   Fri, 24 Apr 2020 18:12:43 +0300
-Message-ID: <20200424151244.3225-17-t-kristo@ti.com>
+CC:     <s-anna@ti.com>, <linux-arm-kernel@lists.infradead.org>,
+        Angela Stegmaier <angelabaker@ti.com>
+Subject: [PATCH 17/17] ARM: dts: dra7-ipu-dsp-common: Add watchdog timers to IPU and DSP nodes
+Date:   Fri, 24 Apr 2020 18:12:44 +0300
+Message-ID: <20200424151244.3225-18-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200424151244.3225-1-t-kristo@ti.com>
 References: <20200424151244.3225-1-t-kristo@ti.com>
@@ -55,89 +56,74 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Suman Anna <s-anna@ti.com>
 
-The CMA reserved memory nodes have been added for both the IPUs and the
-DSP1 remoteproc devices on the AM571x IDK board. These nodes are assigned
-to the respective rproc device nodes, and both the IPUs and the DSP1
-remote processors are enabled for this board.
+The watchdog timer information has been added to all the IPU and DSP
+remote processor device nodes in the DRA7xx/AM57xx SoC families. The
+data has been added to the two common dra7-ipu-dsp-common and
+dra74-ipu-dsp-common dtsi files that can be included by all the
+desired board files. The following timers are chosen as the watchdog
+timers, as per the usage on the current firmware images:
+        IPU2: GPTimers 4 & 9 (one for each Cortex-M4 core)
+        IPU1: GPTimers 7 & 8 (one for each Cortex-M4 core)
+        DSP1: GPTimer 10
+        DSP2: GPTimer 13
 
-The current CMA pools and sizes are defined statically for each device.
-The addresses chosen are the same as the respective processors on the
-DRA72 EVM board to maintain firmware compatibility between the two boards.
-The CMA pools and sizes are defined using 64-bit values to support LPAE.
-The starting addresses are fixed to meet current dependencies on the
-remote processor firmwares, and this will go away when the remote-side
-code has been improved to gather this information runtime during its
-initialization.
+Each of the IPUs has two Cortex-M4 processors and so uses a timer
+each for providing watchdog support on that processor irrespective of
+whether the IPU is running in SMP-mode or non-SMP node. The chosen
+timers also need to be unique from the ones used by other processors
+(regular timers or watchdog timers) so that they can be supported
+simultaneously.
 
-An associated pair of the rproc node and its CMA node can be disabled
-later on if there is no use-case defined to use that remote processor.
+The MPU-side drivers will use this data to initialize the watchdog
+timer(s), and listen for any watchdog triggers. The BIOS-side code on
+these processors needs to configure/refresh the corresponding timer
+properly to not throw a watchdog error.
 
+The watchdog timers are optional in general, but are mandatory to
+be added to support watchdog error recovery on a particular processor.
+These timers can be changed or removed as per the system integration
+needs, alongside appropriate equivalent changes on the firmware side.
+
+Signed-off-by: Angela Stegmaier <angelabaker@ti.com>
 Signed-off-by: Suman Anna <s-anna@ti.com>
 Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- arch/arm/boot/dts/am571x-idk.dts | 42 ++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi  | 3 +++
+ arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/arm/boot/dts/am571x-idk.dts b/arch/arm/boot/dts/am571x-idk.dts
-index 98f12231728a..62eb2b6ff10b 100644
---- a/arch/arm/boot/dts/am571x-idk.dts
-+++ b/arch/arm/boot/dts/am571x-idk.dts
-@@ -21,6 +21,33 @@
- 		reg = <0x0 0x80000000 0x0 0x40000000>;
- 	};
- 
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		ipu2_memory_region: ipu2-memory@95800000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0x0 0x95800000 0x0 0x3800000>;
-+			reusable;
-+			status = "okay";
-+		};
-+
-+		dsp1_memory_region: dsp1-memory@99000000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0x0 0x99000000 0x0 0x4000000>;
-+			reusable;
-+			status = "okay";
-+		};
-+
-+		ipu1_memory_region: ipu1-memory@9d000000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0x0 0x9d000000 0x0 0x2000000>;
-+			reusable;
-+			status = "okay";
-+		};
-+	};
-+
- 	leds {
- 		compatible = "gpio-leds";
- 		cpu0-led {
-@@ -149,6 +176,21 @@
- 	load-gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
+diff --git a/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi b/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi
+index 23ce3b67faf7..a25749a1c365 100644
+--- a/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi
++++ b/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi
+@@ -23,14 +23,17 @@
+ &ipu2 {
+ 	mboxes = <&mailbox6 &mbox_ipu2_ipc3x>;
+ 	ti,timers = <&timer3>;
++	ti,watchdog-timers = <&timer4>, <&timer9>;
  };
  
-+&ipu2 {
-+	status = "okay";
-+	memory-region = <&ipu2_memory_region>;
-+};
-+
-+&ipu1 {
-+	status = "okay";
-+	memory-region = <&ipu1_memory_region>;
-+};
-+
-+&dsp1 {
-+	status = "okay";
-+	memory-region = <&dsp1_memory_region>;
-+};
-+
- &pcie1_rc {
- 	status = "okay";
- 	gpios = <&gpio5 18 GPIO_ACTIVE_HIGH>;
+ &ipu1 {
+ 	mboxes = <&mailbox5 &mbox_ipu1_ipc3x>;
+ 	ti,timers = <&timer11>;
++	ti,watchdog-timers = <&timer7>, <&timer8>;
+ };
+ 
+ &dsp1 {
+ 	mboxes = <&mailbox5 &mbox_dsp1_ipc3x>;
+ 	ti,timers = <&timer5>;
++	ti,watchdog-timers = <&timer10>;
+ };
+diff --git a/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi b/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi
+index a546cf740365..b1147a4b77f9 100644
+--- a/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi
++++ b/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi
+@@ -14,4 +14,5 @@
+ &dsp2 {
+ 	mboxes = <&mailbox6 &mbox_dsp2_ipc3x>;
+ 	ti,timers = <&timer6>;
++	ti,watchdog-timers = <&timer13>;
+ };
 -- 
 2.17.1
 
