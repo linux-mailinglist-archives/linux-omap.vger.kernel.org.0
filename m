@@ -2,129 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E19F1B723B
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 12:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2083B1B7594
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 14:40:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726835AbgDXKn2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Apr 2020 06:43:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35334 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726815AbgDXKn1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Apr 2020 06:43:27 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A54C09B047
-        for <linux-omap@vger.kernel.org>; Fri, 24 Apr 2020 03:43:27 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id u16so10149075wmc.5
-        for <linux-omap@vger.kernel.org>; Fri, 24 Apr 2020 03:43:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=dnKniRRBm6KLmX43VEEOIzRt6LvZaDlvdGMTuziUADI=;
-        b=piLvENvWl4DmoeSXfPxu8cdGgMrHv2thfba7D+KeyKcqRq/kNFVVmKom7MLokxYEuw
-         879epAZEr1e2PpWgseR+b75NAsekCVl6NCQoM153pJJCSpIeP+6b3oEHRZLWZiNP58hl
-         P9DroLVXk/DWSoF5KHOurjOqNB4LOM7EUPV4Gi6X5heKiiaM55ttbsdUycg2GLZQcxul
-         gF90xjqqxT8NIuixcLqed8aWxMKSXoOgeufFHqDlxj/esFD8joBr4w3NLmBGoxdujOlc
-         OLzS4B4TB0qg1ReZnFkVVNfYELkuLqzE0zceluUvZmW1Yd7rSGF0/vctUFq9hZkFtRje
-         8wZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=dnKniRRBm6KLmX43VEEOIzRt6LvZaDlvdGMTuziUADI=;
-        b=nnI9+SGdQ19N+0XXq0tTdpFupov3AW34pWkpPzDWukG+FIDfLLGYIbUGse/eT+2i8g
-         2LRCydjtBeXHfVEliMuBRhBRODSLvqB4zov3ymtpHGOF6RuYjEzbRh8bNSe4xWF8oX4x
-         FvjGl7eHYNvIAxEnnwzhdQuIFkVe1QLeWj0dz7OXspXugTnwbF10JJnIZcf5RTFU2gP4
-         Jr3Wgec6wvlTexPzBa7IkbHVq8YbIRGj6/nQr0SLBHCkBvLTB++fqRKM8X4oSbpSjref
-         +di8iVpxAyAKrzBYbQo5Cw4t1OGeyPTixVavI3M9AkwLTp0DCE3p3x5qsGDwxTuxHZz3
-         6+hA==
-X-Gm-Message-State: AGi0PuZ4uX3wriKW2UIzcgeLS1W/NyVr/AyrrU0MByCli4aD+XEFQGA4
-        R1L3GCPV2hjzSwyeiaaqZJGWUw==
-X-Google-Smtp-Source: APiQypI2Afy4s5XfsjxxMEU/3JcXJfiG2GDyNW0Ogfm/BVtwSxQPPPiy1JiCL97MEDi+IXKQD3oz7Q==
-X-Received: by 2002:a1c:5448:: with SMTP id p8mr9189810wmi.173.1587725005656;
-        Fri, 24 Apr 2020 03:43:25 -0700 (PDT)
-Received: from [192.168.43.23] ([37.166.159.243])
-        by smtp.googlemail.com with ESMTPSA id t2sm2341981wmt.15.2020.04.24.03.43.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Apr 2020 03:43:24 -0700 (PDT)
-Subject: Re: [PATCH v6 09/10] thermal: devfreq_cooling: Refactor code and
- switch to use Energy Model
-To:     Lukasz Luba <lukasz.luba@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-imx@nxp.com, Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
-        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
-        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
-        rui.zhang@intel.com, amit.kucheria@verdurent.com, mingo@redhat.com,
-        peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, rostedt@goodmis.org,
-        qperret@google.com, bsegall@google.com, mgorman@suse.de,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-        kernel@pengutronix.de, khilman@kernel.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, robh@kernel.org,
-        matthias.bgg@gmail.com, steven.price@arm.com,
-        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
-        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
-        lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net,
-        orjan.eide@arm.com, rdunlap@infradead.org, mka@chromium.org
-References: <20200410084210.24932-1-lukasz.luba@arm.com>
- <20200410084210.24932-10-lukasz.luba@arm.com>
- <20200423175708.GG65632@linaro.org>
- <b93226ac-a1f1-c1d0-fc25-0bd0f336252a@arm.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <73fb5d45-d8ac-534f-fd38-619739130160@linaro.org>
-Date:   Fri, 24 Apr 2020 12:43:20 +0200
+        id S1727101AbgDXMkw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Apr 2020 08:40:52 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:48526 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726667AbgDXMkv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Apr 2020 08:40:51 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03OCeSwJ130179;
+        Fri, 24 Apr 2020 07:40:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1587732028;
+        bh=OqOZLXd6jVvlszCib9onXl4SS/9K0iruKK4fRcv8uIo=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=ha46ki2bVuhYHKmUkAjivI0+mpfT7WpIwnDlT14eb2DC9lTigC25z6CcIBzOrVumB
+         A2XwWgWHoOz4DuYBnO7J5iUE78ku6r1j52O4oUAXepntKDk65Ly7uPiFuIYvERXfoa
+         GEzSBhFyo3FISMa/7Vdkr2wpMR/rzcNrm3L1E9oA=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03OCeSpK001066
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 24 Apr 2020 07:40:28 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 24
+ Apr 2020 07:40:28 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 24 Apr 2020 07:40:28 -0500
+Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03OCeOSv072911;
+        Fri, 24 Apr 2020 07:40:25 -0500
+Subject: Re: OF: ERROR: Bad of_node_put() on
+ /ocp/interconnect@4a000000/segment@0/target-module@8000/cm_core@0/l4per-cm@1700/l4per-clkctrl@28
+To:     Tony Lindgren <tony@atomide.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>
+CC:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <lkft-triage@lists.linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Benoit Cousson <bcousson@baylibre.com>,
+        Carlos Hernandez <ceh@ti.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Olof Johansson <olof@lixom.net>, <tomi.valkeinen@ti.com>,
+        Anders Roxell <anders.roxell@linaro.org>
+References: <CA+G9fYv5NxK+F5DX_q1c_wvnhjT_WTZBFJQXLWFeqMXsEcASZg@mail.gmail.com>
+ <CA+G9fYu-qYP2wJw4p1p_C6_ttwK0fvw+qUnsN9mDuKOv3zGEBw@mail.gmail.com>
+ <20200417152903.GO37466@atomide.com>
+From:   Tero Kristo <t-kristo@ti.com>
+Message-ID: <6366d76c-b9dc-6fa5-afad-0b2f471f8ec5@ti.com>
+Date:   Fri, 24 Apr 2020 15:40:23 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <b93226ac-a1f1-c1d0-fc25-0bd0f336252a@arm.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200417152903.GO37466@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 24/04/2020 12:02, Lukasz Luba wrote:
-> Hi Daniel,
+On 17/04/2020 18:29, Tony Lindgren wrote:
+> * Naresh Kamboju <naresh.kamboju@linaro.org> [200327 16:44]:
+>> The reported problem still happening on arm beagle board x15 device
+>> running Linux next kernel 20200327.
+> ...
 > 
-> On 4/23/20 6:57 PM, Daniel Lezcano wrote:
->> On Fri, Apr 10, 2020 at 09:42:09AM +0100, Lukasz Luba wrote:
->>> The overhauled Energy Model (EM) framework support also devfreq devices.
->>> The unified API interface of the EM can be used in the thermal
->>> subsystem to
->>> not duplicate code. The power table now is taken from EM structure and
->>> there is no need to maintain calculation for it locally. In case when
->>> the
->>> EM is not provided by the device a simple interface for cooling
->>> device is
->>> used.
->>>
->>> [lkp: Reported the build warning]
->>> Reported-by: kbuild test robot <lkp@intel.com>
->>> Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org> # for
->>> tracing code
->>> Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
->>
->> Is it possible to split this patch into smaller parts? It is hard to
->> understand
->> what is related to the em conversion and other changes which look not
->> related
->> so far.
->>
+>> [    0.000000] OF: ERROR: Bad of_node_put() on
+>> /ocp/interconnect@4a000000/segment@0/target-module@8000/cm_core@0/l4per-cm@1700/l4per-clkctrl@28
+>> [    0.000000] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W
+>>    5.6.0-rc7-next-20200327 #1
+>> [    0.000000] Hardware name: Generic DRA74X (Flattened Device Tree)
+>> [    0.000000] [<c0311810>] (unwind_backtrace) from [<c030ba14>]
+>> (show_stack+0x10/0x14)
+>> [    0.000000] [<c030ba14>] (show_stack) from [<c0fb6604>]
+>> (dump_stack+0xbc/0xd0)
+>> [    0.000000] [<c0fb6604>] (dump_stack) from [<c0fbb07c>]
+>> (kobject_put+0xc0/0x104)
+>> [    0.000000] [<c0fbb07c>] (kobject_put) from [<c1639e4c>]
+>> (of_clk_init+0x18c/0x228)
+>> [    0.000000] [<c1639e4c>] (of_clk_init) from [<c1611544>]
+>> (omap_clk_init+0x3c/0x58)
+>> [    0.000000] [<c1611544>] (omap_clk_init) from [<c1611ea8>]
+>> (omap4_sync32k_timer_init+0x8/0x2c)
+>> [    0.000000] [<c1611ea8>] (omap4_sync32k_timer_init) from
+>> [<c161213c>] (omap5_realtime_timer_init+0x8/0x234)
+>> [    0.000000] [<c161213c>] (omap5_realtime_timer_init) from
+>> [<c1600c88>] (start_kernel+0x330/0x4b8)
 > 
-> No problem, I will do the split (it will be in the v7).
+> Just FYI, Tero is looking at the clock issues that seem to be
+> causing these warnings.
 
-Thanks Lukasz
+Haven't seen this before, but easily reproducible with 
+multi_v7_defconfig. I have a simple fix for it now, will post to lists soon.
 
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+-Tero
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
