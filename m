@@ -2,107 +2,182 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B8641B7B50
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 18:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2091F1B7CD7
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 19:32:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727089AbgDXQTu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Apr 2020 12:19:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60002 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726753AbgDXQTt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Apr 2020 12:19:49 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D815C09B046;
-        Fri, 24 Apr 2020 09:19:47 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id i10so11566139wrv.10;
-        Fri, 24 Apr 2020 09:19:47 -0700 (PDT)
+        id S1727031AbgDXRcC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Apr 2020 13:32:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44058 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726908AbgDXRcC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 24 Apr 2020 13:32:02 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAFA2C09B047;
+        Fri, 24 Apr 2020 10:32:01 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id t14so11841695wrw.12;
+        Fri, 24 Apr 2020 10:32:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=tEMJE346iaELlYbOBZukFVqzIM6ZParrKkQhvnx79AY=;
-        b=GkrTdfOwF3BWTNp6AqfVToOU5ymMLH6eY4OccPYKijf3pd3f2EyaURY4TnOOIV+hmF
-         +BZuICsIU3Dl9U05Gw6sroJj1+3FDyvbtY2N50yUEEcVOcCFvePeCyuO+priGN9W93Mj
-         YV5riKJjRC8lLKqaGCiSgicH6XfnWFONZ3A8Nf16Oq/T8hbCXjXwCBfH0zLtOQWlnXVv
-         7ygZRO2EGqLe85Br9TDuwxeCwX0+7jtzqwgueueUxE5KSXzIAwFyFdEAdF8SjsDqNKY4
-         EPQvVIW0WOjvwzHAOhUm9TtcJN47Qr9E7n98BAz7j9age3+ZlzeJ/1utsiUqeosdiWAP
-         G4og==
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Ae2C36KNbBQoFJm+SENJYtAiUq+SZIwuCb0GpfbkICI=;
+        b=FH7R9vhcb+UeUh6+IRdyYb5LSIPFWRMjcMb81HxkQfUDPhIt/yz0eqVyw0P+tdLEEP
+         pjlavhyDtE+t0XH7W+vdPAS6/fqoDy6CKgX6eskkW9emdUE33Hrn6fOY9p6W0neeH++h
+         7mTP3pTlX7gbLw9kAlcbVzkmJe8BhCAknXEEZHxAUdqfzfnd8FlxCF/ASLVLMCoPx44D
+         Ci3ygxVQPsBw8TXEkgSI5m3ZKPVMIQR3BfJ62rUYz7LT0qbF98ki3TVrrWhyjxCckmYW
+         GCxbVg+mISbBr5vAiqe14NCCZrAXW5hgVDScbpSLLu3hzw7hExeSJw+b+OKB/b7b/lFv
+         ZcAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=tEMJE346iaELlYbOBZukFVqzIM6ZParrKkQhvnx79AY=;
-        b=OCoBhRPtMz8lvcDlYHcrvNJr5sqUbO6ucF1ScTdjTbYzte432hq72zzM0E3cbGSfyn
-         lom2Vj7ExWUN05+Q2J3Mon1QRRX9kQfSfvJXszs19U4oV+eA+xd00pXVEq6Yyuogv6/N
-         CAyOgr55VuPh+1hJW+1LHNB4tvtljxBQnWt5NFmwZpUN5Hj1gnYxho16ucRumuXj7b2U
-         688fzShmB1jmkc0J8n03z3LpcQ5kxDvObn1WjrJkT8L88GPMnanNokrHl3CeN/ZNl9rH
-         12SEZ3I4i1GdzPvun8iRJJkRoKsvGfuHVhhsn57fftbzyvcVGzxmSVLge3+MSpqNYZnK
-         ZCpA==
-X-Gm-Message-State: AGi0PuYTCk0N9nnBLDp1jzwXTr5T0GaMbJH+KX7/CmB68pvSdg5drZ+m
-        r/NCc3eoQoLILoK4SgIaLDc=
-X-Google-Smtp-Source: APiQypIifbomWIJRPgHYqW7cg7ovdoirf1LfvSI9QXRktOFer9j5YhrN8TXWYXw8oKcmkfXwhHilSQ==
-X-Received: by 2002:adf:d0ca:: with SMTP id z10mr12914289wrh.172.1587745186232;
-        Fri, 24 Apr 2020 09:19:46 -0700 (PDT)
-Received: from debian.office.codethink.co.uk. ([78.40.148.180])
-        by smtp.gmail.com with ESMTPSA id 1sm3745165wmi.0.2020.04.24.09.19.45
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 24 Apr 2020 09:19:45 -0700 (PDT)
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-To:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>
-Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH v2] thermal: ti-soc-thermal: avoid dereferencing ERR_PTR
-Date:   Fri, 24 Apr 2020 17:19:44 +0100
-Message-Id: <20200424161944.6044-1-sudipm.mukherjee@gmail.com>
-X-Mailer: git-send-email 2.11.0
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Ae2C36KNbBQoFJm+SENJYtAiUq+SZIwuCb0GpfbkICI=;
+        b=VCx0E6/A5Z+qIvFh6xCXjb3A1CTn2TsJAQmXxEYowybBdZdYT3/st27C9Geu1Krc9u
+         cZ39AgOzwL311Am9TjVvdDVHhJgQTs1EmIhrUtqzmH110UwIsyhmE3xuni8mE7be7cgL
+         TaoqOWtZckYmt9YqeuBNbQe9ibwBzV1EsQeodw3pUNBqyYBoF1HkAFMs0sPqdstCI1ii
+         uPRCOxhAiRV4Y/Rivr2oJNncYyaT2KJZveoR9TDqP3Cmvg0wcrgUQ5aAKsyW3bbI95Av
+         iJMvrnbM7Fo3iqrjncEx1tGIuYBXd0lATxUc0oqI9soS7BekOg1Z+2mkGLwb1xEG/K5D
+         tU4A==
+X-Gm-Message-State: AGi0PubtYvGXPJCQwpl7dW4VO+BNSkgR/S9D+4t4W7CZ52buJ9KSQd/Z
+        xYBXJe7xM2EJhqGIruZF9Bg=
+X-Google-Smtp-Source: APiQypLJDqSYs5XQe9GB3uV+4jAE5ISFOez3VrCttUxWQ6bcQSLbr7Ug0dEzliuG/XooxUDIbNL9Eg==
+X-Received: by 2002:adf:f34f:: with SMTP id e15mr12570471wrp.275.1587749519640;
+        Fri, 24 Apr 2020 10:31:59 -0700 (PDT)
+Received: from x1 ([2001:16b8:5cf0:5701:d87f:9aa1:fac7:9493])
+        by smtp.gmail.com with ESMTPSA id i13sm9128041wro.50.2020.04.24.10.31.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2020 10:31:58 -0700 (PDT)
+Date:   Fri, 24 Apr 2020 19:32:42 +0200
+From:   Drew Fustini <drew@pdp7.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Robert Nelson <robertcnelson@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Kent Gibson <warthog618@gmail.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: gpio-omap: add support gpiolib bias (pull-up/down) flags?
+Message-ID: <20200424173242.GA25624@x1>
+References: <CAD6h2NT840zMfwaJatfKzai8QjZEQmF5v0xgE+9ngSJJ+Qy+6g@mail.gmail.com>
+ <20200413123921.GA32586@x1>
+ <578a51c3-9cb4-91f9-4735-c512bf75553c@ti.com>
+ <CAOCHtYg=rM_zP6Wr3bWKfvGpeK7sXLj6GLN3DXSh8JgfqDTcCA@mail.gmail.com>
+ <db5e49dc-41b4-2ba5-87b3-f345749d7984@ti.com>
+ <CAOCHtYgNH-OUWdKgKLr7U8Zy2OZb=P9Rpsv4mFii+VwU7h-vGA@mail.gmail.com>
+ <20200415233712.GA16167@x1>
+ <20200416163215.GH37466@atomide.com>
+ <20200423131738.GA16584@x1>
+ <20200423164208.GF37466@atomide.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200423164208.GF37466@atomide.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On error the function ti_bandgap_get_sensor_data() returns the error
-code in ERR_PTR() but we only checked if the return value is NULL or
-not. And, so we can dereference an error code inside ERR_PTR.
-While at it, convert a check to IS_ERR_OR_NULL.
+On Thu, Apr 23, 2020 at 09:42:08AM -0700, Tony Lindgren wrote:
+> * Drew Fustini <drew@pdp7.com> [200423 13:17]:
+> > Thanks, Tony.  I was able to apply your patch cleanly to 5.5.9 kernel
+> > and boot it ok on the PocketBeagle (AM3358) which is what I'm currently
+> > testing with.  I can switch to 5.7.x but I just happened to be on 5.5.x
+> > because that is when bias flags were added to gpiolib uapi.
+> 
+> OK. BTW, with PocketBeagle and mainline v5.6 kernel, I see the micro-USB
+> connection always get disconnected after few hours of use. Are you aware
+> ofthat?
+> 
+> This is with the micro-USB configured as acm and ecm gadget via configfs.
 
-Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
----
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+I've been rebooting often as I build new kernels with debug output but I
+will do a test with 5.6 by leaving it running overnight and see if it gets
+disrupted.  I use the PocketBeagle with the TechLab PocketCape [0] for
+kernel development as there is no eMMC to confuse the boot sequence and
+the TechLab has a seperate USB to serial converter so I can easily see
+u-boot and kernel console.
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-index d3e959d01606..85776db4bf34 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -169,7 +169,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
- 
- 	data = ti_bandgap_get_sensor_data(bgp, id);
- 
--	if (!data || IS_ERR(data))
-+	if (!IS_ERR_OR_NULL(data))
- 		data = ti_thermal_build_data(bgp, id);
- 
- 	if (!data)
-@@ -196,7 +196,7 @@ int ti_thermal_remove_sensor(struct ti_bandgap *bgp, int id)
- 
- 	data = ti_bandgap_get_sensor_data(bgp, id);
- 
--	if (data && data->ti_thermal) {
-+	if (!IS_ERR_OR_NULL(data) && data->ti_thermal) {
- 		if (data->our_zone)
- 			thermal_zone_device_unregister(data->ti_thermal);
- 	}
-@@ -262,7 +262,7 @@ int ti_thermal_unregister_cpu_cooling(struct ti_bandgap *bgp, int id)
- 
- 	data = ti_bandgap_get_sensor_data(bgp, id);
- 
--	if (data) {
-+	if (!IS_ERR_OR_NULL(data)) {
- 		cpufreq_cooling_unregister(data->cool_dev);
- 		if (data->policy)
- 			cpufreq_cpu_put(data->policy);
--- 
-2.11.0
+I asked Robert Nelson if he'd heard of this issue and he had not.  But he
+asked how you are powering the board as any blip would probably reset the
+board instantly as not enough cap's on the PocketBeagle's USB power rail.  
 
+> > I'm a somewhat confused about the difference between the "gpio-ranges"
+> > property for the gpio[0-3] nodes and the "pinctrl-single,gpio-range"
+> > property for the am33xx_pinmux node.
+> > 
+> > For a test, I tried adding "gpio-ranges" to arch/arm/boot/dts/am33xx-l4.dtsi:
+> > 
+> >                         gpio0: gpio@0 {
+> >                                 compatible = "ti,omap4-gpio";
+> >                                 gpio-controller;
+> >                                 #gpio-cells = <2>;
+> >                                 interrupt-controller;
+> >                                 #interrupt-cells = <2>;
+> >                                 reg = <0x0 0x1000>;
+> >                                 interrupts = <96>;
+> >                                 gpio-ranges = <&am33xx_pinmux 0 0 1>;
+> > 			}
+> 
+> So the gpio-ranges tells the gpio contorller what pinctrl device pin
+> to use for configuring things.
+
+Thanks, that makes sense. 
+
+But in this case, pinctrl-single also needs to parse "gpio-ranges"
+property from the gpio nodes?
+
+> > and "pinctrl-single,gpio-range" like this:
+> > 
+> >                                 am33xx_pinmux: pinmux@800 {
+> >                                         compatible = "pinctrl-single";
+> >                                         reg = <0x800 0x238>;
+> >                                         #pinctrl-cells = <1>;
+> >                                         pinctrl-single,register-width = <32>;
+> >                                         pinctrl-single,function-mask = <0x7f>;
+> > 
+> >                                         pinctrl-single,gpio-range = <&range 0 1 0>;
+> > 
+> >                                         range: gpio-range {
+> >                                                 #pinctrl-single,gpio-range-cells = <3>;
+> >                                         };
+> >                                 };
+> > 
+> > Do you think both of those properties would be needed?
+> 
+> No I don't think so. The pinctrl-single could be additionally
+> configured for gpio functionality too. For omaps, that gpio
+> functionality would be mostly limited to output toggling using the
+> internal pulls. Would be still usable on some systems though.
+
+What woud it mean for the pinctrl-single to be configured for gpio
+functionality?
+
+Would that be needed for pinctrl_gpio_request() to succeed?
+
+> Also, it's been a while so I don't remember where I started running
+> into addressing issues though.. My guess is that you will soon hit
+> them too and notice :)
+> 
+> But basically we want to reference the pinctrl pins based on their
+> physical offset from the padconf base register, and not based on an
+> invented number in the dts. Well maybe you can describe the problem
+> further for us to discuss when you see it :)
+
+Wouldn't the pinctrl pin numbering be from 0 to pcs_device.size /
+pcs_device.width ?  
+
+That index number of the pin plus pcs_device would give the physical
+address of the padconf register.
+
+
+Thanks,
+Drew
+
+[0] https://beagleboard.org/techlab
