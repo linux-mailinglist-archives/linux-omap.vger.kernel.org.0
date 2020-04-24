@@ -2,112 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D291B7AB9
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 17:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B8641B7B50
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Apr 2020 18:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728665AbgDXPyY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Apr 2020 11:54:24 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:59456 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728644AbgDXPyX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Apr 2020 11:54:23 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03OFsFk1113611;
-        Fri, 24 Apr 2020 10:54:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1587743655;
-        bh=F3vv+/r3MYmKyP0QQdhLLRZ5pZyCQ8GYvR24m2BMlOA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=XM1DY4VD2Th0ZfhWMczUmt/ftTXPrHB0X3xwD/aLkUpE5S5z/XMm1JUAr8upTfTmi
-         Zh4L5aqe+bG7IrunszBMGsupbf35SfX2cq8uGhS+FcWeU5xNi3bDFiQBapiCuq1WEJ
-         QuMNv70tftuSNhyNvHiOtT68kQAiJ+R28ePLbxis=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03OFsFnX071649
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 24 Apr 2020 10:54:15 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 24
- Apr 2020 10:54:14 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 24 Apr 2020 10:54:14 -0500
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03OFsDlg038492;
-        Fri, 24 Apr 2020 10:54:13 -0500
-Subject: Re: [PATCH 00/17] ARM: dts: dra7/am57xx: remoteproc support
-To:     Tony Lindgren <tony@atomide.com>
-CC:     <linux-omap@vger.kernel.org>, <s-anna@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20200424151244.3225-1-t-kristo@ti.com>
- <20200424155128.GK37466@atomide.com>
-From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <5f8d4dbb-f4fc-ee97-8542-610e98d3f895@ti.com>
-Date:   Fri, 24 Apr 2020 18:54:12 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <20200424155128.GK37466@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S1727089AbgDXQTu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Apr 2020 12:19:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60002 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726753AbgDXQTt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Apr 2020 12:19:49 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D815C09B046;
+        Fri, 24 Apr 2020 09:19:47 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id i10so11566139wrv.10;
+        Fri, 24 Apr 2020 09:19:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=tEMJE346iaELlYbOBZukFVqzIM6ZParrKkQhvnx79AY=;
+        b=GkrTdfOwF3BWTNp6AqfVToOU5ymMLH6eY4OccPYKijf3pd3f2EyaURY4TnOOIV+hmF
+         +BZuICsIU3Dl9U05Gw6sroJj1+3FDyvbtY2N50yUEEcVOcCFvePeCyuO+priGN9W93Mj
+         YV5riKJjRC8lLKqaGCiSgicH6XfnWFONZ3A8Nf16Oq/T8hbCXjXwCBfH0zLtOQWlnXVv
+         7ygZRO2EGqLe85Br9TDuwxeCwX0+7jtzqwgueueUxE5KSXzIAwFyFdEAdF8SjsDqNKY4
+         EPQvVIW0WOjvwzHAOhUm9TtcJN47Qr9E7n98BAz7j9age3+ZlzeJ/1utsiUqeosdiWAP
+         G4og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=tEMJE346iaELlYbOBZukFVqzIM6ZParrKkQhvnx79AY=;
+        b=OCoBhRPtMz8lvcDlYHcrvNJr5sqUbO6ucF1ScTdjTbYzte432hq72zzM0E3cbGSfyn
+         lom2Vj7ExWUN05+Q2J3Mon1QRRX9kQfSfvJXszs19U4oV+eA+xd00pXVEq6Yyuogv6/N
+         CAyOgr55VuPh+1hJW+1LHNB4tvtljxBQnWt5NFmwZpUN5Hj1gnYxho16ucRumuXj7b2U
+         688fzShmB1jmkc0J8n03z3LpcQ5kxDvObn1WjrJkT8L88GPMnanNokrHl3CeN/ZNl9rH
+         12SEZ3I4i1GdzPvun8iRJJkRoKsvGfuHVhhsn57fftbzyvcVGzxmSVLge3+MSpqNYZnK
+         ZCpA==
+X-Gm-Message-State: AGi0PuYTCk0N9nnBLDp1jzwXTr5T0GaMbJH+KX7/CmB68pvSdg5drZ+m
+        r/NCc3eoQoLILoK4SgIaLDc=
+X-Google-Smtp-Source: APiQypIifbomWIJRPgHYqW7cg7ovdoirf1LfvSI9QXRktOFer9j5YhrN8TXWYXw8oKcmkfXwhHilSQ==
+X-Received: by 2002:adf:d0ca:: with SMTP id z10mr12914289wrh.172.1587745186232;
+        Fri, 24 Apr 2020 09:19:46 -0700 (PDT)
+Received: from debian.office.codethink.co.uk. ([78.40.148.180])
+        by smtp.gmail.com with ESMTPSA id 1sm3745165wmi.0.2020.04.24.09.19.45
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 24 Apr 2020 09:19:45 -0700 (PDT)
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH v2] thermal: ti-soc-thermal: avoid dereferencing ERR_PTR
+Date:   Fri, 24 Apr 2020 17:19:44 +0100
+Message-Id: <20200424161944.6044-1-sudipm.mukherjee@gmail.com>
+X-Mailer: git-send-email 2.11.0
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 24/04/2020 18:51, Tony Lindgren wrote:
-> * Tero Kristo <t-kristo@ti.com> [200424 08:13]:
->> Hi Tony,
->>
->> This series adds the DT nodes necessary for remoteproc support, now that
->> the driver side changes are (mostly) in. Couple of things to note
->> though.
->>
->> 1) There is a new IOMMU issue, for which I posted a fix today [1]
->> 2) The remoteproc core still has an issue for which there is ongoing
->>     discussion [2]
->>
->> With these two issue taken care of, the omap remoteproc support is
->> functional. The question though is, whether we should just wait until
->> the above two issues are resolved and merge the DT patches post that, or
->> merge the DT patches with status = "disabled".
-> 
-> If there are no dependencies between the pending driver fixes and
-> the dts changes I see no reason to not merge the dts changes.
+On error the function ti_bandgap_get_sensor_data() returns the error
+code in ERR_PTR() but we only checked if the return value is NULL or
+not. And, so we can dereference an error code inside ERR_PTR.
+While at it, convert a check to IS_ERR_OR_NULL.
 
-Yeah, no hard dependencies as such, just that things won't work properly 
-before they are in.
+Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+---
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
--Tero
+diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+index d3e959d01606..85776db4bf34 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
++++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+@@ -169,7 +169,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+ 
+ 	data = ti_bandgap_get_sensor_data(bgp, id);
+ 
+-	if (!data || IS_ERR(data))
++	if (!IS_ERR_OR_NULL(data))
+ 		data = ti_thermal_build_data(bgp, id);
+ 
+ 	if (!data)
+@@ -196,7 +196,7 @@ int ti_thermal_remove_sensor(struct ti_bandgap *bgp, int id)
+ 
+ 	data = ti_bandgap_get_sensor_data(bgp, id);
+ 
+-	if (data && data->ti_thermal) {
++	if (!IS_ERR_OR_NULL(data) && data->ti_thermal) {
+ 		if (data->our_zone)
+ 			thermal_zone_device_unregister(data->ti_thermal);
+ 	}
+@@ -262,7 +262,7 @@ int ti_thermal_unregister_cpu_cooling(struct ti_bandgap *bgp, int id)
+ 
+ 	data = ti_bandgap_get_sensor_data(bgp, id);
+ 
+-	if (data) {
++	if (!IS_ERR_OR_NULL(data)) {
+ 		cpufreq_cooling_unregister(data->cool_dev);
+ 		if (data->policy)
+ 			cpufreq_cpu_put(data->policy);
+-- 
+2.11.0
 
-> 
->> There aren't any boot failures without the mentioned two issues though,
->> as one needs to enable the RPMSG_VIRTIO support before the failures
->> really kick in (issue [2]), and this config is not enabled for OMAPs
->> yet. Also, multi-v7 config doesn't seem to enable omap remoteproc,
->> so that is safe also.
-> 
-> OK thanks for checking that.
-> 
->> Another thing I was considering myself was to squash all the board
->> specific reserved-memory region patches into the
->> dra7-ipu-dsp-common.dtsi files. However Suman wants to have these
->> separate and as he is the actual author for these, I posted them in this
->> form. But anyway, just so you know it would be possible to merge them
->> together.
-> 
-> OK. The combining of common features can be done in later patches
-> too.
-> 
-> Regards,
-> 
-> Tony
-> 
->> [1] https://lore.kernel.org/linux-iommu/20200424145828.3159-1-t-kristo@ti.com/T/#u
->> [2] https://lkml.org/lkml/2020/4/20/1094
-
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
