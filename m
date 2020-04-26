@@ -2,441 +2,284 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E4FD1B8A89
-	for <lists+linux-omap@lfdr.de>; Sun, 26 Apr 2020 02:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50F8A1B8D6A
+	for <lists+linux-omap@lfdr.de>; Sun, 26 Apr 2020 09:27:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726362AbgDZA5P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 25 Apr 2020 20:57:15 -0400
-Received: from mga05.intel.com ([192.55.52.43]:20919 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726125AbgDZA5M (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 25 Apr 2020 20:57:12 -0400
-IronPort-SDR: Kzd9UaeGMleh5UimFVm84kce1wsOuOZJTxupSGV5y6iPxawE5OTtGI4gi6k4Jm54ng0K/lafQ6
- cfxGoxqWkL7w==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2020 17:57:08 -0700
-IronPort-SDR: 6WRicbGpCFVfesPCTbglfRieW7iK/G1ZiI9ZSjvSTS8uYSLde15l1a7+BFH5WajUDIPY+PIJox
- xHz+fEwhcMyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,318,1583222400"; 
-   d="scan'208";a="248467453"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 25 Apr 2020 17:57:07 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jSVbW-000I5s-FR; Sun, 26 Apr 2020 08:57:06 +0800
-Date:   Sun, 26 Apr 2020 08:56:31 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
- a7b778357ca48df71bbaad6612beaca30bd96e54
-Message-ID: <5ea4dc3f.IZIR3/jyM25ajbC5%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726177AbgDZH1R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 26 Apr 2020 03:27:17 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:60866 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725847AbgDZH1R (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 26 Apr 2020 03:27:17 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 9699D1C0234; Sun, 26 Apr 2020 09:27:14 +0200 (CEST)
+Date:   Sun, 26 Apr 2020 09:27:13 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Johan Hovold <johan@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCHv6 0/4] n_gsm serdev support and protocol driver for
+ droid4 modem
+Message-ID: <20200426072713.GA31008@amd>
+References: <20200421232752.3070-1-tony@atomide.com>
+ <20200423114326.GQ18608@localhost>
+ <20200424215040.GA14087@amd>
+ <20200424221515.GM37466@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="jI8keyz6grp/JLjh"
+Content-Disposition: inline
+In-Reply-To: <20200424221515.GM37466@atomide.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
-branch HEAD: a7b778357ca48df71bbaad6612beaca30bd96e54  usb: raw-gadget: Fix copy_to/from_user() checks
 
-elapsed time: 8247m
+--jI8keyz6grp/JLjh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-configs tested: 382
-configs skipped: 0
+Hi!
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> > > > Here's v4 set of n_gsm serdev support patches, and the related prot=
+ocol
+> > > > driver for the modem found on Motorola Mapphone phones and tablets
+> > > > like droid4.
+> > > >=20
+> > > > This series only adds basic character device support for the serdev
+> > > > driver. Other serdev consumer drivers for specific devices will be
+> > > > posted separately.
+> > >=20
+> > > I'm still missing an architectural (design) overview here -- reviewer
+> > > time is a scarce resource.
+> > >=20
+> > > I also suggested earlier that you include, at least as an RFC, one or
+> > > more of your child-device drivers so that we can see how this ends up
+> > > being used in the end (including an example devicetree).
+> >=20
+> > Note that this is useful on its own: we have ofonod running on the top
+> > of this doing calls and SMSes.
+>=20
+> Yup.
+>=20
+> > Tony: I know you have drivers depending on this somewhere (audio
+> > routing and GPS), but I can't find them. It is not droid4-pending-v5.6
+> > AFAICT. Do you have a pointer / could you publish them somewhere?
+>=20
+> Hmm they should be there in droid4-pending-v5.6 branch [0]:
+>=20
+> $ git log --abbrev=3D12 --pretty=3Dformat:"%h (\"%s\")" \
+> 	v5.6..droid4-pending-v5.6 | grep -i -e gsm -e mot -e mdm
+> e09590a260a4 ("mfd: motmdm: Fix oops on unload of motorola-mdm")
+> f9252f9ff6bd ("mfd: motmdm: Revert bad list change")
+> d733dcaf4416 ("mfd: motmdm: Fix issue with receiving data before ddata is=
+ set")
+> 452d2b5d4c95 ("n_gsm: Build fixes for make randconfig build")
+> 6882b27ea92a ("phy: mapphone-mdm6600: Fix write timeouts with shorter GPI=
+O toggle interval")
+> 58ff58c4b520 ("mfd: motmdm: Add basic DTMF support")
+> e92b6f30e5ae ("ASoC: audio-graph-card: Add audio mixer for motorold mdm66=
+00")
+> c2caea5767d5 ("gnss: mot-mdm6600: Add support for Motorola Mapphone MDM66=
+00 modem")
+> a5f73b7b06f6 ("mfd: motmdm: Add Motorola TS 27.010 serdev driver for devi=
+ces like droid4")
+> 6c311d5aeb0a ("dt-bindings: mfd: motmdm: Add binding for motorola-mdm")
+> cd02274b920e ("tty: n_gsm: Add support for serdev drivers")
+> a73a48321c98 ("phy: mapphone-mdm6600: Fix timeouts by adding wake-up hand=
+ling")
 
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-arm64                            allmodconfig
-arm                              allmodconfig
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                        shmobile_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                           sunxi_defconfig
-arm                        multi_v7_defconfig
-sparc                            allyesconfig
-ia64                          tiger_defconfig
-mips                malta_kvm_guest_defconfig
-sh                  sh7785lcr_32bit_defconfig
-arc                                 defconfig
-parisc                            allnoconfig
-ia64                              allnoconfig
-ia64                        generic_defconfig
-ia64                             alldefconfig
-i386                              allnoconfig
-um                           x86_64_defconfig
-mips                          ath79_defconfig
-um                                  defconfig
-s390                             alldefconfig
-parisc                generic-64bit_defconfig
-powerpc                             defconfig
-openrisc                    or1ksim_defconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                         bigsur_defconfig
-ia64                             allyesconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-m68k                       m5475evb_defconfig
-m68k                             allmodconfig
-h8300                    h8300h-sim_defconfig
-m68k                           sun3_defconfig
-m68k                          multi_defconfig
-arc                              allyesconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-mips                            ar7_defconfig
-mips                             allyesconfig
-mips                         64r6el_defconfig
-mips                              allnoconfig
-mips                           32r2_defconfig
-mips                             allmodconfig
-mips                         tb0287_defconfig
-mips                       capcella_defconfig
-mips                           ip32_defconfig
-mips                  decstation_64_defconfig
-mips                      loongson3_defconfig
-mips                        bcm63xx_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-parisc               randconfig-a001-20200422
-mips                 randconfig-a001-20200422
-alpha                randconfig-a001-20200422
-m68k                 randconfig-a001-20200422
-riscv                randconfig-a001-20200422
-nds32                randconfig-a001-20200422
-parisc               randconfig-a001-20200424
-alpha                randconfig-a001-20200424
-m68k                 randconfig-a001-20200424
-riscv                randconfig-a001-20200424
-nds32                randconfig-a001-20200424
-parisc               randconfig-a001-20200421
-alpha                randconfig-a001-20200421
-mips                 randconfig-a001-20200421
-m68k                 randconfig-a001-20200421
-riscv                randconfig-a001-20200421
-nds32                randconfig-a001-20200421
-parisc               randconfig-a001-20200423
-alpha                randconfig-a001-20200423
-mips                 randconfig-a001-20200423
-m68k                 randconfig-a001-20200423
-riscv                randconfig-a001-20200423
-nds32                randconfig-a001-20200423
-parisc               randconfig-a001-20200426
-mips                 randconfig-a001-20200426
-alpha                randconfig-a001-20200426
-m68k                 randconfig-a001-20200426
-nds32                randconfig-a001-20200426
-nios2                randconfig-a001-20200421
-h8300                randconfig-a001-20200421
-c6x                  randconfig-a001-20200421
-sparc64              randconfig-a001-20200421
-microblaze           randconfig-a001-20200421
-nios2                randconfig-a001-20200424
-c6x                  randconfig-a001-20200424
-h8300                randconfig-a001-20200424
-sparc64              randconfig-a001-20200424
-microblaze           randconfig-a001-20200424
-nios2                randconfig-a001-20200423
-h8300                randconfig-a001-20200423
-c6x                  randconfig-a001-20200423
-sparc64              randconfig-a001-20200423
-microblaze           randconfig-a001-20200423
-nios2                randconfig-a001-20200425
-c6x                  randconfig-a001-20200425
-h8300                randconfig-a001-20200425
-sparc64              randconfig-a001-20200425
-microblaze           randconfig-a001-20200425
-sh                   randconfig-a001-20200421
-csky                 randconfig-a001-20200421
-s390                 randconfig-a001-20200421
-xtensa               randconfig-a001-20200421
-openrisc             randconfig-a001-20200421
-sh                   randconfig-a001-20200424
-csky                 randconfig-a001-20200424
-s390                 randconfig-a001-20200424
-xtensa               randconfig-a001-20200424
-openrisc             randconfig-a001-20200424
-sh                   randconfig-a001-20200425
-csky                 randconfig-a001-20200425
-s390                 randconfig-a001-20200425
-xtensa               randconfig-a001-20200425
-openrisc             randconfig-a001-20200425
-x86_64               randconfig-a001-20200420
-i386                 randconfig-a003-20200420
-x86_64               randconfig-a003-20200420
-i386                 randconfig-a002-20200420
-i386                 randconfig-a001-20200420
-x86_64               randconfig-a002-20200420
-i386                 randconfig-b002-20200421
-i386                 randconfig-b001-20200421
-x86_64               randconfig-b001-20200421
-i386                 randconfig-b003-20200421
-x86_64               randconfig-b002-20200421
-x86_64               randconfig-b003-20200421
-i386                 randconfig-b002-20200426
-x86_64               randconfig-b001-20200426
-i386                 randconfig-b001-20200426
-i386                 randconfig-b003-20200426
-x86_64               randconfig-b003-20200426
-i386                 randconfig-b002-20200425
-x86_64               randconfig-b001-20200425
-i386                 randconfig-b001-20200425
-i386                 randconfig-b003-20200425
-x86_64               randconfig-b002-20200425
-x86_64               randconfig-b003-20200425
-i386                 randconfig-b002-20200422
-i386                 randconfig-b001-20200422
-x86_64               randconfig-b001-20200422
-i386                 randconfig-b003-20200422
-x86_64               randconfig-b003-20200422
-x86_64               randconfig-a001-20200424
-i386                 randconfig-a003-20200424
-x86_64               randconfig-a003-20200424
-i386                 randconfig-a002-20200424
-i386                 randconfig-a001-20200424
-x86_64               randconfig-a002-20200424
-i386                 randconfig-c001-20200421
-x86_64               randconfig-c002-20200421
-x86_64               randconfig-c001-20200421
-i386                 randconfig-c003-20200421
-x86_64               randconfig-c003-20200421
-i386                 randconfig-c002-20200424
-i386                 randconfig-c001-20200424
-x86_64               randconfig-c001-20200424
-i386                 randconfig-c003-20200424
-x86_64               randconfig-c003-20200424
-i386                 randconfig-c002-20200425
-i386                 randconfig-c001-20200425
-x86_64               randconfig-c002-20200425
-x86_64               randconfig-c001-20200425
-i386                 randconfig-c003-20200425
-x86_64               randconfig-c003-20200425
-i386                 randconfig-c002-20200423
-i386                 randconfig-c001-20200423
-x86_64               randconfig-c002-20200423
-x86_64               randconfig-c001-20200423
-i386                 randconfig-c003-20200423
-x86_64               randconfig-c003-20200423
-i386                 randconfig-c002-20200421
-x86_64               randconfig-a001-20200422
-i386                 randconfig-a003-20200422
-x86_64               randconfig-a003-20200422
-i386                 randconfig-a002-20200422
-i386                 randconfig-a001-20200422
-x86_64               randconfig-a002-20200422
-x86_64               randconfig-d001-20200421
-x86_64               randconfig-d002-20200421
-i386                 randconfig-d002-20200421
-i386                 randconfig-d001-20200421
-x86_64               randconfig-d003-20200421
-i386                 randconfig-d003-20200421
-x86_64               randconfig-d002-20200422
-i386                 randconfig-d002-20200422
-i386                 randconfig-d001-20200422
-i386                 randconfig-d003-20200422
-x86_64               randconfig-d001-20200423
-x86_64               randconfig-d002-20200423
-i386                 randconfig-d002-20200423
-i386                 randconfig-d001-20200423
-x86_64               randconfig-d003-20200423
-i386                 randconfig-d003-20200423
-x86_64               randconfig-d001-20200424
-i386                 randconfig-d002-20200424
-i386                 randconfig-d001-20200424
-x86_64               randconfig-d003-20200424
-i386                 randconfig-d003-20200424
-x86_64               randconfig-d002-20200426
-i386                 randconfig-d002-20200426
-i386                 randconfig-d001-20200426
-i386                 randconfig-d003-20200426
-x86_64               randconfig-e002-20200421
-i386                 randconfig-e003-20200421
-x86_64               randconfig-e003-20200421
-i386                 randconfig-e002-20200421
-i386                 randconfig-e001-20200421
-x86_64               randconfig-e001-20200421
-i386                 randconfig-e003-20200425
-x86_64               randconfig-e002-20200425
-x86_64               randconfig-e003-20200425
-i386                 randconfig-e002-20200425
-i386                 randconfig-e001-20200425
-x86_64               randconfig-e001-20200425
-i386                 randconfig-e003-20200426
-x86_64               randconfig-e003-20200426
-i386                 randconfig-e002-20200426
-i386                 randconfig-e001-20200426
-x86_64               randconfig-e001-20200426
-x86_64               randconfig-e002-20200423
-i386                 randconfig-e003-20200423
-x86_64               randconfig-e003-20200423
-i386                 randconfig-e002-20200423
-i386                 randconfig-e001-20200423
-x86_64               randconfig-e001-20200423
-i386                 randconfig-f002-20200421
-i386                 randconfig-f003-20200421
-x86_64               randconfig-f003-20200421
-i386                 randconfig-f001-20200421
-x86_64               randconfig-f001-20200421
-x86_64               randconfig-f002-20200424
-i386                 randconfig-f002-20200424
-i386                 randconfig-f003-20200424
-x86_64               randconfig-f003-20200424
-i386                 randconfig-f001-20200424
-x86_64               randconfig-f001-20200424
-i386                 randconfig-f002-20200425
-i386                 randconfig-f003-20200425
-x86_64               randconfig-f003-20200425
-i386                 randconfig-f001-20200425
-x86_64               randconfig-f001-20200425
-x86_64               randconfig-f002-20200426
-i386                 randconfig-f002-20200426
-x86_64               randconfig-f003-20200426
-i386                 randconfig-f003-20200426
-i386                 randconfig-f001-20200426
-x86_64               randconfig-f001-20200426
-x86_64               randconfig-f002-20200422
-i386                 randconfig-f002-20200422
-x86_64               randconfig-f003-20200422
-i386                 randconfig-f003-20200422
-i386                 randconfig-f001-20200422
-x86_64               randconfig-f001-20200422
-i386                 randconfig-g003-20200422
-x86_64               randconfig-g001-20200422
-i386                 randconfig-g001-20200422
-x86_64               randconfig-g002-20200422
-i386                 randconfig-g002-20200422
-x86_64               randconfig-g003-20200422
-i386                 randconfig-g003-20200424
-i386                 randconfig-g001-20200424
-x86_64               randconfig-g001-20200424
-x86_64               randconfig-g002-20200424
-i386                 randconfig-g002-20200424
-x86_64               randconfig-g003-20200424
-i386                 randconfig-g003-20200426
-i386                 randconfig-g001-20200426
-x86_64               randconfig-g001-20200426
-x86_64               randconfig-g002-20200426
-i386                 randconfig-g002-20200426
-x86_64               randconfig-g003-20200426
-i386                 randconfig-g003-20200423
-x86_64               randconfig-g001-20200423
-i386                 randconfig-g001-20200423
-i386                 randconfig-g002-20200423
-x86_64               randconfig-g003-20200423
-i386                 randconfig-h003-20200421
-x86_64               randconfig-h001-20200421
-x86_64               randconfig-h003-20200421
-i386                 randconfig-h002-20200421
-i386                 randconfig-h001-20200421
-i386                 randconfig-h003-20200424
-x86_64               randconfig-h001-20200424
-x86_64               randconfig-h003-20200424
-x86_64               randconfig-h002-20200424
-i386                 randconfig-h001-20200424
-i386                 randconfig-h002-20200424
-i386                 randconfig-h003-20200426
-x86_64               randconfig-h001-20200426
-x86_64               randconfig-h003-20200426
-x86_64               randconfig-h002-20200426
-i386                 randconfig-h001-20200426
-i386                 randconfig-h002-20200426
-i386                 randconfig-h003-20200425
-x86_64               randconfig-h001-20200425
-x86_64               randconfig-h003-20200425
-i386                 randconfig-h002-20200425
-i386                 randconfig-h001-20200425
-i386                 randconfig-h003-20200422
-x86_64               randconfig-h001-20200422
-x86_64               randconfig-h003-20200422
-x86_64               randconfig-h002-20200422
-i386                 randconfig-h001-20200422
-i386                 randconfig-h002-20200422
-sparc                randconfig-a001-20200423
-ia64                 randconfig-a001-20200423
-arm                  randconfig-a001-20200423
-arm64                randconfig-a001-20200423
-arc                  randconfig-a001-20200423
-sparc                randconfig-a001-20200421
-ia64                 randconfig-a001-20200421
-powerpc              randconfig-a001-20200421
-arm                  randconfig-a001-20200421
-arc                  randconfig-a001-20200421
-sparc                randconfig-a001-20200425
-ia64                 randconfig-a001-20200425
-powerpc              randconfig-a001-20200425
-arm                  randconfig-a001-20200425
-arc                  randconfig-a001-20200425
-sparc                randconfig-a001-20200424
-ia64                 randconfig-a001-20200424
-powerpc              randconfig-a001-20200424
-arm64                randconfig-a001-20200424
-arc                  randconfig-a001-20200424
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                                allnoconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                             i386_defconfig
-x86_64                                   rhel
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                         rhel-7.2-clear
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-7.6
+Thanks for pointers, I was lost in all the git trees. Port is not
+quite trivial :-(.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+    I tried to port GPS and codec support over to new version of base
+    patches, but I get oops when I try to open the GPS:
+
+Best regards,
+								Pavel
+   =20
+    [  182.877014] bfe0: 00000005 bed23af8 b6f279cf b6eb46f6 00070030
+    bed23ea7 00000000 00000000
+    [  182.901672] [<c06e7ba8>] (motmdm_gnss_open) from [<c06e71d4>]
+    (gnss_open+0x7c/0xb0)
+    [  182.901672] [<c06e71d4>] (gnss_open) from [<c0221fe0>]
+    (chrdev_open+0x9c/0x194)
+    [  182.901672] [<c0221fe0>] (chrdev_open) from [<c0219524>]
+    (do_dentry_open+0x21c/0x3e8)
+    [  182.901672] [<c0219524>] (do_dentry_open) from [<c022b424>]
+    (path_openat+0x8b0/0xc1c)
+    [  182.901672] [<c022b424>] (path_openat) from [<c022d0ac>]
+    (do_filp_open+0x60/0xb4)
+    [  182.940002] [<c022d0ac>] (do_filp_open) from [<c0219958>]
+    (do_sys_openat2+0x1f0/0x2f4)
+    [  182.940002] [<c0219958>] (do_sys_openat2) from [<c021ada8>]
+    (do_sys_open+0x98:
+
+diff --git a/drivers/gnss/Kconfig b/drivers/gnss/Kconfig
+index 960178dfad47..13b91034e3ea 100644
+--- a/drivers/gnss/Kconfig
++++ b/drivers/gnss/Kconfig
+@@ -15,7 +15,6 @@ if GNSS
+=20
+ config GNSS_MOTMDM
+ 	tristate "Motorola Modem TS 27.010 serdev GNSS receiver support"
+-	depends on MFD_MOTMDM
+ 	---help---
+ 	  Say Y here if you have a Motorola modem using TS 27.010 line
+ 	  discipline for GNSS such as a Motorola Mapphone series device
+diff --git a/drivers/tty/serdev/protocol/serdev-ngsm-motmdm.c b/drivers/tty=
+/serdev/protocol/serdev-ngsm-motmdm.c
+index 97eb349f5f13..f234a0cd2fb7 100644
+--- a/drivers/tty/serdev/protocol/serdev-ngsm-motmdm.c
++++ b/drivers/tty/serdev/protocol/serdev-ngsm-motmdm.c
+@@ -477,7 +477,7 @@ static int motmdm_send_command(struct device *dev,
+ 	return err;
+ }
+=20
+-static int motmdm_register_dlci(struct device *dev,
++int motmdm_register_dlci(struct device *dev,
+ 				struct motmdm_dlci *mot_dlci)
+ {
+ 	struct motmdm *ddata;
+@@ -522,7 +522,7 @@ static int motmdm_register_dlci(struct device *dev,
+ 	return err;
+ }
+=20
+-static void motmdm_unregister_dlci(struct device *dev,
++void motmdm_unregister_dlci(struct device *dev,
+ 				   struct motmdm_dlci *mot_dlci)
+ {
+ 	struct motmdm *ddata;
+diff --git a/include/linux/mfd/motorola-mdm.h b/include/linux/mfd/motorola-=
+mdm.h
+new file mode 100644
+index 000000000000..aae61050cd34
+--- /dev/null
++++ b/include/linux/mfd/motorola-mdm.h
+@@ -0,0 +1,84 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++struct gsm_serdev_dlci;
++struct kfifo;
++struct motmdm_response;
++
++enum motmdm_dlci_nr {
++	MOTMDM_DLCI1 =3D 1,
++	MOTMDM_DLCI2,
++	MOTMDM_DLCI3,
++	MOTMDM_DLCI4,
++	MOTMDM_DLCI5,
++	MOTMDM_DLCI6,
++	MOTMDM_DLCI7,
++	MOTMDM_DLCI8,
++	MOTMDM_DLCI9,
++	MOTMDM_DLCI10,
++	MOTMDM_DLCI11,
++	MOTMDM_DLCI12,
++	MOTMDM_DLCI13,
++	MOTMDM_DLCI14,
++	MOTMDM_DLCI15,
++};
++
++enum motmdm_state {
++	MOTMDM_STATE_IDLE =3D 0,
++	MOTMDM_STATE_DIAL =3D 1,
++	MOTMDM_STATE_ANSWERING =3D 2,
++	MOTMDM_STATE_CONNECTING =3D 3,
++	MOTMDM_STATE_INCOMING =3D 4,
++	MOTMDM_STATE_CONNECTED =3D 5,
++	MOTMDM_STATE_HANGING_UP =3D 6,
++	MOTMDM_STATE_DISCONNECTED =3D 7,
++};
++
++struct motmdm_dlci {
++	struct gsm_serdev_dlci gsm_dlci;
++	struct list_head node;
++	wait_queue_head_t read_queue;
++	struct kfifo read_fifo;
++	int line;
++	u16 id;
++	int (*send_command)(struct device *dev, struct motmdm_dlci *mot_dlci,
++			    unsigned long timeout_ms, const unsigned char *cmd,
++			    size_t cmdlen,
++			    unsigned char *rsp, size_t rsplen);
++	int (*handle_command)(struct motmdm_dlci *mot_dlci, int id,
++			      const unsigned char *buf, size_t len);
++	int (*receive_data)(struct motmdm_dlci *mot_dlci,
++			    const unsigned char *buf,
++			    size_t len);
++	int (*write)(struct device *dev, struct motmdm_dlci *mot_dlci,
++		     int cmdid, const unsigned char *buf, size_t count);
++	int (*notify)(struct motmdm_dlci *mot_dlci, enum motmdm_state);
++	struct list_head list;
++	void *privdata;		/* Do not use, internal data */
++	void *drvdata;		/* Available for consumer drivers */
++};
++
++int motmdm_register_dlci(struct device *dev, struct motmdm_dlci *mot_dlci);
++void motmdm_unregister_dlci(struct device *dev, struct motmdm_dlci *mot_dl=
+ci);
++
++static inline
++int motmdm_send_command(struct device *dev, struct motmdm_dlci *mot_dlci,
++			unsigned long timeout_ms, const unsigned char *cmd,
++			size_t cmdlen, unsigned char *rsp, size_t rsplen)
++{
++	if (mot_dlci && mot_dlci->send_command)
++		return mot_dlci->send_command(dev, mot_dlci,
++					      timeout_ms, cmd, cmdlen,
++					      rsp, rsplen);
++	else
++		return -EINVAL;
++}
++
++static inline
++int motmdm_write(struct device *dev, struct motmdm_dlci *mot_dlci,
++		 const unsigned char *buf, size_t count)
++{
++	if (mot_dlci && mot_dlci->write)
++		return mot_dlci->write(dev, mot_dlci, -1, buf, count);
++	else
++		return -EINVAL;
++}
+diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
+index 3635fc0ab2a6..63d8d3e731ff 100644
+--- a/sound/soc/codecs/Kconfig
++++ b/sound/soc/codecs/Kconfig
+@@ -878,7 +878,6 @@ config SND_SOC_MAX9860
+=20
+ config SND_SOC_MOTMDM
+ 	tristate "Motorola Modem TS 27.010 Voice Call Codec"
+-	depends on MFD_MOTMDM
+ 	help
+ 	  Enable support for Motorola TS 27.010 line discipline serdev
+ 	  voice call codec driver for Motorola Mapphone series of devices
+
+--=20
+DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--jI8keyz6grp/JLjh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl6lN9EACgkQMOfwapXb+vJBzwCbBNeJcHb6YJbgADLE7yQISiyd
+a9MAn1Gfn1F4otcHkw8/Pcb0VybG2SWD
+=W/So
+-----END PGP SIGNATURE-----
+
+--jI8keyz6grp/JLjh--
