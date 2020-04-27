@@ -2,101 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 199EB1BA82D
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Apr 2020 17:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB36A1BA7E4
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Apr 2020 17:23:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727010AbgD0Pjt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Apr 2020 11:39:49 -0400
-Received: from vern.gendns.com ([98.142.107.122]:52338 "EHLO vern.gendns.com"
+        id S1728015AbgD0PXf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Apr 2020 11:23:35 -0400
+Received: from muru.com ([72.249.23.125]:51558 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726539AbgD0Pjt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 27 Apr 2020 11:39:49 -0400
-X-Greylist: delayed 1376 seconds by postgrey-1.27 at vger.kernel.org; Mon, 27 Apr 2020 11:39:48 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=QHcTOnBrhJ/2TSsv8KnCgPSUCn9klev6fyOnjkLTQHA=; b=rGNlRJBO+DFlpwE/cFAxf47YpC
-        Crudz6L19IvS2rmXE+NPnZV34i3SJpslbDIeXTiScO+gJERn4bj222hhlo2ZVeX9Xqp/yb+tC0RsD
-        KtpRaC036DJlVOpt/oYYGoEF66ZRG8cWD+TmjJOfVDQlhLgDmYgY2vRSJlK685kXl8LKJde/Ha8ov
-        LmoAKhxoesIDGNVN/awVBG+NVetaRoML1GwZMKq7Nc5K6HPu4JKaRSFRNf7TPzNr3KWIKMY9Ogk19
-        UB7AwK3EzDO6iNGqncyGcgqcicsbKXS+Fe/YzYqkDZQXyDPiz2dMDm2FINNvf8NNb9N3nMH71VZP/
-        MWpjIcYQ==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:52234 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1jT5V4-0007tU-5Z; Mon, 27 Apr 2020 11:16:50 -0400
-Subject: Re: [PATCH net-next] drivers: net: davinci_mdio: fix potential NULL
- dereference in davinci_mdio_probe()
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>
-Cc:     linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200427094032.181184-1-weiyongjun1@huawei.com>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <d2c55de2-01f0-b123-dee6-5fc74b8b67da@lechnology.com>
-Date:   Mon, 27 Apr 2020 10:16:47 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1727010AbgD0PXe (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 27 Apr 2020 11:23:34 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 77CD88087;
+        Mon, 27 Apr 2020 15:24:20 +0000 (UTC)
+Date:   Mon, 27 Apr 2020 08:23:29 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Keerthy <j-keerthy@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Adam Ford <aford173@gmail.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 02/14] clocksource/drivers/timer-ti-dm: Add clockevent
+ and clocksource support
+Message-ID: <20200427152329.GR37466@atomide.com>
+References: <20200417165519.4979-1-tony@atomide.com>
+ <20200417165519.4979-3-tony@atomide.com>
+ <62be90e2-7dbe-410d-4171-c0ad0cddc7a3@linaro.org>
+ <20200427143144.GQ37466@atomide.com>
+ <29f39839-b3ed-cac3-1dea-c137286320b1@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <20200427094032.181184-1-weiyongjun1@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <29f39839-b3ed-cac3-1dea-c137286320b1@linaro.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 4/27/20 4:40 AM, Wei Yongjun wrote:
-> platform_get_resource() may fail and return NULL, so we should
-> better check it's return value to avoid a NULL pointer dereference
-> a bit later in the code.
+* Daniel Lezcano <daniel.lezcano@linaro.org> [200427 15:03]:
+> On 27/04/2020 16:31, Tony Lindgren wrote:
+> > Hi,
+> > 
+> > * Daniel Lezcano <daniel.lezcano@linaro.org> [200427 09:19]:
+> >> On 17/04/2020 18:55, Tony Lindgren wrote:
+> >>> --- a/Documentation/devicetree/bindings/timer/ti,timer.txt
+> >>> +++ b/Documentation/devicetree/bindings/timer/ti,timer.txt
+> >>> @@ -14,6 +14,8 @@ Required properties:
+> >>>  			ti,omap5430-timer (applicable to OMAP543x devices)
+> >>>  			ti,am335x-timer	(applicable to AM335x devices)
+> >>>  			ti,am335x-timer-1ms (applicable to AM335x devices)
+> >>> +			ti,dmtimer-clockevent (when used as for clockevent)
+> >>> +			ti,dmtimer-clocksource (when used as for clocksource)
+> >>
+> >> Please, submit a separate patch for this.
+> >>
+> >> Before you resend as is, this will be nacked as clocksource / clockevent
+> >> is not a hardware description but a Linux thing.
+> >>
+> >> Finding a way to characterize that from the DT is an endless discussion
+> >> since years, so I suggest to use a single property for the timer eg
+> >> <ti,dmtimer> and initialize the clocksource and the clockevent in the
+> >> driver.
+> > 
+> > Hmm good point. We still need to specify which timer is a clocksource
+> > and which one a clockevent somehow.
+> > 
+> > Maybe we could have a generic properties like the clock framework such as:
+> > 
+> > assigned-system-clocksource
+> > assigned-system-clockevent
 > 
-> This is detected by Coccinelle semantic patch.
-> 
-> @@
-> expression pdev, res, n, t, e, e1, e2;
-> @@
-> 
-> res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
-> + if (!res)
-> +   return -EINVAL;
-> ... when != res == NULL
-> e = devm_ioremap(e1, res->start, e2);
-> 
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->   drivers/net/ethernet/ti/davinci_mdio.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
-> index 38b7f6d35759..702fdc393da0 100644
-> --- a/drivers/net/ethernet/ti/davinci_mdio.c
-> +++ b/drivers/net/ethernet/ti/davinci_mdio.c
-> @@ -397,6 +397,8 @@ static int davinci_mdio_probe(struct platform_device *pdev)
->   	data->dev = dev;
->   
->   	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (!res)
-> +		return -EINVAL;
->   	data->regs = devm_ioremap(dev, res->start, resource_size(res));
->   	if (!data->regs)
->   		return -ENOMEM;
-> 
+> I think that will be the same problem :/
 
-Could we use devm_platform_ioremap_resource() instead?
+Seems like other SoCs have the same issue too with multiple timers
+to configure.
+
+> Is it possible to check the interrupt for the clockevent ? A timer node
+> with the interrrupt is the clockevent, without it is a clocksource.
+
+OK let's try that. So the configuration would become then:
+
+compatible = "ti,dmtimer;	/* reserved for system timers */
+/delete-property/interrupts;	/* ok so it's a clocksource */
+/delete-property/interrupts-extended;
+
+Regards,
+
+Tony
