@@ -2,84 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBE2B1BC68A
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Apr 2020 19:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2517C1BC7A9
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Apr 2020 20:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728313AbgD1RYR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Apr 2020 13:24:17 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:56858 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728212AbgD1RYQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Apr 2020 13:24:16 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SHMu2i035989;
-        Tue, 28 Apr 2020 17:24:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=g6aKdVTY3T23iII1YYYlUR7JkfOQo1n+D3TQqoWDnbw=;
- b=tVo2VqxkHokM8pzCo43UIvhGL0KgDYoZ4gmLTYqDCEYVVhb+IdnVb9YwjcrvziqtzjrE
- gWB/4jUrEz4xgoLFYctFkB7Fu4OzvNF/nfFk8XQWsLy+l+uc9rNTVVjq9mmp6Z5K6Lxv
- M/7iLKH2/3ePjkEKq/ib6J5SDOCKncK607YfJ/xgcnRMlXam4ZIEUUFtetsBh+syqU/H
- JhHd31s68mJu2edicpSBKnFpfpk9k5y+OFO0Uwg//1F/Zfl9nlQDmsnIIieiCqN5tRmb
- Ii1aGeX4v/VuM9zNz9ji5+4qShnL0EWGxC+kyXaIYlcN94yZHkDQajYTv+HbsOc/tK0l 3w== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 30nucg1bsr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Apr 2020 17:24:00 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SHMf5V024004;
-        Tue, 28 Apr 2020 17:24:00 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 30mxpghd04-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Apr 2020 17:24:00 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03SHNwFw018704;
-        Tue, 28 Apr 2020 17:23:58 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 28 Apr 2020 10:23:57 -0700
-Date:   Tue, 28 Apr 2020 20:23:48 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] PCI: dwc: pci-dra7xx: Fix potential NULL
- dereference in dra7xx_pcie_probe()
-Message-ID: <20200428172348.GH2014@kadam>
-References: <20200427111044.162618-1-weiyongjun1@huawei.com>
- <cad871c8-0915-9dda-2c61-30dfb5504d23@ti.com>
- <20200428130734.GF2014@kadam>
- <ebb4db96-08ef-64fe-5331-291f054562ed@ti.com>
+        id S1728400AbgD1STY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Apr 2020 14:19:24 -0400
+Received: from muru.com ([72.249.23.125]:51652 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728392AbgD1STY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 28 Apr 2020 14:19:24 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id CED4980F3;
+        Tue, 28 Apr 2020 18:20:10 +0000 (UTC)
+Date:   Tue, 28 Apr 2020 11:19:19 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Lokesh Vutla <lokeshvutla@ti.com>
+Cc:     Tero Kristo <t-kristo@ti.com>, Sekhar Nori <nsekhar@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Device Tree Mailing List <devicetree@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH] arm: dts: Add 32KHz clock as default clock source
+Message-ID: <20200428181919.GS37466@atomide.com>
+References: <20200427172604.16351-1-lokeshvutla@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ebb4db96-08ef-64fe-5331-291f054562ed@ti.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004280137
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 priorityscore=1501
- mlxlogscore=999 impostorscore=0 suspectscore=0 malwarescore=0
- lowpriorityscore=0 mlxscore=0 spamscore=0 adultscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004280137
+In-Reply-To: <20200427172604.16351-1-lokeshvutla@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Oh.  Crap.  I'm sorry.  I misread the code.
+* Lokesh Vutla <lokeshvutla@ti.com> [200427 17:27]:
+> Clocksource to timer configured in pwm mode can be selected using the DT
+> property ti,clock-source. There are few pwm timers which are not
+> selecting the clock source and relying on default value in hardware or
+> selected by driver. Instead of relying on default value, always select
+> the clock source from DT. 
+> 
+> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+> ---
+> Tony,
+> 	This is in preparation with removal of selecting clock source in
+> 	prepare() api. Let me know if you prefer separate patches for
+> 	each dts.
 
-regards,
-dan carpenter
+Looks just fine to me.
 
+Tony
+
+>  arch/arm/boot/dts/am335x-guardian.dts            | 1 +
+>  arch/arm/boot/dts/am3517-evm.dts                 | 1 +
+>  arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi | 1 +
+>  arch/arm/boot/dts/omap3-gta04.dtsi               | 1 +
+>  4 files changed, 4 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/am335x-guardian.dts b/arch/arm/boot/dts/am335x-guardian.dts
+> index 81e0f63e94d3..0ebe9e2c150e 100644
+> --- a/arch/arm/boot/dts/am335x-guardian.dts
+> +++ b/arch/arm/boot/dts/am335x-guardian.dts
+> @@ -105,6 +105,7 @@
+>  		ti,timers = <&timer7>;
+>  		pinctrl-names = "default";
+>  		pinctrl-0 = <&dmtimer7_pins>;
+> +		ti,clock-source = <0x01>;
+>  	};
+>  
+>  	vmmcsd_fixed: regulator-3v3 {
+> diff --git a/arch/arm/boot/dts/am3517-evm.dts b/arch/arm/boot/dts/am3517-evm.dts
+> index a1fd3e63e86e..92466b9eb6ba 100644
+> --- a/arch/arm/boot/dts/am3517-evm.dts
+> +++ b/arch/arm/boot/dts/am3517-evm.dts
+> @@ -156,6 +156,7 @@
+>  		pinctrl-0 = <&pwm_pins>;
+>  		ti,timers = <&timer11>;
+>  		#pwm-cells = <3>;
+> +		ti,clock-source = <0x01>;
+>  	};
+>  
+>  	/* HS USB Host PHY on PORT 1 */
+> diff --git a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+> index f7b82ced4080..381f0e82bb70 100644
+> --- a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+> +++ b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+> @@ -65,6 +65,7 @@
+>  		pinctrl-0 = <&pwm_pins>;
+>  		ti,timers = <&timer10>;
+>  		#pwm-cells = <3>;
+> +		ti,clock-source = <0x01>;
+>  	};
+>  
+>  };
+> diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi b/arch/arm/boot/dts/omap3-gta04.dtsi
+> index 409a758c99f1..ecc45862b4f3 100644
+> --- a/arch/arm/boot/dts/omap3-gta04.dtsi
+> +++ b/arch/arm/boot/dts/omap3-gta04.dtsi
+> @@ -150,6 +150,7 @@
+>  		compatible = "ti,omap-dmtimer-pwm";
+>  		ti,timers = <&timer11>;
+>  		#pwm-cells = <3>;
+> +		ti,clock-source = <0x01>;
+>  	};
+>  
+>  	hsusb2_phy: hsusb2_phy {
+> -- 
+> 2.23.0
+> 
