@@ -2,138 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4A1E1BC4E4
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Apr 2020 18:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE2B1BC68A
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Apr 2020 19:24:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728586AbgD1QQR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Apr 2020 12:16:17 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:56744 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728340AbgD1QQR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Apr 2020 12:16:17 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03SGFudR001305;
-        Tue, 28 Apr 2020 11:15:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1588090556;
-        bh=8fXivnlbbbn4L5jCdnMcunsvQltul4JatC/I2sDPy3k=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=o8Q1dKAKumI9AuZuygJqiQhmee1QA49Ouc81U59hsiww7bK01VgxgrCqdNp7yzX0e
-         R1MmG05B4DFE+VsTxTkArUSJkdZBttmag33or25f9RZ/vacup2HQj3wS8sL6iOXivO
-         8R+19OS0oDS3UMBSbIjtaSdyKcwzFlOxoiKTE4cI=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03SGFuw7008647
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 28 Apr 2020 11:15:56 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 28
- Apr 2020 11:15:56 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 28 Apr 2020 11:15:56 -0500
-Received: from [10.250.234.195] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03SGFpMO006509;
-        Tue, 28 Apr 2020 11:15:52 -0500
-Subject: Re: [PATCH -next] PCI: dwc: pci-dra7xx: Fix potential NULL
- dereference in dra7xx_pcie_probe()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        id S1728313AbgD1RYR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Apr 2020 13:24:17 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:56858 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728212AbgD1RYQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Apr 2020 13:24:16 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SHMu2i035989;
+        Tue, 28 Apr 2020 17:24:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=g6aKdVTY3T23iII1YYYlUR7JkfOQo1n+D3TQqoWDnbw=;
+ b=tVo2VqxkHokM8pzCo43UIvhGL0KgDYoZ4gmLTYqDCEYVVhb+IdnVb9YwjcrvziqtzjrE
+ gWB/4jUrEz4xgoLFYctFkB7Fu4OzvNF/nfFk8XQWsLy+l+uc9rNTVVjq9mmp6Z5K6Lxv
+ M/7iLKH2/3ePjkEKq/ib6J5SDOCKncK607YfJ/xgcnRMlXam4ZIEUUFtetsBh+syqU/H
+ JhHd31s68mJu2edicpSBKnFpfpk9k5y+OFO0Uwg//1F/Zfl9nlQDmsnIIieiCqN5tRmb
+ Ii1aGeX4v/VuM9zNz9ji5+4qShnL0EWGxC+kyXaIYlcN94yZHkDQajYTv+HbsOc/tK0l 3w== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 30nucg1bsr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 Apr 2020 17:24:00 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03SHMf5V024004;
+        Tue, 28 Apr 2020 17:24:00 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 30mxpghd04-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 Apr 2020 17:24:00 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03SHNwFw018704;
+        Tue, 28 Apr 2020 17:23:58 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 28 Apr 2020 10:23:57 -0700
+Date:   Tue, 28 Apr 2020 20:23:48 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
         Kishon Vijay Abraham I <kishon@ti.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Rob Herring <robh@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] PCI: dwc: pci-dra7xx: Fix potential NULL
+ dereference in dra7xx_pcie_probe()
+Message-ID: <20200428172348.GH2014@kadam>
 References: <20200427111044.162618-1-weiyongjun1@huawei.com>
- <cad871c8-0915-9dda-2c61-30dfb5504d23@ti.com> <20200428130734.GF2014@kadam>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <ebb4db96-08ef-64fe-5331-291f054562ed@ti.com>
-Date:   Tue, 28 Apr 2020 21:45:51 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ <cad871c8-0915-9dda-2c61-30dfb5504d23@ti.com>
+ <20200428130734.GF2014@kadam>
+ <ebb4db96-08ef-64fe-5331-291f054562ed@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20200428130734.GF2014@kadam>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ebb4db96-08ef-64fe-5331-291f054562ed@ti.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004280137
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9605 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 priorityscore=1501
+ mlxlogscore=999 impostorscore=0 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 mlxscore=0 spamscore=0 adultscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004280137
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Oh.  Crap.  I'm sorry.  I misread the code.
 
+regards,
+dan carpenter
 
-On 28/04/20 6:37 pm, Dan Carpenter wrote:
-> On Mon, Apr 27, 2020 at 05:29:50PM +0530, Vignesh Raghavendra wrote:
->> Hi,
->>
->> On 27/04/20 4:40 pm, Wei Yongjun wrote:
->>> platform_get_resource() may fail and return NULL, so we should
->>> better check it's return value to avoid a NULL pointer dereference
->>> a bit later in the code.
->>>
->>> This is detected by Coccinelle semantic patch.
->>>
->>> @@
->>> expression pdev, res, n, t, e, e1, e2;
->>> @@
->>>
->>> res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
->>> + if (!res)
->>> +   return -EINVAL;
->>> ... when != res == NULL
->>> e = devm_ioremap(e1, res->start, e2);
->>>
->>> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
->>> ---
->>>  drivers/pci/controller/dwc/pci-dra7xx.c | 3 +++
->>>  1 file changed, 3 insertions(+)
->>>
->>> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
->>> index 3b0e58f2de58..7a3d12f7e7d9 100644
->>> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
->>> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
->>> @@ -878,6 +878,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
->>>  	}
->>>  
->>>  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
->                                            ^^^^
-> 
->>> +	if (!res)
->>> +		return -EINVAL;
->>> +
->>>  	base = devm_ioremap(dev, res->start, resource_size(res));
->                             ^^^
->>
->> I don't see why this should be devm_ioremap(). It should also have been
->> devm_ioremap_resource() which does the NULL check.
-> 
-> It's different device pointers.
-> 
-
-Sorry, I don't understand this comment... Currently we have:
-
-static int __init dra7xx_pcie_probe(struct platform_device *pdev)
-{
-        struct device *dev = &pdev->dev;
-	...
-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
-        base = devm_ioremap(dev, res->start, resource_size(res));
-        if (!base)
-                return -ENOMEM;
-
-Instead of the proposed patch, what I am asking is:
-
-	base = devm_platform_ioremap_resource_byname(pdev, "ti_conf");
-	if (IS_ERR(base))
-		return PTR_ERR(base);
-
-
-
-
-> regards,
-> dan carpenter
-> 
