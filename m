@@ -2,71 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 284E31BD787
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Apr 2020 10:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 486101BDC17
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Apr 2020 14:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726426AbgD2Irc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Apr 2020 04:47:32 -0400
-Received: from new1-smtp.messagingengine.com ([66.111.4.221]:60171 "EHLO
-        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726345AbgD2Irc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Apr 2020 04:47:32 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 9AB75580104;
-        Wed, 29 Apr 2020 04:47:30 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Wed, 29 Apr 2020 04:47:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=+x1hnvO451DFLw58Xq3iUsbF2Jz
-        alXMCx3P3fGnFW08=; b=mDylNO0ImdJQcBjcJhxqGwZ0gLH65YlOxSjvQREEP3f
-        4qGYzmConM9HkJufYMjsnhf4/U5f/nMYa7Y4bpNHEPZRGxnLHIjQiWjERglE53zA
-        oKMD/cPGAwRaPGqCJ5/SiN46qyNsjQGFSvMny9nDQB6IkO1SJfBgD9EdtiaVDZ7d
-        A/0pbA75VQ1czsx3Ud3zZ0Ct1tM7dRs5LdgkX5nrL4wlzG5WiI+zMV3YRbG6e9lU
-        EfEjiSIOEGi0F1dFrhGkZzyaX9IhNnWJBcdmGy3kakaIYmrgYV2DTu3hhEr3UJ+B
-        5cyi95cQhZgjntybSHnjxI/ELKDeyPR6wO+DmEdIyNQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=+x1hnv
-        O451DFLw58Xq3iUsbF2JzalXMCx3P3fGnFW08=; b=E2GG4YtpPx9b335eVlOleh
-        Vf8483NTNxzjs95yfN4uRYnvVs2tiKuUvRyMMVSInBLyjh+qMlQ0dVtjSwJbsDUK
-        WQWtSA+Bwb1TRuouQ6Rb6pdXfGYF71YpiWoLMMd4B0/gUi2rfcg5JorfqN0JJssQ
-        b5NszxFBVjt1AJHxC1DJ+KMryBcTxX33yCPmx9xaU+gujbvcPTEUhLLXynjJE6yy
-        miqhu3mWUKdKBcCgKILcyM6xOfgqmO5G1ZTnt75gOcYXtIUlupWdCgLceHSTqR8Q
-        BUigUlYpBZcCXoJnGIlSKCLjDvyVjMLksV6GI/iUupM/vJJdPxnutvDdSf42SJBQ
-        ==
-X-ME-Sender: <xms:HT-pXhpN54g-6aCMfmUe-4DMD6dWLtA3usgSR6go2S5ER7rxsPhAww>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrieefgddtkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesghdtreertddtudenucfhrhhomhepofgrgihimhgv
-    ucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucfkphepledtrd
-    ekledrieekrdejieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
-    fhhrohhmpehmrgigihhmvgestggvrhhnohdrthgvtghh
-X-ME-Proxy: <xmx:HT-pXrVffufAEMQkyDUZKoQp7m4gU6WDQH-928szCVw6XspkjR09Bw>
-    <xmx:HT-pXkD0RZGaxlLx-cC-xX6d0cZb-LFHZKS3nww8to01I-3FCcWuVg>
-    <xmx:HT-pXuTBDDqX0KhTqh3gFz8BYE7BbY0XahpKNhyToXMGSNRpH-Z_Jw>
-    <xmx:Ij-pXvat0UK807ynw6DTDs5CBzCYKJ5Cy3QP0hnPHBSOnNjslvCryA>
-Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
-        by mail.messagingengine.com (Postfix) with ESMTPA id D9FE03280066;
-        Wed, 29 Apr 2020 04:47:24 -0400 (EDT)
-Date:   Wed, 29 Apr 2020 10:47:23 +0200
-From:   Maxime Ripard <maxime@cerno.tech>
+        id S1727025AbgD2M1J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Apr 2020 08:27:09 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:35684 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726524AbgD2M1I (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Apr 2020 08:27:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1588163225; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=UB85kJRWkAnE/ldP2rd2WB1otm7LsPHBG/QdCMbeTtw=;
+        b=Y7SJJo7sZnaAuNIPATy0AiHIaWVsd2iyJrs83ZKmUFLR4e0sPDVaCrXhPJh3FdwWeKj5+B
+        ymuqI/fKXp9dnLKIal7QsfsqkUT5AoaSpooZL4M9yoymur1N6pMByU7yw/6mHtmHFpYRn4
+        m+cKuE3cU7bSMeleVwTgsV9u39AqbSE=
+Date:   Wed, 29 Apr 2020 14:26:46 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v7 08/12] arm: dts: s5pv210: Add node for SGX 540
 To:     Jonathan Bakker <xc-racer2@live.ca>
 Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
         "H. Nikolaus Schaller" <hns@goldelico.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        =?iso-8859-1?q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
         Ralf Baechle <ralf@linux-mips.org>,
         Paul Burton <paulburton@kernel.org>,
         James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
         Chen-Yu Tsai <wens@csie.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Philipp Rossak <embed3d@gmail.com>,
@@ -76,144 +46,125 @@ Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
         kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH v7 08/12] arm: dts: s5pv210: Add node for SGX 540
-Message-ID: <20200429084723.jxybvsakniinvivt@gilmour.lan>
-References: <cover.1587760454.git.hns@goldelico.com>
- <3fd18c747426e15fd1f3500b9c4adce2db9ddd0c.1587760454.git.hns@goldelico.com>
- <NYBE9Q.YH08US7A7DC3@crapouillou.net>
- <BN6PR04MB0660A180D2069848E5C03D7EA3AE0@BN6PR04MB0660.namprd04.prod.outlook.com>
- <20200427154617.GA1798@pi3>
- <BN6PR04MB06605F014024061C894AFBA4A3AC0@BN6PR04MB0660.namprd04.prod.outlook.com>
- <BN6PR04MB0660044B5B1D45BE4CBCD2AAA3AC0@BN6PR04MB0660.namprd04.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="u22eiu3zouiknukx"
-Content-Disposition: inline
+Message-Id: <MKUJ9Q.OQG3OJ6IYGUE3@crapouillou.net>
 In-Reply-To: <BN6PR04MB0660044B5B1D45BE4CBCD2AAA3AC0@BN6PR04MB0660.namprd04.prod.outlook.com>
+References: <cover.1587760454.git.hns@goldelico.com>
+        <3fd18c747426e15fd1f3500b9c4adce2db9ddd0c.1587760454.git.hns@goldelico.com>
+        <NYBE9Q.YH08US7A7DC3@crapouillou.net>
+        <BN6PR04MB0660A180D2069848E5C03D7EA3AE0@BN6PR04MB0660.namprd04.prod.outlook.com>
+        <20200427154617.GA1798@pi3>
+        <BN6PR04MB06605F014024061C894AFBA4A3AC0@BN6PR04MB0660.namprd04.prod.outlook.com>
+        <BN6PR04MB0660044B5B1D45BE4CBCD2AAA3AC0@BN6PR04MB0660.namprd04.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Jonathan,
 
---u22eiu3zouiknukx
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Tue, Apr 28, 2020 at 03:58:03PM -0700, Jonathan Bakker wrote:
-> On 2020-04-28 2:39 p.m., Jonathan Bakker wrote:
-> > On 2020-04-27 8:46 a.m., Krzysztof Kozlowski wrote:
-> >> On Sun, Apr 26, 2020 at 07:57:12AM -0700, Jonathan Bakker wrote:
-> >>> Hi Paul,
-> >>>
-> >>> On 2020-04-26 5:56 a.m., Paul Cercueil wrote:
-> >>>>
-> >>>>
-> >>>> Le ven. 24 avril 2020 =E0 22:34, H. Nikolaus Schaller <hns@goldelico=
-=2Ecom> a =E9crit :
-> >>>>> From: Jonathan Bakker <xc-racer2@live.ca>
-> >>>>>
-> >>>>> All s5pv210 devices have a PowerVR SGX 540 (revision 120) attached.
-> >>>>>
-> >>>>> There is no external regulator for it so it can be enabled by defau=
-lt.
-> >>>>>
-> >>>>> Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
-> >>>>> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> >>>>> ---
-> >>>>> =A0arch/arm/boot/dts/s5pv210.dtsi | 13 +++++++++++++
-> >>>>> =A01 file changed, 13 insertions(+)
-> >>>>>
-> >>>>> diff --git a/arch/arm/boot/dts/s5pv210.dtsi b/arch/arm/boot/dts/s5p=
-v210.dtsi
-> >>>>> index 2ad642f51fd9..abbdda205c1b 100644
-> >>>>> --- a/arch/arm/boot/dts/s5pv210.dtsi
-> >>>>> +++ b/arch/arm/boot/dts/s5pv210.dtsi
-> >>>>> @@ -512,6 +512,19 @@ vic3: interrupt-controller@f2300000 {
-> >>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 #interrupt-cells =3D <1>;
-> >>>>> =A0=A0=A0=A0=A0=A0=A0=A0 };
-> >>>>>
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0 gpu: gpu@f3000000 {
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 compatible =3D "samsung,s5pv210-=
-sgx540-120";
-> >>
-> >> This should not pass the bindings check because you missed last
-> >> compatibles.
-> >>
-> >=20
-> > Thanks for pointing that out, I'll add it and make sure it passes the b=
-indings check.
-> >=20
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 reg =3D <0xf3000000 0x10000>;
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 interrupt-parent =3D <&vic2>;
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 interrupts =3D <10>;
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 clock-names =3D "core";
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 clocks =3D <&clocks CLK_G3D>;
-> >>>>> +
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 assigned-clocks =3D <&clocks MOU=
-T_G3D>, <&clocks DOUT_G3D>;
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 assigned-clock-rates =3D <0>, <6=
-6700000>;
-> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 assigned-clock-parents =3D <&clo=
-cks MOUT_MPLL>;
-> >>>>
-> >>>> What are these clocks for, and why are they reparented / reclocked?
-> >>>>
-> >>>> Shouldn't they be passed to 'clocks' as well?
-> >>>>
-> >>>> -Paul
-> >>>>
-> >>>
-> >>> The G3D clock system can have multiple parents, and for stable operat=
-ion
-> >>> it's recommended to use the MPLL clock as the parent (which in turn
-> >>> is actually a mux as well).  MOUT_G3D is simply the mux for CLK_G3D
-> >>> (SGX core clock), DOUT_G3D is the divider.  DOUT_G3D could equally be=
- CLK_G3D
-> >>> (and probably should be, for readability) as CLK_G3D is simply the ga=
-te and
-> >>> DOUT_G3D is the divider for it.
-> >>
-> >> Good point, it should be CLK_G3D instead of DOUT.  Can you fix this as
-> >> well?
-> >=20
-> > Yep, will do.  Nikolaus, I'll send you an updated patch to include.
-> >=20
+Le mar. 28 avril 2020 =E0 15:58, Jonathan Bakker <xc-racer2@live.ca> a=20
+=E9crit :
+> Hi all,
 >=20
-> How are assigned-clocks handled in the yaml DT schema?  When running make=
- dtbs_check,
+> On 2020-04-28 2:39 p.m., Jonathan Bakker wrote:
+>>  Hi Krzysztof,
+>>=20
+>>  On 2020-04-27 8:46 a.m., Krzysztof Kozlowski wrote:
+>>>  On Sun, Apr 26, 2020 at 07:57:12AM -0700, Jonathan Bakker wrote:
+>>>>  Hi Paul,
+>>>>=20
+>>>>  On 2020-04-26 5:56 a.m., Paul Cercueil wrote:
+>>>>>=20
+>>>>>=20
+>>>>>  Le ven. 24 avril 2020 =E0 22:34, H. Nikolaus Schaller=20
+>>>>> <hns@goldelico.com> a =E9crit :
+>>>>>>  From: Jonathan Bakker <xc-racer2@live.ca>
+>>>>>>=20
+>>>>>>  All s5pv210 devices have a PowerVR SGX 540 (revision 120)=20
+>>>>>> attached.
+>>>>>>=20
+>>>>>>  There is no external regulator for it so it can be enabled by=20
+>>>>>> default.
+>>>>>>=20
+>>>>>>  Signed-off-by: Jonathan Bakker <xc-racer2@live.ca>
+>>>>>>  Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+>>>>>>  ---
+>>>>>>   arch/arm/boot/dts/s5pv210.dtsi | 13 +++++++++++++
+>>>>>>   1 file changed, 13 insertions(+)
+>>>>>>=20
+>>>>>>  diff --git a/arch/arm/boot/dts/s5pv210.dtsi=20
+>>>>>> b/arch/arm/boot/dts/s5pv210.dtsi
+>>>>>>  index 2ad642f51fd9..abbdda205c1b 100644
+>>>>>>  --- a/arch/arm/boot/dts/s5pv210.dtsi
+>>>>>>  +++ b/arch/arm/boot/dts/s5pv210.dtsi
+>>>>>>  @@ -512,6 +512,19 @@ vic3: interrupt-controller@f2300000 {
+>>>>>>               #interrupt-cells =3D <1>;
+>>>>>>           };
+>>>>>>=20
+>>>>>>  +        gpu: gpu@f3000000 {
+>>>>>>  +            compatible =3D "samsung,s5pv210-sgx540-120";
+>>>=20
+>>>  This should not pass the bindings check because you missed last
+>>>  compatibles.
+>>>=20
+>>=20
+>>  Thanks for pointing that out, I'll add it and make sure it passes=20
+>> the bindings check.
+>>=20
+>>>>>>  +            reg =3D <0xf3000000 0x10000>;
+>>>>>>  +            interrupt-parent =3D <&vic2>;
+>>>>>>  +            interrupts =3D <10>;
+>>>>>>  +            clock-names =3D "core";
+>>>>>>  +            clocks =3D <&clocks CLK_G3D>;
+>>>>>>  +
+>>>>>>  +            assigned-clocks =3D <&clocks MOUT_G3D>, <&clocks=20
+>>>>>> DOUT_G3D>;
+>>>>>>  +            assigned-clock-rates =3D <0>, <66700000>;
+>>>>>>  +            assigned-clock-parents =3D <&clocks MOUT_MPLL>;
+>>>>>=20
+>>>>>  What are these clocks for, and why are they reparented /=20
+>>>>> reclocked?
+>>>>>=20
+>>>>>  Shouldn't they be passed to 'clocks' as well?
+>>>>>=20
+>>>>>  -Paul
+>>>>>=20
+>>>>=20
+>>>>  The G3D clock system can have multiple parents, and for stable=20
+>>>> operation
+>>>>  it's recommended to use the MPLL clock as the parent (which in=20
+>>>> turn
+>>>>  is actually a mux as well).  MOUT_G3D is simply the mux for=20
+>>>> CLK_G3D
+>>>>  (SGX core clock), DOUT_G3D is the divider.  DOUT_G3D could=20
+>>>> equally be CLK_G3D
+>>>>  (and probably should be, for readability) as CLK_G3D is simply=20
+>>>> the gate and
+>>>>  DOUT_G3D is the divider for it.
+>>>=20
+>>>  Good point, it should be CLK_G3D instead of DOUT.  Can you fix=20
+>>> this as
+>>>  well?
+>>=20
+>>  Yep, will do.  Nikolaus, I'll send you an updated patch to include.
+>>=20
+>=20
+> How are assigned-clocks handled in the yaml DT schema?  When running=20
+> make dtbs_check,
 > I end up with messages such as
 >=20
-> arch/arm/boot/dts/s5pv210-aquila.dt.yaml: gpu@f3000000: 'assigned-clock-p=
-arents', 'assigned-clock-rates', 'assigned-clocks' do not match any of the =
-regexes: 'pinctrl-[0-9]+'
+> arch/arm/boot/dts/s5pv210-aquila.dt.yaml: gpu@f3000000:=20
+> 'assigned-clock-parents', 'assigned-clock-rates', 'assigned-clocks'=20
+> do not match any of the regexes: 'pinctrl-[0-9]+'
 >=20
 > Do they need to explicitly be listed as valid entries?
 
-If you have additionalProperties set to false, yes. But you should really
-consider not using them in the first place, since they provide no guarantee=
- on
-whether the setup you did in the DT will remain during the life of the syst=
-em.
+The assigned-* can also be moved inside the node of the clocks=20
+provider. I would say it makes more sense to have them there.
 
-I'm not sure why it's needed on that SoC in particular, but this should be =
-fixed
-in the driver itself (either the clock or the GPU driver).
+-Paul
 
-Maxime
 
---u22eiu3zouiknukx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXqk/GwAKCRDj7w1vZxhR
-xR+OAP9zSq/md3bxfVKk4er7ZI7jk8/dQzTxgBO3mo3r+wRqmwEAy6d+UHyzeb5t
-qZLq2zIdK45SI8CMqYcGeBsbBQ1iVAc=
-=VCha
------END PGP SIGNATURE-----
-
---u22eiu3zouiknukx--
