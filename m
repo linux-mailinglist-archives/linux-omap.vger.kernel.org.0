@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 125451BE0F3
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Apr 2020 16:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD6E01BE0EF
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Apr 2020 16:30:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726773AbgD2Oa3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Apr 2020 10:30:29 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:53956 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726741AbgD2Oa3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Apr 2020 10:30:29 -0400
+        id S1726739AbgD2OaZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Apr 2020 10:30:25 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:45994 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726503AbgD2OaZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Apr 2020 10:30:25 -0400
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03TEUPJW098764;
-        Wed, 29 Apr 2020 09:30:25 -0500
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03TEUBet030618;
+        Wed, 29 Apr 2020 09:30:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1588170625;
-        bh=Rr3yRU7e+WZwUMxKj3OhbM3FhcVrnhefKHLL5Wt8jQQ=;
+        s=ti-com-17Q1; t=1588170611;
+        bh=fWC+Rp0M0z5eox70tIMoGNLsRSAUN8+UUzp2rgayua0=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=hFFJ0mkfIwiXeKCKyJHSOfghox4x95BF+ivhTL2/d47rnKZBjxJMvvCxcKFscvO+3
-         mzqUDGfVDIZRIa/g+kyPlNaCPTd2xxtscaoPSXP8K0s2nAPE9jceM1d7nV+zTHz1hG
-         5HwmrjOyHDVcOXk1xuz3JL7cLgj5yAvQGJ+OhuSc=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03TEUPeB062979
+        b=RtGgy1LX2n1oiYMNve1Jiziud30huYw4QQP+49rGVxLVsQzSpup35VZiMZS9UTDLC
+         ZB+pKCUgZUXTpij0x1vuUS9yHhb+yAuzMm86P6zXOsJ1BMBXOWvJgIvp7tvHrB5pO3
+         OA9EvXRuMmAWNmWcYmGFiy5E4zIg2D+QRP/ED3Mk=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03TEUBBe062590
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 29 Apr 2020 09:30:25 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 29 Apr 2020 09:30:11 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 29
- Apr 2020 09:30:10 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ Apr 2020 09:30:11 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 29 Apr 2020 09:30:10 -0500
+ Frontend Transport; Wed, 29 Apr 2020 09:30:11 -0500
 Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03TEU54m010784;
-        Wed, 29 Apr 2020 09:30:09 -0500
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03TEU54n010784;
+        Wed, 29 Apr 2020 09:30:10 -0500
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <linux-omap@vger.kernel.org>, <tony@atomide.com>
 CC:     <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH 2/8] ARM: dts: omap5: fix node names for the l4_cm clkctrl nodes
-Date:   Wed, 29 Apr 2020 17:29:56 +0300
-Message-ID: <20200429143002.5050-3-t-kristo@ti.com>
+Subject: [PATCH 3/8] ARM: dts: omap5: add aes1 entry
+Date:   Wed, 29 Apr 2020 17:29:57 +0300
+Message-ID: <20200429143002.5050-4-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200429143002.5050-1-t-kristo@ti.com>
 References: <20200429143002.5050-1-t-kristo@ti.com>
@@ -53,35 +53,54 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The node name for these should be clk instead of clock. Otherwise the
-clock driver won't be able to map the parent/child relationships
-properly, and large number of clocks end up in orphaned state.
+OMAP5 has AES hardware cryptographic accelerator, add AES1 instance for
+it.
 
 Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- arch/arm/boot/dts/omap54xx-clocks.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/omap5.dtsi | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/arch/arm/boot/dts/omap54xx-clocks.dtsi b/arch/arm/boot/dts/omap54xx-clocks.dtsi
-index 42f2c447727d..746048813a12 100644
---- a/arch/arm/boot/dts/omap54xx-clocks.dtsi
-+++ b/arch/arm/boot/dts/omap54xx-clocks.dtsi
-@@ -1125,13 +1125,13 @@
- 		#size-cells = <1>;
- 		ranges = <0 0x1000 0x200>;
- 
--		l4per_clkctrl: clock@20 {
-+		l4per_clkctrl: clk@20 {
- 			compatible = "ti,clkctrl-l4per", "ti,clkctrl";
- 			reg = <0x20 0x15c>;
- 			#clock-cells = <2>;
+diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
+index 2ac7f021c284..30391dbc7f8f 100644
+--- a/arch/arm/boot/dts/omap5.dtsi
++++ b/arch/arm/boot/dts/omap5.dtsi
+@@ -247,6 +247,35 @@
+ 			hw-caps-temp-alert;
  		};
  
--		l4sec_clkctrl: clock@1a0 {
-+		l4sec_clkctrl: clk@1a0 {
- 			compatible = "ti,clkctrl-l4sec", "ti,clkctrl";
- 			reg = <0x1a0 0x3c>;
- 			#clock-cells = <2>;
++		aes1_target: target-module@4b501000 {
++			compatible = "ti,sysc-omap2", "ti,sysc";
++			reg = <0x4b501080 0x4>,
++			      <0x4b501084 0x4>,
++			      <0x4b501088 0x4>;
++			reg-names = "rev", "sysc", "syss";
++			ti,sysc-mask = <(SYSC_OMAP2_SOFTRESET |
++					 SYSC_OMAP2_AUTOIDLE)>;
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>,
++					<SYSC_IDLE_SMART_WKUP>;
++			ti,syss-mask = <1>;
++			/* Domains (P, C): l4per_pwrdm, l4sec_clkdm */
++			clocks = <&l4sec_clkctrl OMAP5_AES1_CLKCTRL 0>;
++			clock-names = "fck";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0x0 0x4b501000 0x1000>;
++
++			aes1: aes@0 {
++				compatible = "ti,omap4-aes";
++				reg = <0 0xa0>;
++				interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
++				dmas = <&sdma 111>, <&sdma 110>;
++				dma-names = "tx", "rx";
++			};
++		};
++
+ 		bandgap: bandgap@4a0021e0 {
+ 			reg = <0x4a0021e0 0xc
+ 			       0x4a00232c 0xc
 -- 
 2.17.1
 
