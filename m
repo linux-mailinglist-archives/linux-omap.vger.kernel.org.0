@@ -2,93 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C402B1BE166
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Apr 2020 16:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C021BE17A
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Apr 2020 16:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726800AbgD2Ome (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Apr 2020 10:42:34 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:55344 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726348AbgD2Ome (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Apr 2020 10:42:34 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03TEgRqQ101686;
-        Wed, 29 Apr 2020 09:42:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1588171347;
-        bh=ri+/lIeSNOTM3l+FNff6gZorR0Kh5OVSvczQZBkHThk=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=UqK22JWWrlA2aOJc7U9UqwD4vGTMHLikpFgdmyFz3FCCi9KBRNMHAq42jzT0H0dRo
-         bJxru1BLo3QM4R2s7QkRrWNjnTx1KDLmRVMw7sZ4zYGE/CMaKWvRA89gosJJjB6SXw
-         Bsc6iWfe0uQZ95dvPhWNNs4w8rbgt7A4GwqnMJLc=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03TEgRRr009946;
-        Wed, 29 Apr 2020 09:42:27 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 29
- Apr 2020 09:42:27 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 29 Apr 2020 09:42:27 -0500
-Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03TEgHjQ103561;
-        Wed, 29 Apr 2020 09:42:26 -0500
-From:   Tero Kristo <t-kristo@ti.com>
-To:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <linux-crypto@vger.kernel.org>
-CC:     <linux-omap@vger.kernel.org>
-Subject: [PATCH 6/6] crypto: omap-aes: prevent unregistering algorithms twice
-Date:   Wed, 29 Apr 2020 17:42:05 +0300
-Message-ID: <20200429144205.5291-7-t-kristo@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200429144205.5291-1-t-kristo@ti.com>
-References: <20200429144205.5291-1-t-kristo@ti.com>
+        id S1726637AbgD2Oqh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Apr 2020 10:46:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35844 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726618AbgD2Oqh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Apr 2020 10:46:37 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71846C035493
+        for <linux-omap@vger.kernel.org>; Wed, 29 Apr 2020 07:46:36 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id t14so2847504wrw.12
+        for <linux-omap@vger.kernel.org>; Wed, 29 Apr 2020 07:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=2Ficmofxvg1gGlcOqmwoo/4T3OdE1Nj+sekhSCfgbec=;
+        b=cWGcfd37tz1qVZcYhvT2L/iBeU7Z9JdDjY+jlvkqguZEBWg21l9NQBbEhfqreAHF0r
+         PgFOGOS0MuAq132t+zlontVtEyhwErfv+U75h8RTQVurtuURP+rNnNwItWYiPXCfrdHV
+         M0aPXzhFltqtsifSRCoICBK9GZvlMeEtQqt6DgYTKdkeb+TpCnlNguP/Xv6wxhoFkJWG
+         tYIBTK1lJVb2HjZCuOovIjkp1WTLPka/RHm4hD0HC20Zoy212oEIgR2awZtUMzR5c3XI
+         aUTxaOZ4iJXDWIUI8OQS8pHpNV8iVSsHW2+ZUV3oVUJIGte4ATKKW/APRmdqMVeu/1Br
+         eN5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=2Ficmofxvg1gGlcOqmwoo/4T3OdE1Nj+sekhSCfgbec=;
+        b=YbI8Yg1IE0AVnrvHo336PeQAWiHyq2UTUSXjKx931ls3f3w6rj3e6esyC1gtflRP/m
+         lkyOQvJw7K0qHdUONR4pIF5wKPuWARvpiMGiD6v4PRZgTU1dfoqviliiGQYNhQDBK0mx
+         TGQp7gw4vI+7BySidYuDkTQVbTRgPtO+5Hd93y31tsqwfIYUx9EINh7OnemjBkjnw2oR
+         zLnugdfkfIhNq6ulzU/7aSqaSqBl18A/bYikWNIYjnNM5fCDLnHvh1pnDuxcOQTIbM5F
+         eOb+ZtWAMx4L2IQlyoZm0CXLpASGjfJYm4dIQ4IGGO/Pm9qLNDwyQAKg/Oh1fP9wbP5P
+         zvSQ==
+X-Gm-Message-State: AGi0PuaKTR83IxLlzM+uzdXz50J2NFab2rOvubapJhommb/Pai1AEDde
+        IgfETSKkMJH5hIMB14VcIfrnWm6JHlA=
+X-Google-Smtp-Source: APiQypIJBdvXFYtYk7flefaHVSe/KkfD3c1Yp1Mc7/t3OCPyBa7dFoaFaqO6BQHC4L0I7gFa541a+w==
+X-Received: by 2002:a5d:69c9:: with SMTP id s9mr39673966wrw.307.1588171594821;
+        Wed, 29 Apr 2020 07:46:34 -0700 (PDT)
+Received: from [192.168.0.41] (lns-bzn-59-82-252-135-148.adsl.proxad.net. [82.252.135.148])
+        by smtp.googlemail.com with ESMTPSA id a9sm7675575wmm.38.2020.04.29.07.46.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Apr 2020 07:46:34 -0700 (PDT)
+Subject: Re: [PATCH v2] thermal: ti-soc-thermal: avoid dereferencing ERR_PTR
+To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-omap@vger.kernel.org
+References: <20200424161944.6044-1-sudipm.mukherjee@gmail.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <6255085b-984b-58b1-69e7-81c3b9cf1fc7@linaro.org>
+Date:   Wed, 29 Apr 2020 16:46:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20200424161944.6044-1-sudipm.mukherjee@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Most of the OMAP family SoCs contain two instances for AES core, which
-causes the remove callbacks to be also done twice when driver is
-removed. Fix the algorithm unregister callbacks to take into account the
-number of algorithms still registered to avoid removing these twice.
+On 24/04/2020 18:19, Sudip Mukherjee wrote:
+> On error the function ti_bandgap_get_sensor_data() returns the error
+> code in ERR_PTR() but we only checked if the return value is NULL or
+> not. And, so we can dereference an error code inside ERR_PTR.
+> While at it, convert a check to IS_ERR_OR_NULL.
+> 
+> Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+> ---
 
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
----
- drivers/crypto/omap-aes.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Applied thanks
 
-diff --git a/drivers/crypto/omap-aes.c b/drivers/crypto/omap-aes.c
-index 824ddf2a66ff..b5aff20c5900 100644
---- a/drivers/crypto/omap-aes.c
-+++ b/drivers/crypto/omap-aes.c
-@@ -1269,13 +1269,17 @@ static int omap_aes_remove(struct platform_device *pdev)
- 	spin_unlock(&list_lock);
- 
- 	for (i = dd->pdata->algs_info_size - 1; i >= 0; i--)
--		for (j = dd->pdata->algs_info[i].registered - 1; j >= 0; j--)
-+		for (j = dd->pdata->algs_info[i].registered - 1; j >= 0; j--) {
- 			crypto_unregister_skcipher(
- 					&dd->pdata->algs_info[i].algs_list[j]);
-+			dd->pdata->algs_info[i].registered--;
-+		}
- 
--	for (i = dd->pdata->aead_algs_info->size - 1; i >= 0; i--) {
-+	for (i = dd->pdata->aead_algs_info->registered - 1; i >= 0; i--) {
- 		aalg = &dd->pdata->aead_algs_info->algs_list[i];
- 		crypto_unregister_aead(aalg);
-+		dd->pdata->aead_algs_info->registered--;
-+
- 	}
- 
- 	crypto_engine_exit(dd->engine);
+
 -- 
-2.17.1
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
