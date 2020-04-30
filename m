@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C8F1BFBF3
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Apr 2020 16:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14CC51BFB92
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Apr 2020 16:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729231AbgD3OCz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Apr 2020 10:02:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35382 "EHLO mail.kernel.org"
+        id S1728910AbgD3NyM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Apr 2020 09:54:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36432 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728747AbgD3Nxg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 30 Apr 2020 09:53:36 -0400
+        id S1728904AbgD3NyL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 30 Apr 2020 09:54:11 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AF37E24959;
-        Thu, 30 Apr 2020 13:53:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 08F772137B;
+        Thu, 30 Apr 2020 13:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588254815;
-        bh=ZeQ+nsfG34bCl5uEds18kIJEKqqdj1c0qRK1uyLut8M=;
+        s=default; t=1588254850;
+        bh=9Lp5v9/keYjswVxSuVEnn/6z7aoKhj1nB4IUyn6JhvY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CkloH/vru3NPp6yh0HeYo8YWd6sxIKafNuAb6wx6tBjEqFgo5rRnjHA5SoIlVivI9
-         U+Q2pYwKd+3adiVm77awOi8W3SbZsr9a0GaqVjRp6vPfTdGHj1kHo8ia6s5Tx8ktwJ
-         4c48vy/1fwUqqby81ybTufjVa2c63KmP47mK05bg=
+        b=u0kqg40KMGgDhE/gc6rS290hfs5kYxQuaRJqFaKe8o3kmAoEQ+XmAlzsL6rwuUcdP
+         jTTBtMqdp8YjeelIkxsbR3+Kt1dkbu/Gc6kXHCdYSIdEeVEaKzmtmAF9Is5sw3M398
+         CNTlFx9OUGuyWezfFpoIFb1b62YO4zq263ZvbFQA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
@@ -30,12 +30,12 @@ Cc:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
         Felipe Balbi <balbi@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-usb@vger.kernel.org,
         linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 08/30] usb: dwc3: gadget: Do link recovery for SS and SSP
-Date:   Thu, 30 Apr 2020 09:53:03 -0400
-Message-Id: <20200430135325.20762-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 07/27] usb: dwc3: gadget: Do link recovery for SS and SSP
+Date:   Thu, 30 Apr 2020 09:53:42 -0400
+Message-Id: <20200430135402.20994-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200430135325.20762-1-sashal@kernel.org>
-References: <20200430135325.20762-1-sashal@kernel.org>
+In-Reply-To: <20200430135402.20994-1-sashal@kernel.org>
+References: <20200430135402.20994-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,10 +65,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 50d2481041c85..99f6a5aa01095 100644
+index 76a0020b0f2e8..4149d751719e3 100644
 --- a/drivers/usb/dwc3/gadget.c
 +++ b/drivers/usb/dwc3/gadget.c
-@@ -1577,7 +1577,6 @@ static int __dwc3_gadget_wakeup(struct dwc3 *dwc)
+@@ -1641,7 +1641,6 @@ static int __dwc3_gadget_wakeup(struct dwc3 *dwc)
  	u32			reg;
  
  	u8			link_state;
@@ -76,7 +76,7 @@ index 50d2481041c85..99f6a5aa01095 100644
  
  	/*
  	 * According to the Databook Remote wakeup request should
-@@ -1587,16 +1586,13 @@ static int __dwc3_gadget_wakeup(struct dwc3 *dwc)
+@@ -1651,16 +1650,13 @@ static int __dwc3_gadget_wakeup(struct dwc3 *dwc)
  	 */
  	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
  
