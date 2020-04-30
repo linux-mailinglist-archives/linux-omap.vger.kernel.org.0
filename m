@@ -2,27 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9E51C032B
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Apr 2020 18:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D79141C040D
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Apr 2020 19:46:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726770AbgD3Qwi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Apr 2020 12:52:38 -0400
-Received: from muru.com ([72.249.23.125]:52198 "EHLO muru.com"
+        id S1726404AbgD3RqU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Apr 2020 13:46:20 -0400
+Received: from muru.com ([72.249.23.125]:52250 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726333AbgD3Qwh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 30 Apr 2020 12:52:37 -0400
+        id S1726272AbgD3RqU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 30 Apr 2020 13:46:20 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 414DC8123;
-        Thu, 30 Apr 2020 16:53:25 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 89F038123;
+        Thu, 30 Apr 2020 17:47:06 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, maemo-leste@lists.dyne.org,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>
+Cc:     Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
         Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH] ARM: dts: omap4-droid4: Fix occasional lost wakeirq for uart1
-Date:   Thu, 30 Apr 2020 09:52:33 -0700
-Message-Id: <20200430165233.45844-1-tony@atomide.com>
+        Pavel Machek <pavel@ucw.cz>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCHv6 0/6] n_gsm serdev support and GNSS driver for droid4
+Date:   Thu, 30 Apr 2020 10:46:09 -0700
+Message-Id: <20200430174615.41185-1-tony@atomide.com>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -31,56 +36,117 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Looks like using the UART CTS pin does not always trigger for a wake-up
-when the SoC is idle.
+Hi all,
 
-This is probably because the modem first uses gpio_149 to signal the SoC
-that data will be sent, and the CTS will only get used later when the
-data transfer is starting.
+Here's v6 set of these patches fixed up for Johan's earlier comments.
 
-Let's fix the issue by configuring the gpio_149 pad as the wakeirq for
-UART. We have gpio_149 managed by the USB PHY for powering up the right
-USB mode, and after that, the gpio gets recycled as the modem wake-up
-pin. If needeed, the USB PHY can also later on be configured to use
-gpio_149 pad as the wakeirq as a shared irq.
+Getting rid of the custom chardev interface, and making things more
+generic also simplified things quite a bit. Thanks a lot Johan :)
 
-Let's also configure the missing properties for uart-has-rtscts and
-current-speed for the modem port while at it. We already configure the
-hardware flow control pins with uart1_pins pinctrl setting.
+This series does the following:
 
-Cc: maemo-leste@lists.dyne.org
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/motorola-mapphone-common.dtsi | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+1. Adds functions to n_gsm.c for serdev-ngsm.c driver to use
 
-diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
---- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-+++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-@@ -690,14 +690,18 @@ &timer9 {
- };
- 
- /*
-- * As uart1 is wired to mdm6600 with rts and cts, we can use the cts pin for
-- * uart1 wakeirq.
-+ * The uart1 port is wired to mdm6600 with rts and cts. The modem uses gpio_149
-+ * for wake-up events for both the USB PHY and the UART. We can use gpio_149
-+ * pad as the shared wakeirq for the UART rather than the RX or CTS pad as we
-+ * have gpio_149 trigger before the UART transfer starts.
-  */
- &uart1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart1_pins>;
- 	interrupts-extended = <&wakeupgen GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH
--			       &omap4_pmx_core 0xfc>;
-+			       &omap4_pmx_core 0x110>;
-+	uart-has-rtscts;
-+	current-speed = <115200>;
- };
- 
- &uart3 {
+2. Adds a generic serdev-ngsm.c driver that brings up the TS 27.010
+   TTY ports configured in devicetree with help of n_gsm.c
+
+3. Allows the use of standard Linux device drivers for dedicated
+   TS 27.010 channels for devices like GNSS and ALSA found on some
+   modems for example
+
+4. Adds a serdev-ngsm consumer driver for the GNSS device found on
+   the Motorola Mapphone MDM6600 modem on devices like droid4
+
+I've placed the serdev-ngsm.c under drivers/tty/serdev as it still
+seems to make most sense with no better places available. It's no
+longer an MFD driver as it really does not need to care what channel
+specific consumer drivers might be configured. So it now just uses
+of_platform_populate() to probe whatever child nodes it might find.
+
+I'm not attached having the driver in drivers/tty/serdev. I just
+don't have any better locations in mind. So jsing Johan's earlier
+i2c example, the drivers/tty/serdev/serdev-ngsm.c driver is now a
+generic protocol and bus driver, so it's getting closer to the
+maybe the drivers/i2c/busses analogy :) Please do suggest better
+locations other than MFD and misc if you have better ideas.
+
+Now without the chardev support, the /dev/gsmtty* using apps need
+to use "U1234AT+CFUN?" format for the packets. The advantage is
+less kernel code, and we keep the existing /dev/gsmtty* interface.
+
+If we still really need the custom chardev support, that can now
+be added as needed with the channel specific consumer driver(s).
+
+My guess is that at least with the pending ofono patches, we just
+want to use the raw interface for /dev/gsmtty* interface and stop
+pretending we have a modem that is AT compatible.
+
+Regards,
+
+Tony
+
+
+Changes since v5:
+- Based on comments from Johan, moved back to using the existing
+  TS 27.010 TTYs created by n_gsm.c instaed of adding custom chardev
+  support to deal with the Motorola custom protocol
+
+- Based on comments from Johan, made the serdev-ngsm driver generic
+  with just minimal quirk handling for the Motorola modem
+
+- Dropped the Motorola custom protocol on top of TS 27.010 handling
+  from serdev-ngsm.c as this can now be easily handled by the channel
+  specific drivers as needed
+
+- Added few more helpers to n_gsm.c for serdev-ngsm.c to use
+
+- Added the channel specific GNSS driver for the Motorola modem
+
+Changes since v4:
+- Use drivers/tty/serdev/protocol directory for the driver instead of
+  drivers/mfd as discussed on the lists for v3 set of patches
+- Fix remove to call kfree only after removing device from the list
+
+Changes since v3:
+- Update list of folks in Cc, looks like I sent v3 only to Lee and lkml
+- Init privdata before motmdm_register_dlci calls gsm_serdev_register_dlci
+- Update binding based on Rob's comments for license and "allOf"
+
+Changes since v2:
+- Drop useless send_command indirection, use static motmdm_send_command
+
+Changes since v1:
+
+- Simplified usage and got rid of few pointless inline functions
+- Added consumer MFD driver, devicetree binding, and dts changes
+
+
+Tony Lindgren (6):
+  tty: n_gsm: Add support for serdev drivers
+  dt-bindings: serdev: ngsm: Add binding for serdev-ngsm
+  serdev: ngsm: Add generic serdev-ngsm driver
+  dt-bindings: gnss: Add binding for Motorola Mapphone MDM6600 GNSS
+  gnss: motmdm: Add support for Motorola Mapphone MDM6600 modem
+  ARM: dts: omap4-droid4: Configure modem for serdev-ngsm
+
+ .../devicetree/bindings/gnss/motmdm.yaml      |  29 ++
+ .../bindings/serdev/serdev-ngsm.yaml          |  64 +++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ .../boot/dts/motorola-mapphone-common.dtsi    |  14 +
+ drivers/gnss/Kconfig                          |   8 +
+ drivers/gnss/Makefile                         |   3 +
+ drivers/gnss/motmdm.c                         | 419 ++++++++++++++++
+ drivers/tty/n_gsm.c                           | 428 +++++++++++++++++
+ drivers/tty/serdev/Kconfig                    |  10 +
+ drivers/tty/serdev/Makefile                   |   1 +
+ drivers/tty/serdev/serdev-ngsm.c              | 449 ++++++++++++++++++
+ include/linux/serdev-gsm.h                    | 163 +++++++
+ 12 files changed, 1590 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gnss/motmdm.yaml
+ create mode 100644 Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
+ create mode 100644 drivers/gnss/motmdm.c
+ create mode 100644 drivers/tty/serdev/serdev-ngsm.c
+ create mode 100644 include/linux/serdev-gsm.h
+
 -- 
 2.26.2
