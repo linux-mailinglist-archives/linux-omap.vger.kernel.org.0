@@ -2,79 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 440F21C041F
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Apr 2020 19:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D30E91C07D1
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Apr 2020 22:24:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726812AbgD3Rqj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Apr 2020 13:46:39 -0400
-Received: from muru.com ([72.249.23.125]:52352 "EHLO muru.com"
+        id S1726871AbgD3UYm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Apr 2020 16:24:42 -0400
+Received: from muru.com ([72.249.23.125]:52380 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726850AbgD3Rqf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 30 Apr 2020 13:46:35 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id CCA0E81B3;
-        Thu, 30 Apr 2020 17:47:22 +0000 (UTC)
+        id S1726377AbgD3UYm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 30 Apr 2020 16:24:42 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 8A4DA8123;
+        Thu, 30 Apr 2020 20:25:30 +0000 (UTC)
+Date:   Thu, 30 Apr 2020 13:24:38 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>
-Cc:     Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH 6/6] ARM: dts: omap4-droid4: Configure modem for serdev-ngsm
-Date:   Thu, 30 Apr 2020 10:46:15 -0700
-Message-Id: <20200430174615.41185-7-tony@atomide.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200430174615.41185-1-tony@atomide.com>
-References: <20200430174615.41185-1-tony@atomide.com>
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     linux-clk@vger.kernel.org, sboyd@kernel.org,
+        mturquette@baylibre.com, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] clk: ti: clkctrl: convert subclocks to use proper names
+ also
+Message-ID: <20200430202438.GY37466@atomide.com>
+References: <20200430083451.8562-1-t-kristo@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200430083451.8562-1-t-kristo@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Let's enable the TS 27.010 /dev/gsmmux* interfaces via Linux n_gsm that
-can be used for voice calls and SMS with commands using a custom Motorola
-format.
+* Tero Kristo <t-kristo@ti.com> [200430 08:35]:
+> Addition of the new internal API to get the clkctrl names missed adding
+> the same conversion in place for the subclocks. This leads into missed
+> parent/child relationships (i.e. orphaned clocks) with mixed node name
+> handling, for example with omap4/omap5 where the l4_per clocks are using
+> new naming, but rest are using old. Fix by converting the subclock
+> registration to pick correct names for the clocks also.
 
-And let's also enable the kernel GNSS driver via serdev-ngsm that uses a
-dedicated TS 27.010 channel.
+OK, sorry for missing that part.
 
-Note that voice call audio mixer is not supported yet.
+> Fixes: 6c3090520554 ("clk: ti: clkctrl: Fix hidden dependency to node name")
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/motorola-mapphone-common.dtsi | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Thanks for fixing it:
 
-diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
---- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-+++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-@@ -702,6 +702,20 @@ &uart1 {
- 			       &omap4_pmx_core 0x110>;
- 	uart-has-rtscts;
- 	current-speed = <115200>;
-+
-+	modem {
-+		compatible = "motorola,mapphone-mdm6600-serial";
-+		ttymask = <0 0x00001fee>;
-+		phys = <&fsusb1_phy>;
-+		phy-names = "usb";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		gnss@4 {
-+			compatible = "motorola,mapphone-mdm6600-gnss";
-+			reg = <4>;
-+		};
-+	};
- };
- 
- &uart3 {
--- 
-2.26.2
+Acked-by: Tony Lindgren <tony@atomide.com>
