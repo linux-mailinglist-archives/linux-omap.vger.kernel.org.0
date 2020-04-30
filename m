@@ -2,99 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14CC51BFB92
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Apr 2020 16:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A05B1BFB91
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Apr 2020 16:00:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728910AbgD3NyM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Apr 2020 09:54:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36432 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728904AbgD3NyL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 30 Apr 2020 09:54:11 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 08F772137B;
-        Thu, 30 Apr 2020 13:54:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588254850;
-        bh=9Lp5v9/keYjswVxSuVEnn/6z7aoKhj1nB4IUyn6JhvY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u0kqg40KMGgDhE/gc6rS290hfs5kYxQuaRJqFaKe8o3kmAoEQ+XmAlzsL6rwuUcdP
-         jTTBtMqdp8YjeelIkxsbR3+Kt1dkbu/Gc6kXHCdYSIdEeVEaKzmtmAF9Is5sw3M398
-         CNTlFx9OUGuyWezfFpoIFb1b62YO4zq263ZvbFQA=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Thinh Nguyen <thinhn@synopsys.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 07/27] usb: dwc3: gadget: Do link recovery for SS and SSP
-Date:   Thu, 30 Apr 2020 09:53:42 -0400
-Message-Id: <20200430135402.20994-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200430135402.20994-1-sashal@kernel.org>
-References: <20200430135402.20994-1-sashal@kernel.org>
+        id S1729066AbgD3OAp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Apr 2020 10:00:45 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:35035 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729397AbgD3OAn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Apr 2020 10:00:43 -0400
+Received: by mail-oi1-f193.google.com with SMTP id o7so5292733oif.2;
+        Thu, 30 Apr 2020 07:00:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=4SqKDcgFBHx1L7Er/7o6lUHlh3wWzthDwvJZwo5hrJU=;
+        b=QyHss8qcgQyLccmUxMGK7EApLeAiW3/3iykKdJiIOU3pytBtLQreG1zD8jJ/osRaD1
+         OWi7ggHOWxUnCKRUStcWiCp3YU2h4RLn+K/afjcbEAwT0BoPDqfXOI/GqIfeC542vLS4
+         hFNDlBn2oe/4WqL9tEk8xWMn1qMxKYECNJMjIHPmKsj9l7JnLiHJ/8DEdZOPxYHctfjh
+         NW1jlrZzQJAmt5XHzD6WXnICdzRdU+XU8uCdXJju0eQgZNJGbNxRJiZjLozars3rVELi
+         Hr1qn+7431iZ5bRbzjdaZVrFoE9uROl4/S2hzHbzjllvm4lfb7veQyczd+Shv9MmnrY9
+         XTgQ==
+X-Gm-Message-State: AGi0PuaPA9FSTj3JLI/HqpvsxzbRoFDsDSrtYwsxW3pw74BYgtOH6h+F
+        UV+4l2aVqGYNdyrkKtBJlg==
+X-Google-Smtp-Source: APiQypK+NEro6nmq5Ju0kr11u0dYdZk562OwLmfEc6Rdsg37blDy9Pox4kBxZ7K1FWgojRgFDGj0HA==
+X-Received: by 2002:aca:d684:: with SMTP id n126mr1810974oig.173.1588255242401;
+        Thu, 30 Apr 2020 07:00:42 -0700 (PDT)
+Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id h137sm2698oib.33.2020.04.30.07.00.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Apr 2020 07:00:41 -0700 (PDT)
+Received: (nullmailer pid 20979 invoked by uid 1000);
+        Thu, 30 Apr 2020 14:00:40 -0000
+Date:   Thu, 30 Apr 2020 09:00:40 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Keerthy <j-keerthy@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Adam Ford <aford173@gmail.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: Re: [PATCH 02/14] clocksource/drivers/timer-ti-dm: Add clockevent
+ and clocksource support
+Message-ID: <20200430140040.GA8363@bogus>
+References: <20200417165519.4979-1-tony@atomide.com>
+ <20200417165519.4979-3-tony@atomide.com>
+ <62be90e2-7dbe-410d-4171-c0ad0cddc7a3@linaro.org>
+ <20200427143144.GQ37466@atomide.com>
+ <29f39839-b3ed-cac3-1dea-c137286320b1@linaro.org>
+ <20200427152329.GR37466@atomide.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200427152329.GR37466@atomide.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+On Mon, Apr 27, 2020 at 08:23:29AM -0700, Tony Lindgren wrote:
+> * Daniel Lezcano <daniel.lezcano@linaro.org> [200427 15:03]:
+> > On 27/04/2020 16:31, Tony Lindgren wrote:
+> > > Hi,
+> > > 
+> > > * Daniel Lezcano <daniel.lezcano@linaro.org> [200427 09:19]:
+> > >> On 17/04/2020 18:55, Tony Lindgren wrote:
+> > >>> --- a/Documentation/devicetree/bindings/timer/ti,timer.txt
+> > >>> +++ b/Documentation/devicetree/bindings/timer/ti,timer.txt
+> > >>> @@ -14,6 +14,8 @@ Required properties:
+> > >>>  			ti,omap5430-timer (applicable to OMAP543x devices)
+> > >>>  			ti,am335x-timer	(applicable to AM335x devices)
+> > >>>  			ti,am335x-timer-1ms (applicable to AM335x devices)
+> > >>> +			ti,dmtimer-clockevent (when used as for clockevent)
+> > >>> +			ti,dmtimer-clocksource (when used as for clocksource)
+> > >>
+> > >> Please, submit a separate patch for this.
+> > >>
+> > >> Before you resend as is, this will be nacked as clocksource / clockevent
+> > >> is not a hardware description but a Linux thing.
+> > >>
+> > >> Finding a way to characterize that from the DT is an endless discussion
+> > >> since years, so I suggest to use a single property for the timer eg
+> > >> <ti,dmtimer> and initialize the clocksource and the clockevent in the
+> > >> driver.
+> > > 
+> > > Hmm good point. We still need to specify which timer is a clocksource
+> > > and which one a clockevent somehow.
+> > > 
+> > > Maybe we could have a generic properties like the clock framework such as:
+> > > 
+> > > assigned-system-clocksource
+> > > assigned-system-clockevent
+> > 
+> > I think that will be the same problem :/
+> 
+> Seems like other SoCs have the same issue too with multiple timers
+> to configure.
+> 
+> > Is it possible to check the interrupt for the clockevent ? A timer node
+> > with the interrrupt is the clockevent, without it is a clocksource.
+> 
+> OK let's try that. So the configuration would become then:
+> 
+> compatible = "ti,dmtimer;	/* reserved for system timers */
+> /delete-property/interrupts;	/* ok so it's a clocksource */
+> /delete-property/interrupts-extended;
 
-[ Upstream commit d0550cd20e52558ecf6847a0f96ebd5d944c17e4 ]
+That's not really what was meant.
 
-The controller always supports link recovery for device in SS and SSP.
-Remove the speed limit check. Also, when the device is in RESUME or
-RESET state, it means the controller received the resume/reset request.
-The driver must send the link recovery to acknowledge the request. They
-are valid states for the driver to send link recovery.
+Let's say you have N timers. Either every timer is exactly the same and 
+the OS can just assign them however it wants or there is some difference 
+in the h/w making certain timer better for certain functions. Describe 
+that difference. It could be clock rate, number of counter bits, always 
+on, secure mode access only, has or doesn't have output compare or input 
+capture, etc.
 
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Fixes: ee5cd41c9117 ("usb: dwc3: Update speed checks for SuperSpeedPlus")
-Signed-off-by: Thinh Nguyen <thinhn@synopsys.com>
-Signed-off-by: Felipe Balbi <balbi@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/dwc3/gadget.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 76a0020b0f2e8..4149d751719e3 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1641,7 +1641,6 @@ static int __dwc3_gadget_wakeup(struct dwc3 *dwc)
- 	u32			reg;
- 
- 	u8			link_state;
--	u8			speed;
- 
- 	/*
- 	 * According to the Databook Remote wakeup request should
-@@ -1651,16 +1650,13 @@ static int __dwc3_gadget_wakeup(struct dwc3 *dwc)
- 	 */
- 	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
- 
--	speed = reg & DWC3_DSTS_CONNECTSPD;
--	if ((speed == DWC3_DSTS_SUPERSPEED) ||
--	    (speed == DWC3_DSTS_SUPERSPEED_PLUS))
--		return 0;
--
- 	link_state = DWC3_DSTS_USBLNKST(reg);
- 
- 	switch (link_state) {
-+	case DWC3_LINK_STATE_RESET:
- 	case DWC3_LINK_STATE_RX_DET:	/* in HS, means Early Suspend */
- 	case DWC3_LINK_STATE_U3:	/* in HS, means SUSPEND */
-+	case DWC3_LINK_STATE_RESUME:
- 		break;
- 	default:
- 		return -EINVAL;
--- 
-2.20.1
-
+Rob
