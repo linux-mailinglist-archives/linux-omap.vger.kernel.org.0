@@ -2,67 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D841C2093
-	for <lists+linux-omap@lfdr.de>; Sat,  2 May 2020 00:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 214541C276B
+	for <lists+linux-omap@lfdr.de>; Sat,  2 May 2020 20:04:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726377AbgEAW2T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 May 2020 18:28:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50694 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726333AbgEAW2T (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 May 2020 18:28:19 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 220C5C061A0C;
-        Fri,  1 May 2020 15:28:19 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 86F3E14F4BE36;
-        Fri,  1 May 2020 15:28:18 -0700 (PDT)
-Date:   Fri, 01 May 2020 15:28:17 -0700 (PDT)
-Message-Id: <20200501.152817.688071349221528108.davem@davemloft.net>
-To:     weiyongjun1@huawei.com
-Cc:     grygorii.strashko@ti.com, david@lechnology.com,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next v2] drivers: net: davinci_mdio: fix potential
- NULL dereference in davinci_mdio_probe()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200429025220.166415-1-weiyongjun1@huawei.com>
-References: <20200427094032.181184-1-weiyongjun1@huawei.com>
-        <20200429025220.166415-1-weiyongjun1@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 01 May 2020 15:28:18 -0700 (PDT)
+        id S1728311AbgEBSE3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 2 May 2020 14:04:29 -0400
+Received: from libre.maxnod.net ([46.227.16.189]:46962 "EHLO
+        svm-lin-web62.com6-interactive.fr" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728118AbgEBSE1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 May 2020 14:04:27 -0400
+Received: from Shop01 (localhost [127.0.0.1])
+        by svm-lin-web62.com6-interactive.fr (Postfix) with SMTP id 50B3515BE39;
+        Fri,  1 May 2020 17:55:14 +0200 (CEST)
+Received: from [104.20.232.197] by Shop01 with SMTP; Fri, 01 May 2020 22:56:21 +0600
+Message-ID: <290ff8p816$-$q7w41$-i--lp$604@qs4l.l.j9>
+From:   "JEAN MARIE" <fkinneyofd@tampabay.rr.com>
+Reply-To: "JEAN MARIE" <fkinneyofd@tampabay.rr.com>
+To:     linute.zilinskaite@gmail.com
+Subject: Kindly Acknowledge Receipt
+Date:   Fri, 01 May 20 22:56:21 GMT
+X-Mailer: MIME-tools 5.503 (Entity 5.501)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+        boundary="1F96F9E71D"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Wed, 29 Apr 2020 02:52:20 +0000
 
-> platform_get_resource() may fail and return NULL, so we should
-> better check it's return value to avoid a NULL pointer dereference
-> since devm_ioremap() does not check input parameters for null.
-> 
-> This is detected by Coccinelle semantic patch.
-> 
-> @@
-> expression pdev, res, n, t, e, e1, e2;
-> @@
-> 
-> res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
-> + if (!res)
-> +   return -EINVAL;
-> ... when != res == NULL
-> e = devm_ioremap(e1, res->start, e2);
-> 
-> Fixes: 03f66f067560 ("net: ethernet: ti: davinci_mdio: use devm_ioremap()")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
+--1F96F9E71D
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-Applied.
+I 'm a Financial Consultant.  under my network as a financial consultant, =
+there are few private investors offering capital injection as project fund=
+ing or business expansion in critical areas of Investment placements such =
+as Real Estate, Healthcare, Transportation and Agriculture. 
+Get back to me for more details as you express your interest areas of spec=
+ialization.
+
+Regards.
+Mr. J. Marie
+fkinneyofd Consulting
+
+--1F96F9E71D--
+
