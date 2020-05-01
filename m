@@ -2,88 +2,177 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E1891C0F64
-	for <lists+linux-omap@lfdr.de>; Fri,  1 May 2020 10:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE20B1C12BB
+	for <lists+linux-omap@lfdr.de>; Fri,  1 May 2020 15:18:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728471AbgEAIVS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 May 2020 04:21:18 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:33806 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728334AbgEAIVO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 May 2020 04:21:14 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 780AD1C020C; Fri,  1 May 2020 10:21:12 +0200 (CEST)
-Date:   Fri, 1 May 2020 10:21:11 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv6 0/6] n_gsm serdev support and GNSS driver for droid4
-Message-ID: <20200501082111.GA7501@amd>
-References: <20200430174615.41185-1-tony@atomide.com>
+        id S1728765AbgEANSp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 May 2020 09:18:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42824 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728586AbgEANSo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 1 May 2020 09:18:44 -0400
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A78FC24956;
+        Fri,  1 May 2020 13:18:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588339123;
+        bh=J0kG6Z5B+5vJ4yJTDzvDaFXRmJr/dRrJSSeRvMvltRY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=CCC1NvG06y+cp5Ef4bDAo0TGr7/wKVfHCYsbNi6phG34DeG7zHEH8n9cUhx89gV7p
+         xs/wTiWcKEkFMpRqHpvur/SWssP111UJiom0RO4dL7Aq92MluXx+OSVYeywH+J7CMy
+         jSZtmz6eupHTAUExYeqa9bBVMcPQuvvA9RpFd+do=
+Received: by mail-oi1-f180.google.com with SMTP id o24so2673074oic.0;
+        Fri, 01 May 2020 06:18:43 -0700 (PDT)
+X-Gm-Message-State: AGi0PuYOLVFKDFP5fJrG2AjdajA5ldqUN800eex565/E1g34i/kvElNK
+        fMHUU9aJi/14U3W0QqDWFD1Yz6QdG2NfHNu+gA==
+X-Google-Smtp-Source: APiQypKJRTSvBINORuAGd9rJ+1Od8gsw+57/nIuNYUtVMWxRmUA03OTpX3lvdJrg6eQMtcKjF7yl4OwXe6mhJ2HgSzY=
+X-Received: by 2002:a05:6808:24f:: with SMTP id m15mr3083301oie.152.1588339122764;
+ Fri, 01 May 2020 06:18:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="J/dobhs11T7y2rNN"
-Content-Disposition: inline
-In-Reply-To: <20200430174615.41185-1-tony@atomide.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+References: <20200417165519.4979-1-tony@atomide.com> <20200417165519.4979-3-tony@atomide.com>
+ <62be90e2-7dbe-410d-4171-c0ad0cddc7a3@linaro.org> <20200427143144.GQ37466@atomide.com>
+ <29f39839-b3ed-cac3-1dea-c137286320b1@linaro.org> <20200427152329.GR37466@atomide.com>
+ <20200430140040.GA8363@bogus> <20200430153119.GX37466@atomide.com>
+In-Reply-To: <20200430153119.GX37466@atomide.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 1 May 2020 08:18:31 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+Xqv0JByAK-tYj8aHDhuB5rYrn0NXQxkm97j0P1zqGPg@mail.gmail.com>
+Message-ID: <CAL_Jsq+Xqv0JByAK-tYj8aHDhuB5rYrn0NXQxkm97j0P1zqGPg@mail.gmail.com>
+Subject: Re: [PATCH 02/14] clocksource/drivers/timer-ti-dm: Add clockevent and
+ clocksource support
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Keerthy <j-keerthy@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Adam Ford <aford173@gmail.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
+        linux-clk <linux-clk@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, Apr 30, 2020 at 10:31 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> * Rob Herring <robh@kernel.org> [200430 14:01]:
+> > On Mon, Apr 27, 2020 at 08:23:29AM -0700, Tony Lindgren wrote:
+> > > * Daniel Lezcano <daniel.lezcano@linaro.org> [200427 15:03]:
+> > > > On 27/04/2020 16:31, Tony Lindgren wrote:
+> > > > > Hi,
+> > > > >
+> > > > > * Daniel Lezcano <daniel.lezcano@linaro.org> [200427 09:19]:
+> > > > >> On 17/04/2020 18:55, Tony Lindgren wrote:
+> > > > >>> --- a/Documentation/devicetree/bindings/timer/ti,timer.txt
+> > > > >>> +++ b/Documentation/devicetree/bindings/timer/ti,timer.txt
+> > > > >>> @@ -14,6 +14,8 @@ Required properties:
+> > > > >>>                       ti,omap5430-timer (applicable to OMAP543x devices)
+> > > > >>>                       ti,am335x-timer (applicable to AM335x devices)
+> > > > >>>                       ti,am335x-timer-1ms (applicable to AM335x devices)
+> > > > >>> +                     ti,dmtimer-clockevent (when used as for clockevent)
+> > > > >>> +                     ti,dmtimer-clocksource (when used as for clocksource)
+> > > > >>
+> > > > >> Please, submit a separate patch for this.
+> > > > >>
+> > > > >> Before you resend as is, this will be nacked as clocksource / clockevent
+> > > > >> is not a hardware description but a Linux thing.
+> > > > >>
+> > > > >> Finding a way to characterize that from the DT is an endless discussion
+> > > > >> since years, so I suggest to use a single property for the timer eg
+> > > > >> <ti,dmtimer> and initialize the clocksource and the clockevent in the
+> > > > >> driver.
+> > > > >
+> > > > > Hmm good point. We still need to specify which timer is a clocksource
+> > > > > and which one a clockevent somehow.
+> > > > >
+> > > > > Maybe we could have a generic properties like the clock framework such as:
+> > > > >
+> > > > > assigned-system-clocksource
+> > > > > assigned-system-clockevent
+> > > >
+> > > > I think that will be the same problem :/
+> > >
+> > > Seems like other SoCs have the same issue too with multiple timers
+> > > to configure.
+> > >
+> > > > Is it possible to check the interrupt for the clockevent ? A timer node
+> > > > with the interrrupt is the clockevent, without it is a clocksource.
+> > >
+> > > OK let's try that. So the configuration would become then:
+> > >
+> > > compatible = "ti,dmtimer;   /* reserved for system timers */
+> > > /delete-property/interrupts;        /* ok so it's a clocksource */
+> > > /delete-property/interrupts-extended;
+> >
+> > That's not really what was meant.
+>
+> OK, so let's figure out something better then.
+>
+> > Let's say you have N timers. Either every timer is exactly the same and
+> > the OS can just assign them however it wants or there is some difference
+> > in the h/w making certain timer better for certain functions. Describe
+> > that difference. It could be clock rate, number of counter bits, always
+> > on, secure mode access only, has or doesn't have output compare or input
+> > capture, etc.
+>
+> Hmm. Trying to detect this automatically will get messy. For example,
+> we have few omap3 boards with the following options that also need to
+> consider if the separate 32KiHz counter is available:
+>
+> 1. The best case scenario
+>
+> ti,omap-counter32k clocksource
+> ti,sysc-omap2-timer ti,timer-alwon clockevent (timer1)
+>
+> 2. Boards relying on internal clock with unusable 32k counter
+>
+> ti,sysc-omap2-timer ti,timer-alwon clocksource (timer12)
+> ti,sysc-omap2-timer clockevent (typically gpt2)
+>
+> In the second case, the 32k counter is unusable, and timer1
+> is unusable with the external 32k always on clock. But timer1
+> can be used with the system clock just fine for other purposes.
+> So ideally we would not tag timer1 as disabled :)
 
---J/dobhs11T7y2rNN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm perfectly fine with a 'broken 32k clk' type property.
 
-Hi!
+Though I think the compatibility story is not good changing DT for
+stuff needed to boot and needed early in boot. It's one thing to break
+something not required to get a system booted.
 
-> Now without the chardev support, the /dev/gsmtty* using apps need
-> to use "U1234AT+CFUN?" format for the packets. The advantage is
-> less kernel code, and we keep the existing /dev/gsmtty* interface.
+> For the second case, we could remove ti,timer-alwon property
+> for timer1, and tag the 32k counter as disabled as the source
+> clock is unreliable. Then somewhere in the code we would need
+> to check if ti,omap-counter32k is availabe, then check if
+> timer1 is always-on, then use timer12 if not a secure device
+> like n900.
 
-Actually... yes, this works. But no, this is not "existing" tty
-interface.
+IIRC, there's some OMAP timer properties for secure vs. non-secure.
+(It's not the first time we've had this discussion on TI timers.)
 
-ttys work per character, and this interface definitely does not... it
-is "packet" based, write() syscalls need exactly right lengths. You
-can't just open minicom, and type "U1234...". You can't paste it,
-either (I tried). tty controls like start/stop bits and baud rate are
-useless here. CR/LF conversions are unwanted/dangerous because it is
-confusing hard to debug if you get them wrong.
+> If the board wants to use the system clock as the source for
+> a higher resolution with assigned-clock-parents, then we'd need
+> to ignore the always-on property and not use the 32k counter as
+> the clocksource. Basically to somehow figure out that a higher
+> resolution configuration is preferred over a
+> low-power configuration.
 
-Now, I don't see reason why this could not be made to work, and it may
-be more important to have something in mainline and work with that. So
-if you can make this into -next, I'll not complain too loudly. But it
-is... still wrong and I liked motmdm* more :-).
+That could be something you want to pick at run-time.
 
-Best regards,
+> So what's your take on just adding the generic properties for
+> assigned-system-clocksource and clockevent?
 
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
+I'm tired of discussing this for 10 years...
 
---J/dobhs11T7y2rNN
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl6r2/cACgkQMOfwapXb+vJWVQCgmZWp4uW4WcDVtKcZ64vezhLQ
-cwAAn2QiA0rySRtYXW2XeiPwWH7txj3y
-=CjiR
------END PGP SIGNATURE-----
-
---J/dobhs11T7y2rNN--
+Rob
