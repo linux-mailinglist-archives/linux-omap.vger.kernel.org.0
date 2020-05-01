@@ -2,21 +2,20 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D6381C1E8E
-	for <lists+linux-omap@lfdr.de>; Fri,  1 May 2020 22:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3F431C1EA7
+	for <lists+linux-omap@lfdr.de>; Fri,  1 May 2020 22:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727929AbgEAUc3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 May 2020 16:32:29 -0400
-Received: from muru.com ([72.249.23.125]:52542 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726463AbgEAUc3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 1 May 2020 16:32:29 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id CF4E8810E;
-        Fri,  1 May 2020 20:33:15 +0000 (UTC)
-Date:   Fri, 1 May 2020 13:32:24 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Pavel Machek <pavel@denx.de>
+        id S1726307AbgEAUd5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 May 2020 16:33:57 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:56944 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726272AbgEAUd4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 May 2020 16:33:56 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 631651C020D; Fri,  1 May 2020 22:33:54 +0200 (CEST)
+Date:   Fri, 1 May 2020 22:33:54 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Tony Lindgren <tony@atomide.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>,
         Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
@@ -26,35 +25,56 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sebastian Reichel <sre@kernel.org>,
         linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv6 0/6] n_gsm serdev support and GNSS driver for droid4
-Message-ID: <20200501203224.GD37466@atomide.com>
+Subject: Re: [PATCH 2/6] dt-bindings: serdev: ngsm: Add binding for
+ serdev-ngsm
+Message-ID: <20200501203354.GD6043@duo.ucw.cz>
 References: <20200430174615.41185-1-tony@atomide.com>
- <20200501201905.GA6043@duo.ucw.cz>
+ <20200430174615.41185-3-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="IDYEmSnFhs3mNXr+"
 Content-Disposition: inline
-In-Reply-To: <20200501201905.GA6043@duo.ucw.cz>
+In-Reply-To: <20200430174615.41185-3-tony@atomide.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Pavel Machek <pavel@denx.de> [200501 20:20]:
-> Hi!
-> 
-> > My guess is that at least with the pending ofono patches, we just
-> > want to use the raw interface for /dev/gsmtty* interface and stop
-> > pretending we have a modem that is AT compatible.
-> 
-> Ok, so I got ofono back to work. ... I believe. It was not that
-> bad. SMS send/receive and outgoing call start/hangup worked at some
-> point (I did not play with mixers).
-> 
-> To github.com:pavelmachek/ofono.git
->    61d3d727..195760e9  mux-v1.29-1 -> mux-v1.29-1
 
-OK good to hear and thanks for doing it.
+--IDYEmSnFhs3mNXr+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
+On Thu 2020-04-30 10:46:11, Tony Lindgren wrote:
+> Add a binding document for a generic serdev-ngsm driver that can be
+> used to bring up TS 27.010 line discipline with Linux n_gsm support
+> on a serial port.
+>=20
+> As the Motorola Mapphone modems require some custom handling, they
+> are handled with a separate compatible.
+>=20
+> Let's also add vendor string for ETSI as we're using a ETSI 3GPP
+> TS 27.010 standard.
+>=20
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-Tony
+Reviewed-by: Pavel Machek <pavel@ucw.cz>
+
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--IDYEmSnFhs3mNXr+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCXqyHsgAKCRAw5/Bqldv6
+8qpmAJ4u6QcwJrnIodEOCgLHz//7PFwN5ACggpNJzLdgXm9ONB5Rczrm99TWPxg=
+=XuF9
+-----END PGP SIGNATURE-----
+
+--IDYEmSnFhs3mNXr+--
