@@ -2,20 +2,21 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E20F1C1E80
-	for <lists+linux-omap@lfdr.de>; Fri,  1 May 2020 22:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D6381C1E8E
+	for <lists+linux-omap@lfdr.de>; Fri,  1 May 2020 22:32:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726861AbgEAUbd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 May 2020 16:31:33 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:56608 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726778AbgEAUbc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 May 2020 16:31:32 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 7D4641C020C; Fri,  1 May 2020 22:31:30 +0200 (CEST)
-Date:   Fri, 1 May 2020 22:31:30 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Tony Lindgren <tony@atomide.com>
+        id S1727929AbgEAUc3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 May 2020 16:32:29 -0400
+Received: from muru.com ([72.249.23.125]:52542 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726463AbgEAUc3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 1 May 2020 16:32:29 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id CF4E8810E;
+        Fri,  1 May 2020 20:33:15 +0000 (UTC)
+Date:   Fri, 1 May 2020 13:32:24 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@denx.de>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>,
         Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
@@ -25,87 +26,35 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sebastian Reichel <sre@kernel.org>,
         linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 1/6] tty: n_gsm: Add support for serdev drivers
-Message-ID: <20200501203130.GC6043@duo.ucw.cz>
+Subject: Re: [PATCHv6 0/6] n_gsm serdev support and GNSS driver for droid4
+Message-ID: <20200501203224.GD37466@atomide.com>
 References: <20200430174615.41185-1-tony@atomide.com>
- <20200430174615.41185-2-tony@atomide.com>
+ <20200501201905.GA6043@duo.ucw.cz>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="JgQwtEuHJzHdouWu"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200430174615.41185-2-tony@atomide.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200501201905.GA6043@duo.ucw.cz>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Pavel Machek <pavel@denx.de> [200501 20:20]:
+> Hi!
+> 
+> > My guess is that at least with the pending ofono patches, we just
+> > want to use the raw interface for /dev/gsmtty* interface and stop
+> > pretending we have a modem that is AT compatible.
+> 
+> Ok, so I got ofono back to work. ... I believe. It was not that
+> bad. SMS send/receive and outgoing call start/hangup worked at some
+> point (I did not play with mixers).
+> 
+> To github.com:pavelmachek/ofono.git
+>    61d3d727..195760e9  mux-v1.29-1 -> mux-v1.29-1
 
---JgQwtEuHJzHdouWu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+OK good to hear and thanks for doing it.
 
-Hi!
+Regards,
 
-> We can make use of serdev drivers to do simple device drivers for
-> TS 27.010 chanels, and we can handle vendor specific protocols on top
-> of TS 27.010 with serdev drivers.
->=20
-> So far this has been tested with Motorola droid4 where there is a custom
-> packet numbering protocol on top of TS 27.010 for the MDM6600 modem.
->=20
-> I initially though about adding the serdev support into a separate file,
-> but that will take some refactoring of n_gsm.c. And I'd like to have
-> things working first. Then later on we might want to consider splitting
-> n_gsm.c into three pieces for core, tty and serdev parts. And then maybe
-> the serdev related parts can be just moved to live under something like
-> drivers/tty/serdev/protocol/ngsm.c.
->=20
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-
-If you fix error path below, you can add:
-
-Reviewed-by: Pavel Machek <pavel@ucw.cz>=20
-
-> +static struct gsm_dlci *gsd_dlci_get(struct gsm_serdev *gsd, int line,
-> +				     bool allocate)
-> +{
-> +	struct gsm_mux *gsm;
-> +	struct gsm_dlci *dlci;
-> +
-> +	if (!gsd || !gsd->gsm)
-> +		return ERR_PTR(-ENODEV);
-> +
-> +	gsm =3D gsd->gsm;
-> +
-> +	if (line < 1 || line >=3D 63)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	mutex_lock(&gsm->mutex);
-=2E..
-> +	dlci =3D gsm_dlci_alloc(gsm, line);
-> +	if (!dlci) {
-> +		gsm =3D ERR_PTR(-ENOMEM);
-> +		goto unlock;
-
-dlci =3D , or you get nice crash.
-
-Best regards,
-									Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---JgQwtEuHJzHdouWu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCXqyHIgAKCRAw5/Bqldv6
-8tffAJoCv6I/fBC26aNMvJ+2rQ6jVnpbLQCdHCxcWTrGsw8RYmyf01oZGWmp7wM=
-=DG9n
------END PGP SIGNATURE-----
-
---JgQwtEuHJzHdouWu--
+Tony
