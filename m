@@ -2,86 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFC461C2051
-	for <lists+linux-omap@lfdr.de>; Sat,  2 May 2020 00:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D841C2093
+	for <lists+linux-omap@lfdr.de>; Sat,  2 May 2020 00:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726352AbgEAWGl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 May 2020 18:06:41 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:37590 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbgEAWGl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 May 2020 18:06:41 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 680671C020C; Sat,  2 May 2020 00:06:39 +0200 (CEST)
-Date:   Sat, 2 May 2020 00:06:37 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Pavel Machek <pavel@denx.de>, Stephen Boyd <swboyd@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv6 0/6] n_gsm serdev support and GNSS driver for droid4
-Message-ID: <20200501220637.GA19818@amd>
-References: <20200430174615.41185-1-tony@atomide.com>
- <20200430222605.GA10922@duo.ucw.cz>
- <20200501145252.GC37466@atomide.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="0F1p//8PRICkK4MW"
-Content-Disposition: inline
-In-Reply-To: <20200501145252.GC37466@atomide.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+        id S1726377AbgEAW2T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 May 2020 18:28:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50694 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726333AbgEAW2T (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 May 2020 18:28:19 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 220C5C061A0C;
+        Fri,  1 May 2020 15:28:19 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 86F3E14F4BE36;
+        Fri,  1 May 2020 15:28:18 -0700 (PDT)
+Date:   Fri, 01 May 2020 15:28:17 -0700 (PDT)
+Message-Id: <20200501.152817.688071349221528108.davem@davemloft.net>
+To:     weiyongjun1@huawei.com
+Cc:     grygorii.strashko@ti.com, david@lechnology.com,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-next v2] drivers: net: davinci_mdio: fix potential
+ NULL dereference in davinci_mdio_probe()
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200429025220.166415-1-weiyongjun1@huawei.com>
+References: <20200427094032.181184-1-weiyongjun1@huawei.com>
+        <20200429025220.166415-1-weiyongjun1@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 01 May 2020 15:28:18 -0700 (PDT)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: Wei Yongjun <weiyongjun1@huawei.com>
+Date: Wed, 29 Apr 2020 02:52:20 +0000
 
---0F1p//8PRICkK4MW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> platform_get_resource() may fail and return NULL, so we should
+> better check it's return value to avoid a NULL pointer dereference
+> since devm_ioremap() does not check input parameters for null.
+> 
+> This is detected by Coccinelle semantic patch.
+> 
+> @@
+> expression pdev, res, n, t, e, e1, e2;
+> @@
+> 
+> res = \(platform_get_resource\|platform_get_resource_byname\)(pdev, t, n);
+> + if (!res)
+> +   return -EINVAL;
+> ... when != res == NULL
+> e = devm_ioremap(e1, res->start, e2);
+> 
+> Fixes: 03f66f067560 ("net: ethernet: ti: davinci_mdio: use devm_ioremap()")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-On Fri 2020-05-01 07:52:52, Tony Lindgren wrote:
-> * Pavel Machek <pavel@denx.de> [200430 22:27]:
-> >=20
-> > > My guess is that at least with the pending ofono patches, we just
-> > > want to use the raw interface for /dev/gsmtty* interface and stop
-> > > pretending we have a modem that is AT compatible.
-> >=20
-> > I tried to get it to work... it was not fun and I did not get far.
->=20
-> OK. Yeah it's now 2020 and still dealing with serial port stuff :)
-
-Yeah, and scary thing is... it is 2020 and serial port is _still_
-complex and hard to understand and debug :-).
-
-> OK :) I still need to update the ALSA related patches on top
-> of this $subject series.
-
-Let me know when you have these.
-
-								Pavel
---=20
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---0F1p//8PRICkK4MW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl6snWwACgkQMOfwapXb+vIzIgCgh+kpNi03IGiu3qZaCkJjxrwn
-ZugAnRiL9aPdP7Z2i/pEXCljELO8idBA
-=2YyH
------END PGP SIGNATURE-----
-
---0F1p//8PRICkK4MW--
+Applied.
