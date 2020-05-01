@@ -2,40 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA0171C1F69
-	for <lists+linux-omap@lfdr.de>; Fri,  1 May 2020 23:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77CAC1C1F78
+	for <lists+linux-omap@lfdr.de>; Fri,  1 May 2020 23:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726307AbgEAVOW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 May 2020 17:14:22 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:40473 "EHLO
+        id S1726486AbgEAVT1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 May 2020 17:19:27 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:38837 "EHLO
         mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbgEAVOW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 May 2020 17:14:22 -0400
-Received: by mail-oi1-f194.google.com with SMTP id t199so892767oif.7;
-        Fri, 01 May 2020 14:14:21 -0700 (PDT)
+        with ESMTP id S1726045AbgEAVT0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 May 2020 17:19:26 -0400
+Received: by mail-oi1-f194.google.com with SMTP id r66so913344oie.5;
+        Fri, 01 May 2020 14:19:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ik05HoeIPqSlNhrPs/BOvnuIKtmqZ0C22ZMqbywZOpU=;
-        b=qtzpzXUITZAxz0/sS5glxKHhojaBmAHfY3HUVR62nM4f/mMomcsaIp+8Bj8YBlI/hW
-         OvRxbc4wYmkUUmlEy6NOenttx06Imaq6E4WS7z0XIqEawVRHHq/58gxqSASIkdrizgDu
-         Yzq+7joDZil3fexYs2gGqwNBR7FLoLc9wFXulOa9Q7u3H6BTbsKSUcT0Kk8iYJXjGoB0
-         ThGy6izG5gCLVpOZZSSieodcKQl8Xk9TH6ljjSOvKd3iEPW7Bn1pOH7WTQxkMh25R8Ku
-         TT/bUXoWYwf8HFv/fDW3sKaKwVYu9ChMEK3y+JpbQsx8FDsqh+HehyebT+I84iVdDVbO
-         corg==
-X-Gm-Message-State: AGi0PubmfHE2br+P7OMNTbx7iOGgM5aThEUlgfb3rvo3y1y9N4IGz5un
-        xOvKmLBy5Sb/4ErZYbGDcA==
-X-Google-Smtp-Source: APiQypI0G2h3BKOiqHQMvBjUKar5R03mo3gV6ScSjUqGTQn8Z8zBm2V5G25JUPByqh/xwTOKjVbEog==
-X-Received: by 2002:aca:f182:: with SMTP id p124mr1204914oih.170.1588367661422;
-        Fri, 01 May 2020 14:14:21 -0700 (PDT)
+        bh=Jj4D32rdAES+cgO6FKoAP2CT6fMwIDdMNHoTKo0+8Lk=;
+        b=Z90d664sGc83VZKz8HjAZv1HJWkK0dJjAeVZMHN6N3DEqmSRNXBt9E5IlC3RMImv7g
+         Ps8OapDudqwt8sa5W/CEj9oZ/8HSx9p/757NxVlaYqNNZnjmyW3bWPDQA/ESlly3LZfz
+         DBgqojLciMdibiONvNVW6NmlYGxdaqTftQtszdQU3rZ/Sxk5ckmEx78be0/NXy5NZbH9
+         /7vZIl5O0f6moYTuaJs5/ix0ealX/0skyOXt9/+nL/GH0GdXCwMeeE1AnOOWAdgZPHcN
+         dLL80PcfAzxKB4Y7Kzb+Epa1PAeuZZn61wEwyRtQvnkHr245iip4Ta03eou8rxkBMvqx
+         knew==
+X-Gm-Message-State: AGi0PuZ55nPvVN5kDd/arMzhh25KZ0Wn9xxuXhsadickXr0YwOLkj+Cx
+        dAXbDuGs2m/oz0ByonYHDw==
+X-Google-Smtp-Source: APiQypIXivSBT2nsxuhVNY46WEmi1eojgcxHInHjaqkl2sBu8RqSX6qkRxz94QmIS/CqfLVJIXnqUg==
+X-Received: by 2002:aca:c50f:: with SMTP id v15mr1230004oif.115.1588367965592;
+        Fri, 01 May 2020 14:19:25 -0700 (PDT)
 Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id x82sm247465oig.55.2020.05.01.14.14.20
+        by smtp.gmail.com with ESMTPSA id a93sm1128819otc.12.2020.05.01.14.19.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2020 14:14:20 -0700 (PDT)
-Received: (nullmailer pid 6858 invoked by uid 1000);
-        Fri, 01 May 2020 21:14:20 -0000
-Date:   Fri, 1 May 2020 16:14:20 -0500
+        Fri, 01 May 2020 14:19:25 -0700 (PDT)
+Received: (nullmailer pid 14891 invoked by uid 1000);
+        Fri, 01 May 2020 21:19:24 -0000
+Date:   Fri, 1 May 2020 16:19:24 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,7 +50,7 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
 Subject: Re: [PATCH 4/6] dt-bindings: gnss: Add binding for Motorola Mapphone
  MDM6600 GNSS
-Message-ID: <20200501211420.GA6222@bogus>
+Message-ID: <20200501211924.GB6222@bogus>
 References: <20200430174615.41185-1-tony@atomide.com>
  <20200430174615.41185-5-tony@atomide.com>
 MIME-Version: 1.0
@@ -63,7 +63,7 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 30 Apr 2020 10:46:13 -0700, Tony Lindgren wrote:
+On Thu, Apr 30, 2020 at 10:46:13AM -0700, Tony Lindgren wrote:
 > Add a binding document for Motorola Mapphone MDM6600 GNSS driver that
 > can be used with phones such as droid4.
 > 
@@ -73,21 +73,47 @@ On Thu, 30 Apr 2020 10:46:13 -0700, Tony Lindgren wrote:
 >  1 file changed, 29 insertions(+)
 >  create mode 100644 Documentation/devicetree/bindings/gnss/motmdm.yaml
 > 
+> diff --git a/Documentation/devicetree/bindings/gnss/motmdm.yaml b/Documentation/devicetree/bindings/gnss/motmdm.yaml
+> new file mode 100644
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/gnss/motmdm.yaml
+> @@ -0,0 +1,29 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/gnss/motmdm.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Motorola Mapphone MDM6600 GNSS binding
+> +
+> +maintainers:
+> +  - Tony Lindgren <tony@atomide.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: motorola,mapphone-mdm6600-gnss
+> +
+> +  reg:
+> +    items:
+> +      description: TS 27.010 channel the GNSS device is using
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +examples:
+> +  - |
+> +    gnss@4 {
 
-My bot found errors running 'make dt_binding_check' on your patch:
+This is a child of what's in patch 2? I think I'd just combine this 
+schema into it.
 
-Documentation/devicetree/bindings/gnss/motmdm.example.dts:19.11-21: Warning (reg_format): /example-0/gnss@4:reg: property has invalid length (4 bytes) (#address-cells == 1, #size-cells == 1)
-Documentation/devicetree/bindings/gnss/motmdm.example.dt.yaml: Warning (pci_device_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/gnss/motmdm.example.dt.yaml: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/gnss/motmdm.example.dt.yaml: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/gnss/motmdm.example.dt.yaml: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/gnss/motmdm.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+Or you can leave it, but better to have complete examples (which will 
+help fix what my bot reports). Examples have a default 
+#address/size-cells of 1.
 
-See https://patchwork.ozlabs.org/patch/1280739
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure dt-schema is up to date:
-
-pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
-
-Please check and re-submit.
+> +      compatible = "motorola,mapphone-mdm6600-gnss";
+> +      reg = <4>;
+> +    };
+> -- 
+> 2.26.2
