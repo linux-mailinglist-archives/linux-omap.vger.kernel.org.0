@@ -2,686 +2,331 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3977F1C2696
-	for <lists+linux-omap@lfdr.de>; Sat,  2 May 2020 17:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 725921C283A
+	for <lists+linux-omap@lfdr.de>; Sat,  2 May 2020 22:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728283AbgEBPir (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 2 May 2020 11:38:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728222AbgEBPiq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 May 2020 11:38:46 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE46C061A0C;
-        Sat,  2 May 2020 08:38:46 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id 19so7727873ioz.10;
-        Sat, 02 May 2020 08:38:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=K33IZXSJWswi8Ds/yD6+rsycl91MHbpswBRBz+U2Io0=;
-        b=vMfGTWVakGonubzG51584RZk9klh2RfB0NyV/0y7seVhQ2cSPJdo2g4cHCv5MBU40I
-         XhxxSzEIrSOy8fz07CXR4aRbVT1lNZcjrf9ZSgsgGZYUYg/bOCOEqsvVEho4kM+HElEm
-         G28Y5pANZxE+RsWFKyhYQu6CVfJwNbsRmHzGEi2+yKfR5XUhEa8Ys1SW+Tg1GsnpEZ4I
-         h8pLMxSvKwwPZh6facSImuc1Vns1RMjhOQtrZAIymAInecVd8q0wPQ6uH+Ls9a0ziiIb
-         bRFBi9blqVWv4AYkQlVSNpzZtSnBlHPRXFTbunKkTVz6Wy7hAjec6bJ3KMHgrervti89
-         6hDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=K33IZXSJWswi8Ds/yD6+rsycl91MHbpswBRBz+U2Io0=;
-        b=Jjov69NEteA5IzRJQclSURsWN9HTT4ZAKjJ9LF8At1VSsJvOKhOcc+pL/ILnLiUbve
-         meeClsTpg6OcmI3X4dMUrqqoKcKeLkql2SIbzwXVckH8BcR8b07o9ny81e0YDs8VcqOL
-         fSYhdka0ISzCU4WWT4dwtEbDF89dsmLcUpA0Jmpxuun79vrU9MhBAfF/SKnJY/36vX7W
-         fqjomPyQ/droaI9t/rnBNUgFuiTQz/66flEYXtNb68GXCpSTIV1yBN7/vyv7OG9dSztZ
-         LL3e9O2vLqmHIx7+pn7HzZMZSfC6e/TAOMkphhhZswHSAeUvJ01V7PIyLWT1FMwztLTW
-         faXw==
-X-Gm-Message-State: AGi0Puba6C3q3YNq30QYBP5d/ZYFWNdiX+tW/Qrfhk/bjX0Q23C9WuFX
-        iYoyZX15ersWEohy7+dBzsi6io0rlxh5bDekpek=
-X-Google-Smtp-Source: APiQypJX/eV7kJ+cJd9BMGToUWat2Jr7juiA0cI3LusNucxqRxA1D+4j+xMbYiCeAweKAx2PUfZo4cEXhVS7Y2LO0+o=
-X-Received: by 2002:a02:6243:: with SMTP id d64mr7653133jac.135.1588433925217;
- Sat, 02 May 2020 08:38:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200429215402.18125-1-tony@atomide.com> <20200429215402.18125-12-tony@atomide.com>
-In-Reply-To: <20200429215402.18125-12-tony@atomide.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Sat, 2 May 2020 10:38:33 -0500
-Message-ID: <CAHCN7x+GU+X7UsWqz53sBjMUxH8XEFkymdLdD-2EJ5RRyR7EJQ@mail.gmail.com>
-Subject: Re: [PATCH 11/15] ARM: dts: Configure system timers for omap3
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Keerthy <j-keerthy@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Brian Hutchinson <b.hutchman@gmail.com>,
-        Graeme Smecher <gsmecher@threespeedlogic.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S1728498AbgEBU1V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 2 May 2020 16:27:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57328 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728484AbgEBU1U (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 May 2020 16:27:20 -0400
+Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5302::11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA4C7C061A0C;
+        Sat,  2 May 2020 13:27:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1588451233;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=aFutSXBhxdQGsI0cADyst3RpMgduPhgX/DjMd6AXC1k=;
+        b=H5jdrky2qJyx1+QkrkqmAYLfbnfO4X7xCtXRG+96UKYprfyHW/oN+Ce1+B1el09HlI
+        +BgBPgJLxtM3It1i0NhSnVDjdIhdIk5DujTxyFjCmYLAdkcbz/3DsK5XO7tt3thFq+oM
+        s6TLrV7KNzmVfJmW+UGAWAcTSzuMcx+d7MI1nWygLxGlj640fIEstSd/PSUw2iEnsdw/
+        OE7fMzoyELYzzBdYKO9IkYhxXt7Q03Des0KId3XjZig+9zmPuKq1hVL+2IE6ztBB1zVA
+        OHj316zd5s8zmmM9lVU9mxZ5QpBceec2nYOPwZYCCoCXuNZ7E/leIG6i65SgYghhfWOk
+        320Q==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlSVXA4OCWU="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 46.6.2 DYNA|AUTH)
+        with ESMTPSA id R0acebw42KQTesh
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Sat, 2 May 2020 22:26:29 +0200 (CEST)
+Subject: Re: [PATCH v7 01/12] dt-bindings: add img,pvrsgx.yaml for Imagination GPUs
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=iso-8859-1
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <NMCE9Q.LWG45P20NBVJ@crapouillou.net>
+Date:   Sat, 2 May 2020 22:26:29 +0200
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?iso-8859-1?Q?Beno=EEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Philipp Rossak <embed3d@gmail.com>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <28138EC0-0FA5-4F97-B528-3442BF087C7A@goldelico.com>
+References: <cover.1587760454.git.hns@goldelico.com> <3a451e360fed84bc40287678b4d6be13821cfbc0.1587760454.git.hns@goldelico.com> <NMCE9Q.LWG45P20NBVJ@crapouillou.net>
+To:     Paul Cercueil <paul@crapouillou.net>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 4:54 PM Tony Lindgren <tony@atomide.com> wrote:
->
-> We can now init system timers using the dmtimer and 32k counter
-> based on only devicetree data and drivers/clocksource timers.
-> Let's configure the clocksource and clockevent, and drop the old
-> unused platform data.
->
-> As we're just dropping platform data, and the early platform data
-> init is based on the custom ti,hwmods property, we want to drop
-> both the platform data and ti,hwmods property in a single patch.
->
-> Since the dmtimer can use both 32k clock and system clock as the
-> source, let's also configure the SoC specific default values. The
-> board specific dts files can reconfigure these with assigned-clocks
-> and assigned-clock-parents as needed.
->
-> Let's also update the dts file to use #include while at it.
->
-> Cc: devicetree@vger.kernel.org
-> Cc: Adam Ford <aford173@gmail.com>
-> Cc: Andreas Kemnade <andreas@kemnade.info>
-> Cc: "H. Nikolaus Schaller" <hns@goldelico.com>
-> Cc: Keerthy <j-keerthy@ti.com>
-> Cc: Lokesh Vutla <lokeshvutla@ti.com>
-> Cc: Tero Kristo <t-kristo@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  arch/arm/boot/dts/am3517.dtsi              |  28 +++-
+Hi Paul,
 
-For the series on the am3517-evm,
+> Am 26.04.2020 um 15:11 schrieb Paul Cercueil <paul@crapouillou.net>:
+>=20
+> Hi Nikolaus,
+>=20
+> Le ven. 24 avril 2020 =E0 22:34, H. Nikolaus Schaller =
+<hns@goldelico.com> a =E9crit :
+>> The Imagination PVR/SGX GPU is part of several SoC from
+>> multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo,
+>> Allwinner A83 and others.
+>> With this binding, we describe how the SGX processor is
+>> interfaced to the SoC (registers and interrupt).
+>> The interface also consists of clocks, reset, power but
+>> information from data sheets is vague and some SoC integrators
+>> (TI) deciced to use a PRCM wrapper (ti,sysc) which does
+>> all clock, reset and power-management through registers
+>> outside of the sgx register block.
+>> Therefore all these properties are optional.
+>> Tested by make dt_binding_check
+>> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+>> ---
+>> .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 150 =
+++++++++++++++++++
+>> 1 file changed, 150 insertions(+)
+>> create mode 100644 =
+Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+>> diff --git a/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml =
+b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+>> new file mode 100644
+>> index 000000000000..33a9c4c6e784
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+>> @@ -0,0 +1,150 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/gpu/img,pvrsgx.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Imagination PVR/SGX GPU
+>> +
+>> +maintainers:
+>> +  - H. Nikolaus Schaller <hns@goldelico.com>
+>> +
+>> +description: |+
+>> +  This binding describes the Imagination SGX5 series of 3D =
+accelerators which
+>> +  are found in several different SoC like TI OMAP, Sitara, Ingenic =
+JZ4780,
+>> +  Allwinner A83, and Intel Poulsbo and CedarView and more.
+>> +
+>> +  For an extensive list see: =
+https://en.wikipedia.org/wiki/PowerVR#Implementations
+>> +
+>> +  The SGX node is usually a child node of some DT node belonging to =
+the SoC
+>> +  which handles clocks, reset and general address space mapping of =
+the SGX
+>> +  register area. If not, an optional clock can be specified here.
+>> +
+>> +properties:
+>> +  $nodename:
+>> +    pattern: '^gpu@[a-f0-9]+$'
+>> +  compatible:
+>> +    oneOf:
+>> +      - description: SGX530-121 based SoC
+>> +        items:
+>> +          - enum:
+>> +            - ti,omap3-sgx530-121 # BeagleBoard A/B/C, OpenPandora =
+600MHz and similar
+>> +          - const: img,sgx530-121
+>> +          - const: img,sgx530
+>> +
+>> +      - description: SGX530-125 based SoC
+>> +        items:
+>> +          - enum:
+>> +            - ti,am3352-sgx530-125 # BeagleBone Black
+>> +            - ti,am3517-sgx530-125
+>> +            - ti,am4-sgx530-125
+>> +            - ti,omap3-sgx530-125 # BeagleBoard XM, GTA04, =
+OpenPandora 1GHz and similar
+>> +            - ti,ti81xx-sgx530-125
+>> +          - const: ti,omap3-sgx530-125
+>> +          - const: img,sgx530-125
+>> +          - const: img,sgx530
+>> +
+>> +      - description: SGX535-116 based SoC
+>> +        items:
+>> +          - const: intel,poulsbo-gma500-sgx535 # Atom Z5xx
+>> +          - const: img,sgx535-116
+>> +          - const: img,sgx535
+>> +
+>> +      - description: SGX540-116 based SoC
+>> +        items:
+>> +          - const: intel,medfield-gma-sgx540 # Atom Z24xx
+>> +          - const: img,sgx540-116
+>> +          - const: img,sgx540
+>> +
+>> +      - description: SGX540-120 based SoC
+>> +        items:
+>> +          - enum:
+>> +            - samsung,s5pv210-sgx540-120
+>> +            - ti,omap4-sgx540-120 # Pandaboard, Pandaboard ES and =
+similar
+>> +          - const: img,sgx540-120
+>> +          - const: img,sgx540
+>> +
+>> +      - description: SGX540-130 based SoC
+>> +        items:
+>> +          - enum:
+>> +            - ingenic,jz4780-sgx540-130 # CI20
+>> +          - const: img,sgx540-130
+>> +          - const: img,sgx540
+>> +
+>> +      - description: SGX544-112 based SoC
+>> +        items:
+>> +          - const: ti,omap4470-sgx544-112
+>> +          - const: img,sgx544-112
+>> +          - const: img,sgx544
+>> +
+>> +      - description: SGX544-115 based SoC
+>> +        items:
+>> +          - enum:
+>> +            - allwinner,sun8i-a31-sgx544-115
+>> +            - allwinner,sun8i-a31s-sgx544-115
+>> +            - allwinner,sun8i-a83t-sgx544-115 # Banana-Pi-M3 =
+(Allwinner A83T) and similar
+>> +          - const: img,sgx544-115
+>> +          - const: img,sgx544
+>> +
+>> +      - description: SGX544-116 based SoC
+>> +        items:
+>> +          - enum:
+>> +            - ti,dra7-sgx544-116 # DRA7
+>> +            - ti,omap5-sgx544-116 # OMAP5 UEVM, Pyra Handheld and =
+similar
+>> +          - const: img,sgx544-116
+>> +          - const: img,sgx544
+>> +
+>> +      - description: SGX545 based SoC
+>> +        items:
+>> +          - const: intel,cedarview-gma3600-sgx545 # Atom N2600, =
+D2500
+>> +          - const: img,sgx545-116
+>> +          - const: img,sgx545
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  interrupt-names:
+>> +    maxItems: 1
+>> +    items:
+>> +      - const: sgx
+>> +
+>> +  clocks:
+>> +    maxItems: 4
+>> +
+>> +  clock-names:
+>> +    maxItems: 4
+>> +    items:
+>> +      - const: core
+>> +      - const: sys
+>> +      - const: mem
+>> +      - const: hyd
+>> +
+>> +  sgx-supply: true
+>> +
+>> +  power-domains:
+>> +    maxItems: 1
+>> +
+>> +  resets:
+>> +    maxItems: 1
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - interrupts
+>=20
+> By not making 'clocks' required you make it possible to create broken =
+bindings; according to your schema, a GPU node without a 'clocks' for =
+the JZ4780 would be perfectly valid.
 
-Tested-by: Adam Ford <aford173@gmail.com>
+Yes. But it will never pass a test with real hardware. So it can't be =
+omitted anyways.
 
->  arch/arm/boot/dts/omap3-beagle.dts         |  33 +++++
->  arch/arm/boot/dts/omap3-devkit8000.dts     |  33 +++++
->  arch/arm/boot/dts/omap3.dtsi               | 135 +++++++++++++++----
->  arch/arm/mach-omap2/board-generic.c        |  10 +-
->  arch/arm/mach-omap2/omap_hwmod_3xxx_data.c | 146 +--------------------
->  6 files changed, 210 insertions(+), 175 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/am3517.dtsi b/arch/arm/boot/dts/am3517.dtsi
-> --- a/arch/arm/boot/dts/am3517.dtsi
-> +++ b/arch/arm/boot/dts/am3517.dtsi
-> @@ -169,5 +169,29 @@ &mmu_isp {
->         status = "disabled";
->  };
->
-> -/include/ "am35xx-clocks.dtsi"
-> -/include/ "omap36xx-am35xx-omap3430es2plus-clocks.dtsi"
-> +#include "am35xx-clocks.dtsi"
-> +#include "omap36xx-am35xx-omap3430es2plus-clocks.dtsi"
-> +
-> +/* Timer for clocksource, configured without interrupts */
-> +&timer1_target {
-> +       ti,no-reset-on-init;
-> +       ti,no-idle;
-> +       timer@0 {
-> +               compatible = "ti,dmtimer";
-> +               /delete-property/interrupts;
-> +               /delete-property/interrupts-extended;
-> +               assigned-clocks = <&gpt1_fck>;
-> +               assigned-clock-parents = <&sys_ck>;
-> +       };
-> +};
-> +
-> +/* Timer for clockevent */
-> +&timer2_target {
-> +       ti,no-reset-on-init;
-> +       ti,no-idle;
-> +       timer@0 {
-> +               compatible = "ti,dmtimer";
-> +               assigned-clocks = <&gpt2_fck>;
-> +               assigned-clock-parents = <&sys_ck>;
-> +       };
-> +};
-> diff --git a/arch/arm/boot/dts/omap3-beagle.dts b/arch/arm/boot/dts/omap3-beagle.dts
-> --- a/arch/arm/boot/dts/omap3-beagle.dts
-> +++ b/arch/arm/boot/dts/omap3-beagle.dts
-> @@ -304,6 +304,39 @@ &usbhsehci {
->         phys = <0 &hsusb2_phy>;
->  };
->
-> +/* Unusable as clockevent, allow to idle */
-> +&timer1_target {
-> +       /delete-property/ti,no-reset-on-init;
-> +       /delete-property/ti,no-idle;
-> +       timer@0 {
-> +               compatible = "ti,omap3430-timer";
-> +               interrupts = <37>;
-> +       };
-> +};
-> +
-> +/* Timer for clocksource, configured without interrupts */
-> +&timer12_target {
-> +       ti,no-reset-on-init;
-> +       ti,no-idle;
-> +       timer@0 {
-> +               compatible = "ti,dmtimer";
-> +               /delete-property/interrupts;
-> +               /delete-property/interrupts-extended;
-> +               /* Always clocked by secure_32k_fck */
-> +       };
-> +};
-> +
-> +/* Timer for clockevent */
-> +&timer2_target {
-> +       ti,no-reset-on-init;
-> +       ti,no-idle;
-> +       timer@0 {
-> +               compatible = "ti,dmtimer";
-> +               assigned-clocks = <&gpt2_fck>;
-> +               assigned-clock-parents = <&sys_ck>;
-> +       };
-> +};
-> +
->  &twl_gpio {
->         ti,use-leds;
->         /* pullups: BIT(1) */
-> diff --git a/arch/arm/boot/dts/omap3-devkit8000.dts b/arch/arm/boot/dts/omap3-devkit8000.dts
-> --- a/arch/arm/boot/dts/omap3-devkit8000.dts
-> +++ b/arch/arm/boot/dts/omap3-devkit8000.dts
-> @@ -14,3 +14,36 @@ aliases {
->                 display2 = &tv0;
->         };
->  };
-> +
-> +/* Unusable as clockevent, allow to idle */
-> +&timer1_target {
-> +       /delete-property/ti,no-reset-on-init;
-> +       /delete-property/ti,no-idle;
-> +       timer@0 {
-> +               compatible = "ti,omap3430-timer";
-> +               interrupts = <37>;
-> +       };
-> +};
-> +
-> +/* Timer for clocksource, configured without interrupts */
-> +&timer12_target {
-> +       ti,no-reset-on-init;
-> +       ti,no-idle;
-> +       timer@0 {
-> +               compatible = "ti,dmtimer";
-> +               /delete-property/interrupts;
-> +               /delete-property/interrupts-extended;
-> +               /* Always clocked by secure_32k_fck */
-> +       };
-> +};
-> +
-> +/* Timer for clockevent */
-> +&timer2_target {
-> +       ti,no-reset-on-init;
-> +       ti,no-idle;
-> +       timer@0 {
-> +               compatible = "ti,dmtimer";
-> +               assigned-clocks = <&gpt2_fck>;
-> +               assigned-clock-parents = <&sys_ck>;
-> +       };
-> +};
-> diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
-> --- a/arch/arm/boot/dts/omap3.dtsi
-> +++ b/arch/arm/boot/dts/omap3.dtsi
-> @@ -193,10 +193,23 @@ cm_clockdomains: clockdomains {
->                         };
->                 };
->
-> -               counter32k: counter@48320000 {
-> -                       compatible = "ti,omap-counter32k";
-> -                       reg = <0x48320000 0x20>;
-> -                       ti,hwmods = "counter_32k";
-> +               target-module@48320000 {
-> +                       compatible = "ti,sysc-omap2", "ti,sysc";
-> +                       reg = <0x48320000 0x4>,
-> +                             <0x48320004 0x4>;
-> +                       reg-names = "rev", "sysc";
-> +                       ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-> +                                       <SYSC_IDLE_NO>;
-> +                       clocks = <&wkup_32k_fck>, <&omap_32ksync_ick>;
-> +                       clock-names = "fck", "ick";
-> +                       #address-cells = <1>;
-> +                       #size-cells = <1>;
-> +                       ranges = <0x0 0x48320000 0x1000>;
-> +
-> +                       counter32k: counter@0 {
-> +                               compatible = "ti,omap-counter32k";
-> +                               reg = <0x0 0x20>;
-> +                       };
->                 };
->
->                 intc: interrupt-controller@48200000 {
-> @@ -637,19 +650,63 @@ sham: sham@480c3000 {
->                         dma-names = "rx";
->                 };
->
-> -               timer1: timer@48318000 {
-> -                       compatible = "ti,omap3430-timer";
-> -                       reg = <0x48318000 0x400>;
-> -                       interrupts = <37>;
-> -                       ti,hwmods = "timer1";
-> -                       ti,timer-alwon;
-> +               timer1_target: target-module@48318000 {
-> +                       compatible = "ti,sysc-omap2-timer", "ti,sysc";
-> +                       reg = <0x48318000 0x4>,
-> +                             <0x48318010 0x4>,
-> +                             <0x48318014 0x4>;
-> +                       reg-names = "rev", "sysc", "syss";
-> +                       ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
-> +                                        SYSC_OMAP2_EMUFREE |
-> +                                        SYSC_OMAP2_ENAWAKEUP |
-> +                                        SYSC_OMAP2_SOFTRESET |
-> +                                        SYSC_OMAP2_AUTOIDLE)>;
-> +                       ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-> +                                       <SYSC_IDLE_NO>,
-> +                                       <SYSC_IDLE_SMART>;
-> +                       ti,syss-mask = <1>;
-> +                       clocks = <&gpt1_fck>, <&gpt1_ick>;
-> +                       clock-names = "fck", "ick";
-> +                       #address-cells = <1>;
-> +                       #size-cells = <1>;
-> +                       ranges = <0x0 0x48318000 0x1000>;
-> +
-> +                       timer1: timer@0 {
-> +                               compatible = "ti,omap3430-timer";
-> +                               reg = <0x0 0x80>;
-> +                               clocks = <&gpt1_fck>;
-> +                               clock-names = "fck";
-> +                               interrupts = <37>;
-> +                               ti,timer-alwon;
-> +                       };
->                 };
->
-> -               timer2: timer@49032000 {
-> -                       compatible = "ti,omap3430-timer";
-> -                       reg = <0x49032000 0x400>;
-> -                       interrupts = <38>;
-> -                       ti,hwmods = "timer2";
-> +               timer2_target: target-module@49032000 {
-> +                       compatible = "ti,sysc-omap2-timer", "ti,sysc";
-> +                       reg = <0x49032000 0x4>,
-> +                             <0x49032010 0x4>,
-> +                             <0x49032014 0x4>;
-> +                       reg-names = "rev", "sysc", "syss";
-> +                       ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
-> +                                        SYSC_OMAP2_EMUFREE |
-> +                                        SYSC_OMAP2_ENAWAKEUP |
-> +                                        SYSC_OMAP2_SOFTRESET |
-> +                                        SYSC_OMAP2_AUTOIDLE)>;
-> +                       ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-> +                                       <SYSC_IDLE_NO>,
-> +                                       <SYSC_IDLE_SMART>;
-> +                       ti,syss-mask = <1>;
-> +                       clocks = <&gpt2_fck>, <&gpt2_ick>;
-> +                       clock-names = "fck", "ick";
-> +                       #address-cells = <1>;
-> +                       #size-cells = <1>;
-> +                       ranges = <0x0 0x49032000 0x1000>;
-> +
-> +                       timer2: timer@0 {
-> +                               compatible = "ti,omap3430-timer";
-> +                               reg = <0 0x400>;
-> +                               interrupts = <38>;
-> +                       };
->                 };
->
->                 timer3: timer@49034000 {
-> @@ -723,13 +780,34 @@ timer11: timer@48088000 {
->                         ti,timer-pwm;
->                 };
->
-> -               timer12: timer@48304000 {
-> -                       compatible = "ti,omap3430-timer";
-> -                       reg = <0x48304000 0x400>;
-> -                       interrupts = <95>;
-> -                       ti,hwmods = "timer12";
-> -                       ti,timer-alwon;
-> -                       ti,timer-secure;
-> +               timer12_target: target-module@48304000 {
-> +                       compatible = "ti,sysc-omap2-timer", "ti,sysc";
-> +                       reg = <0x48304000 0x4>,
-> +                             <0x48304010 0x4>,
-> +                             <0x48304014 0x4>;
-> +                       reg-names = "rev", "sysc", "syss";
-> +                       ti,sysc-mask = <(SYSC_OMAP2_CLOCKACTIVITY |
-> +                                        SYSC_OMAP2_EMUFREE |
-> +                                        SYSC_OMAP2_ENAWAKEUP |
-> +                                        SYSC_OMAP2_SOFTRESET |
-> +                                        SYSC_OMAP2_AUTOIDLE)>;
-> +                       ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-> +                                       <SYSC_IDLE_NO>,
-> +                                       <SYSC_IDLE_SMART>;
-> +                       ti,syss-mask = <1>;
-> +                       clocks = <&gpt12_fck>, <&gpt12_ick>;
-> +                       clock-names = "fck", "ick";
-> +                       #address-cells = <1>;
-> +                       #size-cells = <1>;
-> +                       ranges = <0x0 0x48304000 0x1000>;
-> +
-> +                       timer12: timer@0 {
-> +                               compatible = "ti,omap3430-timer";
-> +                               reg = <0 0x400>;
-> +                               interrupts = <95>;
-> +                               ti,timer-alwon;
-> +                               ti,timer-secure;
-> +                       };
->                 };
->
->                 usbhstll: usbhstll@48062000 {
-> @@ -886,4 +964,15 @@ ssi_port2: ssi-port@4805b000 {
->         };
->  };
->
-> -/include/ "omap3xxx-clocks.dtsi"
-> +#include "omap3xxx-clocks.dtsi"
-> +
-> +/* Timer for clockevent */
-> +&timer1_target {
-> +       ti,no-reset-on-init;
-> +       ti,no-idle;
-> +       timer@0 {
-> +               compatible = "ti,dmtimer";
-> +               assigned-clocks = <&gpt1_fck>;
-> +               assigned-clock-parents = <&omap_32k_fck>;
-> +       };
-> +};
-> diff --git a/arch/arm/mach-omap2/board-generic.c b/arch/arm/mach-omap2/board-generic.c
-> --- a/arch/arm/mach-omap2/board-generic.c
-> +++ b/arch/arm/mach-omap2/board-generic.c
-> @@ -114,7 +114,7 @@ DT_MACHINE_START(OMAP3_N900_DT, "Nokia RX-51 board")
->         .init_early     = omap3430_init_early,
->         .init_machine   = omap_generic_init,
->         .init_late      = omap3_init_late,
-> -       .init_time      = omap_init_time,
-> +       .init_time      = omap_init_time_of,
->         .dt_compat      = n900_boards_compat,
->         .restart        = omap3xxx_restart,
->  MACHINE_END
-> @@ -132,7 +132,7 @@ DT_MACHINE_START(OMAP3_DT, "Generic OMAP3 (Flattened Device Tree)")
->         .init_early     = omap3430_init_early,
->         .init_machine   = omap_generic_init,
->         .init_late      = omap3_init_late,
-> -       .init_time      = omap_init_time,
-> +       .init_time      = omap_init_time_of,
->         .dt_compat      = omap3_boards_compat,
->         .restart        = omap3xxx_restart,
->  MACHINE_END
-> @@ -149,7 +149,7 @@ DT_MACHINE_START(OMAP36XX_DT, "Generic OMAP36xx (Flattened Device Tree)")
->         .init_early     = omap3630_init_early,
->         .init_machine   = omap_generic_init,
->         .init_late      = omap3_init_late,
-> -       .init_time      = omap_init_time,
-> +       .init_time      = omap_init_time_of,
->         .dt_compat      = omap36xx_boards_compat,
->         .restart        = omap3xxx_restart,
->  MACHINE_END
-> @@ -166,7 +166,7 @@ DT_MACHINE_START(OMAP3_GP_DT, "Generic OMAP3-GP (Flattened Device Tree)")
->         .init_early     = omap3430_init_early,
->         .init_machine   = omap_generic_init,
->         .init_late      = omap3_init_late,
-> -       .init_time      = omap3_secure_sync32k_timer_init,
-> +       .init_time      = omap_init_time_of,
->         .dt_compat      = omap3_gp_boards_compat,
->         .restart        = omap3xxx_restart,
->  MACHINE_END
-> @@ -182,7 +182,7 @@ DT_MACHINE_START(AM3517_DT, "Generic AM3517 (Flattened Device Tree)")
->         .init_early     = am35xx_init_early,
->         .init_machine   = omap_generic_init,
->         .init_late      = omap3_init_late,
-> -       .init_time      = omap3_gptimer_timer_init,
-> +       .init_time      = omap_init_time_of,
->         .dt_compat      = am3517_boards_compat,
->         .restart        = omap3xxx_restart,
->  MACHINE_END
-> diff --git a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
-> --- a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
-> +++ b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
-> @@ -147,36 +147,6 @@ static struct omap_hwmod_class omap3xxx_timer_hwmod_class = {
->         .sysc = &omap3xxx_timer_sysc,
->  };
->
-> -/* timer1 */
-> -static struct omap_hwmod omap3xxx_timer1_hwmod = {
-> -       .name           = "timer1",
-> -       .main_clk       = "gpt1_fck",
-> -       .prcm           = {
-> -               .omap2 = {
-> -                       .module_offs = WKUP_MOD,
-> -                       .idlest_reg_id = 1,
-> -                       .idlest_idle_bit = OMAP3430_ST_GPT1_SHIFT,
-> -               },
-> -       },
-> -       .class          = &omap3xxx_timer_hwmod_class,
-> -       .flags          = HWMOD_SET_DEFAULT_CLOCKACT,
-> -};
-> -
-> -/* timer2 */
-> -static struct omap_hwmod omap3xxx_timer2_hwmod = {
-> -       .name           = "timer2",
-> -       .main_clk       = "gpt2_fck",
-> -       .prcm           = {
-> -               .omap2 = {
-> -                       .module_offs = OMAP3430_PER_MOD,
-> -                       .idlest_reg_id = 1,
-> -                       .idlest_idle_bit = OMAP3430_ST_GPT2_SHIFT,
-> -               },
-> -       },
-> -       .class          = &omap3xxx_timer_hwmod_class,
-> -       .flags          = HWMOD_SET_DEFAULT_CLOCKACT,
-> -};
-> -
->  /* timer3 */
->  static struct omap_hwmod omap3xxx_timer3_hwmod = {
->         .name           = "timer3",
-> @@ -312,21 +282,6 @@ static struct omap_hwmod omap3xxx_timer11_hwmod = {
->         .flags          = HWMOD_SET_DEFAULT_CLOCKACT,
->  };
->
-> -/* timer12 */
-> -static struct omap_hwmod omap3xxx_timer12_hwmod = {
-> -       .name           = "timer12",
-> -       .main_clk       = "gpt12_fck",
-> -       .prcm           = {
-> -               .omap2 = {
-> -                       .module_offs = WKUP_MOD,
-> -                       .idlest_reg_id = 1,
-> -                       .idlest_idle_bit = OMAP3430_ST_GPT12_SHIFT,
-> -               },
-> -       },
-> -       .class          = &omap3xxx_timer_hwmod_class,
-> -       .flags          = HWMOD_SET_DEFAULT_CLOCKACT,
-> -};
-> -
->  /*
->   * 'wd_timer' class
->   * 32-bit watchdog upward counter that generates a pulse on the reset pin on
-> @@ -1524,38 +1479,6 @@ static struct omap_hwmod omap3xxx_sad2d_hwmod = {
->         .class          = &omap3xxx_sad2d_class,
->  };
->
-> -/*
-> - * '32K sync counter' class
-> - * 32-bit ordinary counter, clocked by the falling edge of the 32 khz clock
-> - */
-> -static struct omap_hwmod_class_sysconfig omap3xxx_counter_sysc = {
-> -       .rev_offs       = 0x0000,
-> -       .sysc_offs      = 0x0004,
-> -       .sysc_flags     = SYSC_HAS_SIDLEMODE,
-> -       .idlemodes      = (SIDLE_FORCE | SIDLE_NO),
-> -       .sysc_fields    = &omap_hwmod_sysc_type1,
-> -};
-> -
-> -static struct omap_hwmod_class omap3xxx_counter_hwmod_class = {
-> -       .name   = "counter",
-> -       .sysc   = &omap3xxx_counter_sysc,
-> -};
-> -
-> -static struct omap_hwmod omap3xxx_counter_32k_hwmod = {
-> -       .name           = "counter_32k",
-> -       .class          = &omap3xxx_counter_hwmod_class,
-> -       .clkdm_name     = "wkup_clkdm",
-> -       .flags          = HWMOD_SWSUP_SIDLE,
-> -       .main_clk       = "wkup_32k_fck",
-> -       .prcm           = {
-> -               .omap2  = {
-> -                       .module_offs = WKUP_MOD,
-> -                       .idlest_reg_id = 1,
-> -                       .idlest_idle_bit = OMAP3430_ST_32KSYNC_SHIFT,
-> -               },
-> -       },
-> -};
-> -
->  /*
->   * 'gpmc' class
->   * general purpose memory controller
-> @@ -1868,25 +1791,6 @@ static struct omap_hwmod_ocp_if omap3xxx_l3__iva = {
->         .user           = OCP_USER_MPU | OCP_USER_SDMA,
->  };
->
-> -
-> -/* l4_wkup -> timer1 */
-> -static struct omap_hwmod_ocp_if omap3xxx_l4_wkup__timer1 = {
-> -       .master         = &omap3xxx_l4_wkup_hwmod,
-> -       .slave          = &omap3xxx_timer1_hwmod,
-> -       .clk            = "gpt1_ick",
-> -       .user           = OCP_USER_MPU | OCP_USER_SDMA,
-> -};
-> -
-> -
-> -/* l4_per -> timer2 */
-> -static struct omap_hwmod_ocp_if omap3xxx_l4_per__timer2 = {
-> -       .master         = &omap3xxx_l4_per_hwmod,
-> -       .slave          = &omap3xxx_timer2_hwmod,
-> -       .clk            = "gpt2_ick",
-> -       .user           = OCP_USER_MPU | OCP_USER_SDMA,
-> -};
-> -
-> -
->  /* l4_per -> timer3 */
->  static struct omap_hwmod_ocp_if omap3xxx_l4_per__timer3 = {
->         .master         = &omap3xxx_l4_per_hwmod,
-> @@ -1965,15 +1869,6 @@ static struct omap_hwmod_ocp_if omap3xxx_l4_core__timer11 = {
->         .user           = OCP_USER_MPU | OCP_USER_SDMA,
->  };
->
-> -
-> -/* l4_core -> timer12 */
-> -static struct omap_hwmod_ocp_if omap3xxx_l4_sec__timer12 = {
-> -       .master         = &omap3xxx_l4_sec_hwmod,
-> -       .slave          = &omap3xxx_timer12_hwmod,
-> -       .clk            = "gpt12_ick",
-> -       .user           = OCP_USER_MPU | OCP_USER_SDMA,
-> -};
-> -
->  /* l4_wkup -> wd_timer2 */
->
->  static struct omap_hwmod_ocp_if omap3xxx_l4_wkup__wd_timer2 = {
-> @@ -2325,16 +2220,6 @@ static struct omap_hwmod_ocp_if omap3xxx_l4_core__hdq1w = {
->         .flags          = OMAP_FIREWALL_L4 | OCPIF_SWSUP_IDLE,
->  };
->
-> -/* l4_wkup -> 32ksync_counter */
-> -
-> -
-> -static struct omap_hwmod_ocp_if omap3xxx_l4_wkup__counter_32k = {
-> -       .master         = &omap3xxx_l4_wkup_hwmod,
-> -       .slave          = &omap3xxx_counter_32k_hwmod,
-> -       .clk            = "omap_32ksync_ick",
-> -       .user           = OCP_USER_MPU | OCP_USER_SDMA,
-> -};
-> -
->  /* am35xx has Davinci MDIO & EMAC */
->  static struct omap_hwmod_class am35xx_mdio_class = {
->         .name = "davinci_mdio",
-> @@ -2551,8 +2436,6 @@ static struct omap_hwmod_ocp_if *omap3xxx_hwmod_ocp_ifs[] __initdata = {
->         &omap3_l4_core__i2c2,
->         &omap3_l4_core__i2c3,
->         &omap3xxx_l4_wkup__l4_sec,
-> -       &omap3xxx_l4_wkup__timer1,
-> -       &omap3xxx_l4_per__timer2,
->         &omap3xxx_l4_per__timer3,
->         &omap3xxx_l4_per__timer4,
->         &omap3xxx_l4_per__timer5,
-> @@ -2580,27 +2463,10 @@ static struct omap_hwmod_ocp_if *omap3xxx_hwmod_ocp_ifs[] __initdata = {
->         &omap34xx_l4_core__mcspi2,
->         &omap34xx_l4_core__mcspi3,
->         &omap34xx_l4_core__mcspi4,
-> -       &omap3xxx_l4_wkup__counter_32k,
->         &omap3xxx_l3_main__gpmc,
->         NULL,
->  };
->
-> -/* GP-only hwmod links */
-> -static struct omap_hwmod_ocp_if *omap34xx_gp_hwmod_ocp_ifs[] __initdata = {
-> -       &omap3xxx_l4_sec__timer12,
-> -       NULL,
-> -};
-> -
-> -static struct omap_hwmod_ocp_if *omap36xx_gp_hwmod_ocp_ifs[] __initdata = {
-> -       &omap3xxx_l4_sec__timer12,
-> -       NULL,
-> -};
-> -
-> -static struct omap_hwmod_ocp_if *am35xx_gp_hwmod_ocp_ifs[] __initdata = {
-> -       &omap3xxx_l4_sec__timer12,
-> -       NULL,
-> -};
-> -
->  /* crypto hwmod links */
->  static struct omap_hwmod_ocp_if *omap34xx_sham_hwmod_ocp_ifs[] __initdata = {
->         &omap3xxx_l4_core__sham,
-> @@ -2774,7 +2640,7 @@ static bool __init omap3xxx_hwmod_is_hs_ip_block_usable(struct device_node *bus,
->  int __init omap3xxx_hwmod_init(void)
->  {
->         int r;
-> -       struct omap_hwmod_ocp_if **h = NULL, **h_gp = NULL, **h_sham = NULL;
-> +       struct omap_hwmod_ocp_if **h = NULL, **h_sham = NULL;
->         struct omap_hwmod_ocp_if **h_aes = NULL;
->         struct device_node *bus;
->         unsigned int rev;
-> @@ -2797,18 +2663,15 @@ int __init omap3xxx_hwmod_init(void)
->             rev == OMAP3430_REV_ES2_1 || rev == OMAP3430_REV_ES3_0 ||
->             rev == OMAP3430_REV_ES3_1 || rev == OMAP3430_REV_ES3_1_2) {
->                 h = omap34xx_hwmod_ocp_ifs;
-> -               h_gp = omap34xx_gp_hwmod_ocp_ifs;
->                 h_sham = omap34xx_sham_hwmod_ocp_ifs;
->                 h_aes = omap34xx_aes_hwmod_ocp_ifs;
->         } else if (rev == AM35XX_REV_ES1_0 || rev == AM35XX_REV_ES1_1) {
->                 h = am35xx_hwmod_ocp_ifs;
-> -               h_gp = am35xx_gp_hwmod_ocp_ifs;
->                 h_sham = am35xx_sham_hwmod_ocp_ifs;
->                 h_aes = am35xx_aes_hwmod_ocp_ifs;
->         } else if (rev == OMAP3630_REV_ES1_0 || rev == OMAP3630_REV_ES1_1 ||
->                    rev == OMAP3630_REV_ES1_2) {
->                 h = omap36xx_hwmod_ocp_ifs;
-> -               h_gp = omap36xx_gp_hwmod_ocp_ifs;
->                 h_sham = omap36xx_sham_hwmod_ocp_ifs;
->                 h_aes = omap36xx_aes_hwmod_ocp_ifs;
->         } else {
-> @@ -2820,13 +2683,6 @@ int __init omap3xxx_hwmod_init(void)
->         if (r < 0)
->                 return r;
->
-> -       /* Register GP-only hwmod links. */
-> -       if (h_gp && omap_type() == OMAP2_DEVICE_TYPE_GP) {
-> -               r = omap_hwmod_register_links(h_gp);
-> -               if (r < 0)
-> -                       return r;
-> -       }
-> -
->         /*
->          * Register crypto hwmod links only if they are not disabled in DT.
->          * If DT information is missing, enable them only for GP devices.
-> --
-> 2.26.2
+On a more general thought, this argument holds for any optional =
+property. So it is not specific to clocks. Since the reg address values =
+are also never specified you can still create broken bindings. Or by =
+connecting the wrong clock. So the ways to create broken bindings are =
+numerous.
+
+I also assume that SGX integrators are not beginners and do you think =
+they need to find out through a make dt_binding_check dtbs_check that =
+they should define a clock? based on *assumptions* we do without having =
+access to all systems?
+
+IMHO the bindings documentation is a documentation. So it needs to be =
+helpful but not perfect. Formalizing all corner cases in a bindings =
+document (just because we can since .yaml was introduced) is IMHO =
+overkill.
+
+In times before the introduction of more formal .yaml I think we would =
+not even have considered this for a comment in the bindings.txt.
+
+> It's possible to forbid the presence of the 'clocks' property on some =
+implementations, and require it on others.
+
+To be precise we have to specify the exact number of clocks (between 0 =
+and 4) for every architecture.
+
+This also contradicts my dream to get rid of the architecture specific =
+components in the long run. My dream (because I can't tell how it can be =
+done) is that we can one day develop something which just needs =
+compatible =3D img,530 or imp,540 or img,544. Then we can't make the =
+number clocks depend on the implementation any more.
+
+> See how it's done for instance on =
+Documentation/devicetree/bindings/serial/samsung_uart.yaml.
+
+Yes I know the design pattern, but I wonder if such a move makes the =
+whole thing even less maintainable.
+
+Assume we have finished DTS for some SoC. Then these DTS have been =
+tested on real hardware and are working. Clocks are there where needed =
+and missing where not. We may now forbid or not forbid them for some =
+implementations in the bindings.yaml but the result of dtbs_check won't =
+change! Because they are tested and working and the bindings.yaml has =
+been adapted to the result. So we have just duplicated something for no =
+practical benefit.
+
+Next, assume there is coming support for more and more new SoC. Then, =
+developers not only have to figure out which clocks they need in the DTS =
+but they also have to add a patch to the implementation specific part of =
+the bindings.yaml to clearly define exactly the same what they already =
+have written into their .dts (the clocks are either there for the =
+of_node or they are not). So again the rules are for no benefit, since a =
+new SoC is introduced exactly once. And tested if it works. And if it is =
+there, it will stay as it is. It is just work for maintainers to review =
+that patch as well.
+
+It boils down to the question if we need to formalize the rule how a =
+working DTS was derived. Or just have a working DTS and not formalize =
+everything.
+
+So IMHO carrying along such a detail (forbid clocks on some =
+architectures) is nice to have (and fun to learn the .yaml thing) but =
+not of benefit for anyone. Not for the DTS developer nor for the =
+maintainers nor for the users of a Linux kernel. "Keep it simple" is =
+always a good rule for maintainability.
+
+In summary I don't see a good reason to follow this in v8. But you could =
+add it by a separate patch later if the DTS have been reviewed and =
+agreed.
+
+BR and thanks,
+Nikolaus
+
