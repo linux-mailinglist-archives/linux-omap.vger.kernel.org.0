@@ -2,502 +2,341 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD53F1C28FD
-	for <lists+linux-omap@lfdr.de>; Sun,  3 May 2020 01:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F5081C2C80
+	for <lists+linux-omap@lfdr.de>; Sun,  3 May 2020 14:52:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726449AbgEBXlG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 2 May 2020 19:41:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59130 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726433AbgEBXlF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 May 2020 19:41:05 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A0E0C061A0F
-        for <linux-omap@vger.kernel.org>; Sat,  2 May 2020 16:41:05 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id w3so5230222plz.5
-        for <linux-omap@vger.kernel.org>; Sat, 02 May 2020 16:41:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daemons-net.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=88CioqogjozhrvM+FgYqeMoRRnrnMImszAopGFsVAys=;
-        b=Nr85iyQxiiny4w6xvv3lerI8RZPub/UMX2jPXEulRLgSFwAejaZt+usqukZ+S3pt+/
-         BxU/qPf/VT8zBfx0ecmwBVPgmi26hHNu4aGoQM8jSOjO3p1uXC8m8oM8XbUGASq+ubCU
-         EVo/N0oMVgjLjgGBUR6aXvR6BFEk4T6f7QuLacg6bqK8Uxe00j4g7dSkrHgRXNplsUnS
-         rAUP2ewTiIiiJNGiysovWAhPuvICRgYnOaCcSbo8MARarz6w5dTlmH3JG/cUxDKENoBY
-         0PRxomvvFE/vrQfSEgRbjCxtyp0drQqVOB/p+nCBwFMChZiIVBzFUQvNRw4GjL/BEYbv
-         2UjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=88CioqogjozhrvM+FgYqeMoRRnrnMImszAopGFsVAys=;
-        b=RyniD5mGlISVO5FJqe1BkT7uYNl3AD0EA4I7Rzl6n9LCbd4ClX8RQFNmKfSelNIJHk
-         DNufdVZpNVPtwf+aB08zPK+vXeSmfepDw3HOk2U2+L39KMgi90DhFuByxrD0ptDCY5jl
-         Hh+LYiD2zmVSsMcH4ND0BERk7mDFzGqCT/GSccVy17/llC+fhSX/oVFDiBoFm/oyyOkv
-         +84E4VcYtzo+UHTJRE+PyQKcF3estMx9GU9ovmrsrsAy2YAF4tZM8pKi+IrQFVsiXD/C
-         uciGPSQ4sg0OxTYwRx8tCdNYVj4ikb8dcQJGOcPls43wiIyxMkc8G7FDD61/KTQfV2P3
-         +23w==
-X-Gm-Message-State: AGi0PuYmtWIU3FJ1ENaajOCUyDmLC9f0aGnPzvlMYvQkmCNIS5KpsBK1
-        Rhv+WvjyXkKFutHOigN+Pxmh
-X-Google-Smtp-Source: APiQypKFdqH3lf3OhvUb9swHTEUhh1wXXAGCTFhy1/iGbhsmjjb/cnL24HjszHK5V24PxlbqG5NB0g==
-X-Received: by 2002:a17:90a:e00c:: with SMTP id u12mr8155035pjy.167.1588462864620;
-        Sat, 02 May 2020 16:41:04 -0700 (PDT)
-Received: from localhost.localdomain ([47.156.151.166])
-        by smtp.googlemail.com with ESMTPSA id u5sm4831278pgi.70.2020.05.02.16.41.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 May 2020 16:41:03 -0700 (PDT)
-From:   Clay McClure <clay@daemons.net>
-Cc:     Clay McClure <clay@daemons.net>, Arnd Bergmann <arnd@arndb.de>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        kbuild test robot <lkp@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
+        id S1728551AbgECMwY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 3 May 2020 08:52:24 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:41080 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728378AbgECMwY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 3 May 2020 08:52:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1588510339; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2ko4Xwt96nyrG2ofYwcaiQ3kO8FQgN99Oau+oASza+Y=;
+        b=vMLvvQ26mbkRB5ssq4TJnK7+m022JmcEKlGByK0qEt0wZ/cWuoZ2C+xRTochuMQahsnETO
+        ABOQBnQJ2/HLIwG+CvdEP4jyvQxShAa+HOezOJtmovqAdOYegmCHPgKTS4wd0UiUZCwl/5
+        56vda+SO7iF/CxZEL8qChIccueuMpcE=
+Date:   Sun, 03 May 2020 14:52:05 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v7 01/12] dt-bindings: add img,pvrsgx.yaml for Imagination
+ GPUs
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?iso-8859-1?q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <paulburton@kernel.org>,
+        James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Jesper Dangaard Brouer <brouer@redhat.com>,
-        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH] net: ethernet: ti: Remove TI_CPTS_MOD workaround
-Date:   Sat,  2 May 2020 16:39:04 -0700
-Message-Id: <20200502233910.20851-1-clay@daemons.net>
-X-Mailer: git-send-email 2.20.1
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Philipp Rossak <embed3d@gmail.com>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        openpvrsgx-devgroup@letux.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org
+Message-Id: <TEAR9Q.6HI5DFRO5U0I3@crapouillou.net>
+In-Reply-To: <28138EC0-0FA5-4F97-B528-3442BF087C7A@goldelico.com>
+References: <cover.1587760454.git.hns@goldelico.com>
+        <3a451e360fed84bc40287678b4d6be13821cfbc0.1587760454.git.hns@goldelico.com>
+        <NMCE9Q.LWG45P20NBVJ@crapouillou.net>
+        <28138EC0-0FA5-4F97-B528-3442BF087C7A@goldelico.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-My recent commit b6d49cab44b5 ("net: Make PTP-specific drivers depend on PTP_1588_CLOCK")
-exposes a missing dependency in defconfigs that select TI_CPTS without
-selecting PTP_1588_CLOCK, leading to linker errors of the form:
+Hi Nikolaus,
 
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_ndo_stop':
-cpsw.c:(.text+0x680): undefined reference to `cpts_unregister'
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_remove':
-cpsw.c:(.text+0x81c): undefined reference to `cpts_release'
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_rx_handler':
-cpsw.c:(.text+0x1324): undefined reference to `cpts_rx_timestamp'
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_ndo_open':
-cpsw.c:(.text+0x15ec): undefined reference to `cpts_register'
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_probe':
-cpsw.c:(.text+0x2468): undefined reference to `cpts_release'
+Le sam. 2 mai 2020 =E0 22:26, H. Nikolaus Schaller <hns@goldelico.com> a=20
+=E9crit :
+> Hi Paul,
+>=20
+>>  Am 26.04.2020 um 15:11 schrieb Paul Cercueil <paul@crapouillou.net>:
+>>=20
+>>  Hi Nikolaus,
+>>=20
+>>  Le ven. 24 avril 2020 =E0 22:34, H. Nikolaus Schaller=20
+>> <hns@goldelico.com> a =E9crit :
+>>>  The Imagination PVR/SGX GPU is part of several SoC from
+>>>  multiple vendors, e.g. TI OMAP, Ingenic JZ4780, Intel Poulsbo,
+>>>  Allwinner A83 and others.
+>>>  With this binding, we describe how the SGX processor is
+>>>  interfaced to the SoC (registers and interrupt).
+>>>  The interface also consists of clocks, reset, power but
+>>>  information from data sheets is vague and some SoC integrators
+>>>  (TI) deciced to use a PRCM wrapper (ti,sysc) which does
+>>>  all clock, reset and power-management through registers
+>>>  outside of the sgx register block.
+>>>  Therefore all these properties are optional.
+>>>  Tested by make dt_binding_check
+>>>  Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+>>>  ---
+>>>  .../devicetree/bindings/gpu/img,pvrsgx.yaml   | 150=20
+>>> ++++++++++++++++++
+>>>  1 file changed, 150 insertions(+)
+>>>  create mode 100644=20
+>>> Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+>>>  diff --git a/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml=20
+>>> b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+>>>  new file mode 100644
+>>>  index 000000000000..33a9c4c6e784
+>>>  --- /dev/null
+>>>  +++ b/Documentation/devicetree/bindings/gpu/img,pvrsgx.yaml
+>>>  @@ -0,0 +1,150 @@
+>>>  +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>>>  +%YAML 1.2
+>>>  +---
+>>>  +$id: http://devicetree.org/schemas/gpu/img,pvrsgx.yaml#
+>>>  +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>  +
+>>>  +title: Imagination PVR/SGX GPU
+>>>  +
+>>>  +maintainers:
+>>>  +  - H. Nikolaus Schaller <hns@goldelico.com>
+>>>  +
+>>>  +description: |+
+>>>  +  This binding describes the Imagination SGX5 series of 3D=20
+>>> accelerators which
+>>>  +  are found in several different SoC like TI OMAP, Sitara,=20
+>>> Ingenic JZ4780,
+>>>  +  Allwinner A83, and Intel Poulsbo and CedarView and more.
+>>>  +
+>>>  +  For an extensive list see:=20
+>>> https://en.wikipedia.org/wiki/PowerVR#Implementations
+>>>  +
+>>>  +  The SGX node is usually a child node of some DT node belonging=20
+>>> to the SoC
+>>>  +  which handles clocks, reset and general address space mapping=20
+>>> of the SGX
+>>>  +  register area. If not, an optional clock can be specified here.
+>>>  +
+>>>  +properties:
+>>>  +  $nodename:
+>>>  +    pattern: '^gpu@[a-f0-9]+$'
+>>>  +  compatible:
+>>>  +    oneOf:
+>>>  +      - description: SGX530-121 based SoC
+>>>  +        items:
+>>>  +          - enum:
+>>>  +            - ti,omap3-sgx530-121 # BeagleBoard A/B/C,=20
+>>> OpenPandora 600MHz and similar
+>>>  +          - const: img,sgx530-121
+>>>  +          - const: img,sgx530
+>>>  +
+>>>  +      - description: SGX530-125 based SoC
+>>>  +        items:
+>>>  +          - enum:
+>>>  +            - ti,am3352-sgx530-125 # BeagleBone Black
+>>>  +            - ti,am3517-sgx530-125
+>>>  +            - ti,am4-sgx530-125
+>>>  +            - ti,omap3-sgx530-125 # BeagleBoard XM, GTA04,=20
+>>> OpenPandora 1GHz and similar
+>>>  +            - ti,ti81xx-sgx530-125
+>>>  +          - const: ti,omap3-sgx530-125
+>>>  +          - const: img,sgx530-125
+>>>  +          - const: img,sgx530
+>>>  +
+>>>  +      - description: SGX535-116 based SoC
+>>>  +        items:
+>>>  +          - const: intel,poulsbo-gma500-sgx535 # Atom Z5xx
+>>>  +          - const: img,sgx535-116
+>>>  +          - const: img,sgx535
+>>>  +
+>>>  +      - description: SGX540-116 based SoC
+>>>  +        items:
+>>>  +          - const: intel,medfield-gma-sgx540 # Atom Z24xx
+>>>  +          - const: img,sgx540-116
+>>>  +          - const: img,sgx540
+>>>  +
+>>>  +      - description: SGX540-120 based SoC
+>>>  +        items:
+>>>  +          - enum:
+>>>  +            - samsung,s5pv210-sgx540-120
+>>>  +            - ti,omap4-sgx540-120 # Pandaboard, Pandaboard ES and=20
+>>> similar
+>>>  +          - const: img,sgx540-120
+>>>  +          - const: img,sgx540
+>>>  +
+>>>  +      - description: SGX540-130 based SoC
+>>>  +        items:
+>>>  +          - enum:
+>>>  +            - ingenic,jz4780-sgx540-130 # CI20
+>>>  +          - const: img,sgx540-130
+>>>  +          - const: img,sgx540
+>>>  +
+>>>  +      - description: SGX544-112 based SoC
+>>>  +        items:
+>>>  +          - const: ti,omap4470-sgx544-112
+>>>  +          - const: img,sgx544-112
+>>>  +          - const: img,sgx544
+>>>  +
+>>>  +      - description: SGX544-115 based SoC
+>>>  +        items:
+>>>  +          - enum:
+>>>  +            - allwinner,sun8i-a31-sgx544-115
+>>>  +            - allwinner,sun8i-a31s-sgx544-115
+>>>  +            - allwinner,sun8i-a83t-sgx544-115 # Banana-Pi-M3=20
+>>> (Allwinner A83T) and similar
+>>>  +          - const: img,sgx544-115
+>>>  +          - const: img,sgx544
+>>>  +
+>>>  +      - description: SGX544-116 based SoC
+>>>  +        items:
+>>>  +          - enum:
+>>>  +            - ti,dra7-sgx544-116 # DRA7
+>>>  +            - ti,omap5-sgx544-116 # OMAP5 UEVM, Pyra Handheld and=20
+>>> similar
+>>>  +          - const: img,sgx544-116
+>>>  +          - const: img,sgx544
+>>>  +
+>>>  +      - description: SGX545 based SoC
+>>>  +        items:
+>>>  +          - const: intel,cedarview-gma3600-sgx545 # Atom N2600,=20
+>>> D2500
+>>>  +          - const: img,sgx545-116
+>>>  +          - const: img,sgx545
+>>>  +
+>>>  +  reg:
+>>>  +    maxItems: 1
+>>>  +
+>>>  +  interrupts:
+>>>  +    maxItems: 1
+>>>  +
+>>>  +  interrupt-names:
+>>>  +    maxItems: 1
+>>>  +    items:
+>>>  +      - const: sgx
+>>>  +
+>>>  +  clocks:
+>>>  +    maxItems: 4
+>>>  +
+>>>  +  clock-names:
+>>>  +    maxItems: 4
+>>>  +    items:
+>>>  +      - const: core
+>>>  +      - const: sys
+>>>  +      - const: mem
+>>>  +      - const: hyd
+>>>  +
+>>>  +  sgx-supply: true
+>>>  +
+>>>  +  power-domains:
+>>>  +    maxItems: 1
+>>>  +
+>>>  +  resets:
+>>>  +    maxItems: 1
+>>>  +
+>>>  +required:
+>>>  +  - compatible
+>>>  +  - reg
+>>>  +  - interrupts
+>>=20
+>>  By not making 'clocks' required you make it possible to create=20
+>> broken bindings; according to your schema, a GPU node without a=20
+>> 'clocks' for the JZ4780 would be perfectly valid.
+>=20
+> Yes. But it will never pass a test with real hardware. So it can't be=20
+> omitted anyways.
+>=20
+> On a more general thought, this argument holds for any optional=20
+> property. So it is not specific to clocks. Since the reg address=20
+> values are also never specified you can still create broken bindings.=20
+> Or by connecting the wrong clock. So the ways to create broken=20
+> bindings are numerous.
+>=20
+> I also assume that SGX integrators are not beginners and do you think=20
+> they need to find out through a make dt_binding_check dtbs_check that=20
+> they should define a clock? based on *assumptions* we do without=20
+> having access to all systems?
+>=20
+> IMHO the bindings documentation is a documentation. So it needs to be=20
+> helpful but not perfect. Formalizing all corner cases in a bindings=20
+> document (just because we can since .yaml was introduced) is IMHO=20
+> overkill.
+>=20
+> In times before the introduction of more formal .yaml I think we=20
+> would not even have considered this for a comment in the bindings.txt.
+>=20
+>>  It's possible to forbid the presence of the 'clocks' property on=20
+>> some implementations, and require it on others.
+>=20
+> To be precise we have to specify the exact number of clocks (between=20
+> 0 and 4) for every architecture.
+>=20
+> This also contradicts my dream to get rid of the architecture=20
+> specific components in the long run. My dream (because I can't tell=20
+> how it can be done) is that we can one day develop something which=20
+> just needs compatible =3D img,530 or imp,540 or img,544. Then we can't=20
+> make the number clocks depend on the implementation any more.
 
-That's because TI_CPTS_MOD (which is the symbol gating the _compilation_
-of cpts.c) now depends on PTP_1588_CLOCK, and so is not enabled in these
-configurations, but TI_CPTS (which is the symbol gating _calls_ to the
-cpts functions) _is_ enabled. So we end up compiling calls to functions
-that don't exist, resulting in the linker errors.
+As we said before, the number of clocks is a property of the GPU and=20
+*not* its integration into the SoC.
 
-The reason we have two symbols (TI_CPTS and TI_CPTS_MOD) for the same
-driver is due to commit be9ca0d33c85 ("cpsw/netcp: work around reverse
-cpts dependency"), which introduced TI_CPTS_MOD because (quoting the
-commit message):
+So you would *not* have a number of clocks between 0 and 4. You get=20
+either 0, or 4, depending on whether or not you have a wrapper.
 
-> The dependency is reversed: cpsw and netcp call into cpts,
-> but cpts depends on the other two in Kconfig. This can lead
-> to cpts being a loadable module and its callers built-in:
->
-> drivers/net/ethernet/ti/cpsw.o: In function `cpsw_remove':
-> cpsw.c:(.text.cpsw_remove+0xd0): undefined reference to `cpts_release'
-> drivers/net/ethernet/ti/cpsw.o: In function `cpsw_rx_handler':
-> cpsw.c:(.text.cpsw_rx_handler+0x2dc): undefined reference to `cpts_rx_timestamp'
-> drivers/net/ethernet/ti/cpsw.o: In function `cpsw_tx_handler':
-> cpsw.c:(.text.cpsw_tx_handler+0x7c): undefined reference to `cpts_tx_timestamp'
-> drivers/net/ethernet/ti/cpsw.o: In function `cpsw_ndo_stop':
 
-Both forms of linker error -- those caused by defconfigs that select
-TI_CPTS without PTP_1588_CLOCK and those caused by configuring TI_CPSW
-as a built-in and TI_CPTS as a module -- can be avoided by using the
-IS_REACHABLE() macro to gate calls to cpts functions, and using the
-TI_CPTS symbol to gate compilation of cpts.c. cpts.h already provides
-the no-op stub implementations of the cpts functions required to make
-this work, we just need to change the existing IS_ENABLED(TI_CPTS)
-guards to IS_REACHABLE(TI_CPTS).
+>>  See how it's done for instance on=20
+>> Documentation/devicetree/bindings/serial/samsung_uart.yaml.
+>=20
+> Yes I know the design pattern, but I wonder if such a move makes the=20
+> whole thing even less maintainable.
+>=20
+> Assume we have finished DTS for some SoC. Then these DTS have been=20
+> tested on real hardware and are working. Clocks are there where=20
+> needed and missing where not. We may now forbid or not forbid them=20
+> for some implementations in the bindings.yaml but the result of=20
+> dtbs_check won't change! Because they are tested and working and the=20
+> bindings.yaml has been adapted to the result. So we have just=20
+> duplicated something for no practical benefit.
+>=20
+> Next, assume there is coming support for more and more new SoC. Then,=20
+> developers not only have to figure out which clocks they need in the=20
+> DTS but they also have to add a patch to the implementation specific=20
+> part of the bindings.yaml to clearly define exactly the same what=20
+> they already have written into their .dts (the clocks are either=20
+> there for the of_node or they are not). So again the rules are for no=20
+> benefit, since a new SoC is introduced exactly once. And tested if it=20
+> works. And if it is there, it will stay as it is. It is just work for=20
+> maintainers to review that patch as well.
 
-With this change there is no longer any need for the TI_CPTS_MOD symbol,
-so we can remove it.
+If you add support for a new SoC, you'd still need to modify the=20
+binding to add the compatible string. So the argument of "more work" is=20
+moot.
 
-To preserve the existing behavior of defconfigs that select TI_CPTS, we
-must also select PTP_1588_CLOCK so that the dependency is satisfied.
-omap2plus_defconfig and keystone_defconfig have not been updated in a
-while, so some unrelated no-op changes appear in the diff.
+-Paul
 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Fixes: b6d49cab44b5 ("net: Make PTP-specific drivers depend on PTP_1588_CLOCK")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Clay McClure <clay@daemons.net>
----
- arch/arm/configs/keystone_defconfig    | 72 ++++++++++++--------------
- arch/arm/configs/omap2plus_defconfig   |  3 +-
- drivers/net/ethernet/ti/Kconfig        | 13 ++---
- drivers/net/ethernet/ti/Makefile       |  2 +-
- drivers/net/ethernet/ti/cpsw_ethtool.c |  2 +-
- drivers/net/ethernet/ti/cpts.h         |  3 +-
- drivers/net/ethernet/ti/netcp_ethss.c  | 10 ++--
- 7 files changed, 45 insertions(+), 60 deletions(-)
+> It boils down to the question if we need to formalize the rule how a=20
+> working DTS was derived. Or just have a working DTS and not formalize=20
+> everything.
+>=20
+> So IMHO carrying along such a detail (forbid clocks on some=20
+> architectures) is nice to have (and fun to learn the .yaml thing) but=20
+> not of benefit for anyone. Not for the DTS developer nor for the=20
+> maintainers nor for the users of a Linux kernel. "Keep it simple" is=20
+> always a good rule for maintainability.
+>=20
+> In summary I don't see a good reason to follow this in v8. But you=20
+> could add it by a separate patch later if the DTS have been reviewed=20
+> and agreed.
+>=20
+> BR and thanks,
+> Nikolaus
+>=20
 
-diff --git a/arch/arm/configs/keystone_defconfig b/arch/arm/configs/keystone_defconfig
-index 11e2211f9007..a66c37efa15b 100644
---- a/arch/arm/configs/keystone_defconfig
-+++ b/arch/arm/configs/keystone_defconfig
-@@ -1,44 +1,41 @@
- # CONFIG_SWAP is not set
- CONFIG_POSIX_MQUEUE=y
- CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_CGROUPS=y
-+CONFIG_BLK_CGROUP=y
-+CONFIG_CGROUP_SCHED=y
- CONFIG_CGROUP_FREEZER=y
- CONFIG_CGROUP_DEVICE=y
- CONFIG_CGROUP_CPUACCT=y
--CONFIG_CGROUP_SCHED=y
--CONFIG_BLK_CGROUP=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_KALLSYMS_ALL=y
- # CONFIG_ELF_CORE is not set
- # CONFIG_BASE_FULL is not set
-+CONFIG_KALLSYMS_ALL=y
- CONFIG_EMBEDDED=y
- CONFIG_PROFILING=y
--CONFIG_OPROFILE=y
--CONFIG_KPROBES=y
--CONFIG_MODULES=y
--CONFIG_MODULE_FORCE_LOAD=y
--CONFIG_MODULE_UNLOAD=y
--CONFIG_MODULE_FORCE_UNLOAD=y
--CONFIG_MODVERSIONS=y
- CONFIG_ARCH_KEYSTONE=y
- CONFIG_ARM_LPAE=y
--CONFIG_PCI=y
--CONFIG_PCI_MSI=y
--CONFIG_PCI_KEYSTONE=y
- CONFIG_SMP=y
- CONFIG_HOTPLUG_CPU=y
- CONFIG_ARM_PSCI=y
--CONFIG_PREEMPT=y
--CONFIG_AEABI=y
- CONFIG_HIGHMEM=y
--CONFIG_CMA=y
- CONFIG_VFP=y
- CONFIG_NEON=y
- # CONFIG_SUSPEND is not set
- CONFIG_PM=y
-+CONFIG_TI_SCI_PROTOCOL=y
-+CONFIG_OPROFILE=y
-+CONFIG_KPROBES=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_FORCE_LOAD=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODULE_FORCE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+CONFIG_CMA=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-@@ -65,9 +62,6 @@ CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
- CONFIG_IP_PIMSM_V2=y
- CONFIG_INET_AH=y
- CONFIG_INET_IPCOMP=y
--CONFIG_INET6_XFRM_MODE_TRANSPORT=m
--CONFIG_INET6_XFRM_MODE_TUNNEL=m
--CONFIG_INET6_XFRM_MODE_BEET=m
- CONFIG_IPV6_SIT=m
- CONFIG_IPV6_MULTIPLE_TABLES=y
- CONFIG_IPV6_SUBTREES=y
-@@ -93,7 +87,6 @@ CONFIG_NETFILTER_XT_MATCH_MARK=y
- CONFIG_NETFILTER_XT_MATCH_MULTIPORT=y
- CONFIG_NETFILTER_XT_MATCH_PKTTYPE=y
- CONFIG_NETFILTER_XT_MATCH_STATE=y
--CONFIG_NF_CONNTRACK_IPV4=y
- CONFIG_IP_NF_IPTABLES=y
- CONFIG_IP_NF_MATCH_AH=y
- CONFIG_IP_NF_MATCH_ECN=y
-@@ -114,17 +107,18 @@ CONFIG_VLAN_8021Q=y
- CONFIG_CAN=m
- CONFIG_CAN_C_CAN=m
- CONFIG_CAN_C_CAN_PLATFORM=m
-+CONFIG_PCI=y
-+CONFIG_PCI_MSI=y
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
--CONFIG_DMA_CMA=y
- CONFIG_MTD=y
- CONFIG_MTD_CMDLINE_PARTS=y
- CONFIG_MTD_BLOCK=y
- CONFIG_MTD_PLATRAM=y
--CONFIG_MTD_M25P80=y
- CONFIG_MTD_RAW_NAND=y
- CONFIG_MTD_NAND_DAVINCI=y
- CONFIG_MTD_SPI_NOR=y
-+CONFIG_SPI_CADENCE_QUADSPI=y
- CONFIG_MTD_UBI=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_SRAM=y
-@@ -134,8 +128,12 @@ CONFIG_BLK_DEV_SD=y
- CONFIG_NETDEVICES=y
- CONFIG_TI_KEYSTONE_NETCP=y
- CONFIG_TI_KEYSTONE_NETCP_ETHSS=y
--CONFIG_TI_CPTS=y
-+CONFIG_DP83867_PHY=y
- CONFIG_MARVELL_PHY=y
-+CONFIG_MICREL_PHY=y
-+CONFIG_INPUT_EVDEV=m
-+CONFIG_INPUT_MISC=y
-+CONFIG_INPUT_GPIO_DECODER=m
- CONFIG_SERIAL_8250=y
- CONFIG_SERIAL_8250_CONSOLE=y
- CONFIG_SERIAL_OF_PLATFORM=y
-@@ -147,14 +145,16 @@ CONFIG_I2C_DAVINCI=y
- CONFIG_SPI=y
- CONFIG_SPI_DAVINCI=y
- CONFIG_SPI_SPIDEV=y
-+CONFIG_PTP_1588_CLOCK=y
- CONFIG_PINCTRL_SINGLE=y
- CONFIG_GPIOLIB=y
- CONFIG_GPIO_SYSFS=y
- CONFIG_GPIO_DAVINCI=y
- CONFIG_GPIO_SYSCON=y
--CONFIG_POWER_SUPPLY=y
-+CONFIG_GPIO_PCA953X=m
- CONFIG_POWER_RESET=y
- CONFIG_POWER_RESET_KEYSTONE=y
-+CONFIG_POWER_SUPPLY=y
- # CONFIG_HWMON is not set
- CONFIG_WATCHDOG=y
- CONFIG_DAVINCI_WATCHDOG=y
-@@ -166,8 +166,8 @@ CONFIG_USB_MON=y
- CONFIG_USB_XHCI_HCD=y
- CONFIG_USB_STORAGE=y
- CONFIG_USB_DWC3=y
--CONFIG_NOP_USB_XCEIV=y
- CONFIG_KEYSTONE_USB_PHY=y
-+CONFIG_NOP_USB_XCEIV=y
- CONFIG_MMC=y
- CONFIG_MMC_SDHCI=y
- CONFIG_MMC_SDHCI_PLTFM=y
-@@ -180,9 +180,10 @@ CONFIG_LEDS_TRIGGERS=y
- CONFIG_LEDS_TRIGGER_ONESHOT=y
- CONFIG_LEDS_TRIGGER_HEARTBEAT=y
- CONFIG_LEDS_TRIGGER_BACKLIGHT=y
-+CONFIG_LEDS_TRIGGER_CPU=y
-+CONFIG_LEDS_TRIGGER_ACTIVITY=y
- CONFIG_LEDS_TRIGGER_GPIO=y
- CONFIG_DMADEVICES=y
--CONFIG_TI_EDMA=y
- CONFIG_MAILBOX=y
- CONFIG_TI_MESSAGE_MANAGER=y
- CONFIG_SOC_TI=y
-@@ -196,7 +197,6 @@ CONFIG_PWM_TIECAP=m
- CONFIG_KEYSTONE_IRQ=y
- CONFIG_RESET_TI_SCI=m
- CONFIG_RESET_TI_SYSCON=m
--CONFIG_TI_SCI_PROTOCOL=y
- CONFIG_EXT4_FS=y
- CONFIG_EXT4_FS_POSIX_ACL=y
- CONFIG_FANOTIFY=y
-@@ -217,10 +217,6 @@ CONFIG_NFSD_V3=y
- CONFIG_NFSD_V3_ACL=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
--CONFIG_PRINTK_TIME=y
--CONFIG_DEBUG_INFO=y
--CONFIG_DEBUG_SHIRQ=y
--CONFIG_DEBUG_USER=y
- CONFIG_CRYPTO_USER=y
- CONFIG_CRYPTO_AUTHENC=y
- CONFIG_CRYPTO_CBC=y
-@@ -230,12 +226,8 @@ CONFIG_CRYPTO_DES=y
- CONFIG_CRYPTO_ANSI_CPRNG=y
- CONFIG_CRYPTO_USER_API_HASH=y
- CONFIG_CRYPTO_USER_API_SKCIPHER=y
--CONFIG_SPI_CADENCE_QUADSPI=y
--CONFIG_INPUT_MISC=y
--CONFIG_INPUT_EVDEV=m
--CONFIG_INPUT_GPIO_DECODER=m
--CONFIG_GPIO_PCA953X=m
--CONFIG_LEDS_TRIGGER_ACTIVITY=y
--CONFIG_LEDS_TRIGGER_CPU=y
--CONFIG_MICREL_PHY=y
--CONFIG_DP83867_PHY=y
-+CONFIG_DMA_CMA=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_SHIRQ=y
-+CONFIG_DEBUG_USER=y
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 3cc3ca5fa027..e00f0d871c53 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -57,7 +57,6 @@ CONFIG_CPUFREQ_DT=m
- CONFIG_ARM_TI_CPUFREQ=y
- CONFIG_CPU_IDLE=y
- CONFIG_ARM_CPUIDLE=y
--CONFIG_DT_IDLE_STATES=y
- CONFIG_KERNEL_MODE_NEON=y
- CONFIG_PM_DEBUG=y
- CONFIG_ARM_CRYPTO=y
-@@ -189,7 +188,6 @@ CONFIG_SMSC911X=y
- CONFIG_TI_DAVINCI_EMAC=y
- CONFIG_TI_CPSW=y
- CONFIG_TI_CPSW_SWITCHDEV=y
--CONFIG_TI_CPTS=y
- # CONFIG_NET_VENDOR_VIA is not set
- # CONFIG_NET_VENDOR_WIZNET is not set
- CONFIG_DP83848_PHY=y
-@@ -274,6 +272,7 @@ CONFIG_SPI_TI_QSPI=m
- CONFIG_HSI=m
- CONFIG_OMAP_SSI=m
- CONFIG_SSI_PROTOCOL=m
-+CONFIG_PTP_1588_CLOCK=y
- CONFIG_PINCTRL_SINGLE=y
- CONFIG_DEBUG_GPIO=y
- CONFIG_GPIO_SYSFS=y
-diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
-index 8e348780efb6..f3f8bb724294 100644
---- a/drivers/net/ethernet/ti/Kconfig
-+++ b/drivers/net/ethernet/ti/Kconfig
-@@ -77,23 +77,18 @@ config TI_CPSW_SWITCHDEV
- 	  will be called cpsw_new.
- 
- config TI_CPTS
--	bool "TI Common Platform Time Sync (CPTS) Support"
-+	tristate "TI Common Platform Time Sync (CPTS) Support"
- 	depends on TI_CPSW || TI_KEYSTONE_NETCP || TI_CPSW_SWITCHDEV || COMPILE_TEST
- 	depends on COMMON_CLK
--	depends on POSIX_TIMERS
-+	depends on PTP_1588_CLOCK
-+	default y if TI_CPSW=y || TI_KEYSTONE_NETCP=y || TI_CPSW_SWITCHDEV=y
-+	default m
- 	---help---
- 	  This driver supports the Common Platform Time Sync unit of
- 	  the CPSW Ethernet Switch and Keystone 2 1g/10g Switch Subsystem.
- 	  The unit can time stamp PTP UDP/IPv4 and Layer 2 packets, and the
- 	  driver offers a PTP Hardware Clock.
- 
--config TI_CPTS_MOD
--	tristate
--	depends on TI_CPTS
--	depends on PTP_1588_CLOCK
--	default y if TI_CPSW=y || TI_KEYSTONE_NETCP=y || TI_CPSW_SWITCHDEV=y
--	default m
--
- config TI_K3_AM65_CPSW_NUSS
- 	tristate "TI K3 AM654x/J721E CPSW Ethernet driver"
- 	depends on ARCH_K3 && OF && TI_K3_UDMA_GLUE_LAYER
-diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
-index 53792190e9c2..cb26a9d21869 100644
---- a/drivers/net/ethernet/ti/Makefile
-+++ b/drivers/net/ethernet/ti/Makefile
-@@ -13,7 +13,7 @@ obj-$(CONFIG_TI_DAVINCI_EMAC) += ti_davinci_emac.o
- ti_davinci_emac-y := davinci_emac.o davinci_cpdma.o
- obj-$(CONFIG_TI_DAVINCI_MDIO) += davinci_mdio.o
- obj-$(CONFIG_TI_CPSW_PHY_SEL) += cpsw-phy-sel.o
--obj-$(CONFIG_TI_CPTS_MOD) += cpts.o
-+obj-$(CONFIG_TI_CPTS) += cpts.o
- obj-$(CONFIG_TI_CPSW) += ti_cpsw.o
- ti_cpsw-y := cpsw.o davinci_cpdma.o cpsw_ale.o cpsw_priv.o cpsw_sl.o cpsw_ethtool.o
- obj-$(CONFIG_TI_CPSW_SWITCHDEV) += ti_cpsw_new.o
-diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/ti/cpsw_ethtool.c
-index fa54efe3be63..19a7370a4188 100644
---- a/drivers/net/ethernet/ti/cpsw_ethtool.c
-+++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
-@@ -709,7 +709,7 @@ int cpsw_set_ringparam(struct net_device *ndev,
- 	return ret;
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- int cpsw_get_ts_info(struct net_device *ndev, struct ethtool_ts_info *info)
- {
- 	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
-diff --git a/drivers/net/ethernet/ti/cpts.h b/drivers/net/ethernet/ti/cpts.h
-index bb997c11ee15..782e24c78e7a 100644
---- a/drivers/net/ethernet/ti/cpts.h
-+++ b/drivers/net/ethernet/ti/cpts.h
-@@ -8,7 +8,7 @@
- #ifndef _TI_CPTS_H_
- #define _TI_CPTS_H_
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- 
- #include <linux/clk.h>
- #include <linux/clkdev.h>
-@@ -171,5 +171,4 @@ static inline bool cpts_can_timestamp(struct cpts *cpts, struct sk_buff *skb)
- }
- #endif
- 
--
- #endif
-diff --git a/drivers/net/ethernet/ti/netcp_ethss.c b/drivers/net/ethernet/ti/netcp_ethss.c
-index fb36115e9c51..3de1d25128b7 100644
---- a/drivers/net/ethernet/ti/netcp_ethss.c
-+++ b/drivers/net/ethernet/ti/netcp_ethss.c
-@@ -181,7 +181,7 @@
- 
- #define HOST_TX_PRI_MAP_DEFAULT			0x00000000
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- /* Px_TS_CTL register fields */
- #define TS_RX_ANX_F_EN				BIT(0)
- #define TS_RX_VLAN_LT1_EN			BIT(1)
-@@ -2000,7 +2000,7 @@ static int keystone_set_link_ksettings(struct net_device *ndev,
- 	return phy_ethtool_ksettings_set(phy, cmd);
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- static int keystone_get_ts_info(struct net_device *ndev,
- 				struct ethtool_ts_info *info)
- {
-@@ -2532,7 +2532,7 @@ static int gbe_del_vid(void *intf_priv, int vid)
- 	return 0;
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- 
- static void gbe_txtstamp(void *context, struct sk_buff *skb)
- {
-@@ -2977,7 +2977,7 @@ static int gbe_close(void *intf_priv, struct net_device *ndev)
- 	return 0;
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- static void init_slave_ts_ctl(struct gbe_slave *slave)
- {
- 	slave->ts_ctl.uni = 1;
-@@ -3718,7 +3718,7 @@ static int gbe_probe(struct netcp_device *netcp_device, struct device *dev,
- 
- 	gbe_dev->cpts = cpts_create(gbe_dev->dev, gbe_dev->cpts_reg, cpts_node);
- 	of_node_put(cpts_node);
--	if (IS_ENABLED(CONFIG_TI_CPTS) && IS_ERR(gbe_dev->cpts)) {
-+	if (IS_REACHABLE(CONFIG_TI_CPTS) && IS_ERR(gbe_dev->cpts)) {
- 		ret = PTR_ERR(gbe_dev->cpts);
- 		goto free_sec_ports;
- 	}
--- 
-2.20.1
 
