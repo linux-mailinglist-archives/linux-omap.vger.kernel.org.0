@@ -2,311 +2,272 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE4511C409E
-	for <lists+linux-omap@lfdr.de>; Mon,  4 May 2020 18:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04B3A1C49F7
+	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 01:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729843AbgEDQ5j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 May 2020 12:57:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47094 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729669AbgEDQ5i (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 May 2020 12:57:38 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C90EC061A0F
-        for <linux-omap@vger.kernel.org>; Mon,  4 May 2020 09:57:38 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id t11so30216pgg.2
-        for <linux-omap@vger.kernel.org>; Mon, 04 May 2020 09:57:38 -0700 (PDT)
+        id S1728080AbgEDXBK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 4 May 2020 19:01:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47578 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728059AbgEDXBJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 May 2020 19:01:09 -0400
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC218C061A0E;
+        Mon,  4 May 2020 16:01:09 -0700 (PDT)
+Received: by mail-qv1-xf43.google.com with SMTP id di6so106514qvb.10;
+        Mon, 04 May 2020 16:01:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daemons-net.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Z3NYsHy1jFVKuIx89+E5z9qZ8TEJd1dMXiM1ctxfJr8=;
-        b=SrGhxhrpClXsV4bk9050WnnTCzBEH7KG4lJPbuHhjHiDUaYWSZOx0lbW+gfJA4agDq
-         Co6Pbdn5mafwPdBMo3V69+Eaj0oXv+mCAhhGmNa5Dojnwrt54nUeIenVdxdTeqI1fsNI
-         cm5/15mFX2Xb8UUmViasjD0FTycx5vKgUiI7CLP5IvROEWIWB0jARW0psYcvdT1DIauF
-         8Qzczj+p7TzWUaYl7Z23XM5LuHJnurAXnfAyAoHjPOgg6oZv6AFMes2hzT8wTZzv6bTL
-         LuIzKuQgBIO22z19qdM6Z7q8+qUpvTohN7ELvCcO3VKplo4yIB331LXCvJ/Zp/HXZjnL
-         ZAUA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Sr2MDEt6KTuLtYqratJ8mWzr8mlifnfhPq/CL0zWop0=;
+        b=FlwWcvg9JATvZF1AiaebjBtK/ym7D4Bog8N4mqTbq6ShO/0lbBn9K8SPEP1uiYhlId
+         k2XGfSPfPLsj+L/YUoI10NK+dgGXf/dSgsG39BgaGr3wNgMW75olQbUG2PTI+S3FIDxt
+         yfU277GFGAMw0aMOlSwIqjnql1nEohR/wHT+JZrSHx/HhqiSsRCWGNKLtRyelECFqR+Q
+         t9Kkd1AEjzHUan37m6F9A7H44bVkXil37Y/C7BswLzbJ7ea18mP+yc1l1TnrEIgiGW5P
+         0OKmfjcU62lPY4FRqfb/jOHGOjjcs/BG3nremQITg/ggc2wgRJIydWpZHwY55wbpVn2f
+         oFeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Z3NYsHy1jFVKuIx89+E5z9qZ8TEJd1dMXiM1ctxfJr8=;
-        b=oQKYCm+GZwV6uMhgR5ruzR6DxcYGoOFMEYug3/VMDPKz8G/z1imqwCba85vXxvqHOn
-         bXs2RBx6bB0dtcbWwkYxmXQHi2d1pvKiH6lSiLZLX+JWak4c1ZYM0hoOMnx4WyTSNumQ
-         QCRcq3aBzjuMccu+Pq6kDfD1Wsk4K4rv/Q9aR35KMXxlPl4jL6cgi2NDKUbsSLQrpKMF
-         JtN/7vJHUO96w3L82gVCCbZPpJHVj3d1yMDu1QD7wiULi+WZE5uom9F8NrVdp7OvATSl
-         sh7NVqkBxWb6v8XAHY4yZtWKUo2IcWF/QXMh993DcHyufj/kav76JuO6bMOMENmFri4B
-         dlbQ==
-X-Gm-Message-State: AGi0PuaWU7+GMeQ0cKBvllZgAorF3tEKiFq4FndIlen0DWQ3TL2x6ZU0
-        QpAIjp8WB4NSRhzlOIrIspky
-X-Google-Smtp-Source: APiQypJcRwf080OF3IvaiRv8wJ6azWOpiCEl8NhtMhRtaJITJnJ3hbJv/bs+i33Zm6IW8Lszw/H0Sw==
-X-Received: by 2002:a63:220a:: with SMTP id i10mr18699976pgi.364.1588611457784;
-        Mon, 04 May 2020 09:57:37 -0700 (PDT)
-Received: from localhost.localdomain ([47.156.151.166])
-        by smtp.googlemail.com with ESMTPSA id fh18sm332462pjb.0.2020.05.04.09.57.35
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Sr2MDEt6KTuLtYqratJ8mWzr8mlifnfhPq/CL0zWop0=;
+        b=DtfHFFstCB+d0GKL31kU6fvFRc5pA5hZ0BJgrAAD2KtAmw2bnM5NbwwEkcgzK8CPDE
+         VZVKMk0DFb94+Ch+boGH20A8RSXV4jJuQPsSKMr1kSHb5XPXWTh71j7c651Jfgn8MjN+
+         2Z7fqsxxiUDxqXZmR1JKcklHyL/fRxiEwmBFuhoFbTx80aFsuQv/Hcmw/cPe1vFCbPGq
+         0/+OcnDctUlxFJIo4/dKmMsQ0tCjUWSMnkh5ktVvrAeNel6i6CTlXWljuu2XuwNQNUMf
+         qj9kycR0LDCTjwjnGFywYJeHpojg78VYvbz2G3qDt4JzTz+HSAyGKF+RSPEB3dcC442z
+         tqUw==
+X-Gm-Message-State: AGi0PuYNopWXLT6ByY1cHtPW/rk9zM77u6iwZG87ziiyT6WptWzevKCQ
+        iFGRkUwEbAOQ/tzQ8Ko9cb6ROpQi35k=
+X-Google-Smtp-Source: APiQypIVxS1ZIQaiYcUAl5sFUkEiZNgxETDeUp0tZtSJbCo+IbcMpby88HQvA+T3XfJ/ITLv9gzlmQ==
+X-Received: by 2002:a0c:e6c2:: with SMTP id l2mr363898qvn.91.1588633268281;
+        Mon, 04 May 2020 16:01:08 -0700 (PDT)
+Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
+        by smtp.gmail.com with ESMTPSA id f68sm441126qke.74.2020.05.04.16.01.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2020 09:57:36 -0700 (PDT)
-From:   Clay McClure <clay@daemons.net>
-Cc:     Clay McClure <clay@daemons.net>, Arnd Bergmann <arnd@arndb.de>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        kbuild test robot <lkp@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
+        Mon, 04 May 2020 16:01:07 -0700 (PDT)
+From:   Adam Ford <aford173@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     aford@beaconembedded.com, Adam Ford <aford173@gmail.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Santosh Shilimkar <santosh.shilimkar@oracle.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Jesper Dangaard Brouer <brouer@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH v2] net: ethernet: ti: Remove TI_CPTS_MOD workaround
-Date:   Mon,  4 May 2020 09:57:05 -0700
-Message-Id: <20200504165711.5621-1-clay@daemons.net>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <CAK8P3a1m-zmiTx0_KJb-9PTW0iK+Zkh10gKsaBzge0OJALBFmQ@mail.gmail.com>
-References: <CAK8P3a1m-zmiTx0_KJb-9PTW0iK+Zkh10gKsaBzge0OJALBFmQ@mail.gmail.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Paul Walmsley <paul@pwsan.com>,
+        Russell King <linux@armlinux.org.uk>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] ARM: dts: omap3: Migrate AES from hwmods to sysc-omap2
+Date:   Mon,  4 May 2020 18:01:00 -0500
+Message-Id: <20200504230100.181926-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-My recent commit b6d49cab44b5 ("net: Make PTP-specific drivers depend on PTP_1588_CLOCK")
-exposes a missing dependency in defconfigs that select TI_CPTS without
-selecting PTP_1588_CLOCK, leading to linker errors of the form:
+Various OMAP3 boards have two AES blocks, but only one is currently
+available, because the hwmods are only configured for one.
 
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_ndo_stop':
-cpsw.c:(.text+0x680): undefined reference to `cpts_unregister'
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_remove':
-cpsw.c:(.text+0x81c): undefined reference to `cpts_release'
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_rx_handler':
-cpsw.c:(.text+0x1324): undefined reference to `cpts_rx_timestamp'
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_ndo_open':
-cpsw.c:(.text+0x15ec): undefined reference to `cpts_register'
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_probe':
-cpsw.c:(.text+0x2468): undefined reference to `cpts_release'
+This patch migrates the hwmods for the AES engine to sysc-omap2
+which allows the second AES crypto engine to become available.
 
-That's because TI_CPTS_MOD (which is the symbol gating the _compilation_
-of cpts.c) now depends on PTP_1588_CLOCK, and so is not enabled in these
-configurations, but TI_CPTS (which is the symbol gating _calls_ to the
-cpts functions) _is_ enabled. So we end up compiling calls to functions
-that don't exist, resulting in the linker errors.
+  omap-aes 480a6000.aes1: OMAP AES hw accel rev: 2.6
+  omap-aes 480a6000.aes1: will run requests pump with realtime priority
+  omap-aes 480c5000.aes2: OMAP AES hw accel rev: 2.6
+  omap-aes 480c5000.aes2: will run requests pump with realtime priority
 
-The reason we have two symbols (TI_CPTS and TI_CPTS_MOD) for the same
-driver is due to commit be9ca0d33c85 ("cpsw/netcp: work around reverse
-cpts dependency"), which introduced TI_CPTS_MOD because (quoting the
-commit message):
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-> The dependency is reversed: cpsw and netcp call into cpts,
-> but cpts depends on the other two in Kconfig. This can lead
-> to cpts being a loadable module and its callers built-in:
->
-> drivers/net/ethernet/ti/cpsw.o: In function `cpsw_remove':
-> cpsw.c:(.text.cpsw_remove+0xd0): undefined reference to `cpts_release'
-> drivers/net/ethernet/ti/cpsw.o: In function `cpsw_rx_handler':
-> cpsw.c:(.text.cpsw_rx_handler+0x2dc): undefined reference to `cpts_rx_timestamp'
-> drivers/net/ethernet/ti/cpsw.o: In function `cpsw_tx_handler':
-> cpsw.c:(.text.cpsw_tx_handler+0x7c): undefined reference to `cpts_tx_timestamp'
-> drivers/net/ethernet/ti/cpsw.o: In function `cpsw_ndo_stop':
-
-Both forms of linker error -- those caused by defconfigs that select
-TI_CPTS without PTP_1588_CLOCK and those caused by configuring TI_CPSW
-as a built-in and TI_CPTS as a module -- can be avoided by using the
-IS_REACHABLE() macro to gate calls to cpts functions, and using the
-TI_CPTS symbol to gate compilation of cpts.c. cpts.h already provides
-the no-op stub implementations of the cpts functions required to make
-this work, we just need to change the existing IS_ENABLED(TI_CPTS)
-guards to IS_REACHABLE(TI_CPTS).
-
-With this change there is no longer any need for the TI_CPTS_MOD symbol,
-so we can remove it.
-
-To preserve the existing behavior of defconfigs that select TI_CPTS, we
-must also select PTP_1588_CLOCK so that the dependency is satisfied.
-
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Fixes: b6d49cab44b5 ("net: Make PTP-specific drivers depend on PTP_1588_CLOCK")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Clay McClure <clay@daemons.net>
----
-Changes in v2:
-
-- Don't regenerate the defconfigs, just add PTP_1588_CLOCK.
-
- arch/arm/configs/keystone_defconfig    |  1 +
- arch/arm/configs/omap2plus_defconfig   |  1 +
- drivers/net/ethernet/ti/Kconfig        | 13 ++++---------
- drivers/net/ethernet/ti/Makefile       |  2 +-
- drivers/net/ethernet/ti/cpsw_ethtool.c |  2 +-
- drivers/net/ethernet/ti/cpts.h         |  3 +--
- drivers/net/ethernet/ti/netcp_ethss.c  | 10 +++++-----
- 7 files changed, 14 insertions(+), 18 deletions(-)
-
-diff --git a/arch/arm/configs/keystone_defconfig b/arch/arm/configs/keystone_defconfig
-index 11e2211f9007..84a3b055f253 100644
---- a/arch/arm/configs/keystone_defconfig
-+++ b/arch/arm/configs/keystone_defconfig
-@@ -147,6 +147,7 @@ CONFIG_I2C_DAVINCI=y
- CONFIG_SPI=y
- CONFIG_SPI_DAVINCI=y
- CONFIG_SPI_SPIDEV=y
-+CONFIG_PTP_1588_CLOCK=y
- CONFIG_PINCTRL_SINGLE=y
- CONFIG_GPIOLIB=y
- CONFIG_GPIO_SYSFS=y
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 3cc3ca5fa027..8b83d4a5d309 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -274,6 +274,7 @@ CONFIG_SPI_TI_QSPI=m
- CONFIG_HSI=m
- CONFIG_OMAP_SSI=m
- CONFIG_SSI_PROTOCOL=m
-+CONFIG_PTP_1588_CLOCK=y
- CONFIG_PINCTRL_SINGLE=y
- CONFIG_DEBUG_GPIO=y
- CONFIG_GPIO_SYSFS=y
-diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
-index 8e348780efb6..f3f8bb724294 100644
---- a/drivers/net/ethernet/ti/Kconfig
-+++ b/drivers/net/ethernet/ti/Kconfig
-@@ -77,23 +77,18 @@ config TI_CPSW_SWITCHDEV
- 	  will be called cpsw_new.
+diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
+index adcdf88717a3..376628b32f77 100644
+--- a/arch/arm/boot/dts/omap3.dtsi
++++ b/arch/arm/boot/dts/omap3.dtsi
+@@ -157,13 +157,56 @@ omap3_pmx_wkup: pinmux@a00 {
+ 			};
+ 		};
  
- config TI_CPTS
--	bool "TI Common Platform Time Sync (CPTS) Support"
-+	tristate "TI Common Platform Time Sync (CPTS) Support"
- 	depends on TI_CPSW || TI_KEYSTONE_NETCP || TI_CPSW_SWITCHDEV || COMPILE_TEST
- 	depends on COMMON_CLK
--	depends on POSIX_TIMERS
-+	depends on PTP_1588_CLOCK
-+	default y if TI_CPSW=y || TI_KEYSTONE_NETCP=y || TI_CPSW_SWITCHDEV=y
-+	default m
- 	---help---
- 	  This driver supports the Common Platform Time Sync unit of
- 	  the CPSW Ethernet Switch and Keystone 2 1g/10g Switch Subsystem.
- 	  The unit can time stamp PTP UDP/IPv4 and Layer 2 packets, and the
- 	  driver offers a PTP Hardware Clock.
+-		aes: aes@480c5000 {
+-			compatible = "ti,omap3-aes";
+-			ti,hwmods = "aes";
+-			reg = <0x480c5000 0x50>;
+-			interrupts = <0>;
+-			dmas = <&sdma 65 &sdma 66>;
+-			dma-names = "tx", "rx";
++		aes1_target: target-module@480a6000 {
++			compatible = "ti,sysc-omap2", "ti,sysc";
++			reg = <0x480a6044 0x4>,
++			      <0x480a6048 0x4>,
++			      <0x480a604c 0x4>;
++			reg-names = "rev", "sysc", "syss";
++			ti,sysc-mask = <(SYSC_OMAP2_AUTOIDLE)>;
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ti,syss-mask = <1>;
++			clocks = <&aes1_ick>;
++			clock-names = "ick";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0 0x480a6000 0x2000>;
++
++			aes1: aes1@0 {
++				compatible = "ti,omap3-aes";
++				reg = <0 0x50>;
++				interrupts = <0>;
++				dmas = <&sdma 65 &sdma 66>;
++				dma-names = "tx", "rx";
++			};
++		};
++
++		aes2_target: target-module@480c5000 {
++			compatible = "ti,sysc-omap2", "ti,sysc";
++			reg = <0x480c5044 0x4>,
++			      <0x480c5048 0x4>,
++			      <0x480c504c 0x4>;
++			reg-names = "rev", "sysc", "syss";
++			ti,sysc-mask = <(SYSC_OMAP2_AUTOIDLE)>;
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ti,syss-mask = <1>;
++			clocks = <&aes2_ick>;
++			clock-names = "ick";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0 0x480c5000 0x2000>;
++
++			aes2: aes2@0 {
++				compatible = "ti,omap3-aes";
++				reg = <0 0x50>;
++				interrupts = <0>;
++				dmas = <&sdma 65 &sdma 66>;
++				dma-names = "tx", "rx";
++			};
+ 		};
  
--config TI_CPTS_MOD
--	tristate
--	depends on TI_CPTS
--	depends on PTP_1588_CLOCK
--	default y if TI_CPSW=y || TI_KEYSTONE_NETCP=y || TI_CPSW_SWITCHDEV=y
--	default m
+ 		prm: prm@48306000 {
+diff --git a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
+index ca02f91237e3..b6c7d98a9eff 100644
+--- a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
+@@ -2342,44 +2342,6 @@ static struct omap_hwmod_ocp_if omap3xxx_l4_core__sham = {
+ 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ };
+ 
+-/* l4_core -> AES */
+-static struct omap_hwmod_class_sysconfig omap3_aes_sysc = {
+-	.rev_offs	= 0x44,
+-	.sysc_offs	= 0x48,
+-	.syss_offs	= 0x4c,
+-	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET |
+-			   SYSC_HAS_AUTOIDLE | SYSS_HAS_RESET_STATUS),
+-	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+-	.sysc_fields	= &omap3xxx_aes_sysc_fields,
+-};
 -
- config TI_K3_AM65_CPSW_NUSS
- 	tristate "TI K3 AM654x/J721E CPSW Ethernet driver"
- 	depends on ARCH_K3 && OF && TI_K3_UDMA_GLUE_LAYER
-diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
-index 53792190e9c2..cb26a9d21869 100644
---- a/drivers/net/ethernet/ti/Makefile
-+++ b/drivers/net/ethernet/ti/Makefile
-@@ -13,7 +13,7 @@ obj-$(CONFIG_TI_DAVINCI_EMAC) += ti_davinci_emac.o
- ti_davinci_emac-y := davinci_emac.o davinci_cpdma.o
- obj-$(CONFIG_TI_DAVINCI_MDIO) += davinci_mdio.o
- obj-$(CONFIG_TI_CPSW_PHY_SEL) += cpsw-phy-sel.o
--obj-$(CONFIG_TI_CPTS_MOD) += cpts.o
-+obj-$(CONFIG_TI_CPTS) += cpts.o
- obj-$(CONFIG_TI_CPSW) += ti_cpsw.o
- ti_cpsw-y := cpsw.o davinci_cpdma.o cpsw_ale.o cpsw_priv.o cpsw_sl.o cpsw_ethtool.o
- obj-$(CONFIG_TI_CPSW_SWITCHDEV) += ti_cpsw_new.o
-diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/ti/cpsw_ethtool.c
-index fa54efe3be63..19a7370a4188 100644
---- a/drivers/net/ethernet/ti/cpsw_ethtool.c
-+++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
-@@ -709,7 +709,7 @@ int cpsw_set_ringparam(struct net_device *ndev,
- 	return ret;
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- int cpsw_get_ts_info(struct net_device *ndev, struct ethtool_ts_info *info)
- {
- 	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
-diff --git a/drivers/net/ethernet/ti/cpts.h b/drivers/net/ethernet/ti/cpts.h
-index bb997c11ee15..782e24c78e7a 100644
---- a/drivers/net/ethernet/ti/cpts.h
-+++ b/drivers/net/ethernet/ti/cpts.h
-@@ -8,7 +8,7 @@
- #ifndef _TI_CPTS_H_
- #define _TI_CPTS_H_
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- 
- #include <linux/clk.h>
- #include <linux/clkdev.h>
-@@ -171,5 +171,4 @@ static inline bool cpts_can_timestamp(struct cpts *cpts, struct sk_buff *skb)
- }
- #endif
- 
+-static struct omap_hwmod_class omap3xxx_aes_class = {
+-	.name	= "aes",
+-	.sysc	= &omap3_aes_sysc,
+-};
 -
- #endif
-diff --git a/drivers/net/ethernet/ti/netcp_ethss.c b/drivers/net/ethernet/ti/netcp_ethss.c
-index fb36115e9c51..3de1d25128b7 100644
---- a/drivers/net/ethernet/ti/netcp_ethss.c
-+++ b/drivers/net/ethernet/ti/netcp_ethss.c
-@@ -181,7 +181,7 @@
+-
+-static struct omap_hwmod omap3xxx_aes_hwmod = {
+-	.name		= "aes",
+-	.main_clk	= "aes2_ick",
+-	.prcm		= {
+-		.omap2 = {
+-			.module_offs = CORE_MOD,
+-			.idlest_reg_id = 1,
+-			.idlest_idle_bit = OMAP3430_ST_AES2_SHIFT,
+-		},
+-	},
+-	.class		= &omap3xxx_aes_class,
+-};
+-
+-
+-static struct omap_hwmod_ocp_if omap3xxx_l4_core__aes = {
+-	.master		= &omap3xxx_l4_core_hwmod,
+-	.slave		= &omap3xxx_aes_hwmod,
+-	.clk		= "aes2_ick",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+ /*
+  * 'ssi' class
+  * synchronous serial interface (multichannel and full-duplex serial if)
+@@ -2473,20 +2435,11 @@ static struct omap_hwmod_ocp_if *omap34xx_sham_hwmod_ocp_ifs[] __initdata = {
+ 	NULL,
+ };
  
- #define HOST_TX_PRI_MAP_DEFAULT			0x00000000
+-static struct omap_hwmod_ocp_if *omap34xx_aes_hwmod_ocp_ifs[] __initdata = {
+-	&omap3xxx_l4_core__aes,
+-	NULL,
+-};
+-
+ static struct omap_hwmod_ocp_if *omap36xx_sham_hwmod_ocp_ifs[] __initdata = {
+ 	&omap3xxx_l4_core__sham,
+ 	NULL
+ };
  
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- /* Px_TS_CTL register fields */
- #define TS_RX_ANX_F_EN				BIT(0)
- #define TS_RX_VLAN_LT1_EN			BIT(1)
-@@ -2000,7 +2000,7 @@ static int keystone_set_link_ksettings(struct net_device *ndev,
- 	return phy_ethtool_ksettings_set(phy, cmd);
- }
+-static struct omap_hwmod_ocp_if *omap36xx_aes_hwmod_ocp_ifs[] __initdata = {
+-	&omap3xxx_l4_core__aes,
+-	NULL
+-};
  
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- static int keystone_get_ts_info(struct net_device *ndev,
- 				struct ethtool_ts_info *info)
+ /*
+  * Apparently the SHA/MD5 and AES accelerator IP blocks are
+@@ -2501,11 +2454,6 @@ static struct omap_hwmod_ocp_if *am35xx_sham_hwmod_ocp_ifs[] __initdata = {
+ 	NULL
+ };
+ 
+-static struct omap_hwmod_ocp_if *am35xx_aes_hwmod_ocp_ifs[] __initdata = {
+-	/* &omap3xxx_l4_core__aes, */
+-	NULL,
+-};
+-
+ /* 3430ES1-only hwmod links */
+ static struct omap_hwmod_ocp_if *omap3430es1_hwmod_ocp_ifs[] __initdata = {
+ 	&omap3430es1_dss__l3,
+@@ -2641,7 +2589,6 @@ int __init omap3xxx_hwmod_init(void)
  {
-@@ -2532,7 +2532,7 @@ static int gbe_del_vid(void *intf_priv, int vid)
- 	return 0;
- }
+ 	int r;
+ 	struct omap_hwmod_ocp_if **h = NULL, **h_sham = NULL;
+-	struct omap_hwmod_ocp_if **h_aes = NULL;
+ 	struct device_node *bus;
+ 	unsigned int rev;
  
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- 
- static void gbe_txtstamp(void *context, struct sk_buff *skb)
- {
-@@ -2977,7 +2977,7 @@ static int gbe_close(void *intf_priv, struct net_device *ndev)
- 	return 0;
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- static void init_slave_ts_ctl(struct gbe_slave *slave)
- {
- 	slave->ts_ctl.uni = 1;
-@@ -3718,7 +3718,7 @@ static int gbe_probe(struct netcp_device *netcp_device, struct device *dev,
- 
- 	gbe_dev->cpts = cpts_create(gbe_dev->dev, gbe_dev->cpts_reg, cpts_node);
- 	of_node_put(cpts_node);
--	if (IS_ENABLED(CONFIG_TI_CPTS) && IS_ERR(gbe_dev->cpts)) {
-+	if (IS_REACHABLE(CONFIG_TI_CPTS) && IS_ERR(gbe_dev->cpts)) {
- 		ret = PTR_ERR(gbe_dev->cpts);
- 		goto free_sec_ports;
+@@ -2664,16 +2611,13 @@ int __init omap3xxx_hwmod_init(void)
+ 	    rev == OMAP3430_REV_ES3_1 || rev == OMAP3430_REV_ES3_1_2) {
+ 		h = omap34xx_hwmod_ocp_ifs;
+ 		h_sham = omap34xx_sham_hwmod_ocp_ifs;
+-		h_aes = omap34xx_aes_hwmod_ocp_ifs;
+ 	} else if (rev == AM35XX_REV_ES1_0 || rev == AM35XX_REV_ES1_1) {
+ 		h = am35xx_hwmod_ocp_ifs;
+ 		h_sham = am35xx_sham_hwmod_ocp_ifs;
+-		h_aes = am35xx_aes_hwmod_ocp_ifs;
+ 	} else if (rev == OMAP3630_REV_ES1_0 || rev == OMAP3630_REV_ES1_1 ||
+ 		   rev == OMAP3630_REV_ES1_2) {
+ 		h = omap36xx_hwmod_ocp_ifs;
+ 		h_sham = omap36xx_sham_hwmod_ocp_ifs;
+-		h_aes = omap36xx_aes_hwmod_ocp_ifs;
+ 	} else {
+ 		WARN(1, "OMAP3 hwmod family init: unknown chip type\n");
+ 		return -EINVAL;
+@@ -2696,11 +2640,6 @@ int __init omap3xxx_hwmod_init(void)
+ 			goto put_node;
  	}
+ 
+-	if (h_aes && omap3xxx_hwmod_is_hs_ip_block_usable(bus, "aes")) {
+-		r = omap_hwmod_register_links(h_aes);
+-		if (r < 0)
+-			goto put_node;
+-	}
+ 	of_node_put(bus);
+ 
+ 	/*
 -- 
-2.20.1
+2.25.1
 
