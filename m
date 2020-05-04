@@ -2,272 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04B3A1C49F7
-	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 01:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D3AF1C4A08
+	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 01:06:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728080AbgEDXBK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 May 2020 19:01:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47578 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728059AbgEDXBJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 May 2020 19:01:09 -0400
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC218C061A0E;
-        Mon,  4 May 2020 16:01:09 -0700 (PDT)
-Received: by mail-qv1-xf43.google.com with SMTP id di6so106514qvb.10;
-        Mon, 04 May 2020 16:01:09 -0700 (PDT)
+        id S1728145AbgEDXG0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 4 May 2020 19:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48398 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728059AbgEDXGZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 May 2020 19:06:25 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAE2C061A0E
+        for <linux-omap@vger.kernel.org>; Mon,  4 May 2020 16:06:25 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id u11so7083iow.4
+        for <linux-omap@vger.kernel.org>; Mon, 04 May 2020 16:06:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Sr2MDEt6KTuLtYqratJ8mWzr8mlifnfhPq/CL0zWop0=;
-        b=FlwWcvg9JATvZF1AiaebjBtK/ym7D4Bog8N4mqTbq6ShO/0lbBn9K8SPEP1uiYhlId
-         k2XGfSPfPLsj+L/YUoI10NK+dgGXf/dSgsG39BgaGr3wNgMW75olQbUG2PTI+S3FIDxt
-         yfU277GFGAMw0aMOlSwIqjnql1nEohR/wHT+JZrSHx/HhqiSsRCWGNKLtRyelECFqR+Q
-         t9Kkd1AEjzHUan37m6F9A7H44bVkXil37Y/C7BswLzbJ7ea18mP+yc1l1TnrEIgiGW5P
-         0OKmfjcU62lPY4FRqfb/jOHGOjjcs/BG3nremQITg/ggc2wgRJIydWpZHwY55wbpVn2f
-         oFeA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SfliJx0XK3RBAh4vp7iwJ1c/P5LHIy8aB9zeHF+04PY=;
+        b=G3xqRdeMR8CYXHe+UrG4d8a//dHAi+BbEnGGyo3GN75M454MGMSgxtGgPoxr8pMvg3
+         fgxJpj+Pn3W5IY+GZcS7ynh4Wc6dxrM1OEr3KXgRUTSFbUwEh7oW2HZYtIfU0AMe5A9x
+         Wq3dbQTXYigHBNaNlE13aZTjJB3zY6biagX+ZCndprJJ7HdVjGqm6uekWnTbfbMAb1OO
+         qH24X70xVIl4UHDoQk/EgQd7XLPtnWsEzIRazbI8xlDXwukipgjGSBueMnqXKgUe1L1A
+         /u5awcrgo0rJcps9me8dKxdfN9A22qQHMQy0rE1LrQT4Biuey+tfu4IZqBCbKVEIpYBr
+         Gjng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Sr2MDEt6KTuLtYqratJ8mWzr8mlifnfhPq/CL0zWop0=;
-        b=DtfHFFstCB+d0GKL31kU6fvFRc5pA5hZ0BJgrAAD2KtAmw2bnM5NbwwEkcgzK8CPDE
-         VZVKMk0DFb94+Ch+boGH20A8RSXV4jJuQPsSKMr1kSHb5XPXWTh71j7c651Jfgn8MjN+
-         2Z7fqsxxiUDxqXZmR1JKcklHyL/fRxiEwmBFuhoFbTx80aFsuQv/Hcmw/cPe1vFCbPGq
-         0/+OcnDctUlxFJIo4/dKmMsQ0tCjUWSMnkh5ktVvrAeNel6i6CTlXWljuu2XuwNQNUMf
-         qj9kycR0LDCTjwjnGFywYJeHpojg78VYvbz2G3qDt4JzTz+HSAyGKF+RSPEB3dcC442z
-         tqUw==
-X-Gm-Message-State: AGi0PuYNopWXLT6ByY1cHtPW/rk9zM77u6iwZG87ziiyT6WptWzevKCQ
-        iFGRkUwEbAOQ/tzQ8Ko9cb6ROpQi35k=
-X-Google-Smtp-Source: APiQypIVxS1ZIQaiYcUAl5sFUkEiZNgxETDeUp0tZtSJbCo+IbcMpby88HQvA+T3XfJ/ITLv9gzlmQ==
-X-Received: by 2002:a0c:e6c2:: with SMTP id l2mr363898qvn.91.1588633268281;
-        Mon, 04 May 2020 16:01:08 -0700 (PDT)
-Received: from localhost.localdomain (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id f68sm441126qke.74.2020.05.04.16.01.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2020 16:01:07 -0700 (PDT)
-From:   Adam Ford <aford173@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     aford@beaconembedded.com, Adam Ford <aford173@gmail.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Russell King <linux@armlinux.org.uk>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] ARM: dts: omap3: Migrate AES from hwmods to sysc-omap2
-Date:   Mon,  4 May 2020 18:01:00 -0500
-Message-Id: <20200504230100.181926-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SfliJx0XK3RBAh4vp7iwJ1c/P5LHIy8aB9zeHF+04PY=;
+        b=fNR6xJ9oGZbe3zqvLpErbOJdp6bfhOOzNhB8k3GhYCpJFZys6L2qopW6WFws/0EFS8
+         IWQ/4mgB86Ctn9wylN6EmGn5U//kko6o/GLIyCJkbX8wG4qS3BqcxWrMungurtvyDoow
+         pJExbLPDXmZvFVbw2mwMNNU1vmLTEFAD0qFzbgwsnzFDXNsgUq7Q8Dk9I4WSrnkoh6CA
+         jHKXBAzEaERw16jOMNmeNFTjJTSGAojn8SHsbbvJ2hHwv9X6wRPFPGVEoWKjtekkTIZS
+         Xw0JfTpys6i8LSp9KDPtYyx3KYARkFHMgEqYVkJ5/h9xgGbMhAcxtUzvku5wfVK9LNBa
+         BxIA==
+X-Gm-Message-State: AGi0PuZlNJHrxd/LiwIS1WTx8RaEa5uLcx129uJaTCBI+lM9B5Coeh1t
+        Q3npV6K4tqr9SSFXnF30+gkse1KhHa9ttvFzIVw=
+X-Google-Smtp-Source: APiQypLxfQNY+aAEO909mS34VMrVEv37jUYP5GE9GXIVEaxH66DYLgvobiHuDtuKDVmkCUMH3dsjYCF0o/26csS214M=
+X-Received: by 2002:a05:6638:ece:: with SMTP id q14mr760166jas.65.1588633584839;
+ Mon, 04 May 2020 16:06:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAHCN7xKe6DbNtjWzvXWFO4KMkvmmyaDDFnDWuMOKXi7B5CwJvA@mail.gmail.com>
+ <7b4ffe96-7d97-81c1-629f-af56018b84ae@ti.com> <20200504150649.GI37466@atomide.com>
+In-Reply-To: <20200504150649.GI37466@atomide.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Mon, 4 May 2020 18:06:14 -0500
+Message-ID: <CAHCN7xJKhtsTBnY6HS=M_TdpJuSvkCzy8yRVijE73rkUrx7p=Q@mail.gmail.com>
+Subject: Re: OMAP36 AES and SHA addresses and hwmods
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Tero Kristo <t-kristo@ti.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Various OMAP3 boards have two AES blocks, but only one is currently
-available, because the hwmods are only configured for one.
+On Mon, May 4, 2020 at 10:06 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> * Tero Kristo <t-kristo@ti.com> [200504 06:29]:
+> > On 03/05/2020 18:48, Adam Ford wrote:
+> > > According to the dm3730 reference manual, there are supposed to be two
+> > > AES and SHA engines, but the addresses of their IP doesn't appear in
+> > > the reference manual.
+> > >
+> > > The AM35xx has references to two memory locations for each:
+> > >
+> > >     AES1 shows it's at 0x480A 6000
+> > >     AES2 shows is 0x480C 5000 (matches omap3630 entry)
+> > >
+> > >     SHA1MD5 2 shows it's at 480c 3000 (matches omap3630 entry)
+> > >     SHA2MD5 shows it's at 0x480A 4000
+> > >
+> > > Is it reasonable to think the other IP block addresses for the
+> > > am3630/dm3730 would match the am35xx?
+> > >
+> > > Currently in the OMAP3630, there are hwmods setup for AES and SHA
+> > > engines, but the rng uses the newer approach with ti,sysc and
+> > > sysc-omap2.
+> > >
+> > > I tried to just copy the existing blocks to the other addresses, but I
+> > > got some errors. I assume it's due to hwmods.  It seems like we should
+> > > be able to convert the hwmods out, and add the additional addresses
+> > > for the omap36, but before I go too far, I want to know if it'll even
+> > > be possible.
+> >
+> > All omap3 family should share identical address space for these IPs.
+>
+> For configuring the accelerators, the dts entries needed should be
+> very similar to the other SoCs. AFAIK, there are no "ti,sysc-omap4"
+> compatible devices for omap3 though, and they should be configured
+> as "ti,sysc-omap2". I could be wrong though, but this can be seen
+> from the module revision register.
+>
+> For omap3, you need to specify both "fck" and "ick" for the ti-sysc
+> config. Not sure what's up with the multiple addresses or instance,
+> it's best to check what works.
 
-This patch migrates the hwmods for the AES engine to sysc-omap2
-which allows the second AES crypto engine to become available.
+I wasn't seeing both clocks, but I was able to migrate the AES from
+hwmods by referencing aes2_ick and aes1_ick.
 
-  omap-aes 480a6000.aes1: OMAP AES hw accel rev: 2.6
-  omap-aes 480a6000.aes1: will run requests pump with realtime priority
-  omap-aes 480c5000.aes2: OMAP AES hw accel rev: 2.6
-  omap-aes 480c5000.aes2: will run requests pump with realtime priority
+[    8.002349] omap-aes 480a6000.aes1: OMAP AES hw accel rev: 2.6
+[    8.066375] omap-aes 480a6000.aes1: will run requests pump with
+realtime priority
+[    8.425506] omap-aes 480c5000.aes2: OMAP AES hw accel rev: 2.6
+[    8.492614] omap-aes 480c5000.aes2: will run requests pump with
+realtime priority
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
+Feel free to reject if you think I missed something.  I will admit
+that I am not fully understanding the migration path, but I used the
+RNG stuff you did to help.
 
-diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
-index adcdf88717a3..376628b32f77 100644
---- a/arch/arm/boot/dts/omap3.dtsi
-+++ b/arch/arm/boot/dts/omap3.dtsi
-@@ -157,13 +157,56 @@ omap3_pmx_wkup: pinmux@a00 {
- 			};
- 		};
- 
--		aes: aes@480c5000 {
--			compatible = "ti,omap3-aes";
--			ti,hwmods = "aes";
--			reg = <0x480c5000 0x50>;
--			interrupts = <0>;
--			dmas = <&sdma 65 &sdma 66>;
--			dma-names = "tx", "rx";
-+		aes1_target: target-module@480a6000 {
-+			compatible = "ti,sysc-omap2", "ti,sysc";
-+			reg = <0x480a6044 0x4>,
-+			      <0x480a6048 0x4>,
-+			      <0x480a604c 0x4>;
-+			reg-names = "rev", "sysc", "syss";
-+			ti,sysc-mask = <(SYSC_OMAP2_AUTOIDLE)>;
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>;
-+			ti,syss-mask = <1>;
-+			clocks = <&aes1_ick>;
-+			clock-names = "ick";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0x480a6000 0x2000>;
-+
-+			aes1: aes1@0 {
-+				compatible = "ti,omap3-aes";
-+				reg = <0 0x50>;
-+				interrupts = <0>;
-+				dmas = <&sdma 65 &sdma 66>;
-+				dma-names = "tx", "rx";
-+			};
-+		};
-+
-+		aes2_target: target-module@480c5000 {
-+			compatible = "ti,sysc-omap2", "ti,sysc";
-+			reg = <0x480c5044 0x4>,
-+			      <0x480c5048 0x4>,
-+			      <0x480c504c 0x4>;
-+			reg-names = "rev", "sysc", "syss";
-+			ti,sysc-mask = <(SYSC_OMAP2_AUTOIDLE)>;
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>;
-+			ti,syss-mask = <1>;
-+			clocks = <&aes2_ick>;
-+			clock-names = "ick";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0x480c5000 0x2000>;
-+
-+			aes2: aes2@0 {
-+				compatible = "ti,omap3-aes";
-+				reg = <0 0x50>;
-+				interrupts = <0>;
-+				dmas = <&sdma 65 &sdma 66>;
-+				dma-names = "tx", "rx";
-+			};
- 		};
- 
- 		prm: prm@48306000 {
-diff --git a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
-index ca02f91237e3..b6c7d98a9eff 100644
---- a/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_3xxx_data.c
-@@ -2342,44 +2342,6 @@ static struct omap_hwmod_ocp_if omap3xxx_l4_core__sham = {
- 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
- };
- 
--/* l4_core -> AES */
--static struct omap_hwmod_class_sysconfig omap3_aes_sysc = {
--	.rev_offs	= 0x44,
--	.sysc_offs	= 0x48,
--	.syss_offs	= 0x4c,
--	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET |
--			   SYSC_HAS_AUTOIDLE | SYSS_HAS_RESET_STATUS),
--	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
--	.sysc_fields	= &omap3xxx_aes_sysc_fields,
--};
--
--static struct omap_hwmod_class omap3xxx_aes_class = {
--	.name	= "aes",
--	.sysc	= &omap3_aes_sysc,
--};
--
--
--static struct omap_hwmod omap3xxx_aes_hwmod = {
--	.name		= "aes",
--	.main_clk	= "aes2_ick",
--	.prcm		= {
--		.omap2 = {
--			.module_offs = CORE_MOD,
--			.idlest_reg_id = 1,
--			.idlest_idle_bit = OMAP3430_ST_AES2_SHIFT,
--		},
--	},
--	.class		= &omap3xxx_aes_class,
--};
--
--
--static struct omap_hwmod_ocp_if omap3xxx_l4_core__aes = {
--	.master		= &omap3xxx_l4_core_hwmod,
--	.slave		= &omap3xxx_aes_hwmod,
--	.clk		= "aes2_ick",
--	.user		= OCP_USER_MPU | OCP_USER_SDMA,
--};
--
- /*
-  * 'ssi' class
-  * synchronous serial interface (multichannel and full-duplex serial if)
-@@ -2473,20 +2435,11 @@ static struct omap_hwmod_ocp_if *omap34xx_sham_hwmod_ocp_ifs[] __initdata = {
- 	NULL,
- };
- 
--static struct omap_hwmod_ocp_if *omap34xx_aes_hwmod_ocp_ifs[] __initdata = {
--	&omap3xxx_l4_core__aes,
--	NULL,
--};
--
- static struct omap_hwmod_ocp_if *omap36xx_sham_hwmod_ocp_ifs[] __initdata = {
- 	&omap3xxx_l4_core__sham,
- 	NULL
- };
- 
--static struct omap_hwmod_ocp_if *omap36xx_aes_hwmod_ocp_ifs[] __initdata = {
--	&omap3xxx_l4_core__aes,
--	NULL
--};
- 
- /*
-  * Apparently the SHA/MD5 and AES accelerator IP blocks are
-@@ -2501,11 +2454,6 @@ static struct omap_hwmod_ocp_if *am35xx_sham_hwmod_ocp_ifs[] __initdata = {
- 	NULL
- };
- 
--static struct omap_hwmod_ocp_if *am35xx_aes_hwmod_ocp_ifs[] __initdata = {
--	/* &omap3xxx_l4_core__aes, */
--	NULL,
--};
--
- /* 3430ES1-only hwmod links */
- static struct omap_hwmod_ocp_if *omap3430es1_hwmod_ocp_ifs[] __initdata = {
- 	&omap3430es1_dss__l3,
-@@ -2641,7 +2589,6 @@ int __init omap3xxx_hwmod_init(void)
- {
- 	int r;
- 	struct omap_hwmod_ocp_if **h = NULL, **h_sham = NULL;
--	struct omap_hwmod_ocp_if **h_aes = NULL;
- 	struct device_node *bus;
- 	unsigned int rev;
- 
-@@ -2664,16 +2611,13 @@ int __init omap3xxx_hwmod_init(void)
- 	    rev == OMAP3430_REV_ES3_1 || rev == OMAP3430_REV_ES3_1_2) {
- 		h = omap34xx_hwmod_ocp_ifs;
- 		h_sham = omap34xx_sham_hwmod_ocp_ifs;
--		h_aes = omap34xx_aes_hwmod_ocp_ifs;
- 	} else if (rev == AM35XX_REV_ES1_0 || rev == AM35XX_REV_ES1_1) {
- 		h = am35xx_hwmod_ocp_ifs;
- 		h_sham = am35xx_sham_hwmod_ocp_ifs;
--		h_aes = am35xx_aes_hwmod_ocp_ifs;
- 	} else if (rev == OMAP3630_REV_ES1_0 || rev == OMAP3630_REV_ES1_1 ||
- 		   rev == OMAP3630_REV_ES1_2) {
- 		h = omap36xx_hwmod_ocp_ifs;
- 		h_sham = omap36xx_sham_hwmod_ocp_ifs;
--		h_aes = omap36xx_aes_hwmod_ocp_ifs;
- 	} else {
- 		WARN(1, "OMAP3 hwmod family init: unknown chip type\n");
- 		return -EINVAL;
-@@ -2696,11 +2640,6 @@ int __init omap3xxx_hwmod_init(void)
- 			goto put_node;
- 	}
- 
--	if (h_aes && omap3xxx_hwmod_is_hs_ip_block_usable(bus, "aes")) {
--		r = omap_hwmod_register_links(h_aes);
--		if (r < 0)
--			goto put_node;
--	}
- 	of_node_put(bus);
- 
- 	/*
--- 
-2.25.1
+If / when this gets accepted, I'll do the same for the SHA engine, but
+I wanted to start with one first, before moving on.
 
+Tony - Is there value in doing the migration to other areas (like GPIO) as well?
+
+adam
+>
+> Regards,
+>
+> Tony
