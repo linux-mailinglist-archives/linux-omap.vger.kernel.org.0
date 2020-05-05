@@ -2,62 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4AB41C5FA0
-	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 20:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 294731C5FD6
+	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 20:14:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730636AbgEESHj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 May 2020 14:07:39 -0400
-Received: from muru.com ([72.249.23.125]:52916 "EHLO muru.com"
+        id S1730715AbgEESOb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 May 2020 14:14:31 -0400
+Received: from muru.com ([72.249.23.125]:52924 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729315AbgEESHj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 5 May 2020 14:07:39 -0400
+        id S1729315AbgEESOa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 5 May 2020 14:14:30 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id C3AD880A5;
-        Tue,  5 May 2020 18:08:26 +0000 (UTC)
-Date:   Tue, 5 May 2020 11:07:34 -0700
+        by muru.com (Postfix) with ESMTPS id 7F93F80A5;
+        Tue,  5 May 2020 18:15:19 +0000 (UTC)
+Date:   Tue, 5 May 2020 11:14:28 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Lokesh Vutla <lokeshvutla@ti.com>
-Cc:     daniel.lezcano@linaro.org, Tero Kristo <t-kristo@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>, Suman Anna <s-anna@ti.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Do one override clock
- parent in prepare()
-Message-ID: <20200505180734.GN37466@atomide.com>
-References: <20200427172831.16546-1-lokeshvutla@ti.com>
- <20200428182209.GT37466@atomide.com>
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     linux-omap@vger.kernel.org, s-anna@ti.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 00/17] ARM: dts: dra7/am57xx: remoteproc support
+Message-ID: <20200505181428.GO37466@atomide.com>
+References: <20200424151244.3225-1-t-kristo@ti.com>
+ <20200424155128.GK37466@atomide.com>
+ <5f8d4dbb-f4fc-ee97-8542-610e98d3f895@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200428182209.GT37466@atomide.com>
+In-Reply-To: <5f8d4dbb-f4fc-ee97-8542-610e98d3f895@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [200428 18:23]:
-> * Lokesh Vutla <lokeshvutla@ti.com> [200427 17:29]:
-> > omap_dm_timer_prepare() is setting up the parent 32KHz clock. This
-> > prepare() gets called by request_timer in the client's driver. Because of
-> > this, the timer clock parent that is set with assigned-clock-parent is being
-> > overwritten. So drop this default setting of parent in prepare().
+* Tero Kristo <t-kristo@ti.com> [200424 15:55]:
+> On 24/04/2020 18:51, Tony Lindgren wrote:
+> > * Tero Kristo <t-kristo@ti.com> [200424 08:13]:
+> > > Hi Tony,
+> > > 
+> > > This series adds the DT nodes necessary for remoteproc support, now that
+> > > the driver side changes are (mostly) in. Couple of things to note
+> > > though.
+> > > 
+> > > 1) There is a new IOMMU issue, for which I posted a fix today [1]
+> > > 2) The remoteproc core still has an issue for which there is ongoing
+> > >     discussion [2]
+> > > 
+> > > With these two issue taken care of, the omap remoteproc support is
+> > > functional. The question though is, whether we should just wait until
+> > > the above two issues are resolved and merge the DT patches post that, or
+> > > merge the DT patches with status = "disabled".
 > > 
-> > Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+> > If there are no dependencies between the pending driver fixes and
+> > the dts changes I see no reason to not merge the dts changes.
 > 
-> This works just fine for me but depends on the dts changes.
-> 
-> Daniel, for merging, do you want to set up an immutable branch
-> for the related dts change and this? I'm afraid it will conflict
-> with the related systimer changes for the dts otherwise.
+> Yeah, no hard dependencies as such, just that things won't work properly
+> before they are in.
 
-So I've pushed out an immutable branch for the dts changes
-this patch depends on against v5.7-rc1 as omap-for-v5.8/dt-timer
-[0][1].
+Applying these all into omap-for-v5.8/dt thanks.
 
-Daniel feel free to merge it in to apply this clocksource patch if
-no more comments:
-
-Acked-by: Tony Lindgren <tony@atomide.com>
-
-[0] git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git omap-for-v5.8/dt-timer
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git/log/?h=omap-for-v5.8/dt-timer
+Tony
