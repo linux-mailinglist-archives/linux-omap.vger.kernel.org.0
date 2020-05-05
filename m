@@ -2,78 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F7801C4F8A
-	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 09:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B990A1C53B9
+	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 12:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728453AbgEEHrO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 May 2020 03:47:14 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:58710 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725833AbgEEHrO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 5 May 2020 03:47:14 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id F2146D734242C58E3C61;
-        Tue,  5 May 2020 15:47:10 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Tue, 5 May 2020
- 15:47:01 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <grygorii.strashko@ti.com>, <davem@davemloft.net>,
-        <ast@kernel.org>, <daniel@iogearbox.net>, <kuba@kernel.org>,
-        <hawk@kernel.org>, <john.fastabend@gmail.com>, <kafai@fb.com>,
-        <songliubraving@fb.com>, <yhs@fb.com>, <andriin@fb.com>,
-        <kpsingh@chromium.org>, <linux-omap@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <bpf@vger.kernel.org>
-CC:     Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH net-next] net: ethernet: ti: use true,false for bool variables in cpsw_new.c
-Date:   Tue, 5 May 2020 15:46:23 +0800
-Message-ID: <20200505074623.22541-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.21.1
+        id S1728678AbgEEKye (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 May 2020 06:54:34 -0400
+Received: from foss.arm.com ([217.140.110.172]:37068 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728180AbgEEKye (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 5 May 2020 06:54:34 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2470430E;
+        Tue,  5 May 2020 03:54:33 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E221B3F305;
+        Tue,  5 May 2020 03:54:31 -0700 (PDT)
+Date:   Tue, 5 May 2020 11:54:29 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next  v2] PCI: dwc: pci-dra7xx: use
+ devm_platform_ioremap_resource_byname()
+Message-ID: <20200505105429.GB13446@e121166-lin.cambridge.arm.com>
+References: <20200427111044.162618-1-weiyongjun1@huawei.com>
+ <20200429015027.134485-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200429015027.134485-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix the following coccicheck warning:
+On Wed, Apr 29, 2020 at 01:50:27AM +0000, Wei Yongjun wrote:
+> platform_get_resource() may fail and return NULL, so we should better
+> check it's return value to avoid a NULL pointer dereference a bit later
+> in the code. Fix it to use devm_platform_ioremap_resource_byname()
+> instead of calling platform_get_resource_byname() and devm_ioremap().
+> 
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+> v1 -> v2: use devm_platform_ioremap_resource_byname, suggest by Vignesh
+> ---
+>  drivers/pci/controller/dwc/pci-dra7xx.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
 
-drivers/net/ethernet/ti/cpsw_new.c:1924:2-17: WARNING: Assignment of
-0/1 to bool variable
-drivers/net/ethernet/ti/cpsw_new.c:1231:1-16: WARNING: Assignment of
-0/1 to bool variable
+Applied to pci/dwc, thanks.
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
----
- drivers/net/ethernet/ti/cpsw_new.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Lorenzo
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 33c8dd686206..dce49311d3d3 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1228,7 +1228,7 @@ static int cpsw_probe_dt(struct cpsw_common *cpsw)
- 	data->active_slave = 0;
- 	data->channels = CPSW_MAX_QUEUES;
- 	data->ale_entries = CPSW_ALE_NUM_ENTRIES;
--	data->dual_emac = 1;
-+	data->dual_emac = true;
- 	data->bd_ram_size = CPSW_BD_RAM_SIZE;
- 	data->mac_control = 0;
- 
-@@ -1921,7 +1921,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- 	soc = soc_device_match(cpsw_soc_devices);
- 	if (soc)
--		cpsw->quirk_irq = 1;
-+		cpsw->quirk_irq = true;
- 
- 	cpsw->rx_packet_max = rx_packet_max;
- 	cpsw->descs_pool_size = descs_pool_size;
--- 
-2.21.1
-
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 3b0e58f2de58..6184ebc9392d 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -840,7 +840,6 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+>  	struct phy **phy;
+>  	struct device_link **link;
+>  	void __iomem *base;
+> -	struct resource *res;
+>  	struct dw_pcie *pci;
+>  	struct dra7xx_pcie *dra7xx;
+>  	struct device *dev = &pdev->dev;
+> @@ -877,10 +876,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+>  		return irq;
+>  	}
+>  
+> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
+> -	base = devm_ioremap(dev, res->start, resource_size(res));
+> -	if (!base)
+> -		return -ENOMEM;
+> +	base = devm_platform_ioremap_resource_byname(pdev, "ti_conf");
+> +	if (IS_ERR(base))
+> +		return PTR_ERR(base);
+>  
+>  	phy_count = of_property_count_strings(np, "phy-names");
+>  	if (phy_count < 0) {
+> 
+> 
+> 
