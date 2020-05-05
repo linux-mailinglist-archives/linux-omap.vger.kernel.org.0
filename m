@@ -2,61 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 294731C5FD6
-	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 20:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C94F1C5FF7
+	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 20:21:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730715AbgEESOb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 May 2020 14:14:31 -0400
-Received: from muru.com ([72.249.23.125]:52924 "EHLO muru.com"
+        id S1730862AbgEESVJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 May 2020 14:21:09 -0400
+Received: from muru.com ([72.249.23.125]:52936 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729315AbgEESOa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 5 May 2020 14:14:30 -0400
+        id S1730258AbgEESVJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 5 May 2020 14:21:09 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7F93F80A5;
-        Tue,  5 May 2020 18:15:19 +0000 (UTC)
-Date:   Tue, 5 May 2020 11:14:28 -0700
+        by muru.com (Postfix) with ESMTPS id A47D580A5;
+        Tue,  5 May 2020 18:21:57 +0000 (UTC)
+Date:   Tue, 5 May 2020 11:21:06 -0700
 From:   Tony Lindgren <tony@atomide.com>
 To:     Tero Kristo <t-kristo@ti.com>
-Cc:     linux-omap@vger.kernel.org, s-anna@ti.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 00/17] ARM: dts: dra7/am57xx: remoteproc support
-Message-ID: <20200505181428.GO37466@atomide.com>
-References: <20200424151244.3225-1-t-kristo@ti.com>
- <20200424155128.GK37466@atomide.com>
- <5f8d4dbb-f4fc-ee97-8542-610e98d3f895@ti.com>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/8] ARM: dts: omap4: fix node names for the l4_cm
+ clkctrl nodes
+Message-ID: <20200505182106.GP37466@atomide.com>
+References: <20200429143002.5050-1-t-kristo@ti.com>
+ <20200429143002.5050-2-t-kristo@ti.com>
+ <20200429220714.GV37466@atomide.com>
+ <fef91f43-df5f-99e4-7861-05190fcc2040@ti.com>
+ <cb563fb2-4909-a11a-d167-a5e982f38968@ti.com>
+ <20200430202538.GZ37466@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5f8d4dbb-f4fc-ee97-8542-610e98d3f895@ti.com>
+In-Reply-To: <20200430202538.GZ37466@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tero Kristo <t-kristo@ti.com> [200424 15:55]:
-> On 24/04/2020 18:51, Tony Lindgren wrote:
-> > * Tero Kristo <t-kristo@ti.com> [200424 08:13]:
-> > > Hi Tony,
+* Tony Lindgren <tony@atomide.com> [200430 20:26]:
+> * Tero Kristo <t-kristo@ti.com> [200430 08:35]:
+> > On 30/04/2020 07:55, Tero Kristo wrote:
+> > > On 30/04/2020 01:07, Tony Lindgren wrote:
+> > > > Heh this is no longer needed since commit 6c3090520554
+> > > > ("clk: ti: clkctrl: Fix hidden dependency to node name")
+> > > > that added support for using the compatible name :)
+> > > > 
+> > > > Maybe you are using some older tree? Or else there's
+> > > > still something wrong somewhere.
 > > > 
-> > > This series adds the DT nodes necessary for remoteproc support, now that
-> > > the driver side changes are (mostly) in. Couple of things to note
-> > > though.
+> > > I was using 5.7-rc1 as baseline so can't be that.
 > > > 
-> > > 1) There is a new IOMMU issue, for which I posted a fix today [1]
-> > > 2) The remoteproc core still has an issue for which there is ongoing
-> > >     discussion [2]
-> > > 
-> > > With these two issue taken care of, the omap remoteproc support is
-> > > functional. The question though is, whether we should just wait until
-> > > the above two issues are resolved and merge the DT patches post that, or
-> > > merge the DT patches with status = "disabled".
+> > > Let me try to check this one again.
 > > 
-> > If there are no dependencies between the pending driver fixes and
-> > the dts changes I see no reason to not merge the dts changes.
+> > Ok you can ignore this and patch #2 for omap5 for similar case. It seems
+> > like the patch 6c3090520554 actually forgot to fix the subclock names, and
+> > it causes issues in mixed clock node setup. Will post a fix against the
+> > clock driver shortly.
 > 
-> Yeah, no hard dependencies as such, just that things won't work properly
-> before they are in.
+> OK good to hear.
 
-Applying these all into omap-for-v5.8/dt thanks.
+Applying all but the first two patches into omap-for-v5.8/dt thanks.
 
 Tony
