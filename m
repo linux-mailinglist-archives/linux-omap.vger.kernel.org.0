@@ -2,62 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F7321C5F8C
-	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 20:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4AB41C5FA0
+	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 20:07:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730685AbgEESCr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 May 2020 14:02:47 -0400
-Received: from muru.com ([72.249.23.125]:52904 "EHLO muru.com"
+        id S1730636AbgEESHj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 May 2020 14:07:39 -0400
+Received: from muru.com ([72.249.23.125]:52916 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730069AbgEESCq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 5 May 2020 14:02:46 -0400
+        id S1729315AbgEESHj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 5 May 2020 14:07:39 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 13DEC80A5;
-        Tue,  5 May 2020 18:03:34 +0000 (UTC)
-Date:   Tue, 5 May 2020 11:02:43 -0700
+        by muru.com (Postfix) with ESMTPS id C3AD880A5;
+        Tue,  5 May 2020 18:08:26 +0000 (UTC)
+Date:   Tue, 5 May 2020 11:07:34 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     Lokesh Vutla <lokeshvutla@ti.com>, Tero Kristo <t-kristo@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        Device Tree Mailing List <devicetree@vger.kernel.org>,
+To:     Lokesh Vutla <lokeshvutla@ti.com>
+Cc:     daniel.lezcano@linaro.org, Tero Kristo <t-kristo@ti.com>,
+        Sekhar Nori <nsekhar@ti.com>, Suman Anna <s-anna@ti.com>,
         Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: Re: [PATCH] arm: dts: Add 32KHz clock as default clock source
-Message-ID: <20200505180243.GM37466@atomide.com>
-References: <20200427172604.16351-1-lokeshvutla@ti.com>
- <20200428181919.GS37466@atomide.com>
- <e49e047d-6883-6bee-7dac-a544a27f6293@ti.com>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Do one override clock
+ parent in prepare()
+Message-ID: <20200505180734.GN37466@atomide.com>
+References: <20200427172831.16546-1-lokeshvutla@ti.com>
+ <20200428182209.GT37466@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e49e047d-6883-6bee-7dac-a544a27f6293@ti.com>
+In-Reply-To: <20200428182209.GT37466@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Suman Anna <s-anna@ti.com> [200505 16:07]:
-> On 4/28/20 1:19 PM, Tony Lindgren wrote:
-> > * Lokesh Vutla <lokeshvutla@ti.com> [200427 17:27]:
-> > > Clocksource to timer configured in pwm mode can be selected using the DT
-> > > property ti,clock-source. There are few pwm timers which are not
-> > > selecting the clock source and relying on default value in hardware or
-> > > selected by driver. Instead of relying on default value, always select
-> > > the clock source from DT.
-> > > 
-> > > Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+* Tony Lindgren <tony@atomide.com> [200428 18:23]:
+> * Lokesh Vutla <lokeshvutla@ti.com> [200427 17:29]:
+> > omap_dm_timer_prepare() is setting up the parent 32KHz clock. This
+> > prepare() gets called by request_timer in the client's driver. Because of
+> > this, the timer clock parent that is set with assigned-clock-parent is being
+> > overwritten. So drop this default setting of parent in prepare().
+> > 
+> > Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
 > 
-> Thanks Lokesh, with this patch, we should be able to pickup the dmtimer
-> driver patch to finally allow dmtimer clients to use assigned-clock-parents.
+> This works just fine for me but depends on the dts changes.
 > 
-> Once both of these are merged, we can deprecate the ti,clock-source from the
-> omap-pwm-dmtimer driver.
-> 
-> Reviewed-by: Suman Anna <s-anna@ti.com>
+> Daniel, for merging, do you want to set up an immutable branch
+> for the related dts change and this? I'm afraid it will conflict
+> with the related systimer changes for the dts otherwise.
 
-I've pushed this patch applied against v5.7-rc1 into
-omap-for-v5.8/dt-timer.
+So I've pushed out an immutable branch for the dts changes
+this patch depends on against v5.7-rc1 as omap-for-v5.8/dt-timer
+[0][1].
 
-Regards,
+Daniel feel free to merge it in to apply this clocksource patch if
+no more comments:
 
-Tony
+Acked-by: Tony Lindgren <tony@atomide.com>
+
+[0] git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git omap-for-v5.8/dt-timer
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git/log/?h=omap-for-v5.8/dt-timer
