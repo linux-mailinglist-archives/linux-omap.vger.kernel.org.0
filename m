@@ -2,62 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C94F1C5FF7
-	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 20:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB6F31C6008
+	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 20:26:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730862AbgEESVJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 May 2020 14:21:09 -0400
-Received: from muru.com ([72.249.23.125]:52936 "EHLO muru.com"
+        id S1728233AbgEES0Y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 May 2020 14:26:24 -0400
+Received: from muru.com ([72.249.23.125]:52948 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730258AbgEESVJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 5 May 2020 14:21:09 -0400
+        id S1728135AbgEES0X (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 5 May 2020 14:26:23 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id A47D580A5;
-        Tue,  5 May 2020 18:21:57 +0000 (UTC)
-Date:   Tue, 5 May 2020 11:21:06 -0700
+        by muru.com (Postfix) with ESMTPS id 30AD180A5;
+        Tue,  5 May 2020 18:27:10 +0000 (UTC)
+Date:   Tue, 5 May 2020 11:26:18 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/8] ARM: dts: omap4: fix node names for the l4_cm
- clkctrl nodes
-Message-ID: <20200505182106.GP37466@atomide.com>
-References: <20200429143002.5050-1-t-kristo@ti.com>
- <20200429143002.5050-2-t-kristo@ti.com>
- <20200429220714.GV37466@atomide.com>
- <fef91f43-df5f-99e4-7861-05190fcc2040@ti.com>
- <cb563fb2-4909-a11a-d167-a5e982f38968@ti.com>
- <20200430202538.GZ37466@atomide.com>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Kevin Hilman <khilman@kernel.org>,
+        Olof Johansson <olof@lixom.net>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 12/15] ARM: omap2plus: Drop unneeded select of
+ MIGHT_HAVE_CACHE_L2X0
+Message-ID: <20200505182618.GQ37466@atomide.com>
+References: <20200505150722.1575-1-geert+renesas@glider.be>
+ <20200505150722.1575-13-geert+renesas@glider.be>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200430202538.GZ37466@atomide.com>
+In-Reply-To: <20200505150722.1575-13-geert+renesas@glider.be>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [200430 20:26]:
-> * Tero Kristo <t-kristo@ti.com> [200430 08:35]:
-> > On 30/04/2020 07:55, Tero Kristo wrote:
-> > > On 30/04/2020 01:07, Tony Lindgren wrote:
-> > > > Heh this is no longer needed since commit 6c3090520554
-> > > > ("clk: ti: clkctrl: Fix hidden dependency to node name")
-> > > > that added support for using the compatible name :)
-> > > > 
-> > > > Maybe you are using some older tree? Or else there's
-> > > > still something wrong somewhere.
-> > > 
-> > > I was using 5.7-rc1 as baseline so can't be that.
-> > > 
-> > > Let me try to check this one again.
-> > 
-> > Ok you can ignore this and patch #2 for omap5 for similar case. It seems
-> > like the patch 6c3090520554 actually forgot to fix the subclock names, and
-> > it causes issues in mixed clock node setup. Will post a fix against the
-> > clock driver shortly.
+* Geert Uytterhoeven <geert+renesas@glider.be> [200505 08:08]:
+> Support for TI AM43x SoCs depends on ARCH_MULTI_V7, which selects
+> ARCH_MULTI_V6_V7.
+> As the latter selects MIGHT_HAVE_CACHE_L2X0, there is no need for
+> SOC_AM43XX to select MIGHT_HAVE_CACHE_L2X0.
 > 
-> OK good to hear.
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: linux-omap@vger.kernel.org
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> Acked-by: Tony Lindgren <tony@atomide.com>
+> ---
+> v2:
+>   - Add Acked-by.
 
-Applying all but the first two patches into omap-for-v5.8/dt thanks.
+I'll queue this into omap-for-v5.8/soc tomorrow assuming nobody else
+has it already applied.
 
 Tony
+
+> ---
+>  arch/arm/mach-omap2/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
+> index dca7d06c0b938619..ea23205bf70f4df6 100644
+> --- a/arch/arm/mach-omap2/Kconfig
+> +++ b/arch/arm/mach-omap2/Kconfig
+> @@ -66,7 +66,6 @@ config SOC_AM43XX
+>  	select ARCH_OMAP2PLUS
+>  	select ARM_GIC
+>  	select MACH_OMAP_GENERIC
+> -	select MIGHT_HAVE_CACHE_L2X0
+>  	select HAVE_ARM_SCU
+>  	select GENERIC_CLOCKEVENTS_BROADCAST
+>  	select HAVE_ARM_TWD
+> -- 
+> 2.17.1
+> 
