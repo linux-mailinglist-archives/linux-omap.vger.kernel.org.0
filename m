@@ -2,128 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37B961C592A
-	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 16:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98FE21C598D
+	for <lists+linux-omap@lfdr.de>; Tue,  5 May 2020 16:30:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729453AbgEEOOb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 May 2020 10:14:31 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:36381 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729559AbgEEOOW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 May 2020 10:14:22 -0400
-Received: from localhost.localdomain ([149.172.19.189]) by
- mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1MBDrM-1jQzi83buY-00CePX; Tue, 05 May 2020 16:14:02 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kevin Hilman <khilman@kernel.org>,
+        id S1729366AbgEEOaX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 May 2020 10:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51450 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727785AbgEEOaX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 May 2020 10:30:23 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0367FC061A0F;
+        Tue,  5 May 2020 07:30:23 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id r14so968320pfg.2;
+        Tue, 05 May 2020 07:30:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=/8ydx1OQ+D7IiH04ZB0o6wh3QFLRJGOF1BFo03aMjE0=;
+        b=Vz5o8n1cIrMmoGP44Q46Zmp0HCKTGVL6iSF8j/jpP+jsAwG2FzRJOfqClcI3JFfmIL
+         VVD5IleJMQZXj13SdtF2r6cI0s13BqDa5RMBeC/I162mPJrW54BKbV9HSfCLMcDexZij
+         LeTo1mFhwp6asz6sKuuLUX8UP5WPTN6N6PkU3EFJkGN98n0Gi+xTTKLopwxSdxr+vOKE
+         HxBhiq8nV6SAvixOSrpMVtSDIaWDat6asa/2G7DxMbBy745Rv0Ccvfvgg8BbrPhKOLh7
+         OpPX+31VkVkC/LVUqL+18lYlS13egiSbwNvHYLzf6mYkRTlATOOT4keTyrvbgMmIQaDc
+         zHFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/8ydx1OQ+D7IiH04ZB0o6wh3QFLRJGOF1BFo03aMjE0=;
+        b=ThCEkcKctZuc+6cH5uRIuraFDwi2kiqmB6gHh6/hybUc5tA+8DLvt9BvDlS/FC2vBt
+         I7xPi+NiC/knWXOE13YlzYHd8zYGGKYguPuF+R0jXqUZks2SklpBpMwWIHy9oJJ+LOtG
+         ThEXSfQHo5nagX1ibeN32+IBwi07RrlzdZ364kPLEtD/bUiz7G1MdfOppLAVQSI6/EXZ
+         sj05IUCjLleS0XRWWheDQf3s7+uMfwQbZxZX0GabjvvgGD4DJRTYVtkgLT4OGYmnQdvP
+         Cl1WtohgH0ZgnJi8bHSpOIx0UOZ4DP1gm29oBDdYFU44KKnw9oQ6x9FvebubDWNO+vvO
+         v6+A==
+X-Gm-Message-State: AGi0PubX7sEJS2nNhh5f3iFB5mQ7PXVrSDBW5Gu9qcFlYM1uGA0BvOO0
+        RDEmRYwXLSERv/6f3I3z7vY=
+X-Google-Smtp-Source: APiQypJ9VDBm38O+rpfRbbRf4g5lKVbtUGdAU5GjiMUuycn6ou/4sv+IOjnuV2xTcLQTRwBKy1xcWQ==
+X-Received: by 2002:a62:6385:: with SMTP id x127mr3582714pfb.276.1588689022537;
+        Tue, 05 May 2020 07:30:22 -0700 (PDT)
+Received: from localhost ([49.207.51.154])
+        by smtp.gmail.com with ESMTPSA id j2sm2304373pfb.73.2020.05.05.07.30.18
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 05 May 2020 07:30:19 -0700 (PDT)
+Date:   Tue, 5 May 2020 20:00:17 +0530
+From:   afzal mohammed <afzal.mohd.ma@gmail.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Kevin Hilman <khilman@kernel.org>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        afzal mohammed <afzal.mohd.ma@gmail.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: omap1: fix irq setup
-Date:   Tue,  5 May 2020 16:13:48 +0200
-Message-Id: <20200505141400.767312-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.26.0
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: omap1: fix irq setup
+Message-ID: <20200505143017.GA5263@afzalpc>
+References: <20200505141400.767312-1-arnd@arndb.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:LvLPepcWVA3cOq/dneR4EUFbqygTCx28UhrDXt4MYSPcNJ4mrgn
- +QPxmj7Yxy4NuRDL2I3gKatumDNFanxLYw86EEXLQeaxf2uHxTPjdRxsZ0nyaJR+ncJanxy
- 4nbOjM2H44/xEfwf5IKaHiR31MSIY7ePR1EXQ4Pd0jnyhEqjx5026Ue0/bycDgRv8VJvbSE
- z15LpjYn+K1X0KpouEG5A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:HMPeHO7MWj0=:QCVLcwagAi7moRTbEI8t4o
- uzWUr479RSv5Yd9emDprIzlpJRBuT53YlMq5+Ph3I8BO22ZitbEGM7a0XAZV1RVBCFf25N678
- TSSXd/DZRqPeNA1XgKo27ZE4YfC4aoy7CMpcWIcubWLSwahc2Xd649/RRCJ1m2OeQSpcVNUVy
- 0S4sfhFaScwVX+oUmWSX3LSejHiSqhMTHxBHagCNqDQkYUgvY7Lk1ZLRLLfo5qI9Tgegs8PwV
- kV18Qh/OM9PwyUWsjmUIMGZZdeyBpHb7wox2LZZQ/jMUiOLhxzFzpIn3U0Vd/3+pBq1tSf40P
- ijm0zpuP258+KqWNNf26tgKSlX70j7WNSfTQw5lEjoGpNy0LG3ZHY2lDnbNHOrzrGDkVma1ZW
- QAUaXOEPlSk2TUXpiNbWsdDdJRKkkz6tSZFsz+tcZa1mCrVp06VXvlpZCDUqidndoJUdqcqTR
- tTRJSfP9TXKy9QTHkPTSZVr8WxIrcvil34FhEJeiuF0CYUXDWOQLlegPiXAfQ7qD7AHXkTvKh
- KU3SyvnFld/2S3Ux5n9p6oUgmDcLzE+N+w34hvIMfikZPCamItyAGjJX08clxNMQae1cg+qed
- 2mMf1XNBAplayot4r50g5EN56RUtCME/8OHkIuIDeQa8l75/AnBimnkj6cz1aPm+9W2i1Pw2N
- CaQwxqyVNrY45q70PsMqbGXLktumgD0UiY3EMai9x6tPj3+vvsDz+XHg9FtGCe2SDKjL/V6UJ
- xSbQ3spM4NH7kQgc9kGalLumeO36TZI2qKqiV1K/BSrh2/DKj2yWD0pmUoP6MYOEwQAs1t/cO
- nDRnVmQi9zqpnZnWAibQPwqWUIJdJXK6XyLcf6VORR8tpPigNQ=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200505141400.767312-1-arnd@arndb.de>
+User-Agent: Mutt/1.9.3 (2018-01-21)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-A recent cleanup introduced a bug on any omap1 machine that has
-no wakeup IRQ, i.e. omap15xx:
+Hi,
 
-arch/arm/mach-omap1/pm.c:656:11: error: variable 'irq' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
-        else if (cpu_is_omap16xx())
-                 ^~~~~~~~~~~~~~~~~
-include/linux/soc/ti/omap1-soc.h:115:30: note: expanded from macro 'cpu_is_omap16xx'
- #  define cpu_is_omap16xx()             is_omap16xx()
-                                        ^~~~~~~~~~~~~
-arch/arm/mach-omap1/pm.c:658:18: note: uninitialized use occurs here
-        if (request_irq(irq, omap_wakeup_interrupt, 0, "peripheral wakeup",
-                        ^~~
-arch/arm/mach-omap1/pm.c:656:7: note: remove the 'if' if its condition is always true
-        else if (cpu_is_omap16xx())
-             ^~~~~~~~~~~~~~~~~~~~~~
-arch/arm/mach-omap1/pm.c:611:9: note: initialize the variable 'irq' to silence this warning
-        int irq;
-               ^
+On Tue, May 05, 2020 at 04:13:48PM +0200, Arnd Bergmann wrote:
 
-Move this code into a separate function to deal with it cleanly.
+> A recent cleanup introduced a bug on any omap1 machine that has
+> no wakeup IRQ, i.e. omap15xx:
 
-Fixes: b75ca5217743 ("ARM: OMAP: replace setup_irq() by request_irq()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/arm/mach-omap1/pm.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+> Move this code into a separate function to deal with it cleanly.
+> 
+> Fixes: b75ca5217743 ("ARM: OMAP: replace setup_irq() by request_irq()")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/arch/arm/mach-omap1/pm.c b/arch/arm/mach-omap1/pm.c
-index 0f8064bd40ae..266aa08aa8ed 100644
---- a/arch/arm/mach-omap1/pm.c
-+++ b/arch/arm/mach-omap1/pm.c
-@@ -605,10 +605,25 @@ static const struct platform_suspend_ops omap_pm_ops = {
- 	.valid		= suspend_valid_only_mem,
- };
- 
-+static void omap_wakeup_init(void)
-+{
-+	int irq;
-+
-+	if (cpu_is_omap7xx())
-+		irq = INT_7XX_WAKE_UP_REQ;
-+	else if (cpu_is_omap16xx())
-+		irq = INT_1610_WAKE_UP_REQ;
-+	else
-+		return;
-+
-+	if (request_irq(irq, omap_wakeup_interrupt, 0, "peripheral wakeup",
-+			NULL))
-+		pr_err("Failed to request irq %d (peripheral wakeup)\n", irq);
-+}
-+
- static int __init omap_pm_init(void)
- {
- 	int error = 0;
--	int irq;
- 
- 	if (!cpu_class_is_omap1())
- 		return -ENODEV;
-@@ -651,13 +666,7 @@ static int __init omap_pm_init(void)
- 
- 	arm_pm_idle = omap1_pm_idle;
- 
--	if (cpu_is_omap7xx())
--		irq = INT_7XX_WAKE_UP_REQ;
--	else if (cpu_is_omap16xx())
--		irq = INT_1610_WAKE_UP_REQ;
--	if (request_irq(irq, omap_wakeup_interrupt, 0, "peripheral wakeup",
--			NULL))
--		pr_err("Failed to request irq %d (peripheral wakeup)\n", irq);
-+	omap_wakeup_init();
- 
- 	/* Program new power ramp-up time
- 	 * (0 for most boards since we don't lower voltage when in deep sleep)
--- 
-2.26.0
+Sorry for the mistake and thanks for the fix,
 
+Acked-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+
+Regards
+afzal
