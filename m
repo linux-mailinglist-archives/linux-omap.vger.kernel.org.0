@@ -2,89 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49F521C73E6
-	for <lists+linux-omap@lfdr.de>; Wed,  6 May 2020 17:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 314931C79C3
+	for <lists+linux-omap@lfdr.de>; Wed,  6 May 2020 20:58:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729255AbgEFPPm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 May 2020 11:15:42 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:33198 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729447AbgEFPPl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 May 2020 11:15:41 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 046FFTWn065409;
-        Wed, 6 May 2020 10:15:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1588778129;
-        bh=lfI1h+3lQGMBFBStpi63mpUEBxVTfLRQlu/dzMBT+rU=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=UVdXiryiUy2GzhxnHBR+NqepfqIFuySgoXv7HakdfA05hiFHJ7A3wfM5G/BgaHow7
-         EvCboswm8dnhRPLzzGF6LyncINDpPFEJuhDH4fpOG3c2y9YAORrO0HTVTaTDxceew1
-         iFBYtBSadsGdWIsOt6YYDKS3wM890cShOgeIDpyc=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 046FFTfc017288;
-        Wed, 6 May 2020 10:15:29 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 6 May
- 2020 10:15:28 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 6 May 2020 10:15:28 -0500
-Received: from a0393678ub.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 046FEUgK119457;
-        Wed, 6 May 2020 10:15:24 -0500
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>, Tom Joseph <tjoseph@cadence.com>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <kishon@ti.com>
-Subject: [PATCH v4 14/14] MAINTAINERS: Add Kishon Vijay Abraham I for TI J721E SoC PCIe
-Date:   Wed, 6 May 2020 20:44:29 +0530
-Message-ID: <20200506151429.12255-15-kishon@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200506151429.12255-1-kishon@ti.com>
-References: <20200506151429.12255-1-kishon@ti.com>
+        id S1730472AbgEFS6I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 May 2020 14:58:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35922 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730442AbgEFS6H (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 May 2020 14:58:07 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44A69C061BD3
+        for <linux-omap@vger.kernel.org>; Wed,  6 May 2020 11:58:07 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id j14so2266224lfg.9
+        for <linux-omap@vger.kernel.org>; Wed, 06 May 2020 11:58:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2hhU7YC1mHWJXOQCa9/YtvMX0AvTF/51BQ11Lkp2if0=;
+        b=ENs11Z2E6PTphR/O7XEptV9DrkitQZwLiWGfUE3J1NThoeRLPWDK4tDps5BoTcWit1
+         zxwc6iaDbar5hppPTNmyGg+DQIeMEcKomHQdFBhyU8VETMfHL8W2a1Jd5FtPT4MSFPlx
+         pW5uAwDfiblCrXtvPdUyMV5XllzXhrrMlu3/oW6uuJTz36qgimok4gbXBH4xnjVurcCX
+         lcUe+U7g7T87tsCxaKgUy1ztqhvZkOlPI1dRGORUz42KQ/uPPuoOll0V3+DBw/rjO1OW
+         I1Q/zUwoATalGf6bzwzmulWBAfKNsUBbxb1ZM1A5ACSkMtfwmtHD9gRLESdsOugAfng+
+         xmww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2hhU7YC1mHWJXOQCa9/YtvMX0AvTF/51BQ11Lkp2if0=;
+        b=bmTR+o8irUDv+tAdmxFLCCJ2mfpVLUUhywG1OCdnFox75TwNcbog0BI74frMMEBVcf
+         L69Qgc8jF1zRj+tiI5xHHOmky1M/KYthWbHqqDf+Y8V8rabDRWz6Vy+VAQ7JEemymetZ
+         Uo1IILrhPtW0HUI68vDmpLAwBhX6dyNIkWq5lUqFq22SCY+tpiTWTi6TbnpHUSRhOkdB
+         tLJtAH7y/ozoeVt/n3BpnBkqCH0BUsG/64GjyJjnIxa9iU8FEXfBxs3T/4kqBdUEKAHa
+         v89FDGiIwoYTRj3qk1H3Vdyjd977M8ZdWJ0cz2HMPys9Nn8XzbU+HUAainuuN9a2XIaP
+         extw==
+X-Gm-Message-State: AGi0PuaFbeifakJRF7ohGI8IqBBk0RTCTwNM7zlAgHOxqR0MMSJxruoa
+        Lm2sKoAh42rcV1ojwews4/Ex1qSOXqJkxIue2ANA+w==
+X-Google-Smtp-Source: APiQypK2/BS9DNLQgUdve0DnZIP+ggCdF8l9P6mtknH7uy4q8+KLPietCh0cyMKc+/gJFltqkIhzsPf/UxXxP4Q5v8I=
+X-Received: by 2002:a19:40d2:: with SMTP id n201mr6168784lfa.82.1588791485423;
+ Wed, 06 May 2020 11:58:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <1480357509-28074-1-git-send-email-johan@kernel.org> <1480357509-28074-12-git-send-email-johan@kernel.org>
+In-Reply-To: <1480357509-28074-12-git-send-email-johan@kernel.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 7 May 2020 00:27:53 +0530
+Message-ID: <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
+Subject: Re: [PATCH net 11/16] net: ethernet: marvell: mvneta: fix fixed-link
+ phydev leaks
+To:     Johan Hovold <johan@kernel.org>,
+        linux- stable <stable@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Vince Bridgers <vbridger@opensource.altera.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Fugang Duan <fugang.duan@nxp.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Vitaly Bordug <vbordug@ru.mvista.com>,
+        Claudiu Manoil <claudiu.manoil@freescale.com>,
+        Li Yang <leoli@freescale.com>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        Felix Fietkau <nbd@openwrt.org>,
+        John Crispin <blogic@openwrt.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Lars Persson <lars.persson@axis.com>,
+        Mugunthan V N <mugunthanvnm@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+        Netdev <netdev@vger.kernel.org>,
+        nios2-dev@lists.rocketboards.org,
+        open list <linux-kernel@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, lkft-triage@lists.linaro.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add Kishon Vijay Abraham I as MAINTAINER for TI J721E SoC PCIe.
+On Tue, 29 Nov 2016 at 00:00, Johan Hovold <johan@kernel.org> wrote:
+>
+> Make sure to deregister and free any fixed-link PHY registered using
+> of_phy_register_fixed_link() on probe errors and on driver unbind.
+>
+> Fixes: 83895bedeee6 ("net: mvneta: add support for fixed links")
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+>  drivers/net/ethernet/marvell/mvneta.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+> index 0c0a45af950f..707bc4680b9b 100644
+> --- a/drivers/net/ethernet/marvell/mvneta.c
+> +++ b/drivers/net/ethernet/marvell/mvneta.c
+> @@ -4191,6 +4191,8 @@ static int mvneta_probe(struct platform_device *pdev)
+>         clk_disable_unprepare(pp->clk);
+>  err_put_phy_node:
+>         of_node_put(phy_node);
+> +       if (of_phy_is_fixed_link(dn))
+> +               of_phy_deregister_fixed_link(dn);
 
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
----
- MAINTAINERS | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+While building kernel Image for arm architecture on stable-rc 4.4 branch
+the following build error found.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2926327e4976..9d40e1318f7c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12978,12 +12978,14 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/pci/designware-pcie.txt
- F:	drivers/pci/controller/dwc/*designware*
- 
--PCI DRIVER FOR TI DRA7XX
-+PCI DRIVER FOR TI DRA7XX/J721E
- M:	Kishon Vijay Abraham I <kishon@ti.com>
- L:	linux-omap@vger.kernel.org
- L:	linux-pci@vger.kernel.org
-+L:	linux-arm-kernel@lists.infradead.org
- S:	Supported
- F:	Documentation/devicetree/bindings/pci/ti-pci.txt
-+F:	drivers/pci/controller/cadence/pci-j721e.c
- F:	drivers/pci/controller/dwc/pci-dra7xx.c
- 
- PCI DRIVER FOR TI KEYSTONE
--- 
-2.17.1
+drivers/net/ethernet/marvell/mvneta.c:3442:3: error: implicit
+declaration of function 'of_phy_deregister_fixed_link'; did you mean
+'of_phy_register_fixed_link'? [-Werror=implicit-function-declaration]
+|    of_phy_deregister_fixed_link(dn);
+|    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|    of_phy_register_fixed_link
 
+ref:
+https://gitlab.com/Linaro/lkft/kernel-runs/-/jobs/541374729
+
+- Naresh
