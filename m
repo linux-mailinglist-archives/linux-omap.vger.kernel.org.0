@@ -2,125 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 314931C79C3
-	for <lists+linux-omap@lfdr.de>; Wed,  6 May 2020 20:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A121C79EB
+	for <lists+linux-omap@lfdr.de>; Wed,  6 May 2020 21:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730472AbgEFS6I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 May 2020 14:58:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35922 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730442AbgEFS6H (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 May 2020 14:58:07 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44A69C061BD3
-        for <linux-omap@vger.kernel.org>; Wed,  6 May 2020 11:58:07 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id j14so2266224lfg.9
-        for <linux-omap@vger.kernel.org>; Wed, 06 May 2020 11:58:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2hhU7YC1mHWJXOQCa9/YtvMX0AvTF/51BQ11Lkp2if0=;
-        b=ENs11Z2E6PTphR/O7XEptV9DrkitQZwLiWGfUE3J1NThoeRLPWDK4tDps5BoTcWit1
-         zxwc6iaDbar5hppPTNmyGg+DQIeMEcKomHQdFBhyU8VETMfHL8W2a1Jd5FtPT4MSFPlx
-         pW5uAwDfiblCrXtvPdUyMV5XllzXhrrMlu3/oW6uuJTz36qgimok4gbXBH4xnjVurcCX
-         lcUe+U7g7T87tsCxaKgUy1ztqhvZkOlPI1dRGORUz42KQ/uPPuoOll0V3+DBw/rjO1OW
-         I1Q/zUwoATalGf6bzwzmulWBAfKNsUBbxb1ZM1A5ACSkMtfwmtHD9gRLESdsOugAfng+
-         xmww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2hhU7YC1mHWJXOQCa9/YtvMX0AvTF/51BQ11Lkp2if0=;
-        b=bmTR+o8irUDv+tAdmxFLCCJ2mfpVLUUhywG1OCdnFox75TwNcbog0BI74frMMEBVcf
-         L69Qgc8jF1zRj+tiI5xHHOmky1M/KYthWbHqqDf+Y8V8rabDRWz6Vy+VAQ7JEemymetZ
-         Uo1IILrhPtW0HUI68vDmpLAwBhX6dyNIkWq5lUqFq22SCY+tpiTWTi6TbnpHUSRhOkdB
-         tLJtAH7y/ozoeVt/n3BpnBkqCH0BUsG/64GjyJjnIxa9iU8FEXfBxs3T/4kqBdUEKAHa
-         v89FDGiIwoYTRj3qk1H3Vdyjd977M8ZdWJ0cz2HMPys9Nn8XzbU+HUAainuuN9a2XIaP
-         extw==
-X-Gm-Message-State: AGi0PuaFbeifakJRF7ohGI8IqBBk0RTCTwNM7zlAgHOxqR0MMSJxruoa
-        Lm2sKoAh42rcV1ojwews4/Ex1qSOXqJkxIue2ANA+w==
-X-Google-Smtp-Source: APiQypK2/BS9DNLQgUdve0DnZIP+ggCdF8l9P6mtknH7uy4q8+KLPietCh0cyMKc+/gJFltqkIhzsPf/UxXxP4Q5v8I=
-X-Received: by 2002:a19:40d2:: with SMTP id n201mr6168784lfa.82.1588791485423;
- Wed, 06 May 2020 11:58:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <1480357509-28074-1-git-send-email-johan@kernel.org> <1480357509-28074-12-git-send-email-johan@kernel.org>
-In-Reply-To: <1480357509-28074-12-git-send-email-johan@kernel.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 7 May 2020 00:27:53 +0530
-Message-ID: <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
-Subject: Re: [PATCH net 11/16] net: ethernet: marvell: mvneta: fix fixed-link
- phydev leaks
-To:     Johan Hovold <johan@kernel.org>,
-        linux- stable <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Vince Bridgers <vbridger@opensource.altera.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Vitaly Bordug <vbordug@ru.mvista.com>,
-        Claudiu Manoil <claudiu.manoil@freescale.com>,
-        Li Yang <leoli@freescale.com>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Felix Fietkau <nbd@openwrt.org>,
-        John Crispin <blogic@openwrt.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Lars Persson <lars.persson@axis.com>,
-        Mugunthan V N <mugunthanvnm@ti.com>,
+        id S1728052AbgEFTIy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 May 2020 15:08:54 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:46648 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725966AbgEFTIx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 May 2020 15:08:53 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 046J8cfg025249;
+        Wed, 6 May 2020 14:08:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1588792118;
+        bh=CkQcWvSupPtqAC83l9V2HATNhdv6etMnpYNqdDhGzCk=;
+        h=From:To:CC:Subject:Date;
+        b=VcWlc7x0b58T1r0AO8MO+KLmi2KTUFjnCS6YsRS7SqGJ9CIP3Kp9zfPIoCmRHwS82
+         4PA2qm1wQA2JjJGW7P+A8fHilcCxrnirlR9YOtKBbvVfms530CF2Rk+66UPS9I9F34
+         f0TLE2KaJJPkKIn7bEgj8JX6X9QrqeVnAMVR4W4c=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 046J8cTV045838;
+        Wed, 6 May 2020 14:08:38 -0500
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 6 May
+ 2020 14:08:37 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 6 May 2020 14:08:37 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 046J8asH116543;
+        Wed, 6 May 2020 14:08:37 -0500
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        "David S. Miller" <davem@davemloft.net>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
         Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
-        Netdev <netdev@vger.kernel.org>,
-        nios2-dev@lists.rocketboards.org,
-        open list <linux-kernel@vger.kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, lkft-triage@lists.linaro.org
-Content-Type: text/plain; charset="UTF-8"
+        Philippe Schenker <philippe.schenker@toradex.com>
+Subject: [PATCH next] ARM: dts: am437x: fix networking on boards with ksz9031 phy
+Date:   Wed, 6 May 2020 22:08:35 +0300
+Message-ID: <20200506190835.31342-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 29 Nov 2016 at 00:00, Johan Hovold <johan@kernel.org> wrote:
->
-> Make sure to deregister and free any fixed-link PHY registered using
-> of_phy_register_fixed_link() on probe errors and on driver unbind.
->
-> Fixes: 83895bedeee6 ("net: mvneta: add support for fixed links")
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
->  drivers/net/ethernet/marvell/mvneta.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-> index 0c0a45af950f..707bc4680b9b 100644
-> --- a/drivers/net/ethernet/marvell/mvneta.c
-> +++ b/drivers/net/ethernet/marvell/mvneta.c
-> @@ -4191,6 +4191,8 @@ static int mvneta_probe(struct platform_device *pdev)
->         clk_disable_unprepare(pp->clk);
->  err_put_phy_node:
->         of_node_put(phy_node);
-> +       if (of_phy_is_fixed_link(dn))
-> +               of_phy_deregister_fixed_link(dn);
+Since commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support for the
+KSZ9031 PHY") the networking is broken on boards:
+ am437x-gp-evm
+ am437x-sk-evm
+ am437x-idk-evm
 
-While building kernel Image for arm architecture on stable-rc 4.4 branch
-the following build error found.
+All above boards have phy-mode = "rgmii" and this is worked before, because
+KSZ9031 PHY started with default RGMII internal delays configuration (TX
+off, RX on 1.2 ns) and MAC provided TX delay. After above commit, the
+KSZ9031 PHY starts handling phy mode properly and disables RX delay, as
+result networking is become broken.
 
-drivers/net/ethernet/marvell/mvneta.c:3442:3: error: implicit
-declaration of function 'of_phy_deregister_fixed_link'; did you mean
-'of_phy_register_fixed_link'? [-Werror=implicit-function-declaration]
-|    of_phy_deregister_fixed_link(dn);
-|    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-|    of_phy_register_fixed_link
+Fix it by switching to phy-mode = "rgmii-rxid" to reflect previous
+behavior.
 
-ref:
-https://gitlab.com/Linaro/lkft/kernel-runs/-/jobs/541374729
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Philippe Schenker <philippe.schenker@toradex.com>
+Fixes: commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support for the KSZ9031 PHY")
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+---
+ arch/arm/boot/dts/am437x-gp-evm.dts  | 2 +-
+ arch/arm/boot/dts/am437x-idk-evm.dts | 2 +-
+ arch/arm/boot/dts/am437x-sk-evm.dts  | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-- Naresh
+diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
+index 811c8cae315b..d692e3b2812a 100644
+--- a/arch/arm/boot/dts/am437x-gp-evm.dts
++++ b/arch/arm/boot/dts/am437x-gp-evm.dts
+@@ -943,7 +943,7 @@
+ 
+ &cpsw_emac0 {
+ 	phy-handle = <&ethphy0>;
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-rxid";
+ };
+ 
+ &elm {
+diff --git a/arch/arm/boot/dts/am437x-idk-evm.dts b/arch/arm/boot/dts/am437x-idk-evm.dts
+index 9f66f96d09c9..a7495fb364bf 100644
+--- a/arch/arm/boot/dts/am437x-idk-evm.dts
++++ b/arch/arm/boot/dts/am437x-idk-evm.dts
+@@ -504,7 +504,7 @@
+ 
+ &cpsw_emac0 {
+ 	phy-handle = <&ethphy0>;
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-id";
+ };
+ 
+ &rtc {
+diff --git a/arch/arm/boot/dts/am437x-sk-evm.dts b/arch/arm/boot/dts/am437x-sk-evm.dts
+index 25222497f828..4d5a7ca2e25d 100644
+--- a/arch/arm/boot/dts/am437x-sk-evm.dts
++++ b/arch/arm/boot/dts/am437x-sk-evm.dts
+@@ -833,13 +833,13 @@
+ 
+ &cpsw_emac0 {
+ 	phy-handle = <&ethphy0>;
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-rxid";
+ 	dual_emac_res_vlan = <1>;
+ };
+ 
+ &cpsw_emac1 {
+ 	phy-handle = <&ethphy1>;
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-rxid";
+ 	dual_emac_res_vlan = <2>;
+ };
+ 
+-- 
+2.17.1
+
