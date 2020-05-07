@@ -2,126 +2,169 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 202E61C87BE
-	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 13:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3A8B1C8D9B
+	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 16:08:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbgEGLNP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 May 2020 07:13:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44558 "EHLO mail.kernel.org"
+        id S1727856AbgEGOHi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 May 2020 10:07:38 -0400
+Received: from muru.com ([72.249.23.125]:53080 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725903AbgEGLNP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 7 May 2020 07:13:15 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CF74E208E4;
-        Thu,  7 May 2020 11:13:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588849994;
-        bh=JpJwu3HzMRZiNarifyoKzt5DSF15LyA9t4q0RBYx/+Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=U0ZIgjbxbrUQp22xHRVXhrRyXYovhO9OcSbJLRCt06RzSv/mH0Mi/xwKnQhuqUAE5
-         bq6FwoI59EsiNC3tKiUsGN+5q7sqMFLPCdtlFoH6z0/XtKE9yLiprcbT//sCoJDkbK
-         emJbjo8/AvGo/ULzVUqsZa9FJLI8MDche1ilHUnM=
-Date:   Thu, 7 May 2020 13:13:12 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        linux- stable <stable@vger.kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vince Bridgers <vbridger@opensource.altera.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Vitaly Bordug <vbordug@ru.mvista.com>,
-        Claudiu Manoil <claudiu.manoil@freescale.com>,
-        Li Yang <leoli@freescale.com>,
-        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-        Felix Fietkau <nbd@openwrt.org>,
-        John Crispin <blogic@openwrt.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Lars Persson <lars.persson@axis.com>,
-        Mugunthan V N <mugunthanvnm@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
-        Netdev <netdev@vger.kernel.org>,
-        nios2-dev@lists.rocketboards.org,
-        open list <linux-kernel@vger.kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, lkft-triage@lists.linaro.org
-Subject: Re: [PATCH net 11/16] net: ethernet: marvell: mvneta: fix fixed-link
- phydev leaks
-Message-ID: <20200507111312.GA1497799@kroah.com>
-References: <1480357509-28074-1-git-send-email-johan@kernel.org>
- <1480357509-28074-12-git-send-email-johan@kernel.org>
- <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
- <20200507064412.GL2042@localhost>
- <20200507064734.GA798308@kroah.com>
+        id S1727835AbgEGOHh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 7 May 2020 10:07:37 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 3567680CD;
+        Thu,  7 May 2020 14:08:24 +0000 (UTC)
+Date:   Thu, 7 May 2020 07:07:32 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz
+Subject: Re: USB networking news, ofono for d4: less hacked version
+Message-ID: <20200507140732.GU37466@atomide.com>
+References: <20200506101125.GA7490@amd>
+ <20200506144338.GT37466@atomide.com>
+ <20200506230525.GA22354@amd>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200507064734.GA798308@kroah.com>
+In-Reply-To: <20200506230525.GA22354@amd>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, May 07, 2020 at 08:47:34AM +0200, Greg Kroah-Hartman wrote:
-> On Thu, May 07, 2020 at 08:44:12AM +0200, Johan Hovold wrote:
-> > On Thu, May 07, 2020 at 12:27:53AM +0530, Naresh Kamboju wrote:
-> > > On Tue, 29 Nov 2016 at 00:00, Johan Hovold <johan@kernel.org> wrote:
-> > > >
-> > > > Make sure to deregister and free any fixed-link PHY registered using
-> > > > of_phy_register_fixed_link() on probe errors and on driver unbind.
-> > > >
-> > > > Fixes: 83895bedeee6 ("net: mvneta: add support for fixed links")
-> > > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > > ---
-> > > >  drivers/net/ethernet/marvell/mvneta.c | 5 +++++
-> > > >  1 file changed, 5 insertions(+)
-> > > >
-> > > > diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-> > > > index 0c0a45af950f..707bc4680b9b 100644
-> > > > --- a/drivers/net/ethernet/marvell/mvneta.c
-> > > > +++ b/drivers/net/ethernet/marvell/mvneta.c
-> > > > @@ -4191,6 +4191,8 @@ static int mvneta_probe(struct platform_device *pdev)
-> > > >         clk_disable_unprepare(pp->clk);
-> > > >  err_put_phy_node:
-> > > >         of_node_put(phy_node);
-> > > > +       if (of_phy_is_fixed_link(dn))
-> > > > +               of_phy_deregister_fixed_link(dn);
+* Pavel Machek <pavel@ucw.cz> [200506 23:06]:
+> On Wed 2020-05-06 07:43:38, Tony Lindgren wrote:
+> > * Pavel Machek <pavel@ucw.cz> [200506 10:12]:
+> > > Hi!
 > > > 
-> > > While building kernel Image for arm architecture on stable-rc 4.4 branch
-> > > the following build error found.
-> > > 
-> > > drivers/net/ethernet/marvell/mvneta.c:3442:3: error: implicit
-> > > declaration of function 'of_phy_deregister_fixed_link'; did you mean
-> > > 'of_phy_register_fixed_link'? [-Werror=implicit-function-declaration]
-> > > |    of_phy_deregister_fixed_link(dn);
-> > > |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > |    of_phy_register_fixed_link
-> > > 
-> > > ref:
-> > > https://gitlab.com/Linaro/lkft/kernel-runs/-/jobs/541374729
+> > > So... I found out that USB networking works way better when I don't
+> > > attempt to charge the phone at the same. Yes, green light was
+> > > blinking.
 > > 
-> > Greg, 3f65047c853a ("of_mdio: add helper to deregister fixed-link
-> > PHYs") needs to be backported as well for these.
-> > 
-> > Original series can be found here:
-> > 
-> > 	https://lkml.kernel.org/r/1480357509-28074-1-git-send-email-johan@kernel.org
+> > OK yes we don't have much of a charger detection currently and the
+> > charger tries to reconnect with the LED blinking rapidly with an
+> > empty battery.
 > 
-> Ah, thanks for that, I thought I dropped all of the ones that caused
-> build errors, but missed the above one.  I'll go take the whole series
-> instead.
+> Do you have an idea why that causes problems with usb data connection?
 
-This should now all be fixed up, thanks.
+If the charger is configured to draw too much current, the USB port
+or hub will cut it off. I have been carrying the following patch in
+droid4-pending-v5.6 that lowers the charge current if it fails, maybe
+see if that helps?
 
-greg k-h
+> I created a script to disable charging -- and that works. I also found
+> out cable about 5cm long. Not nice to use, but works significantly
+> better w.r.t. charging.
+
+Yeah some USB cables are really thin.
+
+> > I still need to figure update audio notifications for the current set of
+> > gsmmux patches. Eventually maybe ofono can just set the voice call audio
+> > routing using alsa. But let's get the kernel notifications working first
+> > as we also need to fix up the audio parts for the earlier comments from
+> > Peter and Sebastian.
+> 
+> Ofono does not normally touch ALSA, so I'd prefer not to do it from
+> there.
+
+OK
+
+> But I might be confused. I recall some audio patches were needed for
+> basic phone calls (setting up mixers to connect gsm<->audio), but
+> those worked before gsmux support was enabled. (Maybe some hardcoded
+> commands were needed to be sent to gsmmux somewhere).
+
+We're currently reconfiguring the TDM transport that based on the
+unsolicited messages on dlci1. I still need to figure out how to add
+that back while keeping the serdev-ngsm driver generic.
+
+I'm thinking maybe we'll just have the voice call audio driver also be a
+read-only consumer driver for dlci1 to listen to the unsolicited
+messages on dlci1, and also request n_gsm spin up /dev/gsmtty1.
+
+Then if at some point we have some Linux generic modem framework, it
+can provide some notifiers for the call state.
+
+> I assume neither gsmmux audio parts nor mixer parts are available in
+> -next at the moment?
+
+Sorry not yet, will post as soon as I have the audio notifiers part
+working, so it will be some days away still with time permitting.
+
+Regards,
+
+Tony
+
+8< -------------------------------
+From tony Mon Sep 17 00:00:00 2001
+From: Tony Lindgren <tony@atomide.com>
+Date: Sun, 16 Feb 2020 16:59:06 -0800
+Subject: [PATCH] power: supply: cpcap-charger: Adjust current based on
+ charger interrupts
+
+When debugging why higher than 500 mA charge current does not work, I
+noticed that we start getting lots of chrgcurr1 interrupts if we attempt
+to charge at rates higher than the charger can provide.
+
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/power/supply/cpcap-charger.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+--- a/drivers/power/supply/cpcap-charger.c
++++ b/drivers/power/supply/cpcap-charger.c
+@@ -147,6 +147,8 @@ struct cpcap_charger_ddata {
+ 	int status;
+ 	int state;
+ 	int voltage;
++	int last_current;
++	int last_current_retries;
+ };
+ 
+ struct cpcap_interrupt_desc {
+@@ -616,6 +618,7 @@ static void cpcap_usb_detect(struct work_struct *work)
+ 	/* Just init the state if a charger is connected with no chrg_det set */
+ 	if (!s.chrg_det && s.chrgcurr1 && s.vbusvld) {
+ 		cpcap_charger_update_state(ddata, CPCAP_CHARGER_DETECTING);
++		ddata->last_current = 0;
+ 
+ 		return;
+ 	}
+@@ -662,6 +665,30 @@ static void cpcap_usb_detect(struct work_struct *work)
+ 		else
+ 			max_current = CPCAP_REG_CRM_ICHRG_0A532;
+ 
++		switch (ddata->state) {
++		case CPCAP_CHARGER_DETECTING:
++			ddata->last_current_retries = 0;
++			break;
++		case CPCAP_CHARGER_DISCONNECTED:
++			if (ddata->last_current > CPCAP_REG_CRM_ICHRG_0A532) {
++				/* Attempt current 3 times before lowering */
++				if (ddata->last_current_retries++ >= 3) {
++					ddata->last_current--;
++					ddata->last_current_retries = 0;
++					/* Wait a bit for voltage to ramp up */
++					usleep_range(40000, 50000);
++				}
++				max_current = ddata->last_current;
++			}
++			dev_info(ddata->dev, "enabling charger with current %i\n",
++				 max_current);
++			break;
++		default:
++			ddata->last_current_retries = 0;
++			break;
++		}
++
++		ddata->last_current = max_current;
+ 		vchrg = cpcap_charger_voltage_to_regval(ddata->voltage);
+ 		error = cpcap_charger_set_state(ddata,
+ 						CPCAP_REG_CRM_VCHRG(vchrg),
+-- 
+2.26.2
