@@ -2,180 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B2B1C811F
-	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 06:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E2EB1C82B6
+	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 08:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725879AbgEGElI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 May 2020 00:41:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42046 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725848AbgEGElH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 May 2020 00:41:07 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF10C061A0F
-        for <linux-omap@vger.kernel.org>; Wed,  6 May 2020 21:41:07 -0700 (PDT)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1jWYLF-0003h9-8y; Thu, 07 May 2020 06:41:01 +0200
-Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ore@pengutronix.de>)
-        id 1jWYLA-0004p6-67; Thu, 07 May 2020 06:40:56 +0200
-Date:   Thu, 7 May 2020 06:40:56 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        id S1725841AbgEGGo0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 May 2020 02:44:26 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:43318 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725809AbgEGGoZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 May 2020 02:44:25 -0400
+Received: by mail-lj1-f196.google.com with SMTP id l19so5036779lje.10;
+        Wed, 06 May 2020 23:44:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=KPHo05lQ60Sgmm/o6B6Lw5R77cey+JqtyoXZZ3TP7Og=;
+        b=e7wVI36Rf4fqtU7WJhW0eNhiOoR9qLs5D7mo3cKZhnru4fOU0GoxY1Rs35zvmMqf/I
+         DkA2PrCvpIxoe8AfSXOlVr+ta+B03ZyC68RXZWbovm0bXaTIDEVnnMfW7e3g0LHXY1CO
+         dPAfTAx0ObfeW2JzcLmANRpukFCj7UGfD4Dz2qmu6JNdWZwEYji98uT+Ag8c7vkY0qce
+         qtMr9FwgibLoP97IsmB2khr0BBtNp/Qixd3dkDjNqYPewll+e1NSw/I9TxqrYAUhMlLu
+         BkNL9gdlG3oZnUJUNlWttddZNuu/RiSzOPza0L/9JzUYBSWiPbMzjI9KczuLwh2Lg/MD
+         6zVA==
+X-Gm-Message-State: AGi0PuZ8NNXts1Z10rRrfQ3AGOIxTdtR0oFmdemBYWnHfBdILxspxbN5
+        lBIIvmnMYJZKmHoYdPPk508=
+X-Google-Smtp-Source: APiQypIpQr2fTJp7sK/Z45NvIbcu6kYbSACpGgviZMKo6vxLEoYdxdc72K9eQNDS8kRJ9TzuUBJ2bQ==
+X-Received: by 2002:a2e:b44c:: with SMTP id o12mr6880195ljm.240.1588833860796;
+        Wed, 06 May 2020 23:44:20 -0700 (PDT)
+Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.174.190])
+        by smtp.gmail.com with ESMTPSA id o20sm3131820lfc.39.2020.05.06.23.44.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2020 23:44:19 -0700 (PDT)
+Received: from johan by xi.terra with local (Exim 4.92.3)
+        (envelope-from <johan@kernel.org>)
+        id 1jWaGS-0008Rt-A0; Thu, 07 May 2020 08:44:12 +0200
+Date:   Thu, 7 May 2020 08:44:12 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Johan Hovold <johan@kernel.org>,
+        linux- stable <stable@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vince Bridgers <vbridger@opensource.altera.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Fugang Duan <fugang.duan@nxp.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Vitaly Bordug <vbordug@ru.mvista.com>,
+        Claudiu Manoil <claudiu.manoil@freescale.com>,
+        Li Yang <leoli@freescale.com>,
+        Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+        Felix Fietkau <nbd@openwrt.org>,
+        John Crispin <blogic@openwrt.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Lars Persson <lars.persson@axis.com>,
+        Mugunthan V N <mugunthanvnm@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
         Andrew Lunn <andrew@lunn.ch>,
-        Philippe Schenker <philippe.schenker@toradex.com>
-Subject: Re: [PATCH next] ARM: dts: am437x: fix networking on boards with
- ksz9031 phy
-Message-ID: <20200507044056.4smicagmxve5yshn@pengutronix.de>
-References: <20200506190835.31342-1-grygorii.strashko@ti.com>
+        Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+        Netdev <netdev@vger.kernel.org>,
+        nios2-dev@lists.rocketboards.org,
+        open list <linux-kernel@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, lkft-triage@lists.linaro.org
+Subject: Re: [PATCH net 11/16] net: ethernet: marvell: mvneta: fix fixed-link
+ phydev leaks
+Message-ID: <20200507064412.GL2042@localhost>
+References: <1480357509-28074-1-git-send-email-johan@kernel.org>
+ <1480357509-28074-12-git-send-email-johan@kernel.org>
+ <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="rlbyhlusgguuba5b"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200506190835.31342-1-grygorii.strashko@ti.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 06:38:58 up 173 days, 19:57, 178 users,  load average: 0.00, 0.02,
- 0.00
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+In-Reply-To: <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, May 07, 2020 at 12:27:53AM +0530, Naresh Kamboju wrote:
+> On Tue, 29 Nov 2016 at 00:00, Johan Hovold <johan@kernel.org> wrote:
+> >
+> > Make sure to deregister and free any fixed-link PHY registered using
+> > of_phy_register_fixed_link() on probe errors and on driver unbind.
+> >
+> > Fixes: 83895bedeee6 ("net: mvneta: add support for fixed links")
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > ---
+> >  drivers/net/ethernet/marvell/mvneta.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+> > index 0c0a45af950f..707bc4680b9b 100644
+> > --- a/drivers/net/ethernet/marvell/mvneta.c
+> > +++ b/drivers/net/ethernet/marvell/mvneta.c
+> > @@ -4191,6 +4191,8 @@ static int mvneta_probe(struct platform_device *pdev)
+> >         clk_disable_unprepare(pp->clk);
+> >  err_put_phy_node:
+> >         of_node_put(phy_node);
+> > +       if (of_phy_is_fixed_link(dn))
+> > +               of_phy_deregister_fixed_link(dn);
+> 
+> While building kernel Image for arm architecture on stable-rc 4.4 branch
+> the following build error found.
+> 
+> drivers/net/ethernet/marvell/mvneta.c:3442:3: error: implicit
+> declaration of function 'of_phy_deregister_fixed_link'; did you mean
+> 'of_phy_register_fixed_link'? [-Werror=implicit-function-declaration]
+> |    of_phy_deregister_fixed_link(dn);
+> |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> |    of_phy_register_fixed_link
+> 
+> ref:
+> https://gitlab.com/Linaro/lkft/kernel-runs/-/jobs/541374729
 
---rlbyhlusgguuba5b
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Greg, 3f65047c853a ("of_mdio: add helper to deregister fixed-link
+PHYs") needs to be backported as well for these.
 
-Hi Grygorii,
+Original series can be found here:
 
-thank you for you patches!
+	https://lkml.kernel.org/r/1480357509-28074-1-git-send-email-johan@kernel.org
 
-On Wed, May 06, 2020 at 10:08:35PM +0300, Grygorii Strashko wrote:
-> Since commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support for the
-> KSZ9031 PHY") the networking is broken on boards:
->  am437x-gp-evm
->  am437x-sk-evm
->  am437x-idk-evm
->=20
-> All above boards have phy-mode =3D "rgmii" and this is worked before, bec=
-ause
-> KSZ9031 PHY started with default RGMII internal delays configuration (TX
-> off, RX on 1.2 ns) and MAC provided TX delay. After above commit, the
-> KSZ9031 PHY starts handling phy mode properly and disables RX delay, as
-> result networking is become broken.
->=20
-> Fix it by switching to phy-mode =3D "rgmii-rxid" to reflect previous
-> behavior.
->=20
-> Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-> Cc: Andrew Lunn <andrew@lunn.ch>
-> Cc: Philippe Schenker <philippe.schenker@toradex.com>
-> Fixes: commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support for t=
-he KSZ9031 PHY")
-> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> ---
->  arch/arm/boot/dts/am437x-gp-evm.dts  | 2 +-
->  arch/arm/boot/dts/am437x-idk-evm.dts | 2 +-
->  arch/arm/boot/dts/am437x-sk-evm.dts  | 4 ++--
->  3 files changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am43=
-7x-gp-evm.dts
-> index 811c8cae315b..d692e3b2812a 100644
-> --- a/arch/arm/boot/dts/am437x-gp-evm.dts
-> +++ b/arch/arm/boot/dts/am437x-gp-evm.dts
-> @@ -943,7 +943,7 @@
-> =20
->  &cpsw_emac0 {
->  	phy-handle =3D <&ethphy0>;
-> -	phy-mode =3D "rgmii";
-> +	phy-mode =3D "rgmii-rxid";
->  };
-> =20
->  &elm {
-> diff --git a/arch/arm/boot/dts/am437x-idk-evm.dts b/arch/arm/boot/dts/am4=
-37x-idk-evm.dts
-> index 9f66f96d09c9..a7495fb364bf 100644
-> --- a/arch/arm/boot/dts/am437x-idk-evm.dts
-> +++ b/arch/arm/boot/dts/am437x-idk-evm.dts
-> @@ -504,7 +504,7 @@
-> =20
->  &cpsw_emac0 {
->  	phy-handle =3D <&ethphy0>;
-> -	phy-mode =3D "rgmii";
-> +	phy-mode =3D "rgmii-id";
->  };
-
-Do you have here really rgmii-id?
-
-
->  &rtc {
-> diff --git a/arch/arm/boot/dts/am437x-sk-evm.dts b/arch/arm/boot/dts/am43=
-7x-sk-evm.dts
-> index 25222497f828..4d5a7ca2e25d 100644
-> --- a/arch/arm/boot/dts/am437x-sk-evm.dts
-> +++ b/arch/arm/boot/dts/am437x-sk-evm.dts
-> @@ -833,13 +833,13 @@
-> =20
->  &cpsw_emac0 {
->  	phy-handle =3D <&ethphy0>;
-> -	phy-mode =3D "rgmii";
-> +	phy-mode =3D "rgmii-rxid";
->  	dual_emac_res_vlan =3D <1>;
->  };
-> =20
->  &cpsw_emac1 {
->  	phy-handle =3D <&ethphy1>;
-> -	phy-mode =3D "rgmii";
-> +	phy-mode =3D "rgmii-rxid";
->  	dual_emac_res_vlan =3D <2>;
->  };
-> =20
-> --=20
-> 2.17.1
-
-Regards,
-Oleksij
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---rlbyhlusgguuba5b
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl6zkVMACgkQ4omh9DUa
-UbO2Og//azHJ/HWp+TB9hH+8UujDum628rQwsaH2rFDUmtm0XYBoRTp4L4v4Yn10
-u1eSJxvBl38sfyvDqM2v2visX1Hrr72khBrpSlsZZi+SBaN59cLs97vDRqZxohS6
-R8U2SfVYIHMuiJY0v7J9XuScocVNtQCRJ/tiy9sY2FIQp9U0ny2ghqDpDXkw4FYG
-uzQKPyPSHbqanUlvU2lqapPj8JP6EBprJcUS00DTv5Tqkw9t2A5Xi+S2tfT9CtZj
-jsmQcjpgAKgPuuYsbHzAouvv2E2yxPiOSYrFoKoB+q4STtIojdzAkUxb7G2f/kPi
-u+d2t2lvjaAbVj3fhOmXKqUZVu9fwCqhXTZQzv2pYy4vV4Qi3AgzRSCh42NOZjvU
-Bp/3HiBOiDZsFI2DFjJtk1bPgGbVcStgPW6a853ZrfLZy4RJBopddqedWJBsu8jj
-pHmubJQiZeUu2eAtdxSFNbvTeEzyk+1vuf/zHiO1guXA0Sndm5pbv8b8RE+Uwghf
-CwLUxVRq9AnNDcFZujrFOH3yDN4tYPYG+TjtoxSultHge+7gKs78FirA18DuGpIN
-qh+DSsiOuRLEkN8NzWU/1Xve7qpYb9gOmMoL1WLq96GlgINjcjw0XlEGRJFjl/LU
-hTGgNMOCdxZZJ42p69ESuYZL6bRCH9XphXlYllOfcU0RDYltl+Q=
-=Tt1L
------END PGP SIGNATURE-----
-
---rlbyhlusgguuba5b--
+Johan
