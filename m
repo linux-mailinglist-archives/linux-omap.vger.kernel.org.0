@@ -2,60 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 267141C9849
-	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 19:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C58E1C9857
+	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 19:52:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726761AbgEGRtT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 May 2020 13:49:19 -0400
-Received: from muru.com ([72.249.23.125]:53478 "EHLO muru.com"
+        id S1726515AbgEGRwB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 May 2020 13:52:01 -0400
+Received: from muru.com ([72.249.23.125]:53490 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726470AbgEGRtT (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 7 May 2020 13:49:19 -0400
+        id S1726367AbgEGRwB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 7 May 2020 13:52:01 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 0AC7080CD;
-        Thu,  7 May 2020 17:50:06 +0000 (UTC)
-Date:   Thu, 7 May 2020 10:49:15 -0700
+        by muru.com (Postfix) with ESMTPS id CCE4480CD;
+        Thu,  7 May 2020 17:52:49 +0000 (UTC)
+Date:   Thu, 7 May 2020 10:51:58 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Kevin Hilman <khilman@kernel.org>,
-        Olof Johansson <olof@lixom.net>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH v2 12/15] ARM: omap2plus: Drop unneeded select of
- MIGHT_HAVE_CACHE_L2X0
-Message-ID: <20200507174915.GV37466@atomide.com>
-References: <20200505150722.1575-1-geert+renesas@glider.be>
- <20200505150722.1575-13-geert+renesas@glider.be>
- <20200505182618.GQ37466@atomide.com>
+To:     Philippe Schenker <philippe.schenker@toradex.com>
+Cc:     "davem@davemloft.net" <davem@davemloft.net>,
+        "grygorii.strashko@ti.com" <grygorii.strashko@ti.com>,
+        "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "andrew@lunn.ch" <andrew@lunn.ch>
+Subject: Re: [PATCH next] ARM: dts: am57xx: fix networking on boards with
+ ksz9031 phy
+Message-ID: <20200507175158.GW37466@atomide.com>
+References: <20200506191124.31569-1-grygorii.strashko@ti.com>
+ <eab549aed345683a3ee79835369169c99e003488.camel@toradex.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200505182618.GQ37466@atomide.com>
+In-Reply-To: <eab549aed345683a3ee79835369169c99e003488.camel@toradex.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [200505 18:27]:
-> * Geert Uytterhoeven <geert+renesas@glider.be> [200505 08:08]:
-> > Support for TI AM43x SoCs depends on ARCH_MULTI_V7, which selects
-> > ARCH_MULTI_V6_V7.
-> > As the latter selects MIGHT_HAVE_CACHE_L2X0, there is no need for
-> > SOC_AM43XX to select MIGHT_HAVE_CACHE_L2X0.
+* Philippe Schenker <philippe.schenker@toradex.com> [200507 08:43]:
+> On Wed, 2020-05-06 at 22:11 +0300, Grygorii Strashko wrote:
+> > Since commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support for
+> > the
+> > KSZ9031 PHY") the networking is broken on boards:
+> >  am571x-idk
+> >  am572x-idk
+> >  am574x-idk
+> >  am57xx-beagle-x15
 > > 
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > Cc: Tony Lindgren <tony@atomide.com>
-> > Cc: linux-omap@vger.kernel.org
-> > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> > Acked-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> > v2:
-> >   - Add Acked-by.
+> > All above boards have phy-mode = "rgmii" and this is worked before
+> > because
+> > KSZ9031 PHY started with default RGMII internal delays configuration
+> > (TX
+> > off, RX on 1.2 ns) and MAC provided TX delay. After above commit, the
+> > KSZ9031 PHY starts handling phy mode properly and disables RX delay,
+> > as
+> > result networking is become broken.
+> > 
+> > Fix it by switching to phy-mode = "rgmii-rxid" to reflect previous
+> > behavior.
+> > 
+> > Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+> > Cc: Andrew Lunn <andrew@lunn.ch>
+> > Cc: Philippe Schenker <philippe.schenker@toradex.com>
+> > Fixes: commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support
+> > for the KSZ9031 PHY")
+> > Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 > 
-> I'll queue this into omap-for-v5.8/soc tomorrow assuming nobody else
-> has it already applied.
+> Thanks Grygorii!
+> 
+> Reviewed-by: Philippe Schenker <
+> philippe.schenker@toradex.com>
 
-OK applying int omap-for-v5.8/soc thanks.
+Thanks applying this into fixes.
 
 Tony
