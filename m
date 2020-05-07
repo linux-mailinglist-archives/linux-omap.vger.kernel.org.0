@@ -2,169 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A8B1C8D9B
-	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 16:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 436641C947C
+	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 17:14:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727856AbgEGOHi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 May 2020 10:07:38 -0400
-Received: from muru.com ([72.249.23.125]:53080 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727835AbgEGOHh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 7 May 2020 10:07:37 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 3567680CD;
-        Thu,  7 May 2020 14:08:24 +0000 (UTC)
-Date:   Thu, 7 May 2020 07:07:32 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz
-Subject: Re: USB networking news, ofono for d4: less hacked version
-Message-ID: <20200507140732.GU37466@atomide.com>
-References: <20200506101125.GA7490@amd>
- <20200506144338.GT37466@atomide.com>
- <20200506230525.GA22354@amd>
+        id S1727849AbgEGPNO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 May 2020 11:13:14 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:45950 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726495AbgEGPNN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 May 2020 11:13:13 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 047FCqlM092059;
+        Thu, 7 May 2020 10:12:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1588864372;
+        bh=uHPwV69Dhv7IS63ZpxLzpMltxKOgBIIHLVDM5YZVhN0=;
+        h=From:To:CC:Subject:Date;
+        b=kT8IjwRgE2gl+b9P3zAs5HOYtpWHYrNjlZkW9khLiAPIX0ip7/GQgkmCrzv+GGDDe
+         NJ9ISUCTJeLtlxEW7oUSRY9ZZr7HNCvLBHiim8+UsBbVl5HrtMGsbCjn6f9yv/sh6Q
+         1BqAqX5VhKE1RsTRz9kLiX+GA3b6/4/PY+PNs/mI=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 047FCqD0043780;
+        Thu, 7 May 2020 10:12:52 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 7 May
+ 2020 10:12:51 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 7 May 2020 10:12:51 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 047FCosF070313;
+        Thu, 7 May 2020 10:12:51 -0500
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        "David S. Miller" <davem@davemloft.net>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Philippe Schenker <philippe.schenker@toradex.com>
+Subject: [PATCH v2] ARM: dts: am437x: fix networking on boards with ksz9031 phy
+Date:   Thu, 7 May 2020 18:12:44 +0300
+Message-ID: <20200507151244.24218-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200506230525.GA22354@amd>
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Pavel Machek <pavel@ucw.cz> [200506 23:06]:
-> On Wed 2020-05-06 07:43:38, Tony Lindgren wrote:
-> > * Pavel Machek <pavel@ucw.cz> [200506 10:12]:
-> > > Hi!
-> > > 
-> > > So... I found out that USB networking works way better when I don't
-> > > attempt to charge the phone at the same. Yes, green light was
-> > > blinking.
-> > 
-> > OK yes we don't have much of a charger detection currently and the
-> > charger tries to reconnect with the LED blinking rapidly with an
-> > empty battery.
-> 
-> Do you have an idea why that causes problems with usb data connection?
+Since commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support for the
+KSZ9031 PHY") the networking is broken on boards:
+ am437x-gp-evm
+ am437x-sk-evm
+ am437x-idk-evm
 
-If the charger is configured to draw too much current, the USB port
-or hub will cut it off. I have been carrying the following patch in
-droid4-pending-v5.6 that lowers the charge current if it fails, maybe
-see if that helps?
+All above boards have phy-mode = "rgmii" and this is worked before, because
+KSZ9031 PHY started with default RGMII internal delays configuration (TX
+off, RX on 1.2 ns) and MAC provided TX delay. After above commit, the
+KSZ9031 PHY starts handling phy mode properly and disables RX delay, as
+result networking is become broken.
 
-> I created a script to disable charging -- and that works. I also found
-> out cable about 5cm long. Not nice to use, but works significantly
-> better w.r.t. charging.
+Fix it by switching to phy-mode = "rgmii-rxid" to reflect previous
+behavior.
 
-Yeah some USB cables are really thin.
-
-> > I still need to figure update audio notifications for the current set of
-> > gsmmux patches. Eventually maybe ofono can just set the voice call audio
-> > routing using alsa. But let's get the kernel notifications working first
-> > as we also need to fix up the audio parts for the earlier comments from
-> > Peter and Sebastian.
-> 
-> Ofono does not normally touch ALSA, so I'd prefer not to do it from
-> there.
-
-OK
-
-> But I might be confused. I recall some audio patches were needed for
-> basic phone calls (setting up mixers to connect gsm<->audio), but
-> those worked before gsmux support was enabled. (Maybe some hardcoded
-> commands were needed to be sent to gsmmux somewhere).
-
-We're currently reconfiguring the TDM transport that based on the
-unsolicited messages on dlci1. I still need to figure out how to add
-that back while keeping the serdev-ngsm driver generic.
-
-I'm thinking maybe we'll just have the voice call audio driver also be a
-read-only consumer driver for dlci1 to listen to the unsolicited
-messages on dlci1, and also request n_gsm spin up /dev/gsmtty1.
-
-Then if at some point we have some Linux generic modem framework, it
-can provide some notifiers for the call state.
-
-> I assume neither gsmmux audio parts nor mixer parts are available in
-> -next at the moment?
-
-Sorry not yet, will post as soon as I have the audio notifiers part
-working, so it will be some days away still with time permitting.
-
-Regards,
-
-Tony
-
-8< -------------------------------
-From tony Mon Sep 17 00:00:00 2001
-From: Tony Lindgren <tony@atomide.com>
-Date: Sun, 16 Feb 2020 16:59:06 -0800
-Subject: [PATCH] power: supply: cpcap-charger: Adjust current based on
- charger interrupts
-
-When debugging why higher than 500 mA charge current does not work, I
-noticed that we start getting lots of chrgcurr1 interrupts if we attempt
-to charge at rates higher than the charger can provide.
-
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Philippe Schenker <philippe.schenker@toradex.com>
+Fixes: commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support for the KSZ9031 PHY")
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 ---
- drivers/power/supply/cpcap-charger.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ arch/arm/boot/dts/am437x-gp-evm.dts  | 2 +-
+ arch/arm/boot/dts/am437x-idk-evm.dts | 2 +-
+ arch/arm/boot/dts/am437x-sk-evm.dts  | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
---- a/drivers/power/supply/cpcap-charger.c
-+++ b/drivers/power/supply/cpcap-charger.c
-@@ -147,6 +147,8 @@ struct cpcap_charger_ddata {
- 	int status;
- 	int state;
- 	int voltage;
-+	int last_current;
-+	int last_current_retries;
+diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
+index 811c8cae315b..d692e3b2812a 100644
+--- a/arch/arm/boot/dts/am437x-gp-evm.dts
++++ b/arch/arm/boot/dts/am437x-gp-evm.dts
+@@ -943,7 +943,7 @@
+ 
+ &cpsw_emac0 {
+ 	phy-handle = <&ethphy0>;
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-rxid";
  };
  
- struct cpcap_interrupt_desc {
-@@ -616,6 +618,7 @@ static void cpcap_usb_detect(struct work_struct *work)
- 	/* Just init the state if a charger is connected with no chrg_det set */
- 	if (!s.chrg_det && s.chrgcurr1 && s.vbusvld) {
- 		cpcap_charger_update_state(ddata, CPCAP_CHARGER_DETECTING);
-+		ddata->last_current = 0;
+ &elm {
+diff --git a/arch/arm/boot/dts/am437x-idk-evm.dts b/arch/arm/boot/dts/am437x-idk-evm.dts
+index 9f66f96d09c9..a958f9ee4a5a 100644
+--- a/arch/arm/boot/dts/am437x-idk-evm.dts
++++ b/arch/arm/boot/dts/am437x-idk-evm.dts
+@@ -504,7 +504,7 @@
  
- 		return;
- 	}
-@@ -662,6 +665,30 @@ static void cpcap_usb_detect(struct work_struct *work)
- 		else
- 			max_current = CPCAP_REG_CRM_ICHRG_0A532;
+ &cpsw_emac0 {
+ 	phy-handle = <&ethphy0>;
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-rxid";
+ };
  
-+		switch (ddata->state) {
-+		case CPCAP_CHARGER_DETECTING:
-+			ddata->last_current_retries = 0;
-+			break;
-+		case CPCAP_CHARGER_DISCONNECTED:
-+			if (ddata->last_current > CPCAP_REG_CRM_ICHRG_0A532) {
-+				/* Attempt current 3 times before lowering */
-+				if (ddata->last_current_retries++ >= 3) {
-+					ddata->last_current--;
-+					ddata->last_current_retries = 0;
-+					/* Wait a bit for voltage to ramp up */
-+					usleep_range(40000, 50000);
-+				}
-+				max_current = ddata->last_current;
-+			}
-+			dev_info(ddata->dev, "enabling charger with current %i\n",
-+				 max_current);
-+			break;
-+		default:
-+			ddata->last_current_retries = 0;
-+			break;
-+		}
-+
-+		ddata->last_current = max_current;
- 		vchrg = cpcap_charger_voltage_to_regval(ddata->voltage);
- 		error = cpcap_charger_set_state(ddata,
- 						CPCAP_REG_CRM_VCHRG(vchrg),
+ &rtc {
+diff --git a/arch/arm/boot/dts/am437x-sk-evm.dts b/arch/arm/boot/dts/am437x-sk-evm.dts
+index 25222497f828..4d5a7ca2e25d 100644
+--- a/arch/arm/boot/dts/am437x-sk-evm.dts
++++ b/arch/arm/boot/dts/am437x-sk-evm.dts
+@@ -833,13 +833,13 @@
+ 
+ &cpsw_emac0 {
+ 	phy-handle = <&ethphy0>;
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-rxid";
+ 	dual_emac_res_vlan = <1>;
+ };
+ 
+ &cpsw_emac1 {
+ 	phy-handle = <&ethphy1>;
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-rxid";
+ 	dual_emac_res_vlan = <2>;
+ };
+ 
 -- 
-2.26.2
+2.17.1
+
