@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 021D01C9767
-	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 19:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 536AB1C977C
+	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 19:25:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728102AbgEGRXx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 May 2020 13:23:53 -0400
-Received: from muru.com ([72.249.23.125]:53194 "EHLO muru.com"
+        id S1728110AbgEGRXy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 May 2020 13:23:54 -0400
+Received: from muru.com ([72.249.23.125]:53228 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728070AbgEGRXt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 7 May 2020 13:23:49 -0400
+        id S1727972AbgEGRXv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 7 May 2020 13:23:51 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 226C3822F;
-        Thu,  7 May 2020 17:24:37 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 5B87F80CD;
+        Thu,  7 May 2020 17:24:39 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -31,9 +31,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH 04/14] bus: ti-sysc: Ignore timer12 on secure omap3
-Date:   Thu,  7 May 2020 10:23:20 -0700
-Message-Id: <20200507172330.18679-5-tony@atomide.com>
+Subject: [PATCH 05/14] ARM: OMAP2+: Add omap_init_time_of()
+Date:   Thu,  7 May 2020 10:23:21 -0700
+Message-Id: <20200507172330.18679-6-tony@atomide.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200507172330.18679-1-tony@atomide.com>
 References: <20200507172330.18679-1-tony@atomide.com>
@@ -44,10 +44,9 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Some early omap3 boards use timer12 for system timer, but for secure
-SoCs like on n900 it's not accessible. Likely we will be configuring
-unavailable devices for other SoCs too based on runtime SoC detection,
-so let's use a switch to start with.
+This allows us to move the SoCs to probe system timers one SoC
+at at time. As arch/arm/mach-omap2/timer.c will be eventually gone,
+let's just add omap_init_time_of() to board-generic.c directly.
 
 Cc: Grygorii Strashko <grygorii.strashko@ti.com>
 Cc: Keerthy <j-keerthy@ti.com>
@@ -56,29 +55,33 @@ Cc: Rob Herring <robh@kernel.org>
 Cc: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/bus/ti-sysc.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/mach-omap2/board-generic.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2744,6 +2744,17 @@ static int sysc_init_soc(struct sysc *ddata)
- 	if (match && match->data)
- 		sysc_soc->soc = (int)match->data;
+diff --git a/arch/arm/mach-omap2/board-generic.c b/arch/arm/mach-omap2/board-generic.c
+--- a/arch/arm/mach-omap2/board-generic.c
++++ b/arch/arm/mach-omap2/board-generic.c
+@@ -12,6 +12,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/of_platform.h>
+ #include <linux/irqdomain.h>
++#include <linux/clocksource.h>
  
-+	/* Ignore devices that are not available on HS and EMU SoCs */
-+	if (!sysc_soc->general_purpose) {
-+		switch (sysc_soc->soc) {
-+		case SOC_3430 ... SOC_3630:
-+			sysc_add_disabled(0x48304000);	/* timer12 */
-+			break;
-+		default:
-+			break;
-+		};
-+	}
+ #include <asm/setup.h>
+ #include <asm/mach/arch.h>
+@@ -31,6 +32,13 @@ static void __init __maybe_unused omap_generic_init(void)
+ 	omap_soc_device_init();
+ }
+ 
++/* Clocks are needed early, see drivers/clocksource for the rest */
++void __init __maybe_unused omap_init_time_of(void)
++{
++	omap_clk_init();
++	timer_probe();
++}
 +
- 	match = soc_device_match(sysc_soc_feat_match);
- 	if (!match)
- 		return 0;
+ #ifdef CONFIG_SOC_OMAP2420
+ static const char *const omap242x_boards_compat[] __initconst = {
+ 	"ti,omap2420",
 -- 
 2.26.2
