@@ -2,108 +2,180 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E1661C7DB7
-	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 01:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0B2B1C811F
+	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 06:41:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726529AbgEFXF2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 May 2020 19:05:28 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:48776 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726612AbgEFXF1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 May 2020 19:05:27 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 488E41C0241; Thu,  7 May 2020 01:05:26 +0200 (CEST)
-Date:   Thu, 7 May 2020 01:05:25 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz
-Subject: Re: USB networking news, ofono for d4: less hacked version
-Message-ID: <20200506230525.GA22354@amd>
-References: <20200506101125.GA7490@amd>
- <20200506144338.GT37466@atomide.com>
+        id S1725879AbgEGElI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 May 2020 00:41:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42046 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725848AbgEGElH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 May 2020 00:41:07 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF10C061A0F
+        for <linux-omap@vger.kernel.org>; Wed,  6 May 2020 21:41:07 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1jWYLF-0003h9-8y; Thu, 07 May 2020 06:41:01 +0200
+Received: from ore by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ore@pengutronix.de>)
+        id 1jWYLA-0004p6-67; Thu, 07 May 2020 06:40:56 +0200
+Date:   Thu, 7 May 2020 06:40:56 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Andrew Lunn <andrew@lunn.ch>,
+        Philippe Schenker <philippe.schenker@toradex.com>
+Subject: Re: [PATCH next] ARM: dts: am437x: fix networking on boards with
+ ksz9031 phy
+Message-ID: <20200507044056.4smicagmxve5yshn@pengutronix.de>
+References: <20200506190835.31342-1-grygorii.strashko@ti.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="x+6KMIRAuhnl3hBn"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="rlbyhlusgguuba5b"
 Content-Disposition: inline
-In-Reply-To: <20200506144338.GT37466@atomide.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20200506190835.31342-1-grygorii.strashko@ti.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 06:38:58 up 173 days, 19:57, 178 users,  load average: 0.00, 0.02,
+ 0.00
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---x+6KMIRAuhnl3hBn
-Content-Type: text/plain; charset=us-ascii
+--rlbyhlusgguuba5b
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed 2020-05-06 07:43:38, Tony Lindgren wrote:
-> * Pavel Machek <pavel@ucw.cz> [200506 10:12]:
-> > Hi!
-> >=20
-> > So... I found out that USB networking works way better when I don't
-> > attempt to charge the phone at the same. Yes, green light was
-> > blinking.
+Hi Grygorii,
+
+thank you for you patches!
+
+On Wed, May 06, 2020 at 10:08:35PM +0300, Grygorii Strashko wrote:
+> Since commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support for the
+> KSZ9031 PHY") the networking is broken on boards:
+>  am437x-gp-evm
+>  am437x-sk-evm
+>  am437x-idk-evm
 >=20
-> OK yes we don't have much of a charger detection currently and the
-> charger tries to reconnect with the LED blinking rapidly with an
-> empty battery.
-
-Do you have an idea why that causes problems with usb data connection?
-
-I created a script to disable charging -- and that works. I also found
-out cable about 5cm long. Not nice to use, but works significantly
-better w.r.t. charging.
-
-> > To github.com:pavelmachek/ofono.git
-> >    e7b58fdd..1e7e5ce3  mux-v1.19-2 -> mux-v1.19-2
-> >=20
-> > which creates copy of atchat, so I don't damage existing
-> > functionality. It still seems to somehow work. Lot more work is still
-> > needed. Designed to work with latest kernel patches from Tony, using
-> > gsmmux interfaces.
+> All above boards have phy-mode =3D "rgmii" and this is worked before, bec=
+ause
+> KSZ9031 PHY started with default RGMII internal delays configuration (TX
+> off, RX on 1.2 ns) and MAC provided TX delay. After above commit, the
+> KSZ9031 PHY starts handling phy mode properly and disables RX delay, as
+> result networking is become broken.
 >=20
-> OK, sounds like that should work :)
+> Fix it by switching to phy-mode =3D "rgmii-rxid" to reflect previous
+> behavior.
+>=20
+> Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+> Cc: Andrew Lunn <andrew@lunn.ch>
+> Cc: Philippe Schenker <philippe.schenker@toradex.com>
+> Fixes: commit bcf3440c6dd7 ("net: phy: micrel: add phy-mode support for t=
+he KSZ9031 PHY")
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+> ---
+>  arch/arm/boot/dts/am437x-gp-evm.dts  | 2 +-
+>  arch/arm/boot/dts/am437x-idk-evm.dts | 2 +-
+>  arch/arm/boot/dts/am437x-sk-evm.dts  | 4 ++--
+>  3 files changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am43=
+7x-gp-evm.dts
+> index 811c8cae315b..d692e3b2812a 100644
+> --- a/arch/arm/boot/dts/am437x-gp-evm.dts
+> +++ b/arch/arm/boot/dts/am437x-gp-evm.dts
+> @@ -943,7 +943,7 @@
+> =20
+>  &cpsw_emac0 {
+>  	phy-handle =3D <&ethphy0>;
+> -	phy-mode =3D "rgmii";
+> +	phy-mode =3D "rgmii-rxid";
+>  };
+> =20
+>  &elm {
+> diff --git a/arch/arm/boot/dts/am437x-idk-evm.dts b/arch/arm/boot/dts/am4=
+37x-idk-evm.dts
+> index 9f66f96d09c9..a7495fb364bf 100644
+> --- a/arch/arm/boot/dts/am437x-idk-evm.dts
+> +++ b/arch/arm/boot/dts/am437x-idk-evm.dts
+> @@ -504,7 +504,7 @@
+> =20
+>  &cpsw_emac0 {
+>  	phy-handle =3D <&ethphy0>;
+> -	phy-mode =3D "rgmii";
+> +	phy-mode =3D "rgmii-id";
+>  };
 
-As I said, still ton of work to do :-(.
+Do you have here really rgmii-id?
 
-> I still need to figure update audio notifications for the current set of
-> gsmmux patches. Eventually maybe ofono can just set the voice call audio
-> routing using alsa. But let's get the kernel notifications working first
-> as we also need to fix up the audio parts for the earlier comments from
-> Peter and Sebastian.
 
-Ofono does not normally touch ALSA, so I'd prefer not to do it from
-there.
+>  &rtc {
+> diff --git a/arch/arm/boot/dts/am437x-sk-evm.dts b/arch/arm/boot/dts/am43=
+7x-sk-evm.dts
+> index 25222497f828..4d5a7ca2e25d 100644
+> --- a/arch/arm/boot/dts/am437x-sk-evm.dts
+> +++ b/arch/arm/boot/dts/am437x-sk-evm.dts
+> @@ -833,13 +833,13 @@
+> =20
+>  &cpsw_emac0 {
+>  	phy-handle =3D <&ethphy0>;
+> -	phy-mode =3D "rgmii";
+> +	phy-mode =3D "rgmii-rxid";
+>  	dual_emac_res_vlan =3D <1>;
+>  };
+> =20
+>  &cpsw_emac1 {
+>  	phy-handle =3D <&ethphy1>;
+> -	phy-mode =3D "rgmii";
+> +	phy-mode =3D "rgmii-rxid";
+>  	dual_emac_res_vlan =3D <2>;
+>  };
+> =20
+> --=20
+> 2.17.1
 
-But I might be confused. I recall some audio patches were needed for
-basic phone calls (setting up mixers to connect gsm<->audio), but
-those worked before gsmux support was enabled. (Maybe some hardcoded
-commands were needed to be sent to gsmmux somewhere).
-
-I assume neither gsmmux audio parts nor mixer parts are available in
--next at the moment?
-
-Best regards,
-									Pavel
+Regards,
+Oleksij
 --=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
---x+6KMIRAuhnl3hBn
+--rlbyhlusgguuba5b
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
 
-iEYEARECAAYFAl6zQrUACgkQMOfwapXb+vJF1QCgqarLMWC4FO5LgMlW6LlCOlI2
-dhkAnRHc+zX0noNocp+CI5Hd0uRb0qFk
-=gjFT
+iQIzBAABCAAdFiEERBNZvwSgvmcMY/T74omh9DUaUbMFAl6zkVMACgkQ4omh9DUa
+UbO2Og//azHJ/HWp+TB9hH+8UujDum628rQwsaH2rFDUmtm0XYBoRTp4L4v4Yn10
+u1eSJxvBl38sfyvDqM2v2visX1Hrr72khBrpSlsZZi+SBaN59cLs97vDRqZxohS6
+R8U2SfVYIHMuiJY0v7J9XuScocVNtQCRJ/tiy9sY2FIQp9U0ny2ghqDpDXkw4FYG
+uzQKPyPSHbqanUlvU2lqapPj8JP6EBprJcUS00DTv5Tqkw9t2A5Xi+S2tfT9CtZj
+jsmQcjpgAKgPuuYsbHzAouvv2E2yxPiOSYrFoKoB+q4STtIojdzAkUxb7G2f/kPi
+u+d2t2lvjaAbVj3fhOmXKqUZVu9fwCqhXTZQzv2pYy4vV4Qi3AgzRSCh42NOZjvU
+Bp/3HiBOiDZsFI2DFjJtk1bPgGbVcStgPW6a853ZrfLZy4RJBopddqedWJBsu8jj
+pHmubJQiZeUu2eAtdxSFNbvTeEzyk+1vuf/zHiO1guXA0Sndm5pbv8b8RE+Uwghf
+CwLUxVRq9AnNDcFZujrFOH3yDN4tYPYG+TjtoxSultHge+7gKs78FirA18DuGpIN
+qh+DSsiOuRLEkN8NzWU/1Xve7qpYb9gOmMoL1WLq96GlgINjcjw0XlEGRJFjl/LU
+hTGgNMOCdxZZJ42p69ESuYZL6bRCH9XphXlYllOfcU0RDYltl+Q=
+=Tt1L
 -----END PGP SIGNATURE-----
 
---x+6KMIRAuhnl3hBn--
+--rlbyhlusgguuba5b--
