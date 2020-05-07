@@ -2,39 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 471661C9761
-	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 19:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5E571C9764
+	for <lists+linux-omap@lfdr.de>; Thu,  7 May 2020 19:23:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726641AbgEGRXl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 May 2020 13:23:41 -0400
-Received: from muru.com ([72.249.23.125]:53102 "EHLO muru.com"
+        id S1727959AbgEGRXo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 May 2020 13:23:44 -0400
+Received: from muru.com ([72.249.23.125]:53138 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726074AbgEGRXl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 7 May 2020 13:23:41 -0400
+        id S1726074AbgEGRXn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 7 May 2020 13:23:43 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id B4C8980CD;
-        Thu,  7 May 2020 17:24:26 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 7F55C810D;
+        Thu,  7 May 2020 17:24:29 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>
 Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
+        Rob Herring <robh@kernel.org>, Tero Kristo <t-kristo@ti.com>,
         "H. Nikolaus Schaller" <hns@goldelico.com>,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
         Adam Ford <aford173@gmail.com>,
         Andreas Kemnade <andreas@kemnade.info>,
         Brian Hutchinson <b.hutchman@gmail.com>,
         Graeme Smecher <gsmecher@threespeedlogic.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
         Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <t-kristo@ti.com>, devicetree@vger.kernel.org,
+        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCHv3 00/14] Update omaps to use drivers/clocksource timers
-Date:   Thu,  7 May 2020 10:23:16 -0700
-Message-Id: <20200507172330.18679-1-tony@atomide.com>
+Subject: [PATCH 01/14] clocksource/drivers/timer-ti-32k: Add support for initializing directly
+Date:   Thu,  7 May 2020 10:23:17 -0700
+Message-Id: <20200507172330.18679-2-tony@atomide.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200507172330.18679-1-tony@atomide.com>
+References: <20200507172330.18679-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
@@ -42,100 +44,114 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi all,
+Let's allow probing the 32k counter directly based on devicetree data to
+prepare for dropping the related legacy platform code. Let's only do this
+if the parent node is compatible with ti-sysc to make sure we have the
+related devicetree data available.
 
-Here's v3 series to udpate omaps to use drivers/clocksource timers for
-the 32k counter and dmtimer, and to remove the old legacy platform code.
-Please review and test.
+Let's also show the 32k counter information before registering the
+clocksource, now we see it after the clocksource information which is a
+bit confusing.
 
-I've updated the timer-ti-dm-systimer.c patch based on the comments from
-Daniel and Rob, and added support for selecting the preferred timers to
-use.
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Lokesh Vutla <lokeshvutla@ti.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Tero Kristo <t-kristo@ti.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/clocksource/timer-ti-32k.c | 48 +++++++++++++++++++++++++++++-
+ 1 file changed, 47 insertions(+), 1 deletion(-)
 
-Then for merging when folks are happy with this series, Daniel if you
-can please apply the first three patches into an immutable branch it
-would be great.
-
-Regards,
-
-Tony
-
-
-Changes since v2:
-
-- Drop extra compatible and use timer capabilities instead as suggested
-  by Rob
-
-- Add support for detecting the preferred system timers to use
-
-Changes since v1:
-
-- Updated to be self-contained based on comments from Daniel
-
-
-Tony Lindgren (14):
-  clocksource/drivers/timer-ti-32k: Add support for initializing
-    directly
-  clocksource/drivers/timer-ti-dm: Add clockevent and clocksource
-    support
-  clk: ti: dm816: enable sysclk6_ck on init
-  bus: ti-sysc: Ignore timer12 on secure omap3
-  ARM: OMAP2+: Add omap_init_time_of()
-  ARM: dts: Configure system timers for am335x
-  ARM: dts: Configure system timers for am437x
-  ARM: dts: Configure system timers for omap4
-  ARM: dts: Configure system timers for omap5 and dra7
-  ARM: dts: Configure system timers for omap3
-  ARM: dts: Configure system timers for ti81xx
-  ARM: dts: Configure system timers for omap2
-  ARM: OMAP2+: Drop old timer code for dmtimer and 32k counter
-  bus: ti-sysc: Timers no longer need legacy quirk handling
-
- arch/arm/boot/dts/am33xx-l4.dtsi              |   6 +-
- arch/arm/boot/dts/am33xx.dtsi                 |  20 +
- arch/arm/boot/dts/am3517.dtsi                 |  24 +-
- arch/arm/boot/dts/am4372.dtsi                 |  20 +
- arch/arm/boot/dts/am437x-l4.dtsi              |   7 +-
- arch/arm/boot/dts/dm814x.dtsi                 |  74 +-
- arch/arm/boot/dts/dm816x.dtsi                 |  78 +-
- arch/arm/boot/dts/dra7-l4.dtsi                |   7 +-
- arch/arm/boot/dts/dra7.dtsi                   |  10 +
- arch/arm/boot/dts/omap2.dtsi                  |  31 +-
- arch/arm/boot/dts/omap2420.dtsi               |  68 +-
- arch/arm/boot/dts/omap2430.dtsi               |  68 +-
- arch/arm/boot/dts/omap3-beagle.dts            |  33 +
- arch/arm/boot/dts/omap3-devkit8000.dts        |  33 +
- arch/arm/boot/dts/omap3.dtsi                  | 134 +++-
- arch/arm/boot/dts/omap4-l4.dtsi               |   4 +-
- arch/arm/boot/dts/omap4.dtsi                  |  10 +
- arch/arm/boot/dts/omap5-l4.dtsi               |   4 +-
- arch/arm/boot/dts/omap5.dtsi                  |  10 +
- arch/arm/mach-omap2/Makefile                  |   4 +-
- arch/arm/mach-omap2/board-generic.c           |  32 +-
- arch/arm/mach-omap2/common.h                  |   7 +
- arch/arm/mach-omap2/omap_hwmod_2420_data.c    |  20 -
- arch/arm/mach-omap2/omap_hwmod_2430_data.c    |  19 -
- .../omap_hwmod_2xxx_interconnect_data.c       |   8 -
- .../mach-omap2/omap_hwmod_2xxx_ipblock_data.c |  47 --
- .../omap_hwmod_33xx_43xx_common_data.h        |   2 -
- .../omap_hwmod_33xx_43xx_interconnect_data.c  |   8 -
- .../omap_hwmod_33xx_43xx_ipblock_data.c       |  62 --
- arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |  10 -
- arch/arm/mach-omap2/omap_hwmod_3xxx_data.c    | 146 +---
- arch/arm/mach-omap2/omap_hwmod_43xx_data.c    |  45 --
- arch/arm/mach-omap2/omap_hwmod_44xx_data.c    |  90 ---
- arch/arm/mach-omap2/omap_hwmod_54xx_data.c    |  89 ---
- arch/arm/mach-omap2/omap_hwmod_7xx_data.c     | 176 -----
- arch/arm/mach-omap2/omap_hwmod_81xx_data.c    |  74 --
- arch/arm/mach-omap2/omap_hwmod_common_data.h  |   3 -
- arch/arm/mach-omap2/timer.c                   | 568 +-------------
- drivers/bus/ti-sysc.c                         |  25 +-
- drivers/clk/ti/clk-816x.c                     |   1 +
- drivers/clocksource/Makefile                  |   1 +
- drivers/clocksource/timer-ti-32k.c            |  48 +-
- drivers/clocksource/timer-ti-dm-systimer.c    | 731 ++++++++++++++++++
- 43 files changed, 1372 insertions(+), 1485 deletions(-)
- create mode 100644 drivers/clocksource/timer-ti-dm-systimer.c
-
+diff --git a/drivers/clocksource/timer-ti-32k.c b/drivers/clocksource/timer-ti-32k.c
+--- a/drivers/clocksource/timer-ti-32k.c
++++ b/drivers/clocksource/timer-ti-32k.c
+@@ -24,6 +24,7 @@
+  * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com
+  */
+ 
++#include <linux/clk.h>
+ #include <linux/init.h>
+ #include <linux/time.h>
+ #include <linux/sched_clock.h>
+@@ -76,6 +77,49 @@ static u64 notrace omap_32k_read_sched_clock(void)
+ 	return ti_32k_read_cycles(&ti_32k_timer.cs);
+ }
+ 
++static void __init ti_32k_timer_enable_clock(struct device_node *np,
++					     const char *name)
++{
++	struct clk *clock;
++	int error;
++
++	clock = of_clk_get_by_name(np->parent, name);
++	if (IS_ERR(clock)) {
++		/* Only some SoCs have a separate interface clock */
++		if (PTR_ERR(clock) == -EINVAL && !strncmp("ick", name, 3))
++			return;
++
++		pr_warn("%s: could not get clock %s %li\n",
++			__func__, name, PTR_ERR(clock));
++		return;
++	}
++
++	error = clk_prepare_enable(clock);
++	if (error) {
++		pr_warn("%s: could not enable %s: %i\n",
++			__func__, name, error);
++		return;
++	}
++}
++
++static void __init ti_32k_timer_module_init(struct device_node *np,
++					    void __iomem *base)
++{
++	void __iomem *sysc = base + 4;
++
++	if (!of_device_is_compatible(np->parent, "ti,sysc"))
++		return;
++
++	ti_32k_timer_enable_clock(np, "fck");
++	ti_32k_timer_enable_clock(np, "ick");
++
++	/*
++	 * Force idle module as wkup domain is active with MPU.
++	 * No need to tag the module disabled for ti-sysc probe.
++	 */
++	writel_relaxed(0, sysc);
++}
++
+ static int __init ti_32k_timer_init(struct device_node *np)
+ {
+ 	int ret;
+@@ -90,6 +134,7 @@ static int __init ti_32k_timer_init(struct device_node *np)
+ 		ti_32k_timer.cs.flags |= CLOCK_SOURCE_SUSPEND_NONSTOP;
+ 
+ 	ti_32k_timer.counter = ti_32k_timer.base;
++	ti_32k_timer_module_init(np, ti_32k_timer.base);
+ 
+ 	/*
+ 	 * 32k sync Counter IP register offsets vary between the highlander
+@@ -104,6 +149,8 @@ static int __init ti_32k_timer_init(struct device_node *np)
+ 	else
+ 		ti_32k_timer.counter += OMAP2_32KSYNCNT_CR_OFF_LOW;
+ 
++	pr_info("OMAP clocksource: 32k_counter at 32768 Hz\n");
++
+ 	ret = clocksource_register_hz(&ti_32k_timer.cs, 32768);
+ 	if (ret) {
+ 		pr_err("32k_counter: can't register clocksource\n");
+@@ -111,7 +158,6 @@ static int __init ti_32k_timer_init(struct device_node *np)
+ 	}
+ 
+ 	sched_clock_register(omap_32k_read_sched_clock, 32, 32768);
+-	pr_info("OMAP clocksource: 32k_counter at 32768 Hz\n");
+ 
+ 	return 0;
+ }
 -- 
 2.26.2
