@@ -2,286 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4959A1CA7B7
-	for <lists+linux-omap@lfdr.de>; Fri,  8 May 2020 11:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FEAE1CA7CE
+	for <lists+linux-omap@lfdr.de>; Fri,  8 May 2020 12:02:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726767AbgEHJ7n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 May 2020 05:59:43 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:58318 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727093AbgEHJ7m (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 May 2020 05:59:42 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0489xONv112705;
-        Fri, 8 May 2020 04:59:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1588931964;
-        bh=1mP5NZoPz79Fbrm2hSfkRM1/h90PP/Hph3S5iklvqt4=;
-        h=From:To:CC:Subject:Date;
-        b=P/mubhP8oH6A01orrIyzG3BobORJNErVYONBVkgZrRyeOrqs1NJfr6HUUs03VtqZC
-         P6jhZs3C0RyGHbYcpYvN48piVMB7t/LFN4L+wnKXH9pJK3TAeeujlQQgGd9VaoxEgS
-         2Qf1vvO/h1AenNouIZ1K/p8rYvOOBWwqsxUFeAvo=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0489xOJb089360
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 8 May 2020 04:59:24 -0500
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 8 May
- 2020 04:59:23 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 8 May 2020 04:59:23 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0489xMcH052428;
-        Fri, 8 May 2020 04:59:23 -0500
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-To:     Arnd Bergmann <arnd@arndb.de>, <netdev@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Russell King <linux@armlinux.org.uk>
-CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Clay McClure <clay@daemons.net>, Dan Murphy <dmurphy@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH net v3] net: ethernet: ti: fix build and remove TI_CPTS_MOD workaround
-Date:   Fri, 8 May 2020 12:59:14 +0300
-Message-ID: <20200508095914.20509-1-grygorii.strashko@ti.com>
-X-Mailer: git-send-email 2.17.1
+        id S1727769AbgEHKCP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 May 2020 06:02:15 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:39366 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725825AbgEHKCO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 May 2020 06:02:14 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id B78641C0257; Fri,  8 May 2020 12:02:12 +0200 (CEST)
+Date:   Fri, 8 May 2020 12:02:12 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz
+Subject: ofono for d4: less hcked and more working version was Re: USB
+ networking news, ofono for d4: less hacked version
+Message-ID: <20200508100211.GA19646@amd>
+References: <20200506101125.GA7490@amd>
+ <20200506144338.GT37466@atomide.com>
+ <20200506230525.GA22354@amd>
+ <20200507140732.GU37466@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="yrj/dFKFPuw6o+aM"
+Content-Disposition: inline
+In-Reply-To: <20200507140732.GU37466@atomide.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Clay McClure <clay@daemons.net>
 
-My recent commit b6d49cab44b5 ("net: Make PTP-specific drivers depend on
-PTP_1588_CLOCK") exposes a missing dependency in defconfigs that select
-TI_CPTS without selecting PTP_1588_CLOCK, leading to linker errors of the
-form:
+--yrj/dFKFPuw6o+aM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-drivers/net/ethernet/ti/cpsw.o: in function `cpsw_ndo_stop':
-cpsw.c:(.text+0x680): undefined reference to `cpts_unregister'
- ...
+Hi!
 
-That's because TI_CPTS_MOD (which is the symbol gating the _compilation_ of
-cpts.c) now depends on PTP_1588_CLOCK, and so is not enabled in these
-configurations, but TI_CPTS (which is the symbol gating _calls_ to the cpts
-functions) _is_ enabled. So we end up compiling calls to functions that
-don't exist, resulting in the linker errors.
+> > But I might be confused. I recall some audio patches were needed for
+> > basic phone calls (setting up mixers to connect gsm<->audio), but
+> > those worked before gsmux support was enabled. (Maybe some hardcoded
+> > commands were needed to be sent to gsmmux somewhere).
+>=20
+> We're currently reconfiguring the TDM transport that based on the
+> unsolicited messages on dlci1. I still need to figure out how to add
+> that back while keeping the serdev-ngsm driver generic.
 
-This patch fixes build errors and restores previous behavior by:
- - ensure PTP_1588_CLOCK=y in TI specific configs and CPTS will be built
- - use IS_REACHABLE(CONFIG_TI_CPTS) in code instead of IS_ENABLED()
- - remove TI_CPTS_MOD and, instead, add dependencies from CPTS in
-   TI_CPSW/TI_KEYSTONE_NETCP/TI_CPSW_SWITCHDEV as below:
+Is it really neccessary? I believe I was simply configuring codecs for
+voice call and left them like that.
 
-   config TI_CPSW_SWITCHDEV
-   ...
-    depends on TI_CPTS || !TI_CPTS
+> > I assume neither gsmmux audio parts nor mixer parts are available in
+> > -next at the moment?
+>=20
+> Sorry not yet, will post as soon as I have the audio notifiers part
+> working, so it will be some days away still with time permitting.
 
-   which will ensure proper dependencies PTP_1588_CLOCK -> TI_CPTS ->
-TI_CPSW/TI_KEYSTONE_NETCP/TI_CPSW_SWITCHDEV and build type selection.
+Thanks... feel free to cc me.
 
-Note. For NFS boot + CPTS all of above configs have to be built-in.
+I pushed new version of ofono: I'm still not sure about those incoming
+sms (but _some_ sms are received). Rest should be better.
 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dan Murphy <dmurphy@ti.com>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Murali Karicheri <m-karicheri2@ti.com>
-Fixes: b6d49cab44b5 ("net: Make PTP-specific drivers depend on PTP_1588_CLOCK")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Clay McClure <clay@daemons.net>
-[grygorii.strashko@ti.com: rewording, add deps cpsw/netcp from cpts]
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
----
- arch/arm/configs/keystone_defconfig    |  1 +
- arch/arm/configs/omap2plus_defconfig   |  1 +
- drivers/net/ethernet/ti/Kconfig        | 16 ++++++----------
- drivers/net/ethernet/ti/Makefile       |  2 +-
- drivers/net/ethernet/ti/cpsw_ethtool.c |  2 +-
- drivers/net/ethernet/ti/cpts.h         |  3 +--
- drivers/net/ethernet/ti/netcp_ethss.c  | 10 +++++-----
- 7 files changed, 16 insertions(+), 19 deletions(-)
+Best regards,
+								Pavel
 
-diff --git a/arch/arm/configs/keystone_defconfig b/arch/arm/configs/keystone_defconfig
-index 11e2211f9007..84a3b055f253 100644
---- a/arch/arm/configs/keystone_defconfig
-+++ b/arch/arm/configs/keystone_defconfig
-@@ -147,6 +147,7 @@ CONFIG_I2C_DAVINCI=y
- CONFIG_SPI=y
- CONFIG_SPI_DAVINCI=y
- CONFIG_SPI_SPIDEV=y
-+CONFIG_PTP_1588_CLOCK=y
- CONFIG_PINCTRL_SINGLE=y
- CONFIG_GPIOLIB=y
- CONFIG_GPIO_SYSFS=y
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 395588209b27..c3f749650d5d 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -274,6 +274,7 @@ CONFIG_SPI_TI_QSPI=m
- CONFIG_HSI=m
- CONFIG_OMAP_SSI=m
- CONFIG_SSI_PROTOCOL=m
-+CONFIG_PTP_1588_CLOCK=y
- CONFIG_PINCTRL_SINGLE=y
- CONFIG_DEBUG_GPIO=y
- CONFIG_GPIO_SYSFS=y
-diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
-index 8e348780efb6..62f809b67469 100644
---- a/drivers/net/ethernet/ti/Kconfig
-+++ b/drivers/net/ethernet/ti/Kconfig
-@@ -49,6 +49,7 @@ config TI_CPSW_PHY_SEL
- config TI_CPSW
- 	tristate "TI CPSW Switch Support"
- 	depends on ARCH_DAVINCI || ARCH_OMAP2PLUS || COMPILE_TEST
-+	depends on TI_CPTS || !TI_CPTS
- 	select TI_DAVINCI_MDIO
- 	select MFD_SYSCON
- 	select PAGE_POOL
-@@ -64,6 +65,7 @@ config TI_CPSW_SWITCHDEV
- 	tristate "TI CPSW Switch Support with switchdev"
- 	depends on ARCH_DAVINCI || ARCH_OMAP2PLUS || COMPILE_TEST
- 	depends on NET_SWITCHDEV
-+	depends on TI_CPTS || !TI_CPTS
- 	select PAGE_POOL
- 	select TI_DAVINCI_MDIO
- 	select MFD_SYSCON
-@@ -77,23 +79,16 @@ config TI_CPSW_SWITCHDEV
- 	  will be called cpsw_new.
- 
- config TI_CPTS
--	bool "TI Common Platform Time Sync (CPTS) Support"
--	depends on TI_CPSW || TI_KEYSTONE_NETCP || TI_CPSW_SWITCHDEV || COMPILE_TEST
-+	tristate "TI Common Platform Time Sync (CPTS) Support"
-+	depends on ARCH_OMAP2PLUS || ARCH_KEYSTONE || COMPILE_TEST
- 	depends on COMMON_CLK
--	depends on POSIX_TIMERS
-+	depends on PTP_1588_CLOCK
- 	---help---
- 	  This driver supports the Common Platform Time Sync unit of
- 	  the CPSW Ethernet Switch and Keystone 2 1g/10g Switch Subsystem.
- 	  The unit can time stamp PTP UDP/IPv4 and Layer 2 packets, and the
- 	  driver offers a PTP Hardware Clock.
- 
--config TI_CPTS_MOD
--	tristate
--	depends on TI_CPTS
--	depends on PTP_1588_CLOCK
--	default y if TI_CPSW=y || TI_KEYSTONE_NETCP=y || TI_CPSW_SWITCHDEV=y
--	default m
--
- config TI_K3_AM65_CPSW_NUSS
- 	tristate "TI K3 AM654x/J721E CPSW Ethernet driver"
- 	depends on ARCH_K3 && OF && TI_K3_UDMA_GLUE_LAYER
-@@ -114,6 +109,7 @@ config TI_KEYSTONE_NETCP
- 	select TI_DAVINCI_MDIO
- 	depends on OF
- 	depends on KEYSTONE_NAVIGATOR_DMA && KEYSTONE_NAVIGATOR_QMSS
-+	depends on TI_CPTS || !TI_CPTS
- 	---help---
- 	  This driver supports TI's Keystone NETCP Core.
- 
-diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
-index 53792190e9c2..cb26a9d21869 100644
---- a/drivers/net/ethernet/ti/Makefile
-+++ b/drivers/net/ethernet/ti/Makefile
-@@ -13,7 +13,7 @@ obj-$(CONFIG_TI_DAVINCI_EMAC) += ti_davinci_emac.o
- ti_davinci_emac-y := davinci_emac.o davinci_cpdma.o
- obj-$(CONFIG_TI_DAVINCI_MDIO) += davinci_mdio.o
- obj-$(CONFIG_TI_CPSW_PHY_SEL) += cpsw-phy-sel.o
--obj-$(CONFIG_TI_CPTS_MOD) += cpts.o
-+obj-$(CONFIG_TI_CPTS) += cpts.o
- obj-$(CONFIG_TI_CPSW) += ti_cpsw.o
- ti_cpsw-y := cpsw.o davinci_cpdma.o cpsw_ale.o cpsw_priv.o cpsw_sl.o cpsw_ethtool.o
- obj-$(CONFIG_TI_CPSW_SWITCHDEV) += ti_cpsw_new.o
-diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/ti/cpsw_ethtool.c
-index fa54efe3be63..19a7370a4188 100644
---- a/drivers/net/ethernet/ti/cpsw_ethtool.c
-+++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
-@@ -709,7 +709,7 @@ int cpsw_set_ringparam(struct net_device *ndev,
- 	return ret;
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- int cpsw_get_ts_info(struct net_device *ndev, struct ethtool_ts_info *info)
- {
- 	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
-diff --git a/drivers/net/ethernet/ti/cpts.h b/drivers/net/ethernet/ti/cpts.h
-index bb997c11ee15..782e24c78e7a 100644
---- a/drivers/net/ethernet/ti/cpts.h
-+++ b/drivers/net/ethernet/ti/cpts.h
-@@ -8,7 +8,7 @@
- #ifndef _TI_CPTS_H_
- #define _TI_CPTS_H_
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- 
- #include <linux/clk.h>
- #include <linux/clkdev.h>
-@@ -171,5 +171,4 @@ static inline bool cpts_can_timestamp(struct cpts *cpts, struct sk_buff *skb)
- }
- #endif
- 
--
- #endif
-diff --git a/drivers/net/ethernet/ti/netcp_ethss.c b/drivers/net/ethernet/ti/netcp_ethss.c
-index fb36115e9c51..3de1d25128b7 100644
---- a/drivers/net/ethernet/ti/netcp_ethss.c
-+++ b/drivers/net/ethernet/ti/netcp_ethss.c
-@@ -181,7 +181,7 @@
- 
- #define HOST_TX_PRI_MAP_DEFAULT			0x00000000
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- /* Px_TS_CTL register fields */
- #define TS_RX_ANX_F_EN				BIT(0)
- #define TS_RX_VLAN_LT1_EN			BIT(1)
-@@ -2000,7 +2000,7 @@ static int keystone_set_link_ksettings(struct net_device *ndev,
- 	return phy_ethtool_ksettings_set(phy, cmd);
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- static int keystone_get_ts_info(struct net_device *ndev,
- 				struct ethtool_ts_info *info)
- {
-@@ -2532,7 +2532,7 @@ static int gbe_del_vid(void *intf_priv, int vid)
- 	return 0;
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- 
- static void gbe_txtstamp(void *context, struct sk_buff *skb)
- {
-@@ -2977,7 +2977,7 @@ static int gbe_close(void *intf_priv, struct net_device *ndev)
- 	return 0;
- }
- 
--#if IS_ENABLED(CONFIG_TI_CPTS)
-+#if IS_REACHABLE(CONFIG_TI_CPTS)
- static void init_slave_ts_ctl(struct gbe_slave *slave)
- {
- 	slave->ts_ctl.uni = 1;
-@@ -3718,7 +3718,7 @@ static int gbe_probe(struct netcp_device *netcp_device, struct device *dev,
- 
- 	gbe_dev->cpts = cpts_create(gbe_dev->dev, gbe_dev->cpts_reg, cpts_node);
- 	of_node_put(cpts_node);
--	if (IS_ENABLED(CONFIG_TI_CPTS) && IS_ERR(gbe_dev->cpts)) {
-+	if (IS_REACHABLE(CONFIG_TI_CPTS) && IS_ERR(gbe_dev->cpts)) {
- 		ret = PTR_ERR(gbe_dev->cpts);
- 		goto free_sec_ports;
- 	}
--- 
-2.17.1
+user@devuan:/my/ofono$ git push
+Counting objects: 5, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (5/5), 479 bytes | 0 bytes/s, done.
+Total 5 (delta 4), reused 0 (delta 0)
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
+To github.com:pavelmachek/ofono.git
+   606faf92..f6f43041  mux-v1.29-3 -> mux-v1.29-3
 
+
+commit f6f43041ab33e2b811b73d4009ecfa0692d192aa
+Author: Pavel <pavel@ucw.cz>
+Date:   Fri May 8 11:57:04 2020 +0200
+
+    Trivial fix for incoming calls. Now basic functionality should
+    work.
+
+commit 606faf92c289166a5577963f1f987bc321edd226
+Author: Pavel <pavel@ucw.cz>
+Date:   Fri May 8 11:45:32 2020 +0200
+
+    Got enough of netreg to work for ofone to talk to us.
+
+    Incoming calls do NOT seem to work.
+
+    Outgoing calls seem ok.
+
+    Incoming SMS seem ok.
+
+    Outgoing SMS seem ok.
+   =20
+
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--yrj/dFKFPuw6o+aM
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl61LiMACgkQMOfwapXb+vLIZQCfTkdEtzhMK9+vPZc7yt/nH1EU
+WJkAoKMnCPPHidDjAa969bgYAVkr7rSo
+=qz9P
+-----END PGP SIGNATURE-----
+
+--yrj/dFKFPuw6o+aM--
