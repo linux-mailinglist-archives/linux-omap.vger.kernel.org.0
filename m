@@ -2,36 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 817A21CA7FA
-	for <lists+linux-omap@lfdr.de>; Fri,  8 May 2020 12:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 242E81CA956
+	for <lists+linux-omap@lfdr.de>; Fri,  8 May 2020 13:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726091AbgEHKKw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 May 2020 06:10:52 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:56515 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725825AbgEHKKw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 May 2020 06:10:52 -0400
-Received: from mail-qt1-f181.google.com ([209.85.160.181]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MjPYI-1irriC0HE2-00kyVw; Fri, 08 May 2020 12:10:50 +0200
-Received: by mail-qt1-f181.google.com with SMTP id x12so768596qts.9;
-        Fri, 08 May 2020 03:10:49 -0700 (PDT)
-X-Gm-Message-State: AGi0PubM1AJMs2SPzyREk1dNDm+Ef132FiQbX3qxneCk/+n8pwUXM/1B
-        /NCWZJreM5ihguzXpz/DaSDEkiNR55Y10MPCzx8=
-X-Google-Smtp-Source: APiQypIExSSlqA8yisz6W2ZLVMPQ/wADq+SWrAtp8zPZ88mwmRPwDsgp08zt9Fp0MCbGchCGJqbxIfTbLpDmW0GLnAY=
-X-Received: by 2002:ac8:2bce:: with SMTP id n14mr2162626qtn.18.1588932648766;
- Fri, 08 May 2020 03:10:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200508095914.20509-1-grygorii.strashko@ti.com>
-In-Reply-To: <20200508095914.20509-1-grygorii.strashko@ti.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 8 May 2020 12:10:32 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0qfFzJGya-Ydst8dwC8d7wydfNG-4Ef9zkycEd8WLOCA@mail.gmail.com>
-Message-ID: <CAK8P3a0qfFzJGya-Ydst8dwC8d7wydfNG-4Ef9zkycEd8WLOCA@mail.gmail.com>
+        id S1726690AbgEHLOk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 May 2020 07:14:40 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:35348 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726618AbgEHLOk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 May 2020 07:14:40 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 048BEQpR077154;
+        Fri, 8 May 2020 06:14:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1588936466;
+        bh=ZoYcMIj00piv51ZsPhg0qvcGYShGcn7KMqwUuvC0zPI=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=kqccxOzrqjmb95R4BiFMjrYc+xbny9z3EQ+mjqc8tFQ6jS2nVE8bL/zvVunKt/CZm
+         ViJLmldxvmPOAjv9VxuHrNpRQZjNaDRA8gRJIvG3vLld1l2xbq9bly9Nx1p0yMmrpu
+         OhnK59wLR2UuhE2mBSLvq0K7l1DUOuzv0a1Xo4LM=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 048BEQo7115039
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 8 May 2020 06:14:26 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 8 May
+ 2020 06:14:26 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 8 May 2020 06:14:26 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 048BEMOE130802;
+        Fri, 8 May 2020 06:14:23 -0500
 Subject: Re: [PATCH net v3] net: ethernet: ti: fix build and remove
  TI_CPTS_MOD workaround
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Networking <netdev@vger.kernel.org>,
+To:     Arnd Bergmann <arnd@arndb.de>
+CC:     Networking <netdev@vger.kernel.org>,
         Tony Lindgren <tony@atomide.com>,
         "David S. Miller" <davem@davemloft.net>,
         Russell King <linux@armlinux.org.uk>,
@@ -40,58 +48,66 @@ Cc:     Networking <netdev@vger.kernel.org>,
         Richard Cochran <richardcochran@gmail.com>,
         Clay McClure <clay@daemons.net>, Dan Murphy <dmurphy@ti.com>,
         Murali Karicheri <m-karicheri2@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:+qrP48GYxWtsysT2SpoHntkSQ4zxwhAWRpqIiuLA9lj+qKiLLvF
- 7K2NZFCXh9TEslfE98abhA93G+YP2CAYgvW5CQSXWaFhydtbdGyHpZqloKPsSleDbc1ULJL
- kxfuR9A645lLHahWvsUoOuCJ7UEvM6z/QgJSuNn2HvBukic1DJjfT9ZrzcMyly2EygNY/NB
- H+BBvitw01j3BDekVWuhA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:EPX1zmu9EZs=:b66kWz7wlyXK8CaGzsC5R1
- OIJTXQHxeIZjq9yFwdzgGaAYvKFtHDJMCyTkNvM2Z4lGddGAzWjUwuimCudzObZlYmXXd/vEM
- cj+wcjVNLKTDljX7LhMayi7QgmZOJOqflSlPu8fVkL4iue4+X86SMe7O+fYyEB7orCaXhbtkd
- ukKIngEA/BB62XP5L+osCwcTnoSsDzYPBVCf5Me4hAVhSi0TX27tl7VfsQD/OG02ZaW7dbrJ9
- YZHS0V7S9VWxFRfSDQxUnxTHzrL/MjyNPTzTH3O9fLE5IdXs+OaxbcaaiHSxjDSvpUk+34/di
- WtIoJfl6VG6EySx7jlI4t5WAC65VC0DlH/7h3cvpK7EtTa4DkfGuE/0O3soZdKT1hZeBl1FaL
- wDl9qLUVzP7YUNhXO0iMtBeQ8Wt9GQcV7q9eXMbefuB52mAtbvUGY6ASfSpsCp8LhzvBoFV8q
- zz+XppeWGE2MQHAHscK9mNnRnJ/clKjjfibr2zVgUkaguTNhxuQDGSRMiHXFNxkdtDmUaA2Pz
- +cNiRJclP/3EUxjK1+9czlk966qDK1gVJcfx/yT+DP/DSa7FPkjik81Cn+99vrsiDR0j/aQnO
- OYGmLYBeBdnsRxBauMO+yubSuwQ+W94NdX2u8NCK0ypGQTOFdlgv+TMscQUY7slnZjdi1vw7j
- Q6ixFZ+c9NpkfkMiW85Nv+GmQQKy9GFJ7x8y9x29PmQwNQZOWFhrwVT8f9YiAIimtBumgv+ZG
- 6jUYkH6h4MznC1xflf0+Vjl4+56yTRma/BaAHqZ80isUc6OkhBPszNGwdmDBUgr7m9dKAlWUi
- pEkf3zMa+MxDoMVtCGkvkLf7DXcGozFP66hNJBA8I1nnCHXJgU=
+References: <20200508095914.20509-1-grygorii.strashko@ti.com>
+ <CAK8P3a0qfFzJGya-Ydst8dwC8d7wydfNG-4Ef9zkycEd8WLOCA@mail.gmail.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <7df7a64c-f564-b0cc-9100-93c9e417c2fc@ti.com>
+Date:   Fri, 8 May 2020 14:14:21 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <CAK8P3a0qfFzJGya-Ydst8dwC8d7wydfNG-4Ef9zkycEd8WLOCA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, May 8, 2020 at 11:59 AM Grygorii Strashko
-<grygorii.strashko@ti.com> wrote:
->
-> From: Clay McClure <clay@daemons.net>
->
-> My recent commit b6d49cab44b5 ("net: Make PTP-specific drivers depend on
-> PTP_1588_CLOCK") exposes a missing dependency in defconfigs that select
-> TI_CPTS without selecting PTP_1588_CLOCK, leading to linker errors of the
-> form:
->
-> drivers/net/ethernet/ti/cpsw.o: in function `cpsw_ndo_stop':
-> cpsw.c:(.text+0x680): undefined reference to `cpts_unregister'
->  ...
->
-> That's because TI_CPTS_MOD (which is the symbol gating the _compilation_ of
-> cpts.c) now depends on PTP_1588_CLOCK, and so is not enabled in these
-> configurations, but TI_CPTS (which is the symbol gating _calls_ to the cpts
-> functions) _is_ enabled. So we end up compiling calls to functions that
-> don't exist, resulting in the linker errors.
->
-> This patch fixes build errors and restores previous behavior by:
->  - ensure PTP_1588_CLOCK=y in TI specific configs and CPTS will be built
->  - use IS_REACHABLE(CONFIG_TI_CPTS) in code instead of IS_ENABLED()
 
-I don't understand what IS_REACHABLE() is needed for once all the other
-changes are in place. I'd hope we can avoid that. Do you still see
-failures without
-that or is it just a precaution. I can do some randconfig testing on your patch
-to see what else might be needed to avoid IS_REACHABLE().
 
-        Arnd
+On 08/05/2020 13:10, Arnd Bergmann wrote:
+> On Fri, May 8, 2020 at 11:59 AM Grygorii Strashko
+> <grygorii.strashko@ti.com> wrote:
+>>
+>> From: Clay McClure <clay@daemons.net>
+>>
+>> My recent commit b6d49cab44b5 ("net: Make PTP-specific drivers depend on
+>> PTP_1588_CLOCK") exposes a missing dependency in defconfigs that select
+>> TI_CPTS without selecting PTP_1588_CLOCK, leading to linker errors of the
+>> form:
+>>
+>> drivers/net/ethernet/ti/cpsw.o: in function `cpsw_ndo_stop':
+>> cpsw.c:(.text+0x680): undefined reference to `cpts_unregister'
+>>   ...
+>>
+>> That's because TI_CPTS_MOD (which is the symbol gating the _compilation_ of
+>> cpts.c) now depends on PTP_1588_CLOCK, and so is not enabled in these
+>> configurations, but TI_CPTS (which is the symbol gating _calls_ to the cpts
+>> functions) _is_ enabled. So we end up compiling calls to functions that
+>> don't exist, resulting in the linker errors.
+>>
+>> This patch fixes build errors and restores previous behavior by:
+>>   - ensure PTP_1588_CLOCK=y in TI specific configs and CPTS will be built
+>>   - use IS_REACHABLE(CONFIG_TI_CPTS) in code instead of IS_ENABLED()
+> 
+> I don't understand what IS_REACHABLE() is needed for once all the other
+> changes are in place. I'd hope we can avoid that. Do you still see
+> failures without
+> that or is it just a precaution. I can do some randconfig testing on your patch
+> to see what else might be needed to avoid IS_REACHABLE().
+
+I've not changed this part of original patch, but seems you're right.
+
+I can drop it and resend, but, unfortunately, i do not have time today for full build testing.
+Sorry.
+
+By the way in ptp_clock_kernel.h
+#if IS_REACHABLE(CONFIG_PTP_1588_CLOCK)
+
+
+-- 
+Best regards,
+grygorii
