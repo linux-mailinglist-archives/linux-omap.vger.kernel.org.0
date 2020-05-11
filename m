@@ -2,124 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 633371CD7C4
-	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E55E1CD784
+	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729343AbgEKLVN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 May 2020 07:21:13 -0400
-Received: from foss.arm.com ([217.140.110.172]:57428 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729305AbgEKLVM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 May 2020 07:21:12 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86A441045;
-        Mon, 11 May 2020 04:21:11 -0700 (PDT)
-Received: from e123648.arm.com (unknown [10.37.12.83])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id DC05D3F305;
-        Mon, 11 May 2020 04:21:01 -0700 (PDT)
-From:   Lukasz Luba <lukasz.luba@arm.com>
-To:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-imx@nxp.com
-Cc:     Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
-        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
-        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
-        rui.zhang@intel.com, amit.kucheria@verdurent.com,
-        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
-        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
-        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
-        matthias.bgg@gmail.com, steven.price@arm.com,
-        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
-        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
-        lorenzo.pieralisi@arm.com, lukasz.luba@arm.com,
-        patrick.bellasi@matbug.net, orjan.eide@arm.com,
-        rdunlap@infradead.org, mka@chromium.org
-Subject: [PATCH v7 09/15] thermal: devfreq_cooling: change tracing function and arguments
-Date:   Mon, 11 May 2020 12:19:06 +0100
-Message-Id: <20200511111912.3001-10-lukasz.luba@arm.com>
+        id S1729163AbgEKLTi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 May 2020 07:19:38 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:52250 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726438AbgEKLTh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 May 2020 07:19:37 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJOXN099223;
+        Mon, 11 May 2020 06:19:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1589195964;
+        bh=r/Z289ziuLekskSoAOTc4KuAcsPT8zHSmf/vDtvcIms=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=mHsWzWs7Lk5GIGNMwXZ5PH7M5+jB7PLtYLpnf1nld2OKxJt1HfivDE1xKHUrodikk
+         WzgkTXdNhTXP4rinHohAN7KKPV5YVbMi0JG5lD8Yq8oXdO+bkE6GxBRRjoaJov85K5
+         R+2sabiR5cQenorn4PFkL3UZdL8fVsJZ2z5JV9Ck=
+Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04BBJOOZ061628
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 11 May 2020 06:19:24 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 11
+ May 2020 06:19:23 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 11 May 2020 06:19:23 -0500
+Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJKOV004306;
+        Mon, 11 May 2020 06:19:22 -0500
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <linux-crypto@vger.kernel.org>
+CC:     <linux-omap@vger.kernel.org>
+Subject: [PATCHv2 1/7] crypto: omap-aes: avoid spamming console with self tests
+Date:   Mon, 11 May 2020 14:19:07 +0300
+Message-ID: <20200511111913.26541-2-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200511111912.3001-1-lukasz.luba@arm.com>
-References: <20200511111912.3001-1-lukasz.luba@arm.com>
+In-Reply-To: <20200511111913.26541-1-t-kristo@ti.com>
+References: <20200511111913.26541-1-t-kristo@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Prepare for deleting the static and dynamic power calculation and clean
-the trace function. These two fields are going to be removed in the next
-changes.
+Running the self test suite for omap-aes with extra tests enabled causes
+huge spam with the tag message wrong indicators. With self tests, this
+is fine as there are some tests that purposedly pass bad data to the
+driver. Also, returning -EBADMSG from the driver is enough, so remove the
+dev_err message completely.
 
-Reviewed-by: Steven Rostedt (VMware) <rostedt@goodmis.org> # for tracing code
-Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- drivers/thermal/devfreq_cooling.c |  3 +--
- include/trace/events/thermal.h    | 19 +++++++++----------
- 2 files changed, 10 insertions(+), 12 deletions(-)
+ drivers/crypto/omap-aes-gcm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
-index f7f32e98331b..52694d4bd819 100644
---- a/drivers/thermal/devfreq_cooling.c
-+++ b/drivers/thermal/devfreq_cooling.c
-@@ -286,8 +286,7 @@ static int devfreq_cooling_get_requested_power(struct thermal_cooling_device *cd
- 		*power = dyn_power + static_power;
- 	}
- 
--	trace_thermal_power_devfreq_get_power(cdev, status, freq, dyn_power,
--					      static_power, *power);
-+	trace_thermal_power_devfreq_get_power(cdev, status, freq, *power);
- 
- 	return 0;
- fail:
-diff --git a/include/trace/events/thermal.h b/include/trace/events/thermal.h
-index 135e5421f003..8a5f04888abd 100644
---- a/include/trace/events/thermal.h
-+++ b/include/trace/events/thermal.h
-@@ -153,31 +153,30 @@ TRACE_EVENT(thermal_power_cpu_limit,
- TRACE_EVENT(thermal_power_devfreq_get_power,
- 	TP_PROTO(struct thermal_cooling_device *cdev,
- 		 struct devfreq_dev_status *status, unsigned long freq,
--		u32 dynamic_power, u32 static_power, u32 power),
-+		u32 power),
- 
--	TP_ARGS(cdev, status,  freq, dynamic_power, static_power, power),
-+	TP_ARGS(cdev, status,  freq, power),
- 
- 	TP_STRUCT__entry(
- 		__string(type,         cdev->type    )
- 		__field(unsigned long, freq          )
--		__field(u32,           load          )
--		__field(u32,           dynamic_power )
--		__field(u32,           static_power  )
-+		__field(u32,           busy_time)
-+		__field(u32,           total_time)
- 		__field(u32,           power)
- 	),
- 
- 	TP_fast_assign(
- 		__assign_str(type, cdev->type);
- 		__entry->freq = freq;
--		__entry->load = (100 * status->busy_time) / status->total_time;
--		__entry->dynamic_power = dynamic_power;
--		__entry->static_power = static_power;
-+		__entry->busy_time = status->busy_time;
-+		__entry->total_time = status->total_time;
- 		__entry->power = power;
- 	),
- 
--	TP_printk("type=%s freq=%lu load=%u dynamic_power=%u static_power=%u power=%u",
-+	TP_printk("type=%s freq=%lu load=%u power=%u",
- 		__get_str(type), __entry->freq,
--		__entry->load, __entry->dynamic_power, __entry->static_power,
-+		__entry->total_time == 0 ? 0 :
-+			(100 * __entry->busy_time) / __entry->total_time,
- 		__entry->power)
- );
- 
+diff --git a/drivers/crypto/omap-aes-gcm.c b/drivers/crypto/omap-aes-gcm.c
+index 32dc00dc570b..9f937bdc53a7 100644
+--- a/drivers/crypto/omap-aes-gcm.c
++++ b/drivers/crypto/omap-aes-gcm.c
+@@ -77,7 +77,6 @@ static void omap_aes_gcm_done_task(struct omap_aes_dev *dd)
+ 		tag = (u8 *)rctx->auth_tag;
+ 		for (i = 0; i < dd->authsize; i++) {
+ 			if (tag[i]) {
+-				dev_err(dd->dev, "GCM decryption: Tag Message is wrong\n");
+ 				ret = -EBADMSG;
+ 			}
+ 		}
 -- 
 2.17.1
 
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
