@@ -2,110 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 127B11CD7E3
-	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A6B71CD78D
+	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729279AbgEKLWG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 May 2020 07:22:06 -0400
-Received: from foss.arm.com ([217.140.110.172]:57742 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725993AbgEKLWF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 May 2020 07:22:05 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EAE0F1045;
-        Mon, 11 May 2020 04:22:04 -0700 (PDT)
-Received: from e123648.arm.com (unknown [10.37.12.83])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9D86F3F305;
-        Mon, 11 May 2020 04:21:54 -0700 (PDT)
-From:   Lukasz Luba <lukasz.luba@arm.com>
-To:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-imx@nxp.com
-Cc:     Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
-        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
-        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
-        rui.zhang@intel.com, amit.kucheria@verdurent.com,
-        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
-        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
-        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
-        matthias.bgg@gmail.com, steven.price@arm.com,
-        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
-        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
-        lorenzo.pieralisi@arm.com, lukasz.luba@arm.com,
-        patrick.bellasi@matbug.net, orjan.eide@arm.com,
-        rdunlap@infradead.org, mka@chromium.org
-Subject: [PATCH v7 14/15] thermal: devfreq_cooling: update license to use SPDX
-Date:   Mon, 11 May 2020 12:19:11 +0100
-Message-Id: <20200511111912.3001-15-lukasz.luba@arm.com>
+        id S1729327AbgEKLTn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 May 2020 07:19:43 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:52258 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729279AbgEKLTl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 May 2020 07:19:41 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJU7g099248;
+        Mon, 11 May 2020 06:19:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1589195970;
+        bh=bWc2RhjzhYFoeGzIOp0t00bMitcQ7MX4ewFdu1cUq80=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=vjD34CEC2fEPr16JkfYbidX3P1DeiXgxIYbz6lbgzJk1xJoWI1ZUrTgY1udXrFL2C
+         s2ITSsLOKwSftDTHyO8zbv1VkFcP3hZCNY6GiIlWbtdsA9YTC2L7C2zE11KD/BmX95
+         Okhj2/xgXBC0EaG7S0o53lzvUDVJjeR7g9gJNbdU=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJUf4018197;
+        Mon, 11 May 2020 06:19:30 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 11
+ May 2020 06:19:29 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 11 May 2020 06:19:29 -0500
+Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJKOZ004306;
+        Mon, 11 May 2020 06:19:28 -0500
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <linux-crypto@vger.kernel.org>
+CC:     <linux-omap@vger.kernel.org>
+Subject: [PATCHv2 5/7] crypto: omap-sham: fix very small data size handling
+Date:   Mon, 11 May 2020 14:19:11 +0300
+Message-ID: <20200511111913.26541-6-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200511111912.3001-1-lukasz.luba@arm.com>
-References: <20200511111912.3001-1-lukasz.luba@arm.com>
+In-Reply-To: <20200511111913.26541-1-t-kristo@ti.com>
+References: <20200511111913.26541-1-t-kristo@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Change the license headers and use SPDX standard.
+With very small data sizes, the whole data can end up in the xmit
+buffer. This code path does not set the sg_len properly which causes the
+core dma framework to crash. Fix by adding the proper size in place.
+Also, the data length must be a multiple of block-size, so extend the
+DMA data size while here.
 
-Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- drivers/thermal/devfreq_cooling.c | 12 ++----------
- include/linux/devfreq_cooling.h   | 12 ++----------
- 2 files changed, 4 insertions(+), 20 deletions(-)
+ drivers/crypto/omap-sham.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
-index 79dcef3dbeeb..77d996fd82d2 100644
---- a/drivers/thermal/devfreq_cooling.c
-+++ b/drivers/thermal/devfreq_cooling.c
-@@ -1,17 +1,9 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * devfreq_cooling: Thermal cooling device implementation for devices using
-  *                  devfreq
-  *
-- * Copyright (C) 2014-2015 ARM Limited
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * This program is distributed "as is" WITHOUT ANY WARRANTY of any
-- * kind, whether express or implied; without even the implied warranty
-- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-+ * Copyright (C) 2014-2020 ARM Limited
-  *
-  * TODO:
-  *    - If OPPs are added or removed after devfreq cooling has
-diff --git a/include/linux/devfreq_cooling.h b/include/linux/devfreq_cooling.h
-index 613678ce23df..1f5c07c78f0f 100644
---- a/include/linux/devfreq_cooling.h
-+++ b/include/linux/devfreq_cooling.h
-@@ -1,17 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
- /*
-  * devfreq_cooling: Thermal cooling device implementation for devices using
-  *                  devfreq
-  *
-- * Copyright (C) 2014-2015 ARM Limited
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * This program is distributed "as is" WITHOUT ANY WARRANTY of any
-- * kind, whether express or implied; without even the implied warranty
-- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-+ * Copyright (C) 2014-2020 ARM Limited
-  */
+diff --git a/drivers/crypto/omap-sham.c b/drivers/crypto/omap-sham.c
+index 9823d7dfca9c..86949f1ac6a7 100644
+--- a/drivers/crypto/omap-sham.c
++++ b/drivers/crypto/omap-sham.c
+@@ -753,9 +753,11 @@ static int omap_sham_align_sgs(struct scatterlist *sg,
  
- #ifndef __DEVFREQ_COOLING_H__
+ 	if (!sg || !sg->length || !nbytes) {
+ 		if (bufcnt) {
++			bufcnt = DIV_ROUND_UP(bufcnt, bs) * bs;
+ 			sg_init_table(rctx->sgl, 1);
+ 			sg_set_buf(rctx->sgl, rctx->dd->xmit_buf, bufcnt);
+ 			rctx->sg = rctx->sgl;
++			rctx->sg_len = 1;
+ 		}
+ 
+ 		return 0;
 -- 
 2.17.1
 
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
