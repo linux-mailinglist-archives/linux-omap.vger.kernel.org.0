@@ -2,101 +2,154 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AC3F1CD7D5
-	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 132661CD78E
+	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:19:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729716AbgEKLVd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 May 2020 07:21:33 -0400
-Received: from foss.arm.com ([217.140.110.172]:57552 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729333AbgEKLVd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 May 2020 07:21:33 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5831101E;
-        Mon, 11 May 2020 04:21:32 -0700 (PDT)
-Received: from e123648.arm.com (unknown [10.37.12.83])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 766E33F305;
-        Mon, 11 May 2020 04:21:22 -0700 (PDT)
-From:   Lukasz Luba <lukasz.luba@arm.com>
-To:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-imx@nxp.com
-Cc:     Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
-        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
-        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
-        rui.zhang@intel.com, amit.kucheria@verdurent.com,
-        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
-        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
-        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
-        matthias.bgg@gmail.com, steven.price@arm.com,
-        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
-        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
-        lorenzo.pieralisi@arm.com, lukasz.luba@arm.com,
-        patrick.bellasi@matbug.net, orjan.eide@arm.com,
-        rdunlap@infradead.org, mka@chromium.org
-Subject: [PATCH v7 11/15] thermal: devfreq_cooling: work on a copy of device status
-Date:   Mon, 11 May 2020 12:19:08 +0100
-Message-Id: <20200511111912.3001-12-lukasz.luba@arm.com>
+        id S1729279AbgEKLTn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 May 2020 07:19:43 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:52252 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725993AbgEKLTk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 May 2020 07:19:40 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJP3A099228;
+        Mon, 11 May 2020 06:19:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1589195965;
+        bh=gNPn50pxUfawldLhCux6x7Fp2+dqpJBz1HTS7H4u3SU=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=YJrE4/65VS8f4xJfDQ2sX4XH4upmI8WHMr3R6xALu7ndmBGk7QUUm3FrnbWdWfZws
+         q7bYNJ8lC/IG0VIuOeexAQLLYr0TGKjRlv2vOWB+lrwg+A4yxCiCXTJmVf6618ORPu
+         qG+PSFWgmbItCVl0g0/jjHXBAnif+FJa9P93DV+M=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04BBJPAr053840
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 11 May 2020 06:19:25 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 11
+ May 2020 06:19:25 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 11 May 2020 06:19:25 -0500
+Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJKOW004306;
+        Mon, 11 May 2020 06:19:24 -0500
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <linux-crypto@vger.kernel.org>
+CC:     <linux-omap@vger.kernel.org>
+Subject: [PATCHv2 2/7] crypto: omap-sham: force kernel driver usage for sha algos
+Date:   Mon, 11 May 2020 14:19:08 +0300
+Message-ID: <20200511111913.26541-3-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200511111912.3001-1-lukasz.luba@arm.com>
-References: <20200511111912.3001-1-lukasz.luba@arm.com>
+In-Reply-To: <20200511111913.26541-1-t-kristo@ti.com>
+References: <20200511111913.26541-1-t-kristo@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Devfreq framework can change the device status in the background. To
-mitigate this situation make a copy of the status structure and use it
-for internal calculations.
+As the hardware acceleration for the omap-sham algos is not available
+from userspace, force kernel driver usage. Without this flag in place,
+openssl 1.1 implementation thinks it can accelerate sha algorithms on
+omap devices directly from userspace.
 
-Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- drivers/thermal/devfreq_cooling.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/crypto/omap-sham.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
-index 396f16bb6566..36ec6a48606c 100644
---- a/drivers/thermal/devfreq_cooling.c
-+++ b/drivers/thermal/devfreq_cooling.c
-@@ -348,14 +348,20 @@ static int devfreq_cooling_power2state(struct thermal_cooling_device *cdev,
- {
- 	struct devfreq_cooling_device *dfc = cdev->devdata;
- 	struct devfreq *df = dfc->devfreq;
--	struct devfreq_dev_status *status = &df->last_status;
--	unsigned long freq = status->current_frequency;
-+	struct devfreq_dev_status status;
- 	unsigned long busy_time;
-+	unsigned long freq;
- 	s32 dyn_power;
- 	u32 static_power;
- 	s32 est_power;
- 	int i;
- 
-+	mutex_lock(&df->lock);
-+	status = df->last_status;
-+	mutex_unlock(&df->lock);
-+
-+	freq = status.current_frequency;
-+
- 	if (dfc->power_ops->get_real_power) {
- 		/* Scale for resource utilization */
- 		est_power = power * dfc->res_util;
-@@ -367,8 +373,8 @@ static int devfreq_cooling_power2state(struct thermal_cooling_device *cdev,
- 		dyn_power = dyn_power > 0 ? dyn_power : 0;
- 
- 		/* Scale dynamic power for utilization */
--		busy_time = status->busy_time ?: 1;
--		est_power = (dyn_power * status->total_time) / busy_time;
-+		busy_time = status.busy_time ?: 1;
-+		est_power = (dyn_power * status.total_time) / busy_time;
- 	}
- 
- 	/*
+diff --git a/drivers/crypto/omap-sham.c b/drivers/crypto/omap-sham.c
+index e4072cd38585..0c837bbd8f0c 100644
+--- a/drivers/crypto/omap-sham.c
++++ b/drivers/crypto/omap-sham.c
+@@ -1584,7 +1584,8 @@ static struct ahash_alg algs_sha224_sha256[] = {
+ 		.cra_name		= "sha224",
+ 		.cra_driver_name	= "omap-sha224",
+ 		.cra_priority		= 400,
+-		.cra_flags		= CRYPTO_ALG_ASYNC |
++		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
++						CRYPTO_ALG_ASYNC |
+ 						CRYPTO_ALG_NEED_FALLBACK,
+ 		.cra_blocksize		= SHA224_BLOCK_SIZE,
+ 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
+@@ -1605,7 +1606,8 @@ static struct ahash_alg algs_sha224_sha256[] = {
+ 		.cra_name		= "sha256",
+ 		.cra_driver_name	= "omap-sha256",
+ 		.cra_priority		= 400,
+-		.cra_flags		= CRYPTO_ALG_ASYNC |
++		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
++						CRYPTO_ALG_ASYNC |
+ 						CRYPTO_ALG_NEED_FALLBACK,
+ 		.cra_blocksize		= SHA256_BLOCK_SIZE,
+ 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
+@@ -1627,7 +1629,8 @@ static struct ahash_alg algs_sha224_sha256[] = {
+ 		.cra_name		= "hmac(sha224)",
+ 		.cra_driver_name	= "omap-hmac-sha224",
+ 		.cra_priority		= 400,
+-		.cra_flags		= CRYPTO_ALG_ASYNC |
++		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
++						CRYPTO_ALG_ASYNC |
+ 						CRYPTO_ALG_NEED_FALLBACK,
+ 		.cra_blocksize		= SHA224_BLOCK_SIZE,
+ 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
+@@ -1650,7 +1653,8 @@ static struct ahash_alg algs_sha224_sha256[] = {
+ 		.cra_name		= "hmac(sha256)",
+ 		.cra_driver_name	= "omap-hmac-sha256",
+ 		.cra_priority		= 400,
+-		.cra_flags		= CRYPTO_ALG_ASYNC |
++		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
++						CRYPTO_ALG_ASYNC |
+ 						CRYPTO_ALG_NEED_FALLBACK,
+ 		.cra_blocksize		= SHA256_BLOCK_SIZE,
+ 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
+@@ -1675,7 +1679,8 @@ static struct ahash_alg algs_sha384_sha512[] = {
+ 		.cra_name		= "sha384",
+ 		.cra_driver_name	= "omap-sha384",
+ 		.cra_priority		= 400,
+-		.cra_flags		= CRYPTO_ALG_ASYNC |
++		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
++						CRYPTO_ALG_ASYNC |
+ 						CRYPTO_ALG_NEED_FALLBACK,
+ 		.cra_blocksize		= SHA384_BLOCK_SIZE,
+ 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
+@@ -1696,7 +1701,8 @@ static struct ahash_alg algs_sha384_sha512[] = {
+ 		.cra_name		= "sha512",
+ 		.cra_driver_name	= "omap-sha512",
+ 		.cra_priority		= 400,
+-		.cra_flags		= CRYPTO_ALG_ASYNC |
++		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
++						CRYPTO_ALG_ASYNC |
+ 						CRYPTO_ALG_NEED_FALLBACK,
+ 		.cra_blocksize		= SHA512_BLOCK_SIZE,
+ 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
+@@ -1718,7 +1724,8 @@ static struct ahash_alg algs_sha384_sha512[] = {
+ 		.cra_name		= "hmac(sha384)",
+ 		.cra_driver_name	= "omap-hmac-sha384",
+ 		.cra_priority		= 400,
+-		.cra_flags		= CRYPTO_ALG_ASYNC |
++		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
++						CRYPTO_ALG_ASYNC |
+ 						CRYPTO_ALG_NEED_FALLBACK,
+ 		.cra_blocksize		= SHA384_BLOCK_SIZE,
+ 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
+@@ -1741,7 +1748,8 @@ static struct ahash_alg algs_sha384_sha512[] = {
+ 		.cra_name		= "hmac(sha512)",
+ 		.cra_driver_name	= "omap-hmac-sha512",
+ 		.cra_priority		= 400,
+-		.cra_flags		= CRYPTO_ALG_ASYNC |
++		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
++						CRYPTO_ALG_ASYNC |
+ 						CRYPTO_ALG_NEED_FALLBACK,
+ 		.cra_blocksize		= SHA512_BLOCK_SIZE,
+ 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
 -- 
 2.17.1
 
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
