@@ -2,80 +2,215 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74F761CD7EB
-	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CFC31CD793
+	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:19:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729645AbgEKLWQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 May 2020 07:22:16 -0400
-Received: from foss.arm.com ([217.140.110.172]:57800 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725993AbgEKLWQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 May 2020 07:22:16 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8F28F101E;
-        Mon, 11 May 2020 04:22:15 -0700 (PDT)
-Received: from e123648.arm.com (unknown [10.37.12.83])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 506FB3F305;
-        Mon, 11 May 2020 04:22:05 -0700 (PDT)
-From:   Lukasz Luba <lukasz.luba@arm.com>
-To:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-imx@nxp.com
-Cc:     Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
-        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
-        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
-        rui.zhang@intel.com, amit.kucheria@verdurent.com,
-        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
-        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
-        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
-        matthias.bgg@gmail.com, steven.price@arm.com,
-        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
-        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
-        lorenzo.pieralisi@arm.com, lukasz.luba@arm.com,
-        patrick.bellasi@matbug.net, orjan.eide@arm.com,
-        rdunlap@infradead.org, mka@chromium.org
-Subject: [PATCH v7 15/15] drm/panfrost: Register devfreq cooling and attempt to add Energy Model
-Date:   Mon, 11 May 2020 12:19:12 +0100
-Message-Id: <20200511111912.3001-16-lukasz.luba@arm.com>
+        id S1729387AbgEKLTr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 May 2020 07:19:47 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:34780 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729333AbgEKLTp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 May 2020 07:19:45 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJXb3039243;
+        Mon, 11 May 2020 06:19:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1589195973;
+        bh=DmuTt/oLL9bLxYzTZA57/askvQvzJwvHmWkkULIzNXk=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=EDxwPPYJNjz2kfVxwGA9jZ/2Wa2LfWYXXknYGxxwBBtPgOh3l+9anre/0WWeK3CwF
+         bSPLcuUv/LM5af3RS62hPwS85pLEeL/DNvyHOwpAn4Kbw4V2paEp6lcoz3lBUOPGRG
+         yeERgCejDKIsBxm8DS5X4/Xq9rIdp5NqtstORs9s=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04BBJX3E061692
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 11 May 2020 06:19:33 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 11
+ May 2020 06:19:32 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 11 May 2020 06:19:32 -0500
+Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJKOb004306;
+        Mon, 11 May 2020 06:19:31 -0500
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <linux-crypto@vger.kernel.org>
+CC:     <linux-omap@vger.kernel.org>
+Subject: [PATCHv2 7/7] crypto: omap-sham: add proper load balancing support for multicore
+Date:   Mon, 11 May 2020 14:19:13 +0300
+Message-ID: <20200511111913.26541-8-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200511111912.3001-1-lukasz.luba@arm.com>
-References: <20200511111912.3001-1-lukasz.luba@arm.com>
+In-Reply-To: <20200511111913.26541-1-t-kristo@ti.com>
+References: <20200511111913.26541-1-t-kristo@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Register devfreq cooling device and attempt to register Energy Model. This
-will add the devfreq device to the Energy Model framework. It will create
-a dedicated and unified data structures used i.e. in thermal framework.
-The last NULL parameter indicates that the power model is simplified and
-created based on DT 'dynamic-power-coefficient', voltage and frequency.
+The current implementation of the multiple accelerator core support for
+OMAP SHA does not work properly. It always picks up the first probed
+accelerator core if this is available, and rest of the book keeping also
+gets confused if there are two cores available. Add proper load
+balancing support for SHA, and also fix any bugs related to the
+multicore support while doing it.
 
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>
-Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- drivers/gpu/drm/panfrost/panfrost_devfreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/omap-sham.c | 64 ++++++++++++++++++--------------------
+ 1 file changed, 31 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_devfreq.c b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
-index 413987038fbf..8759a73db153 100644
---- a/drivers/gpu/drm/panfrost/panfrost_devfreq.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
-@@ -105,7 +105,7 @@ int panfrost_devfreq_init(struct panfrost_device *pfdev)
- 	}
- 	pfdev->devfreq.devfreq = devfreq;
+diff --git a/drivers/crypto/omap-sham.c b/drivers/crypto/omap-sham.c
+index 86949f1ac6a7..0651604161ea 100644
+--- a/drivers/crypto/omap-sham.c
++++ b/drivers/crypto/omap-sham.c
+@@ -169,8 +169,6 @@ struct omap_sham_hmac_ctx {
+ };
  
--	cooling = of_devfreq_cooling_register(dev->of_node, devfreq);
-+	cooling = devfreq_cooling_em_register(devfreq, NULL);
- 	if (IS_ERR(cooling))
- 		DRM_DEV_INFO(dev, "Failed to register cooling device\n");
- 	else
+ struct omap_sham_ctx {
+-	struct omap_sham_dev	*dd;
+-
+ 	unsigned long		flags;
+ 
+ 	/* fallback stuff */
+@@ -935,27 +933,35 @@ static int omap_sham_update_dma_stop(struct omap_sham_dev *dd)
+ 	return 0;
+ }
+ 
++struct omap_sham_dev *omap_sham_find_dev(struct omap_sham_reqctx *ctx)
++{
++	struct omap_sham_dev *dd;
++
++	if (ctx->dd)
++		return ctx->dd;
++
++	spin_lock_bh(&sham.lock);
++	dd = list_first_entry(&sham.dev_list, struct omap_sham_dev, list);
++	list_move_tail(&dd->list, &sham.dev_list);
++	ctx->dd = dd;
++	spin_unlock_bh(&sham.lock);
++
++	return dd;
++}
++
+ static int omap_sham_init(struct ahash_request *req)
+ {
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
+ 	struct omap_sham_ctx *tctx = crypto_ahash_ctx(tfm);
+ 	struct omap_sham_reqctx *ctx = ahash_request_ctx(req);
+-	struct omap_sham_dev *dd = NULL, *tmp;
++	struct omap_sham_dev *dd;
+ 	int bs = 0;
+ 
+-	spin_lock_bh(&sham.lock);
+-	if (!tctx->dd) {
+-		list_for_each_entry(tmp, &sham.dev_list, list) {
+-			dd = tmp;
+-			break;
+-		}
+-		tctx->dd = dd;
+-	} else {
+-		dd = tctx->dd;
+-	}
+-	spin_unlock_bh(&sham.lock);
++	ctx->dd = NULL;
+ 
+-	ctx->dd = dd;
++	dd = omap_sham_find_dev(ctx);
++	if (!dd)
++		return -ENODEV;
+ 
+ 	ctx->flags = 0;
+ 
+@@ -1225,8 +1231,7 @@ static int omap_sham_handle_queue(struct omap_sham_dev *dd,
+ static int omap_sham_enqueue(struct ahash_request *req, unsigned int op)
+ {
+ 	struct omap_sham_reqctx *ctx = ahash_request_ctx(req);
+-	struct omap_sham_ctx *tctx = crypto_tfm_ctx(req->base.tfm);
+-	struct omap_sham_dev *dd = tctx->dd;
++	struct omap_sham_dev *dd = ctx->dd;
+ 
+ 	ctx->op = op;
+ 
+@@ -1236,7 +1241,7 @@ static int omap_sham_enqueue(struct ahash_request *req, unsigned int op)
+ static int omap_sham_update(struct ahash_request *req)
+ {
+ 	struct omap_sham_reqctx *ctx = ahash_request_ctx(req);
+-	struct omap_sham_dev *dd = ctx->dd;
++	struct omap_sham_dev *dd = omap_sham_find_dev(ctx);
+ 
+ 	if (!req->nbytes)
+ 		return 0;
+@@ -1340,21 +1345,8 @@ static int omap_sham_setkey(struct crypto_ahash *tfm, const u8 *key,
+ 	struct omap_sham_hmac_ctx *bctx = tctx->base;
+ 	int bs = crypto_shash_blocksize(bctx->shash);
+ 	int ds = crypto_shash_digestsize(bctx->shash);
+-	struct omap_sham_dev *dd = NULL, *tmp;
+ 	int err, i;
+ 
+-	spin_lock_bh(&sham.lock);
+-	if (!tctx->dd) {
+-		list_for_each_entry(tmp, &sham.dev_list, list) {
+-			dd = tmp;
+-			break;
+-		}
+-		tctx->dd = dd;
+-	} else {
+-		dd = tctx->dd;
+-	}
+-	spin_unlock_bh(&sham.lock);
+-
+ 	err = crypto_shash_setkey(tctx->fallback, key, keylen);
+ 	if (err)
+ 		return err;
+@@ -1372,7 +1364,7 @@ static int omap_sham_setkey(struct crypto_ahash *tfm, const u8 *key,
+ 
+ 	memset(bctx->ipad + keylen, 0, bs - keylen);
+ 
+-	if (!test_bit(FLAGS_AUTO_XOR, &dd->flags)) {
++	if (!test_bit(FLAGS_AUTO_XOR, &sham.flags)) {
+ 		memcpy(bctx->opad, bctx->ipad, bs);
+ 
+ 		for (i = 0; i < bs; i++) {
+@@ -2184,6 +2176,7 @@ static int omap_sham_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	dd->flags |= dd->pdata->flags;
++	sham.flags |= dd->pdata->flags;
+ 
+ 	pm_runtime_use_autosuspend(dev);
+ 	pm_runtime_set_autosuspend_delay(dev, DEFAULT_AUTOSUSPEND_DELAY);
+@@ -2211,6 +2204,9 @@ static int omap_sham_probe(struct platform_device *pdev)
+ 	spin_unlock(&sham.lock);
+ 
+ 	for (i = 0; i < dd->pdata->algs_info_size; i++) {
++		if (dd->pdata->algs_info[i].registered)
++			break;
++
+ 		for (j = 0; j < dd->pdata->algs_info[i].size; j++) {
+ 			struct ahash_alg *alg;
+ 
+@@ -2262,9 +2258,11 @@ static int omap_sham_remove(struct platform_device *pdev)
+ 	list_del(&dd->list);
+ 	spin_unlock(&sham.lock);
+ 	for (i = dd->pdata->algs_info_size - 1; i >= 0; i--)
+-		for (j = dd->pdata->algs_info[i].registered - 1; j >= 0; j--)
++		for (j = dd->pdata->algs_info[i].registered - 1; j >= 0; j--) {
+ 			crypto_unregister_ahash(
+ 					&dd->pdata->algs_info[i].algs_list[j]);
++			dd->pdata->algs_info[i].registered--;
++		}
+ 	tasklet_kill(&dd->done_task);
+ 	pm_runtime_disable(&pdev->dev);
+ 
 -- 
 2.17.1
 
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
