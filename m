@@ -2,93 +2,251 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4056D1CD786
-	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6059F1CD7DA
+	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729215AbgEKLTi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 May 2020 07:19:38 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:40270 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725993AbgEKLTi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 May 2020 07:19:38 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJRrO094029;
-        Mon, 11 May 2020 06:19:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589195967;
-        bh=gF2PqYNCTqam+pfCLXYK/QDdEYuZIM7FQDpr83pvKsA=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=M7mlmUldok5B0XtYgXZLUXbdyy10v69rfzgZMFdgVX3BP8EBntzmUxTcLX2jAbRyE
-         zgvT3QhyEZyrpHW+PpE2qJQuqsXGsNPdt8yDfNRq0Z4bQTLUilp3y5vATm/z+JWcXh
-         mNSPGNH5wFjcsY4Zx6aZN+hpVl1zoY9C0c58xOJ4=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04BBJRUW053856
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 May 2020 06:19:27 -0500
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 11
- May 2020 06:19:26 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 11 May 2020 06:19:26 -0500
-Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJKOX004306;
-        Mon, 11 May 2020 06:19:25 -0500
-From:   Tero Kristo <t-kristo@ti.com>
-To:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <linux-crypto@vger.kernel.org>
-CC:     <linux-omap@vger.kernel.org>
-Subject: [PATCHv2 3/7] crypto: omap-crypto: fix userspace copied buffer access
-Date:   Mon, 11 May 2020 14:19:09 +0300
-Message-ID: <20200511111913.26541-4-t-kristo@ti.com>
+        id S1729729AbgEKLVo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 May 2020 07:21:44 -0400
+Received: from foss.arm.com ([217.140.110.172]:57614 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729333AbgEKLVo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 11 May 2020 07:21:44 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF44B1045;
+        Mon, 11 May 2020 04:21:42 -0700 (PDT)
+Received: from e123648.arm.com (unknown [10.37.12.83])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 06ADE3F305;
+        Mon, 11 May 2020 04:21:32 -0700 (PDT)
+From:   Lukasz Luba <lukasz.luba@arm.com>
+To:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com
+Cc:     Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
+        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
+        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
+        rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
+        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
+        lorenzo.pieralisi@arm.com, lukasz.luba@arm.com,
+        patrick.bellasi@matbug.net, orjan.eide@arm.com,
+        rdunlap@infradead.org, mka@chromium.org
+Subject: [PATCH v7 12/15] thermal: devfreq_cooling: add new registration functions with Energy Model
+Date:   Mon, 11 May 2020 12:19:09 +0100
+Message-Id: <20200511111912.3001-13-lukasz.luba@arm.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200511111913.26541-1-t-kristo@ti.com>
-References: <20200511111913.26541-1-t-kristo@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20200511111912.3001-1-lukasz.luba@arm.com>
+References: <20200511111912.3001-1-lukasz.luba@arm.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In case buffers are copied from userspace, directly accessing the page
-will most likely fail because it hasn't been mapped into the kernel
-memory space. Fix the issue by forcing a kmap / kunmap within the
-cleanup functionality.
+The Energy Model (EM) framework supports devices such as Devfreq. Create
+new registration functions which automatically register EM for the thermal
+devfreq_cooling devices. This patch prepares the code for coming changes
+which are going to replace old power model with the new EM.
 
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
+Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
 ---
- drivers/crypto/omap-crypto.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/thermal/devfreq_cooling.c | 99 ++++++++++++++++++++++++++++++-
+ include/linux/devfreq_cooling.h   | 22 +++++++
+ 2 files changed, 120 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/omap-crypto.c b/drivers/crypto/omap-crypto.c
-index cc88b7362bc2..31bdb1d76d11 100644
---- a/drivers/crypto/omap-crypto.c
-+++ b/drivers/crypto/omap-crypto.c
-@@ -178,11 +178,16 @@ static void omap_crypto_copy_data(struct scatterlist *src,
- 		amt = min(src->length - srco, dst->length - dsto);
- 		amt = min(len, amt);
+diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
+index 36ec6a48606c..c7ffed2d6ee0 100644
+--- a/drivers/thermal/devfreq_cooling.c
++++ b/drivers/thermal/devfreq_cooling.c
+@@ -58,6 +58,8 @@ static DEFINE_IDA(devfreq_ida);
+  * @capped_state:	index to cooling state with in dynamic power budget
+  * @req_max_freq:	PM QoS request for limiting the maximum frequency
+  *			of the devfreq device.
++ * @em:		Energy Model which represents the associated Devfreq device
++ * @em_registered:	Devfreq cooling registered the EM and should free it.
+  */
+ struct devfreq_cooling_device {
+ 	int id;
+@@ -71,6 +73,8 @@ struct devfreq_cooling_device {
+ 	u32 res_util;
+ 	int capped_state;
+ 	struct dev_pm_qos_request req_max_freq;
++	struct em_perf_domain *em;
++	bool em_registered;
+ };
  
--		srcb = sg_virt(src) + srco;
--		dstb = sg_virt(dst) + dsto;
-+		srcb = kmap_atomic(sg_page(src)) + srco + src->offset;
-+		dstb = kmap_atomic(sg_page(dst)) + dsto + dst->offset;
+ static int devfreq_cooling_get_max_state(struct thermal_cooling_device *cdev,
+@@ -594,22 +598,115 @@ struct thermal_cooling_device *devfreq_cooling_register(struct devfreq *df)
+ }
+ EXPORT_SYMBOL_GPL(devfreq_cooling_register);
  
- 		memcpy(dstb, srcb, amt);
- 
-+		flush_dcache_page(sg_page(dst));
++/**
++ * devfreq_cooling_em_register_power() - Register devfreq cooling device with
++ *		power information and attempt to register Energy Model (EM)
++ * @df:		Pointer to devfreq device.
++ * @dfc_power:	Pointer to devfreq_cooling_power.
++ * @em_cb:	Callback functions providing the data of the EM
++ *
++ * Register a devfreq cooling device and attempt to register Energy Model. The
++ * available OPPs must be registered for the device.
++ *
++ * If @dfc_power is provided, the cooling device is registered with the
++ * power extensions. If @em_cb is provided it will be called for each OPP to
++ * calculate power value and cost. If @em_cb is not provided then simple Energy
++ * Model is going to be used, which requires "dynamic-power-coefficient" a
++ * devicetree property.
++ */
++struct thermal_cooling_device *
++devfreq_cooling_em_register_power(struct devfreq *df,
++				  struct devfreq_cooling_power *dfc_power,
++				  struct em_data_callback *em_cb)
++{
++	struct thermal_cooling_device *cdev;
++	struct devfreq_cooling_device *dfc;
++	struct device_node *np = NULL;
++	struct device *dev;
++	int nr_opp, ret;
 +
-+		kunmap_atomic(srcb);
-+		kunmap_atomic(dstb);
++	if (IS_ERR_OR_NULL(df))
++		return ERR_PTR(-EINVAL);
 +
- 		srco += amt;
- 		dsto += amt;
- 		len -= amt;
++	dev = df->dev.parent;
++
++	if (em_cb) {
++		nr_opp = dev_pm_opp_get_opp_count(dev);
++		if (nr_opp <= 0) {
++			dev_err(dev, "No valid OPPs found\n");
++			return ERR_PTR(-EINVAL);
++		}
++
++		ret = em_dev_register_perf_domain(dev, nr_opp, em_cb, NULL);
++	} else {
++		ret = dev_pm_opp_of_register_em(dev, NULL);
++	}
++
++	if (ret)
++		dev_warn(dev, "Unable to register EM for devfreq cooling device (%d)\n",
++			 ret);
++
++	if (dev->of_node)
++		np = of_node_get(dev->of_node);
++
++	cdev = of_devfreq_cooling_register_power(np, df, dfc_power);
++
++	if (np)
++		of_node_put(np);
++
++	if (IS_ERR_OR_NULL(cdev)) {
++		if (!ret)
++			em_dev_unregister_perf_domain(dev);
++	} else {
++		dfc = cdev->devdata;
++		dfc->em_registered = !ret;
++	}
++
++	return cdev;
++}
++EXPORT_SYMBOL_GPL(devfreq_cooling_em_register_power);
++
++/**
++ * devfreq_cooling_em_register() - Register devfreq cooling device together
++ *				with Energy Model.
++ * @df:		Pointer to devfreq device.
++ * @em_cb:	Callback functions providing the data of the Energy Model
++ *
++ * This function attempts to register Energy Model for devfreq device and then
++ * register the devfreq cooling device.
++ */
++struct thermal_cooling_device *
++devfreq_cooling_em_register(struct devfreq *df, struct em_data_callback *em_cb)
++{
++	return devfreq_cooling_em_register_power(df, NULL, em_cb);
++}
++EXPORT_SYMBOL_GPL(devfreq_cooling_em_register);
++
+ /**
+  * devfreq_cooling_unregister() - Unregister devfreq cooling device.
+  * @cdev: Pointer to devfreq cooling device to unregister.
++ *
++ * Unregisters devfreq cooling device and related Energy Model if it was
++ * present.
+  */
+ void devfreq_cooling_unregister(struct thermal_cooling_device *cdev)
+ {
+ 	struct devfreq_cooling_device *dfc;
++	struct device *dev;
+ 
+-	if (!cdev)
++	if (IS_ERR_OR_NULL(cdev))
+ 		return;
+ 
+ 	dfc = cdev->devdata;
++	dev = dfc->devfreq->dev.parent;
+ 
+ 	thermal_cooling_device_unregister(dfc->cdev);
+ 	ida_simple_remove(&devfreq_ida, dfc->id);
+ 	dev_pm_qos_remove_request(&dfc->req_max_freq);
++
++	if (dfc->em_registered)
++		em_dev_unregister_perf_domain(dev);
++
+ 	kfree(dfc->power_table);
+ 	kfree(dfc->freq_table);
+ 
+diff --git a/include/linux/devfreq_cooling.h b/include/linux/devfreq_cooling.h
+index 79a6e37a1d6f..07df019fcb66 100644
+--- a/include/linux/devfreq_cooling.h
++++ b/include/linux/devfreq_cooling.h
+@@ -18,6 +18,7 @@
+ #define __DEVFREQ_COOLING_H__
+ 
+ #include <linux/devfreq.h>
++#include <linux/energy_model.h>
+ #include <linux/thermal.h>
+ 
+ 
+@@ -72,6 +73,13 @@ struct thermal_cooling_device *
+ of_devfreq_cooling_register(struct device_node *np, struct devfreq *df);
+ struct thermal_cooling_device *devfreq_cooling_register(struct devfreq *df);
+ void devfreq_cooling_unregister(struct thermal_cooling_device *dfc);
++struct thermal_cooling_device *
++devfreq_cooling_em_register_power(struct devfreq *df,
++				  struct devfreq_cooling_power *dfc_power,
++				  struct em_data_callback *em_cb);
++struct thermal_cooling_device *
++devfreq_cooling_em_register(struct devfreq *df,
++			    struct em_data_callback *em_cb);
+ 
+ #else /* !CONFIG_DEVFREQ_THERMAL */
+ 
+@@ -94,6 +102,20 @@ devfreq_cooling_register(struct devfreq *df)
+ 	return ERR_PTR(-EINVAL);
+ }
+ 
++static inline struct thermal_cooling_device *
++devfreq_cooling_em_register_power(struct devfreq *df,
++				  struct devfreq_cooling_power *dfc_power,
++				  struct em_data_callback *em_cb)
++{
++	return ERR_PTR(-EINVAL);
++}
++
++static inline struct thermal_cooling_device *
++devfreq_cooling_em_register(struct devfreq *df,	struct em_data_callback *em_cb)
++{
++	return ERR_PTR(-EINVAL);
++}
++
+ static inline void
+ devfreq_cooling_unregister(struct thermal_cooling_device *dfc)
+ {
 -- 
 2.17.1
 
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
