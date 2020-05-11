@@ -2,47 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 132661CD78E
-	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4056D1CD786
+	for <lists+linux-omap@lfdr.de>; Mon, 11 May 2020 13:19:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729279AbgEKLTn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 May 2020 07:19:43 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:52252 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725993AbgEKLTk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 May 2020 07:19:40 -0400
+        id S1729215AbgEKLTi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 May 2020 07:19:38 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:40270 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725993AbgEKLTi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 May 2020 07:19:38 -0400
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJP3A099228;
-        Mon, 11 May 2020 06:19:25 -0500
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJRrO094029;
+        Mon, 11 May 2020 06:19:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589195965;
-        bh=gNPn50pxUfawldLhCux6x7Fp2+dqpJBz1HTS7H4u3SU=;
+        s=ti-com-17Q1; t=1589195967;
+        bh=gF2PqYNCTqam+pfCLXYK/QDdEYuZIM7FQDpr83pvKsA=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=YJrE4/65VS8f4xJfDQ2sX4XH4upmI8WHMr3R6xALu7ndmBGk7QUUm3FrnbWdWfZws
-         q7bYNJ8lC/IG0VIuOeexAQLLYr0TGKjRlv2vOWB+lrwg+A4yxCiCXTJmVf6618ORPu
-         qG+PSFWgmbItCVl0g0/jjHXBAnif+FJa9P93DV+M=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04BBJPAr053840
+        b=M7mlmUldok5B0XtYgXZLUXbdyy10v69rfzgZMFdgVX3BP8EBntzmUxTcLX2jAbRyE
+         zgvT3QhyEZyrpHW+PpE2qJQuqsXGsNPdt8yDfNRq0Z4bQTLUilp3y5vATm/z+JWcXh
+         mNSPGNH5wFjcsY4Zx6aZN+hpVl1zoY9C0c58xOJ4=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04BBJRUW053856
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 May 2020 06:19:25 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 11 May 2020 06:19:27 -0500
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 11
- May 2020 06:19:25 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ May 2020 06:19:26 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 11 May 2020 06:19:25 -0500
+ Frontend Transport; Mon, 11 May 2020 06:19:26 -0500
 Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJKOW004306;
-        Mon, 11 May 2020 06:19:24 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04BBJKOX004306;
+        Mon, 11 May 2020 06:19:25 -0500
 From:   Tero Kristo <t-kristo@ti.com>
 To:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
         <linux-crypto@vger.kernel.org>
 CC:     <linux-omap@vger.kernel.org>
-Subject: [PATCHv2 2/7] crypto: omap-sham: force kernel driver usage for sha algos
-Date:   Mon, 11 May 2020 14:19:08 +0300
-Message-ID: <20200511111913.26541-3-t-kristo@ti.com>
+Subject: [PATCHv2 3/7] crypto: omap-crypto: fix userspace copied buffer access
+Date:   Mon, 11 May 2020 14:19:09 +0300
+Message-ID: <20200511111913.26541-4-t-kristo@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200511111913.26541-1-t-kristo@ti.com>
 References: <20200511111913.26541-1-t-kristo@ti.com>
@@ -54,100 +54,39 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-As the hardware acceleration for the omap-sham algos is not available
-from userspace, force kernel driver usage. Without this flag in place,
-openssl 1.1 implementation thinks it can accelerate sha algorithms on
-omap devices directly from userspace.
+In case buffers are copied from userspace, directly accessing the page
+will most likely fail because it hasn't been mapped into the kernel
+memory space. Fix the issue by forcing a kmap / kunmap within the
+cleanup functionality.
 
 Signed-off-by: Tero Kristo <t-kristo@ti.com>
 ---
- drivers/crypto/omap-sham.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/crypto/omap-crypto.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/omap-sham.c b/drivers/crypto/omap-sham.c
-index e4072cd38585..0c837bbd8f0c 100644
---- a/drivers/crypto/omap-sham.c
-+++ b/drivers/crypto/omap-sham.c
-@@ -1584,7 +1584,8 @@ static struct ahash_alg algs_sha224_sha256[] = {
- 		.cra_name		= "sha224",
- 		.cra_driver_name	= "omap-sha224",
- 		.cra_priority		= 400,
--		.cra_flags		= CRYPTO_ALG_ASYNC |
-+		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-+						CRYPTO_ALG_ASYNC |
- 						CRYPTO_ALG_NEED_FALLBACK,
- 		.cra_blocksize		= SHA224_BLOCK_SIZE,
- 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
-@@ -1605,7 +1606,8 @@ static struct ahash_alg algs_sha224_sha256[] = {
- 		.cra_name		= "sha256",
- 		.cra_driver_name	= "omap-sha256",
- 		.cra_priority		= 400,
--		.cra_flags		= CRYPTO_ALG_ASYNC |
-+		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-+						CRYPTO_ALG_ASYNC |
- 						CRYPTO_ALG_NEED_FALLBACK,
- 		.cra_blocksize		= SHA256_BLOCK_SIZE,
- 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
-@@ -1627,7 +1629,8 @@ static struct ahash_alg algs_sha224_sha256[] = {
- 		.cra_name		= "hmac(sha224)",
- 		.cra_driver_name	= "omap-hmac-sha224",
- 		.cra_priority		= 400,
--		.cra_flags		= CRYPTO_ALG_ASYNC |
-+		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-+						CRYPTO_ALG_ASYNC |
- 						CRYPTO_ALG_NEED_FALLBACK,
- 		.cra_blocksize		= SHA224_BLOCK_SIZE,
- 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
-@@ -1650,7 +1653,8 @@ static struct ahash_alg algs_sha224_sha256[] = {
- 		.cra_name		= "hmac(sha256)",
- 		.cra_driver_name	= "omap-hmac-sha256",
- 		.cra_priority		= 400,
--		.cra_flags		= CRYPTO_ALG_ASYNC |
-+		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-+						CRYPTO_ALG_ASYNC |
- 						CRYPTO_ALG_NEED_FALLBACK,
- 		.cra_blocksize		= SHA256_BLOCK_SIZE,
- 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
-@@ -1675,7 +1679,8 @@ static struct ahash_alg algs_sha384_sha512[] = {
- 		.cra_name		= "sha384",
- 		.cra_driver_name	= "omap-sha384",
- 		.cra_priority		= 400,
--		.cra_flags		= CRYPTO_ALG_ASYNC |
-+		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-+						CRYPTO_ALG_ASYNC |
- 						CRYPTO_ALG_NEED_FALLBACK,
- 		.cra_blocksize		= SHA384_BLOCK_SIZE,
- 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
-@@ -1696,7 +1701,8 @@ static struct ahash_alg algs_sha384_sha512[] = {
- 		.cra_name		= "sha512",
- 		.cra_driver_name	= "omap-sha512",
- 		.cra_priority		= 400,
--		.cra_flags		= CRYPTO_ALG_ASYNC |
-+		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-+						CRYPTO_ALG_ASYNC |
- 						CRYPTO_ALG_NEED_FALLBACK,
- 		.cra_blocksize		= SHA512_BLOCK_SIZE,
- 		.cra_ctxsize		= sizeof(struct omap_sham_ctx),
-@@ -1718,7 +1724,8 @@ static struct ahash_alg algs_sha384_sha512[] = {
- 		.cra_name		= "hmac(sha384)",
- 		.cra_driver_name	= "omap-hmac-sha384",
- 		.cra_priority		= 400,
--		.cra_flags		= CRYPTO_ALG_ASYNC |
-+		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-+						CRYPTO_ALG_ASYNC |
- 						CRYPTO_ALG_NEED_FALLBACK,
- 		.cra_blocksize		= SHA384_BLOCK_SIZE,
- 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
-@@ -1741,7 +1748,8 @@ static struct ahash_alg algs_sha384_sha512[] = {
- 		.cra_name		= "hmac(sha512)",
- 		.cra_driver_name	= "omap-hmac-sha512",
- 		.cra_priority		= 400,
--		.cra_flags		= CRYPTO_ALG_ASYNC |
-+		.cra_flags		= CRYPTO_ALG_KERN_DRIVER_ONLY |
-+						CRYPTO_ALG_ASYNC |
- 						CRYPTO_ALG_NEED_FALLBACK,
- 		.cra_blocksize		= SHA512_BLOCK_SIZE,
- 		.cra_ctxsize		= sizeof(struct omap_sham_ctx) +
+diff --git a/drivers/crypto/omap-crypto.c b/drivers/crypto/omap-crypto.c
+index cc88b7362bc2..31bdb1d76d11 100644
+--- a/drivers/crypto/omap-crypto.c
++++ b/drivers/crypto/omap-crypto.c
+@@ -178,11 +178,16 @@ static void omap_crypto_copy_data(struct scatterlist *src,
+ 		amt = min(src->length - srco, dst->length - dsto);
+ 		amt = min(len, amt);
+ 
+-		srcb = sg_virt(src) + srco;
+-		dstb = sg_virt(dst) + dsto;
++		srcb = kmap_atomic(sg_page(src)) + srco + src->offset;
++		dstb = kmap_atomic(sg_page(dst)) + dsto + dst->offset;
+ 
+ 		memcpy(dstb, srcb, amt);
+ 
++		flush_dcache_page(sg_page(dst));
++
++		kunmap_atomic(srcb);
++		kunmap_atomic(dstb);
++
+ 		srco += amt;
+ 		dsto += amt;
+ 		len -= amt;
 -- 
 2.17.1
 
