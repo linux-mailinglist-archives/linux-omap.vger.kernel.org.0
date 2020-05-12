@@ -2,122 +2,188 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C8311CF63E
-	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 15:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2258B1CF655
+	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 16:01:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729583AbgELNzu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 May 2020 09:55:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32916 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729336AbgELNzt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 May 2020 09:55:49 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D90FCC061A0C
-        for <linux-omap@vger.kernel.org>; Tue, 12 May 2020 06:55:47 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id h26so10644059lfg.6
-        for <linux-omap@vger.kernel.org>; Tue, 12 May 2020 06:55:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=ieDMAA9yb+riKiWlcn1PcAR1xXEldRWacm/9O7wTeN8=;
-        b=nqHi0lvEre8nnaYlAJI9c4SegL2WtVHhZudtG9rI2YK7JHpGjZWmVfz4Xj+TxFItCm
-         jV82jyzvEuuqJTPnnCd/u4OUkKNkhFMy0q7jhtLHmHAiOLz0bOUmwjLyv8qv/r3IE/+d
-         vMEg4ad1K8SN01wPDvDyc52jYm9FYqw7r5vRiwPkPQEKLsGReqbqnmZGj9ElFenZIl0Q
-         foLfjZprALxqCLGn9zAXvgTZGhWEbq3C81FBpz6yIIKPcPkGO07fbTTp5kWLe0vcDLlH
-         vp8LyC4LcnPF2Pggbd9y6cH/Gnw8IIfHlbe9tKgyDVZJMknyv2oTHxhL2miDv2c/sbpP
-         a+WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
-         :date:message-id:mime-version;
-        bh=ieDMAA9yb+riKiWlcn1PcAR1xXEldRWacm/9O7wTeN8=;
-        b=HH9DIIvTV5diVlBQ1/4QKf2W9JPvsWnCZtograAAYjC1JyNcy9DJORj2wE/IiB9xB/
-         uxR2jMroWH5PGpCtHKAea98LF7xdXETCn5eWyLExAyrjJHe0XRCTW/GN81/yh43vH9C8
-         mgx+jXAhs/GpNwezVEeLst+i6EUz/Z46lvoeBSLw/W/o5U9vkX0mWTqBxncJeGniN2yz
-         W1xH5Lb7BIey5a5Zlhjxd+52n4CGLB9AGRJxBhcemC+7QlVmSXpnneWQJZbBdqCIHsHk
-         H3yv7R7/WP05J9yB/fUiZIb3RJ82QItX3rzpVD+U9Kz+Hpcl1+p/suuRJULztpeyCOZe
-         dJBg==
-X-Gm-Message-State: AOAM5313O5I0OlNidwvX+1ZBXlSxsjupNORMY2D8VlhuEPkIl3dw6mTH
-        iM7Bd2Yg3RAze/YwjtM+SFlZvE+Bd50=
-X-Google-Smtp-Source: ABdhPJxvF0Rnykg+85HahVRnZh8qJWdTTiKTpX+rmJCnhe7VLO0T8GVfHn/BAEUZc6vpdip9nZBQow==
-X-Received: by 2002:a19:f00b:: with SMTP id p11mr14578601lfc.210.1589291746086;
-        Tue, 12 May 2020 06:55:46 -0700 (PDT)
-Received: from saruman (91-155-214-58.elisa-laajakaista.fi. [91.155.214.58])
-        by smtp.gmail.com with ESMTPSA id 68sm14507611lfn.41.2020.05.12.06.55.43
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 12 May 2020 06:55:43 -0700 (PDT)
-From:   Felipe Balbi <balbi@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: BBB with v5.7-rc5
-In-Reply-To: <20200512134648.GD37466@atomide.com>
-References: <87k11h4df0.fsf@kernel.org> <87eerp46h5.fsf@kernel.org> <20200512134648.GD37466@atomide.com>
-Date:   Tue, 12 May 2020 16:55:39 +0300
-Message-ID: <878shx45r8.fsf@kernel.org>
+        id S1729229AbgELOBp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 May 2020 10:01:45 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:37718 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727859AbgELOBo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 May 2020 10:01:44 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04CE1Mk2043470;
+        Tue, 12 May 2020 09:01:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1589292082;
+        bh=OR75gZnwlt6fdZF5hDS19wyJydL4WevuZucaJhccRRA=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=wQmZMWw3QUNf5p89vL84saTSjkWOmuRgAp9tMeHY8E5Pw3ADFjlCl++5v/hzNKC+/
+         VoIrpH6eQgBYrVsh3ZmVNQVm7FyEdtD39I8FMH8XFLKPyRJgHS+Xjkz5bs6Ntu1Zk2
+         tcUT2aIzMgv04fukjIVfGM8R4X+AqbVerGOVlDsw=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04CE1MG7083187
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 12 May 2020 09:01:22 -0500
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 12
+ May 2020 09:01:22 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 12 May 2020 09:01:22 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04CE1Jxb032373;
+        Tue, 12 May 2020 09:01:20 -0500
+Subject: Re: [PATCH] ASoC: ti: omap-mcbsp: Fix an error handling path in
+ 'asoc_mcbsp_probe()'
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        <jarkko.nikula@bitmer.com>, <lgirdwood@gmail.com>,
+        <broonie@kernel.org>, <perex@perex.cz>, <tiwai@suse.com>,
+        <linux-omap@vger.kernel.org>
+CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20200512134325.252073-1-christophe.jaillet@wanadoo.fr>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+X-Pep-Version: 2.0
+Message-ID: <5f1b0172-279c-9368-838e-6ef0e2d67b15@ti.com>
+Date:   Tue, 12 May 2020 17:01:54 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+In-Reply-To: <20200512134325.252073-1-christophe.jaillet@wanadoo.fr>
+Content-Type: multipart/mixed;
+        boundary="------------BC4735E1360B906FD979E055"
+Content-Language: en-US
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
+--------------BC4735E1360B906FD979E055
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 
-Hi,
 
-Tony Lindgren <tony@atomide.com> writes:
->> Felipe Balbi <balbi@kernel.org> writes:
->> > what's the trick to get BBB to boot recent kernels nowadays? :-p
->> >
->> > I'm using omap2plus_defconfig without CPSW (doesn't link otherwise) wi=
+On 12/05/2020 16.43, Christophe JAILLET wrote:
+> If an error occurs after the call to 'omap_mcbsp_init()', the reference=
+ to
+> 'mcbsp->fclk' must be decremented, as already done in the remove functi=
+on.
+>=20
+> This can be achieved easily by using the devm_ variant of 'clk_get()'
+> when the reference is taken in 'omap_mcbsp_init()'
+>=20
+> This fixes the leak in the probe and has the side effect to simplify bo=
 th
->> > GCC 10.1.0 (I'll try an older version shortly). Cmdline is the usual
->>=20
->> same result with 9.2. Nothing from low level debug either.
->
-> Maybe check you have a current dtb file? The older dtb files may not
-> have all the needed data.
+> the error handling path of 'omap_mcbsp_init()' and the remove function.=
 
-yeah, loading all the data from sd card. I am, however, using the u-boot
-that came with the board.
 
-> Also you probably want to add "earlycon" to your your kernel cmdline
-> and then you have early output from CONFIG_SERIAL_EARLYCON=3Dy as long
-> as there's a chosen entry for the device uart. So no need to enable
-> DEBUG_LL in most cases.
+Acked-by: Peter Ujfalusi <peter.ujflausi@ti.com>
 
-cool, I'll try earlycon, then.
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> I've not been able to identify the when the issue has been introduced, =
+so
+> no Fixes: tag.
 
-> There's "[PATCH net v4] net: ethernet: ti: Remove TI_CPTS_MOD workaround"
-> being discussed too for the cpsw regression.
+I think this is there for a long-long time. It is a theoretical bug, in
+practice it never happen (at least never faced with it over the years).
 
-Thanks
+Thanks for the fix!
 
-=2D-=20
-balbi
+- P=C3=A9ter
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+> ---
+>  sound/soc/ti/omap-mcbsp.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+> index 0348963f4df7..6c83b9888467 100644
+> --- a/sound/soc/ti/omap-mcbsp.c
+> +++ b/sound/soc/ti/omap-mcbsp.c
+> @@ -686,7 +686,7 @@ static int omap_mcbsp_init(struct platform_device *=
+pdev)
+>  	mcbsp->dma_data[1].addr =3D omap_mcbsp_dma_reg_params(mcbsp,
+>  						SNDRV_PCM_STREAM_CAPTURE);
+> =20
+> -	mcbsp->fclk =3D clk_get(&pdev->dev, "fck");
+> +	mcbsp->fclk =3D devm_clk_get(&pdev->dev, "fck");
+>  	if (IS_ERR(mcbsp->fclk)) {
+>  		ret =3D PTR_ERR(mcbsp->fclk);
+>  		dev_err(mcbsp->dev, "unable to get fck: %d\n", ret);
+> @@ -711,7 +711,7 @@ static int omap_mcbsp_init(struct platform_device *=
+pdev)
+>  		if (ret) {
+>  			dev_err(mcbsp->dev,
+>  				"Unable to create additional controls\n");
+> -			goto err_thres;
+> +			return ret;
+>  		}
+>  	}
+> =20
+> @@ -724,8 +724,6 @@ static int omap_mcbsp_init(struct platform_device *=
+pdev)
+>  err_st:
+>  	if (mcbsp->pdata->buffer_size)
+>  		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
+> -err_thres:
+> -	clk_put(mcbsp->fclk);
+>  	return ret;
+>  }
+> =20
+> @@ -1442,8 +1440,6 @@ static int asoc_mcbsp_remove(struct platform_devi=
+ce *pdev)
+> =20
+>  	omap_mcbsp_st_cleanup(pdev);
+> =20
+> -	clk_put(mcbsp->fclk);
+> -
+>  	return 0;
+>  }
+> =20
+>=20
 
------BEGIN PGP SIGNATURE-----
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
 
-iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl66qtsACgkQzL64meEa
-mQYx7Q//VmcUCxpsgoPsIB1x6r73MOuwi0ywJqixymLH3nyr5fmG0hq03RUtZww2
-p1jc9Z+jza5wxkzfjBaf07sRtCixnj9I+wsa2VfPreAhVbFVlNZowsaFa+eLE8/3
-J21trEG2qCHdnYC1CzDEiTdxcN2zrOvahN/p1Z99t2A1YrQhIdb9PfgdnACJ2y8O
-dljwGX+OYzB6wDEgKCwfJvOSBIML2vElD+XiHlL+ehSJ+8v/4Zxpci9YSv4wGJCp
-JdPOyjTkkBjW7mQk7Tj976q8mpq9JmT7YyisPi9IQFZkEEXUE3sRjOuVQ+QSmX3E
-THUhxn3es5gFc29TLiYFMmOu34qiBIbtoGLFim5u2R5USS/Kwgp0qqkfupMD37P6
-bzLfZcXUy3c5eGhxSZ9nbKO9xfQs/8IeJSiYVrfZyb4NY3VMwZpmwehLSOK+I0un
-c1/rLe2+WVlZcqb4R0CXYMUGmH8jAuSeoNZfgc+rpm/ND+QH6FWxMauiW9Dl/Sui
-DmMoOuutClV9RZlH20QzwviNxGHpQMmpfyIDlaoo2BdT6i/Z2jq1SNS5CFoSYuCp
-k/D+1VphBfmgJr/7Xx9nTXGXJ5LwVizshesH9oJR1pCSS48NI0CoC3T4ygFRRWgv
-HrRDvrfN+a08YGCYAOubkm4lFpovmn4byOQ1jU/W2keu90vRRJI=
-=0Jg/
------END PGP SIGNATURE-----
---=-=-=--
+--------------BC4735E1360B906FD979E055
+Content-Type: application/pgp-keys; name="pEpkey.asc"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment; filename="pEpkey.asc"
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQENBFki4nsBCAD3BM+Ogt951JlaDloruEjoZk/Z+/37CjP0fY2mqLhBOzkpx95u
+X1Fquf0KfVk+ZzCd25XGOZEtpZNlXfbxRr2iRWPS5RW2FeLYGvg2TTJCpSr+ugKu
+OOec6KECCUotGbGhpYwBrbarJNEwDcAzPK7UJYa1rhWOmkpZJ1hXF1hUghB84q35
+8DmN4sGLcsIbVdRFZ1tWFh4vGBFV9LsoDZIrnnANb6/XMX78s+tr3RG3GZBaFPl8
+jO5IIv0UIGNUKaYlNVFYthjGCzOqtstHchWuK9eQkR7m1+Vc+ezh1qK0VJydIcjn
+OtoMZZL7RAz13LB9vmcJjbQPnI7dJojz/M7zABEBAAG0JlBldGVyIFVqZmFsdXNp
+IDxwZXRlci51amZhbHVzaUB0aS5jb20+iQFOBBMBCAA4FiEE+dBcpRFvJjZw+uta
+LCayis85LN4FAlki4nsCGwMFCwkIBwIGFQgJCgsCBBYCAwECHgECF4AACgkQLCay
+is85LN4QjggAzxxxXqiWpA3vuj9yrlGLft3BeGKWqF8+RzdeRvshtNdpGeIFf+r5
+AJVR71R1w89Qeb4DGXus7qsKiafdFGG7yxbuhw8a5wUm+ZncBXA+ETn3OyVtl8g8
+r/ZcPX420jClBNTVuL0sSnyqDFDrt5f+uAFOIwsnHdpns174Zu9QhgYxdvdZ+jMh
+Psb745O9EVeNvdfUIRdrVjb4IhJKNIzkb0Tulsz5xeCJReUYpxZU1jzEq3YZqIou
++fi+oS4wlJuSoxKKTmIXtSeEy/weStF1XHMo6vLYqzaK4FyIuclqeuYUYSVy2425
+7TMXugaI+O85AEI6KW8MCcu1NucSfAWUabkBDQRZIuJ7AQgAypKq8iIugpHxWA2c
+Ck6MQdPBT6cOEVK0tjeHaHAVOUPiw9Pq+ssMifdIkDdqXNZ3RLH/X2svYvd8c81C
+egqshfB8nkJ5EKmQc9d7s0EwnYT8OwsoVb3c2WXnsdcKEyu2nHgyeJEUpPpMPyLc
++PWhoREifttab4sOPktepdnUbvrDK/gkjHmiG6+L2owSn637N+Apo3/eQuDajfEu
+kybxK19ReRcp6dbqWSBGSeNB32c/zv1ka37bTMNVUY39Rl+/8lA/utLfrMeACHRO
+FGO1BexMASKUdmlB0v9n4BaJFGrAJYAFJBNHLCDemqkU7gjaiimuHSjwuP0Wk7Ct
+KQJfVQARAQABiQE2BBgBCAAgFiEE+dBcpRFvJjZw+utaLCayis85LN4FAlki4nsC
+GwwACgkQLCayis85LN7kCwgAoy9r3ZQfJNOXO1q/YQfpEELHn0p8LpwliSDUS1xL
+sswyxtZS8LlW8PjlTXuBLu38Vfr0vGav7oyV7TkhnKT3oBOLXanyZqwgyZSKNEGB
+PB4v3Fo7YTzpfSofiwuz03uyfjTxiMGjonxSb+YxM7HBHfzjrOKKlg02fK+lWNZo
+m5lXugeWD7U6JJguNdYfr+U4zYIblelUImcIE+wnR0oLzUEVDIWSpVrl/OqS3Rzo
+mw8wBsHksTHrbgUnKL0SCzYc90BTeKbyjEBnVDr+dlfbxRxkB8h9RMPMdjodvXzS
+Gfsa9V/k4XAsh7iX9EUVBbnmjA61ySxU/w98h96jMuteTg=3D=3D
+=3DeQmw
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------BC4735E1360B906FD979E055--
