@@ -2,194 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A507E1CF375
-	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 13:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5CF81CF5FE
+	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 15:40:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729278AbgELLix (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 May 2020 07:38:53 -0400
-Received: from foss.arm.com ([217.140.110.172]:53022 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728085AbgELLix (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 12 May 2020 07:38:53 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D48E30E;
-        Tue, 12 May 2020 04:38:52 -0700 (PDT)
-Received: from [10.37.12.83] (unknown [10.37.12.83])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D9103F71E;
-        Tue, 12 May 2020 04:38:42 -0700 (PDT)
-Subject: Re: [PATCH v7 04/15] PM / EM: add support for other devices than CPUs
- in Energy Model
-To:     Quentin Perret <qperret@google.com>
-Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-imx@nxp.com, Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
-        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
-        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
-        rui.zhang@intel.com, amit.kucheria@verdurent.com,
-        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-        kernel@pengutronix.de, khilman@kernel.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, robh@kernel.org,
-        matthias.bgg@gmail.com, steven.price@arm.com,
-        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
-        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
-        lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net,
-        orjan.eide@arm.com, rdunlap@infradead.org, mka@chromium.org
-References: <20200511111912.3001-1-lukasz.luba@arm.com>
- <20200511111912.3001-5-lukasz.luba@arm.com>
- <20200511134319.GA29112@google.com>
-From:   Lukasz Luba <lukasz.luba@arm.com>
-Message-ID: <270f3e37-8de8-2841-dca3-8d70089f7317@arm.com>
-Date:   Tue, 12 May 2020 12:38:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1727859AbgELNkN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 May 2020 09:40:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727783AbgELNkN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 May 2020 09:40:13 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6534C061A0C
+        for <linux-omap@vger.kernel.org>; Tue, 12 May 2020 06:40:12 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id a21so13658257ljj.11
+        for <linux-omap@vger.kernel.org>; Tue, 12 May 2020 06:40:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=Pp1+s7RQ5rG8lY+v9K4jMvguVWgg1aIN5RkE+DwswEc=;
+        b=N22OoGtlhpGWtcLQ/0KkDG42g9u3knwLq1ysGrc5E1jwvHDqwmfheeLOnOtbR8rlky
+         hDaHSWVmugcxRKfSpJ5YsOtxYzLW54HNHGpdz611Q8rqG9t/fPFSfE/tvQyT7Sfq1ZSi
+         csfhGnovFYhI3j7c/WrYhiC1AiiDBXFK3xYvI7cd1c/4zZw7p+G3CYC+PyNugoNDbuTI
+         FvYto0BlpX/ZerPafocwEA9ElzYBO+cdHppyEWi46OMjFYB6BKP7JPdyU2kDyByJaxNL
+         TSF1tMEuQ/wRpOBUBol4hXkxIblO1oTRQGw8GMjxiEEaIr9DFRg8VzCgp63E1Fr8+FiF
+         ES6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:subject:in-reply-to:references
+         :date:message-id:mime-version;
+        bh=Pp1+s7RQ5rG8lY+v9K4jMvguVWgg1aIN5RkE+DwswEc=;
+        b=Y/D5Ky8Hh2h2vCkpapLfEbD4rZi0snq1HQF/84lxJ/C8iQ7p/3P/6HWBSnOk8omw6n
+         zlkj7RABdqsf9Hj7PQyVkKVxqLprqjWlWyJGvJSxFMc4I0yGmgMv3mj4Mv/Qojn3gMg0
+         53ejJycXiMQaeGAvHApXCO+t7019/XGsxFqBrj4mXGCKL4JheySXEwl9M4sPMpQWMXIa
+         g/saAOfm+gobD5BnFqm5Xx7DQP/aNCLPrbCT1vdWThq2bRfbAkjJ4/VWhxV6L0PVH0Ul
+         aECEAFie0ehGzpet4z1q6bipdX/gHr1sOUMitkxvNymJiNQcqB82PCmegejJLs2SYlX7
+         Oz8w==
+X-Gm-Message-State: AOAM533mbsYskOTNNh2IJ1exu4AVtSyO8RkDL7Hio8OtjZjYkMM3opuJ
+        kESCK7UNM9wLDoSZywOjtpPJMzuGAWQ=
+X-Google-Smtp-Source: ABdhPJygnuUfP3AqRdEt3f3LbzrFqpyjkI6P2lMv5ZSqQsXoxYAC3dAsORVRiAneM35SkAruG/PnSw==
+X-Received: by 2002:a2e:584a:: with SMTP id x10mr3773902ljd.181.1589290811059;
+        Tue, 12 May 2020 06:40:11 -0700 (PDT)
+Received: from saruman (91-155-214-58.elisa-laajakaista.fi. [91.155.214.58])
+        by smtp.gmail.com with ESMTPSA id c2sm12916459ljk.97.2020.05.12.06.40.10
+        for <linux-omap@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 12 May 2020 06:40:10 -0700 (PDT)
+From:   Felipe Balbi <balbi@kernel.org>
+To:     linux-omap@vger.kernel.org
+Subject: Re: BBB with v5.7-rc5
+In-Reply-To: <87k11h4df0.fsf@kernel.org>
+References: <87k11h4df0.fsf@kernel.org>
+Date:   Tue, 12 May 2020 16:40:06 +0300
+Message-ID: <87eerp46h5.fsf@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200511134319.GA29112@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
+Hi,
 
-On 5/11/20 2:43 PM, Quentin Perret wrote:
-> Hey Lukasz,
-> 
-> On Monday 11 May 2020 at 12:19:01 (+0100), Lukasz Luba wrote:
-> <snip>
->> @@ -27,12 +29,15 @@ struct em_perf_state {
->>    * em_perf_domain - Performance domain
->>    * @table:		List of performance states, in ascending order
->>    * @nr_perf_states:	Number of performance states
->> - * @cpus:		Cpumask covering the CPUs of the domain
->> + * @cpus:		Cpumask covering the CPUs of the domain. It's here
->> + *			for performance reasons to avoid potential cache
->> + *			misses during energy calculations in the scheduler
-> 
-> And because that saves a pointer, and simplifies allocating/freeing that
-> memory region :)
+Felipe Balbi <balbi@kernel.org> writes:
+> what's the trick to get BBB to boot recent kernels nowadays? :-p
+>
+> I'm using omap2plus_defconfig without CPSW (doesn't link otherwise) with
+> GCC 10.1.0 (I'll try an older version shortly). Cmdline is the usual
 
-True, I will add this also:
-'and simplifies allocating/freeing that memory region'
+same result with 9.2. Nothing from low level debug either.
 
-> 
-> <snip>
->> diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
->> index 5b8a1566526a..9cc7f2973600 100644
->> --- a/kernel/power/energy_model.c
->> +++ b/kernel/power/energy_model.c
->> @@ -2,8 +2,9 @@
->>   /*
->>    * Energy Model of CPUs
-> 
-> Should this comment change too?
+=2D-=20
+balbi
 
-Yes, indeed. I will adjust it.
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> 
-> <snip>
->> -static void em_debug_create_pd(struct em_perf_domain *pd, int cpu)
->> +static void em_debug_create_pd(struct device *dev)
->>   {
->>   	struct dentry *d;
->> -	char name[8];
->>   	int i;
->>   
->> -	snprintf(name, sizeof(name), "pd%d", cpu);
->> -
->>   	/* Create the directory of the performance domain */
->> -	d = debugfs_create_dir(name, rootdir);
->> +	d = debugfs_create_dir(dev_name(dev), rootdir);
-> 
-> So what will be the name for the perf domain of CPUs now? cpuX?
+-----BEGIN PGP SIGNATURE-----
 
-yeap, it will be 'cpu0', 'cpu4', etc...
-
-> 
-> <snip>
->> @@ -142,8 +149,8 @@ em_create_pd(struct device *dev, int nr_states, struct em_data_callback *cb,
->>   		 */
->>   		opp_eff = freq / power;
->>   		if (opp_eff >= prev_opp_eff)
->> -			pr_warn("pd%d: hertz/watts ratio non-monotonically decreasing: em_perf_state %d >= em_perf_state%d\n",
->> -					cpu, i, i - 1);
->> +			dev_dbg(dev, "EM: hertz/watts ratio non-monotonically decreasing: em_perf_state %d >= em_perf_state%d\n",
->> +					i, i - 1);
-> 
-> It feels like changing from warn to debug doesn't really belong to this
-> patch no?
-
-I thought that these prints are not worth to introduce another patch.
-This warning is a bit tricky, because we (SW eng) basically are not able
-to tweak OPPs, we can only remove them to calm down this warning.
-
-There are platforms, with dozen of OPPs, seeing this. Warnings triggers 
-the automated tests scripts, which are sensitive to dmesg log level and
-cause developers to spent time and investigate the issue.
-
-Then, what if these OPPs are needed because the thermal was tested OK
-with some OPPs which unfortunately are triggering also this warning.
-They cannot remove these OPPS, but the warning would stay. We might see
-this also for GPUs.
-
-I decided to change it into dbg, due to the reason above.
-
-> 
-> <snip>
->> @@ -216,47 +274,50 @@ int em_dev_register_perf_domain(struct device *dev, unsigned int nr_states,
->>   	 */
->>   	mutex_lock(&em_pd_mutex);
->>   
->> -	for_each_cpu(cpu, span) {
->> -		/* Make sure we don't register again an existing domain. */
->> -		if (READ_ONCE(per_cpu(em_data, cpu))) {
->> -			ret = -EEXIST;
->> -			goto unlock;
->> -		}
->> +	if (dev->em_pd) {
->> +		ret = -EEXIST;
->> +		goto unlock;
->> +	}
->>   
->> -		/*
->> -		 * All CPUs of a domain must have the same micro-architecture
->> -		 * since they all share the same table.
->> -		 */
->> -		cap = arch_scale_cpu_capacity(cpu);
->> -		if (prev_cap && prev_cap != cap) {
->> -			pr_err("CPUs of %*pbl must have the same capacity\n",
->> -							cpumask_pr_args(span));
->> +	if (_is_cpu_device(dev)) {
-> 
-> Something like
-> 
-> 	if (!_is_cpu_device(dev))
-> 		goto device;
-> 
-> would limit the diff a bit, but that may just be personal taste.
-
-Possible
-
-> 
-> But appart from these nits, the patch LGTM.
-
-Thank you for the review.
-
-I will wait for Daniel's (because he suggested the em_pd inside
-device struct) comments and if there is no other issues I will just
-resend the patch with adjusted comment fields in response.
-
-Regards,
-Lukasz
-
-> 
-> Thanks,
-> Quentin
-> 
+iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl66pzYACgkQzL64meEa
+mQaOfA/+MpMlAzhLvVFdWBMniJu1tHtK7RmPWGnk8UzmcOgUGYYdVRTmvRp6zTXA
+paNAFS/9GEsP0n+3QLSbRyn4vZhk4Z30JR/dEOH6BZ3mCuYxgex6cieaSWnFdhF6
+MiC4qv830FHSXFoV06u+rZuZU4P0k5UqHJ3MrZjZSNgVpV3+j3r0x5yFvH+wJOak
+wmJf6AbHbQqpbX2Ws72GEhO3nWSBKbBgryNKbHv4PvTnAgnJqEqK+5EHvE/gEEFM
+oegf6sCu+dCtqKXafilB2tvcDLLnCcJs3PmrCnl1sTOC2AnZDAOSdJMXKmazrw7x
+CZ9/Q2P8vL4987lFzUnCTIYLUjEdTnCVj14Hvs+GNDwfrm+sel+KB7unQGopww5l
+aieX1Oe78s9Je2xarC8r1N6ZHcC53NJWKFhoF2y1BPaPgb6yJOLfvJniVWeVCpWv
+QmCSE6q6JyAtOI25TWNNq1llSKRVzn+jDllAeomvlw/fRBz4UaTAfrMqpGVS4nHt
+WiZObxXIypW/4BaVuA2+LHB2vmVy81AJti45B+NF4PqRL8EXVYUfHr35pjXhdWyI
+aNVe5Wvgnp6zyKuAH87xbdAm3fk6t7l/R9SsuBX1L0xKvblHEtLpFMTHcC6etEei
+vJjmEQgdmr6XJRLqt1y7iTdgTlRw+qP9Lv0W2eCa90dc/AxD7p4=
+=BvFJ
+-----END PGP SIGNATURE-----
+--=-=-=--
