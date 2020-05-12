@@ -2,188 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2258B1CF655
-	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 16:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C9841CF6EE
+	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 16:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729229AbgELOBp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 May 2020 10:01:45 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:37718 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727859AbgELOBo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 May 2020 10:01:44 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04CE1Mk2043470;
-        Tue, 12 May 2020 09:01:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589292082;
-        bh=OR75gZnwlt6fdZF5hDS19wyJydL4WevuZucaJhccRRA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=wQmZMWw3QUNf5p89vL84saTSjkWOmuRgAp9tMeHY8E5Pw3ADFjlCl++5v/hzNKC+/
-         VoIrpH6eQgBYrVsh3ZmVNQVm7FyEdtD39I8FMH8XFLKPyRJgHS+Xjkz5bs6Ntu1Zk2
-         tcUT2aIzMgv04fukjIVfGM8R4X+AqbVerGOVlDsw=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04CE1MG7083187
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 12 May 2020 09:01:22 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 12
- May 2020 09:01:22 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 12 May 2020 09:01:22 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04CE1Jxb032373;
-        Tue, 12 May 2020 09:01:20 -0500
-Subject: Re: [PATCH] ASoC: ti: omap-mcbsp: Fix an error handling path in
- 'asoc_mcbsp_probe()'
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        <jarkko.nikula@bitmer.com>, <lgirdwood@gmail.com>,
-        <broonie@kernel.org>, <perex@perex.cz>, <tiwai@suse.com>,
-        <linux-omap@vger.kernel.org>
-CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20200512134325.252073-1-christophe.jaillet@wanadoo.fr>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-X-Pep-Version: 2.0
-Message-ID: <5f1b0172-279c-9368-838e-6ef0e2d67b15@ti.com>
-Date:   Tue, 12 May 2020 17:01:54 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1729408AbgELOWf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 May 2020 10:22:35 -0400
+Received: from muru.com ([72.249.23.125]:53996 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728085AbgELOWf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 12 May 2020 10:22:35 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id E8BE48047;
+        Tue, 12 May 2020 14:23:22 +0000 (UTC)
+Date:   Tue, 12 May 2020 07:22:30 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Clay McClure <clay@daemons.net>, Dan Murphy <dmurphy@ti.com>
+Subject: Re: [PATCH net v4] net: ethernet: ti: Remove TI_CPTS_MOD workaround
+Message-ID: <20200512142230.GF37466@atomide.com>
+References: <20200512100230.17752-1-grygorii.strashko@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20200512134325.252073-1-christophe.jaillet@wanadoo.fr>
-Content-Type: multipart/mixed;
-        boundary="------------BC4735E1360B906FD979E055"
-Content-Language: en-US
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200512100230.17752-1-grygorii.strashko@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---------------BC4735E1360B906FD979E055
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Hi,
+
+* Grygorii Strashko <grygorii.strashko@ti.com> [200512 10:03]:
+> From: Clay McClure <clay@daemons.net>
+> 
+> My recent commit b6d49cab44b5 ("net: Make PTP-specific drivers depend on
+> PTP_1588_CLOCK") exposes a missing dependency in defconfigs that select
+> TI_CPTS without selecting PTP_1588_CLOCK, leading to linker errors of the
+> form:
+> 
+> drivers/net/ethernet/ti/cpsw.o: in function `cpsw_ndo_stop':
+> cpsw.c:(.text+0x680): undefined reference to `cpts_unregister'
+>  ...
+> 
+> That's because TI_CPTS_MOD (which is the symbol gating the _compilation_ of
+> cpts.c) now depends on PTP_1588_CLOCK, and so is not enabled in these
+> configurations, but TI_CPTS (which is the symbol gating _calls_ to the cpts
+> functions) _is_ enabled. So we end up compiling calls to functions that
+> don't exist, resulting in the linker errors.
+> 
+> This patch fixes build errors and restores previous behavior by:
+>  - ensure PTP_1588_CLOCK=y in TI specific configs and CPTS will be built
+>  - remove TI_CPTS_MOD and, instead, add dependencies from CPTS in
+>    TI_CPSW/TI_KEYSTONE_NETCP/TI_CPSW_SWITCHDEV as below:
+> 
+>    config TI_CPSW_SWITCHDEV
+>    ...
+>     depends on TI_CPTS || !TI_CPTS
+> 
+>    which will ensure proper dependencies PTP_1588_CLOCK -> TI_CPTS ->
+> TI_CPSW/TI_KEYSTONE_NETCP/TI_CPSW_SWITCHDEV and build type selection.
+> 
+> Note. For NFS boot + CPTS all of above configs have to be built-in.
+
+This builds and boots on BBB and beagle x15 with NFSroot so:
+
+Tested-by: Tony Lindgren <tony@atomide.com>
+
+However, there's at least one more issue left that shows up at least
+on ti81xx dra62x-j5eco-evm on v5.7-rc5 that has commit b46b2b7ba6e1
+("ARM: dts: Fix dm814x Ethernet by changing to use rgmii-id mode").
+
+I think this is a different issue though, any ideas?
+
+Regards,
+
+Tony
 
 
-
-On 12/05/2020 16.43, Christophe JAILLET wrote:
-> If an error occurs after the call to 'omap_mcbsp_init()', the reference=
- to
-> 'mcbsp->fclk' must be decremented, as already done in the remove functi=
-on.
->=20
-> This can be achieved easily by using the devm_ variant of 'clk_get()'
-> when the reference is taken in 'omap_mcbsp_init()'
->=20
-> This fixes the leak in the probe and has the side effect to simplify bo=
-th
-> the error handling path of 'omap_mcbsp_init()' and the remove function.=
-
-
-Acked-by: Peter Ujfalusi <peter.ujflausi@ti.com>
-
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> I've not been able to identify the when the issue has been introduced, =
-so
-> no Fixes: tag.
-
-I think this is there for a long-long time. It is a theoretical bug, in
-practice it never happen (at least never faced with it over the years).
-
-Thanks for the fix!
-
-- P=C3=A9ter
-
-> ---
->  sound/soc/ti/omap-mcbsp.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
->=20
-> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-> index 0348963f4df7..6c83b9888467 100644
-> --- a/sound/soc/ti/omap-mcbsp.c
-> +++ b/sound/soc/ti/omap-mcbsp.c
-> @@ -686,7 +686,7 @@ static int omap_mcbsp_init(struct platform_device *=
-pdev)
->  	mcbsp->dma_data[1].addr =3D omap_mcbsp_dma_reg_params(mcbsp,
->  						SNDRV_PCM_STREAM_CAPTURE);
-> =20
-> -	mcbsp->fclk =3D clk_get(&pdev->dev, "fck");
-> +	mcbsp->fclk =3D devm_clk_get(&pdev->dev, "fck");
->  	if (IS_ERR(mcbsp->fclk)) {
->  		ret =3D PTR_ERR(mcbsp->fclk);
->  		dev_err(mcbsp->dev, "unable to get fck: %d\n", ret);
-> @@ -711,7 +711,7 @@ static int omap_mcbsp_init(struct platform_device *=
-pdev)
->  		if (ret) {
->  			dev_err(mcbsp->dev,
->  				"Unable to create additional controls\n");
-> -			goto err_thres;
-> +			return ret;
->  		}
->  	}
-> =20
-> @@ -724,8 +724,6 @@ static int omap_mcbsp_init(struct platform_device *=
-pdev)
->  err_st:
->  	if (mcbsp->pdata->buffer_size)
->  		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
-> -err_thres:
-> -	clk_put(mcbsp->fclk);
->  	return ret;
->  }
-> =20
-> @@ -1442,8 +1440,6 @@ static int asoc_mcbsp_remove(struct platform_devi=
-ce *pdev)
-> =20
->  	omap_mcbsp_st_cleanup(pdev);
-> =20
-> -	clk_put(mcbsp->fclk);
-> -
->  	return 0;
->  }
-> =20
->=20
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
---------------BC4735E1360B906FD979E055
-Content-Type: application/pgp-keys; name="pEpkey.asc"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: attachment; filename="pEpkey.asc"
-
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-mQENBFki4nsBCAD3BM+Ogt951JlaDloruEjoZk/Z+/37CjP0fY2mqLhBOzkpx95u
-X1Fquf0KfVk+ZzCd25XGOZEtpZNlXfbxRr2iRWPS5RW2FeLYGvg2TTJCpSr+ugKu
-OOec6KECCUotGbGhpYwBrbarJNEwDcAzPK7UJYa1rhWOmkpZJ1hXF1hUghB84q35
-8DmN4sGLcsIbVdRFZ1tWFh4vGBFV9LsoDZIrnnANb6/XMX78s+tr3RG3GZBaFPl8
-jO5IIv0UIGNUKaYlNVFYthjGCzOqtstHchWuK9eQkR7m1+Vc+ezh1qK0VJydIcjn
-OtoMZZL7RAz13LB9vmcJjbQPnI7dJojz/M7zABEBAAG0JlBldGVyIFVqZmFsdXNp
-IDxwZXRlci51amZhbHVzaUB0aS5jb20+iQFOBBMBCAA4FiEE+dBcpRFvJjZw+uta
-LCayis85LN4FAlki4nsCGwMFCwkIBwIGFQgJCgsCBBYCAwECHgECF4AACgkQLCay
-is85LN4QjggAzxxxXqiWpA3vuj9yrlGLft3BeGKWqF8+RzdeRvshtNdpGeIFf+r5
-AJVR71R1w89Qeb4DGXus7qsKiafdFGG7yxbuhw8a5wUm+ZncBXA+ETn3OyVtl8g8
-r/ZcPX420jClBNTVuL0sSnyqDFDrt5f+uAFOIwsnHdpns174Zu9QhgYxdvdZ+jMh
-Psb745O9EVeNvdfUIRdrVjb4IhJKNIzkb0Tulsz5xeCJReUYpxZU1jzEq3YZqIou
-+fi+oS4wlJuSoxKKTmIXtSeEy/weStF1XHMo6vLYqzaK4FyIuclqeuYUYSVy2425
-7TMXugaI+O85AEI6KW8MCcu1NucSfAWUabkBDQRZIuJ7AQgAypKq8iIugpHxWA2c
-Ck6MQdPBT6cOEVK0tjeHaHAVOUPiw9Pq+ssMifdIkDdqXNZ3RLH/X2svYvd8c81C
-egqshfB8nkJ5EKmQc9d7s0EwnYT8OwsoVb3c2WXnsdcKEyu2nHgyeJEUpPpMPyLc
-+PWhoREifttab4sOPktepdnUbvrDK/gkjHmiG6+L2owSn637N+Apo3/eQuDajfEu
-kybxK19ReRcp6dbqWSBGSeNB32c/zv1ka37bTMNVUY39Rl+/8lA/utLfrMeACHRO
-FGO1BexMASKUdmlB0v9n4BaJFGrAJYAFJBNHLCDemqkU7gjaiimuHSjwuP0Wk7Ct
-KQJfVQARAQABiQE2BBgBCAAgFiEE+dBcpRFvJjZw+utaLCayis85LN4FAlki4nsC
-GwwACgkQLCayis85LN7kCwgAoy9r3ZQfJNOXO1q/YQfpEELHn0p8LpwliSDUS1xL
-sswyxtZS8LlW8PjlTXuBLu38Vfr0vGav7oyV7TkhnKT3oBOLXanyZqwgyZSKNEGB
-PB4v3Fo7YTzpfSofiwuz03uyfjTxiMGjonxSb+YxM7HBHfzjrOKKlg02fK+lWNZo
-m5lXugeWD7U6JJguNdYfr+U4zYIblelUImcIE+wnR0oLzUEVDIWSpVrl/OqS3Rzo
-mw8wBsHksTHrbgUnKL0SCzYc90BTeKbyjEBnVDr+dlfbxRxkB8h9RMPMdjodvXzS
-Gfsa9V/k4XAsh7iX9EUVBbnmjA61ySxU/w98h96jMuteTg=3D=3D
-=3DeQmw
------END PGP PUBLIC KEY BLOCK-----
-
---------------BC4735E1360B906FD979E055--
+[    7.278339] 8<--- cut here ---
+[    7.281421] Unhandled fault: external abort on non-linefetch (0x1008) at 0xf0169004
+[    7.289116] pgd = (ptrval)
+[    7.291836] [f0169004] *pgd=ae83a811, *pte=4a101653, *ppte=4a101453
+[    7.298154] Internal error: : 1008 [#1] SMP ARM
+[    7.302707] Modules linked in:
+[    7.305789] CPU: 0 PID: 73 Comm: kworker/0:3 Not tainted 5.7.0-rc5-dirty #1969
+[    7.313042] Hardware name: Generic ti814x (Flattened Device Tree)
+[    7.319190] Workqueue: pm pm_runtime_work
+[    7.323241] PC is at davinci_mdio_runtime_suspend+0xc/0x8c
+[    7.328753] LR is at __rpm_callback+0x84/0x154
+[    7.333218] pc : [<c0703c98>]    lr : [<c063f2a4>]    psr: a0000013
+[    7.339513] sp : eed7be80  ip : fffffffa  fp : 00000008
+[    7.344761] r10: ffffe000  r9 : eed3ba40  r8 : 00000000
+[    7.350010] r7 : 00000000  r6 : c063c810  r5 : c063c810  r4 : eed1c010
+[    7.356568] r3 : f0169000  r2 : 000000d4  r1 : eed1c010  r0 : eed1c010
+[    7.363129] Flags: NzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
+[    7.370297] Control: 10c5387d  Table: 80004019  DAC: 00000051
+[    7.376069] Process kworker/0:3 (pid: 73, stack limit = 0x(ptrval))
+[    7.382367] Stack: (0xeed7be80 to 0xeed7c000)
+[    7.386755] be80: eed1c010 c063c810 c063c810 00000000 00000000 c0e051c8 ffffe000 c063f2a4
+[    7.394978] bea0: eed1c010 c063c810 0000000a 00000000 00000000 c063f394 eed1c010 c063c810
+[    7.403202] bec0: 0000000a c063f4f0 c0e00018 ef4e2400 ee979880 c0e088c0 00000000 00000001
+[    7.411425] bee0: 00000000 ef4e2400 eed7bf44 c09293e8 00000000 ea441c81 0efa67ff eed1c0f4
+[    7.419648] bf00: eed5ca80 ef4e2000 ff7edc00 00000000 00000000 c0ebf890 ffffe000 c0640af0
+[    7.427871] bf20: eed1c0f4 c0155338 ee979880 ef4e2000 00000008 eed5ca80 eed5ca94 ef4e2000
+[    7.436094] bf40: 00000008 ef4e2018 c0e03d00 ef4e2000 ffffe000 c0155eb0 ffffe000 eed5ca80
+[    7.444318] bf60: c0155e84 00000000 eed5a880 eed5a840 eed7a000 eed5ca80 c0155e84 ee915eac
+[    7.452542] bf80: eed5a85c c015bf38 00000001 eed5a880 c015be04 00000000 00000000 00000000
+[    7.460763] bfa0: 00000000 00000000 00000000 c0100168 00000000 00000000 00000000 00000000
+[    7.468985] bfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    7.477207] bfe0: 00000000 00000000 00000000 00000000 00000013 00000000 00000000 00000000
+[    7.485450] [<c0703c98>] (davinci_mdio_runtime_suspend) from [<c063f2a4>] (__rpm_callback+0x84/0x154)
+[    7.494720] [<c063f2a4>] (__rpm_callback) from [<c063f394>] (rpm_callback+0x20/0x80)
+[    7.502506] [<c063f394>] (rpm_callback) from [<c063f4f0>] (rpm_suspend+0xfc/0x6ac)
+[    7.510117] [<c063f4f0>] (rpm_suspend) from [<c0640af0>] (pm_runtime_work+0x88/0xa4)
+[    7.517916] [<c0640af0>] (pm_runtime_work) from [<c0155338>] (process_one_work+0x228/0x568)
+[    7.526317] [<c0155338>] (process_one_work) from [<c0155eb0>] (worker_thread+0x2c/0x5d4)
+[    7.534460] [<c0155eb0>] (worker_thread) from [<c015bf38>] (kthread+0x134/0x148)
+[    7.541900] [<c015bf38>] (kthread) from [<c0100168>] (ret_from_fork+0x14/0x2c)
+[    7.549155] Exception stack(0xeed7bfb0 to 0xeed7bff8)
+[    7.554233] bfa0:                                     00000000 00000000 00000000 00000000
+[    7.562455] bfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    7.570676] bfe0: 00000000 00000000 00000000 00000000 00000013 00000000
+[    7.577331] Code: e8bd8070 e92d47f0 e5909040 e5993004 (e5935004)
+[    7.583459] ---[ end trace 42a064f19df2a2ea ]---
+[    7.588333] 8<--- cut here ---
