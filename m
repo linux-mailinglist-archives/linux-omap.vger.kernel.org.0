@@ -2,77 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2E471CF814
-	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 16:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC851CF945
+	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 17:34:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730247AbgELO5C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 May 2020 10:57:02 -0400
-Received: from muru.com ([72.249.23.125]:54038 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726891AbgELO5C (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 12 May 2020 10:57:02 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id C3C078047;
-        Tue, 12 May 2020 14:57:49 +0000 (UTC)
-Date:   Tue, 12 May 2020 07:56:57 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Keerthy <j-keerthy@ti.com>, Stephen Boyd <sboyd@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Graeme Smecher <gsmecher@threespeedlogic.com>,
-        linux-kernel@vger.kernel.org, Tero Kristo <t-kristo@ti.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        devicetree@vger.kernel.org, Andreas Kemnade <andreas@kemnade.info>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Adam Ford <aford173@gmail.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Brian Hutchinson <b.hutchman@gmail.com>,
-        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 02/15] dt-bindings: timer: add ti, dmtimer compatible for
- for system timers
-Message-ID: <20200512145657.GH37466@atomide.com>
-References: <20200429215402.18125-1-tony@atomide.com>
- <20200429215402.18125-3-tony@atomide.com>
- <20200512145215.GA23423@bogus>
+        id S1730750AbgELPeA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 May 2020 11:34:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48318 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730636AbgELPd7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 May 2020 11:33:59 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B22EC061A0C
+        for <linux-omap@vger.kernel.org>; Tue, 12 May 2020 08:33:59 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id u20so3872094ljo.1
+        for <linux-omap@vger.kernel.org>; Tue, 12 May 2020 08:33:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=mOP/Ft6cI0hdIumlv9ctKfSS43C7gS2VvrrEhU+vEvE=;
+        b=Z8lD3wIX7DKw05x+RfD3/tegPr5zHQn6JLsFvQ09MM6JnlVnN4+rXOApeiNXpuCFLU
+         kVS6DOC0qYb9+J+CuVpD3mDIq97s2qJAYQZQgAAMjQcqPs8ddxcynADpx4kw1l2v9llL
+         q54lK9fM2TGzkqa1NM3fgK0o/Mqro0OM8xaZcGycYlmfmkMQIN+MZgQDpHsM8AyRUijS
+         jHJ7yhDxxn9Hw9dOegMDlfcgTJcXsH783YKHDmzwbs/wPxGaoltwNYXe9WK4FS+umJaX
+         bceNsGnjXW3AnWNDvOCrCGAu19h/WMw8Nzr4R5dkvEnhI8mf5IHjAmuaQptHiDZ6Lhf4
+         N1oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
+         :date:message-id:mime-version;
+        bh=mOP/Ft6cI0hdIumlv9ctKfSS43C7gS2VvrrEhU+vEvE=;
+        b=JLd4pFje8OyJtmuei131UpeUzuY6T43VUDV8INBJkiAmgHJyTnYaLGUqJOUMcBBtS9
+         5EH5RLoL197NNx+FoxSXLiExKAVPRx/83dUNn659YSORY72qj32sVGCly1mSKKA1riIC
+         Gfy5r4tvp/8LelEql3W3Las37esDcSmosjXeElm7sHeOrzLw7PjOtIKGBK48BPIF2LnV
+         AxJ2wowtae2KIpxXlFSutjkj2DEWRYIeTDI4DOZ3LCTJFgGi3N2eRAS+M8YTurOm90TR
+         dQWqgnL09OFjDPSg/aMTnlgtyOebBrPmdF6YOVhCAAk3OuoADOSwrqCi4tzAzinSFvzW
+         8zJQ==
+X-Gm-Message-State: AOAM531guuh7WYqW6blTsMyDmWgrnUgoNdoxg1mbe2swUSurPtVtmwkX
+        FXSnaXLVNdkb/2xavh9wbnIaj6i4vjY=
+X-Google-Smtp-Source: ABdhPJyEmsIz6n0BrgAm/XcFPEwMOOHzcNhQtUTfM4SLxUE3J9/2FPwtZKke7FHTtIfPtDQMBZxe3Q==
+X-Received: by 2002:a2e:780a:: with SMTP id t10mr14120879ljc.247.1589297637722;
+        Tue, 12 May 2020 08:33:57 -0700 (PDT)
+Received: from saruman (91-155-214-58.elisa-laajakaista.fi. [91.155.214.58])
+        by smtp.gmail.com with ESMTPSA id a15sm12936197ljb.37.2020.05.12.08.33.56
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 12 May 2020 08:33:56 -0700 (PDT)
+From:   Felipe Balbi <balbi@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org
+Subject: Re: BBB with v5.7-rc5
+In-Reply-To: <878shx45r8.fsf@kernel.org>
+References: <87k11h4df0.fsf@kernel.org> <87eerp46h5.fsf@kernel.org> <20200512134648.GD37466@atomide.com> <878shx45r8.fsf@kernel.org>
+Date:   Tue, 12 May 2020 18:33:52 +0300
+Message-ID: <87o8qtp3q7.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200512145215.GA23423@bogus>
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Rob Herring <robh@kernel.org> [200512 14:53]:
-> On Wed, 29 Apr 2020 14:53:49 -0700, Tony Lindgren wrote:
-> > The TI dual-mode timer can be used for both clocksource and clockevent
-> > system timers. We need a way to specify which dual-mode timers are
-> > reserved for system timers as there are multiple instances available
-> > that may require a board specific configuration.
-> > 
-> > Let's add a generic compatible "ti,dmtimer" that TIMER_OF_DECLARE can
-> > use as suggested by Daniel Lezcano <daniel.lezcano@linaro.org>.
-> > 
-> > Suggested-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> >  Documentation/devicetree/bindings/timer/ti,timer.txt | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> 
-> Acked-by: Rob Herring <robh@kernel.org>
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Looks like this is no longer needed with v3 set in the repost
-thread:
 
-"[PATCHv3 00/14] Update omaps to use drivers/clocksource timers"
+Hi,
 
-It now does detection for the preferred system timers based on
-the various timer features like you suggested.
+Felipe Balbi <balbi@kernel.org> writes:
+> Tony Lindgren <tony@atomide.com> writes:
+>>> Felipe Balbi <balbi@kernel.org> writes:
+>>> > what's the trick to get BBB to boot recent kernels nowadays? :-p
+>>> >
+>>> > I'm using omap2plus_defconfig without CPSW (doesn't link otherwise) w=
+ith
+>>> > GCC 10.1.0 (I'll try an older version shortly). Cmdline is the usual
+>>>=20
+>>> same result with 9.2. Nothing from low level debug either.
+>>
+>> Maybe check you have a current dtb file? The older dtb files may not
+>> have all the needed data.
+>
+> yeah, loading all the data from sd card. I am, however, using the u-boot
+> that came with the board.
 
-Regards,
+All sorted out, thanks for the tips ;-)
 
-Tony
+=2D-=20
+balbi
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl66weAACgkQzL64meEa
+mQY/wBAA2Sc203FLR5fnFQ3G8ab96zK7ojk6B3cvQGqfnB/UpbYEVwt4+SDFffPy
+NhKREVP3BwBOxXhr2lb+F079HK9QzfgXtgy1jAHrP7fJwUBVCewk+O/9DXWtnhi4
+bYoyx48WK2m5n8B3+k7hx7xMWHbJ1csF2IcfwJL1vlOeE2vrvBVBT9wyZbPq11PX
+LJT07Crqk7y5BM28pGfl16CRu6Siiq6W8tT3poINy9E6hPX5lbU0XKhwTMOemCPE
+3e/7y6VxCw9vY36nK/GMJcob9ArjZJkpXNpoUtLpYspxW0TVue3+wBPy76mNmsqj
+tYtyC/Gh/qyJxZdLrLZLAoiH6/RxHLOJyWQ2JrpWhKqYgY6zPUnTjVtYPWxd00bu
+Alm+XdEJkGNVkQmpm7nk/dYByZ0zDWZYAh5bHsROkXuqjN9i0rulkkF/PAiPiShU
+PWhDykDhvWX0TlPbAOoORQgy1t0vTsRbCyYS7Adz2fKukJtCZJ9O2QTje5sD24am
+P5nL5Z81Y2HO6L5CDVBggx52LgHOoOW2vy7tuQOs80TOMbne0xOnBwWo3mxwtjeN
+29K8tJ/bU98RU2qj2o771xFZmVgCj99AIy9B1rE+Zx9nMSWFj9MQbp8isgLHepSD
+IBcTJkZRgG30SlgWX5xWT+UNgF2WV177XcearhAaeXlGRbtqDrs=
+=I7eK
+-----END PGP SIGNATURE-----
+--=-=-=--
