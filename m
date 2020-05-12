@@ -2,101 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5CF81CF5FE
-	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 15:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 162D91CF628
+	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 15:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727859AbgELNkN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 May 2020 09:40:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727783AbgELNkN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 May 2020 09:40:13 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6534C061A0C
-        for <linux-omap@vger.kernel.org>; Tue, 12 May 2020 06:40:12 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id a21so13658257ljj.11
-        for <linux-omap@vger.kernel.org>; Tue, 12 May 2020 06:40:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=Pp1+s7RQ5rG8lY+v9K4jMvguVWgg1aIN5RkE+DwswEc=;
-        b=N22OoGtlhpGWtcLQ/0KkDG42g9u3knwLq1ysGrc5E1jwvHDqwmfheeLOnOtbR8rlky
-         hDaHSWVmugcxRKfSpJ5YsOtxYzLW54HNHGpdz611Q8rqG9t/fPFSfE/tvQyT7Sfq1ZSi
-         csfhGnovFYhI3j7c/WrYhiC1AiiDBXFK3xYvI7cd1c/4zZw7p+G3CYC+PyNugoNDbuTI
-         FvYto0BlpX/ZerPafocwEA9ElzYBO+cdHppyEWi46OMjFYB6BKP7JPdyU2kDyByJaxNL
-         TSF1tMEuQ/wRpOBUBol4hXkxIblO1oTRQGw8GMjxiEEaIr9DFRg8VzCgp63E1Fr8+FiF
-         ES6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:subject:in-reply-to:references
-         :date:message-id:mime-version;
-        bh=Pp1+s7RQ5rG8lY+v9K4jMvguVWgg1aIN5RkE+DwswEc=;
-        b=Y/D5Ky8Hh2h2vCkpapLfEbD4rZi0snq1HQF/84lxJ/C8iQ7p/3P/6HWBSnOk8omw6n
-         zlkj7RABdqsf9Hj7PQyVkKVxqLprqjWlWyJGvJSxFMc4I0yGmgMv3mj4Mv/Qojn3gMg0
-         53ejJycXiMQaeGAvHApXCO+t7019/XGsxFqBrj4mXGCKL4JheySXEwl9M4sPMpQWMXIa
-         g/saAOfm+gobD5BnFqm5Xx7DQP/aNCLPrbCT1vdWThq2bRfbAkjJ4/VWhxV6L0PVH0Ul
-         aECEAFie0ehGzpet4z1q6bipdX/gHr1sOUMitkxvNymJiNQcqB82PCmegejJLs2SYlX7
-         Oz8w==
-X-Gm-Message-State: AOAM533mbsYskOTNNh2IJ1exu4AVtSyO8RkDL7Hio8OtjZjYkMM3opuJ
-        kESCK7UNM9wLDoSZywOjtpPJMzuGAWQ=
-X-Google-Smtp-Source: ABdhPJygnuUfP3AqRdEt3f3LbzrFqpyjkI6P2lMv5ZSqQsXoxYAC3dAsORVRiAneM35SkAruG/PnSw==
-X-Received: by 2002:a2e:584a:: with SMTP id x10mr3773902ljd.181.1589290811059;
-        Tue, 12 May 2020 06:40:11 -0700 (PDT)
-Received: from saruman (91-155-214-58.elisa-laajakaista.fi. [91.155.214.58])
-        by smtp.gmail.com with ESMTPSA id c2sm12916459ljk.97.2020.05.12.06.40.10
-        for <linux-omap@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 12 May 2020 06:40:10 -0700 (PDT)
-From:   Felipe Balbi <balbi@kernel.org>
-To:     linux-omap@vger.kernel.org
+        id S1726891AbgELNvO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 May 2020 09:51:14 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:33926 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725923AbgELNvN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 May 2020 09:51:13 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04CDpAOj085255;
+        Tue, 12 May 2020 08:51:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1589291471;
+        bh=kP7p2udPs8yOE4gXyX2ZtUgV2UoVuhXvsL9m5Cjw0ps=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=e4ZjHqlewHQN0FJQ/2qPeZg7UliGEZo3sCBquZFhlbzqTGrkasAodL7T1qT14bH+x
+         p10xSbrOspu/k7ooU7IZy0Sb6XsircDJ1ZqLEPf6HGkH5h4yjB3DbBXxoNtrubwcS2
+         2H4JLZYAXfWYgSXFEEy+KB4Fjra8Nec0umNbArTQ=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04CDpAO3005921
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 12 May 2020 08:51:10 -0500
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 12
+ May 2020 08:51:10 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 12 May 2020 08:51:10 -0500
+Received: from [10.250.52.63] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04CDpAsX098266;
+        Tue, 12 May 2020 08:51:10 -0500
 Subject: Re: BBB with v5.7-rc5
-In-Reply-To: <87k11h4df0.fsf@kernel.org>
-References: <87k11h4df0.fsf@kernel.org>
-Date:   Tue, 12 May 2020 16:40:06 +0300
-Message-ID: <87eerp46h5.fsf@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>, Felipe Balbi <balbi@kernel.org>
+CC:     <linux-omap@vger.kernel.org>
+References: <87k11h4df0.fsf@kernel.org> <87eerp46h5.fsf@kernel.org>
+ <20200512134648.GD37466@atomide.com>
+From:   Dan Murphy <dmurphy@ti.com>
+Message-ID: <586c35cf-80f1-6922-a46b-a6fce312e83c@ti.com>
+Date:   Tue, 12 May 2020 08:41:41 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+In-Reply-To: <20200512134648.GD37466@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Felipe
 
-Hi,
-
-Felipe Balbi <balbi@kernel.org> writes:
-> what's the trick to get BBB to boot recent kernels nowadays? :-p
+On 5/12/20 8:46 AM, Tony Lindgren wrote:
+> Hi,
 >
-> I'm using omap2plus_defconfig without CPSW (doesn't link otherwise) with
-> GCC 10.1.0 (I'll try an older version shortly). Cmdline is the usual
+> * Felipe Balbi <balbi@kernel.org> [200512 13:41]:
+>> Hi,
+>>
+>> Felipe Balbi <balbi@kernel.org> writes:
+>>> what's the trick to get BBB to boot recent kernels nowadays? :-p
+>>>
+>>> I'm using omap2plus_defconfig without CPSW (doesn't link otherwise) with
+>>> GCC 10.1.0 (I'll try an older version shortly). Cmdline is the usual
+>> same result with 9.2. Nothing from low level debug either.
+> Maybe check you have a current dtb file? The older dtb files may not
+> have all the needed data.
 
-same result with 9.2. Nothing from low level debug either.
+I have been using the latest uBoot, DTBs and kernel with no issue 
+(except CPSW).
 
-=2D-=20
-balbi
+I have booted the BBB and a BBG.  9.2 gcc compiler
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+> Also you probably want to add "earlycon" to your your kernel cmdline
+> and then you have early output from CONFIG_SERIAL_EARLYCON=y as long
+> as there's a chosen entry for the device uart. So no need to enable
+> DEBUG_LL in most cases.
+>
+> There's "[PATCH net v4] net: ethernet: ti: Remove TI_CPTS_MOD workaround"
+> being discussed too for the cpsw regression.
 
------BEGIN PGP SIGNATURE-----
+This is a build dependency issue.
 
-iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl66pzYACgkQzL64meEa
-mQaOfA/+MpMlAzhLvVFdWBMniJu1tHtK7RmPWGnk8UzmcOgUGYYdVRTmvRp6zTXA
-paNAFS/9GEsP0n+3QLSbRyn4vZhk4Z30JR/dEOH6BZ3mCuYxgex6cieaSWnFdhF6
-MiC4qv830FHSXFoV06u+rZuZU4P0k5UqHJ3MrZjZSNgVpV3+j3r0x5yFvH+wJOak
-wmJf6AbHbQqpbX2Ws72GEhO3nWSBKbBgryNKbHv4PvTnAgnJqEqK+5EHvE/gEEFM
-oegf6sCu+dCtqKXafilB2tvcDLLnCcJs3PmrCnl1sTOC2AnZDAOSdJMXKmazrw7x
-CZ9/Q2P8vL4987lFzUnCTIYLUjEdTnCVj14Hvs+GNDwfrm+sel+KB7unQGopww5l
-aieX1Oe78s9Je2xarC8r1N6ZHcC53NJWKFhoF2y1BPaPgb6yJOLfvJniVWeVCpWv
-QmCSE6q6JyAtOI25TWNNq1llSKRVzn+jDllAeomvlw/fRBz4UaTAfrMqpGVS4nHt
-WiZObxXIypW/4BaVuA2+LHB2vmVy81AJti45B+NF4PqRL8EXVYUfHr35pjXhdWyI
-aNVe5Wvgnp6zyKuAH87xbdAm3fk6t7l/R9SsuBX1L0xKvblHEtLpFMTHcC6etEei
-vJjmEQgdmr6XJRLqt1y7iTdgTlRw+qP9Lv0W2eCa90dc/AxD7p4=
-=BvFJ
------END PGP SIGNATURE-----
---=-=-=--
+Dan
+
+> Regards,
+>
+> Tony
+>
+>
+>
