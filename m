@@ -2,35 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C1551D0126
-	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 23:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAD7F1D0143
+	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 23:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731540AbgELVrl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 May 2020 17:47:41 -0400
-Received: from muru.com ([72.249.23.125]:54330 "EHLO muru.com"
+        id S1731190AbgELVvf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 May 2020 17:51:35 -0400
+Received: from muru.com ([72.249.23.125]:54342 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731534AbgELVrl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 12 May 2020 17:47:41 -0400
+        id S1728313AbgELVvf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 12 May 2020 17:51:35 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 68AAA8047;
-        Tue, 12 May 2020 21:48:28 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 7B2C38047;
+        Tue, 12 May 2020 21:52:24 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>
-Cc:     Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH 6/6] ARM: dts: omap4-droid4: Configure modem for serdev-ngsm
-Date:   Tue, 12 May 2020 14:47:13 -0700
-Message-Id: <20200512214713.40501-7-tony@atomide.com>
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH] power: supply: cpcap-charger: Make VBUS already provided debug only
+Date:   Tue, 12 May 2020 14:51:29 -0700
+Message-Id: <20200512215129.41174-1-tony@atomide.com>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200512214713.40501-1-tony@atomide.com>
-References: <20200512214713.40501-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
@@ -38,43 +28,24 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Let's enable the TS 27.010 /dev/gsmmux* interfaces via Linux n_gsm that
-can be used for voice calls and SMS with commands using a custom Motorola
-format.
-
-And let's also enable the kernel GNSS driver via serdev-ngsm that uses a
-dedicated TS 27.010 channel.
-
-Note that voice call audio mixer is not supported yet.
+This should be only shown when debug is enabled.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/motorola-mapphone-common.dtsi | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/power/supply/cpcap-charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
---- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-+++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-@@ -698,6 +698,20 @@ &uart1 {
- 	pinctrl-0 = <&uart1_pins>;
- 	interrupts-extended = <&wakeupgen GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH
- 			       &omap4_pmx_core 0xfc>;
-+
-+	modem {
-+		compatible = "motorola,mapphone-mdm6600-serial";
-+		ttymask = <0 0x00001fee>;
-+		phys = <&fsusb1_phy>;
-+		phy-names = "usb";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		gnss@4 {
-+			compatible = "motorola,mapphone-mdm6600-gnss";
-+			reg = <4>;
-+		};
-+	};
- };
+diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+--- a/drivers/power/supply/cpcap-charger.c
++++ b/drivers/power/supply/cpcap-charger.c
+@@ -433,7 +433,7 @@ static void cpcap_charger_vbus_work(struct work_struct *work)
+ 	if (ddata->vbus_enabled) {
+ 		vbus = cpcap_charger_vbus_valid(ddata);
+ 		if (vbus) {
+-			dev_info(ddata->dev, "VBUS already provided\n");
++			dev_dbg(ddata->dev, "VBUS already provided\n");
  
- &uart3 {
+ 			return;
+ 		}
 -- 
 2.26.2
