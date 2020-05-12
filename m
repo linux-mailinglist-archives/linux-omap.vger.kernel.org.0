@@ -2,98 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 162D91CF628
-	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 15:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8A1C1CF607
+	for <lists+linux-omap@lfdr.de>; Tue, 12 May 2020 15:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726891AbgELNvO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 May 2020 09:51:14 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:33926 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725923AbgELNvN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 May 2020 09:51:13 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04CDpAOj085255;
-        Tue, 12 May 2020 08:51:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589291471;
-        bh=kP7p2udPs8yOE4gXyX2ZtUgV2UoVuhXvsL9m5Cjw0ps=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=e4ZjHqlewHQN0FJQ/2qPeZg7UliGEZo3sCBquZFhlbzqTGrkasAodL7T1qT14bH+x
-         p10xSbrOspu/k7ooU7IZy0Sb6XsircDJ1ZqLEPf6HGkH5h4yjB3DbBXxoNtrubwcS2
-         2H4JLZYAXfWYgSXFEEy+KB4Fjra8Nec0umNbArTQ=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04CDpAO3005921
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 12 May 2020 08:51:10 -0500
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 12
- May 2020 08:51:10 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 12 May 2020 08:51:10 -0500
-Received: from [10.250.52.63] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04CDpAsX098266;
-        Tue, 12 May 2020 08:51:10 -0500
-Subject: Re: BBB with v5.7-rc5
-To:     Tony Lindgren <tony@atomide.com>, Felipe Balbi <balbi@kernel.org>
-CC:     <linux-omap@vger.kernel.org>
-References: <87k11h4df0.fsf@kernel.org> <87eerp46h5.fsf@kernel.org>
- <20200512134648.GD37466@atomide.com>
-From:   Dan Murphy <dmurphy@ti.com>
-Message-ID: <586c35cf-80f1-6922-a46b-a6fce312e83c@ti.com>
-Date:   Tue, 12 May 2020 08:41:41 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1729519AbgELNne (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 May 2020 09:43:34 -0400
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:28277 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729570AbgELNnd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 May 2020 09:43:33 -0400
+Received: from localhost.localdomain ([93.22.148.175])
+        by mwinf5d15 with ME
+        id dpjT2200B3nHaxZ03pjT5r; Tue, 12 May 2020 15:43:31 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 12 May 2020 15:43:31 +0200
+X-ME-IP: 93.22.148.175
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     peter.ujfalusi@ti.com, jarkko.nikula@bitmer.com,
+        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
+        tiwai@suse.com, linux-omap@vger.kernel.org
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ASoC: ti: omap-mcbsp: Fix an error handling path in 'asoc_mcbsp_probe()'
+Date:   Tue, 12 May 2020 15:43:25 +0200
+Message-Id: <20200512134325.252073-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200512134648.GD37466@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Felipe
+If an error occurs after the call to 'omap_mcbsp_init()', the reference to
+'mcbsp->fclk' must be decremented, as already done in the remove function.
 
-On 5/12/20 8:46 AM, Tony Lindgren wrote:
-> Hi,
->
-> * Felipe Balbi <balbi@kernel.org> [200512 13:41]:
->> Hi,
->>
->> Felipe Balbi <balbi@kernel.org> writes:
->>> what's the trick to get BBB to boot recent kernels nowadays? :-p
->>>
->>> I'm using omap2plus_defconfig without CPSW (doesn't link otherwise) with
->>> GCC 10.1.0 (I'll try an older version shortly). Cmdline is the usual
->> same result with 9.2. Nothing from low level debug either.
-> Maybe check you have a current dtb file? The older dtb files may not
-> have all the needed data.
+This can be achieved easily by using the devm_ variant of 'clk_get()'
+when the reference is taken in 'omap_mcbsp_init()'
 
-I have been using the latest uBoot, DTBs and kernel with no issue 
-(except CPSW).
+This fixes the leak in the probe and has the side effect to simplify both
+the error handling path of 'omap_mcbsp_init()' and the remove function.
 
-I have booted the BBB and a BBG.  9.2 gcc compiler
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+I've not been able to identify the when the issue has been introduced, so
+no Fixes: tag.
+---
+ sound/soc/ti/omap-mcbsp.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-> Also you probably want to add "earlycon" to your your kernel cmdline
-> and then you have early output from CONFIG_SERIAL_EARLYCON=y as long
-> as there's a chosen entry for the device uart. So no need to enable
-> DEBUG_LL in most cases.
->
-> There's "[PATCH net v4] net: ethernet: ti: Remove TI_CPTS_MOD workaround"
-> being discussed too for the cpsw regression.
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index 0348963f4df7..6c83b9888467 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -686,7 +686,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+ 	mcbsp->dma_data[1].addr = omap_mcbsp_dma_reg_params(mcbsp,
+ 						SNDRV_PCM_STREAM_CAPTURE);
+ 
+-	mcbsp->fclk = clk_get(&pdev->dev, "fck");
++	mcbsp->fclk = devm_clk_get(&pdev->dev, "fck");
+ 	if (IS_ERR(mcbsp->fclk)) {
+ 		ret = PTR_ERR(mcbsp->fclk);
+ 		dev_err(mcbsp->dev, "unable to get fck: %d\n", ret);
+@@ -711,7 +711,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+ 		if (ret) {
+ 			dev_err(mcbsp->dev,
+ 				"Unable to create additional controls\n");
+-			goto err_thres;
++			return ret;
+ 		}
+ 	}
+ 
+@@ -724,8 +724,6 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+ err_st:
+ 	if (mcbsp->pdata->buffer_size)
+ 		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
+-err_thres:
+-	clk_put(mcbsp->fclk);
+ 	return ret;
+ }
+ 
+@@ -1442,8 +1440,6 @@ static int asoc_mcbsp_remove(struct platform_device *pdev)
+ 
+ 	omap_mcbsp_st_cleanup(pdev);
+ 
+-	clk_put(mcbsp->fclk);
+-
+ 	return 0;
+ }
+ 
+-- 
+2.25.1
 
-This is a build dependency issue.
-
-Dan
-
-> Regards,
->
-> Tony
->
->
->
