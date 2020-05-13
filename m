@@ -2,128 +2,383 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11D2F1D18F2
-	for <lists+linux-omap@lfdr.de>; Wed, 13 May 2020 17:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0DB01D1AEC
+	for <lists+linux-omap@lfdr.de>; Wed, 13 May 2020 18:23:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729027AbgEMPSX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 May 2020 11:18:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44146 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728692AbgEMPSW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 May 2020 11:18:22 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7653CC061A0C;
-        Wed, 13 May 2020 08:18:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:
-        Subject:Sender:Reply-To:Cc:Content-ID:Content-Description;
-        bh=1tZgH8MNeghSPyWNWnOBlGuYAdG9LL5O6RnEdePT1vE=; b=gb6ABaw7RHKKCr1HU766fZDB8U
-        SB3h6fppxsH05Z02CrRcbdER5PcWclAq30iLWhi9toAcrYx2gDTi2f6Ygq2i3bRxwrtVW7K2alru7
-        a+2SkgnNRPyVTAjzPq9QrRPgZ7yeMbl2gC2E2b3QQ6seYdYrig544U3QgoVJPrQB+7RDAvAdQJ/Ts
-        rgvKSg3kEfaXw9mw1je4fbu3TRJcZ2Q1tpcfypeCRLm5C/8RRahy35PNCo2iPB5R/H6RIa+gUJkkA
-        hH9pzFXBD+vbbm+BjX1GgxPVCk5WVYTD1l6LYY8oGm33ACtlpFIvBju6/vnq9aBVH05Hr06pZP8zD
-        9sSHwAHw==;
-Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jYt9J-0005kF-21; Wed, 13 May 2020 15:18:21 +0000
-Subject: Re: mmotm 2020-05-11-15-43 uploaded (ethernet/ti/ti_cpsw)
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andrew Morton <akpm@linux-foundation.org>, broonie@kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-next@vger.kernel.org, mhocko@suse.cz,
-        mm-commits@vger.kernel.org, sfr@canb.auug.org.au,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        linux-omap@vger.kernel.org
-References: <20200511224430.HDJjRC68z%akpm@linux-foundation.org>
- <9ba4bac8-d4ec-c2d2-373f-3a631523cb2f@infradead.org>
- <a6e2a4ff-1ec5-4d86-4d00-ce62fbf1813f@ti.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <86830472-e970-cf07-49ae-2970fd99c25e@infradead.org>
-Date:   Wed, 13 May 2020 08:18:20 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S2389127AbgEMQXd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 May 2020 12:23:33 -0400
+Received: from muru.com ([72.249.23.125]:54378 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387522AbgEMQXd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 13 May 2020 12:23:33 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id BBF8E80E1;
+        Wed, 13 May 2020 16:24:19 +0000 (UTC)
+Date:   Wed, 13 May 2020 09:23:27 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Keerthy <j-keerthy@ti.com>
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, robh+dt@kernel.org,
+        bcousson@baylibre.com, Faiz Abbas <faiz_abbas@ti.com>
+Subject: Re: [PATCH v2] arm: dts: Move am33xx and am43xx mmc nodes to
+ sdhci-omap driver
+Message-ID: <20200513162327.GM37466@atomide.com>
+References: <20200512203804.9340-1-faiz_abbas@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <a6e2a4ff-1ec5-4d86-4d00-ce62fbf1813f@ti.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200512203804.9340-1-faiz_abbas@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 5/13/20 2:20 AM, Grygorii Strashko wrote:
+* Faiz Abbas <faiz_abbas@ti.com> [200512 13:39]:
+> Move mmc nodes to be compatible with the sdhci-omap driver. The following
+> modifications are required for omap_hsmmc specific properties:
 > 
+> ti,non-removable: convert to the generic mmc non-removable
+> ti,needs-special-reset:  co-opted into the sdhci-omap driver
+> ti,dual-volt: removed. Legacy property not used in am335x or am43xx
+> ti,needs-special-hs-handling: removed. Legacy property not used in am335x
+> or am43xx
 > 
-> On 12/05/2020 05:12, Randy Dunlap wrote:
->> On 5/11/20 3:44 PM, Andrew Morton wrote:
->>> The mm-of-the-moment snapshot 2020-05-11-15-43 has been uploaded to
->>>
->>>     http://www.ozlabs.org/~akpm/mmotm/
->>>
->>> mmotm-readme.txt says
->>>
->>> README for mm-of-the-moment:
->>>
->>> http://www.ozlabs.org/~akpm/mmotm/
->>>
->>> This is a snapshot of my -mm patch queue.  Uploaded at random hopefully
->>> more than once a week.
->>>
->>> You will need quilt to apply these patches to the latest Linus release (5.x
->>> or 5.x-rcY).  The series file is in broken-out.tar.gz and is duplicated in
->>> http://ozlabs.org/~akpm/mmotm/series
->>>
->>> The file broken-out.tar.gz contains two datestamp files: .DATE and
->>> .DATE-yyyy-mm-dd-hh-mm-ss.  Both contain the string yyyy-mm-dd-hh-mm-ss,
->>> followed by the base kernel version against which this patch series is to
->>> be applied.
->>>
->>> This tree is partially included in linux-next.  To see which patches are
->>> included in linux-next, consult the `series' file.  Only the patches
->>> within the #NEXT_PATCHES_START/#NEXT_PATCHES_END markers are included in
->>> linux-next.
->>>
->>>
->>> A full copy of the full kernel tree with the linux-next and mmotm patches
->>> already applied is available through git within an hour of the mmotm
->>> release.  Individual mmotm releases are tagged.  The master branch always
->>> points to the latest release, so it's constantly rebasing.
->>>
->>>     https://github.com/hnaz/linux-mm
->>>
->>> The directory http://www.ozlabs.org/~akpm/mmots/ (mm-of-the-second)
->>> contains daily snapshots of the -mm tree.  It is updated more frequently
->>> than mmotm, and is untested.
->>>
->>> A git copy of this tree is also available at
->>>
->>>     https://github.com/hnaz/linux-mm
->>
->> on i386:
->>
->> ERROR: modpost: "cpts_register" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
->> ERROR: modpost: "cpts_unregister" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
->> ERROR: modpost: "cpts_tx_timestamp" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
->> ERROR: modpost: "cpts_create" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
->> ERROR: modpost: "cpts_misc_interrupt" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
->> ERROR: modpost: "cpts_release" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
->> ERROR: modpost: "cpts_tx_timestamp" [drivers/net/ethernet/ti/ti_cpsw.ko] undefined!
->> ERROR: modpost: "cpts_create" [drivers/net/ethernet/ti/ti_cpsw.ko] undefined!
->> ERROR: modpost: "cpts_misc_interrupt" [drivers/net/ethernet/ti/ti_cpsw.ko] undefined!
->> ERROR: modpost: "cpts_release" [drivers/net/ethernet/ti/ti_cpsw.ko] undefined!
->>
->>
->> Full randconfig file is attached.
->>
+> Also since the sdhci-omap driver does not support runtime PM, explicitly
+> disable the mmc3 instance in the dtsi.
 > 
-> It's expected to be fixed by
-> https://lkml.org/lkml/2020/5/12/333
+> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
+> ---
+> 
+> v2: Rebased to latest mainline where all kernel dependancies have been merged.
+> 
+> Suspend/Resume is now supported in the sdhci-omap driver.
 
-Works for me. Thanks.
+Great, thanks for updating it.
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Keerthy, care to test for am3 and am4?
 
--- 
-~Randy
+Regards,
+
+Tony
+
+
+> Tested on: am335x-evm, am335x-boneblack, am335x-sk, am335x-bone, am437x-idk,
+> am43xx-gp-evm, am43xx-epos-evm.
+> 
+>  arch/arm/boot/dts/am335x-baltos.dtsi              | 2 +-
+>  arch/arm/boot/dts/am335x-boneblack-common.dtsi    | 1 +
+>  arch/arm/boot/dts/am335x-boneblack-wireless.dts   | 1 -
+>  arch/arm/boot/dts/am335x-boneblue.dts             | 1 -
+>  arch/arm/boot/dts/am335x-bonegreen-wireless.dts   | 1 -
+>  arch/arm/boot/dts/am335x-evm.dts                  | 3 +--
+>  arch/arm/boot/dts/am335x-evmsk.dts                | 2 +-
+>  arch/arm/boot/dts/am335x-lxm.dts                  | 2 +-
+>  arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi | 2 +-
+>  arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts    | 2 +-
+>  arch/arm/boot/dts/am335x-pepper.dts               | 4 ++--
+>  arch/arm/boot/dts/am335x-phycore-som.dtsi         | 2 +-
+>  arch/arm/boot/dts/am33xx-l4.dtsi                  | 6 ++----
+>  arch/arm/boot/dts/am33xx.dtsi                     | 3 ++-
+>  arch/arm/boot/dts/am4372.dtsi                     | 3 ++-
+>  arch/arm/boot/dts/am437x-cm-t43.dts               | 2 +-
+>  arch/arm/boot/dts/am437x-gp-evm.dts               | 4 ++--
+>  arch/arm/boot/dts/am437x-l4.dtsi                  | 5 ++---
+>  arch/arm/boot/dts/am437x-sk-evm.dts               | 2 +-
+>  19 files changed, 22 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/am335x-baltos.dtsi b/arch/arm/boot/dts/am335x-baltos.dtsi
+> index 05e7b5d4a95b..04f0b1227efe 100644
+> --- a/arch/arm/boot/dts/am335x-baltos.dtsi
+> +++ b/arch/arm/boot/dts/am335x-baltos.dtsi
+> @@ -369,7 +369,7 @@
+>  &mmc2 {
+>  	status = "okay";
+>  	vmmc-supply = <&wl12xx_vmmc>;
+> -	ti,non-removable;
+> +	non-removable;
+>  	bus-width = <4>;
+>  	cap-power-off-card;
+>  	pinctrl-names = "default";
+> diff --git a/arch/arm/boot/dts/am335x-boneblack-common.dtsi b/arch/arm/boot/dts/am335x-boneblack-common.dtsi
+> index 91f93bc89716..dd932220a8bf 100644
+> --- a/arch/arm/boot/dts/am335x-boneblack-common.dtsi
+> +++ b/arch/arm/boot/dts/am335x-boneblack-common.dtsi
+> @@ -22,6 +22,7 @@
+>  	pinctrl-0 = <&emmc_pins>;
+>  	bus-width = <8>;
+>  	status = "okay";
+> +	non-removable;
+>  };
+>  
+>  &am33xx_pinmux {
+> diff --git a/arch/arm/boot/dts/am335x-boneblack-wireless.dts b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+> index 3124d94c0b3c..e07dd7979586 100644
+> --- a/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+> +++ b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+> @@ -75,7 +75,6 @@
+>  	bus-width = <4>;
+>  	non-removable;
+>  	cap-power-off-card;
+> -	ti,needs-special-hs-handling;
+>  	keep-power-in-suspend;
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&mmc3_pins &wl18xx_pins>;
+> diff --git a/arch/arm/boot/dts/am335x-boneblue.dts b/arch/arm/boot/dts/am335x-boneblue.dts
+> index 5811fb8d4fdf..83f9452c9cd3 100644
+> --- a/arch/arm/boot/dts/am335x-boneblue.dts
+> +++ b/arch/arm/boot/dts/am335x-boneblue.dts
+> @@ -367,7 +367,6 @@
+>  	bus-width = <4>;
+>  	non-removable;
+>  	cap-power-off-card;
+> -	ti,needs-special-hs-handling;
+>  	keep-power-in-suspend;
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&mmc3_pins &wl18xx_pins>;
+> diff --git a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+> index 4092cd193b8a..609c8db687ec 100644
+> --- a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+> +++ b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+> @@ -75,7 +75,6 @@
+>  	bus-width = <4>;
+>  	non-removable;
+>  	cap-power-off-card;
+> -	ti,needs-special-hs-handling;
+>  	keep-power-in-suspend;
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&mmc3_pins &wl18xx_pins>;
+> diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
+> index 68252dab32c3..a4fc6b168a85 100644
+> --- a/arch/arm/boot/dts/am335x-evm.dts
+> +++ b/arch/arm/boot/dts/am335x-evm.dts
+> @@ -743,8 +743,7 @@
+>  	bus-width = <4>;
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&mmc3_pins &wlan_pins>;
+> -	ti,non-removable;
+> -	ti,needs-special-hs-handling;
+> +	non-removable;
+>  	cap-power-off-card;
+>  	keep-power-in-suspend;
+>  
+> diff --git a/arch/arm/boot/dts/am335x-evmsk.dts b/arch/arm/boot/dts/am335x-evmsk.dts
+> index 32f515a295ee..78b6e1f594c9 100644
+> --- a/arch/arm/boot/dts/am335x-evmsk.dts
+> +++ b/arch/arm/boot/dts/am335x-evmsk.dts
+> @@ -655,7 +655,7 @@
+>  &mmc2 {
+>  	status = "okay";
+>  	vmmc-supply = <&wl12xx_vmmc>;
+> -	ti,non-removable;
+> +	non-removable;
+>  	bus-width = <4>;
+>  	cap-power-off-card;
+>  	keep-power-in-suspend;
+> diff --git a/arch/arm/boot/dts/am335x-lxm.dts b/arch/arm/boot/dts/am335x-lxm.dts
+> index fef582852820..dbedf729205c 100644
+> --- a/arch/arm/boot/dts/am335x-lxm.dts
+> +++ b/arch/arm/boot/dts/am335x-lxm.dts
+> @@ -339,7 +339,7 @@
+>  	pinctrl-0 = <&emmc_pins>;
+>  	vmmc-supply = <&vmmcsd_fixed>;
+>  	bus-width = <8>;
+> -	ti,non-removable;
+> +	non-removable;
+>  	status = "okay";
+>  };
+>  
+> diff --git a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
+> index 6495a125c01f..4e90f9c23d2e 100644
+> --- a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
+> +++ b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
+> @@ -159,7 +159,7 @@
+>  	vmmc-supply = <&vmmcsd_fixed>;
+>  	bus-width = <8>;
+>  	pinctrl-0 = <&mmc1_pins_default>;
+> -	ti,non-removable;
+> +	non-removable;
+>  	status = "okay";
+>  };
+>  
+> diff --git a/arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts b/arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts
+> index 244df9c5a537..f03e72cada41 100644
+> --- a/arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts
+> +++ b/arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts
+> @@ -451,7 +451,7 @@
+>  	vmmc-supply = <&vmmcsd_fixed>;
+>  	bus-width = <8>;
+>  	pinctrl-0 = <&mmc2_pins_default>;
+> -	ti,non-removable;
+> +	non-removable;
+>  	status = "okay";
+>  };
+>  
+> diff --git a/arch/arm/boot/dts/am335x-pepper.dts b/arch/arm/boot/dts/am335x-pepper.dts
+> index 6d7608d9377b..f9a027b47962 100644
+> --- a/arch/arm/boot/dts/am335x-pepper.dts
+> +++ b/arch/arm/boot/dts/am335x-pepper.dts
+> @@ -341,7 +341,7 @@
+>  	pinctrl-0 = <&emmc_pins>;
+>  	vmmc-supply = <&ldo3_reg>;
+>  	bus-width = <8>;
+> -	ti,non-removable;
+> +	non-removable;
+>  };
+>  
+>  &mmc3 {
+> @@ -351,7 +351,7 @@
+>  	pinctrl-0 = <&wireless_pins>;
+>  	vmmmc-supply = <&v3v3c_reg>;
+>  	bus-width = <4>;
+> -	ti,non-removable;
+> +	non-removable;
+>  	dmas = <&edma_xbar 12 0 1
+>  		&edma_xbar 13 0 2>;
+>  	dma-names = "tx", "rx";
+> diff --git a/arch/arm/boot/dts/am335x-phycore-som.dtsi b/arch/arm/boot/dts/am335x-phycore-som.dtsi
+> index 3d0672b53d77..7e46b4c02709 100644
+> --- a/arch/arm/boot/dts/am335x-phycore-som.dtsi
+> +++ b/arch/arm/boot/dts/am335x-phycore-som.dtsi
+> @@ -69,7 +69,7 @@
+>  	pinctrl-0 = <&emmc_pins>;
+>  	vmmc-supply = <&vmmc_reg>;
+>  	bus-width = <8>;
+> -	ti,non-removable;
+> +	non-removable;
+>  	status = "disabled";
+>  };
+>  
+> diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+> index 5ed7f3c58c0f..573ff076178b 100644
+> --- a/arch/arm/boot/dts/am33xx-l4.dtsi
+> +++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+> @@ -1337,10 +1337,8 @@
+>  			ranges = <0x0 0x60000 0x1000>;
+>  
+>  			mmc1: mmc@0 {
+> -				compatible = "ti,omap4-hsmmc";
+> -				ti,dual-volt;
+> +				compatible = "ti,am335-sdhci";
+>  				ti,needs-special-reset;
+> -				ti,needs-special-hs-handling;
+>  				dmas = <&edma_xbar 24 0 0
+>  					&edma_xbar 25 0 0>;
+>  				dma-names = "tx", "rx";
+> @@ -1818,7 +1816,7 @@
+>  			ranges = <0x0 0xd8000 0x1000>;
+>  
+>  			mmc2: mmc@0 {
+> -				compatible = "ti,omap4-hsmmc";
+> +				compatible = "ti,am335-sdhci";
+>  				ti,needs-special-reset;
+>  				dmas = <&edma 2 0
+>  					&edma 3 0>;
+> diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+> index a35f5052d76f..3b9d4d2d35bf 100644
+> --- a/arch/arm/boot/dts/am33xx.dtsi
+> +++ b/arch/arm/boot/dts/am33xx.dtsi
+> @@ -322,10 +322,11 @@
+>  			ranges = <0x0 0x47810000 0x1000>;
+>  
+>  			mmc3: mmc@0 {
+> -				compatible = "ti,omap4-hsmmc";
+> +				compatible = "ti,am335-sdhci";
+>  				ti,needs-special-reset;
+>  				interrupts = <29>;
+>  				reg = <0x0 0x1000>;
+> +				status = "disabled";
+>  			};
+>  		};
+>  
+> diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
+> index dba87bfaf33e..092b3d4404f4 100644
+> --- a/arch/arm/boot/dts/am4372.dtsi
+> +++ b/arch/arm/boot/dts/am4372.dtsi
+> @@ -316,10 +316,11 @@
+>  			ranges = <0x0 0x47810000 0x1000>;
+>  
+>  			mmc3: mmc@0 {
+> -				compatible = "ti,omap4-hsmmc";
+> +				compatible = "ti,am437-sdhci";
+>  				ti,needs-special-reset;
+>  				interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
+>  				reg = <0x0 0x1000>;
+> +				status = "disabled";
+>  			};
+>  		};
+>  
+> diff --git a/arch/arm/boot/dts/am437x-cm-t43.dts b/arch/arm/boot/dts/am437x-cm-t43.dts
+> index 063113a5da2d..a6b4fca8626a 100644
+> --- a/arch/arm/boot/dts/am437x-cm-t43.dts
+> +++ b/arch/arm/boot/dts/am437x-cm-t43.dts
+> @@ -291,7 +291,7 @@
+>  	pinctrl-0 = <&emmc_pins>;
+>  	vmmc-supply = <&vmmc_3v3>;
+>  	bus-width = <8>;
+> -	ti,non-removable;
+> +	non-removable;
+>  };
+>  
+>  &spi0 {
+> diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
+> index 811c8cae315b..cadf47ee337f 100644
+> --- a/arch/arm/boot/dts/am437x-gp-evm.dts
+> +++ b/arch/arm/boot/dts/am437x-gp-evm.dts
+> @@ -869,7 +869,7 @@
+>  	pinctrl-names = "default", "sleep";
+>  	pinctrl-0 = <&emmc_pins_default>;
+>  	pinctrl-1 = <&emmc_pins_sleep>;
+> -	ti,non-removable;
+> +	non-removable;
+>  };
+>  
+>  &mmc3 {
+> @@ -886,7 +886,7 @@
+>  	pinctrl-1 = <&mmc3_pins_sleep>;
+>  	cap-power-off-card;
+>  	keep-power-in-suspend;
+> -	ti,non-removable;
+> +	non-removable;
+>  
+>  	#address-cells = <1>;
+>  	#size-cells = <0>;
+> diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
+> index 49c6a872052e..f4eb36d8b660 100644
+> --- a/arch/arm/boot/dts/am437x-l4.dtsi
+> +++ b/arch/arm/boot/dts/am437x-l4.dtsi
+> @@ -1086,9 +1086,8 @@
+>  			ranges = <0x0 0x60000 0x1000>;
+>  
+>  			mmc1: mmc@0 {
+> -				compatible = "ti,omap4-hsmmc";
+> +				compatible = "ti,am437-sdhci";
+>  				reg = <0x0 0x1000>;
+> -				ti,dual-volt;
+>  				ti,needs-special-reset;
+>  				dmas = <&edma 24 0>,
+>  					<&edma 25 0>;
+> @@ -1601,7 +1600,7 @@
+>  			ranges = <0x0 0xd8000 0x1000>;
+>  
+>  			mmc2: mmc@0 {
+> -				compatible = "ti,omap4-hsmmc";
+> +				compatible = "ti,am437-sdhci";
+>  				reg = <0x0 0x1000>;
+>  				ti,needs-special-reset;
+>  				dmas = <&edma 2 0>,
+> diff --git a/arch/arm/boot/dts/am437x-sk-evm.dts b/arch/arm/boot/dts/am437x-sk-evm.dts
+> index 25222497f828..2416597a4f5c 100644
+> --- a/arch/arm/boot/dts/am437x-sk-evm.dts
+> +++ b/arch/arm/boot/dts/am437x-sk-evm.dts
+> @@ -719,7 +719,7 @@
+>  	pinctrl-1 = <&mmc3_pins_sleep>;
+>  	cap-power-off-card;
+>  	keep-power-in-suspend;
+> -	ti,non-removable;
+> +	non-removable;
+>  
+>  	#address-cells = <1>;
+>  	#size-cells = <0>;
+> -- 
+> 2.17.1
+> 
