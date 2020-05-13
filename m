@@ -2,56 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 669221D055B
-	for <lists+linux-omap@lfdr.de>; Wed, 13 May 2020 05:18:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF431D0BE2
+	for <lists+linux-omap@lfdr.de>; Wed, 13 May 2020 11:21:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728478AbgEMDSc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 May 2020 23:18:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50318 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725898AbgEMDSa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 12 May 2020 23:18:30 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 451A624927;
-        Wed, 13 May 2020 03:18:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589339910;
-        bh=ed6gXENa/W1RjzBFyeIVvQW6Im7PXr0RmRmYy3seB8c=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=G07pCmBY2YfcYT/8Dgz2GHDgNgVAtQm+vKpVa/BKuIO8kIc5xu8NO4hvYobThHJnU
-         m4iiKkRkQqBZynA0XmrodJonIlEyakObiMOPHDJPuY7/xk2DzJb69VgugE4Nkig+Mk
-         yc+4FqogA2Lv/ku3PaANBzdj7PtIKinu35LGy77M=
-Content-Type: text/plain; charset="utf-8"
+        id S1727918AbgEMJVQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 May 2020 05:21:16 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:59802 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726492AbgEMJVQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 May 2020 05:21:16 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04D9Kixe120808;
+        Wed, 13 May 2020 04:20:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1589361644;
+        bh=IlqvhSvX7dm7U6fNCP86Eh1rVu3aygJpNYeXEiRbTwk=;
+        h=Subject:To:References:From:Date:In-Reply-To;
+        b=N4WBlCpAf/TS9QYfLJ7UD/CdMegYlurlnTJmuVycuArXL4cpSl05bQcj3R8odRjcZ
+         OjufQOaNPKqfqP+HrrXFGan1Nxk/Cru82bInTbI4tod0Kmca/FlOUZhePsvc2KxT44
+         3KqUdSpbmjK5KWn0q7xSu8c4/ED8QDEjD4TK5YZs=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04D9KiNK027980
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 13 May 2020 04:20:44 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 13
+ May 2020 04:20:43 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 13 May 2020 04:20:43 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04D9KeXT046041;
+        Wed, 13 May 2020 04:20:41 -0500
+Subject: Re: mmotm 2020-05-11-15-43 uploaded (ethernet/ti/ti_cpsw)
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        <broonie@kernel.org>, <linux-fsdevel@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-next@vger.kernel.org>, <mhocko@suse.cz>,
+        <mm-commits@vger.kernel.org>, <sfr@canb.auug.org.au>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+References: <20200511224430.HDJjRC68z%akpm@linux-foundation.org>
+ <9ba4bac8-d4ec-c2d2-373f-3a631523cb2f@infradead.org>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <a6e2a4ff-1ec5-4d86-4d00-ce62fbf1813f@ti.com>
+Date:   Wed, 13 May 2020 12:20:39 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200430083451.8562-1-t-kristo@ti.com>
-References: <20200430083451.8562-1-t-kristo@ti.com>
-Subject: Re: [PATCH] clk: ti: clkctrl: convert subclocks to use proper names also
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     tony@atomide.com, linux-omap@vger.kernel.org
-To:     Tero Kristo <t-kristo@ti.com>, linux-clk@vger.kernel.org,
-        mturquette@baylibre.com
-Date:   Tue, 12 May 2020 20:18:29 -0700
-Message-ID: <158933990954.215346.10446994560814171691@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9
+In-Reply-To: <9ba4bac8-d4ec-c2d2-373f-3a631523cb2f@infradead.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Tero Kristo (2020-04-30 01:34:51)
-> Addition of the new internal API to get the clkctrl names missed adding
-> the same conversion in place for the subclocks. This leads into missed
-> parent/child relationships (i.e. orphaned clocks) with mixed node name
-> handling, for example with omap4/omap5 where the l4_per clocks are using
-> new naming, but rest are using old. Fix by converting the subclock
-> registration to pick correct names for the clocks also.
->=20
-> Fixes: 6c3090520554 ("clk: ti: clkctrl: Fix hidden dependency to node nam=
-e")
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> ---
 
-Applied to clk-fixes
+
+On 12/05/2020 05:12, Randy Dunlap wrote:
+> On 5/11/20 3:44 PM, Andrew Morton wrote:
+>> The mm-of-the-moment snapshot 2020-05-11-15-43 has been uploaded to
+>>
+>>     http://www.ozlabs.org/~akpm/mmotm/
+>>
+>> mmotm-readme.txt says
+>>
+>> README for mm-of-the-moment:
+>>
+>> http://www.ozlabs.org/~akpm/mmotm/
+>>
+>> This is a snapshot of my -mm patch queue.  Uploaded at random hopefully
+>> more than once a week.
+>>
+>> You will need quilt to apply these patches to the latest Linus release (5.x
+>> or 5.x-rcY).  The series file is in broken-out.tar.gz and is duplicated in
+>> http://ozlabs.org/~akpm/mmotm/series
+>>
+>> The file broken-out.tar.gz contains two datestamp files: .DATE and
+>> .DATE-yyyy-mm-dd-hh-mm-ss.  Both contain the string yyyy-mm-dd-hh-mm-ss,
+>> followed by the base kernel version against which this patch series is to
+>> be applied.
+>>
+>> This tree is partially included in linux-next.  To see which patches are
+>> included in linux-next, consult the `series' file.  Only the patches
+>> within the #NEXT_PATCHES_START/#NEXT_PATCHES_END markers are included in
+>> linux-next.
+>>
+>>
+>> A full copy of the full kernel tree with the linux-next and mmotm patches
+>> already applied is available through git within an hour of the mmotm
+>> release.  Individual mmotm releases are tagged.  The master branch always
+>> points to the latest release, so it's constantly rebasing.
+>>
+>> 	https://github.com/hnaz/linux-mm
+>>
+>> The directory http://www.ozlabs.org/~akpm/mmots/ (mm-of-the-second)
+>> contains daily snapshots of the -mm tree.  It is updated more frequently
+>> than mmotm, and is untested.
+>>
+>> A git copy of this tree is also available at
+>>
+>> 	https://github.com/hnaz/linux-mm
+> 
+> on i386:
+> 
+> ERROR: modpost: "cpts_register" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
+> ERROR: modpost: "cpts_unregister" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
+> ERROR: modpost: "cpts_tx_timestamp" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
+> ERROR: modpost: "cpts_create" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
+> ERROR: modpost: "cpts_misc_interrupt" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
+> ERROR: modpost: "cpts_release" [drivers/net/ethernet/ti/ti_cpsw_new.ko] undefined!
+> ERROR: modpost: "cpts_tx_timestamp" [drivers/net/ethernet/ti/ti_cpsw.ko] undefined!
+> ERROR: modpost: "cpts_create" [drivers/net/ethernet/ti/ti_cpsw.ko] undefined!
+> ERROR: modpost: "cpts_misc_interrupt" [drivers/net/ethernet/ti/ti_cpsw.ko] undefined!
+> ERROR: modpost: "cpts_release" [drivers/net/ethernet/ti/ti_cpsw.ko] undefined!
+> 
+> 
+> Full randconfig file is attached.
+> 
+
+It's expected to be fixed by
+https://lkml.org/lkml/2020/5/12/333
+
+-- 
+Best regards,
+grygorii
