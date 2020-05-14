@@ -2,93 +2,230 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 538C51D3841
-	for <lists+linux-omap@lfdr.de>; Thu, 14 May 2020 19:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 292741D3918
+	for <lists+linux-omap@lfdr.de>; Thu, 14 May 2020 20:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726050AbgENRbu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 14 May 2020 13:31:50 -0400
-Received: from muru.com ([72.249.23.125]:54564 "EHLO muru.com"
+        id S1726383AbgENS27 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 14 May 2020 14:28:59 -0400
+Received: from mga01.intel.com ([192.55.52.88]:11941 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726027AbgENRbt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 14 May 2020 13:31:49 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 1AD9380C0;
-        Thu, 14 May 2020 17:32:37 +0000 (UTC)
-Date:   Thu, 14 May 2020 10:31:44 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Pavel Machek <pavel@denx.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv8 0/6] n_gsm serdev support and GNSS driver for droid4
-Message-ID: <20200514173144.GP37466@atomide.com>
-References: <20200512214713.40501-1-tony@atomide.com>
- <20200513190942.GA2626@duo.ucw.cz>
+        id S1726165AbgENS26 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 14 May 2020 14:28:58 -0400
+IronPort-SDR: /J1Xmj5NVUxXGXzA2KRY3WRLaIp/gqcRhjSoeyaWZsR/ueS9BJ4FVcmXRXrhJFSai02O5ZrThs
+ BBfxe0ePiQyA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 11:28:55 -0700
+IronPort-SDR: 1wa5ogtVeF+x5THzdC/npn0apWDDRGVUDuU1ZXlNeRX1pw2P4fCEXVOfG1GmGttyd1dsL2+2a5
+ Zr/E98b+u+iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,392,1583222400"; 
+   d="scan'208";a="298130256"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 14 May 2020 11:28:53 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jZIbF-0001ES-5p; Fri, 15 May 2020 02:28:53 +0800
+Date:   Fri, 15 May 2020 02:28:31 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
+ 172b14b48ca10b280482b164506892ea09edb946
+Message-ID: <5ebd8dcf.v9WxMqmsSgF7dZbg%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200513190942.GA2626@duo.ucw.cz>
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Pavel Machek <pavel@denx.de> [200513 19:10]:
-> Hi!
-> 
-> > Here's the updated set of these patches fixed up for Johan's and
-> > Pavel's earlier comments.
-> > 
-> > This series does the following:
-> > 
-> > 1. Adds functions to n_gsm.c for serdev-ngsm.c driver to use
-> > 
-> > 2. Adds a generic serdev-ngsm.c driver that brings up the TS 27.010
-> >    TTY ports configured in devicetree with help of n_gsm.c
-> > 
-> > 3. Allows the use of standard Linux device drivers for dedicated
-> >    TS 27.010 channels for devices like GNSS and ALSA found on some
-> >    modems for example
-> 
-> > 4. Adds a gnss-motmdm consumer driver for the GNSS device found on
-> >    the Motorola Mapphone MDM6600 modem on devices like droid4
-> 
-> It does one thing ... it turns Droid 4 into useful phone! 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
+branch HEAD: 172b14b48ca10b280482b164506892ea09edb946  usb: cdns3: gadget: make a bunch of functions static
 
-Right, a minor detail I forgot :)
+elapsed time: 483m
 
-> Thanks a lot. I believe these are same patches as in
-> droid4-pending-v5.7 branch, so whole series is
-> 
-> Tested-by: Pavel Machek <pavel@ucw.cz>
-> 
-> Getting this into 5.8 would be nice :-).
-> 
-> > Now without the chardev support, the /dev/gsmtty* using apps need
-> > to use "U1234AT+CFUN?" format for the packets. The advantage is
-> > less kernel code, and we keep the existing /dev/gsmtty* interface.
-> > 
-> > If we still really need the custom chardev support, that can now
-> > be added as needed with the channel specific consumer driver(s),
-> > but looks like this won't be needed based on Pavel's ofono work.
-> 
-> These work for me, and I have patched ofono with basic
-> functionality. It is no longer possible to use minicom for debugging,
-> but printf can be used instead, so that's not much of a problem.
-> 
-> I have adjusted ofono code, and moved away from normal AT support
-> code. More API changes would not be welcome :-).
+configs tested: 171
+configs skipped: 11
 
-There is no need for a new API or API changes as we now use the
-existing n_gsm tty interface for /dev/gsmtty* devices that have
-been around for years.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Regards,
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+sparc                            allyesconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                 nsimosci_hs_smp_defconfig
+mips                          malta_defconfig
+i386                                defconfig
+arm                          exynos_defconfig
+powerpc                      pmac32_defconfig
+powerpc                     mpc5200_defconfig
+arm                            qcom_defconfig
+sh                               alldefconfig
+arm                       aspeed_g5_defconfig
+arm                        vexpress_defconfig
+mips                         rt305x_defconfig
+arm                           corgi_defconfig
+powerpc                       holly_defconfig
+arm                        oxnas_v6_defconfig
+powerpc                           allnoconfig
+m68k                       m5208evb_defconfig
+m68k                            q40_defconfig
+sh                          sdk7780_defconfig
+riscv                            alldefconfig
+sh                             espt_defconfig
+m68k                         amcore_defconfig
+sh                          polaris_defconfig
+arc                     haps_hs_smp_defconfig
+mips                           jazz_defconfig
+powerpc                          g5_defconfig
+arm                  colibri_pxa300_defconfig
+arm                       cns3420vb_defconfig
+mips                     loongson1c_defconfig
+arm                             rpc_defconfig
+mips                      loongson3_defconfig
+ia64                        generic_defconfig
+arm                        magician_defconfig
+arm                          imote2_defconfig
+s390                       zfcpdump_defconfig
+powerpc                       maple_defconfig
+sh                           se7722_defconfig
+sh                          r7785rp_defconfig
+h8300                            alldefconfig
+powerpc                      tqm8xx_defconfig
+mips                           ip28_defconfig
+arm                        clps711x_defconfig
+m68k                           sun3_defconfig
+mips                   sb1250_swarm_defconfig
+arm                           efm32_defconfig
+nios2                         3c120_defconfig
+um                             i386_defconfig
+arm                         lubbock_defconfig
+arm                       multi_v4t_defconfig
+arc                          axs103_defconfig
+arc                          axs101_defconfig
+sh                            titan_defconfig
+s390                                defconfig
+arc                      axs103_smp_defconfig
+arm                         cm_x2xx_defconfig
+arm                         palmz72_defconfig
+sh                 kfr2r09-romimage_defconfig
+c6x                        evmc6678_defconfig
+sh                            shmin_defconfig
+arm                        neponset_defconfig
+sh                         microdev_defconfig
+x86_64                              defconfig
+arm                         s3c2410_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+sh                        sh7763rdp_defconfig
+arm                             ezx_defconfig
+powerpc                mpc7448_hpc2_defconfig
+mips                         cobalt_defconfig
+ia64                            zx1_defconfig
+sh                         ecovec24_defconfig
+ia64                              allnoconfig
+mips                         db1xxx_defconfig
+m68k                          atari_defconfig
+sh                               j2_defconfig
+arm                          lpd270_defconfig
+sh                          rsk7264_defconfig
+m68k                        m5407c3_defconfig
+sh                ecovec24-romimage_defconfig
+riscv                    nommu_virt_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                                defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+i386                 randconfig-a006-20200514
+i386                 randconfig-a005-20200514
+i386                 randconfig-a003-20200514
+i386                 randconfig-a001-20200514
+i386                 randconfig-a004-20200514
+i386                 randconfig-a002-20200514
+x86_64               randconfig-a012-20200514
+x86_64               randconfig-a016-20200514
+x86_64               randconfig-a015-20200514
+x86_64               randconfig-a013-20200514
+x86_64               randconfig-a014-20200514
+x86_64               randconfig-a011-20200514
+i386                 randconfig-a012-20200514
+i386                 randconfig-a016-20200514
+i386                 randconfig-a014-20200514
+i386                 randconfig-a011-20200514
+i386                 randconfig-a013-20200514
+i386                 randconfig-a015-20200514
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-Tony
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
