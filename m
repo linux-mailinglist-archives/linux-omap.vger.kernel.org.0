@@ -2,98 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93A091D49B1
-	for <lists+linux-omap@lfdr.de>; Fri, 15 May 2020 11:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8533C1D4F43
+	for <lists+linux-omap@lfdr.de>; Fri, 15 May 2020 15:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727898AbgEOJeZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 15 May 2020 05:34:25 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:45424 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727803AbgEOJeZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 15 May 2020 05:34:25 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04F9YL2A002540;
-        Fri, 15 May 2020 04:34:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589535261;
-        bh=eoqwD1iY8I9uQckZWcPuP5jTSPV/Lliz8amDTTfZ87w=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=AlW9FY5X9gMIyy3p7ak4u9jg9wI1vCfsL6IgjfBVIXDaUaeFled9DxsrsjyxOwgmd
-         RMESuK5NFXNcxqmXZ0458GHPDMvhXX08gT4Yvei42IT0qMcFAr/TDxSxYQhlHfWIVf
-         Zxs+2U8UMeYyDQEBgRx27FGKjhmHFLT/oPBZ/TDM=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04F9YLcb057666
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 15 May 2020 04:34:21 -0500
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 15
- May 2020 04:34:20 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 15 May 2020 04:34:21 -0500
-Received: from [10.250.151.179] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04F9YGRB117213;
-        Fri, 15 May 2020 04:34:17 -0500
-Subject: Re: [PATCH v2] arm: dts: Move am33xx and am43xx mmc nodes to
- sdhci-omap driver
-To:     Tony Lindgren <tony@atomide.com>, Keerthy <j-keerthy@ti.com>
-CC:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <robh+dt@kernel.org>,
-        <bcousson@baylibre.com>, Tomi Valkeinen <tomi.valkeinen@ti.com>
-References: <20200512203804.9340-1-faiz_abbas@ti.com>
- <20200513162327.GM37466@atomide.com>
-From:   Faiz Abbas <faiz_abbas@ti.com>
-Message-ID: <94025425-95e2-e53d-cfac-a1e73e6c011a@ti.com>
-Date:   Fri, 15 May 2020 15:04:15 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726191AbgEONaQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 May 2020 09:30:16 -0400
+Received: from rere.qmqm.pl ([91.227.64.183]:35466 "EHLO rere.qmqm.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726179AbgEONaQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 15 May 2020 09:30:16 -0400
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 49Nq5x0fTgz8j;
+        Fri, 15 May 2020 15:30:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1589549414; bh=YhB2JsZedxwN/B0OR0Q2lPRzMCO96sFs8wnazr66xiA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VUjaUsVKtUrnMR6cwbBIf5YkkpBfI3oQfiB7seL4Jr+YGEGDsR1TP/ynHi/NHLI8b
+         ZtlqWJL1ima5A6MTYIuf3T05sWlwe9Rkg6O9Biwc2jyxj7aDqMUviAuKmRMgisLYVg
+         xB9eAAsoPGso/w1GskeocPjPquQE9gqy9IxeFMBW5WDalHYDehVxzVLskMe1JDU8YV
+         LZXCwNw+Nb5QpeEbHm8Z+8vBdm/9e/DRsfMpeo1zXkIgTjTuD44czwTVXFUMK2XeDo
+         x8wE9jOJ1pToKB8OoMcRfWX0GIxJeXBG+gzZVcE9gU+ZswKiX/HgTTqZDpUSqEJCyi
+         2R3OJQeBXobNQ==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.102.2 at mail
+Date:   Fri, 15 May 2020 15:30:11 +0200
+From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Zack Pearsall <zpearsall@yahoo.com>,
+        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mfd: tps65910: Correct power-off programming sequence
+Message-ID: <20200515110754.GB20564@qmqm.qmqm.pl>
+References: <20200514205022.7024-1-digetx@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200513162327.GM37466@atomide.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=iso-8859-2
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200514205022.7024-1-digetx@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
-
-On 13/05/20 9:53 pm, Tony Lindgren wrote:
-> * Faiz Abbas <faiz_abbas@ti.com> [200512 13:39]:
->> Move mmc nodes to be compatible with the sdhci-omap driver. The following
->> modifications are required for omap_hsmmc specific properties:
->>
->> ti,non-removable: convert to the generic mmc non-removable
->> ti,needs-special-reset:  co-opted into the sdhci-omap driver
->> ti,dual-volt: removed. Legacy property not used in am335x or am43xx
->> ti,needs-special-hs-handling: removed. Legacy property not used in am335x
->> or am43xx
->>
->> Also since the sdhci-omap driver does not support runtime PM, explicitly
->> disable the mmc3 instance in the dtsi.
->>
->> Signed-off-by: Faiz Abbas <faiz_abbas@ti.com>
->> ---
->>
->> v2: Rebased to latest mainline where all kernel dependancies have been merged.
->>
->> Suspend/Resume is now supported in the sdhci-omap driver.
+On Thu, May 14, 2020 at 11:50:21PM +0300, Dmitry Osipenko wrote:
+> This patch fixes system shutdown on a devices that use TPS65910 as a
+> system's power controller. In accordance to the TPS65910 datasheet, the
+> PMIC's state-machine transitions into the OFF state only when DEV_OFF
+> bit of DEVCTRL_REG is set. The ON / SLEEP states also should be cleared,
+> otherwise PMIC won't get into a proper state on shutdown. Devices like
+> Nexus 7 tablet and Ouya game console are now shutting down properly.
 > 
-> Great, thanks for updating it.
+> Tested-by: Zack Pearsall <zpearsall@yahoo.com>
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> ---
+>  drivers/mfd/tps65910.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
 > 
-> Keerthy, care to test for am3 and am4?
-> 
+> diff --git a/drivers/mfd/tps65910.c b/drivers/mfd/tps65910.c
+> index 11959021b50a..22116cee411d 100644
+> --- a/drivers/mfd/tps65910.c
+> +++ b/drivers/mfd/tps65910.c
+> @@ -440,8 +440,16 @@ static void tps65910_power_off(void)
+>  			DEVCTRL_PWR_OFF_MASK) < 0)
+>  		return;
+>  
+> -	tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
+> -			DEVCTRL_DEV_ON_MASK);
+> +	if (tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
+> +			DEVCTRL_DEV_SLP_MASK) < 0)
+> +		return;
+> +
+> +	if (tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
+> +			DEVCTRL_DEV_ON_MASK) < 0)
+> +		return;
+> +
+> +	tps65910_reg_set_bits(tps65910, TPS65910_DEVCTRL,
+> +			DEVCTRL_DEV_OFF_MASK);
+>  }
 
-Suspend/resume on am43xx-gpevm is broken right now in mainline and the regression looks
-like it is caused by the display subsystem. I have reported this to Tomi and
-its being investigated.
+Isn't it enough to update the DEVCTRL with just one
+tps65910_reg_update_bits()?
 
-Meanwhile I have tested this patch with display configs disabled and Keerthy's
-suspend/resume tests pass on both am3 and am4.
-
-Thanks,
-Faiz
+Best Regards
+Micha³ Miros³aw
