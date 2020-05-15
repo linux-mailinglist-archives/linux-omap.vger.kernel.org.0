@@ -2,199 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CD661D421C
-	for <lists+linux-omap@lfdr.de>; Fri, 15 May 2020 02:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03EFF1D46ED
+	for <lists+linux-omap@lfdr.de>; Fri, 15 May 2020 09:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728485AbgEOAcK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 14 May 2020 20:32:10 -0400
-Received: from mga18.intel.com ([134.134.136.126]:19292 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728427AbgEOAcK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 14 May 2020 20:32:10 -0400
-IronPort-SDR: AJca3RWS+vR6Nie82d1nG1PNb/nLnDmNKvx7RG66QptIc1Ao3wBbI8zfo3/1NmLK5JXEy7iVrl
- qhirUPcFuGGQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 17:32:09 -0700
-IronPort-SDR: GyWORXeExasTfNa8vVdKvZJQoRi6VwdWu6zxIKOj25NmV2yIkVnkNFc67yIVnDOPo/VfGRrcVp
- QWJJ95HW5Z+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,392,1583222400"; 
-   d="scan'208";a="307265862"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 14 May 2020 17:32:08 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jZOGl-0002Si-Kk; Fri, 15 May 2020 08:32:07 +0800
-Date:   Fri, 15 May 2020 08:31:38 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/next] BUILD SUCCESS
- 55f322974cbe2878bcfaec3804257c68ac90ee6f
-Message-ID: <5ebde2ea.jzeLCDJ9Llmhu6JU%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+        id S1726496AbgEOHTV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 May 2020 03:19:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726434AbgEOHTU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 15 May 2020 03:19:20 -0400
+Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5302::7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 920BCC061A0C;
+        Fri, 15 May 2020 00:19:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1589527155;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=/LlQLnJSjr1dPjlAnAK+u/lQG0tGroGOnAwr3HRIIDg=;
+        b=V4rmYoQNMiSdVNe+dWbLMntZAM4z93rruWDqBl4jIT/149VE95L/x3e6Izb3Bs3eyg
+        tk4HunCz0xxntP2hQvK0O33IO16iO3NAOWHc3cB8Z8OrBMXwXk/yWXFHvPmWk+xX8Ll5
+        dF1YuCJ16hBNa93UGhg1Vh3qjEL0JdM8chtrEPk4SXOOA9AiBdNddJqmOAkHqpwuz2AM
+        1N58+yn/d/9SNgUyZ8GRDkvhQ/ehCXXpQJuWL+H0JVTHKXvfmFeiNUIdgs9FOGJn8FvE
+        dJvnMUo1CiW0KXL9HUGsXmDQ9dv4BC3Cdg0//a56AAyC7WYbePBDs6kpZU0JPm0bhf77
+        xLNQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/vtwDOvBTU="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 46.6.2 DYNA|AUTH)
+        with ESMTPSA id R0acebw4F7IYYRg
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Fri, 15 May 2020 09:18:34 +0200 (CEST)
+Subject: Re: [PATCH v7 01/12] dt-bindings: add img,pvrsgx.yaml for Imagination GPUs
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=iso-8859-1
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <08B861A8-D4C2-48A6-9B05-B8CA43312834@goldelico.com>
+Date:   Fri, 15 May 2020 09:18:33 +0200
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?iso-8859-1?Q?Beno=EEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        James Hogan <jhogan@kernel.org>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Philipp Rossak <embed3d@gmail.com>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        OpenPVRSGX Linux Driver Group <openpvrsgx-devgroup@letux.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        linux-mips@vger.kernel.org,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        linux-samsung-soc@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D1D14684-2532-46A4-ADA0-2F88F4D2228E@goldelico.com>
+References: <cover.1587760454.git.hns@goldelico.com> <3a451e360fed84bc40287678b4d6be13821cfbc0.1587760454.git.hns@goldelico.com> <NMCE9Q.LWG45P20NBVJ@crapouillou.net> <28138EC0-0FA5-4F97-B528-3442BF087C7A@goldelico.com> <TEAR9Q.6HI5DFRO5U0I3@crapouillou.net> <3D8B59D6-83E3-4FE6-9C99-E2E5616A8139@goldelico.com> <8EER9Q.C206SXNSICP7@crapouillou.net> <08B861A8-D4C2-48A6-9B05-B8CA43312834@goldelico.com>
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Paul Burton <paulburton@kernel.org>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
-branch HEAD: 55f322974cbe2878bcfaec3804257c68ac90ee6f  USB: dummy-hcd: use configurable endpoint naming scheme
+Hi Paul & Paul,
 
-elapsed time: 742m
+> Am 03.05.2020 um 18:41 schrieb H. Nikolaus Schaller =
+<hns@goldelico.com>:
+>=20
+> Hi Paul and Paul,
+>=20
+>> Am 03.05.2020 um 16:18 schrieb Paul Cercueil <paul@crapouillou.net>:
+>>=20
+>>=20
+>>=20
+>> Le dim. 3 mai 2020 =E0 15:31, H. Nikolaus Schaller =
+<hns@goldelico.com> a =E9crit :
+>>> Hi Paul,
+>>>> Am 03.05.2020 um 14:52 schrieb Paul Cercueil =
+<paul@crapouillou.net>:
+>>>>>> It's possible to forbid the presence of the 'clocks' property on =
+some implementations, and require it on others.
+>>>>> To be precise we have to specify the exact number of clocks =
+(between 0 and 4) for every architecture.
+>>>>> This also contradicts my dream to get rid of the architecture =
+specific components in the long run. My dream (because I can't tell how =
+it can be done) is that we can one day develop something which just =
+needs compatible =3D img,530 or imp,540 or img,544. Then we can't make =
+the number clocks depend on the implementation any more.
+>>>> As we said before, the number of clocks is a property of the GPU =
+and *not* its integration into the SoC.
+>>> Well, it is a not very well documented property of the GPU. We have =
+no data sheet of the standalone GPU. Only several SoC data sheets which =
+give some indications.
+>>=20
+>> Maybe we can nicely ask them?
+>=20
+> There is some (old) answer here:
+>=20
+> =
+https://github.com/MIPS/CI20_linux/blob/ci20-v3.18/arch/mips/boot/dts/jz47=
+80.dtsi#L63
+>=20
+>> I expect Paul Burton to have some contacts at ImgTec. Asking for a =
+doc would be too much, but maybe they can help a bit with the DT =
+bindings.
+>=20
+> Good idea! It is definitively worth to try. Therefore I have moved him =
+from CC: to To:
 
-configs tested: 140
-configs skipped: 8
+Do we already have an idea if we can get into contact and get help from =
+ImgTec for this topic or if we have to live with what we have?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+BR and thanks,
+Nikolaus
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-sparc                            allyesconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                 nsimosci_hs_smp_defconfig
-mips                          malta_defconfig
-arm                          exynos_defconfig
-powerpc                      pmac32_defconfig
-mips                         rt305x_defconfig
-arm                           corgi_defconfig
-m68k                       m5208evb_defconfig
-powerpc                       holly_defconfig
-arm                        oxnas_v6_defconfig
-powerpc                           allnoconfig
-sh                          polaris_defconfig
-arc                     haps_hs_smp_defconfig
-mips                           jazz_defconfig
-ia64                              allnoconfig
-powerpc                          g5_defconfig
-m68k                            q40_defconfig
-ia64                        generic_defconfig
-arm                        magician_defconfig
-arm                          imote2_defconfig
-s390                       zfcpdump_defconfig
-powerpc                       maple_defconfig
-sh                           se7722_defconfig
-sh                          r7785rp_defconfig
-h8300                            alldefconfig
-arm                           efm32_defconfig
-nios2                         3c120_defconfig
-um                             i386_defconfig
-arm                         lubbock_defconfig
-arm                       multi_v4t_defconfig
-arc                          axs103_defconfig
-s390                                defconfig
-arc                      axs103_smp_defconfig
-arm                         cm_x2xx_defconfig
-arm                         palmz72_defconfig
-ia64                             allmodconfig
-sh                 kfr2r09-romimage_defconfig
-c6x                        evmc6678_defconfig
-sh                            shmin_defconfig
-arm                        neponset_defconfig
-arm                         socfpga_defconfig
-mips                        bcm63xx_defconfig
-arm                          iop32x_defconfig
-arm                         vf610m4_defconfig
-mips                        nlm_xlr_defconfig
-mips                        nlm_xlp_defconfig
-arm                      jornada720_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-i386                 randconfig-a006-20200514
-i386                 randconfig-a005-20200514
-i386                 randconfig-a003-20200514
-i386                 randconfig-a001-20200514
-i386                 randconfig-a004-20200514
-i386                 randconfig-a002-20200514
-x86_64               randconfig-a012-20200514
-x86_64               randconfig-a016-20200514
-x86_64               randconfig-a015-20200514
-x86_64               randconfig-a013-20200514
-x86_64               randconfig-a014-20200514
-x86_64               randconfig-a011-20200514
-i386                 randconfig-a012-20200514
-i386                 randconfig-a016-20200514
-i386                 randconfig-a014-20200514
-i386                 randconfig-a011-20200514
-i386                 randconfig-a013-20200514
-i386                 randconfig-a015-20200514
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-x86_64                              defconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
