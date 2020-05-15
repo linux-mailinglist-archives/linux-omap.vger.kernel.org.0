@@ -2,107 +2,199 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44F971D3F5C
-	for <lists+linux-omap@lfdr.de>; Thu, 14 May 2020 22:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CD661D421C
+	for <lists+linux-omap@lfdr.de>; Fri, 15 May 2020 02:32:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727835AbgENUxQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 14 May 2020 16:53:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39110 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727123AbgENUxP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 14 May 2020 16:53:15 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44ADAC061A0C;
-        Thu, 14 May 2020 13:53:15 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id 82so2312312lfh.2;
-        Thu, 14 May 2020 13:53:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8ZX5aSRmz5jYRhVNI33JYSnsQRmUFYEKnhmSj7lgJyc=;
-        b=Ev2F/CLB7pA3dHkEJLfIS7zf50ZpNLO1iAl80R2/Mb9S7RrglW/0daTX5jfR9qa2Ss
-         K6GevTqJ7CRO8I4Q7o8Y1HLw+S0jQ6ft0fcXig0YGSrIiGwrs1WFFuDF+cqTc2go+9fY
-         TcVCCn65Ee+CwmfUtxtQzqpdX4/XC+7x6rYBIasvwmO1r5maTMJ9Zy3qlnWbYMob7R0c
-         AIwrgBztPPi9Ve1ypwm7WADLnruDN5yoyb2YUpeUbRTJo20T3n8LOimnq/GnNbcn4NSF
-         PZtUvliwv3n0w22iWpTbIIvOy1fQdEDM+1S3ZUox8EF0gn3hIh3g34eGQODp1nBB/0E9
-         VV/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8ZX5aSRmz5jYRhVNI33JYSnsQRmUFYEKnhmSj7lgJyc=;
-        b=TXPy8ByOfrokzHdTaegMCnfYXSM8lAfHOgJUXNNEETyaCDx0Q7D8wXNSNaHEywPgms
-         AD9RrJqrWzXLYFo0wSYLK6UCcLC+oWSWuIzBcrcRavVHItTUZsG2VCbeo+UFc1puyQJW
-         Tl/CRC26ynRI7oO6WOLvVFGpxxy/wFEuCywM2voC4KzVZcAntd0RpZTk5iLz+XR/a/8H
-         Wkb2vLIUvkI7Vu9s6UivXMZETf/xqnJDnXtWnIeuYjk6qsmCx06OCxVmhSYK45qUK3r2
-         Z9SrwctRbbjH+34tx3GcU6DxgezU5Ujl2jKPLLzrZggE4MHPtczY2PrLKxsPlipHIGD7
-         zknQ==
-X-Gm-Message-State: AOAM5310KD7kBtutsKbdVamo27pq1NDli2sGPkxwMepev1VVY0d6zmvG
-        Epy9+nNscVbUaHPJUSOheYU=
-X-Google-Smtp-Source: ABdhPJwdhEYSKRvj3P/XNm29+bPUFCqmQUpncZwquIfbD0KmklXjKtbyavR9lREmIkPlSXuOsdSiNg==
-X-Received: by 2002:ac2:5199:: with SMTP id u25mr39844lfi.80.1589489593816;
-        Thu, 14 May 2020 13:53:13 -0700 (PDT)
-Received: from localhost.localdomain (ppp91-78-208-152.pppoe.mtu-net.ru. [91.78.208.152])
-        by smtp.gmail.com with ESMTPSA id m20sm17612ljb.23.2020.05.14.13.53.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2020 13:53:13 -0700 (PDT)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        Zack Pearsall <zpearsall@yahoo.com>
-Cc:     linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v1] mfd: tps65910: Correct power-off programming sequence
-Date:   Thu, 14 May 2020 23:50:21 +0300
-Message-Id: <20200514205022.7024-1-digetx@gmail.com>
-X-Mailer: git-send-email 2.26.0
+        id S1728485AbgEOAcK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 14 May 2020 20:32:10 -0400
+Received: from mga18.intel.com ([134.134.136.126]:19292 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728427AbgEOAcK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 14 May 2020 20:32:10 -0400
+IronPort-SDR: AJca3RWS+vR6Nie82d1nG1PNb/nLnDmNKvx7RG66QptIc1Ao3wBbI8zfo3/1NmLK5JXEy7iVrl
+ qhirUPcFuGGQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2020 17:32:09 -0700
+IronPort-SDR: GyWORXeExasTfNa8vVdKvZJQoRi6VwdWu6zxIKOj25NmV2yIkVnkNFc67yIVnDOPo/VfGRrcVp
+ QWJJ95HW5Z+A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,392,1583222400"; 
+   d="scan'208";a="307265862"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 14 May 2020 17:32:08 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jZOGl-0002Si-Kk; Fri, 15 May 2020 08:32:07 +0800
+Date:   Fri, 15 May 2020 08:31:38 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/next] BUILD SUCCESS
+ 55f322974cbe2878bcfaec3804257c68ac90ee6f
+Message-ID: <5ebde2ea.jzeLCDJ9Llmhu6JU%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This patch fixes system shutdown on a devices that use TPS65910 as a
-system's power controller. In accordance to the TPS65910 datasheet, the
-PMIC's state-machine transitions into the OFF state only when DEV_OFF
-bit of DEVCTRL_REG is set. The ON / SLEEP states also should be cleared,
-otherwise PMIC won't get into a proper state on shutdown. Devices like
-Nexus 7 tablet and Ouya game console are now shutting down properly.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
+branch HEAD: 55f322974cbe2878bcfaec3804257c68ac90ee6f  USB: dummy-hcd: use configurable endpoint naming scheme
 
-Tested-by: Zack Pearsall <zpearsall@yahoo.com>
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+elapsed time: 742m
+
+configs tested: 140
+configs skipped: 8
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+sparc                            allyesconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                 nsimosci_hs_smp_defconfig
+mips                          malta_defconfig
+arm                          exynos_defconfig
+powerpc                      pmac32_defconfig
+mips                         rt305x_defconfig
+arm                           corgi_defconfig
+m68k                       m5208evb_defconfig
+powerpc                       holly_defconfig
+arm                        oxnas_v6_defconfig
+powerpc                           allnoconfig
+sh                          polaris_defconfig
+arc                     haps_hs_smp_defconfig
+mips                           jazz_defconfig
+ia64                              allnoconfig
+powerpc                          g5_defconfig
+m68k                            q40_defconfig
+ia64                        generic_defconfig
+arm                        magician_defconfig
+arm                          imote2_defconfig
+s390                       zfcpdump_defconfig
+powerpc                       maple_defconfig
+sh                           se7722_defconfig
+sh                          r7785rp_defconfig
+h8300                            alldefconfig
+arm                           efm32_defconfig
+nios2                         3c120_defconfig
+um                             i386_defconfig
+arm                         lubbock_defconfig
+arm                       multi_v4t_defconfig
+arc                          axs103_defconfig
+s390                                defconfig
+arc                      axs103_smp_defconfig
+arm                         cm_x2xx_defconfig
+arm                         palmz72_defconfig
+ia64                             allmodconfig
+sh                 kfr2r09-romimage_defconfig
+c6x                        evmc6678_defconfig
+sh                            shmin_defconfig
+arm                        neponset_defconfig
+arm                         socfpga_defconfig
+mips                        bcm63xx_defconfig
+arm                          iop32x_defconfig
+arm                         vf610m4_defconfig
+mips                        nlm_xlr_defconfig
+mips                        nlm_xlp_defconfig
+arm                      jornada720_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+i386                 randconfig-a006-20200514
+i386                 randconfig-a005-20200514
+i386                 randconfig-a003-20200514
+i386                 randconfig-a001-20200514
+i386                 randconfig-a004-20200514
+i386                 randconfig-a002-20200514
+x86_64               randconfig-a012-20200514
+x86_64               randconfig-a016-20200514
+x86_64               randconfig-a015-20200514
+x86_64               randconfig-a013-20200514
+x86_64               randconfig-a014-20200514
+x86_64               randconfig-a011-20200514
+i386                 randconfig-a012-20200514
+i386                 randconfig-a016-20200514
+i386                 randconfig-a014-20200514
+i386                 randconfig-a011-20200514
+i386                 randconfig-a013-20200514
+i386                 randconfig-a015-20200514
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+x86_64                              defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
 ---
- drivers/mfd/tps65910.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mfd/tps65910.c b/drivers/mfd/tps65910.c
-index 11959021b50a..22116cee411d 100644
---- a/drivers/mfd/tps65910.c
-+++ b/drivers/mfd/tps65910.c
-@@ -440,8 +440,16 @@ static void tps65910_power_off(void)
- 			DEVCTRL_PWR_OFF_MASK) < 0)
- 		return;
- 
--	tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
--			DEVCTRL_DEV_ON_MASK);
-+	if (tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
-+			DEVCTRL_DEV_SLP_MASK) < 0)
-+		return;
-+
-+	if (tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
-+			DEVCTRL_DEV_ON_MASK) < 0)
-+		return;
-+
-+	tps65910_reg_set_bits(tps65910, TPS65910_DEVCTRL,
-+			DEVCTRL_DEV_OFF_MASK);
- }
- 
- static int tps65910_i2c_probe(struct i2c_client *i2c,
--- 
-2.26.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
