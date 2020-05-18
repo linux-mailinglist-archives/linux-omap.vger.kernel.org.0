@@ -2,108 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E31371D7068
-	for <lists+linux-omap@lfdr.de>; Mon, 18 May 2020 07:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A22BB1D718A
+	for <lists+linux-omap@lfdr.de>; Mon, 18 May 2020 09:11:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726180AbgERFf0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 May 2020 01:35:26 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:52450 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726040AbgERFf0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 May 2020 01:35:26 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04I5ZO0G026728;
-        Mon, 18 May 2020 00:35:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589780124;
-        bh=qJh+u4HJfgz4gV+cdYH5RlY8bjmFeUAi5Vc8N+QeL0M=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Nm/hf7KeeUQgOcoBLtLRKij6nWAb/tj7XvO1rCRUuaKKIzilRs8Gmv/7mpY2axLCS
-         b741ceBeFmdcmu883fsL6Yl2BBhSzSb4RZqs5HXLrafDM7NcT8tZiwoVOiSNZnh9vA
-         aV+9AzjYI9sBDiczNBwZljByR7YraPsDAPUU9BMQ=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04I5ZNIB096509;
-        Mon, 18 May 2020 00:35:24 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 18
- May 2020 00:35:23 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 18 May 2020 00:35:23 -0500
-Received: from [10.24.69.198] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04I5ZH16065415;
-        Mon, 18 May 2020 00:35:19 -0500
-Subject: Re: AM3517 MUSB and CPPI
-To:     Adam Ford <aford173@gmail.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-CC:     Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>,
-        "Liu, Bin" <b-liu@ti.com>
-References: <CAHCN7x+PAsFBhKyUUdbW2_diZ9PX=-Keb=UtXbkUVv1Mp1eujQ@mail.gmail.com>
-From:   Sekhar Nori <nsekhar@ti.com>
-Message-ID: <fedbed5e-8365-85ab-9b81-2ec25ffa64b4@ti.com>
-Date:   Mon, 18 May 2020 11:05:17 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726872AbgERHLU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 May 2020 03:11:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45500 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726676AbgERHLU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 May 2020 03:11:20 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF2ACC061A0C
+        for <linux-omap@vger.kernel.org>; Mon, 18 May 2020 00:11:19 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id l19so8637638lje.10
+        for <linux-omap@vger.kernel.org>; Mon, 18 May 2020 00:11:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vabidfbMFc96pp/HPLlR3jZG3FkUzmqg2LVXthmSJ2M=;
+        b=NfE56AHSj2+vxlz/6yUuJTa3t1IV7WenHpdNYEo7f95qJmJJ7+A+i4PfeTiCIrPiWQ
+         uYSbSUg13aS4vfJaeyo4jtE6ZbrQ6PhWV2nsbkr+ogLPQ30ZHA1EqWD18NJP4hIn6G4P
+         RwcbxQBrPzrrKZXVShOpZv+GAEPFygjSUkP+dLcRxv3Z1CxpQsJhhxVSr+jjv/o4AlLh
+         wsC0H7Rt9LcPnL733Y458Bq+7fnwRXuqfAGhr/q0FVs1dT5VwHflTGdw7X1nGTXtt2Wz
+         7rvUt/oAzPVBSBYkjjaUrZqOR4LyEYN+kZXN7YN1C1gpvVgr4O2aFpkfXBlHUDzpyk8T
+         KNcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vabidfbMFc96pp/HPLlR3jZG3FkUzmqg2LVXthmSJ2M=;
+        b=RTYn2Wk2UX0qDGK1kg8bWzewbN5CIG7UQXJaPDhuDjYcLuJmem9ttnw0ns8iasazL7
+         HR0sUhLjiFmItdQ8g/k3m7lukruCj3HCOMHgd6SBtgnZONGMsBUjsFGUsnm6TlI6x+/D
+         hrpFrgozT/RsuzxKxHiZg+SPV9BvccDlTSbMFcQ0Ec79qGuKZI6ZXvQjp0fjjwioXZhC
+         5MSXdSo5FOoBYovUTypn+L4Gzx6JmeKLdB7S8YhJ8PvQQ0jr+26JEu9pb9HAkx9ehC4h
+         DY4ogyi6qRymLKJdr7ub6Liv+dXTO9vLx7Fl2GdTnCrVoeqBxYxPbQE/EHM0LBDX5+l5
+         Ze1Q==
+X-Gm-Message-State: AOAM53020248w0w4SDCE9TQXH104FZ7Ch+G2RK1hLRAAkChRlHuJ2q/c
+        cfOVcyqp+PAToVORWx4kaLxtPprQ45hOsFnF+Uzyjg==
+X-Google-Smtp-Source: ABdhPJw9hkh1xdtF0LAYyj2TI1WiZMc9QwdD8Q3PjEibbo2bM2I8adeqiZA3vX+G4exFdZvSrqFJyEySfS8r7g40xpc=
+X-Received: by 2002:a05:651c:154:: with SMTP id c20mr8865566ljd.99.1589785878126;
+ Mon, 18 May 2020 00:11:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAHCN7x+PAsFBhKyUUdbW2_diZ9PX=-Keb=UtXbkUVv1Mp1eujQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20200508165821.GA14555@x1>
+In-Reply-To: <20200508165821.GA14555@x1>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 18 May 2020 09:11:07 +0200
+Message-ID: <CACRpkdb+ZP6rfjGg6Ef9_wYvNf6qmSc7LZyYBVKA3XWCtxPfqQ@mail.gmail.com>
+Subject: Re: [PATCH] arm: dts: am33xx-bone-common: add gpio-line-names
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@beagleboard.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-+ Bin who maintains MUSB controller support
+On Fri, May 8, 2020 at 6:57 PM Drew Fustini <drew@beagleboard.org> wrote:
 
-On 5/18/20 8:17 AM, Adam Ford wrote:
-> From what I can tell, the MUSB controller on the AM3517 hasn't worked
-> in a very long time.
-> 
-> I have been going through the TRM for the AM3517, and I am convinced
-> the device tree for the OTG port is wrong, but I am struggling to fix
-> it.
-> 
-> From what I can see the USB OTG Port support the CPPI 4.1 DMA
-> controller, but the CPPI 4.1 only appears to support the
-> DA850/OMAP-L138 and the AM335x family.
-> 
-> It appears as if the AM35xx is a bit closer in behavior to the AM335x
-> than the L138, but I was hoping either Tony, Tero or someone from TI
-> might have a suggestion.
-> 
-> The compatible flag need to be something like "compatible =
-> "ti,am35xx-musb" and not omap3, because OMAP3 doesn't support the CPPI
-> 4.1 DMA controller and the AM3517 does.
-> 
-> Secondly, we need to update a couple of the tables in the cppi driver
-> to support the am3517, and lastly, the device tree node needs to
-> support the CPPI driver.
-> 
-> It looks like the DA850/L138 makes the CPPI driver a sub-node of the
-> OTG port, while the am335x has it as a separate node from the USB
-> controller.
-> 
-> From what I can tell on the AM3517, the CPPI DMA node should be a
-> sub-node of the OTG.
-> 
-> What I am struggling with now is the register offsets for controller,
-> scheduler and queue manager.
-> On both DA850 the 335x, there is an explicit table entry showing the
-> offset of DMAREVID, which tells the DMA revision ID.  I cannot find a
-> corresponding register for the AM3517, yet the AM3517
-> 
-> FWICT, the scheduler is offset 0x2000 with respect to the OTG
-> controller, and the Queue Manager register is at 0ffset 0x4000, both
-> with respect to the OTG base address.  Unfortunately, I am not finding
-> the offset for the CDMA controller itself.
-> 
-> Can someone tell me what it should be?  I am guessing it would be near
-> the 0x1000 offset, but it's a pure guess.
-> 
-> adam
-> 
+> Add gpio-line-names properties to the gpio controller nodes.
+> BeagleBone boards have P8 and P9 headers [0] which expose many the
+> AM3358 SoC balls to stacking expansion boards called "capes", or to
+> other external connections like jumper wires to a breadboard.
+>
+> Many of the P8/P9 header pins can muxed to a gpio line.  The
+> gpio-line-names describe which P8/P9 pin that line goes to and the
+> default mux for that P8/P9 pin.  Some lines are not routed to the
+> P8/P9 headers, but instead are dedicated to some functionality such as
+> status LEDs.  The line name will indicate this.  Some line names are
+> left empty as the corresponding AM3358 balls are not connected.
+>
+> The goal is to make it easier for a user viewing the output of gpioinfo
+> to determine which P8/P9 pin is connected to a line.  The output of
+> gpioinfo on a BeagleBone Black will now look like this:
+>
+> gpiochip0 - 32 lines:
+>         line   0:   "ethernet"       unused   input  active-high
+>         line   1:   "ethernet"       unused   input  active-high
 
+Why are the ethernet lines not tagged with respective signal name
+when right below the SPI lines are explicitly tagged with
+sclk, cs0 etc?
+
+Ethernet is usually RGMII and has signal names like
+tx_clk, tx_d0, tx_en etc.
+
+Also some lines seem to be tagged with the pin number
+like P9_22, P2_21 below, it seems a bit inconsistent
+to have much information on some pins and very sketchy
+information on some.
+
+>         line  18:        "usb"       unused   input  active-high
+>         line  19:       "hdmi"       unused   input  active-high
+
+Similar comments for these.
+
+Yours,
+Linus Walleij
