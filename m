@@ -2,126 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A391D7B26
-	for <lists+linux-omap@lfdr.de>; Mon, 18 May 2020 16:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7916F1D7C21
+	for <lists+linux-omap@lfdr.de>; Mon, 18 May 2020 17:00:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727975AbgEROYI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 May 2020 10:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56808 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727777AbgEROYI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 May 2020 10:24:08 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44604C05BD09
-        for <linux-omap@vger.kernel.org>; Mon, 18 May 2020 07:24:08 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id v5so8195265lfp.13
-        for <linux-omap@vger.kernel.org>; Mon, 18 May 2020 07:24:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=n1fBLRPhoaETkliq/A27B/1RTPiV9jHJlDqYtxK0Yw0=;
-        b=TNTTmdPizHT9crmFFEjj9L02FrgJrG8L0bUlQVGrvvAH963M6bvF/nW2rf3Gp1o/73
-         k7PcRx0EdXy2xcLiIdONyHqqbStU4qU7eGASiXa25+hFP5vC30q6miUEVyYkY5KgvC4k
-         /zGKHQZ/uiTrC2U46IjBHynwE2FG1JUVhlKwaCHi5/xLauPlJ/oD/8qqhhgew/Xrx2Q/
-         tzl1KqMCLYbSyeGRG1MkqowBeKyhVM/S47EHW7K9JlQyAGNH8j1DlvsN4FL9vrTV499o
-         uJKlXDnE8hUNwBcGyAR0TgjgVM9GFlojBk/WbVgFVR5vEgAKK88vNPI5KG9TIpKxBixk
-         99tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=n1fBLRPhoaETkliq/A27B/1RTPiV9jHJlDqYtxK0Yw0=;
-        b=TOQqrqc+FwS4A3kTk6Bn5RPx2+p3U2I3ku8vmLfwhSvd2lk33Ct+rP+cThuCZ8innT
-         T/W/vh7XPs3RG6r0HWUBPY4QIuXz49MzIvyNxVkokFwyY438vxQSppUA5HRhWTfLOikF
-         zK3ZNSAEG7nYIZM17b+Nc5Hp0b34Slnff6CU9JyK9NoSDVobX4vWo1g8c80r7SLz+boe
-         V+GAMdmo/LFu9wCzD52V8lZWFPGm525Oay2dszwgImx3nut++aiBZ+oXkLNuzEOE3ahi
-         b9ADXgfifLAxaH7i3PnDrxPc+uqtJ5pseA4pt3pLlG8lNGNDXnjtxH4yxPl7uVNGonK/
-         p0tQ==
-X-Gm-Message-State: AOAM5316mR0x7Ewg/N51DENTo0he4IxKlH/NcrcOTW7bgcGM1j4rJoaa
-        Jo5fqSsK5TDJEsu41463IiabfA==
-X-Google-Smtp-Source: ABdhPJz1oUVBZQTXPnfWBabJX27Y9GJSHH/mmmmILTNHRuqsL7eQMEbJSFWn9U8RcWnQA/QURPYc0A==
-X-Received: by 2002:a19:4854:: with SMTP id v81mr7521098lfa.189.1589811846308;
-        Mon, 18 May 2020 07:24:06 -0700 (PDT)
-Received: from x1 (i59F66838.versanet.de. [89.246.104.56])
-        by smtp.gmail.com with ESMTPSA id 3sm2581016lfq.55.2020.05.18.07.24.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2020 07:24:05 -0700 (PDT)
-Date:   Mon, 18 May 2020 16:24:02 +0200
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>
-Subject: Re: [PATCH] arm: dts: am33xx-bone-common: add gpio-line-names
-Message-ID: <20200518142402.GB916914@x1>
-References: <20200508165821.GA14555@x1>
- <CACRpkdb+ZP6rfjGg6Ef9_wYvNf6qmSc7LZyYBVKA3XWCtxPfqQ@mail.gmail.com>
- <875zcty7tt.fsf@kernel.org>
- <CACRpkdZnnRXwv0-71t93HX42jL-muty4yJx5gW6_P3yOM-sGAg@mail.gmail.com>
- <87zha5whf4.fsf@kernel.org>
+        id S1728055AbgERPAm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 May 2020 11:00:42 -0400
+Received: from mga01.intel.com ([192.55.52.88]:6466 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726958AbgERPAm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 18 May 2020 11:00:42 -0400
+IronPort-SDR: gETPJuecheRBTFX7C/6OQSC1Mm01cQXiAXGTuxy1Vt9SN4saYjmvijRGMiVaji4T0zTu7vVZnO
+ jsDBJTM2I0aw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2020 08:00:33 -0700
+IronPort-SDR: EdpOmiPmdb8bUA7ozCaf7HQjA8VwSaNauqhI8mn5jk2F7S+yjuFVh//4jhims+nT5xZn9LyuAh
+ PG/kI/sIQ6dA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,407,1583222400"; 
+   d="scan'208";a="288602066"
+Received: from pl-dbox.sh.intel.com (HELO intel.com) ([10.239.159.39])
+  by fmsmga004.fm.intel.com with ESMTP; 18 May 2020 08:00:31 -0700
+Date:   Mon, 18 May 2020 22:59:11 +0800
+From:   Philip Li <philip.li@intel.com>
+To:     Andrey Konovalov <andreyknvl@google.com>
+Cc:     kbuild test robot <lkp@intel.com>, kbuild-all@lists.01.org,
+        USB list <linux-usb@vger.kernel.org>,
+        linux-omap@vger.kernel.org, Felipe Balbi <balbi@kernel.org>
+Subject: Re: [kbuild-all] Re: [balbi-usb:testing/fixes 2/8] WARNING:
+ simple_strtoul is obsolete, use kstrtoul instead
+Message-ID: <20200518145911.GA14746@intel.com>
+References: <20200518033319.GC24805@intel.com>
+ <CAAeHK+wLp6h9Ew5ZHgk7u3qQ7gN32ZPqdWUcYcFNYfzFw5EvVQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87zha5whf4.fsf@kernel.org>
+In-Reply-To: <CAAeHK+wLp6h9Ew5ZHgk7u3qQ7gN32ZPqdWUcYcFNYfzFw5EvVQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, May 18, 2020 at 03:34:23PM +0300, Felipe Balbi wrote:
-> Linus Walleij <linus.walleij@linaro.org> writes:
-> 
-> > On Mon, May 18, 2020 at 10:18 AM Felipe Balbi <balbi@kernel.org> wrote:
-> >> Linus Walleij <linus.walleij@linaro.org> writes:
-> >> >> gpiochip0 - 32 lines:
-> >> >>         line   0:   "ethernet"       unused   input  active-high
-> >> >>         line   1:   "ethernet"       unused   input  active-high
-> >> >
-> >> > Why are the ethernet lines not tagged with respective signal name
-> >> > when right below the SPI lines are explicitly tagged with
-> >> > sclk, cs0 etc?
-> >> >
-> >> > Ethernet is usually RGMII and has signal names like
-> >> > tx_clk, tx_d0, tx_en etc.
-> >> >
-> >> > Also some lines seem to be tagged with the pin number
-> >> > like P9_22, P2_21 below, it seems a bit inconsistent
-> >> > to have much information on some pins and very sketchy
-> >> > information on some.
-> >>
-> >> the pin names match the beagle bone documentation and would help users
-> >> figure out which pins on the expansion headers match to a gpio signal.
-
-Thank you for pointing this out.  That is my goal with the line names.
-
+On Mon, May 18, 2020 at 04:16:25PM +0200, Andrey Konovalov wrote:
+> On Mon, May 18, 2020 at 5:34 AM kbuild test robot <lkp@intel.com> wrote:
 > >
-> > OK if it is how it looks in the documentation I agree that is what
-> > users need, maybe the documentation is confusing but there is not
-> > much to do about that.
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git testing/fixes
+> > head:   172b14b48ca10b280482b164506892ea09edb946
+> > commit: 97df5e5758f7d1dd0ca97e3210696818fc45bdb3 [2/8] usb: raw-gadget: fix gadget endpoint selection
+> >
+> > If you fix the issue, kindly add following tag as appropriate
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> >
+> > scripts/checkpatch.pl 0001-usb-raw-gadget-fix-gadget-endpoint-selection.patch
+> > # many are suggestions rather than must-fix
+> >
+> > WARNING: simple_strtoul is obsolete, use kstrtoul instead
+> > #123: drivers/usb/gadget/legacy/raw_gadget.c:261:
+> > +               return simple_strtoul(&name[2], NULL, 10);
 > 
-> the board has two expansion headers, P1 and P2:
+> The use of simple_strtoul() is intended here and falls under [1]. I'm
+> not sure if we need to explain this to kbuild test robot somehow.
+thanks for the info, we will be careful for this WARNING in future. Sorry
+for the wrong report.
+
 > 
-> https://github.com/beagleboard/pocketbeagle/wiki/System-Reference-Manual#531_Expansion_Headers
-> 
-> Pins are always the pin number on the header, hence P2_21 and P1_10 and
-> so on.
-
-Just to clarify, the patch was for the BeagleBone {White,Green,Black}
-which have P8 and P9 headers.
-
-The PocketBeagle has lower pin count headers labeled P1 and P2.  I do 
-plan to submit a patch for am335x-pocketbeagle.dts with the respective
-line names, but I wanted to first integrate feedback regarding P8/P9 on
-the bone.
-
-thanks,
-drew
+> [1] https://elixir.bootlin.com/linux/v5.7-rc5/source/include/linux/kernel.h#L459
+> _______________________________________________
+> kbuild-all mailing list -- kbuild-all@lists.01.org
+> To unsubscribe send an email to kbuild-all-leave@lists.01.org
