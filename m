@@ -2,67 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA3071D9C98
-	for <lists+linux-omap@lfdr.de>; Tue, 19 May 2020 18:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 004371D9E25
+	for <lists+linux-omap@lfdr.de>; Tue, 19 May 2020 19:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729194AbgESQ2F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 May 2020 12:28:05 -0400
-Received: from muru.com ([72.249.23.125]:55086 "EHLO muru.com"
+        id S1729478AbgESRqA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 May 2020 13:46:00 -0400
+Received: from muru.com ([72.249.23.125]:55104 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729118AbgESQ2F (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 19 May 2020 12:28:05 -0400
+        id S1726059AbgESRp7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 19 May 2020 13:45:59 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 12A9380FA;
-        Tue, 19 May 2020 16:28:55 +0000 (UTC)
-Date:   Tue, 19 May 2020 09:28:02 -0700
+        by muru.com (Postfix) with ESMTPS id 4D92980FA;
+        Tue, 19 May 2020 17:46:48 +0000 (UTC)
+Date:   Tue, 19 May 2020 10:45:55 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kbuild test robot <lkp@intel.com>
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Fix warning for set but
- not used
-Message-ID: <20200519162802.GW37466@atomide.com>
-References: <20200519155157.12804-1-tony@atomide.com>
- <2f67a110-e52f-94fc-fae2-c3171a67bb8a@linaro.org>
- <20200519160630.GV37466@atomide.com>
- <552325fe-e759-6b22-ceee-2d0a4b3b4b2f@linaro.org>
+To:     Tero Kristo <t-kristo@ti.com>
+Cc:     ssantosh@kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        s-anna@ti.com
+Subject: Re: [PATCH 1/1] soc: ti: omap-prm: use atomic iopoll instead of
+ sleeping one
+Message-ID: <20200519174555.GX37466@atomide.com>
+References: <20200514073718.17690-1-t-kristo@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <552325fe-e759-6b22-ceee-2d0a4b3b4b2f@linaro.org>
+In-Reply-To: <20200514073718.17690-1-t-kristo@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Daniel Lezcano <daniel.lezcano@linaro.org> [200519 16:27]:
-> On 19/05/2020 18:06, Tony Lindgren wrote:
-> > * Daniel Lezcano <daniel.lezcano@linaro.org> [200519 16:01]:
-> >> On 19/05/2020 17:51, Tony Lindgren wrote:
-> >>> We can get a warning for dmtimer_clocksource_init() with 'pa' set but
-> >>> not used. This was used in the earlier revisions of the code but no
-> >>> longer needed, so let's remove the unused pa and of_translate_address().
-> >>> Let's also do it for dmtimer_clockevent_init() that has a similar issue.
-> >>>
-> >>> Reported-by: kbuild test robot <lkp@intel.com>
-> >>> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> >>> ---
-> >>
-> >> Applied, thanks
-> > 
-> > Thanks! Do you already have some immutable commit I can use
-> > as the base for the SoC and dts changes? Or do you want to
-> > wait a bit for that?
+* Tero Kristo <t-kristo@ti.com> [200514 00:38]:
+> The reset handling APIs for omap-prm can be invoked PM runtime which
+> runs in atomic context. For this to work properly, switch to atomic
+> iopoll version instead of the current which can sleep. Otherwise,
+> this throws a "BUG: scheduling while atomic" warning. Issue is seen
+> rather easily when CONFIG_PREEMPT is enabled.
 > 
-> Hi Tony,
-> 
-> https://git.linaro.org/people/daniel.lezcano/linux.git/log/?h=timers/drivers/timer-ti
-> 
-> it contains the two patches + the warning fix
+> Signed-off-by: Tero Kristo <t-kristo@ti.com>
 
-OK thanks a lot! Will use that as the base then.
+Santosh do you want me to pick this for fixes?
 
 Regards,
 
 Tony
+
+> ---
+>  drivers/soc/ti/omap_prm.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
+> index 96c6f777519c..c9b3f9ebf0bb 100644
+> --- a/drivers/soc/ti/omap_prm.c
+> +++ b/drivers/soc/ti/omap_prm.c
+> @@ -256,10 +256,10 @@ static int omap_reset_deassert(struct reset_controller_dev *rcdev,
+>  		goto exit;
+>  
+>  	/* wait for the status to be set */
+> -	ret = readl_relaxed_poll_timeout(reset->prm->base +
+> -					 reset->prm->data->rstst,
+> -					 v, v & BIT(st_bit), 1,
+> -					 OMAP_RESET_MAX_WAIT);
+> +	ret = readl_relaxed_poll_timeout_atomic(reset->prm->base +
+> +						 reset->prm->data->rstst,
+> +						 v, v & BIT(st_bit), 1,
+> +						 OMAP_RESET_MAX_WAIT);
+>  	if (ret)
+>  		pr_err("%s: timedout waiting for %s:%lu\n", __func__,
+>  		       reset->prm->data->name, id);
+> -- 
+> 2.17.1
+> 
+> --
+> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> 
