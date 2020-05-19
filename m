@@ -2,76 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FF801D9BED
-	for <lists+linux-omap@lfdr.de>; Tue, 19 May 2020 18:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AA501D9BF3
+	for <lists+linux-omap@lfdr.de>; Tue, 19 May 2020 18:06:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729185AbgESQFB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 May 2020 12:05:01 -0400
-Received: from muru.com ([72.249.23.125]:55060 "EHLO muru.com"
+        id S1729185AbgESQGd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 May 2020 12:06:33 -0400
+Received: from muru.com ([72.249.23.125]:55072 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729055AbgESQFB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 19 May 2020 12:05:01 -0400
+        id S1728953AbgESQGc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 19 May 2020 12:06:32 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 07EAD80FA;
-        Tue, 19 May 2020 16:05:50 +0000 (UTC)
-Date:   Tue, 19 May 2020 09:04:58 -0700
+        by muru.com (Postfix) with ESMTPS id 6559B80FA;
+        Tue, 19 May 2020 16:07:22 +0000 (UTC)
+Date:   Tue, 19 May 2020 09:06:30 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Faiz Abbas <faiz_abbas@ti.com>, Keerthy <j-keerthy@ti.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        bcousson@baylibre.com
-Subject: Re: [PATCH v2] arm: dts: Move am33xx and am43xx mmc nodes to
- sdhci-omap driver
-Message-ID: <20200519160458.GU37466@atomide.com>
-References: <20200512203804.9340-1-faiz_abbas@ti.com>
- <20200513162327.GM37466@atomide.com>
- <94025425-95e2-e53d-cfac-a1e73e6c011a@ti.com>
- <53c815db-dd7d-e6e1-f81a-cf05ef340c71@ti.com>
- <20200519154807.GT37466@atomide.com>
- <e37ed4be-aed5-8051-a9fd-c0704d947d75@ti.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        kbuild test robot <lkp@intel.com>
+Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Fix warning for set but
+ not used
+Message-ID: <20200519160630.GV37466@atomide.com>
+References: <20200519155157.12804-1-tony@atomide.com>
+ <2f67a110-e52f-94fc-fae2-c3171a67bb8a@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e37ed4be-aed5-8051-a9fd-c0704d947d75@ti.com>
+In-Reply-To: <2f67a110-e52f-94fc-fae2-c3171a67bb8a@linaro.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tomi Valkeinen <tomi.valkeinen@ti.com> [200519 15:55]:
-> (Dropping DT from cc)
-> 
-> On 19/05/2020 18:48, Tony Lindgren wrote:
-> 
-> > > > Suspend/resume on am43xx-gpevm is broken right now in mainline and the regression looks
-> > > > like it is caused by the display subsystem. I have reported this to Tomi and
-> > > > its being investigated.
-> > > > 
-> > > > Meanwhile I have tested this patch with display configs disabled and Keerthy's
-> > > > suspend/resume tests pass on both am3 and am4.
+* Daniel Lezcano <daniel.lezcano@linaro.org> [200519 16:01]:
+> On 19/05/2020 17:51, Tony Lindgren wrote:
+> > We can get a warning for dmtimer_clocksource_init() with 'pa' set but
+> > not used. This was used in the earlier revisions of the code but no
+> > longer needed, so let's remove the unused pa and of_translate_address().
+> > Let's also do it for dmtimer_clockevent_init() that has a similar issue.
 > > 
-> > OK great thanks for checking it. Do you have the display subsystem
-> > related commit that broke PM? I'm wondering if my recent DSS platform
-> > data removal changes might have caused the regression.
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > ---
 > 
-> I spent a bit time looking at this, but unfortunately I wasn't even able to
-> resume my AM4 evm from suspend. I tried with rtcwake and with plain console
-> (with no_console_suspend). I did not have DSS loaded.
+> Applied, thanks
 
-My test-bbb-suspend script seems to have:
-
-sudo modprobe wkup_m3_ipc
-sudo modprobe pm33xx
-sudo modprobe rtc-omap
-rtcwake -m mem -s 5
-
-I think the same should work for am437x. But some boards do not support
-deep sleep like am437x-idk.
-
-> Anyone have quick hints on how to debug why resume doesn't seem to happen?
-
-You might get some info with no_console_suspend, but that might also
-cause other issues.
+Thanks! Do you already have some immutable commit I can use
+as the base for the SoC and dts changes? Or do you want to
+wait a bit for that?
 
 Regards,
 
