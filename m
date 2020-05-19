@@ -2,91 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87A231D9BDD
-	for <lists+linux-omap@lfdr.de>; Tue, 19 May 2020 18:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FF801D9BED
+	for <lists+linux-omap@lfdr.de>; Tue, 19 May 2020 18:05:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729160AbgESQAo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 May 2020 12:00:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729055AbgESQAo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 May 2020 12:00:44 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA18CC08C5C1
-        for <linux-omap@vger.kernel.org>; Tue, 19 May 2020 09:00:43 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id y3so19929wrt.1
-        for <linux-omap@vger.kernel.org>; Tue, 19 May 2020 09:00:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZgDKc3HEYEnyhOTY+wQvny/RRZ2rvIz9Ed6CzUywMNk=;
-        b=Eq23zFrKqsJEF7WMk37RL9HDAg5eeAfNuJoLllOPXJZq5k3oneQ1YtMrHYsi4z39AL
-         o4cJg/JHwMEUVYwWSoezsqcaXsMxGYv+nDOdlVBMgUI2MkOroGxR1QrYvy6VNMFqSnkM
-         Xn+a2BnBAYcDYuYI8d1EdoYk8lxCoqkVhukHJSji8Q++Ywzqdt2eHIFg9K8GqFQ2R9Dg
-         NnRYperS/dEp68p/jHcIdzoGjMVcCbW9I96vR/+S5CKl9kqL74rUj6nLWaAe/XWkILlv
-         ngsJFGKW4rS0GS9ODLBTp7vdAJQGkQeque5riA0PgYITWqi2BRO847/Y1hNCfxaC5Cts
-         UzJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZgDKc3HEYEnyhOTY+wQvny/RRZ2rvIz9Ed6CzUywMNk=;
-        b=Sh+3IMhbwuwMCkdKknQWk78kAep4j3h620oJy+vqLGWTQ3Rp69BhgAtK55fE5l3UDe
-         1zVxcT9p4b34RnArswnjIOpaHqMPPB97upEwBRS5sAOOZhaf/i1Ofvr4SqybLn+Y8y+c
-         AKE0AIMs0X8afJQ+UNdGil4WeevxB+5n+fUu5lwTEZOk0YjgQ89J1Tor2rsddfVghqpB
-         qLRBj3JcdRQWE9cm6TP0uGGn6jKQgHsmhZZ5Al00UgGrAbBpsUk710pFi8wcnATFXYgZ
-         w0zll8+2oA7IrcesYRYs8tYumbCURTmBuJDEEWnIueUYVW3f2EcZDwNjtZf5gsi0tsnU
-         H+ag==
-X-Gm-Message-State: AOAM530GnmjLZGKsif6rmSjuV3HuTolOIM+u/LVzuuCekPn3+6niTMc9
-        K+L+WSwxq6YekKGssZBjWmg1rQ==
-X-Google-Smtp-Source: ABdhPJxGVpesohvaaRIa7+vBgDYIMXNEEmp86gTxM/Sz51g4e2Mut4SoxAPLfwG5D/qKdaXzK/rZ9g==
-X-Received: by 2002:adf:e951:: with SMTP id m17mr26966121wrn.352.1589904042372;
-        Tue, 19 May 2020 09:00:42 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:e504:4297:986:ffb0? ([2a01:e34:ed2f:f020:e504:4297:986:ffb0])
-        by smtp.googlemail.com with ESMTPSA id c17sm21759979wrn.59.2020.05.19.09.00.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2020 09:00:41 -0700 (PDT)
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Fix warning for set but
- not used
-To:     Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kbuild test robot <lkp@intel.com>
-References: <20200519155157.12804-1-tony@atomide.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <2f67a110-e52f-94fc-fae2-c3171a67bb8a@linaro.org>
-Date:   Tue, 19 May 2020 18:00:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1729185AbgESQFB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 May 2020 12:05:01 -0400
+Received: from muru.com ([72.249.23.125]:55060 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729055AbgESQFB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 19 May 2020 12:05:01 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 07EAD80FA;
+        Tue, 19 May 2020 16:05:50 +0000 (UTC)
+Date:   Tue, 19 May 2020 09:04:58 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Faiz Abbas <faiz_abbas@ti.com>, Keerthy <j-keerthy@ti.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        bcousson@baylibre.com
+Subject: Re: [PATCH v2] arm: dts: Move am33xx and am43xx mmc nodes to
+ sdhci-omap driver
+Message-ID: <20200519160458.GU37466@atomide.com>
+References: <20200512203804.9340-1-faiz_abbas@ti.com>
+ <20200513162327.GM37466@atomide.com>
+ <94025425-95e2-e53d-cfac-a1e73e6c011a@ti.com>
+ <53c815db-dd7d-e6e1-f81a-cf05ef340c71@ti.com>
+ <20200519154807.GT37466@atomide.com>
+ <e37ed4be-aed5-8051-a9fd-c0704d947d75@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20200519155157.12804-1-tony@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e37ed4be-aed5-8051-a9fd-c0704d947d75@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 19/05/2020 17:51, Tony Lindgren wrote:
-> We can get a warning for dmtimer_clocksource_init() with 'pa' set but
-> not used. This was used in the earlier revisions of the code but no
-> longer needed, so let's remove the unused pa and of_translate_address().
-> Let's also do it for dmtimer_clockevent_init() that has a similar issue.
+* Tomi Valkeinen <tomi.valkeinen@ti.com> [200519 15:55]:
+> (Dropping DT from cc)
 > 
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
+> On 19/05/2020 18:48, Tony Lindgren wrote:
+> 
+> > > > Suspend/resume on am43xx-gpevm is broken right now in mainline and the regression looks
+> > > > like it is caused by the display subsystem. I have reported this to Tomi and
+> > > > its being investigated.
+> > > > 
+> > > > Meanwhile I have tested this patch with display configs disabled and Keerthy's
+> > > > suspend/resume tests pass on both am3 and am4.
+> > 
+> > OK great thanks for checking it. Do you have the display subsystem
+> > related commit that broke PM? I'm wondering if my recent DSS platform
+> > data removal changes might have caused the regression.
+> 
+> I spent a bit time looking at this, but unfortunately I wasn't even able to
+> resume my AM4 evm from suspend. I tried with rtcwake and with plain console
+> (with no_console_suspend). I did not have DSS loaded.
 
-Applied, thanks
+My test-bbb-suspend script seems to have:
 
+sudo modprobe wkup_m3_ipc
+sudo modprobe pm33xx
+sudo modprobe rtc-omap
+rtcwake -m mem -s 5
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+I think the same should work for am437x. But some boards do not support
+deep sleep like am437x-idk.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+> Anyone have quick hints on how to debug why resume doesn't seem to happen?
+
+You might get some info with no_console_suspend, but that might also
+cause other issues.
+
+Regards,
+
+Tony
