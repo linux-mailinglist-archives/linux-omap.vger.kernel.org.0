@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A986D1DC115
+	by mail.lfdr.de (Postfix) with ESMTP id 3CBD61DC114
 	for <lists+linux-omap@lfdr.de>; Wed, 20 May 2020 23:14:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728475AbgETVNz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 20 May 2020 17:13:55 -0400
-Received: from muru.com ([72.249.23.125]:55332 "EHLO muru.com"
+        id S1728486AbgETVN5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 20 May 2020 17:13:57 -0400
+Received: from muru.com ([72.249.23.125]:55340 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728472AbgETVNy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 20 May 2020 17:13:54 -0400
+        id S1728439AbgETVN4 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 20 May 2020 17:13:56 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id B57AD81D8;
-        Wed, 20 May 2020 21:14:41 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id B6EBD81BF;
+        Wed, 20 May 2020 21:14:43 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     "Andrew F . Davis" <afd@ti.com>,
@@ -21,9 +21,9 @@ Cc:     "Andrew F . Davis" <afd@ti.com>,
         Suman Anna <s-anna@ti.com>, Tero Kristo <t-kristo@ti.com>,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
-Subject: [PATCH 5/6] ARM: dts: Configure am3 and am4 sgx for genpd and drop platform data
-Date:   Wed, 20 May 2020 14:13:33 -0700
-Message-Id: <20200520211334.61814-6-tony@atomide.com>
+Subject: [PATCH 6/6] ARM: dts: Configure omap4 and 5 l4_abe for genpd and drop platform data
+Date:   Wed, 20 May 2020 14:13:34 -0700
+Message-Id: <20200520211334.61814-7-tony@atomide.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200520211334.61814-1-tony@atomide.com>
 References: <20200520211334.61814-1-tony@atomide.com>
@@ -34,190 +34,210 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can power off the SGX power domain when not in use when we configure
-it for genpd. And with that change, we can now also drop the old unused
-legacy platform data.
+We can power off l4_abe domain when not in use when we configure it for
+genpd. And with that change, we can now also drop the old unused legacy
+platform data.
+
+Note that we also need to now use "simple-pm-bus" instead of "simple-bus"
+for PM runtime to get enabled for the bus.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/am33xx.dtsi                 |  2 +
- arch/arm/boot/dts/am4372.dtsi                 |  2 +
- .../omap_hwmod_33xx_43xx_interconnect_data.c  | 16 --------
- .../omap_hwmod_33xx_43xx_ipblock_data.c       | 40 -------------------
- arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |  2 -
- arch/arm/mach-omap2/omap_hwmod_43xx_data.c    |  2 -
- 6 files changed, 4 insertions(+), 60 deletions(-)
+ arch/arm/boot/dts/omap4-l4-abe.dtsi        |  6 ++--
+ arch/arm/boot/dts/omap4.dtsi               |  6 ++++
+ arch/arm/boot/dts/omap5-l4-abe.dtsi        |  6 ++--
+ arch/arm/boot/dts/omap5.dtsi               |  6 ++++
+ arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 33 ----------------------
+ arch/arm/mach-omap2/omap_hwmod_54xx_data.c | 31 --------------------
+ 6 files changed, 20 insertions(+), 68 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -577,6 +577,7 @@ target-module@56000000 {
- 					<SYSC_IDLE_SMART>;
- 			clocks = <&gfx_l3_clkctrl AM3_GFX_L3_GFX_CLKCTRL 0>;
- 			clock-names = "fck";
-+			power-domains = <&prm_gfx>;
- 			resets = <&prm_gfx 0>;
- 			reset-names = "rstctrl";
- 			#address-cells = <1>;
-@@ -616,6 +617,7 @@ prm_device: prm@f00 {
- 	prm_gfx: prm@1100 {
- 		compatible = "ti,am3-prm-inst", "ti,omap-prm-inst";
- 		reg = <0x1100 0x100>;
-+		#power-domain-cells = <0>;
- 		#reset-cells = <1>;
- 	};
- };
-diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
---- a/arch/arm/boot/dts/am4372.dtsi
-+++ b/arch/arm/boot/dts/am4372.dtsi
-@@ -516,6 +516,7 @@ target-module@56000000 {
- 					<SYSC_IDLE_SMART>;
- 			clocks = <&gfx_l3_clkctrl AM4_GFX_L3_GFX_CLKCTRL 0>;
- 			clock-names = "fck";
-+			power-domains = <&prm_gfx>;
- 			resets = <&prm_gfx 0>;
- 			reset-names = "rstctrl";
- 			#address-cells = <1>;
-@@ -532,6 +533,7 @@ &prcm {
- 	prm_gfx: prm@400 {
- 		compatible = "ti,am4-prm-inst", "ti,omap-prm-inst";
- 		reg = <0x400 0x100>;
-+		#power-domain-cells = <0>;
+diff --git a/arch/arm/boot/dts/omap4-l4-abe.dtsi b/arch/arm/boot/dts/omap4-l4-abe.dtsi
+--- a/arch/arm/boot/dts/omap4-l4-abe.dtsi
++++ b/arch/arm/boot/dts/omap4-l4-abe.dtsi
+@@ -1,14 +1,16 @@
+ &l4_abe {						/* 0x40100000 */
+-	compatible = "ti,omap4-l4-abe", "simple-bus";
++	compatible = "ti,omap4-l4-abe", "simple-pm-bus";
+ 	reg = <0x40100000 0x400>,
+ 	      <0x40100400 0x400>;
+ 	reg-names = "la", "ap";
++	power-domains = <&prm_abe>;
++	/* OMAP4_L4_ABE_CLKCTRL is read-only */
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+ 	ranges = <0x00000000 0x40100000 0x100000>,	/* segment 0 */
+ 		 <0x49000000 0x49000000 0x100000>;
+ 	segment@0 {					/* 0x40100000 */
+-		compatible = "simple-bus";
++		compatible = "simple-pm-bus";
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		ranges =
+diff --git a/arch/arm/boot/dts/omap4.dtsi b/arch/arm/boot/dts/omap4.dtsi
+--- a/arch/arm/boot/dts/omap4.dtsi
++++ b/arch/arm/boot/dts/omap4.dtsi
+@@ -637,6 +637,12 @@ prm_tesla: prm@400 {
  		#reset-cells = <1>;
  	};
  
-diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
-@@ -74,22 +74,6 @@ struct omap_hwmod_ocp_if am33xx_l3_s__l3_main = {
++	prm_abe: prm@500 {
++		compatible = "ti,omap4-prm-inst", "ti,omap-prm-inst";
++		reg = <0x500 0x100>;
++		#power-domain-cells = <0>;
++	};
++
+ 	prm_core: prm@700 {
+ 		compatible = "ti,omap4-prm-inst", "ti,omap-prm-inst";
+ 		reg = <0x700 0x100>;
+diff --git a/arch/arm/boot/dts/omap5-l4-abe.dtsi b/arch/arm/boot/dts/omap5-l4-abe.dtsi
+--- a/arch/arm/boot/dts/omap5-l4-abe.dtsi
++++ b/arch/arm/boot/dts/omap5-l4-abe.dtsi
+@@ -1,14 +1,16 @@
+ &l4_abe {						/* 0x40100000 */
+-	compatible = "ti,omap5-l4-abe", "simple-bus";
++	compatible = "ti,omap5-l4-abe", "simple-pm-bus";
+ 	reg = <0x40100000 0x400>,
+ 	      <0x40100400 0x400>;
+ 	reg-names = "la", "ap";
++	power-domains = <&prm_abe>;
++	/* OMAP5_L4_ABE_CLKCTRL is read-only */
+ 	#address-cells = <1>;
+ 	#size-cells = <1>;
+ 	ranges = <0x00000000 0x40100000 0x100000>,	/* segment 0 */
+ 		 <0x49000000 0x49000000 0x100000>;
+ 	segment@0 {					/* 0x40100000 */
+-		compatible = "simple-bus";
++		compatible = "simple-pm-bus";
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		ranges =
+diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
+--- a/arch/arm/boot/dts/omap5.dtsi
++++ b/arch/arm/boot/dts/omap5.dtsi
+@@ -563,6 +563,12 @@ prm_dsp: prm@400 {
+ 		#reset-cells = <1>;
+ 	};
+ 
++	prm_abe: prm@500 {
++		compatible = "ti,omap5-prm-inst", "ti,omap-prm-inst";
++		reg = <0x500 0x100>;
++		#power-domain-cells = <0>;
++	};
++
+ 	prm_core: prm@700 {
+ 		compatible = "ti,omap5-prm-inst", "ti,omap-prm-inst";
+ 		reg = <0x700 0x100>;
+diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+@@ -124,21 +124,6 @@ static struct omap_hwmod_class omap44xx_l4_hwmod_class = {
+ 	.name	= "l4",
+ };
+ 
+-/* l4_abe */
+-static struct omap_hwmod omap44xx_l4_abe_hwmod = {
+-	.name		= "l4_abe",
+-	.class		= &omap44xx_l4_hwmod_class,
+-	.clkdm_name	= "abe_clkdm",
+-	.prcm = {
+-		.omap4 = {
+-			.clkctrl_offs = OMAP4_CM1_ABE_L4ABE_CLKCTRL_OFFSET,
+-			.context_offs = OMAP4_RM_ABE_AESS_CONTEXT_OFFSET,
+-			.lostcontext_mask = OMAP4430_LOSTMEM_AESSMEM_MASK,
+-			.flags	      = HWMOD_OMAP4_NO_CONTEXT_LOSS_BIT,
+-		},
+-	},
+-};
+-
+ /* l4_cfg */
+ static struct omap_hwmod omap44xx_l4_cfg_hwmod = {
+ 	.name		= "l4_cfg",
+@@ -1007,22 +992,6 @@ static struct omap_hwmod_ocp_if omap44xx_l4_cfg__l3_main_3 = {
  	.user		= OCP_USER_MPU | OCP_USER_SDMA,
  };
  
--/* gfx -> l3 main */
--struct omap_hwmod_ocp_if am33xx_gfx__l3_main = {
--	.master		= &am33xx_gfx_hwmod,
--	.slave		= &am33xx_l3_main_hwmod,
--	.clk		= "dpll_core_m4_ck",
+-/* l3_main_1 -> l4_abe */
+-static struct omap_hwmod_ocp_if omap44xx_l3_main_1__l4_abe = {
+-	.master		= &omap44xx_l3_main_1_hwmod,
+-	.slave		= &omap44xx_l4_abe_hwmod,
+-	.clk		= "l3_div_ck",
 -	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 -};
 -
--/* l3 main -> gfx */
--struct omap_hwmod_ocp_if am33xx_l3_main__gfx = {
--	.master		= &am33xx_l3_main_hwmod,
--	.slave		= &am33xx_gfx_hwmod,
--	.clk		= "dpll_core_m4_ck",
+-/* mpu -> l4_abe */
+-static struct omap_hwmod_ocp_if omap44xx_mpu__l4_abe = {
+-	.master		= &omap44xx_mpu_hwmod,
+-	.slave		= &omap44xx_l4_abe_hwmod,
+-	.clk		= "ocp_abe_iclk",
 -	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 -};
 -
- /* l4 wkup -> rtc */
- struct omap_hwmod_ocp_if am33xx_l4_wkup__rtc = {
- 	.master		= &am33xx_l4_wkup_hwmod,
-diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
-@@ -133,30 +133,6 @@ struct omap_hwmod_class am33xx_wkup_m3_hwmod_class = {
- 	.name		= "wkup_m3",
+ /* l3_main_1 -> l4_cfg */
+ static struct omap_hwmod_ocp_if omap44xx_l3_main_1__l4_cfg = {
+ 	.master		= &omap44xx_l3_main_1_hwmod,
+@@ -1266,8 +1235,6 @@ static struct omap_hwmod_ocp_if *omap44xx_hwmod_ocp_ifs[] __initdata = {
+ 	&omap44xx_l3_main_1__l3_main_3,
+ 	&omap44xx_l3_main_2__l3_main_3,
+ 	&omap44xx_l4_cfg__l3_main_3,
+-	&omap44xx_l3_main_1__l4_abe,
+-	&omap44xx_mpu__l4_abe,
+ 	&omap44xx_l3_main_1__l4_cfg,
+ 	&omap44xx_l3_main_2__l4_per,
+ 	&omap44xx_l4_cfg__l4_wkup,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c b/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
+@@ -121,19 +121,6 @@ static struct omap_hwmod_class omap54xx_l4_hwmod_class = {
+ 	.name	= "l4",
  };
  
--/* gfx */
--/* Pseudo hwmod for reset control purpose only */
--static struct omap_hwmod_class am33xx_gfx_hwmod_class = {
--	.name	= "gfx",
--};
--
--static struct omap_hwmod_rst_info am33xx_gfx_resets[] = {
--	{ .name = "gfx", .rst_shift = 0, .st_shift = 0},
--};
--
--struct omap_hwmod am33xx_gfx_hwmod = {
--	.name		= "gfx",
--	.class		= &am33xx_gfx_hwmod_class,
--	.clkdm_name	= "gfx_l3_clkdm",
--	.main_clk	= "gfx_fck_div_ck",
--	.prcm		= {
--		.omap4	= {
--			.modulemode	= MODULEMODE_SWCTRL,
+-/* l4_abe */
+-static struct omap_hwmod omap54xx_l4_abe_hwmod = {
+-	.name		= "l4_abe",
+-	.class		= &omap54xx_l4_hwmod_class,
+-	.clkdm_name	= "abe_clkdm",
+-	.prcm = {
+-		.omap4 = {
+-			.clkctrl_offs = OMAP54XX_CM_ABE_L4_ABE_CLKCTRL_OFFSET,
+-			.flags = HWMOD_OMAP4_NO_CONTEXT_LOSS_BIT,
 -		},
 -	},
--	.rst_lines	= am33xx_gfx_resets,
--	.rst_lines_cnt	= ARRAY_SIZE(am33xx_gfx_resets),
 -};
 -
- /*
-  * 'prcm' class
-  * power and reset manager (whole prcm infrastructure)
-@@ -379,22 +355,14 @@ static void omap_hwmod_am33xx_clkctrl(void)
- 	CLKCTRL(am33xx_l4_ls_hwmod, AM33XX_CM_PER_L4LS_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_l4_wkup_hwmod, AM33XX_CM_WKUP_L4WKUP_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_l3_main_hwmod, AM33XX_CM_PER_L3_CLKCTRL_OFFSET);
--	CLKCTRL(am33xx_gfx_hwmod, AM33XX_CM_GFX_GFX_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_mpu_hwmod , AM33XX_CM_MPU_MPU_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_l3_instr_hwmod , AM33XX_CM_PER_L3_INSTR_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_ocmcram_hwmod , AM33XX_CM_PER_OCMCRAM_CLKCTRL_OFFSET);
- }
+ /* l4_cfg */
+ static struct omap_hwmod omap54xx_l4_cfg_hwmod = {
+ 	.name		= "l4_cfg",
+@@ -618,22 +605,6 @@ static struct omap_hwmod_ocp_if omap54xx_l4_cfg__l3_main_3 = {
+ 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ };
  
--static void omap_hwmod_am33xx_rst(void)
--{
--	RSTCTRL(am33xx_gfx_hwmod, AM33XX_RM_GFX_RSTCTRL_OFFSET);
--	RSTST(am33xx_gfx_hwmod, AM33XX_RM_GFX_RSTST_OFFSET);
--}
+-/* l3_main_1 -> l4_abe */
+-static struct omap_hwmod_ocp_if omap54xx_l3_main_1__l4_abe = {
+-	.master		= &omap54xx_l3_main_1_hwmod,
+-	.slave		= &omap54xx_l4_abe_hwmod,
+-	.clk		= "abe_iclk",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
 -
- void omap_hwmod_am33xx_reg(void)
- {
- 	omap_hwmod_am33xx_clkctrl();
--	omap_hwmod_am33xx_rst();
- }
- 
- static void omap_hwmod_am43xx_clkctrl(void)
-@@ -410,20 +378,12 @@ static void omap_hwmod_am43xx_clkctrl(void)
- 	CLKCTRL(am33xx_l4_ls_hwmod, AM43XX_CM_PER_L4LS_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_l4_wkup_hwmod, AM43XX_CM_WKUP_L4WKUP_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_l3_main_hwmod, AM43XX_CM_PER_L3_CLKCTRL_OFFSET);
--	CLKCTRL(am33xx_gfx_hwmod, AM43XX_CM_GFX_GFX_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_mpu_hwmod , AM43XX_CM_MPU_MPU_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_l3_instr_hwmod , AM43XX_CM_PER_L3_INSTR_CLKCTRL_OFFSET);
- 	CLKCTRL(am33xx_ocmcram_hwmod , AM43XX_CM_PER_OCMCRAM_CLKCTRL_OFFSET);
- }
- 
--static void omap_hwmod_am43xx_rst(void)
--{
--	RSTCTRL(am33xx_gfx_hwmod, AM43XX_RM_GFX_RSTCTRL_OFFSET);
--	RSTST(am33xx_gfx_hwmod, AM43XX_RM_GFX_RSTST_OFFSET);
--}
+-/* mpu -> l4_abe */
+-static struct omap_hwmod_ocp_if omap54xx_mpu__l4_abe = {
+-	.master		= &omap54xx_mpu_hwmod,
+-	.slave		= &omap54xx_l4_abe_hwmod,
+-	.clk		= "abe_iclk",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
 -
- void omap_hwmod_am43xx_reg(void)
- {
- 	omap_hwmod_am43xx_clkctrl();
--	omap_hwmod_am43xx_rst();
- }
-diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
-@@ -282,10 +282,8 @@ static struct omap_hwmod_ocp_if *am33xx_hwmod_ocp_ifs[] __initdata = {
- 	&am33xx_l3_main__l4_hs,
- 	&am33xx_l3_main__l3_s,
- 	&am33xx_l3_main__l3_instr,
--	&am33xx_l3_main__gfx,
- 	&am33xx_l3_s__l3_main,
- 	&am33xx_wkup_m3__l4_wkup,
--	&am33xx_gfx__l3_main,
- 	&am33xx_l3_main__debugss,
- 	&am33xx_l4_wkup__wkup_m3,
- 	&am33xx_l4_wkup__control,
-diff --git a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
---- a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
-+++ b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
-@@ -243,11 +243,9 @@ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
- 	&am43xx_l3_main__l4_hs,
- 	&am33xx_l3_main__l3_s,
- 	&am33xx_l3_main__l3_instr,
--	&am33xx_l3_main__gfx,
- 	&am33xx_l3_s__l3_main,
- 	&am43xx_l3_main__emif,
- 	&am43xx_wkup_m3__l4_wkup,
--	&am33xx_gfx__l3_main,
- 	&am43xx_l4_wkup__wkup_m3,
- 	&am43xx_l4_wkup__control,
- 	&am43xx_l4_wkup__smartreflex0,
+ /* l3_main_1 -> l4_cfg */
+ static struct omap_hwmod_ocp_if omap54xx_l3_main_1__l4_cfg = {
+ 	.master		= &omap54xx_l3_main_1_hwmod,
+@@ -741,8 +712,6 @@ static struct omap_hwmod_ocp_if *omap54xx_hwmod_ocp_ifs[] __initdata = {
+ 	&omap54xx_l3_main_1__l3_main_3,
+ 	&omap54xx_l3_main_2__l3_main_3,
+ 	&omap54xx_l4_cfg__l3_main_3,
+-	&omap54xx_l3_main_1__l4_abe,
+-	&omap54xx_mpu__l4_abe,
+ 	&omap54xx_l3_main_1__l4_cfg,
+ 	&omap54xx_l3_main_2__l4_per,
+ 	&omap54xx_l3_main_1__l4_wkup,
 -- 
 2.26.2
