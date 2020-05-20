@@ -2,79 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE2B01DAE59
-	for <lists+linux-omap@lfdr.de>; Wed, 20 May 2020 11:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6B7C1DAE45
+	for <lists+linux-omap@lfdr.de>; Wed, 20 May 2020 11:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726436AbgETJHe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 20 May 2020 05:07:34 -0400
-Received: from aliyun-cloud.icoremail.net ([47.90.88.95]:31104 "HELO
-        aliyun-sdnproxy-1.icoremail.net" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with SMTP id S1726403AbgETJHe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 20 May 2020 05:07:34 -0400
-X-Greylist: delayed 717 seconds by postgrey-1.27 at vger.kernel.org; Wed, 20 May 2020 05:07:33 EDT
-Received: from localhost.localdomain (unknown [222.205.77.158])
-        by mail-app4 (Coremail) with SMTP id cS_KCgBHnwm97sReaUvXAQ--.24724S4;
-        Wed, 20 May 2020 16:48:01 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn, kjlu@umn.edu
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        id S1726403AbgETJDS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 20 May 2020 05:03:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33372 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726914AbgETJDO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 May 2020 05:03:14 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A15B7C061A0E
+        for <linux-omap@vger.kernel.org>; Wed, 20 May 2020 02:03:13 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id n18so2040485wmj.5
+        for <linux-omap@vger.kernel.org>; Wed, 20 May 2020 02:03:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=fe1y1P3KuNT27Xt1HIe0Tg/h4Eje3e3b/mEovm8Unro=;
+        b=QlEtHzbVimMMdRXvv73kp2w+o5F6H4x1sYU4+rH6GgixXkylmS5m0rHB2BHbyZBEZx
+         0GtVnuEklagqyysOmxpPMSD0LeVgnX1oaVcFSJDBEYFvEDbV6hUYrkslZtkdSJyQ/3iH
+         kMroLkNP/SJZVYZ+NGzgLmlhZRPgFCmcEMdCaAlJjgpWrOwTd8YxV1Jmju312HOhXBdF
+         AyNwBYoneT8mQtAO1ua93Hkmx0GBjGDp1SxM6/6nQJ0boi38STs1J03mJe6eLjdpw2U4
+         rfKvY7eIva/MyhLLij0THeiDFlM0DbjXnTtPYzdH9+ePTKrMB/2qFYETRQHp691sIqs5
+         /lIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=fe1y1P3KuNT27Xt1HIe0Tg/h4Eje3e3b/mEovm8Unro=;
+        b=Loqn2hzm7V7R4fEAODtTkToYzLrHtv5119+mbYJLTEwkLDI2sMa17AvMa7HC7RJVhn
+         3U7TWihmKUNDDstIRymqHXpkn0nabxCpzBZoKFCGfnHpAlBXC5IRe91pWJPmov1r6KYK
+         8sB8CsjJOpXwJuyV94zdwbP8LDk0hth8a2QWyu3XpS38zJD2MhFiZIPP8743ziib2CcA
+         YbX8JAv5DFxVtcp0xNq/yoQFYrPltPieTMERJ4V/rybEMorGcypQ0MZrv8AwTJkS81Nr
+         VLdazmQLVf7YbK4UAfZrN2M1qHmyuSOHmnuyVoMFVCbcG5luO7/K5+M9hfR3Hjyd/PFr
+         qnIg==
+X-Gm-Message-State: AOAM530LobGqgt9jgKiMx5mWbTWFF1ow9suz9HzHRdZDzdZW4hdxcX45
+        mZloKGOUcNnBJX141W3sSPvskg==
+X-Google-Smtp-Source: ABdhPJw9c4b0FEt51IGNxa1OVFTu4fGFAjKQqnYYgQj9H43HxMbDDt1wTz7bJ12iotKnqA/WDSczSQ==
+X-Received: by 2002:a1c:1b0d:: with SMTP id b13mr3869519wmb.171.1589965392202;
+        Wed, 20 May 2020 02:03:12 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:f9a0:30c:ec6c:7971? ([2a01:e34:ed2f:f020:f9a0:30c:ec6c:7971])
+        by smtp.googlemail.com with ESMTPSA id w82sm2389150wmg.28.2020.05.20.02.03.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 May 2020 02:03:11 -0700 (PDT)
+Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Do one override clock
+ parent in prepare()
+To:     Tony Lindgren <tony@atomide.com>, Lokesh Vutla <lokeshvutla@ti.com>
+Cc:     Tero Kristo <t-kristo@ti.com>, Sekhar Nori <nsekhar@ti.com>,
+        Suman Anna <s-anna@ti.com>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] PCI: dwc: pci-dra7xx: fix runtime pm imbalance on error
-Date:   Wed, 20 May 2020 16:47:56 +0800
-Message-Id: <20200520084756.31620-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: cS_KCgBHnwm97sReaUvXAQ--.24724S4
-X-Coremail-Antispam: 1UD129KBjvdXoWrKrW5ZF15Jr17CrWrKFy7trb_yoWfXrg_ur
-        n8uFsrCrs0kFyqyryqyw1Fvr9IqasxXw1vga1ftF43ZFyIvr15WrWUXFZ8AFZ8Wr1fXF1q
-        yryqqF17CrWUAjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbIxFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4UJVW0owA2z4x0Y4vEx4A2
-        jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
-        x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
-        AwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-        8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY02Avz4vE14v_GFyl42xK82IYc2Ij64vIr41l
-        42xK82IY6x8ErcxFaVAv8VW8uw4UJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-        8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
-        ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-        0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Wr1j6rW3Jr1lIxAIcVC2z280aVAF
-        wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
-        7VUj3CztUUUUU==
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/
+References: <20200427172831.16546-1-lokeshvutla@ti.com>
+ <20200428182209.GT37466@atomide.com> <20200505180734.GN37466@atomide.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <4d279416-64bb-822f-2783-a7aca7e03877@linaro.org>
+Date:   Wed, 20 May 2020 11:03:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20200505180734.GN37466@atomide.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-pm_runtime_get_sync() increments the runtime PM usage counter even
-it returns an error code. Thus a pairing decrement is needed on
-the error handling path to keep the counter balanced.
+On 05/05/2020 20:07, Tony Lindgren wrote:
+> * Tony Lindgren <tony@atomide.com> [200428 18:23]:
+>> * Lokesh Vutla <lokeshvutla@ti.com> [200427 17:29]:
+>>> omap_dm_timer_prepare() is setting up the parent 32KHz clock. This
+>>> prepare() gets called by request_timer in the client's driver. Because of
+>>> this, the timer clock parent that is set with assigned-clock-parent is being
+>>> overwritten. So drop this default setting of parent in prepare().
+>>>
+>>> Signed-off-by: Lokesh Vutla <lokeshvutla@ti.com>
+>>
+>> This works just fine for me but depends on the dts changes.
+>>
+>> Daniel, for merging, do you want to set up an immutable branch
+>> for the related dts change and this? I'm afraid it will conflict
+>> with the related systimer changes for the dts otherwise.
+> 
+> So I've pushed out an immutable branch for the dts changes
+> this patch depends on against v5.7-rc1 as omap-for-v5.8/dt-timer
+> [0][1].
+> 
+> Daniel feel free to merge it in to apply this clocksource patch if
+> no more comments:
+> 
+> Acked-by: Tony Lindgren <tony@atomide.com>
+> 
+> [0] git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git omap-for-v5.8/dt-timer
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git/log/?h=omap-for-v5.8/dt-timer
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
----
- drivers/pci/controller/dwc/pci-dra7xx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Merged and patch applied, thanks
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 3b0e58f2de58..8fd9f2281e02 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -1000,9 +1000,8 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
- 	return 0;
- 
- err_gpio:
--	pm_runtime_put(dev);
--
- err_get_sync:
-+	pm_runtime_put(dev);
- 	pm_runtime_disable(dev);
- 	dra7xx_pcie_disable_phy(dra7xx);
- 
+
 -- 
-2.17.1
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
