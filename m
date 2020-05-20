@@ -2,204 +2,220 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E341DC1B8
-	for <lists+linux-omap@lfdr.de>; Thu, 21 May 2020 00:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17EF61DC1D0
+	for <lists+linux-omap@lfdr.de>; Thu, 21 May 2020 00:07:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728225AbgETWCJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 20 May 2020 18:02:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42512 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728190AbgETWCI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 May 2020 18:02:08 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D194C05BD43
-        for <linux-omap@vger.kernel.org>; Wed, 20 May 2020 15:02:08 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id x20so6187009ejb.11
-        for <linux-omap@vger.kernel.org>; Wed, 20 May 2020 15:02:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=zb7O+OsRlJ4ZhW1N495+RjDIqGKHuZiwClTZ+SkOEVo=;
-        b=GUYHGAJ/HZdlTz7FAL3kk1Q1ZKredBwA78I2wjW6Qe6iDcBlNTUAgHtpRtnD2XwOzD
-         PZc/2vtLlgy5Z3Gp2OvfAyF2skRpoA3PmJzy3YQQ+j8oCRN1/qm2GK3XdFQLW68yHLqm
-         6HXncPCDT5Q5zy+uVH2gQRzLVKbMu9Vz3zcCPzDG/I7NoiR7H8jO1m+xrFlnZA2KOCUU
-         friZf8XqGJY6n80MFrhBLl1npN10BCJRzxOlaTFc/dqWG7i4Sy4AwX29Zr+RyQVwxm4A
-         CbP5clCQjJQ1Iu4VwS8xqKpxaLdENXW2tLnpek4+sLubnRM/J1/XKxaIRoDqf8gvPBsz
-         iPtw==
+        id S1728270AbgETWH1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 20 May 2020 18:07:27 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:35850 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726847AbgETWH1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 May 2020 18:07:27 -0400
+Received: by mail-io1-f67.google.com with SMTP id c16so5126442iol.3;
+        Wed, 20 May 2020 15:07:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=zb7O+OsRlJ4ZhW1N495+RjDIqGKHuZiwClTZ+SkOEVo=;
-        b=JWlhx0E6Gshiml0UhpI3P2nZMzg3r2Qvqj6sX2LCx5xknocB0YmVrYXWTtXEL/1Seh
-         qMQnrH4KEAYY/TjgQR20+GrKw3DIYxnAbaudig26dOQDFyq5Sei6Ao7fNeyiKB2POvUp
-         kr7R9VuNc9oxknIwtw+lFlsGispZaQInRvVmnZNC0FuSCJ05/VgpCFrhw++e3fSqg/xs
-         wQGX8N3d+JEgt+DeFzJLVM9/1f7gwyQc/QSThAaScL65DEbRX3dK7a3P1LJJtWBLyLRT
-         uT3Vzxm7EeWWX/gN0cqEXa9pzFkcE3BXKHcKEn4c/UF4eUpwkNQlB0IgT7pyp/pDkWMs
-         Pu5Q==
-X-Gm-Message-State: AOAM533ipQ7re2t481/M4cxDpMgtAF88yw4BcsTuRkbXYwzKYcdhXhBn
-        8BNRxShUrP+70s3hMJsRI/S+9Q==
-X-Google-Smtp-Source: ABdhPJydr2OxyDSE1NNU/8zJYhWpt8hsi8i5qypj2a/FIrillUdRhiXkFiLgeiTx532XbbKT+FTZ/w==
-X-Received: by 2002:a17:906:b79a:: with SMTP id dt26mr992211ejb.121.1590012126776;
-        Wed, 20 May 2020 15:02:06 -0700 (PDT)
-Received: from x1 ([2001:16b8:5c90:fc01:e5e5:b2fe:677e:9a51])
-        by smtp.gmail.com with ESMTPSA id i2sm2747185edy.30.2020.05.20.15.02.04
+        bh=WUh3b880eTZB9TUeMaUcw/6WEtirPL5dFoPDjLOVxK0=;
+        b=rUtDg4buD1G3bmFnFN8RfGzEnUpKowsg4S2yi7m1WGfegf5Rtgkjq5yg09rxG7GxLG
+         ezf/7ePyP+oTzSTdUE9VBLTR9SI4abwV/NO8dlwr43tL5nveSQH/p5pPGswHy9vCzL+Q
+         tYK0R/WfkiFF3FVyc3h8mFfiKCsVR8sZtPX479smlmaYshWq8FoO8+04wzXcc6R9dAga
+         KJnZSG9p+AshVO2NBoqqnt9lIxONh3Wjy0fANIMIJWLGZm5qtsHMcSrYdXCO4W0O39Ti
+         SmqQnNeRq9a2ZHOu39/lelrytGtdVJZyaEiU41TwrhbKgjjCZIr3TP9a/6ovrRCNSH88
+         BJiw==
+X-Gm-Message-State: AOAM530FxMoS1C6cDntBiiMhG8vyoDuyKr6cWtRnFpZyo87Zdvk/67d9
+        VBgq0RrmLsvKrqyhLZ/rCw==
+X-Google-Smtp-Source: ABdhPJwWAIyGPF3V7h0vTyeYZmnRkJL8NmG4CG554Lffu6o5pQ/beMaQbAl2N3fnm/qyqabvBHC99w==
+X-Received: by 2002:a05:6638:60e:: with SMTP id g14mr1231252jar.54.1590012445798;
+        Wed, 20 May 2020 15:07:25 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id i13sm2025192ill.65.2020.05.20.15.07.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2020 15:02:05 -0700 (PDT)
-Date:   Thu, 21 May 2020 00:02:03 +0200
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>
-Subject: Re: [PATCH] arm: dts: am33xx-bone-common: add gpio-line-names
-Message-ID: <20200520220203.GA363398@x1>
-References: <20200508165821.GA14555@x1>
- <CACRpkdb+ZP6rfjGg6Ef9_wYvNf6qmSc7LZyYBVKA3XWCtxPfqQ@mail.gmail.com>
- <20200518141843.GA916914@x1>
+        Wed, 20 May 2020 15:07:25 -0700 (PDT)
+Received: (nullmailer pid 683784 invoked by uid 1000);
+        Wed, 20 May 2020 22:07:24 -0000
+Date:   Wed, 20 May 2020 16:07:24 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 03/14] PCI: cadence: Add support to use custom read
+ and write accessors
+Message-ID: <20200520220724.GA636352@bogus>
+References: <20200506151429.12255-1-kishon@ti.com>
+ <20200506151429.12255-4-kishon@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200518141843.GA916914@x1>
+In-Reply-To: <20200506151429.12255-4-kishon@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, May 18, 2020 at 04:18:43PM +0200, Drew Fustini wrote:
-> On Mon, May 18, 2020 at 09:11:07AM +0200, Linus Walleij wrote:
-> > On Fri, May 8, 2020 at 6:57 PM Drew Fustini <drew@beagleboard.org> wrote:
-> > 
-> > > Add gpio-line-names properties to the gpio controller nodes.
-> > > BeagleBone boards have P8 and P9 headers [0] which expose many the
-> > > AM3358 SoC balls to stacking expansion boards called "capes", or to
-> > > other external connections like jumper wires to a breadboard.
-> > >
-> > > Many of the P8/P9 header pins can muxed to a gpio line.  The
-> > > gpio-line-names describe which P8/P9 pin that line goes to and the
-> > > default mux for that P8/P9 pin.  Some lines are not routed to the
-> > > P8/P9 headers, but instead are dedicated to some functionality such as
-> > > status LEDs.  The line name will indicate this.  Some line names are
-> > > left empty as the corresponding AM3358 balls are not connected.
-> > >
-> > > The goal is to make it easier for a user viewing the output of gpioinfo
-> > > to determine which P8/P9 pin is connected to a line.  The output of
-> > > gpioinfo on a BeagleBone Black will now look like this:
-> > >
-> > > gpiochip0 - 32 lines:
-> > >         line   0:   "ethernet"       unused   input  active-high
-> > >         line   1:   "ethernet"       unused   input  active-high
-> > 
-> > Why are the ethernet lines not tagged with respective signal name
-> > when right below the SPI lines are explicitly tagged with
-> > sclk, cs0 etc?
-> > 
-> > Ethernet is usually RGMII and has signal names like
-> > tx_clk, tx_d0, tx_en etc.
+On Wed, May 06, 2020 at 08:44:18PM +0530, Kishon Vijay Abraham I wrote:
+> Add support to use custom read and write accessors. Platforms that
+> don't support half word or byte access or any other constraint
+> while accessing registers can use this feature to populate custom
+> read and write accessors. These custom accessors are used for both
+> standard register access and configuration space register access of
+> the PCIe host bridge.
 > 
-> Thank you for the feedback, Linus.
-> 
-> My desire is to communicate that the AM3358 balls corresponding to these
-> GPIO lines are being used for Ethernet and not exposed to the P8 and P9
-> expansion headers.
-> 
-> I am happy to switch these labels to the actual Ethernet signals such as
-> RGMII and MDIO signal names if you think that is better.
-> 
-> For example, AM3358 ZCZ ball M17 is both gpio0_0 and mdio_data [0].  On 
-> BeagleBone, the ball is routed to the Ethernet PHY and used for MDIO [1]
-> Thus gpiochio 0 line 0 is not connected to the P8 or P9 expansion header.
-> 
-> Which of the following line name would be best?
-> 
-> 1) "[MDIO_DATA]"
-> 
-> precise signal name, placed in brackets to denote is not possible to 
-> use as GPIO on the P8 or P9 headers
-> 
-> 2) "[ethernet]" 
-> 
-> instead of the precise signal name, just indicate that it is used for
-> Ethernet and is not usable for GPIO on the P8 or P9 headers
-> 
-> 3) ""
-> 
-> no label as this gpio line is not connected to the P8/P9 and is
-> hardwired in the PCB layout for Ethernet (MDIO).
-> 
-> > Also some lines seem to be tagged with the pin number
-> > like P9_22, P2_21 below, it seems a bit inconsistent
-> > to have much information on some pins and very sketchy
-> > information on some.
-> 
-> The goal for these line names is make it easier for a BeagleBone user to
-> identify which GPIO lines are connected to the P8 and P9 expansion
-> headers.  Our users are most likely to refer to cape-headers.png [2] as
-> it is part of the bone101 out-of-the-box tutorial [3]. 
-> 
-> Some GPIO lines are free to be used for GPIO in the default
-> configuration.  For example, gpiochip 1 line 12 is connected to P8_12
-> and it is not used by another peripheral by default. I used the label:
-> "P8_12 gpio"
-> 
-> However, gpiochip 1 line 0 is connected to P8_25 but is also used by the
-> on-board eMMC.  The eMMc is enabled by default so this line can not be
-> used for GPIO unless the user modifies the pinmux in the device tree.  
-> 
-> Thus, I used this label: "P8_25 emmc"
-> 
-> Maybe a better label would be "P8_25 [EMMC]"?
-> 
-> > 
-> > >         line  18:        "usb"       unused   input  active-high
-> > >         line  19:       "hdmi"       unused   input  active-high
-> > 
-> > Similar comments for these.
-> 
-> 
-> These are similar to the Ethernet MDIO example above.  The balls
-> corresponding to these GPIO lines are not connected to the P8 or P9 
-> headers and are hardwired on the PCB for other peripherals like USB
-> and HDMI.
-> 
-> For example, gpiochip 0 line 18 is USB0_DRVVBUS so I simplified it to
-> "usb" to indicate it can not be used for GPIO. Maybe "[USB]" is better?
-> 
-> gpiochip 0 line 19 is AM3358 ZCZ ball A15 and the BeagleBone Black
-> schematic shows that this is connected to the CEC clock for the HDMI
-> framer [4].  I though "hdmi" was a nice way to summarize that this is
-> used for HDMI and can not be changed, though maybe "[HDMI]" is better
-> or no label at all.
-> 
-> In conclusion, the motivation of these line names is to be a quick
-> reference for a user to find GPIO lines on the P8 and P9 headers.
-> 
-> Thanks,
-> Drew
-> 
-> [0] http://www.ti.com/lit/ds/symlink/am3358.pdf
-> [1] https://github.com/beagleboard/beaglebone-black/wiki/System-Reference-Manual#ethernet-processor-interface
-> [2] http://beagleboard.org/static/images/cape-headers.png
-> [3] https://beagleboard.org/Support/bone101
-> [4] https://github.com/beagleboard/beaglebone-black/blob/master/BBB_SCH.pdf
-> 
+> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> ---
+>  drivers/pci/controller/cadence/pcie-cadence.h | 107 +++++++++++++++---
+>  1 file changed, 94 insertions(+), 13 deletions(-)
 
-I've posted a v2 which I hope improves the intent of the line names. [0]
+Actually, take back my R-by...
 
-I'm happy to integrate any feedback and create a v3 - especially if it
-is prefered for me to list the specific peripherial signals instead of
-an abstract term like "[ethernet]" or "[emmc]".  This is for lines that
-can not be used because they are not routed to the expansion headers.
+> 
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+> index df14ad002fe9..70b6b25153e8 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence.h
+> +++ b/drivers/pci/controller/cadence/pcie-cadence.h
+> @@ -223,6 +223,11 @@ enum cdns_pcie_msg_routing {
+>  	MSG_ROUTING_GATHER,
+>  };
+>  
+> +struct cdns_pcie_ops {
+> +	u32	(*read)(void __iomem *addr, int size);
+> +	void	(*write)(void __iomem *addr, int size, u32 value);
+> +};
+> +
+>  /**
+>   * struct cdns_pcie - private data for Cadence PCIe controller drivers
+>   * @reg_base: IO mapped register base
+> @@ -239,7 +244,7 @@ struct cdns_pcie {
+>  	int			phy_count;
+>  	struct phy		**phy;
+>  	struct device_link	**link;
+> -	const struct cdns_pcie_common_ops *ops;
+> +	const struct cdns_pcie_ops *ops;
+>  };
+>  
+>  /**
+> @@ -299,69 +304,145 @@ struct cdns_pcie_ep {
+>  /* Register access */
+>  static inline void cdns_pcie_writeb(struct cdns_pcie *pcie, u32 reg, u8 value)
+>  {
+> -	writeb(value, pcie->reg_base + reg);
+> +	void __iomem *addr = pcie->reg_base + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x1, value);
+> +		return;
+> +	}
+> +
+> +	writeb(value, addr);
+>  }
+>  
+>  static inline void cdns_pcie_writew(struct cdns_pcie *pcie, u32 reg, u16 value)
+>  {
+> -	writew(value, pcie->reg_base + reg);
+> +	void __iomem *addr = pcie->reg_base + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x2, value);
+> +		return;
+> +	}
+> +
+> +	writew(value, addr);
+>  }
 
-thanks,
-drew
+cdns_pcie_writeb and cdns_pcie_writew are used, so remove them.
 
-[0] https://lore.kernel.org/linux-omap/20200520214757.GA362547@x1/T/#u
+>  
+>  static inline void cdns_pcie_writel(struct cdns_pcie *pcie, u32 reg, u32 value)
+>  {
+> -	writel(value, pcie->reg_base + reg);
+> +	void __iomem *addr = pcie->reg_base + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x4, value);
+> +		return;
+> +	}
+> +
+> +	writel(value, addr);
+
+writel isn't broken for you, so you don't need this either.
+
+>  }
+>  
+>  static inline u32 cdns_pcie_readl(struct cdns_pcie *pcie, u32 reg)
+>  {
+> -	return readl(pcie->reg_base + reg);
+> +	void __iomem *addr = pcie->reg_base + reg;
+> +
+> +	if (pcie->ops && pcie->ops->read)
+> +		return pcie->ops->read(addr, 0x4);
+> +
+> +	return readl(addr);
+
+And neither is readl.
+
+>  }
+>  
+>  /* Root Port register access */
+>  static inline void cdns_pcie_rp_writeb(struct cdns_pcie *pcie,
+>  				       u32 reg, u8 value)
+>  {
+> -	writeb(value, pcie->reg_base + CDNS_PCIE_RP_BASE + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_RP_BASE + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x1, value);
+> +		return;
+> +	}
+> +
+> +	writeb(value, addr);
+>  }
+>  
+>  static inline void cdns_pcie_rp_writew(struct cdns_pcie *pcie,
+>  				       u32 reg, u16 value)
+>  {
+> -	writew(value, pcie->reg_base + CDNS_PCIE_RP_BASE + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_RP_BASE + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x2, value);
+> +		return;
+> +	}
+> +
+> +	writew(value, addr);
+
+You removed 2 out of 3 calls to this. I think I'd just make the root 
+port writes always be 32-bit. It is all just one time init stuff 
+anyways.
+
+Either rework the calls to assemble the data into 32-bits or keep these 
+functions and do the RMW here.
+
+>  }
+>  
+>  /* Endpoint Function register access */
+>  static inline void cdns_pcie_ep_fn_writeb(struct cdns_pcie *pcie, u8 fn,
+>  					  u32 reg, u8 value)
+>  {
+> -	writeb(value, pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg);
+> +	void __iomem *addr = pcie->reg_base + CDNS_PCIE_EP_FUNC_BASE(fn) + reg;
+> +
+> +	if (pcie->ops && pcie->ops->write) {
+> +		pcie->ops->write(addr, 0x1, value);
+> +		return;
+> +	}
+> +
+> +	writeb(value, addr);
+
+Same for these EP functions. 
+
+Unless there are places where doing a RMW is fundamentally broken like 
+in config space (not counting the one time init stuff).
+
+Rob
