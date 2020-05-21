@@ -2,91 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CA211DD05A
-	for <lists+linux-omap@lfdr.de>; Thu, 21 May 2020 16:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 952681DD448
+	for <lists+linux-omap@lfdr.de>; Thu, 21 May 2020 19:27:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729764AbgEUOmR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 May 2020 10:42:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56922 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728256AbgEUOmR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 May 2020 10:42:17 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D09C6C061A0E;
-        Thu, 21 May 2020 07:42:16 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id c16so7694836iol.3;
-        Thu, 21 May 2020 07:42:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uMf5PSS8v7h+lqCLsnwmzDp+h/BmZ4e0wPer6Vr2cGs=;
-        b=NFYhck/AVQ4UWSacJe7ENhzPcbR6sO8iACNZjErSdvwJ9wrqZ9RJFZ6QenBhe562aP
-         KfxW0cYjDNR4FLotUvUydBbfp3XT14Bk4PiwBWPOSV5h3DPQYpMd5VYt5+adDW8P78L/
-         J5y0pJpf1c0Wt+K5URdoBKLM+JlcXXdbM/ZLd935cpJUasiNfXGfxb1rYepad6dYah8p
-         LeTySwVr6Y4japUvkuFylk3x0yGdsHwJv/VVce+PDL/h9F/Xon80FOzJMA23VS1xgS34
-         h/l/ignBWZh7FA2s8tCDV2906hkU9GTarwXvq9AOjun/QP6IKSHPTzUOfpZPpHs5mrEH
-         Si2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uMf5PSS8v7h+lqCLsnwmzDp+h/BmZ4e0wPer6Vr2cGs=;
-        b=g2d/ep2F3OvwVODjoFgxD+I6AST6x7OvWCduUvlWkeAqK7l/mB/V4Ckx8DT7iQrmPT
-         CZCTnK99GljrtHHCVWSJCYfndFRbahyzXcfjxE3OhCel1+AM0QBD2FHU2KccEIUkgsGY
-         NDQky1Wo0SeQ2RI1F5Wfci9ZUggm1C/Y1zcfkiXFO7uX4EM6JeqSlRq2jDK94n47bSIa
-         Dqi2MISJVjQlyBk13KUPrjZwggNSRk2nf3REmpXRWhtkbWyei6wTLLTXPCmuEItE88oz
-         g2JpVG2WG8eUnNpHESg4lkZ5VlxHteP2ZwtHgjOwpaKfwWzTcLoQFr6MZXpABpv/Pzmy
-         Fmpw==
-X-Gm-Message-State: AOAM532ISirrC/IczdVL54BfA535R3blAc5Zb5ib+bvFwLvIl6LCcDuI
-        G2gex+RRu/h5dizPxC2IT/JRAfSes8TWDz9nhVw=
-X-Google-Smtp-Source: ABdhPJzmmoAtqvKiSRzzQdvPOdNku2+q8onAHYeKer64fb+YIN0nrWX+l4VWuyicyEo2/tLD9Pf2CRLDktLkJDnboNE=
-X-Received: by 2002:a05:6638:118c:: with SMTP id f12mr4230733jas.6.1590072135956;
- Thu, 21 May 2020 07:42:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200520214757.GA362547@x1> <71dbf4e6-e65b-f001-319c-0b354f675568@ti.com>
-In-Reply-To: <71dbf4e6-e65b-f001-319c-0b354f675568@ti.com>
-From:   Robert Nelson <robertcnelson@gmail.com>
-Date:   Thu, 21 May 2020 09:41:50 -0500
-Message-ID: <CAOCHtYiw2jJuzbnW02FUmPy-xmmtErMmow46QQJUMs0VtX=cKg@mail.gmail.com>
+        id S1729011AbgEUR1F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 May 2020 13:27:05 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:54824 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728864AbgEUR1E (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 May 2020 13:27:04 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04LHQlch012436;
+        Thu, 21 May 2020 12:26:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1590082007;
+        bh=5sbZFMXFyR6R0M8wgkVp71flez8Gasc4Z5KA2W8N+4U=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Q88Uz8n8XFOimF1DN2mSKKhcwrafBNj5pONsJ20IssohVHQp/5QhGUuJifhF124qU
+         F2raO0vuZAtZjMQWr3GIVnobvapohPdCbcgObPy051uA7r2/XnsZELrD+bh4Rj9DUe
+         3o/AO66KI0VZ3ANwh60Xyh4Zc11aJAy+5N0IsLZg=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04LHQlTj058716
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 21 May 2020 12:26:47 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 21
+ May 2020 12:26:46 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 21 May 2020 12:26:46 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04LHQheW043615;
+        Thu, 21 May 2020 12:26:44 -0500
 Subject: Re: [PATCH v2] arm: dts: am33xx-bone-common: add gpio-line-names
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Drew Fustini <drew@beagleboard.org>,
+To:     Robert Nelson <robertcnelson@gmail.com>
+CC:     Drew Fustini <drew@beagleboard.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
         Rob Herring <robh+dt@kernel.org>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         linux kernel <linux-kernel@vger.kernel.org>,
         Jason Kridner <jkridner@beagleboard.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20200520214757.GA362547@x1>
+ <71dbf4e6-e65b-f001-319c-0b354f675568@ti.com>
+ <CAOCHtYiw2jJuzbnW02FUmPy-xmmtErMmow46QQJUMs0VtX=cKg@mail.gmail.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <cdf82f9c-48fb-49a0-99e4-926dc292c109@ti.com>
+Date:   Thu, 21 May 2020 20:26:42 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <CAOCHtYiw2jJuzbnW02FUmPy-xmmtErMmow46QQJUMs0VtX=cKg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> Not sure if it should be in am335x-bone-common.dtsi.
->
-> For example:
-> am335x-boneblack.dts
->   #include "am335x-bone-common.dtsi"
->   #include "am335x-boneblack-common.dtsi" <-- hdmi defined only here
 
-Ah crap, yeah that's a good point.. So if we stick it in...
-am335x-boneblack-common.dtsi
 
-Then the Black-Wireless now has Ethernet...
+On 21/05/2020 17:41, Robert Nelson wrote:
+>> Not sure if it should be in am335x-bone-common.dtsi.
+>>
+>> For example:
+>> am335x-boneblack.dts
+>>    #include "am335x-bone-common.dtsi"
+>>    #include "am335x-boneblack-common.dtsi" <-- hdmi defined only here
+> 
+> Ah crap, yeah that's a good point.. So if we stick it in...
+> am335x-boneblack-common.dtsi
+> 
+> Then the Black-Wireless now has Ethernet...
+> 
+> am335x-boneblack-wireless.dts
+> #include "am335x-bone-common.dtsi"
+> #include "am335x-boneblack-common.dtsi"
+> 
+> It's going to be ugly, copy and paste mess, but i guess we might as
+> well stick it in the device " am335x-boneblack.dts"?
 
-am335x-boneblack-wireless.dts
-#include "am335x-bone-common.dtsi"
-#include "am335x-boneblack-common.dtsi"
+Seems like.
 
-It's going to be ugly, copy and paste mess, but i guess we might as
-well stick it in the device " am335x-boneblack.dts"?
-
-Regards,
+Unfortunately, there is no way to partially overwrite "gpio-line-names"
+property.
 
 -- 
-Robert Nelson
-https://rcn-ee.com/
+Best regards,
+grygorii
