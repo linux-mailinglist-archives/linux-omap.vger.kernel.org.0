@@ -2,55 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE55A1DE4AF
-	for <lists+linux-omap@lfdr.de>; Fri, 22 May 2020 12:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3FBD1DE769
+	for <lists+linux-omap@lfdr.de>; Fri, 22 May 2020 14:58:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728716AbgEVKnU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 May 2020 06:43:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46742 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728623AbgEVKnS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 22 May 2020 06:43:18 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5B5C08C5C1
-        for <linux-omap@vger.kernel.org>; Fri, 22 May 2020 03:43:18 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id w7so9646525wre.13
-        for <linux-omap@vger.kernel.org>; Fri, 22 May 2020 03:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=VGoYWtdu5N5u5jqWgNJFmyeBLxTDklq5XGRfQf6qY4Q=;
-        b=YdeY/dYKbHgnjF5Rfbcb+eEpYTqwDn5A1vVV0JJ5zhynRDstj4c9FpHWPMl+epaBKj
-         4+oNruH5nf6kCafoeC8oqKNyZ/Po23OIUoBNbYN9r4/k0SejSAvyGC92UsY58XQLUfsa
-         3JjDrFGsY19YdyfPsHQclmg1uXVg+LMh91ZPjSFXVChXGrVWjG0Ui7eJQGqklE6+5kay
-         g5Uz20ffaV5DdoIjAToXKulBulbkNzxmwxh2KnSMRG7DYDLx1ioPSUF/Sq5icU69Spbb
-         sYt6m5Pg2RyBF7ZlFDkiMCnoSB3EaxfTGXp6TNa8MZWvQOKRiLEeX0kDcZ6ep0ep66E5
-         CPew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=VGoYWtdu5N5u5jqWgNJFmyeBLxTDklq5XGRfQf6qY4Q=;
-        b=BD018fY73Y4KQlA29KOMwe8SHERAdPTZTkK62bSH8NCLwADNXlmp1TB+dcAqbs2K5l
-         R2kzaHQL2f6aXU4QNRpvKF5g2EULpgAMByMjYmNpaEZfEccVlRc3FUDdB5ObuICvEikm
-         W7Y2AuE736ViXPgKXb0EMHZtV/1/dN6KGCACzEDXlgETjPOeSKPT2o39A+sQ5ldC00m/
-         OHAFyHvOYhsDT3Sh8RyFJOubjmZ+os43KexF2ZE2WaVVd5pSXOT1b3zSm5Ej7Jd9eFpM
-         ArCRuBH+g2mu2UCdlKncAy5VYYbH3rQkk4iMyBG/MxcXWhpcNbYtvjm6ndXI1GrIib5U
-         DY4Q==
-X-Gm-Message-State: AOAM533mrfS0k/452Fzc861UQjxBoSjULpU4cHc83D5g8DZtEFV0Fwxf
-        wFCKprZxvfGoEtrYW6fBtKpFFg==
-X-Google-Smtp-Source: ABdhPJybiYUfjcoyk6EZQDK4C+UEDo86CQQDAJc9f/khvU4Ce7Ww2hRO343VGYU3st9oV83jeHWEKA==
-X-Received: by 2002:a5d:52c6:: with SMTP id r6mr2933510wrv.269.1590144196705;
-        Fri, 22 May 2020 03:43:16 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:a82f:eaec:3c49:875a? ([2a01:e34:ed2f:f020:a82f:eaec:3c49:875a])
-        by smtp.googlemail.com with ESMTPSA id h1sm9702407wme.42.2020.05.22.03.43.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 May 2020 03:43:16 -0700 (PDT)
+        id S1729016AbgEVM61 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 22 May 2020 08:58:27 -0400
+Received: from foss.arm.com ([217.140.110.172]:35140 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728898AbgEVM61 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 22 May 2020 08:58:27 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 07F76D6E;
+        Fri, 22 May 2020 05:58:26 -0700 (PDT)
+Received: from [10.37.12.7] (unknown [10.37.12.7])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1D8533F68F;
+        Fri, 22 May 2020 05:58:13 -0700 (PDT)
 Subject: Re: [PATCH v7 00/15] Add support for devices in the Energy Model
-To:     Lukasz Luba <lukasz.luba@arm.com>, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
         dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
         linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
         linux-imx@nxp.com
@@ -70,61 +40,67 @@ Cc:     Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
         lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net,
         orjan.eide@arm.com, rdunlap@infradead.org, mka@chromium.org
 References: <20200511111912.3001-1-lukasz.luba@arm.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <abff69b6-b033-18e2-f380-ceccb42c6b01@linaro.org>
-Date:   Fri, 22 May 2020 12:43:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ <abff69b6-b033-18e2-f380-ceccb42c6b01@linaro.org>
+From:   Lukasz Luba <lukasz.luba@arm.com>
+Message-ID: <3f6652a5-ad9b-15cb-08a8-160becd3f912@arm.com>
+Date:   Fri, 22 May 2020 13:58:12 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200511111912.3001-1-lukasz.luba@arm.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <abff69b6-b033-18e2-f380-ceccb42c6b01@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Daniel,
 
-Hi Lukasz,
-
-On 11/05/2020 13:18, Lukasz Luba wrote:
-> Hi all,
+On 5/22/20 11:43 AM, Daniel Lezcano wrote:
 > 
-> This patch set introduces support for devices in the Energy Model (EM)
-> framework. It will unify the power model for thermal subsystem. It will
-> make simpler to add support for new devices willing to use more
-> advanced features (like Intelligent Power Allocation). Now it should
-> require less knowledge and effort for driver developer to add e.g.
-> GPU driver with simple energy model. A more sophisticated energy model
-> in the thermal framework is also possible, driver needs to provide
-> a dedicated callback function. More information can be found in the
-> updated documentation file.
+> Hi Lukasz,
 > 
-> First 7 patches are refactoring Energy Model framework to add support
-> of other devices that CPUs. They change:
-> - naming convention from 'capacity' to 'performance' state,
-> - API arguments adding device pointer and not rely only on cpumask,
-> - change naming when 'cpu' was used, now it's a 'device'
-> - internal structure to maintain registered devices
-> - update users to the new API
-> Patch 8 updates OPP framework helper function to be more generic, not
-> CPU specific.
-> Patches 9-14 change devfreq cooling, dropping part of old power model and
-> adding registration with Energy Model via exported GPL function.
-> The last path is a simple change for Panfrost GPU driver.
+> On 11/05/2020 13:18, Lukasz Luba wrote:
+>> Hi all,
+>>
+>> This patch set introduces support for devices in the Energy Model (EM)
+>> framework. It will unify the power model for thermal subsystem. It will
+>> make simpler to add support for new devices willing to use more
+>> advanced features (like Intelligent Power Allocation). Now it should
+>> require less knowledge and effort for driver developer to add e.g.
+>> GPU driver with simple energy model. A more sophisticated energy model
+>> in the thermal framework is also possible, driver needs to provide
+>> a dedicated callback function. More information can be found in the
+>> updated documentation file.
+>>
+>> First 7 patches are refactoring Energy Model framework to add support
+>> of other devices that CPUs. They change:
+>> - naming convention from 'capacity' to 'performance' state,
+>> - API arguments adding device pointer and not rely only on cpumask,
+>> - change naming when 'cpu' was used, now it's a 'device'
+>> - internal structure to maintain registered devices
+>> - update users to the new API
+>> Patch 8 updates OPP framework helper function to be more generic, not
+>> CPU specific.
+>> Patches 9-14 change devfreq cooling, dropping part of old power model and
+>> adding registration with Energy Model via exported GPL function.
+>> The last path is a simple change for Panfrost GPU driver.
+>>
+>> The patch set is based on linux-next tag next-20200508.
 > 
-> The patch set is based on linux-next tag next-20200508.
+> Do you think it is possible to respin against linux-pm next ?
 
-Do you think it is possible to respin against linux-pm next ?
+Yes, I will do it and send the v8.
 
-I wanted to try the series but I'm getting non trivial conflicts with
-the devfreq_cooling changes
+> 
+> I wanted to try the series but I'm getting non trivial conflicts with
+> the devfreq_cooling changes
+> 
+> 
 
+Let me take care of this.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Regards,
+Lukasz
