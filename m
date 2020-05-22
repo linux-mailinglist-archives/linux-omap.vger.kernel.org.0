@@ -2,78 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 774C71DE7CB
-	for <lists+linux-omap@lfdr.de>; Fri, 22 May 2020 15:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70C5D1DEB1A
+	for <lists+linux-omap@lfdr.de>; Fri, 22 May 2020 16:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729763AbgEVNNL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 May 2020 09:13:11 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:39262 "EHLO fornost.hmeau.com"
+        id S1730656AbgEVOuZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 22 May 2020 10:50:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51554 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729334AbgEVNNL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 22 May 2020 09:13:11 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
-        id 1jc7Tj-0007Pz-B1; Fri, 22 May 2020 23:12:48 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 22 May 2020 23:12:47 +1000
-Date:   Fri, 22 May 2020 23:12:47 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Tero Kristo <t-kristo@ti.com>
-Cc:     davem@davemloft.net, linux-crypto@vger.kernel.org,
-        linux-omap@vger.kernel.org, Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCHv2 3/7] crypto: omap-crypto: fix userspace copied buffer
- access
-Message-ID: <20200522131247.GA27255@gondor.apana.org.au>
-References: <20200511111913.26541-1-t-kristo@ti.com>
- <20200511111913.26541-4-t-kristo@ti.com>
+        id S1730618AbgEVOuY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 22 May 2020 10:50:24 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D3560221FF;
+        Fri, 22 May 2020 14:50:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590159024;
+        bh=wCEJW245dxBO726etQLlIpRtTbaTWQv+YPDCCDn2mbo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=WtaPLhSoputyahicOiKvlHr4VPFcR0uOr7H1LwxWerGtlCgseSxC2Q5LPGu5QAL+s
+         14P9o27HrgNKtm9dRUQcMNre8V2sLD7QgbbZgy6iuHgSuD7qbu0DposHdnDMVD1yZr
+         JXQZxd7s2BJNqIhS0br70oPXNYsUxrQWfKswdcl4=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 22/41] usb: dwc3: pci: Enable extcon driver for Intel Merrifield
+Date:   Fri, 22 May 2020 10:49:39 -0400
+Message-Id: <20200522144959.434379-22-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200522144959.434379-1-sashal@kernel.org>
+References: <20200522144959.434379-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200511111913.26541-4-t-kristo@ti.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, May 11, 2020 at 02:19:09PM +0300, Tero Kristo wrote:
-> In case buffers are copied from userspace, directly accessing the page
-> will most likely fail because it hasn't been mapped into the kernel
-> memory space. Fix the issue by forcing a kmap / kunmap within the
-> cleanup functionality.
-> 
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> ---
->  drivers/crypto/omap-crypto.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/crypto/omap-crypto.c b/drivers/crypto/omap-crypto.c
-> index cc88b7362bc2..31bdb1d76d11 100644
-> --- a/drivers/crypto/omap-crypto.c
-> +++ b/drivers/crypto/omap-crypto.c
-> @@ -178,11 +178,16 @@ static void omap_crypto_copy_data(struct scatterlist *src,
->  		amt = min(src->length - srco, dst->length - dsto);
->  		amt = min(len, amt);
->  
-> -		srcb = sg_virt(src) + srco;
-> -		dstb = sg_virt(dst) + dsto;
-> +		srcb = kmap_atomic(sg_page(src)) + srco + src->offset;
-> +		dstb = kmap_atomic(sg_page(dst)) + dsto + dst->offset;
->  
->  		memcpy(dstb, srcb, amt);
->  
-> +		flush_dcache_page(sg_page(dst));
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-You need to check !PageSlab as it's illegal to call it on a kernel
-page.  Also you should be using flush_kernel_dcache_page.  scatterwalk
-uses flush_dcache_page only because when it was created the other
-function didn't exist.
+[ Upstream commit 066c09593454e89bc605ffdff1c9810061f9b1e1 ]
 
-Would it be possible to use the sg_miter interface to do the copy?
-In fact your function could possibly be added to lib/scatterlist.c
-as it seems to be quite generic.
+Intel Merrifield provides a DR support via PMIC which has its own
+extcon driver.
 
-Thanks,
+Add a property string to link to that driver.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Felipe Balbi <balbi@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/usb/dwc3/dwc3-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
+index 7051611229c9..b67372737dc9 100644
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -114,6 +114,7 @@ static const struct property_entry dwc3_pci_intel_properties[] = {
+ 
+ static const struct property_entry dwc3_pci_mrfld_properties[] = {
+ 	PROPERTY_ENTRY_STRING("dr_mode", "otg"),
++	PROPERTY_ENTRY_STRING("linux,extcon-name", "mrfld_bcove_pwrsrc"),
+ 	PROPERTY_ENTRY_BOOL("linux,sysdev_is_parent"),
+ 	{}
+ };
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.25.1
+
