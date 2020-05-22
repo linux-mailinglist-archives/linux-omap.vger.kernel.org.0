@@ -2,95 +2,187 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9478C1DE2C6
-	for <lists+linux-omap@lfdr.de>; Fri, 22 May 2020 11:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7000F1DE405
+	for <lists+linux-omap@lfdr.de>; Fri, 22 May 2020 12:16:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729582AbgEVJRg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 May 2020 05:17:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36600 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728068AbgEVJRf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 22 May 2020 05:17:35 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9800F206B6;
-        Fri, 22 May 2020 09:17:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590139054;
-        bh=HNMgBFDJToK3zbjWXKcZnffRZmJKX11EfdxrUJQVZ+k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ALXMmxWNVRdAjNCssSQVc/aCyaMykegZCH1zG2CEyzJQngkhsO1Y29uPu1QJsKqUk
-         Va1x7rbuVZTiy8uA6On9aCxlWqVvBJ0TCtd76m0uBBkp3mw0sDp3eX1C9M1thT8Kqz
-         59gCS+p+GCEM4CESC9xYJ51C2Ps59hFla3XZTOe8=
-Date:   Fri, 22 May 2020 11:17:31 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv8 0/6] n_gsm serdev support and GNSS driver for droid4
-Message-ID: <20200522091731.GA1203588@kroah.com>
-References: <20200512214713.40501-1-tony@atomide.com>
+        id S1728329AbgEVKQR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 22 May 2020 06:16:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42546 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728281AbgEVKQQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 22 May 2020 06:16:16 -0400
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E05E7C061A0E
+        for <linux-omap@vger.kernel.org>; Fri, 22 May 2020 03:16:15 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id l20so10131431ilj.10
+        for <linux-omap@vger.kernel.org>; Fri, 22 May 2020 03:16:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=lFglfxtflhYB6+KPpkNDLZLP+UDYE2uMjE/WOWfdIQ4=;
+        b=PwP/wnylahn6Q8UfoXhziwB+1v9cLXkxedtHcubFNn/eq00GGkYxBGkC8ZWdZj8SQu
+         OyWD3A43+c0+lEDTm4IwjBgw9sGE8QLBo4wCpHGsEHoHgcgK/3MTucg6+tkFeQS4y+L0
+         7Lsw7RII+nGD0B2smh6Ze06JmbLDIY+ooLOi3MuN7JMVlHvxT9d8t6kSeCuCGklbAJGZ
+         3AB6LJHIeuI7zYV+GrEi3+0MRTTTnZV1AIMuz/OjQttG1NVJC9xtHm/P3ZJ5rrmHWLL7
+         m8o9iywouXyXreDQsZlhY4JgkYMGP7rAs++PaNIibJtEccSSi6s+nb5qsGz/NwqDqjbh
+         /IRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=lFglfxtflhYB6+KPpkNDLZLP+UDYE2uMjE/WOWfdIQ4=;
+        b=VOUrqOMiZ6WtkXry+e3XnqavSNYbA7ioL33XB7BsT1uci04mC9ByVe8s9TQpJ9FpRF
+         Zs8OBRv1Hi9C0SpU8nuWeF4lNZB0PO5WKBKeletLBcrMEAPZkQOCV/VsBUmnXjm9J885
+         Fc2JZ5ntGcpxo4Mx+1p/NyFLBuFdA1oGRMz/ugVcBBH2noqnxxQQQKoSuMLYctuNzmSb
+         b6+FyjpRW2scAa4YcJI8en3QGMzPmgYpTbshCzQKywFHkm80X6cUOyk5+qm0qJOyNX47
+         KfWRdcABDDjGAlu1pMvklFklwxz5h4v1JR5+np8Azp3fvHN6c/ufDXDrxAR40kDmkMaM
+         QpVA==
+X-Gm-Message-State: AOAM530H40ROg5/rXH9su9Avb42NtRQ+h+HkE68qrjcCY0xcp1RkXKTy
+        rsmniz1VGTEmU99vFGqdFucC5HaJasD/FdQhx/HWJHVxlrw=
+X-Google-Smtp-Source: ABdhPJwm5PAX8tg0XXP+5DRtVDcEVZSPIdVgCtqVw0d864xj90X1X7WpHAKgIy87wOlN/sa14KmxwhegFJ43VGPaZz8=
+X-Received: by 2002:a92:7e51:: with SMTP id z78mr9367851ilc.214.1590142574997;
+ Fri, 22 May 2020 03:16:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200512214713.40501-1-tony@atomide.com>
+References: <CAHCN7x+PAsFBhKyUUdbW2_diZ9PX=-Keb=UtXbkUVv1Mp1eujQ@mail.gmail.com>
+ <fedbed5e-8365-85ab-9b81-2ec25ffa64b4@ti.com> <CAHCN7x+E3YrRFerzOHKOQHfx67g=ANESuopskKpZHX5qBx_fHQ@mail.gmail.com>
+ <20200521024445.GC5684@iaqt7>
+In-Reply-To: <20200521024445.GC5684@iaqt7>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 22 May 2020 05:16:03 -0500
+Message-ID: <CAHCN7x+cL00Vhdat5R6=AoTVpq7kt9C28aibZiwe3QuyCQ_fAw@mail.gmail.com>
+Subject: Re: AM3517 MUSB and CPPI
+To:     Bin Liu <b-liu@ti.com>, Adam Ford <aford173@gmail.com>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 12, 2020 at 02:47:07PM -0700, Tony Lindgren wrote:
-> Hi all,
-> 
-> Here's the updated set of these patches fixed up for Johan's and
-> Pavel's earlier comments.
-> 
-> This series does the following:
-> 
-> 1. Adds functions to n_gsm.c for serdev-ngsm.c driver to use
-> 
-> 2. Adds a generic serdev-ngsm.c driver that brings up the TS 27.010
->    TTY ports configured in devicetree with help of n_gsm.c
-> 
-> 3. Allows the use of standard Linux device drivers for dedicated
->    TS 27.010 channels for devices like GNSS and ALSA found on some
->    modems for example
-> 
-> 4. Adds a gnss-motmdm consumer driver for the GNSS device found on
->    the Motorola Mapphone MDM6600 modem on devices like droid4
-> 
-> I've placed the serdev-ngsm.c under drivers/tty/serdev as it still
-> seems to make most sense with no better places available. It's no
-> longer an MFD driver as it really does not need to care what channel
-> specific consumer drivers might be configured for the generic driver.
-> Now serdev-ngsm just uses of_platform_populate() to probe whatever
-> child nodes it might find.
-> 
-> I'm not attached having the driver in drivers/tty/serdev. I just
-> don't have any better locations in mind. So using Johan's earlier
-> i2c example, the drivers/tty/serdev/serdev-ngsm.c driver is now a
-> generic protocol and bus driver, so it's getting closer to the
-> the drivers/i2c/busses analogy maybe :) Please do suggest better
-> locations other than MFD and misc if you have better ideas.
-> 
-> Now without the chardev support, the /dev/gsmtty* using apps need
-> to use "U1234AT+CFUN?" format for the packets. The advantage is
-> less kernel code, and we keep the existing /dev/gsmtty* interface.
-> 
-> If we still really need the custom chardev support, that can now
-> be added as needed with the channel specific consumer driver(s),
-> but looks like this won't be needed based on Pavel's ofono work.
+On Wed, May 20, 2020 at 9:44 PM Bin Liu <b-liu@ti.com> wrote:
+>
+> Hi Adam,
+>
+> First of all for my curiosity, what motivates you to bring up the AM3517
+> MUSB support up to date?
 
-Johan and Rob, any objection/review of this series?
+I work for Logic PD, now called Beacon EmbeddedWorks, and we still get
+inquiries for that SOM.  I've been trying to keep all the older SOM's
+up-to-date in my spare time.  We have an L138/AM1808 SOM that seems
+like it's in decent shape, as well as an OMAP3530 and a DM3730 which
+all have most of their functionality.  The last remaining SOM to need
+some fixing is the AM3517.
 
-thanks,
+>
+> Though I maintain the musb drivers, I don't know much about the devices
+> other than AM335x. But I spent a little time looked at the drivers and
+> the TRM, here is what I thought.
+>
+> Your query below seems showing that you are trying to bring up the CPPI41
+> support for AM3517 MUSB, but have you got the glue driver working in PIO
+> mode yet? It seems to be quite amount of effort to get PIO mode working.
 
-greg k-h
+I do not have either PIO nor CPPI41 support working yet.  I've been
+using the L138 and the am335x as references because the AM3517 seems
+very similar to both in some ways.  It appears more similar to the
+am335x.
+
+> The glue driver am35x.c is there but it doesn't support device tree. The
+> dts am3517.dtsi defines the musb node with 'ti,omap3-musb' compatible,
+> which seems not right, at least internal phy vs external phy, comparing
+> with omap3 musb. am3517.dtsi also misses some required musb properties.
+
+I've been working on that too, and the glue for the am35x glue that
+was present before now probes when adding DT support and pointing the
+am3517 OTG node to it.
+
+> So I am not sure which glue driver should be used for AM3517 MUSB.
+There was an am35x glue driver already present, but it was incomplete.
+
+>
+> I also looked the CPPI section in the TRM, yes, the scheduler register
+> base offset should be 0x2000, and the queue manager register base offset
+> should be 0x4000. But I think the CDMA controller register base should
+> be 0x1800, not 0x1000 as shown in Table 20-9. However the register
+> layout in these 3 segments are quite different from those on AM335x, so
+> it seems the CPPI41 dmaengine driver need some work as well to support
+> AM3517 CPPI.
+
+That's what worries me.  I am OK with using PIO instead of the DMA,
+but I wasn't sure which driver to use as an example to follow.  If you
+have any suggestions or pointers, I'm fine with PIO.  My main goal is
+to get the MUSB working again, and we can improve power or performance
+later.
+
+thanks
+>
+> -Bin.
+>
+> On Mon, May 18, 2020 at 05:19:32AM -0500, Adam Ford wrote:
+> > On Mon, May 18, 2020 at 12:35 AM Sekhar Nori <nsekhar@ti.com> wrote:
+> > >
+> > > + Bin who maintains MUSB controller support
+> > >
+> > > On 5/18/20 8:17 AM, Adam Ford wrote:
+> > > > From what I can tell, the MUSB controller on the AM3517 hasn't worked
+> > > > in a very long time.
+> >
+> > Thanks for adding Bin.
+> >
+> > I can post of code patches as an RFC if interested.  They don't work
+> > any better, but they don't work any worse either.
+> >
+> > I have modifications to the am35x glue to support cppi41, cppi41 to
+> > support am35, and updates to the device tree to point the musb
+> > controller to the am35 glue with additions for cppi41 references and
+> > some additional clocks.
+> >
+> > adam
+> >
+> > > >
+> > > > I have been going through the TRM for the AM3517, and I am convinced
+> > > > the device tree for the OTG port is wrong, but I am struggling to fix
+> > > > it.
+> > > >
+> > > > From what I can see the USB OTG Port support the CPPI 4.1 DMA
+> > > > controller, but the CPPI 4.1 only appears to support the
+> > > > DA850/OMAP-L138 and the AM335x family.
+> > > >
+> > > > It appears as if the AM35xx is a bit closer in behavior to the AM335x
+> > > > than the L138, but I was hoping either Tony, Tero or someone from TI
+> > > > might have a suggestion.
+> > > >
+> > > > The compatible flag need to be something like "compatible =
+> > > > "ti,am35xx-musb" and not omap3, because OMAP3 doesn't support the CPPI
+> > > > 4.1 DMA controller and the AM3517 does.
+> > > >
+> > > > Secondly, we need to update a couple of the tables in the cppi driver
+> > > > to support the am3517, and lastly, the device tree node needs to
+> > > > support the CPPI driver.
+> > > >
+> > > > It looks like the DA850/L138 makes the CPPI driver a sub-node of the
+> > > > OTG port, while the am335x has it as a separate node from the USB
+> > > > controller.
+> > > >
+> > > > From what I can tell on the AM3517, the CPPI DMA node should be a
+> > > > sub-node of the OTG.
+> > > >
+> > > > What I am struggling with now is the register offsets for controller,
+> > > > scheduler and queue manager.
+> > > > On both DA850 the 335x, there is an explicit table entry showing the
+> > > > offset of DMAREVID, which tells the DMA revision ID.  I cannot find a
+> > > > corresponding register for the AM3517, yet the AM3517
+> > > >
+> > > > FWICT, the scheduler is offset 0x2000 with respect to the OTG
+> > > > controller, and the Queue Manager register is at 0ffset 0x4000, both
+> > > > with respect to the OTG base address.  Unfortunately, I am not finding
+> > > > the offset for the CDMA controller itself.
+> > > >
+> > > > Can someone tell me what it should be?  I am guessing it would be near
+> > > > the 0x1000 offset, but it's a pure guess.
+> > > >
+> > > > adam
+> > > >
+> > >
