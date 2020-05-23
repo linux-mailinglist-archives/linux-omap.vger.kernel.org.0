@@ -2,45 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54B091DFA26
-	for <lists+linux-omap@lfdr.de>; Sat, 23 May 2020 20:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 935B01DFBE3
+	for <lists+linux-omap@lfdr.de>; Sun, 24 May 2020 01:35:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387632AbgEWSLl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 23 May 2020 14:11:41 -0400
-Received: from muru.com ([72.249.23.125]:55632 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726865AbgEWSLl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 23 May 2020 14:11:41 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 87AB980F3;
-        Sat, 23 May 2020 18:12:31 +0000 (UTC)
-Date:   Sat, 23 May 2020 11:11:38 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Evgeniy Polyakov <zbr@ioremap.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        YueHaibing <yuehaibing@huawei.com>, linux-kernel@vger.kernel.org,
-        kernel@pyra-handheld.com, letux-kernel@openphoenux.org,
-        linux-omap@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/4] w1: omap-hdq: fix return value to be -1 if there is
- a timeout
-Message-ID: <20200523181138.GF37466@atomide.com>
-References: <cover.1590255176.git.hns@goldelico.com>
- <b2c2192b461fbb9b8e9bea4ad514a49557a7210b.1590255176.git.hns@goldelico.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b2c2192b461fbb9b8e9bea4ad514a49557a7210b.1590255176.git.hns@goldelico.com>
+        id S2388016AbgEWXfV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 23 May 2020 19:35:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51398 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388010AbgEWXfV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 23 May 2020 19:35:21 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F61C061A0E;
+        Sat, 23 May 2020 16:35:21 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id C92821286F3AD;
+        Sat, 23 May 2020 16:35:20 -0700 (PDT)
+Date:   Sat, 23 May 2020 16:35:19 -0700 (PDT)
+Message-Id: <20200523.163519.974222011620661089.davem@davemloft.net>
+To:     grygorii.strashko@ti.com
+Cc:     kuba@kernel.org, netdev@vger.kernel.org, nsekhar@ti.com,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        s-anna@ti.com
+Subject: Re: [PATCH] net: ethernet: ti: cpsw: fix ASSERT_RTNL() warning
+ during suspend
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200522163931.29905-1-grygorii.strashko@ti.com>
+References: <20200522163931.29905-1-grygorii.strashko@ti.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sat, 23 May 2020 16:35:21 -0700 (PDT)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [200523 17:34]:
-> The code accidentially overwrites the variable ret and not val,
-> which is returned. So it will return the initial value 0 instead
-> of -1.
+From: Grygorii Strashko <grygorii.strashko@ti.com>
+Date: Fri, 22 May 2020 19:39:31 +0300
 
-Oops, sorry about causing this. And thanks for catching it:
+> vlan_for_each() are required to be called with rtnl_lock taken, otherwise
+> ASSERT_RTNL() warning will be triggered - which happens now during System
+> resume from suspend:
+>   cpsw_suspend()
+>   |- cpsw_ndo_stop()
+>     |- __hw_addr_ref_unsync_dev()
+>       |- cpsw_purge_all_mc()
+>          |- vlan_for_each()
+>             |- ASSERT_RTNL();
+> 
+> Hence, fix it by surrounding cpsw_ndo_stop() by rtnl_lock/unlock() calls.
+> 
+> Fixes: 15180eca569b net: ethernet: ti: cpsw: fix vlan mcast
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-Acked-by: Tony Lindgren <tony@atomide.com>
+Applied.
