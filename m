@@ -2,112 +2,150 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB4F91E0827
-	for <lists+linux-omap@lfdr.de>; Mon, 25 May 2020 09:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9D31E08EF
+	for <lists+linux-omap@lfdr.de>; Mon, 25 May 2020 10:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389152AbgEYHog (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 25 May 2020 03:44:36 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:39581 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389105AbgEYHof (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 May 2020 03:44:35 -0400
-Received: by mail-lf1-f68.google.com with SMTP id z206so6346748lfc.6;
-        Mon, 25 May 2020 00:44:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=QQh8K/AzxLyGXT7M8yyjCx9x6FADb3eXEm3pp3jyfa4=;
-        b=Zgpw5qphMRCBKWHJFfrmVihs3Yafigyu8r1I6rSThpIn6IoCrkEpHpPQPdOHdILtnc
-         o34ZdzK05O2EsAhcbSDNuL+nKpO+VM9vB4D2hruSUmIelKC21lcFQLYJIITIYr9OXqO2
-         J7Kh8jVQtBwfksKmwcm+xu6RERFPITseVDe/HSusP/+szbISvyBqLliroe980yVj4WyK
-         KqHjWB2nzJIkBZ9GISVRnFUxD0cNkDnXj6VqoVmVJfrZ1nr3vx6BcO6NdH4MhvXv3Py9
-         VgUjhf4dxXNbjcyxXY2tdxkJxR2XWIvKPOn9/mjm36rfj4mWGmPUfycX8OP+Ic84EIiZ
-         lACw==
-X-Gm-Message-State: AOAM532xn4mq4lgKq2+RbU1mnSmcdVKpM0GRSMWV5BLXzrCQjw/gkz8O
-        TKGIm6QLXLRR6cEuSZC7tO4=
-X-Google-Smtp-Source: ABdhPJxKSbwHav/tnGnwZwLeNFOidZRkNGpkdbwTWES4Gq2Rkn73uu1zH4rlqSs7CM5G8CSF/j4pBg==
-X-Received: by 2002:a19:c212:: with SMTP id l18mr6677122lfc.68.1590392673005;
-        Mon, 25 May 2020 00:44:33 -0700 (PDT)
-Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.174.190])
-        by smtp.gmail.com with ESMTPSA id l15sm4308390ljc.73.2020.05.25.00.44.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2020 00:44:32 -0700 (PDT)
-Received: from johan by xi.terra with local (Exim 4.93.0.4)
-        (envelope-from <johan@kernel.org>)
-        id 1jd7ma-0001OJ-DP; Mon, 25 May 2020 09:44:24 +0200
-Date:   Mon, 25 May 2020 09:44:24 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Tony Lindgren <tony@atomide.com>, Johan Hovold <johan@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv8 0/6] n_gsm serdev support and GNSS driver for droid4
-Message-ID: <20200525074424.GA5276@localhost>
-References: <20200512214713.40501-1-tony@atomide.com>
- <20200522091731.GA1203588@kroah.com>
+        id S1729566AbgEYIhp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 25 May 2020 04:37:45 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:47234 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726222AbgEYIhp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 May 2020 04:37:45 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04P8asGt084140;
+        Mon, 25 May 2020 03:36:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1590395814;
+        bh=WKKDh0I+q2khJ+ZKHjixvl1/vqt6yniCdX720vezMZs=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=iGU9rXyzNd1+f4GTgq3fuGpByAG/mp6GkLlbgbcSrNgfMuDLZtK1r3q6nLXGBNp7j
+         GLP1xX8UfyHhJTpmiXszeR1dfOQiOJwPmF9yrotyFYvSAkjaTrvGszcYeEreRwVxx7
+         Af4lxyws4Fow986uyrPi2AABRoarIhEMkwO7Qg7A=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04P8ascu090199;
+        Mon, 25 May 2020 03:36:54 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 25
+ May 2020 03:36:53 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 25 May 2020 03:36:53 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04P8apcY021458;
+        Mon, 25 May 2020 03:36:51 -0500
+Subject: Re: [PATCH] ASoC: ti: Fix runtime PM imbalance in
+ omap2_mcbsp_set_clks_src
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>, <kjlu@umn.edu>
+CC:     Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, <alsa-devel@alsa-project.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20200525072209.6935-1-dinghao.liu@zju.edu.cn>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+X-Pep-Version: 2.0
+Message-ID: <16f653b3-2a36-7b2c-60be-73d550e47774@ti.com>
+Date:   Mon, 25 May 2020 11:37:30 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200522091731.GA1203588@kroah.com>
+In-Reply-To: <20200525072209.6935-1-dinghao.liu@zju.edu.cn>
+Content-Type: multipart/mixed;
+        boundary="------------487D93F0F3FFD83EDC06518C"
+Content-Language: en-US
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, May 22, 2020 at 11:17:31AM +0200, Greg Kroah-Hartman wrote:
-> On Tue, May 12, 2020 at 02:47:07PM -0700, Tony Lindgren wrote:
-> > Hi all,
-> > 
-> > Here's the updated set of these patches fixed up for Johan's and
-> > Pavel's earlier comments.
-> > 
-> > This series does the following:
-> > 
-> > 1. Adds functions to n_gsm.c for serdev-ngsm.c driver to use
-> > 
-> > 2. Adds a generic serdev-ngsm.c driver that brings up the TS 27.010
-> >    TTY ports configured in devicetree with help of n_gsm.c
-> > 
-> > 3. Allows the use of standard Linux device drivers for dedicated
-> >    TS 27.010 channels for devices like GNSS and ALSA found on some
-> >    modems for example
-> > 
-> > 4. Adds a gnss-motmdm consumer driver for the GNSS device found on
-> >    the Motorola Mapphone MDM6600 modem on devices like droid4
-> > 
-> > I've placed the serdev-ngsm.c under drivers/tty/serdev as it still
-> > seems to make most sense with no better places available. It's no
-> > longer an MFD driver as it really does not need to care what channel
-> > specific consumer drivers might be configured for the generic driver.
-> > Now serdev-ngsm just uses of_platform_populate() to probe whatever
-> > child nodes it might find.
-> > 
-> > I'm not attached having the driver in drivers/tty/serdev. I just
-> > don't have any better locations in mind. So using Johan's earlier
-> > i2c example, the drivers/tty/serdev/serdev-ngsm.c driver is now a
-> > generic protocol and bus driver, so it's getting closer to the
-> > the drivers/i2c/busses analogy maybe :) Please do suggest better
-> > locations other than MFD and misc if you have better ideas.
-> > 
-> > Now without the chardev support, the /dev/gsmtty* using apps need
-> > to use "U1234AT+CFUN?" format for the packets. The advantage is
-> > less kernel code, and we keep the existing /dev/gsmtty* interface.
-> > 
-> > If we still really need the custom chardev support, that can now
-> > be added as needed with the channel specific consumer driver(s),
-> > but looks like this won't be needed based on Pavel's ofono work.
-> 
-> Johan and Rob, any objection/review of this series?
+--------------487D93F0F3FFD83EDC06518C
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Yeah, sorry I haven't had time to review this yet. I should be able to
-look at it today.
 
-Johan
+
+On 25/05/2020 10.22, Dinghao Liu wrote:
+> When clk_set_parent() returns an error code, a pairing
+> runtime PM usage counter increment is needed to keep the
+> counter balanced.
+>=20
+> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+> ---
+>  sound/soc/ti/omap-mcbsp.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+> index 3d41ca2238d4..84b4de9b670c 100644
+> --- a/sound/soc/ti/omap-mcbsp.c
+> +++ b/sound/soc/ti/omap-mcbsp.c
+> @@ -80,6 +80,7 @@ static int omap2_mcbsp_set_clks_src(struct omap_mcbsp=
+ *mcbsp, u8 fck_src_id)
+>  	if (r) {
+>  		dev_err(mcbsp->dev, "CLKS: could not clk_set_parent() to %s\n",
+>  			src);
+> +		pm_runtime_get_sync(mcbsp->dev);
+
+>  		clk_put(fck_src);
+>  		return r;
+>  	}
+
+I think it would be cleaner in this way:
+
+pm_runtime_put_sync(mcbsp->dev);
+
+r =3D clk_set_parent(mcbsp->fclk, fck_src);
+if (r)
+	dev_err(mcbsp->dev, "CLKS: could not clk_set_parent() to %s\n",
+		src);
+
+pm_runtime_get_sync(mcbsp->dev);
+clk_put(fck_src);
+
+return r;
+
+- P=C3=A9ter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
+--------------487D93F0F3FFD83EDC06518C
+Content-Type: application/pgp-keys; name="pEpkey.asc"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment; filename="pEpkey.asc"
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQENBFki4nsBCAD3BM+Ogt951JlaDloruEjoZk/Z+/37CjP0fY2mqLhBOzkpx95u
+X1Fquf0KfVk+ZzCd25XGOZEtpZNlXfbxRr2iRWPS5RW2FeLYGvg2TTJCpSr+ugKu
+OOec6KECCUotGbGhpYwBrbarJNEwDcAzPK7UJYa1rhWOmkpZJ1hXF1hUghB84q35
+8DmN4sGLcsIbVdRFZ1tWFh4vGBFV9LsoDZIrnnANb6/XMX78s+tr3RG3GZBaFPl8
+jO5IIv0UIGNUKaYlNVFYthjGCzOqtstHchWuK9eQkR7m1+Vc+ezh1qK0VJydIcjn
+OtoMZZL7RAz13LB9vmcJjbQPnI7dJojz/M7zABEBAAG0JlBldGVyIFVqZmFsdXNp
+IDxwZXRlci51amZhbHVzaUB0aS5jb20+iQFOBBMBCAA4FiEE+dBcpRFvJjZw+uta
+LCayis85LN4FAlki4nsCGwMFCwkIBwIGFQgJCgsCBBYCAwECHgECF4AACgkQLCay
+is85LN4QjggAzxxxXqiWpA3vuj9yrlGLft3BeGKWqF8+RzdeRvshtNdpGeIFf+r5
+AJVR71R1w89Qeb4DGXus7qsKiafdFGG7yxbuhw8a5wUm+ZncBXA+ETn3OyVtl8g8
+r/ZcPX420jClBNTVuL0sSnyqDFDrt5f+uAFOIwsnHdpns174Zu9QhgYxdvdZ+jMh
+Psb745O9EVeNvdfUIRdrVjb4IhJKNIzkb0Tulsz5xeCJReUYpxZU1jzEq3YZqIou
++fi+oS4wlJuSoxKKTmIXtSeEy/weStF1XHMo6vLYqzaK4FyIuclqeuYUYSVy2425
+7TMXugaI+O85AEI6KW8MCcu1NucSfAWUabkBDQRZIuJ7AQgAypKq8iIugpHxWA2c
+Ck6MQdPBT6cOEVK0tjeHaHAVOUPiw9Pq+ssMifdIkDdqXNZ3RLH/X2svYvd8c81C
+egqshfB8nkJ5EKmQc9d7s0EwnYT8OwsoVb3c2WXnsdcKEyu2nHgyeJEUpPpMPyLc
++PWhoREifttab4sOPktepdnUbvrDK/gkjHmiG6+L2owSn637N+Apo3/eQuDajfEu
+kybxK19ReRcp6dbqWSBGSeNB32c/zv1ka37bTMNVUY39Rl+/8lA/utLfrMeACHRO
+FGO1BexMASKUdmlB0v9n4BaJFGrAJYAFJBNHLCDemqkU7gjaiimuHSjwuP0Wk7Ct
+KQJfVQARAQABiQE2BBgBCAAgFiEE+dBcpRFvJjZw+utaLCayis85LN4FAlki4nsC
+GwwACgkQLCayis85LN7kCwgAoy9r3ZQfJNOXO1q/YQfpEELHn0p8LpwliSDUS1xL
+sswyxtZS8LlW8PjlTXuBLu38Vfr0vGav7oyV7TkhnKT3oBOLXanyZqwgyZSKNEGB
+PB4v3Fo7YTzpfSofiwuz03uyfjTxiMGjonxSb+YxM7HBHfzjrOKKlg02fK+lWNZo
+m5lXugeWD7U6JJguNdYfr+U4zYIblelUImcIE+wnR0oLzUEVDIWSpVrl/OqS3Rzo
+mw8wBsHksTHrbgUnKL0SCzYc90BTeKbyjEBnVDr+dlfbxRxkB8h9RMPMdjodvXzS
+Gfsa9V/k4XAsh7iX9EUVBbnmjA61ySxU/w98h96jMuteTg=3D=3D
+=3DeQmw
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------487D93F0F3FFD83EDC06518C--
