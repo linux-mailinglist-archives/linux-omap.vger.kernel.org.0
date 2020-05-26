@@ -2,97 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C84651E2520
-	for <lists+linux-omap@lfdr.de>; Tue, 26 May 2020 17:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93FD51E275F
+	for <lists+linux-omap@lfdr.de>; Tue, 26 May 2020 18:46:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728626AbgEZPNF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 May 2020 11:13:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33526 "EHLO mail.kernel.org"
+        id S2388801AbgEZQp4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 May 2020 12:45:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60668 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728205AbgEZPNF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 26 May 2020 11:13:05 -0400
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S2388799AbgEZQpz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 26 May 2020 12:45:55 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CDDE12078C;
-        Tue, 26 May 2020 15:13:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2771120787;
+        Tue, 26 May 2020 16:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590505984;
-        bh=mLAN8D6oIJoa3xggwgfTsbQUrUGKyiAShX7jqMOfqpQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=TwwVC+24PxfZ9n8pI3uZo1gP7BUT14m+GVWVUjEuzJ19b989LBWKZjSDjv/kPV1ex
-         L6uQJSmJPjTj8IXOAE5zqwykadOzOqlPyc4fH9x/KqRNyGBVD62xdvunQ1MvXvKizj
-         2XBl6a+OPGFq6NlEgOuIG4xeKo2Nm0kKRMRoalz8=
-Received: by mail-oi1-f179.google.com with SMTP id j145so18969007oib.5;
-        Tue, 26 May 2020 08:13:04 -0700 (PDT)
-X-Gm-Message-State: AOAM531+aFI0HyQnJlBo0CYWapiZsZzGwyXGu/0pWcg16srZRy5Ken2n
-        yiH5UP3Jxvshw3ntVYqbrJ6QpB8gK0fyrf6zJg==
-X-Google-Smtp-Source: ABdhPJxnWdsB33/h+eNDJFncCR1n3OmMuD+wbzq8824aW+7RwYNdy8Fq+5CjchUFaYrWK3vesXy9roYP9HkRJfjTDcY=
-X-Received: by 2002:aca:f084:: with SMTP id o126mr14928427oih.106.1590505984103;
- Tue, 26 May 2020 08:13:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200522033631.32574-1-kishon@ti.com> <20200522033631.32574-4-kishon@ti.com>
- <CAL_JsqJjXUUgTbSAi83w4Eie-sVTrkLLMGh_PRQsd8k2vuua4Q@mail.gmail.com> <df29309d-8401-4040-eb1e-90bb3af93a82@ti.com>
-In-Reply-To: <df29309d-8401-4040-eb1e-90bb3af93a82@ti.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 26 May 2020 09:12:52 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLy9T8O81stSW8RHpsUXFFjon80VG9-Jgync1eVR4iTew@mail.gmail.com>
-Message-ID: <CAL_JsqLy9T8O81stSW8RHpsUXFFjon80VG9-Jgync1eVR4iTew@mail.gmail.com>
-Subject: Re: [PATCH v5 03/14] PCI: cadence: Convert all r/w accessors to
- perform only 32-bit accesses
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        PCI <linux-pci@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devicetree@vger.kernel.org,
-        linux-omap <linux-omap@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        s=default; t=1590511555;
+        bh=XOChMk8gnrUoD6TmiuzV6PPv/YGwIxQm8tqk/nDusow=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=tcmQUE3ryk37EbisWbA+aKPXcV4hwxJtkoKRvBtFxt++O2PQuAsURLEhcbL4Bt0gI
+         C0fgmYv4qEZZsxMjzGojjwnSQTFd0Y0oIlV122g2vfxKGh4cuS3rBz3N/Ww1pmL2HG
+         Qw/EZd+JkCoMY6PEKJpj/kgfaVCV/j70gCAelFlY=
+Date:   Tue, 26 May 2020 17:45:53 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     kjlu@umn.edu, Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        linux-omap@vger.kernel.org, alsa-devel@alsa-project.org,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Takashi Iwai <tiwai@suse.com>
+In-Reply-To: <20200525085848.4227-1-dinghao.liu@zju.edu.cn>
+References: <20200525085848.4227-1-dinghao.liu@zju.edu.cn>
+Subject: Re: [PATCH] [v2] ASoC: ti: Fix runtime PM imbalance in omap2_mcbsp_set_clks_src
+Message-Id: <159051153752.36309.9642221556598180618.b4-ty@kernel.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, May 24, 2020 at 9:30 PM Kishon Vijay Abraham I <kishon@ti.com> wrote:
->
-> Hi Rob,
->
-> On 5/22/2020 9:24 PM, Rob Herring wrote:
-> > On Thu, May 21, 2020 at 9:37 PM Kishon Vijay Abraham I <kishon@ti.com> wrote:
-> >>
-> >> Certain platforms like TI's J721E using Cadence PCIe IP can perform only
-> >> 32-bit accesses for reading or writing to Cadence registers. Convert all
-> >> read and write accesses to 32-bit in Cadence PCIe driver in preparation
-> >> for adding PCIe support in TI's J721E SoC.
-> >
-> > Looking more closely I don't think cdns_pcie_ep_assert_intx is okay
-> > with this and never can be given the PCI_COMMAND and PCI_STATUS
-> > registers are in the same word (IIRC, that's the main reason 32-bit
-> > config space accesses are broken). So this isn't going to work at
->
-> right, PCI_STATUS has write '1' to clear bits and there's a chance that it
-> could be reset while raising legacy interrupt. While this cannot be avoided for
-> TI's J721E, other platforms doesn't have to have this limitation.
-> > least for EP accesses. And maybe you need a custom .raise_irq() hook
-> > to minimize any problems (such as making the RMW atomic at least from
-> > the endpoint's perspective).
->
-> This is to make sure EP doesn't update in-consistent state when RC is updating
-> the PCI_STATUS register? Since this involves two different systems, how do we
-> make this atomic?
+On Mon, 25 May 2020 16:58:48 +0800, Dinghao Liu wrote:
+> When clk_set_parent() returns an error code, a pairing
+> runtime PM usage counter increment is needed to keep the
+> counter balanced.
 
-You can't make it atomic WRT both systems, but is there locking around
-each RMW? Specifically, are preemption and interrupts disabled to
-ensure time between a read and write are minimized? You wouldn't want
-interrupts disabled during the delay too though (i.e. around
-.raise_irq()).
+Applied to
 
-BTW, I've asked this question before, but aren't PCI legacy interrupts
-level triggered? If so, isn't generating a pulse wrong?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Rob
+Thanks!
+
+[1/1] ASoC: ti: Fix runtime PM imbalance in omap2_mcbsp_set_clks_src
+      commit: c553d290577093553098a56c954e516950c35c59
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
