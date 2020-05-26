@@ -2,86 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A64971E24D0
-	for <lists+linux-omap@lfdr.de>; Tue, 26 May 2020 17:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C84651E2520
+	for <lists+linux-omap@lfdr.de>; Tue, 26 May 2020 17:13:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727978AbgEZPBF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 May 2020 11:01:05 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:50874 "EHLO rere.qmqm.pl"
+        id S1728626AbgEZPNF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 May 2020 11:13:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33526 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726939AbgEZPBF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 26 May 2020 11:01:05 -0400
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 49Wcbf1BFgz8L;
-        Tue, 26 May 2020 17:01:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1590505262; bh=5eoWOCSdKM+lSnXRhtSkJsDrLufv/HLpEsk0JbM9g6I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c+Y9YxlmFWtn2WaNwfZJdGE1DhP5Doxf6E6dQMaz3HGUrCT7wPf8H6l7bkONr4eEj
-         UKTqbathgIRAijpN+hDrPq8r9WHRJwUwWdShDzb9yv7Pw651t2VejN9CnXg3itiwX4
-         ZQ9d/OOhhw7iQj1EcsmvIVDmqDxC71LZUShUDN2vSldUtXYaafw+kyydg99IVYKwAr
-         47JvXlbsojgNiD+RFRlBlVBSvGH2Kn8AoYqQKV1MsNtG1HoUcGWBB7v6GTAgXSuHD3
-         PgIGeiPYIQEPFbRnnd/g5dld1PduSYKPaT0FT+9299X9OchhuF3uN0EqQnVWOXDdCN
-         S9sThJJOyqlig==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.102.2 at mail
-Date:   Tue, 26 May 2020 17:01:01 +0200
-From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Zack Pearsall <zpearsall@yahoo.com>,
-        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mfd: tps65910: Correct power-off programming sequence
-Message-ID: <20200526145952.GA2517@qmqm.qmqm.pl>
-References: <20200524192643.18207-1-digetx@gmail.com>
+        id S1728205AbgEZPNF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 26 May 2020 11:13:05 -0400
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CDDE12078C;
+        Tue, 26 May 2020 15:13:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590505984;
+        bh=mLAN8D6oIJoa3xggwgfTsbQUrUGKyiAShX7jqMOfqpQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=TwwVC+24PxfZ9n8pI3uZo1gP7BUT14m+GVWVUjEuzJ19b989LBWKZjSDjv/kPV1ex
+         L6uQJSmJPjTj8IXOAE5zqwykadOzOqlPyc4fH9x/KqRNyGBVD62xdvunQ1MvXvKizj
+         2XBl6a+OPGFq6NlEgOuIG4xeKo2Nm0kKRMRoalz8=
+Received: by mail-oi1-f179.google.com with SMTP id j145so18969007oib.5;
+        Tue, 26 May 2020 08:13:04 -0700 (PDT)
+X-Gm-Message-State: AOAM531+aFI0HyQnJlBo0CYWapiZsZzGwyXGu/0pWcg16srZRy5Ken2n
+        yiH5UP3Jxvshw3ntVYqbrJ6QpB8gK0fyrf6zJg==
+X-Google-Smtp-Source: ABdhPJxnWdsB33/h+eNDJFncCR1n3OmMuD+wbzq8824aW+7RwYNdy8Fq+5CjchUFaYrWK3vesXy9roYP9HkRJfjTDcY=
+X-Received: by 2002:aca:f084:: with SMTP id o126mr14928427oih.106.1590505984103;
+ Tue, 26 May 2020 08:13:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200524192643.18207-1-digetx@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200522033631.32574-1-kishon@ti.com> <20200522033631.32574-4-kishon@ti.com>
+ <CAL_JsqJjXUUgTbSAi83w4Eie-sVTrkLLMGh_PRQsd8k2vuua4Q@mail.gmail.com> <df29309d-8401-4040-eb1e-90bb3af93a82@ti.com>
+In-Reply-To: <df29309d-8401-4040-eb1e-90bb3af93a82@ti.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 26 May 2020 09:12:52 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLy9T8O81stSW8RHpsUXFFjon80VG9-Jgync1eVR4iTew@mail.gmail.com>
+Message-ID: <CAL_JsqLy9T8O81stSW8RHpsUXFFjon80VG9-Jgync1eVR4iTew@mail.gmail.com>
+Subject: Re: [PATCH v5 03/14] PCI: cadence: Convert all r/w accessors to
+ perform only 32-bit accesses
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        PCI <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devicetree@vger.kernel.org,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, May 24, 2020 at 10:26:43PM +0300, Dmitry Osipenko wrote:
-> This patch fixes system shutdown on a devices that use TPS65910 as a
-> system's power controller. In accordance to the TPS65910 datasheet, the
-> PMIC's state-machine transitions into the OFF state only when DEV_OFF
-> bit of DEVCTRL_REG is set. The ON / SLEEP states also should be cleared,
-> otherwise PMIC won't get into a proper state on shutdown. Devices like
-> Nexus 7 tablet and Ouya game console are now shutting down properly.
+On Sun, May 24, 2020 at 9:30 PM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>
+> Hi Rob,
+>
+> On 5/22/2020 9:24 PM, Rob Herring wrote:
+> > On Thu, May 21, 2020 at 9:37 PM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+> >>
+> >> Certain platforms like TI's J721E using Cadence PCIe IP can perform only
+> >> 32-bit accesses for reading or writing to Cadence registers. Convert all
+> >> read and write accesses to 32-bit in Cadence PCIe driver in preparation
+> >> for adding PCIe support in TI's J721E SoC.
+> >
+> > Looking more closely I don't think cdns_pcie_ep_assert_intx is okay
+> > with this and never can be given the PCI_COMMAND and PCI_STATUS
+> > registers are in the same word (IIRC, that's the main reason 32-bit
+> > config space accesses are broken). So this isn't going to work at
+>
+> right, PCI_STATUS has write '1' to clear bits and there's a chance that it
+> could be reset while raising legacy interrupt. While this cannot be avoided for
+> TI's J721E, other platforms doesn't have to have this limitation.
+> > least for EP accesses. And maybe you need a custom .raise_irq() hook
+> > to minimize any problems (such as making the RMW atomic at least from
+> > the endpoint's perspective).
+>
+> This is to make sure EP doesn't update in-consistent state when RC is updating
+> the PCI_STATUS register? Since this involves two different systems, how do we
+> make this atomic?
 
-The datasheets of 65910 and 65911 say that ON and SLP bits are cleared
-during OFF state. But I guess the hardware might work differently.
+You can't make it atomic WRT both systems, but is there locking around
+each RMW? Specifically, are preemption and interrupts disabled to
+ensure time between a read and write are minimized? You wouldn't want
+interrupts disabled during the delay too though (i.e. around
+.raise_irq()).
 
-[...]
-> --- a/drivers/mfd/tps65910.c
-> +++ b/drivers/mfd/tps65910.c
-> @@ -440,8 +440,13 @@ static void tps65910_power_off(void)
->  			DEVCTRL_PWR_OFF_MASK) < 0)
->  		return;
->  
-> -	tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
-> -			DEVCTRL_DEV_ON_MASK);
-> +	if (tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
-> +			DEVCTRL_DEV_SLP_MASK) < 0)
-> +		return;
-> +
-> +	tps65910_reg_update_bits(tps65910, TPS65910_DEVCTRL,
-> +				 DEVCTRL_DEV_OFF_MASK | DEVCTRL_DEV_ON_MASK,
-> +				 DEVCTRL_DEV_OFF_MASK);
->  }
+BTW, I've asked this question before, but aren't PCI legacy interrupts
+level triggered? If so, isn't generating a pulse wrong?
 
-There is tps65910_reg_set_bits() at the start of function. I guess it
-doesn't work if your changes are needed. Maybe you can remove it?
-
-I would also include your observations about the chip's behaviour in the
-commit message so it doesn't get "fixed" later.
-
-Best Regards,
-Micha³ Miros³aw
+Rob
