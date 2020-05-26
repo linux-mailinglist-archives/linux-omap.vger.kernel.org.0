@@ -2,82 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A541E22C6
-	for <lists+linux-omap@lfdr.de>; Tue, 26 May 2020 15:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0797D1E23FB
+	for <lists+linux-omap@lfdr.de>; Tue, 26 May 2020 16:21:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727110AbgEZNLq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 May 2020 09:11:46 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:47634 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727034AbgEZNLq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 May 2020 09:11:46 -0400
+        id S1726954AbgEZOVN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 May 2020 10:21:13 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:56112 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726811AbgEZOVN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 May 2020 10:21:13 -0400
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04QDBeKi005982;
-        Tue, 26 May 2020 08:11:40 -0500
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04QEL6wc042024;
+        Tue, 26 May 2020 09:21:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1590498700;
-        bh=JqOubeKK6wSULSZQlLqXbBsppFmdTk0e4/K1dkdXo6s=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=eoYtn5NYNWXWqZAHfiHfDGNOzipMHE1VIwVzQIKTLe/n46EcPKNCshakA9ujECIHX
-         vx7drYQ6myfzA0n7My3AoCLhUYQ04K6wgmlSoI67rSC8G+rk5jno2AovkJE7XiJBED
-         tLZx2CCdkqm1ui3AjE0KU3ENHXfPLubruQUqcPTU=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04QDBeBj078347;
-        Tue, 26 May 2020 08:11:40 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+        s=ti-com-17Q1; t=1590502866;
+        bh=os45j/rYJrQJWrLHX/zyT3cvsjFLUypv+9XW8LkowNw=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=upAv+60s82w7RwKv/t5j6FHEIw9NLahjjFiKZ+IKxH0DVeOhPjvpP4wUVBIYgdANK
+         7khZmrxI22CnskLdHOqNTZhT4bWW2apCCnRhjxaJdCjkRW7UxziQVtKWgq84pbOBsz
+         g8J0nwQgaykfKGkz6yCNwoZcSNXMWoZ2lDMg5u7U=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04QEL6A9050220;
+        Tue, 26 May 2020 09:21:06 -0500
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 26
- May 2020 08:11:39 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ May 2020 09:21:06 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 26 May 2020 08:11:39 -0500
-Received: from [127.0.0.1] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04QDBaXE034511;
-        Tue, 26 May 2020 08:11:38 -0500
-Subject: Re: [PATCHv2 3/7] crypto: omap-crypto: fix userspace copied buffer
- access
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-CC:     <davem@davemloft.net>, <linux-crypto@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, Tejun Heo <tj@kernel.org>
-References: <20200511111913.26541-1-t-kristo@ti.com>
- <20200511111913.26541-4-t-kristo@ti.com>
- <20200522131247.GA27255@gondor.apana.org.au>
- <24092385-1348-f55d-a637-6fb2b3129f4e@ti.com>
- <20200526123552.GA10897@gondor.apana.org.au>
- <7fece128-ea82-06cb-23d3-d49c9f10c4a0@ti.com>
- <20200526130743.GA13801@gondor.apana.org.au>
+ Frontend Transport; Tue, 26 May 2020 09:21:06 -0500
+Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04QEL4TV121018;
+        Tue, 26 May 2020 09:21:05 -0500
 From:   Tero Kristo <t-kristo@ti.com>
-Message-ID: <77c2be7c-061c-1d54-c65e-e27b18b66bbb@ti.com>
-Date:   Tue, 26 May 2020 16:11:35 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+To:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <linux-crypto@vger.kernel.org>
+CC:     <linux-omap@vger.kernel.org>
+Subject: [PATCHv3 3/7] crypto: omap-crypto: fix userspace copied buffer access
+Date:   Tue, 26 May 2020 17:21:04 +0300
+Message-ID: <20200526142104.7362-1-t-kristo@ti.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200522131247.GA27255@gondor.apana.org.au>
+References: <20200522131247.GA27255@gondor.apana.org.au>
 MIME-Version: 1.0
-In-Reply-To: <20200526130743.GA13801@gondor.apana.org.au>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 26/05/2020 16:07, Herbert Xu wrote:
-> On Tue, May 26, 2020 at 03:57:10PM +0300, Tero Kristo wrote:
->>
->> Btw, any word on the TI sa2ul series I posted a while back? I see it has
->> been marked as deferred in patchwork but I am not quite sure what that
->> means... deferred until what? I have also been thinking of creating a
->> drivers/crypto/ti subdir at some point, as there are quite a few files for
->> TI accelerators already.
-> 
-> IIRC it was missing an ack from Rob Herring, unless you want me to
-> only apply the bits under drivers/crypto?
+In case buffers are copied from userspace, directly accessing the page
+will most likely fail because it hasn't been mapped into the kernel
+memory space. Fix the issue by forcing a kmap / kunmap within the
+cleanup functionality.
 
-Right, its missing ack from Rob still so need to wait for that. Was 
-wondering if you had any comments on the actual patches themselves.
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
+---
+v3:
+  - Added PageSlab() check to the cache flushing portion, and changed
+    the used flush API to be flush_kernel_dcache_page()
 
--Tero
+ drivers/crypto/omap-crypto.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/crypto/omap-crypto.c b/drivers/crypto/omap-crypto.c
+index cc88b7362bc2..94b2dba90f0d 100644
+--- a/drivers/crypto/omap-crypto.c
++++ b/drivers/crypto/omap-crypto.c
+@@ -178,11 +178,17 @@ static void omap_crypto_copy_data(struct scatterlist *src,
+ 		amt = min(src->length - srco, dst->length - dsto);
+ 		amt = min(len, amt);
+ 
+-		srcb = sg_virt(src) + srco;
+-		dstb = sg_virt(dst) + dsto;
++		srcb = kmap_atomic(sg_page(src)) + srco + src->offset;
++		dstb = kmap_atomic(sg_page(dst)) + dsto + dst->offset;
+ 
+ 		memcpy(dstb, srcb, amt);
+ 
++		if (!PageSlab(sg_page(dst)))
++			flush_kernel_dcache_page(sg_page(dst));
++
++		kunmap_atomic(srcb);
++		kunmap_atomic(dstb);
++
+ 		srco += amt;
+ 		dsto += amt;
+ 		len -= amt;
+-- 
+2.17.1
+
 --
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
