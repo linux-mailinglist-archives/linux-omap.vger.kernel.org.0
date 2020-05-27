@@ -2,107 +2,153 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D6A51E4E20
-	for <lists+linux-omap@lfdr.de>; Wed, 27 May 2020 21:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A100A1E50E4
+	for <lists+linux-omap@lfdr.de>; Thu, 28 May 2020 00:06:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726150AbgE0T2V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 May 2020 15:28:21 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:35901 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725320AbgE0T2V (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 May 2020 15:28:21 -0400
-Received: by mail-io1-f65.google.com with SMTP id y18so6951703iow.3;
-        Wed, 27 May 2020 12:28:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=bgk9XpqXSxucV5OMC4BoaIOWVkM3DvrsJIDo7nwW2GA=;
-        b=h6pSbWeXmTcoLy6Xah1Q2OBlmdmbgTl+hzps5MCINZD31132xk9WObg9EV5taIhJzA
-         /gnX5nVe7VGhxdz7+olrPf9xvAjp+pAZyqqIJ/GxbOLZ0C/ZGZxepVb0mNwYLx/mRHOz
-         btbjmwu18I3Au91kJpXVF177BUtfHV68otsZocHFXN8U0KQAPOjq1dhLY9rbIL75UEul
-         mMFzg9EDZLLNGsfIEvojwuTLAOWIbES+0ZAVYw3kf5eU7TLFiOcyYX8yzfSNQVFv3md8
-         iVytEb05A2BkvKPMy8n+4YWFXGIFLt8dZ+oJQo8ZdROEscJdVY+fPc4bKgBOq/dxYEYW
-         +yiA==
-X-Gm-Message-State: AOAM532ufOqeccsVwPmD1bUyXjfV9cWvNW3p7BQFNnglhtjK3vUagl5d
-        hF6WueRu8xg6umv/vQpPiA==
-X-Google-Smtp-Source: ABdhPJz2AR1rkipQGqnDMAjyexmb3CQOj9FvL6X/yiuBHdY+4XWSLol+S+ivS3k+KdxI0/RLJhY2Ww==
-X-Received: by 2002:a05:6602:2001:: with SMTP id y1mr12134767iod.94.1590607700123;
-        Wed, 27 May 2020 12:28:20 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id j15sm1989870ilk.0.2020.05.27.12.28.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2020 12:28:19 -0700 (PDT)
-Received: (nullmailer pid 2597176 invoked by uid 1000);
-        Wed, 27 May 2020 19:28:17 -0000
-Date:   Wed, 27 May 2020 13:28:17 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johan Hovold <johan@kernel.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 3/6] dt-bindings: serdev: ngsm: Add binding for GNSS
- child node
-Message-ID: <20200527192817.GA2587830@bogus>
-References: <20200512214713.40501-1-tony@atomide.com>
- <20200512214713.40501-4-tony@atomide.com>
+        id S1725306AbgE0WGe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 27 May 2020 18:06:34 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:54076 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725267AbgE0WGe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 May 2020 18:06:34 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04RM6JMC027110;
+        Wed, 27 May 2020 17:06:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1590617179;
+        bh=wHq3GUk6tsshZfXmIGKnDN4gAiFx1/8S5VNAsQF6aUI=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=OrUSiKp5bsBc5ZXTvXvnjoBh7y5cW5Pl1xWZ+u16iP4DZrzl9cE38cGyolacbSAwn
+         Zo+9OrtH66DhqQeKxD07qnql0hbgqaYBbryCQY8AULI9Cvtd5PK9VUA6lM8p2URc2F
+         crKYqnkUMugBmcwsHOn0IuUdAJ5EIz/C8KZ9Y5D0=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04RM6JpY043916
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 27 May 2020 17:06:19 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 27
+ May 2020 17:06:19 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 27 May 2020 17:06:18 -0500
+Received: from [10.250.233.85] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04RM6EbP092800;
+        Wed, 27 May 2020 17:06:15 -0500
+Subject: Re: [PATCH v5 03/14] PCI: cadence: Convert all r/w accessors to
+ perform only 32-bit accesses
+To:     Rob Herring <robh@kernel.org>
+CC:     Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        PCI <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <devicetree@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+References: <20200522033631.32574-1-kishon@ti.com>
+ <20200522033631.32574-4-kishon@ti.com>
+ <CAL_JsqJjXUUgTbSAi83w4Eie-sVTrkLLMGh_PRQsd8k2vuua4Q@mail.gmail.com>
+ <df29309d-8401-4040-eb1e-90bb3af93a82@ti.com>
+ <CAL_JsqLy9T8O81stSW8RHpsUXFFjon80VG9-Jgync1eVR4iTew@mail.gmail.com>
+ <b3663862-44df-867f-0824-28802909f224@ti.com>
+ <CAL_JsqJMZxOFw-kn5_9bNTPzJuwHybJAi6iQyBq=6BrKSvfTqA@mail.gmail.com>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <457db3ae-e68a-d2fc-ba5f-5393ad464413@ti.com>
+Date:   Thu, 28 May 2020 03:36:14 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200512214713.40501-4-tony@atomide.com>
+In-Reply-To: <CAL_JsqJMZxOFw-kn5_9bNTPzJuwHybJAi6iQyBq=6BrKSvfTqA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 12, 2020 at 02:47:10PM -0700, Tony Lindgren wrote:
-> For motorola modem case, we may have a GNSS device on channel 4.
-> Let's add that to the binding and example.
+Hi Rob,
+
+On 5/27/2020 10:07 PM, Rob Herring wrote:
+> On Wed, May 27, 2020 at 4:49 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>>
+>> Hi Rob,
+>>
+>> On 5/26/2020 8:42 PM, Rob Herring wrote:
+>>> On Sun, May 24, 2020 at 9:30 PM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>>>>
+>>>> Hi Rob,
+>>>>
+>>>> On 5/22/2020 9:24 PM, Rob Herring wrote:
+>>>>> On Thu, May 21, 2020 at 9:37 PM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>>>>>>
+>>>>>> Certain platforms like TI's J721E using Cadence PCIe IP can perform only
+>>>>>> 32-bit accesses for reading or writing to Cadence registers. Convert all
+>>>>>> read and write accesses to 32-bit in Cadence PCIe driver in preparation
+>>>>>> for adding PCIe support in TI's J721E SoC.
+>>>>>
+>>>>> Looking more closely I don't think cdns_pcie_ep_assert_intx is okay
+>>>>> with this and never can be given the PCI_COMMAND and PCI_STATUS
+>>>>> registers are in the same word (IIRC, that's the main reason 32-bit
+>>>>> config space accesses are broken). So this isn't going to work at
+>>>>
+>>>> right, PCI_STATUS has write '1' to clear bits and there's a chance that it
+>>>> could be reset while raising legacy interrupt. While this cannot be avoided for
+>>>> TI's J721E, other platforms doesn't have to have this limitation.
+>>>>> least for EP accesses. And maybe you need a custom .raise_irq() hook
+>>>>> to minimize any problems (such as making the RMW atomic at least from
+>>>>> the endpoint's perspective).
+>>>>
+>>>> This is to make sure EP doesn't update in-consistent state when RC is updating
+>>>> the PCI_STATUS register? Since this involves two different systems, how do we
+>>>> make this atomic?
+>>>
+>>> You can't make it atomic WRT both systems, but is there locking around
+>>> each RMW? Specifically, are preemption and interrupts disabled to
+>>> ensure time between a read and write are minimized? You wouldn't want
+>>> interrupts disabled during the delay too though (i.e. around
+>>> .raise_irq()).
+>>
+>> Okay, I'll add spin spin_lock_irqsave() in cdns_pcie_write_sz(). As you also
+>> pointed below that delay for legacy interrupt is wrong and it has to be fixed
+>> (with a later series).
 > 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  .../devicetree/bindings/serdev/serdev-ngsm.yaml          | 9 +++++++++
->  1 file changed, 9 insertions(+)
+> But you don't need a lock everywhere. You need locks in the callers
+> (and only sometimes).
+
+Okay, the locks should be added only for registers where HOST can also write to
+the same register? Maybe only raise_irq then..
+
 > 
-> diff --git a/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml b/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
-> --- a/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
-> +++ b/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
-> @@ -42,6 +42,10 @@ allOf:
->            description: Name of the USB PHY
->            const: usb
->  
-> +        compatible:
-> +          description: GNSS receiver
-> +          const: motorola,mapphone-mdm6600-gnss
+>> How do you want to handle cdns_pcie_ep_fn_writew() now? Because now we are
+>> changing the default implementation to perform only 32-bit access (used for
+>> legacy interrupt, msi-x interrupt and while writing standard headers) and it's
+>> not okay only for legacy interrupts for platforms other than TI.
+> 
+> Now I'm wondering how set_msi is not racy in the current code with the
+> host setting/clearing PCI_MSI_FLAGS_ENABLE? Maybe that bit is RO from
+> the EP side?
 
-I'm not sure how this isn't failing on the example because it is wrong.
+set_msi/set_msix is a one time configuration that is invoked before the host
+establishes the link with the endpoint. I don't think we have to consider this
+as racy.
 
-You're saying this compatible belongs at the same level as 
-phys/phy-names, but that would be the parent which already has a 
-compatible. You have to define a child node property (gnss@4) and have 
-'compatible' under it. At that point, this schema becomes very much 
-Motorola specific.
+Thanks
+Kishon
 
-> +
->        required:
->          - phys
->          - phy-names
-> @@ -61,4 +65,9 @@ examples:
->        phy-names = "usb";
->        #address-cells = <1>;
->        #size-cells = <0>;
-> +
-> +      gnss@4 {
-> +         compatible = "motorola,mapphone-mdm6600-gnss";
-> +         reg = <4>;
-> +      };
->      };
-> -- 
-> 2.26.2
+> 
+> Ultimately I think you're going to have to provide your own endpoint
+> functions or you need accessors for specific registers like
+> PCI_MSI_FLAGS. Then for example, you just rely on the 2 bytes before
+> PCI_MSI_FLAGS being reserved and do a 32-bit access without a RMW.
+> Trying to abstract this at the register read/write level is going to
+> be fragile
+> 
+> Rob
+> 
