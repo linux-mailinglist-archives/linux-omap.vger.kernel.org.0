@@ -2,54 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 468D81E435F
-	for <lists+linux-omap@lfdr.de>; Wed, 27 May 2020 15:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2E8A1E44BD
+	for <lists+linux-omap@lfdr.de>; Wed, 27 May 2020 15:56:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730272AbgE0NS7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 May 2020 09:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33398 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725267AbgE0NS6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 May 2020 09:18:58 -0400
-X-Greylist: delayed 124 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 27 May 2020 06:18:56 PDT
-Received: from msa13.plala.or.jp (msa13.plala.or.jp [IPv6:2400:7800:0:502e::13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AD2C1C08C5C3;
-        Wed, 27 May 2020 06:18:55 -0700 (PDT)
-Received: from mwebp13 ([172.23.13.133]) by msa14.plala.or.jp with ESMTP
-          id <20200527130918.VRFA3566.msa14.plala.or.jp@mwebp13>;
-          Wed, 27 May 2020 22:09:18 +0900
-Date:   Wed, 27 May 2020 22:09:17 +0900
-From:   "Mrs.Judith Rice" <hamurafujimi@tmail.plala.or.jp>
-Reply-To: jonesevansje@gmail.com
-Message-ID: <20200527220918.W9Z21.802.root@mwebp13>
-Subject: Spende
+        id S2389024AbgE0Nzu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 27 May 2020 09:55:50 -0400
+Received: from muru.com ([72.249.23.125]:55818 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388991AbgE0Nzu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 27 May 2020 09:55:50 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id E5A1780DB;
+        Wed, 27 May 2020 13:56:39 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] bus: ti-sysc: Flush posted write on enable and disable
+Date:   Wed, 27 May 2020 06:55:39 -0700
+Message-Id: <20200527135539.49059-1-tony@atomide.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-2022-jp
-Content-Transfer-Encoding: 7bit
-X-Priority: 3 (Normal)
-Sensitivity: Normal
-X-VirusScan: Outbound; mvir-ac14; Wed, 27 May 2020 22:09:18 +0900
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Attn:
+Looks like we're missing flush of posted write after module enable and
+disable. I've seen occasional errors accessing various modules, and it
+is suspected that the lack of posted writes can also cause random reboots.
 
-Es tut uns leid, dass wir Sie aufgrund eines Mismanagent of Beneficaries-Fonds von unseren ernannten Zonal Managern versp&#228;tet kontaktiert haben. Bitte beachten Sie, dass Sie qualifiziert sind, die Zahlung von 900.000,00 USD an der ATM-Karte mit neunhunderttausend Dollar zu erhalten.
+The errors we can see are similar to the one below from spi for example:
 
-Als Entsch&#228;digung von WORLD BANK / IWF (Internationaler W&#228;hrungsfonds) f&#252;r die automatisch &#252;ber einen E-Mail-Wahlautomaten gezogenen, die in der Vergangenheit noch nicht abgeschlossene Transaktionen hatten.
+44000000.ocp:L3 Custom Error: MASTER MPU TARGET L4CFG (Read): Data Access
+in User mode during Functional access
+...
+mcspi_wait_for_reg_bit
+omap2_mcspi_transfer_one
+spi_transfer_one_message
+...
 
-F&#252;r weitere Informationen kontaktieren Sie bitte Rev.EVANS JONES ( jonesevansje@gmail.com )
+We also want to also flush posted write for disable. The clkctrl clock
+disable happens after module disable, and we don't want to have the
+module potentially stay active while we're trying to disable the clock.
 
-Bitte senden Sie ihm Ihre pers&#246;nlichen Daten wie:
+Fixes: d59b60564cbf ("bus: ti-sysc: Add generic enable/disable functions")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/bus/ti-sysc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Vollst&#228;ndiger Name:
-Wohnanschrift:
-Telefonnummer:
-Herkunftsland:
-
-Gr&#252;&#223;e,
-Mrs. Judith Rice
-
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -991,6 +991,9 @@ static int sysc_enable_module(struct device *dev)
+ 		sysc_write_sysconfig(ddata, reg);
+ 	}
+ 
++	/* Flush posted write */
++	sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
++
+ 	if (ddata->module_enable_quirk)
+ 		ddata->module_enable_quirk(ddata);
+ 
+@@ -1071,6 +1074,9 @@ static int sysc_disable_module(struct device *dev)
+ 		reg |= 1 << regbits->autoidle_shift;
+ 	sysc_write_sysconfig(ddata, reg);
+ 
++	/* Flush posted write */
++	sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
++
+ 	return 0;
+ }
+ 
+-- 
+2.26.2
