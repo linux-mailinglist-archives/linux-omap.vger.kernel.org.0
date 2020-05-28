@@ -2,114 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D309A1E6B69
-	for <lists+linux-omap@lfdr.de>; Thu, 28 May 2020 21:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 907D11E6C9E
+	for <lists+linux-omap@lfdr.de>; Thu, 28 May 2020 22:34:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728575AbgE1Toj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 May 2020 15:44:39 -0400
-Received: from mta-p7.oit.umn.edu ([134.84.196.207]:58072 "EHLO
-        mta-p7.oit.umn.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728525AbgE1Toi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 May 2020 15:44:38 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mta-p7.oit.umn.edu (Postfix) with ESMTP id 49Xynw5s8Lz9vpP6
-        for <linux-omap@vger.kernel.org>; Thu, 28 May 2020 19:44:36 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at umn.edu
-Received: from mta-p7.oit.umn.edu ([127.0.0.1])
-        by localhost (mta-p7.oit.umn.edu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Plo8jxIDeSAH for <linux-omap@vger.kernel.org>;
-        Thu, 28 May 2020 14:44:36 -0500 (CDT)
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mta-p7.oit.umn.edu (Postfix) with ESMTPS id 49Xynw4BbTz9vpNv
-        for <linux-omap@vger.kernel.org>; Thu, 28 May 2020 14:44:36 -0500 (CDT)
-DMARC-Filter: OpenDMARC Filter v1.3.2 mta-p7.oit.umn.edu 49Xynw4BbTz9vpNv
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-p7.oit.umn.edu 49Xynw4BbTz9vpNv
-Received: by mail-il1-f197.google.com with SMTP id k77so228392ilg.7
-        for <linux-omap@vger.kernel.org>; Thu, 28 May 2020 12:44:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umn.edu; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=PfzknLmfX2Bjtf5+K+UAI2zCUlxWnyr31FaRztaH9EY=;
-        b=GgwTeWRsrJf6uCZBd7WIQP/vQw66yUYSI/IfKQP4/Nqx0gXbfaqNYSjwaJghfc7Its
-         VNBzs7Yf5oj4ZQ2zRIUDaSA3o/aMAKiiEH0Ftk9jT4icfOYKFSwzIT53RwVyh68zFnVc
-         Hb7MNIURqQd4TN3LIVHG9F8/vpp2seM6ozkVM7NJ58FH0obdTcPT+eDpBHNRB1PU1rhd
-         lH3hsuKfEkMkPSg3i3fzjyK56HNHWvQs3d3mTE0j4G84MGbMXRDr5kjHFx5JheVkhlzv
-         Jrxp4+VzCS9X8bQi1AntSp4fIYAEiCFBgNISwYBDcW4ovqPffcIP5L28ZEjenIj1lpXV
-         dNTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=PfzknLmfX2Bjtf5+K+UAI2zCUlxWnyr31FaRztaH9EY=;
-        b=Lt1EUxLtRLD+bOgJZU1v9XvLFupZg0u7aCQDekYxhJRkkPeq+IVxvwKnEKVx3ov4qC
-         7E28VpzEpUcg8eAktXyftN1uwFG5Pc5IyVue0zKOCFygmBD6V/KnL3jO13BTfip6Xd8f
-         dzOpV+EY9FOq3fOv5J4tWEzNV4SOdu/S9GUtiEIs/vRXikQUl21G24T64VIex45CfDPA
-         VMB+gbLviJ1KOWDCbRqdfJIFy50UOl6A07Ogv+RwZXGAQazS4/0btUm3hP9ZXdDFp0X6
-         8yahD4wcEROzXKQiHnP4kJONkljdPeutCT/MJOdpFkFGSJ2D7J2b3yURRKVd5tIE4CPJ
-         A7MQ==
-X-Gm-Message-State: AOAM533iXfr+6qkVI2qn2X761rl3ZIQ2M2jYoqjGPn7FeqPnM8WYpiWl
-        KrA5gPvM0SXOZHcIKIJUmcyimIlGUi1lHj1avvVENuuQBJEWx5wWcpDF+0mHnNXKIOR6R8rcJqi
-        wcAU7iIwyT1FvvPuEXD+p2TcWrA==
-X-Received: by 2002:a6b:4413:: with SMTP id r19mr3702492ioa.162.1590695076080;
-        Thu, 28 May 2020 12:44:36 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzyzHOXdfF7fbsziLAX3p+sQwgpWqimkngVD+dlB/SgAXob/nxTRKphQmLbUKH8qsco8UxYGg==
-X-Received: by 2002:a6b:4413:: with SMTP id r19mr3702460ioa.162.1590695075587;
-        Thu, 28 May 2020 12:44:35 -0700 (PDT)
-Received: from qiushi.dtc.umn.edu (cs-kh5248-02-umh.cs.umn.edu. [128.101.106.4])
-        by smtp.gmail.com with ESMTPSA id s66sm3096905ilb.25.2020.05.28.12.44.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2020 12:44:34 -0700 (PDT)
-From:   wu000273@umn.edu
-To:     kjlu@umn.edu
-Cc:     wu000273@umn.edu,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Enrico Weigelt <info@metux.net>,
-        Allison Randal <allison@lohutok.net>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Dave Airlie <airlied@gmail.com>, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] omapfb: Fix reference count leak in display_init_sysfs.
-Date:   Thu, 28 May 2020 14:44:23 -0500
-Message-Id: <20200528194424.11596-1-wu000273@umn.edu>
-X-Mailer: git-send-email 2.17.1
+        id S2407095AbgE1UeO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 May 2020 16:34:14 -0400
+Received: from mout.kundenserver.de ([212.227.126.131]:60063 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2407020AbgE1UeL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 May 2020 16:34:11 -0400
+Received: from mail-qk1-f169.google.com ([209.85.222.169]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MLzSD-1jN9ST1zHt-00HxmW; Thu, 28 May 2020 22:34:08 +0200
+Received: by mail-qk1-f169.google.com with SMTP id q8so189060qkm.12;
+        Thu, 28 May 2020 13:34:08 -0700 (PDT)
+X-Gm-Message-State: AOAM53019TbOTyNAzJ28LSBVyxyYKKfQPlavHZUd/nt5UfcNqrfbaz2o
+        DCrSnE5f5SFWY1ubfmA3JYZ+HlgiIEGpb1E1hec=
+X-Google-Smtp-Source: ABdhPJw35+vBI63bF7SfK+zLRpe/uowGSJPEFF3GisVzMhFz/CLIpy+Xs9Ye1mQuxA5jYglGf/r9jzeY5QW4ONbtd8k=
+X-Received: by 2002:ae9:de85:: with SMTP id s127mr3586078qkf.352.1590698047221;
+ Thu, 28 May 2020 13:34:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200528091923.2951100-1-arnd@arndb.de> <20200528134621.GN37466@atomide.com>
+ <20200528135057.GO37466@atomide.com> <20200528155759.GP37466@atomide.com> <34e8fb61-b452-529b-b2c6-3849b2395096@oracle.com>
+In-Reply-To: <34e8fb61-b452-529b-b2c6-3849b2395096@oracle.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 28 May 2020 22:33:50 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0AaH+pAdhu7jzEAGC-bECgmz7w=D8PN6NOUjj2kxevkg@mail.gmail.com>
+Message-ID: <CAK8P3a0AaH+pAdhu7jzEAGC-bECgmz7w=D8PN6NOUjj2kxevkg@mail.gmail.com>
+Subject: Re: [PATCH] ARM: omap2: drop broken broadcast timer hack
+To:     Santosh Shilimkar <santosh.shilimkar@oracle.com>
+Cc:     Tony Lindgren <tony@atomide.com>, arm-soc <arm@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Lokesh Vutla <lokeshvutla@ti.com>, Keerthy <j-keerthy@ti.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Tero Kristo <t-kristo@ti.com>, Olof Johansson <olof@lixom.net>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        afzal mohammed <afzal.mohd.ma@gmail.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:dTgnDJci0MeHtLUnNuT55fdZMzCKbWbDgHGAo7MqI955pVb+bPO
+ ksWB2ZJmwKkDagByGouBJnVMv41N9B5ct5Hvzpo99i+UUz7jFIRW8EItJJ3PNkQtZYlcgOi
+ sU2sIpN1nucmmNQysdXOYNorrJ6cmUIaDFIq9o+fM2kuVmCcFYCdhb4srDQg4xavtKkEp68
+ 2fCMqB8n1P6nCJJBDn0ww==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:TzSOWCib3zs=:Q/eh1aK8wnA0/6Pi6Cp5zB
+ g4/tbCPUYq0KTyYvLkkbF6x0weq2icg4EmUDtr087yzWTh74SFAUqQHVsZTxRChCQy3/6Qrcz
+ dsKUSAaSG+X/HaVklFFW+EX0j6b2dytTKkQRvE94XfI8bK5IoxIx8d54G7n+vCnysWMiFggxm
+ ngmWo5cWsMInzm5sezqrdTKYG1XUCBQ1C3YCKZU38tTXkrO5Xdb/jf2GMAm+A+sb3mpbC46Kn
+ SbaR08nrG5/coCEl3HGR8BEP60S24DP7l370R9ne9VEhXNgGW9gh+fCB+Rq89JEfygJEOE+MN
+ ShxHfBCun/6x/eCqwHXbMJUDRvobawMQqD1yoWkvoe7Le7LiaVJcuSF3PIyWfLMyH/jGQg06a
+ r2ITwu7taaL01mndHUIrue0LUyH1Mfa/7Ir/3qRsP0TUZbiwhZf6x1Pr65G+Zl/fxUitZ+Tll
+ 9SPKkuwP2xx7O1Pboqs4nyR0Hc1Pjb6QfJip6jBcXGJR/G0GQBskPtFPb9OBL/Rkan4rG9zNX
+ ++3e8pbP4GJAIym62ODfg/+9i5jNzedTB2M3bUxu31ySwEh8901CypP2onQ4CLNKtM88oij3Q
+ oLylLYjBsqIw20Vz0gA55x/KXTf6Buk39T03d8h4dKSPy4HRVJT4LrBS0nSF/tl4WAwRY4BCA
+ lceFiqNlfwoJkkxgGz2pNMbYKe3HK+yCYBL3dWrcehsTKONsNQqI7IvAtAhEDep2Tt27DckBx
+ CEtTvDM3Z12TO4uuoZkxCev8OsIwrZWA5T0I5Aem29eWyETbBKGT4KCuMNr+jnGo9hTfOT6f+
+ l5YCkUeq6PB51fRrGSAMEyfEm2YKilx/bFqKkGkcOQdCsBwjGQ=
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Qiushi Wu <wu000273@umn.edu>
+On Thu, May 28, 2020 at 6:18 PM <santosh.shilimkar@oracle.com> wrote:
+> On 5/28/20 8:57 AM, Tony Lindgren wrote:
+> > * Tony Lindgren <tony@atomide.com> [200528 13:51]:
+> >> * Tony Lindgren <tony@atomide.com> [200528 13:47]:
+> >>> * Arnd Bergmann <arnd@arndb.de> [200528 09:20]:
+> >>>> The OMAP4 timer code had a special hack for using the broadcast timer
+> >>>> without SMP. Since the dmtimer is now gone, this also needs to be dropped
+> >>>> to avoid a link failure for non-SMP AM43xx configurations:
+> >>>>
+> >>>> kernel/time/tick-broadcast.o: in function `tick_device_uses_broadcast':
+> >>>> tick-broadcast.c:(.text+0x130): undefined reference to `tick_broadcast'
+> >>>
+> >>> Hmm this sounds like a regression though. Isn't this needed for using
+> >>> the ARM local timers on non-SMP SoC, so a separate timer from dmtimer?
+> >>>
+> >>> I've probably removed something accidentally to cause this.
+> >>
+> >> Sounds like arch/arm/mach-omap2/Makefile change needs to be removed
+> >> to always still build in timer.o. And probably timer.c needs back
+> >> the ifdef for CONFIG_SOC_HAS_REALTIME_COUNTER.
+> >>
+> >> I'll take a look today.
+> >
+> > I've sent a patch along those lines as:
+> >
+> > [PATCH] ARM: OMAP2+: Fix regression for using local timer on non-SMP SoCs
+> >
+> > A link for the patch at [0] below.
+> >
+> CPU local timers not being in always ON power domain use to be the
+> reason on early version of the SOCs but later SOC moved the CPU local
+> timer also in always on domain. Probably AM43xx does loose local timer
+> on CPU PD in low power so yes broadcast would be needed with dmtimer
+> help.
+>
+> >
+> > [0] https://lore.kernel.org/linux-omap/20200528155453.8585-1-tony@atomide.com/T/#u
+> >
+> This should restore it.
 
-kobject_init_and_add() takes reference even when it fails.
-If this function returns an error, kobject_put() must be called to
-properly clean up the memory associated with the object.
-Because function omap_dss_put_device() doesn't handle dssdev->kobj,
-thus we need insert kobject_put() to clean up the kobject,
-when kobject_init_and_add() fails.
+Should I apply the fix directly to the arm/soc branch that has the
+other changes then?
 
-Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
-Signed-off-by: Qiushi Wu <wu000273@umn.edu>
----
- drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-index 6dbe265b312d..51322ac7df07 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-@@ -316,6 +316,7 @@ int display_init_sysfs(struct platform_device *pdev)
- 			&pdev->dev.kobj, "%s", dssdev->alias);
- 		if (r) {
- 			DSSERR("failed to create sysfs files\n");
-+			kobject_put(&dssdev->kobj);
- 			omap_dss_put_device(dssdev);
- 			goto err;
- 		}
--- 
-2.17.1
-
+     Arnd
