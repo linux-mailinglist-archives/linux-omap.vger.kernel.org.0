@@ -2,46 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3356D1E5C70
-	for <lists+linux-omap@lfdr.de>; Thu, 28 May 2020 11:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B57811E612C
+	for <lists+linux-omap@lfdr.de>; Thu, 28 May 2020 14:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387584AbgE1JwC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 May 2020 05:52:02 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:38681 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387440AbgE1JwB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 May 2020 05:52:01 -0400
-Received: by mail-lf1-f67.google.com with SMTP id 202so16214744lfe.5;
-        Thu, 28 May 2020 02:51:59 -0700 (PDT)
+        id S2389767AbgE1Mnk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 May 2020 08:43:40 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:33287 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389762AbgE1Mnj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 May 2020 08:43:39 -0400
+Received: by mail-lj1-f194.google.com with SMTP id s1so329533ljo.0;
+        Thu, 28 May 2020 05:43:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=C1jeUHCaajt+ex7tP6wzXy2BUh7vgRg4hvPENzAT8xU=;
-        b=dBi7PMI7inivJdVtZcESqmcfp0orcZs4UcpSJtgA0YsoVuP85KjKdnKCx1RtPERDwO
-         HiAXf6JIYEfSnR1tU1YIXsoXLWcC2GVnTYejQ7Yjy7h3c3SUlTV9ZQ3flGDyUF2x/ktm
-         74pTUVCoe5Ea+C66tJHdef6D5okQ9U+Nscd/wiKz+TrBAJ+YZl91cdFKur5on4ZRrB9n
-         SRGBtV7mcmjSSunZcT304ohNg6l4JJGOSryjYWvCbIduDxBWWXriXDqmt0ggHXpvKMX5
-         bRjJ+iAogGmRjGroeIANj3iZAHs8MVpNV3npRFMLyICuMa2k5u6h/1j2xooSOHw5Pq0C
-         pZig==
-X-Gm-Message-State: AOAM532PDh8KauUbVpdSA2i+wupd89vpcNV6V7IMp0NMLxbbRhMpfchD
-        30Ef4Jtc9+FqGmi9dGMzLM8=
-X-Google-Smtp-Source: ABdhPJxaMoiBxiBTkBBuuHSa7VweEudLSh4UTf5kllxZAlKXbN2ojWNXhY+cVfOP6GXjVB9EEWKZUw==
-X-Received: by 2002:a19:a405:: with SMTP id q5mr1237521lfc.164.1590659518686;
-        Thu, 28 May 2020 02:51:58 -0700 (PDT)
+        bh=aQL1KYnygH1zYMts1f3yN0EbJcd4qFIkqaWK0d2It9U=;
+        b=jNx/rx8cgRFBwQfUBdBh+iwRp5PDvwF5uOOTyNj0Y+Rfl8ob7zfZInVN+rxSs/GuZ6
+         CMPcfLJenOLtyFTn1QKTDKHociF3ReI/107YJ5AnQ1rrAdIt9Esbu7N8UlrmfrliQ/p3
+         aeWfMt1uWyKoVNEXikMxGC+GJDiTRZnBMGMdhVf386TImN3NVXVFf6IfQBzQEqBOoThC
+         snJsYtHjBNCaQW6olRLHQISBv6Ep4GVYVbNNw50MLI24OIhwQoGviV4e3pi8mOYBxx7U
+         2P2LXtvJsNcICUV8M9p3Cenrlysr+VsjxzCOF8LfLreYqZ2QWVouVNpAgs+AO3LEaBNT
+         n5nw==
+X-Gm-Message-State: AOAM531Ry1+esBWPhbOoUI22nMHo3yu4n1lCYZZuQGQkdGO0vhYyGO5Z
+        aJxrvb1kFY4WvaOfFXG0nlE=
+X-Google-Smtp-Source: ABdhPJzS017hp3nVso9iqmDVfYs2dfjIg28PI6a2J6l2WZgOKTuJGMd6IK2j3EtxlpYgpKRh4x291Q==
+X-Received: by 2002:a2e:9d8f:: with SMTP id c15mr1495409ljj.125.1590669814627;
+        Thu, 28 May 2020 05:43:34 -0700 (PDT)
 Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.174.190])
-        by smtp.gmail.com with ESMTPSA id a10sm1507517ljd.126.2020.05.28.02.51.57
+        by smtp.gmail.com with ESMTPSA id c8sm1598644lfc.46.2020.05.28.05.43.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2020 02:51:57 -0700 (PDT)
+        Thu, 28 May 2020 05:43:33 -0700 (PDT)
 Received: from johan by xi.terra with local (Exim 4.93.0.4)
         (envelope-from <johan@kernel.org>)
-        id 1jeFCZ-0003RU-3w; Thu, 28 May 2020 11:51:51 +0200
-Date:   Thu, 28 May 2020 11:51:51 +0200
+        id 1jeHsc-00046n-SB; Thu, 28 May 2020 14:43:26 +0200
+Date:   Thu, 28 May 2020 14:43:26 +0200
 From:   Johan Hovold <johan@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Johan Hovold <johan@kernel.org>,
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johan Hovold <johan@kernel.org>, Rob Herring <robh@kernel.org>,
         Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
         Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
         Merlijn Wajer <merlijn@wizzup.org>,
@@ -50,88 +49,596 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Sebastian Reichel <sre@kernel.org>,
         linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 3/6] dt-bindings: serdev: ngsm: Add binding for GNSS
- child node
-Message-ID: <20200528095151.GE10358@localhost>
+Subject: Re: [PATCH 4/6] serdev: ngsm: Add generic serdev-ngsm driver
+Message-ID: <20200528124326.GF10358@localhost>
 References: <20200512214713.40501-1-tony@atomide.com>
- <20200512214713.40501-4-tony@atomide.com>
- <20200527192817.GA2587830@bogus>
+ <20200512214713.40501-5-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200527192817.GA2587830@bogus>
+In-Reply-To: <20200512214713.40501-5-tony@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, May 27, 2020 at 01:28:17PM -0600, Rob Herring wrote:
-> On Tue, May 12, 2020 at 02:47:10PM -0700, Tony Lindgren wrote:
-> > For motorola modem case, we may have a GNSS device on channel 4.
-> > Let's add that to the binding and example.
-> > 
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> >  .../devicetree/bindings/serdev/serdev-ngsm.yaml          | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml b/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
-> > --- a/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
-> > +++ b/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
-> > @@ -42,6 +42,10 @@ allOf:
-> >            description: Name of the USB PHY
-> >            const: usb
-> >  
-> > +        compatible:
-> > +          description: GNSS receiver
-> > +          const: motorola,mapphone-mdm6600-gnss
+On Tue, May 12, 2020 at 02:47:11PM -0700, Tony Lindgren wrote:
+> We can have a generic serdev-ngsm driver bring up the TS 27.010 line
+> discipline on the selected serial ports based on device tree data.
 > 
-> I'm not sure how this isn't failing on the example because it is wrong.
+> And we can now do standard Linux device driver for the dedicated
+> TS 27.010 channels for devices like GNSS and ALSA found on modems.
 > 
-> You're saying this compatible belongs at the same level as 
-> phys/phy-names, but that would be the parent which already has a 
-> compatible. You have to define a child node property (gnss@4) and have 
-> 'compatible' under it. At that point, this schema becomes very much 
-> Motorola specific.
+> Tested-by: Pavel Machek <pavel@ucw.cz>
+> Reviewed-by: Pavel Machek <pavel@ucw.cz>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/tty/serdev/Kconfig       |  10 +
+>  drivers/tty/serdev/Makefile      |   1 +
+>  drivers/tty/serdev/serdev-ngsm.c | 449 +++++++++++++++++++++++++++++++
+
+The n in n_gsm indicates that its a line discipline so doesn't really
+make sense here.
+
+How about just calling the driver something like gsm0710.c, gsmmux.c, or
+gsm_serdev.c if you really want to include the interface in the name?
+
+As it's a tty driver I think it should live in drivers/tty (tty/serdev
+is for serdev core and serdev controllers).
+
+And I think this one should be merged with the patch adding functions to
+n_gsm that you depend on (and there shouldn't be a need to export those
+functions globally).
+
+>  include/linux/serdev-gsm.h       |  11 +
+>  4 files changed, 471 insertions(+)
+>  create mode 100644 drivers/tty/serdev/serdev-ngsm.c
 > 
-> > +
-> >        required:
-> >          - phys
-> >          - phy-names
-> > @@ -61,4 +65,9 @@ examples:
-> >        phy-names = "usb";
-> >        #address-cells = <1>;
-> >        #size-cells = <0>;
-> > +
-> > +      gnss@4 {
-> > +         compatible = "motorola,mapphone-mdm6600-gnss";
-> > +         reg = <4>;
-> > +      };
-> >      };
-> > -- 
-> > 2.26.2
+> diff --git a/drivers/tty/serdev/Kconfig b/drivers/tty/serdev/Kconfig
+> --- a/drivers/tty/serdev/Kconfig
+> +++ b/drivers/tty/serdev/Kconfig
+> @@ -22,4 +22,14 @@ config SERIAL_DEV_CTRL_TTYPORT
+>  	depends on SERIAL_DEV_BUS != m
+>  	default y
+>  
+> +config SERIAL_DEV_N_GSM
+> +	tristate "Serial device TS 27.010 support"
+> +	depends on N_GSM
+> +	depends on SERIAL_DEV_CTRL_TTYPORT
+> +	help
+> +	  Select this if you want to use the TS 27.010 with a serial port with
+> +	  devices such as modems and GNSS devices.
+> +
+> +	  If unsure, say N.
+> +
+>  endif
+> diff --git a/drivers/tty/serdev/Makefile b/drivers/tty/serdev/Makefile
+> --- a/drivers/tty/serdev/Makefile
+> +++ b/drivers/tty/serdev/Makefile
+> @@ -4,3 +4,4 @@ serdev-objs := core.o
+>  obj-$(CONFIG_SERIAL_DEV_BUS) += serdev.o
+>  
+>  obj-$(CONFIG_SERIAL_DEV_CTRL_TTYPORT) += serdev-ttyport.o
+> +obj-$(CONFIG_SERIAL_DEV_N_GSM) += serdev-ngsm.o
+> diff --git a/drivers/tty/serdev/serdev-ngsm.c b/drivers/tty/serdev/serdev-ngsm.c
+> new file mode 100644
+> --- /dev/null
+> +++ b/drivers/tty/serdev/serdev-ngsm.c
+> @@ -0,0 +1,449 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Generic TS 27.010 serial line discipline serdev driver
+> + * Copyright (C) 2020 Tony Lindgren <tony@atomide.com>
+> + */
+> +
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/init.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/serdev.h>
+> +#include <linux/serdev-gsm.h>
+> +
+> +#include <linux/phy/phy.h>
+> +
+> +#include <uapi/linux/gsmmux.h>
+> +
+> +#define TS27010_C_N2		3	/* TS 27.010 default value */
+> +#define TS27010_RESERVED_DLCI	(BIT_ULL(63) | BIT_ULL(62) | BIT_ULL(0))
+> +
+> +struct serdev_ngsm_cfg {
+> +	const struct gsm_config *gsm;
+> +	unsigned int init_retry_quirk:1;
+> +	unsigned int needs_usb_phy:1;
+> +	unsigned int aggressive_pm:1;
+> +	int (*init)(struct serdev_device *serdev); /* for device quirks */
+> +};
+> +
+> +struct serdev_ngsm {
+> +	struct device *dev;
+> +	struct gsm_serdev gsd;
+> +	struct phy *phy;
+> +	u32 baudrate;
+> +	DECLARE_BITMAP(ttymask, 64);
+> +	const struct serdev_ngsm_cfg *cfg;
+> +};
+> +
+> +static int serdev_ngsm_tty_init(struct serdev_ngsm *ddata)
+> +{
+> +	struct gsm_serdev *gsd = &ddata->gsd;
+> +	struct device *dev = ddata->dev;
+> +	int bit, err;
+> +
+> +	for_each_set_bit(bit, ddata->ttymask, 64) {
+> +		if (BIT_ULL(bit) & TS27010_RESERVED_DLCI)
+> +			continue;
+> +
+> +		err = gsm_serdev_register_tty_port(gsd, bit);
+> +		if (err) {
+> +			dev_err(dev, "ngsm tty init failed for dlci%i: %i\n",
+> +				bit, err);
+> +			return err;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void serdev_ngsm_tty_exit(struct serdev_ngsm *ddata)
+> +{
+> +	struct gsm_serdev *gsd = &ddata->gsd;
+> +	int bit;
+> +
+> +	for_each_set_bit(bit, ddata->ttymask, 64) {
+> +		if (BIT_ULL(bit) & TS27010_RESERVED_DLCI)
+> +			continue;
+> +
+> +		gsm_serdev_unregister_tty_port(gsd, bit);
+> +	}
+> +}
+> +
+> +/*
+> + * Note that we rely on gsm_serdev_register_dlci() locking for
+> + * reserved channels that serdev_ngsm_tty_init() and consumer
+> + * drivers may have already reserved.
+> + */
+> +int serdev_ngsm_register_dlci(struct device *dev,
+> +			      struct gsm_serdev_dlci *dlci)
+> +{
+> +	struct serdev_ngsm *ddata = gsm_serdev_get_drvdata(dev);
+> +	struct gsm_serdev *gsd = &ddata->gsd;
+> +	int err;
+> +
+> +	err = gsm_serdev_register_dlci(gsd, dlci);
+> +	if (err)
+> +		return err;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(serdev_ngsm_register_dlci);
+> +
+> +void serdev_ngsm_unregister_dlci(struct device *dev,
+> +				 struct gsm_serdev_dlci *dlci)
+> +{
+> +	struct serdev_ngsm *ddata = gsm_serdev_get_drvdata(dev);
+> +	struct gsm_serdev *gsd = &ddata->gsd;
+> +
+> +	gsm_serdev_unregister_dlci(gsd, dlci);
+> +}
+> +EXPORT_SYMBOL_GPL(serdev_ngsm_unregister_dlci);
+> +
+> +int serdev_ngsm_write(struct device *dev, struct gsm_serdev_dlci *ops,
+> +		      const u8 *buf, int len)
+> +{
+> +	struct serdev_ngsm *ddata = gsm_serdev_get_drvdata(dev);
+> +	struct gsm_serdev *gsd = &ddata->gsd;
+> +	int ret;
+> +
+> +	ret = pm_runtime_get_sync(dev);
+> +	if ((ret != -EINPROGRESS) && ret < 0) {
+> +		pm_runtime_put_noidle(dev);
+> +
+> +		return ret;
+> +	}
+> +
+> +	ret = gsm_serdev_write(gsd, ops, buf, len);
+> +
+> +	pm_runtime_mark_last_busy(dev);
+> +	pm_runtime_put_autosuspend(dev);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(serdev_ngsm_write);
 
-And since we're describing a mux, I think you need nodes for the virtual
-ports rather than a reg property in what should be a serial client. That
-is something like
+These three shouldn't be needed with proper serdev child devices.
 
-	serial@nnn {
-		modem {
-			compatible = "etsi,ts27001-mux";
+> +
+> +static int serdev_ngsm_set_config(struct device *dev)
+> +{
+> +	struct serdev_ngsm *ddata = gsm_serdev_get_drvdata(dev);
+> +	struct gsm_serdev *gsd = &ddata->gsd;
+> +	struct gsm_config c;
+> +	int err, n2;
+> +
+> +	memcpy(&c, ddata->cfg->gsm, sizeof(c));
+> +
+> +	if (ddata->cfg->init_retry_quirk) {
+> +		n2 = c.n2;
+> +		c.n2 *= 10;
+> +		err = gsm_serdev_set_config(gsd, &c);
+> +		if (err)
+> +			return err;
+> +
+> +		msleep(5000);
+> +		c.n2 = n2;
+> +	}
+> +
+> +	err = gsm_serdev_set_config(gsd, &c);
+> +	if (err)
+> +		return err;
+> +
+> +	return 0;
+> +}
+> +
+> +static int serdev_ngsm_output(struct gsm_serdev *gsd, u8 *data, int len)
+> +{
+> +	struct serdev_device *serdev = gsd->serdev;
+> +	struct device *dev = &serdev->dev;
+> +	int err;
+> +
+> +	err = pm_runtime_get(dev);
+> +	if ((err != -EINPROGRESS) && err < 0) {
+> +		pm_runtime_put_noidle(dev);
+> +
+> +		return err;
+> +	}
+> +
+> +	serdev_device_write_buf(serdev, data, len);
+> +
+> +	pm_runtime_put(dev);
+> +
+> +	return len;
+> +}
+> +
+> +static int serdev_ngsm_runtime_suspend(struct device *dev)
+> +{
+> +	struct serdev_ngsm *ddata = gsm_serdev_get_drvdata(dev);
+> +	int err;
+> +
+> +	if (ddata->cfg->needs_usb_phy) {
+> +		err = phy_pm_runtime_put(ddata->phy);
+> +		if (err < 0) {
+> +			dev_warn(dev, "%s: phy_pm_runtime_put: %i\n",
+> +				 __func__, err);
 
-			serial@4 {
-				compatible = "etsi,ts27001-serial";
-				reg = <4>;
+No need to include __func__ here; I'd spell out what went wrong instead
+of relying on a function name (e.g. "failed to suspend phy: %d\n");
 
-				gnss {
-					compatible = "motorola,motmdm-gnss";
-				};
-			};
-		};
-	};
+> +
+> +			return err;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int serdev_ngsm_runtime_resume(struct device *dev)
+> +{
+> +	struct serdev_ngsm *ddata = gsm_serdev_get_drvdata(dev);
+> +	int err;
+> +
+> +	if (ddata->cfg->needs_usb_phy) {
+> +		err = phy_pm_runtime_get_sync(ddata->phy);
+> +		if (err < 0) {
+> +			dev_warn(dev, "%s: phy_pm_runtime_get: %i\n",
+> +				 __func__, err);
+> +
+> +			return err;
+> +		}
+> +	}
+> +
+> +	gsm_serdev_data_kick(&ddata->gsd);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct dev_pm_ops serdev_ngsm_pm_ops = {
+> +	SET_RUNTIME_PM_OPS(serdev_ngsm_runtime_suspend,
+> +			   serdev_ngsm_runtime_resume,
+> +			   NULL)
+> +};
+> +
+> +/*
+> + * At least Motorola MDM6600 devices have GPIO wake pins shared between the
+> + * USB PHY and the TS 27.010 interface. So for PM, we need to use the calls
+> + * for phy_pm_runtime. Otherwise the modem won't respond to anything on the
+> + * UART and will never idle either.
+> + */
+> +static int serdev_ngsm_phy_init(struct device *dev)
+> +{
+> +	struct serdev_ngsm *ddata = gsm_serdev_get_drvdata(dev);
+> +	int err;
+> +
+> +	if (!ddata->cfg->needs_usb_phy)
+> +		return 0;
+> +
+> +	ddata->phy = devm_of_phy_get(dev, dev->of_node, NULL);
+> +	if (IS_ERR(ddata->phy)) {
+> +		err = PTR_ERR(ddata->phy);
+> +		if (err != -EPROBE_DEFER)
+> +			dev_err(dev, "%s: phy error: %i\n", __func__, err);
 
-This way you can actually use serdev for the client drivers (e.g. for
-gnss), and those drivers also be used for non-muxed ports if needed
-(e.g. over USB).
+"failed to lookup phy: %d"?
+
+> +
+> +		return err;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Configure SoC 8250 device for 700 ms autosuspend delay, Values around 600 ms
+> + * and shorter cause spurious wake-up events at least on Droid 4. Also keep the
+> + * SoC 8250 device active during use because of the OOB GPIO wake-up signaling
+> + * shared with USB PHY.
+> + */
+> +static int motmdm_init(struct serdev_device *serdev)
+> +{
+> +	pm_runtime_set_autosuspend_delay(serdev->ctrl->dev.parent, 700);
+> +	pm_suspend_ignore_children(&serdev->ctrl->dev, false);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct gsm_config adaption1 = {
+> +	.i = 1,			/* 1 = UIH, 2 = UI */
+> +	.initiator = 1,
+> +	.encapsulation = 0,	/* basic mode */
+> +	.adaption = 1,
+> +	.mru = 1024,		/* from android TS 27010 driver */
+> +	.mtu = 1024,		/* from android TS 27010 driver */
+> +	.t1 = 10,		/* ack timer, default 10ms */
+> +	.t2 = 34,		/* response timer, default 34 */
+> +	.n2 = 3,		/* retransmissions, default 3 */
+> +};
+> +
+> +static const struct serdev_ngsm_cfg adaption1_cfg = {
+> +	.gsm = &adaption1,
+> +};
+> +
+> +static const struct serdev_ngsm_cfg motmdm_cfg = {
+> +	.gsm = &adaption1,
+> +	.init_retry_quirk = 1,
+> +	.needs_usb_phy = 1,
+> +	.aggressive_pm = 1,
+> +	.init = motmdm_init,
+> +};
+> +
+> +static const struct of_device_id serdev_ngsm_id_table[] = {
+> +	{
+> +		.compatible = "etsi,3gpp-ts27010-adaption1",
+> +		.data = &adaption1_cfg,
+
+Hmm. Yeah, how should we deal with the mux configuration. There's a
+bunch of parameters, some of which can be negotiated.
+
+Perhaps not something that needs to be solved now, but it should be
+given some though before partially encoding the configuration in the
+compatible strings, I'd say.
+
+This is also not generally useful until there's a way to actually setup
+the mux, right (i.e. AT+CMUX)?
+
+> +	},
+> +	{
+> +		.compatible = "motorola,mapphone-mdm6600-serial",
+> +		.data = &motmdm_cfg,
+> +	},
+> +	{ /* sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, serdev_ngsm_id_table);
+> +
+> +static int serdev_ngsm_probe(struct serdev_device *serdev)
+> +{
+> +	struct device *dev = &serdev->dev;
+> +	const struct of_device_id *match;
+> +	struct gsm_serdev *gsd;
+> +	struct serdev_ngsm *ddata;
+> +	u64 ttymask;
+> +	int err;
+> +
+> +	match = of_match_device(of_match_ptr(serdev_ngsm_id_table), dev);
+> +	if (!match)
+> +		return -ENODEV;
+> +
+> +	ddata = devm_kzalloc(dev, sizeof(*ddata), GFP_KERNEL);
+> +	if (!ddata)
+> +		return -ENOMEM;
+> +
+> +	ddata->dev = dev;
+> +	ddata->cfg = match->data;
+> +
+> +	gsd = &ddata->gsd;
+> +	gsd->serdev = serdev;
+> +	gsd->output = serdev_ngsm_output;
+> +	serdev_device_set_drvdata(serdev, gsd);
+> +	gsm_serdev_set_drvdata(dev, ddata);
+> +
+> +	err = serdev_ngsm_phy_init(dev);
+> +	if (err)
+> +		return err;
+> +
+> +	err = of_property_read_u64(dev->of_node, "ttymask", &ttymask);
+> +	if (err) {
+> +		dev_err(dev, "invalid or missing ttymask: %i\n", err);
+> +
+> +		return err;
+> +	}
+> +
+> +	bitmap_from_u64(ddata->ttymask, ttymask);
+> +
+> +	pm_runtime_set_autosuspend_delay(dev, 200);
+> +	pm_runtime_use_autosuspend(dev);
+> +	pm_runtime_enable(dev);
+> +	err = pm_runtime_get_sync(dev);
+> +	if (err < 0) {
+> +		pm_runtime_put_noidle(dev);
+> +
+
+pm_runtime_disable()? dont_use_autosuspend()?
+
+> +		return err;
+> +	}
+> +
+> +	err = gsm_serdev_register_device(gsd);
+> +	if (err)
+> +		goto err_disable;
+> +
+> +	err = serdev_device_open(gsd->serdev);
+> +	if (err)
+> +		goto err_disable;
+> +
+> +	/* Optional serial port configuration */
+> +	of_property_read_u32(dev->of_node->parent, "current-speed",
+> +			     &ddata->baudrate);
+
+Should this be dev->of_node? The parent would be the serial port itself
+(i.e. not the client).
+
+> +	if (ddata->baudrate)
+> +		serdev_device_set_baudrate(gsd->serdev, ddata->baudrate);
+> +
+> +	if (of_get_property(dev->of_node->parent, "uart-has-rtscts", NULL)) {
+
+This looks like a layering issue; why not set these unconditionally and
+let the upper layers deal with it?
+
+> +		serdev_device_set_rts(gsd->serdev, true);
+
+Do you really need this? The RTS would have been asserted on open by the
+serial driver.
+
+> +		serdev_device_set_flow_control(gsd->serdev, true);
+> +	}
+> +
+> +	err = serdev_ngsm_set_config(dev);
+> +	if (err)
+> +		goto err_close;
+> +
+> +	err = serdev_ngsm_tty_init(ddata);
+> +	if (err)
+> +		goto err_tty;
+> +
+> +	if (ddata->cfg->init) {
+> +		err = ddata->cfg->init(serdev);
+> +		if (err)
+> +			goto err_tty;
+> +	}
+> +
+> +	err = of_platform_populate(dev->of_node, NULL, NULL, dev);
+> +	if (err)
+> +		goto err_tty;
+
+This bit wouldn't be needed either if you register the tty devices using
+tty_port_register_device_serdev() and possibly rethink the device tree
+binding.
+
+> +
+> +	/* Allow parent serdev device to idle when open, balanced in remove */
+> +	if (ddata->cfg->aggressive_pm)
+> +		pm_runtime_put(&serdev->ctrl->dev);
+> +
+> +	pm_runtime_mark_last_busy(dev);
+> +	pm_runtime_put_autosuspend(dev);
+> +
+> +	return 0;
+> +
+> +err_tty:
+> +	serdev_ngsm_tty_exit(ddata);
+> +
+> +err_close:
+> +	serdev_device_close(serdev);
+> +
+> +err_disable:
+> +	pm_runtime_dont_use_autosuspend(dev);
+> +	pm_runtime_put_sync(dev);
+> +	pm_runtime_disable(dev);
+> +	gsm_serdev_unregister_device(gsd);
+> +
+> +	return err;
+> +}
+> +
+> +static void serdev_ngsm_remove(struct serdev_device *serdev)
+> +{
+> +	struct gsm_serdev *gsd = serdev_device_get_drvdata(serdev);
+> +	struct device *dev = &serdev->dev;
+> +	struct serdev_ngsm *ddata;
+> +	int err;
+> +
+> +	ddata = gsm_serdev_get_drvdata(dev);
+> +
+> +	/* Balance the put done in probe for UART */
+> +	if (ddata->cfg->aggressive_pm)
+> +		pm_runtime_get(&serdev->ctrl->dev);
+> +
+> +	err = pm_runtime_get_sync(dev);
+> +	if (err < 0)
+> +		dev_warn(dev, "%s: PM runtime: %i\n", __func__, err);
+> +
+> +	of_platform_depopulate(dev);
+> +	serdev_ngsm_tty_exit(ddata);
+> +	serdev_device_close(serdev);
+> +	gsm_serdev_unregister_device(gsd);
+> +
+> +	pm_runtime_dont_use_autosuspend(dev);
+> +	pm_runtime_put_sync(dev);
+> +	pm_runtime_disable(dev);
+> +}
+> +
+> +static struct serdev_device_driver serdev_ngsm_driver = {
+> +	.driver = {
+> +		.name = "serdev_ngsm",
+
+"gsmmux"? No need to include "serdev" in the driver name for a driver on
+the serdev bus.
+
+> +		.of_match_table = of_match_ptr(serdev_ngsm_id_table),
+> +		.pm = &serdev_ngsm_pm_ops,
+> +	},
+> +	.probe = serdev_ngsm_probe,
+> +	.remove = serdev_ngsm_remove,
+> +};
+> +
+> +module_serdev_device_driver(serdev_ngsm_driver);
+> +
+> +MODULE_DESCRIPTION("serdev n_gsm driver");
+> +MODULE_AUTHOR("Tony Lindgren <tony@atomide.com>");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/include/linux/serdev-gsm.h b/include/linux/serdev-gsm.h
+> --- a/include/linux/serdev-gsm.h
+> +++ b/include/linux/serdev-gsm.h
+> @@ -45,6 +45,17 @@ struct gsm_serdev_dlci {
+>  
+>  #if IS_ENABLED(CONFIG_N_GSM) && IS_ENABLED(CONFIG_SERIAL_DEV_BUS)
+>  
+> +/* TS 27.010 channel specific functions for consumer drivers */
+> +#if IS_ENABLED(CONFIG_SERIAL_DEV_N_GSM)
+> +extern int
+> +serdev_ngsm_register_dlci(struct device *dev, struct gsm_serdev_dlci *dlci);
+> +extern void serdev_ngsm_unregister_dlci(struct device *dev,
+> +					struct gsm_serdev_dlci *dlci);
+> +extern int serdev_ngsm_write(struct device *dev, struct gsm_serdev_dlci *ops,
+> +			     const u8 *buf, int len);
+> +#endif
+> +
+> +/* Interface for_gsm serdev support */
+>  extern int gsm_serdev_register_device(struct gsm_serdev *gsd);
+>  extern void gsm_serdev_unregister_device(struct gsm_serdev *gsd);
+>  extern int gsm_serdev_register_tty_port(struct gsm_serdev *gsd, int line);
 
 Johan
