@@ -2,55 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D44AA1E84AC
-	for <lists+linux-omap@lfdr.de>; Fri, 29 May 2020 19:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A305F1E8546
+	for <lists+linux-omap@lfdr.de>; Fri, 29 May 2020 19:40:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbgE2RVM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 May 2020 13:21:12 -0400
-Received: from muru.com ([72.249.23.125]:56186 "EHLO muru.com"
+        id S1727004AbgE2Rkk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 May 2020 13:40:40 -0400
+Received: from muru.com ([72.249.23.125]:56200 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727008AbgE2RVM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 29 May 2020 13:21:12 -0400
+        id S1726954AbgE2Rkk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 29 May 2020 13:40:40 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AD89D8030;
-        Fri, 29 May 2020 17:22:01 +0000 (UTC)
-Date:   Fri, 29 May 2020 10:21:08 -0700
+        by muru.com (Postfix) with ESMTPS id E15A78030;
+        Fri, 29 May 2020 17:41:30 +0000 (UTC)
+Date:   Fri, 29 May 2020 10:40:37 -0700
 From:   Tony Lindgren <tony@atomide.com>
 To:     Drew Fustini <drew@beagleboard.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>
-Subject: Re: [PATCH v2] arm: dts: am335x-boneblack: add gpio-line-names
-Message-ID: <20200529172108.GS37466@atomide.com>
-References: <20200521200926.GC429020@x1>
- <20200528131620.GA3126290@x1>
+Cc:     Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-omap@vger.kernel.org
+Subject: Re: pinctrl-single: num_maps in generic pinconf support?
+Message-ID: <20200529174037.GT37466@atomide.com>
+References: <20200526122133.GA1454440@x1>
+ <20200527165122.GL37466@atomide.com>
+ <20200527221915.GA2963339@x1>
+ <20200527224108.GM37466@atomide.com>
+ <20200528125323.GA3074222@x1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200528131620.GA3126290@x1>
+In-Reply-To: <20200528125323.GA3074222@x1>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Drew Fustini <drew@beagleboard.org> [200528 13:17]:
-> FYI - Linus W. provided an Acked-by in related thread [0].
-> 
-> Anyone else have any review comments?
+* Drew Fustini <drew@beagleboard.org> [200528 12:54]:
+> Would you be able to describe what you think AM33XX_PADCONF would look
+> like if the mux and conf are seperated?
 
-Looks good to me thanks. But as the merge window is about
-to open, let's do fixes only at this point and leave this
-for v5.9.
+Yes it would just slightly change, see your example below.
+
+> Is there an example you know of for another SoC?
+
+I think the other driver already keep the padconf and mux separate.
+
+So not sure where all #pinctrl-cells could be used. It would make
+pinctrl-single.c a bit nicer though, and probably would make it
+easier to implement further features.
+
+Some hardware may need it to have #pinctrl-cells = <3> if GPIO
+features are there too, ideally pinctrl-single would not even
+care but just work for what is configured for the hardware.
+
+> Currently, the macro takes dir and mux:
+> 
+> include/dt-bindings/pinctrl/omap.h:
+> #define AM33XX_PADCONF(pa, dir, mux) OMAP_IOPAD_OFFSET((pa), 0x0800) ((dir) | (mux))
+
+So after fixing up pinctrl-single.c, and changing the SoC dts
+to have #pinctrl-cells = <2> instead of <1>, the macro would
+then need to be:
+
+#define AM33XX_PADCONF(pa, dir, mux) OMAP_IOPAD_OFFSET((pa), 0x0800) (dir), (mux))
+
+> For example, in arch/arm/boot/dts/am335x-bone-common.dtsi:
+> AM33XX_PADCONF(AM335X_PIN_I2C0_SDA, PIN_INPUT_PULLUP, MUX_MODE0)
+
+Yeah so no change needed for the use.
+
+> I think it might be more accurate to rename 'dir' to 'conf'.
+
+Sure makes sense to rename it in the macro.
 
 Regards,
 
 Tony
-
-
-> 
-> [0] https://lore.kernel.org/linux-devicetree/CACRpkdZLRjcE0FGwVR-Q7a50aEmpB=xO4q6H8_EaV199fGr0OA@mail.gmail.com/
