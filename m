@@ -2,131 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F7B1E88D0
-	for <lists+linux-omap@lfdr.de>; Fri, 29 May 2020 22:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F08E81E88C1
+	for <lists+linux-omap@lfdr.de>; Fri, 29 May 2020 22:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728167AbgE2UVm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 May 2020 16:21:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39128 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726926AbgE2UVl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 May 2020 16:21:41 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113A8C03E969
-        for <linux-omap@vger.kernel.org>; Fri, 29 May 2020 13:21:41 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id x6so5250816wrm.13
-        for <linux-omap@vger.kernel.org>; Fri, 29 May 2020 13:21:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Qxa3M/MvhiqYKdmf/w4n6AgdA8qRvXt1CZdlD0nn0dE=;
-        b=Wory6WK+oDlOWEcRoDt+0+BwTOy9GvA8rPYpGJf8Md+2mJDLoyrIRamSFm49MWOgkH
-         6kI/VGCheyNUiLm1mGksOMEn5Hfk+u47SldEZriTLqyOx2/+bdV6MfmfliLjLvcy4xXG
-         H6Mjp9r3x5NU+Cn/5qOosfg+qFT2I3eeq9JQEHjP9xeaYlHHXt2Odc8s0Q5AuuohOAJT
-         zIerFBFT9frPC+uIhaMokKO6MmQOdcguwT+hLZijH+NfO5HJdQkLeU00J90ylWpb2OiF
-         Z/wECX8NPBbW0fBqVH0uZUMTCA77/82fcq978xxFcMgXXI5A5AoYEd9nMEirErUipT0v
-         lenw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=Qxa3M/MvhiqYKdmf/w4n6AgdA8qRvXt1CZdlD0nn0dE=;
-        b=pRmBYlLkbXBHRw7Za5TsqiQgfVxonsV5bhOsp5iIGjmK6+IiTACqtImyuFmoYmHO5f
-         VomoCPZUlwWBXBaKfzNw6JvHH1NuHqTwyztdkjy8CrYP1IMg01nhSzgZV5AVslTHrevE
-         y0UA0SwoDW2Mr8K54JHlOUhqgM+fkVBOdEz5Q5MG48n5IFXvaWU8ue05izVh5lhaqpw+
-         iq9FJKxSzyscZ/LvOae8Zfg8nATojTUjor9JDqySYSxGH2LkARNr6+n/prfe79YOx0Or
-         8Wsg9BLQCK+rqT1cYRw7aEooJkXV3UfNPBiPUS2GKBbqpUHiUvwmVya2kFd9YnwYZZ+/
-         JI1w==
-X-Gm-Message-State: AOAM531ZYKQSnwX2E9u6VKWBK2Zkht05chyLVEEjBDwCZGFS7NTvf/Y6
-        IyuxkvgEJCr7BDm9olRSk7BCWPQGw2dBnC2Dew4v2eQ1
-X-Google-Smtp-Source: ABdhPJwytCaqiE6GGyfoOO8fx7FpHpuYt93xGN2qNM7gsjAOGrZQHeYQnsFc5AcaCGBHFW52mqggvSLA8Fd20lp6wYw=
-X-Received: by 2002:a17:906:aac8:: with SMTP id kt8mr9495236ejb.460.1590783344288;
- Fri, 29 May 2020 13:15:44 -0700 (PDT)
+        id S1728084AbgE2URO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 May 2020 16:17:14 -0400
+Received: from mout.kundenserver.de ([212.227.126.131]:40363 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726878AbgE2URN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 May 2020 16:17:13 -0400
+Received: from threadripper.lan ([149.172.98.151]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MW9zm-1jUDqv0gJu-00XYHs; Fri, 29 May 2020 22:17:03 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     soc@kernel.org, Tony Lindgren <tony@atomide.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     Olof Johansson <olof@lixom.net>, Stefan Agner <stefan@agner.ch>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: omap2: fix omap5_realtime_timer_init definition
+Date:   Fri, 29 May 2020 22:16:45 +0200
+Message-Id: <20200529201701.521933-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Reply-To: rmst227@gmail.com
-Received: by 2002:ab4:9cc9:0:0:0:0:0 with HTTP; Fri, 29 May 2020 13:15:43
- -0700 (PDT)
-From:   "R.Mustafa" <rm2568590@gmail.com>
-Date:   Fri, 29 May 2020 22:15:43 +0200
-X-Google-Sender-Auth: yH5ZOE3YJ5k9xnBSH0ASf0mU1UA
-Message-ID: <CADxkk6VA=UzauhmZ1Hi1tnBZb_7joZrWMZg0VsOC4GXs4rVV8Q@mail.gmail.com>
-Subject: Assalamualaikum My Dear Friend,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:ut68jkWxMSIDqAasDiMgUP+u+uDANBHpvLSMe6e4VwoMh+BBJ1H
+ 6Kxz2dmuXAjOQIIkVylBW6gkceAiNHOa1Q/0HTxAtd0fF/P6JL5BotRHd7vQUzfsgcuQq0a
+ jBiMg7G0mw9wVJT+vTVsJOhCEmr9XTWf9ZBe1jzmtR5A6AHrD9w5zhB+g/KISb7ZVB8nvP8
+ XcGA37J8aG+/Xfk6TpDfw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:RV+VlsD9mj0=:39W2qi7gLz+rPUcP8FiYu0
+ dIY5zhEyc2SD7tgBgRTvqfUCkKQ1CnYi8w2pstLLUg5NTxb7tmZBiKid4hqudW2MFUmlccFAt
+ NwAz00C7oPqiAr6n3CGsHG0oLlRE5xfNmG5nZUwZekAk+pWVeMFxbmEX7fPVf5aDyY/eQAQNG
+ z2V9lgwCHGJq5ZCbcJSjjjtZdxxn26ToRMu1GLJYEOLBMhyHmF9XNsHRwYQTasTuDtyo+E3py
+ 1CVFY6ka3gZH/munkTb2gCVViIXFAil09LfbYpo0IfDCCG+zfyHUZkwUzU8bDC4h+hBfszw3q
+ 2r+HndlWYOc+1M06N8hEbTDi6D1ESWqak18RxsTh81k2te507wbGg9UOtPm/Zo/vwR2vTG4Qv
+ ohrgOjS/pcX/DkyIgkOZM+WnAqfJI8AKnQhXSnn6g3yq9XfEjnGjX0MiJCtKhwIA1ECiJuW73
+ riXterVEddNJrM7B03jtoqVxsJLk/lbGlm3bk3mYXSqpzFyw/drBksv4OJpoxfAoHNXmfYAT0
+ 0ocv1S8mkJTkcdyvqcmo8+IzTZzFo8rVFIkAOnKrxXX9L7SHusVrZIlhiUc5sNbhIGywnj9Xf
+ RxTqqfIaZ1oKH/raHd9pdAIgs4S0aNJFBXOgSoFfOWyTsm1zUeia9+mcWBhIt8PanyLnSZDt/
+ DyME012+dNBR5w1Kz8HIkcCRo+jxI8FMfO7s4nPez3Ssz5Fjkfjw812TkgTYdojcubf7PDasF
+ HQAT9VZychqXF6poAMAzms3Gmq5my/P+/OpS6ibTh8AF0iAU/SYs3+6yNnT09UiY9tjaBAuFt
+ WCguLiMJT77gtQUt/uc0WpEDfRAahJ8u57UWcU49SaoVkUvfmQ=
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Assalamualaikum My Dear Friend,
+There is one more regression introduced by the last build fix:
 
-Before I introduce myself, I wish to inform you that this letter is
-not a hoax mail and I urge you to treat it serious. This letter must
-come to you as a big surprise, but I believe it is only a day that
-people meet and become great friends and business partners. Please I
-want you to read this letter very carefully and I must apologize for
-barging this message into your mail box without any formal
-introduction due to the urgency and confidentiality of this business
-and I know that this message will come to you as a surprise. Please
-this is not a joke and I will not like you to joke with it ok, with
-due respect to your person and much sincerity of purpose, I make this
-contact with you as I believe that you can be of great assistance to
-me. My name is Mr.Rasheed Umaru Mustafa, from Burkina Faso, West
-Africa. I work in Bank Of Africa United Bank for Africa (UBA) as telex
-manager, please see this as a confidential message and do not reveal
-it to another person and let me know whether you can be of assistance
-regarding my proposal below because it is top secret.
+arch/arm/mach-omap2/timer.c:170:6: error: attribute declaration must precede definition [-Werror,-Wignored-attributes]
+void __init omap5_realtime_timer_init(void)
+     ^
+arch/arm/mach-omap2/common.h:118:20: note: previous definition is here
+static inline void omap5_realtime_timer_init(void)
+                   ^
+arch/arm/mach-omap2/timer.c:170:13: error: redefinition of 'omap5_realtime_timer_init'
+void __init omap5_realtime_timer_init(void)
+            ^
+arch/arm/mach-omap2/common.h:118:20: note: previous definition is here
+static inline void omap5_realtime_timer_init(void)
 
-I am about to retire from active Banking service to start a new life
-but I am skeptical to reveal this particular secret to a stranger. You
-must assure me that everything will be handled confidentially because
-we are not going to suffer again in life. It has been 10 years now
-that most of the greedy African Politicians used our bank to launder
-money overseas through the help of their Political advisers. Most of
-the funds which they transferred out of the shores of Africa were gold
-and oil money that was supposed to have been used to develop the
-continent. Their Political advisers always inflated the amounts before
-transferring to foreign accounts, so I also used the opportunity to
-divert part of the funds hence I am aware that there is no official
-trace of how much was transferred as all the accounts used for such
-transfers were being closed after transfer.I acted as the Bank Officer
-to most of the politicians and when I discovered that they were using
-me to succeed in their greedy act; I also cleaned some of their
-banking records from the Bank files and no one cared to ask me because
-the money was too much for them to control. They laundered over
-$5billion Dollars during the process.
+Address this by removing the now obsolete #ifdefs in that file and
+just building the entire file based on the flag that controls the
+omap5_realtime_timer_init function declaration.
 
-Before I sent this message to you, I have already diverted
-($10.5million Dollars) to an escrow account belonging to no one in the
-bank. The bank isanxious now to know who the beneficiary to the funds
-is because they have made a lot of profits with the funds. It is more
-than Eight years now and most of the politicians are no longer using
-our bank to transfer funds overseas. The ($10.5million Dollars) has
-been laying waste in our bank and I don=E2=80=99t want to retire from the b=
-ank
-without transferring the funds to a foreign account to enable me share
-the proceeds with the receiver (a foreigner). The money will be shared
-60% for me and 40% for you. There is no one coming to ask you about
-the funds because I secured everything. I only want you to assist me
-by providing a reliable bank account where the funds can be
-transferred.
+Fixes: d86ad463d670 ("ARM: OMAP2+: Fix regression for using local timer on non-SMP SoCs")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+If this looks ok, I'd apply it directly on top again for the merge window.
+---
+ arch/arm/mach-omap2/Makefile |  6 +++---
+ arch/arm/mach-omap2/timer.c  | 10 ----------
+ 2 files changed, 3 insertions(+), 13 deletions(-)
 
-You are not to face any difficulties or legal implications as I am
-going to handle the transfer personally. If you are capable of
-receiving the funds,
-do let me know immediately to enable me give you a detailed
-information on what to do. For me, I have not stolen the money from
-anyone because the other people that took the whole money did not face
-any problems. This is my chance to grab my own life opportunity but
-you must keep the details of the funds secret to avoid any leakages as
-no one in the bank knows about my plans. Please get back to me if you
-are interested and capable to handle this project, I shall intimate
-you on what to do when I hear from your confirmation and acceptance.
-If you are capable of being my trusted associate, do declare your
-consent to me I am looking forward to hearing from you immediately for
-further information.
+diff --git a/arch/arm/mach-omap2/Makefile b/arch/arm/mach-omap2/Makefile
+index 40898b1fd7da..732e614c56b2 100644
+--- a/arch/arm/mach-omap2/Makefile
++++ b/arch/arm/mach-omap2/Makefile
+@@ -46,9 +46,9 @@ obj-$(CONFIG_SOC_OMAP5)			+= $(omap-4-5-common) $(smp-y) sleep44xx.o
+ obj-$(CONFIG_SOC_AM43XX)		+= $(omap-4-5-common)
+ obj-$(CONFIG_SOC_DRA7XX)		+= $(omap-4-5-common) $(smp-y) sleep44xx.o
+ 
+-omap5-dra7-common			=  timer.o
+-obj-$(CONFIG_SOC_OMAP5)			+= $(omap5-dra7-common)
+-obj-$(CONFIG_SOC_DRA7XX)		+= $(omap5-dra7-common)
++omap5-dra7-common-$(CONFIG_SOC_HAS_REALTIME_COUNTER) =  timer.o
++obj-$(CONFIG_SOC_OMAP5)			+= $(omap5-dra7-common-y)
++obj-$(CONFIG_SOC_DRA7XX)		+= $(omap5-dra7-common-y)
+ 
+ # Functions loaded to SRAM
+ obj-$(CONFIG_SOC_OMAP2420)		+= sram242x.o
+diff --git a/arch/arm/mach-omap2/timer.c b/arch/arm/mach-omap2/timer.c
+index c1737e737a94..620ba69c8f11 100644
+--- a/arch/arm/mach-omap2/timer.c
++++ b/arch/arm/mach-omap2/timer.c
+@@ -39,8 +39,6 @@
+ #define INCREMENTER_DENUMERATOR_RELOAD_OFFSET		0x14
+ #define NUMERATOR_DENUMERATOR_MASK			0xfffff000
+ 
+-#ifdef CONFIG_SOC_HAS_REALTIME_COUNTER
+-
+ static unsigned long arch_timer_freq;
+ 
+ void set_cntfreq(void)
+@@ -159,14 +157,6 @@ static void __init realtime_counter_init(void)
+ 	iounmap(base);
+ }
+ 
+-#else
+-
+-static inline void realtime_counter_init(void)
+-{
+-}
+-
+-#endif	/* CONFIG_SOC_HAS_REALTIME_COUNTER */
+-
+ void __init omap5_realtime_timer_init(void)
+ {
+ 	omap_clk_init();
+-- 
+2.26.2
 
-Thanks with my best regards.
-Mr.Rasheed.U.Mustafa.
