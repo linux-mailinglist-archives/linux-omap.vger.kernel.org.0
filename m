@@ -2,94 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1BC1E7828
-	for <lists+linux-omap@lfdr.de>; Fri, 29 May 2020 10:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E31E1E8115
+	for <lists+linux-omap@lfdr.de>; Fri, 29 May 2020 17:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725913AbgE2IWe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 May 2020 04:22:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43504 "EHLO mail.kernel.org"
+        id S1726887AbgE2PBA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 May 2020 11:01:00 -0400
+Received: from foss.arm.com ([217.140.110.172]:37480 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725775AbgE2IWe (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 29 May 2020 04:22:34 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 32CBE2075A;
-        Fri, 29 May 2020 08:22:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590740553;
-        bh=bF+LDFKKjlpS21JygvHXpMb9WnNnBV/JsdAJKAMxjZs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ICjfZOphbFZLG5btT32Hp4tn9NGWybHZBgnR3m2vcuI6BJJr4xsqSbGpskfnXhahr
-         Sux2cUhuyBFdlhJ1kX1rXWLGUCS/ZRrNVUzPCWZzCkHnNn8cjsz/4etAhb/A6Zenbh
-         lXFsI8hB0AUoZDIo4CEPmuymr7KPrHwkZDH8UXrE=
-Date:   Fri, 29 May 2020 10:22:31 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     wu000273@umn.edu
-Cc:     kjlu@umn.edu, Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Enrico Weigelt <info@metux.net>,
-        Allison Randal <allison@lohutok.net>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Dave Airlie <airlied@gmail.com>, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] omapfb: Fix reference count leak in display_init_sysfs.
-Message-ID: <20200529082231.GA847132@kroah.com>
-References: <20200528194424.11596-1-wu000273@umn.edu>
+        id S1726849AbgE2PA7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 29 May 2020 11:00:59 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D452F1045;
+        Fri, 29 May 2020 08:00:58 -0700 (PDT)
+Received: from [10.37.12.52] (unknown [10.37.12.52])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C41F73F718;
+        Fri, 29 May 2020 08:00:48 -0700 (PDT)
+Subject: Re: [PATCH v8 0/8] Add support for devices in the Energy Model
+To:     rjw@rjwysocki.net
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com, Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
+        b.zolnierkie@samsung.com, sudeep.holla@arm.com,
+        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
+        rui.zhang@intel.com, amit.kucheria@verdurent.com,
+        daniel.lezcano@linaro.org, mingo@redhat.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        rostedt@goodmis.org, qperret@google.com, bsegall@google.com,
+        mgorman@suse.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        festevam@gmail.com, kernel@pengutronix.de, khilman@kernel.org,
+        agross@kernel.org, bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
+        lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net,
+        orjan.eide@arm.com, rdunlap@infradead.org, mka@chromium.org
+References: <20200527095854.21714-1-lukasz.luba@arm.com>
+From:   Lukasz Luba <lukasz.luba@arm.com>
+Message-ID: <8fca24a1-93f7-f859-bd1f-b7bf484737f4@arm.com>
+Date:   Fri, 29 May 2020 16:00:47 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200528194424.11596-1-wu000273@umn.edu>
+In-Reply-To: <20200527095854.21714-1-lukasz.luba@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, May 28, 2020 at 02:44:23PM -0500, wu000273@umn.edu wrote:
-> From: Qiushi Wu <wu000273@umn.edu>
+Hi Rafael,
+
+
+On 5/27/20 10:58 AM, Lukasz Luba wrote:
+> Hi all,
 > 
-> kobject_init_and_add() takes reference even when it fails.
-> If this function returns an error, kobject_put() must be called to
-> properly clean up the memory associated with the object.
-> Because function omap_dss_put_device() doesn't handle dssdev->kobj,
-> thus we need insert kobject_put() to clean up the kobject,
-> when kobject_init_and_add() fails.
+> Background of this version:
+> This is the v8 of the patch set and is has smaller scope. I had to split
+> the series into two: EM changes and thermal changes due to devfreq
+> dependencies. The patches from v7 9-14 which change devfreq cooling are
+> going to be sent in separate patch series, just after this set get merged
+> into mainline. These patches related to EM got acks and hopefully can go
+> through linux-pm tree. The later thermal patches will go through thermal
+> tree.
 > 
-> Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
-> Signed-off-by: Qiushi Wu <wu000273@umn.edu>
-> ---
->  drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c | 1 +
->  1 file changed, 1 insertion(+)
+> The idea and purpose of the Energy Model framework changes:
+> This patch set introduces support for devices in the Energy Model (EM)
+> framework. It will unify the power model for thermal subsystem. It will
+> make simpler to add support for new devices willing to use more
+> advanced features (like Intelligent Power Allocation). Now it should
+> require less knowledge and effort for driver developer to add e.g.
+> GPU driver with simple energy model. A more sophisticated energy model
+> in the thermal framework is also possible, driver needs to provide
+> a dedicated callback function. More information can be found in the
+> updated documentation file.
 > 
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-> index 6dbe265b312d..51322ac7df07 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/display-sysfs.c
-> @@ -316,6 +316,7 @@ int display_init_sysfs(struct platform_device *pdev)
->  			&pdev->dev.kobj, "%s", dssdev->alias);
->  		if (r) {
->  			DSSERR("failed to create sysfs files\n");
-> +			kobject_put(&dssdev->kobj);
->  			omap_dss_put_device(dssdev);
->  			goto err;
->  		}
+> First 7 patches are refactoring Energy Model framework to add support
+> of other devices that CPUs. They change:
+> - naming convention from 'capacity' to 'performance' state,
+> - API arguments adding device pointer and not rely only on cpumask,
+> - change naming when 'cpu' was used, now it's a 'device'
+> - internal structure to maintain registered devices
+> - update users to the new API
+> Patch 8 updates OPP framework helper function to be more generic, not
+> CPU specific.
+> 
+> The patch set is based on linux-pm branch linux-next 813946019dfd.
+> 
 
-Why is a driver creating "raw" kobjects and the like at all?
+Could you take the patch set via your linux-pm?
 
-/me goes off to look...
-
-
-Ick, no, that's not ok, this just needs to be an attribute group
-attached to the device, no need for a kobject at all.  Having a kobject
-means that the files will be ignored totally by userspace tools that
-monitor sysfs changes.  So these files are probably not even being
-used...
-
-Please fix this up properly.
-
-thanks,
-
-greg k-h
+Regards,
+Lukasz
