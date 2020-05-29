@@ -2,107 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA64A1E8A5C
-	for <lists+linux-omap@lfdr.de>; Fri, 29 May 2020 23:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D001E8A77
+	for <lists+linux-omap@lfdr.de>; Fri, 29 May 2020 23:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728546AbgE2Vq7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 May 2020 17:46:59 -0400
-Received: from muru.com ([72.249.23.125]:56290 "EHLO muru.com"
+        id S1727879AbgE2VxT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 May 2020 17:53:19 -0400
+Received: from muru.com ([72.249.23.125]:56302 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728086AbgE2Vq7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 29 May 2020 17:46:59 -0400
+        id S1726975AbgE2VxS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 29 May 2020 17:53:18 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id A03A28030;
-        Fri, 29 May 2020 21:47:46 +0000 (UTC)
-Date:   Fri, 29 May 2020 14:46:53 -0700
+        by muru.com (Postfix) with ESMTPS id 186A18030;
+        Fri, 29 May 2020 21:54:07 +0000 (UTC)
+Date:   Fri, 29 May 2020 14:53:14 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     SoC Team <soc@kernel.org>, Olof Johansson <olof@lixom.net>,
-        Stefan Agner <stefan@agner.ch>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        santosh.shilimkar@oracle.com
-Subject: Re: [PATCH] ARM: omap2: fix omap5_realtime_timer_init definition
-Message-ID: <20200529214653.GY37466@atomide.com>
-References: <20200529201701.521933-1-arnd@arndb.de>
- <20200529204404.GW37466@atomide.com>
- <CAK8P3a1fEq6n1pBqkY4CqxpSZnMLOQsNHFyhB_L4uo-oZVu4sw@mail.gmail.com>
- <20200529211440.GX37466@atomide.com>
- <CAK8P3a0oK-SqWHR9v0-2p3Fd_mCe2ibP_SQKf_W2A6cbEzVgWw@mail.gmail.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Faiz Abbas <faiz_abbas@ti.com>, Keerthy <j-keerthy@ti.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        bcousson@baylibre.com
+Subject: Re: [PATCH v2] arm: dts: Move am33xx and am43xx mmc nodes to
+ sdhci-omap driver
+Message-ID: <20200529215314.GZ37466@atomide.com>
+References: <20200512203804.9340-1-faiz_abbas@ti.com>
+ <20200513162327.GM37466@atomide.com>
+ <94025425-95e2-e53d-cfac-a1e73e6c011a@ti.com>
+ <53c815db-dd7d-e6e1-f81a-cf05ef340c71@ti.com>
+ <20200519154807.GT37466@atomide.com>
+ <e37ed4be-aed5-8051-a9fd-c0704d947d75@ti.com>
+ <20200519160458.GU37466@atomide.com>
+ <20200527160543.GI37466@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a0oK-SqWHR9v0-2p3Fd_mCe2ibP_SQKf_W2A6cbEzVgWw@mail.gmail.com>
+In-Reply-To: <20200527160543.GI37466@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Arnd Bergmann <arnd@arndb.de> [200529 21:41]:
-> On Fri, May 29, 2020 at 11:14 PM Tony Lindgren <tony@atomide.com> wrote:
-> > * Arnd Bergmann <arnd@arndb.de> [200529 21:09]:
-> > >
-> > > #ifdef CONFIG_SOC_HAS_REALTIME_COUNTER
-> > > extern void omap5_realtime_timer_init(void);
-> > > #else
-> > > static inline void omap5_realtime_timer_init(void)
-> > > {
-> > > }
-> > > #endif
-> > >
-> > > In fact, the inline stub is what that caused the regression,
-> > > so I think it's ok with my patch.
-> >
-> > To me it seems not having SOC_HAS_REALTIME_COUNTER will
-> > cause omap5_realtime_timer_init() not get called?
+* Tony Lindgren <tony@atomide.com> [200527 16:06]:
+> * Tony Lindgren <tony@atomide.com> [200519 09:05]:
+> > * Tomi Valkeinen <tomi.valkeinen@ti.com> [200519 15:55]:
+> > > (Dropping DT from cc)
+> > > 
+> > > On 19/05/2020 18:48, Tony Lindgren wrote:
+> > > 
+> > > > > > Suspend/resume on am43xx-gpevm is broken right now in mainline and the regression looks
+> > > > > > like it is caused by the display subsystem. I have reported this to Tomi and
+> > > > > > its being investigated.
+> > > > > > 
+> > > > > > Meanwhile I have tested this patch with display configs disabled and Keerthy's
+> > > > > > suspend/resume tests pass on both am3 and am4.
+> > > > 
+> > > > OK great thanks for checking it. Do you have the display subsystem
+> > > > related commit that broke PM? I'm wondering if my recent DSS platform
+> > > > data removal changes might have caused the regression.
+> > > 
+> > > I spent a bit time looking at this, but unfortunately I wasn't even able to
+> > > resume my AM4 evm from suspend. I tried with rtcwake and with plain console
+> > > (with no_console_suspend). I did not have DSS loaded.
+> > 
+> > My test-bbb-suspend script seems to have:
+> > 
+> > sudo modprobe wkup_m3_ipc
+> > sudo modprobe pm33xx
+> > sudo modprobe rtc-omap
+> > rtcwake -m mem -s 5
+> > 
+> > I think the same should work for am437x. But some boards do not support
+> > deep sleep like am437x-idk.
+> > 
+> > > Anyone have quick hints on how to debug why resume doesn't seem to happen?
+> > 
+> > You might get some info with no_console_suspend, but that might also
+> > cause other issues.
 > 
-> Correct, this looked to me like it was the intention of that
-> symbol. Unfortunately there is no help text but it is user
-> selectable:
-> 
-> config SOC_HAS_REALTIME_COUNTER
->         bool "Real time free running counter"
->         depends on SOC_OMAP5 || SOC_DRA7XX
->         default y
+> To me it seems we may have some dss clock missing with the ti-sysc dts
+> changes that makes resume fail. Or else there is some ordering issue
+> between the dss components now on resume, I'll try to debug more.
 
-Maybe this is a legacy Kconfig option since Santosh got
-the cpuidle coupled to switch things to using the always on
-timers for idle modes years ago already.
-
-> > That initializes clocks and calls timer_probe(). So this
-> > will result in non-booting system AFAIK, the header
-> > file stub should no rely CONFIG_SOC_HAS_REALTIME_COUNTER
-> > also, but rather ! CONFIG_SOC_OMAP5 || CONFIG_SOC_DRA7XX.
-> >
-> > Also the Makefile change at least seems wrong, that
-> > can't rely on CONFIG_SOC_HAS_REALTIME_COUNTER.
-> 
-> How about just removing the prompt on
-> CONFIG_SOC_HAS_REALTIME_COUNTER but keeping the
-> rest of my patch? That way it's just always enabled when
-> there is a chip that needs it enabled in the kernel config.
-> 
-> The only other usage of the symbol is
-> 
-> #ifdef CONFIG_SOC_HAS_REALTIME_COUNTER
-> void set_cntfreq(void);
-> #else
-> static inline void set_cntfreq(void)
-> {
-> }
-> #endif
-
-Yeah it's already default y, so I'd say let's just get
-rid of the option.
-
-> Alternatively, we could just remove the Kconfig symbol
-> altogether and rely on (SOC_OMAP5 || SOC_DRA7XX)
-> everywhere, but that seems a little more fragile in case
-> there is going to be another chip that needs it.
-
-Sounds like we can just remove CONFIG_SOC_HAS_REALTIME_COUNTER
-and rely on (SOC_OMAP5 || SOC_DRA7XX).
+Looks like we now set the CLOCKATIVITY bit while earlier we did not
+set it except for HWMOD_SET_DEFAULT_CLOCKACT cases. I've also found
+few other minor issues, but I'm still seeing resume fail for DSS.
+The clock and sysconfig registers look just fine, so getting closer.
 
 Regards,
 
