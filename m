@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27FCE1E9A20
-	for <lists+linux-omap@lfdr.de>; Sun, 31 May 2020 21:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A98E1E9A22
+	for <lists+linux-omap@lfdr.de>; Sun, 31 May 2020 21:40:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728306AbgEaTkL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 31 May 2020 15:40:11 -0400
-Received: from muru.com ([72.249.23.125]:56390 "EHLO muru.com"
+        id S1728359AbgEaTkP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 31 May 2020 15:40:15 -0400
+Received: from muru.com ([72.249.23.125]:56398 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725991AbgEaTkL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 31 May 2020 15:40:11 -0400
+        id S1725991AbgEaTkO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 31 May 2020 15:40:14 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 111738126;
-        Sun, 31 May 2020 19:40:58 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 0AAE2813D;
+        Sun, 31 May 2020 19:41:01 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
@@ -25,12 +25,12 @@ Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
         Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
         Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        dri-devel@lists.freedesktop.org,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH 1/5] drm/omap: Fix suspend resume regression after platform data removal
-Date:   Sun, 31 May 2020 12:39:37 -0700
-Message-Id: <20200531193941.13179-2-tony@atomide.com>
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH 2/5] bus: ti-sysc: Use optional clocks on for enable and wait for softreset bit
+Date:   Sun, 31 May 2020 12:39:38 -0700
+Message-Id: <20200531193941.13179-3-tony@atomide.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200531193941.13179-1-tony@atomide.com>
 References: <20200531193941.13179-1-tony@atomide.com>
@@ -41,112 +41,149 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-When booting without legacy platform data, we no longer have omap_device
-calling PM runtime suspend for us on suspend. This causes the driver
-context not be saved as we have no suspend and resume functions defined.
+Some modules reset automatically when idled, and when re-enabled, we must
+wait for the automatic OCP softreset to complete. And if optional clocks
+are configured, we need to keep the clocks on while waiting for the reset
+to complete.
 
-Let's fix the issue by switching over to use UNIVERSAL_DEV_PM_OPS as it
-will call the existing PM runtime suspend functions on suspend.
+Let's fix the issue by moving the OCP softreset code to a separate
+function sysc_wait_softreset(), and call it also from sysc_enable_module()
+with the optional clocks enabled.
 
-Fixes: cef766300353 ("drm/omap: Prepare DSS for probing without legacy platform data")
+This is based on what we're already doing for legacy platform data booting
+in _enable_sysc().
+
+Fixes: 7324a7a0d5e2 ("bus: ti-sysc: Implement display subsystem reset quirk")
 Reported-by: Faiz Abbas <faiz_abbas@ti.com>
-Cc: dri-devel@lists.freedesktop.org
 Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/gpu/drm/omapdrm/dss/dispc.c      | 6 ++----
- drivers/gpu/drm/omapdrm/dss/dsi.c        | 6 ++----
- drivers/gpu/drm/omapdrm/dss/dss.c        | 6 ++----
- drivers/gpu/drm/omapdrm/dss/venc.c       | 6 ++----
- drivers/gpu/drm/omapdrm/omap_dmm_tiler.c | 4 +---
- 5 files changed, 9 insertions(+), 19 deletions(-)
+ drivers/bus/ti-sysc.c | 81 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 61 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/dss/dispc.c b/drivers/gpu/drm/omapdrm/dss/dispc.c
---- a/drivers/gpu/drm/omapdrm/dss/dispc.c
-+++ b/drivers/gpu/drm/omapdrm/dss/dispc.c
-@@ -4933,10 +4933,8 @@ static int dispc_runtime_resume(struct device *dev)
- 	return 0;
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -221,6 +221,36 @@ static u32 sysc_read_sysstatus(struct sysc *ddata)
+ 	return sysc_read(ddata, offset);
  }
  
--static const struct dev_pm_ops dispc_pm_ops = {
--	.runtime_suspend = dispc_runtime_suspend,
--	.runtime_resume = dispc_runtime_resume,
--};
-+static UNIVERSAL_DEV_PM_OPS(dispc_pm_ops, dispc_runtime_suspend,
-+			    dispc_runtime_resume, NULL);
++/* Poll on reset status */
++static int sysc_wait_softreset(struct sysc *ddata)
++{
++	u32 sysc_mask, syss_done, rstval;
++	int sysc_offset, syss_offset, error = 0;
++
++	sysc_offset = ddata->offsets[SYSC_SYSCONFIG];
++	syss_offset = ddata->offsets[SYSC_SYSSTATUS];
++	sysc_mask = BIT(ddata->cap->regbits->srst_shift);
++
++	if (ddata->cfg.quirks & SYSS_QUIRK_RESETDONE_INVERTED)
++		syss_done = 0;
++	else
++		syss_done = ddata->cfg.syss_mask;
++
++	if (syss_offset >= 0) {
++		error = readx_poll_timeout(sysc_read_sysstatus, ddata, rstval,
++					   (rstval & ddata->cfg.syss_mask) ==
++					   syss_done,
++					   100, MAX_MODULE_SOFTRESET_WAIT);
++
++	} else if (ddata->cfg.quirks & SYSC_QUIRK_RESET_STATUS) {
++		error = readx_poll_timeout(sysc_read_sysconfig, ddata, rstval,
++					   !(rstval & sysc_mask),
++					   100, MAX_MODULE_SOFTRESET_WAIT);
++	}
++
++	return error;
++}
++
+ static int sysc_add_named_clock_from_child(struct sysc *ddata,
+ 					   const char *name,
+ 					   const char *optfck_name)
+@@ -925,8 +955,34 @@ static int sysc_enable_module(struct device *dev)
+ 	struct sysc *ddata;
+ 	const struct sysc_regbits *regbits;
+ 	u32 reg, idlemodes, best_mode;
++	int error;
  
- struct platform_driver omap_dispchw_driver = {
- 	.probe		= dispc_probe,
-diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
---- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-+++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-@@ -5464,10 +5464,8 @@ static int dsi_runtime_resume(struct device *dev)
- 	return 0;
- }
+ 	ddata = dev_get_drvdata(dev);
++
++	/*
++	 * Some modules like DSS reset automatically on idle. Enable optional
++	 * reset clocks and wait for OCP softreset to complete.
++	 */
++	if (ddata->cfg.quirks & SYSC_QUIRK_OPT_CLKS_IN_RESET) {
++		error = sysc_enable_opt_clocks(ddata);
++		if (error) {
++			dev_err(ddata->dev,
++				"Optional clocks failed for enable: %i\n",
++				error);
++			return error;
++		}
++	}
++	error = sysc_wait_softreset(ddata);
++	if (error)
++		dev_warn(ddata->dev, "OCP softreset timed out\n");
++	if (ddata->cfg.quirks & SYSC_QUIRK_OPT_CLKS_IN_RESET)
++		sysc_disable_opt_clocks(ddata);
++
++	/*
++	 * Some subsystem private interconnects, like DSS top level module,
++	 * need only the automatic OCP softreset handling with no sysconfig
++	 * register bits to configure.
++	 */
+ 	if (ddata->offsets[SYSC_SYSCONFIG] == -ENODEV)
+ 		return 0;
  
--static const struct dev_pm_ops dsi_pm_ops = {
--	.runtime_suspend = dsi_runtime_suspend,
--	.runtime_resume = dsi_runtime_resume,
--};
-+static UNIVERSAL_DEV_PM_OPS(dsi_pm_ops, dsi_runtime_suspend,
-+			    dsi_runtime_resume, NULL);
- 
- struct platform_driver omap_dsihw_driver = {
- 	.probe		= dsi_probe,
-diff --git a/drivers/gpu/drm/omapdrm/dss/dss.c b/drivers/gpu/drm/omapdrm/dss/dss.c
---- a/drivers/gpu/drm/omapdrm/dss/dss.c
-+++ b/drivers/gpu/drm/omapdrm/dss/dss.c
-@@ -1611,10 +1611,8 @@ static int dss_runtime_resume(struct device *dev)
- 	return 0;
- }
- 
--static const struct dev_pm_ops dss_pm_ops = {
--	.runtime_suspend = dss_runtime_suspend,
--	.runtime_resume = dss_runtime_resume,
--};
-+static UNIVERSAL_DEV_PM_OPS(dss_pm_ops, dss_runtime_suspend,
-+			    dss_runtime_resume, NULL);
- 
- struct platform_driver omap_dsshw_driver = {
- 	.probe		= dss_probe,
-diff --git a/drivers/gpu/drm/omapdrm/dss/venc.c b/drivers/gpu/drm/omapdrm/dss/venc.c
---- a/drivers/gpu/drm/omapdrm/dss/venc.c
-+++ b/drivers/gpu/drm/omapdrm/dss/venc.c
-@@ -942,10 +942,8 @@ static int venc_runtime_resume(struct device *dev)
- 	return 0;
- }
- 
--static const struct dev_pm_ops venc_pm_ops = {
--	.runtime_suspend = venc_runtime_suspend,
--	.runtime_resume = venc_runtime_resume,
--};
-+static UNIVERSAL_DEV_PM_OPS(venc_pm_ops, venc_runtime_suspend,
-+			    venc_runtime_resume, NULL);
- 
- static const struct of_device_id venc_of_match[] = {
- 	{ .compatible = "ti,omap2-venc", },
-diff --git a/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c b/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c
---- a/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c
-+++ b/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c
-@@ -1169,7 +1169,6 @@ int tiler_map_show(struct seq_file *s, void *arg)
- }
- #endif
- 
--#ifdef CONFIG_PM_SLEEP
- static int omap_dmm_resume(struct device *dev)
+@@ -1828,11 +1884,10 @@ static int sysc_legacy_init(struct sysc *ddata)
+  */
+ static int sysc_reset(struct sysc *ddata)
  {
- 	struct tcm_area area;
-@@ -1193,9 +1192,8 @@ static int omap_dmm_resume(struct device *dev)
+-	int sysc_offset, syss_offset, sysc_val, rstval, error = 0;
+-	u32 sysc_mask, syss_done;
++	int sysc_offset, sysc_val, error;
++	u32 sysc_mask;
  
- 	return 0;
- }
--#endif
+ 	sysc_offset = ddata->offsets[SYSC_SYSCONFIG];
+-	syss_offset = ddata->offsets[SYSC_SYSSTATUS];
  
--static SIMPLE_DEV_PM_OPS(omap_dmm_pm_ops, NULL, omap_dmm_resume);
-+static UNIVERSAL_DEV_PM_OPS(omap_dmm_pm_ops, NULL, omap_dmm_resume, NULL);
+ 	if (ddata->legacy_mode ||
+ 	    ddata->cap->regbits->srst_shift < 0 ||
+@@ -1841,11 +1896,6 @@ static int sysc_reset(struct sysc *ddata)
  
- #if defined(CONFIG_OF)
- static const struct dmm_platform_data dmm_omap4_platform_data = {
+ 	sysc_mask = BIT(ddata->cap->regbits->srst_shift);
+ 
+-	if (ddata->cfg.quirks & SYSS_QUIRK_RESETDONE_INVERTED)
+-		syss_done = 0;
+-	else
+-		syss_done = ddata->cfg.syss_mask;
+-
+ 	if (ddata->pre_reset_quirk)
+ 		ddata->pre_reset_quirk(ddata);
+ 
+@@ -1862,18 +1912,9 @@ static int sysc_reset(struct sysc *ddata)
+ 	if (ddata->post_reset_quirk)
+ 		ddata->post_reset_quirk(ddata);
+ 
+-	/* Poll on reset status */
+-	if (syss_offset >= 0) {
+-		error = readx_poll_timeout(sysc_read_sysstatus, ddata, rstval,
+-					   (rstval & ddata->cfg.syss_mask) ==
+-					   syss_done,
+-					   100, MAX_MODULE_SOFTRESET_WAIT);
+-
+-	} else if (ddata->cfg.quirks & SYSC_QUIRK_RESET_STATUS) {
+-		error = readx_poll_timeout(sysc_read_sysconfig, ddata, rstval,
+-					   !(rstval & sysc_mask),
+-					   100, MAX_MODULE_SOFTRESET_WAIT);
+-	}
++	error = sysc_wait_softreset(ddata);
++	if (error)
++		dev_warn(ddata->dev, "OCP softreset timed out\n");
+ 
+ 	if (ddata->reset_done_quirk)
+ 		ddata->reset_done_quirk(ddata);
 -- 
 2.26.2
