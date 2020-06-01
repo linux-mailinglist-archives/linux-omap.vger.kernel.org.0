@@ -2,176 +2,157 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41CE61EA492
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Jun 2020 15:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A67451EA4DE
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Jun 2020 15:25:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728170AbgFANMu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 1 Jun 2020 09:12:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48250 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727879AbgFANLw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 1 Jun 2020 09:11:52 -0400
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F199C061A0E;
-        Mon,  1 Jun 2020 06:11:52 -0700 (PDT)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1jfkEF-00077k-K0; Mon, 01 Jun 2020 15:11:47 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 3E25C1C04CE;
-        Mon,  1 Jun 2020 15:11:47 +0200 (CEST)
-Date:   Mon, 01 Jun 2020 13:11:47 -0000
-From:   "tip-bot2 for Tony Lindgren" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] clocksource/drivers/timer-ti-32k: Add support for
- initializing directly
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
-        Rob Herring <robh@kernel.org>, Tero Kristo <t-kristo@ti.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>, x86 <x86@kernel.org>
-In-Reply-To: <20200507172330.18679-2-tony@atomide.com>
-References: <20200507172330.18679-2-tony@atomide.com>
+        id S1726149AbgFANZH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 1 Jun 2020 09:25:07 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:44609 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725847AbgFANZH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 1 Jun 2020 09:25:07 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200601132505euoutp0290e961d478f67da65e3d4a0a5aa2b19c~Ublr7g_Pp1974319743euoutp02N
+        for <linux-omap@vger.kernel.org>; Mon,  1 Jun 2020 13:25:05 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200601132505euoutp0290e961d478f67da65e3d4a0a5aa2b19c~Ublr7g_Pp1974319743euoutp02N
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1591017905;
+        bh=WDoFslnoBh4NFH5LxebC/l/9rNxykmi1JmVWDnec9NU=;
+        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
+        b=cD1cN3D1e+Nh7jTXsLqqpT0yDWpTd0ZULiUNMLo3S6r/pH/aqFVm4qrAsau0lTLHY
+         ENS2lNyiQhzeOUDdMHO7+92HNFOJoFh3ysiVnR5VYk/CrwjkFNl83yYJyJAa79P+7K
+         iMpJ3ynypXHODTihrjeEYb3bVzDvAOoR2T4ApzHs=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200601132505eucas1p18e3a7e6740ebae768a8f4da8c9a9ece3~UblrkZ79k1098310983eucas1p1T;
+        Mon,  1 Jun 2020 13:25:05 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id 51.33.60679.0B105DE5; Mon,  1
+        Jun 2020 14:25:04 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200601132504eucas1p1065ae1c2c68bb149a0505cd521452c15~UblrMu8g12556225562eucas1p18;
+        Mon,  1 Jun 2020 13:25:04 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200601132504eusmtrp111ff227a9c0cd8a8e126eb12a77f4b3a~UblrMG_lB2270722707eusmtrp1H;
+        Mon,  1 Jun 2020 13:25:04 +0000 (GMT)
+X-AuditID: cbfec7f4-0cbff7000001ed07-1c-5ed501b010ea
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id B7.DB.08375.0B105DE5; Mon,  1
+        Jun 2020 14:25:04 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200601132504eusmtip10bef19bb4da24abb7f5138822552b060~Ublq27nnW1048610486eusmtip1m;
+        Mon,  1 Jun 2020 13:25:04 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: Re: [PATCH] omapfb/dss: fix comparison to bool warning
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     afd@ti.com, tomi.valkeinen@ti.com, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Message-ID: <266bc2e0-c2bf-1c0c-a5ac-58941ff38f5f@samsung.com>
+Date:   Mon, 1 Jun 2020 15:25:03 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Message-ID: <159101710704.17951.8363727578897055242.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20200422071903.637-1-yanaijie@huawei.com>
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrOKsWRmVeSWpSXmKPExsWy7djP87obGK/GGfR3WVm8PzWR3eLK1/ds
+        Fif6PrBaXN41h81i9pJ+Fov182+xWSza08nswO7RcuQtq8f97uNMHsdvbGfy+LxJLoAlissm
+        JTUnsyy1SN8ugStjc8NL5oLF/BVNR9vYGxi/8HQxcnJICJhIrHk0g72LkYtDSGAFo8T/+Xeh
+        nC+MEm/vfmGFcD4zSnya8ZwJpuVGzzSoxHJGiWW7mlkgnLeMEpPWXWQEqWITsJKY2L4KzBYW
+        sJdou/sbrFtEQFmi8f50sG5mgYWMEgc3rQdayMHBK2AncWKvH0gNi4CKRPedbjYQW1QgQuLT
+        g8OsIDavgKDEyZlPWEBsTgFziea1/8FmMguIS9x6Mh/KlpfY/nYOM8h8CYFt7BKXrs6GOttF
+        YtmEs2wQtrDEq+Nb2CFsGYnTk3tYIBrWMUr87XgB1b2dUWL55H9QHdYSd879YgO5lFlAU2L9
+        Ln2IsKPE3W3PwR6QEOCTuPFWEOIIPolJ26YzQ4R5JTrahCCq1SQ2LNvABrO2a+dK5gmMSrOQ
+        vDYLyTuzkLwzC2HvAkaWVYziqaXFuempxUZ5qeV6xYm5xaV56XrJ+bmbGIHJ5/S/4192MO76
+        k3SIUYCDUYmHl+PRlTgh1sSy4srcQ4wSHMxKIrxOZ0/HCfGmJFZWpRblxxeV5qQWH2KU5mBR
+        Euc1XvQyVkggPbEkNTs1tSC1CCbLxMEp1cDI7bDKTkTR/O3n3dqf9Btm2+y56LPk+RlHTeUW
+        yY83Tnw74qH9XMxm5dbsKfFHeN04Ih5MfrpR93qz4eSME7u3rJVlPhfzQdauX+PGJ5+224bL
+        +Q5+Fpp1d7/i2U0uU5a1SX1aVvs6l/Nvq4M09+1Z+/vKOWcoKpUcmmTsFXK1nt3DwSwwqzlP
+        iaU4I9FQi7moOBEAcc8G9DoDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrBIsWRmVeSWpSXmKPExsVy+t/xu7obGK/GGUz7pmTx/tREdosrX9+z
+        WZzo+8BqcXnXHDaL2Uv6WSzWz7/FZrFoTyezA7tHy5G3rB73u48zeRy/sZ3J4/MmuQCWKD2b
+        ovzSklSFjPziElulaEMLIz1DSws9IxNLPUNj81grI1MlfTublNSczLLUIn27BL2MzQ0vmQsW
+        81c0HW1jb2D8wtPFyMkhIWAicaNnGmsXIxeHkMBSRokVX1vZuhg5gBIyEsfXl0HUCEv8udbF
+        BlHzmlFi3rReZpAEm4CVxMT2VYwgtrCAvUTb3d9MILaIgLJE4/3pYEOZBRYySmyY+JcdoruL
+        UeL+zXcsIBt4BewkTuz1A2lgEVCR6L7TzQZiiwpESBzeMQtsKK+AoMTJmU9YQGxOAXOJ5rX/
+        wRYwC6hL/Jl3iRnCFpe49WQ+VFxeYvvbOcwTGIVmIWmfhaRlFpKWWUhaFjCyrGIUSS0tzk3P
+        LTbUK07MLS7NS9dLzs/dxAiMtW3Hfm7ewXhpY/AhRgEORiUe3g33r8QJsSaWFVfmHmKU4GBW
+        EuF1Ons6Tog3JbGyKrUoP76oNCe1+BCjKdBzE5mlRJPzgWkgryTe0NTQ3MLS0NzY3NjMQkmc
+        t0PgYIyQQHpiSWp2ampBahFMHxMHp1QDY79emF3X1dbZO0y7P+neWrm6jkO89/LWE812MyZy
+        r18R1zvj2IdFv/Lc1m2wXxeQKPbh47p/nAqTe97NnPv/ufryyfNfLq90W3xL33nObdYH2vt7
+        Pe9t/5DaJ/hVW7+js3p6pKinxSI5vpwgf/2n6ponGDubPD0XP7r5zjNB9eS+4NTVBx7eD1Vi
+        Kc5INNRiLipOBAAdEM/mywIAAA==
+X-CMS-MailID: 20200601132504eucas1p1065ae1c2c68bb149a0505cd521452c15
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200422072450eucas1p106befe0a06fe20557d7ea4297525878a
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200422072450eucas1p106befe0a06fe20557d7ea4297525878a
+References: <CGME20200422072450eucas1p106befe0a06fe20557d7ea4297525878a@eucas1p1.samsung.com>
+        <20200422071903.637-1-yanaijie@huawei.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     d15483bb49bae0f9cbb67c54becec252545752d3
-Gitweb:        https://git.kernel.org/tip/d15483bb49bae0f9cbb67c54becec252545752d3
-Author:        Tony Lindgren <tony@atomide.com>
-AuthorDate:    Thu, 07 May 2020 10:23:17 -07:00
-Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Mon, 18 May 2020 18:56:35 +02:00
+On 4/22/20 9:19 AM, Jason Yan wrote:
+> Fix the following coccicheck warning:
+> 
+> drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c:461:15-32: WARNING:
+> Comparison to bool
+> drivers/video/fbdev/omap2/omapfb/dss/dispc.c:891:5-35: WARNING:
+> Comparison of 0/1 to bool variable
+> 
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
-clocksource/drivers/timer-ti-32k: Add support for initializing directly
+Applied to drm-misc-next tree (patch should show up in v5.9), thanks.
 
-Let's allow probing the 32k counter directly based on devicetree data to
-prepare for dropping the related legacy platform code. Let's only do this
-if the parent node is compatible with ti-sysc to make sure we have the
-related devicetree data available.
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
 
-Let's also show the 32k counter information before registering the
-clocksource, now we see it after the clocksource information which is a
-bit confusing.
+> ---
+>  drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 2 +-
+>  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c | 4 +---
+>  2 files changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> index 4a16798b2ecd..3bb951eb29c7 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> @@ -888,7 +888,7 @@ static void dispc_ovl_set_color_mode(enum omap_plane plane,
+>  static void dispc_ovl_configure_burst_type(enum omap_plane plane,
+>  		enum omap_dss_rotation_type rotation_type)
+>  {
+> -	if (dss_has_feature(FEAT_BURST_2D) == 0)
+> +	if (!dss_has_feature(FEAT_BURST_2D))
+>  		return;
+>  
+>  	if (rotation_type == OMAP_DSS_ROT_TILER)
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+> index 7060ae56c062..ef659c89ba58 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+> @@ -455,11 +455,9 @@ static void hdmi_disconnect(struct omap_dss_device *dssdev,
+>  static int hdmi_read_edid(struct omap_dss_device *dssdev,
+>  		u8 *edid, int len)
+>  {
+> -	bool need_enable;
+> +	bool need_enable = !hdmi.core_enabled;
+>  	int r;
+>  
+> -	need_enable = hdmi.core_enabled == false;
+> -
+>  	if (need_enable) {
+>  		r = hdmi_core_enable(dssdev);
+>  		if (r)
+> 
 
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-omap@vger.kernel.org
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Lokesh Vutla <lokeshvutla@ti.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Tero Kristo <t-kristo@ti.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20200507172330.18679-2-tony@atomide.com
----
- drivers/clocksource/timer-ti-32k.c | 48 ++++++++++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/clocksource/timer-ti-32k.c b/drivers/clocksource/timer-ti-32k.c
-index abd5f15..ae12bbf 100644
---- a/drivers/clocksource/timer-ti-32k.c
-+++ b/drivers/clocksource/timer-ti-32k.c
-@@ -24,6 +24,7 @@
-  * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com
-  */
- 
-+#include <linux/clk.h>
- #include <linux/init.h>
- #include <linux/time.h>
- #include <linux/sched_clock.h>
-@@ -76,6 +77,49 @@ static u64 notrace omap_32k_read_sched_clock(void)
- 	return ti_32k_read_cycles(&ti_32k_timer.cs);
- }
- 
-+static void __init ti_32k_timer_enable_clock(struct device_node *np,
-+					     const char *name)
-+{
-+	struct clk *clock;
-+	int error;
-+
-+	clock = of_clk_get_by_name(np->parent, name);
-+	if (IS_ERR(clock)) {
-+		/* Only some SoCs have a separate interface clock */
-+		if (PTR_ERR(clock) == -EINVAL && !strncmp("ick", name, 3))
-+			return;
-+
-+		pr_warn("%s: could not get clock %s %li\n",
-+			__func__, name, PTR_ERR(clock));
-+		return;
-+	}
-+
-+	error = clk_prepare_enable(clock);
-+	if (error) {
-+		pr_warn("%s: could not enable %s: %i\n",
-+			__func__, name, error);
-+		return;
-+	}
-+}
-+
-+static void __init ti_32k_timer_module_init(struct device_node *np,
-+					    void __iomem *base)
-+{
-+	void __iomem *sysc = base + 4;
-+
-+	if (!of_device_is_compatible(np->parent, "ti,sysc"))
-+		return;
-+
-+	ti_32k_timer_enable_clock(np, "fck");
-+	ti_32k_timer_enable_clock(np, "ick");
-+
-+	/*
-+	 * Force idle module as wkup domain is active with MPU.
-+	 * No need to tag the module disabled for ti-sysc probe.
-+	 */
-+	writel_relaxed(0, sysc);
-+}
-+
- static int __init ti_32k_timer_init(struct device_node *np)
- {
- 	int ret;
-@@ -90,6 +134,7 @@ static int __init ti_32k_timer_init(struct device_node *np)
- 		ti_32k_timer.cs.flags |= CLOCK_SOURCE_SUSPEND_NONSTOP;
- 
- 	ti_32k_timer.counter = ti_32k_timer.base;
-+	ti_32k_timer_module_init(np, ti_32k_timer.base);
- 
- 	/*
- 	 * 32k sync Counter IP register offsets vary between the highlander
-@@ -104,6 +149,8 @@ static int __init ti_32k_timer_init(struct device_node *np)
- 	else
- 		ti_32k_timer.counter += OMAP2_32KSYNCNT_CR_OFF_LOW;
- 
-+	pr_info("OMAP clocksource: 32k_counter at 32768 Hz\n");
-+
- 	ret = clocksource_register_hz(&ti_32k_timer.cs, 32768);
- 	if (ret) {
- 		pr_err("32k_counter: can't register clocksource\n");
-@@ -111,7 +158,6 @@ static int __init ti_32k_timer_init(struct device_node *np)
- 	}
- 
- 	sched_clock_register(omap_32k_read_sched_clock, 32, 32768);
--	pr_info("OMAP clocksource: 32k_counter at 32768 Hz\n");
- 
- 	return 0;
- }
