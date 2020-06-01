@@ -2,175 +2,163 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5D7A1E9A5A
-	for <lists+linux-omap@lfdr.de>; Sun, 31 May 2020 22:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A76471E9B24
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Jun 2020 03:16:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728296AbgEaUlw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 31 May 2020 16:41:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35900 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727000AbgEaUlw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 31 May 2020 16:41:52 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E70FC05BD43
-        for <linux-omap@vger.kernel.org>; Sun, 31 May 2020 13:41:51 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id l10so9439006wrr.10
-        for <linux-omap@vger.kernel.org>; Sun, 31 May 2020 13:41:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=XPS7Wm2VWj6CUy+E0xjT/Rc+9g5GOp3P8FCBLIlwzJo=;
-        b=AbeDd+VZXi3HG/DUD5MnzM0WkfA7pfoopzNQnkqPJVYXiC1x3Ge0puDCadq3xmZCOf
-         sClqPFc5prhw5ggSaHNlWPUwwh7wF8oQVsS6z33KhK7luIW9/bhu7CZJ1TJTiCmc3adX
-         H122u4+Vs6Mf4dH85DDPnxJi/K7hNSt8y6a23n83KKGDsNzbzgHX96UvwDATLCP/Qb7i
-         kobyDYvnWucSKMSSZBg5kQFe1EjmWMdnoSjyW6hmfzMgPVhlo+15ogtdOu1Wf0APGegV
-         egKw/l2UAp5uoBy3oBg+7Qqy9WQVfADYAGig/32FdrOKd+hn3SI9Z67KR+2yhWZwKsE/
-         //EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition;
-        bh=XPS7Wm2VWj6CUy+E0xjT/Rc+9g5GOp3P8FCBLIlwzJo=;
-        b=GAOl3LjkQ2HjGjYgtUtsnH8MM6pIBY+zMpWvAAEafpsQ6J3vO1qIN6Gw3Mu27AOvxp
-         i7pENWx4weZG8K7PUeayBjNy/zUjkhtaMT4aCwEwTqwwzN79BHA2JZSF4tYFknFIcZCa
-         Oqu3M/ZTJStIx1poEpzok2QDHJP7uCrYJSZXH64sHkMW8ajJNU4RYU3aYT/KWc/nBt6K
-         7vvktkKMi9OzVHx4AZ32J5t3KV8l39QSU2nlcsdkVA55hwZonE/tcfFtJns15rzqT0Ir
-         eeEfW2dbKpjgkI6soStdmVWSbXkG4F1eZrAGhLUb31vIqP82CDjkhUd/3mJtuFn9OKox
-         RLjw==
-X-Gm-Message-State: AOAM5325FgBEXwN0APzaNDvqIp4r/bdcXZAvjEsBrhodSZR2pHeq3Gnu
-        ReO9H6rBhKV9oXOH2puv1WODfg==
-X-Google-Smtp-Source: ABdhPJx15g0vSZpLKQ1DQXGPeEz1sugYXvSvoWG4pgj2qP0JKlhM0zDTy5DuHXhyIA72bnpCctTB0w==
-X-Received: by 2002:adf:e44c:: with SMTP id t12mr18025369wrm.181.1590957710498;
-        Sun, 31 May 2020 13:41:50 -0700 (PDT)
-Received: from x1 ([2001:16b8:5c3c:c701:98fe:8f8:cce1:59e])
-        by smtp.gmail.com with ESMTPSA id z206sm9940414wmg.30.2020.05.31.13.41.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 May 2020 13:41:49 -0700 (PDT)
-Date:   Sun, 31 May 2020 22:41:47 +0200
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>
-Subject: [PATCH] pinctrl-single: fix pcs_parse_pinconf() return val
-Message-ID: <20200531204147.GA664833@x1>
+        id S1726882AbgFABQe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 31 May 2020 21:16:34 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:35798 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726555AbgFABQe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 31 May 2020 21:16:34 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0511GFBE077304;
+        Sun, 31 May 2020 20:16:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1590974175;
+        bh=nmBVOGZ6DigGZrEHfDNyY0pzJCmoX4ALlVYIJmH8ruU=;
+        h=Subject:From:To:CC:References:Date:In-Reply-To;
+        b=DhBv92SeT8NUFq0TfpZHoKtzpDOrYomFTV02VZQhPeTmUfo43amF0iyCBmyIZRURA
+         W2J+kffABIadckRvm8g4OasEa+ttkI5E11foTqm9V9+6pNqYHHgXVBtHZLZvDHbGst
+         0QD/BMj29EFcADgh6J7ZLNS4m3+XWbyiUSc3vmBU=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0511GFQN088753
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 31 May 2020 20:16:15 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Sun, 31
+ May 2020 20:16:14 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Sun, 31 May 2020 20:16:14 -0500
+Received: from [10.250.233.85] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0511GBQt059820;
+        Sun, 31 May 2020 20:16:12 -0500
+Subject: Re: [PATCH v5 03/14] PCI: cadence: Convert all r/w accessors to
+ perform only 32-bit accesses
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+To:     Rob Herring <robh@kernel.org>
+CC:     Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        PCI <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <devicetree@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>
+References: <20200522033631.32574-1-kishon@ti.com>
+ <20200522033631.32574-4-kishon@ti.com>
+ <CAL_JsqJjXUUgTbSAi83w4Eie-sVTrkLLMGh_PRQsd8k2vuua4Q@mail.gmail.com>
+ <df29309d-8401-4040-eb1e-90bb3af93a82@ti.com>
+ <CAL_JsqLy9T8O81stSW8RHpsUXFFjon80VG9-Jgync1eVR4iTew@mail.gmail.com>
+ <b3663862-44df-867f-0824-28802909f224@ti.com>
+ <CAL_JsqJMZxOFw-kn5_9bNTPzJuwHybJAi6iQyBq=6BrKSvfTqA@mail.gmail.com>
+ <457db3ae-e68a-d2fc-ba5f-5393ad464413@ti.com>
+Message-ID: <e31f1479-ba0e-d599-4cdc-dd1395d02e6c@ti.com>
+Date:   Mon, 1 Jun 2020 06:46:10 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <457db3ae-e68a-d2fc-ba5f-5393ad464413@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This patch causes pcs_parse_pinconf() to return an error when no
-pinctrl_map is added.  The current behavior is to return 0 when
-!PCS_HAS_PINCONF or !nconfs.  Thus pcs_parse_one_pinctrl_entry()
-incorrectly assumes that a map was added and sets num_maps = 2.
+Hi Rob,
 
-Analysis:
-=========
-The function pcs_parse_one_pinctrl_entry() calls pcs_parse_pinconf()
-if PCS_HAS_PINCONF is enabled.  The function pcs_parse_pinconf()
-returns 0 to indicate there was no error and num_maps is then set to 2:
+On 5/28/2020 3:36 AM, Kishon Vijay Abraham I wrote:
+> Hi Rob,
+> 
+> On 5/27/2020 10:07 PM, Rob Herring wrote:
+>> On Wed, May 27, 2020 at 4:49 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>>>
+>>> Hi Rob,
+>>>
+>>> On 5/26/2020 8:42 PM, Rob Herring wrote:
+>>>> On Sun, May 24, 2020 at 9:30 PM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>>>>>
+>>>>> Hi Rob,
+>>>>>
+>>>>> On 5/22/2020 9:24 PM, Rob Herring wrote:
+>>>>>> On Thu, May 21, 2020 at 9:37 PM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>>>>>>>
+>>>>>>> Certain platforms like TI's J721E using Cadence PCIe IP can perform only
+>>>>>>> 32-bit accesses for reading or writing to Cadence registers. Convert all
+>>>>>>> read and write accesses to 32-bit in Cadence PCIe driver in preparation
+>>>>>>> for adding PCIe support in TI's J721E SoC.
+>>>>>>
+>>>>>> Looking more closely I don't think cdns_pcie_ep_assert_intx is okay
+>>>>>> with this and never can be given the PCI_COMMAND and PCI_STATUS
+>>>>>> registers are in the same word (IIRC, that's the main reason 32-bit
+>>>>>> config space accesses are broken). So this isn't going to work at
+>>>>>
+>>>>> right, PCI_STATUS has write '1' to clear bits and there's a chance that it
+>>>>> could be reset while raising legacy interrupt. While this cannot be avoided for
+>>>>> TI's J721E, other platforms doesn't have to have this limitation.
+>>>>>> least for EP accesses. And maybe you need a custom .raise_irq() hook
+>>>>>> to minimize any problems (such as making the RMW atomic at least from
+>>>>>> the endpoint's perspective).
+>>>>>
+>>>>> This is to make sure EP doesn't update in-consistent state when RC is updating
+>>>>> the PCI_STATUS register? Since this involves two different systems, how do we
+>>>>> make this atomic?
+>>>>
+>>>> You can't make it atomic WRT both systems, but is there locking around
+>>>> each RMW? Specifically, are preemption and interrupts disabled to
+>>>> ensure time between a read and write are minimized? You wouldn't want
+>>>> interrupts disabled during the delay too though (i.e. around
+>>>> .raise_irq()).
+>>>
+>>> Okay, I'll add spin spin_lock_irqsave() in cdns_pcie_write_sz(). As you also
+>>> pointed below that delay for legacy interrupt is wrong and it has to be fixed
+>>> (with a later series).
+>>
+>> But you don't need a lock everywhere. You need locks in the callers
+>> (and only sometimes).
+> 
+> Okay, the locks should be added only for registers where HOST can also write to
+> the same register? Maybe only raise_irq then..
+> 
+>>
+>>> How do you want to handle cdns_pcie_ep_fn_writew() now? Because now we are
+>>> changing the default implementation to perform only 32-bit access (used for
+>>> legacy interrupt, msi-x interrupt and while writing standard headers) and it's
+>>> not okay only for legacy interrupts for platforms other than TI.
+>>
+>> Now I'm wondering how set_msi is not racy in the current code with the
+>> host setting/clearing PCI_MSI_FLAGS_ENABLE? Maybe that bit is RO from
+>> the EP side?
+> 
+> set_msi/set_msix is a one time configuration that is invoked before the host
+> establishes the link with the endpoint. I don't think we have to consider this
+> as racy.
 
- 980 static int pcs_parse_one_pinctrl_entry(struct pcs_device *pcs,
- 981                                                 struct device_node *np,
- 982                                                 struct pinctrl_map **map,
- 983                                                 unsigned *num_maps,
- 984                                                 const char **pgnames)
- 985 {
-<snip>
-1053         (*map)->type = PIN_MAP_TYPE_MUX_GROUP;
-1054         (*map)->data.mux.group = np->name;
-1055         (*map)->data.mux.function = np->name;
-1056
-1057         if (PCS_HAS_PINCONF && function) {
-1058                 res = pcs_parse_pinconf(pcs, np, function, map);
-1059                 if (res)
-1060                         goto free_pingroups;
-1061                 *num_maps = 2;
-1062         } else {
-1063                 *num_maps = 1;
-1064         }
+Can we try to close on this discussion please?
 
-However, pcs_parse_pinconf() will also return 0 if !PCS_HAS_PINCONF or
-!nconfs.  I believe these conditions should indicate that no map was
-added by returning non-zero. Otherwise pcs_parse_one_pinctrl_entry()
-will set num_maps = 2 even though no maps were successfully added, as
-it does not reach "m++" on line 940:
+Thanks
+Kishon
 
- 895 static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
- 896                              struct pcs_function *func,
- 897                              struct pinctrl_map **map)
- 898
- 899 {
- 900         struct pinctrl_map *m = *map;
-<snip>
- 917         /* If pinconf isn't supported, don't parse properties in below. */
- 918         if (!PCS_HAS_PINCONF)
- 919                 return 0;
- 920
- 921         /* cacluate how much properties are supported in current node */
- 922         for (i = 0; i < ARRAY_SIZE(prop2); i++) {
- 923                 if (of_find_property(np, prop2[i].name, NULL))
- 924                         nconfs++;
- 925         }
- 926         for (i = 0; i < ARRAY_SIZE(prop4); i++) {
- 927                 if (of_find_property(np, prop4[i].name, NULL))
- 928                         nconfs++;
- 929         }
- 930         if (!nconfs)
- 919                 return 0;
- 932
- 933         func->conf = devm_kcalloc(pcs->dev,
- 934                                   nconfs, sizeof(struct pcs_conf_vals),
- 935                                   GFP_KERNEL);
- 936         if (!func->conf)
- 937                 return -ENOMEM;
- 938         func->nconfs = nconfs;
- 939         conf = &(func->conf[0]);
- 940         m++;
-
-This situtation will cause a boot failure [0] on the BeagleBone Black
-(AM3358) when am33xx_pinmux node in arch/arm/boot/dts/am33xx-l4.dtsi
-has compatible = "pinconf-single" instead of "pinctrl-single".
-
-The patch fixes this issue by returning -ENOSUPP when !PCS_HAS_PINCONF
-or !nconfs, so that pcs_parse_one_pinctrl_entry() will know that no
-map was added.
-
-[0] https://lore.kernel.org/linux-omap/20200529175544.GA3766151@x1/
-
-Signed-off-by: Drew Fustini <drew@beagleboard.org>
----
- drivers/pinctrl/pinctrl-single.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 1e0614daee9b..18a02cd0c701 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -916,7 +916,7 @@ static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
- 
- 	/* If pinconf isn't supported, don't parse properties in below. */
- 	if (!PCS_HAS_PINCONF)
--		return 0;
-+		return -ENOTSUPP; /* do not return 0 as no map added */
- 
- 	/* cacluate how much properties are supported in current node */
- 	for (i = 0; i < ARRAY_SIZE(prop2); i++) {
-@@ -928,7 +928,7 @@ static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
- 			nconfs++;
- 	}
- 	if (!nconfs)
--		return 0;
-+		return -ENOTSUPP; /* do not return 0 as no map added */
- 
- 	func->conf = devm_kcalloc(pcs->dev,
- 				  nconfs, sizeof(struct pcs_conf_vals),
--- 
-2.25.1
-
+> 
+> Thanks
+> Kishon
+> 
+>>
+>> Ultimately I think you're going to have to provide your own endpoint
+>> functions or you need accessors for specific registers like
+>> PCI_MSI_FLAGS. Then for example, you just rely on the 2 bytes before
+>> PCI_MSI_FLAGS being reserved and do a 32-bit access without a RMW.
+>> Trying to abstract this at the register read/write level is going to
+>> be fragile
+>>
+>> Rob
+>>
