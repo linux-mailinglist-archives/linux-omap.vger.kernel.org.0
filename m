@@ -2,92 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B762F1EB76D
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Jun 2020 10:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E68D31EBA65
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Jun 2020 13:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726311AbgFBIcH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Jun 2020 04:32:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60188 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725811AbgFBIcH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 Jun 2020 04:32:07 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 697E0C061A0E;
-        Tue,  2 Jun 2020 01:32:06 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id a127so2702352pfa.12;
-        Tue, 02 Jun 2020 01:32:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9ZQUYgk2V7Mx0esfmh4y3mmfTGvC64s4iQn4Jh1H8G8=;
-        b=HmJGGygz1wL1O+w/dN5pG3C+kjX4bhh2rAcYhLaL4nrdg+aRCGL86aqPCKmDODTk0H
-         W6GnOC+vBXUbBT87WvAYn5flUU2VGCZxuEo+O9hDshlGMB7wKHIDIzNYs2k86cF4hwQO
-         Ki604kWSEjZcN1tfqdfjvbDUQmjMU+Rhv+DPPXRMRVS2T3zyLFjdS0sDOEW8PuZFoxOd
-         goc6foUxMpEkGQJkAyrofUhpaOE12U3LtRnCkhrdnRRcgd5ziD55wlen4lbG5sY70LYj
-         BNhjF1FIib1UbINzuK+MskR4KXmDzAtZOiMPUNA3Xu2v+17EiQRGofGcjTanOm2i6wc3
-         yuKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9ZQUYgk2V7Mx0esfmh4y3mmfTGvC64s4iQn4Jh1H8G8=;
-        b=IFDhJ9vwuFqUD1uh9Eb8ZxKiTo8dkfDdKMzfChf9t88y4YpP1s0HEwLPf+9rFRP/KW
-         K4OSc8BpSJfyzi/2aiEvsuEGNfyb/AqaDXPwJEZbTnKKsguJcWniNoWRY3F925Z1v4ew
-         a8tE5NI20Qk2zrANasuGbh5vXCljj9Pr41AkcNohWT9neNp0HCr6yW6hwL0moXTSP7zn
-         4xS7UcllhuIdLsnZqjPWhc+Liz1pO5g9HZNdWXAIxoKfTh7cTMTF11NuWB09yNeKsvbn
-         tF9WBBWKsg9NBaJpqGCXKhH7HavL+wESAZ6HBPqQwdwPe8ZpmK8EYjZwKjipC3yYkGAL
-         1bgQ==
-X-Gm-Message-State: AOAM532NdfEY4z9D4VI89oZ+mgK7MoLSdPndDCOYSpcp6DKuLLIRJVFD
-        eNatIRpRwWfpqFZpOnzWiTOUSSTnBfNPG9EZnPs=
-X-Google-Smtp-Source: ABdhPJwjAR6qWM3iADSoQUZxsvaZmkMb4RSf3zmVgzLNjjgc1H9ASyudk4ftkU45x4hKebGHa3tp9SwQoXYg0p/F9V8=
-X-Received: by 2002:a63:545a:: with SMTP id e26mr22582548pgm.4.1591086725894;
- Tue, 02 Jun 2020 01:32:05 -0700 (PDT)
+        id S1726450AbgFBLbj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 2 Jun 2020 07:31:39 -0400
+Received: from foss.arm.com ([217.140.110.172]:49630 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725900AbgFBLbi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 2 Jun 2020 07:31:38 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B08A931B;
+        Tue,  2 Jun 2020 04:31:37 -0700 (PDT)
+Received: from [10.37.12.87] (unknown [10.37.12.87])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 54B5E3F52E;
+        Tue,  2 Jun 2020 04:31:27 -0700 (PDT)
+Subject: Re: [PATCH v8 4/8] PM / EM: add support for other devices than CPUs
+ in Energy Model
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com
+Cc:     Dietmar.Eggemann@arm.com, cw00.choi@samsung.com,
+        b.zolnierkie@samsung.com, rjw@rjwysocki.net, sudeep.holla@arm.com,
+        viresh.kumar@linaro.org, nm@ti.com, sboyd@kernel.org,
+        rui.zhang@intel.com, amit.kucheria@verdurent.com, mingo@redhat.com,
+        peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, rostedt@goodmis.org,
+        qperret@google.com, bsegall@google.com, mgorman@suse.de,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+        kernel@pengutronix.de, khilman@kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, robh@kernel.org,
+        matthias.bgg@gmail.com, steven.price@arm.com,
+        tomeu.vizoso@collabora.com, alyssa.rosenzweig@collabora.com,
+        airlied@linux.ie, daniel@ffwll.ch, liviu.dudau@arm.com,
+        lorenzo.pieralisi@arm.com, patrick.bellasi@matbug.net,
+        orjan.eide@arm.com, rdunlap@infradead.org, mka@chromium.org
+References: <20200527095854.21714-1-lukasz.luba@arm.com>
+ <20200527095854.21714-5-lukasz.luba@arm.com>
+ <d45e5592-8e11-858b-d3a3-2ec9ce1d1f54@linaro.org>
+From:   Lukasz Luba <lukasz.luba@arm.com>
+Message-ID: <7201e161-6952-6e28-4036-bd0f0353ec30@arm.com>
+Date:   Tue, 2 Jun 2020 12:31:25 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20200602001813.30459-1-tony@atomide.com> <20200602080811.GI19480@localhost>
-In-Reply-To: <20200602080811.GI19480@localhost>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 2 Jun 2020 11:31:54 +0300
-Message-ID: <CAHp75Vfi5nDgwT10J_EKYn90vGuiL1hyfre+t_w_OFREFY-Tqg@mail.gmail.com>
-Subject: Re: [PATCH] serial: 8250_port: Fix imprecise external abort for mctrl
- if inactive
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <d45e5592-8e11-858b-d3a3-2ec9ce1d1f54@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 2, 2020 at 11:09 AM Johan Hovold <johan@kernel.org> wrote:
-> On Mon, Jun 01, 2020 at 05:18:13PM -0700, Tony Lindgren wrote:
+Hi Daniel,
 
-...
+On 6/1/20 10:44 PM, Daniel Lezcano wrote:
+> On 27/05/2020 11:58, Lukasz Luba wrote:
+>> Add support for other devices than CPUs. The registration function
+>> does not require a valid cpumask pointer and is ready to handle new
+>> devices. Some of the internal structures has been reorganized in order to
+>> keep consistent view (like removing per_cpu pd pointers).
+>>
+>> Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+>> ---
+> 
+> [ ... ]
+> 
+>>   }
+>>   EXPORT_SYMBOL_GPL(em_register_perf_domain);
+>> +
+>> +/**
+>> + * em_dev_unregister_perf_domain() - Unregister Energy Model (EM) for a device
+>> + * @dev		: Device for which the EM is registered
+>> + *
+>> + * Try to unregister the EM for the specified device (but not a CPU).
+>> + */
+>> +void em_dev_unregister_perf_domain(struct device *dev)
+>> +{
+>> +	if (IS_ERR_OR_NULL(dev) || !dev->em_pd)
+>> +		return;
+>> +
+>> +	if (_is_cpu_device(dev))
+>> +		return;
+>> +
+>> +	mutex_lock(&em_pd_mutex);
+> 
+> Is the mutex really needed?
 
-> There's shouldn't be anything fundamental preventing you from adding the
-> missing resume calls to the mctrl paths even if it may require reworking
-> (and fixing) the whole RPM implementation (which would be a good thing
-> of course).
+I just wanted to align this unregister code with register. Since there
+is debugfs dir lookup and the device's EM existence checks I thought it
+wouldn't harm just to lock for a while and make sure the registration
+path is not used. These two paths shouldn't affect each other, but with
+modules loading/unloading I wanted to play safe.
+I can change it maybe to just dmb() and the end of the function if it's
+a big performance problem in this unloading path. What do you think?
 
-Yes, for serial core I have long standing patch series to implement
-RPM (more or less?) properly.
+> 
+> If this function is called that means there is no more user of the
+> em_pd, no?
 
-However, OMAP is a beast which prevents us to go due to a big hack
-called pm_runtime_irq_safe().
-Tony is aware of this and I think the above is somehow related to removal of it.
+True, that EM users should already be unregistered i.e. thermal cooling.
 
-But I completely agree that the goal is to get better runtime PM
-implementation over all.
+> 
+>> +	em_debug_remove_pd(dev);
+>> +
+>> +	kfree(dev->em_pd->table);
+>> +	kfree(dev->em_pd);
+>> +	dev->em_pd = NULL;
+>> +	mutex_unlock(&em_pd_mutex);
+>> +}
+>> +EXPORT_SYMBOL_GPL(em_dev_unregister_perf_domain);
+>>
+> 
+> 
 
--- 
-With Best Regards,
-Andy Shevchenko
+Thank you for reviewing this.
+
+Regards,
+Lukasz
