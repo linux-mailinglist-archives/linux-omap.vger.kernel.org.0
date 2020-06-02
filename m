@@ -2,139 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C17921EB70E
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Jun 2020 10:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B762F1EB76D
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Jun 2020 10:32:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725995AbgFBIIZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Jun 2020 04:08:25 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:40230 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725900AbgFBIIY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 Jun 2020 04:08:24 -0400
-Received: by mail-lj1-f195.google.com with SMTP id n23so703182ljh.7;
-        Tue, 02 Jun 2020 01:08:21 -0700 (PDT)
+        id S1726311AbgFBIcH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 2 Jun 2020 04:32:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60188 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725811AbgFBIcH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 Jun 2020 04:32:07 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 697E0C061A0E;
+        Tue,  2 Jun 2020 01:32:06 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id a127so2702352pfa.12;
+        Tue, 02 Jun 2020 01:32:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9ZQUYgk2V7Mx0esfmh4y3mmfTGvC64s4iQn4Jh1H8G8=;
+        b=HmJGGygz1wL1O+w/dN5pG3C+kjX4bhh2rAcYhLaL4nrdg+aRCGL86aqPCKmDODTk0H
+         W6GnOC+vBXUbBT87WvAYn5flUU2VGCZxuEo+O9hDshlGMB7wKHIDIzNYs2k86cF4hwQO
+         Ki604kWSEjZcN1tfqdfjvbDUQmjMU+Rhv+DPPXRMRVS2T3zyLFjdS0sDOEW8PuZFoxOd
+         goc6foUxMpEkGQJkAyrofUhpaOE12U3LtRnCkhrdnRRcgd5ziD55wlen4lbG5sY70LYj
+         BNhjF1FIib1UbINzuK+MskR4KXmDzAtZOiMPUNA3Xu2v+17EiQRGofGcjTanOm2i6wc3
+         yuKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=epAHVW2zVd0xxJxByYd83hzmtUg4fG+8BzwLS9Yfh2Y=;
-        b=SKNTR6s77q9WL8G4cSn0vyA77STzEF9rmTPSGLPcpPh0rWBKfcXq2E98lZPqRSZyGb
-         DPfl4zG4nQ4fFNik48pUXAWPn/MOPsisNcrko7wJpkwB3ybpjmt/5hT+RjGLiXZWMc/c
-         R483aPUuiwG8jmFj38uZvm5oG9Z8/+38KP/qsK2oaKRscDAerUSFOtWLd2PdT857BuWB
-         cWpSrs0VLJTVNBrKG7+r20Trk4LRyiSTQjX03Zrmp4shYiVYD5vxNO0gNaFboL4yC3S9
-         NVg4/MXDyoDE2QJX5H8BxX8Qg8R49aIeWVMzPgvOKjOug57G7HPxZLrcx5JiWDNlx6GF
-         bv6w==
-X-Gm-Message-State: AOAM532ahYBKLe3Dw6xg6SYrF8gjJg/ponlGXE8Z5GO0O2q+aWEYgTo8
-        4gKEug5ZjQzr4xEjbrMp0Ao=
-X-Google-Smtp-Source: ABdhPJzs8rg9IjYOrG6EABGkprkL1AVegpE4YCJZ0VEMKyDthgQYMYck7P24EkCtFiV9hjbnwkhvYg==
-X-Received: by 2002:a2e:1506:: with SMTP id s6mr12370746ljd.296.1591085300351;
-        Tue, 02 Jun 2020 01:08:20 -0700 (PDT)
-Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.174.190])
-        by smtp.gmail.com with ESMTPSA id w1sm331970ljo.80.2020.06.02.01.08.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jun 2020 01:08:19 -0700 (PDT)
-Received: from johan by xi.terra with local (Exim 4.93.0.4)
-        (envelope-from <johan@kernel.org>)
-        id 1jg1xz-0004Qj-WB; Tue, 02 Jun 2020 10:08:12 +0200
-Date:   Tue, 2 Jun 2020 10:08:11 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Peter Hurley <peter@hurleysoftware.com>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9ZQUYgk2V7Mx0esfmh4y3mmfTGvC64s4iQn4Jh1H8G8=;
+        b=IFDhJ9vwuFqUD1uh9Eb8ZxKiTo8dkfDdKMzfChf9t88y4YpP1s0HEwLPf+9rFRP/KW
+         K4OSc8BpSJfyzi/2aiEvsuEGNfyb/AqaDXPwJEZbTnKKsguJcWniNoWRY3F925Z1v4ew
+         a8tE5NI20Qk2zrANasuGbh5vXCljj9Pr41AkcNohWT9neNp0HCr6yW6hwL0moXTSP7zn
+         4xS7UcllhuIdLsnZqjPWhc+Liz1pO5g9HZNdWXAIxoKfTh7cTMTF11NuWB09yNeKsvbn
+         tF9WBBWKsg9NBaJpqGCXKhH7HavL+wESAZ6HBPqQwdwPe8ZpmK8EYjZwKjipC3yYkGAL
+         1bgQ==
+X-Gm-Message-State: AOAM532NdfEY4z9D4VI89oZ+mgK7MoLSdPndDCOYSpcp6DKuLLIRJVFD
+        eNatIRpRwWfpqFZpOnzWiTOUSSTnBfNPG9EZnPs=
+X-Google-Smtp-Source: ABdhPJwjAR6qWM3iADSoQUZxsvaZmkMb4RSf3zmVgzLNjjgc1H9ASyudk4ftkU45x4hKebGHa3tp9SwQoXYg0p/F9V8=
+X-Received: by 2002:a63:545a:: with SMTP id e26mr22582548pgm.4.1591086725894;
+ Tue, 02 Jun 2020 01:32:05 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200602001813.30459-1-tony@atomide.com> <20200602080811.GI19480@localhost>
+In-Reply-To: <20200602080811.GI19480@localhost>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 2 Jun 2020 11:31:54 +0300
+Message-ID: <CAHp75Vfi5nDgwT10J_EKYn90vGuiL1hyfre+t_w_OFREFY-Tqg@mail.gmail.com>
+Subject: Re: [PATCH] serial: 8250_port: Fix imprecise external abort for mctrl
+ if inactive
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Peter Hurley <peter@hurleysoftware.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Merlijn Wajer <merlijn@wizzup.org>,
         Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH] serial: 8250_port: Fix imprecise external abort for
- mctrl if inactive
-Message-ID: <20200602080811.GI19480@localhost>
-References: <20200602001813.30459-1-tony@atomide.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200602001813.30459-1-tony@atomide.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 01, 2020 at 05:18:13PM -0700, Tony Lindgren wrote:
-> We can get an imprecise external abort on uart_shutdown() at
-> serial8250_do_set_mctrl() if the UART is autoidled.
-> 
-> We don't want to add PM runtime calls to serial8250_do_set_mctrl()
-> beyond checking the usage count as it gets called from interrupts
-> disabled and spinlock held from uart_update_mctrl().
-> 
-> We can just bail out early from serial8250_do_set_mctrl() if the UART
-> is inactive. We have uart_shutdown() call uart_port_dtr_rts() with
-> value of 0 just to disable DTR and RTS.
+On Tue, Jun 2, 2020 at 11:09 AM Johan Hovold <johan@kernel.org> wrote:
+> On Mon, Jun 01, 2020 at 05:18:13PM -0700, Tony Lindgren wrote:
 
-No, sorry. This is just putting another band-aid on this broken mess (I
-never realised it was this bad).
+...
 
-As others have apparently already pointed out in the past, there are
-paths that will end up calling sleeping pm_runtime_get_sync() in atomic
-context (e.g serial8250_stop_tx()).
+> There's shouldn't be anything fundamental preventing you from adding the
+> missing resume calls to the mctrl paths even if it may require reworking
+> (and fixing) the whole RPM implementation (which would be a good thing
+> of course).
 
-In other places this all seems to work mostly by chance by relying on
-autosuspend keeping the clocks enabled long enough to not hit broken
-paths (e.g. serial8250_do_set_mctrl()) which fail to enable clocks.
+Yes, for serial core I have long standing patch series to implement
+RPM (more or less?) properly.
 
-Note that uart_port_dtr_rts() is called from other paths, for example on
-close and hangup, which would now fail to lower DTR/RTS as expected (it
-still appears to work mostly by chance since there's later call in
-serial8250_do_shutdown() which updates MCR to clear TIOCM_OUT2).
+However, OMAP is a beast which prevents us to go due to a big hack
+called pm_runtime_irq_safe().
+Tony is aware of this and I think the above is somehow related to removal of it.
 
-There's shouldn't be anything fundamental preventing you from adding the
-missing resume calls to the mctrl paths even if it may require reworking
-(and fixing) the whole RPM implementation (which would be a good thing
-of course).
+But I completely agree that the goal is to get better runtime PM
+implementation over all.
 
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: Merlijn Wajer <merlijn@wizzup.org>
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/tty/serial/8250/8250_port.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-> --- a/drivers/tty/serial/8250/8250_port.c
-> +++ b/drivers/tty/serial/8250/8250_port.c
-> @@ -2001,11 +2001,20 @@ static unsigned int serial8250_get_mctrl(struct uart_port *port)
->  	return serial8250_do_get_mctrl(port);
->  }
->  
-> +/*
-> + * Called from uart_update_mctrl() with spinlock held, so we don't want
-> + * add PM runtime calls here beyond checking the usage count. If the
-> + * UART is not active, we can just bail out early.
-> + */
->  void serial8250_do_set_mctrl(struct uart_port *port, unsigned int mctrl)
->  {
->  	struct uart_8250_port *up = up_to_u8250p(port);
->  	unsigned char mcr;
->  
-> +	if (up->capabilities & UART_CAP_RPM &&
-> +	    !pm_runtime_get_if_in_use(up->port.dev))
-> +		return;
-> +
->  	if (port->rs485.flags & SER_RS485_ENABLED) {
->  		if (serial8250_in_MCR(up) & UART_MCR_RTS)
->  			mctrl |= TIOCM_RTS;
-> @@ -2018,6 +2027,9 @@ void serial8250_do_set_mctrl(struct uart_port *port, unsigned int mctrl)
->  	mcr = (mcr & up->mcr_mask) | up->mcr_force | up->mcr;
->  
->  	serial8250_out_MCR(up, mcr);
-> +
-> +	if (up->capabilities & UART_CAP_RPM)
-> +		pm_runtime_put(up->port.dev);
->  }
->  EXPORT_SYMBOL_GPL(serial8250_do_set_mctrl);
-
-Johan
+-- 
+With Best Regards,
+Andy Shevchenko
