@@ -2,98 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BDB91EEFD2
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Jun 2020 05:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDFB31EFF58
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Jun 2020 19:45:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726022AbgFEDTs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 4 Jun 2020 23:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59510 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725883AbgFEDTs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Jun 2020 23:19:48 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 629D3C08C5C0;
-        Thu,  4 Jun 2020 20:19:48 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id u13so2534704iol.10;
-        Thu, 04 Jun 2020 20:19:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=ylwAjWlfQX7Ys6bdlykQN32LK5oaEYcVBjgpUdc+/vA=;
-        b=KK7ot4ZFYdD12OBdHD2GsBClTx8K2XN7pjcrX+ddjRtEIKjnZ31JFQ7DWyru7gsPJj
-         4aFUdXfUFdJJjYDQBxpnCisN8JdWiYpgWyNPnJDGW+26SbJ7AIFParIJ8QDaESRG5lnQ
-         1032Cv87obeHTCAz13sAC4hjgm8uTdXXrgq75L3RtXkGtfGZwFkLTzV6xYvHY7XjXN/9
-         8BNLQWmDADmrnIPFCpwIfzM/dz/wD+mxumBYknvjRUGy7W71O5J+lsS32yT6FEpptYXY
-         KzVu6xW/T7dGAg7T0HOA/vtzQ8IOMmQqyYVG4sYvN+zMdXRkBB08BBxcFBMjRvGJTdYV
-         /vqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=ylwAjWlfQX7Ys6bdlykQN32LK5oaEYcVBjgpUdc+/vA=;
-        b=kzpJOOpk3rbDr2c9cHd8bVC8tXQpECNrvkoyys8DWvzKASndNTCjBta6hg4Zm008Jh
-         rxMWsYVEmNKDS7a+9MYtrH5vrUDysZK2qi3/HNmZiXqeZ7qOjRZFA2o4cdGO7APb/3Ow
-         LR/LCrqcSMUNUrHUmFYWjA19Sce/Mi0h9PM9KnWWW1jf4Mg9EYms9NbQZT0Iz/r2bU6e
-         PL79lCpz2PHgLXU3m6WL1IXkT5vo5nM4aPig+LZAuk1triHGsYicmkAze509ILUIZ/1S
-         sCY8jiV0zSH/hh1lBneK77WbSb1n/ulWQcFYEAKPtUTkJzISGV8LkGVo5eeA9DV8a65K
-         V0gA==
-X-Gm-Message-State: AOAM5310c2CabxAueMBLs1mK10sijsZLjutXczBFeYjjD9rxOr6I5G2f
-        fnC7uuL2+8PcDUAc3rYShoA=
-X-Google-Smtp-Source: ABdhPJzLs8qIoBTbIt3TB55cLL2yH9uHS++YiThxgv1FN+Hf0kF/axU36oWmvgm9ybtr1c0xQGYPxA==
-X-Received: by 2002:a05:6602:1204:: with SMTP id y4mr6825745iot.44.1591327187717;
-        Thu, 04 Jun 2020 20:19:47 -0700 (PDT)
-Received: from cs-u-kase.dtc.umn.edu (cs-u-kase.cs.umn.edu. [160.94.64.2])
-        by smtp.googlemail.com with ESMTPSA id w78sm2403655ilk.14.2020.06.04.20.19.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jun 2020 20:19:47 -0700 (PDT)
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-To:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     emamd001@umn.edu, wu000273@umn.edu, kjlu@umn.edu, smccaman@umn.edu,
-        Navid Emamdoost <navid.emamdoost@gmail.com>
-Subject: [PATCH] PCI: dwc: pci-dra7xx: handle failure case of pm_runtime_get_sync
-Date:   Thu,  4 Jun 2020 22:19:40 -0500
-Message-Id: <20200605031940.27911-1-navid.emamdoost@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1727885AbgFERpj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 5 Jun 2020 13:45:39 -0400
+Received: from 46-22-124-5.ip.axbyte.se ([46.22.124.5]:14712 "EHLO
+        mail01.ohdata.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726964AbgFERpi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 5 Jun 2020 13:45:38 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail01.ohdata.se (Postfix) with ESMTP id 22B8411947;
+        Fri,  5 Jun 2020 19:23:12 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mail01.ohdata.se
+Received: from mail01.ohdata.se ([127.0.0.1])
+        by localhost (mail01.ohdata.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id aKYjnco2swyn; Fri,  5 Jun 2020 19:23:03 +0200 (CEST)
+Received: from webmail.ohdata.se (unknown [10.0.38.61])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mail01.ohdata.se (Postfix) with ESMTPSA id AD5E95DE8;
+        Fri,  5 Jun 2020 19:23:03 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Fri, 05 Jun 2020 19:49:23 +0200
+From:   Oskar Holmlund <info@ohdata.se>
+To:     linux-omap@vger.kernel.org
+Cc:     tony@atomide.com, bcousson@baylibre.com
+Subject: PATCH: ARM: am33xx.dtsi USB ranges length
+Organization: OH Data
+Message-ID: <d22deb609cf4678d569928f4a48cb409@ohdata.se>
+X-Sender: info@ohdata.se
+User-Agent: Roundcube Webmail/1.3.6
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Calling pm_runtime_get_sync increments the counter even in case of
-failure, causing incorrect ref count. Call pm_runtime_put if
-pm_runtime_get_sync fails.
+AM335x TRM: Table 2-1 defines USBSS - USB Queue Manager in memory region
+0x4740 0000 to 0x4740 7FFF.
 
-Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
----
- drivers/pci/controller/dwc/pci-dra7xx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Diff created from am33xx.dtsi commit 
+e20ef23dd6937c38df2cfddf15270668153c8177
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 3b0e58f2de58..83986f5f2be7 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -932,7 +932,7 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
- 	ret = pm_runtime_get_sync(dev);
- 	if (ret < 0) {
- 		dev_err(dev, "pm_runtime_get_sync failed\n");
--		goto err_get_sync;
-+		goto err_gpio;
- 	}
- 
- 	reset = devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH);
-@@ -1001,8 +1001,6 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
- 
- err_gpio:
- 	pm_runtime_put(dev);
--
--err_get_sync:
- 	pm_runtime_disable(dev);
- 	dra7xx_pcie_disable_phy(dra7xx);
- 
+Signed-off-by: Oskar Holmlund <oskar@ohdata.se>
+--- arch/arm/boot/dts/am33xx.dtsi.orig	2020-06-05 18:58:39.720383275 
++0200
++++ arch/arm/boot/dts/am33xx.dtsi	2020-06-05 19:01:32.974619980 +0200
+@@ -347,7 +347,7 @@
+  			clock-names = "fck";
+  			#address-cells = <1>;
+  			#size-cells = <1>;
+-			ranges = <0x0 0x47400000 0x5000>;
++			ranges = <0x0 0x47400000 0x8000>;
+
+  			usb0_phy: usb-phy@1300 {
+  				compatible = "ti,am335x-usb-phy";
+
 -- 
-2.17.1
-
+Bästa Hälsningar
+Oskar Holmlund
+Tel 070-3220292
