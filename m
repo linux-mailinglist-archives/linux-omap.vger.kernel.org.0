@@ -2,36 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34FBE1F2E5F
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Jun 2020 02:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46B6F1F2E0E
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Jun 2020 02:40:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733237AbgFIAlC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Jun 2020 20:41:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60504 "EHLO mail.kernel.org"
+        id S1729287AbgFHXNU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Jun 2020 19:13:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32990 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728336AbgFHXMt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:12:49 -0400
+        id S1728574AbgFHXNS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:13:18 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 67AAA212CC;
-        Mon,  8 Jun 2020 23:12:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B999D20897;
+        Mon,  8 Jun 2020 23:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591657969;
-        bh=48qnSUMvAgXFcboFXXCk/yFfLm1NqUTMU6M6I9i+qZo=;
+        s=default; t=1591657997;
+        bh=4mLUq8oF0+XPpJ0iLZPuz7kue4ub17LRH+eWo4UMPF0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cbS24Kgd+8thAY+pjsjvUWqBShwCbZjDYTmI3d+YRwpUIYp+zQ94rqdi+0f91oGYo
-         5x4lQcvdtLRHaLV5xZ3T663b3ZbfhJgsYPx4KpnLj3uY5cpLvPiJDrcprmXfX4Gao+
-         bM3t879eFRR2zsKStDIxytTc8peZgw0AaombTM20=
+        b=nKL/EiZUPH8/ebEd7MGVPP97hGF/Q0wzpJfMQT6bWNIxbyLy/4qcz3YhmkSEX/fxG
+         Vq8Yvv+Kg1n+Wa39vgBgHdC3CJ2W8kkBXIoViIU8Fu4QJXeNybJsVC3BBW2qIboZwH
+         Cpp1aosWhg+YNw2AEn86ZhgVaA1hMJeOVFND1G3o=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>, stable@kernel.org,
+Cc:     Tero Kristo <t-kristo@ti.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
         Tony Lindgren <tony@atomide.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 032/606] ARM: dts: dra7: Fix bus_dma_limit for PCIe
-Date:   Mon,  8 Jun 2020 19:02:37 -0400
-Message-Id: <20200608231211.3363633-32-sashal@kernel.org>
+        linux-omap@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 055/606] clk: ti: clkctrl: Fix Bad of_node_put within clkctrl_get_name
+Date:   Mon,  8 Jun 2020 19:03:00 -0400
+Message-Id: <20200608231211.3363633-55-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608231211.3363633-1-sashal@kernel.org>
 References: <20200608231211.3363633-1-sashal@kernel.org>
@@ -44,61 +46,41 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Kishon Vijay Abraham I <kishon@ti.com>
+From: Tero Kristo <t-kristo@ti.com>
 
-commit 90d4d3f4ea45370d482fa609dbae4d2281b4074f upstream.
+commit e1f9e0d28ff025564dfdb1001a7839b4af5db2e2 upstream.
 
-Even though commit cfb5d65f2595 ("ARM: dts: dra7: Add bus_dma_limit
-for L3 bus") added bus_dma_limit for L3 bus, the PCIe controller
-gets incorrect value of bus_dma_limit.
+clkctrl_get_name incorrectly calls of_node_put when it is not really
+doing of_node_get. This causes a boot time warning later on:
 
-Fix it by adding empty dma-ranges property to axi@0 and axi@1
-(parent device tree node of PCIe controller).
+[    0.000000] OF: ERROR: Bad of_node_put() on /ocp/interconnect@4a000000/segmen
+t@0/target-module@5000/cm_core_aon@0/ipu-cm@500/ipu1-clkctrl@20
 
-Cc: stable@kernel.org
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fix by dropping the of_node_put from the function.
+
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: 6c3090520554 ("clk: ti: clkctrl: Fix hidden dependency to node name")
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
+Link: https://lkml.kernel.org/r/20200424124725.9895-1-t-kristo@ti.com
+Acked-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/dra7.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/ti/clkctrl.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
-index 5f5ee16f07a3..a341511f014c 100644
---- a/arch/arm/boot/dts/dra7.dtsi
-+++ b/arch/arm/boot/dts/dra7.dtsi
-@@ -172,6 +172,7 @@ axi@0 {
- 			#address-cells = <1>;
- 			ranges = <0x51000000 0x51000000 0x3000
- 				  0x0	     0x20000000 0x10000000>;
-+			dma-ranges;
- 			/**
- 			 * To enable PCI endpoint mode, disable the pcie1_rc
- 			 * node and enable pcie1_ep mode.
-@@ -185,7 +186,6 @@ pcie1_rc: pcie@51000000 {
- 				device_type = "pci";
- 				ranges = <0x81000000 0 0          0x03000 0 0x00010000
- 					  0x82000000 0 0x20013000 0x13000 0 0xffed000>;
--				dma-ranges = <0x02000000 0x0 0x00000000 0x00000000 0x1 0x00000000>;
- 				bus-range = <0x00 0xff>;
- 				#interrupt-cells = <1>;
- 				num-lanes = <1>;
-@@ -230,6 +230,7 @@ axi@1 {
- 			#address-cells = <1>;
- 			ranges = <0x51800000 0x51800000 0x3000
- 				  0x0	     0x30000000 0x10000000>;
-+			dma-ranges;
- 			status = "disabled";
- 			pcie2_rc: pcie@51800000 {
- 				reg = <0x51800000 0x2000>, <0x51802000 0x14c>, <0x1000 0x2000>;
-@@ -240,7 +241,6 @@ pcie2_rc: pcie@51800000 {
- 				device_type = "pci";
- 				ranges = <0x81000000 0 0          0x03000 0 0x00010000
- 					  0x82000000 0 0x30013000 0x13000 0 0xffed000>;
--				dma-ranges = <0x02000000 0x0 0x00000000 0x00000000 0x1 0x00000000>;
- 				bus-range = <0x00 0xff>;
- 				#interrupt-cells = <1>;
- 				num-lanes = <1>;
+diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+index 062266034d84..9019624e37bc 100644
+--- a/drivers/clk/ti/clkctrl.c
++++ b/drivers/clk/ti/clkctrl.c
+@@ -461,7 +461,6 @@ static char * __init clkctrl_get_name(struct device_node *np)
+ 			return name;
+ 		}
+ 	}
+-	of_node_put(np);
+ 
+ 	return NULL;
+ }
 -- 
 2.25.1
 
