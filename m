@@ -2,72 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF9001F1884
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Jun 2020 14:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 570DC1F18D9
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Jun 2020 14:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729620AbgFHMJn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Jun 2020 08:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48908 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729655AbgFHMJn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Jun 2020 08:09:43 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2729EC08C5C3
-        for <linux-omap@vger.kernel.org>; Mon,  8 Jun 2020 05:09:43 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id i27so9203728ljb.12
-        for <linux-omap@vger.kernel.org>; Mon, 08 Jun 2020 05:09:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Csn8KyDxlJnuN8p2QHdR8JXGYy4Wt0VYt2wzsa2XpmM=;
-        b=vfMDaX2zzlrSnow55/RVFfgZNvOQQIOlg0+UADwTfo8NoD4IcmMyMQETnO6jCYVH5P
-         SIkK9gILG10+4Bo1Y8ZAraKkA7SBM818PZN7Nog3zHnz4wVaUFMpU8VlEpN68CfGac92
-         NauAcX9ToavwhBOKNACj4SnUqWT1nMvI42llswTwsX+iEVUWjDoQ7zSbveBxVnGhdOxh
-         oLaGn9rm5RYSFOgofUz0Geg4ejiSRgXg6f7vCaKwD+JSy0AM85Bn/82oonnqwweMAy5h
-         Rdmj0/l0e3y0nucJdtRe3YoB6lvVGhQ1th8te9rvdbv7juBxxiHZ55PoRmpailYdihRJ
-         DqwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Csn8KyDxlJnuN8p2QHdR8JXGYy4Wt0VYt2wzsa2XpmM=;
-        b=uKdAmIXlUMHbwAAk4E/U9uBXCt8VXsTiKOr4ah8zExMaLkCZvFBYDWMk9c2jrAImUd
-         evjQ/HUPXYM64xJ2SXWDrHYYUctmaGA4QMv/f5CsMP3uyRPy/Z+5MVXJ+wuQcpsSAwv0
-         8asdO5M0hZNYpqXEFuRcdeMtmBIhGDgyq4Hd+nhjZzmPzQIIq/tXxhOMGYosqq/tXr6n
-         yklQIBI9XRpmlHH5ELuv00r27A3nPnYPBoGy7v+MazifeFNg82n8mV/3R67BtqKBpjpT
-         jqqMuyam0S0LD13jWh4kD0+eRMxTGPtDXSRDOPhUNIdUWDXffORHxRa5RQA/y86qjxmp
-         wxHg==
-X-Gm-Message-State: AOAM531sDeapKNc/1Na6O6AgQdoF3LOz6EBIgPqhbCKCbo1zOcnkz3Bo
-        G8uPuErIQcGCsLnsKs7fFVyCY6+srW1byASvqEESGQ==
-X-Google-Smtp-Source: ABdhPJxygKDGdQRQPGBYKTQqKJCd6k5YRc6rzNmwz77L6cJGWdHonWxHMEo58eZaVq/HyScv9iBfqeevK9kAW96xKxo=
-X-Received: by 2002:a2e:5304:: with SMTP id h4mr5424716ljb.293.1591618181290;
- Mon, 08 Jun 2020 05:09:41 -0700 (PDT)
+        id S1727052AbgFHMeo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Jun 2020 08:34:44 -0400
+Received: from foss.arm.com ([217.140.110.172]:52186 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725965AbgFHMeo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Jun 2020 08:34:44 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F87B1FB;
+        Mon,  8 Jun 2020 05:34:43 -0700 (PDT)
+Received: from [10.37.12.95] (unknown [10.37.12.95])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 25CD83F52E;
+        Mon,  8 Jun 2020 05:34:39 -0700 (PDT)
+Subject: Re: [PATCH v8 4/8] PM / EM: add support for other devices than CPUs
+ in Energy Model
+To:     Dan Carpenter <dan.carpenter@oracle.com>, kbuild@lists.01.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-imx@nxp.com
+Cc:     lkp@intel.com, Dan Carpenter <error27@gmail.com>,
+        kbuild-all@lists.01.org, Dietmar.Eggemann@arm.com,
+        cw00.choi@samsung.com
+References: <20200608115155.GY30374@kadam>
+From:   Lukasz Luba <lukasz.luba@arm.com>
+Message-ID: <b347fb60-46d3-e59c-59fa-a2b10932fc49@arm.com>
+Date:   Mon, 8 Jun 2020 13:34:37 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20200526122133.GA1454440@x1> <20200529175544.GA3766151@x1> <20200531001709.GA168774@x1>
-In-Reply-To: <20200531001709.GA168774@x1>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 8 Jun 2020 14:09:30 +0200
-Message-ID: <CACRpkdYox64qGhxu2ycd-18Q08cKjt=Z019qVfdFEdRdTxxq3g@mail.gmail.com>
-Subject: Re: pinctrl-single: num_maps in generic pinconf support?
-To:     Drew Fustini <drew@beagleboard.org>
-Cc:     Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200608115155.GY30374@kadam>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, May 31, 2020 at 2:17 AM Drew Fustini <drew@beagleboard.org> wrote:
+Hi Dan,
 
-> Does this appear to be a reasonable solution?
->
-> I would appreciate any comments.
+Thank you for your analyzes.
 
-Looks reasonable to me. I suggest you send a proper patch. Tony?
+On 6/8/20 12:51 PM, Dan Carpenter wrote:
+> Hi Lukasz,
+> 
+> I love your patch! Perhaps something to improve:
+> 
+> url:    https://github.com/0day-ci/linux/commits/Lukasz-Luba/Add-support-for-devices-in-the-Energy-Model/20200527-180614
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+> 
+> config: i386-randconfig-m021-20200605 (attached as .config)
+> compiler: gcc-9 (Debian 9.3.0-13) 9.3.0
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> smatch warnings:
+> kernel/power/energy_model.c:316 em_dev_register_perf_domain() error: we previously assumed 'dev->em_pd' could be null (see line 277)
+> 
+> # https://github.com/0day-ci/linux/commit/110d050cb7ba1c96e63ada498979d1fd99529be2
+> git remote add linux-review https://github.com/0day-ci/linux
+> git remote update linux-review
+> git checkout 110d050cb7ba1c96e63ada498979d1fd99529be2
+> vim +316 kernel/power/energy_model.c
+> 
+> 0e294e607adaf3 Lukasz Luba     2020-05-27  262  int em_dev_register_perf_domain(struct device *dev, unsigned int nr_states,
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  263  				struct em_data_callback *cb, cpumask_t *cpus)
+> 27871f7a8a341e Quentin Perret  2018-12-03  264  {
+> 27871f7a8a341e Quentin Perret  2018-12-03  265  	unsigned long cap, prev_cap = 0;
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  266  	int cpu, ret;
+> 27871f7a8a341e Quentin Perret  2018-12-03  267
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  268  	if (!dev || !nr_states || !cb)
+> 27871f7a8a341e Quentin Perret  2018-12-03  269  		return -EINVAL;
+> 27871f7a8a341e Quentin Perret  2018-12-03  270
+> 27871f7a8a341e Quentin Perret  2018-12-03  271  	/*
+> 27871f7a8a341e Quentin Perret  2018-12-03  272  	 * Use a mutex to serialize the registration of performance domains and
+> 27871f7a8a341e Quentin Perret  2018-12-03  273  	 * let the driver-defined callback functions sleep.
+> 27871f7a8a341e Quentin Perret  2018-12-03  274  	 */
+> 27871f7a8a341e Quentin Perret  2018-12-03  275  	mutex_lock(&em_pd_mutex);
+> 27871f7a8a341e Quentin Perret  2018-12-03  276
+> 110d050cb7ba1c Lukasz Luba     2020-05-27 @277  	if (dev->em_pd) {
+>                                                              ^^^^^^^^^^
+> Check for NULL.
+> 
+> 27871f7a8a341e Quentin Perret  2018-12-03  278  		ret = -EEXIST;
+> 27871f7a8a341e Quentin Perret  2018-12-03  279  		goto unlock;
+> 27871f7a8a341e Quentin Perret  2018-12-03  280  	}
+> 27871f7a8a341e Quentin Perret  2018-12-03  281
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  282  	if (_is_cpu_device(dev)) {
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  283  		if (!cpus) {
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  284  			dev_err(dev, "EM: invalid CPU mask\n");
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  285  			ret = -EINVAL;
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  286  			goto unlock;
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  287  		}
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  288
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  289  		for_each_cpu(cpu, cpus) {
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  290  			if (em_cpu_get(cpu)) {
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  291  				dev_err(dev, "EM: exists for CPU%d\n", cpu);
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  292  				ret = -EEXIST;
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  293  				goto unlock;
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  294  			}
+> 27871f7a8a341e Quentin Perret  2018-12-03  295  			/*
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  296  			 * All CPUs of a domain must have the same
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  297  			 * micro-architecture since they all share the same
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  298  			 * table.
+> 27871f7a8a341e Quentin Perret  2018-12-03  299  			 */
+> 8ec59c0f5f4966 Vincent Guittot 2019-06-17  300  			cap = arch_scale_cpu_capacity(cpu);
+> 27871f7a8a341e Quentin Perret  2018-12-03  301  			if (prev_cap && prev_cap != cap) {
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  302  				dev_err(dev, "EM: CPUs of %*pbl must have the same capacity\n",
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  303  					cpumask_pr_args(cpus));
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  304
+> 27871f7a8a341e Quentin Perret  2018-12-03  305  				ret = -EINVAL;
+> 27871f7a8a341e Quentin Perret  2018-12-03  306  				goto unlock;
+> 27871f7a8a341e Quentin Perret  2018-12-03  307  			}
+> 27871f7a8a341e Quentin Perret  2018-12-03  308  			prev_cap = cap;
+> 27871f7a8a341e Quentin Perret  2018-12-03  309  		}
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  310  	}
+> 27871f7a8a341e Quentin Perret  2018-12-03  311
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  312  	ret = em_create_pd(dev, nr_states, cb, cpus);
+> 
+> 
+> If it's a _is_cpu_device() then it iterates through a bunch of devices
+> and sets up cpu_dev->em_pd for each.  Presumably one of the devices is
+> "dev" or this would crash pretty early on in testing?
 
-Yours,
-Linus Walleij
+Yes, all of the devices taken from 'cpus' mask will get the em_pd set
+including the suspected @dev.
+To calm down this static analyzer I can remove the 'else'
+in line 204 to make 'dev->em_pd = pd' set always.
+199         if (_is_cpu_device(dev))
+200                 for_each_cpu(cpu, cpus) {
+201                         cpu_dev = get_cpu_device(cpu);
+202                         cpu_dev->em_pd = pd;
+203                 }
+204         else
+205                 dev->em_pd = pd;
+
+
+Do you think it's a good solution and will work for this tool?
+
+Regards,
+Lukasz
+
+> 
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  313  	if (ret)
+> 27871f7a8a341e Quentin Perret  2018-12-03  314  		goto unlock;
+> 27871f7a8a341e Quentin Perret  2018-12-03  315
+> 110d050cb7ba1c Lukasz Luba     2020-05-27 @316  	em_debug_create_pd(dev);
+>                                                                             ^^^
+> Dereferences dev->em_pd.
+> 
+> 110d050cb7ba1c Lukasz Luba     2020-05-27  317  	dev_info(dev, "EM: created perf domain\n");
+> 27871f7a8a341e Quentin Perret  2018-12-03  318
+> 27871f7a8a341e Quentin Perret  2018-12-03  319  unlock:
+> 27871f7a8a341e Quentin Perret  2018-12-03  320  	mutex_unlock(&em_pd_mutex);
+> 27871f7a8a341e Quentin Perret  2018-12-03  321  	return ret;
+> 27871f7a8a341e Quentin Perret  2018-12-03  322  }
+> 0e294e607adaf3 Lukasz Luba     2020-05-27  323  EXPORT_SYMBOL_GPL(em_dev_register_perf_domain);
+> 
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
