@@ -2,216 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 558CE1F8435
-	for <lists+linux-omap@lfdr.de>; Sat, 13 Jun 2020 18:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 833EE1F85AE
+	for <lists+linux-omap@lfdr.de>; Sun, 14 Jun 2020 00:36:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726442AbgFMQG0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 13 Jun 2020 12:06:26 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:37768 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726335AbgFMQG0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 13 Jun 2020 12:06:26 -0400
-Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 94DB424A;
-        Sat, 13 Jun 2020 18:06:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1592064382;
-        bh=SPnfRNM2lPv5SzQeU8zN2XhDt7irHmkZBSjsS6NBm3M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pOeRSCC0rPb66soZvLxXkEicbWd9yal3fEfyWkJiHJlzCYxP7Lmy+1J7u9bfxAC0U
-         orNrRL1V4fusE+m9Rbhq9bd17cmvR0yx7yDsq8RxhKbta6soBwiqcrUfQjdOS76/+A
-         vxvoCMXZd1m3WKItkUuY/SomyIGy+r+TGfc4vikU=
-Date:   Sat, 13 Jun 2020 19:06:01 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Adam Ford <aford173@gmail.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: Re: omap3 dss failues on 5.7
-Message-ID: <20200613160601.GB9722@pendragon.ideasonboard.com>
-References: <CAHCN7xLmhynf5X+2YgMTPcQMwEP4N_XE-BhVjcL1hT4L+EGuCg@mail.gmail.com>
- <20200613160242.GW37466@atomide.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200613160242.GW37466@atomide.com>
+        id S1726442AbgFMWgG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 13 Jun 2020 18:36:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39276 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726272AbgFMWgG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 13 Jun 2020 18:36:06 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD620C03E96F;
+        Sat, 13 Jun 2020 15:36:05 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 1F8BF120ED480;
+        Sat, 13 Jun 2020 15:36:05 -0700 (PDT)
+Date:   Sat, 13 Jun 2020 15:36:04 -0700 (PDT)
+Message-Id: <20200613.153604.1380998320865364226.davem@davemloft.net>
+To:     grygorii.strashko@ti.com
+Cc:     netdev@vger.kernel.org, kuba@kernel.org, nsekhar@ti.com,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] net: ethernet: ti: am65-cpsw-nuss: fix ale parameters
+ init
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200613145259.17044-1-grygorii.strashko@ti.com>
+References: <20200613145259.17044-1-grygorii.strashko@ti.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sat, 13 Jun 2020 15:36:05 -0700 (PDT)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+From: Grygorii Strashko <grygorii.strashko@ti.com>
+Date: Sat, 13 Jun 2020 17:52:59 +0300
 
-On Sat, Jun 13, 2020 at 09:02:42AM -0700, Tony Lindgren wrote:
-> * Adam Ford <aford173@gmail.com> [200613 02:28]:
-> > Is anyone else having DSS failures on the 5.7 stable branch using an
-> > omap3 board?
-> >
-> > I haven't had time to bisect yet, but before I do I thought I'd ask.
+> The ALE parameters structure is created on stack, so it has to be reset
+> before passing to cpsw_ale_create() to avoid garbage values.
 > 
-> Sounds this might be caused by some panel related between v5.6 and v5.7,
-> so adding Laurent to Cc.
-> 
-> We also started dropping legacy platform data for some SoCs, but that
-> should not affect omap3 so far.
+> Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-I think this is caused by the panel driver not setting the connector
-type. Only the panel-simple driver should be affected, fixing this
-should just be a matter of setting
-
-	.connector_type = DRM_MODE_CONNECTOR_DPI
-
-for the appropriate panel_desc entry.
-
-> >   10.370574] ------------[ cut here ]------------
-> > [   10.375335] WARNING: CPU: 0 PID: 71 at
-> > drivers/gpu/drm/bridge/panel.c:176 drm_panel_bridge_add+0x40/0x4c
-> > [drm_kms_helper]
-> > [   10.386474] Modules linked in: joydev mousedev evdev leds_gpio
-> > pwm_bl panel_simple snd_soc_omap_twl4030 pwm_omap_dmtimer led_class
-> > gpio_keys cpufreq_dt snd_soc_omap_mcbsp bq27xxx_battery_hdq
-> > snd_soc_ti_sdma bq27xxx_battery omap_wdt omap3_isp
-> > videobuf2_dma_contig videobuf2_memops omap_hdq videobuf2_v4l2
-> > omap_sham videobuf2_common v4l2_fwnode wire cn hwmon mt9p031
-> > aptina_pll phy_twl4030_usb omap_aes_driver omap2430 crypto_engine
-> > omap_crypto musb_hdrc hci_uart omap_rng btbcm wlcore_sdio udc_core
-> > rng_core videodev omap_mailbox mc usbcore snd_soc_twl4030 twl4030_wdt
-> > usb_common watchdog rtc_twl snd_soc_core snd_pcm_dmaengine bluetooth
-> > snd_pcm snd_timer twl4030_pwrbutton snd omapdss pwm_twl_led
-> > twl4030_charger ecdh_generic soundcore ecc omapdss_base industrialio
-> > libaes pwm_twl drm_kms_helper tsc2004 at24 tsc200x_core cfbfillrect
-> > omap_ssi syscopyarea cfbimgblt hsi sysfillrect sysimgblt fb_sys_fops
-> > cfbcopyarea drm drm_panel_orientation_quirks cec
-> > [   10.470123] CPU: 0 PID: 71 Comm: kworker/0:3 Not tainted 5.7.2-dirty #2
-> > [   10.476776] Hardware name: Generic OMAP36xx (Flattened Device Tree)
-> > [   10.483093] Workqueue: events deferred_probe_work_func
-> > [   10.488281] [<c01119f8>] (unwind_backtrace) from [<c010ba28>]
-> > (show_stack+0x10/0x14)
-> > [   10.496063] [<c010ba28>] (show_stack) from [<c054dd30>]
-> > (dump_stack+0xc0/0xdc)
-> > [   10.503326] [<c054dd30>] (dump_stack) from [<c01389f4>] (__warn+0xc0/0xf8)
-> > [   10.510223] [<c01389f4>] (__warn) from [<c0138d8c>]
-> > (warn_slowpath_fmt+0x5c/0xc0)
-> > [   10.517822] [<c0138d8c>] (warn_slowpath_fmt) from [<bf0d4810>]
-> > (drm_panel_bridge_add+0x40/0x4c [drm_kms_helper])
-> > [   10.528106] [<bf0d4810>] (drm_panel_bridge_add [drm_kms_helper])
-> > from [<bf1258fc>] (omapdss_device_init_output+0x7c/0x780
-> > [omapdss_base])
-> > [   10.540618] [<bf1258fc>] (omapdss_device_init_output
-> > [omapdss_base]) from [<bf14aecc>] (dpi_init_port+0x188/0x288
-> > [omapdss])
-> > [   10.551971] [<bf14aecc>] (dpi_init_port [omapdss]) from
-> > [<bf142240>] (dss_probe+0x29c/0x578 [omapdss])
-> > [   10.561370] [<bf142240>] (dss_probe [omapdss]) from [<c063dd0c>]
-> > (platform_drv_probe+0x48/0x98)
-> > [   10.570129] [<c063dd0c>] (platform_drv_probe) from [<c063bce4>]
-> > (really_probe+0x1d8/0x344)
-> > [   10.578430] [<c063bce4>] (really_probe) from [<c063bf60>]
-> > (driver_probe_device+0x5c/0x164)
-> > [   10.586730] [<c063bf60>] (driver_probe_device) from [<c063a128>]
-> > (bus_for_each_drv+0x80/0xcc)
-> > [   10.595306] [<c063a128>] (bus_for_each_drv) from [<c063ba90>]
-> > (__device_attach+0xd4/0x148)
-> > [   10.603607] [<c063ba90>] (__device_attach) from [<c063adfc>]
-> > (bus_probe_device+0x84/0x8c)
-> > [   10.611816] [<c063adfc>] (bus_probe_device) from [<c063b288>]
-> > (deferred_probe_work_func+0x60/0x8c)
-> > [   10.620819] [<c063b288>] (deferred_probe_work_func) from
-> > [<c01553b4>] (process_one_work+0x1ec/0x530)
-> > [   10.630004] [<c01553b4>] (process_one_work) from [<c0155728>]
-> > (worker_thread+0x30/0x558)
-> > [   10.638153] [<c0155728>] (worker_thread) from [<c015c048>]
-> > (kthread+0x134/0x148)
-> > [   10.645568] [<c015c048>] (kthread) from [<c0100168>]
-> > (ret_from_fork+0x14/0x2c)
-> > [   10.652832] Exception stack(0xcc84bfb0 to 0xcc84bff8)
-> > [   10.657897] bfa0:                                     00000000
-> > 00000000 00000000 00000000
-> > [   10.666137] bfc0: 00000000 00000000 00000000 00000000 00000000
-> > 00000000 00000000 00000000
-> > [   10.674346] bfe0: 00000000 00000000 00000000 00000000 00000013 00000000
-> > [   10.681060] ---[ end trace 9571aa0bd994d08b ]---
-> > [   10.967132] cfg80211: Loading compiled-in X.509 certificates for
-> > regulatory database
-> > [   11.284881] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-> > [   11.867645] ------------[ cut here ]------------
-> > [   11.872619] WARNING: CPU: 0 PID: 15 at
-> > drivers/gpu/drm/bridge/panel.c:176 drm_panel_bridge_add+0x40/0x4c
-> > [drm_kms_helper]
-> > [   11.883819] Modules linked in: wl12xx wlcore mac80211 libarc4
-> > sha256_generic libsha256 sha256_arm cfg80211 joydev mousedev evdev
-> > leds_gpio pwm_bl panel_simple snd_soc_omap_twl4030 pwm_omap_dmtimer
-> > led_class gpio_keys cpufreq_dt snd_soc_omap_mcbsp bq27xxx_battery_hdq
-> > snd_soc_ti_sdma bq27xxx_battery omap_wdt omap3_isp
-> > videobuf2_dma_contig videobuf2_memops omap_hdq videobuf2_v4l2
-> > omap_sham videobuf2_common v4l2_fwnode wire cn hwmon mt9p031
-> > aptina_pll phy_twl4030_usb omap_aes_driver omap2430 crypto_engine
-> > omap_crypto musb_hdrc hci_uart omap_rng btbcm wlcore_sdio udc_core
-> > rng_core videodev omap_mailbox mc usbcore snd_soc_twl4030 twl4030_wdt
-> > usb_common watchdog rtc_twl snd_soc_core snd_pcm_dmaengine bluetooth
-> > snd_pcm snd_timer twl4030_pwrbutton snd omapdss pwm_twl_led
-> > twl4030_charger ecdh_generic soundcore ecc omapdss_base industrialio
-> > libaes pwm_twl drm_kms_helper tsc2004 at24 tsc200x_core cfbfillrect
-> > omap_ssi syscopyarea cfbimgblt hsi sysfillrect sysimgblt fb_sys_fops
-> > cfbcopyarea drm
-> > [   11.884246]  drm_panel_orientation_quirks cec
-> > [   11.976013] CPU: 0 PID: 15 Comm: kworker/0:1 Tainted: G        W
-> >      5.7.2-dirty #2
-> > [   11.984069] Hardware name: Generic OMAP36xx (Flattened Device Tree)
-> > [   11.990417] Workqueue: events deferred_probe_work_func
-> > [   11.995635] [<c01119f8>] (unwind_backtrace) from [<c010ba28>]
-> > (show_stack+0x10/0x14)
-> > [   12.003448] [<c010ba28>] (show_stack) from [<c054dd30>]
-> > (dump_stack+0xc0/0xdc)
-> > [   12.010742] [<c054dd30>] (dump_stack) from [<c01389f4>] (__warn+0xc0/0xf8)
-> > [   12.017669] [<c01389f4>] (__warn) from [<c0138d8c>]
-> > (warn_slowpath_fmt+0x5c/0xc0)
-> > [   12.025360] [<c0138d8c>] (warn_slowpath_fmt) from [<bf0d4810>]
-> > (drm_panel_bridge_add+0x40/0x4c [drm_kms_helper])
-> > [   12.035766] [<bf0d4810>] (drm_panel_bridge_add [drm_kms_helper])
-> > from [<bf1258fc>] (omapdss_device_init_output+0x7c/0x780
-> > [omapdss_base])
-> > [   12.048400] [<bf1258fc>] (omapdss_device_init_output
-> > [omapdss_base]) from [<bf14aecc>] (dpi_init_port+0x188/0x288
-> > [omapdss])
-> > [   12.059906] [<bf14aecc>] (dpi_init_port [omapdss]) from
-> > [<bf142240>] (dss_probe+0x29c/0x578 [omapdss])
-> > [   12.069396] [<bf142240>] (dss_probe [omapdss]) from [<c063dd0c>]
-> > (platform_drv_probe+0x48/0x98)
-> > [   12.078186] [<c063dd0c>] (platform_drv_probe) from [<c063bce4>]
-> > (really_probe+0x1d8/0x344)
-> > [   12.086517] [<c063bce4>] (really_probe) from [<c063bf60>]
-> > (driver_probe_device+0x5c/0x164)
-> > [   12.094848] [<c063bf60>] (driver_probe_device) from [<c063a128>]
-> > (bus_for_each_drv+0x80/0xcc)
-> > [   12.103454] [<c063a128>] (bus_for_each_drv) from [<c063ba90>]
-> > (__device_attach+0xd4/0x148)
-> > [   12.111785] [<c063ba90>] (__device_attach) from [<c063adfc>]
-> > (bus_probe_device+0x84/0x8c)
-> > [   12.120025] [<c063adfc>] (bus_probe_device) from [<c063b288>]
-> > (deferred_probe_work_func+0x60/0x8c)
-> > [   12.129058] [<c063b288>] (deferred_probe_work_func) from
-> > [<c01553b4>] (process_one_work+0x1ec/0x530)
-> > [   12.138275] [<c01553b4>] (process_one_work) from [<c0155728>]
-> > (worker_thread+0x30/0x558)
-> > [   12.146423] [<c0155728>] (worker_thread) from [<c015c048>]
-> > (kthread+0x134/0x148)
-> > [   12.153900] [<c015c048>] (kthread) from [<c0100168>]
-> > (ret_from_fork+0x14/0x2c)
-> > [   12.161163] Exception stack(0xce1d7fb0 to 0xce1d7ff8)
-> > [   12.166259] 7fa0:                                     00000000
-> > 00000000 00000000 00000000
-> > [   12.174530] 7fc0: 00000000 00000000 00000000 00000000 00000000
-> > 00000000 00000000 00000000
-> > [   12.182769] 7fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-> > [   12.189544] ---[ end trace 9571aa0bd994d08c ]---
-> > 
-> > 
-> > Thanks for any suggestions.  I'll bisect when I have more time.
-> > 
-> > adam
-
--- 
-Regards,
-
-Laurent Pinchart
+Applied and queued up for v5.7 -stable, thanks.
