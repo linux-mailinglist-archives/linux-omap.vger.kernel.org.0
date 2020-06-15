@@ -2,88 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A7B81F883E
-	for <lists+linux-omap@lfdr.de>; Sun, 14 Jun 2020 11:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5660F1F8D6B
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Jun 2020 07:56:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726014AbgFNJ4D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 14 Jun 2020 05:56:03 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:44885 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725265AbgFNJ4C (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 14 Jun 2020 05:56:02 -0400
-Received: from linux-5fgm.suse ([79.250.176.52]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MTAJl-1jLI0F2mqd-00UWVr for <linux-omap@vger.kernel.org>; Sun, 14 Jun 2020
- 11:56:00 +0200
-From:   Matthias Welwarsky <linux-omap@welwarsky.de>
-To:     linux-omap@vger.kernel.org
-Subject: omap dmtimer driver bug and a silicon issue on TI AM3358
-Date:   Sun, 14 Jun 2020 11:56:00 +0200
-Message-ID: <2019546.2yLtp7J43K@linux-5fgm.suse>
+        id S1728276AbgFOF4y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Jun 2020 01:56:54 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:53642 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728162AbgFOF4y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Jun 2020 01:56:54 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 05F5umSH122595;
+        Mon, 15 Jun 2020 00:56:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1592200608;
+        bh=iNm63oi4V+OHirtQgr0JauXGgDFpZ85faDOGakHExdY=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Y7ZccyoPBvP4I1mmrpkv7AK326DZqxB87FdVchkWVvRvZZ8h/1/Z/FcMlosmLn0XQ
+         m73kBWfs97PEL5H2hCECQp53M2gH1BAA0hj9w7+ogsxDH/6+VxVku7ROosfZ+PWnT0
+         yQy1mUEl/HIoegH+wHg/sZK+nP/cpVs9MiEQN9/I=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 05F5um4O072994
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 15 Jun 2020 00:56:48 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 15
+ Jun 2020 00:56:48 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 15 Jun 2020 00:56:48 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05F5ukTw125994;
+        Mon, 15 Jun 2020 00:56:47 -0500
+Subject: Re: omap3 dss failues on 5.7
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tony Lindgren <tony@atomide.com>
+CC:     Adam Ford <aford173@gmail.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+References: <CAHCN7xLmhynf5X+2YgMTPcQMwEP4N_XE-BhVjcL1hT4L+EGuCg@mail.gmail.com>
+ <20200613160242.GW37466@atomide.com>
+ <20200613160601.GB9722@pendragon.ideasonboard.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <d5416482-6b9a-ce53-9635-7ecf5697afde@ti.com>
+Date:   Mon, 15 Jun 2020 08:56:46 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Provags-ID: V03:K1:VAUuWub6qB5MdntR8MY0KMMpXPbbUZpGfZQE7m4jcNUnoYW+x2M
- ijATK8DpHQbzZDUrmRTd6Bddd145WtYSTcObvdM57UoJSaPqdsU+q3HOhiOVSxTvF2j4CBs
- 70RqlZjSGoEonp8P0snE7uRMPujUh8zffwfNMxMNOKh0H9usSWgWqJvUyFbl0hlRRbfCuNF
- tQ6kACitRWlB6+bJaMqGw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SXePJmUv2xM=:xnArzl+lau4C5wM4CTFOVj
- flrEM66jSC0QQjRVZ1oeYEo0mcrk+TZJ8Htj6UoSm5I8MTf2mAybeWOJFHfHvFtefT6F1m5bb
- 15TJU4nEAyY5/ya2nUo0sP8uMzVWT7tBhYjgOXlbY/P0LaKTA1y9xksvIcHo3JidWBnWVDqMO
- 3dX6oq/VHgKcsK08mkiEUY8JbAn30NyHqh24MNFGFxXs/xYKdQ/TC6S31qqKW7WXu4r/lg66n
- R4Zq8NBvuzHcn9Mh6gtCbxnSqzslKu1gt06Aqgn57ffUDHYYzpcZiS8wpTgT7G2EZNKxrcbh9
- L/ahKkrafZJQbPLtxXeJILXl7LwziPjFOEycXxhm6WS96XMUILtHYkzo3S6kUlkICRo6jm6lG
- 48L24OwN/sMYr+0yFAvdBZ5DyzqR3O/mP0S+MpqPXzJnD9D/77pE/AtuWyFVw+8KhtZbFCTP6
- Lyg02JLe22qZ/WAMoDdbVolr6TKcbYi9n5b/zuEC0jgTXrnmZXv9/0f30qTxs21OIqImWRQtv
- w9xd04OrFfDJBoiM6Ogbf/k3mrP9ldtkTvVoN9/NlbMeKj8mjg13dZ82Biu0Qmjn9s9GjH3md
- htAegwMkaFRa/8BDCEXPIwQtlWkEg5Unr1Q98mX17tHBKwq9XjNJLEWMZySddATFOOkxG6RAR
- Sg2ZRlI5yjAmtWktS92/FdDpPuy6eIw6eB7WhPsiNONjub8RT1dQL8JfDsb8QI8K154SuS9Bq
- OYV+0/4aSG36mN1QFHV2qJptEDb2X+2vXwds12VKOqcSA0WwJx+Qc9OkcN1/GqqPVRXkZX9U6
- vDm5IhqOR5ddqlBIi+zwwtNOKUfq1V9mxiDx4YN5rZSxjatKoDX4j/3liCpSn5mCi4RbeW0
+In-Reply-To: <20200613160601.GB9722@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On 13/06/2020 19:06, Laurent Pinchart wrote:
+> Hi Tony,
+> 
+> On Sat, Jun 13, 2020 at 09:02:42AM -0700, Tony Lindgren wrote:
+>> * Adam Ford <aford173@gmail.com> [200613 02:28]:
+>>> Is anyone else having DSS failures on the 5.7 stable branch using an
+>>> omap3 board?
+>>>
+>>> I haven't had time to bisect yet, but before I do I thought I'd ask.
+>>
+>> Sounds this might be caused by some panel related between v5.6 and v5.7,
+>> so adding Laurent to Cc.
+>>
+>> We also started dropping legacy platform data for some SoCs, but that
+>> should not affect omap3 so far.
+> 
+> I think this is caused by the panel driver not setting the connector
+> type. Only the panel-simple driver should be affected, fixing this
+> should just be a matter of setting
+> 
+> 	.connector_type = DRM_MODE_CONNECTOR_DPI
+> 
+> for the appropriate panel_desc entry.
 
-while doing some timekeeping experiments with the Beaglebone Black I ran 
-across two issues I'd like advice on before submitting patches.
+Yes. I sent one fix a few days back:
 
-I'm feeding one of the dmtimers with a external clock (10MHz from a GPSDO) to 
-improve drift behaviour of CLOCK_REALTIME. For this, I need to set the input 
-clock multiplexer of one of the dmtimers to "tclkin_ck". I also need to set up 
-the pin multiplexing so that the external clock is actually available.
+https://www.mail-archive.com/dri-devel@lists.freedesktop.org/msg312208.html
 
-The first issue is the framework function omap_dm_timer_set_source(). Of the 
-available clock sources, none is a possible parent. But even when fixing them, 
-the clk_set_parent() will fail because timer->fclk points to the "wrong" clock 
-in the clock topology. You can only set the parent clock of the "timerN_fclk" 
-nodes, but timer->fclk points to the actual hardware clock one level "down" in 
-the topology. This clock only has one possible parent, which is "timerN_fck". 
-The work-around I use in my clocksource driver is to use the clock framework 
-directly and manually retrieve the parent clock of timer->fclk, then reparent 
-that clock to "tclkin_ck". That works, but I'd prefer to fix the driver 
-framework. But I'd need a hint what would be an appropriate approach for that.
+ Tomi
 
-The second issue is more of a silicon "bug". It seems that the clock 
-multiplexer is not warm-reset sensitive but the pinmux is. In consequence, 
-when the chip is reset (watchdog or "reboot" command), the pinmux defaults 
-back to GPIO but the timer functional clock mux still points to "tclkin_ck" 
-and when the kernel boots up and the dmtimer framework tries to initialize the 
-timer, it accesses a hwmod that has no functional clock and the kernel 
-receives an async external abort and dies. 
-
-Two possible places for a fix come to mind: u-boot could reset the clock mux, 
-or the kernel needs to do it when it boots, either in the dmtimer framework or 
-in the clock framework, maybe based on a device tree attribute that specifies 
-a default state of the clock mux.
-
-I'd like to hear your take on this.
-
-BR,
-Matthias
-
-
-
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
