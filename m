@@ -2,202 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB931FBC26
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Jun 2020 18:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 218EB1FBC31
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Jun 2020 18:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730117AbgFPQxV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Jun 2020 12:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56748 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728861AbgFPQxT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Jun 2020 12:53:19 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D72C061573
-        for <linux-omap@vger.kernel.org>; Tue, 16 Jun 2020 09:53:18 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id mb16so22299102ejb.4
-        for <linux-omap@vger.kernel.org>; Tue, 16 Jun 2020 09:53:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=tmG3LnbRJSg3fKU+VOok+qLig2JtTOzSavXoxpBHQG0=;
-        b=YkgrjD+WxvLdy4risEIP5GnN/TJKndB19nXRYpItZ3rmCN7L6zoMFdKzbK2hHeVJRr
-         zmGk4jdsuXkjPdNxNQfGDNuxu22r42sSvmioy8gTUMg72po1qC/1w+pZX31gz0tpDBIh
-         anOTecQEc3CqLp6uqzLZNF4odePAuFYEbtMJ7YJS933NmgucODOB43rgNcZN+lJTTHz8
-         Yz7Et++MZD16Fn1TklqPRl+r7ctjpZ/aps/bpq3uOOdqJMnybzUbgUOwImrfFQbVxyd0
-         ZOW01uuXtOJ15pq5Ii3yM8M/j6VqoMt4q9HZj/fjy3IePTR6nKm+Ens0Rg3HtLjRTVed
-         7apg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=tmG3LnbRJSg3fKU+VOok+qLig2JtTOzSavXoxpBHQG0=;
-        b=fmSxwYuW0Mum31GMPtuFSnPfJdqTJO8UmqPMq77FyMDxFZtS7GU8tLIehO05bpADFm
-         JOrLhh1TxOiWlFTBgAPFrS81YeofSsXKUrEURfbIxVm+jOLBjPqvMy/JShERDjSxDP2E
-         AjxdFz2d0E3Wi4LlsqhNWWj2xD7zGEZxI3HRS35e7uAz8Lz9+cGbA/2+sOj59DxcXl+r
-         sr/rh8O7NpGMV9xcvOTj3yaUf3JMUoSBlkcrJSM/BQCuwmfZDTJfyYKXGw301oGrYz+/
-         KSbHCK8m271sObZC8vDhlD7XGLFvXCiVcGJ8Xe01KIfRd6xDlVE9Q9ukemBhb+E9w+SQ
-         DDBQ==
-X-Gm-Message-State: AOAM532+7y6dt4+MXc2ig5VBIKmnnW22+JXc5Vd+lW++uJurPRBoBtKJ
-        3zkQ8ZsbvvgqYnAjAtoAiEphTA==
-X-Google-Smtp-Source: ABdhPJzu8fLCRgJ2ALaSxSC5pDD2AYOVPWho8q0Q9tYxmtMORvUO7pZS/LpXl2T9nN/klY+EyircrA==
-X-Received: by 2002:a17:906:af62:: with SMTP id os2mr3590836ejb.345.1592326397031;
-        Tue, 16 Jun 2020 09:53:17 -0700 (PDT)
-Received: from x1 (i59F66838.versanet.de. [89.246.104.56])
-        by smtp.gmail.com with ESMTPSA id l2sm10373977edq.9.2020.06.16.09.53.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2020 09:53:16 -0700 (PDT)
-Date:   Tue, 16 Jun 2020 18:53:14 +0200
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-omap@vger.kernel.org,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>
-Subject: Re: [RFC PATCH] pinctrl-single: parse #pinctrl-cells = 2
-Message-ID: <20200616165314.GC4007093@x1>
-References: <20200615230906.GA3967771@x1>
- <20200616142628.GX37466@atomide.com>
+        id S1729578AbgFPQ5R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Jun 2020 12:57:17 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:58050 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728861AbgFPQ5R (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Jun 2020 12:57:17 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 05GGv4c5039757;
+        Tue, 16 Jun 2020 11:57:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1592326624;
+        bh=5SNJOnx/JOfRnrAoSOCyZsNKVPe0vOboLu2yYA8Qo+g=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=p7Di1GMM11digdmvF0BR+ZWyhf2oS8veOe9hLPwIC443TStcKogKOcDElHepmLxDs
+         X80+pB0bLhqVfDFcgPlnHehgK2MOwQXu+aeb9HssxCD4mSb2uyp+eVTNt0w/W6z9bX
+         4bsapM7NawXR5nmJoTuYU1Xv2smugOwMEg/P49oI=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05GGv44v029523;
+        Tue, 16 Jun 2020 11:57:04 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 16
+ Jun 2020 11:57:03 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 16 Jun 2020 11:57:03 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05GGuwQT087296;
+        Tue, 16 Jun 2020 11:56:59 -0500
+Subject: Re: [PATCH 1/5] drm/omap: Fix suspend resume regression after
+ platform data removal
+To:     Tony Lindgren <tony@atomide.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+CC:     <linux-omap@vger.kernel.org>, "Andrew F . Davis" <afd@ti.com>,
+        Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <dri-devel@lists.freedesktop.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <20200531193941.13179-1-tony@atomide.com>
+ <20200531193941.13179-2-tony@atomide.com>
+ <16ba1808-5c7f-573d-8dd0-c80cac2f476e@ti.com>
+ <20200603140639.GG37466@atomide.com>
+ <47e286dd-f87a-4440-5bde-1f7b53e8b672@ti.com>
+ <20200609151943.GL37466@atomide.com>
+ <9ed70121-2a53-d2b3-051a-88eb83e6c53f@ti.com>
+ <d03dd04f-6f2c-25ba-fe1f-d5fc0dfb5c68@ti.com>
+ <592501c9-2d94-b266-ae76-e383d3bffa29@ti.com>
+ <20200616153042.GZ37466@atomide.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <3f2855cc-48b8-ecb8-5d92-beeabe344b26@ti.com>
+Date:   Tue, 16 Jun 2020 19:56:59 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200616142628.GX37466@atomide.com>
+In-Reply-To: <20200616153042.GZ37466@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 16, 2020 at 07:26:28AM -0700, Tony Lindgren wrote:
-> * Drew Fustini <drew@beagleboard.org> [200615 23:10]:
-> > These changes are based on feedback from Tony [1] concerning changing
-> > pinctrl-single to be able to handle pinctrl-cells = 2 for for the 
-> > "pinctrl-single,pins" property.
+
+
+On 16/06/2020 18:30, Tony Lindgren wrote:
+> * Tomi Valkeinen <tomi.valkeinen@ti.com> [200616 13:02]:
+>> On 11/06/2020 17:00, Grygorii Strashko wrote:
+>>> I think, suspend might be fixed if all devices, which are now child of ti-sysc, will do
+>>> pm_runtime_force_xxx() calls at noirq suspend stage by adding:
+>>>
+>>>       SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+>>>                         pm_runtime_force_resume)
+>>>
+>>> Am I missing smth?
+>>
+>> Isn't this almost exactly the same my patch does? I just used suspend_late
+>> and resume_early. Is noirq phase better than late & early?
 > 
-> Hey this is great! Thanks for sorting it out.
-> 
-> > --- a/drivers/pinctrl/pinctrl-single.c
-> > +++ b/drivers/pinctrl/pinctrl-single.c
-> > @@ -1017,11 +1017,21 @@ static int pcs_parse_one_pinctrl_entry(struct pcs_device *pcs,
-> >  			break;
-> >  		}
-> >  
-> > -		/* Index plus one value cell */
-> >  		offset = pinctrl_spec.args[0];
-> >  		vals[found].reg = pcs->base + offset;
-> > -		vals[found].val = pinctrl_spec.args[1];
-> >  
-> > +		pr_info("%s: args_count=%d offset=0x%x", __func__,
-> > +				pinctrl_spec.args_count, offset);
-> > +		pr_info("%s: args[1]=0x%x", __func__, pinctrl_spec.args[1]);
-> > +
-> > +		if (pinctrl_spec.args_count == 2) {
-> > +			vals[found].val = pinctrl_spec.args[1];
-> > +		} else if (pinctrl_spec.args_count == 3) {
-> > +			pr_info("%s: args[2]=0x%x", __func__, pinctrl_spec.args[2]);
-> > +			vals[found].val = (pinctrl_spec.args[1] | pinctrl_spec.args[2]);
-> > +		}
-> 
-> Maybe do the above with a switch? And leave out the pr_info for the
-> final version :) Also please do a separate patch for pinctrl-singl.c,
-> and then another patch for the define and dts change.
+> Well up to you as far as I'm concerned. The noirq phase comes with serious
+> limitations, for let's say i2c bus usage if needed. Probably also harder
+> to debug for suspend and resume.
 
-Thanks for the suggestions.  Yes, I wasn't sure what the best way to
-express this "rough draft" solution.  I'll create a patch series in
-future.
+Unfortunately, you can't use PM runtime force API at .suspend() stage as pm_runtime_get will still work and
+there is no sync between suspend and pm_runtime.
+The PM runtime force API can be used only during late/noirq as at this time pm_runtime is disabled.
 
-> Hmm so now the conf and mux values are still register masks in the dts
-> which is not ideal in all cases. But that's a separate issue and could
-> be sorted out as needed later on with adding separate conf and mux
-> shifts and masks. Not sure if we want to do that for the existing use
-> cases though.
-> 
-> Regards,
-> 
-> Tony
-
-By register masks, do you mean the #define's like PIN_OUTPUT_PULLDOWN
-and MUX_MODE6?
-
-AM33XX_PADCONF(AM335X_PIN_GPMC_A2, PIN_OUTPUT_PULLDOWN, MUX_MODE6)
-
-There is a possibility to also use the pinconf properties defined in
-pinctrl-single.c:
-
-	static const struct pcs_conf_type prop2[] = {
-		{ "pinctrl-single,drive-strength", PIN_CONFIG_DRIVE_STRENGTH, },
-		{ "pinctrl-single,slew-rate", PIN_CONFIG_SLEW_RATE, },
-		{ "pinctrl-single,input-schmitt", PIN_CONFIG_INPUT_SCHMITT, },
-		{ "pinctrl-single,low-power-mode", PIN_CONFIG_LOW_POWER_MODE, },
-	};
-	static const struct pcs_conf_type prop4[] = {
-		{ "pinctrl-single,bias-pullup", PIN_CONFIG_BIAS_PULL_UP, },
-		{ "pinctrl-single,bias-pulldown", PIN_CONFIG_BIAS_PULL_DOWN, },
-		{ "pinctrl-single,input-schmitt-enable",
-			PIN_CONFIG_INPUT_SCHMITT_ENABLE, },
-	};
-
-For example, I was experimenting with how to define the bias properties:
-
-        ehrpwm0_pins: pinmux-ehrpwm0-pins {
-                pinctrl-single,pins = <
-                        AM33XX_PADCONF(AM335X_PIN_MCASP0_ACLKX, PIN_OUTPUT_PULLDOWN, MUX_MODE1)
-                        /* (A13) mcasp0_aclkx.ehrpwm0A */
-                >;
-                pinctrl-single,bias-pullup = <24 24 0 24>;
-        };
-
-        ehrpwm1_pins: pinmux-ehrpwm1-pins {
-                pinctrl-single,pins = <
-                        AM33XX_PADCONF(AM335X_PIN_GPMC_A2, PIN_OUTPUT_PULLDOWN, MUX_MODE6)
-                        /* (U14) gpmc_a2.ehrpwm1A */
-                >;
-                pinctrl-single,bias-pulldown = <8 8 0 24>;
-        };
-
-I found the binding documentation [0] for the bias properties to be very
-confusing as to how those 4 values work:
-
-> - pinctrl-single,bias-pullup : array of value that are used to configure the
->   input bias pullup in the pinmux register.
->
-> 		/* input, enabled pullup bits, disabled pullup bits, mask */
-> 		pinctrl-single,bias-pullup = <0 1 0 1>;
-> 
-> - pinctrl-single,bias-pulldown : array of value that are used to configure the
->   input bias pulldown in the pinmux register.
-
->		/* input, enabled pulldown bits, disabled pulldown bits, mask */
->		pinctrl-single,bias-pulldown = <2 2 0 2>;
-
-For AM3358, the pin conf
-register has the format [1]:
-
-bit	attribute      value
-  6	slew           { 0: fast, 1: slow }
-  5     rx_active      { 0: rx disable, 1: rx enabled }
-  4     pu_typesel     { 0: pulldown select, 1: pullup select }
-  3     puden          { 0: pud enable, 1: disabled }
-  2     mode           3 bits to selec mode 0 to 7
-  1     mode
-  0     mode
-
-And I figured out the values for the bias-pull{up,down} properties:
-
-        16      8       4       2       1
-        2^4     2^3     2^2     2^1     2^0
-mask    1       1       0       0       0       24
-pull-up 1       1       0       0       0       24
-pull-dn 0       1       0       0       0       8
-none    0       0       0       0       0       0
-
-
-I did some testing with pr_info's sprinkled in and I think those values
-are correct but I would be happy to hear from someone with more insight
-in the design of bias-pulldown and bias-pullup.
-
-thanks,
-drew
-
-[0] Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
-[1] https://www.ti.com/lit/ug/spruh73q/spruh73q.pdf (see Figure 9-51)
+-- 
+Best regards,
+grygorii
