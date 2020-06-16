@@ -2,163 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C13CF1FAB43
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Jun 2020 10:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89C021FAC37
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Jun 2020 11:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727988AbgFPIcH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Jun 2020 04:32:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728038AbgFPIcH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Jun 2020 04:32:07 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8125C05BD43
-        for <linux-omap@vger.kernel.org>; Tue, 16 Jun 2020 01:32:06 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id 9so22504255ljc.8
-        for <linux-omap@vger.kernel.org>; Tue, 16 Jun 2020 01:32:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sQ4U7wvoNlcpjuMW/4KAQuHPsQCChERlSO2SrjCLc4A=;
-        b=yzgs82TyqjiolbSZa0hACzF4gN7GCdrUZ3PkJIwNsxrwGymEWug+COKC95YBk6TI0K
-         2Y0WbWcE0rB11ecpIHasmBOEfu2LHU1jVxms4CkS6c1YBhHphAVGDqxKnQPW4PBBc7hb
-         LMdJwAntiTOBJmW2XA6P3lnRabzZ3UT3E9uy8o/U1SwZ5oitYwRLHc5WSAN8DB/8WxGH
-         VrB15nm/FvXI/F5bPdrN/KsIQp6inbymvEpyLN7rdC7zEFqzsH+Jxw7zBeSbaDF9hj4Z
-         jaXPYaexNoE0Z92Ldpp3NqRRd9Su8ihOkFK3xJAvMTKv498p1DzKxsLxehhJydEQaZ+i
-         fWig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sQ4U7wvoNlcpjuMW/4KAQuHPsQCChERlSO2SrjCLc4A=;
-        b=PVHcPOhgsVWqBnI4NE4YLmUNe9fNycXdLAetOZ/QiQkEy496AoaGonR4Xu47TboBhA
-         L10/3w1ckrOsoAMldsqNj6tpp7KzICiZxwZkSkIbTwNqVMeEwxAnNwzkH802UgIWa/T/
-         jl32Rke+D1tsdLzaDHW5LH/zTSPMJZdfkFdb5R/AS0uR5vFc53W2IhA1YYd2FmDDh4BS
-         VqX6yp099o3tihk0tB9R9clsXMssOquvrV5Q7Tmj/dUpC8xM0+94QzF0EMW9y+gPx/TQ
-         zrNu9gfKgIV3NpqlmghOgtAPpcTj3vFPpDHrEjpz5Jg9dmmw+vN6+BgzJXLNulZXFsfi
-         q3sA==
-X-Gm-Message-State: AOAM530a7f0cCG8DWslKSGUFpani+YEYeay6C8XeF+sAVA1rjUtH+jrC
-        Pp2Oq7e8NrIlcBQllex8dyj60z9C08C1K+5pemLGPo545eA=
-X-Google-Smtp-Source: ABdhPJzDjr7Vp4IVSdnf58s8G/HEW2ciu0txbLcKtPfjhvTLWtyM16wHBxujqgvNRbb533tvY8VqBYbmo4AT2CdyIOc=
-X-Received: by 2002:a2e:350a:: with SMTP id z10mr837916ljz.104.1592296325111;
- Tue, 16 Jun 2020 01:32:05 -0700 (PDT)
+        id S1728095AbgFPJWJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Jun 2020 05:22:09 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:56990 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725843AbgFPJWG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Jun 2020 05:22:06 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05G9LlZk184942;
+        Tue, 16 Jun 2020 09:21:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=JY/T5f/hGcowMJ8VD+RE1SJlbLsBJv3+IyXnug6dOUc=;
+ b=llObE3WJ2nelnhLBBguVo3vAXmGeWpNUmBaYxduyzQYQBJWNPAkaTHC/hHoIUAjO1K3J
+ cOUesEEx6ssPsM441xOJHHZras2jPC/RQNyMD77nrEISP/ed7e6UrY5WX0q/SkBck8Mm
+ hHEv6l3lKrzzBxBwMt+xg3pvfXOEoAzXX1IQoBjJmrgZUgqIiF6pu9ZMQO6ONElpIS7m
+ R5Pl60R25Rcwx5J81bU1aNzC4DwQ+n76u35RvXsMdwKHERtEjakprPM63c+zFNCl3YpW
+ 1hmMRh2syv3M6wyRqXXJO7JcAb38KjrYaQoEAh2Pa3mWWytevlR2gUplcd6uVuq4xyXn Ag== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 31p6s25nnj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 16 Jun 2020 09:21:59 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05G9J2uL194221;
+        Tue, 16 Jun 2020 09:19:58 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 31p6dg1r3h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 16 Jun 2020 09:19:58 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05G9JvaT004028;
+        Tue, 16 Jun 2020 09:19:57 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 16 Jun 2020 02:19:57 -0700
+Date:   Tue, 16 Jun 2020 12:19:49 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Eduardo Valentin <edubezval@gmail.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] thermal: ti-soc-thermal: Fix reversed condition in
+ ti_thermal_expose_sensor()
+Message-ID: <20200616091949.GA11940@mwanda>
 MIME-Version: 1.0
-References: <20200608125143.GA2789203@x1>
-In-Reply-To: <20200608125143.GA2789203@x1>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 16 Jun 2020 10:31:54 +0200
-Message-ID: <CACRpkdZupnetd29aehw4HF3isGgRHbqxWZuTkPBusm_EmvjZ4g@mail.gmail.com>
-Subject: Re: [PATCH v2] pinctrl-single: fix pcs_parse_pinconf() return value
-To:     Drew Fustini <drew@beagleboard.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9653 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006160068
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9653 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
+ clxscore=1011 mlxscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 cotscore=-2147483648 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006160069
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jun 8, 2020 at 2:51 PM Drew Fustini <drew@beagleboard.org> wrote:
+This condition is reversed and will cause breakage.
 
-> This patch causes pcs_parse_pinconf() to return -ENOTSUPP when no
-> pinctrl_map is added.  The current behavior is to return 0 when
-> !PCS_HAS_PINCONF or !nconfs.  Thus pcs_parse_one_pinctrl_entry()
-> incorrectly assumes that a map was added and sets num_maps = 2.
->
-> Analysis:
-> =========
-> The function pcs_parse_one_pinctrl_entry() calls pcs_parse_pinconf()
-> if PCS_HAS_PINCONF is enabled.  The function pcs_parse_pinconf()
-> returns 0 to indicate there was no error and num_maps is then set to 2:
->
->  980 static int pcs_parse_one_pinctrl_entry(struct pcs_device *pcs,
->  981                                                 struct device_node *np,
->  982                                                 struct pinctrl_map **map,
->  983                                                 unsigned *num_maps,
->  984                                                 const char **pgnames)
->  985 {
-> <snip>
-> 1053         (*map)->type = PIN_MAP_TYPE_MUX_GROUP;
-> 1054         (*map)->data.mux.group = np->name;
-> 1055         (*map)->data.mux.function = np->name;
-> 1056
-> 1057         if (PCS_HAS_PINCONF && function) {
-> 1058                 res = pcs_parse_pinconf(pcs, np, function, map);
-> 1059                 if (res)
-> 1060                         goto free_pingroups;
-> 1061                 *num_maps = 2;
-> 1062         } else {
-> 1063                 *num_maps = 1;
-> 1064         }
->
-> However, pcs_parse_pinconf() will also return 0 if !PCS_HAS_PINCONF or
-> !nconfs.  I believe these conditions should indicate that no map was
-> added by returning -ENOTSUPP. Otherwise pcs_parse_one_pinctrl_entry()
-> will set num_maps = 2 even though no maps were successfully added, as
-> it does not reach "m++" on line 940:
->
->  895 static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
->  896                              struct pcs_function *func,
->  897                              struct pinctrl_map **map)
->  898
->  899 {
->  900         struct pinctrl_map *m = *map;
-> <snip>
->  917         /* If pinconf isn't supported, don't parse properties in below. */
->  918         if (!PCS_HAS_PINCONF)
->  919                 return 0;
->  920
->  921         /* cacluate how much properties are supported in current node */
->  922         for (i = 0; i < ARRAY_SIZE(prop2); i++) {
->  923                 if (of_find_property(np, prop2[i].name, NULL))
->  924                         nconfs++;
->  925         }
->  926         for (i = 0; i < ARRAY_SIZE(prop4); i++) {
->  927                 if (of_find_property(np, prop4[i].name, NULL))
->  928                         nconfs++;
->  929         }
->  930         if (!nconfs)
->  919                 return 0;
->  932
->  933         func->conf = devm_kcalloc(pcs->dev,
->  934                                   nconfs, sizeof(struct pcs_conf_vals),
->  935                                   GFP_KERNEL);
->  936         if (!func->conf)
->  937                 return -ENOMEM;
->  938         func->nconfs = nconfs;
->  939         conf = &(func->conf[0]);
->  940         m++;
->
-> This situtation will cause a boot failure [0] on the BeagleBone Black
-> (AM3358) when am33xx_pinmux node in arch/arm/boot/dts/am33xx-l4.dtsi
-> has compatible = "pinconf-single" instead of "pinctrl-single".
->
-> The patch fixes this issue by returning -ENOSUPP when !PCS_HAS_PINCONF
-> or !nconfs, so that pcs_parse_one_pinctrl_entry() will know that no
-> map was added.
->
-> Logic is also added to pcs_parse_one_pinctrl_entry() to distinguish
-> between -ENOSUPP and other errors.  In the case of -ENOSUPP, num_maps
-> is set to 1 as it is valid for pinconf to be enabled and a given pin
-> group to not any pinconf properties.
->
-> [0] https://lore.kernel.org/linux-omap/20200529175544.GA3766151@x1/
->
-> Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
-> Signed-off-by: Drew Fustini <drew@beagleboard.org>
+Fixes: 7440f518dad9 ("thermal/drivers/ti-soc-thermal: Avoid dereferencing ERR_PTR")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patch applied as non-critical (for-next) fix.
+diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+index 85776db4bf34..2ce4b19f312a 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
++++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+@@ -169,7 +169,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+ 
+ 	data = ti_bandgap_get_sensor_data(bgp, id);
+ 
+-	if (!IS_ERR_OR_NULL(data))
++	if (IS_ERR_OR_NULL(data))
+ 		data = ti_thermal_build_data(bgp, id);
+ 
+ 	if (!data)
+-- 
+2.27.0
 
-If there is no hurry let's merge it this way with lots of testing
-along the way.
-
-Yours,
-Linus Walleij
