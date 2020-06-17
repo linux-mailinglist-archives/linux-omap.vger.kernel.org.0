@@ -2,117 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A43F1FC5FC
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Jun 2020 08:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C194F1FCB31
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jun 2020 12:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726851AbgFQGFQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Jun 2020 02:05:16 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:57064 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726769AbgFQGFQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Jun 2020 02:05:16 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 05H651rG119792;
-        Wed, 17 Jun 2020 01:05:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1592373901;
-        bh=pjgQJY6FtV2aSO68aw+isVN5H6rQrBZ0BarV7CeclmA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=ldFy59vnuaLA/u87+fSXcqQRsUB1FMfZ07OUnq32bevnq5CuqguFk6/XIN+tU3b5b
-         QzajJXonGLbCTYhJ7liLkJqF8XcR6NM3wvFilkEO57mLXav1z5rVRgnlWTAQRsftd+
-         mmEMIUL1z+KZBoKQCcf3OXJ7dxO5ulRadfJySHJE=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 05H651lZ051995
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 17 Jun 2020 01:05:01 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 17
- Jun 2020 01:05:00 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 17 Jun 2020 01:05:00 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05H64vko028969;
-        Wed, 17 Jun 2020 01:04:57 -0500
-Subject: Re: [PATCH 1/5] drm/omap: Fix suspend resume regression after
- platform data removal
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Tony Lindgren <tony@atomide.com>
-CC:     <linux-omap@vger.kernel.org>, "Andrew F . Davis" <afd@ti.com>,
-        Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <dri-devel@lists.freedesktop.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <20200531193941.13179-1-tony@atomide.com>
- <20200531193941.13179-2-tony@atomide.com>
- <16ba1808-5c7f-573d-8dd0-c80cac2f476e@ti.com>
- <20200603140639.GG37466@atomide.com>
- <47e286dd-f87a-4440-5bde-1f7b53e8b672@ti.com>
- <20200609151943.GL37466@atomide.com>
- <9ed70121-2a53-d2b3-051a-88eb83e6c53f@ti.com>
- <d03dd04f-6f2c-25ba-fe1f-d5fc0dfb5c68@ti.com>
- <592501c9-2d94-b266-ae76-e383d3bffa29@ti.com>
- <20200616153042.GZ37466@atomide.com>
- <3f2855cc-48b8-ecb8-5d92-beeabe344b26@ti.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <d0488631-e2d8-115f-9900-5838147ec674@ti.com>
-Date:   Wed, 17 Jun 2020 09:04:56 +0300
+        id S1726605AbgFQKoT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Jun 2020 06:44:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52322 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726541AbgFQKoS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Jun 2020 06:44:18 -0400
+X-Greylist: delayed 135601 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 17 Jun 2020 03:44:17 PDT
+Received: from mail.lysator.liu.se (mail.lysator.liu.se [IPv6:2001:6b0:17:f0a0::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 852B0C061573
+        for <linux-omap@vger.kernel.org>; Wed, 17 Jun 2020 03:44:17 -0700 (PDT)
+Received: from mail.lysator.liu.se (localhost [127.0.0.1])
+        by mail.lysator.liu.se (Postfix) with ESMTP id C571640015;
+        Wed, 17 Jun 2020 12:44:03 +0200 (CEST)
+Received: from [192.168.82.193] (c-7a4fe655.06-290-73746f71.bbcust.telenor.se [85.230.79.122])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.lysator.liu.se (Postfix) with ESMTPSA id 6FDDA40008;
+        Wed, 17 Jun 2020 12:44:03 +0200 (CEST)
+Subject: Re: WL1271 on CM-T3730
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org
+References: <807d19b0-842f-87b9-c9ba-dcbfd4e7b108@lysator.liu.se>
+ <20200616153921.GA37466@atomide.com>
+From:   Oskar Enoksson <enok@lysator.liu.se>
+Message-ID: <a002d6ed-526a-bf82-b698-6182f9bb126e@lysator.liu.se>
+Date:   Wed, 17 Jun 2020 12:44:08 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <3f2855cc-48b8-ecb8-5d92-beeabe344b26@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <20200616153921.GA37466@atomide.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 16/06/2020 19:56, Grygorii Strashko wrote:
-> 
-> 
-> On 16/06/2020 18:30, Tony Lindgren wrote:
->> * Tomi Valkeinen <tomi.valkeinen@ti.com> [200616 13:02]:
->>> On 11/06/2020 17:00, Grygorii Strashko wrote:
->>>> I think, suspend might be fixed if all devices, which are now child of ti-sysc, will do
->>>> pm_runtime_force_xxx() calls at noirq suspend stage by adding:
->>>>
->>>>       SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
->>>>                         pm_runtime_force_resume)
->>>>
->>>> Am I missing smth?
->>>
->>> Isn't this almost exactly the same my patch does? I just used suspend_late
->>> and resume_early. Is noirq phase better than late & early?
+
+
+On 6/16/20 5:39 PM, Tony Lindgren wrote:
+> * Oskar Enoksson <enok@lysator.liu.se> [200615 21:15]:
+>> Hello all, sorry to bother, I'm urgently in need of some help/hints.
 >>
->> Well up to you as far as I'm concerned. The noirq phase comes with serious
->> limitations, for let's say i2c bus usage if needed. Probably also harder
->> to debug for suspend and resume.
+>> I'm trying to make wifi work on an Compulab CM-T3730, an old OMAP3 board
+>> with WL1271 Wifi chip connected to an mmc via SDIO.
+>>
+>> Everything works with the kernel supported by Texas Instruments 3.0.87 but I
+>> need a newer kernel. There is a device tree file omap3-cm-t3730.dts in the
+>> Linux mainline sourcees, but it doesn't work for me, the Wifi chip is not
+>> detected on the SDIO bus. I'm using mainline linux 5.6.18, but I also tried
+>> 4.14, 4.9 and 3.16 with similar results.
+>>
+>> What could be the problem?
 > 
-> Unfortunately, you can't use PM runtime force API at .suspend() stage as pm_runtime_get will still 
-> work and
-> there is no sync between suspend and pm_runtime.
-> The PM runtime force API can be used only during late/noirq as at this time pm_runtime is disabled.
+> Well it should work in general, maybe there's a regression somewhere.
+> I can confirm that cm-t3730 works with v5.3 at least, have not bothered
+> to update it for a while. Maybe you just need to update your firmware for
+> /lib/firmware/ti-connectivity for it?
+> 
+> Regards,
+> 
+> Tony
+> 
 
-Yes, but which one... Do you know what the diff is with late/noirq from driver's perspective? I 
-guess noirq is atomic context, late is nto?
+I tried replacing my own u-boot 2020.1 with Compulab's pre-compiled 
+u-boot 2014.1, no noticeable difference, still no wlan0. I just had to 
+set bootm_low, bootm_size and bootm_mapsize for the kernel bootm command 
+not to hang. (I'm not sure I understand which address settings are safe 
+and why, the ones below seems to work for me):
 
-Dispc's suspend uses synchronize_irq(), so that rules out noirq. Although the call is not needed if 
-using noirq version, so that could also be managed with small change. But I wonder if there's any 
-benefit in using noirq versus late.
+bootm_low=0x80004000
+bootm_mapsize=0xf000000
+bootm_size=0xf000000
+...
+loadaddr=0x8f000000
+loadfdtaddr=0x8ff00000
 
-  Tomi
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+I then tried re-compiling the kernel using omap2plus_defconfig without 
+any modifications (CONFIG_NETFILTER=y was already set). I used Yocto 
+with kernel 5.4.28. Still exactly the same results (no wlan0)
+
+I then tried latest 5.3 kernel, to get as close as possible to Tony's 
+build, this time using a crosstool-ng toolchain. Exactly the same 
+results (no wlan0)
+
+
+Firmware files are all there under /lib/firmware/ti-connectivity as far 
+as I can tell. cfg80211 finds regulatory.db. Files wl127x-fw-5*.bin and 
+wl128x-fw-5*.bin match the ones reported by "modinfo wl12xx", but there 
+is nothing indicating they are loaded when I do "modprobe wl12xx".
+
+
+Could someone please share a /proc/config.gz from some working board 
+(with a recent kernel), just to eliminate the possibility of something 
+wrong there after all?
+
+And - are you using the omap3-cm-t3730.dtb or the omap3-sbc-t3730.dtb?
+
+
+This is extract from my console output at boot:
+
+Starting HOSTAP Daemon: Configuration file: /etc/hostapd.conf
+[   15.884643] cfg80211: Loading compiled-in X.509 certificates for 
+regulatory database
+[   16.051849] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+Could not read interface wlan0 flags: No such device
+nl80211: Driver does not support authentication/association or connect 
+commands
+nl80211: deinit ifname=wlan0 disabled_11b_rates=0
+Could not read interface wlan0 flags: No such device
+nl80211 driver initialization failed.
+wlan0: interface state UNINITIALIZED->DISABLED
+wlan0: AP-DISABLED
+wlan0: CTRL-EVENT-TERMINATING
+hostapd_free_hapd_data: Interface wlan0 wasn't started
+
+
+
