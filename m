@@ -2,121 +2,153 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23C261FCDB1
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Jun 2020 14:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EC9F1FD21F
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Jun 2020 18:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726044AbgFQMuP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Jun 2020 08:50:15 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:35752 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725894AbgFQMuO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Jun 2020 08:50:14 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 05HCo4X6095317;
-        Wed, 17 Jun 2020 07:50:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1592398204;
-        bh=BXXLlXyiZ34Pa+skFKuCFmgnUEithsnyVV/ercr7hMg=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=g48g+UOOzBxkV+1nKxOOKDEkHZOSrWF5cwzwCmXc3ket7nwIC2fo6XxfS/2UG8iLd
-         q9MZK5aYhm3zhEnYh/JlgIPwoU3kll0336ljll0hrFOy+XzHuYjyh2GQVhO3QQhsyi
-         kPwkG4NynPsW3rZEK7BHJhfTWI4YRrJ7dVX/zufo=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 05HCo4Nl128396
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 17 Jun 2020 07:50:04 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 17
- Jun 2020 07:50:04 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 17 Jun 2020 07:50:04 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05HCnxCX006519;
-        Wed, 17 Jun 2020 07:50:00 -0500
-Subject: Re: [PATCH 1/5] drm/omap: Fix suspend resume regression after
- platform data removal
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Lindgren <tony@atomide.com>
-CC:     <linux-omap@vger.kernel.org>, "Andrew F . Davis" <afd@ti.com>,
-        Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <dri-devel@lists.freedesktop.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <20200531193941.13179-1-tony@atomide.com>
- <20200531193941.13179-2-tony@atomide.com>
- <16ba1808-5c7f-573d-8dd0-c80cac2f476e@ti.com>
- <20200603140639.GG37466@atomide.com>
- <47e286dd-f87a-4440-5bde-1f7b53e8b672@ti.com>
- <20200609151943.GL37466@atomide.com>
- <9ed70121-2a53-d2b3-051a-88eb83e6c53f@ti.com>
- <d03dd04f-6f2c-25ba-fe1f-d5fc0dfb5c68@ti.com>
- <592501c9-2d94-b266-ae76-e383d3bffa29@ti.com>
- <20200616153042.GZ37466@atomide.com>
- <3f2855cc-48b8-ecb8-5d92-beeabe344b26@ti.com>
- <d0488631-e2d8-115f-9900-5838147ec674@ti.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <8404d47b-33bb-499f-4d50-33501e7c5921@ti.com>
-Date:   Wed, 17 Jun 2020 15:49:59 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1727900AbgFQQ1t (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Jun 2020 12:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49266 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727884AbgFQQ1r (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Jun 2020 12:27:47 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8DFEC061755
+        for <linux-omap@vger.kernel.org>; Wed, 17 Jun 2020 09:27:46 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id w7so2483714edt.1
+        for <linux-omap@vger.kernel.org>; Wed, 17 Jun 2020 09:27:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=0PeE1nNOhO8NzBOTfY/pdL8QsrWSh7rT+swmugwtigI=;
+        b=sNqB/fFnXRRSizIysZQ/7bQPvN3dI1sAubAzmXPjlp5zADcg3mFHnEhj4KpzI4rlRT
+         b0rXBfv2Leyc1LO9lG4qxGitWmak6FKoBKT4g43POIBQG/++rpoKsKoTPII/fiiBPcZ4
+         nhol/ldhYskiBz7ksJBQ9W7X36Ud195pCyKhr2fxjwYok3HHb3JoLM6hol9DVu8c0XaT
+         IrDZVH8Ne9ZwHErbNev4dNa6sCLZnMKaiZAZ17jz65bE2z46/CEosSbP3MB0bkOMXt9X
+         jdY+AP4M7yuHGaMmy6BTlRgPH5WXxySI36LtxDl12eLIp0A97DJs8zhMYnEqbY8ZpY8F
+         M2Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=0PeE1nNOhO8NzBOTfY/pdL8QsrWSh7rT+swmugwtigI=;
+        b=NlQDOZ7PeDnJmKqiSAsq68LqP18ItVeVVPzKGWmCdE40GZ5dMgeeQi+YTzpcDfiDt1
+         ln7hkvPOQ8x7Bgx3y+k7oWRKkSsT/9I3lDm8palFJCEXLX4uuiBI+1Cikj1f9wCThFb3
+         8giyRbYmsbX4RPtqsJdlWQtTUSbfWwh0WvYFXJptKOA/1NG4pnFLUyTleolH2O2Y+z5i
+         2Y9NaBC4jzCmUwdXYoXlhzdYHahhv1923k8u0UHJxp5sK/Z5XMKiJUAU51mu+21RwOEq
+         7q+A5qMbtD1KBuoa1hA/ZeLot9rviXM/ME5KW7JP9e7f3bR63R00yQWd3xXeRV5+umVB
+         Z0yg==
+X-Gm-Message-State: AOAM530ogkzIQcu+elstkIcCP3LQpL0cZBONk4O+X3M47iZfY5HkYf13
+        pKVF7cCvYxvjam4DBASI9xCAQA==
+X-Google-Smtp-Source: ABdhPJzcNlf5mAAzJmZXfW/N+4oUOHXbX6TDnTWRpql38l+PqLTIechB/LyMZ9YZXb3Wzr6JLXkDVA==
+X-Received: by 2002:aa7:df05:: with SMTP id c5mr25038edy.48.1592411265374;
+        Wed, 17 Jun 2020 09:27:45 -0700 (PDT)
+Received: from x1 (i59F66838.versanet.de. [89.246.104.56])
+        by smtp.gmail.com with ESMTPSA id h9sm312336ejc.96.2020.06.17.09.27.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2020 09:27:44 -0700 (PDT)
+Date:   Wed, 17 Jun 2020 18:27:40 +0200
+From:   Drew Fustini <drew@beagleboard.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Suman Anna <s-anna@ti.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, jkridner@beagleboard.org,
+        robertcnelson@gmail.com
+Subject: Re: [PATCH] ARM: dts: AM33xx-l4: add gpio-ranges
+Message-ID: <20200617162740.GA4181112@x1>
+References: <20200602131428.GA496390@x1>
+ <803e2d78-28ba-0816-dbb5-d441d7659a91@ti.com>
+ <20200602135155.GE37466@atomide.com>
+ <20200602163458.GA847883@x1>
 MIME-Version: 1.0
-In-Reply-To: <d0488631-e2d8-115f-9900-5838147ec674@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20200602163458.GA847883@x1>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 17/06/2020 09:04, Tomi Valkeinen wrote:
-> On 16/06/2020 19:56, Grygorii Strashko wrote:
->>
->>
->> On 16/06/2020 18:30, Tony Lindgren wrote:
->>> * Tomi Valkeinen <tomi.valkeinen@ti.com> [200616 13:02]:
->>>> On 11/06/2020 17:00, Grygorii Strashko wrote:
->>>>> I think, suspend might be fixed if all devices, which are now child of ti-sysc, will do
->>>>> pm_runtime_force_xxx() calls at noirq suspend stage by adding:
->>>>>
->>>>>       SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
->>>>>                         pm_runtime_force_resume)
->>>>>
->>>>> Am I missing smth?
->>>>
->>>> Isn't this almost exactly the same my patch does? I just used suspend_late
->>>> and resume_early. Is noirq phase better than late & early?
->>>
->>> Well up to you as far as I'm concerned. The noirq phase comes with serious
->>> limitations, for let's say i2c bus usage if needed. Probably also harder
->>> to debug for suspend and resume.
->>
->> Unfortunately, you can't use PM runtime force API at .suspend() stage as pm_runtime_get will still work and
->> there is no sync between suspend and pm_runtime.
->> The PM runtime force API can be used only during late/noirq as at this time pm_runtime is disabled.
+On Tue, Jun 02, 2020 at 06:34:58PM +0200, Drew Fustini wrote:
+> On Tue, Jun 02, 2020 at 06:51:55AM -0700, Tony Lindgren wrote:
+> > * Grygorii Strashko <grygorii.strashko@ti.com> [200602 13:44]:
+> > > 
+> > > 
+> > > On 02/06/2020 16:14, Drew Fustini wrote:
+> > > > Add gpio-ranges properties to the gpio controller nodes.
+> > > > 
+> > > > These gpio-ranges were created based on "Table 9-10. CONTROL_MODULE
+> > > > REGISTERS" in the  "AM335x Technical Reference Manual" [0] and "Table
+> > > > 4-2. Pin Attributes" in the "AM335x Sitara Processor datasheet" [1].
+> > > > A csv file with this data is available for reference [2].
+> > > 
+> > > It will be good if you can explain not only "what" is changed, but
+> > > also "why" it's needed in commit message.
+> > 
+> > Also, please check (again) that this is the same for all the am3
+> > variants. For omap3, we had different pad assignments even between
+> > SoC revisions. Different pad routings should be easy to deal with
+> > in the dts if needed though.
+> > 
+> > Regards,
+> > 
+> > Tony
 > 
-> Yes, but which one... Do you know what the diff is with late/noirq from driver's perspective? I guess noirq is atomic context, late is nto?
-
-noirq is *not* atomic, jus IRQs (non-wakeup) will be disabled (disbale_irq())
-
+> It appears that the only usage of am33xx-l4.dtsi is for am335x for which
+> specific parts mentioned in those dtsi files are 3352, 3358, and 3359.
 > 
-> Dispc's suspend uses synchronize_irq(), so that rules out noirq. Although the call is not needed if using noirq version, so that could also be managed with small change. But I wonder if there's any benefit in using noirq versus late.
+> $ git grep am33xx-l4.dtsi 
+> arch/arm/boot/dts/am33xx.dtsi:#include "am33xx-l4.dtsi"
+> $ git grep -l '#include "am33xx.dtsi"' arch/ |wc -l
+> 27
+> $ git grep -l '#include "am33xx.dtsi"' arch/ |grep -v am335x |wc -l
+> 0
+> 
+> Also, it appears that the only AM33xx parts that actually exist are [0]:
+> 
+> AM3351, AM3352, AM3354, AM3356, AM3357, AM3358, AM3359
+> 
+> I clicked on the datasheet link for each product page and while the URL
+> has the specific part number in it [1], they all end up loading the
+> exact same PDF. The header states:
+> 
+> "AM3359, AM3358, AM3357, AM3356, AM3354, AM3352, AM3351
+> SPRS717L – OCTOBER 2011 – REVISED MARCH 2020"
+> 
+> Thus, I do believe all SoC's using am33xx-l4.dtsi would have the same
+> memory map for the pin control registers and the same relationshop from
+> pin to gpio line.  For example, GPMC_A0 has mode 7 and it is labeled
+> gpio1_16.  conf_gpmc_a0 is at offset 840h which makes it pin 16.
+> 
+> Maybe am33xx-l4.dtsi should have actually been named am335x-l4.dtsi?
+> 
+> Though I suppose there is no point in changing that now.
+> 
+> thanks,
+> drew
+> 
+> [0] http://www.ti.com/processors/sitara-arm/am335x-cortex-a8/overview.html
+> [1] https://www.ti.com/lit/ds/symlink/am3359.pdf
 
+Tony - 
 
+These gpio-ranges are correct for all the platforms that included
+am33xx-l4.dtsi.
 
+I think it makes sense to add gpio-ranges properties as they describe
+the relationship between a gpio line and pin control register that
+exists in the hardware.
 
--- 
-Best regards,
-grygorii
+Are there changes you would like to see in this patch?
+
+Thanks,
+Drew
+
