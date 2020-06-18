@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9171FDC76
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Jun 2020 03:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 118D81FDD98
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Jun 2020 03:27:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729282AbgFRBTl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Jun 2020 21:19:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51540 "EHLO mail.kernel.org"
+        id S1731818AbgFRB1P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Jun 2020 21:27:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35222 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730177AbgFRBTh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:19:37 -0400
+        id S1731815AbgFRB1N (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:27:13 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 96FBB21D94;
-        Thu, 18 Jun 2020 01:19:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C8091221F4;
+        Thu, 18 Jun 2020 01:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592443177;
-        bh=G3npwubaEKnd3PGv+uBeBKcI2zNcuNgQoVB37CCG5rs=;
+        s=default; t=1592443632;
+        bh=Vgwn97CeZulKG1yZXGJOHSsrUjdcOzy3sqVgKXATIwU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LzaDCZf97BD3F1wqsaW+QVBC2Gb9cpLwPAkRTZ8fn/i+vPVc+sxDYBupDFx3e6gJF
-         oWI/vSesp4XTQtk99L9g1isS2IYwEdNnM90ryWHiQMuqwxbJDQuqICDDCo2r4yL7WY
-         GUILYE+K0MC/O34JQkHSMGwAioUn/rfWH520jAQ8=
+        b=fWIjQuxzVfL9kiiII7cMYXuR0Ps1P20P7r9L9f6wNHkGbAcOzW/DtzjbRI7CAubjM
+         16QeU88FRqfh9DSdrushrfk7yboXjGlR5Yd1fg9Nlnu9u1eByh5r8Jvl/tJ7fuit/W
+         EaJ8lA0C7SrwrQ5d/gEFinoPrZlMek44tHMpuSFs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tero Kristo <t-kristo@ti.com>,
@@ -31,12 +31,12 @@ Cc:     Tero Kristo <t-kristo@ti.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 140/266] clk: ti: composite: fix memory leak
-Date:   Wed, 17 Jun 2020 21:14:25 -0400
-Message-Id: <20200618011631.604574-140-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 056/108] clk: ti: composite: fix memory leak
+Date:   Wed, 17 Jun 2020 21:25:08 -0400
+Message-Id: <20200618012600.608744-56-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618011631.604574-1-sashal@kernel.org>
-References: <20200618011631.604574-1-sashal@kernel.org>
+In-Reply-To: <20200618012600.608744-1-sashal@kernel.org>
+References: <20200618012600.608744-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,10 +65,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/clk/ti/composite.c b/drivers/clk/ti/composite.c
-index 6a89936ba03a..eaa43575cfa5 100644
+index beea89463ca2..4ea5c08a1eb6 100644
 --- a/drivers/clk/ti/composite.c
 +++ b/drivers/clk/ti/composite.c
-@@ -196,6 +196,7 @@ static void __init _register_composite(void *user,
+@@ -240,6 +240,7 @@ static void __init _register_composite(struct clk_hw *hw,
  		if (!cclk->comp_clks[i])
  			continue;
  		list_del(&cclk->comp_clks[i]->link);
