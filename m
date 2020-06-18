@@ -2,39 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F5541FDBB1
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Jun 2020 03:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F153B1FDC61
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Jun 2020 03:19:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729184AbgFRBNn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Jun 2020 21:13:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42962 "EHLO mail.kernel.org"
+        id S1729381AbgFRBTE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Jun 2020 21:19:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729174AbgFRBNk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 17 Jun 2020 21:13:40 -0400
+        id S1730065AbgFRBTB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:19:01 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6502F221EB;
-        Thu, 18 Jun 2020 01:13:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 78DE321D80;
+        Thu, 18 Jun 2020 01:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592442820;
-        bh=PGIajTLNvn1TlSKGVmd+/Ro+viHxJzQ4+cuGN8MOxDA=;
+        s=default; t=1592443141;
+        bh=EvwO6JCvwjH0ii7c8P2k9TCjFrLWsFBoTY+wiB+vL34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fgmk6Tp5AmLgFnz+Vty6rmPTMvmLI+g0bKagi+CeTJc21J75LlUSdR6pzYG4GH/f1
-         k3LMYjVgajENzu2r97jv2qFDOpz2pxmlKd5M2ceTKHdhcbiwLFMRKGxniW3DaZCeKM
-         Cb2VYR+qVFZAuXp+Ye7CnwrTg+R05PE8YbguMVWM=
+        b=smoQjOzW2LiqJhngY6QBYojmCA0m531EgvFft0s9TCHHdvBRMiqfIVk++oz74d4I1
+         X/RGlCRy3IGTK2adGwltPd8mD8cryvZ+IE6+vxbmQGFJmki5EyXq1uv3zmcsk5Ne9c
+         6vV7+qzbSCQQwfwUwY7XgUqBNHTSPkNmPwXDrFkQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 257/388] PCI: dwc: pci-dra7xx: Use devm_platform_ioremap_resource_byname()
-Date:   Wed, 17 Jun 2020 21:05:54 -0400
-Message-Id: <20200618010805.600873-257-sashal@kernel.org>
+Cc:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Sasha Levin <sashal@kernel.org>, linux-pm@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 111/266] thermal/drivers/ti-soc-thermal: Avoid dereferencing ERR_PTR
+Date:   Wed, 17 Jun 2020 21:13:56 -0400
+Message-Id: <20200618011631.604574-111-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
-References: <20200618010805.600873-1-sashal@kernel.org>
+In-Reply-To: <20200618011631.604574-1-sashal@kernel.org>
+References: <20200618011631.604574-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,50 +45,55 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+From: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
 
-[ Upstream commit c8a119779f5609de8dcd98630f71cc7f1b2e4e8c ]
+[ Upstream commit 7440f518dad9d861d76c64956641eeddd3586f75 ]
 
-platform_get_resource() may fail and return NULL, so we had better
-check its return value to avoid a NULL pointer dereference a bit later
-in the code. Fix it to use devm_platform_ioremap_resource_byname()
-instead of calling platform_get_resource_byname() and devm_ioremap().
+On error the function ti_bandgap_get_sensor_data() returns the error
+code in ERR_PTR() but we only checked if the return value is NULL or
+not. And, so we can dereference an error code inside ERR_PTR.
+While at it, convert a check to IS_ERR_OR_NULL.
 
-Link: https://lore.kernel.org/r/20200429015027.134485-1-weiyongjun1@huawei.com
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-[lorenzo.pieralisi@arm.com: commit log]
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20200424161944.6044-1-sudipm.mukherjee@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-dra7xx.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 3b0e58f2de58..6184ebc9392d 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -840,7 +840,6 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
- 	struct phy **phy;
- 	struct device_link **link;
- 	void __iomem *base;
--	struct resource *res;
- 	struct dw_pcie *pci;
- 	struct dra7xx_pcie *dra7xx;
- 	struct device *dev = &pdev->dev;
-@@ -877,10 +876,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
- 		return irq;
+diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+index d3e959d01606..85776db4bf34 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
++++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+@@ -169,7 +169,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+ 
+ 	data = ti_bandgap_get_sensor_data(bgp, id);
+ 
+-	if (!data || IS_ERR(data))
++	if (!IS_ERR_OR_NULL(data))
+ 		data = ti_thermal_build_data(bgp, id);
+ 
+ 	if (!data)
+@@ -196,7 +196,7 @@ int ti_thermal_remove_sensor(struct ti_bandgap *bgp, int id)
+ 
+ 	data = ti_bandgap_get_sensor_data(bgp, id);
+ 
+-	if (data && data->ti_thermal) {
++	if (!IS_ERR_OR_NULL(data) && data->ti_thermal) {
+ 		if (data->our_zone)
+ 			thermal_zone_device_unregister(data->ti_thermal);
  	}
+@@ -262,7 +262,7 @@ int ti_thermal_unregister_cpu_cooling(struct ti_bandgap *bgp, int id)
  
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
--	base = devm_ioremap(dev, res->start, resource_size(res));
--	if (!base)
--		return -ENOMEM;
-+	base = devm_platform_ioremap_resource_byname(pdev, "ti_conf");
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
+ 	data = ti_bandgap_get_sensor_data(bgp, id);
  
- 	phy_count = of_property_count_strings(np, "phy-names");
- 	if (phy_count < 0) {
+-	if (data) {
++	if (!IS_ERR_OR_NULL(data)) {
+ 		cpufreq_cooling_unregister(data->cool_dev);
+ 		if (data->policy)
+ 			cpufreq_cpu_put(data->policy);
 -- 
 2.25.1
 
