@@ -2,54 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E2091FD725
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Jun 2020 23:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F5541FDBB1
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Jun 2020 03:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726950AbgFQVZT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Jun 2020 17:25:19 -0400
-Received: from muru.com ([72.249.23.125]:58186 "EHLO muru.com"
+        id S1729184AbgFRBNn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Jun 2020 21:13:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42962 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726763AbgFQVZS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 17 Jun 2020 17:25:18 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 5CCCC801E;
-        Wed, 17 Jun 2020 21:26:10 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
-        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH 4/4] wlcore: Remove pointless spinlock
-Date:   Wed, 17 Jun 2020 14:25:05 -0700
-Message-Id: <20200617212505.62519-5-tony@atomide.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200617212505.62519-1-tony@atomide.com>
-References: <20200617212505.62519-1-tony@atomide.com>
+        id S1729174AbgFRBNk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:13:40 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6502F221EB;
+        Thu, 18 Jun 2020 01:13:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592442820;
+        bh=PGIajTLNvn1TlSKGVmd+/Ro+viHxJzQ4+cuGN8MOxDA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=fgmk6Tp5AmLgFnz+Vty6rmPTMvmLI+g0bKagi+CeTJc21J75LlUSdR6pzYG4GH/f1
+         k3LMYjVgajENzu2r97jv2qFDOpz2pxmlKd5M2ceTKHdhcbiwLFMRKGxniW3DaZCeKM
+         Cb2VYR+qVFZAuXp+Ye7CnwrTg+R05PE8YbguMVWM=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.7 257/388] PCI: dwc: pci-dra7xx: Use devm_platform_ioremap_resource_byname()
+Date:   Wed, 17 Jun 2020 21:05:54 -0400
+Message-Id: <20200618010805.600873-257-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
+References: <20200618010805.600873-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-No need to take a spinlock here.
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+[ Upstream commit c8a119779f5609de8dcd98630f71cc7f1b2e4e8c ]
+
+platform_get_resource() may fail and return NULL, so we had better
+check its return value to avoid a NULL pointer dereference a bit later
+in the code. Fix it to use devm_platform_ioremap_resource_byname()
+instead of calling platform_get_resource_byname() and devm_ioremap().
+
+Link: https://lore.kernel.org/r/20200429015027.134485-1-weiyongjun1@huawei.com
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+[lorenzo.pieralisi@arm.com: commit log]
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/pci/controller/dwc/pci-dra7xx.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -700,9 +700,7 @@ static irqreturn_t wlcore_irq(int irq, void *cookie)
- 	mutex_unlock(&wl->mutex);
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index 3b0e58f2de58..6184ebc9392d 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -840,7 +840,6 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+ 	struct phy **phy;
+ 	struct device_link **link;
+ 	void __iomem *base;
+-	struct resource *res;
+ 	struct dw_pcie *pci;
+ 	struct dra7xx_pcie *dra7xx;
+ 	struct device *dev = &pdev->dev;
+@@ -877,10 +876,9 @@ static int __init dra7xx_pcie_probe(struct platform_device *pdev)
+ 		return irq;
+ 	}
  
- out_handled:
--	spin_lock_irqsave(&wl->wl_lock, flags);
- 	clear_bit(WL1271_FLAG_IRQ_RUNNING, &wl->flags);
--	spin_unlock_irqrestore(&wl->wl_lock, flags);
+-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "ti_conf");
+-	base = devm_ioremap(dev, res->start, resource_size(res));
+-	if (!base)
+-		return -ENOMEM;
++	base = devm_platform_ioremap_resource_byname(pdev, "ti_conf");
++	if (IS_ERR(base))
++		return PTR_ERR(base);
  
- 	return IRQ_HANDLED;
- }
+ 	phy_count = of_property_count_strings(np, "phy-names");
+ 	if (phy_count < 0) {
 -- 
-2.27.0
+2.25.1
+
