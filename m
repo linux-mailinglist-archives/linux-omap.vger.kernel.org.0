@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1527200498
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Jun 2020 11:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D39D92004A0
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Jun 2020 11:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731869AbgFSJG6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Jun 2020 05:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57606 "EHLO
+        id S1731027AbgFSJHE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Jun 2020 05:07:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731783AbgFSJGx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Jun 2020 05:06:53 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ABE9C061795
-        for <linux-omap@vger.kernel.org>; Fri, 19 Jun 2020 02:06:51 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id o15so9366186ejm.12
-        for <linux-omap@vger.kernel.org>; Fri, 19 Jun 2020 02:06:51 -0700 (PDT)
+        with ESMTP id S1731813AbgFSJGy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Jun 2020 05:06:54 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 767A8C0613EF
+        for <linux-omap@vger.kernel.org>; Fri, 19 Jun 2020 02:06:53 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id q19so9409216eja.7
+        for <linux-omap@vger.kernel.org>; Fri, 19 Jun 2020 02:06:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=5mEvzhD8ZDNfnKNW5KPSqhD16ebDefQ348OLXK7WNy4=;
-        b=X1XJo4xQqza5Gpmu5TS6+sFT/+90kfsxQwDVnSGPwQaL6hbFdH21IfK5LnIvWKmlTj
-         gaFsYadBj8FbAs0pNrTKRZlA2+66YP2SeubU9X26yVbBRXWPqGIEO4OICu2sRQ+9lY5e
-         EmZukeqFRzEyTIrBogjX7YxfkkdIGPAdOsFtIZG/LitU3ZAAJzNsjJN0pk79wYWA/Pc1
-         zGxL6jpw6nuzBg6Xo7s8ntORdfcO4qJ71Z2wnBSOYm4n3qiTtJbILegg5sR2/ArWTZpt
-         bBCGfw+hcBzTiosEQbvpF8Jo//TjbtthL0cHnwhvniO8Rva4MAeOcucbi5FK/wEdjmQN
-         sWKA==
+        bh=EF3uQr3RQED1YKYkNKEVE2Xoq5JyRRd7hiTR6pRsTG4=;
+        b=hbsAZmXNE2TaOrADyfhZ4LncxAlKOcWNbKLbDeF2rsahruJQCNzLprdZsGdbsUDjbq
+         qrzTvHV7mlFcoGs5wRL1DmgYNtpfTYJn4yUmv3wLcxZn6ifXoTmBYaKDalxxjprE4H75
+         OFcrYnlQQb3DyBgekcLt/QElT7wo5S4Fx2JoOrZuAHEe640Rad0m9k1WfJvRz++zkTS7
+         c4Xc2hdrnjqNTUCgQk4kqi9gGZAT/y0MHgN+y3t734xefMs29v8NjuC/JpsypOd6R2t4
+         Si6ZesNDYvk6F49qAjkeO/QV73MqqosehLo+mhVjGQDVaAiRozB3VWBJFDg8zbopksMe
+         ClXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=5mEvzhD8ZDNfnKNW5KPSqhD16ebDefQ348OLXK7WNy4=;
-        b=MNohrZxnMfLxYH1M+KBvNSwY2HoZo8bul+MDQYZGiPWSLaVPFopqMdxUnD7S3Dsh12
-         cvP1FGPzxUnMFvw+y5pZ06uwcCrmgCuyooEQKoGuijVsxRliJ+bfkLRTsclyrrVc8yNH
-         qBi6Ba8wNeAgaciyQQP/IRtlXF9NF1OpGy14ukggzay4ZWszDu7bzzrKEVrtqRf7GMwg
-         YpQGQmapctdSG9/I1WeNBpEdNugKjXFzw7oc3Yn1ytfY33xk+T2u5CrkyFRB8XNgZpEm
-         33bjxmkSuxMgbCZJDJe0nzFxYk/XhNqlZzWeNgA9kc93uk0S5lQeDAWZlru4bP361nHT
-         52gQ==
-X-Gm-Message-State: AOAM533WTIbG6TSofm3CNXR8wy1Md1kOsl4vU4WcG3GPkzt0UFzxuGl9
-        QI8MdjXal76uR2JP8hXsmOM6jDj6WAzgLqsB
-X-Google-Smtp-Source: ABdhPJzO4kbHdFvwlDaJ4wJ4m/s3iIdkdw6eY8mxMyd30QFl7MlUDUx58T6KaBdKzzwhRHx6KyznLA==
-X-Received: by 2002:a17:907:35c2:: with SMTP id ap2mr2547627ejc.530.1592557609833;
-        Fri, 19 Jun 2020 02:06:49 -0700 (PDT)
+        bh=EF3uQr3RQED1YKYkNKEVE2Xoq5JyRRd7hiTR6pRsTG4=;
+        b=eaHZmQBFwe08MshLRY8RfRbsyABNVk4w3oAfQVmPHQq/Ls+nTKHxpJWktdZh4vmJKj
+         ylDJ2dsjwd+PIjYEeWo59vY9+k1ZLSLLZcgb4n51exR2IUHfhFzWHiYAZQFRERXbuD1s
+         mGzi62ObyRCNNa2PIo5Bs9cqLUfk8yw3Ij/v339XjeV90c8H8JJqK7tKKkaotROvpQP9
+         LB4xcOBGk3IVL/cRyIBYK6xzOyMfX5qfmdUh5dxfDeZmQhAeIfzbCeGDbw5jY8935FT9
+         KRShwZtOZ0UU/s6+GRKoV+vEW0cYaX3/K/nCyhsAvuRBbzEWAIMCawxHmDSG8VaRP8UD
+         Ci4w==
+X-Gm-Message-State: AOAM531zVJu8hlC9CT//p/o0ax1J/9e5HICH39mjY/yW2D3JfPBh+W4+
+        zirARbKzLz0HfO3p/V/E0rex+g==
+X-Google-Smtp-Source: ABdhPJwcHprUUq00PuchIFIQbAmYwvW8uI0PLiIJTeBXZedE5iHqZtnO5Gza2w34X9TiFWfp14Ftgg==
+X-Received: by 2002:a17:906:2615:: with SMTP id h21mr2624881ejc.84.1592557612232;
+        Fri, 19 Jun 2020 02:06:52 -0700 (PDT)
 Received: from localhost.localdomain ([2001:16b8:5c68:7901:5c06:6064:338b:4004])
-        by smtp.gmail.com with ESMTPSA id dm1sm4653650ejc.99.2020.06.19.02.06.48
+        by smtp.gmail.com with ESMTPSA id dm1sm4653650ejc.99.2020.06.19.02.06.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2020 02:06:48 -0700 (PDT)
+        Fri, 19 Jun 2020 02:06:51 -0700 (PDT)
 From:   Drew Fustini <drew@beagleboard.org>
 To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
         linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -58,9 +58,9 @@ To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
         Jason Kridner <jkridner@beagleboard.org>,
         Robert Nelson <robertcnelson@gmail.com>
 Cc:     Drew Fustini <drew@beagleboard.org>
-Subject: [PATCH v2 1/3] ARM: dts: change AM33XX_PADCONF macro separate conf and mux
-Date:   Fri, 19 Jun 2020 11:06:06 +0200
-Message-Id: <20200619090608.94948-2-drew@beagleboard.org>
+Subject: [PATCH v2 2/3] ARM: dts: am33xx-l4: change #pinctrl-cells from 1 to 2
+Date:   Fri, 19 Jun 2020 11:06:07 +0200
+Message-Id: <20200619090608.94948-3-drew@beagleboard.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200619090608.94948-1-drew@beagleboard.org>
 References: <20200619090608.94948-1-drew@beagleboard.org>
@@ -71,36 +71,30 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-AM33XX_PADCONF macro is modified to keep pin conf and pin mux separate.
+This requires AM33XX_PADCONF macro in omap.h to be modified to keep pin
+conf and pin mux values separate.
 
-This requires #pinctrl-cells = 2 in am33xx-l4.dtsi
-
-pinctrl-single.c but also be changed to support "pinctrl-single,pins"
-with 3 arguments (offset, conf, mux)
+pinctrl-single.c must also be changed to support "pinctrl-single,pins"
+with 3 arguments (offset, conf, mux).
 
 Signed-off-by: Drew Fustini <drew@beagleboard.org>
 ---
-v2 change:
-- remove outer parentheses from AM33XX_PADCONF macro as it causes a
-  compile error in dtc.  I had added it per suggestion from checkpatch
-  about having parentheses around complex values.
-
- include/dt-bindings/pinctrl/omap.h | 2 +-
+ arch/arm/boot/dts/am33xx-l4.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/dt-bindings/pinctrl/omap.h b/include/dt-bindings/pinctrl/omap.h
-index 625718042413..2d2a8c737822 100644
---- a/include/dt-bindings/pinctrl/omap.h
-+++ b/include/dt-bindings/pinctrl/omap.h
-@@ -65,7 +65,7 @@
- #define DM814X_IOPAD(pa, val)		OMAP_IOPAD_OFFSET((pa), 0x0800) (val)
- #define DM816X_IOPAD(pa, val)		OMAP_IOPAD_OFFSET((pa), 0x0800) (val)
- #define AM33XX_IOPAD(pa, val)		OMAP_IOPAD_OFFSET((pa), 0x0800) (val)
--#define AM33XX_PADCONF(pa, dir, mux)	OMAP_IOPAD_OFFSET((pa), 0x0800) ((dir) | (mux))
-+#define AM33XX_PADCONF(pa, conf, mux)	OMAP_IOPAD_OFFSET((pa), 0x0800) (conf) (mux)
- 
- /*
-  * Macros to allow using the offset from the padconf physical address
+diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+index 340ea331e54d..f9b99cfa93b6 100644
+--- a/arch/arm/boot/dts/am33xx-l4.dtsi
++++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+@@ -290,7 +290,7 @@ scm: scm@0 {
+ 				am33xx_pinmux: pinmux@800 {
+ 					compatible = "pinctrl-single";
+ 					reg = <0x800 0x238>;
+-					#pinctrl-cells = <1>;
++					#pinctrl-cells = <2>;
+ 					pinctrl-single,register-width = <32>;
+ 					pinctrl-single,function-mask = <0x7f>;
+ 				};
 -- 
 2.25.1
 
