@@ -2,108 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A9D52004A7
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Jun 2020 11:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E54320070F
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Jun 2020 12:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731874AbgFSJHZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Jun 2020 05:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57626 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731860AbgFSJG5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Jun 2020 05:06:57 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CCDC061799
-        for <linux-omap@vger.kernel.org>; Fri, 19 Jun 2020 02:06:55 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id o26so7044684edq.0
-        for <linux-omap@vger.kernel.org>; Fri, 19 Jun 2020 02:06:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=+0u89dpmgvQy4plYwwslEmSBiru+bR25mmVExT9ZnYw=;
-        b=UB/REUZqGhSab2IhwMetGxClUkd/oH91Eb1YMtnqkqAxIYIsM5YWJ4a17MUa8/08et
-         0KoPGo9oOwe1emR2wQSQNrT5mDdb5rPGbQPYSjM7oAM0AmVr3nITPyO5xBU0y99uSaYS
-         GceF0JPmFhlA4OqkmdjhyRfE1guxkExlPCp0DWWvNnsOZnKJIUT+xfTjyP1zTVLFmjP2
-         dMylqWecptZAOuQnxr4pfUQnYY3XKand3fm9DpP1DYG41QiDNvEzeMJVk82vaFfE2K9D
-         qtb13ihfkOU5g1JKWZXaspFlc8GMvyr56s1ipcyGwqqbQPiOZwcx/nYfvYwyMjpAPLcZ
-         I8Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=+0u89dpmgvQy4plYwwslEmSBiru+bR25mmVExT9ZnYw=;
-        b=bANKpP6vZEgCwWppKQS4ASVnDXsddIcjCQi0wJ1qXVEJxO4HcLZH+lLtH3AnORm5w6
-         9n7XfMmsBokMCdaOsEdsAAlmQQ7eECEk0S/gbvdlwvLVzVVJsCjdWVqCXLG/gqvyugnf
-         NYaHuBho4YTF2qENmsT63sXphUauNrsx99eQCCKnEuuUhi3nrj7uVScBEYI65Pm0466w
-         7J3cNIOU3J7yr9bEJfODsx/VuZ4wuaXP5DV/Eq8wqcPmgt2Xj+hiS4q9Oum3xnVF4Nkv
-         8jrCJmtAFep7CXN+kifUHxJ1/Uvhw5DPNRDujVe11wQEETrWNsybA+xscofZdHGXFFbs
-         ELtA==
-X-Gm-Message-State: AOAM530NkTh6vO34NZJuI/Yctk15snj3E2QPGNU3U9czNoMe1DLr9Qb8
-        4jHuwVwuIXa5CETJIVVnjR3hhQ==
-X-Google-Smtp-Source: ABdhPJy/3Bg56TEDS6v87nEXxy3icDzdDUs8cujpuQA8aXHR5JzzlkpBgh63TY4ie6qdHZydvU1qVg==
-X-Received: by 2002:aa7:d7ca:: with SMTP id e10mr2271039eds.45.1592557613971;
-        Fri, 19 Jun 2020 02:06:53 -0700 (PDT)
-Received: from localhost.localdomain ([2001:16b8:5c68:7901:5c06:6064:338b:4004])
-        by smtp.gmail.com with ESMTPSA id dm1sm4653650ejc.99.2020.06.19.02.06.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2020 02:06:53 -0700 (PDT)
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        devicetree@vger.kernel.org,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>
-Cc:     Drew Fustini <drew@beagleboard.org>
-Subject: [PATCH v2 3/3] pinctrl: single: parse #pinctrl-cells = 2
-Date:   Fri, 19 Jun 2020 11:06:08 +0200
-Message-Id: <20200619090608.94948-4-drew@beagleboard.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200619090608.94948-1-drew@beagleboard.org>
-References: <20200619090608.94948-1-drew@beagleboard.org>
+        id S1732526AbgFSKoL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Jun 2020 06:44:11 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6364 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1732715AbgFSKoE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 19 Jun 2020 06:44:04 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 57BF814173BCF5B8416D;
+        Fri, 19 Jun 2020 18:44:01 +0800 (CST)
+Received: from huawei.com (10.67.174.156) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.487.0; Fri, 19 Jun 2020
+ 18:43:52 +0800
+From:   Chen Tao <chentao107@huawei.com>
+To:     <paul@pwsan.com>, <tony@atomide.com>
+CC:     <linux@armlinux.org.uk>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <chentao107@huawei.com>
+Subject: [PATCH] ARM: OMAP2+: Fix possible memory leak in omap_hwmod_allocate_module
+Date:   Fri, 19 Jun 2020 18:42:40 +0800
+Message-ID: <20200619104240.55978-1-chentao107@huawei.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.67.174.156]
+X-CFilter-Loop: Reflected
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If "pinctrl-single,pins" has 3 arguments (offset, conf, mux) then
-pcs_parse_one_pinctrl_entry() does an OR operation on to get the
-value to store in the register.
+Fix memory leak in omap_hwmod_allocate_module not freeing in
+handling error path.
 
-Signed-off-by: Drew Fustini <drew@beagleboard.org>
+Fixes: 8c87970543b17("ARM: OMAP2+: Add functions to allocate module data from device tree")
+Signed-off-by: Chen Tao <chentao107@huawei.com>
 ---
- drivers/pinctrl/pinctrl-single.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap2/omap_hwmod.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 02f677eb1d53..e6d1cf25782c 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -1017,10 +1017,17 @@ static int pcs_parse_one_pinctrl_entry(struct pcs_device *pcs,
- 			break;
- 		}
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+index 82706af307de..d2667f28e68e 100644
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -3435,7 +3435,7 @@ static int omap_hwmod_allocate_module(struct device *dev, struct omap_hwmod *oh,
+ 		regs = ioremap(data->module_pa,
+ 			       data->module_size);
+ 		if (!regs)
+-			return -ENOMEM;
++			goto out_free_sysc;
+ 	}
  
--		/* Index plus one value cell */
- 		offset = pinctrl_spec.args[0];
- 		vals[found].reg = pcs->base + offset;
--		vals[found].val = pinctrl_spec.args[1];
+ 	/*
+@@ -3445,13 +3445,13 @@ static int omap_hwmod_allocate_module(struct device *dev, struct omap_hwmod *oh,
+ 	if (oh->class->name && strcmp(oh->class->name, data->name)) {
+ 		class = kmemdup(oh->class, sizeof(*oh->class), GFP_KERNEL);
+ 		if (!class)
+-			return -ENOMEM;
++			goto out_unmap;
+ 	}
+ 
+ 	if (list_empty(&oh->slave_ports)) {
+ 		oi = kcalloc(1, sizeof(*oi), GFP_KERNEL);
+ 		if (!oi)
+-			return -ENOMEM;
++			goto out_free_class;
+ 
+ 		/*
+ 		 * Note that we assume interconnect interface clocks will be
+@@ -3478,6 +3478,14 @@ static int omap_hwmod_allocate_module(struct device *dev, struct omap_hwmod *oh,
+ 	spin_unlock_irqrestore(&oh->_lock, flags);
+ 
+ 	return 0;
 +
-+		switch (pinctrl_spec.args_count) {
-+		case 2:
-+			vals[found].val = pinctrl_spec.args[1];
-+			break;
-+		case 3:
-+			vals[found].val = (pinctrl_spec.args[1] | pinctrl_spec.args[2]);
-+			break;
-+		}
++out_free_class:
++	kfree(class);
++out_unmap:
++	iounmap();
++out_free_sysc:
++	kfree(sysc);
++	return -ENOMEM;
+ }
  
- 		dev_dbg(pcs->dev, "%pOFn index: 0x%x value: 0x%x\n",
- 			pinctrl_spec.np, offset, pinctrl_spec.args[1]);
+ static const struct omap_hwmod_reset omap24xx_reset_quirks[] = {
 -- 
-2.25.1
+2.22.0
 
