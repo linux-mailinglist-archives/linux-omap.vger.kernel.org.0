@@ -2,136 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C2CC2029C8
-	for <lists+linux-omap@lfdr.de>; Sun, 21 Jun 2020 11:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7EF3202B62
+	for <lists+linux-omap@lfdr.de>; Sun, 21 Jun 2020 17:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729509AbgFUJYD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 21 Jun 2020 05:24:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43130 "EHLO
+        id S1730368AbgFUPfS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 21 Jun 2020 11:35:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727917AbgFUJYC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 21 Jun 2020 05:24:02 -0400
-Received: from mail.lysator.liu.se (mail.lysator.liu.se [IPv6:2001:6b0:17:f0a0::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528C4C061794
-        for <linux-omap@vger.kernel.org>; Sun, 21 Jun 2020 02:24:01 -0700 (PDT)
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-        by mail.lysator.liu.se (Postfix) with ESMTP id 9595740004;
-        Sun, 21 Jun 2020 11:23:53 +0200 (CEST)
-Received: from [192.168.82.193] (c-7a4fe655.06-290-73746f71.bbcust.telenor.se [85.230.79.122])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.lysator.liu.se (Postfix) with ESMTPSA id 4D69C40003;
-        Sun, 21 Jun 2020 11:23:52 +0200 (CEST)
-Subject: Re: WL1271 on CM-T3730
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>
-References: <807d19b0-842f-87b9-c9ba-dcbfd4e7b108@lysator.liu.se>
- <AD238A83-22FC-458D-9180-F715AD6A5237@goldelico.com>
-From:   Oskar Enoksson <enok@lysator.liu.se>
-Message-ID: <d32e2c17-849a-4aa8-7f84-a84d9699789a@lysator.liu.se>
-Date:   Sun, 21 Jun 2020 11:23:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
-MIME-Version: 1.0
-In-Reply-To: <AD238A83-22FC-458D-9180-F715AD6A5237@goldelico.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+        with ESMTP id S1730349AbgFUPfR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 21 Jun 2020 11:35:17 -0400
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61A0C061794;
+        Sun, 21 Jun 2020 08:35:16 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id n2so6364951pld.13;
+        Sun, 21 Jun 2020 08:35:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=y6egePbuV5QUD1Pss3WsUczRgm6WZZV/FMaa+s3w21Q=;
+        b=vGypfE9yre3g5v6JR0SjT1UIA+95xNwC8yWk2m+s7DiVhc09oUZtZO1v8brPNsj2dh
+         be7JVZbZ+9jqcRfrTot7/Gi85kyn6mjmENav+HcsTfYlBD/wCTk6qBpMVFdL1mniepG/
+         gnfFmXjNcr3EY6/v/0Ne5b+ylLoXJWNQvgzP/qcGNg6WarvvA9SpeFXB5fWEj8rhO4Pz
+         yCBtyNlA5vDW2tZQvycjnhYmhAMfBQVtb5J3ioUtfhbxUTefzFqggAEc4bh/up+3++R6
+         /ycvabV5Rrq1MD2yarA9vwXjtMZTyNrs4xkj2obhZsIbrwveYLDgKWWgMYJucN5suLpM
+         MeOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=y6egePbuV5QUD1Pss3WsUczRgm6WZZV/FMaa+s3w21Q=;
+        b=ILETFGuBZ9pHCj6MsDXkHWtYtmT4lbnkw1BJLszEcl1fAIk8V8bB/UgT4s4bOytAyA
+         IXmJ/65ehAbrYGXyckwIEWQli0gCBzAiw5vnUN4+Jia4adWKBfY9wlyys65+RjpkaYrK
+         ptVzMDS1618YbFQ28eYxuUpm97TUaEpEjkKKxcTMcOKBDW215GTLxvV+KO4wKseiK+Ty
+         ebIenXgeIYZ9oBZrrnppjy6wqEFI9ReMaUJrTtsrQMdh3qwZUfCS3hckBUEuqF5GCCQo
+         fJm39dgN8PoA5Mdq1Qh3c/dlgpLC0GCtilOrYfsnsmAJo8BN0wuxS16ZGlj95FHAQTva
+         O4WQ==
+X-Gm-Message-State: AOAM53277g/Zx3gzbPRZbcUFRpAUpDT7CWDIkY4qKoHCrmDpgWLrmKUZ
+        QHkNR6g9QTlM232Ae4xGjU6AvaR2TSnL4g==
+X-Google-Smtp-Source: ABdhPJz2VauVz2AkzBzAirGeS4Osm8F8gssFc5fRLWQPfBn8fc/pWUzdxvC69QmwxppHzD7ne6iIEw==
+X-Received: by 2002:a17:902:bd0b:: with SMTP id p11mr16020194pls.91.1592753716171;
+        Sun, 21 Jun 2020 08:35:16 -0700 (PDT)
+Received: from localhost.localdomain ([106.121.157.185])
+        by smtp.gmail.com with ESMTPSA id e124sm11127129pfh.140.2020.06.21.08.35.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 21 Jun 2020 08:35:15 -0700 (PDT)
+From:   dillon.minfei@gmail.com
+To:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dillon min <dillon.minfei@gmail.com>
+Subject: [PATCH] Configure osc clock for d_can on am437x
+Date:   Sun, 21 Jun 2020 23:34:00 +0800
+Message-Id: <1592753641-5205-1-git-send-email-dillon.minfei@gmail.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Yes, it turned out that when I use the omap3-sbc-3730 devicetree then 
-wifi starts up ok.
+From: dillon min <dillon.minfei@gmail.com>
 
-I used omap3-cm-t3730 devicetree since I just use the CM T3730 on a 
-custom carrier board which does not have any of the stuff on the T35 board
+Got following d_can probe errors with kernel 5.8-rc1 on am437x
 
-(Actually I wrote a custom device tree inheriting from 
-omap3-cm-t3730.dts adding a few things needed for my carrier board).
+[   10.730822] CAN device driver interface
+Starting Wait for Network to be Configured...
+[  OK  ] Reached target Network.
+[   10.787363] c_can_platform 481cc000.can: probe failed
+[   10.792484] c_can_platform: probe of 481cc000.can failed with
+error -2
+[   10.799457] c_can_platform 481d0000.can: probe failed
+[   10.804617] c_can_platform: probe of 481d0000.can failed with
+error -2
 
-After some experiments I deduce that the only thing missing in 
-omap3-cm-t3730.dts is the compatible line needs to start with 
-"compulab,omap3-sbc-t3730".
+actually, Tony has fixed this issue on am335x, the patch [3]
+commit messages:
+"
+The reason why the issue happens is because we now attempt to read the
+interconnect target module revision register by first manually enabling
+all the device clocks in sysc_probe(). And looks like d_can also needs
+the osc clock in addition to the module clock, and it may or may not be
+enabled depending on the bootloader version and if other devices have
+already requested osc clock.
 
-There is a function "omap3_sbc_t3730_legacy_init" in 
-arch/arm/mach-omap2/pdata-quirks.c which seems to be triggered by the 
-string "compulab,omap3-sbc-t3730". My guess is that this is needed for 
-wifi to be initialized.
+Let's fix the issue by adding osc clock as an optional clock for the
+module for am335x. Note that am437x does not seem to list the osc clock
+at all, so presumably it is not needed for am437x.
+"
 
-Maybe this should better be triggered by "compulab,omap3-cm-t3730" 
-instead, since the wifi functionality has nothing to do with the t35 board?
+from TRM of am335x/am437x [1][2], they have the same clock structure,
+so, we can just reuse [3] for am437x platform.
 
-On 6/19/20 9:55 AM, H. Nikolaus Schaller wrote:
-> Hi,
-> 
->> Am 15.06.2020 um 23:04 schrieb Oskar Enoksson <enok@lysator.liu.se>:
->>
->> Hello all, sorry to bother, I'm urgently in need of some help/hints.
->>
->> I'm trying to make wifi work on an Compulab CM-T3730, an old OMAP3 board with WL1271 Wifi chip connected to an mmc via SDIO.
-> 
-> I managed to boot the PandaBoard ES with v5.8-rc1 and there, the wl1271 works.
-> 
-> So it may be an omap3 or board specific issue.
-> 
-> BR,
-> Nikolaus
-> 
->>
->> Everything works with the kernel supported by Texas Instruments 3.0.87 but I need a newer kernel. There is a device tree file omap3-cm-t3730.dts in the Linux mainline sourcees, but it doesn't work for me, the Wifi chip is not detected on the SDIO bus. I'm using mainline linux 5.6.18, but I also tried 4.14, 4.9 and 3.16 with similar results.
->>
->> What could be the problem?
->>
->> When I boot I can see (by enabling various verbose printouts) that the appropriate mmc is bound to the right driver omap_hsmmc, but no device is detected on the SDIO bus. Some power pin messages look worrying but maybe it's ok?:
->>
->> [    4.584228] platform 480b4000.mmc: Retrying from deferred list
->> [    4.584808] bus: 'platform': driver_probe_device: matched device 480b4000.mmc with driver omap_hsmmc
->> [    4.584838] bus: 'platform': really_probe: probing driver omap_hsmmc with device 480b4000.mmc
->> [    4.585083] omap_hsmmc 480b4000.mmc: no init pinctrl state
->> [    4.585144] omap_hsmmc 480b4000.mmc: no sleep pinctrl state
->> [    4.585174] omap_hsmmc 480b4000.mmc: no idle pinctrl state
->> [    4.585571] omap_hsmmc 480b4000.mmc: GPIO lookup for consumer wp
->> [    4.585571] omap_hsmmc 480b4000.mmc: using device tree for GPIO lookup
->> [    4.585662] of_get_named_gpiod_flags: can't parse 'wp-gpios' property of node '/ocp@68000000/mmc@480b4000[0]'
->> [    4.585723] of_get_named_gpiod_flags: can't parse 'wp-gpio' property of node '/ocp@68000000/mmc@480b4000[0]'
->> [    4.585754] omap_hsmmc 480b4000.mmc: using lookup tables for GPIO lookup
->> [    4.585784] omap_hsmmc 480b4000.mmc: No GPIO consumer wp found
->> [    4.586669] omap_hsmmc 480b4000.mmc: Looking up vmmc-supply from device tree
->> [    4.587097] devices_kset: Moving 480b4000.mmc to end of list
->> [    4.587127] omap_hsmmc 480b4000.mmc: Linked as a consumer to regulator.9
->> [    4.587158] omap_hsmmc 480b4000.mmc: Looking up vqmmc-supply from device tree
->> [    4.587615] devices_kset: Moving 480b4000.mmc to end of list
->> [    4.587646] omap_hsmmc 480b4000.mmc: Linked as a consumer to regulator.6
->> [    4.587677] omap_hsmmc 480b4000.mmc: Looking up pbias-supply from device tree
->> [    4.587738] omap_hsmmc 480b4000.mmc: Looking up pbias-supply property in node /ocp@68000000/mmc@480b4000 failed
->> [    4.587860] device: 'mmc1': device_add
->> [    4.613861] driver: 'omap_hsmmc': driver_bound: bound to device '480b4000.mmc'
->> [    4.614105] bus: 'platform': really_probe: bound device 480b4000.mmc to driver omap_hsmmc
->>
->>
->>
->> When I manually modprobe wlcore, then wlcore_sdio, then wl12xx, dmesg shows:
->>
->> [   49.467132] device class 'rfkill': registering
->> [   49.467376] device: 'rfkill': device_add
->> [   50.070983] device class 'ieee80211': registering
->> [   50.072143] Registering platform device 'regulatory.0'. Parent at platform
->> [   50.072174] device: 'regulatory.0': device_add
->> [   50.072235] bus: 'platform': add device regulatory.0
->> [   50.072906] cfg80211: Loading compiled-in X.509 certificates for regulatory database
->> [   50.173675] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
->> [   54.470794] bus: 'sdio': add driver wl1271_sdio
->> [   59.017272] bus: 'platform': add driver wl12xx_driver
->>
->>
->>
->> Still, no wlan0 interface visible with "ifconfig -a"
->>
->> Is something wrong/missing in the devicetree? cap-sdio-irq? mmc-pwrseq? Or is the pin configuration in the device tree wrong? Did anyone ever try the device tree on a board with wl1271 wifi (it is optional)? I don't even have a schematic so I can't double check the pins.
->>
->> Hints much appreciated!! Device tree file is attached (from mainline kernel 5.6.18)
->> <omap3-cm-t3730.dts>
-> 
+Tested on custom am4372 board.
+
+[1]: https://www.ti.com/lit/pdf/spruh73 Chapter-23, Figure 23-1. DCAN
+Integration
+[2]: https://www.ti.com/lit/pdf/spruhl7 Chapter-25, Figure 25-1. DCAN
+Integration
+[3]: commit 516f1117d0fb ("ARM: dts: Configure osc clock for d_can on am335x")
+
+dillon min (1):
+  ARM: dts: Configure osc clock for d_can on am437x
+
+ arch/arm/boot/dts/am437x-l4.dtsi | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+-- 
+1.9.1
+
