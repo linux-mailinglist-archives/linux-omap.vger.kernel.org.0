@@ -2,64 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69D22203AD4
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jun 2020 17:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B58203C25
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jun 2020 18:06:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729204AbgFVP22 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Jun 2020 11:28:28 -0400
-Received: from muru.com ([72.249.23.125]:58578 "EHLO muru.com"
+        id S1729280AbgFVQGb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Jun 2020 12:06:31 -0400
+Received: from muru.com ([72.249.23.125]:58622 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728293AbgFVP22 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 22 Jun 2020 11:28:28 -0400
+        id S1729260AbgFVQGb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 22 Jun 2020 12:06:31 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 40EDC8140;
-        Mon, 22 Jun 2020 15:29:20 +0000 (UTC)
-Date:   Mon, 22 Jun 2020 08:28:25 -0700
+        by muru.com (Postfix) with ESMTPS id B52CA8140;
+        Mon, 22 Jun 2020 16:07:23 +0000 (UTC)
+Date:   Mon, 22 Jun 2020 09:06:28 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Oskar Enoksson <enok@lysator.liu.se>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        linux-omap@vger.kernel.org
-Subject: Re: WL1271 on CM-T3730
-Message-ID: <20200622152825.GK37466@atomide.com>
-References: <807d19b0-842f-87b9-c9ba-dcbfd4e7b108@lysator.liu.se>
- <AD238A83-22FC-458D-9180-F715AD6A5237@goldelico.com>
- <d32e2c17-849a-4aa8-7f84-a84d9699789a@lysator.liu.se>
- <5166bacd-428d-168c-edf4-a322274deac6@lysator.liu.se>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 1/4] wlcore: Use spin_trylock in wlcore_irq_locked() for
+ running the queue
+Message-ID: <20200622160628.GL37466@atomide.com>
+References: <20200617212505.62519-1-tony@atomide.com>
+ <20200617212505.62519-2-tony@atomide.com>
+ <875zbjgpbj.fsf@codeaurora.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5166bacd-428d-168c-edf4-a322274deac6@lysator.liu.se>
+In-Reply-To: <875zbjgpbj.fsf@codeaurora.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Oskar Enoksson <enok@lysator.liu.se> [200621 22:01]:
-> Correction: occasionally wl1271_sdio initialization still fails with error
-> messages such as
+* Kalle Valo <kvalo@codeaurora.org> [200622 14:15]:
+> Tony Lindgren <tony@atomide.com> writes:
 > 
-> [   46.961364] wl1271_sdio: probe of mmc1:0001:1 failed with error -16
-> [   46.967834] wl1271_sdio: probe of mmc1:0001:2 failed with error -16
+> > We need the spinlock to check if we need to run the queue. Let's use
+> > spin_trylock instead and always run the queue unless we know there's
+> > nothing to do.
 > 
-> other times
-> 
-> [   27.302215][  T903] wl1271_sdio mmc1:0001:2: wl12xx_sdio_power_on: failed
-> to get_sync(-22)
-> 
-> or
-> root@pte2000:~# ifup wlan0
-> [   53.799468][ T2420] wl1271_sdio mmc1:0001:2: wl12xx_sdio_power_on: failed
-> to get_sync(-110)
-> [   53.840118][ T2420] wl1271_sdio mmc1:0001:2: wl12xx_sdio_power_on: failed
-> to get_sync(-22)
-> [   53.879882][ T2420] wl1271_sdio mmc1:0001:2: wl12xx_sdio_power_on: failed
-> to get_sync(-22)
-> [   53.888610][ T2420] wlcore: ERROR firmware boot failed despite 3 retries
-> RTNETLINK answers: Invalid argument
-> ifup: failed to bring up wlan0
+> Why? What's the problem you are solving here?
 
-Maybe try changing the wl12xx_vmmc2 startup-delay-us to something
-higher like 70000 we usually have?
+To simplify the flags and locking use between the threaded irq
+and tx work.
+
+While chasing an occasional hang with an idle wlan doing just a
+periodic network scans, I noticed we can start simplifying the
+locking between the threaded irq and tx work for the driver.
+
+No luck so far figuring out what the occasional idle wlan hang is,
+but I suspect we end up somewhere in a deadlock between tx work
+and the threaded irq.
+
+We currently have a collection of flags and locking between the
+threaded irq and tx work:
+
+- wl->flags bitops
+- wl->mutex
+- wl->wl_lock spinlock
+
+The bitops flags do not need a spinlock around them, and
+wlcore_irq() already holds the mutex calling wlcore_irq_locked().
+And we only need the spinlock to see if we need to run the queue
+or not.
+
+So I think eventually we can remove most of the spinlock use in
+favor of the mutex. I guess I could leave out the trylock changes
+here if this is too many changes at once.
+
+Or do you see some problem in general with this approach?
 
 Regards,
 
