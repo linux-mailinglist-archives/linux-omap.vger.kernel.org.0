@@ -2,75 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B58203C25
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Jun 2020 18:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12489203C48
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Jun 2020 18:11:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729280AbgFVQGb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Jun 2020 12:06:31 -0400
-Received: from muru.com ([72.249.23.125]:58622 "EHLO muru.com"
+        id S1729298AbgFVQLh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Jun 2020 12:11:37 -0400
+Received: from muru.com ([72.249.23.125]:58636 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729260AbgFVQGb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 22 Jun 2020 12:06:31 -0400
+        id S1729250AbgFVQLh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 22 Jun 2020 12:11:37 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id B52CA8140;
-        Mon, 22 Jun 2020 16:07:23 +0000 (UTC)
-Date:   Mon, 22 Jun 2020 09:06:28 -0700
+        by muru.com (Postfix) with ESMTPS id 15F748140;
+        Mon, 22 Jun 2020 16:12:28 +0000 (UTC)
+Date:   Mon, 22 Jun 2020 09:11:32 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
-        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 1/4] wlcore: Use spin_trylock in wlcore_irq_locked() for
- running the queue
-Message-ID: <20200622160628.GL37466@atomide.com>
-References: <20200617212505.62519-1-tony@atomide.com>
- <20200617212505.62519-2-tony@atomide.com>
- <875zbjgpbj.fsf@codeaurora.org>
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        devicetree@vger.kernel.org,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Subject: Re: [PATCH 0/3] pinctrl: single: support #pinctrl-cells = 2
+Message-ID: <20200622161132.GM37466@atomide.com>
+References: <20200618125057.41252-1-drew@beagleboard.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <875zbjgpbj.fsf@codeaurora.org>
+In-Reply-To: <20200618125057.41252-1-drew@beagleboard.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Kalle Valo <kvalo@codeaurora.org> [200622 14:15]:
-> Tony Lindgren <tony@atomide.com> writes:
+* Drew Fustini <drew@beagleboard.org> [200618 05:52]:
+> Currently, pinctrl-single only allows #pinctrl-cells = 1.
 > 
-> > We need the spinlock to check if we need to run the queue. Let's use
-> > spin_trylock instead and always run the queue unless we know there's
-> > nothing to do.
+> This series will allow pinctrl-single to also support #pinctrl-cells = 2
 > 
-> Why? What's the problem you are solving here?
+> If "pinctrl-single,pins" has 3 arguments (offset, conf, mux) then
+> pcs_parse_one_pinctrl_entry() does an OR operation on to get the
+> value to store in the register.
+>     
+> To take advantage of #pinctrl-cells = 2, the AM33XX_PADCONF macro in
+> omap.h is modified to keep pin conf and pin mux values separate.
 
-To simplify the flags and locking use between the threaded irq
-and tx work.
-
-While chasing an occasional hang with an idle wlan doing just a
-periodic network scans, I noticed we can start simplifying the
-locking between the threaded irq and tx work for the driver.
-
-No luck so far figuring out what the occasional idle wlan hang is,
-but I suspect we end up somewhere in a deadlock between tx work
-and the threaded irq.
-
-We currently have a collection of flags and locking between the
-threaded irq and tx work:
-
-- wl->flags bitops
-- wl->mutex
-- wl->wl_lock spinlock
-
-The bitops flags do not need a spinlock around them, and
-wlcore_irq() already holds the mutex calling wlcore_irq_locked().
-And we only need the spinlock to see if we need to run the queue
-or not.
-
-So I think eventually we can remove most of the spinlock use in
-favor of the mutex. I guess I could leave out the trylock changes
-here if this is too many changes at once.
-
-Or do you see some problem in general with this approach?
+Hmm to me it looks like the order of the patches is the
+wrong way around here. Don't we need to first change
+pinctrl-single.c, and then only after that update the
+dts? And make sure the pinctrl-single.c change does not
+break anything without changing the dts :)
 
 Regards,
 
