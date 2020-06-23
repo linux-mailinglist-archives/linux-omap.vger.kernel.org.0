@@ -2,107 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4350D204CFC
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jun 2020 10:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9102205064
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jun 2020 13:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731849AbgFWIwW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Jun 2020 04:52:22 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:41228 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731691AbgFWIwV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Jun 2020 04:52:21 -0400
-Received: from linux.localdomain (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxv2uFwvFecLBIAA--.12S6;
-        Tue, 23 Jun 2020 16:51:26 +0800 (CST)
-From:   Tiezhu Yang <yangtiezhu@loongson.cn>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Rob Herring <robh+dt@kernel.org>
-Cc:     Guo Ren <guoren@kernel.org>, Baruch Siach <baruch@tkos.co.il>,
-        Huacai Chen <chenhc@lemote.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mips@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
-        Xuefeng Li <lixuefeng@loongson.cn>
-Subject: [PATCH 4/7] irqchip/loongson-pch-pic: Check return value of irq_domain_translate_twocell()
-Date:   Tue, 23 Jun 2020 16:51:13 +0800
-Message-Id: <1592902276-3969-5-git-send-email-yangtiezhu@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <1592902276-3969-1-git-send-email-yangtiezhu@loongson.cn>
-References: <1592902276-3969-1-git-send-email-yangtiezhu@loongson.cn>
-X-CM-TRANSID: AQAAf9Dxv2uFwvFecLBIAA--.12S6
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF17JrW8tFWkAr1fXrW5Jrb_yoW8Xw1DpF
-        4UAwnFqr4DJFyUZw1xCws5Xry3Jw1ftFW7tayfKas3WrZ5J34qkF1UuFn5ur1rAF45JFy7
-        Zrs8KFWUuF13AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUPa14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
-        kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
-        z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
-        4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE
-        3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2I
-        x0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8
-        JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2
-        ka0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-        67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MI
-        IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-        14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
-        4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfU
-        eXd1UUUUU
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+        id S1732438AbgFWLQ2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Jun 2020 07:16:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52716 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732459AbgFWLQ0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jun 2020 07:16:26 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2023C061795
+        for <linux-omap@vger.kernel.org>; Tue, 23 Jun 2020 04:16:25 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id h5so20114864wrc.7
+        for <linux-omap@vger.kernel.org>; Tue, 23 Jun 2020 04:16:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=El7mhPczl6zDV1AJSVGvVhdB3yWX0GV4TdgpKOETgDUDSEQEbTrvvk6vHjFGJyRivD
+         9uFlmmefZSUDsHrNg9jWWsWS8Qc1q9VuBM6EDipBpNt3Zee6QVer295zzr6Lm5mL26+O
+         gzYTGC3UtzbasZTpwVi2tghIkGD8qLJPM/OKzQvopYyr5fNKC7+IXHSy9QywjtAbAE6O
+         eNgmGwVXCwVZD48z5+ZziPkV4LZhbeC3MwWbVhcBwIm/EmmnwA4w2lakJ/Hr7ZCJ4SXH
+         Tv+aqcYTBkQ7XJlgGddwhQpgbhZ5rOwvIQh81TrV9+W5/e58Cm5K/9C5MPtLFZNIrm1t
+         kjKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D7l/Y2nU4ivOXB3kYNarWKNDy1SUWuawPt7q4q/Bhv4=;
+        b=QNfSwk0Dv3rTdSeE1tc12QYGrr5DPy9cRqhMR2mSv24L7Iv4c/VB6cIZU8oSRngvir
+         BmECYa/OJdLWxNKs0MQ8paQnmxGfIOLV9L9kPtIWYxssA681/MGZAdtS2xQGwW5Ut7XE
+         /DG3Tc3Vwry63azNvN8cCvCjkI53T7rEaEcysnJ0PuOBzO0AWV4osmkITYJPLt77ga0t
+         uWGhGSuHV/KLRGZSk20lUKAnb0YZJ1XbVjZ+ZrLMG7XLiDmrSsePQFO1UHsL0dJgRBiy
+         rhVOFdYaBlByrVRo0Q1KzOjzqkEM7YCzcJOdd8D3tydw/sohpjQR8Q6xc0jJv0hE7am6
+         SkzA==
+X-Gm-Message-State: AOAM530NeSOzRcy9irZF7r2K/bJlscYbU7UU4XQRGvWIs23ugxHizSqW
+        5Ajc/qpb6TJNYbsnR7F3747KScYOw1bUopZqaA0=
+X-Google-Smtp-Source: ABdhPJzvy9uqLBBT5FD0RyBMgHNNB8JPeL4KZV4DQXiaGd69/J17MXOrDmXuaGztTz9Gbidgke1EGYWXnuCnQthXZdk=
+X-Received: by 2002:a5d:6088:: with SMTP id w8mr9307227wrt.49.1592910984526;
+ Tue, 23 Jun 2020 04:16:24 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a1c:f002:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 04:16:23
+ -0700 (PDT)
+Reply-To: sarahkoffi389@yahoo.co.jp
+From:   Sarah Koffi <paulwiliam782@gmail.com>
+Date:   Tue, 23 Jun 2020 12:16:23 +0100
+Message-ID: <CAHqcnY1jJ+-VY-xgeJUGH3xq3KTX6UpsyNM29CbKAdthK14QOA@mail.gmail.com>
+Subject: Greetings From Mrs. Sarah Koffi
+To:     sarahkoffi389@yahoo.co.jp
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Check the return value of irq_domain_translate_twocell() due to
-it may returns -EINVAL if failed and use variable fwspec for it,
-and then use a new variable parent_fwspec which is proper for
-irq_domain_alloc_irqs_parent().
+Greetings From Mrs. Sarah Koffi
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
----
- drivers/irqchip/irq-loongson-pch-pic.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+I'm contacting you based on your good profiles I read and for a good
+reasons, I am in search of a property to buy in your country as I
+intended to come over to your
+country for investment, Though I have not meet with you before but I
+believe that one has to risk confiding in someone to succeed sometimes
+in life.
 
-diff --git a/drivers/irqchip/irq-loongson-pch-pic.c b/drivers/irqchip/irq-loongson-pch-pic.c
-index 2a05b93..016f32c 100644
---- a/drivers/irqchip/irq-loongson-pch-pic.c
-+++ b/drivers/irqchip/irq-loongson-pch-pic.c
-@@ -135,16 +135,19 @@ static int pch_pic_alloc(struct irq_domain *domain, unsigned int virq,
- 	int err;
- 	unsigned int type;
- 	unsigned long hwirq;
--	struct irq_fwspec fwspec;
-+	struct irq_fwspec *fwspec = arg;
-+	struct irq_fwspec parent_fwspec;
- 	struct pch_pic *priv = domain->host_data;
- 
--	irq_domain_translate_twocell(domain, arg, &hwirq, &type);
-+	err = irq_domain_translate_twocell(domain, fwspec, &hwirq, &type);
-+	if (err)
-+		return err;
- 
--	fwspec.fwnode = domain->parent->fwnode;
--	fwspec.param_count = 1;
--	fwspec.param[0] = hwirq + priv->ht_vec_base;
-+	parent_fwspec.fwnode = domain->parent->fwnode;
-+	parent_fwspec.param_count = 1;
-+	parent_fwspec.param[0] = hwirq + priv->ht_vec_base;
- 
--	err = irq_domain_alloc_irqs_parent(domain, virq, 1, &fwspec);
-+	err = irq_domain_alloc_irqs_parent(domain, virq, 1, &parent_fwspec);
- 	if (err)
- 		return err;
- 
--- 
-2.1.0
+My name is Mrs. Sarah Koffi. My late husband deals on Crude Oil with
+Federal Government of Sudan and he has a personal Oil firm in Bentiu
+Oil zone town and Upper
+Nile city. What I have experience physically, I don't wish to
+experience it again in my life due to the recent civil Ethnic war
+cause by our President Mr. Salva Kiir
+and the rebel leader Mr Riek Machar, I have been Under United Nation
+refuge camp in chad to save my life and that of my little daughter.
 
+Though, I do not know how you will feel to my proposal, but the truth
+is that I sneaked into Chad our neighboring country where I am living
+now as a refugee.
+I escaped with my little daughter when the rebels bust into our house
+and killed my husband as one of the big oil dealers in the country,
+ever since then, I have being on the run.
+
+I left my country and move to Chad our neighboring country with the
+little ceasefire we had, due to the face to face peace meeting accord
+coordinated by the US Secretary of State, Mr John Kerry and United
+Nations in Ethiopia (Addis Ababa) between our President Mr Salva Kiir
+and the rebel leader Mr Riek Machar to stop this war.
+
+I want to solicit for your partnership with trust to invest the $8
+million dollars deposited by my late husband in Bank because my life
+is no longer safe in our country, since the rebels are looking for the
+families of all the oil business men in the country to kill, saying
+that they are they one that is milking the country dry.
+
+I will offer you 20% of the total fund for your help while I will
+partner with you for the investment in your country.
+If I get your reply.
+
+I will wait to hear from you so as to give you details.With love from
+
+ i need you to contact me here sarahkoffi389@yahoo.co.jp
+
+Mrs. Sarah Koffi
