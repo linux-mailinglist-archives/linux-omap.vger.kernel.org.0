@@ -2,65 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E80920522D
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jun 2020 14:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBCC4205B1D
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jun 2020 20:48:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732333AbgFWMPj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Jun 2020 08:15:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33814 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729534AbgFWMPj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Jun 2020 08:15:39 -0400
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A8ADC061755
-        for <linux-omap@vger.kernel.org>; Tue, 23 Jun 2020 05:15:39 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id h23so8024056qtr.0
-        for <linux-omap@vger.kernel.org>; Tue, 23 Jun 2020 05:15:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=oUdT+FHmj56wQBW9u9kJ4OhjrkdYCOAdHdqnMfM1wIpHhKjXMzKbBfVVPA2rsl1764
-         +LyJHaehLk/M0HNSiPBfvzDDhDuRKsQm+EWZlIpQXvZFKS+LREXXDZPMHjMUuQokdf19
-         6aTX6EnJdZo57fa9eyJ8JyRrJx6e6ndlK1xyrgjtWiiIpMn/H0vh8jbfpwifpuANKLo2
-         IrU9uaDgitNfG9uobQzhZkf0WJPZwXUlPRgHl1FrTTY287ElPZN+WPfmC64tCryM+BJR
-         Q0rKCcKaBXyuexB9CpxLBPT4cnbo2w4nrXPsbqaQ9Oc3+MvjbxUuyYzWqDS2OSLYxb6X
-         Acdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=Es2InTZokgOZAMhxHRr1M+kx/9tqEnNa6wPyLEAcHtDlivhHXog8vn7OfRc28SPkWF
-         RSXN0UIOye5G14Uaw7nWGjpt7QVdFSoi1PpBH4tuhpekW/jlWLlXeuOkiq9j/986Rrdz
-         D1LRcPxRsUt6Sr5QooUTkhfdmFPUkp910podH4JlkoMhJk91KDNmk1vS81QdRfXA8Dxh
-         0SuDbA+TeMdhz+VkXTjslMLVaS65T8Cf5zaYfl046W3Vz0lBNiZfKb/+YKkLBGXToEUW
-         z6nBoeePSj63inzwpDQrBITufqH46FjYFw1aTN7cevHf2BpVuLdxY4VsoCziYiT0eOMq
-         utAQ==
-X-Gm-Message-State: AOAM532G5nyt7KYFNlV/W7sztvpLvZQRaKaf6KzAKXPtmkf3k/wd2JqN
-        PEeNgTXNLaVgnDfvWFI0exvlHBpWZ5Fe6UMzh10=
-X-Google-Smtp-Source: ABdhPJzwqAq1oqVQt5qj9+Q65od49vnI/ggIp8ocv2lY8uRniEbv6dm4JjEL4zbRLpaSi+O9Q9G6TWZVIhwMJYB6N/E=
-X-Received: by 2002:ac8:664a:: with SMTP id j10mr19999297qtp.85.1592914538814;
- Tue, 23 Jun 2020 05:15:38 -0700 (PDT)
+        id S1733211AbgFWSs6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Jun 2020 14:48:58 -0400
+Received: from muru.com ([72.249.23.125]:59146 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733138AbgFWSs6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 23 Jun 2020 14:48:58 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id BA48E816A;
+        Tue, 23 Jun 2020 18:49:49 +0000 (UTC)
+Date:   Tue, 23 Jun 2020 11:48:54 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 1/4] wlcore: Use spin_trylock in wlcore_irq_locked() for
+ running the queue
+Message-ID: <20200623184854.GO37466@atomide.com>
+References: <20200617212505.62519-1-tony@atomide.com>
+ <20200617212505.62519-2-tony@atomide.com>
+ <875zbjgpbj.fsf@codeaurora.org>
+ <20200622160628.GL37466@atomide.com>
+ <87wo3ye11n.fsf@codeaurora.org>
 MIME-Version: 1.0
-Received: by 2002:ac8:47c2:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 05:15:38
- -0700 (PDT)
-Reply-To: bektery@outlook.com
-From:   YAVUZ BEKTER <bakert.jg@gmail.com>
-Date:   Tue, 23 Jun 2020 05:15:38 -0700
-Message-ID: <CAAUSuTXxL_PH3NVx1KatJqqPTp9Cyo61kQoOEsGqkzQ6NKbrLg@mail.gmail.com>
-Subject: Hello.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wo3ye11n.fsf@codeaurora.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I am the foreign operations director of Bank of Turkey.
-My name is Mr, Yavuz. I have a sensitive investment project to discuss
-with you, please reply now.
-________________________
-Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
-Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
-met u, antwoord dan nu.
+* Kalle Valo <kvalo@codeaurora.org> [200623 06:46]:
+> Tony Lindgren <tony@atomide.com> writes:
+> 
+> > * Kalle Valo <kvalo@codeaurora.org> [200622 14:15]:
+> >> Tony Lindgren <tony@atomide.com> writes:
+> >> 
+> >> > We need the spinlock to check if we need to run the queue. Let's use
+> >> > spin_trylock instead and always run the queue unless we know there's
+> >> > nothing to do.
+> >> 
+> >> Why? What's the problem you are solving here?
+> >
+> > To simplify the flags and locking use between the threaded irq
+> > and tx work.
+> >
+> > While chasing an occasional hang with an idle wlan doing just a
+> > periodic network scans, I noticed we can start simplifying the
+> > locking between the threaded irq and tx work for the driver.
+> >
+> > No luck so far figuring out what the occasional idle wlan hang is,
+> > but I suspect we end up somewhere in a deadlock between tx work
+> > and the threaded irq.
+> >
+> > We currently have a collection of flags and locking between the
+> > threaded irq and tx work:
+> >
+> > - wl->flags bitops
+> > - wl->mutex
+> > - wl->wl_lock spinlock
+> >
+> > The bitops flags do not need a spinlock around them, and
+> > wlcore_irq() already holds the mutex calling wlcore_irq_locked().
+> > And we only need the spinlock to see if we need to run the queue
+> > or not.
+> >
+> > So I think eventually we can remove most of the spinlock use in
+> > favor of the mutex. I guess I could leave out the trylock changes
+> > here if this is too many changes at once.
+> >
+> > Or do you see some problem in general with this approach?
+> 
+> My only problem was lack of background information in the commit logs.
+> Conditional locking is tricky and I didn't figure out why you are doing
+> that and why it's safe to do. So if you could send v2 with the
+> information above in the commit log I would be happy.
+
+OK. I'll update the description for the patches and resend.
+
+Thanks,
+
+Tony
+
