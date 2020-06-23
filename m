@@ -2,109 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 647B3204A15
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jun 2020 08:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D86B204D12
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Jun 2020 10:53:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730540AbgFWGmD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Jun 2020 02:42:03 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:29072 "EHLO m43-7.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730728AbgFWGmD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Jun 2020 02:42:03 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592894522; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=N4/GpdSXrdvWiK6U8fh1EZiXdjYys4Gz3YS+KkT6+54=; b=foRDt1RJxuRv779+PXVe33J8vViNTIOy91hWv3nC64cZgQ4xZ9Y3xmr7b0a/CMUBbaBiXYTt
- eXp+AeuBGoKEvKT4ebMYbdUVewpDoj48BU8yVwo3grRQG9B83uGtoMvcZAYSN7oaxj/YKkZb
- QrYjXt+wz9GBXp/iGaqHDhX0VGE=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyIwZGJlNiIsICJsaW51eC1vbWFwQHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n16.prod.us-east-1.postgun.com with SMTP id
- 5ef1a439567385e8e7bdcdb6 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 06:42:01
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 47C64C433C6; Tue, 23 Jun 2020 06:42:00 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7F4F1C433C8;
-        Tue, 23 Jun 2020 06:41:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7F4F1C433C8
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
-        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 1/4] wlcore: Use spin_trylock in wlcore_irq_locked() for running the queue
-References: <20200617212505.62519-1-tony@atomide.com>
-        <20200617212505.62519-2-tony@atomide.com>
-        <875zbjgpbj.fsf@codeaurora.org> <20200622160628.GL37466@atomide.com>
-Date:   Tue, 23 Jun 2020 09:41:56 +0300
-In-Reply-To: <20200622160628.GL37466@atomide.com> (Tony Lindgren's message of
-        "Mon, 22 Jun 2020 09:06:28 -0700")
-Message-ID: <87wo3ye11n.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        id S1731824AbgFWIwf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Jun 2020 04:52:35 -0400
+Received: from mail.loongson.cn ([114.242.206.163]:41238 "EHLO loongson.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731811AbgFWIwW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 23 Jun 2020 04:52:22 -0400
+Received: from linux.localdomain (unknown [113.200.148.30])
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxv2uFwvFecLBIAA--.12S2;
+        Tue, 23 Jun 2020 16:51:19 +0800 (CST)
+From:   Tiezhu Yang <yangtiezhu@loongson.cn>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>, Rob Herring <robh+dt@kernel.org>
+Cc:     Guo Ren <guoren@kernel.org>, Baruch Siach <baruch@tkos.co.il>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mips@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+        Xuefeng Li <lixuefeng@loongson.cn>
+Subject: [PATCH 0/7] Fix potential resource leaks and do some code cleanups about irqchip
+Date:   Tue, 23 Jun 2020 16:51:09 +0800
+Message-Id: <1592902276-3969-1-git-send-email-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.1.0
+X-CM-TRANSID: AQAAf9Dxv2uFwvFecLBIAA--.12S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AFy5GF48uFy7WrWfGr1Utrb_yoW8CrWDpF
+        47A39Ivr1fCay3Zr1fAr40yry3A3Z5Kay7K3yxt3sxXr95G34DWF1UAa4kXr97JrWxG3Wj
+        9F1rWFWUG3WUCF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvF14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+        6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+        CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+        2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+        W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+        Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+        xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
+        MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
+        0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AK
+        xVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
+        fUeApeUUUUU
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Tony Lindgren <tony@atomide.com> writes:
+When I test the irqchip code of Loongson, I read the related code of other
+chips in drivers/irqchip and I find some potential resource leaks in the
+error path, I think it is better to fix them. Additionally, do some code
+cleanups about Loongson to make it more clean and readable.
 
-> * Kalle Valo <kvalo@codeaurora.org> [200622 14:15]:
->> Tony Lindgren <tony@atomide.com> writes:
->> 
->> > We need the spinlock to check if we need to run the queue. Let's use
->> > spin_trylock instead and always run the queue unless we know there's
->> > nothing to do.
->> 
->> Why? What's the problem you are solving here?
->
-> To simplify the flags and locking use between the threaded irq
-> and tx work.
->
-> While chasing an occasional hang with an idle wlan doing just a
-> periodic network scans, I noticed we can start simplifying the
-> locking between the threaded irq and tx work for the driver.
->
-> No luck so far figuring out what the occasional idle wlan hang is,
-> but I suspect we end up somewhere in a deadlock between tx work
-> and the threaded irq.
->
-> We currently have a collection of flags and locking between the
-> threaded irq and tx work:
->
-> - wl->flags bitops
-> - wl->mutex
-> - wl->wl_lock spinlock
->
-> The bitops flags do not need a spinlock around them, and
-> wlcore_irq() already holds the mutex calling wlcore_irq_locked().
-> And we only need the spinlock to see if we need to run the queue
-> or not.
->
-> So I think eventually we can remove most of the spinlock use in
-> favor of the mutex. I guess I could leave out the trylock changes
-> here if this is too many changes at once.
->
-> Or do you see some problem in general with this approach?
+Tiezhu Yang (7):
+  irqchip: Fix potential resource leaks
+  irqchip/loongson-htpic: Remove redundant kfree operation
+  irqchip/loongson-htvec: Check return value of
+    irq_domain_translate_onecell()
+  irqchip/loongson-pch-pic: Check return value of
+    irq_domain_translate_twocell()
+  irqchip/loongson-pch-msi: Remove unneeded variable
+  irqchip/loongson-htpic: Remove unneeded select of I8259
+  dt-bindings: interrupt-controller: Fix typos in loongson,liointc.yaml
 
-My only problem was lack of background information in the commit logs.
-Conditional locking is tricky and I didn't figure out why you are doing
-that and why it's safe to do. So if you could send v2 with the
-information above in the commit log I would be happy.
+ .../interrupt-controller/loongson,liointc.yaml     |  4 ++--
+ drivers/irqchip/Kconfig                            |  1 -
+ drivers/irqchip/irq-ath79-misc.c                   |  3 +++
+ drivers/irqchip/irq-csky-apb-intc.c                |  3 +++
+ drivers/irqchip/irq-csky-mpintc.c                  | 26 +++++++++++++++++-----
+ drivers/irqchip/irq-davinci-aintc.c                | 17 ++++++++++----
+ drivers/irqchip/irq-davinci-cp-intc.c              | 17 +++++++++++---
+ drivers/irqchip/irq-digicolor.c                    |  4 ++++
+ drivers/irqchip/irq-dw-apb-ictl.c                  | 11 ++++++---
+ drivers/irqchip/irq-loongson-htpic.c               |  6 ++---
+ drivers/irqchip/irq-loongson-htvec.c               | 10 +++++++--
+ drivers/irqchip/irq-loongson-pch-msi.c             |  7 +-----
+ drivers/irqchip/irq-loongson-pch-pic.c             | 15 ++++++++-----
+ drivers/irqchip/irq-ls1x.c                         |  4 +++-
+ drivers/irqchip/irq-mscc-ocelot.c                  |  6 +++--
+ drivers/irqchip/irq-nvic.c                         |  2 ++
+ drivers/irqchip/irq-omap-intc.c                    |  4 +++-
+ drivers/irqchip/irq-riscv-intc.c                   |  1 +
+ drivers/irqchip/irq-s3c24xx.c                      | 20 ++++++++++++-----
+ drivers/irqchip/irq-xilinx-intc.c                  |  1 +
+ 20 files changed, 116 insertions(+), 46 deletions(-)
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.1.0
+
