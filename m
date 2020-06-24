@@ -2,89 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBCC4205B1D
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Jun 2020 20:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1D9B206FCD
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Jun 2020 11:15:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733211AbgFWSs6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Jun 2020 14:48:58 -0400
-Received: from muru.com ([72.249.23.125]:59146 "EHLO muru.com"
+        id S2389201AbgFXJPf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Jun 2020 05:15:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33682 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733138AbgFWSs6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Jun 2020 14:48:58 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id BA48E816A;
-        Tue, 23 Jun 2020 18:49:49 +0000 (UTC)
-Date:   Tue, 23 Jun 2020 11:48:54 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
-        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 1/4] wlcore: Use spin_trylock in wlcore_irq_locked() for
- running the queue
-Message-ID: <20200623184854.GO37466@atomide.com>
-References: <20200617212505.62519-1-tony@atomide.com>
- <20200617212505.62519-2-tony@atomide.com>
- <875zbjgpbj.fsf@codeaurora.org>
- <20200622160628.GL37466@atomide.com>
- <87wo3ye11n.fsf@codeaurora.org>
+        id S2387970AbgFXJPe (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 24 Jun 2020 05:15:34 -0400
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1CF882082F;
+        Wed, 24 Jun 2020 09:15:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592990133;
+        bh=14K+VhMvuge//+mHFVRO68jMad3Xx5brMH+O3+ggBOk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=IFQxL2bunzkopmfTsIvl2UbpyJSVNCbVz1tMkicOQpIhZE+i7/lWCftYg10E3XPAI
+         LleqWHI0jaKN4UcquF75OjUnAAl7OdeSI1CZUwvRqOC11GAXNdmVhHLdaOFnoVbq1E
+         XfG8K/JctUacbaPa4zvCuXENEZxWe4yQDQX+rA74=
+Received: by mail-lj1-f182.google.com with SMTP id 9so1752239ljc.8;
+        Wed, 24 Jun 2020 02:15:33 -0700 (PDT)
+X-Gm-Message-State: AOAM533UbckesswlTmbt/oQeNGmzfV1ZPmHY9ngNSAuY/zZug+mGZ68u
+        ONx4rT1rT0ygL8cH+U/nlA58qlLJp/ozW7Bl0iQ=
+X-Google-Smtp-Source: ABdhPJxbxsux7XuzN8uOjxja4hquHGy/NKFHEFBm47OMUifwg0Hc5X+Fhkw49rQCA/MTWVvIK0zPn0Jq/i3BDFjZoEY=
+X-Received: by 2002:a2e:954c:: with SMTP id t12mr13005177ljh.287.1592990131408;
+ Wed, 24 Jun 2020 02:15:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87wo3ye11n.fsf@codeaurora.org>
+References: <1592902276-3969-1-git-send-email-yangtiezhu@loongson.cn> <1592902276-3969-2-git-send-email-yangtiezhu@loongson.cn>
+In-Reply-To: <1592902276-3969-2-git-send-email-yangtiezhu@loongson.cn>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Wed, 24 Jun 2020 11:15:20 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPc9QuDp+FEogVamf7x+4JEUw78MSKqSPFpRcyTYZ7HSMA@mail.gmail.com>
+Message-ID: <CAJKOXPc9QuDp+FEogVamf7x+4JEUw78MSKqSPFpRcyTYZ7HSMA@mail.gmail.com>
+Subject: Re: [PATCH 1/7] irqchip: Fix potential resource leaks
+To:     Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Huacai Chen <chenhc@lemote.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Kukjin Kim <kgene@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        devicetree@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-riscv@lists.infradead.org,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>,
+        Xuefeng Li <lixuefeng@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Kalle Valo <kvalo@codeaurora.org> [200623 06:46]:
-> Tony Lindgren <tony@atomide.com> writes:
-> 
-> > * Kalle Valo <kvalo@codeaurora.org> [200622 14:15]:
-> >> Tony Lindgren <tony@atomide.com> writes:
-> >> 
-> >> > We need the spinlock to check if we need to run the queue. Let's use
-> >> > spin_trylock instead and always run the queue unless we know there's
-> >> > nothing to do.
-> >> 
-> >> Why? What's the problem you are solving here?
-> >
-> > To simplify the flags and locking use between the threaded irq
-> > and tx work.
-> >
-> > While chasing an occasional hang with an idle wlan doing just a
-> > periodic network scans, I noticed we can start simplifying the
-> > locking between the threaded irq and tx work for the driver.
-> >
-> > No luck so far figuring out what the occasional idle wlan hang is,
-> > but I suspect we end up somewhere in a deadlock between tx work
-> > and the threaded irq.
-> >
-> > We currently have a collection of flags and locking between the
-> > threaded irq and tx work:
-> >
-> > - wl->flags bitops
-> > - wl->mutex
-> > - wl->wl_lock spinlock
-> >
-> > The bitops flags do not need a spinlock around them, and
-> > wlcore_irq() already holds the mutex calling wlcore_irq_locked().
-> > And we only need the spinlock to see if we need to run the queue
-> > or not.
-> >
-> > So I think eventually we can remove most of the spinlock use in
-> > favor of the mutex. I guess I could leave out the trylock changes
-> > here if this is too many changes at once.
-> >
-> > Or do you see some problem in general with this approach?
-> 
-> My only problem was lack of background information in the commit logs.
-> Conditional locking is tricky and I didn't figure out why you are doing
-> that and why it's safe to do. So if you could send v2 with the
-> information above in the commit log I would be happy.
+On Tue, 23 Jun 2020 at 10:51, Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+>
+> There exists some potential resource leaks in the error path, fix them.
 
-OK. I'll update the description for the patches and resend.
+This should be split per driver and per bug (although mostly in driver
+it's just one bug). Otherwise it is difficult to review, backport and
+revert.
 
-Thanks,
+Best regards,
+Krzysztof
 
-Tony
 
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> ---
+>  drivers/irqchip/irq-ath79-misc.c      |  3 +++
+>  drivers/irqchip/irq-csky-apb-intc.c   |  3 +++
+>  drivers/irqchip/irq-csky-mpintc.c     | 26 ++++++++++++++++++++------
+>  drivers/irqchip/irq-davinci-aintc.c   | 17 +++++++++++++----
+>  drivers/irqchip/irq-davinci-cp-intc.c | 17 ++++++++++++++---
+>  drivers/irqchip/irq-digicolor.c       |  4 ++++
+>  drivers/irqchip/irq-dw-apb-ictl.c     | 11 ++++++++---
+>  drivers/irqchip/irq-loongson-htvec.c  |  5 ++++-
+>  drivers/irqchip/irq-ls1x.c            |  4 +++-
+>  drivers/irqchip/irq-mscc-ocelot.c     |  6 ++++--
+>  drivers/irqchip/irq-nvic.c            |  2 ++
+>  drivers/irqchip/irq-omap-intc.c       |  4 +++-
+>  drivers/irqchip/irq-riscv-intc.c      |  1 +
+>  drivers/irqchip/irq-s3c24xx.c         | 20 +++++++++++++++-----
+>  drivers/irqchip/irq-xilinx-intc.c     |  1 +
+>  15 files changed, 98 insertions(+), 26 deletions(-)
