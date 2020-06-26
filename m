@@ -2,57 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F3220B1DC
-	for <lists+linux-omap@lfdr.de>; Fri, 26 Jun 2020 14:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ADC620B1DE
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Jun 2020 14:59:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726875AbgFZM6i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 26 Jun 2020 08:58:38 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:37167 "EHLO
+        id S1726082AbgFZM7A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 26 Jun 2020 08:59:00 -0400
+Received: from mout.kundenserver.de ([217.72.192.73]:52859 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725283AbgFZM6g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 26 Jun 2020 08:58:36 -0400
-Received: from mail-qk1-f175.google.com ([209.85.222.175]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MjgfT-1j97aL3gwF-00lILB; Fri, 26 Jun 2020 14:58:35 +0200
-Received: by mail-qk1-f175.google.com with SMTP id k18so8614321qke.4;
-        Fri, 26 Jun 2020 05:58:34 -0700 (PDT)
-X-Gm-Message-State: AOAM5338Am5yO9SmxtmMqppn1UZl4jzCZLf4UvUbUswftK4LXYmbbITh
-        hv3KIP3beFGbL4UFYXCUYnMzqZdOzq/TuQXiHDM=
-X-Google-Smtp-Source: ABdhPJzDfJJF887IBIHwrqjS5+XNkf6aPwW0DG18i+u68IAHRbRtFhbDNjl1YtlahPyTzjUQNGbtNbLSVDouT+LYRVE=
-X-Received: by 2002:a37:a282:: with SMTP id l124mr2413294qke.3.1593176313613;
- Fri, 26 Jun 2020 05:58:33 -0700 (PDT)
+        with ESMTP id S1725283AbgFZM67 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 26 Jun 2020 08:58:59 -0400
+Received: from mail-qv1-f46.google.com ([209.85.219.46]) by
+ mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1Mysa4-1itwC80RtK-00vvPQ; Fri, 26 Jun 2020 14:58:58 +0200
+Received: by mail-qv1-f46.google.com with SMTP id u8so4399259qvj.12;
+        Fri, 26 Jun 2020 05:58:57 -0700 (PDT)
+X-Gm-Message-State: AOAM532l3qXYd7iAH8RyzSbqqs2qpjkPVmHNBk7Ad461Gca5zXH3aDdU
+        AY1+j/NNfRFSaEsmDbptRCYxEh+WlZL+h5zpXYg=
+X-Google-Smtp-Source: ABdhPJxAtrHTrv8tnPhop9bBePLdn9dbmNZaCWb8bd+izbtJeOoFbJPjUmEqBnnSjX/letu0DIzFRKMsNUQjrX8onBo=
+X-Received: by 2002:a0c:ba0e:: with SMTP id w14mr3005212qvf.222.1593176336945;
+ Fri, 26 Jun 2020 05:58:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200626115321.1898798-1-hverkuil-cisco@xs4all.nl> <20200626115321.1898798-4-hverkuil-cisco@xs4all.nl>
-In-Reply-To: <20200626115321.1898798-4-hverkuil-cisco@xs4all.nl>
+References: <20200626115321.1898798-1-hverkuil-cisco@xs4all.nl> <20200626115321.1898798-5-hverkuil-cisco@xs4all.nl>
+In-Reply-To: <20200626115321.1898798-5-hverkuil-cisco@xs4all.nl>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 26 Jun 2020 14:58:17 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1UGwUR4nc7NRrFQ-heUZ4LOxSRDmVJGf1kNDz9nWqzfg@mail.gmail.com>
-Message-ID: <CAK8P3a1UGwUR4nc7NRrFQ-heUZ4LOxSRDmVJGf1kNDz9nWqzfg@mail.gmail.com>
-Subject: Re: [PATCH 3/7] mach-imx: mach-imx27_visstrim_m10.c: remove
- soc_camera dependencies
+Date:   Fri, 26 Jun 2020 14:58:41 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0XNb5=4F3QMpO+CtQZuxvKdmKrHPjZ80fv0Rgt4U0pfA@mail.gmail.com>
+Message-ID: <CAK8P3a0XNb5=4F3QMpO+CtQZuxvKdmKrHPjZ80fv0Rgt4U0pfA@mail.gmail.com>
+Subject: Re: [PATCH 4/7] mach-omap1: board-ams-delta.c: remove soc_camera dependencies
 To:     Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Cc:     Linux Media Mailing List <linux-media@vger.kernel.org>,
         linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Tony Lindgren <tony@atomide.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:oOGesCcERp2mwQ5fcYfZHaZ/uAkOSCMspN0SqFGumGqVZBUqvRJ
- kK6Am1LWVx/jK59AJOsl9cGIIu5N5mrPY5BMSg79qZICFsIppwEm/qYl/jOEGGCm+cjHsnd
- y/yHckdWrBUW2gSAEi2zNAg4gzSDZ15Ch+vm77l1Dj2Dn1zg3aZDRPOEsKJaQGZNo3JFGtl
- dwtBOkgMHHCsKXfphjQxA==
+X-Provags-ID: V03:K1:Ork1ET+c04+hSBKQ1yMj702x1fG+5wEXK5bt0hMjflygrR2HN+7
+ ig/x7EffakjJm/2N2nPMd/Mw4wH0PqM9UxgY5FC9V+OalHZmknsjlJRr48sc8yDuygZshSv
+ uU5BPGE7UnEDmFGOlS80L206DtpWK+SY4xQyDfrqPMb9nNJJ59bNQcIiDQ6BAgXRZVlJDJF
+ nmEV66A7LPP7AEAdramgQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:arhdJ7doB7k=:81dTRpOYePIhBz/VHAofSf
- mux+Yi+XYLq6cGBfkFf5DvkCKjf+Rls5aVf6K+hcwDcM/gZYDk3z8nBJqE7cYce1olcgDVb3e
- rN1aT94amWPbMFVoNSLcbjhENVAg/hkNaskrGU9Zi1NKO9gQI7AqH5HV+jn7K98DyZolLVjYu
- OPzeoPcqXyy+1AhMdQLgyMq8gIs5AOA9KbWUhoQeC/ZX8iOLlhmQqEUJAhXzRacvxvrE8Txcb
- N6coVSrSnC7LhMOOWE4+zue2Fm27f/Aonlhz2XzhbOjaeHH7k3qnOs8blcILKr6CT93XZchI8
- 67JqgX7R76H68UQUctevgRDMEThvqfkgmVI7PvMC13nCJDKm4tAETqrKiGG67jaQ/ZW3+d0eI
- dyHIAPoZYngth2pG+Y3d3/cIr8Qn2Wp/jFyKlrMrxkegcIGc1pcCrPhoOTsVTQTgviZzyhDfk
- Nw1eNcA1oqvI8qT/38oEbJRefqiF14yeMNauq70nn2PCzYvqtZLx1pFq9IuIDJ5vIC8hV65O4
- R3LAqtHRLZ93yytb3BIFNef/o5OOVV1cvPxABYL0T0drgrY8SsOaG62vgklSzuHpsRxiJi8pJ
- 7PTE1qD9NpjXXzojA3MrwlDx9iQQ73j+asU6ccREnbI+G2qAxOrgSfXoDsatCIRKUesQcW3dw
- XxsJSkv6PjpoOeOphawucvgUnPgLhPsJGuScSMIwWwzbdTxxXRt9lwjtgDmTDnBrEA+iC5GiY
- a9K7zaXphi4siC5FyLVWwj0ivUWhyTWE5prhSYx7HDwyBIwGDaY6HUDZLEclI9KnvDR/VvLOE
- DnGBKWlUgJ3oNhLnstRAwGJASnT7724cb9p2NfpAlltq4dpeG8=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:JhYzfDP/V+w=:TsK8cabEuR8ZeppIRb6VBr
+ EXaTagebTMTqD69uO0NV8S900z3V7sH827EvD67fQzAivnFAWa4YIyrJ4Th9kY4HsvXL8xPKR
+ weSpgfU98ebCpX8w/dgoew3U9lf3pv7rFjb8PsdZUbOC6ywddgvJFhZjU8JqzAkIk1VmKDx4f
+ V80o3ByrNyxfgyU9Tkbc8DMHxn2wO8nmfW75xy/poUbgYnYF49ebE4gCj5Kbsft6ZW1g6QB3x
+ g+qPVpPn7s4NTwPOnN4C9cI7TL5hQxZaUUCPjTtmlN0IgW0Z9SdXWLckivPq1RTmeAo4LU5lT
+ baxUdYAuWxkHMrsqyOWUALGI2XgD2dLBT6Gcou3eWENtZ/KHdWJVLepoBmZDh+4TOlihymiH7
+ ds05+NnsJWSWvPmfCe4A1nRbu3hCi0/VvZsNTn0Wil+YDvflVebpve0ECU0pu7CRmbODFA5L4
+ a9RRKPEKPbpVCZgVVtWatk75cmfSs2cO6jwolHEQXMfCt3fwlZ07qjk1ZmfPDddtS+JOjBwPO
+ OGBiapp8sKDZdDYipH3Hb1hnLeKn99Zc158+bAVc4daci/hLWvB4VpGCZ922w6a0p7RCSHlgZ
+ XNkARAkm2JG8GMGcY8Cz1cCYqMsQ5qnwmyLpkH3qnjPcTxiWrpgftK7W5qWnrxFnuuvoAJXzC
+ pCGXPR0BcvmQqCkt93aU6sPesnk5wVeE6hYiZwLBbmck40Y8S4OFFgba7rHaS2zZ/5U/iqr6/
+ u8icXuAs5FBBrS9SOpMiHQY2J7T+hfzJll3l0USpRpmPQ73OPvZL6O4i8ZqTzVO4onNc436vW
+ EgZ7WKC9VsdXbWY080mtkOxCgoDhTmQqbULZQumOfXO+PGuRYk=
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
@@ -60,14 +60,20 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 On Fri, Jun 26, 2020 at 1:53 PM Hans Verkuil <hverkuil-cisco@xs4all.nl> wrote:
 >
-> The soc_camera.h header driver is about to be removed, so drop camera
+> The soc_camera driver is about to be removed, so drop camera
 > support from this board. Note that the soc_camera driver itself has
 > long since been deprecated and can't be compiled anymore (it depends
 > on BROKEN), so camera support on this board has been broken for a long
-> time (at least since 4.6 when the mx2_camera.c was removed from soc_camera).
+> time (at least since 4.6 when the omap1_camera.c was removed from soc_camera).
 >
 > Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 > Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Tony Lindgren <tony@atomide.com>
+> ---
+>  arch/arm/mach-omap1/board-ams-delta.c         | 32 --------------
+>  arch/arm/mach-omap1/camera.h                  | 14 ------
+>  arch/arm/mach-omap1/devices.c                 | 43 -------------------
+>  .../linux/platform_data/media/omap1_camera.h  | 32 --------------
 
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 
