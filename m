@@ -2,191 +2,149 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1C720B942
-	for <lists+linux-omap@lfdr.de>; Fri, 26 Jun 2020 21:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12B0B20C037
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 10:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725912AbgFZTTv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 26 Jun 2020 15:19:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59912 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725904AbgFZTTv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 26 Jun 2020 15:19:51 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B916C03E97A
-        for <linux-omap@vger.kernel.org>; Fri, 26 Jun 2020 12:19:50 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id a6so10522786wrm.4
-        for <linux-omap@vger.kernel.org>; Fri, 26 Jun 2020 12:19:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=v3oOHqdeiilgAo1krqYM7ZW2FYPIuBxdWkBI8kNf8w4=;
-        b=NQTltRUUQEyW33Cu2UEltV6GamFzrhZ94/moDjBBeDIWK+eLNpNbN3QnKUQZ633i2K
-         SAsyOsZB2dkM/QqQzckArvwRNsGVVPcFsTY3EBvlYaR1TH2zFC+ToIUhC3weBqAwMNqY
-         46WgvtmTea15ADPMKPKljDfRBsW1N6yeG9DPkIqCntAcs+IIAJ7Q3uhTiN9qATp6+4Gb
-         uVNjVPK5U6YHPGAtTdvXUTqdLbqBuznHnSm7leob0E5rMqNAoLutVOjPOmoP1dyYLzT6
-         CAjpfEhlqeTrl0rjehSk66/5E9syf5SYN3q29L41ioUbUusekaKJf+TwW8farRSItzlT
-         /Jqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=v3oOHqdeiilgAo1krqYM7ZW2FYPIuBxdWkBI8kNf8w4=;
-        b=nWKdvDQD7/Py2DWCNdjmEsyyafdEhMQLyEntDGDQAQoTDeCCuer3KBNL8dzeULLVcu
-         d1fJCwZ7kNwTDkfdOwsV5a0bJdhoe+1HoZXcbsA90waoy723r985OICR/F/up1E4ZY9e
-         K3k4nHDhXjAiBV2yLRerexSULY0mJCfEY4oIjv7wKKcqPHJ+/uunNB0YW7vl7btFaCys
-         PULT5q1gYpESvvGr1ZX7LoQXRx7zP80mYUIQEvosgwZv6CMmJDX83kxWTytRwWl2ZhKl
-         gGhAoEo7PHzYz24IDXKHNojhHyGMdwiDrkpb47ZMkGPEB5yBZiHLuhMdI7kvannWzRSn
-         mqCg==
-X-Gm-Message-State: AOAM530PbWRuL7P9AZbfq50K2DxsWsJWQgfNKg3OmOocvnp0KEOjY1hS
-        G9cpoz8iN2yTMbJKQqvdZ7OBBQ==
-X-Google-Smtp-Source: ABdhPJyxppcg9yXdgcCtGmzUVM0Qhgol51JAPy/Ev0oDVmvT+dzG+dcduwYmDgiNPxITN/BSFtuOaA==
-X-Received: by 2002:a5d:664a:: with SMTP id f10mr5249137wrw.300.1593199189262;
-        Fri, 26 Jun 2020 12:19:49 -0700 (PDT)
-Received: from x1 ([2001:16b8:5c03:b001:3446:ed90:fece:8da5])
-        by smtp.gmail.com with ESMTPSA id w12sm29179536wrm.79.2020.06.26.12.19.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2020 12:19:48 -0700 (PDT)
-Date:   Fri, 26 Jun 2020 21:19:46 +0200
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Daniel Mack <daniel@zonque.org>
-Subject: Re: [PATCH v2] pinctrl-single: fix pcs_parse_pinconf() return value
-Message-ID: <20200626191946.GA97666@x1>
-References: <20200608125143.GA2789203@x1>
- <CACRpkdZupnetd29aehw4HF3isGgRHbqxWZuTkPBusm_EmvjZ4g@mail.gmail.com>
- <20200616115951.GA3976568@x1>
+        id S1726087AbgF0Igg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 27 Jun 2020 04:36:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60616 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726086AbgF0Igg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 27 Jun 2020 04:36:36 -0400
+Received: from dogfood.home (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AEEE8207FC;
+        Sat, 27 Jun 2020 08:36:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593246995;
+        bh=AGJG6MRW6cS+GBuTXX6phwza1LeF4svVTU7KsEF6MYI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=V0a7lTRjEUQv8fjsdrmREWQ//7dF9YdyaOSIvGCntd9GuVSJ62WMT+FxlUURR1N6r
+         pwc7iS6iY1yLdMX+8PdelNbEFf/urdbydvE3rINSugP05HXJO8cM+bFqTKn5yETVq6
+         MqCS4dGIJHmr6gmEUAjU9SAS5P0xXEeni9No7eE8=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-crypto@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ayush Sawal <ayush.sawal@chelsio.com>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jamie Iles <jamie@jamieiles.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Subject: [PATCH v2 00/13] crypto: permit asynchronous skciphers as driver fallbacks
+Date:   Sat, 27 Jun 2020 10:36:10 +0200
+Message-Id: <20200627083623.2428333-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200616115951.GA3976568@x1>
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 16, 2020 at 01:59:51PM +0200, Drew Fustini wrote:
-> On Tue, Jun 16, 2020 at 10:31:54AM +0200, Linus Walleij wrote:
-> > On Mon, Jun 8, 2020 at 2:51 PM Drew Fustini <drew@beagleboard.org> wrote:
-> > 
-> > > This patch causes pcs_parse_pinconf() to return -ENOTSUPP when no
-> > > pinctrl_map is added.  The current behavior is to return 0 when
-> > > !PCS_HAS_PINCONF or !nconfs.  Thus pcs_parse_one_pinctrl_entry()
-> > > incorrectly assumes that a map was added and sets num_maps = 2.
-> > >
-> > > Analysis:
-> > > =========
-> > > The function pcs_parse_one_pinctrl_entry() calls pcs_parse_pinconf()
-> > > if PCS_HAS_PINCONF is enabled.  The function pcs_parse_pinconf()
-> > > returns 0 to indicate there was no error and num_maps is then set to 2:
-> > >
-> > >  980 static int pcs_parse_one_pinctrl_entry(struct pcs_device *pcs,
-> > >  981                                                 struct device_node *np,
-> > >  982                                                 struct pinctrl_map **map,
-> > >  983                                                 unsigned *num_maps,
-> > >  984                                                 const char **pgnames)
-> > >  985 {
-> > > <snip>
-> > > 1053         (*map)->type = PIN_MAP_TYPE_MUX_GROUP;
-> > > 1054         (*map)->data.mux.group = np->name;
-> > > 1055         (*map)->data.mux.function = np->name;
-> > > 1056
-> > > 1057         if (PCS_HAS_PINCONF && function) {
-> > > 1058                 res = pcs_parse_pinconf(pcs, np, function, map);
-> > > 1059                 if (res)
-> > > 1060                         goto free_pingroups;
-> > > 1061                 *num_maps = 2;
-> > > 1062         } else {
-> > > 1063                 *num_maps = 1;
-> > > 1064         }
-> > >
-> > > However, pcs_parse_pinconf() will also return 0 if !PCS_HAS_PINCONF or
-> > > !nconfs.  I believe these conditions should indicate that no map was
-> > > added by returning -ENOTSUPP. Otherwise pcs_parse_one_pinctrl_entry()
-> > > will set num_maps = 2 even though no maps were successfully added, as
-> > > it does not reach "m++" on line 940:
-> > >
-> > >  895 static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
-> > >  896                              struct pcs_function *func,
-> > >  897                              struct pinctrl_map **map)
-> > >  898
-> > >  899 {
-> > >  900         struct pinctrl_map *m = *map;
-> > > <snip>
-> > >  917         /* If pinconf isn't supported, don't parse properties in below. */
-> > >  918         if (!PCS_HAS_PINCONF)
-> > >  919                 return 0;
-> > >  920
-> > >  921         /* cacluate how much properties are supported in current node */
-> > >  922         for (i = 0; i < ARRAY_SIZE(prop2); i++) {
-> > >  923                 if (of_find_property(np, prop2[i].name, NULL))
-> > >  924                         nconfs++;
-> > >  925         }
-> > >  926         for (i = 0; i < ARRAY_SIZE(prop4); i++) {
-> > >  927                 if (of_find_property(np, prop4[i].name, NULL))
-> > >  928                         nconfs++;
-> > >  929         }
-> > >  930         if (!nconfs)
-> > >  919                 return 0;
-> > >  932
-> > >  933         func->conf = devm_kcalloc(pcs->dev,
-> > >  934                                   nconfs, sizeof(struct pcs_conf_vals),
-> > >  935                                   GFP_KERNEL);
-> > >  936         if (!func->conf)
-> > >  937                 return -ENOMEM;
-> > >  938         func->nconfs = nconfs;
-> > >  939         conf = &(func->conf[0]);
-> > >  940         m++;
-> > >
-> > > This situtation will cause a boot failure [0] on the BeagleBone Black
-> > > (AM3358) when am33xx_pinmux node in arch/arm/boot/dts/am33xx-l4.dtsi
-> > > has compatible = "pinconf-single" instead of "pinctrl-single".
-> > >
-> > > The patch fixes this issue by returning -ENOSUPP when !PCS_HAS_PINCONF
-> > > or !nconfs, so that pcs_parse_one_pinctrl_entry() will know that no
-> > > map was added.
-> > >
-> > > Logic is also added to pcs_parse_one_pinctrl_entry() to distinguish
-> > > between -ENOSUPP and other errors.  In the case of -ENOSUPP, num_maps
-> > > is set to 1 as it is valid for pinconf to be enabled and a given pin
-> > > group to not any pinconf properties.
-> > >
-> > > [0] https://lore.kernel.org/linux-omap/20200529175544.GA3766151@x1/
-> > >
-> > > Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
-> > > Signed-off-by: Drew Fustini <drew@beagleboard.org>
-> > 
-> > Patch applied as non-critical (for-next) fix.
-> > 
-> > If there is no hurry let's merge it this way with lots of testing
-> > along the way.
-> > 
-> > Yours,
-> > Linus Walleij
-> 
-> Thanks, I agree more testing is a good idea.
-> 
-> In particular, do you have a way to followup with Haojian Zhuang within
-> Linaro?
-> 
+The drivers for crypto accelerators in drivers/crypto all implement skciphers
+of an asynchronous nature, given that they are backed by hardware DMA that
+completes asynchronously wrt the execution flow.
 
-Linus - do you have a way to contact Haojian Zhuan?
+However, in many cases, any fallbacks they allocate are limited to the
+synchronous variety, which rules out the use of SIMD implementations of
+AES in ECB, CBC and XTS modes, given that they are usually built on top
+of the asynchronous SIMD helper, which queues requests for asynchronous
+completion if they are issued from a context that does not permit the use
+of the SIMD register file.
 
-I found them on Freenode but they have been idle since beginning of
-June.  Last email I can find on the mailing list is from March.
+This may result in sub-optimal AES implementations to be selected as
+fallbacks, or even less secure ones if the only synchronous alternative
+is table based, and therefore not time invariant.
 
-Tony and I would both like someone familiar with Hisilicon to comment on
-this patch as it is using pinctrl-single.
+So switch all these cases over to the asynchronous API, by moving the
+subrequest into the skcipher request context, and permitting it to
+complete asynchronously via the caller provided completion function.
 
-Thanks,
-Drew
+Patch #1 is not related, but touches the same driver as #2 so it is
+included anyway. Patch #13 removes another sync skcipher allocation by
+switching to the AES library interface.
+
+Only OMAP was tested on actual hardware - the others are build tested only.
+
+v2:
+- address issue found by build robot in patch #7
+- add patch #13
+- rebase onto cryptodev/master
+
+Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Ayush Sawal <ayush.sawal@chelsio.com>
+Cc: Vinay Kumar Yadav <vinay.yadav@chelsio.com>
+Cc: Rohit Maheshwari <rohitm@chelsio.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Jamie Iles <jamie@jamieiles.com>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Tero Kristo <t-kristo@ti.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+
+Ard Biesheuvel (13):
+  crypto: amlogic-gxl - default to build as module
+  crypto: amlogic-gxl - permit async skcipher as fallback
+  crypto: omap-aes - permit asynchronous skcipher as fallback
+  crypto: sun4i - permit asynchronous skcipher as fallback
+  crypto: sun8i-ce - permit asynchronous skcipher as fallback
+  crypto: sun8i-ss - permit asynchronous skcipher as fallback
+  crypto: ccp - permit asynchronous skcipher as fallback
+  crypto: chelsio - permit asynchronous skcipher as fallback
+  crypto: mxs-dcp - permit asynchronous skcipher as fallback
+  crypto: picoxcell - permit asynchronous skcipher as fallback
+  crypto: qce - permit asynchronous skcipher as fallback
+  crypto: sahara - permit asynchronous skcipher as fallback
+  crypto: mediatek - use AES library for GCM key derivation
+
+ drivers/crypto/Kconfig                              |  3 +-
+ drivers/crypto/allwinner/sun4i-ss/sun4i-ss-cipher.c | 46 +++++-----
+ drivers/crypto/allwinner/sun4i-ss/sun4i-ss.h        |  3 +-
+ drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 41 ++++-----
+ drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h        |  3 +-
+ drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c | 39 ++++----
+ drivers/crypto/allwinner/sun8i-ss/sun8i-ss.h        |  3 +-
+ drivers/crypto/amlogic/Kconfig                      |  2 +-
+ drivers/crypto/amlogic/amlogic-gxl-cipher.c         | 27 +++---
+ drivers/crypto/amlogic/amlogic-gxl.h                |  3 +-
+ drivers/crypto/ccp/ccp-crypto-aes-xts.c             | 33 ++++---
+ drivers/crypto/ccp/ccp-crypto.h                     |  4 +-
+ drivers/crypto/chelsio/chcr_algo.c                  | 57 +++++-------
+ drivers/crypto/chelsio/chcr_crypto.h                |  3 +-
+ drivers/crypto/mediatek/mtk-aes.c                   | 63 ++-----------
+ drivers/crypto/mxs-dcp.c                            | 33 +++----
+ drivers/crypto/omap-aes.c                           | 35 ++++---
+ drivers/crypto/omap-aes.h                           |  3 +-
+ drivers/crypto/picoxcell_crypto.c                   | 34 ++++---
+ drivers/crypto/qce/cipher.h                         |  3 +-
+ drivers/crypto/qce/skcipher.c                       | 27 +++---
+ drivers/crypto/sahara.c                             | 96 +++++++++-----------
+ 22 files changed, 254 insertions(+), 307 deletions(-)
+
+-- 
+2.27.0
+
