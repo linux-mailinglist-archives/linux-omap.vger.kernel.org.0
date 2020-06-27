@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8572A20C045
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 10:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F53920C048
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 10:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726404AbgF0IhH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 27 Jun 2020 04:37:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33042 "EHLO mail.kernel.org"
+        id S1726412AbgF0IhM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 27 Jun 2020 04:37:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33128 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726086AbgF0IhH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 27 Jun 2020 04:37:07 -0400
+        id S1726086AbgF0IhM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 27 Jun 2020 04:37:12 -0400
 Received: from dogfood.home (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CE2BA208C7;
-        Sat, 27 Jun 2020 08:37:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4580C20DD4;
+        Sat, 27 Jun 2020 08:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593247026;
-        bh=DoA6f29T+QZl9PEHAXdrvpSKEzdX6U9CtDe+6HrgxnA=;
+        s=default; t=1593247031;
+        bh=VdWXGOSKjJGXQhycLLuQQ27vibyXBPZrm23gn1gDZfA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PXx0Cxudum+aOZZ1BJD27yf9+2R+PZxtRs/sEdd/EbHaLJiLFYj4cLMordpd21Ire
-         l8cI3XNHTEFono/mGqo5pqvCsrKduxQE83N9cR03hkX3zl7EU5uiQrauKEOyCp7txU
-         v7XZGHHgUpJk3tt0GNhOnp7WDdlvbgoA7noElsjQ=
+        b=nDoTOnSTs2Rz3Sos4WM39GbplROYXqO0QPv/s1ucHafGTnuhZ3PgqYJfncaTsO5OI
+         c7EziQSFZXMvvDuoXwgC0lPImzU11sYszDdaj/miKmQSFxkieHJSF5K/DyxaINyJ+4
+         Z6SidAFbuqI1S2qty1tnLeINfqHF2svhJKIVhHJ0=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-crypto@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
@@ -46,9 +46,9 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         Eric Biggers <ebiggers@google.com>,
         Tero Kristo <t-kristo@ti.com>,
         Matthias Brugger <matthias.bgg@gmail.com>
-Subject: [PATCH v2 07/13] crypto: ccp - permit asynchronous skcipher as fallback
-Date:   Sat, 27 Jun 2020 10:36:17 +0200
-Message-Id: <20200627083623.2428333-8-ardb@kernel.org>
+Subject: [PATCH v2 08/13] crypto: chelsio - permit asynchronous skcipher as fallback
+Date:   Sat, 27 Jun 2020 10:36:18 +0200
+Message-Id: <20200627083623.2428333-9-ardb@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200627083623.2428333-1-ardb@kernel.org>
 References: <20200627083623.2428333-1-ardb@kernel.org>
@@ -59,14 +59,15 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Even though the ccp driver implements an asynchronous version of xts(aes),
-the fallback it allocates is required to be synchronous. Given that SIMD
-based software implementations are usually asynchronous as well, even
-though they rarely complete asynchronously (this typically only happens
-in cases where the request was made from softirq context, while SIMD was
-already in use in the task context that it interrupted), these
-implementations are disregarded, and either the generic C version or
-another table based version implemented in assembler is selected instead.
+Even though the chelsio driver implements asynchronous versions of
+cbc(aes) and xts(aes), the fallbacks it allocates are required to be
+synchronous. Given that SIMD based software implementations are usually
+asynchronous as well, even though they rarely complete asynchronously
+(this typically only happens in cases where the request was made from
+softirq context, while SIMD was already in use in the task context that
+it interrupted), these implementations are disregarded, and either the
+generic C version or another table based version implemented in assembler
+is selected instead.
 
 Since falling back to synchronous AES is not only a performance issue, but
 potentially a security issue as well (due to the fact that table based AES
@@ -76,111 +77,160 @@ to the outer request.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/crypto/ccp/ccp-crypto-aes-xts.c | 33 ++++++++++----------
- drivers/crypto/ccp/ccp-crypto.h         |  4 ++-
- 2 files changed, 19 insertions(+), 18 deletions(-)
+ drivers/crypto/chelsio/chcr_algo.c   | 57 ++++++++------------
+ drivers/crypto/chelsio/chcr_crypto.h |  3 +-
+ 2 files changed, 25 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/crypto/ccp/ccp-crypto-aes-xts.c b/drivers/crypto/ccp/ccp-crypto-aes-xts.c
-index 04b2517df955..959168a7ac59 100644
---- a/drivers/crypto/ccp/ccp-crypto-aes-xts.c
-+++ b/drivers/crypto/ccp/ccp-crypto-aes-xts.c
-@@ -98,7 +98,7 @@ static int ccp_aes_xts_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	ctx->u.aes.key_len = key_len / 2;
- 	sg_init_one(&ctx->u.aes.key_sg, ctx->u.aes.key, key_len);
- 
--	return crypto_sync_skcipher_setkey(ctx->u.aes.tfm_skcipher, key, key_len);
-+	return crypto_skcipher_setkey(ctx->u.aes.tfm_skcipher, key, key_len);
+diff --git a/drivers/crypto/chelsio/chcr_algo.c b/drivers/crypto/chelsio/chcr_algo.c
+index 4c2553672b6f..a6625b90fb1a 100644
+--- a/drivers/crypto/chelsio/chcr_algo.c
++++ b/drivers/crypto/chelsio/chcr_algo.c
+@@ -690,26 +690,22 @@ static int chcr_sg_ent_in_wr(struct scatterlist *src,
+ 	return min(srclen, dstlen);
  }
  
- static int ccp_aes_xts_crypt(struct skcipher_request *req,
-@@ -145,20 +145,19 @@ static int ccp_aes_xts_crypt(struct skcipher_request *req,
- 	    (ctx->u.aes.key_len != AES_KEYSIZE_256))
- 		fallback = 1;
- 	if (fallback) {
--		SYNC_SKCIPHER_REQUEST_ON_STACK(subreq,
--					       ctx->u.aes.tfm_skcipher);
+-static int chcr_cipher_fallback(struct crypto_sync_skcipher *cipher,
+-				u32 flags,
+-				struct scatterlist *src,
+-				struct scatterlist *dst,
+-				unsigned int nbytes,
++static int chcr_cipher_fallback(struct crypto_skcipher *cipher,
++				struct skcipher_request *req,
+ 				u8 *iv,
+ 				unsigned short op_type)
+ {
++	struct chcr_skcipher_req_ctx *reqctx = skcipher_request_ctx(req);
+ 	int err;
+ 
+-	SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, cipher);
 -
- 		/* Use the fallback to process the request for any
- 		 * unsupported unit sizes or key sizes
- 		 */
--		skcipher_request_set_sync_tfm(subreq, ctx->u.aes.tfm_skcipher);
--		skcipher_request_set_callback(subreq, req->base.flags,
--					      NULL, NULL);
--		skcipher_request_set_crypt(subreq, req->src, req->dst,
--					   req->cryptlen, req->iv);
--		ret = encrypt ? crypto_skcipher_encrypt(subreq) :
--				crypto_skcipher_decrypt(subreq);
--		skcipher_request_zero(subreq);
-+		skcipher_request_set_tfm(&rctx->fallback_req,
-+					 ctx->u.aes.tfm_skcipher);
-+		skcipher_request_set_callback(&rctx->fallback_req,
-+					      req->base.flags,
-+					      req->base.complete,
-+					      req->base.data);
-+		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
-+					   req->dst, req->cryptlen, req->iv);
-+		ret = encrypt ? crypto_skcipher_encrypt(&rctx->fallback_req) :
-+				crypto_skcipher_decrypt(&rctx->fallback_req);
- 		return ret;
- 	}
+-	skcipher_request_set_sync_tfm(subreq, cipher);
+-	skcipher_request_set_callback(subreq, flags, NULL, NULL);
+-	skcipher_request_set_crypt(subreq, src, dst,
+-				   nbytes, iv);
++	skcipher_request_set_tfm(&reqctx->fallback_req, cipher);
++	skcipher_request_set_callback(&reqctx->fallback_req, req->base.flags,
++				      req->base.complete, req->base.data);
++	skcipher_request_set_crypt(&reqctx->fallback_req, req->src, req->dst,
++				   req->cryptlen, iv);
  
-@@ -198,13 +197,12 @@ static int ccp_aes_xts_decrypt(struct skcipher_request *req)
- static int ccp_aes_xts_init_tfm(struct crypto_skcipher *tfm)
+-	err = op_type ? crypto_skcipher_decrypt(subreq) :
+-		crypto_skcipher_encrypt(subreq);
+-	skcipher_request_zero(subreq);
++	err = op_type ? crypto_skcipher_decrypt(&reqctx->fallback_req) :
++			crypto_skcipher_encrypt(&reqctx->fallback_req);
+ 
+ 	return err;
+ 
+@@ -924,11 +920,11 @@ static int chcr_cipher_fallback_setkey(struct crypto_skcipher *cipher,
  {
- 	struct ccp_ctx *ctx = crypto_skcipher_ctx(tfm);
--	struct crypto_sync_skcipher *fallback_tfm;
-+	struct crypto_skcipher *fallback_tfm;
+ 	struct ablk_ctx *ablkctx = ABLK_CTX(c_ctx(cipher));
  
- 	ctx->complete = ccp_aes_xts_complete;
- 	ctx->u.aes.key_len = 0;
- 
--	fallback_tfm = crypto_alloc_sync_skcipher("xts(aes)", 0,
--					     CRYPTO_ALG_ASYNC |
-+	fallback_tfm = crypto_alloc_skcipher("xts(aes)", 0,
- 					     CRYPTO_ALG_NEED_FALLBACK);
- 	if (IS_ERR(fallback_tfm)) {
- 		pr_warn("could not load fallback driver xts(aes)\n");
-@@ -212,7 +210,8 @@ static int ccp_aes_xts_init_tfm(struct crypto_skcipher *tfm)
- 	}
- 	ctx->u.aes.tfm_skcipher = fallback_tfm;
- 
--	crypto_skcipher_set_reqsize(tfm, sizeof(struct ccp_aes_req_ctx));
-+	crypto_skcipher_set_reqsize(tfm, sizeof(struct ccp_aes_req_ctx) +
-+					 crypto_skcipher_reqsize(fallback_tfm));
- 
- 	return 0;
- }
-@@ -221,7 +220,7 @@ static void ccp_aes_xts_exit_tfm(struct crypto_skcipher *tfm)
- {
- 	struct ccp_ctx *ctx = crypto_skcipher_ctx(tfm);
- 
--	crypto_free_sync_skcipher(ctx->u.aes.tfm_skcipher);
-+	crypto_free_skcipher(ctx->u.aes.tfm_skcipher);
+-	crypto_sync_skcipher_clear_flags(ablkctx->sw_cipher,
++	crypto_skcipher_clear_flags(ablkctx->sw_cipher,
+ 				CRYPTO_TFM_REQ_MASK);
+-	crypto_sync_skcipher_set_flags(ablkctx->sw_cipher,
++	crypto_skcipher_set_flags(ablkctx->sw_cipher,
+ 				cipher->base.crt_flags & CRYPTO_TFM_REQ_MASK);
+-	return crypto_sync_skcipher_setkey(ablkctx->sw_cipher, key, keylen);
++	return crypto_skcipher_setkey(ablkctx->sw_cipher, key, keylen);
  }
  
- static int ccp_register_aes_xts_alg(struct list_head *head,
-diff --git a/drivers/crypto/ccp/ccp-crypto.h b/drivers/crypto/ccp/ccp-crypto.h
-index 90a009e6b5c1..aed3d2192d01 100644
---- a/drivers/crypto/ccp/ccp-crypto.h
-+++ b/drivers/crypto/ccp/ccp-crypto.h
-@@ -89,7 +89,7 @@ static inline struct ccp_crypto_ahash_alg *
- /***** AES related defines *****/
- struct ccp_aes_ctx {
- 	/* Fallback cipher for XTS with unsupported unit sizes */
--	struct crypto_sync_skcipher *tfm_skcipher;
-+	struct crypto_skcipher *tfm_skcipher;
+ static int chcr_aes_cbc_setkey(struct crypto_skcipher *cipher,
+@@ -1206,13 +1202,8 @@ static int chcr_handle_cipher_resp(struct skcipher_request *req,
+ 				      req);
+ 		memcpy(req->iv, reqctx->init_iv, IV);
+ 		atomic_inc(&adap->chcr_stats.fallback);
+-		err = chcr_cipher_fallback(ablkctx->sw_cipher,
+-				     req->base.flags,
+-				     req->src,
+-				     req->dst,
+-				     req->cryptlen,
+-				     req->iv,
+-				     reqctx->op);
++		err = chcr_cipher_fallback(ablkctx->sw_cipher, req, req->iv,
++					   reqctx->op);
+ 		goto complete;
+ 	}
  
- 	enum ccp_engine engine;
- 	enum ccp_aes_type type;
-@@ -121,6 +121,8 @@ struct ccp_aes_req_ctx {
- 	u8 rfc3686_iv[AES_BLOCK_SIZE];
+@@ -1341,11 +1332,7 @@ static int process_cipher(struct skcipher_request *req,
+ 		chcr_cipher_dma_unmap(&ULD_CTX(c_ctx(tfm))->lldi.pdev->dev,
+ 				      req);
+ fallback:       atomic_inc(&adap->chcr_stats.fallback);
+-		err = chcr_cipher_fallback(ablkctx->sw_cipher,
+-					   req->base.flags,
+-					   req->src,
+-					   req->dst,
+-					   req->cryptlen,
++		err = chcr_cipher_fallback(ablkctx->sw_cipher, req,
+ 					   subtype ==
+ 					   CRYPTO_ALG_SUB_TYPE_CTR_RFC3686 ?
+ 					   reqctx->iv : req->iv,
+@@ -1486,14 +1473,15 @@ static int chcr_init_tfm(struct crypto_skcipher *tfm)
+ 	struct chcr_context *ctx = crypto_skcipher_ctx(tfm);
+ 	struct ablk_ctx *ablkctx = ABLK_CTX(ctx);
  
- 	struct ccp_cmd cmd;
-+
+-	ablkctx->sw_cipher = crypto_alloc_sync_skcipher(alg->base.cra_name, 0,
++	ablkctx->sw_cipher = crypto_alloc_skcipher(alg->base.cra_name, 0,
+ 				CRYPTO_ALG_NEED_FALLBACK);
+ 	if (IS_ERR(ablkctx->sw_cipher)) {
+ 		pr_err("failed to allocate fallback for %s\n", alg->base.cra_name);
+ 		return PTR_ERR(ablkctx->sw_cipher);
+ 	}
+ 	init_completion(&ctx->cbc_aes_aio_done);
+-	crypto_skcipher_set_reqsize(tfm, sizeof(struct chcr_skcipher_req_ctx));
++	crypto_skcipher_set_reqsize(tfm, sizeof(struct chcr_skcipher_req_ctx) +
++					 crypto_skcipher_reqsize(ablkctx->sw_cipher));
+ 
+ 	return chcr_device_init(ctx);
+ }
+@@ -1507,13 +1495,14 @@ static int chcr_rfc3686_init(struct crypto_skcipher *tfm)
+ 	/*RFC3686 initialises IV counter value to 1, rfc3686(ctr(aes))
+ 	 * cannot be used as fallback in chcr_handle_cipher_response
+ 	 */
+-	ablkctx->sw_cipher = crypto_alloc_sync_skcipher("ctr(aes)", 0,
++	ablkctx->sw_cipher = crypto_alloc_skcipher("ctr(aes)", 0,
+ 				CRYPTO_ALG_NEED_FALLBACK);
+ 	if (IS_ERR(ablkctx->sw_cipher)) {
+ 		pr_err("failed to allocate fallback for %s\n", alg->base.cra_name);
+ 		return PTR_ERR(ablkctx->sw_cipher);
+ 	}
+-	crypto_skcipher_set_reqsize(tfm, sizeof(struct chcr_skcipher_req_ctx));
++	crypto_skcipher_set_reqsize(tfm, sizeof(struct chcr_skcipher_req_ctx) +
++				    crypto_skcipher_reqsize(ablkctx->sw_cipher));
+ 	return chcr_device_init(ctx);
+ }
+ 
+@@ -1523,7 +1512,7 @@ static void chcr_exit_tfm(struct crypto_skcipher *tfm)
+ 	struct chcr_context *ctx = crypto_skcipher_ctx(tfm);
+ 	struct ablk_ctx *ablkctx = ABLK_CTX(ctx);
+ 
+-	crypto_free_sync_skcipher(ablkctx->sw_cipher);
++	crypto_free_skcipher(ablkctx->sw_cipher);
+ }
+ 
+ static int get_alg_config(struct algo_param *params,
+diff --git a/drivers/crypto/chelsio/chcr_crypto.h b/drivers/crypto/chelsio/chcr_crypto.h
+index b3fdbdc25acb..55a6631cdbee 100644
+--- a/drivers/crypto/chelsio/chcr_crypto.h
++++ b/drivers/crypto/chelsio/chcr_crypto.h
+@@ -171,7 +171,7 @@ static inline struct chcr_context *h_ctx(struct crypto_ahash *tfm)
+ }
+ 
+ struct ablk_ctx {
+-	struct crypto_sync_skcipher *sw_cipher;
++	struct crypto_skcipher *sw_cipher;
+ 	__be32 key_ctx_hdr;
+ 	unsigned int enckey_len;
+ 	unsigned char ciph_mode;
+@@ -305,6 +305,7 @@ struct chcr_skcipher_req_ctx {
+ 	u8 init_iv[CHCR_MAX_CRYPTO_IV_LEN];
+ 	u16 txqidx;
+ 	u16 rxqidx;
 +	struct skcipher_request fallback_req;	// keep at the end
  };
  
- struct ccp_aes_cmac_req_ctx {
+ struct chcr_alg_template {
 -- 
 2.27.0
 
