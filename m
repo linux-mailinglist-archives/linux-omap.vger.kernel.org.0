@@ -2,77 +2,193 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CE2B20C100
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 13:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7706320C1E1
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 15:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725926AbgF0LML (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 27 Jun 2020 07:12:11 -0400
-Received: from bosmailout06.eigbox.net ([66.96.185.6]:43867 "EHLO
-        bosmailout06.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726424AbgF0LML (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 27 Jun 2020 07:12:11 -0400
-X-Greylist: delayed 1861 seconds by postgrey-1.27 at vger.kernel.org; Sat, 27 Jun 2020 07:12:10 EDT
-Received: from bosmailscan10.eigbox.net ([10.20.15.10])
-        by bosmailout06.eigbox.net with esmtp (Exim)
-        id 1jp8Gi-0002lS-Rc; Sat, 27 Jun 2020 06:41:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=morganmorem.org; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Reply-To:From:Subject:Date:Message-ID:To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=v26y40hxnc0IuoSdJmQByfVs+ix8nmGBNTYiq3zxUIk=; b=JZ1n064yMbFAqf21zztEZ5SRT0
-        wzGJWGIaaWIQhbDjlAVwIS9vUKBhfo8CNF3m86vMCFMm4Kom1PQlRssWLWAHz4LYn1VpFzyqyJMeJ
-        himU/9s4qiamCmJFZfxCn5ttizCOLqZYWdDx1DVTehg6GRNjX5Hvx8MZ2eXumdItz0MfLYb7kphE6
-        G8Cc/S+qd7vGxEvn3QABk32M7eu/xYGyf0bU+IO0ozAwvtcAP/n60M5XDuAGWOoD351oMIyName+l
-        ir4cGtlRRU/6sFv4cmKOoPb3sAkdp7YfsKlMNCT+ggalsInARhgOHNVWUMsja2mxbm6sGDaOMwOkk
-        fj/k7q2A==;
-Received: from [10.115.3.33] (helo=bosimpout13)
-        by bosmailscan10.eigbox.net with esmtp (Exim)
-        id 1jp8Gh-0000Iw-GQ; Sat, 27 Jun 2020 06:41:07 -0400
-Received: from boswebmail02.eigbox.net ([10.20.16.2])
-        by bosimpout13 with 
-        id wAgv2200102gDNJ01Agy6h; Sat, 27 Jun 2020 06:41:07 -0400
-X-EN-SP-DIR: OUT
-X-EN-SP-SQ: 1
-Received: from [127.0.0.1] (helo=email.ipage.com)
-        by boswebmail02.eigbox.net with esmtp (Exim)
-        id 1jp8GU-0005GD-W9; Sat, 27 Jun 2020 06:40:55 -0400
-Received: from 197.210.71.163
-        (SquirrelMail authenticated user ukwa@morganmorem.org)
-        by email.ipage.com with HTTP;
-        Sat, 27 Jun 2020 06:40:54 -0400
-Message-ID: <1c7637ca33ba6798444cd381a94b03b4.squirrel@email.ipage.com>
-Date:   Sat, 27 Jun 2020 06:40:54 -0400
-Subject: Re
-From:   "Mr Mohammed Kamal" <ukwa@morganmorem.org>
-Reply-To: kmma102@yahoo.com
-User-Agent: SquirrelMail/1.4.19
+        id S1726177AbgF0Nzz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 27 Jun 2020 09:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32916 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726657AbgF0Nzz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 27 Jun 2020 09:55:55 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97D24C061794
+        for <linux-omap@vger.kernel.org>; Sat, 27 Jun 2020 06:55:54 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id dg28so9042515edb.3
+        for <linux-omap@vger.kernel.org>; Sat, 27 Jun 2020 06:55:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hoSrfN6BUR4s2KxWgiwxUSDxg2CiKyhfKscI1191oiA=;
+        b=T8sLRMvw/GozyjPIwBVAuof7TWZV5UE+xRUqLg5JJVUQV/qh8ABpO+NdDWOEOl7In3
+         3500XHgq2minPL+o2DBa/QDRLeY4TU+A/XsjL0LRaRr7b5ZdBj6MW2SOysKirBN4UZdW
+         9sxehSPrLAFe100eH49YKmxBEazdwIU6WfX0ouKm4v7dwM+3bKbNoytUSSwoDhhb8Rmn
+         EXv33BYFX8Etmck3DZxXkKer4ZRM8sleFnVNf9Qzmrk56vh6Qx27uoOxSop58Rw0CYBm
+         O6CzoQ+wScSN57FdDSHJ2Uk64fFluScupS0tEEQLyvgP8iMsmBSwDbG+etGnrVxS4W4P
+         ZbVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hoSrfN6BUR4s2KxWgiwxUSDxg2CiKyhfKscI1191oiA=;
+        b=AEV7mrW9yaPgtjahf+snCxub9wPAkMvA+Q0fytIvgzwrEZkwShEi0bkJS54LWi7WtO
+         Yrt6ijzcw8uJihaYuLRvtHTEtW8xals6j4O+dfGjB2jRso2hlB/wvsxacGSEfsJGZt21
+         +tASNA8uuTNzFLyVMe2KYvxjlZr/zGIlN24QMkp25C3cIpCK0j0Ks7VysdBtbG08F0cC
+         Yb07jpVec/e3C8d2Shuav8cNlp6SCJqmoG5bijTSG9yBsOPjkahuYRPq5LRHyALjD68I
+         zbrLjpm/3zm9AAObrssmGZnxTVSMQCqxH+J4/2TW7D1s3QqVjotWVGbSWwe3pbiQTH2m
+         uDOQ==
+X-Gm-Message-State: AOAM531UZo/IXQJmEY1TrtGzp6/9UA1XhODF2IerFjLwpVXDAg0DknF3
+        lQKhjRsX3EO/xYhbuSa71V7SZg==
+X-Google-Smtp-Source: ABdhPJyQ9Nm7pcD7I8ZuGmTzvTdIQKbVgRckXBQakwSnqr+vyREZjumQpmx23E0PMKrU7of3rXTC8g==
+X-Received: by 2002:aa7:c305:: with SMTP id l5mr2571618edq.163.1593266152157;
+        Sat, 27 Jun 2020 06:55:52 -0700 (PDT)
+Received: from localhost.localdomain ([2001:16b8:5c8f:5b01:3446:ed90:fece:8da5])
+        by smtp.gmail.com with ESMTPSA id bc23sm5665335edb.90.2020.06.27.06.55.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Jun 2020 06:55:51 -0700 (PDT)
+From:   Drew Fustini <drew@beagleboard.org>
+To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
+        bcousson@baylibre.com, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        linux-gpio@vger.kernel.org
+Cc:     Drew Fustini <drew@beagleboard.org>
+Subject: [PATCH] Add default mux for pins that a free GPIO lines on the PocketBeagle
+Date:   Sat, 27 Jun 2020 15:55:38 +0200
+Message-Id: <20200627135538.194179-1-drew@beagleboard.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
 Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-X-EN-AuthUser: ukwa@morganmorem.org
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+These pins on the PocketBeagle P1 and P2 headers are connected to AM3358
+balls with gpio lines, and these pins are not used for any other
+peripherals by default. These GPIO lines are unclaimed and could be used
+by userspace program through the gpiod ABI. However, no driver will have
+set mux mode for the pins.
 
+This patch adds a "default" state in the am33xx_pinmux node and sets the
+pins to gpio output mux mode.
 
+Signed-off-by: Drew Fustini <drew@beagleboard.org>
+---
+ arch/arm/boot/dts/am335x-pocketbeagle.dts | 98 +++++++++++++++++++++++
+ 1 file changed, 98 insertions(+)
 
-Sir,
-I am Mr Mohammed Kamal Head of Operations at Finance and Account
-Department of Qatar Petroleum. I have an Investment opportunity of $100M,
-for Investment in your Country. I need your assistance and co-operation to
-move it into your account as a Contract Payment  with the QP for onward
-investment in your country.Tell me if you can handle this,then Get back to
-me with this (kmma102@yahoo.com ) if you can't, don't let this to be known
-by any other person. Its between you and I.
-Kind regards,
-Mr Mohammed Kamal
-Finance and Account Department
-Qatar Petroleum
+diff --git a/arch/arm/boot/dts/am335x-pocketbeagle.dts b/arch/arm/boot/dts/am335x-pocketbeagle.dts
+index f0b222201b86..900dc6558701 100644
+--- a/arch/arm/boot/dts/am335x-pocketbeagle.dts
++++ b/arch/arm/boot/dts/am335x-pocketbeagle.dts
+@@ -60,6 +60,104 @@ vmmcsd_fixed: fixedregulator0 {
+ };
+ 
+ &am33xx_pinmux {
++
++	pinctrl-names = "default";
++	pinctrl-0 =   <	&P2_03_gpio &P1_34_gpio &P2_19_gpio &P2_24_gpio
++			&P2_33_gpio &P2_22_gpio &P2_18_gpio &P2_10_gpio
++			&P2_06_gpio &P2_04_gpio &P2_02_gpio &P2_08_gpio
++			&P2_17_gpio >;
++
++	/* P2_03 (ZCZ ball T10) gpio0_23 0x824 */
++	P2_03_gpio: pinmux_P2_03_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_AD9, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P1_34 (ZCZ ball T11) gpio0_26 0x828 */
++	P1_34_gpio: pinmux_P1_34_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_AD10, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++		/* P2_19 (ZCZ ball U12) gpio0_27 0x82c */
++	P2_19_gpio: pinmux_P2_19_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_AD11, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_24 (ZCZ ball T12) gpio1_12 0x830 */
++	P2_24_gpio: pinmux_P2_24_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_AD12, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_33 (ZCZ ball R12) gpio1_13 0x834 */
++	P2_33_gpio: pinmux_P2_33_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_AD13, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_22 (ZCZ ball V13) gpio1_14 0x838 */
++	P2_22_gpio: pinmux_P2_22_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_AD14, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_18 (ZCZ ball U13) gpio1_15 0x83c */
++	P2_18_gpio: pinmux_P2_18_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_AD15, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_10 (ZCZ ball R14) gpio1_20 0x850 */
++	P2_10_gpio: pinmux_P2_10_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_A4, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_06 (ZCZ ball U16) gpio1_25 0x864 */
++	P2_06_gpio: pinmux_P2_06_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_A9, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_04 (ZCZ ball T16) gpio1_26 0x868 */
++	P2_04_gpio: pinmux_P2_04_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_A10, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_02 (ZCZ ball V17) gpio1_27 0x86c */
++	P2_02_gpio: pinmux_P2_02_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_A11, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_08 (ZCZ ball U18) gpio1_28 0x878 */
++	P2_08_gpio: pinmux_P2_08_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_BEN1, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
++	/* P2_17 (ZCZ ball V12) gpio2_1 0x88c */
++	P2_17_gpio: pinmux_P2_17_gpio {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_GPMC_CLK, PIN_OUTPUT, MUX_MODE7)
++		>;
++	};
++
+ 	i2c2_pins: pinmux-i2c2-pins {
+ 		pinctrl-single,pins = <
+ 			AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, PIN_INPUT_PULLUP, MUX_MODE3)	/* (D17) uart1_rtsn.I2C2_SCL */
+-- 
+2.25.1
 
