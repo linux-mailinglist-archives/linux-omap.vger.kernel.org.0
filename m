@@ -2,74 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAC3D20C363
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 19:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50E0D20C482
+	for <lists+linux-omap@lfdr.de>; Sun, 28 Jun 2020 00:03:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725975AbgF0RzN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 27 Jun 2020 13:55:13 -0400
-Received: from server.strassenburgpharma.biz ([85.187.132.10]:41904 "EHLO
-        server.strassenburgpharma.biz" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725932AbgF0RzN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 27 Jun 2020 13:55:13 -0400
-X-Greylist: delayed 15725 seconds by postgrey-1.27 at vger.kernel.org; Sat, 27 Jun 2020 13:55:12 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=strassenburgpharma.com; s=default; h=Message-ID:Reply-To:Subject:To:From:
-        Date:Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID
-        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-        Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=xkDsXpEitqBoPOZ/9D6b0Qod8i3nY9LBEa7cKlro3+c=; b=k92mhbFyChW8lrwDONxA0g5vij
-        2ZERd30HdoWFmLx+SgC5ZRGfsneeRVWBI3IN5SMjM4eIIfYSQSX7yhUsVVq9Boz07+GB5+og70yn8
-        mFmETkdOMlwYVvs8l4u+ViF4zWEtrsAlD95azpMrBHN5giuw8rKlVw279lDqSO55jkMWTY06NiIim
-        Ero9USF+6RTqHjzA5JKyRafsRsJ83V1kbqFXEl+P9dv+Z9oVXBspGhUVwgmY43+C6t8XrJwVokJrj
-        j4eq1JTWMwIdrX3xROW4BLPF64/eXaI7gaukQmMRQrWfI0zHpVILr5YxZyWdWDK5ch7l745nqtQep
-        NUbxPt3Q==;
-Received: from localhost ([127.0.0.1]:40620 helo=server.strassenburgpharma.biz)
-        by server.strassenburgpharma.biz with esmtpa (Exim 4.93)
-        (envelope-from <sudam.pandadm@strassenburgpharma.com>)
-        id 1jpAvU-0005Qo-7p; Sat, 27 Jun 2020 21:31:24 +0800
+        id S1726101AbgF0WDB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 27 Jun 2020 18:03:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50706 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726057AbgF0WDB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 27 Jun 2020 18:03:01 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25D98C061794
+        for <linux-omap@vger.kernel.org>; Sat, 27 Jun 2020 15:03:01 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id 95so1357431otw.10
+        for <linux-omap@vger.kernel.org>; Sat, 27 Jun 2020 15:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=uvaWEz0dd8Ac3CT35qBSqfznpY4sgxsz7Od3pFBzZIuQcY/8TViLhlHXQU9leeTEpY
+         AGovLfmyzd6U3Cq2lgZLwHP1J5YFMSD+Pyz17XxyLzQnjVOPPz8Ik+J+fYFM18bC4Fqc
+         JhO+jF294xtXRRnL3TKWvGE6eKydOzo9lI+qnLW3YVbUSLfu7Gq0pi7M8z5WpDddMN8M
+         WWaoRGs8g5M97omhRASDLgcJhl5wyTXcCK3cENHMncLoSakV7dWBQ+2v4jCXqV+88itT
+         y9KXfYDXgC/gw5+BqchOAKmUvgcqp5Y71+LwruoBL/ShzO8C2ON+xs5RLFzJg/awZL11
+         9lUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
+        b=exDiHg03+trQgvchBcxYKtJ7fiGKPBGYmcDJUNm8Smf5kocdtwT/l7HO6k68On9Wmq
+         eEAAT8gcGmDJlX24lt7ee9oG5tMUImjb5Y21t411qtKslnOc/kSVHQ4uHthF5rKIl1HX
+         +2i6NiwUyvIEPRzh3RZFvMwMhW4pEFaaC8IRH0Q2zYf7d+c0UhEXeE0n1N5Zz7GnfUsK
+         k2agsKaF83/9AXMThH6+3Vk8EjveeK3QNztpGLGSHa97GUw3Hy8/XuRHJ2mmeXVkAkWU
+         NQH2lzAoDTRquU/43Km+1xFYnU7axO7TsNRU3eLbk8ljL5ayn0ahQSQMOy11VRkPIzKA
+         qzag==
+X-Gm-Message-State: AOAM533vDCSMZis061CAt7wQvIJe2ZivIIvI7yzAUPf9c9QGqVNJSPV5
+        /9zaPJ2dCIxC0KzBHljeBObRD/ttd9w2onYKpBTRYirR+Yg=
+X-Google-Smtp-Source: ABdhPJynf4CV3u/z+wvqAxCFESu7ee7lLWI0u2+Rd2bRIf462RpI7Q5/OgPmYRkZuywkeS9iG1gTukKnSolbNLelkro=
+X-Received: by 2002:a05:6830:1dba:: with SMTP id z26mr8074641oti.180.1593294943879;
+ Sat, 27 Jun 2020 14:55:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Sat, 27 Jun 2020 21:31:24 +0800
-From:   "Mis, Patricia" <sudam.pandadm@strassenburgpharma.com>
+Received: by 2002:a9d:12d3:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:55:43
+ -0700 (PDT)
+Reply-To: un.org@i.ua
+From:   helen <taxofficebenin@gmail.com>
+Date:   Sat, 27 Jun 2020 22:55:43 +0100
+Message-ID: <CAK9MGy3D5UBf06OY16UW=c+Cybm67x+0kH_OWJkX7ywdQD9CNA@mail.gmail.com>
+Subject: 
 To:     undisclosed-recipients:;
-Subject: Aw: Von Mis, Patricia Daniel. !!!
-Reply-To: patricia.d0980@gmail.com
-Mail-Reply-To: patricia.d0980@gmail.com
-Message-ID: <5029cd9b41aaefd087faf0d1605a1b52@strassenburgpharma.com>
-X-Sender: sudam.pandadm@strassenburgpharma.com
-User-Agent: Roundcube Webmail/1.3.8
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.strassenburgpharma.biz
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - strassenburgpharma.com
-X-Get-Message-Sender-Via: server.strassenburgpharma.biz: authenticated_id: sudam.pandadm@strassenburgpharma.com
-X-Authenticated-Sender: server.strassenburgpharma.biz: sudam.pandadm@strassenburgpharma.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+MONEY-GRAM TRANSFERRED PAYMENT INFO:
+
+Below is the sender=E2=80=99s information
 
 
--- 
-Sehr geehrte Damen und Herren,
 
-Ich brauche Ihre Hilfe, um in Ihr Land zu ziehen, Investitionen zu
-ermöglichen und meine Ausbildung fortzusetzen. Ich brauche Ihre
-Unterstützung, weil ich die Faktoren nicht kenne, die Ihr Land für ein
-Investitionsprojekt leiten.
+1. MG. REFERENCE NO#: 36360857
 
-Kannst du mich unterstützen?
+2. SENDER'S NAME: Johnson Williams
 
-Kontaktieren Sie mich für weitere Details!
+3. AMOUNT TO PICKUP: US$10,000
 
-Mit freundlichen Grüßen,
-Fräulein Patricia.
+
+
+Go to any Money Gram office near you and pick up the payment Track the
+
+Reference Number by visiting and click the link below
+
+(https://secure.moneygram.com/embed/track) and enter the Reference
+
+Number: 36360857 and the Last Name: Williams, you will find the payment
+
+available for pickup instantly.
+
+Yours Sincerely,
+
+Mrs. Helen Marvis
+United Nations Liaison Office
+Directorate for International Payments
