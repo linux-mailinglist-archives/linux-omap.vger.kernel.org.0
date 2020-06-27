@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9441E20C03B
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 10:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B747220C03D
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 10:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726177AbgF0Igp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 27 Jun 2020 04:36:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60794 "EHLO mail.kernel.org"
+        id S1726335AbgF0Igu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 27 Jun 2020 04:36:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60884 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726086AbgF0Igp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 27 Jun 2020 04:36:45 -0400
+        id S1726086AbgF0Igt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 27 Jun 2020 04:36:49 -0400
 Received: from dogfood.home (lfbn-nic-1-188-42.w2-15.abo.wanadoo.fr [2.15.37.42])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 977E2207FC;
-        Sat, 27 Jun 2020 08:36:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1071F208C7;
+        Sat, 27 Jun 2020 08:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593247004;
-        bh=DOov/VzevH5sYOijwCFcdKlJxFMfsKQgVxpnIqtZ1KY=;
+        s=default; t=1593247009;
+        bh=7g45QWyrYUg0An4TDCghUfvpEHV1X2Se+dPPjGObVdQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d3D4qZ1Udq19A4lVk9G8mcnn+SKDYG8eRwybM6i60UDifVk1tlJZrpBYpOBGmezZN
-         p93KPhKHWW658YZPGd+3PhaqhERvvq5bH8I7mvwdIgweJda0/QDy9qGvWM+7hSsqrS
-         0GoZSRp0fTzPlGrrigR0JDgGLOQWXvxmqWF1KgfU=
+        b=m/ajGB074NYPLnbD44erR6c0f/YJu/AftljLUMwznn2XTvzylJ57vf9p77ozT+oMH
+         LnD5P55AI7sAnQiCyMDNQOkzTrkruxcyc0jQAiYMgNHRmip/V38nDze6evPOeL1pLE
+         IE0r1GnBuZ0T4ZicvAT81K/AIf0R2ONMInASwX58=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-crypto@vger.kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
@@ -46,9 +46,9 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         Eric Biggers <ebiggers@google.com>,
         Tero Kristo <t-kristo@ti.com>,
         Matthias Brugger <matthias.bgg@gmail.com>
-Subject: [PATCH v2 02/13] crypto: amlogic-gxl - permit async skcipher as fallback
-Date:   Sat, 27 Jun 2020 10:36:12 +0200
-Message-Id: <20200627083623.2428333-3-ardb@kernel.org>
+Subject: [PATCH v2 03/13] crypto: omap-aes - permit asynchronous skcipher as fallback
+Date:   Sat, 27 Jun 2020 10:36:13 +0200
+Message-Id: <20200627083623.2428333-4-ardb@kernel.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200627083623.2428333-1-ardb@kernel.org>
 References: <20200627083623.2428333-1-ardb@kernel.org>
@@ -59,119 +59,127 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Even though the amlogic-gxl driver implements asynchronous versions of
-ecb(aes) and cbc(aes), the fallbacks it allocates are required to be
-synchronous. Given that SIMD based software implementations are usually
-asynchronous as well, even though they rarely complete asynchronously
-(this typically only happens in cases where the request was made from
-softirq context, while SIMD was already in use in the task context that
-it interrupted), these implementations are disregarded, and either the
-generic C version or another table based version implemented in assembler
-is selected instead.
+Even though the omap-aes driver implements asynchronous versions of
+ecb(aes), cbc(aes) and ctr(aes), the fallbacks it allocates are required
+to be synchronous. Given that SIMD based software implementations are
+usually asynchronous as well, even though they rarely complete
+asynchronously (this typically only happens in cases where the request was
+made from softirq context, while SIMD was already in use in the task
+context that it interrupted), these implementations are disregarded, and
+either the generic C version or another table based version implemented in
+assembler is selected instead.
 
-Since falling back to synchronous AES is not only a performance issue,
-but potentially a security issue as well (due to the fact that table
-based AES is not time invariant), let's fix this, by allocating an
-ordinary skcipher as the fallback, and invoke it with the completion
-routine that was given to the outer request.
+Since falling back to synchronous AES is not only a performance issue, but
+potentially a security issue as well (due to the fact that table based AES
+is not time invariant), let's fix this, by allocating an ordinary skcipher
+as the fallback, and invoke it with the completion routine that was given
+to the outer request.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- drivers/crypto/amlogic/amlogic-gxl-cipher.c | 27 ++++++++++----------
- drivers/crypto/amlogic/amlogic-gxl.h        |  3 ++-
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/crypto/omap-aes.c | 35 ++++++++++----------
+ drivers/crypto/omap-aes.h |  3 +-
+ 2 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/crypto/amlogic/amlogic-gxl-cipher.c b/drivers/crypto/amlogic/amlogic-gxl-cipher.c
-index 9819dd50fbad..5880b94dcb32 100644
---- a/drivers/crypto/amlogic/amlogic-gxl-cipher.c
-+++ b/drivers/crypto/amlogic/amlogic-gxl-cipher.c
-@@ -64,22 +64,20 @@ static int meson_cipher_do_fallback(struct skcipher_request *areq)
- #ifdef CONFIG_CRYPTO_DEV_AMLOGIC_GXL_DEBUG
- 	struct skcipher_alg *alg = crypto_skcipher_alg(tfm);
- 	struct meson_alg_template *algt;
--#endif
--	SYNC_SKCIPHER_REQUEST_ON_STACK(req, op->fallback_tfm);
+diff --git a/drivers/crypto/omap-aes.c b/drivers/crypto/omap-aes.c
+index b5aff20c5900..25154b74dcc6 100644
+--- a/drivers/crypto/omap-aes.c
++++ b/drivers/crypto/omap-aes.c
+@@ -548,20 +548,18 @@ static int omap_aes_crypt(struct skcipher_request *req, unsigned long mode)
+ 		  !!(mode & FLAGS_CBC));
  
--#ifdef CONFIG_CRYPTO_DEV_AMLOGIC_GXL_DEBUG
- 	algt = container_of(alg, struct meson_alg_template, alg.skcipher);
- 	algt->stat_fb++;
- #endif
--	skcipher_request_set_sync_tfm(req, op->fallback_tfm);
--	skcipher_request_set_callback(req, areq->base.flags, NULL, NULL);
--	skcipher_request_set_crypt(req, areq->src, areq->dst,
-+	skcipher_request_set_tfm(&rctx->fallback_req, op->fallback_tfm);
-+	skcipher_request_set_callback(&rctx->fallback_req, areq->base.flags,
-+				      areq->base.complete, areq->base.data);
-+	skcipher_request_set_crypt(&rctx->fallback_req, areq->src, areq->dst,
- 				   areq->cryptlen, areq->iv);
-+
- 	if (rctx->op_dir == MESON_DECRYPT)
--		err = crypto_skcipher_decrypt(req);
-+		err = crypto_skcipher_decrypt(&rctx->fallback_req);
- 	else
--		err = crypto_skcipher_encrypt(req);
--	skcipher_request_zero(req);
-+		err = crypto_skcipher_encrypt(&rctx->fallback_req);
- 	return err;
- }
- 
-@@ -321,15 +319,16 @@ int meson_cipher_init(struct crypto_tfm *tfm)
- 	algt = container_of(alg, struct meson_alg_template, alg.skcipher);
- 	op->mc = algt->mc;
- 
--	sktfm->reqsize = sizeof(struct meson_cipher_req_ctx);
+ 	if (req->cryptlen < aes_fallback_sz) {
+-		SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, ctx->fallback);
 -
--	op->fallback_tfm = crypto_alloc_sync_skcipher(name, 0, CRYPTO_ALG_NEED_FALLBACK);
-+	op->fallback_tfm = crypto_alloc_skcipher(name, 0, CRYPTO_ALG_NEED_FALLBACK);
- 	if (IS_ERR(op->fallback_tfm)) {
- 		dev_err(op->mc->dev, "ERROR: Cannot allocate fallback for %s %ld\n",
- 			name, PTR_ERR(op->fallback_tfm));
- 		return PTR_ERR(op->fallback_tfm);
+-		skcipher_request_set_sync_tfm(subreq, ctx->fallback);
+-		skcipher_request_set_callback(subreq, req->base.flags, NULL,
+-					      NULL);
+-		skcipher_request_set_crypt(subreq, req->src, req->dst,
+-					   req->cryptlen, req->iv);
++		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
++		skcipher_request_set_callback(&rctx->fallback_req,
++					      req->base.flags,
++					      req->base.complete,
++					      req->base.data);
++		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
++					   req->dst, req->cryptlen, req->iv);
+ 
+ 		if (mode & FLAGS_ENCRYPT)
+-			ret = crypto_skcipher_encrypt(subreq);
++			ret = crypto_skcipher_encrypt(&rctx->fallback_req);
+ 		else
+-			ret = crypto_skcipher_decrypt(subreq);
+-
+-		skcipher_request_zero(subreq);
++			ret = crypto_skcipher_decrypt(&rctx->fallback_req);
+ 		return ret;
  	}
+ 	dd = omap_aes_find_dev(rctx);
+@@ -590,11 +588,11 @@ static int omap_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
+ 	memcpy(ctx->key, key, keylen);
+ 	ctx->keylen = keylen;
  
-+	sktfm->reqsize = sizeof(struct meson_cipher_req_ctx) +
-+			 crypto_skcipher_reqsize(op->fallback_tfm);
-+
- 	op->enginectx.op.do_one_request = meson_handle_cipher_request;
- 	op->enginectx.op.prepare_request = NULL;
- 	op->enginectx.op.unprepare_request = NULL;
-@@ -345,7 +344,7 @@ void meson_cipher_exit(struct crypto_tfm *tfm)
- 		memzero_explicit(op->key, op->keylen);
- 		kfree(op->key);
- 	}
--	crypto_free_sync_skcipher(op->fallback_tfm);
-+	crypto_free_skcipher(op->fallback_tfm);
+-	crypto_sync_skcipher_clear_flags(ctx->fallback, CRYPTO_TFM_REQ_MASK);
+-	crypto_sync_skcipher_set_flags(ctx->fallback, tfm->base.crt_flags &
++	crypto_skcipher_clear_flags(ctx->fallback, CRYPTO_TFM_REQ_MASK);
++	crypto_skcipher_set_flags(ctx->fallback, tfm->base.crt_flags &
+ 						 CRYPTO_TFM_REQ_MASK);
+ 
+-	ret = crypto_sync_skcipher_setkey(ctx->fallback, key, keylen);
++	ret = crypto_skcipher_setkey(ctx->fallback, key, keylen);
+ 	if (!ret)
+ 		return 0;
+ 
+@@ -640,15 +638,16 @@ static int omap_aes_init_tfm(struct crypto_skcipher *tfm)
+ {
+ 	const char *name = crypto_tfm_alg_name(&tfm->base);
+ 	struct omap_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
+-	struct crypto_sync_skcipher *blk;
++	struct crypto_skcipher *blk;
+ 
+-	blk = crypto_alloc_sync_skcipher(name, 0, CRYPTO_ALG_NEED_FALLBACK);
++	blk = crypto_alloc_skcipher(name, 0, CRYPTO_ALG_NEED_FALLBACK);
+ 	if (IS_ERR(blk))
+ 		return PTR_ERR(blk);
+ 
+ 	ctx->fallback = blk;
+ 
+-	crypto_skcipher_set_reqsize(tfm, sizeof(struct omap_aes_reqctx));
++	crypto_skcipher_set_reqsize(tfm, sizeof(struct omap_aes_reqctx) +
++					 crypto_skcipher_reqsize(blk));
+ 
+ 	ctx->enginectx.op.prepare_request = omap_aes_prepare_req;
+ 	ctx->enginectx.op.unprepare_request = NULL;
+@@ -662,7 +661,7 @@ static void omap_aes_exit_tfm(struct crypto_skcipher *tfm)
+ 	struct omap_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
+ 
+ 	if (ctx->fallback)
+-		crypto_free_sync_skcipher(ctx->fallback);
++		crypto_free_skcipher(ctx->fallback);
+ 
+ 	ctx->fallback = NULL;
  }
+diff --git a/drivers/crypto/omap-aes.h b/drivers/crypto/omap-aes.h
+index 2d111bf906e1..23d073e87bb8 100644
+--- a/drivers/crypto/omap-aes.h
++++ b/drivers/crypto/omap-aes.h
+@@ -97,7 +97,7 @@ struct omap_aes_ctx {
+ 	int		keylen;
+ 	u32		key[AES_KEYSIZE_256 / sizeof(u32)];
+ 	u8		nonce[4];
+-	struct crypto_sync_skcipher	*fallback;
++	struct crypto_skcipher	*fallback;
+ };
  
- int meson_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
-@@ -377,5 +376,5 @@ int meson_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	if (!op->key)
- 		return -ENOMEM;
- 
--	return crypto_sync_skcipher_setkey(op->fallback_tfm, key, keylen);
-+	return crypto_skcipher_setkey(op->fallback_tfm, key, keylen);
- }
-diff --git a/drivers/crypto/amlogic/amlogic-gxl.h b/drivers/crypto/amlogic/amlogic-gxl.h
-index b7f2de91ab76..dc0f142324a3 100644
---- a/drivers/crypto/amlogic/amlogic-gxl.h
-+++ b/drivers/crypto/amlogic/amlogic-gxl.h
-@@ -109,6 +109,7 @@ struct meson_dev {
- struct meson_cipher_req_ctx {
- 	u32 op_dir;
- 	int flow;
+ struct omap_aes_gcm_ctx {
+@@ -110,6 +110,7 @@ struct omap_aes_reqctx {
+ 	unsigned long mode;
+ 	u8 iv[AES_BLOCK_SIZE];
+ 	u32 auth_tag[AES_BLOCK_SIZE / sizeof(u32)];
 +	struct skcipher_request fallback_req;	// keep at the end
  };
  
- /*
-@@ -126,7 +127,7 @@ struct meson_cipher_tfm_ctx {
- 	u32 keylen;
- 	u32 keymode;
- 	struct meson_dev *mc;
--	struct crypto_sync_skcipher *fallback_tfm;
-+	struct crypto_skcipher *fallback_tfm;
- };
- 
- /*
+ #define OMAP_AES_QUEUE_LENGTH	1
 -- 
 2.27.0
 
