@@ -2,209 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AE7320C1F6
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 16:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAC3D20C363
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Jun 2020 19:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725850AbgF0OJi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 27 Jun 2020 10:09:38 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:25004 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725798AbgF0OJi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 27 Jun 2020 10:09:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1593266972;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=oZX/2REc+F7gc5PSyf4xLdHRaC1Jao1IJPfNXwG+ask=;
-        b=hB7puQo3D8wdgy79Gwnv6MGt2P2yRewKjcXTexkp270ZgBW32n6+KvNoYWjVsY+rmR
-        tI1YB7zxv2FrxhKJTpunmke2R4n/RK9cmz3391JckNvOC/apFjr3XjXSLRAqwCpZygID
-        WBfLEzvmGaoVXClAggzEtNnoedOm+dGdSnazennrZu2aydjdGyhO73E4tRw4A5qJUg7/
-        bn6AqApsc34tPUB2dh0aOjZUhrP76YFvkejzhrd6Yez+iX+h2+f3N6t+YFLGHO+/O34c
-        rFeidqzFYnnhBA+GO59iwC/wSccm4Iq88MF9nqxDhdIuo87Tc2QzBrNzXMwozlbEdx2g
-        5C8Q==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlWcXA0MG+M="
-X-RZG-CLASS-ID: mo00
-Received: from mbp-13-nikolaus.fritz.box
-        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
-        with ESMTPSA id V07054w5RE9OHTJ
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Sat, 27 Jun 2020 16:09:24 +0200 (CEST)
-Subject: Re: [PATCH] Add default mux for pins that a free GPIO lines on the PocketBeagle
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20200627135538.194179-1-drew@beagleboard.org>
-Date:   Sat, 27 Jun 2020 16:09:27 +0200
-Cc:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
-        bcousson@baylibre.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>,
-        linux-gpio@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <53805044-06E2-4A70-A024-4D77DEA3FCDE@goldelico.com>
-References: <20200627135538.194179-1-drew@beagleboard.org>
-To:     Drew Fustini <drew@beagleboard.org>
-X-Mailer: Apple Mail (2.3124)
+        id S1725975AbgF0RzN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 27 Jun 2020 13:55:13 -0400
+Received: from server.strassenburgpharma.biz ([85.187.132.10]:41904 "EHLO
+        server.strassenburgpharma.biz" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725932AbgF0RzN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 27 Jun 2020 13:55:13 -0400
+X-Greylist: delayed 15725 seconds by postgrey-1.27 at vger.kernel.org; Sat, 27 Jun 2020 13:55:12 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=strassenburgpharma.com; s=default; h=Message-ID:Reply-To:Subject:To:From:
+        Date:Content-Transfer-Encoding:Content-Type:MIME-Version:Sender:Cc:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=xkDsXpEitqBoPOZ/9D6b0Qod8i3nY9LBEa7cKlro3+c=; b=k92mhbFyChW8lrwDONxA0g5vij
+        2ZERd30HdoWFmLx+SgC5ZRGfsneeRVWBI3IN5SMjM4eIIfYSQSX7yhUsVVq9Boz07+GB5+og70yn8
+        mFmETkdOMlwYVvs8l4u+ViF4zWEtrsAlD95azpMrBHN5giuw8rKlVw279lDqSO55jkMWTY06NiIim
+        Ero9USF+6RTqHjzA5JKyRafsRsJ83V1kbqFXEl+P9dv+Z9oVXBspGhUVwgmY43+C6t8XrJwVokJrj
+        j4eq1JTWMwIdrX3xROW4BLPF64/eXaI7gaukQmMRQrWfI0zHpVILr5YxZyWdWDK5ch7l745nqtQep
+        NUbxPt3Q==;
+Received: from localhost ([127.0.0.1]:40620 helo=server.strassenburgpharma.biz)
+        by server.strassenburgpharma.biz with esmtpa (Exim 4.93)
+        (envelope-from <sudam.pandadm@strassenburgpharma.com>)
+        id 1jpAvU-0005Qo-7p; Sat, 27 Jun 2020 21:31:24 +0800
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Sat, 27 Jun 2020 21:31:24 +0800
+From:   "Mis, Patricia" <sudam.pandadm@strassenburgpharma.com>
+To:     undisclosed-recipients:;
+Subject: Aw: Von Mis, Patricia Daniel. !!!
+Reply-To: patricia.d0980@gmail.com
+Mail-Reply-To: patricia.d0980@gmail.com
+Message-ID: <5029cd9b41aaefd087faf0d1605a1b52@strassenburgpharma.com>
+X-Sender: sudam.pandadm@strassenburgpharma.com
+User-Agent: Roundcube Webmail/1.3.8
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.strassenburgpharma.biz
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - strassenburgpharma.com
+X-Get-Message-Sender-Via: server.strassenburgpharma.biz: authenticated_id: sudam.pandadm@strassenburgpharma.com
+X-Authenticated-Sender: server.strassenburgpharma.biz: sudam.pandadm@strassenburgpharma.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
-> Am 27.06.2020 um 15:55 schrieb Drew Fustini <drew@beagleboard.org>:
->=20
-> These pins on the PocketBeagle P1 and P2 headers are connected to =
-AM3358
-> balls with gpio lines, and these pins are not used for any other
-> peripherals by default. These GPIO lines are unclaimed and could be =
-used
-> by userspace program through the gpiod ABI. However, no driver will =
-have
-> set mux mode for the pins.
->=20
-> This patch adds a "default" state in the am33xx_pinmux node and sets =
-the
-> pins to gpio output mux mode.
 
-wouldn't it be more safe to set them to input mode?
+-- 
+Sehr geehrte Damen und Herren,
 
-BR,
-Nikolaus Schaller
+Ich brauche Ihre Hilfe, um in Ihr Land zu ziehen, Investitionen zu
+ermöglichen und meine Ausbildung fortzusetzen. Ich brauche Ihre
+Unterstützung, weil ich die Faktoren nicht kenne, die Ihr Land für ein
+Investitionsprojekt leiten.
 
->=20
-> Signed-off-by: Drew Fustini <drew@beagleboard.org>
-> ---
-> arch/arm/boot/dts/am335x-pocketbeagle.dts | 98 +++++++++++++++++++++++
-> 1 file changed, 98 insertions(+)
->=20
-> diff --git a/arch/arm/boot/dts/am335x-pocketbeagle.dts =
-b/arch/arm/boot/dts/am335x-pocketbeagle.dts
-> index f0b222201b86..900dc6558701 100644
-> --- a/arch/arm/boot/dts/am335x-pocketbeagle.dts
-> +++ b/arch/arm/boot/dts/am335x-pocketbeagle.dts
-> @@ -60,6 +60,104 @@ vmmcsd_fixed: fixedregulator0 {
-> };
->=20
-> &am33xx_pinmux {
-> +
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D   <	&P2_03_gpio &P1_34_gpio &P2_19_gpio =
-&P2_24_gpio
-> +			&P2_33_gpio &P2_22_gpio &P2_18_gpio &P2_10_gpio
-> +			&P2_06_gpio &P2_04_gpio &P2_02_gpio &P2_08_gpio
-> +			&P2_17_gpio >;
-> +
-> +	/* P2_03 (ZCZ ball T10) gpio0_23 0x824 */
-> +	P2_03_gpio: pinmux_P2_03_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_AD9, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P1_34 (ZCZ ball T11) gpio0_26 0x828 */
-> +	P1_34_gpio: pinmux_P1_34_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_AD10, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +		/* P2_19 (ZCZ ball U12) gpio0_27 0x82c */
-> +	P2_19_gpio: pinmux_P2_19_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_AD11, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_24 (ZCZ ball T12) gpio1_12 0x830 */
-> +	P2_24_gpio: pinmux_P2_24_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_AD12, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_33 (ZCZ ball R12) gpio1_13 0x834 */
-> +	P2_33_gpio: pinmux_P2_33_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_AD13, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_22 (ZCZ ball V13) gpio1_14 0x838 */
-> +	P2_22_gpio: pinmux_P2_22_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_AD14, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_18 (ZCZ ball U13) gpio1_15 0x83c */
-> +	P2_18_gpio: pinmux_P2_18_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_AD15, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_10 (ZCZ ball R14) gpio1_20 0x850 */
-> +	P2_10_gpio: pinmux_P2_10_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_A4, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_06 (ZCZ ball U16) gpio1_25 0x864 */
-> +	P2_06_gpio: pinmux_P2_06_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_A9, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_04 (ZCZ ball T16) gpio1_26 0x868 */
-> +	P2_04_gpio: pinmux_P2_04_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_A10, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_02 (ZCZ ball V17) gpio1_27 0x86c */
-> +	P2_02_gpio: pinmux_P2_02_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_A11, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_08 (ZCZ ball U18) gpio1_28 0x878 */
-> +	P2_08_gpio: pinmux_P2_08_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_BEN1, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> +	/* P2_17 (ZCZ ball V12) gpio2_1 0x88c */
-> +	P2_17_gpio: pinmux_P2_17_gpio {
-> +		pinctrl-single,pins =3D <
-> +			AM33XX_PADCONF(AM335X_PIN_GPMC_CLK, PIN_OUTPUT, =
-MUX_MODE7)
-> +		>;
-> +	};
-> +
-> 	i2c2_pins: pinmux-i2c2-pins {
-> 		pinctrl-single,pins =3D <
-> 			AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, =
-PIN_INPUT_PULLUP, MUX_MODE3)	/* (D17) uart1_rtsn.I2C2_SCL */
-> --=20
-> 2.25.1
->=20
+Kannst du mich unterstützen?
 
+Kontaktieren Sie mich für weitere Details!
+
+Mit freundlichen Grüßen,
+Fräulein Patricia.
