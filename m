@@ -2,333 +2,184 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96BC620DF13
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jun 2020 23:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86DFC20E6A0
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jun 2020 00:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389288AbgF2Ub4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Jun 2020 16:31:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56284 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732478AbgF2Ubz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Jun 2020 16:31:55 -0400
-Received: from smtp.al2klimov.de (smtp.al2klimov.de [IPv6:2a01:4f8:c0c:1465::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 670F6C061755;
-        Mon, 29 Jun 2020 13:31:55 -0700 (PDT)
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-        by smtp.al2klimov.de (Postfix) with ESMTPA id 29768BC140;
-        Mon, 29 Jun 2020 20:31:33 +0000 (UTC)
-From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To:     corbet@lwn.net, aaro.koskinen@iki.fi, tony@atomide.com,
-        linux@armlinux.org.uk, daniel@zonque.org, haojian.zhuang@gmail.com,
-        robert.jarzmik@free.fr, kgene@kernel.org, krzk@kernel.org,
-        dmitry.torokhov@gmail.com, lee.jones@linaro.org,
-        wsa+renesas@sang-engineering.com, ulf.hansson@linaro.org,
-        davem@davemloft.net, kuba@kernel.org, b.zolnierkie@samsung.com,
-        j.neuschaefer@gmx.net, mchehab+samsung@kernel.org,
-        gustavo@embeddedor.com, gregkh@linuxfoundation.org,
-        yanaijie@huawei.com, daniel.vetter@ffwll.ch,
-        rafael.j.wysocki@intel.com, Julia.Lawall@inria.fr,
-        linus.walleij@linaro.org, viresh.kumar@linaro.org, arnd@arndb.de,
-        jani.nikula@intel.com, yuehaibing@huawei.com,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
-Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Subject: [PATCH] Remove handhelds.org links and email addresses
-Date:   Mon, 29 Jun 2020 22:31:21 +0200
-Message-Id: <20200629203121.7892-1-grandmaster@al2klimov.de>
+        id S2404346AbgF2VtF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Jun 2020 17:49:05 -0400
+Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:54600 "EHLO
+        hetgrotebos.org" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2404335AbgF2VtC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Jun 2020 17:49:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
+         s=mail; h=Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:
+        References:Cc:To:Subject:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
+        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+        :List-Post:List-Owner:List-Archive;
+        bh=yYf/4uioxwUJRWditCtSogal4Oh2sBPAPwofmyk83yw=; b=OJM4aI1cX/AKmwFJh9uqrq3T39
+        SG2V5EIUhlUHaxxaauiqH+DmP0Nreqh15pF8gW6PTeC7CA6cLbxXkQy094TrCVsSsI7GgFiT5swJe
+        hAl8kSZGEfcJnkjxNn00oR5ugXjY4MkunDNFMHTKVhcx4wx+P8Xz/rXppv4Mzbo4fOI2JZgktt2Bh
+        ipLPwLY7WwrbiSeUZsR13kxE272WvorNLSQJ+EXoNymUFvSbnGvghBElw8T50GvqZTsoBkL3fKePN
+        /D1OrbzSp/H+BG4I3CDrmjMEV4anJzi/YjiFEGRo8SDGdumI3ODEWv0teRzAcWJUwnVOBbwsyxKFc
+        cYkYKpCQ==;
+Received: from deepwater.fritz.box ([192.168.178.25] helo=[0.0.0.0])
+        by hetgrotebos.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <merlijn@wizzup.org>)
+        id 1jpruQ-0000p4-V1; Mon, 29 Jun 2020 11:25:10 +0000
+Subject: Re: [PATCH 1/2] Input: add `SW_MACHINE_COVER`
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Beno??t Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Borislav Petkov <bp@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Mark Gross <mgross@linux.intel.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        "open list:OMAP DEVICE TREE SUPPORT" <linux-omap@vger.kernel.org>,
+        "open list:OMAP DEVICE TREE SUPPORT" <devicetree@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." 
+        <linux-input@vger.kernel.org>
+References: <20200612125402.18393-1-merlijn@wizzup.org>
+ <20200612125402.18393-2-merlijn@wizzup.org> <20200616105045.GB1718@bug>
+From:   Merlijn Wajer <merlijn@wizzup.org>
+Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
+ 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
+ /XslHw==
+Message-ID: <fef69c79-9943-7bd1-5c51-101f551cf2c8@wizzup.org>
+Date:   Mon, 29 Jun 2020 13:27:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: ++
-X-Spam-Level: **
-Authentication-Results: smtp.al2klimov.de;
-        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
+In-Reply-To: <20200616105045.GB1718@bug>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="L9nXZWfLgDBc19pVr702UfFy2pqPFtyAn"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Rationale:
-https://lore.kernel.org/linux-doc/20200626110706.7b5d4a38@lwn.net/
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--L9nXZWfLgDBc19pVr702UfFy2pqPFtyAn
+Content-Type: multipart/mixed; boundary="EqbQqHPlILTDAUo6V7sORgxEpUBvBrTyA"
 
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
----
- @Jon I thought about what I said and *no*, unfortunately I *can't* automate
- the detection of such as easy as the HTTPSifying. As you maybe see below
- cleaning up is even "harder".
+--EqbQqHPlILTDAUo6V7sORgxEpUBvBrTyA
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
 
- We have only 17 files and one domain here. Shall I split it up per subsystem
- or can we let it as is?
+Hi,
 
- Documentation/arm/sa1100/assabet.rst           |  2 --
- Documentation/arm/samsung-s3c24xx/h1940.rst    | 10 ----------
- Documentation/arm/samsung-s3c24xx/overview.rst |  3 +--
- Documentation/arm/samsung-s3c24xx/smdk2440.rst |  4 ----
- arch/arm/mach-omap1/Kconfig                    |  4 +---
- arch/arm/mach-pxa/h5000.c                      |  2 +-
- arch/arm/mach-s3c24xx/mach-h1940.c             |  2 --
- arch/arm/mach-s3c24xx/mach-n30.c               |  3 ---
- arch/arm/mach-s3c24xx/mach-rx3715.c            |  2 --
- drivers/input/keyboard/gpio_keys.c             |  2 +-
- drivers/input/keyboard/jornada720_kbd.c        |  2 +-
- drivers/input/touchscreen/jornada720_ts.c      |  2 +-
- drivers/mfd/asic3.c                            |  2 +-
- drivers/mmc/host/renesas_sdhi_core.c           |  2 +-
- drivers/net/ethernet/dec/tulip/de4x5.c         |  1 -
- drivers/video/fbdev/sa1100fb.c                 |  2 +-
- include/linux/apm-emulation.h                  |  2 --
- 17 files changed, 9 insertions(+), 38 deletions(-)
+Looks like we're blocking on this input patch.
 
-diff --git a/Documentation/arm/sa1100/assabet.rst b/Documentation/arm/sa1100/assabet.rst
-index a761e128fb08..c9e75ae3f077 100644
---- a/Documentation/arm/sa1100/assabet.rst
-+++ b/Documentation/arm/sa1100/assabet.rst
-@@ -32,7 +32,6 @@ BLOB (http://www.lartmaker.nl/lartware/blob/)
-    patches were merged into BLOB to add support for Assabet.
- 
- Compaq's Bootldr + John Dorsey's patch for Assabet support
--(http://www.handhelds.org/Compaq/bootldr.html)
- (http://www.wearablegroup.org/software/bootldr/)
- 
-    Bootldr is the bootloader developed by Compaq for the iPAQ Pocket PC.
-@@ -54,7 +53,6 @@ precompiled RedBoot binary is available from the following location:
- 
- - ftp://ftp.netwinder.org/users/n/nico/
- - ftp://ftp.arm.linux.org.uk/pub/linux/arm/people/nico/
--- ftp://ftp.handhelds.org/pub/linux/arm/sa-1100-patches/
- 
- Look for redboot-assabet*.tgz.  Some installation infos are provided in
- redboot-assabet*.txt.
-diff --git a/Documentation/arm/samsung-s3c24xx/h1940.rst b/Documentation/arm/samsung-s3c24xx/h1940.rst
-index 62a562c178e3..e7ce61ada9ee 100644
---- a/Documentation/arm/samsung-s3c24xx/h1940.rst
-+++ b/Documentation/arm/samsung-s3c24xx/h1940.rst
-@@ -2,8 +2,6 @@
- HP IPAQ H1940
- =============
- 
--http://www.handhelds.org/projects/h1940.html
--
- Introduction
- ------------
- 
-@@ -16,14 +14,6 @@ Support
- 
-   A variety of information is available
- 
--  handhelds.org project page:
--
--    http://www.handhelds.org/projects/h1940.html
--
--  handhelds.org wiki page:
--
--    http://handhelds.org/moin/moin.cgi/HpIpaqH1940
--
-   Herbert Pötzl pages:
- 
-     http://vserver.13thfloor.at/H1940/
-diff --git a/Documentation/arm/samsung-s3c24xx/overview.rst b/Documentation/arm/samsung-s3c24xx/overview.rst
-index e9a1dc7276b5..ed17c2a86edf 100644
---- a/Documentation/arm/samsung-s3c24xx/overview.rst
-+++ b/Documentation/arm/samsung-s3c24xx/overview.rst
-@@ -113,8 +113,7 @@ Machines
- 
-   Acer N30
- 
--    A S3C2410 based PDA from Acer.  There is a Wiki page at
--    http://handhelds.org/moin/moin.cgi/AcerN30Documentation .
-+    A S3C2410 based PDA from Acer.
- 
-   AML M5900
- 
-diff --git a/Documentation/arm/samsung-s3c24xx/smdk2440.rst b/Documentation/arm/samsung-s3c24xx/smdk2440.rst
-index 524fd0b4afaf..c2681815e585 100644
---- a/Documentation/arm/samsung-s3c24xx/smdk2440.rst
-+++ b/Documentation/arm/samsung-s3c24xx/smdk2440.rst
-@@ -25,10 +25,6 @@ Support
-   Ben Dooks' SMDK2440 site at http://www.fluff.org/ben/smdk2440/ which
-   includes linux based USB download tools.
- 
--  Some of the h1940 patches that can be found from the H1940 project
--  site at http://www.handhelds.org/projects/h1940.html can also be
--  applied to this board.
--
- 
- Peripherals
- -----------
-diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
-index 948da556162e..8631a2f4e746 100644
---- a/arch/arm/mach-omap1/Kconfig
-+++ b/arch/arm/mach-omap1/Kconfig
-@@ -145,9 +145,7 @@ config MACH_SX1
- 	help
- 	  Support for the Siemens SX1 phone. To boot the kernel,
- 	  you'll need a SX1 compatible bootloader; check out
--	  http://forum.oslik.ru and
--	  http://www.handhelds.org/moin/moin.cgi/SiemensSX1
--	  for more information.
-+	  http://forum.oslik.ru for more information.
- 	  Say Y here if you have such a phone, say NO otherwise.
- 
- config MACH_NOKIA770
-diff --git a/arch/arm/mach-pxa/h5000.c b/arch/arm/mach-pxa/h5000.c
-index ece1e71c90a9..679aa780b004 100644
---- a/arch/arm/mach-pxa/h5000.c
-+++ b/arch/arm/mach-pxa/h5000.c
-@@ -4,7 +4,7 @@
-  *
-  * Copyright 2000-2003  Hewlett-Packard Company.
-  * Copyright 2002       Jamey Hicks <jamey.hicks@hp.com>
-- * Copyright 2004-2005  Phil Blundell <pb@handhelds.org>
-+ * Copyright 2004-2005  Phil Blundell
-  * Copyright 2007-2008  Anton Vorontsov <cbouatmailru@gmail.com>
-  *
-  * COMPAQ COMPUTER CORPORATION MAKES NO WARRANTIES, EXPRESSED OR IMPLIED,
-diff --git a/arch/arm/mach-s3c24xx/mach-h1940.c b/arch/arm/mach-s3c24xx/mach-h1940.c
-index e1c372e5447b..da8debc28282 100644
---- a/arch/arm/mach-s3c24xx/mach-h1940.c
-+++ b/arch/arm/mach-s3c24xx/mach-h1940.c
-@@ -2,8 +2,6 @@
- //
- // Copyright (c) 2003-2005 Simtec Electronics
- //   Ben Dooks <ben@simtec.co.uk>
--//
--// http://www.handhelds.org/projects/h1940.html
- 
- #include <linux/kernel.h>
- #include <linux/types.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-n30.c b/arch/arm/mach-s3c24xx/mach-n30.c
-index d856f23939af..210cadfd8168 100644
---- a/arch/arm/mach-s3c24xx/mach-n30.c
-+++ b/arch/arm/mach-s3c24xx/mach-n30.c
-@@ -7,9 +7,6 @@
- //	Ben Dooks <ben@simtec.co.uk>
- //
- // Copyright (c) 2005-2008 Christer Weinigel <christer@weinigel.se>
--//
--// There is a wiki with more information about the n30 port at
--// http://handhelds.org/moin/moin.cgi/AcerN30Documentation .
- 
- #include <linux/kernel.h>
- #include <linux/types.h>
-diff --git a/arch/arm/mach-s3c24xx/mach-rx3715.c b/arch/arm/mach-s3c24xx/mach-rx3715.c
-index 529c6faf862f..669b96ec79a7 100644
---- a/arch/arm/mach-s3c24xx/mach-rx3715.c
-+++ b/arch/arm/mach-s3c24xx/mach-rx3715.c
-@@ -2,8 +2,6 @@
- //
- // Copyright (c) 2003-2004 Simtec Electronics
- //	Ben Dooks <ben@simtec.co.uk>
--//
--// http://www.handhelds.org/projects/rx3715.html
- 
- #include <linux/kernel.h>
- #include <linux/types.h>
-diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
-index 53c9ff338dea..f455f6efdd26 100644
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -1032,6 +1032,6 @@ late_initcall(gpio_keys_init);
- module_exit(gpio_keys_exit);
- 
- MODULE_LICENSE("GPL");
--MODULE_AUTHOR("Phil Blundell <pb@handhelds.org>");
-+MODULE_AUTHOR("Phil Blundell");
- MODULE_DESCRIPTION("Keyboard driver for GPIOs");
- MODULE_ALIAS("platform:gpio-keys");
-diff --git a/drivers/input/keyboard/jornada720_kbd.c b/drivers/input/keyboard/jornada720_kbd.c
-index cd9af5221c3d..6c1ca741a405 100644
---- a/drivers/input/keyboard/jornada720_kbd.c
-+++ b/drivers/input/keyboard/jornada720_kbd.c
-@@ -9,7 +9,7 @@
-  *    Copyright (C) 2006 jornada 720 kbd driver by
- 		Filip Zyzniewsk <Filip.Zyzniewski@tefnet.plX
-  *     based on (C) 2004 jornada 720 kbd driver by
--		Alex Lange <chicken@handhelds.org>
-+		Alex Lange
-  */
- #include <linux/device.h>
- #include <linux/errno.h>
-diff --git a/drivers/input/touchscreen/jornada720_ts.c b/drivers/input/touchscreen/jornada720_ts.c
-index 974521102178..be17592b431c 100644
---- a/drivers/input/touchscreen/jornada720_ts.c
-+++ b/drivers/input/touchscreen/jornada720_ts.c
-@@ -5,7 +5,7 @@
-  * Copyright (C) 2007 Kristoffer Ericson <Kristoffer.Ericson@gmail.com>
-  *
-  *  Copyright (C) 2006 Filip Zyzniewski <filip.zyzniewski@tefnet.pl>
-- *  based on HP Jornada 56x touchscreen driver by Alex Lange <chicken@handhelds.org>
-+ *  based on HP Jornada 56x touchscreen driver by Alex Lange
-  *
-  * HP Jornada 710/720/729 Touchscreen Driver
-  */
-diff --git a/drivers/mfd/asic3.c b/drivers/mfd/asic3.c
-index a6bd2134cea2..e9fdc402eddd 100644
---- a/drivers/mfd/asic3.c
-+++ b/drivers/mfd/asic3.c
-@@ -8,7 +8,7 @@
-  * Copyright 2004-2005 Phil Blundell
-  * Copyright 2007-2008 OpenedHand Ltd.
-  *
-- * Authors: Phil Blundell <pb@handhelds.org>,
-+ * Authors: Phil Blundell,
-  *	    Samuel Ortiz <sameo@openedhand.com>
-  */
- 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index 15e21894bd44..1fc640fa4784 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -13,7 +13,7 @@
-  * Copyright 2004-2005 Phil Blundell
-  * Copyright 2007-2008 OpenedHand Ltd.
-  *
-- * Authors: Phil Blundell <pb@handhelds.org>,
-+ * Authors: Phil Blundell,
-  *	    Samuel Ortiz <sameo@openedhand.com>
-  *
-  */
-diff --git a/drivers/net/ethernet/dec/tulip/de4x5.c b/drivers/net/ethernet/dec/tulip/de4x5.c
-index 0ccd9994ad45..3f0e5cdb538f 100644
---- a/drivers/net/ethernet/dec/tulip/de4x5.c
-+++ b/drivers/net/ethernet/dec/tulip/de4x5.c
-@@ -435,7 +435,6 @@
-                            case a PCI bridge (DEC chip 21152). The value of
-                            'pb' is now only initialized if a de4x5 chip is
-                            present.
--                           <france@handhelds.org>
-       0.547  08-Nov-01    Use library crc32 functions by <Matt_Domsch@dell.com>
-       0.548  30-Aug-03    Big 2.6 cleanup. Ported to PCI/EISA probing and
-                            generic DMA APIs. Fixed DE425 support on Alpha.
-diff --git a/drivers/video/fbdev/sa1100fb.c b/drivers/video/fbdev/sa1100fb.c
-index 3e6e13f7a831..0d273b02cba0 100644
---- a/drivers/video/fbdev/sa1100fb.c
-+++ b/drivers/video/fbdev/sa1100fb.c
-@@ -144,7 +144,7 @@
-  *	  manufactured by Prime View, model no V16C6448AB
-  *
-  * 2001/07/23: <rmk@arm.linux.org.uk>
-- *	- Hand merge version from handhelds.org CVS tree.  See patch
-+ *	- Hand merge version from CVS tree.  See patch
-  *	  notes for 595/1 for more information.
-  *	- Drop 12bpp (it's 16bpp with different colour register mappings).
-  *	- This hardware can not do direct colour.  Therefore we don't
-diff --git a/include/linux/apm-emulation.h b/include/linux/apm-emulation.h
-index 94c036957948..b5d63358c61b 100644
---- a/include/linux/apm-emulation.h
-+++ b/include/linux/apm-emulation.h
-@@ -1,7 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /* -*- linux-c -*-
-- *
-- * (C) 2003 zecke@handhelds.org
-  *
-  * based on arch/arm/kernel/apm.c
-  * factor out the information needed by architectures to provide
--- 
-2.27.0
+On 16/06/2020 12:50, Pavel Machek wrote:
+> On Fri 2020-06-12 14:53:58, Merlijn Wajer wrote:
+>> This event code represents the state of a removable cover of a device.=
 
+>> Value 0 means that the cover is open or removed, value 1 means that th=
+e
+>> cover is closed.
+>>
+>> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com> Acked=
+-by: Tony Lindgren=20
+>> <tony@atomide.com> Signed-off-by: Merlijn Wajer <merlijn@wizzup.org> -=
+--
+>=20
+> Dmitry, can we get some kind of comment here, or better yet can we get =
+you to apply this?
+
+This is part of a patch series to resolve problems with the Nokia N900
+not booting when the cover is removed (making the cover be the card
+detect was also just weird IMHO). Just removing the card-detect from the
+DTS is fine, but it was suggested that we expose the data instead as
+input event. And that's gotten no response for about four months.
+
+Should we just drop the feature and only remove the cd-gpios line from
+the DTS, assuming upstream doesn't want this SW_MACHINE_COVER code?
+
+Merlijn
+
+
+--EqbQqHPlILTDAUo6V7sORgxEpUBvBrTyA--
+
+--L9nXZWfLgDBc19pVr702UfFy2pqPFtyAn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCXvnQKAAKCRAGN09rynK8
+WgE7AP9fyxHZYvAwf0BX3mGGRxMa++9Yz8UqZbcxLpGyR89XPgEAkRwyWpSwCu4o
+8hYneNbhz/Wg4AUBuPfSi9aG+QuQdwc=
+=tGXY
+-----END PGP SIGNATURE-----
+
+--L9nXZWfLgDBc19pVr702UfFy2pqPFtyAn--
