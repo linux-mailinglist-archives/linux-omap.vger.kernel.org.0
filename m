@@ -2,90 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFDE220E503
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jun 2020 00:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E27520E32C
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jun 2020 00:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731813AbgF2Vbb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Jun 2020 17:31:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60598 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728803AbgF2SlR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 29 Jun 2020 14:41:17 -0400
-Received: from earth.universe (dyndsl-091-096-060-101.ewe-ip-backbone.de [91.96.60.101])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8AFBE23B9B;
-        Mon, 29 Jun 2020 11:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593430924;
-        bh=Da5rKfu7NcQEU4hEYHAI7KlFjFOHVdyUmJ9/xzsXQOE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Wr28RRfMzBCTuyoQPSS2ea58UU/qydW6onAfi9dI5ECjWngYxtjjkCMfLblAdfP20
-         +HOQbwKVA4y9MVfdWHO5Gvh3z9GvCkG1Q/IhXtPoHjtNJZfzIDyEEU9+2iTrLwDcXA
-         pD+tYmRgaLOh2QEQtyuZyiCEXsvTH7M6MIUOTJqk=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 56C873C08CD; Mon, 29 Jun 2020 13:42:02 +0200 (CEST)
-Date:   Mon, 29 Jun 2020 13:42:02 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Dev Null <devnull@uvos.xyz>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: [bug report] Droid 4 cpcap rtc
-Message-ID: <20200629114202.7e5su5ny75mhqubw@earth.universe>
-References: <20200629002917.0a2045380a0fe022f852e067@uvos.xyz>
+        id S1730158AbgF2VMa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Jun 2020 17:12:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40928 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727009AbgF2S5o (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Jun 2020 14:57:44 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77469C00F804
+        for <linux-omap@vger.kernel.org>; Mon, 29 Jun 2020 05:29:03 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id a1so16347569ejg.12
+        for <linux-omap@vger.kernel.org>; Mon, 29 Jun 2020 05:29:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=nLPL88OfKWPjoDgMrUq7HX0bJ21PFQyFVAStT19x/30=;
+        b=PSx0WywEstp6kzCgrb2T780nS7vnNFzJS+U+DK53C0PhGN6LZvYDc2EFvOEAdEmhEj
+         RUqqwUYHPI+moJOm1Lu+qDnTY8k7w4i1ZmDLAcEGCt5/VfkthQIciG4scNhgkF7qBZsF
+         vapojTxZMy6hzLbJ19FtwmOG4LeFbtDfvu2hGXI5r15prpIVDn5Q6Ex36/ORxBC8HOMu
+         p8sNi03zdwEm4JKaNFhsJFwkK43/7a69OrK8KLs3I2Jj3FUWqdHQLOJ+ViEJxwPsy3tk
+         RJ+tPHTitdFJ/MPwm7Oci+jsb+VVt/S6RIkCjMGIh8K6vN3UA3j4206+/RBfGp3XCb1e
+         Wcrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=nLPL88OfKWPjoDgMrUq7HX0bJ21PFQyFVAStT19x/30=;
+        b=GUljHLRFvnOs4k6/3uz8qwcEwSGeLEFInnpsQtS5rqcjLF/b7GPIOAGmGozt/t9SMx
+         wrYf5/fM+DfgfypRJTses1AvGzRgFhrEu6a+5mD8m7CjNf3+9O4iJ7Jsb26Gshj8xQq9
+         nKq5QecqhytBhewLRVgkRgEhrb1wr5620Arg8XtuMOwrpwSoCe5jC29IiPwN3BNJB3CV
+         pvuoRxE5MEGz4W3qCgQkJM20fdBuQe9agsxDJN454OXEM6Ak3hF9vkSQeJprpjlhEtBW
+         oc358H/PRHYdcQQKCwK33D1uKOefx2z3VC/xC3UzM2ObnCr2VUnMRXNHqJtdwjwzRBln
+         3TAA==
+X-Gm-Message-State: AOAM533FCxEBmD47tqdZk60L/7jViM/blhrHm4OD/mg0oj6ywNZVIaDW
+        cD2CJX9YEK9YCjdyt/R+f+agYg==
+X-Google-Smtp-Source: ABdhPJysnXFWJwpJ6uF9IEbsegahi3Y1+BUPbpahxlycTv66BVhVh2m/VMBwbtCgMcpWhDDWY9vklw==
+X-Received: by 2002:a17:906:fa15:: with SMTP id lo21mr14416147ejb.156.1593433742019;
+        Mon, 29 Jun 2020 05:29:02 -0700 (PDT)
+Received: from x1 (i59F66838.versanet.de. [89.246.104.56])
+        by smtp.gmail.com with ESMTPSA id a1sm18278094ejk.125.2020.06.29.05.29.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2020 05:29:01 -0700 (PDT)
+Date:   Mon, 29 Jun 2020 14:28:58 +0200
+From:   Drew Fustini <drew@beagleboard.org>
+To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        devicetree@vger.kernel.org, bcousson@baylibre.com,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Subject: Re: [PATCH v3 0/3] pinctrl: single: support #pinctrl-cells = 2
+Message-ID: <20200629122858.GA506802@x1>
+References: <20200622172951.524306-1-drew@beagleboard.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="3xcadvlsseesphbu"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200629002917.0a2045380a0fe022f852e067@uvos.xyz>
+In-Reply-To: <20200622172951.524306-1-drew@beagleboard.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, Jun 22, 2020 at 07:29:48PM +0200, Drew Fustini wrote:
+> Currently, pinctrl-single only allows #pinctrl-cells = 1.
+> 
+> This series will allow pinctrl-single to also support #pinctrl-cells = 2
+> 
+> If "pinctrl-single,pins" has 3 arguments (offset, conf, mux) then
+> pcs_parse_one_pinctrl_entry() does an OR operation on to get the
+> value to store in the register.
+>     
+> To take advantage of #pinctrl-cells = 2, the AM33XX_PADCONF macro in
+> omap.h is modified to keep pin conf and pin mux values separate.
+> 
+> change log:
+> - v3: change order of patches to make sure the pinctrl-single.c patch
+>   does not break anything without the dts patches
+> 
+> - v2: remove outer parentheses from AM33XX_PADCONF macro as it causes a
+>   compile error in dtc.  I had added it per suggestion from checkpatch
+>   about having parentheses around complex values.
+> 
+> Drew Fustini (3):
+>   pinctrl: single: parse #pinctrl-cells = 2
+>   ARM: dts: change AM33XX_PADCONF macro separate conf and mux
+>   ARM: dts: am33xx-l4: change #pinctrl-cells from 1 to 2
+> 
+>  arch/arm/boot/dts/am33xx-l4.dtsi   |  2 +-
+>  drivers/pinctrl/pinctrl-single.c   | 11 +++++++++--
+>  include/dt-bindings/pinctrl/omap.h |  2 +-
+>  3 files changed, 11 insertions(+), 4 deletions(-)
+> 
+> -- 
+> 2.25.1
+> 
 
---3xcadvlsseesphbu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi Tony - do you think this series is useful as-is?
 
-Hi,
+Or do you want to see some usage of the seperate conf and mux values
+first?
 
-On Mon, Jun 29, 2020 at 12:29:17AM +0200, Dev Null wrote:
-> 1. writing to the rtc via rtc-cpcap with hwclock appears to not work at all.
-> 	- see https://github.com/maemo-leste/bugtracker/issues/399
-> 	- hwclock: ioctl(RTC_SET_TIME) to /dev/rtc0 to set the time failed: Numerical result out of range
-
-Looks like a regression introduced by "rtc: cpcap: set range",
-which landed in v5.7.
-
-> 2. do you by any chance know how the RGB -> RGWRBW pentile color
-> conversion happens on the droid 4? is this handled in hardware or
-> in software or in firmware somewere?
-
-The omapdrm RGB framebuffer is send to the DSI panel, which has its
-own local framebuffer to support panel self refresh. The panel
-controller does the format change transparently and does not offer
-any configuration options as far as I know.
-
--- Sebastian
-
---3xcadvlsseesphbu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl75034ACgkQ2O7X88g7
-+ppr9w//cg72ArLU2Eh7eIjm15WYHlbn4gUpRac9b2ixCdtZy1aa6GKSa/K0S5ur
-vXyJhmqJtaQbOJZFluKSwD6meuny+55aTcpmTN3PfGw4lEpKVG74IY0BVhe1RA/c
-/m3pSKToCP6VpwSvG24ptKsLI6aRX/hZZNn69g3yJGEySQr9Yp+Mw1l9nQc5u+yk
-2hMCUBK1PFrDHqnifK3G+6aXAsKsEgfYPEk/fGuiQGmf2/YCKSX8/Pf11JGrhZZv
-UFaw9MFy+7b1c2HBjJykbzTjc0tfBLX8lUac5cHJ6KTg3KPZCbIR7XBIWTnohFLc
-NLCTFhOVY22mCLcijMTSXYxZocvxUsXjZ8PCfJJMWvCx1EhnMQBHFVnCF4mizW6W
-G4ruHmgpR+itwiMh2YyF+xFyNX9fwd4NngLRAtWESsb3lSk35yuAfFnbYY7LQ+QF
-X6HMnCYlYMGskrzds0cnFHQNwfq+LAS2CxBW5OBg45sWGfl+Xm5N5eHhr7wuAuZH
-13jfdZKrc+XEKd0l3+m2A8hlyFiOqQ7dRWZDX+SR5vul/aR+EVU1UjW2naepmoCO
-feQ/P6gfLMr2l/b9shkrsX9/HQhW/HjLQ5LdH8b+UxcJs5AkNNST3buKKhhsFb90
-65naCWXdE9EJZwOZpZCWCAZQhTF2m/Wa20NS1nGF9KVDu6eI/38=
-=0cdk
------END PGP SIGNATURE-----
-
---3xcadvlsseesphbu--
+thanks,
+drew
