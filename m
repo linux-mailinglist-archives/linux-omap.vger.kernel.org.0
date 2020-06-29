@@ -2,73 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B2820D461
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Jun 2020 21:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77AAD20D41C
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Jun 2020 21:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728556AbgF2TH4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Jun 2020 15:07:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42564 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730829AbgF2THo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Jun 2020 15:07:44 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FBAC02E2EA;
-        Mon, 29 Jun 2020 07:19:44 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id y2so17350917ioy.3;
-        Mon, 29 Jun 2020 07:19:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=47yB/J2jJp/Hyiy9M1uWjEhRFrnBjwMwfE/nDbFPyRk=;
-        b=COU2zmBMOm8jAHhSa++Aeij+HAuixWLkN3X9fJ0pp3riGsqzqZL1CRUWjbssHufSb3
-         gGm8EG9uruuKCtRAbTeqEFPbpPwFVXlmWaEpomInYFEsUjIMTgs0/WtnBKCqIuTcfRcy
-         WzB8luRn2ZuiM0dmbKxEP9KHf+/40+l7aiGoL7EPsd0ni5TOtKvyaUfdpyktQrZeKXuv
-         8tQqybvpp+PfzvX0U0eu8bHUltSlu19P4defCduKZUGmn4OUKxeO8/MHvqDDtIrKg5EI
-         MqLQ88Ll1cYGe57lf/CAX8xNMpPYzaxwO0MlzNAq6KZpIK/vPAcDtF3bdoAHltthEuXb
-         kZyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=47yB/J2jJp/Hyiy9M1uWjEhRFrnBjwMwfE/nDbFPyRk=;
-        b=f9r3KXQgYsxVaadQsYHxAx208E5S6WClXrMZIEbGlDmb3OTDb3Tm+V5cY2Tx6kfLaj
-         uAG9uiXeAVNZXSIINn4BT55s/Mzj3LqaZIARy668hcOd87P2wZWuArluzKwJlTbWPVVx
-         Q7Y4JZoRUSgpTOHf8C/rUIkrdxxv4sk9C+ejkhVALDv2T7+TLKD2rbVOlCXGS6x5+W1h
-         YCfUKzUqCwygXVSbuGDoIgJ4RMamRWSL0hvBLVejZlzAPE+7dmDN73g+uaR5exDQyT6R
-         Nj9V3Tg59i7TuP8swMUf49ZmnYNYaM6EVmOG9QplJW9jsMN6J+KHOmfoYFiZnkpvAtSW
-         hAmA==
-X-Gm-Message-State: AOAM531MxSgBNy/eWO+cq8LSAuleFJsbvZRqKE5SZqdqDQA2YRkwn1tN
-        UZeV0CBouO+OFdXuhrs/VcPAu/RltUZZvN3EpKGkjaGR
-X-Google-Smtp-Source: ABdhPJyC8hLzoJwSTAJ37OV6pmSucDMOB0wnAWTtZUr3eTh4i+eQjTnFBjIWQLJ5kNgYMsyBdON3CzqZ8fxg/7DhBJk=
-X-Received: by 2002:a6b:9355:: with SMTP id v82mr15996040iod.92.1593440382903;
- Mon, 29 Jun 2020 07:19:42 -0700 (PDT)
+        id S1729476AbgF2TFN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Jun 2020 15:05:13 -0400
+Received: from muru.com ([72.249.23.125]:59962 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730521AbgF2TFL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 29 Jun 2020 15:05:11 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 3161D818E;
+        Mon, 29 Jun 2020 15:30:22 +0000 (UTC)
+Date:   Mon, 29 Jun 2020 08:29:26 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 4/7] mach-omap1: board-ams-delta.c: remove soc_camera
+ dependencies
+Message-ID: <20200629152926.GQ37466@atomide.com>
+References: <20200626115321.1898798-1-hverkuil-cisco@xs4all.nl>
+ <20200626115321.1898798-5-hverkuil-cisco@xs4all.nl>
+ <CAK8P3a0XNb5=4F3QMpO+CtQZuxvKdmKrHPjZ80fv0Rgt4U0pfA@mail.gmail.com>
 MIME-Version: 1.0
-From:   Adam Ford <aford173@gmail.com>
-Date:   Mon, 29 Jun 2020 09:19:32 -0500
-Message-ID: <CAHCN7xJWL4_P4Dz04fSVPtSQJNVo-reW0SO7DqkMDhhBEVwsYg@mail.gmail.com>
-Subject: ti-soc-thermal fails on OMAP3
-To:     Linux-OMAP <linux-omap@vger.kernel.org>, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a0XNb5=4F3QMpO+CtQZuxvKdmKrHPjZ80fv0Rgt4U0pfA@mail.gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I submitted a patch in November to enable idling of the bandgap on
-OMAP3, however it was never applied.  I spent some time over the
-weekend trying refresh my memory on what was going on and what's left
-to do so I could re-submit the patch after re-basing it.
-Unfortunately, I am getting some errors even before attempting to
-re-apply my patch.
+* Arnd Bergmann <arnd@arndb.de> [200626 12:59]:
+> On Fri, Jun 26, 2020 at 1:53 PM Hans Verkuil <hverkuil-cisco@xs4all.nl> wrote:
+> >
+> > The soc_camera driver is about to be removed, so drop camera
+> > support from this board. Note that the soc_camera driver itself has
+> > long since been deprecated and can't be compiled anymore (it depends
+> > on BROKEN), so camera support on this board has been broken for a long
+> > time (at least since 4.6 when the omap1_camera.c was removed from soc_camera).
+> >
+> > Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+> > Cc: Arnd Bergmann <arnd@arndb.de>
+> > Cc: Tony Lindgren <tony@atomide.com>
+> > ---
+> >  arch/arm/mach-omap1/board-ams-delta.c         | 32 --------------
+> >  arch/arm/mach-omap1/camera.h                  | 14 ------
+> >  arch/arm/mach-omap1/devices.c                 | 43 -------------------
+> >  .../linux/platform_data/media/omap1_camera.h  | 32 --------------
+> 
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> Please merge this through the media tree if there are no objections.
 
-ti-soc-thermal: probe of 48002524.bandgap failed with error -22
+Yes agreed, this is unlikely to conflict with anything:
 
-I did some digging on this.  EINVAL (-22) is set  in ti-thermal-common
-in two places, and in both places it's trying either
-ti_bandgap_get_sensor_data or ti_thermal_build_data.
-
-I haven't had time to bisect yet, but I will.  I was just hoping
-someone might have some ideas to save me some time.
-
-thanks
-
-adam
+Acked-by: Tony Lindgren <tony@atomide.com>
