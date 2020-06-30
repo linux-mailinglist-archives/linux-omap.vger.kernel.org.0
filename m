@@ -2,86 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2445A20FCC4
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jun 2020 21:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8097A20FD52
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jun 2020 22:01:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbgF3T3p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Jun 2020 15:29:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43476 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726961AbgF3T3o (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Jun 2020 15:29:44 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F17FC061755;
-        Tue, 30 Jun 2020 12:29:44 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id k5so342966pjg.3;
-        Tue, 30 Jun 2020 12:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=z9NbGrJNVhmDvwjE4p/JaViBJ44BVQVTuZHg6UXMIYY=;
-        b=co3GS2Cjq3IS4PBvsxpk3iaeANWXu9yXQTCa2iad2uBkShSkMJdxn3+XTqZQwNfDXy
-         RlY76zsgVjCL43sSBus5UM6FBRu0aVIGHO4JN/bDnKmaer8C5enTUMgjW4YUfz0eEODp
-         txdPInWQ7GWQUOgDHHs67W+oOI5hBCYfzX84Pyz9UvnCOi9y2q9BZsXzQtKmfkRJwZS/
-         DSpFrB5U9oQ8oRblkl/qrgws8AvvQ8uhGK98S0lQDOU8OMLjrYC4/eH9XoZZOebAzwN3
-         GMrQM3PT/yZRtiT7PUVWYyuFrPxxrQknyJOyE0djQIFkCeBzVBbtogf+f5Rg3LzrjwjY
-         5UiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=z9NbGrJNVhmDvwjE4p/JaViBJ44BVQVTuZHg6UXMIYY=;
-        b=IJ1p4wsJ8933pTc/90QJlWLZOVSf+VxrPV0IsOJCBOVWIgIw0WzFeUgAipJCoZfo3s
-         IetVpmsBSlp0AmQJfvYJVRt8RzYYPgPGn6EgTm3pkd1t7ATGMNpRuC6Ek7b34OxIl3Ly
-         0XSy2p+RBFriT9v0pJCZyKuELLs9S1yeAoW97hvxpMRyc+zxJQq5cADi7Li8nNxd7FDK
-         ms7Tbqo7yqhbtnv9aiPDHnetMKMMKBMQrZx2IgF492WB+eNCbAbUuz7HaSLNG+27A8oa
-         SMusYD7DnsJUec00RYHnsNoCNT2ROzm81mZL6OvSSNgRRkFIyFlVAxe5uwmKhAPsm0Kk
-         bZoA==
-X-Gm-Message-State: AOAM533VYVJW+nsZ17bV/+OIiebLSAYxaGNpjw9V/EvDo7Yr2sD8fB/8
-        bmjv9GUbuTixMfrBQ309ypk=
-X-Google-Smtp-Source: ABdhPJwv4jFJgO1XEbhIRLji/2KijRhr9g67KUtACfRcPhhVmiFQ8SFh/i4yjIkB/MOaOvhH2n3yTg==
-X-Received: by 2002:a17:902:8a8f:: with SMTP id p15mr19083179plo.172.1593545383723;
-        Tue, 30 Jun 2020 12:29:43 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id s12sm3554059pgp.54.2020.06.30.12.29.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2020 12:29:43 -0700 (PDT)
-Date:   Tue, 30 Jun 2020 12:29:41 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Merlijn Wajer <merlijn@wizzup.org>
-Cc:     pavel@ucw.cz,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Mattias Jacobsson <2pi@mok.nu>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Mark Gross <mgross@linux.intel.com>,
-        "open list:OMAP DEVICE TREE SUPPORT" <linux-omap@vger.kernel.org>,
-        "open list:OMAP DEVICE TREE SUPPORT" <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." 
-        <linux-input@vger.kernel.org>
-Subject: Re: [PATCH 0/2] Add SW_MACHINE_COVER key
-Message-ID: <20200630192941.GI248110@dtor-ws>
-References: <20200612125402.18393-1-merlijn@wizzup.org>
+        id S1729110AbgF3UBp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Jun 2020 16:01:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46886 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728874AbgF3UBp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 30 Jun 2020 16:01:45 -0400
+Received: from localhost (mobile-166-175-191-139.mycingular.net [166.175.191.139])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 23B91206A1;
+        Tue, 30 Jun 2020 20:01:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593547304;
+        bh=xoTjQ79TbykWz2bgjO5163oU+Huro2drhQe+XI5Cw3c=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=y0GcIrJfHoe6Ms0bfelRYUiDXTrD/N33DNm+SlFcg71mSVQmxlkyZxIy45+AGLiE9
+         8RKw3ZZnYgFPa/GUBPQlrkvYcbDRNQo1a4I+5p1zweXYd3sgrvHEulO9rKnEggS1Wm
+         ZTpzPS7jeT6W5Ug828bt7dKQVASxCRmM3vhBxWF4=
+Date:   Tue, 30 Jun 2020 15:01:42 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Cc:     sathyanarayanan.kuppuswamy@linux.intel.com,
+        rafael.j.wysocki@intel.com, linux-doc@vger.kernel.org,
+        linux-pci@vger.kernel.org, wangbinghui@hisilicon.com,
+        hpa@zytor.com, festevam@gmail.com, lorenzo.pieralisi@arm.com,
+        corbet@lwn.net, x86@kernel.org, kishon@ti.com,
+        hkallweit1@gmail.com, m-karicheri2@ti.com, linux-imx@nxp.com,
+        songxiaowei@hisilicon.com, devicetree@vger.kernel.org,
+        hongxing.zhu@nxp.com, s.hauer@pengutronix.de, robh+dt@kernel.org,
+        bp@alien8.de, bhelgaas@google.com, tglx@linutronix.de,
+        linux-omap@vger.kernel.org, mingo@redhat.com,
+        linux-arm-kernel@lists.infradead.org, rdunlap@infradead.org,
+        linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+        l.stach@pengutronix.de, shawnguo@kernel.org,
+        amurray@thegoodpenguin.co.uk
+Subject: Re: PCI: Replace lkml.org, spinics, gmane with lore.kernel.org
+Message-ID: <20200630200142.GA3469982@bjorn-Precision-5520>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200612125402.18393-1-merlijn@wizzup.org>
+In-Reply-To: <20200630180917.GA3455699@bjorn-Precision-5520>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jun 12, 2020 at 02:53:57PM +0200, Merlijn Wajer wrote:
+On Tue, Jun 30, 2020 at 01:09:17PM -0500, Bjorn Helgaas wrote:
+> PCI: Replace lkml.org, spinics, gmane with lore.kernel.org
+> 
+> The lkml.org, spinics.net, and gmane.org archives are not very reliable
+> and, in some cases, not even easily accessible.  Replace links to them with
+> links to lore.kernel.org, the archives hosted by kernel.org.
+> 
+> I found the gmane items via the Wayback Machine archive at
+> https://web.archive.org/.
+> 
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Applied, thank you.
+I applied this to pci/misc for v5.9.
 
--- 
-Dmitry
+> diff --git a/Documentation/PCI/pci.rst b/Documentation/PCI/pci.rst
+> index d2815d735c86..281d8a241eae 100644
+> --- a/Documentation/PCI/pci.rst
+> +++ b/Documentation/PCI/pci.rst
+> @@ -214,7 +214,7 @@ the PCI device by calling pci_enable_device(). This will:
+>     problem and unlikely to get fixed soon.
+>  
+>     This has been discussed before but not changed as of 2.6.19:
+> -   http://lkml.org/lkml/2006/3/2/194
+> +   https://lore.kernel.org/r/20060302180025.GC28895@flint.arm.linux.org.uk/
+>  
+>  
+>  pci_set_master() will enable DMA by setting the bus master bit
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 54ebbef850be..9d7a43261613 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -3549,7 +3549,7 @@ static void quirk_no_bus_reset(struct pci_dev *dev)
+>   * The device will throw a Link Down error on AER-capable systems and
+>   * regardless of AER, config space of the device is never accessible again
+>   * and typically causes the system to hang or reset when access is attempted.
+> - * http://www.spinics.net/lists/linux-pci/msg34797.html
+> + * https://lore.kernel.org/r/20140923210318.498dacbd@dualc.maya.org/
+>   */
+>  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0030, quirk_no_bus_reset);
+>  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0032, quirk_no_bus_reset);
+> @@ -4378,9 +4378,9 @@ static int pci_acs_ctrl_enabled(u16 acs_ctrl_req, u16 acs_ctrl_ena)
+>   * redirect (CR) since all transactions are redirected to the upstream
+>   * root complex.
+>   *
+> - * http://permalink.gmane.org/gmane.comp.emulators.kvm.devel/94086
+> - * http://permalink.gmane.org/gmane.comp.emulators.kvm.devel/94102
+> - * http://permalink.gmane.org/gmane.comp.emulators.kvm.devel/99402
+> + * https://lore.kernel.org/r/201207111426.q6BEQTbh002928@mail.maya.org/
+> + * https://lore.kernel.org/r/20120711165854.GM25282@amd.com/
+> + * https://lore.kernel.org/r/20121005130857.GX4009@amd.com/
+>   *
+>   * 1002:4385 SBx00 SMBus Controller
+>   * 1002:439c SB7x0/SB8x0/SB9x0 IDE Controller
+> diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
+> index d21fa04fa44d..43eda101fcf4 100644
+> --- a/drivers/pci/setup-res.c
+> +++ b/drivers/pci/setup-res.c
+> @@ -73,7 +73,8 @@ static void pci_std_update_resource(struct pci_dev *dev, int resno)
+>  		/*
+>  		 * Apparently some Matrox devices have ROM BARs that read
+>  		 * as zero when disabled, so don't update ROM BARs unless
+> -		 * they're enabled.  See https://lkml.org/lkml/2005/8/30/138.
+> +		 * they're enabled.  See
+> +		 * https://lore.kernel.org/r/43147B3D.1030309@vc.cvut.cz/
+>  		 */
+>  		if (!(res->flags & IORESOURCE_ROM_ENABLE))
+>  			return;
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
