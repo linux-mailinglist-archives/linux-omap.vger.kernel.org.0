@@ -2,114 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4FF420FB63
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jun 2020 20:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E08B20FB9E
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jun 2020 20:20:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389783AbgF3SJU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Jun 2020 14:09:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37132 "EHLO mail.kernel.org"
+        id S2387763AbgF3SUn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Jun 2020 14:20:43 -0400
+Received: from muru.com ([72.249.23.125]:60110 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728566AbgF3SJT (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 30 Jun 2020 14:09:19 -0400
-Received: from localhost (mobile-166-175-191-139.mycingular.net [166.175.191.139])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 482EB206C0;
-        Tue, 30 Jun 2020 18:09:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593540558;
-        bh=5WVwI9V0bvuYlDJK1bD7y8a6tFTxacqy/VIWlu5mFkE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=V5InnpzvN8ngt1Mwy7cPok3fE5TO7AU5KiaG7dHHaCoJc/shrphDd/wgvAEd9cJpp
-         Hvv2A6/GvWO8Cr9C7dxiXsYRzpq0kfRCezleNguJFFwf+gQLY+ox8D6y0arhjM0NqA
-         ZbNB9kMvPCQDC5OHV0/KvcRAhMrsHnN281jEL/4Y=
-Date:   Tue, 30 Jun 2020 13:09:17 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Cc:     bhelgaas@google.com, corbet@lwn.net, robh+dt@kernel.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com, kishon@ti.com, lorenzo.pieralisi@arm.com,
-        hongxing.zhu@nxp.com, l.stach@pengutronix.de, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, m-karicheri2@ti.com, songxiaowei@hisilicon.com,
-        wangbinghui@hisilicon.com, amurray@thegoodpenguin.co.uk,
-        sathyanarayanan.kuppuswamy@linux.intel.com, hkallweit1@gmail.com,
-        rafael.j.wysocki@intel.com, rdunlap@infradead.org,
-        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: PCI: Replace lkml.org, spinics, gmane with lore.kernel.org
-Message-ID: <20200630180917.GA3455699@bjorn-Precision-5520>
+        id S1733297AbgF3SUn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 30 Jun 2020 14:20:43 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 620CE8164;
+        Tue, 30 Jun 2020 18:21:33 +0000 (UTC)
+Date:   Tue, 30 Jun 2020 11:20:37 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Rob Herring <robh+dt@kernel.org>, bcousson@baylibre.com,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v2] ARM: dts: am335x-pocketbeagle: set default mux for
+ gpio pins
+Message-ID: <20200630182037.GF37466@atomide.com>
+References: <20200628152442.322593-1-drew@beagleboard.org>
+ <20200629170358.GT37466@atomide.com>
+ <20200630020102.GA45128@x1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200627103050.71712-1-grandmaster@al2klimov.de>
+In-Reply-To: <20200630020102.GA45128@x1>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-PCI: Replace lkml.org, spinics, gmane with lore.kernel.org
+* Drew Fustini <drew@beagleboard.org> [200630 02:02]:
+> On Mon, Jun 29, 2020 at 10:03:58AM -0700, Tony Lindgren wrote:
+> > Hi,
+> > 
+> > * Drew Fustini <drew@beagleboard.org> [200628 08:26]:
+> > > v2 changes:
+> > > - change default mux from output to input.  Input is safer as it does
+> > >   not drive the line.  If the user wants output, they will need to edit
+> > >   this device tree.
+> > 
+> > So can you please clarify this a bit, are you saying that gpio output can't
+> > be done via userspace?
+> 
+> As it stands, there is no way for userspace to change a pin from gpio 
+> input to gpio output as it is based on the reciever active bit in the
+> pin control register (table 9-60 in the AM3358 datasheet [0]).
 
-The lkml.org, spinics.net, and gmane.org archives are not very reliable
-and, in some cases, not even easily accessible.  Replace links to them with
-links to lore.kernel.org, the archives hosted by kernel.org.
+OK. I guess one not so nice option would be to enable receiver active
+for all the gpio pins.. But this also affects power consumption a little.
 
-I found the gmane items via the Wayback Machine archive at
-https://web.archive.org/.
+> I thought it would be useful to at least define the GPIOs available for
+> use on the PocketBeagle by default (and eventually the other BeagleBone
+> device trees).  Input seems to be the safest value.  This patch at least
+> makes it more clear where the user should edit to switch from input to
+> output.
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Some TI TRMs actually have tables listing the preferred mux logic
+for unused pins. I recall safe mode input pull down being one of the
+preferred modes. Sorry not sure which TRM that is, maybe omap3 or
+omap4 or omap5?
 
-diff --git a/Documentation/PCI/pci.rst b/Documentation/PCI/pci.rst
-index d2815d735c86..281d8a241eae 100644
---- a/Documentation/PCI/pci.rst
-+++ b/Documentation/PCI/pci.rst
-@@ -214,7 +214,7 @@ the PCI device by calling pci_enable_device(). This will:
-    problem and unlikely to get fixed soon.
- 
-    This has been discussed before but not changed as of 2.6.19:
--   http://lkml.org/lkml/2006/3/2/194
-+   https://lore.kernel.org/r/20060302180025.GC28895@flint.arm.linux.org.uk/
- 
- 
- pci_set_master() will enable DMA by setting the bus master bit
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 54ebbef850be..9d7a43261613 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3549,7 +3549,7 @@ static void quirk_no_bus_reset(struct pci_dev *dev)
-  * The device will throw a Link Down error on AER-capable systems and
-  * regardless of AER, config space of the device is never accessible again
-  * and typically causes the system to hang or reset when access is attempted.
-- * http://www.spinics.net/lists/linux-pci/msg34797.html
-+ * https://lore.kernel.org/r/20140923210318.498dacbd@dualc.maya.org/
-  */
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0030, quirk_no_bus_reset);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_ATHEROS, 0x0032, quirk_no_bus_reset);
-@@ -4378,9 +4378,9 @@ static int pci_acs_ctrl_enabled(u16 acs_ctrl_req, u16 acs_ctrl_ena)
-  * redirect (CR) since all transactions are redirected to the upstream
-  * root complex.
-  *
-- * http://permalink.gmane.org/gmane.comp.emulators.kvm.devel/94086
-- * http://permalink.gmane.org/gmane.comp.emulators.kvm.devel/94102
-- * http://permalink.gmane.org/gmane.comp.emulators.kvm.devel/99402
-+ * https://lore.kernel.org/r/201207111426.q6BEQTbh002928@mail.maya.org/
-+ * https://lore.kernel.org/r/20120711165854.GM25282@amd.com/
-+ * https://lore.kernel.org/r/20121005130857.GX4009@amd.com/
-  *
-  * 1002:4385 SBx00 SMBus Controller
-  * 1002:439c SB7x0/SB8x0/SB9x0 IDE Controller
-diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
-index d21fa04fa44d..43eda101fcf4 100644
---- a/drivers/pci/setup-res.c
-+++ b/drivers/pci/setup-res.c
-@@ -73,7 +73,8 @@ static void pci_std_update_resource(struct pci_dev *dev, int resno)
- 		/*
- 		 * Apparently some Matrox devices have ROM BARs that read
- 		 * as zero when disabled, so don't update ROM BARs unless
--		 * they're enabled.  See https://lkml.org/lkml/2005/8/30/138.
-+		 * they're enabled.  See
-+		 * https://lore.kernel.org/r/43147B3D.1030309@vc.cvut.cz/
- 		 */
- 		if (!(res->flags & IORESOURCE_ROM_ENABLE))
- 			return;
+> > Needing to change the dts does not sound good to me.. But maybe you mean
+> > this is needed until the gpio-omap and pinctrl-single patches are merged?
+>
+> I agree that I would like for userspace to be able to do run-time
+> changes.  However, I think something would need to be added to the
+> pinconf support in pinctrl-single for that to be possible.  There are
+> bias properties but non for receiver enable.
+> 
+> Does it seem sensible to add that?
+
+Well let's see with Linus W says. To me it seems this might be a good
+reason to allow a sysfs interface to change the pinctrl if we don't
+have it yet? With the proper gpio line naming it should be quite simple
+to use too :)
+
+Regards,
+
+Tony
