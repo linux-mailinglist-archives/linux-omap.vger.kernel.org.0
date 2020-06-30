@@ -2,101 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA5D220FBB1
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Jun 2020 20:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2445A20FCC4
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Jun 2020 21:29:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390777AbgF3S0t (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Jun 2020 14:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33738 "EHLO
+        id S1727998AbgF3T3p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Jun 2020 15:29:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729953AbgF3S0t (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Jun 2020 14:26:49 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F303C061755;
-        Tue, 30 Jun 2020 11:26:48 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id f23so22095536iof.6;
-        Tue, 30 Jun 2020 11:26:48 -0700 (PDT)
+        with ESMTP id S1726961AbgF3T3o (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Jun 2020 15:29:44 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F17FC061755;
+        Tue, 30 Jun 2020 12:29:44 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id k5so342966pjg.3;
+        Tue, 30 Jun 2020 12:29:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=zHkMrF1WG28iaGTof2SgLVlAgajf1uvvDa148L1A4YA=;
-        b=F4bRlhY7JPlFE5MOJNhH06ubJD/AwLxDSHTkK8prEd7WJaNbBFDvroFyM7nSqG00Qh
-         zC5d+FeO3qACgBJISvU47GGOic70oP3x22flzistdPNasJi0UKqQxS4c4S1sc7PWUUi4
-         xJ1Vr0NWy8FyYXBmzQVtBjQ+nMkcbeOXGvwpb547MFCGBgXdN5rR+2y2OdZGN+iUAOax
-         eyGf3xANMO+ot5QApAld1RaJ+fkECK+TohwDhBwwPWS5JKI4p9uLq/W1X0CN884zX3Zo
-         rQx7fAnGqeoTgkMm1dwc6vbRGEP8aYycGvJWlI2LbF5LRtP3K6WJKWVy90C2pYHUjGyL
-         CApA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=z9NbGrJNVhmDvwjE4p/JaViBJ44BVQVTuZHg6UXMIYY=;
+        b=co3GS2Cjq3IS4PBvsxpk3iaeANWXu9yXQTCa2iad2uBkShSkMJdxn3+XTqZQwNfDXy
+         RlY76zsgVjCL43sSBus5UM6FBRu0aVIGHO4JN/bDnKmaer8C5enTUMgjW4YUfz0eEODp
+         txdPInWQ7GWQUOgDHHs67W+oOI5hBCYfzX84Pyz9UvnCOi9y2q9BZsXzQtKmfkRJwZS/
+         DSpFrB5U9oQ8oRblkl/qrgws8AvvQ8uhGK98S0lQDOU8OMLjrYC4/eH9XoZZOebAzwN3
+         GMrQM3PT/yZRtiT7PUVWYyuFrPxxrQknyJOyE0djQIFkCeBzVBbtogf+f5Rg3LzrjwjY
+         5UiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=zHkMrF1WG28iaGTof2SgLVlAgajf1uvvDa148L1A4YA=;
-        b=gPjWyL+WMBeZOG0Uo1lIdiGHop1C7yR0LsrJSGJmLPtWMjLE3U3Anc0PFMW2oI7iIc
-         LxZPA2B20LzFOJUUrAm3qXBXqGMInklpuNyFoiaMnj2jxzzfLj6d1D26lZiSAbbdw68Q
-         h7++Z5nWwJ5N2Y28e1cfM96ax27EMgwtFgJujL3fQFYZasGBt3u0p3Ch/THhAEscxRx2
-         zjpOaculwp2YdjgMWLOGsZ4GgKYEPGWqZiHMEJ7kjRSz6apn0zoMGgD1MvZk4ASbrzaj
-         KyhKxtwXOAB4YNWBV8i5z+YAI6rxY1NvL00SzweBhoEOVUpPmUuYnhI9vuakYq7lzE+A
-         17fA==
-X-Gm-Message-State: AOAM5338bQExhAz4YoQFUJkKQ6fmrhmTw0Aww/D3hw5I2VxSaridU+YN
-        TYSG5qZtshrBh71L/+8tJMLenrHL
-X-Google-Smtp-Source: ABdhPJyAPNjOe2Euzd0n2GEPfkpD1dt5csCv1TH57jPtERYO/b5rK+8mNMNPSrE+XyMWMLNVkpw8xA==
-X-Received: by 2002:a6b:d809:: with SMTP id y9mr23557963iob.209.1593541607533;
-        Tue, 30 Jun 2020 11:26:47 -0700 (PDT)
-Received: from aford-IdeaCentre-A730.lan (c-73-37-219-234.hsd1.mn.comcast.net. [73.37.219.234])
-        by smtp.gmail.com with ESMTPSA id u6sm1966164ilg.32.2020.06.30.11.26.46
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=z9NbGrJNVhmDvwjE4p/JaViBJ44BVQVTuZHg6UXMIYY=;
+        b=IJ1p4wsJ8933pTc/90QJlWLZOVSf+VxrPV0IsOJCBOVWIgIw0WzFeUgAipJCoZfo3s
+         IetVpmsBSlp0AmQJfvYJVRt8RzYYPgPGn6EgTm3pkd1t7ATGMNpRuC6Ek7b34OxIl3Ly
+         0XSy2p+RBFriT9v0pJCZyKuELLs9S1yeAoW97hvxpMRyc+zxJQq5cADi7Li8nNxd7FDK
+         ms7Tbqo7yqhbtnv9aiPDHnetMKMMKBMQrZx2IgF492WB+eNCbAbUuz7HaSLNG+27A8oa
+         SMusYD7DnsJUec00RYHnsNoCNT2ROzm81mZL6OvSSNgRRkFIyFlVAxe5uwmKhAPsm0Kk
+         bZoA==
+X-Gm-Message-State: AOAM533VYVJW+nsZ17bV/+OIiebLSAYxaGNpjw9V/EvDo7Yr2sD8fB/8
+        bmjv9GUbuTixMfrBQ309ypk=
+X-Google-Smtp-Source: ABdhPJwv4jFJgO1XEbhIRLji/2KijRhr9g67KUtACfRcPhhVmiFQ8SFh/i4yjIkB/MOaOvhH2n3yTg==
+X-Received: by 2002:a17:902:8a8f:: with SMTP id p15mr19083179plo.172.1593545383723;
+        Tue, 30 Jun 2020 12:29:43 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
+        by smtp.gmail.com with ESMTPSA id s12sm3554059pgp.54.2020.06.30.12.29.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2020 11:26:46 -0700 (PDT)
-From:   Adam Ford <aford173@gmail.com>
-To:     linux-fbdev@vger.kernel.org
-Cc:     Adam Ford <aford173@gmail.com>, stable@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Dave Airlie <airlied@gmail.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Rob Clark <robdclark@gmail.com>, linux-omap@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] omapfb: dss: Fix max fclk divider for omap36xx
-Date:   Tue, 30 Jun 2020 13:26:36 -0500
-Message-Id: <20200630182636.439015-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 30 Jun 2020 12:29:43 -0700 (PDT)
+Date:   Tue, 30 Jun 2020 12:29:41 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     pavel@ucw.cz,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jeffrey Hugo <jhugo@codeaurora.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Mattias Jacobsson <2pi@mok.nu>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Mark Gross <mgross@linux.intel.com>,
+        "open list:OMAP DEVICE TREE SUPPORT" <linux-omap@vger.kernel.org>,
+        "open list:OMAP DEVICE TREE SUPPORT" <devicetree@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." 
+        <linux-input@vger.kernel.org>
+Subject: Re: [PATCH 0/2] Add SW_MACHINE_COVER key
+Message-ID: <20200630192941.GI248110@dtor-ws>
+References: <20200612125402.18393-1-merlijn@wizzup.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200612125402.18393-1-merlijn@wizzup.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The drm/omap driver was fixed to correct an issue where using a
-divider of 32 breaks the DSS despite the TRM stating 32 is a valid
-number.  Through experimentation, it appears that 31 works, and
-it is consistent with the value used by the drm/omap driver.
+On Fri, Jun 12, 2020 at 02:53:57PM +0200, Merlijn Wajer wrote:
 
-This patch fixes the divider for fbdev driver instead of the drm.
+Applied, thank you.
 
-Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
-
-Cc: <stable@vger.kernel.org> #4.9+
-Signed-off-by: Adam Ford <aford173@gmail.com>
----
-Linux 4.4 will need a similar patch, but it doesn't apply cleanly.
-
-The DRM version of this same fix is:
-e2c4ed148cf3 ("drm/omap: fix max fclk divider for omap36xx")
-
-
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-index 7252d22dd117..bfc5c4c5a26a 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-@@ -833,7 +833,7 @@ static const struct dss_features omap34xx_dss_feats = {
- };
- 
- static const struct dss_features omap3630_dss_feats = {
--	.fck_div_max		=	32,
-+	.fck_div_max		=	31,
- 	.dss_fck_multiplier	=	1,
- 	.parent_clk_name	=	"dpll4_ck",
- 	.dpi_select_source	=	&dss_dpi_select_source_omap2_omap3,
 -- 
-2.25.1
-
+Dmitry
