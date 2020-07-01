@@ -2,68 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F026210864
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jul 2020 11:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41A89210926
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jul 2020 12:23:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729278AbgGAJkn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Jul 2020 05:40:43 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:34516 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729267AbgGAJkn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 1 Jul 2020 05:40:43 -0400
-Received: from [10.130.0.52] (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9DxT2gQWvxeT6FNAA--.1580S3;
-        Wed, 01 Jul 2020 17:40:32 +0800 (CST)
-Subject: Re: [PATCH v4 11/14] irqchip/omap-intc: Fix potential resource leak
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-References: <1593569786-11500-1-git-send-email-yangtiezhu@loongson.cn>
- <1593569786-11500-12-git-send-email-yangtiezhu@loongson.cn>
- <fdbd6e18-37d4-cf29-a990-89c1974491cb@web.de>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-From:   Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <25e52567-bda4-e936-f04b-8126eb849520@loongson.cn>
-Date:   Wed, 1 Jul 2020 17:40:32 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+        id S1729834AbgGAKX3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Jul 2020 06:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40576 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729791AbgGAKX0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jul 2020 06:23:26 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C154C03E97A
+        for <linux-omap@vger.kernel.org>; Wed,  1 Jul 2020 03:23:26 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id f18so15160244wrs.0
+        for <linux-omap@vger.kernel.org>; Wed, 01 Jul 2020 03:23:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=C+0L7y/Q5A/sbDA9AxIYlmTu4gtBQkLRySgsaJ7BoAY=;
+        b=kQ7dkkURh4AtE4qt3ISqlQdkih3RMk1qYxt16jBrQnP+M4yANrT9fjqxEUUvPKBZCU
+         +ibk0nVgsTJCv4KKuqtFXLS8ZZtsA/C8msTHGAFRRTlzdhnMWf9JNjyvkaDSSsfvjqHZ
+         rS/oIaEhI6i26kgyrdznxuGzcahq74INsEQy0Ym87n7DF1mrbXcKTeUdBwDN0tjsM1jY
+         i9LOzkwVt4ut2AxZkywFAPtfZ7WpDqZd89Kq81kqnQErx087oc0kNMyRM2CA8ZtKAO+U
+         2U+nlItyqhrv6GNd6bzObPsvbtxMF6HRjaJowz3v6BcX7pfLCHcxvOFceHEtpydsTSsV
+         XXcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=C+0L7y/Q5A/sbDA9AxIYlmTu4gtBQkLRySgsaJ7BoAY=;
+        b=YPm10Vzjvf7rkAkXjVVU6NZBxOCB24hx3hWkU0sO4S4jfDyi+4R8qJeyZFIm9Lsh5r
+         RFG8TiNgrNcNHtBv7PZwmnHNeBTlopVD8OOAN6msEC5ePYjO9wiGYBfFMFJmxIzDTkVC
+         sBI/DQe8GHDqDAiz+QMV+3ARn6gy3U6aLIhWwFls2x2HMMmXYvcTIUELofwOWEHloU0H
+         hJ4upHgRItD73cDlY8bAFbwRrSSrb/TUTopv7K8Db/dBBU8Nn4ZLQjCElBv8kfbpOoAE
+         VjgkZQ65uOmhu8rjyV/nBr/FS3BFyuRcZlYHXORKppG1bVkQF3D0qdG5jK32K1xQ4kDy
+         +pSQ==
+X-Gm-Message-State: AOAM532dSsmjqnQAIwKNNqKeeGHtbTUmA0esIdPpxqzlkVzufbPB3yM+
+        UQA4fwr4jqptnG1B6/ihvHerRw==
+X-Google-Smtp-Source: ABdhPJw1kO9gxa4UxTNtADJOroEmaJriqXOuZTCWjSGpmV8hPEVE/6FojS/GyzGme4iBa4RNP8DHqQ==
+X-Received: by 2002:adf:fe07:: with SMTP id n7mr25362925wrr.240.1593599004674;
+        Wed, 01 Jul 2020 03:23:24 -0700 (PDT)
+Received: from localhost.localdomain ([2.27.35.144])
+        by smtp.gmail.com with ESMTPSA id d10sm6994341wrx.66.2020.07.01.03.23.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2020 03:23:24 -0700 (PDT)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     lee.jones@linaro.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-mmc@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH 1/1] arch: arm: mach-omap2: mmc: Move omap_mmc_notify_cover_event() prototype
+Date:   Wed,  1 Jul 2020 11:23:17 +0100
+Message-Id: <20200701102317.235032-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <fdbd6e18-37d4-cf29-a990-89c1974491cb@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf9DxT2gQWvxeT6FNAA--.1580S3
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-        VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYs7k0a2IF6FyUM7kC6x804xWl14x267AK
-        xVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGw
-        A2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26ryj
-        6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26F
-        4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAa
-        Y2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4
-        A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI
-        62AI1cAE67vIY487MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-        kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-        67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-        CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6Fyj6rWU
-        JwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcS
-        sGvfC2KfnxnUUI43ZEXa7IU8Ntx3UUUUU==
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 07/01/2020 05:14 PM, Markus Elfring wrote:
->> In the function omap_init_irq_of(), system resource "omap_irq_base"
->> was not released in the error case, fix it.
-> Another small wording adjustment:
->    … in an error case. Thus add a call of the function “iounmap”
->    in the if branch.
+When building the kernel with W=1 the build system complains of:
 
-OK, thank you, I will do it in v5 of this patch #11 and next patch #12.
+ drivers/mmc/host/omap.c:854:6: warning: no previous prototype for ‘omap_mmc_notify_cover_event’ [-Wmissing-prototypes]
+ 854 | void omap_mmc_notify_cover_event(struct device *dev, int num, int is_closed)
+ | ^~~~~~~~~~~~~~~~~~~~~~~~~~~
 
->
-> Regards,
-> Markus
+If we move the prototype into a shared headerfile the build system
+will be satisfied.  Rather than create a whole new headerfile just
+for this purpose, it makes sense to use the already existing
+mmc-omap.h.
+
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-mmc@vger.kernel.org
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: linux-omap@vger.kernel.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ arch/arm/mach-omap2/mmc.h              | 4 ----
+ include/linux/platform_data/mmc-omap.h | 3 +++
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/mach-omap2/mmc.h b/arch/arm/mach-omap2/mmc.h
+index 7f4e053c34344..b5533e93cb632 100644
+--- a/arch/arm/mach-omap2/mmc.h
++++ b/arch/arm/mach-omap2/mmc.h
+@@ -16,7 +16,3 @@ static inline int omap_msdi_reset(struct omap_hwmod *oh)
+ 	return 0;
+ }
+ #endif
+-
+-/* called from board-specific card detection service routine */
+-extern void omap_mmc_notify_cover_event(struct device *dev, int slot,
+-					int is_closed);
+diff --git a/include/linux/platform_data/mmc-omap.h b/include/linux/platform_data/mmc-omap.h
+index 9acf0e87aa9be..f0b8947e6b07d 100644
+--- a/include/linux/platform_data/mmc-omap.h
++++ b/include/linux/platform_data/mmc-omap.h
+@@ -116,3 +116,6 @@ struct omap_mmc_platform_data {
+ 
+ 	} slots[OMAP_MMC_MAX_SLOTS];
+ };
++
++extern void omap_mmc_notify_cover_event(struct device *dev, int slot,
++					int is_closed);
+-- 
+2.25.1
 
