@@ -2,117 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C0ED21039F
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jul 2020 08:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1492107CB
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jul 2020 11:15:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726905AbgGAGHe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Jul 2020 02:07:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57088 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726828AbgGAGHe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jul 2020 02:07:34 -0400
-Received: from mail.lysator.liu.se (mail.lysator.liu.se [IPv6:2001:6b0:17:f0a0::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70CA9C061755
-        for <linux-omap@vger.kernel.org>; Tue, 30 Jun 2020 23:07:33 -0700 (PDT)
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-        by mail.lysator.liu.se (Postfix) with ESMTP id AEFFE4004C;
-        Wed,  1 Jul 2020 08:07:27 +0200 (CEST)
-Received: from [192.168.82.172] (c-7a4fe655.06-290-73746f71.bbcust.telenor.se [85.230.79.122])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.lysator.liu.se (Postfix) with ESMTPSA id 74DEE40049;
-        Wed,  1 Jul 2020 08:07:26 +0200 (CEST)
-Subject: Re: WL1271 on CM-T3730
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        linux-omap@vger.kernel.org
-References: <807d19b0-842f-87b9-c9ba-dcbfd4e7b108@lysator.liu.se>
- <AD238A83-22FC-458D-9180-F715AD6A5237@goldelico.com>
- <d32e2c17-849a-4aa8-7f84-a84d9699789a@lysator.liu.se>
- <5166bacd-428d-168c-edf4-a322274deac6@lysator.liu.se>
- <20200622152825.GK37466@atomide.com>
-From:   Oskar Enoksson <enok@lysator.liu.se>
-Message-ID: <c9c7fdbb-3f2b-ecf3-342a-179a9980beaf@lysator.liu.se>
-Date:   Wed, 1 Jul 2020 08:07:26 +0200
+        id S1726353AbgGAJPM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Jul 2020 05:15:12 -0400
+Received: from mout.web.de ([212.227.17.12]:53451 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725915AbgGAJPM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 1 Jul 2020 05:15:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1593594900;
+        bh=gBtyVQm8fm2su1FSsiG7tja1aFYHtMY3thDKxgiNcpY=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=fRzBk9x8hcHUYzzPqnHbdwF894OrbOMrVFfRC69jTmu7WdOyTi6GmU5s7bwtMsrxI
+         TjHvFd91eayF6IkkAZ536GsUDKJtcFd0rTyHZrDLsVUbgGgw17BACeOXa9RFOEWZDF
+         zAiLCorNIgo57mBJxT0pc6k126M0xyYkw1aMPaY8=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.41.17]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lcxxc-1j8jhc1EEC-00i8XE; Wed, 01
+ Jul 2020 11:15:00 +0200
+Subject: Re: [PATCH v4 11/14] irqchip/omap-intc: Fix potential resource leak
+To:     Tiezhu Yang <yangtiezhu@loongson.cn>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <1593569786-11500-1-git-send-email-yangtiezhu@loongson.cn>
+ <1593569786-11500-12-git-send-email-yangtiezhu@loongson.cn>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <fdbd6e18-37d4-cf29-a990-89c1974491cb@web.de>
+Date:   Wed, 1 Jul 2020 11:14:58 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200622152825.GK37466@atomide.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <1593569786-11500-12-git-send-email-yangtiezhu@loongson.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:PksGMMULrlfc4sy8f/xMCXiwy7Wxo5ApqOVnjNfeRLx9xmwaZUt
+ fwZneUWs/sMuRhHuolE27gU2PkeqwIvCEFobJlNuYX15D2aIM3D1SDYBZZ7Ps5BL7CmR3Hp
+ wuMTL/RkjHGznDZ296rDyamA3BJw/hXpfLOJ5KrITAEojab6r+rrjLylywNxZvGgupvijDH
+ hDT36j1MCFDULTn/RjAtQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:q9HnAGRZstE=:cCCO9QVn3fYCdFzkh8SeS4
+ G4ec8kcqGJIH2hx/ySrpcE3aXIwAT4333eAHMhKbwwoHbNQptO6Bdtn6GLlk2iAqH1DTRo3aM
+ 6LNcmNSK5zO/rq84j12TZ50ph6dNiy9H4EUHhgwBK+sltB/T7uOD9NAhacXtjoW556Xgw7y1B
+ HeMh57znOHRKCqjuFvXN4v1xrf6TRQ53tgobIYMG4yQMZ7IYKf8IwMWFi9502IB2zKVlPvMws
+ Pl8H3ZrPm+7wSlBxVwzkSXkbvCsojbmjCfjOIQPKkD1Gy95E/KKL65WHjp+3n70UuO56Ns+o4
+ bXg4dXGte+zBNzoaEEcnxWwDDgqc0JqrQ1Fg96qg53G392ftsyagi98yndKEG8wD5pbkSjLpd
+ XLXDZNqyXSKRHsDsAg1Fc5Zqz2tGStinIGQ4ytq1A06S7Kkzlc82XcP7l2qqHzZQAK+GQxUV9
+ 1lW2HjiQ/2yqjSdSbc36Vwz0ShgoNCS+VkpmhmkzV4xFqc26hDd9/fK+HXlkUh/Bq4CNdqYSO
+ FVC0XH6xvekLodhEw5GauDXTl6leWG3d+sHveHIj7uBN7uOrLILV1OnLhe/1qCPESwDHDQfL/
+ PhymbiJBriRyfQdYVXhdU5lcJpSY1uSqwnwlGzZy+r1ArO0ankKFKrsUXkzZZcv1l8yARhIpN
+ OBWfAXBYJL0wgFwg7YNRoVokZuA5NvVwwsiMtwZsCvkCHqFuxk4jKyPIeDfrm/EzIbeoU7OlO
+ 6vswqYUYfe4aiN/GJftTHSxyhoIBZb/PLUzxfqzAKopWs02bRPUhswF5Ig9IrvAiXVY/MSdui
+ WVf4UlCFlhhOsWqOxH1GXwTTb1ORTHOHYfTQIrZ4qhKCD5cu5VxIkxZCca3D4oWhS0NIhx3oJ
+ ofnTMX2XnT230dvOR9x6I/Q6LlNIURzNfozmlCdXcAqTEsbTcxCX3tvWgb5wU6tlXmkE2isuS
+ 1CJcyNHSGTmV66yzEZ9FBTpK+Q6sJ5+u81Nfy/EgqLa+ziPzE6uIArxhB4Av1jW6fJdMuX+/2
+ bhVbmlvbKaiFkvhZyECFEQWgs2Ay9sDgi6R8m05QW0VZhvgwd62Ccsmfh3yZxf9wpohwOOQF+
+ m8ET7+2ZSCssVHl9TLym1PiX3Zf9j371okrez04a08Ywd9MQaoyUMuMsyrPYpGHqzsJ4HdFgR
+ gjy8uCGeSG6qkjXbqiSZB+/jZiqtnAFL0KFTL9pBzdKhWtfeQdCyCBuSL8+KAGqK+n0VldEI3
+ Yz0GAqGZuv5OKQ8M2
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Thanks for the hints. I did some experiments with increasing the 
-startup-delay-us of wl12xx_vmmc2 but couldn't notice any effect.
+> In the function omap_init_irq_of(), system resource "omap_irq_base"
+> was not released in the error case, fix it.
 
-I also tried other changes in the device tree, kernel command line 
-arguments and kernel configuration, but I can't see any pattern in the 
-result. Whatever I try the initialization very often still fails with 
-errors as before. Occasionally I even get crashes such as:
+Another small wording adjustment:
+  =E2=80=A6 in an error case. Thus add a call of the function =E2=80=9Ciou=
+nmap=E2=80=9D
+  in the if branch.
 
-> [    7.188934] mmc1: tried to HW reset card, got error -110
-> sysctl: cannot stat /proc/sys/net/ipv4/tcp_syncookies: No such file or directory
-> [    7.410125] ------------[ cut here ]------------
-> [    7.414825] WARNING: CPU: 0 PID: 10 at drivers/net/wireless/ti/wlcore/sdio.c:131 wl12xx_sdio_raw_write+0xa3/0x104 [wlcore_sdio]
-> [    7.426422] Modules linked in: wl12xx wlcore mac80211 libarc4 omapdrm sha256_generic libsha256 drm_kms_helper sha256_arm cfbfillrect syscopyarea cfbimgblt sysfillrect sysimgblt fb_sys_fops cfbcopyarea cfg80211 joydev mousedev evdc
-> [    7.506774] CPU: 0 PID: 10 Comm: kworker/0:1 Not tainted 5.4.28-pte-g6f3bf13d53 #1
-> [    7.514465] Hardware name: Generic OMAP36xx (Flattened Device Tree)
-> [    7.520812] Workqueue: events request_firmware_work_func
-> [    7.526214] [<c010c0c5>] (unwind_backtrace) from [<c0109863>] (show_stack+0xb/0xc)
-> [    7.533905] [<c0109863>] (show_stack) from [<c0122541>] (__warn+0xb5/0xb8)
-> [    7.540893] [<c0122541>] (__warn) from [<c01227a9>] (warn_slowpath_fmt+0x41/0x7c)
-> [    7.548461] [<c01227a9>] (warn_slowpath_fmt) from [<bfa0a217>] (wl12xx_sdio_raw_write+0xa3/0x104 [wlcore_sdio])
-> [    7.558807] [<bfa0a217>] (wl12xx_sdio_raw_write [wlcore_sdio]) from [<bfaf9e9b>] (wlcore_set_partition+0x83/0x340 [wlcore])
-> [    7.570220] [<bfaf9e9b>] (wlcore_set_partition [wlcore]) from [<bfaf402d>] (wl12xx_set_power_on+0x4d/0xd4 [wlcore])
-> [    7.580841] [<bfaf402d>] (wl12xx_set_power_on [wlcore]) from [<bfaf5ea9>] (wlcore_nvs_cb+0xdd/0x804 [wlcore])
-> [    7.590942] [<bfaf5ea9>] (wlcore_nvs_cb [wlcore]) from [<c04328ad>] (request_firmware_work_func+0x35/0x64)
-> [    7.600708] [<c04328ad>] (request_firmware_work_func) from [<c0132efb>] (process_one_work+0x117/0x30c)
-> [    7.610168] [<c0132efb>] (process_one_work) from [<c01331d7>] (worker_thread+0xe7/0x388)
-> [    7.618316] [<c01331d7>] (worker_thread) from [<c0136f89>] (kthread+0xed/0xf4)
-> [    7.625640] [<c0136f89>] (kthread) from [<c01010f9>] (ret_from_fork+0x11/0x38)
-> [    7.632965] Exception stack(0xcd199fb0 to 0xcd199ff8)
-> [    7.638061] 9fa0:                                     00000000 00000000 00000000 00000000
-> [    7.646331] 9fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-> [    7.654602] 9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-> [    7.661285] ---[ end trace 09a18993a63ecdda ]---
-> [    7.665954] wl1271_sdio mmc1:0001:2: sdio write failed (-110)
-
-
-
-On 6/22/20 5:28 PM, Tony Lindgren wrote:
-> * Oskar Enoksson <enok@lysator.liu.se> [200621 22:01]:
->> Correction: occasionally wl1271_sdio initialization still fails with error
->> messages such as
->>
->> [   46.961364] wl1271_sdio: probe of mmc1:0001:1 failed with error -16
->> [   46.967834] wl1271_sdio: probe of mmc1:0001:2 failed with error -16
->>
->> other times
->>
->> [   27.302215][  T903] wl1271_sdio mmc1:0001:2: wl12xx_sdio_power_on: failed
->> to get_sync(-22)
->>
->> or
->> root@pte2000:~# ifup wlan0
->> [   53.799468][ T2420] wl1271_sdio mmc1:0001:2: wl12xx_sdio_power_on: failed
->> to get_sync(-110)
->> [   53.840118][ T2420] wl1271_sdio mmc1:0001:2: wl12xx_sdio_power_on: failed
->> to get_sync(-22)
->> [   53.879882][ T2420] wl1271_sdio mmc1:0001:2: wl12xx_sdio_power_on: failed
->> to get_sync(-22)
->> [   53.888610][ T2420] wlcore: ERROR firmware boot failed despite 3 retries
->> RTNETLINK answers: Invalid argument
->> ifup: failed to bring up wlan0
-> 
-> Maybe try changing the wl12xx_vmmc2 startup-delay-us to something
-> higher like 70000 we usually have?
-> 
-> Regards,
-> 
-> Tony
-> 
+Regards,
+Markus
