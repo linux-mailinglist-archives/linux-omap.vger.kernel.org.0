@@ -2,134 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2F452121F4
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Jul 2020 13:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2431E2125FB
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Jul 2020 16:19:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728454AbgGBLRL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Jul 2020 07:17:11 -0400
-Received: from sonic316-13.consmr.mail.bf2.yahoo.com ([74.6.130.123]:33393
-        "EHLO sonic316-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726475AbgGBLRL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Jul 2020 07:17:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1593688629; bh=NQQqU1PeFJSsC+ymHCz198coL/kqcVSY9gUcHqcpdis=; h=Date:From:Reply-To:Subject:References:From:Subject; b=d+SPetLPWDdjNO1S37zMWG5NExf6F3eAQS4OYISDoV5MHRYDKXYEAQD7YezAzc//UWA+hAV3EFe91JHr6IzaaIsfJ9SISYHXGvvGWdlYNnoTwl4D976Bvb4I4RT0sLTm3pceWBP2zYoHBDIt8ca3VfAyZAsJayN7D1JG5HFkd1e7xDAgIfUcofn3Lf24jSAh6+5auekcEYGSZRylETY8GFbbe2Vs5dliFi0zbFlX/M0IeXXbWuLixYPk81ayEYZ7ONZBF42k2BaLcrEh/U+yZx+wN6iYzGJi4vMSaMBXbgE4BbQtSc7IXmLcfEMCIi7BCNlLb4fD/vyK5Sn+S4ikCg==
-X-YMail-OSG: 6lqJBoYVM1kaHDT7v0u7obhcJ9_o1lNJgmQtH.nl7IoTJa2f1GNSisAWcyTXU9i
- zNlAmUhCzDDSAC9K4qXxReJ.egbKeQ02mDK4h1FU7JakpYbaurj7J6CLDuTgJ78EBt9n8Acm0uxy
- kAL5..By61M6aD2oi4rjhvdOtzUmMtg0ePmWz4n4IxCPs6H90BvLqSlz0hsisUBMJHb4G_biu4RY
- PhzKYEstPvuvbPXz4h.Bn7kiMBBKP6Np3U6GfIe1uY0erO5LXahf_1R4A4blb8tAsvo9aU6h8Pbu
- qSIybBXV6XH14DEVKDY4vsMDCqhNSkSBxxgAHlkq0qHVPtZhSCTdSOLxzw6loLJMHUrIk_90eWJa
- Y4_sVGbJVk.YgAyIxSPeeAntOWWwh8cGJB9X7BeWHR1uqOAhuzbj6lWif_hYcsOM2tn5ZAH3J6es
- kJRjFDFZByauo6Y2khdvIMf2TaSvgV6mryxjhqBiynf__GsYwtDi0rb_qL0fuZG27S3qqKAbcjFx
- z74.XsKUQuZvuiFg2rf5BESVYO4IMV3V8CBmj7EXkqokff.g4evmOeB3n1e0nmmXan40LwY3jjix
- mrOgBxfbIMyK5A3LPCjdXwo8aHSwm8dIDe8SRfwWJrpDpWAauAHc_hMA1AeuIcyfpW7bMnnlKrV_
- erqOT2Dsuc3GaoNkRqQ8XSfNo0NopkQJ26DEeD7vwqmWQKn58CLyTBLXoOWtui4vbj.iMxFAbyMB
- qSrI8yijWWTOWVZD.L6e3p9mjaoB2C8ASoG.3ZUob89c7G3XIof5phzQOTz0ZY0Q.nDS5.u3xPdF
- U1YFQkHyENf5XfclcBizGo72nmZAz1lTDrjW3T7vdhh6Lu6N25alfpGsjQM0nt7Pdxv6theMt.UJ
- pMoix8jovO8xCwTxV2N2Kjn1lwypQPJezzESN8PWkdO0DBo9ZBXNGjn7EsVgSFnt0gd7tUpiJ38o
- oQ4X7YRdRAOz3WppHTF2lTEHGcFQFAIlEl45Jz6og3gSghM9oPXDMoy7.TsrGYlEhNhxp4RtrdZC
- jVJS33TwiRseqfuOdlO5k.mPx9OIKLyYWftRJqtIihKhqxfaO8Q04WNWkU4CVP9yFBT1jj_x6fVr
- kHt7i38Fu2Y2pTp4X.lgLh_LBAe_2TSZcDhTSNi7JEcTPz6PEveI1GAljU0POk9XLDHPNMm3f.7u
- vxB8yGAs2epUHWVEJ82HlbtQ3OijchzjxHFRTww_NYNiObRIMwBxPfUeYoX_sPwrn7lAAjdSq567
- 8QY6RbMRVecFl37WxOiFubM3ojjU700YkPuDNqWiZiQUz5KLLMR5lNmbCmYowGbi1
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Thu, 2 Jul 2020 11:17:09 +0000
-Date:   Thu, 2 Jul 2020 11:17:05 +0000 (UTC)
-From:   Marilis Mannik <mariliis.manniik@gmail.com>
-Reply-To: manniik.mariliis@gmail.com
-Message-ID: <1351281970.158395.1593688625919@mail.yahoo.com>
-Subject: Urgent From Hospital
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <1351281970.158395.1593688625919.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16197 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
-To:     unlisted-recipients:; (no To-header on input)
+        id S1729508AbgGBOTK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Jul 2020 10:19:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45880 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729493AbgGBOTK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Jul 2020 10:19:10 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34B1C08C5DD
+        for <linux-omap@vger.kernel.org>; Thu,  2 Jul 2020 07:19:09 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id t25so27790716lji.12
+        for <linux-omap@vger.kernel.org>; Thu, 02 Jul 2020 07:19:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=0P63yETtCZy7cAGoDgafSeN36XD6Q/8y9SUCJsklzIU=;
+        b=Sl2TTjzwSjlY2Q45XFnpjkZAYMSWda+yE40Vr4ZMzbf45WKugp/wqROPo3mVS70Qeh
+         6rrSJ522hSEUbMfdvCCnRIApBpzMMNQ7zosW95YMpgW6FAUBex6eVjXU/6UM7J7xz7ZC
+         vBvCn5BXRM86J8J4owX9S5qS8aHnWROah/VleW8+Y/YRVzQ41DDi68C4sIj8wTv9wtZg
+         vroEPWaLTy2fLdsmJykqeGqv63UmoGLiFU5K1rjyYDmxOWxyeXk1oDy7HILMu4/+iH4t
+         xh9BhxMVXq5jalPjRCbX0STd5QLJO1F/AnrsJSAbvoJj8Q1GZ0EmgsDBECPIrod/CTwt
+         TdmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=0P63yETtCZy7cAGoDgafSeN36XD6Q/8y9SUCJsklzIU=;
+        b=KJumyHEJ4GqI1lTMjUR0AQ6aOk1GsEmgQsppxFznvmgQAYeSCGZy7+UHwqb8ii2Ik7
+         Dvlu9ojJHJ1ARXXwMwhylS3OqEBTaScx3NMXd5fXAMtyQ1SuLrceUEjUzwXOVQvSY9a4
+         vYp17PZN6djg3Eg9Dce5aELfnoQ0rqFsDDs/Xpa0Mstxal7rSZkHSJcwTt8X6FLg4c1P
+         hWLuQTtMH+hFSOX43QgE3ih6NiZKTVKqOwGJDlxa7Oq5YgllyJWLIaJuIXVMrfSz4VY1
+         LweLh0TOU3eaLp4VAnKnPNX5Z+GO8dHR+u9HwvNLDQclobMAoB/5Uumrw71XD7gH1VCs
+         DFDg==
+X-Gm-Message-State: AOAM532cmu2bjU85t/ZqvvCcQO1WgH909+h97bCbIT1xgjCY8z5/pVj3
+        IWpVFVxxhk6waW+8mH7T4VMG+g==
+X-Google-Smtp-Source: ABdhPJxNW8aUC7P/8FBnpgDN16lffoUsadSz8mCqHx5zKjKr2rET0nDVNBdEJxLtRZb50m5Lq78rnQ==
+X-Received: by 2002:a2e:9744:: with SMTP id f4mr14295946ljj.367.1593699548019;
+        Thu, 02 Jul 2020 07:19:08 -0700 (PDT)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id v10sm692581ljg.113.2020.07.02.07.19.06
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 02 Jul 2020 07:19:07 -0700 (PDT)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
+        s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, robh+dt@kernel.org,
+        lee.jones@linaro.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
+        wmills@ti.com
+Subject: [PATCHv3 0/6] Add TI PRUSS Local Interrupt Controller IRQChip driver
+Date:   Thu,  2 Jul 2020 16:17:53 +0200
+Message-Id: <1593699479-1445-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi All,
 
+The following is a v3 version of the series [1][2] that adds an IRQChip
+driver for the local interrupt controller present within a Programmable
+Real-Time Unit and Industrial Communication Subsystem (PRU-ICSS) present on a
+number of TI SoCs including OMAP architecture based AM335x, AM437x, AM57xx SoCs,
+Keystone 2 architecture based 66AK2G SoCs, Davinci architecture based
+OMAP-L138/DA850 SoCs and the latest K3 architecture based AM65x and J721E SoCs.
+Please see the v1 cover-letter [1] for details about the features of this
+interrupt controller.  More details can be found in any of the supported SoC
+TRMs.  Eg: Chapter 30.1.6 of AM5728 TRM [3]
 
-Hello=C2=A0My=C2=A0Beloved
-this=C2=A0is=C2=A0Ms=C2=A0Marilis=C2=A0Mannik=C2=A0from=C2=A0Estonia=C2=A0w=
-riting=C2=A0from=C2=A0the=C2=A0hospital=C2=A0here=C2=A0in=C2=A0Ivory=C2=A0C=
-oast;Dear=C2=A0I=C2=A0want=C2=A0you=C2=A0to=C2=A0know=C2=A0that=C2=A0I'm=C2=
-=A0dying=C2=A0here=C2=A0in=C2=A0this=C2=A0hospital=C2=A0right=C2=A0now=C2=
-=A0which=C2=A0i=C2=A0don't=C2=A0know=C2=A0if=C2=A0i=C2=A0will=C2=A0see=C2=
-=A0some=C2=A0few=C2=A0days=C2=A0to=C2=A0come.
+Please see the individual patches for exact changes in each patch, following are
+the main changes from v2:
+ - Convert dt-binding to YAML (patch #1).
+ - Address comments from Marc Zyngier regarding patch #2 and update following
+   patches due to those changes.
+ - Dropped the custom helper functions used for interrupt configuration outside
+   of irq driver [4]. Introduce new patch (patch 6) which uses xlate and irq
+   domain mapping functionality in order to map system event through 2 levels of
+   many-to-one mapping i.e.  events to channel mapping and channels to host
+   interrupts.
 
-My=C2=A0Beloved,=C2=A0i=C2=A0was=C2=A0informed=C2=A0by=C2=A0my=C2=A0doctor=
-=C2=A0that=C2=A0i=C2=A0got=C2=A0poisoned=C2=A0and=C2=A0it=C2=A0affected=C2=
-=A0my=C2=A0liver=C2=A0and=C2=A0i=C2=A0can=C2=A0only=C2=A0live=C2=A0for=C2=
-=A0some=C2=A0days.=C2=A0The=C2=A0reason=C2=A0why=C2=A0i=C2=A0contacted=C2=
-=A0you=C2=A0today=C2=A0is=C2=A0because=C2=A0i=C2=A0know=C2=A0that=C2=A0my=
-=C2=A0step=C2=A0mother=C2=A0wanted=C2=A0to=C2=A0kill=C2=A0me=C2=A0and=C2=A0=
-take=C2=A0my=C2=A0inheritance=C2=A0from=C2=A0my=C2=A0late=C2=A0Father.=C2=
-=A0I=C2=A0have=C2=A0a=C2=A0little=C2=A0adopted=C2=A0child=C2=A0named=C2=A0A=
-ndrew=C2=A0C.=C2=A0Mannik=C2=A0that=C2=A0i=C2=A0adopted=C2=A0in=C2=A0this=
-=C2=A0Country=C2=A0when=C2=A0my=C2=A0late=C2=A0Father=C2=A0was=C2=A0alive=
-=C2=A0and=C2=A0$3.5=C2=A0million=C2=A0Dollars=C2=A0i=C2=A0inherited=C2=A0fr=
-om=C2=A0my=C2=A0late=C2=A0father.=C2=A0My=C2=A0step=C2=A0mother=C2=A0and=C2=
-=A0her=C2=A0children=C2=A0they=C2=A0are=C2=A0after=C2=A0Andrew=C2=A0right=
-=C2=A0now=C2=A0because=C2=A0they=C2=A0found=C2=A0out=C2=A0that=C2=A0Andrew=
-=C2=A0was=C2=A0aware=C2=A0of=C2=A0the=C2=A0poison,=C2=A0and=C2=A0because=C2=
-=A0i=C2=A0handed=C2=A0the=C2=A0documents=C2=A0of=C2=A0the=C2=A0fund=C2=A0ov=
-er=C2=A0to=C2=A0him=C2=A0the=C2=A0day=C2=A0my=C2=A0step=C2=A0Mother=C2=A0po=
-isoned=C2=A0my=C2=A0food,=C2=A0for=C2=A0that=C2=A0reason=C2=A0they=C2=A0do=
-=C2=A0not=C2=A0want=C2=A0Andrew=C2=A0to=C2=A0expose=C2=A0them,=C2=A0so=C2=
-=A0they=C2=A0are=C2=A0doing=C2=A0everything=C2=A0possible=C2=A0to=C2=A0kill=
-=C2=A0him.
+[1] https://patchwork.kernel.org/cover/11034561/
+[2] https://patchwork.kernel.org/cover/11069749/
+[3] http://www.ti.com/lit/pdf/spruhz6
+[4] https://patchwork.kernel.org/patch/11069751/
 
-My=C2=A0Beloved,=C2=A0please=C2=A0i=C2=A0want=C2=A0you=C2=A0to=C2=A0help=C2=
-=A0him=C2=A0out=C2=A0of=C2=A0this=C2=A0country=C2=A0with=C2=A0the=C2=A0mone=
-y,=C2=A0he=C2=A0is=C2=A0the=C2=A0only=C2=A0one=C2=A0taking=C2=A0good=C2=A0c=
-are=C2=A0of=C2=A0me=C2=A0here=C2=A0in=C2=A0this=C2=A0hospital=C2=A0right=C2=
-=A0now=C2=A0and=C2=A0even=C2=A0this=C2=A0email=C2=A0you=C2=A0are=C2=A0readi=
-ng=C2=A0now=C2=A0he=C2=A0is=C2=A0the=C2=A0one=C2=A0helping=C2=A0me=C2=A0out=
-.=C2=A0I=C2=A0want=C2=A0you=C2=A0to=C2=A0get=C2=A0back=C2=A0to=C2=A0me=C2=
-=A0so=C2=A0that=C2=A0he=C2=A0will=C2=A0give=C2=A0you=C2=A0the=C2=A0document=
-s=C2=A0of=C2=A0the=C2=A0fund=C2=A0and=C2=A0he=C2=A0will=C2=A0direct=C2=A0yo=
-u=C2=A0to=C2=A0a=C2=A0well=C2=A0known=C2=A0lawyer=C2=A0that=C2=A0i=C2=A0hav=
-e=C2=A0appointed,=C2=A0the=C2=A0lawyer=C2=A0will=C2=A0assist=C2=A0you=C2=A0=
-to=C2=A0change=C2=A0the=C2=A0documents=C2=A0of=C2=A0the=C2=A0fund=C2=A0to=
-=C2=A0your=C2=A0name=C2=A0to=C2=A0enable=C2=A0the=C2=A0bank=C2=A0transfer=
-=C2=A0the=C2=A0money=C2=A0to=C2=A0you..
+Best regards
+Grzegorz
 
-This=C2=A0is=C2=A0the=C2=A0favor=C2=A0i=C2=A0need=C2=A0when=C2=A0you=C2=A0h=
-ave=C2=A0gotten=C2=A0the=C2=A0fund:
+David Lechner (1):
+  irqchip/irq-pruss-intc: Implement irq_{get,set}_irqchip_state ops
 
-(1)=C2=A0Keep=C2=A030%=C2=A0of=C2=A0the=C2=A0money=C2=A0for=C2=A0Andrew=C2=
-=A0until=C2=A0he=C2=A0finish=C2=A0his=C2=A0studies=C2=A0to=C2=A0become=C2=
-=A0a=C2=A0man=C2=A0as=C2=A0he=C2=A0has=C2=A0been=C2=A0there=C2=A0for=C2=A0m=
-e=C2=A0as=C2=A0my=C2=A0lovely=C2=A0Son=C2=A0and=C2=A0i=C2=A0promised=C2=A0t=
-o=C2=A0support=C2=A0him=C2=A0in=C2=A0life=C2=A0to=C2=A0become=C2=A0a=C2=A0m=
-edical=C2=A0Doctor=C2=A0because=C2=A0he=C2=A0always=C2=A0desire=C2=A0for=C2=
-=A0it=C2=A0with=C2=A0the=C2=A0scholarship=C2=A0he=C2=A0had=C2=A0won=C2=A0so=
-=C2=A0far.=C2=A0I=C2=A0want=C2=A0you=C2=A0to=C2=A0take=C2=A0him=C2=A0along=
-=C2=A0with=C2=A0you=C2=A0to=C2=A0your=C2=A0country=C2=A0and=C2=A0establish=
-=C2=A0him=C2=A0as=C2=A0your=C2=A0son.
+Grzegorz Jaszczyk (1):
+  irqchip/irq-pruss-intc: Add event mapping support
 
-(2)=C2=A0Give=C2=A020%=C2=A0of=C2=A0the=C2=A0money=C2=A0to=C2=A0handicap=C2=
-=A0people=C2=A0and=C2=A0charity=C2=A0organization.=C2=A0The=C2=A0remaining=
-=C2=A050%=C2=A0should=C2=A0be=C2=A0yours=C2=A0for=C2=A0your=C2=A0help=C2=A0=
-to=C2=A0Andrew.
+Suman Anna (4):
+  dt-bindings: irqchip: Add PRU-ICSS interrupt controller bindings
+  irqchip/irq-pruss-intc: Add a PRUSS irqchip driver for PRUSS
+    interrupts
+  irqchip/irq-pruss-intc: Add support for shared and invalid interrupts
+  irqchip/irq-pruss-intc: Add support for ICSSG INTC on K3 SoCs
 
-Note;=C2=A0This=C2=A0should=C2=A0be=C2=A0a=C2=A0code=C2=A0between=C2=A0you=
-=C2=A0and=C2=A0my=C2=A0son=C2=A0Andrew=C2=A0in=C2=A0this=C2=A0transaction=
-=C2=A0"Hospital"=C2=A0any=C2=A0mail=C2=A0from=C2=A0him,=C2=A0the=C2=A0Lawye=
-r=C2=A0he=C2=A0will=C2=A0direct=C2=A0you=C2=A0to,=C2=A0without=C2=A0this=C2=
-=A0code=C2=A0"Hospital"=C2=A0is=C2=A0not=C2=A0from=C2=A0the=C2=A0Andrew,=C2=
-=A0the=C2=A0Lawyer=C2=A0or=C2=A0myself=C2=A0as=C2=A0i=C2=A0don't=C2=A0know=
-=C2=A0what=C2=A0will=C2=A0happen=C2=A0to=C2=A0me=C2=A0in=C2=A0the=C2=A0next=
-=C2=A0few=C2=A0hours.
+ .../interrupt-controller/ti,pruss-intc.yaml        | 135 ++++
+ drivers/irqchip/Kconfig                            |  10 +
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-pruss-intc.c                   | 717 +++++++++++++++++++++
+ 4 files changed, 863 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+ create mode 100644 drivers/irqchip/irq-pruss-intc.c
 
-Finally,=C2=A0write=C2=A0me=C2=A0back=C2=A0so=C2=A0that=C2=A0Andrew=C2=A0wi=
-ll=C2=A0send=C2=A0you=C2=A0his=C2=A0pictures=C2=A0to=C2=A0be=C2=A0sure=C2=
-=A0of=C2=A0whom=C2=A0you=C2=A0are=C2=A0dealing=C2=A0with.=C2=A0Andrew=C2=A0=
-is=C2=A014years=C2=A0now,=C2=A0therefore=C2=A0guide=C2=A0him.=C2=A0And=C2=
-=A0if=C2=A0i=C2=A0don't=C2=A0hear=C2=A0from=C2=A0you=C2=A0i=C2=A0will=C2=A0=
-look=C2=A0for=C2=A0another=C2=A0person=C2=A0or=C2=A0any=C2=A0organization.
+-- 
+2.7.4
 
-May=C2=A0Almighty=C2=A0God=C2=A0bless=C2=A0you=C2=A0and=C2=A0use=C2=A0you=
-=C2=A0to=C2=A0accomplish=C2=A0my=C2=A0wish.=C2=A0Pray=C2=A0for=C2=A0me=C2=
-=A0always.
-Ms=C2=A0Marilis=C2=A0Mannik
