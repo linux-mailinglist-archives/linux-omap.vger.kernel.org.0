@@ -2,260 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F379E212B6F
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Jul 2020 19:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F2E9212B81
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Jul 2020 19:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727877AbgGBRoc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Jul 2020 13:44:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47682 "EHLO mail.kernel.org"
+        id S1726997AbgGBRtd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Jul 2020 13:49:33 -0400
+Received: from muru.com ([72.249.23.125]:60458 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726754AbgGBRoc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 2 Jul 2020 13:44:32 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 855D22084C;
-        Thu,  2 Jul 2020 17:44:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593711871;
-        bh=jvU81eMf9nFGcLoqw6ryzx8Tg8Jkc1RCkdQ6/wLR6e0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ch3hykzfMgu1Qo8zt4VSYuTyusuv1Lqco8D+TwHw9WyRPNntv3XRMHGrgYHe7LgO1
-         h173wZqkhm+wT8g/yJ+sa7y5wZTDvbsJfStZVxSbP03BEvY2w3baybXDXQJtvEHPI8
-         5z2C0OxIRiAW6fH0Klx1fRsUZYaRU7lglUYFLdeQ=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1jr3GA-008V3N-21; Thu, 02 Jul 2020 18:44:30 +0100
+        id S1726754AbgGBRtc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 2 Jul 2020 13:49:32 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 9DD418062;
+        Thu,  2 Jul 2020 17:50:24 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 1/2] bus: ti-sysc: Fix wakeirq sleeping function called from invalid context
+Date:   Thu,  2 Jul 2020 10:49:28 -0700
+Message-Id: <20200702174929.26506-1-tony@atomide.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 02 Jul 2020 18:44:30 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Cc:     tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com,
-        robh+dt@kernel.org, lee.jones@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        david@lechnology.com, wmills@ti.com
-Subject: Re: [PATCHv3 3/6] irqchip/irq-pruss-intc: Add support for shared and
- invalid interrupts
-In-Reply-To: <1593699479-1445-4-git-send-email-grzegorz.jaszczyk@linaro.org>
-References: <1593699479-1445-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1593699479-1445-4-git-send-email-grzegorz.jaszczyk@linaro.org>
-User-Agent: Roundcube Webmail/1.4.5
-Message-ID: <2a6b0391f1395eb0aa15ffee6769184e@kernel.org>
-X-Sender: maz@kernel.org
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: grzegorz.jaszczyk@linaro.org, tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com, robh+dt@kernel.org, lee.jones@linaro.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, david@lechnology.com, wmills@ti.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2020-07-02 15:17, Grzegorz Jaszczyk wrote:
-> From: Suman Anna <s-anna@ti.com>
-> 
-> The PRUSS INTC has a fixed number of output interrupt lines that are
-> connected to a number of processors or other PRUSS instances or other
-> devices (like DMA) on the SoC. The output interrupt lines 2 through 9
-> are usually connected to the main Arm host processor and are referred
-> to as host interrupts 0 through 7 from ARM/MPU perspective.
-> 
-> All of these 8 host interrupts are not always exclusively connected
-> to the Arm interrupt controller. Some SoCs have some interrupt lines
-> not connected to the Arm interrupt controller at all, while a few 
-> others
-> have the interrupt lines connected to multiple processors in which they
-> need to be partitioned as per SoC integration needs. For example, 
-> AM437x
-> and 66AK2G SoCs have 2 PRUSS instances each and have the host interrupt 
-> 5
-> connected to the other PRUSS, while AM335x has host interrupt 0 shared
-> between MPU and TSC_ADC and host interrupts 6 & 7 shared between MPU 
-> and
-> a DMA controller.
-> 
-> Add support to the PRUSS INTC driver to allow both these shared and
-> invalid interrupts by not returning a failure if any of these 
-> interrupts
-> are skipped from the corresponding INTC DT node.
+With CONFIG_DEBUG_ATOMIC_SLEEP enabled we can see the following with
+wakeirqs and serial console idled:
 
-That's not exactly "adding support", is it? It really is "ignore these
-interrupts because they are useless from the main CPU's perspective",
-right?
+BUG: sleeping function called from invalid context at drivers/bus/ti-sysc.c:242
+...
+(sysc_wait_softreset) from [<c0606894>] (sysc_enable_module+0x48/0x274)
+(sysc_enable_module) from [<c0606c5c>] (sysc_runtime_resume+0x19c/0x1d8)
+(sysc_runtime_resume) from [<c0606cf0>] (sysc_child_runtime_resume+0x58/0x84)
+(sysc_child_runtime_resume) from [<c06eb7bc>] (__rpm_callback+0x30/0x12c)
+(__rpm_callback) from [<c06eb8d8>] (rpm_callback+0x20/0x80)
+(rpm_callback) from [<c06eb434>] (rpm_resume+0x638/0x7fc)
+(rpm_resume) from [<c06eb658>] (__pm_runtime_resume+0x60/0x9c)
+(__pm_runtime_resume) from [<c06edc08>] (handle_threaded_wake_irq+0x24/0x60)
+(handle_threaded_wake_irq) from [<c01befec>] (irq_thread_fn+0x1c/0x78)
+(irq_thread_fn) from [<c01bf30c>] (irq_thread+0x140/0x26c)
 
-> 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> ---
-> v2->v3:
-> - Extra checks for (intc->irqs[i]) in error/remove path was moved from
->   "irqchip/irq-pruss-intc: Add a PRUSS irqchip driver for PRUSS
->   interrupts" to this patch
-> v1->v2:
-> - https://patchwork.kernel.org/patch/11069757/
-> ---
->  drivers/irqchip/irq-pruss-intc.c | 73 
-> +++++++++++++++++++++++++++++++++++++---
->  1 file changed, 68 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/irqchip/irq-pruss-intc.c 
-> b/drivers/irqchip/irq-pruss-intc.c
-> index fb3dda3..49c936f 100644
-> --- a/drivers/irqchip/irq-pruss-intc.c
-> +++ b/drivers/irqchip/irq-pruss-intc.c
-> @@ -65,11 +65,15 @@
->   * @irqs: kernel irq numbers corresponding to PRUSS host interrupts
->   * @base: base virtual address of INTC register space
->   * @domain: irq domain for this interrupt controller
-> + * @shared_intr: bit-map denoting if the MPU host interrupt is shared
+We have __pm_runtime_resume() call the sysc_runtime_resume() with spinlock
+held and interrupts disabled.
 
-nit: bitmap
+Fixes: d46f9fbec719 ("bus: ti-sysc: Use optional clocks on for enable and wait for softreset bit")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/bus/ti-sysc.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-> + * @invalid_intr: bit-map denoting if host interrupt is not connected 
-> to MPU
->   */
->  struct pruss_intc {
->  	unsigned int irqs[MAX_NUM_HOST_IRQS];
->  	void __iomem *base;
->  	struct irq_domain *domain;
-> +	u16 shared_intr;
-> +	u16 invalid_intr;
-
-Please represent bitmaps as an unsigned long.
-
->  };
-> 
->  static inline u32 pruss_intc_read_reg(struct pruss_intc *intc,
-> unsigned int reg)
-> @@ -222,7 +226,8 @@ static int pruss_intc_probe(struct platform_device 
-> *pdev)
->  		"host_intr4", "host_intr5", "host_intr6", "host_intr7", };
->  	struct device *dev = &pdev->dev;
->  	struct pruss_intc *intc;
-> -	int i, irq;
-> +	int i, irq, count;
-> +	u8 temp_intr[MAX_NUM_HOST_IRQS] = { 0 };
-> 
->  	intc = devm_kzalloc(dev, sizeof(*intc), GFP_KERNEL);
->  	if (!intc)
-> @@ -235,6 +240,52 @@ static int pruss_intc_probe(struct platform_device 
-> *pdev)
->  		return PTR_ERR(intc->base);
->  	}
-> 
-> +	count = of_property_read_variable_u8_array(dev->of_node,
-> +						   "ti,irqs-reserved",
-> +						   temp_intr, 0,
-> +						   MAX_NUM_HOST_IRQS);
-> +	/*
-> +	 * The irqs-reserved is used only for some SoC's therefore not having
-> +	 * this property is still valid
-> +	 */
-> +	if (count == -EINVAL)
-> +		count = 0;
-> +	if (count < 0)
-> +		return count;
-> +
-> +	for (i = 0; i < count; i++) {
-> +		if (temp_intr[i] >= MAX_NUM_HOST_IRQS) {
-> +			dev_warn(dev, "ignoring invalid reserved irq %d\n",
-> +				 temp_intr[i]);
-> +			continue;
-> +		}
-> +
-> +		intc->invalid_intr |= BIT(temp_intr[i]);
-> +	}
-> +
-> +	count = of_property_read_variable_u8_array(dev->of_node,
-> +						   "ti,irqs-shared",
-> +						   temp_intr, 0,
-> +						   MAX_NUM_HOST_IRQS);
-> +	/*
-> +	 * The irqs-shared is used only for some SoC's therefore not having
-> +	 * this property is still valid
-> +	 */
-> +	if (count == -EINVAL)
-> +		count = 0;
-> +	if (count < 0)
-> +		return count;
-> +
-> +	for (i = 0; i < count; i++) {
-> +		if (temp_intr[i] >= MAX_NUM_HOST_IRQS) {
-> +			dev_warn(dev, "ignoring invalid shared irq %d\n",
-> +				 temp_intr[i]);
-> +			continue;
-> +		}
-> +
-> +		intc->shared_intr |= BIT(temp_intr[i]);
-> +	}
-> +
-
-You probably want to move this in a separate function, since you 
-populate a
-common structure.
-
->  	pruss_intc_init(intc);
-> 
->  	/* always 64 events */
-> @@ -244,8 +295,14 @@ static int pruss_intc_probe(struct platform_device 
-> *pdev)
->  		return -ENOMEM;
-> 
->  	for (i = 0; i < MAX_NUM_HOST_IRQS; i++) {
-> +		if (intc->invalid_intr & BIT(i))
-> +			continue;
-> +
->  		irq = platform_get_irq_byname(pdev, irq_names[i]);
->  		if (irq <= 0) {
-> +			if (intc->shared_intr & BIT(i))
-> +				continue;
-
-I don't really understand why you are treating these "shared" interrupts
-differently from the invalid ones. In all cases, they shouldn't be used.
-
-> +
->  			dev_err(dev, "platform_get_irq_byname failed for %s : %d\n",
->  				irq_names[i], irq);
->  			goto fail_irq;
-> @@ -259,8 +316,11 @@ static int pruss_intc_probe(struct platform_device 
-> *pdev)
->  	return 0;
-> 
->  fail_irq:
-> -	while (--i >= 0)
-> -		irq_set_chained_handler_and_data(intc->irqs[i], NULL, NULL);
-> +	while (--i >= 0) {
-> +		if (intc->irqs[i])
-> +			irq_set_chained_handler_and_data(intc->irqs[i], NULL,
-> +							 NULL);
-> +	}
-> 
->  	irq_domain_remove(intc->domain);
-> 
-> @@ -273,8 +333,11 @@ static int pruss_intc_remove(struct 
-> platform_device *pdev)
->  	unsigned int hwirq;
->  	int i;
-> 
-> -	for (i = 0; i < MAX_NUM_HOST_IRQS; i++)
-> -		irq_set_chained_handler_and_data(intc->irqs[i], NULL, NULL);
-> +	for (i = 0; i < MAX_NUM_HOST_IRQS; i++) {
-> +		if (intc->irqs[i])
-> +			irq_set_chained_handler_and_data(intc->irqs[i], NULL,
-> +							 NULL);
-> +	}
-> 
->  	for (hwirq = 0; hwirq < MAX_PRU_SYS_EVENTS; hwirq++)
->  		irq_dispose_mapping(irq_find_mapping(intc->domain, hwirq));
-
-Thanks,
-
-         M.
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -236,15 +236,14 @@ static int sysc_wait_softreset(struct sysc *ddata)
+ 		syss_done = ddata->cfg.syss_mask;
+ 
+ 	if (syss_offset >= 0) {
+-		error = readx_poll_timeout(sysc_read_sysstatus, ddata, rstval,
+-					   (rstval & ddata->cfg.syss_mask) ==
+-					   syss_done,
+-					   100, MAX_MODULE_SOFTRESET_WAIT);
++		error = readx_poll_timeout_atomic(sysc_read_sysstatus, ddata,
++				rstval, (rstval & ddata->cfg.syss_mask) ==
++				syss_done, 100, MAX_MODULE_SOFTRESET_WAIT);
+ 
+ 	} else if (ddata->cfg.quirks & SYSC_QUIRK_RESET_STATUS) {
+-		error = readx_poll_timeout(sysc_read_sysconfig, ddata, rstval,
+-					   !(rstval & sysc_mask),
+-					   100, MAX_MODULE_SOFTRESET_WAIT);
++		error = readx_poll_timeout_atomic(sysc_read_sysconfig, ddata,
++				rstval, !(rstval & sysc_mask),
++				100, MAX_MODULE_SOFTRESET_WAIT);
+ 	}
+ 
+ 	return error;
 -- 
-Jazz is not dead. It just smells funny...
+2.27.0
