@@ -2,101 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53D3A212BB9
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Jul 2020 19:59:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0BEE212BCB
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Jul 2020 20:00:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726980AbgGBR7E (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Jul 2020 13:59:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51986 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726349AbgGBR7E (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 2 Jul 2020 13:59:04 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52A9720737;
-        Thu,  2 Jul 2020 17:59:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593712743;
-        bh=LiNf/oCR5xMtevLJEVXBqNNKcCAHHJBxiwRz04agoFc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jMpwBH2mioxgNjTAwQkjJpfcUhIWXt5XWb5sP5oVkYJrQGOWeo/mDsBSAdUW8bYVt
-         SHUK1h9zjeZY8/04WvNLGrfO1ARjnvt/hkXzAZBd7rTxWVFX4sds6Va2oJRR3Qinsy
-         y1Z1l9rvas+7lJv5H4aNTynD1JdD9fMiINsNcW8Y=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1jr3UD-008VH4-L0; Thu, 02 Jul 2020 18:59:01 +0100
+        id S1727991AbgGBSAh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Jul 2020 14:00:37 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:49494 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727936AbgGBSAh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Jul 2020 14:00:37 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 062I0VdR040880;
+        Thu, 2 Jul 2020 13:00:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1593712831;
+        bh=KVA7MrVhpmMXCpDVx4rR2az6AzBpgSyFeYfBTQT81zQ=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=FiUwjzZf7VIuXWa+kQW3jqt4+eDzaYkfulpF4BMmyEYoteqeH6CijEKebmVDzw/TA
+         +sSImz4aAUR9puwd/3kIFyHJBZIHoa6ofjYMjbK4x7KRZwTRVho3Uzq0nhtVd1/01w
+         bzNgUsrtDd7yp2YsSp8c5h68gFNCjSTVCnHGUMtw=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 062I0VEw107430
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 2 Jul 2020 13:00:31 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 2 Jul
+ 2020 13:00:30 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 2 Jul 2020 13:00:30 -0500
+Received: from [10.250.48.148] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 062I0Ujt078494;
+        Thu, 2 Jul 2020 13:00:30 -0500
+Subject: Re: [PATCH 1/2] bus: ti-sysc: Fix wakeirq sleeping function called
+ from invalid context
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Tero Kristo <t-kristo@ti.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20200702174929.26506-1-tony@atomide.com>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <434eff2e-bc7f-84ee-0980-769915cefffb@ti.com>
+Date:   Thu, 2 Jul 2020 13:00:25 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+In-Reply-To: <20200702174929.26506-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Date:   Thu, 02 Jul 2020 18:59:01 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Cc:     tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com,
-        robh+dt@kernel.org, lee.jones@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        david@lechnology.com, wmills@ti.com
-Subject: Re: [PATCHv3 5/6] irqchip/irq-pruss-intc: Add support for ICSSG INTC
- on K3 SoCs
-In-Reply-To: <1593699479-1445-6-git-send-email-grzegorz.jaszczyk@linaro.org>
-References: <1593699479-1445-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1593699479-1445-6-git-send-email-grzegorz.jaszczyk@linaro.org>
-User-Agent: Roundcube Webmail/1.4.5
-Message-ID: <d1b232c6f33a629117a2ecbd440622d0@kernel.org>
-X-Sender: maz@kernel.org
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: grzegorz.jaszczyk@linaro.org, tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com, robh+dt@kernel.org, lee.jones@linaro.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, david@lechnology.com, wmills@ti.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2020-07-02 15:17, Grzegorz Jaszczyk wrote:
-> From: Suman Anna <s-anna@ti.com>
+Hi Tony,
+
+On 7/2/20 12:49 PM, Tony Lindgren wrote:
+> With CONFIG_DEBUG_ATOMIC_SLEEP enabled we can see the following with
+> wakeirqs and serial console idled:
+
+Which devices are these? I have one patch from Tero fixing similar 
+errors in OMAP IOMMU driver. Will post that either today or tomorrow.
+
+regards
+Suman
+
 > 
-> The K3 AM65x and J721E SoCs have the next generation of the PRU-ICSS 
-> IP,
-> commonly called ICSSG. The PRUSS INTC present within the ICSSG supports
-> more System Events (160 vs 64), more Interrupt Channels and Host 
-> Interrupts
-> (20 vs 10) compared to the previous generation PRUSS INTC instances. 
-> The
-> first 2 and the last 10 of these host interrupt lines are used by the
-> PRU and other auxiliary cores and sub-modules within the ICSSG, with 8
-> host interrupts connected to MPU. The host interrupts 5, 6, 7 are also
-> connected to the other ICSSG instances within the SoC and can be
-> partitioned as per system integration through the board dts files.
+> BUG: sleeping function called from invalid context at drivers/bus/ti-sysc.c:242
+> ...
+> (sysc_wait_softreset) from [<c0606894>] (sysc_enable_module+0x48/0x274)
+> (sysc_enable_module) from [<c0606c5c>] (sysc_runtime_resume+0x19c/0x1d8)
+> (sysc_runtime_resume) from [<c0606cf0>] (sysc_child_runtime_resume+0x58/0x84)
+> (sysc_child_runtime_resume) from [<c06eb7bc>] (__rpm_callback+0x30/0x12c)
+> (__rpm_callback) from [<c06eb8d8>] (rpm_callback+0x20/0x80)
+> (rpm_callback) from [<c06eb434>] (rpm_resume+0x638/0x7fc)
+> (rpm_resume) from [<c06eb658>] (__pm_runtime_resume+0x60/0x9c)
+> (__pm_runtime_resume) from [<c06edc08>] (handle_threaded_wake_irq+0x24/0x60)
+> (handle_threaded_wake_irq) from [<c01befec>] (irq_thread_fn+0x1c/0x78)
+> (irq_thread_fn) from [<c01bf30c>] (irq_thread+0x140/0x26c)
 > 
-> Enhance the PRUSS INTC driver to add support for this ICSSG INTC
-> instance. This support is added using specific compatible and match
-> data and updating the code to use this data instead of the current
-> hard-coded macros. The INTC config structure is updated to use the
-> higher events and channels on all SoCs, while limiting the actual
-> processing to only the relevant number of events/channels/interrupts.
+> We have __pm_runtime_resume() call the sysc_runtime_resume() with spinlock
+> held and interrupts disabled.
 > 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> Fixes: d46f9fbec719 ("bus: ti-sysc: Use optional clocks on for enable and wait for softreset bit")
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
-> v2->v3:
-> - Change patch order: use it directly after "irqchip/irq-pruss-intc:
->   Implement irq_{get,set}_irqchip_state ops" and before new
->   "irqchip/irq-pruss-intc: Add event mapping support" in order to 
-> reduce
->   diff.
+>   drivers/bus/ti-sysc.c | 13 ++++++-------
+>   1 file changed, 6 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
+> @@ -236,15 +236,14 @@ static int sysc_wait_softreset(struct sysc *ddata)
+>   		syss_done = ddata->cfg.syss_mask;
+>   
+>   	if (syss_offset >= 0) {
+> -		error = readx_poll_timeout(sysc_read_sysstatus, ddata, rstval,
+> -					   (rstval & ddata->cfg.syss_mask) ==
+> -					   syss_done,
+> -					   100, MAX_MODULE_SOFTRESET_WAIT);
+> +		error = readx_poll_timeout_atomic(sysc_read_sysstatus, ddata,
+> +				rstval, (rstval & ddata->cfg.syss_mask) ==
+> +				syss_done, 100, MAX_MODULE_SOFTRESET_WAIT);
+>   
+>   	} else if (ddata->cfg.quirks & SYSC_QUIRK_RESET_STATUS) {
+> -		error = readx_poll_timeout(sysc_read_sysconfig, ddata, rstval,
+> -					   !(rstval & sysc_mask),
+> -					   100, MAX_MODULE_SOFTRESET_WAIT);
+> +		error = readx_poll_timeout_atomic(sysc_read_sysconfig, ddata,
+> +				rstval, !(rstval & sysc_mask),
+> +				100, MAX_MODULE_SOFTRESET_WAIT);
+>   	}
+>   
+>   	return error;
+> 
 
-The diff would be even smaller if you introduced a variable number of
-inputs the first place, i.e. in patch #2. Most if this patch just
-retrofits it. Please squash these changes into that initial patch,
-and only add the platform stuff here.
-
-Thanks,
-
-         M.
--- 
-Jazz is not dead. It just smells funny...
