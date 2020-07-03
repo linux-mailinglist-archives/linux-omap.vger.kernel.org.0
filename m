@@ -2,110 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E9C213E25
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Jul 2020 19:06:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F4101214012
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Jul 2020 21:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726791AbgGCRFy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Jul 2020 13:05:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38826 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726782AbgGCRFy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Jul 2020 13:05:54 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7E99C08C5DD
-        for <linux-omap@vger.kernel.org>; Fri,  3 Jul 2020 10:05:53 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id m8so10318839qvk.7
-        for <linux-omap@vger.kernel.org>; Fri, 03 Jul 2020 10:05:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uOxIRzqV33cwYiOayyd2WFVo6gUD/TXwDz0UDM2FxKs=;
-        b=KwXmSjzk/in70DsvZW/OqlJVbh7RjTtMHjUSsmmNvyH5aE7ZNj6NcWsyaamq+b+79b
-         VgSghhNlE0KbRfmk9RYQYiMvyqWl1/fsjdD9sIrMxJIJ007fdJxPuKPyqvtAYdQ5lMjA
-         NYCDxzvIrgOcaa0SRN+rU+dDlfqeeWRrAGsLe6tS2ojOxffdNA0NFJb9Dkd4gpfYNGpF
-         S1Dmd5e//uzU3TSzYsXNe+EnbbVjC9Zy2i322fansr6nSoSKGwqOYRum47dWPnJci6lN
-         +SNCJvdrTxsGybqIIbnSrud4z1YtiSwB6SlWOqx4pg5j/eFpO+uVgGDNJnA4nRCPA5xp
-         sruA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uOxIRzqV33cwYiOayyd2WFVo6gUD/TXwDz0UDM2FxKs=;
-        b=GK+w+5XB37x5fYfWgaca6KVUVAtqkkgaAkaMoChQq6NaPEX332SGuNJDBScCvkKQdy
-         tlhR9oKhwPl/AWuiz55+dj91GRAGHWbR94C8jisAql9EpjN8F63VPqTUD4sbTkRhhWm7
-         Iimzug7QBeV/So8oiJEd3eCZDE+h9lqegiwSCUaDfDL2AqDpZ1JKjegmOS/MV0RyBHfW
-         3WUUr8vtUyVkiEq/Q/ZG7qR44rUv/CzpoXIYTpBB4ay3w1mKdXWMlaUkAHslHcff/TS8
-         DOfbO96xEUfEh8GKa6BTqpq943asWDKMYdIkipATmskO2oXF3DzCGK0YT9G/BK5YwHbV
-         Vftw==
-X-Gm-Message-State: AOAM532roiGmSUZZfH3IId6xVgXAKdM0sprcHj511OAbWtRxNUMS2d7S
-        4za+IyWzsYdZ7s9TtY0DReLeBIzslac3izBOBB4F7w==
-X-Google-Smtp-Source: ABdhPJwmiuz2Y+CJRbdyQtdd6dbeRQNgpQTJtM4808f8jP39qAVc6vY+XdPGcwSFBZ91+L4uKjouCHEW2eXs8kWDPCA=
-X-Received: by 2002:a0c:b315:: with SMTP id s21mr35952885qve.53.1593795952915;
- Fri, 03 Jul 2020 10:05:52 -0700 (PDT)
+        id S1726710AbgGCTgz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Jul 2020 15:36:55 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:51528 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726236AbgGCTgz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Jul 2020 15:36:55 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 016FA804F9;
+        Fri,  3 Jul 2020 21:36:49 +0200 (CEST)
+Date:   Fri, 3 Jul 2020 21:36:48 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Adam Ford <aford173@gmail.com>, linux-fbdev@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        stable@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] omapfb: dss: Fix max fclk divider for omap36xx
+Message-ID: <20200703193648.GA373653@ravnborg.org>
+References: <20200630182636.439015-1-aford173@gmail.com>
+ <b9052a12-af5a-c1b9-5b86-907eac470cf8@ti.com>
 MIME-Version: 1.0
-References: <1593699479-1445-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1593699479-1445-6-git-send-email-grzegorz.jaszczyk@linaro.org> <d1b232c6f33a629117a2ecbd440622d0@kernel.org>
-In-Reply-To: <d1b232c6f33a629117a2ecbd440622d0@kernel.org>
-From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Date:   Fri, 3 Jul 2020 19:05:41 +0200
-Message-ID: <CAMxfBF5p3kh-E-vUxo60a+QTuqQXbsSVYSTc_qYvN8ZckLPKzA@mail.gmail.com>
-Subject: Re: [PATCHv3 5/6] irqchip/irq-pruss-intc: Add support for ICSSG INTC
- on K3 SoCs
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     tglx@linutronix.de, jason@lakedaemon.net,
-        "Anna, Suman" <s-anna@ti.com>, robh+dt@kernel.org,
-        Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
-        "Mills, William" <wmills@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b9052a12-af5a-c1b9-5b86-907eac470cf8@ti.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=aP3eV41m c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=sozttTNsAAAA:8
+        a=P1BnusSwAAAA:8 a=7gkXJVJtAAAA:8 a=hD80L64hAAAA:8 a=i0EeH86SAAAA:8
+        a=e5mUnYsNAAAA:8 a=0HEiEkm5zgkht_cWyOUA:9 a=CjuIK1q_8ugA:10
+        a=AjGcO6oz07-iQ99wixmX:22 a=aeg5Gbbo78KNqacMgKqU:22
+        a=D0XLA9XvdZm18NrgonBM:22 a=E9Po1WZjFZOl8hwRPBS3:22
+        a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 2 Jul 2020 at 19:59, Marc Zyngier <maz@kernel.org> wrote:
->
-> On 2020-07-02 15:17, Grzegorz Jaszczyk wrote:
-> > From: Suman Anna <s-anna@ti.com>
-> >
-> > The K3 AM65x and J721E SoCs have the next generation of the PRU-ICSS
-> > IP,
-> > commonly called ICSSG. The PRUSS INTC present within the ICSSG supports
-> > more System Events (160 vs 64), more Interrupt Channels and Host
-> > Interrupts
-> > (20 vs 10) compared to the previous generation PRUSS INTC instances.
-> > The
-> > first 2 and the last 10 of these host interrupt lines are used by the
-> > PRU and other auxiliary cores and sub-modules within the ICSSG, with 8
-> > host interrupts connected to MPU. The host interrupts 5, 6, 7 are also
-> > connected to the other ICSSG instances within the SoC and can be
-> > partitioned as per system integration through the board dts files.
-> >
-> > Enhance the PRUSS INTC driver to add support for this ICSSG INTC
-> > instance. This support is added using specific compatible and match
-> > data and updating the code to use this data instead of the current
-> > hard-coded macros. The INTC config structure is updated to use the
-> > higher events and channels on all SoCs, while limiting the actual
-> > processing to only the relevant number of events/channels/interrupts.
-> >
-> > Signed-off-by: Suman Anna <s-anna@ti.com>
-> > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+Hi Tomi.
+
+On Fri, Jul 03, 2020 at 10:17:29AM +0300, Tomi Valkeinen wrote:
+> On 30/06/2020 21:26, Adam Ford wrote:
+> > The drm/omap driver was fixed to correct an issue where using a
+> > divider of 32 breaks the DSS despite the TRM stating 32 is a valid
+> > number.  Through experimentation, it appears that 31 works, and
+> > it is consistent with the value used by the drm/omap driver.
+> > 
+> > This patch fixes the divider for fbdev driver instead of the drm.
+> > 
+> > Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+> > 
+> > Cc: <stable@vger.kernel.org> #4.9+
+> > Signed-off-by: Adam Ford <aford173@gmail.com>
 > > ---
-> > v2->v3:
-> > - Change patch order: use it directly after "irqchip/irq-pruss-intc:
-> >   Implement irq_{get,set}_irqchip_state ops" and before new
-> >   "irqchip/irq-pruss-intc: Add event mapping support" in order to
-> > reduce
-> >   diff.
->
-> The diff would be even smaller if you introduced a variable number of
-> inputs the first place, i.e. in patch #2. Most if this patch just
-> retrofits it. Please squash these changes into that initial patch,
-> and only add the platform stuff here.
+> > Linux 4.4 will need a similar patch, but it doesn't apply cleanly.
+> > 
+> > The DRM version of this same fix is:
+> > e2c4ed148cf3 ("drm/omap: fix max fclk divider for omap36xx")
+> > 
+> > 
+> > diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> > index 7252d22dd117..bfc5c4c5a26a 100644
+> > --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> > +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> > @@ -833,7 +833,7 @@ static const struct dss_features omap34xx_dss_feats = {
+> >   };
+> >   static const struct dss_features omap3630_dss_feats = {
+> > -	.fck_div_max		=	32,
+> > +	.fck_div_max		=	31,
+> >   	.dss_fck_multiplier	=	1,
+> >   	.parent_clk_name	=	"dpll4_ck",
+> >   	.dpi_select_source	=	&dss_dpi_select_source_omap2_omap3,
+> > 
+> 
+> Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Will you apply to drm-misc?
 
-Sure I will do that.
+Note  following output from "dim fixes":
+$ dim fixes f76ee892a99e
+Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc: Dave Airlie <airlied@gmail.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc: Jason Yan <yanaijie@huawei.com>
+Cc: "Andrew F. Davis" <afd@ti.com>
+Cc: YueHaibing <yuehaibing@huawei.com>
+Cc: <stable@vger.kernel.org> # v4.5+
 
-Thank you,
-Grzegorz
+Here it says the fix is valid from v4.5 onwards.
+
+	Sam
+> 
+>  Tomi
+> 
+> -- 
+> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
