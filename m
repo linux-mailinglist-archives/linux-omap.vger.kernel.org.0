@@ -2,156 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE4C02133C5
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Jul 2020 07:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A38D22134C6
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Jul 2020 09:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725915AbgGCF4E (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Jul 2020 01:56:04 -0400
-Received: from mga05.intel.com ([192.55.52.43]:42810 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725764AbgGCF4E (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 3 Jul 2020 01:56:04 -0400
-IronPort-SDR: qG+lriNdEto9/EVZlz3OuCA5ZIOCJ5YCLJmo1i9np0NPpZsL2AGdj+1FZidrVFXOX1BW7ISIr+
- Kgr+Aw2S6wXA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9670"; a="231961829"
-X-IronPort-AV: E=Sophos;i="5.75,307,1589266800"; 
-   d="scan'208";a="231961829"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2020 22:56:02 -0700
-IronPort-SDR: rq42tQ/2Wx8BU4iEGAe75RCO1n1tX+c8H2r1Kn4P5WUmL6QDtIfAUMrcaJtNoqhFY8kmWfaicr
- ph71pqZClACw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,307,1589266800"; 
-   d="scan'208";a="296115696"
-Received: from lkp-server01.sh.intel.com (HELO 6dc8ab148a5d) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 02 Jul 2020 22:56:00 -0700
-Received: from kbuild by 6dc8ab148a5d with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1jrEg4-00003G-5X; Fri, 03 Jul 2020 05:56:00 +0000
-Date:   Fri, 03 Jul 2020 13:55:51 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
- ae6d27d3970d56f8a199d2b60aed706cd078e715
-Message-ID: <5efec867.OpEYJOdxQX+vOmA3%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726236AbgGCHRi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Jul 2020 03:17:38 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:59178 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725779AbgGCHRi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Jul 2020 03:17:38 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0637HWoL115147;
+        Fri, 3 Jul 2020 02:17:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1593760652;
+        bh=tpCp46YgYhG/QrH4ChjpFQLXP5Ol+QOmEFujaXnFEPI=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=JFeFvps/w2XpkSxRKOeoGYS+r9rHLogTZ3ryq3TPoNHlrFsoSe73PrTb/r1LNGu1e
+         MoALpJE2Yvc8JCUNQ26yAkS3aRQ5Qaqb5I8S/egTIQBrt/xU2z1SB9+r9GsxG+REy4
+         eVNfNSyPqlsZR1ZlGZ0K0s9P3a0o0dhMru/IqdyU=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0637HWPh031794
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 3 Jul 2020 02:17:32 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 3 Jul
+ 2020 02:17:31 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 3 Jul 2020 02:17:31 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0637HTNE007840;
+        Fri, 3 Jul 2020 02:17:30 -0500
+Subject: Re: [PATCH] omapfb: dss: Fix max fclk divider for omap36xx
+To:     Adam Ford <aford173@gmail.com>, <linux-fbdev@vger.kernel.org>
+CC:     <stable@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Dave Airlie <airlied@gmail.com>,
+        Rob Clark <robdclark@gmail.com>, <linux-omap@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+References: <20200630182636.439015-1-aford173@gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <b9052a12-af5a-c1b9-5b86-907eac470cf8@ti.com>
+Date:   Fri, 3 Jul 2020 10:17:29 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20200630182636.439015-1-aford173@gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
-branch HEAD: ae6d27d3970d56f8a199d2b60aed706cd078e715  usb: gadget: udc: atmel: fix uninitialized read in debug printk
+On 30/06/2020 21:26, Adam Ford wrote:
+> The drm/omap driver was fixed to correct an issue where using a
+> divider of 32 breaks the DSS despite the TRM stating 32 is a valid
+> number.  Through experimentation, it appears that 31 works, and
+> it is consistent with the value used by the drm/omap driver.
+> 
+> This patch fixes the divider for fbdev driver instead of the drm.
+> 
+> Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+> 
+> Cc: <stable@vger.kernel.org> #4.9+
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> ---
+> Linux 4.4 will need a similar patch, but it doesn't apply cleanly.
+> 
+> The DRM version of this same fix is:
+> e2c4ed148cf3 ("drm/omap: fix max fclk divider for omap36xx")
+> 
+> 
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> index 7252d22dd117..bfc5c4c5a26a 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> @@ -833,7 +833,7 @@ static const struct dss_features omap34xx_dss_feats = {
+>   };
+>   
+>   static const struct dss_features omap3630_dss_feats = {
+> -	.fck_div_max		=	32,
+> +	.fck_div_max		=	31,
+>   	.dss_fck_multiplier	=	1,
+>   	.parent_clk_name	=	"dpll4_ck",
+>   	.dpi_select_source	=	&dss_dpi_select_source_omap2_omap3,
+> 
 
-elapsed time: 2798m
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
 
-configs tested: 94
-configs skipped: 2
+  Tomi
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-xtensa                generic_kc705_defconfig
-sh                ecovec24-romimage_defconfig
-powerpc                      ppc6xx_defconfig
-arm                  colibri_pxa270_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                   rts7751r2dplus_defconfig
-arm                       aspeed_g4_defconfig
-sh                        apsh4ad0a_defconfig
-riscv                             allnoconfig
-mips                      pistachio_defconfig
-alpha                            alldefconfig
-arc                         haps_hs_defconfig
-powerpc                    gamecube_defconfig
-arm                           tegra_defconfig
-arm                         orion5x_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                           allnoconfig
-sparc64                          allmodconfig
-sparc64                             defconfig
-sparc64                          allyesconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
