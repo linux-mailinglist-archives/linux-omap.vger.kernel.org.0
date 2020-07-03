@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EAE3213D48
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Jul 2020 18:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F849213D46
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Jul 2020 18:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbgGCQHr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Jul 2020 12:07:47 -0400
-Received: from muru.com ([72.249.23.125]:60618 "EHLO muru.com"
+        id S1726488AbgGCQHq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Jul 2020 12:07:46 -0400
+Received: from muru.com ([72.249.23.125]:60624 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726236AbgGCQHp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 3 Jul 2020 12:07:45 -0400
+        id S1726035AbgGCQHq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 3 Jul 2020 12:07:46 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id A3552807A;
-        Fri,  3 Jul 2020 16:08:36 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 7F553807E;
+        Fri,  3 Jul 2020 16:08:37 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
@@ -22,9 +22,9 @@ Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
         Suman Anna <s-anna@ti.com>, Tero Kristo <t-kristo@ti.com>,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Keerthy <j-keerthy@ti.com>
-Subject: [PATCH 1/3] soc: ti: pm33xx: Simplify RTC usage to prepare to drop platform data
-Date:   Fri,  3 Jul 2020 09:07:29 -0700
-Message-Id: <20200703160731.53698-2-tony@atomide.com>
+Subject: [PATCH 2/3] ARM: OMAP2+: Drop legacy platform data for am3 and am4 rtc
+Date:   Fri,  3 Jul 2020 09:07:30 -0700
+Message-Id: <20200703160731.53698-3-tony@atomide.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200703160731.53698-1-tony@atomide.com>
 References: <20200703160731.53698-1-tony@atomide.com>
@@ -35,233 +35,210 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We must re-enable the RTC module clock enabled in RTC+DDR suspend, and
-pm33xx has been using platform data callbacks for that. Looks like for
-retention suspend the RTC module clock must not be re-enabled.
+We can now probe devices with ti-sysc interconnect driver and dts
+data. Let's drop the related platform data and custom ti,hwmods
+dts property.
 
-To remove the legacy platform data callbacks, and eventually be able to
-drop the RTC legacy platform data, let's manage the RTC module clock
-and register range directly in pm33xx.
+As we're just dropping data, and the early platform data init
+is based on the custom ti,hwmods property, we want to drop both
+the platform data and ti,hwmods property in a single patch.
 
+Note that we also must tag rtc as disabled on am43x-epos-evm as
+it's not accessible according to commit 4321dc8dff35 ("ARM: AM43XX:
+hwmod: Add rtc hwmod"). And we must keep RTC enabled for rtcwake
+to work now that we've removed the custom platfor code for
+re-enabling the RTC on suspend.
+
+Keerthy <j-keerthy@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/mach-omap2/pm33xx-core.c    | 25 ---------------
- drivers/soc/ti/pm33xx.c              | 47 +++++++++++++++++++++++++---
- include/linux/platform_data/pm33xx.h |  3 --
- 3 files changed, 42 insertions(+), 33 deletions(-)
+ arch/arm/boot/dts/am33xx-l4.dtsi              |  1 -
+ arch/arm/boot/dts/am437x-l4.dtsi              |  3 +-
+ arch/arm/boot/dts/am43x-epos-evm.dts          |  4 ++
+ .../omap_hwmod_33xx_43xx_common_data.h        |  2 -
+ .../omap_hwmod_33xx_43xx_interconnect_data.c  |  8 ----
+ .../omap_hwmod_33xx_43xx_ipblock_data.c       | 37 -------------------
+ arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |  1 -
+ arch/arm/mach-omap2/omap_hwmod_43xx_data.c    |  8 ----
+ 8 files changed, 5 insertions(+), 59 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/pm33xx-core.c b/arch/arm/mach-omap2/pm33xx-core.c
---- a/arch/arm/mach-omap2/pm33xx-core.c
-+++ b/arch/arm/mach-omap2/pm33xx-core.c
-@@ -25,7 +25,6 @@
- #include "control.h"
- #include "clockdomain.h"
- #include "iomap.h"
--#include "omap_hwmod.h"
- #include "pm.h"
- #include "powerdomain.h"
- #include "prm33xx.h"
-@@ -36,7 +35,6 @@
- static struct powerdomain *cefuse_pwrdm, *gfx_pwrdm, *per_pwrdm, *mpu_pwrdm;
- static struct clockdomain *gfx_l4ls_clkdm;
- static void __iomem *scu_base;
--static struct omap_hwmod *rtc_oh;
+diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+--- a/arch/arm/boot/dts/am33xx-l4.dtsi
++++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+@@ -413,7 +413,6 @@ target-module@39000 {			/* 0x44e39000, ap 33 02.0 */
  
- static int (*idle_fn)(u32 wfi_flags);
+ 		target-module@3e000 {			/* 0x44e3e000, ap 35 60.0 */
+ 			compatible = "ti,sysc-omap4-simple", "ti,sysc";
+-			ti,hwmods = "rtc";
+ 			reg = <0x3e074 0x4>,
+ 			      <0x3e078 0x4>;
+ 			reg-names = "rev", "sysc";
+diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
+--- a/arch/arm/boot/dts/am437x-l4.dtsi
++++ b/arch/arm/boot/dts/am437x-l4.dtsi
+@@ -409,9 +409,8 @@ target-module@39000 {			/* 0x44e39000, ap 32 02.0 */
+ 			ranges = <0x0 0x39000 0x1000>;
+ 		};
  
-@@ -267,13 +265,6 @@ static struct am33xx_pm_sram_addr *amx3_get_sram_addrs(void)
- 		return NULL;
- }
- 
--static void __iomem *am43xx_get_rtc_base_addr(void)
--{
--	rtc_oh = omap_hwmod_lookup("rtc");
--
--	return omap_hwmod_get_mpu_rt_va(rtc_oh);
--}
--
- static void am43xx_save_context(void)
- {
- }
-@@ -297,16 +288,6 @@ static void am43xx_restore_context(void)
- 	writel_relaxed(0x0, AM33XX_L4_WK_IO_ADDRESS(0x44df2e14));
- }
- 
--static void am43xx_prepare_rtc_suspend(void)
--{
--	omap_hwmod_enable(rtc_oh);
--}
--
--static void am43xx_prepare_rtc_resume(void)
--{
--	omap_hwmod_idle(rtc_oh);
--}
--
- static struct am33xx_pm_platform_data am33xx_ops = {
- 	.init = am33xx_suspend_init,
- 	.deinit = amx3_suspend_deinit,
-@@ -317,10 +298,7 @@ static struct am33xx_pm_platform_data am33xx_ops = {
- 	.get_sram_addrs = amx3_get_sram_addrs,
- 	.save_context = am33xx_save_context,
- 	.restore_context = am33xx_restore_context,
--	.prepare_rtc_suspend = am43xx_prepare_rtc_suspend,
--	.prepare_rtc_resume = am43xx_prepare_rtc_resume,
- 	.check_off_mode_enable = am33xx_check_off_mode_enable,
--	.get_rtc_base_addr = am43xx_get_rtc_base_addr,
+-		target-module@3e000 {			/* 0x44e3e000, ap 34 60.0 */
++		rtc_target: target-module@3e000 {	/* 0x44e3e000, ap 34 60.0 */
+ 			compatible = "ti,sysc-omap4-simple", "ti,sysc";
+-			ti,hwmods = "rtc";
+ 			reg = <0x3e074 0x4>,
+ 			      <0x3e078 0x4>;
+ 			reg-names = "rev", "sysc";
+diff --git a/arch/arm/boot/dts/am43x-epos-evm.dts b/arch/arm/boot/dts/am43x-epos-evm.dts
+--- a/arch/arm/boot/dts/am43x-epos-evm.dts
++++ b/arch/arm/boot/dts/am43x-epos-evm.dts
+@@ -833,6 +833,10 @@ &epwmss0 {
+ 	status = "okay";
  };
  
- static struct am33xx_pm_platform_data am43xx_ops = {
-@@ -333,10 +311,7 @@ static struct am33xx_pm_platform_data am43xx_ops = {
- 	.get_sram_addrs = amx3_get_sram_addrs,
- 	.save_context = am43xx_save_context,
- 	.restore_context = am43xx_restore_context,
--	.prepare_rtc_suspend = am43xx_prepare_rtc_suspend,
--	.prepare_rtc_resume = am43xx_prepare_rtc_resume,
- 	.check_off_mode_enable = am43xx_check_off_mode_enable,
--	.get_rtc_base_addr = am43xx_get_rtc_base_addr,
- };
- 
- static struct am33xx_pm_platform_data *am33xx_pm_get_pdata(void)
-diff --git a/drivers/soc/ti/pm33xx.c b/drivers/soc/ti/pm33xx.c
---- a/drivers/soc/ti/pm33xx.c
-+++ b/drivers/soc/ti/pm33xx.c
-@@ -16,6 +16,7 @@
- #include <linux/module.h>
- #include <linux/nvmem-consumer.h>
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/platform_data/pm33xx.h>
- #include <linux/platform_device.h>
- #include <linux/rtc.h>
-@@ -39,6 +40,8 @@
- #define GIC_INT_SET_PENDING_BASE 0x200
- #define AM43XX_GIC_DIST_BASE	0x48241000
- 
-+static void __iomem *rtc_base_virt;
-+static struct clk *rtc_fck;
- static u32 rtc_magic_val;
- 
- static int (*am33xx_do_wfi_sram)(unsigned long unused);
-@@ -90,7 +93,7 @@ static int am33xx_push_sram_idle(void)
- 	ro_sram_data.amx3_pm_sram_data_virt = ocmcram_location_data;
- 	ro_sram_data.amx3_pm_sram_data_phys =
- 		gen_pool_virt_to_phys(sram_pool_data, ocmcram_location_data);
--	ro_sram_data.rtc_base_virt = pm_ops->get_rtc_base_addr();
-+	ro_sram_data.rtc_base_virt = rtc_base_virt;
- 
- 	/* Save physical address to calculate resume offset during pm init */
- 	am33xx_do_wfi_sram_phys = gen_pool_virt_to_phys(sram_pool,
-@@ -158,7 +161,7 @@ static struct wkup_m3_wakeup_src rtc_wake_src(void)
- {
- 	u32 i;
- 
--	i = __raw_readl(pm_ops->get_rtc_base_addr() + 0x44) & 0x40;
-+	i = __raw_readl(rtc_base_virt + 0x44) & 0x40;
- 
- 	if (i) {
- 		retrigger_irq = rtc_alarm_wakeup.irq_nr;
-@@ -177,13 +180,24 @@ static int am33xx_rtc_only_idle(unsigned long wfi_flags)
- 	return 0;
- }
- 
-+/*
-+ * Note that the RTC module clock must be re-enabled only for rtc+ddr suspend.
-+ * And looks like the module can stay in SYSC_IDLE_SMART_WKUP mode configured
-+ * by the interconnect code just fine for both rtc+ddr suspend and retention
-+ * suspend.
-+ */
- static int am33xx_pm_suspend(suspend_state_t suspend_state)
- {
- 	int i, ret = 0;
- 
- 	if (suspend_state == PM_SUSPEND_MEM &&
- 	    pm_ops->check_off_mode_enable()) {
--		pm_ops->prepare_rtc_suspend();
-+		ret = clk_prepare_enable(rtc_fck);
-+		if (ret) {
-+			dev_err(pm33xx_dev, "Failed to enable clock: %i\n", ret);
-+			return ret;
-+		}
++&rtc_target {
++	status = "disabled";
++};
 +
- 		pm_ops->save_context();
- 		suspend_wfi_flags |= WFI_FLAG_RTC_ONLY;
- 		clk_save_context();
-@@ -236,7 +250,7 @@ static int am33xx_pm_suspend(suspend_state_t suspend_state)
- 	}
+ &tscadc {
+ 	status = "okay";
  
- 	if (suspend_state == PM_SUSPEND_MEM && pm_ops->check_off_mode_enable())
--		pm_ops->prepare_rtc_resume();
-+		clk_disable_unprepare(rtc_fck);
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_common_data.h
+@@ -26,7 +26,6 @@ extern struct omap_hwmod_ocp_if am33xx_mpu__prcm;
+ extern struct omap_hwmod_ocp_if am33xx_l3_s__l3_main;
+ extern struct omap_hwmod_ocp_if am33xx_gfx__l3_main;
+ extern struct omap_hwmod_ocp_if am33xx_l3_main__gfx;
+-extern struct omap_hwmod_ocp_if am33xx_l4_wkup__rtc;
+ extern struct omap_hwmod_ocp_if am33xx_l3_s__gpmc;
+ extern struct omap_hwmod_ocp_if am33xx_l4_ls__timer2;
+ extern struct omap_hwmod_ocp_if am33xx_l3_main__ocmc;
+@@ -43,7 +42,6 @@ extern struct omap_hwmod am33xx_ocmcram_hwmod;
+ extern struct omap_hwmod am33xx_smartreflex0_hwmod;
+ extern struct omap_hwmod am33xx_smartreflex1_hwmod;
+ extern struct omap_hwmod am33xx_gpmc_hwmod;
+-extern struct omap_hwmod am33xx_rtc_hwmod;
  
+ extern struct omap_hwmod_class am33xx_emif_hwmod_class;
+ extern struct omap_hwmod_class am33xx_l4_hwmod_class;
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_interconnect_data.c
+@@ -90,14 +90,6 @@ struct omap_hwmod_ocp_if am33xx_l3_main__gfx = {
+ 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ };
+ 
+-/* l4 wkup -> rtc */
+-struct omap_hwmod_ocp_if am33xx_l4_wkup__rtc = {
+-	.master		= &am33xx_l4_wkup_hwmod,
+-	.slave		= &am33xx_rtc_hwmod,
+-	.clk		= "clkdiv32k_ick",
+-	.user		= OCP_USER_MPU,
+-};
+-
+ /* l3s cfg -> gpmc */
+ struct omap_hwmod_ocp_if am33xx_l3_s__gpmc = {
+ 	.master		= &am33xx_l3_s_hwmod,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_43xx_ipblock_data.c
+@@ -26,7 +26,6 @@
+ #define CLKCTRL(oh, clkctrl) ((oh).prcm.omap4.clkctrl_offs = (clkctrl))
+ #define RSTCTRL(oh, rstctrl) ((oh).prcm.omap4.rstctrl_offs = (rstctrl))
+ #define RSTST(oh, rstst) ((oh).prcm.omap4.rstst_offs = (rstst))
+-#define PRCM_FLAGS(oh, flag) ((oh).prcm.omap4.flags = (flag))
+ 
+ /*
+  * 'l3' class
+@@ -274,47 +273,12 @@ struct omap_hwmod am33xx_gpmc_hwmod = {
+ 	},
+ };
+ 
+-
+-/*
+- * 'rtc' class
+- * rtc subsystem
+- */
+-static struct omap_hwmod_class_sysconfig am33xx_rtc_sysc = {
+-	.rev_offs	= 0x0074,
+-	.sysc_offs	= 0x0078,
+-	.sysc_flags	= SYSC_HAS_SIDLEMODE,
+-	.idlemodes	= (SIDLE_FORCE | SIDLE_NO |
+-			  SIDLE_SMART | SIDLE_SMART_WKUP),
+-	.sysc_fields	= &omap_hwmod_sysc_type3,
+-};
+-
+-static struct omap_hwmod_class am33xx_rtc_hwmod_class = {
+-	.name		= "rtc",
+-	.sysc		= &am33xx_rtc_sysc,
+-	.unlock		= &omap_hwmod_rtc_unlock,
+-	.lock		= &omap_hwmod_rtc_lock,
+-};
+-
+-struct omap_hwmod am33xx_rtc_hwmod = {
+-	.name		= "rtc",
+-	.class		= &am33xx_rtc_hwmod_class,
+-	.clkdm_name	= "l4_rtc_clkdm",
+-	.main_clk	= "clk_32768_ck",
+-	.prcm		= {
+-		.omap4	= {
+-			.modulemode	= MODULEMODE_SWCTRL,
+-		},
+-	},
+-};
+-
+ static void omap_hwmod_am33xx_clkctrl(void)
+ {
+ 	CLKCTRL(am33xx_smartreflex0_hwmod,
+ 		AM33XX_CM_WKUP_SMARTREFLEX0_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_smartreflex1_hwmod,
+ 		AM33XX_CM_WKUP_SMARTREFLEX1_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_rtc_hwmod, AM33XX_CM_RTC_RTC_CLKCTRL_OFFSET);
+-	PRCM_FLAGS(am33xx_rtc_hwmod, HWMOD_OMAP4_ZERO_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_gpmc_hwmod, AM33XX_CM_PER_GPMC_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_l4_ls_hwmod, AM33XX_CM_PER_L4LS_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_l4_wkup_hwmod, AM33XX_CM_WKUP_L4WKUP_CLKCTRL_OFFSET);
+@@ -343,7 +307,6 @@ static void omap_hwmod_am43xx_clkctrl(void)
+ 		AM43XX_CM_WKUP_SMARTREFLEX0_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_smartreflex1_hwmod,
+ 		AM43XX_CM_WKUP_SMARTREFLEX1_CLKCTRL_OFFSET);
+-	CLKCTRL(am33xx_rtc_hwmod, AM43XX_CM_RTC_RTC_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_gpmc_hwmod, AM43XX_CM_PER_GPMC_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_l4_ls_hwmod, AM43XX_CM_PER_L4LS_CLKCTRL_OFFSET);
+ 	CLKCTRL(am33xx_l4_wkup_hwmod, AM43XX_CM_WKUP_L4WKUP_CLKCTRL_OFFSET);
+diff --git a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_33xx_data.c
+@@ -283,7 +283,6 @@ static struct omap_hwmod_ocp_if *am33xx_hwmod_ocp_ifs[] __initdata = {
+ 	&am33xx_l4_wkup__control,
+ 	&am33xx_l4_wkup__smartreflex0,
+ 	&am33xx_l4_wkup__smartreflex1,
+-	&am33xx_l4_wkup__rtc,
+ 	&am33xx_l3_s__gpmc,
+ 	&am33xx_l3_main__ocmc,
+ 	NULL,
+diff --git a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_43xx_data.c
+@@ -216,11 +216,6 @@ static struct omap_hwmod_ocp_if *am43xx_hwmod_ocp_ifs[] __initdata = {
+ 	NULL,
+ };
+ 
+-static struct omap_hwmod_ocp_if *am43xx_rtc_hwmod_ocp_ifs[] __initdata = {
+-	&am33xx_l4_wkup__rtc,
+-	NULL,
+-};
+-
+ int __init am43xx_hwmod_init(void)
+ {
+ 	int ret;
+@@ -229,8 +224,5 @@ int __init am43xx_hwmod_init(void)
+ 	omap_hwmod_init();
+ 	ret = omap_hwmod_register_links(am43xx_hwmod_ocp_ifs);
+ 
+-	if (!ret && of_machine_is_compatible("ti,am4372"))
+-		ret = omap_hwmod_register_links(am43xx_rtc_hwmod_ocp_ifs);
+-
  	return ret;
  }
-@@ -425,14 +439,28 @@ static int am33xx_pm_rtc_setup(void)
- 	struct device_node *np;
- 	unsigned long val = 0;
- 	struct nvmem_device *nvmem;
-+	int error;
- 
- 	np = of_find_node_by_name(NULL, "rtc");
- 
- 	if (of_device_is_available(np)) {
-+		/* RTC interconnect target module clock */
-+		rtc_fck = of_clk_get_by_name(np->parent, "fck");
-+		if (IS_ERR(rtc_fck))
-+			return PTR_ERR(rtc_fck);
-+
-+		rtc_base_virt = of_iomap(np, 0);
-+		if (!rtc_base_virt) {
-+			pr_warn("PM: could not iomap rtc");
-+			error = -ENODEV;
-+			goto err_clk_put;
-+		}
-+
- 		omap_rtc = rtc_class_open("rtc0");
- 		if (!omap_rtc) {
- 			pr_warn("PM: rtc0 not available");
--			return -EPROBE_DEFER;
-+			error = -EPROBE_DEFER;
-+			goto err_iounmap;
- 		}
- 
- 		nvmem = devm_nvmem_device_get(&omap_rtc->dev,
-@@ -454,6 +482,13 @@ static int am33xx_pm_rtc_setup(void)
- 	}
- 
- 	return 0;
-+
-+err_iounmap:
-+	iounmap(rtc_base_virt);
-+err_clk_put:
-+	clk_put(rtc_fck);
-+
-+	return error;
- }
- 
- static int am33xx_pm_probe(struct platform_device *pdev)
-@@ -544,6 +579,8 @@ static int am33xx_pm_remove(struct platform_device *pdev)
- 	suspend_set_ops(NULL);
- 	wkup_m3_ipc_put(m3_ipc);
- 	am33xx_pm_free_sram();
-+	iounmap(rtc_base_virt);
-+	clk_put(rtc_fck);
- 	return 0;
- }
- 
-diff --git a/include/linux/platform_data/pm33xx.h b/include/linux/platform_data/pm33xx.h
---- a/include/linux/platform_data/pm33xx.h
-+++ b/include/linux/platform_data/pm33xx.h
-@@ -54,11 +54,8 @@ struct am33xx_pm_platform_data {
- 	void    (*begin_suspend)(void);
- 	void    (*finish_suspend)(void);
- 	struct  am33xx_pm_sram_addr *(*get_sram_addrs)(void);
--	void __iomem *(*get_rtc_base_addr)(void);
- 	void (*save_context)(void);
- 	void (*restore_context)(void);
--	void (*prepare_rtc_suspend)(void);
--	void (*prepare_rtc_resume)(void);
- 	int (*check_off_mode_enable)(void);
- };
- 
 -- 
 2.27.0
