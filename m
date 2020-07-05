@@ -2,167 +2,206 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC3C7214AF8
-	for <lists+linux-omap@lfdr.de>; Sun,  5 Jul 2020 09:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E33214B37
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Jul 2020 10:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725967AbgGEHkw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 5 Jul 2020 03:40:52 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:10558 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725901AbgGEHkw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 Jul 2020 03:40:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1593934847;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=nrpO7LlX05/QUSJ/KE9R/uWunrjDcgnFW5PQQlRom7o=;
-        b=EDsjl1NKT9tRf7uigau3wDBRSlpcU9SnZ9YYKIf0koRLUHpQ4JOfiX7zpEic1RKCGE
-        FXzjuHfnoUMueWpiRv4ukE2iMGykaxubpwvQ1oRHFFLntzz8KurLChyN1UslKEFDQsnd
-        ZXa2J33Zo6+1urRa42Yc0M3F7Ot4zj0YQwtsWYOGb+S8888Ut2vmx0M5SBj9RUXrSF7H
-        YiW3H0/Fr9EjdbQd5QvqaEUv6KsuYohLqem57u6rVb/r5O3orhUtzrUGYRNxCQ13aUEh
-        4CyhLcjDiacAk4ZoLW2GSum1CXfUUHFKyHIajlP+R3cnvNlcGgVu9MZP4WZQAr68rpmn
-        t+rw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGHPrqwDCpBMA="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
-        with ESMTPSA id V07054w657ealvi
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Sun, 5 Jul 2020 09:40:36 +0200 (CEST)
-Subject: Re: OMAP5: inconsistency between target-module and dsi_of_data_omap5
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <F5C04FAF-0029-48F3-B0A6-5327CD911EA2@goldelico.com>
-Date:   Sun, 5 Jul 2020 09:40:36 +0200
-Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        kernel@pyra-handheld.com, Linux-OMAP <linux-omap@vger.kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Jyri Sarha <jsarha@ti.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <49725F81-E615-4101-81B3-0850F201D9E8@goldelico.com>
-References: <F5C04FAF-0029-48F3-B0A6-5327CD911EA2@goldelico.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1726538AbgGEI63 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Jul 2020 04:58:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38468 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726510AbgGEI62 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 Jul 2020 04:58:28 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F4CC061794
+        for <linux-omap@vger.kernel.org>; Sun,  5 Jul 2020 01:58:28 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id g10so13564822wmc.1
+        for <linux-omap@vger.kernel.org>; Sun, 05 Jul 2020 01:58:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fO8Sm7jhXe4mHOe8pjHRrbIqykTXXZPDSkAJJtQ0flQ=;
+        b=UHqRHBrk/E0Nro7ziXuOaa2fcSqwoDgSjmxgLh47J+/bouQPDuI25LLgGRkyN8CPlE
+         4HOBi7C6Iw5v8emKfPYbZGNGcECP0l6o68V5ju4IonzXU4QEzWHoi80mgtc3+R4gqhSN
+         Y8mawndVwaQhVVTaiEBHwZiyZx7D+nhQuJHcJpe9084zirgn13roo0hlOdEzO85QZJdG
+         WnbQahnJ/c0d2yVGP0tUV0+9QYXnB1Kul8CAZPxFqAxY8IvJ/zKot/73RedRcTcwwgXL
+         GY/gWb1okutR4wDE3YeocsKJh//JH7pfgjRDtFgz4nj6DHgIMml7B8+VSAO3/JJ7Fvbr
+         IC/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fO8Sm7jhXe4mHOe8pjHRrbIqykTXXZPDSkAJJtQ0flQ=;
+        b=XyqT+iTSVwSR0v6djRJBdVI9Xo7ZtGlp+E+192OfKTRJpU5fPDABoBx/vnOIcohE62
+         hq4wl4kbz5DF97/5wbHWnSP+3aPfEB0Ai2J3wJxhel5CbXU17OQ/6mKhhxbmynZLaTS5
+         0BwWw9hR1ou618zMYmYDy4gfizI+7hSa254cqbdrbf3JGGStWhqR05xW8nUJa6Mf9W2O
+         D92clgBMkHS+OLsFnZC2ft0BRehCJVKzzOuG+Evb19KpzVs1TKHbziyNWZWrTldAqmhS
+         aXDNNRAIT3QAm27ZElvP+tuUeOrcfR9fhpit3IEco3XhK5iOAs1+Qtb8FPcg+SANehvb
+         E3zQ==
+X-Gm-Message-State: AOAM530crW6fw1Nu7IxlOHu9OA8udB2sAJNSMZcjHTP6CM6RqNOiMztV
+        c4ODkWiBs52JOrIHte4vmQZA0MGXFGVbdYBEdJe9sg==
+X-Google-Smtp-Source: ABdhPJxoXIiB/oovpbebj6RLBt4a0fIvvJskTiQi8g73R7Bb8eF1bsgPg6qJgADyzLpCZDir/JK2rDmBmjxOaavedyc=
+X-Received: by 2002:a1c:f30a:: with SMTP id q10mr43204822wmq.3.1593939507310;
+ Sun, 05 Jul 2020 01:58:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200608125143.GA2789203@x1>
+In-Reply-To: <20200608125143.GA2789203@x1>
+From:   Haojian Zhuang <haojian.zhuang@linaro.org>
+Date:   Sun, 5 Jul 2020 16:58:16 +0800
+Message-ID: <CAD6h2NR3C0UPMR93jx3Hoo270ebfwXe8bx9WG9Edkf7nr2CQ9Q@mail.gmail.com>
+Subject: Re: [PATCH v2] pinctrl-single: fix pcs_parse_pinconf() return value
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@beagleboard.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, 8 Jun 2020 at 20:51, Drew Fustini <drew@beagleboard.org> wrote:
+>
+> This patch causes pcs_parse_pinconf() to return -ENOTSUPP when no
+> pinctrl_map is added.  The current behavior is to return 0 when
+> !PCS_HAS_PINCONF or !nconfs.  Thus pcs_parse_one_pinctrl_entry()
+> incorrectly assumes that a map was added and sets num_maps = 2.
+>
+> Analysis:
+> =========
+> The function pcs_parse_one_pinctrl_entry() calls pcs_parse_pinconf()
+> if PCS_HAS_PINCONF is enabled.  The function pcs_parse_pinconf()
+> returns 0 to indicate there was no error and num_maps is then set to 2:
+>
+>  980 static int pcs_parse_one_pinctrl_entry(struct pcs_device *pcs,
+>  981                                                 struct device_node *np,
+>  982                                                 struct pinctrl_map **map,
+>  983                                                 unsigned *num_maps,
+>  984                                                 const char **pgnames)
+>  985 {
+> <snip>
+> 1053         (*map)->type = PIN_MAP_TYPE_MUX_GROUP;
+> 1054         (*map)->data.mux.group = np->name;
+> 1055         (*map)->data.mux.function = np->name;
+> 1056
+> 1057         if (PCS_HAS_PINCONF && function) {
+> 1058                 res = pcs_parse_pinconf(pcs, np, function, map);
+> 1059                 if (res)
+> 1060                         goto free_pingroups;
+> 1061                 *num_maps = 2;
+> 1062         } else {
+> 1063                 *num_maps = 1;
+> 1064         }
+>
+> However, pcs_parse_pinconf() will also return 0 if !PCS_HAS_PINCONF or
+> !nconfs.  I believe these conditions should indicate that no map was
+> added by returning -ENOTSUPP. Otherwise pcs_parse_one_pinctrl_entry()
+> will set num_maps = 2 even though no maps were successfully added, as
+> it does not reach "m++" on line 940:
+>
+>  895 static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
+>  896                              struct pcs_function *func,
+>  897                              struct pinctrl_map **map)
+>  898
+>  899 {
+>  900         struct pinctrl_map *m = *map;
+> <snip>
+>  917         /* If pinconf isn't supported, don't parse properties in below. */
+>  918         if (!PCS_HAS_PINCONF)
+>  919                 return 0;
+>  920
+>  921         /* cacluate how much properties are supported in current node */
+>  922         for (i = 0; i < ARRAY_SIZE(prop2); i++) {
+>  923                 if (of_find_property(np, prop2[i].name, NULL))
+>  924                         nconfs++;
+>  925         }
+>  926         for (i = 0; i < ARRAY_SIZE(prop4); i++) {
+>  927                 if (of_find_property(np, prop4[i].name, NULL))
+>  928                         nconfs++;
+>  929         }
+>  930         if (!nconfs)
+>  919                 return 0;
+>  932
+>  933         func->conf = devm_kcalloc(pcs->dev,
+>  934                                   nconfs, sizeof(struct pcs_conf_vals),
+>  935                                   GFP_KERNEL);
+>  936         if (!func->conf)
+>  937                 return -ENOMEM;
+>  938         func->nconfs = nconfs;
+>  939         conf = &(func->conf[0]);
+>  940         m++;
+>
+> This situtation will cause a boot failure [0] on the BeagleBone Black
+> (AM3358) when am33xx_pinmux node in arch/arm/boot/dts/am33xx-l4.dtsi
+> has compatible = "pinconf-single" instead of "pinctrl-single".
+>
+> The patch fixes this issue by returning -ENOSUPP when !PCS_HAS_PINCONF
+> or !nconfs, so that pcs_parse_one_pinctrl_entry() will know that no
+> map was added.
+>
+> Logic is also added to pcs_parse_one_pinctrl_entry() to distinguish
+> between -ENOSUPP and other errors.  In the case of -ENOSUPP, num_maps
+> is set to 1 as it is valid for pinconf to be enabled and a given pin
+> group to not any pinconf properties.
+>
+> [0] https://lore.kernel.org/linux-omap/20200529175544.GA3766151@x1/
+>
+> Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
+> Signed-off-by: Drew Fustini <drew@beagleboard.org>
+> ---
+> changes from V1 [0]:
+> - if pcs_parse_pinconf() returns -ENOSUPP, then set num_maps to 1 and
+>   proceed normally as it is valid for group to have no pinconf props
+> - added Fixes: tag thanks to Gustavo A. R. Silva
+>
+> [0] https://lore.kernel.org/linux-omap/20200531204147.GA664833@x1/
+>
+>  drivers/pinctrl/pinctrl-single.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+> index 1e0614daee9b..a9d511982780 100644
+> --- a/drivers/pinctrl/pinctrl-single.c
+> +++ b/drivers/pinctrl/pinctrl-single.c
+> @@ -916,7 +916,7 @@ static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
+>
+>         /* If pinconf isn't supported, don't parse properties in below. */
+>         if (!PCS_HAS_PINCONF)
+> -               return 0;
+> +               return -ENOTSUPP;
+>
+>         /* cacluate how much properties are supported in current node */
+>         for (i = 0; i < ARRAY_SIZE(prop2); i++) {
+> @@ -928,7 +928,7 @@ static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
+>                         nconfs++;
+>         }
+>         if (!nconfs)
+> -               return 0;
+> +               return -ENOTSUPP;
+>
+>         func->conf = devm_kcalloc(pcs->dev,
+>                                   nconfs, sizeof(struct pcs_conf_vals),
+> @@ -1056,9 +1056,12 @@ static int pcs_parse_one_pinctrl_entry(struct pcs_device *pcs,
+>
+>         if (PCS_HAS_PINCONF && function) {
+>                 res = pcs_parse_pinconf(pcs, np, function, map);
+> -               if (res)
+> +               if (res == 0)
+> +                       *num_maps = 2;
+> +               else if (res == -ENOTSUPP)
+> +                       *num_maps = 1;
+> +               else
+>                         goto free_pingroups;
+> -               *num_maps = 2;
+>         } else {
+>                 *num_maps = 1;
+>         }
+> --
+> 2.25.1
 
-> Am 05.07.2020 um 08:52 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->=20
-> Hi Tony,
-> since v5.7-rc1 our Pyra (OMAP5) dsi panel doesn't initialize and we do =
-not
-> get a /dev/fb0.
->=20
-> There is a suspicious log message:
->=20
-> [   15.352314] DSI: omapdss DSI error: unsupported DSI module
->=20
-> I could trace it down to be likely a discrepancy between
->=20
-> target-module@58000000 {=20
->=20
-> ...
->=20
-> 				target-module@5000 {
-> 					compatible =3D "ti,sysc-omap2", =
-"ti,sysc";
-> 					reg =3D <0x5000 0x4>,
-> ...
-> 					ranges =3D <0 0x5000 0x1000>;
->=20
-> 					dsi1: encoder@0 {
-> 						compatible =3D =
-"ti,omap5-dsi";
->=20
-> 				target-module@9000 {
-> 					compatible =3D "ti,sysc-omap2", =
-"ti,sysc";
-> 					reg =3D <0x9000 0x4>,
-> 					      <0x9010 0x4>,
-> 					      <0x9014 0x4>;
->=20
-> ...
->=20
-> 					ranges =3D <0 0x9000 0x1000>;
->=20
-> 					dsi2: encoder@0 {
-> 						compatible =3D =
-"ti,omap5-dsi";
-> 						reg =3D <0 0x200>,
-> 						      <0x200 0x40>,
-> 						      <0x300 0x40>;
->=20
->=20
->=20
-> and
->=20
-> static const struct dsi_of_data dsi_of_data_omap5 =3D {
-> 	.model =3D DSI_MODEL_OMAP5,
-> 	.pll_hw =3D &dss_omap5_dsi_pll_hw,
-> 	.modules =3D (const struct dsi_module_id_data[]) {
-> 		{ .address =3D 0x58004000, .id =3D 0, },
-> 		{ .address =3D 0x58009000, .id =3D 1, },
-> 		{ },
-> 	},
->=20
-> Therefore the address match logic in dsi_probe() fails and ends in
-> the mentioned log message.
->=20
-> Looking at git blame, the DTS was recently changed by 5a507162f096b54.
-> Commit 98e1a6a86a22d62 did do a similar change for dsi2 but did not
-> modify the address.
->=20
-> So I wonder if the 0x5000 is just a typo or if there is something
-> where the dsi1: encoder@0 should have a negative offset to end
-> up at address 0x58004000?
->=20
-> BR and thanks,
-> Nikolaus
->=20
 
-This patch makes the DSI error go away and omapdrm initialized:
-
-diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
-index e147121513e644..b9f54f62163879 100644
---- a/arch/arm/boot/dts/omap5.dtsi
-+++ b/arch/arm/boot/dts/omap5.dtsi
-@@ -474,7 +474,7 @@ rfbi: encoder@0  {
-                                        };
-                                };
-=20
--                               target-module@5000 {
-+                               target-module@4000 {
-                                        compatible =3D "ti,sysc-omap2", =
-"ti,sysc";
-                                        reg =3D <0x5000 0x4>,
-                                              <0x5010 0x4>,
-@@ -490,7 +490,7 @@ SYSC_OMAP2_SOFTRESET |
-                                        ti,syss-mask =3D <1>;
-                                        #address-cells =3D <1>;
-                                        #size-cells =3D <1>;
--                                       ranges =3D <0 0x5000 0x1000>;
-+                                       ranges =3D <0 0x4000 0x1000>;
-=20
-                                        dsi1: encoder@0 {
-                                                compatible =3D =
-"ti,omap5-dsi";
-
-But I still have no display:
-
-[   17.537515] [drm] Initialized omapdrm 1.0.0 20110917 for omapdrm.0 on =
-minor 2
-[   18.558950] omapdrm omapdrm.0: [drm] Cannot find any crtc or sizes
-
-So there is more to fix.
-
-BR,
-Nikolaus
-
-
+Tested-by: Haojian Zhuang <haojian.zhuang@linaro.org>
