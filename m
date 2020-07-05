@@ -2,415 +2,191 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E93E2214CCC
-	for <lists+linux-omap@lfdr.de>; Sun,  5 Jul 2020 15:39:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B92C7214CDB
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Jul 2020 15:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbgGENjs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 5 Jul 2020 09:39:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53410 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726833AbgGENjs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 Jul 2020 09:39:48 -0400
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30249C061794
-        for <linux-omap@vger.kernel.org>; Sun,  5 Jul 2020 06:39:48 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id j10so27087628qtq.11
-        for <linux-omap@vger.kernel.org>; Sun, 05 Jul 2020 06:39:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vvVIDc2CLQZDujNmwNntgRGtU/Zrk9Wmx69vehTgRDk=;
-        b=PDdKVnFu1TydlyNKktkWqnCRTDFmteZajPSGtOkv0S+4Y53zL5cCSkYpbpKdywqT0Y
-         NMLmDOBjQtoubs6MUN/7qu7yJJf65N+LuScdGcUQXGkbHmYd+1UwZRR1wOXRQbqv9heO
-         5mScpNZn9mt7qWyYZCJkH+R1i/rNrONbv9jcoDPMfIr/c6J8rMxxWEqpAkuPlVZvGS1A
-         bXcAwDpvyVSM8fCA66MeJwhF7Xsw2jM/cAwttmJikww9LmIdc07pmeqAPWKNx9yC/yph
-         92I9WTCvL2M7K7fzqBnksquRjTjNKZjcC9d96A2SSNbh7YFcfFDnBnb0eCXb4oz7Rju+
-         xKcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vvVIDc2CLQZDujNmwNntgRGtU/Zrk9Wmx69vehTgRDk=;
-        b=reCdiIWW8dB7Acx1Mik1JUS8U/qHuAkr7GUl3nv1N59CrM7uZtZGiSTCnQnuUFQaHX
-         eOCPy54xAdeG2NdKvrQWArlFrw3qmNWKL5oOAZaP1GYqXxuR0fRIFbqBrxKgPTDXGaqb
-         s7UQGY+f9G0H+UO3dA2KgTl29IVzKP9sd4FmlMNjyjGM+S3GmsKf5JzLDyzuthtcEI8L
-         aNbGDmPip2S4cgY/9Jhs6Vfb1ZaKNEitZn2AXoMr5r5XVVFqXs6akqMRE8UrFc4Q44j1
-         UKZDIGjq7vSVt4f9Vl7y6JyKuHvnrFujcE/22ssl5897HlkluziQlTLIrCGl1POSrPqk
-         pPlA==
-X-Gm-Message-State: AOAM531Rks7+bFACLLRTneQ7VypyBO7gClTEy8rx/ZGAaQNHj/9UhuMN
-        101J43ziecj9Ph/aROlLHy8Sf+C7Lno/esg5AI7Idw==
-X-Google-Smtp-Source: ABdhPJxfkj6OZ6hQheX8h0Nb6a4GQGKk923ArjNOCtTDiijain8V2v34ZiBevv3Fd0ldieaZWbE782ngUMwZO1gM6wI=
-X-Received: by 2002:ac8:404f:: with SMTP id j15mr43989782qtl.200.1593956387252;
- Sun, 05 Jul 2020 06:39:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <1593699479-1445-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1593699479-1445-7-git-send-email-grzegorz.jaszczyk@linaro.org> <46b98790-a393-d66c-1e42-bf2055fc24ff@ti.com>
-In-Reply-To: <46b98790-a393-d66c-1e42-bf2055fc24ff@ti.com>
-From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Date:   Sun, 5 Jul 2020 15:39:36 +0200
-Message-ID: <CAMxfBF52X+USBYt4MGs_z3T+SciqoJrGW61ZC39P3Xo8rjqPsg@mail.gmail.com>
-Subject: Re: [PATCHv3 6/6] irqchip/irq-pruss-intc: Add event mapping support
-To:     Suman Anna <s-anna@ti.com>
-Cc:     tglx@linutronix.de, jason@lakedaemon.net,
-        Marc Zyngier <maz@kernel.org>, robh+dt@kernel.org,
-        Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
-        "Mills, William" <wmills@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S1726833AbgGENxp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Jul 2020 09:53:45 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:29762 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727790AbgGENxo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 Jul 2020 09:53:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1593957221;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=v6J2S0eib8wKFNo5EYt0US11Tk7XmGzvX7A0J+ietzA=;
+        b=TuWQ0leDBiAOjqKCET/Hq52VjtEc6Gn6PkQeWZx5BHVofpunGkI1q9XFnPbeozLqPr
+        DoEurvshkSHDOqtVC8ejBh0N/CL6cZAkuRLkwyJalpNTWZ/swZS9rQsWmuA3rA01lNOn
+        AH3VLaIFi5lW+jZ2D9W/yFj3yjxgWlzPh3CDsjySf/HBMyW1WIivm8KaMlcvLYWqfxUC
+        g5OBwdl+tmtyVro+lpzPZ2DtWbZh4IQP6oEDSL9yRrbz7UPp0PKU8zJheKVh3Wojwz6L
+        DMC3WUnDHXV8WO5/vSZW2St+5v3KZUuqik/0rT7If57ft5hm5uesENur9nyG+Ar2JnhP
+        xnxQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGHPrqwDCpBMA="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
+        with ESMTPSA id V07054w65DlcmYn
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Sun, 5 Jul 2020 15:47:38 +0200 (CEST)
+Subject: Re: OMAP5: inconsistency between target-module and dsi_of_data_omap5
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=us-ascii
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <49725F81-E615-4101-81B3-0850F201D9E8@goldelico.com>
+Date:   Sun, 5 Jul 2020 15:47:37 +0200
+Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        kernel@pyra-handheld.com, Linux-OMAP <linux-omap@vger.kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Jyri Sarha <jsarha@ti.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5F4C23B0-A82B-4F94-BD74-D04F6D798FC0@goldelico.com>
+References: <F5C04FAF-0029-48F3-B0A6-5327CD911EA2@goldelico.com> <49725F81-E615-4101-81B3-0850F201D9E8@goldelico.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Suman,
 
-On Thu, 2 Jul 2020 at 18:25, Suman Anna <s-anna@ti.com> wrote:
->
-> Hi Greg,
->
-> On 7/2/20 9:17 AM, Grzegorz Jaszczyk wrote:
-> > The PRUSS INTC receives a number of system input interrupt source events
-> > and supports individual control configuration and hardware prioritization.
-> > These input events can be mapped to some output host interrupts through 2
-> > levels of many-to-one mapping i.e. events to channel mapping and channels
-> > to host interrupts.
-> >
-> > This mapping information is provided through the PRU firmware that is
-> > loaded onto a PRU core/s or through the device tree node of the PRU
-> > application. The mapping configuration is triggered by the PRU
-> > remoteproc driver, and is setup before the PRU core is started and
-> > cleaned up after the PRU core is stopped. This event mapping
-> > configuration logic programs the Channel Map Registers (CMRx) and
-> > Host-Interrupt Map Registers (HMRx) only when a new program is being
-> > loaded/started and the same events and interrupt channels are reset to
-> > zero when stopping a PRU.
-> >
-> > Reference counting is used to allow multiple system events to share a
-> > single channel and to allow multiple channels to share a single host
-> > event.
-> >
-> > The remoteproc driver can register mappings read from a firmware blob
-> > as shown below.
-> >
-> >       struct irq_fwspec fwspec;
-> >       int irq;
-> >
-> >       fwspec.fwnode = of_node_to_fwnode(dev->of_node);
-> >       fwspec.param_count = 3;
-> >       fwspec.param[0] = 63; // system event
-> >       fwspec.param[1] = 5;  // channel
-> >       fwspec.param[2] = 6;  // host event
-> >
-> >       irq = irq_create_fwspec_mapping(&fwspec);
-> >       if (irq < 0) {
-> >               dev_err(dev, "failed to get irq\n");
-> >               return irq;
-> >       }
-> >
-> > Suggested-by: David Lechner <david@lechnology.com>
-> > Signed-off-by: Suman Anna <s-anna@ti.com>
-> > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> > ---
-> > v3:
-> > - This patch replaces https://patchwork.kernel.org/patch/11069753/
-> >    according to received feedback. Instead of exporting custom functions
-> >    from interrupt driver, the xlate and irq domain map is used for
-> >    interrupt parsing and mapping.
->
-> Thanks for reworking this. Only have couple of very minor comments below.
->
-> > ---
-> >   drivers/irqchip/irq-pruss-intc.c | 265 ++++++++++++++++++++++++++++++++++++++-
-> >   1 file changed, 264 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/irqchip/irq-pruss-intc.c b/drivers/irqchip/irq-pruss-intc.c
-> > index 362aa01..cf40a97 100644
-> > --- a/drivers/irqchip/irq-pruss-intc.c
-> > +++ b/drivers/irqchip/irq-pruss-intc.c
-> > @@ -51,14 +51,42 @@
-> >   #define PRU_INTC_HIER               0x1500
-> >
-> >   /* CMR register bit-field macros */
-> > +#define CMR_EVT_MAP_MASK     0xf
-> > +#define CMR_EVT_MAP_BITS     8
-> >   #define CMR_EVT_PER_REG             4
-> >
-> >   /* HMR register bit-field macros */
-> > +#define HMR_CH_MAP_MASK              0xf
-> > +#define HMR_CH_MAP_BITS              8
-> >   #define HMR_CH_PER_REG              4
-> >
-> >   /* HIPIR register bit-fields */
-> >   #define INTC_HIPIR_NONE_HINT        0x80000000
-> >
-> > +#define MAX_PRU_SYS_EVENTS 160
-> > +#define MAX_PRU_CHANNELS 20
-> > +
-> > +/**
-> > + * struct pruss_intc_hwirq_data - additional metadata associated with a PRU
-> > + * system event
-> > + * @channel: The PRU INTC channel that the system event should be mapped to
-> > + * @host: The PRU INTC host that the channel should be mapped to
-> > + */
-> > +struct pruss_intc_hwirq_data {
-> > +     u8 channel;
-> > +     u8 host;
-> > +};
-> > +
-> > +/**
-> > + * struct pruss_intc_map_record - keeps track of actual mapping state
-> > + * @value: The currently mapped value (channel or host)
-> > + * @ref_count: Keeps track of number of current users of this resource
-> > + */
-> > +struct pruss_intc_map_record {
-> > +     u8 value;
-> > +     u8 ref_count;
-> > +};
-> > +
-> >   /**
-> >    * struct pruss_intc_match_data - match data to handle SoC variations
-> >    * @num_system_events: number of input system events handled by the PRUSS INTC
-> > @@ -71,18 +99,29 @@ struct pruss_intc_match_data {
-> >
-> >   /**
-> >    * struct pruss_intc - PRUSS interrupt controller structure
-> > + * @hwirq_data: table of additional mapping data received from device tree
-> > + *   or PRU firmware
-> > + * @event_channel: current state of system event to channel mappings
-> > + * @channel_host: current state of channel to host mappings
-> >    * @irqs: kernel irq numbers corresponding to PRUSS host interrupts
-> >    * @base: base virtual address of INTC register space
-> >    * @domain: irq domain for this interrupt controller
-> >    * @soc_config: cached PRUSS INTC IP configuration data
-> > + * @lock: mutex to serialize access to INTC
-> > + * @dev: PRUSS INTC device pointer
-> >    * @shared_intr: bit-map denoting if the MPU host interrupt is shared
-> >    * @invalid_intr: bit-map denoting if host interrupt is not connected to MPU
-> >    */
-> >   struct pruss_intc {
-> > +     struct pruss_intc_hwirq_data hwirq_data[MAX_PRU_SYS_EVENTS];
-> > +     struct pruss_intc_map_record event_channel[MAX_PRU_SYS_EVENTS];
-> > +     struct pruss_intc_map_record channel_host[MAX_PRU_CHANNELS];
-> >       unsigned int irqs[MAX_NUM_HOST_IRQS];
-> >       void __iomem *base;
-> >       struct irq_domain *domain;
-> >       const struct pruss_intc_match_data *soc_config;
-> > +     struct mutex lock; /* PRUSS INTC lock */
-> > +     struct device *dev;
-> >       u16 shared_intr;
-> >       u16 invalid_intr;
-> >   };
-> > @@ -98,6 +137,165 @@ static inline void pruss_intc_write_reg(struct pruss_intc *intc,
-> >       writel_relaxed(val, intc->base + reg);
-> >   }
-> >
-> > +static void pruss_intc_update_cmr(struct pruss_intc *intc, int evt, s8 ch)
-> > +{
-> > +     u32 idx, offset, val;
-> > +
-> > +     idx = evt / CMR_EVT_PER_REG;
-> > +     offset = (evt % CMR_EVT_PER_REG) * CMR_EVT_MAP_BITS;
-> > +
-> > +     val = pruss_intc_read_reg(intc, PRU_INTC_CMR(idx));
-> > +     val &= ~(CMR_EVT_MAP_MASK << offset);
-> > +     val |= ch << offset;
-> > +     pruss_intc_write_reg(intc, PRU_INTC_CMR(idx), val);
-> > +
-> > +     dev_dbg(intc->dev, "SYSEV%u -> CH%d (CMR%d 0x%08x)\n", evt, ch,
-> > +             idx, pruss_intc_read_reg(intc, PRU_INTC_CMR(idx)));
-> > +}
-> > +
-> > +static void pruss_intc_update_hmr(struct pruss_intc *intc, int ch, s8 host)
-> > +{
-> > +     u32 idx, offset, val;
-> > +
-> > +     idx = ch / HMR_CH_PER_REG;
-> > +     offset = (ch % HMR_CH_PER_REG) * HMR_CH_MAP_BITS;
-> > +
-> > +     val = pruss_intc_read_reg(intc, PRU_INTC_HMR(idx));
-> > +     val &= ~(HMR_CH_MAP_MASK << offset);
-> > +     val |= host << offset;
-> > +     pruss_intc_write_reg(intc, PRU_INTC_HMR(idx), val);
-> > +
-> > +     dev_dbg(intc->dev, "CH%d -> HOST%d (HMR%d 0x%08x)\n", ch, host, idx,
-> > +             pruss_intc_read_reg(intc, PRU_INTC_HMR(idx)));
-> > +}
-> > +
-> > +/**
-> > + * pruss_intc_map() - configure the PRUSS INTC
-> > + * @intc: PRUSS interrupt controller pointer
-> > + * @hwirq: the system event number
-> > + *
-> > + * Configures the PRUSS INTC with the provided configuration from the one
-> > + * parsed in the xlate function. Any existing event to channel mappings or
-> > + * channel to host interrupt mappings are checked to make sure there are no
-> > + * conflicting configuration between both the PRU cores.
-> > + *
-> > + * Returns 0 on success, or a suitable error code otherwise
-> > + */
-> > +static int pruss_intc_map(struct pruss_intc *intc, unsigned long hwirq)
-> > +{
-> > +     struct device *dev = intc->dev;
-> > +     int ret = 0;
-> > +     u8 ch, host, reg_idx;
-> > +     u32 val;
-> > +
-> > +     if (hwirq >= intc->soc_config->num_system_events)
-> > +             return -EINVAL;
-> > +
-> > +     mutex_lock(&intc->lock);
-> > +
-> > +     ch = intc->hwirq_data[hwirq].channel;
-> > +     host = intc->hwirq_data[hwirq].host;
-> > +
-> > +     /* check if sysevent already assigned */
-> > +     if (intc->event_channel[hwirq].ref_count > 0 &&
-> > +         intc->event_channel[hwirq].value != ch) {
-> > +             dev_err(dev, "event %lu (req. channel %d) already assigned to channel %d\n",
-> > +                     hwirq, ch, intc->event_channel[hwirq].value);
-> > +             ret = -EBUSY;
-> > +             goto unlock;
-> > +     }
-> > +
-> > +     /* check if channel already assigned */
-> > +     if (intc->channel_host[ch].ref_count > 0 &&
-> > +         intc->channel_host[ch].value != host) {
-> > +             dev_err(dev, "channel %d (req. host %d) already assigned to host %d\n",
-> > +                     ch, host, intc->channel_host[ch].value);
-> > +             ret = -EBUSY;
-> > +             goto unlock;
-> > +     }
-> > +
-> > +     if (++intc->event_channel[hwirq].ref_count == 1) {
-> > +             intc->event_channel[hwirq].value = ch;
-> > +
-> > +             pruss_intc_update_cmr(intc, hwirq, ch);
-> > +
-> > +             reg_idx = hwirq / 32;
-> > +             val = BIT(hwirq  % 32);
-> > +
-> > +             /* clear and enable system event */
-> > +             pruss_intc_write_reg(intc, PRU_INTC_ESR(reg_idx), val);
-> > +             pruss_intc_write_reg(intc, PRU_INTC_SECR(reg_idx), val);
-> > +     }
-> > +
-> > +     if (++intc->channel_host[ch].ref_count == 1) {
-> > +             intc->channel_host[ch].value = host;
-> > +
-> > +             pruss_intc_update_hmr(intc, ch, host);
-> > +
-> > +             /* enable host interrupts */
-> > +             pruss_intc_write_reg(intc, PRU_INTC_HIEISR, host);
-> > +     }
-> > +
-> > +     dev_dbg(dev, "mapped system_event = %lu channel = %d host = %d",
-> > +              hwirq, ch, host);
-> > +
-> > +     /* global interrupt enable */
-> > +     pruss_intc_write_reg(intc, PRU_INTC_GER, 1);
-> > +
-> > +unlock:
-> > +     mutex_unlock(&intc->lock);
-> > +     return ret;
-> > +}
-> > +
-> > +/**
-> > + * pruss_intc_unmap() - unconfigure the PRUSS INTC
-> > + * @intc: PRUSS interrupt controller pointer
-> > + * @hwirq: the system event number
-> > + *
-> > + * Undo whatever was done in pruss_intc_map() for a PRU core.
-> > + * Mappings are reference counted, so resources are only disabled when there
-> > + * are no longer any users.
-> > + */
-> > +static void pruss_intc_unmap(struct pruss_intc *intc, unsigned long hwirq)
-> > +{
-> > +     u8 ch, host, reg_idx;
-> > +     u32 val;
-> > +
-> > +     if (hwirq >= intc->soc_config->num_system_events)
-> > +             return;
-> > +
-> > +     mutex_lock(&intc->lock);
-> > +
-> > +     ch = intc->event_channel[hwirq].value;
-> > +     host = intc->channel_host[ch].value;
-> > +
-> > +     if (--intc->channel_host[ch].ref_count == 0) {
-> > +             /* disable host interrupts */
-> > +             pruss_intc_write_reg(intc, PRU_INTC_HIDISR, host);
-> > +
-> > +             /* clear the map using reset value 0 */
-> > +             pruss_intc_update_hmr(intc, ch, 0);
-> > +     }
-> > +
-> > +     if (--intc->event_channel[hwirq].ref_count == 0) {
-> > +             reg_idx = hwirq / 32;
-> > +             val = BIT(hwirq  % 32);
-> > +
-> > +             /* disable system events */
-> > +             pruss_intc_write_reg(intc, PRU_INTC_ECR(reg_idx), val);
-> > +             /* clear any pending status */
-> > +             pruss_intc_write_reg(intc, PRU_INTC_SECR(reg_idx), val);
-> > +
-> > +             /* clear the map using reset value 0 */
-> > +             pruss_intc_update_cmr(intc, hwirq, 0);
-> > +     }
-> > +
-> > +     dev_dbg(intc->dev, "unmapped system_event = %lu channel = %d host = %d\n",
-> > +             hwirq, ch, host);
-> > +
-> > +     mutex_unlock(&intc->lock);
-> > +}
-> > +
-> >   static void pruss_intc_init(struct pruss_intc *intc)
-> >   {
-> >       const struct pruss_intc_match_data *soc_config = intc->soc_config;
-> > @@ -212,10 +410,67 @@ static struct irq_chip pruss_irqchip = {
-> >       .irq_set_irqchip_state = pruss_intc_irq_set_irqchip_state,
-> >   };
-> >
-> > +static int
-> > +pruss_intc_irq_domain_xlate(struct irq_domain *d, struct device_node *node,
-> > +                         const u32 *intspec, unsigned int intsize,
-> > +                         unsigned long *out_hwirq, unsigned int *out_type)
-> > +{
-> > +     struct pruss_intc *intc = d->host_data;
-> > +     struct device *dev = intc->dev;
-> > +     int sys_event, channel, host;
-> > +
-> > +     if (intsize == 1) {
-> > +             /*
-> > +              * In case of short version (intsize == 1) verify if sysevent
-> > +              * already mapped to channel/host irq if not return error
-> > +              */
-> > +             sys_event = intspec[0];
-> > +             if (intc->event_channel[sys_event].ref_count)
-> > +                     goto already_mapped;
-> > +             else
-> > +                     return -EINVAL;
->
-> Perhaps revise this to check the error condition first and skipping the
-> else, similar to the change you have done in Patch 3.
+> Am 05.07.2020 um 09:40 schrieb H. Nikolaus Schaller =
+<hns@goldelico.com>:
+>=20
+>=20
+>> Am 05.07.2020 um 08:52 schrieb H. Nikolaus Schaller =
+<hns@goldelico.com>:
+>>=20
+>> Hi Tony,
+>> since v5.7-rc1 our Pyra (OMAP5) dsi panel doesn't initialize and we =
+do not
+>> get a /dev/fb0.
+>>=20
+>> There is a suspicious log message:
+>>=20
+>> [   15.352314] DSI: omapdss DSI error: unsupported DSI module
+>>=20
+>> I could trace it down to be likely a discrepancy between
+>>=20
+>> target-module@58000000 {=20
+>>=20
+>> ...
+>>=20
+>> 				target-module@5000 {
+>> 					compatible =3D "ti,sysc-omap2", =
+"ti,sysc";
+>> 					reg =3D <0x5000 0x4>,
+>> ...
+>> 					ranges =3D <0 0x5000 0x1000>;
+>>=20
+>> 					dsi1: encoder@0 {
+>> 						compatible =3D =
+"ti,omap5-dsi";
+>>=20
+>> 				target-module@9000 {
+>> 					compatible =3D "ti,sysc-omap2", =
+"ti,sysc";
+>> 					reg =3D <0x9000 0x4>,
+>> 					      <0x9010 0x4>,
+>> 					      <0x9014 0x4>;
+>>=20
+>> ...
+>>=20
+>> 					ranges =3D <0 0x9000 0x1000>;
+>>=20
+>> 					dsi2: encoder@0 {
+>> 						compatible =3D =
+"ti,omap5-dsi";
+>> 						reg =3D <0 0x200>,
+>> 						      <0x200 0x40>,
+>> 						      <0x300 0x40>;
+>>=20
+>>=20
+>>=20
+>> and
+>>=20
+>> static const struct dsi_of_data dsi_of_data_omap5 =3D {
+>> 	.model =3D DSI_MODEL_OMAP5,
+>> 	.pll_hw =3D &dss_omap5_dsi_pll_hw,
+>> 	.modules =3D (const struct dsi_module_id_data[]) {
+>> 		{ .address =3D 0x58004000, .id =3D 0, },
+>> 		{ .address =3D 0x58009000, .id =3D 1, },
+>> 		{ },
+>> 	},
+>>=20
+>> Therefore the address match logic in dsi_probe() fails and ends in
+>> the mentioned log message.
+>>=20
+>> Looking at git blame, the DTS was recently changed by =
+5a507162f096b54.
+>> Commit 98e1a6a86a22d62 did do a similar change for dsi2 but did not
+>> modify the address.
+>>=20
+>> So I wonder if the 0x5000 is just a typo or if there is something
+>> where the dsi1: encoder@0 should have a negative offset to end
+>> up at address 0x58004000?
+>>=20
+>> BR and thanks,
+>> Nikolaus
+>>=20
+>=20
+> This patch makes the DSI error go away and omapdrm initialized:
+>=20
+> diff --git a/arch/arm/boot/dts/omap5.dtsi =
+b/arch/arm/boot/dts/omap5.dtsi
+> index e147121513e644..b9f54f62163879 100644
+> --- a/arch/arm/boot/dts/omap5.dtsi
+> +++ b/arch/arm/boot/dts/omap5.dtsi
+> @@ -474,7 +474,7 @@ rfbi: encoder@0  {
+>                                        };
+>                                };
+>=20
+> -                               target-module@5000 {
+> +                               target-module@4000 {
+>                                        compatible =3D "ti,sysc-omap2", =
+"ti,sysc";
+>                                        reg =3D <0x5000 0x4>,
+>                                              <0x5010 0x4>,
+> @@ -490,7 +490,7 @@ SYSC_OMAP2_SOFTRESET |
+>                                        ti,syss-mask =3D <1>;
+>                                        #address-cells =3D <1>;
+>                                        #size-cells =3D <1>;
+> -                                       ranges =3D <0 0x5000 0x1000>;
+> +                                       ranges =3D <0 0x4000 0x1000>;
+>=20
+>                                        dsi1: encoder@0 {
+>                                                compatible =3D =
+"ti,omap5-dsi";
+>=20
+> But I still have no display:
+>=20
+> [   17.537515] [drm] Initialized omapdrm 1.0.0 20110917 for omapdrm.0 =
+on minor 2
+> [   18.558950] omapdrm omapdrm.0: [drm] Cannot find any crtc or sizes
+>=20
+> So there is more to fix.
 
-Ok. I will do that for v4.
+A little more info:
 
->
-> > +     }
-> > +
-> > +     if (intsize < 3)
-> > +             return -EINVAL;
-> > +
-> > +     sys_event = intspec[0];
-> > +     if (sys_event < 0 || sys_event >= intc->soc_config->num_system_events) {
-> > +             dev_err(dev, "not valid event number\n");
->
-> Would be useful to print the invalid event numbers here, and each of
-> channel and host below.
+on v5.7 I see:
 
-Yes, good point.
+[   13.850883] omapdss_dss 58000000.dss: bound 58001000.dispc (ops =
+dispc_component_ops [omapdss])
+[   13.885714] omapdss_dss 58000000.dss: bound 58040000.encoder (ops =
+hdmi5_component_ops [omapdss])
 
-Thank you,
-Grzegorz
+while on v5.6:
+
+[   14.997890] omapdss_dss 58000000.dss: bound 58001000.dispc (ops =
+dsi_vc_flush_receive_data [omapdss])
+[   15.007726] omapdss_dss 58000000.dss: bound 58004000.encoder (ops =
+dsi_vc_flush_receive_data [omapdss])
+[   15.026118] omapdss_dss 58000000.dss: bound 58040000.encoder (ops =
+dsi_vc_flush_receive_data [omapdss])
+
+So the dsi1 encoder isn't properly bound.
+
+BR,
+Nikolaus=
