@@ -2,112 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35B36214DB1
-	for <lists+linux-omap@lfdr.de>; Sun,  5 Jul 2020 17:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 669E1214F89
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Jul 2020 22:45:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726996AbgGEPkW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 5 Jul 2020 11:40:22 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.20]:33680 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726975AbgGEPkV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 Jul 2020 11:40:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1593963619;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=vSVVc59vCmbpMVDpRe0ZmsPUtypVOTeiw6DLQQriGnY=;
-        b=MqXRpNia/oP1YjpFAQSU/250/UHd6Kav9axzbTfmBAnhIchWmUMqdyOlpiRrXfc9aH
-        U9xCqvK1CmbZjwvCZ0CnJaJ6oKb6zoJ66eVCO30vyAYogcDM+yNzpHf0qzou1+8vhUcE
-        WATzwNgzzBPFXtYZDFZDmDTi0d2slAmjTcuDKOOgGGYRfYf+68M+dwY9fYeVtrNlz4nW
-        oBvNjsWqJijmJ7r8y7aurBpvQ3nT2U57FPwUldH/UV4g0gQU+Ix9qdpJOsjx6f/xH+EM
-        QsQm0OZFeFUXibJK5dcsDK1qAnHgSwcwa8q+LwHpxeUXMowLUY1vGfmazJ7yUQvGPrJA
-        IlCg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGHPrqwDCpBMA="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
-        with ESMTPSA id V07054w65FeHmlK
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Sun, 5 Jul 2020 17:40:17 +0200 (CEST)
-Subject: Re: OMAP5: inconsistency between target-module and dsi_of_data_omap5
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20200705143614.GR37466@atomide.com>
-Date:   Sun, 5 Jul 2020 17:40:17 +0200
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Jyri Sarha <jsarha@ti.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E200E98D-A4F8-4270-B192-33733F4C7235@goldelico.com>
-References: <F5C04FAF-0029-48F3-B0A6-5327CD911EA2@goldelico.com> <49725F81-E615-4101-81B3-0850F201D9E8@goldelico.com> <5F4C23B0-A82B-4F94-BD74-D04F6D798FC0@goldelico.com> <20200705142653.GQ37466@atomide.com> <20200705143614.GR37466@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1728485AbgGEUpj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Jul 2020 16:45:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53372 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728326AbgGEUpi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 5 Jul 2020 16:45:38 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E85012068F;
+        Sun,  5 Jul 2020 20:45:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593981938;
+        bh=PzWD9Q9qreaWguzKmtjZ782UP/42e9+9BUsUmRGeEjw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=wiVQ9fZXiEvK6iYxV3uu+0ZPPkTnV1ZHaQrQLHuSeweFITpQJFM/C3jpPqsviLrUv
+         NpvGv268nwsmfPFOREOzuVh1XoHSDSPJyyHXH5Z41YznUTDuVSghg9v9zfPrGQVppW
+         ovq36YQgJcNzfurQ3iqsL3VMyL80SUEsAFKuqxq4=
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <maz@kernel.org>)
+        id 1jsBW4-009Fhz-Ge; Sun, 05 Jul 2020 21:45:36 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sun, 05 Jul 2020 21:45:36 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+Cc:     tglx@linutronix.de, jason@lakedaemon.net,
+        "Anna, Suman" <s-anna@ti.com>, robh+dt@kernel.org,
+        Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
+        "Mills, William" <wmills@ti.com>, "Andrew F . Davis" <afd@ti.com>,
+        Roger Quadros <rogerq@ti.com>
+Subject: Re: [PATCHv3 2/6] irqchip/irq-pruss-intc: Add a PRUSS irqchip driver
+ for PRUSS interrupts
+In-Reply-To: <CAMxfBF7pbH1LLE4fJnnCPnrqnQ-tdO+_xfoN1VerJcQ-ZyYM9Q@mail.gmail.com>
+References: <1593699479-1445-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+ <1593699479-1445-3-git-send-email-grzegorz.jaszczyk@linaro.org>
+ <f0d3f3224a1b8fa2be668dd2b8d9d84e@kernel.org>
+ <CAMxfBF6A9702-rBOo0jHtfn4Ds1_G+nWG4O9-urNqU00dFXeww@mail.gmail.com>
+ <12db6d22c12369b6d64f410aa2434b03@kernel.org>
+ <CAMxfBF7pbH1LLE4fJnnCPnrqnQ-tdO+_xfoN1VerJcQ-ZyYM9Q@mail.gmail.com>
+User-Agent: Roundcube Webmail/1.4.5
+Message-ID: <53d39d8fbd63c6638dbf0584c7016ee0@kernel.org>
+X-Sender: maz@kernel.org
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: grzegorz.jaszczyk@linaro.org, tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com, robh+dt@kernel.org, lee.jones@linaro.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, david@lechnology.com, wmills@ti.com, afd@ti.com, rogerq@ti.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+On 2020-07-05 14:26, Grzegorz Jaszczyk wrote:
+> On Sat, 4 Jul 2020 at 11:39, Marc Zyngier <maz@kernel.org> wrote:
+>> 
+>> On 2020-07-03 15:28, Grzegorz Jaszczyk wrote:
 
-> Am 05.07.2020 um 16:36 schrieb Tony Lindgren <tony@atomide.com>:
->=20
-> * Tony Lindgren <tony@atomide.com> [200705 14:27]:
->> * H. Nikolaus Schaller <hns@goldelico.com> [200705 13:48]:
->>>> This patch makes the DSI error go away and omapdrm initialized:
->>>>=20
->>>> diff --git a/arch/arm/boot/dts/omap5.dtsi =
-b/arch/arm/boot/dts/omap5.dtsi
->>>> index e147121513e644..b9f54f62163879 100644
->>>> --- a/arch/arm/boot/dts/omap5.dtsi
->>>> +++ b/arch/arm/boot/dts/omap5.dtsi
->>>> @@ -474,7 +474,7 @@ rfbi: encoder@0  {
->>>>                                       };
->>>>                               };
->>>>=20
->>>> -                               target-module@5000 {
->>>> +                               target-module@4000 {
->>>>                                       compatible =3D =
-"ti,sysc-omap2", "ti,sysc";
->>>>                                       reg =3D <0x5000 0x4>,
->>>>                                             <0x5010 0x4>,
->=20
-> Looks like you need to also change the reg offsets above
-> from 0x5000 something to 0x4000 something.
+[...]
 
-I think I had tried that as well, but then it seems to hang
-in drm_setup_crtcs_fb (or shortly after).
+>> It still begs the question: if the HW can support both edge and level
+>> triggered interrupts, why isn't the driver supporting this diversity?
+>> I appreciate that your HW may only have level interrupts so far, but
+>> what guarantees that this will forever be true? It would imply a 
+>> change
+>> in the DT binding, which isn't desirable.
+> 
+> Ok, I've got your point. I will try to come up with something later
+> on. Probably extending interrupt-cells by one and passing interrupt
+> type will be enough for now. Extending this driver to actually support
+> it can be handled later if needed. Hope it works for you.
 
->=20
->> Do you have loaded display-connector? That is needed starting
->> with v5.7-rc1.
->=20
-> Where the display-connector is a new kernel module to load.
+Writing a set_type callback to deal with this should be pretty easy.
+Don't delay doing the right thing.
 
-Ah, ok. Never heard of but it seems to be selected automatically:
+[...]
 
-CONFIG_CONNECTOR=3Dy
-CONFIG_DRM_DISPLAY_CONNECTOR=3Dm
+>> >> > +             hwirq = hipir & GENMASK(9, 0);
+>> >> > +             virq = irq_linear_revmap(intc->domain, hwirq);
+>> >>
+>> >> And this is where I worry. You seems to have a single irqdomain
+>> >> for all the muxes. Are you guaranteed that you will have no
+>> >> overlap between muxes? And please use irq_find_mapping(), as
+>> >> I have top-secret plans to kill irq_linear_revmap().
+>> >
+>> > Regarding irq_find_mapping - sure.
+>> >
+>> > Regarding irqdomains:
+>> > It is a single irqdomain since the hwirq (system event) can be mapped
+>> > to different irq_host (muxes). Patch #6
+>> > https://lkml.org/lkml/2020/7/2/616 implements and describes how input
+>> > events can be mapped to some output host interrupts through 2 levels
+>> > of many-to-one mapping i.e. events to channel mapping and channels to
+>> > host interrupts. Mentioned implementation ensures that specific system
+>> > event (hwirq) can be mapped through PRUSS specific channel into a
+>> > single host interrupt.
+>> 
+>> Patch #6 is a nightmare of its own, and I haven't fully groked it yet.
+>> Also, this driver seems to totally ignore the 2-level routing. Where
+>> is it set up? map/unmap in this driver do exactly *nothing*, so
+>> something somewhere must set it up.
+> 
+> The map/unmap is updated in patch #6 and it deals with those 2-level
+> routing setup. Map is responsible for programming the Channel Map
+> Registers (CMRx) and Host-Interrupt Map Registers (HMRx) basing on
+> provided configuration from the one parsed in the xlate function.
+> Unmap undo whatever was done on the map. More details can be found in
+> patch #6.
+> 
+> Maybe it would be better to squash patch #6 with this one so it would
+> be less confusing. What is your advice?
 
-and
+So am I right in understanding that without patch #6, this driver does
+exactly nothing? If so, it has been a waste of review time.
 
-root@letux:~# lsmod | fgrep dss
-omapdss               163840  3
-omapdss_base           16384  2 omapdrm,omapdss
-drm_kms_helper        143360  3 omapdss_base,omapdrm,omapdss
-drm                   380928  10 =
-ti_tpd12s015,omapdss_base,pvrsrvkm_omap5_sgx544_116,display_connector,etna=
-viv,omapdrm,gpu_sched,omapdss,drm_kms_helper
-cec                    45056  1 omapdss
-root@letux:~#=20
+Please split patch #6 so that this driver does something useful
+for Linux, without any of the PRU interrupt routing stuff. I want
+to see a Linux-only driver that works and doesn't rely on any other
+exotic feature.
 
-Does the panel driver also need some modification? It is no longer =
-loaded.
-
-BR and thanks,
-Nikolaus
-
+         M.
+-- 
+Jazz is not dead. It just smells funny...
