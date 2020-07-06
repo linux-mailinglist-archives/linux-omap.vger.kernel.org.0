@@ -2,111 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8F1215B86
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Jul 2020 18:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 231E1215E61
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Jul 2020 20:33:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729406AbgGFQKy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Jul 2020 12:10:54 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:27549 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729293AbgGFQKy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Jul 2020 12:10:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1594051852;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=hVt/Cz++hbUBnWXKsMOde2MTlCEheUB2/NrB9aVfjyg=;
-        b=KGDY4zYqx36LOlUc+N1yCkveaHOXwgkh6aFvkal2hOdR9tc0/TxTEOwE79NWo9MvUN
-        3JZJyIbhENy6ahNbQcqF4j/hYh193crOqJLjlLdLz/vUNQQ0up9iVeg4u1Vxi9v+n6cW
-        HaOuzVUIDhuZri8AmMBLfZPJvNeIW9IxjxXuNFxaQ/UfwZR3Ir8LWOg9QMv7nqeEGhOO
-        rL8CgSYeF/8gu7yk3AZ2D/1KGv0284aJCzYBxDYkmXD5DkPJY0oRCvFnpPGBv5vRWAYo
-        rZJ913+D6RzdnY8xYReNjl9lL9Q/bEng2CHsKYMtKdFQd/z/bo9qFJNDvxjExsJZ87UE
-        2m0g==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/PvwDCqz4U="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
-        with ESMTPSA id V07054w66GAnrHV
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Mon, 6 Jul 2020 18:10:49 +0200 (CEST)
-Subject: Re: OMAP5: inconsistency between target-module and dsi_of_data_omap5
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20200706143613.GS37466@atomide.com>
-Date:   Mon, 6 Jul 2020 18:10:49 +0200
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Jyri Sarha <jsarha@ti.com>
-Content-Transfer-Encoding: 7bit
-Message-Id: <E4616E3C-2519-4421-BC75-87A5CA2BB9EF@goldelico.com>
-References: <F5C04FAF-0029-48F3-B0A6-5327CD911EA2@goldelico.com> <49725F81-E615-4101-81B3-0850F201D9E8@goldelico.com> <5F4C23B0-A82B-4F94-BD74-D04F6D798FC0@goldelico.com> <20200705142653.GQ37466@atomide.com> <20200705143614.GR37466@atomide.com> <E200E98D-A4F8-4270-B192-33733F4C7235@goldelico.com> <20200706143613.GS37466@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1729762AbgGFSdr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Jul 2020 14:33:47 -0400
+Received: from muru.com ([72.249.23.125]:60924 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729550AbgGFSdq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 6 Jul 2020 14:33:46 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 6C99F80FE;
+        Mon,  6 Jul 2020 18:34:38 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>
+Cc:     Amit Kucheria <amit.kucheria@verdurent.com>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH] thermal: ti-soc-thermal: Fix bogus thermal shutdowns for omap4430
+Date:   Mon,  6 Jul 2020 11:33:38 -0700
+Message-Id: <20200706183338.25622-1-tony@atomide.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+We can sometimes get bogus thermal shutdowns on omap4430 at least with
+droid4 running idle with a battery charger connected:
 
-> Am 06.07.2020 um 16:36 schrieb Tony Lindgren <tony@atomide.com>:
-> 
-> * H. Nikolaus Schaller <hns@goldelico.com> [200705 15:41]:
->> Does the panel driver also need some modification? It is no longer loaded.
-> 
-> Hmm so what's the panel driver in this case?
+thermal thermal_zone0: critical temperature reached (143 C), shutting down
 
-boe,btl507212-w677l
+Dumping out the register values shows we can occasionally get a 0x7f value
+that is outside the TRM listed values in the ADC conversion table. And then
+we get a normal value when reading again after that. Reading the register
+multiple times does not seem help avoiding the bogus values as they stay
+until the next sample is ready.
 
-> 
-> I think you should now be using just the generic panel with
-> drivers/gpu/drm/panel/panel-simple or some panel specific
-> driver for dsi.
+Looking at the TRM chapter "18.4.10.2.3 ADC Codes Versus Temperature", we
+should have values from 13 to 107 listed with a total of 95 values. But
+looking at the omap4430_adc_to_temp array, the values are off, and the
+end values are missing. And it seems that the 4430 ADC table is similar
+to omap3630 rather than omap4460.
 
-None of them supports the vendor specific MIPI commands of
-this panel.
+Let's fix the issue by using values based on the omap3630 table and just
+ignoring invalid values. Compared to the 4430 TRM, the omap3630 table has
+the missing values added while the TRM table only shows every second
+value.
 
-Therefore we have our own panel driver for years and try to
-keep pace with upstream changes.
+Note that sometimes the ADC register values within the valid table can
+also be way off for about 1 out of 10 values. But it seems that those
+just show about 25 C too low values rather than too high values. So those
+do not cause a bogus thermal shutdown.
 
-> 
-> I think dsi command mode is now the only omapdrm output not
-> yet using generic panel. And Sebastian has a branch pending
-> for updating dsi command mode to use generic panel.
+Fixes: 1a31270e54d7 ("staging: omap-thermal: add OMAP4 data structures")
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ .../ti-soc-thermal/omap4-thermal-data.c       | 23 ++++++++++---------
+ .../thermal/ti-soc-thermal/omap4xxx-bandgap.h | 10 +++++---
+ 2 files changed, 19 insertions(+), 14 deletions(-)
 
-I know and had made an attempt to make a modified panel driver
-compatible to his code.
-
-But his code is no longer compatible to v5.7 or v5.8 and I failed
-to get the panel working on earlier releases.
-
-We also use it in video mode and not command mode.
-
-It seems to be the third or fourth time that we have to rework
-the panel driver for an -rc1 because dss panel api has changed
-(for good reasons)...
-
-The best thing would be that the panel driver can be upstreamed.
-Ideally as a DRM panel and no an OMAPDSS display.
-
-But there are some blocking points:
-
-a) driver is now no longer working, so that it is no longer ready
-   for submission
-b) there is no DTS upstream that makes use of it
-c) it is still an omapdss display driver sitting in
-   drivers/gpu/drm/omapdrm/displays where it works up to v5.6.y
-d) AFAIR omapdrm does not support random MIPI-DSI panels from
-   drivers/gpu/drm/panel (or does it now and we have not yet
-   recognised?)
-
-Sort of hen&egg problem :)
-
-BR and thanks,
-Nikolaus
-
+diff --git a/drivers/thermal/ti-soc-thermal/omap4-thermal-data.c b/drivers/thermal/ti-soc-thermal/omap4-thermal-data.c
+--- a/drivers/thermal/ti-soc-thermal/omap4-thermal-data.c
++++ b/drivers/thermal/ti-soc-thermal/omap4-thermal-data.c
+@@ -37,20 +37,21 @@ static struct temp_sensor_data omap4430_mpu_temp_sensor_data = {
+ 
+ /*
+  * Temperature values in milli degree celsius
+- * ADC code values from 530 to 923
++ * ADC code values from 13 to 107, see TRM
++ * "18.4.10.2.3 ADC Codes Versus Temperature".
+  */
+ static const int
+ omap4430_adc_to_temp[OMAP4430_ADC_END_VALUE - OMAP4430_ADC_START_VALUE + 1] = {
+-	-38000, -35000, -34000, -32000, -30000, -28000, -26000, -24000, -22000,
+-	-20000, -18000, -17000, -15000, -13000, -12000, -10000, -8000, -6000,
+-	-5000, -3000, -1000, 0, 2000, 3000, 5000, 6000, 8000, 10000, 12000,
+-	13000, 15000, 17000, 19000, 21000, 23000, 25000, 27000, 28000, 30000,
+-	32000, 33000, 35000, 37000, 38000, 40000, 42000, 43000, 45000, 47000,
+-	48000, 50000, 52000, 53000, 55000, 57000, 58000, 60000, 62000, 64000,
+-	66000, 68000, 70000, 71000, 73000, 75000, 77000, 78000, 80000, 82000,
+-	83000, 85000, 87000, 88000, 90000, 92000, 93000, 95000, 97000, 98000,
+-	100000, 102000, 103000, 105000, 107000, 109000, 111000, 113000, 115000,
+-	117000, 118000, 120000, 122000, 123000,
++	-40000, -38000, -35000, -34000, -32000, -30000, -28000, -26000, -24000,
++	-22000,	-20000, -18500, -17000, -15000, -13500, -12000, -10000, -8000,
++	-6500, -5000, -3500, -1500, 0, 2000, 3500, 5000, 6500, 8500, 10000,
++	12000, 13500, 15000, 17000, 19000, 21000, 23000, 25000, 27000, 28500,
++	30000, 32000, 33500, 35000, 37000, 38500, 40000, 42000, 43500, 45000,
++	47000, 48500, 50000, 52000, 53500, 55000, 57000, 58500, 60000, 62000,
++	64000, 66000, 68000, 70000, 71500, 73500, 75000, 77000, 78500, 80000,
++	82000, 83500, 85000, 87000, 88500, 90000, 92000, 93500, 95000, 97000,
++	98500, 100000, 102000, 103500, 105000, 107000, 109000, 111000, 113000,
++	115000, 117000, 118500, 120000, 122000, 123500, 125000,
+ };
+ 
+ /* OMAP4430 data */
+diff --git a/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h b/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h
+--- a/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h
++++ b/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h
+@@ -53,9 +53,13 @@
+  * and thresholds for OMAP4430.
+  */
+ 
+-/* ADC conversion table limits */
+-#define OMAP4430_ADC_START_VALUE			0
+-#define OMAP4430_ADC_END_VALUE				127
++/*
++ * ADC conversion table limits. Ignore values outside the TRM listed
++ * range to avoid bogus thermal shutdowns. See omap4430 TRM chapter
++ * "18.4.10.2.3 ADC Codes Versus Temperature".
++ */
++#define OMAP4430_ADC_START_VALUE			13
++#define OMAP4430_ADC_END_VALUE				107
+ /* bandgap clock limits (no control on 4430) */
+ #define OMAP4430_MAX_FREQ				32768
+ #define OMAP4430_MIN_FREQ				32768
+-- 
+2.27.0
