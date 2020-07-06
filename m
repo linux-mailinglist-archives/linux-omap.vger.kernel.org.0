@@ -2,130 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 231E1215E61
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Jul 2020 20:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC232160F8
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Jul 2020 23:34:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729762AbgGFSdr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Jul 2020 14:33:47 -0400
-Received: from muru.com ([72.249.23.125]:60924 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729550AbgGFSdq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 6 Jul 2020 14:33:46 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 6C99F80FE;
-        Mon,  6 Jul 2020 18:34:38 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>
-Cc:     Amit Kucheria <amit.kucheria@verdurent.com>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH] thermal: ti-soc-thermal: Fix bogus thermal shutdowns for omap4430
-Date:   Mon,  6 Jul 2020 11:33:38 -0700
-Message-Id: <20200706183338.25622-1-tony@atomide.com>
-X-Mailer: git-send-email 2.27.0
+        id S1726727AbgGFVeb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Jul 2020 17:34:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37038 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726763AbgGFVeb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Jul 2020 17:34:31 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EDAC061794
+        for <linux-omap@vger.kernel.org>; Mon,  6 Jul 2020 14:34:31 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id u18so2188069pfk.10
+        for <linux-omap@vger.kernel.org>; Mon, 06 Jul 2020 14:34:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=nb2b5E8jozASb6qKQS31YncmreGQOkYkl7FIjerURPg=;
+        b=VKc2yiKmsKiUyGXyyk/gMwF2tP6NaaLQjqZiuMZkc6dptE83hdFJW2SjkhjCF1jw+g
+         2qvImudQ1WCmdDcPsBNxBS4y/hysHw+JLmUeLrCaz2PBgCV8Gj51ciW5ziGcCYd0WMhy
+         5p3BJvcvkVAGi/O5raIFNqcvwd5R52HyXEdkzU62Pcq7eEMTvYoREuo7ngKqd2w5VdmF
+         ZMs7dOiKITGYH6JC29xImHb5G4QK+neYbzKNpFP0NsHhHAH9sdcs/y9CWoqLEMeqFeRK
+         wpfSILH7zk9ysmJMeOy68SsETeukpIBp/CXbaqv1iaNcbz3OgiZ/eHBwG7qyjZPjlJi5
+         8mTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=nb2b5E8jozASb6qKQS31YncmreGQOkYkl7FIjerURPg=;
+        b=bYF9llsLluhQZCNtOwDl+z/sN7Pp2bTzLE4b0dd5bDIyGKBrQrslH5nqZX0MuavAMO
+         hi7aqsgXqOxzsrxOskYeaixXW0CMcL3Q53Kkcbs+Bv4IfcDgyZxIH+rrLkJ22TeP80Vw
+         N+D06C7w4sXJJkwKlvvXkvuPqIll24VUOhypfI+FSZ6V0ylHADlmfvriYbF3n3BYqzL7
+         70mmK4hy7NlR1FwA0FdQrBFSGAdoxjGaPflllNOCNfI/ngBW75lwnXPDXsIe2ZMvhyke
+         E0ah8lP/k5Nra84DjSIc9ss7qmY67iP9v7bdFtcLE9CUKhxU0j0siBBUBoBJW2odoeYI
+         FieQ==
+X-Gm-Message-State: AOAM53175MaW6gdyR/WpVLe2J9geNAZKQYDpOL7Zyv2ipr5Ov/U7uRSc
+        TjA0goA9QnsiU9yXC4IDI7cI+e5w+2hu37+HNGA=
+X-Google-Smtp-Source: ABdhPJwLNr6ut/klp8L45pPeVxHkwTvUSCoSowcJolpmMysCe535vKX/TbzgrVj2rLhJ7jp+3m2/sqAhbRFFli49UQQ=
+X-Received: by 2002:aa7:9e89:: with SMTP id p9mr48206429pfq.110.1594071268872;
+ Mon, 06 Jul 2020 14:34:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a17:90b:943:0:0:0:0 with HTTP; Mon, 6 Jul 2020 14:34:28
+ -0700 (PDT)
+Reply-To: sctnld11170@tlen.pl
+From:   "Mr. Scott Donald" <lhame7124@gmail.com>
+Date:   Mon, 6 Jul 2020 14:34:28 -0700
+Message-ID: <CAL699QR80--xK46OPXBhXqVJNJYO_8adi7E-wXSraR2-=aXrBA@mail.gmail.com>
+Subject: Hello, Please
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can sometimes get bogus thermal shutdowns on omap4430 at least with
-droid4 running idle with a battery charger connected:
+--=20
+Dear Friend,
 
-thermal thermal_zone0: critical temperature reached (143 C), shutting down
+I'm Mr. Scott Donald a Successful business Man dealing with
+Exportation, I got your mail contact through search to let you know my
+Ugly Situation Am a dying Man here in Los Angeles California Hospital
+Bed in (USA), I Lost my Wife and my only Daughter for Covid-19 I'm
+dying with same symptoms and more. my Doctor open-up to me that he is
+Afraid to tell me my Condition and inside me, I already know that I'm
+not going to survive and I can't live alone without my Family on
+Earth,
 
-Dumping out the register values shows we can occasionally get a 0x7f value
-that is outside the TRM listed values in the ADC conversion table. And then
-we get a normal value when reading again after that. Reading the register
-multiple times does not seem help avoiding the bogus values as they stay
-until the next sample is ready.
+I have a project that I am about to hand over to you. and I already
+instructed the Bank to transfer my fund sum of =C2=A33,7M GBP to you as to
+enable you to give 50% to Charitable Home and take 50% don't think
+otherwise and why would anybody send someone you barely know to help
+you deliver a message, help me do this for the happiness of my soul
+and for God to mercy me and my Family and give Us a good place.
 
-Looking at the TRM chapter "18.4.10.2.3 ADC Codes Versus Temperature", we
-should have values from 13 to 107 listed with a total of 95 values. But
-looking at the omap4430_adc_to_temp array, the values are off, and the
-end values are missing. And it seems that the 4430 ADC table is similar
-to omap3630 rather than omap4460.
 
-Let's fix the issue by using values based on the omap3630 table and just
-ignoring invalid values. Compared to the 4430 TRM, the omap3630 table has
-the missing values added while the TRM table only shows every second
-value.
+please, do as I said there was someone from your State that I deeply
+love so very very much and I miss her so bad I have no means to reach
+any Charitable Home there. that is why I go for a personal search of
+the Country and State and I got your mail contact through search to
+let you know my Bitterness and please, help me is getting Dark I ask
+my Doctor to help me keep you notice failure for me to reach you in
+person Your urgent Response, here is my Doctor Whats-app Number for
+urgent notice +13019692737
 
-Note that sometimes the ADC register values within the valid table can
-also be way off for about 1 out of 10 values. But it seems that those
-just show about 25 C too low values rather than too high values. So those
-do not cause a bogus thermal shutdown.
+Hope To Hear From You. I'm sending this email to you for the second
+time yet no response from you. I operate Two Foreign banks, I bank
+with Barclays bank of London (BBL) & Bankia S.A. Madrid, Spain(BSA)
 
-Fixes: 1a31270e54d7 ("staging: omap-thermal: add OMAP4 data structures")
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- .../ti-soc-thermal/omap4-thermal-data.c       | 23 ++++++++++---------
- .../thermal/ti-soc-thermal/omap4xxx-bandgap.h | 10 +++++---
- 2 files changed, 19 insertions(+), 14 deletions(-)
+My Regards.
 
-diff --git a/drivers/thermal/ti-soc-thermal/omap4-thermal-data.c b/drivers/thermal/ti-soc-thermal/omap4-thermal-data.c
---- a/drivers/thermal/ti-soc-thermal/omap4-thermal-data.c
-+++ b/drivers/thermal/ti-soc-thermal/omap4-thermal-data.c
-@@ -37,20 +37,21 @@ static struct temp_sensor_data omap4430_mpu_temp_sensor_data = {
- 
- /*
-  * Temperature values in milli degree celsius
-- * ADC code values from 530 to 923
-+ * ADC code values from 13 to 107, see TRM
-+ * "18.4.10.2.3 ADC Codes Versus Temperature".
-  */
- static const int
- omap4430_adc_to_temp[OMAP4430_ADC_END_VALUE - OMAP4430_ADC_START_VALUE + 1] = {
--	-38000, -35000, -34000, -32000, -30000, -28000, -26000, -24000, -22000,
--	-20000, -18000, -17000, -15000, -13000, -12000, -10000, -8000, -6000,
--	-5000, -3000, -1000, 0, 2000, 3000, 5000, 6000, 8000, 10000, 12000,
--	13000, 15000, 17000, 19000, 21000, 23000, 25000, 27000, 28000, 30000,
--	32000, 33000, 35000, 37000, 38000, 40000, 42000, 43000, 45000, 47000,
--	48000, 50000, 52000, 53000, 55000, 57000, 58000, 60000, 62000, 64000,
--	66000, 68000, 70000, 71000, 73000, 75000, 77000, 78000, 80000, 82000,
--	83000, 85000, 87000, 88000, 90000, 92000, 93000, 95000, 97000, 98000,
--	100000, 102000, 103000, 105000, 107000, 109000, 111000, 113000, 115000,
--	117000, 118000, 120000, 122000, 123000,
-+	-40000, -38000, -35000, -34000, -32000, -30000, -28000, -26000, -24000,
-+	-22000,	-20000, -18500, -17000, -15000, -13500, -12000, -10000, -8000,
-+	-6500, -5000, -3500, -1500, 0, 2000, 3500, 5000, 6500, 8500, 10000,
-+	12000, 13500, 15000, 17000, 19000, 21000, 23000, 25000, 27000, 28500,
-+	30000, 32000, 33500, 35000, 37000, 38500, 40000, 42000, 43500, 45000,
-+	47000, 48500, 50000, 52000, 53500, 55000, 57000, 58500, 60000, 62000,
-+	64000, 66000, 68000, 70000, 71500, 73500, 75000, 77000, 78500, 80000,
-+	82000, 83500, 85000, 87000, 88500, 90000, 92000, 93500, 95000, 97000,
-+	98500, 100000, 102000, 103500, 105000, 107000, 109000, 111000, 113000,
-+	115000, 117000, 118500, 120000, 122000, 123500, 125000,
- };
- 
- /* OMAP4430 data */
-diff --git a/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h b/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h
---- a/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h
-+++ b/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h
-@@ -53,9 +53,13 @@
-  * and thresholds for OMAP4430.
-  */
- 
--/* ADC conversion table limits */
--#define OMAP4430_ADC_START_VALUE			0
--#define OMAP4430_ADC_END_VALUE				127
-+/*
-+ * ADC conversion table limits. Ignore values outside the TRM listed
-+ * range to avoid bogus thermal shutdowns. See omap4430 TRM chapter
-+ * "18.4.10.2.3 ADC Codes Versus Temperature".
-+ */
-+#define OMAP4430_ADC_START_VALUE			13
-+#define OMAP4430_ADC_END_VALUE				107
- /* bandgap clock limits (no control on 4430) */
- #define OMAP4430_MAX_FREQ				32768
- #define OMAP4430_MIN_FREQ				32768
--- 
-2.27.0
+Mr. Scott Donald
+CEO
