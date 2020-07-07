@@ -2,113 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF47C216AAE
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jul 2020 12:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D503F216AEE
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jul 2020 13:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726911AbgGGKsb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jul 2020 06:48:31 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:44450 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725941AbgGGKsb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jul 2020 06:48:31 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 067AlXf7075713;
-        Tue, 7 Jul 2020 05:47:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1594118854;
-        bh=T+nHlhZOidYOCH29bUqU/Pu9XpetYy0kEACSndhggaU=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=W7I/bYA4P+vOJYQQssbhsAL3EojexiAa+4hA8Ips/b9sVXRZ/lf/JiINNDnpVcyce
-         H9Ag4yjTH4rD48TwtCQnQEMC68gIMgROVFVlMQv/fuv2rMJPGwM3tBNQb9sa95Twlg
-         sMzpFHxXjUXoh1/9xLoHvg3Ag5nFJR5SnOGcWFNI=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 067AlXG4099736
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 7 Jul 2020 05:47:33 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 7 Jul
- 2020 05:47:33 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 7 Jul 2020 05:47:33 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 067AlVc2096354;
-        Tue, 7 Jul 2020 05:47:31 -0500
-Subject: Re: [PATCH 21/28] ASoC: ti: omap-mcbsp-st: Remove set, but unused
- variable 'w'
-To:     Lee Jones <lee.jones@linaro.org>, <broonie@kernel.org>,
-        <lgirdwood@gmail.com>, <perex@perex.cz>, <tiwai@suse.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <alsa-devel@alsa-project.org>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Samuel Ortiz <samuel.ortiz@nokia.com>,
-        <linux-omap@vger.kernel.org>
-References: <20200707101642.1747944-1-lee.jones@linaro.org>
- <20200707101642.1747944-22-lee.jones@linaro.org>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-X-Pep-Version: 2.0
-Message-ID: <61d554e7-0579-3c6c-b9e1-30b135d5927c@ti.com>
-Date:   Tue, 7 Jul 2020 13:48:34 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728172AbgGGLAH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jul 2020 07:00:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726540AbgGGLAG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jul 2020 07:00:06 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0975EC08C5DB
+        for <linux-omap@vger.kernel.org>; Tue,  7 Jul 2020 04:00:06 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id 9so49328809ljv.5
+        for <linux-omap@vger.kernel.org>; Tue, 07 Jul 2020 04:00:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KYp96ZZSsCMgncArOFXly9s4OIli23NE92mNWgNw4B4=;
+        b=fTRhwpj/hU9LfJzJkArIDCDB06upW6a/C93yjE1K2cuse98pkQSzoA+sYMYtLUzpDf
+         3bp4aEg2xQVvoYioUSQP0uJQAC21hPPGHss9REoOMCDiJiZ5xEBBCNpeUbFG4cvUniMv
+         2TC9aOH9W8eK2nENG0Z49Gl/eIoFu9EfVU7YOlIOqdz27oL0+BEVXQstm2SudjiXJY3+
+         27TOPF9Jb895pl5OdzMSly4xGJ0XrKuF6+ntvUXmtZOdDg2vGf6j8qqtWXaNTbOKnfRC
+         k9bfaV65PgvLITOCEwGD9SdAmApIqfAx76iAQGVkmib6gjtNWscBDAyMLSGqGzdyvUTP
+         y7jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KYp96ZZSsCMgncArOFXly9s4OIli23NE92mNWgNw4B4=;
+        b=s0BuQOmr+ZbTMd2uiv2X8zfxIl9dOKl3uHo0BL5Z6G6pPCGBcucHm7ftWQXtn9UYRc
+         GQPI0qh8Ji+rSZoRcieIrJ5YIY4145Y51C2Ih0ld8zL0i9mxkSL3ptHGGHY1/igC/CBk
+         VbPdX2y9zH+s03IZrr22lSrgEtxnTmHHXPmilMxIEgiVl4e7PBoCQW5qgLvfF1jFjxJZ
+         0pBfSP66RyNYWuSAsTmx2rjdCE/I9lDdp/qd69Wh30oxFJNSOgwYDfA7kNyqk/QkBMJx
+         CyCfUlL5stWK9+WwrQMLQJ3Bs3I/WkxhXGGZjqw2Turi6aOumSdmLP6SmRxrFQkNjhH3
+         AOmg==
+X-Gm-Message-State: AOAM5327ctUfKTZiN6vrlPWHmA1Stk5gNv/mzE+hVD57lMYHlMHnqH4S
+        3LEoOhuEWd8frYIQ6xHD0T/bY4MOc1TRDGhjWtnswA==
+X-Google-Smtp-Source: ABdhPJz/EbBwJ1T3GgvyKHSaJPDBjC/885l2Y1IY+hCrikFT6rUcrPXU9Ohp3fztPR4QHzpES5qUG955fZ1BVL9iXNs=
+X-Received: by 2002:a2e:7a1a:: with SMTP id v26mr13896696ljc.104.1594119604328;
+ Tue, 07 Jul 2020 04:00:04 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200707101642.1747944-22-lee.jones@linaro.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20200701013320.130441-1-drew@beagleboard.org>
+In-Reply-To: <20200701013320.130441-1-drew@beagleboard.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 7 Jul 2020 12:59:53 +0200
+Message-ID: <CACRpkdY3mUjczkJhV9BdZhUJGOgrbOMJnciBjOaPg6c9XUt8Ww@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] pinctrl: single: support #pinctrl-cells = 2
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Lee,
+On Wed, Jul 1, 2020 at 3:33 AM Drew Fustini <drew@beagleboard.org> wrote:
 
-On 07/07/2020 13.16, Lee Jones wrote:
-> Looks like 'w' has remained unchecked since the driver's inception.
->=20
-> Fixes the following W=3D1 kernel build warning(s):
->=20
->  sound/soc/ti/omap-mcbsp-st.c: In function =E2=80=98omap_mcbsp_st_chgai=
-n=E2=80=99:
->  sound/soc/ti/omap-mcbsp-st.c:145:6: warning: variable =E2=80=98w=E2=80=
-=99 set but not used [-Wunused-but-set-variable]
->=20
-> Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> Cc: Jarkko Nikula <jarkko.nikula@bitmer.com>
-> Cc: Samuel Ortiz <samuel.ortiz@nokia.com>
-> Cc: linux-omap@vger.kernel.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> ---
->  sound/soc/ti/omap-mcbsp-st.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->=20
-> diff --git a/sound/soc/ti/omap-mcbsp-st.c b/sound/soc/ti/omap-mcbsp-st.=
-c
-> index 5a32b54bbf3bb..643ef7eb68fc8 100644
-> --- a/sound/soc/ti/omap-mcbsp-st.c
-> +++ b/sound/soc/ti/omap-mcbsp-st.c
-> @@ -142,10 +142,9 @@ static void omap_mcbsp_st_fir_write(struct omap_mc=
-bsp *mcbsp, s16 *fir)
-> =20
->  static void omap_mcbsp_st_chgain(struct omap_mcbsp *mcbsp)
->  {
-> -	u16 w;
->  	struct omap_mcbsp_st_data *st_data =3D mcbsp->st_data;
-> =20
-> -	w =3D MCBSP_ST_READ(mcbsp, SSELCR);
-> +	MCBSP_ST_READ(mcbsp, SSELCR);
+> Currently, pinctrl-single only allows #pinctrl-cells = 1.
+>
+> This series will allow pinctrl-single to also support #pinctrl-cells = 2
+>
+> If "pinctrl-single,pins" has 3 arguments (offset, conf, mux) then
+> pcs_parse_one_pinctrl_entry() does an OR operation on conf and mux to
+> get the value to store in the register.
+>
+> To take advantage of #pinctrl-cells = 2, the AM33XX_PADCONF macro in
+> omap.h is modified to keep pin conf and pin mux values separate.
+>
+> change log:
+> - v4: squash patches 2 and 3 together so that git biesct will not result
+>   in a boot failure
+>
+> - v3: change order of patches to make sure the pinctrl-single.c patch
+>   does not break anything without the dts patches
+>
+> - v2: remove outer parentheses from AM33XX_PADCONF macro as it causes a
+>   compile error in dtc.  I had added it per suggestion from checkpatch
+>   about having parentheses around complex values.
+>
+> Drew Fustini (2):
+>   pinctrl: single: parse #pinctrl-cells = 2
+>   ARM: dts: am33xx-l4: change #pinctrl-cells from 1 to 2
 
-The read can be removed at the same time.
+Both patches applied to the pinctrl devel branch for v5.9!
 
->  	MCBSP_ST_WRITE(mcbsp, SGAINCR, ST_CH0GAIN(st_data->ch0gain) |
->  		       ST_CH1GAIN(st_data->ch1gain));
->=20
+Please make sure not to create colliding patches in the DTS files merged
+through ARM SoC this merge window.
 
-- P=C3=A9ter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
+Yours,
+Linus Walleij
