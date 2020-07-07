@@ -2,95 +2,200 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CE2E217787
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jul 2020 21:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F47221785B
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jul 2020 21:55:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728847AbgGGTGs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jul 2020 15:06:48 -0400
-Received: from mga17.intel.com ([192.55.52.151]:46557 "EHLO mga17.intel.com"
+        id S1728354AbgGGTzQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jul 2020 15:55:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35644 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728872AbgGGTGr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 7 Jul 2020 15:06:47 -0400
-IronPort-SDR: oC/Wi2mamMMEbCuYlglLfD9Mcuzf7qKuMciYrToTos7ylhlpZ+brEgGBYlZz03aMXyQyhjOKL9
- f7VqjFqryh5w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9675"; a="127764324"
-X-IronPort-AV: E=Sophos;i="5.75,324,1589266800"; 
-   d="scan'208";a="127764324"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2020 12:06:47 -0700
-IronPort-SDR: np5h6z3uYM5ayhkdF+jDw9VOs2oMJMXG8Ow97LTi0iDGjwbWyuFe1MCE7Ift8BwN9owYOHxmc5
- F7aYlZdLp3Kw==
-X-IronPort-AV: E=Sophos;i="5.75,324,1589266800"; 
-   d="scan'208";a="268278616"
-Received: from mrtorger-mobl1.amr.corp.intel.com (HELO pbossart-mobl3.amr.corp.intel.com) ([10.254.77.62])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2020 12:06:45 -0700
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-To:     alsa-devel@alsa-project.org
-Cc:     tiwai@suse.de, broonie@kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Samuel Ortiz <samuel.ortiz@nokia.com>,
+        id S1728254AbgGGTzP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 7 Jul 2020 15:55:15 -0400
+Received: from embeddedor (unknown [200.39.26.250])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5258A2067D;
+        Tue,  7 Jul 2020 19:55:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594151714;
+        bh=EKHQa0fn19dP7DdfSsBAyCGObw/4dqvoeOQ2/MAc5zM=;
+        h=Date:From:To:Cc:Subject:From;
+        b=FXBCzWY09+DYmPoVYbiaKTUAOjJ2ovjQFPURMU2W4LPZGUL596iwJJV2TIeAesPLA
+         OQ2b6A9ZfvORaDVut94zw1dvVT2NU3xUF22BweWUM1x/u1/gQkhQeI009o++B21hhO
+         wUzk9OWGE1aCepcl2X+wbc6C8UORlOyXiEKuXxAg=
+Date:   Tue, 7 Jul 2020 15:00:40 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@kernel.org>
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v3 09/13] ASoC: ti: omap-mcbsp-st: Remove set, but unused variable 'w'
-Date:   Tue,  7 Jul 2020 14:06:08 -0500
-Message-Id: <20200707190612.97799-10-pierre-louis.bossart@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200707190612.97799-1-pierre-louis.bossart@linux.intel.com>
-References: <20200707190612.97799-1-pierre-louis.bossart@linux.intel.com>
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Subject: [PATCH] usb: phy: Use fallthrough pseudo-keyword
+Message-ID: <20200707200040.GA4525@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Lee Jones <lee.jones@linaro.org>
+Replace the existing /* fall through */ comments and its variants with
+the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
+fall-through markings when it is the case.
 
-Looks like 'w' has remained unchecked since the driver's inception.
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
 
-Fixes the following W=1 kernel build warning(s):
-
- sound/soc/ti/omap-mcbsp-st.c: In function ‘omap_mcbsp_st_chgain’:
- sound/soc/ti/omap-mcbsp-st.c:145:6: warning: variable ‘w’ set but not used [-Wunused-but-set-variable]
-
-Peter suggested that the whole read can be removed, so that's
-been done too.
-
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc: Jarkko Nikula <jarkko.nikula@bitmer.com>
-Cc: Samuel Ortiz <samuel.ortiz@nokia.com>
-Cc: linux-omap@vger.kernel.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- sound/soc/ti/omap-mcbsp-st.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/usb/phy/phy-ab8500-usb.c   |   12 ++++++------
+ drivers/usb/phy/phy-fsl-usb.c      |    4 ++--
+ drivers/usb/phy/phy-isp1301-omap.c |   14 +++++++-------
+ drivers/usb/phy/phy-mv-usb.c       |    2 +-
+ 4 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/sound/soc/ti/omap-mcbsp-st.c b/sound/soc/ti/omap-mcbsp-st.c
-index 5a32b54bbf3b..0bc7d26c660a 100644
---- a/sound/soc/ti/omap-mcbsp-st.c
-+++ b/sound/soc/ti/omap-mcbsp-st.c
-@@ -142,11 +142,8 @@ static void omap_mcbsp_st_fir_write(struct omap_mcbsp *mcbsp, s16 *fir)
+diff --git a/drivers/usb/phy/phy-ab8500-usb.c b/drivers/usb/phy/phy-ab8500-usb.c
+index 20c0f082bf9c..aa4a3140394b 100644
+--- a/drivers/usb/phy/phy-ab8500-usb.c
++++ b/drivers/usb/phy/phy-ab8500-usb.c
+@@ -331,7 +331,7 @@ static int ab8505_usb_link_status_update(struct ab8500_usb *ab,
+ 	switch (lsts) {
+ 	case USB_LINK_ACA_RID_B_8505:
+ 		event = UX500_MUSB_RIDB;
+-		/* Fall through */
++		fallthrough;
+ 	case USB_LINK_NOT_CONFIGURED_8505:
+ 	case USB_LINK_RESERVED0_8505:
+ 	case USB_LINK_RESERVED1_8505:
+@@ -352,7 +352,7 @@ static int ab8505_usb_link_status_update(struct ab8500_usb *ab,
  
- static void omap_mcbsp_st_chgain(struct omap_mcbsp *mcbsp)
- {
--	u16 w;
- 	struct omap_mcbsp_st_data *st_data = mcbsp->st_data;
+ 	case USB_LINK_ACA_RID_C_NM_8505:
+ 		event = UX500_MUSB_RIDC;
+-		/* Fall through */
++		fallthrough;
+ 	case USB_LINK_STD_HOST_NC_8505:
+ 	case USB_LINK_STD_HOST_C_NS_8505:
+ 	case USB_LINK_STD_HOST_C_S_8505:
+@@ -371,7 +371,7 @@ static int ab8505_usb_link_status_update(struct ab8500_usb *ab,
+ 	case USB_LINK_ACA_RID_A_8505:
+ 	case USB_LINK_ACA_DOCK_CHGR_8505:
+ 		event = UX500_MUSB_RIDA;
+-		/* Fall through */
++		fallthrough;
+ 	case USB_LINK_HM_IDGND_8505:
+ 		if (ab->mode == USB_IDLE) {
+ 			ab->mode = USB_HOST;
+@@ -444,7 +444,7 @@ static int ab8500_usb_link_status_update(struct ab8500_usb *ab,
+ 	switch (lsts) {
+ 	case USB_LINK_ACA_RID_B_8500:
+ 		event = UX500_MUSB_RIDB;
+-		/* Fall through */
++		fallthrough;
+ 	case USB_LINK_NOT_CONFIGURED_8500:
+ 	case USB_LINK_NOT_VALID_LINK_8500:
+ 		ab->mode = USB_IDLE;
+@@ -461,7 +461,7 @@ static int ab8500_usb_link_status_update(struct ab8500_usb *ab,
+ 	case USB_LINK_ACA_RID_C_HS_8500:
+ 	case USB_LINK_ACA_RID_C_HS_CHIRP_8500:
+ 		event = UX500_MUSB_RIDC;
+-		/* Fall through */
++		fallthrough;
+ 	case USB_LINK_STD_HOST_NC_8500:
+ 	case USB_LINK_STD_HOST_C_NS_8500:
+ 	case USB_LINK_STD_HOST_C_S_8500:
+@@ -481,7 +481,7 @@ static int ab8500_usb_link_status_update(struct ab8500_usb *ab,
  
--	w = MCBSP_ST_READ(mcbsp, SSELCR);
--
- 	MCBSP_ST_WRITE(mcbsp, SGAINCR, ST_CH0GAIN(st_data->ch0gain) |
- 		       ST_CH1GAIN(st_data->ch1gain));
- }
--- 
-2.25.1
+ 	case USB_LINK_ACA_RID_A_8500:
+ 		event = UX500_MUSB_RIDA;
+-		/* Fall through */
++		fallthrough;
+ 	case USB_LINK_HM_IDGND_8500:
+ 		if (ab->mode == USB_IDLE) {
+ 			ab->mode = USB_HOST;
+diff --git a/drivers/usb/phy/phy-fsl-usb.c b/drivers/usb/phy/phy-fsl-usb.c
+index b451f4695f3f..01985e1b513a 100644
+--- a/drivers/usb/phy/phy-fsl-usb.c
++++ b/drivers/usb/phy/phy-fsl-usb.c
+@@ -911,10 +911,10 @@ int usb_otg_start(struct platform_device *pdev)
+ 		break;
+ 	case FSL_USB2_PHY_UTMI_WIDE:
+ 		temp |= PORTSC_PTW_16BIT;
+-		/* fall through */
++		fallthrough;
+ 	case FSL_USB2_PHY_UTMI:
+ 		temp |= PORTSC_PTS_UTMI;
+-		/* fall through */
++		fallthrough;
+ 	default:
+ 		break;
+ 	}
+diff --git a/drivers/usb/phy/phy-isp1301-omap.c b/drivers/usb/phy/phy-isp1301-omap.c
+index 7041ba030052..4a6462c92ef2 100644
+--- a/drivers/usb/phy/phy-isp1301-omap.c
++++ b/drivers/usb/phy/phy-isp1301-omap.c
+@@ -581,11 +581,11 @@ static void otg_update_isp(struct isp1301 *isp)
+ 		/* HNP failed for some reason (A_AIDL_BDIS timeout) */
+ 		notresponding(isp);
+ 
+-		/* FALLTHROUGH */
++		fallthrough;
+ 	case OTG_STATE_A_VBUS_ERR:
+ 		isp->phy.otg->state = OTG_STATE_A_WAIT_VFALL;
+ 		pr_debug("  --> a_wait_vfall\n");
+-		/* FALLTHROUGH */
++		fallthrough;
+ 	case OTG_STATE_A_WAIT_VFALL:
+ 		/* FIXME usbcore thinks port power is still on ... */
+ 		clr |= OTG1_VBUS_DRV;
+@@ -595,7 +595,7 @@ static void otg_update_isp(struct isp1301 *isp)
+ 			isp->phy.otg->state = OTG_STATE_A_WAIT_VRISE;
+ 			pr_debug("  --> a_wait_vrise\n");
+ 		}
+-		/* FALLTHROUGH */
++		fallthrough;
+ 	default:
+ 		toggle(OTG_DRV_VBUS, OTG1_VBUS_DRV);
+ 	}
+@@ -945,10 +945,10 @@ static void isp_update_otg(struct isp1301 *isp, u8 stat)
+ 			switch (state) {
+ 			case OTG_STATE_B_IDLE:
+ 				a_idle(isp, "idle");
+-				/* FALLTHROUGH */
++				fallthrough;
+ 			case OTG_STATE_A_IDLE:
+ 				enable_vbus_source(isp);
+-				/* FALLTHROUGH */
++				fallthrough;
+ 			case OTG_STATE_A_WAIT_VRISE:
+ 				/* we skip over OTG_STATE_A_WAIT_BCON, since
+ 				 * the HC will transition to A_HOST (or
+@@ -1032,12 +1032,12 @@ static void isp_update_otg(struct isp1301 *isp, u8 stat)
+ 						OTG1_DP_PULLUP);
+ 			dump_regs(isp, __func__);
+ #endif
+-			/* FALLTHROUGH */
++			fallthrough;
+ 		case OTG_STATE_B_SRP_INIT:
+ 			b_idle(isp, __func__);
+ 			l = omap_readl(OTG_CTRL) & OTG_XCEIV_OUTPUTS;
+ 			omap_writel(l, OTG_CTRL);
+-			/* FALLTHROUGH */
++			fallthrough;
+ 		case OTG_STATE_B_IDLE:
+ 			if (otg->gadget && (isp_bstat & OTG_B_SESS_VLD)) {
+ #ifdef	CONFIG_USB_OTG
+diff --git a/drivers/usb/phy/phy-mv-usb.c b/drivers/usb/phy/phy-mv-usb.c
+index 06b47f1028b3..ce767ecc0636 100644
+--- a/drivers/usb/phy/phy-mv-usb.c
++++ b/drivers/usb/phy/phy-mv-usb.c
+@@ -334,7 +334,7 @@ static void mv_otg_update_state(struct mv_otg *mvotg)
+ 	switch (old_state) {
+ 	case OTG_STATE_UNDEFINED:
+ 		mvotg->phy.otg->state = OTG_STATE_B_IDLE;
+-		/* FALL THROUGH */
++		fallthrough;
+ 	case OTG_STATE_B_IDLE:
+ 		if (otg_ctrl->id == 0)
+ 			mvotg->phy.otg->state = OTG_STATE_A_IDLE;
 
