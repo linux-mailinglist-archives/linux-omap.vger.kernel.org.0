@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 081F121667D
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jul 2020 08:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C66D0216680
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jul 2020 08:34:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727874AbgGGGeC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jul 2020 02:34:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33604 "EHLO mail.kernel.org"
+        id S1726918AbgGGGeL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jul 2020 02:34:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33680 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726918AbgGGGeB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 7 Jul 2020 02:34:01 -0400
+        id S1726889AbgGGGeL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 7 Jul 2020 02:34:11 -0400
 Received: from e123331-lin.nice.arm.com (adsl-70.109.242.21.tellas.gr [109.242.21.70])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6A35F206DF;
-        Tue,  7 Jul 2020 06:33:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 81019206CD;
+        Tue,  7 Jul 2020 06:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594103641;
-        bh=xtNbkebtMctQdpvkm5ZhZR31pleEX5efnRbSCp2ZF4o=;
+        s=default; t=1594103649;
+        bh=6U7XguKXGmmibU47z0Py8zOQR8BTQqlqFCMXn3UNzgE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gFSYxowZEHOLyY+Ipf7RU3fgh0E92aOYIxLyhqK/3TYSbTj0CttxfdLuSh7MmgFlW
-         PWkJ01ls+bBokuC51UUu9ghub1utZK4OQEsS4U6IpjfYy7KudQxcOnIdoPD6nrx2TK
-         DIF3pCBAXWJ9fv1KSbkhVc5wDApltgKvBmM1ySac=
+        b=SRWfbF76+3qXp6z2vLxeWgCTtyuEzCKcQ0prmUAZL0007ahMKJjqKBYiKe3An1Y4N
+         deZ/RU3lvOM/jmuSXJ8cZLZnlnem2buSV+u1Si2Pk3TvV9DffseDB++tLuwNiNF9D7
+         hiQl2R1htEBqSTbKgNHT3Kw66Psge6htN5GMgr38=
 From:   Ard Biesheuvel <ardb@kernel.org>
 To:     linux-crypto@vger.kernel.org
 Cc:     Ard Biesheuvel <ardb@kernel.org>,
@@ -49,19 +49,22 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         linux-amlogic@lists.infradead.org
-Subject: [PATCH v4 11/13] crypto: qce - permit asynchronous skcipher as fallback
-Date:   Tue,  7 Jul 2020 09:32:01 +0300
-Message-Id: <20200707063203.5018-12-ardb@kernel.org>
+Subject: [PATCH v4 12/13] crypto: sahara - permit asynchronous skcipher as fallback
+Date:   Tue,  7 Jul 2020 09:32:02 +0300
+Message-Id: <20200707063203.5018-13-ardb@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200707063203.5018-1-ardb@kernel.org>
 References: <20200707063203.5018-1-ardb@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Even though the qce driver implements asynchronous versions of ecb(aes),
-cbc(aes)and xts(aes), the fallbacks it allocates are required to be
+Even though the sahara driver implements asynchronous versions of
+ecb(aes) and cbc(aes), the fallbacks it allocates are required to be
 synchronous. Given that SIMD based software implementations are usually
 asynchronous as well, even though they rarely complete asynchronously
 (this typically only happens in cases where the request was made from
@@ -76,53 +79,54 @@ is not time invariant), let's fix this, by allocating an ordinary skcipher
 as the fallback, and invoke it with the completion routine that was given
 to the outer request.
 
-While at it, remove the pointless memset() from qce_skcipher_init(), and
-remove the call to it qce_skcipher_init_fallback().
-
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
 ---
- drivers/crypto/qce/cipher.h   |  3 +-
- drivers/crypto/qce/skcipher.c | 42 ++++++++++----------
- 2 files changed, 24 insertions(+), 21 deletions(-)
+ drivers/crypto/sahara.c | 96 +++++++++-----------
+ 1 file changed, 45 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/crypto/qce/cipher.h b/drivers/crypto/qce/cipher.h
-index 7770660bc853..cffa9fc628ff 100644
---- a/drivers/crypto/qce/cipher.h
-+++ b/drivers/crypto/qce/cipher.h
-@@ -14,7 +14,7 @@
- struct qce_cipher_ctx {
- 	u8 enc_key[QCE_MAX_KEY_SIZE];
- 	unsigned int enc_keylen;
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 466e30bd529c..0c8cb23ae708 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -146,11 +146,12 @@ struct sahara_ctx {
+ 	/* AES-specific context */
+ 	int keylen;
+ 	u8 key[AES_KEYSIZE_128];
 -	struct crypto_sync_skcipher *fallback;
 +	struct crypto_skcipher *fallback;
  };
  
- /**
-@@ -43,6 +43,7 @@ struct qce_cipher_reqctx {
- 	struct sg_table src_tbl;
- 	struct scatterlist *src_sg;
- 	unsigned int cryptlen;
+ struct sahara_aes_reqctx {
+ 	unsigned long mode;
 +	struct skcipher_request fallback_req;	// keep at the end
  };
  
- static inline struct qce_alg_template *to_cipher_tmpl(struct crypto_skcipher *tfm)
-diff --git a/drivers/crypto/qce/skcipher.c b/drivers/crypto/qce/skcipher.c
-index 9412433f3b21..a8147381b774 100644
---- a/drivers/crypto/qce/skcipher.c
-+++ b/drivers/crypto/qce/skcipher.c
-@@ -178,7 +178,7 @@ static int qce_skcipher_setkey(struct crypto_skcipher *ablk, const u8 *key,
- 		break;
- 	}
+ /*
+@@ -617,10 +618,10 @@ static int sahara_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
+ 	/*
+ 	 * The requested key size is not supported by HW, do a fallback.
+ 	 */
+-	crypto_sync_skcipher_clear_flags(ctx->fallback, CRYPTO_TFM_REQ_MASK);
+-	crypto_sync_skcipher_set_flags(ctx->fallback, tfm->base.crt_flags &
++	crypto_skcipher_clear_flags(ctx->fallback, CRYPTO_TFM_REQ_MASK);
++	crypto_skcipher_set_flags(ctx->fallback, tfm->base.crt_flags &
+ 						 CRYPTO_TFM_REQ_MASK);
+-	return crypto_sync_skcipher_setkey(ctx->fallback, key, keylen);
++	return crypto_skcipher_setkey(ctx->fallback, key, keylen);
+ }
  
--	ret = crypto_sync_skcipher_setkey(ctx->fallback, key, keylen);
-+	ret = crypto_skcipher_setkey(ctx->fallback, key, keylen);
- 	if (!ret)
- 		ctx->enc_keylen = keylen;
- 	return ret;
-@@ -235,16 +235,15 @@ static int qce_skcipher_crypt(struct skcipher_request *req, int encrypt)
- 	      req->cryptlen <= aes_sw_max_len) ||
- 	     (IS_XTS(rctx->flags) && req->cryptlen > QCE_SECTOR_SIZE &&
- 	      req->cryptlen % QCE_SECTOR_SIZE))) {
+ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
+@@ -651,21 +652,19 @@ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
+ 
+ static int sahara_aes_ecb_encrypt(struct skcipher_request *req)
+ {
++	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+ 	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+ 		crypto_skcipher_reqtfm(req));
+-	int err;
+ 
+ 	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
 -		SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, ctx->fallback);
 -
 -		skcipher_request_set_sync_tfm(subreq, ctx->fallback);
@@ -130,9 +134,9 @@ index 9412433f3b21..a8147381b774 100644
 -					      NULL, NULL);
 -		skcipher_request_set_crypt(subreq, req->src, req->dst,
 -					   req->cryptlen, req->iv);
--		ret = encrypt ? crypto_skcipher_encrypt(subreq) :
--				crypto_skcipher_decrypt(subreq);
+-		err = crypto_skcipher_encrypt(subreq);
 -		skcipher_request_zero(subreq);
+-		return err;
 +		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
 +		skcipher_request_set_callback(&rctx->fallback_req,
 +					      req->base.flags,
@@ -140,52 +144,130 @@ index 9412433f3b21..a8147381b774 100644
 +					      req->base.data);
 +		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
 +					   req->dst, req->cryptlen, req->iv);
-+		ret = encrypt ? crypto_skcipher_encrypt(&rctx->fallback_req) :
-+				crypto_skcipher_decrypt(&rctx->fallback_req);
- 		return ret;
++		return crypto_skcipher_encrypt(&rctx->fallback_req);
  	}
  
-@@ -263,10 +262,9 @@ static int qce_skcipher_decrypt(struct skcipher_request *req)
+ 	return sahara_aes_crypt(req, FLAGS_ENCRYPT);
+@@ -673,21 +672,19 @@ static int sahara_aes_ecb_encrypt(struct skcipher_request *req)
  
- static int qce_skcipher_init(struct crypto_skcipher *tfm)
+ static int sahara_aes_ecb_decrypt(struct skcipher_request *req)
  {
--	struct qce_cipher_ctx *ctx = crypto_skcipher_ctx(tfm);
++	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+ 	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+ 		crypto_skcipher_reqtfm(req));
+-	int err;
+ 
+ 	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, ctx->fallback);
 -
--	memset(ctx, 0, sizeof(*ctx));
--	crypto_skcipher_set_reqsize(tfm, sizeof(struct qce_cipher_reqctx));
-+	/* take the size without the fallback skcipher_request at the end */
-+	crypto_skcipher_set_reqsize(tfm, offsetof(struct qce_cipher_reqctx,
-+						  fallback_req));
+-		skcipher_request_set_sync_tfm(subreq, ctx->fallback);
+-		skcipher_request_set_callback(subreq, req->base.flags,
+-					      NULL, NULL);
+-		skcipher_request_set_crypt(subreq, req->src, req->dst,
+-					   req->cryptlen, req->iv);
+-		err = crypto_skcipher_decrypt(subreq);
+-		skcipher_request_zero(subreq);
+-		return err;
++		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
++		skcipher_request_set_callback(&rctx->fallback_req,
++					      req->base.flags,
++					      req->base.complete,
++					      req->base.data);
++		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
++					   req->dst, req->cryptlen, req->iv);
++		return crypto_skcipher_decrypt(&rctx->fallback_req);
+ 	}
+ 
+ 	return sahara_aes_crypt(req, 0);
+@@ -695,21 +692,19 @@ static int sahara_aes_ecb_decrypt(struct skcipher_request *req)
+ 
+ static int sahara_aes_cbc_encrypt(struct skcipher_request *req)
+ {
++	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+ 	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+ 		crypto_skcipher_reqtfm(req));
+-	int err;
+ 
+ 	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, ctx->fallback);
+-
+-		skcipher_request_set_sync_tfm(subreq, ctx->fallback);
+-		skcipher_request_set_callback(subreq, req->base.flags,
+-					      NULL, NULL);
+-		skcipher_request_set_crypt(subreq, req->src, req->dst,
+-					   req->cryptlen, req->iv);
+-		err = crypto_skcipher_encrypt(subreq);
+-		skcipher_request_zero(subreq);
+-		return err;
++		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
++		skcipher_request_set_callback(&rctx->fallback_req,
++					      req->base.flags,
++					      req->base.complete,
++					      req->base.data);
++		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
++					   req->dst, req->cryptlen, req->iv);
++		return crypto_skcipher_encrypt(&rctx->fallback_req);
+ 	}
+ 
+ 	return sahara_aes_crypt(req, FLAGS_ENCRYPT | FLAGS_CBC);
+@@ -717,21 +712,19 @@ static int sahara_aes_cbc_encrypt(struct skcipher_request *req)
+ 
+ static int sahara_aes_cbc_decrypt(struct skcipher_request *req)
+ {
++	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+ 	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+ 		crypto_skcipher_reqtfm(req));
+-	int err;
+ 
+ 	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, ctx->fallback);
+-
+-		skcipher_request_set_sync_tfm(subreq, ctx->fallback);
+-		skcipher_request_set_callback(subreq, req->base.flags,
+-					      NULL, NULL);
+-		skcipher_request_set_crypt(subreq, req->src, req->dst,
+-					   req->cryptlen, req->iv);
+-		err = crypto_skcipher_decrypt(subreq);
+-		skcipher_request_zero(subreq);
+-		return err;
++		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
++		skcipher_request_set_callback(&rctx->fallback_req,
++					      req->base.flags,
++					      req->base.complete,
++					      req->base.data);
++		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
++					   req->dst, req->cryptlen, req->iv);
++		return crypto_skcipher_decrypt(&rctx->fallback_req);
+ 	}
+ 
+ 	return sahara_aes_crypt(req, FLAGS_CBC);
+@@ -742,14 +735,15 @@ static int sahara_aes_init_tfm(struct crypto_skcipher *tfm)
+ 	const char *name = crypto_tfm_alg_name(&tfm->base);
+ 	struct sahara_ctx *ctx = crypto_skcipher_ctx(tfm);
+ 
+-	ctx->fallback = crypto_alloc_sync_skcipher(name, 0,
++	ctx->fallback = crypto_alloc_skcipher(name, 0,
+ 					      CRYPTO_ALG_NEED_FALLBACK);
+ 	if (IS_ERR(ctx->fallback)) {
+ 		pr_err("Error allocating fallback algo %s\n", name);
+ 		return PTR_ERR(ctx->fallback);
+ 	}
+ 
+-	crypto_skcipher_set_reqsize(tfm, sizeof(struct sahara_aes_reqctx));
++	crypto_skcipher_set_reqsize(tfm, sizeof(struct sahara_aes_reqctx) +
++					 crypto_skcipher_reqsize(ctx->fallback));
+ 
  	return 0;
  }
- 
-@@ -274,17 +272,21 @@ static int qce_skcipher_init_fallback(struct crypto_skcipher *tfm)
+@@ -758,7 +752,7 @@ static void sahara_aes_exit_tfm(struct crypto_skcipher *tfm)
  {
- 	struct qce_cipher_ctx *ctx = crypto_skcipher_ctx(tfm);
- 
--	qce_skcipher_init(tfm);
--	ctx->fallback = crypto_alloc_sync_skcipher(crypto_tfm_alg_name(&tfm->base),
--						   0, CRYPTO_ALG_NEED_FALLBACK);
--	return PTR_ERR_OR_ZERO(ctx->fallback);
-+	ctx->fallback = crypto_alloc_skcipher(crypto_tfm_alg_name(&tfm->base),
-+					      0, CRYPTO_ALG_NEED_FALLBACK);
-+	if (IS_ERR(ctx->fallback))
-+		return PTR_ERR(ctx->fallback);
-+
-+	crypto_skcipher_set_reqsize(tfm, sizeof(struct qce_cipher_reqctx) +
-+					 crypto_skcipher_reqsize(ctx->fallback));
-+	return 0;
- }
- 
- static void qce_skcipher_exit(struct crypto_skcipher *tfm)
- {
- 	struct qce_cipher_ctx *ctx = crypto_skcipher_ctx(tfm);
+ 	struct sahara_ctx *ctx = crypto_skcipher_ctx(tfm);
  
 -	crypto_free_sync_skcipher(ctx->fallback);
 +	crypto_free_skcipher(ctx->fallback);
  }
  
- struct qce_skcipher_def {
+ static u32 sahara_sha_init_hdr(struct sahara_dev *dev,
 -- 
 2.17.1
 
