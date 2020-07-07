@@ -2,97 +2,169 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEC232160F8
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Jul 2020 23:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D405216664
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jul 2020 08:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726727AbgGFVeb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Jul 2020 17:34:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37038 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726763AbgGFVeb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Jul 2020 17:34:31 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EDAC061794
-        for <linux-omap@vger.kernel.org>; Mon,  6 Jul 2020 14:34:31 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id u18so2188069pfk.10
-        for <linux-omap@vger.kernel.org>; Mon, 06 Jul 2020 14:34:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=nb2b5E8jozASb6qKQS31YncmreGQOkYkl7FIjerURPg=;
-        b=VKc2yiKmsKiUyGXyyk/gMwF2tP6NaaLQjqZiuMZkc6dptE83hdFJW2SjkhjCF1jw+g
-         2qvImudQ1WCmdDcPsBNxBS4y/hysHw+JLmUeLrCaz2PBgCV8Gj51ciW5ziGcCYd0WMhy
-         5p3BJvcvkVAGi/O5raIFNqcvwd5R52HyXEdkzU62Pcq7eEMTvYoREuo7ngKqd2w5VdmF
-         ZMs7dOiKITGYH6JC29xImHb5G4QK+neYbzKNpFP0NsHhHAH9sdcs/y9CWoqLEMeqFeRK
-         wpfSILH7zk9ysmJMeOy68SsETeukpIBp/CXbaqv1iaNcbz3OgiZ/eHBwG7qyjZPjlJi5
-         8mTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=nb2b5E8jozASb6qKQS31YncmreGQOkYkl7FIjerURPg=;
-        b=bYF9llsLluhQZCNtOwDl+z/sN7Pp2bTzLE4b0dd5bDIyGKBrQrslH5nqZX0MuavAMO
-         hi7aqsgXqOxzsrxOskYeaixXW0CMcL3Q53Kkcbs+Bv4IfcDgyZxIH+rrLkJ22TeP80Vw
-         N+D06C7w4sXJJkwKlvvXkvuPqIll24VUOhypfI+FSZ6V0ylHADlmfvriYbF3n3BYqzL7
-         70mmK4hy7NlR1FwA0FdQrBFSGAdoxjGaPflllNOCNfI/ngBW75lwnXPDXsIe2ZMvhyke
-         E0ah8lP/k5Nra84DjSIc9ss7qmY67iP9v7bdFtcLE9CUKhxU0j0siBBUBoBJW2odoeYI
-         FieQ==
-X-Gm-Message-State: AOAM53175MaW6gdyR/WpVLe2J9geNAZKQYDpOL7Zyv2ipr5Ov/U7uRSc
-        TjA0goA9QnsiU9yXC4IDI7cI+e5w+2hu37+HNGA=
-X-Google-Smtp-Source: ABdhPJwLNr6ut/klp8L45pPeVxHkwTvUSCoSowcJolpmMysCe535vKX/TbzgrVj2rLhJ7jp+3m2/sqAhbRFFli49UQQ=
-X-Received: by 2002:aa7:9e89:: with SMTP id p9mr48206429pfq.110.1594071268872;
- Mon, 06 Jul 2020 14:34:28 -0700 (PDT)
+        id S1726788AbgGGGcb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jul 2020 02:32:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60826 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725825AbgGGGca (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 7 Jul 2020 02:32:30 -0400
+Received: from e123331-lin.nice.arm.com (adsl-70.109.242.21.tellas.gr [109.242.21.70])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DFC2C206CD;
+        Tue,  7 Jul 2020 06:32:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594103549;
+        bh=vX6i3Ra+kAMs1TuleEtAIqe2wt8EgPexdR6kk5rGYqw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oacChSNntimn3y6H6HbE4sgNBQcgJdyaw4Lc7klfZcHsRGpQlsYM/esigsJzQZvBM
+         a270k5/uUclz90XD8j+MClpntDBQR2z1Ea6xSlgD31JlGhjZ6VFC2dIXxeOdGmESy1
+         FQkylwrduhsp9YAwA5aOmXBXQNkPP5fi/+zndphg=
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-crypto@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        Corentin Labbe <clabbe@baylibre.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        John Allen <john.allen@amd.com>,
+        Ayush Sawal <ayush.sawal@chelsio.com>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jamie Iles <jamie@jamieiles.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-amlogic@lists.infradead.org
+Subject: [PATCH v4 00/13] crypto: permit asynchronous skciphers as driver fallbacks
+Date:   Tue,  7 Jul 2020 09:31:50 +0300
+Message-Id: <20200707063203.5018-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: by 2002:a17:90b:943:0:0:0:0 with HTTP; Mon, 6 Jul 2020 14:34:28
- -0700 (PDT)
-Reply-To: sctnld11170@tlen.pl
-From:   "Mr. Scott Donald" <lhame7124@gmail.com>
-Date:   Mon, 6 Jul 2020 14:34:28 -0700
-Message-ID: <CAL699QR80--xK46OPXBhXqVJNJYO_8adi7E-wXSraR2-=aXrBA@mail.gmail.com>
-Subject: Hello, Please
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-Dear Friend,
+The drivers for crypto accelerators in drivers/crypto all implement skciphers
+of an asynchronous nature, given that they are backed by hardware DMA that
+completes asynchronously wrt the execution flow.
 
-I'm Mr. Scott Donald a Successful business Man dealing with
-Exportation, I got your mail contact through search to let you know my
-Ugly Situation Am a dying Man here in Los Angeles California Hospital
-Bed in (USA), I Lost my Wife and my only Daughter for Covid-19 I'm
-dying with same symptoms and more. my Doctor open-up to me that he is
-Afraid to tell me my Condition and inside me, I already know that I'm
-not going to survive and I can't live alone without my Family on
-Earth,
+However, in many cases, any fallbacks they allocate are limited to the
+synchronous variety, which rules out the use of SIMD implementations of
+AES in ECB, CBC and XTS modes, given that they are usually built on top
+of the asynchronous SIMD helper, which queues requests for asynchronous
+completion if they are issued from a context that does not permit the use
+of the SIMD register file.
 
-I have a project that I am about to hand over to you. and I already
-instructed the Bank to transfer my fund sum of =C2=A33,7M GBP to you as to
-enable you to give 50% to Charitable Home and take 50% don't think
-otherwise and why would anybody send someone you barely know to help
-you deliver a message, help me do this for the happiness of my soul
-and for God to mercy me and my Family and give Us a good place.
+This may result in sub-optimal AES implementations to be selected as
+fallbacks, or even less secure ones if the only synchronous alternative
+is table based, and therefore not time invariant.
 
+So switch all these cases over to the asynchronous API, by moving the
+subrequest into the skcipher request context, and permitting it to
+complete asynchronously via the caller provided completion function.
 
-please, do as I said there was someone from your State that I deeply
-love so very very much and I miss her so bad I have no means to reach
-any Charitable Home there. that is why I go for a personal search of
-the Country and State and I got your mail contact through search to
-let you know my Bitterness and please, help me is getting Dark I ask
-my Doctor to help me keep you notice failure for me to reach you in
-person Your urgent Response, here is my Doctor Whats-app Number for
-urgent notice +13019692737
+Patch #1 is not related, but touches the same driver as #2 so it is
+included anyway. Patch #13 removes another sync skcipher allocation by
+switching to the AES library interface.
 
-Hope To Hear From You. I'm sending this email to you for the second
-time yet no response from you. I operate Two Foreign banks, I bank
-with Barclays bank of London (BBL) & Bankia S.A. Madrid, Spain(BSA)
+v4:
+- add missing kerneldoc updates for sun8i-ce and sun8i-ss
+- add acks from Horia, Jamie and Corentin
+- rebase onto cryptodev/master
 
-My Regards.
+v3:
+- disregard the fallback skcipher_request when taking the request context size
+  for TFMs that don't need the fallback at all (picoxcell, qce)
+- fix error handling in fallback skcipher allocation and remove pointless
+  memset()s (qce)
 
-Mr. Scott Donald
-CEO
+v2:
+- address issue found by build robot in patch #7
+- add patch #13
+- rebase onto cryptodev/master
+
+Cc: Corentin Labbe <clabbe.montjoie@gmail.com>
+Cc: Corentin Labbe <clabbe@baylibre.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: John Allen <john.allen@amd.com>
+Cc: Ayush Sawal <ayush.sawal@chelsio.com>
+Cc: Vinay Kumar Yadav <vinay.yadav@chelsio.com>
+Cc: Rohit Maheshwari <rohitm@chelsio.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Jamie Iles <jamie@jamieiles.com>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Tero Kristo <t-kristo@ti.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Horia Geantă <horia.geanta@nxp.com>
+
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-omap@vger.kernel.org
+Cc: linux-amlogic@lists.infradead.org
+
+Ard Biesheuvel (13):
+  crypto: amlogic-gxl - default to build as module
+  crypto: amlogic-gxl - permit async skcipher as fallback
+  crypto: omap-aes - permit asynchronous skcipher as fallback
+  crypto: sun4i - permit asynchronous skcipher as fallback
+  crypto: sun8i-ce - permit asynchronous skcipher as fallback
+  crypto: sun8i-ss - permit asynchronous skcipher as fallback
+  crypto: ccp - permit asynchronous skcipher as fallback
+  crypto: chelsio - permit asynchronous skcipher as fallback
+  crypto: mxs-dcp - permit asynchronous skcipher as fallback
+  crypto: picoxcell - permit asynchronous skcipher as fallback
+  crypto: qce - permit asynchronous skcipher as fallback
+  crypto: sahara - permit asynchronous skcipher as fallback
+  crypto: mediatek - use AES library for GCM key derivation
+
+ drivers/crypto/Kconfig                        |  3 +-
+ .../allwinner/sun4i-ss/sun4i-ss-cipher.c      | 46 ++++-----
+ drivers/crypto/allwinner/sun4i-ss/sun4i-ss.h  |  3 +-
+ .../allwinner/sun8i-ce/sun8i-ce-cipher.c      | 41 ++++----
+ drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h  |  8 +-
+ .../allwinner/sun8i-ss/sun8i-ss-cipher.c      | 39 ++++----
+ drivers/crypto/allwinner/sun8i-ss/sun8i-ss.h  | 26 ++---
+ drivers/crypto/amlogic/Kconfig                |  2 +-
+ drivers/crypto/amlogic/amlogic-gxl-cipher.c   | 27 +++---
+ drivers/crypto/amlogic/amlogic-gxl.h          |  3 +-
+ drivers/crypto/ccp/ccp-crypto-aes-xts.c       | 33 ++++---
+ drivers/crypto/ccp/ccp-crypto.h               |  4 +-
+ drivers/crypto/chelsio/chcr_algo.c            | 57 +++++------
+ drivers/crypto/chelsio/chcr_crypto.h          |  3 +-
+ drivers/crypto/mediatek/mtk-aes.c             | 63 ++----------
+ drivers/crypto/mxs-dcp.c                      | 33 +++----
+ drivers/crypto/omap-aes.c                     | 35 ++++---
+ drivers/crypto/omap-aes.h                     |  3 +-
+ drivers/crypto/picoxcell_crypto.c             | 38 ++++----
+ drivers/crypto/qce/cipher.h                   |  3 +-
+ drivers/crypto/qce/skcipher.c                 | 42 ++++----
+ drivers/crypto/sahara.c                       | 96 +++++++++----------
+ 22 files changed, 280 insertions(+), 328 deletions(-)
+
+-- 
+2.17.1
+
