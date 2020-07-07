@@ -2,200 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F47221785B
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jul 2020 21:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9762A21788B
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jul 2020 22:04:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728354AbgGGTzQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jul 2020 15:55:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35644 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728254AbgGGTzP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 7 Jul 2020 15:55:15 -0400
-Received: from embeddedor (unknown [200.39.26.250])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5258A2067D;
-        Tue,  7 Jul 2020 19:55:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594151714;
-        bh=EKHQa0fn19dP7DdfSsBAyCGObw/4dqvoeOQ2/MAc5zM=;
-        h=Date:From:To:Cc:Subject:From;
-        b=FXBCzWY09+DYmPoVYbiaKTUAOjJ2ovjQFPURMU2W4LPZGUL596iwJJV2TIeAesPLA
-         OQ2b6A9ZfvORaDVut94zw1dvVT2NU3xUF22BweWUM1x/u1/gQkhQeI009o++B21hhO
-         wUzk9OWGE1aCepcl2X+wbc6C8UORlOyXiEKuXxAg=
-Date:   Tue, 7 Jul 2020 15:00:40 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Felipe Balbi <balbi@kernel.org>
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: [PATCH] usb: phy: Use fallthrough pseudo-keyword
-Message-ID: <20200707200040.GA4525@embeddedor>
-MIME-Version: 1.0
+        id S1728318AbgGGUE3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jul 2020 16:04:29 -0400
+Received: from mail-eopbgr770043.outbound.protection.outlook.com ([40.107.77.43]:12455
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727895AbgGGUE3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 7 Jul 2020 16:04:29 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A3J1E3gxEDrBoVdt3rs0YqDl0m7JrbipgUQ38EFkLOurh5HzHsRxbuIqHtJrCgBNJJk886LBxl5u1k/9FThjMs4sUAjYF9GRx6Zf1QKyuJrLDTktiMhhminUSBSYXwko1UAxQo7NCLkpzS1Rrb6Jvd2cQhaLn+oND4sdOzge+Lo+Ebja72JoCPy6RHGNOgt6yz4TDDLNmOD3r+jCP24h5zRprwXvW/3964Q955xpoZrIzkK8qGjkKQufiBPeFmoUbkWCJJMiLaxQpEpbiI5OKSwSzBqGwaBNdos/6hRoZ9oH7eorIR/LuduU9hDJVbTllMjxVOgFL1+KImNNO3Qyaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RQWNGQ2dJvXojFQN6qUP29zvrHH/0lVt3ygOEfkEEUI=;
+ b=M6vy+BU4YQaUPgJo3Has8tz8XWmdfEdXGVsbEthavnaygNkkaCc120tPJcnUNcduEp1qzdf/QchnOtvG73PN++ilWMRNFSetNncao2s3CFhgk0dycowTOUfHd/FZFqNmUU1lr/eCqVtsz9ASfOAJuuzsliT3GOdaQ8EXRC9VyNnjGP2DeRBEqWIvyC+yy2ooRdQnTyci9boxVpaM50VIckZSziLxF/wr8w3Qx/Z567AyX3zD20vBRrDU8zonZEtPHE7s83UDpYVBL2dkRiOb5YXz66FUv9DkueYqsLDcaUr0TNW+PLilv8/wY6KM/lQw8zxobH4MjJVmgnwXElhC/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RQWNGQ2dJvXojFQN6qUP29zvrHH/0lVt3ygOEfkEEUI=;
+ b=M0RiF84r9WoS0HaFb7IsUOm10qWfCA5d2PrAGxQPk0IwYGm6Dwj07VelDMsmWxr9ueRcdA/+CajW6Ryn+2Nut7KeyI905sJR7jsZixDMQDmLaXbtBVH6c6qgbegtgHFiDzaaKQoqR0oP4dhkOTdXf98IIVKPKionSVBJp5vsY2k=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from SN1PR12MB2590.namprd12.prod.outlook.com (2603:10b6:802:2e::17)
+ by SA0PR12MB4496.namprd12.prod.outlook.com (2603:10b6:806:9b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.23; Tue, 7 Jul
+ 2020 20:04:26 +0000
+Received: from SN1PR12MB2590.namprd12.prod.outlook.com
+ ([fe80::c179:ec27:4476:8e05]) by SN1PR12MB2590.namprd12.prod.outlook.com
+ ([fe80::c179:ec27:4476:8e05%7]) with mapi id 15.20.3153.029; Tue, 7 Jul 2020
+ 20:04:26 +0000
+Date:   Tue, 7 Jul 2020 15:04:18 -0500
+From:   John Allen <john.allen@amd.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-crypto@vger.kernel.org,
+        Corentin Labbe <clabbe.montjoie@gmail.com>,
+        Corentin Labbe <clabbe@baylibre.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ayush Sawal <ayush.sawal@chelsio.com>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jamie Iles <jamie@jamieiles.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-amlogic@lists.infradead.org
+Subject: Re: [PATCH v4 07/13] crypto: ccp - permit asynchronous skcipher as
+ fallback
+Message-ID: <20200707200348.GA127522@mojo.amd.com>
+References: <20200707063203.5018-1-ardb@kernel.org>
+ <20200707063203.5018-8-ardb@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200707063203.5018-8-ardb@kernel.org>
+X-ClientProxiedBy: SN2PR01CA0051.prod.exchangelabs.com (2603:10b6:800::19) To
+ SN1PR12MB2590.namprd12.prod.outlook.com (2603:10b6:802:2e::17)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mojo.amd.com (165.204.77.1) by SN2PR01CA0051.prod.exchangelabs.com (2603:10b6:800::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.23 via Frontend Transport; Tue, 7 Jul 2020 20:04:25 +0000
+X-Originating-IP: [165.204.77.1]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: b393c32a-c880-47e9-8314-08d822b0f300
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4496:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SA0PR12MB4496C2646662A9928D444C619A660@SA0PR12MB4496.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-Forefront-PRVS: 0457F11EAF
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: dTwtxGCgVESod0ofTo3TKbYK9RkbqXd+92ipVnWyU6aDNm/wv4Ejq6qRBMjo1DQWKZ5Z+NxUILgqmerv6oqqL6HkY8EKFPqqx/CJi5r2xHSC81SmzBouWIvC3sT/ryaU1GbuAzdSnlehlFPd3ZAWvTLvvFlmyDplz1d3ECopqaTF3qGmCGmndzJQ+P5xSCC4o/RiEMkuN5AQsquS6jRdA28wr1vthNzJjhmcjg2VHVVbw4nwHFwbRoIeomrU9XFX2e/XvmId91gh7isbWFziFM07c1X4g4q5xyfFR58vn6Iu4AgDfExQgYgoij1Zh1uY
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN1PR12MB2590.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(396003)(376002)(366004)(346002)(136003)(44832011)(83380400001)(6666004)(316002)(956004)(54906003)(66946007)(66556008)(66476007)(7416002)(4326008)(6916009)(478600001)(55016002)(8676002)(2906002)(52116002)(7696005)(5660300002)(33656002)(1076003)(8936002)(26005)(186003)(16526019)(86362001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: YeGb2stMMcMRTzsP7vfzpcpVwMdaSBN/IHzlOoGT089aC/PJIeIpMLWcymQeEY5cAcn/aKNBCodZQt/OslIGZbWQlOxMYZHlBqlYsotojHvj8qS10ItkfvebGx0Mt/tNJURku69/VqM0eth89LVmhgGvpPt8k2/bNuvGwYGKq4DFnASjTaKgNws3IldTbDXX+wjKUUDSP9zUHNMBET/z6eVqKnqhljyI0D4FxbALq1Zjv2CuagdtNi66i1mqm63anadT4kpPt/qm7tli3sbb3IBxV0T7WbknmP8PBSUMWJq36wCw5yb2DPQOqOYTVn5knM2+rBWYXyEi8IKStLfrLdcKcgH48NBoCjICzBN6JTqNw5F+ZZa70Bdh/NmizfFgGWoQg7Gt9SSamudyfEnUMkZ8f4PwjMD+1LJh/xlv9IdFsNMKKUs1+UD7R2yiYLE8U5eCvUVkmoRFoa34qfD2b/kN5gFRmQexoFhaCoklokw=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b393c32a-c880-47e9-8314-08d822b0f300
+X-MS-Exchange-CrossTenant-AuthSource: SN1PR12MB2590.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2020 20:04:26.3218
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IW32qZl7sQGZLPjTFnIkn89LCajYPQBiho9LKjrkka+RWllG4/o/V9a7bdu1S/2Q3wmlMulhYMs+ROcBfCc2yA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4496
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Replace the existing /* fall through */ comments and its variants with
-the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
-fall-through markings when it is the case.
+On Tue, Jul 07, 2020 at 09:31:57AM +0300, Ard Biesheuvel wrote:
+> Even though the ccp driver implements an asynchronous version of xts(aes),
+> the fallback it allocates is required to be synchronous. Given that SIMD
+> based software implementations are usually asynchronous as well, even
+> though they rarely complete asynchronously (this typically only happens
+> in cases where the request was made from softirq context, while SIMD was
+> already in use in the task context that it interrupted), these
+> implementations are disregarded, and either the generic C version or
+> another table based version implemented in assembler is selected instead.
+> 
+> Since falling back to synchronous AES is not only a performance issue, but
+> potentially a security issue as well (due to the fact that table based AES
+> is not time invariant), let's fix this, by allocating an ordinary skcipher
+> as the fallback, and invoke it with the completion routine that was given
+> to the outer request.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/usb/phy/phy-ab8500-usb.c   |   12 ++++++------
- drivers/usb/phy/phy-fsl-usb.c      |    4 ++--
- drivers/usb/phy/phy-isp1301-omap.c |   14 +++++++-------
- drivers/usb/phy/phy-mv-usb.c       |    2 +-
- 4 files changed, 16 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/usb/phy/phy-ab8500-usb.c b/drivers/usb/phy/phy-ab8500-usb.c
-index 20c0f082bf9c..aa4a3140394b 100644
---- a/drivers/usb/phy/phy-ab8500-usb.c
-+++ b/drivers/usb/phy/phy-ab8500-usb.c
-@@ -331,7 +331,7 @@ static int ab8505_usb_link_status_update(struct ab8500_usb *ab,
- 	switch (lsts) {
- 	case USB_LINK_ACA_RID_B_8505:
- 		event = UX500_MUSB_RIDB;
--		/* Fall through */
-+		fallthrough;
- 	case USB_LINK_NOT_CONFIGURED_8505:
- 	case USB_LINK_RESERVED0_8505:
- 	case USB_LINK_RESERVED1_8505:
-@@ -352,7 +352,7 @@ static int ab8505_usb_link_status_update(struct ab8500_usb *ab,
- 
- 	case USB_LINK_ACA_RID_C_NM_8505:
- 		event = UX500_MUSB_RIDC;
--		/* Fall through */
-+		fallthrough;
- 	case USB_LINK_STD_HOST_NC_8505:
- 	case USB_LINK_STD_HOST_C_NS_8505:
- 	case USB_LINK_STD_HOST_C_S_8505:
-@@ -371,7 +371,7 @@ static int ab8505_usb_link_status_update(struct ab8500_usb *ab,
- 	case USB_LINK_ACA_RID_A_8505:
- 	case USB_LINK_ACA_DOCK_CHGR_8505:
- 		event = UX500_MUSB_RIDA;
--		/* Fall through */
-+		fallthrough;
- 	case USB_LINK_HM_IDGND_8505:
- 		if (ab->mode == USB_IDLE) {
- 			ab->mode = USB_HOST;
-@@ -444,7 +444,7 @@ static int ab8500_usb_link_status_update(struct ab8500_usb *ab,
- 	switch (lsts) {
- 	case USB_LINK_ACA_RID_B_8500:
- 		event = UX500_MUSB_RIDB;
--		/* Fall through */
-+		fallthrough;
- 	case USB_LINK_NOT_CONFIGURED_8500:
- 	case USB_LINK_NOT_VALID_LINK_8500:
- 		ab->mode = USB_IDLE;
-@@ -461,7 +461,7 @@ static int ab8500_usb_link_status_update(struct ab8500_usb *ab,
- 	case USB_LINK_ACA_RID_C_HS_8500:
- 	case USB_LINK_ACA_RID_C_HS_CHIRP_8500:
- 		event = UX500_MUSB_RIDC;
--		/* Fall through */
-+		fallthrough;
- 	case USB_LINK_STD_HOST_NC_8500:
- 	case USB_LINK_STD_HOST_C_NS_8500:
- 	case USB_LINK_STD_HOST_C_S_8500:
-@@ -481,7 +481,7 @@ static int ab8500_usb_link_status_update(struct ab8500_usb *ab,
- 
- 	case USB_LINK_ACA_RID_A_8500:
- 		event = UX500_MUSB_RIDA;
--		/* Fall through */
-+		fallthrough;
- 	case USB_LINK_HM_IDGND_8500:
- 		if (ab->mode == USB_IDLE) {
- 			ab->mode = USB_HOST;
-diff --git a/drivers/usb/phy/phy-fsl-usb.c b/drivers/usb/phy/phy-fsl-usb.c
-index b451f4695f3f..01985e1b513a 100644
---- a/drivers/usb/phy/phy-fsl-usb.c
-+++ b/drivers/usb/phy/phy-fsl-usb.c
-@@ -911,10 +911,10 @@ int usb_otg_start(struct platform_device *pdev)
- 		break;
- 	case FSL_USB2_PHY_UTMI_WIDE:
- 		temp |= PORTSC_PTW_16BIT;
--		/* fall through */
-+		fallthrough;
- 	case FSL_USB2_PHY_UTMI:
- 		temp |= PORTSC_PTS_UTMI;
--		/* fall through */
-+		fallthrough;
- 	default:
- 		break;
- 	}
-diff --git a/drivers/usb/phy/phy-isp1301-omap.c b/drivers/usb/phy/phy-isp1301-omap.c
-index 7041ba030052..4a6462c92ef2 100644
---- a/drivers/usb/phy/phy-isp1301-omap.c
-+++ b/drivers/usb/phy/phy-isp1301-omap.c
-@@ -581,11 +581,11 @@ static void otg_update_isp(struct isp1301 *isp)
- 		/* HNP failed for some reason (A_AIDL_BDIS timeout) */
- 		notresponding(isp);
- 
--		/* FALLTHROUGH */
-+		fallthrough;
- 	case OTG_STATE_A_VBUS_ERR:
- 		isp->phy.otg->state = OTG_STATE_A_WAIT_VFALL;
- 		pr_debug("  --> a_wait_vfall\n");
--		/* FALLTHROUGH */
-+		fallthrough;
- 	case OTG_STATE_A_WAIT_VFALL:
- 		/* FIXME usbcore thinks port power is still on ... */
- 		clr |= OTG1_VBUS_DRV;
-@@ -595,7 +595,7 @@ static void otg_update_isp(struct isp1301 *isp)
- 			isp->phy.otg->state = OTG_STATE_A_WAIT_VRISE;
- 			pr_debug("  --> a_wait_vrise\n");
- 		}
--		/* FALLTHROUGH */
-+		fallthrough;
- 	default:
- 		toggle(OTG_DRV_VBUS, OTG1_VBUS_DRV);
- 	}
-@@ -945,10 +945,10 @@ static void isp_update_otg(struct isp1301 *isp, u8 stat)
- 			switch (state) {
- 			case OTG_STATE_B_IDLE:
- 				a_idle(isp, "idle");
--				/* FALLTHROUGH */
-+				fallthrough;
- 			case OTG_STATE_A_IDLE:
- 				enable_vbus_source(isp);
--				/* FALLTHROUGH */
-+				fallthrough;
- 			case OTG_STATE_A_WAIT_VRISE:
- 				/* we skip over OTG_STATE_A_WAIT_BCON, since
- 				 * the HC will transition to A_HOST (or
-@@ -1032,12 +1032,12 @@ static void isp_update_otg(struct isp1301 *isp, u8 stat)
- 						OTG1_DP_PULLUP);
- 			dump_regs(isp, __func__);
- #endif
--			/* FALLTHROUGH */
-+			fallthrough;
- 		case OTG_STATE_B_SRP_INIT:
- 			b_idle(isp, __func__);
- 			l = omap_readl(OTG_CTRL) & OTG_XCEIV_OUTPUTS;
- 			omap_writel(l, OTG_CTRL);
--			/* FALLTHROUGH */
-+			fallthrough;
- 		case OTG_STATE_B_IDLE:
- 			if (otg->gadget && (isp_bstat & OTG_B_SESS_VLD)) {
- #ifdef	CONFIG_USB_OTG
-diff --git a/drivers/usb/phy/phy-mv-usb.c b/drivers/usb/phy/phy-mv-usb.c
-index 06b47f1028b3..ce767ecc0636 100644
---- a/drivers/usb/phy/phy-mv-usb.c
-+++ b/drivers/usb/phy/phy-mv-usb.c
-@@ -334,7 +334,7 @@ static void mv_otg_update_state(struct mv_otg *mvotg)
- 	switch (old_state) {
- 	case OTG_STATE_UNDEFINED:
- 		mvotg->phy.otg->state = OTG_STATE_B_IDLE;
--		/* FALL THROUGH */
-+		fallthrough;
- 	case OTG_STATE_B_IDLE:
- 		if (otg_ctrl->id == 0)
- 			mvotg->phy.otg->state = OTG_STATE_A_IDLE;
-
+Acked-by: John Allen <john.allen@amd.com>
