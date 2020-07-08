@@ -2,73 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86C0D218A6F
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jul 2020 16:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4C49218E3D
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jul 2020 19:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729206AbgGHOx0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Jul 2020 10:53:26 -0400
-Received: from mail.elsol.com.pe ([170.231.82.35]:55123 "EHLO
-        mail.elsol.com.pe" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729652AbgGHOxZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jul 2020 10:53:25 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.elsol.com.pe (Postfix) with ESMTP id 4FCFD600D1F;
-        Wed,  8 Jul 2020 09:32:21 -0500 (-05)
-Received: from mail.elsol.com.pe ([127.0.0.1])
-        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Ja_E_J5M--0O; Wed,  8 Jul 2020 09:32:21 -0500 (-05)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.elsol.com.pe (Postfix) with ESMTP id 5E6776A5107;
-        Wed,  8 Jul 2020 08:56:48 -0500 (-05)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.elsol.com.pe 5E6776A5107
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=elsol.com.pe;
-        s=17F39D2A-FFD0-11E7-BCBF-081969246B0E; t=1594216608;
-        bh=Q4TLgAxN+1jVUXx41+YdTHwxwV+FjnBzBEZtAH/XUmk=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=f9VYwXZNqELrLlVxfh4rpVIqgvZPSyo+Mqg0sSHXw5uMk+u52dHLDWMwXduVfWvsT
-         t2EVPQDWLgI3TIOuDMFcYcI9ix3tjMd/9nDgKdIKdOZmFKoRmbNPYiLp5yI/diDbvi
-         JXwc9u2D9QHTzjZNos8flKSYhX+jVZXE1DYbiCsnB3QJHkb1ASviVw41zFizHpRfEU
-         3x4imiSC5Zx2OFeyEQZLpextIOipxWCtB36KK27ytzsfnMFoLEMMpCFL0rv7L3php4
-         g9AafFzg61Uj/oIiak4KKIi9iuM+lFi+i+LYtBJnED0/PTZTfIBQTNqNpgj4Cp8kPP
-         F3pZFDCiB5KWA==
-X-Virus-Scanned: amavisd-new at elsol.com.pe
-Received: from mail.elsol.com.pe ([127.0.0.1])
-        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id qt9cr9ehkMtP; Wed,  8 Jul 2020 08:56:48 -0500 (-05)
-Received: from [10.86.65.172] (unknown [105.8.7.225])
-        by mail.elsol.com.pe (Postfix) with ESMTPSA id 0F3736C0BFB;
-        Wed,  8 Jul 2020 08:39:23 -0500 (-05)
+        id S1726340AbgGHRd1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 8 Jul 2020 13:33:27 -0400
+Received: from tramin.artio.cz ([193.86.240.83]:48888 "EHLO tramin.artio.cz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725810AbgGHRd1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 8 Jul 2020 13:33:27 -0400
+X-Greylist: delayed 1362 seconds by postgrey-1.27 at vger.kernel.org; Wed, 08 Jul 2020 13:33:26 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by tramin.artio.cz (Postfix) with ESMTP id 987E3224ABA;
+        Wed,  8 Jul 2020 19:08:32 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at 
+X-Spam-Flag: NO
+X-Spam-Score: 0.691
+X-Spam-Level: 
+X-Spam-Status: No, score=0.691 tagged_above=-9999 required=6.31
+        tests=[BAYES_00=-1.9, FREEMAIL_FORGED_REPLYTO=2.095, FROMSPACE=0.001,
+        MISSING_MID=0.497, NO_RECEIVED=-0.001, NO_RELAYS=-0.001]
+        autolearn=no autolearn_force=no
+Received: from tramin.artio.cz ([127.0.0.1])
+        by localhost (tramin.artio.cz [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 8mjN6UgKVPNM; Wed,  8 Jul 2020 19:08:30 +0200 (CEST)
 Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8BIT
 Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <dreyes@elsol.com.pe>
-From:   ''Charles jackson'' <dreyes@elsol.com.pe>
-Date:   Wed, 08 Jul 2020 15:35:36 +0200
-Reply-To: charlesjacksonjr001@gmail.com
-Message-Id: <20200708133924.0F3736C0BFB@mail.elsol.com.pe>
+Subject: This is Sgt. Conner
+To:     Recipients <kcfm@renarkon.cz>
+From:   " Sgt. Conner" <kcfm@renarkon.cz>
+Date:   Wed, 08 Jul 2020 16:49:06 +0000
+Reply-To: sgtconnerrianna@gmail.com
+Message-Id: <20200708170832.987E3224ABA@tramin.artio.cz>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hallo
+Hello ,this is Sgt. Conner of the US Marines. Treat this contact as
+confidential,and it will be beneficial to you. It is because of the
+nature of information that I am writing from a pseudo account,so get
+back to me urgently via my personal email address,  
+sgtconnerrianna@gmail.com  for details.
 
-Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Ameri=
-ka, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen =
-US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der H=
-ilfsgelder f=FCr das Corona-Virus.
-
-Dies ist Ihr Spendencode: [CJ530342019]
-
-www.youtube.com/watch?v=3DBSr8myiLPMQ
-
-Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
-
-charlesjacksonjr001@gmail.com
-
-Ich hoffe, dass Sie und Ihre Familie dies durchkommen
-
-
-Herr Charles Jackson
+Hei, tämä on Sgt. Yhdysvaltain merijalkaväen rakenne. Käsittele tätä yhteyshenkilöä luottamuksellisena, ja siitä on hyötyä sinulle. Kirjoitan pseudotililtä tietojen luonteen vuoksi, joten palata minuun kiireellisesti henkilökohtaisen sähköpostiosoitteeni kautta,
+sgtconnerrianna@gmail.com saadaksesi lisätietoja.
