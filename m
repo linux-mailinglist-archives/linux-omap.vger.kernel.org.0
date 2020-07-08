@@ -2,95 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64EFC21877B
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jul 2020 14:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86C0D218A6F
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jul 2020 16:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729122AbgGHMdj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Jul 2020 08:33:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60346 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729251AbgGHMdc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jul 2020 08:33:32 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 074C9C08E89D
-        for <linux-omap@vger.kernel.org>; Wed,  8 Jul 2020 05:33:31 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id u12so34247803qth.12
-        for <linux-omap@vger.kernel.org>; Wed, 08 Jul 2020 05:33:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=CtDA46Te1kJYGFqAkgr9Vub/YrG6WB2S+VlEURQEEM4x6m9sjli+Jz/yotFRmV/AMR
-         T/h2d+e8At09eChsFX2C+mUFLH+FsdwAy78KAtzHqTPpG69rhvmbmMUpZSALFUdgKxT3
-         rKV4TF8A0J+Za5tWsTPtObTKnCJJSeTUvLM0KCUCLapZUiUA/CE0qJguNsnmAcBYT7Bw
-         PUSSiRKtit7eL05YbTu8d4vZk3Rk52mtpEQs926eluhEg6IUrqIesfOKILheZFFzZp0P
-         0kRnPxRkSyAb2gIupk6cQmoDhkGW5ga2ONIfRh7Ui0T+vXHI9OfE4hLpnUDNkQjQgdsE
-         pxTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=/vBVbAxvijag95IA6OM26aTa2bKDnUtimRlc1mZm/7M=;
-        b=DGvx8+vETVXkKcd37NsJsZJzAuq1e1a2W+kKQ5Sm9CFcmLygGXYisPqEAdSFhz/r/h
-         rrlYPVISsv6BU/ts7CePqirQfc8qzPFX1RHEG1/MkcETG2BYv2F5uLIIXnaZ8kzzmg3e
-         nC78AAHJBaS1SJ+bwPzvoij7rcdj0JWytimA1oLRlq5rNEIjYEOFydQj22cZ2NEcvmf1
-         aqs28h9G3pln3TF9jvWt4MmJWm97XjfX35RtWRiWoRlkMP/8VmnVzjjkpqvT0GdjCso4
-         jH2rLTX3zQBz17RMU1uMBNTDYB1O+38i3KX8j+mkU6KcvxdIGV8xNENsLxI6IXXA1yFG
-         3cQQ==
-X-Gm-Message-State: AOAM530SS+T9wNnCyDkzBbosPMYLZTPq961Lvw2rH2Iv0xW32Wj/sz0F
-        Aj5rLCDAhrN8UAFp8lZuZ/BRMKmDYV31salVkqjn+MJPrZ4=
-X-Google-Smtp-Source: ABdhPJy69qBRFRW2d2u+0xyGHVfmVbQRW6SQ4gKLQIvGwSNWfhZDhNcIlxNh+7AirNZFy3An0aJSkt25Q8y7juQZu8o=
-X-Received: by 2002:a05:6638:12c7:: with SMTP id v7mr64754290jas.56.1594211609022;
- Wed, 08 Jul 2020 05:33:29 -0700 (PDT)
+        id S1729206AbgGHOx0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Jul 2020 10:53:26 -0400
+Received: from mail.elsol.com.pe ([170.231.82.35]:55123 "EHLO
+        mail.elsol.com.pe" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729652AbgGHOxZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jul 2020 10:53:25 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.elsol.com.pe (Postfix) with ESMTP id 4FCFD600D1F;
+        Wed,  8 Jul 2020 09:32:21 -0500 (-05)
+Received: from mail.elsol.com.pe ([127.0.0.1])
+        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id Ja_E_J5M--0O; Wed,  8 Jul 2020 09:32:21 -0500 (-05)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.elsol.com.pe (Postfix) with ESMTP id 5E6776A5107;
+        Wed,  8 Jul 2020 08:56:48 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.elsol.com.pe 5E6776A5107
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=elsol.com.pe;
+        s=17F39D2A-FFD0-11E7-BCBF-081969246B0E; t=1594216608;
+        bh=Q4TLgAxN+1jVUXx41+YdTHwxwV+FjnBzBEZtAH/XUmk=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=f9VYwXZNqELrLlVxfh4rpVIqgvZPSyo+Mqg0sSHXw5uMk+u52dHLDWMwXduVfWvsT
+         t2EVPQDWLgI3TIOuDMFcYcI9ix3tjMd/9nDgKdIKdOZmFKoRmbNPYiLp5yI/diDbvi
+         JXwc9u2D9QHTzjZNos8flKSYhX+jVZXE1DYbiCsnB3QJHkb1ASviVw41zFizHpRfEU
+         3x4imiSC5Zx2OFeyEQZLpextIOipxWCtB36KK27ytzsfnMFoLEMMpCFL0rv7L3php4
+         g9AafFzg61Uj/oIiak4KKIi9iuM+lFi+i+LYtBJnED0/PTZTfIBQTNqNpgj4Cp8kPP
+         F3pZFDCiB5KWA==
+X-Virus-Scanned: amavisd-new at elsol.com.pe
+Received: from mail.elsol.com.pe ([127.0.0.1])
+        by localhost (mail.elsol.com.pe [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id qt9cr9ehkMtP; Wed,  8 Jul 2020 08:56:48 -0500 (-05)
+Received: from [10.86.65.172] (unknown [105.8.7.225])
+        by mail.elsol.com.pe (Postfix) with ESMTPSA id 0F3736C0BFB;
+        Wed,  8 Jul 2020 08:39:23 -0500 (-05)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Received: by 2002:a05:6602:1582:0:0:0:0 with HTTP; Wed, 8 Jul 2020 05:33:28
- -0700 (PDT)
-Reply-To: mmsafiatou057@gmail.com
-From:   "Mrs. Safitaou Zoungrana" <richardlaurentdr@gmail.com>
-Date:   Wed, 8 Jul 2020 12:33:28 +0000
-Message-ID: <CALJAiTVXhrKZYOHVoupnx6hmXXD0i2k4MOSO6HW+mj1BAydXhA@mail.gmail.com>
-Subject: My Dear Beloved One,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <dreyes@elsol.com.pe>
+From:   ''Charles jackson'' <dreyes@elsol.com.pe>
+Date:   Wed, 08 Jul 2020 15:35:36 +0200
+Reply-To: charlesjacksonjr001@gmail.com
+Message-Id: <20200708133924.0F3736C0BFB@mail.elsol.com.pe>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-My Dear Beloved One,
+Hallo
 
-I greet you in the name of God almighty the givers of all good things
-in life. Please kindly pardon me for any inconvenience this letter may
-cost you because I know it may come to you as a surprise as we have no
-previous correspondence.  I sent this mail praying for it to reach you
-in good health, since I myself are in a very critical health condition
-in which I sleep every night without knowing if I may be alive to see
-the next day.
+Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Ameri=
+ka, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen =
+US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der H=
+ilfsgelder f=FCr das Corona-Virus.
 
-I am Mrs. Safiatou Zoungrana,  the wife of late Engineer Ralph
-Alphonso Zoungrana from Paris France but based here in Burkina Faso
-West Africa since eight years ago as a business woman dealing with
-gold exportation and Sales. We have been married for years before his
-sudden death although we were childless. I have been diagnosed with
-ovarian cancer and I have been battling with the sickness when my late
-lovely husband of a blessed memory was alive. May his soul rest in
-peace, Amen.
+Dies ist Ihr Spendencode: [CJ530342019]
 
-My late Husband left the sum of =E2=82=AC7.900.000.00 Seven Million Nine
-Hundred Thousand Euros in a fix/suspense account in one of the prime
-bank here in Burkina Faso. Recently, my Doctor told me that I have few
-days to live due to the cancer problem. The one that disturbs me most
-is my blood pressure sickness.
+www.youtube.com/watch?v=3DBSr8myiLPMQ
 
-Having known my health condition I decided to seek for your kind
-assistance to transfer this fund into your account and you will use it
-to establish an orphanage home in my name. I will give you more
-details about the project as soon as I receive your reply in my
-private email (mmsafiatou057@gmail.com) to handle this project because
-I do not want to state all here until I see your reply, desire and
-commitment to handle this project.
+Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
 
-My Regards to your family.
-Mrs. Safiatou Zoungrana.
+charlesjacksonjr001@gmail.com
+
+Ich hoffe, dass Sie und Ihre Familie dies durchkommen
+
+
+Herr Charles Jackson
