@@ -2,110 +2,117 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 665EF2181E5
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jul 2020 09:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55DE02181D7
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jul 2020 09:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726472AbgGHHz0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Jul 2020 03:55:26 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:26254 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726081AbgGHHz0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jul 2020 03:55:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1594194923;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=JRCk12NmZPFZESJ1uogxI4JtqbrTpjAQcQz4oexmLF0=;
-        b=MMWDtouLzj82N0K+kzkCK/veJE3VxCEJ9GS0IFP4MHfS5UdqKRCVJT5Q+dDfTu2iYs
-        Ok/nZOTOB6ukFQyxk1jQGYDLB5gq0FsPGvSXoDzAUbGg/DN52wXQB6+5H/KZiwPLSEhC
-        +cLSnwvfQzHhdOY3xUQo/BZP6pOhXg9R+lsxPpGjlZsA0MhodLyAkKmIGum5Xf59VN4u
-        HuB7HBVoUU7rFjr9zWs61JArUVP/2msDrG12MOUVSxAhUqf6SiisJ17sGHIF6qtdFWDf
-        zY51ThJylc9NI0fVIF5sreuPIVF0J9mhgIZJp1h/EKcWKQU/BkxIBNpryAWGL56X+fa7
-        9jng==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/zrwDOv05g="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
-        with ESMTPSA id V07054w687qIxIX
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Wed, 8 Jul 2020 09:52:18 +0200 (CEST)
-Subject: Re: OMAP5: inconsistency between target-module and dsi_of_data_omap5 / module_mipi_dsi_driver panel with omapdrm
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+        id S1727952AbgGHHxl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Jul 2020 03:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44866 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726286AbgGHHxk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Jul 2020 03:53:40 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4220C08C5DC;
+        Wed,  8 Jul 2020 00:53:39 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id z2so25540746wrp.2;
+        Wed, 08 Jul 2020 00:53:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=z6+nuHAx7L8u/EGJ0fxzxH9P5Mn+J7bZgvUQH6/6JiE=;
+        b=LOnG/4u/IfXDoZja+V359IRXUa777GMUh6ivYJbbH4q3X71H9TB+D6+zxVOIKeAXOE
+         ysQynx6nYq1xfJZoWqOewlbDJ5HQFNvj3RoGGpPjcLqsdwC0MLehdixEZXIKMzcq448I
+         ugQptdLNzyLveI+oqu/19JPhvmlUMTSYVcSjBbswKNMchb5dnwjx6NzGdH4I2jFZ8AHb
+         SNz1Fcr3xkGONcAew1Rv2NS+JP4OnXpc4ch+v0wznqQELoUbiXnfLGSqUwz5lMgcMGMv
+         CN0rjhB+xsaK1LbugknbJn3rSDAg8qm3XoGBDAaijqJAR6QW2rrZhLG0X97m0MhYeTcv
+         h0fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=z6+nuHAx7L8u/EGJ0fxzxH9P5Mn+J7bZgvUQH6/6JiE=;
+        b=Pew59TPA/Yz9m+Pw5JWgTuob3/3cr4GLWx74BkQtiz6depOe1/lf4Kwphi18d2J0S4
+         F/KBUnisSqrrexxdp9AGxxXj79jNkFtwmsOHX3lbwjmo8MmwNq6luqUThx5qNI8vV5PA
+         CprqkL/ffW33JoVvfEwBBv/fvAju30HQbAdwDu1+9LMiAz0wKsOKZorIzPlO69umgKVP
+         q6qzv5OXt76gcjR+2g/hKLe6zE6E7YN6D2KjYJfzEtXkKWXuQIntHp/BCNBidc5SL6xs
+         1HRhiYwIVv/I1Pm8e8yOLJE/eGlRGiB4EPQGSLop/qwtSHVYdJgjxv0kAG9pUvBzW+G/
+         GVpA==
+X-Gm-Message-State: AOAM530MqJEAZ3FJ8ZXSC6cY1Ff6YUr9HM8rXXwo0SPdgK3ElWzvW4/8
+        rgLrVQk50WFptfQisBVVNLI=
+X-Google-Smtp-Source: ABdhPJz8A2muEKNqwpqnXdusputoDmaFnzX4LyW0vTh9d2EDx90cds41auLtb5xmTsdRuQdUAC7OMQ==
+X-Received: by 2002:a5d:66ca:: with SMTP id k10mr46352817wrw.244.1594194818597;
+        Wed, 08 Jul 2020 00:53:38 -0700 (PDT)
+Received: from Red ([2a01:cb1d:3d5:a100:2e56:dcff:fed2:c6d6])
+        by smtp.googlemail.com with ESMTPSA id u1sm5597306wrb.78.2020.07.08.00.53.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2020 00:53:37 -0700 (PDT)
+Date:   Wed, 8 Jul 2020 09:53:36 +0200
+From:   Corentin Labbe <clabbe.montjoie@gmail.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-crypto@vger.kernel.org, Corentin Labbe <clabbe@baylibre.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        John Allen <john.allen@amd.com>,
+        Ayush Sawal <ayush.sawal@chelsio.com>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Jamie Iles <jamie@jamieiles.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-amlogic@lists.infradead.org
+Subject: Re: [PATCH v4 05/13] crypto: sun8i-ce - permit asynchronous skcipher
+ as fallback
+Message-ID: <20200708075336.GB19609@Red>
+References: <20200707063203.5018-1-ardb@kernel.org>
+ <20200707063203.5018-6-ardb@kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <ECE29C41-DFE5-4A50-9206-6FB3183824C3@goldelico.com>
-Date:   Wed, 8 Jul 2020 09:52:17 +0200
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Jyri Sarha <jsarha@ti.com>, kernel@pyra-handheld.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6E0A9415-9AB5-48D9-9E61-12D20655D04D@goldelico.com>
-References: <F5C04FAF-0029-48F3-B0A6-5327CD911EA2@goldelico.com> <49725F81-E615-4101-81B3-0850F201D9E8@goldelico.com> <5F4C23B0-A82B-4F94-BD74-D04F6D798FC0@goldelico.com> <20200705142653.GQ37466@atomide.com> <20200705143614.GR37466@atomide.com> <E200E98D-A4F8-4270-B192-33733F4C7235@goldelico.com> <20200706143613.GS37466@atomide.com> <E4616E3C-2519-4421-BC75-87A5CA2BB9EF@goldelico.com> <20200707180115.GB5849@atomide.com> <ECE29C41-DFE5-4A50-9206-6FB3183824C3@goldelico.com>
-To:     Tony Lindgren <tony@atomide.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>
-X-Mailer: Apple Mail (2.3124)
+Content-Disposition: inline
+In-Reply-To: <20200707063203.5018-6-ardb@kernel.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi again,
+On Tue, Jul 07, 2020 at 09:31:55AM +0300, Ard Biesheuvel wrote:
+> Even though the sun8i-ce driver implements asynchronous versions of
+> ecb(aes) and cbc(aes), the fallbacks it allocates are required to be
+> synchronous. Given that SIMD based software implementations are usually
+> asynchronous as well, even though they rarely complete asynchronously
+> (this typically only happens in cases where the request was made from
+> softirq context, while SIMD was already in use in the task context that
+> it interrupted), these implementations are disregarded, and either the
+> generic C version or another table based version implemented in assembler
+> is selected instead.
+> 
+> Since falling back to synchronous AES is not only a performance issue, but
+> potentially a security issue as well (due to the fact that table based AES
+> is not time invariant), let's fix this, by allocating an ordinary skcipher
+> as the fallback, and invoke it with the completion routine that was given
+> to the outer request.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Acked-by: Corentin Labbe <clabbe.montjoie@gmail.com>
+> ---
+>  drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 41 ++++++++++----------
+>  drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h        |  8 ++--
+>  2 files changed, 25 insertions(+), 24 deletions(-)
+> 
 
-> Am 07.07.2020 um 21:04 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->=20
-> Hi Tony and Tomi,
->=20
->> Am 07.07.2020 um 20:01 schrieb Tony Lindgren <tony@atomide.com>:
->>=20
->> * H. Nikolaus Schaller <hns@goldelico.com> [200706 16:11]:
->>>> Am 06.07.2020 um 16:36 schrieb Tony Lindgren <tony@atomide.com>:
->>>> I think you should now be using just the generic panel with
->>>> drivers/gpu/drm/panel/panel-simple or some panel specific
->>>> driver for dsi.
->>>=20
->>> None of them supports the vendor specific MIPI commands of
->>> this panel.
->>>=20
->>> Therefore we have our own panel driver for years and try to
->>> keep pace with upstream changes.
->>=20
->> OK yeah would be good to have it upstream. It might see use
->> on some other platforms while waiting for the pyra dts files.
->=20
-> So if you think we can get the panel driver upstream without the
-> pyra dts files I am happy to submit something for review.
->=20
-> But I have to fix it first.
->=20
-> Maybe Tomi can comment about ideas what structural changes have
-> been done so that it got broken since v5.7-rc1. Then it becomes
-> easier to fix for me. Maybe there was some rework in omapdrm/dss
-> which needs some change in the driver.
->=20
-> And what I would need to know before I start to write new code is
-> if is possible to operate a video mipi dsi panel with driver from
-> gpu/drm/panel together with omapdrm (v5.7 and later).
->=20
-> If this is possible it should be quite easy to mix the
-> old omapdrm/display driver code with e.g.:
->=20
-> drivers/gpu/drm/panel/panel-orisetech-otm8009a.c
+I finally took the time to rebase all my hash/xrng serie on top of this change and test this patch.
 
-I did a quick test on a 5.7.6 kernel with the sysc fixes as
-suggested by Tony.
-
-Then I overwrote the compatible entry of our display to be
-orisetech,otm8009a and configured to build the otm8009a panel driver.
-
-The panel driver is loaded, but not probed (no call to otm8009a_probe).
-It is shown in /sys/bus/mipi-dsi/drivers (and lsmod) but not =
-/sys/bus/mipi-dsi/devices.
-
-So what should I try next?
-
-BR and thanks,
-Nikolaus=
+Tested-by: Corentin Labbe <clabbe.montjoie@gmail.com>
+Tested-on: sun50i-h6-pine-h64
+Tested-on: sun8i-h3-orangepi-pc
