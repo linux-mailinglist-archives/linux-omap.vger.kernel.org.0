@@ -2,122 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8E921AA9A
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Jul 2020 00:34:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E87521AB5F
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Jul 2020 01:20:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726275AbgGIWes (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Jul 2020 18:34:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38030 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726228AbgGIWer (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Jul 2020 18:34:47 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B596C08C5CE
-        for <linux-omap@vger.kernel.org>; Thu,  9 Jul 2020 15:34:47 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id l6so3473747qkc.6
-        for <linux-omap@vger.kernel.org>; Thu, 09 Jul 2020 15:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=nGzR1WtRF8Y8tGKLwHQjy7lggywuCqvt56g9Ssnty14=;
-        b=XN33SzHhxER6ZyVjHyeXjMhX536wgzMnw6B/6NCjLZgko9k/DgUnON6auLfZbFRNHH
-         zADdDT8A3f3eiKj+EM8oF9OEfH6P3gTKjqNl33W5Aq4BT32OI1hOdTiqeo0lC77A9O7X
-         cgSSNWnoK4cKsVFryv7xhGj5pW7W0eDx7m0vkSNbIA4H4ByzBzgOep9KnJhDcatSk7ti
-         2nIFgycv6LN49S6zBfaV3cErfAfTqf0mTpLyRZXncXzmZAnU/kk9fMtp+LFltmHfPnVU
-         F8eWqAUP6oAZGhHDogHLVB9YQIdiM1fRE/y8zSSY/tPhaZuN7R6kB4C2eVDKrg48/uhN
-         Kw1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=nGzR1WtRF8Y8tGKLwHQjy7lggywuCqvt56g9Ssnty14=;
-        b=ceoLS8umUKPwD0lL2M2n+JRid77CdBvcwcmxiK/mtQbkCfbtiuM+Campi7Vc+WPt+5
-         NHYPXBoI1mkg302aTDUd44ece1KfZctR2x8+5q0yS8b03fN15GLL75wkbFsweiURldy2
-         32M64lUHysAVT+fs9yF/XjLpd8yxT2Mg0xyhgKYf/t4LdIaQEDxyYFPsoSXE5cITgcTX
-         Gd9i/HwcOUr0LElZlca+aJ+BFoTSp8j5S5WQQ4P/Wkko4jD1eaHf+HrQbxuYsytWkYDp
-         7ArIjqeS4z4gRMIb8xZEhVKhtnIhVkSBZfFBszJvzNM+WhPoq8ciiPhKleJSg08mQguj
-         Skww==
-X-Gm-Message-State: AOAM532EmA+xBGWCvG+iDs83wL2np8+THNNAqOb5tyG4BuuZHTqu2Ixz
-        uzfZOg3tQigrq2MHRntkZAeKDg==
-X-Google-Smtp-Source: ABdhPJz3R95qBwSgxEru/Shu4hNfF1GuP4jw2nXmuF6ITk4JjFBp3/peBCYE1DJSJYvsLz702FTn+g==
-X-Received: by 2002:a37:88c2:: with SMTP id k185mr53706537qkd.53.1594334086637;
-        Thu, 09 Jul 2020 15:34:46 -0700 (PDT)
-Received: from localhost.localdomain ([196.52.2.97])
-        by smtp.gmail.com with ESMTPSA id o12sm5029160qtl.48.2020.07.09.15.34.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2020 15:34:45 -0700 (PDT)
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Tony Lindgren <tony@atomide.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Drew Fustini <drew@beagleboard.org>
-Subject: [PATCH] gpio: omap: handle pin config bias flags
-Date:   Fri, 10 Jul 2020 00:34:01 +0200
-Message-Id: <20200709223401.780051-1-drew@beagleboard.org>
-X-Mailer: git-send-email 2.25.1
+        id S1726615AbgGIXUH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Jul 2020 19:20:07 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:34574 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726272AbgGIXUG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Jul 2020 19:20:06 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 069NK0Or053680;
+        Thu, 9 Jul 2020 18:20:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1594336800;
+        bh=L6EHhTZGwkAXNqimgQyMdIJygzgCJ7uhT1WiATJtN/Q=;
+        h=From:To:CC:Subject:Date;
+        b=P3DaTpWOquXEgY00eRYlAykrdNUdCGy/POvMQW0glO6lr8SqS/ztmG6AtLMrVOTVW
+         GvuUyNxAqAFhV7K3m3Fb/eweRtxv72L/yOsx3Xi9r0jqh0GrtZLOr0hGVHuNMtkcPI
+         kw6t2FOECQhCwJGsI6EM53p0JXoy7ZndqUmUf3Po=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 069NK0ph011329
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 9 Jul 2020 18:20:00 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 9 Jul
+ 2020 18:19:59 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 9 Jul 2020 18:19:59 -0500
+Received: from fllv0103.dal.design.ti.com (fllv0103.dal.design.ti.com [10.247.120.73])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 069NJxOC030895;
+        Thu, 9 Jul 2020 18:19:59 -0500
+Received: from localhost ([10.250.34.57])
+        by fllv0103.dal.design.ti.com (8.14.7/8.14.7) with ESMTP id 069NJxOY124312;
+        Thu, 9 Jul 2020 18:19:59 -0500
+From:   Suman Anna <s-anna@ti.com>
+To:     Tony Lindgren <tony@atomide.com>
+CC:     <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Tero Kristo <t-kristo@ti.com>, Suman Anna <s-anna@ti.com>
+Subject: [PATCH 00/13] Add IPU & DSP remoteprocs on OMAP4 and OMAP5
+Date:   Thu, 9 Jul 2020 18:19:41 -0500
+Message-ID: <20200709231954.1973-1-s-anna@ti.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Modify omap_gpio_set_config() to handle pin config bias flags by calling
-gpiochip_generic_config().
+Hi Tony,
 
-The pin group for the gpio line must have the corresponding pinconf
-properties:
+The following series contains all the necessary DT pieces to boot the
+IPU and DSP remote processors on OMAP4 and OMAP5 SoCs. They are
+enabled specifically on the TI OMAP4 PandaBoard and OMAP5 uEVM boards.
+This is the last DT piece that now completes the support for IPUs and
+DSPs on all OMAP4+ SoCs, similar patches were merged for 5.8 covering
+the DRA7xx/AM57xx SoCs. Appreciate it if you can pick up the series for
+5.9 if it isn't too late.
 
-PIN_CONFIG_BIAS_PULL_UP requires "pinctrl-single,bias-pullup"
-PIN_CONFIG_BIAS_PULL_DOWN requires "pinctrl-single,bias-pulldown"
+There is one issue that I have run into while testing this series on
+the latest kernel. I am seeing a l3_noc error for OMAP4 DSP when it
+attempts to auto-suspend or stop after it is booted. The issue is a
+L4CFG read error that happens in the sysc_disable_module() function
+in ti-sysc code.
 
-This is necessary for pcs_pinconf_set() to find the requested bias
-parameter in the PIN_MAP_TYPE_CONFIGS_GROUP pinctrl map.
+I do not have any issues on my downstream 5.4 based SDK kernel. I have
+root-caused this to the OMAP4 voltage controller patches you added for
+5.5 kernel through your omap-for-v5.5/pm branch, specifically the
+commit 4873843718f9 ("ARM: OMAP2+: Initialize voltage controller for omap4").
+The VOLTCTRL register value is 0x300 before that patch, and modifying
+this register either through  omap4_vc_init_pmic_signaling() or
+omap4_vc_set_pmic_signaling() will trigger this. A debug print in
+sysc_disable_module() also seems to help.
 
-Signed-off-by: Drew Fustini <drew@beagleboard.org>
----
- drivers/gpio/gpio-omap.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+regards
+Suman
 
-diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-index b8e2ecc3eade..a471a152f318 100644
---- a/drivers/gpio/gpio-omap.c
-+++ b/drivers/gpio/gpio-omap.c
-@@ -896,12 +896,25 @@ static int omap_gpio_set_config(struct gpio_chip *chip, unsigned offset,
- 				unsigned long config)
- {
- 	u32 debounce;
-+	int ret;
- 
--	if (pinconf_to_config_param(config) != PIN_CONFIG_INPUT_DEBOUNCE)
--		return -ENOTSUPP;
-+	if ((pinconf_to_config_param(config) == PIN_CONFIG_BIAS_DISABLE) ||
-+	    (pinconf_to_config_param(config) == PIN_CONFIG_BIAS_PULL_UP) ||
-+	    (pinconf_to_config_param(config) == PIN_CONFIG_BIAS_PULL_DOWN))
-+	{
-+		ret = gpiochip_generic_config(chip, offset, config);
-+	}
-+	else if (pinconf_to_config_param(config) == PIN_CONFIG_INPUT_DEBOUNCE)
-+	{
-+		debounce = pinconf_to_config_argument(config);
-+		ret = omap_gpio_debounce(chip, offset, debounce);
-+	}
-+	else
-+	{
-+		ret = -ENOTSUPP;
-+	}
- 
--	debounce = pinconf_to_config_argument(config);
--	return omap_gpio_debounce(chip, offset, debounce);
-+	return ret;
- }
- 
- static void omap_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
+Suman Anna (13):
+  ARM: dts: omap4: Add timer_sys_ck clocks for timers
+  ARM: dts: omap5: Add timer_sys_ck clocks for timers
+  ARM: dts: omap4: Update the DSP node
+  ARM: dts: omap4: Add IPU DT node
+  ARM: dts: omap4: Add aliases for rproc nodes
+  ARM: dts: omap4-panda-common: Add CMA pools and enable IPU & DSP
+  ARM: dts: omap4-panda-common:: Add system timers to DSP and IPU
+  ARM: dts: omap5: Add DSP and IPU nodes
+  ARM: dts: omap5: Add aliases for rproc nodes
+  ARM: dts: omap5-uevm: Add CMA pools and enable IPU & DSP
+  ARM: dts: omap5-uevm: Add system timers to DSP and IPU
+  ARM: dts: omap4-panda-common: Add watchdog timers for IPU and DSP
+  ARM: dts: omap5-uevm: Add watchdog timers for IPU and DSP
+
+ arch/arm/boot/dts/omap4-l4-abe.dtsi       | 20 +++++++------
+ arch/arm/boot/dts/omap4-l4.dtsi           | 35 ++++++++++++++---------
+ arch/arm/boot/dts/omap4-panda-common.dtsi | 34 ++++++++++++++++++++++
+ arch/arm/boot/dts/omap4.dtsi              | 29 ++++++++++++++++---
+ arch/arm/boot/dts/omap5-l4-abe.dtsi       | 20 +++++++------
+ arch/arm/boot/dts/omap5-l4.dtsi           | 35 ++++++++++++++---------
+ arch/arm/boot/dts/omap5-uevm.dts          | 34 ++++++++++++++++++++++
+ arch/arm/boot/dts/omap5.dtsi              | 25 ++++++++++++++++
+ 8 files changed, 184 insertions(+), 48 deletions(-)
+
 -- 
-2.25.1
+2.26.0
 
