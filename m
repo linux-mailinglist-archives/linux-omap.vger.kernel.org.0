@@ -2,90 +2,275 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D977321A55B
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jul 2020 19:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18C4F21A5DB
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jul 2020 19:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728088AbgGIRAl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Jul 2020 13:00:41 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:38565 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726722AbgGIRAl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Jul 2020 13:00:41 -0400
-Received: by mail-io1-f66.google.com with SMTP id l1so3084655ioh.5;
-        Thu, 09 Jul 2020 10:00:40 -0700 (PDT)
+        id S1727061AbgGIRaM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Jul 2020 13:30:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46436 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726765AbgGIRaM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Jul 2020 13:30:12 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B28C08C5DC
+        for <linux-omap@vger.kernel.org>; Thu,  9 Jul 2020 10:30:11 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id ga4so3117760ejb.11
+        for <linux-omap@vger.kernel.org>; Thu, 09 Jul 2020 10:30:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=F/dfHtnsJB9MOcXbZhwcjlMKxkwZqMB6l2sufAGo788=;
+        b=K1hK+bqghnz2MI0oGaGgc1pxDDAgvXqEFggc78Ax1qDP5G5SopCbkoW8lrKdiTBxjx
+         +EqtwM1Q65rqSqQwCeDQLhv8R+kcOmFIuWnkkxHEcChOoJE0NXFZFptL4lngsqp6aUe7
+         CbxX7XxRdJDF1tfcyivKNwWV39sxvkyl4St9nFSWZT0B7lv054oMpgelbXWG2Rva/yVB
+         6zfGPDhEU6++LSBsv2lmFZ7giMFAUcyTMDHVoAQhdg8ss83vMnCP9Gie4CdO+AWkVg7V
+         Qy2cYwco4VmAcNTAFz9yNbpKzhi9RQQDoOkRNvUAAg4gE7zZ9LANqShJH2UDCrIUnBFS
+         KaZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=J57B4SYSeZSds0MiAw/eWQKxFfmLvKjSluZG4Rx7dM0=;
-        b=m4YRvSMUURKSZ5R7Js7iwtbdrlp9PDTmPRbU/+sRmokivsT+Rd7i9aUKXS6iyHb5nf
-         BilinT6rXc6++EgqnZRyaTMbehJB0tCngqzQr9Ut3MUqCfrOn9E1KFrIwaLY3fcoLIR+
-         Ef1inw062uVbLNMdTuDacU3p5qAW1L/4HIbyzS6Vz6ThR8Bm3GF032q0OGl/PybAcydt
-         rfPbUUk3ImtGujVLLsX9s8cX4ltWxM5qM+qTwQfelt+gJB2cKPQ7gqn4fXyZmr8zvXF1
-         X/CTXSS2nSDFOzFsHOKLJgODU1cqY6kPgeEDvQDFA7wtfZKfyetlaDgWErixwq4NPPB7
-         WIkw==
-X-Gm-Message-State: AOAM532kQx2wp3eDbY3yLCO8vOfGs6ZxlA+M7RMFNsXQICgdl9chkkd5
-        MvyYYhuYtJMREWLpgQHplL6xHdJJjg==
-X-Google-Smtp-Source: ABdhPJym5BpBPRGl0IaG+oewAoSKHMUJvqWWhGsC8UTGI1GS5iPctaV9bpzLjDfYKxDsWZrvRq4bOQ==
-X-Received: by 2002:a05:6638:2649:: with SMTP id n9mr37825758jat.126.1594314040162;
-        Thu, 09 Jul 2020 10:00:40 -0700 (PDT)
-Received: from xps15 ([64.188.179.254])
-        by smtp.gmail.com with ESMTPSA id c25sm2438583ioi.13.2020.07.09.10.00.37
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=F/dfHtnsJB9MOcXbZhwcjlMKxkwZqMB6l2sufAGo788=;
+        b=G/xgV345YjnRYeIOcA+cD36oQc7NGA2k+oO7fF7E0Fv/gcoWGYRi/sEsjg//CdbGQw
+         So+g8mU13UgR2cZs4gJU4+hSvalR/+omXsn9XEqPZTYmZuo5C/9sAnwguRcSKtUoxN9Z
+         iQLc/Jn1+/+But1Q+9KvhIC6iSwB/1Xij2vu+M7dGTApR9cKlLlv8MbMGOZ2wluW1JoR
+         LCGU8CUDf54V+vGI/ffKMAmPGeWr3XR9YLwjRwluHffb8/vp8T3YtBjOkdwAsOIj8wY0
+         gHPAC3kl7P5wPewXtrm/Ey3TSC3HbedVDuIvRKsRnUi/gQ4D9gOS26GNHp9FRYIgJs/Q
+         pCXQ==
+X-Gm-Message-State: AOAM531YqmeyyECDKrHAejnpgbgb/zb4NMvB6wM2xOo8dG4lSzjPPI5b
+        6sYGP3ohOZVwbGBQI8ICx41/tg==
+X-Google-Smtp-Source: ABdhPJy4azb0lAJom66K1CZw3JBvjqNnZK8mqimmkNmMod3QpRruZvs6oLa3Al9hlHMxrDJiq+heVQ==
+X-Received: by 2002:a17:906:d286:: with SMTP id ay6mr48901383ejb.400.1594315810469;
+        Thu, 09 Jul 2020 10:30:10 -0700 (PDT)
+Received: from x1 (i59F66838.versanet.de. [89.246.104.56])
+        by smtp.gmail.com with ESMTPSA id m16sm2151745eji.23.2020.07.09.10.30.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2020 10:00:39 -0700 (PDT)
-Received: (nullmailer pid 518350 invoked by uid 1000);
-        Thu, 09 Jul 2020 17:00:35 -0000
-Date:   Thu, 9 Jul 2020 11:00:35 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        devicetree@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-pci@vger.kernel.org
-Subject: Re: [PATCH v6 11/14] dt-bindings: PCI: Add EP mode dt-bindings for
- TI's J721E SoC
-Message-ID: <20200709170035.GA518075@bogus>
-References: <20200708093018.28474-1-kishon@ti.com>
- <20200708093018.28474-12-kishon@ti.com>
+        Thu, 09 Jul 2020 10:30:09 -0700 (PDT)
+Date:   Thu, 9 Jul 2020 19:30:07 +0200
+From:   Drew Fustini <drew@beagleboard.org>
+To:     Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org
+Cc:     Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Subject: [RFC] gpio-omap: handle bias flags
+Message-ID: <20200709173007.GA739269@x1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200708093018.28474-12-kishon@ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 08 Jul 2020 15:00:15 +0530, Kishon Vijay Abraham I wrote:
-> Add PCIe EP mode dt-bindings for TI's J721E SoC.
-> 
-> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> ---
->  .../bindings/pci/ti,j721e-pci-ep.yaml         | 89 +++++++++++++++++++
->  1 file changed, 89 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
-> 
+Tony - what do you think of this approach?
+
+I have added this in arch/arm/boot/dts/am335x-pocketbeagle.dts to
+describe the pins which will be gpio lines accessed by userspace
+through gpiod ioctl() calls:
+
+&am33xx_pinmux {
+
+	pinctrl-names = "default";
+	pinctrl-0 =   < &gpio_pins >;
+
+	gpio_pins: pinmux-gpio-pins {
+		/* MUX_MODE7 is gpio mode */
+		pinctrl-single,pins = <
+			/* PIN 95 and PIN 94 */
+			AM33XX_PADCONF(AM335X_PIN_UART1_RTSN, PIN_INPUT, MUX_MODE7)
+			AM33XX_PADCONF(AM335X_PIN_UART1_CTSN, PIN_INPUT, MUX_MODE7)
+			/* PIN 100 */
+			AM33XX_PADCONF(AM335X_PIN_MCASP0_ACLKX, PIN_INPUT, MUX_MODE7)
+			/* PIN 18 */
+			AM33XX_PADCONF(AM335X_PIN_GPMC_A2, PIN_INPUT, MUX_MODE7)
+		>;
+		pinctrl-single,bias-pullup   = < 8 16  8 24>;
+		pinctrl-single,bias-pulldown = < 8  0  8 24>;
+	};
+
+The "pinctrl-single,bias-pullup" and "pinctrl-single,bias-pulldown"
+pinconf properties are set for the gpio_pins pin group.  The input
+value 0x8 causes both to be inactive but still added to the
+PIN_MAP_TYPE_CONFIGS_GROUP pinctrl map.  This is necessary for
+pcs_pinconf_set() to be able to be able to set the bias config.
+
+For AM335x, the pin conf register has the format [0]:
+
+bit	attribute      value
+  6	slew           { 0: fast, 1: slow }
+  5     rx_active      { 0: rx disable, 1: rx enabled }
+  4     pu_typesel     { 0: pulldown select, 1: pullup select }
+  3     puden          { 0: pud enable, 1: disabled }
+  2     mode           3 bits to selec mode 0 to 7
+  1     mode
+  0     mode
+
+Here is how I derived the values:
+
+pinctrl-single,bias-pullup   = <[input] [enabled] [disable] [mask]>;
+pinctrl-single,bias-pullup   = <     8        16        8      24 >;
+
+          2^5    2^4    2^3    2^2    2^1    2^0  | 
+         0x20   0x10   0x08   0x04   0x02   0x01  |
+           32     16      8      4      2      1  | 
+-------------------------------------------------------  
+input       x      0      1     x      x      x   |   8 
+enabled     x      1      0     x      x      x   |  16
+disabled    x      0      1     x      x      x   |   8
+mask        x      1      1     x      x      x   |  24
 
 
-My bot found errors running 'make dt_binding_check' on your patch:
+pinctrl-single,bias-pulldown = <[input] [enabled] [disable] [mask]>;
+pinctrl-single,bias-pulldown = <     8         0        8      24 >;
 
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.example.dt.yaml: example-0: pcie-ep@d000000:reg:0: [0, 42991616, 0, 4096] is too long
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.example.dt.yaml: example-0: pcie-ep@d000000:reg:1: [0, 43020288, 0, 1024] is too long
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.example.dt.yaml: example-0: pcie-ep@d000000:reg:2: [0, 218103808, 0, 8388608] is too long
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.example.dt.yaml: example-0: pcie-ep@d000000:reg:3: [0, 268435456, 0, 134217728] is too long
+          2^5    2^4    2^3    2^2    2^1    2^0  | 
+         0x20   0x10   0x08   0x04   0x02   0x01  |
+           32     16      8      4      2      1  | 
+-------------------------------------------------------  
+input       x      0      1     x      x      x   |   8 
+enabled     x      0      0     x      x      x   |   0 
+disabled    x      0      1     x      x      x   |   8
+mask        x      1      1     x      x      x   |  24
 
+The pinconf bias properties get applied to the pin group during boot
+when pcs_pinconf_group_set() calls pcs_pinconf_set() for each pin. Here
+is the output from function_graph tracer:
 
-See https://patchwork.ozlabs.org/patch/1325133
+              pinconf_apply_setting() {
+                pcs_pinconf_group_set() {
+                  pinctrl_generic_get_group_pins();
+                  pcs_pinconf_set() {
+                    pcs_get_function() {
+                      pinmux_generic_get_function();
+                    }
+                    pcs_readl();
+                    pcs_writel();
+                    pcs_readl();
+                    pcs_writel();
+                  }
+                  pcs_pinconf_set() {
+                    pcs_get_function() {
+                      pinmux_generic_get_function();
+                    }
+                    pcs_readl();
+                    pcs_writel();
+                    pcs_readl();
+                    pcs_writel();
+                  }
+                  pcs_pinconf_set() {
+                    pcs_get_function() {
+                      pinmux_generic_get_function();
+                    }
+                    pcs_readl();
+                    pcs_writel();
+                    pcs_readl();
+                    pcs_writel();
+                  }
+                  pcs_pinconf_set() {
+                    pcs_get_function() {
+                      pinmux_generic_get_function();
+                    }
+                    pcs_readl();
+                    pcs_writel();
+                    pcs_readl();
+                    pcs_writel();
+                  }
+                }
+              }
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure dt-schema is up to date:
+After boot, I then use gpiomon utility with bias flags:
 
-pip3 install git+https://github.com/devicetree-org/dt-schema.git@master --upgrade
+	gpiomon -B pull-up 3 14
 
-Please check and re-submit.
+gpiochip 3 line 14 maps to pin 100 which is AM335X_PIN_MCASP0_ACLKX at
+offset 0x990.  For this to succeed, I modified omap_gpio_set_config() in
+gpio_omap.c to handle PIN_CONFIG_BIAS_PULL_{UP,DOWN} by calling
+gpiochip_generic_config().  Here is output of function_grapher tracer:
 
+             gpio_ioctl() {
+               gpiochip_get_desc();
+               gpiod_request() {
+                 gpiod_request_commit() {
+                   gpiochip_line_is_valid();
+                   omap_gpio_request() {
+                     omap_gpio_runtime_resume() {
+                       omap_gpio_unidle() {
+                         omap_gpio_restore_context();
+                       }
+                     }
+                     omap_enable_gpio_module();
+                   }
+                   gpiod_get_direction() {
+                     gpiod_to_chip();
+                     omap_gpio_get_direction();
+                   }
+                 }
+               }
+               gpiod_direction_input() {
+                 omap_gpio_input() {
+                   omap_set_gpio_direction();
+                 }
+                 gpio_set_bias() {
+                   gpio_set_config() {
+                     gpio_do_set_config() {
+                       omap_gpio_set_config() {
+                         gpiochip_generic_config() {
+                           pinctrl_gpio_set_config() {
+                             pinctrl_get_device_gpio_range() {
+                               pinctrl_match_gpio_range();
+                             }
+                             pinconf_set_config() {
+                               pcs_pinconf_set() {
+                                 pcs_get_function() {
+                                   pinmux_generic_get_function();
+                                 }
+                                 pcs_readl();
+                                 pcs_pinconf_clear_bias.constprop.0();
+                                 pcs_writel();
+
+Thanks,
+Drew
+
+[0] http://www.ti.com/lit/ds/symlink/am3358.pdf
+---
+ drivers/gpio/gpio-omap.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index b8e2ecc3eade..a471a152f318 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -896,12 +896,25 @@ static int omap_gpio_set_config(struct gpio_chip *chip, unsigned offset,
+ 				unsigned long config)
+ {
+ 	u32 debounce;
++	int ret;
+ 
+-	if (pinconf_to_config_param(config) != PIN_CONFIG_INPUT_DEBOUNCE)
+-		return -ENOTSUPP;
++	if ((pinconf_to_config_param(config) == PIN_CONFIG_BIAS_DISABLE) ||
++	    (pinconf_to_config_param(config) == PIN_CONFIG_BIAS_PULL_UP) ||
++	    (pinconf_to_config_param(config) == PIN_CONFIG_BIAS_PULL_DOWN))
++	{
++		ret = gpiochip_generic_config(chip, offset, config);
++	}
++	else if (pinconf_to_config_param(config) == PIN_CONFIG_INPUT_DEBOUNCE)
++	{
++		debounce = pinconf_to_config_argument(config);
++		ret = omap_gpio_debounce(chip, offset, debounce);
++	}
++	else
++	{
++		ret = -ENOTSUPP;
++	}
+ 
+-	debounce = pinconf_to_config_argument(config);
+-	return omap_gpio_debounce(chip, offset, debounce);
++	return ret;
+ }
+ 
+ static void omap_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
+-- 
+2.25.1
