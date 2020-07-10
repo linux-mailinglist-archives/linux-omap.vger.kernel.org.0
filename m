@@ -2,248 +2,237 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8817721C045
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Jul 2020 01:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0768B21C07B
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Jul 2020 01:04:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726505AbgGJXCY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Jul 2020 19:02:24 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:37776 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726465AbgGJXCY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Jul 2020 19:02:24 -0400
-Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id A46822C0;
-        Sat, 11 Jul 2020 01:02:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1594422141;
-        bh=LTdEtqT+NlaqDcv/+04cRbFvA5sYy0O/CsuUnk778K8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Cp6w3peNw+xdVcu0e5u6sCV+HY1jH+eJlCq3btwwdhQDl55V2IGPtokX+32bJ5sp2
-         fk35lJ2Xvm5siGJBWWvGhc/L5I57sKFrsTK1N1SIc2C1iJLWbz1Q03i5vEX8ycz7Se
-         YXa5ednNMvp8Bvsa3LGaI6pVoUajPtCc0uAMBjto=
-Date:   Sat, 11 Jul 2020 02:02:15 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc:     Sam Ravnborg <sam@ravnborg.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Lindgren <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCHv1 1/4] dt-bindings: display: panel-dsi-cm: convert to YAML
-Message-ID: <20200710230215.GC5964@pendragon.ideasonboard.com>
-References: <20200629223315.118256-1-sebastian.reichel@collabora.com>
- <20200629223315.118256-2-sebastian.reichel@collabora.com>
- <20200630055031.GA361800@ravnborg.org>
+        id S1726544AbgGJXES (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Jul 2020 19:04:18 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:60320 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726519AbgGJXER (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Jul 2020 19:04:17 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 06AN3B24130519;
+        Fri, 10 Jul 2020 18:03:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1594422191;
+        bh=ub1+3l989W7mhZEj/I2ppqT5GtSi7nEJv2DHiEKNTsI=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=sxEL6JcHWOB90ZiF98uA+dnOLNJqIhGWjmu2u+pC6gH0R2vT5KLDlxKuxEu4pC/fX
+         G4oMyPeUkc3IiwKheb9KJS1SC7u4/NRrEJXV7vdzSM5lSzHSsR3vrKe59DVsbRo0r+
+         Z/uYWam3khgNv9oq002dgqRLzCrbqM4PP3FJoPM0=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 06AN3BvQ064771
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 10 Jul 2020 18:03:11 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 10
+ Jul 2020 18:03:11 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 10 Jul 2020 18:03:10 -0500
+Received: from [10.250.34.57] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06AN3AG1093664;
+        Fri, 10 Jul 2020 18:03:10 -0500
+Subject: Re: [PATCHv3 2/6] irqchip/irq-pruss-intc: Add a PRUSS irqchip driver
+ for PRUSS interrupts
+To:     Marc Zyngier <maz@kernel.org>,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+CC:     <tglx@linutronix.de>, <jason@lakedaemon.net>, <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <david@lechnology.com>,
+        "Mills, William" <wmills@ti.com>, "Andrew F . Davis" <afd@ti.com>,
+        Roger Quadros <rogerq@ti.com>
+References: <1593699479-1445-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+ <1593699479-1445-3-git-send-email-grzegorz.jaszczyk@linaro.org>
+ <f0d3f3224a1b8fa2be668dd2b8d9d84e@kernel.org>
+ <CAMxfBF6A9702-rBOo0jHtfn4Ds1_G+nWG4O9-urNqU00dFXeww@mail.gmail.com>
+ <12db6d22c12369b6d64f410aa2434b03@kernel.org>
+ <CAMxfBF7pbH1LLE4fJnnCPnrqnQ-tdO+_xfoN1VerJcQ-ZyYM9Q@mail.gmail.com>
+ <53d39d8fbd63c6638dbf0584c7016ee0@kernel.org>
+ <CAMxfBF6Th+zKOmogA5phkh21tSUzutokCgU+pv0Eh-sDk=1Hbg@mail.gmail.com>
+ <f11097c321b62e7f8ba904dc2907d4e0@kernel.org>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <3501f3a6-0613-df1c-2c6d-5ac4610a226d@ti.com>
+Date:   Fri, 10 Jul 2020 18:03:10 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200630055031.GA361800@ravnborg.org>
+In-Reply-To: <f11097c321b62e7f8ba904dc2907d4e0@kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Sebastian,
+Hi Marc,
 
-Thank you for the patch.
+On 7/8/20 5:47 AM, Marc Zyngier wrote:
+> On 2020-07-08 08:04, Grzegorz Jaszczyk wrote:
+>> On Sun, 5 Jul 2020 at 22:45, Marc Zyngier <maz@kernel.org> wrote:
+>>>
+>>> On 2020-07-05 14:26, Grzegorz Jaszczyk wrote:
+>>> > On Sat, 4 Jul 2020 at 11:39, Marc Zyngier <maz@kernel.org> wrote:
+>>> >>
+>>> >> On 2020-07-03 15:28, Grzegorz Jaszczyk wrote:
+>>>
+>>> [...]
+>>>
+>>> >> It still begs the question: if the HW can support both edge and level
+>>> >> triggered interrupts, why isn't the driver supporting this diversity?
+>>> >> I appreciate that your HW may only have level interrupts so far, but
+>>> >> what guarantees that this will forever be true? It would imply a
+>>> >> change
+>>> >> in the DT binding, which isn't desirable.
+>>> >
+>>> > Ok, I've got your point. I will try to come up with something later
+>>> > on. Probably extending interrupt-cells by one and passing interrupt
+>>> > type will be enough for now. Extending this driver to actually support
+>>> > it can be handled later if needed. Hope it works for you.
+>>>
+>>> Writing a set_type callback to deal with this should be pretty easy.
+>>> Don't delay doing the right thing.
+>>
+>> Ok.
 
-On Tue, Jun 30, 2020 at 07:50:31AM +0200, Sam Ravnborg wrote:
-> On Tue, Jun 30, 2020 at 12:33:12AM +0200, Sebastian Reichel wrote:
-> > Convert panel-dsi-cm bindings to YAML and add
-> > missing properties while at it.
-> > 
-> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> 
-> Thanks, one of the few panel bindings still pending.
-> And you added some nice explanations too, good.
-> 
-> Some small comments in the folllowing.
-> 
-> > ---
-> >  .../bindings/display/panel/panel-dsi-cm.txt   |  29 -----
-> >  .../bindings/display/panel/panel-dsi-cm.yaml  | 100 ++++++++++++++++++
-> >  2 files changed, 100 insertions(+), 29 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
-> >  create mode 100644 Documentation/devicetree/bindings/display/panel/panel-dsi-cm.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt b/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
-> > deleted file mode 100644
-> > index dce48eb9db57..000000000000
-> > --- a/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
-> > +++ /dev/null
-> > @@ -1,29 +0,0 @@
-> > -Generic MIPI DSI Command Mode Panel
-> > -===================================
-> > -
-> > -Required properties:
-> > -- compatible: "panel-dsi-cm"
-> > -
-> > -Optional properties:
-> > -- label: a symbolic name for the panel
-> > -- reset-gpios: panel reset gpio
-> > -- te-gpios: panel TE gpio
-> > -
-> > -Required nodes:
-> > -- Video port for DSI input
-> > -
-> > -Example
-> > --------
-> > -
-> > -lcd0: display {
-> > -	compatible = "tpo,taal", "panel-dsi-cm";
-> > -	label = "lcd0";
-> > -
-> > -	reset-gpios = <&gpio4 6 GPIO_ACTIVE_HIGH>;
-> > -
-> > -	port {
-> > -		lcd0_in: endpoint {
-> > -			remote-endpoint = <&dsi1_out_ep>;
-> > -		};
-> > -	};
-> > -};
-> > diff --git a/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.yaml b/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.yaml
-> > new file mode 100644
-> > index 000000000000..8d6a20f26470
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/display/panel/panel-dsi-cm.yaml
-> > @@ -0,0 +1,100 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/display/panel/panel-dsi-cm.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: DSI command mode panels
-> > +
-> > +maintainers:
-> > +  - Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > +  - Sebastian Reichel <sre@kernel.org>
-> > +
-> > +description: |
-> > +  This binding file is a collection of the DSI panels that
-> > +  are usually driven in command mode. If no backlight is
-> > +  referenced via the optional backlight property, the DSI
-> > +  panel is assumed to have native backlight support.
-> 
-> > +  The panel may use an OF graph binding for the association
-> > +  to the display, or it may be a direct child node of the
-> > +  display.
-> 
-> Later port: is required which does not really match this explanation.
-> 
-> > +
-> > +allOf:
-> > +  - $ref: panel-common.yaml#
-> > +
-> > +properties:
-> > +
-> > +  compatible:
-> > +    items:
-> > +      - enum:
-> > +        - motorola,droid4-panel        # Panel from Motorola Droid4 phone
-> > +        - nokia,himalaya               # Panel from Nokia N950 phone
-> > +        - tpo,taal                     # Panel from OMAP4 SDP board
-> > +      - const: panel-dsi-cm            # Generic DSI command mode panel compatible fallback
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +    description: DSI virtual channel
-> > +
-> > +  vddi-supply:
-> > +    description:
-> > +      Display panels require power to be supplied. While several panels need
-> > +      more than one power supply with panel-specific constraints governing the
-> > +      order and timings of the power supplies, in many cases a single power
-> > +      supply is sufficient, either because the panel has a single power rail, or
-> > +      because all its power rails can be driven by the same supply. In that case
-> > +      the vddi-supply property specifies the supply powering the panel as a
-> > +      phandle to a regulator.
-> > +
-> > +  vpnl-supply:
-> > +    description:
-> > +      When the display panel needs a second power supply, this property can be
-> > +      used in addition to vddi-supply. Both supplies will be enabled at the
-> > +      same time before the panel is being accessed.
-> > +
-> > +  width-mm: true
-> > +  height-mm: true
-> > +  label: true
-> > +  rotation: true
-> > +  panel-timing: true
-> > +  port: true
-> > +  reset-gpios: true
-> > +  te-gpios: true
-> > +  backlight: true
-> > +
-> > +additionalProperties: false
-> > +
-> > +required:
-> > +  - compatible
-> > +  - port
-> > +  - reg
-> > +
-> > +examples:
->
-> My personal preference is indent 4 spaces.
-> But there is no hard rule so do what you like.
-> 
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +
-> > +    dsi-controller {
-> > +      #address-cells = <1>;
-> > +      #size-cells = <0>;
-> > +
-> > +      port {
-> > +        dsi1_out_ep: endpoint {
-> > +          remote-endpoint = <&lcd0_in>;
-> > +          lanes = <0 1 2 3 4 5>;
-> > +        };
-> > +      };
-> 
-> Addding the port node here does not really help me,
-> I was left confused about the lanes = <...> property.
-> 
-> > +
-> > +      panel@0 {
-> > +        compatible = "tpo,taal", "panel-dsi-cm";
-> > +        label = "lcd0";
-> 
-> This use of label does not really match the description.
-> The description says label shall be used for specific names and not
-> generic names like "lcd".
-> 
-> > +        reg = <0>;
-> > +        reset-gpios = <&gpio4 6 GPIO_ACTIVE_HIGH>;
-> > +
-> > +        port {
-> > +          lcd0_in: endpoint {
-> > +            remote-endpoint = <&dsi1_out_ep>;
-> > +          };
-> > +        };
-> > +      };
-> > +
-> > +    };
-> 
-> Add:
-> <empty line>
-> ...
-> 
-> The latter is end of statement or soething.
-> You see it used often bu not always.
-> 
-> I expect it to become mandatory the day the tools check for it.
+Sorry for the typo in my comment causing this confusion.
 
-I have no other comment to add. Once you address the issues pointed out
-by Sam, you can add my
+The h/w actually doesn't support the edge-interrupts. Likewise, the 
+polarity is always high. The individual register bit descriptions 
+mention what the bit values 0 and 1 mean, but there is additional 
+description in the TRMs on all the SoCs that says
+"always write 1 to the bits of this register" for PRUSS_INTC_SIPR(x) and
+"always write 0 to the bits of this register" for PRUSS_INTC_SITR(x).
+FWIW, these are also the reset values.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Eg: AM335x TRM - https://www.ti.com/lit/pdf/spruh73
+Please see Section 4.4.2.5 and the register descriptions in 4.5.3.49, 
+4.5.3.51. Please also see Section 4.4.2.3 that explains the PRUSS INTC 
+methodology.
 
--- 
-Regards,
+>>
+>>>
+>>> [...]
+>>>
+>>> >> >> > +             hwirq = hipir & GENMASK(9, 0);
+>>> >> >> > +             virq = irq_linear_revmap(intc->domain, hwirq);
+>>> >> >>
+>>> >> >> And this is where I worry. You seems to have a single irqdomain
+>>> >> >> for all the muxes. Are you guaranteed that you will have no
+>>> >> >> overlap between muxes? And please use irq_find_mapping(), as
+>>> >> >> I have top-secret plans to kill irq_linear_revmap().
+>>> >> >
+>>> >> > Regarding irq_find_mapping - sure.
+>>> >> >
+>>> >> > Regarding irqdomains:
+>>> >> > It is a single irqdomain since the hwirq (system event) can be 
+>>> mapped
+>>> >> > to different irq_host (muxes). Patch #6
+>>> >> > https://lkml.org/lkml/2020/7/2/616 implements and describes how 
+>>> input
+>>> >> > events can be mapped to some output host interrupts through 2 
+>>> levels
+>>> >> > of many-to-one mapping i.e. events to channel mapping and 
+>>> channels to
+>>> >> > host interrupts. Mentioned implementation ensures that specific 
+>>> system
+>>> >> > event (hwirq) can be mapped through PRUSS specific channel into a
+>>> >> > single host interrupt.
+>>> >>
+>>> >> Patch #6 is a nightmare of its own, and I haven't fully groked it 
+>>> yet.
+>>> >> Also, this driver seems to totally ignore the 2-level routing. Where
+>>> >> is it set up? map/unmap in this driver do exactly *nothing*, so
+>>> >> something somewhere must set it up.
+>>> >
+>>> > The map/unmap is updated in patch #6 and it deals with those 2-level
+>>> > routing setup. Map is responsible for programming the Channel Map
+>>> > Registers (CMRx) and Host-Interrupt Map Registers (HMRx) basing on
+>>> > provided configuration from the one parsed in the xlate function.
+>>> > Unmap undo whatever was done on the map. More details can be found in
+>>> > patch #6.
+>>> >
+>>> > Maybe it would be better to squash patch #6 with this one so it would
+>>> > be less confusing. What is your advice?
+>>>
+>>> So am I right in understanding that without patch #6, this driver does
+>>> exactly nothing? If so, it has been a waste of review time.
+>>>
+>>> Please split patch #6 so that this driver does something useful
+>>> for Linux, without any of the PRU interrupt routing stuff. I want
+>>> to see a Linux-only driver that works and doesn't rely on any other
+>>> exotic feature.
+>>>
+>>
+>> Patch #6 provides PRU specific 2-level routing setup. This step is
+>> required and it is part of the entire patch-set. Theoretically routing
+>> setup could be done by other platform driver (not irq one) or e.g. by
+>> PRU firmware. In such case this driver would be functional without
+>> patch #6 but I do not think it would be proper.
+> 
+> Then this whole driver is non-functional until the last patch that
+> comes with the PRU-specific "value-add".
 
-Laurent Pinchart
+It is all moot actually and the interrupts work only when the PRU 
+remoteproc/clients have invoked the irq_create_fwspec_mapping()
+for all of the desired system events. It does not make much difference 
+if it was a separate patch or squashed in, patch #6 is a replacement for 
+the previous logic, and since it was complex, it was done in a separate 
+patch to better explain the usage (same reason on v1 and v2 as well).
+
+> 
+> [...]
+> 
+>> I am open to any suggestion if there is a better way of handling
+>> 2-level routing. I will also appreciate if you could elaborate about
+>> issues that you see with patch #6.
+> 
+> The two level routing has to be part of this (or another) irqchip
+> driver (specially given that it appears to me like another set of
+> crossbar). There should only be a *single* binding for all interrupts,
+> including those targeting the PRU (you seem to have two).
+> 
+
+Yeah, there hasn't been a clean way of doing this. Our previous attempt 
+was to do this through custom exported functions so that the PRU 
+remoteproc driver can set these up correctly, but that was shot down and 
+this is the direction we are pointed to.
+
+We do want to leverage the "interrupts" property in the PRU user nodes 
+instead of inventing our own paradigm through a non-irqchip driver, and 
+at the same time, be able to configure this at the run time only when 
+that PRU driver is running, and remove the mappings once that driver is 
+removed allowing another PRU application/driver. We treat PRUs as an 
+exclusive resource, so everything needs to go along with an appropriate 
+client user.
+
+> And the non-CPU interrupt code has to be in its own patch, because
+> it is pretty borderline anyway (I'm still not completely convinced
+> this is Linux's job).
+
+The logic for non-CPU interrupt code is exactly the same as the CPU 
+interrupt code, as they are all setup through the 
+irq_create_fwspec_mapping(). The CPU-specific pieces are primarily the 
+chained interrupt handling.
+
+We have already argued internally about the last part, but our firmware 
+developers literally don't have any IRAM space (we have a lot of 
+Industrial protocols working out of 4K/8K memory), and have pushed all 
+one-time setup to the OS running (Linux or otherwise) on the main ARM 
+core, and INTC is one among the other many such settings. Every word in 
+Instruction RAM was crucial for them.
+
+So, we are all ears if there is still an elegant way of doing this. Look 
+forward to any suggestions you may have.
+
+And thank you for all your review comments.
+
+regards
+Suman
+
