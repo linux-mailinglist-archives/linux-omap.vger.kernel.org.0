@@ -2,187 +2,244 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FF9C21AD98
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Jul 2020 05:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B9E321B876
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Jul 2020 16:24:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726581AbgGJDkw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Jul 2020 23:40:52 -0400
-Received: from mga03.intel.com ([134.134.136.65]:12605 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726509AbgGJDkv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 9 Jul 2020 23:40:51 -0400
-IronPort-SDR: 9AGpKEsApofNRE72yZ0y+QfFpgto+MvuIwcHiH+r2Ci8nKfniheD2Fx6frbAOLCtXXa0URUUQz
- F8JWF08EDLZw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9677"; a="148134691"
-X-IronPort-AV: E=Sophos;i="5.75,334,1589266800"; 
-   d="scan'208";a="148134691"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2020 20:40:50 -0700
-IronPort-SDR: W5o4jXi7DNh6igZu6MYsy9UklhwKSOi/TJ1u/3Hxpc1nP4LTq5YhT3VNu39s+3XVJ5IhomzpSu
- MRdkr8OuVZ5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,334,1589266800"; 
-   d="scan'208";a="484038611"
-Received: from lkp-server02.sh.intel.com (HELO d197edaadf32) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 09 Jul 2020 20:40:49 -0700
-Received: from kbuild by d197edaadf32 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1jtju4-00002j-OA; Fri, 10 Jul 2020 03:40:48 +0000
-Date:   Fri, 10 Jul 2020 11:40:21 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
- 8778eb0927ddcd3f431805c37b78fa56481aeed9
-Message-ID: <5f07e325.mM6Q2bIAlbjG6bCk%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1728493AbgGJOYA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Jul 2020 10:24:00 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:55151 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727083AbgGJOX5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Jul 2020 10:23:57 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200710142355euoutp01f0186f3456547974c1446897b6f75454~gajLrAyYu3221032210euoutp01V
+        for <linux-omap@vger.kernel.org>; Fri, 10 Jul 2020 14:23:55 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200710142355euoutp01f0186f3456547974c1446897b6f75454~gajLrAyYu3221032210euoutp01V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1594391035;
+        bh=k6kKp5Q44utOhq6BdHSSWTCNyx+Oy/mLFO4L6jIZR4E=;
+        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
+        b=FWkXxVAEaWyVMmJKgl2ZFI0GwpDBIxzQ+pkEMw7kHlvtTVrTgdfDw25YyoKQSzDol
+         IjabuHTphc4EiyVu4lnfSe3t5Q1vD47IBeS6RuMMsnPYUrS/bN9yI3IsQf48HzqzWs
+         17MQwkRRnYPlrN1ZWMfArXDaQVm89d3HDrY7Fnng=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200710142354eucas1p2d950849266e3b1f7ac3b551c09a2e080~gajLIul0n0954709547eucas1p2C;
+        Fri, 10 Jul 2020 14:23:54 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 0B.DE.06318.AF9780F5; Fri, 10
+        Jul 2020 15:23:54 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200710142354eucas1p2b4509184e94ba8c55ae66f9c5ba1f380~gajK0iyi80953909539eucas1p2C;
+        Fri, 10 Jul 2020 14:23:54 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200710142354eusmtrp2490b1926c917b6fc0a43c700af7399be~gajKztZRi1267512675eusmtrp20;
+        Fri, 10 Jul 2020 14:23:54 +0000 (GMT)
+X-AuditID: cbfec7f5-371ff700000018ae-3f-5f0879fac43b
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 85.71.06017.9F9780F5; Fri, 10
+        Jul 2020 15:23:53 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200710142353eusmtip1e6c80cfac1c21c3ab467fab46d269dda~gajJ_ecqM0341503415eusmtip1Q;
+        Fri, 10 Jul 2020 14:23:53 +0000 (GMT)
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: Re: [PATCH] omapfb: fix multiple reference count leaks due to
+ pm_runtime_get_sync
+To:     Aditya Pakki <pakki001@umn.edu>
+Cc:     kjlu@umn.edu, wu000273@umn.edu,
+        Allison Randal <allison@lohutok.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Enrico Weigelt <info@metux.net>,
+        "Andrew F. Davis" <afd@ti.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        YueHaibing <yuehaibing@huawei.com>, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Message-ID: <474b3931-4638-0eab-de96-2038a8e3ac7d@samsung.com>
+Date:   Fri, 10 Jul 2020 16:23:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20200614030528.128064-1-pakki001@umn.edu>
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Se0hTcRTmt3t3791odp3ZThYVk6KCtLLoUiEW/nGh6IEFvcxmXh/kpuz6
+        yCDyhcV6akaklpaaz5xMSZ2hZdlMcYaZpVYK2UNrbaYSWq66u0X+953vO9/vfOfwozDlqNSL
+        itLFcXqdJlpNyPF7T6asq6eTqJA19sz5jL09k2Sa3jSRTFmbE2d6Ju0Ek1ZoJJi+lEYJ03az
+        k2TaLjqkzHNzHsHkFl3CmcKSKcTUmK5ijDG/n2AutKYQzOvJj3jAXDb9sU3KFt4fkbBfrVaS
+        bb5RSbKD5ywSduzLMMledtgI1vKqTsK+uJVKsuOmxbvlB+VbwrjoqARO7+t/VB6Za0iXxprV
+        J7LP5xLJ6MUiA6IooNfD44xAA5JTSroUQZ/9ATIg2Z9iAsFEyz5RGEfwsNzmEgRDs6mdFIUS
+        BA0XLYRY2BAY6mpxoYugN0HmmXKXw4M+DF0d2S5+Hu0NRWm/XBijBzDIrg0RYihof8iocBdo
+        nF4GxpkBiYA96f3wbeiRVMAK2h2eXh92WWX0Rqjs6sLEZ1TQP5wvEfESqLPlYUIeoK9TUFQx
+        QYipA+HtaD8mYg8YtdSSIl4EvxoEs2CoQjBz9tNfdx2CkivOv+7N8No6TQhJMXolGM2+Ir0V
+        njtsuHhHN3hlcxdDuEHWvWuYSCvgbIZS7F4O1XeqiX9jDQ1l2GWkzpm1Ws6sdXJmrZPzf24B
+        wsuRiovntREc76fjEn14jZaP10X4HIvRmtCfH9jhtEzWo6afoS2IppB6jqJAQ4UopZoEPknb
+        goDC1PMU2zo7jigVYZqkk5w+JkQfH83xLWghhatVCr/bI8FKOkITxx3nuFhO/0+VUDKvZNSZ
+        td0Rt+2o910+4F19ZV5j8dDOqh2B67zHvs+NPXTsw8y5cN/0AxUn9N1ahSyxW3fKHr5rsDh0
+        pFtpXNq7Vxp+eiz5Qfl4ryk42OOMKnW98coKYskP4577W04Ffa5IcnNGTzpLVd2OOVxN6vvh
+        nqx6z/OtxsFnLwMWmJ1BzY82gFWN85GataswPa/5DaNILp19AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrHIsWRmVeSWpSXmKPExsVy+t/xu7o/KzniDR69tLF4f2oiu8W+u/vY
+        LVae+MdiceXrezaL5sXr2SxuNu5msjgx7yy7xYm+D6wWl3fNYbOYvaSfxWLx8p+MFps3TWW2
+        WD//FptF79FGNos7X5+zOPB7tBx5y+qxeM9LJo93586xe+yfu4bd4373cSaPj2+esHtM+PCW
+        zeP4je1MHlcXNrF7fN4kF8AVpWdTlF9akqqQkV9cYqsUbWhhpGdoaaFnZGKpZ2hsHmtlZKqk
+        b2eTkpqTWZZapG+XoJcxu6uFtWCXUsWUntlsDYxXZboYOTkkBEwk9m86xd7FyMUhJLCUUWLv
+        299ADgdQQkbi+PoyiBphiT/Xutggal4zSny8sp8ZJMEmYCUxsX0VI4gtLBAjcf70FBYQW0RA
+        WWJJ838WkAZmgbvMEic//WKE6O5ilPh0YCEjyAZeATuJttWCIA0sAqoS6//eZgKxRQUiJA7v
+        mAU2lFdAUOLkzCdgQzkFzCXWnD8PtphZQF3iz7xLULa4xK0n85kgbHmJ7W/nME9gFJqFpH0W
+        kpZZSFpmIWlZwMiyilEktbQ4Nz232EivODG3uDQvXS85P3cTIzDutx37uWUHY9e74EOMAhyM
+        Sjy8CxI54oVYE8uKK3MPMUpwMCuJ8DqdPR0nxJuSWFmVWpQfX1Sak1p8iNEU6LmJzFKiyfnA
+        lJRXEm9oamhuYWlobmxubGahJM7bIXAwRkggPbEkNTs1tSC1CKaPiYNTqoEx+NyHP3yaElnb
+        1vSaRFT0z/mvU7TL5cP0pxt75/h0XOjeZ9XPb7vj1/4jKzJ5Lfekfj2/qi+WbzKvhYT5xExD
+        AeVFEzXSHXc8WBTkFfP1s3NfSUwjt4r2t2gFhiZzA5YVlx7MCFi8LjfujOXd9yzMwYc7YzJ/
+        c8rPYtK43h/UeSOGM2fJZVElluKMREMt5qLiRACdXOynEQMAAA==
+X-CMS-MailID: 20200710142354eucas1p2b4509184e94ba8c55ae66f9c5ba1f380
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200614030543eucas1p11e05674cb3b4f801baaf012f44bbf1ba
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200614030543eucas1p11e05674cb3b4f801baaf012f44bbf1ba
+References: <CGME20200614030543eucas1p11e05674cb3b4f801baaf012f44bbf1ba@eucas1p1.samsung.com>
+        <20200614030528.128064-1-pakki001@umn.edu>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
-branch HEAD: 8778eb0927ddcd3f431805c37b78fa56481aeed9  usb: gadget: function: fix missing spinlock in f_uac1_legacy
 
-elapsed time: 721m
+On 6/14/20 5:05 AM, Aditya Pakki wrote:
+> On calling pm_runtime_get_sync() the reference count of the device
+> is incremented. In case of failure, decrement the
+> reference count before returning the error.
+> 
+> Signed-off-by: Aditya Pakki <pakki001@umn.edu>
 
-configs tested: 125
-configs skipped: 8
+Applied to drm-misc-next tree, thanks.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                               defconfig
-mips                         rt305x_defconfig
-sh                                  defconfig
-nios2                            alldefconfig
-m68k                         apollo_defconfig
-mips                        omega2p_defconfig
-powerpc                     mpc512x_defconfig
-s390                          debug_defconfig
-csky                             allyesconfig
-m68k                          amiga_defconfig
-powerpc                     ep8248e_defconfig
-arm                   milbeaut_m10v_defconfig
-mips                       rbtx49xx_defconfig
-arm                        spear6xx_defconfig
-m68k                       m5249evb_defconfig
-arm                        multi_v7_defconfig
-powerpc                       holly_defconfig
-x86_64                              defconfig
-arm                         ebsa110_defconfig
-ia64                                defconfig
-csky                                defconfig
-powerpc                      tqm8xx_defconfig
-powerpc                      ep88xc_defconfig
-arm                         at91_dt_defconfig
-m68k                          hp300_defconfig
-powerpc                  mpc866_ads_defconfig
-powerpc64                           defconfig
-um                             i386_defconfig
-openrisc                         allyesconfig
-sh                        edosk7705_defconfig
-m68k                          atari_defconfig
-sh                             espt_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-nds32                               defconfig
-nds32                             allnoconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20200709
-i386                 randconfig-a001-20200709
-i386                 randconfig-a006-20200709
-i386                 randconfig-a005-20200709
-i386                 randconfig-a004-20200709
-i386                 randconfig-a003-20200709
-x86_64               randconfig-a012-20200709
-x86_64               randconfig-a016-20200709
-x86_64               randconfig-a011-20200709
-x86_64               randconfig-a014-20200709
-x86_64               randconfig-a013-20200709
-x86_64               randconfig-a015-20200709
-i386                 randconfig-a011-20200709
-i386                 randconfig-a015-20200709
-i386                 randconfig-a014-20200709
-i386                 randconfig-a016-20200709
-i386                 randconfig-a012-20200709
-i386                 randconfig-a013-20200709
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                                allnoconfig
-um                                  defconfig
-um                               allyesconfig
-um                               allmodconfig
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> ---
+>  drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 7 +++++--
+>  drivers/video/fbdev/omap2/omapfb/dss/dsi.c   | 7 +++++--
+>  drivers/video/fbdev/omap2/omapfb/dss/dss.c   | 7 +++++--
+>  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c | 5 +++--
+>  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c | 5 +++--
+>  drivers/video/fbdev/omap2/omapfb/dss/venc.c  | 7 +++++--
+>  6 files changed, 26 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> index 4a16798b2ecd..e2b572761bf6 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> @@ -520,8 +520,11 @@ int dispc_runtime_get(void)
+>  	DSSDBG("dispc_runtime_get\n");
+>  
+>  	r = pm_runtime_get_sync(&dispc.pdev->dev);
+> -	WARN_ON(r < 0);
+> -	return r < 0 ? r : 0;
+> +	if (WARN_ON(r < 0)) {
+> +		pm_runtime_put_sync(&dispc.pdev->dev);
+> +		return r;
+> +	}
+> +	return 0;
+>  }
+>  EXPORT_SYMBOL(dispc_runtime_get);
+>  
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+> index d620376216e1..6f9c25fec994 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+> @@ -1137,8 +1137,11 @@ static int dsi_runtime_get(struct platform_device *dsidev)
+>  	DSSDBG("dsi_runtime_get\n");
+>  
+>  	r = pm_runtime_get_sync(&dsi->pdev->dev);
+> -	WARN_ON(r < 0);
+> -	return r < 0 ? r : 0;
+> +	if (WARN_ON(r < 0)) {
+> +		pm_runtime_put_sync(&dsi->pdev->dev);
+> +		return r;
+> +	}
+> +	return 0;
+>  }
+>  
+>  static void dsi_runtime_put(struct platform_device *dsidev)
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> index 7252d22dd117..3586579c838f 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+> @@ -768,8 +768,11 @@ int dss_runtime_get(void)
+>  	DSSDBG("dss_runtime_get\n");
+>  
+>  	r = pm_runtime_get_sync(&dss.pdev->dev);
+> -	WARN_ON(r < 0);
+> -	return r < 0 ? r : 0;
+> +	if (WARN_ON(r < 0)) {
+> +		pm_runtime_put_sync(&dss.pdev->dev);
+> +		return r;
+> +	}
+> +	return 0;
+>  }
+>  
+>  void dss_runtime_put(void)
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+> index 7060ae56c062..4804aab34298 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+> @@ -39,9 +39,10 @@ static int hdmi_runtime_get(void)
+>  	DSSDBG("hdmi_runtime_get\n");
+>  
+>  	r = pm_runtime_get_sync(&hdmi.pdev->dev);
+> -	WARN_ON(r < 0);
+> -	if (r < 0)
+> +	if (WARN_ON(r < 0)) {
+> +		pm_runtime_put_sync(&hdmi.pdev->dev);
+>  		return r;
+> +	}
+>  
+>  	return 0;
+>  }
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
+> index ac49531e4732..a06b6f1355bd 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
+> @@ -43,9 +43,10 @@ static int hdmi_runtime_get(void)
+>  	DSSDBG("hdmi_runtime_get\n");
+>  
+>  	r = pm_runtime_get_sync(&hdmi.pdev->dev);
+> -	WARN_ON(r < 0);
+> -	if (r < 0)
+> +	if (WARN_ON(r < 0)) {
+> +		pm_runtime_put_sync(&hdmi.pdev->dev);
+>  		return r;
+> +	}
+>  
+>  	return 0;
+>  }
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+> index d5404d56c922..0b0ad20afd63 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
+> @@ -348,8 +348,11 @@ static int venc_runtime_get(void)
+>  	DSSDBG("venc_runtime_get\n");
+>  
+>  	r = pm_runtime_get_sync(&venc.pdev->dev);
+> -	WARN_ON(r < 0);
+> -	return r < 0 ? r : 0;
+> +	if (WARN_ON(r < 0)) {
+> +		pm_runtime_put_sync(&venc.pdev->dev);
+> +		return r;
+> +	}
+> +	return 0;
+>  }
+>  
+>  static void venc_runtime_put(void)
+> 
