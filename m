@@ -2,64 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6200D21BC74
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Jul 2020 19:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 936E621BC80
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Jul 2020 19:43:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728363AbgGJRkz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Jul 2020 13:40:55 -0400
-Received: from muru.com ([72.249.23.125]:33310 "EHLO muru.com"
+        id S1726962AbgGJRnx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Jul 2020 13:43:53 -0400
+Received: from muru.com ([72.249.23.125]:33322 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726925AbgGJRkx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 10 Jul 2020 13:40:53 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 1239780E5;
-        Fri, 10 Jul 2020 17:41:46 +0000 (UTC)
-Date:   Fri, 10 Jul 2020 10:40:51 -0700
+        id S1726820AbgGJRnx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 10 Jul 2020 13:43:53 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id D309180E5;
+        Fri, 10 Jul 2020 17:44:46 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, Tero Kristo <t-kristo@ti.com>
-Subject: Re: [PATCH 00/13] Add IPU & DSP remoteprocs on OMAP4 and OMAP5
-Message-ID: <20200710174051.GG5849@atomide.com>
-References: <20200709231954.1973-1-s-anna@ti.com>
- <20200710165814.GF5849@atomide.com>
- <41bd2bb4-06fe-5f70-22cf-ce9cedc8bbc3@ti.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL] Device tree changes for omaps for v5.9
+Date:   Fri, 10 Jul 2020 10:43:46 -0700
+Message-Id: <pull-1594402929-762188@atomide.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41bd2bb4-06fe-5f70-22cf-ce9cedc8bbc3@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Suman Anna <s-anna@ti.com> [200710 17:18]:
-> On 7/10/20 11:58 AM, Tony Lindgren wrote:
-> > I wonder the following commit in v5.8-rc3 might help with this though:
-> > 
-> > 5ce8aee81be6 ("bus: ti-sysc: Flush posted write on enable and disable")
-> > 
-> 
-> I had already tested on v5.8-rc4 when I posted the patches, so this patch
-> doesn't help. OMAP5 DSP is fine, because Think it has to do with this
-> automated
+From: "Tony Lindgren" <tony@atomide.com>
 
-OK
+The following changes since commit b3a9e3b9622ae10064826dccb4f7a52bd88c7407:
 
-> So, I am looking at the TRM, and the three VDD_{IVA,MPU,CORE}_I2C_DISABLE
-> bits in VOLTCTRL are marked debug-purpose only, so I don't think we should
-> be setting those to begin with. Any reason why you want to set those?
-> Anyway, these bits were not an issue, I have specifically tried that
-> already.
+  Linux 5.8-rc1 (2020-06-14 12:45:04 -0700)
 
-I'm pretty sure that's how the old TI PM branch was initializing them to
-disable voltctrl I2C use on init. But if these are not the issue I guess
-no need to mess with them.
+are available in the Git repository at:
 
-Could it be that we have wrong voltage tables for 4460 in the mainline
-kernel? See earlier commit 32236a84906f ("ARM: OMAP2+: Update 4430
-voltage controller operating points").
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.9/dt-signed
 
-Regards,
+for you to fetch changes up to e14d2c766392ff1f226017fd62f0b6283a53bd0c:
 
-Tony
+  ARM: dts: am335x-pocketbeagle: add gpio-line-names (2020-06-29 11:24:27 -0700)
+
+----------------------------------------------------------------
+Device tree changes for omaps for v5.9 merge window
+
+This series of changes configures the GPIO line names for am335x beaglebone
+black and pocketbeagle to make it easier to configure the pins. To make use
+of the pins, we also add the gpio-ranges for am335x.
+
+We also enable IPU and DSP repmoteproc for am5729-beaglebone-ai, and then
+there are two non-urgent dtschema validator warning fixes.
+
+----------------------------------------------------------------
+Drew Fustini (3):
+      ARM: dts: am33xx-l4: add gpio-ranges
+      ARM: dts: am335x-boneblack: add gpio-line-names
+      ARM: dts: am335x-pocketbeagle: add gpio-line-names
+
+Krzysztof Kozlowski (2):
+      ARM: dts: omap: Align L2 cache-controller nodename with dtschema
+      ARM: dts: am: Align L2 cache-controller nodename with dtschema
+
+Suman Anna (2):
+      ARM: dts: am5729-beaglebone-ai: Enable IPU & DSP rprocs
+      ARM: dts: am5729-beaglebone-ai: Disable ununsed mailboxes
+
+ arch/arm/boot/dts/am335x-boneblack.dts    | 144 ++++++++++++++++++++++++++++++
+ arch/arm/boot/dts/am335x-pocketbeagle.dts | 144 ++++++++++++++++++++++++++++++
+ arch/arm/boot/dts/am33xx-l4.dtsi          |  24 +++++
+ arch/arm/boot/dts/am4372.dtsi             |   2 +-
+ arch/arm/boot/dts/am5729-beagleboneai.dts |  73 +++++----------
+ arch/arm/boot/dts/omap4.dtsi              |   2 +-
+ 6 files changed, 335 insertions(+), 54 deletions(-)
