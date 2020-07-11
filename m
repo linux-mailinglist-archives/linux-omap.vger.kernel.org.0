@@ -2,66 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7304C21C5FB
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Jul 2020 21:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A34EA21C65B
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Jul 2020 23:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726962AbgGKTox (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 11 Jul 2020 15:44:53 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:37202 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726476AbgGKTox (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Jul 2020 15:44:53 -0400
-Received: from belgarion ([86.210.166.159])
-        by mwinf5d59 with ME
-        id 1vkp230093SgWc603vkqzc; Sat, 11 Jul 2020 21:44:51 +0200
-X-ME-Helo: belgarion
-X-ME-Auth: amFyem1pay5yb2JlcnRAb3JhbmdlLmZy
-X-ME-Date: Sat, 11 Jul 2020 21:44:51 +0200
-X-ME-IP: 86.210.166.159
-From:   Robert Jarzmik <robert.jarzmik@free.fr>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 5/7] mach-pxa: palmz72/pcm990: remove soc_camera dependencies
-References: <20200626115321.1898798-1-hverkuil-cisco@xs4all.nl>
-        <20200626115321.1898798-6-hverkuil-cisco@xs4all.nl>
-        <CAK8P3a048hsYw3iQ3+kiPQx9QqHDYJeh8hRuGgxN8NJSpKsOmg@mail.gmail.com>
-X-URL:  http://belgarath.falguerolles.org/
-Date:   Sat, 11 Jul 2020 21:44:49 +0200
-In-Reply-To: <CAK8P3a048hsYw3iQ3+kiPQx9QqHDYJeh8hRuGgxN8NJSpKsOmg@mail.gmail.com>
-        (Arnd Bergmann's message of "Fri, 26 Jun 2020 14:58:00 +0200")
-Message-ID: <87wo39x2dq.fsf@belgarion.home>
-User-Agent: Gnus/5.130008 (Ma Gnus v0.8) Emacs/26 (gnu/linux)
+        id S1727901AbgGKVMw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 11 Jul 2020 17:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44304 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726948AbgGKVMv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Jul 2020 17:12:51 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C2F2C08C5DD
+        for <linux-omap@vger.kernel.org>; Sat, 11 Jul 2020 14:12:51 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id f5so10361665ljj.10
+        for <linux-omap@vger.kernel.org>; Sat, 11 Jul 2020 14:12:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HgHuk3yasiCaHOFp70C3S20yfZ/46i84UF/qS9vnKcc=;
+        b=phqDGApFNUiMib/i5ixNCjfscEjoGG9dm6nGYkkuK89crua9hH+Tw7oPeffJC7QngU
+         RONlsfsM4KQjjbP4mPDj9QElR/qCsD9yv/qaQpjBCA6/oyONnMwuRKN7BB4cC0vhIiwY
+         kyAqCwFYD67vTukOgwi4SAOOJ3y4bWgX75+0NHKHaTOzQU1EfVepNIPR9OmInGdCueXn
+         tgKw5T5UbQ3RnhfyKVS6CypNrb7d2z6WvMAaa21KH/66WCySXG/dPzbDMW17AY9luj2q
+         ttE93UdvI29dJLsLDydAdDP/Ugx2PXg9S+F1Ay5326VSHypR6iQ4rRYxyLTwY7LgiIuE
+         ug/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HgHuk3yasiCaHOFp70C3S20yfZ/46i84UF/qS9vnKcc=;
+        b=GNL/yj1n6VH2EyY+rYqhgTE0V0RBkzjllzw+6e2KB65CNBh84DmM8yXmHzNYKUe1Px
+         Wta0mwbORoW6yiExR5iPCwaDuPz1tuV550lHP+qJWeB3zU1IZgiqvV01rwfRDZ2m98nS
+         Z0e3j6tWF5DDsn1YLgg3AMmmvxvkh2/q4rl+pKWmx+M9EM87lGP51qiV/NfFtpjEpk2r
+         LTmzg/9zkMfYBBSOs5Hct5aAySqxzMwkHlZPk7HoTsWeIA8gaI2sYKSqrh2DQe0RSJnm
+         uMWW1uF8R9tOtHoctgqkBPMHPeIv3wH2+IbKqIpj5+JSaq9aQX2/bM8CHbfCSiQwnS0a
+         O4lA==
+X-Gm-Message-State: AOAM533HmF20VH2oY1HOBsVKpUXeYU23f1qc0CG5xVHD322PhyoVecTx
+        O4kzxSqii0z/M0YSVP1c3eJ4876tZX5Wu9AmpCkQQQ==
+X-Google-Smtp-Source: ABdhPJxfLX8yHShpQtjGOPNlAosmEBIPTvGmPBymA5g4mnnwVTGmE0j69am4R1NGfe/2Nhmcd1M6BuIbcIw3m1Dxgdc=
+X-Received: by 2002:a2e:7a1a:: with SMTP id v26mr27868119ljc.104.1594501970063;
+ Sat, 11 Jul 2020 14:12:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200701013320.130441-1-drew@beagleboard.org> <CACRpkdY3mUjczkJhV9BdZhUJGOgrbOMJnciBjOaPg6c9XUt8Ww@mail.gmail.com>
+ <CAEf4M_ArGSpN5-7_zt6mQaWm8XkqTcQiOnCbs3_obCipDC1KNA@mail.gmail.com>
+In-Reply-To: <CAEf4M_ArGSpN5-7_zt6mQaWm8XkqTcQiOnCbs3_obCipDC1KNA@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sat, 11 Jul 2020 23:12:39 +0200
+Message-ID: <CACRpkdZRnS=xt6FKy6pSUQ+itkxoimAAKBc+=kupTXpEGg+b8g@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] pinctrl: single: support #pinctrl-cells = 2
+To:     Drew Fustini <pdp7pdp7@gmail.com>
+Cc:     Drew Fustini <drew@beagleboard.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Arnd Bergmann <arnd@arndb.de> writes:
+On Tue, Jul 7, 2020 at 1:02 PM Drew Fustini <pdp7pdp7@gmail.com> wrote:
 
-> On Fri, Jun 26, 2020 at 1:53 PM Hans Verkuil <hverkuil-cisco@xs4all.nl> wrote:
->>
->> The soc_camera driver is about to be removed, so drop camera
->> support from this board. Note that the soc_camera driver itself has
->> long since been deprecated and can't be compiled anymore (it depends
->> on BROKEN), so camera support on this board has been broken for a long
->> time (at least since 4.9 when the pxa_camera.c was removed from soc_camera).
->>
->> Note that there is a new pxa_camera.c driver that replaced the old
->> soc_camera based driver, but using that would require these boards to
->> be converted to use the device tree.
-This statement is not accurate, pxa_camera should be working in platform_data
-based boards, it's just that the solution to make it work was not found yet if I
-remember correctly, since the evolutions to the clocking in v4l2 hit it.
+> Which repo/branch is the best for me to use if I am going to be
+> posting any further dts patches?
 
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
->
-> Please merge this through the media tree if there are no objections.
-So be it.
+Mine, pinctrl devel branch during this (v5.9) cycle I suppose.
 
---
-Robert
+Yours,
+Linus Walleij
