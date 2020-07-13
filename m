@@ -2,157 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F6521CBAB
-	for <lists+linux-omap@lfdr.de>; Sun, 12 Jul 2020 23:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76FC221CD61
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Jul 2020 04:49:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729496AbgGLV4k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 12 Jul 2020 17:56:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44904 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729249AbgGLV4k (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 12 Jul 2020 17:56:40 -0400
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D819EC061794
-        for <linux-omap@vger.kernel.org>; Sun, 12 Jul 2020 14:56:39 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id w27so8581843qtb.7
-        for <linux-omap@vger.kernel.org>; Sun, 12 Jul 2020 14:56:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=nswgBRvMZKcgVRKdiEQljd5QY51T/DwTFJxtYTlPBBI=;
-        b=RmIzk8dJJZB++ufFpJ8oL/YFget+HUp85KKTgluGj16u0b8wEO9zCz6y6v/nkl/Ph8
-         jQRdJ/iS0ps5s1Vz4hKi0geFU2S0yagEri3BL/Ef5ouuOW+oEm81FR/pXK5iz88Tm0hk
-         IgsP+JnYx3jxEZJMEKq88ppnCJLsjrfs0MlhnGKmmdtRVYEsO3WtT2/JngQTXKStIz+w
-         mp6h+l6nsmmfxrEi1ilwrcPVogLzg1ejgbKU90UiGSzM3G5TcjpR/SEcqT7u+Wh4M5ZN
-         mgYkAirb/DGzrV0XmLP55uvKBPMBf5I5iRZdkYrF4dSIuOFE2aa+aGxTf6K/Y643nKX5
-         xJmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nswgBRvMZKcgVRKdiEQljd5QY51T/DwTFJxtYTlPBBI=;
-        b=uH5qCa9rFxIfW/yqBFDVmcOQUD53kqXFWZ2PI90uXnEQEDT1miWhLpKa6h0wUH8M0/
-         3UmKn59U/PQvQ1bLIqjcEe4nVqkfC8c69Tj488inejpfyQFiqmCrhBr5gJJ0Hn8ZbFZk
-         vXEW8Ryw8QEkEaD3bQxLlxLj7lLrkBPYyYmPDwoxNJC7bAOvDIsQHcPxbI4YUPixr25S
-         0ON7ZbJcCbgsOzYYgA69BBuk4ISREefG0AWLXawg8qI7YgNDCNNug+EjXUrz+2V4uABJ
-         bWuQ01ZpTvM2taWB4fEnDqCCgc+/1IUDcsC3uHeY7lej2k1Ogxsq51ytvQPKe+eg0gkL
-         Bzag==
-X-Gm-Message-State: AOAM533+JZBzTEgOL8FQoM5wEk5tgHgLv32kqKOmDaGtaN3tOPN+XXU8
-        fiVxE0JouP7bWWDR6c+IVRqWAg==
-X-Google-Smtp-Source: ABdhPJzhnN6ppWDABJB9RCqhSeW/S0rntEpuCdlOpRMVK8R+I2RFgqm82UVfvlFY91SvhrQvQT1e1g==
-X-Received: by 2002:ac8:c8:: with SMTP id d8mr84941138qtg.221.1594590998849;
-        Sun, 12 Jul 2020 14:56:38 -0700 (PDT)
-Received: from x1 ([196.52.2.99])
-        by smtp.gmail.com with ESMTPSA id q189sm16663980qkd.57.2020.07.12.14.56.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2020 14:56:38 -0700 (PDT)
-Date:   Sun, 12 Jul 2020 23:56:30 +0200
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>
-Subject: Re: gpio-omap: handle bias flag for gpio line
-Message-ID: <20200712215630.GA1298162@x1>
-References: <20200625002736.GA24954@x1>
- <CACRpkdYze_6cM0R=rr7RF8h5WO4GoCcz4=K1_XLt0PJNxCYtbw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACRpkdYze_6cM0R=rr7RF8h5WO4GoCcz4=K1_XLt0PJNxCYtbw@mail.gmail.com>
+        id S1728614AbgGMCtu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 12 Jul 2020 22:49:50 -0400
+Received: from smtp25.cstnet.cn ([159.226.251.25]:42528 "EHLO cstnet.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725892AbgGMCtr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 12 Jul 2020 22:49:47 -0400
+Received: from localhost (unknown [159.226.5.99])
+        by APP-05 (Coremail) with SMTP id zQCowAAHpwzNygtfHw9aAA--.18071S2;
+        Mon, 13 Jul 2020 10:45:33 +0800 (CST)
+From:   Xu Wang <vulab@iscas.ac.cn>
+To:     tony@atomide.com, linux@armlinux.org.uk,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Xu Wang <vulab@iscas.ac.cn>
+Subject: [PATCH] arm: omap-iommu: fix return value check in _get_pwrdm()
+Date:   Mon, 13 Jul 2020 02:45:27 +0000
+Message-Id: <20200713024527.17892-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: zQCowAAHpwzNygtfHw9aAA--.18071S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JrWxWw1xtrW8Jw1fWF45Wrg_yoW3Xwb_A3
+        Z2qwn3Wr18tFs29a4UCw4rGrsxt3WUCrs3WrW8twnxKayDWr13Ar9Yyrsayry7Ww40kFW5
+        Ars7Ar4Skw13AjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb4xFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+        Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+        1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+        6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbV
+        WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc2xSY4AK67AK
+        6r4UMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+        0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+        0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+        WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8
+        JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUk5rcUUU
+        UU=
+X-Originating-IP: [159.226.5.99]
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCAMPA18J9ey8twABsC
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jul 07, 2020 at 02:38:36PM +0200, Linus Walleij wrote:
-> On Thu, Jun 25, 2020 at 2:27 AM Drew Fustini <drew@beagleboard.org> wrote:
-> 
-> > Tony and Linus -
-> >
-> > I'm hoping you could give me some feedback on this approach. My goal is
-> > to allow a userspace library (like libgpiod) to be able to set pull-up
-> > and pull-downs on the AM3358.
-> 
-> I'm lost on any pinctrl-single specifics, sorry... Generic questions about
-> pinctrl I can maybe answer.
-> 
-> Yours,
-> Linus Walleij
+In case of error, function of_clk_get() returns ERR_PTR()
+and never returns NULL. The NULL test in the return value
+check should be replaced with IS_ERR().
 
-I now have a way to set bias with libgpiod on the AM3358 (BeagleBone
-and PocketBeagle) with these two patches:
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+---
+ arch/arm/mach-omap2/omap-iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[PATCH] gpio: omap: handle pin config bias flags [0]
-------------------------------------------------
-Modify omap_gpio_set_config() to handle pin config bias flags by calling
-gpiochip_generic_config().
+diff --git a/arch/arm/mach-omap2/omap-iommu.c b/arch/arm/mach-omap2/omap-iommu.c
+index 54aff33e55e6..bfa5e1b8dba7 100644
+--- a/arch/arm/mach-omap2/omap-iommu.c
++++ b/arch/arm/mach-omap2/omap-iommu.c
+@@ -74,7 +74,7 @@ static struct powerdomain *_get_pwrdm(struct device *dev)
+ 		return pwrdm;
+ 
+ 	clk = of_clk_get(dev->of_node->parent, 0);
+-	if (!clk) {
++	if (IS_ERR(clk)) {
+ 		dev_err(dev, "no fck found\n");
+ 		return NULL;
+ 	}
+-- 
+2.17.1
 
-The pin group for the gpio line must have the corresponding pinconf
-properties:
-
-PIN_CONFIG_BIAS_PULL_UP requires "pinctrl-single,bias-pullup"
-PIN_CONFIG_BIAS_PULL_DOWN requires "pinctrl-single,bias-pulldown
-
-This means the ability to set bias from userspace is controlled from
-device tree. If there is concern about potiental damage caused by
-userspace setting bias to an unsafe value then those pins should not
-have the bias property in the dts.
-
-
-[PATCH] ARM: dts: am335x-pocketbeagle: set default mux for gpio pins [1]
---------------------------------------------------------------------
-These pins on the PocketBeagle P1 and P2 headers are connected to AM3358
-balls with gpio lines, and these pins are not used for any other
-peripherals by default.  This patch adds "pinctrl-single,bias-pullup"
-and "pinctrl-single,bias-pulldown" pinconf properties for each pin per
-the ball reset state in the datasheet.
-
-Here is an example for P2.03 header pin on the PocketBeagle:
-
-        /* P2_03 (ZCZ ball T10) gpio0_23 0x824 PIN 9 */
-        P2_03_gpio: pinmux_P2_03_gpio {
-                pinctrl-single,pins = <
-                        AM33XX_PADCONF(AM335X_PIN_GPMC_AD9, PIN_INPUT_PULLUP, MUX_MODE7)
-                >;
-                pinctrl-single,bias-pullup   =   < 0x10  0x10  0x00  0x18>;
-                pinctrl-single,bias-pulldown   = < 0x10  0x00  0x10  0x18>;
-        };
-
-P2.03 header pin on PocketBeagle maps to gpiochip 0 line 23. It is PIN9
-which value on boot: 0x37 (input [0x20] pull-up [0x10] gpio mode [0x7])
-
-$ cat /sys/kernel/debug/pinctrl/44e10800.pinmux-pinctrl-single/pins |grep ^'pin 9' |head -1
-pin 9 (PIN9) 44e10824 00000037 pinctrl-single
-
-$ gpiomon -B pull-down 0 23
-^C
-
-Value 0x27 means it switched to pull-down [0x0] but still input [0x20]
-and gpio mode [0x7]:
-
-$ cat /sys/kernel/debug/pinctrl/44e10800.pinmux-pinctrl-single/pins |grep ^'pin 9' |head -1
-pin 9 (PIN9) 44e10824 00000027 pinctrl-single
-
-Now switch it back to pull-up:
-
-$ gpiomon -B pull-up 0 23
-^C
-
-Value 0x37 means it switched to pull-up [0x10] and is still input [0x20]
-and gpio mode [0x7]:
-
-$ cat /sys/kernel/debug/pinctrl/44e10800.pinmux-pinctrl-single/pins |grep ^'pin 9' |head -1
-pin 9 (PIN9) 44e10824 00000037 pinctrl-single
-
-
-Question: does this seem like a reasonable solution?
-
-Thanks,
-Drew
-
-[0] https://lore.kernel.org/linux-omap/20200712103717.1219765-1-drew@beagleboard.org/
-[1] https://lore.kernel.org/linux-omap/20200709223401.780051-1-drew@beagleboard.org/
