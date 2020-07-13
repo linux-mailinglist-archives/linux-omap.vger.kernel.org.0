@@ -2,93 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92F8F21D459
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Jul 2020 13:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18EBC21D90A
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Jul 2020 16:50:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729781AbgGMLCv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Jul 2020 07:02:51 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:47058 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729762AbgGMLCu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Jul 2020 07:02:50 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 06DB2dqV071729;
-        Mon, 13 Jul 2020 06:02:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1594638159;
-        bh=ZmLHKDhhFvQEACU9S2JTUSC0cmWio3Xl+uM9GiBjHGs=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=nax7QOFOXZLbMbqQ9+/+LOpKABhhH79r4NtDFg0b7qt5+XZIZfHtbSt8xTr1InSRK
-         iIDK1oAHEWlfMJMxOo50GDoMP8I1AOsWjZXIHw/ErYI2unqtqRTzUwGDaLcf0jUSFK
-         pxVXG3LvqRwIF/2P2bo88k+E8xGa1HtHb585Yahs=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 06DB2dm7023449
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 13 Jul 2020 06:02:39 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 13
- Jul 2020 06:02:38 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 13 Jul 2020 06:02:38 -0500
-Received: from a0393678ub.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06DB1gVo031460;
-        Mon, 13 Jul 2020 06:02:35 -0500
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-To:     Tom Joseph <tjoseph@cadence.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH v7 14/14] MAINTAINERS: Add Kishon Vijay Abraham I for TI J721E SoC PCIe
-Date:   Mon, 13 Jul 2020 16:31:41 +0530
-Message-ID: <20200713110141.13156-15-kishon@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200713110141.13156-1-kishon@ti.com>
-References: <20200713110141.13156-1-kishon@ti.com>
+        id S1730294AbgGMOu2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Jul 2020 10:50:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730211AbgGMOt5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Jul 2020 10:49:57 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4100DC061755
+        for <linux-omap@vger.kernel.org>; Mon, 13 Jul 2020 07:49:57 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id k6so16866320wrn.3
+        for <linux-omap@vger.kernel.org>; Mon, 13 Jul 2020 07:49:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=MGVkPRp/+I1joXVdv6caEP06X1PF0rNG8kbo7/M1JBk=;
+        b=QiHDfDTGlAj/YS7C4u7kOc9JwEFDw3G0oGclidDhkGG3zqi1U3reU5/sFhI47sYphg
+         HeiZUEn/8P25l8ozcJNgk5z6bsdiI5c07DjWLBg3+bY/4kLVz2Q32r9LNafPsNTobcQS
+         qkH5Tm1h8TN6RDaCWLJT4g0EX6g+c1CeY4vDz8SsfIPEXVAwMrje1zKdA1KWa5H882OL
+         SZ1FPlR19YfURzt9hxk5H7HI8ywDaJ31gFsUOPmNz7070R9N6rjz0rom3oYN//QTvb+l
+         YmXn4Dpd0zghrInn3FZCpnIZl93yJoeIcYXPsxF9WdG+1WSYAZxAXJm+ILAFRi3bECqk
+         v7Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=MGVkPRp/+I1joXVdv6caEP06X1PF0rNG8kbo7/M1JBk=;
+        b=SkasxhkkUj6MS7bNHLO6+gOwAXZfbiIYcxreZMnRD0F7JyLFY1Al3/2ZSvTN+s3xkB
+         oH4zbrI34+wHe8DaGlRCTS5mmwiYzeojaQ/5432eO9s/8BUwxJPWkwC3eoHNnwFDR/8W
+         m+uut/zxNtxd/k6fwCft1J4pTpZJO+tj6g9eAWOIdJ8ca3bE5j3tXpmv8LfWAPH90pKU
+         8ED29D1hWwYqCkMi9qS+Nw1G9UUjUPoIOOtEgrN+UWN7DpRuLiPgfrnCQx2BxQbx03Ez
+         Ab7lsYLCEGqhNJYsGwWMCPccNLhpvr5Dg9MjEf9h5lN1YmHUKoEIH2rdfFm1iLQniBtR
+         rAhQ==
+X-Gm-Message-State: AOAM533kI2yZvAqwyM8cUtaWcXVDFmwIm+6Mhl1TmOqroKQICtW7/JR1
+        V8X+inek+lACY6OmxoQbpnq9MAiCV6M=
+X-Google-Smtp-Source: ABdhPJx9Drg7tITXelXrTGkjdiA4cztDP4a+w06kMhyQ79IF54jdT4nucp1hYkuJYWkR3yVfSNeQhA==
+X-Received: by 2002:a5d:6a90:: with SMTP id s16mr78126603wru.8.1594651796017;
+        Mon, 13 Jul 2020 07:49:56 -0700 (PDT)
+Received: from localhost.localdomain ([2.31.163.6])
+        by smtp.gmail.com with ESMTPSA id o29sm26207756wra.5.2020.07.13.07.49.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2020 07:49:55 -0700 (PDT)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     linus.walleij@linaro.org
+Cc:     linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Lee Jones <lee.jones@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH 21/25] pinctrl: pinctrl-single: Fix struct/function documentation blocks
+Date:   Mon, 13 Jul 2020 15:49:26 +0100
+Message-Id: <20200713144930.1034632-22-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200713144930.1034632-1-lee.jones@linaro.org>
+References: <20200713144930.1034632-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add Kishon Vijay Abraham I as MAINTAINER for TI J721E SoC PCIe.
+Add some missing attributes/parameter descriptions, remove other
+superfluous ones, add struct header titles and fix misspellings.
 
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Fixes the following W=1 kernel build warning(s):
+
+ drivers/pinctrl/pinctrl-single.c:50: warning: Function parameter or member 'mask' not described in 'pcs_func_vals'
+ drivers/pinctrl/pinctrl-single.c:97: warning: Function parameter or member 'conf' not described in 'pcs_function'
+ drivers/pinctrl/pinctrl-single.c:97: warning: Function parameter or member 'nconfs' not described in 'pcs_function'
+ drivers/pinctrl/pinctrl-single.c:659: warning: Function parameter or member 'pin_pos' not described in 'pcs_add_pin'
+ drivers/pinctrl/pinctrl-single.c:985: warning: Excess function parameter 'pctldev' description in 'pcs_parse_one_pinctrl_entry'
+ drivers/pinctrl/pinctrl-single.c:1357: warning: Cannot understand  * @reg:        virtual address of interrupt register
+ drivers/pinctrl/pinctrl-single.c:1377: warning: Function parameter or member 'pcs_soc' not described in 'pcs_irq_set'
+ drivers/pinctrl/pinctrl-single.c:1377: warning: Function parameter or member 'irq' not described in 'pcs_irq_set'
+ drivers/pinctrl/pinctrl-single.c:1377: warning: Function parameter or member 'enable' not described in 'pcs_irq_set'
+ drivers/pinctrl/pinctrl-single.c:1458: warning: Function parameter or member 'pcs_soc' not described in 'pcs_irq_handle'
+ drivers/pinctrl/pinctrl-single.c:1458: warning: Excess function parameter 'pcs_irq' description in 'pcs_irq_handle'
+ drivers/pinctrl/pinctrl-single.c:1506: warning: Excess function parameter 'irq' description in 'pcs_irq_chain_handler'
+
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Haojian Zhuang <haojian.zhuang@linaro.org>
+Cc: linux-omap@vger.kernel.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- MAINTAINERS | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5bbc2649566b..bdec73c3069e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13119,12 +13119,14 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/pci/designware-pcie.txt
- F:	drivers/pci/controller/dwc/*designware*
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index e6d1cf25782ce..542578d0bda2d 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -42,6 +42,7 @@
+  * struct pcs_func_vals - mux function register offset and value pair
+  * @reg:	register virtual address
+  * @val:	register value
++ * @mask:	mask
+  */
+ struct pcs_func_vals {
+ 	void __iomem *reg;
+@@ -83,6 +84,8 @@ struct pcs_conf_type {
+  * @nvals:	number of entries in vals array
+  * @pgnames:	array of pingroup names the function uses
+  * @npgnames:	number of pingroup names the function uses
++ * @conf:	array of pin configurations
++ * @nconfs:	number of pin configurations available
+  * @node:	list node
+  */
+ struct pcs_function {
+@@ -653,6 +656,7 @@ static const struct pinconf_ops pcs_pinconf_ops = {
+  * pcs_add_pin() - add a pin to the static per controller pin array
+  * @pcs: pcs driver instance
+  * @offset: register offset from base
++ * @pin_pos: unused
+  */
+ static int pcs_add_pin(struct pcs_device *pcs, unsigned offset,
+ 		unsigned pin_pos)
+@@ -959,7 +963,6 @@ static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
  
--PCI DRIVER FOR TI DRA7XX
-+PCI DRIVER FOR TI DRA7XX/J721E
- M:	Kishon Vijay Abraham I <kishon@ti.com>
- L:	linux-omap@vger.kernel.org
- L:	linux-pci@vger.kernel.org
-+L:	linux-arm-kernel@lists.infradead.org
- S:	Supported
- F:	Documentation/devicetree/bindings/pci/ti-pci.txt
-+F:	drivers/pci/controller/cadence/pci-j721e.c
- F:	drivers/pci/controller/dwc/pci-dra7xx.c
+ /**
+  * pcs_parse_one_pinctrl_entry() - parses a device tree mux entry
+- * @pctldev: pin controller device
+  * @pcs: pinctrl driver instance
+  * @np: device node of the mux entry
+  * @map: map entry
+@@ -1353,7 +1356,9 @@ static int pcs_add_gpio_func(struct device_node *node, struct pcs_device *pcs)
+ 	}
+ 	return ret;
+ }
++
+ /**
++ * struct pcs_interrupt
+  * @reg:	virtual address of interrupt register
+  * @hwirq:	hardware irq number
+  * @irq:	virtual irq number
+@@ -1368,6 +1373,9 @@ struct pcs_interrupt {
  
- PCI DRIVER FOR TI KEYSTONE
+ /**
+  * pcs_irq_set() - enables or disables an interrupt
++ * @pcs_soc: SoC specific settings
++ * @irq: interrupt
++ * @enable: enable or disable the interrupt
+  *
+  * Note that this currently assumes one interrupt per pinctrl
+  * register that is typically used for wake-up events.
+@@ -1448,7 +1456,7 @@ static int pcs_irq_set_wake(struct irq_data *d, unsigned int state)
+ 
+ /**
+  * pcs_irq_handle() - common interrupt handler
+- * @pcs_irq: interrupt data
++ * @pcs_soc: SoC specific settings
+  *
+  * Note that this currently assumes we have one interrupt bit per
+  * mux register. This interrupt is typically used for wake-up events.
+@@ -1496,7 +1504,6 @@ static irqreturn_t pcs_irq_handler(int irq, void *d)
+ 
+ /**
+  * pcs_irq_handle() - handler for the dedicated chained interrupt case
+- * @irq: interrupt
+  * @desc: interrupt descriptor
+  *
+  * Use this if you have a separate interrupt for each
 -- 
-2.17.1
+2.25.1
 
