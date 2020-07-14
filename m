@@ -2,135 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FCF721E68E
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jul 2020 05:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3875821E696
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jul 2020 05:54:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726777AbgGNDwO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Jul 2020 23:52:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40420 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726771AbgGNDwN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Jul 2020 23:52:13 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97D18C061755;
-        Mon, 13 Jul 2020 20:52:13 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id e8so7000822pgc.5;
-        Mon, 13 Jul 2020 20:52:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=GnebsxGNNiOoiYfiC1kn84gDhaBxaLqzjhEh/R1NZTU=;
-        b=e4G57ei3UOCLalrDzEh03NxmlohXTZBoCCWSgitar/EZcG5UL6TMzs+o3S3UlSrZRL
-         WsPz3wA5yv4n/ZTRT8Gy/fJEoiX4xNqx/ik9DBtnRfF6GENhPBQSVhdfbamlZ+WEUEiK
-         rcCV8zYZlVCd+lSJWEQ2CovDKjcb/KPOAMYSF+TVwiqXMygwNKahum0rIeeGfI1goias
-         QYKgjHSQTB6UxMxVECHo0WagC3j9owrRUJ+LnbY+FGnsFOTiRtpH4wLUcX48DiQIEBQp
-         WEFAUOolpMCPgxsI1uC4vHxw+0AQoYtQG065bWm0wt4BXu7S7MaYc64T2zPbW0Gb7KqV
-         k5LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=GnebsxGNNiOoiYfiC1kn84gDhaBxaLqzjhEh/R1NZTU=;
-        b=nHE+aJXps5s1Zf3WQa7rMEaxGYC9yEXIT7yyyYgbh03r0oxFU07Se7ZFXXckbAZv60
-         NzTFBvqhkwdqrP2xaIwuBN45aj//raHJHZjeYEBvYN/HflyWHwoZzyQ4DKVtVMqevmAC
-         zIQdGTRgoHILv2RoqyAxGvMb2riC9glIPAyYNpAIalZ9czW+BEmip/VmZv0MKJydoI/0
-         0SpNFKXPrrpoaOXNVSKnSF4hBtaSkbArW0ZPGkgwDWLTjGay4mnTaMIPrH/ExOpNOj16
-         /d8k6kXP5vUCmS2FNUommZY7izP1fk398+SIoSQUuR3G+P4Iv3aK6fQHPzohYM3uY22C
-         8+7A==
-X-Gm-Message-State: AOAM533P0hCNRCS81SAvQ5EOdZ2xDkp7UXnomvPWq2bdTCuYQkGtOWVR
-        iMYqy9T4cIv6lqjR1b+huTFvDeL7llo=
-X-Google-Smtp-Source: ABdhPJw9XxcIqQaocq0iMXTMvVlAUSgMG4zI17nmiqc325A24sn+tmIhqUFMdSHtOmt1ZJbCIh7j9g==
-X-Received: by 2002:a63:2b91:: with SMTP id r139mr1946237pgr.61.1594698733164;
-        Mon, 13 Jul 2020 20:52:13 -0700 (PDT)
-Received: from fmin-OptiPlex-7060.nreal.work ([103.206.191.8])
-        by smtp.gmail.com with ESMTPSA id v11sm17595832pfc.108.2020.07.13.20.52.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 13 Jul 2020 20:52:12 -0700 (PDT)
-From:   dillon.minfei@gmail.com
-To:     sfr@canb.auug.org.au, bcousson@baylibre.com, tony@atomide.com,
-        robh+dt@kernel.org
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dillon min <dillon.minfei@gmail.com>
-Subject: [PATCH v3] Since am437x have the same clock structure with am335x [1][2], reuse the code from Tony Lindgren's patch [3] to fix dcan probe failed on am437x platform.
-Date:   Tue, 14 Jul 2020 11:52:06 +0800
-Message-Id: <1594698726-4557-2-git-send-email-dillon.minfei@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1594698726-4557-1-git-send-email-dillon.minfei@gmail.com>
-References: <1594698726-4557-1-git-send-email-dillon.minfei@gmail.com>
+        id S1726546AbgGNDyN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Jul 2020 23:54:13 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:34977 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726510AbgGNDyM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 13 Jul 2020 23:54:12 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4B5RTY0LPfz9sRR;
+        Tue, 14 Jul 2020 13:54:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1594698849;
+        bh=3B84NJPSJ3aCDVa/eUO1Ar7r+qMlInL+yp7oVPhgKDQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=kiyCts7uI9biVlsodhX8PvD+tlBUJMqUywoXAsXM8coW6k4ay1rwMDmTNv0V9PkJ0
+         6eP8WkEMbg7izxzfe0+J7oS2GohHswBQbeXrMtWM57YCvDarMXKzJZjkuPYckt43/p
+         dJhYrz6SyYNepcWVeQnjek7bpSIzNx6LwIAytGvSrIGinn57dSK9sQCbL3DCknLXix
+         LhR9aO3BcQuOFOV1UXaCTFGMPxjdrkGPfvii26xZ4p1/J0/nnFTklEvL4myH52VSpp
+         IqFM2C6ncVCaxCJkrqK0AooGRupwAVnOOeHaUZPTrYkt6lVPS9F1eX0LqXOgvEwAf+
+         czRZaUgkde/tg==
+Date:   Tue, 14 Jul 2020 13:54:07 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     dillon min <dillon.minfei@gmail.com>
+Cc:     Benoit Cousson <bcousson@baylibre.com>, tony@atomide.com,
+        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] Since am437x have the same clock structure with
+ am335x [1][2], reuse the code from Tony Lindgren's patch [3] to fix dcan
+ probe failed on am437x platform.
+Message-ID: <20200714135407.35992389@canb.auug.org.au>
+In-Reply-To: <CAL9mu0JurdBoXbSxvHUmNFSBOa=RneNyYtzT=C1MvJs10Y-Geg@mail.gmail.com>
+References: <1594696998-3995-1-git-send-email-dillon.minfei@gmail.com>
+        <1594696998-3995-2-git-send-email-dillon.minfei@gmail.com>
+        <20200714133835.3b03b8af@canb.auug.org.au>
+        <CAL9mu0JurdBoXbSxvHUmNFSBOa=RneNyYtzT=C1MvJs10Y-Geg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/ysRfC1yFZY8=z2G12/rynj_";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: dillon min <dillon.minfei@gmail.com>
+--Sig_/ysRfC1yFZY8=z2G12/rynj_
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+Hi Dillon,
 
-[1]: https://www.ti.com/lit/pdf/spruh73 Chapter-23, Figure 23-1. DCAN
-Integration
-[2]: https://www.ti.com/lit/pdf/spruhl7 Chapter-25, Figure 25-1. DCAN
-Integration
-[3]: commit 516f1117d0fb ("ARM: dts: Configure osc clock for d_can on am335x")
+On Tue, 14 Jul 2020 11:43:31 +0800 dillon min <dillon.minfei@gmail.com> wro=
+te:
+>
+> On Tue, Jul 14, 2020 at 11:38 AM Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+> >
+> > On Tue, 14 Jul 2020 11:23:18 +0800 dillon.minfei@gmail.com wrote: =20
+> > >
+> > > From: dillon min <dillon.minfei@gmail.com>
+> > >
+> > > Fixes: 1a5cd7c23cc5 ("bus: ti-sysc: Enable all clocks directly during=
+ init to read revision")
+> > >
+> > > [1]: https://www.ti.com/lit/pdf/spruh73 Chapter-23, Figure 23-1. DCAN
+> > > Integration
+> > > [2]: https://www.ti.com/lit/pdf/spruhl7 Chapter-25, Figure 25-1. DCAN
+> > > Integration
+> > > [3]: commit 516f1117d0fb ("ARM: dts: Configure osc clock for d_can on=
+ am335x")
+> > >
+> > > Signed-off-by: dillon min <dillon.minfei@gmail.com>
+> > > ---
+> > >
+> > > Hi Stephen,
+> > >
+> > > This changes correct commit messages based on your reviewing.
+> > > make Fixes tags to oneline.
+> > > make all commit message tags at the end of commit message =20
+> >
+> > But the Fixes: line should be down with the Signed-off-by: line ...
+> > =20
+> Ok, should it be like this=EF=BC=8Ci will resubmit it.
+>=20
+> Subject: [PATCH v2] Since am437x have the same clock structure with am335x
+>  [1][2], reuse the code from Tony Lindgren's patch [3] to fix dcan
+>  probe failed on the am437x platform.
 
-Signed-off-by: dillon min <dillon.minfei@gmail.com>
-Fixes: 1a5cd7c23cc5 ("bus: ti-sysc: Enable all clocks directly during init to read revision")
----
+You should have a shorter subject and maybe the above could be the
+first paragraph of the commit message.
 
-Hi Stephen,
+>=20
+> [1]: https://www.ti.com/lit/pdf/spruh73 Chapter-23, Figure 23-1. DCAN
+> Integration
+> [2]: https://www.ti.com/lit/pdf/spruhl7 Chapter-25, Figure 25-1. DCAN
+> Integration
+> [3]: commit 516f1117d0fb ("ARM: dts: Configure osc clock for d_can on am3=
+35x")
+>=20
+> Signed-off-by: dillon min <dillon.minfei@gmail.com>
+> Fixes: 1a5cd7c23cc5 ("bus: ti-sysc: Enable all clocks directly during
+> init to read revision")
 
-This changes correct commit messages based on your reviewing.
-make Fixes tags to oneline.
-make all commit message tags at the end of commit message
-make Fixes tags after Signed-off-by line.
+No wrapping the the Fixes line, please and it would usually go before
+your Signed=3Doff-by line
+--=20
+Cheers,
+Stephen Rothwell
 
- arch/arm/boot/dts/am437x-l4.dtsi | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+--Sig_/ysRfC1yFZY8=z2G12/rynj_
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
-index 0d0f9fe4a882..4129affde54e 100644
---- a/arch/arm/boot/dts/am437x-l4.dtsi
-+++ b/arch/arm/boot/dts/am437x-l4.dtsi
-@@ -1541,8 +1541,9 @@
- 			reg = <0xcc020 0x4>;
- 			reg-names = "rev";
- 			/* Domains (P, C): per_pwrdm, l4ls_clkdm */
--			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN0_CLKCTRL 0>;
--			clock-names = "fck";
-+			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN0_CLKCTRL 0>,
-+			<&dcan0_fck>;
-+			clock-names = "fck", "osc";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0xcc000 0x2000>;
-@@ -1550,6 +1551,8 @@
- 			dcan0: can@0 {
- 				compatible = "ti,am4372-d_can", "ti,am3352-d_can";
- 				reg = <0x0 0x2000>;
-+				clocks = <&dcan0_fck>;
-+				clock-names = "fck";
- 				syscon-raminit = <&scm_conf 0x644 0>;
- 				interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
-@@ -1561,8 +1564,9 @@
- 			reg = <0xd0020 0x4>;
- 			reg-names = "rev";
- 			/* Domains (P, C): per_pwrdm, l4ls_clkdm */
--			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN1_CLKCTRL 0>;
--			clock-names = "fck";
-+			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN1_CLKCTRL 0>,
-+			<&dcan1_fck>;
-+			clock-names = "fck", "osc";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0xd0000 0x2000>;
-@@ -1570,6 +1574,8 @@
- 			dcan1: can@0 {
- 				compatible = "ti,am4372-d_can", "ti,am3352-d_can";
- 				reg = <0x0 0x2000>;
-+				clocks = <&dcan1_fck>;
-+				clock-name = "fck";
- 				syscon-raminit = <&scm_conf 0x644 1>;
- 				interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
--- 
-2.7.4
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl8NLF8ACgkQAVBC80lX
+0GyneAf/Vz8N3OEDTkT89DgJLYH6tp0quCfVnAO7ZCwvo2ORCaJLnoz3f9PwlYRX
+HV7I5F02PmnsNvByTy+1oO5yruYKgABTbl1LViGu45JCzoUmqA8P4haX9wEGo2X9
+VTNwDJxipYdvkhIQ/+V6CGlUnanfbeo4pEGr9+b95rKMBdf90ELo6WFw9a/NxAyi
+Tg+89BFIp1BLfLYC/zGqjGP/P7sE6gUV/luxtcJGLnNrd9ENBfne9bNAwP61zsAZ
+So5f/a+msvHuIRM38X6Qr9g97+hBIPjyilrXVx7jX0sT9J3wADZwsUoQQ4EJCLtU
+G1bxSK72+YNX6ZgVcmZjPbR+u+FcBQ==
+=KYmx
+-----END PGP SIGNATURE-----
+
+--Sig_/ysRfC1yFZY8=z2G12/rynj_--
