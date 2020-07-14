@@ -2,135 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2577B21E644
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jul 2020 05:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BEDB21E668
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jul 2020 05:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726629AbgGNDX1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Jul 2020 23:23:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726435AbgGNDX0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Jul 2020 23:23:26 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B70FC061755;
-        Mon, 13 Jul 2020 20:23:26 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id s189so1924484pgc.13;
-        Mon, 13 Jul 2020 20:23:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=xW5/BabNEIvpDOfbtUR9xY+c9eab4OK4y+/ElG/HHWo=;
-        b=I3Ozj2LdraXWTsbMzEfYCxicSyC/Sa7NMra7F1PtGAGy9xQZj+TC61P3+F9caJO819
-         QDws7LMCyA/0it6sG30unvvKnxU55JR+zndf0Gozr7NVKte/zyNwbaHotdglzIKmeStv
-         IkJHwcyCQ2pCWNBhWzfZlVLIdAELN5FkHm7KiaOXwjsUQBag2g4DlP2Qp5qHw2vi/HWh
-         ZchcetBT9Y+hiP4LjVclRVQA4q2WNUyqo1/srwUgEIchWX5Lr3hjzR6hW/ktHZFVR+5m
-         5VIoOEk0OsZ5tXB8mHhnjPBHuT5P48vdDsSoHXrIlUxjCx6mTdnm4WS7KRFFRI6B+z4n
-         JiKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=xW5/BabNEIvpDOfbtUR9xY+c9eab4OK4y+/ElG/HHWo=;
-        b=qiatt0cI0Mn6JHAfqTAJu7GdvVLSbWfMQ9AvW5BKC4/Cgl3mnH9j5PXKQDSucXXF/g
-         G0fP3/Kru6fFbAll4nYJxK8FsLojkRc+nG/t10YKqddZpecAeFxLGMFzRkpfCYFj8ZV9
-         fXyxv43FetGRM9jYtCn6Fe+gRWcK++9WtJzVrF8BpF1x2G7KB6ZKaKSScWDIm/sefkgt
-         fInKDuBPT+T0+8lLxI/D0DlR5meNzDo17yW74SlyiRu6X9duS1VsQxcshOcwSLqlpFdV
-         dko1K8d+itGdPStuTTp/esw3BpbaNGU+dthxla5pTLIIL22iR5TUZsr8I+WjKGvsni2o
-         Ye1A==
-X-Gm-Message-State: AOAM5309WhYtpOMhwYIdMWRmRX70eMLvaPL5rjtIkJJh81yyDJOpaMJc
-        Lod7mYGvX3TsURhJWKOPOVUNbXkSaZg=
-X-Google-Smtp-Source: ABdhPJxxORme6Q3TuPJzp9CBnVooakCTgBJw/bYUDbA95N5iNpBAUOq8mPtWEX4loWdX/M44VdDqdg==
-X-Received: by 2002:a63:d74c:: with SMTP id w12mr1852456pgi.260.1594697005581;
-        Mon, 13 Jul 2020 20:23:25 -0700 (PDT)
-Received: from fmin-OptiPlex-7060.nreal.work ([103.206.191.8])
-        by smtp.gmail.com with ESMTPSA id c139sm15243184pfb.65.2020.07.13.20.23.23
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 13 Jul 2020 20:23:25 -0700 (PDT)
-From:   dillon.minfei@gmail.com
-To:     sfr@canb.auug.org.au, bcousson@baylibre.com, tony@atomide.com,
-        robh+dt@kernel.org
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dillon min <dillon.minfei@gmail.com>
-Subject: [PATCH v2] Since am437x have the same clock structure with am335x [1][2], reuse the code from Tony Lindgren's patch [3] to fix dcan probe failed on am437x platform.
-Date:   Tue, 14 Jul 2020 11:23:18 +0800
-Message-Id: <1594696998-3995-2-git-send-email-dillon.minfei@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1594696998-3995-1-git-send-email-dillon.minfei@gmail.com>
+        id S1726715AbgGNDij (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Jul 2020 23:38:39 -0400
+Received: from ozlabs.org ([203.11.71.1]:41395 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726456AbgGNDij (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 13 Jul 2020 23:38:39 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4B5R7c1n5lz9sRf;
+        Tue, 14 Jul 2020 13:38:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1594697917;
+        bh=utKdEPCFFOb8Q1Yxk4/KLx+BAJ8D2GFKAuYxXohCvG8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=YhNyqPH34KDJC8jEG9M/eVuyt9cp7GboLqIlNbnCksVZV0jDSD5tcjZ3qamCB2BTW
+         77nJg9JkOSDaEQYDHE5qSYLdALc9cAixTzF6wwWdelNfgZJEOXuRtsb5OmM/Ryndal
+         Fi7cu7PRJ8g836mWmZbDvPevVHabbZo9dUzYQEMix9rzzA15BBiwJbcWsnkxmMvgFo
+         An/EbFyasd8sLsnaqw9HAYxY8ljonIpWhWzeKGjMXwdb46oLK/X7pPGwYDZ0MzgzeH
+         Ydu7j+da1KVtcIwii1oA/6ogGp2YLXf8fHv6gX+PbS/4lujDnGNdPiqpeYR18fLRVl
+         SW2JhvfMsQzpw==
+Date:   Tue, 14 Jul 2020 13:38:35 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     dillon.minfei@gmail.com
+Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] Since am437x have the same clock structure with
+ am335x [1][2], reuse the code from Tony Lindgren's patch [3] to fix dcan
+ probe failed on am437x platform.
+Message-ID: <20200714133835.3b03b8af@canb.auug.org.au>
+In-Reply-To: <1594696998-3995-2-git-send-email-dillon.minfei@gmail.com>
 References: <1594696998-3995-1-git-send-email-dillon.minfei@gmail.com>
+        <1594696998-3995-2-git-send-email-dillon.minfei@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/k1XeJEgdCmFTZKkg66haG0l";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: dillon min <dillon.minfei@gmail.com>
+--Sig_/k1XeJEgdCmFTZKkg66haG0l
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 1a5cd7c23cc5 ("bus: ti-sysc: Enable all clocks directly during init to read revision")
+Hi,
 
-[1]: https://www.ti.com/lit/pdf/spruh73 Chapter-23, Figure 23-1. DCAN
-Integration
-[2]: https://www.ti.com/lit/pdf/spruhl7 Chapter-25, Figure 25-1. DCAN
-Integration
-[3]: commit 516f1117d0fb ("ARM: dts: Configure osc clock for d_can on am335x")
+On Tue, 14 Jul 2020 11:23:18 +0800 dillon.minfei@gmail.com wrote:
+>
+> From: dillon min <dillon.minfei@gmail.com>
+>=20
+> Fixes: 1a5cd7c23cc5 ("bus: ti-sysc: Enable all clocks directly during ini=
+t to read revision")
+>=20
+> [1]: https://www.ti.com/lit/pdf/spruh73 Chapter-23, Figure 23-1. DCAN
+> Integration
+> [2]: https://www.ti.com/lit/pdf/spruhl7 Chapter-25, Figure 25-1. DCAN
+> Integration
+> [3]: commit 516f1117d0fb ("ARM: dts: Configure osc clock for d_can on am3=
+35x")
+>=20
+> Signed-off-by: dillon min <dillon.minfei@gmail.com>
+> ---
+>=20
+> Hi Stephen,
+>=20
+> This changes correct commit messages based on your reviewing.
+> make Fixes tags to oneline.
+> make all commit message tags at the end of commit message
 
-Signed-off-by: dillon min <dillon.minfei@gmail.com>
----
+But the Fixes: line should be down with the Signed-off-by: line ...
 
-Hi Stephen,
+--=20
+Cheers,
+Stephen Rothwell
 
-This changes correct commit messages based on your reviewing.
-make Fixes tags to oneline.
-make all commit message tags at the end of commit message
+--Sig_/k1XeJEgdCmFTZKkg66haG0l
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
+-----BEGIN PGP SIGNATURE-----
 
- arch/arm/boot/dts/am437x-l4.dtsi | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl8NKLsACgkQAVBC80lX
+0Gxd/gf/XDaMTcgnoIkuJHOcd/X609x4hkBiINhaOmMBdPYVD/PQndttJiqXeUPM
+NTBl0H06S0BFUyeLAMiw2eA0gfzcCoz81NKhgTiKFl1uh3n+3MHM4Uw1ZkC2aj+o
+XW46IYvBt9Kf4IFd07cs/JGz8S25/LXhlU1tUQlujk5nBk52afUguIpIPLMq66QS
+3K4BlmGIYFvJhATTndQEkT4nGKfLXm0J00Pg8Ajq+y0kcErMGRgrGOgySdB9v0Ij
+wyZlDlZpLcSF8kfr+3Fk31ZGZmxkNAEvKrvdbsZjmV48PYedlgXYrQ8vk1924nAE
+lT4RqY7Bbs2VdqKaTY1WHYppHlCAOQ==
+=Y4xQ
+-----END PGP SIGNATURE-----
 
-diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
-index 0d0f9fe4a882..4129affde54e 100644
---- a/arch/arm/boot/dts/am437x-l4.dtsi
-+++ b/arch/arm/boot/dts/am437x-l4.dtsi
-@@ -1541,8 +1541,9 @@
- 			reg = <0xcc020 0x4>;
- 			reg-names = "rev";
- 			/* Domains (P, C): per_pwrdm, l4ls_clkdm */
--			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN0_CLKCTRL 0>;
--			clock-names = "fck";
-+			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN0_CLKCTRL 0>,
-+			<&dcan0_fck>;
-+			clock-names = "fck", "osc";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0xcc000 0x2000>;
-@@ -1550,6 +1551,8 @@
- 			dcan0: can@0 {
- 				compatible = "ti,am4372-d_can", "ti,am3352-d_can";
- 				reg = <0x0 0x2000>;
-+				clocks = <&dcan0_fck>;
-+				clock-names = "fck";
- 				syscon-raminit = <&scm_conf 0x644 0>;
- 				interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
-@@ -1561,8 +1564,9 @@
- 			reg = <0xd0020 0x4>;
- 			reg-names = "rev";
- 			/* Domains (P, C): per_pwrdm, l4ls_clkdm */
--			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN1_CLKCTRL 0>;
--			clock-names = "fck";
-+			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN1_CLKCTRL 0>,
-+			<&dcan1_fck>;
-+			clock-names = "fck", "osc";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0xd0000 0x2000>;
-@@ -1570,6 +1574,8 @@
- 			dcan1: can@0 {
- 				compatible = "ti,am4372-d_can", "ti,am3352-d_can";
- 				reg = <0x0 0x2000>;
-+				clocks = <&dcan1_fck>;
-+				clock-name = "fck";
- 				syscon-raminit = <&scm_conf 0x644 1>;
- 				interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
--- 
-2.7.4
-
+--Sig_/k1XeJEgdCmFTZKkg66haG0l--
