@@ -2,58 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1764B21E839
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jul 2020 08:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1604521E83C
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jul 2020 08:35:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725931AbgGNGfN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Jul 2020 02:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37058 "EHLO
+        id S1726856AbgGNGfQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jul 2020 02:35:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbgGNGfM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jul 2020 02:35:12 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3EB8C061755;
-        Mon, 13 Jul 2020 23:35:12 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id t15so1049977pjq.5;
-        Mon, 13 Jul 2020 23:35:12 -0700 (PDT)
+        with ESMTP id S1725788AbgGNGfP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jul 2020 02:35:15 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 996CAC061755;
+        Mon, 13 Jul 2020 23:35:15 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id m22so7160361pgv.9;
+        Mon, 13 Jul 2020 23:35:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=nYIq3s1IHbdH+MZbpM6kGknWWai88MaOCyqNgWjvORc=;
-        b=HE0YOIdtyktN/30g5UR4aTbDMEiJ60MfhzG2RF8vKWVhG1kla54bXSlfT5Tff4Dw5a
-         T6PjAD6fhfPS3YAfdirgAUBBVtHINZVhLZonhmDEiOrAET+wvq348P8fSeQ5QREeoEj4
-         4smc0y3hv+zQxrPiyTdiur6S3uoW9zn9uyuegIrVLEj2gPXxOeDzVN0yFIJjyTMdxLTx
-         l/EglEwGocda2Ezxp+/qNOv0jJY2TEEXJfsDsX1N4C0EMpMRgUiLnd92sjHMJtfwcOyY
-         ymZRU2iJAaDf3W4WxIdDblZyw4XCNi9H2VYTjl3WRUtnBz8iWwuv+Ksddsh2FSYOiplg
-         QigQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=ttRWYRpQA+ROyR/qt6rQ042N5BqhH7zwDEorOgcsIPw=;
+        b=k+9CWDSBFyBA4uCZr9ZjCOxZFRn2+dG48OX0eM1HjXj+N2V3hERruL+Mcetjh8Hlpt
+         E7Kig993b6wqk3ckBvtplrk7lOgpTlrQkGUU4hVLpBQ8DU0JX8kUyWsGw/1oFihjWn8j
+         tOMVWjy/3bsyeOQEmqGIJwVQG3N4MzzY6pQGJm45d4PTng77FEjHi9ydbD00oFtV3uBK
+         6h88I2wYeRACthoCuGcH5o39H9pcohzPC1p4GnKgNY5HNs3INFHXJ+YFVwDp4nBH39EU
+         noOBxd+s93S/LK+u4xpFdIkMvLDfKt7ahXlfEzID58xF2tkrZon2MM9vEQVY4wJdqL0O
+         n9Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=nYIq3s1IHbdH+MZbpM6kGknWWai88MaOCyqNgWjvORc=;
-        b=gFgffUPYFPrd4stCm8H8n/CJBYkYz0cCYJXNOXTwj1GsZhOInWzVVIG8q9iK5g2mYB
-         d2WbcvPWiVG420iUMbUCZKMEFSshv92uc4KfwmjxnBokZ8IQ87oZT98lIiOdRt1i8T3q
-         TqOkk/FhS0QXP0gsN22w20mza/Z0M2/Y0BMzAz/Mptcz604Zm5XZeKgtk8KSrFQcz1hK
-         R+D7oxQSv1gpXDFhYC+rEelgKtlRVIRvo9lh3H7RCAvlAv0LSZSyxwCRc2pgCh8mMyzp
-         107wGG0uKkF6NayEk6Uu1G0ngOK94iM/HYOS37pTjzWtKzSvSnzf/WwoOT6UJnHfEerB
-         +NoQ==
-X-Gm-Message-State: AOAM531vFL+7WEbwXZTGCqtsqISLgPv/4jXEGqKnxW3EJwa4luEFzNgf
-        U9Redn5xXpuzwDWh+rCGn+Y=
-X-Google-Smtp-Source: ABdhPJzXWYfelP2UlkhJrFFyCyinzaLny15ZuOdnLd3JvnBFfo9xDWUlt3iTnE1a+GsOEMdsc8V+1Q==
-X-Received: by 2002:a17:90a:14a5:: with SMTP id k34mr3214646pja.37.1594708512326;
-        Mon, 13 Jul 2020 23:35:12 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=ttRWYRpQA+ROyR/qt6rQ042N5BqhH7zwDEorOgcsIPw=;
+        b=FO3h5S44jmujNVPwVrhlRYp9DUvvPXVaJJQouiE0Wm18pvSd5CNsCKynNxtPylpms5
+         mpN4cVz1OrUhmPz3xglyWkvNgiR0mKM+sTSdKlx53TDo0zDajsrenFHffm8XHamcyuPl
+         B5PLwJo/UYj8tyS51Jc6Rm4LEULyEd0hzBqdonqv1mR3rMb1/MxK28hat7ENG+lp+29o
+         qoWSkJ2h4HXLdkHKKC6xac4san1lP4vnF9T6YYwzCKW3YD8Wul06UxjshBRo3o3NylcH
+         KEhlYUaILVHVSECmxsZKOhns70Jh20VPCmYeXv1g1aLA3Q2WUFaUfH1wl0aB9ctlTrfW
+         TqFA==
+X-Gm-Message-State: AOAM5339jiJcVO2+wHUgp08jBlf4tRJQhjES3S09SIICNBVWUK2GjxKz
+        nRdFGGccSDwP+DvoBRAEAe2oe/bfdw4=
+X-Google-Smtp-Source: ABdhPJxsXMb8aduQly7Mg4wx8VR76wGSzmEGY7JJaD/c4MxeTPvsNGUJRjc3/isijJ4jjqq1+Ci6/Q==
+X-Received: by 2002:aa7:9609:: with SMTP id q9mr2892721pfg.269.1594708515214;
+        Mon, 13 Jul 2020 23:35:15 -0700 (PDT)
 Received: from fmin-OptiPlex-7060.nreal.work ([103.206.191.8])
-        by smtp.gmail.com with ESMTPSA id q29sm16041215pfl.77.2020.07.13.23.35.09
+        by smtp.gmail.com with ESMTPSA id q29sm16041215pfl.77.2020.07.13.23.35.12
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 13 Jul 2020 23:35:11 -0700 (PDT)
+        Mon, 13 Jul 2020 23:35:14 -0700 (PDT)
 From:   dillon.minfei@gmail.com
 To:     sfr@canb.auug.org.au, bcousson@baylibre.com, tony@atomide.com,
         robh+dt@kernel.org
 Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, dillon min <dillon.minfei@gmail.com>
-Subject: [PATCH v4] ARM: dts: Configure osc clock for d_can on am437x
-Date:   Tue, 14 Jul 2020 14:35:06 +0800
-Message-Id: <1594708507-6794-1-git-send-email-dillon.minfei@gmail.com>
+Subject: [PATCH v4] Fix dcan driver probe failed on am437x platform
+Date:   Tue, 14 Jul 2020 14:35:07 +0800
+Message-Id: <1594708507-6794-2-git-send-email-dillon.minfei@gmail.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1594708507-6794-1-git-send-email-dillon.minfei@gmail.com>
+References: <1594708507-6794-1-git-send-email-dillon.minfei@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
@@ -61,21 +64,6 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: dillon min <dillon.minfei@gmail.com>
 
-V3 -> V4:
-make Fixes tags before Signed-off-by line.
-make subject more clear and short.
-add driver probe failed log to commit message.
-
-V2 -> V3:
-make Fixes tags after Signed-off-by line.
-
-V1 -> V2:
-correct commit messages based on Stephen Rothwell's reviewing.
-make Fixes tags to oneline.
-make all commit message tags at the end of commit message
-
-
-V1:
 Got following d_can probe errors with kernel 5.8-rc1 on am437x
 
 [   10.730822] CAN device driver interface
@@ -88,25 +76,11 @@ error -2
 [   10.804617] c_can_platform: probe of 481d0000.can failed with
 error -2
 
-actually, Tony has fixed this issue on am335x, the patch [3]
-commit messages:
-"
-The reason why the issue happens is because we now attempt to read the
-interconnect target module revision register by first manually enabling
-all the device clocks in sysc_probe(). And looks like d_can also needs
-the osc clock in addition to the module clock, and it may or may not be
-enabled depending on the bootloader version and if other devices have
-already requested osc clock.
+actually, Tony has fixed this issue on am335x with the patch [3]
 
-Let's fix the issue by adding osc clock as an optional clock for the
-module for am335x. Note that am437x does not seem to list the osc clock
-at all, so presumably it is not needed for am437x.
-"
+Since am437x has the same clock structure with am335x
+[1][2], so reuse the code from Tony Lindgren's patch [3] to fix it.
 
-from TRM of am335x/am437x [1][2], they have the same clock structure,
-so, we can just reuse [3] for am437x platform.
-
-Tested on custom am4372 board.
 
 [1]: https://www.ti.com/lit/pdf/spruh73 Chapter-23, Figure 23-1. DCAN
 Integration
@@ -114,15 +88,67 @@ Integration
 Integration
 [3]: commit 516f1117d0fb ("ARM: dts: Configure osc clock for d_can on am335x")
 
+Fixes: 1a5cd7c23cc5 ("bus: ti-sysc: Enable all clocks directly during init to read revision")
+Signed-off-by: dillon min <dillon.minfei@gmail.com>
+---
 
-dillon min (1):
-  Since am437x have the same clock structure with am335x [1][2],    
-    reuse the code from Tony Lindgren's patch [reference] to fix dcan
-    probe     failed on am437x platform.
+Hi Stephen,
+
+This changes correct commit messages based on your reviewing.
+make Fixes tags to oneline.
+make all commit message tags at the end of commit message
+make Fixes tags before Signed-off-by line.
+add probe failed log to commit message.
 
  arch/arm/boot/dts/am437x-l4.dtsi | 14 ++++++++++----
  1 file changed, 10 insertions(+), 4 deletions(-)
 
+diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
+index 0d0f9fe4a882..4129affde54e 100644
+--- a/arch/arm/boot/dts/am437x-l4.dtsi
++++ b/arch/arm/boot/dts/am437x-l4.dtsi
+@@ -1541,8 +1541,9 @@
+ 			reg = <0xcc020 0x4>;
+ 			reg-names = "rev";
+ 			/* Domains (P, C): per_pwrdm, l4ls_clkdm */
+-			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN0_CLKCTRL 0>;
+-			clock-names = "fck";
++			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN0_CLKCTRL 0>,
++			<&dcan0_fck>;
++			clock-names = "fck", "osc";
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges = <0x0 0xcc000 0x2000>;
+@@ -1550,6 +1551,8 @@
+ 			dcan0: can@0 {
+ 				compatible = "ti,am4372-d_can", "ti,am3352-d_can";
+ 				reg = <0x0 0x2000>;
++				clocks = <&dcan0_fck>;
++				clock-names = "fck";
+ 				syscon-raminit = <&scm_conf 0x644 0>;
+ 				interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+ 				status = "disabled";
+@@ -1561,8 +1564,9 @@
+ 			reg = <0xd0020 0x4>;
+ 			reg-names = "rev";
+ 			/* Domains (P, C): per_pwrdm, l4ls_clkdm */
+-			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN1_CLKCTRL 0>;
+-			clock-names = "fck";
++			clocks = <&l4ls_clkctrl AM4_L4LS_D_CAN1_CLKCTRL 0>,
++			<&dcan1_fck>;
++			clock-names = "fck", "osc";
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges = <0x0 0xd0000 0x2000>;
+@@ -1570,6 +1574,8 @@
+ 			dcan1: can@0 {
+ 				compatible = "ti,am4372-d_can", "ti,am3352-d_can";
+ 				reg = <0x0 0x2000>;
++				clocks = <&dcan1_fck>;
++				clock-name = "fck";
+ 				syscon-raminit = <&scm_conf 0x644 1>;
+ 				interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
+ 				status = "disabled";
 -- 
 2.7.4
 
