@@ -2,84 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFCCD21E87C
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jul 2020 08:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F07021E8EE
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jul 2020 09:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726432AbgGNGpK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Jul 2020 02:45:10 -0400
-Received: from bilbo.ozlabs.org ([203.11.71.1]:59597 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725945AbgGNGpJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 14 Jul 2020 02:45:09 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4B5WGp4HPBz9s1x;
-        Tue, 14 Jul 2020 16:45:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1594709107;
-        bh=ClduEeAgs47lVi4Z75/vHJ8zjThpPjpSsYlX2EXPZ7E=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bN8EsUsxELG1u7TALvBxLWL2r85/raNsB6NeSDJwP8CbQy/fxXZlXQdvSTYv2KxbH
-         fmFDt0FmRdU/4vwViuqWGpJCib+mE9RWE3u7CnjwUm570RQiIlpPML2K2emLWNE3JI
-         XkV2SN50Xwvh62h1qLywY8UKFr6Ot6S+SUAIs5IwBYCbV98Kg5QufuGrvfGgyjgZRD
-         5DZIBtAa+HjwgA8IJYzALpbyljS3wWqmBb+ZBtsx7BE5jfxT0NvPHSR/ZtSexNs3JF
-         dONbgqHyBkoyQLoyrS1BuMAUJRkh+t2n2mId3vEXVonwcZeOz1TzXdYhjRMt+6BUuG
-         hJw8U06OUu7rQ==
-Date:   Tue, 14 Jul 2020 16:45:04 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     dillon.minfei@gmail.com
-Cc:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] Fix dcan driver probe failed on am437x platform
-Message-ID: <20200714164504.10b23697@canb.auug.org.au>
-In-Reply-To: <1594708507-6794-2-git-send-email-dillon.minfei@gmail.com>
-References: <1594708507-6794-1-git-send-email-dillon.minfei@gmail.com>
-        <1594708507-6794-2-git-send-email-dillon.minfei@gmail.com>
+        id S1726062AbgGNHD0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jul 2020 03:03:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41476 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725788AbgGNHD0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jul 2020 03:03:26 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47CCC061755;
+        Tue, 14 Jul 2020 00:03:25 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id v6so16225665iob.4;
+        Tue, 14 Jul 2020 00:03:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MT7cYYrcM99DVBuXFRqZwFieQfngoQCFo5QcPTP5JIU=;
+        b=UuwneiRc0rQ4ddykmcV5x4aFSBSVHiADlOmVLt+KR1OpoPshajKUwgnvFAcpGSrxl5
+         3pGRlh9s4/86E31cbcNuVMogV6sdDS0rQj9+cA323xxXwYQ2hwNUSV5bssL2w7/SprQh
+         LfMbP5OsgkMYdGRiIZ9q852VoxNxtbKbnzYYVH3B0n6NEnmzVC0nq3KggJDS3YpBUD/D
+         uSvQAEGqc+9ZQzGfzNnvPhpcUtDYw46nzAPxSh+QM/jD8uclpmT76WFgIZJpYQH6XNvq
+         3kwsabONEMBcGjzDzWzgUtPlslAtkKMXs9vFaVg91F6Cfbc077ix/IxSewKrczxN4Yj5
+         9WRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MT7cYYrcM99DVBuXFRqZwFieQfngoQCFo5QcPTP5JIU=;
+        b=f/ch9BlkP3qJNsq2T8fHqnaHjm2tJll2qLzZqYx594cYJ+wAaDjSwO+f1biTQoGzPY
+         fgoQ9epWjnCkbdiCbGropF/oYCuK1djvG6bqoCkbiNQSpCOTpo76iw7d/TeYf9zwDU7E
+         xi/O9BOUZWAyByRRD/5YMBvsx9aBr3p4crfbWZRu5kUdmfE1JwzYfTmga8RziIR12PCK
+         t3JJIu3oPzet8iuaLjj97Ag3gTcfNzOPrUtjBpBY4vTO8F+7azIKj5oNW27aNNZpcjoN
+         Ngu2Bi1APVv/DFX/i0nlbBJ4TAZ75d9kVhmvqtx2GHnIRMAC4tOaeiskNEvFVJAtvjWO
+         lvjw==
+X-Gm-Message-State: AOAM532ZbrIGPU7SPgxx6agSuaTb69ZyigFiEJgdzUCdkJT9l3ASalod
+        DvYcRLtzzZpU4XYpbcCOy5MutxWJKUd9qbfSppo=
+X-Google-Smtp-Source: ABdhPJx/68mFEtDU4FvSbKmhgpZcJ/ThBF5GsLgMTXMMX9bc0cLIFg2GtR0zDMn4VLvb+UyjQcuz6KcG9QXNXo3MMi4=
+X-Received: by 2002:a05:6638:601:: with SMTP id g1mr4378444jar.137.1594710205319;
+ Tue, 14 Jul 2020 00:03:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/+.0IClS8DjJjchbmw_qi_zA";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+References: <1594708507-6794-1-git-send-email-dillon.minfei@gmail.com>
+ <1594708507-6794-2-git-send-email-dillon.minfei@gmail.com> <20200714164504.10b23697@canb.auug.org.au>
+In-Reply-To: <20200714164504.10b23697@canb.auug.org.au>
+From:   dillon min <dillon.minfei@gmail.com>
+Date:   Tue, 14 Jul 2020 15:02:49 +0800
+Message-ID: <CAL9mu0KRc1qNvW4xJj0cn_PoaumCnfdFVoneHja_B+2DPoRTSw@mail.gmail.com>
+Subject: Re: [PATCH v4] Fix dcan driver probe failed on am437x platform
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     Benoit Cousson <bcousson@baylibre.com>, tony@atomide.com,
+        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---Sig_/+.0IClS8DjJjchbmw_qi_zA
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Stephen,
 
-Hi Dillon,
+Thanks for your patience, step by step help on my patch reviewing.
 
-> Hi Stephen,
->=20
-> This changes correct commit messages based on your reviewing.
-> make Fixes tags to oneline.
-> make all commit message tags at the end of commit message
-> make Fixes tags before Signed-off-by line.
-> add probe failed log to commit message.
+Dillon,
 
-Thanks for persisting.  It looks good to me, now.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/+.0IClS8DjJjchbmw_qi_zA
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl8NVHAACgkQAVBC80lX
-0GyuHAgAmwBoMVZJJ41XqErZe0fvVMe9O7xJmHSy+4TlJlzE9R+Aiw3fgWsmzA82
-UoVQZo708iuMwvsbnFl56rq8jJipnsgVl4Ajy4qPbtFLZ5eW8aa3ZmiA3DMhmVzi
-WXY18QLsb+vdvIi0+CjGu88dOR3+nweWGcsAEN3PQroHFf7Y3VQPCNqEdCd/wf2H
-xGt4wyz1YpWOeAEYq89wm45WgnnfjxJ2aUEpTABGlp1NaGoJViMIBFdNgzbCf8li
-FDhLuj6Pjgzw7X9Pn9OduA+prLrTCd0Y2lf89moTfFLgWbCY3RSdJeDGEx8AyCzj
-TcBnhcCOVlGMSmO6AqTpvNfHxhHmhw==
-=mxjk
------END PGP SIGNATURE-----
-
---Sig_/+.0IClS8DjJjchbmw_qi_zA--
+On Tue, Jul 14, 2020 at 2:45 PM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+>
+> Hi Dillon,
+>
+> > Hi Stephen,
+> >
+> > This changes correct commit messages based on your reviewing.
+> > make Fixes tags to oneline.
+> > make all commit message tags at the end of commit message
+> > make Fixes tags before Signed-off-by line.
+> > add probe failed log to commit message.
+>
+> Thanks for persisting.  It looks good to me, now.
+>
+> --
+> Cheers,
+> Stephen Rothwell
