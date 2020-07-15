@@ -2,77 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D900F2214E1
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Jul 2020 21:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31B3E221640
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Jul 2020 22:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726634AbgGOTJm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Jul 2020 15:09:42 -0400
-Received: from muru.com ([72.249.23.125]:37104 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726742AbgGOTIr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 15 Jul 2020 15:08:47 -0400
-Received: from alpine.gateway.sonic.net (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id D21908120;
-        Wed, 15 Jul 2020 19:08:41 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] Few fixes for omaps for v5.8
-Date:   Wed, 15 Jul 2020 12:08:42 -0700
-Message-Id: <pull-1594840100-132735@atomide.com>
-X-Mailer: git-send-email 2.27.0
+        id S1726491AbgGOUah (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Jul 2020 16:30:37 -0400
+Received: from mail-io1-f43.google.com ([209.85.166.43]:45524 "EHLO
+        mail-io1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725917AbgGOUag (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Jul 2020 16:30:36 -0400
+Received: by mail-io1-f43.google.com with SMTP id e64so3651437iof.12;
+        Wed, 15 Jul 2020 13:30:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=yYUQrUg8P+/Z2qQaRZUnCH8LNzb7PJi2wPNt7qBjrAk=;
+        b=QFF11bEGwK0l6zQWIhEYgsC7w3qZla/zGwOxl58k+5kHHbz5/SaGdobToWrSfXtdmU
+         dbr4L3iuk2ePeaBnDkUgqmdPw84GYPcVLyxgOXq7mQgSBtkRs0xCMI0TScLahh3UNq65
+         I3LFX6s8WaQ7Khz64S3mCCbOJGL2b/Ua57JIxkcUGUh0KBMh3W6H2xfew5bVPDStg9BN
+         PMxGfq5RB0Kt0pP/yZ6FqR92GKNcTbTYPk4Sft/EDzGo4Y644lAzPHpIPpAWZoBEI9pE
+         OUFPQjtwZqEyUAgs4fGzTfMzAFQsfUgw7B/U971fRqt2safVGph7aV0a0JD3ZGSzQnQi
+         qILQ==
+X-Gm-Message-State: AOAM532h/O1fK9zaL1R+0zeT2Ydzj/EV0vktKSa3i2k5ZJ1j96ZSm3pt
+        NFkchSvea6Sza5c95cwsqA==
+X-Google-Smtp-Source: ABdhPJy/Dkdfg1gv5bU+wnbD/kvGdXdWEHoc1q9BvuFWtmaNw+uFMhXfRK/BiwT7u5MnV+3YpU7dbQ==
+X-Received: by 2002:a05:6602:1581:: with SMTP id e1mr1165025iow.44.1594845035932;
+        Wed, 15 Jul 2020 13:30:35 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id o7sm1692424ioo.4.2020.07.15.13.30.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2020 13:30:35 -0700 (PDT)
+Received: (nullmailer pid 767349 invoked by uid 1000);
+        Wed, 15 Jul 2020 20:30:34 -0000
+Date:   Wed, 15 Jul 2020 14:30:34 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc:     Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Rob Herring <robh+dt@kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Merlijn Wajer <merlijn@wizzup.org>, kernel@collabora.com,
+        linux-omap@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: [PATCHv1 1/4] dt-bindings: display: panel-dsi-cm: convert to YAML
+Message-ID: <20200715203034.GA767277@bogus>
+References: <20200629223315.118256-1-sebastian.reichel@collabora.com>
+ <20200629223315.118256-2-sebastian.reichel@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200629223315.118256-2-sebastian.reichel@collabora.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+On Tue, 30 Jun 2020 00:33:12 +0200, Sebastian Reichel wrote:
+> Convert panel-dsi-cm bindings to YAML and add
+> missing properties while at it.
+> 
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> ---
+>  .../bindings/display/panel/panel-dsi-cm.txt   |  29 -----
+>  .../bindings/display/panel/panel-dsi-cm.yaml  | 100 ++++++++++++++++++
+>  2 files changed, 100 insertions(+), 29 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/display/panel/panel-dsi-cm.txt
+>  create mode 100644 Documentation/devicetree/bindings/display/panel/panel-dsi-cm.yaml
+> 
 
-The following changes since commit a352fe371053d047481635da328ea781329c84a4:
-
-  Merge branch 'omap-for-v5.8/fixes-rc1' into fixes (2020-06-16 09:26:03 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.8/fixes-rc5-signed
-
-for you to fetch changes up to 2a4117df9b436a0e4c79d211284ab2097bcd00dc:
-
-  ARM: dts: Fix dcan driver probe failed on am437x platform (2020-07-14 08:03:28 -0700)
-
-----------------------------------------------------------------
-Fixes for omaps for v5.8-rc cycle
-
-Few fixes for issues noticed during testing:
-
-- Two DEBUG_ATOMIC_SLEEP fixes for ti-sysc interconnect target module
-  driver
-
-- A regression fix for ti-sysc no-idle handling that caused issues
-  compared to earlier platform data based booting
-
-- A fix for memory leak for omap_hwmod_allocate_module
-
-- Fix d_can driver probe for am437x
-
-----------------------------------------------------------------
-Chen Tao (1):
-      ARM: OMAP2+: Fix possible memory leak in omap_hwmod_allocate_module
-
-Tony Lindgren (3):
-      bus: ti-sysc: Fix wakeirq sleeping function called from invalid context
-      bus: ti-sysc: Fix sleeping function called from invalid context for RTC quirk
-      bus: ti-sysc: Do not disable on suspend for no-idle
-
-dillon min (1):
-      ARM: dts: Fix dcan driver probe failed on am437x platform
-
- arch/arm/boot/dts/am437x-l4.dtsi | 14 ++++++++++----
- arch/arm/mach-omap2/omap_hwmod.c | 14 +++++++++++---
- drivers/bus/ti-sysc.c            | 23 ++++++++++++-----------
- 3 files changed, 33 insertions(+), 18 deletions(-)
+Reviewed-by: Rob Herring <robh@kernel.org>
