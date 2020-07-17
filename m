@@ -2,69 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45084222D9F
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jul 2020 23:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E3F222307F
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jul 2020 03:35:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727790AbgGPVRy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jul 2020 17:17:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56798 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727771AbgGPVRx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 16 Jul 2020 17:17:53 -0400
-Received: from embeddedor (unknown [201.162.240.161])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4451720760;
-        Thu, 16 Jul 2020 21:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594934273;
-        bh=fl1M7KHJ6l6iSD5rSUZXrn1j+ZTdSGkBJT8qw0W0aV8=;
-        h=Date:From:To:Cc:Subject:From;
-        b=QzHl1kwGgmnLUBfSLRD17xkzonCsUImNvS+Y6vY0WCWOfENLRZgMbl4EjNdoheJwF
-         /zgVdBHiRfOq9OHpLBfUou8VouyIvV8uIHuAv2NT6WBE9gQ574IH2MK8TkXcf2blHv
-         7L8OZIyW1cuQoTCj4I2k1AO5iJcdrEKAsnE/NTzg=
-Date:   Thu, 16 Jul 2020 16:23:17 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+        id S1726401AbgGQBfo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Jul 2020 21:35:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37802 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726960AbgGQBff (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Jul 2020 21:35:35 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC6EC08C5DB
+        for <linux-omap@vger.kernel.org>; Thu, 16 Jul 2020 18:35:35 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id z15so9242662wrl.8
+        for <linux-omap@vger.kernel.org>; Thu, 16 Jul 2020 18:35:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=C+8I031c2hEesaHtS2cfGMJOZo6/g22x05Hcv9ocwjk=;
+        b=pj1mWLsxalHIuf9Pm1hZOhp9XC3YtUxl5L0+12sMGteVE1eugXs25S6A+S3EFlUgtn
+         eO6/H+YEjH5gebkBVpTljRUEQZnlUMDEhQhd1HpPzi6pdRNGNT2hq4Ejrflosh24ECt7
+         abG4rpXyfoioF80E+umsrMDWe/rkoihK9yl6Y9EWFP5G7/SP2T/yx8G6Le7LDk91VXdi
+         TBcNpIUsV2VYLApwvilSRiR+nzqjyNnwbPFFLXRPojoZfwGPqwtlxJIjKiyErCrOjk4P
+         Zqy1dKuqHPb1Z/Z9QUzJz3Vp5XzhpGJd4Qpxmci8lPf/6akkXi0X6npoqsecsTi5tTkO
+         aArw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=C+8I031c2hEesaHtS2cfGMJOZo6/g22x05Hcv9ocwjk=;
+        b=lOpfUCIrpefEstRogkIu8+6ulGaAMw8G+0blZBcccgveVyC2sSLqPuY9oIjbJdBmKH
+         ctFTq2Umg3X+Xm90NOQy/qEFdfuQGqwnJNOaYQJwj+6LEYQWq/PWAZiW4pTskn9L/th5
+         CYSAQiUc7e5p+P4YgW8Gw7DDYj0RyU93Wjo5OspdMWtt3TdZXydRk5nITXLILMm5NyzZ
+         OUSj7S6re43CQOF0BfiPnL8veF6NIJwR/nSAIJBIP26MFGbSt+twIwntFq0SnYpvBJkw
+         rf2sZQwBXYFDNIzglsq8fTbcW+W+7JW3c6tC+3l0QcYU15Mra9WzGIX4KceQr9M69FLV
+         l6jw==
+X-Gm-Message-State: AOAM5338ZTVyu7rfG/nzp8r01u7yxIrKwz8RwCpFr6MYysEwIqFFqt2i
+        RYmTPbP66rDj7SP/B/ZnX1YyzA==
+X-Google-Smtp-Source: ABdhPJxqER0flvJa+b1TeXf5gn7RqfPuflGfXe4a1gY41a8svtFbOIgL9uqu1kvhe7o16GbeEyX33Q==
+X-Received: by 2002:adf:dd83:: with SMTP id x3mr8479774wrl.292.1594949733904;
+        Thu, 16 Jul 2020 18:35:33 -0700 (PDT)
+Received: from localhost.localdomain (220.red-95-125-197.staticip.rima-tde.net. [95.125.197.220])
+        by smtp.gmail.com with ESMTPSA id 138sm6708828wmb.1.2020.07.16.18.35.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2020 18:35:33 -0700 (PDT)
+From:   Drew Fustini <drew@beagleboard.org>
 To:     Tony Lindgren <tony@atomide.com>,
         Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] pinctrl: single: Use fallthrough pseudo-keyword
-Message-ID: <20200716212317.GA17754@embeddedor>
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Cc:     Drew Fustini <drew@beagleboard.org>
+Subject: [PATCH] pinctrl: single: print gpio number in pins debugfs file
+Date:   Fri, 17 Jul 2020 03:33:40 +0200
+Message-Id: <20200717013338.1741659-1-drew@beagleboard.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Replace the existing /* fall through */ comments and its variants with
-the new pseudo-keyword macro fallthrough[1].
+If there is a gpio range mapping for the pin, then print out the gpio
+number for the pin in the debugfs 'pins' file.
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
+Here is an example on the BeagleBone Black:
 
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+  $ cat /sys/kernel/debug/pinctrl/44e10800.pinmux-pinctrl-single/pins |head -20
+  registered pins: 142
+  pin 0 (PIN0) 44e10800 00000027 pinctrl-single GPIO-32
+  pin 1 (PIN1) 44e10804 00000027 pinctrl-single GPIO-33
+  pin 2 (PIN2) 44e10808 00000027 pinctrl-single GPIO-34
+  pin 3 (PIN3) 44e1080c 00000027 pinctrl-single GPIO-35
+  pin 4 (PIN4) 44e10810 00000027 pinctrl-single GPIO-36
+  pin 5 (PIN5) 44e10814 00000027 pinctrl-single GPIO-37
+  pin 6 (PIN6) 44e10818 00000027 pinctrl-single GPIO-38
+  pin 7 (PIN7) 44e1081c 00000027 pinctrl-single GPIO-39
+  pin 8 (PIN8) 44e10820 00000027 pinctrl-single GPIO-22
+  pin 9 (PIN9) 44e10824 00000030 pinctrl-single GPIO-23
+  pin 10 (PIN10) 44e10828 00000030 pinctrl-single GPIO-26
+  pin 11 (PIN11) 44e1082c 00000030 pinctrl-single GPIO-27
+  pin 12 (PIN12) 44e10830 00000030 pinctrl-single GPIO-44
+  pin 13 (PIN13) 44e10834 00000030 pinctrl-single GPIO-45
+  pin 14 (PIN14) 44e10838 00000030 pinctrl-single GPIO-46
+  pin 15 (PIN15) 44e1083c 00000030 pinctrl-single GPIO-47
+  pin 16 (PIN16) 44e10840 00000027 pinctrl-single GPIO-48
+  pin 17 (PIN17) 44e10844 00000027 pinctrl-single GPIO-49
+  pin 18 (PIN18) 44e10848 00000000 pinctrl-single GPIO-50
+
+Signed-off-by: Drew Fustini <drew@beagleboard.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index e6d1cf25782c..132b36ef5d83 100644
+index f3a8a465d27e..473fe0f61792 100644
 --- a/drivers/pinctrl/pinctrl-single.c
 +++ b/drivers/pinctrl/pinctrl-single.c
-@@ -560,7 +560,7 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
- 			case PIN_CONFIG_BIAS_PULL_UP:
- 				if (arg)
- 					pcs_pinconf_clear_bias(pctldev, pin);
--				/* fall through */
-+				fallthrough;
- 			case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
- 				data &= ~func->conf[i].mask;
- 				if (arg)
+@@ -275,6 +275,14 @@ static void pcs_pin_dbg_show(struct pinctrl_dev *pctldev,
+ 	unsigned val, mux_bytes;
+ 	unsigned long offset;
+ 	size_t pa;
++	struct pinctrl_gpio_range *range;
++	unsigned gpio_num = 0;
++
++	list_for_each_entry(range, &pctldev->gpio_ranges, node) {
++		if ((pin >= range->pin_base) &&
++		    (pin < (range->pin_base + range->npins)))
++			gpio_num = range->base + (pin - range->pin_base);
++	}
+ 
+ 	pcs = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -283,7 +291,10 @@ static void pcs_pin_dbg_show(struct pinctrl_dev *pctldev,
+ 	val = pcs->read(pcs->base + offset);
+ 	pa = pcs->res->start + offset;
+ 
+-	seq_printf(s, "%zx %08x %s ", pa, val, DRIVER_NAME);
++	if (gpio_num > 0)
++		seq_printf(s, "%zx %08x %s GPIO-%u", pa, val, DRIVER_NAME, gpio_num);
++	else
++		seq_printf(s, "%zx %08x %s", pa, val, DRIVER_NAME);
+ }
+ 
+ static void pcs_dt_free_map(struct pinctrl_dev *pctldev,
 -- 
-2.27.0
+2.25.1
 
