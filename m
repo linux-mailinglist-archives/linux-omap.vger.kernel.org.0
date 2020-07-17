@@ -2,104 +2,228 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF882244EA
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jul 2020 22:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BB47224557
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jul 2020 22:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728194AbgGQUJ3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Jul 2020 16:09:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40392 "EHLO
+        id S1728304AbgGQUsn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jul 2020 16:48:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726771AbgGQUJ2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jul 2020 16:09:28 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD486C0619D2;
-        Fri, 17 Jul 2020 13:09:28 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id k27so7193375pgm.2;
-        Fri, 17 Jul 2020 13:09:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uWgTw4SO7HlV8PPTjgP389Ux/qhYArlWIa2voew7JMo=;
-        b=ott81wzf+3QElLTOn1rqr8bX/GCFvTHKKXe7X72vUj7IdLFfOmIyx2KmlScch5Y3Se
-         DJA2mVl7SiBnANwMnJq1mpNyVf2B7it+sn8Sx5lODm3cBbFYG2ys5h5kaeFE5ayg9vof
-         ThFyg0I93K2s4jWohSzdOZG9InUPiIyCaic2J/kkZh4LIxty1P0T0eDxbm3j0SRuboS4
-         7vWXcwI9eb36kRCO/nH9/6hpRcNTvNJDbPxrHllKz/KZTWefW5aA37Vz8EiziqZovugo
-         crxI8DtNA7DFhU5fEUhz/Kcy6787n05Y+GBRiWMIvoX5BspgQ5p1VyKGlQ7NihFgX7xz
-         zzTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uWgTw4SO7HlV8PPTjgP389Ux/qhYArlWIa2voew7JMo=;
-        b=LbFNJwbyYHWvAUtseRc0z1Bw3m5p6b4V4xtEn3PX+eB0hFjfWC0QEBGWObjMd96/Tz
-         V6ohWPWv+Qgtijzpk7y36XpXfAzw0DLQ2VO8h8kXWqdkhk/SVybEd1CQ7Iu0vcOQa17/
-         AtLekxr6kWGEXqhqKtyhG7p9LvK9o5sR/E1C8hrEDD0ZpSkm8v+wjlyauzIldaV6kkp8
-         Bq1Yq95VdztbbEJcYna+VIGMJc+yQzJ2CoEqnTQ8Nev7rYJhDshtNGnv0gPENvMxgxZ3
-         XMEQfasw2x95cAfZoi6dy4vrDJsYDzl6HQYAaboUTeczXqPkpvO8nEK8c+7lM1swVJ47
-         KtAQ==
-X-Gm-Message-State: AOAM5321ge8sOQblEb5z8MwKlpMpyQYLb6w/HhayZ0DLIS/LGjDywDnp
-        EDjX/kuBnmeI+NOohBj9GsVENSm/PZ+uAuA6ygg=
-X-Google-Smtp-Source: ABdhPJyRhxMlEuPo5nw1qAg9VXz35N6qGPUIcx/S6mCWJtx2WBrubDRGLIHaPmnOl69CtsAXW+0GH+PhrAARtTDCWEM=
-X-Received: by 2002:a63:ce41:: with SMTP id r1mr10278831pgi.203.1595016568213;
- Fri, 17 Jul 2020 13:09:28 -0700 (PDT)
+        with ESMTP id S1726492AbgGQUsm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jul 2020 16:48:42 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E3C6C0619D2;
+        Fri, 17 Jul 2020 13:48:42 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id CE21371D;
+        Fri, 17 Jul 2020 22:48:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1595018918;
+        bh=XYHG8/2rl6p2XqnEsWEfoxx9RfN0fqz7yBhyxsmUQwg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rGwYawElmR3YEQwm/N4Pfa9x5b9wkPNQvkInL7r8g6E+ROHcMuARJFRgyPJ22BLLU
+         uZG6e/yInEmdTtd00cHew6ALJsXywvknnru5QOQxs9wcKZMMELuxY2kFn8zcKMcHeR
+         i2YcNhCZnXYMWBu9QljkTvJRjoHhl/cg+NOu0ATs=
+Date:   Fri, 17 Jul 2020 23:48:29 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Jacopo Mondi <jacopo+renesas@jmondi.org>
+Cc:     robh+dt@kernel.org, devicetree@vger.kernel.org,
+        slongerbeam@gmail.com, linux-media@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        "moderated list:ARM/STM32 ARCHITECTURE" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>
+Subject: Re: [PATCH 07/13] dt-bindings: media: ov5640: Remove clock-lanes
+Message-ID: <20200717204829.GI5961@pendragon.ideasonboard.com>
+References: <20200717132859.237120-1-jacopo+renesas@jmondi.org>
+ <20200717132859.237120-8-jacopo+renesas@jmondi.org>
 MIME-Version: 1.0
-References: <20200717013338.1741659-1-drew@beagleboard.org>
- <CAHp75Vd_s-W7Z1iG4fA5JvY51OzstkTYUcQcd=OGJUQtcJ75Ww@mail.gmail.com> <20200717195028.GA1775511@x1>
-In-Reply-To: <20200717195028.GA1775511@x1>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 17 Jul 2020 23:09:11 +0300
-Message-ID: <CAHp75VcL8Cz3E5HB6WkpddNzGRBY8w5m5m_vbxEr5EfBz7mWdA@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: single: print gpio number in pins debugfs file
-To:     Drew Fustini <drew@beagleboard.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200717132859.237120-8-jacopo+renesas@jmondi.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jul 17, 2020 at 10:50 PM Drew Fustini <drew@beagleboard.org> wrote:
-> On Fri, Jul 17, 2020 at 06:14:06PM +0300, Andy Shevchenko wrote:
-> > On Fri, Jul 17, 2020 at 4:36 AM Drew Fustini <drew@beagleboard.org> wrote:
+Hi Jacopo,
 
-...
+Thank you for the patch.
 
-> > >   pin 0 (PIN0) 44e10800 00000027 pinctrl-single GPIO-32
-> > >   pin 1 (PIN1) 44e10804 00000027 pinctrl-single GPIO-33
-> > >   pin 2 (PIN2) 44e10808 00000027 pinctrl-single GPIO-34
-> > >   pin 3 (PIN3) 44e1080c 00000027 pinctrl-single GPIO-35
-> > >   pin 4 (PIN4) 44e10810 00000027 pinctrl-single GPIO-36
-> > >   pin 5 (PIN5) 44e10814 00000027 pinctrl-single GPIO-37
-> > >   pin 6 (PIN6) 44e10818 00000027 pinctrl-single GPIO-38
-> > >   pin 7 (PIN7) 44e1081c 00000027 pinctrl-single GPIO-39
-> > >   pin 8 (PIN8) 44e10820 00000027 pinctrl-single GPIO-22
-> > >   pin 9 (PIN9) 44e10824 00000030 pinctrl-single GPIO-23
-> >
-> > Wouldn't it be better to have this for all types of pin controllers?
-> > But I'm not sure about the format of output.
+On Fri, Jul 17, 2020 at 03:28:53PM +0200, Jacopo Mondi wrote:
+> The ov5640 does not support routing the clock signal to a different
+> lane, and the property has value fixed to 0.
+> 
+> Remove the property from the bindings and update its users
+> accordingly.
+> 
+> Signed-off-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
 
-...
+When we'll convert video-interface.txt to YAML, let's state clearly that
+properties should not be specified when the hardware is configurable.
 
-> I added the gpio column based on Tony's feedback [0].
->
-> I'm not sure how I could do it genericly.
->
-> The pin_dbg_show callback is implemented in pcs_pin_dbg_show() which
-> prints the contents of each line in the 'pins' file.
->
-> Any advice on how I could implement a gpio column for 'pins' file
-> without chaning the pin_dbg_show in all the drivers?A
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-My question was exactly about changing core, i.e. pinctrl_pins_show(),
-rather than each driver.
+> ---
+>  Documentation/devicetree/bindings/media/i2c/ov5640.yaml | 6 ------
+>  arch/arm/boot/dts/dra72-evm-common.dtsi                 | 1 -
+>  arch/arm/boot/dts/dra76-evm.dts                         | 1 -
+>  arch/arm/boot/dts/imx6-logicpd-baseboard.dtsi           | 1 -
+>  arch/arm/boot/dts/imx6qdl-icore.dtsi                    | 1 -
+>  arch/arm/boot/dts/imx6qdl-sabrelite.dtsi                | 1 -
+>  arch/arm/boot/dts/imx6qdl-sabresd.dtsi                  | 1 -
+>  arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi               | 1 -
+>  arch/arm64/boot/dts/ti/k3-am654-base-board.dts          | 1 -
+>  9 files changed, 14 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ov5640.yaml b/Documentation/devicetree/bindings/media/i2c/ov5640.yaml
+> index 8fd54575a1db..5e1662e848bd 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ov5640.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ov5640.yaml
+> @@ -76,9 +76,6 @@ properties:
+>            bus-type:
+>              enum: [4, 5]
+> 
+> -          clock-lanes:
+> -            const: 0
+> -
+>            data-lanes:
+>              description: |
+>                Should be set to <1> or <1 2> (one or two CSI-2 lanes supported).
+> @@ -125,7 +122,6 @@ properties:
+>                  required:
+>                    - remote-endpoint
+>                    - bus-type
+> -                  - clock-lanes
+>                    - data-lanes
+> 
+>            - if:
+> @@ -134,7 +130,6 @@ properties:
+>                    const: 5
+>              then:
+>                properties:
+> -                clock-lanes: false
+>                  data-lanes: false
+>                required:
+>                  - remote-endpoint
+> @@ -182,7 +177,6 @@ examples:
+>                  ov5640_to_mipi_csi2: endpoint {
+>                      remote-endpoint = <&mipi_csi2_from_ov5640>;
+>                      bus-type = <4>;
+> -                    clock-lanes = <0>;
+>                      data-lanes = <1 2>;
+>                  };
+>              };
+> diff --git a/arch/arm/boot/dts/dra72-evm-common.dtsi b/arch/arm/boot/dts/dra72-evm-common.dtsi
+> index aba7eb55525d..b5b31dc927d4 100644
+> --- a/arch/arm/boot/dts/dra72-evm-common.dtsi
+> +++ b/arch/arm/boot/dts/dra72-evm-common.dtsi
+> @@ -288,7 +288,6 @@ port {
+>  			csi2_cam0: endpoint {
+>  				remote-endpoint = <&csi2_phy0>;
+>  				bus-type = <4>;
+> -				clock-lanes = <0>;
+>  				data-lanes = <1 2>;
+>  			};
+>  		};
+> diff --git a/arch/arm/boot/dts/dra76-evm.dts b/arch/arm/boot/dts/dra76-evm.dts
+> index ddf16e65ec7f..6fcb96abc41d 100644
+> --- a/arch/arm/boot/dts/dra76-evm.dts
+> +++ b/arch/arm/boot/dts/dra76-evm.dts
+> @@ -421,7 +421,6 @@ port {
+>  			csi2_cam0: endpoint {
+>  				remote-endpoint = <&csi2_phy0>;
+>  				bus-type = <4>;
+> -				clock-lanes = <0>;
+>  				data-lanes = <1 2>;
+>  			};
+>  		};
+> diff --git a/arch/arm/boot/dts/imx6-logicpd-baseboard.dtsi b/arch/arm/boot/dts/imx6-logicpd-baseboard.dtsi
+> index dd5765778e87..a12d80a2403e 100644
+> --- a/arch/arm/boot/dts/imx6-logicpd-baseboard.dtsi
+> +++ b/arch/arm/boot/dts/imx6-logicpd-baseboard.dtsi
+> @@ -275,7 +275,6 @@ port {
+>  			ov5640_to_mipi_csi2: endpoint {
+>  				remote-endpoint = <&mipi_csi2_in>;
+>  				bus-type = <4>;
+> -				clock-lanes = <0>;
+>  				data-lanes = <1 2>;
+>  			};
+>  		};
+> diff --git a/arch/arm/boot/dts/imx6qdl-icore.dtsi b/arch/arm/boot/dts/imx6qdl-icore.dtsi
+> index 2b1f275b8cc4..05bd332f527b 100644
+> --- a/arch/arm/boot/dts/imx6qdl-icore.dtsi
+> +++ b/arch/arm/boot/dts/imx6qdl-icore.dtsi
+> @@ -214,7 +214,6 @@ port {
+>  			ov5640_to_mipi_csi2: endpoint {
+>  				remote-endpoint = <&mipi_csi2_in>;
+>  				bus-type = <4>;
+> -				clock-lanes = <0>;
+>  				data-lanes = <1 2>;
+>  			};
+>  		};
+> diff --git a/arch/arm/boot/dts/imx6qdl-sabrelite.dtsi b/arch/arm/boot/dts/imx6qdl-sabrelite.dtsi
+> index 5752abb48e68..5eb7fbf33069 100644
+> --- a/arch/arm/boot/dts/imx6qdl-sabrelite.dtsi
+> +++ b/arch/arm/boot/dts/imx6qdl-sabrelite.dtsi
+> @@ -383,7 +383,6 @@ port {
+>  			ov5640_to_mipi_csi2: endpoint {
+>  				remote-endpoint = <&mipi_csi2_in>;
+>  				bus-type = <4>;
+> -				clock-lanes = <0>;
+>  				data-lanes = <1 2>;
+>  			};
+>  		};
+> diff --git a/arch/arm/boot/dts/imx6qdl-sabresd.dtsi b/arch/arm/boot/dts/imx6qdl-sabresd.dtsi
+> index 990f4cc345da..02f78b46a8fd 100644
+> --- a/arch/arm/boot/dts/imx6qdl-sabresd.dtsi
+> +++ b/arch/arm/boot/dts/imx6qdl-sabresd.dtsi
+> @@ -314,7 +314,6 @@ port {
+>  			ov5640_to_mipi_csi2: endpoint {
+>  				remote-endpoint = <&mipi_csi2_in>;
+>  				bus-type = <4>;
+> -				clock-lanes = <0>;
+>  				data-lanes = <1 2>;
+>  			};
+>  		};
+> diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi b/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
+> index 5c79ad5e7b5d..8c24fd468a22 100644
+> --- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi
+> @@ -628,7 +628,6 @@ camera_rear@3b {
+>  		port {
+>  			ov5640_ep: endpoint {
+>  				bus-type = <4>;
+> -				clock-lanes = <0>;
+>  				data-lanes = <1 2>;
+>  				remote-endpoint = <&csiphy0_ep>;
+>  			};
+> diff --git a/arch/arm64/boot/dts/ti/k3-am654-base-board.dts b/arch/arm64/boot/dts/ti/k3-am654-base-board.dts
+> index 33f4eceffbe5..dd6a636ba3af 100644
+> --- a/arch/arm64/boot/dts/ti/k3-am654-base-board.dts
+> +++ b/arch/arm64/boot/dts/ti/k3-am654-base-board.dts
+> @@ -255,7 +255,6 @@ port {
+>  			csi2_cam0: endpoint {
+>  				remote-endpoint = <&csi2_phy0>;
+>  				bus-type = <4>;
+> -				clock-lanes = <0>;
+>  				data-lanes = <1 2>;
+>  			};
+>  		};
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+
+Laurent Pinchart
