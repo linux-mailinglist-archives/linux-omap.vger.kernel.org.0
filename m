@@ -2,110 +2,297 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D84C223943
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jul 2020 12:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A34EB2239EA
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jul 2020 13:02:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726059AbgGQK3j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Jul 2020 06:29:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35176 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726040AbgGQK3i (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jul 2020 06:29:38 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BBD4C061755
-        for <linux-omap@vger.kernel.org>; Fri, 17 Jul 2020 03:29:38 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id f139so16320521wmf.5
-        for <linux-omap@vger.kernel.org>; Fri, 17 Jul 2020 03:29:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=fMOiiumjQ/fG2ARKn+kEmSFoCfRvfCoyPOdi6El2piw=;
-        b=JGuZZ5jdnINF6UiQriZUL+OAPTn7cNB7sakFSFNIeaC6seST9VfxKOeGnaCUkRnFvV
-         PHnwWZn9JXzKN/KTaL7dSZ49XCDosHTy43rMjVo8QktHk6LvFH6b/NvKNHt8mqXEIwVh
-         AM3BO/HEwBozVBmKiFWxHTz4P4+Kh8ovA3UbAK9xrambEynYfTxkV7gY8WPS7ZEv5jIO
-         epGOIwFbsmq4gftFSFZ7vbhWqVlBbeFDwv9HC5QGdS/H49EWiRDqrWm+1QuSI6h8Ub69
-         Ty1KnAQvo9B08OarjqMmIwwPaj0gba4u7bZPdMurkPRa0yDyiXO+IfliDDNsfauf+NSW
-         ymaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=fMOiiumjQ/fG2ARKn+kEmSFoCfRvfCoyPOdi6El2piw=;
-        b=QwzJbiO2848NIM7ApHF0X6BgnkbgRJUVsRYGGSr0u0W+ZuQ0kjlkdNI6eICbIk1AdI
-         peh/BoOXAAzr3TLuaSOcZlNExHggFuZ08lgKPMqEgqQLfyp9kSKPKIfztocdmE4JIdOl
-         HpzkC74rt/Og52oF61wywhJ9XN/su6OmQ5lUuIwaCeTB4mh4Me4lQ5usQp7ExwbMvyOh
-         +w53QUjVsED8BmdYB7bekUn0zEqE9lha6i+q7WiXGEbl/tJEP06bl9IvkHVTANl09HmV
-         pzd9nq3Am6SNYkkLqlYVKaX+pc++6VIh9OzufaeH0wiBVutwmDb2sERfV2LqFUi+wMqG
-         m/lw==
-X-Gm-Message-State: AOAM530nTxEq1MGN7tQI8rzdoDEKFMuYpjzu4AjyxJSmF8d0pxOmrpIr
-        M5txALM6Dj1A0clrzaiupPcUQg==
-X-Google-Smtp-Source: ABdhPJySUI1BgkrK4qDXvYidHGvdo6Xw53TzQZ17/jE+sFu5rp+BlXxZp6ZwYOessXptzBVThMMczQ==
-X-Received: by 2002:a1c:2041:: with SMTP id g62mr8540340wmg.172.1594981776846;
-        Fri, 17 Jul 2020 03:29:36 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:9880:a643:3e69:6393? ([2a01:e34:ed2f:f020:9880:a643:3e69:6393])
-        by smtp.googlemail.com with ESMTPSA id y7sm13897178wrt.11.2020.07.17.03.29.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Jul 2020 03:29:36 -0700 (PDT)
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Fix suspend and resume
- for am3 and am4
-To:     Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, Carlos Hernandez <ceh@ti.com>
-References: <20200713162601.6829-1-tony@atomide.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <1ac1ac81-1335-8ba2-590c-8f57c2df1910@linaro.org>
-Date:   Fri, 17 Jul 2020 12:29:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20200713162601.6829-1-tony@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S1726200AbgGQLCn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jul 2020 07:02:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55164 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725932AbgGQLCm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Jul 2020 07:02:42 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CF84D20717;
+        Fri, 17 Jul 2020 11:02:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594983761;
+        bh=bbLMObkNrniR80ZdzHzteBsWJ5zcpRCBrOI2j6GQ4W0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dqzm/OI6mZOxyuUKPJ7jFTK+TsDEjToHh/tLOy9xUBQ0ukZBFD8kQt8fFOxEk03fW
+         BwU1AfbENm2NKpfpqLKq+ks8pBss9yT0+cwgjABMePaatnRza0S8ZMUDZPZknMAAlL
+         3TXECbw7eZtO0cuZCTRvKCVwNpJnABIlFHvSRfbE=
+Received: from 78.163-31-62.static.virginmediabusiness.co.uk ([62.31.163.78] helo=wait-a-minute.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <maz@kernel.org>)
+        id 1jwO8V-00CbW3-DI; Fri, 17 Jul 2020 12:02:39 +0100
+Date:   Fri, 17 Jul 2020 12:02:38 +0100
+Message-ID: <87imemxv3l.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        <tglx@linutronix.de>, <jason@lakedaemon.net>, <robh+dt@kernel.org>,
+        <lee.jones@linaro.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <david@lechnology.com>,
+        <wmills@ti.com>
+Subject: Re: [PATCHv3 3/6] irqchip/irq-pruss-intc: Add support for shared and invalid interrupts
+In-Reply-To: <3a73bb14-9f7b-970d-fbae-f9c7bb7bdf1e@ti.com>
+References: <1593699479-1445-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+        <1593699479-1445-4-git-send-email-grzegorz.jaszczyk@linaro.org>
+        <2a6b0391f1395eb0aa15ffee6769184e@kernel.org>
+        <3a73bb14-9f7b-970d-fbae-f9c7bb7bdf1e@ti.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 EasyPG/1.0.0 Emacs/26.3
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 62.31.163.78
+X-SA-Exim-Rcpt-To: s-anna@ti.com, grzegorz.jaszczyk@linaro.org, tglx@linutronix.de, jason@lakedaemon.net, robh+dt@kernel.org, lee.jones@linaro.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, david@lechnology.com, wmills@ti.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 13/07/2020 18:26, Tony Lindgren wrote:
-> Carlos Hernandez <ceh@ti.com> reported that we now have a suspend and
-> resume regresssion on am3 and am4 compared to the earlier kernels. While
-> suspend and resume works with v5.8-rc3, we now get errors with rtcwake:
-> 
-> pm33xx pm33xx: PM: Could not transition all powerdomains to target state
-> ...
-> rtcwake: write error
-> 
-> This is because we now fail to idle the system timer clocks that the
-> idle code checks and the error gets propagated to the rtcwake.
-> 
-> Turns out there are several issues that need to be fixed:
-> 
-> 1. Ignore no-idle and no-reset configured timers for the ti-sysc
->    interconnect target driver as otherwise it will keep the system timer
->    clocks enabled
-> 
-> 2. Toggle the system timer functional clock for suspend for am3 and am4
->    (but not for clocksource on am3)
-> 
-> 3. Only reconfigure type1 timers in dmtimer_systimer_disable()
-> 
-> 4. Use of_machine_is_compatible() instead of of_device_is_compatible()
->    for checking the SoC type
-> 
-> Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
-> Reported-by: Carlos Hernandez <ceh@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
+On Fri, 10 Jul 2020 21:59:17 +0100,
+Suman Anna <s-anna@ti.com> wrote:
 
-Carlos, were you able to test this patch ?
+Hi Suman,
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+[...]
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+>
+> Hi Marc,
+>=20
+> On 7/2/20 12:44 PM, Marc Zyngier wrote:
+> > On 2020-07-02 15:17, Grzegorz Jaszczyk wrote:
+> >> From: Suman Anna <s-anna@ti.com>
+> >>=20
+> >> The PRUSS INTC has a fixed number of output interrupt lines that are
+> >> connected to a number of processors or other PRUSS instances or other
+> >> devices (like DMA) on the SoC. The output interrupt lines 2 through 9
+> >> are usually connected to the main Arm host processor and are referred
+> >> to as host interrupts 0 through 7 from ARM/MPU perspective.
+> >>=20
+> >> All of these 8 host interrupts are not always exclusively connected
+> >> to the Arm interrupt controller. Some SoCs have some interrupt lines
+> >> not connected to the Arm interrupt controller at all, while a few othe=
+rs
+> >> have the interrupt lines connected to multiple processors in which they
+> >> need to be partitioned as per SoC integration needs. For example, AM43=
+7x
+> >> and 66AK2G SoCs have 2 PRUSS instances each and have the host interrup=
+t 5
+> >> connected to the other PRUSS, while AM335x has host interrupt 0 shared
+> >> between MPU and TSC_ADC and host interrupts 6 & 7 shared between MPU a=
+nd
+> >> a DMA controller.
+> >>=20
+> >> Add support to the PRUSS INTC driver to allow both these shared and
+> >> invalid interrupts by not returning a failure if any of these interrup=
+ts
+> >> are skipped from the corresponding INTC DT node.
+> >=20
+> > That's not exactly "adding support", is it? It really is "ignore these
+> > interrupts because they are useless from the main CPU's perspective",
+> > right?
+>=20
+> Correct. We can rephrase this to something like
+> "Add logic to the PRUSS INTC driver to ignore.."
+>=20
+> >=20
+> >>=20
+> >> Signed-off-by: Suman Anna <s-anna@ti.com>
+> >> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> >> ---
+> >> v2->v3:
+> >> - Extra checks for (intc->irqs[i]) in error/remove path was moved from
+> >> =C2=A0 "irqchip/irq-pruss-intc: Add a PRUSS irqchip driver for PRUSS
+> >> =C2=A0 interrupts" to this patch
+> >> v1->v2:
+> >> - https://patchwork.kernel.org/patch/11069757/
+> >> ---
+> >> =C2=A0drivers/irqchip/irq-pruss-intc.c | 73
+> >> +++++++++++++++++++++++++++++++++++++---
+> >> =C2=A01 file changed, 68 insertions(+), 5 deletions(-)
+> >>=20
+> >> diff --git a/drivers/irqchip/irq-pruss-intc.c
+> >> b/drivers/irqchip/irq-pruss-intc.c
+> >> index fb3dda3..49c936f 100644
+> >> --- a/drivers/irqchip/irq-pruss-intc.c
+> >> +++ b/drivers/irqchip/irq-pruss-intc.c
+> >> @@ -65,11 +65,15 @@
+> >> =C2=A0 * @irqs: kernel irq numbers corresponding to PRUSS host interru=
+pts
+> >> =C2=A0 * @base: base virtual address of INTC register space
+> >> =C2=A0 * @domain: irq domain for this interrupt controller
+> >> + * @shared_intr: bit-map denoting if the MPU host interrupt is shared
+> >=20
+> > nit: bitmap
+>=20
+> ok
+>=20
+> >=20
+> >> + * @invalid_intr: bit-map denoting if host interrupt is not
+> >> connected to MPU
+> >> =C2=A0 */
+> >> =C2=A0struct pruss_intc {
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 unsigned int irqs[MAX_NUM_HOST_IRQS];
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 void __iomem *base;
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 struct irq_domain *domain;
+> >> +=C2=A0=C2=A0=C2=A0 u16 shared_intr;
+> >> +=C2=A0=C2=A0=C2=A0 u16 invalid_intr;
+> >=20
+> > Please represent bitmaps as an unsigned long.
+>=20
+> ok. We have atmost 8 interrupts coming in, but agree on the change
+> since we are using the BIT() macro below.
+>=20
+> >=20
+> >> =C2=A0};
+> >>=20
+> >> =C2=A0static inline u32 pruss_intc_read_reg(struct pruss_intc *intc,
+> >> unsigned int reg)
+> >> @@ -222,7 +226,8 @@ static int pruss_intc_probe(struct
+> >> platform_device *pdev)
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "host_intr4", "host_i=
+ntr5", "host_intr6", "host_intr7", };
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 struct device *dev =3D &pdev->dev;
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 struct pruss_intc *intc;
+> >> -=C2=A0=C2=A0=C2=A0 int i, irq;
+> >> +=C2=A0=C2=A0=C2=A0 int i, irq, count;
+> >> +=C2=A0=C2=A0=C2=A0 u8 temp_intr[MAX_NUM_HOST_IRQS] =3D { 0 };
+> >>=20
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 intc =3D devm_kzalloc(dev, sizeof(*intc), GFP=
+_KERNEL);
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 if (!intc)
+> >> @@ -235,6 +240,52 @@ static int pruss_intc_probe(struct
+> >> platform_device *pdev)
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return PTR_ERR(intc->=
+base);
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 }
+> >>=20
+> >> +=C2=A0=C2=A0=C2=A0 count =3D of_property_read_variable_u8_array(dev->=
+of_node,
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 "ti,irqs-reserved",
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 temp_intr, 0,
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 MAX_NUM_HOST_IRQS);
+> >> +=C2=A0=C2=A0=C2=A0 /*
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0 * The irqs-reserved is used only for some So=
+C's therefore not
+> >> having
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0 * this property is still valid
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0 */
+> >> +=C2=A0=C2=A0=C2=A0 if (count =3D=3D -EINVAL)
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 count =3D 0;
+> >> +=C2=A0=C2=A0=C2=A0 if (count < 0)
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return count;
+> >> +
+> >> +=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < count; i++) {
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (temp_intr[i] >=3D MAX_=
+NUM_HOST_IRQS) {
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 de=
+v_warn(dev, "ignoring invalid reserved irq %d\n",
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 temp_intr[i]);
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 co=
+ntinue;
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> >> +
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 intc->invalid_intr |=3D BI=
+T(temp_intr[i]);
+> >> +=C2=A0=C2=A0=C2=A0 }
+> >> +
+> >> +=C2=A0=C2=A0=C2=A0 count =3D of_property_read_variable_u8_array(dev->=
+of_node,
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 "ti,irqs-shared",
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 temp_intr, 0,
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 MAX_NUM_HOST_IRQS);
+> >> +=C2=A0=C2=A0=C2=A0 /*
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0 * The irqs-shared is used only for some SoC'=
+s therefore not having
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0 * this property is still valid
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0 */
+> >> +=C2=A0=C2=A0=C2=A0 if (count =3D=3D -EINVAL)
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 count =3D 0;
+> >> +=C2=A0=C2=A0=C2=A0 if (count < 0)
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return count;
+> >> +
+> >> +=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < count; i++) {
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (temp_intr[i] >=3D MAX_=
+NUM_HOST_IRQS) {
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 de=
+v_warn(dev, "ignoring invalid shared irq %d\n",
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 temp_intr[i]);
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 co=
+ntinue;
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> >> +
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 intc->shared_intr |=3D BIT=
+(temp_intr[i]);
+> >> +=C2=A0=C2=A0=C2=A0 }
+> >> +
+> >=20
+> > You probably want to move this in a separate function, since you popula=
+te a
+> > common structure.
+> >=20
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 pruss_intc_init(intc);
+> >>=20
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 /* always 64 events */
+> >> @@ -244,8 +295,14 @@ static int pruss_intc_probe(struct
+> >> platform_device *pdev)
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENOMEM;
+> >>=20
+> >> =C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < MAX_NUM_HOST_IRQS; i++) {
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (intc->invalid_intr & B=
+IT(i))
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 co=
+ntinue;
+> >> +
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 irq =3D platform_get_=
+irq_byname(pdev, irq_names[i]);
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (irq <=3D 0) {
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if=
+ (intc->shared_intr & BIT(i))
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 continue;
+> >=20
+> > I don't really understand why you are treating these "shared" interrupts
+> > differently from the invalid ones. In all cases, they shouldn't be used.
+>=20
+> The behavior is the same in how we handle it, but the difference is
+> that an "invalid" one is never even connected to the ARM interrupt
+> controller, while the "shared" one is a choice. So, unless this
+> interrupt is being used/handled by a different processor/entity, you
+> would not see this skipped from the dts node.
+
+And I'm saying that all that matters is that you are discarding these
+interrupts. Whether they are flagged invalid or shared, they are not
+available to Linux. So the difference in handling is pointless and
+only makes it harder to understand what you are doing.
+
+Thanks,
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
