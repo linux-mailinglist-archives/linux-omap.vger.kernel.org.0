@@ -2,40 +2,65 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD673224D10
-	for <lists+linux-omap@lfdr.de>; Sat, 18 Jul 2020 18:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FCB3224D52
+	for <lists+linux-omap@lfdr.de>; Sat, 18 Jul 2020 19:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727986AbgGRQaO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 18 Jul 2020 12:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726346AbgGRQaO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 18 Jul 2020 12:30:14 -0400
-Received: from 151.80.89.196 (unknown [IPv6:2001:41d0:303:46d2::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36508C0619D2;
-        Sat, 18 Jul 2020 09:30:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=click; d=offenline.biz;
- h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID;
- bh=WrCb5nGko31fd5GUgjGBj5htdBM=;
- b=6N71k5xG5PyoiVngaOD9chOD/0GkwhKZ91ZkNqcFa3fY7suVU/8QYw/ABnPSRg7Zi5ocgvii2iDM
-   V9/LMjHNtZcxA2Pj0cKDXmHQte5MlnvPJooGxYGYOU4p1eWIvn8J/JF4CG9biQhABJU35vybDX5P
-   ghK31lLAwQqtw4UJIxA=
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1728050AbgGRRYq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 18 Jul 2020 13:24:46 -0400
+Received: from muru.com ([72.249.23.125]:37436 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726863AbgGRRYq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 18 Jul 2020 13:24:46 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 403A180AF;
+        Sat, 18 Jul 2020 17:24:43 +0000 (UTC)
+Date:   Sat, 18 Jul 2020 10:24:46 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Subject: Re: [PATCH] pinctrl: core: print gpio in pins debugfs file
+Message-ID: <20200718172446.GC10993@atomide.com>
+References: <20200718154908.1816031-1-drew@beagleboard.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Why continued silence 2
-To:     Recipients <info@lee.org>
-From:   "convy" <info@lee.org>
-Date:   Sat, 18 Jul 2020 17:22:51 +0100
-Reply-To: convy442121@gmail.com
-Message-ID: <0.0.9A.5EE.1D65D1FFA298BBA.0@151.80.89.196>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200718154908.1816031-1-drew@beagleboard.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Did you receive my previous email regarding your family inheritance?
-Reply strictly through: convy0090@gmail.com
-Best Regards,
-Ruben CONVY
+* Drew Fustini <drew@beagleboard.org> [200718 15:53]:
+> If there is a gpio range mapping for the pin, then print out the gpio
+> number for the pin in the debugfs 'pins' file.
+> 
+> Here is an example output on the BeagleBone Black from:
+> /sys/kernel/debug/pinctrl/44e10800.pinmux-pinctrl-single/pins
+> 
+> pin 103 (PIN103) GPIO-113 44e1099c 00000027 pinctrl-single
+> pin 104 (PIN104) GPIO-114 44e109a0 0000002c pinctrl-single
+> pin 105 (PIN105) GPIO-115 44e109a4 00000027 pinctrl-single
+> pin 106 (PIN106) GPIO-116 44e109a8 00000027 pinctrl-single
+> pin 107 (PIN107) GPIO-117 44e109ac 00000027 pinctrl-single
+> pin 108 (PIN108) GPIO-19 44e109b0 00000027 pinctrl-single
+> pin 109 (PIN109) GPIO-20 44e109b4 00000027 pinctrl-single
+> pin 110 (PIN110) 44e109b8 00000030 pinctrl-single
+> pin 111 (PIN111) 44e109bc 00000028 pinctrl-single
+> pin 112 (PIN112) 44e109c0 00000030 pinctrl-single
+> pin 113 (PIN113) 44e109c4 00000028 pinctrl-single
+> pin 114 (PIN114) 44e109c8 00000028 pinctrl-single
+
+This looks nice to me, maybe just show NA if no GPIO name is
+available?
+
+This is debugfs so the output format can change at any point
+AFAIK.
+
+Regards,
+
+Tony
