@@ -2,128 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C7A224AED
-	for <lists+linux-omap@lfdr.de>; Sat, 18 Jul 2020 13:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D1B9224CB4
+	for <lists+linux-omap@lfdr.de>; Sat, 18 Jul 2020 17:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbgGRLYO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 18 Jul 2020 07:24:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38994 "EHLO
+        id S1726973AbgGRPxN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 18 Jul 2020 11:53:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726566AbgGRLYO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 18 Jul 2020 07:24:14 -0400
-Received: from smtp.al2klimov.de (smtp.al2klimov.de [IPv6:2a01:4f8:c0c:1465::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE53C0619D2;
-        Sat, 18 Jul 2020 04:24:13 -0700 (PDT)
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-        by smtp.al2klimov.de (Postfix) with ESMTPA id C090ABC07E;
-        Sat, 18 Jul 2020 11:24:09 +0000 (UTC)
-From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To:     peter.ujfalusi@ti.com, jarkko.nikula@bitmer.com,
-        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-        tiwai@suse.com, alsa-devel@alsa-project.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Subject: [PATCH] ASoC: omap: Replace HTTP links with HTTPS ones
-Date:   Sat, 18 Jul 2020 13:24:03 +0200
-Message-Id: <20200718112403.13709-1-grandmaster@al2klimov.de>
+        with ESMTP id S1726989AbgGRPxN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 18 Jul 2020 11:53:13 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBCAAC0619D4
+        for <linux-omap@vger.kernel.org>; Sat, 18 Jul 2020 08:53:09 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id 22so18480703wmg.1
+        for <linux-omap@vger.kernel.org>; Sat, 18 Jul 2020 08:53:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Nm7RbRbPXsGrD5oeSS4NsVpJcs55MiMj/6SWijtpEjw=;
+        b=BousnIH6TWxTOBuP6LlByW1rJ2d7ZIi1dhlxP/92+rdVWYIm+UwlgtzTh/JdDvY810
+         3mLF+bW3d3wmVhklOzBmxIKlj9NjiNxPzWl+VCYZHkwYGJ+p31uwC767CTqRBSrNmH2D
+         KLQ4/1SUBUG/0j52bY65Btclx94bWLVL6mmypADVLgbqsPIJwu8BYpPmq1/KJ7tAQ6W+
+         VUNk98nrVOubafzIbrB1wAB3etaT/gZ41fVGzgYWEWyAxn5U9Ug8x0CFbI+mFVrj0Tn2
+         +8CRVASIuskUTdMhrLa83t196RP1EZRhuV4UmxSFoO3hE34kGkbLc7Hgt4bm+8QOC69i
+         Tl4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Nm7RbRbPXsGrD5oeSS4NsVpJcs55MiMj/6SWijtpEjw=;
+        b=R9SEN/dfhVPCqXhfWKilgQIRzLsGMILorkAttMy9rrbJcBy6ZqlrE1z2Hg/IQDqoWj
+         h+p9MGRT201Lsot66OoBMAkaGhWUzRIBb8Ro2iE4115Xq/l+yz16p+omm4CqsOHABIgt
+         9HTefUTHoWo9CwgcqgMlW1IjVcbu5Hb74B9AHDH10hMOIxBEH2ze1416hlaQZsN2cCuW
+         5MZlTxMAWp/vur/T8scgIVjYGl2nRvVH5HI9lO3EBuhJLZHTEbU84QsFHO+x7OvxtwgT
+         z5lPuadmkb0tuhnfDyNDhOHyCZoaLf+Bn9E++xH/OXpowY7K38JkwKBYhEdsWrFfV1AF
+         iCXQ==
+X-Gm-Message-State: AOAM531KDkbde2VwCX+g72GOc9+4tZJnBl+XAYw8DQxuifwmiLOIHvEa
+        HmIJNlhv6tpaIFiayAEksqjUug==
+X-Google-Smtp-Source: ABdhPJybWy/0R3DSJk1V+N6uY+brwF6uf7mCMJfmMhhasJYalSP2zIEWXZfA9FMYPFmiKFdMaqWoFg==
+X-Received: by 2002:a1c:7402:: with SMTP id p2mr14371545wmc.117.1595087588317;
+        Sat, 18 Jul 2020 08:53:08 -0700 (PDT)
+Received: from localhost.localdomain (195.red-80-27-212.dynamicip.rima-tde.net. [80.27.212.195])
+        by smtp.gmail.com with ESMTPSA id s10sm21284623wme.31.2020.07.18.08.53.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jul 2020 08:53:07 -0700 (PDT)
+From:   Drew Fustini <drew@beagleboard.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Cc:     Drew Fustini <drew@beagleboard.org>
+Subject: [PATCH] pinctrl: core: print gpio in pins debugfs file
+Date:   Sat, 18 Jul 2020 17:49:10 +0200
+Message-Id: <20200718154908.1816031-1-drew@beagleboard.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: +++++
-X-Spam-Level: *****
-Authentication-Results: smtp.al2klimov.de;
-        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Rationale:
-Reduces attack surface on kernel devs opening the links for MITM
-as HTTPS traffic is much harder to manipulate.
+If there is a gpio range mapping for the pin, then print out the gpio
+number for the pin in the debugfs 'pins' file.
 
-Deterministic algorithm:
-For each file:
-  If not .svg:
-    For each line:
-      If doesn't contain `\bxmlns\b`:
-        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
-	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
-            If both the HTTP and HTTPS versions
-            return 200 OK and serve the same content:
-              Replace HTTP with HTTPS.
+Here is an example output on the BeagleBone Black from:
+/sys/kernel/debug/pinctrl/44e10800.pinmux-pinctrl-single/pins
 
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+pin 103 (PIN103) GPIO-113 44e1099c 00000027 pinctrl-single
+pin 104 (PIN104) GPIO-114 44e109a0 0000002c pinctrl-single
+pin 105 (PIN105) GPIO-115 44e109a4 00000027 pinctrl-single
+pin 106 (PIN106) GPIO-116 44e109a8 00000027 pinctrl-single
+pin 107 (PIN107) GPIO-117 44e109ac 00000027 pinctrl-single
+pin 108 (PIN108) GPIO-19 44e109b0 00000027 pinctrl-single
+pin 109 (PIN109) GPIO-20 44e109b4 00000027 pinctrl-single
+pin 110 (PIN110) 44e109b8 00000030 pinctrl-single
+pin 111 (PIN111) 44e109bc 00000028 pinctrl-single
+pin 112 (PIN112) 44e109c0 00000030 pinctrl-single
+pin 113 (PIN113) 44e109c4 00000028 pinctrl-single
+pin 114 (PIN114) 44e109c8 00000028 pinctrl-single
+
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Suggested-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Drew Fustini <drew@beagleboard.org>
 ---
- Continuing my work started at 93431e0607e5.
- See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
+Note:
+- I am hoping to get feedback if another format is better.  Currently
+  the column 'GPIO-xxx' will only be printed when there is a GPIO num
 
- If there are any URLs to be removed completely
- or at least not (just) HTTPSified:
- Just clearly say so and I'll *undo my change*.
- See also: https://lkml.org/lkml/2020/6/27/64
+ drivers/pinctrl/core.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
- If there are any valid, but yet not changed URLs:
- See: https://lkml.org/lkml/2020/6/26/837
-
- If you apply the patch, please let me know.
-
-
- sound/soc/ti/omap-hdmi.c    | 2 +-
- sound/soc/ti/omap-twl4030.c | 2 +-
- sound/soc/ti/sdma-pcm.c     | 2 +-
- sound/soc/ti/sdma-pcm.h     | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index def2a0ce8886..3328c02f93c7 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -2,7 +2,7 @@
- /*
-  * omap-hdmi-audio.c -- OMAP4+ DSS HDMI audio support library
-  *
-- * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com
-+ * Copyright (C) 2014 Texas Instruments Incorporated - https://www.ti.com
-  *
-  * Author: Jyri Sarha <jsarha@ti.com>
-  */
-diff --git a/sound/soc/ti/omap-twl4030.c b/sound/soc/ti/omap-twl4030.c
-index 92dbe2c67290..4b408cec7a90 100644
---- a/sound/soc/ti/omap-twl4030.c
-+++ b/sound/soc/ti/omap-twl4030.c
-@@ -2,7 +2,7 @@
- /*
-  * omap-twl4030.c  --  SoC audio for TI SoC based boards with twl4030 codec
-  *
-- * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com
-+ * Copyright (C) 2012 Texas Instruments Incorporated - https://www.ti.com
-  * All rights reserved.
-  *
-  * Author: Peter Ujfalusi <peter.ujfalusi@ti.com>
-diff --git a/sound/soc/ti/sdma-pcm.c b/sound/soc/ti/sdma-pcm.c
-index 2b0bc234e1b6..9e7691103f05 100644
---- a/sound/soc/ti/sdma-pcm.c
-+++ b/sound/soc/ti/sdma-pcm.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- *  Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com
-+ *  Copyright (C) 2018 Texas Instruments Incorporated - https://www.ti.com
-  *  Author: Peter Ujfalusi <peter.ujfalusi@ti.com>
-  */
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 70e13fcd94c4..e3eee950a553 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1633,6 +1633,8 @@ static int pinctrl_pins_show(struct seq_file *s, void *what)
+ 	struct pinctrl_dev *pctldev = s->private;
+ 	const struct pinctrl_ops *ops = pctldev->desc->pctlops;
+ 	unsigned i, pin;
++	struct pinctrl_gpio_range *range;
++	unsigned gpio_num;
  
-diff --git a/sound/soc/ti/sdma-pcm.h b/sound/soc/ti/sdma-pcm.h
-index cb0627c8dd34..c19efb4c043d 100644
---- a/sound/soc/ti/sdma-pcm.h
-+++ b/sound/soc/ti/sdma-pcm.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- /*
-- *  Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com
-+ *  Copyright (C) 2018 Texas Instruments Incorporated - https://www.ti.com
-  *  Author: Peter Ujfalusi <peter.ujfalusi@ti.com>
-  */
+ 	seq_printf(s, "registered pins: %d\n", pctldev->desc->npins);
  
+@@ -1650,6 +1652,16 @@ static int pinctrl_pins_show(struct seq_file *s, void *what)
+ 
+ 		seq_printf(s, "pin %d (%s) ", pin, desc->name);
+ 
++		gpio_num = 0;
++		list_for_each_entry(range, &pctldev->gpio_ranges, node) {
++			if ((pin >= range->pin_base) &&
++			    (pin < (range->pin_base + range->npins)))
++				gpio_num = range->base + (pin - range->pin_base);
++		}
++
++		if (gpio_num > 0)
++			seq_printf(s, "GPIO-%u ", gpio_num);
++
+ 		/* Driver-specific info per pin */
+ 		if (ops->pin_dbg_show)
+ 			ops->pin_dbg_show(pctldev, s, pin);
 -- 
-2.27.0
+2.25.1
 
