@@ -2,26 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B3062250C6
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Jul 2020 10:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5386E2250C9
+	for <lists+linux-omap@lfdr.de>; Sun, 19 Jul 2020 10:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725988AbgGSIs4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 19 Jul 2020 04:48:56 -0400
-Received: from smtp.al2klimov.de ([78.46.175.9]:36374 "EHLO smtp.al2klimov.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725836AbgGSIsz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 19 Jul 2020 04:48:55 -0400
+        id S1726038AbgGSI7G (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 19 Jul 2020 04:59:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38964 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725836AbgGSI7G (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 19 Jul 2020 04:59:06 -0400
+Received: from smtp.al2klimov.de (smtp.al2klimov.de [IPv6:2a01:4f8:c0c:1465::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D25C0619D2;
+        Sun, 19 Jul 2020 01:59:06 -0700 (PDT)
 Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-        by smtp.al2klimov.de (Postfix) with ESMTPA id D879EBC065;
-        Sun, 19 Jul 2020 08:48:50 +0000 (UTC)
+        by smtp.al2klimov.de (Postfix) with ESMTPA id A834EBC065;
+        Sun, 19 Jul 2020 08:59:00 +0000 (UTC)
 From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To:     rnayak@codeaurora.org, paul@pwsan.com, tony@atomide.com,
-        linux@armlinux.org.uk, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To:     paul@pwsan.com, tony@atomide.com, linux@armlinux.org.uk,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
 Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Subject: [PATCH for v5.9] ARM: OMAP2+: PRM: Replace HTTP links with HTTPS ones
-Date:   Sun, 19 Jul 2020 10:48:44 +0200
-Message-Id: <20200719084844.57001-1-grandmaster@al2klimov.de>
+Subject: [PATCH for v5.9] ARM: OMAP2+: Replace HTTP links with HTTPS ones
+Date:   Sun, 19 Jul 2020 10:58:53 +0200
+Message-Id: <20200719085853.57137-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Bar: ++++++
@@ -73,78 +76,36 @@ Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
  Impossible is nothing! :)
 
 
- arch/arm/mach-omap2/prm-regbits-33xx.h | 2 +-
- arch/arm/mach-omap2/prm33xx.c          | 2 +-
- arch/arm/mach-omap2/prm33xx.h          | 2 +-
- arch/arm/mach-omap2/prm54xx.h          | 2 +-
- arch/arm/mach-omap2/prm7xx.h           | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/mach-omap2/clockdomains33xx_data.c | 2 +-
+ arch/arm/mach-omap2/clockdomains81xx_data.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/prm-regbits-33xx.h b/arch/arm/mach-omap2/prm-regbits-33xx.h
-index 84feecee4fe6..7dfdff09ddeb 100644
---- a/arch/arm/mach-omap2/prm-regbits-33xx.h
-+++ b/arch/arm/mach-omap2/prm-regbits-33xx.h
+diff --git a/arch/arm/mach-omap2/clockdomains33xx_data.c b/arch/arm/mach-omap2/clockdomains33xx_data.c
+index 32c90fd9eba2..b4d5144df445 100644
+--- a/arch/arm/mach-omap2/clockdomains33xx_data.c
++++ b/arch/arm/mach-omap2/clockdomains33xx_data.c
 @@ -1,7 +1,7 @@
  /*
-  * AM33XX PRM_XXX register bits
+  * AM33XX Clock Domain data.
   *
 - * Copyright (C) 2011-2012 Texas Instruments Incorporated - http://www.ti.com/
 + * Copyright (C) 2011-2012 Texas Instruments Incorporated - https://www.ti.com/
+  * Vaibhav Hiremath <hvaibhav@ti.com>
   *
   * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License as
-diff --git a/arch/arm/mach-omap2/prm33xx.c b/arch/arm/mach-omap2/prm33xx.c
-index d5141669c28d..9144cc0479af 100644
---- a/arch/arm/mach-omap2/prm33xx.c
-+++ b/arch/arm/mach-omap2/prm33xx.c
+diff --git a/arch/arm/mach-omap2/clockdomains81xx_data.c b/arch/arm/mach-omap2/clockdomains81xx_data.c
+index 65fbd136b20c..127dc7ace71f 100644
+--- a/arch/arm/mach-omap2/clockdomains81xx_data.c
++++ b/arch/arm/mach-omap2/clockdomains81xx_data.c
 @@ -1,7 +1,7 @@
  /*
-  * AM33XX PRM functions
+  * TI81XX Clock Domain data.
   *
-- * Copyright (C) 2011-2012 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2011-2012 Texas Instruments Incorporated - https://www.ti.com/
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License as
-diff --git a/arch/arm/mach-omap2/prm33xx.h b/arch/arm/mach-omap2/prm33xx.h
-index 66302c6aba61..d0b7404565f1 100644
---- a/arch/arm/mach-omap2/prm33xx.h
-+++ b/arch/arm/mach-omap2/prm33xx.h
-@@ -1,7 +1,7 @@
- /*
-  * AM33XX PRM instance offset macros
-  *
-- * Copyright (C) 2011-2012 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2011-2012 Texas Instruments Incorporated - https://www.ti.com/
+- * Copyright (C) 2010 Texas Instruments, Inc. - http://www.ti.com/
++ * Copyright (C) 2010 Texas Instruments, Inc. - https://www.ti.com/
+  * Copyright (C) 2013 SKTB SKiT, http://www.skitlab.ru/
   *
   * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License as
-diff --git a/arch/arm/mach-omap2/prm54xx.h b/arch/arm/mach-omap2/prm54xx.h
-index ee0f1cc92e3a..7329d6fcd78b 100644
---- a/arch/arm/mach-omap2/prm54xx.h
-+++ b/arch/arm/mach-omap2/prm54xx.h
-@@ -2,7 +2,7 @@
- /*
-  * OMAP54xx PRM instance offset macros
-  *
-- * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com
-+ * Copyright (C) 2013 Texas Instruments Incorporated - https://www.ti.com
-  *
-  * Paul Walmsley (paul@pwsan.com)
-  * Rajendra Nayak (rnayak@ti.com)
-diff --git a/arch/arm/mach-omap2/prm7xx.h b/arch/arm/mach-omap2/prm7xx.h
-index cf99307d1b1f..e5aee0409eae 100644
---- a/arch/arm/mach-omap2/prm7xx.h
-+++ b/arch/arm/mach-omap2/prm7xx.h
-@@ -2,7 +2,7 @@
- /*
-  * DRA7xx PRM instance offset macros
-  *
-- * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com
-+ * Copyright (C) 2013 Texas Instruments Incorporated - https://www.ti.com
-  *
-  * Generated by code originally written by:
-  * Paul Walmsley (paul@pwsan.com)
 -- 
 2.27.0
 
