@@ -2,33 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C49352253E4
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Jul 2020 22:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 010EE225423
+	for <lists+linux-omap@lfdr.de>; Sun, 19 Jul 2020 22:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726093AbgGSUGe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 19 Jul 2020 16:06:34 -0400
-Received: from smtp.al2klimov.de ([78.46.175.9]:39488 "EHLO smtp.al2klimov.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726009AbgGSUGe (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 19 Jul 2020 16:06:34 -0400
+        id S1726135AbgGSUh3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 19 Jul 2020 16:37:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60628 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726073AbgGSUh3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 19 Jul 2020 16:37:29 -0400
+Received: from smtp.al2klimov.de (smtp.al2klimov.de [IPv6:2a01:4f8:c0c:1465::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997E9C0619D2;
+        Sun, 19 Jul 2020 13:37:28 -0700 (PDT)
 Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-        by smtp.al2klimov.de (Postfix) with ESMTPA id BDBE4BC063;
-        Sun, 19 Jul 2020 20:06:29 +0000 (UTC)
+        by smtp.al2klimov.de (Postfix) with ESMTPA id 2B803BC063;
+        Sun, 19 Jul 2020 20:37:20 +0000 (UTC)
 From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        tony@atomide.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org
+To:     b.zolnierkie@samsung.com, corbet@lwn.net, sam@ravnborg.org,
+        arnd@arndb.de, sashal@kernel.org, weh@microsoft.com,
+        michal.simek@xilinx.com, paul@crapouillou.net,
+        masahiroy@kernel.org, daniel.vetter@ffwll.ch,
+        rdunlap@infradead.org, jani.nikula@intel.com,
+        viresh.kumar@linaro.org, Julia.Lawall@inria.fr,
+        linus.walleij@linaro.org, yuehaibing@huawei.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
 Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Subject: [PATCH for v5.9] regulator: Replace HTTP links with HTTPS ones
-Date:   Sun, 19 Jul 2020 22:06:23 +0200
-Message-Id: <20200719200623.61524-1-grandmaster@al2klimov.de>
+Subject: [PATCH for v5.9] video: fbdev: Replace HTTP links with HTTPS ones
+Date:   Sun, 19 Jul 2020 22:37:14 +0200
+Message-Id: <20200719203714.61745-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: ++++++
-X-Spam-Level: ******
+X-Spamd-Bar: +++++
+X-Spam-Level: *****
 Authentication-Results: smtp.al2klimov.de;
         auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
-X-Spam: Yes
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
@@ -73,176 +82,249 @@ Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
  Impossible is nothing! :)
 
 
- Documentation/devicetree/bindings/regulator/lp872x.txt | 4 ++--
- drivers/regulator/hi6421-regulator.c                   | 2 +-
- drivers/regulator/hi6421v530-regulator.c               | 2 +-
- drivers/regulator/lp873x-regulator.c                   | 2 +-
- drivers/regulator/lp87565-regulator.c                  | 2 +-
- drivers/regulator/pbias-regulator.c                    | 2 +-
- drivers/regulator/tps65023-regulator.c                 | 2 +-
- drivers/regulator/tps6507x-regulator.c                 | 2 +-
- drivers/regulator/tps65086-regulator.c                 | 2 +-
- drivers/regulator/tps65217-regulator.c                 | 2 +-
- drivers/regulator/tps65218-regulator.c                 | 2 +-
- drivers/regulator/tps65912-regulator.c                 | 2 +-
- 12 files changed, 13 insertions(+), 13 deletions(-)
+ Documentation/fb/ep93xx-fb.rst                    | 2 +-
+ drivers/video/fbdev/Kconfig                       | 8 ++++----
+ drivers/video/fbdev/core/fbmon.c                  | 4 ++--
+ drivers/video/fbdev/ep93xx-fb.c                   | 2 +-
+ drivers/video/fbdev/grvga.c                       | 2 +-
+ drivers/video/fbdev/macfb.c                       | 2 +-
+ drivers/video/fbdev/metronomefb.c                 | 2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/Kconfig      | 4 ++--
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi.h       | 2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c      | 2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c | 2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.h | 2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.h | 2 +-
+ drivers/video/fbdev/sa1100fb.c                    | 2 +-
+ 14 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/regulator/lp872x.txt b/Documentation/devicetree/bindings/regulator/lp872x.txt
-index ca58a68ffdf1..ab895cd1cac1 100644
---- a/Documentation/devicetree/bindings/regulator/lp872x.txt
-+++ b/Documentation/devicetree/bindings/regulator/lp872x.txt
-@@ -37,8 +37,8 @@ Optional properties:
-     (Documentation/devicetree/bindings/regulator/regulator.txt)
+diff --git a/Documentation/fb/ep93xx-fb.rst b/Documentation/fb/ep93xx-fb.rst
+index 6f7767926d1a..1dd67f4688c7 100644
+--- a/Documentation/fb/ep93xx-fb.rst
++++ b/Documentation/fb/ep93xx-fb.rst
+@@ -127,7 +127,7 @@ At least on the EP9315 there is a silicon bug which causes bit 27 of
+ the VIDSCRNPAGE (framebuffer physical offset) to be tied low. There is
+ an unofficial errata for this bug at::
  
- Datasheet
--  - LP8720: http://www.ti.com/lit/ds/symlink/lp8720.pdf
--  - LP8725: http://www.ti.com/lit/ds/symlink/lp8725.pdf
-+  - LP8720: https://www.ti.com/lit/ds/symlink/lp8720.pdf
-+  - LP8725: https://www.ti.com/lit/ds/symlink/lp8725.pdf
+-	http://marc.info/?l=linux-arm-kernel&m=110061245502000&w=2
++	https://marc.info/?l=linux-arm-kernel&m=110061245502000&w=2
  
- Example 1) LP8720
+ By default the EP93xx framebuffer driver checks if the allocated physical
+ address has bit 27 set. If it does, then the memory is freed and an
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index 0f559aeaf469..f12e390941b8 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -844,7 +844,7 @@ config FB_OPENCORES
+ 	  systems (e.g. Altera socfpga or Xilinx Zynq) on FPGAs.
  
-diff --git a/drivers/regulator/hi6421-regulator.c b/drivers/regulator/hi6421-regulator.c
-index 66219d8dfc1a..dc631c1a46b4 100644
---- a/drivers/regulator/hi6421-regulator.c
-+++ b/drivers/regulator/hi6421-regulator.c
-@@ -5,7 +5,7 @@
- // Copyright (c) <2011-2014> HiSilicon Technologies Co., Ltd.
- //              http://www.hisilicon.com
- // Copyright (c) <2013-2014> Linaro Ltd.
--//              http://www.linaro.org
-+//              https://www.linaro.org
- //
- // Author: Guodong Xu <guodong.xu@linaro.org>
+ 	  The source code and specification for the core is available at
+-	  <http://opencores.org/project,vga_lcd>
++	  <https://opencores.org/project,vga_lcd>
  
-diff --git a/drivers/regulator/hi6421v530-regulator.c b/drivers/regulator/hi6421v530-regulator.c
-index 06ae65199afd..988115f9b594 100644
---- a/drivers/regulator/hi6421v530-regulator.c
-+++ b/drivers/regulator/hi6421v530-regulator.c
-@@ -5,7 +5,7 @@
- // Copyright (c) <2017> HiSilicon Technologies Co., Ltd.
- //              http://www.hisilicon.com
- // Copyright (c) <2017> Linaro Ltd.
--//              http://www.linaro.org
-+//              https://www.linaro.org
- //
- // Author: Wang Xiaoyin <hw.wangxiaoyin@hisilicon.com>
- //         Guodong Xu <guodong.xu@linaro.org>
-diff --git a/drivers/regulator/lp873x-regulator.c b/drivers/regulator/lp873x-regulator.c
-index fe049b67e7d5..c38387e0fbb2 100644
---- a/drivers/regulator/lp873x-regulator.c
-+++ b/drivers/regulator/lp873x-regulator.c
-@@ -1,7 +1,7 @@
- /*
-  * Regulator driver for LP873X PMIC
+ config FB_S1D13XXX
+ 	tristate "Epson S1D13XXX framebuffer support"
+@@ -855,7 +855,7 @@ config FB_S1D13XXX
+ 	help
+ 	  Support for S1D13XXX framebuffer device family (currently only
+ 	  working with S1D13806). Product specs at
+-	  <http://vdc.epson.com/>
++	  <https://vdc.epson.com/>
+ 
+ config FB_ATMEL
+ 	tristate "AT91 LCD Controller support"
+@@ -1213,7 +1213,7 @@ config FB_RADEON
+ 	  don't need to choose this to run the Radeon in plain VGA mode.
+ 
+ 	  There is a product page at
+-	  http://products.amd.com/en-us/GraphicCardResult.aspx
++	  https://products.amd.com/en-us/GraphicCardResult.aspx
+ 
+ config FB_RADEON_I2C
+ 	bool "DDC/I2C for ATI Radeon support"
+@@ -1381,7 +1381,7 @@ config FB_SIS
+ 	help
+ 	  This is the frame buffer device driver for the SiS 300, 315, 330
+ 	  and 340 series as well as XGI V3XT, V5, V8, Z7 graphics chipsets.
+-	  Specs available at <http://www.sis.com> and <http://www.xgitech.com>.
++	  Specs available at <https://www.sis.com> and <http://www.xgitech.com>.
+ 
+ 	  To compile this driver as a module, choose M here; the module
+ 	  will be called sisfb.
+diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
+index d62a1e43864e..1bf82dbc9e3c 100644
+--- a/drivers/video/fbdev/core/fbmon.c
++++ b/drivers/video/fbdev/core/fbmon.c
+@@ -19,7 +19,7 @@
+  * Generalized Timing Formula is derived from:
   *
-- * Copyright (C) 2016 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2016 Texas Instruments Incorporated - https://www.ti.com/
+  *      GTF Spreadsheet by Andy Morrish (1/5/97)
+- *      available at http://www.vesa.org
++ *      available at https://www.vesa.org
   *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License version 2 as
-diff --git a/drivers/regulator/lp87565-regulator.c b/drivers/regulator/lp87565-regulator.c
-index 5d525dacf959..b77d69b687d9 100644
---- a/drivers/regulator/lp87565-regulator.c
-+++ b/drivers/regulator/lp87565-regulator.c
+  * This file is subject to the terms and conditions of the GNU General Public
+  * License.  See the file COPYING in the main directory of this archive
+@@ -1201,7 +1201,7 @@ static void fb_timings_dclk(struct __fb_timings *timings)
+  * ignored and @var will be filled with the calculated timings.
+  *
+  * All calculations are based on the VESA GTF Spreadsheet
+- * available at VESA's public ftp (http://www.vesa.org).
++ * available at VESA's public ftp (https://www.vesa.org).
+  *
+  * NOTES:
+  * The timings generated by the GTF will be different from VESA
+diff --git a/drivers/video/fbdev/ep93xx-fb.c b/drivers/video/fbdev/ep93xx-fb.c
+index cda2ef337423..ba33b4dce0df 100644
+--- a/drivers/video/fbdev/ep93xx-fb.c
++++ b/drivers/video/fbdev/ep93xx-fb.c
+@@ -430,7 +430,7 @@ static int ep93xxfb_alloc_videomem(struct fb_info *info)
+ 	/*
+ 	 * There is a bug in the ep93xx framebuffer which causes problems
+ 	 * if bit 27 of the physical address is set.
+-	 * See: http://marc.info/?l=linux-arm-kernel&m=110061245502000&w=2
++	 * See: https://marc.info/?l=linux-arm-kernel&m=110061245502000&w=2
+ 	 * There does not seem to be any official errata for this, but I
+ 	 * have confirmed the problem exists on my hardware (ep9315) at
+ 	 * least.
+diff --git a/drivers/video/fbdev/grvga.c b/drivers/video/fbdev/grvga.c
+index 07dda03e0957..24818b276241 100644
+--- a/drivers/video/fbdev/grvga.c
++++ b/drivers/video/fbdev/grvga.c
+@@ -5,7 +5,7 @@
+  * 2011 (c) Aeroflex Gaisler AB
+  *
+  * Full documentation of the core can be found here:
+- * http://www.gaisler.com/products/grlib/grip.pdf
++ * https://www.gaisler.com/products/grlib/grip.pdf
+  *
+  * Contributors: Kristoffer Glembo <kristoffer@gaisler.com>
+  */
+diff --git a/drivers/video/fbdev/macfb.c b/drivers/video/fbdev/macfb.c
+index e05a97662ca8..312e35c9aa6c 100644
+--- a/drivers/video/fbdev/macfb.c
++++ b/drivers/video/fbdev/macfb.c
+@@ -478,7 +478,7 @@ static int macfb_setcolreg(unsigned regno, unsigned red, unsigned green,
+ 			break;
+ 		/*
+ 		 * 24-bit colour almost doesn't exist on 68k Macs --
+-		 * http://support.apple.com/kb/TA28634 (Old Article: 10992)
++		 * https://support.apple.com/kb/TA28634 (Old Article: 10992)
+ 		 */
+ 		case 24:
+ 		case 32:
+diff --git a/drivers/video/fbdev/metronomefb.c b/drivers/video/fbdev/metronomefb.c
+index a42e2eceee48..952826557a0c 100644
+--- a/drivers/video/fbdev/metronomefb.c
++++ b/drivers/video/fbdev/metronomefb.c
+@@ -10,7 +10,7 @@
+  * Layout is based on skeletonfb.c by James Simmons and Geert Uytterhoeven.
+  *
+  * This work was made possible by help and equipment support from E-Ink
+- * Corporation. http://www.eink.com/
++ * Corporation. https://www.eink.com/
+  *
+  * This driver is written to be used with the Metronome display controller.
+  * It is intended to be architecture independent. A board specific driver
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/Kconfig b/drivers/video/fbdev/omap2/omapfb/dss/Kconfig
+index 36b97fee2d57..cc81a19537d2 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/Kconfig
++++ b/drivers/video/fbdev/omap2/omapfb/dss/Kconfig
+@@ -60,7 +60,7 @@ config FB_OMAP5_DSS_HDMI
+ 	select FB_OMAP2_DSS_HDMI_COMMON
+ 	help
+ 	  HDMI Interface for OMAP5 and similar cores. This adds the High
+-	  Definition Multimedia Interface. See http://www.hdmi.org/ for HDMI
++	  Definition Multimedia Interface. See https://www.hdmi.org/ for HDMI
+ 	  specification.
+ 
+ config FB_OMAP2_DSS_SDI
+@@ -79,7 +79,7 @@ config FB_OMAP2_DSS_DSI
+ 	  DSI is a high speed half-duplex serial interface between the host
+ 	  processor and a peripheral, such as a display or a framebuffer chip.
+ 
+-	  See http://www.mipi.org/ for DSI specifications.
++	  See https://www.mipi.org/ for DSI specifications.
+ 
+ config FB_OMAP2_DSS_MIN_FCK_PER_PCK
+ 	int "Minimum FCK/PCK ratio (for scaling)"
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h b/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h
+index b9d4480ecfad..9a7253355f6d 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h
 @@ -2,7 +2,7 @@
  /*
-  * Regulator driver for LP87565 PMIC
+  * HDMI driver definition for TI OMAP4 Processor.
   *
-- * Copyright (C) 2017 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2017 Texas Instruments Incorporated - https://www.ti.com/
+- * Copyright (C) 2010-2011 Texas Instruments Incorporated - http://www.ti.com/
++ * Copyright (C) 2010-2011 Texas Instruments Incorporated - https://www.ti.com/
   */
  
- #include <linux/module.h>
-diff --git a/drivers/regulator/pbias-regulator.c b/drivers/regulator/pbias-regulator.c
-index bfc15dd3f730..4eccf12f39de 100644
---- a/drivers/regulator/pbias-regulator.c
-+++ b/drivers/regulator/pbias-regulator.c
+ #ifndef _HDMI_H
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
+index 7060ae56c062..63262ec06921 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
 @@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  /*
-  * pbias-regulator.c
-  *
-- * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2014 Texas Instruments Incorporated - https://www.ti.com/
-  * Author: Balaji T K <balajitk@ti.com>
-  *
-  * This program is free software; you can redistribute it and/or
-diff --git a/drivers/regulator/tps65023-regulator.c b/drivers/regulator/tps65023-regulator.c
-index 5ca6d2130593..795d459ff3cf 100644
---- a/drivers/regulator/tps65023-regulator.c
-+++ b/drivers/regulator/tps65023-regulator.c
+  * HDMI interface DSS driver for TI's OMAP4 family of SoCs.
+- * Copyright (C) 2010-2011 Texas Instruments Incorporated - http://www.ti.com/
++ * Copyright (C) 2010-2011 Texas Instruments Incorporated - https://www.ti.com/
+  * Authors: Yong Zhi
+  *	Mythri pk <mythripk@ti.com>
+  */
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
+index 6b79b52d5fad..7ca1803bf161 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
 @@ -3,7 +3,7 @@
+  * ti_hdmi_4xxx_ip.c
   *
-  * Supports TPS65023 Regulator
-  *
-- * Copyright (C) 2009 Texas Instrument Incorporated - http://www.ti.com/
-+ * Copyright (C) 2009 Texas Instrument Incorporated - https://www.ti.com/
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License as
-diff --git a/drivers/regulator/tps6507x-regulator.c b/drivers/regulator/tps6507x-regulator.c
-index d2a8f69b2665..eafbc2bb4b57 100644
---- a/drivers/regulator/tps6507x-regulator.c
-+++ b/drivers/regulator/tps6507x-regulator.c
-@@ -3,7 +3,7 @@
-  *
-  * Regulator driver for TPS65073 PMIC
-  *
-- * Copyright (C) 2009 Texas Instrument Incorporated - http://www.ti.com/
-+ * Copyright (C) 2009 Texas Instrument Incorporated - https://www.ti.com/
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License as
-diff --git a/drivers/regulator/tps65086-regulator.c b/drivers/regulator/tps65086-regulator.c
-index 9910e949373c..23528475a962 100644
---- a/drivers/regulator/tps65086-regulator.c
-+++ b/drivers/regulator/tps65086-regulator.c
-@@ -1,5 +1,5 @@
+  * HDMI TI81xx, TI38xx, TI OMAP4 etc IP driver Library
+- * Copyright (C) 2010-2011 Texas Instruments Incorporated - http://www.ti.com/
++ * Copyright (C) 2010-2011 Texas Instruments Incorporated - https://www.ti.com/
+  * Authors: Yong Zhi
+  *	Mythri pk <mythripk@ti.com>
+  */
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.h b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.h
+index f066d1f69132..b5c35277f06e 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.h
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.h
+@@ -2,7 +2,7 @@
  /*
-- * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2015 Texas Instruments Incorporated - https://www.ti.com/
+  * HDMI header definition for OMAP4 HDMI core IP
   *
-  * Author: Andrew F. Davis <afd@ti.com>
-  *
-diff --git a/drivers/regulator/tps65217-regulator.c b/drivers/regulator/tps65217-regulator.c
-index d27dbbafcf72..2c989256c0a7 100644
---- a/drivers/regulator/tps65217-regulator.c
-+++ b/drivers/regulator/tps65217-regulator.c
-@@ -3,7 +3,7 @@
-  *
-  * Regulator driver for TPS65217 PMIC
-  *
-- * Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2011 Texas Instruments Incorporated - https://www.ti.com/
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License as
-diff --git a/drivers/regulator/tps65218-regulator.c b/drivers/regulator/tps65218-regulator.c
-index 05d13f807918..433f27cb324e 100644
---- a/drivers/regulator/tps65218-regulator.c
-+++ b/drivers/regulator/tps65218-regulator.c
-@@ -3,7 +3,7 @@
-  *
-  * Regulator driver for TPS65218 PMIC
-  *
-- * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2014 Texas Instruments Incorporated - https://www.ti.com/
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License version 2 as
-diff --git a/drivers/regulator/tps65912-regulator.c b/drivers/regulator/tps65912-regulator.c
-index 15c79931ea89..63d6bbd4969b 100644
---- a/drivers/regulator/tps65912-regulator.c
-+++ b/drivers/regulator/tps65912-regulator.c
-@@ -1,7 +1,7 @@
+- * Copyright (C) 2010-2011 Texas Instruments Incorporated - http://www.ti.com/
++ * Copyright (C) 2010-2011 Texas Instruments Incorporated - https://www.ti.com/
+  */
+ 
+ #ifndef _HDMI4_CORE_H_
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.h b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.h
+index f10b8a283011..192c9b6e2f7b 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.h
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.h
+@@ -2,7 +2,7 @@
  /*
-  * Regulator driver for TI TPS65912x PMICs
+  * HDMI driver definition for TI OMAP5 processors.
   *
-- * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com/
-+ * Copyright (C) 2015 Texas Instruments Incorporated - https://www.ti.com/
-  *	Andrew F. Davis <afd@ti.com>
+- * Copyright (C) 2011-2012 Texas Instruments Incorporated - http://www.ti.com/
++ * Copyright (C) 2011-2012 Texas Instruments Incorporated - https://www.ti.com/
+  */
+ 
+ #ifndef _HDMI5_CORE_H_
+diff --git a/drivers/video/fbdev/sa1100fb.c b/drivers/video/fbdev/sa1100fb.c
+index 3e6e13f7a831..bda6cc313c8b 100644
+--- a/drivers/video/fbdev/sa1100fb.c
++++ b/drivers/video/fbdev/sa1100fb.c
+@@ -18,7 +18,7 @@
+  * Clean patches should be sent to the ARM Linux Patch System.  Please see the
+  * following web page for more information:
   *
-  * This program is free software; you can redistribute it and/or
+- *	http://www.arm.linux.org.uk/developer/patches/info.shtml
++ *	https://www.arm.linux.org.uk/developer/patches/info.shtml
+  *
+  * Thank you.
+  *
 -- 
 2.27.0
 
