@@ -2,15 +2,15 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3663C2261CA
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Jul 2020 16:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87C262261CD
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Jul 2020 16:19:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728469AbgGTOT0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Jul 2020 10:19:26 -0400
-Received: from mout.web.de ([212.227.15.3]:36291 "EHLO mout.web.de"
+        id S1728142AbgGTOTZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jul 2020 10:19:25 -0400
+Received: from mout.web.de ([212.227.15.3]:40427 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726782AbgGTOT0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 20 Jul 2020 10:19:26 -0400
+        id S1726759AbgGTOTZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 20 Jul 2020 10:19:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
         s=dbaedf251592; t=1595254748;
         bh=OExZunafEjPoP/mn9AZfuMf11tWR5wYwJKvm6Ui+qd8=;
@@ -19,9 +19,9 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
          U43dpQR2UEm2etr3HyMzpsrEcGNV1wb4nipviOOC5jkU/SAJbysk6+cWj5b4OSkJZi
          JGOAHXYTv6ZjdDgPDDCGIPl61Q5lSDUwX8vwnjxk=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.85.87]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MbyJ4-1kEdVi0W3C-00JGTj; Mon, 20
- Jul 2020 16:19:08 +0200
+Received: from [192.168.1.2] ([93.131.85.87]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MIvJx-1jzSRG3BjF-002V31; Mon, 20
+ Jul 2020 16:19:07 +0200
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Michael Turquette <mturquette@baylibre.com>,
         Rob Herring <robh@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
@@ -74,7 +74,7 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
 To:     Jing Xiangfeng <jingxiangfeng@huawei.com>,
         linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
-Message-ID: <ddf4efea-0a4b-de0a-e0cd-bdc04f5859d6@web.de>
+Message-ID: <b7f0dcda-7ec8-b3d8-ba53-c2720799abbc@web.de>
 Date:   Mon, 20 Jul 2020 16:19:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
@@ -82,30 +82,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:H4VJpDEaIHRf6gXge9wZRkoVyHFbgCXbOtheUaUJxJOnEaWmmQq
- l4FyCXqCpk/Sf0HrUobIiCacbtrQbmg+AV6as9pzez1TA7oSxzWrhn4JPc6By1Vrc1ttig8
- crOZM+nhe4snQs1a8VIdv6nCSRIx5KvF3wa/claaEj3Kwa6L7VBI4zVTgxYVsQFtb8OF8eT
- IWvWPZuTO2i1xY4pRJYJw==
+X-Provags-ID: V03:K1:TAFFwBtUf8EMNr/i/7TMnPeNyQcFIJxVsJk/5fTyr7p1J1qk018
+ fz/JckmV8XsByZXh2Zj75KND5waumCuZnw6jtU5rFTvLQN305qpUALa0mZFiCI4eOb/EoNl
+ DD+ouzsHWjJafnwI8H6dMcimm99iCpUu7J9SuisZlNLwVChk1vrA8PJbwbu253X5n4w4A+g
+ 0r3EuC1S7GhGTFcVTOTEQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:czClYcnBbjc=:i8f68ub+ju+uVxKRcUaR5A
- FMkDquBSkC1GscPwxGLiqTM93QVpzxP/h5LJAFankxYZ9jGJojzXe8H6+xO0pTE+pqvjtx+kD
- kBXSe+dJ6ltRXb9nD5qYGN3aUf4++DC/smsPlDZrO8xAL4C+wGIakLXKzdxKaXrDb+roxGD8q
- 7Ln86edGwMywnH+AtbzQoQD7ZYlSgMa2Zf61B7lSk8gZNRSxt5wxHA6RWyZL0dNXalqme+/oh
- DbSmuvAfXKuO2fpddBZCx7+IQGvAD24E6r8DtVpOKrV+4/uApBW3PRtDCrVHiZYOwUvSpnJ+p
- s3qqS18WrCIL6XjijzxiwcE4HOWpHdHhwnTXjNgIsAkLDotmjkUt0Ge2e1c+nwj73EDjyG4jZ
- 7h1RC6iAkgXrAhmD6Fn7gEoGU3VZWLG4MYFh7g2M7grYeSbE3zJ8HykrJqGtqTDRnrCAxYcCI
- pLWTZ6HzTCPrdAl1Lnf5ZJqlNEU9KmbJd03/yWc9Vxql9NIVT3JRsM54Lh0OorLG2odZxIHQK
- nDEkJhTGob26E6l2c18+UOpAGJi5cWAq1iUqSWySSJBKiU/Z4D9BALtFufPiXC+c7OK3U3JLy
- p1e4ZllFwnHK3hRaED3vuA7Rl+n3CIfJP/eYVPs2L0yKuTI+1GmdxQC01x+tbSlwYGd9Sas34
- CbTDm68hTfjb9peI8QmaIYKGLTCIvRUB1u0cEnNLe8pjIGDe7KYBGeqWTWWH8v61hBaFXVXQa
- zdjNF6gjUtt8szcGf/tb5AXNGp1bdAo4GaQ1wmuJxFaLyYZgiwMnk45zxfWChBv9tr7P3uZrX
- /oNXUvNu+bFARUnqA6/pUHVrkjVm9mvfChkscFsMhagmqjQ7+srI34uOrIuLOQGSLRBEy/4cG
- 2Kl67QpQxIdnng+hbG/6lv7LP64sRyxoVZgJ0YH9w90EHIlYOvKbs8uhXFgwAQqzAkQPq4oFV
- +IlHPg18NWmbROsa3JenDFhrVpVHIf2Z7bLqlW5bS5yeHCNhUmXk7Zee4BzW3ASRKTe2VV8x+
- 94xrz4N/nPL1LS10DXEhnwyuoROrzEqMu3Rj8b+Q96/6lZprNijUijatBYndXFzfLxR8RzCWc
- 0U60Tv//ZED+OgdOu3N9J8GuLKxGlK9whmJNSLUKEpj/fznxRBDLGxSgBuBV+BgzIWoZF/ViL
- rWNaYsyZwvkmcjPi9HojifWf1Z9kZwpKMDpgzK6t4NqdRc6ZCsy78T8o5VDKEGv8VxcYPK4Z1
- 8LIw2SXFzxyIZg7DL0CkJB17FcZtwXw07geVo7A==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:xDb4Kd9oyQU=:O6vWZA1wfG47BY4IITt4xR
+ ouJ93vgB9vJl/s6q5eRIy+s3rO2Y/LW1edBHxAw/BgO+cA0dnCL93L6P2USpZeKYmVClhn/+E
+ s/sCnAjR97qxU6tLNc3Ai/sARit1uRBnESuWETBHaXJ4DlpsSmFMXXcBurA1GAwvx7odSDp8Y
+ yfmNb/FFuzZjgwQMVAv3/QHaq+t9Ze3kCRUdtpP/vHYYrww8ylxR5hDE7JKHwEqqRfiXQ1d1J
+ u6DheFOZOcrYVZF0Ko0qtushemPGdlA5SAEMCgPVYIe3O2id74ou3hZMbFbpeCZGD5QLajHgk
+ l0itQfnflsQ6PfItn0cIHfEceSYDGsOzJWhbaNyWN+QjSiQlBKvnSzXWrOxDWroYfYplOBbeI
+ D/AcmSFs3w8G6LAC45rJsu9Or122MWXMl26nfgK7JuPfTiDcLy6uzsfyUeymTUG7vS6E6H9mj
+ kceOcGamm+XLEd58xEMw9yyphAYq9sh0TqCaxCQqHqrJvEtvQ0dYwADzKujkB88LrOmZ3eIr1
+ 15ji6JzkZughAWxsw9dCKJZYPK9yW1+PyU1cfZaAaQU6/3Ov5YJ08bb85kwOb9/HDDx54Ksy4
+ VZpjmDVvhpefb/xOFvuJtSDR2jBcmdIbAA6zrd2YMo0DdeJQ3tzCmVSzexg5J86HrRaGhqpyt
+ H7FafP7tL+pkp0+FksldQpbx9SCtAXHkZxa0KwJAMly1Z1qT9U9g7dTQWyhDfHgxxFDmZFONp
+ B+WTjQEZivGPqq2DeGRztx1XyZZB/dw6p+iMA3715sWYHJrwqRWnE9D6VhecwgxCW1kCV+8ID
+ AViv2PGZ50DvOAU30RKKPZprcKJhBVmPPyGFxmWfQc+++HHRQG3rwTtZDMCdfVLp3Lw+OaD43
+ +oGuVK++r1dabqp2jLXhn6pHuakrz0kYX7V4qnYfteGDCNWF7DambndKLXi6mXk17HKD1dWbB
+ q250ICIuHJDOd+B399zAqav0L0SyTxqDTVCUEd93lDOdPj0bH3Hhcd/z00hSSdaWPJ4fFeojn
+ q5CrczNWwXok2bAiRfmO3EPOeAIgwktjFG/pL9x1cjo2wwEC/FNsAJVj27jO+kfN80lMapdhZ
+ Amu0dS4VJd2Xeb7jLsCJI1iu46PjwmwfdcoNivQCerS9TqzKb/iRkwsrqPZllqToRVpA+SnIO
+ utHjIzwYQQ85xwSHgoIPNaL/Cg680wA6JlBgAOPcWqSO+D4H/lAviYIAmrsqXUo642RdjUNt5
+ tMdAb2R7il3tnIi8A1WeYGjsBqVI3qV3dGwjQww==
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
