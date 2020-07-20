@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4594D2271BD
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Jul 2020 23:45:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DF47227186
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Jul 2020 23:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727094AbgGTVhg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Jul 2020 17:37:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55408 "EHLO mail.kernel.org"
+        id S1728069AbgGTViR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jul 2020 17:38:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56700 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727048AbgGTVhb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 20 Jul 2020 17:37:31 -0400
+        id S1728062AbgGTViR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 20 Jul 2020 17:38:17 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 384D422BEF;
-        Mon, 20 Jul 2020 21:37:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A558B22BEF;
+        Mon, 20 Jul 2020 21:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595281051;
-        bh=ngBgYryhRrbUSwezXCMKxVoZ+YtUstZLZkhj22QczNQ=;
+        s=default; t=1595281096;
+        bh=7ieTW10cs9zo/rw7fhm6O8NQwDfikmvtqfJ9a+7vWGk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0UjyQUPINUK+aTDE3YDe/9ALKCXvL7mp1Ld2eOthebLPphlCSaQUg0ocT188wh7Rn
-         1VXSKSog/8i6zjizbfx13q0XJJpEyxDswPIlX4POd7uQntOK1+73b2HYAcoHCLA2CR
-         WEDPycUNW52HuCFBtidAV2BKJjk+U8Ue+T4LqUG4=
+        b=Dw2No4DSIr03SSvFiLoxOAdbWqI9PEU5XG9DflYUFEEtVhyTxLsMDCPHwrIdBZTEk
+         RYeGyVlk6/QLGgMAXwe1gcuCa37kHVJqaumbG1ukkKFO9EubWvSHOfXhTPLO59dP1r
+         gj3Gv7pJAygnMp7OhN47i4u83MbCf3OxFHn14TBs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Merlijn Wajer <merlijn@wizzup.org>,
@@ -31,12 +31,12 @@ Cc:     Merlijn Wajer <merlijn@wizzup.org>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 12/40] ARM: dts: n900: remove mmc1 card detect gpio
-Date:   Mon, 20 Jul 2020 17:36:47 -0400
-Message-Id: <20200720213715.406997-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 07/34] ARM: dts: n900: remove mmc1 card detect gpio
+Date:   Mon, 20 Jul 2020 17:37:40 -0400
+Message-Id: <20200720213807.407380-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200720213715.406997-1-sashal@kernel.org>
-References: <20200720213715.406997-1-sashal@kernel.org>
+In-Reply-To: <20200720213807.407380-1-sashal@kernel.org>
+References: <20200720213807.407380-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,7 +73,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
-index 4089d97405c95..3dbcae3d60d28 100644
+index 7f2ddb78da5fa..4227da71cc626 100644
 --- a/arch/arm/boot/dts/omap3-n900.dts
 +++ b/arch/arm/boot/dts/omap3-n900.dts
 @@ -105,6 +105,14 @@ proximity_sensor {
@@ -91,7 +91,7 @@ index 4089d97405c95..3dbcae3d60d28 100644
  	};
  
  	isp1707: isp1707 {
-@@ -819,10 +827,6 @@ &mmc1 {
+@@ -814,10 +822,6 @@ &mmc1 {
  	pinctrl-0 = <&mmc1_pins>;
  	vmmc-supply = <&vmmc1>;
  	bus-width = <4>;
