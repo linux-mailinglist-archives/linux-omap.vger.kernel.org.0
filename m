@@ -2,92 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 172EA226F3A
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Jul 2020 21:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4594D2271BD
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Jul 2020 23:45:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728733AbgGTTr2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Jul 2020 15:47:28 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:34557 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726491AbgGTTr1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Jul 2020 15:47:27 -0400
-Received: by mail-io1-f67.google.com with SMTP id q74so18945049iod.1;
-        Mon, 20 Jul 2020 12:47:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=wami5ld0z9FHvbWVsYveEHQ9/pc5tADPd3tpSIEvVUM=;
-        b=DtzuNnCvJf1kWNw5RVf7hcRW6jFHoqH0k/yIC7F32ZClDeJn315BVJPrGBlsHJFIPg
-         4ileIHe9G/4FdiNWcgmpg1/QI/+9dIT3y/exiRM+hElC3QdufY3vQ4Ml9zfBVCMXh/zw
-         xJ+unj1ChWld+SGa6DciCf6/cUq3wzpFK4XSNYzeZU/1CgJE1mp63QgRFSO4PmgFDFXI
-         T0TZd5xr8Tn6iM0ZpjX8rnxJCpnHo/DPyppN527pZG3nyCjDniyQrmCNCJIA0DouSUNA
-         6OmMz6oN3tZDCnLTV8/jLnJKjrjyb8527+scNvp/YM+LBp7ey9mjGfnMLLDvyv8EgrlB
-         m67A==
-X-Gm-Message-State: AOAM532axaqMjO/v3Cswu9Mm9AFMF2IKfUvMHwABejigWyMKVhXjFao4
-        cRJR6KYVf/DSVzSENOo9eg==
-X-Google-Smtp-Source: ABdhPJwYhcD+ech3tTx1xgCvhsZ+suOtxjFUk2x6J6Yy5dtevlrrdBMQER6Ts4r7Gt8P/VVQIziInA==
-X-Received: by 2002:a05:6602:2ac8:: with SMTP id m8mr25005533iov.36.1595274446734;
-        Mon, 20 Jul 2020 12:47:26 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id b24sm9347565ioh.6.2020.07.20.12.47.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2020 12:47:25 -0700 (PDT)
-Received: (nullmailer pid 2887462 invoked by uid 1000);
-        Mon, 20 Jul 2020 19:47:24 -0000
-Date:   Mon, 20 Jul 2020 13:47:24 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Jacopo Mondi <jacopo+renesas@jmondi.org>
-Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Andy Gross <agross@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>, robh+dt@kernel.org,
-        Tony Lindgren <tony@atomide.com>, slongerbeam@gmail.com,
-        linux-media@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Maxime Ripard <mripard@kernel.org>, Nishanth Menon <nm@ti.com>,
-        linux-renesas-soc@vger.kernel.org,
-        laurent.pinchart@ideasonboard.com
-Subject: Re: [PATCH 07/13] dt-bindings: media: ov5640: Remove clock-lanes
-Message-ID: <20200720194724.GA2887432@bogus>
-References: <20200717132859.237120-1-jacopo+renesas@jmondi.org>
- <20200717132859.237120-8-jacopo+renesas@jmondi.org>
+        id S1727094AbgGTVhg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jul 2020 17:37:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55408 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727048AbgGTVhb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 20 Jul 2020 17:37:31 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 384D422BEF;
+        Mon, 20 Jul 2020 21:37:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595281051;
+        bh=ngBgYryhRrbUSwezXCMKxVoZ+YtUstZLZkhj22QczNQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=0UjyQUPINUK+aTDE3YDe/9ALKCXvL7mp1Ld2eOthebLPphlCSaQUg0ocT188wh7Rn
+         1VXSKSog/8i6zjizbfx13q0XJJpEyxDswPIlX4POd7uQntOK1+73b2HYAcoHCLA2CR
+         WEDPycUNW52HuCFBtidAV2BKJjk+U8Ue+T4LqUG4=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Merlijn Wajer <merlijn@wizzup.org>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.7 12/40] ARM: dts: n900: remove mmc1 card detect gpio
+Date:   Mon, 20 Jul 2020 17:36:47 -0400
+Message-Id: <20200720213715.406997-12-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200720213715.406997-1-sashal@kernel.org>
+References: <20200720213715.406997-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200717132859.237120-8-jacopo+renesas@jmondi.org>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 17 Jul 2020 15:28:53 +0200, Jacopo Mondi wrote:
-> The ov5640 does not support routing the clock signal to a different
-> lane, and the property has value fixed to 0.
-> 
-> Remove the property from the bindings and update its users
-> accordingly.
-> 
-> Signed-off-by: Jacopo Mondi <jacopo+renesas@jmondi.org>
-> ---
->  Documentation/devicetree/bindings/media/i2c/ov5640.yaml | 6 ------
->  arch/arm/boot/dts/dra72-evm-common.dtsi                 | 1 -
->  arch/arm/boot/dts/dra76-evm.dts                         | 1 -
->  arch/arm/boot/dts/imx6-logicpd-baseboard.dtsi           | 1 -
->  arch/arm/boot/dts/imx6qdl-icore.dtsi                    | 1 -
->  arch/arm/boot/dts/imx6qdl-sabrelite.dtsi                | 1 -
->  arch/arm/boot/dts/imx6qdl-sabresd.dtsi                  | 1 -
->  arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi               | 1 -
->  arch/arm64/boot/dts/ti/k3-am654-base-board.dts          | 1 -
->  9 files changed, 14 deletions(-)
-> 
+From: Merlijn Wajer <merlijn@wizzup.org>
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+[ Upstream commit ed3e98e919aaaa47e9d9f8a40c3f6f4a22577842 ]
+
+Instead, expose the key via the input framework, as SW_MACHINE_COVER
+
+The chip-detect GPIO is actually detecting if the cover is closed.
+Technically it's possible to use the SD card with open cover. The
+only downside is risk of battery falling out and user being able
+to physically remove the card.
+
+The behaviour of SD card not being available when the device is
+open is unexpected and creates more problems than it solves. There
+is a high chance, that more people accidentally break their rootfs
+by opening the case without physically removing the card.
+
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Acked-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Merlijn Wajer <merlijn@wizzup.org>
+Link: https://lore.kernel.org/r/20200612125402.18393-3-merlijn@wizzup.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/boot/dts/omap3-n900.dts | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
+index 4089d97405c95..3dbcae3d60d28 100644
+--- a/arch/arm/boot/dts/omap3-n900.dts
++++ b/arch/arm/boot/dts/omap3-n900.dts
+@@ -105,6 +105,14 @@ proximity_sensor {
+ 			linux,code = <SW_FRONT_PROXIMITY>;
+ 			linux,can-disable;
+ 		};
++
++		machine_cover {
++			label = "Machine Cover";
++			gpios = <&gpio6 0 GPIO_ACTIVE_LOW>; /* 160 */
++			linux,input-type = <EV_SW>;
++			linux,code = <SW_MACHINE_COVER>;
++			linux,can-disable;
++		};
+ 	};
+ 
+ 	isp1707: isp1707 {
+@@ -819,10 +827,6 @@ &mmc1 {
+ 	pinctrl-0 = <&mmc1_pins>;
+ 	vmmc-supply = <&vmmc1>;
+ 	bus-width = <4>;
+-	/* For debugging, it is often good idea to remove this GPIO.
+-	   It means you can remove back cover (to reboot by removing
+-	   battery) and still use the MMC card. */
+-	cd-gpios = <&gpio6 0 GPIO_ACTIVE_LOW>; /* 160 */
+ };
+ 
+ /* most boards use vaux3, only some old versions use vmmc2 instead */
+-- 
+2.25.1
+
