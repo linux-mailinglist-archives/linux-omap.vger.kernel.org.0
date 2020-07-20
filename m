@@ -2,140 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87C262261CD
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Jul 2020 16:19:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3958E22620A
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Jul 2020 16:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728142AbgGTOTZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Jul 2020 10:19:25 -0400
-Received: from mout.web.de ([212.227.15.3]:40427 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726759AbgGTOTZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 20 Jul 2020 10:19:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1595254748;
-        bh=OExZunafEjPoP/mn9AZfuMf11tWR5wYwJKvm6Ui+qd8=;
-        h=X-UI-Sender-Class:Cc:Subject:From:To:Date;
-        b=nCsQwJeXM3JTRNYoaAgymHldDMNxKi9xNxlf0c68SWP6/7G7Pnu6ENy0vqEydLohv
-         U43dpQR2UEm2etr3HyMzpsrEcGNV1wb4nipviOOC5jkU/SAJbysk6+cWj5b4OSkJZi
-         JGOAHXYTv6ZjdDgPDDCGIPl61Q5lSDUwX8vwnjxk=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.85.87]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MIvJx-1jzSRG3BjF-002V31; Mon, 20
- Jul 2020 16:19:07 +0200
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <t-kristo@ti.com>, Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH] clk: ti: clkctrl: add the missed kfree() for
- _ti_omap4_clkctrl_setup()
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     Jing Xiangfeng <jingxiangfeng@huawei.com>,
-        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
-Message-ID: <b7f0dcda-7ec8-b3d8-ba53-c2720799abbc@web.de>
-Date:   Mon, 20 Jul 2020 16:19:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728749AbgGTO0e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jul 2020 10:26:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728543AbgGTO0e (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Jul 2020 10:26:34 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54B2C0619D2
+        for <linux-omap@vger.kernel.org>; Mon, 20 Jul 2020 07:26:33 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id o18so18237268eje.7
+        for <linux-omap@vger.kernel.org>; Mon, 20 Jul 2020 07:26:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KAyErvrsmsg2yl8HJaeI8qkyJy7u6qTS/Aw3lCZAIlQ=;
+        b=ztJXSb87r/qQfxKi+7vOos/B89RV26brZQVQ6s1aAVVoG2JdLyuYRol/QYC3/moMz5
+         /F3w7LaaCk4u2rDR1b0RmRFQCnTJsX7Dy2CGHqqZQQne3XLDa9D4O80hbGBDDog9/0C8
+         zpjzS6Z5/bH5iL92Q9bPLoWXNAGl6jQWzteTcz8+JVmyD9AKyoFw6nC0XR0P3EIySCnQ
+         bE+0sJD+i6+OBvRl5os3uQSnSc/jE7Nd/gEftLTbiH6SLrhYS2DVaIIPiLIfDxUg0NnD
+         BVdgRjGXMhvr6p+wqdHhQcz8WDjd//QpVzqk74JLrfTLhUhr4oLLJYfUkDTJMtsaxVRN
+         sl1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KAyErvrsmsg2yl8HJaeI8qkyJy7u6qTS/Aw3lCZAIlQ=;
+        b=K0P3zQ/ywEK8cy5ixZo9gk033saCKntQb/6fqrfsHAzBjnDdCqVLdT0OXKoSKGfAvD
+         VrWJbxqCA2/b+0jwbIgfk20K4quh5cvrugHRKdfRpSu6JSTAldyomEcdRiG6J3m9B1V8
+         Wb8vWUE/fuvmCmTflCDpydDrpkk0ERLh1zsuhrPEkii57Try4gZqsGLpB49CZpwRjJIq
+         LiWuMzjl4/d6PZW4yPApKCx3V77YSh2Q6UMBr1s+FFcee+FoGu1s1dc+J/vSVc9OBJX1
+         BnGtTILv+pHOzADUhy+AdodZLtVpkNHasDFMJTBwdR3A2eejGgkef5c7e8eT0cvgfjaK
+         FOyw==
+X-Gm-Message-State: AOAM533/nmroLpo21dglsKilOnc1wzsHz0SDphTK1dVZyc66MX9KfW8L
+        PYTJYtESdTItGENvBGBnqu/aZGg1cQGrXh+PVEproA==
+X-Google-Smtp-Source: ABdhPJw0is1LrzDGO+RSe9ZgSBD3yon69XrfPOGSyQdsM4gQolQ+anP1PVWoq7gNuJoTStTzoel7kjPpeB+rZDstYzI=
+X-Received: by 2002:a17:906:a44:: with SMTP id x4mr21956032ejf.193.1595255192387;
+ Mon, 20 Jul 2020 07:26:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:TAFFwBtUf8EMNr/i/7TMnPeNyQcFIJxVsJk/5fTyr7p1J1qk018
- fz/JckmV8XsByZXh2Zj75KND5waumCuZnw6jtU5rFTvLQN305qpUALa0mZFiCI4eOb/EoNl
- DD+ouzsHWjJafnwI8H6dMcimm99iCpUu7J9SuisZlNLwVChk1vrA8PJbwbu253X5n4w4A+g
- 0r3EuC1S7GhGTFcVTOTEQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xDb4Kd9oyQU=:O6vWZA1wfG47BY4IITt4xR
- ouJ93vgB9vJl/s6q5eRIy+s3rO2Y/LW1edBHxAw/BgO+cA0dnCL93L6P2USpZeKYmVClhn/+E
- s/sCnAjR97qxU6tLNc3Ai/sARit1uRBnESuWETBHaXJ4DlpsSmFMXXcBurA1GAwvx7odSDp8Y
- yfmNb/FFuzZjgwQMVAv3/QHaq+t9Ze3kCRUdtpP/vHYYrww8ylxR5hDE7JKHwEqqRfiXQ1d1J
- u6DheFOZOcrYVZF0Ko0qtushemPGdlA5SAEMCgPVYIe3O2id74ou3hZMbFbpeCZGD5QLajHgk
- l0itQfnflsQ6PfItn0cIHfEceSYDGsOzJWhbaNyWN+QjSiQlBKvnSzXWrOxDWroYfYplOBbeI
- D/AcmSFs3w8G6LAC45rJsu9Or122MWXMl26nfgK7JuPfTiDcLy6uzsfyUeymTUG7vS6E6H9mj
- kceOcGamm+XLEd58xEMw9yyphAYq9sh0TqCaxCQqHqrJvEtvQ0dYwADzKujkB88LrOmZ3eIr1
- 15ji6JzkZughAWxsw9dCKJZYPK9yW1+PyU1cfZaAaQU6/3Ov5YJ08bb85kwOb9/HDDx54Ksy4
- VZpjmDVvhpefb/xOFvuJtSDR2jBcmdIbAA6zrd2YMo0DdeJQ3tzCmVSzexg5J86HrRaGhqpyt
- H7FafP7tL+pkp0+FksldQpbx9SCtAXHkZxa0KwJAMly1Z1qT9U9g7dTQWyhDfHgxxFDmZFONp
- B+WTjQEZivGPqq2DeGRztx1XyZZB/dw6p+iMA3715sWYHJrwqRWnE9D6VhecwgxCW1kCV+8ID
- AViv2PGZ50DvOAU30RKKPZprcKJhBVmPPyGFxmWfQc+++HHRQG3rwTtZDMCdfVLp3Lw+OaD43
- +oGuVK++r1dabqp2jLXhn6pHuakrz0kYX7V4qnYfteGDCNWF7DambndKLXi6mXk17HKD1dWbB
- q250ICIuHJDOd+B399zAqav0L0SyTxqDTVCUEd93lDOdPj0bH3Hhcd/z00hSSdaWPJ4fFeojn
- q5CrczNWwXok2bAiRfmO3EPOeAIgwktjFG/pL9x1cjo2wwEC/FNsAJVj27jO+kfN80lMapdhZ
- Amu0dS4VJd2Xeb7jLsCJI1iu46PjwmwfdcoNivQCerS9TqzKb/iRkwsrqPZllqToRVpA+SnIO
- utHjIzwYQQ85xwSHgoIPNaL/Cg680wA6JlBgAOPcWqSO+D4H/lAviYIAmrsqXUo642RdjUNt5
- tMdAb2R7il3tnIi8A1WeYGjsBqVI3qV3dGwjQww==
+References: <20200718154908.1816031-1-drew@beagleboard.org>
+In-Reply-To: <20200718154908.1816031-1-drew@beagleboard.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 20 Jul 2020 16:26:21 +0200
+Message-ID: <CACRpkdapJj5Q3MBKrJkd3CBeJJDuuS-Cj6D=Gk67uyt4O_Oj-A@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: core: print gpio in pins debugfs file
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-=E2=80=A6
-> +++ b/drivers/clk/ti/clkctrl.c
-> @@ -655,8 +655,10 @@ static void __init _ti_omap4_clkctrl_setup(struct d=
-evice_node *node)
->  		}
->
->  		hw =3D kzalloc(sizeof(*hw), GFP_KERNEL);
-> -		if (!hw)
-> +		if (!hw) {
-> +			kfree(clkctrl_name);
->  			return;
-> +		}
-=E2=80=A6
+Hi Drew,
 
-I suggest to use an additional label instead.
+thanks for this patch, we're going the right direction here
+and creating things that are generically useful.
 
- 		if (!hw)
--			return;
-+			goto free_control_name;
+On Sat, Jul 18, 2020 at 5:53 PM Drew Fustini <drew@beagleboard.org> wrote:
 
+> pin 103 (PIN103) GPIO-113 44e1099c 00000027 pinctrl-single
+> pin 104 (PIN104) GPIO-114 44e109a0 0000002c pinctrl-single
+(...)
 
-By the way:
-How do you think about to replace the label =E2=80=9Ccleanup=E2=80=9D by o=
-ther jump targets
-for better exception handling in this function implementation?
+Uh oh, that is the global GPIO number that we want to get
+rid of.
 
-Regards,
-Markus
+> +               gpio_num = 0;
+> +               list_for_each_entry(range, &pctldev->gpio_ranges, node) {
+> +                       if ((pin >= range->pin_base) &&
+> +                           (pin < (range->pin_base + range->npins)))
+> +                               gpio_num = range->base + (pin - range->pin_base);
+
+There should be a break; here should it not?
+
+> +               }
+> +
+> +               if (gpio_num > 0)
+> +                       seq_printf(s, "GPIO-%u ", gpio_num);
+
+Can we print the gpio_chip name and offset instead?
+I want to discourage the world from thinking about these
+global GPIO numbers.
+
+You can fetch the gpio_chip for the range pretty easily
+with
+
+struct gpio_chip *chip = gpio_to_chip(gpio_num);
+
+Also notice that this code needs to be
+#ifdef CONFIG_GPIOLIB somehow
+(maybe IS_ENABLED() works) because there
+are pin controllers in use without gpiolib believe it
+or not.
+
+Yours,
+Linus Walleij
