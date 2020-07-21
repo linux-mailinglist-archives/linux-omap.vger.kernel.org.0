@@ -2,102 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E76F52280A9
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Jul 2020 15:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 405EB2280B4
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Jul 2020 15:14:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727888AbgGUNLn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Jul 2020 09:11:43 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:49222 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726687AbgGUNLn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jul 2020 09:11:43 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 06LDBXMr098550;
-        Tue, 21 Jul 2020 08:11:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1595337093;
-        bh=NELhrCg4CbssggoxMkMnomy3Bv2q7drp9uho36FblX4=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=blBcqiTjOEfc0HHVJevjQ0kvujaObADmAnVnWU4R5XroSjuvCag9Edwi6aGg1QQ74
-         LxnfM+pX2qrlZp8x2Y+/5u2Ohz/76e/9axUhc4eTENIv2j5NHUPoDmN2JURqrXZhkk
-         SDwfk4AZw1G30ZaYwo0HslTZdsZxhOe+15Qgcin8=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06LDBX34126462;
-        Tue, 21 Jul 2020 08:11:33 -0500
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 21
- Jul 2020 08:11:33 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 21 Jul 2020 08:11:33 -0500
-Received: from [158.218.117.90] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06LDBTQw063801;
-        Tue, 21 Jul 2020 08:11:32 -0500
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Fix suspend and resume
- for am3 and am4
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20200713162601.6829-1-tony@atomide.com>
- <1ac1ac81-1335-8ba2-590c-8f57c2df1910@linaro.org>
-From:   Carlos Hernandez <ceh@ti.com>
-Message-ID: <6b5fc12c-4da3-fc67-b9dd-bfca2ae870f2@ti.com>
-Date:   Tue, 21 Jul 2020 09:11:29 -0400
+        id S1728416AbgGUNN5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Jul 2020 09:13:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42590 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726719AbgGUNN4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jul 2020 09:13:56 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A6AFC0619DA
+        for <linux-omap@vger.kernel.org>; Tue, 21 Jul 2020 06:13:56 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id y3so3808896wrl.4
+        for <linux-omap@vger.kernel.org>; Tue, 21 Jul 2020 06:13:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=6cyLMOSBZeL+BpGOPZ4KnMd993F4LhWCmpRnBNnGfbE=;
+        b=pLrzDAuE9wXfoBg5tbB9EnQhEkgxhH8oujCWqkPZ7yPs1YY1iIAN3Htmby+FaeSNto
+         I0AsSJQSA14mKVeuZwpaosXjYyNdgjtE5Md2vtVDzF5SPMVyAKGYNQ4PIOHEG3MPgF6A
+         mZOW0+Bb5/X/p5NPn/GLaSwX82VnAeWXT8ZAGshNALVq1M3MvLoGZdddDwhJKJLFl+00
+         +i5Z5m8Zht+mRlzpG/0R25tzgs57MBR3QTMoD3UNlkFRi4PqhEkOMLhM2Mt5uL0O/ne2
+         M8FbFkGM0/NmhmKmCJwLFVHma6/oaFG80Y2XNLp4WcctcPX9+M7x/KrMfslAWLgEGoHR
+         RJ7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=6cyLMOSBZeL+BpGOPZ4KnMd993F4LhWCmpRnBNnGfbE=;
+        b=NEzmuMmkRfj1KcmTItrsNq8S+JwrX7EDmX1OjVjTz78rhh5gXyG0lIkZ/h4o+gWTol
+         hFLCKlimTUXH2h9T9c6FcmID5ly/cy0nVW54DZeC5GFh2OX4kbXGDLYFNnh7yvO6e/Be
+         uDHMEQODTWl7hz8YzT8jRwQ/Dj4Ehk4iCojft+rUlHSK3wr86XItXEtB+XviizkTTIuc
+         3A/zz6sOGTm+11cROJPqFFVpWnkA5iFlq78UDt+vo475nd/+WDA4BHQIMtOopVScJFsF
+         AxcPAwxCZ5+4Tc8e+sApAfCyzxLS/06qSeTEVFsLk2D9rCxC1uuE54MnteFgfXn4ure1
+         s3vg==
+X-Gm-Message-State: AOAM531MhGmoQTXUe/0WgInUt4GmVZifU8RPJOJOHDEVCb15HFwVxLiL
+        aJEbjYJ1h3ffsCaeVxj8HrqI7g==
+X-Google-Smtp-Source: ABdhPJxx0VQc6B7QNxyrz8xAMr6fQIOSIIeCGxhOqrMXIku3RHo9gn7vVbH1A4tXfP0uGL/ot16u8A==
+X-Received: by 2002:a5d:65cd:: with SMTP id e13mr28879567wrw.213.1595337235242;
+        Tue, 21 Jul 2020 06:13:55 -0700 (PDT)
+Received: from ?IPv6:2a01:e34:ed2f:f020:c144:5385:c824:85ce? ([2a01:e34:ed2f:f020:c144:5385:c824:85ce])
+        by smtp.googlemail.com with ESMTPSA id m2sm3516167wmg.0.2020.07.21.06.13.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jul 2020 06:13:54 -0700 (PDT)
+Subject: Re: [PATCH] thermal: ti-soc-thermal: Fix reversed condition in
+ ti_thermal_expose_sensor()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20200616091949.GA11940@mwanda>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <145478f0-3db1-4121-ad7c-78bc67a69c66@linaro.org>
+Date:   Tue, 21 Jul 2020 15:13:53 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <1ac1ac81-1335-8ba2-590c-8f57c2df1910@linaro.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200616091949.GA11940@mwanda>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-On 7/17/20 6:29 AM, Daniel Lezcano wrote:
-> On 13/07/2020 18:26, Tony Lindgren wrote:
->> Carlos Hernandez <ceh@ti.com> reported that we now have a suspend and
->> resume regresssion on am3 and am4 compared to the earlier kernels. While
->> suspend and resume works with v5.8-rc3, we now get errors with rtcwake:
->>
->> pm33xx pm33xx: PM: Could not transition all powerdomains to target state
->> ...
->> rtcwake: write error
->>
->> This is because we now fail to idle the system timer clocks that the
->> idle code checks and the error gets propagated to the rtcwake.
->>
->> Turns out there are several issues that need to be fixed:
->>
->> 1. Ignore no-idle and no-reset configured timers for the ti-sysc
->>     interconnect target driver as otherwise it will keep the system timer
->>     clocks enabled
->>
->> 2. Toggle the system timer functional clock for suspend for am3 and am4
->>     (but not for clocksource on am3)
->>
->> 3. Only reconfigure type1 timers in dmtimer_systimer_disable()
->>
->> 4. Use of_machine_is_compatible() instead of of_device_is_compatible()
->>     for checking the SoC type
->>
->> Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
->> Reported-by: Carlos Hernandez <ceh@ti.com>
->> Signed-off-by: Tony Lindgren <tony@atomide.com>
->> ---
-
-Tested-by: Carlos Hernandez <ceh@ti.com>
+On 16/06/2020 11:19, Dan Carpenter wrote:
+> This condition is reversed and will cause breakage.
+> 
+> Fixes: 7440f518dad9 ("thermal/drivers/ti-soc-thermal: Avoid dereferencing ERR_PTR")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+ Applied.
 
 
-> Carlos, were you able to test this patch ?
->
 -- 
-Carlos
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
