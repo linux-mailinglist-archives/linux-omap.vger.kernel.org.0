@@ -2,135 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACEA9227692
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Jul 2020 05:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1C0B2276F5
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Jul 2020 05:36:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728390AbgGUDSt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Jul 2020 23:18:49 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:30759 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728377AbgGUDSt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 20 Jul 2020 23:18:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1595301527;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qvHTqf3N2UBCBfimzRRDXZNRWSQDDfsB47kO82KCfgE=;
-        b=NNYEK4kec2Zps1pWwKJhY5kUmg0gP8VzsJOCf9CBNKfJZnVNO326uKzxAhmWXV3Q/Uvlnn
-        UGcpu9Fzj1cL04qMYZGpsb3rqvEsqsaujQ7mD3+6le6iN0aEcYV0ESOkT+mIJR/hxEJMCF
-        D2olNL+oWXVG2lqlzeh1Tx0gcQLap0o=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-89-aRvlxbx0MhmcXL9aaJevTA-1; Mon, 20 Jul 2020 23:18:45 -0400
-X-MC-Unique: aRvlxbx0MhmcXL9aaJevTA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3F902800477;
-        Tue, 21 Jul 2020 03:18:43 +0000 (UTC)
-Received: from dhcp-128-65.nay.redhat.com (ovpn-13-4.pek2.redhat.com [10.72.13.4])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 48EC560BF1;
-        Tue, 21 Jul 2020 03:18:39 +0000 (UTC)
-Date:   Tue, 21 Jul 2020 11:18:36 +0800
-From:   Dave Young <dyoung@redhat.com>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org
-Subject: Re: omap-mcbsp 49022000.mcbsp: TX Buffer Overflow!
-Message-ID: <20200721031836.GC5271@dhcp-128-65.nay.redhat.com>
-References: <20200711033356.GA164619@dhcp-128-65.nay.redhat.com>
- <e4fc5a03-0343-d9c7-757f-b9652f0cd0ed@bitmer.com>
- <74f478d4-4028-0c5f-da21-f6cdf8d7e13e@ti.com>
- <d8829b8a-eca7-f0e3-600f-3263619332b3@ti.com>
+        id S1728515AbgGUDgH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jul 2020 23:36:07 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:36110 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726675AbgGUDgH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Jul 2020 23:36:07 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 06L3ZmkQ113164;
+        Mon, 20 Jul 2020 22:35:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1595302548;
+        bh=4l/xopkB5rnqxgNpCYxPbkaaMPF5KBXCv8Jz2guGsy0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=BS/sdwdgNI6twow8o4U179ZE5zNrG0WqI278XrRGm/5yYkRa9rDTPSWXzaQit+eDc
+         /gkDZqEzuYvgaJvKBnZ+vZQol3bQAjz2vo+2WIUY1Lx/FhCcXPWLSLF0kh4N9t2ykq
+         2+sehHLNT4grfY200MSRDQ+ZXAssYczX/0AH1XOM=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 06L3Zm2R021422
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 20 Jul 2020 22:35:48 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 20
+ Jul 2020 22:35:47 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 20 Jul 2020 22:35:47 -0500
+Received: from [10.24.69.198] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06L3Zifo083113;
+        Mon, 20 Jul 2020 22:35:45 -0500
+Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Fix suspend and resume
+ for am3 and am4
+To:     Tony Lindgren <tony@atomide.com>, Carlos Hernandez <ceh@ti.com>
+CC:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Roger Quadros <rogerq@ti.com>
+References: <20200713162601.6829-1-tony@atomide.com>
+ <1ac1ac81-1335-8ba2-590c-8f57c2df1910@linaro.org>
+ <f96cb9d8-c940-672a-b1d2-a26570d6f775@ti.com>
+ <20200720143033.GD10993@atomide.com>
+From:   Sekhar Nori <nsekhar@ti.com>
+Message-ID: <e3e3e4c5-738c-e246-49a6-5d41597956a8@ti.com>
+Date:   Tue, 21 Jul 2020 09:05:44 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d8829b8a-eca7-f0e3-600f-3263619332b3@ti.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+In-Reply-To: <20200720143033.GD10993@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Peter
-On 07/20/20 at 12:32pm, Peter Ujfalusi wrote:
-> Hi,
+On 7/20/20 8:00 PM, Tony Lindgren wrote:
+> * Carlos Hernandez <ceh@ti.com> [200717 21:35]:
+>> On 7/17/20 6:29 AM, Daniel Lezcano wrote:
+>>> On 13/07/2020 18:26, Tony Lindgren wrote:
+>>>> Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
+>>>> Reported-by: Carlos Hernandez <ceh@ti.com>
+>>>> Signed-off-by: Tony Lindgren <tony@atomide.com>
+>>>> ---
+>>> Carlos, were you able to test this patch ?
+>>
+>> Tested the patch on top of 5.8-rc5.
+>>
+>> cbdb2617290d (HEAD) clocksource/drivers/timer-ti-dm: Fix suspend and resume
+>> for am3 and am4
+>> 11ba468877bb (tag: v5.8-rc5) Linux 5.8-rc5
+>>
+>> It works on am335x-evm but fails on am437x-evm
 > 
-> On 20/07/2020 12.03, Peter Ujfalusi wrote:
-> > Hi,
-> > 
-> > On 14/07/2020 21.03, Jarkko Nikula wrote:
-> >> Hi
-> >>
-> >> On 7/11/20 6:33 AM, Dave Young wrote:
-> >>> Hi,
-> >>>
-> >>> I'm trying to use g_audio on my Nokia N900 with mainline kernel. Seems
-> >>> it does not work.  No sound when I play from a laptop, and also see a
-> >>> lot of error like below:
-> >>> [ 4729.557647] omap-mcbsp 49022000.mcbsp: TX Buffer Overflow!
-> >>> ...
-> >>>
-> >> Head 0dc589da873b ("Merge tag 'iommu-fixes-v5.8-rc5' of
-> >> git://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu") records and
-> >> plays fine here (arecord -f dat |aplay), although I see some of those
-> >> errors but don't hear any glitches etc.
-> >>
-> >> Peter, does above indicate a serious issue or is it perhaps a false
-> >> alarm on OMAP3 (no audible glitches)?
-> > 
-> > I need to dig out my n900 or beagleXM, but it is hard to believe it is
-> > not a result of a glitch.
-> > The DMA is triggered by McBSP and it should write exactly what McBSP
-> > expects to be receiving.
-> > 
-> > I can not recall any changes in the past years which would have
-> > introduced regressions in McBSP or the sDMA driver.
+> Thanks for testing.
 > 
-> I have booted linux-next on my BeagleXM (OMAP3630, McBSP2 <-> twl4030)
-> and I don't see the TX overflow print.
+>> am4:
+>>
+>> CCCCCCCC** 1196 printk messages dropped **
+> 
+> The above does not look normal..
+> 
+>> 44000000.ocp:L3 Custom Error: MASTER DSS TARGET GPMC (Read)
+>> ** 34 printk messages dropped **
+> 
+> ..but the above points to the GPMC module failing to suspend.
+> This seems to be some other GPMC specific issue not related
+> to the system timers.
 
-Just to clarify, the sound works well on n900 for normal use cases.
-The TX overflow only happens when I use it as an usb audio gadget.
-Because n900 is old, I tried to use it as an external audio device.
+So, I guess this patch can still go into v5.8 while the AM437x GP EVM
+failures are root caused.
 
-> 
-> I have checked element and threshold modes and it looks fine.
-> I'm not sure why we have TX Overflow printed on n900.
-> 
-> >> I believe you don't have some mixer knob on, N900 audio path is somewhat
-> >> complex and needs bunch of mixer switches and volumes to be set. I
-> >> attached my N900 mixer scripts for you to try.
-> > 
-> > This could be the reason for the silence, I have asoundrc files
-> > somewhere to restore a 'good' mixer config.
-> > 
-> >> Set first everything off:
-> >> ./aic34_scripts/shutdown.sh
-> >>
-> >> Then enable internal digital microphone and speakers:
-> >> ./aic34_scripts/dmic.sh
-> >> ./aic34_scripts/speakers.sh
-> >>
-> >> Hopefully these help you get going :-)
-> >>
-> > 
-> > - Péter
-> > 
-> > Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> > Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-> > 
-> 
-> - Péter
-> 
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-> 
+Carlos, Daniel is looking for your tested by. Can you send it because it
+fixes the original problem report with dmtimer?
 
-Thanks
-Dave
-
+Thanks,
+Sekhar
