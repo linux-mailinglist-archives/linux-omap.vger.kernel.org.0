@@ -2,103 +2,177 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6F142293FC
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jul 2020 10:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABD112296DD
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jul 2020 13:04:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731107AbgGVIvF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Jul 2020 04:51:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55704 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728911AbgGVIvF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Jul 2020 04:51:05 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ECC1C0619DC;
-        Wed, 22 Jul 2020 01:51:05 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id z3so812407pfn.12;
-        Wed, 22 Jul 2020 01:51:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=e3OT5w6u3rxG/3iZ+MykAHqpmEMoLtEmtYfcFs2OdbA=;
-        b=lcLf9txTrjt7hKVxP5gHCuyjkEz9RmBIC+LvPgKzvRZtnViz4NLCU3lgBmESF6zSjc
-         twIU4avgtOsb4uzfw/cV1b45Ua8JmLeshTj82RnoEUUjxtLgNRG6aMLi3AAfOwptrda4
-         G9mAphyqrGUDorRoYnQYEsm3QHhGkO3u1bnmADdhMeik3sp4FMM5jzojAEjucUmeErg/
-         euMtXXkvYwV7auGAhJ9WPNDR0Wzcv/XFJ+tPA5rXnKgiyd8iv9wR157pAL+f/s7g5u2A
-         p1E+0QX5TAM7MeInLS5d0nuLTtJkOgAyg/jds9ZS/+P6aTfL33oMH6DMytNz6FztY0/2
-         AizA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=e3OT5w6u3rxG/3iZ+MykAHqpmEMoLtEmtYfcFs2OdbA=;
-        b=cb5fZJEwW9fnvcPWrn8hHfxwG+MicK1m8zdj225DIvDQKh6r8kNb+ptEgKS6LZnAks
-         GU66ydJAhk+FsnDAsH/eT5aiGg1I/Z+x+dsy86PMHoPj9Uj0V+BvVsWy8doDicWG2YSF
-         cIQxcXNCDKNakd2Eso9YcFDsfEAjh7ay1q5eQNXohVLEfmWh94asHJS2Wd+6jvycqXrR
-         JGrptZE1ee9WX3CTXcv7auqOh/xIYtk91K7+1o9Rz84z+FLWzNJXWCyEVwCdgCjagaOP
-         1ZpbcEm9rHV/1CHN4G/Hvx1QbqDUw0hErCoUUppzYy6ZD/foz+MN8Shr33XBVC/p8QSh
-         vg/w==
-X-Gm-Message-State: AOAM5310DpcC5rThI4W4LDhMw2hRKmBidf6AV8KbUHfZWweuGp6t4zVy
-        Vp9Z61Di6u1edf2437r8u4w6N1fAcc50g7sBGag=
-X-Google-Smtp-Source: ABdhPJwk8TMBoOfP/mmDUdNAvHRR4uQdqWvutrkzEuwfNgqWTzOS/6FZqp9RGt9Ld4mrxIwr7V5Ox0PodZaH1uJk7tI=
-X-Received: by 2002:a62:7657:: with SMTP id r84mr26903497pfc.130.1595407864704;
- Wed, 22 Jul 2020 01:51:04 -0700 (PDT)
+        id S1726559AbgGVLDj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Jul 2020 07:03:39 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:49446 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726153AbgGVLDj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Jul 2020 07:03:39 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 06MB3Ro5052626;
+        Wed, 22 Jul 2020 06:03:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1595415807;
+        bh=1raZkMKIg8HyeFaSNe5T8QbrZ+ubuokHpyXLX12R2xA=;
+        h=From:To:CC:Subject:Date;
+        b=Bv9t8B0DKmqKzoAJU5jkCHdhGRzgmTOBZyRZf/kmOCb7ZJT0YC82gAeefrVF06ThB
+         k87c38GwdkuO/WkXHIy+4kF9GC5cSBihCoe8ynXuAiwZXUyfCyCB1dC9OVh6D/rZFz
+         eRW1hRNZNAHB/DrYBeCLq/0GqySuEeZZfu1vc4wo=
+Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 06MB3LVF005494
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 22 Jul 2020 06:03:26 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 22
+ Jul 2020 06:03:22 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 22 Jul 2020 06:03:22 -0500
+Received: from a0393678ub.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06MB3IFY078616;
+        Wed, 22 Jul 2020 06:03:19 -0500
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+To:     Tom Joseph <tjoseph@cadence.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH v8 00/15] Add PCIe support to TI's J721E SoC
+Date:   Wed, 22 Jul 2020 16:33:02 +0530
+Message-ID: <20200722110317.4744-1-kishon@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20200721222851.2075891-1-drew@beagleboard.org> <CAHp75Vd35n0=hB-K3WjUXD3HPNt6F=MHNafNY55NGfb5ahvLSA@mail.gmail.com>
-In-Reply-To: <CAHp75Vd35n0=hB-K3WjUXD3HPNt6F=MHNafNY55NGfb5ahvLSA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Jul 2020 11:50:50 +0300
-Message-ID: <CAHp75VeXiir4BYFTd3YrseExnLPg4MfD69koTkqf4_TKp7dsBQ@mail.gmail.com>
-Subject: Re: [PATCH v4] pinctrl: core: print gpio in pins debugfs file
-To:     Drew Fustini <drew@beagleboard.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jul 22, 2020 at 11:48 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Wed, Jul 22, 2020 at 1:29 AM Drew Fustini <drew@beagleboard.org> wrote:
-> >
-> > If there is a gpio range mapping for the pin, then print out the gpio
-> > chip and line index for the pin in the debugfs 'pins' file with the
-> > format: "[line-index]:[gpio-label]"
-> >
-> > Here is an example output on the BeagleBoard.org PocketBeagle (AM3358):
-> > /sys/kernel/debug/pinctrl/44e10800.pinmux-pinctrl-single/pins
-> >
-> > pin 25 (PIN25) 25:gpio-32-63 44e10864 00000037 pinctrl-single
-> > pin 26 (PIN26) 26:gpio-32-63 44e10868 00000037 pinctrl-single
-> > pin 27 (PIN27) 27:gpio-32-63 44e1086c 00000037 pinctrl-single
-> > pin 28 (PIN28) 0:N/A 44e10870 00000036 pinctrl-single
-> > pin 29 (PIN29) 0:N/A 44e10874 00000006 pinctrl-single
+TI's J721E SoC uses Cadence PCIe core to implement both RC mode
+and EP mode.
 
-Though one more nit, I have just realized, perhaps '0:?' would be
-better, because GPIO library uses '?' in cases of unknown labels or
-so.
-I guess no need to resend (but if you wish you may do, with my tag
-included) and we may wait for Linus and Bart to comment.
+The high level features are:
+  *) Supports Legacy, MSI and MSI-X interrupt
+  *) Supports upto GEN4 speed mode
+  *) Supports SR-IOV
+  *) Supports multiple physical function
+  *) Ability to route all transactions via SMMU
 
-> > pin 30 (PIN30) 28:gpio-32-63 44e10878 00000027 pinctrl-single
-> > pin 31 (PIN31) 29:gpio-32-63 44e1087c 00000037 pinctrl-single
-> > pin 32 (PIN32) 30:gpio-32-63 44e10880 00000037 pinctrl-single
-> > pin 33 (PIN33) 31:gpio-32-63 44e10884 00000037 pinctrl-single
-> > pin 34 (PIN34) 0:gpio-64-95 44e10888 00000037 pinctrl-single
-> > pin 35 (PIN35) 1:gpio-64-95 44e1088c 00000037 pinctrl-single
-> >
->
-> This variant looks good enough to me, thanks! FWIW,
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+This patch series
+  *) Add support in Cadence PCIe core to be used for TI's J721E SoC
+  *) Add a driver for J721E PCIe wrapper
 
+v1 of the series can be found @ [1]
+v2 of the series can be found @ [2]
+v3 of the series can be found @ [5]
+v4 of the series can be found @ [6]
+v5 of the series can be found @ [7]
+v6 of the series can be found @ [8]
+v7 of the series can be found @ [9]
+
+Changes from v7:
+1) Replaced WARN with pr_warn
+2) Included support for "dma-ranges" property patch in this series [10]
+
+Changes from v6:
+1) Fixed bot found errors running 'make dt_binding_check'
+
+Changes from v5:
+1) Added Reviewed-by: for PATCH #6
+2) Protect writes to PCI_STATUS with spin_lock during raising interrupts
+   in EP mode to reduce the time between read and write of RMW.
+
+Changes from v4:
+1) Added Reviewed-by: & Acked-by: tags from RobH
+2) Removed un-used accessors for pcie-cadence.h and removed having ops
+   for read/write accessors
+3) Updated cdns,cdns-pcie-host.yaml to remove "mem" from reg
+
+Changes from v3:
+1) Changed the order of files in MAINTAINTERS file to fix Joe's comments
+2) Fixed indentation and added Reviewed-by: Rob Herring <robh@kernel.org>
+3) Cleaned up computing msix_tbl
+4) Fixed RobH's comment on J721E driver
+
+Changes from v2:
+1) Converting Cadence binding to YAML schema was done as a
+   separate series [3] & [4]. [3] is merged and [4] is
+   pending.
+2) Included MSI-X support in this series
+3) Added link down interrupt handling (only error message)
+4) Rebased to latest 5.7-rc1
+5) Adapted TI J721E binding to [3] & [4]
+
+Changes from v1:
+1) Added DT schemas cdns-pcie-host.yaml, cdns-pcie-ep.yaml and
+   cdns-pcie.yaml for Cadence PCIe core and included it in
+   TI's PCIe DT schema.
+2) Added cpu_addr_fixup() for Cadence Platform driver.
+3) Fixed subject/description/renamed functions as commented by
+   Andrew Murray.
+
+[1] -> http://lore.kernel.org/r/20191209092147.22901-1-kishon@ti.com
+[2] -> http://lore.kernel.org/r/20200106102058.19183-1-kishon@ti.com
+[3] -> http://lore.kernel.org/r/20200305103017.16706-1-kishon@ti.com
+[4] -> http://lore.kernel.org/r/20200417114322.31111-1-kishon@ti.com
+[5] -> http://lore.kernel.org/r/20200417125753.13021-1-kishon@ti.com
+[6] -> http://lore.kernel.org/r/20200506151429.12255-1-kishon@ti.com
+[7] -> http://lore.kernel.org/r/20200522033631.32574-1-kishon@ti.com
+[8] -> http://lore.kernel.org/r/20200708093018.28474-1-kishon@ti.com
+[9] -> http://lore.kernel.org/r/20200713110141.13156-1-kishon@ti.com
+[10] -> http://lore.kernel.org/r/20200521080153.5902-1-kishon@ti.com
+
+Alan Douglas (1):
+  PCI: cadence: Add MSI-X support to Endpoint driver
+
+Kishon Vijay Abraham I (14):
+  PCI: cadence: Use "dma-ranges" instead of "cdns,no-bar-match-nbits"
+    property
+  PCI: cadence: Fix cdns_pcie_{host|ep}_setup() error path
+  linux/kernel.h: Add PTR_ALIGN_DOWN macro
+  PCI: cadence: Convert all r/w accessors to perform only 32-bit
+    accesses
+  PCI: cadence: Add support to start link and verify link status
+  PCI: cadence: Allow pci_host_bridge to have custom pci_ops
+  dt-bindings: PCI: cadence: Remove "mem" from reg binding
+  PCI: cadence: Add new *ops* for CPU addr fixup
+  PCI: cadence: Fix updating Vendor ID and Subsystem Vendor ID register
+  dt-bindings: PCI: Add host mode dt-bindings for TI's J721E SoC
+  dt-bindings: PCI: Add EP mode dt-bindings for TI's J721E SoC
+  PCI: j721e: Add TI J721E PCIe driver
+  misc: pci_endpoint_test: Add J721E in pci_device_id table
+  MAINTAINERS: Add Kishon Vijay Abraham I for TI J721E SoC PCIe
+
+ .../bindings/pci/cdns,cdns-pcie-host.yaml     |   8 +-
+ .../bindings/pci/ti,j721e-pci-ep.yaml         |  94 ++++
+ .../bindings/pci/ti,j721e-pci-host.yaml       | 113 ++++
+ MAINTAINERS                                   |   4 +-
+ drivers/misc/pci_endpoint_test.c              |   9 +
+ drivers/pci/controller/cadence/Kconfig        |  23 +
+ drivers/pci/controller/cadence/Makefile       |   1 +
+ drivers/pci/controller/cadence/pci-j721e.c    | 493 ++++++++++++++++++
+ .../pci/controller/cadence/pcie-cadence-ep.c  | 129 ++++-
+ .../controller/cadence/pcie-cadence-host.c    | 310 +++++++++--
+ .../controller/cadence/pcie-cadence-plat.c    |  13 +
+ drivers/pci/controller/cadence/pcie-cadence.c |   8 +-
+ drivers/pci/controller/cadence/pcie-cadence.h | 161 +++++-
+ include/linux/kernel.h                        |   1 +
+ 14 files changed, 1297 insertions(+), 70 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+ create mode 100644 Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+ create mode 100644 drivers/pci/controller/cadence/pci-j721e.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.17.1
+
