@@ -2,40 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C280B22AB3E
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 11:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 165F722AB72
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 11:11:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728114AbgGWJCg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jul 2020 05:02:36 -0400
-Received: from mail-ej1-f66.google.com ([209.85.218.66]:41843 "EHLO
-        mail-ej1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728047AbgGWJCg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 05:02:36 -0400
-Received: by mail-ej1-f66.google.com with SMTP id w9so5537841ejc.8;
-        Thu, 23 Jul 2020 02:02:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=SP17WTfOStR1f/zhDqqAukFagjGeQ43CPtbR6JVcAtM=;
-        b=UdMAGS5GV336AvtRObsuflGMGwCjBEL+RzCvWzaYHkdtqcCoSTrPi/NtGi/IAy/hhP
-         GageRiGOPKFk9XDwzHE3i1+UCqz8BMxqdB9gaBfIiAmqrnNNiHZkUM8JVUGuhPiUOKH4
-         i0AzKumvJZVxkBwnt0vSY4imORUqAi3MhkJ018qbtHaEufuVZAtTmoDJ6fLG9HB0OZvt
-         lHEtGiq90LKZe07vtX8GoQkgBXdMtwo5xtUMmoVe2fButxFQUqTktUY41X8/rWMU+Ojs
-         N+afj2e1qA2uOga344gpUM/6G05xtRvERu6VRtfiYdj2enj20a75qWXQvaCbAKBbHkR0
-         JGBA==
-X-Gm-Message-State: AOAM531Ys0J7iyz7qM8Tgcz8HTOiQ72mPCD2HzkJP7Yoqczrle2XcjHy
-        rPuj+ZOAMEZYQlnxUOsZq0g=
-X-Google-Smtp-Source: ABdhPJzZvryybJpj7wOJimQ2Cyt/LNy/AugUNbqr7zzcp389gJSHaS+UZayp1LGVwYwITNeIoG5eTA==
-X-Received: by 2002:a17:906:57c5:: with SMTP id u5mr3270775ejr.311.1595494953946;
-        Thu, 23 Jul 2020 02:02:33 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.213])
-        by smtp.googlemail.com with ESMTPSA id h8sm660427edv.28.2020.07.23.02.02.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 Jul 2020 02:02:33 -0700 (PDT)
-Date:   Thu, 23 Jul 2020 11:02:30 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
+        id S1728314AbgGWJJ7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jul 2020 05:09:59 -0400
+Received: from mout.kundenserver.de ([212.227.126.133]:46671 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726177AbgGWJJ7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 05:09:59 -0400
+Received: from mail-qk1-f171.google.com ([209.85.222.171]) by
+ mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1Mtxxk-1koJRZ1Voy-00uLNN; Thu, 23 Jul 2020 11:09:57 +0200
+Received: by mail-qk1-f171.google.com with SMTP id g26so4687610qka.3;
+        Thu, 23 Jul 2020 02:09:56 -0700 (PDT)
+X-Gm-Message-State: AOAM530omc8Oz6Yi4PihOQH1LosDiWWxnLRf+3bZHmfqi1ZM1M+hMLi1
+        y3ZICop3xN44lR56DrFg7BvixM1H2WPMyveC+5k=
+X-Google-Smtp-Source: ABdhPJxSTa5cKHst3O4qitCaV1YQ0tX+BRjglSXj/Cu27GhpJg8d0OcwDlaZbCo1S43Lb3m3S4DuPLbxybObeRblrbk=
+X-Received: by 2002:a05:620a:2444:: with SMTP id h4mr4289080qkn.352.1595495396053;
+ Thu, 23 Jul 2020 02:09:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200723073744.13400-1-krzk@kernel.org> <20200723073744.13400-20-krzk@kernel.org>
+In-Reply-To: <20200723073744.13400-20-krzk@kernel.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 23 Jul 2020 11:09:40 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3emZd=Tz5JhxevkX3OJMMEn_2Nb+_LQtGZJ9-GWNpd2g@mail.gmail.com>
+Message-ID: <CAK8P3a3emZd=Tz5JhxevkX3OJMMEn_2Nb+_LQtGZJ9-GWNpd2g@mail.gmail.com>
+Subject: Re: [PATCH 19/23] memory: omap-gpmc: Enclose macro statements in do-while
+To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         SoC Team <soc@kernel.org>, Markus Mayer <mmayer@broadcom.com>,
         bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
@@ -56,57 +50,67 @@ Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 14/23] memory: ti-emif-pm: Fix cast to iomem pointer
-Message-ID: <20200723090230.GB25935@kozik-lap>
-References: <20200723073744.13400-1-krzk@kernel.org>
- <20200723073744.13400-15-krzk@kernel.org>
- <CAK8P3a3btGD5oqmPXJk=UOmA=wuUxn-vOOO982uAjuRcE3crVg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a3btGD5oqmPXJk=UOmA=wuUxn-vOOO982uAjuRcE3crVg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:6ny/DMVML+SjQTHts0giPpRaNRrIMYvQPhgbmdntf1OZguwvdCX
+ vbPiQ4ua46OMxvOFU1TQtVvBVMx83uLWBBfp0ND0CXPeuVe8DGY6dsj+iOtp+VwzatW5BFu
+ l6jrCGtYURRy+W6tp5P68xgWhtRtk9A+ngZzNX2KCsW70rbk+VJJ/H8oW7iUf1m4Ty1VSUK
+ l2OAF0zc7VV4vOlM8cXHw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:D1CFpvprRZ4=:8bS1votwphA7KsYZmwPjLh
+ 4Re0l7bP/t52NnZCCJerBYW01ImZ6WkkBguLiyYWsNeUqmoUsWH6hguvPtsArXPyCTtQ42aOd
+ WGj8Msf7iTMkKE9JOoWNRY/BW5zft7d3GhHimjuwn1Qsw/16oJCXIQvWsLI2QXAhAEdOUzyPQ
+ JJK9ReAA+ttA47yw0xmzszJrKovR7i8WmtjUyikxjKOmmkD0kfdylxDuAJ8L/7KkarNRA4QE3
+ 51KZxocyKREIXyQ4y6PfJT8uL0f+3DHeM2QfcV4BukrI9bjzsBGBvFWUwc5NVrtody9s4g2SS
+ xGCCIftj0kW1WQtCrOPpbMBd2kwo3/JVJNOi6USqBV0hxuMD2u/6g3aBEFlR6nNY5dBClZZfQ
+ S1idCWrl8e/cs+d9gF5/QFkJovGL7x6OzgqZAxfyr0QnqV3r7wCuFz7mZwJNQ+aN1HHxDAKs1
+ AG9uHpy4zKTFAisptWPNAfCqYg3Lxu7EAo80fJmt58SSIPIiMcd0936/HFVu2mTczY0+XJLOC
+ nYtVgctWUXRnrVOt4XQGiFpCELUX0F9xld4gf2qpEXXEzTXSiz5KhOIvqMt8X68+0ovj7GRx8
+ wR7DHtrbZHlYj0EdHSv6JtZ6TFXaNBL8ThvPM9ygLXIkVgyD5kJ43PC1I7N7umuEadwaQLcIA
+ KnJXUAuIhR2zL0hJeSflGgcBEda/iTKfepDBLQQfVaPPhIHVhB9J51rL7pZqypgS6Uv4McN2l
+ Gu2fyx7VDryA15wpqdcBzEOg8lRSVVh9pXCyU+j5GMCGEHSRmusCuiDh1MI8U+X9HDbjnpkGC
+ K0g4mGqgEbh4NdR9SjKS4rAvbU0n9zBgyBq3yZ7wqexxyWiHYCljS2fk4SDuT9i3iy9gxgf/O
+ NLvYIhAUAocAUQkgTyIyL0t9SEe5uudBDFwA8bBF7ZnHPp9I4RphdYSc9BFuOQSfI4zCoAyZX
+ enW34kEJ2OjpJRIpHaCZ/q1/duw7Q5paZpMHTVSQO2ORgBMdrr68r
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jul 23, 2020 at 10:48:19AM +0200, Arnd Bergmann wrote:
-> On Thu, Jul 23, 2020 at 9:39 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> >
-> > Cast pointer to iomem memory properly to fix sparse warning:
-> >
-> >     drivers/memory/ti-emif-pm.c:251:38: warning: incorrect type in argument 1 (different address spaces)
-> >     drivers/memory/ti-emif-pm.c:251:38:    expected void const volatile [noderef] __iomem *addr
-> >     drivers/memory/ti-emif-pm.c:251:38:    got void *
-> >
-> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> > ---
-> >  drivers/memory/ti-emif-pm.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/memory/ti-emif-pm.c b/drivers/memory/ti-emif-pm.c
-> > index 9c90f815ad3a..6c747c1e98cb 100644
-> > --- a/drivers/memory/ti-emif-pm.c
-> > +++ b/drivers/memory/ti-emif-pm.c
-> > @@ -248,7 +248,7 @@ MODULE_DEVICE_TABLE(of, ti_emif_of_match);
-> >  static int ti_emif_resume(struct device *dev)
-> >  {
-> >         unsigned long tmp =
-> > -                       __raw_readl((void *)emif_instance->ti_emif_sram_virt);
-> > +                       __raw_readl((void __iomem *)emif_instance->ti_emif_sram_virt);
-> >
-> 
-> Maybe this shouldn't even be __raw_readl(), but instead READ_ONCE()?
+On Thu, Jul 23, 2020 at 9:39 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>
+> do-while is a preferred way for complex macros because of safety
+> reasons.  This fixes checkpatch error:
+>
+>     ERROR: Macros starting with if should be enclosed by a do - while
+>         loop to avoid possible if/else logic defects
+>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Won't readl() be enough? Indeed it looks problematic.
+This is an improvement, but the macro still has other issues that
+are just as bad as the one you address:
 
-> 
-> The other accesses in this file don't use MMIO wrappers either but just treat
-> it as a pointer. The effect would be the same though.
+- Using the # operator to avoid the "" in the invocation seems confusing
+- it implicitly uses the 'cs' and 't' variables of the calling function instead
+  of passing them as arguments.
+- it calls 'return -1' in a function that otherwise uses errno-style
+  return codes, so this gets interpreted as EPERM "Operation not
+  permitted".
 
-I think all the reads and writes are with readl() and writel().
+I would probably just open-code the entire thing and remove the
+macro like:
 
-Best regards,
-Krzysztof
+ret = 0;
+ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  0,  3, 0, t->cs_on,
+GPMC_CD_FCLK, "cs_on");
+ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  8,  12, 0,
+t->cs_rd_off, GPMC_CD_FCLK, "cs_rd_off");
+ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  16,  20, 0,
+t->cs_wr_off, GPMC_CD_FCLK, "cs_wr_off);
+...
+if (ret)
+     return -ENXIO;
 
+Of maybe leave the macro, but remove the if/return part and use
+the "ret |= GPMC_SET_ONE(...)" trick to avoid some of the problems.
+
+      Arnd
