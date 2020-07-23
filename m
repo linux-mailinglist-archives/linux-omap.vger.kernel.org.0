@@ -2,33 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E7A22AB77
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 11:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 117E022AB8F
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 11:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726597AbgGWJL2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jul 2020 05:11:28 -0400
-Received: from mout.kundenserver.de ([212.227.126.130]:35679 "EHLO
+        id S1727847AbgGWJOW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jul 2020 05:14:22 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:51077 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726330AbgGWJL1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 05:11:27 -0400
-Received: from mail-qk1-f169.google.com ([209.85.222.169]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1Mr8zO-1kdw4W026w-00oFj4; Thu, 23 Jul 2020 11:11:26 +0200
-Received: by mail-qk1-f169.google.com with SMTP id x69so4703496qkb.1;
-        Thu, 23 Jul 2020 02:11:25 -0700 (PDT)
-X-Gm-Message-State: AOAM53023axEZDgnVlMMgO3Nu6ueSN7+CTrABkzU66EJcRQYrRdrvwD1
-        V1Jlpz1NRIGtqvW796dDDi513T8n62wWpUerOB8=
-X-Google-Smtp-Source: ABdhPJxStLH4bkEByDAb/z44/3h8H0El0YO8LxmjELnMmVnMZT+ySbMYTCQvSxd/U4jvrltWM2ImxEZLkkbzi6dufOs=
-X-Received: by 2002:a37:b484:: with SMTP id d126mr4090550qkf.394.1595495484736;
- Thu, 23 Jul 2020 02:11:24 -0700 (PDT)
+        with ESMTP id S1726558AbgGWJOW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 05:14:22 -0400
+Received: from mail-qk1-f175.google.com ([209.85.222.175]) by
+ mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MtOT0-1korCv3xzq-00uuXD; Thu, 23 Jul 2020 11:14:20 +0200
+Received: by mail-qk1-f175.google.com with SMTP id e13so4675853qkg.5;
+        Thu, 23 Jul 2020 02:14:19 -0700 (PDT)
+X-Gm-Message-State: AOAM530c1r2tqj0+pTyvty7kjYk4SMUa/1GIVMv2myeL/w/bEa8ujy+a
+        suKa7UbgST6wBCj0JMjHny8MpKGjW61ErLfaSlI=
+X-Google-Smtp-Source: ABdhPJyfIhx6eiKVKg4rHbAuRO6OkD2w5iLBrvPotu3J5hOQmvUiK3e54tHiHcXr7T/fRPeYMXzXCv1u/Kq2bJSXU54=
+X-Received: by 2002:a05:620a:1654:: with SMTP id c20mr4131860qko.138.1595495658635;
+ Thu, 23 Jul 2020 02:14:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200723073744.13400-1-krzk@kernel.org> <20200723073744.13400-21-krzk@kernel.org>
-In-Reply-To: <20200723073744.13400-21-krzk@kernel.org>
+References: <20200723073744.13400-1-krzk@kernel.org> <20200723073744.13400-15-krzk@kernel.org>
+ <CAK8P3a3btGD5oqmPXJk=UOmA=wuUxn-vOOO982uAjuRcE3crVg@mail.gmail.com> <20200723090230.GB25935@kozik-lap>
+In-Reply-To: <20200723090230.GB25935@kozik-lap>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 23 Jul 2020 11:11:08 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1=WCQ5326Et5RRK7yiOYeHH7uUkQ+T3YPtj2XRh+gkgA@mail.gmail.com>
-Message-ID: <CAK8P3a1=WCQ5326Et5RRK7yiOYeHH7uUkQ+T3YPtj2XRh+gkgA@mail.gmail.com>
-Subject: Re: [PATCH 20/23] memory: omap-gpmc: Fix whitespace issue
+Date:   Thu, 23 Jul 2020 11:14:02 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2O4bCb_Bcpc+Y4BuXmrO6mbVwgo67aGF5E=uxHQpeTnw@mail.gmail.com>
+Message-ID: <CAK8P3a2O4bCb_Bcpc+Y4BuXmrO6mbVwgo67aGF5E=uxHQpeTnw@mail.gmail.com>
+Subject: Re: [PATCH 14/23] memory: ti-emif-pm: Fix cast to iomem pointer
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         SoC Team <soc@kernel.org>, Markus Mayer <mmayer@broadcom.com>,
@@ -51,48 +52,76 @@ Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:v18qdtD1UxaUBVHa41zG90KKmFsLt4sykU64bSt5ycjTL0+LfNy
- AreI4W2yvXDVndyCg57IJlttwGrj5O+KzbTqt1oMRG5SVN6v/WadOJuE+dCiaLbb3a7TRCE
- P/JzVx39YXeN4dGBZh2UMXgXmkL9ltcaiuALqpP7xak0C8Zde6WM09ekSpQU35UTmQ6UVo5
- H4lGMDBhdlbVFYa1gzxDA==
+X-Provags-ID: V03:K1:BuZuoFhwqlQyuJf6Z1sCO9jIZRWDzAo/haAFTgt/rZzZgZ//LSH
+ 0ndDvl6EQ76bgSvScovAZPdKFvJatGUeLyDdwt+X5t8CdIUkrsZ2IqRw1Sot/xhIdKcuHzF
+ A4SIKANE+tAo//V9/Tg2ksfMo+HTYnmZord/6fRWdIK+pKuqnfN/y5ERk1t7SDqfc+03riV
+ 7dyl8VUkdru8NYKDfUWQw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0hrSZiOk9bw=:V9D6CK2SMMYYU6WUUk2dCQ
- HGnmpm20PKyvoCLlc5xTS88O6pO69Cal3nuefhzHYSsQIdi8FPKJKhjr5WJt5ltuhD42KnaXo
- NnarjvMmIkib92ekKQaKOtiC7QcVzghYmGYCx8R5qRQW28Q1syC0HHtj8N1yvOdnZhVwJRfZ1
- WNHVifTZCSJJCex9xFHlEoE4OmyWNC3Bk5AiYxBGMF5cXuZfb2F0VZUbnt2U4wlfwjdSe4jbc
- fq9wX0iM+6XTzV8rpncV4o4Q4/bn/pBUz69Hrz0yfoFc0Emt9brfIXf//vUeGzPyPNX8LWwV2
- A0mQCrLvSPdAA2XGMrx5VhL62lo47WL9H9zCXlHwHUjfjuOvL8vqQbbVezIqOWCL2kY9dobeP
- qG5PVmsk2TZXbLvFmTccDzX4mBpOrF9m/Lli+xKOQ1FXUJC+pRvdqeSTtqfIoLh3Pcdg+wtiz
- FIwcKkpuwwWmF4tkBM/1LxrpDaa4bZFCBUvT/+TyTxwShzkZygK2c9DlESoz5nYUFKwpI2r43
- TXhPJGfiIAoj+jLAGwbIN2o/byA/CnnfsrXDOlfcdBnZ2Wc6hHJGkKTYXi6yBrIbnUMfUvy8A
- /hOewnXSJOEg2nzF1NEmK5lMjyRvX/IWDMXb4IBGY24PKWG5mXLFeu2FtvsI8T+LhqCbWMzgi
- Milpui+x2KbrxQh2KYHEK0hbCc7HYi+EmUah3JKcrRQnQ+S5i4Si7/goZCrY3GjSYMQkCFtew
- aAxjDsqbuDdt2ADYt20m7eshIXGNEfpL06b6vygyUCWM4tZ0u/PWLxapqfs8OfgTZR4i/X4Bh
- N7at00DM35nsbgCtv8E5odgBe65xMlonPyT5pSYHhRYV/H9LCwGN7HuLaJAK0btOdfkCbkT9J
- JFDbw3J6l4K2ERue5+Od4ZjCfvIisc1jRjCHQ84cT2zB4ZsHbD0HIIoDGq82e2pHan0fDGFt7
- guuE47syc79rMkSew9ea/tNLznSP0cVMKYsOhQQe50s4K6V6/rjKx
+X-UI-Out-Filterresults: notjunk:1;V03:K0:B1XF1uwrRNY=:791O7UeUV/gA5nU7AtAo9P
+ 2C0wVmz5DnoWttCr8guFLY5lcd8mO9hdagyKd5wb76z4ogpdTRpKh6JKAKOVzWj8UVNPhy8X9
+ yCaM0tu9zbLNNR4WecH69ycjtlrHjJeot25bEl0Ar6LltfG99JHJNT7v/buXZ7fP7u9hCTRjB
+ 6u7CqUmDFfndFaDwZ9FQXQoCFY8DOPdEsyveoaer1PaJQ4+WBkZbZTjWvGJc2nuyw08T8+5Yi
+ 1MyFsOdhbYzGfIk8VBilGy4Qc2MDa/qUALaubhNJR+YsUJu8te7mjUkhH2N/R1muWZKlkkwvL
+ Pn+khxaysuQWMLmj9W5KeJk7O71yrome7IxU7pqNvc0hgkzgNN5u94kLYhruwPPi9PXGg2rVQ
+ uUf8SPLmlKHsUEYlF+r25jnDDD0+IPWGpimfTEEdJxXYmk9kLHJWfrvpcdEnffSbz2NamDMBl
+ 12USBpeQJJ6yimuFc1iBwt4j+fBxDhXnHQ1cXYyuKqOgcS3Z+D2M/yNSFjhiCW1j5szmfBjHx
+ UfaholMuT+SFjEYtjdybANqymr0eEzO7JFtFyITAfPu3FGr+b++mbP4z/YxZ8xWQoD83IqsPS
+ 9Hx3VjCh2wiJSTtIMtagH5qkrgJYkyVUA3EtQVk7wMaZSlVOhVR6gDCKYhV5oMiUduCj26JwK
+ rBf03W3ejPtfSmxwxrpWl2mjCq6jtwTEjlmjiKkg3kHk04+Kal0MuZezqwC/uFp78ehinyKN2
+ G27EXwTMEflySH88UPREMcnSjXpGCm3bLMtviTBGCY0qFIPQewIAS6QmTKUMjWEv2Jx8zgirj
+ yuo6sBl4rwgisFVmD7clpx4d3aUkAB+aOZgNzhVvIBJMEUzQXBSZzLQl8THEKqp4YjMrd3iaK
+ eUfA3MF/TItoVxtlMb15LVLuLF7HwaWNYevG9NndNkiRiVpqPXbd0kMdpvJeISZbC3UuuRfBo
+ qP5wtHk0LJyJ5kvT/Bm4aGZvU9b8Ky0RsTefW+VvOzA/JnBgbP+1S
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jul 23, 2020 at 9:39 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Thu, Jul 23, 2020 at 11:02 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> On Thu, Jul 23, 2020 at 10:48:19AM +0200, Arnd Bergmann wrote:
+> > On Thu, Jul 23, 2020 at 9:39 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> > >
+> > > Cast pointer to iomem memory properly to fix sparse warning:
+> > >
+> > >     drivers/memory/ti-emif-pm.c:251:38: warning: incorrect type in argument 1 (different address spaces)
+> > >     drivers/memory/ti-emif-pm.c:251:38:    expected void const volatile [noderef] __iomem *addr
+> > >     drivers/memory/ti-emif-pm.c:251:38:    got void *
+> > >
+> > > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > > ---
+> > >  drivers/memory/ti-emif-pm.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/memory/ti-emif-pm.c b/drivers/memory/ti-emif-pm.c
+> > > index 9c90f815ad3a..6c747c1e98cb 100644
+> > > --- a/drivers/memory/ti-emif-pm.c
+> > > +++ b/drivers/memory/ti-emif-pm.c
+> > > @@ -248,7 +248,7 @@ MODULE_DEVICE_TABLE(of, ti_emif_of_match);
+> > >  static int ti_emif_resume(struct device *dev)
+> > >  {
+> > >         unsigned long tmp =
+> > > -                       __raw_readl((void *)emif_instance->ti_emif_sram_virt);
+> > > +                       __raw_readl((void __iomem *)emif_instance->ti_emif_sram_virt);
+> > >
+> >
+> > Maybe this shouldn't even be __raw_readl(), but instead READ_ONCE()?
+>
+> Won't readl() be enough? Indeed it looks problematic.
 
-> @@ -1756,7 +1756,7 @@ static int gpmc_calc_common_timings(struct gpmc_timings *gpmc_t,
->  /* TODO: remove this function once all peripherals are confirmed to
->   * work with generic timing. Simultaneously gpmc_cs_set_timings()
->   * has to be modified to handle timings in ps instead of ns
-> -*/
-> + */
+readl() won't work on big-endian kernels, since this is a byte comparison.
 
-This still doesn't follow the normal coding style for multi-line comments.
+> > The other accesses in this file don't use MMIO wrappers either but just treat
+> > it as a pointer. The effect would be the same though.
+>
+> I think all the reads and writes are with readl() and writel().
 
-I don't think it's worth fixing, but if you think it should be changed, then
-make it
+I actually see only one other access:
 
-     /*
-      * mult-line comment
-      * ...
-      */
+        copy_addr = sram_exec_copy(emif_data->sram_pool_code,
+                                   (void *)emif_data->ti_emif_sram_virt,
+                                   &ti_emif_sram, ti_emif_sram_sz);
+
+and this one ends up in a memcpy() that does not perform any byte
+swapping or barriers.
 
      Arnd
