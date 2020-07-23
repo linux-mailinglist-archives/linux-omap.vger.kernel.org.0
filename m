@@ -2,36 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3482722AC42
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 12:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A4AD22AC46
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 12:16:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbgGWKOn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jul 2020 06:14:43 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:51785 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727769AbgGWKOm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 06:14:42 -0400
-Received: from mail-qk1-f174.google.com ([209.85.222.174]) by
- mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1Mt7Pt-1kmwye0ZLd-00tXq9; Thu, 23 Jul 2020 12:14:41 +0200
-Received: by mail-qk1-f174.google.com with SMTP id b79so4771078qkg.9;
-        Thu, 23 Jul 2020 03:14:40 -0700 (PDT)
-X-Gm-Message-State: AOAM532fGOpRT19s6+JgcY1n0IXeoxcWCRqivArxt+YM3tT8xje02JEw
-        UPQMc/o0QNubPPfGaOYahyKIeUAHIYkNW+2rrHc=
-X-Google-Smtp-Source: ABdhPJxAf+812MuVjcfu0XwRQWQnRGJhKuMoucN2dt9Q6NE0hzXxWnmvljuMU8/tZW5Ym6SImtgRoUMVG9dICDcl5Bc=
-X-Received: by 2002:a37:9004:: with SMTP id s4mr4264475qkd.286.1595499279844;
- Thu, 23 Jul 2020 03:14:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200723073744.13400-1-krzk@kernel.org> <CAK8P3a0hcVhBbKCBDSZYXChmPpRVsEi_G6+oj5quC6uUiPeeiA@mail.gmail.com>
- <20200723095209.GA30472@kozik-lap>
-In-Reply-To: <20200723095209.GA30472@kozik-lap>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 23 Jul 2020 12:14:24 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0g0k6e-STpqPS0S-wajxqS-M3DV+3UD=QFE7e-98J-og@mail.gmail.com>
-Message-ID: <CAK8P3a0g0k6e-STpqPS0S-wajxqS-M3DV+3UD=QFE7e-98J-og@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/23] memory: Cleanup, improve and compile test
- memory drivers
-To:     Krzysztof Kozlowski <krzk@kernel.org>
+        id S1726867AbgGWKQl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jul 2020 06:16:41 -0400
+Received: from mail-ej1-f67.google.com ([209.85.218.67]:44577 "EHLO
+        mail-ej1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725846AbgGWKQk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 06:16:40 -0400
+Received: by mail-ej1-f67.google.com with SMTP id ga4so5751437ejb.11;
+        Thu, 23 Jul 2020 03:16:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=dnWqbbfyoTOE1v2/nsDrkVQKi2TdYuhkczsrtV9Tj/A=;
+        b=NtC5oSEYS63EEfhdQWLyY0hoLsqGLZMOIcQD3MP1xs6q12+e2JwulyF/k3ABp3031u
+         5qIx5ABNhz4g7yDccFUQvWuxT9a7RfPmj8/d554pnTal6Okd1EgvCrleJIQOKtBAU75u
+         0D8J6qK1IBDlBrSH9nGlP9yse/xZwdm9oyFZqpL6OVfsKkucaEPV7qEXtM2YhPja3kJ/
+         4JHDhqPr6ICy8988bR0cGcqeQBnMgfvNS/QOWOIdlmduskW3bQvA8Kyn1JJBhlav5e+g
+         DQTHchwMn8xMqdhaCJF92814zXagOvNXogyNXrWvFq3D0LVf+T8WxoSV0wpcZGKMgSjA
+         ajGg==
+X-Gm-Message-State: AOAM533XQYVR40CiFN3SNvsxsmKzDHhlokyKBUMf3l3jSafiXSZ1Soc/
+        MGjgDdzz5W19PINoQ1INup8=
+X-Google-Smtp-Source: ABdhPJxFOO+eX3VP5KW+75n2zsTc3LGcB7+QqfGOKNwpQ7g2yIGn/n4uVf5RddsxBNhVVCNRNqRwLw==
+X-Received: by 2002:a17:906:2e83:: with SMTP id o3mr3639213eji.261.1595499398253;
+        Thu, 23 Jul 2020 03:16:38 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.213])
+        by smtp.googlemail.com with ESMTPSA id ah1sm841926ejc.43.2020.07.23.03.16.36
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 23 Jul 2020 03:16:37 -0700 (PDT)
+Date:   Thu, 23 Jul 2020 12:16:34 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         SoC Team <soc@kernel.org>, Markus Mayer <mmayer@broadcom.com>,
         bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
@@ -52,48 +56,77 @@ Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:mm6ugzMgTFJSARdpDf1u0ah3/h8EqCvIO7cjX34WhdJ2m2VlrOq
- Kyi/okZpILXsPUhnhgefIsPwcCQeiHl5Ccap+3XaCthEOq0A1KGLTmpoR/npq8DIQzSjE8a
- EGhIGNvNDQo43D9U7KJRVgwQEfNIoo9So/GO0oyIxYnetsNN+XIUohMZC8LEBjDQgpmkqZe
- yrSQJfHyqV8El1vgJnC9g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:apjJuQlJE/E=:rzpOGNOjFDsKvOF6lffk82
- hqB//tv9z5zMKSYKj1FcbTPoDNfIGwq0wyrHUAobD0wnNCKo47RfEnVSILjng0nOHa3LCetOb
- arwFdnvw1KqlSgA6NZzarq1ymz4Sb8Xe7fxhoGaDsfAeqENQ+LbMpP1vZ2FX6RJdWWvAaOO1v
- 7TJcz7SVTAWCdxBPxDsD4Zb3aqOvQvLXg1fVm9xtVAkK6IMDgRM24RtNeaa8d5quJl80Sg9nI
- HCVLuE9j3mnVV6CItrwEr725UnDbeIUZPKPHxi0tMJLMaU/5p+lGilV/gtykaAf8YWdAOQRLA
- cMh6wFTDmTCo+4l0tA8gUxQX43VSnyCcHHY1q2ZjQfL/pdxAev2jZzfbpCloAR73qVvlHhE1O
- OzfD2ZNUX/wEpVam9C3NCsH2mTVo+xUa4Py2hMqnpyTjZ0B0PyMZGqwQ4se2v1IRQ21LZbVwX
- qa5VdAY0NO63oFVqIdN3hkunfU+xl4Kv05NVVEWoKmCihXFpeezTwq///OyxbMVUWwCgA854r
- WmP5uKgkXZYMtDGAxOJg6hhKX0HkgtI99HIEW0LfB5ofXzWfmgUyJi8hocRf0L1aaYmVSP4ai
- GQZKX0+/4od/UoxKlYy2GRUPScVYUKaNQzAmxEIWdfRjmtlew/qyU4G5MYnDb6GEJ2MehDHQr
- /kPNShLTy7HfAFfARpJuYrIgLbOBxpxtkjY+BC1vHROHrV0MtbfM2zectksVteO6o+TSXcgiW
- uqsSFKWXGV3YcBrjmFmVS+SGPdTtSdiqaFT0OdoOhdc4XkjOkZg1MX4IY6zXf9iP49PnfuHNB
- wFLYRsZERYkyIkqwMQuGPjbm9x/PHen4pQWhUQuz57GrfIbeoEJxMEmLA5RBJ/lq4ta6OCJSy
- aoF9wtNFEregcjV14VyFLd2amjL9HTBwJp+BpPLEPsWG93IzVMQOjDwwUhGEjEdlb9Fc75/8t
- jn6u9nWs7j8/EWRSajAtxLaVeWLKTQk8DkpKaDfK9Cbw3MsIPEQBq
+Subject: Re: [PATCH 19/23] memory: omap-gpmc: Enclose macro statements in
+ do-while
+Message-ID: <20200723101634.GD30472@kozik-lap>
+References: <20200723073744.13400-1-krzk@kernel.org>
+ <20200723073744.13400-20-krzk@kernel.org>
+ <CAK8P3a3emZd=Tz5JhxevkX3OJMMEn_2Nb+_LQtGZJ9-GWNpd2g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a3emZd=Tz5JhxevkX3OJMMEn_2Nb+_LQtGZJ9-GWNpd2g@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jul 23, 2020 at 11:52 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> On Thu, Jul 23, 2020 at 11:31:02AM +0200, Arnd Bergmann wrote:
-> > On Thu, Jul 23, 2020 at 9:37 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Thu, Jul 23, 2020 at 11:09:40AM +0200, Arnd Bergmann wrote:
+> On Thu, Jul 23, 2020 at 9:39 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 > >
-> > Afterwards you could either send the pull requests to Linus directly,
-> > or send them to the soc team (or to Greg) as well, the way we handle
-> > a couple of other subsystems like drivers/reset and drivers/tee that
-> > usually only have a handful of patches per release.
->
-> Most of the drivers are for ARM architecture so arm-soc seems like the
-> way to do it.  However BT1_L2_CTL and JZ4780_NEMC are MIPS specific and
-> maybe more would come in the future.  Are you fine taking them as well?
+> > do-while is a preferred way for complex macros because of safety
+> > reasons.  This fixes checkpatch error:
+> >
+> >     ERROR: Macros starting with if should be enclosed by a do - while
+> >         loop to avoid possible if/else logic defects
+> >
+> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> 
+> This is an improvement, but the macro still has other issues that
+> are just as bad as the one you address:
+> 
+> - Using the # operator to avoid the "" in the invocation seems confusing
 
-Yes, that's not a problem at all. Most other architectures are ramping down
-anyway, both on the maintainership side and on newly supported hardware,
-so we are picking those up where necessary. I also merged a couple of
-drivers for the MIPS based Baikal SoCs recently.
+I guess it was useful for debugging.
 
-     Arnd
+> - it implicitly uses the 'cs' and 't' variables of the calling function instead
+>   of passing them as arguments.
+
+Actually another reason to convert it to just a function.
+
+> - it calls 'return -1' in a function that otherwise uses errno-style
+>   return codes, so this gets interpreted as EPERM "Operation not
+>   permitted".
+
+The users of this macro also do it (gpmc_cs_set_timings()) so this
+wrong practice is consistent with the driver. :)
+
+> 
+> I would probably just open-code the entire thing and remove the
+> macro like:
+> 
+> ret = 0;
+> ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  0,  3, 0, t->cs_on,
+> GPMC_CD_FCLK, "cs_on");
+> ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  8,  12, 0,
+> t->cs_rd_off, GPMC_CD_FCLK, "cs_rd_off");
+> ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  16,  20, 0,
+> t->cs_wr_off, GPMC_CD_FCLK, "cs_wr_off);
+> ...
+> if (ret)
+>      return -ENXIO;a
+
+I like this approach because it also removes the 'return' from macro
+which is not desired.
+
+> 
+> Of maybe leave the macro, but remove the if/return part and use
+> the "ret |= GPMC_SET_ONE(...)" trick to avoid some of the problems.
+
+I could probably then keep it as a function.  This would be the safest
+and remove most of the problems here.
+
+Best regards,
+Krzysztof
+
