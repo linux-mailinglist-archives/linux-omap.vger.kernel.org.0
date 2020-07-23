@@ -2,33 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 165F722AB72
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 11:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74E7A22AB77
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 11:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728314AbgGWJJ7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jul 2020 05:09:59 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:46671 "EHLO
+        id S1726597AbgGWJL2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jul 2020 05:11:28 -0400
+Received: from mout.kundenserver.de ([212.227.126.130]:35679 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726177AbgGWJJ7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 05:09:59 -0400
-Received: from mail-qk1-f171.google.com ([209.85.222.171]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1Mtxxk-1koJRZ1Voy-00uLNN; Thu, 23 Jul 2020 11:09:57 +0200
-Received: by mail-qk1-f171.google.com with SMTP id g26so4687610qka.3;
-        Thu, 23 Jul 2020 02:09:56 -0700 (PDT)
-X-Gm-Message-State: AOAM530omc8Oz6Yi4PihOQH1LosDiWWxnLRf+3bZHmfqi1ZM1M+hMLi1
-        y3ZICop3xN44lR56DrFg7BvixM1H2WPMyveC+5k=
-X-Google-Smtp-Source: ABdhPJxSTa5cKHst3O4qitCaV1YQ0tX+BRjglSXj/Cu27GhpJg8d0OcwDlaZbCo1S43Lb3m3S4DuPLbxybObeRblrbk=
-X-Received: by 2002:a05:620a:2444:: with SMTP id h4mr4289080qkn.352.1595495396053;
- Thu, 23 Jul 2020 02:09:56 -0700 (PDT)
+        with ESMTP id S1726330AbgGWJL1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 05:11:27 -0400
+Received: from mail-qk1-f169.google.com ([209.85.222.169]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1Mr8zO-1kdw4W026w-00oFj4; Thu, 23 Jul 2020 11:11:26 +0200
+Received: by mail-qk1-f169.google.com with SMTP id x69so4703496qkb.1;
+        Thu, 23 Jul 2020 02:11:25 -0700 (PDT)
+X-Gm-Message-State: AOAM53023axEZDgnVlMMgO3Nu6ueSN7+CTrABkzU66EJcRQYrRdrvwD1
+        V1Jlpz1NRIGtqvW796dDDi513T8n62wWpUerOB8=
+X-Google-Smtp-Source: ABdhPJxStLH4bkEByDAb/z44/3h8H0El0YO8LxmjELnMmVnMZT+ySbMYTCQvSxd/U4jvrltWM2ImxEZLkkbzi6dufOs=
+X-Received: by 2002:a37:b484:: with SMTP id d126mr4090550qkf.394.1595495484736;
+ Thu, 23 Jul 2020 02:11:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200723073744.13400-1-krzk@kernel.org> <20200723073744.13400-20-krzk@kernel.org>
-In-Reply-To: <20200723073744.13400-20-krzk@kernel.org>
+References: <20200723073744.13400-1-krzk@kernel.org> <20200723073744.13400-21-krzk@kernel.org>
+In-Reply-To: <20200723073744.13400-21-krzk@kernel.org>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 23 Jul 2020 11:09:40 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3emZd=Tz5JhxevkX3OJMMEn_2Nb+_LQtGZJ9-GWNpd2g@mail.gmail.com>
-Message-ID: <CAK8P3a3emZd=Tz5JhxevkX3OJMMEn_2Nb+_LQtGZJ9-GWNpd2g@mail.gmail.com>
-Subject: Re: [PATCH 19/23] memory: omap-gpmc: Enclose macro statements in do-while
+Date:   Thu, 23 Jul 2020 11:11:08 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1=WCQ5326Et5RRK7yiOYeHH7uUkQ+T3YPtj2XRh+gkgA@mail.gmail.com>
+Message-ID: <CAK8P3a1=WCQ5326Et5RRK7yiOYeHH7uUkQ+T3YPtj2XRh+gkgA@mail.gmail.com>
+Subject: Re: [PATCH 20/23] memory: omap-gpmc: Fix whitespace issue
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         SoC Team <soc@kernel.org>, Markus Mayer <mmayer@broadcom.com>,
@@ -51,66 +51,48 @@ Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:6ny/DMVML+SjQTHts0giPpRaNRrIMYvQPhgbmdntf1OZguwvdCX
- vbPiQ4ua46OMxvOFU1TQtVvBVMx83uLWBBfp0ND0CXPeuVe8DGY6dsj+iOtp+VwzatW5BFu
- l6jrCGtYURRy+W6tp5P68xgWhtRtk9A+ngZzNX2KCsW70rbk+VJJ/H8oW7iUf1m4Ty1VSUK
- l2OAF0zc7VV4vOlM8cXHw==
+X-Provags-ID: V03:K1:v18qdtD1UxaUBVHa41zG90KKmFsLt4sykU64bSt5ycjTL0+LfNy
+ AreI4W2yvXDVndyCg57IJlttwGrj5O+KzbTqt1oMRG5SVN6v/WadOJuE+dCiaLbb3a7TRCE
+ P/JzVx39YXeN4dGBZh2UMXgXmkL9ltcaiuALqpP7xak0C8Zde6WM09ekSpQU35UTmQ6UVo5
+ H4lGMDBhdlbVFYa1gzxDA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:D1CFpvprRZ4=:8bS1votwphA7KsYZmwPjLh
- 4Re0l7bP/t52NnZCCJerBYW01ImZ6WkkBguLiyYWsNeUqmoUsWH6hguvPtsArXPyCTtQ42aOd
- WGj8Msf7iTMkKE9JOoWNRY/BW5zft7d3GhHimjuwn1Qsw/16oJCXIQvWsLI2QXAhAEdOUzyPQ
- JJK9ReAA+ttA47yw0xmzszJrKovR7i8WmtjUyikxjKOmmkD0kfdylxDuAJ8L/7KkarNRA4QE3
- 51KZxocyKREIXyQ4y6PfJT8uL0f+3DHeM2QfcV4BukrI9bjzsBGBvFWUwc5NVrtody9s4g2SS
- xGCCIftj0kW1WQtCrOPpbMBd2kwo3/JVJNOi6USqBV0hxuMD2u/6g3aBEFlR6nNY5dBClZZfQ
- S1idCWrl8e/cs+d9gF5/QFkJovGL7x6OzgqZAxfyr0QnqV3r7wCuFz7mZwJNQ+aN1HHxDAKs1
- AG9uHpy4zKTFAisptWPNAfCqYg3Lxu7EAo80fJmt58SSIPIiMcd0936/HFVu2mTczY0+XJLOC
- nYtVgctWUXRnrVOt4XQGiFpCELUX0F9xld4gf2qpEXXEzTXSiz5KhOIvqMt8X68+0ovj7GRx8
- wR7DHtrbZHlYj0EdHSv6JtZ6TFXaNBL8ThvPM9ygLXIkVgyD5kJ43PC1I7N7umuEadwaQLcIA
- KnJXUAuIhR2zL0hJeSflGgcBEda/iTKfepDBLQQfVaPPhIHVhB9J51rL7pZqypgS6Uv4McN2l
- Gu2fyx7VDryA15wpqdcBzEOg8lRSVVh9pXCyU+j5GMCGEHSRmusCuiDh1MI8U+X9HDbjnpkGC
- K0g4mGqgEbh4NdR9SjKS4rAvbU0n9zBgyBq3yZ7wqexxyWiHYCljS2fk4SDuT9i3iy9gxgf/O
- NLvYIhAUAocAUQkgTyIyL0t9SEe5uudBDFwA8bBF7ZnHPp9I4RphdYSc9BFuOQSfI4zCoAyZX
- enW34kEJ2OjpJRIpHaCZ/q1/duw7Q5paZpMHTVSQO2ORgBMdrr68r
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0hrSZiOk9bw=:V9D6CK2SMMYYU6WUUk2dCQ
+ HGnmpm20PKyvoCLlc5xTS88O6pO69Cal3nuefhzHYSsQIdi8FPKJKhjr5WJt5ltuhD42KnaXo
+ NnarjvMmIkib92ekKQaKOtiC7QcVzghYmGYCx8R5qRQW28Q1syC0HHtj8N1yvOdnZhVwJRfZ1
+ WNHVifTZCSJJCex9xFHlEoE4OmyWNC3Bk5AiYxBGMF5cXuZfb2F0VZUbnt2U4wlfwjdSe4jbc
+ fq9wX0iM+6XTzV8rpncV4o4Q4/bn/pBUz69Hrz0yfoFc0Emt9brfIXf//vUeGzPyPNX8LWwV2
+ A0mQCrLvSPdAA2XGMrx5VhL62lo47WL9H9zCXlHwHUjfjuOvL8vqQbbVezIqOWCL2kY9dobeP
+ qG5PVmsk2TZXbLvFmTccDzX4mBpOrF9m/Lli+xKOQ1FXUJC+pRvdqeSTtqfIoLh3Pcdg+wtiz
+ FIwcKkpuwwWmF4tkBM/1LxrpDaa4bZFCBUvT/+TyTxwShzkZygK2c9DlESoz5nYUFKwpI2r43
+ TXhPJGfiIAoj+jLAGwbIN2o/byA/CnnfsrXDOlfcdBnZ2Wc6hHJGkKTYXi6yBrIbnUMfUvy8A
+ /hOewnXSJOEg2nzF1NEmK5lMjyRvX/IWDMXb4IBGY24PKWG5mXLFeu2FtvsI8T+LhqCbWMzgi
+ Milpui+x2KbrxQh2KYHEK0hbCc7HYi+EmUah3JKcrRQnQ+S5i4Si7/goZCrY3GjSYMQkCFtew
+ aAxjDsqbuDdt2ADYt20m7eshIXGNEfpL06b6vygyUCWM4tZ0u/PWLxapqfs8OfgTZR4i/X4Bh
+ N7at00DM35nsbgCtv8E5odgBe65xMlonPyT5pSYHhRYV/H9LCwGN7HuLaJAK0btOdfkCbkT9J
+ JFDbw3J6l4K2ERue5+Od4ZjCfvIisc1jRjCHQ84cT2zB4ZsHbD0HIIoDGq82e2pHan0fDGFt7
+ guuE47syc79rMkSew9ea/tNLznSP0cVMKYsOhQQe50s4K6V6/rjKx
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 On Thu, Jul 23, 2020 at 9:39 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> do-while is a preferred way for complex macros because of safety
-> reasons.  This fixes checkpatch error:
->
->     ERROR: Macros starting with if should be enclosed by a do - while
->         loop to avoid possible if/else logic defects
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-This is an improvement, but the macro still has other issues that
-are just as bad as the one you address:
+> @@ -1756,7 +1756,7 @@ static int gpmc_calc_common_timings(struct gpmc_timings *gpmc_t,
+>  /* TODO: remove this function once all peripherals are confirmed to
+>   * work with generic timing. Simultaneously gpmc_cs_set_timings()
+>   * has to be modified to handle timings in ps instead of ns
+> -*/
+> + */
 
-- Using the # operator to avoid the "" in the invocation seems confusing
-- it implicitly uses the 'cs' and 't' variables of the calling function instead
-  of passing them as arguments.
-- it calls 'return -1' in a function that otherwise uses errno-style
-  return codes, so this gets interpreted as EPERM "Operation not
-  permitted".
+This still doesn't follow the normal coding style for multi-line comments.
 
-I would probably just open-code the entire thing and remove the
-macro like:
+I don't think it's worth fixing, but if you think it should be changed, then
+make it
 
-ret = 0;
-ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  0,  3, 0, t->cs_on,
-GPMC_CD_FCLK, "cs_on");
-ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  8,  12, 0,
-t->cs_rd_off, GPMC_CD_FCLK, "cs_rd_off");
-ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  16,  20, 0,
-t->cs_wr_off, GPMC_CD_FCLK, "cs_wr_off);
-...
-if (ret)
-     return -ENXIO;
+     /*
+      * mult-line comment
+      * ...
+      */
 
-Of maybe leave the macro, but remove the if/return part and use
-the "ret |= GPMC_SET_ONE(...)" trick to avoid some of the problems.
-
-      Arnd
+     Arnd
