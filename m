@@ -2,131 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A4AD22AC46
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 12:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6DEB22AD97
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 13:22:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726867AbgGWKQl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jul 2020 06:16:41 -0400
-Received: from mail-ej1-f67.google.com ([209.85.218.67]:44577 "EHLO
-        mail-ej1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725846AbgGWKQk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 06:16:40 -0400
-Received: by mail-ej1-f67.google.com with SMTP id ga4so5751437ejb.11;
-        Thu, 23 Jul 2020 03:16:39 -0700 (PDT)
+        id S1728666AbgGWLVX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jul 2020 07:21:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48156 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728663AbgGWLVD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 07:21:03 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55882C0619E4
+        for <linux-omap@vger.kernel.org>; Thu, 23 Jul 2020 04:20:59 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id 9so4604143wmj.5
+        for <linux-omap@vger.kernel.org>; Thu, 23 Jul 2020 04:20:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=cq5UFsGM4PwbW1qFMIEr855aXB0O6MiL01vlSKcAzk8=;
+        b=KytZh9UnUDim2wAZoUN7fbP/fKy8ZwVeBJ7TWqNhWdU6W6uh7i+FtCKzmWvfvZv6hf
+         ycZ+iBjEZXKTRlh7TBoQtDkDqBtdxwgQkYvwqMg/7Z5GbsNzD5ESatBd9U7qnNyvCHxZ
+         Z6IGH15rdF5RQT7Le8IUI6uApoe0buZI5rZpvTKt86NHhVjGCbugtJKDGiuQcNyjI9ul
+         hN+5sM564AX70iXZPGKeGTI+qS67b99sBbwG8TImeet8ePGbwWYbTxnVuPRe7Ei9v2aW
+         58c/EXaheUL8ELQ/gx7wKA2xieBSgKIvWNF9PfnWbnj81e7K+K1v7yjo55WJ9TI+9Eg9
+         ZoNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=dnWqbbfyoTOE1v2/nsDrkVQKi2TdYuhkczsrtV9Tj/A=;
-        b=NtC5oSEYS63EEfhdQWLyY0hoLsqGLZMOIcQD3MP1xs6q12+e2JwulyF/k3ABp3031u
-         5qIx5ABNhz4g7yDccFUQvWuxT9a7RfPmj8/d554pnTal6Okd1EgvCrleJIQOKtBAU75u
-         0D8J6qK1IBDlBrSH9nGlP9yse/xZwdm9oyFZqpL6OVfsKkucaEPV7qEXtM2YhPja3kJ/
-         4JHDhqPr6ICy8988bR0cGcqeQBnMgfvNS/QOWOIdlmduskW3bQvA8Kyn1JJBhlav5e+g
-         DQTHchwMn8xMqdhaCJF92814zXagOvNXogyNXrWvFq3D0LVf+T8WxoSV0wpcZGKMgSjA
-         ajGg==
-X-Gm-Message-State: AOAM533XQYVR40CiFN3SNvsxsmKzDHhlokyKBUMf3l3jSafiXSZ1Soc/
-        MGjgDdzz5W19PINoQ1INup8=
-X-Google-Smtp-Source: ABdhPJxFOO+eX3VP5KW+75n2zsTc3LGcB7+QqfGOKNwpQ7g2yIGn/n4uVf5RddsxBNhVVCNRNqRwLw==
-X-Received: by 2002:a17:906:2e83:: with SMTP id o3mr3639213eji.261.1595499398253;
-        Thu, 23 Jul 2020 03:16:38 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.213])
-        by smtp.googlemail.com with ESMTPSA id ah1sm841926ejc.43.2020.07.23.03.16.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 Jul 2020 03:16:37 -0700 (PDT)
-Date:   Thu, 23 Jul 2020 12:16:34 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
-        SoC Team <soc@kernel.org>, Markus Mayer <mmayer@broadcom.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Roger Quadros <rogerq@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC..." 
-        <linux-mediatek@lists.infradead.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 19/23] memory: omap-gpmc: Enclose macro statements in
- do-while
-Message-ID: <20200723101634.GD30472@kozik-lap>
-References: <20200723073744.13400-1-krzk@kernel.org>
- <20200723073744.13400-20-krzk@kernel.org>
- <CAK8P3a3emZd=Tz5JhxevkX3OJMMEn_2Nb+_LQtGZJ9-GWNpd2g@mail.gmail.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=cq5UFsGM4PwbW1qFMIEr855aXB0O6MiL01vlSKcAzk8=;
+        b=MSYTxhWh6ngV6xPkqBfB4XkOLn+e958+f5bweW/KkfNlpd0tNoGfTYJ7lN57XMy85p
+         IMh+neB438EoshlwRZvK19erDEPnahlJC0pvtBh+YjwV5G1Pal2wAny/na1wnG5h1QLC
+         wIAmIbHNBbLruj9gA+BTxrrx510OfLnFWLSukUgmYOui9KTtUHAObA/gZufpFGHKuKZ1
+         anb8F/mguIGZtC89rxsWEKt/UctQQBjULdVOoehzXXtCEqQX56krBGI9O5zOk+FD1iNM
+         QN0/7Z3bymVWPIJWuhhGa7v0hXUSe95rJ51zK9Op7cnVtmBqdZKH1eB0w1tdsnPj4DbF
+         zcew==
+X-Gm-Message-State: AOAM533QQBBt0x5YQ6SmroW53amr2Sno2LSp7xjBZ0b6u+54zkTx5BIb
+        ZtoniKo16MlAFZlC1ESM0l/JU5Ly8kf1vjcv8xI=
+X-Google-Smtp-Source: ABdhPJz59Y2v9g6RHFo0PIRwkSA3oiyMAeWQq5emT1enaUFqyrWZxeL/bP//act1bDBq3dUS0lrIsk/EqNGX1Svd8zQ=
+X-Received: by 2002:a7b:c952:: with SMTP id i18mr4000116wml.65.1595503257912;
+ Thu, 23 Jul 2020 04:20:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a3emZd=Tz5JhxevkX3OJMMEn_2Nb+_LQtGZJ9-GWNpd2g@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Received: by 2002:adf:9267:0:0:0:0:0 with HTTP; Thu, 23 Jul 2020 04:20:57
+ -0700 (PDT)
+Reply-To: godardchambers@yandex.com
+From:   Luis Fernandez Godard <doran11karn@gmail.com>
+Date:   Thu, 23 Jul 2020 13:20:57 +0200
+Message-ID: <CAFyBfXJFn9QL6ukyOJ1e=6PKqG1SkMxYOcn_ubYmJSvFmRHNGA@mail.gmail.com>
+Subject: =?UTF-8?B?TmFsw6loYXbDoSB6cHLDoXZhLA==?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jul 23, 2020 at 11:09:40AM +0200, Arnd Bergmann wrote:
-> On Thu, Jul 23, 2020 at 9:39 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> >
-> > do-while is a preferred way for complex macros because of safety
-> > reasons.  This fixes checkpatch error:
-> >
-> >     ERROR: Macros starting with if should be enclosed by a do - while
-> >         loop to avoid possible if/else logic defects
-> >
-> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> 
-> This is an improvement, but the macro still has other issues that
-> are just as bad as the one you address:
-> 
-> - Using the # operator to avoid the "" in the invocation seems confusing
-
-I guess it was useful for debugging.
-
-> - it implicitly uses the 'cs' and 't' variables of the calling function instead
->   of passing them as arguments.
-
-Actually another reason to convert it to just a function.
-
-> - it calls 'return -1' in a function that otherwise uses errno-style
->   return codes, so this gets interpreted as EPERM "Operation not
->   permitted".
-
-The users of this macro also do it (gpmc_cs_set_timings()) so this
-wrong practice is consistent with the driver. :)
-
-> 
-> I would probably just open-code the entire thing and remove the
-> macro like:
-> 
-> ret = 0;
-> ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  0,  3, 0, t->cs_on,
-> GPMC_CD_FCLK, "cs_on");
-> ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  8,  12, 0,
-> t->cs_rd_off, GPMC_CD_FCLK, "cs_rd_off");
-> ret |= set_gpmc_timing_reg(cs, GPMC_CS_CONFIG2,  16,  20, 0,
-> t->cs_wr_off, GPMC_CD_FCLK, "cs_wr_off);
-> ...
-> if (ret)
->      return -ENXIO;a
-
-I like this approach because it also removes the 'return' from macro
-which is not desired.
-
-> 
-> Of maybe leave the macro, but remove the if/return part and use
-> the "ret |= GPMC_SET_ONE(...)" trick to avoid some of the problems.
-
-I could probably then keep it as a function.  This would be the safest
-and remove most of the problems here.
-
-Best regards,
-Krzysztof
-
+TmFsw6loYXbDoSB6cHLDoXZhLA0KDQpKYWsgb2JlY27Emz8gRG91ZsOhbSwgxb5lIHNlIHRhdG8g
+enByw6F2YSBzIHbDoW1pIGRvYsWZZSBzZXRrw6F2w6EuDQpOZXphcG9tZcWIdGUgcHJvc8OtbSB0
+dXRvIHpwcsOhdnUgbmEgcm96ZMOtbCBvZCBkxZnDrXbEm2rFocOtY2gsIHByb3Rvxb5lIHbDocWh
+DQpkxJtkaWNrw70gZm9uZCB2ZSB2w73FoWkgOSwyIG1pbGlvbnUgVVNEIG55bsOtIG9kaGFsdWpl
+IHZhxaFpIG9rYW3Fvml0b3UNCnBveml0aXZuw60gb2Rwb3bEm8SPLiBWeXrDvXbDoW0gdsOhcyB2
+xaFhaywgYWJ5c3RlIGxhc2thdsSbIHDFmWVkYWxpIHN2w6kgY2Vsw6kNCmptw6lubzogWmVtxJs6
+IEFkcmVzYTogUG92b2zDoW7DrTogUm9kaW5uw70gc3RhdjogUG9obGF2w606IFbEm2s6IFNvdWty
+b23DqQ0KxI3DrXNsbzoga29uZcSNbsSbLCBQbGF0bsOhIGtvcGllIGlkZW50aXR5Og0KDQpTIMO6
+Y3RvdSBWw6HFoS4NCkJhcnJpc3RlciBMdWlzIEZlcm5hbmRleiBHb2RhcmQgKEVzcSkuDQo=
