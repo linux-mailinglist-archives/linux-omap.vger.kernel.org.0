@@ -2,34 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB6D722AB0C
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 10:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7542E22AB24
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 10:55:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725911AbgGWIu2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jul 2020 04:50:28 -0400
-Received: from mout.kundenserver.de ([212.227.17.10]:49429 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725858AbgGWIu2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 04:50:28 -0400
-Received: from mail-qv1-f42.google.com ([209.85.219.42]) by
- mrelayeu.kundenserver.de (mreue107 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MmkjY-1kiLLj2YwY-00jto9; Thu, 23 Jul 2020 10:50:25 +0200
-Received: by mail-qv1-f42.google.com with SMTP id u15so943808qvx.7;
-        Thu, 23 Jul 2020 01:50:25 -0700 (PDT)
-X-Gm-Message-State: AOAM531Rp5KQWCifnKMRXE6KOuXw2mvqPcHZdAo7pZt5G8sSloWT3uX5
-        RAjL5acwI3351CWEpbiXxo7m7Q7CDaOsd/ctOKU=
-X-Google-Smtp-Source: ABdhPJx/8iMOoQeuagptb1XxDW3qWIfpAYP9JEOH9O/fasuWg4WHNOHmGUtLnKRpZtu6H/lGAICf6WUPWzlQb7/e0Ec=
-X-Received: by 2002:a0c:f802:: with SMTP id r2mr3732657qvn.197.1595494224298;
- Thu, 23 Jul 2020 01:50:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200723073744.13400-1-krzk@kernel.org> <20200723073744.13400-19-krzk@kernel.org>
-In-Reply-To: <20200723073744.13400-19-krzk@kernel.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 23 Jul 2020 10:50:08 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1TSTX9ATUuyWyqJ1xtd6GP13JM-RQkhGCi1BSTiM9X9A@mail.gmail.com>
-Message-ID: <CAK8P3a1TSTX9ATUuyWyqJ1xtd6GP13JM-RQkhGCi1BSTiM9X9A@mail.gmail.com>
-Subject: Re: [PATCH 18/23] memory: mtk-smi: Add argument to function definition
-To:     Krzysztof Kozlowski <krzk@kernel.org>
+        id S1726303AbgGWIzj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jul 2020 04:55:39 -0400
+Received: from mail-ej1-f67.google.com ([209.85.218.67]:40938 "EHLO
+        mail-ej1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725911AbgGWIzj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 04:55:39 -0400
+Received: by mail-ej1-f67.google.com with SMTP id o18so5514928eje.7;
+        Thu, 23 Jul 2020 01:55:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Xt5+vxpGC9nM/ZHsj3r5gI/nmTDmk9F2oBeOZtyGPQM=;
+        b=ddpnUlIUIV5C0ItojdvfTtAPdsnBCDQMXoF/G1SjnTGBKiFG8k3OVikaOxUm19odph
+         VEFVVmtP/eIlYfyKZmTPAMxK9gW1O/MLXDxdtie4Q9+xMGEieYxirNthaFgrIhC41sig
+         ubX6nkZiF2qCHGc0ghQf6rJdLPIrWWynuYsGef8ztTi8ThASG+r8jGuR7cCldme+GXSd
+         aZxhSnecXiH0HZn6FbRiqKkg6XY3xG7O/E96nXsPeMHMedVxtPw58TcwbnrYuzxNXjQE
+         TNPpHsVKkUXNC5ACLxjnGyCj8ITPMN/EdiMiJH5odImulHMyx3GFuDhKBiVjA/2LpGsZ
+         JhBQ==
+X-Gm-Message-State: AOAM533luptVUqF4R1RVBDBQVtqaDwYwrkDBiLqqUMQVULSFzffhYXjC
+        bjZX9BMt0RRZ8nnDHBFhrEvrC641jr0=
+X-Google-Smtp-Source: ABdhPJwRP+wjzC0Ys2mHygLb4mxZAtf0iTg0JkShIGi/qXx7US6BV7vrg2I5N8csKyuByvVrRm5SwQ==
+X-Received: by 2002:a17:906:414c:: with SMTP id l12mr3469617ejk.417.1595494536809;
+        Thu, 23 Jul 2020 01:55:36 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.213])
+        by smtp.googlemail.com with ESMTPSA id jo25sm1541668ejb.116.2020.07.23.01.55.34
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 23 Jul 2020 01:55:36 -0700 (PDT)
+Date:   Thu, 23 Jul 2020 10:55:33 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         SoC Team <soc@kernel.org>, Markus Mayer <mmayer@broadcom.com>,
         bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
@@ -50,64 +56,39 @@ Cc:     Olof Johansson <olof@lixom.net>, arm-soc <arm@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:T07cc0gP5MoCdz4PnvOZ2+zYhjo+pKqjdS96OLHkp0Rf4TM7IJu
- Q/tCYLBpxPRxMbLHIcNQA5VZX3/xfqvz+uT9XXvNceNTl1k+ibKjZw36RfLsp7jbRVSwkR0
- AByWy35dUQjYKho256fh1xHt6fWnPwcY/QS17QxCOEHViQIOaFnwm43CB8GDGH8+CazV4l0
- RNlEog4mlCixWq3CAaxgA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:TH6InGJ3QXE=:PZIapkJdtmFpYegJlc3fA6
- de/wssOUZJEKXOCfmgqYbZVe6ONzzebUWf6LiGtnzJ8QBhNV5W+K3sSN6YI9wrO5CUYd59TAj
- 6OTfTnUj1zsbkST3Gm8u+wY3qp/IH0tYcH8x0tD/rXdUeVqPzhlkRi3hgtVN7fcxjjaEo2FTX
- gV/xzpxRRiookTaA6bgdp6nuv4nAtzttBP7snNOve89CUBOuQRbOEd6Z/U6ca98JS6KooqfoT
- N/zbDoUQL7d5DtTnmOnIdfHDODOTi28mebwEz8ukYNhIJFp3ZYTxqTqlosLyXTxYLdei29Aej
- jmdlpqO0KzNqzJkW+LyrGpXjxKlQrvtCg+MJByBU0/ksuYTzdlozOomfMVci2Ia9oS4E6Dml/
- UuR/iy+yp1y1nSbT7YAJAGHVWYOPnFYBT+ABp0skzDPGKljL/veyiT9QD7GYi6hqQum0sOreg
- hgQ1tlFFFi1NdnqqWQl3NFww1qUtr9rl8s7nIzEWh1M9/nQYKgaudCe4FR3/FurXtyQimZuZA
- LuzgvviqhvycnIdl2MBx6ZcLjJ5EKB4Z9wjkQoyKwHAvyzuNQ+qhjsnctdFmnnx3eGnMEkOUJ
- IdzEpny9BcioPSuJIf+mXrEOIAtXSjTtLTXnj9R6R58Igk89hYx3Sl/xmxlWtGg35XBanwyee
- iD8wnERBCLhOpuQamnOx/lsblFsUj1EEhXwmGEwr/yETnZLCk/HPxsjZEOOkaAYDJsT/Mkn0o
- hDb1ioeY0iKGU7NvrrxJ9p12exVZpp8bDz2brKMEiweVfRJsMUkIfGWbBVUZTv1q+P61z0AKV
- yt7RCnRs5zU2THcFM9ucYT+n8SzrvHI1jDnFEYY7xFGPr0SpAssd3KgJp7uNTTVr4d0S1++ij
- f59mG9GXKTJ1SDNEhgjZmgNA6dgGrChU2QW0WbCumf/gZeqI9hx5o2FlR28+ISTECxQRbB950
- 1KMmeWQpOpVNt4Hl54CstM2vHL6/qktE2A2SGO4fL39iikFmnz6Np
+Subject: Re: [PATCH 18/23] memory: mtk-smi: Add argument to function
+ definition
+Message-ID: <20200723085533.GA25935@kozik-lap>
+References: <20200723073744.13400-1-krzk@kernel.org>
+ <20200723073744.13400-19-krzk@kernel.org>
+ <CAK8P3a1TSTX9ATUuyWyqJ1xtd6GP13JM-RQkhGCi1BSTiM9X9A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a1TSTX9ATUuyWyqJ1xtd6GP13JM-RQkhGCi1BSTiM9X9A@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jul 23, 2020 at 9:39 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> Fix checkpatch warning:
->     WARNING: function definition argument 'struct device *' should also have an identifier name
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+On Thu, Jul 23, 2020 at 10:50:08AM +0200, Arnd Bergmann wrote:
+> On Thu, Jul 23, 2020 at 9:39 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >
+> > Fix checkpatch warning:
+> >     WARNING: function definition argument 'struct device *' should also have an identifier name
+> >
+> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> 
+> Is this a bug in checkpatch? I don't see why it should warn about this,
+> as there is no function definition here.
+> 
+> Your change is clearly harmless, but I wonder if we should fix
+> checkpatch instead.
 
-Is this a bug in checkpatch? I don't see why it should warn about this,
-as there is no function definition here.
+Good point. If this were not a warning, I would ignore it. However still
+the common practice is to add arguments to such type definitions as it
+helps to describe the type.
 
-Your change is clearly harmless, but I wonder if we should fix
-checkpatch instead.
-
-      Arnd
-
-> ---
->  drivers/memory/mtk-smi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
-> index 109c7e51d551..c21262502581 100644
-> --- a/drivers/memory/mtk-smi.c
-> +++ b/drivers/memory/mtk-smi.c
-> @@ -60,7 +60,7 @@ struct mtk_smi_common_plat {
->
->  struct mtk_smi_larb_gen {
->         int port_in_larb[MTK_LARB_NR_MAX + 1];
-> -       void (*config_port)(struct device *);
-> +       void (*config_port)(struct device *dev);
->         unsigned int                    larb_direct_to_common_mask;
->         bool                            has_gals;
->  };
-> --
-> 2.17.1
->
+Best regards,
+Krzysztof
