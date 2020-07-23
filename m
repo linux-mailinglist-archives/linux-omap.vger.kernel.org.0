@@ -2,54 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F72F22B436
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 19:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DF5D22B43B
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 19:11:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbgGWRLT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jul 2020 13:11:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46124 "EHLO
+        id S1729983AbgGWRLb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jul 2020 13:11:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726254AbgGWRLT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 13:11:19 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE64AC0619DC;
-        Thu, 23 Jul 2020 10:11:18 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id j18so5628455wmi.3;
-        Thu, 23 Jul 2020 10:11:18 -0700 (PDT)
+        with ESMTP id S1726254AbgGWRL3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 13:11:29 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F366C0619DC;
+        Thu, 23 Jul 2020 10:11:29 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id y24so1711083wma.1;
+        Thu, 23 Jul 2020 10:11:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=BOBtgx7HBcwU2CsvP4SkgzS+LAVOAZGJthho4DkTsIc=;
-        b=rFc6dLsAi7Hp1xqMLEZD0WEvBOjeF78fbhSsQu7THA3tc6JHHEK6dTX3tkR5TWI5hh
-         ig8cyM1wIzgXOT3y9xWWsO1vKjBvxXailgcwaOVw/xqeBuwSyLjRuUFExja2ma7WNXCY
-         bcwLZkCAOBSEYcH1lNrLT3Cpe+ygTqj9amnX9pK/mgs7/rKoo0IWAI47HPz7rmDU4W3R
-         LVq7EU96M7a1nao61YuZApiaH8y3kGZG3RX+bOIefp7uSrOEBHnOrVt8U27cP1W3XBx5
-         Bs2iMhJURDBDdmV1/FD7qZ3NmHVvq8MzCg6spa74V8bEwUoyj2z7ximrWyyrGoplJV6V
-         2dCg==
+        bh=7SjoJTYXQvTojo9vvc7snzILBAZP0a2/wyluR86x7BA=;
+        b=p23w/jtOq2WqKP3tV9WunD56cJ1Dw/VjCEGtr7+SlzbT64IQGs0s1jCuyg/Dbd7Kgt
+         OgMEepGbRghJk+y9rc/xj2DiSCSRBnz0LNXgpxckBexnptIiy79HEZvqx1s0ISWROaTX
+         QgaBs1lnxfiWNY0C3V3NXhg+ggdRb/OhwpP7dyKCGeyzGNGTzRBcZ5owRRTt5ZNBbBLl
+         wFPNuw0Xi3boRCs0xAEeUQuQQzG6Yc8uqPbBuN3FuWGQn+3kOmiaP1r7Ul9KuR8fnSLX
+         WJWOGZVSIFqDoqTOPLIUVZHNfnKOkPpNXWveQmy88/lJCKoFn6vhwTRy29sCvQwPoP+f
+         eB2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:autocrypt
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=BOBtgx7HBcwU2CsvP4SkgzS+LAVOAZGJthho4DkTsIc=;
-        b=rJtam5VDQd8TQH7mSQwNn9zHuQQhD0i3sfwfvzpr7AuSOZfldMGltTPhzqX1y961cC
-         QFh+d7xaM2us68wAwuhSVYTIdyFy7TPd+RcqW/N6Yn41bpQg9CHqtEJ4psBUlWq+zqwj
-         JHttY4whLSv8moGRJoktI65glIfVdXSkdCaD2blEaTYvdUV1NrpFVizOm8EIKZmmlCTg
-         BUv+t84ECGy0geipP9KN2KBW3+Tne5Z+xm2paGwrB8jTbDv9tB15iMP+EdN/o+yTY6z9
-         9Mw/4mYrs6dsgAJlL+8o97mAjbj9nLKpPvorlyZW/Gt777CI/IbjiF2eae1mysSH1pw8
-         dNgg==
-X-Gm-Message-State: AOAM532ty92pV0IbUacxledfITfI8YOdDHj/uOYf3PHEEfIWM2O2UKIa
-        eNbkAm4Tx1Z+xJoaXKPo/ZAmq9Nt
-X-Google-Smtp-Source: ABdhPJzOYApeTD/fZoWBdyCetAktvJgiYeaqNCN86sDdSggtCsOINeaduyNfWq8EWtwqs1vVfcq/Og==
-X-Received: by 2002:a1c:6809:: with SMTP id d9mr4982725wmc.34.1595524277650;
-        Thu, 23 Jul 2020 10:11:17 -0700 (PDT)
+        bh=7SjoJTYXQvTojo9vvc7snzILBAZP0a2/wyluR86x7BA=;
+        b=IVU9wEYD3pHOpxsoRVvbDp+f2k9l4MUO9mfW90VzL/qa7/ZQslBWwNxTegsNInkma1
+         BA8Zy6SCA2Bqvr072IkxUOfZNtIRqS9S3wrNvEU4zPWT2CWZv/ThthmIM5WzWInfbE2N
+         w4z3SppFBZj4Uz/eNTYyog/kGXlgwjPCLuqPgScRbyFQIwfAyH/C0QdLLlRenFygxJDx
+         u5r+ci/wXosMqBEkKnGC0Z9xY7hlHpEGutssC4vr8QC9c1id2tSwFyF2yWGHJy1HSINS
+         5XLZ+IeG0yqmg+2c4Hbu/VIJhRQKYNyaTi5MZkkK5QvRcbbaMWvsAt/hHhZjVLCc5/au
+         l3rw==
+X-Gm-Message-State: AOAM532+N4wf65F8utUk+v6eXDViZ67y5U1HFPn2KiLx7ayCUQA5s5kd
+        0ZnuczZBm8RRPJ/ey00YMjI=
+X-Google-Smtp-Source: ABdhPJz3yLd9OnsuWyOlP//CgtBDcAyMfwkYwXowysKC0s4GBJ63E5fqUYtaEmkcMy7imX4twi6dIQ==
+X-Received: by 2002:a1c:ab06:: with SMTP id u6mr5272630wme.55.1595524287042;
+        Thu, 23 Jul 2020 10:11:27 -0700 (PDT)
 Received: from [10.67.50.75] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id p29sm4403202wmi.43.2020.07.23.10.11.12
+        by smtp.googlemail.com with ESMTPSA id j5sm4374070wma.45.2020.07.23.10.11.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2020 10:11:16 -0700 (PDT)
-Subject: Re: [PATCH 16/23] memory: brcmstb_dpfe: Constify the contents of
- string
+        Thu, 23 Jul 2020 10:11:26 -0700 (PDT)
+Subject: Re: [PATCH 17/23] memory: brcmstb_dpfe: Remove unneeded braces
 To:     Krzysztof Kozlowski <krzk@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
         arm@kernel.org, soc@kernel.org, Markus Mayer <mmayer@broadcom.com>,
@@ -69,7 +68,7 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <20200723073744.13400-1-krzk@kernel.org>
- <20200723073744.13400-17-krzk@kernel.org>
+ <20200723073744.13400-18-krzk@kernel.org>
 From:   Florian Fainelli <f.fainelli@gmail.com>
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
@@ -125,12 +124,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  HvsHIcv4lxCWkFXkwsuWqzEKK6kxVpRDoEQPDj+Oy/ZJ5fYuMbkdHrlegwoQ64LrqdmiVVPC
  TwQYEQIADwIbDAUCVF/S8QUJHlwd3wAKCRBhV5kVtWN2Do+FAJ956xSz2XpDHql+Wg/2qv3b
  G10n8gCguORqNGMsVRxrlLs7/himep7MrCc=
-Message-ID: <b9519b7f-9cf0-3715-bca9-05905035eada@gmail.com>
-Date:   Thu, 23 Jul 2020 10:11:05 -0700
+Message-ID: <e65d4ed3-3c01-acb7-f324-be99201815df@gmail.com>
+Date:   Thu, 23 Jul 2020 10:11:19 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200723073744.13400-17-krzk@kernel.org>
+In-Reply-To: <20200723073744.13400-18-krzk@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -140,7 +139,9 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 On 7/23/20 12:37 AM, Krzysztof Kozlowski wrote:
-> The string itself can be made const for safety.
+> Single statement blocks don't need braces.  Fixes checkpatch warning:
+> 
+>     WARNING: braces {} are not necessary for single statement blocks
 > 
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
