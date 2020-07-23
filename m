@@ -2,83 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0990122B77C
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 22:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A7E22B856
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 23:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727854AbgGWUU1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jul 2020 16:20:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35718 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725979AbgGWUU1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 23 Jul 2020 16:20:27 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 73B5A20B1F;
-        Thu, 23 Jul 2020 20:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595535627;
-        bh=WLDe8p+A/CpQf5/6gq8TVOgNo0NwPqUHogMr+bFuRAw=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=Hf0XD6+LeWC+wP6ISweQEjefDPwEoG0pmVg1WZ5pQscc75fWWmHrmL53k7Hod/Wvs
-         SgSWCTbWHINmRuH7QXaOeghUz/+2zm5S9/yu8s6YNXlZ452dCjxEetWpwmA11LR/2a
-         lrhoNY+QjgS1cFscMjJspwQeD+GHPPq/fuXtPPRE=
-Date:   Thu, 23 Jul 2020 21:20:11 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-kernel@vger.kernel.org, perex@perex.cz,
-        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
-        jarkko.nikula@bitmer.com, tiwai@suse.com,
-        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
-        lgirdwood@gmail.com, peter.ujfalusi@ti.com
-In-Reply-To: <20200718112403.13709-1-grandmaster@al2klimov.de>
-References: <20200718112403.13709-1-grandmaster@al2klimov.de>
-Subject: Re: [PATCH] ASoC: omap: Replace HTTP links with HTTPS ones
-Message-Id: <159553557415.41908.1856023334882832244.b4-ty@kernel.org>
+        id S1726686AbgGWVIL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jul 2020 17:08:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54784 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726368AbgGWVIL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 17:08:11 -0400
+X-Greylist: delayed 764 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 23 Jul 2020 14:08:11 PDT
+Received: from ds0.me (ds0.me [IPv6:2602:ffc5::f9bc:b4ce])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4503FC0619D3
+        for <linux-omap@vger.kernel.org>; Thu, 23 Jul 2020 14:08:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ds0.me; s=mail;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:Date:Cc:To:From:Subject:Message-ID; bh=GVHWuSBLLor554PVb+AbJTCraXOKqQJdAkMxXWazX0w=;
+        b=B2tdSAq3HsQqX3cHYsAH2vS+bxaH8DPPn9xSRtNqCYfJXJ6Xd+cO6VCqgpvISfdp5fgJ02W9UXQYYeJEN1BZOSetwPAg4MFKoE1xIhywwJU0QecHQGhp2FB2+BsJsyyKrGs/TsAgJ1InS4wH957pw+/x637T8Ox9xFK+NCzD55Y=;
+Received: from 97e2e5e0.skybroadband.com ([151.226.229.224] helo=david-5530)
+        by ds0.me with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.84_2)
+        (envelope-from <dave@ds0.me>)
+        id 1jyiFR-0005BD-JL; Thu, 23 Jul 2020 16:55:26 -0400
+Message-ID: <c077ece056713ad120b3d2fd59916aab1248cd1c.camel@ds0.me>
+Subject: Understanding OMAP5 DPLL_ABE and CM_CLKSEL_WKUPAON
+From:   David Shah <dave@ds0.me>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
+Date:   Thu, 23 Jul 2020 21:55:18 +0100
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 18 Jul 2020 13:24:03 +0200, Alexander A. Klimov wrote:
-> Rationale:
-> Reduces attack surface on kernel devs opening the links for MITM
-> as HTTPS traffic is much harder to manipulate.
-> 
-> Deterministic algorithm:
-> For each file:
->   If not .svg:
->     For each line:
->       If doesn't contain `\bxmlns\b`:
->         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
-> 	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
->             If both the HTTP and HTTPS versions
->             return 200 OK and serve the same content:
->               Replace HTTP with HTTPS.
+Hi,
 
-Applied to
+There has been a somewhat longstanding issue on the Pyra, where any kind of soft reboot causes
+it to hang (only a true power off and on again works). The background is at
+https://projects.goldelico.com/p/gta04-kernel/issues/876/.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+The failure is typically of the following form: https://dev.pyra-handheld.com/snippets/765
+(the exact failure sequence has changed a bit in different kernel versions).
 
-Thanks!
+With the pertinent line being:
+[    0.000000] clock: dpll_abe_ck failed transition to 'locked'
 
-[1/1] ASoC: omap: Replace HTTP links with HTTPS ones
-      commit: 3323a148fd79a6c6c8809bb793708bcfa626081d
+This only happens on the Pyra, not the OMAP5 uEVM. This seems to be because
+the Pyra uses TIMER8 for the backlight PWM.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Looking around at some other OMAP5 clocking code, I found
+https://gitlab.com/linux-omap4-dev/omapboot/-/blob/kexec_support/arch/omap5/clock.c#L335
+This to me suggests that both CM_CLKSEL_ABE_PLL_REF and CM_CLKSEL_WKUPAON
+should be set to 1. I found that only CM_CLKSEL_ABE_PLL_REF was 1 and 
+CM_CLKSEL_WKUPAON was 0 at the point of checking DPLL lock.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+I wrote a very hacky patch just to force CM_CLKSEL_WKUPAON to 1 at startup, to test
+this theory: https://dev.pyra-handheld.com/snippets/770 (breaking every rule in the
+book, I know :)
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+And indeed with this reboots now seem to work fine.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+The question is, what is the correct way/place to deal with this? Is this even a Linux
+issue at all, or should U-Boot be doing something here? A quick glance suggests that
+nothing in the kernel deals with CM_CLKSEL_WKUPAON at all but I may have missed
+something.
 
-Thanks,
-Mark
+Best
+
+David
+
