@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F35722BFE4
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jul 2020 09:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D856222BFE7
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jul 2020 09:43:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728092AbgGXHnJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Jul 2020 03:43:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37222 "EHLO mail.kernel.org"
+        id S1726801AbgGXHnN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Jul 2020 03:43:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37312 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726607AbgGXHnI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 24 Jul 2020 03:43:08 -0400
+        id S1726607AbgGXHnM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 24 Jul 2020 03:43:12 -0400
 Received: from kozik-lap.mshome.net (unknown [194.230.155.213])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 42A5120748;
-        Fri, 24 Jul 2020 07:43:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0120A20771;
+        Fri, 24 Jul 2020 07:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595576587;
-        bh=CFjeTLf3VxTPc69usAlF1x6NQjpN6H7DE6BSfcr/r54=;
+        s=default; t=1595576592;
+        bh=7O0bm2CLZ3Q5OFx8KqB2VK0KoKe3zQms78gh6gShMCc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RxVX1tyirSx120u18ZJM+5Gx+2KqFZYCFB2SQtS0ZGDTqPD7BS7V6VZdc/yD3NjqB
-         AfqzWdTIr8M5e777Yf9ra0jDA0j25dl4z7Y3Jxf9DIS5oolpz2oWFUG5qocUQhU8/r
-         6Y01I1AJhqage1nlFby30TsvQJ3HhQWGM5nUYJUg=
+        b=eq5SIgQy1QpEy6J7NJ8OQP7Oe76XZjRwGoMXnCBZa+SzQzLVWCEQKqhi/DARA16rd
+         b9fJxjbOMZxQtZJ0tgD4kFgWVH5zBFd/LYE3Y+JK9MpC1BXF1gvi3Apzvkm7I/gdfE
+         JD7lLQRMFB4B55KQLldXAv/CQgh+pjPMjOvf6aIA=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
         Markus Mayer <mmayer@broadcom.com>,
@@ -42,9 +42,9 @@ To:     Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v2 24/29] memory: tegra: tegra210-emc: Fix indentation
-Date:   Fri, 24 Jul 2020 09:40:33 +0200
-Message-Id: <20200724074038.5597-25-krzk@kernel.org>
+Subject: [PATCH v2 25/29] MAINTAINERS: Add Krzysztof Kozlowski as maintainer of memory controllers
+Date:   Fri, 24 Jul 2020 09:40:34 +0200
+Message-Id: <20200724074038.5597-26-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200724074038.5597-1-krzk@kernel.org>
 References: <20200724074038.5597-1-krzk@kernel.org>
@@ -53,26 +53,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use tabs instead of spaces for indentation.
+The generic parts of memory controllers (of_memory.[ch]) lacked any
+care.  The memory controller drivers were not abandoned (usually
+picked up by architecture maintainers) but in such case I can take care
+about them as well.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/memory/tegra/tegra210-emc-cc-r21021.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/memory/tegra/tegra210-emc-cc-r21021.c b/drivers/memory/tegra/tegra210-emc-cc-r21021.c
-index ff55a17896fa..d60bdea3af3f 100644
---- a/drivers/memory/tegra/tegra210-emc-cc-r21021.c
-+++ b/drivers/memory/tegra/tegra210-emc-cc-r21021.c
-@@ -1044,7 +1044,7 @@ static void tegra210_emc_r21021_set_clock(struct tegra210_emc *emc, u32 clksrc)
- 			   !opt_cc_short_zcal && opt_short_zcal) {
- 			value = (value & ~(EMC_ZCAL_WAIT_CNT_ZCAL_WAIT_CNT_MASK <<
- 					   EMC_ZCAL_WAIT_CNT_ZCAL_WAIT_CNT_SHIFT)) |
--			        ((zq_wait_long & EMC_ZCAL_WAIT_CNT_ZCAL_WAIT_CNT_MASK) <<
-+				((zq_wait_long & EMC_ZCAL_WAIT_CNT_ZCAL_WAIT_CNT_MASK) <<
- 						 EMC_MRS_WAIT_CNT_SHORT_WAIT_SHIFT);
- 		} else if (offset == EMC_ZCAL_INTERVAL && opt_zcal_en_cc) {
- 			value = 0; /* EMC_ZCAL_INTERVAL reset value. */
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f4557bc43bd5..cba0ed77775b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11158,6 +11158,13 @@ F:	Documentation/core-api/boot-time-mm.rst
+ F:	include/linux/memblock.h
+ F:	mm/memblock.c
+ 
++MEMORY CONTROLLER DRIVERS
++M:	Krzysztof Kozlowski <krzk@kernel.org>
++L:	linux-kernel@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/memory-controllers/
++F:	drivers/memory/
++
+ MEMORY FREQUENCY SCALING DRIVERS FOR NVIDIA TEGRA
+ M:	Dmitry Osipenko <digetx@gmail.com>
+ L:	linux-pm@vger.kernel.org
 -- 
 2.17.1
 
