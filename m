@@ -2,35 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75BB722C711
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jul 2020 15:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4039622C719
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jul 2020 15:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbgGXNvY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Jul 2020 09:51:24 -0400
-Received: from mout.kundenserver.de ([212.227.17.24]:60513 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726326AbgGXNvY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Jul 2020 09:51:24 -0400
-Received: from mail-qk1-f173.google.com ([209.85.222.173]) by
- mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MMXYH-1kHJdd0H4B-00Jcus; Fri, 24 Jul 2020 15:51:22 +0200
-Received: by mail-qk1-f173.google.com with SMTP id l23so8665291qkk.0;
-        Fri, 24 Jul 2020 06:51:21 -0700 (PDT)
-X-Gm-Message-State: AOAM532LD8Ig3/gFZ7hE+WwRTfGWCAJkfuPgKmX+zKtvUYXork1IdoPM
-        x0yoKEosS+9RIBuz9unmaBMmLBCIhuOHL9CzpqU=
-X-Google-Smtp-Source: ABdhPJxjGVar32Mo4zyo7czqW6vHPwVJvr9ZZ1aqSE80mAP36DQF09IVdxgsaflYW8FpBItG+23osrBEpNeTs3oF6bs=
-X-Received: by 2002:a05:620a:1654:: with SMTP id c20mr10549815qko.138.1595598680633;
- Fri, 24 Jul 2020 06:51:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200724074038.5597-1-krzk@kernel.org>
-In-Reply-To: <20200724074038.5597-1-krzk@kernel.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 24 Jul 2020 15:51:04 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2EAm=pxkU-AiucgDQyoMEGFOGqQBkVacWjoT7O9-PHkA@mail.gmail.com>
-Message-ID: <CAK8P3a2EAm=pxkU-AiucgDQyoMEGFOGqQBkVacWjoT7O9-PHkA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/29] *memory: Cleanup, improve and compile test
- memory drivers
-To:     Krzysztof Kozlowski <krzk@kernel.org>
+        id S1726567AbgGXNxS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Jul 2020 09:53:18 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:39904 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726366AbgGXNxR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Jul 2020 09:53:17 -0400
+Received: by mail-ed1-f65.google.com with SMTP id d18so7087978edv.6;
+        Fri, 24 Jul 2020 06:53:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=wHJM9ZNtQPPVokcpsCbdp5GsMdp3YHUZAH6Xvy0iTKM=;
+        b=ZmSpJpw2lApyVrUgRqpAUwKUgIOfM2GzFdGJzvpAfcYRY+m4ZKqAs7TcGXbTz50gja
+         TrGnK6EET1TpeImy5mJDGjOg1+iHlgDommFFTqu+GXYYaB9iPt778nKPo/SIajcckhii
+         QamtcK1frWOq3xjeEV/4TnwQrBApGjWErmkC9Mb1N4Ahxb0BvWQfJzZGY0fzb+Iqljw7
+         aOuKo9+bQ2VugslwL9CdrlemzvVJubYOOBZDMWn9OBpm90KFi5PTSsiNT+hmEMbXRAUZ
+         RnJeDD5yNJn4g8X+fAwVApnqvb24+E37u5uZON/bZp+tC9ZbiXhpQevgWNCJ4J7xvDXR
+         giqg==
+X-Gm-Message-State: AOAM530oPE28Nn3bwcpiBYP6idNM2AlhvYpxRKz5AXGyPjj5C3PyTlJo
+        n0/SSedOd4deJUEVsPR/QJ8=
+X-Google-Smtp-Source: ABdhPJxQatp/16zc2FQj9pOk/YrBsNh8emgbUp3CY5xYniVLl6YIl4y8V3SdvTEG1nFeCNjq8TSdOA==
+X-Received: by 2002:a50:dacf:: with SMTP id s15mr9448134edj.136.1595598795606;
+        Fri, 24 Jul 2020 06:53:15 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.213])
+        by smtp.googlemail.com with ESMTPSA id x10sm737481ejc.46.2020.07.24.06.53.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 24 Jul 2020 06:53:14 -0700 (PDT)
+Date:   Fri, 24 Jul 2020 15:53:11 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Olof Johansson <olof@lixom.net>,
         Markus Mayer <mmayer@broadcom.com>,
         bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
@@ -53,65 +58,51 @@ Cc:     Olof Johansson <olof@lixom.net>,
         "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:h51Bmr1YHWGzwbAcnkPPXOC7mTatte8E3oICeOrVD0Zn7jFR5fq
- wLQRyHhkEnG1tNZyehnPejPrRp66/DYwgv/1aROiZjUiiUrAH0AxkD21kOsBnhNzcb+TC2I
- CKxaxack11yO1xF35x3hN4cCH/kFUZ+ByqC0aUNRwBa8GHfzEbPTrZT7e+MvqYTXVvgp+8m
- aALgZgv2a//NSTOUJVuxA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7t60lDTIdmw=:sEwCTV+kQVemdBbngfGotN
- eSagtz54ty7m6n+reBGgGZ4x+XanhdadHZzz8NuL26Bky9qbCJ7ZWq7/tmTrqJvOITg0+3wfX
- qEMiuciIYJ1rFkf6wCbvPrNdy7pDbZ3dkdjfkFAGDjyGCyBkbIYVzn4vhFoWjGyWMWsCJ4KoT
- hD7vsMJHSli5gpmCgcms7C2SODw/gtucKK2X+m/GbCm/erEZqzs04rw5W9bH69OLiNjivNSCR
- DmtyrYuCZpxLn0/tCj/Rr5N0AwNpzFaQh/Q0vA1X5FogAyPDWog2KwKAgLtXAipqgtSpwabKF
- 86q0MqLYDGXq82PPUnoP3RTnxmXk99JFBIYqrXDrVYHm3tPTXHGWtXUwlZtc+Jq2tdLnMAqC8
- 8UoeM3BmONMNDYbiKcuywOij5JQQNqaPFeiHqIeYwyM/dy1AK6MGAoqXAIwfkTBV6Qcr7ZmGq
- ulvx0n85to0zkjnkswzrgui0pieFl3auYyris34g+XR7ui9OJGlIwGzf4sijdlGOvUv06WQtc
- GtLGxPcd++lvYha++vMhAhTEmdb2wGo3MhxSHz2F5NzaDGA0W151TprBLRomXyv36G5AFhSlV
- pRYFIPsroUbiRRedibZ3e0RBD3Xt7NcWEk0HXwR3fqgtzhPaM8o7KTxiobkGl7NxGjecHZNMq
- Dm6nmAbzqkvN6ZWF7QUAt9YUW3kMNY7PTsE7oyXjI4wn3yqabKSbM39QS6BQ9EAl7W3A7FEZt
- IHmpUfmoHPjb9SKeWZq8nOUCuZ2D+6NAi6HayAVzveLpyU1o72OrOftmQHXeWjYpr57GtG5Lt
- fWlxmRffwogbmRHoWoAxxWa1iHam7bKP5Sh/cAst/2evP7s746901DQ/+syzTo3JrySeIrQ72
- iaMhnZklTYzx05FD6K8T2xZ0vzlrs/60O2vpY7hpoPN2+X6H1hdZ1b9zFiuIURYc9VApN8GuF
- H/H4vFBWxaHzmYBLu+OnOsdExDStmsGyO0tSSLiL3Y0+AWS7QDL/w
+Subject: Re: [PATCH v2 05/29] memory: jz4780-nemc: Do not enable by default
+ on every compile test
+Message-ID: <20200724135311.GA13472@kozik-lap>
+References: <20200724074038.5597-1-krzk@kernel.org>
+ <20200724074038.5597-6-krzk@kernel.org>
+ <CAK8P3a0h3dMRH_wuGX5dZ5znnx+EHJKYwQeZ9aB7cFGudo6vmw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a0h3dMRH_wuGX5dZ5znnx+EHJKYwQeZ9aB7cFGudo6vmw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jul 24, 2020 at 9:41 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> Dear All,
->
-> Changes since v1:
-> 1. Few new patches,
-> 2. Please see individual logs (per patch).
->
->
-> The drivers/memory directory contains generic code (of_memory.c) and a
-> bunch of drivers.  Changes to generic code were coming usually through
-> different trees with the driver code.
->
-> Over last days, memory drivers grew in numbers but not necessarily in
-> quality.  They lacked compile testing and code cleanup.  Also lacked
-> maintainer.
->
-> I would be happy to take care about this part.
->
-> If there are no objections, I will collect the patches and push them
-> through arm-soc maintainers.
->
-> Driver-specific changes in the patchset were only compile-tested. Tests
-> are welcome. The generic code was tested on ARMv7 Exynos based boards
-> with a exynos5422-dmc memory controller driver.
+On Fri, Jul 24, 2020 at 03:45:37PM +0200, Arnd Bergmann wrote:
+> On Fri, Jul 24, 2020 at 9:41 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >
+> > When compile testing, enable the driver by default only on MIPS
+> > architecture.
+> >
+> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> >
+> > ---
+> >
+> > Changes since v1:
+> > 1. New patch
+>  @@ -141,7 +141,7 @@ config FSL_IFC
+> >
+> >  config JZ4780_NEMC
+> >         bool "Ingenic JZ4780 SoC NEMC driver"
+> > -       default y
+> > +       default y if MIPS
+> >         depends on MIPS || COMPILE_TEST
+> 
+> 
+> Actually I think this should be 'default MACH_INGENIC',
+> and probably also 'depends on MACH_INGENIC || COMPILE_TEST'.
 
-Looks all good. Can you send a pull request for the patches that you don't
-expect to need testing for, while you still wait for more feedback on the
-others?
+Makes sense, especially for default.
 
-As the merge window (and my vacation) is getting closer, I would like to
-have most of the patches for v5.9 queued up.
+For the depends, there is also MTD_NAND_JZ4780 (depending on
+JZ4780_NEMC) which also requires MIPS. I could fix both then.
 
-       Arnd
+Best regards,
+Krzysztof
 
-     Arnd
