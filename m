@@ -2,75 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89A7E22B856
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jul 2020 23:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4638222BB56
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jul 2020 03:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726686AbgGWVIL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Jul 2020 17:08:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54784 "EHLO
+        id S1726259AbgGXBYW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Jul 2020 21:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726368AbgGWVIL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 17:08:11 -0400
-X-Greylist: delayed 764 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 23 Jul 2020 14:08:11 PDT
-Received: from ds0.me (ds0.me [IPv6:2602:ffc5::f9bc:b4ce])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4503FC0619D3
-        for <linux-omap@vger.kernel.org>; Thu, 23 Jul 2020 14:08:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ds0.me; s=mail;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:Date:Cc:To:From:Subject:Message-ID; bh=GVHWuSBLLor554PVb+AbJTCraXOKqQJdAkMxXWazX0w=;
-        b=B2tdSAq3HsQqX3cHYsAH2vS+bxaH8DPPn9xSRtNqCYfJXJ6Xd+cO6VCqgpvISfdp5fgJ02W9UXQYYeJEN1BZOSetwPAg4MFKoE1xIhywwJU0QecHQGhp2FB2+BsJsyyKrGs/TsAgJ1InS4wH957pw+/x637T8Ox9xFK+NCzD55Y=;
-Received: from 97e2e5e0.skybroadband.com ([151.226.229.224] helo=david-5530)
-        by ds0.me with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <dave@ds0.me>)
-        id 1jyiFR-0005BD-JL; Thu, 23 Jul 2020 16:55:26 -0400
-Message-ID: <c077ece056713ad120b3d2fd59916aab1248cd1c.camel@ds0.me>
-Subject: Understanding OMAP5 DPLL_ABE and CM_CLKSEL_WKUPAON
-From:   David Shah <dave@ds0.me>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
-Date:   Thu, 23 Jul 2020 21:55:18 +0100
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4 
+        with ESMTP id S1726010AbgGXBYV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Jul 2020 21:24:21 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 777D9C0619D3
+        for <linux-omap@vger.kernel.org>; Thu, 23 Jul 2020 18:24:21 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id BEFF4279;
+        Fri, 24 Jul 2020 03:24:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1595553857;
+        bh=/92mB/UdrhoQAGBthcAox6PzBUiTSEUE3eKH/3iQbtc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=c2UBXGjG3+6JNc1XRdxR3qW6bc6cJbwpwy8WlZI43P0ogdaKGwd0Cag5i2IIYQ16I
+         ZMdy9ogIyWNb1J4kzsU2MttbRFoKTmVlXKPe1eQnvs2rngKiTkplheAbyyH4FF60SX
+         1S0tWt8nNRZrspP1eolHk2Yu7cNijFBs5ssmhsSM=
+Date:   Fri, 24 Jul 2020 04:24:11 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Jyri Sarha <jsarha@ti.com>, kernel@pyra-handheld.com,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
+Subject: Re: module_mipi_dsi_driver panel with omapdrm?
+Message-ID: <20200724012411.GJ21353@pendragon.ideasonboard.com>
+References: <5F4C23B0-A82B-4F94-BD74-D04F6D798FC0@goldelico.com>
+ <20200705142653.GQ37466@atomide.com>
+ <20200705143614.GR37466@atomide.com>
+ <E200E98D-A4F8-4270-B192-33733F4C7235@goldelico.com>
+ <20200706143613.GS37466@atomide.com>
+ <E4616E3C-2519-4421-BC75-87A5CA2BB9EF@goldelico.com>
+ <20200707180115.GB5849@atomide.com>
+ <ECE29C41-DFE5-4A50-9206-6FB3183824C3@goldelico.com>
+ <6E0A9415-9AB5-48D9-9E61-12D20655D04D@goldelico.com>
+ <EE54FB82-C18E-4B81-AB38-E9453A32406B@goldelico.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <EE54FB82-C18E-4B81-AB38-E9453A32406B@goldelico.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hi Nikolaus,
 
-There has been a somewhat longstanding issue on the Pyra, where any kind of soft reboot causes
-it to hang (only a true power off and on again works). The background is at
-https://projects.goldelico.com/p/gta04-kernel/issues/876/.
+On Thu, Jul 23, 2020 at 09:03:49AM +0200, H. Nikolaus Schaller wrote:
+> > Am 08.07.2020 um 09:52 schrieb H. Nikolaus Schaller <hns@goldelico.com>:
+> >> Am 07.07.2020 um 21:04 schrieb H. Nikolaus Schaller <hns@goldelico.com>:
+> >> 
+> >> And what I would need to know before I start to write new code is
+> >> if is possible to operate a video mipi dsi panel with driver from
+> >> gpu/drm/panel together with omapdrm (v5.7 and later).
+> > 
+> > I did a quick test on a 5.7.6 kernel with the sysc fixes as
+> > suggested by Tony.
+> > 
+> > Then I overwrote the compatible entry of our display to be
+> > orisetech,otm8009a and configured to build the otm8009a panel driver.
+> > 
+> > The panel driver is loaded, but not probed (no call to otm8009a_probe).
+> > It is shown in /sys/bus/mipi-dsi/drivers (and lsmod) but not /sys/bus/mipi-dsi/devices.
+> > 
+> > So what should I try next?
+> 
+> Any suggestions if and how it is possible to use a gpu/drm/panel MIPI DSI
+> video mode panel with omapdrm (on OMAP5)?
 
-The failure is typically of the following form: https://dev.pyra-handheld.com/snippets/765
-(the exact failure sequence has changed a bit in different kernel versions).
+For the DSI panel to probe, the display driver needs to register a DSI
+host with mipi_dsi_host_register(). omapdrm doesn't do so yet, we need
+to integrate Sebastian's "[PATCHv2 00/56] drm/omap: Convert DSI code to
+use drm_mipi_dsi and drm_panel" series first. I'll try to review it in
+the near future.
 
-With the pertinent line being:
-[    0.000000] clock: dpll_abe_ck failed transition to 'locked'
+> The problem is that our old omapdrm/display driver is broken since v5.7 and
+> an experimental gpu/drm/panel driver does not probe. And I assume that
+> omapdrm/display will disappear completely soon.
 
-This only happens on the Pyra, not the OMAP5 uEVM. This seems to be because
-the Pyra uses TIMER8 for the backlight PWM.
+Not before Sebastian's series gets integrated.
 
-Looking around at some other OMAP5 clocking code, I found
-https://gitlab.com/linux-omap4-dev/omapboot/-/blob/kexec_support/arch/omap5/clock.c#L335
-This to me suggests that both CM_CLKSEL_ABE_PLL_REF and CM_CLKSEL_WKUPAON
-should be set to 1. I found that only CM_CLKSEL_ABE_PLL_REF was 1 and 
-CM_CLKSEL_WKUPAON was 0 at the point of checking DPLL lock.
+-- 
+Regards,
 
-I wrote a very hacky patch just to force CM_CLKSEL_WKUPAON to 1 at startup, to test
-this theory: https://dev.pyra-handheld.com/snippets/770 (breaking every rule in the
-book, I know :)
-
-And indeed with this reboots now seem to work fine.
-
-The question is, what is the correct way/place to deal with this? Is this even a Linux
-issue at all, or should U-Boot be doing something here? A quick glance suggests that
-nothing in the kernel deals with CM_CLKSEL_WKUPAON at all but I may have missed
-something.
-
-Best
-
-David
-
+Laurent Pinchart
