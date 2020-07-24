@@ -2,86 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A86C22C003
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jul 2020 09:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A8222C02A
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jul 2020 09:51:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728209AbgGXHnd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Jul 2020 03:43:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37848 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727886AbgGXHnb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 24 Jul 2020 03:43:31 -0400
-Received: from kozik-lap.mshome.net (unknown [194.230.155.213])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0FD5720786;
-        Fri, 24 Jul 2020 07:43:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595576611;
-        bh=01DVBx+cUJU2MUx86mEXbPPRcD1lVtSvl6DAEX/P6uE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lU+ri9XTeXV7fdDhxC3z7c5crNIvFy/Om3bddXaemL8BaUIDVVuX9FV6jrqSXkBWR
-         ErCM6ROOyf8AQp9eff/vfdrUX6AZ3oLt20pPHW84/j52XGmZkRf4N+7T5vd23jUQIG
-         gv0egVrlDdHC8WMUScaOHw/vG3Ki388NlnpxjqgY=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        Markus Mayer <mmayer@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Roger Quadros <rogerq@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v2 29/29] memory: samsung: exynos-srom: Describe the Kconfig entry
-Date:   Fri, 24 Jul 2020 09:40:38 +0200
-Message-Id: <20200724074038.5597-30-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200724074038.5597-1-krzk@kernel.org>
-References: <20200724074038.5597-1-krzk@kernel.org>
+        id S1726686AbgGXHvz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Jul 2020 03:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41410 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726638AbgGXHvz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Jul 2020 03:51:55 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFF33C0619D3;
+        Fri, 24 Jul 2020 00:51:54 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id q4so9067573lji.2;
+        Fri, 24 Jul 2020 00:51:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=7xHsDIbPEWyTXMIhiJIbbGWZOWOwEadlbVNuSeDqT58=;
+        b=UefAGxSzVvcQrMqw7JsZpBhJqtcsDHapnhWVNEftPEqP5UPXQ18vnlyLFyBaIrenvW
+         i6hWJK3mNrZwoaNqrqWGnuHyU1TCuvgMEDgKMbggnZH1hTltVhzI+tJGYy52WxCtaYqr
+         vdhz6P0STkYV1Gepr+FERUgor/ZvvMDCUs7kxuJKtkCITQIWDFSrXW5AKVd4+j3EA/Dy
+         GURZNvdQRooh4/MM+xlyzOpROuvYArXx3c6mX+CfTwyy9lXUFmohWrzf/seZvd7opgTE
+         QcPlYl5+vDEyXst/zuAo1guKPUggdrXNaaM2SNvPDJ3TBo1GnrTgTX/hmHNVJFq0xX71
+         nHwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
+         :date:message-id:mime-version;
+        bh=7xHsDIbPEWyTXMIhiJIbbGWZOWOwEadlbVNuSeDqT58=;
+        b=BgboqLdvMULjtNQB1er2KmfkFv4oxaDoR6sSCPFH23WfnAloY8GFd+rp9YWzzfjjy9
+         pGn02pEykeSXkMkcWive9oC5ztM5ovPEiOX+I+jOUxfrFDowA5IrcBhqTPkIifD0YDXS
+         3rXfLIe0xJxmfjP8XCZNop7lUp9FbpM15UHOIOD+4hhXCC+M/6Mzq0bJMn3gXIc124Md
+         DDjU5PfEOK4KZ6tCdOkJMCS4R5csZAjgJ1WH4SrC8gA3Agry6rSUfszsuQNPZQjT/Rxv
+         ISgDMmHTZbP/3fbWe+Zp5hLF9/ZrX9vY4CETrhQ7fd6Cn8mkDSF/cNPmfaStSk5Vygve
+         bF3g==
+X-Gm-Message-State: AOAM531MQz+GBph/aRlz2zIboI7D7LjkrWl5O5RSoqWnpGzYqE8FfF9n
+        Srt7WNFmOUjlzpB4Zygx4PPsm7o/csRv2g==
+X-Google-Smtp-Source: ABdhPJwDksuWJ4I428kZ+PeDJ/DiIx8CWOYUN20JuMGvHI+quZ2MsKaGwhMOYMe8qvm8M+1rfIQWPg==
+X-Received: by 2002:a2e:9611:: with SMTP id v17mr3948747ljh.110.1595577112901;
+        Fri, 24 Jul 2020 00:51:52 -0700 (PDT)
+Received: from saruman (91-155-214-58.elisa-laajakaista.fi. [91.155.214.58])
+        by smtp.gmail.com with ESMTPSA id e69sm48528lfd.21.2020.07.24.00.51.51
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 24 Jul 2020 00:51:51 -0700 (PDT)
+From:   Felipe Balbi <balbi@kernel.org>
+To:     kernel test robot <lkp@intel.com>,
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        Minas Harutyunyan <hminas@synopsys.com>
+Cc:     kbuild-all@lists.01.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [balbi-usb:testing/next 1/39] drivers/usb/dwc2/drd.c:80:36: error: 'struct dwc2_hsotg' has no member named 'test_mode'
+In-Reply-To: <202007241311.MMbsxewn%lkp@intel.com>
+References: <202007241311.MMbsxewn%lkp@intel.com>
+Date:   Fri, 24 Jul 2020 10:51:47 +0300
+Message-ID: <875zadnyek.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Write short description about the Exynos SROM controller driver.
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+kernel test robot <lkp@intel.com> writes:
 
----
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git tes=
+ting/next
+> head:   74dbc49b08d37ed9d4fd440d8896626733f80564
+> commit: bc0f0d4a5853e32ba97a0318f774570428fc5634 [1/39] usb: dwc2: overri=
+de PHY input signals with usb role switch support
+> config: nios2-randconfig-r002-20200724 (attached as .config)
+> compiler: nios2-linux-gcc (GCC) 9.3.0
+> reproduce (this is a W=3D1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbi=
+n/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         git checkout bc0f0d4a5853e32ba97a0318f774570428fc5634
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-9.3.0 make.cros=
+s ARCH=3Dnios2=20
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+>
+> All errors (new ones prefixed by >>):
+>
+>    drivers/usb/dwc2/drd.c: In function 'dwc2_drd_role_sw_set':
+>>> drivers/usb/dwc2/drd.c:80:36: error: 'struct dwc2_hsotg' has no member =
+named 'test_mode'
+>       80 |  if (role =3D=3D USB_ROLE_NONE && hsotg->test_mode) {
 
-Changes since v1:
-1. New patch
----
- drivers/memory/samsung/Kconfig | 7 +++++++
- 1 file changed, 7 insertions(+)
+weird, this compiled just fine here with allmodconfig on AArch64.
 
-diff --git a/drivers/memory/samsung/Kconfig b/drivers/memory/samsung/Kconfig
-index 20a8406ce786..8e240f078afc 100644
---- a/drivers/memory/samsung/Kconfig
-+++ b/drivers/memory/samsung/Kconfig
-@@ -23,5 +23,12 @@ config EXYNOS5422_DMC
- config EXYNOS_SROM
- 	bool "Exynos SROM controller driver" if COMPILE_TEST
- 	depends on (ARM && ARCH_EXYNOS) || (COMPILE_TEST && HAS_IOMEM)
-+	help
-+	  This adds driver for Samsung Exynos SoC SROM controller.  The driver
-+	  in basic operation mode only saves and restores SROM registers
-+	  during suspend.  If however appropriate device tree configuration
-+	  is provided, the driver enables support for external memory
-+	  or external devices.
-+	  If unsure, say Y on devices with Samsung Exynos SocS.
- 
- endif
--- 
-2.17.1
+/me goes check. Oh, I see what's happening, hsotg->test_mode is only
+compiled on Peripheral-only and Dual-role builds. I'm assuming this was
+a Host-only build. Then the problem triggers because drd.o is
+unconditionally added to the binary.
 
+dwc2-y					:=3D core.o core_intr.o platform.o drd.o
+
+Is this an old problem or was it triggered by $subject?
+
+=2D-=20
+balbi
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl8akxMACgkQzL64meEa
+mQYLERAA4NGQKN1b//bX2GFWUNcsbRLDKdPh3Mm7RbamvsvoUnoiu5L+jpGLYpM3
+guveY/9YviP1J/0Twv/vsRROird9lI+sgEy19jUkQynsABb+baXBa4vvn0aORz+p
+w39zdlIktqzLMmdkT4JQb9A1IFzhtePilebQI/tcuFKCthlZkm+XQnMcQil6NAVy
+3+JVCQ+7oap9oiZ2t4uljxVI0DwhBDC/emICwNi8mVIVwKxewjxxESnqe4N8ZCtu
+BXMkxxZlMo0tpPWTICrTgWrr4DR0B9WUDd5f0X6lP9ZBiiyb5bSz/vkVUMGPfNdc
+fy9I8QmiEU4YPR1sw01ciD9iRKUVh8V4kcZn6iv84VohdhSqWNulxY96Ibd+slUR
+C9ZLh9GSq5b1vDpfN3rhOgmz8yFMy0Vswk7O2jd/ZpPntQGbDCBFvcKKgPGS0B3V
+3RJGS/yKVPpQg4QhpQh7zNk9LqBtp8FmtGU9gwd3Xo4tXQWYyxHrew3gCdGaVw1N
+969ezc+ipEV+WhOWYRh4NU/ETVax0HVOg3okfdu9TyDRKbDyTuxlTclbePr4ZoTv
+pVxO/cdTDQQag2XxGBEcWq3xAS3C+igT9G9SKI+Tnnywf9E3b6/FRCqsms9l8jek
+I1Z3dNTUlTVYGAp/pZscdENdRrNvgXa1GzzJUfQQTnQhNEnM44g=
+=48da
+-----END PGP SIGNATURE-----
+--=-=-=--
