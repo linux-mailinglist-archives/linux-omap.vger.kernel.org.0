@@ -2,120 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9E7122E846
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Jul 2020 10:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F53122EF67
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Jul 2020 16:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726956AbgG0I61 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Jul 2020 04:58:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43060 "EHLO
+        id S1729640AbgG0OQK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Jul 2020 10:16:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726821AbgG0I61 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jul 2020 04:58:27 -0400
-Received: from ds0.me (ds0.me [IPv6:2602:ffc5::f9bc:b4ce])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E14A1C061794
-        for <linux-omap@vger.kernel.org>; Mon, 27 Jul 2020 01:58:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ds0.me; s=mail;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID; bh=8Qq5shh7wf0yTB77oLzYCY05PaPksKfb2dxY/nEk9Zo=;
-        b=JJY2OKr4ugPNXney5jp/PQ7S8czMUi67PTPv6aBb21ih70pzZp3X0R0E/3eFQV0ysHCGTpykuVRRaUk8azmKwrPI+cKpsmQUW+ObKH+Ug/h/+c2A3QladkZt2iRMGPUTTgJwO/4dAPUKuHRBQ42lHDBNGskK+goENqw7T/tusL0=;
-Received: from 97e2e5e0.skybroadband.com ([151.226.229.224] helo=archlinux)
-        by ds0.me with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <dave@ds0.me>)
-        id 1jzyxk-00082S-Oc; Mon, 27 Jul 2020 04:58:25 -0400
-Message-ID: <ac19052a552660c86838709f071cffe0f3e65932.camel@ds0.me>
-Subject: Re: Understanding OMAP5 DPLL_ABE and CM_CLKSEL_WKUPAON
-From:   David Shah <dave@ds0.me>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        Tero Kristo <t-kristo@ti.com>
-Date:   Mon, 27 Jul 2020 09:58:17 +0100
-In-Reply-To: <20200727082833.GB2811@atomide.com>
-References: <c077ece056713ad120b3d2fd59916aab1248cd1c.camel@ds0.me>
-         <20200727082833.GB2811@atomide.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4 
+        with ESMTP id S1730811AbgG0OQJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jul 2020 10:16:09 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB55C061794
+        for <linux-omap@vger.kernel.org>; Mon, 27 Jul 2020 07:16:09 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id g8so3153182wmk.3
+        for <linux-omap@vger.kernel.org>; Mon, 27 Jul 2020 07:16:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=OfeIQ7fuyXMNX3+/WRYrDZ4OiAswU9YSpAGq0MJR3Qk=;
+        b=Hn668tMsYylryOuBEj9y8mjBaum1BR6RWwK0ku3JWX59ZQxBLDwOmMgBAWCVcE5Z5b
+         2c2kjrPGs/8IJv9fOZU6LTFL4823pdOCMHScobKcGB26/UvcwGxObmVQ+nfSYok3UVXV
+         y8jZntEGdDqBkfACeuCFPpviPI1bF4y/WyHmV64TdjpUWYcx/vlwfaEo93Q7N19ALPuf
+         dgxdM4C4v0gg99rHSeRt7zP0s+HePYSo+MBAgAcGaFshIYFkq6VtQN5LKuUuY+F7rHOv
+         KZsvs2TP7WvjrxFzkPBs4rtVc8MNiIke1P073VcVxPYEWd1vNSH6mYgIlLs/YdC5xo03
+         9vhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=OfeIQ7fuyXMNX3+/WRYrDZ4OiAswU9YSpAGq0MJR3Qk=;
+        b=QV5uFzC9n3UYte5odVf1NEYitxS7IofsYv8k1Gfp5QgRosc1WA+T7vyMo9fDMQCc6z
+         xelDz/yJSVuNZDzTSoWr5RwVm8osa8imDw3s5sWkl0usbjxBa7bzbttlqpjdvBs4qbrF
+         xDoQdT1oRNdpo1JEQocuwUV0puQ5YPhz5AAczsSmpS/FzyKrQmhIz/cwKvI4ImpQPVlm
+         MLHy8aDDgOWvCJo5yDjeYIln4mtETHRZaB1VM+4f+vAAaVCW1tCz9vqcMzKQEKo8uneS
+         GsOEjLknVLJofnj4j/pePjNvbGBefrUij+FSFGDIN3nuHNkqeF+e2JT2K7pxWh7juuzq
+         66WQ==
+X-Gm-Message-State: AOAM531PhLLSlEqYb/CcMxwoGJsRC162T9139eFTCWmMMwbixluK3k+b
+        LO5AgjLb9KqmK/t8XyDDTGc05g==
+X-Google-Smtp-Source: ABdhPJwXT7IGhG6i2ax6YMsMfOUVYdF5VVpy+kpRsWP14/nCVLIlyPmNmTdhme4qI9qNmQgKjAM1MA==
+X-Received: by 2002:a1c:a7d1:: with SMTP id q200mr2832327wme.131.1595859368016;
+        Mon, 27 Jul 2020 07:16:08 -0700 (PDT)
+Received: from dell ([2.27.167.73])
+        by smtp.gmail.com with ESMTPSA id 32sm12369292wrn.86.2020.07.27.07.16.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2020 07:16:07 -0700 (PDT)
+Date:   Mon, 27 Jul 2020 15:16:05 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Cc:     robh+dt@kernel.org, tony@atomide.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] mfd: Replace HTTP links with HTTPS ones
+Message-ID: <20200727141605.GW1850026@dell>
+References: <20200722184711.GI3533@dell>
+ <20200722192454.69591-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200722192454.69591-1-grandmaster@al2klimov.de>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+On Wed, 22 Jul 2020, Alexander A. Klimov wrote:
 
-On Mon, 2020-07-27 at 01:28 -0700, Tony Lindgren wrote:
-> Hi,
+> Rationale:
+> Reduces attack surface on kernel devs opening the links for MITM
+> as HTTPS traffic is much harder to manipulate.
 > 
-> * David Shah <dave@ds0.me> [200723 14:08]:
-> > Hi,
-> > 
-> > There has been a somewhat longstanding issue on the Pyra, where any
-> > kind of soft reboot causes
-> > it to hang (only a true power off and on again works). The
-> > background is at
-> > https://projects.goldelico.com/p/gta04-kernel/issues/876/.
-> > 
-> > The failure is typically of the following form: 
-> > https://dev.pyra-handheld.com/snippets/765
-> > (the exact failure sequence has changed a bit in different kernel
-> > versions).
-> > 
-> > With the pertinent line being:
-> > [    0.000000] clock: dpll_abe_ck failed transition to 'locked'
-> > 
-> > This only happens on the Pyra, not the OMAP5 uEVM. This seems to be
-> > because
-> > the Pyra uses TIMER8 for the backlight PWM.
+> Deterministic algorithm:
+> For each file:
+>   If not .svg:
+>     For each line:
+>       If doesn't contain `\bxmlns\b`:
+>         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+> 	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+>             If both the HTTP and HTTPS versions
+>             return 200 OK and serve the same content:
+>               Replace HTTP with HTTPS.
 > 
-> OK good to hear this one is tracked down now.
-> 
-> > Looking around at some other OMAP5 clocking code, I found
-> > https://gitlab.com/linux-omap4-dev/omapboot/-/blob/kexec_support/arch/omap5/clock.c#L335
-> > This to me suggests that both CM_CLKSEL_ABE_PLL_REF and
-> > CM_CLKSEL_WKUPAON
-> > should be set to 1. I found that only CM_CLKSEL_ABE_PLL_REF was 1
-> > and 
-> > CM_CLKSEL_WKUPAON was 0 at the point of checking DPLL lock.
-> > 
-> > I wrote a very hacky patch just to force CM_CLKSEL_WKUPAON to 1 at
-> > startup, to test
-> > this theory: https://dev.pyra-handheld.com/snippets/770 (breaking
-> > every rule in the
-> > book, I know :)
-> > 
-> > And indeed with this reboots now seem to work fine.
-> > 
-> > The question is, what is the correct way/place to deal with this?
-> > Is this even a Linux
-> > issue at all, or should U-Boot be doing something here? A quick
-> > glance suggests that
-> > nothing in the kernel deals with CM_CLKSEL_WKUPAON at all but I may
-> > have missed
-> > something.
-> 
-> Not sure if CM_CLKSEL_WKUPAON can be always configured to 1 for ABE
-> usage. So probably configuring it with assigned-clocks does not sound
-> like a right solution.
-> 
-> If it only needs to be configured to 1 for reboot, sounds like it
-> should
-> be set in omap44xx_restart(). And we should also set it to 1 for
-> omap4
-> too.
+> Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+> ---
+>  Documentation/devicetree/bindings/mfd/twl-family.txt | 2 +-
+>  drivers/mfd/hi6421-pmic-core.c                       | 2 +-
+>  drivers/mfd/lp873x.c                                 | 2 +-
+>  drivers/mfd/lp87565.c                                | 2 +-
+>  drivers/mfd/omap-usb-host.c                          | 2 +-
+>  drivers/mfd/omap-usb-tll.c                           | 2 +-
+>  drivers/mfd/smsc-ece1099.c                           | 2 +-
+>  drivers/mfd/ti_am335x_tscadc.c                       | 2 +-
+>  drivers/mfd/tps65086.c                               | 2 +-
+>  drivers/mfd/tps65217.c                               | 2 +-
+>  drivers/mfd/tps65218.c                               | 2 +-
+>  drivers/mfd/tps65912-core.c                          | 2 +-
+>  drivers/mfd/tps65912-i2c.c                           | 2 +-
+>  drivers/mfd/tps65912-spi.c                           | 2 +-
+>  include/linux/mfd/hi6421-pmic.h                      | 2 +-
+>  include/linux/mfd/lp873x.h                           | 2 +-
+>  include/linux/mfd/lp87565.h                          | 2 +-
+>  include/linux/mfd/ti_am335x_tscadc.h                 | 2 +-
+>  include/linux/mfd/tps65086.h                         | 2 +-
+>  include/linux/mfd/tps65217.h                         | 2 +-
+>  include/linux/mfd/tps65218.h                         | 2 +-
+>  include/linux/mfd/tps65912.h                         | 2 +-
+>  22 files changed, 22 insertions(+), 22 deletions(-)
 
-omap44xx_restart doesn't seem like the right place to me, as the bug
-also affects hard resets (i.e. NRESWARM assertion) and it would be nice
-to have these working, too.
+Applied, thanks.
 
-Would a better solution be to set it early during startup (the first
-part of clock init), and then clear it when the DPLLs are set up and
-locked?
-
-> Regards,
-> 
-> Tony
-
-Thanks for your help!
-
-David
-
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
