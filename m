@@ -2,68 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3988A22FA61
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Jul 2020 22:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B4B22FB1A
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Jul 2020 23:11:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726879AbgG0Uvf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Jul 2020 16:51:35 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.219]:11297 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726320AbgG0Uvf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jul 2020 16:51:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1595883090;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:Message-Id:Cc:Date:From:Subject:X-RZG-CLASS-ID:X-RZG-AUTH:From:
-        Subject:Sender;
-        bh=GwtC4z8O9xd+htP8Gdu0ZH1k7XeNm9FKTpE9F9Glphs=;
-        b=jjsyw6zyyWWpxViheJtOQAgJ4zc7rvMjW01SaVDe8Q8zRQ3CAZ3wTH7bmsCHT8V9ug
-        Pvb2zPdchuw3jYdaKhKk/Z0qRKksCkeeemyyeRoxVWUPhc+EGNRd1RfipyIgJD525UcU
-        aN8Tt5fEFID24su7VzDyk7t96+6DvJ4OGaD9uNKCK7XYqo24njf92ExJyClhAJIlqht8
-        Fv+mbzZMBxyabro4s+PV7rLwuEU8MC1oDSwvUUh/1IRj4tE80YR4X3q/7n959yUOoet7
-        tIGsgMMOXC5AfAg9OAYuaXYiU0V1/X4/58bJrmHw8AaM2KiIp2K96muee+BEpvJhVXE6
-        1xAw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmMnw43qGZk="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
-        with ESMTPSA id V07054w6RKpT9oS
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Mon, 27 Jul 2020 22:51:29 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: BUG: omap5: v5.8-rc7 boot fails
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-Date:   Mon, 27 Jul 2020 22:51:28 +0200
-Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        kernel@pyra-handheld.com, Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: 7bit
-Message-Id: <3FEECC44-3156-4786-8DF9-149F8CA9B41D@goldelico.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1726176AbgG0VLM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Jul 2020 17:11:12 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:38304 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726139AbgG0VLM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jul 2020 17:11:12 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 06RLAL0p078832;
+        Mon, 27 Jul 2020 16:10:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1595884221;
+        bh=TZF0KLe8ZtYIhI+Y7RD9A3jUdGCFtjvjRXhA9sWCJC0=;
+        h=From:To:CC:Subject:Date;
+        b=wZllyO6hSWcWeGADNdU65VAmZ/hWgRb5LA0T8CcniqsOwNVZWzlQzvEUNP1TqKKFY
+         GLKeXYxvqMyNQmN/8nfYh5rE6tGW5JDR1KD7h1NbjU41DJRuo8bSry/4AvdzByf/ug
+         7mIGV1NUoRbnqzfVkJcIhzm/weHyAlDOWsv7CAm8=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06RLAKES124003;
+        Mon, 27 Jul 2020 16:10:21 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 27
+ Jul 2020 16:10:12 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 27 Jul 2020 16:10:12 -0500
+Received: from lelv0597.itg.ti.com (lelv0597.itg.ti.com [10.181.64.32])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06RLACrN062741;
+        Mon, 27 Jul 2020 16:10:12 -0500
+Received: from localhost ([10.250.34.248])
+        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 06RLAC26125049;
+        Mon, 27 Jul 2020 16:10:12 -0500
+From:   Suman Anna <s-anna@ti.com>
+To:     Lee Jones <lee.jones@linaro.org>, Arnd Bergmann <arnd@arndb.de>
+CC:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        David Lechner <david@lechnology.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Roger Quadros <rogerq@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, Suman Anna <s-anna@ti.com>
+Subject: [RESEND PATCH v2] mfd: syscon: Use a unique name with regmap_config
+Date:   Mon, 27 Jul 2020 16:10:08 -0500
+Message-ID: <20200727211008.24225-1-s-anna@ti.com>
+X-Mailer: git-send-email 2.26.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
-after trying v5.8-rc7 the Pyra boot hangs after ca. 3 seconds
-(a little random what the last log line is).
+The DT node full name is currently being used in regmap_config
+which in turn is used to create the regmap debugfs directories.
+This name however is not guaranteed to be unique and the regmap
+debugfs registration can fail in the cases where the syscon nodes
+have the same unit-address but are present in different DT node
+hierarchies. Replace this logic using the syscon reg resource
+address instead (inspired from logic used while creating platform
+devices) to ensure a unique name is given for each syscon.
 
-I could bisect it to:
+Signed-off-by: Suman Anna <s-anna@ti.com>
+---
+Hi Arnd,
+Lee is looking for your review on this patch. Can you please
+review and provide your comments.
 
-6cfcd5563b4fadbf49ba8fa481978e5e86d30322 is the first bad commit
-commit 6cfcd5563b4fadbf49ba8fa481978e5e86d30322
-Author: Tony Lindgren <tony@atomide.com>
-Date:   Mon Jul 13 09:26:01 2020 -0700
+This is a resend of the patch that was posted previously, rebased
+now onto latest kernel.
 
-    clocksource/drivers/timer-ti-dm: Fix suspend and resume for am3 and am4
+v2: https://patchwork.kernel.org/patch/11353355/
+ - Fix build warning reported by kbuild test bot
+v1: https://patchwork.kernel.org/patch/11346363/
 
-And a git revert makes it boot again.
+ drivers/mfd/syscon.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-I haven't had time to do more tests (e.g. with omap3/4 or on omap5uevm).
-
-BR and thanks,
-Nikolaus
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 3a97816d0cba..75859e492984 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -101,12 +101,14 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+ 		}
+ 	}
+ 
+-	syscon_config.name = of_node_full_name(np);
++	syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%llx", np,
++				       (u64)res.start);
+ 	syscon_config.reg_stride = reg_io_width;
+ 	syscon_config.val_bits = reg_io_width * 8;
+ 	syscon_config.max_register = resource_size(&res) - reg_io_width;
+ 
+ 	regmap = regmap_init_mmio(NULL, base, &syscon_config);
++	kfree(syscon_config.name);
+ 	if (IS_ERR(regmap)) {
+ 		pr_err("regmap init failed\n");
+ 		ret = PTR_ERR(regmap);
+-- 
+2.26.0
 
