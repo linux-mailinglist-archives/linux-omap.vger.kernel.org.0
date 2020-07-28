@@ -2,116 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87B3A23082C
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Jul 2020 12:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 591DD230DF3
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Jul 2020 17:35:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728876AbgG1Kyu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Jul 2020 06:54:50 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:34175 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728784AbgG1Kyt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Jul 2020 06:54:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1595933684;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:Message-Id:Cc:Date:From:Subject:X-RZG-CLASS-ID:X-RZG-AUTH:From:
-        Subject:Sender;
-        bh=nrgJQ6ZENefiwXSqi0/qBGfd7KcWeXLw3l68EYLtFRA=;
-        b=pQHfuM1Ng/9+6w36XJf6eBWb5rkJd+Pdr9sUzbvFwGzSVJ+viS5qF54ua5Z9+3loRt
-        HDbX3jyn21fUKwTXJDk5I4U2aa5pwBEqBia2vLYN4pMY2b1dyBnBlZoMB75Cu94MN578
-        +SQzn+KWa25lc6kHzNRrkA1CLcADI8qtt7F+r3ZnqMp8tQjZiB5JqBN9D4a6ArCc93BP
-        k2X+DH5OIzs1y3xb2q7lcFjJ4eZvtSJc6PFZ7eq3cLf0l67m8XkOsdkUU/XWvuy5swa6
-        SpSQnlaIbyMsAwSyEADve6raYrLIxRmcUSDuGjSaSJj0NqOSvKO+6P4zJ7kSXJpZ3Z/a
-        AZ2g==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGH/vqwDrG"
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
-        with ESMTPSA id V07054w6SAsXC6k
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Tue, 28 Jul 2020 12:54:33 +0200 (CEST)
-Content-Type: text/plain; charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Subject: omap-abe-twl6040 and aess
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-Date:   Tue, 28 Jul 2020 12:54:32 +0200
-Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        kernel@pyra-handheld.com, Linux-OMAP <linux-omap@vger.kernel.org>,
-        Andrey Utkin <andrey_utkin@fastmail.com>,
-        Belisko Marek <marek.belisko@gmail.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <39175614-8484-493C-B580-8DAF5B53F80B@goldelico.com>
-To:     David Shah <dave@ds0.me>, Tony Lindgren <tony@atomide.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>
-X-Mailer: Apple Mail (2.3124)
+        id S1730898AbgG1PfH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Jul 2020 11:35:07 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:55120 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730701AbgG1PfG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Jul 2020 11:35:06 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 06SFYGl8078735;
+        Tue, 28 Jul 2020 10:34:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1595950456;
+        bh=Y3bdMy0j6b+YSB/57qC4aT+9PUXNDrMIyX5k/Gdanh8=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=e0cYw271xm0WRqWGklcW02kIWJhdHY3bU5qTLX7OFrf6eOyTH+mM19LVILV7SHm0t
+         Aj9P5gMz4nzyMF+kSPl+S0rAemWwNhdR0RF2el7mJUYxQLr9STVyvm/ISZf90vtey0
+         U6PtHR/PCDo0PIQJd0LlfeS3GFKasATjNye8V4rQ=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06SFYGYX015577;
+        Tue, 28 Jul 2020 10:34:16 -0500
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 28
+ Jul 2020 10:34:16 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 28 Jul 2020 10:34:16 -0500
+Received: from [10.250.34.248] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 06SFYFBW097281;
+        Tue, 28 Jul 2020 10:34:15 -0500
+Subject: Re: [RESEND PATCH v2] mfd: syscon: Use a unique name with
+ regmap_config
+To:     Arnd Bergmann <arnd@arndb.de>
+CC:     Lee Jones <lee.jones@linaro.org>,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        David Lechner <david@lechnology.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Roger Quadros <rogerq@ti.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-omap <linux-omap@vger.kernel.org>
+References: <20200727211008.24225-1-s-anna@ti.com>
+ <CAK8P3a3_qu_rwWmxMz=H5DLSoZB3Jngjxqq14vir+NudfavmMg@mail.gmail.com>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <2dc0dd51-2ded-996c-3b93-ad463b52582d@ti.com>
+Date:   Tue, 28 Jul 2020 10:34:15 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <CAK8P3a3_qu_rwWmxMz=H5DLSoZB3Jngjxqq14vir+NudfavmMg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-long time ago the LetuxOS kernel project had started to forward-port the =
-abe/aess
-extensions from the TI kernel and carried them along, but it got more =
-and more
-broken...
+On 7/28/20 2:44 AM, Arnd Bergmann wrote:
+> On Mon, Jul 27, 2020 at 11:10 PM Suman Anna <s-anna@ti.com> wrote:
+>>
+>> The DT node full name is currently being used in regmap_config
+>> which in turn is used to create the regmap debugfs directories.
+>> This name however is not guaranteed to be unique and the regmap
+>> debugfs registration can fail in the cases where the syscon nodes
+>> have the same unit-address but are present in different DT node
+>> hierarchies. Replace this logic using the syscon reg resource
+>> address instead (inspired from logic used while creating platform
+>> devices) to ensure a unique name is given for each syscon.
+>>
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> ---
+>> Hi Arnd,
+>> Lee is looking for your review on this patch. Can you please
+>> review and provide your comments.
+> 
+> Sorry for missing this earlier. I think this makes sense, and I don't
+> expect the name change to cause problems, so
+> 
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-At some point we were not even able to play "normal" sound on the =
-twl6040 of the Pyra.
+Thanks Arnd.
 
-Finally I have invested some time to reintegrate and fix most of the =
-fragments on top of
-v5.8-rc so that it:
+> 
+>> --- a/drivers/mfd/syscon.c
+>> +++ b/drivers/mfd/syscon.c
+>> @@ -101,12 +101,14 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+>>                  }
+>>          }
+>>
+>> -       syscon_config.name = of_node_full_name(np);
+>> +       syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%llx", np,
+>> +                                      (u64)res.start);
+> 
+> Note that you could avoid the cast by using "%pOFn@%pa", and
+> passing res.start by reference. Not important though, the result should
+> be similar, and you might not like the '0x' that this adds.
 
-* adds DTS nodes for ranges and reg mapping
-* compiles the code
-* still supports non-aess sound like upstream omap-abe-twl6040.c
-* loads the aess driver as a separate and independent module
-* tries to download aess firmware
-* gracefully falls back to upstream omap-abe-twl6040.c functionality if =
-aess firmware load fails
+Yeah, preference was not to add the leading 0x or any leading 0s. We did 
+discuss about this on the original v2 submission [1].
 
-The following extensions of the TI code are for further study:
-* DMIC 0/1/2 support
-* SPDIF
-* AESS
-* connections between McBSP1,2,3 for FM, Bluetooth, Modem
+regards
+Suman
 
-The tree based on v5.8-rc7 is here:
-
-	=
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/letux/aess-v5
-
-Some of these patches are cosmetics for omap-abe-twl6040.c and can =
-probably already be
-upstreamed now.
-
-Note that this series contains the earlier attempt and does a REVERT to =
-upstream omap-abe-twl6040.c
-on which the new code is based on. The earlier and reverted patches are =
-only for reference because
-they contain code that has not yet been ported.
-
-A full kernel which can run on the Pyra (tested with letux_defconfig) is =
-here:
-
-	=
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/work-aess-new
-
-Comments, patches, suggestions, help, support, critics are welcome.
-
-Maybe we can eventually get this beast working with upstream kernels...
-
-BR,
-Nikolaus
-
-root@letux:~# dmesg|fgrep aess
-[   17.049578] omap-abe-twl6040 sound: loading =
-/lib/firmware/omap_aess-adfw.bin failed with error -22
-[   17.071299] omap-abe-twl6040 sound: Direct firmware load for =
-omap_aess-adfw.bin failed with error -22
-[   17.131717] omap-abe-twl6040 sound: Failed to load firmware =
-omap_aess-adfw.bin: -22
-root@letux:~#=20=
+[1] https://patchwork.kernel.org/comment/23129393/
