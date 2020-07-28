@@ -2,82 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD6A623005A
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Jul 2020 05:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A44FF230279
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Jul 2020 08:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726845AbgG1DoB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Jul 2020 23:44:01 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:8834 "EHLO huawei.com"
+        id S1727101AbgG1GPz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Jul 2020 02:15:55 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:8836 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726782AbgG1DoB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 27 Jul 2020 23:44:01 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 34EDD7B55506FB966D52;
-        Tue, 28 Jul 2020 11:43:58 +0800 (CST)
-Received: from [10.174.179.105] (10.174.179.105) by smtp.huawei.com
- (10.3.19.209) with Microsoft SMTP Server (TLS) id 14.3.487.0; Tue, 28 Jul
- 2020 11:43:57 +0800
-Subject: Re: [PATCH] clk: ti: clkctrl: add the missed kfree() for
- _ti_omap4_clkctrl_setup()
-To:     Stephen Boyd <sboyd@kernel.org>, <mturquette@baylibre.com>,
-        <robh@kernel.org>, <t-kristo@ti.com>, <tony@atomide.com>
-References: <20200720122343.178203-1-jingxiangfeng@huawei.com>
- <159589945839.1360974.1977401781355555451@swboyd.mtv.corp.google.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+        id S1726746AbgG1GPz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 28 Jul 2020 02:15:55 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 27F7CD4DF071FA9B929B;
+        Tue, 28 Jul 2020 14:15:47 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 28 Jul 2020 14:15:39 +0800
 From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
-Message-ID: <5F1F9EF8.6090304@huawei.com>
-Date:   Tue, 28 Jul 2020 11:43:52 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
+To:     <t-kristo@ti.com>, <mturquette@baylibre.com>, <sboyd@kernel.org>,
+        <tony@atomide.com>, <robh@kernel.org>
+CC:     <linux-omap@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <jingxiangfeng@huawei.com>
+Subject: [PATCH v2] clk: ti: clkctrl: fix the missed kfree() for _ti_omap4_clkctrl_setup()
+Date:   Tue, 28 Jul 2020 14:18:46 +0800
+Message-ID: <20200728061846.68281-1-jingxiangfeng@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <159589945839.1360974.1977401781355555451@swboyd.mtv.corp.google.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.105]
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+_ti_omap4_clkctrl_setup() misses to call kfree() in an error path. Jump
+to cleanup to fix it.
 
+Fixes: 6c3090520554 ("clk: ti: clkctrl: Fix hidden dependency to node name")
+Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
+---
+ drivers/clk/ti/clkctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 2020/7/28 9:24, Stephen Boyd wrote:
-> Quoting Jing Xiangfeng (2020-07-20 05:23:43)
->> _ti_omap4_clkctrl_setup() misses to call kfree() in an error path. Add
->> the missed function call to fix it.
->>
->> Fixes: 6c3090520554 ("clk: ti: clkctrl: Fix hidden dependency to node name")
->> Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
->> ---
->>   drivers/clk/ti/clkctrl.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
->> index 864c484bde1b..868e50132c21 100644
->> --- a/drivers/clk/ti/clkctrl.c
->> +++ b/drivers/clk/ti/clkctrl.c
->> @@ -655,8 +655,10 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
->>                  }
->>
->>                  hw = kzalloc(sizeof(*hw), GFP_KERNEL);
->> -               if (!hw)
->> +               if (!hw) {
->> +                       kfree(clkctrl_name);
->>                          return;
->> +               }
->
-> Why not goto cleanup?
+diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+index 864c484bde1b..a562261eb061 100644
+--- a/drivers/clk/ti/clkctrl.c
++++ b/drivers/clk/ti/clkctrl.c
+@@ -656,7 +656,7 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
+ 
+ 		hw = kzalloc(sizeof(*hw), GFP_KERNEL);
+ 		if (!hw)
+-			return;
++			goto cleanup;
+ 
+ 		hw->enable_reg.ptr = provider->base + reg_data->offset;
+ 
+-- 
+2.17.1
 
-Thanks, I will change it as you suggested.
-
->
->>
->>                  hw->enable_reg.ptr = provider->base + reg_data->offset;
->>
->> --
->> 2.17.1
->>
-> .
->
