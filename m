@@ -2,107 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA887230FED
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Jul 2020 18:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACB4223102F
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Jul 2020 18:56:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731455AbgG1QiA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Jul 2020 12:38:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52060 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731443AbgG1Qh7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 28 Jul 2020 12:37:59 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1ABAD2053B;
-        Tue, 28 Jul 2020 16:37:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595954279;
-        bh=UaTT6eelrtF58zWytNG0egvpELFC0XFjYD4HTtCZOO0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=2I46v+1m8oKmJ9VQeo6N0nZjzcRmXs1Ru/C4qbubwOnEDs27BOFW3Kl+HdEPSSiBk
-         fu7YtYgh8gzbomyi98+V8kVZYGGWkFSh6gateSBafHcHZIcZ4DjQC26w9JylQyHBzx
-         y4cWhePYSIuGjTcYQT0/UjYg1ZER9QYZh1A14SgU=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1k0Sc1-00FiFS-5h; Tue, 28 Jul 2020 17:37:57 +0100
+        id S1731504AbgG1Q4q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Jul 2020 12:56:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58500 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731525AbgG1Q4p (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Jul 2020 12:56:45 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16AB3C0619D8
+        for <linux-omap@vger.kernel.org>; Tue, 28 Jul 2020 09:56:45 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id o18so21333919eje.7
+        for <linux-omap@vger.kernel.org>; Tue, 28 Jul 2020 09:56:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=YqljJR74+Mn7SppABFl/S/+hKBpdw+21MScTQOdBTOE=;
+        b=lV7+TqzjxoGceDfe6LGN3Ae63gOeC2fiafu3RVtn3n9OvQujyBC7h6Pa35EQrNjIM9
+         SBq6F0KiK0gfUyUMZIg7nzFQt2d3/xeo1cnOYTFRA/yIf+f1wOb5mQfu2fWla2Ova2vv
+         gDVbejsy/SvwzA0CLIMSxnOklpzBvt23FHYAyD0QZxOA/GY/dNh5UbrcP2A5lVqeWNbR
+         /tz9Qziq88HE5hKswpRvbS31xfwMCXRsYIpUODRBB0QPfx0weACZiuLaqlOwQ8ypCeH8
+         PDOuuMCRKyO9CM/FXwoebiuaDH607zJLR7nGSGaWiAQSCp+NGk41FRpGq8sVZ8iLTxlA
+         FAjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=YqljJR74+Mn7SppABFl/S/+hKBpdw+21MScTQOdBTOE=;
+        b=ULTY0AtXnKBQsciWHS0gwbhlAWBvtePaRuWKXh30qTR6x5WBT2VeJZvsVllIIl/C44
+         FqPB0DcKI8Vv5+fCnxZoS19bX+S6ixe1+Wj5NgUA9wyFHVHnaci94ZaqKbKAiph29BEF
+         KCgyrzc51ZfSzSU/NLLGIjeTduVqSZYMKxQzupmr5Qus75WnzbvNRUDda2jBU4DCaZqs
+         c826yDol73ug2BDu0PWjaa8+z8a4WQBjDui0jV6FaGgrkDNx5eIOVwOWgE6xDABvY2hX
+         d86FYjopP4xUuQJ5Qgyl7dLHWh8gKXI5qxR6agOQ3sqGK5S0CFMHWzegtr+gOWSi7kpR
+         NxZg==
+X-Gm-Message-State: AOAM531ukXPoEQUcvwUsjAbwIQbKo7GH49MzbKNPP0kdb2ntt1IfutFz
+        Np92Nm27iFSMKubJSQGiQU11ilb6H7JvFNjVK2E=
+X-Google-Smtp-Source: ABdhPJyD+qobOKVu+X8+1AME7mvZ7Tyyj3L9BOKohhAIRnTEH/cKzWAhjm8THBy3gXtB9glcDk36e2LkhcaTqCtKyq4=
+X-Received: by 2002:a17:906:ca4d:: with SMTP id jx13mr18490835ejb.548.1595955403537;
+ Tue, 28 Jul 2020 09:56:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 28 Jul 2020 17:37:57 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Cc:     tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com,
-        robh+dt@kernel.org, lee.jones@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        david@lechnology.com, wmills@ti.com, praneeth@ti.com
-Subject: Re: [PATCH v4 3/5] irqchip/irq-pruss-intc: Add logic for handling
- reserved interrupts
-In-Reply-To: <1595927918-19845-4-git-send-email-grzegorz.jaszczyk@linaro.org>
-References: <1595927918-19845-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1595927918-19845-4-git-send-email-grzegorz.jaszczyk@linaro.org>
-User-Agent: Roundcube Webmail/1.4.5
-Message-ID: <1ae8b42d0e7a09caf01197b11cea2fff@kernel.org>
-X-Sender: maz@kernel.org
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: grzegorz.jaszczyk@linaro.org, tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com, robh+dt@kernel.org, lee.jones@linaro.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, david@lechnology.com, wmills@ti.com, praneeth@ti.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Received: by 2002:a50:8a99:0:0:0:0:0 with HTTP; Tue, 28 Jul 2020 09:56:43
+ -0700 (PDT)
+Reply-To: mrsnicole.france1958@outlook.com
+From:   Mrs Nicole Marois Benoite <mrsnicolefrance1958@gmail.com>
+Date:   Tue, 28 Jul 2020 09:56:43 -0700
+Message-ID: <CAJKBOPmG1o==twVStViQzZEmz2Lyb3D3MsODbQT1nFq_vz0HSg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2020-07-28 10:18, Grzegorz Jaszczyk wrote:
-> From: Suman Anna <s-anna@ti.com>
-> 
-> The PRUSS INTC has a fixed number of output interrupt lines that are
-> connected to a number of processors or other PRUSS instances or other
-> devices (like DMA) on the SoC. The output interrupt lines 2 through 9
-> are usually connected to the main Arm host processor and are referred
-> to as host interrupts 0 through 7 from ARM/MPU perspective.
-> 
-> All of these 8 host interrupts are not always exclusively connected
-> to the Arm interrupt controller. Some SoCs have some interrupt lines
-> not connected to the Arm interrupt controller at all, while a few 
-> others
-> have the interrupt lines connected to multiple processors in which they
-> need to be partitioned as per SoC integration needs. For example, 
-> AM437x
-> and 66AK2G SoCs have 2 PRUSS instances each and have the host interrupt 
-> 5
-> connected to the other PRUSS, while AM335x has host interrupt 0 shared
-> between MPU and TSC_ADC and host interrupts 6 & 7 shared between MPU 
-> and
-> a DMA controller.
-> 
-> Add logic to the PRUSS INTC driver to ignore both these shared and
-> invalid interrupts.
-> 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> ---
-> v3->v4:
-> - Due to changes in DT bindings which converts irqs-reserved
->   property from uint8-array to bitmask requested by Rob introduce
->   relevant changes in the driver.
-> - Merge the irqs-reserved and irqs-shared to one property since they
->   can be handled by one logic (relevant change was introduced to DT
->   binding).
+Dear Beloved
 
-This isn't what I asked for in my initial review.
+I am Mrs Nicole Benoite Marois and i have been suffering from ovarian
+cancer disease and the doctor says that i have just few days to leave.
+I am from (Paris) France but based in Africa Burkina Faso since eight
+years ago as a business woman dealing with gold exportation.
 
-I repeatedly asked for the *handling* to be common, not for the
-properties to be merged. I don't mind either way, but I understood
-there were two properties for a good reason. Has this reason gone?
+Now that i am about to end the race like this, without any family
+members and no child. I have $3 Million US DOLLARS in Africa
+Development Bank (ADB) Burkina Faso which i instructed the bank to remit and
+give to Orphanage & Teaching Volunteer Work in Burkina Faso.But my
+mind is not at
+rest because i am writing this letter now through the help of my
+computer beside my sick bed.
 
-Anyway, I'll come back to it once I start reviewing the series
-again.
+I also have $4.5 Million US Dollars at Eco-Bank here in Burkina Faso
+and i instructed the bank to transfer the fund to you as foreigner
+that will apply to the bank after i have gone, that they should
+release the fund to him/her,but you will assure me that you will take
+50% of the fund and give 50% to the orphanages home in your country
+for my heart to rest.
 
-          M.
--- 
-Jazz is not dead. It just smells funny...
+Respond to me immediately via my private email address
+(mrsnicole.france1958@outlook.com) for further details since I have just
+few days to end my life due to the ovarian cancer disease, hoping you
+will understand my point
+
+Yours fairly friend,
+
+Mrs Nicole Benoite Marois.
