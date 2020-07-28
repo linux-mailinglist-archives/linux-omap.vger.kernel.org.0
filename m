@@ -2,95 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69DD3230586
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Jul 2020 10:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F3892305A4
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Jul 2020 10:42:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728222AbgG1IgY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Jul 2020 04:36:24 -0400
-Received: from muru.com ([72.249.23.125]:38292 "EHLO muru.com"
+        id S1727997AbgG1Ims (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Jul 2020 04:42:48 -0400
+Received: from muru.com ([72.249.23.125]:38306 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728009AbgG1IgY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 28 Jul 2020 04:36:24 -0400
+        id S1727950AbgG1Ims (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 28 Jul 2020 04:42:48 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 61D5B8105;
-        Tue, 28 Jul 2020 08:36:20 +0000 (UTC)
-Date:   Tue, 28 Jul 2020 01:36:31 -0700
+        by muru.com (Postfix) with ESMTPS id EE86B8105;
+        Tue, 28 Jul 2020 08:42:46 +0000 (UTC)
+Date:   Tue, 28 Jul 2020 01:42:57 -0700
 From:   Tony Lindgren <tony@atomide.com>
-To:     Pavel Machek <pavel@denx.de>
-Cc:     Johan Hovold <johan@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv8 0/6] n_gsm serdev support and GNSS driver for droid4
-Message-ID: <20200728083631.GE2811@atomide.com>
-References: <20200512214713.40501-1-tony@atomide.com>
- <20200528083918.GB10358@localhost>
- <20200726082520.GA16953@amd>
+To:     David Shah <dave@ds0.me>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        Tero Kristo <t-kristo@ti.com>
+Subject: Re: Understanding OMAP5 DPLL_ABE and CM_CLKSEL_WKUPAON
+Message-ID: <20200728084257.GF2811@atomide.com>
+References: <c077ece056713ad120b3d2fd59916aab1248cd1c.camel@ds0.me>
+ <20200727082833.GB2811@atomide.com>
+ <ac19052a552660c86838709f071cffe0f3e65932.camel@ds0.me>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200726082520.GA16953@amd>
+In-Reply-To: <ac19052a552660c86838709f071cffe0f3e65932.camel@ds0.me>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Pavel Machek <pavel@denx.de> [200726 08:25]:
-> Hi!
+* David Shah <dave@ds0.me> [200727 08:58]:
+> On Mon, 2020-07-27 at 01:28 -0700, Tony Lindgren wrote:
+> > If it only needs to be configured to 1 for reboot, sounds like it
+> > should
+> > be set in omap44xx_restart(). And we should also set it to 1 for
+> > omap4
+> > too.
 > 
-> > > Here's the updated set of these patches fixed up for Johan's and
-> > > Pavel's earlier comments.
-> > > 
-> > > This series does the following:
-> > > 
-> > > 1. Adds functions to n_gsm.c for serdev-ngsm.c driver to use
-> > > 
-> > > 2. Adds a generic serdev-ngsm.c driver that brings up the TS 27.010
-> > >    TTY ports configured in devicetree with help of n_gsm.c
-> > > 
-> > > 3. Allows the use of standard Linux device drivers for dedicated
-> > >    TS 27.010 channels for devices like GNSS and ALSA found on some
-> > >    modems for example
-> > 
-> > Unfortunately that does not seem to be the case just yet. Your gnss
-> > driver is still aware that it's using n_gsm for the transport and calls
-> > into the "parent" serdev-ngsm driver instead of using the serdev
-> > interface (e.g. as if this was still and MFD driver).
-> > 
-> > If you model this right, the GNSS driver should work equally well
-> > regardless of whether you use the serial interface (with n_gsm) or USB
-> > (e.g. cdc-acm or usb-serial).
-> 
-> We are not going to see that protocol anywhere else, so why is that
-> a good goal?
+> omap44xx_restart doesn't seem like the right place to me, as the bug
+> also affects hard resets (i.e. NRESWARM assertion) and it would be nice
+> to have these working, too.
 
-Yes it seems this GNSS implementation is different from the one
-provided by gobi.
+Ah right, the device reboots fine, but the rebooted kernel
+won't initialize properly.
 
-> Anyway, Tony, is there newer version of this patchset? It would be
-> good to get something in...
+> Would a better solution be to set it early during startup (the first
+> part of clock init), and then clear it when the DPLLs are set up and
+> locked?
 
-Sorry it will likely be few more weeks before I can look at this
-stuff again.
-
-> Can I help somehow?
-
-I think I'm pretty clear on what needs to be done regarding this
-patchset. Probably taking a look at if we could implement a
-minimal raw /dev/gsmtty* read/write access in ofono using ell
-instead of gatchat would help most :)
-
-So something that mbim modem is already doing I think, sorry have
-not had a chance to look at that either.
-
-The /dev/gsmtty* devices should not change even with the further
-changes to this patchset.
+Yes sounds like then the place to configure this is in the
+drivers/clk/ti/clk-54xx.c omap5xxx_dt_clk_init(). Maybe add
+a comment to the patch description that a similar patch may
+be also needed for omap4 on some devices.
 
 Regards,
 
