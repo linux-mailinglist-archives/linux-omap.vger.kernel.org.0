@@ -2,138 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A0F231581
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Jul 2020 00:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9227B231D15
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Jul 2020 13:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729726AbgG1WXe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Jul 2020 18:23:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52796 "EHLO
+        id S1726299AbgG2LCi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Jul 2020 07:02:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729597AbgG1WXe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Jul 2020 18:23:34 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA444C0619D2
-        for <linux-omap@vger.kernel.org>; Tue, 28 Jul 2020 15:23:33 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id 11so20415460qkn.2
-        for <linux-omap@vger.kernel.org>; Tue, 28 Jul 2020 15:23:33 -0700 (PDT)
+        with ESMTP id S1726560AbgG2LCh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Jul 2020 07:02:37 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FBA0C0619D4
+        for <linux-omap@vger.kernel.org>; Wed, 29 Jul 2020 04:02:36 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id f5so24547271ljj.10
+        for <linux-omap@vger.kernel.org>; Wed, 29 Jul 2020 04:02:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8wMDzveqXMcU7qz1vEvMmj5Kh0jEuVD57A0b/vJIJrw=;
-        b=tG4rNdPI8R5LdMMO8xwPde56cVxcwd5fZAw2kzauifqgPFPeBuZ9hEyUHhD85W8bcI
-         M1T/PlI64ZhklmxrEyELMjberZDJ4KzNnazmhwE09VlAAj0XK22zP/a/RK+PvrSp+Dnw
-         /kkHshyydV5SLhk3KWYkA4xDfl/IEjoYJ5GkZ4EoshWFgVSVIYnqm32wkBDc1LGr7m0N
-         HgzWw9A3e0iQmRej8ZPgpGbNn9sSZ2XIGEd3opB1tb8IvxSd7SFVVhcpRuKxcTXFy7C+
-         nDujLhiAkU2NKuhnqQJRM1pocRepvEnfkf/zdOdHFkbxcH1jSPE5wsMu/GvGsW2QmqB5
-         Cq2g==
+        h=from:to:cc:subject:date:message-id;
+        bh=1p/nSgtdkS6RT0uc1pBBiZ0bICji/pIROwSE8og0ow8=;
+        b=J4JNa4qv37g5NWhBZaCQ6BSM4/d/4LhSFiar9U4kEG1i2rKPSVsEm+Fi8hKHagbjfY
+         FMmRzv4n5fI1oiRuRrqBAigKBEDKfDpQkmdU1hF5Hb2wrPd0RYLtwZfZcNUDrgR00N28
+         P0ni9WYCj3H0SkyvzjgPmQ2ZHPfwcdPB/tTwVzD6hjQixcu3B9VhV8Lez5vvBOfV+r17
+         WADwPsa4XwUOp582XaBFDPXdzqjiES56KhLM0bigcp1sUM2nFMa1Jyf/fWQZvqNoLQMt
+         iA7FBArFOPGLNwrJcCviaqhgISDg+DLIyCKQbZe9IIw+cjncMD0tpFx3WEOnd+tfCV8f
+         Tx/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8wMDzveqXMcU7qz1vEvMmj5Kh0jEuVD57A0b/vJIJrw=;
-        b=pU/eeZk6K/vyuhuRWBsaUe3x6dSa0NSeGwf5f6fDXq8eQoM5UsvSx9YHcg1HOaSmDk
-         tC+AowWKBCJ/qOaIwO9vOpwKApYesgJkLwI4AGZdnSJ/venD92was9Wh/qw7vFdBts30
-         PyyMCeuR0S00nugnTNmuuOPZTGnWDkFVn5WsiNpz2x4yeeYGd+U8p2dsfRI8NyAojReC
-         ffgbJIYcz7WOkX8kUmKVZH/aMXi5pRo4r/J29l83iGKiJxRho3kweSnrqmxHdHGZD+LU
-         pOHm13KSi1Wk/0YiGb9F4JtkyVaW4HhdcN4MzZqNVIO6tAJDBZrzpXGV4s8dutE3l5pW
-         7yvQ==
-X-Gm-Message-State: AOAM532YRLy++93g5oEsPhhMwbIVAgQdUjY8z6oqiY8PtzgqiSvjk+Ev
-        OboDDj7fLYWhpRUEBkZJrwo8wN0bSIs434lT5B3qJQ==
-X-Google-Smtp-Source: ABdhPJzBuFDwbTuAKAxLAKDoRVzjoMzJAgky0l1xUfwlCP1+u+1EBHu/d0wQurDqGyYI3vgcw/PLrAXzP60vhB16MLo=
-X-Received: by 2002:a05:620a:4ca:: with SMTP id 10mr27297992qks.306.1595975012973;
- Tue, 28 Jul 2020 15:23:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <1595927918-19845-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1595927918-19845-4-git-send-email-grzegorz.jaszczyk@linaro.org> <1ae8b42d0e7a09caf01197b11cea2fff@kernel.org>
-In-Reply-To: <1ae8b42d0e7a09caf01197b11cea2fff@kernel.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=1p/nSgtdkS6RT0uc1pBBiZ0bICji/pIROwSE8og0ow8=;
+        b=F4lnk5yzEagjAaXt4td9NY/UbfIvNZez0ojFRlOJZU81FkMsl1OUALW5ShTRn/dOqW
+         SmZU+7wvdKT5I9uAYd/RVsnrlf+moIf45PpoGoCQUHTUsWB5XSifs9B0WMFuoMwYMkP6
+         25HdNIZNDtWijLrsz20ic2SuTabRNzPib+zcmg+QxCfewo1MkjMfek8mY7qCORc1kGxK
+         0YJAsA7JBQKEDBfu4+BjDcHAsjSmVNy8n+wdH19L1FFVd8w54qlkG9oy0YyZJuGZQivn
+         01sk1+YGcfwkISpaRMKk+Po5EOZj1TZvQWCwEYUoXm0e8Mwbk0HPH7Gz8LypQmwW6dZ+
+         YXrw==
+X-Gm-Message-State: AOAM533AkaqbAA3nKKthAp4CVEN9mBjWrEvxpbWEudAkrcIPom/jQYXh
+        SbB5qhsnwwzQCOEE71bkpJwzlg==
+X-Google-Smtp-Source: ABdhPJwS6idbGKr5FM/mOnpu6U7dl2edJHUeJHk5Ns8Mz2Wno5b3USCog8R6LSKoFnKylkncCVQUEw==
+X-Received: by 2002:a2e:8799:: with SMTP id n25mr14700332lji.416.1596020553627;
+        Wed, 29 Jul 2020 04:02:33 -0700 (PDT)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id e12sm329283ljk.74.2020.07.29.04.02.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Jul 2020 04:02:33 -0700 (PDT)
 From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Date:   Wed, 29 Jul 2020 00:23:22 +0200
-Message-ID: <CAMxfBF7uaFMhGDTmVjZiAEiUxNFSBnh-qcEz3rSDhFTkWkrLkw@mail.gmail.com>
-Subject: Re: [PATCH v4 3/5] irqchip/irq-pruss-intc: Add logic for handling
- reserved interrupts
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     tglx@linutronix.de, jason@lakedaemon.net,
-        "Anna, Suman" <s-anna@ti.com>, robh+dt@kernel.org,
-        Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
-        "Mills, William" <wmills@ti.com>,
-        "Bajjuri, Praneeth" <praneeth@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+To:     ssantosh@kernel.org, s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, santosh.shilimkar@oracle.com,
+        robh+dt@kernel.org, lee.jones@linaro.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        wmills@ti.com, praneeth@ti.com
+Subject: [PATCH 0/6] Add TI PRUSS platform driver
+Date:   Wed, 29 Jul 2020 13:02:02 +0200
+Message-Id: <1596020528-19510-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Marc
+Hi,
 
-On Tue, 28 Jul 2020 at 18:37, Marc Zyngier <maz@kernel.org> wrote:
->
-> On 2020-07-28 10:18, Grzegorz Jaszczyk wrote:
-> > From: Suman Anna <s-anna@ti.com>
-> >
-> > The PRUSS INTC has a fixed number of output interrupt lines that are
-> > connected to a number of processors or other PRUSS instances or other
-> > devices (like DMA) on the SoC. The output interrupt lines 2 through 9
-> > are usually connected to the main Arm host processor and are referred
-> > to as host interrupts 0 through 7 from ARM/MPU perspective.
-> >
-> > All of these 8 host interrupts are not always exclusively connected
-> > to the Arm interrupt controller. Some SoCs have some interrupt lines
-> > not connected to the Arm interrupt controller at all, while a few
-> > others
-> > have the interrupt lines connected to multiple processors in which they
-> > need to be partitioned as per SoC integration needs. For example,
-> > AM437x
-> > and 66AK2G SoCs have 2 PRUSS instances each and have the host interrupt
-> > 5
-> > connected to the other PRUSS, while AM335x has host interrupt 0 shared
-> > between MPU and TSC_ADC and host interrupts 6 & 7 shared between MPU
-> > and
-> > a DMA controller.
-> >
-> > Add logic to the PRUSS INTC driver to ignore both these shared and
-> > invalid interrupts.
-> >
-> > Signed-off-by: Suman Anna <s-anna@ti.com>
-> > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> > ---
-> > v3->v4:
-> > - Due to changes in DT bindings which converts irqs-reserved
-> >   property from uint8-array to bitmask requested by Rob introduce
-> >   relevant changes in the driver.
-> > - Merge the irqs-reserved and irqs-shared to one property since they
-> >   can be handled by one logic (relevant change was introduced to DT
-> >   binding).
->
-> This isn't what I asked for in my initial review.
->
-> I repeatedly asked for the *handling* to be common, not for the
-> properties to be merged. I don't mind either way, but I understood
-> there were two properties for a good reason. Has this reason gone?
+The Programmable Real-Time Unit and Industrial Communication Subsystem
+(PRU-ICSS) is present on various TI SoCs. The IP is present on multiple TI SoC
+architecture families including the OMAP architecture SoCs such as AM33xx,
+AM437x and AM57xx; and on a Keystone 2 architecture based 66AK2G SoC. It is also
+present on the Davinci based OMAPL138 SoCs and K3 architecture based AM65x and
+J721E SoCs as well.
 
-Yes, I am aware that you've asked for common handling. Nevertheless
-due to this change the usage of irqs-shared had to change. Previously
-Suman's intention was to always skip the irqs-reserved, while allowing
-to try getting interrupts even from irqs-shared list but in case of
-failure (during platform_get_irq_byname) it wasn't treated as an
-error.
-In other words: in the previous approach if the interrupt from
-irqs-shared was present in DT interrupts property it was treated as a
-valid resource. If the irqs-shared interrupt wasn't present in DT
-interrupts property it was skipped (similar to the irqs-reserved
-case).
+A PRUSS consists of dual 32-bit RISC cores (Programmable Real-Time Units, or
+PRUs), shared RAM, data and instruction RAMs, some internal peripheral modules
+to facilitate industrial communication, and an interrupt controller.
 
-Now after your request for handling both in a common way the
-interpretation of irqs-shared had to change. Therefore there's no need
-to have seperate property for them. Now it is simpler: if some
-interrupt is present in irqs-reserved it will be skipped.
+The programmable nature of the PRUs provide flexibility to implement custom
+peripheral interfaces, fast real-time responses, or specialized data handling.
+The common peripheral modules include the following,
+  - an Ethernet MII_RT module with two MII ports
+  - an MDIO port to control external Ethernet PHYs
+  - an Industrial Ethernet Peripheral (IEP) to manage/generate Industrial
+    Ethernet functions
+  - an Enhanced Capture Module (eCAP)
+  - an Industrial Ethernet Timer with 7/9 capture and 16 compare events
+  - a 16550-compatible UART to support PROFIBUS
+  - Enhanced GPIO with async capture and serial support
 
->
-> Anyway, I'll come back to it once I start reviewing the series
-> again.
->
 
-Ok, thank you,
-Grzegorz
+A typical usage scenario would be to load the application firmware into one or
+more of the PRU cores, initialize one or more of the peripherals and perform I/O
+through shared RAM from either a kernel driver or directly from userspace.
+
+This series contains the PRUSS platform driver. This is the parent driver for
+the entire PRUSS and is used for managing the subsystem level resources like
+various memories and the CFG module.  It is responsible for the creation and
+deletion of the platform devices for the child PRU devices and other child
+devices (like Interrupt Controller, MDIO node and some syscon nodes) so that
+they can be managed by specific platform drivers.
+
+Grzegorz Jaszczyk (1):
+  dt-bindings: soc: ti: Add TI PRUSS bindings
+
+Suman Anna (5):
+  soc: ti: pruss: Add a platform driver for PRUSS in TI SoCs
+  soc: ti: pruss: Add support for PRU-ICSSs on AM437x SoCs
+  soc: ti: pruss: Add support for PRU-ICSS subsystems on AM57xx SoCs
+  soc: ti: pruss: Add support for PRU-ICSS subsystems on 66AK2G SoC
+  soc: ti: pruss: enable support for ICSSG subsystems on K3 AM65x SoCs
+
+ .../devicetree/bindings/soc/ti/ti,pruss.yaml       | 383 +++++++++++++++++++++
+ drivers/soc/ti/Kconfig                             |  11 +
+ drivers/soc/ti/Makefile                            |   1 +
+ drivers/soc/ti/pruss.c                             | 183 ++++++++++
+ include/linux/pruss_driver.h                       |  48 +++
+ 5 files changed, 626 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+ create mode 100644 drivers/soc/ti/pruss.c
+ create mode 100644 include/linux/pruss_driver.h
+
+-- 
+2.7.4
+
