@@ -2,87 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BF14232568
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Jul 2020 21:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C0223304F
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Jul 2020 12:24:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726391AbgG2T2u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Jul 2020 15:28:50 -0400
-Received: from vern.gendns.com ([98.142.107.122]:38636 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726365AbgG2T2t (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Jul 2020 15:28:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=5SF0hS7MkjQG4xi6yfTw/jT+y1owMkznxqXdW5rNR2k=; b=vbKl+EIC0kzrXinDsh/59cXAl4
-        YimkBAX2zxmID/NFwzUOLOxnaNLnLIA9z2jcu0tZJl30l0SHZ3J2gZVK9fKFG0VHoFf7k95UCf8FF
-        1gESSNMTIrDicWkGdc3CJpfc6siwX6V+hBZlbOC74qwiNoMiDrD0dj9AIBgOvQ7KCFrP6GNe35dxR
-        yDGfkFW5KJwRFhKJPIO4qSy421F7quO45Wfqpxo25tU0FZxAKYZEoHa4ghbZT5KyF+WbGzhXyjjRt
-        ZNKcWWEtNSP96nRv/LESXfrJ1pnuY5uX4Z6jlw/RNtmQ4hbVTT4uvH9w/HBmK6gX5h+1sCj5vaDwU
-        chZQfrZA==;
-Received: from [2600:1700:4830:165f::19e] (port=43762)
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <david@lechnology.com>)
-        id 1k0rkq-0004vP-Os; Wed, 29 Jul 2020 15:28:44 -0400
-Subject: Re: [PATCH v4 5/5] irqchip/irq-pruss-intc: Add support for ICSSG INTC
- on K3 SoCs
-To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
-        s-anna@ti.com
-Cc:     robh+dt@kernel.org, lee.jones@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        wmills@ti.com, praneeth@ti.com
-References: <1595927918-19845-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1595927918-19845-6-git-send-email-grzegorz.jaszczyk@linaro.org>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <015909fa-794c-c938-d944-897985475d20@lechnology.com>
-Date:   Wed, 29 Jul 2020 14:28:42 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <1595927918-19845-6-git-send-email-grzegorz.jaszczyk@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+        id S1726707AbgG3KYe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Jul 2020 06:24:34 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:24256 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725892AbgG3KYe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Jul 2020 06:24:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1596104672;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=5eS+BVhe8xR/vNU0oSAQGqLHjYljN5F6k3SOrv5G/WQ=;
+        b=Wh/TwJA06GpCKRE8Ko9bjSkFFzFzVNom4HpETO6/guHnUZkEUJx3pu+gbV9sCRgiGF
+        bfCWWhjStqW6ozeLKXkrXxgVopjgd0dajwibO2+oAnajZYbPum+7NA4ixFtr5UGSBjzb
+        PRIy4s7fP/dfp+/JFTzjCQbLjiei+5JCT/avnQQcp7qDBp01gVCORn3LKKCEUldeq5GS
+        VdVfiTECCFDXwXCAderALExM1Nnry01E65uGV38oFniTn7+aZzhl3jChFRFg3rOFscB/
+        aKX9jPkt4xxwcr0kU8zIWjDGFoQhKpwGVk4HGCiYcOLBwZkx1PHLPpKiPT9L1YzOJ1/9
+        ueuw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGHPrvwDOrng=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
+        with ESMTPSA id V07054w6UAOOJMq
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Thu, 30 Jul 2020 12:24:24 +0200 (CEST)
+Subject: Re: BUG: omap5: v5.8-rc7 boot fails
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=us-ascii
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20200729115525.GG2811@atomide.com>
+Date:   Thu, 30 Jul 2020 12:24:23 +0200
+Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        kernel@pyra-handheld.com, Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A5FDB933-0B23-43DE-840D-AA9126A5E60A@goldelico.com>
+References: <3FEECC44-3156-4786-8DF9-149F8CA9B41D@goldelico.com> <20200728082348.GD2811@atomide.com> <20200729115525.GG2811@atomide.com>
+To:     Tony Lindgren <tony@atomide.com>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 7/28/20 4:18 AM, Grzegorz Jaszczyk wrote:
-> From: Suman Anna <s-anna@ti.com>
-> 
-> The K3 AM65x and J721E SoCs have the next generation of the PRU-ICSS IP,
-> commonly called ICSSG. The PRUSS INTC present within the ICSSG supports
-> more System Events (160 vs 64), more Interrupt Channels and Host Interrupts
-> (20 vs 10) compared to the previous generation PRUSS INTC instances. The
-> first 2 and the last 10 of these host interrupt lines are used by the
-> PRU and other auxiliary cores and sub-modules within the ICSSG, with 8
-> host interrupts connected to MPU. The host interrupts 5, 6, 7 are also
-> connected to the other ICSSG instances within the SoC and can be
-> partitioned as per system integration through the board dts files.
-> 
-> Enhance the PRUSS INTC driver to add support for this ICSSG INTC
-> instance.
-> 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> ---
+Hi Tony,
 
-There is not much left in this patch. Might as well squash this into
-"irqchip/irq-pruss-intc: Add a PRUSS irqchip driver for PRUSS interrupts".
+> Am 29.07.2020 um 13:55 schrieb Tony Lindgren <tony@atomide.com>:
+>=20
+> * Tony Lindgren <tony@atomide.com> [200728 08:23]:
+>> * H. Nikolaus Schaller <hns@goldelico.com> [200727 20:51]:
+>>> Hi Tony,
+>>> after trying v5.8-rc7 the Pyra boot hangs after ca. 3 seconds
+>>> (a little random what the last log line is).
+>>>=20
+>>> I could bisect it to:
+>>>=20
+>>> 6cfcd5563b4fadbf49ba8fa481978e5e86d30322 is the first bad commit
+>>> commit 6cfcd5563b4fadbf49ba8fa481978e5e86d30322
+>>> Author: Tony Lindgren <tony@atomide.com>
+>>> Date:   Mon Jul 13 09:26:01 2020 -0700
+>>>=20
+>>>    clocksource/drivers/timer-ti-dm: Fix suspend and resume for am3 =
+and am4
+>>>=20
+>>> And a git revert makes it boot again.
+>>>=20
+>>> I haven't had time to do more tests (e.g. with omap3/4 or on =
+omap5uevm).
+>>=20
+>> Oops sorry about that, I'll take a look.
+>=20
+> This fixes booting for me,
+
+yes, I can confirm that this fixes the omap5 Pyra.
+
+And there seems to be no regression on dm3730 GTA04 (but I didn't notice =
+the bug either, although it also uses a pwm_dmtimer).
+
+BR and thanks,
+Nikolaus
+
+> but I still need to check if we also
+> need to enable before the reset. And then this needs to be tested
+> on all the related SoCs again.
+>=20
+> Regards,
+>=20
+> Tony
+>=20
+> 8< ------------------
+> diff --git a/drivers/clocksource/timer-ti-dm-systimer.c =
+b/drivers/clocksource/timer-ti-dm-systimer.c
+> --- a/drivers/clocksource/timer-ti-dm-systimer.c
+> +++ b/drivers/clocksource/timer-ti-dm-systimer.c
+> @@ -409,8 +409,8 @@ static int __init dmtimer_systimer_setup(struct =
+device_node *np,
+> 	t->wakeup =3D regbase + _OMAP_TIMER_WAKEUP_EN_OFFSET;
+> 	t->ifctrl =3D regbase + _OMAP_TIMER_IF_CTRL_OFFSET;
+>=20
+> -	dmtimer_systimer_enable(t);
+> 	dmtimer_systimer_reset(t);
+> +	dmtimer_systimer_enable(t);
+> 	pr_debug("dmtimer rev %08x sysc %08x\n", readl_relaxed(t->base),
+> 		 readl_relaxed(t->base + t->sysc));
+>=20
+
