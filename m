@@ -2,139 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22245235791
-	for <lists+linux-omap@lfdr.de>; Sun,  2 Aug 2020 16:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98F77239C3B
+	for <lists+linux-omap@lfdr.de>; Sun,  2 Aug 2020 23:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbgHBO0V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 2 Aug 2020 10:26:21 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:36759 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726300AbgHBO0U (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 2 Aug 2020 10:26:20 -0400
-Received: by mail-lf1-f67.google.com with SMTP id c15so1838480lfi.3;
-        Sun, 02 Aug 2020 07:26:18 -0700 (PDT)
+        id S1726163AbgHBVlS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 2 Aug 2020 17:41:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47498 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726364AbgHBVlR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 2 Aug 2020 17:41:17 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78EAEC061756
+        for <linux-omap@vger.kernel.org>; Sun,  2 Aug 2020 14:41:17 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id 6so26977304qtt.0
+        for <linux-omap@vger.kernel.org>; Sun, 02 Aug 2020 14:41:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+vVrgGh+FKZTumikQLMQ5VD9iTv9jTO6F54b15uPxzM=;
+        b=xfbCE69Roj++5y5XnvMOHsfu8LuLC5xeKYXMtwBooQr2QX0KopA2KI/E0cKhjagW/W
+         X6K4icziYVsSDLZXERIsop5RzhiCu25uLk2hp8/FAXI6QI7hq9BzsD1BBJD4489Uc0BM
+         V54UJwzQwhVMxMKG3/S+sTPGQto2Yrp1FeOjky6+2r46/Kpa2R0nG/njEjrT1vl7FHDj
+         GrP/H8rGR+gbCQutnQRvYdh+tbJpMSgKgsoSx27ZOX2qBHTb4onj8XUZ9MVBVmoSinmf
+         PwLCENu+f5AJY/EvH2JgnmZuZHNVsl2XzupC1Jc1sCCqYtKE+XXIM/OS7jIWSFwzQrXb
+         CJCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=/S75/rZPVtT/la0J520uvq4mcrCeNFGU2um+3tul+rI=;
-        b=eGYxKagEb+QN5Q7HCeGhnyhJKXIWmSd8RBVimVWipR+irMxje/N7qFbEo9bJg1Wjfr
-         /73rkoJLOwd6N5dnh3ZampC3gj12TE0GCc70OOJocJCMMdtceSvoWa2clFkVtfz42tfc
-         NVTbE3gDGn7bsADcEQq84BzSGxMRIHt9HfI+r2PzD42AqbYnIjjZfJbcHwXQnHr2aqu1
-         nV218QolJDfI8X1OyUZ1XhjebAyle3QGdgOg4XslQkNGxWl7gSMjpGEVoWy61YEdBC7i
-         e2/D2KSAFJiWtMIQqnOqpX6L3lLESHhiZ0Qjf+B9NExEmrDzEU/1KuhGueyXTVODCXmW
-         FQtw==
-X-Gm-Message-State: AOAM531OOYSQb6OEx2x8ckJJvP4MZ5XEzBRGm3PyMlBahdSl5ewxwwXr
-        XEM3Bp1fOAkrCKSRINjS+H4=
-X-Google-Smtp-Source: ABdhPJzNpdAF9CCzGfP8sG9ncd25/FPuC6g6AByGverT5oAgx7TlVWh8xE/g3DI5YXBMEkYyIP2c8Q==
-X-Received: by 2002:a19:189:: with SMTP id 131mr6399805lfb.128.1596378377807;
-        Sun, 02 Aug 2020 07:26:17 -0700 (PDT)
-Received: from workstation.lan ([95.155.85.46])
-        by smtp.gmail.com with ESMTPSA id 193sm4214136lfa.90.2020.08.02.07.26.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2020 07:26:17 -0700 (PDT)
-From:   =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Jingoo Han <jingoohan1@gmail.com>, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Yue Wang <yue.wang@Amlogic.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Pratyush Anand <pratyush.anand@gmail.com>,
-        Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Toan Le <toan@os.amperecomputing.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        rfi@lists.rocketboards.org
-Subject: [PATCH 09/10] PCI: rockchip: Remove dev_err() when handing an error from platform_get_irq()
-Date:   Sun,  2 Aug 2020 14:26:01 +0000
-Message-Id: <20200802142601.1635926-10-kw@linux.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200802142601.1635926-1-kw@linux.com>
-References: <20200802142601.1635926-1-kw@linux.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+vVrgGh+FKZTumikQLMQ5VD9iTv9jTO6F54b15uPxzM=;
+        b=narBOywCaddI5v6EX2EZS3R1x0Fy6uQkBYQkgDefD73R018XazgehfkipWSx6DRxAw
+         qP/P3XrO81gSbA1yM7rfqZMa90yPC/AgMQL2jYwqpoL/bVqWEJltiRC+na9Vz38/z18a
+         iV/CGtBZ+jUJM+SHL/K6Yuey8SdZ4XE9BZFKdtKdqkmDMeeBtcjXOOxt14Pdig+LnGPH
+         7eGabkYHp7SdCdK2X0fJvygDGMHzOUd5CatWi/D0yozg6kdXMP/E9/71fLAXxnZQdhj/
+         3b09DyLzsO7Z3eTU27LadtR6+Oel6z+eNwUTwk8OITloRyAvoY7wV1BWuI+T8hsSTf8r
+         B0sQ==
+X-Gm-Message-State: AOAM530jwd0rQ82kwgpsApZs+aiSzgL6Xn6vs9+muXNy2vMYKpZB6Moi
+        dobGF3Ohw+8TioI3wm3Rzw3D78gRZT8DLOYKuO4IJw==
+X-Google-Smtp-Source: ABdhPJzLUGvqAlacqIPSypPacSsR69kygSTFzmoRBFfCoX8+sQpcUqzLggUFnqzw5BRSxMAFINx/e3Qn19Lp2pQreqY=
+X-Received: by 2002:aed:22cb:: with SMTP id q11mr11268953qtc.200.1596404476604;
+ Sun, 02 Aug 2020 14:41:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <1596020528-19510-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+ <20200802115330.GA1090@bug> <20200802115701.GD1162@bug>
+In-Reply-To: <20200802115701.GD1162@bug>
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+Date:   Sun, 2 Aug 2020 23:41:05 +0200
+Message-ID: <CAMxfBF6k9wK1iPd7b42xGfDsG5rOBV2rWmVeWxY4UKTTwjSPDQ@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Add TI PRUSS platform driver
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     ssantosh@kernel.org, "Anna, Suman" <s-anna@ti.com>,
+        santosh.shilimkar@oracle.com, robh+dt@kernel.org,
+        Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Mills, William" <wmills@ti.com>,
+        "Bajjuri, Praneeth" <praneeth@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There is no need to call the dev_err() function directly to print a
-custom message when handling an error from either the platform_get_irq()
-or platform_get_irq_byname() functions as both are going to display an
-appropriate error message in case of a failure.
+Hi
 
-This change is as per suggestion from Coccinelle:
+On Sun, 2 Aug 2020 at 13:57, Pavel Machek <pavel@ucw.cz> wrote:
+>
+> On Sun 2020-08-02 13:53:30, Pavel Machek wrote:
+> > Hi!
+> >
+> > > A typical usage scenario would be to load the application firmware into one or
+> > > more of the PRU cores, initialize one or more of the peripherals and perform I/O
+> > > through shared RAM from either a kernel driver or directly from userspace.
+> > >
+> > > This series contains the PRUSS platform driver. This is the parent driver for
+> > > the entire PRUSS and is used for managing the subsystem level resources like
+> > > various memories and the CFG module.  It is responsible for the creation and
+> > > deletion of the platform devices for the child PRU devices and other child
+> > > devices (like Interrupt Controller, MDIO node and some syscon nodes) so that
+> > > they can be managed by specific platform drivers.
+> >
+> > >  drivers/soc/ti/Kconfig | 11 + drivers/soc/ti/Makefile | 1 + drivers/soc/ti/pruss.c |
+> >
+> > Is drivers/soc right place for that? We already have subsystem for various
+> > programmable accelerators...
+>
+> ....see drivers/remoteproc.
 
-  drivers/pci/controller/pcie-rockchip-host.c:553:2-9: line 553 is
-  redundant because platform_get_irq() already prints an error
+Yes I am aware of that and remoteproc sub-system will be used but only
+for managing PRU cores (drivers/remoteproc/pru-rproc - will be
+submitted soon), while this driver is the parent driver for the entire
+PRUSS (used for managing the subsystem level resources like various
+memories and the CFG module). This driver is also responsible for
+populating all child devices (described in DT), managed by specific
+(and separate) drivers: e.g.:
+- PRU core will be managed by drivers/remoteproc/pru-rproc (will be
+submitted next)
+- PRU interrupt controller will be managed by
+drivers/irqchip/irq-pruss-intc.c (it is already under review)
+etc.
 
-  drivers/pci/controller/pcie-rockchip-host.c:566:2-9: line 566 is
-  redundant because platform_get_irq() already prints an error
-
-  drivers/pci/controller/pcie-rockchip-host.c:576:2-9: line 576 is
-  redundant because platform_get_irq() already prints an error
-
-Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kw@linux.com>
----
- drivers/pci/controller/pcie-rockchip-host.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/pci/controller/pcie-rockchip-host.c b/drivers/pci/controller/pcie-rockchip-host.c
-index 94af6f5828a3..eebe05ab354f 100644
---- a/drivers/pci/controller/pcie-rockchip-host.c
-+++ b/drivers/pci/controller/pcie-rockchip-host.c
-@@ -549,10 +549,8 @@ static int rockchip_pcie_setup_irq(struct rockchip_pcie *rockchip)
- 	struct platform_device *pdev = to_platform_device(dev);
- 
- 	irq = platform_get_irq_byname(pdev, "sys");
--	if (irq < 0) {
--		dev_err(dev, "missing sys IRQ resource\n");
-+	if (irq < 0)
- 		return irq;
--	}
- 
- 	err = devm_request_irq(dev, irq, rockchip_pcie_subsys_irq_handler,
- 			       IRQF_SHARED, "pcie-sys", rockchip);
-@@ -562,20 +560,16 @@ static int rockchip_pcie_setup_irq(struct rockchip_pcie *rockchip)
- 	}
- 
- 	irq = platform_get_irq_byname(pdev, "legacy");
--	if (irq < 0) {
--		dev_err(dev, "missing legacy IRQ resource\n");
-+	if (irq < 0)
- 		return irq;
--	}
- 
- 	irq_set_chained_handler_and_data(irq,
- 					 rockchip_pcie_legacy_int_handler,
- 					 rockchip);
- 
- 	irq = platform_get_irq_byname(pdev, "client");
--	if (irq < 0) {
--		dev_err(dev, "missing client IRQ resource\n");
-+	if (irq < 0)
- 		return irq;
--	}
- 
- 	err = devm_request_irq(dev, irq, rockchip_pcie_client_irq_handler,
- 			       IRQF_SHARED, "pcie-client", rockchip);
--- 
-2.27.0
-
+Best regards,
+Grzegorz
