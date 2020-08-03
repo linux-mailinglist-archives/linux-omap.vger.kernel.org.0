@@ -2,140 +2,573 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19A7A23A8FA
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Aug 2020 16:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD53E23AD72
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Aug 2020 21:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726857AbgHCOzL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Aug 2020 10:55:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45066 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726825AbgHCOzL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 3 Aug 2020 10:55:11 -0400
-Received: from localhost (mobile-166-175-186-42.mycingular.net [166.175.186.42])
+        id S1727918AbgHCTlO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Aug 2020 15:41:14 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:42232 "EHLO
+        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727813AbgHCTlO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Aug 2020 15:41:14 -0400
+Received: from ravnborg.org (unknown [188.228.123.71])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 941822076C;
-        Mon,  3 Aug 2020 14:55:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596466509;
-        bh=qjp447E1FdrQ1VZ023mmW0i+s+n2xlSEVcNx6++grCw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=js72JAn2bH2xSm+hYcTQJGVkYXneeZJu3WaUZn6z6vYSOzv7YKwhBYVr6t9avSQXt
-         qU1B6g/sav0/hQvP8lshLpuLg09vHpm0tBm1iPdgP8Oy8IOEVvOnZHpFaz1vJf+fWC
-         OM3gS2l2KadBq5i7cExyeKjGHeiEM+cd7lXZK83k=
-Date:   Mon, 3 Aug 2020 09:55:08 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        by asavdk4.altibox.net (Postfix) with ESMTPS id 6FBF780502;
+        Mon,  3 Aug 2020 21:41:07 +0200 (CEST)
+Date:   Mon, 3 Aug 2020 21:41:06 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Timur Tabi <timur@kernel.org>,
         Jingoo Han <jingoohan1@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Yue Wang <yue.wang@Amlogic.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Pratyush Anand <pratyush.anand@gmail.com>,
-        Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Toan Le <toan@os.amperecomputing.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        rfi@lists.rocketboards.org
-Subject: Re: [PATCH 00/10] Remove surplus dev_err() when handing an error
- from platform_get_irq()
-Message-ID: <20200803145508.GA332368@bjorn-Precision-5520>
+        Antonino Daplas <adaplas@gmail.com>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH][next] fbdev: Use fallthrough pseudo-keyword
+Message-ID: <20200803194024.GA525506@ravnborg.org>
+References: <20200707210539.GA12530@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200803020151.GA291575@bjorn-Precision-5520>
+In-Reply-To: <20200707210539.GA12530@embeddedor>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=aP3eV41m c=1 sm=1 tr=0
+        a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
+        a=kj9zAlcOel0A:10 a=VwQbUJbxAAAA:8 a=e5mUnYsNAAAA:8
+        a=ZkvXaxzpEBCGFCigZb4A:9 a=THN5lsWJXTe09ccl:21 a=JiB3bZhdlf3hca_M:21
+        a=CjuIK1q_8ugA:10 a=1F1461vogZIA:10 a=5kKzt1m56AEA:10
+        a=AjGcO6oz07-iQ99wixmX:22 a=Vxmtnl_E_bksehYqCbjh:22
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Aug 02, 2020 at 09:01:51PM -0500, Bjorn Helgaas wrote:
-> On Sun, Aug 02, 2020 at 02:25:52PM +0000, Krzysztof Wilczyński wrote:
-> > At the moment a lot of error handling code would print a duplicated
-> > error message should either the platform_get_irq() or
-> > platform_get_irq_byname() function fails to obtain an IRQ for a device.
-> > 
-> > There is no need to call the dev_err() function directly to print
-> > a custom message when handling an error from either of these functions
-> > as both are going to display an appropriate error message in case of
-> > a failure.
-> > 
-> > This series aims to remove surplus call to dev_err() when handing an
-> > error originating from either platform_get_irq() or
-> > platform_get_irq_byname() function as per suggestion from Coccinelle.
-> > 
-> > Related commits are commit 7723f4c5ecdb ("driver core: platform: Add an
-> > error message to platform_get_irq*()") and commit 98051ba2b28b
-> > ("coccinelle: Add script to check for platform_get_irq() excessive
-> > prints").
-> > 
-> > Krzysztof Wilczyński (10):
-> >   PCI: dwc: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> >   PCI: mobiveil: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> >   PCI: tegra: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> >   PCI: altera: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> >   PCI: host-generic: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> >   PCI: v3-semi: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> >   PCI: altera-msi: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> >   PCI: xgene-msi: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> >   PCI: rockchip: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> >   PCI: xilinx-nwl: Remove dev_err() when handing an error from
-> >     platform_get_irq()
-> > 
-> >  drivers/pci/controller/dwc/pci-dra7xx.c              |  8 ++------
-> >  drivers/pci/controller/dwc/pci-exynos.c              |  9 +++------
-> >  drivers/pci/controller/dwc/pci-imx6.c                |  4 +---
-> >  drivers/pci/controller/dwc/pci-keystone.c            |  4 +---
-> >  drivers/pci/controller/dwc/pci-meson.c               |  4 +---
-> >  drivers/pci/controller/dwc/pcie-armada8k.c           |  4 +---
-> >  drivers/pci/controller/dwc/pcie-artpec6.c            |  4 +---
-> >  drivers/pci/controller/dwc/pcie-histb.c              |  4 +---
-> >  drivers/pci/controller/dwc/pcie-kirin.c              |  5 +----
-> >  drivers/pci/controller/dwc/pcie-spear13xx.c          |  5 ++---
-> >  drivers/pci/controller/dwc/pcie-tegra194.c           |  4 +---
-> >  .../pci/controller/mobiveil/pcie-layerscape-gen4.c   |  5 ++---
-> >  drivers/pci/controller/mobiveil/pcie-mobiveil-host.c |  4 +---
-> >  drivers/pci/controller/pci-tegra.c                   |  8 ++------
-> >  drivers/pci/controller/pci-v3-semi.c                 |  5 ++---
-> >  drivers/pci/controller/pci-xgene-msi.c               |  2 --
-> >  drivers/pci/controller/pcie-altera-msi.c             |  1 -
-> >  drivers/pci/controller/pcie-altera.c                 |  4 +---
-> >  drivers/pci/controller/pcie-rockchip-host.c          | 12 +++---------
-> >  drivers/pci/controller/pcie-tango.c                  |  4 +---
-> >  drivers/pci/controller/pcie-xilinx-nwl.c             | 11 ++---------
-> >  21 files changed, 29 insertions(+), 82 deletions(-)
+On Tue, Jul 07, 2020 at 04:05:39PM -0500, Gustavo A. R. Silva wrote:
+> Replace the existing /* fall through */ comments and its variants with
+> the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
+> fall-through markings when it is the case.
 > 
-> I squashed these together and applied them to pci/irq-error for v5.9,
-> thanks!
+> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
 > 
-> The cover letter claims there should be 10 patches, but I only got 9.
-> Just FYI.
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-I picked up and applied 10/10 as well.  And added Jesper & Ley Foon's
-reviewed-by and acked-by.  Thanks!
+Thanks.
+
+Fixed indent in arcfb.c while applying.
+Applied to drm-misc-next and it will appear in 5.10
+
+	Sam
+
+> ---
+>  drivers/video/fbdev/acornfb.c                 |  2 +-
+>  drivers/video/fbdev/arcfb.c                   |  2 +-
+>  drivers/video/fbdev/atmel_lcdfb.c             |  4 ++--
+>  drivers/video/fbdev/aty/radeon_pm.c           |  6 +++---
+>  drivers/video/fbdev/cirrusfb.c                |  4 ++--
+>  drivers/video/fbdev/controlfb.c               |  2 +-
+>  drivers/video/fbdev/core/fbmem.c              |  2 +-
+>  drivers/video/fbdev/fsl-diu-fb.c              |  4 ++--
+>  drivers/video/fbdev/gxt4500.c                 |  2 +-
+>  drivers/video/fbdev/i740fb.c                  |  2 +-
+>  drivers/video/fbdev/offb.c                    |  4 ++--
+>  drivers/video/fbdev/omap/lcdc.c               |  4 ++--
+>  drivers/video/fbdev/omap/omapfb_main.c        | 20 +++++++++----------
+>  drivers/video/fbdev/omap2/omapfb/dss/dispc.c  |  4 ++--
+>  .../video/fbdev/omap2/omapfb/omapfb-ioctl.c   |  2 +-
+>  .../video/fbdev/omap2/omapfb/omapfb-main.c    |  2 +-
+>  drivers/video/fbdev/pm2fb.c                   |  4 ++--
+>  drivers/video/fbdev/pxafb.c                   |  2 +-
+>  drivers/video/fbdev/s3c-fb.c                  |  6 +++---
+>  drivers/video/fbdev/sa1100fb.c                |  2 +-
+>  drivers/video/fbdev/savage/savagefb_driver.c  |  3 +--
+>  drivers/video/fbdev/sh_mobile_lcdcfb.c        |  4 ++--
+>  drivers/video/fbdev/sm501fb.c                 |  2 +-
+>  drivers/video/fbdev/tdfxfb.c                  |  2 +-
+>  drivers/video/fbdev/xen-fbfront.c             |  2 +-
+>  25 files changed, 46 insertions(+), 47 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/acornfb.c b/drivers/video/fbdev/acornfb.c
+> index 09a9ad901dad..bcc92aecf666 100644
+> --- a/drivers/video/fbdev/acornfb.c
+> +++ b/drivers/video/fbdev/acornfb.c
+> @@ -857,7 +857,7 @@ static void acornfb_parse_dram(char *opt)
+>  		case 'M':
+>  		case 'm':
+>  			size *= 1024;
+> -			/* Fall through */
+> +			fallthrough;
+>  		case 'K':
+>  		case 'k':
+>  			size *= 1024;
+> diff --git a/drivers/video/fbdev/arcfb.c b/drivers/video/fbdev/arcfb.c
+> index 6f7838979f0a..ae3d8e8b8d33 100644
+> --- a/drivers/video/fbdev/arcfb.c
+> +++ b/drivers/video/fbdev/arcfb.c
+> @@ -419,7 +419,7 @@ static int arcfb_ioctl(struct fb_info *info,
+>  			schedule();
+>  			finish_wait(&arcfb_waitq, &wait);
+>  		}
+> -		/* fall through */
+> +			fallthrough;
+>  
+>  		case FBIO_GETCONTROL2:
+>  		{
+> diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
+> index 1e252192569a..8c1d47e52b1a 100644
+> --- a/drivers/video/fbdev/atmel_lcdfb.c
+> +++ b/drivers/video/fbdev/atmel_lcdfb.c
+> @@ -508,7 +508,7 @@ static int atmel_lcdfb_check_var(struct fb_var_screeninfo *var,
+>  	case 32:
+>  		var->transp.offset = 24;
+>  		var->transp.length = 8;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 24:
+>  		if (pdata->lcd_wiring_mode == ATMEL_LCDC_WIRING_RGB) {
+>  			/* RGB:888 mode */
+> @@ -633,7 +633,7 @@ static int atmel_lcdfb_set_par(struct fb_info *info)
+>  		case 2: value |= ATMEL_LCDC_PIXELSIZE_2; break;
+>  		case 4: value |= ATMEL_LCDC_PIXELSIZE_4; break;
+>  		case 8: value |= ATMEL_LCDC_PIXELSIZE_8; break;
+> -		case 15: /* fall through */
+> +		case 15: fallthrough;
+>  		case 16: value |= ATMEL_LCDC_PIXELSIZE_16; break;
+>  		case 24: value |= ATMEL_LCDC_PIXELSIZE_24; break;
+>  		case 32: value |= ATMEL_LCDC_PIXELSIZE_32; break;
+> diff --git a/drivers/video/fbdev/aty/radeon_pm.c b/drivers/video/fbdev/aty/radeon_pm.c
+> index 7c4483c7f313..f3d8123d7f36 100644
+> --- a/drivers/video/fbdev/aty/radeon_pm.c
+> +++ b/drivers/video/fbdev/aty/radeon_pm.c
+> @@ -1208,11 +1208,11 @@ static void radeon_pm_enable_dll_m10(struct radeonfb_info *rinfo)
+>  	case 1:
+>  		if (mc & 0x4)
+>  			break;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 2:
+>  		dll_sleep_mask |= MDLL_R300_RDCK__MRDCKB_SLEEP;
+>  		dll_reset_mask |= MDLL_R300_RDCK__MRDCKB_RESET;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 0:
+>  		dll_sleep_mask |= MDLL_R300_RDCK__MRDCKA_SLEEP;
+>  		dll_reset_mask |= MDLL_R300_RDCK__MRDCKA_RESET;
+> @@ -1221,7 +1221,7 @@ static void radeon_pm_enable_dll_m10(struct radeonfb_info *rinfo)
+>  	case 1:
+>  		if (!(mc & 0x4))
+>  			break;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 2:
+>  		dll_sleep_mask |= MDLL_R300_RDCK__MRDCKD_SLEEP;
+>  		dll_reset_mask |= MDLL_R300_RDCK__MRDCKD_RESET;
+> diff --git a/drivers/video/fbdev/cirrusfb.c b/drivers/video/fbdev/cirrusfb.c
+> index 3df64a973194..15a9ee7cd734 100644
+> --- a/drivers/video/fbdev/cirrusfb.c
+> +++ b/drivers/video/fbdev/cirrusfb.c
+> @@ -1476,11 +1476,11 @@ static void init_vgachip(struct fb_info *info)
+>  		mdelay(100);
+>  		/* mode */
+>  		vga_wgfx(cinfo->regbase, CL_GR31, 0x00);
+> -		/* fall through */
+> +		fallthrough;
+>  	case BT_GD5480:
+>  		/* from Klaus' NetBSD driver: */
+>  		vga_wgfx(cinfo->regbase, CL_GR2F, 0x00);
+> -		/* fall through */
+> +		fallthrough;
+>  	case BT_ALPINE:
+>  		/* put blitter into 542x compat */
+>  		vga_wgfx(cinfo->regbase, CL_GR33, 0x00);
+> diff --git a/drivers/video/fbdev/controlfb.c b/drivers/video/fbdev/controlfb.c
+> index 9c4f1be856ec..a88dcb63eeb4 100644
+> --- a/drivers/video/fbdev/controlfb.c
+> +++ b/drivers/video/fbdev/controlfb.c
+> @@ -713,7 +713,7 @@ static int controlfb_blank(int blank_mode, struct fb_info *info)
+>  			break;
+>  		case FB_BLANK_POWERDOWN:
+>  			ctrl &= ~0x33;
+> -			/* fall through */
+> +			fallthrough;
+>  		case FB_BLANK_NORMAL:
+>  			ctrl |= 0x400;
+>  			break;
+> diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> index 30e73ec4ad5c..66f07c391e55 100644
+> --- a/drivers/video/fbdev/core/fbmem.c
+> +++ b/drivers/video/fbdev/core/fbmem.c
+> @@ -1310,7 +1310,7 @@ static long fb_compat_ioctl(struct file *file, unsigned int cmd,
+>  	case FBIOGET_CON2FBMAP:
+>  	case FBIOPUT_CON2FBMAP:
+>  		arg = (unsigned long) compat_ptr(arg);
+> -		/* fall through */
+> +		fallthrough;
+>  	case FBIOBLANK:
+>  		ret = do_fb_ioctl(info, cmd, arg);
+>  		break;
+> diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
+> index 67ebfe5c9f1d..a547c21c7e92 100644
+> --- a/drivers/video/fbdev/fsl-diu-fb.c
+> +++ b/drivers/video/fbdev/fsl-diu-fb.c
+> @@ -1287,7 +1287,7 @@ static int fsl_diu_ioctl(struct fb_info *info, unsigned int cmd,
+>  		dev_warn(info->dev,
+>  			 "MFB_SET_PIXFMT value of 0x%08x is deprecated.\n",
+>  			 MFB_SET_PIXFMT_OLD);
+> -		/* fall through */
+> +		fallthrough;
+>  	case MFB_SET_PIXFMT:
+>  		if (copy_from_user(&pix_fmt, buf, sizeof(pix_fmt)))
+>  			return -EFAULT;
+> @@ -1297,7 +1297,7 @@ static int fsl_diu_ioctl(struct fb_info *info, unsigned int cmd,
+>  		dev_warn(info->dev,
+>  			 "MFB_GET_PIXFMT value of 0x%08x is deprecated.\n",
+>  			 MFB_GET_PIXFMT_OLD);
+> -		/* fall through */
+> +		fallthrough;
+>  	case MFB_GET_PIXFMT:
+>  		pix_fmt = ad->pix_fmt;
+>  		if (copy_to_user(buf, &pix_fmt, sizeof(pix_fmt)))
+> diff --git a/drivers/video/fbdev/gxt4500.c b/drivers/video/fbdev/gxt4500.c
+> index 13ded3a10708..e5475ae1e158 100644
+> --- a/drivers/video/fbdev/gxt4500.c
+> +++ b/drivers/video/fbdev/gxt4500.c
+> @@ -534,7 +534,7 @@ static int gxt4500_setcolreg(unsigned int reg, unsigned int red,
+>  			break;
+>  		case DFA_PIX_32BIT:
+>  			val |= (reg << 24);
+> -			/* fall through */
+> +			fallthrough;
+>  		case DFA_PIX_24BIT:
+>  			val |= (reg << 16) | (reg << 8);
+>  			break;
+> diff --git a/drivers/video/fbdev/i740fb.c b/drivers/video/fbdev/i740fb.c
+> index c65ec7386e87..e6f35f8feefc 100644
+> --- a/drivers/video/fbdev/i740fb.c
+> +++ b/drivers/video/fbdev/i740fb.c
+> @@ -430,7 +430,7 @@ static int i740fb_decode_var(const struct fb_var_screeninfo *var,
+>  		break;
+>  	case 9 ... 15:
+>  		bpp = 15;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 16:
+>  		if ((1000000 / var->pixclock) > DACSPEED16) {
+>  			dev_err(info->device, "requested pixclock %i MHz out of range (max. %i MHz at 15/16bpp)\n",
+> diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
+> index 5cd0f5f6a4ae..4501e848a36f 100644
+> --- a/drivers/video/fbdev/offb.c
+> +++ b/drivers/video/fbdev/offb.c
+> @@ -141,7 +141,7 @@ static int offb_setcolreg(u_int regno, u_int red, u_int green, u_int blue,
+>  		/* Clear PALETTE_ACCESS_CNTL in DAC_CNTL */
+>  		out_le32(par->cmap_adr + 0x58,
+>  			 in_le32(par->cmap_adr + 0x58) & ~0x20);
+> -		/* fall through */
+> +		fallthrough;
+>  	case cmap_r128:
+>  		/* Set palette index & data */
+>  		out_8(par->cmap_adr + 0xb0, regno);
+> @@ -211,7 +211,7 @@ static int offb_blank(int blank, struct fb_info *info)
+>  				/* Clear PALETTE_ACCESS_CNTL in DAC_CNTL */
+>  				out_le32(par->cmap_adr + 0x58,
+>  					 in_le32(par->cmap_adr + 0x58) & ~0x20);
+> -				/* fall through */
+> +				fallthrough;
+>  			case cmap_r128:
+>  				/* Set palette index & data */
+>  				out_8(par->cmap_adr + 0xb0, i);
+> diff --git a/drivers/video/fbdev/omap/lcdc.c b/drivers/video/fbdev/omap/lcdc.c
+> index fa73acfc1371..7317c9aad677 100644
+> --- a/drivers/video/fbdev/omap/lcdc.c
+> +++ b/drivers/video/fbdev/omap/lcdc.c
+> @@ -328,13 +328,13 @@ static int omap_lcdc_setup_plane(int plane, int channel_out,
+>  			lcdc.bpp = 12;
+>  			break;
+>  		}
+> -		/* fallthrough */
+> +		fallthrough;
+>  	case OMAPFB_COLOR_YUV422:
+>  		if (lcdc.ext_mode) {
+>  			lcdc.bpp = 16;
+>  			break;
+>  		}
+> -		/* fallthrough */
+> +		fallthrough;
+>  	default:
+>  		/* FIXME: other BPPs.
+>  		 * bpp1: code  0,     size 256
+> diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+> index 0cbcc74fa943..3d090d2d9ed9 100644
+> --- a/drivers/video/fbdev/omap/omapfb_main.c
+> +++ b/drivers/video/fbdev/omap/omapfb_main.c
+> @@ -253,7 +253,7 @@ static int _setcolreg(struct fb_info *info, u_int regno, u_int red, u_int green,
+>  		if (fbdev->ctrl->setcolreg)
+>  			r = fbdev->ctrl->setcolreg(regno, red, green, blue,
+>  							transp, update_hw_pal);
+> -		/* Fallthrough */
+> +		fallthrough;
+>  	case OMAPFB_COLOR_RGB565:
+>  	case OMAPFB_COLOR_RGB444:
+>  		if (r != 0)
+> @@ -443,7 +443,7 @@ static int set_color_mode(struct omapfb_plane_struct *plane,
+>  		return 0;
+>  	case 12:
+>  		var->bits_per_pixel = 16;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 16:
+>  		if (plane->fbdev->panel->bpp == 12)
+>  			plane->color_mode = OMAPFB_COLOR_RGB444;
+> @@ -1531,27 +1531,27 @@ static void omapfb_free_resources(struct omapfb_device *fbdev, int state)
+>  	case OMAPFB_ACTIVE:
+>  		for (i = 0; i < fbdev->mem_desc.region_cnt; i++)
+>  			unregister_framebuffer(fbdev->fb_info[i]);
+> -		/* fall through */
+> +		fallthrough;
+>  	case 7:
+>  		omapfb_unregister_sysfs(fbdev);
+> -		/* fall through */
+> +		fallthrough;
+>  	case 6:
+>  		if (fbdev->panel->disable)
+>  			fbdev->panel->disable(fbdev->panel);
+> -		/* fall through */
+> +		fallthrough;
+>  	case 5:
+>  		omapfb_set_update_mode(fbdev, OMAPFB_UPDATE_DISABLED);
+> -		/* fall through */
+> +		fallthrough;
+>  	case 4:
+>  		planes_cleanup(fbdev);
+> -		/* fall through */
+> +		fallthrough;
+>  	case 3:
+>  		ctrl_cleanup(fbdev);
+> -		/* fall through */
+> +		fallthrough;
+>  	case 2:
+>  		if (fbdev->panel->cleanup)
+>  			fbdev->panel->cleanup(fbdev->panel);
+> -		/* fall through */
+> +		fallthrough;
+>  	case 1:
+>  		dev_set_drvdata(fbdev->dev, NULL);
+>  		kfree(fbdev);
+> @@ -1854,7 +1854,7 @@ static int __init omapfb_setup(char *options)
+>  			case 'm':
+>  			case 'M':
+>  				vram *= 1024;
+> -				/* Fall through */
+> +				fallthrough;
+>  			case 'k':
+>  			case 'K':
+>  				vram *= 1024;
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> index 3bb951eb29c7..285d33ce1e11 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> @@ -1858,7 +1858,7 @@ static void calc_vrfb_rotation_offset(u8 rotation, bool mirror,
+>  		if (color_mode == OMAP_DSS_COLOR_YUV2 ||
+>  			color_mode == OMAP_DSS_COLOR_UYVY)
+>  			width = width >> 1;
+> -		/* fall through */
+> +		fallthrough;
+>  	case OMAP_DSS_ROT_90:
+>  	case OMAP_DSS_ROT_270:
+>  		*offset1 = 0;
+> @@ -1881,7 +1881,7 @@ static void calc_vrfb_rotation_offset(u8 rotation, bool mirror,
+>  		if (color_mode == OMAP_DSS_COLOR_YUV2 ||
+>  			color_mode == OMAP_DSS_COLOR_UYVY)
+>  			width = width >> 1;
+> -		/* fall through */
+> +		fallthrough;
+>  	case OMAP_DSS_ROT_90 + 4:
+>  	case OMAP_DSS_ROT_270 + 4:
+>  		*offset1 = 0;
+> diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c b/drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c
+> index f40be68d5aac..ea8c88aa4477 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c
+> @@ -760,7 +760,7 @@ int omapfb_ioctl(struct fb_info *fbi, unsigned int cmd, unsigned long arg)
+>  			r = -ENODEV;
+>  			break;
+>  		}
+> -		/* FALLTHROUGH */
+> +		fallthrough;
+>  
+>  	case OMAPFB_WAITFORVSYNC:
+>  		DBG("ioctl WAITFORVSYNC\n");
+> diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+> index 836e7b1639ce..a3decc7fadde 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+> @@ -882,7 +882,7 @@ int omapfb_setup_overlay(struct fb_info *fbi, struct omap_overlay *ovl,
+>  				/ (var->bits_per_pixel >> 2);
+>  			break;
+>  		}
+> -		/* fall through */
+> +		fallthrough;
+>  	default:
+>  		screen_width = fix->line_length / (var->bits_per_pixel >> 3);
+>  		break;
+> diff --git a/drivers/video/fbdev/pm2fb.c b/drivers/video/fbdev/pm2fb.c
+> index c7c98d8e2359..0642555289e0 100644
+> --- a/drivers/video/fbdev/pm2fb.c
+> +++ b/drivers/video/fbdev/pm2fb.c
+> @@ -233,10 +233,10 @@ static u32 to3264(u32 timing, int bpp, int is64)
+>  	switch (bpp) {
+>  	case 24:
+>  		timing *= 3;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 8:
+>  		timing >>= 1;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 16:
+>  		timing >>= 1;
+>  	case 32:
+> diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
+> index a53d24fb7183..f1551e00eb12 100644
+> --- a/drivers/video/fbdev/pxafb.c
+> +++ b/drivers/video/fbdev/pxafb.c
+> @@ -1614,7 +1614,7 @@ static void set_ctrlr_state(struct pxafb_info *fbi, u_int state)
+>  		 */
+>  		if (old_state != C_DISABLE_PM)
+>  			break;
+> -		/* fall through */
+> +		fallthrough;
+>  
+>  	case C_ENABLE:
+>  		/*
+> diff --git a/drivers/video/fbdev/s3c-fb.c b/drivers/video/fbdev/s3c-fb.c
+> index 9dc925054930..ba316bd56efd 100644
+> --- a/drivers/video/fbdev/s3c-fb.c
+> +++ b/drivers/video/fbdev/s3c-fb.c
+> @@ -284,7 +284,7 @@ static int s3c_fb_check_var(struct fb_var_screeninfo *var,
+>  		/* 666 with one bit alpha/transparency */
+>  		var->transp.offset	= 18;
+>  		var->transp.length	= 1;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 18:
+>  		var->bits_per_pixel	= 32;
+>  
+> @@ -312,7 +312,7 @@ static int s3c_fb_check_var(struct fb_var_screeninfo *var,
+>  	case 25:
+>  		var->transp.length	= var->bits_per_pixel - 24;
+>  		var->transp.offset	= 24;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 24:
+>  		/* our 24bpp is unpacked, so 32bpp */
+>  		var->bits_per_pixel	= 32;
+> @@ -809,7 +809,7 @@ static int s3c_fb_blank(int blank_mode, struct fb_info *info)
+>  	case FB_BLANK_POWERDOWN:
+>  		wincon &= ~WINCONx_ENWIN;
+>  		sfb->enabled &= ~(1 << index);
+> -		/* fall through - to FB_BLANK_NORMAL */
+> +		fallthrough;	/* to FB_BLANK_NORMAL */
+>  
+>  	case FB_BLANK_NORMAL:
+>  		/* disable the DMA and display 0x0 (black) */
+> diff --git a/drivers/video/fbdev/sa1100fb.c b/drivers/video/fbdev/sa1100fb.c
+> index 3e6e13f7a831..a3f0a66b3471 100644
+> --- a/drivers/video/fbdev/sa1100fb.c
+> +++ b/drivers/video/fbdev/sa1100fb.c
+> @@ -935,7 +935,7 @@ static void set_ctrlr_state(struct sa1100fb_info *fbi, u_int state)
+>  		 */
+>  		if (old_state != C_DISABLE_PM)
+>  			break;
+> -		/* fall through */
+> +		fallthrough;
+>  
+>  	case C_ENABLE:
+>  		/*
+> diff --git a/drivers/video/fbdev/savage/savagefb_driver.c b/drivers/video/fbdev/savage/savagefb_driver.c
+> index 3c8ae87f0ea7..2a0b156019b9 100644
+> --- a/drivers/video/fbdev/savage/savagefb_driver.c
+> +++ b/drivers/video/fbdev/savage/savagefb_driver.c
+> @@ -1859,8 +1859,7 @@ static int savage_init_hw(struct savagefb_par *par)
+>  		vga_out8(0x3d4, 0x68, par);	/* memory control 1 */
+>  		if ((vga_in8(0x3d5, par) & 0xC0) == (0x01 << 6))
+>  			RamSavage4[1] = 8;
+> -
+> -		/*FALLTHROUGH*/
+> +		fallthrough;
+>  
+>  	case S3_SAVAGE2000:
+>  		videoRam = RamSavage4[(config1 & 0xE0) >> 5] * 1024;
+> diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+> index 8a27d12e6ea8..c1043420dbd3 100644
+> --- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
+> +++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+> @@ -1594,7 +1594,7 @@ sh_mobile_lcdc_overlay_fb_init(struct sh_mobile_lcdc_overlay *ovl)
+>  	case V4L2_PIX_FMT_NV12:
+>  	case V4L2_PIX_FMT_NV21:
+>  		info->fix.ypanstep = 2;
+> -		/* Fall through */
+> +		fallthrough;
+>  	case V4L2_PIX_FMT_NV16:
+>  	case V4L2_PIX_FMT_NV61:
+>  		info->fix.xpanstep = 2;
+> @@ -2085,7 +2085,7 @@ sh_mobile_lcdc_channel_fb_init(struct sh_mobile_lcdc_chan *ch,
+>  	case V4L2_PIX_FMT_NV12:
+>  	case V4L2_PIX_FMT_NV21:
+>  		info->fix.ypanstep = 2;
+> -		/* Fall through */
+> +		fallthrough;
+>  	case V4L2_PIX_FMT_NV16:
+>  	case V4L2_PIX_FMT_NV61:
+>  		info->fix.xpanstep = 2;
+> diff --git a/drivers/video/fbdev/sm501fb.c b/drivers/video/fbdev/sm501fb.c
+> index 3dd1b1d76e98..6a52eba64559 100644
+> --- a/drivers/video/fbdev/sm501fb.c
+> +++ b/drivers/video/fbdev/sm501fb.c
+> @@ -1005,7 +1005,7 @@ static int sm501fb_blank_crt(int blank_mode, struct fb_info *info)
+>  	case FB_BLANK_POWERDOWN:
+>  		ctrl &= ~SM501_DC_CRT_CONTROL_ENABLE;
+>  		sm501_misc_control(fbi->dev->parent, SM501_MISC_DAC_POWER, 0);
+> -		/* fall through */
+> +		fallthrough;
+>  
+>  	case FB_BLANK_NORMAL:
+>  		ctrl |= SM501_DC_CRT_CONTROL_BLANK;
+> diff --git a/drivers/video/fbdev/tdfxfb.c b/drivers/video/fbdev/tdfxfb.c
+> index f73e26c18c09..f056d80f6359 100644
+> --- a/drivers/video/fbdev/tdfxfb.c
+> +++ b/drivers/video/fbdev/tdfxfb.c
+> @@ -523,7 +523,7 @@ static int tdfxfb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
+>  	case 32:
+>  		var->transp.offset = 24;
+>  		var->transp.length = 8;
+> -		/* fall through */
+> +		fallthrough;
+>  	case 24:
+>  		var->red.offset = 16;
+>  		var->green.offset = 8;
+> diff --git a/drivers/video/fbdev/xen-fbfront.c b/drivers/video/fbdev/xen-fbfront.c
+> index 00307b8693bf..5ec51445bee8 100644
+> --- a/drivers/video/fbdev/xen-fbfront.c
+> +++ b/drivers/video/fbdev/xen-fbfront.c
+> @@ -677,7 +677,7 @@ static void xenfb_backend_changed(struct xenbus_device *dev,
+>  	case XenbusStateClosed:
+>  		if (dev->state == XenbusStateClosed)
+>  			break;
+> -		/* fall through - Missed the backend's CLOSING state. */
+> +		fallthrough;	/* Missed the backend's CLOSING state */
+>  	case XenbusStateClosing:
+>  		xenbus_frontend_closed(dev);
+>  		break;
+> -- 
+> 2.27.0
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
