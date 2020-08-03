@@ -2,151 +2,142 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 555C723AE52
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Aug 2020 22:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C78E23AED4
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Aug 2020 23:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728046AbgHCUld (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Aug 2020 16:41:33 -0400
-Received: from gateway31.websitewelcome.com ([192.185.143.234]:37034 "EHLO
-        gateway31.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726693AbgHCUld (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Aug 2020 16:41:33 -0400
-X-Greylist: delayed 1499 seconds by postgrey-1.27 at vger.kernel.org; Mon, 03 Aug 2020 16:41:31 EDT
-Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
-        by gateway31.websitewelcome.com (Postfix) with ESMTP id 0951934355
-        for <linux-omap@vger.kernel.org>; Mon,  3 Aug 2020 14:52:37 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id 2gTjk3OymCjCV2gTkk2p3v; Mon, 03 Aug 2020 14:50:36 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=a82iAoC3wtmd0m+CGqkI10oX4tlnLO4lUVTp19ttoWY=; b=Q5JMDgCXFYhlB8DQMrePj6N8Np
-        D0Gz7dV+h5LsRL5M7z/L/trKS+s6/WdO/qttVQUo2uvqbQH2sIMB85CAtIe1f9f3gGlJFrnuKIVgm
-        VjSG0WwuuO4Xs2HqAmv6tm4I9CzaKSO5wcijQ01IlKAZwCif2lO7pvMuTrKPcFsnAENYML886I+vq
-        pGi0DJhrIvOIat00jxgnQl+t0K772Z7RYxHcshTwqWbEtOGpAjmlvlPmf9I/LWTjb3VtjHd407FQd
-        OTKlT4yUbjFzCZT6KQBm/LpYqoKimMJVfbnT9r24kScwECInjGz/1E/uAPmQ3htOA+umWVq59fsAn
-        xjw8CN5g==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:41154 helo=[192.168.15.2])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1k2gTj-002LBi-91; Mon, 03 Aug 2020 14:50:35 -0500
-Subject: Re: [PATCH][next] fbdev: Use fallthrough pseudo-keyword
-To:     Sam Ravnborg <sam@ravnborg.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Timur Tabi <timur@kernel.org>,
+        id S1729003AbgHCVBV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Aug 2020 17:01:21 -0400
+Received: from mail-io1-f46.google.com ([209.85.166.46]:44953 "EHLO
+        mail-io1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728889AbgHCVBU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Aug 2020 17:01:20 -0400
+Received: by mail-io1-f46.google.com with SMTP id v6so24749093iow.11;
+        Mon, 03 Aug 2020 14:01:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=caU68Vks0Qq0qRNr1RcbbJo83bu5SQyVcphbC7uR/pw=;
+        b=eLf7LczPFnRjHgztRiF/SzIF4maOualtTBucdu4jKPARDpvweRK/8Ikey/hZ9uKHmW
+         q3ulkz9TB+0gsZyhMRRGV+RT0JScLW6eiRuVdy0h6Cs9wI3YAXyt530hyDYwClmvIrnF
+         PBSgvTeMUe4FM2Ri+r6Cu8rwmmPGbQ5HmLOvi3dURAioxjNXCSC6As/uyiRkpax9kg+I
+         MwVRonkBibAPH3Vqigm4NoLUZj9BsEoJF8P8u54s07kI5vpFnti4NApiVsjTXwetrzfw
+         Q7LbHWkLqRJaqwsn0wJl+urSidxjXe6DKTZ4jczt8GbdHlu8z0UQK1m9LWCB9sRnQUv+
+         icrQ==
+X-Gm-Message-State: AOAM530Wwp4vl3i/+A3lSiRwqAzCAJpP9Q+vPMGfTU/d18C2iXNGfuqi
+        1l7FTE3qx6SK7JIOdqNsdg==
+X-Google-Smtp-Source: ABdhPJwLvkQ8nLiW6KyvJ0FE/ZZBxba/47A0nMcMogCK9MlyD6FPHyseUZgrOPhESgV+UWpEU2XPBA==
+X-Received: by 2002:a5d:9b96:: with SMTP id r22mr1872679iom.66.1596488479389;
+        Mon, 03 Aug 2020 14:01:19 -0700 (PDT)
+Received: from xps15.herring.priv ([64.188.179.252])
+        by smtp.googlemail.com with ESMTPSA id r6sm9292280iod.7.2020.08.03.14.01.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2020 14:01:18 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
         Jingoo Han <jingoohan1@gmail.com>,
-        Antonino Daplas <adaplas@gmail.com>,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20200707210539.GA12530@embeddedor>
- <20200803194024.GA525506@ravnborg.org>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Autocrypt: addr=gustavo@embeddedor.com; keydata=
- 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
- AP7RWS474w==
-Message-ID: <6dd23644-bace-549f-8053-f0f1f99d9352@embeddedor.com>
-Date:   Mon, 3 Aug 2020 14:56:41 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     Binghui Wang <wangbinghui@hisilicon.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-tegra@vger.kernel.org, Lucas Stach <l.stach@pengutronix.de>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        Yue Wang <yue.wang@Amlogic.com>
+Subject: [RFC 00/27] PCI: dwc: Driver clean-ups
+Date:   Mon,  3 Aug 2020 15:00:49 -0600
+Message-Id: <20200803210116.3132633-1-robh@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20200803194024.GA525506@ravnborg.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1k2gTj-002LBi-91
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.2]) [187.162.31.110]:41154
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 14
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+This is a series of clean-ups for the Designware PCI driver. The series
+primarily reworks the config space accessors to use the existing pci_ops
+struct and removes various private data that's also present in the
+pci_host_bridge struct. There's also some duplicated common (PCI and
+DWC) register defines which I converted to use the common defines.
+
+This is compile tested only as I don't have any DWC based h/w, so any
+testing would be helpful. This is an RFC as it will need to be rebased
+on 5.9-rc1 and my previous clean-up series.
+
+Rob
 
 
-On 8/3/20 14:41, Sam Ravnborg wrote:
-> On Tue, Jul 07, 2020 at 04:05:39PM -0500, Gustavo A. R. Silva wrote:
->> Replace the existing /* fall through */ comments and its variants with
->> the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
->> fall-through markings when it is the case.
->>
->> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
->>
->> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> 
-> Thanks.
-> 
-> Fixed indent in arcfb.c while applying.
-> Applied to drm-misc-next and it will appear in 5.10
-> 
+Rob Herring (27):
+  PCI: Allow root and child buses to have different pci_ops
+  PCI: dwc: Use DBI accessors instead of own config accessors
+  PCI: dwc: Allow overriding bridge pci_ops
+  PCI: dwc: Add a default pci_ops.map_bus for root port
+  PCI: dwc: al: Use pci_ops for child config space accessors
+  PCI: dwc: keystone: Use pci_ops for config space accessors
+  PCI: dwc: tegra: Use pci_ops for root config space accessors
+  PCI: dwc: meson: Use pci_ops for root config space accessors
+  PCI: dwc: kirin: Use pci_ops for root config space accessors
+  PCI: dwc: exynos: Use pci_ops for root config space accessors
+  PCI: dwc: histb: Use pci_ops for root config space accessors
+  PCI: dwc: Remove dwc specific config accessor ops
+  PCI: dwc: Use generic config accessors
+  PCI: Also call .add_bus() callback for root bus
+  PCI: dwc: keystone: Convert .scan_bus() callback to use add_bus
+  PCI: dwc: Convert to use pci_host_probe()
+  PCI: dwc: Remove root_bus pointer
+  PCI: dwc: Remove storing of PCI resources
+  PCI: dwc: Simplify config space handling
+  PCI: dwc/keystone: Drop duplicated 'num-viewport'
+  PCI: dwc: Check CONFIG_PCI_MSI inside dw_pcie_msi_init()
+  PCI: dwc/imx6: Remove duplicate define PCIE_LINK_WIDTH_SPEED_CONTROL
+  PCI: dwc/meson: Drop unnecessary RC config space initialization
+  PCI: dwc/meson: Rework PCI config and DW port logic register accesses
+  PCI: dwc/qcom: Use common PCI register definitions
+  PCI: dwc: Remove hardcoded PCI_CAP_ID_EXP offset
+  PCI: dwc/tegra: Use common Designware port logic register definitions
 
-Thank you, Sam. :)
+ drivers/pci/controller/dwc/pci-dra7xx.c       |   4 +-
+ drivers/pci/controller/dwc/pci-exynos.c       |  45 +--
+ drivers/pci/controller/dwc/pci-imx6.c         |   6 +-
+ drivers/pci/controller/dwc/pci-keystone.c     |  90 +++--
+ drivers/pci/controller/dwc/pci-meson.c        | 164 +++------
+ drivers/pci/controller/dwc/pcie-al.c          |  70 +---
+ drivers/pci/controller/dwc/pcie-artpec6.c     |  11 +-
+ .../pci/controller/dwc/pcie-designware-host.c | 319 ++++++------------
+ .../pci/controller/dwc/pcie-designware-plat.c |   4 +-
+ drivers/pci/controller/dwc/pcie-designware.h  |  28 +-
+ drivers/pci/controller/dwc/pcie-histb.c       |  45 +--
+ drivers/pci/controller/dwc/pcie-kirin.c       |  43 +--
+ drivers/pci/controller/dwc/pcie-qcom.c        |  31 +-
+ drivers/pci/controller/dwc/pcie-spear13xx.c   |   4 +-
+ drivers/pci/controller/dwc/pcie-tegra194.c    |  90 +++--
+ drivers/pci/controller/dwc/pcie-uniphier.c    |   3 +-
+ drivers/pci/probe.c                           |  14 +-
+ include/linux/pci.h                           |   1 +
+ 18 files changed, 368 insertions(+), 604 deletions(-)
 
 --
-Gustavo
+2.25.1
