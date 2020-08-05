@@ -2,126 +2,164 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6642023D0FA
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Aug 2020 21:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9FD423D122
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Aug 2020 21:57:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729588AbgHETyx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Aug 2020 15:54:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46360 "EHLO
+        id S1728015AbgHET5A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Aug 2020 15:57:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728072AbgHEQsi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Aug 2020 12:48:38 -0400
-Received: from mo6-p02-ob.smtp.rzone.de (mo6-p02-ob.smtp.rzone.de [IPv6:2a01:238:20a:202:5302::5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65B1DC03460E
-        for <linux-omap@vger.kernel.org>; Wed,  5 Aug 2020 05:11:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1596628862;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=HKIqLRmSQ+p9mZrCWiA9BeJJodIRQ8eG+wM7N37ouac=;
-        b=Pz4A6hK4U28Bz2ClklvfZEblinoUxy2QwcQPqJjeLTICZYsJFry5ZJVsgnZEHG4ETJ
-        teu7sTgDNjjeb7XtrgTJxH/LpnZhbDo1cfzW41s5qhnAZwkkn79u4wE0aB7HXEc8giiI
-        ebQypm7gky7yBWWbTvePE7zQLBJeVcrrSIGLW79MXAOoiWw2tdwPcy7U9SR6vrLI24Nm
-        zCHv2NGLM8/cciTgN52Vlh4XKQYwPDN51mvysMSIM5HLgvqndQ9aZhAEEL5D98BzE2q4
-        aSRBToz2KjGlfZfDE/UE0W74IxTPxHLe6sJEaniHKtM4stI6hWzm6diqMtfFUPo0IfJK
-        Dw/w==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBp5hRy/t23tTZSrJjFjnMxHeR4GcVReHGtOgKna+z0IjvQ4fmvWQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2003:d5:8700:1900:25a9:5bd5:20ae:409a]
-        by smtp.strato.de (RZmta 46.10.5 AUTH)
-        with ESMTPSA id V07054w75C0lbku
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Wed, 5 Aug 2020 14:00:47 +0200 (CEST)
-Subject: Re: module_mipi_dsi_driver panel with omapdrm?
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <E1k3Hyu-0000Ac-BU@ds0.me>
-Date:   Wed, 5 Aug 2020 14:00:46 +0200
-Cc:     Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        with ESMTP id S1727998AbgHEQoM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Aug 2020 12:44:12 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB433C08ED2B;
+        Wed,  5 Aug 2020 06:17:29 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id j9so33893460ilc.11;
+        Wed, 05 Aug 2020 06:17:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=U9j+MufxMDRYF1VNGK/h8ZpxbV45735lCqjDi7az7Y4=;
+        b=HYhDSNmOIeR8Tsx8WIrVaqjB1BsfWU/aDZd+mWUzIkl92tNvGHxuV98CEr4ICg5bZj
+         0hMqGfgpfY0LmImX9w5DtGi+O5L/JgjPyvAAnDDwcIFA+JiEH4lTU/iYTZ4kzSfyjVN/
+         APHqSnfypG1GSBKovRFe8+eUbJLog8nP7ypyeUlkdqpyuq3+fPS5sXRKdpZpTAHtttDW
+         VsLqacvZOAeeZOqzobmFGX5eZWyQyVHa5ExdjZ8ZigsYZzuaQEYs7/LdG+R+u8I7iMWP
+         JNNhNcHMSQRRLVOBUQiRIQY1q/eDk8A0E4ZlwRBXgQx4xECv3OiwvnkQxuUSm40BJZWG
+         YuMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=U9j+MufxMDRYF1VNGK/h8ZpxbV45735lCqjDi7az7Y4=;
+        b=h92tL9f5cpMt6h3GVoMA0UoUB3ySXn5whPYW9eiwm+bxH5U1fvlOhSCERFcYeI/WKT
+         +9dd2EnuYS1oi7gbcm7snOKAueLtZO3RLFYqXTLbG9V9ZJ96PKKvWcCYYDEu56ULHSxr
+         INyhRe6/ylaxuUWstTuX6GvIBGnVMy903fDTqnAaOvTsXgqL5Fz1w4e+aX15PHNMOtyR
+         pmDuDnqmdRVhGf8oeB+r3X5o8v8QvUFTtN0s46+5TLeRV/xGmoLnMWbVwnRMrjodE4WS
+         To3MHjpSCSOuUNaJw2b4qckGviptnnH/I98dGCy5bRY80/2I4K22G+oCfim2Wm4d8xnZ
+         +OZA==
+X-Gm-Message-State: AOAM532OFR6m1OGh0SOcJMtrkciGM25VFBt8DO/F/s7Dg9GKMAgA8oLx
+        5rm6uYDnY1CGTCkrELPIgVMlaRLeE2BFLa93f8gnvg==
+X-Google-Smtp-Source: ABdhPJwHeDoHvq2FDyJUbZK5qgI7U+gsBRFp8nkzGnu2r/YdKckPQIeQukn5HdbnZh+8a/s0rnH4tJdWMvWvFKiyjHE=
+X-Received: by 2002:a92:60d:: with SMTP id x13mr3933276ilg.214.1596633448397;
+ Wed, 05 Aug 2020 06:17:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <20191007220540.30690-1-aford173@gmail.com> <20191007220540.30690-2-aford173@gmail.com>
+In-Reply-To: <20191007220540.30690-2-aford173@gmail.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Wed, 5 Aug 2020 08:17:16 -0500
+Message-ID: <CAHCN7x+fnyXb+UO3xPd0nKeZNAPhRsXd5kTCAHxvg6hSt8Bx-A@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ARM: dts: omap3: Add cpu trips and cooling map for
+ omap34/36 families
+To:     Linux-OMAP <linux-omap@vger.kernel.org>
+Cc:     Adam Ford <adam.ford@logicpd.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Jyri Sarha <jsarha@ti.com>, kernel@pyra-handheld.com,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7634E586-CCCC-4DF6-9F43-F3FD11B707BA@goldelico.com>
-References: <E1k3Hyu-0000Ac-BU@ds0.me>
-To:     David Shah <dave@ds0.me>
-X-Mailer: Apple Mail (2.3124)
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi David,
-good to know! Would mean that the combination of HDMI and DSI may make =
-trouble.
+On Mon, Oct 7, 2019 at 5:06 PM Adam Ford <aford173@gmail.com> wrote:
+>
+> The OMAP3530, OMAP3630, and DM3730 all show thresholds of 90C and 105C
+> depending on commercial or industrial temperature ratings.
+>
+> This patch expands the thermal information to include the limits of 90
+> and 105C for alert and critical.  It sets the coolings-cells for the
+> 34xx and 36xx CPU's which both point to omap3-cpu-thermal.dtsi.
+>
+> For boards who never use industrial temperatures, these can be
+> changed on their respective device trees with something like:
+>
+> &cpu_alert0 {
+>         temperature = <85000>; /* millicelsius */
+> };
+>
+> &cpu_crit {
+>         temperature = <90000>; /* millicelsius */
+> };
+>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # on GTA04A5 with dm3730cbp100
+>
 
-Maybe we should simply wait ca. 14 days until I have access to my own =
-test setup and can run such tests easily and within minutes myself.
-Since it is already broken since v5.7-rc1 it should be possible to wait =
-that time :)
+Tony,
 
-Best regards,
-Nikolaus
+I know this is an old thread.  I am trying to revisit some of the
+other issues that came about with this, but is there any way we can
+get patch 2/2 applied?  It might not do anything unless the bandgap
+sensor is enabled, but it at least gets us one step closer for those
+who choose to enable it.  With 1GHz support now available, it would be
+nice to have the precautions to protect the processor from running too
+fast when its too hot.
 
+thanks
 
-> Am 05.08.2020 um 13:53 schrieb David Shah <dave@ds0.me>:
->=20
-> If it helps, I can confirm that HDMI was working fine on the uEVM the =
-last time I test 5.7 (I think it was the final rc before release).
->=20
-> David
->=20
-> -------- Original message --------
-> From: "H. Nikolaus Schaller" <hns@goldelico.com>
-> Date: 05/08/2020 12:49 (GMT+00:00)
-> To: Sebastian Reichel <sebastian.reichel@collabora.com>
-> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Tony =
-Lindgren <tony@atomide.com>, Tomi Valkeinen <tomi.valkeinen@ti.com>, =
-Linux-OMAP <linux-omap@vger.kernel.org>, Jyri Sarha <jsarha@ti.com>, =
-kernel@pyra-handheld.com, Discussions about the Letux Kernel =
-<letux-kernel@openphoenux.org>, David Shah <dave@ds0.me>
-> Subject: Re: module_mipi_dsi_driver panel with omapdrm?
->=20
-> Hi,
->=20
-> > Am 05.08.2020 um 13:28 schrieb Sebastian Reichel =
-<sebastian.reichel@collabora.com>:
-> >=20
-> > Hi,
-> >=20
-> > On Wed, Aug 05, 2020 at 11:19:20AM +0200, H. Nikolaus Schaller =
-wrote:
-> >> What I do not yet understand is how Laurent's patch should be able
-> >> to break it.
-> >=20
-> > omapdrm will not probe successfully if any DT enabled component
-> > does not probe correctly. Since the patch you identified touched
-> > HDMI and VENC and you are probably using HDMI, I suggest looking
-> > there first.
->=20
-> Yes, that is a very good explanation.
->=20
-> Maybe there is a subtle change in how the HDMI connector has to be =
-defined
-> which is missing in our (private) DTB. Maybe the OMAP5-uEVM DTS gives =
-a hint.
->=20
-> A quick check shows last hdmi specific change for omap5-board-common =
-or uevm
-> was in 2017 but I may have missed something.
->=20
-> There are 715a5a978733f0 and 671ab615bd507f which arrived in v5.7-rc1 =
-as well
-> and are related to hdmi clocks. So this may be (or not) and =
-influencing factor.
->=20
-> BR and thanks,
-> Nikolaus
->=20
+adam
 
+> diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+> index 235ecfd61e2d..dfbd0cb0b00b 100644
+> --- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+> +++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+> @@ -17,4 +17,25 @@ cpu_thermal: cpu_thermal {
+>
+>                         /* sensor       ID */
+>         thermal-sensors = <&bandgap     0>;
+> +
+> +       cpu_trips: trips {
+> +               cpu_alert0: cpu_alert {
+> +                       temperature = <90000>; /* millicelsius */
+> +                       hysteresis = <2000>; /* millicelsius */
+> +                       type = "passive";
+> +               };
+> +               cpu_crit: cpu_crit {
+> +                       temperature = <105000>; /* millicelsius */
+> +                       hysteresis = <2000>; /* millicelsius */
+> +                       type = "critical";
+> +               };
+> +       };
+> +
+> +       cpu_cooling_maps: cooling-maps {
+> +               map0 {
+> +                       trip = <&cpu_alert0>;
+> +                       cooling-device =
+> +                               <&cpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+> +               };
+> +       };
+>  };
+> diff --git a/arch/arm/boot/dts/omap34xx.dtsi b/arch/arm/boot/dts/omap34xx.dtsi
+> index 7b09cbee8bb8..99a7161bebb2 100644
+> --- a/arch/arm/boot/dts/omap34xx.dtsi
+> +++ b/arch/arm/boot/dts/omap34xx.dtsi
+> @@ -26,6 +26,7 @@
+>                                 600000  1350000
+>                         >;
+>                         clock-latency = <300000>; /* From legacy driver */
+> +                       #cooling-cells = <2>;
+>                 };
+>         };
+>
+> diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
+> index 1e552f08f120..8096b6ef0ae1 100644
+> --- a/arch/arm/boot/dts/omap36xx.dtsi
+> +++ b/arch/arm/boot/dts/omap36xx.dtsi
+> @@ -28,6 +28,7 @@
+>                                 800000  1325000
+>                         >;
+>                         clock-latency = <300000>; /* From legacy driver */
+> +                       #cooling-cells = <2>;
+>                 };
+>         };
+>
+> --
+> 2.17.1
+>
