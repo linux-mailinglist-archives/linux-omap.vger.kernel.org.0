@@ -2,164 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9FD423D122
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Aug 2020 21:57:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7300B23D461
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Aug 2020 02:09:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728015AbgHET5A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Aug 2020 15:57:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45438 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727998AbgHEQoM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Aug 2020 12:44:12 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB433C08ED2B;
-        Wed,  5 Aug 2020 06:17:29 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id j9so33893460ilc.11;
-        Wed, 05 Aug 2020 06:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=U9j+MufxMDRYF1VNGK/h8ZpxbV45735lCqjDi7az7Y4=;
-        b=HYhDSNmOIeR8Tsx8WIrVaqjB1BsfWU/aDZd+mWUzIkl92tNvGHxuV98CEr4ICg5bZj
-         0hMqGfgpfY0LmImX9w5DtGi+O5L/JgjPyvAAnDDwcIFA+JiEH4lTU/iYTZ4kzSfyjVN/
-         APHqSnfypG1GSBKovRFe8+eUbJLog8nP7ypyeUlkdqpyuq3+fPS5sXRKdpZpTAHtttDW
-         VsLqacvZOAeeZOqzobmFGX5eZWyQyVHa5ExdjZ8ZigsYZzuaQEYs7/LdG+R+u8I7iMWP
-         JNNhNcHMSQRRLVOBUQiRIQY1q/eDk8A0E4ZlwRBXgQx4xECv3OiwvnkQxuUSm40BJZWG
-         YuMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=U9j+MufxMDRYF1VNGK/h8ZpxbV45735lCqjDi7az7Y4=;
-        b=h92tL9f5cpMt6h3GVoMA0UoUB3ySXn5whPYW9eiwm+bxH5U1fvlOhSCERFcYeI/WKT
-         +9dd2EnuYS1oi7gbcm7snOKAueLtZO3RLFYqXTLbG9V9ZJ96PKKvWcCYYDEu56ULHSxr
-         INyhRe6/ylaxuUWstTuX6GvIBGnVMy903fDTqnAaOvTsXgqL5Fz1w4e+aX15PHNMOtyR
-         pmDuDnqmdRVhGf8oeB+r3X5o8v8QvUFTtN0s46+5TLeRV/xGmoLnMWbVwnRMrjodE4WS
-         To3MHjpSCSOuUNaJw2b4qckGviptnnH/I98dGCy5bRY80/2I4K22G+oCfim2Wm4d8xnZ
-         +OZA==
-X-Gm-Message-State: AOAM532OFR6m1OGh0SOcJMtrkciGM25VFBt8DO/F/s7Dg9GKMAgA8oLx
-        5rm6uYDnY1CGTCkrELPIgVMlaRLeE2BFLa93f8gnvg==
-X-Google-Smtp-Source: ABdhPJwHeDoHvq2FDyJUbZK5qgI7U+gsBRFp8nkzGnu2r/YdKckPQIeQukn5HdbnZh+8a/s0rnH4tJdWMvWvFKiyjHE=
-X-Received: by 2002:a92:60d:: with SMTP id x13mr3933276ilg.214.1596633448397;
- Wed, 05 Aug 2020 06:17:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191007220540.30690-1-aford173@gmail.com> <20191007220540.30690-2-aford173@gmail.com>
-In-Reply-To: <20191007220540.30690-2-aford173@gmail.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Wed, 5 Aug 2020 08:17:16 -0500
-Message-ID: <CAHCN7x+fnyXb+UO3xPd0nKeZNAPhRsXd5kTCAHxvg6hSt8Bx-A@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ARM: dts: omap3: Add cpu trips and cooling map for
- omap34/36 families
-To:     Linux-OMAP <linux-omap@vger.kernel.org>
-Cc:     Adam Ford <adam.ford@logicpd.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        id S1725969AbgHFAJg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Aug 2020 20:09:36 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:47106 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725779AbgHFAJg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Aug 2020 20:09:36 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 075C8WYJ052997;
+        Wed, 5 Aug 2020 07:08:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1596629312;
+        bh=bYN9YMMfBLPwBNbNiYnHPFmJhdJUzDpSUVoYpTUh52w=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=sWPzE31G5P5hKsv4rPXlmqJQQKC22yKVKcccDOeadD4omqWsXpF2dUqmKrdFtNGTH
+         kGY5VBA2rk24Uhq1tnu6rSYDUEgOJz8w1IwVoEyyZvnPv/Qj4trMrJTb+L6nDnl1l6
+         V8bHHuk3s6t6Dw8ZfPEoB722KezljuhKEou0moQc=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 075C8W7u095378
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 5 Aug 2020 07:08:32 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 5 Aug
+ 2020 07:08:32 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 5 Aug 2020 07:08:32 -0500
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 075C8Tt9037679;
+        Wed, 5 Aug 2020 07:08:30 -0500
+Subject: Re: module_mipi_dsi_driver panel with omapdrm?
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+CC:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Jyri Sarha <jsarha@ti.com>, <kernel@pyra-handheld.com>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, David Shah <dave@ds0.me>
+References: <20200706143613.GS37466@atomide.com>
+ <E4616E3C-2519-4421-BC75-87A5CA2BB9EF@goldelico.com>
+ <20200707180115.GB5849@atomide.com>
+ <ECE29C41-DFE5-4A50-9206-6FB3183824C3@goldelico.com>
+ <6E0A9415-9AB5-48D9-9E61-12D20655D04D@goldelico.com>
+ <EE54FB82-C18E-4B81-AB38-E9453A32406B@goldelico.com>
+ <20200724012411.GJ21353@pendragon.ideasonboard.com>
+ <7023EB05-DC29-4D42-84C8-F0D14B50467D@goldelico.com>
+ <20200801232259.hitcfosiq6f2i57y@earth.universe>
+ <4F1BD997-B791-4570-92B9-552C9BFF1350@goldelico.com>
+ <20200805112831.akufm5wxkwqehiff@earth.universe>
+ <0DDD1D3E-4F63-44B4-91CA-1B5B853837BC@goldelico.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <64416676-a2ea-f11e-4d07-51a3efb55cdd@ti.com>
+Date:   Wed, 5 Aug 2020 15:08:29 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <0DDD1D3E-4F63-44B4-91CA-1B5B853837BC@goldelico.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 7, 2019 at 5:06 PM Adam Ford <aford173@gmail.com> wrote:
->
-> The OMAP3530, OMAP3630, and DM3730 all show thresholds of 90C and 105C
-> depending on commercial or industrial temperature ratings.
->
-> This patch expands the thermal information to include the limits of 90
-> and 105C for alert and critical.  It sets the coolings-cells for the
-> 34xx and 36xx CPU's which both point to omap3-cpu-thermal.dtsi.
->
-> For boards who never use industrial temperatures, these can be
-> changed on their respective device trees with something like:
->
-> &cpu_alert0 {
->         temperature = <85000>; /* millicelsius */
-> };
->
-> &cpu_crit {
->         temperature = <90000>; /* millicelsius */
-> };
->
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-> Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # on GTA04A5 with dm3730cbp100
->
+On 05/08/2020 14:49, H. Nikolaus Schaller wrote:
+> Hi,
+> 
+>> Am 05.08.2020 um 13:28 schrieb Sebastian Reichel <sebastian.reichel@collabora.com>:
+>>
+>> Hi,
+>>
+>> On Wed, Aug 05, 2020 at 11:19:20AM +0200, H. Nikolaus Schaller wrote:
+>>> What I do not yet understand is how Laurent's patch should be able
+>>> to break it.
+>>
+>> omapdrm will not probe successfully if any DT enabled component
+>> does not probe correctly. Since the patch you identified touched
+>> HDMI and VENC and you are probably using HDMI, I suggest looking
+>> there first.
+> 
+> Yes, that is a very good explanation.
+> 
+> Maybe there is a subtle change in how the HDMI connector has to be defined
+> which is missing in our (private) DTB. Maybe the OMAP5-uEVM DTS gives a hint.
+> 
+> A quick check shows last hdmi specific change for omap5-board-common or uevm
+> was in 2017 but I may have missed something.
+> 
+> There are 715a5a978733f0 and 671ab615bd507f which arrived in v5.7-rc1 as well
+> and are related to hdmi clocks. So this may be (or not) and influencing factor.
 
-Tony,
+HDMI should "just work", and has been tested. But maybe there's some conflict with HDMI and DSI.
 
-I know this is an old thread.  I am trying to revisit some of the
-other issues that came about with this, but is there any way we can
-get patch 2/2 applied?  It might not do anything unless the bandgap
-sensor is enabled, but it at least gets us one step closer for those
-who choose to enable it.  With 1GHz support now available, it would be
-nice to have the precautions to protect the processor from running too
-fast when its too hot.
+ Tomi
 
-thanks
-
-adam
-
-> diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-> index 235ecfd61e2d..dfbd0cb0b00b 100644
-> --- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-> +++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-> @@ -17,4 +17,25 @@ cpu_thermal: cpu_thermal {
->
->                         /* sensor       ID */
->         thermal-sensors = <&bandgap     0>;
-> +
-> +       cpu_trips: trips {
-> +               cpu_alert0: cpu_alert {
-> +                       temperature = <90000>; /* millicelsius */
-> +                       hysteresis = <2000>; /* millicelsius */
-> +                       type = "passive";
-> +               };
-> +               cpu_crit: cpu_crit {
-> +                       temperature = <105000>; /* millicelsius */
-> +                       hysteresis = <2000>; /* millicelsius */
-> +                       type = "critical";
-> +               };
-> +       };
-> +
-> +       cpu_cooling_maps: cooling-maps {
-> +               map0 {
-> +                       trip = <&cpu_alert0>;
-> +                       cooling-device =
-> +                               <&cpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
-> +               };
-> +       };
->  };
-> diff --git a/arch/arm/boot/dts/omap34xx.dtsi b/arch/arm/boot/dts/omap34xx.dtsi
-> index 7b09cbee8bb8..99a7161bebb2 100644
-> --- a/arch/arm/boot/dts/omap34xx.dtsi
-> +++ b/arch/arm/boot/dts/omap34xx.dtsi
-> @@ -26,6 +26,7 @@
->                                 600000  1350000
->                         >;
->                         clock-latency = <300000>; /* From legacy driver */
-> +                       #cooling-cells = <2>;
->                 };
->         };
->
-> diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
-> index 1e552f08f120..8096b6ef0ae1 100644
-> --- a/arch/arm/boot/dts/omap36xx.dtsi
-> +++ b/arch/arm/boot/dts/omap36xx.dtsi
-> @@ -28,6 +28,7 @@
->                                 800000  1325000
->                         >;
->                         clock-latency = <300000>; /* From legacy driver */
-> +                       #cooling-cells = <2>;
->                 };
->         };
->
-> --
-> 2.17.1
->
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
