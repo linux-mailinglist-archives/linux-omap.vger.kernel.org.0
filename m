@@ -2,91 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B8B924019E
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Aug 2020 06:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5B3C241052
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Aug 2020 21:29:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725814AbgHJE6W (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 10 Aug 2020 00:58:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52860 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbgHJE6W (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 Aug 2020 00:58:22 -0400
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 771DFC061786
-        for <linux-omap@vger.kernel.org>; Sun,  9 Aug 2020 21:58:21 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id l204so7869985oib.3
-        for <linux-omap@vger.kernel.org>; Sun, 09 Aug 2020 21:58:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=IiUjz/E0yJS5Acwq7s0Wi9NqTJCu4UNiNtrhWhhnZJE=;
-        b=w5ntOGonI2saN+6mytrGYie4+y8Yh277EywUV9obx+xdwtiHqM78gvDYtNlxZiTVw4
-         u1DGtj7vQj5KukSTQElURStY5cldisYxpkYXUPAqXWSeC52K/645Wi1MOmCrWxWE2D/3
-         lasZed7h5p5T97AScHaZI8HDbxkSAKjbD+VfTZsLjM4tbTgRribKDsiYl9j28wGmyyEJ
-         uQH1gEET4hLt6WWwbJgk1oL20+bkPVa9UpPt6gPU8dQPL/ZWYaep+cGzrL7rNn9TfPmA
-         P2YYjNTPTrQBug7jliA8AZ6jquUPImMp19afRznu9GBMSUWkUYyOqBvRSMjQUxQ/mwoz
-         GyqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=IiUjz/E0yJS5Acwq7s0Wi9NqTJCu4UNiNtrhWhhnZJE=;
-        b=mgRjRFaz5EWJOFCkvnCvpL8HZYLBIgtr5+WaEE29lusyS+rEsdGGMbL+WbMovsGPyJ
-         bFZHexs+45uP0h396/k1r0o3aQ4F22cAZ31urbLgrKPMzVlM+vEG2cNEoHmnEHafdnpG
-         Gksa2d4KFpAlpPrho8eL/kejjfFQMY7SETEY8qDBFgTNaP2+8ZnXEDuDwbsgwkshhCH0
-         Ve6ksF3fpYFpOIN4rXcBtK6n9i+kiQOY9DAdLT8YVgalW9QxP61ecoEzV7BzIDhUxzPX
-         gsUzrn40YDe7g7UcR9C7F8rI+0MlzcCtjzGNfAHn+mS9WV+TAylofY6czHg+mLBRiiNh
-         uJlw==
-X-Gm-Message-State: AOAM5304fqBKB6i3XM7ttZf1a+8UIuMliT21PdNW23k6n0QNhd2/8eUL
-        b+GnS3JDs25j/ykof71SxZ69Ig==
-X-Google-Smtp-Source: ABdhPJx1w9rZoh3/Tnwxe3wZZkLYlzxR8RFAig7w/rPU85ghmbBZ2QiW9BUTovV5HtIwrqb4eQyTHA==
-X-Received: by 2002:a54:4f1a:: with SMTP id e26mr21293472oiy.171.1597035500419;
-        Sun, 09 Aug 2020 21:58:20 -0700 (PDT)
-Received: from x1.attlocal.net ([2600:1702:da0:ff40:2318:61c2:fbc5:d01e])
-        by smtp.gmail.com with ESMTPSA id t21sm3416950ooc.43.2020.08.09.21.58.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Aug 2020 21:58:19 -0700 (PDT)
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
-        bcousson@baylibre.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>
-Cc:     Drew Fustini <drew@beagleboard.org>
-Subject: [PATCH] ARM: dts: am33xx: add ocp label
-Date:   Sun,  9 Aug 2020 23:58:03 -0500
-Message-Id: <20200810045802.1547989-1-drew@beagleboard.org>
+        id S1729723AbgHJT3L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 10 Aug 2020 15:29:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38444 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729054AbgHJTKt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 10 Aug 2020 15:10:49 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C2B3A22B47;
+        Mon, 10 Aug 2020 19:10:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597086648;
+        bh=QEuPLD1HFICe5Me7VJga6gs3ZjqUmsBZRqF24c5m6FA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=hQ8qZxXCqWLZYGOmEVLeBlLoaMEiqm1x1YJy8zeGhBdFay+GSNeCfR9xp2V4+xn2O
+         CcdyPA/ZwG22r6or3WKJUz36FrwDdh8UOUuu/7O7qSDLUFlpRNL+2xrilogeEORmlt
+         G3AcpQByTFmUsR8+0pURVEXM0mtGSo94yb2nwpI8=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.7 14/60] bus: ti-sysc: Add missing quirk flags for usb_host_hs
+Date:   Mon, 10 Aug 2020 15:09:42 -0400
+Message-Id: <20200810191028.3793884-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200810191028.3793884-1-sashal@kernel.org>
+References: <20200810191028.3793884-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add label to the ocp node in the AM33xx SoC include so that it can be
-referenced in board-level files like am335x-pocketbeagle.dts
+From: Tony Lindgren <tony@atomide.com>
 
-Signed-off-by: Drew Fustini <drew@beagleboard.org>
+[ Upstream commit 4254632dba27271f6de66efd87e444ee405dee29 ]
+
+Similar to what we have for the legacy platform data, we need to
+configure SWSUP_SIDLE and SWSUP_MSTANDBY quirks for usb_host_hs.
+
+These are needed to drop the legacy platform data for usb_host_hs.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/bus/ti-sysc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
- arch/arm/boot/dts/am33xx.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-index 3b177c9c4412..02f0b886d177 100644
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -172,7 +172,7 @@ mpu {
- 	 * for the moment, just use a fake OCP bus entry to represent
- 	 * the whole bus hierarchy.
- 	 */
--	ocp {
-+	ocp: ocp {
- 		compatible = "simple-bus";
- 		#address-cells = <1>;
- 		#size-cells = <1>;
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 3b0417a014946..ae4cf4667633f 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -1402,6 +1402,10 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
+ 	SYSC_QUIRK("tptc", 0, 0, -ENODEV, -ENODEV, 0x40007c00, 0xffffffff,
+ 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
++	SYSC_QUIRK("usb_host_hs", 0, 0, 0x10, 0x14, 0x50700100, 0xffffffff,
++		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
++	SYSC_QUIRK("usb_host_hs", 0, 0, 0x10, -ENODEV, 0x50700101, 0xffffffff,
++		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
+ 	SYSC_QUIRK("usb_otg_hs", 0, 0x400, 0x404, 0x408, 0x00000050,
+ 		   0xffffffff, SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
+ 	SYSC_QUIRK("usb_otg_hs", 0, 0, 0x10, -ENODEV, 0x4ea2080d, 0xffffffff,
+@@ -1473,8 +1477,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+ 	SYSC_QUIRK("tpcc", 0, 0, -ENODEV, -ENODEV, 0x40014c00, 0xffffffff, 0),
+ 	SYSC_QUIRK("usbhstll", 0, 0, 0x10, 0x14, 0x00000004, 0xffffffff, 0),
+ 	SYSC_QUIRK("usbhstll", 0, 0, 0x10, 0x14, 0x00000008, 0xffffffff, 0),
+-	SYSC_QUIRK("usb_host_hs", 0, 0, 0x10, 0x14, 0x50700100, 0xffffffff, 0),
+-	SYSC_QUIRK("usb_host_hs", 0, 0, 0x10, -ENODEV, 0x50700101, 0xffffffff, 0),
+ 	SYSC_QUIRK("venc", 0x58003000, 0, -ENODEV, -ENODEV, 0x00000002, 0xffffffff, 0),
+ 	SYSC_QUIRK("vfpe", 0, 0, 0x104, -ENODEV, 0x4d001200, 0xffffffff, 0),
+ #endif
 -- 
 2.25.1
 
