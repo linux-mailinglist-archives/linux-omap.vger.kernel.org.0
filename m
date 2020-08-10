@@ -2,37 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5B3C241052
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Aug 2020 21:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE4D5240FCD
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Aug 2020 21:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729723AbgHJT3L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 10 Aug 2020 15:29:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38444 "EHLO mail.kernel.org"
+        id S1730097AbgHJTZE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 10 Aug 2020 15:25:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41358 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729054AbgHJTKt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 10 Aug 2020 15:10:49 -0400
+        id S1729485AbgHJTMK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 10 Aug 2020 15:12:10 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C2B3A22B47;
-        Mon, 10 Aug 2020 19:10:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 104CD2224D;
+        Mon, 10 Aug 2020 19:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597086648;
-        bh=QEuPLD1HFICe5Me7VJga6gs3ZjqUmsBZRqF24c5m6FA=;
+        s=default; t=1597086729;
+        bh=RHrWIpfh1+kidBJL6kDPXytVop8VlIf344Wn0aOojfA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hQ8qZxXCqWLZYGOmEVLeBlLoaMEiqm1x1YJy8zeGhBdFay+GSNeCfR9xp2V4+xn2O
-         CcdyPA/ZwG22r6or3WKJUz36FrwDdh8UOUuu/7O7qSDLUFlpRNL+2xrilogeEORmlt
-         G3AcpQByTFmUsR8+0pURVEXM0mtGSo94yb2nwpI8=
+        b=yTq0X+o+1qK+ptpyRNoheRdSw0nXBduqADqc1ozxDNfVQPIenoM7NWg438hCung58
+         8OJ+bmajDp13woUsHQYS5Uomvww8NFC9fyHYfYnXUCTOxfrrG02skOB1iwLZqWNcXq
+         jBETifPlxwZH4FmdNaovTCWNrpbTNPbi5+W+cEyo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
         linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 14/60] bus: ti-sysc: Add missing quirk flags for usb_host_hs
-Date:   Mon, 10 Aug 2020 15:09:42 -0400
-Message-Id: <20200810191028.3793884-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 11/45] bus: ti-sysc: Add missing quirk flags for usb_host_hs
+Date:   Mon, 10 Aug 2020 15:11:19 -0400
+Message-Id: <20200810191153.3794446-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200810191028.3793884-1-sashal@kernel.org>
-References: <20200810191028.3793884-1-sashal@kernel.org>
+In-Reply-To: <20200810191153.3794446-1-sashal@kernel.org>
+References: <20200810191153.3794446-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -58,10 +58,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 3b0417a014946..ae4cf4667633f 100644
+index f8bc052cd853a..770a780dfa544 100644
 --- a/drivers/bus/ti-sysc.c
 +++ b/drivers/bus/ti-sysc.c
-@@ -1402,6 +1402,10 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+@@ -1371,6 +1371,10 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
  		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
  	SYSC_QUIRK("tptc", 0, 0, -ENODEV, -ENODEV, 0x40007c00, 0xffffffff,
  		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
@@ -72,7 +72,7 @@ index 3b0417a014946..ae4cf4667633f 100644
  	SYSC_QUIRK("usb_otg_hs", 0, 0x400, 0x404, 0x408, 0x00000050,
  		   0xffffffff, SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
  	SYSC_QUIRK("usb_otg_hs", 0, 0, 0x10, -ENODEV, 0x4ea2080d, 0xffffffff,
-@@ -1473,8 +1477,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+@@ -1440,8 +1444,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
  	SYSC_QUIRK("tpcc", 0, 0, -ENODEV, -ENODEV, 0x40014c00, 0xffffffff, 0),
  	SYSC_QUIRK("usbhstll", 0, 0, 0x10, 0x14, 0x00000004, 0xffffffff, 0),
  	SYSC_QUIRK("usbhstll", 0, 0, 0x10, 0x14, 0x00000008, 0xffffffff, 0),
