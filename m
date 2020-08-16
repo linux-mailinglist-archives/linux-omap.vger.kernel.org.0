@@ -2,354 +2,194 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D7D7244EE0
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Aug 2020 21:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BB6824574D
+	for <lists+linux-omap@lfdr.de>; Sun, 16 Aug 2020 13:25:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728373AbgHNTdk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Aug 2020 15:33:40 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:54368 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728243AbgHNTdj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Aug 2020 15:33:39 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 07EJXVdZ077400;
-        Fri, 14 Aug 2020 14:33:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1597433611;
-        bh=p212y5+bOF57KAqtSiuMDV5uuIRq0cHH7cYSMccia9E=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=yKmUAt6X6+hqPKFx+tgmqEmNv54creI2khbtJVP4hOXgoxurnO5W1K65pWnYGJWwA
-         stOI5UEJPvvR0xohUkLB34mT2C/ruyBf/eOGFMZ103QfcmCRZv3cOlaMxLK3wCAcbw
-         WPOTUHM5JpM1fgWdzRcgrdAYdVz45qub6VBEFbAc=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07EJXVB8057247;
-        Fri, 14 Aug 2020 14:33:31 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 14
- Aug 2020 14:33:31 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 14 Aug 2020 14:33:30 -0500
-Received: from [10.250.32.36] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07EJXUbn056309;
-        Fri, 14 Aug 2020 14:33:30 -0500
-Subject: Re: [PATCH 06/13] ARM: dts: omap4-panda-common: Add CMA pools and
- enable IPU & DSP
-To:     Guillaume Tucker <guillaume.tucker@collabora.com>,
-        Tony Lindgren <tony@atomide.com>
-CC:     Tero Kristo <t-kristo@ti.com>, <devicetree@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kernelci-results@groups.io>
-References: <20200709231954.1973-1-s-anna@ti.com>
- <20200709231954.1973-7-s-anna@ti.com>
- <3e44fc46-07ac-6103-5c4d-8c7389453b87@collabora.com>
- <f6ec1fd3-f42b-9284-44dc-e754e02ee86e@collabora.com>
- <ee6e41e6-cfc6-145c-97a7-3aa53fc8df39@ti.com>
- <94dbd2ee-bbac-2374-93bc-15ed67ba0e01@collabora.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <563c6edb-d55a-8f91-c8ff-06c5ee04b52e@ti.com>
-Date:   Fri, 14 Aug 2020 14:33:25 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <94dbd2ee-bbac-2374-93bc-15ed67ba0e01@collabora.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S1728913AbgHPLZK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 16 Aug 2020 07:25:10 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.165]:25156 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726971AbgHPLZG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 16 Aug 2020 07:25:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1597577098;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=RbaWvxLbZYhYmRBCvlGb2AaBi8Bxa6oAcs3HYd06/Tg=;
+        b=Cs7/UimIFpUJ8Hq52jhqHC+AnEq12/ZzGYR9o84LHdw3yscOrEn1RZ7f2tQqvk57Qv
+        OT9KQeh4TnE1mllNy2eTLiBW8zGZXBkG9jtrE2SPCBbYBxgPPRk7uyPBivz2CC4pyxz1
+        tjnLYhJEayGMVA4VQ2MGzOJhO9bCyF4zGQBo1mvAFBryUyhUiae7L8FWLLTVleBwuVNm
+        97JN0IdMYDm5JsqF2jJv+a5+3SX7xMqaUI8uTooFwTPuLSVqp/wIY8xtHMrxOeZo7JLf
+        ECAdKXnCmZ0M1cTl4llVma4OTH9b73+6Oa2Pc2Lu6iArh8qyl071Mm+HQGXx3uwLyIUb
+        f9mQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGHPrpwDOpoA=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 46.10.5 DYNA|AUTH)
+        with ESMTPSA id V07054w7GBOmJJG
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Sun, 16 Aug 2020 13:24:48 +0200 (CEST)
+Subject: Re: [Letux-kernel] module_mipi_dsi_driver panel with omapdrm?
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=us-ascii
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <63501267004c35bd1dc6971cb9cddda07c967303.camel@ds0.me>
+Date:   Sun, 16 Aug 2020 13:24:47 +0200
+Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Jyri Sarha <jsarha@ti.com>, kernel@pyra-handheld.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <83C454BF-F443-4C8F-904E-D6745A01A296@goldelico.com>
+References: <20200706143613.GS37466@atomide.com> <E4616E3C-2519-4421-BC75-87A5CA2BB9EF@goldelico.com> <20200707180115.GB5849@atomide.com> <ECE29C41-DFE5-4A50-9206-6FB3183824C3@goldelico.com> <6E0A9415-9AB5-48D9-9E61-12D20655D04D@goldelico.com> <EE54FB82-C18E-4B81-AB38-E9453A32406B@goldelico.com> <20200724012411.GJ21353@pendragon.ideasonboard.com> <7023EB05-DC29-4D42-84C8-F0D14B50467D@goldelico.com> <20200801232259.hitcfosiq6f2i57y@earth.universe> <4F1BD997-B791-4570-92B9-552C9BFF1350@goldelico.com> <20200805112831.akufm5wxkwqehiff@earth.universe> <0DDD1D3E-4F63-44B4-91CA-1B5B853837BC@goldelico.com> <64416676-a2ea-f11e-4d07-51a3efb55cdd@ti.com> <7ef4e081c1a0db81fd98f9e94afc6228a9b68703.camel@ds0.me> <1ec9febeb685c7fa866b14b0a4c2a5026f0a3461.camel@ds0.me> <63501267004c35bd1dc6971cb9cddda07c967303.camel@ds0.me>
+To:     David Shah <dave@ds0.me>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Guillaume,
+Hi David,
 
-On 8/14/20 11:33 AM, Guillaume Tucker wrote:
-> On 14/08/2020 16:26, Suman Anna wrote:
->> On 8/14/20 9:32 AM, Guillaume Tucker wrote:
->>> On 12/08/2020 06:31, Guillaume Tucker wrote:
->>>> On 10/07/2020 00:19, Suman Anna wrote:
->>>>> The CMA reserved memory nodes have been added for the IPU and DSP
->>>>> remoteproc devices on all the OMAP4-based Panda boards. These nodes
->>>>> are assigned to the respective rproc device nodes, and both the
->>>>> IPU and DSP remote processors are enabled for all these boards.
->>>>>
->>>>> The current CMA pools and sizes are defined statically for each device.
->>>>> The starting addresses are fixed to meet current dependencies on the
->>>>> remote processor firmwares, and will go away when the remote-side
->>>>> code has been improved to gather this information runtime during
->>>>> its initialization.
->>>>>
->>>>> An associated pair of the rproc node and its CMA node can be disabled
->>>>> later on if there is no use-case defined to use that remote processor.
->>>>>
->>>>> Signed-off-by: Suman Anna <s-anna@ti.com>
->>>>> ---
->>>>>  arch/arm/boot/dts/omap4-panda-common.dtsi | 30 +++++++++++++++++++++++
->>>>>  1 file changed, 30 insertions(+)
->>>>>
->>>>> diff --git a/arch/arm/boot/dts/omap4-panda-common.dtsi b/arch/arm/boot/dts/omap4-panda-common.dtsi
->>>>> index 55ea8b6189af..ef79028fc95f 100644
->>>>> --- a/arch/arm/boot/dts/omap4-panda-common.dtsi
->>>>> +++ b/arch/arm/boot/dts/omap4-panda-common.dtsi
->>>>> @@ -12,6 +12,26 @@ memory@80000000 {
->>>>>  		reg = <0x80000000 0x40000000>; /* 1 GB */
->>>>>  	};
->>>>>  
->>>>> +	reserved-memory {
->>>>> +		#address-cells = <1>;
->>>>> +		#size-cells = <1>;
->>>>> +		ranges;
->>>>> +
->>>>> +		dsp_memory_region: dsp-memory@98000000 {
->>>>> +			compatible = "shared-dma-pool";
->>>>> +			reg = <0x98000000 0x800000>;
->>>>> +			reusable;
->>>>> +			status = "okay";
->>>>> +		};
->>>>> +
->>>>> +		ipu_memory_region: ipu-memory@98800000 {
->>>>> +			compatible = "shared-dma-pool";
->>>>> +			reg = <0x98800000 0x7000000>;
->>>>> +			reusable;
->>>>> +			status = "okay";
->>>>> +		};
->>>>> +	};
->>>>> +
->>>>>  	chosen {
->>>>>  		stdout-path = &uart3;
->>>>>  	};
->>>>> @@ -571,3 +591,13 @@ hdmi_out: endpoint {
->>>>>  		};
->>>>>  	};
->>>>>  };
->>>>> +
->>>>> +&dsp {
->>>>> +	status = "okay";
->>>>> +	memory-region = <&dsp_memory_region>;
->>>>> +};
->>>>> +
->>>>> +&ipu {
->>>>> +	status = "okay";
->>>>> +	memory-region = <&ipu_memory_region>;
->>>>> +};
->>>>>
->>>>
->>>> This appears to be causing some BUG alert messages:
->>>>
->>>>   BUG: Bad page state in process swapper/0  pfn:9c801
->>>>
->>>> as reported on kernelci.org:
->>>>
->>>>   https://kernelci.org/test/case/id/5f326c6661360154c452c1c9/
->>>>
->>>> I've run a bisection and it landed on this commit.  If you fix it
->>>> with another patch, please add:
->>>>
->>>>   Reported-by: "kernelci.org bot" <bot@kernelci.org>
->>>
->>>
->>> This was bisected again automatically on mainline, see the report
->>> below.  Is anyone available to take a look, or could the patch be
->>> reverted?
->>
->> Thanks Guillaume for the report. I will take a look at this today. It is strange
->> that the bisect is pointing to this commit as reserving a CMA pool and assigning
->> it to a device should be fairly normal usage. Is the issue seen only on OMAP4
->> Pandaboard and not any of the other OMAP5 uEVM or DRA7xx/AM57xx EVMS?
-> 
-> Thanks for taking a look.
-> 
-> In the extended OMAP family, aside from the Panda only the
-> BeagleBone Black and BeagleBoard xM are being tested on
-> kernelci.org and they don't show this problem:
+> Am 06.08.2020 um 20:44 schrieb David Shah <dave@ds0.me>:
+>=20
+> Following a bit of testing, the DSI issues are fixed by=20
+> =
+https://github.com/daveshah1/pyra-kernel-devel/commit/3161275854a0f2cd44a5=
+5b8eb039bd201f894486
+> (I will prepare a proper patch set shortly). This makes the display
+> work with HDMI disabled.
 
-OK, neither of these boards have these IPU remote processors, and so they do not
-define any reserved-memory pools.
+yes, it makes the LCD work (tested so far on 5.8-rc7).
+But even with HDMI enabled.
 
-Anyway, the issue started popping up because of the mem arguments used in the
-bootargs on these kernelci setups, and the current CMA pools using addresses
-from this region, resulting in the kernel panic traces.
+>=20
+> There also seems to be a race condition between the hdmi0 connector
+> and tpd12s015 "encoder". This results in the tpd12s015 permanently
+> returning EPROBE_DEFER and the display subsystem never successfully
+> probing.
 
-Kernel command line: console=ttyO2,115200n8 root=/dev/ram0 fixrtc nocompcache
-vram=48M omapfb.vram=0:24M mem=456M@0x80000000 mem=512M@0xA0000000 rootdelay=5
-console_msg_format=syslog ip=dhcp
+>=20
+> Reversing the order of the encoder and connector in the device tree
+> (omap5-board-common.dtsi) makes the display work again with HDMI
+> enabled; as does adding some printks to the display-connector driver.
 
-The bootargs leave out a hole in the available memory for kernel, and this way
-of specifying was coming from really very old downstream TI kernel usage (pre-DT
-days). This carveout hole was used to define the memory used by remoteprocs.
-This has come through a long evolution of using memblock functions in code, to
-finally using the reserved-memory nodes in dts since then.
+I didn't have to disable or reverse the order. Maybe the speed of the SD
+card also has an influcence...
 
-The issue should be fixed once the bootargs are fixed up to remove using these
-mem args, and let the memory for the board be defined by the regular dts memory
-node.
+So I'll backport it to all our affected Letux kernels until it is =
+merged/fixed
+upstream.
 
-I have checked the next git history and these patches were first added from
-next-20200714 onwards, and that matches the kernelci failure log history.
+Then we can work on debugging/testing a module_mipi_dsi_driver based =
+panel
+drivers as soon as Sebastian's new patches become available.
 
-regards
-Suman
+BR and thanks,
+Nikolaus
 
-> 
->   https://kernelci.org/soc/omap2/job/next/kernel/next-20200814/plan/baseline/
-> 
-> Thanks,
-> Guillaume
-> 
->>> On 14/08/2020 15:22, KernelCI bot wrote:
->>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
->>>> * This automated bisection report was sent to you on the basis  *
->>>> * that you may be involved with the breaking commit it has      *
->>>> * found.  No manual investigation has been done to verify it,   *
->>>> * and the root cause of the problem may be somewhere else.      *
->>>> *                                                               *
->>>> * If you do send a fix, please include this trailer:            *
->>>> *   Reported-by: "kernelci.org bot" <bot@kernelci.org>          *
->>>> *                                                               *
->>>> * Hope this helps!                                              *
->>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
->>>>
->>>> mainline/master bisection: baseline.dmesg.alert on panda
->>>>
->>>> Summary:
->>>>   Start:      a1d21081a60d Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
->>>>   Plain log:  https://storage.kernelci.org/mainline/master/v5.8-13249-ga1d21081a60d/arm/multi_v7_defconfig+CONFIG_SMP=n/gcc-8/lab-collabora/baseline-omap4-panda.txt
->>>>   HTML log:   https://storage.kernelci.org/mainline/master/v5.8-13249-ga1d21081a60d/arm/multi_v7_defconfig+CONFIG_SMP=n/gcc-8/lab-collabora/baseline-omap4-panda.html
->>>>   Result:     b4778e787fe9 ARM: dts: omap4-panda-common: Add CMA pools and enable IPU & DSP
->>>>
->>>> Checks:
->>>>   revert:     PASS
->>>>   verify:     PASS
->>>>
->>>> Parameters:
->>>>   Tree:       mainline
->>>>   URL:        https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
->>>>   Branch:     master
->>>>   Target:     panda
->>>>   CPU arch:   arm
->>>>   Lab:        lab-collabora
->>>>   Compiler:   gcc-8
->>>>   Config:     multi_v7_defconfig+CONFIG_SMP=n
->>>>   Test case:  baseline.dmesg.alert
->>>>
->>>> Breaking commit found:
->>>>
->>>> -------------------------------------------------------------------------------
->>>> commit b4778e787fe9e82dcbff8150ebfbe6fea0b6c4e1
->>>> Author: Suman Anna <s-anna@ti.com>
->>>> Date:   Thu Jul 9 18:19:47 2020 -0500
->>>>
->>>>     ARM: dts: omap4-panda-common: Add CMA pools and enable IPU & DSP
->>>>     
->>>>     The CMA reserved memory nodes have been added for the IPU and DSP
->>>>     remoteproc devices on all the OMAP4-based Panda boards. These nodes
->>>>     are assigned to the respective rproc device nodes, and both the
->>>>     IPU and DSP remote processors are enabled for all these boards.
->>>>     
->>>>     The current CMA pools and sizes are defined statically for each device.
->>>>     The starting addresses are fixed to meet current dependencies on the
->>>>     remote processor firmwares, and will go away when the remote-side
->>>>     code has been improved to gather this information runtime during
->>>>     its initialization.
->>>>     
->>>>     An associated pair of the rproc node and its CMA node can be disabled
->>>>     later on if there is no use-case defined to use that remote processor.
->>>>     
->>>>     Signed-off-by: Suman Anna <s-anna@ti.com>
->>>>     Signed-off-by: Tony Lindgren <tony@atomide.com>
->>>>
->>>> diff --git a/arch/arm/boot/dts/omap4-panda-common.dtsi b/arch/arm/boot/dts/omap4-panda-common.dtsi
->>>> index 55ea8b6189af..ef79028fc95f 100644
->>>> --- a/arch/arm/boot/dts/omap4-panda-common.dtsi
->>>> +++ b/arch/arm/boot/dts/omap4-panda-common.dtsi
->>>> @@ -12,6 +12,26 @@
->>>>  		reg = <0x80000000 0x40000000>; /* 1 GB */
->>>>  	};
->>>>  
->>>> +	reserved-memory {
->>>> +		#address-cells = <1>;
->>>> +		#size-cells = <1>;
->>>> +		ranges;
->>>> +
->>>> +		dsp_memory_region: dsp-memory@98000000 {
->>>> +			compatible = "shared-dma-pool";
->>>> +			reg = <0x98000000 0x800000>;
->>>> +			reusable;
->>>> +			status = "okay";
->>>> +		};
->>>> +
->>>> +		ipu_memory_region: ipu-memory@98800000 {
->>>> +			compatible = "shared-dma-pool";
->>>> +			reg = <0x98800000 0x7000000>;
->>>> +			reusable;
->>>> +			status = "okay";
->>>> +		};
->>>> +	};
->>>> +
->>>>  	chosen {
->>>>  		stdout-path = &uart3;
->>>>  	};
->>>> @@ -571,3 +591,13 @@
->>>>  		};
->>>>  	};
->>>>  };
->>>> +
->>>> +&dsp {
->>>> +	status = "okay";
->>>> +	memory-region = <&dsp_memory_region>;
->>>> +};
->>>> +
->>>> +&ipu {
->>>> +	status = "okay";
->>>> +	memory-region = <&ipu_memory_region>;
->>>> +};
->>>> -------------------------------------------------------------------------------
->>>>
->>>>
->>>> Git bisection log:
->>>>
->>>> -------------------------------------------------------------------------------
->>>> git bisect start
->>>> # good: [e4cbce4d131753eca271d9d67f58c6377f27ad21] Merge tag 'sched-core-2020-08-03' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
->>>> git bisect good e4cbce4d131753eca271d9d67f58c6377f27ad21
->>>> # bad: [a1d21081a60dfb7fddf4a38b66d9cef603b317a9] Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
->>>> git bisect bad a1d21081a60dfb7fddf4a38b66d9cef603b317a9
->>>> # bad: [47ec5303d73ea344e84f46660fff693c57641386] Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
->>>> git bisect bad 47ec5303d73ea344e84f46660fff693c57641386
->>>> # bad: [e4a7b2dc35d9582c253cf5e6d6c3605aabc7284d] Merge tag 'leds-5.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/pavel/linux-leds
->>>> git bisect bad e4a7b2dc35d9582c253cf5e6d6c3605aabc7284d
->>>> # bad: [74858abbb1032222f922487fd1a24513bbed80f9] Merge tag 'cap-checkpoint-restore-v5.9' of git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux
->>>> git bisect bad 74858abbb1032222f922487fd1a24513bbed80f9
->>>> # bad: [2f3fbfdaf77f3ac417d0511fac221f76af79f6fc] Merge tag 'arm-dt-5.9' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
->>>> git bisect bad 2f3fbfdaf77f3ac417d0511fac221f76af79f6fc
->>>> # bad: [c6e2e454baef6080ef89c2b6488e708d5fa0f052] Merge tag 'qcom-arm64-for-5.9' of git://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux into arm/dt
->>>> git bisect bad c6e2e454baef6080ef89c2b6488e708d5fa0f052
->>>> # bad: [3502e079c6bcff95f5c34eecb5c1d9ad1379ae0d] Merge tag 'tegra-for-5.9-arm-dt' of git://git.kernel.org/pub/scm/linux/kernel/git/tegra/linux into arm/dt
->>>> git bisect bad 3502e079c6bcff95f5c34eecb5c1d9ad1379ae0d
->>>> # bad: [39a85f6d91a1a827985ce44a346a99f68167d0ee] Merge tag 'v5.8-next-dts64' of git://git.kernel.org/pub/scm/linux/kernel/git/matthias.bgg/linux into arm/dt
->>>> git bisect bad 39a85f6d91a1a827985ce44a346a99f68167d0ee
->>>> # good: [dfe2a4cf8e2f4c1f53877aa6cb38eda102a14681] Merge tag 'uniphier-dt64-v5.9' of git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-uniphier into arm/dt
->>>> git bisect good dfe2a4cf8e2f4c1f53877aa6cb38eda102a14681
->>>> # bad: [75f66813e081d2bd718d931ee50334c12a9e4492] Replace HTTP links with HTTPS ones: OMAP DEVICE TREE SUPPORT
->>>> git bisect bad 75f66813e081d2bd718d931ee50334c12a9e4492
->>>> # good: [9ae60ac13fc847d7175587290a1a9aa2aac091b0] ARM: dts: omap4: Update the DSP node
->>>> git bisect good 9ae60ac13fc847d7175587290a1a9aa2aac091b0
->>>> # bad: [3026ce47498dfdc92966d8d66f10afabf7190c46] ARM: dts: omap5: Add DSP and IPU nodes
->>>> git bisect bad 3026ce47498dfdc92966d8d66f10afabf7190c46
->>>> # good: [691eb1805fcfc1a2ede06aec6a4d85d312961146] ARM: dts: omap4: Add aliases for rproc nodes
->>>> git bisect good 691eb1805fcfc1a2ede06aec6a4d85d312961146
->>>> # bad: [7f7d771c00bf65d18a3e30e983b4061a418efbf4] ARM: dts: omap4-panda-common:: Add system timers to DSP and IPU
->>>> git bisect bad 7f7d771c00bf65d18a3e30e983b4061a418efbf4
->>>> # bad: [b4778e787fe9e82dcbff8150ebfbe6fea0b6c4e1] ARM: dts: omap4-panda-common: Add CMA pools and enable IPU & DSP
->>>> git bisect bad b4778e787fe9e82dcbff8150ebfbe6fea0b6c4e1
->>>> # first bad commit: [b4778e787fe9e82dcbff8150ebfbe6fea0b6c4e1] ARM: dts: omap4-panda-common: Add CMA pools and enable IPU & DSP
->>>> -------------------------------------------------------------------------------
->>>
->>>
->>
-> 
+>=20
+> On Thu, 2020-08-06 at 17:04 +0100, David Shah wrote:
+>> Sorry, my error. I forgot the Pyra is LPAE and therefore using 64-bit
+>> physical addresses.
+>>=20
+>> The start is indeed a correct physical address, 0x58005000, but off
+>> by
+>> 0x1000 from what the DSI driver is expecting.
+>>=20
+>> On Thu, 2020-08-06 at 16:50 +0100, David Shah wrote:
+>>> I had a moment to give letux-5.7.y a test on the Pyra hardware.
+>>>=20
+>>> I notice an error in dmesg:
+>>>=20
+>>> DSI: omapdss DSI error: unsupported DSI module
+>>>=20
+>>> which comes from this code (with a small patch added by me):
+>>>=20
+>>> 	d =3D dsi->data->modules;
+>>> 	while (d->address !=3D 0 && d->address !=3D dsi_mem->start)
+>>> 		d++;
+>>>=20
+>>> 	if (d->address =3D=3D 0) {
+>>> 		DSSERR("unsupported DSI module (start: %08x)\n",
+>>> dsi_mem->start);
+>>> 		return -ENODEV;
+>>> 	}
+>>>=20
+>>> "start" here is c0b3ba5c - a kernel virtual address - which
+>>> definitely
+>>> doesn't seem right as it would never match.=20
+>>>=20
+>>> Not sure my kernel-fu is quite up to tracking this down yet, but I
+>>> will
+>>> keep trying to trace out what is happening.
+>>>=20
+>>> Best
+>>>=20
+>>> Davidg
+>>>=20
+>>> On Wed, 2020-08-05 at 15:08 +0300, Tomi Valkeinen wrote:
+>>>> On 05/08/2020 14:49, H. Nikolaus Schaller wrote:
+>>>>> Hi,
+>>>>>=20
+>>>>>> Am 05.08.2020 um 13:28 schrieb Sebastian Reichel <
+>>>>>> sebastian.reichel@collabora.com>:
+>>>>>>=20
+>>>>>> Hi,
+>>>>>>=20
+>>>>>> On Wed, Aug 05, 2020 at 11:19:20AM +0200, H. Nikolaus
+>>>>>> Schaller
+>>>>>> wrote:
+>>>>>>> What I do not yet understand is how Laurent's patch should
+>>>>>>> be
+>>>>>>> able
+>>>>>>> to break it.
+>>>>>>=20
+>>>>>> omapdrm will not probe successfully if any DT enabled
+>>>>>> component
+>>>>>> does not probe correctly. Since the patch you identified
+>>>>>> touched
+>>>>>> HDMI and VENC and you are probably using HDMI, I suggest
+>>>>>> looking
+>>>>>> there first.
+>>>>>=20
+>>>>> Yes, that is a very good explanation.
+>>>>>=20
+>>>>> Maybe there is a subtle change in how the HDMI connector has to
+>>>>> be
+>>>>> defined
+>>>>> which is missing in our (private) DTB. Maybe the OMAP5-uEVM DTS
+>>>>> gives a hint.
+>>>>>=20
+>>>>> A quick check shows last hdmi specific change for omap5-board-
+>>>>> common or uevm
+>>>>> was in 2017 but I may have missed something.
+>>>>>=20
+>>>>> There are 715a5a978733f0 and 671ab615bd507f which arrived in
+>>>>> v5.7-
+>>>>> rc1 as well
+>>>>> and are related to hdmi clocks. So this may be (or not) and
+>>>>> influencing factor.
+>>>>=20
+>>>> HDMI should "just work", and has been tested. But maybe there's
+>>>> some
+>>>> conflict with HDMI and DSI.
+>>>>=20
+>>>> Tomi
+>>>>=20
+>>>=20
+>>> _______________________________________________
+>>> https://projects.goldelico.com/p/gta04-kernel/
+>>> Letux-kernel mailing list
+>>> Letux-kernel@openphoenux.org
+>>> http://lists.goldelico.com/mailman/listinfo.cgi/letux-kernel
+>>=20
+>> _______________________________________________
+>> Kernel mailing list
+>> Kernel@pyra-handheld.com
+>> http://pyra-handheld.com/cgi-bin/mailman/listinfo/kernel
+>=20
 
