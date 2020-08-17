@@ -2,49 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB18224604D
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Aug 2020 10:35:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A686324604F
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Aug 2020 10:35:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726473AbgHQIfZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Aug 2020 04:35:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54162 "EHLO
+        id S1726385AbgHQIfd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Aug 2020 04:35:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726385AbgHQIfY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Aug 2020 04:35:24 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E332EC061388;
-        Mon, 17 Aug 2020 01:35:23 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id f5so7139579plr.9;
-        Mon, 17 Aug 2020 01:35:22 -0700 (PDT)
+        with ESMTP id S1726698AbgHQIf2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Aug 2020 04:35:28 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FBDAC061388;
+        Mon, 17 Aug 2020 01:35:28 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id f9so7349135pju.4;
+        Mon, 17 Aug 2020 01:35:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=RTg2ZMt185zzvUgaMnfoRgnvAtOybCl6nq3HlbjwXIo=;
-        b=np1DZOoVOiJmzQfi5gIFqZ65oL1RRtYC/68KC3rInxkaZDqqFb/7z2Lfa/8VuU5mxt
-         hKEecv7OPaClrMrl2IIyG7rQQkOidWxYQokK7lg9P1SL5ycFolrW7nHdGNTyIfWBa1ZR
-         zx2obDmU6/uhiHeOwGDeTg4RpWMMKRCvc9qaB0/Bm544JouhDftKId5XsiqtXOuArMgl
-         hPUrI1znMdzk/abSdiSO/zFiyTwS1HMfRTC9XTg7ymAhtc8PIZmzLYvAp/w7o+O6tvfT
-         O8CHuhs55HOCj2GicPc7wDhsybyic+UH/GEEGAJkk8oFkKe0Yq06697J9pl0eG35Fhui
-         d6Ow==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=4nhWNM41f6BjKWP46DMIjPsIWGEGdOxdBi1jSC7XG8s=;
+        b=mGaGN7JDJGgy/1WQUsKWaFTCgtC3rJsf9uTrL9370PCWKVjEpcQy9EI/xP8rVxFxDN
+         DQIhtVNRxYd5wR3QuC/KZMts9WZPnoOmndIBmz7t+lB5n2DbwECCodBm/tqN8abCMd6W
+         fKb81wMBVASTh9+YpvzvixeJADKQDAghKJ6T+AfCHs0fJnmHRSROgh+427SAETCDabE0
+         wt/mq0Z0DSqoHRUV9ZP3QzDHRLfplHZASTF3VWCHLT91w/d4h9XdXJm3+VCD5/vN2Jgn
+         oEVypkDuBgsJrkHGE34tWKfqOJ3q+LX0nQ533oYNCTnFYVd4RZwp3maByR+ZeuvpmDue
+         63Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=RTg2ZMt185zzvUgaMnfoRgnvAtOybCl6nq3HlbjwXIo=;
-        b=rxxaFcTV88t36call5yacylSsg3UOC1xN70AfcpCiA6Y3dYu2gCCbniFX0yPhOz3Xy
-         CccC0AnWeGSmSmiY9wZgT82/X7KbeSLFXV50tXRWvfhi7AZXnZOgIY8/XmY11YEKJgz8
-         ne8hwFR1rhlUPWWXGO6SOnDkkjtfJGamV7ckjt6U4lFKy2DQoYUgYhSTRtdgQVLE13wb
-         cWA0WxyHbzMiB79zjkxkxJ7wa4GZMijcnZ7cJbo5aS0F8L71V6SOCkGCIc/h9JTNpMRX
-         zHOZ6OkCkzVxppz9UtATrOSAlHtSDJNpGG+lvYjX0HvIK7eNxkrV4S1cRvlGaq/4Splo
-         g6ow==
-X-Gm-Message-State: AOAM533w/jy3dR+vYwpZ1+EasA3NjLp+kNq/joFrv6MZvb/Y83FHG9Yf
-        sT2KoqzILBYcLYe3DvNr6Ik=
-X-Google-Smtp-Source: ABdhPJx8MPEZVqt1qfF75/O368PzmZucttE6ZMqC8OTPwo0zJWTrr5MWUzU7fT3D2F2oBQlTv6nlCw==
-X-Received: by 2002:a17:902:c286:: with SMTP id i6mr9995341pld.219.1597653322315;
-        Mon, 17 Aug 2020 01:35:22 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=4nhWNM41f6BjKWP46DMIjPsIWGEGdOxdBi1jSC7XG8s=;
+        b=cOcz8LI3ZNLbzvBXzBQpF8pkCXEjI3Iz/SY/8Kntp0/NWTADnATiP3/wC7Y/WV1D8z
+         +0tXbNxjR+na0JJQOkgfv1NL/gNSDbF0PdPTiaWt5JUEjhOl/VSQK8YLGiTqzRo2zVT2
+         2y4kAKmW+EpO22+pZvy+42BHhPxVRzCmNLTIY+ylIOkQ6m3x/GRUVFSn9Tl9Ddm4KDIl
+         t79Id1944dMl0YX0zZnulkvFs89QV+8GhgQ5Xo3EifwCFL9SNF2Ei33nyBsHvZHcHcF/
+         S7jmd/kFyraq0ESy4eM1tSytljV3NPRxII9UlmrdVzK5iWVrQoQo351XZFgO8Mt+6ypZ
+         Z7qg==
+X-Gm-Message-State: AOAM532c6GInJdGUKMJNd8lWWePkCr8PHfFeQcN+waWGMyGmNeSO2I6s
+        CuaT8Hwu0jn0b2mBXf0E2UU=
+X-Google-Smtp-Source: ABdhPJwpxyd4w90B/LHzc3wDMjJl+AoxneVsdWqfIUr98hR55sv5bW17uf9nyFyU9tMklV2BSez1zg==
+X-Received: by 2002:a17:90a:ce94:: with SMTP id g20mr11462006pju.61.1597653327838;
+        Mon, 17 Aug 2020 01:35:27 -0700 (PDT)
 Received: from localhost.localdomain ([49.207.202.98])
-        by smtp.gmail.com with ESMTPSA id h5sm18434068pfq.146.2020.08.17.01.35.17
+        by smtp.gmail.com with ESMTPSA id h5sm18434068pfq.146.2020.08.17.01.35.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2020 01:35:21 -0700 (PDT)
+        Mon, 17 Aug 2020 01:35:27 -0700 (PDT)
 From:   Allen Pais <allen.lkml@gmail.com>
 To:     ludovic.desroches@microchip.com, ulf.hansson@linaro.org,
         manuel.lauss@gmail.com, mirq-linux@rere.qmqm.pl,
@@ -53,47 +54,55 @@ To:     ludovic.desroches@microchip.com, ulf.hansson@linaro.org,
         HaraldWelte@viatech.com
 Cc:     keescook@chromium.org, inux-mmc@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Allen Pais <allen.lkml@gmail.com>
-Subject: [PATCH 00/10] mmc: convert tasklets to use new tasklet_setup()
-Date:   Mon, 17 Aug 2020 14:04:58 +0530
-Message-Id: <20200817083508.22657-1-allen.lkml@gmail.com>
+        linux-omap@vger.kernel.org, Allen Pais <allen.lkml@gmail.com>,
+        Romain Perier <romain.perier@gmail.com>
+Subject: [PATCH 01/10] mmc: atmel-mci: convert tasklets to use new tasklet_setup() API
+Date:   Mon, 17 Aug 2020 14:04:59 +0530
+Message-Id: <20200817083508.22657-2-allen.lkml@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200817083508.22657-1-allen.lkml@gmail.com>
+References: <20200817083508.22657-1-allen.lkml@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Commit 12cc923f1ccc ("tasklet: Introduce new initialization API")'
-introduced a new tasklet initialization API. This series converts 
-all the mmc drivers to use the new tasklet_setup() API
+In preparation for unconditionally passing the
+struct tasklet_struct pointer to all tasklet
+callbacks, switch to using the new tasklet_setup()
+and from_tasklet() to pass the tasklet pointer explicitly.
 
-Allen Pais (10):
-  mmc: atmel-mci: convert tasklets to use new tasklet_setup() API
-  mmc: au1xmmc: convert tasklets to use new tasklet_setup() API
-  mmc: cb710: convert tasklets to use new tasklet_setup() API
-  mmc: dw_mmc: convert tasklets to use new tasklet_setup() API
-  mmc: omap: convert tasklets to use new tasklet_setup() API
-  mmc: renesas: convert tasklets to use new tasklet_setup() API
-  mmc: s3cmci: convert tasklets to use new tasklet_setup() API
-  mmc: tifm_sd: convert tasklets to use new tasklet_setup() API
-  mmc: uniphier: convert tasklets to use new tasklet_setup() API
-  mmc: via-sdmmc: convert tasklets to use new tasklet_setup() API
+Signed-off-by: Romain Perier <romain.perier@gmail.com>
+Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+---
+ drivers/mmc/host/atmel-mci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- drivers/mmc/host/atmel-mci.c                  |  6 +++---
- drivers/mmc/host/au1xmmc.c                    | 15 ++++++--------
- drivers/mmc/host/cb710-mmc.c                  | 11 +++++-----
- drivers/mmc/host/dw_mmc.c                     |  6 +++---
- drivers/mmc/host/omap.c                       |  7 +++----
- drivers/mmc/host/renesas_sdhi.h               |  1 +
- drivers/mmc/host/renesas_sdhi_core.c          |  2 ++
- drivers/mmc/host/renesas_sdhi_internal_dmac.c | 20 +++++++++----------
- drivers/mmc/host/renesas_sdhi_sys_dmac.c      |  9 ++++-----
- drivers/mmc/host/s3cmci.c                     |  6 +++---
- drivers/mmc/host/tifm_sd.c                    |  7 +++----
- drivers/mmc/host/uniphier-sd.c                | 14 ++++++-------
- drivers/mmc/host/via-sdmmc.c                  |  7 +++----
- 13 files changed, 53 insertions(+), 58 deletions(-)
-
+diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
+index 300901415aa2..562cf8eb993f 100644
+--- a/drivers/mmc/host/atmel-mci.c
++++ b/drivers/mmc/host/atmel-mci.c
+@@ -1719,9 +1719,9 @@ static void atmci_detect_change(struct timer_list *t)
+ 	}
+ }
+ 
+-static void atmci_tasklet_func(unsigned long priv)
++static void atmci_tasklet_func(struct tasklet_struct *t)
+ {
+-	struct atmel_mci	*host = (struct atmel_mci *)priv;
++	struct atmel_mci	*host = from_tasklet(host, t, tasklet);
+ 	struct mmc_request	*mrq = host->mrq;
+ 	struct mmc_data		*data = host->data;
+ 	enum atmel_mci_state	state = host->state;
+@@ -2496,7 +2496,7 @@ static int atmci_probe(struct platform_device *pdev)
+ 
+ 	host->mapbase = regs->start;
+ 
+-	tasklet_init(&host->tasklet, atmci_tasklet_func, (unsigned long)host);
++	tasklet_setup(&host->tasklet, atmci_tasklet_func);
+ 
+ 	ret = request_irq(irq, atmci_interrupt, 0, dev_name(&pdev->dev), host);
+ 	if (ret) {
 -- 
 2.17.1
 
