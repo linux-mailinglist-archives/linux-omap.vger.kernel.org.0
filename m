@@ -2,145 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44A30246771
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Aug 2020 15:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 714B124677C
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Aug 2020 15:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728399AbgHQNjw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Aug 2020 09:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44962 "EHLO
+        id S1728626AbgHQNlx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Aug 2020 09:41:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728388AbgHQNjt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Aug 2020 09:39:49 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E0FCC061389;
-        Mon, 17 Aug 2020 06:39:48 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id g13so3344092ioo.9;
-        Mon, 17 Aug 2020 06:39:44 -0700 (PDT)
+        with ESMTP id S1728657AbgHQNlh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Aug 2020 09:41:37 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE148C06134B
+        for <linux-omap@vger.kernel.org>; Mon, 17 Aug 2020 06:41:00 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id i10so17525458ljn.2
+        for <linux-omap@vger.kernel.org>; Mon, 17 Aug 2020 06:41:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id;
-        bh=C7tJkw3gpkfOAsh/5PfRMa++rple6ZtJ6apnzTQm920=;
-        b=MP82ajQ3AOs5A6p6hOhfYf+4czLAAW5UFKivKIxj8Pt5vKvaB3o+NBQnEWNjR2lSp6
-         peh49DfnuH3CbOfIep3O0CaqSS03a9Q7QNhkn+zXBb08uxbAxfy5Ytwd9uWB8VAi/raR
-         2LbhqEnpmjcMvnaR1VzW2pgA9/2OYfq9dHSrOu/6Lab23QRkn3OzVE2rhDuCBPhvWJ4R
-         tz39j8KfCMSPrAZVI6YxTOwgc5RnxQxOPcT1cokcjJMVv/J2BNjzjtDoFGNfaei5/WF+
-         lT/HMbqkEoEBtHYJsBKxf1KZC3FqFKisFf4YAd5TUT8XQda7T2pJM3/aE9TCqjQtLY4g
-         2uLQ==
+        bh=m+ousw4fXr79+y3y64jWSrgKPSzonc7IxBJ1mGORPXc=;
+        b=TEppYqF1eUfSax+aIvKd0LAUnTJWiokA4qC4Xpz2SYDaqKl5E7Sak8XoxxT4cWWViC
+         JzKjRvb2mIubhps5A5g6PvyMSVLUkkRNx+mtvF3nrwtZ9eRm/Qxj4vaAaFaIV3pAOGj2
+         Fe75HXYQwFsThowTlTbsAonowIKHGsT2mSRuLWOXOPw7VYsTVrGHHK+CxbA7ZG351aTk
+         0nl5OT5UjgVUR7ecO8HrzWsfn/RWr+L2lX6wz2aqs7sZB34Hzsn4LNdcC6PXD9PzvoE3
+         ipojH8izMRvbA0svEpxiKXr6Wobptv/9JrDkGUzSNQ6dyFyQpC+tvOZbE0iMVzy9hrYh
+         M6Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=C7tJkw3gpkfOAsh/5PfRMa++rple6ZtJ6apnzTQm920=;
-        b=rj7zru90wbDkNgPrWj8b4BQA0fTm2H8QUNm9t9a6cyS8uR0J56hUbdGuCf7urq1boo
-         i44FcaGl0lLFO3JasJEP3dQoUht/f1tjDzFGXhUqftkpl8Sw8qKOKRbYwBuGJW1l/VOj
-         06LoYcPtp5kNqiSvYJGA8J2V9amKE77swx0vg9Eszm5z3Gb6xTr45C9DNiz+72HJ28x/
-         2HeweANtEP3iLydzGInwV4vpt8GtNfbftn6TFtthlJdF5Ur55ARM8+Npqq2VAU/CNXtC
-         CNwk6zR7mx566mabYWn82pK4HZ4UGBMlTSv1eMQfymBMTiU2+YjBPfh32oVLxzzVEGeg
-         18EQ==
-X-Gm-Message-State: AOAM5337vwUp/KBJO4cqLNDid/FB5NnabSqJ7hnc7q9Xe5SUC83O1W1a
-        em5ZPOPXmfiDKeRWbAnJ8fvIa/thELesog==
-X-Google-Smtp-Source: ABdhPJygjm12YZVskCQ1Zymqu8sJEUcWaNfBP+uM8JDE4OvUKduWwUtskpDR+692WxEYlnvy8mvzTw==
-X-Received: by 2002:a6b:8b10:: with SMTP id n16mr12524442iod.11.1597671582215;
-        Mon, 17 Aug 2020 06:39:42 -0700 (PDT)
-Received: from aford-OptiPlex-7050.logicpd.com ([174.46.170.158])
-        by smtp.gmail.com with ESMTPSA id f18sm3351271ilj.24.2020.08.17.06.39.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2020 06:39:41 -0700 (PDT)
-From:   Adam Ford <aford173@gmail.com>
-To:     linux-omap@vger.kernel.org
-Cc:     aford@beaconembedded.com, Adam Ford <aford173@gmail.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH V2] ARM: dts: omap3: Add cpu trips and cooling map for omap34/36 families
-Date:   Mon, 17 Aug 2020 08:39:31 -0500
-Message-Id: <20200817133931.11785-1-aford173@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        bh=m+ousw4fXr79+y3y64jWSrgKPSzonc7IxBJ1mGORPXc=;
+        b=foMMlMuzOuLffvD0kKKzDf+Ez4TZ6FtiZHxYfCESbj7t7GAjny/3cKRZsKvwhbSMow
+         UsXa2ClrX/jLrULsUzBNW1YN5ZYFdrNSTI+rk0sINBf/YenXTEfTeY5wMqv78MiQOUMA
+         xON2yLn1fjIV5ncMTDU4ivISfLfut/27FWQr/ThEW2Bdto+2oSpH5DyXM2gGuCN8IprN
+         +YQu55oUxRib35g4qtTNyg+cIcuITuf8QPGUSRDbYkcsO582LZvJN1C/AC5SNvFhtx4B
+         7WPsVitUqlKpWElcx/f9Kvb0AmhynjHNWxbxUSm4cd9R/12yvJH5yZxBYXIySDAyoGJW
+         wCFQ==
+X-Gm-Message-State: AOAM5319XVBEtMgH9HKOGiNZn3DF3LsZ8n/ibTPV0xsKJd1ydypgimEJ
+        r6n1j8/U3DUJObI/DdJL7x1rtA==
+X-Google-Smtp-Source: ABdhPJwmB0UO6vc4c3I2R5pE5ACL/1O6dNBEGweV8RJPEozIubkSsXH04rvei5cu86g/SsJLdWUK+A==
+X-Received: by 2002:a2e:5301:: with SMTP id h1mr6111553ljb.147.1597671646924;
+        Mon, 17 Aug 2020 06:40:46 -0700 (PDT)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id g22sm3443791lja.29.2020.08.17.06.40.45
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 17 Aug 2020 06:40:46 -0700 (PDT)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
+        s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, robh+dt@kernel.org,
+        lee.jones@linaro.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
+        praneeth@ti.com
+Subject: [PATCH v5 0/5] Add TI PRUSS Local Interrupt Controller IRQChip driver
+Date:   Mon, 17 Aug 2020 15:40:08 +0200
+Message-Id: <1597671613-20879-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The OMAP3530, OMAP3630, and DM3730 all show thresholds of 90C and 105C
-depending on commercial or industrial temperature ratings.
+Hi All,
 
-This patch expands the thermal information to include the limits of 90
-and 105C for alert and critical.  It sets the coolings-cells for the
-34xx and 36xx CPU's which both point to omap3-cpu-thermal.dtsi.
+The following is a v4 version of the series [1-4] that adds an IRQChip
+driver for the local interrupt controller present within a Programmable
+Real-Time Unit and Industrial Communication Subsystem (PRU-ICSS) present on a
+number of TI SoCs including OMAP architecture based AM335x, AM437x, AM57xx SoCs,
+Keystone 2 architecture based 66AK2G SoCs, Davinci architecture based
+OMAP-L138/DA850 SoCs and the latest K3 architecture based AM65x and J721E SoCs.
+Please see the v1 cover-letter [1] for details about the features of this
+interrupt controller.  More details can be found in any of the supported SoC
+TRMs.  Eg: Chapter 30.1.6 of AM5728 TRM [5]
 
-For boards who never use industrial temperatures, these can be
-changed on their respective device trees with something like:
+Please see the individual patches for exact changes in each patch, following are
+the main changes from v4:
+ - Update dt-binding description (no functional changes).
+ - Use more meaningful define/variable names, drop redundant error messages, fix
+   error handling in case of irq == 0 (patch #2).
 
-&cpu_alert0 {
-	temperature = <85000>; /* millicelsius */
-};
+[1] https://patchwork.kernel.org/cover/11034561/
+[2] https://patchwork.kernel.org/cover/11069749/
+[3] https://patchwork.kernel.org/cover/11639055/
+[4] https://patchwork.kernel.org/cover/11688727/
+[5] http://www.ti.com/lit/pdf/spruhz6
 
-&cpu_crit {
-	temperature = <90000>; /* millicelsius */
-};
+Best regards
+Grzegorz
 
-OMAP3_THERMAL will need to be enabled.  It is off by default.
+David Lechner (1):
+  irqchip/irq-pruss-intc: Implement irq_{get,set}_irqchip_state ops
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Tested-by: H. Nikolaus Schaller <hns@goldelico.com> # on GTA04A5 with dm3730cbp100
+Grzegorz Jaszczyk (1):
+  irqchip/irq-pruss-intc: Add a PRUSS irqchip driver for PRUSS
+    interrupts
 
----
-V2:  Rebase on Linux 5.9-rc1
+Suman Anna (3):
+  dt-bindings: irqchip: Add PRU-ICSS interrupt controller bindings
+  irqchip/irq-pruss-intc: Add logic for handling reserved interrupts
+  irqchip/irq-pruss-intc: Add support for ICSSG INTC on K3 SoCs
 
-diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-index aee46fa8c055..99858eb0d7f6 100644
---- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-+++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-@@ -17,4 +17,25 @@ cpu_thermal: cpu_thermal {
- 
- 			/* sensor       ID */
- 	thermal-sensors = <&bandgap     0>;
-+
-+	cpu_trips: trips {
-+		cpu_alert0: cpu_alert {
-+			temperature = <90000>; /* millicelsius */
-+			hysteresis = <2000>; /* millicelsius */
-+			type = "passive";
-+		};
-+		cpu_crit: cpu_crit {
-+			temperature = <105000>; /* millicelsius */
-+			hysteresis = <2000>; /* millicelsius */
-+			type = "critical";
-+		};
-+	};
-+
-+	cpu_cooling_maps: cooling-maps {
-+		map0 {
-+			trip = <&cpu_alert0>;
-+			cooling-device =
-+				<&cpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
-+		};
-+	};
- };
-diff --git a/arch/arm/boot/dts/omap34xx.dtsi b/arch/arm/boot/dts/omap34xx.dtsi
-index 9c3ee4ac8165..c0dcc75833a8 100644
---- a/arch/arm/boot/dts/omap34xx.dtsi
-+++ b/arch/arm/boot/dts/omap34xx.dtsi
-@@ -20,6 +20,7 @@
- 			operating-points-v2 = <&cpu0_opp_table>;
- 
- 			clock-latency = <300000>; /* From legacy driver */
-+			#cooling-cells = <2>;
- 		};
- 	};
- 
-diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
-index 9c3beefc0fe0..fadbf308feff 100644
---- a/arch/arm/boot/dts/omap36xx.dtsi
-+++ b/arch/arm/boot/dts/omap36xx.dtsi
-@@ -25,6 +25,7 @@
- 
- 			vbb-supply = <&abb_mpu_iva>;
- 			clock-latency = <300000>; /* From omap-cpufreq driver */
-+			#cooling-cells = <2>;
- 		};
- 	};
- 
+ .../interrupt-controller/ti,pruss-intc.yaml        | 158 +++++
+ drivers/irqchip/Kconfig                            |  10 +
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-pruss-intc.c                   | 658 +++++++++++++++++++++
+ 4 files changed, 827 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+ create mode 100644 drivers/irqchip/irq-pruss-intc.c
+
 -- 
-2.17.1
+2.7.4
 
