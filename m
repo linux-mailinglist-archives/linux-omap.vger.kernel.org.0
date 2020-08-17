@@ -2,113 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F65824725C
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Aug 2020 20:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF3192471AD
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Aug 2020 20:32:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730693AbgHQSlg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Aug 2020 14:41:36 -0400
-Received: from sender11-of-o53.zoho.eu ([31.186.226.239]:21856 "EHLO
-        sender11-of-o53.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730677AbgHQP5Z (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Aug 2020 11:57:25 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1597678928; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=lkv1/CzyRzokpV5P362lTkMGPTcbdNkHtO4VR+mndGq8p1w/9JjBzzVHVPqoGnWVoVfzAqXXaNFY7OxdPFiRPFnNnmPStGMsotJv7v3fsznf72L9wRMJz10WuhW+8Kd3hZkZ/dRhLY5BfNRvhDuGCePbHgNjVzxMeNN1hEpJMXw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1597678928; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=zFq0cwIqpAd0SCMBlmuzmsuIgtncaqbmV+L/FCcGivk=; 
-        b=Y4ZQQfoIkXyw13ls8XLRkUbVLMYc4k6PAXkHsVwvPt8BSKofMu7Vk32LnvkCbwlOM5GuWtthez0sf6CbclMgxPY7fycjKtaXq8API8QuEpcAPd56u5HURIbrScN2tXRb+4IT3mrNvtsm4w5e3lFkNt/qXxVr2GaG5/UGISfv+vo=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=devnull@uvos.xyz;
-        dmarc=pass header.from=<devnull@uvos.xyz> header.from=<devnull@uvos.xyz>
-Received: from localhost.localdomain (ip-95-222-214-71.hsi15.unitymediagroup.de [95.222.214.71]) by mx.zoho.eu
-        with SMTPS id 1597678926806512.0089999106973; Mon, 17 Aug 2020 17:42:06 +0200 (CEST)
-Date:   Mon, 17 Aug 2020 17:41:37 +0200
-From:   Dev Null <devnull@uvos.xyz>
-To:     linux-omap@vger.kernel.org
-Cc:     linux-input@vger.kernel.org
-Subject: ARM: dts: motorola-mapphone-common: Add dts configureation for the
- android buttons beneath the screen
-Message-Id: <20200817174137.554be5c0589e535b71f4d753@uvos.xyz>
-Organization: UVOS Organization
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+        id S2391117AbgHQScI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Mon, 17 Aug 2020 14:32:08 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:45388 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391005AbgHQSby (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Aug 2020 14:31:54 -0400
+Received: by mail-ed1-f68.google.com with SMTP id di22so13086971edb.12;
+        Mon, 17 Aug 2020 11:31:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=hBUcN4OkcyXAP5E6a2eouoPSQBhcXpldM+aQp0PGfhg=;
+        b=Wxw0reRYJZkCVPfAowO4O4pAFXEBNn7QFVUeipNpad9I99gIC0menVzRUcLV4NulTp
+         lJgjGpEvREs2R2FNytWyihWdtFxW/yLa55QGdM5q3zIBKojJWNlwoUDlY6U29xR7pg75
+         2nNjkn8igKWGTXZkfZYzqUMalmO2X4UQlZg8OTFGP+PpI4nq0yaERCzjpcrQq2Td48k6
+         G66tACCRKyItIx+vxGSEKIz0NkmPTfQ0vAUgYKRGrCntmKWDQJ+SDUheZI/Naz3L09B1
+         rlW60ZohwVke53fuWOKV7FLYe93FL63IN5Hi6FVxs125ShQqMzIUoNw1ENE8qTlnOEYK
+         eGZA==
+X-Gm-Message-State: AOAM532Ji+LccBPqYSP3I7RgmSIC9K2abp0VBV/uPG7I/sZj0MUIGNrn
+        ieMlbUJBWdB652RYci9g42LxzYpJxeFhKhKb
+X-Google-Smtp-Source: ABdhPJwJFBPzF7Ip4mHFHwCJ7i6D0iGFtLdNnjjZFvxi/KEFgJtC4lqELj6xSQmWu9o+PqLjXrbWlQ==
+X-Received: by 2002:a05:6402:3196:: with SMTP id di22mr15802828edb.193.1597689112098;
+        Mon, 17 Aug 2020 11:31:52 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.216])
+        by smtp.googlemail.com with ESMTPSA id lc10sm14962158ejb.22.2020.08.17.11.31.50
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 17 Aug 2020 11:31:51 -0700 (PDT)
+Date:   Mon, 17 Aug 2020 20:31:48 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        Markus Mayer <mmayer@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Roger Quadros <rogerq@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [RFT v2 02/29] memory: omap-gpmc: Remove unused file-scope
+ phys_base and mem_size
+Message-ID: <20200817183148.GB3464@kozik-lap>
+References: <20200724074038.5597-1-krzk@kernel.org>
+ <20200724074038.5597-3-krzk@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20200724074038.5597-3-krzk@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Uses the touchscreen-buttons driver for the android buttons on the droid 4
+On Fri, Jul 24, 2020 at 09:40:11AM +0200, Krzysztof Kozlowski wrote:
+> The file-scope variables phys_base and mem_size are assigned in
+> gpmc_probe() but never read.
+> 
+> This fixes build error when compile testing on x86_64 architecture:
+> 
+>     drivers/memory/omap-gpmc.c:246:24: error: conflicting types for ‘phys_base’
+>      static resource_size_t phys_base, mem_size;
+>     In file included from arch/x86/include/asm/page.h:12:0,
+>                      from arch/x86/include/asm/thread_info.h:12,
+>                      from include/linux/thread_info.h:38,
+>                      from arch/x86/include/asm/preempt.h:7,
+>                      from include/linux/preempt.h:78,
+>                      from include/linux/spinlock.h:51,
+>                      from include/linux/irq.h:14,
+>                      from drivers/memory/omap-gpmc.c:12:
+>     arch/x86/include/asm/page_64.h:12:22: note: previous declaration of ‘phys_base’ was here
+>      extern unsigned long phys_base;
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> ---
+>  drivers/memory/omap-gpmc.c | 4 ----
+>  1 file changed, 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-index cef4d8abdaa1..455e6b624802 100644
---- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-+++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-@@ -176,6 +176,40 @@ pwm9: dmtimer-pwm-9 {
- 		ti,clock-source = <0x01>;
- 	};
- 
-+	mapphone_touchscreen {
-+			/* keycodes must be >255 or the kernel vt will hold the device open wasteing power */
-+			compatible = "touchscreen-buttons";
-+			touchscreen_phandle = <&touchscreen>;
-+			menu {
-+				x-position = <0>;
-+				y-position = <950>;
-+				x-size = <256>;
-+				y-size = <74>;
-+				keycode = <KEY_KBD_LCD_MENU1>;
-+			};
-+			home {
-+				x-position = <256>;
-+				y-position = <950>;
-+				x-size = <256>;
-+				y-size = <74>;
-+				keycode = <KEY_KBD_LCD_MENU2>;
-+			};
-+			back {
-+				x-position = <512>;
-+				y-position = <950>;
-+				x-size = <256>;
-+				y-size = <74>;
-+				keycode = <KEY_KBD_LCD_MENU3>;
-+			};
-+			search {
-+				x-position = <768>;
-+				y-position = <950>;
-+				x-size = <256>;
-+				y-size = <74>;
-+				keycode = <KEY_KBD_LCD_MENU4>;
-+			};
-+	};
-+
- 	vibrator {
- 		compatible = "pwm-vibrator";
- 		pwms = <&pwm9 0 10000000 0>, <&pwm8 0 10000000 0>;
-@@ -422,7 +456,7 @@ led@1 {
- };
- 
- &i2c2 {
--	touchscreen@4a {
-+	touchscreen: touchscreen@4a {
- 		compatible = "atmel,maxtouch";
- 		reg = <0x4a>;
- 		pinctrl-names = "default";
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index d397ad4006f2..bd15ad5278d9 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -249,6 +249,7 @@ CONFIG_TOUCHSCREEN_TSC2005=m
- CONFIG_TOUCHSCREEN_TSC2007=m
- CONFIG_INPUT_MISC=y
- CONFIG_INPUT_CPCAP_PWRBUTTON=m
-+CONFIG_INPUT_TOUCHSCREEN_BUTTONS=m
- CONFIG_INPUT_TPS65218_PWRBUTTON=m
- CONFIG_INPUT_TWL4030_PWRBUTTON=m
- CONFIG_INPUT_UINPUT=m
+Applied to drivers/memory tree.
 
--- 
-Dev Null <devnull@uvos.xyz>
+Best regards,
+Krzysztof
