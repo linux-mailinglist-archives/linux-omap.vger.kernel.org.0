@@ -2,117 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA3B245F29
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Aug 2020 10:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB18224604D
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Aug 2020 10:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727936AbgHQITE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Aug 2020 04:19:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51508 "EHLO
+        id S1726473AbgHQIfZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Aug 2020 04:35:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727797AbgHQITC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Aug 2020 04:19:02 -0400
-Received: from ds0.me (ds0.me [IPv6:2602:ffc5::f9bc:b4ce])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78237C061388
-        for <linux-omap@vger.kernel.org>; Mon, 17 Aug 2020 01:19:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ds0.me; s=mail;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID; bh=kv2kv6o8+CJz/gtnJzng8Ng2m7mqY7Uosu9hvJ+JVJo=;
-        b=KvyGXLvxGf68frEHtAw7AQ+oxY05UvAa2mpInZC+xdoMl9Gd+oAyGr9ObKswKTg3qEnpV1A50asaFr7X3Gu0eqh4hfQD3jRKKzjrc3n1vySfI/Hmqfa/jl35e/c8wVT0ykhCrWSEsh1ci0UR0J1g0bjgP57AjpURxAOlzE280zA=;
-Received: from 97e0b068.skybroadband.com ([151.224.176.104] helo=david-5530)
-        by ds0.me with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.84_2)
-        (envelope-from <dave@ds0.me>)
-        id 1k7aM4-0003PB-7K; Mon, 17 Aug 2020 04:18:56 -0400
-Message-ID: <2b2d40b6fde71167d78af33ff3af18f878a13000.camel@ds0.me>
-Subject: Re: [Letux-kernel] Lockup inside omap4_prminst_read_inst_reg on
- OMAP5 uEVM
-From:   David Shah <dave@ds0.me>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        kernel@pyra-handheld.com, Linux-OMAP <linux-omap@vger.kernel.org>
-Date:   Mon, 17 Aug 2020 09:18:49 +0100
-In-Reply-To: <20200817063835.GA2994@atomide.com>
-References: <115bcd43a5d01f2df26b58ffcd7e1a9f9e551c83.camel@ds0.me>
-         <b407c35a2017dd348c7fd94eee1386246ffba857.camel@ds0.me>
-         <30eba639cefaa30718fad38a1dbc53c7475e40dd.camel@ds0.me>
-         <20200817063835.GA2994@atomide.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        with ESMTP id S1726385AbgHQIfY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Aug 2020 04:35:24 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E332EC061388;
+        Mon, 17 Aug 2020 01:35:23 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id f5so7139579plr.9;
+        Mon, 17 Aug 2020 01:35:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=RTg2ZMt185zzvUgaMnfoRgnvAtOybCl6nq3HlbjwXIo=;
+        b=np1DZOoVOiJmzQfi5gIFqZ65oL1RRtYC/68KC3rInxkaZDqqFb/7z2Lfa/8VuU5mxt
+         hKEecv7OPaClrMrl2IIyG7rQQkOidWxYQokK7lg9P1SL5ycFolrW7nHdGNTyIfWBa1ZR
+         zx2obDmU6/uhiHeOwGDeTg4RpWMMKRCvc9qaB0/Bm544JouhDftKId5XsiqtXOuArMgl
+         hPUrI1znMdzk/abSdiSO/zFiyTwS1HMfRTC9XTg7ymAhtc8PIZmzLYvAp/w7o+O6tvfT
+         O8CHuhs55HOCj2GicPc7wDhsybyic+UH/GEEGAJkk8oFkKe0Yq06697J9pl0eG35Fhui
+         d6Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=RTg2ZMt185zzvUgaMnfoRgnvAtOybCl6nq3HlbjwXIo=;
+        b=rxxaFcTV88t36call5yacylSsg3UOC1xN70AfcpCiA6Y3dYu2gCCbniFX0yPhOz3Xy
+         CccC0AnWeGSmSmiY9wZgT82/X7KbeSLFXV50tXRWvfhi7AZXnZOgIY8/XmY11YEKJgz8
+         ne8hwFR1rhlUPWWXGO6SOnDkkjtfJGamV7ckjt6U4lFKy2DQoYUgYhSTRtdgQVLE13wb
+         cWA0WxyHbzMiB79zjkxkxJ7wa4GZMijcnZ7cJbo5aS0F8L71V6SOCkGCIc/h9JTNpMRX
+         zHOZ6OkCkzVxppz9UtATrOSAlHtSDJNpGG+lvYjX0HvIK7eNxkrV4S1cRvlGaq/4Splo
+         g6ow==
+X-Gm-Message-State: AOAM533w/jy3dR+vYwpZ1+EasA3NjLp+kNq/joFrv6MZvb/Y83FHG9Yf
+        sT2KoqzILBYcLYe3DvNr6Ik=
+X-Google-Smtp-Source: ABdhPJx8MPEZVqt1qfF75/O368PzmZucttE6ZMqC8OTPwo0zJWTrr5MWUzU7fT3D2F2oBQlTv6nlCw==
+X-Received: by 2002:a17:902:c286:: with SMTP id i6mr9995341pld.219.1597653322315;
+        Mon, 17 Aug 2020 01:35:22 -0700 (PDT)
+Received: from localhost.localdomain ([49.207.202.98])
+        by smtp.gmail.com with ESMTPSA id h5sm18434068pfq.146.2020.08.17.01.35.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2020 01:35:21 -0700 (PDT)
+From:   Allen Pais <allen.lkml@gmail.com>
+To:     ludovic.desroches@microchip.com, ulf.hansson@linaro.org,
+        manuel.lauss@gmail.com, mirq-linux@rere.qmqm.pl,
+        jh80.chung@samsung.com, oakad@yahoo.com,
+        yamada.masahiro@socionext.com, brucechang@via.com.tw,
+        HaraldWelte@viatech.com
+Cc:     keescook@chromium.org, inux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, Allen Pais <allen.lkml@gmail.com>
+Subject: [PATCH 00/10] mmc: convert tasklets to use new tasklet_setup()
+Date:   Mon, 17 Aug 2020 14:04:58 +0530
+Message-Id: <20200817083508.22657-1-allen.lkml@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+Commit 12cc923f1ccc ("tasklet: Introduce new initialization API")'
+introduced a new tasklet initialization API. This series converts 
+all the mmc drivers to use the new tasklet_setup() API
 
-On Mon, 2020-08-17 at 09:38 +0300, Tony Lindgren wrote:
-> Hi,
-> 
-> * David Shah <dave@ds0.me> [200816 20:13]:
-> > It seems like 'CSWR' idle may never have actually worked properly on
-> > the OMAP5...
-> > 
-> > As an experiment, I took the old TI 3.8.y GLSDK kernel,
-> > commit 2c871a879dbb4234232126f7075468d5bf0a50e3 and made the following
-> > changes:
-> > 
-> >  - Enabling CONFIG_CPU_IDLE as this was not in omap2plus_defconfig back
-> > then
-> >  - Disabling all the kernel debugging related config, as these seem to
-> > significantly reduce the frequency of lockups
-> >  - OSWR idle disabled, as this is known broken
-> >  - Some small patches to get it working with gcc9, none of which
-> > touched any power management or idle code.
-> > 
-> > And I saw lockups with an almost identical frequency to 5.6 and 5.7
-> > with a similar config; and the same pipeline stalled error reported by
-> > CCS when connecting over JTAG. The only difference is the reported PC
-> > was a read instruction inside sched_clock rather
-> > than omap4_prminst_read_inst_reg.
-> > 
-> > Would be interested to know if there is a backstory here? Could it be
-> > related to the bugs that stopped OSWR from working? Is there a glsdk
-> > kernel version that I missed where CSWR on the OMAP5 actually works
-> > reliably.
-> > 
-> > If anyone wants to try reproducing this; the most important settings
-> > are:
-> > 
-> >  - CONFIG_CPU_IDLE=y
-> >  - All kernel debugging settings disabled
-> >  - CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y
-> > 
-> > This will usually result in a lockup while idle at a login prompt
-> > within a few hours with no other hardware connected. A lockup usually
-> > occurs sooner (within 30 minutes) repeatedly wget'ing a 100MB test file
-> > in a loop.
-> 
-> Care to check if this happens with current mainline kernel and sgx
-> disabled?
-> 
-> The reason I'm asking is I used a pi-top with a omap5-igep0050 board as
-> a test laptop with the mainline kernel for about two years until I managed
-> to break the UART connector on it a few years ago :) I sure had things
-> working reliably with no hangs with cpuidle enabled with LPAE. This was
-> with the pi-top HDMI panel without sgx.
-> 
+Allen Pais (10):
+  mmc: atmel-mci: convert tasklets to use new tasklet_setup() API
+  mmc: au1xmmc: convert tasklets to use new tasklet_setup() API
+  mmc: cb710: convert tasklets to use new tasklet_setup() API
+  mmc: dw_mmc: convert tasklets to use new tasklet_setup() API
+  mmc: omap: convert tasklets to use new tasklet_setup() API
+  mmc: renesas: convert tasklets to use new tasklet_setup() API
+  mmc: s3cmci: convert tasklets to use new tasklet_setup() API
+  mmc: tifm_sd: convert tasklets to use new tasklet_setup() API
+  mmc: uniphier: convert tasklets to use new tasklet_setup() API
+  mmc: via-sdmmc: convert tasklets to use new tasklet_setup() API
 
-That's a good idea, I'll try that. 
+ drivers/mmc/host/atmel-mci.c                  |  6 +++---
+ drivers/mmc/host/au1xmmc.c                    | 15 ++++++--------
+ drivers/mmc/host/cb710-mmc.c                  | 11 +++++-----
+ drivers/mmc/host/dw_mmc.c                     |  6 +++---
+ drivers/mmc/host/omap.c                       |  7 +++----
+ drivers/mmc/host/renesas_sdhi.h               |  1 +
+ drivers/mmc/host/renesas_sdhi_core.c          |  2 ++
+ drivers/mmc/host/renesas_sdhi_internal_dmac.c | 20 +++++++++----------
+ drivers/mmc/host/renesas_sdhi_sys_dmac.c      |  9 ++++-----
+ drivers/mmc/host/s3cmci.c                     |  6 +++---
+ drivers/mmc/host/tifm_sd.c                    |  7 +++----
+ drivers/mmc/host/uniphier-sd.c                | 14 ++++++-------
+ drivers/mmc/host/via-sdmmc.c                  |  7 +++----
+ 13 files changed, 53 insertions(+), 58 deletions(-)
 
-> Also please see if this happens with omap5-uevm too. There pyra related
-> DDR self-refresh related hangs should be out of the AFAIK, but still
-> worth testing.
-> 
-
-Most of my testing so far has been on the the uEVM, due to easier JTAG access.
-For some reason that I have not yet identified, the uEVM actually locks up
-slightly more frequently than the Pyra.
-
-I wonder if there is some hardware difference going on, I know a few other
-people have had good experiences with the IGEP on older mainline kernels too.
-
-> Regards,
-> 
-> Tony
+-- 
+2.17.1
 
