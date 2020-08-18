@@ -2,86 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2F69248098
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Aug 2020 10:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1415248135
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Aug 2020 10:59:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726429AbgHRI32 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Aug 2020 04:29:28 -0400
-Received: from muru.com ([72.249.23.125]:40706 "EHLO muru.com"
+        id S1726694AbgHRI62 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Aug 2020 04:58:28 -0400
+Received: from muru.com ([72.249.23.125]:40720 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726043AbgHRI31 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 18 Aug 2020 04:29:27 -0400
+        id S1726424AbgHRI61 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 18 Aug 2020 04:58:27 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 80DFF810D;
-        Tue, 18 Aug 2020 08:29:26 +0000 (UTC)
-Date:   Tue, 18 Aug 2020 11:29:53 +0300
+        by muru.com (Postfix) with ESMTPS id 317F7810D;
+        Tue, 18 Aug 2020 08:58:25 +0000 (UTC)
+Date:   Tue, 18 Aug 2020 11:58:53 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org, Santosh Shilimkar <ssantosh@kernel.org>
-Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, Keerthy <j-keerthy@ti.com>
-Subject: Re: [PATCH 0/3] Simplify PM for am3/4, drop RTC pdata for am3/4/dra7
-Message-ID: <20200818082953.GN2994@atomide.com>
-References: <20200703160731.53698-1-tony@atomide.com>
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     Adam Ford <aford173@gmail.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Adam Ford-BE <aford@beaconembedded.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH V2] ARM: dts: omap3: Add cpu trips and cooling map for
+ omap34/36 families
+Message-ID: <20200818085853.GO2994@atomide.com>
+References: <20200817133931.11785-1-aford173@gmail.com>
+ <20200817215953.59607c11@aktux>
+ <CAHCN7x+2trMJPmg1xA_j2EUfxqtZX0da-pyzvpiZE4GanVNf4Q@mail.gmail.com>
+ <20200817221532.5d150648@aktux>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200703160731.53698-1-tony@atomide.com>
+In-Reply-To: <20200817221532.5d150648@aktux>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Santosh,
+* Andreas Kemnade <andreas@kemnade.info> [200817 20:15]:
+> On Mon, 17 Aug 2020 15:02:27 -0500
+> Adam Ford <aford173@gmail.com> wrote:
+> 
+> > On Mon, Aug 17, 2020 at 2:59 PM Andreas Kemnade <andreas@kemnade.info> wrote:
+> > >
+> > > On Mon, 17 Aug 2020 08:39:31 -0500
+> > > Adam Ford <aford173@gmail.com> wrote:
+> > >  
+> > > > The OMAP3530, OMAP3630, and DM3730 all show thresholds of 90C and 105C
+> > > > depending on commercial or industrial temperature ratings.
+> > > >
+> > > > This patch expands the thermal information to include the limits of 90
+> > > > and 105C for alert and critical.  It sets the coolings-cells for the
+> > > > 34xx and 36xx CPU's which both point to omap3-cpu-thermal.dtsi.
+> > > >
+> > > > For boards who never use industrial temperatures, these can be
+> > > > changed on their respective device trees with something like:
+> > > >
+> > > > &cpu_alert0 {
+> > > >       temperature = <85000>; /* millicelsius */
+> > > > };
+> > > >
+> > > > &cpu_crit {
+> > > >       temperature = <90000>; /* millicelsius */
+> > > > };
 
-* Tony Lindgren <tony@atomide.com> [200703 19:08]:
-> Hi all,
-> 
-> Here are patches to simplify the RTC+DDR PM code for am3 and am4. We want
-> to do this to drop the RTC related legacy platform data for am3 and am4.
-> We also drop RTC legacy platform data for dra7.
-> 
-> Please test the RTC+DDR suspend on am437x-gp-evm if possible. I've tested
-> this series on am437x-sk-evm, but at least currently cannot do RTC+DDR
-> suspend and is limited to testing retention suspend only.
-> 
-> These patches depend on v5.8-rc3 for earlier suspend and resume related
-> fixes.
-> 
-> Additionally, for testing the LCD for suspend, the following patch is
-> needed for the missing omapdrm PM ops:
-> 
-> drm/omap: force runtime PM suspend on system suspend
+I think you should set the lower temperatures by default and have
+only the boards known to work with higher values configure them as
+needed.
 
-Here's another series that was getting too late for v5.9 that I'd like to
-queue for v5.10. Care to take a look and ack if it looks OK?
+> > > > OMAP3_THERMAL will need to be enabled.  It is off by default.
+> > > >  
+> > > hmm, I think the patch for idling core when OMAP3_THERMAL is enabled
+> > > got stuck somewhere. It still seems not to work. Shouldn't that patch
+> > > be applied first?  
+> > 
+> > I rebased the idle stuff, and now I get errors, so I haven't pushed it
+> > yet.  I put a note that OMAP3_THERMAL is off by default, but this
+> > patch would at least get the framing in there.  I know at least two of
+> > us that use 1GHZ processors which are not supposed to run at that
+> > speed above 90MHz, so the idea was to tolerate the higher current for
+> > now, and when the idle stuff works, we'll enable the OMAP3_THERMAL by
+> > default.
+> > 
+> yes, makes sense, so with this patch we have the choice to either
+> optimize for low speeds and currents (by disabling OMAP3_THERMAL and
+> 1GHz) or high speeds (by enabling OMAP3_THERMAL and 1 Ghz).
+
+Maybe add something like that to the patch description too?
 
 Regards,
 
 Tony
-
-
-> Tony Lindgren (3):
->   soc: ti: pm33xx: Simplify RTC usage to prepare to drop platform data
->   ARM: OMAP2+: Drop legacy platform data for am3 and am4 rtc
->   ARM: OMAP2+: Drop legacy platform data for dra7 rtcss
-> 
->  arch/arm/boot/dts/am33xx-l4.dtsi              |  1 -
->  arch/arm/boot/dts/am437x-l4.dtsi              |  3 +-
->  arch/arm/boot/dts/am43x-epos-evm.dts          |  4 ++
->  arch/arm/boot/dts/dra7-l4.dtsi                |  1 -
->  .../omap_hwmod_33xx_43xx_common_data.h        |  2 -
->  .../omap_hwmod_33xx_43xx_interconnect_data.c  |  8 ----
->  .../omap_hwmod_33xx_43xx_ipblock_data.c       | 37 ---------------
->  arch/arm/mach-omap2/omap_hwmod_33xx_data.c    |  1 -
->  arch/arm/mach-omap2/omap_hwmod_43xx_data.c    |  8 ----
->  arch/arm/mach-omap2/omap_hwmod_7xx_data.c     | 44 -----------------
->  arch/arm/mach-omap2/pm33xx-core.c             | 25 ----------
->  drivers/soc/ti/pm33xx.c                       | 47 +++++++++++++++++--
->  include/linux/platform_data/pm33xx.h          |  3 --
->  13 files changed, 47 insertions(+), 137 deletions(-)
-> 
-> -- 
-> 2.27.0
-> 
