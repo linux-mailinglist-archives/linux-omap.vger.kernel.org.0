@@ -2,93 +2,65 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D77248075
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Aug 2020 10:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 549C0248088
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Aug 2020 10:26:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726203AbgHRIW0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Aug 2020 04:22:26 -0400
-Received: from foss.arm.com ([217.140.110.172]:37866 "EHLO foss.arm.com"
+        id S1726273AbgHRI0V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Aug 2020 04:26:21 -0400
+Received: from muru.com ([72.249.23.125]:40692 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726043AbgHRIW0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 18 Aug 2020 04:22:26 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A74771FB;
-        Tue, 18 Aug 2020 01:22:25 -0700 (PDT)
-Received: from [10.37.12.68] (unknown [10.37.12.68])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA8FC3F66B;
-        Tue, 18 Aug 2020 01:22:21 -0700 (PDT)
-Subject: Re: [PATCH 16/16] memory: samsung: exynos5422-dmc: Correct white
- space issues
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-samsung-soc@vger.kernel.org, linux-pm@vger.kernel.org
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Roger Quadros <rogerq@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Olof Johansson <olof@lixom.net>,
-        Arnd Bergmann <arnd@arndb.de>
-References: <20200724182328.3348-1-krzk@kernel.org>
- <20200724182328.3348-17-krzk@kernel.org>
-From:   Lukasz Luba <lukasz.luba@arm.com>
-Message-ID: <f02d1d01-aefa-cdae-c937-7a3b6e4e3114@arm.com>
-Date:   Tue, 18 Aug 2020 09:22:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726203AbgHRI0U (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 18 Aug 2020 04:26:20 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 602A4810D;
+        Tue, 18 Aug 2020 08:26:18 +0000 (UTC)
+Date:   Tue, 18 Aug 2020 11:26:45 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     santosh.shilimkar@oracle.com
+Cc:     linux-omap@vger.kernel.org,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        "Andrew F . Davis" <afd@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCHv4 0/6] Add initial genpd support for omap PRM driver
+Message-ID: <20200818082645.GM2994@atomide.com>
+References: <20200702154513.31859-1-tony@atomide.com>
+ <20200817065300.GD2994@atomide.com>
+ <f52bc6c2-1256-a3ca-fede-1d3ab441ef9f@oracle.com>
 MIME-Version: 1.0
-In-Reply-To: <20200724182328.3348-17-krzk@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f52bc6c2-1256-a3ca-fede-1d3ab441ef9f@oracle.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* santosh.shilimkar@oracle.com <santosh.shilimkar@oracle.com> [200817 15:25]:
+> On 8/16/20 11:53 PM, Tony Lindgren wrote:
+> > Hi Santosh,
+> > 
+> > * Tony Lindgren <tony@atomide.com> [200702 18:46]:
+> > > Hi all,
+> > > 
+> > > Here's v4 set of patches to add genpd support to the PRM (Power and Reset
+> > > Module) driver.
+> > > 
+> > > Initially we just add one hardware accelerator power domain for sgx,
+> > > and one interconnect instance for l4_abe. The rest of the SoC specific
+> > > domain data is probably best added one SoC at a time based on generated
+> > > data.
+> > 
+> > Care to ack some of these patches? I'd like to get this into Linux next
+> > for v5.10 :)
+> > 
+> Sure,
+> Acked-by: Santosh Shilimkar <ssantosh@kernel.org>
 
-
-On 7/24/20 7:23 PM, Krzysztof Kozlowski wrote:
-> Remove unneeded blank line and align indentation with open parenthesis.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> ---
->   drivers/memory/samsung/exynos5422-dmc.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/memory/samsung/exynos5422-dmc.c b/drivers/memory/samsung/exynos5422-dmc.c
-> index 0388066a7d96..62a7193e3904 100644
-> --- a/drivers/memory/samsung/exynos5422-dmc.c
-> +++ b/drivers/memory/samsung/exynos5422-dmc.c
-> @@ -1394,7 +1394,7 @@ static int exynos5_dmc_probe(struct platform_device *pdev)
->   		return PTR_ERR(dmc->base_drexi1);
->   
->   	dmc->clk_regmap = syscon_regmap_lookup_by_phandle(np,
-> -				"samsung,syscon-clk");
-> +							  "samsung,syscon-clk");
->   	if (IS_ERR(dmc->clk_regmap))
->   		return PTR_ERR(dmc->clk_regmap);
->   
-> @@ -1473,7 +1473,6 @@ static int exynos5_dmc_probe(struct platform_device *pdev)
->   		exynos5_dmc_df_profile.polling_ms = 500;
->   	}
->   
-> -
->   	dmc->df = devm_devfreq_add_device(dev, &exynos5_dmc_df_profile,
->   					  DEVFREQ_GOV_SIMPLE_ONDEMAND,
->   					  &dmc->gov_data);
-> 
-
-LGTM
-
-Acked-by: Lukasz Luba <lukasz.luba@arm.com>
+Thanks, I've pushed out this series into omap-for-v5.10/prm-genpd and
+for-next branches.
 
 Regards,
-Lukasz
+
+Tony
