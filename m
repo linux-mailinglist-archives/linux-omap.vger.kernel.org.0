@@ -2,392 +2,201 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D70024908F
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Aug 2020 00:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FC9C2491F8
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Aug 2020 02:49:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726783AbgHRWHT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Aug 2020 18:07:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39250 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726799AbgHRWHR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Aug 2020 18:07:17 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067D5C061342
-        for <linux-omap@vger.kernel.org>; Tue, 18 Aug 2020 15:07:16 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id o22so16347328qtt.13
-        for <linux-omap@vger.kernel.org>; Tue, 18 Aug 2020 15:07:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=px8ObE2xOi/36R5JWvUBtMfgDCI+Fg4lbQqfJ0YrggQ=;
-        b=HPYR+grppmQc/6qWyiY8FL2m31cXd/LpPr+K9Rk92MwGCiO+09qTJQZJnbWEvNLGy4
-         HFWN3eMFqp8OTxNH4FZF407D2c/tv50tQvOvS5rWKs3nno+UKbYsZzt++FIvTgcv3QcB
-         Vo9gmTRuDH3ygT/pm6qRwfLBQjjnQrcJCxpArjqcsnci5IMXbXWh4y2w/DhE0UHxmwyd
-         oD03vMhzkAnZ0S067sgdGPTGneuyU0iD/YuqUlV9pAomfPnmWGHldmQYLfkNMbuEDafg
-         6nTddIcCQ2hcE3Ywjmoug4WrJ7Fau5OgM3uyQFXW4lMor/xZUiuBVQ7frs0SVNcQz7AX
-         Cvyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=px8ObE2xOi/36R5JWvUBtMfgDCI+Fg4lbQqfJ0YrggQ=;
-        b=mJOK314r29lWz5q80nZ/R1FOzxT4y3nAUsQMYvE6ICMp+N18Dy5ChAJNKBR2vYpdon
-         I5Z+Ea/VowZQKXOZZg/HSVLGSEjTmqNfbPoSQYGf3zHHtL3Y/S6cI8v72iit6mZyzfNY
-         9It5pq/oSumWKSnr2F9cJ+Q8avlwC6O7l42BVcnJavAzM3bAD1STXQ1sSrI8j/CqaIdy
-         Zx1wsnLegMJohOmn2b43IIIGYRcmZpI6XAk+uQbk6RLYA3PImfSn3FnIqeY1ciiOl90R
-         aoW6pBtYQYng7W7IlBhn4A1QBr2SvSdbJZeN92Yqngd4JxiQnBtPsOFUZA3juAnNkHny
-         qmNg==
-X-Gm-Message-State: AOAM530+jgtu3aff78TZWVr51J81c9bgj9WwWgDMRZhm2JLgbvPuCDeK
-        zI80nwsqwN6gKCN8M9wvpMcpLjnS0Dw5EszvXaQTDw==
-X-Google-Smtp-Source: ABdhPJyHCn8r4aLq23a97uyhpLFlSZ3mnxBVLrCwHgQJVtznOvhgjh2wgQPw3On28wpzamxePVdq2m1CSITqWxILkUE=
-X-Received: by 2002:aed:22cb:: with SMTP id q11mr19402496qtc.200.1597788435923;
- Tue, 18 Aug 2020 15:07:15 -0700 (PDT)
+        id S1726890AbgHSAtS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Aug 2020 20:49:18 -0400
+Received: from mga04.intel.com ([192.55.52.120]:61679 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726600AbgHSAtP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 18 Aug 2020 20:49:15 -0400
+IronPort-SDR: jXMYhZhc9CLMv8CGFTgj+pnR7fgEJzn6xwzG/pwz96014OQChzbAGPOpU4gA0p+2NJ8hkKJmzW
+ qcBxRTr1fq7w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="152441945"
+X-IronPort-AV: E=Sophos;i="5.76,329,1592895600"; 
+   d="scan'208";a="152441945"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2020 17:49:11 -0700
+IronPort-SDR: ZcnIOw0h1SwJAa+TKbyD1zn9SzifTZhErC5XiNbrZaxULfTs0yPc9i1IO599wUt5LBCl6i+ece
+ DDDFsfivYvuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,329,1592895600"; 
+   d="scan'208";a="279553326"
+Received: from lkp-server02.sh.intel.com (HELO 2f0d8b563e65) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 18 Aug 2020 17:49:09 -0700
+Received: from kbuild by 2f0d8b563e65 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1k8CHt-0001W2-8a; Wed, 19 Aug 2020 00:49:09 +0000
+Date:   Wed, 19 Aug 2020 08:48:02 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
+ bc9a2e226ea95e1699f7590845554de095308b75
+Message-ID: <5f3c76c2.cb5U+yNtT28Jj3os%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <1596020528-19510-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1596020528-19510-2-git-send-email-grzegorz.jaszczyk@linaro.org> <20200817211456.GA1542592@bogus>
-In-Reply-To: <20200817211456.GA1542592@bogus>
-From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Date:   Wed, 19 Aug 2020 00:07:05 +0200
-Message-ID: <CAMxfBF5YQCE9i-Xot209S+vWtaH6NFUrcViFcsEG6GKyeQ5j3A@mail.gmail.com>
-Subject: Re: [PATCH 1/6] dt-bindings: soc: ti: Add TI PRUSS bindings
-To:     Rob Herring <robh@kernel.org>
-Cc:     ssantosh@kernel.org, "Anna, Suman" <s-anna@ti.com>,
-        santosh.shilimkar@oracle.com, Lee Jones <lee.jones@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        "Bajjuri, Praneeth" <praneeth@ti.com>,
-        Roger Quadros <rogerq@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Rob,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
+branch HEAD: bc9a2e226ea95e1699f7590845554de095308b75  usb: dwc3: gadget: Handle ZLP for sg requests
 
-On Mon, 17 Aug 2020 at 23:14, Rob Herring <robh@kernel.org> wrote:
->
-> On Wed, Jul 29, 2020 at 01:02:03PM +0200, Grzegorz Jaszczyk wrote:
-> > This patch adds the bindings for the Programmable Real-Time Unit
-> > and Industrial Communication Subsystem (PRU-ICSS) present on various
-> > TI SoCs. The IP is present on multiple TI SoC architecture families
-> > including the OMAP architecture SoCs such as AM33xx, AM437x and
-> > AM57xx; and on a Keystone 2 architecture based 66AK2G SoC. It is
-> > also present on the Davinci based OMAPL138 SoCs and K3 architecture
-> > based AM65x and J721E SoCs as well.
-> >
-> > The IP has a number of sub-modules some of which are represented as
-> > their own devices. This binding covers only the top-level sub-system
-> > devices, and some sub-modules like MDIO, MII_RT (Ethernet MII_RT module
-> > with MII ports) and IEP (Industrial Ethernet Peripheral). The remaining
-> > sub-modules bindings shall be defined in the respective driver
-> > subsystem bindings folders. Couple of full examples have also been
-> > added demonstrating the devices on AM335x and AM437x SoCs.
-> >
-> > Signed-off-by: Suman Anna <s-anna@ti.com>
-> > Signed-off-by: Roger Quadros <rogerq@ti.com>
-> > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> > Reviewed-by: Lee Jones <lee.jones@linaro.org>
-> > ---
-> >  .../devicetree/bindings/soc/ti/ti,pruss.yaml       | 383 +++++++++++++++++++++
-> >  1 file changed, 383 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml b/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
-> > new file mode 100644
-> > index 0000000..4b7a098
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
-> > @@ -0,0 +1,383 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/soc/ti/ti,pruss.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: |+
-> > +  TI Programmable Real-Time Unit and Industrial Communication Subsystem
-> > +
-> > +maintainers:
-> > +  - Suman Anna <s-anna@ti.com>
-> > +
-> > +description: |+
-> > +
-> > +  The Programmable Real-Time Unit and Industrial Communication Subsystem
-> > +  (PRU-ICSS a.k.a. PRUSS) is present on various TI SoCs such as AM335x, AM437x,
-> > +  Keystone 66AK2G, OMAP-L138/DA850 etc. A PRUSS consists of dual 32-bit RISC
-> > +  cores (Programmable Real-Time Units, or PRUs), shared RAM, data and
-> > +  instruction RAMs, some internal peripheral modules to facilitate industrial
-> > +  communication, and an interrupt controller.
-> > +
-> > +  The programmable nature of the PRUs provide flexibility to implement custom
-> > +  peripheral interfaces, fast real-time responses, or specialized data handling.
-> > +  The common peripheral modules include the following,
-> > +    - an Ethernet MII_RT module with two MII ports
-> > +    - an MDIO port to control external Ethernet PHYs
-> > +    - an Industrial Ethernet Peripheral (IEP) to manage/generate Industrial
-> > +      Ethernet functions
-> > +    - an Enhanced Capture Module (eCAP)
-> > +    - an Industrial Ethernet Timer with 7/9 capture and 16 compare events
-> > +    - a 16550-compatible UART to support PROFIBUS
-> > +    - Enhanced GPIO with async capture and serial support
-> > +
-> > +  A PRU-ICSS subsystem can have up to three shared data memories. A PRU core
-> > +  acts on a primary Data RAM (there are usually 2 Data RAMs) at its address
-> > +  0x0, but also has access to a secondary Data RAM (primary to the other PRU
-> > +  core) at its address 0x2000. A shared Data RAM, if present, can be accessed
-> > +  by both the PRU cores. The Interrupt Controller (INTC) and a CFG module are
-> > +  common to both the PRU cores. Each PRU core also has a private instruction
-> > +  RAM, and specific register spaces for Control and Debug functionalities.
-> > +
-> > +  Various sub-modules within a PRU-ICSS subsystem are represented as individual
-> > +  nodes and are defined using a parent-child hierarchy depending on their
-> > +  integration within the IP and the SoC. These nodes are described in the
-> > +  following sections.
-> > +
-> > +
-> > +  PRU-ICSS Node
-> > +  ==============
-> > +  Each PRU-ICSS instance is represented as its own node with the individual PRU
-> > +  processor cores, the memories node, an INTC node and an MDIO node represented
-> > +  as child nodes within this PRUSS node. This node shall be a child of the
-> > +  corresponding interconnect bus nodes or target-module nodes.
-> > +
-> > +  See ../../mfd/syscon.yaml for generic SysCon binding details.
-> > +
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - ti,am3356-pruss  # for AM335x SoC family
-> > +      - ti,am4376-pruss0 # for AM437x SoC family and PRUSS unit 0
-> > +      - ti,am4376-pruss1 # for AM437x SoC family and PRUSS unit 1
-> > +      - ti,am5728-pruss  # for AM57xx SoC family
-> > +      - ti,k2g-pruss     # for 66AK2G SoC family
-> > +      - ti,am654-icssg   # for K3 AM65x SoC family
-> > +      - ti,j721e-icssg   # for K3 J721E SoC family
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  ranges:
-> > +    maxItems: 1
-> > +    description: |
-> > +      Standard ranges definition using addresses from 0 for child nodes.
->
-> Don't need a description on standard properties.
+elapsed time: 2108m
 
-Ok.
+configs tested: 139
+configs skipped: 12
 
->
->
-> > +
-> > +  power-domains:
-> > +    description: |
-> > +      This property is as per sci-pm-domain.txt.
-> > +
-> > +  memories:
->
-> Missing unit-address pattern.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Ok, I will also update other subnodes regarding the unit-address pattern.
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+sh                        apsh4ad0a_defconfig
+arm                            hisi_defconfig
+ia64                             allyesconfig
+riscv                    nommu_k210_defconfig
+powerpc                       holly_defconfig
+arm                          collie_defconfig
+m68k                        stmark2_defconfig
+powerpc                         ps3_defconfig
+h8300                     edosk2674_defconfig
+sh                          urquell_defconfig
+ia64                        generic_defconfig
+ia64                          tiger_defconfig
+csky                                defconfig
+sh                               allmodconfig
+mips                           rs90_defconfig
+powerpc                      ppc64e_defconfig
+sh                         ecovec24_defconfig
+m68k                          amiga_defconfig
+ia64                             alldefconfig
+powerpc                    adder875_defconfig
+mips                          rb532_defconfig
+powerpc                     mpc83xx_defconfig
+mips                      malta_kvm_defconfig
+sparc                            alldefconfig
+mips                       capcella_defconfig
+powerpc                      ppc6xx_defconfig
+arm                             mxs_defconfig
+mips                        omega2p_defconfig
+mips                       rbtx49xx_defconfig
+mips                         cobalt_defconfig
+mips                malta_kvm_guest_defconfig
+mips                malta_qemu_32r6_defconfig
+arm                          pcm027_defconfig
+ia64                            zx1_defconfig
+mips                         mpc30x_defconfig
+arm                           tegra_defconfig
+arm                         s3c2410_defconfig
+m68k                          hp300_defconfig
+arm                        clps711x_defconfig
+mips                      pic32mzda_defconfig
+mips                      maltasmvp_defconfig
+arm                           sunxi_defconfig
+powerpc                      tqm8xx_defconfig
+mips                        nlm_xlr_defconfig
+sh                          lboxre2_defconfig
+arm                      footbridge_defconfig
+microblaze                      mmu_defconfig
+arm                        oxnas_v6_defconfig
+sh                          kfr2r09_defconfig
+sh                          sdk7786_defconfig
+arm                           spitz_defconfig
+powerpc                        cell_defconfig
+powerpc                      ppc44x_defconfig
+m68k                       m5208evb_defconfig
+arm                   milbeaut_m10v_defconfig
+c6x                        evmc6472_defconfig
+sh                           sh2007_defconfig
+mips                        nlm_xlp_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20200817
+x86_64               randconfig-a001-20200817
+x86_64               randconfig-a005-20200817
+x86_64               randconfig-a003-20200817
+x86_64               randconfig-a002-20200817
+x86_64               randconfig-a004-20200817
+i386                 randconfig-a005-20200817
+i386                 randconfig-a001-20200817
+i386                 randconfig-a002-20200817
+i386                 randconfig-a003-20200817
+i386                 randconfig-a006-20200817
+i386                 randconfig-a004-20200817
+i386                 randconfig-a005-20200818
+i386                 randconfig-a002-20200818
+i386                 randconfig-a001-20200818
+i386                 randconfig-a006-20200818
+i386                 randconfig-a003-20200818
+i386                 randconfig-a004-20200818
+x86_64               randconfig-a013-20200818
+x86_64               randconfig-a016-20200818
+x86_64               randconfig-a012-20200818
+x86_64               randconfig-a011-20200818
+x86_64               randconfig-a014-20200818
+x86_64               randconfig-a015-20200818
+i386                 randconfig-a016-20200817
+i386                 randconfig-a011-20200817
+i386                 randconfig-a013-20200817
+i386                 randconfig-a015-20200817
+i386                 randconfig-a014-20200817
+i386                 randconfig-a012-20200817
+i386                 randconfig-a016-20200818
+i386                 randconfig-a011-20200818
+i386                 randconfig-a015-20200818
+i386                 randconfig-a013-20200818
+i386                 randconfig-a012-20200818
+i386                 randconfig-a014-20200818
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
->
->
-> > +    description: |
-> > +      The various Data RAMs within a single PRU-ICSS unit are represented as a
-> > +      single node with the name 'memories'.
-> > +
-> > +    type: object
-> > +
-> > +    properties:
-> > +      reg:
-> > +        minItems: 2 # On AM437x one of two PRUSS units don't contain Shared RAM.
-> > +        maxItems: 3
-> > +        items:
-> > +          - description: Address and size of the Data RAM0.
-> > +          - description: Address and size of the Data RAM1.
-> > +          - description: |
-> > +              Address and size of the Shared Data RAM. Note that on AM437x one
-> > +              of two PRUSS units don't contain Shared RAM, while the second one
-> > +              has it.
-> > +
-> > +      reg-names:
-> > +        minItems: 2
-> > +        maxItems: 3
-> > +        items:
-> > +          - const: dram0
-> > +          - const: dram1
-> > +          - const: shrdram2
-> > +
-> > +    required:
-> > +      - reg
-> > +      - reg-names
->
->        additionalProperties: false
->
-
-Ok.
-
->
->
-> (And throughout for other child nodes).
-
-Ok.
-
->
->
-> > +
-> > +  cfg:
-> > +    description: |
-> > +      PRU-ICSS configuration space. CFG sub-module represented as a SysCon.
-> > +
-> > +    type: object
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        items:
-> > +          - const: ti,pruss-cfg
-> > +          - const: syscon
-> > +
-> > +      reg:
-> > +        maxItems: 1
-> > +
-> > +  iep:
-> > +    description: |
-> > +      Industrial Ethernet Peripheral to manage/generate Industrial Ethernet
-> > +      functions such as time stamping. Each PRUSS has either 1 IEP (on AM335x,
-> > +      AM437x, AM57xx & 66AK2G SoCs) or 2 IEPs (on K3 AM65x & J721E SoCs ). IEP
-> > +      is used for creating PTP clocks and generating PPS signals. The bindings
-> > +      for this shall be defined in ../../net/ti,icss-iep.yaml.
-> > +
-> > +    type: object
-> > +
-> > +  mii-rt:
-> > +    description: |
-> > +      Real-Time Ethernet to support multiple industrial communication protocols.
-> > +      MII-RT sub-module represented as a SysCon.
-> > +
-> > +    type: object
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        items:
-> > +          - const: ti,pruss-mii
-> > +          - const: syscon
-> > +
-> > +      reg:
-> > +        maxItems: 1
-> > +
-> > +  mii-g-rt:
-> > +    description: |
-> > +      The Real-time Media Independent Interface to support multiple industrial
-> > +      communication protocols (G stands for Gigabit). MII-G-RT sub-module
-> > +      represented as a SysCon.
-> > +
-> > +    type: object
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        items:
-> > +          - const: ti,pruss-mii-g
-> > +          - const: syscon
-> > +
-> > +      reg:
-> > +        maxItems: 1
-> > +
-> > +  interrupt-controller:
-> > +    description: |
-> > +      PRUSS INTC Node. Each PRUSS has a single interrupt controller instance
-> > +      that is common to all the PRU cores. This should be represented as an
-> > +      interrupt-controller node. The bindings for this shall be defined in
-> > +      ../../interrupt-controller/ti,pruss-intc.yaml.
->
-> Use $ref to reference the schema.
-
-The problem is that the mentioned binding is not merged yet. Is it ok
-for you to leave it as is and update once
-../../interrupt-controller/ti,pruss-intc.yam get merged?
-
->
->
-> > +
-> > +    type: object
-> > +
-> > +  mdio:
-> > +    description: |
-> > +      MDIO Node. Each PRUSS has an MDIO module that can be used to control
-> > +      external PHYs. The MDIO module used within the PRU-ICSS is an instance of
-> > +      the MDIO Controller used in TI Davinci SoCs.
-> > +
-> > +    allOf:
-> > +      - $ref: /schemas/net/ti,davinci-mdio.yaml#
-> > +
-> > +    type: object
-> > +
-> > +patternProperties:
-> > +  "^(pru|rtu|txpru)@[0-9a-f]+$":
-> > +    description: |
-> > +      PRU Node. Each PRUSS has dual PRU cores, each represented as a RemoteProc
-> > +      device through a PRU child node each. Each node can optionally be rendered
-> > +      inactive by using the standard DT string property, "status". The ICSSG IP
-> > +      present on K3 SoCs have additional auxiliary PRU cores with slightly
-> > +      different IP integration. The bindings for this shall be defined in
-> > +      ../../remoteproc/ti,pru-rproc.yaml
-> > +
-> > +    type: object
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - ranges
-> > +
-> > +# Due to inability of correctly verifying sub-nodes with an @address through
-> > +# the "required" list, the required sub-nodes below are commented out for now.
-> > +
-> > +#required:
-> > +# - memories
-> > +# - interrupt-controller
-> > +# - pru
->
-> Add:
->
-> additionalProperties: false
-
-Ok.
-
->
->
-> > +
-> > +if:
-> > +  properties:
-> > +    compatible:
-> > +      contains:
-> > +        enum:
-> > +          - ti,k2g-pruss
-> > +          - ti,am654-icssg
-> > +          - ti,j721e-icssg
-> > +then:
-> > +  required:
-> > +    - power-domains
-> > +
-> > +examples:
-> > +  - |
-> > +
-> > +    /* Example 1 AM33xx PRU-ICSS */
-> > +    pruss: pruss@0 {
-> > +        compatible = "ti,am3356-pruss";
-> > +        reg = <0x0 0x80000>;
-> > +        #address-cells = <1>;
-> > +        #size-cells = <1>;
-> > +        ranges;
->
-> I would have expected a warning on this since you defined it to have 1
-> entry.
-
-I've double checked with dt_binding_check - there is no warning. For
-ranges maxItems: 1 is defined.
-
-Thank you for your review,
-Grzegorz
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
