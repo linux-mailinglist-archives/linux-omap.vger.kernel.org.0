@@ -2,104 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B498324A3D9
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Aug 2020 18:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C78F24A4E1
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Aug 2020 19:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726735AbgHSQQy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Aug 2020 12:16:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38854 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726640AbgHSQQu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Aug 2020 12:16:50 -0400
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C44FAC061383
-        for <linux-omap@vger.kernel.org>; Wed, 19 Aug 2020 09:16:49 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id e5so18179041qth.5
-        for <linux-omap@vger.kernel.org>; Wed, 19 Aug 2020 09:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gKC3JrltoHNCRRNe9rGPlKVLmajTZ2YTeYEO1e3K7/s=;
-        b=lQ3oKpJkZKD3Bh2jO/uRZk/MX0WD4c9ClZTaDdOprZU2ZIXc2DidPmljk1Mm5/8Kux
-         rT5VmLZiWkM2QkIV9+7f9l89lQSKHJQh8w+0d+pLze8zOvozLskdIpIQLDPXUXLjM6pg
-         IS2iy1oKuqhxgEtguWoPiuQAKwQ6VCcUozgKp/RSmaK1ACWZby7M+c3ANTFjXLScgsnU
-         dX/ndaq9QlVqMyOj5l5z1BQlNRj0174i8ci8ieGMpLqq5hmx8+S8UEacyU9ntTChVOIh
-         pRyxihHv4zrOBbr72oRvLXhY86wnBxrnumE/Xbfc3POSu/X5xas5+OmrODq4QVl6anLx
-         jFBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gKC3JrltoHNCRRNe9rGPlKVLmajTZ2YTeYEO1e3K7/s=;
-        b=cU25+wB4VhMr2emovRQQz7aaqt31FJEMJQAkD8zP2zvLZzeI2fgHlyipBIFPtfnXjB
-         Va+g6iADEq35VxgI6aCgPbCwwOSpttxCy4T3dhG4bgkFh/paCFE14b9F7/2/RRDhn1YH
-         cIt1irJs30rDXeP3QgIj2jo6KoewDsvMy4ron1GZKB5TNaPR3OnxRrFFKaHVMsBuxuXX
-         BAJDAamktT8ASwoQkBaFdHQtGPv/hw3lnganOurXV5qrFW9iRrZ7aYKqjpbmUqzwklIQ
-         FrONJ1nWt3miza77AnDYKpqc0+co/KunoM9/wDHRCZwPtjoCIwwBl/8v8s8+yXk0Ch0k
-         gpVw==
-X-Gm-Message-State: AOAM531mlrAknoD4VYu3GUiL+WsM29djHzRfcBQl8A1Zo4ZjdhVLsuJe
-        /eX1ONQ6AJAvRkOPiW8A257YmnDmpTPNmtBFIt4afg==
-X-Google-Smtp-Source: ABdhPJwit8P/uhJUwL9TQHT1GcKDdYhENtsdfmRxHGsqAEisZdJ4Hy2n76dCkvtPlynazhzg29s+cREq641riTwAYwM=
-X-Received: by 2002:ac8:4e39:: with SMTP id d25mr22580262qtw.208.1597853808119;
- Wed, 19 Aug 2020 09:16:48 -0700 (PDT)
+        id S1726585AbgHSRXz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Aug 2020 13:23:55 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:38602 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725997AbgHSRXy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Aug 2020 13:23:54 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07JHD3tL005151;
+        Wed, 19 Aug 2020 17:23:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=oo8HJPOFnI8jYMf22UYgSVQCSYKNPPazecoW3XTuh6E=;
+ b=nJoK3HvSvLS9hkuz5yxZGUO3oabzdeV8TRP8UMs+uFfNBfr6Ea1NlREW/FXLqVRRW+r1
+ 3wpJdqut57L4RIYiUzWF4Pu5UyDSZOYJOCg4RVyiURObIUQe54okMzXt16nZAxQIgfwu
+ NFuN1yVUZSBanrPFcTAw79Eu7hQAHBrdEHaX9TgOmUVCUbYWnlkJOLiWoOAuPub8xPGV
+ 6h8KNtVAx3Ev7V0o8pvWjPGooz9tOPAgN+zkNwFwXe3uiLv/Ur/yKFz0sET3VtOy6zTo
+ DqBTL+XYSEOTw8mjeG3rf4fEu7fIDguFdsGOcTS2P1Fxk9HUefEB48u01QAvGnO7Qy87 0g== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 32x8bnbt9y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 19 Aug 2020 17:23:39 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07JHCLIv112642;
+        Wed, 19 Aug 2020 17:21:38 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 32xs9pgyps-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Aug 2020 17:21:38 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 07JHLaV6000771;
+        Wed, 19 Aug 2020 17:21:37 GMT
+Received: from [10.74.109.231] (/10.74.109.231)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 19 Aug 2020 10:21:35 -0700
+Subject: Re: [PATCH 0/3] Simplify PM for am3/4, drop RTC pdata for am3/4/dra7
+To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        Santosh Shilimkar <ssantosh@kernel.org>
+Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, Keerthy <j-keerthy@ti.com>
+References: <20200703160731.53698-1-tony@atomide.com>
+ <20200818082953.GN2994@atomide.com>
+From:   santosh.shilimkar@oracle.com
+Organization: Oracle Corporation
+Message-ID: <aaf8a24c-d12c-c3b2-6cd1-b9825d14e7a0@oracle.com>
+Date:   Wed, 19 Aug 2020 10:21:33 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.9.0
 MIME-Version: 1.0
-References: <20200819092445.15702-1-tony@atomide.com>
-In-Reply-To: <20200819092445.15702-1-tony@atomide.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Wed, 19 Aug 2020 18:16:37 +0200
-Message-ID: <CAMpxmJUUkq3442KRDxsTec6C6V+0_WFF1uzvsB216swSV7rSAg@mail.gmail.com>
-Subject: Re: [PATCH] gpio: omap: Fix warnings if PM is disabled
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        linux-gpio <linux-gpio@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200818082953.GN2994@atomide.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9718 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 spamscore=0
+ mlxscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008190143
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9718 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 adultscore=0 spamscore=0 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 bulkscore=0 clxscore=1011 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008190143
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 11:24 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> Fix warnings for omap_gpio_resume and omap_gpio_suspend
-> defined but not used when PM is disabled as noticed when
-> doing make randconfig builds.
->
-> Fixes: f02a03985d06 ("gpio: omap: Add missing PM ops for suspend")
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/gpio/gpio-omap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-> --- a/drivers/gpio/gpio-omap.c
-> +++ b/drivers/gpio/gpio-omap.c
-> @@ -1516,7 +1516,7 @@ static int __maybe_unused omap_gpio_runtime_resume(struct device *dev)
->         return 0;
->  }
->
-> -static int omap_gpio_suspend(struct device *dev)
-> +static int __maybe_unused omap_gpio_suspend(struct device *dev)
->  {
->         struct gpio_bank *bank = dev_get_drvdata(dev);
->
-> @@ -1528,7 +1528,7 @@ static int omap_gpio_suspend(struct device *dev)
->         return omap_gpio_runtime_suspend(dev);
->  }
->
-> -static int omap_gpio_resume(struct device *dev)
-> +static int __maybe_unused omap_gpio_resume(struct device *dev)
->  {
->         struct gpio_bank *bank = dev_get_drvdata(dev);
->
-> --
-> 2.28.0
 
-Applied for fixes, thanks!
 
-Bartosz
+On 8/18/20 1:29 AM, Tony Lindgren wrote:
+> Hi Santosh,
+> 
+> * Tony Lindgren <tony@atomide.com> [200703 19:08]:
+>> Hi all,
+>>
+>> Here are patches to simplify the RTC+DDR PM code for am3 and am4. We want
+>> to do this to drop the RTC related legacy platform data for am3 and am4.
+>> We also drop RTC legacy platform data for dra7.
+>>
+>> Please test the RTC+DDR suspend on am437x-gp-evm if possible. I've tested
+>> this series on am437x-sk-evm, but at least currently cannot do RTC+DDR
+>> suspend and is limited to testing retention suspend only.
+>>
+>> These patches depend on v5.8-rc3 for earlier suspend and resume related
+>> fixes.
+>>
+>> Additionally, for testing the LCD for suspend, the following patch is
+>> needed for the missing omapdrm PM ops:
+>>
+>> drm/omap: force runtime PM suspend on system suspend
+> 
+> Here's another series that was getting too late for v5.9 that I'd like to
+> queue for v5.10. Care to take a look and ack if it looks OK?
+> 
+Just finished going through the patches. If the suspend continue to work
+with this update then its good to go.
+
+FWIW,
+Acked-by: Santosh Shilimkar <ssantosh@kernel.org>
