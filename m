@@ -2,40 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 541D7249709
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Aug 2020 09:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03A9E24970F
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Aug 2020 09:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727839AbgHSHVI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Aug 2020 03:21:08 -0400
-Received: from muru.com ([72.249.23.125]:40990 "EHLO muru.com"
+        id S1726636AbgHSHWo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Aug 2020 03:22:44 -0400
+Received: from muru.com ([72.249.23.125]:41000 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727859AbgHSHVH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 19 Aug 2020 03:21:07 -0400
+        id S1726612AbgHSHWn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 19 Aug 2020 03:22:43 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AACB38107;
-        Wed, 19 Aug 2020 07:21:07 +0000 (UTC)
-Date:   Wed, 19 Aug 2020 10:21:35 +0300
+        by muru.com (Postfix) with ESMTPS id E80458107;
+        Wed, 19 Aug 2020 07:22:43 +0000 (UTC)
+Date:   Wed, 19 Aug 2020 10:23:12 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Cc:     linux@armlinux.org.uk, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH for v5.9] OMAP2+: Replace HTTP links with HTTPS ones
-Message-ID: <20200819072135.GB2994@atomide.com>
-References: <20200719103033.57850-1-grandmaster@al2klimov.de>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH] arm: mach-omap1: mux.h: delete duplicate word
+Message-ID: <20200819072312.GC2994@atomide.com>
+References: <20200726002212.19896-1-rdunlap@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200719103033.57850-1-grandmaster@al2klimov.de>
+In-Reply-To: <20200726002212.19896-1-rdunlap@infradead.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Alexander A. Klimov <grandmaster@al2klimov.de> [200719 13:30]:
-> Rationale:
-> Reduces attack surface on kernel devs opening the links for MITM
-> as HTTPS traffic is much harder to manipulate.
+* Randy Dunlap <rdunlap@infradead.org> [200726 03:22]:
+> Drop the repeated word "is".
 
-Thanks applying into omap-for-v5.10/soc.
+Thanks applying into omap-for-v5.9/omap1.
 
 Tony
