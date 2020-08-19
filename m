@@ -2,94 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B9CD249F20
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Aug 2020 15:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B498324A3D9
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Aug 2020 18:16:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728651AbgHSNGL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Aug 2020 09:06:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36268 "EHLO
+        id S1726735AbgHSQQy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Aug 2020 12:16:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728019AbgHSNAX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Aug 2020 09:00:23 -0400
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B03C06135D;
-        Wed, 19 Aug 2020 05:59:36 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id u126so24472938iod.12;
-        Wed, 19 Aug 2020 05:59:36 -0700 (PDT)
+        with ESMTP id S1726640AbgHSQQu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Aug 2020 12:16:50 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C44FAC061383
+        for <linux-omap@vger.kernel.org>; Wed, 19 Aug 2020 09:16:49 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id e5so18179041qth.5
+        for <linux-omap@vger.kernel.org>; Wed, 19 Aug 2020 09:16:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=NtzkSuCwuVd+0UO9n6oA+BAW4tVVE+zEGyv58T8TdB4=;
-        b=FBl+WwvRGqGnorKLY+KDejdhfQgPSnP1ekvH33MA/ME8GETj8p+yLDx5UHYD8st7Wc
-         05o982Lz0UMjp/ZrZ5UCXLB4/HbZTywC0H1YmS5I58nLxcCoSbQky5c6U/SwreWXxTEq
-         PpMZX21CdKlOkg5dWPlRVxJ5G1uSNxLbpj5XygJWCjlwzielL07egsxNXKX3yHWTcWz6
-         D+KN4Fljr5dhFNeMyT+uE1zK1b6nGucRCnbLbULlgIfgyKmdxobG8yJr8r5RAGu2LciP
-         Ufu6kR8RkCsOvon1Hzo9ge+vLW0vwRZRdbSx9cJIbZF+DtTAN9Ujp08IZqX/Kg6QP/h8
-         K7fA==
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gKC3JrltoHNCRRNe9rGPlKVLmajTZ2YTeYEO1e3K7/s=;
+        b=lQ3oKpJkZKD3Bh2jO/uRZk/MX0WD4c9ClZTaDdOprZU2ZIXc2DidPmljk1Mm5/8Kux
+         rT5VmLZiWkM2QkIV9+7f9l89lQSKHJQh8w+0d+pLze8zOvozLskdIpIQLDPXUXLjM6pg
+         IS2iy1oKuqhxgEtguWoPiuQAKwQ6VCcUozgKp/RSmaK1ACWZby7M+c3ANTFjXLScgsnU
+         dX/ndaq9QlVqMyOj5l5z1BQlNRj0174i8ci8ieGMpLqq5hmx8+S8UEacyU9ntTChVOIh
+         pRyxihHv4zrOBbr72oRvLXhY86wnBxrnumE/Xbfc3POSu/X5xas5+OmrODq4QVl6anLx
+         jFBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=NtzkSuCwuVd+0UO9n6oA+BAW4tVVE+zEGyv58T8TdB4=;
-        b=udgR3Y+fnC28tj7HruFfOSxseR8nRs0k1RSL9SOPuuU49JqrloyUiOfiNeUQZg2IYq
-         fczzj+aKnIVnt2akOI1/4KLSzXeLrZuvDRGWeFB1+LL+X/uR6PgaqiCmoCfbjIqJjq1T
-         qkjk586+c3zg6eggB4gfKCXGlwwzn2bT5rWAnxGeQWySV1JtfuvmeIlrXFyYQntL37OG
-         oMX5HAZ5SQjGvRc9sQTPT2BVBl1/A8qsd1l0UPeS14aQQip4EPvhLkxF2KoDvP+PoZB9
-         75GUUx8gQlnu6QXiL6yypu24by4BDm3msrSU0rQ8mRKPW4bDOKjXhtzr/3Xh2UoDqCQp
-         b3ww==
-X-Gm-Message-State: AOAM5314KZvbrFZ6TTH4gLBlbzm7vCSi/WxOTpOsPGKpT8Aj+niun1fn
-        tqFQy19khlNoskJ9kHPugWxRtaO/E3Sq/4y5
-X-Google-Smtp-Source: ABdhPJxoK4y5weKNZKYd6Bo31UrzQruDNpkUn3kcI2PMlwC+ga3JeKSQlr3x0203g5IVWZcE1EWoJA==
-X-Received: by 2002:a05:6638:1393:: with SMTP id w19mr23503106jad.113.1597841975108;
-        Wed, 19 Aug 2020 05:59:35 -0700 (PDT)
-Received: from aford-IdeaCentre-A730.lan ([2601:448:8400:9e8:b588:1a5f:55c3:870e])
-        by smtp.gmail.com with ESMTPSA id i5sm4138388ilc.69.2020.08.19.05.59.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2020 05:59:34 -0700 (PDT)
-From:   Adam Ford <aford173@gmail.com>
-To:     linux-pm@vger.kernel.org
-Cc:     aford@beaconembedded.com, hns@goldelico.com,
-        Adam Ford <aford173@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V2 2/2] ARM: omap2plus_defconfig: Enable OMAP3_THERMAL
-Date:   Wed, 19 Aug 2020 07:59:24 -0500
-Message-Id: <20200819125925.2119434-2-aford173@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200819125925.2119434-1-aford173@gmail.com>
-References: <20200819125925.2119434-1-aford173@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gKC3JrltoHNCRRNe9rGPlKVLmajTZ2YTeYEO1e3K7/s=;
+        b=cU25+wB4VhMr2emovRQQz7aaqt31FJEMJQAkD8zP2zvLZzeI2fgHlyipBIFPtfnXjB
+         Va+g6iADEq35VxgI6aCgPbCwwOSpttxCy4T3dhG4bgkFh/paCFE14b9F7/2/RRDhn1YH
+         cIt1irJs30rDXeP3QgIj2jo6KoewDsvMy4ron1GZKB5TNaPR3OnxRrFFKaHVMsBuxuXX
+         BAJDAamktT8ASwoQkBaFdHQtGPv/hw3lnganOurXV5qrFW9iRrZ7aYKqjpbmUqzwklIQ
+         FrONJ1nWt3miza77AnDYKpqc0+co/KunoM9/wDHRCZwPtjoCIwwBl/8v8s8+yXk0Ch0k
+         gpVw==
+X-Gm-Message-State: AOAM531mlrAknoD4VYu3GUiL+WsM29djHzRfcBQl8A1Zo4ZjdhVLsuJe
+        /eX1ONQ6AJAvRkOPiW8A257YmnDmpTPNmtBFIt4afg==
+X-Google-Smtp-Source: ABdhPJwit8P/uhJUwL9TQHT1GcKDdYhENtsdfmRxHGsqAEisZdJ4Hy2n76dCkvtPlynazhzg29s+cREq641riTwAYwM=
+X-Received: by 2002:ac8:4e39:: with SMTP id d25mr22580262qtw.208.1597853808119;
+ Wed, 19 Aug 2020 09:16:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200819092445.15702-1-tony@atomide.com>
+In-Reply-To: <20200819092445.15702-1-tony@atomide.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Wed, 19 Aug 2020 18:16:37 +0200
+Message-ID: <CAMpxmJUUkq3442KRDxsTec6C6V+0_WFF1uzvsB216swSV7rSAg@mail.gmail.com>
+Subject: Re: [PATCH] gpio: omap: Fix warnings if PM is disabled
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-With the additional power management options enabled,
-this patch enables OMAP3_THERMAL by default.
+On Wed, Aug 19, 2020 at 11:24 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> Fix warnings for omap_gpio_resume and omap_gpio_suspend
+> defined but not used when PM is disabled as noticed when
+> doing make randconfig builds.
+>
+> Fixes: f02a03985d06 ("gpio: omap: Add missing PM ops for suspend")
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/gpio/gpio-omap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+> --- a/drivers/gpio/gpio-omap.c
+> +++ b/drivers/gpio/gpio-omap.c
+> @@ -1516,7 +1516,7 @@ static int __maybe_unused omap_gpio_runtime_resume(struct device *dev)
+>         return 0;
+>  }
+>
+> -static int omap_gpio_suspend(struct device *dev)
+> +static int __maybe_unused omap_gpio_suspend(struct device *dev)
+>  {
+>         struct gpio_bank *bank = dev_get_drvdata(dev);
+>
+> @@ -1528,7 +1528,7 @@ static int omap_gpio_suspend(struct device *dev)
+>         return omap_gpio_runtime_suspend(dev);
+>  }
+>
+> -static int omap_gpio_resume(struct device *dev)
+> +static int __maybe_unused omap_gpio_resume(struct device *dev)
+>  {
+>         struct gpio_bank *bank = dev_get_drvdata(dev);
+>
+> --
+> 2.28.0
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
----
-V2:  No change
+Applied for fixes, thanks!
 
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index fe383f5a92fb..efcc46305a47 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -303,6 +303,7 @@ CONFIG_THERMAL_GOV_FAIR_SHARE=y
- CONFIG_THERMAL_GOV_USER_SPACE=y
- CONFIG_CPU_THERMAL=y
- CONFIG_TI_THERMAL=y
-+CONFIG_OMAP3_THERMAL=y
- CONFIG_OMAP4_THERMAL=y
- CONFIG_OMAP5_THERMAL=y
- CONFIG_DRA752_THERMAL=y
--- 
-2.25.1
-
+Bartosz
