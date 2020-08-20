@@ -2,192 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 694EC24AC8A
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Aug 2020 03:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 507C324AD9A
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Aug 2020 06:14:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726578AbgHTBPw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Aug 2020 21:15:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37606 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726362AbgHTBPv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Aug 2020 21:15:51 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCFEC061757
-        for <linux-omap@vger.kernel.org>; Wed, 19 Aug 2020 18:15:50 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id c16so621520ejx.12
-        for <linux-omap@vger.kernel.org>; Wed, 19 Aug 2020 18:15:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=L95gIXwGMvZZq8+ZBbJLFbYWdlFmXYekwntOD8a6oOA=;
-        b=WG3KUIydvAL6lmQrHxm61oJNRNmcU6P3AYdrnvvDk2Y+hKlIojHKEJGegWF4qwv1+Y
-         QTeYxO/dmBMjiGuD8Bcer9Szc6wGqRF7KS54/JvegK794xU8NuZtLrfXge70efh+Srjf
-         j8SOWTy9A9tvc8TrHp9v6b/ZgrKwYzANCvRu97KxycC19b+fIKbadEqG5DQwkPrUYnrD
-         oXvP4WUQANyhz4Iia2vNUjttdG3ES2Q5Q+15Mf8bYJ86ICEPE5SpK2K5syACwh1i+IeQ
-         SzVm4NRN8oEMld6tQ3d+tp0J1Y7Gsx/80wE5GM+Iv8TVgc/ysjZ1fPS6WsvaQVMk41/k
-         HhsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=L95gIXwGMvZZq8+ZBbJLFbYWdlFmXYekwntOD8a6oOA=;
-        b=kNGMr72j5aQEPxCOd2wHSBVFc3pE4mEKdStsy9Yk+RuJBL02PefKpkzNDKP0ihugvx
-         tm90qV8PdCMPVIu1ub2yKNqP2Xg74kOD7W/gtHm0nIEqOqIwEIvnsjh7q6Safbb6lztk
-         uCkDn5+v25SldSzAHOFfBVWCMhED3kRvWPLY6re4ED6qi7TjB+VYGpzDrRvG10UksSIw
-         ETySRMSwlhvI7rZQSHqB1g9qsMxMMfNfTVth2GAThjtf0Pc+KgWOR6jFG180vHy9Aw7S
-         KS3uMou4tKDMv5MXLtOvjn3nTn4cNQm8DIC0HBqbU1G+EytPwCOUhJ7sNyjeYtYOAuAO
-         eLDA==
-X-Gm-Message-State: AOAM533A7+UIDJNuuDdJomgfZTslCVMphITcdn/A0HXR1kFJ0lU0vB9O
-        k9hVaMltVbheLbFWwPmlF4/XRQ==
-X-Google-Smtp-Source: ABdhPJyEI0+REUtIA4p2wEAbWZN4TQlHgJzr4Z/vBB40QUXm8ya4oYGDbsGWCuRbDl47Y0QH6guB/Q==
-X-Received: by 2002:a17:906:528d:: with SMTP id c13mr1023638ejm.61.1597886149318;
-        Wed, 19 Aug 2020 18:15:49 -0700 (PDT)
-Received: from x1 ([2001:16b8:5ca7:9f01:a7aa:12ad:e665:579d])
-        by smtp.gmail.com with ESMTPSA id i26sm274194edv.70.2020.08.19.18.15.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2020 18:15:48 -0700 (PDT)
-Date:   Thu, 20 Aug 2020 03:15:45 +0200
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: Re: [PATCH] gpio: omap: improve coding style for pin config flags
-Message-ID: <20200820011545.GA140179@x1>
-References: <20200722120755.230741-1-drew@beagleboard.org>
- <20200819063127.GU2994@atomide.com>
+        id S1725859AbgHTEOr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Aug 2020 00:14:47 -0400
+Received: from muru.com ([72.249.23.125]:41188 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725819AbgHTEOr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 20 Aug 2020 00:14:47 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 99986807A;
+        Thu, 20 Aug 2020 04:14:44 +0000 (UTC)
+Date:   Thu, 20 Aug 2020 07:15:12 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        linux-pm@vger.kernel.org, "Arthur D." <spinal.by@gmail.com>
+Subject: Re: [RFC] Limiting charge current on Droid 4 (and N900)
+Message-ID: <20200820041512.GH2994@atomide.com>
+References: <20200615140557.GA22781@duo.ucw.cz>
+ <20200629155515.GR37466@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200819063127.GU2994@atomide.com>
+In-Reply-To: <20200629155515.GR37466@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 09:31:27AM +0300, Tony Lindgren wrote:
-> Hi,
-> 
-> * Drew Fustini <drew@beagleboard.org> [200722 12:09]:
-> > Change the handling of pin config flags from if/else to switch
-> > statement to make the code more readable and cleaner.
+* Tony Lindgren <tony@atomide.com> [200629 18:46]:
+> * Pavel Machek <pavel@ucw.cz> [200615 07:06]:
+> > Hi!
 > > 
-> > Suggested-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
-> > Signed-off-by: Drew Fustini <drew@beagleboard.org>
+> > Droid 4 has same problem as N900: it is often neccessary to manually
+> > tweak current draw from USB, for example when using thin charging cable.
+> > 
+> > N900 creates unique attribute by hand, but I believe
+> > POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT looks suitable. (Should N900 be
+> > converted?)
+> > 
+> > Comments? Would the patch be acceptable after fixing whitespace?
 > 
-> This looks OK to me:
-> 
-> Acked-by: Tony Lindgren <tony@atomide.com>
-> 
-> I've lost track of the pending pinctrl/gpio/dts patches you've
-> posted :) Care to also summarized the pending ones and repost
-> them now that v5.9-rc1 is out?
+> Looks OK to me. Until we have better charger vs host vs usb3 charging hub
+> detection in place this seems like a good thing to do.
 
-Everything appears to be in mainline already:
+FYI, I'm cleaning up the pending charger and battery patches to send out
+for review. So that includes my earlier RFC battery status patches, and
+Spinal's additions, and this patch. It will likely be several days before
+I have the series ready for posting though.
 
-commit f1b206cf7c57561ea156798f323b0541a783bd2f
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Wed Jul 22 14:27:52 2020 +0200
+Regards,
 
-    pinctrl: core: print gpio in pins debugfs file
-
-commit bde8c0e64c78633612aaf283692f72bef0bbc549
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Wed Jul 22 14:07:56 2020 +0200
-
-    gpio: omap: improve coding style for pin config flags
-        
-commit 75dec56710dfafd37daa95e756c5d1840932ba90
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Fri Jul 17 21:40:43 2020 +0200
-
-    gpio: omap: handle pin config bias flags
-
-commit 40e30d26d909af89de2dcd0b4abdd27c47ac2235
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Wed Jul 15 23:37:38 2020 +0200
-
-    gpio: omap: handle pin config bias flags
-
-commit abe4e4675dfc62b7f2328e2c4bce8b5bdcdff7c0
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Sun Jul 12 12:37:19 2020 +0200
-
-    ARM: dts: am335x-pocketbeagle: set default mux for gpio pins
-    
-commit bc6d201591344aa21d616179ee9ad406a7336267
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Wed Jun 17 20:05:43 2020 +0200
-
-    pinctrl: single: fix function name in documentation
-
-commit 27c90e5e48d008bfda1cf6108eb699697317c67b
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Wed Jul 1 03:33:20 2020 +0200
-
-    ARM: dts: am33xx-l4: change #pinctrl-cells from 1 to 2
-    
-commit a133954188887a830b5ce438a287a5e4e234b1be
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Wed Jul 1 03:33:19 2020 +0200
-
-    pinctrl: single: parse #pinctrl-cells = 2
-    
-commit e14d2c766392ff1f226017fd62f0b6283a53bd0c
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Thu Jun 18 20:29:21 2020 +0200
-
-    ARM: dts: am335x-pocketbeagle: add gpio-line-names
-
-commit aafd897a5ac4cb7f9b4f99acc5365a7df1f77aa0
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Thu May 21 22:09:26 2020 +0200
-
-    ARM: dts: am335x-boneblack: add gpio-line-names
-
-commit ff82009fcc6ace774570107750f5af91c9081b0a
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Wed Jun 10 13:02:58 2020 +0200
-
-    ARM: dts: am33xx-l4: add gpio-ranges
-
-commit 25fae752156db7253471347df08a2700501eafde
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Fri Jun 12 13:27:58 2020 +0200
-
-    pinctrl: single: fix function name in documentation
-
-commit 80bf72598663496d08b3c0231377db6a99d7fd68
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Mon Jun 15 17:57:01 2020 +0200
-
-    ARM: dts: am5729: beaglebone-ai: fix rgmii phy-mode
-
-commit d7af722344e6dc52d87649100516515263e15c75
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Tue Jun 9 23:45:21 2020 +0200
-
-    ARM: dts: am335x-pocketbeagle: Fix mmc0 Write Protect
-
-commit f46fe79ff1b65692a65266a5bec6dbe2bf7fc70f
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Mon Jun 8 14:51:43 2020 +0200
-
-    pinctrl-single: fix pcs_parse_pinconf() return value
-
-Author: Drew Fustini <drew@beagleboard.org>
-Date:   Fri Apr 3 21:19:31 2020 +0200
-
-    dt-bindings: Add vendor prefix for BeagleBoard.org
-
-
-The only thing that isn't would be "ARM: dts: am33xx: add ocp label"
-which you applied to omap-for-v5.9/dt.
-
-thanks,
-drew
+Tony
