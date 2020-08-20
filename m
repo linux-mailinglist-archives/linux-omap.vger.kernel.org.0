@@ -2,234 +2,192 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3570824A6CD
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Aug 2020 21:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 694EC24AC8A
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Aug 2020 03:15:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726852AbgHSTXc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Aug 2020 15:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39540 "EHLO
+        id S1726578AbgHTBPw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Aug 2020 21:15:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726211AbgHSTX3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Aug 2020 15:23:29 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3DD6C061757;
-        Wed, 19 Aug 2020 12:23:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=bGT9fwoymd6Ic9AGH3RntlECSDyDiGNWp2hinEX/z1I=; b=Nz4x6SLPB9YvHOHs9R+RjbXmsw
-        jiuyRjtli+sw8kM98fLFS5EIeX+rBOTraKKByIt9LXeg9v/m0CkpMXl8fxql5/7dGIU5s6CaDDlen
-        5ZDNxwMqLhM14odRkryCHduXiSpRZg47ztbMSWOLM8kuN1nard283L3+x0rwBxkmcUag=;
-Received: from p200300ccff0e87001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0e:8700:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1k8Tfv-0007qx-2w; Wed, 19 Aug 2020 21:23:07 +0200
-Date:   Wed, 19 Aug 2020 21:23:05 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     linux-pm@vger.kernel.org, aford@beaconembedded.com,
-        hns@goldelico.com, kernel test robot <lkp@intel.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2 1/2] thermal: ti-soc-thermal: Enable addition power
- management
-Message-ID: <20200819212305.6caa4b7d@aktux>
-In-Reply-To: <20200819125925.2119434-1-aford173@gmail.com>
-References: <20200819125925.2119434-1-aford173@gmail.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        with ESMTP id S1726362AbgHTBPv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Aug 2020 21:15:51 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCFEC061757
+        for <linux-omap@vger.kernel.org>; Wed, 19 Aug 2020 18:15:50 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id c16so621520ejx.12
+        for <linux-omap@vger.kernel.org>; Wed, 19 Aug 2020 18:15:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=L95gIXwGMvZZq8+ZBbJLFbYWdlFmXYekwntOD8a6oOA=;
+        b=WG3KUIydvAL6lmQrHxm61oJNRNmcU6P3AYdrnvvDk2Y+hKlIojHKEJGegWF4qwv1+Y
+         QTeYxO/dmBMjiGuD8Bcer9Szc6wGqRF7KS54/JvegK794xU8NuZtLrfXge70efh+Srjf
+         j8SOWTy9A9tvc8TrHp9v6b/ZgrKwYzANCvRu97KxycC19b+fIKbadEqG5DQwkPrUYnrD
+         oXvP4WUQANyhz4Iia2vNUjttdG3ES2Q5Q+15Mf8bYJ86ICEPE5SpK2K5syACwh1i+IeQ
+         SzVm4NRN8oEMld6tQ3d+tp0J1Y7Gsx/80wE5GM+Iv8TVgc/ysjZ1fPS6WsvaQVMk41/k
+         HhsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=L95gIXwGMvZZq8+ZBbJLFbYWdlFmXYekwntOD8a6oOA=;
+        b=kNGMr72j5aQEPxCOd2wHSBVFc3pE4mEKdStsy9Yk+RuJBL02PefKpkzNDKP0ihugvx
+         tm90qV8PdCMPVIu1ub2yKNqP2Xg74kOD7W/gtHm0nIEqOqIwEIvnsjh7q6Safbb6lztk
+         uCkDn5+v25SldSzAHOFfBVWCMhED3kRvWPLY6re4ED6qi7TjB+VYGpzDrRvG10UksSIw
+         ETySRMSwlhvI7rZQSHqB1g9qsMxMMfNfTVth2GAThjtf0Pc+KgWOR6jFG180vHy9Aw7S
+         KS3uMou4tKDMv5MXLtOvjn3nTn4cNQm8DIC0HBqbU1G+EytPwCOUhJ7sNyjeYtYOAuAO
+         eLDA==
+X-Gm-Message-State: AOAM533A7+UIDJNuuDdJomgfZTslCVMphITcdn/A0HXR1kFJ0lU0vB9O
+        k9hVaMltVbheLbFWwPmlF4/XRQ==
+X-Google-Smtp-Source: ABdhPJyEI0+REUtIA4p2wEAbWZN4TQlHgJzr4Z/vBB40QUXm8ya4oYGDbsGWCuRbDl47Y0QH6guB/Q==
+X-Received: by 2002:a17:906:528d:: with SMTP id c13mr1023638ejm.61.1597886149318;
+        Wed, 19 Aug 2020 18:15:49 -0700 (PDT)
+Received: from x1 ([2001:16b8:5ca7:9f01:a7aa:12ad:e665:579d])
+        by smtp.gmail.com with ESMTPSA id i26sm274194edv.70.2020.08.19.18.15.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2020 18:15:48 -0700 (PDT)
+Date:   Thu, 20 Aug 2020 03:15:45 +0200
+From:   Drew Fustini <drew@beagleboard.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>, linux-omap@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: Re: [PATCH] gpio: omap: improve coding style for pin config flags
+Message-ID: <20200820011545.GA140179@x1>
+References: <20200722120755.230741-1-drew@beagleboard.org>
+ <20200819063127.GU2994@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200819063127.GU2994@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 19 Aug 2020 07:59:23 -0500
-Adam Ford <aford173@gmail.com> wrote:
-
-> The bandgap sensor can be idled when the processor is too, but it
-> isn't currently being done, so the power consumption of OMAP3
-> boards can elevated if the bangap sensor is enabled.
+On Wed, Aug 19, 2020 at 09:31:27AM +0300, Tony Lindgren wrote:
+> Hi,
 > 
-> This patch attempts to use some additional power management
-> to idle the clock to the bandgap when not needed.
+> * Drew Fustini <drew@beagleboard.org> [200722 12:09]:
+> > Change the handling of pin config flags from if/else to switch
+> > statement to make the code more readable and cleaner.
+> > 
+> > Suggested-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+> > Signed-off-by: Drew Fustini <drew@beagleboard.org>
 > 
-> Signed-off-by: Adam Ford <aford173@gmail.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> ---
-> V2: Fix issue where variable stating the suspend mode isn't being
->     properly set and cleared.
+> This looks OK to me:
 > 
-I get
-root@(none):/# cat /sys/class/thermal/thermal_zone0/type 
-cpu_thermal
-root@(none):/# cat /sys/class/thermal/thermal_zone0/temp 
-50000
-root@(none):/# cat /sys/class/thermal/thermal_zone1/     
-available_policies  mode                subsystem/
-integral_cutoff     offset              sustainable_power
-k_d                 passive             temp
-k_i                 policy              type
-k_po                power/              uevent
-k_pu                slope               
-root@(none):/# cat /sys/class/thermal/thermal_zone1/type 
-bq27000-battery
-root@(none):/# cat /sys/kernel/debug/pm_debug/count 
-usbhost_pwrdm (ON),OFF:3459,RET:635,INA:0,ON:4095,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-sgx_pwrdm (OFF),OFF:1,RET:0,INA:1,ON:2,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-core_pwrdm (ON),OFF:86,RET:7,INA:0,ON:94,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0,RET-MEMBANK2-OFF:0
-per_pwrdm (ON),OFF:1518,RET:64,INA:0,ON:1583,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-dss_pwrdm (ON),OFF:3459,RET:635,INA:0,ON:4095,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-cam_pwrdm (OFF),OFF:1,RET:1,INA:0,ON:2,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-neon_pwrdm (ON),OFF:2845,RET:1131,INA:119,ON:4096,RET-LOGIC-OFF:0
-mpu_pwrdm (ON),OFF:2845,RET:1130,INA:119,ON:4095,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-iva2_pwrdm (OFF),OFF:1,RET:1,INA:0,ON:2,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0,RET-MEMBANK2-OFF:0,RET-MEMBANK3-OFF:0,RET-MEMBANK4-OFF:0
-usbhost_clkdm->usbhost_pwrdm (1)
-sgx_clkdm->sgx_pwrdm (0)
-per_clkdm->per_pwrdm (13)
-cam_clkdm->cam_pwrdm (0)
-dss_clkdm->dss_pwrdm (1)
-d2d_clkdm->core_pwrdm (0)
-iva2_clkdm->iva2_pwrdm (0)
-mpu_clkdm->mpu_pwrdm (0)
-core_l4_clkdm->core_pwrdm (20)
-core_l3_clkdm->core_pwrdm (1)
-neon_clkdm->neon_pwrdm (0)
-root@(none):/# 
+> Acked-by: Tony Lindgren <tony@atomide.com>
+> 
+> I've lost track of the pending pinctrl/gpio/dts patches you've
+> posted :) Care to also summarized the pending ones and repost
+> them now that v5.9-rc1 is out?
 
-So things still turn off.
+Everything appears to be in mainline already:
 
-Tested-by: Andreas Kemnade <andreas@kemnade.info> # GTA04
+commit f1b206cf7c57561ea156798f323b0541a783bd2f
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Wed Jul 22 14:27:52 2020 +0200
 
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-> index ab19ceff6e2a..9404631bea4d 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-> +++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-> @@ -25,10 +25,18 @@
->  #include <linux/of_platform.h>
->  #include <linux/of_irq.h>
->  #include <linux/io.h>
-> +#include <linux/cpu_pm.h>
-> +#include <linux/device.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/pm.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
->  
->  #include "ti-bandgap.h"
->  
->  static int ti_bandgap_force_single_read(struct ti_bandgap *bgp, int id);
-> +static int bandgap_omap_cpu_notifier(struct notifier_block *nb,
-> +				  unsigned long cmd, void *v);
->  
->  /***   Helper functions to access registers and their bitfields   ***/
->  
-> @@ -1008,6 +1016,9 @@ int ti_bandgap_probe(struct platform_device *pdev)
->  		}
->  	}
->  
-> +	bgp->nb.notifier_call = bandgap_omap_cpu_notifier;
-> +	cpu_pm_register_notifier(&bgp->nb);
-> +
->  	return 0;
->  
->  remove_last_cooling:
-> @@ -1041,7 +1052,9 @@ int ti_bandgap_remove(struct platform_device *pdev)
->  	struct ti_bandgap *bgp = platform_get_drvdata(pdev);
->  	int i;
->  
-> -	/* First thing is to remove sensor interfaces */
-> +	cpu_pm_unregister_notifier(&bgp->nb);
-> +
-> +	/* Remove sensor interfaces */
->  	for (i = 0; i < bgp->conf->sensor_count; i++) {
->  		if (bgp->conf->sensors[i].unregister_cooling)
->  			bgp->conf->sensors[i].unregister_cooling(bgp, i);
-> @@ -1150,9 +1163,43 @@ static int ti_bandgap_suspend(struct device *dev)
->  	if (TI_BANDGAP_HAS(bgp, CLK_CTRL))
->  		clk_disable_unprepare(bgp->fclock);
->  
-> +	bgp->is_suspended = true;
-> +
->  	return err;
->  }
->  
-> +static int bandgap_omap_cpu_notifier(struct notifier_block *nb,
-> +				  unsigned long cmd, void *v)
-> +{
-> +	struct ti_bandgap *bgp;
-> +
-> +	bgp = container_of(nb, struct ti_bandgap, nb);
-> +
-> +	spin_lock(&bgp->lock);
-> +	switch (cmd) {
-> +	case CPU_CLUSTER_PM_ENTER:
-> +		if (bgp->is_suspended)
-> +			break;
-> +		ti_bandgap_save_ctxt(bgp);
-> +		ti_bandgap_power(bgp, false);
-> +		if (TI_BANDGAP_HAS(bgp, CLK_CTRL))
-> +			clk_disable(bgp->fclock);
-> +		break;
-> +	case CPU_CLUSTER_PM_ENTER_FAILED:
-> +	case CPU_CLUSTER_PM_EXIT:
-> +		if (bgp->is_suspended)
-> +			break;
-> +		if (TI_BANDGAP_HAS(bgp, CLK_CTRL))
-> +			clk_enable(bgp->fclock);
-> +		ti_bandgap_power(bgp, true);
-> +		ti_bandgap_restore_ctxt(bgp);
-> +		break;
-> +	}
-> +	spin_unlock(&bgp->lock);
-> +
-> +	return NOTIFY_OK;
-> +}
-> +
->  static int ti_bandgap_resume(struct device *dev)
->  {
->  	struct ti_bandgap *bgp = dev_get_drvdata(dev);
-> @@ -1161,6 +1208,7 @@ static int ti_bandgap_resume(struct device *dev)
->  		clk_prepare_enable(bgp->fclock);
->  
->  	ti_bandgap_power(bgp, true);
-> +	bgp->is_suspended = false;
->  
->  	return ti_bandgap_restore_ctxt(bgp);
->  }
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.h b/drivers/thermal/ti-soc-thermal/ti-bandgap.h
-> index fce4657e9486..ed0ea4b17b25 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-bandgap.h
-> +++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.h
-> @@ -12,6 +12,10 @@
->  #include <linux/spinlock.h>
->  #include <linux/types.h>
->  #include <linux/err.h>
-> +#include <linux/cpu_pm.h>
-> +#include <linux/device.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/pm.h>
->  
->  struct gpio_desc;
->  
-> @@ -203,6 +207,8 @@ struct ti_bandgap {
->  	int				irq;
->  	struct gpio_desc		*tshut_gpiod;
->  	u32				clk_rate;
-> +	struct notifier_block		nb;
-> +	unsigned int is_suspended:1;
->  };
->  
->  /**
+    pinctrl: core: print gpio in pins debugfs file
 
+commit bde8c0e64c78633612aaf283692f72bef0bbc549
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Wed Jul 22 14:07:56 2020 +0200
+
+    gpio: omap: improve coding style for pin config flags
+        
+commit 75dec56710dfafd37daa95e756c5d1840932ba90
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Fri Jul 17 21:40:43 2020 +0200
+
+    gpio: omap: handle pin config bias flags
+
+commit 40e30d26d909af89de2dcd0b4abdd27c47ac2235
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Wed Jul 15 23:37:38 2020 +0200
+
+    gpio: omap: handle pin config bias flags
+
+commit abe4e4675dfc62b7f2328e2c4bce8b5bdcdff7c0
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Sun Jul 12 12:37:19 2020 +0200
+
+    ARM: dts: am335x-pocketbeagle: set default mux for gpio pins
+    
+commit bc6d201591344aa21d616179ee9ad406a7336267
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Wed Jun 17 20:05:43 2020 +0200
+
+    pinctrl: single: fix function name in documentation
+
+commit 27c90e5e48d008bfda1cf6108eb699697317c67b
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Wed Jul 1 03:33:20 2020 +0200
+
+    ARM: dts: am33xx-l4: change #pinctrl-cells from 1 to 2
+    
+commit a133954188887a830b5ce438a287a5e4e234b1be
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Wed Jul 1 03:33:19 2020 +0200
+
+    pinctrl: single: parse #pinctrl-cells = 2
+    
+commit e14d2c766392ff1f226017fd62f0b6283a53bd0c
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Thu Jun 18 20:29:21 2020 +0200
+
+    ARM: dts: am335x-pocketbeagle: add gpio-line-names
+
+commit aafd897a5ac4cb7f9b4f99acc5365a7df1f77aa0
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Thu May 21 22:09:26 2020 +0200
+
+    ARM: dts: am335x-boneblack: add gpio-line-names
+
+commit ff82009fcc6ace774570107750f5af91c9081b0a
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Wed Jun 10 13:02:58 2020 +0200
+
+    ARM: dts: am33xx-l4: add gpio-ranges
+
+commit 25fae752156db7253471347df08a2700501eafde
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Fri Jun 12 13:27:58 2020 +0200
+
+    pinctrl: single: fix function name in documentation
+
+commit 80bf72598663496d08b3c0231377db6a99d7fd68
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Mon Jun 15 17:57:01 2020 +0200
+
+    ARM: dts: am5729: beaglebone-ai: fix rgmii phy-mode
+
+commit d7af722344e6dc52d87649100516515263e15c75
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Tue Jun 9 23:45:21 2020 +0200
+
+    ARM: dts: am335x-pocketbeagle: Fix mmc0 Write Protect
+
+commit f46fe79ff1b65692a65266a5bec6dbe2bf7fc70f
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Mon Jun 8 14:51:43 2020 +0200
+
+    pinctrl-single: fix pcs_parse_pinconf() return value
+
+Author: Drew Fustini <drew@beagleboard.org>
+Date:   Fri Apr 3 21:19:31 2020 +0200
+
+    dt-bindings: Add vendor prefix for BeagleBoard.org
+
+
+The only thing that isn't would be "ARM: dts: am33xx: add ocp label"
+which you applied to omap-for-v5.9/dt.
+
+thanks,
+drew
