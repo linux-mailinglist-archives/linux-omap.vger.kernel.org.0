@@ -2,59 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 507C324AD9A
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Aug 2020 06:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D121224ADA8
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Aug 2020 06:24:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725859AbgHTEOr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Aug 2020 00:14:47 -0400
-Received: from muru.com ([72.249.23.125]:41188 "EHLO muru.com"
+        id S1725468AbgHTEYF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Aug 2020 00:24:05 -0400
+Received: from muru.com ([72.249.23.125]:41218 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725819AbgHTEOr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 20 Aug 2020 00:14:47 -0400
+        id S1725290AbgHTEYE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 20 Aug 2020 00:24:04 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 99986807A;
-        Thu, 20 Aug 2020 04:14:44 +0000 (UTC)
-Date:   Thu, 20 Aug 2020 07:15:12 +0300
+        by muru.com (Postfix) with ESMTPS id C557C807A;
+        Thu, 20 Aug 2020 04:24:02 +0000 (UTC)
+Date:   Thu, 20 Aug 2020 07:24:31 +0300
 From:   Tony Lindgren <tony@atomide.com>
 To:     Pavel Machek <pavel@ucw.cz>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
+Cc:     maemo-leste@lists.dyne.org,
+        kernel list <linux-kernel@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        linux-pm@vger.kernel.org, "Arthur D." <spinal.by@gmail.com>
-Subject: Re: [RFC] Limiting charge current on Droid 4 (and N900)
-Message-ID: <20200820041512.GH2994@atomide.com>
-References: <20200615140557.GA22781@duo.ucw.cz>
- <20200629155515.GR37466@atomide.com>
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz
+Subject: Re: GPS fun on Droid 4 and leste
+Message-ID: <20200820042431.GI2994@atomide.com>
+References: <20200712092726.GC13495@amd>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200629155515.GR37466@atomide.com>
+In-Reply-To: <20200712092726.GC13495@amd>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [200629 18:46]:
-> * Pavel Machek <pavel@ucw.cz> [200615 07:06]:
-> > Hi!
-> > 
-> > Droid 4 has same problem as N900: it is often neccessary to manually
-> > tweak current draw from USB, for example when using thin charging cable.
-> > 
-> > N900 creates unique attribute by hand, but I believe
-> > POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT looks suitable. (Should N900 be
-> > converted?)
-> > 
-> > Comments? Would the patch be acceptable after fixing whitespace?
+* Pavel Machek <pavel@ucw.cz> [200712 09:28]:
+> Hi!
 > 
-> Looks OK to me. Until we have better charger vs host vs usb3 charging hub
-> detection in place this seems like a good thing to do.
+> GPS on the droid 4 does not really work out of the box.
+> 
+> gpsd is not in default installation, maybe it should be?
+> 
+> What is worse, there's something broken with gpsd. Try:
+> 
+> /usr/sbin/gpsd -N -D 5 /dev/gnss0
+> gpspipe -w
+> # this seems to work, but do ^C and restart
+> gpspipe -w
+> ...and it hangs.
 
-FYI, I'm cleaning up the pending charger and battery patches to send out
-for review. So that includes my earlier RFC battery status patches, and
-Spinal's additions, and this patch. It will likely be several days before
-I have the series ready for posting though.
+Some earlier versions of gpsd I think had issues where you could
+only connect one client. Or it was a bug in the kernel drivers..
+Anyways, multiple gpspipe instances have been working for me for
+a while now with gpsd-3.21.
+
+I also found some issues in gnss-motmdm driver for closing the
+gnss device, see:
+
+https://github.com/tmlind/linux/commits/droid4-pending-v5.8
+
+And I think the xtra2.bin data for agps is now working too :)
+
+https://github.com/tmlind/droid4-agps/commits/master
+
+At least I now get a fix in about two minutes after running the
+update.sh, going outside, and starting cgps.
+
+> xgps from gpsd-clients is broken: probably missing dependency
+> on gtk3 libraries.
+> 
+> user@devuan-droid4:/my/tui/lib$ xgps
+> Traceback (most recent call last):
+>   File "/usr/bin/xgps", line 30, in <module>
+>       gi.require_version('Gtk', '3.0')
+>  File "/usr/lib/python2.7/dist-packages/gi/__init__.py", line
+>  129, in require_version
+>  raise ValueError('Namespace %s not available' % namespace)
+>  ValueError: Namespace Gtk not available
+> 
+> Any ideas?
+
+No idea about the xgps related stuff, I mostly use cgps for
+testing with GPSD_UNITS=metric cgps.
 
 Regards,
 
