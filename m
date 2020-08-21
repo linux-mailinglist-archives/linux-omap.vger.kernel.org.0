@@ -2,84 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE52224D68D
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Aug 2020 15:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9244524D788
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Aug 2020 16:44:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728780AbgHUNtW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Aug 2020 09:49:22 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:58258 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728633AbgHUNtU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Aug 2020 09:49:20 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 07LDnG0h044154;
-        Fri, 21 Aug 2020 08:49:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1598017756;
-        bh=U1IbJLUcumtugOjZo1HlCDkgCIgGAvBcLRyw1XPkUAY=;
-        h=From:To:Subject:Date:In-Reply-To:References;
-        b=uCuf7JsshVipcS1nGxll54DPKWIWcuaOnLJvb7aKXPd/nHfZtbSEuGYygrvbW79OS
-         SAd+DSdNMMAoTETnECZY+vKjnl/gdv6CNRD3t06nX4d7o5MjNuddwKhccHwKHfpa20
-         rK7CcAELLcKJAvod5BJXh1ieGLAgc6HYMF8AUzRI=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07LDnGMJ098946;
-        Fri, 21 Aug 2020 08:49:16 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 21
- Aug 2020 08:49:16 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 21 Aug 2020 08:49:15 -0500
-Received: from uda0868495.fios-router.home (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07LDnC1D035260;
-        Fri, 21 Aug 2020 08:49:14 -0500
-From:   Murali Karicheri <m-karicheri2@ti.com>
-To:     <davem@davemloft.net>, <kuba@kernel.org>,
-        <grygorii.strashko@ti.com>, <nsekhar@ti.com>,
-        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [net v2 PATCH 2/2] net: ethernet: ti: cpsw_new: fix clean up of vlan mc entries for host port
-Date:   Fri, 21 Aug 2020 09:49:12 -0400
-Message-ID: <20200821134912.30008-2-m-karicheri2@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200821134912.30008-1-m-karicheri2@ti.com>
-References: <20200821134912.30008-1-m-karicheri2@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S1727072AbgHUOo0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Aug 2020 10:44:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46646 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726189AbgHUOoX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Aug 2020 10:44:23 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74C7C061574
+        for <linux-omap@vger.kernel.org>; Fri, 21 Aug 2020 07:44:21 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id w25so2094744ljo.12
+        for <linux-omap@vger.kernel.org>; Fri, 21 Aug 2020 07:44:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=AIG5aJvk4bOQSa/LqmM0nhcaHZI8vyVexmjeCfVeirU=;
+        b=UPuNhJ8V2Q61eb74UpaLpxI1zgM5dDlClegTFZLT+Kn3ua31t8YT7RD4Jl0/lEXzSq
+         5HGIX3aXa6i41RygZPryAX8QkUl8IAZs6ZBwUd8R6lofBZU38XV7k0iHAsAgrq7M0a1P
+         zsifVaUYsnH7/Cwwe1lFeart2EiGDyw+7jChdNJUzaRkJSGBsubSok8sLyzZoACmcBOt
+         RuC4ig/aGuzQBRPBFkXRlhvr7a8ts1YMumSLig2mpZQnSWZldE9aKPWEp4tDZm+ePZDo
+         SQpkJiDwyv97GBOefvxcC6WUf9pyLnKEazu0JWDo5pn0wfwViX91MWN1uhBHfuLqm6qD
+         0lzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=AIG5aJvk4bOQSa/LqmM0nhcaHZI8vyVexmjeCfVeirU=;
+        b=TR0Z9AqdVJhtrfPyQErBQ2U+bHkGFzN5u/tgSXeLJartwEduzXvDA/ijtU0OK85tkJ
+         s1eCSgqyy3B5Y9OFpnxNMISDPrgUy4zfNA+oBpjVmxfxmLJZxC7JlU/SZSHQm4DBIHsk
+         LUOhm8ZBGRrh0kLaJxjzxJcAE0qTgFmKPl/T5CRGRXsOLY2qF3pXhci6FMnB79gwgMWX
+         emwCHflWBW3vmK31fBQlwryqaA/JE/pKF36kRlJQopPE0ZwHv8dPf6aWzYCdiv1zHL4l
+         2ODDNmvC3Gw+TznUvkNa7duOcXlBduyj806fGfHpaPIW4IYHknMnqnE5s3JKNTT9hxXn
+         XkUA==
+X-Gm-Message-State: AOAM5304ryCHSPgyg7wtUcWgfy1rqB5xJmiuN4UTd50xx5Q1dxj+q73o
+        Nwts4PWh0QeogJj6jpvMQRQQoQ==
+X-Google-Smtp-Source: ABdhPJx46s8nwkObUzZieA+o4KdRW6bz8UYBJ7c/MvRLO2z7O2jYTUJj0VfzEUyGu92VciOkv6IvwA==
+X-Received: by 2002:a2e:531c:: with SMTP id h28mr1825810ljb.322.1598021060145;
+        Fri, 21 Aug 2020 07:44:20 -0700 (PDT)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id u10sm425301lfo.39.2020.08.21.07.44.18
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 21 Aug 2020 07:44:19 -0700 (PDT)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     ssantosh@kernel.org, s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, santosh.shilimkar@oracle.com,
+        robh+dt@kernel.org, lee.jones@linaro.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        praneeth@ti.com, tony@atomide.com
+Subject: [PATCH v2 0/7] Add TI PRUSS platform driver
+Date:   Fri, 21 Aug 2020 16:42:37 +0200
+Message-Id: <1598020964-29877-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-To flush the vid + mc entries from ALE, which is required when a VLAN
-interface is removed, driver needs to call cpsw_ale_flush_multicast()
-with ALE_PORT_HOST for port mask as these entries are added only for
-host port. Without this, these entries remain in the ALE table even
-after removing the VLAN interface. cpsw_ale_flush_multicast() calls
-cpsw_ale_flush_mcast which expects a port mask to do the job.
+Hi All,
 
-Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
----
- v2: Dropped 3/3 and re-sending as it need more work
- drivers/net/ethernet/ti/cpsw_new.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The following is a v2 version of the series [1] that adds the platform driver
+for the Programmable Real-Time Unit and Industrial Communication Subsystem
+(PRU-ICSS), which is present on various TI SoCs. Please see the v1
+cover-letter [1] for details about the features of this subsystem.
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 1247d35d42ef..8d0a2bc7128d 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1044,7 +1044,7 @@ static int cpsw_ndo_vlan_rx_kill_vid(struct net_device *ndev,
- 			   HOST_PORT_NUM, ALE_VLAN, vid);
- 	cpsw_ale_del_mcast(cpsw->ale, priv->ndev->broadcast,
- 			   0, ALE_VLAN, vid);
--	cpsw_ale_flush_multicast(cpsw->ale, 0, vid);
-+	cpsw_ale_flush_multicast(cpsw->ale, ALE_PORT_HOST, vid);
- err:
- 	pm_runtime_put(cpsw->dev);
- 	return ret;
+Please see the individual patches for exact changes in each patch, following are
+the main changes from v1:
+ - dt-bindings was updated regarding to Rob Herring comments;
+ - support for K3 J721E SoCs ICSSG was enabled in patch #7.
+
+[1] https://patchwork.kernel.org/cover/11690777/
+
+Best regards,
+Grzegorz
+
+Grzegorz Jaszczyk (1):
+  dt-bindings: soc: ti: Add TI PRUSS bindings
+
+Suman Anna (6):
+  soc: ti: pruss: Add a platform driver for PRUSS in TI SoCs
+  soc: ti: pruss: Add support for PRU-ICSSs on AM437x SoCs
+  soc: ti: pruss: Add support for PRU-ICSS subsystems on AM57xx SoCs
+  soc: ti: pruss: Add support for PRU-ICSS subsystems on 66AK2G SoC
+  soc: ti: pruss: Enable support for ICSSG subsystems on K3 AM65x SoCs
+  soc: ti: pruss: Enable support for ICSSG subsystems on K3 J721E SoCs
+
+ .../devicetree/bindings/soc/ti/ti,pruss.yaml       | 320 +++++++++++++++++++++
+ drivers/soc/ti/Kconfig                             |  11 +
+ drivers/soc/ti/Makefile                            |   1 +
+ drivers/soc/ti/pruss.c                             | 184 ++++++++++++
+ include/linux/pruss_driver.h                       |  48 ++++
+ 5 files changed, 564 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+ create mode 100644 drivers/soc/ti/pruss.c
+ create mode 100644 include/linux/pruss_driver.h
+
 -- 
-2.17.1
+2.7.4
 
