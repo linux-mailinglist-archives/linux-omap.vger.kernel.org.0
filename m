@@ -2,138 +2,168 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D6CC24C351
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Aug 2020 18:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 572CE24CBAD
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Aug 2020 05:54:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729632AbgHTQ11 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Aug 2020 12:27:27 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:46150 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727780AbgHTQ1Z (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Aug 2020 12:27:25 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07KGN5Ng185569;
-        Thu, 20 Aug 2020 16:27:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=EhcIkdT5kS+atUJAy+/F2IziSwuZSev4/FziC9JMbe8=;
- b=es8IcqaQFxFBi8AOBf0kA9WnVstw9kZSFc/PyFOtBz+UWkIi7+UaU0ap4DkgJb91usSv
- H8seDxM3PiHpvM98191tO72kGt2d62EQYQ4B3Tbrl73uxugsOJhTTxasnZ7k4wqngt6p
- hBuCG1G+Rx0CGFvcj4/2GPoLjaoH6KUD/1+nfnc+OMRZvdMmnKn+F+wsiuFLt7y0Mfqj
- O95wqHhFLezeBP6BbwNNDjPIpgrgryE5Xlfs1DWjzoTr/4T5kkdbhYY+YHbKwJzlzF2e
- AGmv1p2TdlyaU3lIXloP2Q6BOE/oFOIeJ6EEEe/ap6VRhIkEAoh/x0RWSwk1VYW79TJk 1Q== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 32x8bnheph-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 20 Aug 2020 16:27:12 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07KGN2tT109476;
-        Thu, 20 Aug 2020 16:27:12 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 32xsn1k4gv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 20 Aug 2020 16:27:12 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07KGRAig010695;
-        Thu, 20 Aug 2020 16:27:10 GMT
-Received: from [10.74.106.11] (/10.74.106.11)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 20 Aug 2020 09:27:10 -0700
-Subject: Re: [PATCH 0/6] Add TI PRUSS platform driver
-To:     Suman Anna <s-anna@ti.com>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        ssantosh@kernel.org, Tony Lindgren <tony@atomide.com>
-Cc:     robh+dt@kernel.org, lee.jones@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        praneeth@ti.com
-References: <1596020528-19510-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <12a7fc2a-4c48-655f-daa1-880fd1866fd1@ti.com>
-From:   santosh.shilimkar@oracle.com
-Organization: Oracle Corporation
-Message-ID: <2a64dcb7-d79e-7ef8-b3e6-4c2533a19c38@oracle.com>
-Date:   Thu, 20 Aug 2020 09:27:08 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.9.0
+        id S1727075AbgHUDy1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Aug 2020 23:54:27 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:39107 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727066AbgHUDy0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Aug 2020 23:54:26 -0400
+Received: by mail-io1-f68.google.com with SMTP id z17so470442ioi.6;
+        Thu, 20 Aug 2020 20:54:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3xQSyuidDHE000cQW3ruY29YdVzjzemLhdUCUqMHH4g=;
+        b=uoec5P7k+QAy4T9/nm7pq0b8CZje786rS41068pS6CuvKKElqVH0zc86wKhU1rkXSe
+         ge4AYyvkGT10QcwxPl5s4FNn3zXyEh88p3p7pnatrqZhv+8a0fAED8IrnyN0dOuA0dP3
+         FoJu6YDc31iTC92MApZVcmxVDWZMOXpghYkKpthOhc5K6RqEKpd4hPOY76gUymCZH13d
+         ADQ4fUteyv4DoXI3X+A6sOndgAcxHQdQar6paKB5HJNIkWA7rPzYxpLn+Gyxuayc5Eeq
+         2Ug4CDQwa90FUQtT0CiLaNF8vHAlG96DLJDiHRO8Pv0SM6bnnDFX27RUyoJkpf04SbF9
+         Wzxg==
+X-Gm-Message-State: AOAM5328FtueSOGCteuIevaPKX7ePcTf/Z+LVefPGpw5+H6RkW6wmSme
+        yR4WJssPaXKPcUZ+tWasnA==
+X-Google-Smtp-Source: ABdhPJwWDZ2uF1UR52gyVwJrVKI7xgxX5Bug8MFl6x6tEW09K4V+Q0/1o3ijFf216rQPvCw1DGjTMQ==
+X-Received: by 2002:a6b:e70d:: with SMTP id b13mr795565ioh.141.1597982065025;
+        Thu, 20 Aug 2020 20:54:25 -0700 (PDT)
+Received: from xps15.herring.priv ([64.188.179.249])
+        by smtp.googlemail.com with ESMTPSA id 79sm413923ilc.9.2020.08.20.20.54.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2020 20:54:24 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     linux-pci@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dilip Kota <eswara.kota@linux.intel.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        Yue Wang <yue.wang@Amlogic.com>, Marc Zyngier <maz@kernel.org>,
+        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: [PATCH v2 00/40] PCI: dwc: Driver clean-ups
+Date:   Thu, 20 Aug 2020 21:53:40 -0600
+Message-Id: <20200821035420.380495-1-robh@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <12a7fc2a-4c48-655f-daa1-880fd1866fd1@ti.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9718 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 bulkscore=0
- mlxlogscore=999 phishscore=0 mlxscore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008200133
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9718 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 lowpriorityscore=0
- impostorscore=0 suspectscore=0 adultscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 priorityscore=1501 bulkscore=0 clxscore=1011 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008200133
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 8/20/20 7:43 AM, Suman Anna wrote:
-> Hi Santosh, Tony,
-> 
-> On 7/29/20 6:02 AM, Grzegorz Jaszczyk wrote:
->> Hi,
->>
->> The Programmable Real-Time Unit and Industrial Communication Subsystem
->> (PRU-ICSS) is present on various TI SoCs. The IP is present on multiple TI SoC
->> architecture families including the OMAP architecture SoCs such as AM33xx,
->> AM437x and AM57xx; and on a Keystone 2 architecture based 66AK2G SoC. It is also
->> present on the Davinci based OMAPL138 SoCs and K3 architecture based AM65x and
->> J721E SoCs as well.
->>
->> A PRUSS consists of dual 32-bit RISC cores (Programmable Real-Time Units, or
->> PRUs), shared RAM, data and instruction RAMs, some internal peripheral modules
->> to facilitate industrial communication, and an interrupt controller.
->>
->> The programmable nature of the PRUs provide flexibility to implement custom
->> peripheral interfaces, fast real-time responses, or specialized data handling.
->> The common peripheral modules include the following,
->>    - an Ethernet MII_RT module with two MII ports
->>    - an MDIO port to control external Ethernet PHYs
->>    - an Industrial Ethernet Peripheral (IEP) to manage/generate Industrial
->>      Ethernet functions
->>    - an Enhanced Capture Module (eCAP)
->>    - an Industrial Ethernet Timer with 7/9 capture and 16 compare events
->>    - a 16550-compatible UART to support PROFIBUS
->>    - Enhanced GPIO with async capture and serial support
->>
->>
->> A typical usage scenario would be to load the application firmware into one or
->> more of the PRU cores, initialize one or more of the peripherals and perform I/O
->> through shared RAM from either a kernel driver or directly from userspace.
->>
->> This series contains the PRUSS platform driver. This is the parent driver for
->> the entire PRUSS and is used for managing the subsystem level resources like
->> various memories and the CFG module.  It is responsible for the creation and
->> deletion of the platform devices for the child PRU devices and other child
->> devices (like Interrupt Controller, MDIO node and some syscon nodes) so that
->> they can be managed by specific platform drivers.
->>
->> Grzegorz Jaszczyk (1):
->>    dt-bindings: soc: ti: Add TI PRUSS bindings
->>
->> Suman Anna (5):
->>    soc: ti: pruss: Add a platform driver for PRUSS in TI SoCs
->>    soc: ti: pruss: Add support for PRU-ICSSs on AM437x SoCs
->>    soc: ti: pruss: Add support for PRU-ICSS subsystems on AM57xx SoCs
->>    soc: ti: pruss: Add support for PRU-ICSS subsystems on 66AK2G SoC
->>    soc: ti: pruss: enable support for ICSSG subsystems on K3 AM65x SoCs
-> 
-> Do you have any comments on the driver portions of this series before Greg posts
-> a v2 addressing the binding comments. This is one of the foundation series
-> towards enabling PRUSS, and is a dependency for the PRU remoteproc driver.
-> 
-No just post V2 addressing Rob's comment. I will line it up once
-rob acks it.
+This is a series of clean-ups for the Designware PCI driver. The series
+initially reworks the config space accessors to use the existing pci_ops
+struct. Then there's removal of various private data that's also present
+in the pci_host_bridge struct. There's also some duplicated common (PCI
+and DWC) register defines which I converted to use the common defines.
+Finally, the initialization for speed/gen, number of lanes, and N_FTS
+are all moved to the common DWC code.
 
-Regards,
-Santosh
+This is compile tested only as I don't have any DWC based h/w, so any
+testing would be helpful. A branch is here[1].
+
+Rob
+
+[1] git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git pci-dw-cleanups
+
+Rob Herring (40):
+  PCI: Allow root and child buses to have different pci_ops
+  PCI: dwc: Use DBI accessors instead of own config accessors
+  PCI: dwc: Allow overriding bridge pci_ops
+  PCI: dwc: Add a default pci_ops.map_bus for root port
+  PCI: dwc: al: Use pci_ops for child config space accessors
+  PCI: dwc: keystone: Use pci_ops for config space accessors
+  PCI: dwc: tegra: Use pci_ops for root config space accessors
+  PCI: dwc: meson: Use pci_ops for root config space accessors
+  PCI: dwc: kirin: Use pci_ops for root config space accessors
+  PCI: dwc: exynos: Use pci_ops for root config space accessors
+  PCI: dwc: histb: Use pci_ops for root config space accessors
+  PCI: dwc: Remove dwc specific config accessor ops
+  PCI: dwc: Use generic config accessors
+  PCI: Also call .add_bus() callback for root bus
+  PCI: dwc: keystone: Convert .scan_bus() callback to use add_bus
+  PCI: dwc: Convert to use pci_host_probe()
+  PCI: dwc: Remove root_bus pointer
+  PCI: dwc: Remove storing of PCI resources
+  PCI: dwc: Simplify config space handling
+  PCI: dwc/keystone: Drop duplicated 'num-viewport'
+  PCI: dwc: Check CONFIG_PCI_MSI inside dw_pcie_msi_init()
+  PCI: dwc/imx6: Remove duplicate define PCIE_LINK_WIDTH_SPEED_CONTROL
+  PCI: dwc: Add a 'num_lanes' field to struct dw_pcie
+  PCI: dwc: Ensure FAST_LINK_MODE is cleared
+  PCI: dwc/meson: Drop the duplicate number of lanes setup
+  PCI: dwc/meson: Drop unnecessary RC config space initialization
+  PCI: dwc/meson: Rework PCI config and DW port logic register accesses
+  PCI: dwc/imx6: Use common PCI register definitions
+  PCI: dwc/qcom: Use common PCI register definitions
+  PCI: dwc: Remove hardcoded PCI_CAP_ID_EXP offset
+  PCI: dwc/tegra: Use common Designware port logic register definitions
+  PCI: dwc: Remove read_dbi2 code
+  PCI: dwc: Make ATU accessors private
+  PCI: dwc: Centralize link gen setting
+  PCI: dwc: Set PORT_LINK_DLL_LINK_EN in common setup code
+  PCI: dwc/intel-gw: Drop unnecessary checking of DT 'device_type'
+    property
+  PCI: dwc/intel-gw: Move getting PCI_CAP_ID_EXP offset to
+    intel_pcie_link_setup()
+  PCI: dwc/intel-gw: Drop unused max_width
+  PCI: dwc: Move N_FTS setup to common setup
+  PCI: dwc: Use DBI accessors
+
+ drivers/pci/controller/dwc/pci-dra7xx.c       |  29 +-
+ drivers/pci/controller/dwc/pci-exynos.c       |  45 +--
+ drivers/pci/controller/dwc/pci-imx6.c         |  52 +--
+ drivers/pci/controller/dwc/pci-keystone.c     | 126 ++-----
+ drivers/pci/controller/dwc/pci-meson.c        | 156 ++-------
+ drivers/pci/controller/dwc/pcie-al.c          |  70 +---
+ drivers/pci/controller/dwc/pcie-artpec6.c     |  48 +--
+ .../pci/controller/dwc/pcie-designware-ep.c   |  11 +-
+ .../pci/controller/dwc/pcie-designware-host.c | 319 ++++++------------
+ .../pci/controller/dwc/pcie-designware-plat.c |   4 +-
+ drivers/pci/controller/dwc/pcie-designware.c  | 104 +++---
+ drivers/pci/controller/dwc/pcie-designware.h  |  54 +--
+ drivers/pci/controller/dwc/pcie-histb.c       |  45 +--
+ drivers/pci/controller/dwc/pcie-intel-gw.c    |  65 +---
+ drivers/pci/controller/dwc/pcie-kirin.c       |  43 +--
+ drivers/pci/controller/dwc/pcie-qcom.c        |  33 +-
+ drivers/pci/controller/dwc/pcie-spear13xx.c   |  39 +--
+ drivers/pci/controller/dwc/pcie-tegra194.c    | 120 ++-----
+ drivers/pci/controller/dwc/pcie-uniphier.c    |   3 +-
+ drivers/pci/probe.c                           |  14 +-
+ include/linux/pci.h                           |   1 +
+ 21 files changed, 443 insertions(+), 938 deletions(-)
+
+--
+2.25.1
