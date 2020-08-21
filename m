@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C5EE24DC40
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Aug 2020 18:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29DB824DBDE
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Aug 2020 18:49:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728601AbgHUQ6B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Aug 2020 12:58:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51618 "EHLO mail.kernel.org"
+        id S1728714AbgHUQsb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Aug 2020 12:48:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728269AbgHUQTZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 21 Aug 2020 12:19:25 -0400
+        id S1728361AbgHUQUH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 21 Aug 2020 12:20:07 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1BB9D22D2C;
-        Fri, 21 Aug 2020 16:18:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A289022BED;
+        Fri, 21 Aug 2020 16:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598026716;
-        bh=r+vHRWWu2w3ZF3UsA/CeFeXJT3lpFdYiC0k6NtPT8Wg=;
+        s=default; t=1598026762;
+        bh=aSdNx2qWrmIsmiVue+fhidxS8tAnmctRUSuR3fZdmdM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HR9p9ooSV5OZf2RtYKOYYT2uQKPOqE3gYTvmZ5kOEdcnl+xfvSvhrcqzL3fU3nRbL
-         TKuU4IFgFbB+VGVgnGiNJsNAxB8rGpODJtkM/V+VylEjKgRgQC/YveM5nr7OHn56YN
-         QAH7OdOeJvOJsnqrVRAe+6RNUI09HOamOsKL0tNs=
+        b=Uy9BDwAgZrv/px/1b56r49Y28ZznrSDOoh8x9bjb7SDfx2LC+8AB4UoBo0c7D9ryJ
+         bFl72mcOvn4FPhUTj6dy7O2Z8HTkHJijHERXnSiV6tNXjiKHnL9P8jg7Wurg2IUkOl
+         zkQg25iztxGtLXlceS10exJcCDI39F+LzT4uGiLs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Aditya Pakki <pakki001@umn.edu>, kjlu@umn.edu, wu000273@umn.edu,
@@ -37,12 +37,12 @@ Cc:     Aditya Pakki <pakki001@umn.edu>, kjlu@umn.edu, wu000273@umn.edu,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 4.19 22/38] omapfb: fix multiple reference count leaks due to pm_runtime_get_sync
-Date:   Fri, 21 Aug 2020 12:17:51 -0400
-Message-Id: <20200821161807.348600-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 18/30] omapfb: fix multiple reference count leaks due to pm_runtime_get_sync
+Date:   Fri, 21 Aug 2020 12:18:45 -0400
+Message-Id: <20200821161857.348955-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200821161807.348600-1-sashal@kernel.org>
-References: <20200821161807.348600-1-sashal@kernel.org>
+In-Reply-To: <20200821161857.348955-1-sashal@kernel.org>
+References: <20200821161857.348955-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -84,7 +84,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  6 files changed, 26 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index a06d9c25765c5..0bd582e845f31 100644
+index 7a75dfda98457..00f5a54aaf9b7 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
 @@ -531,8 +531,11 @@ int dispc_runtime_get(void)
@@ -102,7 +102,7 @@ index a06d9c25765c5..0bd582e845f31 100644
  EXPORT_SYMBOL(dispc_runtime_get);
  
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-index 8e1d60d48dbb0..50792d31533bf 100644
+index 30d49f3800b33..2bfd9063cdfc3 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
 @@ -1148,8 +1148,11 @@ static int dsi_runtime_get(struct platform_device *dsidev)
@@ -120,10 +120,10 @@ index 8e1d60d48dbb0..50792d31533bf 100644
  
  static void dsi_runtime_put(struct platform_device *dsidev)
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-index b6c6c24979dd6..faebf9a773ba5 100644
+index 48c6500c24e1f..91879f9d38a7f 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-@@ -779,8 +779,11 @@ int dss_runtime_get(void)
+@@ -778,8 +778,11 @@ int dss_runtime_get(void)
  	DSSDBG("dss_runtime_get\n");
  
  	r = pm_runtime_get_sync(&dss.pdev->dev);
@@ -138,7 +138,7 @@ index b6c6c24979dd6..faebf9a773ba5 100644
  
  void dss_runtime_put(void)
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
-index 28de56e21c74b..9fd9a02bb871d 100644
+index ec78d61bc5512..e2d571ca8590a 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
 @@ -50,9 +50,10 @@ static int hdmi_runtime_get(void)
