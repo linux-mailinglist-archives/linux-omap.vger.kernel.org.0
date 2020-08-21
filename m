@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FEEC24DD79
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Aug 2020 19:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 191C224DCD2
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Aug 2020 19:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729002AbgHURQO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Aug 2020 13:16:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49882 "EHLO mail.kernel.org"
+        id S1728901AbgHURIg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Aug 2020 13:08:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728037AbgHUQQc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 21 Aug 2020 12:16:32 -0400
+        id S1728185AbgHUQRk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 21 Aug 2020 12:17:40 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 22DAF22B4B;
-        Fri, 21 Aug 2020 16:16:30 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 33B4922B4B;
+        Fri, 21 Aug 2020 16:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598026591;
-        bh=gyOlkQURNkZvXeZvqUwTJ18Ftp1jHejsTw6kRIdH8JI=;
+        s=default; t=1598026659;
+        bh=BcXAjORY+0JvKMCREjiXxjuioo9oUn2AuWfztd3npj4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tVVFh1PmwSNkntZbhTjEXfqEiQERt4VDuI3BsOoJ+0inVEf4aGG8rojBynbHbwmMO
-         d0DAsNEVFWcxKps0rvytkd5ltMlFpSUnCpADmy6CO9ZvBJUOPMWsS8L2++F1CovNc8
-         6Y8tXZjLfC8R4acbuEBHwauGB8iNHwDEreY8BCq4=
+        b=qXPhXKA5DQUkw8i+wrcSgVkIxMUyHDwg29ixz20TBd/LDNNdtOncsPEv6uejazNYY
+         Hu4QvlanahMmAv1UC38l8mSqSF2L7OERKw4UUYz8Y3nL38AkwzEdDGsEYeA+nQ69Ty
+         4zVwOpeHBbuoCuOsJ2oATLXETumPXFNVugyCmWKg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Aditya Pakki <pakki001@umn.edu>, kjlu@umn.edu, wu000273@umn.edu,
@@ -37,12 +37,12 @@ Cc:     Aditya Pakki <pakki001@umn.edu>, kjlu@umn.edu, wu000273@umn.edu,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.7 36/61] omapfb: fix multiple reference count leaks due to pm_runtime_get_sync
-Date:   Fri, 21 Aug 2020 12:15:20 -0400
-Message-Id: <20200821161545.347622-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 27/48] omapfb: fix multiple reference count leaks due to pm_runtime_get_sync
+Date:   Fri, 21 Aug 2020 12:16:43 -0400
+Message-Id: <20200821161704.348164-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200821161545.347622-1-sashal@kernel.org>
-References: <20200821161545.347622-1-sashal@kernel.org>
+In-Reply-To: <20200821161704.348164-1-sashal@kernel.org>
+References: <20200821161704.348164-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -84,7 +84,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  6 files changed, 26 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index ce37da85cc458..5d7daec9b1e72 100644
+index 376ee5bc3ddc9..34e8171856e95 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
 @@ -520,8 +520,11 @@ int dispc_runtime_get(void)
