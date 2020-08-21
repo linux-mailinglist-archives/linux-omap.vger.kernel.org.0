@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E29324DB83
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Aug 2020 18:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B03D824DE13
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Aug 2020 19:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728453AbgHUQk1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Aug 2020 12:40:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51668 "EHLO mail.kernel.org"
+        id S1728378AbgHURZx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Aug 2020 13:25:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47566 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728404AbgHUQUq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 21 Aug 2020 12:20:46 -0400
+        id S1727863AbgHUQPM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 21 Aug 2020 12:15:12 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C3C1B22D04;
-        Fri, 21 Aug 2020 16:19:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2201D2063A;
+        Fri, 21 Aug 2020 16:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598026799;
-        bh=cfdCNrxxqiPmksM9a9a3500KiB2de5Nz5QodaXsb7FM=;
+        s=default; t=1598026512;
+        bh=nPjr62iDyDw76cIsvSNQAF6YytqSbALHux2+KtPnUTc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1u62T43t7cy65XOW2v7xXxBCn6MxIK18faQ6uf9P0cHDatB4sBlpCIApK86kp8DJd
-         YS/3zBkHxvLLhD5kN2lb44D98guzXVlFTSX0beJkFOptt/iaGIDRIzfgTRRY09Hgr2
-         IGWAU34gmCjzx9Ow7DShCf3tsVfxf224RHgnVZzA=
+        b=zUs3C9ofeYEC8BtS3oxWU+zUALIimBffkSPbn+ZhlDDZoSacZz+2FVdqEhAHx98w7
+         X4s1gU8ei4ynszYtNFsCn6Trjei272qW3pCsd65KbivJgy16tb2DZ1SqknRDATpMbR
+         UcG2oYDj/X5/ASHwD0gRy0izKzq0e1WWjOQ0leXM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Aditya Pakki <pakki001@umn.edu>, kjlu@umn.edu, wu000273@umn.edu,
@@ -37,12 +37,12 @@ Cc:     Aditya Pakki <pakki001@umn.edu>, kjlu@umn.edu, wu000273@umn.edu,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 4.9 15/26] omapfb: fix multiple reference count leaks due to pm_runtime_get_sync
-Date:   Fri, 21 Aug 2020 12:19:26 -0400
-Message-Id: <20200821161938.349246-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.8 37/62] omapfb: fix multiple reference count leaks due to pm_runtime_get_sync
+Date:   Fri, 21 Aug 2020 12:13:58 -0400
+Message-Id: <20200821161423.347071-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200821161938.349246-1-sashal@kernel.org>
-References: <20200821161938.349246-1-sashal@kernel.org>
+In-Reply-To: <20200821161423.347071-1-sashal@kernel.org>
+References: <20200821161423.347071-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -84,10 +84,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  6 files changed, 26 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index 7a75dfda98457..00f5a54aaf9b7 100644
+index 4a16798b2ecd8..e2b572761bf61 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-@@ -531,8 +531,11 @@ int dispc_runtime_get(void)
+@@ -520,8 +520,11 @@ int dispc_runtime_get(void)
  	DSSDBG("dispc_runtime_get\n");
  
  	r = pm_runtime_get_sync(&dispc.pdev->dev);
@@ -102,10 +102,10 @@ index 7a75dfda98457..00f5a54aaf9b7 100644
  EXPORT_SYMBOL(dispc_runtime_get);
  
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-index 30d49f3800b33..2bfd9063cdfc3 100644
+index d620376216e1d..6f9c25fec9946 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-@@ -1148,8 +1148,11 @@ static int dsi_runtime_get(struct platform_device *dsidev)
+@@ -1137,8 +1137,11 @@ static int dsi_runtime_get(struct platform_device *dsidev)
  	DSSDBG("dsi_runtime_get\n");
  
  	r = pm_runtime_get_sync(&dsi->pdev->dev);
@@ -120,10 +120,10 @@ index 30d49f3800b33..2bfd9063cdfc3 100644
  
  static void dsi_runtime_put(struct platform_device *dsidev)
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-index 48c6500c24e1f..91879f9d38a7f 100644
+index bfc5c4c5a26ad..a6b1c1598040d 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-@@ -778,8 +778,11 @@ int dss_runtime_get(void)
+@@ -768,8 +768,11 @@ int dss_runtime_get(void)
  	DSSDBG("dss_runtime_get\n");
  
  	r = pm_runtime_get_sync(&dss.pdev->dev);
@@ -138,10 +138,10 @@ index 48c6500c24e1f..91879f9d38a7f 100644
  
  void dss_runtime_put(void)
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
-index 156a254705ea5..ab64bf0215e82 100644
+index 7060ae56c062c..4804aab342981 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c
-@@ -50,9 +50,10 @@ static int hdmi_runtime_get(void)
+@@ -39,9 +39,10 @@ static int hdmi_runtime_get(void)
  	DSSDBG("hdmi_runtime_get\n");
  
  	r = pm_runtime_get_sync(&hdmi.pdev->dev);
@@ -155,10 +155,10 @@ index 156a254705ea5..ab64bf0215e82 100644
  	return 0;
  }
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
-index 4da36bcab9779..c6efaca3235a8 100644
+index ac49531e47327..a06b6f1355bdb 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c
-@@ -54,9 +54,10 @@ static int hdmi_runtime_get(void)
+@@ -43,9 +43,10 @@ static int hdmi_runtime_get(void)
  	DSSDBG("hdmi_runtime_get\n");
  
  	r = pm_runtime_get_sync(&hdmi.pdev->dev);
@@ -172,10 +172,10 @@ index 4da36bcab9779..c6efaca3235a8 100644
  	return 0;
  }
 diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-index 392464da12e41..96714b4596d2d 100644
+index d5404d56c922f..0b0ad20afd630 100644
 --- a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
 +++ b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-@@ -402,8 +402,11 @@ static int venc_runtime_get(void)
+@@ -348,8 +348,11 @@ static int venc_runtime_get(void)
  	DSSDBG("venc_runtime_get\n");
  
  	r = pm_runtime_get_sync(&venc.pdev->dev);
