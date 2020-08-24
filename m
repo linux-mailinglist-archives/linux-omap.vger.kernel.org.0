@@ -2,128 +2,168 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F54425045F
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Aug 2020 19:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EDD5250A5A
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Aug 2020 22:56:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726751AbgHXRBX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Aug 2020 13:01:23 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:42544 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726513AbgHXRBI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Aug 2020 13:01:08 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 07OH12k0100866;
-        Mon, 24 Aug 2020 12:01:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1598288462;
-        bh=DT3PA1/IKDqSXW15ng6SPivLr45yGQeLTmDSIfcQkho=;
-        h=From:To:Subject:Date;
-        b=C4u2oJBkCwWBuWEgNB3FaDbjnXaCPiJOt9a+jPpmMl1A0oItgXWtmfYVzCxheiqDc
-         5MtGCZgGsfEwbRTcd58tnyMvg+2v8GyIYb7VjOvELRFX9dSsHrrFYpYW6mW+N+QH8H
-         tYTp6bTr+FK9zkDwuNEPWIFkVPT7t8XKWjHcjteU=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 07OH1297035999
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 24 Aug 2020 12:01:02 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 24
- Aug 2020 12:01:01 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 24 Aug 2020 12:01:01 -0500
-Received: from uda0868495.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07OH103g005955;
-        Mon, 24 Aug 2020 12:01:00 -0500
-From:   Murali Karicheri <m-karicheri2@ti.com>
-To:     <davem@davemloft.net>, <kuba@kernel.org>,
-        <grygorii.strashko@ti.com>, <nsekhar@ti.com>,
-        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [net v3 PATCH] net: ethernet: ti: cpsw_new: fix error handling in cpsw_ndo_vlan_rx_kill_vid()
-Date:   Mon, 24 Aug 2020 13:01:00 -0400
-Message-ID: <20200824170100.21319-1-m-karicheri2@ti.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726241AbgHXU4w (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Aug 2020 16:56:52 -0400
+Received: from mga11.intel.com ([192.55.52.93]:11969 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726051AbgHXU4v (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 24 Aug 2020 16:56:51 -0400
+IronPort-SDR: 7svKFMh+L5HXla2eRcb4c9YVkrfCNzAAEWR/rb32nW8IYrPONOdRKJ1nmWXWrGsplOTjMPYOTP
+ +WgWgq5YSVeg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9723"; a="153566288"
+X-IronPort-AV: E=Sophos;i="5.76,349,1592895600"; 
+   d="scan'208";a="153566288"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2020 13:56:50 -0700
+IronPort-SDR: 4NPByA73rfZoRpO9RibkGcKPWkKPIlPN6ZZZq/q5BXD28AGLPLJUnl8IKRS5gYzn4KoGqIWfMY
+ Ty/vY6EOkVCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,349,1592895600"; 
+   d="scan'208";a="338568656"
+Received: from lkp-server01.sh.intel.com (HELO c420d4f0765f) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 24 Aug 2020 13:56:49 -0700
+Received: from kbuild by c420d4f0765f with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kAJWK-0000TO-KH; Mon, 24 Aug 2020 20:56:48 +0000
+Date:   Tue, 25 Aug 2020 04:56:08 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/next] BUILD SUCCESS WITH WARNING
+ 53b3ae5a08ffcd07d627baeddd00ae63f973513b
+Message-ID: <5f442968.WEdAgLMYVLYcPzdY%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This patch fixes a bunch of issues in cpsw_ndo_vlan_rx_kill_vid()
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
+branch HEAD: 53b3ae5a08ffcd07d627baeddd00ae63f973513b  dwc3: debugfs: fix checkpatch warnings
 
- - pm_runtime_get_sync() returns non zero value. This results in
-   non zero value return to caller which will be interpreted as error.
-   So overwrite ret with zero.
- - If VID matches with port VLAN VID, then set error code.
- - Currently when VLAN interface is deleted, all of the VLAN mc addresses
-   are removed from ALE table, however the return values from ale function
-   calls are not checked. These functions can return error code -ENOENT.
-   But that shouldn't happen in a normal case. So add error print to
-   catch the situations so that these can be investigated and addressed.
-   return zero in these cases as these are not real error case, but only
-   serve to catch ALE table update related issues and help address the
-   same in the driver.
+Warning in current branch:
 
-Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+drivers/usb/dwc2/platform.c:593:1: warning: unused label 'error_debugfs' [-Wunused-label]
+
+Warning ids grouped by kconfigs:
+
+clang_recent_errors
+|-- arm-randconfig-r012-20200824
+|   `-- drivers-usb-dwc2-platform.c:warning:unused-label-error_debugfs
+`-- mips-randconfig-r013-20200824
+    `-- drivers-usb-dwc2-platform.c:warning:unused-label-error_debugfs
+
+elapsed time: 724m
+
+configs tested: 97
+configs skipped: 6
+
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                      tqm8xx_defconfig
+nios2                         10m50_defconfig
+m68k                        m5407c3_defconfig
+powerpc                          g5_defconfig
+mips                           jazz_defconfig
+c6x                         dsk6455_defconfig
+arm                         lpc32xx_defconfig
+arm                      integrator_defconfig
+arm                           sunxi_defconfig
+sh                          landisk_defconfig
+powerpc                     ep8248e_defconfig
+mips                       rbtx49xx_defconfig
+m68k                           sun3_defconfig
+sh                   rts7751r2dplus_defconfig
+arm                            zeus_defconfig
+arm                              zx_defconfig
+arc                              alldefconfig
+arm                          badge4_defconfig
+sh                          sdk7780_defconfig
+sh                          r7785rp_defconfig
+arm                             rpc_defconfig
+h8300                    h8300h-sim_defconfig
+powerpc                         ps3_defconfig
+riscv                    nommu_k210_defconfig
+arc                        nsimosci_defconfig
+sh                           se7721_defconfig
+m68k                            q40_defconfig
+mips                     loongson1b_defconfig
+arm                           stm32_defconfig
+x86_64                           alldefconfig
+sparc                       sparc64_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20200824
+i386                 randconfig-a004-20200824
+i386                 randconfig-a005-20200824
+i386                 randconfig-a003-20200824
+i386                 randconfig-a006-20200824
+i386                 randconfig-a001-20200824
+x86_64               randconfig-a015-20200824
+x86_64               randconfig-a016-20200824
+x86_64               randconfig-a012-20200824
+x86_64               randconfig-a014-20200824
+x86_64               randconfig-a011-20200824
+x86_64               randconfig-a013-20200824
+i386                 randconfig-a013-20200824
+i386                 randconfig-a012-20200824
+i386                 randconfig-a011-20200824
+i386                 randconfig-a016-20200824
+i386                 randconfig-a015-20200824
+i386                 randconfig-a014-20200824
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
 ---
- v3 - updated commit description to describe error check related to
-      port vlan VID
- v2 - updated comments from Grygorii, also return error code if VID
- match with port_vlan vid.
- drivers/net/ethernet/ti/cpsw_new.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 8d0a2bc7128d..61fa5063d751 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1032,19 +1032,35 @@ static int cpsw_ndo_vlan_rx_kill_vid(struct net_device *ndev,
- 		return ret;
- 	}
- 
-+	/* reset the return code as pm_runtime_get_sync() can return
-+	 * non zero values as well.
-+	 */
-+	ret = 0;
- 	for (i = 0; i < cpsw->data.slaves; i++) {
- 		if (cpsw->slaves[i].ndev &&
--		    vid == cpsw->slaves[i].port_vlan)
-+		    vid == cpsw->slaves[i].port_vlan) {
-+			ret = -EINVAL;
- 			goto err;
-+		}
- 	}
- 
- 	dev_dbg(priv->dev, "removing vlanid %d from vlan filter\n", vid);
--	cpsw_ale_del_vlan(cpsw->ale, vid, 0);
--	cpsw_ale_del_ucast(cpsw->ale, priv->mac_addr,
--			   HOST_PORT_NUM, ALE_VLAN, vid);
--	cpsw_ale_del_mcast(cpsw->ale, priv->ndev->broadcast,
--			   0, ALE_VLAN, vid);
-+	ret = cpsw_ale_del_vlan(cpsw->ale, vid, 0);
-+	if (ret)
-+		dev_err(priv->dev, "%s: failed %d: ret %d\n",
-+			__func__, __LINE__, ret);
-+	ret = cpsw_ale_del_ucast(cpsw->ale, priv->mac_addr,
-+				 HOST_PORT_NUM, ALE_VLAN, vid);
-+	if (ret)
-+		dev_err(priv->dev, "%s: failed %d: ret %d\n",
-+			__func__, __LINE__, ret);
-+	ret = cpsw_ale_del_mcast(cpsw->ale, priv->ndev->broadcast,
-+				 0, ALE_VLAN, vid);
-+	if (ret)
-+		dev_err(priv->dev, "%s: failed %d: ret %d\n",
-+			__func__, __LINE__, ret);
- 	cpsw_ale_flush_multicast(cpsw->ale, ALE_PORT_HOST, vid);
-+	ret = 0;
- err:
- 	pm_runtime_put(cpsw->dev);
- 	return ret;
--- 
-2.17.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
