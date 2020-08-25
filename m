@@ -2,57 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00BB9251CA6
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Aug 2020 17:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3C5B251D48
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Aug 2020 18:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726825AbgHYPvJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Aug 2020 11:51:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46268 "EHLO
+        id S1726413AbgHYQgH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 Aug 2020 12:36:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726988AbgHYPvG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Aug 2020 11:51:06 -0400
+        with ESMTP id S1726257AbgHYQgG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Aug 2020 12:36:06 -0400
 Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BCB0C061574;
-        Tue, 25 Aug 2020 08:51:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 192B7C061574;
+        Tue, 25 Aug 2020 09:36:06 -0700 (PDT)
 Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 54D9F1344473D;
-        Tue, 25 Aug 2020 08:34:19 -0700 (PDT)
-Date:   Tue, 25 Aug 2020 08:51:05 -0700 (PDT)
-Message-Id: <20200825.085105.471804029075197026.davem@davemloft.net>
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 64AE2134A0E3F;
+        Tue, 25 Aug 2020 09:19:18 -0700 (PDT)
+Date:   Tue, 25 Aug 2020 09:36:03 -0700 (PDT)
+Message-Id: <20200825.093603.2026695844604591106.davem@davemloft.net>
 To:     m-karicheri2@ti.com
 Cc:     kuba@kernel.org, grygorii.strashko@ti.com, nsekhar@ti.com,
         linux-omap@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [net v3 PATCH 2/2] net: ethernet: ti: cpsw_new: fix clean up
- of vlan mc entries for host port
+Subject: Re: [net v3 PATCH] net: ethernet: ti: cpsw_new: fix error handling
+ in cpsw_ndo_vlan_rx_kill_vid()
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200824151053.18449-2-m-karicheri2@ti.com>
-References: <20200824151053.18449-1-m-karicheri2@ti.com>
-        <20200824151053.18449-2-m-karicheri2@ti.com>
+In-Reply-To: <20200824170100.21319-1-m-karicheri2@ti.com>
+References: <20200824170100.21319-1-m-karicheri2@ti.com>
 X-Mailer: Mew version 6.8 on Emacs 26.3
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 25 Aug 2020 08:34:19 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 25 Aug 2020 09:19:18 -0700 (PDT)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Murali Karicheri <m-karicheri2@ti.com>
-Date: Mon, 24 Aug 2020 11:10:53 -0400
+Date: Mon, 24 Aug 2020 13:01:00 -0400
 
-> To flush the vid + mc entries from ALE, which is required when a VLAN
-> interface is removed, driver needs to call cpsw_ale_flush_multicast()
-> with ALE_PORT_HOST for port mask as these entries are added only for
-> host port. Without this, these entries remain in the ALE table even
-> after removing the VLAN interface. cpsw_ale_flush_multicast() calls
-> cpsw_ale_flush_mcast which expects a port mask to do the job.
-> 
-> Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+> +	ret = cpsw_ale_del_vlan(cpsw->ale, vid, 0);
+> +	if (ret)
+> +		dev_err(priv->dev, "%s: failed %d: ret %d\n",
+> +			__func__, __LINE__, ret);
+> +	ret = cpsw_ale_del_ucast(cpsw->ale, priv->mac_addr,
+> +				 HOST_PORT_NUM, ALE_VLAN, vid);
+> +	if (ret)
+> +		dev_err(priv->dev, "%s: failed %d: ret %d\n",
+> +			__func__, __LINE__, ret);
+> +	ret = cpsw_ale_del_mcast(cpsw->ale, priv->ndev->broadcast,
+> +				 0, ALE_VLAN, vid);
+> +	if (ret)
+> +		dev_err(priv->dev, "%s: failed %d: ret %d\n",
+> +			__func__, __LINE__, ret);
+>  	cpsw_ale_flush_multicast(cpsw->ale, ALE_PORT_HOST, vid);
 
-Applied and queued up for -stable.
+These error messages are extremely unhelpful.  You're calling three
+different functions, yet emitting basically the same __func__ for
+each of those cases.  No user can send you a useful bug report
+immediately if they just have func and line.
+
+Please get rid of the "__func__" and "__line__" stuff completely, it's
+never advisable to ever use that in my opinion.  Instead, describe
+which delete operation failed, optionally with the error return.
+
