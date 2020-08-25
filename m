@@ -2,168 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EDD5250A5A
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Aug 2020 22:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E442B2516D6
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Aug 2020 12:47:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726241AbgHXU4w (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Aug 2020 16:56:52 -0400
-Received: from mga11.intel.com ([192.55.52.93]:11969 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726051AbgHXU4v (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 24 Aug 2020 16:56:51 -0400
-IronPort-SDR: 7svKFMh+L5HXla2eRcb4c9YVkrfCNzAAEWR/rb32nW8IYrPONOdRKJ1nmWXWrGsplOTjMPYOTP
- +WgWgq5YSVeg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9723"; a="153566288"
-X-IronPort-AV: E=Sophos;i="5.76,349,1592895600"; 
-   d="scan'208";a="153566288"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2020 13:56:50 -0700
-IronPort-SDR: 4NPByA73rfZoRpO9RibkGcKPWkKPIlPN6ZZZq/q5BXD28AGLPLJUnl8IKRS5gYzn4KoGqIWfMY
- Ty/vY6EOkVCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,349,1592895600"; 
-   d="scan'208";a="338568656"
-Received: from lkp-server01.sh.intel.com (HELO c420d4f0765f) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 24 Aug 2020 13:56:49 -0700
-Received: from kbuild by c420d4f0765f with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kAJWK-0000TO-KH; Mon, 24 Aug 2020 20:56:48 +0000
-Date:   Tue, 25 Aug 2020 04:56:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/next] BUILD SUCCESS WITH WARNING
- 53b3ae5a08ffcd07d627baeddd00ae63f973513b
-Message-ID: <5f442968.WEdAgLMYVLYcPzdY%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1729848AbgHYKrU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 Aug 2020 06:47:20 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:41486 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729827AbgHYKrU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Aug 2020 06:47:20 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PAjKVu136657;
+        Tue, 25 Aug 2020 10:47:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=yn0OmaXlVdIsJwcUdyYW+Kk02+g/l6M7ahIn4FwXthk=;
+ b=RHPEP9kRltu6yfez+jWi1UjXRi3pvfhA636WJj9aN3Uo5IAedNdNi6gzzU/DnXTTBtXS
+ X6s1KKzkKDLNpc0EHlImjWcHYSRHH57wD975Q790BZwBJ6ilAdqazL26isgMex7WvsbP
+ ChTbD/RqjD9N/hSjAmmGCkNgS/WoSu2GAhZESypO4fOuz5dURx5b5VmnzABzIOgu0jlJ
+ tAyVdQcrUpUrfDjzcQoZgwA2jTqggvV6pI7oUs54Ancx6NfVu/felzW2HNbbyNKjRGhg
+ Nd6efXC0QTc5IcRW26lhpPd779j2rLcLnEWLqehcfkmFcUfauG2yF29aLPLjk6SXA8Lq AA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 333w6tr991-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 25 Aug 2020 10:47:16 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PAiaA3153129;
+        Tue, 25 Aug 2020 10:47:16 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 333rtxn0n3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 25 Aug 2020 10:47:15 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07PAlEeV008592;
+        Tue, 25 Aug 2020 10:47:15 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 25 Aug 2020 03:47:14 -0700
+Date:   Tue, 25 Aug 2020 13:47:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Roger Quadros <rogerq@ti.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Jon Hunter <jon-hunter@ti.com>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] memory: omap-gpmc: Fix a couple off by ones
+Message-ID: <20200825104707.GB278587@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
+ phishscore=0 spamscore=0 bulkscore=0 mlxlogscore=810 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008250081
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
+ mlxlogscore=796 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
+ priorityscore=1501 clxscore=1011 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008250081
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
-branch HEAD: 53b3ae5a08ffcd07d627baeddd00ae63f973513b  dwc3: debugfs: fix checkpatch warnings
+These comparisons should be >= instead of > to prevent reading one
+element beyond the end of the gpmc_cs[] array.
 
-Warning in current branch:
-
-drivers/usb/dwc2/platform.c:593:1: warning: unused label 'error_debugfs' [-Wunused-label]
-
-Warning ids grouped by kconfigs:
-
-clang_recent_errors
-|-- arm-randconfig-r012-20200824
-|   `-- drivers-usb-dwc2-platform.c:warning:unused-label-error_debugfs
-`-- mips-randconfig-r013-20200824
-    `-- drivers-usb-dwc2-platform.c:warning:unused-label-error_debugfs
-
-elapsed time: 724m
-
-configs tested: 97
-configs skipped: 6
-
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                      tqm8xx_defconfig
-nios2                         10m50_defconfig
-m68k                        m5407c3_defconfig
-powerpc                          g5_defconfig
-mips                           jazz_defconfig
-c6x                         dsk6455_defconfig
-arm                         lpc32xx_defconfig
-arm                      integrator_defconfig
-arm                           sunxi_defconfig
-sh                          landisk_defconfig
-powerpc                     ep8248e_defconfig
-mips                       rbtx49xx_defconfig
-m68k                           sun3_defconfig
-sh                   rts7751r2dplus_defconfig
-arm                            zeus_defconfig
-arm                              zx_defconfig
-arc                              alldefconfig
-arm                          badge4_defconfig
-sh                          sdk7780_defconfig
-sh                          r7785rp_defconfig
-arm                             rpc_defconfig
-h8300                    h8300h-sim_defconfig
-powerpc                         ps3_defconfig
-riscv                    nommu_k210_defconfig
-arc                        nsimosci_defconfig
-sh                           se7721_defconfig
-m68k                            q40_defconfig
-mips                     loongson1b_defconfig
-arm                           stm32_defconfig
-x86_64                           alldefconfig
-sparc                       sparc64_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20200824
-i386                 randconfig-a004-20200824
-i386                 randconfig-a005-20200824
-i386                 randconfig-a003-20200824
-i386                 randconfig-a006-20200824
-i386                 randconfig-a001-20200824
-x86_64               randconfig-a015-20200824
-x86_64               randconfig-a016-20200824
-x86_64               randconfig-a012-20200824
-x86_64               randconfig-a014-20200824
-x86_64               randconfig-a011-20200824
-x86_64               randconfig-a013-20200824
-i386                 randconfig-a013-20200824
-i386                 randconfig-a012-20200824
-i386                 randconfig-a011-20200824
-i386                 randconfig-a016-20200824
-i386                 randconfig-a015-20200824
-i386                 randconfig-a014-20200824
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
+Fixes: cdd6928c589a ("ARM: OMAP2+: Add device-tree support for NOR flash")
+Fixes: f37e4580c409 ("ARM: OMAP2: Dynamic allocator for GPMC memory space")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/memory/omap-gpmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+index cd9e80748591..fd245b82163a 100644
+--- a/drivers/memory/omap-gpmc.c
++++ b/drivers/memory/omap-gpmc.c
+@@ -989,7 +989,7 @@ static int gpmc_cs_remap(int cs, u32 base)
+ 	int ret;
+ 	u32 old_base, size;
+ 
+-	if (cs > gpmc_cs_num) {
++	if (cs >= gpmc_cs_num) {
+ 		pr_err("%s: requested chip-select is disabled\n", __func__);
+ 		return -ENODEV;
+ 	}
+@@ -1024,7 +1024,7 @@ int gpmc_cs_request(int cs, unsigned long size, unsigned long *base)
+ 	struct resource *res = &gpmc->mem;
+ 	int r = -1;
+ 
+-	if (cs > gpmc_cs_num) {
++	if (cs >= gpmc_cs_num) {
+ 		pr_err("%s: requested chip-select is disabled\n", __func__);
+ 		return -ENODEV;
+ 	}
+-- 
+2.28.0
+
