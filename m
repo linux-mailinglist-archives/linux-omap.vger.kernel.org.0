@@ -2,116 +2,167 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE786251F90
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Aug 2020 21:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F9F2252858
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Aug 2020 09:19:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726180AbgHYTJ3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Aug 2020 15:09:29 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:45727 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726149AbgHYTJ2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Aug 2020 15:09:28 -0400
-Received: by mail-io1-f68.google.com with SMTP id u126so13605887iod.12;
-        Tue, 25 Aug 2020 12:09:28 -0700 (PDT)
+        id S1726766AbgHZHTg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Aug 2020 03:19:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48432 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726716AbgHZHTf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Aug 2020 03:19:35 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A52CC061574;
+        Wed, 26 Aug 2020 00:19:35 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id g1so590809pgm.9;
+        Wed, 26 Aug 2020 00:19:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qWLQ09H4pd8WgMgtgz12mw5W3VvW3dhG530iJhOXSE0=;
+        b=OXa+dODJtUqYwtqpQ7ayh7hD2+7v70th2/273W1+fTk2MmqVr26N7l3YZK+gVNeD/0
+         VJQGWHjYBPCccKWZ5YVAYwN/9y4ZFAyd6xLhPT4v16Qzl8uLtYEwJYFtwS+IV2T+uYRT
+         o696chC8iVjFQ0LJSsUiv6kscF9IHSXTtAA+LZaM69XQXkCOHKmEW0qVuTAVoGDTw8rI
+         sKBmyMC1a5Rt7wlCJz+Qs7XI8L/DKlv4IH8jFR3MVib6BMPkEUCTjfEyquqWtlz1cbbZ
+         Ja4CpU7sVeu/8jGj2Wbeme+jeEiCa6g/jBznhIWVa5JLTjmtiBQR2a5mNhXgh2O5GvYc
+         AUBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=eEnscZ144fB/Icib0BxejX+dHld9Sfy5N1mdgz0fLTI=;
-        b=L7yeUWLDE+/X4BIjbkx7Wk9thw+UYUayUj87dyl/CFzlbw30h55BkoTZR6F617iSBZ
-         BaloxHgc4ljE0oGYd7sFHFAlI7znob+apR05PqB7khwxPszYLJGFGTWmPqvTFYbju5bN
-         SJxSxITcCwDsyotcHg/GGZnU79rYJlOS+uQmXsvIv0UYX1sUtg1ettw3n4uDqjbg5tFB
-         GL+c4FhQdwYc9LEh86KLg9joYuR0zQ8XwdVhH/Ke+LFLaaDqFZw+SKEYFs1i1XUmf4kM
-         MfVHz/cC6+/MHEjovL0pz9yim6EwAFR3j3rALVIJwSUsTOXcgA2+xrb5OkwkqsEgGeB4
-         41fA==
-X-Gm-Message-State: AOAM531RNOdQQUYZPAE9T06qpC8W8DyRP/31vsCGq3x9RgGroJJ5sPH9
-        +EsldKX8nnLzKDx9DSjEYQ==
-X-Google-Smtp-Source: ABdhPJyG8THBO7xd0t/WMwBcD/ftApc9n5G5bBZV+A53FZSw7DcNoHRLyBUu6gbhqznyE9MRd5K6EA==
-X-Received: by 2002:a05:6602:2106:: with SMTP id x6mr9859814iox.84.1598382567254;
-        Tue, 25 Aug 2020 12:09:27 -0700 (PDT)
-Received: from xps15 ([64.188.179.249])
-        by smtp.gmail.com with ESMTPSA id o62sm9717855ilb.38.2020.08.25.12.09.22
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=qWLQ09H4pd8WgMgtgz12mw5W3VvW3dhG530iJhOXSE0=;
+        b=tn+9w6CiRtMbIpuveuhC37fUCmmj1OsAanDCA47jAXzMVjiucwRaMjaTvsBGfcybK+
+         yoOj75a2cOquqBqvq/uz4w/+tzckBbwLb8YMyDxqHg9oZlfd14XNJt6BSYl/+jZhcpya
+         0rMs7CuhMpL/+arKhc/AuOtqc4YrwsIdR80m/+9HUNa27vlF0E359c3wOsAVfMGLimdM
+         NgkvtubXDzck0wmcJMxlH5SmwdRUNXkxHNO/PS4CstmdSszhGwC2LINijFOJ88OnuoHq
+         57WJ8YltyWRjrAjoY02nq6/P0EC+Jigx+TPeorzauZsOtdbOtfAd1Z4tClXGhbylFzSU
+         ex8Q==
+X-Gm-Message-State: AOAM530NZR5Vps1S6xayj6En9fye9BMp8pHcu8XLjFnCuBtidwKixSRa
+        fHTF7uDBUKB1RKDBbVOmHps=
+X-Google-Smtp-Source: ABdhPJzu+RfzmpakKaJ6ICWRJIIn4iAY6rm05Qjiy2cIfh8eZg7ri+t6ytJ/DqHxJh9T+iOIaATKGQ==
+X-Received: by 2002:a62:1c86:: with SMTP id c128mr11084787pfc.78.1598426374880;
+        Wed, 26 Aug 2020 00:19:34 -0700 (PDT)
+Received: from localhost.localdomain ([45.124.203.19])
+        by smtp.gmail.com with ESMTPSA id mw8sm1125465pjb.47.2020.08.26.00.19.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2020 12:09:26 -0700 (PDT)
-Received: (nullmailer pid 1144568 invoked by uid 1000);
-        Tue, 25 Aug 2020 19:09:21 -0000
-Date:   Tue, 25 Aug 2020 13:09:21 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Cc:     tglx@linutronix.de, maz@kernel.org, devicetree@vger.kernel.org,
-        jason@lakedaemon.net, robh+dt@kernel.org, s-anna@ti.com,
-        linux-omap@vger.kernel.org, david@lechnology.com,
-        linux-arm-kernel@lists.infradead.org,
-        Roger Quadros <rogerq@ti.com>, praneeth@ti.com,
-        "Andrew F . Davis" <afd@ti.com>, lee.jones@linaro.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/5] dt-bindings: irqchip: Add PRU-ICSS interrupt
- controller bindings
-Message-ID: <20200825190921.GA1144515@bogus>
-References: <1597671613-20879-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1597671613-20879-2-git-send-email-grzegorz.jaszczyk@linaro.org>
+        Wed, 26 Aug 2020 00:19:33 -0700 (PDT)
+From:   Joel Stanley <joel@jms.id.au>
+To:     Andrew Jeffery <andrew@aj.id.au>, Arnd Bergmann <arnd@arndb.de>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc:     =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+        James Hartley <james.hartley@sondrel.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, stable@vger.kernel.org
+Subject: [PATCH] ARM: config: aspeed: Fix selection of media drivers
+Date:   Wed, 26 Aug 2020 16:49:16 +0930
+Message-Id: <20200826071916.3081953-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1597671613-20879-2-git-send-email-grzegorz.jaszczyk@linaro.org>
+Content-Transfer-Encoding: 8bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 17 Aug 2020 15:40:09 +0200, Grzegorz Jaszczyk wrote:
-> From: Suman Anna <s-anna@ti.com>
-> 
-> The Programmable Real-Time Unit and Industrial Communication Subsystem
-> (PRU-ICSS or simply PRUSS) contains an interrupt controller (INTC) that
-> can handle various system input events and post interrupts back to the
-> device-level initiators. The INTC can support up to 64 input events on
-> most SoCs with individual control configuration and h/w prioritization.
-> These events are mapped onto 10 output interrupt lines through two levels
-> of many-to-one mapping support. Different interrupt lines are routed to
-> the individual PRU cores or to the host CPU or to other PRUSS instances.
-> 
-> The K3 AM65x and J721E SoCs have the next generation of the PRU-ICSS IP,
-> commonly called ICSSG. The ICSSG interrupt controller on K3 SoCs provide
-> a higher number of host interrupts (20 vs 10) and can handle an increased
-> number of input events (160 vs 64) from various SoC interrupt sources.
-> 
-> Add the bindings document for these interrupt controllers on all the
-> applicable SoCs. It covers the OMAP architecture SoCs - AM33xx, AM437x
-> and AM57xx; the Keystone 2 architecture based 66AK2G SoC; the Davinci
-> architecture based OMAPL138 SoCs, and the K3 architecture based AM65x
-> and J721E SoCs.
-> 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Andrew F. Davis <afd@ti.com>
-> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> ---
-> v4->v5:
-> - Fix typo in commit description.
-> - Update interrupt-cells description regarding each cells meaning.
-> v3->v4:
-> - Drop allOf references to interrupt-controller.yaml and
->   interrupts.yaml.
-> - Drop items descriptions and use only maxItems: 1 as suggested by Rob.
-> - Convert irqs-reserved property from uint8-array to bitmask.
-> - Minor descriptions updates.
-> - Change interrupt-cells to 3 in order to provide 2-level mapping
->   description for interrupts routed to the main CPU (as Marc requested).
-> - Merge the irqs-reserved and irqs-shared to one property since they
->   can be handled by one logic.
-> - Drop reviewed-by due to introduced changes.
-> - Add another example illustrating irqs-reserved property usage.
-> v2->v3:
-> - Convert dt-binding to YAML
-> v1->v2:
-> - https://patchwork.kernel.org/patch/11069767/
-> 
-> update irq-pruss-intc binding
-> ---
->  .../interrupt-controller/ti,pruss-intc.yaml        | 158 +++++++++++++++++++++
->  1 file changed, 158 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
-> 
+In the 5.7 merge window the media kconfig was restructued. For most
+platforms these changes set CONFIG_MEDIA_SUPPORT_FILTER=y which keeps
+unwanted drivers disabled.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+The exception is if a config sets EMBEDDED or EXPERT (see b0cd4fb27665).
+In that case the filter is set to =n, causing a bunch of DVB tuner drivers
+(MEDIA_TUNER_*) to be accidentally enabled. This was noticed as it blew
+out the build time for the Aspeed defconfigs.
+
+Enabling the filter means the Aspeed config also needs to set
+CONFIG_MEDIA_PLATFORM_SUPPORT=y in order to have the CONFIG_VIDEO_ASPEED
+driver enabled.
+
+Fixes: 06b93644f4d1 ("media: Kconfig: add an option to filter in/out platform drivers")
+Fixes: b0cd4fb27665 ("media: Kconfig: on !EMBEDDED && !EXPERT, enable driver filtering")
+Cc: stable@vger.kernel.org
+CC: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+
+Another solution would be to revert b0cd4fb27665 ("media: Kconfig: on
+!EMBEDDED && !EXPERT, enable driver filtering"). I assume this was done
+to be helpful, but in practice it has enabled the TUNER drivers (and
+others) for the following configs that didn't have them before:
+
+$ git grep -lE "(CONFIG_EXPERT|CONFIG_EMBEDDED)"  arch/*/configs/ | xargs grep -l MEDIA_SUPPORT
+arch/arm/configs/aspeed_g4_defconfig
+arch/arm/configs/aspeed_g5_defconfig
+arch/arm/configs/at91_dt_defconfig
+arch/arm/configs/bcm2835_defconfig
+arch/arm/configs/davinci_all_defconfig
+arch/arm/configs/ezx_defconfig
+arch/arm/configs/imote2_defconfig
+arch/arm/configs/imx_v4_v5_defconfig
+arch/arm/configs/imx_v6_v7_defconfig
+arch/arm/configs/milbeaut_m10v_defconfig
+arch/arm/configs/multi_v7_defconfig
+arch/arm/configs/omap2plus_defconfig
+arch/arm/configs/pxa_defconfig
+arch/arm/configs/qcom_defconfig
+arch/arm/configs/sama5_defconfig
+arch/arm/configs/tegra_defconfig
+arch/mips/configs/ci20_defconfig
+arch/mips/configs/lemote2f_defconfig
+arch/mips/configs/loongson3_defconfig
+arch/mips/configs/pistachio_defconfig
+
+I've cc'd the maintainers of these defconfigs so they are aware.
+
+---
+ arch/arm/configs/aspeed_g4_defconfig | 3 ++-
+ arch/arm/configs/aspeed_g5_defconfig | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/configs/aspeed_g4_defconfig b/arch/arm/configs/aspeed_g4_defconfig
+index 303f75a3baec..58d293b63581 100644
+--- a/arch/arm/configs/aspeed_g4_defconfig
++++ b/arch/arm/configs/aspeed_g4_defconfig
+@@ -160,7 +160,8 @@ CONFIG_SENSORS_TMP421=y
+ CONFIG_SENSORS_W83773G=y
+ CONFIG_WATCHDOG_SYSFS=y
+ CONFIG_MEDIA_SUPPORT=y
+-CONFIG_MEDIA_CAMERA_SUPPORT=y
++CONFIG_MEDIA_SUPPORT_FILTER=y
++CONFIG_MEDIA_PLATFORM_SUPPORT=y
+ CONFIG_V4L_PLATFORM_DRIVERS=y
+ CONFIG_VIDEO_ASPEED=y
+ CONFIG_DRM=y
+diff --git a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
+index b0d056d49abe..cc2449ed6e6d 100644
+--- a/arch/arm/configs/aspeed_g5_defconfig
++++ b/arch/arm/configs/aspeed_g5_defconfig
+@@ -175,7 +175,8 @@ CONFIG_SENSORS_TMP421=y
+ CONFIG_SENSORS_W83773G=y
+ CONFIG_WATCHDOG_SYSFS=y
+ CONFIG_MEDIA_SUPPORT=y
+-CONFIG_MEDIA_CAMERA_SUPPORT=y
++CONFIG_MEDIA_SUPPORT_FILTER=y
++CONFIG_MEDIA_PLATFORM_SUPPORT=y
+ CONFIG_V4L_PLATFORM_DRIVERS=y
+ CONFIG_VIDEO_ASPEED=y
+ CONFIG_DRM=y
+-- 
+2.28.0
+
