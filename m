@@ -2,75 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06A3325456A
-	for <lists+linux-omap@lfdr.de>; Thu, 27 Aug 2020 14:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39C462545D4
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Aug 2020 15:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729135AbgH0MyM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 Aug 2020 08:54:12 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:36498 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729089AbgH0MyD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 27 Aug 2020 08:54:03 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 48D11DC603F684ED7B2A;
-        Thu, 27 Aug 2020 20:53:45 +0800 (CST)
-Received: from localhost (10.174.179.108) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Thu, 27 Aug 2020
- 20:53:38 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <rogerq@ti.com>, <tony@atomide.com>, <krzk@kernel.org>,
-        <ladis@linux-mips.org>, <bbrezillon@kernel.org>,
-        <peter.ujfalusi@ti.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH v3] memory: omap-gpmc: Fix build error without CONFIG_OF
-Date:   Thu, 27 Aug 2020 20:53:16 +0800
-Message-ID: <20200827125316.20780-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
-In-Reply-To: <20200826125919.22172-1-yuehaibing@huawei.com>
-References: <20200826125919.22172-1-yuehaibing@huawei.com>
+        id S1727955AbgH0NW1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Aug 2020 09:22:27 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:50636 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728014AbgH0NWX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Aug 2020 09:22:23 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 07RD0oGN084176;
+        Thu, 27 Aug 2020 08:00:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1598533250;
+        bh=bNdiejgmrP6UyoxidBCnn4mIur5XympzIClUiV4GOpI=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=b8mxLPPuz/qNstwFOEFuw9TyyfpFBYHln26sR0eUm3txSf4jqoADDhNjCPwN+SUYk
+         eHTbW63h9keDDONxlm20Pv3iQBclhrGa26WkupSWOb3jcFTsXE+3xGjKPifbeQ0jln
+         iKuYBWCNJl3LrEg3yaNW0JAlXSMuf+LjXouH1hLU=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07RD0o70124320;
+        Thu, 27 Aug 2020 08:00:50 -0500
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 27
+ Aug 2020 08:00:49 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 27 Aug 2020 08:00:49 -0500
+Received: from [10.250.227.175] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07RD0mS7108067;
+        Thu, 27 Aug 2020 08:00:48 -0500
+Subject: Re: [net v3 PATCH] net: ethernet: ti: cpsw_new: fix error handling in
+ cpsw_ndo_vlan_rx_kill_vid()
+To:     David Miller <davem@davemloft.net>
+CC:     <kuba@kernel.org>, <grygorii.strashko@ti.com>, <nsekhar@ti.com>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20200824170100.21319-1-m-karicheri2@ti.com>
+ <20200825.093603.2026695844604591106.davem@davemloft.net>
+From:   Murali Karicheri <m-karicheri2@ti.com>
+Message-ID: <5be2b575-238c-247f-db9a-95680984e26d@ti.com>
+Date:   Thu, 27 Aug 2020 09:00:48 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.108]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20200825.093603.2026695844604591106.davem@davemloft.net>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If CONFIG_OF is n, gcc fails:
+Hi Dave,
 
-drivers/memory/omap-gpmc.o: In function `gpmc_omap_onenand_set_timings':
-omap-gpmc.c:(.text+0x2a88): undefined reference to `gpmc_read_settings_dt'
+On 8/25/20 12:36 PM, David Miller wrote:
+> From: Murali Karicheri <m-karicheri2@ti.com>
+> Date: Mon, 24 Aug 2020 13:01:00 -0400
+> 
+>> +	ret = cpsw_ale_del_vlan(cpsw->ale, vid, 0);
+>> +	if (ret)
+>> +		dev_err(priv->dev, "%s: failed %d: ret %d\n",
+>> +			__func__, __LINE__, ret);
+>> +	ret = cpsw_ale_del_ucast(cpsw->ale, priv->mac_addr,
+>> +				 HOST_PORT_NUM, ALE_VLAN, vid);
+>> +	if (ret)
+>> +		dev_err(priv->dev, "%s: failed %d: ret %d\n",
+>> +			__func__, __LINE__, ret);
+>> +	ret = cpsw_ale_del_mcast(cpsw->ale, priv->ndev->broadcast,
+>> +				 0, ALE_VLAN, vid);
+>> +	if (ret)
+>> +		dev_err(priv->dev, "%s: failed %d: ret %d\n",
+>> +			__func__, __LINE__, ret);
+>>   	cpsw_ale_flush_multicast(cpsw->ale, ALE_PORT_HOST, vid);
+> 
+> These error messages are extremely unhelpful.  You're calling three
+> different functions, yet emitting basically the same __func__ for
+> each of those cases.  No user can send you a useful bug report
+> immediately if they just have func and line.
+> 
+> Please get rid of the "__func__" and "__line__" stuff completely, it's
+> never advisable to ever use that in my opinion.  Instead, describe
+> which delete operation failed, optionally with the error return.
+> 
+OK. I had considered your suggestion, but thought having a line number
+would be handy for a developer. Function name would be better. Will
+re-send with changes as you have suggested.
 
-Add gpmc_read_settings_dt() helper function, which zero the gpmc_settings
-so the caller doesn't proceed with random/invalid settings.
-
-Fixes: a758f50f10cf ("mtd: onenand: omap2: Configure driver from DT")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
-v3: zero gpmc_settings
-v2: add gpmc_read_settings_dt() stub
----
- drivers/memory/omap-gpmc.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index cd9e80748591..e026b4cd3612 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2310,6 +2310,10 @@ static void gpmc_probe_dt_children(struct platform_device *pdev)
- 	}
- }
- #else
-+void gpmc_read_settings_dt(struct device_node *np, struct gpmc_settings *p)
-+{
-+	memset(p, 0, sizeof(struct gpmc_settings));
-+}
- static int gpmc_probe_dt(struct platform_device *pdev)
- {
- 	return 0;
 -- 
-2.17.1
-
-
+Murali Karicheri
+Texas Instruments
