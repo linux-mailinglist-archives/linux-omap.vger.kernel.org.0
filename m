@@ -2,103 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 479BF2555E8
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Aug 2020 10:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40CD6255843
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Aug 2020 12:04:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728269AbgH1IBP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 Aug 2020 04:01:15 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:55362 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726825AbgH1IBO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Aug 2020 04:01:14 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 07S816o1002531;
-        Fri, 28 Aug 2020 03:01:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1598601666;
-        bh=Zzyzhv/OQz4cNObFcYrRq4lBDLY/NNdxY6FfGzwHF6w=;
-        h=Subject:To:References:From:Date:In-Reply-To;
-        b=B7nZqXpEi2vKISPyszqTsoXoA3ORDZsL1TGce2O+fB7l6YO+m52sj+eHcGrB8cRDu
-         76mYYd0lexFBFeoN/L4T7L1b7eKn5PUFgdQgxwYIGlpZLcd4XMyXmoTLwiirVuuBC4
-         m4XnMFLwpkS20QofU6siaQYbatCtsKWSzUfGqUwU=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 07S816qf060270
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 28 Aug 2020 03:01:06 -0500
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 28
- Aug 2020 03:01:06 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 28 Aug 2020 03:01:06 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07S812qd033416;
-        Fri, 28 Aug 2020 03:01:02 -0500
-Subject: Re: [PATCH 3/6] gpio: omap: Simplify with dev_err_probe()
-To:     Krzysztof Kozlowski <krzk@kernel.org>, Ray Jui <rjui@broadcom.com>,
+        id S1728966AbgH1KD4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 Aug 2020 06:03:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42816 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728269AbgH1KDy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Aug 2020 06:03:54 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A7A0C061264;
+        Fri, 28 Aug 2020 03:03:54 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id u128so409982pfb.6;
+        Fri, 28 Aug 2020 03:03:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JeATIG32mt8GW6hG8YQG7ME9WIX0ZVokl8LGrdLF2VI=;
+        b=npg/pMc4xABa6t0kSPLrj5t0jRwEpQAQYUmdQOPQPG6nINTTJP69y7uqI6mM/VpPxw
+         cYwVEFkyQ7quMqgaUMVLWeW+z1heNIuuVUg0LO2Yh8US7xawckT7OOo8gYFxeHNrrDO1
+         lYpQkCVocyE8tAEt2sZIz4RMKbIvC7khbR7gX9s2l9yQsr6iHWCysgEUqDQpWHGqc2Gq
+         aGLDUQj2JBpUGPzpZzp4/repGsJQbDsdIgWFVHpkH1yAbBdltOFaQtfPr74096y8mqXY
+         LPfh0ght00BoCZ7ujUc5gzR/x7AWjzC7pUN1TpLkvDfS0w4JVfAjpOnIRzVHrozs7t1Z
+         yV4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JeATIG32mt8GW6hG8YQG7ME9WIX0ZVokl8LGrdLF2VI=;
+        b=nHkFUTVFEOuET7Fb8n6NS7Is3HcB62Ye/wzBGKGVAgXbzeF3LQyMWXnkW5WWkqzO1h
+         P+K7yFYVqZWJLjb+x+nLa4hukShJYIA0tK6F9xLWMmnc2UdcgrbPhd1MVcIJE4/SU8N9
+         Ola0iLyftTZs1t3ofvVDIz2g16IhYjjl9qjKbne0OeCliYzFWVzCiAS7hf83ccQcRpPm
+         L6r/1GFHwy4SdS5G/TGGM/48huRlNULCD0EYAArXVSpYXXX73BNFktrkWKlxZcbYGaS+
+         8FS8yCkqoAzwr5lFFm6DVlRTSUZNTYM4P9QlRRmZHoi5FY03u7Il1NBKqB3vq0Zubeye
+         z6Cg==
+X-Gm-Message-State: AOAM533cXBTTNUPHatN9qxCx/u6H40x/IsEnJNSbXC0fUM7v/aqTSG/D
+        sjBaYF9NqhA5edqsSSQ/e+Iuh+D2kgpwmAdTfds=
+X-Google-Smtp-Source: ABdhPJxsTwYbt3QLI1AYzLLB4HUv6BawDn4RGcqcVV9H9EDxrPfXt+vJuJyh8mufFdOb+FW6DoXr6LBLNzKRIzpPV1g=
+X-Received: by 2002:a63:ec18:: with SMTP id j24mr677384pgh.74.1598609033963;
+ Fri, 28 Aug 2020 03:03:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200827200827.26462-1-krzk@kernel.org>
+In-Reply-To: <20200827200827.26462-1-krzk@kernel.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 28 Aug 2020 13:03:37 +0300
+Message-ID: <CAHp75Veu+EpM-OY7TOHfBg-HteAmN+vbSfqmkO-2O2-qA4VQTA@mail.gmail.com>
+Subject: Re: [PATCH 1/6] gpio: bcm-kona: Simplify with dev_err_probe()
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Ray Jui <rjui@broadcom.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Scott Branden <sbranden@broadcom.com>,
-        <bcm-kernel-feedback-list@broadcom.com>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
         Keerthy <j-keerthy@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
         Santosh Shilimkar <ssantosh@kernel.org>,
         Kevin Hilman <khilman@kernel.org>,
         Michal Simek <michal.simek@xilinx.com>,
-        <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20200827200827.26462-1-krzk@kernel.org>
- <20200827200827.26462-3-krzk@kernel.org>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <0013c2d6-6587-3646-35f2-3804fb5b244c@ti.com>
-Date:   Fri, 28 Aug 2020 11:01:00 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
-MIME-Version: 1.0
-In-Reply-To: <20200827200827.26462-3-krzk@kernel.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 27/08/2020 23:08, Krzysztof Kozlowski wrote:
+On Thu, Aug 27, 2020 at 11:09 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>
 > Common pattern of handling deferred probe can be simplified with
 > dev_err_probe().  Less code and also it prints the error value.
-> 
+>
+
+I believe you are doing this right (after we have discussed previous
+series and approaches).
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+for entire series (Linus!)
+
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > ---
->   drivers/gpio/gpio-omap.c | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-> index 7fbe0c9e1fc1..2dc12f4addbd 100644
-> --- a/drivers/gpio/gpio-omap.c
-> +++ b/drivers/gpio/gpio-omap.c
-> @@ -1394,10 +1394,7 @@ static int omap_gpio_probe(struct platform_device *pdev)
->   	if (bank->irq <= 0) {
->   		if (!bank->irq)
->   			bank->irq = -ENXIO;
-> -		if (bank->irq != -EPROBE_DEFER)
-> -			dev_err(dev,
-> -				"can't get irq resource ret=%d\n", bank->irq);
-> -		return bank->irq;
-> +		return dev_err_probe(dev, bank->irq, "can't get irq resource\n");
->   	}
->   
->   	bank->chip.parent = dev;
-> 
+>  drivers/gpio/gpio-bcm-kona.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
+> index cf3687a7925f..1e6b427f2c4a 100644
+> --- a/drivers/gpio/gpio-bcm-kona.c
+> +++ b/drivers/gpio/gpio-bcm-kona.c
+> @@ -590,10 +590,7 @@ static int bcm_kona_gpio_probe(struct platform_device *pdev)
+>                 dev_err(dev, "Couldn't determine # GPIO banks\n");
+>                 return -ENOENT;
+>         } else if (ret < 0) {
+> -               if (ret != -EPROBE_DEFER)
+> -                       dev_err(dev, "Couldn't determine GPIO banks: (%pe)\n",
+> -                               ERR_PTR(ret));
+> -               return ret;
+> +               return dev_err_probe(dev, ret, "Couldn't determine GPIO banks\n");
+>         }
+>         kona_gpio->num_bank = ret;
+>
+> --
+> 2.17.1
+>
 
-Acked-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
 -- 
-Best regards,
-grygorii
+With Best Regards,
+Andy Shevchenko
