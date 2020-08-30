@@ -2,127 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B409A256A97
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Aug 2020 00:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1928F256F85
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Aug 2020 19:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728448AbgH2WMB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 29 Aug 2020 18:12:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39292 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728462AbgH2WLW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 29 Aug 2020 18:11:22 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE8AC06123A;
-        Sat, 29 Aug 2020 15:11:22 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id t6so2659923ljk.9;
-        Sat, 29 Aug 2020 15:11:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=eqKLFOejHvPoCA5PJskfbUfjzApOxehyRsmGMj4+oiw=;
-        b=lufC50cLUeKCGVIm35aFlQr/7cb4UxaTGnxv9JCIlFcT5tGTkCFCKeqAJLzcdDkmca
-         3PjP7lwVAF9GfyFizN7wu0+z+nR7+gl3BGvr9FedbJZXy7ILvolI7u4q2ZjG5X7YODPz
-         a2sqQRoUJKrePbQVJz5+IL3CLXgEdt7f1CLQ4s2zH4FbZYJeJQbTzRzcr/5B53rjZ0Sh
-         +PoqJpwv7N7QWqcXF31HtTqLtDHgbbP2ifuivBUbd271CSTkTBW9KihHQjBoBNPARUe4
-         y4xDHWf8vS7x9W5ulAgznr9SlkwbK6I6ngfnKjV66X62dk96+Wb63oMUYPR0ZfWY7G3P
-         TelA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=eqKLFOejHvPoCA5PJskfbUfjzApOxehyRsmGMj4+oiw=;
-        b=jDFOZ5aDkhunD0ISEndhmMOXBlK5WL9ZJdcWNgyavi9dAneeCuaVFdJYWdYIgqKLlZ
-         U2ux5ZVGdQ50yjgPOdVjRGN5xACsg1jORkzOUIp3FnMoSq8dl+mJTUoWamQlrDju68p1
-         Jy8yxwEi27bCwz3FkRvIZw9vOZ+SJibSVWa7zUeeIXHCWAQ+PKPclZ7W6cVa/z8grvA0
-         G2AZ4ohrGuSHSUzsL74Pqpm/AZ1sSlglCptU6e1AnfmjhhQPuzw/3CP/l4JisveLml0y
-         BneAYUOEAl4RUfzpihRnChrYxjXEptVqV5t/85oLiarmb48lJhJEMTRj7aWcTVWhq//J
-         DhyQ==
-X-Gm-Message-State: AOAM532fF9j62o3Udrjwygii+c4qQzxxplKSyt0UrZCKZKaF+IYiYs0L
-        Lgsykfy4V/QZBSJzJWCOXz725I6TqFo=
-X-Google-Smtp-Source: ABdhPJzUp75kygHc38shkqJ09g7NBALp4ZTb/A+r5mwYVb5QsH+myXFZB+7zujBjyT3JO8oVl+XNpA==
-X-Received: by 2002:a2e:b5b3:: with SMTP id f19mr2100455ljn.210.1598739080913;
-        Sat, 29 Aug 2020 15:11:20 -0700 (PDT)
-Received: from localhost.localdomain (h-82-196-111-59.NA.cust.bahnhof.se. [82.196.111.59])
-        by smtp.gmail.com with ESMTPSA id 4sm697546ljq.92.2020.08.29.15.11.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2020 15:11:20 -0700 (PDT)
-From:   Rikard Falkeborn <rikard.falkeborn@gmail.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
-        Rikard Falkeborn <rikard.falkeborn@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Subject: [PATCH 8/8] regulator: tps65910: Constify static regulator_ops
-Date:   Sun, 30 Aug 2020 00:11:04 +0200
-Message-Id: <20200829221104.20870-9-rikard.falkeborn@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200829221104.20870-1-rikard.falkeborn@gmail.com>
-References: <20200829221104.20870-1-rikard.falkeborn@gmail.com>
+        id S1725934AbgH3ReT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 30 Aug 2020 13:34:19 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:44776 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725825AbgH3ReS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 30 Aug 2020 13:34:18 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 07UHYDMn100948;
+        Sun, 30 Aug 2020 12:34:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1598808853;
+        bh=MoOFmYEOA8VyE/6RF9dj7w1Zgs0iRQPtNiGfTNAjTus=;
+        h=From:To:CC:Subject:Date;
+        b=vQrXe4xwYsJoPbPY+2RvWr8BxCCfXtCksTj5YPfxNlgCMBVxkvxnJq7mqwZQdmS+X
+         kFRl+/tguysr/G3StDzebQwR3R7qATRP/KooU7DXMTSCNftJPkegTsdFDBXKBhdK5n
+         2VfMNXZ0+p4iFwLsp4lgmHdJKW43BRqljhmoiwlw=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 07UHYD3Z024020
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 30 Aug 2020 12:34:13 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Sun, 30
+ Aug 2020 12:34:10 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Sun, 30 Aug 2020 12:34:10 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07UHY9NO109025;
+        Sun, 30 Aug 2020 12:34:10 -0500
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     Tony Lindgren <tony@atomide.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH] ARM: omap2plus_defconfig: enable generic net options
+Date:   Sun, 30 Aug 2020 20:34:01 +0300
+Message-ID: <20200830173401.14825-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The only usage of these is to assign their address to the ops field in
-the regulator_desc struct, which is a const pointer. Make them const to
-allow the compiler to put them in read-only memory.
+Enable set of generic, widely used, networking  options:
+- basic QoS, filter and actions
+- VLAN support
+- Bridge support
+Use "M" build option where possible.
 
-Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 ---
- drivers/regulator/tps65910-regulator.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/configs/omap2plus_defconfig | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/regulator/tps65910-regulator.c b/drivers/regulator/tps65910-regulator.c
-index 4eb5b19d2344..faa5b3538167 100644
---- a/drivers/regulator/tps65910-regulator.c
-+++ b/drivers/regulator/tps65910-regulator.c
-@@ -757,7 +757,7 @@ static int tps65911_list_voltage(struct regulator_dev *dev, unsigned selector)
- }
- 
- /* Regulator ops (except VRTC) */
--static struct regulator_ops tps65910_ops_dcdc = {
-+static const struct regulator_ops tps65910_ops_dcdc = {
- 	.is_enabled		= regulator_is_enabled_regmap,
- 	.enable			= regulator_enable_regmap,
- 	.disable		= regulator_disable_regmap,
-@@ -770,7 +770,7 @@ static struct regulator_ops tps65910_ops_dcdc = {
- 	.map_voltage		= regulator_map_voltage_ascend,
- };
- 
--static struct regulator_ops tps65910_ops_vdd3 = {
-+static const struct regulator_ops tps65910_ops_vdd3 = {
- 	.is_enabled		= regulator_is_enabled_regmap,
- 	.enable			= regulator_enable_regmap,
- 	.disable		= regulator_disable_regmap,
-@@ -781,7 +781,7 @@ static struct regulator_ops tps65910_ops_vdd3 = {
- 	.map_voltage		= regulator_map_voltage_ascend,
- };
- 
--static struct regulator_ops tps65910_ops_vbb = {
-+static const struct regulator_ops tps65910_ops_vbb = {
- 	.is_enabled		= regulator_is_enabled_regmap,
- 	.enable			= regulator_enable_regmap,
- 	.disable		= regulator_disable_regmap,
-@@ -793,7 +793,7 @@ static struct regulator_ops tps65910_ops_vbb = {
- 	.map_voltage		= regulator_map_voltage_iterate,
- };
- 
--static struct regulator_ops tps65910_ops = {
-+static const struct regulator_ops tps65910_ops = {
- 	.is_enabled		= regulator_is_enabled_regmap,
- 	.enable			= regulator_enable_regmap,
- 	.disable		= regulator_disable_regmap,
-@@ -805,7 +805,7 @@ static struct regulator_ops tps65910_ops = {
- 	.map_voltage		= regulator_map_voltage_ascend,
- };
- 
--static struct regulator_ops tps65911_ops = {
-+static const struct regulator_ops tps65911_ops = {
- 	.is_enabled		= regulator_is_enabled_regmap,
- 	.enable			= regulator_enable_regmap,
- 	.disable		= regulator_disable_regmap,
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index c05e041751f7..74aa66e8f1ab 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -95,7 +95,18 @@ CONFIG_IP_PNP_DHCP=y
+ CONFIG_IP_PNP_BOOTP=y
+ CONFIG_IP_PNP_RARP=y
+ CONFIG_NETFILTER=y
++CONFIG_BRIDGE=m
++CONFIG_BRIDGE_VLAN_FILTERING=y
++CONFIG_VLAN_8021Q=m
+ CONFIG_PHONET=m
++CONFIG_NET_SCHED=y
++CONFIG_NET_SCH_INGRESS=m
++CONFIG_NET_CLS_U32=m
++CONFIG_NET_CLS_FLOWER=m
++CONFIG_NET_CLS_MATCHALL=m
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=m
++CONFIG_NET_ACT_GACT=m
+ CONFIG_NET_SWITCHDEV=y
+ CONFIG_CAN=m
+ CONFIG_CAN_C_CAN=m
 -- 
-2.28.0
+2.17.1
 
