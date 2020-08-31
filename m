@@ -2,94 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE0AA257A7F
-	for <lists+linux-omap@lfdr.de>; Mon, 31 Aug 2020 15:33:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91BA1257BE7
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Aug 2020 17:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727053AbgHaNdV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 31 Aug 2020 09:33:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35956 "EHLO
+        id S1728213AbgHaPJw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 31 Aug 2020 11:09:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726928AbgHaN2D (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Aug 2020 09:28:03 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E369AC0619EF
-        for <linux-omap@vger.kernel.org>; Mon, 31 Aug 2020 06:26:40 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id i10so6712791ljn.2
-        for <linux-omap@vger.kernel.org>; Mon, 31 Aug 2020 06:26:40 -0700 (PDT)
+        with ESMTP id S1728129AbgHaPJr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 Aug 2020 11:09:47 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32BCC061573
+        for <linux-omap@vger.kernel.org>; Mon, 31 Aug 2020 08:09:46 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id z17so3673534lfi.12
+        for <linux-omap@vger.kernel.org>; Mon, 31 Aug 2020 08:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=kc8b/w+wOTtF7zLYRjvrR1jPT/ZK7Vk2mKpv3jAxE9VT67C9fVlpfW9Y+phL1vuGxq
-         Hb3x1FpXZuW578gvCk5O04B73B4LZoP7kKsmw9UxgkoXE6gTVKzovNHYGFhIYhijFRil
-         nl0JSzi7hR74DeD8nMnyt6lcP4qNdUY/Lc8F+58ZXu/CzzOM7yUQDtVLUEwdsGkyt5VA
-         d9qEgMSd8orYp0jlQehk7NI5qh7PWtCoIKmsR98GatwAE0LmWdvtpQ20BCG/6na9SXJC
-         dRhbpFzqkzfoYJgpg/F8CGs3itwyW4e/YfM/kFooNAjpi/4QSH5iWMSkHbbwXEQIlTwE
-         oN6Q==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=m+ousw4fXr79+y3y64jWSrgKPSzonc7IxBJ1mGORPXc=;
+        b=oxU1FAWkMAdlZNofP3Lz0EkAx+ley9wg9Sx9jjQQ4URQ+XnKMUyalJ9n4R1ITqQNY8
+         zH8oWA2z44OCkJtwldUGo4AF8wC9aAadul21JlM4bgVWsrGzqhRlrf1ptBhtWXZMi3Eq
+         OFV+dHajvGnbRLrgAX3DLD77kxYX2E1teXA/WpMbtfFS9VMBn312R9eiGCCaboCjr+ki
+         e2UzaAk6tROAdQputt3xy4WQoiqqRDRav6pQ4Q2VNX3bBRAHPZZwelsgKvatj+VpX9+C
+         kalDx6pnXBODp/P56GV5O9gwDFxXzsIKUrwNlzMqErWq4pHLuhHitVorXFJpCepq3c0f
+         sqcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=SQPklrxSCdlG7xYVhzoCD0GZK6+SBWiUQilkVz9TxNgxm3q7xUKeJZ6PKBBqy+rZeM
-         DT/HYIH8LY41S6/smV1kY870HEEH31WFwx2zObAKtvOl1Nz/5AFMM8N29F8KpPIyHqN7
-         xpkxsA4wy/LrLHPIfuWnirt7IPOn33LYbopdaHTKIXvOT2NPbvNksbgNRts/j3UTH1u7
-         HYW56HWKX+8vaDt0hWOKaYJrwgDiRVL4mPn9n83TCsfMpzWIBTxBC9FqGhBYJshjJ2A7
-         zYgROD0lLyjR8eXzVVtADZBCBPoL0YjzPDkGW33bcushyAPrLg04iRTbMikINKT4CI6W
-         Bzag==
-X-Gm-Message-State: AOAM5329a+gankro7PLeXZqHqCh/eqNOBA6nioBwhcrjFmmP9Doaj8DL
-        VRnNG9BhItSBpYBDDUUCbWmerVjwiDZqCMfE4l4=
-X-Google-Smtp-Source: ABdhPJwwxnLJ+boQ5AWjXxG674YSv8HYua8cHn0ffhUvKkWm/U6sy8uO7QhVk0w3Z6JDIeHHrXTyb5x5hxbubByOKbo=
-X-Received: by 2002:a2e:1511:: with SMTP id s17mr724722ljd.81.1598880399293;
- Mon, 31 Aug 2020 06:26:39 -0700 (PDT)
-MIME-Version: 1.0
-Reply-To: marie_avis12@yahoo.com
-Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:38
- -0700 (PDT)
-From:   Miss Maris Avis <marie.avis11@gmail.com>
-Date:   Mon, 31 Aug 2020 13:26:38 +0000
-X-Google-Sender-Auth: FfeQe1Uhq_bzJWJ1eFQ7t2v5C-w
-Message-ID: <CADTVshP+AqENJRYaXa3w3RXtbFi9dvwrKoG-vr=u5b93NO3RnQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=m+ousw4fXr79+y3y64jWSrgKPSzonc7IxBJ1mGORPXc=;
+        b=NuF47dzX7odrnSwpcamDvReqoA6uEU8cUuk+jmGT/8kAczFpmHQmDhM1wrGBcbex7n
+         bwuC3cT2EAovIlvZrxB3bOHYdsx8lMo5fvD4giArqjlYNtdpfRBroqkGYtz3DEPHEy25
+         wXoZnPQqvdUC/ZkNl6vj2o5JNn28HbxXx3gzFPqHlRNWJ1/okZ8AjDfiDMxYK4WvF1lL
+         OdS/LJ2DuGZqOw91tbHxsvLpNGnjkcT5UYMowid9mQ91YEB7hvumoiCqZcrH44s7Zg7N
+         6C+UeTwaeVd0d5VCwskJs7qa2fqW6PUQ34ySH7L+xS0HCG0Yv30Q2Q5jRSA7WnAJs/zM
+         55ZA==
+X-Gm-Message-State: AOAM532rBolO/6OK0MuZ2VwoVHOzGFAXsut3Gnl2M2WMod3eQMwHMAvs
+        IIjRzLR82pJ81HEUHXaT8Hjbvj424NDIbw==
+X-Google-Smtp-Source: ABdhPJzdInn/v+/RHibWaNevmUbn23GSxa4f5Tmg5SIRq9zj/nOaSGRUihEyUSP8g9u+sdBwql02tA==
+X-Received: by 2002:ac2:42c2:: with SMTP id n2mr894835lfl.117.1598886584936;
+        Mon, 31 Aug 2020 08:09:44 -0700 (PDT)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id w6sm2034388lfn.73.2020.08.31.08.09.42
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 31 Aug 2020 08:09:43 -0700 (PDT)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
+        s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, robh+dt@kernel.org,
+        lee.jones@linaro.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
+        praneeth@ti.com
+Subject: [RESEND PATCH v5 0/5] Add TI PRUSS Local Interrupt Controller IRQChip driver
+Date:   Mon, 31 Aug 2020 17:09:13 +0200
+Message-Id: <1598886558-16546-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-My Dear,
+Hi All,
 
-My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
-Father was dealing in Cocoa and Timber in this country before his
-death,  It is my pleasure to contact you for a business venture which
-I intend to establish in your country. Though I have not met with you
-before but I believe one has to risk confiding before you can succeed
-sometimes in life.
+The following is a v4 version of the series [1-4] that adds an IRQChip
+driver for the local interrupt controller present within a Programmable
+Real-Time Unit and Industrial Communication Subsystem (PRU-ICSS) present on a
+number of TI SoCs including OMAP architecture based AM335x, AM437x, AM57xx SoCs,
+Keystone 2 architecture based 66AK2G SoCs, Davinci architecture based
+OMAP-L138/DA850 SoCs and the latest K3 architecture based AM65x and J721E SoCs.
+Please see the v1 cover-letter [1] for details about the features of this
+interrupt controller.  More details can be found in any of the supported SoC
+TRMs.  Eg: Chapter 30.1.6 of AM5728 TRM [5]
 
-I can confide in you for my brighter future since you are a human
-being like me. There is this huge amount of Ten Million five hundred
-thousand United States dollars. ($10.500.000.00) which my late Father
-kept for me in a suspense account with one of the bank here in Abidjan
-Cote d'Ivoire before he was assassinated by unknown persons, Now I
-have decided to invest these money in your country or anywhere safe
-enough for me.
+Please see the individual patches for exact changes in each patch, following are
+the main changes from v4:
+ - Update dt-binding description (no functional changes).
+ - Use more meaningful define/variable names, drop redundant error messages, fix
+   error handling in case of irq == 0 (patch #2).
 
-I want you to help me claim this fund from the bank and have it
-transfer into your personal account in your country for investment
-purposes in your country in these areas:
+[1] https://patchwork.kernel.org/cover/11034561/
+[2] https://patchwork.kernel.org/cover/11069749/
+[3] https://patchwork.kernel.org/cover/11639055/
+[4] https://patchwork.kernel.org/cover/11688727/
+[5] http://www.ti.com/lit/pdf/spruhz6
 
-1). Telecommunication
-2). The transport Industry
-3). Five Star Hotel
-4). Tourism
-5). Real Estate
+Best regards
+Grzegorz
 
-If you can be of assistance to me I will be pleased to offer you 20%
-of the total fund.
+David Lechner (1):
+  irqchip/irq-pruss-intc: Implement irq_{get,set}_irqchip_state ops
 
-I await your soonest response.
+Grzegorz Jaszczyk (1):
+  irqchip/irq-pruss-intc: Add a PRUSS irqchip driver for PRUSS
+    interrupts
 
-Respectfully yours,
-Miss Marie Evis
-Tel: +225597438528
+Suman Anna (3):
+  dt-bindings: irqchip: Add PRU-ICSS interrupt controller bindings
+  irqchip/irq-pruss-intc: Add logic for handling reserved interrupts
+  irqchip/irq-pruss-intc: Add support for ICSSG INTC on K3 SoCs
+
+ .../interrupt-controller/ti,pruss-intc.yaml        | 158 +++++
+ drivers/irqchip/Kconfig                            |  10 +
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-pruss-intc.c                   | 658 +++++++++++++++++++++
+ 4 files changed, 827 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+ create mode 100644 drivers/irqchip/irq-pruss-intc.c
+
+-- 
+2.7.4
+
