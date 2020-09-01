@@ -2,28 +2,28 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC5E62588BB
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Sep 2020 09:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98C5F2588C7
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Sep 2020 09:10:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726044AbgIAHIc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Sep 2020 03:08:32 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:10744 "EHLO huawei.com"
+        id S1726310AbgIAHKC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Sep 2020 03:10:02 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:60368 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726006AbgIAHIc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 1 Sep 2020 03:08:32 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 20D41AA7CFA4EA010863;
-        Tue,  1 Sep 2020 15:08:30 +0800 (CST)
-Received: from localhost (10.174.179.108) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Tue, 1 Sep 2020
- 15:08:23 +0800
+        id S1726006AbgIAHKC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 1 Sep 2020 03:10:02 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 3866C7C57B1C7193F6F2;
+        Tue,  1 Sep 2020 15:10:00 +0800 (CST)
+Received: from localhost (10.174.179.108) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Tue, 1 Sep 2020
+ 15:09:52 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
 To:     <rogerq@ti.com>, <tony@atomide.com>, <krzk@kernel.org>
 CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] memory: omap-gpmc: Fix -Wunused-function warnings
-Date:   Tue, 1 Sep 2020 15:07:53 +0800
-Message-ID: <20200901070753.24328-1-yuehaibing@huawei.com>
+Subject: [PATCH v2 -next] memory: omap-gpmc: Fix -Wunused-function warnings
+Date:   Tue, 1 Sep 2020 15:09:45 +0800
+Message-ID: <20200901070945.23792-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.10.2.windows.1
 In-Reply-To: <20200901035642.22772-1-yuehaibing@huawei.com>
 References: <20200901035642.22772-1-yuehaibing@huawei.com>
@@ -37,6 +37,8 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+If CONFIG_OF is not set, make W=1 warns:
+
 drivers/memory/omap-gpmc.c:987:12: warning: ‘gpmc_cs_remap’ defined but not used [-Wunused-function]
  static int gpmc_cs_remap(int cs, u32 base)
             ^~~~~~~~~~~~~
@@ -49,6 +51,8 @@ drivers/memory/omap-gpmc.c:919:13: warning: ‘gpmc_cs_set_name’ defined but n
 Make them as  __maybe_unused to fix this.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+v2: update commit log
 ---
  drivers/memory/omap-gpmc.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
