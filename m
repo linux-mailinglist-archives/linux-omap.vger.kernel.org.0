@@ -2,82 +2,176 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E81AC25AEDC
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Sep 2020 17:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79BE825BD21
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Sep 2020 10:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728305AbgIBPaF convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Wed, 2 Sep 2020 11:30:05 -0400
-Received: from mail-ej1-f65.google.com ([209.85.218.65]:41311 "EHLO
-        mail-ej1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727894AbgIBP3j (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Sep 2020 11:29:39 -0400
-Received: by mail-ej1-f65.google.com with SMTP id lo4so7240817ejb.8;
-        Wed, 02 Sep 2020 08:29:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=ehqFNeLfYlTgzhjXsHjpxPHQB/qAgGP+bEZCpgojj5E=;
-        b=IkRqLdZBkNQ4pFkAZ2mhpLhO+gCpJ0bTqpJyf3XivXYTCuj1I2TOlX99pVs5H9jaN8
-         e9zyhwIyzh72MHaqSZ7g/gwNMliFBvYbEW7RWzVGwWEygyMSSJqwZbCWctGufcTK3oAq
-         oVIhpWSgTsONk3msd31Mb/Xfj1FXYETcKh0aPkdeS4e2KNdO3K2qo26iDTTj9H8xEzz0
-         wWkmnOLEAu1G9kOMJAgY6hPzv4/tlpVHBCeUFQMIKerJfNHn/2M2Hw8UP8f22bjHalqW
-         ijt1N+XKwOu9lWdOUQ1bsiutwuM5jtBpRsf+/KR2D655LWryIHRocfQ5iBuHn/GTYz8G
-         wHnA==
-X-Gm-Message-State: AOAM532Iqly3V4TLI7D1AXXa/i0ZMvmwk40ZaOo39cqDqV48Sdn5DqRp
-        rDBHGZ+UmpkTEDGS3rTRplamOk4gmQnBrQ==
-X-Google-Smtp-Source: ABdhPJwUN0BtGTTfUP4Xy44jcruznJYTW75f8W7prpQVrUstD60vT1TKImhOHy/NbwctTiBfW/3HTg==
-X-Received: by 2002:a17:907:270f:: with SMTP id w15mr562515ejk.141.1599060575101;
-        Wed, 02 Sep 2020 08:29:35 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.106])
-        by smtp.googlemail.com with ESMTPSA id r15sm4351182edv.94.2020.09.02.08.29.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 02 Sep 2020 08:29:34 -0700 (PDT)
-Date:   Wed, 2 Sep 2020 17:29:32 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     rogerq@ti.com, tony@atomide.com, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 -next] memory: omap-gpmc: Fix -Wunused-function
- warnings
-Message-ID: <20200902152932.GA20369@kozik-lap>
-References: <20200901035642.22772-1-yuehaibing@huawei.com>
- <20200901112832.3084-1-yuehaibing@huawei.com>
+        id S1726025AbgICI0I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Sep 2020 04:26:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59260 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725984AbgICI0H (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 3 Sep 2020 04:26:07 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AA5B420767;
+        Thu,  3 Sep 2020 08:26:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599121566;
+        bh=GvZkOC+BPPTL+XcUgMkplQGWuZ8I+5+/ZHbskGgUnBU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=mhwDCr0SNhzZErsLcrf769vbGcVDe+PUxzIm7TCOPMRcnDUJSlGYz42VVtRVjKj76
+         rDZ5KlhHsCfkPWWbyNO4Qz0Y3PPT+iTlqZpyy+HlkJOj95jTk7o7lfkVg6C3A0jA0S
+         1aAo5Vlgznh2dUyTbR0uuWUZR2O6S/SJE3ur6NvM=
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <maz@kernel.org>)
+        id 1kDkZJ-008puc-1G; Thu, 03 Sep 2020 09:26:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20200901112832.3084-1-yuehaibing@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Thu, 03 Sep 2020 09:26:04 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Mark Brown <broonie@kernel.org>, Lee Jones <lee.jones@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        David Lechner <david@lechnology.com>,
+        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Roger Quadros <rogerq@ti.com>, kernel-team@android.com
+Subject: Re: [RESEND PATCH v2] mfd: syscon: Use a unique name with
+ regmap_config
+In-Reply-To: <ef1931eb-5677-d92c-732d-b67b5263425d@ti.com>
+References: <20200727211008.24225-1-s-anna@ti.com>
+ <0c1feaf91b9d285c1bded488437705da@misterjones.org>
+ <74bc1f9f-cc48-cec9-85f4-3376b66b40fc@ti.com>
+ <78b465b080772b6ba867e39a623c2310@kernel.org>
+ <ef1931eb-5677-d92c-732d-b67b5263425d@ti.com>
+User-Agent: Roundcube Webmail/1.4.8
+Message-ID: <0d43f357983711fcffce7023ad115d13@kernel.org>
+X-Sender: maz@kernel.org
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: s-anna@ti.com, broonie@kernel.org, lee.jones@linaro.org, arnd@arndb.de, grzegorz.jaszczyk@linaro.org, david@lechnology.com, tony@atomide.com, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, rogerq@ti.com, kernel-team@android.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Sep 01, 2020 at 07:28:32PM +0800, YueHaibing wrote:
-> If CONFIG_OF is not set, make W=1 warns:
+On 2020-08-27 21:32, Suman Anna wrote:
+> Hi Marc,
 > 
-> drivers/memory/omap-gpmc.c:987:12: warning: ‘gpmc_cs_remap’ defined but not used [-Wunused-function]
->  static int gpmc_cs_remap(int cs, u32 base)
->             ^~~~~~~~~~~~~
-> drivers/memory/omap-gpmc.c:926:20: warning: ‘gpmc_cs_get_name’ defined but not used [-Wunused-function]
->  static const char *gpmc_cs_get_name(int cs)
->                     ^~~~~~~~~~~~~~~~
-> drivers/memory/omap-gpmc.c:919:13: warning: ‘gpmc_cs_set_name’ defined but not used [-Wunused-function]
->  static void gpmc_cs_set_name(int cs, const char *name)
->              ^~~~~~~~~~~~~~~~
-> Move them to #ifdef CONFIG_OF block to fix this.
+> + Mark Brown
 > 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
-> v3: move the functions to #ifdef block
-> v2: update commit log
-> ---
->  drivers/memory/omap-gpmc.c | 114 ++++++++++++++++++-------------------
+> On 8/27/20 3:06 PM, Marc Zyngier wrote:
+>> Hi Suman,
+>> 
+>> On 2020-08-27 19:28, Suman Anna wrote:
+>>> Hi Marc,
+>>> 
+>>> On 8/27/20 9:46 AM, Marc Zyngier wrote:
 
-Thanks, applied.
+[...]
 
-Best regards,
-Krzysztof
+>>>> This patch triggers some illegal memory accesses when debugfs is
+>>>> enabled, as regmap does rely on config->name to be persistent
+>>>> when the debugfs registration is deferred via 
+>>>> regmap_debugfs_early_list
+>>>> (__regmap_init() -> regmap_attach_dev() -> 
+>>>> regmap_debugfs_init()...),
+>>>> leading to a KASAN splat on demand.
+>>>> 
+>>> 
+>>> Thanks, I missed the subtlety around the debugfs registration.
+>>> 
+>>>> I came up with the following patch that solves the issue for me.
+>>>> 
+>>>> Thanks,
+>>>> 
+>>>>         M.
+>>>> 
+>>>> From fd3f5f2bf72df53be18d13914fe349a34f81f16b Mon Sep 17 00:00:00 
+>>>> 2001
+>>>> From: Marc Zyngier <maz@kernel.org>
+>>>> Date: Thu, 27 Aug 2020 14:45:34 +0100
+>>>> Subject: [PATCH] mfd: syscon: Don't free allocated name for 
+>>>> regmap_config
+>>>> 
+>>>> The name allocated for the regmap_config structure is freed
+>>>> pretty early, right after the registration of the MMIO region.
+>>>> 
+>>>> Unfortunately, that doesn't follow the life cycle that debugfs
+>>>> expects, as it can access the name field long after the free
+>>>> has occured.
+>>>> 
+>>>> Move the free on the error path, and keep it forever otherwise.
+>>> 
+>>> Hmm, this is exactly what I was trying to avoid. The regmap_init does 
+>>> duplicate
+>>> the name into map->name if config->name is given, and the regmap 
+>>> debugfs makes
+>>> another copy of its own into debugfs_name when actually registered. 
+>>> If the rules
+>>> for regmap_init is that the config->name should be persistent, then I 
+>>> guess we
+>>> have no choice but to go with the below fix.
+>>> 
+>>> Does something like below help?
+>>> 
+>>> diff --git a/drivers/base/regmap/regmap.c 
+>>> b/drivers/base/regmap/regmap.c
+>>> index e93700af7e6e..96d8a0161c89 100644
+>>> --- a/drivers/base/regmap/regmap.c
+>>> +++ b/drivers/base/regmap/regmap.c
+>>> @@ -1137,7 +1137,7 @@ struct regmap *__regmap_init(struct device 
+>>> *dev,
+>>>                 if (ret != 0)
+>>>                         goto err_regcache;
+>>>         } else {
+>>> -               regmap_debugfs_init(map, config->name);
+>>> +               regmap_debugfs_init(map, map->name);
+>>> 
+>>> But there are couple of other places in regmap code that uses 
+>>> config->name, but
+>>> those won't be exercised with the syscon code.
+>> 
+>> Is config->name always the same as map->name? If so, why don't you 
+>> just
+>> pass map once and for all? Is the lifetime of map->name the same as
+>> that of config->name?
+> 
+> map->name is created (kstrdup_const) from config->name if not NULL, so 
+> above
+> replacement should be exactly equivalent, map is filled in 
+> _regmap_init. But it
+> does make the regmap_debugfs_init callsites in the file look 
+> dissimilar.
+> 
+>> 
+>> My worry with this approach is that we start changing stuff in a rush,
+>> and this would IMHO deserve a thorough investigation of whether this
+>> change is actually safe.
+>> 
+>> I'd rather take the safe approach of either keeping the memory around
+>> until we clearly understand what the implications are (and probably
+>> this should involve the regmap maintainer), or to revert this patch
+>> until we figure out the actual life cycle of the various names.
+> 
+> Yeah, agreed. Let's see what Mark suggests.
+> 
+> Mark,
+> Can you clarify the lifecycle expectations on the config->name and do 
+> you have
+> any suggestions here?
 
+Have we reached a conclusion here? Can we get a fix in mainline?
+
+Thanks,
+
+         M.
+-- 
+Jazz is not dead. It just smells funny...
