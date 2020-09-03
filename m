@@ -2,81 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23DB325C60D
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Sep 2020 18:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4CDF25C8E2
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Sep 2020 20:42:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728401AbgICQET (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Sep 2020 12:04:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60756 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727065AbgICQET (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 3 Sep 2020 12:04:19 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 436B720829;
-        Thu,  3 Sep 2020 16:04:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599149058;
-        bh=GTA7nLGOuRGnaYqMiBhQJcR754KpBuAkgjzerzCpcWg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KmAYC9Umq1PjHaDgPe+K/fS3MPk+4Pe+PVCqDtaEaBDS5L6h4t8tzu2euja/fMWDF
-         xzSJgUpu5KlnkxlBLH1moCGPXfKCfZXMonYF1PFGZ16qCvQzZDDv7gcAlqZ+ZXctOf
-         triNkoo0PaQetAiFiB/g+98Xv9ItQlT3v0VtQHxs=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1kDrii-008w85-JK; Thu, 03 Sep 2020 17:04:16 +0100
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 03 Sep 2020 17:04:16 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>, Lee Jones <lee.jones@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        David Lechner <david@lechnology.com>,
-        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
+        id S1729169AbgICSmC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Sep 2020 14:42:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46882 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729149AbgICSmB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Sep 2020 14:42:01 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E220C061244
+        for <linux-omap@vger.kernel.org>; Thu,  3 Sep 2020 11:42:01 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id w14so4989485ljj.4
+        for <linux-omap@vger.kernel.org>; Thu, 03 Sep 2020 11:42:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=ojv6Zk70N0pbknpw71ulfKg+oLfuRBwxeCEgVk52nEg=;
+        b=PmgHUg7YwZYRfk8fy/b0qtwKor1VLNxaFACT9pq1qIzXr2izp251+LS8lUqZSW7KL4
+         5nwmyMNkpkK3MOGxCBuG5EOMPLbBC6i06CLYfIFGAUxlxB7PA6LhjSIhAxeIQj5HcP1L
+         TQVChQztEpkR+z9iYfObgEE2kwzmqBt6IbYh/nrWhls/JIl0a1LTZ3Squ09s4yCSDmCs
+         H9++MGcmnALDUa7TrAXiPOHq/rwYV1dylFsbvi3MxWg1umXtYNUXKBj32uWGeenwVs/+
+         TS8h4wSP606ZJLXugzKPGigTVTQdOBCu+R0Y1eNP6XzyZLo9dDFFZ4w9/eyQnpSDvnJg
+         mWOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=ojv6Zk70N0pbknpw71ulfKg+oLfuRBwxeCEgVk52nEg=;
+        b=UrTs2GKUg4gsSEw6ZTCGQle6JXGqv5osmWSJtS5YFG5HBG9GoYv33IKqpV5uTNKlUB
+         VL34OX0yk3sw0d45cculR45dXyK4T9Us/NKxng5rRu2PCNNTciVLmGoAjapUF8lePiJy
+         jzBuYIxSkn2m3wANVj04g930ts0jw3L92xcS85mJ5+deDXfmhIh1nFc4T+G5W3IfAwHE
+         OJ3ZH4d5XEoUYfppyDpRk4cI2FhdDEFzb1hQoxiHWckVp/FMBiZFD4DcWfEVvNzJz6Gg
+         wEeHxW6FvXDnAjrNX8G/asfqZLH+X8zupcCat/W5OvGqe6EHZneWn6Fh7b8Ei4GJjMLG
+         pV4w==
+X-Gm-Message-State: AOAM532I184oXehsFS5A1+2Aa04Wi1Ver11jE2qxYOzpDVTCWJ/BOnYP
+        anbm5usNte7GH/fyPoPIkxYVFw==
+X-Google-Smtp-Source: ABdhPJwFpQwo6BynYN2iRFXq6SxYV8l/szsBtAdT1FFMfbaNsMBXqPNhU6TRTeGGcR9y91+b/9OimQ==
+X-Received: by 2002:a2e:9602:: with SMTP id v2mr1857532ljh.455.1599158519552;
+        Thu, 03 Sep 2020 11:41:59 -0700 (PDT)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id r8sm754854lfm.42.2020.09.03.11.41.58
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 03 Sep 2020 11:41:58 -0700 (PDT)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     ssantosh@kernel.org, s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, santosh.shilimkar@oracle.com,
+        robh+dt@kernel.org, lee.jones@linaro.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Roger Quadros <rogerq@ti.com>, kernel-team@android.com
-Subject: Re: [RESEND PATCH v2] mfd: syscon: Use a unique name with
- regmap_config
-In-Reply-To: <b378af0d-19a8-3d1b-5ca3-54ebccd77c9b@ti.com>
-References: <20200727211008.24225-1-s-anna@ti.com>
- <0c1feaf91b9d285c1bded488437705da@misterjones.org>
- <74bc1f9f-cc48-cec9-85f4-3376b66b40fc@ti.com>
- <78b465b080772b6ba867e39a623c2310@kernel.org>
- <ef1931eb-5677-d92c-732d-b67b5263425d@ti.com>
- <0d43f357983711fcffce7023ad115d13@kernel.org>
- <b378af0d-19a8-3d1b-5ca3-54ebccd77c9b@ti.com>
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <80600ff6d37712d15da906c24f761bfd@kernel.org>
-X-Sender: maz@kernel.org
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: s-anna@ti.com, broonie@kernel.org, lee.jones@linaro.org, arnd@arndb.de, grzegorz.jaszczyk@linaro.org, david@lechnology.com, tony@atomide.com, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, rogerq@ti.com, kernel-team@android.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+        praneeth@ti.com, tony@atomide.com
+Subject: [PATCH 0/2] Extend TI PRUSS platform driver
+Date:   Thu,  3 Sep 2020 20:41:39 +0200
+Message-Id: <1599158501-8302-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2020-09-03 14:25, Suman Anna wrote:
-> On 9/3/20 3:26 AM, Marc Zyngier wrote:
+Hi,
 
-[...]
+This patch-set extends TI PRUSS platform driver about CORECLK_MUX and
+IEPCLK_MUX support. The corresponding dt-binding is updated accordingly.
 
->> Have we reached a conclusion here? Can we get a fix in mainline?
-> 
-> Marc, we can go with your patch based on Mark's response.
+This patch series depends on TI PRUSS platform driver patchset [1].
 
-Patch resent[1].
+[1] https://patchwork.kernel.org/cover/11729645/
 
-         M.
+Grzegorz Jaszczyk (2):
+  dt-bindings: soc: ti: Update TI PRUSS bindings regarding clock-muxes
+  soc: ti: pruss: support CORECLK_MUX and IEPCLK_MUX
 
-[1] https://lore.kernel.org/r/20200903160237.932818-1-maz@kernel.org
+ .../devicetree/bindings/soc/ti/ti,pruss.yaml       | 121 +++++++++++++-
+ drivers/soc/ti/pruss.c                             | 184 ++++++++++++++++++++-
+ include/linux/pruss_driver.h                       |   6 +
+ 3 files changed, 303 insertions(+), 8 deletions(-)
+
 -- 
-Jazz is not dead. It just smells funny...
+2.7.4
+
