@@ -2,56 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF4E025E48B
-	for <lists+linux-omap@lfdr.de>; Sat,  5 Sep 2020 02:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2C6625E5BC
+	for <lists+linux-omap@lfdr.de>; Sat,  5 Sep 2020 08:16:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727851AbgIEAK0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Sep 2020 20:10:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58488 "EHLO mail.kernel.org"
+        id S1726476AbgIEGQN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 5 Sep 2020 02:16:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48860 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726208AbgIEAK0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 4 Sep 2020 20:10:26 -0400
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.1])
+        id S1726261AbgIEGQN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 5 Sep 2020 02:16:13 -0400
+Received: from dragon (80.251.214.228.16clouds.com [80.251.214.228])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 71350208FE;
-        Sat,  5 Sep 2020 00:10:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5837F2137B;
+        Sat,  5 Sep 2020 06:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599264625;
-        bh=CIke2Yb8/O1WlbwHmvfhzGM4v2Lz+SSikf2c522Tj7M=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=zLG3v4lISlYDUYfL5RtuTfBqToe0F5c929Tzc90MPPy1MhtsVZ3zW2otHd6d0U7nv
-         Jppndb/WzQVzSgj7Zou/8nu33I3XjypKRxlyn0iTnN4EelxTwaS3ioPyHawUGDK6Ls
-         zHhreNPJPsjwu9gNmnVuq5fsbg3yomAUlcAFtuiA=
-Date:   Fri, 4 Sep 2020 17:10:22 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH net-next 9/9] net: ethernet: ti: ale: add support for
- multi port k3 cpsw versions
-Message-ID: <20200904171022.63f103fa@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20200904230924.9971-10-grygorii.strashko@ti.com>
-References: <20200904230924.9971-1-grygorii.strashko@ti.com>
-        <20200904230924.9971-10-grygorii.strashko@ti.com>
+        s=default; t=1599286572;
+        bh=HUfZflaTNKEav1QHCpDsu4CzdeOJIw83G3apXN7lVtk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MJphf3hTVOln9ygK12JTkERYB1F8MIeCvhj0O2kXXNsDotiusNAzWhRqEHxQgrMgS
+         SRSRRfX3MY26IGfbWQBSwL9H4M7pv677NQE/Qren6iY3TFkWy2H0AVq59FduJFLGzr
+         jbfSomUqArNWMSicN4scJpQrzM+NYP42OkReCZac=
+Date:   Sat, 5 Sep 2020 14:16:05 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Stefan Agner <stefan@agner.ch>, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org
+Subject: Re: [PATCH 6/6] ARM: dts: vf: Fix PCA95xx GPIO expander properties
+ on ZII CFU1
+Message-ID: <20200905061604.GD9261@dragon>
+References: <20200829094024.31842-1-krzk@kernel.org>
+ <20200829094024.31842-6-krzk@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200829094024.31842-6-krzk@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 5 Sep 2020 02:09:24 +0300 Grygorii Strashko wrote:
-> The TI J721E (CPSW9g) ALE version is similar, in general, to Sitara AM3/4/5
-> CPSW ALE, but has more extended functions and different ALE VLAN entry
-> format.
+On Sat, Aug 29, 2020 at 11:40:24AM +0200, Krzysztof Kozlowski wrote:
+> The PCA95xx GPIO expander requires GPIO controller properties to operate
+> properly.
 > 
-> This patch adds support for for multi port TI J721E (CPSW9g) ALE variant.
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-and:
-
-drivers/net/ethernet/ti/cpsw_ale.c:195:28: warning: symbol 'vlan_entry_k3_cpswxg' was not declared. Should it be static?
+Applied, thanks.
