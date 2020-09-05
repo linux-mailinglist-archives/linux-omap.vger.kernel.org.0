@@ -2,105 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7405A25E409
-	for <lists+linux-omap@lfdr.de>; Sat,  5 Sep 2020 01:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E09C25E486
+	for <lists+linux-omap@lfdr.de>; Sat,  5 Sep 2020 02:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728397AbgIDXKk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Sep 2020 19:10:40 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:51210 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728423AbgIDXKi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Sep 2020 19:10:38 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 084NAZUN127299;
-        Fri, 4 Sep 2020 18:10:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1599261035;
-        bh=fVMIoRQ2J/TPcBbTujc+L6c5QIKzAf+QYahB70X3HYo=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Op1KoyJWwDWwBIBQ0zdFhdfLK58PgGvdGo+FyUt4FLMEEtBDYMrSLgdwKm9xKuy5h
-         h93inVtBL87nlIqlUaRa97J1EywEXiBzHwOKGA/zzP2KCB3YKm5UovF5u0KdX4RsO7
-         7KgKvqG/VayU/phncXkKcw2j4PcXn26GqGcqdlxE=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 084NAZTa091744
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 4 Sep 2020 18:10:35 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 4 Sep
- 2020 18:10:34 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 4 Sep 2020 18:10:34 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 084NAYMW006960;
-        Fri, 4 Sep 2020 18:10:34 -0500
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        id S1726406AbgIEAKA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Sep 2020 20:10:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57988 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726208AbgIEAKA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 4 Sep 2020 20:10:00 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5BDD6208FE;
+        Sat,  5 Sep 2020 00:09:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599264599;
+        bh=P/6uRSKbc276FtT+BF2FCS1nLO3Isxb5xURf1YHtXCA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=kotxlg9gdljRKVFnlVGjSRirPUAw0VjAM2+kv2MMbw7NNr/KRAGbQ/qP+LxCx8jf1
+         EBl9Y+/ANHoA6CJTtV9q8wa6gtmq3MFnyQ6/ipRCZVC3LuV2dFHY4kakkmdSPYk0Dd
+         Q1p085pqITMVNoaOs7qqLD7DJwzHC4K0FBYxhSZI=
+Date:   Fri, 4 Sep 2020 17:09:57 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>
-CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH net-next 9/9] net: ethernet: ti: ale: add support for multi port k3 cpsw versions
-Date:   Sat, 5 Sep 2020 02:09:24 +0300
-Message-ID: <20200904230924.9971-10-grygorii.strashko@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200904230924.9971-1-grygorii.strashko@ti.com>
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH net-next 8/9] net: ethernet: ti: ale: switch to use
+ tables for vlan entry description
+Message-ID: <20200904170957.11a8068d@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20200904230924.9971-9-grygorii.strashko@ti.com>
 References: <20200904230924.9971-1-grygorii.strashko@ti.com>
+        <20200904230924.9971-9-grygorii.strashko@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The TI J721E (CPSW9g) ALE version is similar, in general, to Sitara AM3/4/5
-CPSW ALE, but has more extended functions and different ALE VLAN entry
-format.
+On Sat, 5 Sep 2020 02:09:23 +0300 Grygorii Strashko wrote:
+> The ALE VLAN entries are too much differ between different TI CPSW ALE
+> versions. So, handling them using flags, defines and get/set functions
+> became over-complicated.
+> 
+> This patch introduces tables to describe the ALE VLAN entries fields, which
+> are different between TI CPSW ALE versions, and new get/set access
+> functions. It also allows to detect incorrect access to not available ALL
+> entry fields.
 
-This patch adds support for for multi port TI J721E (CPSW9g) ALE variant.
+When building with W=1 C=1:
 
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
----
- drivers/net/ethernet/ti/cpsw_ale.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 7ca46936a36c..40b6f740d62d 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -191,6 +191,14 @@ const struct ale_entry_fld vlan_entry_nu[ALE_ENT_VID_LAST] = {
- 	ALE_ENTRY_FLD(ALE_ENT_VID_REG_MCAST_IDX, 44, 3),
- };
- 
-+/* K3 j721e/j7200 cpsw9g/5g, am64x cpsw3g  */
-+const struct ale_entry_fld vlan_entry_k3_cpswxg[] = {
-+	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_MEMBER_LIST, 0),
-+	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_UNREG_MCAST_MSK, 12),
-+	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_FORCE_UNTAGGED_MSK, 24),
-+	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_REG_MCAST_MSK, 36),
-+};
-+
- DEFINE_ALE_FIELD(entry_type,		60,	2)
- DEFINE_ALE_FIELD(vlan_id,		48,	12)
- DEFINE_ALE_FIELD(mcast_state,		62,	2)
-@@ -1213,6 +1221,12 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
- 		.nu_switch_ale = true,
- 		.vlan_entry_tbl = vlan_entry_nu,
- 	},
-+	{
-+		.dev_id = "j721e-cpswxg",
-+		.features = CPSW_ALE_F_STATUS_REG | CPSW_ALE_F_HW_AUTOAGING,
-+		.major_ver_mask = 0x7,
-+		.vlan_entry_tbl = vlan_entry_k3_cpswxg,
-+	},
- 	{ },
- };
- 
--- 
-2.17.1
-
+drivers/net/ethernet/ti/cpsw_ale.c:179:28: warning: symbol 'vlan_entry_cpsw' was not declared. Should it be static?
+drivers/net/ethernet/ti/cpsw_ale.c:187:28: warning: symbol 'vlan_entry_nu' was not declared. Should it be static?
+drivers/net/ethernet/ti/cpsw_ale.c:63: warning: Function parameter or member 'num_bits' not described in 'ale_entry_fld'
