@@ -2,75 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 674CA25F744
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Sep 2020 12:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 560A125F754
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Sep 2020 12:08:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728482AbgIGKHq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Sep 2020 06:07:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59096 "EHLO
+        id S1728573AbgIGKIZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Sep 2020 06:08:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728415AbgIGKHo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Sep 2020 06:07:44 -0400
-Received: from mail-vs1-xe43.google.com (mail-vs1-xe43.google.com [IPv6:2607:f8b0:4864:20::e43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66FA7C061574
-        for <linux-omap@vger.kernel.org>; Mon,  7 Sep 2020 03:07:44 -0700 (PDT)
-Received: by mail-vs1-xe43.google.com with SMTP id j185so7103094vsc.3
-        for <linux-omap@vger.kernel.org>; Mon, 07 Sep 2020 03:07:44 -0700 (PDT)
+        with ESMTP id S1728514AbgIGKH7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Sep 2020 06:07:59 -0400
+Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF361C061574
+        for <linux-omap@vger.kernel.org>; Mon,  7 Sep 2020 03:07:58 -0700 (PDT)
+Received: by mail-ua1-x941.google.com with SMTP id v24so4010102uaj.7
+        for <linux-omap@vger.kernel.org>; Mon, 07 Sep 2020 03:07:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ce6obAoY06qb3yfC15lC/wYcbO24HR4Ggz8VlArYV5I=;
-        b=gpG2iBWSdQ5eahHqJWkR0z9Znx1jhPqheJ1ciSe4hCMHTL9NyEPjrAb+nC0AtfZVMF
-         iX3JbaU10TsRqgFHKITh5NU86iQcIlIfRTQOR62AQqb/8MeRJ8kNYSui+PYqCXoxnzLG
-         PFKWzjBzT81bfnVq2yFpbmA7gp7VxxmwoyofYsl2Sq6J7Bt2gxyptwnky2biQZpY2ae1
-         TJkWumpJPbtatrVQuZxIihT0UjmJrMCtsYw0twy/yXroZrrHCgfFjJ7X84TCw+MjjaeZ
-         t5B2fRvYmP5FYuDqaUa+q7Vthib56jvWeECcJi2vVjl40w8peFKT06ty53K4n6XRfvM1
-         Yy1A==
+         :cc:content-transfer-encoding;
+        bh=QuNLltsEiIW4LCbpFyTWl1p44IkTT3QJmbdClg97dn0=;
+        b=GdR9hDKN5L9o4E+D9klMf226TdSBiyQrmIJFqTy1wvu7JgUOP5hnq9D/dbGUt34nVN
+         XTE9ZkkMZYDWJkEj8/LXyenZz3T0Irx/WXSUQIYDB4F7XGGOjeU/eP0cHxgH70gtpxoS
+         593wZnUVUiqgZqhmNZJBvdbDOEAjelVZNg7W3uJxmMeE2W2+4ryrLED4uLWr5d2on/1Y
+         V+k0+LPGbknr9eHhBtS9n9cOKc/o9fFLWU4T/+6C9EhAuV3OtNNgAG8pjet6UXydTeg8
+         /OlJ55P8StYowRupDWz7iqCrO55GZV8SHF0Qf78K+dPX1qyWPG1Pi5uUN5Re3N+8QgpF
+         Opsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ce6obAoY06qb3yfC15lC/wYcbO24HR4Ggz8VlArYV5I=;
-        b=rdCqJ5cde7Xs7RNimdpAK0BQkEEAUPijG9WTLsVG9O4GQh+wgZraL5pwEc7EaCX781
-         VCsTcRihFz8KW/WDGuU0LsMke5Ji0/BFHL9ascj6ey4/ecBWWpqL/akqC7VcpbS/cqOy
-         7iQcHOICYpZQbcZIZoiB9I02AjJG/sEUTq0VBo92JxyFE6KMd+h1gTKzSzUfMlb9ZQzd
-         6X0saQhfqboxPxXx6kHlNeO7Ye4K+vN6DS92vQar5Ir/0Ny7nGuKRT631eW24ss7jRcK
-         AyDr3fCtZr2IGntQwuKrj3WlX3IACmj1d5VV+sqcTHvuglEdYWXYXOyXktW5GVbZvxP9
-         YryQ==
-X-Gm-Message-State: AOAM5313Xebhc2gu86hUGZXn60jrG17RiIhXd8KXz4NA6PXSx43BynPd
-        +ztRBUpBzcJshnLJejkmrXkFaNUcJYRwUiv0bT6pgw==
-X-Google-Smtp-Source: ABdhPJwDJaI3759+fZr6m+VSJRYg+e8v1KCPXZUCXbChfkQ7zkupTb2pUy+KivsGmeJZ4vk4HulUd5jk+xtdLdPpiPw=
-X-Received: by 2002:a67:e197:: with SMTP id e23mr11355927vsl.7.1599473263611;
- Mon, 07 Sep 2020 03:07:43 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=QuNLltsEiIW4LCbpFyTWl1p44IkTT3QJmbdClg97dn0=;
+        b=V0AePCqfEv78Aer/q2H9e0I37z7YVGE2FcQAdiThg0YRP+TLleL6n53YIOyQmPDbWg
+         OBp6hBgh3jagFt9QsJIdnnkS1M/sWVzVpQHLAwJFH5/gxp/Swwz5vipBQ5ixzyE/rwV9
+         8Ma9xP0KIbGyMt1IPMgPYPLUga5ptIc56oznd0rYXCJyi29AXgsDOf6qgHrSUek6UxDt
+         yJzGS3z9qJfMKXgEBW5TDnJG/NT1XLyiZgFnqqqE1PWJaoKcLgAQbk/+wN0S72P50zDV
+         z24dl3ZiwenJF1GMTGrC600Uk/Gx1zpBlzjFhL8+lT6sR0wRemngg8yU0SKdz366yA6d
+         +iug==
+X-Gm-Message-State: AOAM533To/XH1GpZ4CvN8XFrsMcrUM3OGF6zFgjAYOveFmvnVJNu7LDX
+        20RhuUWnrTlSJBdCohWDjMBAM3nD8eOVzN8NwXlReg==
+X-Google-Smtp-Source: ABdhPJylvGTfdGwP02Q+D0hgvcDauwlOQni6HAn5s7aLot2eLwS2w0Wmn0FgXWKx98K2aaDsiVxs7F4QHZfQitRnsZs=
+X-Received: by 2002:ab0:130a:: with SMTP id g10mr1522518uae.100.1599473277782;
+ Mon, 07 Sep 2020 03:07:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200903084825.85616-1-vulab@iscas.ac.cn>
-In-Reply-To: <20200903084825.85616-1-vulab@iscas.ac.cn>
+References: <20200904164315.24618-1-krzk@kernel.org>
+In-Reply-To: <20200904164315.24618-1-krzk@kernel.org>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 7 Sep 2020 12:07:06 +0200
-Message-ID: <CAPDyKFrADVAs2zK2FY5sOh0R=8Kgsm9GwAKkbV9pfdczt07QOg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: host: omap-hsmmc: remove redundant null check
-To:     Xu Wang <vulab@iscas.ac.cn>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Dr. H. Nikolaus Schaller" <hns@goldelico.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
+Date:   Mon, 7 Sep 2020 12:07:21 +0200
+Message-ID: <CAPDyKFrzDeNqvM4cc69iCdVW7QnF=O9C=v13+o5bGBSCSzZfWA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mmc: host: Drop unneeded MMC dependency in Kconfig
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
         "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Prabu Thangamuthu <prabu.t@synopsys.com>,
+        Manjunath M B <manjumb@synopsys.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
         linux-omap <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        linux-arm-kernel@axis.com,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 3 Sep 2020 at 10:48, Xu Wang <vulab@iscas.ac.cn> wrote:
+On Fri, 4 Sep 2020 at 18:43, Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
-> Because clk_disable_unprepare already checked NULL clock
-> parameter, so the additional checks are unnecessary, just remove them.
+> All entries in Kconfig are already part of "if MMC", so there is no need
+> for additional dependency on MMC.
 >
-> Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+> Suggested-by: Micha=C5=82 Miros=C5=82aw <mirq-linux@rere.qmqm.pl>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
 Applied for next, thanks!
 
@@ -78,74 +94,37 @@ Kind regards
 Uffe
 
 
+>
 > ---
->  drivers/mmc/host/omap_hsmmc.c | 18 ++++++------------
->  1 file changed, 6 insertions(+), 12 deletions(-)
 >
-> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
-> index 37b8740513f5..d02983e23ed1 100644
-> --- a/drivers/mmc/host/omap_hsmmc.c
-> +++ b/drivers/mmc/host/omap_hsmmc.c
-> @@ -1114,8 +1114,7 @@ static int omap_hsmmc_switch_opcond(struct omap_hsmmc_host *host, int vdd)
->         int ret;
+> Changes since v1:
+> 1. New patch
+> ---
+>  drivers/mmc/host/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
->         /* Disable the clocks */
-> -       if (host->dbclk)
-> -               clk_disable_unprepare(host->dbclk);
-> +       clk_disable_unprepare(host->dbclk);
+> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+> index b95f79f53395..eea01fde0591 100644
+> --- a/drivers/mmc/host/Kconfig
+> +++ b/drivers/mmc/host/Kconfig
+> @@ -422,7 +422,7 @@ config MMC_SDHCI_IPROC
 >
->         /* Turn the power off */
->         ret = omap_hsmmc_set_power(host, 0);
-> @@ -1123,8 +1122,7 @@ static int omap_hsmmc_switch_opcond(struct omap_hsmmc_host *host, int vdd)
->         /* Turn the power ON with given VDD 1.8 or 3.0v */
->         if (!ret)
->                 ret = omap_hsmmc_set_power(host, 1);
-> -       if (host->dbclk)
-> -               clk_prepare_enable(host->dbclk);
-> +       clk_prepare_enable(host->dbclk);
+>  config MMC_MESON_GX
+>         tristate "Amlogic S905/GX*/AXG SD/MMC Host Controller support"
+> -       depends on ARCH_MESON && MMC
+> +       depends on ARCH_MESON
+>         help
+>           This selects support for the Amlogic SD/MMC Host Controller
+>           found on the S905/GX*/AXG family of SoCs.  This controller is
+> @@ -458,7 +458,7 @@ config MMC_MESON_MX_SDIO
 >
->         if (ret != 0)
->                 goto err;
-> @@ -2014,8 +2012,7 @@ static int omap_hsmmc_probe(struct platform_device *pdev)
->         pm_runtime_dont_use_autosuspend(host->dev);
->         pm_runtime_put_sync(host->dev);
->         pm_runtime_disable(host->dev);
-> -       if (host->dbclk)
-> -               clk_disable_unprepare(host->dbclk);
-> +       clk_disable_unprepare(host->dbclk);
->  err1:
->         mmc_free_host(mmc);
->  err:
-> @@ -2037,8 +2034,7 @@ static int omap_hsmmc_remove(struct platform_device *pdev)
->         pm_runtime_put_sync(host->dev);
->         pm_runtime_disable(host->dev);
->         device_init_wakeup(&pdev->dev, false);
-> -       if (host->dbclk)
-> -               clk_disable_unprepare(host->dbclk);
-> +       clk_disable_unprepare(host->dbclk);
->
->         mmc_free_host(host->mmc);
->
-> @@ -2063,8 +2059,7 @@ static int omap_hsmmc_suspend(struct device *dev)
->                                 OMAP_HSMMC_READ(host->base, HCTL) & ~SDBP);
->         }
->
-> -       if (host->dbclk)
-> -               clk_disable_unprepare(host->dbclk);
-> +       clk_disable_unprepare(host->dbclk);
->
->         pm_runtime_put_sync(host->dev);
->         return 0;
-> @@ -2080,8 +2075,7 @@ static int omap_hsmmc_resume(struct device *dev)
->
->         pm_runtime_get_sync(host->dev);
->
-> -       if (host->dbclk)
-> -               clk_prepare_enable(host->dbclk);
-> +       clk_prepare_enable(host->dbclk);
->
->         if (!(host->mmc->pm_flags & MMC_PM_KEEP_POWER))
->                 omap_hsmmc_conf_bus_power(host);
+>  config MMC_MOXART
+>         tristate "MOXART SD/MMC Host Controller support"
+> -       depends on ARCH_MOXART && MMC
+> +       depends on ARCH_MOXART
+>         help
+>           This selects support for the MOXART SD/MMC Host Controller.
+>           MOXA provides one multi-functional card reader which can
 > --
 > 2.17.1
 >
