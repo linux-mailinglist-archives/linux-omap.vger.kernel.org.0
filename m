@@ -2,39 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC95725FF1E
+	by mail.lfdr.de (Postfix) with ESMTP id 05DB825FF1C
 	for <lists+linux-omap@lfdr.de>; Mon,  7 Sep 2020 18:28:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729980AbgIGQ2F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Sep 2020 12:28:05 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:53916 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729905AbgIGOcx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Sep 2020 10:32:53 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 087EVujc015802;
-        Mon, 7 Sep 2020 09:31:56 -0500
+        id S1729924AbgIGQZw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Sep 2020 12:25:52 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:39226 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729906AbgIGOcz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Sep 2020 10:32:55 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 087EVxV9078601;
+        Mon, 7 Sep 2020 09:31:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1599489116;
-        bh=vSX2SLuTk0cAacN2wnopN/GO0s/2FaryB38zuY2OUQw=;
+        s=ti-com-17Q1; t=1599489119;
+        bh=T0vEyaZIzK+YOhVL1aT2Hj7/oC3d1nw3F+zKDemup3A=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Dprr/PdyQCskZDYmd0/cJ+hbQ/mqcgP3JNL70Iq0CTl8DWVxjHXrTSYLOOGiLTzzK
-         h14eozt3QFZYAmDXWX+bBg5Ae6S0u0pVUf6TyezJ5CjiXxfk5ieQVcDRBAh6qEv88m
-         HpGboZJNYsXkQ72paQnm7T4N/gkEWz9C4m6Zwha8=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 087EVuZh001425;
-        Mon, 7 Sep 2020 09:31:56 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+        b=sAySucemIdR0gWvIWqyaP7EOrbj9EC0r69XbDvO5s3TeKm4ES6Jnk0DYk5aB0zLHP
+         GdPuhJt6pQzP4eY6oyXV6Q+bdW1OePqEOAH4zooPyHQZCnI6jNZIkwS0sfA0P2GFeJ
+         docmuzVpv1OnNK/jyFGyJkI7F+qcqUReernypGZY=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 087EVxgA095485
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 7 Sep 2020 09:31:59 -0500
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 7 Sep
- 2020 09:31:56 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 09:31:59 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 7 Sep 2020 09:31:56 -0500
+ Frontend Transport; Mon, 7 Sep 2020 09:31:59 -0500
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 087EVtvu106496;
-        Mon, 7 Sep 2020 09:31:55 -0500
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 087EVwPe106549;
+        Mon, 7 Sep 2020 09:31:58 -0500
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
 To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -43,9 +44,9 @@ To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
 CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
         <linux-omap@vger.kernel.org>,
         Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH net-next v2 6/9] net: ethernet: ti: ale: make usage of ale dev_id mandatory
-Date:   Mon, 7 Sep 2020 17:31:40 +0300
-Message-ID: <20200907143143.13735-7-grygorii.strashko@ti.com>
+Subject: [PATCH net-next v2 8/9] net: ethernet: ti: ale: switch to use tables for vlan entry description
+Date:   Mon, 7 Sep 2020 17:31:42 +0300
+Message-ID: <20200907143143.13735-9-grygorii.strashko@ti.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200907143143.13735-1-grygorii.strashko@ti.com>
 References: <20200907143143.13735-1-grygorii.strashko@ti.com>
@@ -57,97 +58,458 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hence all existing driver updated to use ALE dev_id the usage of ale dev_id
-can be made mandatory and cpsw_ale_create() can be updated to use
-"features" property from ALE static configuration.
+The ALE VLAN entries are too much differ between different TI CPSW ALE
+versions. So, handling them using flags, defines and get/set functions
+became over-complicated.
+
+This patch introduces tables to describe the ALE VLAN entries fields, which
+are different between TI CPSW ALE versions, and new get/set access
+functions. It also allows to detect incorrect access to not available ALL
+entry fields.
 
 Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 28 +++++++++++++---------------
- drivers/net/ethernet/ti/cpsw_ale.h |  1 +
- 2 files changed, 14 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 239 ++++++++++++++++++++++-------
+ drivers/net/ethernet/ti/cpsw_ale.h |   3 +
+ 2 files changed, 188 insertions(+), 54 deletions(-)
 
 diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 766197003971..524920a4bff0 100644
+index 7b54e9911b1e..0dd0c3329dee 100644
 --- a/drivers/net/ethernet/ti/cpsw_ale.c
 +++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -83,7 +83,6 @@ struct cpsw_ale_dev_id {
+@@ -50,6 +50,18 @@
+ /* ALE_AGING_TIMER */
+ #define ALE_AGING_TIMER_MASK	GENMASK(23, 0)
  
- #define ALE_TABLE_SIZE_MULTIPLIER	1024
- #define ALE_STATUS_SIZE_MASK		0x1f
--#define ALE_TABLE_SIZE_DEFAULT		64
- 
- static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- {
-@@ -1060,11 +1059,12 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
- 	u32 rev, ale_entries;
- 
- 	ale_dev_id = cpsw_ale_match_id(cpsw_ale_id_match, params->dev_id);
--	if (ale_dev_id) {
--		params->ale_entries = ale_dev_id->tbl_entries;
--		params->major_ver_mask = ale_dev_id->major_ver_mask;
--		params->nu_switch_ale = ale_dev_id->nu_switch_ale;
--	}
-+	if (!ale_dev_id)
-+		return ERR_PTR(-EINVAL);
++/**
++ * struct ale_entry_fld - The ALE tbl entry field description
++ * @start_bit: field start bit
++ * @num_bits: field bit length
++ * @flags: field flags
++ */
++struct ale_entry_fld {
++	u8 start_bit;
++	u8 num_bits;
++	u8 flags;
++};
 +
-+	params->ale_entries = ale_dev_id->tbl_entries;
-+	params->major_ver_mask = ale_dev_id->major_ver_mask;
-+	params->nu_switch_ale = ale_dev_id->nu_switch_ale;
+ enum {
+ 	CPSW_ALE_F_STATUS_REG = BIT(0), /* Status register present */
+ 	CPSW_ALE_F_HW_AUTOAGING = BIT(1), /* HW auto aging */
+@@ -64,6 +76,7 @@ enum {
+  * @tbl_entries: number of ALE entries
+  * @major_ver_mask: mask of ALE Major Version Value in ALE_IDVER reg.
+  * @nu_switch_ale: NU Switch ALE
++ * @vlan_entry_tbl: ALE vlan entry fields description tbl
+  */
+ struct cpsw_ale_dev_id {
+ 	const char *dev_id;
+@@ -71,6 +84,7 @@ struct cpsw_ale_dev_id {
+ 	u32 tbl_entries;
+ 	u32 major_ver_mask;
+ 	bool nu_switch_ale;
++	const struct ale_entry_fld *vlan_entry_tbl;
+ };
  
- 	ale = devm_kzalloc(params->dev, sizeof(*ale), GFP_KERNEL);
- 	if (!ale)
-@@ -1079,6 +1079,7 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
+ #define ALE_TABLE_WRITE		BIT(31)
+@@ -132,6 +146,51 @@ static inline void cpsw_ale_set_##name(u32 *ale_entry, u32 value,	\
+ 	cpsw_ale_set_field(ale_entry, start, bits, value);		\
+ }
  
++enum {
++	ALE_ENT_VID_MEMBER_LIST = 0,
++	ALE_ENT_VID_UNREG_MCAST_MSK,
++	ALE_ENT_VID_REG_MCAST_MSK,
++	ALE_ENT_VID_FORCE_UNTAGGED_MSK,
++	ALE_ENT_VID_UNREG_MCAST_IDX,
++	ALE_ENT_VID_REG_MCAST_IDX,
++	ALE_ENT_VID_LAST,
++};
++
++#define ALE_FLD_ALLOWED			BIT(0)
++#define ALE_FLD_SIZE_PORT_MASK_BITS	BIT(1)
++#define ALE_FLD_SIZE_PORT_NUM_BITS	BIT(2)
++
++#define ALE_ENTRY_FLD(id, start, bits)	\
++[id] = {				\
++	.start_bit = start,		\
++	.num_bits = bits,		\
++	.flags = ALE_FLD_ALLOWED,	\
++}
++
++#define ALE_ENTRY_FLD_DYN_MSK_SIZE(id, start)	\
++[id] = {					\
++	.start_bit = start,			\
++	.num_bits = 0,				\
++	.flags = ALE_FLD_ALLOWED |		\
++		 ALE_FLD_SIZE_PORT_MASK_BITS,	\
++}
++
++/* dm814x, am3/am4/am5, k2hk */
++static const struct ale_entry_fld vlan_entry_cpsw[ALE_ENT_VID_LAST] = {
++	ALE_ENTRY_FLD(ALE_ENT_VID_MEMBER_LIST, 0, 3),
++	ALE_ENTRY_FLD(ALE_ENT_VID_UNREG_MCAST_MSK, 8, 3),
++	ALE_ENTRY_FLD(ALE_ENT_VID_REG_MCAST_MSK, 16, 3),
++	ALE_ENTRY_FLD(ALE_ENT_VID_FORCE_UNTAGGED_MSK, 24, 3),
++};
++
++/* k2e/k2l, k3 am65/j721e cpsw2g  */
++static const struct ale_entry_fld vlan_entry_nu[ALE_ENT_VID_LAST] = {
++	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_MEMBER_LIST, 0),
++	ALE_ENTRY_FLD(ALE_ENT_VID_UNREG_MCAST_IDX, 20, 3),
++	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_FORCE_UNTAGGED_MSK, 24),
++	ALE_ENTRY_FLD(ALE_ENT_VID_REG_MCAST_IDX, 44, 3),
++};
++
+ DEFINE_ALE_FIELD(entry_type,		60,	2)
+ DEFINE_ALE_FIELD(vlan_id,		48,	12)
+ DEFINE_ALE_FIELD(mcast_state,		62,	2)
+@@ -141,17 +200,76 @@ DEFINE_ALE_FIELD(ucast_type,		62,     2)
+ DEFINE_ALE_FIELD1(port_num,		66)
+ DEFINE_ALE_FIELD(blocked,		65,     1)
+ DEFINE_ALE_FIELD(secure,		64,     1)
+-DEFINE_ALE_FIELD1(vlan_untag_force,	24)
+-DEFINE_ALE_FIELD1(vlan_reg_mcast,	16)
+-DEFINE_ALE_FIELD1(vlan_unreg_mcast,	8)
+-DEFINE_ALE_FIELD1(vlan_member_list,	0)
+ DEFINE_ALE_FIELD(mcast,			40,	1)
+-/* ALE NetCP nu switch specific */
+-DEFINE_ALE_FIELD(vlan_unreg_mcast_idx,	20,	3)
+-DEFINE_ALE_FIELD(vlan_reg_mcast_idx,	44,	3)
+ 
+ #define NU_VLAN_UNREG_MCAST_IDX	1
+ 
++static int cpsw_ale_entry_get_fld(struct cpsw_ale *ale,
++				  u32 *ale_entry,
++				  const struct ale_entry_fld *entry_tbl,
++				  int fld_id)
++{
++	const struct ale_entry_fld *entry_fld;
++	u32 bits;
++
++	if (!ale || !ale_entry)
++		return -EINVAL;
++
++	entry_fld = &entry_tbl[fld_id];
++	if (!(entry_fld->flags & ALE_FLD_ALLOWED)) {
++		dev_err(ale->params.dev, "get: wrong ale fld id %d\n", fld_id);
++		return -ENOENT;
++	}
++
++	bits = entry_fld->num_bits;
++	if (entry_fld->flags & ALE_FLD_SIZE_PORT_MASK_BITS)
++		bits = ale->port_mask_bits;
++
++	return cpsw_ale_get_field(ale_entry, entry_fld->start_bit, bits);
++}
++
++static void cpsw_ale_entry_set_fld(struct cpsw_ale *ale,
++				   u32 *ale_entry,
++				   const struct ale_entry_fld *entry_tbl,
++				   int fld_id,
++				   u32 value)
++{
++	const struct ale_entry_fld *entry_fld;
++	u32 bits;
++
++	if (!ale || !ale_entry)
++		return;
++
++	entry_fld = &entry_tbl[fld_id];
++	if (!(entry_fld->flags & ALE_FLD_ALLOWED)) {
++		dev_err(ale->params.dev, "set: wrong ale fld id %d\n", fld_id);
++		return;
++	}
++
++	bits = entry_fld->num_bits;
++	if (entry_fld->flags & ALE_FLD_SIZE_PORT_MASK_BITS)
++		bits = ale->port_mask_bits;
++
++	cpsw_ale_set_field(ale_entry, entry_fld->start_bit, bits, value);
++}
++
++static int cpsw_ale_vlan_get_fld(struct cpsw_ale *ale,
++				 u32 *ale_entry,
++				 int fld_id)
++{
++	return cpsw_ale_entry_get_fld(ale, ale_entry,
++				      ale->vlan_entry_tbl, fld_id);
++}
++
++static void cpsw_ale_vlan_set_fld(struct cpsw_ale *ale,
++				  u32 *ale_entry,
++				  int fld_id,
++				  u32 value)
++{
++	cpsw_ale_entry_set_fld(ale, ale_entry,
++			       ale->vlan_entry_tbl, fld_id, value);
++}
++
+ /* The MAC address field in the ALE entry cannot be macroized as above */
+ static inline void cpsw_ale_get_addr(u32 *ale_entry, u8 *addr)
+ {
+@@ -446,19 +564,22 @@ static void cpsw_ale_set_vlan_mcast(struct cpsw_ale *ale, u32 *ale_entry,
+ 	int idx;
+ 
+ 	/* Set VLAN registered multicast flood mask */
+-	idx = cpsw_ale_get_vlan_reg_mcast_idx(ale_entry);
++	idx = cpsw_ale_vlan_get_fld(ale, ale_entry,
++				    ALE_ENT_VID_REG_MCAST_IDX);
+ 	writel(reg_mcast, ale->params.ale_regs + ALE_VLAN_MASK_MUX(idx));
+ 
+ 	/* Set VLAN unregistered multicast flood mask */
+-	idx = cpsw_ale_get_vlan_unreg_mcast_idx(ale_entry);
++	idx = cpsw_ale_vlan_get_fld(ale, ale_entry,
++				    ALE_ENT_VID_UNREG_MCAST_IDX);
+ 	writel(unreg_mcast, ale->params.ale_regs + ALE_VLAN_MASK_MUX(idx));
+ }
+ 
+ static void cpsw_ale_set_vlan_untag(struct cpsw_ale *ale, u32 *ale_entry,
+ 				    u16 vid, int untag_mask)
+ {
+-	cpsw_ale_set_vlan_untag_force(ale_entry,
+-				      untag_mask, ale->vlan_field_bits);
++	cpsw_ale_vlan_set_fld(ale, ale_entry,
++			      ALE_ENT_VID_FORCE_UNTAGGED_MSK,
++			      untag_mask);
+ 	if (untag_mask & ALE_PORT_HOST)
+ 		bitmap_set(ale->p0_untag_vid_mask, vid, 1);
+ 	else
+@@ -480,17 +601,19 @@ int cpsw_ale_add_vlan(struct cpsw_ale *ale, u16 vid, int port_mask, int untag,
+ 	cpsw_ale_set_vlan_untag(ale, ale_entry, vid, untag);
+ 
+ 	if (!ale->params.nu_switch_ale) {
+-		cpsw_ale_set_vlan_reg_mcast(ale_entry, reg_mcast,
+-					    ale->vlan_field_bits);
+-		cpsw_ale_set_vlan_unreg_mcast(ale_entry, unreg_mcast,
+-					      ale->vlan_field_bits);
++		cpsw_ale_vlan_set_fld(ale, ale_entry,
++				      ALE_ENT_VID_REG_MCAST_MSK, reg_mcast);
++		cpsw_ale_vlan_set_fld(ale, ale_entry,
++				      ALE_ENT_VID_UNREG_MCAST_MSK, unreg_mcast);
+ 	} else {
+-		cpsw_ale_set_vlan_unreg_mcast_idx(ale_entry,
+-						  NU_VLAN_UNREG_MCAST_IDX);
++		cpsw_ale_vlan_set_fld(ale, ale_entry,
++				      ALE_ENT_VID_UNREG_MCAST_IDX,
++				      NU_VLAN_UNREG_MCAST_IDX);
+ 		cpsw_ale_set_vlan_mcast(ale, ale_entry, reg_mcast, unreg_mcast);
+ 	}
+-	cpsw_ale_set_vlan_member_list(ale_entry, port_mask,
+-				      ale->vlan_field_bits);
++
++	cpsw_ale_vlan_set_fld(ale, ale_entry,
++			      ALE_ENT_VID_MEMBER_LIST, port_mask);
+ 
+ 	if (idx < 0)
+ 		idx = cpsw_ale_match_free(ale);
+@@ -509,20 +632,20 @@ static void cpsw_ale_del_vlan_modify(struct cpsw_ale *ale, u32 *ale_entry,
+ 	int reg_mcast, unreg_mcast;
+ 	int members, untag;
+ 
+-	members = cpsw_ale_get_vlan_member_list(ale_entry,
+-						ale->vlan_field_bits);
++	members = cpsw_ale_vlan_get_fld(ale, ale_entry,
++					ALE_ENT_VID_MEMBER_LIST);
+ 	members &= ~port_mask;
+ 	if (!members) {
+ 		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
+ 		return;
+ 	}
+ 
+-	untag = cpsw_ale_get_vlan_untag_force(ale_entry,
+-					      ale->vlan_field_bits);
+-	reg_mcast = cpsw_ale_get_vlan_reg_mcast(ale_entry,
+-						ale->vlan_field_bits);
+-	unreg_mcast = cpsw_ale_get_vlan_unreg_mcast(ale_entry,
+-						    ale->vlan_field_bits);
++	untag = cpsw_ale_vlan_get_fld(ale, ale_entry,
++				      ALE_ENT_VID_FORCE_UNTAGGED_MSK);
++	reg_mcast = cpsw_ale_vlan_get_fld(ale, ale_entry,
++					  ALE_ENT_VID_REG_MCAST_MSK);
++	unreg_mcast = cpsw_ale_vlan_get_fld(ale, ale_entry,
++					    ALE_ENT_VID_UNREG_MCAST_MSK);
+ 	untag &= members;
+ 	reg_mcast &= members;
+ 	unreg_mcast &= members;
+@@ -530,16 +653,16 @@ static void cpsw_ale_del_vlan_modify(struct cpsw_ale *ale, u32 *ale_entry,
+ 	cpsw_ale_set_vlan_untag(ale, ale_entry, vid, untag);
+ 
+ 	if (!ale->params.nu_switch_ale) {
+-		cpsw_ale_set_vlan_reg_mcast(ale_entry, reg_mcast,
+-					    ale->vlan_field_bits);
+-		cpsw_ale_set_vlan_unreg_mcast(ale_entry, unreg_mcast,
+-					      ale->vlan_field_bits);
++		cpsw_ale_vlan_set_fld(ale, ale_entry,
++				      ALE_ENT_VID_REG_MCAST_MSK, reg_mcast);
++		cpsw_ale_vlan_set_fld(ale, ale_entry,
++				      ALE_ENT_VID_UNREG_MCAST_MSK, unreg_mcast);
+ 	} else {
+ 		cpsw_ale_set_vlan_mcast(ale, ale_entry, reg_mcast,
+ 					unreg_mcast);
+ 	}
+-	cpsw_ale_set_vlan_member_list(ale_entry, members,
+-				      ale->vlan_field_bits);
++	cpsw_ale_vlan_set_fld(ale, ale_entry,
++			      ALE_ENT_VID_MEMBER_LIST, members);
+ }
+ 
+ int cpsw_ale_del_vlan(struct cpsw_ale *ale, u16 vid, int port_mask)
+@@ -577,15 +700,15 @@ int cpsw_ale_vlan_add_modify(struct cpsw_ale *ale, u16 vid, int port_mask,
+ 	if (idx >= 0)
+ 		cpsw_ale_read(ale, idx, ale_entry);
+ 
+-	vlan_members = cpsw_ale_get_vlan_member_list(ale_entry,
+-						     ale->vlan_field_bits);
+-	reg_mcast_members = cpsw_ale_get_vlan_reg_mcast(ale_entry,
+-							ale->vlan_field_bits);
++	vlan_members = cpsw_ale_vlan_get_fld(ale, ale_entry,
++					     ALE_ENT_VID_MEMBER_LIST);
++	reg_mcast_members = cpsw_ale_vlan_get_fld(ale, ale_entry,
++						  ALE_ENT_VID_REG_MCAST_MSK);
+ 	unreg_mcast_members =
+-		cpsw_ale_get_vlan_unreg_mcast(ale_entry,
+-					      ale->vlan_field_bits);
+-	untag_members = cpsw_ale_get_vlan_untag_force(ale_entry,
+-						      ale->vlan_field_bits);
++		cpsw_ale_vlan_get_fld(ale, ale_entry,
++				      ALE_ENT_VID_UNREG_MCAST_MSK);
++	untag_members = cpsw_ale_vlan_get_fld(ale, ale_entry,
++					      ALE_ENT_VID_FORCE_UNTAGGED_MSK);
+ 
+ 	vlan_members |= port_mask;
+ 	untag_members = (untag_members & ~port_mask) | untag_mask;
+@@ -618,14 +741,15 @@ void cpsw_ale_set_unreg_mcast(struct cpsw_ale *ale, int unreg_mcast_mask,
+ 			continue;
+ 
+ 		unreg_members =
+-			cpsw_ale_get_vlan_unreg_mcast(ale_entry,
+-						      ale->vlan_field_bits);
++			cpsw_ale_vlan_get_fld(ale, ale_entry,
++					      ALE_ENT_VID_UNREG_MCAST_MSK);
+ 		if (add)
+ 			unreg_members |= unreg_mcast_mask;
+ 		else
+ 			unreg_members &= ~unreg_mcast_mask;
+-		cpsw_ale_set_vlan_unreg_mcast(ale_entry, unreg_members,
+-					      ale->vlan_field_bits);
++		cpsw_ale_vlan_set_fld(ale, ale_entry,
++				      ALE_ENT_VID_UNREG_MCAST_MSK,
++				      unreg_members);
+ 		cpsw_ale_write(ale, idx, ale_entry);
+ 	}
+ }
+@@ -635,15 +759,15 @@ static void cpsw_ale_vlan_set_unreg_mcast(struct cpsw_ale *ale, u32 *ale_entry,
+ {
+ 	int unreg_mcast;
+ 
+-	unreg_mcast =
+-		cpsw_ale_get_vlan_unreg_mcast(ale_entry,
+-					      ale->vlan_field_bits);
++	unreg_mcast = cpsw_ale_vlan_get_fld(ale, ale_entry,
++					    ALE_ENT_VID_UNREG_MCAST_MSK);
+ 	if (allmulti)
+ 		unreg_mcast |= ALE_PORT_HOST;
+ 	else
+ 		unreg_mcast &= ~ALE_PORT_HOST;
+-	cpsw_ale_set_vlan_unreg_mcast(ale_entry, unreg_mcast,
+-				      ale->vlan_field_bits);
++
++	cpsw_ale_vlan_set_fld(ale, ale_entry,
++			      ALE_ENT_VID_UNREG_MCAST_MSK, unreg_mcast);
+ }
+ 
+ static void
+@@ -653,7 +777,8 @@ cpsw_ale_vlan_set_unreg_mcast_idx(struct cpsw_ale *ale, u32 *ale_entry,
+ 	int unreg_mcast;
+ 	int idx;
+ 
+-	idx = cpsw_ale_get_vlan_unreg_mcast_idx(ale_entry);
++	idx = cpsw_ale_vlan_get_fld(ale, ale_entry,
++				    ALE_ENT_VID_UNREG_MCAST_IDX);
+ 
+ 	unreg_mcast = readl(ale->params.ale_regs + ALE_VLAN_MASK_MUX(idx));
+ 
+@@ -677,9 +802,9 @@ void cpsw_ale_set_allmulti(struct cpsw_ale *ale, int allmulti, int port)
+ 		type = cpsw_ale_get_entry_type(ale_entry);
+ 		if (type != ALE_TYPE_VLAN)
+ 			continue;
+-		vlan_members =
+-			cpsw_ale_get_vlan_member_list(ale_entry,
+-						      ale->vlan_field_bits);
++
++		vlan_members = cpsw_ale_vlan_get_fld(ale, ale_entry,
++						     ALE_ENT_VID_MEMBER_LIST);
+ 
+ 		if (port != -1 && !(vlan_members & BIT(port)))
+ 			continue;
+@@ -1056,18 +1181,21 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
+ 		.dev_id = "cpsw",
+ 		.tbl_entries = 1024,
+ 		.major_ver_mask = 0xff,
++		.vlan_entry_tbl = vlan_entry_cpsw,
+ 	},
+ 	{
+ 		/* 66ak2h_xgbe */
+ 		.dev_id = "66ak2h-xgbe",
+ 		.tbl_entries = 2048,
+ 		.major_ver_mask = 0xff,
++		.vlan_entry_tbl = vlan_entry_cpsw,
+ 	},
+ 	{
+ 		.dev_id = "66ak2el",
+ 		.features = CPSW_ALE_F_STATUS_REG,
+ 		.major_ver_mask = 0x7,
+ 		.nu_switch_ale = true,
++		.vlan_entry_tbl = vlan_entry_nu,
+ 	},
+ 	{
+ 		.dev_id = "66ak2g",
+@@ -1075,6 +1203,7 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
+ 		.tbl_entries = 64,
+ 		.major_ver_mask = 0x7,
+ 		.nu_switch_ale = true,
++		.vlan_entry_tbl = vlan_entry_nu,
+ 	},
+ 	{
+ 		.dev_id = "am65x-cpsw2g",
+@@ -1082,6 +1211,7 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
+ 		.tbl_entries = 64,
+ 		.major_ver_mask = 0x7,
+ 		.nu_switch_ale = true,
++		.vlan_entry_tbl = vlan_entry_nu,
+ 	},
+ 	{ },
+ };
+@@ -1129,6 +1259,7 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
  	ale->params = *params;
  	ale->ageout = ale->params.ale_ageout * HZ;
-+	ale->features = ale_dev_id->features;
+ 	ale->features = ale_dev_id->features;
++	ale->vlan_entry_tbl = ale_dev_id->vlan_entry_tbl;
  
  	rev = readl_relaxed(ale->params.ale_regs + ALE_IDVER);
  	ale->version =
-@@ -1088,7 +1089,8 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
- 		 ALE_VERSION_MAJOR(rev, ale->params.major_ver_mask),
- 		 ALE_VERSION_MINOR(rev));
- 
--	if (!ale->params.ale_entries) {
-+	if (ale->features & CPSW_ALE_F_STATUS_REG &&
-+	    !ale->params.ale_entries) {
- 		ale_entries =
- 			readl_relaxed(ale->params.ale_regs + ALE_STATUS) &
- 			ALE_STATUS_SIZE_MASK;
-@@ -1097,16 +1099,12 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
- 		 * table which shows the size as a multiple of 1024 entries.
- 		 * For these, params.ale_entries will be set to zero. So
- 		 * read the register and update the value of ale_entries.
--		 * ALE table on NetCP lite, is much smaller and is indicated
--		 * by a value of zero in ALE_STATUS. So use a default value
--		 * of ALE_TABLE_SIZE_DEFAULT for this. Caller is expected
--		 * to set the value of ale_entries for all other versions
--		 * of ALE.
-+		 * return error if ale_entries is zero in ALE_STATUS.
- 		 */
- 		if (!ale_entries)
--			ale_entries = ALE_TABLE_SIZE_DEFAULT;
--		else
--			ale_entries *= ALE_TABLE_SIZE_MULTIPLIER;
-+			return ERR_PTR(-EINVAL);
-+
-+		ale_entries *= ALE_TABLE_SIZE_MULTIPLIER;
- 		ale->params.ale_entries = ale_entries;
- 	}
- 	dev_info(ale->params.dev,
 diff --git a/drivers/net/ethernet/ti/cpsw_ale.h b/drivers/net/ethernet/ti/cpsw_ale.h
-index 53ad4246617e..27b30802b384 100644
+index 9c6da58183c9..5e4a69662c5f 100644
 --- a/drivers/net/ethernet/ti/cpsw_ale.h
 +++ b/drivers/net/ethernet/ti/cpsw_ale.h
-@@ -32,6 +32,7 @@ struct cpsw_ale {
+@@ -28,6 +28,8 @@ struct cpsw_ale_params {
+ 	unsigned long		bus_freq;
+ };
+ 
++struct ale_entry_fld;
++
+ struct cpsw_ale {
+ 	struct cpsw_ale_params	params;
  	struct timer_list	timer;
- 	unsigned long		ageout;
- 	u32			version;
-+	u32			features;
- 	/* These bits are different on NetCP NU Switch ALE */
- 	u32			port_mask_bits;
+@@ -39,6 +41,7 @@ struct cpsw_ale {
  	u32			port_num_bits;
+ 	u32			vlan_field_bits;
+ 	unsigned long		*p0_untag_vid_mask;
++	const struct ale_entry_fld *vlan_entry_tbl;
+ };
+ 
+ enum cpsw_ale_control {
 -- 
 2.17.1
 
