@@ -2,92 +2,160 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B8C525F518
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Sep 2020 10:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20D6C25F693
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Sep 2020 11:36:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727943AbgIGI0L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Sep 2020 04:26:11 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:41822 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728225AbgIGI0J (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Sep 2020 04:26:09 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0878Q7kW092459;
-        Mon, 7 Sep 2020 03:26:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1599467167;
-        bh=+9IVZ6g+HmgWB90pOJtgDqW8uGH1+adNPd3FFT+Rh0U=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=jmp9cug1TXFaExrVzoA8GibrmHxGhGO6PDRXzZmQWP/a10zzNq0nyIC1qkKJDYr8a
-         LngztxCStsnrrrV0U5fs0EivX4VD7qR08+J73OCofECif2Zp2FgBsgICb1QluoMrRf
-         q16vRUyYCIVTDTva08g6JZmUKrt2ORGtp9Ygxdhw=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0878Q6L3075747
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 7 Sep 2020 03:26:07 -0500
-Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 7 Sep
- 2020 03:26:06 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 7 Sep 2020 03:26:06 -0500
-Received: from sokoban.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0878Q1YJ087957;
-        Mon, 7 Sep 2020 03:26:05 -0500
-From:   Tero Kristo <t-kristo@ti.com>
-To:     <linux-clk@vger.kernel.org>, <sboyd@kernel.org>
-CC:     <linux-omap@vger.kernel.org>
-Subject: [PATCH 3/3] clk: ti: dra7: add missing clkctrl register for SHA2 instance
-Date:   Mon, 7 Sep 2020 11:26:00 +0300
-Message-ID: <20200907082600.454-4-t-kristo@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200907082600.454-1-t-kristo@ti.com>
-References: <20200907082600.454-1-t-kristo@ti.com>
+        id S1728199AbgIGJgK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Sep 2020 05:36:10 -0400
+Received: from foss.arm.com ([217.140.110.172]:58790 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727122AbgIGJgH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 7 Sep 2020 05:36:07 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D06430E;
+        Mon,  7 Sep 2020 02:36:06 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1BF733F66E;
+        Mon,  7 Sep 2020 02:36:01 -0700 (PDT)
+Date:   Mon, 7 Sep 2020 10:35:58 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dilip Kota <eswara.kota@linux.intel.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        Yue Wang <yue.wang@Amlogic.com>, Marc Zyngier <maz@kernel.org>,
+        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v2 00/40] PCI: dwc: Driver clean-ups
+Message-ID: <20200907093558.GC6428@e121166-lin.cambridge.arm.com>
+References: <20200821035420.380495-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200821035420.380495-1-robh@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-DRA7 SoC has two SHA instances. Add the clkctrl entry for the second
-one.
+On Thu, Aug 20, 2020 at 09:53:40PM -0600, Rob Herring wrote:
+> This is a series of clean-ups for the Designware PCI driver. The series
+> initially reworks the config space accessors to use the existing pci_ops
+> struct. Then there's removal of various private data that's also present
+> in the pci_host_bridge struct. There's also some duplicated common (PCI
+> and DWC) register defines which I converted to use the common defines.
+> Finally, the initialization for speed/gen, number of lanes, and N_FTS
+> are all moved to the common DWC code.
+> 
+> This is compile tested only as I don't have any DWC based h/w, so any
+> testing would be helpful. A branch is here[1].
 
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
----
- drivers/clk/ti/clk-7xx.c         | 1 +
- include/dt-bindings/clock/dra7.h | 1 +
- 2 files changed, 2 insertions(+)
+Applied the series to pci/dwc, thanks.
 
-diff --git a/drivers/clk/ti/clk-7xx.c b/drivers/clk/ti/clk-7xx.c
-index b4cf578a69e1..4e27f88062e7 100644
---- a/drivers/clk/ti/clk-7xx.c
-+++ b/drivers/clk/ti/clk-7xx.c
-@@ -637,6 +637,7 @@ static const struct omap_clkctrl_reg_data dra7_l4sec_clkctrl_regs[] __initconst
- 	{ DRA7_L4SEC_DES_CLKCTRL, NULL, CLKF_HW_SUP, "l3_iclk_div" },
- 	{ DRA7_L4SEC_RNG_CLKCTRL, NULL, CLKF_HW_SUP | CLKF_SOC_NONSEC, "l4_root_clk_div" },
- 	{ DRA7_L4SEC_SHAM_CLKCTRL, NULL, CLKF_HW_SUP, "l3_iclk_div" },
-+	{ DRA7_L4SEC_SHAM2_CLKCTRL, NULL, CLKF_HW_SUP, "l3_iclk_div" },
- 	{ 0 },
- };
- 
-diff --git a/include/dt-bindings/clock/dra7.h b/include/dt-bindings/clock/dra7.h
-index 8cec5a1e1806..5ec4137231e3 100644
---- a/include/dt-bindings/clock/dra7.h
-+++ b/include/dt-bindings/clock/dra7.h
-@@ -332,6 +332,7 @@
- #define DRA7_L4SEC_DES_CLKCTRL	DRA7_L4SEC_CLKCTRL_INDEX(0x1b0)
- #define DRA7_L4SEC_RNG_CLKCTRL	DRA7_L4SEC_CLKCTRL_INDEX(0x1c0)
- #define DRA7_L4SEC_SHAM_CLKCTRL	DRA7_L4SEC_CLKCTRL_INDEX(0x1c8)
-+#define DRA7_L4SEC_SHAM2_CLKCTRL DRA7_L4SEC_CLKCTRL_INDEX(0x1f8)
- 
- /* l4per2 clocks */
- #define DRA7_L4PER2_CLKCTRL_OFFSET	0xc
--- 
-2.17.1
+Lorenzo
 
---
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> Rob
+> 
+> [1] git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git pci-dw-cleanups
+> 
+> Rob Herring (40):
+>   PCI: Allow root and child buses to have different pci_ops
+>   PCI: dwc: Use DBI accessors instead of own config accessors
+>   PCI: dwc: Allow overriding bridge pci_ops
+>   PCI: dwc: Add a default pci_ops.map_bus for root port
+>   PCI: dwc: al: Use pci_ops for child config space accessors
+>   PCI: dwc: keystone: Use pci_ops for config space accessors
+>   PCI: dwc: tegra: Use pci_ops for root config space accessors
+>   PCI: dwc: meson: Use pci_ops for root config space accessors
+>   PCI: dwc: kirin: Use pci_ops for root config space accessors
+>   PCI: dwc: exynos: Use pci_ops for root config space accessors
+>   PCI: dwc: histb: Use pci_ops for root config space accessors
+>   PCI: dwc: Remove dwc specific config accessor ops
+>   PCI: dwc: Use generic config accessors
+>   PCI: Also call .add_bus() callback for root bus
+>   PCI: dwc: keystone: Convert .scan_bus() callback to use add_bus
+>   PCI: dwc: Convert to use pci_host_probe()
+>   PCI: dwc: Remove root_bus pointer
+>   PCI: dwc: Remove storing of PCI resources
+>   PCI: dwc: Simplify config space handling
+>   PCI: dwc/keystone: Drop duplicated 'num-viewport'
+>   PCI: dwc: Check CONFIG_PCI_MSI inside dw_pcie_msi_init()
+>   PCI: dwc/imx6: Remove duplicate define PCIE_LINK_WIDTH_SPEED_CONTROL
+>   PCI: dwc: Add a 'num_lanes' field to struct dw_pcie
+>   PCI: dwc: Ensure FAST_LINK_MODE is cleared
+>   PCI: dwc/meson: Drop the duplicate number of lanes setup
+>   PCI: dwc/meson: Drop unnecessary RC config space initialization
+>   PCI: dwc/meson: Rework PCI config and DW port logic register accesses
+>   PCI: dwc/imx6: Use common PCI register definitions
+>   PCI: dwc/qcom: Use common PCI register definitions
+>   PCI: dwc: Remove hardcoded PCI_CAP_ID_EXP offset
+>   PCI: dwc/tegra: Use common Designware port logic register definitions
+>   PCI: dwc: Remove read_dbi2 code
+>   PCI: dwc: Make ATU accessors private
+>   PCI: dwc: Centralize link gen setting
+>   PCI: dwc: Set PORT_LINK_DLL_LINK_EN in common setup code
+>   PCI: dwc/intel-gw: Drop unnecessary checking of DT 'device_type'
+>     property
+>   PCI: dwc/intel-gw: Move getting PCI_CAP_ID_EXP offset to
+>     intel_pcie_link_setup()
+>   PCI: dwc/intel-gw: Drop unused max_width
+>   PCI: dwc: Move N_FTS setup to common setup
+>   PCI: dwc: Use DBI accessors
+> 
+>  drivers/pci/controller/dwc/pci-dra7xx.c       |  29 +-
+>  drivers/pci/controller/dwc/pci-exynos.c       |  45 +--
+>  drivers/pci/controller/dwc/pci-imx6.c         |  52 +--
+>  drivers/pci/controller/dwc/pci-keystone.c     | 126 ++-----
+>  drivers/pci/controller/dwc/pci-meson.c        | 156 ++-------
+>  drivers/pci/controller/dwc/pcie-al.c          |  70 +---
+>  drivers/pci/controller/dwc/pcie-artpec6.c     |  48 +--
+>  .../pci/controller/dwc/pcie-designware-ep.c   |  11 +-
+>  .../pci/controller/dwc/pcie-designware-host.c | 319 ++++++------------
+>  .../pci/controller/dwc/pcie-designware-plat.c |   4 +-
+>  drivers/pci/controller/dwc/pcie-designware.c  | 104 +++---
+>  drivers/pci/controller/dwc/pcie-designware.h  |  54 +--
+>  drivers/pci/controller/dwc/pcie-histb.c       |  45 +--
+>  drivers/pci/controller/dwc/pcie-intel-gw.c    |  65 +---
+>  drivers/pci/controller/dwc/pcie-kirin.c       |  43 +--
+>  drivers/pci/controller/dwc/pcie-qcom.c        |  33 +-
+>  drivers/pci/controller/dwc/pcie-spear13xx.c   |  39 +--
+>  drivers/pci/controller/dwc/pcie-tegra194.c    | 120 ++-----
+>  drivers/pci/controller/dwc/pcie-uniphier.c    |   3 +-
+>  drivers/pci/probe.c                           |  14 +-
+>  include/linux/pci.h                           |   1 +
+>  21 files changed, 443 insertions(+), 938 deletions(-)
+> 
+> --
+> 2.25.1
