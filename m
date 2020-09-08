@@ -2,135 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2AF02610EC
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Sep 2020 13:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BE882621F2
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Sep 2020 23:30:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730158AbgIHLjv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Sep 2020 07:39:51 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:43108 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729896AbgIHLiX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Sep 2020 07:38:23 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200908113655euoutp02032458bd2defe632252681b45363d8d7~yy_gjdV_d3145731457euoutp02k
-        for <linux-omap@vger.kernel.org>; Tue,  8 Sep 2020 11:36:55 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200908113655euoutp02032458bd2defe632252681b45363d8d7~yy_gjdV_d3145731457euoutp02k
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1599565015;
-        bh=xBskEF8d1EaE+h1II+yeE2r2YHnzRhz5IYvNlirWK/U=;
-        h=From:Subject:To:Cc:Date:In-Reply-To:References:From;
-        b=szkwM5rwjV8Az6BO4K0lGFrRTFrg4iERQPhY1puk8WsG8VI0BVx7fAxmAAkvs6qD6
-         pkSMuoyiWjww4HY2/lOz3khPUaS6F7dYZuwHkRinddEkLh4rB1ShdBbLhQOZ2g3Sco
-         QR9wZzGgJmS/+jbdxWWtj4iJSPpK88GzFtnHx6XA=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200908113655eucas1p1750d3149c36df0fe07f7e36a321306bc~yy_gF2e020115401154eucas1p1E;
-        Tue,  8 Sep 2020 11:36:55 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id 00.45.05997.7DC675F5; Tue,  8
-        Sep 2020 12:36:55 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113654eucas1p1540e6015986866bc75c7f51ea4815490~yy_f13_Yx2000020000eucas1p1F;
-        Tue,  8 Sep 2020 11:36:54 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200908113654eusmtrp18a1cf0970b5a56dbd144ab60be8a1ee9~yy_f1QlUZ2002820028eusmtrp1v;
-        Tue,  8 Sep 2020 11:36:54 +0000 (GMT)
-X-AuditID: cbfec7f4-65dff7000000176d-6a-5f576cd7a1f9
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 11.C1.06314.6DC675F5; Tue,  8
-        Sep 2020 12:36:54 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200908113654eusmtip21b1d13c6e0d4bbbfbc9e05aa7cee36d4~yy_ffppHa1101211012eusmtip2x;
-        Tue,  8 Sep 2020 11:36:54 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: Re: [PATCH] omapfb: fix spelling mistake "propert" -> "property"
-To:     Colin King <colin.king@canonical.com>
-Cc:     linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-ID: <ce1d7ff3-fd1e-e6d8-706b-665db8411675@samsung.com>
-Date:   Tue, 8 Sep 2020 13:36:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.8.0
+        id S1728954AbgIHVav (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Sep 2020 17:30:51 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:36202 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728164AbgIHVau (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Sep 2020 17:30:50 -0400
+Received: by mail-io1-f66.google.com with SMTP id d190so974820iof.3;
+        Tue, 08 Sep 2020 14:30:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=tZ2tqeTxfdvHhXI4fYGCLG+ZG+/0E7uL33/3l5leCNU=;
+        b=i7zspWjDwFOU9ZdSsftLdoVhxt0DuIrjaUYJ5Y07vB2qcjgWLXxiZLn/d/sutKrulB
+         ePXx/BodmKDhvIO6fTJ0Ixoui7jDJikPfMZvm6vQeVzeqDnU5aSWGEuMr42AoJfSbLGT
+         ILq6FADYl17bMOWwGIShcpK75et9OXUlqwzEwJdLAoYet3/sbBWmApY7/upIB07r+3rg
+         H8xsTRmTFfLKncKs3qm95uYvpfuaoaVYDsliY2SOvm4dQe1szO8u5EOz4UMlTIMBJUsr
+         y5jEwTJHwAZ5I6IqBiA8D2PXWIX945s5Y0h2sExvs0EeyphfB2ENKSi64yKUFIxQ7t9T
+         wbkg==
+X-Gm-Message-State: AOAM530gUoMC76IY6qK+p/dYo+GDZkVHFeZFVLjMExY/WhwLRLsNByZB
+        gJCVgxvNunKiFc4nwYJD/EAsP5AfBk3P
+X-Google-Smtp-Source: ABdhPJwbYpkWxvkS0JzZDhjXoVmIf3BcFupaddawmTGlHFebiItQ6YyIOv77w6zWGeepGibLLVoAwA==
+X-Received: by 2002:a6b:700f:: with SMTP id l15mr780998ioc.168.1599600649372;
+        Tue, 08 Sep 2020 14:30:49 -0700 (PDT)
+Received: from xps15 ([64.188.179.251])
+        by smtp.gmail.com with ESMTPSA id k14sm280985ioa.7.2020.09.08.14.30.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2020 14:30:48 -0700 (PDT)
+Received: (nullmailer pid 959278 invoked by uid 1000);
+        Tue, 08 Sep 2020 21:30:47 -0000
+Date:   Tue, 8 Sep 2020 15:30:47 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, Roger Quadros <rogerq@ti.com>,
+        ssantosh@kernel.org, devicetree@vger.kernel.org, praneeth@ti.com,
+        santosh.shilimkar@oracle.com, s-anna@ti.com, robh+dt@kernel.org,
+        tony@atomide.com, linux-omap@vger.kernel.org, lee.jones@linaro.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/7] dt-bindings: soc: ti: Add TI PRUSS bindings
+Message-ID: <20200908213047.GA959249@bogus>
+References: <1598020964-29877-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+ <1598020964-29877-2-git-send-email-grzegorz.jaszczyk@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <20200805102805.15353-1-colin.king@canonical.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprNKsWRmVeSWpSXmKPExsWy7djP87rXc8LjDSbdYbL4vbqXzeLK1/ds
-        FltvSVuc6PvAanF51xw2i9lL+lkc2DxmNfSyedzvPs7k8XmTXABzFJdNSmpOZllqkb5dAlfG
-        3zNP2QqWc1TMOLievYHxPVsXIyeHhICJxNTZi1i6GLk4hARWMEq8Wf6JEcL5wijROOkHM4Tz
-        mVFi/pVtTDAtq/58YoVILGeUWHCnB6rlLaPEnNmfWUGq2ASsJCa2r2IEsYUFPCW6/l0EWsjB
-        ISKgKXH+XBFIPbPAfEaJPZsXgh3CK2An8WL6fjCbRUBF4vTzmcwgtqhAhMSnB4dZIWoEJU7O
-        fMICYnMC1U9p3AB2EbOAuMStJ/OhbHmJ7W/nMENcuohdYt9LqKtdJF4uWQ71tLDEq+Nb2CFs
-        GYnTk3vAASAhsI5R4m/HC2YIZzujxPLJ/6A6rCXunPsF9gEz0Afrd+lDhB0l7pxYzgISlhDg
-        k7jxVhDiBj6JSdumM0OEeSU62oQgqtUkNizbwAaztmvnSuYJjEqzkHw2C8k3s5B8Mwth7wJG
-        llWM4qmlxbnpqcVGeanlesWJucWleel6yfm5mxiBSeb0v+NfdjDu+pN0iFGAg1GJh/eDV1i8
-        EGtiWXFl7iFGCQ5mJRFep7On44R4UxIrq1KL8uOLSnNSiw8xSnOwKInzGi96GSskkJ5Ykpqd
-        mlqQWgSTZeLglGpg1Jh2/pvfnhzJ2eV90tqCX0KjOmM/RQYvEPMofNT9avlKfp6SyIT94hUd
-        GS+OW0y+zq1ybymPyKuY/+u0WP/7ms1YZ7QoYDGbQL+M+EfuyihTQ9vnpto2d25pr908rWW3
-        R7r7EbXiqytV7G6lSh1KKkifWGy19P+G+LY4xamin7njddqPrm5XYinOSDTUYi4qTgQAUOjl
-        XS4DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrDIsWRmVeSWpSXmKPExsVy+t/xe7rXcsLjDa7v1rH4vbqXzeLK1/ds
-        FltvSVuc6PvAanF51xw2i9lL+lkc2DxmNfSyedzvPs7k8XmTXABzlJ5NUX5pSapCRn5xia1S
-        tKGFkZ6hpYWekYmlnqGxeayVkamSvp1NSmpOZllqkb5dgl7G3zNP2QqWc1TMOLievYHxPVsX
-        IyeHhICJxKo/n1i7GLk4hASWMkq0dm5n6mLkAErISBxfXwZRIyzx51oXWL2QwGtGib2TmEFs
-        NgEriYntqxhBbGEBT4mufxfZQFpFBDQlzp8rAhnJLDCfUeLNy7VMEPMnMkrs/HkUrJlXwE7i
-        xfT9YENZBFQkTj+fCRYXFYiQOLxjFiNEjaDEyZlPWEBsTqD6KY0bmEBsZgF1iT/zLjFD2OIS
-        t57Mh4rLS2x/O4d5AqPQLCTts5C0zELSMgtJywJGllWMIqmlxbnpucWGesWJucWleel6yfm5
-        mxiBMbXt2M/NOxgvbQw+xCjAwajEw/vBKyxeiDWxrLgy9xCjBAezkgiv09nTcUK8KYmVValF
-        +fFFpTmpxYcYTYGem8gsJZqcD4z3vJJ4Q1NDcwtLQ3Njc2MzCyVx3g6BgzFCAumJJanZqakF
-        qUUwfUwcnFINjKoPE49cmSLze4Kv0rmHq0Inz5pZJlgfyVGsrSWYkJA78a341sMmjHtdQ3ax
-        yKdMytnF0BW9ey7T2msJ96UrH/7ddVqgY9WqzLz2i59UX2o7hq+sbcyb+Ld4b4zRioKTAdH5
-        /2ZnTjlcuvDw3Potb75v5He/vM4z4HNhZcK7CKv0Od8vSykoRyqxFGckGmoxFxUnAgCrzWhr
-        vwIAAA==
-X-CMS-MailID: 20200908113654eucas1p1540e6015986866bc75c7f51ea4815490
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200805102810eucas1p27af2db275089d0e815f59da56cf204a6
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200805102810eucas1p27af2db275089d0e815f59da56cf204a6
-References: <CGME20200805102810eucas1p27af2db275089d0e815f59da56cf204a6@eucas1p2.samsung.com>
-        <20200805102805.15353-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1598020964-29877-2-git-send-email-grzegorz.jaszczyk@linaro.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-On 8/5/20 12:28 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Fri, 21 Aug 2020 16:42:38 +0200, Grzegorz Jaszczyk wrote:
+> This patch adds the bindings for the Programmable Real-Time Unit
+> and Industrial Communication Subsystem (PRU-ICSS) present on various
+> TI SoCs. The IP is present on multiple TI SoC architecture families
+> including the OMAP architecture SoCs such as AM33xx, AM437x and
+> AM57xx; and on a Keystone 2 architecture based 66AK2G SoC. It is
+> also present on the Davinci based OMAPL138 SoCs and K3 architecture
+> based AM65x and J721E SoCs as well.
 > 
-> There is a spelling mistake in a pr_err message. Fix it.
+> The IP has a number of sub-modules some of which are represented as
+> their own devices. This binding covers only the top-level sub-system
+> devices, and some sub-modules like MDIO, MII_RT (Ethernet MII_RT module
+> with MII ports) and IEP (Industrial Ethernet Peripheral). The remaining
+> sub-modules bindings shall be defined in the respective driver
+> subsystem bindings folders. Couple of full examples have also been
+> added demonstrating the devices on AM335x and AM437x SoCs.
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Applied to drm-misc-next tree, thanks.
-
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
-
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> Signed-off-by: Roger Quadros <rogerq@ti.com>
+> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
 > ---
->  drivers/video/fbdev/omap2/omapfb/dss/venc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v1-v2 (requested by Rob):
+> - Add unit address pattern for all sub-nodes.
+> - Add "additionalProperties: false" to all sub-nodes and entire
+>   description. This allow to catch and fix some issues like missing
+>   "#address-cells" property description.
+> - Drop ranges description.
+> - Fix compatible name in example binding for AM43xx.
+> - Drop the *.yaml references from description as they are not merged yet
+>   and therefore they can't be converted to $ref.
+> - Drop reviewed-by tag due to introduced changes.
+> ---
+>  .../devicetree/bindings/soc/ti/ti,pruss.yaml       | 320 +++++++++++++++++++++
+>  1 file changed, 320 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
 > 
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-> index 0b0ad20afd63..f560fa4d7786 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-> @@ -787,7 +787,7 @@ static int venc_probe_of(struct platform_device *pdev)
->  		venc.type = OMAP_DSS_VENC_TYPE_SVIDEO;
->  		break;
->  	default:
-> -		dev_err(&pdev->dev, "bad channel propert '%d'\n", channels);
-> +		dev_err(&pdev->dev, "bad channel property '%d'\n", channels);
->  		r = -EINVAL;
->  		goto err;
->  	}
-> 
+
+Reviewed-by: Rob Herring <robh@kernel.org>
