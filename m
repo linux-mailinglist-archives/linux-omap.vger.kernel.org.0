@@ -2,68 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FD1526336E
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Sep 2020 19:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 062382636CB
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Sep 2020 21:47:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730294AbgIIRDo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Sep 2020 13:03:44 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:11759 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730349AbgIIPq3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Sep 2020 11:46:29 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id CEF1D1ADD43EFCF8CF07;
-        Wed,  9 Sep 2020 21:44:58 +0800 (CST)
-Received: from localhost (10.174.179.108) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Wed, 9 Sep 2020
- 21:44:49 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <edubezval@gmail.com>, <j-keerthy@ti.com>, <rui.zhang@intel.com>,
-        <daniel.lezcano@linaro.org>, <amitk@kernel.org>,
-        <sudipm.mukherjee@gmail.com>
-CC:     <linux-pm@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] thermal: ti-soc-thermal: Remove unused function ti_thermal_get_temp()
-Date:   Wed, 9 Sep 2020 21:44:48 +0800
-Message-ID: <20200909134448.30344-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1726408AbgIITrY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Sep 2020 15:47:24 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:52314 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726184AbgIITrW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Sep 2020 15:47:22 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 089JlEk6043812;
+        Wed, 9 Sep 2020 14:47:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1599680834;
+        bh=hyeMXjel84UV7AF54SUwa8AymegmYGcJAwI92mILVZ8=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=m/C/r4R4krbBRVuNz47YCnpmQttF4XBgtFafuP/yP+Omw/B8axuFhyxeyajG7rsS4
+         aSDq9mgAfA8290/s4+t3OSbDiJXmH7mRhRUMo5PrBZ2Rc5YtLN643o/WGD/6vAH8+T
+         CmUKwpGcHaNKtGseokSFr0dV/8YizjbPosrZ5HiE=
+Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 089JlEd2055518
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 9 Sep 2020 14:47:14 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 9 Sep
+ 2020 14:47:13 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 9 Sep 2020 14:47:13 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 089JlACC025704;
+        Wed, 9 Sep 2020 14:47:12 -0500
+Subject: Re: omap1 and __arch_pfn_to_dma
+To:     Tony Lindgren <tony@atomide.com>, Christoph Hellwig <hch@lst.de>
+CC:     Aaro Koskinen <aaro.koskinen@iki.fi>, <linux-omap@vger.kernel.org>
+References: <20200908092831.GA20123@lst.de>
+ <20200909055552.GA2747@atomide.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <065869e4-7528-f41c-26f2-5fd5e5f64959@ti.com>
+Date:   Wed, 9 Sep 2020 22:47:08 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.108]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20200909055552.GA2747@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-commit b263b473bf62 ("thermal: ti-soc-thermal: Remove redundant code")
-left behind this, remove it.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 8 --------
- 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-index 2ce4b19f312a..93b28c7ce83d 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -106,14 +106,6 @@ static inline int __ti_thermal_get_temp(void *devdata, int *temp)
- 	return ret;
- }
- 
--static inline int ti_thermal_get_temp(struct thermal_zone_device *thermal,
--				      int *temp)
--{
--	struct ti_thermal_data *data = thermal->devdata;
--
--	return __ti_thermal_get_temp(data, temp);
--}
--
- static int __ti_thermal_get_trend(void *p, int trip, enum thermal_trend *trend)
- {
- 	struct ti_thermal_data *data = p;
+On 09/09/2020 08:55, Tony Lindgren wrote:
+> Hi,
+> 
+> * Christoph Hellwig <hch@lst.de> [200908 09:28]:
+>> Hi Aaro and Tony,
+>>
+>> omap1 is the last arm platform implementing __arch_pfn_to_dma and
+>> __arch_dma_to_pfn.  Any chance you could help converting them to
+>> use the dma pfn offset in struct device [1] instead?
+> 
+> Sounds like a plan, however I don't have currently access to my omap1
+> devices and won't for about a month. Aaro care to look at this?
+> 
+
+FYI.
+Seems arch/arm/mach-keystone/keystone.c can be used as reference.
+
+> 
+>> p1] which we are also reworking to support multiple ranges, but I
+>> can help with fixing that up easily
+
 -- 
-2.17.1
-
-
+Best regards,
+grygorii
