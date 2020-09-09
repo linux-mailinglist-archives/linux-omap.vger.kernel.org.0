@@ -2,232 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E7D226266B
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Sep 2020 06:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 220A72626D1
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Sep 2020 07:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725821AbgIIEnR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Sep 2020 00:43:17 -0400
-Received: from mga05.intel.com ([192.55.52.43]:6079 "EHLO mga05.intel.com"
+        id S1725807AbgIIFnI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Sep 2020 01:43:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57214 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725811AbgIIEnQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Sep 2020 00:43:16 -0400
-IronPort-SDR: la5aqwbYGXrIofkVI0ifI7YL9OK/Vyfv2h0yhBVdi6+85TWvcDPK2pD3b/td6eLTwKa2cceGNn
- cqKrklyHE5nQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9738"; a="243084175"
-X-IronPort-AV: E=Sophos;i="5.76,408,1592895600"; 
-   d="scan'208";a="243084175"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2020 21:43:15 -0700
-IronPort-SDR: qudUQnPsndW+/4lmp0X2l/xnS7mqJ3YCPXx/wHYzaCd0IzVPT1yErdmrl6GW8KvkStdiRV0U8W
- nfQoPVNcajQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,408,1592895600"; 
-   d="scan'208";a="505319925"
-Received: from lkp-server01.sh.intel.com (HELO 12ff3cf3f2e9) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 08 Sep 2020 21:43:14 -0700
-Received: from kbuild by 12ff3cf3f2e9 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kFrwv-00001N-En; Wed, 09 Sep 2020 04:43:13 +0000
-Date:   Wed, 09 Sep 2020 12:42:21 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/fixes] BUILD SUCCESS
- 51609fba0cca69206a213171ce0cdf2dfc9cb21d
-Message-ID: <5f585d2d.Ag27ON0pIxLGRQvc%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1725772AbgIIFnI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 9 Sep 2020 01:43:08 -0400
+Received: from saruman (91-155-214-58.elisa-laajakaista.fi [91.155.214.58])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2C8BB21582;
+        Wed,  9 Sep 2020 05:43:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599630188;
+        bh=iXTO+A9PjdGm/jgigERlLbE44/kLcZMsRTLmZAzQigs=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Z0YICAnc0x3EqMg1qsEH6VCLUn0VLs12mGrREwonX6FyWwXKjoQ39rwQPhBYztv9W
+         Fq8ec90eKeEWBuRBxOk5fhDJiZHsOKxo3CnCnt5hv/eIAxYpfFmmvvpUCrNsIYjZQ+
+         fQeAF62LiJwD3ISXyHsEytykFHnEnlkv0CBkojuU=
+From:   Felipe Balbi <balbi@kernel.org>
+To:     kernel test robot <lkp@intel.com>,
+        Amelie Delaunay <amelie.delaunay@st.com>
+Cc:     kbuild-all@lists.01.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [balbi-usb:testing/next 32/38] drd.c:undefined reference to
+ `usb_role_switch_get_drvdata'
+In-Reply-To: <202009090044.0oZdDUmk%lkp@intel.com>
+References: <202009090044.0oZdDUmk%lkp@intel.com>
+Date:   Wed, 09 Sep 2020 08:42:56 +0300
+Message-ID: <87eenbld3z.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/fixes
-branch HEAD: 51609fba0cca69206a213171ce0cdf2dfc9cb21d  usb: dwc3: simple: add support for Hikey 970
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-elapsed time: 726m
 
-configs tested: 167
-configs skipped: 17
+Hi,
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+kernel test robot <lkp@intel.com> writes:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git tes=
+ting/next
+> head:   3c9722514c3fb74bbe0af87c20bc6b4c47121287
+> commit: a0f0bc95705446b8b1476338056bf869271ba36a [32/38] usb: dwc2: overr=
+ide PHY input signals with usb role switch support
+> config: arc-randconfig-r016-20200908 (attached as .config)
+> compiler: arceb-elf-gcc (GCC) 9.3.0
+> reproduce (this is a W=3D1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbi=
+n/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         git checkout a0f0bc95705446b8b1476338056bf869271ba36a
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-9.3.0 make.cros=
+s ARCH=3Darc=20
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+>
+> All errors (new ones prefixed by >>):
+>
+>    arceb-elf-ld: lib/stackdepot.o: in function `filter_irq_stacks':
+>    stackdepot.c:(.text+0x5a): undefined reference to `__irqentry_text_sta=
+rt'
+>    arceb-elf-ld: stackdepot.c:(.text+0x5a): undefined reference to `__irq=
+entry_text_start'
+>    arceb-elf-ld: stackdepot.c:(.text+0x62): undefined reference to `__irq=
+entry_text_end'
+>    arceb-elf-ld: stackdepot.c:(.text+0x62): undefined reference to `__irq=
+entry_text_end'
+>    arceb-elf-ld: stackdepot.c:(.text+0x6a): undefined reference to `__sof=
+tirqentry_text_start'
+>    arceb-elf-ld: stackdepot.c:(.text+0x6a): undefined reference to `__sof=
+tirqentry_text_start'
+>    arceb-elf-ld: stackdepot.c:(.text+0x72): undefined reference to `__sof=
+tirqentry_text_end'
+>    arceb-elf-ld: stackdepot.c:(.text+0x72): undefined reference to `__sof=
+tirqentry_text_end'
+>    arceb-elf-ld: drivers/usb/dwc2/drd.o: in function `dwc2_drd_role_sw_se=
+t':
+>>> drd.c:(.text+0x82): undefined reference to `usb_role_switch_get_drvdata'
+>>> arceb-elf-ld: drd.c:(.text+0x82): undefined reference to `usb_role_swit=
+ch_get_drvdata'
+>    arceb-elf-ld: drivers/usb/dwc2/drd.o: in function `dwc2_drd_init':
+>>> drd.c:(.text+0x1c0): undefined reference to `usb_role_switch_register'
+>>> arceb-elf-ld: drd.c:(.text+0x1c0): undefined reference to `usb_role_swi=
+tch_register'
+>    arceb-elf-ld: drivers/usb/dwc2/drd.o: in function `dwc2_drd_exit':
+>>> drd.c:(.text+0x2c4): undefined reference to `usb_role_switch_unregister'
+>>> arceb-elf-ld: drd.c:(.text+0x2c4): undefined reference to `usb_role_swi=
+tch_unregister'
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm                       omap2plus_defconfig
-powerpc                    adder875_defconfig
-mips                            ar7_defconfig
-arm                           omap1_defconfig
-sh                           se7619_defconfig
-mips                           ip28_defconfig
-mips                          malta_defconfig
-powerpc                       holly_defconfig
-arm                        mvebu_v7_defconfig
-arc                     nsimosci_hs_defconfig
-sh                        sh7763rdp_defconfig
-sh                          r7785rp_defconfig
-mips                           rs90_defconfig
-m68k                       m5275evb_defconfig
-arm                          exynos_defconfig
-mips                malta_kvm_guest_defconfig
-m68k                        m5407c3_defconfig
-c6x                              allyesconfig
-mips                            gpr_defconfig
-sh                           se7780_defconfig
-powerpc                           allnoconfig
-s390                       zfcpdump_defconfig
-nios2                               defconfig
-arc                        vdk_hs38_defconfig
-ia64                      gensparse_defconfig
-c6x                        evmc6457_defconfig
-m68k                            q40_defconfig
-sparc                            allyesconfig
-sh                   secureedge5410_defconfig
-um                            kunit_defconfig
-sh                           se7721_defconfig
-sh                                  defconfig
-arm                              zx_defconfig
-arm                  colibri_pxa270_defconfig
-arm                          pxa168_defconfig
-arm                        spear6xx_defconfig
-ia64                          tiger_defconfig
-microblaze                      mmu_defconfig
-powerpc                     mpc512x_defconfig
-arm                          collie_defconfig
-arm                          moxart_defconfig
-mips                     cu1000-neo_defconfig
-arc                            hsdk_defconfig
-powerpc                          allmodconfig
-s390                                defconfig
-arm                         hackkit_defconfig
-powerpc                 linkstation_defconfig
-arm                      footbridge_defconfig
-xtensa                              defconfig
-c6x                         dsk6455_defconfig
-h8300                            alldefconfig
-sh                        sh7785lcr_defconfig
-arc                          axs103_defconfig
-mips                         rt305x_defconfig
-arm                         s3c2410_defconfig
-riscv                            allmodconfig
-m68k                        stmark2_defconfig
-powerpc                         ps3_defconfig
-arm                        trizeps4_defconfig
-powerpc                  mpc885_ads_defconfig
-sh                         apsh4a3a_defconfig
-mips                         tb0287_defconfig
-arc                          axs101_defconfig
-sh                        apsh4ad0a_defconfig
-arm                            zeus_defconfig
-c6x                        evmc6472_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                             defconfig
-x86_64               randconfig-a006-20200907
-x86_64               randconfig-a004-20200907
-x86_64               randconfig-a003-20200907
-x86_64               randconfig-a005-20200907
-x86_64               randconfig-a001-20200907
-x86_64               randconfig-a002-20200907
-i386                 randconfig-a004-20200908
-i386                 randconfig-a005-20200908
-i386                 randconfig-a006-20200908
-i386                 randconfig-a002-20200908
-i386                 randconfig-a001-20200908
-i386                 randconfig-a003-20200908
-i386                 randconfig-a004-20200907
-i386                 randconfig-a005-20200907
-i386                 randconfig-a006-20200907
-i386                 randconfig-a002-20200907
-i386                 randconfig-a003-20200907
-i386                 randconfig-a001-20200907
-i386                 randconfig-a004-20200909
-i386                 randconfig-a005-20200909
-i386                 randconfig-a006-20200909
-i386                 randconfig-a002-20200909
-i386                 randconfig-a001-20200909
-i386                 randconfig-a003-20200909
-x86_64               randconfig-a013-20200908
-x86_64               randconfig-a016-20200908
-x86_64               randconfig-a011-20200908
-x86_64               randconfig-a012-20200908
-x86_64               randconfig-a015-20200908
-x86_64               randconfig-a014-20200908
-i386                 randconfig-a016-20200907
-i386                 randconfig-a015-20200907
-i386                 randconfig-a011-20200907
-i386                 randconfig-a013-20200907
-i386                 randconfig-a014-20200907
-i386                 randconfig-a012-20200907
-i386                 randconfig-a016-20200908
-i386                 randconfig-a015-20200908
-i386                 randconfig-a011-20200908
-i386                 randconfig-a013-20200908
-i386                 randconfig-a014-20200908
-i386                 randconfig-a012-20200908
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Amelie? Have you seen this? Is it ARC-specific?
 
-clang tested configs:
-x86_64               randconfig-a004-20200908
-x86_64               randconfig-a006-20200908
-x86_64               randconfig-a003-20200908
-x86_64               randconfig-a001-20200908
-x86_64               randconfig-a005-20200908
-x86_64               randconfig-a002-20200908
-x86_64               randconfig-a013-20200907
-x86_64               randconfig-a011-20200907
-x86_64               randconfig-a016-20200907
-x86_64               randconfig-a012-20200907
-x86_64               randconfig-a015-20200907
-x86_64               randconfig-a014-20200907
-x86_64               randconfig-a013-20200909
-x86_64               randconfig-a016-20200909
-x86_64               randconfig-a011-20200909
-x86_64               randconfig-a012-20200909
-x86_64               randconfig-a015-20200909
-x86_64               randconfig-a014-20200909
+=2D-=20
+balbi
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJFBAEBCAAvFiEElLzh7wn96CXwjh2IzL64meEamQYFAl9Ya2ARHGJhbGJpQGtl
+cm5lbC5vcmcACgkQzL64meEamQbUORAAks35Ew10yGI3AgEdGslrg/Tt8SDRzEhz
+B3Ytpbl3OS4uIE/t0VG6OjN4wHUYGmK7lmUcvBfKs7rfF8yV3yz6aG0AhctRYG9H
+fDn8YaUJTlDF42i4EszJQbll+kOflZYbOx8LNXxKaY6tQqh6COHMbh5IttQNZysA
+GnS3c5CAyaU9Q5N+4gtFWszjH13vifrxwDCrCOkZb44KtAFoxgWL6aFO8juUXdHP
+SWypfNcV9Rl6kqw2RT7SLuGTJ+tszphzwHTs8klwFjElVJWTpR1UOOaUT0JmOdzw
+GfpdHVoXpYQyJleaH1jY0nSkxSG/Jx8yypPl9ZBWG3YtmA6QcZAgQm9lN8lB2krG
+osrN5O5QBPe8FPpOYPLHacnbpCFEVwW2MA6PqMtW181NVZUpa5goY+p8c4ekfWsq
+ukn2cHdODK38KF5Osg96KNzh8Yc3qJ1sTeD2/yvN81bDQsdqNzoQhZOFE93mNZNO
+6VZFQXDdDZZUfwl0C0IJIQQBhxYfiJCYB+pPjabSGIH6nQre1RjePvVbx85iEnNe
+wr5EJvpEXHNcFEBBd0l7vQtP47ONaVsckkUT8w1yVH0DpcoqduHfrJSSay7ux6x9
+MZQU+H2dnszuJlte93/5WMaWOQmzX6JznK0YXEdtOvyBss7R0GoAPNQe+AjWeUPx
+xxMwLOs7VC8=
+=gaVA
+-----END PGP SIGNATURE-----
+--=-=-=--
