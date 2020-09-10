@@ -2,47 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6861626515B
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 22:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC6E5265503
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Sep 2020 00:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727113AbgIJUxI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Sep 2020 16:53:08 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:59268 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726722AbgIJUwn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Sep 2020 16:52:43 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 08AKqcEd034925;
-        Thu, 10 Sep 2020 15:52:38 -0500
+        id S1725791AbgIJWZY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Sep 2020 18:25:24 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:41410 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725763AbgIJWZW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Sep 2020 18:25:22 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 08AMPIU0090114;
+        Thu, 10 Sep 2020 17:25:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1599771158;
-        bh=t7k46oT9pdpc2te28RZVzUBs6yLYoN9qqxmc9rN0uSU=;
+        s=ti-com-17Q1; t=1599776718;
+        bh=GjMJP+nWCUtiQwNsarcqurRBqCFISUNVgzR2BTmparY=;
         h=From:To:CC:Subject:Date;
-        b=undEP0rsph6DlL2R+xPaLD+9BEhykMfEuAMAd6MROCbwOSHDWlrrnxbB2P5w7PM7S
-         NYHBw2TKvjWRWN7pRFQzEzdgP4qtgc5lGZeobOXAJ3oND4Gwv90iwbMjpGviciHhTO
-         NfwwqW5fkZ9i0gdky4FFT9Fu/kM0rtmzQm1Evst4=
-Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKqc5J089725;
-        Thu, 10 Sep 2020 15:52:38 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+        b=F9u6+z1H7wqbOHBaHNRVjb/2Hki0eCW4Q0WDeb408kQoysmWoS3AhGan7yP7la6MU
+         JEsf8QG/bnkZS2YuOwN6PAFk+IjbbeWMlFWi6m6KoYPv2xZ6zaQlxpikTUV705pAnX
+         zJRPEfTaB3rTKZNg3FUtko1+az/kjSNK86MWY25k=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 08AMPIhe091776
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 10 Sep 2020 17:25:18 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 10
- Sep 2020 15:52:38 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ Sep 2020 17:25:17 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 10 Sep 2020 15:52:38 -0500
+ Frontend Transport; Thu, 10 Sep 2020 17:25:17 -0500
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKqbEN070224;
-        Thu, 10 Sep 2020 15:52:37 -0500
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AMPGr5017546;
+        Thu, 10 Sep 2020 17:25:17 -0500
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
-To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+To:     Tony Lindgren <tony@atomide.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH] net: ethernet: ti: cpsw_new: fix suspend/resume
-Date:   Thu, 10 Sep 2020 23:52:29 +0300
-Message-ID: <20200910205229.21288-1-grygorii.strashko@ti.com>
+Subject: [PATCH next 0/3] ARM: dts: am437x: switch to new cpsw switch drv
+Date:   Fri, 11 Sep 2020 01:25:05 +0300
+Message-ID: <20200910222508.32417-1-grygorii.strashko@ti.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -52,89 +55,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add missed suspend/resume callbacks to properly restore networking after
-suspend/resume cycle.
+Hi Tony,
 
-Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
----
- drivers/net/ethernet/ti/cpsw_new.c | 53 ++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+Since Kernel v5.5 commits:
+ 111cf1ab4da3 ("net: ethernet: ti: introduce cpsw switchdev based driver part 2 - switch")
+ ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
+the new CPSW driver with switchdev support has been introduced and one
+am571x-idk board was converted to use it. And since that time (Nov 2019) no
+significant issues were reported for the new CPSW driver.
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 8ed78577cded..15672d0a4de6 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -17,6 +17,7 @@
- #include <linux/phy.h>
- #include <linux/phy/phy.h>
- #include <linux/delay.h>
-+#include <linux/pinctrl/consumer.h>
- #include <linux/pm_runtime.h>
- #include <linux/gpio/consumer.h>
- #include <linux/of.h>
-@@ -2070,9 +2071,61 @@ static int cpsw_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static int __maybe_unused cpsw_suspend(struct device *dev)
-+{
-+	struct cpsw_common *cpsw = dev_get_drvdata(dev);
-+	int i;
-+
-+	rtnl_lock();
-+
-+	for (i = 0; i < cpsw->data.slaves; i++) {
-+		struct net_device *ndev = cpsw->slaves[i].ndev;
-+
-+		if (!(ndev && netif_running(ndev)))
-+			continue;
-+
-+		cpsw_ndo_stop(ndev);
-+	}
-+
-+	rtnl_unlock();
-+
-+	/* Select sleep pin state */
-+	pinctrl_pm_select_sleep_state(dev);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused cpsw_resume(struct device *dev)
-+{
-+	struct cpsw_common *cpsw = dev_get_drvdata(dev);
-+	int i;
-+
-+	/* Select default pin state */
-+	pinctrl_pm_select_default_state(dev);
-+
-+	/* shut up ASSERT_RTNL() warning in netif_set_real_num_tx/rx_queues */
-+	rtnl_lock();
-+
-+	for (i = 0; i < cpsw->data.slaves; i++) {
-+		struct net_device *ndev = cpsw->slaves[i].ndev;
-+
-+		if (!(ndev && netif_running(ndev)))
-+			continue;
-+
-+		cpsw_ndo_open(ndev);
-+	}
-+
-+	rtnl_unlock();
-+
-+	return 0;
-+}
-+
-+static SIMPLE_DEV_PM_OPS(cpsw_pm_ops, cpsw_suspend, cpsw_resume);
-+
- static struct platform_driver cpsw_driver = {
- 	.driver = {
- 		.name	 = "cpsw-switch",
-+		.pm	 = &cpsw_pm_ops,
- 		.of_match_table = cpsw_of_mtable,
- 	},
- 	.probe = cpsw_probe,
+Therefore it's time to switch all am437x boards to use new cpsw switch
+driver. Those boards have 1 or 2 Ext. ports wired and configured in dual_mac mode
+by default. The dual_mac mode has been preserved the same way between
+legacy and new driver, and one port devices works the same as 1 dual_mac port,
+so it's safe to switch drivers.
+
+Grygorii Strashko (3):
+  ARM: dts: am437x-l4: add dt node for new cpsw switchdev driver
+  ARM: dts: am437x: switch to new cpsw switch drv
+  ARM: dts: am437x-l4: drop legacy cpsw dt node
+
+ arch/arm/boot/dts/am4372.dtsi        |  4 +-
+ arch/arm/boot/dts/am437x-cm-t43.dts  | 14 +++--
+ arch/arm/boot/dts/am437x-gp-evm.dts  | 13 +++--
+ arch/arm/boot/dts/am437x-idk-evm.dts | 13 +++--
+ arch/arm/boot/dts/am437x-l4.dtsi     | 77 +++++++++++++++-------------
+ arch/arm/boot/dts/am437x-sk-evm.dts  | 14 +++--
+ arch/arm/boot/dts/am43x-epos-evm.dts | 13 +++--
+ 7 files changed, 78 insertions(+), 70 deletions(-)
+
 -- 
 2.17.1
 
