@@ -2,88 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2A2D264AAF
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 19:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3FEC264C8D
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 20:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbgIJRHr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Sep 2020 13:07:47 -0400
-Received: from mail-ej1-f66.google.com ([209.85.218.66]:40527 "EHLO
-        mail-ej1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726911AbgIJQyc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Sep 2020 12:54:32 -0400
-Received: by mail-ej1-f66.google.com with SMTP id z22so9728574ejl.7;
-        Thu, 10 Sep 2020 09:54:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=z+RRvOyKYsSB07pFbec6LrWNZNZGtC9Skn84W6Crqbc=;
-        b=mFIRBviG67oPi7GvSQ7YoMkkKwQDBqGPStCwOgxWTo96mbmHDxixw8DSuAuu4tGF0f
-         YRk0s/D8aUvDLD7s8GZsB97DJ9KFxdWV2GCpVkE0026Hplo/KyvZkvnguomhF6uZ8BRv
-         +YxWpg85UQyCDieSLNNIt5UlfUAogNI4BXBTz+rQTyYbx6cnldg0F4S4ABZjXV3sANU9
-         jPv54qXwUiLhR1u14lgW6apJ9AX0KUHlNL/jdiuh2mSS+OEpa3zLXnPYvH4tUay7VcBo
-         LhkOgq/1sStz83zVtT3A5ahpJgtGD2gbPF7PbDS58BdbImACCS0gREdTrkRHw1eu2Aln
-         n0NA==
-X-Gm-Message-State: AOAM532hPN/V8y+ByBW1lmhbhDM49M81B9LgP9dJtfsHYFHOD8kt2xeV
-        H5lPMAgBG4k1KJgqfEbC4lU=
-X-Google-Smtp-Source: ABdhPJyj5xfspeBLG8ppW3CbSisewa6vNwOrvIyYECPfXCHzGxITo2vMAJd3CXmp+RnBY0Xa2JprUQ==
-X-Received: by 2002:a17:906:cf9b:: with SMTP id um27mr9876859ejb.66.1599756856544;
-        Thu, 10 Sep 2020 09:54:16 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.174])
-        by smtp.googlemail.com with ESMTPSA id p20sm7917053eja.18.2020.09.10.09.54.14
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 10 Sep 2020 09:54:15 -0700 (PDT)
-Date:   Thu, 10 Sep 2020 18:54:12 +0200
+        id S1725965AbgIJR6Z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Sep 2020 13:58:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34288 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725807AbgIJR5s (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 10 Sep 2020 13:57:48 -0400
+Received: from localhost.localdomain (unknown [194.230.155.174])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3808820BED;
+        Thu, 10 Sep 2020 17:57:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1599760667;
+        bh=muQ6zjVn/mf+iXsfCUdXzl3dZG6B8J8l8bbNbkMxaHs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=1/dJz17PLrZMeRIjQd6sFEAce0o7eu4K+r0dL+zosiqq0luiYlHoWB51FielsPqaO
+         Wa3TSJxOyAyZi6SExx28ze23dGlUmJasReiKbjSU4S7it/I5rb2rMggP0mkbcOPGUV
+         cSry5a/sdkrgJlogKXiGfjplhGDzzPpiCOwVMjVI=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Rob Herring <robh+dt@kernel.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
+        Russell King <linux@armlinux.org.uk>,
         Jason Cooper <jason@lakedaemon.net>,
         Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
         Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
         Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Stefan Agner <stefan@agner.ch>, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org
-Subject: Re: [PATCH 1/6] dt-bindings: gpio: Convert bindings for NXP PCA953x
- family to dtschema
-Message-ID: <20200910165412.GB11510@kozik-lap>
-References: <20200829094024.31842-1-krzk@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200829094024.31842-1-krzk@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        NXP Linux Team <linux-imx@nxp.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH v2 00/15] ARM: dts: / gpio: Add dtschema for NXP PCA953x and correct dts
+Date:   Thu, 10 Sep 2020 19:57:18 +0200
+Message-Id: <20200910175733.11046-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Aug 29, 2020 at 11:40:19AM +0200, Krzysztof Kozlowski wrote:
-> Convert the NXP PCA953x family of GPIO expanders bindings to device tree
-> schema.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> ---
->  .../devicetree/bindings/gpio/gpio-pca953x.txt |  90 ------------
->  .../bindings/gpio/gpio-pca95xx.yaml           | 138 ++++++++++++++++++
->  .../devicetree/bindings/trivial-devices.yaml  |   4 -
->  3 files changed, 138 insertions(+), 94 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-pca953x.txt
->  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml
->
+Hi,
 
-I will resend the dt-bindings replacing unevaluated ->
-additionalProperties.
+Changes since v1:
+1. Patch 1: Use additionalProperties, Add wakeup-source, Add hogs, Extend example with hogs.
+2. New patches: 3, 4, 5, 6, 7, 9, 10, 12, 14 and 15.
+
+The patches could be picked up independently if dtschema makes sense.
+The fixes for pins make sense anyway, regardless of dtschema.
 
 Best regards,
 Krzysztof
+
+
+Krzysztof Kozlowski (15):
+  dt-bindings: gpio: convert bindings for NXP PCA953x family to dtschema
+  dt-bindings: gpio: convert bindings for Maxim MAX732x family to
+    dtschema
+  arm64: dts: mediatek: fix tca6416 reset GPIOs in pumpkin
+  arm64: dts: mediatek: align GPIO hog names with dtschema
+  arm64: dts: renesas: align GPIO hog names with dtschema
+  arm64: dts: ti: align GPIO hog names with dtschema
+  arm64: dts: xilinx: align GPIO hog names with dtschema
+  ARM: dts: am335x: lxm: fix PCA9539 GPIO expander properties
+  ARM: dts: am335x: t335: align GPIO hog names with dtschema
+  ARM: dts: am3874: iceboard: fix GPIO expander reset GPIOs
+  ARM: dts: aspeed: fix PCA95xx GPIO expander properties on Portwell
+  ARM: dts: aspeed: align GPIO hog names with dtschema
+  ARM: dts: dove: fix PCA95xx GPIO expander properties on A510
+  ARM: dts: armada: align GPIO hog names with dtschema
+  ARM: dts: imx6q: align GPIO hog names with dtschema
+
+ .../devicetree/bindings/gpio/gpio-max732x.txt |  58 -----
+ .../devicetree/bindings/gpio/gpio-pca953x.txt |  90 -------
+ .../bindings/gpio/gpio-pca95xx.yaml           | 234 ++++++++++++++++++
+ .../devicetree/bindings/trivial-devices.yaml  |   4 -
+ arch/arm/boot/dts/am335x-lxm.dts              |   4 +
+ arch/arm/boot/dts/am335x-sbc-t335.dts         |   4 +-
+ arch/arm/boot/dts/am3874-iceboard.dts         |   8 +-
+ arch/arm/boot/dts/armada-388-clearfog.dts     |   4 +-
+ arch/arm/boot/dts/armada-388-clearfog.dtsi    |  10 +-
+ arch/arm/boot/dts/armada-388-helios4.dts      |   6 +-
+ arch/arm/boot/dts/aspeed-bmc-ibm-rainier.dts  |   2 +-
+ arch/arm/boot/dts/aspeed-bmc-opp-mihawk.dts   |  16 +-
+ .../boot/dts/aspeed-bmc-portwell-neptune.dts  |   2 +
+ arch/arm/boot/dts/dove-sbc-a510.dts           |   1 +
+ arch/arm/boot/dts/imx6q-b450v3.dts            |  14 +-
+ arch/arm/boot/dts/imx6q-b650v3.dts            |  12 +-
+ arch/arm/boot/dts/imx6q-b850v3.dts            |   4 +-
+ arch/arm/boot/dts/imx6q-bx50v3.dtsi           |  12 +-
+ .../boot/dts/mediatek/pumpkin-common.dtsi     |  28 +--
+ .../boot/dts/renesas/r8a77951-salvator-xs.dts |   2 +-
+ .../boot/dts/renesas/r8a77965-salvator-xs.dts |   2 +-
+ arch/arm64/boot/dts/renesas/ulcb-kf.dtsi      |  14 +-
+ .../dts/ti/k3-j721e-common-proc-board.dts     |   4 +-
+ .../boot/dts/xilinx/zynqmp-zcu102-revA.dts    |   8 +-
+ 24 files changed, 316 insertions(+), 227 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-max732x.txt
+ delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-pca953x.txt
+ create mode 100644 Documentation/devicetree/bindings/gpio/gpio-pca95xx.yaml
+
+-- 
+2.17.1
 
