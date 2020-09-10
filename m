@@ -2,40 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39EDE2650CF
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 22:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 440E2265130
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 22:46:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726919AbgIJU3F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Sep 2020 16:29:05 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:55636 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726694AbgIJU2g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Sep 2020 16:28:36 -0400
+        id S1727032AbgIJUq4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Sep 2020 16:46:56 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:47074 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725912AbgIJU2b (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Sep 2020 16:28:31 -0400
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 08AKSRxM028076;
-        Thu, 10 Sep 2020 15:28:27 -0500
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 08AKSBY1116314;
+        Thu, 10 Sep 2020 15:28:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1599769707;
-        bh=zRevarR8bBHB46h6T67QBWgaS+xUykO9TW3TMcjN6qY=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=WK2RMtn/I1fUdc34/9rKlg4LNt+3Zn8GX04yT3Cwy7NDYttFxxdKX+Jz+5Jy440hN
-         wrsmhRiaXcRfcQgtYXoWfQPVLSsGRXysH5qekcKVKP3pDFw2dDoNKZt5BeUv8neiTb
-         8OqNkfzyAaQAew5GSTBhfPkSu1s57svJOgon2/vY=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 08AKSRcm112820
+        s=ti-com-17Q1; t=1599769691;
+        bh=eDlxiD4utOxmohtB0yYYTyyb5XD4NhElIrrN1FYYUBU=;
+        h=From:To:CC:Subject:Date;
+        b=EX2tKOu+lo1kJgjmHo12debzuGEFZkjm3gHrrZ0Gb0o2HBj/y4OYsfmhgZ5qz7Se2
+         /3c2DraF4BTmF6wo9YXc1mtFZgCrmzuc2tPBYF+NcEBp5X9EAfEbCXXzDX8+ot5mEA
+         1p27XNgnUlQ4TuFOPlhqrCRKJ7XvWpnmyzAARAh0=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 08AKSBDM112441
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 10 Sep 2020 15:28:27 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 10 Sep 2020 15:28:11 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 10
- Sep 2020 15:28:27 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ Sep 2020 15:28:11 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 10 Sep 2020 15:28:27 -0500
+ Frontend Transport; Thu, 10 Sep 2020 15:28:11 -0500
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKSPec066019;
-        Thu, 10 Sep 2020 15:28:26 -0500
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKSAvk065653;
+        Thu, 10 Sep 2020 15:28:10 -0500
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
 To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -44,12 +44,10 @@ To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
 CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
         <linux-omap@vger.kernel.org>,
         Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH net-next v3 3/9] net: ethernet: ti: cpsw: use dev_id for ale configuration
-Date:   Thu, 10 Sep 2020 23:28:01 +0300
-Message-ID: <20200910202807.17473-4-grygorii.strashko@ti.com>
+Subject: [PATCH net-next v3 0/9] net: ethernet: ti: ale: add static configuration 
+Date:   Thu, 10 Sep 2020 23:27:58 +0300
+Message-ID: <20200910202807.17473-1-grygorii.strashko@ti.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200910202807.17473-1-grygorii.strashko@ti.com>
-References: <20200910202807.17473-1-grygorii.strashko@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -58,81 +56,70 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The previous patch has introduced possibility to select CPSW ALE by using
-ALE dev_id identifier. Switch TI cpsw driver to use dev_id="cpsw" and
-perform clean up by removing "ale_entries" configuration code.
+Hi All,
 
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
----
- drivers/net/ethernet/ti/cpsw.c      | 6 ------
- drivers/net/ethernet/ti/cpsw_new.c  | 1 -
- drivers/net/ethernet/ti/cpsw_priv.c | 2 +-
- drivers/net/ethernet/ti/cpsw_priv.h | 2 --
- 4 files changed, 1 insertion(+), 10 deletions(-)
+As existing, as newly introduced CPSW ALE versions have differences in 
+supported features and ALE table formats. Especially it's actual for the
+recent AM65x/J721E/J7200 and future AM64x SoCs, which supports more
+features like: auto-aging, classifiers, Link aggregation, additional HW
+filtering, etc.
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index 4a65edc5a375..9b425f184f3c 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -1278,12 +1278,6 @@ static int cpsw_probe_dt(struct cpsw_platform_data *data,
- 	}
- 	data->channels = prop;
- 
--	if (of_property_read_u32(node, "ale_entries", &prop)) {
--		dev_err(&pdev->dev, "Missing ale_entries property in the DT.\n");
--		return -EINVAL;
--	}
--	data->ale_entries = prop;
--
- 	if (of_property_read_u32(node, "bd_ram_size", &prop)) {
- 		dev_err(&pdev->dev, "Missing bd_ram_size property in the DT.\n");
- 		return -EINVAL;
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 8ed78577cded..a3528c5c823f 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1243,7 +1243,6 @@ static int cpsw_probe_dt(struct cpsw_common *cpsw)
- 
- 	data->active_slave = 0;
- 	data->channels = CPSW_MAX_QUEUES;
--	data->ale_entries = CPSW_ALE_NUM_ENTRIES;
- 	data->dual_emac = true;
- 	data->bd_ram_size = CPSW_BD_RAM_SIZE;
- 	data->mac_control = 0;
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.c b/drivers/net/ethernet/ti/cpsw_priv.c
-index 482a1a451e43..51cc29f39038 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.c
-+++ b/drivers/net/ethernet/ti/cpsw_priv.c
-@@ -500,8 +500,8 @@ int cpsw_init_common(struct cpsw_common *cpsw, void __iomem *ss_regs,
- 
- 	ale_params.dev			= dev;
- 	ale_params.ale_ageout		= ale_ageout;
--	ale_params.ale_entries		= data->ale_entries;
- 	ale_params.ale_ports		= CPSW_ALE_PORTS_NUM;
-+	ale_params.dev_id		= "cpsw";
- 
- 	cpsw->ale = cpsw_ale_create(&ale_params);
- 	if (IS_ERR(cpsw->ale)) {
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
-index bf4e179b4ca4..7b7f3596b20d 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.h
-+++ b/drivers/net/ethernet/ti/cpsw_priv.h
-@@ -117,7 +117,6 @@ do {								\
- #define CPSW_MAX_QUEUES		8
- #define CPSW_CPDMA_DESCS_POOL_SIZE_DEFAULT 256
- #define CPSW_ALE_AGEOUT_DEFAULT		10 /* sec */
--#define CPSW_ALE_NUM_ENTRIES		1024
- #define CPSW_FIFO_QUEUE_TYPE_SHIFT	16
- #define CPSW_FIFO_SHAPE_EN_SHIFT	16
- #define CPSW_FIFO_RATE_EN_SHIFT		20
-@@ -294,7 +293,6 @@ struct cpsw_platform_data {
- 	u32	channels;	/* number of cpdma channels (symmetric) */
- 	u32	slaves;		/* number of slave cpgmac ports */
- 	u32	active_slave;/* time stamping, ethtool and SIOCGMIIPHY slave */
--	u32	ale_entries;	/* ale table size */
- 	u32	bd_ram_size;	/*buffer descriptor ram size */
- 	u32	mac_control;	/* Mac control register */
- 	u16	default_vlan;	/* Def VLAN for ALE lookup in VLAN aware mode*/
+The existing ALE configuration interface is not practical in terms of 
+adding new features and requires consumers to program a lot static
+parameters. And any attempt to add new features will case endless adding
+and maintaining different combination of flags and options. Because CPSW
+ALE configuration is static and fixed for SoC (or set of SoC), It is
+reasonable to add support for static ALE configurations inside ALE module.
+
+This series introduces static ALE configuration table for different ALE 
+variants and provides option for consumers to select required ALE
+configuration by providing ALE const char *dev_id identifier (Patch 2).
+And all existing driver have been switched to use new approach (Patches 3-6).
+
+After this ALE HW auto-ageing feature can be enabled for AM65x CPSW ALE 
+variant (Patch 7).
+
+Finally, Patches 8-9 introduces tables to describe the ALE VLAN entries 
+fields as the ALE VLAN entries are too much differ between different TI
+CPSW ALE versions. So, handling them using flags, defines and get/set
+functions are became over-complicated.
+
+Patch 1 - is preparation patch
+
+Changes in v3:
+- fixed comment for Patch 2
+
+Changes in v2:
+- fixed sparse warnings
+
+v2: https://lore.kernel.org/patchwork/cover/1301684/
+v1: https://lore.kernel.org/patchwork/cover/1301048/
+
+Grygorii Strashko (9):
+  net: ethernet: ti: ale: add cpsw_ale_get_num_entries api
+  net: ethernet: ti: ale: add static configuration
+  net: ethernet: ti: cpsw: use dev_id for ale configuration
+  net: netcp: ethss: use dev_id for ale configuration
+  net: ethernet: ti: am65-cpsw: use dev_id for ale configuration
+  net: ethernet: ti: ale: make usage of ale dev_id mandatory
+  net: ethernet: ti: am65-cpsw: enable hw auto ageing
+  net: ethernet: ti: ale: switch to use tables for vlan entry
+    description
+  net: ethernet: ti: ale: add support for multi port k3 cpsw versions
+
+ drivers/net/ethernet/ti/am65-cpsw-ethtool.c |  10 +-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c    |  16 +-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.h    |   1 +
+ drivers/net/ethernet/ti/cpsw.c              |   6 -
+ drivers/net/ethernet/ti/cpsw_ale.c          | 421 ++++++++++++++++----
+ drivers/net/ethernet/ti/cpsw_ale.h          |   7 +
+ drivers/net/ethernet/ti/cpsw_ethtool.c      |   3 +-
+ drivers/net/ethernet/ti/cpsw_new.c          |   1 -
+ drivers/net/ethernet/ti/cpsw_priv.c         |   2 +-
+ drivers/net/ethernet/ti/cpsw_priv.h         |   2 -
+ drivers/net/ethernet/ti/netcp_ethss.c       |  18 +-
+ 11 files changed, 388 insertions(+), 99 deletions(-)
+
 -- 
 2.17.1
 
