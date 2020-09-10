@@ -2,107 +2,154 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06AC2264FAD
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 21:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6444F2650D3
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 22:30:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725866AbgIJTtA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Sep 2020 15:49:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49724 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726683AbgIJTsw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Sep 2020 15:48:52 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE625C061757;
-        Thu, 10 Sep 2020 12:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=2c66nEBP3DnG4HoyZXJPOlNFvLsRVtjflHnzpM04Cds=; b=WVt7qUC3KvQkSyJfCLY4neNlzG
-        5roByh4wUvdqv/vQ1V2RMcthBqRUdn+vthIURckBn8mMTPbtkU1y84Uxtzb+Kum2q/NTBRrJ4sPOu
-        mAuqdWRs3XovrKECyu+zzODbwxAkJsqvkYslQ+rhNBQOrYsV3zeQSqRtAIX71GfJ2p2U=;
-Received: from p200300ccff0e43001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0e:4300:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1kGSYb-0007Sl-NR; Thu, 10 Sep 2020 21:48:34 +0200
-Date:   Thu, 10 Sep 2020 21:48:32 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-pm@vger.kernel.org, Adam Ford-BE <aford@beaconembedded.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        kernel test robot <lkp@intel.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        arm-soc <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V2 1/2] thermal: ti-soc-thermal: Enable addition power
- management
-Message-ID: <20200910214832.0041b3aa@aktux>
-In-Reply-To: <CAHCN7xLUrh7xr0pr5Bz0unWQXGkiKDK88hZKx7WXGyr2RBWTVg@mail.gmail.com>
-References: <20200819125925.2119434-1-aford173@gmail.com>
-        <20200910200152.72cc5d9f@aktux>
-        <4770327e-84fb-0543-097c-6525d762a01f@linaro.org>
-        <CAHCN7xLUrh7xr0pr5Bz0unWQXGkiKDK88hZKx7WXGyr2RBWTVg@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726937AbgIJU3v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Sep 2020 16:29:51 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:47158 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726662AbgIJU2b (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Sep 2020 16:28:31 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 08AKSIfA116336;
+        Thu, 10 Sep 2020 15:28:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1599769698;
+        bh=9zdhcOMR7Ccf+ysTWrNasl7P6ckqRz+nS1O8WjwH018=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=Qd/dh3mV7bp0Ujbt6Y0WuAqsCmlXVwJM3xZTwxpUYTK5Mb1S1h/htrvW1EpWkPiBx
+         C9hswVhDje1+R4yWRCGfNEKzSM85v+RTB0QV19A/VF5lDkqq1UPV7GyUL6k1/Qbf/r
+         S+/b5IrxOtuWJdu2fDO+UkPmHurcBCjnPlMoixGY=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKSIFm052030;
+        Thu, 10 Sep 2020 15:28:18 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 10
+ Sep 2020 15:28:18 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 10 Sep 2020 15:28:17 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKSHFU065839;
+        Thu, 10 Sep 2020 15:28:17 -0500
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>
+CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH net-next v3 1/9] net: ethernet: ti: ale: add cpsw_ale_get_num_entries api
+Date:   Thu, 10 Sep 2020 23:27:59 +0300
+Message-ID: <20200910202807.17473-2-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200910202807.17473-1-grygorii.strashko@ti.com>
+References: <20200910202807.17473-1-grygorii.strashko@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 10 Sep 2020 14:33:13 -0500
-Adam Ford <aford173@gmail.com> wrote:
+Add cpsw_ale_get_num_entries() API to return number of ALE table entries
+and update existing drivers to use it.
 
-> On Thu, Sep 10, 2020 at 2:14 PM Daniel Lezcano <daniel.lezcano@linaro.org>
-> wrote:
-> 
-> > On 10/09/2020 20:01, Andreas Kemnade wrote:  
-> > > On Wed, 19 Aug 2020 07:59:23 -0500
-> > > Adam Ford <aford173@gmail.com> wrote:
-> > >  
-> > >> The bandgap sensor can be idled when the processor is too, but it
-> > >> isn't currently being done, so the power consumption of OMAP3
-> > >> boards can elevated if the bangap sensor is enabled.
-> > >>
-> > >> This patch attempts to use some additional power management
-> > >> to idle the clock to the bandgap when not needed.
-> > >>
-> > >> Signed-off-by: Adam Ford <aford173@gmail.com>
-> > >> Reported-by: kernel test robot <lkp@intel.com>
-> > >> ---
-> > >> V2: Fix issue where variable stating the suspend mode isn't being
-> > >>     properly set and cleared.
-> > >>  
-> > > hmm, it is not in linux-next. Can we expect that for v5.10?  
-> >
-> > The reason I did not pick this patch is because lkp reported an error on
-> > it.
-> >
-> > https://marc.info/?l=linux-pm&m=159788472017308&w=2
-> >
-> >
-> >  
-> That error message shows it's trying to be built with 'sh' cross compiler,
-> but should be build with an ARM.
-> 
-> I can run a manual test of the patch against a different branch if
-> necessary, but I had built and tested it, so I know it worked at one time.
-> 
-hmm, what about compile-testing without CONFIG_PM_SLEEP?
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+---
+ drivers/net/ethernet/ti/am65-cpsw-ethtool.c | 10 ++++++----
+ drivers/net/ethernet/ti/cpsw_ale.c          |  5 +++++
+ drivers/net/ethernet/ti/cpsw_ale.h          |  1 +
+ drivers/net/ethernet/ti/cpsw_ethtool.c      |  3 ++-
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
-The function definition is guarded by that.
-So it is not a sh-specific problem.
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-ethtool.c b/drivers/net/ethernet/ti/am65-cpsw-ethtool.c
+index 496dafb25128..6e4d4f9e32e0 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-ethtool.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-ethtool.c
+@@ -572,13 +572,14 @@ static int am65_cpsw_nway_reset(struct net_device *ndev)
+ static int am65_cpsw_get_regs_len(struct net_device *ndev)
+ {
+ 	struct am65_cpsw_common *common = am65_ndev_to_common(ndev);
+-	u32 i, regdump_len = 0;
++	u32 ale_entries, i, regdump_len = 0;
+ 
++	ale_entries = cpsw_ale_get_num_entries(common->ale);
+ 	for (i = 0; i < ARRAY_SIZE(am65_cpsw_regdump); i++) {
+ 		if (am65_cpsw_regdump[i].hdr.module_id ==
+ 		    AM65_CPSW_REGDUMP_MOD_CPSW_ALE_TBL) {
+ 			regdump_len += sizeof(struct am65_cpsw_regdump_hdr);
+-			regdump_len += common->ale->params.ale_entries *
++			regdump_len += ale_entries *
+ 				       ALE_ENTRY_WORDS * sizeof(u32);
+ 			continue;
+ 		}
+@@ -592,10 +593,11 @@ static void am65_cpsw_get_regs(struct net_device *ndev,
+ 			       struct ethtool_regs *regs, void *p)
+ {
+ 	struct am65_cpsw_common *common = am65_ndev_to_common(ndev);
+-	u32 i, j, pos, *reg = p;
++	u32 ale_entries, i, j, pos, *reg = p;
+ 
+ 	/* update CPSW IP version */
+ 	regs->version = AM65_CPSW_REGDUMP_VER;
++	ale_entries = cpsw_ale_get_num_entries(common->ale);
+ 
+ 	pos = 0;
+ 	for (i = 0; i < ARRAY_SIZE(am65_cpsw_regdump); i++) {
+@@ -603,7 +605,7 @@ static void am65_cpsw_get_regs(struct net_device *ndev,
+ 
+ 		if (am65_cpsw_regdump[i].hdr.module_id ==
+ 		    AM65_CPSW_REGDUMP_MOD_CPSW_ALE_TBL) {
+-			u32 ale_tbl_len = common->ale->params.ale_entries *
++			u32 ale_tbl_len = ale_entries *
+ 					  ALE_ENTRY_WORDS * sizeof(u32) +
+ 					  sizeof(struct am65_cpsw_regdump_hdr);
+ 			reg[pos++] = ale_tbl_len;
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 9ad872bfae3a..a94aef3f54a5 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -1079,3 +1079,8 @@ void cpsw_ale_dump(struct cpsw_ale *ale, u32 *data)
+ 		data += ALE_ENTRY_WORDS;
+ 	}
+ }
++
++u32 cpsw_ale_get_num_entries(struct cpsw_ale *ale)
++{
++	return ale ? ale->params.ale_entries : 0;
++}
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.h b/drivers/net/ethernet/ti/cpsw_ale.h
+index 6a3cb6898728..735692f066bf 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.h
++++ b/drivers/net/ethernet/ti/cpsw_ale.h
+@@ -119,6 +119,7 @@ int cpsw_ale_control_get(struct cpsw_ale *ale, int port, int control);
+ int cpsw_ale_control_set(struct cpsw_ale *ale, int port,
+ 			 int control, int value);
+ void cpsw_ale_dump(struct cpsw_ale *ale, u32 *data);
++u32 cpsw_ale_get_num_entries(struct cpsw_ale *ale);
+ 
+ static inline int cpsw_ale_get_vlan_p0_untag(struct cpsw_ale *ale, u16 vid)
+ {
+diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/ti/cpsw_ethtool.c
+index fa54efe3be63..4d02c5135611 100644
+--- a/drivers/net/ethernet/ti/cpsw_ethtool.c
++++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
+@@ -339,7 +339,8 @@ int cpsw_get_regs_len(struct net_device *ndev)
+ {
+ 	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
+ 
+-	return cpsw->data.ale_entries * ALE_ENTRY_WORDS * sizeof(u32);
++	return cpsw_ale_get_num_entries(cpsw->ale) *
++	       ALE_ENTRY_WORDS * sizeof(u32);
+ }
+ 
+ void cpsw_get_regs(struct net_device *ndev, struct ethtool_regs *regs, void *p)
+-- 
+2.17.1
 
-Regards,
-Andreas
