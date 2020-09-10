@@ -2,53 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD3C8265112
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 22:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6861626515B
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 22:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727001AbgIJUlh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Sep 2020 16:41:37 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:47282 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727023AbgIJU3K (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Sep 2020 16:29:10 -0400
+        id S1727113AbgIJUxI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Sep 2020 16:53:08 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:59268 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726722AbgIJUwn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Sep 2020 16:52:43 -0400
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 08AKT6qG116542;
-        Thu, 10 Sep 2020 15:29:06 -0500
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 08AKqcEd034925;
+        Thu, 10 Sep 2020 15:52:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1599769746;
-        bh=MrJ8oniUAvkpJjFUq2IygbIoO9wyGKNWBqzzRnaJdfQ=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=uAeMKy8SyExBXjnlwnJdEAMk+KlhPsgN8IdFdl3pImCEL0Cq6wRPptqloA3KnUy3D
-         pjH8qtylD1sjf/Es+XfYhKk8hQMco0/ZrU690mX9UJi+PAyYvsMSKNV6b+S0I/SNZR
-         8d9cKX4zF67BhypPGDZfKojamCG182Px2719zw7U=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKT6M7053273;
-        Thu, 10 Sep 2020 15:29:06 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+        s=ti-com-17Q1; t=1599771158;
+        bh=t7k46oT9pdpc2te28RZVzUBs6yLYoN9qqxmc9rN0uSU=;
+        h=From:To:CC:Subject:Date;
+        b=undEP0rsph6DlL2R+xPaLD+9BEhykMfEuAMAd6MROCbwOSHDWlrrnxbB2P5w7PM7S
+         NYHBw2TKvjWRWN7pRFQzEzdgP4qtgc5lGZeobOXAJ3oND4Gwv90iwbMjpGviciHhTO
+         NfwwqW5fkZ9i0gdky4FFT9Fu/kM0rtmzQm1Evst4=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKqc5J089725;
+        Thu, 10 Sep 2020 15:52:38 -0500
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 10
- Sep 2020 15:29:06 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ Sep 2020 15:52:38 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 10 Sep 2020 15:29:06 -0500
+ Frontend Transport; Thu, 10 Sep 2020 15:52:38 -0500
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKT5vV109275;
-        Thu, 10 Sep 2020 15:29:05 -0500
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08AKqbEN070224;
+        Thu, 10 Sep 2020 15:52:37 -0500
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
 To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>
-CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
         Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH net-next v3 9/9] net: ethernet: ti: ale: add support for multi port k3 cpsw versions
-Date:   Thu, 10 Sep 2020 23:28:07 +0300
-Message-ID: <20200910202807.17473-10-grygorii.strashko@ti.com>
+Subject: [PATCH] net: ethernet: ti: cpsw_new: fix suspend/resume
+Date:   Thu, 10 Sep 2020 23:52:29 +0300
+Message-ID: <20200910205229.21288-1-grygorii.strashko@ti.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200910202807.17473-1-grygorii.strashko@ti.com>
-References: <20200910202807.17473-1-grygorii.strashko@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -57,49 +52,89 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The TI J721E (CPSW9g) ALE version is similar, in general, to Sitara AM3/4/5
-CPSW ALE, but has more extended functions and different ALE VLAN entry
-format.
+Add missed suspend/resume callbacks to properly restore networking after
+suspend/resume cycle.
 
-This patch adds support for for multi port TI J721E (CPSW9g) ALE variant.
-
+Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
 Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ethernet/ti/cpsw_new.c | 53 ++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 0dd0c3329dee..a6a455c32628 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -191,6 +191,14 @@ static const struct ale_entry_fld vlan_entry_nu[ALE_ENT_VID_LAST] = {
- 	ALE_ENTRY_FLD(ALE_ENT_VID_REG_MCAST_IDX, 44, 3),
- };
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index 8ed78577cded..15672d0a4de6 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -17,6 +17,7 @@
+ #include <linux/phy.h>
+ #include <linux/phy/phy.h>
+ #include <linux/delay.h>
++#include <linux/pinctrl/consumer.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/of.h>
+@@ -2070,9 +2071,61 @@ static int cpsw_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
-+/* K3 j721e/j7200 cpsw9g/5g, am64x cpsw3g  */
-+static const struct ale_entry_fld vlan_entry_k3_cpswxg[] = {
-+	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_MEMBER_LIST, 0),
-+	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_UNREG_MCAST_MSK, 12),
-+	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_FORCE_UNTAGGED_MSK, 24),
-+	ALE_ENTRY_FLD_DYN_MSK_SIZE(ALE_ENT_VID_REG_MCAST_MSK, 36),
-+};
++static int __maybe_unused cpsw_suspend(struct device *dev)
++{
++	struct cpsw_common *cpsw = dev_get_drvdata(dev);
++	int i;
 +
- DEFINE_ALE_FIELD(entry_type,		60,	2)
- DEFINE_ALE_FIELD(vlan_id,		48,	12)
- DEFINE_ALE_FIELD(mcast_state,		62,	2)
-@@ -1213,6 +1221,12 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
- 		.nu_switch_ale = true,
- 		.vlan_entry_tbl = vlan_entry_nu,
++	rtnl_lock();
++
++	for (i = 0; i < cpsw->data.slaves; i++) {
++		struct net_device *ndev = cpsw->slaves[i].ndev;
++
++		if (!(ndev && netif_running(ndev)))
++			continue;
++
++		cpsw_ndo_stop(ndev);
++	}
++
++	rtnl_unlock();
++
++	/* Select sleep pin state */
++	pinctrl_pm_select_sleep_state(dev);
++
++	return 0;
++}
++
++static int __maybe_unused cpsw_resume(struct device *dev)
++{
++	struct cpsw_common *cpsw = dev_get_drvdata(dev);
++	int i;
++
++	/* Select default pin state */
++	pinctrl_pm_select_default_state(dev);
++
++	/* shut up ASSERT_RTNL() warning in netif_set_real_num_tx/rx_queues */
++	rtnl_lock();
++
++	for (i = 0; i < cpsw->data.slaves; i++) {
++		struct net_device *ndev = cpsw->slaves[i].ndev;
++
++		if (!(ndev && netif_running(ndev)))
++			continue;
++
++		cpsw_ndo_open(ndev);
++	}
++
++	rtnl_unlock();
++
++	return 0;
++}
++
++static SIMPLE_DEV_PM_OPS(cpsw_pm_ops, cpsw_suspend, cpsw_resume);
++
+ static struct platform_driver cpsw_driver = {
+ 	.driver = {
+ 		.name	 = "cpsw-switch",
++		.pm	 = &cpsw_pm_ops,
+ 		.of_match_table = cpsw_of_mtable,
  	},
-+	{
-+		.dev_id = "j721e-cpswxg",
-+		.features = CPSW_ALE_F_STATUS_REG | CPSW_ALE_F_HW_AUTOAGING,
-+		.major_ver_mask = 0x7,
-+		.vlan_entry_tbl = vlan_entry_k3_cpswxg,
-+	},
- 	{ },
- };
- 
+ 	.probe = cpsw_probe,
 -- 
 2.17.1
 
