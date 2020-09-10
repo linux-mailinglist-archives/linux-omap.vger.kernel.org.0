@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E367264C56
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 20:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2425C264C13
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 20:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726931AbgIJSIk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Sep 2020 14:08:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36654 "EHLO mail.kernel.org"
+        id S1726534AbgIJSAA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Sep 2020 14:00:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36904 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726792AbgIJR7O (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 10 Sep 2020 13:59:14 -0400
+        id S1726805AbgIJR7V (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 10 Sep 2020 13:59:21 -0400
 Received: from localhost.localdomain (unknown [194.230.155.174])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 712A521D92;
-        Thu, 10 Sep 2020 17:59:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AFB6120C09;
+        Thu, 10 Sep 2020 17:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599760753;
-        bh=cnme77ncydCGyn5yAaUYaAlKma6Mlrz2eobW02u1gNc=;
+        s=default; t=1599760760;
+        bh=4N+AVz1iFewUv22C1sZLRU1oZ3vPM6n5YgLdZX5yJcs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u/eABZ9F+q2oSujqAJjIRw8ViIgsQGgybCFx15PV5lua7Q9B5GJUPJLxb3bYeztBd
-         Ojde/RzdDa09Zdk69i0L/0S6UdsLYhED9ISPUM7rwK9npdivrHozn3/F9H/GTfmAPA
-         P5aBvwZu9lzvafuk+kRk6236Z3+JBHYvo3ZHAv5s=
+        b=N9Q8v8rYJEGYTGOGYdjCjPtkPabMqxu9+jIF3945v1aI8f8LKhOUot2QegtJ+jYFD
+         4nGGpy3v3t1Da+kE5INyAPk2VWb2YuDZkg0/DcceHwbDtT6sQwhm8ObmtjOEmxmjBu
+         76bSjuzPwQzWPUYVTdBieRSM7tdXbX7qQJ8oM3U0=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
@@ -51,9 +51,9 @@ To:     Linus Walleij <linus.walleij@linaro.org>,
         linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
         linux-renesas-soc@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v2 12/15] ARM: dts: aspeed: align GPIO hog names with dtschema
-Date:   Thu, 10 Sep 2020 19:57:30 +0200
-Message-Id: <20200910175733.11046-13-krzk@kernel.org>
+Subject: [PATCH v2 13/15] ARM: dts: dove: fix PCA95xx GPIO expander properties on A510
+Date:   Thu, 10 Sep 2020 19:57:31 +0200
+Message-Id: <20200910175733.11046-14-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200910175733.11046-1-krzk@kernel.org>
 References: <20200910175733.11046-1-krzk@kernel.org>
@@ -62,103 +62,26 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-dtschema for pca95xx expects GPIO hogs to end with 'hog' prefix.
+The PCA95xx GPIO expander requires GPIO controller properties to operate
+properly.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/arm/boot/dts/aspeed-bmc-ibm-rainier.dts |  2 +-
- arch/arm/boot/dts/aspeed-bmc-opp-mihawk.dts  | 16 ++++++++--------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ arch/arm/boot/dts/dove-sbc-a510.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/aspeed-bmc-ibm-rainier.dts b/arch/arm/boot/dts/aspeed-bmc-ibm-rainier.dts
-index 1fa233d2da26..0aa437486a0d 100644
---- a/arch/arm/boot/dts/aspeed-bmc-ibm-rainier.dts
-+++ b/arch/arm/boot/dts/aspeed-bmc-ibm-rainier.dts
-@@ -560,7 +560,7 @@
- 		gpio-controller;
+diff --git a/arch/arm/boot/dts/dove-sbc-a510.dts b/arch/arm/boot/dts/dove-sbc-a510.dts
+index 2bb85a9b7614..df021f9b0117 100644
+--- a/arch/arm/boot/dts/dove-sbc-a510.dts
++++ b/arch/arm/boot/dts/dove-sbc-a510.dts
+@@ -143,6 +143,7 @@
+ 	gpio_ext: gpio@20 {
+ 		compatible = "nxp,pca9555";
+ 		reg = <0x20>;
++		gpio-controller;
  		#gpio-cells = <2>;
- 
--		smbus0 {
-+		smbus0-hog {
- 			gpio-hog;
- 			gpios = <4 GPIO_ACTIVE_HIGH>;
- 			output-high;
-diff --git a/arch/arm/boot/dts/aspeed-bmc-opp-mihawk.dts b/arch/arm/boot/dts/aspeed-bmc-opp-mihawk.dts
-index cb85168f6761..577c211c469e 100644
---- a/arch/arm/boot/dts/aspeed-bmc-opp-mihawk.dts
-+++ b/arch/arm/boot/dts/aspeed-bmc-opp-mihawk.dts
-@@ -827,7 +827,7 @@
- 				gpio-controller;
- 				#gpio-cells = <2>;
- 
--				smbus0 {
-+				smbus0-hog {
- 					gpio-hog;
- 					gpios = <4 GPIO_ACTIVE_HIGH>;
- 					output-high;
-@@ -852,7 +852,7 @@
- 				gpio-controller;
- 				#gpio-cells = <2>;
- 
--				smbus1 {
-+				smbus1-hog {
- 					gpio-hog;
- 					gpios = <4 GPIO_ACTIVE_HIGH>;
- 					output-high;
-@@ -900,7 +900,7 @@
- 				gpio-controller;
- 				#gpio-cells = <2>;
- 
--				smbus2 {
-+				smbus2-hog {
- 					gpio-hog;
- 					gpios = <4 GPIO_ACTIVE_HIGH>;
- 					output-high;
-@@ -925,7 +925,7 @@
- 				gpio-controller;
- 				#gpio-cells = <2>;
- 
--				smbus3 {
-+				smbus3-hog {
- 					gpio-hog;
- 					gpios = <4 GPIO_ACTIVE_HIGH>;
- 					output-high;
-@@ -992,7 +992,7 @@
- 				gpio-controller;
- 				#gpio-cells = <2>;
- 
--				smbus4 {
-+				smbus4-hog {
- 					gpio-hog;
- 					gpios = <4 GPIO_ACTIVE_HIGH>;
- 					output-high;
-@@ -1017,7 +1017,7 @@
- 				gpio-controller;
- 				#gpio-cells = <2>;
- 
--				smbus5 {
-+				smbus5-hog {
- 					gpio-hog;
- 					gpios = <4 GPIO_ACTIVE_HIGH>;
- 					output-high;
-@@ -1065,7 +1065,7 @@
- 				gpio-controller;
- 				#gpio-cells = <2>;
- 
--				smbus6 {
-+				smbus6-hog {
- 					gpio-hog;
- 					gpios = <4 GPIO_ACTIVE_HIGH>;
- 					output-high;
-@@ -1090,7 +1090,7 @@
- 				gpio-controller;
- 				#gpio-cells = <2>;
- 
--				smbus7 {
-+				smbus7-hog {
- 					gpio-hog;
- 					gpios = <4 GPIO_ACTIVE_HIGH>;
- 					output-high;
+ 	};
+ };
 -- 
 2.17.1
 
