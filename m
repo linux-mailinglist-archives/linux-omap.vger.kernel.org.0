@@ -2,173 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FCEB263B53
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 05:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99FD5263ED2
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Sep 2020 09:34:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726883AbgIJDWB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Sep 2020 23:22:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725772AbgIJDV6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Sep 2020 23:21:58 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64234C061573;
-        Wed,  9 Sep 2020 20:21:58 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id o8so6521355ejb.10;
-        Wed, 09 Sep 2020 20:21:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=A79j38TeGo0FTeKhZJ6Z5HVKC+rNAm+2XLbIiEuCKUY=;
-        b=aVrMkYlo/d+zmyouXTJxSqtB33bFfF1/mNixCVCCODQPmxJhhUiurbpS/1nRAOrm6o
-         M8pON54OhrBwxLNcItuOcyfQnJK26edZu8Do4NxxPQoqMoGIeDFGaWwG3ADZCs9fUq1m
-         8zuZ4YYIv1t1KKfwfaGw+isSSyNpgR6Cm4ZpU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=A79j38TeGo0FTeKhZJ6Z5HVKC+rNAm+2XLbIiEuCKUY=;
-        b=AbqWG5ulRkvDqCSuW46bK6/hgR3CybMvdP7CVxtwW9YM0GgqYzmngRh8PVIL8kkgQ7
-         E1P9efkn+Hfe/vPOT99LVmh/AVRGkk7N9IILhyKDAADtgFFzIwGSLyaRATOyTUvsfZ7V
-         v/V12qFbGXFvbH5bSz9te1k63McQicC2Bze/prFp2G+jjSkWyMQxtI1zc403XfaFWAjQ
-         NMJun/zD5c5vy939ugTS7hfL1eb6ZpZxSmcFWoC4IShtpPT/ugiKb/5ycmt6NujwK27d
-         OVr+Zisf8GzkOGu/73QHWZ0VdguZSeEe53PrSlMEKY+ee1fMeHC56o1bgD62wx0ocDKC
-         0Gaw==
-X-Gm-Message-State: AOAM533aaJYpHwX8dzzwt3Y/9zm/eFDoHt9rqWJXtjksSoqhhp0y9+P6
-        dcbfiohbPJSlG58M/S0exVnwMwwxojDR2cv28gc=
-X-Google-Smtp-Source: ABdhPJyKppctq6u7ic9iz13bTUlMW2PIg2/iotUNWAl8CNxSQjvLXnJMdPO7f/onda7kLt48QCQ9ONhY4jV5TO6/oKg=
-X-Received: by 2002:a17:906:4c58:: with SMTP id d24mr7092918ejw.108.1599708116944;
- Wed, 09 Sep 2020 20:21:56 -0700 (PDT)
+        id S1729005AbgIJHew (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Sep 2020 03:34:52 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:1175 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728297AbgIJHev (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 10 Sep 2020 03:34:51 -0400
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08A7Qsvo001037;
+        Thu, 10 Sep 2020 09:34:37 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=STMicroelectronics;
+ bh=yitzxd1EpxSR+UWF5RZLvTzZh1+/ExLz6X9wKwEHp6c=;
+ b=nZkhw9kUN+I2HILMVN6KMn/4f3IhIl+hTkgVaz7LymhFmX6Yaen1vqRfif7nItEFDy0W
+ VzOOoOZhJxnaXG0QZn+FNFmXUdFRxa4wvcmjIWZXbBhNszmj2zDOn3vjmT+Tks45w+SA
+ 6Ql6tRmp+hu6oMRjjs42MJKjXLmIcI4UbvMCOrn5JcDAXplgcLUGRJE8segauxo6djdQ
+ yBeId3gNdpjsYiIZfeW8P5YXSwAoFkoP6miPjXAyy+QP2MG8fvZt/mQpCRltySB4Pooq
+ l8txBZZcwQ2oNiqaJE8ysdEWVemf5LRMGlCBKHK2oAnuoN11aQgwK8rUwfz24HgYdpjf Iw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 33c051hm4p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 10 Sep 2020 09:34:37 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id EBD7F10002A;
+        Thu, 10 Sep 2020 09:34:36 +0200 (CEST)
+Received: from Webmail-eu.st.com (gpxdag3node5.st.com [10.75.127.72])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D0F57212104;
+        Thu, 10 Sep 2020 09:34:36 +0200 (CEST)
+Received: from lmecxl0995.lme.st.com (10.75.127.46) by GPXDAG3NODE5.st.com
+ (10.75.127.72) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 10 Sep
+ 2020 09:34:35 +0200
+Subject: Re: [balbi-usb:testing/next 32/38] ld.lld: error: undefined symbol:
+ usb_role_switch_get_drvdata
+To:     kernel test robot <lkp@intel.com>, Felipe Balbi <balbi@kernel.org>
+CC:     "kbuild-all@lists.01.org" <kbuild-all@lists.01.org>,
+        "clang-built-linux@googlegroups.com" 
+        <clang-built-linux@googlegroups.com>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+References: <202009100918.i31tdoK9%lkp@intel.com>
+From:   Amelie DELAUNAY <amelie.delaunay@st.com>
+Message-ID: <497fbf82-805b-5b82-28f0-114c3f31756f@st.com>
+Date:   Thu, 10 Sep 2020 09:34:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200826071916.3081953-1-joel@jms.id.au>
-In-Reply-To: <20200826071916.3081953-1-joel@jms.id.au>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Thu, 10 Sep 2020 03:21:43 +0000
-Message-ID: <CACPK8XcNc=O99Fuup=OnFacJJnRHd0bt0BiuSrYUCTSVs_shuw@mail.gmail.com>
-Subject: Re: [PATCH] ARM: config: aspeed: Fix selection of media drivers
-To:     Andrew Jeffery <andrew@aj.id.au>, Arnd Bergmann <arnd@arndb.de>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-mips@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <202009100918.i31tdoK9%lkp@intel.com>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.46]
+X-ClientProxiedBy: SFHDAG8NODE2.st.com (10.75.127.23) To GPXDAG3NODE5.st.com
+ (10.75.127.72)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-10_01:2020-09-10,2020-09-10 signatures=0
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 26 Aug 2020 at 07:19, Joel Stanley <joel@jms.id.au> wrote:
->
-> In the 5.7 merge window the media kconfig was restructued. For most
-> platforms these changes set CONFIG_MEDIA_SUPPORT_FILTER=y which keeps
-> unwanted drivers disabled.
->
-> The exception is if a config sets EMBEDDED or EXPERT (see b0cd4fb27665).
-> In that case the filter is set to =n, causing a bunch of DVB tuner drivers
-> (MEDIA_TUNER_*) to be accidentally enabled. This was noticed as it blew
-> out the build time for the Aspeed defconfigs.
->
-> Enabling the filter means the Aspeed config also needs to set
-> CONFIG_MEDIA_PLATFORM_SUPPORT=y in order to have the CONFIG_VIDEO_ASPEED
-> driver enabled.
->
-> Fixes: 06b93644f4d1 ("media: Kconfig: add an option to filter in/out platform drivers")
-> Fixes: b0cd4fb27665 ("media: Kconfig: on !EMBEDDED && !EXPERT, enable driver filtering")
-> Cc: stable@vger.kernel.org
-> CC: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
+Hi,
+
+On 9/10/20 3:29 AM, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git testing/next
+> head:   3c9722514c3fb74bbe0af87c20bc6b4c47121287
+> commit: a0f0bc95705446b8b1476338056bf869271ba36a [32/38] usb: dwc2: override PHY input signals with usb role switch support
+> config: x86_64-randconfig-r022-20200909 (attached as .config)
+> compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project 8893d0816ccdf8998d2e21b5430e9d6abe7ef465)
+> reproduce (this is a W=1 build):
+>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>          chmod +x ~/bin/make.cross
+>          # install x86_64 cross compiling tool for clang build
+>          # apt-get install binutils-x86-64-linux-gnu
+>          git checkout a0f0bc95705446b8b1476338056bf869271ba36a
+>          # save the attached .config to linux build tree
+>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=x86_64
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>>> ld.lld: error: undefined symbol: usb_role_switch_get_drvdata
+>     >>> referenced by drd.c:71 (drivers/usb/dwc2/drd.c:71)
+>     >>> usb/dwc2/drd.o:(dwc2_drd_role_sw_set) in archive drivers/built-in.a
+> 
 > ---
->
-> Another solution would be to revert b0cd4fb27665 ("media: Kconfig: on
-> !EMBEDDED && !EXPERT, enable driver filtering"). I assume this was done
-> to be helpful, but in practice it has enabled the TUNER drivers (and
-> others) for the following configs that didn't have them before:
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
 
-Mauro, did you have any thoughts here?
-
-Otherwise I'll merge the fix for the aspeed configs for 5.10.
-
-Cheers,
-
-Joel
-
->
-> $ git grep -lE "(CONFIG_EXPERT|CONFIG_EMBEDDED)"  arch/*/configs/ | xargs grep -l MEDIA_SUPPORT
-> arch/arm/configs/aspeed_g4_defconfig
-> arch/arm/configs/aspeed_g5_defconfig
-> arch/arm/configs/at91_dt_defconfig
-> arch/arm/configs/bcm2835_defconfig
-> arch/arm/configs/davinci_all_defconfig
-> arch/arm/configs/ezx_defconfig
-> arch/arm/configs/imote2_defconfig
-> arch/arm/configs/imx_v4_v5_defconfig
-> arch/arm/configs/imx_v6_v7_defconfig
-> arch/arm/configs/milbeaut_m10v_defconfig
-> arch/arm/configs/multi_v7_defconfig
-> arch/arm/configs/omap2plus_defconfig
-> arch/arm/configs/pxa_defconfig
-> arch/arm/configs/qcom_defconfig
-> arch/arm/configs/sama5_defconfig
-> arch/arm/configs/tegra_defconfig
-> arch/mips/configs/ci20_defconfig
-> arch/mips/configs/lemote2f_defconfig
-> arch/mips/configs/loongson3_defconfig
-> arch/mips/configs/pistachio_defconfig
->
-> I've cc'd the maintainers of these defconfigs so they are aware.
->
-> ---
->  arch/arm/configs/aspeed_g4_defconfig | 3 ++-
->  arch/arm/configs/aspeed_g5_defconfig | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm/configs/aspeed_g4_defconfig b/arch/arm/configs/aspeed_g4_defconfig
-> index 303f75a3baec..58d293b63581 100644
-> --- a/arch/arm/configs/aspeed_g4_defconfig
-> +++ b/arch/arm/configs/aspeed_g4_defconfig
-> @@ -160,7 +160,8 @@ CONFIG_SENSORS_TMP421=y
->  CONFIG_SENSORS_W83773G=y
->  CONFIG_WATCHDOG_SYSFS=y
->  CONFIG_MEDIA_SUPPORT=y
-> -CONFIG_MEDIA_CAMERA_SUPPORT=y
-> +CONFIG_MEDIA_SUPPORT_FILTER=y
-> +CONFIG_MEDIA_PLATFORM_SUPPORT=y
->  CONFIG_V4L_PLATFORM_DRIVERS=y
->  CONFIG_VIDEO_ASPEED=y
->  CONFIG_DRM=y
-> diff --git a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
-> index b0d056d49abe..cc2449ed6e6d 100644
-> --- a/arch/arm/configs/aspeed_g5_defconfig
-> +++ b/arch/arm/configs/aspeed_g5_defconfig
-> @@ -175,7 +175,8 @@ CONFIG_SENSORS_TMP421=y
->  CONFIG_SENSORS_W83773G=y
->  CONFIG_WATCHDOG_SYSFS=y
->  CONFIG_MEDIA_SUPPORT=y
-> -CONFIG_MEDIA_CAMERA_SUPPORT=y
-> +CONFIG_MEDIA_SUPPORT_FILTER=y
-> +CONFIG_MEDIA_PLATFORM_SUPPORT=y
->  CONFIG_V4L_PLATFORM_DRIVERS=y
->  CONFIG_VIDEO_ASPEED=y
->  CONFIG_DRM=y
-> --
-> 2.28.0
->
+fixed in v6 version: 
+https://lore.kernel.org/patchwork/project/lkml/list/?series=461852
