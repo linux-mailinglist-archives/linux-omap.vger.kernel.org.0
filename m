@@ -2,44 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5010626592C
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Sep 2020 08:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7927265943
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Sep 2020 08:24:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725770AbgIKGLJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Sep 2020 02:11:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35406 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725446AbgIKGLH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 11 Sep 2020 02:11:07 -0400
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E62E0221F1;
-        Fri, 11 Sep 2020 06:11:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599804667;
-        bh=R+WQCRWfq/LEeLL9EuGAFD+jyfSl/fjliRW9gC2u17M=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=GHEpjzBiGvtJ1QhOXg4nIsgN5ThSgM00QRJX4Cghvz7A274L7p71V6OwfaBrG1X7J
-         uVyd/7XdH7fhiQhYyOM4eLfnabBhEQ8cFOqAAgpYBXbjJTV7NJ8+LYLGYdNvk7hHE1
-         8odlxiTb6JWeOThhbKMIc1HFWyofHRtn3Q8u/1v8=
-Received: by mail-ej1-f48.google.com with SMTP id gr14so12244485ejb.1;
-        Thu, 10 Sep 2020 23:11:06 -0700 (PDT)
-X-Gm-Message-State: AOAM531kIgp6PQ41zD+x4poHXkcXDayMrLutW1ti6LgVzfaTLQazauxe
-        d0ugZuDx+8NaAQ6H8+Yo1qMazkg61LxFFr414i8=
-X-Google-Smtp-Source: ABdhPJysqYkgvsUB5GiEswkRNNKILHjjgWCeXRVo+QHtk0WCjK+abRX2rEGDEoOCLg/z/tM8wvqyn+iTq0H6F2DGVuc=
-X-Received: by 2002:a17:906:af53:: with SMTP id ly19mr495830ejb.503.1599804665477;
- Thu, 10 Sep 2020 23:11:05 -0700 (PDT)
+        id S1725730AbgIKGYn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Sep 2020 02:24:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34638 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725535AbgIKGYm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Sep 2020 02:24:42 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE855C061573;
+        Thu, 10 Sep 2020 23:24:39 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id lo4so12215856ejb.8;
+        Thu, 10 Sep 2020 23:24:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=F8q8VZI/KqEdOVJ9DW+ecexrsQ8uO8xdnTiT3lh40GY=;
+        b=iwxNNRSqHQPPw7NRN3+AJDPYeet1cIe/BlZC9CmOPEmivDcmkXwVg6nAsHooODEeC8
+         9EO7FQ5VufnzEfm3/j4+SKpqHNDE2sPor9HObeojQJ7mkcSDKAYX3+dgbzEnwAmX/zt5
+         EgDmsRXXN/ycose+Vtdl1SotJHnNGv/5q06uU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=F8q8VZI/KqEdOVJ9DW+ecexrsQ8uO8xdnTiT3lh40GY=;
+        b=ReHO9jenfyt7qwSfmGBAa/jLJ526u0LwxWcSTShYipDrGDGZD69Noqi02tX4UvNX16
+         gGUCZwLjRG0KhWkJWjC1Zn9abhvcoSBWY/uCEwZw1oUud11Rf8mrDOQKHmnwDHnHbBss
+         3731djuCioFApyUEmLkzGkSlQpwoKPZrmCo67XnuJNFT2njalLelr7zKLK8AaoDxK6hO
+         E9CUtGbinRFJukEAsNo0TrHFSW8/Bi+Yg1F4CRCRd/EAuVs2S9Bmd53YAv0G9qSI9DI8
+         8IUetcsami60d3p5tg4kAAwUVbM6Icm1MoUaD00fc2wrwQoY6tRoIs2SKEcfTlOEPz21
+         ZtJg==
+X-Gm-Message-State: AOAM531gQsapjao0URnJ4zcwePJNfV7J2JLQ6Gs29q/cDcJjMUp1pKaL
+        ctor9DRS9gQDsV19oAWagxX6FLuwIqML39CnhxQ=
+X-Google-Smtp-Source: ABdhPJwGsIFct6xD49icnIdRIUypp1dR0gXkCjgcK8V0N6s7a11zNG7uif/vfB4uystoNpvqg7tfhllyjz2DhzvlA5Y=
+X-Received: by 2002:a17:906:4c58:: with SMTP id d24mr630416ejw.108.1599805477428;
+ Thu, 10 Sep 2020 23:24:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200910175733.11046-1-krzk@kernel.org> <20200910175733.11046-13-krzk@kernel.org>
- <CACPK8XfmDySpkCw8nkmns-euGQE6JTqZLVO6JhvFJiRqNosRuQ@mail.gmail.com>
-In-Reply-To: <CACPK8XfmDySpkCw8nkmns-euGQE6JTqZLVO6JhvFJiRqNosRuQ@mail.gmail.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Fri, 11 Sep 2020 08:10:53 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPca3R=LYVws9rYj-iuOx7Z1GMkM2ow2pCQ3CGnv0vSS7Q@mail.gmail.com>
-Message-ID: <CAJKOXPca3R=LYVws9rYj-iuOx7Z1GMkM2ow2pCQ3CGnv0vSS7Q@mail.gmail.com>
-Subject: Re: [PATCH v2 12/15] ARM: dts: aspeed: align GPIO hog names with dtschema
-To:     Joel Stanley <joel@jms.id.au>
+References: <20200910175733.11046-1-krzk@kernel.org> <20200910175733.11046-2-krzk@kernel.org>
+In-Reply-To: <20200910175733.11046-2-krzk@kernel.org>
+From:   Joel Stanley <joel@jms.id.au>
+Date:   Fri, 11 Sep 2020 06:24:25 +0000
+Message-ID: <CACPK8XdocAX5mOXf3VP29cNXH+6unYunB9NiT3qFVKyzR6WXPg@mail.gmail.com>
+Subject: Re: [PATCH v2 01/15] dt-bindings: gpio: convert bindings for NXP
+ PCA953x family to dtschema
+To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -74,15 +83,46 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 11 Sep 2020 at 02:58, Joel Stanley <joel@jms.id.au> wrote:
+On Thu, 10 Sep 2020 at 17:57, Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
-> On Thu, 10 Sep 2020 at 17:59, Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> >
-> > dtschema for pca95xx expects GPIO hogs to end with 'hog' prefix.
+> Convert the NXP PCA953x family of GPIO expanders bindings to device tree
+> schema.
 >
-> This is a bit ugly. Do we have to go down this path?
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-No, but please comment on schema (1/15 in this series).
+> +patternProperties:
+> +  "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
+> +    type: object
+> +    properties:
+> +      gpio-hog: true
+> +      gpios: true
+> +      input: true
+> +      output-high: true
+> +      output-low: true
+> +      line-name: true
+> +
+> +    required:
+> +      - gpio-hog
+> +      - gpios
+> +
 
-Best regards,
-Krzysztof
+> +            usb3-sata-sel-hog {
+> +                gpio-hog;
+> +                gpios = <4 GPIO_ACTIVE_HIGH>;
+> +                output-low;
+> +                line-name = "usb3_sata_sel";
+
+I would prefer we didn't require the addition of hte -hog prefix. It's
+mostly just a matter of taste, but I can think of a few more concrete
+reasons:
+
+We don't require -high or -low prefixes, so the node name doesn't need
+to describe the properties that will be found below.
+
+Changing around node names for existing boards carries with it the
+chance of userspace breakage (as sysfs paths change). I would prefer
+we avoid that if possible.
+
+Cheers,
+
+Joel
