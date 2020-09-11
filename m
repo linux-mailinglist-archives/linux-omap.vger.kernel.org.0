@@ -2,54 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7927265943
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Sep 2020 08:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 184C5265977
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Sep 2020 08:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725730AbgIKGYn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Sep 2020 02:24:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34638 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725535AbgIKGYm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Sep 2020 02:24:42 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE855C061573;
-        Thu, 10 Sep 2020 23:24:39 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id lo4so12215856ejb.8;
-        Thu, 10 Sep 2020 23:24:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=F8q8VZI/KqEdOVJ9DW+ecexrsQ8uO8xdnTiT3lh40GY=;
-        b=iwxNNRSqHQPPw7NRN3+AJDPYeet1cIe/BlZC9CmOPEmivDcmkXwVg6nAsHooODEeC8
-         9EO7FQ5VufnzEfm3/j4+SKpqHNDE2sPor9HObeojQJ7mkcSDKAYX3+dgbzEnwAmX/zt5
-         EgDmsRXXN/ycose+Vtdl1SotJHnNGv/5q06uU=
+        id S1725554AbgIKGmG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Sep 2020 02:42:06 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:38112 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725468AbgIKGmE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Sep 2020 02:42:04 -0400
+Received: by mail-ot1-f68.google.com with SMTP id y5so7497325otg.5;
+        Thu, 10 Sep 2020 23:42:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=F8q8VZI/KqEdOVJ9DW+ecexrsQ8uO8xdnTiT3lh40GY=;
-        b=ReHO9jenfyt7qwSfmGBAa/jLJ526u0LwxWcSTShYipDrGDGZD69Noqi02tX4UvNX16
-         gGUCZwLjRG0KhWkJWjC1Zn9abhvcoSBWY/uCEwZw1oUud11Rf8mrDOQKHmnwDHnHbBss
-         3731djuCioFApyUEmLkzGkSlQpwoKPZrmCo67XnuJNFT2njalLelr7zKLK8AaoDxK6hO
-         E9CUtGbinRFJukEAsNo0TrHFSW8/Bi+Yg1F4CRCRd/EAuVs2S9Bmd53YAv0G9qSI9DI8
-         8IUetcsami60d3p5tg4kAAwUVbM6Icm1MoUaD00fc2wrwQoY6tRoIs2SKEcfTlOEPz21
-         ZtJg==
-X-Gm-Message-State: AOAM531gQsapjao0URnJ4zcwePJNfV7J2JLQ6Gs29q/cDcJjMUp1pKaL
-        ctor9DRS9gQDsV19oAWagxX6FLuwIqML39CnhxQ=
-X-Google-Smtp-Source: ABdhPJwGsIFct6xD49icnIdRIUypp1dR0gXkCjgcK8V0N6s7a11zNG7uif/vfB4uystoNpvqg7tfhllyjz2DhzvlA5Y=
-X-Received: by 2002:a17:906:4c58:: with SMTP id d24mr630416ejw.108.1599805477428;
- Thu, 10 Sep 2020 23:24:37 -0700 (PDT)
+        bh=Fd37rPIKQ8kE2t3AwO5/OmIuIXHedyKotPXtUMjyF2w=;
+        b=ssEj5ur118J6k2Ced/Zj0T1013SX/my+1L6sa+YyX2ltxckYZb9ARvDEDkeg2Wfo1E
+         k6It8szDwFkVsCjOiyo/QDdRz8ACwg9HF377zNch/lowKsOnWe3sjdgQ7dpt0cKfJry1
+         DXfmTaNwE8tIs9q7QzlisKsr+TpayhVx5wZl0oNMldEBfg04RfFnDO1c0Ek8qmCcaO7A
+         7wjkopTQB46LymkwA4we9COpW3uoUcCcp6UbZ78H7AzyBmRyH6yJ+BHeo/5CVABtWXQ+
+         k/L0YpI22NZY/NTsxjCx0caNMrMuO0qcWUTrNmy3LSovbXVVc1XaeHls9P2A6aN3MfdN
+         Apew==
+X-Gm-Message-State: AOAM5318K2LN1z46Ybx0Sh0+VgKvcETAqMlkZc0GMstXGUY6T+4HcZzP
+        gVFdxj8gbpTY7B4+CkvPdTYdFPjSifUY74l4quI=
+X-Google-Smtp-Source: ABdhPJyHFeXfHoxVfoXb/lF9obDK4GQsw0s+uaaDCZdbjIAVpoMuCLbEzubvLMnxtVhpCEHmoeJzN55crOToqaVuB8s=
+X-Received: by 2002:a05:6830:1008:: with SMTP id a8mr296058otp.107.1599806523827;
+ Thu, 10 Sep 2020 23:42:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200910175733.11046-1-krzk@kernel.org> <20200910175733.11046-2-krzk@kernel.org>
-In-Reply-To: <20200910175733.11046-2-krzk@kernel.org>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Fri, 11 Sep 2020 06:24:25 +0000
-Message-ID: <CACPK8XdocAX5mOXf3VP29cNXH+6unYunB9NiT3qFVKyzR6WXPg@mail.gmail.com>
+ <20200910182814.veviax3n377undkv@akan> <CAJKOXPdQJz7aLu4sjds46SiZwxvB-VMBR=stjpUme+8iEo+d-w@mail.gmail.com>
+In-Reply-To: <CAJKOXPdQJz7aLu4sjds46SiZwxvB-VMBR=stjpUme+8iEo+d-w@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 11 Sep 2020 08:41:52 +0200
+Message-ID: <CAMuHMdVG6+BsTUxb4wcAwj1WK982S0k2RCxmb3x9gsOS2TphNw@mail.gmail.com>
 Subject: Re: [PATCH v2 01/15] dt-bindings: gpio: convert bindings for NXP
  PCA953x family to dtschema
 To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
+Cc:     Nishanth Menon <nm@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Rob Herring <robh+dt@kernel.org>,
         =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
@@ -59,6 +50,7 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Andrew Lunn <andrew@lunn.ch>,
         Gregory Clement <gregory.clement@bootlin.com>,
         Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Joel Stanley <joel@jms.id.au>,
         Andrew Jeffery <andrew@aj.id.au>,
         Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
@@ -67,62 +59,61 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Magnus Damm <magnus.damm@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
         Michal Simek <michal.simek@xilinx.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org
+        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 10 Sep 2020 at 17:57, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+Hi Krzysztof,
+
+On Thu, Sep 10, 2020 at 8:54 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> On Thu, 10 Sep 2020 at 20:28, Nishanth Menon <nm@ti.com> wrote:
+> > On 19:57-20200910, Krzysztof Kozlowski wrote:
+> > [...]
+> > > +  wakeup-source:
+> > > +    $ref: /schemas/types.yaml#/definitions/flag
+> > > +
+> > > +patternProperties:
+> > > +  "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
+> >
+> > I wonder if "hog" is too generic and might clash with "something-hog" in
+> > the future?
 >
-> Convert the NXP PCA953x family of GPIO expanders bindings to device tree
-> schema.
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> This pattern is already used in
+> Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml. It will
+> match only children and so far it did not find any other nodes in ARM
+> and ARM64 dts. I don't expect clashes. Also the question is then - if
+> one adds a child of GPIO expander named "foobar-hog" and it is not a
+> GPIO hog, then what is it?
 
-> +patternProperties:
-> +  "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
-> +    type: object
-> +    properties:
-> +      gpio-hog: true
-> +      gpios: true
-> +      input: true
-> +      output-high: true
-> +      output-low: true
-> +      line-name: true
-> +
-> +    required:
-> +      - gpio-hog
-> +      - gpios
-> +
+Perhaps you didn't find any other nodes as children of pca953x
+controllers?
+There are other hog nodes in other types of GPIO controllers. Typically
+they're named after the purpose, e.g. "wifi-disable", "i2c3_mux_oe_n",
+"pcie_sata_switch", "lcd0_mux".
 
-> +            usb3-sata-sel-hog {
-> +                gpio-hog;
-> +                gpios = <4 GPIO_ACTIVE_HIGH>;
-> +                output-low;
-> +                line-name = "usb3_sata_sel";
+IMHO it's a hog if it contains a "gpio-hog" property, regardless of node
+naming.
 
-I would prefer we didn't require the addition of hte -hog prefix. It's
-mostly just a matter of taste, but I can think of a few more concrete
-reasons:
+Gr{oetje,eeting}s,
 
-We don't require -high or -low prefixes, so the node name doesn't need
-to describe the properties that will be found below.
+                        Geert
 
-Changing around node names for existing boards carries with it the
-chance of userspace breakage (as sysfs paths change). I would prefer
-we avoid that if possible.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Cheers,
-
-Joel
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
