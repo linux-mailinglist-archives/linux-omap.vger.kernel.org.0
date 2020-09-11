@@ -2,118 +2,156 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 184C5265977
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Sep 2020 08:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC144265996
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Sep 2020 08:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725554AbgIKGmG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Sep 2020 02:42:06 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:38112 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725468AbgIKGmE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Sep 2020 02:42:04 -0400
-Received: by mail-ot1-f68.google.com with SMTP id y5so7497325otg.5;
-        Thu, 10 Sep 2020 23:42:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Fd37rPIKQ8kE2t3AwO5/OmIuIXHedyKotPXtUMjyF2w=;
-        b=ssEj5ur118J6k2Ced/Zj0T1013SX/my+1L6sa+YyX2ltxckYZb9ARvDEDkeg2Wfo1E
-         k6It8szDwFkVsCjOiyo/QDdRz8ACwg9HF377zNch/lowKsOnWe3sjdgQ7dpt0cKfJry1
-         DXfmTaNwE8tIs9q7QzlisKsr+TpayhVx5wZl0oNMldEBfg04RfFnDO1c0Ek8qmCcaO7A
-         7wjkopTQB46LymkwA4we9COpW3uoUcCcp6UbZ78H7AzyBmRyH6yJ+BHeo/5CVABtWXQ+
-         k/L0YpI22NZY/NTsxjCx0caNMrMuO0qcWUTrNmy3LSovbXVVc1XaeHls9P2A6aN3MfdN
-         Apew==
-X-Gm-Message-State: AOAM5318K2LN1z46Ybx0Sh0+VgKvcETAqMlkZc0GMstXGUY6T+4HcZzP
-        gVFdxj8gbpTY7B4+CkvPdTYdFPjSifUY74l4quI=
-X-Google-Smtp-Source: ABdhPJyHFeXfHoxVfoXb/lF9obDK4GQsw0s+uaaDCZdbjIAVpoMuCLbEzubvLMnxtVhpCEHmoeJzN55crOToqaVuB8s=
-X-Received: by 2002:a05:6830:1008:: with SMTP id a8mr296058otp.107.1599806523827;
- Thu, 10 Sep 2020 23:42:03 -0700 (PDT)
+        id S1725536AbgIKGuz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Sep 2020 02:50:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38634 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725497AbgIKGuw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Sep 2020 02:50:52 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEB2DC061573;
+        Thu, 10 Sep 2020 23:50:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=hDqq1JG175ppowfS+5K7leNlHt/omHY888LR3V06tR4=; b=NtGcTdUU4w/N2X72+BK9qqwB3w
+        eIGqZeu5gBNG0wuBvXicLERsQ5yAlTJ+2zVMP2biOwDnt4dhR/Zswk2JNlYVhboOKhMggMo6aHV4A
+        sW9VY1j70XdcXO97NFV3TQZZew8XUr01hkQlAyzFD9S7GYUOKAwfrvR8d8c2lzRmAQMw=;
+Received: from p200300ccff0ce9001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0c:e900:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1kGctL-0005Do-2W; Fri, 11 Sep 2020 08:50:39 +0200
+Received: from andi by aktux with local (Exim 4.92)
+        (envelope-from <andreas@kemnade.info>)
+        id 1kGctK-0006qj-JJ; Fri, 11 Sep 2020 08:50:38 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     khilman@kernel.org, tony@atomide.com, linux@armlinux.org.uk,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org
+Cc:     Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH] omap3: enable off mode automatically
+Date:   Fri, 11 Sep 2020 08:49:24 +0200
+Message-Id: <20200911064924.26281-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20200910175733.11046-1-krzk@kernel.org> <20200910175733.11046-2-krzk@kernel.org>
- <20200910182814.veviax3n377undkv@akan> <CAJKOXPdQJz7aLu4sjds46SiZwxvB-VMBR=stjpUme+8iEo+d-w@mail.gmail.com>
-In-Reply-To: <CAJKOXPdQJz7aLu4sjds46SiZwxvB-VMBR=stjpUme+8iEo+d-w@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 11 Sep 2020 08:41:52 +0200
-Message-ID: <CAMuHMdVG6+BsTUxb4wcAwj1WK982S0k2RCxmb3x9gsOS2TphNw@mail.gmail.com>
-Subject: Re: [PATCH v2 01/15] dt-bindings: gpio: convert bindings for NXP
- PCA953x family to dtschema
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Nishanth Menon <nm@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
-        <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.0 (-)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Krzysztof,
+Enabling off mode was only reachable deeply hidden
+in the debugfs. As powersaving is an important feature,
+move the option out of its shady place.
+The debugfs file can still be used to override the default.
 
-On Thu, Sep 10, 2020 at 8:54 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> On Thu, 10 Sep 2020 at 20:28, Nishanth Menon <nm@ti.com> wrote:
-> > On 19:57-20200910, Krzysztof Kozlowski wrote:
-> > [...]
-> > > +  wakeup-source:
-> > > +    $ref: /schemas/types.yaml#/definitions/flag
-> > > +
-> > > +patternProperties:
-> > > +  "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
-> >
-> > I wonder if "hog" is too generic and might clash with "something-hog" in
-> > the future?
->
-> This pattern is already used in
-> Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml. It will
-> match only children and so far it did not find any other nodes in ARM
-> and ARM64 dts. I don't expect clashes. Also the question is then - if
-> one adds a child of GPIO expander named "foobar-hog" and it is not a
-> GPIO hog, then what is it?
+Use the presence of a device compatible to ti,twl4030-idle or
+ti,twl4030-idle-osc-off as an indicator that the board is wired correctly
+for off mode.
 
-Perhaps you didn't find any other nodes as children of pca953x
-controllers?
-There are other hog nodes in other types of GPIO controllers. Typically
-they're named after the purpose, e.g. "wifi-disable", "i2c3_mux_oe_n",
-"pcie_sata_switch", "lcd0_mux".
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+An earlier version of this patch was here:
+https://patchwork.kernel.org/patch/10794121/
 
-IMHO it's a hog if it contains a "gpio-hog" property, regardless of node
-naming.
+A config option was used instead of the suggested devicetree check.
 
-Gr{oetje,eeting}s,
+ arch/arm/mach-omap2/pm.h     |  4 ----
+ arch/arm/mach-omap2/pm34xx.c | 29 ++++++++++++++++++++++++++++-
+ 2 files changed, 28 insertions(+), 5 deletions(-)
 
-                        Geert
-
+diff --git a/arch/arm/mach-omap2/pm.h b/arch/arm/mach-omap2/pm.h
+index 2a883a0c1fcd..80e84ae66aee 100644
+--- a/arch/arm/mach-omap2/pm.h
++++ b/arch/arm/mach-omap2/pm.h
+@@ -49,11 +49,7 @@ static inline int omap4_opp_init(void)
+ extern int omap3_pm_get_suspend_state(struct powerdomain *pwrdm);
+ extern int omap3_pm_set_suspend_state(struct powerdomain *pwrdm, int state);
+ 
+-#ifdef CONFIG_PM_DEBUG
+ extern u32 enable_off_mode;
+-#else
+-#define enable_off_mode 0
+-#endif
+ 
+ #if defined(CONFIG_PM_DEBUG) && defined(CONFIG_DEBUG_FS)
+ extern void pm_dbg_update_time(struct powerdomain *pwrdm, int prev);
+diff --git a/arch/arm/mach-omap2/pm34xx.c b/arch/arm/mach-omap2/pm34xx.c
+index f5dfddf492e2..d069d581c372 100644
+--- a/arch/arm/mach-omap2/pm34xx.c
++++ b/arch/arm/mach-omap2/pm34xx.c
+@@ -25,6 +25,7 @@
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/slab.h>
++#include <linux/of.h>
+ #include <linux/omap-gpmc.h>
+ 
+ #include <trace/events/power.h>
+@@ -51,6 +52,10 @@
+ /* pm34xx errata defined in pm.h */
+ u16 pm34xx_errata;
+ 
++#ifndef CONFIG_PM_DEBUG
++u32 enable_off_mode;
++#endif
++
+ struct power_state {
+ 	struct powerdomain *pwrdm;
+ 	u32 next_state;
+@@ -410,7 +415,12 @@ static int __init pwrdms_setup(struct powerdomain *pwrdm, void *unused)
+ 	if (!pwrst)
+ 		return -ENOMEM;
+ 	pwrst->pwrdm = pwrdm;
+-	pwrst->next_state = PWRDM_POWER_RET;
++
++	if (enable_off_mode)
++		pwrst->next_state = PWRDM_POWER_OFF;
++	else
++		pwrst->next_state = PWRDM_POWER_RET;
++
+ 	list_add(&pwrst->node, &pwrst_list);
+ 
+ 	if (pwrdm_has_hdwr_sar(pwrdm))
+@@ -444,6 +454,21 @@ static void __init pm_errata_configure(void)
+ 	}
+ }
+ 
++static void __init omap3_pm_check_pmic(void)
++{
++	struct device_node *np;
++
++	np = of_find_compatible_node(NULL, NULL, "ti,twl4030-power-idle");
++	if (!np)
++		np = of_find_compatible_node(NULL, NULL, "ti,twl4030-power-idle-osc-off");
++
++	if (np) {
++		of_node_put(np);
++		enable_off_mode = 1;
++	} else
++		enable_off_mode = 0;
++}
++
+ int __init omap3_pm_init(void)
+ {
+ 	struct power_state *pwrst, *tmp;
+@@ -477,6 +502,8 @@ int __init omap3_pm_init(void)
+ 		goto err2;
+ 	}
+ 
++	omap3_pm_check_pmic();
++
+ 	ret = pwrdm_for_each(pwrdms_setup, NULL);
+ 	if (ret) {
+ 		pr_err("Failed to setup powerdomains\n");
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.20.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
