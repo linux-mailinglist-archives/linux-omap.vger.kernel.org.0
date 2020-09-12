@@ -2,57 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8C3E26791F
-	for <lists+linux-omap@lfdr.de>; Sat, 12 Sep 2020 11:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8587267926
+	for <lists+linux-omap@lfdr.de>; Sat, 12 Sep 2020 11:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725814AbgILJ06 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 12 Sep 2020 05:26:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59478 "EHLO
+        id S1725865AbgILJ2P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 12 Sep 2020 05:28:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725823AbgILJ0x (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 12 Sep 2020 05:26:53 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E12EC061757
-        for <linux-omap@vger.kernel.org>; Sat, 12 Sep 2020 02:26:51 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id b12so8282849lfp.9
-        for <linux-omap@vger.kernel.org>; Sat, 12 Sep 2020 02:26:51 -0700 (PDT)
+        with ESMTP id S1725836AbgILJ2N (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 12 Sep 2020 05:28:13 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C862DC061573
+        for <linux-omap@vger.kernel.org>; Sat, 12 Sep 2020 02:28:10 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id a15so14529207ljk.2
+        for <linux-omap@vger.kernel.org>; Sat, 12 Sep 2020 02:28:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=S+48eoB8+wThondXw2toHob0ZQwe3LgTU2CE7AlUBMM=;
-        b=OuRWaG40whjIBcB91iNEvAaHGH0XDNk5AXjxsFd+lICwB8++pB5UsygLg6jwo/lL2A
-         qd53HqFUUnm3cDfBUscBkRR1u9VdxLP7qcflg9bAFk0JXmup6OrDzfQpQsCOhL9SY7XW
-         vR0VT+2T1bqV19wiKfCyC3E9Nx/TcZ88mR8/c8gXF0yduk3xdoC/Ir50d7AIkuzKUjUy
-         4F0dMDAIYUEth89uoIqHYVdc8C+bdXJyz5JmcupsoZY0mzUstYXOqCoD/nN76FZS7ImA
-         lJD8JSIjMf3V+xJpzWOjcQptKuobR+0USHm2aAa9OpznGdsOHeTJ6ZJVdmq+wn0U96tO
-         N3jA==
+        bh=3+/cI6ELF81exg/RR6O6O+aVN5sqIX5r7pgGzHaDNpI=;
+        b=vjl9bbO8iUlC2sz3imomb0O6hpjiO8gsClut6HK+gK0O4wRbxMumMVEOuympYxol7K
+         y/Ise3AX8b8e3tzqXRxsmGtHKZmV4QDIVwh49vKCRFxmc3gmh4RNsxlTBww1NO2y70I8
+         FfsHNexZKO4cQXN/66Cq33fg2FyFiGMQW+Rz9kGk9ZoNkd8c5jc8rUX3/evKM1JcqMvg
+         W2WyAehcphSgR+YbsqIuAqow4T/2Cx1UgDUpGBp0mrg8rirA1BWEww5Q1wAcvR0s/E5X
+         omLVsALi1566IgwJu0XUUU7ALSI7cAf5vz9ObTKrxDdIz8AY9F6FjFDcEtNsJDeejjzC
+         j+SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=S+48eoB8+wThondXw2toHob0ZQwe3LgTU2CE7AlUBMM=;
-        b=aAS3B18wH6ndIwOBqnPMG7NJ8dbMKwuyibUSI7xQEG1E/NbiT8p1oZbh3e+BUoZ23H
-         JY9HndS6Vd5hnRvx+N/ZLUnwXGUd/Gl58yL6QdYa3cr+GjDArAKXjWMrSu38QEhAQc+x
-         YLmWzROqINHz/1kQ4wLdTe3Ms0cGeqlGIYK9Bjpci4kT+zig2lyOPuXfyJ8JRJqHO6Ac
-         dN7wZuiGzcVCrSpqZtOFVYNySCxOYpwoFEVAXgnKFFqHDH0vr/CE6wePyAuD/a0gjP4M
-         j6J/yesR/ZKKLo63LmR+r59yo3ogHkC9FvAgIsweUZk/LCOanhoZW3hMBQo3dBMTWdcX
-         if+g==
-X-Gm-Message-State: AOAM532UOvciPPLWi6VbtplFel86GL0PfM6NlDvVfM5u+CXrVQyyTKRt
-        fcyZPrpG0UC3UAteIAlolNvau3X8WMnb51Wh7xjPog==
-X-Google-Smtp-Source: ABdhPJxdoNVDkt5k0KwL4T1WSSnHEJDy+mY/l76Bcz8T6aGaxXWR//LA/bThMnertfCCTg+IRPpUIcuvCtcRsJJk2dk=
-X-Received: by 2002:a19:520b:: with SMTP id m11mr1331733lfb.502.1599902810277;
- Sat, 12 Sep 2020 02:26:50 -0700 (PDT)
+        bh=3+/cI6ELF81exg/RR6O6O+aVN5sqIX5r7pgGzHaDNpI=;
+        b=VPo89AGtUnIhfiELK2AzuoFX67GE8L2RkiVDOPGOtE4x5+Pjpv+5kr5sA9pI81lEzS
+         UhRjYSCSL9LqZY4qiDnXb/dI2efHc/b8DJXmYXehnIb/0wxf3xID2/62E0XO4iUcTssY
+         zRBDatYuMt0Wh+Xm20JDgoQdAEA968/TkdsScr4VuFO+MylC8RY+B96JkH3SfNZ3fsbI
+         95jhRuwJLQkOQkLoaPk9PG9gUjaaqhI/7buxk8SXq7xPb+n3rHgNNQXXSqT/CJN7PIZG
+         1dMPUrnyIwHPDObGxRXneL5oyK4xfNXGyvSWf/hq7CVhlgxrjsGoi2M5ygPr/w1C3BbB
+         twBQ==
+X-Gm-Message-State: AOAM530FILM0+9kiAZ5f32aMRTCskgpZm5F1/wchtL3ROw/wWHCc+4uE
+        +lM5uRr6Kx1bnDHFAF5qw2JAPNyfje8elPhnWfdz5g==
+X-Google-Smtp-Source: ABdhPJxBsTNPv8rTOK3nTsl78tCBYvEXZdS93+fdtnacKEhcDIY4ugN8Nz58OFQx6JN7+eus6AgEBIfh+o+KwvT7keo=
+X-Received: by 2002:a2e:4e01:: with SMTP id c1mr2035650ljb.144.1599902889267;
+ Sat, 12 Sep 2020 02:28:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200827200827.26462-1-krzk@kernel.org> <20200827200827.26462-6-krzk@kernel.org>
-In-Reply-To: <20200827200827.26462-6-krzk@kernel.org>
+References: <20200827200827.26462-1-krzk@kernel.org> <CAMpxmJXbjJMgiTgpWokfeeuXjd-tuns8kq1T+Q+qwcxXvums_g@mail.gmail.com>
+In-Reply-To: <CAMpxmJXbjJMgiTgpWokfeeuXjd-tuns8kq1T+Q+qwcxXvums_g@mail.gmail.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 12 Sep 2020 11:26:39 +0200
-Message-ID: <CACRpkdZJ78LBANGOdE6+kokfJV5hUYWaXhdhG+9cFUyj6YjVpw@mail.gmail.com>
-Subject: Re: [PATCH 6/6] gpio: zynq: Simplify with dev_err_probe()
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Ray Jui <rjui@broadcom.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+Date:   Sat, 12 Sep 2020 11:27:58 +0200
+Message-ID: <CACRpkdbA1L3BzQ8uxVmPjeZKG4z18x-6ZXD0cPWCeCpwUw2=WQ@mail.gmail.com>
+Subject: Re: [PATCH 1/6] gpio: bcm-kona: Simplify with dev_err_probe()
+To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>, Ray Jui <rjui@broadcom.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Scott Branden <sbranden@broadcom.com>,
         bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
@@ -61,25 +60,22 @@ Cc:     Ray Jui <rjui@broadcom.com>,
         Santosh Shilimkar <ssantosh@kernel.org>,
         Kevin Hilman <khilman@kernel.org>,
         Michal Simek <michal.simek@xilinx.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+        arm-soc <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Aug 27, 2020 at 10:08 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Fri, Aug 28, 2020 at 8:17 PM Bartosz Golaszewski
+<bgolaszewski@baylibre.com> wrote:
 
-> Common pattern of handling deferred probe can be simplified with
-> dev_err_probe().  Less code and also it prints the error value.
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Queued the entire series with all the tags, thanks!
 
-All six patches applied!
+Oh you already queued them, I'll drop them from my tree.
 
 Thanks!
-Yours,
 Linus Walleij
