@@ -2,136 +2,145 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7F0926795E
-	for <lists+linux-omap@lfdr.de>; Sat, 12 Sep 2020 12:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A99E268102
+	for <lists+linux-omap@lfdr.de>; Sun, 13 Sep 2020 21:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725838AbgILKIR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 12 Sep 2020 06:08:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37580 "EHLO
+        id S1725938AbgIMTmo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 13 Sep 2020 15:42:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725817AbgILKIN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 12 Sep 2020 06:08:13 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E84EC0613ED
-        for <linux-omap@vger.kernel.org>; Sat, 12 Sep 2020 03:08:12 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id r24so14569808ljm.3
-        for <linux-omap@vger.kernel.org>; Sat, 12 Sep 2020 03:08:12 -0700 (PDT)
+        with ESMTP id S1725940AbgIMTmj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Sep 2020 15:42:39 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D14D8C061788
+        for <linux-omap@vger.kernel.org>; Sun, 13 Sep 2020 12:42:38 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id i1so15568126edv.2
+        for <linux-omap@vger.kernel.org>; Sun, 13 Sep 2020 12:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LhS5fiHNS+mf8gdgKUyRgo45ZOROmtSlUAQLqDxlfa4=;
-        b=m84ZT5BPICoUprfBrZfjZJo2ToERzKGaIY2M6zIDJinD/VsTcZGwo12Haard8p1vhC
-         MjZ8Hx1mOMoZusfjl0oIINyvWLew3L/D9Vjr6BiIPqengZMXdB/f0RVu1NZMRU2Q3z2V
-         kDw7HrGgkIRJkY7ZdDYxtEtXHKR5/QKvHKBVMwnPxWhPJDa8IJD1nxJmu+ACxDeUAVRj
-         eWLRVBXOA6MNERWuGkqiqoNBVFHwzaDGQ/HFBHpcyhLZgLwuWw0uLKa/KkF+xDYIC+Fm
-         y512jagysE3SZE1JiPHWpTndTacUnZvwMYiNVx5FAlo6DD9u1U+4vzX3/glDN2wD5pMh
-         pEFg==
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=k2cvB0HQArtJknBkltHAoCpwXnIH5D4KwvQqQMifHm4=;
+        b=WWoza80lwFN2cSIWNPpF9RO03s6vxAsB42qYdTC+2typ17TgiQsuQj2R+PaBHA24Mc
+         X0NsWurndtM13ubMmMe7uzPhq1Opu5a170YrnmE2bVIwNwwaVBw83JkdWh7bQPu8fZ2H
+         cqWL+xe6KzHNVp66cZeZTtUrk46ajDsyf3bfaiUDApWx9r90psJVxlx9rPM4vYP5413U
+         cdL5I8USziB8vGrhrakS2Xj1zIJCfCVHB+ScOFXRKYfXvhpePasFd6ficE58V5tXEWFZ
+         oydEoP3ObwzEN7oxrp5I6V0/czFh2JACXJJMwIyObuR1D8K99HglGuojcpq5UnVU4wXN
+         +ccw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LhS5fiHNS+mf8gdgKUyRgo45ZOROmtSlUAQLqDxlfa4=;
-        b=sBapHHgB22MwWAIlmmgWZL2zhpu/0uj0SPUnIUJJO1S+s9m9oDI3o2qop+jWzJhqW3
-         LTCHCyeP4ee+p3RIpLbFp4YoFM1c6+w8pQ+wlzzeG6gq8EWoGdkY65eXKLI3itt0MM1S
-         eL0zP6uTsFJCw/f6nZM4rpT+ImL2B5OpFDfo4HCC1pIHQbfJpAvk6ddEOJgAGtQR85wK
-         yuBu6pR2/M/V3pNrhtSLtbJp6egV+pFvoEi00FsUP2AyCaa7YJCzxDb4KNy6dWjq/RRl
-         XzG4YYsVtY0LtgtnMm2+PNuz+BaQ42HildvW0k89KYl+DXzK4/rDaFYcHTtdE60YH4bc
-         uOOg==
-X-Gm-Message-State: AOAM533p5021CWgxPqLfCfmyd3YVIkt37GKY4vwZYqg4MPb02EzD/Paw
-        kn0p2t+3Rmrebll4z7UeZGQmcrVftZieVQwTCK88Iw==
-X-Google-Smtp-Source: ABdhPJztH8Y3Zl30n6XdqCSNpq33ojnWBwr/h05qXrY6CWiTumbfWA4LLSAc0k49IpbpJ+j5i9pFRwI9T1f7AE6sj0s=
-X-Received: by 2002:a2e:9988:: with SMTP id w8mr2308597lji.286.1599905290685;
- Sat, 12 Sep 2020 03:08:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200910175733.11046-1-krzk@kernel.org> <20200910175733.11046-2-krzk@kernel.org>
- <CACPK8XdocAX5mOXf3VP29cNXH+6unYunB9NiT3qFVKyzR6WXPg@mail.gmail.com>
- <CAJKOXPe6Tf0B5W27XaD5zLk77OBzGCHpirhTdZjFH0oh8GvWgg@mail.gmail.com> <c162b6ad-57f1-a75a-11e3-9c80c60bd845@ti.com>
-In-Reply-To: <c162b6ad-57f1-a75a-11e3-9c80c60bd845@ti.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 12 Sep 2020 12:07:59 +0200
-Message-ID: <CACRpkdbrrzkYVW13V89PJ5_WRGhxSL0rOxAHA_7hYSyw28Shvg@mail.gmail.com>
-Subject: Re: [PATCH v2 01/15] dt-bindings: gpio: convert bindings for NXP
- PCA953x family to dtschema
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=k2cvB0HQArtJknBkltHAoCpwXnIH5D4KwvQqQMifHm4=;
+        b=rNsBdEWV8ADQrQfDLYv+yFeI7u7uS8gzKliaFStGy1MOkANXFclyVGuvlEzo1odOs8
+         ammTh5K2QPr4uuoerwlh3EXten19wmYrHrkwCly7oXe7oukISDm4wL23vz8yP6eBQZM2
+         rt10oKJQ6/+3K/90LsXz0GuXIdQQc5PQjn6bhYSpCDldsU5a7SbzFRojD+m8RYX8t3Cx
+         CCleXEu+GgrlkQcxejaOCbG2S0Mth3uhtds02/6GSsfIvtRO/VxmZp7Z6rnV7xh+W1Q5
+         0X/q6F09AguCzWk1q57Cb3eTq84urCoiTQJnJnCkSoPRWCYvmjiAApcCLaivGO14ZYvR
+         oQ9g==
+X-Gm-Message-State: AOAM532wjNY0TseLkXzGx0hCRYuCRwIv5W4iywoCrKsYTobmM2McLjlB
+        UbtATbMMPfxAOZzFo3sKz6435w==
+X-Google-Smtp-Source: ABdhPJz7OvHoMkyN0c1qJ1xvIg2tXwvkdR2sb0uzsGhQB0HjoTTy1q871OAMdzLfTfJEW5qDmRtJCQ==
+X-Received: by 2002:a05:6402:326:: with SMTP id q6mr14107023edw.216.1600026156541;
+        Sun, 13 Sep 2020 12:42:36 -0700 (PDT)
+Received: from x1 ([2001:16b8:5cf8:e601:5f2:8f03:4748:2bc6])
+        by smtp.gmail.com with ESMTPSA id bf25sm7685811edb.95.2020.09.13.12.42.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Sep 2020 12:42:35 -0700 (PDT)
+Date:   Sun, 13 Sep 2020 21:42:33 +0200
+From:   Drew Fustini <drew@beagleboard.org>
+To:     Trent Piepho <tpiepho@gmail.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
         Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        devicetree@vger.kernel.org, bcousson@baylibre.com,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Subject: Re: [PATCH v4 1/2] pinctrl: single: parse #pinctrl-cells = 2
+Message-ID: <20200913194233.GA1955808@x1>
+References: <20200701013320.130441-1-drew@beagleboard.org>
+ <20200701013320.130441-2-drew@beagleboard.org>
+ <3139716.CMS8C0sQ7x@zen.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3139716.CMS8C0sQ7x@zen.local>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Sep 11, 2020 at 11:54 AM Grygorii Strashko
-<grygorii.strashko@ti.com> wrote:
+On Tue, Sep 08, 2020 at 04:52:58PM -0700, Trent Piepho wrote:
+> On Tuesday, June 30, 2020 6:33:19 PM PDT Drew Fustini wrote:
+> > If "pinctrl-single,pins" has 3 arguments (offset, conf, mux), then
+> > pcs_parse_one_pinctrl_entry() does an OR operation on conf and mux to
+> > get the value to store in the register.
+> 
+> 
+> > -		vals[found].val = pinctrl_spec.args[1];
+> > +
+> > +		switch (pinctrl_spec.args_count) {
+> > +		case 2:
+> > +			vals[found].val = pinctrl_spec.args[1];
+> > +			break;
+> > +		case 3:
+> > +			vals[found].val = (pinctrl_spec.args[1] | 
+> pinctrl_spec.args[2]);
+> > +			break;
+> > +		}
+> > 
+> >  		dev_dbg(pcs->dev, "%pOFn index: 0x%x value: 0x%x\n",
+> >  			pinctrl_spec.np, offset, 
+> pinctrl_spec.args[1]);
+> 
+> If #pinctrl-cells value is greater than 2, nothing will set vals[found].val to 
+> anything other than zero (from when it's calloc'ed) and the pinctrl will 
+> silently be programmed to zero.
 
-> More over, there is already generic schema for gpio hogs: gpio-hog.yaml
+If #pinctrl-cells is 3, then it will be:
 
-Where is this? I don't have it in my GPIO devel branch for sure, and
-it is not in linux-next either so not in Bartosz' tree.
+	vals[found].val = (pinctrl_spec.args[1] | pinctrl_spec.args[2]);
 
-I did suggest that I want a gpio-common.yaml file which includes the
-hogs.
+Do you mean if #pinctrl-cells is great than 3 then it will just have a
+default value of zero?
 
-> Originally, gpio bindings were defined without restricting gpio hog node names and,
-> generic schema follows this.
+That does appear to be the case and is probably not the behavior we
+want.  Thank you for pointing this out.  Earlier, there is a check to
+make sure there are at least 2 arguments:
+
+	if (pinctrl_spec.args_count < 2) {
+		dev_err(pcs->dev, "invalid args_count for spec: %i\n",
+			pinctrl_spec.args_count); 
+		break;
+	}
+
+I'll submit a patch where the upper bound is also checked:
+
+	if (pinctrl_spec.args_count < 2 || pinctrl_spec.args_count > 3) {
+		dev_err(pcs->dev, "invalid args_count for spec: %i\n",
+			pinctrl_spec.args_count); 
+		break;
+	}
+
+> The debug printout was not change to print vals[found].val, so it will 
+> continue to print the value of the 2nd cell.
+
+Thank you for pointing this out.  Yes, this is an oversight and I will
+submit a patch.
+
+> The result is that a #pinctrl-cells of 3 will produce no warning or error, 
+> program the pinctrl to zero, whilst at the same time emit debug log messages 
+> that it is programming the expected values.
 >
-> I think, the generic "gpio-hogs" sub-node may be introduced to place gpio hogs child nodes,
-> if gpio hogs node names restriction need to be introduces (*which i'm not sure is reasonable*).
->
-> gpio@20 {
->         gpio-hogs {
->                 yyy-hog {
->                          gpio-hog;
->                          gpios
->                 }
->         }
->
-> But this require as gpio code as generic gpio schema update (with backward compatibility in mind).
+> The device tree documentation still states that #pinctrl-cells must be 1 when 
+> using pinctrl-single,pins.  This new special case of ORing two values is not 
+> documented.
 
-The whole problem I have with the DT bindings is that defining
-them is not really a Linux problem and the people maintaining it even want
-to move it out of the Linux kernel tree. It is supposedly the responsibility of
-all operating systems using device tree including but not limited to BSD
-and Zephyr.
+This is a good point, too.  I will make a patch to update the
+documentation.
 
-But there is noone picking up the responsibility outside of the Linux kernel
-tree except for Rob and Rob cannot do everything.
 
-With things like this it breaks apart because noone takes the overall
-responsibility. And as subsystem maintainer I am fully overloaded with
-the Linux side of things.
-
-This is of course not your or anyone else's fault. But:
-GPIO DT binding maintainers/writers wanted!
-
-Yours,
-Linus Walleij
+-Drew
