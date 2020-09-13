@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCE6626815F
-	for <lists+linux-omap@lfdr.de>; Sun, 13 Sep 2020 23:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB2572681C2
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Sep 2020 00:50:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725940AbgIMVSG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 13 Sep 2020 17:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48706 "EHLO
+        id S1725969AbgIMWuW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 13 Sep 2020 18:50:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725945AbgIMVRu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Sep 2020 17:17:50 -0400
+        with ESMTP id S1725949AbgIMWuN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Sep 2020 18:50:13 -0400
 Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46811C06178A
-        for <linux-omap@vger.kernel.org>; Sun, 13 Sep 2020 14:17:49 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id z22so20376436ejl.7
-        for <linux-omap@vger.kernel.org>; Sun, 13 Sep 2020 14:17:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CF4C06178A
+        for <linux-omap@vger.kernel.org>; Sun, 13 Sep 2020 15:50:11 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id gr14so20592333ejb.1
+        for <linux-omap@vger.kernel.org>; Sun, 13 Sep 2020 15:50:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=OnBB2DvrjzYcd2Xdjt97x0iAp2/ezTLDUs0RIs9ctY4=;
-        b=anMv6v5bdZAYEnkPr+2lsuP8+5lMUf/p8cStq7v1B4plciXq+6TtFHW8QzpKKOhTCq
-         S/ipULt16qgmNsz82+0Ka6apn7BUvnlyhjPklRW3PpewTvP64wBy4a24YGb3PGZcFY0P
-         bH60+5as3PU1yc1jL1JgKNhVxKD9OdRRQQn+Yowgil3qiQ0i1y0dQafzssROTbpYg02P
-         0Leir4WZOwlRGbDPEY4WEXMlXL021iZtufx+pPPX6lNpZ6W/1i1DYEWUej5BGVbjmPUj
-         9rFD4aBhyUZH9M34lHZSVgsEQb0t4UyDvmZ2f9yJj+1RJ1FwdtYmV2CVaT7eIUuvm2H2
-         m28Q==
+        bh=jCkqObLQ6XI/cM41eaYHVKIOntJotdMpMjm5ZTC8RoQ=;
+        b=J6Lor6kkrx1LBJfAjZtlgpdUKKYWlck7lJlUbb0SSO+vOWUlMoO2P4YTFTfhf09Hb4
+         tDj37UEilxmAnsrbMV4cOFaMGwNqn09aB68hQlCyVy/C4t+A2J9CtvkGeDxhWBMx9JUI
+         Ntpn6Qw/QIJKrN6zScv+1HEtSYr/sm7uFxfDA7q4o6dlc8fFzyJ7LidX0/s1vPghhMug
+         T+1peI892d9JzFFGOe+oiEDYfGLkj35F0RJoXGjefdZjP1MxdUjJBEiJ1S3GklsqbmSh
+         BX0BWFOO2jXc7RAFjm0kHHmSKRSLXSzn5YETrxqD3uvtitRsJJM97Qzeq2xUT2e2lNTM
+         /ZFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=OnBB2DvrjzYcd2Xdjt97x0iAp2/ezTLDUs0RIs9ctY4=;
-        b=fmDiL1q6BWlU6AeJjvbgJ+iynrouggd2s5NJz8he5JyfRnHNul+q7f4EPVpx/sRd18
-         F7rEWzpcMgJhB2K6XikXFTa94b9/os0bY6beveP5CKlMlvmF9m5X4Yjj4RPwUHU1zros
-         R9MSpP7V2ESYLmUejIzjiGsMxBFBdiVT8l4NCCuPYDXlSgWyh53h+mfXudr6SIqX+KoT
-         LhmjnIaxHgFMWHgxrgWnQXiMjOOltMLUaiAmywQ4my2FRIaVahqxlz0k3g5BrnSxMX4a
-         J+Ghj+JtMWNwHutemBjvJuHkGouW1IHMld/YayoON1EopICn9r7OnMrZ9TsgO4aSUATI
-         Tzog==
-X-Gm-Message-State: AOAM5308rSgCQSwfNPc0Ol9REH/M1Sk559sibz3v5yGFds+Z+UcYWyJR
-        FGMAJ+3cD/vGCDLp4+OYau0Kbg==
-X-Google-Smtp-Source: ABdhPJx/fPh48IU+8lLHz64Qb1MQH+b7UmWjSssDB+euFBrzvDr8kAd930lroS4LaVAWxXdwq0JsIg==
-X-Received: by 2002:a17:906:5495:: with SMTP id r21mr11285979ejo.33.1600031868331;
-        Sun, 13 Sep 2020 14:17:48 -0700 (PDT)
-Received: from localhost.localdomain ([2001:16b8:5cf8:e601:5f2:8f03:4748:2bc6])
-        by smtp.gmail.com with ESMTPSA id cw9sm7782989edb.13.2020.09.13.14.17.46
+        bh=jCkqObLQ6XI/cM41eaYHVKIOntJotdMpMjm5ZTC8RoQ=;
+        b=bpJ8Y2EBb9+66ddmZAazdkSjMaaTefksBUfAe/4F/pJY71rdXgqe1VNE5mZjEBxuSP
+         EGSJ+3ARleZNaqoJBnFcqGqkKpHGe/qN1oPupCMZNDNgGIieTgW2GZipDGx7X7/HcjqU
+         cSkUKpXqZ5qkXlF8x7nEsGCZImS1gGgebYbLX2JUBRFGdK+z9ZCP1kCA9CKVeGfZln3w
+         mlejC8fqVjGIgmh0m3tdiRYy0k6yAKkUfEE6+Do1wnirokb/5wh+CBzq5+rF94ZJCYo9
+         U4LMaYO/WBBXfU5T9fVAYuE98Tc/xC1VrfqTaUssRzBSJ6qD0SNHbmINcNRtBLt3uzVa
+         9ISw==
+X-Gm-Message-State: AOAM5333W2RAnYl7baScH/hOoo81XfqfbOXCckrFF7Wj/dCjFXHBE97M
+        Mduf3ilnXe8gQm6EcKUq4dJUPsTG8QoaKv7XwOs=
+X-Google-Smtp-Source: ABdhPJycv3oM6/mxGcVmlcdaPFp/A1PlmqJxqSgM3DkeRXQ57TuHJDm1Xo9uuEhbDu0Bv1VVqWI7oQ==
+X-Received: by 2002:a17:906:3913:: with SMTP id f19mr12528258eje.83.1600037410320;
+        Sun, 13 Sep 2020 15:50:10 -0700 (PDT)
+Received: from localhost.localdomain ([2604:a880:400:d0::26:8001])
+        by smtp.gmail.com with ESMTPSA id hk14sm6171147ejb.88.2020.09.13.15.50.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2020 14:17:47 -0700 (PDT)
+        Sun, 13 Sep 2020 15:50:09 -0700 (PDT)
 From:   Drew Fustini <drew@beagleboard.org>
 To:     linux-arm-kernel@lists.infradead.org,
         Tony Lindgren <tony@atomide.com>,
@@ -59,9 +59,9 @@ To:     linux-arm-kernel@lists.infradead.org,
         Robert Nelson <robertcnelson@gmail.com>,
         Trent Piepho <tpiepho@gmail.com>
 Cc:     Drew Fustini <drew@beagleboard.org>
-Subject: [PATCH] pinctrl: single: check if #pinctrl-cells exceeds 3
-Date:   Sun, 13 Sep 2020 23:08:25 +0200
-Message-Id: <20200913210825.2022552-1-drew@beagleboard.org>
+Subject: [PATCH] pinctrl: single: fix debug output when #pinctrl-cells = 3
+Date:   Mon, 14 Sep 2020 00:47:46 +0200
+Message-Id: <20200913224746.2048603-1-drew@beagleboard.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -70,9 +70,8 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The property #pinctrl-cells can either be 2 or 3.  There is currently
-only a check to make sure that #pinctrl-cells is 2 or greater.  This
-patch adds a check to make sure it is not greater than 3.
+The debug output in pcs_parse_one_pinctrl_entry() needs to be updated
+to print the correct pinctrl register value when #pinctrl-cells is 3.
 
 Fixes: a13395418888 ("pinctrl: single: parse #pinctrl-cells = 2")
 Reported-by: Trent Piepho <tpiepho@gmail.com>
@@ -83,18 +82,18 @@ Signed-off-by: Drew Fustini <drew@beagleboard.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index efe41abc5d47..5cbf0e55087c 100644
+index 5cbf0e55087c..f3cd7e296712 100644
 --- a/drivers/pinctrl/pinctrl-single.c
 +++ b/drivers/pinctrl/pinctrl-single.c
-@@ -1014,7 +1014,7 @@ static int pcs_parse_one_pinctrl_entry(struct pcs_device *pcs,
- 		if (res)
- 			return res;
+@@ -1033,7 +1033,7 @@ static int pcs_parse_one_pinctrl_entry(struct pcs_device *pcs,
+ 		}
  
--		if (pinctrl_spec.args_count < 2) {
-+		if (pinctrl_spec.args_count < 2 || pinctrl_spec.args_count > 3) {
- 			dev_err(pcs->dev, "invalid args_count for spec: %i\n",
- 				pinctrl_spec.args_count);
- 			break;
+ 		dev_dbg(pcs->dev, "%pOFn index: 0x%x value: 0x%x\n",
+-			pinctrl_spec.np, offset, pinctrl_spec.args[1]);
++			pinctrl_spec.np, offset, vals[found].val);
+ 
+ 		pin = pcs_get_pin_by_offset(pcs, offset);
+ 		if (pin < 0) {
 -- 
 2.25.1
 
