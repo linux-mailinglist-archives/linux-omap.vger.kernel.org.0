@@ -2,88 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D905B268EAC
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Sep 2020 16:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E488268F95
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Sep 2020 17:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726840AbgINO7T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Sep 2020 10:59:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42490 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726921AbgINO7Q (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Sep 2020 10:59:16 -0400
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A350FC06174A
-        for <linux-omap@vger.kernel.org>; Mon, 14 Sep 2020 07:59:15 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id g3so54378qtq.10
-        for <linux-omap@vger.kernel.org>; Mon, 14 Sep 2020 07:59:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TI5UfO8CrhKlxSTB0fizVNNuJljGKxUe27eUOJYXQoA=;
-        b=sr6LAD6B25leq62gmbiDCVsb2Vy+TsneobGpZ3/FszDIr9j20hCmO7B/S3Hs+2EQ98
-         Rfb4eFP8MeWQJLG74ckXsXbR3dxP2fDKJJi5uZMjxXwDwvG0EETtramH1ibOBF7jhgfz
-         61mce+LvufkYZynzEbEuGlYadfQpcsA5sunof0rCFfMS205sRw1np8xG7qRhHDwwCBBI
-         EjYnHxMdR5ml0TMUNtCMFNXNPlb4gIyT3g0b9D6TAva7QaC64gEceI3VSiy81P6thUIB
-         Cm+EeQyqAOOxrphSsTLMe/T6Cw2tLSd4WgHBDUAXg1mwO1udm0CyBmiNjfgEHqJHXq2v
-         TZZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TI5UfO8CrhKlxSTB0fizVNNuJljGKxUe27eUOJYXQoA=;
-        b=nLZoG9t/zu+QN/F1t6YjKQ0M4RRTPmcNwZR1QETit20tJiSl45gAf+Vb+U4tyyt16c
-         zvJ2Vgb2T8cRN95PbfzzT8tb3srvTMVtbV08PnByfL8wJzEqzV7Aj31mxaRAz5Viur94
-         NcOetFUBaD+lufJUMYZGswhAlfiVlO+KuoU61KhtDghQ96ucTq1/m09x2CZIhQdqGdcS
-         lYBNH40ZaWf2D3HGYdFcEYndqXAJKEn09f2gYCM1iKhGaWZPBJ0tpevE2Vz4J2nZVMaR
-         opsR19AcHyXNoKeCZNkAMyZSzZoZYDSOth+eXrhwSzZ2xdn8M9IqDsg4h8YzPXiBHnDp
-         8WCg==
-X-Gm-Message-State: AOAM533Q3Af45HbQrX4vHYgJWMoUHBCAlGxbiy3V6RctmxpTzkrRvHGb
-        KfzmKWgpFH9BZJdwP4YGaBwtNJALJ6uAZDxDYfrQbw==
-X-Google-Smtp-Source: ABdhPJzE1Q0xqknRdRoK8U7HNFZKzLHcd3U+p+aKDmfcmkAnNREsFT1MH9lvooSs/7x/6zC3vSbp+glWuGc4ZBbbnCw=
-X-Received: by 2002:ac8:6ec2:: with SMTP id f2mr13983987qtv.159.1600095554884;
- Mon, 14 Sep 2020 07:59:14 -0700 (PDT)
+        id S1726055AbgINPVS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Sep 2020 11:21:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37164 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726452AbgINPUw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 14 Sep 2020 11:20:52 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DBE7820639;
+        Mon, 14 Sep 2020 15:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600096852;
+        bh=SxgwuzST+JSvYJRya+PVcp2/F0AEFrRW37h2Gsc+7V0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=yXjmEl6lYb+CMo9qlJJ1g4ZfKswQatENxl/z8bFZseaoC6wuWzREtpR7VZX8HHY5W
+         ko72GcE7VHXAL9yPyvBjSmxAj0DOLKxnEFWna/wanDwU/RCJm/wQ2VaGfnKqPO5lTi
+         ahwagrDpRpMCXfZqNLBXFqk5CaGYnXOa98S7oumU=
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <maz@kernel.org>)
+        id 1kHqHh-00Bj4r-Sy; Mon, 14 Sep 2020 16:20:49 +0100
 MIME-Version: 1.0
-References: <1598886558-16546-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1598886558-16546-5-git-send-email-grzegorz.jaszczyk@linaro.org> <87lfhfl3yv.wl-maz@kernel.org>
-In-Reply-To: <87lfhfl3yv.wl-maz@kernel.org>
-From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Date:   Mon, 14 Sep 2020 16:59:03 +0200
-Message-ID: <CAMxfBF7cPwPSbNuNqohy3BJGMqtiPk22_5hxrrSpvKUAVB4epA@mail.gmail.com>
-Subject: Re: [RESEND PATCH v5 4/5] irqchip/irq-pruss-intc: Implement
- irq_{get,set}_irqchip_state ops
-To:     Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 14 Sep 2020 16:20:49 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
 Cc:     tglx@linutronix.de, jason@lakedaemon.net,
         "Anna, Suman" <s-anna@ti.com>, robh+dt@kernel.org,
         Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         David Lechner <david@lechnology.com>,
-        "Bajjuri, Praneeth" <praneeth@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+        "Bajjuri, Praneeth" <praneeth@ti.com>,
+        "Andrew F . Davis" <afd@ti.com>, Roger Quadros <rogerq@ti.com>
+Subject: Re: [RESEND PATCH v5 2/5] irqchip/irq-pruss-intc: Add a PRUSS irqchip
+ driver for PRUSS interrupts
+In-Reply-To: <CAMxfBF6Qj=_uVA5t2mEkncRQ3jb+ZZZtc0=qvw7YsZzxCw-UfQ@mail.gmail.com>
+References: <1598886558-16546-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+ <1598886558-16546-3-git-send-email-grzegorz.jaszczyk@linaro.org>
+ <87mu1vl46q.wl-maz@kernel.org>
+ <CAMxfBF6Qj=_uVA5t2mEkncRQ3jb+ZZZtc0=qvw7YsZzxCw-UfQ@mail.gmail.com>
+User-Agent: Roundcube Webmail/1.4.8
+Message-ID: <98edb75abcd08e93b46c7b6dcf26ad23@kernel.org>
+X-Sender: maz@kernel.org
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: grzegorz.jaszczyk@linaro.org, tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com, robh+dt@kernel.org, lee.jones@linaro.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, david@lechnology.com, praneeth@ti.com, afd@ti.com, rogerq@ti.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 12 Sep 2020 at 11:49, Marc Zyngier <maz@kernel.org> wrote:
->
-> On Mon, 31 Aug 2020 16:09:17 +0100,
-> Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org> wrote:
-> >
-> > From: David Lechner <david@lechnology.com>
-> >
-> > This implements the irq_get_irqchip_state and irq_set_irqchip_state
-> > callbacks for the TI PRUSS INTC driver. The set callback can be used
-> > by drivers to "kick" a PRU by injecting a PRU system event.
-> >
-> > Example:
-> >      irq_set_irqchip_state(irq, IRQCHIP_STATE_PENDING, true);
-> >
->
-> Please drop this "example", it brings nothing without the full
-> context. This patch just implements a standard callback.
->
+On 2020-09-14 15:57, Grzegorz Jaszczyk wrote:
+> On Sat, 12 Sep 2020 at 11:44, Marc Zyngier <maz@kernel.org> wrote:
 
-Ok. Thank you for your review,
-Grzegorz
+[...]
+
+>> > +static void pruss_intc_update_cmr(struct pruss_intc *intc, int evt, s8 ch)
+>> > +{
+>> > +     u32 idx, offset, val;
+>> > +
+>> > +     idx = evt / CMR_EVT_PER_REG;
+>> > +     offset = (evt % CMR_EVT_PER_REG) * CMR_EVT_MAP_BITS;
+>> > +
+>> > +     val = pruss_intc_read_reg(intc, PRU_INTC_CMR(idx));
+>> > +     val &= ~(CMR_EVT_MAP_MASK << offset);
+>> > +     val |= ch << offset;
+>> 
+>> Why is 'ch' a signed value? Shifting a signed value, specially when
+>> casing it to a larger, unsigned type definitely is in UB territory.
+>> Similar funnies can be said about evt.
+>> 
+>> And given that the caller does use unsigned types, you really are
+>> asking for trouble. Please fix this.
+> 
+> Sure, thank you for pointing this out - I will change to u8.
+
+Please change evt too. Anything that is used to compute masks/shifts
+should be unsigned.
+
+[...]
+
+>> > +static void pruss_intc_init(struct pruss_intc *intc)
+>> > +{
+>> > +     const struct pruss_intc_match_data *soc_config = intc->soc_config;
+>> > +     int i;
+>> > +     int num_chnl_map_regs = DIV_ROUND_UP(soc_config->num_system_events,
+>> > +                                          CMR_EVT_PER_REG);
+>> > +     int num_host_intr_regs = DIV_ROUND_UP(soc_config->num_host_events,
+>> > +                                           HMR_CH_PER_REG);
+>> > +     int num_event_type_regs =
+>> > +                     DIV_ROUND_UP(soc_config->num_system_events, 32);
+>> 
+>> Please keep assignments on a single line.
+> 
+> Keeping entire assignment in single line will break the 80 columns
+> rule, what about changing it into:
+
+There is no such thing as a "80 column rule". As I often say, I no
+longer own a vt100.
+
+> 
+> -       int i;
+> -       int num_chnl_map_regs = 
+> DIV_ROUND_UP(soc_config->num_system_events,
+> -                                            CMR_EVT_PER_REG);
+> -       int num_host_intr_regs = 
+> DIV_ROUND_UP(soc_config->num_host_events,
+> -                                             HMR_CH_PER_REG);
+> -       int num_event_type_regs =
+> -                       DIV_ROUND_UP(soc_config->num_system_events, 
+> 32);
+> +       int num_chnl_map_regs, num_host_intr_regs, num_event_type_regs, 
+> i;
+> +
+> +       num_chnl_map_regs = DIV_ROUND_UP(soc_config->num_system_events,
+> +                                        CMR_EVT_PER_REG);
+> +       num_host_intr_regs = DIV_ROUND_UP(soc_config->num_host_events,
+> +                                         HMR_CH_PER_REG);
+> +       num_event_type_regs = 
+> DIV_ROUND_UP(soc_config->num_system_events, 32);
+> 
+> Will it be ok?
+
+Sure.
+
+         M.
+-- 
+Jazz is not dead. It just smells funny...
