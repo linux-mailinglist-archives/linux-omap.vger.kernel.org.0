@@ -2,92 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6123126A1D4
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Sep 2020 11:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD15026A3DA
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Sep 2020 13:09:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726372AbgIOJNS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Sep 2020 05:13:18 -0400
-Received: from ssl.serverraum.org ([176.9.125.105]:41977 "EHLO
-        ssl.serverraum.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726243AbgIOJNB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Sep 2020 05:13:01 -0400
-Received: from mwalle01.sab.local. (unknown [213.135.10.150])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id CB43822708;
-        Tue, 15 Sep 2020 11:12:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1600161175;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2P5NgU0B9AjWYC5q+V3Ti4erlurb01RNNs/ekO5kyz4=;
-        b=Gmmwa8SaNq1wBjgmtbx23XQ4Aq+GkGLeJlA4UeC3ZaWzH1qGxK9dFUBOmbF1lddi3yip+W
-        4Hv+k+gC8x+sDVQnS5zAzIdZMndJFqFUt7ClVJhvzrUOwTpCo9s/8/hFo9w+Azsq37lK5o
-        ArWMyV0/CqU5KBo6YGZcLMw2FgrRGas=
-From:   Michael Walle <michael@walle.cc>
-To:     robh@kernel.org
-Cc:     agross@kernel.org, bhelgaas@google.com, bjorn.andersson@linaro.org,
-        eswara.kota@linux.intel.com, festevam@gmail.com,
-        gustavo.pimentel@synopsys.com, hayashi.kunihiko@socionext.com,
-        hongxing.zhu@nxp.com, jbrunet@baylibre.com,
-        jesper.nilsson@axis.com, jingoohan1@gmail.com,
-        jonathanh@nvidia.com, jonnyc@amazon.com, kernel@pengutronix.de,
-        kgene@kernel.org, khilman@baylibre.com, kishon@ti.com,
-        krzk@kernel.org, l.stach@pengutronix.de,
-        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-imx@nxp.com,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        lorenzo.pieralisi@arm.com, m-karicheri2@ti.com,
-        martin.blumenstingl@googlemail.com, maz@kernel.org,
-        narmstrong@baylibre.com, pratyush.anand@gmail.com,
-        s.hauer@pengutronix.de, shawn.guo@linaro.org, shawnguo@kernel.org,
-        songxiaowei@hisilicon.com, svarbanov@mm-sol.com,
-        thierry.reding@gmail.com, wangbinghui@hisilicon.com,
-        yamada.masahiro@socionext.com, yue.wang@Amlogic.com,
-        Michael Walle <michael@walle.cc>
-Subject: Re: [PATCH v2 00/40] PCI: dwc: Driver clean-ups
-Date:   Tue, 15 Sep 2020 11:12:18 +0200
-Message-Id: <20200915091218.28737-1-michael@walle.cc>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200821035420.380495-1-robh@kernel.org>
-References: <20200821035420.380495-1-robh@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam: Yes
+        id S1726135AbgIOLJF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Sep 2020 07:09:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59450 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726131AbgIOLIs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Sep 2020 07:08:48 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19F07C06178A
+        for <linux-omap@vger.kernel.org>; Tue, 15 Sep 2020 04:01:15 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id b12so2596453lfp.9
+        for <linux-omap@vger.kernel.org>; Tue, 15 Sep 2020 04:01:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=VDzzatZNSBpQX7pKPfZ2Jk0vfUIzw5Bf9Eon3mMy8po=;
+        b=CHlUmc7RPVH81nY89i759+N+3bpbtClFAivxfPnGTq9kK/PratYX/V4yYmYbJLtMDd
+         NO5VHoN4YOOLfTO/j8oKpQI2nbjZvaC1AT0Eld357rjKFHYr4oBW/7NxNK2ZyM2MVfwJ
+         08KmfRMz1/MvFhWIE+gDl+z3i2aoJzirAiUmsMPO9L0eCy8+F89ZRgYm+GmVvU9yW3rY
+         eZXcf5c3+Abvvs7QtdE2T9AWD5ahLttZm+fTEMgOAQ8XiuWBQDROs/EMmK1gdskB0Zxp
+         zPo8CGPEUs4MmjcULfpxqYQ6PvrqP08HEJ2fv0nHB1vvw3gci9DzA9Q2wvRfqNqmPSVx
+         uOPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=VDzzatZNSBpQX7pKPfZ2Jk0vfUIzw5Bf9Eon3mMy8po=;
+        b=ke3R4blQsrUgr0bQWhm+WaZHG5amG9nZhUamOH09KEbEg15Lx5kA58SgFB25X5Wa2L
+         a79SW8DTfCQhVNwwk1eWErsNgm+mF2ddkxN48SP2ehyKHOp3B2/hWBQQMJhPB1WDZu/N
+         iUO1m2BQSR6nZ1D5MAkpPRiGukKeHaDJ2oOG/Y/DZgbCT+kVjG983Z5DFmdCQwQjyCSn
+         wHh6GB0U8qCkvJPBOF6c0UIC3hsccAJ2UzzWnjVpWJRlivc2cN38Fy7w2XW7LVQ4qodO
+         Hj2kpLv0V94OMbfRT8Z66wY+TUckBg5QUcrxd4PVJcD6AuNZKcno/9LjhBoh5cpKZYYH
+         /QvQ==
+X-Gm-Message-State: AOAM530l0zjrxwUjkYF805KthwueVmrj191rhihnGjAPlIwBmtpxPgry
+        zWPNck8cYmVLLuqWb4i8NYprCg==
+X-Google-Smtp-Source: ABdhPJxi1eJT7NU7liu0QBCxMR+g+0qBdUBCH3RJ43+uG7Hm3Dkdke+R9A2OiggP5qYYPyl76lzKNQ==
+X-Received: by 2002:ac2:5547:: with SMTP id l7mr5848074lfk.153.1600167672741;
+        Tue, 15 Sep 2020 04:01:12 -0700 (PDT)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id n3sm4588916ljj.59.2020.09.15.04.01.11
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 15 Sep 2020 04:01:12 -0700 (PDT)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
+        s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, robh+dt@kernel.org,
+        lee.jones@linaro.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
+        praneeth@ti.com
+Subject: [PATCH v6 0/5] Add TI PRUSS Local Interrupt Controller IRQChip driver
+Date:   Tue, 15 Sep 2020 13:00:46 +0200
+Message-Id: <1600167651-20851-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Rob,
+Hi All,
 
-> This is a series of clean-ups for the Designware PCI driver. The series
-> initially reworks the config space accessors to use the existing pci_ops
-> struct. Then there's removal of various private data that's also present
-> in the pci_host_bridge struct. There's also some duplicated common (PCI
-> and DWC) register defines which I converted to use the common defines.
-> Finally, the initialization for speed/gen, number of lanes, and N_FTS
-> are all moved to the common DWC code.
+The following is a v6 version of the series [1-5] that adds an IRQChip
+driver for the local interrupt controller present within a Programmable
+Real-Time Unit and Industrial Communication Subsystem (PRU-ICSS) present on a
+number of TI SoCs including OMAP architecture based AM335x, AM437x, AM57xx SoCs,
+Keystone 2 architecture based 66AK2G SoCs, Davinci architecture based
+OMAP-L138/DA850 SoCs and the latest K3 architecture based AM65x and J721E SoCs.
+Please see the v1 cover-letter [1] for details about the features of this
+interrupt controller.  More details can be found in any of the supported SoC
+TRMs.  Eg: Chapter 30.1.6 of AM5728 TRM [6]
 
-> This is compile tested only as I don't have any DWC based h/w, so any
-> testing would be helpful. A branch is here[1].
+Please see the individual patches for exact changes in each patch, following are
+the main changes from v5:
+ - Improve patch #2 with regards to various Marc Zyngier comments.
+ - Drop example from commit description of patch #4.
 
-I've noticed that with the latest linux-next, my board doesn't boot
-anymore. I've traced it back to this series. There is a similar
-board in kernelci [1,2] where you can have a look at the backtrace.
+[1] https://patchwork.kernel.org/cover/11034561/
+[2] https://patchwork.kernel.org/cover/11069749/
+[3] https://patchwork.kernel.org/cover/11639055/
+[4] https://patchwork.kernel.org/cover/11688727/
+[5] https://patchwork.kernel.org/cover/11746463/
+[6] http://www.ti.com/lit/pdf/spruhz6
 
-I've bisected this to the following patch:
-  PCI: dwc: Use generic config accessors
+Best regards
+Grzegorz
 
-I'm pretty much lost here. It seems that the kernel tries to read from
-an invalid/unmapped memory address.
+David Lechner (1):
+  irqchip/irq-pruss-intc: Implement irq_{get,set}_irqchip_state ops
 
-[1] https://kernelci.org/test/plan/id/5f5f4992d1c53777a0a6092d/
-[2] https://storage.kernelci.org/next/master/next-20200914/arm64/defconfig/gcc-8/lab-nxp/baseline-fsl-ls1028a-rdb.txt
+Grzegorz Jaszczyk (1):
+  irqchip/irq-pruss-intc: Add a PRUSS irqchip driver for PRUSS
+    interrupts
 
--michael
+Suman Anna (3):
+  dt-bindings: irqchip: Add PRU-ICSS interrupt controller bindings
+  irqchip/irq-pruss-intc: Add logic for handling reserved interrupts
+  irqchip/irq-pruss-intc: Add support for ICSSG INTC on K3 SoCs
+
+ .../interrupt-controller/ti,pruss-intc.yaml        | 158 +++++
+ drivers/irqchip/Kconfig                            |  10 +
+ drivers/irqchip/Makefile                           |   1 +
+ drivers/irqchip/irq-pruss-intc.c                   | 664 +++++++++++++++++++++
+ 4 files changed, 833 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+ create mode 100644 drivers/irqchip/irq-pruss-intc.c
+
+-- 
+2.7.4
+
