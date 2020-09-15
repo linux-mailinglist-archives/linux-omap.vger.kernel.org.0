@@ -2,203 +2,117 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C84926A8A0
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Sep 2020 17:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A260E26ADFB
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Sep 2020 21:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727316AbgIOPUA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Sep 2020 11:20:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39550 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727391AbgIOPTj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 15 Sep 2020 11:19:39 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7E82B2074B;
-        Tue, 15 Sep 2020 15:19:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600183159;
-        bh=+SQGJDtXngzEixASBW9Ix71E6mn0ETBIHvgUP43qm7g=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nTuMjKWR5/yWZF5DdQbq9r6UpctkMQGPzogngUsiIXikU1KbJ+N8/MkBiNk6yuT8/
-         vcRxeJcLCX7RusrzHai/ZgX0Orh1/oBhRMMA37VWMT60eHKayT+nQB7ML9nso+dqJu
-         /cBA8hGkLvXcH83Jt0zAUdH56Q4IX2Ni5jM/uCrE=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1kICjl-00C2sC-Hx; Tue, 15 Sep 2020 16:19:17 +0100
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 15 Sep 2020 16:19:17 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Cc:     tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com,
-        robh+dt@kernel.org, lee.jones@linaro.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        id S1727874AbgIOTsS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Sep 2020 15:48:18 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:38071 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727755AbgIOTrp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Sep 2020 15:47:45 -0400
+Received: by mail-il1-f194.google.com with SMTP id t18so4188416ilp.5;
+        Tue, 15 Sep 2020 12:47:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=vlMe/O0KpaLLn52vRtI2d+InOdmPVFJgxviIiqo487k=;
+        b=Hx4JcNekRElzjsosTQx18YzIcAvdLGVEES+rJid6gQj8CuzpeLZiGqNN91MIJy46XI
+         MPEYE2DZXkOwQsUYD9QW3wYY0zoROIvSvCxBz8JNFWdn4y+pq+PTXOt4/xhsK0pjfk5/
+         7J6lXDHBJTBvAMjdGHbW77yU7mS1GYzmU6ZMlNCtBAe2MPmC0soev5xTEx/1mggZ3pG1
+         9QmQjf1azbHnRho0R3kVgpF/UtJGKgbc/RzWMpK5c0YxtFKAFApKa15QU/uRDCp9zMtT
+         5wCk6cB1o1WupcgC08+E4VOREBEW5qvRqYDXdqPYHTVdsV9LJpfzca/7mVc9e+1ARyaX
+         2Oiw==
+X-Gm-Message-State: AOAM530azeMPhpH9u6NYbGx0xkXn8phd0dSH1cuX1n8l/XFUbHa7hh/A
+        1k2YWDZQRD9HpQjSVJbMdw==
+X-Google-Smtp-Source: ABdhPJyJBucL9yXLzWld+N7C06O44ALNqm0DtTmTngrhGguRJncbPkgBRf60HAkVwNDjrR37f44klQ==
+X-Received: by 2002:a92:6901:: with SMTP id e1mr17859827ilc.209.1600199263981;
+        Tue, 15 Sep 2020 12:47:43 -0700 (PDT)
+Received: from xps15 ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id m15sm7972824iow.9.2020.09.15.12.47.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2020 12:47:43 -0700 (PDT)
+Received: (nullmailer pid 2389041 invoked by uid 1000);
+        Tue, 15 Sep 2020 19:47:40 -0000
+Date:   Tue, 15 Sep 2020 13:47:40 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Nishanth Menon <nm@ti.com>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        david@lechnology.com, praneeth@ti.com,
-        Roger Quadros <rogerq@ti.com>
-Subject: Re: [PATCH v6 2/5] irqchip/irq-pruss-intc: Add a PRUSS irqchip driver
- for PRUSS interrupts
-In-Reply-To: <1600167651-20851-3-git-send-email-grzegorz.jaszczyk@linaro.org>
-References: <1600167651-20851-1-git-send-email-grzegorz.jaszczyk@linaro.org>
- <1600167651-20851-3-git-send-email-grzegorz.jaszczyk@linaro.org>
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <ab6858f56cf47e48f167d6893bcd3043@kernel.org>
-X-Sender: maz@kernel.org
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: grzegorz.jaszczyk@linaro.org, tglx@linutronix.de, jason@lakedaemon.net, s-anna@ti.com, robh+dt@kernel.org, lee.jones@linaro.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, david@lechnology.com, praneeth@ti.com, rogerq@ti.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 01/15] dt-bindings: gpio: convert bindings for NXP
+ PCA953x family to dtschema
+Message-ID: <20200915194740.GA2385241@bogus>
+References: <20200910175733.11046-1-krzk@kernel.org>
+ <20200910175733.11046-2-krzk@kernel.org>
+ <20200910182814.veviax3n377undkv@akan>
+ <CAJKOXPdQJz7aLu4sjds46SiZwxvB-VMBR=stjpUme+8iEo+d-w@mail.gmail.com>
+ <20200910191305.phjtijx2fhkhqavu@akan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200910191305.phjtijx2fhkhqavu@akan>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-[ Dropping afd@ti.com from the Cc list, as this address bounces]
-
-On 2020-09-15 12:00, Grzegorz Jaszczyk wrote:
-> The Programmable Real-Time Unit Subsystem (PRUSS) contains a local
-> interrupt controller (INTC) that can handle various system input events
-> and post interrupts back to the device-level initiators. The INTC can
-> support upto 64 input events with individual control configuration and
-> hardware prioritization. These events are mapped onto 10 output 
-> interrupt
-> lines through two levels of many-to-one mapping support. Different
-> interrupt lines are routed to the individual PRU cores or to the host
-> CPU, or to other devices on the SoC. Some of these events are sourced
-> from peripherals or other sub-modules within that PRUSS, while a few
-> others are sourced from SoC-level peripherals/devices.
+On Thu, Sep 10, 2020 at 02:13:05PM -0500, Nishanth Menon wrote:
+> On 20:53-20200910, Krzysztof Kozlowski wrote:
+> > On Thu, 10 Sep 2020 at 20:28, Nishanth Menon <nm@ti.com> wrote:
+> > >
+> > > On 19:57-20200910, Krzysztof Kozlowski wrote:
+> > > [...]
+> > > > +  wakeup-source:
+> > > > +    $ref: /schemas/types.yaml#/definitions/flag
+> > > > +
+> > > > +patternProperties:
+> > > > +  "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
+> > >
+> > > I wonder if "hog" is too generic and might clash with "something-hog" in
+> > > the future?
+> > 
+> > This pattern is already used in
+> > Documentation/devicetree/bindings/gpio/fsl-imx-gpio.yaml. It will
+> > match only children and so far it did not find any other nodes in ARM
+> > and ARM64 dts. I don't expect clashes. Also the question is then - if
+> > one adds a child of GPIO expander named "foobar-hog" and it is not a
+> > GPIO hog, then what is it?
 > 
-> The PRUSS INTC platform driver manages this PRUSS interrupt controller
-> and implements an irqchip driver to provide a Linux standard way for
-> the PRU client users to enable/disable/ack/re-trigger a PRUSS system
-> event. The system events to interrupt channels and output interrupts
-> relies on the mapping configuration provided either through the PRU
-> firmware blob (for interrupts routed to PRU cores) or via the PRU
-> application's device tree node (for interrupt routed to the main CPU).
-> In the first case the mappings will be programmed on PRU remoteproc
-> driver demand (via irq_create_fwspec_mapping) during the boot of a PRU
-> core and cleaned up after the PRU core is stopped.
+> Probably a nitpick.. but then,.. I have'nt seen us depend on hierarchy
+> for uniqueness of naming.. we choose for example "bus" no matter where
+> in the hierarchy it falls in, as long it is a bus.. etc.. same argument
+> holds good for properties as well.. "gpio-hog;" is kinda redundant if
+> you think of it for a compatible that is already gpio ;)..
 > 
-> Reference counting is used to allow multiple system events to share a
-> single channel and to allow multiple channels to share a single host
-> event.
-> 
-> The PRUSS INTC module is reference counted during the interrupt
-> setup phase through the irqchip's irq_request_resources() and
-> irq_release_resources() ops. This restricts the module from being
-> removed as long as there are active interrupt users.
-> 
-> The driver currently supports and can be built for OMAP architecture
-> based AM335x, AM437x and AM57xx SoCs; Keystone2 architecture based
-> 66AK2G SoCs and Davinci architecture based OMAP-L13x/AM18x/DA850 SoCs.
-> All of these SoCs support 64 system events, 10 interrupt channels and
-> 10 output interrupt lines per PRUSS INTC with a few SoC integration
-> differences.
-> 
-> NOTE:
-> Each PRU-ICSS's INTC on AM57xx SoCs is preceded by a Crossbar that
-> enables multiple external events to be routed to a specific number
-> of input interrupt events. Any non-default external interrupt event
-> directed towards PRUSS needs this crossbar to be setup properly.
-> 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Andrew F. Davis <afd@ti.com>
-> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: David Lechner <david@lechnology.com>
-> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> I did'nt mean to de-rail the discussion, but was curious what the DT
+> maintainers think..
 
-Please see the use of the Co-developed-by: tag.
+Not really a fan of gpio-hog binding to have another type of hog nor can 
+I imagine what that would be.
 
-> ---
-> v5->v6:
-> 1) Address Marc Zyngier comments:
-> - Use unsigned types for variables used to compute masks/shifts (ch,
->   evt, host).
-> - Move part responsible for enabling global interrupt from
->   pruss_intc_map to pruss_intc_init.
-> - Improve coding style in pruss_intc_init with regards to variable
->   assignments.
-> - Align the '=' signs vertically in pruss_irqchip structure.
-> - Change the irq type in xlate handler from IRQ_TYPE_NONE to
->   IRQ_TYPE_LEVEL_MASK
-
-Gruik? (yes, that's approximately the noise I made reading this)
-
-[...]
-
-> +static void pruss_intc_init(struct pruss_intc *intc)
-> +{
-> +	const struct pruss_intc_match_data *soc_config = intc->soc_config;
-> +	int num_chnl_map_regs, num_host_intr_regs, num_event_type_regs, i;
-> +
-> +	num_chnl_map_regs = DIV_ROUND_UP(soc_config->num_system_events,
-> +					 CMR_EVT_PER_REG);
-> +	num_host_intr_regs = DIV_ROUND_UP(soc_config->num_host_events,
-> +					  HMR_CH_PER_REG);
-> +	num_event_type_regs = DIV_ROUND_UP(soc_config->num_system_events, 
-> 32);
-> +
-> +	/*
-> +	 * configure polarity (SIPR register) to active high and
-> +	 * type (SITR register) to level interrupt for all system events
-> +	 */
-
-So I read this...
-
-[...]
-
-> +static int
-> +pruss_intc_irq_domain_xlate(struct irq_domain *d, struct device_node 
-> *node,
-> +			    const u32 *intspec, unsigned int intsize,
-> +			    unsigned long *out_hwirq, unsigned int *out_type)
-> +{
-> +	struct pruss_intc *intc = d->host_data;
-> +	struct device *dev = intc->dev;
-> +	int ret, sys_event, channel, host;
-> +
-> +	if (intsize < 3)
-> +		return -EINVAL;
-> +
-> +	sys_event = intspec[0];
-> +	if (sys_event < 0 || sys_event >= 
-> intc->soc_config->num_system_events) {
-> +		dev_err(dev, "%d is not valid event number\n", sys_event);
-> +		return -EINVAL;
-> +	}
-> +
-> +	channel = intspec[1];
-> +	if (channel < 0 || channel >= intc->soc_config->num_host_events) {
-> +		dev_err(dev, "%d is not valid channel number", channel);
-> +		return -EINVAL;
-> +	}
-> +
-> +	host = intspec[2];
-> +	if (host < 0 || host >= intc->soc_config->num_host_events) {
-> +		dev_err(dev, "%d is not valid host irq number\n", host);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* check if requested sys_event was already mapped, if so validate it 
-> */
-> +	ret = pruss_intc_validate_mapping(intc, sys_event, channel, host);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*out_hwirq = sys_event;
-> +	*out_type = IRQ_TYPE_LEVEL_MASK;
-
-... and then I see that.
-
-What does IRQ_TYPE_LEVEL_MASK even mean? Can the interrupt be triggered 
-as
-level high and low *at the same time*? (this is a rhetorical question).
-
-         M.
--- 
-Jazz is not dead. It just smells funny...
+Rob
