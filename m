@@ -2,93 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 223E326A023
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Sep 2020 09:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6123126A1D4
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Sep 2020 11:13:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726269AbgIOHs2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Sep 2020 03:48:28 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:41544 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726205AbgIOHq4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Sep 2020 03:46:56 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 08F7kbBL073363;
-        Tue, 15 Sep 2020 02:46:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1600155997;
-        bh=uoPhB0r2w4bgFxmOWAKRg8Gso4sbqPAakuGRd5hTu04=;
-        h=Subject:To:References:From:Date:In-Reply-To;
-        b=dmOoHylc2glM4hZTP/1K5UuqSCQTOMzuiP1kug41GomfuiDfYcTtWOl7fTrrzUkjr
-         5zMkJQ+01Igm2Pg6d+MBEFHXVEm8p3XenUNngfvpMx/9BLQ09idQDcEklNupdFrErM
-         tnVri1zLH70OXIQOe0MUNnDyOPG9V259Vo+58caE=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 08F7kbMd095332
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 15 Sep 2020 02:46:37 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 15
- Sep 2020 02:46:37 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 15 Sep 2020 02:46:37 -0500
-Received: from [192.168.2.14] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08F7kZtJ011661;
-        Tue, 15 Sep 2020 02:46:36 -0500
-Subject: Re: [PATCH] memory: omap-gpmc: Fix compile test on SPARC
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20200911143251.399-1-krzk@kernel.org>
-From:   Roger Quadros <rogerq@ti.com>
-Message-ID: <9b369f89-dd51-9b5b-7fc5-2d27fe1e8f24@ti.com>
-Date:   Tue, 15 Sep 2020 10:46:35 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726372AbgIOJNS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Sep 2020 05:13:18 -0400
+Received: from ssl.serverraum.org ([176.9.125.105]:41977 "EHLO
+        ssl.serverraum.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726243AbgIOJNB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Sep 2020 05:13:01 -0400
+Received: from mwalle01.sab.local. (unknown [213.135.10.150])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id CB43822708;
+        Tue, 15 Sep 2020 11:12:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1600161175;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=2P5NgU0B9AjWYC5q+V3Ti4erlurb01RNNs/ekO5kyz4=;
+        b=Gmmwa8SaNq1wBjgmtbx23XQ4Aq+GkGLeJlA4UeC3ZaWzH1qGxK9dFUBOmbF1lddi3yip+W
+        4Hv+k+gC8x+sDVQnS5zAzIdZMndJFqFUt7ClVJhvzrUOwTpCo9s/8/hFo9w+Azsq37lK5o
+        ArWMyV0/CqU5KBo6YGZcLMw2FgrRGas=
+From:   Michael Walle <michael@walle.cc>
+To:     robh@kernel.org
+Cc:     agross@kernel.org, bhelgaas@google.com, bjorn.andersson@linaro.org,
+        eswara.kota@linux.intel.com, festevam@gmail.com,
+        gustavo.pimentel@synopsys.com, hayashi.kunihiko@socionext.com,
+        hongxing.zhu@nxp.com, jbrunet@baylibre.com,
+        jesper.nilsson@axis.com, jingoohan1@gmail.com,
+        jonathanh@nvidia.com, jonnyc@amazon.com, kernel@pengutronix.de,
+        kgene@kernel.org, khilman@baylibre.com, kishon@ti.com,
+        krzk@kernel.org, l.stach@pengutronix.de,
+        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-imx@nxp.com,
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        lorenzo.pieralisi@arm.com, m-karicheri2@ti.com,
+        martin.blumenstingl@googlemail.com, maz@kernel.org,
+        narmstrong@baylibre.com, pratyush.anand@gmail.com,
+        s.hauer@pengutronix.de, shawn.guo@linaro.org, shawnguo@kernel.org,
+        songxiaowei@hisilicon.com, svarbanov@mm-sol.com,
+        thierry.reding@gmail.com, wangbinghui@hisilicon.com,
+        yamada.masahiro@socionext.com, yue.wang@Amlogic.com,
+        Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH v2 00/40] PCI: dwc: Driver clean-ups
+Date:   Tue, 15 Sep 2020 11:12:18 +0200
+Message-Id: <20200915091218.28737-1-michael@walle.cc>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200821035420.380495-1-robh@kernel.org>
+References: <20200821035420.380495-1-robh@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200911143251.399-1-krzk@kernel.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
+X-Spam: Yes
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Rob,
 
+> This is a series of clean-ups for the Designware PCI driver. The series
+> initially reworks the config space accessors to use the existing pci_ops
+> struct. Then there's removal of various private data that's also present
+> in the pci_host_bridge struct. There's also some duplicated common (PCI
+> and DWC) register defines which I converted to use the common defines.
+> Finally, the initialization for speed/gen, number of lanes, and N_FTS
+> are all moved to the common DWC code.
 
-On 11/09/2020 17:32, Krzysztof Kozlowski wrote:
-> SPARC comes without CONFIG_OF_ADDRESS thus compile testing fails on
-> linking:
-> 
->    /usr/bin/sparc64-linux-gnu-ld: drivers/memory/omap-gpmc.o: in function `gpmc_probe_generic_child':
->    omap-gpmc.c:(.text.unlikely+0x14ec): undefined reference to `of_platform_device_create'
-> 
-> Fixes: ea0c0ad6b6eb ("memory: Enable compile testing for most of the drivers")
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> This is compile tested only as I don't have any DWC based h/w, so any
+> testing would be helpful. A branch is here[1].
 
-Acked-by: Roger Quadros <rogerq@ti.com>
+I've noticed that with the latest linux-next, my board doesn't boot
+anymore. I've traced it back to this series. There is a similar
+board in kernelci [1,2] where you can have a look at the backtrace.
 
-> ---
->   drivers/memory/Kconfig | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-> index 8072204bc21a..00e013b14703 100644
-> --- a/drivers/memory/Kconfig
-> +++ b/drivers/memory/Kconfig
-> @@ -104,6 +104,7 @@ config TI_EMIF
->   
->   config OMAP_GPMC
->   	bool "Texas Instruments OMAP SoC GPMC driver" if COMPILE_TEST
-> +	depends on OF_ADDRESS
->   	select GPIOLIB
->   	help
->   	  This driver is for the General Purpose Memory Controller (GPMC)
-> 
+I've bisected this to the following patch:
+  PCI: dwc: Use generic config accessors
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+I'm pretty much lost here. It seems that the kernel tries to read from
+an invalid/unmapped memory address.
+
+[1] https://kernelci.org/test/plan/id/5f5f4992d1c53777a0a6092d/
+[2] https://storage.kernelci.org/next/master/next-20200914/arm64/defconfig/gcc-8/lab-nxp/baseline-fsl-ls1028a-rdb.txt
+
+-michael
