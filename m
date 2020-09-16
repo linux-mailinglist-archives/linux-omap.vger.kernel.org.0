@@ -2,146 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC62026B922
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Sep 2020 02:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5186826BC66
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Sep 2020 08:15:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726184AbgIPA5s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Sep 2020 20:57:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60124 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726196AbgIOLMz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Sep 2020 07:12:55 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88CA9C061220
-        for <linux-omap@vger.kernel.org>; Tue, 15 Sep 2020 04:01:39 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id c2so2374829ljj.12
-        for <linux-omap@vger.kernel.org>; Tue, 15 Sep 2020 04:01:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=mc2gdazpP2I7bg6WRsLz8UwRyinpHdK0stSWn7q23gw=;
-        b=WjZlN/Kd9Jjxj+pMCooXrtqM/Mbi0szwmTXaJ7skiL/yJ5v/3ifkWd5b/hsdl5pPaq
-         JBv/2KOxLgfMry2/ioIZAV9/oRcP9+nkFJyAUzwBcbyaRSfazV9xJvJMJE5AuXtzGdTS
-         KNswQQrHg28VxTj2qkvyl/G1Kd56qkD9wzLZFuMfa8KhP2wREIPZ+pGNTxIyAPNP7JLC
-         SpaPsbtFbM0Y6pgCO0PPD6BACZHwiSIgMZusSUzrUSX8WhA/a3yGEVl+RYOUXdAQkqsG
-         vPmkFc/nLjlgLirmnrW/qNsLeX3NGpeNinQSLd2S7DF09oAg+p2dwGSBv38MguzYpYS3
-         h9+Q==
+        id S1726242AbgIPGPU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Sep 2020 02:15:20 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:39462 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726172AbgIPGPS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Sep 2020 02:15:18 -0400
+Received: by mail-wm1-f67.google.com with SMTP id b79so1627678wmb.4;
+        Tue, 15 Sep 2020 23:15:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=mc2gdazpP2I7bg6WRsLz8UwRyinpHdK0stSWn7q23gw=;
-        b=Pp02VWYihfOwYMOSIW+eMLWx/FzTn9r0DKZfBv9ZHf037GqbDlki030mTHQ2TKq0mJ
-         kgxhE/jwwprgh4ZX4ex/1cX2354XFyITD0HxUtzZrJSkwSQ7row9DQ918ulKueWbqtMe
-         S3pqHQz/3+buoXjW7mdBQPQoyF1yq1JokGCx9fxiSpyiUKh27lk0B5XwHjC7QtredOkF
-         pLx63yC7Qb4I0K1/01TSpK+0nUObjet6YWvSXQsfzBTsPz3jd9jwmZm0Zt7WOoJqbs47
-         FlrEAXQuHp+ejNgut/wHoV24Szk7NoqoFpguP9U3b3Zb8Cbv0dsk+9XBiRxLBX9/IucO
-         jcKQ==
-X-Gm-Message-State: AOAM5303uose6/9a1S6E7IIRzwBqvQ7WJIMXJKOL6+y5NxCE2t2tkdhv
-        wMIpgnICMK6i7asqtTblinBRBw==
-X-Google-Smtp-Source: ABdhPJxBkYyDeMqg+OlqkRJ0ZOsCdWm1KltQZ9+g3/C6bPryvTmE1Oviffi01zfdU/xTwMGiInoe6w==
-X-Received: by 2002:a2e:895a:: with SMTP id b26mr6623334ljk.468.1600167685701;
-        Tue, 15 Sep 2020 04:01:25 -0700 (PDT)
-Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
-        by smtp.gmail.com with ESMTPSA id n3sm4588916ljj.59.2020.09.15.04.01.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 15 Sep 2020 04:01:25 -0700 (PDT)
-From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-To:     tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
-        s-anna@ti.com
-Cc:     grzegorz.jaszczyk@linaro.org, robh+dt@kernel.org,
-        lee.jones@linaro.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
-        praneeth@ti.com
-Subject: [PATCH v6 5/5] irqchip/irq-pruss-intc: Add support for ICSSG INTC on K3 SoCs
-Date:   Tue, 15 Sep 2020 13:00:51 +0200
-Message-Id: <1600167651-20851-6-git-send-email-grzegorz.jaszczyk@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1600167651-20851-1-git-send-email-grzegorz.jaszczyk@linaro.org>
-References: <1600167651-20851-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=1Uh7Ou5BUk6cJr1eeO8uTrFUHXPcK3jWLNCgC2OA24Q=;
+        b=iimM/rgA0sVbd2BUccvtCaS7S8lZwIZ7g2PlklMvADdLFem6OiWM1Cp8u574+7BbwY
+         SuZEVwd7epJNsDiJRE4+Jq1VKQJc9yrwdy0nCpNDLE3qBumZMKQGHyCLvEQq/GmJGGsn
+         lozDRkW7Lotntmdd7cNzedQTsHViXLvwODXKDobv18aWWxeqPYoh48hYp2hLFT8LGU4N
+         pnFMZ1tCbbmtAcrR45kBgT8VnPgzcULDPzWkXGrLHXGhH72tVQYcEuKf3ckL/FGM+RGC
+         4WLF+bKvDqb5ah5X8IjI6+nzJYaqjewQidr10BCM5H+fzQURWokGmPOeAUwiovp3wews
+         AY6w==
+X-Gm-Message-State: AOAM5315rbuqAsuieb5cut2/3K3WbfXNMeFrmbFiJ+iRqZT6D6JTixeY
+        SAiTwWdm09T9zz0g9+peMUE=
+X-Google-Smtp-Source: ABdhPJw7nNn+CFhmnzt169e4rqB2CZP7AUPFZ9UBjFZbfGui7iEULE8AHLZ3m9ra4r8Pv7DiLjNGnw==
+X-Received: by 2002:a7b:c92c:: with SMTP id h12mr2849155wml.121.1600236916238;
+        Tue, 15 Sep 2020 23:15:16 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.124])
+        by smtp.googlemail.com with ESMTPSA id u126sm4022642wmu.9.2020.09.15.23.15.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 15 Sep 2020 23:15:15 -0700 (PDT)
+Date:   Wed, 16 Sep 2020 08:15:11 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v2 02/15] dt-bindings: gpio: convert bindings for Maxim
+ MAX732x family to dtschema
+Message-ID: <20200916061511.GA5719@kozik-lap>
+References: <20200910175733.11046-1-krzk@kernel.org>
+ <20200910175733.11046-3-krzk@kernel.org>
+ <CACRpkdZXu2J4z=1j-syxSbz2x-QiLeTBpwHSOVNfmZ31RgM6Ng@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CACRpkdZXu2J4z=1j-syxSbz2x-QiLeTBpwHSOVNfmZ31RgM6Ng@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Suman Anna <s-anna@ti.com>
+On Sat, Sep 12, 2020 at 11:58:22AM +0200, Linus Walleij wrote:
+> On Thu, Sep 10, 2020 at 7:58 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> 
+> > Convert the Maxim MAX732x family of GPIO expanders bindings to device
+> > tree schema by merging it with existing PCA95xx schema.  These are quite
+> > similar so merging reduces duplication.
+> >
+> > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> 
+> Can I just apply this one patch to the GPIO tree?
 
-The K3 AM65x and J721E SoCs have the next generation of the PRU-ICSS IP,
-commonly called ICSSG. The PRUSS INTC present within the ICSSG supports
-more System Events (160 vs 64), more Interrupt Channels and Host Interrupts
-(20 vs 10) compared to the previous generation PRUSS INTC instances. The
-first 2 and the last 10 of these host interrupt lines are used by the
-PRU and other auxiliary cores and sub-modules within the ICSSG, with 8
-host interrupts connected to MPU. The host interrupts 5, 6, 7 are also
-connected to the other ICSSG instances within the SoC and can be
-partitioned as per system integration through the board dts files.
+No, this requires the previous one (1/15) because it merges the max732x
+into pca95xx.
 
-Enhance the PRUSS INTC driver to add support for this ICSSG INTC
-instance.
+Although now Rob reviewed both so you can pick them up.
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
----
-v5->v6:
-- No change.
-v4->v5:
-- Rename: s/num_host_intrs/num_host_events/ regarding to change
-  introduced in patch #2.
-v3->v4:
-- Move generic part to "irqchip/irq-pruss-intc: Add a PRUSS irqchip
-  driver for PRUSS interrupts" patch and leave only platform related
-  code.
-v2->v3:
-- Change patch order: use it directly after "irqchip/irq-pruss-intc:
-  Implement irq_{get,set}_irqchip_state ops" and before new
-  "irqchip/irq-pruss-intc: Add event mapping support" in order to reduce
-  diff.
-v1->v2:
-- https://patchwork.kernel.org/patch/11069773/
----
- drivers/irqchip/Kconfig          | 2 +-
- drivers/irqchip/irq-pruss-intc.c | 9 +++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index 733e59f..25c8944 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -495,7 +495,7 @@ config TI_SCI_INTA_IRQCHIP
- 
- config TI_PRUSS_INTC
- 	tristate "TI PRU-ICSS Interrupt Controller"
--	depends on ARCH_DAVINCI || SOC_AM33XX || SOC_AM43XX || SOC_DRA7XX || ARCH_KEYSTONE
-+	depends on ARCH_DAVINCI || SOC_AM33XX || SOC_AM43XX || SOC_DRA7XX || ARCH_KEYSTONE || ARCH_K3
- 	select IRQ_DOMAIN
- 	help
- 	  This enables support for the PRU-ICSS Local Interrupt Controller
-diff --git a/drivers/irqchip/irq-pruss-intc.c b/drivers/irqchip/irq-pruss-intc.c
-index 41c6271..4be501e 100644
---- a/drivers/irqchip/irq-pruss-intc.c
-+++ b/drivers/irqchip/irq-pruss-intc.c
-@@ -628,11 +628,20 @@ static const struct pruss_intc_match_data pruss_intc_data = {
- 	.num_host_events = 10,
- };
- 
-+static const struct pruss_intc_match_data icssg_intc_data = {
-+	.num_system_events = 160,
-+	.num_host_events = 20,
-+};
-+
- static const struct of_device_id pruss_intc_of_match[] = {
- 	{
- 		.compatible = "ti,pruss-intc",
- 		.data = &pruss_intc_data,
- 	},
-+	{
-+		.compatible = "ti,icssg-intc",
-+		.data = &icssg_intc_data,
-+	},
- 	{ /* sentinel */ },
- };
- MODULE_DEVICE_TABLE(of, pruss_intc_of_match);
--- 
-2.7.4
-
+Best regards,
+Krzysztof
