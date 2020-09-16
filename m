@@ -2,149 +2,219 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA43B26CC06
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Sep 2020 22:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C5926CDC6
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Sep 2020 23:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728449AbgIPUh7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Sep 2020 16:37:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57480 "EHLO
+        id S1726632AbgIPVE5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Sep 2020 17:04:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726674AbgIPRJW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Sep 2020 13:09:22 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D4AC02C2BB
-        for <linux-omap@vger.kernel.org>; Wed, 16 Sep 2020 09:37:12 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id b22so7638103lfs.13
-        for <linux-omap@vger.kernel.org>; Wed, 16 Sep 2020 09:37:12 -0700 (PDT)
+        with ESMTP id S1726335AbgIPQPB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Sep 2020 12:15:01 -0400
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EFEC0F26CC
+        for <linux-omap@vger.kernel.org>; Wed, 16 Sep 2020 08:13:59 -0700 (PDT)
+Received: by mail-qk1-x742.google.com with SMTP id d20so8503707qka.5
+        for <linux-omap@vger.kernel.org>; Wed, 16 Sep 2020 08:13:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=i7gj/Nh8EGIMLYny0ckHHCC3KzEEY3dk78DyFkalFas=;
-        b=OXV2czXHSzNB9gK5puIx4OtBccuHuoEEXxTJymesg/maaUyhIbM4Fp67x5jajv9xHZ
-         ky++sC7oCo8Ln/6QkYF+T28lpqc7eFfJRuv8wx2mYDF3PEVoQ2Rsrm6ZMKrwIWHNnOKo
-         y3+OacNOhef2bvFe61dQWjg53Z9MfRuAMNqzRbdiSvDYlatalaUsUiB2m8nY9t+xgD04
-         /VoWYu3MjSidCsvpVLuLd/QNmEYcv2RvrMLyYeG5Jk+ja7oG4nq7fpF3Em4kz06wuQa0
-         Q2L8pevz8GXJ+FoYBjJsxwTLumKGa1yZ7gV/3RI2zxdc00Mo6Hc4+ui1U03TQP6YmkVk
-         C+QQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UwdE407eW2BFHe5kx2AckV/Q6Zp6aBVdsxXq4mQKS1E=;
+        b=U4vItbxLqH9boJSGFGd3Zp+H4W037yontlZBqdCzzt4amivAVGHVYcD8oqNicmtwRB
+         Xhfib8aSKxbm13rFgCIGqpu5E8z8m+6TWXngEuwEaNXtlgxkCWK62VeZWnlIBDnDy/gL
+         HyvjZ9Lm8IWjbKW4j9Z5bjcnvIjp1N6JLD8/o5nI4kfQZ91HvKhqUmQAzN/nU3z8xuoW
+         J40XfX66hbsJdnabZvjhnnuQgUE2QYmTxjBYKQR62W+wAo4C7AQRMozPj48mkgfM5HQd
+         ySgrxqADILnBYn1SCa6RSWBAiNTjIfR6vKLroTpm0QePnVSayIH8Ai+SK0IPknhdiP8g
+         kg+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=i7gj/Nh8EGIMLYny0ckHHCC3KzEEY3dk78DyFkalFas=;
-        b=ggQQpv6XjVV3kWcZz1ztlX53hNMdbs9ef77pUon7VJlxSClBQfAqQaCbKNYa9VasWF
-         caPmCQT/OImUjOcX3MgBLqlrChbw1zZPqgnTci2jgFudvjFlGDSosh+J25oubR9JQO7p
-         UQbp12pCs878rIuJ3DDyVcKIgqdU659i7A6lr/m/uuJQdxYftbVSBD/jFqJ5ypm/GtM8
-         djgSG6dE3qJS3dmMbMDsMKdIsBY8LExX12605Ru/11RQTMQY/VsllM9wlKgUoH/hfEOr
-         g3AOinyaswDP10x0geGdDHsi99e8/849VOBmCgFfUcmPA3G4TGcNjJc5lZESgqKjKD0P
-         CJeg==
-X-Gm-Message-State: AOAM5334rlE5SwJqRpEpXT8MN4GwIWLG6HbMFhwNBSizSP3xzMoP7lwZ
-        5380jW9+z/cmaC45k1LUKhP22Q==
-X-Google-Smtp-Source: ABdhPJwjpyxBhzIMV0oPgMgroNqtgx1faULkhVJghwHXIfr9e5Cs9MpB4u/0hsLEoYs8TQ/sDqXIYQ==
-X-Received: by 2002:a19:8142:: with SMTP id c63mr7926347lfd.175.1600274231059;
-        Wed, 16 Sep 2020 09:37:11 -0700 (PDT)
-Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
-        by smtp.gmail.com with ESMTPSA id o15sm4684400lfo.188.2020.09.16.09.37.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 16 Sep 2020 09:37:10 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UwdE407eW2BFHe5kx2AckV/Q6Zp6aBVdsxXq4mQKS1E=;
+        b=IbwqxeWLrK76VFp366ll0lkxEl2oLXaWvIJQFsxH7fpcY9d1ccb9Ut/Gz3etVDnjM1
+         qRfr2oNO8Jmb9uOmTlq2+twIIhhrCtHhJil5q9jPDj9XiU4SrthbDmGAhPLs7Cj0U8ot
+         ROQMf4tz9k6mtQzZKMQ3RAF3nlmh6+U6gPHmYxl8d71eIM7BINH/oVnIpQI2OpP/yFZB
+         WyXpaYbvXexuRG+hOP5X1h7m4neRY2CbLrMPxfRiUWhqrJ68owzmKtC0A1GffU18GWA+
+         kxKgM9RM3ZZwF0ym8v14Xw4OLv567SoBxKt2HK8hCdclsrShcj6wRuDikBa5eVweUYog
+         fa+A==
+X-Gm-Message-State: AOAM531iQDvGOHNIkvrS24AQztvvS8AhU2BndPEIpcSTWKizbI+UDbtp
+        q89qBg/EMY6E4kg7kRliJMbLqkFmK6Uf90hNIrHoS3HJ4kk=
+X-Google-Smtp-Source: ABdhPJyDjMKo3SJBXU8S0LBbq3zj6+wYtpwozZxS4NNNxPrr6WaxZGly6KqgjGLlz9/S/81ImQGyA1ZsfDZ/9XpIVOo=
+X-Received: by 2002:a05:620a:a92:: with SMTP id v18mr23309499qkg.498.1600269237995;
+ Wed, 16 Sep 2020 08:13:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <1600167651-20851-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+ <1600167651-20851-3-git-send-email-grzegorz.jaszczyk@linaro.org> <ab6858f56cf47e48f167d6893bcd3043@kernel.org>
+In-Reply-To: <ab6858f56cf47e48f167d6893bcd3043@kernel.org>
 From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-To:     tglx@linutronix.de, jason@lakedaemon.net, maz@kernel.org,
-        s-anna@ti.com
-Cc:     grzegorz.jaszczyk@linaro.org, robh+dt@kernel.org,
-        lee.jones@linaro.org, devicetree@vger.kernel.org,
+Date:   Wed, 16 Sep 2020 17:13:46 +0200
+Message-ID: <CAMxfBF6=eu+o8ZLOra16X8M=Yv4QmSgr1umk2hVO7jANEfN9Jw@mail.gmail.com>
+Subject: Re: [PATCH v6 2/5] irqchip/irq-pruss-intc: Add a PRUSS irqchip driver
+ for PRUSS interrupts
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     tglx@linutronix.de, jason@lakedaemon.net,
+        "Anna, Suman" <s-anna@ti.com>, robh+dt@kernel.org,
+        Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, david@lechnology.com,
-        praneeth@ti.com
-Subject: [PATCH v7 5/5] irqchip/irq-pruss-intc: Add support for ICSSG INTC on K3 SoCs
-Date:   Wed, 16 Sep 2020 18:36:38 +0200
-Message-Id: <1600274198-30470-3-git-send-email-grzegorz.jaszczyk@linaro.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1600274198-30470-1-git-send-email-grzegorz.jaszczyk@linaro.org>
-References: <1600274198-30470-1-git-send-email-grzegorz.jaszczyk@linaro.org>
+        linux-arm-kernel@lists.infradead.org,
+        David Lechner <david@lechnology.com>,
+        "Bajjuri, Praneeth" <praneeth@ti.com>,
+        Roger Quadros <rogerq@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Suman Anna <s-anna@ti.com>
+On Tue, 15 Sep 2020 at 17:19, Marc Zyngier <maz@kernel.org> wrote:
+>
+> [ Dropping afd@ti.com from the Cc list, as this address bounces]
+>
+> On 2020-09-15 12:00, Grzegorz Jaszczyk wrote:
+> > The Programmable Real-Time Unit Subsystem (PRUSS) contains a local
+> > interrupt controller (INTC) that can handle various system input events
+> > and post interrupts back to the device-level initiators. The INTC can
+> > support upto 64 input events with individual control configuration and
+> > hardware prioritization. These events are mapped onto 10 output
+> > interrupt
+> > lines through two levels of many-to-one mapping support. Different
+> > interrupt lines are routed to the individual PRU cores or to the host
+> > CPU, or to other devices on the SoC. Some of these events are sourced
+> > from peripherals or other sub-modules within that PRUSS, while a few
+> > others are sourced from SoC-level peripherals/devices.
+> >
+> > The PRUSS INTC platform driver manages this PRUSS interrupt controller
+> > and implements an irqchip driver to provide a Linux standard way for
+> > the PRU client users to enable/disable/ack/re-trigger a PRUSS system
+> > event. The system events to interrupt channels and output interrupts
+> > relies on the mapping configuration provided either through the PRU
+> > firmware blob (for interrupts routed to PRU cores) or via the PRU
+> > application's device tree node (for interrupt routed to the main CPU).
+> > In the first case the mappings will be programmed on PRU remoteproc
+> > driver demand (via irq_create_fwspec_mapping) during the boot of a PRU
+> > core and cleaned up after the PRU core is stopped.
+> >
+> > Reference counting is used to allow multiple system events to share a
+> > single channel and to allow multiple channels to share a single host
+> > event.
+> >
+> > The PRUSS INTC module is reference counted during the interrupt
+> > setup phase through the irqchip's irq_request_resources() and
+> > irq_release_resources() ops. This restricts the module from being
+> > removed as long as there are active interrupt users.
+> >
+> > The driver currently supports and can be built for OMAP architecture
+> > based AM335x, AM437x and AM57xx SoCs; Keystone2 architecture based
+> > 66AK2G SoCs and Davinci architecture based OMAP-L13x/AM18x/DA850 SoCs.
+> > All of these SoCs support 64 system events, 10 interrupt channels and
+> > 10 output interrupt lines per PRUSS INTC with a few SoC integration
+> > differences.
+> >
+> > NOTE:
+> > Each PRU-ICSS's INTC on AM57xx SoCs is preceded by a Crossbar that
+> > enables multiple external events to be routed to a specific number
+> > of input interrupt events. Any non-default external interrupt event
+> > directed towards PRUSS needs this crossbar to be setup properly.
+> >
+> > Signed-off-by: Suman Anna <s-anna@ti.com>
+> > Signed-off-by: Andrew F. Davis <afd@ti.com>
+> > Signed-off-by: Roger Quadros <rogerq@ti.com>
+> > Signed-off-by: David Lechner <david@lechnology.com>
+> > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+>
+> Please see the use of the Co-developed-by: tag.
 
-The K3 AM65x and J721E SoCs have the next generation of the PRU-ICSS IP,
-commonly called ICSSG. The PRUSS INTC present within the ICSSG supports
-more System Events (160 vs 64), more Interrupt Channels and Host Interrupts
-(20 vs 10) compared to the previous generation PRUSS INTC instances. The
-first 2 and the last 10 of these host interrupt lines are used by the
-PRU and other auxiliary cores and sub-modules within the ICSSG, with 8
-host interrupts connected to MPU. The host interrupts 5, 6, 7 are also
-connected to the other ICSSG instances within the SoC and can be
-partitioned as per system integration through the board dts files.
+Ok, thank you.
 
-Enhance the PRUSS INTC driver to add support for this ICSSG INTC
-instance.
+>
+> > ---
+> > v5->v6:
+> > 1) Address Marc Zyngier comments:
+> > - Use unsigned types for variables used to compute masks/shifts (ch,
+> >   evt, host).
+> > - Move part responsible for enabling global interrupt from
+> >   pruss_intc_map to pruss_intc_init.
+> > - Improve coding style in pruss_intc_init with regards to variable
+> >   assignments.
+> > - Align the '=' signs vertically in pruss_irqchip structure.
+> > - Change the irq type in xlate handler from IRQ_TYPE_NONE to
+> >   IRQ_TYPE_LEVEL_MASK
+>
+> Gruik? (yes, that's approximately the noise I made reading this)
+>
+> [...]
+>
+> > +static void pruss_intc_init(struct pruss_intc *intc)
+> > +{
+> > +     const struct pruss_intc_match_data *soc_config = intc->soc_config;
+> > +     int num_chnl_map_regs, num_host_intr_regs, num_event_type_regs, i;
+> > +
+> > +     num_chnl_map_regs = DIV_ROUND_UP(soc_config->num_system_events,
+> > +                                      CMR_EVT_PER_REG);
+> > +     num_host_intr_regs = DIV_ROUND_UP(soc_config->num_host_events,
+> > +                                       HMR_CH_PER_REG);
+> > +     num_event_type_regs = DIV_ROUND_UP(soc_config->num_system_events,
+> > 32);
+> > +
+> > +     /*
+> > +      * configure polarity (SIPR register) to active high and
+> > +      * type (SITR register) to level interrupt for all system events
+> > +      */
+>
+> So I read this...
+>
+> [...]
+>
+> > +static int
+> > +pruss_intc_irq_domain_xlate(struct irq_domain *d, struct device_node
+> > *node,
+> > +                         const u32 *intspec, unsigned int intsize,
+> > +                         unsigned long *out_hwirq, unsigned int *out_type)
+> > +{
+> > +     struct pruss_intc *intc = d->host_data;
+> > +     struct device *dev = intc->dev;
+> > +     int ret, sys_event, channel, host;
+> > +
+> > +     if (intsize < 3)
+> > +             return -EINVAL;
+> > +
+> > +     sys_event = intspec[0];
+> > +     if (sys_event < 0 || sys_event >=
+> > intc->soc_config->num_system_events) {
+> > +             dev_err(dev, "%d is not valid event number\n", sys_event);
+> > +             return -EINVAL;
+> > +     }
+> > +
+> > +     channel = intspec[1];
+> > +     if (channel < 0 || channel >= intc->soc_config->num_host_events) {
+> > +             dev_err(dev, "%d is not valid channel number", channel);
+> > +             return -EINVAL;
+> > +     }
+> > +
+> > +     host = intspec[2];
+> > +     if (host < 0 || host >= intc->soc_config->num_host_events) {
+> > +             dev_err(dev, "%d is not valid host irq number\n", host);
+> > +             return -EINVAL;
+> > +     }
+> > +
+> > +     /* check if requested sys_event was already mapped, if so validate it
+> > */
+> > +     ret = pruss_intc_validate_mapping(intc, sys_event, channel, host);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     *out_hwirq = sys_event;
+> > +     *out_type = IRQ_TYPE_LEVEL_MASK;
+>
+> ... and then I see that.
+>
+> What does IRQ_TYPE_LEVEL_MASK even mean? Can the interrupt be triggered
+> as
+> level high and low *at the same time*? (this is a rhetorical question).
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
-Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
----
-v6->v7:
-- Add Co-developed-by tag.
-v5->v6:
-- No change.
-v4->v5:
-- Rename: s/num_host_intrs/num_host_events/ regarding to change
-  introduced in patch #2.
-v3->v4:
-- Move generic part to "irqchip/irq-pruss-intc: Add a PRUSS irqchip
-  driver for PRUSS interrupts" patch and leave only platform related
-  code.
-v2->v3:
-- Change patch order: use it directly after "irqchip/irq-pruss-intc:
-  Implement irq_{get,set}_irqchip_state ops" and before new
-  "irqchip/irq-pruss-intc: Add event mapping support" in order to reduce
-  diff.
-v1->v2:
-- https://patchwork.kernel.org/patch/11069773/
----
- drivers/irqchip/Kconfig          | 2 +-
- drivers/irqchip/irq-pruss-intc.c | 9 +++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+Really sorry for that, my mistake. I will change it to
+IRQ_TYPE_LEVEL_HIGH in v7.
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index 733e59f..25c8944 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -495,7 +495,7 @@ config TI_SCI_INTA_IRQCHIP
- 
- config TI_PRUSS_INTC
- 	tristate "TI PRU-ICSS Interrupt Controller"
--	depends on ARCH_DAVINCI || SOC_AM33XX || SOC_AM43XX || SOC_DRA7XX || ARCH_KEYSTONE
-+	depends on ARCH_DAVINCI || SOC_AM33XX || SOC_AM43XX || SOC_DRA7XX || ARCH_KEYSTONE || ARCH_K3
- 	select IRQ_DOMAIN
- 	help
- 	  This enables support for the PRU-ICSS Local Interrupt Controller
-diff --git a/drivers/irqchip/irq-pruss-intc.c b/drivers/irqchip/irq-pruss-intc.c
-index bfe529a..92fb578 100644
---- a/drivers/irqchip/irq-pruss-intc.c
-+++ b/drivers/irqchip/irq-pruss-intc.c
-@@ -628,11 +628,20 @@ static const struct pruss_intc_match_data pruss_intc_data = {
- 	.num_host_events = 10,
- };
- 
-+static const struct pruss_intc_match_data icssg_intc_data = {
-+	.num_system_events = 160,
-+	.num_host_events = 20,
-+};
-+
- static const struct of_device_id pruss_intc_of_match[] = {
- 	{
- 		.compatible = "ti,pruss-intc",
- 		.data = &pruss_intc_data,
- 	},
-+	{
-+		.compatible = "ti,icssg-intc",
-+		.data = &icssg_intc_data,
-+	},
- 	{ /* sentinel */ },
- };
- MODULE_DEVICE_TABLE(of, pruss_intc_of_match);
--- 
-2.7.4
-
+Thank you for your review,
+Grzegorz
