@@ -2,96 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1FA426CD84
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Sep 2020 23:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D616B26D1D3
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Sep 2020 05:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728624AbgIPVAI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Sep 2020 17:00:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43074 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726340AbgIPQae (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 16 Sep 2020 12:30:34 -0400
-Received: from kozik-lap.mshome.net (unknown [194.230.155.191])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5F04B2245D;
-        Wed, 16 Sep 2020 15:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600271915;
-        bh=wyPmzC4NHbsZu5CEn9G5Z8eCB/nHoC/xFKB5B2bqx3c=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kFmrLMvHie1rZdTr2MQXMcBAEJNhP9kC7phlzQSPUc6Rbu1gF/gl9XyoAFvVHOYcz
-         YKDErYBxNoI8NdNaXX4AS5DmlalS5OaBdgI/Hu4M46Fyf9G5rsj8ETJbN+t/3q+UJP
-         8HUppa3L8lmRCEKlvCdPbAGCqZs2sleWD0Nu9IEY=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH v3 08/15] ARM: dts: am335x: lxm: fix PCA9539 GPIO expander properties
-Date:   Wed, 16 Sep 2020 17:57:08 +0200
-Message-Id: <20200916155715.21009-9-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200916155715.21009-1-krzk@kernel.org>
-References: <20200916155715.21009-1-krzk@kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+        id S1726011AbgIQDlS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Sep 2020 23:41:18 -0400
+Received: from hairstylesfeed.com ([138.197.30.88]:42062 "EHLO ubuntu"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725858AbgIQDlS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 16 Sep 2020 23:41:18 -0400
+X-Greylist: delayed 12476 seconds by postgrey-1.27 at vger.kernel.org; Wed, 16 Sep 2020 23:41:15 EDT
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+        by ubuntu (Postfix) with SMTP id 285B750CE9;
+        Wed, 16 Sep 2020 11:39:32 +0000 (UTC)
+Received: from [175.225.24.25] by 127.0.0.1 id c34GzSLUgF1T for <linus81@de.publicvm.com>; Wed, 16 Sep 2020 15:33:38 +0300
+Message-ID: <uy----$-42zhto-$arv762mc@85pmx>
+From:   "Nicola W. Samir" <nicola@brighenti.net>
+Reply-To: "Nicola W. Samir" <nicola@brighenti.net>
+To:     linus81@de.publicvm.com
+Subject: LUCRATIVE PROJECT VENTURE
+Date:   Wed, 16 Sep 20 15:33:38 GMT
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+        boundary="9F.02FB..F5..681264.7B46"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The PCA9539 GPIO expander requires GPIO controller properties to operate
-properly.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Acked-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/am335x-lxm.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+--9F.02FB..F5..681264.7B46
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/arm/boot/dts/am335x-lxm.dts b/arch/arm/boot/dts/am335x-lxm.dts
-index cd55f11260ea..0f078465297a 100644
---- a/arch/arm/boot/dts/am335x-lxm.dts
-+++ b/arch/arm/boot/dts/am335x-lxm.dts
-@@ -160,11 +160,15 @@
- 	serial_config1: serial_config1@20 {
- 		compatible = "nxp,pca9539";
- 		reg = <0x20>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
- 	};
- 
- 	serial_config2: serial_config2@21 {
- 		compatible = "nxp,pca9539";
- 		reg = <0x21>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
- 	};
- 
- 	tps: tps@2d {
--- 
-2.17.1
+I am an Independent Financial Consultant, I have a reputable client who is=
+ seeking for an experienced individual or company that can profitably inve=
+st $51,000.000 United State Dollars privately for TPI. 
+
+Your swift response is highly needed.
+The modalities is 100% risk free
+
+Best Regard
+Nicola Samir Wahiba
+
+--9F.02FB..F5..681264.7B46--
 
