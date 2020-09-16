@@ -2,69 +2,164 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8623E26C97F
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Sep 2020 21:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7718026CB08
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Sep 2020 22:21:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727035AbgIPRmx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Sep 2020 13:42:53 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:35921 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727297AbgIPRmX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Sep 2020 13:42:23 -0400
-Received: by mail-wr1-f67.google.com with SMTP id z1so7816258wrt.3;
-        Wed, 16 Sep 2020 10:42:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=mZM+DPpEcfwHy6w47m49YsAp4ppTWvN4oVK5Trply5g=;
-        b=iRcuxEzQgB8dgm7yMOhc4w1BhwvEIoRat6t47aB6E+n2kgERaqKg2qs9LH9scR/zBs
-         PqFc3iiBsFxHiIPnzELU2OB+JXaDhEawHB6nMZw4xxv6mc6I424ZoGpHsT+0XxIrPQiJ
-         lRqUh9wI1QnaS4VCuVmCLTRNpRDT0Q+xwUslnWBwpqJjSX5Bjp4Q2CZc8PkIXceodbe+
-         EYCiTsdwM5Fnoq3PpSXJAmXcpAaR3Dp0+bEM1ZgN2QuwayFXYaK8fVOr98RknC6exsKr
-         hG639S0ZcDL+BoeGm1WSDSVf4+ZCLzMjsAylgNVNOqWJF4uy/HVrGfppH7TK4lYohQ/o
-         Bdrw==
-X-Gm-Message-State: AOAM532ByHabZUnys4CsUKTh7wq8gEHWkEYsINs+KklNFcWY6/+u21HE
-        oo6TfTy5OjqCN2MGtgU4sY/0XGSo6Q7+wYDw
-X-Google-Smtp-Source: ABdhPJxqTflk58WRHyVtD9XbqL9Q118Cqj3AUT87A43/ZCuGySbyxf6K/9H38Cgpf4SCgzC076Bv/g==
-X-Received: by 2002:a5d:634d:: with SMTP id b13mr28939753wrw.324.1600278141285;
-        Wed, 16 Sep 2020 10:42:21 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.191])
-        by smtp.googlemail.com with ESMTPSA id f6sm34757724wro.5.2020.09.16.10.42.19
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 16 Sep 2020 10:42:20 -0700 (PDT)
-Date:   Wed, 16 Sep 2020 19:42:18 +0200
+        id S1727409AbgIPUV3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Sep 2020 16:21:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43846 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727160AbgIPRau (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 16 Sep 2020 13:30:50 -0400
+Received: from kozik-lap.mshome.net (unknown [194.230.155.191])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1D3B922464;
+        Wed, 16 Sep 2020 15:58:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600271894;
+        bh=wdAkw2TjM1udxEqqVOzxHnXaiuAOFMCD3JyJ0x6GXJI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=CEkiTIX+Fl0xgU9GaFowB3IBFoj0LdQvWJp6D/j5lf4NecsiG9e7rpukGJOxIsOGX
+         OiHfB2CHjp8UzjXsoU4dCoauEfCjSPEEzbwnAko1gQFeuf/NUQwGG6LcEcvfRUlBi8
+         pOcI/Xun6ff/784JHIbliYALEOTgbG6oNJuCy1EA=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Roger Quadros <rogerq@ti.com>, Tony Lindgren <tony@atomide.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] memory: omap-gpmc: Fix compile test on SPARC
-Message-ID: <20200916174218.GA23084@kozik-lap>
-References: <20200911143251.399-1-krzk@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200911143251.399-1-krzk@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH v3 05/15] arm64: dts: renesas: align GPIO hog names with dtschema
+Date:   Wed, 16 Sep 2020 17:57:05 +0200
+Message-Id: <20200916155715.21009-6-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200916155715.21009-1-krzk@kernel.org>
+References: <20200916155715.21009-1-krzk@kernel.org>
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Sep 11, 2020 at 04:32:51PM +0200, Krzysztof Kozlowski wrote:
-> SPARC comes without CONFIG_OF_ADDRESS thus compile testing fails on
-> linking:
-> 
->   /usr/bin/sparc64-linux-gnu-ld: drivers/memory/omap-gpmc.o: in function `gpmc_probe_generic_child':
->   omap-gpmc.c:(.text.unlikely+0x14ec): undefined reference to `of_platform_device_create'
-> 
-> Fixes: ea0c0ad6b6eb ("memory: Enable compile testing for most of the drivers")
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> ---
->  drivers/memory/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+The convention for node names is to use hyphens, not underscores.
+dtschema for pca95xx expects GPIO hogs to end with 'hog' prefix.
 
-Applied.
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ .../boot/dts/renesas/r8a77951-salvator-xs.dts      |  2 +-
+ .../boot/dts/renesas/r8a77965-salvator-xs.dts      |  2 +-
+ arch/arm64/boot/dts/renesas/ulcb-kf.dtsi           | 14 +++++++-------
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-Best regards,
-Krzysztof
+diff --git a/arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dts b/arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dts
+index cef9da4376a3..e5922329a4b8 100644
+--- a/arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dts
++++ b/arch/arm64/boot/dts/renesas/r8a77951-salvator-xs.dts
+@@ -118,7 +118,7 @@
+ };
+ 
+ &pca9654 {
+-	pcie_sata_switch {
++	pcie-sata-switch-hog {
+ 		gpio-hog;
+ 		gpios = <7 GPIO_ACTIVE_HIGH>;
+ 		output-low; /* enable SATA by default */
+diff --git a/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs.dts b/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs.dts
+index 5cef64605464..d7e621101af7 100644
+--- a/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs.dts
++++ b/arch/arm64/boot/dts/renesas/r8a77965-salvator-xs.dts
+@@ -55,7 +55,7 @@
+ };
+ 
+ &pca9654 {
+-	pcie_sata_switch {
++	pcie-sata-switch-hog {
+ 		gpio-hog;
+ 		gpios = <7 GPIO_ACTIVE_HIGH>;
+ 		output-low; /* enable SATA by default */
+diff --git a/arch/arm64/boot/dts/renesas/ulcb-kf.dtsi b/arch/arm64/boot/dts/renesas/ulcb-kf.dtsi
+index 202177706cde..e9ed2597f1c2 100644
+--- a/arch/arm64/boot/dts/renesas/ulcb-kf.dtsi
++++ b/arch/arm64/boot/dts/renesas/ulcb-kf.dtsi
+@@ -143,49 +143,49 @@
+ 		interrupt-parent = <&gpio6>;
+ 		interrupts = <8 IRQ_TYPE_EDGE_FALLING>;
+ 
+-		audio_out_off {
++		audio-out-off-hog {
+ 			gpio-hog;
+ 			gpios = <0 GPIO_ACTIVE_HIGH>; /* P00 */
+ 			output-high;
+ 			line-name = "Audio_Out_OFF";
+ 		};
+ 
+-		hub_pwen {
++		hub-pwen-hog {
+ 			gpio-hog;
+ 			gpios = <6 GPIO_ACTIVE_HIGH>;
+ 			output-high;
+ 			line-name = "HUB pwen";
+ 		};
+ 
+-		hub_rst {
++		hub-rst-hog {
+ 			gpio-hog;
+ 			gpios = <7 GPIO_ACTIVE_HIGH>;
+ 			output-high;
+ 			line-name = "HUB rst";
+ 		};
+ 
+-		otg_extlpn {
++		otg-extlpn-hog {
+ 			gpio-hog;
+ 			gpios = <9 GPIO_ACTIVE_HIGH>;
+ 			output-high;
+ 			line-name = "OTG EXTLPn";
+ 		};
+ 
+-		otg_offvbusn {
++		otg-offvbusn-hog {
+ 			gpio-hog;
+ 			gpios = <8 GPIO_ACTIVE_HIGH>;
+ 			output-low;
+ 			line-name = "OTG OFFVBUSn";
+ 		};
+ 
+-		sd-wifi-mux {
++		sd-wifi-mux-hog {
+ 			gpio-hog;
+ 			gpios = <5 GPIO_ACTIVE_HIGH>;
+ 			output-low;	/* Connect WL1837 */
+ 			line-name = "SD WiFi mux";
+ 		};
+ 
+-		snd_rst {
++		snd-rst-hog {
+ 			gpio-hog;
+ 			gpios = <15 GPIO_ACTIVE_HIGH>; /* P17 */
+ 			output-high;
+-- 
+2.17.1
 
