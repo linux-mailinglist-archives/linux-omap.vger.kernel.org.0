@@ -2,188 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0287E26C9B4
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Sep 2020 21:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8623E26C97F
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Sep 2020 21:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727365AbgIPTS0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Sep 2020 15:18:26 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:12793 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727355AbgIPTRX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 16 Sep 2020 15:17:23 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id DDB546E93D4F92723607;
-        Wed, 16 Sep 2020 19:07:05 +0800 (CST)
-Received: from huawei.com (10.90.53.225) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Wed, 16 Sep 2020
- 19:07:01 +0800
-From:   Qilong Zhang <zhangqilong3@huawei.com>
-To:     <b.zolnierkie@samsung.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next] dss:use devm_platform_ioremap_resource_byname
-Date:   Wed, 16 Sep 2020 19:13:53 +0800
-Message-ID: <20200916111353.105914-1-zhangqilong3@huawei.com>
-X-Mailer: git-send-email 2.26.0.106.g9fadedd
+        id S1727035AbgIPRmx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Sep 2020 13:42:53 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:35921 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727297AbgIPRmX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Sep 2020 13:42:23 -0400
+Received: by mail-wr1-f67.google.com with SMTP id z1so7816258wrt.3;
+        Wed, 16 Sep 2020 10:42:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=mZM+DPpEcfwHy6w47m49YsAp4ppTWvN4oVK5Trply5g=;
+        b=iRcuxEzQgB8dgm7yMOhc4w1BhwvEIoRat6t47aB6E+n2kgERaqKg2qs9LH9scR/zBs
+         PqFc3iiBsFxHiIPnzELU2OB+JXaDhEawHB6nMZw4xxv6mc6I424ZoGpHsT+0XxIrPQiJ
+         lRqUh9wI1QnaS4VCuVmCLTRNpRDT0Q+xwUslnWBwpqJjSX5Bjp4Q2CZc8PkIXceodbe+
+         EYCiTsdwM5Fnoq3PpSXJAmXcpAaR3Dp0+bEM1ZgN2QuwayFXYaK8fVOr98RknC6exsKr
+         hG639S0ZcDL+BoeGm1WSDSVf4+ZCLzMjsAylgNVNOqWJF4uy/HVrGfppH7TK4lYohQ/o
+         Bdrw==
+X-Gm-Message-State: AOAM532ByHabZUnys4CsUKTh7wq8gEHWkEYsINs+KklNFcWY6/+u21HE
+        oo6TfTy5OjqCN2MGtgU4sY/0XGSo6Q7+wYDw
+X-Google-Smtp-Source: ABdhPJxqTflk58WRHyVtD9XbqL9Q118Cqj3AUT87A43/ZCuGySbyxf6K/9H38Cgpf4SCgzC076Bv/g==
+X-Received: by 2002:a5d:634d:: with SMTP id b13mr28939753wrw.324.1600278141285;
+        Wed, 16 Sep 2020 10:42:21 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.191])
+        by smtp.googlemail.com with ESMTPSA id f6sm34757724wro.5.2020.09.16.10.42.19
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 16 Sep 2020 10:42:20 -0700 (PDT)
+Date:   Wed, 16 Sep 2020 19:42:18 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Roger Quadros <rogerq@ti.com>, Tony Lindgren <tony@atomide.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] memory: omap-gpmc: Fix compile test on SPARC
+Message-ID: <20200916174218.GA23084@kozik-lap>
+References: <20200911143251.399-1-krzk@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.90.53.225]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200911143251.399-1-krzk@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-omap-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use the devm_platform_ioremap_resource_byname() helper instead of
-calling platform_get_resource_byname() and devm_ioremap_resource()
-separately.
+On Fri, Sep 11, 2020 at 04:32:51PM +0200, Krzysztof Kozlowski wrote:
+> SPARC comes without CONFIG_OF_ADDRESS thus compile testing fails on
+> linking:
+> 
+>   /usr/bin/sparc64-linux-gnu-ld: drivers/memory/omap-gpmc.o: in function `gpmc_probe_generic_child':
+>   omap-gpmc.c:(.text.unlikely+0x14ec): undefined reference to `of_platform_device_create'
+> 
+> Fixes: ea0c0ad6b6eb ("memory: Enable compile testing for most of the drivers")
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> ---
+>  drivers/memory/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
----
- .../video/fbdev/omap2/omapfb/dss/hdmi4_core.c | 10 +--------
- .../video/fbdev/omap2/omapfb/dss/hdmi5_core.c | 10 +--------
- .../video/fbdev/omap2/omapfb/dss/hdmi_phy.c   | 10 +--------
- .../video/fbdev/omap2/omapfb/dss/hdmi_pll.c   |  9 +-------
- .../video/fbdev/omap2/omapfb/dss/video-pll.c  | 21 +++----------------
- 5 files changed, 7 insertions(+), 53 deletions(-)
+Applied.
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
-index 7ca1803bf161..726c190862d4 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
-@@ -875,15 +875,7 @@ void hdmi4_audio_stop(struct hdmi_core_data *core, struct hdmi_wp_data *wp)
- 
- int hdmi4_core_init(struct platform_device *pdev, struct hdmi_core_data *core)
- {
--	struct resource *res;
--
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "core");
--	if (!res) {
--		DSSERR("can't get CORE mem resource\n");
--		return -EINVAL;
--	}
--
--	core->base = devm_ioremap_resource(&pdev->dev, res);
-+	core->base = devm_platform_ioremap_resource_byname(pdev, "core");
- 	if (IS_ERR(core->base)) {
- 		DSSERR("can't ioremap CORE\n");
- 		return PTR_ERR(core->base);
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
-index 2f6ff14a48d9..eda29d3032e1 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
-@@ -887,15 +887,7 @@ int hdmi5_audio_config(struct hdmi_core_data *core, struct hdmi_wp_data *wp,
- 
- int hdmi5_core_init(struct platform_device *pdev, struct hdmi_core_data *core)
- {
--	struct resource *res;
--
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "core");
--	if (!res) {
--		DSSERR("can't get CORE IORESOURCE_MEM HDMI\n");
--		return -EINVAL;
--	}
--
--	core->base = devm_ioremap_resource(&pdev->dev, res);
-+	core->base = devm_platform_ioremap_resource_byname(pdev, "core");
- 	if (IS_ERR(core->base)) {
- 		DSSERR("can't ioremap HDMI core\n");
- 		return PTR_ERR(core->base);
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c
-index 9c645adba9e2..6fbfeb01b315 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c
-@@ -207,19 +207,11 @@ static const struct hdmi_phy_features *hdmi_phy_get_features(void)
- 
- int hdmi_phy_init(struct platform_device *pdev, struct hdmi_phy_data *phy)
- {
--	struct resource *res;
--
- 	phy_feat = hdmi_phy_get_features();
- 	if (!phy_feat)
- 		return -ENODEV;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "phy");
--	if (!res) {
--		DSSERR("can't get PHY mem resource\n");
--		return -EINVAL;
--	}
--
--	phy->base = devm_ioremap_resource(&pdev->dev, res);
-+	phy->base = devm_platform_ioremap_resource_byname(pdev, "phy");
- 	if (IS_ERR(phy->base)) {
- 		DSSERR("can't ioremap TX PHY\n");
- 		return PTR_ERR(phy->base);
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_pll.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_pll.c
-index 4991be031b0b..eb984d9999fe 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_pll.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_pll.c
-@@ -220,17 +220,10 @@ int hdmi_pll_init(struct platform_device *pdev, struct hdmi_pll_data *pll,
- 	struct hdmi_wp_data *wp)
- {
- 	int r;
--	struct resource *res;
- 
- 	pll->wp = wp;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "pll");
--	if (!res) {
--		DSSERR("can't get PLL mem resource\n");
--		return -EINVAL;
--	}
--
--	pll->base = devm_ioremap_resource(&pdev->dev, res);
-+	pll->base = devm_platform_ioremap_resource_byname(pdev, "pll");
- 	if (IS_ERR(pll->base)) {
- 		DSSERR("can't ioremap PLLCTRL\n");
- 		return PTR_ERR(pll->base);
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/video-pll.c b/drivers/video/fbdev/omap2/omapfb/dss/video-pll.c
-index f45fe60b9e7d..bff03d920722 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/video-pll.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/video-pll.c
-@@ -129,7 +129,6 @@ struct dss_pll *dss_video_pll_init(struct platform_device *pdev, int id,
- 	const char * const clkctrl_name[] = { "pll1_clkctrl", "pll2_clkctrl" };
- 	const char * const clkin_name[] = { "video1_clk", "video2_clk" };
- 
--	struct resource *res;
- 	struct dss_video_pll *vpll;
- 	void __iomem *pll_base, *clkctrl_base;
- 	struct clk *clk;
-@@ -138,14 +137,7 @@ struct dss_pll *dss_video_pll_init(struct platform_device *pdev, int id,
- 
- 	/* PLL CONTROL */
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, reg_name[id]);
--	if (!res) {
--		dev_err(&pdev->dev,
--			"missing platform resource data for pll%d\n", id);
--		return ERR_PTR(-ENODEV);
--	}
--
--	pll_base = devm_ioremap_resource(&pdev->dev, res);
-+	pll_base = devm_platform_ioremap_resource_byname(pdev, reg_name[id]);
- 	if (IS_ERR(pll_base)) {
- 		dev_err(&pdev->dev, "failed to ioremap pll%d reg_name\n", id);
- 		return ERR_CAST(pll_base);
-@@ -153,15 +145,8 @@ struct dss_pll *dss_video_pll_init(struct platform_device *pdev, int id,
- 
- 	/* CLOCK CONTROL */
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
--		clkctrl_name[id]);
--	if (!res) {
--		dev_err(&pdev->dev,
--			"missing platform resource data for pll%d\n", id);
--		return ERR_PTR(-ENODEV);
--	}
--
--	clkctrl_base = devm_ioremap_resource(&pdev->dev, res);
-+	clkctrl_base = devm_platform_ioremap_resource_byname(pdev,
-+					clkctrl_name[id]);
- 	if (IS_ERR(clkctrl_base)) {
- 		dev_err(&pdev->dev, "failed to ioremap pll%d clkctrl\n", id);
- 		return ERR_CAST(clkctrl_base);
--- 
-2.17.1
+Best regards,
+Krzysztof
 
