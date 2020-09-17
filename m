@@ -2,113 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E530126D77F
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Sep 2020 11:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7FFF26D842
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Sep 2020 12:00:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726334AbgIQJUL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Sep 2020 05:20:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39050 "EHLO
+        id S1726211AbgIQKAt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Sep 2020 06:00:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726285AbgIQJUK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Sep 2020 05:20:10 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 943E4C061756
-        for <linux-omap@vger.kernel.org>; Thu, 17 Sep 2020 02:20:09 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id t10so1256064wrv.1
-        for <linux-omap@vger.kernel.org>; Thu, 17 Sep 2020 02:20:09 -0700 (PDT)
+        with ESMTP id S1726185AbgIQKAs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Sep 2020 06:00:48 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E556C06174A;
+        Thu, 17 Sep 2020 03:00:48 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id g4so1940487edk.0;
+        Thu, 17 Sep 2020 03:00:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Rs4qIsV+1Nc8/ULSmz6fhje8+3Q5WuQ/ZqN8EKMf44M=;
-        b=HneP4Ax9h4G9FuTtlRadvMHfIy7MklfXQgvihGj/s4IkedJjlIcDIIN9OKN+TKPv1Q
-         YOHbDkBxijps9TuQt3WI77Trp6FzEmkd34MvgCBmrO8u7YmmMCiiTCU7Pw4wtwO+tq5Y
-         XL68N5LVD01YXce3Md5P8IJSX0+xPNbPGcRZx/IkAGd06yRy1L91j4Nn/tUN1oQBd+9X
-         MB5TIz2AfCzFVqkRTMHEOoq5gvl3mqc9iRiCI9jU17Jnt6aUBj+V23z+o/lKXomR1VBg
-         aysEiRfYQsaZu/Zif0ZW9cJgfORgsrpcDmNKMizSGKbKB5f5jaU9hm0d9jvxb8p/udCk
-         l6kQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mog08lfqfxZzqsQp+fqJ0msYK0VIdpvG6vqtJbveMak=;
+        b=SlBMAFa/OpI0zd49+YKJFEQ0ZK3dD9P4CbN595u9woZwVueEgYYMkJniC503Wcr2PC
+         eZg2NUWHVACE+RzvlTyayY/zXL3b81IuTsRdqg/CjdCLVPh8G6Ejz0Ly+xIWWwLonzOd
+         LBGMxG0DUEDHR3ujW/6eK+DyHp8uYFb7umfRHqn/Gj7gP0l6HLE7IcwoZoIRnEVPlK+Y
+         0OB38ajIkvuXNXZjbBE6Mg/H8t6eOlCVToAcfAkg7h14Vw2TONtVyklrmbrnTy/CGWhB
+         eeO+HwJBDKHmEb270FdDh5Qr8K8QgpcCtXmFs31Djh21bKeiqlcenixj/OK3eyFwRV5v
+         96Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Rs4qIsV+1Nc8/ULSmz6fhje8+3Q5WuQ/ZqN8EKMf44M=;
-        b=NLrrE8kAXQU5/rFJyRZfks6qiC9HMb2hmntUxFZ6jL6Cvxwbym9dGhPO1nmEhNId1M
-         rF2Nbel4QXemwk1GuBqYneysdvdM1x+ZAAoTIucTO7xeosDBPudOhXlg1MGK0Ht3iFmg
-         8daN+D7W75PVo4y3Eq7yIlmI90TDfWpXV6OL2YBGvuHVXOyrj+hn4EDbgnn0yNuccCiq
-         r7iI6Jgi36nYv3s0UKHbKAUpOLZojrNe1ZDhRaT62qtqpndruHojNAufmgxOvmi15r/Q
-         WUjvKczcXdZb1UloSKrHRlxRBJAJ4Vdw1MWhFi8IcBeWRBKL14T48KYq1AxKKoY3Ou0f
-         2bZQ==
-X-Gm-Message-State: AOAM533kM+UJIuxasK+TXHpFr+KaxNFNYFVtVhWrT94PPfBs6pbdPvBx
-        rf1H8HpgTyN1bPZLb4rE8AuyWA==
-X-Google-Smtp-Source: ABdhPJwDBcbUJMmuU1+Ad2eRRDNOJE6+feQz9qegFGUMrQF2ZIMUj7aGlnqVTlh4Dy8cUHkn08Eo4w==
-X-Received: by 2002:a5d:5583:: with SMTP id i3mr30071275wrv.119.1600334407681;
-        Thu, 17 Sep 2020 02:20:07 -0700 (PDT)
-Received: from x1 ([2001:16b8:5c22:e701:5f2:8f03:4748:2bc6])
-        by smtp.gmail.com with ESMTPSA id x10sm10543614wmi.37.2020.09.17.02.20.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2020 02:20:06 -0700 (PDT)
-Date:   Thu, 17 Sep 2020 11:20:04 +0200
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Trent Piepho <tpiepho@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mog08lfqfxZzqsQp+fqJ0msYK0VIdpvG6vqtJbveMak=;
+        b=Uya7H+tp5sodYjymRkMOHtwmWc8CaU0r0gIaFidQmeQpDKBSjLgl3S65XP8jXTk1KU
+         DJxME3RTTOH57tPPIxKepZ6mqv5h502ICi+67Ar/RDEjwaapGaMOFCSsZ0mLbSlgxIVT
+         5sC/v32IseZHoZ8a4HWSLF5Chl/fOvIfM8fmr2rnA9jImsXhwpKDVhyjysJ7Ih14az+I
+         TD8wkLB2MbXITr524jc21ASJk+8xz5dLriOW0wpGVtlo0vqayz80F8ATkNasvLOzrLfE
+         /8flzIMmCW5iTJ8y+kpJLCu7ARqmc+2jnOF3ABCCdXOttz3VWgQEBszx8/oPnSPkQtgT
+         UPqQ==
+X-Gm-Message-State: AOAM530O+a3kv0icHeE37kHWH2X5x+2DE29CFXOLM7EfHwDDPqwb1DkO
+        71OP2YzprUN/ZQ7OHsYvIFW9NUanS8iRk6e4J9luSw7euB3T8g==
+X-Google-Smtp-Source: ABdhPJyoXk0WoHOaaTu86WVRwuhzB9IwesJGlfmWyPQl7ZCPRCnONgv/KQ2/fx4Hv9opaQcE91DGnzo8sfhHvoE4NQE=
+X-Received: by 2002:aa7:d458:: with SMTP id q24mr32711156edr.23.1600336847136;
+ Thu, 17 Sep 2020 03:00:47 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200914104352.2165818-1-drew@beagleboard.org>
+ <CA+7tXii8rwBexgAHeqYsvBywhWLmk-Hf5_VWUU5bQkBREeFcSA@mail.gmail.com> <20200917092004.GA2468349@x1>
+In-Reply-To: <20200917092004.GA2468349@x1>
+From:   Trent Piepho <tpiepho@gmail.com>
+Date:   Thu, 17 Sep 2020 03:00:36 -0700
+Message-ID: <CA+7tXihwHbcuxZ10jGZrQkET9+Dbs31SfsYDt_6XB+-JM99gqA@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: document pinctrl-single,pins when
+ #pinctrl-cells = 2
+To:     Drew Fustini <drew@beagleboard.org>
 Cc:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Jason Kridner <jkridner@beagleboard.org>,
         Robert Nelson <robertcnelson@gmail.com>,
         linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, linux-gpio <linux-gpio@vger.kernel.org>
-Subject: Re: [PATCH] ARM: dts: document pinctrl-single,pins when
- #pinctrl-cells = 2
-Message-ID: <20200917092004.GA2468349@x1>
-References: <20200914104352.2165818-1-drew@beagleboard.org>
- <CA+7tXii8rwBexgAHeqYsvBywhWLmk-Hf5_VWUU5bQkBREeFcSA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+7tXii8rwBexgAHeqYsvBywhWLmk-Hf5_VWUU5bQkBREeFcSA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Sep 17, 2020 at 02:03:46AM -0700, Trent Piepho wrote:
-> On Mon, Sep 14, 2020 at 3:44 AM Drew Fustini <drew@beagleboard.org> wrote:
+On Thu, Sep 17, 2020 at 2:20 AM Drew Fustini <drew@beagleboard.org> wrote:
+>
+> On Thu, Sep 17, 2020 at 02:03:46AM -0700, Trent Piepho wrote:
+> > On Mon, Sep 14, 2020 at 3:44 AM Drew Fustini <drew@beagleboard.org> wrote:
+> > >
+> > > +
+> > > +When #pinctrl-cells = 2, then setting a pin for a device could be done with:
+> > > +
+> > > +       pinctrl-single,pins = <0xdc 0x30 0x07>;
+> > > +
+> > > +Where 0x30 is the pin configuration value and 0x07 is the pin mux mode value.
+> > > +See the device example and static board pins example below for more information.
 > >
-> > +
-> > +When #pinctrl-cells = 2, then setting a pin for a device could be done with:
-> > +
-> > +       pinctrl-single,pins = <0xdc 0x30 0x07>;
-> > +
-> > +Where 0x30 is the pin configuration value and 0x07 is the pin mux mode value.
-> > +See the device example and static board pins example below for more information.
-> 
-> Pin configuration and mux mode don't mean anything in pinctrl-single.
-> On another machine, mux mode might not be programmed this way or even
-> exist.  Or the location of bits would probably be different, and this
-> would seem to imply the 0x07 would get shifted to the correct location
-> for where the pin mux setting was on that machine's pinctrl registers.
-> 
-> It seems like it would be better to explain the values are ORed together.
+> > Pin configuration and mux mode don't mean anything in pinctrl-single.
+> > On another machine, mux mode might not be programmed this way or even
+> > exist.  Or the location of bits would probably be different, and this
+> > would seem to imply the 0x07 would get shifted to the correct location
+> > for where the pin mux setting was on that machine's pinctrl registers.
+> >
+> > It seems like it would be better to explain the values are ORed together.
+>
+> I descirbed it as seoerate values as I did not want to prescribe what
+> the pcs driver would do with those values.  But, yes, it is a just an OR
+> operation, so I could change the language to reflect tat.
 
-I descirbed it as seoerate values as I did not want to prescribe what
-the pcs driver would do with those values.  But, yes, it is a just an OR
-operation, so I could change the language to reflect tat.
+If you don't say what the pinctrl-single driver does with the values,
+how would anyone know how to use it?
 
-> What is the purpose of this change anyway?  It seems like in the end
-> it just does what it did before.  The data is now split into two cells
-> in the device tree, but why?
+> > What is the purpose of this change anyway?  It seems like in the end
+> > it just does what it did before.  The data is now split into two cells
+> > in the device tree, but why?
+>
+> These changes were a result of desire to seperate pinconf and pinmux.
+> Tony raised the idea in a thread at the end of May [1].
+>
+> Tony wrote:
+> > Only slightly related, but we should really eventually move omaps to use
+> > #pinctrl-cells = <2> (or 3) instead of 1, and pass the pinconf seprately
+> > from the mux mode. We already treat them separately with the new
+> > AM33XX_PADCONF macro, so we'd only have to change one SoC at a time to
+> > use updated #pinctrl-cells. But I think pinctrl-single might need some
+> > changes before we can do that.
 
-These changes were a result of desire to seperate pinconf and pinmux.
-Tony raised the idea in a thread at the end of May [1].
+I still don't see what the goal is here.  Support generic pinconf?
 
-Tony wrote:
-> Only slightly related, but we should really eventually move omaps to use
-> #pinctrl-cells = <2> (or 3) instead of 1, and pass the pinconf seprately
-> from the mux mode. We already treat them separately with the new
-> AM33XX_PADCONF macro, so we'd only have to change one SoC at a time to
-> use updated #pinctrl-cells. But I think pinctrl-single might need some
-> changes before we can do that.
-
-
-thanks,
-drew
-
-[1] https://lore.kernel.org/linux-omap/20200527165122.GL37466@atomide.com/
+Also note that while AM33XX_PADCONF() is changed, there is an in tree
+board that doesn't use it, so it's broken now.  I found this change
+when it broke my out of tree board, due to the dtsi change not being
+reflected in my board's pinctrl values.
