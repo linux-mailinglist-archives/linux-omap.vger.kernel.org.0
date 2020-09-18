@@ -2,83 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6AC726E4A4
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Sep 2020 20:53:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53F6226EC86
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Sep 2020 04:15:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726358AbgIQSxv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Sep 2020 14:53:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43808 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726580AbgIQSxq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Sep 2020 14:53:46 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D82DC06174A;
-        Thu, 17 Sep 2020 11:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=YmDVFHDpizYc/TwnnkFHJuvq4HZQyroxl/6sftZyOfg=; b=yo2ThNdDFBBSofow6/GUT6znO
-        AV6up04hQxQ87JSuwyBsYZ6cPA40Jyx7/h7ugIDDAyxGQuxpPb7h5RlTXju5lRqwNwH3Fjtcjriq2
-        2Y2Ot122hkB0c8aWhxQrgYjG80j2F5sIUEsORGJiB2kK1NYmSxCzSWwiHMsw747ECXq0qsnP05pjU
-        /uU6Kplfx0ojCnVoas3BJbwS+VAr2GmyiBXJHhn477cic+DTVgN3eO/PfKEqRXHH9HZAPhIG8WSKx
-        ObsOX+yk+sxyxrx9eX608uRInho4bEz9J93gW/BvXdNi7EZUjRuENs8kmXOTAYqZhDjd1PkACkjEB
-        DwbP5k/MA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34896)
-        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1kIz2K-00065q-UW; Thu, 17 Sep 2020 19:53:40 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1kIz2K-0005xj-Ax; Thu, 17 Sep 2020 19:53:40 +0100
-Date:   Thu, 17 Sep 2020 19:53:40 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Tony Lindgren <tony@atomide.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        iommu@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 2/4] ARM/footbridge: switch to use dma_direct_set_offset
- for lbus DMA offsets
-Message-ID: <20200917185340.GC1559@shell.armlinux.org.uk>
-References: <20200917173229.3311382-1-hch@lst.de>
- <20200917173229.3311382-3-hch@lst.de>
+        id S1728760AbgIRCMh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Sep 2020 22:12:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38992 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728789AbgIRCMc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:12:32 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 46C1D2388D;
+        Fri, 18 Sep 2020 02:12:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600395152;
+        bh=FTn1Kzua1foQM2Tm0+Dr/bPtM5tkJRU8+Es3JWSissk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=AprAKJoTPLn0wZXYdOw7VMlCjSdurGrTB3imyaagP+0Ll5nldCPQI23Gb4Fuo634o
+         +QIG1ztaUDxlQ3t+iKrBzuLPxoEMFQvCcMCLxQKdQhYTNZ24WEO1I26ZAxHpAhxSr2
+         sTcoVCIC3blAr70ZqScy81RIKz4IXsIcdenHFG4k=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Stephen Kitt <steve@sk2.org>, Tony Lindgren <tony@atomide.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 010/127] clk/ti/adpll: allocate room for terminating null
+Date:   Thu, 17 Sep 2020 22:10:23 -0400
+Message-Id: <20200918021220.2066485-10-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200918021220.2066485-1-sashal@kernel.org>
+References: <20200918021220.2066485-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200917173229.3311382-3-hch@lst.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Sep 17, 2020 at 07:32:27PM +0200, Christoph Hellwig wrote:
->  static int __init cats_pci_init(void)
->  {
-> -	if (machine_is_cats())
-> -		pci_common_init(&cats_pci);
-> +	if (!machine_is_cats())
-> +		return 0;
-> +	bus_register_notifier(&pci_bus_type, &footbridge_pci_dma_nb);
-> +	pci_common_init(&cats_pci);
+From: Stephen Kitt <steve@sk2.org>
 
-I'd prefer these things to retain a positive-logic construct, so:
+[ Upstream commit 7f6ac72946b88b89ee44c1c527aa8591ac5ffcbe ]
 
-	if (machine_is_cats()) {
-		bus_register_notifier(&pci_bus_type, &footbridge_pci_dma_nb);
-		pci_common_init(&cats_pci);
-	}
+The buffer allocated in ti_adpll_clk_get_name doesn't account for the
+terminating null. This patch switches to devm_kasprintf to avoid
+overflowing.
 
-It's the same number of lines.
+Signed-off-by: Stephen Kitt <steve@sk2.org>
+Link: https://lkml.kernel.org/r/20191019140634.15596-1-steve@sk2.org
+Acked-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/clk/ti/adpll.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-Otherwise, I think it's fine. I'll try to find some spare time to give
-it a go on a Netwinder.
-
+diff --git a/drivers/clk/ti/adpll.c b/drivers/clk/ti/adpll.c
+index d6036c788fab8..2738ecb1511b1 100644
+--- a/drivers/clk/ti/adpll.c
++++ b/drivers/clk/ti/adpll.c
+@@ -193,15 +193,8 @@ static const char *ti_adpll_clk_get_name(struct ti_adpll_data *d,
+ 		if (err)
+ 			return NULL;
+ 	} else {
+-		const char *base_name = "adpll";
+-		char *buf;
+-
+-		buf = devm_kzalloc(d->dev, 8 + 1 + strlen(base_name) + 1 +
+-				    strlen(postfix), GFP_KERNEL);
+-		if (!buf)
+-			return NULL;
+-		sprintf(buf, "%08lx.%s.%s", d->pa, base_name, postfix);
+-		name = buf;
++		name = devm_kasprintf(d->dev, GFP_KERNEL, "%08lx.adpll.%s",
++				      d->pa, postfix);
+ 	}
+ 
+ 	return name;
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+2.25.1
+
