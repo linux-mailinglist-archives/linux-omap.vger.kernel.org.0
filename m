@@ -2,64 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EEC0270A6E
-	for <lists+linux-omap@lfdr.de>; Sat, 19 Sep 2020 05:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDBFA270B8A
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Sep 2020 09:45:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726104AbgISDnV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Sep 2020 23:43:21 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:39734 "EHLO huawei.com"
+        id S1726366AbgISHpQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Sep 2020 03:45:16 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:13723 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726097AbgISDnU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 18 Sep 2020 23:43:20 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 7ADD01F4EDB0DDC48CFB;
-        Sat, 19 Sep 2020 11:43:17 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.487.0; Sat, 19 Sep 2020 11:43:07 +0800
-From:   Jing Xiangfeng <jingxiangfeng@huawei.com>
-To:     <tony@atomide.com>, <linux@armlinux.org.uk>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <jingxiangfeng@huawei.com>
-Subject: [PATCH] ARM: OMAP2+: Remove redundant assignment to variable ret
-Date:   Sat, 19 Sep 2020 11:43:31 +0800
-Message-ID: <20200919034331.161271-1-jingxiangfeng@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726041AbgISHpO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 19 Sep 2020 03:45:14 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id DCEF03F5BB19D8BCD646;
+        Sat, 19 Sep 2020 15:45:11 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Sat, 19 Sep 2020
+ 15:45:05 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <grygorii.strashko@ti.com>, <davem@davemloft.net>,
+        <kuba@kernel.org>, <ast@kernel.org>, <daniel@iogearbox.net>,
+        <hawk@kernel.org>, <john.fastabend@gmail.com>, <kafai@fb.com>,
+        <songliubraving@fb.com>, <yhs@fb.com>, <andriin@fb.com>,
+        <kpsingh@chromium.org>, <linux-omap@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <bpf@vger.kernel.org>
+CC:     Jason Yan <yanaijie@huawei.com>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH net-next] net: ethernet: ti: cpsw: use true,false for bool variables
+Date:   Sat, 19 Sep 2020 15:46:17 +0800
+Message-ID: <20200919074617.3460645-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
+X-Originating-IP: [10.175.127.227]
 X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The variable ret has been initialized with '-ENOMEM'. The assignment
-in the if branch is redundant. So remove it.
+This addresses the following coccinelle warning:
 
-Signed-off-by: Jing Xiangfeng <jingxiangfeng@huawei.com>
+drivers/net/ethernet/ti/cpsw.c:1599:2-17: WARNING: Assignment of 0/1 to
+bool variable
+drivers/net/ethernet/ti/cpsw.c:1300:2-17: WARNING: Assignment of 0/1 to
+bool variable
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
 ---
- arch/arm/mach-omap2/omap_device.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ti/cpsw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/omap_device.c b/arch/arm/mach-omap2/omap_device.c
-index fc7bb2ca1672..f3191704cab9 100644
---- a/arch/arm/mach-omap2/omap_device.c
-+++ b/arch/arm/mach-omap2/omap_device.c
-@@ -334,10 +334,9 @@ struct omap_device *omap_device_alloc(struct platform_device *pdev,
- 	struct omap_hwmod **hwmods;
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index 9b425f184f3c..9fd1f77190ad 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -1291,7 +1291,7 @@ static int cpsw_probe_dt(struct cpsw_platform_data *data,
+ 	data->mac_control = prop;
  
- 	od = kzalloc(sizeof(struct omap_device), GFP_KERNEL);
--	if (!od) {
--		ret = -ENOMEM;
-+	if (!od)
- 		goto oda_exit1;
--	}
-+
- 	od->hwmods_cnt = oh_cnt;
+ 	if (of_property_read_bool(node, "dual_emac"))
+-		data->dual_emac = 1;
++		data->dual_emac = true;
  
- 	hwmods = kmemdup(ohs, sizeof(struct omap_hwmod *) * oh_cnt, GFP_KERNEL);
+ 	/*
+ 	 * Populate all the child nodes here...
+@@ -1590,7 +1590,7 @@ static int cpsw_probe(struct platform_device *pdev)
+ 
+ 	soc = soc_device_match(cpsw_soc_devices);
+ 	if (soc)
+-		cpsw->quirk_irq = 1;
++		cpsw->quirk_irq = true;
+ 
+ 	data = &cpsw->data;
+ 	cpsw->slaves = devm_kcalloc(dev,
 -- 
-2.17.1
+2.25.4
 
