@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2ECB271061
-	for <lists+linux-omap@lfdr.de>; Sat, 19 Sep 2020 21:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2C6C27106E
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Sep 2020 22:10:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726537AbgISTxn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 19 Sep 2020 15:53:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46082 "EHLO
+        id S1726518AbgISUKY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Sep 2020 16:10:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726511AbgISTxn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Sep 2020 15:53:43 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A96C0613CE
-        for <linux-omap@vger.kernel.org>; Sat, 19 Sep 2020 12:53:42 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id a12so9141596eds.13
-        for <linux-omap@vger.kernel.org>; Sat, 19 Sep 2020 12:53:42 -0700 (PDT)
+        with ESMTP id S1726575AbgISUKX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Sep 2020 16:10:23 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2A2C0613D1
+        for <linux-omap@vger.kernel.org>; Sat, 19 Sep 2020 13:10:23 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id p9so12566407ejf.6
+        for <linux-omap@vger.kernel.org>; Sat, 19 Sep 2020 13:10:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=qMwGB/6Q8iuh06nESVxnQhD9mhvdXzNztX0AnrMhLHo=;
-        b=Av22sauDdvg5f8PJXeQVU4ypMPuew4aeryx9oJBswTAhrJHWsVkgSte0K74F7AR5GT
-         IbrGAYZhgWen0QxSEd5Ccij1pT9wnVpFZGkFzWPglsy9z2hz4EqfIjvB3sMvyaDA2w0c
-         nL+TPQqa1eSsXRqyA6nkzEWPoMegpGQ+J/UeA1rqUiDgNqxePx/CsrwhqteSgmkswNqk
-         7dSuWWmhxQCwL3ESjeMtfWemDZYOsra4XP6FznaRG+4xGZH2V1w4W9xai+R/BnQBXi/T
-         HTy8StVIlM5ONAj0vexUroJMm37GBhGfir8cHX7bgZIr/CTD6FUDDWUiZ6dbLZIpc4c3
-         Os8Q==
+        bh=bIUgrI9VvUV3joqrWL0lDga1yejUz0t72Nx3sYu9s5I=;
+        b=L9ZNoEf+xu48ppvnblmZrK2nJchaz2vEmWMEwk0swPeneNBWwlEvhh9K2LRJ4HX/Lr
+         yaLd88oTJthtaQqxoTU6Bpq9MompSoGcLiUcNpIfeAA00igj+XiDykYLeLV/Jw8j1hhS
+         INZQvLR3KlU5Mz4ouanoPhPkOE8DEebpwgHK1I4PX/UKjaA9eUPZ+znYNIZ1yQpacRBA
+         0HOeF7HiDNqgNDI2rcBXnSTaJk5w+fymuI/a9RBVIXTu7CcWALUG5FTdeATk0vZ2Ud7H
+         bROaU33aeRXMmpNvS74rrEVYF/PP54F9jib8fsmGcXYMFfhRBbqJE69KatbCAS7mm5Y+
+         RIbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=qMwGB/6Q8iuh06nESVxnQhD9mhvdXzNztX0AnrMhLHo=;
-        b=BPdzeax6GUi/kanZ1YOd+Y6JLboJ56X3uMcXGtzEcUAVJxPRPO5lbM4MJDQ0/NqJ19
-         rQjfb1JtgiXtEKG6cntUt9yOI94eYm4sKs7/NcDUFblyGpUaY0kMCl172E0KAecaSksq
-         YX+cCLxdGkjTWV/hSznIQSQFEwQ+yi+6g1s8eI627Hrr6Xv0gFZbk1hI5iGuENrsEjwd
-         dfYH/2SkVfHG3zpU3ZpGuPoZ1nzZcq5TSIXnTBl2hRhrg+XZQhXFrHTmBMwuA+lblbrh
-         LpoeljoTanO1uZ3Lhz851iHrNVN/4HWLmXpXfyF3J21p8TDaMwYm1UOnITIJJ8v8tt3w
-         Ln5Q==
-X-Gm-Message-State: AOAM53386fBbrBb6/bmRZoMAYLeJMf0TzNRByt5uUnNTLb8M/PgOfOaX
-        remiSgP79NQKQaVrxz7UiPXaDA==
-X-Google-Smtp-Source: ABdhPJwl3da6h+kCC6DLGgNphfmJ0WGAOBmg2rj2XT2NbMiwRvB0yOEG972ZAybPmrRI/nyI6ETh/g==
-X-Received: by 2002:a50:bb26:: with SMTP id y35mr46674569ede.234.1600545221134;
-        Sat, 19 Sep 2020 12:53:41 -0700 (PDT)
+        bh=bIUgrI9VvUV3joqrWL0lDga1yejUz0t72Nx3sYu9s5I=;
+        b=GMc1lTmcmQY/WLonxNTZCVBk45JBVy4fqPbMDPKibd4yVEZgL1zul5aXZtUg1oBTHt
+         yuASJ5iwmVe6v5d+m/uBTfgqHoLVTb7K98GEX1Sgq+tS8Y8YvXn7tzlpupFYMd62fnI9
+         PNufFPxvJ74cfdAkVA27l7co0O/Ktl3j4S418DL6vqh5/rKxBsVHyL9FdNVvz3LI3dx5
+         p0W0E9bXwmhHPyQSKxuQL3IRLT+Z9hfk10mrkz8R9Hin0Ws/M9FvXcnF813uMCN6IeKX
+         rXFopCRj/cSV0AnvyNaTi1FOz/xe8k0GwUJ73clJnE1WMDDFxuF3As/JXHFlW+89g/gI
+         OVug==
+X-Gm-Message-State: AOAM531uSQ9EY8S8tOAvb4wgk4EshFtJON6CWoshwuKyWPyTCzQnVExK
+        cHV8oc7bK+xf+j0BwzJ+7CtBqw==
+X-Google-Smtp-Source: ABdhPJyXNqZQicq1ULAO60r8L8+AZhDK5qSHeRWT+5a8VqRkbjyQ+aQHZc7zHY/Lxi8bZlOvg+97sQ==
+X-Received: by 2002:a17:906:4553:: with SMTP id s19mr41341473ejq.475.1600546220782;
+        Sat, 19 Sep 2020 13:10:20 -0700 (PDT)
 Received: from localhost.localdomain ([2001:16b8:5c3d:1401:6946:9f46:bd13:f4c6])
-        by smtp.gmail.com with ESMTPSA id h5sm4978881ejk.41.2020.09.19.12.53.39
+        by smtp.gmail.com with ESMTPSA id ks21sm5008761ejb.63.2020.09.19.13.10.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Sep 2020 12:53:40 -0700 (PDT)
+        Sat, 19 Sep 2020 13:10:19 -0700 (PDT)
 From:   Drew Fustini <drew@beagleboard.org>
 To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -57,9 +57,9 @@ To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
         linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
 Cc:     Drew Fustini <drew@beagleboard.org>
-Subject: [PATCH] ARM: dts: am335x: guardian: switch to AM33XX_PADCONF
-Date:   Sat, 19 Sep 2020 21:52:00 +0200
-Message-Id: <20200919195159.3126193-1-drew@beagleboard.org>
+Subject: [PATCH v2] ARM: dts: document pinctrl-single,pins when #pinctrl-cells = 2
+Date:   Sat, 19 Sep 2020 22:08:37 +0200
+Message-Id: <20200919200836.3218536-1-drew@beagleboard.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,260 +67,56 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Change the pin defintions from AM33XX_IOPAD to AM33XX_PADCONF macro so
-that it correctly handles changes to #pinctrl-cells.
+Document the values in pinctrl-single,pins when #pinctrl-cells = <2>
 
 Fixes: 27c90e5e48d0 ("ARM: dts: am33xx-l4: change #pinctrl-cells from 1 to 2")
 Reported-by: Trent Piepho <tpiepho@gmail.com>
 Link: https://lore.kernel.org/linux-omap/3139716.CMS8C0sQ7x@zen.local/
 Signed-off-by: Drew Fustini <drew@beagleboard.org>
 ---
- arch/arm/boot/dts/am335x-guardian.dts | 172 +++++++++++++-------------
- 1 file changed, 86 insertions(+), 86 deletions(-)
+v2 change:
+- rephrase to make it clear that the pin conf value and pin mux value
+  are OR'd together with #pinctrl-cells = <2>
 
-diff --git a/arch/arm/boot/dts/am335x-guardian.dts b/arch/arm/boot/dts/am335x-guardian.dts
-index 1918766c1f80..56c9cd674d98 100644
---- a/arch/arm/boot/dts/am335x-guardian.dts
-+++ b/arch/arm/boot/dts/am335x-guardian.dts
-@@ -339,152 +339,152 @@ &am33xx_pinmux {
+
+ .../bindings/pinctrl/pinctrl-single.txt       | 21 ++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
+index e705acd3612c..f903eb4471f8 100644
+--- a/Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
++++ b/Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
+@@ -94,16 +94,23 @@ pinctrl-single,bit-per-mux is set), and uses the common pinctrl bindings as
+ specified in the pinctrl-bindings.txt document in this directory.
  
- 	clkout2_pin: pinmux_clkout2_pin {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x9b4, PIN_OUTPUT_PULLDOWN | MUX_MODE3)
-+			AM33XX_PADCONF(0x9b4, PIN_OUTPUT_PULLDOWN, MUX_MODE3)
- 		>;
- 	};
+ The pin configuration nodes for pinctrl-single are specified as pinctrl
+-register offset and value pairs using pinctrl-single,pins. Only the bits
+-specified in pinctrl-single,function-mask are updated. For example, setting
+-a pin for a device could be done with:
++register offset and values using pinctrl-single,pins. Only the bits specified
++in pinctrl-single,function-mask are updated.
++
++When #pinctrl-cells = 1, then setting a pin for a device could be done with:
  
- 	dmtimer7_pins: pinmux_dmtimer7_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x968, PIN_OUTPUT | MUX_MODE5)
-+			AM33XX_PADCONF(0x968, PIN_OUTPUT, MUX_MODE5)
- 		>;
- 	};
+ 	pinctrl-single,pins = <0xdc 0x118>;
  
- 	gpio_keys_pins: pinmux_gpio_keys_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x940, PIN_INPUT | MUX_MODE7)
-+			AM33XX_PADCONF(0x940, PIN_INPUT, MUX_MODE7)
- 		>;
- 	};
+-Where 0xdc is the offset from the pinctrl register base address for the
+-device pinctrl register, and 0x118 contains the desired value of the
+-pinctrl register. See the device example and static board pins example
+-below for more information.
++Where 0xdc is the offset from the pinctrl register base address for the device
++pinctrl register, and 0x118 contains the desired value of the pinctrl register.
++
++When #pinctrl-cells = 2, then setting a pin for a device could be done with:
++
++	pinctrl-single,pins = <0xdc 0x30 0x07>;
++
++Where 0x30 is the pin configuration value and 0x07 is the pin mux mode value.
++These two values are OR'd together to produce the value stored at offset 0xdc.
++See the device example and static board pins example below for more information.
  
- 	gpio_pins: pinmux_gpio_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x928, PIN_OUTPUT | MUX_MODE7)
--			AM33XX_IOPAD(0x990, PIN_OUTPUT | MUX_MODE7)
-+			AM33XX_PADCONF(0x928, PIN_OUTPUT, MUX_MODE7)
-+			AM33XX_PADCONF(0x990, PIN_OUTPUT, MUX_MODE7)
- 		>;
- 	};
- 
- 	i2c0_pins: pinmux_i2c0_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x988, PIN_INPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x98c, PIN_INPUT_PULLUP | MUX_MODE0)
-+			AM33XX_PADCONF(0x988, PIN_INPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x98c, PIN_INPUT_PULLUP, MUX_MODE0)
- 		>;
- 	};
- 
- 	lcd_disen_pins: pinmux_lcd_disen_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x9a4, PIN_OUTPUT_PULLUP | SLEWCTRL_SLOW | MUX_MODE7)
-+			AM33XX_PADCONF(0x9a4, PIN_OUTPUT_PULLUP | SLEWCTRL_SLOW, MUX_MODE7)
- 		>;
- 	};
- 
- 	lcd_pins_default: pinmux_lcd_pins_default {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x820, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE1)
--			AM33XX_IOPAD(0x824, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE1)
--			AM33XX_IOPAD(0x828, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE1)
--			AM33XX_IOPAD(0x82c, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE1)
--			AM33XX_IOPAD(0x830, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE1)
--			AM33XX_IOPAD(0x834, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE1)
--			AM33XX_IOPAD(0x838, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE1)
--			AM33XX_IOPAD(0x83c, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE1)
--			AM33XX_IOPAD(0x8a0, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8a4, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8a8, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8ac, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8b0, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8b4, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8b8, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8bc, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8c0, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8c4, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8c8, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8cc, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8d0, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8d4, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8d8, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8dc, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8e0, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8e4, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8e8, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
--			AM33XX_IOPAD(0x8ec, PIN_OUTPUT | SLEWCTRL_SLOW | MUX_MODE0)
-+			AM33XX_PADCONF(0x820, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE1)
-+			AM33XX_PADCONF(0x824, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE1)
-+			AM33XX_PADCONF(0x828, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE1)
-+			AM33XX_PADCONF(0x82c, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE1)
-+			AM33XX_PADCONF(0x830, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE1)
-+			AM33XX_PADCONF(0x834, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE1)
-+			AM33XX_PADCONF(0x838, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE1)
-+			AM33XX_PADCONF(0x83c, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE1)
-+			AM33XX_PADCONF(0x8a0, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8a4, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8a8, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8ac, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8b0, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8b4, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8b8, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8bc, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8c0, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8c4, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8c8, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8cc, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8d0, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8d4, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8d8, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8dc, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8e0, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8e4, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8e8, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
-+			AM33XX_PADCONF(0x8ec, PIN_OUTPUT | SLEWCTRL_SLOW, MUX_MODE0)
- 		>;
- 	};
- 
- 	lcd_pins_sleep: pinmux_lcd_pins_sleep {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x8a0, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8a4, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8a8, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8ac, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8b0, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8b4, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8b8, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8bc, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8c0, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8c4, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8c8, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8cc, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8d0, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8d4, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8d8, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8dc, PULL_DISABLE | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8e0, PIN_INPUT_PULLDOWN | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8e4, PIN_INPUT_PULLDOWN | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8e8, PIN_INPUT_PULLDOWN | SLEWCTRL_SLOW | MUX_MODE7)
--			AM33XX_IOPAD(0x8ec, PIN_INPUT_PULLDOWN | SLEWCTRL_SLOW | MUX_MODE7)
-+			AM33XX_PADCONF(0x8a0, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8a4, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8a8, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8ac, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8b0, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8b4, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8b8, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8bc, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8c0, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8c4, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8c8, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8cc, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8d0, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8d4, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8d8, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8dc, PULL_DISABLE | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8e0, PIN_INPUT_PULLDOWN | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8e4, PIN_INPUT_PULLDOWN | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8e8, PIN_INPUT_PULLDOWN | SLEWCTRL_SLOW, MUX_MODE7)
-+			AM33XX_PADCONF(0x8ec, PIN_INPUT_PULLDOWN | SLEWCTRL_SLOW, MUX_MODE7)
- 		>;
- 	};
- 
- 	leds_pins: pinmux_leds_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x868, PIN_OUTPUT | MUX_MODE7)
--			AM33XX_IOPAD(0x86c, PIN_OUTPUT | MUX_MODE7)
-+			AM33XX_PADCONF(0x868, PIN_OUTPUT, MUX_MODE7)
-+			AM33XX_PADCONF(0x86c, PIN_OUTPUT, MUX_MODE7)
- 		>;
- 	};
- 
- 	mmc1_pins: pinmux_mmc1_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x8f0, PIN_INPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x8f4, PIN_INPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x8f8, PIN_INPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x8fc, PIN_INPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x900, PIN_INPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x904, PIN_INPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x960, PIN_INPUT | MUX_MODE7)
-+			AM33XX_PADCONF(0x8f0, PIN_INPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x8f4, PIN_INPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x8f8, PIN_INPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x8fc, PIN_INPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x900, PIN_INPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x904, PIN_INPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x960, PIN_INPUT, MUX_MODE7)
- 		>;
- 	};
- 
- 	spi0_pins: pinmux_spi0_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x950, PIN_OUTPUT_PULLDOWN | MUX_MODE0)
--			AM33XX_IOPAD(0x954, PIN_OUTPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x958, PIN_INPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x95c, PIN_OUTPUT_PULLUP | MUX_MODE0)
-+			AM33XX_PADCONF(0x950, PIN_OUTPUT_PULLDOWN, MUX_MODE0)
-+			AM33XX_PADCONF(0x954, PIN_OUTPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x958, PIN_INPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x95c, PIN_OUTPUT_PULLUP, MUX_MODE0)
- 		>;
- 	};
- 
- 	uart0_pins: pinmux_uart0_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x970, PIN_INPUT_PULLUP | MUX_MODE0)
--			AM33XX_IOPAD(0x974, PIN_OUTPUT_PULLDOWN | MUX_MODE0)
-+			AM33XX_PADCONF(0x970, PIN_INPUT_PULLUP, MUX_MODE0)
-+			AM33XX_PADCONF(0x974, PIN_OUTPUT_PULLDOWN, MUX_MODE0)
- 		>;
- 	};
- 
- 	nandflash_pins: pinmux_nandflash_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x800, PIN_INPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x804, PIN_INPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x808, PIN_INPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x80c, PIN_INPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x810, PIN_INPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x814, PIN_INPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x818, PIN_INPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x81c, PIN_INPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x870, PIN_INPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x874, PIN_OUTPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x87c, PIN_OUTPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x890, PIN_OUTPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x894, PIN_OUTPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x898, PIN_OUTPUT | MUX_MODE0)
--			AM33XX_IOPAD(0x89c, PIN_OUTPUT | MUX_MODE0)
-+			AM33XX_PADCONF(0x800, PIN_INPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x804, PIN_INPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x808, PIN_INPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x80c, PIN_INPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x810, PIN_INPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x814, PIN_INPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x818, PIN_INPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x81c, PIN_INPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x870, PIN_INPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x874, PIN_OUTPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x87c, PIN_OUTPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x890, PIN_OUTPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x894, PIN_OUTPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x898, PIN_OUTPUT, MUX_MODE0)
-+			AM33XX_PADCONF(0x89c, PIN_OUTPUT, MUX_MODE0)
- 		>;
- 	};
- };
+ In case when one register changes more than one pin's mux the
+ pinctrl-single,bits need to be used which takes three parameters:
 -- 
 2.25.1
 
