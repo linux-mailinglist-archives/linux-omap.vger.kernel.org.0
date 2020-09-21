@@ -2,29 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 325902724B4
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 15:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ECC42724DB
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 15:12:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727388AbgIUNKi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Sep 2020 09:10:38 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:43038 "EHLO huawei.com"
+        id S1727352AbgIUNKl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Sep 2020 09:10:41 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:13805 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727352AbgIUNKg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Sep 2020 09:10:36 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 8E4E9DE22BA672D9B9FA;
-        Mon, 21 Sep 2020 21:10:33 +0800 (CST)
+        id S1727380AbgIUNKk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Sep 2020 09:10:40 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 3AB85507957FC64C9C34;
+        Mon, 21 Sep 2020 21:10:35 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 21 Sep 2020 21:10:24 +0800
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 21 Sep 2020 21:10:25 +0800
 From:   Qinglang Miao <miaoqinglang@huawei.com>
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 CC:     <linux-omap@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
         <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
         "Qinglang Miao" <miaoqinglang@huawei.com>
-Subject: [PATCH -next] omapdrm: panel: td028ttec1: simplify the return expression of td028ttec1_panel_connect()
-Date:   Mon, 21 Sep 2020 21:10:48 +0800
-Message-ID: <20200921131048.92571-1-miaoqinglang@huawei.com>
+Subject: [PATCH -next] omapfb: connector-analog-tv: simplify the return expression of tvc_connect()
+Date:   Mon, 21 Sep 2020 21:10:49 +0800
+Message-ID: <20200921131049.92616-1-miaoqinglang@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -39,31 +39,33 @@ Simplify the return expression.
 
 Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
 ---
- .../fbdev/omap2/omapfb/displays/panel-tpo-td028ttec1.c     | 7 +------
+ .../fbdev/omap2/omapfb/displays/connector-analog-tv.c      | 7 +------
  1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td028ttec1.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td028ttec1.c
-index 595ebd8bd..3939fe8d5 100644
---- a/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td028ttec1.c
-+++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-tpo-td028ttec1.c
-@@ -159,16 +159,11 @@ static int td028ttec1_panel_connect(struct omap_dss_device *dssdev)
+diff --git a/drivers/video/fbdev/omap2/omapfb/displays/connector-analog-tv.c b/drivers/video/fbdev/omap2/omapfb/displays/connector-analog-tv.c
+index 63bd13ba4..a9fd732f8 100644
+--- a/drivers/video/fbdev/omap2/omapfb/displays/connector-analog-tv.c
++++ b/drivers/video/fbdev/omap2/omapfb/displays/connector-analog-tv.c
+@@ -47,18 +47,13 @@ static int tvc_connect(struct omap_dss_device *dssdev)
  {
  	struct panel_drv_data *ddata = to_panel_data(dssdev);
  	struct omap_dss_device *in = ddata->in;
 -	int r;
  
+ 	dev_dbg(ddata->dev, "connect\n");
+ 
  	if (omapdss_device_is_connected(dssdev))
  		return 0;
  
--	r = in->ops.dpi->connect(in, dssdev);
+-	r = in->ops.atv->connect(in, dssdev);
 -	if (r)
 -		return r;
 -
 -	return 0;
-+	return in->ops.dpi->connect(in, dssdev);
++	return in->ops.atv->connect(in, dssdev);
  }
  
- static void td028ttec1_panel_disconnect(struct omap_dss_device *dssdev)
+ static void tvc_disconnect(struct omap_dss_device *dssdev)
 -- 
 2.23.0
 
