@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2248627343F
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 22:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D753273445
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 22:54:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728593AbgIUUxe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Sep 2020 16:53:34 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59674 "EHLO mail.kernel.org"
+        id S1728604AbgIUUxk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Sep 2020 16:53:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59820 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728591AbgIUUxd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Sep 2020 16:53:33 -0400
+        id S1727808AbgIUUxj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Sep 2020 16:53:39 -0400
 Received: from kozik-lap.mshome.net (unknown [194.230.155.191])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5054023A02;
-        Mon, 21 Sep 2020 20:53:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4424423A05;
+        Mon, 21 Sep 2020 20:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600721612;
-        bh=vSy8YmQ7rMfM5gLA126GFQJXpLeU/lgw/zMliEK3SNE=;
+        s=default; t=1600721618;
+        bh=rwcxHedviMWPck0GnAohh/fen5W24mFQK+Aj4ZWN5CQ=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=0b8YLwhSR25s08K6K3VIQv8gf0CHWCOkUjWK+7fUVSw5u6ixUSqp7WJXhs1CGI99X
-         U7tUJKfLfR65YwpxpXsfeR0W3Vai0heNWWPRDwE9mGx250fEc2uDCQmQztNpeFJW+E
-         6HJ606+1we8DiViFLx+X8zeQQmnoqfLJkd/968MQ=
+        b=ZUiisC6xMElCEgCvcvp/5Dl3VPq01LXASpf7secFAPKMapn3dwV9P9rN50NzWddNC
+         ykEY1501HmwA8msHcWeuO0FX74zHrhg5JVnDAkR9PAsCxm5Rqfuo3lQduF09bTCPZe
+         JouzhCYwO+ry49IamxA8LwrnFos/6fjv3ipDl3x4=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -46,9 +46,9 @@ To:     Lee Jones <lee.jones@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-rpi-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH 31/42] mfd: timberdale: use PLATFORM_DEVID_NONE
-Date:   Mon, 21 Sep 2020 22:50:05 +0200
-Message-Id: <20200921205016.20461-31-krzk@kernel.org>
+Subject: [PATCH 32/42] mfd: tps6507x: use PLATFORM_DEVID_NONE
+Date:   Mon, 21 Sep 2020 22:50:06 +0200
+Message-Id: <20200921205016.20461-32-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200921205016.20461-1-krzk@kernel.org>
 References: <20200921205016.20461-1-krzk@kernel.org>
@@ -62,43 +62,25 @@ Use PLATFORM_DEVID_NONE define instead of "-1" value because:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/mfd/timberdale.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mfd/tps6507x.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/timberdale.c b/drivers/mfd/timberdale.c
-index faecbca6dba3..de1589fa2120 100644
---- a/drivers/mfd/timberdale.c
-+++ b/drivers/mfd/timberdale.c
-@@ -740,25 +740,25 @@ static int timb_probe(struct pci_dev *dev,
- 	ip_setup = priv->fw.config & TIMB_HW_VER_MASK;
- 	switch (ip_setup) {
- 	case TIMB_HW_VER0:
--		err = mfd_add_devices(&dev->dev, -1,
-+		err = mfd_add_devices(&dev->dev, PLATFORM_DEVID_NONE,
- 			timberdale_cells_bar0_cfg0,
- 			ARRAY_SIZE(timberdale_cells_bar0_cfg0),
- 			&dev->resource[0], msix_entries[0].vector, NULL);
- 		break;
- 	case TIMB_HW_VER1:
--		err = mfd_add_devices(&dev->dev, -1,
-+		err = mfd_add_devices(&dev->dev, PLATFORM_DEVID_NONE,
- 			timberdale_cells_bar0_cfg1,
- 			ARRAY_SIZE(timberdale_cells_bar0_cfg1),
- 			&dev->resource[0], msix_entries[0].vector, NULL);
- 		break;
- 	case TIMB_HW_VER2:
--		err = mfd_add_devices(&dev->dev, -1,
-+		err = mfd_add_devices(&dev->dev, PLATFORM_DEVID_NONE,
- 			timberdale_cells_bar0_cfg2,
- 			ARRAY_SIZE(timberdale_cells_bar0_cfg2),
- 			&dev->resource[0], msix_entries[0].vector, NULL);
- 		break;
- 	case TIMB_HW_VER3:
--		err = mfd_add_devices(&dev->dev, -1,
-+		err = mfd_add_devices(&dev->dev, PLATFORM_DEVID_NONE,
- 			timberdale_cells_bar0_cfg3,
- 			ARRAY_SIZE(timberdale_cells_bar0_cfg3),
- 			&dev->resource[0], msix_entries[0].vector, NULL);
+diff --git a/drivers/mfd/tps6507x.c b/drivers/mfd/tps6507x.c
+index 1f308c4e3694..15bb92ef64c7 100644
+--- a/drivers/mfd/tps6507x.c
++++ b/drivers/mfd/tps6507x.c
+@@ -100,8 +100,9 @@ static int tps6507x_i2c_probe(struct i2c_client *i2c,
+ 	tps6507x->read_dev = tps6507x_i2c_read_device;
+ 	tps6507x->write_dev = tps6507x_i2c_write_device;
+ 
+-	return devm_mfd_add_devices(tps6507x->dev, -1, tps6507x_devs,
+-				    ARRAY_SIZE(tps6507x_devs), NULL, 0, NULL);
++	return devm_mfd_add_devices(tps6507x->dev, PLATFORM_DEVID_NONE,
++				    tps6507x_devs, ARRAY_SIZE(tps6507x_devs),
++				    NULL, 0, NULL);
+ }
+ 
+ static const struct i2c_device_id tps6507x_i2c_id[] = {
 -- 
 2.17.1
 
