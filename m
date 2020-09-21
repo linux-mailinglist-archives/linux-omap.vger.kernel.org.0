@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCEFF273420
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 22:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 801F6273426
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 22:52:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727338AbgIUUwk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Sep 2020 16:52:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58622 "EHLO mail.kernel.org"
+        id S1728512AbgIUUwq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Sep 2020 16:52:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58752 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726471AbgIUUwk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Sep 2020 16:52:40 -0400
+        id S1726563AbgIUUwq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Sep 2020 16:52:46 -0400
 Received: from kozik-lap.mshome.net (unknown [194.230.155.191])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CCC082396F;
-        Mon, 21 Sep 2020 20:52:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 182792399C;
+        Mon, 21 Sep 2020 20:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600721559;
-        bh=BzfE2Whd2U7I4lvlW4ZlgaA3TzQPIBadcLxzR76dqV4=;
+        s=default; t=1600721565;
+        bh=hE3o37HAl8/p4qX2nqJrTMXoyiiYALc9HXrxjJsJ00g=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=0xrrNERPAOjcnJfTnvx8zXTdqI4QtH/KkJEc5ISWZ892Da9Pvj2pt+RB9CdLPMviW
-         Wx9sMVz/GbBrg7dascbeY3nGZkPjUwrc3XeHPXpAZ+mKbzY8DeDh3w53Z/Beu1xoQR
-         WYfvkwxrtDqc19xINy0aRq9eZ8k6nmWQ4MB+jUvU=
+        b=gsRJKxxoh+mcFlptxey0q3x8S3T4GD9G7kLspIytq2CPvD556wNwoa1jibU+syoiE
+         tsRzrc/yVMRQSHiorqtvQVNjfxLZ1AM1rDMx2Vhfd0q5oV1hxMpsRVxKG706y5uII+
+         SOe9FeQouh+g8sPtFBIDXEhlvg+C3zv5LQXqVwx4=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -46,9 +46,9 @@ To:     Lee Jones <lee.jones@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-rpi-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH 22/42] mfd: mc13xxx: use PLATFORM_DEVID_NONE
-Date:   Mon, 21 Sep 2020 22:49:56 +0200
-Message-Id: <20200921205016.20461-22-krzk@kernel.org>
+Subject: [PATCH 23/42] mfd: rc5t583: use PLATFORM_DEVID_NONE
+Date:   Mon, 21 Sep 2020 22:49:57 +0200
+Message-Id: <20200921205016.20461-23-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200921205016.20461-1-krzk@kernel.org>
 References: <20200921205016.20461-1-krzk@kernel.org>
@@ -62,24 +62,25 @@ Use PLATFORM_DEVID_NONE define instead of "-1" value because:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/mfd/mc13xxx-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/rc5t583.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/mc13xxx-core.c b/drivers/mfd/mc13xxx-core.c
-index 1abe7432aad8..659e72cdac3d 100644
---- a/drivers/mfd/mc13xxx-core.c
-+++ b/drivers/mfd/mc13xxx-core.c
-@@ -379,8 +379,8 @@ static int mc13xxx_add_subdevice_pdata(struct mc13xxx *mc13xxx,
- 	if (!cell.name)
- 		return -ENOMEM;
+diff --git a/drivers/mfd/rc5t583.c b/drivers/mfd/rc5t583.c
+index d0dc48f99096..a4915f411ee8 100644
+--- a/drivers/mfd/rc5t583.c
++++ b/drivers/mfd/rc5t583.c
+@@ -270,8 +270,9 @@ static int rc5t583_i2c_probe(struct i2c_client *i2c,
+ 			dev_warn(&i2c->dev, "IRQ init failed: %d\n", ret);
+ 	}
  
--	return mfd_add_devices(mc13xxx->dev, -1, &cell, 1, NULL, 0,
--			       regmap_irq_get_domain(mc13xxx->irq_data));
-+	return mfd_add_devices(mc13xxx->dev, PLATFORM_DEVID_NONE, &cell, 1, NULL,
-+			       0, regmap_irq_get_domain(mc13xxx->irq_data));
- }
- 
- static int mc13xxx_add_subdevice(struct mc13xxx *mc13xxx, const char *format)
+-	ret = devm_mfd_add_devices(rc5t583->dev, -1, rc5t583_subdevs,
+-				   ARRAY_SIZE(rc5t583_subdevs), NULL, 0, NULL);
++	ret = devm_mfd_add_devices(rc5t583->dev, PLATFORM_DEVID_NONE,
++				   rc5t583_subdevs, ARRAY_SIZE(rc5t583_subdevs),
++				   NULL, 0, NULL);
+ 	if (ret) {
+ 		dev_err(&i2c->dev, "add mfd devices failed: %d\n", ret);
+ 		return ret;
 -- 
 2.17.1
 
