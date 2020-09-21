@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1E9727345F
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 22:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD345273462
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 22:54:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727237AbgIUUyh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Sep 2020 16:54:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32768 "EHLO mail.kernel.org"
+        id S1728084AbgIUUyk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Sep 2020 16:54:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32884 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726492AbgIUUyd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Sep 2020 16:54:33 -0400
+        id S1727805AbgIUUyk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Sep 2020 16:54:40 -0400
 Received: from kozik-lap.mshome.net (unknown [194.230.155.191])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2E17423A59;
-        Mon, 21 Sep 2020 20:54:27 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D69D423A51;
+        Mon, 21 Sep 2020 20:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600721673;
-        bh=F6cOtWeGn0mxayABknOKeGdwp5N8qh+emK6KTJA1ZSE=;
+        s=default; t=1600721679;
+        bh=+j1NMQRXfo7WK2NT2Ni/FTUg+lHn9ZbPIBnsqtPzjOw=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=ydaBtJcuMZ/qOVb+Af7D+CiD0bOmctQ01XRCj4XsOvNoythCcJ9Pu2S+e300mDVqP
-         F9rzp9au851T2DC3sbvtRn/QeHy3dHfJ9a0mqWMx1DNAxrwj4ZhdSXWYHMR6FsZCjk
-         v2VfL7f2DWubt8PdtRPwTF3a27xwbrS14gAAIR3k=
+        b=gRJdut3DApPeUrKiEj68rx3t6kxSWjs0SuxElp0OIzIdcYqCpKysvAy9sf9T4Hh+1
+         PywkBXNNVMFMe0QfYyNunt9yjEj00M3L4qEPg2J/ONVwP7z1e7aYwNQg9MdZZ+Zf+P
+         ghm7Sk5YGXhv4A7ZDI4EYl5awplpf4JmRIiNfiFE=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -46,9 +46,9 @@ To:     Lee Jones <lee.jones@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-rpi-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH 41/42] mfd: wm8400: use PLATFORM_DEVID_NONE
-Date:   Mon, 21 Sep 2020 22:50:15 +0200
-Message-Id: <20200921205016.20461-41-krzk@kernel.org>
+Subject: [PATCH 42/42] mfd: wm8994: use PLATFORM_DEVID_NONE
+Date:   Mon, 21 Sep 2020 22:50:16 +0200
+Message-Id: <20200921205016.20461-42-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200921205016.20461-1-krzk@kernel.org>
 References: <20200921205016.20461-1-krzk@kernel.org>
@@ -62,23 +62,22 @@ Use PLATFORM_DEVID_NONE define instead of "-1" value because:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/mfd/wm8400-core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mfd/wm8994-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/wm8400-core.c b/drivers/mfd/wm8400-core.c
-index 0fe32a05421b..9efca6f3fbb2 100644
---- a/drivers/mfd/wm8400-core.c
-+++ b/drivers/mfd/wm8400-core.c
-@@ -38,7 +38,8 @@ static int wm8400_register_codec(struct wm8400 *wm8400)
- 		.pdata_size = sizeof(*wm8400),
- 	};
+diff --git a/drivers/mfd/wm8994-core.c b/drivers/mfd/wm8994-core.c
+index 3b2b93c5bbcb..5a8d4cc00cc1 100644
+--- a/drivers/mfd/wm8994-core.c
++++ b/drivers/mfd/wm8994-core.c
+@@ -578,7 +578,7 @@ static int wm8994_device_init(struct wm8994 *wm8994, int irq)
  
--	return devm_mfd_add_devices(wm8400->dev, -1, &cell, 1, NULL, 0, NULL);
-+	return devm_mfd_add_devices(wm8400->dev, PLATFORM_DEVID_NONE, &cell, 1,
-+				    NULL, 0, NULL);
- }
+ 	wm8994_irq_init(wm8994);
  
- /*
+-	ret = mfd_add_devices(wm8994->dev, -1,
++	ret = mfd_add_devices(wm8994->dev, PLATFORM_DEVID_NONE,
+ 			      wm8994_devs, ARRAY_SIZE(wm8994_devs),
+ 			      NULL, 0, NULL);
+ 	if (ret != 0) {
 -- 
 2.17.1
 
