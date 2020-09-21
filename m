@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31E092734A3
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 23:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF1262734A5
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Sep 2020 23:12:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726471AbgIUVMK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Sep 2020 17:12:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47222 "EHLO
+        id S1726969AbgIUVM3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Sep 2020 17:12:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726441AbgIUVMJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Sep 2020 17:12:09 -0400
+        with ESMTP id S1726796AbgIUVM3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Sep 2020 17:12:29 -0400
 Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66894C061755;
-        Mon, 21 Sep 2020 14:12:09 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id y1so10118696pgk.8;
-        Mon, 21 Sep 2020 14:12:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 657F2C061755;
+        Mon, 21 Sep 2020 14:12:29 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id o25so5177076pgm.0;
+        Mon, 21 Sep 2020 14:12:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:references:from:autocrypt:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
         bh=qNIywEk8n4W6WGK4Sh0ruxCSIrA3ghVUhoSd2R849bw=;
-        b=qeBlY9BuNHzyycKcoMsoxxm19XlIV83mNWNwevo9n1Pc557wK3HvbNPiG9oaYdW9rB
-         Ybiz8T/x0x9hLpUe7eGohgPRvhhn7e+hTerK/cPyujN5IxKY1re0kH43C+MRjetE50eK
-         I5c4uG45Ox8LO3moMaY5kzrOLZO31PrbhL/PDx/dJ5MUstKiPVku/Q6I0nxtlh30gxBG
-         HLo6puri6ahrRkfZ/xSBYgVuwZ9wTBEDletHAseSPfsJRr5xwzbNAS6GSslF4CTkVq8o
-         5EaZJHi/QGhxRfQep5sW4chihi8Rlc9OJkKbg2adhbuVbRPc4rMfYwOEFCaR2JQvU//o
-         RDUQ==
+        b=veX5vw6JIcLcIZNV42+xVg3OwjoU1TNVGrbtQlm3gS/fW/APG/GyXVv3/914AQXX+H
+         /v8fztToL/zRbCxOhOb86qVGqqsS9o68buoP+oCrWAPxelU+B+sR6NtQsg8qF7RGd9uz
+         nCJav+d6tm9UAPd0ffAoOel0mk5gjniihDGLtNIBd3abewPBvAMuX56Og/UHX1EtvdBc
+         211vL6SyTebeX+K+O+b6+vWNmOP0lWvVE5z7SSfhhvMSqArtcujxcenKJdv6JfmRUnyU
+         J6DUAB4mwgh2yfWv4dhhQlyQMo4U8g2uI/OIXYpvvFqamNu5TC+7V5E2ASEpANFFV62s
+         J4rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
          :date:user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
         bh=qNIywEk8n4W6WGK4Sh0ruxCSIrA3ghVUhoSd2R849bw=;
-        b=uTf1qACW17heD5MH/Nuk5zFaLcMC7tRDlfQnkJ+imWqFWPNhJfwP1I9/TbR70aoC5T
-         nOHsxJuzsOTZ9IwLqMkBz6nPyaOyFe54qBvYMvfAuOD0bvaDVlOUlF0rqnKrVmjIdi4c
-         Qrgs4vSchvOaZiw/hJZuQOWCH+PoqnElAuhDM/W0siWc8oavN7b3qNgpNmKoep9aP6hg
-         R+eUnuaEsSZEsY0AEZvZfeMuWzGpUqmp7I6kXn5Wz9SNuedEsOQsAe7NaGjI2lBjs0L9
-         youEAllBsNbyDYsFpB+MmTl/6SgZAV7jU4DHZKtOD7o32Z3Fm5WthqSBErmuDCalPX0R
-         bbhg==
-X-Gm-Message-State: AOAM533iXw/zSg1GLd6uaP+XkCyWiPiMX/2ZwM/7ojoSMFekk/NzWaXj
-        66t5p5jHbPL7GyGybObEMHlXw5i4VLTMNg==
-X-Google-Smtp-Source: ABdhPJxImQ+j5tETzXiwAJ8mnpork0Y4UWfHe3ruwM85JS2wP4C8y/R9jwR8Xh/IXXaO6aZd5Mov9Q==
-X-Received: by 2002:a63:c18:: with SMTP id b24mr1159126pgl.208.1600722725671;
-        Mon, 21 Sep 2020 14:12:05 -0700 (PDT)
+        b=ZrjTdKgLihxJhs0XC8iW1iUaX2jU66/D92g23BpyNXl/xuFfyystw+5qkziElFQQlq
+         8McYBKWqfcukWHle206w6mXhEulxErTMrMWmeg88DqtskgrZAgA2fT74dK0wKmGJo3rh
+         5q8BN4xrARENJH12pbVdsjiFc1t7rAtHHKy7uSo6oHkT/N1lRRnK1lmRiSIddosAk/OJ
+         dqBeWllYOndFZmwN1rVxbnHvPuSJCOqVKmLDcIZCY5e98hxQBUaOtPEkI7k6drvSpQkk
+         +q9+mAo9Ang/mC0Fpeet8AF/R0HDTa9k6ddTaLQR6S6kUUJTK89bJCDUpHSrDFFTj7mj
+         jQxA==
+X-Gm-Message-State: AOAM531228nuhuER8a3YGAwOH4C1Uqv3fTb79M6qckwA3txZ2Tpp6rdI
+        Zm8KL/XJM3yGp1azg96CqYgR/8N296LR0g==
+X-Google-Smtp-Source: ABdhPJzK80+DF48gh4Y6BX2sBGh22B0yb+sjS6eDh04ZCXIzmhdOmWdaYF8YY9eo/UiFg3lA5YGfpA==
+X-Received: by 2002:a62:7bc7:0:b029:138:9430:544e with SMTP id w190-20020a627bc70000b02901389430544emr1471748pfc.1.1600722748567;
+        Mon, 21 Sep 2020 14:12:28 -0700 (PDT)
 Received: from [10.67.49.188] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id c5sm8210829pfc.40.2020.09.21.14.12.03
+        by smtp.googlemail.com with ESMTPSA id w206sm12424097pfc.1.2020.09.21.14.12.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Sep 2020 14:12:04 -0700 (PDT)
-Subject: Re: [PATCH 24/42] mfd: rdc321x: use PLATFORM_DEVID_NONE
+        Mon, 21 Sep 2020 14:12:27 -0700 (PDT)
+Subject: Re: [PATCH 06/42] mfd: bcm2835: use PLATFORM_DEVID_NONE
 To:     Krzysztof Kozlowski <krzk@kernel.org>,
         Lee Jones <lee.jones@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -70,7 +70,7 @@ To:     Krzysztof Kozlowski <krzk@kernel.org>,
         linux-rpi-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
 References: <20200921205016.20461-1-krzk@kernel.org>
- <20200921205016.20461-24-krzk@kernel.org>
+ <20200921205016.20461-6-krzk@kernel.org>
 From:   Florian Fainelli <f.fainelli@gmail.com>
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  mQGiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
@@ -126,12 +126,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  caxTGgc5zzQHeX67eMzrGomG3ZnIxmd1sAbgvJUDaD2GrYlulfwGWwWyTNbWRvMighVdPkSF
  6XFgQaosWxkV0OELLy2N485YrTr2Uq64VKyxpncLh50e2RnyAJ9Za0Dx0yyp44iD1OvHtkEI
  M5kY0ACeNhCZJvZ5g4C2Lc9fcTHu8jxmEkI=
-Message-ID: <2c80c22a-af61-6ca0-3bb8-97712c3c8547@gmail.com>
-Date:   Mon, 21 Sep 2020 14:12:02 -0700
+Message-ID: <4746aec4-3aa0-d0be-0b4e-64958af0e759@gmail.com>
+Date:   Mon, 21 Sep 2020 14:12:24 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200921205016.20461-24-krzk@kernel.org>
+In-Reply-To: <20200921205016.20461-6-krzk@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
