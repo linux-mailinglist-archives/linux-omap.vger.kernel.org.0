@@ -2,55 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF08273D2D
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Sep 2020 10:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5998C273D30
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Sep 2020 10:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbgIVIVz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Sep 2020 04:21:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37162 "EHLO
+        id S1726655AbgIVIWq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Sep 2020 04:22:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726649AbgIVIVy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Sep 2020 04:21:54 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BCDC061755;
-        Tue, 22 Sep 2020 01:21:54 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id b124so11719552pfg.13;
-        Tue, 22 Sep 2020 01:21:54 -0700 (PDT)
+        with ESMTP id S1726649AbgIVIWp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Sep 2020 04:22:45 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6379C061755;
+        Tue, 22 Sep 2020 01:22:45 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id x123so11737670pfc.7;
+        Tue, 22 Sep 2020 01:22:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=smNZB9H3lFiNBvXyfUZ+LjIuLRfI0LDRw3wzLyN58eg=;
-        b=barvP639NjCROnD9uWmUXv82JHvOckVM9XhCXhdfBIwZdbYliOHKVy2sDmYeM33F7Q
-         c4zGQDrtn+InHv7Ie5Joei43l4Dkbdt8h8RO75YHlw0QmILfQNdyBf1HNU78jsJO7plQ
-         s3XyOH1J9Ogo/Kz3vNkBTIPfYIdC0uhPAwSqIQ34O/bOIMKkyXvjkKTZHXaY3EY6/6W6
-         umSpbU0ygJCXz/fzaHNCkCR/yx3CSP3aSpFCfWFepehv+C3NLn2OhTXXrZH1i9aoDuaD
-         Y6To85eiofbT9pWH45KISBE4bC8spFahV9Oci037diwEoNHzluqGQDia2tTMdi2fo16V
-         5X6A==
+        bh=IRBIpZozw6VBGdp6Z6B+Cbie+RecJ/RdOYOp4JhiRRk=;
+        b=qb96eCXIyf9FDCF6NtpK1sNAbtykfFlgq4eXYhlIev+MJjrUIjCPfcwVmzj1+znXG+
+         TzZTWl2fTHIGAxVWUHclA8w6OEu3FtaPZx7U3Xl/TzXP5Vj3LsH4KL5vwEuG08VZevLe
+         8fgUTPqI4molIZuFuV+SyEbkL/0v30u/OqCLv/Hzo6lHFxP4EQnQDbAqS9dPROo9+mXl
+         F4o0qQv0wpzpv/aY/WvoQDVlifJSnfH/8uIl9yC7LinyQJHzfX6i5VfIx2M5lWJcOVFG
+         4sv2juFKfrn/GR1WLU5Ei/aGrJkztK82pmj1ky+gtR3KkhEC+i60/l0frRf1P6bNcUsj
+         DM4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=smNZB9H3lFiNBvXyfUZ+LjIuLRfI0LDRw3wzLyN58eg=;
-        b=hhWwabP0aIqoFkgBTt5BP7bm9kPd7K+/zQB09zkmaEtgAQg6BtUxpnSyMzVN7X6Qta
-         No7t8F1rKGyPEB73OmKxlgfk/G0mJgAbb3SeRsj6P47HV3WR6HC8IabZbc7YWrk3SPUZ
-         TA1ct7IaooA75RvAD6IwAhCMeV1fLsL+4xw5eWVYj7ScQ1g5RiuHoUbeKLPoqGXX97tL
-         6LuaYxzAChdAz3HXrNt4O3ruJ27slJaWHs3WaTG7w4LsWerREOl+we7rNYdtYVoO7bvY
-         xCJTQV/lgVDeoyOtVaFxp/kT+8ZmCAdVFoFlmhjmpSsg1VOYM7G6lpUo87eeiuHSxhUV
-         0VPA==
-X-Gm-Message-State: AOAM531MKraJZ6KvuxqIkd9ZgsRqJomfcCzC6uHDvg8xF8v3Pa65hcaB
-        q464Vaem/OkXZP5h6Vh9dkCLmQJToL1vfoUg5uA=
-X-Google-Smtp-Source: ABdhPJyQ7mLs/QLk46U3q9QKDnYjTmr3usX+SysoO8dpdgk3qIRwK9RMBGldX8R7JF3VIPYb6UeYOJ78yZWEOCTfD+0=
-X-Received: by 2002:a62:7b55:0:b029:13e:7367:2b2e with SMTP id
- w82-20020a627b550000b029013e73672b2emr3061981pfc.7.1600762914307; Tue, 22 Sep
- 2020 01:21:54 -0700 (PDT)
+        bh=IRBIpZozw6VBGdp6Z6B+Cbie+RecJ/RdOYOp4JhiRRk=;
+        b=r2xc9ng/mNtbmc301bC8KsNjGfhKqS9L3EQY6IBL2wDc0FCQX2bETvdgeLyqhaWzK+
+         qv44Ydgwc/W13zWtRLg35ocMFPciDwmDQuJ/bDoedSYx/91yd4SuMrCJO934SOx3ZvpB
+         Xsa4F+qh5CZJVQnFqu+3jzGCRWAOHjtH++bml+hICf1zGK81eL8XDmCz5cuqc66GJapH
+         iXUoXuspaf4kOVp/l6iVxtvF6XtVtLz1bYrV9B8/Z8yqVV7OfcTK6xvYWYvewE4SitBO
+         ekbL33ebjCzq+55wJGBcomVLlSYh2cUTFWIozHo6aY9oaXGMstPH57kMmEk64VFy3RzF
+         NvoA==
+X-Gm-Message-State: AOAM533/Sz/rAbYPZtf2FwuiB0nffdv5wgqNfXFtGsjBhiSFQarRqOet
+        Gdh0M0NvveHpmHWbC5hSVj+GrU9JvT/2zOE7jrI=
+X-Google-Smtp-Source: ABdhPJwtwwEErqWEdtfkmflQiZNFOB9Z4kaB6SoQ63Z9t1SZ2x6pZRsTxuy1Okw074pmAyBZdoffjdWRCH6dww9xrcg=
+X-Received: by 2002:aa7:9201:0:b029:13e:d13d:a10c with SMTP id
+ 1-20020aa792010000b029013ed13da10cmr3030367pfo.40.1600762965399; Tue, 22 Sep
+ 2020 01:22:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200921205016.20461-1-krzk@kernel.org> <20200921205016.20461-5-krzk@kernel.org>
-In-Reply-To: <20200921205016.20461-5-krzk@kernel.org>
+References: <20200921205016.20461-1-krzk@kernel.org> <20200921205016.20461-10-krzk@kernel.org>
+In-Reply-To: <20200921205016.20461-10-krzk@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 22 Sep 2020 11:21:37 +0300
-Message-ID: <CAHp75VecLojCKW1ckVJvW_cjUek14QxpS=JZH0D2P6jVHBMGqQ@mail.gmail.com>
-Subject: Re: [PATCH 05/42] mfd: axp20x: use PLATFORM_DEVID_NONE
+Date:   Tue, 22 Sep 2020 11:22:28 +0300
+Message-ID: <CAHp75Veb3NAS+GekwQvL2_Y-jRbiJNM6W4JhH6o3R8GjSC8uww@mail.gmail.com>
+Subject: Re: [PATCH 10/42] mfd: intel_msic: use PLATFORM_DEVID_NONE
 To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -80,7 +80,7 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Sep 21, 2020 at 11:52 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Mon, Sep 21, 2020 at 11:54 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
 >
 > Use PLATFORM_DEVID_NONE define instead of "-1" value because:
 >  - it brings some meaning,
@@ -90,22 +90,25 @@ Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 > ---
->  drivers/mfd/axp20x.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/mfd/intel_msic.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
-> index aa59496e4376..70aa538a4b64 100644
-> --- a/drivers/mfd/axp20x.c
-> +++ b/drivers/mfd/axp20x.c
-> @@ -967,7 +967,7 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
->                 return ret;
+> diff --git a/drivers/mfd/intel_msic.c b/drivers/mfd/intel_msic.c
+> index bb24c2a07900..e9944a81dc44 100644
+> --- a/drivers/mfd/intel_msic.c
+> +++ b/drivers/mfd/intel_msic.c
+> @@ -317,8 +317,9 @@ static int intel_msic_init_devices(struct intel_msic *msic)
+>                 if (!pdata->irq[i])
+>                         continue;
+>
+> -               ret = mfd_add_devices(&pdev->dev, -1, &msic_devs[i], 1, NULL,
+> -                                     pdata->irq[i], NULL);
+> +               ret = mfd_add_devices(&pdev->dev, PLATFORM_DEVID_NONE,
+> +                                     &msic_devs[i], 1, NULL, pdata->irq[i],
+> +                                     NULL);
+>                 if (ret)
+>                         goto fail;
 >         }
->
-> -       ret = mfd_add_devices(axp20x->dev, -1, axp20x->cells,
-> +       ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_NONE, axp20x->cells,
->                               axp20x->nr_cells, NULL, 0, NULL);
->
->         if (ret) {
 > --
 > 2.17.1
 >
