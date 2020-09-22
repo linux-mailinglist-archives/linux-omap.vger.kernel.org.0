@@ -2,67 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E0B273826
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Sep 2020 03:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 865FD273844
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Sep 2020 04:00:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728870AbgIVBoj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Sep 2020 21:44:39 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:13815 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728497AbgIVBoj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Sep 2020 21:44:39 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id EE63161BD1720B017F1D;
-        Tue, 22 Sep 2020 09:44:36 +0800 (CST)
-Received: from huawei.com (10.90.53.225) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0; Tue, 22 Sep 2020
- 09:44:31 +0800
-From:   Qilong Zhang <zhangqilong3@huawei.com>
-To:     <broonie@kernel.org>, <peter.ujfalusi@ti.com>,
-        <jarkko.nikula@bitmer.com>, <lgirdwood@gmail.com>,
-        <perex@perex.cz>, <tiwai@suse.com>
-CC:     <linux-omap@vger.kernel.org>
-Subject: [PATCH -next v2] ASoC: ti: omap-mcbsp: use devm_platform_ioremap_resource_byname
-Date:   Tue, 22 Sep 2020 09:51:23 +0800
-Message-ID: <20200922015123.117489-1-zhangqilong3@huawei.com>
-X-Mailer: git-send-email 2.26.0.106.g9fadedd
+        id S1729271AbgIVCAW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Sep 2020 22:00:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42446 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728501AbgIVCAV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Sep 2020 22:00:21 -0400
+Received: from dragon (80.251.214.228.16clouds.com [80.251.214.228])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0F5C123A74;
+        Tue, 22 Sep 2020 02:00:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600740021;
+        bh=kYNJxkMo2anS/8PuLnAzPGHb8GTmWTIcIgZzUe5W7ys=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=k7OXLPC+wJQNc62e75OkkvOiY2XUHlpSW94FG2mbCavbr9OoBUthgvnsAshDdYrUd
+         ibQI7tJ4iX38/3FFnZCHsMhglmYZQeSMe3r2mawzxgw+hjL0YPQ/nNwakkwvAKJMQ3
+         E7m61S9bPggx+TW6vXYL1dGfP3KmZ6aU+Oj1XC3w=
+Date:   Tue, 22 Sep 2020 10:00:12 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v3 15/15] ARM: dts: imx6q: align GPIO hog names with
+ dtschema
+Message-ID: <20200922020011.GQ25109@dragon>
+References: <20200916155715.21009-1-krzk@kernel.org>
+ <20200916155715.21009-16-krzk@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.90.53.225]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200916155715.21009-16-krzk@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Zhang Qilong <zhangqilong3@huawei.com>
+On Wed, Sep 16, 2020 at 05:57:15PM +0200, Krzysztof Kozlowski wrote:
+> dtschema for pca95xx expects GPIO hogs to end with 'hog' prefix.  While
+> touching the hogs, fix indentation (spaces -> tabs).
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Use the devm_platform_ioremap_resource_byname() helper instead of
-calling platform_get_resource_byname() and devm_ioremap_resource()
-separately.
-
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
----
- sound/soc/ti/omap-mcbsp.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index 6025b30bbe77..186cea91076f 100644
---- a/sound/soc/ti/omap-mcbsp.c
-+++ b/sound/soc/ti/omap-mcbsp.c
-@@ -620,11 +620,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
- 	spin_lock_init(&mcbsp->lock);
- 	mcbsp->free = true;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mpu");
--	if (!res)
--		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--
--	mcbsp->io_base = devm_ioremap_resource(&pdev->dev, res);
-+	mcbsp->io_base = devm_platform_ioremap_resource_byname(pdev, "mpu");
- 	if (IS_ERR(mcbsp->io_base))
- 		return PTR_ERR(mcbsp->io_base);
- 
--- 
-2.17.1
-
+Applied, thanks.
