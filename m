@@ -2,74 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 865FD273844
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Sep 2020 04:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15910273B3F
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Sep 2020 08:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729271AbgIVCAW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Sep 2020 22:00:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42446 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728501AbgIVCAV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 21 Sep 2020 22:00:21 -0400
-Received: from dragon (80.251.214.228.16clouds.com [80.251.214.228])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0F5C123A74;
-        Tue, 22 Sep 2020 02:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600740021;
-        bh=kYNJxkMo2anS/8PuLnAzPGHb8GTmWTIcIgZzUe5W7ys=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k7OXLPC+wJQNc62e75OkkvOiY2XUHlpSW94FG2mbCavbr9OoBUthgvnsAshDdYrUd
-         ibQI7tJ4iX38/3FFnZCHsMhglmYZQeSMe3r2mawzxgw+hjL0YPQ/nNwakkwvAKJMQ3
-         E7m61S9bPggx+TW6vXYL1dGfP3KmZ6aU+Oj1XC3w=
-Date:   Tue, 22 Sep 2020 10:00:12 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
+        id S1728278AbgIVGy2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Sep 2020 02:54:28 -0400
+Received: from mslow2.mail.gandi.net ([217.70.178.242]:49222 "EHLO
+        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727710AbgIVGy2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Sep 2020 02:54:28 -0400
+Received: from relay1-d.mail.gandi.net (unknown [217.70.183.193])
+        by mslow2.mail.gandi.net (Postfix) with ESMTP id 04FCA3AE602;
+        Tue, 22 Sep 2020 06:49:26 +0000 (UTC)
+X-Originating-IP: 90.65.88.165
+Received: from localhost (lfbn-lyo-1-1908-165.w90-65.abo.wanadoo.fr [90.65.88.165])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 02909240007;
+        Tue, 22 Sep 2020 06:49:01 +0000 (UTC)
+Date:   Tue, 22 Sep 2020 08:49:01 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
 To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Milo Kim <milo.kim@ti.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sangbeom Kim <sbkim73@samsung.com>,
         Tony Lindgren <tony@atomide.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v3 15/15] ARM: dts: imx6q: align GPIO hog names with
- dtschema
-Message-ID: <20200922020011.GQ25109@dragon>
-References: <20200916155715.21009-1-krzk@kernel.org>
- <20200916155715.21009-16-krzk@kernel.org>
+        linux-rpi-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 04/42] mfd: atmel-hlcdc: use PLATFORM_DEVID_NONE
+Message-ID: <20200922064901.GM9675@piout.net>
+References: <20200921205016.20461-1-krzk@kernel.org>
+ <20200921205016.20461-4-krzk@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200916155715.21009-16-krzk@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200921205016.20461-4-krzk@kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 16, 2020 at 05:57:15PM +0200, Krzysztof Kozlowski wrote:
-> dtschema for pca95xx expects GPIO hogs to end with 'hog' prefix.  While
-> touching the hogs, fix indentation (spaces -> tabs).
+On 21/09/2020 22:49:38+0200, Krzysztof Kozlowski wrote:
+> Use PLATFORM_DEVID_NONE define instead of "-1" value because:
+>  - it brings some meaning,
+>  - it might point attention why auto device ID was not used.
 > 
 > Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-Applied, thanks.
+> ---
+>  drivers/mfd/atmel-hlcdc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mfd/atmel-hlcdc.c b/drivers/mfd/atmel-hlcdc.c
+> index 3c2414ba4b01..8ba13bc6fcf8 100644
+> --- a/drivers/mfd/atmel-hlcdc.c
+> +++ b/drivers/mfd/atmel-hlcdc.c
+> @@ -129,7 +129,7 @@ static int atmel_hlcdc_probe(struct platform_device *pdev)
+>  
+>  	dev_set_drvdata(dev, hlcdc);
+>  
+> -	return devm_mfd_add_devices(dev, -1, atmel_hlcdc_cells,
+> +	return devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE, atmel_hlcdc_cells,
+>  				    ARRAY_SIZE(atmel_hlcdc_cells),
+>  				    NULL, 0, NULL);
+>  }
+> -- 
+> 2.17.1
+> 
+
+-- 
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
