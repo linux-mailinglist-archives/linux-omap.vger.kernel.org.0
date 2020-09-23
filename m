@@ -2,101 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A7562756ED
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Sep 2020 13:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20852275A74
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Sep 2020 16:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbgIWLOZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Sep 2020 07:14:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59848 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726332AbgIWLOZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Sep 2020 07:14:25 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19A76C0613CE
-        for <linux-omap@vger.kernel.org>; Wed, 23 Sep 2020 04:14:25 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4578B555;
-        Wed, 23 Sep 2020 13:14:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1600859660;
-        bh=Cyk8Wfrdr8hZdCvpnY7aBS4GLr2Qa+ByffIujIUK1RY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wfOHb5bmXzOfJyFuXkV+/xyFhA9Re6yELQlaV7UtjUHcxtj+liDhFaFSHcC66+I0r
-         F8rk/HkQYZ7W3XcVgbrzSdHfNcKF2Rh+lKLa6x4gtud5btiNr7qhiw+wqnzTmH2xvw
-         ARzUJ0czF0fiAgN/kVXjjE5ov5fcSIff6rBKeY3c=
-Date:   Wed, 23 Sep 2020 14:13:46 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Subject: Re: Slow booting on x15
-Message-ID: <20200923111346.GA3980@pendragon.ideasonboard.com>
-References: <ea02f57e-871d-cd16-4418-c1da4bbc4696@ti.com>
- <20200918155844.GH28436@pendragon.ideasonboard.com>
- <20200923070758.GT7101@atomide.com>
+        id S1726786AbgIWOkq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Sep 2020 10:40:46 -0400
+Received: from mslow2.mail.gandi.net ([217.70.178.242]:39248 "EHLO
+        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726668AbgIWOkl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Sep 2020 10:40:41 -0400
+Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
+        by mslow2.mail.gandi.net (Postfix) with ESMTP id 6E04C3B25DB;
+        Wed, 23 Sep 2020 14:39:19 +0000 (UTC)
+X-Originating-IP: 90.65.92.90
+Received: from localhost (lfbn-lyo-1-1913-90.w90-65.abo.wanadoo.fr [90.65.92.90])
+        (Authenticated sender: gregory.clement@bootlin.com)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 024DBFF80C;
+        Wed, 23 Sep 2020 14:38:52 +0000 (UTC)
+From:   Gregory CLEMENT <gregory.clement@bootlin.com>
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v3 13/15] ARM: dts: dove: fix PCA95xx GPIO expander properties on A510
+In-Reply-To: <20200916155715.21009-14-krzk@kernel.org>
+References: <20200916155715.21009-1-krzk@kernel.org> <20200916155715.21009-14-krzk@kernel.org>
+Date:   Wed, 23 Sep 2020 16:38:52 +0200
+Message-ID: <87blhwimmb.fsf@BL-laptop>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200923070758.GT7101@atomide.com>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+Hi Krzysztof,
 
-On Wed, Sep 23, 2020 at 10:07:58AM +0300, Tony Lindgren wrote:
-> * Laurent Pinchart [200918 15:59]:
-> > On Fri, Sep 18, 2020 at 06:25:02PM +0300, Tomi Valkeinen wrote:
-> > > Hi,
-> > > 
-> > > Has anyone noticed that booting would have slowed down in 5.8 and in 5.9-rcs? I'm booting x15 with
-> > > my custom config builder, which uses omap2plus_defconfig as a base. I see:
-> > > 
-> > > v5.7
-> > > [    0.597765] cpuidle: using governor menu
-> > > [    0.793198] No ATAGs?
-> > > 
-> > > [    9.654611] Run /sbin/init as init process
-> > > 
-> > > 5.8
-> > > [    0.616660] cpuidle: using governor menu
-> > > [    4.439856] No ATAGs?
-> > > 
-> > > [   15.484710] Run /sbin/init as init process
-> > > 
-> > > v5.9-rc5
-> > > [    0.706165] cpuidle: using governor menu
-> > > [    6.761812] No ATAGs?
-> > > 
-> > > [   19.522536] Run /sbin/init as init process
-> > > 
-> > > 
-> > > So v5.7 boots quickly, and init starts around 9.6 secs. 5.8 is much slower, and 5.9-rc5 even slower.
-> > 
-> > I've tracked this down to device_link_add_missing_supplier_links()
-> > taking about 40+ms to run, for every device added to the system. Given
-> > the large number of devices, this adds up to 10s on v5.9-rc5, when
-> > called during the initial of_platform_populate().
-> > 
-> > It doesn't seem there's a single culprit here (although I may have
-> > missed it), "just" lots of walks through the whole device tree that end
-> > up taking way too much time. I'm not planning to investigate this
-> > further at this point.
-> 
-> Hmm so do you have some commit that causes this slowness?
+> The PCA95xx GPIO expander requires GPIO controller properties to operate
+> properly.
 
-No, I haven't had time to bisect this.
+Applied on mvebu/dt
 
-> In general, we should now be looking each device at module_init
-> time only when configured in the dts. I guess it's possible we still
-> have some extra walking of the whole device tree left but this sounds
-> like a more generic issue though and not related to the omap dts
-> conversion.
+Thanks,
 
-There's a call to of_platform_populate() in pdata_quirks_init(), and
-that takes between 5 and 10 seconds to run, depending on the board.
+Gregory
+>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  arch/arm/boot/dts/dove-sbc-a510.dts | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/arm/boot/dts/dove-sbc-a510.dts b/arch/arm/boot/dts/dove-sbc-a510.dts
+> index 2bb85a9b7614..df021f9b0117 100644
+> --- a/arch/arm/boot/dts/dove-sbc-a510.dts
+> +++ b/arch/arm/boot/dts/dove-sbc-a510.dts
+> @@ -143,6 +143,7 @@
+>  	gpio_ext: gpio@20 {
+>  		compatible = "nxp,pca9555";
+>  		reg = <0x20>;
+> +		gpio-controller;
+>  		#gpio-cells = <2>;
+>  	};
+>  };
+> -- 
+> 2.17.1
+>
 
 -- 
-Regards,
-
-Laurent Pinchart
+Gregory Clement, Bootlin
+Embedded Linux and Kernel engineering
+http://bootlin.com
