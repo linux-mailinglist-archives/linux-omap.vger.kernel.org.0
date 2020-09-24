@@ -2,178 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B9BE275DB3
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Sep 2020 18:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 119FF2765E7
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Sep 2020 03:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726710AbgIWQl7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Sep 2020 12:41:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57004 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726130AbgIWQl7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 23 Sep 2020 12:41:59 -0400
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 460B6212CC;
-        Wed, 23 Sep 2020 16:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600879318;
-        bh=H/X54/9jjWgX70+wPfPiiKTHZeodTG5ZIAFYl/owpiY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=xyw8QgUlBVbDnDx66/3JJe7kWGDnxv+A6AZroC4M6/hjmR4QXH2I6G1HvF/v/oQcj
-         E09cUFRtjQ7bQHXaVTY3vGDQ/UUhzN+oTE975DvARbiGg7eeVVNoJZjL4Q+D1ujwy5
-         Z/R7wxqrRzaJVmELmFNdNHaQw1Jz4HwjWSrzqRQ0=
-Received: by mail-ot1-f49.google.com with SMTP id n61so318856ota.10;
-        Wed, 23 Sep 2020 09:41:58 -0700 (PDT)
-X-Gm-Message-State: AOAM531vz+1zE0w44jYDP7cqTe4irqcFVknoBghEZ9qoDj6Vxfl0U2Hb
-        koQG0UdqGxY6DegB6e1aS+8WmL/idK4KG4qCzA==
-X-Google-Smtp-Source: ABdhPJwLbfDZiK9Pm9S8+Ij5u6rYx0WjoXRoutVyMdSeHNE/MwsRZePtNTTSEW871CePVnni7eI/l+9oJjB3GKIsTiE=
-X-Received: by 2002:a05:6830:1008:: with SMTP id a8mr345792otp.107.1600879317500;
- Wed, 23 Sep 2020 09:41:57 -0700 (PDT)
+        id S1726064AbgIXBed (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Sep 2020 21:34:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51360 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725208AbgIXBed (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Sep 2020 21:34:33 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C2D3C0613CE;
+        Wed, 23 Sep 2020 18:34:33 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id j11so2269429ejk.0;
+        Wed, 23 Sep 2020 18:34:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BdVDi/8E9qWkSdKxeY/lJ0KoRE68VzIF4q1Pns2xhD4=;
+        b=cchMfWJLbTknIU61451rYND7QC8qYeJgN6egxZppAsXuwTvDsYc8htefTrxT/eSqO2
+         UpbmZvOVIOme+TpfwdjZlHCxpi3/pZ0cFL0T7Cy53lpD+RIIJivxhkE8VFGDITwx1+2G
+         GqQMPHSYce5cwuh3vbcF6Q8rzMquc/XpFaWkWnnti0GdilXS/yHP8J/lGSO9/ThbbeqG
+         ERtZ4fUOdGA25Tjn/USYwtASuI4VqyagxKDF9VZ3QMEgaZN1Af5Xo3f4oIKA1ZVUqrQe
+         /xHhL5Lglc4moV/iF/KCCMYx2F47VucWY1rCPnFkkyUKzs5l38akdbY0/EBCzzC8lau+
+         0FHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BdVDi/8E9qWkSdKxeY/lJ0KoRE68VzIF4q1Pns2xhD4=;
+        b=WTatE0FBzVXzu8Ll87+idsqSOzwJNVNPqNJQq31B8nb4QlIjEnxBKpMCifcNKzs4U+
+         GJ7981db3sWT9vrhi9eRqq3Hp0HcVRbgTou30lhHgtVaD6uBp8t9wlPZvUIi5tUAqwUC
+         5vnzEgWjM3Jf7Ofo+1U2DnHdRDE2Alc0RvGAtXmBoLehtJikKpNdDjznipOBoJcH+qUB
+         60OXMQM+V6Umt55y/ADsf4vgXlr125XZwcalbq+5I/3uzXKdolak7G7KWEDMrutZBrak
+         ioF+bZABn86IvDJODoHjVEQ8tXkL2sDaNU6L2rgdte35NS20zHl+VvrE2UpmrEBOyhlz
+         6Rug==
+X-Gm-Message-State: AOAM533b/jH3jcGM5ldP9cS8QUU6wRBoM1cdcR1j9/yY6DXLCWABl1HT
+        t+p6ie65ALpmrG0kDBu7ocyui8BbGFm5NJcTOnk=
+X-Google-Smtp-Source: ABdhPJzMxMdP4kSFMn/hJnAwQtYoFTQZYIFjGNisG2wS8nogdPXCZQxSXQvjrd6XQufmIDZ0SbrxRnwJ3VNn3PbOR1w=
+X-Received: by 2002:a17:906:390d:: with SMTP id f13mr2326309eje.86.1600911271918;
+ Wed, 23 Sep 2020 18:34:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200923142607.10c89bd2@xhacker.debian>
-In-Reply-To: <20200923142607.10c89bd2@xhacker.debian>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 23 Sep 2020 10:41:45 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJV_8sCVB2fAi6kk19ZLbO+nKbk-kYsBNEbN+jR84LUgg@mail.gmail.com>
-Message-ID: <CAL_JsqJV_8sCVB2fAi6kk19ZLbO+nKbk-kYsBNEbN+jR84LUgg@mail.gmail.com>
-Subject: Re: [PATCH] PCI: dwc: Move allocate and map page for msi out of dw_pcie_msi_init()
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Vidya Sagar <vidyas@nvidia.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        PCI <linux-pci@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20200914104352.2165818-1-drew@beagleboard.org>
+ <CA+7tXii8rwBexgAHeqYsvBywhWLmk-Hf5_VWUU5bQkBREeFcSA@mail.gmail.com>
+ <20200917092004.GA2468349@x1> <CA+7tXihwHbcuxZ10jGZrQkET9+Dbs31SfsYDt_6XB+-JM99gqA@mail.gmail.com>
+ <20200917103942.GA2477958@x1> <20200923065755.GR7101@atomide.com>
+In-Reply-To: <20200923065755.GR7101@atomide.com>
+From:   Trent Piepho <tpiepho@gmail.com>
+Date:   Wed, 23 Sep 2020 18:34:21 -0700
+Message-ID: <CA+7tXigeNhQQVuAu0toZrvBKvMYkDU-8EWTpJR29HLTAMgoOBA@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: document pinctrl-single,pins when
+ #pinctrl-cells = 2
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Drew Fustini <drew@beagleboard.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        Christina Quast <cquast@hanoverdisplays.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 23, 2020 at 12:27 AM Jisheng Zhang
-<Jisheng.Zhang@synaptics.com> wrote:
+On Tue, Sep 22, 2020 at 11:57 PM Tony Lindgren <tony@atomide.com> wrote:
 >
-> Currently, dw_pcie_msi_init() allocates and maps page for msi, then
-> program the PCIE_MSI_ADDR_LO and PCIE_MSI_ADDR_HI. The Root Complex
-> may lose power during suspend-to-RAM, so when we resume, we want to
-> redo the latter but not the former. If designware based driver (for
-> example, pcie-tegra194.c) calls dw_pcie_msi_init() in resume path, the
-> previous msi page will be leaked.
+> Also FYI, folks have also complained for a long time that the pinctrl-single
+> binding mixes mux and conf values while they should be handled separately.
+>
 
-It's worse than this. I think there's also error paths too leaking the
-page. Also, there's never a dma_unmap_page call which should happen
-before freeing.
+Instead of combining two fields when the dts is generated they are now
+combined when the pinctrl-single driver reads the dts.  Other than
+this detail, the result is the same.  The board dts source is the
+same.  The value programmed into the pinctrl register is the same.
+There is no mechanism currently that can alter that value in any way.
 
-> Move the allocate and map msi page from dw_pcie_msi_init() to
-> dw_pcie_host_init() to fix this problem.
->
-> Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c       | 18 ++++++++++++-
->  .../pci/controller/dwc/pcie-designware-host.c | 27 +++++++++----------
->  2 files changed, 30 insertions(+), 15 deletions(-)
->
-> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-> index dc387724cf08..4301cf844a4c 100644
-> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
-> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-> @@ -490,7 +490,9 @@ static struct irq_chip dra7xx_pci_msi_bottom_irq_chip = {
->  static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
->  {
->         struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> +       struct device *dev = pci->dev;
->         u32 ctrl, num_ctrls;
-> +       int ret;
->
->         pp->msi_irq_chip = &dra7xx_pci_msi_bottom_irq_chip;
->
-> @@ -506,7 +508,21 @@ static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
->                                     ~0);
->         }
->
-> -       return dw_pcie_allocate_domains(pp);
-> +       ret = dw_pcie_allocate_domains(pp);
-> +       if (ret)
-> +               return ret;
-> +
-> +       pp->msi_page = alloc_page(GFP_KERNEL);
-> +       pp->msi_data = dma_map_page(dev, pp->msi_page, 0, PAGE_SIZE,
-> +                                   DMA_FROM_DEVICE);
-> +       ret = dma_mapping_error(dev, pp->msi_data);
-> +       if (ret) {
-> +               dev_err(dev, "Failed to map MSI data\n");
-> +               __free_page(pp->msi_page);
-> +               pp->msi_page = NULL;
-> +               dw_pcie_free_msi(pp);
-> +       }
-
-I don't like having 2 copies of the same thing. Also, doesn't keystone
-need this too?
-
-The other thing is .msi_host_init() is abused by having an empty
-function to disable MSI support. We should have a flag instead to
-enable/disable MSI support and then we can key off of that in the
-common code.
-
-> +       return ret;
->  }
->
->  static const struct dw_pcie_host_ops dra7xx_pcie_host_ops = {
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> index 9dafecba347f..c23ba64f64fe 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> @@ -294,20 +294,7 @@ void dw_pcie_free_msi(struct pcie_port *pp)
->
->  void dw_pcie_msi_init(struct pcie_port *pp)
-
-Might be good to rename this function with exactly what it does.
-There's too many 'init' and 'setup' functions...
-
->  {
-> -       struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> -       struct device *dev = pci->dev;
-> -       u64 msi_target;
-> -
-> -       pp->msi_page = alloc_page(GFP_KERNEL);
-> -       pp->msi_data = dma_map_page(dev, pp->msi_page, 0, PAGE_SIZE,
-> -                                   DMA_FROM_DEVICE);
-> -       if (dma_mapping_error(dev, pp->msi_data)) {
-> -               dev_err(dev, "Failed to map MSI data\n");
-> -               __free_page(pp->msi_page);
-> -               pp->msi_page = NULL;
-> -               return;
-> -       }
-> -       msi_target = (u64)pp->msi_data;
-> +       u64 msi_target = (u64)pp->msi_data;
->
->         /* Program the msi_data */
->         dw_pcie_wr_own_conf(pp, PCIE_MSI_ADDR_LO, 4,
-> @@ -440,6 +427,18 @@ int dw_pcie_host_init(struct pcie_port *pp)
->                                 irq_set_chained_handler_and_data(pp->msi_irq,
->                                                             dw_chained_msi_isr,
->                                                             pp);
-> +
-> +                       pp->msi_page = alloc_page(GFP_KERNEL);
-> +                       pp->msi_data = dma_map_page(pci->dev, pp->msi_page,
-> +                                                   0, PAGE_SIZE,
-> +                                                   DMA_FROM_DEVICE);
-> +                       ret = dma_mapping_error(pci->dev, pp->msi_data);
-> +                       if (ret) {
-> +                               dev_err(pci->dev, "Failed to map MSI data\n");
-> +                               __free_page(pp->msi_page);
-> +                               pp->msi_page = NULL;
-> +                               goto err_free_msi;
-> +                       }
->                 } else {
->                         ret = pp->ops->msi_host_init(pp);
->                         if (ret < 0)
-> --
-> 2.28.0
->
+What does combining them later allow that is not possible now?
