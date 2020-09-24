@@ -2,66 +2,175 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1E2276A0C
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Sep 2020 09:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A14F3276F30
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Sep 2020 13:00:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726984AbgIXHFz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Sep 2020 03:05:55 -0400
-Received: from muru.com ([72.249.23.125]:45362 "EHLO muru.com"
+        id S1726516AbgIXLAj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Sep 2020 07:00:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37590 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726902AbgIXHFz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 24 Sep 2020 03:05:55 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id E2A078027;
-        Thu, 24 Sep 2020 07:05:56 +0000 (UTC)
-Date:   Thu, 24 Sep 2020 10:05:50 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     khilman@kernel.org, linux@armlinux.org.uk,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org
-Subject: Re: [PATCH v2] omap3: enable off mode automatically
-Message-ID: <20200924070550.GG9471@atomide.com>
-References: <20200911161209.25149-1-andreas@kemnade.info>
- <20200924090047.2b61f883@aktux>
+        id S1726303AbgIXLAj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 24 Sep 2020 07:00:39 -0400
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0E497239D2;
+        Thu, 24 Sep 2020 11:00:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600945238;
+        bh=mcQstb6kgrv0RCLL5uYxJdTKMZzoQT1OGetbZvl4Dys=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=HoERfLtzBHHfF9t7LHk1EVr5ENzggxhqG1fq2bIBjO0rsHGK7+wyVwfYjlsSOHeVA
+         M2Wa79HeFQQdgQZtj7cflzJuVlevXeBaUrbCsrOhW3X/dRNU9OBkViJu/G4EEt7sy5
+         tU5Ik3Bfo84YfhmKKB2zzpIf67hmF9bIGgyaHe2M=
+Received: by mail-oi1-f180.google.com with SMTP id v20so3230816oiv.3;
+        Thu, 24 Sep 2020 04:00:38 -0700 (PDT)
+X-Gm-Message-State: AOAM531Appt7O9pFAt8jBm2tWPQqJCLmPNwi6dlhl5HJdSGFsRaOOvRJ
+        s9BAUFKezVDQ9qkEgUTUqpXxpJrjU0a+R4mJzi0=
+X-Google-Smtp-Source: ABdhPJw672kHZvlPXq/Xj5fIkVqsPRuNnsOGNIheEW6trScKa826onwsLVZV11OPHvh1+Q14Z8+jPRWJ3pwlGNVeYa8=
+X-Received: by 2002:a54:4517:: with SMTP id l23mr2228436oil.174.1600945237175;
+ Thu, 24 Sep 2020 04:00:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200924090047.2b61f883@aktux>
+References: <20200923142607.10c89bd2@xhacker.debian>
+In-Reply-To: <20200923142607.10c89bd2@xhacker.debian>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Thu, 24 Sep 2020 13:00:26 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEyQGEu7=-kbDuTDW9_xXkmns1HM2dQMrLn=XL9W88vJw@mail.gmail.com>
+Message-ID: <CAMj1kXEyQGEu7=-kbDuTDW9_xXkmns1HM2dQMrLn=XL9W88vJw@mail.gmail.com>
+Subject: Re: [PATCH] PCI: dwc: Move allocate and map page for msi out of dw_pcie_msi_init()
+To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Vidya Sagar <vidyas@nvidia.com>, linux-pci@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Andreas Kemnade <andreas@kemnade.info> [200924 07:00]:
-> On Fri, 11 Sep 2020 18:12:09 +0200
-> Andreas Kemnade <andreas@kemnade.info> wrote:
-> 
-> > Enabling off mode was only reachable deeply hidden
-> > in the debugfs. As powersaving is an important feature,
-> > move the option out of its shady place.
-> > The debugfs file can still be used to override the default.
-> > 
-> > Use the presence of a device compatible to ti,twl4030-idle or
-> > ti,twl4030-idle-osc-off as an indicator that the board is wired correctly
-> > for off mode.
-> > 
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> > An earlier version of this patch was here:
-> > https://patchwork.kernel.org/patch/10794121/
-> > 
-> > A config option was used instead of the suggested devicetree check.
-> > 
-> > Changes in v2:
-> > - fix compile without CONFIG_ARCH_OMAP3
-> >   The variable enable_off_mode is now always a real one and not
-> >   a preprocessor constant to avoid trouble with unusual configurations.
-> > 
-> Anything I still missed here? 
+On Wed, 23 Sep 2020 at 08:28, Jisheng Zhang <Jisheng.Zhang@synaptics.com> wrote:
+>
+> Currently, dw_pcie_msi_init() allocates and maps page for msi, then
+> program the PCIE_MSI_ADDR_LO and PCIE_MSI_ADDR_HI. The Root Complex
+> may lose power during suspend-to-RAM, so when we resume, we want to
+> redo the latter but not the former. If designware based driver (for
+> example, pcie-tegra194.c) calls dw_pcie_msi_init() in resume path, the
+> previous msi page will be leaked.
+>
+> Move the allocate and map msi page from dw_pcie_msi_init() to
+> dw_pcie_host_init() to fix this problem.
+>
+> Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
+> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
 
-No the missing part is just me picking up the remaining patches
-for v5.10 that I'll hopefully manage to do today :)
+Why do you allocate a page for this in the first place? Isn't
+PCIE_MSI_ADDR_HI:PCIE_MSI_ADDR_LO simply a magic DMA address that
+never gets forwarded across to the CPU side of the host bridge, and
+triggers a SPI instead, which gets handled by reading
+PCIE_MSI_INTR0_STATUS ?
 
-Regards,
+Couldn't you just map the zero page instead?
 
-Tony
+
+> ---
+>  drivers/pci/controller/dwc/pci-dra7xx.c       | 18 ++++++++++++-
+>  .../pci/controller/dwc/pcie-designware-host.c | 27 +++++++++----------
+>  2 files changed, 30 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index dc387724cf08..4301cf844a4c 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -490,7 +490,9 @@ static struct irq_chip dra7xx_pci_msi_bottom_irq_chip = {
+>  static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
+>  {
+>         struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +       struct device *dev = pci->dev;
+>         u32 ctrl, num_ctrls;
+> +       int ret;
+>
+>         pp->msi_irq_chip = &dra7xx_pci_msi_bottom_irq_chip;
+>
+> @@ -506,7 +508,21 @@ static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
+>                                     ~0);
+>         }
+>
+> -       return dw_pcie_allocate_domains(pp);
+> +       ret = dw_pcie_allocate_domains(pp);
+> +       if (ret)
+> +               return ret;
+> +
+> +       pp->msi_page = alloc_page(GFP_KERNEL);
+> +       pp->msi_data = dma_map_page(dev, pp->msi_page, 0, PAGE_SIZE,
+> +                                   DMA_FROM_DEVICE);
+> +       ret = dma_mapping_error(dev, pp->msi_data);
+> +       if (ret) {
+> +               dev_err(dev, "Failed to map MSI data\n");
+> +               __free_page(pp->msi_page);
+> +               pp->msi_page = NULL;
+> +               dw_pcie_free_msi(pp);
+> +       }
+> +       return ret;
+>  }
+>
+>  static const struct dw_pcie_host_ops dra7xx_pcie_host_ops = {
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index 9dafecba347f..c23ba64f64fe 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -294,20 +294,7 @@ void dw_pcie_free_msi(struct pcie_port *pp)
+>
+>  void dw_pcie_msi_init(struct pcie_port *pp)
+>  {
+> -       struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> -       struct device *dev = pci->dev;
+> -       u64 msi_target;
+> -
+> -       pp->msi_page = alloc_page(GFP_KERNEL);
+> -       pp->msi_data = dma_map_page(dev, pp->msi_page, 0, PAGE_SIZE,
+> -                                   DMA_FROM_DEVICE);
+> -       if (dma_mapping_error(dev, pp->msi_data)) {
+> -               dev_err(dev, "Failed to map MSI data\n");
+> -               __free_page(pp->msi_page);
+> -               pp->msi_page = NULL;
+> -               return;
+> -       }
+> -       msi_target = (u64)pp->msi_data;
+> +       u64 msi_target = (u64)pp->msi_data;
+>
+>         /* Program the msi_data */
+>         dw_pcie_wr_own_conf(pp, PCIE_MSI_ADDR_LO, 4,
+> @@ -440,6 +427,18 @@ int dw_pcie_host_init(struct pcie_port *pp)
+>                                 irq_set_chained_handler_and_data(pp->msi_irq,
+>                                                             dw_chained_msi_isr,
+>                                                             pp);
+> +
+> +                       pp->msi_page = alloc_page(GFP_KERNEL);
+> +                       pp->msi_data = dma_map_page(pci->dev, pp->msi_page,
+> +                                                   0, PAGE_SIZE,
+> +                                                   DMA_FROM_DEVICE);
+> +                       ret = dma_mapping_error(pci->dev, pp->msi_data);
+> +                       if (ret) {
+> +                               dev_err(pci->dev, "Failed to map MSI data\n");
+> +                               __free_page(pp->msi_page);
+> +                               pp->msi_page = NULL;
+> +                               goto err_free_msi;
+> +                       }
+>                 } else {
+>                         ret = pp->ops->msi_host_init(pp);
+>                         if (ret < 0)
+> --
+> 2.28.0
+>
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
