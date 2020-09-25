@@ -2,68 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D2582785F9
-	for <lists+linux-omap@lfdr.de>; Fri, 25 Sep 2020 13:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F0D0278606
+	for <lists+linux-omap@lfdr.de>; Fri, 25 Sep 2020 13:36:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727997AbgIYLfE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 25 Sep 2020 07:35:04 -0400
-Received: from muru.com ([72.249.23.125]:45416 "EHLO muru.com"
+        id S1728270AbgIYLg5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 25 Sep 2020 07:36:57 -0400
+Received: from muru.com ([72.249.23.125]:45456 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726990AbgIYLfD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 25 Sep 2020 07:35:03 -0400
+        id S1728148AbgIYLg5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 25 Sep 2020 07:36:57 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 716C380B0;
-        Fri, 25 Sep 2020 11:35:05 +0000 (UTC)
-Date:   Fri, 25 Sep 2020 14:34:59 +0300
+        by muru.com (Postfix) with ESMTPS id DBB9C80B0;
+        Fri, 25 Sep 2020 11:36:52 +0000 (UTC)
+Date:   Fri, 25 Sep 2020 14:36:46 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     khilman@kernel.org, linux@armlinux.org.uk,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org
-Subject: Re: [PATCH v2] omap3: enable off mode automatically
-Message-ID: <20200925113459.GI9471@atomide.com>
-References: <20200911161209.25149-1-andreas@kemnade.info>
- <20200924090047.2b61f883@aktux>
- <20200924070550.GG9471@atomide.com>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v3 08/15] ARM: dts: am335x: lxm: fix PCA9539 GPIO
+ expander properties
+Message-ID: <20200925113646.GJ9471@atomide.com>
+References: <20200916155715.21009-1-krzk@kernel.org>
+ <20200916155715.21009-9-krzk@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200924070550.GG9471@atomide.com>
+In-Reply-To: <20200916155715.21009-9-krzk@kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [200924 07:06]:
-> * Andreas Kemnade <andreas@kemnade.info> [200924 07:00]:
-> > On Fri, 11 Sep 2020 18:12:09 +0200
-> > Andreas Kemnade <andreas@kemnade.info> wrote:
-> > 
-> > > Enabling off mode was only reachable deeply hidden
-> > > in the debugfs. As powersaving is an important feature,
-> > > move the option out of its shady place.
-> > > The debugfs file can still be used to override the default.
-> > > 
-> > > Use the presence of a device compatible to ti,twl4030-idle or
-> > > ti,twl4030-idle-osc-off as an indicator that the board is wired correctly
-> > > for off mode.
-> > > 
-> > > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > > ---
-> > > An earlier version of this patch was here:
-> > > https://patchwork.kernel.org/patch/10794121/
-> > > 
-> > > A config option was used instead of the suggested devicetree check.
-> > > 
-> > > Changes in v2:
-> > > - fix compile without CONFIG_ARCH_OMAP3
-> > >   The variable enable_off_mode is now always a real one and not
-> > >   a preprocessor constant to avoid trouble with unusual configurations.
-> > > 
-> > Anything I still missed here? 
-> 
-> No the missing part is just me picking up the remaining patches
-> for v5.10 that I'll hopefully manage to do today :)
+* Krzysztof Kozlowski <krzk@kernel.org> [200916 18:58]:
+> The PCA9539 GPIO expander requires GPIO controller properties to operate
+> properly.
 
-Applied now in omap-for-v5.10/soc thanks.
+I'm picking this patch into omap-for-v5.10/dt thanks.
 
 Tony
