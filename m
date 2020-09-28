@@ -2,309 +2,165 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 292DB279F9C
-	for <lists+linux-omap@lfdr.de>; Sun, 27 Sep 2020 10:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A7B927A59A
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Sep 2020 05:03:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730504AbgI0I3E (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 27 Sep 2020 04:29:04 -0400
-Received: from mail-dm6nam11on2080.outbound.protection.outlook.com ([40.107.223.80]:20049
-        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727614AbgI0I3D (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 27 Sep 2020 04:29:03 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Sw4K4dcJSnTc6wb8NdpeuaODU8Plmoe5bp635yPaD9iE3AfYrjtd1nVmfip/Oia7dauGzT5BTJQIlevDqfjPJRSwv8pB37dWocpaeph6Vyf27W6NyU1vmkBDMY7MKIrwwTj9JCwxIEm1ADLFvKUmlw6Km7+MEYffSh7Ys1A0mjXH/FM+0nfhc5VzmHzt78KRoJpDZrrIYHS+2YzPqr/f4WfF6P+pccevPhPumf20pZXEwv5k6w9DPDIn7sutzChvKVdouucEvdUwtg5eQNQuCHTkoj1cjftquDCi20Kl6OE9QQJbqF2VVPxB63zKUwpVScWirE8hJ6HGgSX2f4leIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CcvROOIHPrTzckOCuezDgMG5OlL8Hu7mxuVTl5wJLRo=;
- b=amOGcRLPjocqCoBMs0akfhwj6OVbP/DwNSHSjrxp4MH0Gl9gANqNvm2dE515S6PONSljUrLe57IiB9rOFhmbhjnbxDZ7ThWDqKzj6qcfaSjJlEYooD5sdvk5JwhQj3A6wkc1ZAXw4CKgQiKjC4rN3RLpYrkHHJQ/EAD9DR1y0OdTsFfbBgIzo0tzfX0WU2itAXzTssP95M+1p8GVoRuTlLdXQrOEydmc3ZHoxt3L2tvo7rOHfi6Yx4X5K+mw5zD6Gll/sHiY1wA4kMQBekePaC+c2Rzm7UthWbGzq52DThR0WE7k3N3eMFwOWpdmEFezBbz3NyVoN7mfG8xKfWd5Dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=synaptics.com; dmarc=pass action=none
- header.from=synaptics.com; dkim=pass header.d=synaptics.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=Synaptics.onmicrosoft.com; s=selector2-Synaptics-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CcvROOIHPrTzckOCuezDgMG5OlL8Hu7mxuVTl5wJLRo=;
- b=e2CVVbN/aEC1ehRlBkh/cwmqphAUSoi1GFdBz0SFdS7NOsY8jSdpIHpPp+QJbNwwnoC7VrtM0b3lXTvlxIsaFk7+Lj0nJMb0qpVM3x+CwiMBoPQalvbe9Apa+JNtGkQ15d1VtZHtbdqtt2Qi7TOE89uQjGW9nKxdFKvWPgN4rxI=
-Authentication-Results: nvidia.com; dkim=none (message not signed)
- header.d=none;nvidia.com; dmarc=none action=none header.from=synaptics.com;
-Received: from DM6PR03MB4555.namprd03.prod.outlook.com (2603:10b6:5:102::17)
- by DM6PR03MB5035.namprd03.prod.outlook.com (2603:10b6:5:1e5::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.23; Sun, 27 Sep
- 2020 08:29:00 +0000
-Received: from DM6PR03MB4555.namprd03.prod.outlook.com
- ([fe80::e494:740f:155:4a38]) by DM6PR03MB4555.namprd03.prod.outlook.com
- ([fe80::e494:740f:155:4a38%7]) with mapi id 15.20.3412.028; Sun, 27 Sep 2020
- 08:28:59 +0000
-Date:   Sun, 27 Sep 2020 16:28:30 +0800
-From:   Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-To:     Jon Hunter <jonathanh@nvidia.com>
-Cc:     Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        <linux-pci@vger.kernel.org>,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        <linux-arm-kernel@axis.com>, Vidya Sagar <vidyas@nvidia.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Rob Herring <robh@kernel.org>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Pratyush Anand <pratyush.anand@gmail.com>,
-        <linux-tegra@vger.kernel.org>,
-        "Krzysztof Kozlowski" <krzk@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        "Kukjin Kim" <kgene@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>,
-        <linux-arm-msm@vger.kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Yue Wang" <yue.wang@Amlogic.com>,
-        <linux-samsung-soc@vger.kernel.org>,
-        "Bjorn Helgaas" <bhelgaas@google.com>,
-        <linux-amlogic@lists.infradead.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        "Jingoo Han" <jingoohan1@gmail.com>,
-        Andy Gross <agross@kernel.org>, <linux-kernel@vger.kernel.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH v2 0/5] PCI: dwc: improve msi handling
-Message-ID: <20200927162830.3531ba60@xhacker.debian>
-In-Reply-To: <d4715e17-147f-a4fe-32c1-32fdfe8548bb@nvidia.com>
-References: <20200924190421.549cb8fc@xhacker.debian>
-        <de4d9294-4f6d-c7d1-efc7-c8ef6570bd64@nvidia.com>
-        <20200925171712.254a018d@xhacker.debian>
-        <20200925172724.5bdf6aab@xhacker.debian>
-        <d4715e17-147f-a4fe-32c1-32fdfe8548bb@nvidia.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [124.74.246.114]
-X-ClientProxiedBy: TYAP286CA0021.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:404:8014::8) To DM6PR03MB4555.namprd03.prod.outlook.com
- (2603:10b6:5:102::17)
+        id S1726476AbgI1DDA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 27 Sep 2020 23:03:00 -0400
+Received: from mailout3.samsung.com ([203.254.224.33]:35545 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726396AbgI1DDA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Sep 2020 23:03:00 -0400
+Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20200928030257epoutp03475141aec6c04eac263de23f7290723b~403dedheL0939209392epoutp03d
+        for <linux-omap@vger.kernel.org>; Mon, 28 Sep 2020 03:02:57 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20200928030257epoutp03475141aec6c04eac263de23f7290723b~403dedheL0939209392epoutp03d
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1601262177;
+        bh=KjfQfqxrWjbZa16tlxMnm9PxTiQnV7ZQFDFLyBeBEUk=;
+        h=Subject:To:From:Date:In-Reply-To:References:From;
+        b=uZuFaXVFcnQiWlKXIcXzmI1wv1u0RsV9UFsobuXIVznGBeLxS0zm4YdmGjg77EPyr
+         4kS+UN8XjilvRLl0UfvxVzZgr2icdAaV1w7obN7oTM03MU5UeUA5qxjRCJ9HIDXF2t
+         KtmlJYG8d69P/G9y6Lw5hz6figg+2g0Y6mmDJPIU=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200928030256epcas1p22905fc893f42305df4fa6cd8a74cd019~403c85lyV1001210012epcas1p2_;
+        Mon, 28 Sep 2020 03:02:56 +0000 (GMT)
+Received: from epsmges1p2.samsung.com (unknown [182.195.40.157]) by
+        epsnrtp2.localdomain (Postfix) with ESMTP id 4C06lL0l2XzMqYkh; Mon, 28 Sep
+        2020 03:02:54 +0000 (GMT)
+Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
+        epsmges1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        CD.38.09918.D52517F5; Mon, 28 Sep 2020 12:02:54 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200928030253epcas1p23153177a2718d2327f00a0fad5623e8d~403Z2Zc4i0496204962epcas1p2j;
+        Mon, 28 Sep 2020 03:02:53 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200928030253epsmtrp195ea1947ce8b595d017a5a79f91d1504~403Z1WYU21249412494epsmtrp16;
+        Mon, 28 Sep 2020 03:02:53 +0000 (GMT)
+X-AuditID: b6c32a36-729ff700000026be-80-5f71525dd61a
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        37.3D.08604.D52517F5; Mon, 28 Sep 2020 12:02:53 +0900 (KST)
+Received: from [10.113.221.102] (unknown [10.113.221.102]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200928030252epsmtip206a13e667cb164c763172c775d8ced4e~403ZeBbvd3127831278epsmtip2f;
+        Mon, 28 Sep 2020 03:02:52 +0000 (GMT)
+Subject: Re: [PATCH 15/42] mfd: max14577: use PLATFORM_DEVID_NONE
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Milo Kim <milo.kim@ti.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Sangbeom Kim <sbkim73@samsung.com>,
+        Tony Lindgren <tony@atomide.com>,
+        patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
+From:   Chanwoo Choi <cw00.choi@samsung.com>
+Organization: Samsung Electronics
+Message-ID: <daa7c239-fba2-c0da-ee3c-037070636390@samsung.com>
+Date:   Mon, 28 Sep 2020 12:15:59 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101
+        Thunderbird/59.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from xhacker.debian (124.74.246.114) by TYAP286CA0021.JPNP286.PROD.OUTLOOK.COM (2603:1096:404:8014::8) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.25 via Frontend Transport; Sun, 27 Sep 2020 08:28:48 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6bbd68cb-aa5b-4171-2507-08d862bf61c2
-X-MS-TrafficTypeDiagnostic: DM6PR03MB5035:
-X-Microsoft-Antispam-PRVS: <DM6PR03MB5035F6550012254F09AB883AED340@DM6PR03MB5035.namprd03.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /Ks4IXRB0R5h4WoxZtkqy7g8LmoJs4i5kkHXTh3sHFxyOL4LuMQ5Ms+ZT2pi0B11fibhQlx6s+6SnJ5rUyzHeTgtkj4fCGzGMVQ8BanmLHAL7e9fixgNmPDwY2cDiLtvTwjgY6tsggnUn/Vgo5+r/Vp8OsShURp0Uqakj+99OMJ+hQ0UVJP77UhlG5j8rbyfG4ki2yZKO5OoUmmVXR3kONubYDpwIUJCzzKDqyAALgyDwVtTyPFCxhMTRRW19eDkbhnUQLCupRRXcDGmOAKBfo20dVBV8BbRDHTDfK3tsnP0eyh4lBJxRyJutOYrtlkMWx2By92/Rk5SsqbR0GgYGRYoTLqkIrqweC7S6J4D1AcvGWqUb9pIvZSEC3LfsDE6
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4555.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(39850400004)(346002)(396003)(376002)(136003)(366004)(8676002)(5660300002)(26005)(8936002)(956004)(1076003)(16526019)(186003)(4326008)(7696005)(52116002)(66556008)(66476007)(2906002)(316002)(478600001)(6666004)(45080400002)(55016002)(86362001)(7416002)(6916009)(7406005)(6506007)(53546011)(54906003)(9686003)(66946007)(83380400001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 0+uIc/TwuvtvuBShW8Tk1e4AjnT9HnXLc8Ac/CHWTBVJT2JHPZgn7JhVqTdX30njeIiS8Sp8EfkBDXcWbzRxmVCi+FX7PNbcmY+072f616R9GMp2bgYUC9YDBKBqxRsQsTBp1R/Ez7acTxswD+lappaEk307SgwSzCWErKXzF8j4SGRzwqHL4dNsIB21jhgY/LKxaeW+PgyN62Sbp4W03kU8oiznro2Dt2T67nSWvPWWoixsNJBSbxzQzHg2Zkr3JC+CVU72NI5e7DteogZ89zQnwcm9OyvJCdZkpRmF8On8VVZCpf+PtzCdwtEEz6c6Fz6TMwPzoatekqwDkuEyqBEBrIDG1cjAHhNEurRc+7+DwEztVZkBwWa/J4FqNXsp03Vn7TIGQUgBlfBYddSyIPDiH4cUMMqYMtH//tbwAsNcebd7vKLizIL8e/Bbq+eoY5wtnkqZbfXv1YkFJfHoLbPp+qylZxcvrhrujXFfhSGvVAoQxET+pXKSurtngszaaxTea9mhbP8c3ms08XF2lsAB5R6KIG7QZjB3oMYd7v2AMwToUKnj4T4tH9++MUH+kTPdRpSXdpzEjgz0GsrpO5mVP5R+fIJ6A/ytZZcL7doZeBYfrieOynKD9qML2bHtlYcRhHIKjT+jUQ1JPsPy+g==
-X-OriginatorOrg: synaptics.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6bbd68cb-aa5b-4171-2507-08d862bf61c2
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR03MB4555.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2020 08:28:59.6001
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 335d1fbc-2124-4173-9863-17e7051a2a0e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A1Ll9ZESZy8pzq9tJoDO/Co/cFM+bD6oxopVyXuVQLCYXKw6hdDzhCtsXlv1ESoxIKL6+McEDdKmRNlcEazmbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5035
+In-Reply-To: <20200921205016.20461-15-krzk@kernel.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Ta0xbZRj2Oz09bUnQQ+nkGzGzVBcH41ZY2YEAzjCXs4sGHdGFGGtDj4D0
+        Rk+Z06o0C5fBmNymQGWTAeN+EwoMtlLFAoPFMQK7yEWGQ0U2GOE2Lqta2i7y73mf533yfs/7
+        5WUzuIUsd3a8QkOpFRKZAHNC23729PP58N1Esb/lCyJ9voJFnDtdgBA/FDYyifpzPSixMW9m
+        EYODTSxicqUHEM0P7jCJ4c5ijPiuPBslcsesQuFgF0LM1N9lEpUbDSjR3nKJQbTpKzFi6bGJ
+        SfxR1IIRQ1XLCDFfOw0IY+oQgzCNHCHWuweRA27k6koeSl6s05L6yV8wsun3WiZZtehHdugn
+        WGRzTQZGjt+5hpEX+98hW8qTyfG1y4AsKP4XkF8bagDZckNL9t1rR8il5l2ReHRCaBwlkVJq
+        PqWIUUrjFbFhgqPHxRFiUZC/0EcYTOwX8BUSORUmOHgs0udQvMy6BgH/pESWZKUiJTQt8AsP
+        VSuTNBQ/TklrwgSUSipTBat8aYmcTlLE+sYo5SFCf/8AkbXxo4S4p5VzqMrMOjX6tA3owFks
+        E7DZEN8HJ9JVmcCJzcWvAGiZvIrZi0UA11IsTHuxCuDm4iPwzFE+QNt5I4Df9hodjscAjl7P
+        sjZx2K74G3D5VpdN4OGVLFjRnolsCRjuBU0z97At/ALuAW+vPbAZnPFwmGvMtPEovhuul3ah
+        W3gH/h7sb0tx9LjA/qJpG8/Bg+Cg5U8bz8Dd4Oj094gdvwzb54oZW4MhPsCB2Rk65pYA8YNw
+        oM/swK5wts/AsmN3+Hd2mgNrYXW/GbObzwBoMN1yGAKh6XI+spWfgXvCxk4/O+0BOzYvOB7x
+        PJxfyWLaV+QMz6Rx7S2vwOH7E4gd74Rl6RmYHZNwZmoaywEe+m3R9Nvi6LfF0f8/uASgNeBF
+        SkXLYylaqArY/tvNwHYiXkFXQN7cgm83QNigG0A2Q8BzfkumEnOdpZLPPqfUSrE6SUbR3UBk
+        XXYuw31HjNJ6YwqNWCgKCAwMJPYJg0RCocDNeWqUL+bisRINlUBRKkr9zIewOe46JPG4BS81
+        JCk4DXNjRmmhbhRT++SXaAf21+/mXfd4qJGMV5V+Gtx46Un0J7pWw56e17Gm3mzvPJF6pUuH
+        Hn24aqyoyvIyvPbjXNzmkT7+qXY4kZM8f+H87H3vrybkqadrqJGzCL3zsHdWw83q83XVb46E
+        eNXt1UbLA449d/X9cO82zW15JLqRvLFUEpD4Qfa1kJeWOdqFEweKWj9e5KpOeqY8GkntJ7+M
+        IslduuqIG3t/fbvzcMRU35BLrtPw2D8m882Fg988OeE0mx+14fpbQaS+JX5oPTq0zJy3avEr
+        l6fW5qS82uHyE9qa1ps5vZm3J/UvKW82oXqgTH4XePCiEnlcAUrHSYReDDUt+Q+fG3Y5qwQA
+        AA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrBIsWRmVeSWpSXmKPExsWy7bCSvG5sUGG8QcMfNov2d8vYLXqbpjNZ
+        bJyxntVibe9RFotf746wW5w/v4Hd4v7Xo4wWmx5fY7W4vGsOm8XsJf0sFhNvAyVmnN/HZPFi
+        7XVWi+W/1rFYbN+8kNli26zlbBaf3+9ntXg6czObxcUVX5gs3q1+wmixt/Uis8X+K14WPw+d
+        Z3IQ9/j2dRKLx7w11R6z7p9l89jwaDWrx4pP+h47Z91l99i0qpPN4861PWwe804GemxeUu9x
+        58dSRo/pc/4zevRtWcXosfl0tcfxG9uZPD5vkgsQiOKySUnNySxLLdK3S+DK+LP8LUvBEfaK
+        W3+2MTYwdrN1MXJwSAiYSCw5VdzFyMUhJLCbUWL/qo0sXYycQHFJiWkXjzJD1AhLHD4MVfOW
+        UeJByz1GkBphAUeJLxf2sYEkRARWs0u0/fjMAlG1hVHiW/N/NpAqNgEtif0vboDZ/AKKEld/
+        PAbr5hWwk5i4twssziKgKvFz0T6wzaICYRI7lzxmgqgRlDg58wlYnFPATOL832dgvcwC6hJ/
+        5l1ihrDFJW49mc8EYctLbH87h3kCo9AsJO2zkLTMQtIyC0nLAkaWVYySqQXFuem5xYYFhnmp
+        5XrFibnFpXnpesn5uZsYwYlDS3MH4/ZVH/QOMTJxMB5ilOBgVhLh9c0piBfiTUmsrEotyo8v
+        Ks1JLT7EKM3BoiTOe6NwYZyQQHpiSWp2ampBahFMlomDU6qBqTpAe82mxeFXuWv3zHfrK5jp
+        HX9om/zycxXzTt575FPdOsl/iWPJrnsvHP26rygGSulz3//Xe2P7nzffU5IO1RizOU9Rdbxj
+        1+SY0rbc53fcFDF+Z1PXJdVmtX/Lcn59f9uqyV8/x0vNVH/SRNb9k3r0Wtc+vLFAo6GlZabg
+        Zc2XDMWaD5d+PaX/4qJ1ztrYrICKk3M/LWq0Xd2Z2z093YHD+tC8/xG7Xrtfnjlt82T2qQ3s
+        C8I+MR3ZnWQdsSVQ6Mnzw+Fs35+dFs77cDej1tgm9FK9bquk6lzbNTsdYlXKnPRWzl42c6nj
+        GUlbi10PvY2DMvVqA7hNFqxkvW7UP6H25moB02JzlpnCMwsdlFiKMxINtZiLihMB3CBNkIsD
+        AAA=
+X-CMS-MailID: 20200928030253epcas1p23153177a2718d2327f00a0fad5623e8d
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20200921205201epcas1p44578cd3f5e7859a88834e7ac6f9631d3
+References: <20200921205016.20461-1-krzk@kernel.org>
+        <CGME20200921205201epcas1p44578cd3f5e7859a88834e7ac6f9631d3@epcas1p4.samsung.com>
+        <20200921205016.20461-15-krzk@kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-On Fri, 25 Sep 2020 16:13:02 +0100 Jon Hunter wrote:
-
+On 9/22/20 5:49 AM, Krzysztof Kozlowski wrote:
+> Use PLATFORM_DEVID_NONE define instead of "-1" value because:
+>  - it brings some meaning,
+>  - it might point attention why auto device ID was not used.
 > 
-> Hi Jisheng,
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> ---
+>  drivers/mfd/max14577.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> On 25/09/2020 10:27, Jisheng Zhang wrote:
-> 
-> ...
-> 
-> >> Could you please try below patch?
-> >>
-> >>
-> >> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> >> index bf25d783b5c5..7e5dc54d060e 100644
-> >> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> >> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> >> @@ -197,7 +197,6 @@ static struct irq_chip dw_pci_msi_bottom_irq_chip = {
-> >>         .name = "DWPCI-MSI",
-> >>         .irq_ack = dw_pci_bottom_ack,
-> >>         .irq_compose_msi_msg = dw_pci_setup_msi_msg,
-> >> -       .irq_set_affinity = dw_pci_msi_set_affinity,
-> >>         .irq_mask = dw_pci_bottom_mask,
-> >>         .irq_unmask = dw_pci_bottom_unmask,
-> >>  };  
-> >
-> > A complete patch w/o compiler warning:
-> >
-> > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > index bf25d783b5c5..18f719cfed0b 100644
-> > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > @@ -137,12 +137,6 @@ static void dw_pci_setup_msi_msg(struct irq_data *d, struct msi_msg *msg)
-> >               (int)d->hwirq, msg->address_hi, msg->address_lo);
-> >  }
-> >
-> > -static int dw_pci_msi_set_affinity(struct irq_data *d,
-> > -                                const struct cpumask *mask, bool force)
-> > -{
-> > -     return -EINVAL;
-> > -}
-> > -
-> >  static void dw_pci_bottom_mask(struct irq_data *d)
-> >  {
-> >       struct pcie_port *pp = irq_data_get_irq_chip_data(d);
-> > @@ -197,7 +191,6 @@ static struct irq_chip dw_pci_msi_bottom_irq_chip = {
-> >       .name = "DWPCI-MSI",
-> >       .irq_ack = dw_pci_bottom_ack,
-> >       .irq_compose_msi_msg = dw_pci_setup_msi_msg,
-> > -     .irq_set_affinity = dw_pci_msi_set_affinity,
-> >       .irq_mask = dw_pci_bottom_mask,
-> >       .irq_unmask = dw_pci_bottom_unmask,
-> >  };
-> >  
-> 
-> 
-> Thanks I was not expecting this to work because ...
-> 
->  int irq_do_set_affinity(struct irq_data *data, const struct cpumask *mask,
->                          bool force)
->  {
->          struct irq_desc *desc = irq_data_to_desc(data);
->          struct irq_chip *chip = irq_data_get_irq_chip(data);
->          int ret;
-> 
->          if (!chip || !chip->irq_set_affinity)
->                  return -EINVAL;
-> 
-> However, with your patch Tegra crashes on boot ...
-> 
-> [   11.613853] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-> [   11.622500] Mem abort info:
-> [   11.622515]   ESR = 0x86000004
-> [   11.622524]   EC = 0x21: IABT (current EL), IL = 32 bits
-> [   11.622540]   SET = 0, FnV = 0
-> [   11.636544]   EA = 0, S1PTW = 0
-> [   11.636554] user pgtable: 4k pages, 48-bit VAs, pgdp=000000046a28e000
-> [   11.636559] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-> [   11.652652] Internal error: Oops: 86000004 [#1] PREEMPT SMP
-> [   11.652658] Modules linked in: pwm_tegra phy_tegra194_p2u crct10dif_ce lm90 pwm_fan tegra_bpmp_thermal pcie_tegra194 ip_tables x_tables ipv6
-> [   11.670525] CPU: 3 PID: 138 Comm: kworker/3:3 Not tainted 5.9.0-rc4-dirty #12
-> [   11.670534] Hardware name: NVIDIA Jetson AGX Xavier Developer Kit (DT)
-> [   11.683967] Workqueue: events deferred_probe_work_func
-> [   11.683974] pstate: 60c00089 (nZCv daIf +PAN +UAO BTYPE=--)
-> [   11.683985] pc : 0x0
-> [   11.696669] lr : msi_domain_set_affinity+0x44/0xc0
-> [   11.696672] sp : ffff800012bcb390
-> [   11.696680] x29: ffff800012bcb390 x28: ffff0003e3033c20
-> [   11.709891] x27: ffff0003e76cfe58 x26: 0000000000000000
-> [   11.709900] x25: ffff800011d7e850 x24: ffff800011d7e878
-> [   11.709908] x23: 0000000000000000 x22: ffff0003e76cfe00
-> [   11.709914] x21: ffff0003e76cfe58 x20: ffff0003e76cfe58
-> [   11.709921] x19: ffff800011b19000 x18: ffffffffffffffff
-> [   11.709927] x17: 0000000000000000 x16: 0000000000000000
-> [   11.741262] x15: ffff800011b19948 x14: 0000000000000040
-> [   11.741267] x13: 0000000000000228 x12: 0000000000000030
-> [   11.741272] x11: 0101010101010101 x10: 0000000000000040
-> [   11.741277] x9 : 0000000000000000 x8 : 0000000000000004
-> [   11.741281] x7 : ffffffffffffffff x6 : 00000000000000ff
-> [   11.767374] x5 : 0000000000000000 x4 : 0000000000000000
-> [   11.767379] x3 : 0000000000000000 x2 : 0000000000000000
-> [   11.767384] x1 : ffff800011d7e898 x0 : ffff0003e262bf00
-> [   11.767406] Call trace:
-> [   11.767410]  0x0
-> [   11.767424]  irq_do_set_affinity+0x4c/0x178
-> [   11.791400]  irq_setup_affinity+0x124/0x1b0
-> [   11.791423]  irq_startup+0x6c/0x118
-> [   11.791434]  __setup_irq+0x810/0x8a0
-> [   11.802510]  request_threaded_irq+0xdc/0x188
-> [   11.802517]  pcie_pme_probe+0x98/0x110
-> [   11.802536]  pcie_port_probe_service+0x34/0x60
-> [   11.814799]  really_probe+0x110/0x400
-> [   11.814809]  driver_probe_device+0x54/0xb8
-> [   11.822438]  __device_attach_driver+0x90/0xc0
-> [   11.822463]  bus_for_each_drv+0x70/0xc8
-> [   11.822471]  __device_attach+0xec/0x150
-> [   11.834307]  device_initial_probe+0x10/0x18
-> [   11.834311]  bus_probe_device+0x94/0xa0
-> [   11.834315]  device_add+0x464/0x730
-> [   11.834338]  device_register+0x1c/0x28
-> [   11.834349]  pcie_port_device_register+0x2d0/0x3e8
-> [   11.854056]  pcie_portdrv_probe+0x34/0xd8
-> [   11.854063]  local_pci_probe+0x3c/0xa0
-> [   11.854088]  pci_device_probe+0x128/0x1c8
-> [   11.854103]  really_probe+0x110/0x400
-> [   11.869283]  driver_probe_device+0x54/0xb8
-> [   11.869311]  __device_attach_driver+0x90/0xc0
-> [   11.877638]  bus_for_each_drv+0x70/0xc8
-> [   11.877645]  __device_attach+0xec/0x150
-> [   11.877669]  device_attach+0x10/0x18
-> [   11.877680]  pci_bus_add_device+0x4c/0xb0
-> [   11.892642]  pci_bus_add_devices+0x44/0x90
-> [   11.892646]  dw_pcie_host_init+0x370/0x4f8
-> [   11.892653]  tegra_pcie_dw_probe+0x5e8/0xb50 [pcie_tegra194]
-> [   11.892661]  platform_drv_probe+0x50/0xa8
-> [   11.910179]  really_probe+0x110/0x400
-> [   11.910183]  driver_probe_device+0x54/0xb8
-> [   11.910186]  __device_attach_driver+0x90/0xc0
-> [   11.910213]  bus_for_each_drv+0x70/0xc8
-> [   11.910240]  __device_attach+0xec/0x150
-> [   11.929689]  device_initial_probe+0x10/0x18
-> [   11.929694]  bus_probe_device+0x94/0xa0
-> [   11.929719]  deferred_probe_work_func+0x6c/0xa0
-> [   11.929730]  process_one_work+0x1cc/0x360
-> [   11.946008]  worker_thread+0x48/0x450
-> [   11.949602]  kthread+0x120/0x150
-> [   11.952803]  ret_from_fork+0x10/0x1c
-> [   11.956332] Code: bad PC value
-> [   11.959360] ---[ end trace 03c30e252fe4e40b ]---
-> 
-> To be honest, I am not sure I completely understand why it crashes here.
+> diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
+> index be185e9d5f16..93df79748a45 100644
+> --- a/drivers/mfd/max14577.c
+> +++ b/drivers/mfd/max14577.c
+> @@ -445,7 +445,7 @@ static int max14577_i2c_probe(struct i2c_client *i2c,
+>  			goto err_max77836;
+>  	}
+>  
+> -	ret = mfd_add_devices(max14577->dev, -1, mfd_devs,
+> +	ret = mfd_add_devices(max14577->dev, PLATFORM_DEVID_NONE, mfd_devs,
+>  			mfd_devs_size, NULL, 0, NULL);
+>  	if (ret < 0)
+>  		goto err_mfd;
 > 
 
-I see, the msi_domain_set_affinity() calls parent->chip->irq_set_affinity
-without checking, grepping the irqchip and pci dir, I found that
-if the MSI is based on some cascaded interrupt mechanism, they all
-point the irq_set_affinity to irq_chip_set_affinity_parent(), so I believe
-below patch works:
+Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index bf25d783b5c5..093fba616736 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -137,12 +137,6 @@ static void dw_pci_setup_msi_msg(struct irq_data *d, struct msi_msg *msg)
- 		(int)d->hwirq, msg->address_hi, msg->address_lo);
- }
- 
--static int dw_pci_msi_set_affinity(struct irq_data *d,
--				   const struct cpumask *mask, bool force)
--{
--	return -EINVAL;
--}
--
- static void dw_pci_bottom_mask(struct irq_data *d)
- {
- 	struct pcie_port *pp = irq_data_get_irq_chip_data(d);
-@@ -197,7 +191,7 @@ static struct irq_chip dw_pci_msi_bottom_irq_chip = {
- 	.name = "DWPCI-MSI",
- 	.irq_ack = dw_pci_bottom_ack,
- 	.irq_compose_msi_msg = dw_pci_setup_msi_msg,
--	.irq_set_affinity = dw_pci_msi_set_affinity,
-+	.irq_set_affinity = irq_chip_set_affinity_parent,
- 	.irq_mask = dw_pci_bottom_mask,
- 	.irq_unmask = dw_pci_bottom_unmask,
- };
-
+-- 
+Best Regards,
+Chanwoo Choi
+Samsung Electronics
