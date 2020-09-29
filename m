@@ -2,133 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 729BA27CF01
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Sep 2020 15:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DCF227D12D
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Sep 2020 16:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728674AbgI2NXW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Sep 2020 09:23:22 -0400
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:13115 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727495AbgI2NXW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Sep 2020 09:23:22 -0400
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5f7335390005>; Tue, 29 Sep 2020 06:23:05 -0700
-Received: from [10.26.75.44] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 29 Sep
- 2020 13:22:59 +0000
-Subject: Re: [PATCH v2 0/5] PCI: dwc: improve msi handling
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-CC:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        "NXP Linux Team" <linux-imx@nxp.com>,
-        Yue Wang <yue.wang@Amlogic.com>,
-        "Kevin Hilman" <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Pratyush Anand <pratyush.anand@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-amlogic@lists.infradead.org>, <linux-arm-kernel@axis.com>,
-        <linux-arm-msm@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        Vidya Sagar <vidyas@nvidia.com>
-References: <20200924190421.549cb8fc@xhacker.debian>
- <de4d9294-4f6d-c7d1-efc7-c8ef6570bd64@nvidia.com>
- <20200929184851.22682ff1@xhacker.debian>
-From:   Jon Hunter <jonathanh@nvidia.com>
-Message-ID: <8e06a370-a37a-5f33-b43b-2830adb31b3e@nvidia.com>
-Date:   Tue, 29 Sep 2020 14:22:57 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1730489AbgI2Oc3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Sep 2020 10:32:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43118 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725554AbgI2Oc3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 29 Sep 2020 10:32:29 -0400
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D849F20C09;
+        Tue, 29 Sep 2020 14:32:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601389948;
+        bh=VjYWaMro1xYrDNe26Vn7kbXKrgcLLp4Ul6eqYCvWIoQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=H42ozem74rjURrts0hRxe5T7CR4s7jiAxWHjUUrTYgxfrnGr0VLpdA4Aw1dCyY2XN
+         F3H1cPJHIvXCrMnWjDV3iLSMTT23c4tqpcm164P6bprzHmV6oXC2ERW52N1oVptGMB
+         32FTqmUy5XKdV9HwtzY+TaD8vzqFnaRvS+GdHy30=
+Received: by mail-ot1-f46.google.com with SMTP id 60so4623648otw.3;
+        Tue, 29 Sep 2020 07:32:27 -0700 (PDT)
+X-Gm-Message-State: AOAM530hi35aVK04eo9DT35oBrTCsxBc06yqeDT+7RJyjb7kAAo18258
+        LDW5TRFGJegbTh4tDbzO0PkVpUlrsBGMACKTcQ==
+X-Google-Smtp-Source: ABdhPJzrYJQxmXmK64+WMD0rkZVvGC2aVs8Bric+nrdYTcuT20sY6koxQbDnQMlcrE1ulqGTm+OoF2mzSgf9Ky4PhtA=
+X-Received: by 2002:a9d:6ada:: with SMTP id m26mr3041497otq.192.1601389946977;
+ Tue, 29 Sep 2020 07:32:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200929184851.22682ff1@xhacker.debian>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1601385785; bh=O1AmZKE8e7EeFMJXiJzyuvgvP7i5Nhyk8/759La3vkU=;
-        h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
-         MIME-Version:In-Reply-To:Content-Type:Content-Language:
-         Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
-        b=PEUGx/Oto2o82hJdlAk6/ts4WMeu88gqStSAIbht98Z/IG5S7VWh+vP98HENpPGWz
-         dvi4P4CwF9nHeRHsl9AzVkrvmXIBrwVTKKBrg57TUdTtX6rbg2iu/yl/npKamfzDfN
-         bde3+rbXPUm4osMwTFyxLBEvxx/+GgYRccoic8JmGxsvmJpOdJQ499JIrzTlkZbfGy
-         uatLuKB6XhZi8NLNwtLMbP08tRGBLxw/s1yS6UBfhIRviBPwMOohoewPUOkIiYkNbc
-         kQHmRyOIchEWyKHIRxQV7sPqqZB+NDjrJDEXtUGp+aaP6iFoCKud6BERbUL3KiIhZi
-         LjHupkiehvUcg==
+References: <20200821035420.380495-1-robh@kernel.org> <20200915091218.28737-1-michael@walle.cc>
+ <CAL_JsqLHBPduSjs1L3R2vbsLygJNDzajt4XThAkRG0DEu-GnAA@mail.gmail.com>
+ <346b694e43b1b6b86e4f3164e6589d25@walle.cc> <6b776dda-e575-74f0-5575-0e5d30641522@ti.com>
+In-Reply-To: <6b776dda-e575-74f0-5575-0e5d30641522@ti.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 29 Sep 2020 09:32:16 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+kQdmRfMQo-1AE+A3TxH7J99fuuuV5H0H=cOT1DK436Q@mail.gmail.com>
+Message-ID: <CAL_Jsq+kQdmRfMQo-1AE+A3TxH7J99fuuuV5H0H=cOT1DK436Q@mail.gmail.com>
+Subject: Re: [PATCH v2 00/40] PCI: dwc: Driver clean-ups
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Michael Walle <michael@walle.cc>,
+        "Gross, Andy" <agross@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dilip Kota <eswara.kota@linux.intel.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Kukjin Kim <kgene@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        linux-arm-kernel@axis.com,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        PCI <linux-pci@vger.kernel.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Song Xiaowei <songxiaowei@hisilicon.com>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Wangbinghui <wangbinghui@hisilicon.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Yue Wang <yue.wang@amlogic.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Jisheng,
+On Tue, Sep 29, 2020 at 12:24 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>
+> Hi,
+>
+> On 16/09/20 1:24 pm, Michael Walle wrote:
+> > Am 2020-09-16 00:02, schrieb Rob Herring:
+> >> Can you try this? The link up check seemed unnecessary as it is racy.
+> >> What happens if the link goes down right after checking? That's the
+> >> only thing in the change that sticks out.
+> >>
+> >> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c
+> >> b/drivers/pci/controller/dwc/pcie-designware-host.c
+> >> index 317ff512f8df..afee1a0e8883 100644
+> >> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> >> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> >> @@ -441,6 +441,9 @@ static void __iomem
+> >> *dw_pcie_other_conf_map_bus(struct pci_bus *bus,
+> >>         struct pcie_port *pp = bus->sysdata;
+> >>         struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> >>
+> >> +       if (!dw_pcie_link_up(pci))
+> >> +               return NULL;
+> >> +
+> >>         busdev = PCIE_ATU_BUS(bus->number) |
+> >> PCIE_ATU_DEV(PCI_SLOT(devfn)) |
+> >>                  PCIE_ATU_FUNC(PCI_FUNC(devfn));
+> >
+> > This will fix the issue.
+>
+> This fix is required to get DRA7 EVM booting again in linux-next.
 
-On 29/09/2020 11:48, Jisheng Zhang wrote:
-> Hi Jon,
-> 
-> On Fri, 25 Sep 2020 09:53:45 +0100 Jon Hunter wrote:
-> 
->>
->> On 24/09/2020 12:05, Jisheng Zhang wrote:
->>> Improve the msi code:
->>> 1. Add proper error handling.
->>> 2. Move dw_pcie_msi_init() from each users to designware host to solve
->>> msi page leakage in resume path.  
->>
->> Apologies if this is slightly off topic, but I have been meaning to ask
->> about MSIs and PCI. On Tegra194 which uses the DWC PCI driver, whenever we
->> hotplug CPUs we see the following warnings ...
->>
->>  [      79.068351] WARNING KERN IRQ70: set affinity failed(-22).
->>  [      79.068362] WARNING KERN IRQ71: set affinity failed(-22).
->>
-> 
-> I tried to reproduce this issue on Synaptics SoC, but can't reproduce it.
-> Per my understanding of the code in kernel/irq/cpuhotplug.c, this warning
-> happened when we migrate irqs away from the offline cpu, this implicitly
-> implies that before this point the irq has bind to the offline cpu, but how
-> could this happen given current dw_pci_msi_set_affinity() implementation
-> always return -EINVAL
+Did you see the discussion here[1]? Is firmware setting up the same
+register in question?
 
-By default the smp_affinity should be set so that all CPUs can be
-interrupted ...
+Rob
 
-$ cat /proc/irq/70/smp_affinity
-0xff
-
-In my case there are 8 CPUs and so 0xff implies that the interrupt can
-be triggered on any of the 8 CPUs.
-
-Do you see the set_affinity callback being called for the DWC irqchip in
-migrate_one_irq()?
-
-Cheers
-Jon
-
--- 
-nvpublic
+[1] http://lore.kernel.org/r/HE1PR0402MB33713A623A37D08AE3253DEB84320@HE1PR0402MB3371.eurprd04.prod.outlook.com
