@@ -2,85 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5755C27CE19
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Sep 2020 14:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 729BA27CF01
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Sep 2020 15:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728368AbgI2Mva (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Sep 2020 08:51:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49826 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728364AbgI2Mv3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Sep 2020 08:51:29 -0400
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D894C0613D0
-        for <linux-omap@vger.kernel.org>; Tue, 29 Sep 2020 05:51:29 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id y2so5326024lfy.10
-        for <linux-omap@vger.kernel.org>; Tue, 29 Sep 2020 05:51:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4ptsriY4LqRV3GJ566RNPaiV+XmYiNhIg946yy5oC2g=;
-        b=C1oMWXhl/V1we8SiQv7MD3uFufVOKUTx1KFYS3ZI3EMF5mo4zflrkl/KNYXDL7r9Es
-         cFSk/006NTDo233joIyrpSe3WP/glDonquZa8lFyPbzHO5E9d3WRe5bWA0aQPHy9G2d3
-         CEGYDADd//aSSrN9Apffy5e0CZZArqxDe0t5Uk/MS+2HjOwUVsbW1xoL9plDoQ18dgD0
-         pmaCC9xpy/Q79VICJs1PIohTlMCuCIkdgrgbD5w5723sAQVXiNNVBT3WuuN2x1mt5pgr
-         zjtpTKBdj9DCIV5+jHZiGAGL9xlc7tQgITfuuZh8N08Kp1w07y96lBKAKzknr7TI6hoP
-         MKiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4ptsriY4LqRV3GJ566RNPaiV+XmYiNhIg946yy5oC2g=;
-        b=KbeOSqbeG1aU1X/4J0zWV/Z8oW/uXrCU8eOYpf3OV1EQQJiTT1eSap+T29TKDX/njp
-         5lp4NY9q6Yo6/2PTuDHJ8rh+JzuspClK1wVabjorPEWJivGySLDVEep/DqiZji0T1PFZ
-         m18Xl/C4St0TWHnE5Q+sQFJ/Soyfm90ooa0r4JY1NjVb7qH97Qu3kuBq3xwQbW7grNE4
-         Hd+GJp5yURbpA954CPGx3x0EMwWximnMUyEr8QN3x6q6TJMVdET7t9bTOpRvPxfdVxSt
-         5/qbk5fTwdaQ5fNDInUCXmVX11CP0YDA4TGCZ+qLZkIfi5qhisSN7tNugICii0PjmNkn
-         6XZA==
-X-Gm-Message-State: AOAM531OIG6KB8xoEaWy1fs86LWhEo8BRRnwfsqLtcYnfKgPJKqZ5jxD
-        rOaeozG6qbx6t2kk4/wPoWbULr63SaBsoKJk3+7nTdSOA6Njeg==
-X-Google-Smtp-Source: ABdhPJzAklLFWTOhXE7N9aEIT8GTpcr3Umi0D1/nm0zTd6rrhgvTwNP0yZm6xyWGCQSyOiDqLPaAZ2G3phObiGG1cWk=
-X-Received: by 2002:a19:520b:: with SMTP id m11mr1033290lfb.502.1601383887479;
- Tue, 29 Sep 2020 05:51:27 -0700 (PDT)
+        id S1728674AbgI2NXW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Sep 2020 09:23:22 -0400
+Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:13115 "EHLO
+        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727495AbgI2NXW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Sep 2020 09:23:22 -0400
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5f7335390005>; Tue, 29 Sep 2020 06:23:05 -0700
+Received: from [10.26.75.44] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 29 Sep
+ 2020 13:22:59 +0000
+Subject: Re: [PATCH v2 0/5] PCI: dwc: improve msi handling
+To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+CC:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        "NXP Linux Team" <linux-imx@nxp.com>,
+        Yue Wang <yue.wang@Amlogic.com>,
+        "Kevin Hilman" <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-amlogic@lists.infradead.org>, <linux-arm-kernel@axis.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+        Vidya Sagar <vidyas@nvidia.com>
+References: <20200924190421.549cb8fc@xhacker.debian>
+ <de4d9294-4f6d-c7d1-efc7-c8ef6570bd64@nvidia.com>
+ <20200929184851.22682ff1@xhacker.debian>
+From:   Jon Hunter <jonathanh@nvidia.com>
+Message-ID: <8e06a370-a37a-5f33-b43b-2830adb31b3e@nvidia.com>
+Date:   Tue, 29 Sep 2020 14:22:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200913210825.2022552-1-drew@beagleboard.org>
-In-Reply-To: <20200913210825.2022552-1-drew@beagleboard.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 29 Sep 2020 14:51:16 +0200
-Message-ID: <CACRpkdZXu9g_Rq7707-6hXqPVfbxPBcrnR8KwLm+zOgS_EabAQ@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: single: check if #pinctrl-cells exceeds 3
-To:     Drew Fustini <drew@beagleboard.org>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>,
-        Trent Piepho <tpiepho@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200929184851.22682ff1@xhacker.debian>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1601385785; bh=O1AmZKE8e7EeFMJXiJzyuvgvP7i5Nhyk8/759La3vkU=;
+        h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
+         MIME-Version:In-Reply-To:Content-Type:Content-Language:
+         Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
+        b=PEUGx/Oto2o82hJdlAk6/ts4WMeu88gqStSAIbht98Z/IG5S7VWh+vP98HENpPGWz
+         dvi4P4CwF9nHeRHsl9AzVkrvmXIBrwVTKKBrg57TUdTtX6rbg2iu/yl/npKamfzDfN
+         bde3+rbXPUm4osMwTFyxLBEvxx/+GgYRccoic8JmGxsvmJpOdJQ499JIrzTlkZbfGy
+         uatLuKB6XhZi8NLNwtLMbP08tRGBLxw/s1yS6UBfhIRviBPwMOohoewPUOkIiYkNbc
+         kQHmRyOIchEWyKHIRxQV7sPqqZB+NDjrJDEXtUGp+aaP6iFoCKud6BERbUL3KiIhZi
+         LjHupkiehvUcg==
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Sep 13, 2020 at 11:17 PM Drew Fustini <drew@beagleboard.org> wrote:
+Hi Jisheng,
 
-> The property #pinctrl-cells can either be 2 or 3.  There is currently
-> only a check to make sure that #pinctrl-cells is 2 or greater.  This
-> patch adds a check to make sure it is not greater than 3.
->
-> Fixes: a13395418888 ("pinctrl: single: parse #pinctrl-cells = 2")
-> Reported-by: Trent Piepho <tpiepho@gmail.com>
-> Link: https://lore.kernel.org/linux-omap/3139716.CMS8C0sQ7x@zen.local/
-> Signed-off-by: Drew Fustini <drew@beagleboard.org>
+On 29/09/2020 11:48, Jisheng Zhang wrote:
+> Hi Jon,
+> 
+> On Fri, 25 Sep 2020 09:53:45 +0100 Jon Hunter wrote:
+> 
+>>
+>> On 24/09/2020 12:05, Jisheng Zhang wrote:
+>>> Improve the msi code:
+>>> 1. Add proper error handling.
+>>> 2. Move dw_pcie_msi_init() from each users to designware host to solve
+>>> msi page leakage in resume path.  
+>>
+>> Apologies if this is slightly off topic, but I have been meaning to ask
+>> about MSIs and PCI. On Tegra194 which uses the DWC PCI driver, whenever we
+>> hotplug CPUs we see the following warnings ...
+>>
+>>  [      79.068351] WARNING KERN IRQ70: set affinity failed(-22).
+>>  [      79.068362] WARNING KERN IRQ71: set affinity failed(-22).
+>>
+> 
+> I tried to reproduce this issue on Synaptics SoC, but can't reproduce it.
+> Per my understanding of the code in kernel/irq/cpuhotplug.c, this warning
+> happened when we migrate irqs away from the offline cpu, this implicitly
+> implies that before this point the irq has bind to the offline cpu, but how
+> could this happen given current dw_pci_msi_set_affinity() implementation
+> always return -EINVAL
 
-Tony, does this and the other patch look good to you?
+By default the smp_affinity should be set so that all CPUs can be
+interrupted ...
 
-Yours,
-Linus Walleij
+$ cat /proc/irq/70/smp_affinity
+0xff
+
+In my case there are 8 CPUs and so 0xff implies that the interrupt can
+be triggered on any of the 8 CPUs.
+
+Do you see the set_affinity callback being called for the DWC irqchip in
+migrate_one_irq()?
+
+Cheers
+Jon
+
+-- 
+nvpublic
