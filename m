@@ -2,215 +2,146 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8479927C283
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Sep 2020 12:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3067327C2BB
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Sep 2020 12:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728200AbgI2KgL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Sep 2020 06:36:11 -0400
-Received: from mail-bn8nam12on2043.outbound.protection.outlook.com ([40.107.237.43]:2880
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        id S1728292AbgI2Kte (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Sep 2020 06:49:34 -0400
+Received: from mail-bn8nam11on2043.outbound.protection.outlook.com ([40.107.236.43]:20577
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725306AbgI2KgK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 29 Sep 2020 06:36:10 -0400
+        id S1727761AbgI2Ktd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 29 Sep 2020 06:49:33 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HNr3R4kgHQ+0In2grDv5NLYRmpFKpyuD0MYmzu0gIxqyhamFuGDf9zBRv076iPCUb/qqEL0PA3LovlvRiSNkh0ZcW5iv2xJmkTIHD6dX8Z2en4FpzFm0ysQoY+16P9IKzd+84TnFsrO4iILph5odsQJ/joqO4+mC9G6+kP8WWb1Z+r84xFWlyBQd5Wbyp6DiYSmLZ6BGb7VM9V1XBr9FcHj+5kkhs6jzfcyRMHmAo88V/7Gu0tgpRqRL8KbDi1Qoq6KG6Ciq3MnAQtPAU1OUu6I0Ns8KCfjaII8cix7Mz4xx+bK2RJuz6fXM/1FCbQzqkimaZjed5GqDiQxVdkMABQ==
+ b=EgK4TbOnr0fczpx5TAK6RA2ni7US/7NnDQ+LvZW8WoKUpwIPuLYiLtUsw1hfq05CLJDyTf/LaK488Qq33vHlh+Yxf9DsSMzvu5i5lmFbhjDNn3m+itfDeDIBGz2xHYecjRSxLpa9MGlANfT8qd9vN6iQz/FYD1jthiVQUJm0wIGuQG0VxKu9dWnOcKmb8GL85xCjesKevcxiSYZG2xum/5ptx045qcw7snH6BIAGjtUx93X30OnjzHdWreE9UpGlXb1RMiPCqqfv0DR3HHQET3Lx4J5N3qkdvW70XXwJ2XdqSA6NKkaXkMtGZR6Z4CrvxUIJZbDpxu9A6/wLFMFBFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mLsmRuocSYHjRDfMW+H3OrXPClDCOufHTKyMVD6zYqM=;
- b=SgDr47P8m+76FoHQXJ3fcYazTH0SFReDlFUHLYjcR49+hPZEdUYl8XuRtUtTFyOUrNjM6gcbeYR5J7s8vwCQbBgi6sQ48scBvP0spHTdfe4JRpNZhE3g+57BG1cmN9PUsuIccNr86nVBeIErFU4/dUQiNGyYzXyR5EjH7vWBMu7wD1dQJRXRPooQXqtHvnx/cnUgAqnLlX3/cjjIHGeT99+MGm5T9UvjGJthOEiXFGuEsiopM1TNUn/VcXMGG+IjLKfT0jkf8CFsI3GFHQw9QsVHlNE5intxM5JLpsmmexR4JUHOc1V5HKv7xJNSul4ifksEWZ+klK2Ax1hwKFj8fw==
+ bh=RrEqLeOG0e+YEU9Ew3Jbjzgylpn3z6Ewcxvzj7PRsog=;
+ b=iwGWAcbqwq5ivUMM3n8DQNgsckZFsme7VLkdsyWxRFDVYywsvYSEhf4zL2WDvfL9fySw6VhuKrTPnxw8TJmLYAjy+MZNjdR+qdpEhlMs/9ksg0r7sv4lk6QMgxbxvIU39A5OXQC7XAJ7sqrg6ODL8wvIEIdwGg6Z/0wPFLEo8SPO9x0G6d2CtjE9F/JKVhHhgCF3KkHW2r1xMGyCF3Da6q35WTpEedEyO9YHePl/IhSI0ZXKO8Qs4UrwNrumveAicLuBWFkAJC/tflH89Tx4Ppc9Ku5coWsCsBi5gNWYUoP1UL8mfe4xFUHcBJVOiksCPhSyUikAPUlewJ3PO+iwnw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=synaptics.com; dmarc=pass action=none
  header.from=synaptics.com; dkim=pass header.d=synaptics.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=Synaptics.onmicrosoft.com; s=selector2-Synaptics-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mLsmRuocSYHjRDfMW+H3OrXPClDCOufHTKyMVD6zYqM=;
- b=l9xyB80WwENpAQKt+/Q03mSUDvMu1wM+bR/Nz3n/3nAHH0/pXjHw6LKzwAva7tZNo4kA1F27ORQNHuNUuSa0uukf9NjzTRW9j7Yq4wMZzNBXJljK9kJyK39nt9MxrhnLG1/zsJjg5B0F8kWUda2x9+n3UyNdhHVQ9mLfn9Um82o=
-Authentication-Results: ti.com; dkim=none (message not signed)
- header.d=none;ti.com; dmarc=none action=none header.from=synaptics.com;
+ bh=RrEqLeOG0e+YEU9Ew3Jbjzgylpn3z6Ewcxvzj7PRsog=;
+ b=fzGWL+Dtmv1fbrzf/1UqoiwBl4DNVP8RYtDYz8YuHO6crpagZ1TAA0Fj5DVPqzC6PE/7L9J/Jep9nES1qMUNSKsWyfziinUmfbT6uRs4sziCKH4vpY4KRthBrm0R2Im5jNpKbqoX66pG4dr9kdx+SPih/r2nKZlYZucEA8snNNA=
+Authentication-Results: nvidia.com; dkim=none (message not signed)
+ header.d=none;nvidia.com; dmarc=none action=none header.from=synaptics.com;
 Received: from DM6PR03MB4555.namprd03.prod.outlook.com (2603:10b6:5:102::17)
- by DM6PR03MB5292.namprd03.prod.outlook.com (2603:10b6:5:240::19) with
+ by DM6PR03MB4442.namprd03.prod.outlook.com (2603:10b6:5:10a::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.32; Tue, 29 Sep
- 2020 10:36:07 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.26; Tue, 29 Sep
+ 2020 10:49:28 +0000
 Received: from DM6PR03MB4555.namprd03.prod.outlook.com
  ([fe80::e494:740f:155:4a38]) by DM6PR03MB4555.namprd03.prod.outlook.com
  ([fe80::e494:740f:155:4a38%7]) with mapi id 15.20.3433.032; Tue, 29 Sep 2020
- 10:36:07 +0000
-Date:   Tue, 29 Sep 2020 18:34:58 +0800
+ 10:49:28 +0000
+Date:   Tue, 29 Sep 2020 18:48:51 +0800
 From:   Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-To:     Kishon Vijay Abraham I <kishon@ti.com>,
+To:     Jon Hunter <jonathanh@nvidia.com>
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Rob Herring <robh@kernel.org>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Jingoo Han <jingoohan1@gmail.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        "Yue Wang" <yue.wang@Amlogic.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        "Neil Armstrong" <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
         Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 2/2] PCI: dwc: Fix MSI page leakage in suspend/resume
-Message-ID: <20200929183458.37f91a38@xhacker.debian>
-In-Reply-To: <20200929183403.060d1853@xhacker.debian>
-References: <20200929183403.060d1853@xhacker.debian>
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-amlogic@lists.infradead.org>, <linux-arm-kernel@axis.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+        Vidya Sagar <vidyas@nvidia.com>
+Subject: Re: [PATCH v2 0/5] PCI: dwc: improve msi handling
+Message-ID: <20200929184851.22682ff1@xhacker.debian>
+In-Reply-To: <de4d9294-4f6d-c7d1-efc7-c8ef6570bd64@nvidia.com>
+References: <20200924190421.549cb8fc@xhacker.debian>
+        <de4d9294-4f6d-c7d1-efc7-c8ef6570bd64@nvidia.com>
 X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [124.74.246.114]
-X-ClientProxiedBy: TYBP286CA0025.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:404:10a::13) To DM6PR03MB4555.namprd03.prod.outlook.com
+X-ClientProxiedBy: TYAPR01CA0054.jpnprd01.prod.outlook.com
+ (2603:1096:404:2b::18) To DM6PR03MB4555.namprd03.prod.outlook.com
  (2603:10b6:5:102::17)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from xhacker.debian (124.74.246.114) by TYBP286CA0025.JPNP286.PROD.OUTLOOK.COM (2603:1096:404:10a::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.32 via Frontend Transport; Tue, 29 Sep 2020 10:36:03 +0000
+Received: from xhacker.debian (124.74.246.114) by TYAPR01CA0054.jpnprd01.prod.outlook.com (2603:1096:404:2b::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.32 via Frontend Transport; Tue, 29 Sep 2020 10:49:16 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 92883639-5d06-48b2-25a1-08d864637920
-X-MS-TrafficTypeDiagnostic: DM6PR03MB5292:
-X-Microsoft-Antispam-PRVS: <DM6PR03MB52924CD234AE3414D6F95BD7ED320@DM6PR03MB5292.namprd03.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: a7998fb7-2a5a-4760-9244-08d864655641
+X-MS-TrafficTypeDiagnostic: DM6PR03MB4442:
+X-Microsoft-Antispam-PRVS: <DM6PR03MB4442DDA95D15D07A19C05B42ED320@DM6PR03MB4442.namprd03.prod.outlook.com>
 X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 4i0HGzLOkqZ78x7yuvzSXEPxkmKD7l8ntVbsE+jAEhGi0nAuWpx5H8hRm8QE51nNs2umflTnbrPjXulGyGaydiCjJtmFFlXGCU+BFgqR6ESPy5S+UlxElv2kroBlNl4iD7MP2SYyzjNZ48f42joEqxugxx6F1S3Y2IF1a4u1EEHaCFHiN8w5VC/Ihrsqzc7mNlaTkxzDU4KBv3d6uJw14CQUsKX3caWaFcVL/h+5ZTwM8nt+G7FJuWCF+JIM49VrLj3Ab/d4vO/CwhcU37llsARRV3hAFbwe79uAa34hjyJ82JYmpFAW1aEZZB7kseO6/pO++gULiMpwvNY5aS4Lrw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4555.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(136003)(346002)(376002)(39860400002)(366004)(4326008)(6506007)(186003)(8936002)(16526019)(26005)(55016002)(9686003)(8676002)(7696005)(52116002)(86362001)(66946007)(66556008)(66476007)(478600001)(5660300002)(1076003)(6666004)(956004)(110136005)(316002)(15650500001)(2906002)(83380400001)(7416002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: s7Jsrq+yUJhYXOfNrHXQapgRyOzicXleWYUScjoGl07WeSzGpq59cAWnSNJmYEhnVu+zLmUkEhgTYoulIrODRSna9HG+tK5lcClK8h0RMY7Jlj7A6DN/BBq5M4EPGxY2EUM4e1uUaDi9guNfHuPTCh+yd8gcpeFz1/+jqKAhQFjyc97DrG/V1/BcR7UrL4UP9Qsq1jUj5tWqpebNXv45TJ7w0rK6BWenvmGwEvmLQf0YxlohnuPLZpi4dgj8OxQjYTsjMUqIsPQKLsWeSoSQ/zFN5MKGfgMbZFpa/PI2FdYuj7YUzQZzPzxtlKRM1UF5B9LCAMHnPATgqLiMmqdl6BMBcyQwK11gIrKMCnC5ZyhJMgpKGV0ZCOA5iNM8jMGMS8eVv/hQ9aHqkBR1zHwCKL2Lf+eySVnicKXsan0g3yE6PhR9Hb2b3IgMp80nlK0fVqIAGUBDYUuei4VUAHuksm9wUyiYheFDeNdx7zmRzBBcUfJ2qoIS1SOqhhVfkF1RNUi25c3UEaBb/5WVhmqI2nXJ+qeIzUblZs6DpzESJD5x0qBOw9QvvxVgYBS0sIMtZCz2ttj+qzgcKwEXMrVMNlK6xe9sBz9viEmYo39ER1eSTvn5GhnAlzvwxqp2u3YHSgtOYGFi/UhwhAWHDixSsw==
+X-Microsoft-Antispam-Message-Info: bdv1cSzH0wAYG1qqqX9oVTw7xry1CEJvAkVhoAYoETIovnkvhyU9bR2l8SJsKl/2HDwWFtggQHCE02U5rq7nmuvzIlBk+Q05L+5vvP0AOf32sg3STsncAFYVV5mPvGUmte6Bl1L2RR6Z4aCq4wla9AkyAYf2fqEgv+xXdkxurNvxjoOvcy+aFXPh0NyE+uLGOJDmAiXmIETWWQ556OXr5g3yvYTsaTM0H8rgbyfsYTw6yCSt8gPHpHtv628GpNVvcFmiW83uRD1m0OLV8y7RhEzkpPANRTg41ICHSRdEzlTJnVcm26IyCIPiXYfq+X0Kw+bk85hh4oMbCnua/Xahush3rUUFt3YK6vBN9Gzswd+WrIP3fLkDpr+kiGnDEU8D
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4555.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(136003)(346002)(376002)(366004)(396003)(66946007)(956004)(6666004)(8676002)(86362001)(478600001)(8936002)(1076003)(6916009)(4326008)(5660300002)(7696005)(52116002)(7416002)(7406005)(53546011)(2906002)(16526019)(6506007)(26005)(186003)(66556008)(316002)(66476007)(9686003)(83380400001)(55016002)(54906003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: mXCAddAnPLSkQjPzsCwpnlw31nefGW/Yx2Iy7B5gG4NvIlsPMeoj+EycO5dJ+1dVLM4SMg1eYvdh0/J4xRdUKxV7hyi8HkEmu5s3ikYHSViqYO+qdYIwse6fRJahYUy2WRPvTJLxZAeyOHpYnfzRQiQ8S5uNddpGtkt24/VGOn8TDwAN3LpOj4a6cSiCHvUwkAarEoOFdAMkVBbu+1TpATEBRxv2qLS08noWBQLcfiBD2FZOXiHB5KkhEA5t7QrCRi2nvDwHio/JzxjDOFQNhmXez8HKEDGT9g1FNVQyXSvYvZjhDmnOAx3jgOyDH9c01jjz6r9UpcXNArgsdAy60sEETGRsKusk9/bkIfpGMJpl/QNQ9DQ1T7CN+uShmyBjGFRmUeQrXxLiNUpiaNtHf1Fu5JPXQJXHfHUg7932UXTwzsQpiJv9YMZrBYJJjIpbh7RXIG1P+BB+m7ntLyMTbz9m1jbnFtk/0Px1Zrgxv2DhjmwJxNTS5Uba/lKCgu2XsPF1aZpWGt1wQF4eIvxz+E6fyhNHagR3OniEkeJ3TUx27m+3hFEhI0pV5GrXLuOekQPRcTiYrWrtAF6y4DVaJQeCzPhwnB8MGZfS5+CT18dTXYefIZ6ZQInu4H9tICnzeMht4P2QLbwsNfNzCvng/A==
 X-OriginatorOrg: synaptics.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 92883639-5d06-48b2-25a1-08d864637920
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7998fb7-2a5a-4760-9244-08d864655641
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR03MB4555.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2020 10:36:07.3892
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2020 10:49:27.6996
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 335d1fbc-2124-4173-9863-17e7051a2a0e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QhkAgvVIeAx++P0yOqe9xfm5H52RzYMCb2c0oUvum0SsP8dr6hZzkcEpSDAc5iEqHGSsb+cB6cOKqLTCZzMq0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5292
+X-MS-Exchange-CrossTenant-UserPrincipalName: lL2OHFP21JIEiE6gpUPB0JP6ixr9g7VrYwQhCn1EXTXxDmQDeFIIIviGQOFYASIUIctBsQ9kmm1z1Za8IFSsjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4442
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Currently, dw_pcie_msi_init() allocates and maps page for msi, then
-program the PCIE_MSI_ADDR_LO and PCIE_MSI_ADDR_HI. The Root Complex
-may lose power during suspend-to-RAM, so when we resume, we want to
-redo the latter but not the former. If designware based driver (for
-example, pcie-tegra194.c) calls dw_pcie_msi_init() in resume path, the
-msi page will be leaked.
+Hi Jon,
 
-As pointed out by Rob and Ard, there's no need to allocate a page for
-the MSI address, we could use an address in the driver data.
+On Fri, 25 Sep 2020 09:53:45 +0100 Jon Hunter wrote:
 
-To avoid map the MSI msg again during resume, we move the map MSI msg
-from dw_pcie_msi_init() to dw_pcie_host_init().
+> 
+> On 24/09/2020 12:05, Jisheng Zhang wrote:
+> > Improve the msi code:
+> > 1. Add proper error handling.
+> > 2. Move dw_pcie_msi_init() from each users to designware host to solve
+> > msi page leakage in resume path.  
+> 
+> Apologies if this is slightly off topic, but I have been meaning to ask
+> about MSIs and PCI. On Tegra194 which uses the DWC PCI driver, whenever we
+> hotplug CPUs we see the following warnings ...
+> 
+>  [      79.068351] WARNING KERN IRQ70: set affinity failed(-22).
+>  [      79.068362] WARNING KERN IRQ71: set affinity failed(-22).
+> 
 
-Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
----
- drivers/pci/controller/dwc/pci-dra7xx.c       | 16 +++++++++-
- .../pci/controller/dwc/pcie-designware-host.c | 32 +++++++++----------
- drivers/pci/controller/dwc/pcie-designware.h  |  2 +-
- 3 files changed, 32 insertions(+), 18 deletions(-)
+I tried to reproduce this issue on Synaptics SoC, but can't reproduce it.
+Per my understanding of the code in kernel/irq/cpuhotplug.c, this warning
+happened when we migrate irqs away from the offline cpu, this implicitly
+implies that before this point the irq has bind to the offline cpu, but how
+could this happen given current dw_pci_msi_set_affinity() implementation
+always return -EINVAL
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index dc387724cf08..688e5e88784e 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -490,7 +490,9 @@ static struct irq_chip dra7xx_pci_msi_bottom_irq_chip = {
- static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct device *dev = pci->dev;
- 	u32 ctrl, num_ctrls;
-+	int ret;
- 
- 	pp->msi_irq_chip = &dra7xx_pci_msi_bottom_irq_chip;
- 
-@@ -506,7 +508,19 @@ static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
- 				    ~0);
- 	}
- 
--	return dw_pcie_allocate_domains(pp);
-+	ret = dw_pcie_allocate_domains(pp);
-+	if (ret)
-+		return ret;
-+
-+	pp->msi_data = dma_map_single(dev, pp->msi_msg, sizeof(pp->msi_msg),
-+				      DMA_FROM_DEVICE);
-+	ret = dma_mapping_error(dev, pp->msi_data);
-+	if (ret) {
-+		dev_err(dev, "Failed to map MSI data\n");
-+		pp->msi_data = 0;
-+		dw_pcie_free_msi(pp);
-+	}
-+	return ret;
- }
- 
- static const struct dw_pcie_host_ops dra7xx_pcie_host_ops = {
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index f08f4d97f321..27bbeee5718f 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -288,26 +288,17 @@ void dw_pcie_free_msi(struct pcie_port *pp)
- 	irq_domain_remove(pp->msi_domain);
- 	irq_domain_remove(pp->irq_domain);
- 
--	if (pp->msi_page)
--		__free_page(pp->msi_page);
-+	if (pp->msi_data) {
-+		struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+		struct device *dev = pci->dev;
-+		dma_unmap_single_attrs(dev, pp->msi_data, sizeof(pp->msi_msg),
-+				       DMA_FROM_DEVICE, DMA_ATTR_SKIP_CPU_SYNC);
-+	}
- }
- 
- void dw_pcie_msi_init(struct pcie_port *pp)
- {
--	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
--	struct device *dev = pci->dev;
--	u64 msi_target;
--
--	pp->msi_page = alloc_page(GFP_KERNEL);
--	pp->msi_data = dma_map_page(dev, pp->msi_page, 0, PAGE_SIZE,
--				    DMA_FROM_DEVICE);
--	if (dma_mapping_error(dev, pp->msi_data)) {
--		dev_err(dev, "Failed to map MSI data\n");
--		__free_page(pp->msi_page);
--		pp->msi_page = NULL;
--		return;
--	}
--	msi_target = (u64)pp->msi_data;
-+	u64 msi_target = (u64)pp->msi_data;
- 
- 	/* Program the msi_data */
- 	dw_pcie_wr_own_conf(pp, PCIE_MSI_ADDR_LO, 4,
-@@ -440,6 +431,15 @@ int dw_pcie_host_init(struct pcie_port *pp)
- 				irq_set_chained_handler_and_data(pp->msi_irq,
- 							    dw_chained_msi_isr,
- 							    pp);
-+			pp->msi_data = dma_map_single_attrs(pci->dev, &pp->msi_msg,
-+						      sizeof(pp->msi_msg),
-+						      DMA_FROM_DEVICE,
-+						      DMA_ATTR_SKIP_CPU_SYNC);
-+			if (dma_mapping_error(pci->dev, pp->msi_data)) {
-+				dev_err(pci->dev, "Failed to map MSI data\n");
-+				pp->msi_data = 0;
-+				goto err_free_msi;
-+			}
- 		} else {
- 			ret = pp->ops->msi_host_init(pp);
- 			if (ret < 0)
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index f911760dcc69..cd9e76904c58 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -194,8 +194,8 @@ struct pcie_port {
- 	int			msi_irq;
- 	struct irq_domain	*irq_domain;
- 	struct irq_domain	*msi_domain;
-+	u16			msi_msg;
- 	dma_addr_t		msi_data;
--	struct page		*msi_page;
- 	struct irq_chip		*msi_irq_chip;
- 	u32			num_vectors;
- 	u32			irq_mask[MAX_MSI_CTRLS];
--- 
-2.28.0
-
+thanks
