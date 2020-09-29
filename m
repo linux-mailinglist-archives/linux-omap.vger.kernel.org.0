@@ -2,169 +2,272 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AD1F27D58C
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Sep 2020 20:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA82E27D707
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Sep 2020 21:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728006AbgI2SNB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Sep 2020 14:13:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47796 "EHLO mail.kernel.org"
+        id S1728107AbgI2Thm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Sep 2020 15:37:42 -0400
+Received: from mga02.intel.com ([134.134.136.20]:53021 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725320AbgI2SNA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 29 Sep 2020 14:13:00 -0400
-Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 61130208B8;
-        Tue, 29 Sep 2020 18:12:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601403179;
-        bh=KbbIptFu2by3ZEgiSoxO0ItV258aPMBQ8QGyKLlZVN4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RJjs+GRAdQMy1SObha2G7D1UaBcQCAAyaTf8WgvCvreuOJYCdRhPfgljfewCRMqNa
-         fgTvFA+0dGumXNIblpNRfptGGEAht5GxmMN852H1TK4YPcCUSphboNBwtzPzAVnGzS
-         +GpbuSl9ZZMwew3iyJxm0lXQg8HDC9Hx7S1EK6Fw=
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <maz@kernel.org>)
-        id 1kNK7V-00FxpD-8M; Tue, 29 Sep 2020 19:12:57 +0100
+        id S1727740AbgI2Thl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 29 Sep 2020 15:37:41 -0400
+IronPort-SDR: DY1HlspdtdOfyrrRYLKeXWN/oVLtfzCyhP3iLxgUFoKiODpTu+bnZfoC4nodjuKkV3Om2w9QoG
+ CIdyBryY8YPQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9759"; a="149930980"
+X-IronPort-AV: E=Sophos;i="5.77,319,1596524400"; 
+   d="scan'208";a="149930980"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 12:37:38 -0700
+IronPort-SDR: 4vnLNO6Wk6kogUEtdUzpbo/W1IaKimgKQmmOpx6dx0OiMdQcZ81KLC5gRYes+ARYznm8cnY/NL
+ aPJxuIljRS6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,319,1596524400"; 
+   d="scan'208";a="493134248"
+Received: from lkp-server02.sh.intel.com (HELO 10ae44db8633) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 29 Sep 2020 12:37:38 -0700
+Received: from kbuild by 10ae44db8633 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1kNLRR-0000GE-GQ; Tue, 29 Sep 2020 19:37:37 +0000
+Date:   Wed, 30 Sep 2020 03:37:28 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: [balbi-usb:testing/next] BUILD SUCCESS WITH WARNING
+ 8e9f3908b995a33443821dc3a977277f69a4adc3
+Message-ID: <5f738cf8.voQWTbhK9hBhwjyh%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Tue, 29 Sep 2020 19:12:57 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Jon Hunter <jonathanh@nvidia.com>
-Cc:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        linux-pci@vger.kernel.org,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-arm-kernel@axis.com, Vidya Sagar <vidyas@nvidia.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Rob Herring <robh@kernel.org>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Pratyush Anand <pratyush.anand@gmail.com>,
-        linux-tegra@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-arm-msm@vger.kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Yue Wang <yue.wang@amlogic.com>,
-        linux-samsung-soc@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Andy Gross <agross@kernel.org>, linux-kernel@vger.kernel.org,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH v2 0/5] PCI: dwc: improve msi handling
-In-Reply-To: <6ead62a5-6ad5-bde8-a5df-93c0f8029f65@nvidia.com>
-References: <20200924190421.549cb8fc@xhacker.debian>
- <de4d9294-4f6d-c7d1-efc7-c8ef6570bd64@nvidia.com>
- <20200929184851.22682ff1@xhacker.debian>
- <8e06a370-a37a-5f33-b43b-2830adb31b3e@nvidia.com>
- <d4a6eea3c5e33a3a4056885419df95a7@kernel.org>
- <6ead62a5-6ad5-bde8-a5df-93c0f8029f65@nvidia.com>
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <5f4947b18bf381615a37aa81c2242477@kernel.org>
-X-Sender: maz@kernel.org
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: jonathanh@nvidia.com, Jisheng.Zhang@synaptics.com, hayashi.kunihiko@socionext.com, narmstrong@baylibre.com, linux-pci@vger.kernel.org, wangbinghui@hisilicon.com, bjorn.andersson@linaro.org, yamada.masahiro@socionext.com, thierry.reding@gmail.com, linux-arm-kernel@axis.com, vidyas@nvidia.com, festevam@gmail.com, jbrunet@baylibre.com, robh@kernel.org, jesper.nilsson@axis.com, lorenzo.pieralisi@arm.com, khilman@baylibre.com, pratyush.anand@gmail.com, linux-tegra@vger.kernel.org, krzk@kernel.org, kishon@ti.com, kgene@kernel.org, linux-imx@nxp.com, songxiaowei@hisilicon.com, hongxing.zhu@nxp.com, martin.blumenstingl@googlemail.com, linux-arm-msm@vger.kernel.org, s.hauer@pengutronix.de, yue.wang@amlogic.com, linux-samsung-soc@vger.kernel.org, bhelgaas@google.com, linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, jingoohan1@gmail.com, agross@kernel.org, linux-kernel@vger.kernel.org, svarbanov@mm-sol.com, kernel@pengutroni
- x.de, gustavo.pimentel@synopsys.com, shawnguo@kernel.org, l.stach@pengutronix.de
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2020-09-29 19:02, Jon Hunter wrote:
-> On 29/09/2020 18:25, Marc Zyngier wrote:
->> On 2020-09-29 14:22, Jon Hunter wrote:
->>> Hi Jisheng,
->>> 
->>> On 29/09/2020 11:48, Jisheng Zhang wrote:
->>>> Hi Jon,
->>>> 
->>>> On Fri, 25 Sep 2020 09:53:45 +0100 Jon Hunter wrote:
->>>> 
->>>>> 
->>>>> On 24/09/2020 12:05, Jisheng Zhang wrote:
->>>>>> Improve the msi code:
->>>>>> 1. Add proper error handling.
->>>>>> 2. Move dw_pcie_msi_init() from each users to designware host to 
->>>>>> solve
->>>>>> msi page leakage in resume path.
->>>>> 
->>>>> Apologies if this is slightly off topic, but I have been meaning to 
->>>>> ask
->>>>> about MSIs and PCI. On Tegra194 which uses the DWC PCI driver,
->>>>> whenever we
->>>>> hotplug CPUs we see the following warnings ...
->>>>> 
->>>>>  [      79.068351] WARNING KERN IRQ70: set affinity failed(-22).
->>>>>  [      79.068362] WARNING KERN IRQ71: set affinity failed(-22).
->>>>> 
->>>> 
->>>> I tried to reproduce this issue on Synaptics SoC, but can't 
->>>> reproduce
->>>> it.
->>>> Per my understanding of the code in kernel/irq/cpuhotplug.c, this
->>>> warning
->>>> happened when we migrate irqs away from the offline cpu, this 
->>>> implicitly
->>>> implies that before this point the irq has bind to the offline cpu,
->>>> but how
->>>> could this happen given current dw_pci_msi_set_affinity() 
->>>> implementation
->>>> always return -EINVAL
->>> 
->>> By default the smp_affinity should be set so that all CPUs can be
->>> interrupted ...
->>> 
->>> $ cat /proc/irq/70/smp_affinity
->>> 0xff
->>> 
->>> In my case there are 8 CPUs and so 0xff implies that the interrupt 
->>> can
->>> be triggered on any of the 8 CPUs.
->>> 
->>> Do you see the set_affinity callback being called for the DWC irqchip 
->>> in
->>> migrate_one_irq()?
->> 
->> The problem is common to all MSI implementations that end up muxing
->> all the end-point MSIs into a single interrupt. With these systems,
->> you cannot set the affinity of individual MSIs (they don't target a
->> CPU, they target another interrupt... braindead). Only the mux
->> interrupt can have its affinity changed.
->> 
->> So returning -EINVAL is the right thing to do.
-> 
-> Right, so if that is the case, then surely there should be some way to
-> avoid these warnings because they are not relevant?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
+branch HEAD: 8e9f3908b995a33443821dc3a977277f69a4adc3  usb: dwc3: gadget: Allow restarting a transfer
 
-I don't think there is a way to do this, because the core code
-doesn't (and cannot) know the exact interrupt topology.
+Warning in current branch:
 
-The only alternative would be to change the affinity of the mux
-interrupt when a MSI affinity changes, but that tends to break
-userspace (irqbalance, for example).
+drivers/usb/cdns3/gadget.c:509:7: warning: variable 'length' set but not used [-Wunused-but-set-variable]
 
-         M.
--- 
-Jazz is not dead. It just smells funny...
+Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allmodconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- arc-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- c6x-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- c6x-randconfig-r003-20200929
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- h8300-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- i386-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- i386-randconfig-a006-20200929
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- i386-randconfig-s001-20200929
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- ia64-allmodconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- ia64-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- m68k-allmodconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- m68k-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- mips-allmodconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- nios2-randconfig-r011-20200929
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- parisc-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- powerpc-allmodconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- powerpc-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- riscv-allmodconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- riscv-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- s390-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- sparc-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- x86_64-allmodconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+|-- x86_64-allyesconfig
+|   `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+`-- xtensa-allyesconfig
+    `-- drivers-usb-cdns3-gadget.c:warning:variable-length-set-but-not-used
+
+elapsed time: 725m
+
+configs tested: 155
+configs skipped: 2
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                    vt8500_v6_v7_defconfig
+m68k                        m5407c3_defconfig
+mips                         db1xxx_defconfig
+powerpc                      cm5200_defconfig
+arm                        keystone_defconfig
+arm                        multi_v5_defconfig
+powerpc                 mpc8540_ads_defconfig
+arm                        mvebu_v7_defconfig
+arm                        spear3xx_defconfig
+s390                       zfcpdump_defconfig
+ia64                        generic_defconfig
+mips                      pistachio_defconfig
+ia64                            zx1_defconfig
+arm                           efm32_defconfig
+arm                         cm_x300_defconfig
+sh                         apsh4a3a_defconfig
+um                             i386_defconfig
+arm                             ezx_defconfig
+powerpc64                           defconfig
+powerpc                    ge_imp3a_defconfig
+powerpc                      pasemi_defconfig
+powerpc                     sequoia_defconfig
+mips                           ip32_defconfig
+powerpc                  mpc866_ads_defconfig
+nios2                         3c120_defconfig
+powerpc                 mpc832x_mds_defconfig
+mips                             allmodconfig
+sh                        sh7757lcr_defconfig
+powerpc                  mpc885_ads_defconfig
+arm                             pxa_defconfig
+sh                           se7722_defconfig
+riscv                    nommu_virt_defconfig
+mips                      loongson3_defconfig
+arm                       spear13xx_defconfig
+powerpc                     tqm8541_defconfig
+m68k                        mvme16x_defconfig
+powerpc                 mpc8560_ads_defconfig
+s390                                defconfig
+powerpc                 mpc837x_rdb_defconfig
+sh                          polaris_defconfig
+sh                          urquell_defconfig
+arm                           sama5_defconfig
+arc                             nps_defconfig
+arm                          exynos_defconfig
+um                            kunit_defconfig
+arm                          gemini_defconfig
+powerpc                 mpc8313_rdb_defconfig
+powerpc                        fsp2_defconfig
+arm                           sunxi_defconfig
+sh                           se7206_defconfig
+powerpc                      katmai_defconfig
+powerpc                     tqm8560_defconfig
+microblaze                    nommu_defconfig
+powerpc                     akebono_defconfig
+c6x                        evmc6457_defconfig
+ia64                      gensparse_defconfig
+powerpc                     ppa8548_defconfig
+powerpc                    socrates_defconfig
+arm                              zx_defconfig
+c6x                         dsk6455_defconfig
+arm                         at91_dt_defconfig
+sh                          sdk7780_defconfig
+powerpc                     tqm8555_defconfig
+mips                         mpc30x_defconfig
+powerpc                      ppc6xx_defconfig
+arm                      pxa255-idp_defconfig
+mips                        nlm_xlr_defconfig
+powerpc                 mpc836x_mds_defconfig
+arc                        vdk_hs38_defconfig
+xtensa                    smp_lx200_defconfig
+arm                           u8500_defconfig
+mips                           ci20_defconfig
+powerpc                 mpc836x_rdk_defconfig
+arm                       aspeed_g5_defconfig
+sparc                            alldefconfig
+sh                         ecovec24_defconfig
+riscv                          rv32_defconfig
+mips                        bcm63xx_defconfig
+arm                         hackkit_defconfig
+sh                   sh7724_generic_defconfig
+powerpc64                        alldefconfig
+arm                            mps2_defconfig
+mips                       capcella_defconfig
+powerpc                     mpc83xx_defconfig
+openrisc                    or1ksim_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20200929
+i386                 randconfig-a002-20200929
+i386                 randconfig-a003-20200929
+i386                 randconfig-a004-20200929
+i386                 randconfig-a005-20200929
+i386                 randconfig-a001-20200929
+x86_64               randconfig-a011-20200929
+x86_64               randconfig-a013-20200929
+x86_64               randconfig-a015-20200929
+x86_64               randconfig-a014-20200929
+x86_64               randconfig-a016-20200929
+x86_64               randconfig-a012-20200929
+i386                 randconfig-a012-20200929
+i386                 randconfig-a016-20200929
+i386                 randconfig-a014-20200929
+i386                 randconfig-a013-20200929
+i386                 randconfig-a015-20200929
+i386                 randconfig-a011-20200929
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a005-20200929
+x86_64               randconfig-a003-20200929
+x86_64               randconfig-a004-20200929
+x86_64               randconfig-a002-20200929
+x86_64               randconfig-a006-20200929
+x86_64               randconfig-a001-20200929
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
