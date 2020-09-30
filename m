@@ -2,130 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0D3927D7D2
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Sep 2020 22:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C91227DD9F
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Sep 2020 03:16:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728991AbgI2UP6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Sep 2020 16:15:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34142 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725372AbgI2UP6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Sep 2020 16:15:58 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F199C061755;
-        Tue, 29 Sep 2020 13:15:58 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id q13so17014932ejo.9;
-        Tue, 29 Sep 2020 13:15:58 -0700 (PDT)
+        id S1728943AbgI3BQo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Sep 2020 21:16:44 -0400
+Received: from mail-dm6nam12on2060.outbound.protection.outlook.com ([40.107.243.60]:41185
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728931AbgI3BQo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 29 Sep 2020 21:16:44 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bSei3e70z/SC7UdcBPu5bTBQ9j092kXgM6BNibrNqIM40GFwzhT/ffISGvOLvriueBRV8rS30p+UlvpSBclPr/sQ/LalnRKEwS+hDEUDAlAho02wiYGTVP8dGmKmk7awB7CLvy+YPiOaoAVebUzc2qOUThl7lzaUcYhjuIkluAD4r4fINpsJkohteaR+/09v8UvzCNuPouXTwXE/kZGyZlIkRHKkSAyKsrW+d+KeLEgEsviGwfqy+W6pD65SBWvG0uiECeiEVg9JvWOwAS/O223yVoEsHT3/F3ndWCNgtUeS1uIKXiGN0qHjaRwN6TBcU0ebgWCSlK0FzP1n4LOMiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cZ1mg79nd2coqgMKTnUBB7fmiA8/KnEIFzlWy2mhIWQ=;
+ b=Re0Z5WTi2fZAlXiWRdLuR+pFuo5yWH3jdL+nGYuU+uKeu6JqI0vZHm42I2iXWedCRizRMQydCeKIMKUaRf5QeX1/54tDZ4PtE3V4Rh39bsj3q25NYYcLqjbauaTxR6PEHGK/B/uWBcWrb/qUpEbmcgS0oWHaUqrf3T1hAGkFGMlQVzosAzGKPHEo7qILGZV4EXvdwApKXVu/fVpKjSBAl4f8vgZt4lPELVzRwZDrf2lEt6aiDjmck46B5AV80s42qkQRwFxvvRQ7WKCnouLEjR9yRLZQmrm8Hw+mfpU95antOJWrobrpiaXIytyFiZEa2iYMAAvWEFhTBNRrO6tr4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=synaptics.com; dmarc=pass action=none
+ header.from=synaptics.com; dkim=pass header.d=synaptics.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bj06u3268YV4rMONZW+9cQQsZIYizw/MGioYKlxwrFQ=;
-        b=RlvS/p8yRVGkTkxeCitothk9LQOb77u3VmQulmDJlfqDKCFiSwOSZDkaBPByP9iyjc
-         7t5Z1ctkXF6PY9vs66Z/5+pHMWVS1QM5fMRL1gv6m9qrqtrhXKTzNfKEdsAuSuNlJcBO
-         3AFPIObNyfasK+81wanl+EZyGcRsIp4H+nLe/ngfQL2A9+1KY5bcFxj806F0AbAcqB5c
-         0MnmFzcUIT5cdvJtHDXSws2yyXCUWkKdjk5qx9MqwpyG7VTXUnMGP+P04hmylI8jje6B
-         a9y9FL5+sVveTL/nMHzaI2RGG2s3njJC/tV2fklO9UOJwOJFAmdf99iXeTW2hK5IC4Jd
-         dlMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bj06u3268YV4rMONZW+9cQQsZIYizw/MGioYKlxwrFQ=;
-        b=bjnQIyKMxzuBiUKou3mhYTR3XZlwHNVx+J3LuLAfK+1BToYlBgAD7a3cicMFiVuTPt
-         WYtQQbRnQDn9jSLy//bj4DiFLA/AToZz5roA2EJhmNC/3XTynFxrjFVUw/Y/QWLQ1t8O
-         97Rm6x8YFGhuMlwTJeBdEYuXURzy7Z0iqg0YxguDGfcclxIb8QjuAOgY3/H+l8I1IHQF
-         od7DdsvDzvE5Ssmz8AbOZe+LtqSFvRFA/7OJcUYvNVH6j2fuFyJrQSdnpGSRA1h+BYCY
-         5bTqgVplIlm5/eREii873s9DNP5FVU7bMw390+qr1OXXVAkHfrPVjUNedfkZuDTRUFY0
-         5ZxQ==
-X-Gm-Message-State: AOAM533KdJhrQPIhyXkkayoEjB0AQp04oWUhZw37iiKdk6WGZdNq8rfb
-        lJU4qbHJE2EN0LJMtlkPa/KQFrNgS9vzgxgMkOA=
-X-Google-Smtp-Source: ABdhPJyBpW0MlR3+4EP9zT79hfB16NmXJ05S8RXHE/OphML/hIwnmiWgXwZjYwpaEmDRwPibZh4jriZNEXAZw/+V9hk=
-X-Received: by 2002:a17:906:c1d4:: with SMTP id bw20mr5611928ejb.91.1601410556905;
- Tue, 29 Sep 2020 13:15:56 -0700 (PDT)
+ d=Synaptics.onmicrosoft.com; s=selector2-Synaptics-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cZ1mg79nd2coqgMKTnUBB7fmiA8/KnEIFzlWy2mhIWQ=;
+ b=PT27d+LEUM1T9qqjnp2Y66q0/xt54YL9sG8TNc1hDRAiGioK7VfqRansLecWV+X2zpU3uIv28fgwupA2X18RoaJAThMViioYaz3qmWQ0xhGCKqWVl4k6+6BptBBV2+bI5A+TtX+yKtz0h45Gnvmnt6OAsZ/VflucDTnIet1Cis8=
+Authentication-Results: ti.com; dkim=none (message not signed)
+ header.d=none;ti.com; dmarc=none action=none header.from=synaptics.com;
+Received: from DM6PR03MB4555.namprd03.prod.outlook.com (2603:10b6:5:102::17)
+ by DM6PR03MB5145.namprd03.prod.outlook.com (2603:10b6:5:1e9::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.35; Wed, 30 Sep
+ 2020 01:16:40 +0000
+Received: from DM6PR03MB4555.namprd03.prod.outlook.com
+ ([fe80::e494:740f:155:4a38]) by DM6PR03MB4555.namprd03.prod.outlook.com
+ ([fe80::e494:740f:155:4a38%7]) with mapi id 15.20.3433.032; Wed, 30 Sep 2020
+ 01:16:40 +0000
+Date:   Wed, 30 Sep 2020 09:12:05 +0800
+From:   Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+Cc:     linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/2] PCI: dwc: fix two MSI issues
+Message-ID: <20200930091205.792d6c7c@xhacker.debian>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [124.74.246.114]
+X-ClientProxiedBy: HK2PR0302CA0004.apcprd03.prod.outlook.com
+ (2603:1096:202::14) To DM6PR03MB4555.namprd03.prod.outlook.com
+ (2603:10b6:5:102::17)
 MIME-Version: 1.0
-References: <CA+7tXii8rwBexgAHeqYsvBywhWLmk-Hf5_VWUU5bQkBREeFcSA@mail.gmail.com>
- <20200917092004.GA2468349@x1> <CA+7tXihwHbcuxZ10jGZrQkET9+Dbs31SfsYDt_6XB+-JM99gqA@mail.gmail.com>
- <20200917103942.GA2477958@x1> <20200923065755.GR7101@atomide.com>
- <CA+7tXigeNhQQVuAu0toZrvBKvMYkDU-8EWTpJR29HLTAMgoOBA@mail.gmail.com>
- <20200924054324.GB9471@atomide.com> <CA+7tXigg+h3v61AVMaYRKa_ZwznehOUPEESMqXKsNDNCrFph3w@mail.gmail.com>
- <20200924060645.GD9471@atomide.com> <CA+7tXijkS8UMFk4t=DuKjZZNnThbRarPQvxwxjg-uJFTKJRsXA@mail.gmail.com>
- <20200924070443.GF9471@atomide.com>
-In-Reply-To: <20200924070443.GF9471@atomide.com>
-From:   Trent Piepho <tpiepho@gmail.com>
-Date:   Tue, 29 Sep 2020 13:15:45 -0700
-Message-ID: <CA+7tXihBdw9AOGL7Hp2cH9+ii8fUXaaZZDUP3icyeOkMuGm4qA@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: document pinctrl-single,pins when
- #pinctrl-cells = 2
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Drew Fustini <drew@beagleboard.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        linux-gpio <linux-gpio@vger.kernel.org>,
-        Christina Quast <cquast@hanoverdisplays.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from xhacker.debian (124.74.246.114) by HK2PR0302CA0004.apcprd03.prod.outlook.com (2603:1096:202::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3433.18 via Frontend Transport; Wed, 30 Sep 2020 01:16:37 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 892c29ee-563a-4ff2-3f40-08d864de7c53
+X-MS-TrafficTypeDiagnostic: DM6PR03MB5145:
+X-Microsoft-Antispam-PRVS: <DM6PR03MB514550FA133BFC3F6C4EC766ED330@DM6PR03MB5145.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3044;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: IS9N0I/16SHJUF3RN+AS0OIJoJAnyis8mdBVB+kvzbZM+PybQmFn7bT7k3kPLbdbHFD/0OkwyQdSm+zemjk6gklziUgBWcwc5U04zRK6N8d5VUFx2vOFoP8sZwNKlE2LmUmDyyCEqbMm4M0K0hTvtuOE615oNgMP5/k8JNIFbXZUgX3IS0gbG+xkXGDIKcWE23PwR4YylPOZPs1zIUcQA9OfD8l+dtJ9qdhYE7ORe8ye7tTHcswkCMJ5cSW9GfAHW+Z3zAVs/wh7iKBp33wOiOeyY2FgqrjgOJbm8dimx8Efq2m/P8Wb9Z6HG1dJGlbsiYC5ZmZBHNZzfuE/L5jlqA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB4555.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(6506007)(956004)(55016002)(5660300002)(6666004)(8676002)(498600001)(4326008)(8936002)(83380400001)(110136005)(66946007)(66556008)(66476007)(86362001)(1076003)(7416002)(186003)(7696005)(9686003)(2906002)(16526019)(26005)(52116002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: d8HFMUcbO6XojAUV5tw3iAQEK9J4oTerlldNMyXS4cMObuAVYqrt2t2DpQRlW412p0TX/KUm1Nc6BkaytoGjzRLzAxicQQpE8q6zK6aORpsock5Pjf4yg6evTFUqKgOU7UsFQ2ihBWHNMaQL1OQuhC7JYD7ZA2NWwl2hh57YE9uFDMIqRQ+iAFh4ocn+NrixwsfB8sHZHCqVG57PknPt1HlSgo/B1tHJYIU1Q49zEgmD2JxMQ5LhUv2aAtB0ij8ZtPZKrekYMn64f+N9mfJtjwwku6XvFNSe8JTjtF7kgNv2F34lZk9EavGACexCRU07CWvaezZGCXwsjl0zfOZdGw3/apnb6S3AlK0VJ4kA7nI3Vn216EV9M+zGAgwqqfMiSZRDtCvUKGyWvg0rSKA2KKpBazqj3/N/ck1prIWmmqmh3OZfeDlI8ta5VZKVTxZXvvm1n31x7VKvFyRp7Uzo4J3YIiPUERCizD9gaux6xj8O/t5fLdEya90M9DhAJnVRHNKAwHn7rSKDfzfo69GH4IdusXM/mG/6B+8dSpy9yFgQ0RMcFUiRr1XINMxI8yeqq8gm23oRXa2TUbIFCpEKM1xTfaweCbkOtAE2ThYO7WWwRmlxZMH1Vo1sW3qZ8Gwwr5GURMGw2YHf7+Td1leNYQ==
+X-OriginatorOrg: synaptics.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 892c29ee-563a-4ff2-3f40-08d864de7c53
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR03MB4555.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2020 01:16:40.8110
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335d1fbc-2124-4173-9863-17e7051a2a0e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kAjP/Px5EBvV4AdRVuaRSk5UG89Lt8cwJud+6zYg043J9XGPDVsbLDBiN5cEGcD4MYmI7B/aXGWzG+lxU5RvoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5145
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Sep 24, 2020 at 12:04 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> * Trent Piepho <tpiepho@gmail.com> [200924 06:31]:
-> > > >
-> > > > The pinctrl-single driver?  How will that work with boards that are
-> > > > not am335x and don't use conf and mux fields in the same manner as
-> > > > am335x?
-> > >
-> > > For those cases we still have #pinctrl-cells = <1>.
-> >
-> > If pincntrl-single is going to be am335x specific, then shouldn't it
-> > be a different compatible string?
->
-> Certainly different compatible strings can be used as needed.
-> But pinctrl-single is not going to be am335x specific though :)
-> We have quite a few SoCs using it:
+Fix two MSI issues. One to skip PCIE_MSI_INTR0* programming if MSI is
+disabled, another to use an address in the driver data for MSI address,
+to fix the MSI page leakage during suspend/resume.
 
-So what doesn't make sense to me, is to put something am335x specific
-like two cells for conf and mux, into a generic driver like pinctrl
-single.
+Since v4:
+  - fix pci-dra7xx.c
 
-This series adds two cells ORed into one.  Ok, that's generic, other
-platforms could use it.  But it also accomplishes nothing, so what's
-the point?  You've hinted there is more to come, which will accomplish
-something, but what is it?  That can be:
-Used by platforms other than am335x
-Can't already be done with the pinctrl single pinconf features
-Needs more than one data cell per pin
+Since v3:
+  - add Acked-by tag
+  - change patch2 commit msg to make it clear
+  - map the MSI msg with dma_map_single_attrs() for some platforms
+    which either has seperate addrs for dma and phy or has mem access
+    limitation for the PCIe.
 
-> > Are the driver changes something that can be not be done with the
-> > pinconf-single properties?  They all include a mask.
->
-> Sure but in the long term we're better off with using #pinctrl-cells
-> along the lines what we have for example for #interrupt-cells and
-> #gpio-cells.
+Since v2:
+  - add Acked-by tag
+  - use an address in the driver data for MSI address. Thank Ard and Rob
+    for pointing out this correct direction.
+  - Since the MSI page has gone, the leak issue doesn't exist anymore,
+    remove unnecessary patches.
+  - Remove dw_pcie_free_msi rename and the last patch. They could be
+    targeted to next. So will send out patches in a separate series.
 
-So if you look at gpio-cells, virtually every driver uses 2, where one
-cell is the gpio index and the other is a common set of flags.  It's
-the standard layout of a gpio handle that almost all bindings use.
-Only a handful of platform specific gpio drivers have another cell to
-indicate bank (probably better to have made each bank its own device
-node).
+Since v1:
+  - add proper error handling patches.
+  - solve the msi page leakage by moving dw_pcie_msi_init() from each
+    users to designware host
 
-Interrupt controllers have different numbers of cells, but they are
-all platform specific, and the cells have defined platform specific
-meanings.  pci-host-cam-generic is a somewhat generic interrupt
-controller and it uses 1 cell, since it lacks device specific fields
-to put into additional cells.
 
-So I don't see an example of multiple cells which do not have a
-defined meaning that applies to all devices using the bindings.
+Jisheng Zhang (2):
+  PCI: dwc: Skip PCIE_MSI_INTR0* programming if MSI is disabled
+  PCI: dwc: Fix MSI page leakage in suspend/resume
 
-Consider also that any future changes to the pinctrl-single bindings
-would need to be backward compatible with a device tree binary where
-two cells get combined.  So if the bindings being added here aren't
-done, then adding them now creates an unnecessary additional version
-to deal with for backward compatibility.
+ drivers/pci/controller/dwc/pci-dra7xx.c       | 18 +++++++++-
+ .../pci/controller/dwc/pcie-designware-host.c | 34 +++++++++----------
+ drivers/pci/controller/dwc/pcie-designware.h  |  2 +-
+ 3 files changed, 35 insertions(+), 19 deletions(-)
+
+-- 
+2.28.0
+
