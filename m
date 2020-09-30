@@ -2,130 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5380127E8B4
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Sep 2020 14:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38BEA27EB82
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Sep 2020 16:55:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728042AbgI3MlN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Sep 2020 08:41:13 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:46170 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbgI3MlN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Sep 2020 08:41:13 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 08UCf1Yq104823;
-        Wed, 30 Sep 2020 07:41:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1601469662;
-        bh=E3JGTzimhdkSP/WG0ZL2hN7U5G3iDp4sM1T6UKdbBDA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=KCPiywxTdAigs7ets07O0RLNZo0e00UdTVER4DXP5nONYegDhx1Kdq4G2b7GMqJK2
-         ncnFCWF8oYjubWcYiI0rGoOjVq697Na7o1MrRLmcbl0n/I74EVIU07/wUbiMC5zwe4
-         X8YfDiqQRfAcO08HEXirV9ZBmqaZzEkZOuDb6bxQ=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 08UCf1ex095011
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 30 Sep 2020 07:41:01 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 30
- Sep 2020 07:41:01 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 30 Sep 2020 07:41:01 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 08UCf0en088092;
-        Wed, 30 Sep 2020 07:41:00 -0500
-Subject: Re: Slow booting on x15
-To:     Tony Lindgren <tony@atomide.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-References: <20200918155844.GH28436@pendragon.ideasonboard.com>
- <20200923070758.GT7101@atomide.com>
- <20200923111346.GA3980@pendragon.ideasonboard.com>
- <20200924054220.GA9471@atomide.com> <20200924055313.GC9471@atomide.com>
- <fe0a4fa8-53fc-d316-261f-52f631f12469@ti.com>
- <20200924060826.GE9471@atomide.com>
- <20200924133049.GH3968@pendragon.ideasonboard.com>
- <20200925115147.GM9471@atomide.com>
- <20200925115817.GB3933@pendragon.ideasonboard.com>
- <20200930052057.GP9471@atomide.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-X-Pep-Version: 2.0
-Message-ID: <d8d81891-7e22-81a2-19df-6e9a5f8679c4@ti.com>
-Date:   Wed, 30 Sep 2020 15:41:16 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1730188AbgI3Ozk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Sep 2020 10:55:40 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:36102 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727426AbgI3Ozk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Sep 2020 10:55:40 -0400
+Received: by mail-ot1-f52.google.com with SMTP id 60so2103777otw.3;
+        Wed, 30 Sep 2020 07:55:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=jPAORAkrFyZ367lv0IoFMC2aORY/aaMYkwJJyCN1bP8=;
+        b=nxZ/EsVUThSULOXhcDG2rBvIQM7AQiYMNMLgaWNzYcHaNlBnhrJNVKtuTxgpMpeDFn
+         p/RJMp8I/xbh3AwRwywdG0WjOpYoRlm5t0zEobE8ny+rD9nPEc+HCX5clqGbpi+raDan
+         ugscE0JhfuPF783kezKyIGX6uLUAr3tpLKblwLglTDiCJJgxuRPZIqP0Y3wyhV3MJTeM
+         mQOYSORMyMZXqCq5f1E0AtMBSqY9D3z6+ww5av3nEOr7Sr1unD1XSUrKr6Kgs43eaAhN
+         2l3hWSQtrqQJxTDsKaYyLuev+joyHRoUp0eE1tSO9LiqHips2gMqdPba2rTYL450L68i
+         xv7g==
+X-Gm-Message-State: AOAM532E42XRVXRDNqkZKLaFDK55xAfP2CD8fpdefTAxg4Q72WBmTjVh
+        E4i6boA6IgyETRuy58274QA3vmIfNHYSsS0=
+X-Google-Smtp-Source: ABdhPJw4XUJWDoMHhegeUyWr1FcDEJQe2jfwOTyMUsd7XLyrRcBHLj+PQiDF5GTmqft0sdl9hT7+Ow==
+X-Received: by 2002:a05:6830:610:: with SMTP id w16mr1653371oti.353.1601477739000;
+        Wed, 30 Sep 2020 07:55:39 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id f29sm440483ook.44.2020.09.30.07.55.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2020 07:55:38 -0700 (PDT)
+Received: (nullmailer pid 2852145 invoked by uid 1000);
+        Wed, 30 Sep 2020 14:55:37 -0000
+Date:   Wed, 30 Sep 2020 09:55:37 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Nishanth Menon <nm@ti.com>, devicetree@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH -next] dt-bindings: hwlock: omap: Fix warnings with
+ k3.yaml
+Message-ID: <20200930145537.GA2851296@bogus>
+References: <20200928225155.12432-1-s-anna@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20200930052057.GP9471@atomide.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200928225155.12432-1-s-anna@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, Sep 28, 2020 at 05:51:55PM -0500, Suman Anna wrote:
+> Update the AM65x HwSpinlock example to fix couple of warnings
+> that started showing up after the conversion of K3 bindings to
+> YAML format in commit 66e06509aa37 ("dt-bindings: arm: ti:
+> Convert K3 board/soc bindings to DT schema").
+> 
+>  compatible: ['ti,am654'] is not valid under any of the given schemas (Possible causes of the failure):
+>  compatible: ['ti,am654'] is too short
+>  compatible:0: 'ti,am654' is not one of ['ti,am654-evm']
+> 
+> Also, fix one of the node names while at this.
+> 
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> ---
+>  .../devicetree/bindings/hwlock/ti,omap-hwspinlock.yaml        | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-
-On 30/09/2020 8.20, Tony Lindgren wrote:
-> * Laurent Pinchart <laurent.pinchart@ideasonboard.com> [200925 11:59]:
->> On Fri, Sep 25, 2020 at 02:51:47PM +0300, Tony Lindgren wrote:
->>> This is from beagle x15. I wonder how Tomi is seeing over six seconds=
-
->>> at that point though while I'm seeing two something.
->>
->> And I see 10s on the same platform.
->=20
-> Hmm I wonder why that does not happen to me? I don't have any displays
-> connected currently, maybe that makes a difference?
->=20
-> Can you guys try to bisect it down?
->=20
->>>> Still, 1.5s spent there is quite a lot.
->>>
->>> Probably that's when module_init runs and we probe almost everything.=
-
->>> Might be worth profiling to see if we can optimize out some full dtb
->>> tree searches for example.
->>
->> As far as I can tell, module_init() runs later than that. If we probed=
-
->> everything there would be lots of messages printed during that period =
-of
->> time.
->=20
-> Hmm OK. Sorry no ideas other than than me not having displays connected=
-
-> currently.
-
-Fwiw on my beagle x15
-
-v5.8
-[    9.908787] Run /sbin/init as init process
-
-v5.9-rc7
-[   15.085373] Run /sbin/init as init process
-
-
-It appears to be 'fixed' in next-20200928: the board does not even boot.
-
-next-20200928 on omap5
-[    9.936806] Run /sbin/init as init process
-
-
--rc7 spends most of it's time:
-[    7.635530] Micrel KSZ9031 Gigabit PHY 48485000.mdio:01: attached PHY =
-driver [Micrel KSZ9031 Gigabit PHY] (mii_bus:phy_addr=3D48485000.mdio:01,=
- irq=3DPOLL)
-[   14.956671] cpsw 48484000.ethernet eth0: Link is Up - 1Gbps/Full - flo=
-w control off
-[   15.005211] IP-Config: Complete:
-
-
-- P=C3=A9ter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/=
-Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
+Reviewed-by: Rob Herring <robh@kernel.org>
