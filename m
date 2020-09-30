@@ -2,80 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 446D327E407
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Sep 2020 10:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDFCF27E4E0
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Sep 2020 11:15:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728358AbgI3Iot (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Sep 2020 04:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36342 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbgI3Iot (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Sep 2020 04:44:49 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9950BC0613D1
-        for <linux-omap@vger.kernel.org>; Wed, 30 Sep 2020 01:44:48 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id u21so866595ljl.6
-        for <linux-omap@vger.kernel.org>; Wed, 30 Sep 2020 01:44:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=e0o0cITbLOXW4+eb4zMVz/hDGXwXK4Yd1WHZKdH8XV8=;
-        b=XQLsJ9sGnzpb2NBy2+CPEZ0bkgFSnVRiz4E2UQfJtSkQSaOFVyDtnJOG2dkjQYDmkE
-         W//dHiLk0xV3Zp23dTeJyBfArI6iw0J4uTHlUCVjk4gDhPd6XU5Kq29dIPFyEGAsOyWG
-         Hx3WYjYpbKvpn+0Nwz1G3RLbiMJOm66hTeXSNXF/SjGXhEJilsfBy4hIJN63EW5zVON8
-         rpTgETkXc6ZqJ4Qs3BDy07LvNjVxbl/F6qEexSWdrRyD5qI47eZVvkqy/Wc7e15Mn6Ls
-         giDpwRrjyoQIQ4GBKyjCcuusS4pBv4jdiVIOSFhJ/gqnkwPf5uVcupRq6uwUJS6XgdkY
-         D56g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=e0o0cITbLOXW4+eb4zMVz/hDGXwXK4Yd1WHZKdH8XV8=;
-        b=FiFmkbzJvcM2Vrw57N7KMxBJs63VdH2qFnkgbz5mIrSTfzqigZvDueQvWI2dPSZMAz
-         G29lWo7crPfm4yDSUSGbq9Hyk7mBPXBEEM4TKJzXljulByhDUto9x5+7QFECoh7IRyO9
-         p6qMIRChTYah6j5FvpYh8wTF8zz99Zq7xpIHGAXkDeh0zC0+sFC476xkv5VdqRnfLWjU
-         +gbEwx75r4h6sbt3dMjejK6SKuWJZS8O8DBpcHjrZiw7I36J39OdtjTBt4Q9G+8kQZWk
-         UZbYaf2N4i94Lmim2OhC0YnZ3OhpTiJLPesKdgDH+HUeCV5FW3tkmJxarfuu31v2W3sA
-         Ejqg==
-X-Gm-Message-State: AOAM532frHlg5KiDFrEiE+wStgB85IKIaF52+KCK7i6mnXYT+5z5hfh9
-        3MjuJzAvYIE7ph+y3ViBHdrHqFUJfvr6251/TZw6Jw==
-X-Google-Smtp-Source: ABdhPJxUMbdtUKth9ohwnhlzbPBIm4QoTd73PXwmY9CkkhyjzIiz7pcNYsPBKeLoiodHA/gG+0Fb9rfHe577eGY30bE=
-X-Received: by 2002:a2e:a177:: with SMTP id u23mr523885ljl.104.1601455486858;
- Wed, 30 Sep 2020 01:44:46 -0700 (PDT)
+        id S1729504AbgI3JPg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Sep 2020 05:15:36 -0400
+Received: from muru.com ([72.249.23.125]:45746 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729470AbgI3JPe (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 30 Sep 2020 05:15:34 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 59D8C810D;
+        Wed, 30 Sep 2020 09:15:33 +0000 (UTC)
+Date:   Wed, 30 Sep 2020 12:15:26 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Trent Piepho <tpiepho@gmail.com>
+Cc:     Drew Fustini <drew@beagleboard.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        Christina Quast <cquast@hanoverdisplays.com>
+Subject: Re: [PATCH] ARM: dts: document pinctrl-single,pins when
+ #pinctrl-cells = 2
+Message-ID: <20200930091526.GQ9471@atomide.com>
+References: <20200923065755.GR7101@atomide.com>
+ <CA+7tXigeNhQQVuAu0toZrvBKvMYkDU-8EWTpJR29HLTAMgoOBA@mail.gmail.com>
+ <20200924054324.GB9471@atomide.com>
+ <CA+7tXigg+h3v61AVMaYRKa_ZwznehOUPEESMqXKsNDNCrFph3w@mail.gmail.com>
+ <20200924060645.GD9471@atomide.com>
+ <CA+7tXijkS8UMFk4t=DuKjZZNnThbRarPQvxwxjg-uJFTKJRsXA@mail.gmail.com>
+ <20200924070443.GF9471@atomide.com>
+ <CA+7tXihBdw9AOGL7Hp2cH9+ii8fUXaaZZDUP3icyeOkMuGm4qA@mail.gmail.com>
+ <20200930051521.GN9471@atomide.com>
+ <CA+7tXig=3hbFXfmYMC5Hd1Zc2n-6uGXbMePPw_Cr4bOsyt7QQA@mail.gmail.com>
 MIME-Version: 1.0
-References: <cover.1601164493.git.mirq-linux@rere.qmqm.pl> <e3a3979657babf716e5f4072e373637ce86ad7ff.1601164493.git.mirq-linux@rere.qmqm.pl>
-In-Reply-To: <e3a3979657babf716e5f4072e373637ce86ad7ff.1601164493.git.mirq-linux@rere.qmqm.pl>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 30 Sep 2020 10:44:36 +0200
-Message-ID: <CACRpkdaMHH35C1LqUROFBte3T00Lz0zApHy3hdZ83Z8EZR04hw@mail.gmail.com>
-Subject: Re: [PATCH 1/5] gpio: tps65910: use regmap accessors
-To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+7tXig=3hbFXfmYMC5Hd1Zc2n-6uGXbMePPw_Cr4bOsyt7QQA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Sep 27, 2020 at 1:59 AM Micha=C5=82 Miros=C5=82aw <mirq-linux@rere.=
-qmqm.pl> wrote:
+* Trent Piepho <tpiepho@gmail.com> [200930 08:35]:
+> The closest thing would be the generic pin config type bindings, which
+> go in the pinctrl driver's nodes, and look like this:
+> &am335x_pinmux {
+>     pinctrl_yoyo_reset: yoyogrp {
+>         pins = "foo";
+>         function = "gpio";
+>         bias-pull-up;
+>     };
+> };
 
-> Use regmap accessors directly for register manipulation - removing one
-> layer of abstraction.
->
-> Signed-off-by: Micha=C5=82 Miros=C5=82aw <mirq-linux@rere.qmqm.pl>
+There's a bit of a dtb size and boot time issue for adding properties
+for each pin where that needs to be done for several hundred pins :)
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Is "some additional property for specifying generic conf flags"
+> different from the existing pinctrl-single,bias-pullup, etc.
+> properties?  Because splitting the data cell into two parts doesn't
+> make any difference to those.
 
-I suppose it is easiest that Lee apply all patches to the MFD tree?
+So with an interrupt style binding with generic pinconf flags we can
+leave out the parsing of multiple properties for each pin. Sure the
+pin is only referenced by the controller like you pointed out but the
+pinconf flags could be generic.
 
-Yours,
-Linus Walleij
+Regards,
+
+Tony
