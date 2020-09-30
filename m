@@ -2,128 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E3C027F199
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Sep 2020 20:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA13127F62A
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Oct 2020 01:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725893AbgI3SuW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Sep 2020 14:50:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45224 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725771AbgI3SuW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Sep 2020 14:50:22 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5844BC061755;
-        Wed, 30 Sep 2020 11:50:22 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id t16so2996676edw.7;
-        Wed, 30 Sep 2020 11:50:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Sg3JdskTv/baC1RIHHUI9THUReq0qsRlNzLxJycYwpY=;
-        b=iAx2GEEtJ4eZu+wgiOzIuHUkDDjjYQtWB9JgMtllCOLUZM+wluabzrKEe/ivOUx6yY
-         kgsCdXTtEWLEivK0FGWvR4KXAgbP1bL6imaFIsLRm7RAoJIpVG0tK83kUAj02duPE5+C
-         FUvSKv8SSLHKQ+rJ7EKpAAZMXxWTMcrh0JPWXskB6xF8v1Unq8iJEgrjuUB8Md5twErC
-         1k9NCBsjb/Sge1F+3mva4jSWHVgPAm0edgdwfmjGmTPwoA6GsMSwdS8wMHzjZmBJER+Y
-         Ix0x1Be1RXa6Gn9P4pjnt9xPo046R6dYJ6U8gYafZ6gU4UqAD9Kw5KFZDxd7eNRuszJR
-         wESw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Sg3JdskTv/baC1RIHHUI9THUReq0qsRlNzLxJycYwpY=;
-        b=XPl0gp7ZS8taOauBLsjVyJTExh1cma8hbgs02Fjpsf8UoHUfyXfaueGz4BfqeRuuBi
-         j7KmueRN+Yj47KR1icf/GV8/ED0+AS3H7gd5yGBdS+On78aV2VmiTHYHlHTAxGKRf25z
-         ekQi/myK3w+Z2hcbFCns/w0wJvaz5KD1Za676/XcpE0kqhkIzlmgc6rNUhEZf9kn5axR
-         6L8jWaxJ7NZXVlc6BtY9vuPv3YT24OSwbEB3yZbxuMCCOeHjLDeEDW+imsiJLVXDFRQN
-         o1ueR6tSUNoAyKEE5CI/S5y7lFu8oM3OHDdBH8ZPxvr4wqERuSINQCpsH2kPmT04EMe7
-         NOIA==
-X-Gm-Message-State: AOAM533B76s4JZ6VltGuRsWiWek1EuNvYdTrpd64R8EFj0IG4ewdaUK/
-        7+Mg1ZDuzKo1+R3RgwsYed6vn2jEKtoEGLsGDofxNjPc89rTujGB
-X-Google-Smtp-Source: ABdhPJwHY8Mt2cRi5DRYkuaDFjWn86zSncMMNn3sSdiwsWjgOGvvgfbLuzwcM4ocTjmoS32nnkGdtCx6MDoxuzB/NYc=
-X-Received: by 2002:aa7:c1d0:: with SMTP id d16mr4106617edp.209.1601491820999;
- Wed, 30 Sep 2020 11:50:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200924054324.GB9471@atomide.com> <CA+7tXigg+h3v61AVMaYRKa_ZwznehOUPEESMqXKsNDNCrFph3w@mail.gmail.com>
- <20200924060645.GD9471@atomide.com> <CA+7tXijkS8UMFk4t=DuKjZZNnThbRarPQvxwxjg-uJFTKJRsXA@mail.gmail.com>
- <20200924070443.GF9471@atomide.com> <CA+7tXihBdw9AOGL7Hp2cH9+ii8fUXaaZZDUP3icyeOkMuGm4qA@mail.gmail.com>
- <20200930051521.GN9471@atomide.com> <CA+7tXig=3hbFXfmYMC5Hd1Zc2n-6uGXbMePPw_Cr4bOsyt7QQA@mail.gmail.com>
- <20200930091526.GQ9471@atomide.com> <CA+7tXihYb6AHrQLpO9UDHV7YFbzo_Pm8EdXNJXX+tJXX-L6UYA@mail.gmail.com>
- <20200930094714.GR9471@atomide.com>
-In-Reply-To: <20200930094714.GR9471@atomide.com>
-From:   Trent Piepho <tpiepho@gmail.com>
-Date:   Wed, 30 Sep 2020 11:50:10 -0700
-Message-ID: <CA+7tXijZJnJ-=erFq+XQCrwwV7tv+6PsmO5T8XSR3p1Jb6qjkg@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: document pinctrl-single,pins when
- #pinctrl-cells = 2
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Drew Fustini <drew@beagleboard.org>,
+        id S1731255AbgI3Xr1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Sep 2020 19:47:27 -0400
+Received: from mout.kundenserver.de ([212.227.17.10]:60805 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725800AbgI3Xr1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Sep 2020 19:47:27 -0400
+Received: from methusalix.internal.home.lespocky.de ([92.117.51.117]) by
+ mrelayeu.kundenserver.de (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis)
+ id 1MTiLj-1jyIQs3sRZ-00U2pM; Thu, 01 Oct 2020 01:47:04 +0200
+Received: from lemmy.internal.home.lespocky.de ([192.168.243.176] helo=lemmy.home.lespocky.de)
+        by methusalix.internal.home.lespocky.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <alex@home.lespocky.de>)
+        id 1kNloJ-0007Ye-6b; Thu, 01 Oct 2020 01:47:00 +0200
+Received: (nullmailer pid 7671 invoked by uid 2001);
+        Wed, 30 Sep 2020 23:46:58 -0000
+From:   Alexander Dahl <post@lespocky.de>
+To:     linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org
+Cc:     Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        linux-gpio <linux-gpio@vger.kernel.org>,
-        Christina Quast <cquast@hanoverdisplays.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Alexander Dahl <ada@thorsis.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Alexander Dahl <post@lespocky.de>
+Subject: [PATCH v6 0/7] leds: pwm: Make automatic labels work
+Date:   Thu,  1 Oct 2020 01:46:30 +0200
+Message-Id: <20200930234637.7573-1-post@lespocky.de>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scan-Signature: a725df07d7ef17d6c9c3b8b0b262d2c4
+X-Spam-Score: -2.8 (--)
+X-Provags-ID: V03:K1:1elWBi7e5x3yI9alpARH+EzCpdRWKPCu5CRyf0GlHEX72/7ReQG
+ uK+KfSK9bq2XSjeizOMOQ1aX81WAtDM6x33xXmSQR4PGyxTAFe+Gyet5tvr5SsoocF8fkI6
+ wSoVyqgv448pDp8oa8pMgpO1/2adBnPHdkc6W+5jqszUFcPSeKSiuI0MNhA2Cm5ImFDpZJd
+ CTEWaoq7Zs45webTwlzJg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:6alNuLrEGTM=:/JzZgqFL5jcymyQztVcQOq
+ FjxmZcvrBOVCPqcnXy+7LRNn5FCV5x5rFniePHKClSKDklFA4XytiJHTWPmRH9scMeoS+B/64
+ BlVgHSGulgI65FjtqdOjhileRqNHQIAzBZFbiqQpFNgq202+GikFCy/xaHpOVEh9vg1IajYCg
+ Lt2eTnDEB6DJGd0SFFM842tbVSWrI+WNSL360BFHDKFAPPPAVI9v3d8UpyaPR7KXcb1uVYWCt
+ Hau+i8KYufRR7C1yX5kkvYa5LTp0YaMb0Ve1AGNoUzRBQwJVhGlY4V3tEcZInhhVHbhgkuL6O
+ fOsv227odzxhpVjJUpU/bA4Km556V1smNzzjItRCNc5HuK1IRc2nqpm8rIQC5nekctRbVWoLV
+ 3PiWxpx65aIICaHcYPUejEw4aeNO8l2jyzzDzJYsyZ/YYWQ+WhfvfwS6y2CfQk6ZkhJX14JcV
+ /PU/XTVQaV931qWbzKdRfR/o4zTOlmBUq7NncVRTHyfAHo7CTLWk/W9RFVVl5jSMjvUgGtAt2
+ SRsXkr11xKUT3BEHgNRDwtgfcIzkT1/5lykDr7NRvqX6jQEG82cb2ItZrccHXrWAIUOs8wzHL
+ tBNrUqdkqhI4bqoGzIMThGTJB4Q119crVleU9q0AjRzrjwmc8sa6vWnjRXjl4SZLuMSXEaVb7
+ BjoIGbdsc8iPEdoPHiSb5o/b+FnAMlKVCgRiiu8Tgr6mU24AjEduYafCSw19DqMnNp6sVjeN1
+ QoSC10dCkrDX1VvK7iCze3yiqtIGW+Dyi+QDP7oAR3Dnnubg6HFlDL7Qjm4X5VOwlEL/W9uVb
+ srj/mjCZd9wH4qLjLDzrwxLf52R1XcL+nIJENySPlOGCa5beS/UYs1Xpa/UA7Hff+6YMO6W
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 30, 2020 at 2:47 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> * Trent Piepho <tpiepho@gmail.com> [200930 09:34]:
+Hei hei,
 
-> >
-> > Where do these flags go?  In pinctrl-single,pins?  Like:
-> >
-> > pinctrl-single,pins =3D <AM335X_PIN_MDC MUX_MODE7 PIN_INPUT_PULLUP>;
-> >
-> > But PIN_INPUT_PULLUP is a generic flag?  Which is translated into the
-> > proper value by??
->
-> Yes that's what I was thinking, something like this with generic flags:
->
-> pinctrl-single,pins =3D <AM335X_PIN_MDC (PIN_INPUT | PIN_PULLUP) MUX_MODE=
-7>;
+for leds-gpio you can use the properties 'function' and 'color' in the
+devicetree node and omit 'label', the label is constructed
+automatically.  This is a common feature supposed to be working for all
+LED drivers.  However it did not yet work for the 'leds-pwm' driver.
 
-It doesn't seem like these patches help achieve that, since they
-create device tree binaries with a property that has the same name and
-number of cells, but the cells have a different meaning than above,
-and must be handled differently by the driver.  So you either drop
-compatibility or need to forever deal with supporting an interim
-format that is being created by these patches.
+This series removes platform_data support for the leds-pwm driver and
+takes the opportunity to update the leds-pwm dt-bindings accordingly.
 
-The conf and max are already split in (all but one) of the device tree
-SOURCE files via the macro with multiple fields.  That does seem like
-a good step if you wanted to transition into something like the above.
-But splitting it in the binary too doesn't help.  Is there a way the
-dtb now being created can turn into the above via a driver change?
-Absolutely not.  So what's the point of an interim binary format?  All
-that matters is what the source looks like, and since that doesn't
-change, nothing is accomplished.
+After myself being one week on vacation patch 2/3 was already picked by
+Pavel and I gathered some more feedback on the remaining issues.
 
-I'll also point out that the current generic pinconf, done not via
-flags but with multiple properties for each configurable parameter,
-has a drive strength properties with strength in mA or =C2=B5A as a
-parameter.  How would you do that with generic bit flags?  I don't
-think you can fit everything in pinconf-generic.h into one 32 bit
-cell.
+v6 was compile tested and dt_bindings_check and dtbs_check were run.
 
-> > Or are you talking about replacing the existing pinctrl-0,
-> > pinctrl-names properties with a totally different system that looks
-> > more like gpio and interrupt handles?
->
-> That would be even better :) Might be just too much to deal with..
->
-> In any case the parser code could already be generic if we had generic
-> flags based on #pinctrl-cells.
+Note: I added some patches to fix DT schema warnings, but I did not put
+every reviewer/supporter/maintainer printed by get_maintainers in Cc to
+keep that list reasonable small.
 
-But the pinctrl-single,pins isn't parsed.  It just uses the values as
-they are.  You'd have to write something to parse the cells and add
-more data to the dts that told the parser how to turn them into device
-specific values.  It seems like that could eventually achieve
-basically what is happening already with the dts preprocessor
-converting symbolic constants into device specific values.
+Series changelog below …
+
+Greets
+Alex
+
+v6:
+- rebased series on recent pavel/for-next
+- added Reviewed-by from Marek to patch 1
+- patch 2 from v5 was picked by Pavel and is already in his for-next
+  branch
+- previous patch 3/3 (now 2/7) was reworked based on feedback by Rob
+- added more dt patches fixing warnings after binding conversion to yaml
+
+v5:
+- replaced patch 1/3 by a new patch removing platform_data support for
+  the leds-pwm driver
+- little rewording of commit message in patch 2/3
+- updated patch 3/3 based on feedback by Rob Herring
+- added Marek Behún to Cc, because he also works on removing
+  platform_data support
+- rebased series on pavel/for-next
+
+v4:
+- added led-class patch handling fwnode passing differently (patch 1/3)
+- adapted leds-pwm patch to new led-class (patch 2/3)
+- contacted original author of leds-pwm dt binding on license issue
+  (patch 3/3)
+
+v3:
+- series rebased on v5.9-rc4
+- changed license of .yaml file to recommended one (patch 2/2)
+- added Acked-by to both patches
+
+v2:
+- series rebased on v5.9-rc3
+- added the dt-bindings update patch (2/2)
+
+v1:
+- based on v5.9-rc2
+- backport on v5.4.59 tested and working
+
+Alexander Dahl (7):
+  leds: pwm: Remove platform_data support
+  dt-bindings: leds: Convert pwm to yaml
+  dt-bindings: mfd: Fix schema warnings for pwm-leds
+  ARM: dts: at91: smartkiz: Reference led node directly
+  ARM: dts: Fix schema warnings for pwm-leds
+  arm64: dts: meson: Fix schema warnings for pwm-leds
+  MIPS: DTS: img: Fix schema warnings for pwm-leds
+
+ .../devicetree/bindings/leds/leds-pwm.txt     | 50 -------------
+ .../devicetree/bindings/leds/leds-pwm.yaml    | 70 +++++++++++++++++++
+ .../devicetree/bindings/mfd/iqs62x.yaml       |  5 +-
+ arch/arm/boot/dts/at91-kizbox.dts             | 10 +--
+ arch/arm/boot/dts/at91-kizbox2-common.dtsi    |  8 +--
+ arch/arm/boot/dts/at91-kizbox3-hs.dts         | 16 ++---
+ arch/arm/boot/dts/at91-kizbox3_common.dtsi    | 10 +--
+ arch/arm/boot/dts/at91-kizboxmini-common.dtsi |  8 +--
+ arch/arm/boot/dts/at91-smartkiz.dts           |  6 +-
+ arch/arm/boot/dts/at91sam9m10g45ek.dts        | 10 +--
+ arch/arm/boot/dts/at91sam9rlek.dts            | 10 +--
+ .../boot/dts/berlin2cd-google-chromecast.dts  |  6 +-
+ arch/arm/boot/dts/exynos5422-odroidhc1.dts    |  4 +-
+ arch/arm/boot/dts/exynos5422-odroidxu4.dts    |  4 +-
+ .../boot/dts/exynos54xx-odroidxu-leds.dtsi    | 11 +--
+ arch/arm/boot/dts/imx53-ppd.dts               | 15 ++--
+ arch/arm/boot/dts/imx6qdl-cubox-i.dtsi        |  4 +-
+ .../boot/dts/imx6sx-softing-vining-2000.dts   |  8 +--
+ arch/arm/boot/dts/omap3-beagle-xm.dts         | 10 +--
+ arch/arm/boot/dts/omap3-overo-base.dtsi       |  4 +-
+ arch/arm/boot/dts/omap4-kc1.dts               |  6 +-
+ arch/arm/boot/dts/omap4-sdp.dts               | 26 +++----
+ arch/arm/boot/dts/stm32mp157c-lxa-mc1.dts     | 12 ++--
+ .../amlogic/meson-gxl-s905x-khadas-vim.dts    |  4 +-
+ .../dts/amlogic/meson-gxm-khadas-vim2.dts     |  4 +-
+ .../boot/dts/amlogic/meson-sm1-sei610.dts     |  8 +--
+ arch/mips/boot/dts/img/pistachio_marduk.dts   |  5 +-
+ drivers/leds/leds-pwm.c                       | 30 ++------
+ 28 files changed, 184 insertions(+), 180 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/leds/leds-pwm.txt
+ create mode 100644 Documentation/devicetree/bindings/leds/leds-pwm.yaml
+
+
+base-commit: 8fd8f94235c2c925d80b2316e0ab2bdd00af9bae
+-- 
+2.20.1
+
