@@ -2,107 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BFE427FB6A
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Oct 2020 10:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E998F27FC21
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Oct 2020 11:01:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725883AbgJAIXg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Oct 2020 04:23:36 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:35756 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725878AbgJAIXf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Oct 2020 04:23:35 -0400
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id AD26F255;
-        Thu,  1 Oct 2020 10:23:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1601540613;
-        bh=x0PepIt6CqKq++ixDVxQMIsdZRpNM2VpcVlJ+VwJ6is=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JJfspX62Utl9Liltm1A9tFwaCUtaOGkzgh3G9M+DczHbhvz5GujtyKNVmrLXv8MMC
-         9o3rU46Qh3KH0JtvF4E0cu27rNW0IpYHFZvMSPCfNKgCX0uDZDM/56l/fZmivZb54m
-         z/ZPvhVDH11CHNKmdqNvsNm2vDefpad0iOvapBG8=
-Date:   Thu, 1 Oct 2020 11:22:56 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        id S1731661AbgJAJBM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Oct 2020 05:01:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35548 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731628AbgJAJBK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Oct 2020 05:01:10 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA6F5C0613E3
+        for <linux-omap@vger.kernel.org>; Thu,  1 Oct 2020 02:01:08 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id t17so2161456wmi.4
+        for <linux-omap@vger.kernel.org>; Thu, 01 Oct 2020 02:01:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=LCvd+9oMPV1TUiWupBH/r0LupF+7kFOX6DhC7Gcrx0g=;
+        b=YR4MIEhAGcvomD/uxMVbUiIe763pjYh55U/6WKdK4ANeEYvJpvBHgTir3soHKMF71P
+         AYTqH6nrgBCmxI/LBlS3IhuTQ0XywPfkfloSXMhcqazuIEAwJgweqhvCUPLMGjwFUpzw
+         U5t0MUPEclTgs1+05Kiz/OCkn/tBgcluzBtttN1p3Pe/P6aOGSy3RsJujNT5101KictT
+         SqZ13V6DEIWcCRn9UvJdvjNLKE1oOGTVJZPtKipBlEi6zRhnlwEBoynnMRi6DFWzLbEF
+         Sy2Wto4i8ft6p3F+AiH9+jZHlEQdqs1e+48zEqL1W+DjJk9mSeTsdSjisq02VhbdBNp5
+         boKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=LCvd+9oMPV1TUiWupBH/r0LupF+7kFOX6DhC7Gcrx0g=;
+        b=mGmOssEXx+Orh2XKw+blat5RbzqBTobqI7xZxTGg6r5i42WaVCU2zraMi48/4s5GzR
+         AW1x7SBDCi1mqlPe0WpUowrLtyo7WrlF6ZqziAwlTddENedDMlopdYC43VFFeAJPBre3
+         RybgHk2YIJsWpSeuyPG2SULlJCLOve73xbyxbPxgWPEIZZBE1IgwUaaJXIALPPIa9vvN
+         r7NUneHev6W7onC914aDA6bq71xg+yOgiP1SCxa6K3dJtLFkhbyAcCgTQ6/Wmnl4g1u4
+         08aAqC17XxI8x8HLPK9bgQ+Xaeo5cZEvHw/2QF61d32yq5uAv6h+OjRnDHl6e7lzgqtN
+         mzUg==
+X-Gm-Message-State: AOAM5327kj7sX9apTZEJS+7lInmgCkF9RhTGwlI9rPD5FUgPTGjuVhEd
+        la+bmWQvANoiQLXCOSMJO8k17g==
+X-Google-Smtp-Source: ABdhPJwTZ1RYKtWIyoBk+8fpiZQFsYIgVtzcvQYqDG+wI52Vzemq2cBusw6V5zUhwT6eqp7ki3sNsA==
+X-Received: by 2002:a7b:c1d3:: with SMTP id a19mr7125986wmj.19.1601542867376;
+        Thu, 01 Oct 2020 02:01:07 -0700 (PDT)
+Received: from dell ([91.110.221.236])
+        by smtp.gmail.com with ESMTPSA id i16sm7968008wrq.73.2020.10.01.02.01.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2020 02:01:06 -0700 (PDT)
+Date:   Thu, 1 Oct 2020 10:01:04 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Linux-OMAP <linux-omap@vger.kernel.org>
-Subject: Re: Slow booting on x15
-Message-ID: <20201001082256.GA3722@pendragon.ideasonboard.com>
-References: <20200924055313.GC9471@atomide.com>
- <fe0a4fa8-53fc-d316-261f-52f631f12469@ti.com>
- <20200924060826.GE9471@atomide.com>
- <20200924133049.GH3968@pendragon.ideasonboard.com>
- <20200925115147.GM9471@atomide.com>
- <20200925115817.GB3933@pendragon.ideasonboard.com>
- <20200930052057.GP9471@atomide.com>
- <d8d81891-7e22-81a2-19df-6e9a5f8679c4@ti.com>
- <20201001075344.GU9471@atomide.com>
- <20201001081748.GW9471@atomide.com>
+Subject: Re: [PATCH 1/5] gpio: tps65910: use regmap accessors
+Message-ID: <20201001090104.GM6148@dell>
+References: <cover.1601164493.git.mirq-linux@rere.qmqm.pl>
+ <e3a3979657babf716e5f4072e373637ce86ad7ff.1601164493.git.mirq-linux@rere.qmqm.pl>
+ <CACRpkdaMHH35C1LqUROFBte3T00Lz0zApHy3hdZ83Z8EZR04hw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201001081748.GW9471@atomide.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdaMHH35C1LqUROFBte3T00Lz0zApHy3hdZ83Z8EZR04hw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+On Wed, 30 Sep 2020, Linus Walleij wrote:
 
-On Thu, Oct 01, 2020 at 11:17:48AM +0300, Tony Lindgren wrote:
-> * Tony Lindgren <tony@atomide.com> [201001 07:53]:
-> > * Peter Ujfalusi <peter.ujfalusi@ti.com> [200930 12:41]:
-> > > Fwiw on my beagle x15
-> > > 
-> > > v5.8
-> > > [    9.908787] Run /sbin/init as init process
-> > > 
-> > > v5.9-rc7
-> > > [   15.085373] Run /sbin/init as init process
-> > > 
-> > > 
-> > > It appears to be 'fixed' in next-20200928: the board does not even boot.
-> > 
-> > Yeah so it seems :(
-> > 
-> > > next-20200928 on omap5
-> > > [    9.936806] Run /sbin/init as init process
-> > > 
-> > > 
-> > > -rc7 spends most of it's time:
-> > > [    7.635530] Micrel KSZ9031 Gigabit PHY 48485000.mdio:01: attached PHY driver [Micrel KSZ9031 Gigabit PHY] (mii_bus:phy_addr=48485000.mdio:01, irq=POLL)
-> > > [   14.956671] cpsw 48484000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
-> > > [   15.005211] IP-Config: Complete:
-> > 
-> > Booting with initcall_debug I see this with current Linux next:
-> > 
-> > ...
-> > [    1.697313] cpuidle: using governor menu
-> > [    1.701353] initcall init_menu+0x0/0xc returned 0 after 0 usecs
-> > [    1.707458] calling  gpmc_init+0x0/0x10 @ 1
-> > [    1.711784] initcall gpmc_init+0x0/0x10 returned 0 after 0 usecs
-> > [    1.717974] calling  omap3_l3_init+0x0/0x10 @ 1
-> > [    1.722653] initcall omap3_l3_init+0x0/0x10 returned 0 after 0 usecs
-> > [    1.729201] calling  omap_l3_init+0x0/0x10 @ 1
-> > [    1.733791] initcall omap_l3_init+0x0/0x10 returned 0 after 0 usecs
-> > [    1.740314] calling  gate_vma_init+0x0/0x70 @ 1
-> > [    1.744976] initcall gate_vma_init+0x0/0x70 returned 0 after 0 usecs
-> > [    1.751522] calling  customize_machine+0x0/0x30 @ 1
-> > [    3.823114] initcall customize_machine+0x0/0x30 returned 0 after 2011718 usecs
-> > [    3.830566] calling  init_atags_procfs+0x0/0xec @ 1
-> > [    3.835583] No ATAGs?
+> On Sun, Sep 27, 2020 at 1:59 AM Michał Mirosław <mirq-linux@rere.qmqm.pl> wrote:
 > 
-> And the long time above with customize_machine() ends up being
-> pdata_quirks_init() calling of_platform_populate().
-
-That's what the delay is for me (I think I've reported that initially).
-
-> > Laurent & Tomi, care to check what you guys see in the slow booting case
-> > after booting with initcall_debug?
+> > Use regmap accessors directly for register manipulation - removing one
+> > layer of abstraction.
+> >
+> > Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 > 
-> But maybe the long delay is something else for you guys so please check.
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> 
+> I suppose it is easiest that Lee apply all patches to the MFD tree?
+
+Yes, that's fine.
+
+It won't be for this release though, as we're already at -rc7.
 
 -- 
-Regards,
-
-Laurent Pinchart
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
