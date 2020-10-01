@@ -2,102 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B92C27F65B
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Oct 2020 01:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C37B27F9D7
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Oct 2020 09:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725800AbgI3Xx1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Sep 2020 19:53:27 -0400
-Received: from mout.kundenserver.de ([212.227.126.135]:44831 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725372AbgI3Xx1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Sep 2020 19:53:27 -0400
-Received: from methusalix.internal.home.lespocky.de ([92.117.51.117]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MgRYd-1ku3qH3u3T-00hvd8; Thu, 01 Oct 2020 01:47:55 +0200
-Received: from lemmy.internal.home.lespocky.de ([192.168.243.176] helo=lemmy.home.lespocky.de)
-        by methusalix.internal.home.lespocky.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94)
-        (envelope-from <alex@home.lespocky.de>)
-        id 1kNlp9-0007aF-MT; Thu, 01 Oct 2020 01:47:52 +0200
-Received: (nullmailer pid 7817 invoked by uid 2001);
-        Wed, 30 Sep 2020 23:47:51 -0000
-From:   Alexander Dahl <post@lespocky.de>
-To:     linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org
-Cc:     Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        id S1730967AbgJAHAu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Oct 2020 03:00:50 -0400
+Received: from muru.com ([72.249.23.125]:45806 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725878AbgJAHAu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 1 Oct 2020 03:00:50 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 314B98057;
+        Thu,  1 Oct 2020 07:00:49 +0000 (UTC)
+Date:   Thu, 1 Oct 2020 10:00:43 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Trent Piepho <tpiepho@gmail.com>
+Cc:     Drew Fustini <drew@beagleboard.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Alexander Dahl <ada@thorsis.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Alexander Dahl <post@lespocky.de>
-Subject: [PATCH v6 7/7] MIPS: DTS: img: Fix schema warnings for pwm-leds
-Date:   Thu,  1 Oct 2020 01:46:37 +0200
-Message-Id: <20200930234637.7573-8-post@lespocky.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200930234637.7573-1-post@lespocky.de>
-References: <20200930234637.7573-1-post@lespocky.de>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        Christina Quast <cquast@hanoverdisplays.com>
+Subject: Re: [PATCH] ARM: dts: document pinctrl-single,pins when
+ #pinctrl-cells = 2
+Message-ID: <20201001070043.GS9471@atomide.com>
+References: <20200924060645.GD9471@atomide.com>
+ <CA+7tXijkS8UMFk4t=DuKjZZNnThbRarPQvxwxjg-uJFTKJRsXA@mail.gmail.com>
+ <20200924070443.GF9471@atomide.com>
+ <CA+7tXihBdw9AOGL7Hp2cH9+ii8fUXaaZZDUP3icyeOkMuGm4qA@mail.gmail.com>
+ <20200930051521.GN9471@atomide.com>
+ <CA+7tXig=3hbFXfmYMC5Hd1Zc2n-6uGXbMePPw_Cr4bOsyt7QQA@mail.gmail.com>
+ <20200930091526.GQ9471@atomide.com>
+ <CA+7tXihYb6AHrQLpO9UDHV7YFbzo_Pm8EdXNJXX+tJXX-L6UYA@mail.gmail.com>
+ <20200930094714.GR9471@atomide.com>
+ <CA+7tXijZJnJ-=erFq+XQCrwwV7tv+6PsmO5T8XSR3p1Jb6qjkg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scan-Signature: 47063c0bd3b0440d119657da58bc7562
-X-Spam-Score: -2.9 (--)
-X-Provags-ID: V03:K1:0IUo1RRU7aAo8lMj4tzZs2tdPUuRWx/DVg9fWHk99XurY6GYSNC
- hi0k4Y+6Rvd2A96ObtnJkZ9b7FaJC8oTKeQjrqDQoiAJi59zcVISDFtcTQC5r9ppEjXMxT5
- 9JZqTtubXCNiBVhQw98FxKkqHLFjh1VvJjlQu5KTRSOTFE3yj4N8WYGh5qJoe9yvg0/N+ST
- 0mF0lowsi3Ph4kHDEtMIg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/ecUuY4q8Gc=:5pdPvjKLRtHGB+jyb6ogsm
- mseida6O/rUXoquHbx//MvOs5Y3069W/7rUsraL6Q8VMaKRBaHaZ9YpMmWMvTvq7Iy/ZM+o1P
- 3ug1TRVxllhD2Tf8UGFiH/2z5Jys0wgCL2GSzGszKKP3N1PNfig4vfq/nyvmChwF+JuMJ9cXi
- Th6iZFSTqG3oNsx0attXL+8KxXvon3FZP4eQJmr8/Et5J51O75T5X0KRiIBRSjA4LJUgZb1Op
- g/VsS4wSzaXKAdJof4lmMye/B0gN5CaIe+2gLLb3VkPuIObK9figRjq6Rj9Mdl/+Ok/sJG/YB
- LLRR0lcEsdHllHueRexDH/OALqq0YIGwrqtVEGAlIrBFTNcSa8Tla3btFaOGKtzEVCL2d6ORl
- gPTJ66cs+0DLQtFRKsN4yrKR5a3dK+uVX9/d/uoSSK9SQZjOmNPj3ThYCtJcehN5SvvfmSx2L
- VxhfphV7Zs3o4iQTJ4PJzeqprgdkiAXlVU2x1clPQyGK36NcJv+QYf1F9jV8lISwkPuhnhBja
- o4T03eH4tGYdIDQN+Ahe13cUIMfbzwJ3ZeE0prSRlgsk4Evdn17hiGjQlpkqHRRGSdxHCatZW
- +hDGpSyzd0OmLDV5iuR0zipb8TfWbpH5qTZPuSdU+lFqpWj7O0Voom3reL9mudWxGaf7Q+kl+
- jNf2QwLABuQSrWYMumMB/VYDcnGPy2+pDucow638wMe9uqLVIDFCR/0lnyR7vhFkiOyyGATJQ
- E4bwN7rKHWjSY83PwK/1sawX7PAx17LdSbR0xxmq6pu4pnWOUVSSJK5BQ82GvuO7ZBILyTfur
- l8ArD43Oi4k8MhDuYj7DkA4tfYESO+SfRmRfY98lwTkUG3Je2r2EAXUsKlUuk+kDbePtWiLgR
- A1kGCdoGG2QarQQTjJ5jYuuAxhO1Qv1JpeThZd+cQh8SHDJAuj/10UMVWYp2LsP9UFk+tEp+X
- PrOR5q7Ml2TqA+ghjTVnru/WeaZ/GJR5u6tvwZjqZXjUmJA5Kx1BMIJ4QgLuJVeJwhiKT6It3
- O3eZkORudcdbpEPydJPUv2JXHfS6U5e3n4zKke+jXQWx
+In-Reply-To: <CA+7tXijZJnJ-=erFq+XQCrwwV7tv+6PsmO5T8XSR3p1Jb6qjkg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The node names for devices using the pwm-leds driver follow a certain
-naming scheme (now).
+* Trent Piepho <tpiepho@gmail.com> [200930 18:50]:
+> On Wed, Sep 30, 2020 at 2:47 AM Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > * Trent Piepho <tpiepho@gmail.com> [200930 09:34]:
+> 
+> > >
+> > > Where do these flags go?  In pinctrl-single,pins?  Like:
+> > >
+> > > pinctrl-single,pins = <AM335X_PIN_MDC MUX_MODE7 PIN_INPUT_PULLUP>;
+> > >
+> > > But PIN_INPUT_PULLUP is a generic flag?  Which is translated into the
+> > > proper value by??
+> >
+> > Yes that's what I was thinking, something like this with generic flags:
+> >
+> > pinctrl-single,pins = <AM335X_PIN_MDC (PIN_INPUT | PIN_PULLUP) MUX_MODE7>;
+> 
+> It doesn't seem like these patches help achieve that, since they
+> create device tree binaries with a property that has the same name and
+> number of cells, but the cells have a different meaning than above,
+> and must be handled differently by the driver.  So you either drop
+> compatibility or need to forever deal with supporting an interim
+> format that is being created by these patches.
+> 
+> The conf and max are already split in (all but one) of the device tree
+> SOURCE files via the macro with multiple fields.  That does seem like
+> a good step if you wanted to transition into something like the above.
+> But splitting it in the binary too doesn't help.  Is there a way the
+> dtb now being created can turn into the above via a driver change?
+> Absolutely not.  So what's the point of an interim binary format?  All
+> that matters is what the source looks like, and since that doesn't
+> change, nothing is accomplished.
 
-Signed-off-by: Alexander Dahl <post@lespocky.de>
----
+We do get the conf and mux data separated though. This fixes the long
+term complaint that the pinctrl single binding mixes conf and mux data.
+And the driver can take the dtb conf values and convert them into
+something generic and use more generic pinctrl functions. So I would
+not call it interim binary format, it's something we'll be using in
+the long term. I would also like to get to the next step that we've
+been discussing, but who knows if we ever get there. Feel free to
+get the ball rolling on the new generic binding, we'll be discussing
+it for years as has happened with the earlier attempts :)
 
-Notes:
-    v6:
-      * added this patch to series
+BTW, for more complicated use cases, we can already quite easily
+create hardware specific drivers with the use of GENERIC_PINCTRL_GROUPS
+and GENERIC_PINMUX_FUNCTIONS, see for example the iodelay driver at
+drivers/pinctrl/ti/pinctrl-ti-iodelay.c. It uses #pinctrl-cells = 2 and
+passes the timing values in two cells.
 
- arch/mips/boot/dts/img/pistachio_marduk.dts | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+> I'll also point out that the current generic pinconf, done not via
+> flags but with multiple properties for each configurable parameter,
+> has a drive strength properties with strength in mA or µA as a
+> parameter.  How would you do that with generic bit flags?  I don't
+> think you can fit everything in pinconf-generic.h into one 32 bit
+> cell.
 
-diff --git a/arch/mips/boot/dts/img/pistachio_marduk.dts b/arch/mips/boot/dts/img/pistachio_marduk.dts
-index bf69da96dc8b..a8708783f04b 100644
---- a/arch/mips/boot/dts/img/pistachio_marduk.dts
-+++ b/arch/mips/boot/dts/img/pistachio_marduk.dts
-@@ -46,9 +46,10 @@
- 		regulator-max-microvolt = <1800000>;
- 	};
- 
--	leds {
-+	led-controller {
- 		compatible = "pwm-leds";
--		heartbeat {
-+
-+		led-1 {
- 			label = "marduk:red:heartbeat";
- 			pwms = <&pwm 3 300000>;
- 			max-brightness = <255>;
--- 
-2.20.1
+Good point. The values could be passed by increasing the value for
+#pinctrl-cells and then the generic format would need to look like:
 
+pinctrl-single,pins = <AM335X_PIN_MDC (PIN_INPUT | PIN_PULLUP)
+                       1234 MUX_MODE7>;
+
+> > > Or are you talking about replacing the existing pinctrl-0,
+> > > pinctrl-names properties with a totally different system that looks
+> > > more like gpio and interrupt handles?
+> >
+> > That would be even better :) Might be just too much to deal with..
+> >
+> > In any case the parser code could already be generic if we had generic
+> > flags based on #pinctrl-cells.
+> 
+> But the pinctrl-single,pins isn't parsed.  It just uses the values as
+> they are.  You'd have to write something to parse the cells and add
+> more data to the dts that told the parser how to turn them into device
+> specific values.  It seems like that could eventually achieve
+> basically what is happening already with the dts preprocessor
+> converting symbolic constants into device specific values.
+
+Except we'd be setting the conf in a generic way and would avoid
+potentially lots of pin specific properties.
+
+Regards,
+
+Tony
