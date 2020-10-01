@@ -2,64 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B39127FC7E
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Oct 2020 11:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1732B27FDBD
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Oct 2020 12:53:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731605AbgJAJat (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Oct 2020 05:30:49 -0400
-Received: from muru.com ([72.249.23.125]:45882 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725975AbgJAJat (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 1 Oct 2020 05:30:49 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 69C108057;
-        Thu,  1 Oct 2020 09:30:51 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] Two omap regression fixes
-Date:   Thu,  1 Oct 2020 12:30:44 +0300
-Message-Id: <pull-1601544624-617679@atomide.com>
-X-Mailer: git-send-email 2.28.0
+        id S1731884AbgJAKxG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Oct 2020 06:53:06 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:33976 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731131AbgJAKxF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Oct 2020 06:53:05 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 091Ar1WM097623;
+        Thu, 1 Oct 2020 05:53:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1601549581;
+        bh=siR2Dq0VwkakKM4NvZJ4Dd9LKdMWMVceMi7VtEmHcLI=;
+        h=From:To:CC:Subject:Date;
+        b=kOde88gdPCXuPtOyksZVL8RjA2BesqGAd4Jme61t0hEkkIINRRi+iskrUAFTrs0FC
+         BWE31KyCLY5OYAZxiv75bcStKMhR54olDHP/+AlgrG2txCJVq8YV/atjEU9VcdNWs1
+         OGXdUS2gvjWgfxf51mhbH9I16iDgenrH5VL1MlVk=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 091Ar1AW129553
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 1 Oct 2020 05:53:01 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 1 Oct
+ 2020 05:53:01 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 1 Oct 2020 05:53:01 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 091Ar0lK073206;
+        Thu, 1 Oct 2020 05:53:01 -0500
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH net-next 0/8] net: ethernet: ti: am65-cpsw: add multi port support in mac-only mode
+Date:   Thu, 1 Oct 2020 13:52:50 +0300
+Message-ID: <20201001105258.2139-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+Hi
 
-The following changes since commit 6542e2b613c2b1952e83973dc434831332ce8e27:
+This series adds multi-port support in mac-only mode (multi MAC mode) to TI
+AM65x CPSW driver in preparation for enabling support for multi-port devices,
+like Main CPSW0 on K3 J721E SoC or future CPSW3g on K3 AM64x SoC.
 
-  ARM: dts: omap5: Fix DSI base address and clocks (2020-08-19 08:54:33 +0300)
+The multi MAC mode is implemented by configuring every enabled port in "mac-only"
+mode (all ingress packets are sent only to the Host port and egress packets
+directed to target Ext. Port) and creating separate net_device for
+every enabled Ext. port.
 
-are available in the Git repository at:
+Patches 1-3: Preparation patches to improve K3 CPSW configuration depending on DT
+Patches 4-5: Fix VLAN offload for multi MAC mode
+Patch 6: Fixes CPTS context lose issue during PM runtime transition
+Patches 7-8: add multi-port support to TI AM65x CPSW
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.9/fixes-rc7
+Grygorii Strashko (8):
+  net: ethernet: ti: am65-cpsw: move ale selection in pdata
+  net: ethernet: ti: am65-cpsw: move free desc queue mode selection in pdata
+  net: ethernet: ti: am65-cpsw: use cppi5_desc_is_tdcm()
+  net: ethernet: ti: cpsw_ale: add cpsw_ale_vlan_del_modify()
+  net: ethernet: ti: am65-cpsw: fix vlan offload for multi mac mode
+  net: ethernet: ti: am65-cpsw: keep active if cpts enabled
+  net: ethernet: ti: am65-cpsw: prepare xmit/rx path for multi-port
+    devices in mac-only mode
+  net: ethernet: ti: am65-cpsw: add multi port support in mac-only mode
 
-for you to fetch changes up to 8f04aea048d56f3e39a7e543939450246542a6fc:
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 179 ++++++++++++++---------
+ drivers/net/ethernet/ti/am65-cpsw-nuss.h |   4 +
+ drivers/net/ethernet/ti/cpsw_ale.c       |  41 +++++-
+ drivers/net/ethernet/ti/cpsw_ale.h       |   1 +
+ drivers/net/ethernet/ti/cpsw_switchdev.c |   2 +-
+ 5 files changed, 153 insertions(+), 74 deletions(-)
 
-  ARM: OMAP2+: Restore MPU power domain if cpu_cluster_pm_enter() fails (2020-09-23 10:39:33 +0300)
+-- 
+2.17.1
 
-----------------------------------------------------------------
-Two regression fixes for omaps
-
-Fix AM33XX_IOPAD macro that broke after recent pinctrl changes
-to use #pinctrl-cells = 2. And fix omap_enter_idle_coupled()
-for cases where cpu_cluster_pm_enter() returns an error as
-otherwise we may end up wrongly idling the MPU domain on the
-next WFI.
-
-----------------------------------------------------------------
-Drew Fustini (1):
-      ARM: dts: am33xx: modify AM33XX_IOPAD for #pinctrl-cells = 2
-
-Tony Lindgren (1):
-      ARM: OMAP2+: Restore MPU power domain if cpu_cluster_pm_enter() fails
-
- arch/arm/mach-omap2/cpuidle44xx.c  | 4 +++-
- include/dt-bindings/pinctrl/omap.h | 2 +-
- 2 files changed, 4 insertions(+), 2 deletions(-)
