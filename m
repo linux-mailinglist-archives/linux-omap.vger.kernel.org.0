@@ -2,88 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD5E27FAA4
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Oct 2020 09:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D865A27FAF5
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Oct 2020 10:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725883AbgJAHxt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Oct 2020 03:53:49 -0400
-Received: from muru.com ([72.249.23.125]:45846 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725878AbgJAHxt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 1 Oct 2020 03:53:49 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 510AE8057;
-        Thu,  1 Oct 2020 07:53:51 +0000 (UTC)
-Date:   Thu, 1 Oct 2020 10:53:44 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Subject: Re: Slow booting on x15
-Message-ID: <20201001075344.GU9471@atomide.com>
-References: <20200923111346.GA3980@pendragon.ideasonboard.com>
- <20200924054220.GA9471@atomide.com>
- <20200924055313.GC9471@atomide.com>
- <fe0a4fa8-53fc-d316-261f-52f631f12469@ti.com>
- <20200924060826.GE9471@atomide.com>
- <20200924133049.GH3968@pendragon.ideasonboard.com>
- <20200925115147.GM9471@atomide.com>
- <20200925115817.GB3933@pendragon.ideasonboard.com>
- <20200930052057.GP9471@atomide.com>
- <d8d81891-7e22-81a2-19df-6e9a5f8679c4@ti.com>
+        id S1726992AbgJAIDW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Oct 2020 04:03:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54870 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725883AbgJAIDW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Oct 2020 04:03:22 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 904ACC0613D0
+        for <linux-omap@vger.kernel.org>; Thu,  1 Oct 2020 01:03:21 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id u4so3822383ljd.10
+        for <linux-omap@vger.kernel.org>; Thu, 01 Oct 2020 01:03:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YYHHGDFcyV7m8A+kwt4Um8hblS35Zy5LrCr00HSCg5U=;
+        b=V5dI8k0JGBDJKaUjGkZd5nb7FzKkNjAUGj5Vtz/vwaOkdbsk6Kfj/tmoI9iIZ1EsBr
+         aD0K4VFAX8MLbgmH7OLqizXrI8d3P4p+YYeQZX3ae2tdMsL1Vm5bLjDfOYlcP1JcitaB
+         Dl0EfsIi5mkBQ4A22FPU8fDnsa9ugjECw+1FE9iQlMUmqxgurQjB+a0knVgjE0yqtyk4
+         DtH3WcgwZWwr1QzCBGkMPKAr0RQNrx9OfD+0fOPZwF9SgVqdm8ro/mLu0kaP2NDqbAGu
+         1A4zBRIRD6OGp0vlQhTbU5MktfsOzI6rM7rsHzYQnx2GMb3f/R3DeS9Kzc4QPyShlVzI
+         3zUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YYHHGDFcyV7m8A+kwt4Um8hblS35Zy5LrCr00HSCg5U=;
+        b=DOom66LFa2smBaM0/zZBHuSBrLrq+oa/UDHlqzdC6iKGAeTEW9FQ+Qm9IO8U/69WoP
+         D3Y2KwJCYQjHR59MGJ9DW3h2m5q7jBI0znliULn/boZVTr4YEidfVHAtJt3xx+QdpFSz
+         ssdfV9qItDHO/h2CvDCrVPIyq/z4VGy8fD0xhMjNSCPcxEDMOIzFzIZ1qbVr4TWnf/LE
+         Ft+B3zLLEGANF+nG6GrrMNLjMwvZDqtrReyL+4+AAcyobGTxxNRMvZqvZUrkf6BHexFr
+         uuVU+roJg8Z5wQg4wUoGRxKko5QvgM1h36LwImvOJGhbox+l7WfXo5xneooZNK+ilH4o
+         7JLA==
+X-Gm-Message-State: AOAM53275Gda5vJ9YWK258pgcI6s7+6y6qWA9zKZDJfF1ygU6bMIKiY7
+        m6LOjjEcDbNQB/X9OBtryBlD/rpb/3/NYd2jbf4jcg==
+X-Google-Smtp-Source: ABdhPJxObbJWEMCPewD8z+AbY9e15OBPYDfPTz8C51qe9fXmpPzD4vXP4mXTehFmCobLoRIHlfHzT37WBOKXg2KqIaY=
+X-Received: by 2002:a2e:9b15:: with SMTP id u21mr2102611lji.283.1601539399825;
+ Thu, 01 Oct 2020 01:03:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d8d81891-7e22-81a2-19df-6e9a5f8679c4@ti.com>
+References: <20200930174839.1308344-1-drew@beagleboard.org>
+In-Reply-To: <20200930174839.1308344-1-drew@beagleboard.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 1 Oct 2020 10:03:08 +0200
+Message-ID: <CACRpkdYkxTiC9iMJV8SrMGXHU5jGut8vJ=1WQFK=avXd5PrE_w@mail.gmail.com>
+Subject: Re: [PATCH v2] pinctrl: single: fix pinctrl_spec.args_count bounds check
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>,
+        Trent Piepho <tpiepho@gmail.com>,
+        Christina Quast <cquast@hanoverdisplays.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Peter Ujfalusi <peter.ujfalusi@ti.com> [200930 12:41]:
-> Fwiw on my beagle x15
-> 
-> v5.8
-> [    9.908787] Run /sbin/init as init process
-> 
-> v5.9-rc7
-> [   15.085373] Run /sbin/init as init process
-> 
-> 
-> It appears to be 'fixed' in next-20200928: the board does not even boot.
+On Wed, Sep 30, 2020 at 7:51 PM Drew Fustini <drew@beagleboard.org> wrote:
 
-Yeah so it seems :(
+> The property #pinctrl-cells can either be 1 or 2:
+>
+> - if #pinctrl-cells = <1>, then pinctrl_spec.args_count = 2
+> - if #pinctrl-cells = <2>, then pinctrl_spec.args_count = 3
+>
+> All other values of pinctrl_spec.args_count are incorrect.  This fix
+> checks the upper bound instead of just the lower bound.
+>
+> Fixes: a13395418888 ("pinctrl: single: parse #pinctrl-cells = 2")
+> Reported-by: Trent Piepho <tpiepho@gmail.com>
+> Link: https://lore.kernel.org/linux-omap/3139716.CMS8C0sQ7x@zen.local/
+> Signed-off-by: Drew Fustini <drew@beagleboard.org>
+> ---
+> v2 change:
+> - correct the description as I had previously been mistakenly using the
+>   term #pinctrl-cells instead of pinctrl_spec.args_count
 
-> next-20200928 on omap5
-> [    9.936806] Run /sbin/init as init process
-> 
-> 
-> -rc7 spends most of it's time:
-> [    7.635530] Micrel KSZ9031 Gigabit PHY 48485000.mdio:01: attached PHY driver [Micrel KSZ9031 Gigabit PHY] (mii_bus:phy_addr=48485000.mdio:01, irq=POLL)
-> [   14.956671] cpsw 48484000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
-> [   15.005211] IP-Config: Complete:
+Patch applied!
 
-Booting with initcall_debug I see this with current Linux next:
-
-...
-[    1.697313] cpuidle: using governor menu
-[    1.701353] initcall init_menu+0x0/0xc returned 0 after 0 usecs
-[    1.707458] calling  gpmc_init+0x0/0x10 @ 1
-[    1.711784] initcall gpmc_init+0x0/0x10 returned 0 after 0 usecs
-[    1.717974] calling  omap3_l3_init+0x0/0x10 @ 1
-[    1.722653] initcall omap3_l3_init+0x0/0x10 returned 0 after 0 usecs
-[    1.729201] calling  omap_l3_init+0x0/0x10 @ 1
-[    1.733791] initcall omap_l3_init+0x0/0x10 returned 0 after 0 usecs
-[    1.740314] calling  gate_vma_init+0x0/0x70 @ 1
-[    1.744976] initcall gate_vma_init+0x0/0x70 returned 0 after 0 usecs
-[    1.751522] calling  customize_machine+0x0/0x30 @ 1
-[    3.823114] initcall customize_machine+0x0/0x30 returned 0 after 2011718 usecs
-[    3.830566] calling  init_atags_procfs+0x0/0xec @ 1
-[    3.835583] No ATAGs?
-
-Laurent & Tomi, care to check what you guys see in the slow booting case
-after booting with initcall_debug?
-
-Regards,
-
-Tony
+Yours,
+Linus Walleij
