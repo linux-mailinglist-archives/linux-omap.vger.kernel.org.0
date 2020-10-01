@@ -2,58 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D95280AE7
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 01:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE667280B48
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 01:20:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728090AbgJAXIu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Oct 2020 19:08:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47858 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726855AbgJAXIu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 1 Oct 2020 19:08:50 -0400
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 66614206C1;
-        Thu,  1 Oct 2020 23:08:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601593729;
-        bh=1pHyViCMyAZxq87rCmC1bar3F/2pIh4QAMMvqHsnUKQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LWDUtYeyci9YaoO3gdAvHlGQASG3nkDIiT5jX+1fvTjK2xrRoUCL56dsBd4y/isBG
-         zXiJ0SIStTCb5k3ShcZ2ZdOzDIBO8AcBHb9rTFgFYZBGVxHpf4M5bN1f+p/fITMaAr
-         7pA3q5z0m0utH4fwR7OQ1+bypUftgOjKPasq7O0c=
-Date:   Thu, 1 Oct 2020 16:08:47 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        Murali Karicheri <m-karicheri2@ti.com>
-Subject: Re: [PATCH net-next 0/8] net: ethernet: ti: am65-cpsw: add multi
- port support in mac-only mode
-Message-ID: <20201001160847.3b5d91f1@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20201001105258.2139-1-grygorii.strashko@ti.com>
-References: <20201001105258.2139-1-grygorii.strashko@ti.com>
+        id S1733085AbgJAXUD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Oct 2020 19:20:03 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:54832 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728090AbgJAXUC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Oct 2020 19:20:02 -0400
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 44E3A60;
+        Fri,  2 Oct 2020 01:20:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1601594400;
+        bh=rfIIQwVRd/AeRqJEFC4VlBko7IIup6fEBhePqztkIR8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=D39RLFAyWjqKwgTPH1a8EHsX07hOSfHzj62ZmTqxirfGmrvGP/bNc+NtszXhl6VkN
+         s/2MWQTd2wrRkETjQru4rieOG9kAhy0ON8UMTzUYGrqnlM0cL7JGAsCd5S7c/Yz0tb
+         zIcNp663oGEWjRaTK/g4LECn89v68Mj7AMAsS75s=
+Date:   Fri, 2 Oct 2020 02:19:22 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>, geert+renesas@glider.be,
+        gregkh@linuxfoundation.org, grygorii.strashko@ti.com,
+        linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
+        peter.ujfalusi@ti.com, rjw@rjwysocki.net, tomi.valkeinen@ti.com,
+        tony@atomide.com, ulf.hansson@linaro.org, kernel-team@android.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] of: platform: Batch fwnode parsing in the
+ init_machine() path
+Message-ID: <20201001231922.GG3722@pendragon.ideasonboard.com>
+References: <CAGETcx8owDP_Bu4oNCyHEsME8XpKygxghm8+yNc2RyMA4wyjCA@mail.gmail.com>
+ <20201001225952.3676755-1-saravanak@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201001225952.3676755-1-saravanak@google.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 1 Oct 2020 13:52:50 +0300 Grygorii Strashko wrote:
-> This series adds multi-port support in mac-only mode (multi MAC mode) to TI
-> AM65x CPSW driver in preparation for enabling support for multi-port devices,
-> like Main CPSW0 on K3 J721E SoC or future CPSW3g on K3 AM64x SoC.
+Hi Saravana,
+
+Thank you for the patch.
+
+On Thu, Oct 01, 2020 at 03:59:51PM -0700, Saravana Kannan wrote:
+> When commit 93d2e4322aa7 ("of: platform: Batch fwnode parsing when
+> adding all top level devices") optimized the fwnode parsing when all top
+> level devices are added, it missed out optimizing this for platform
+> where the top level devices are added through the init_machine() path.
 > 
-> The multi MAC mode is implemented by configuring every enabled port in "mac-only"
-> mode (all ingress packets are sent only to the Host port and egress packets
-> directed to target Ext. Port) and creating separate net_device for
-> every enabled Ext. port.
+> This commit does the optimization for all paths by simply moving the
+> fw_devlink_pause/resume() inside of_platform_default_populate().
 
-Do I get it right that you select the mode based on platform? Can the
-other mode still be supported on these platforms?
+Based on v5.9-rc5, before the patch:
 
-Is this a transition to normal DSA mode where ports always have netdevs?
+[    0.652887] cpuidle: using governor menu
+[   12.349476] No ATAGs?
+
+After the patch:
+
+[    0.650460] cpuidle: using governor menu
+[   12.262101] No ATAGs?
+
+:-(
+
+> Reported-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/of/platform.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index 071f04da32c8..79972e49b539 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -501,8 +501,21 @@ int of_platform_default_populate(struct device_node *root,
+>  				 const struct of_dev_auxdata *lookup,
+>  				 struct device *parent)
+>  {
+> -	return of_platform_populate(root, of_default_bus_match_table, lookup,
+> -				    parent);
+> +	int ret;
+> +
+> +	/*
+> +	 * fw_devlink_pause/resume() are only safe to be called around top
+> +	 * level device addition due to locking constraints.
+> +	 */
+> +	if (!root)
+> +		fw_devlink_pause();
+> +
+> +	ret = of_platform_populate(root, of_default_bus_match_table, lookup,
+> +				   parent);
+> +
+> +	if (!root)
+> +		fw_devlink_resume();
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(of_platform_default_populate);
+>  
+> @@ -538,9 +551,7 @@ static int __init of_platform_default_populate_init(void)
+>  	}
+>  
+>  	/* Populate everything else. */
+> -	fw_devlink_pause();
+>  	of_platform_default_populate(NULL, NULL, NULL);
+> -	fw_devlink_resume();
+>  
+>  	return 0;
+>  }
+
+-- 
+Regards,
+
+Laurent Pinchart
