@@ -2,164 +2,201 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 70ED6281850
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 18:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF228281A14
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 19:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388042AbgJBQu5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 2 Oct 2020 12:50:57 -0400
-Received: from gateway36.websitewelcome.com ([192.185.194.2]:13929 "EHLO
-        gateway36.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725991AbgJBQu5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Oct 2020 12:50:57 -0400
-X-Greylist: delayed 1500 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 12:50:56 EDT
-Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
-        by gateway36.websitewelcome.com (Postfix) with ESMTP id E099D413B3DC2
-        for <linux-omap@vger.kernel.org>; Fri,  2 Oct 2020 11:01:04 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id ONUWkqVrRn9FWONUWkkTry; Fri, 02 Oct 2020 11:01:04 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ephjn50hlak6WRjk7cg7OX0+xyLomUtUgG95wXiC2WA=; b=ZM80eU1y+XsyJJKerxhZTgyCVm
-        +fk56eBcjVxAHdHJR6ieh5EcSd7xazZTBRakkFn2iwarG8gxipmNyEXmUU6hDGbwxpoeM+FbsFN7p
-        YF94n1VyXGiHrD8hGxpHN3/kBf+kedINRuOJE+d2KKkKLjrvu/uRCW6NkuA2eBWmpr1MgC9pQ7nby
-        4N0Mk5eSiZyAgaLLZpd2BFRYW7vUUWS8Mh5X1iJj1vDRf9X3P8WggSkASnXJ0yzKi5p1cIJzlOii/
-        J1VBuh9GtkK8m++I/DYslAvhMmoG06E+fySBUWQg/lgJD0nR4XjCEc2I79B2pbvcUmNXAS6MYPMIk
-        Q2E60cug==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:45718 helo=[192.168.15.4])
-        by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1kONUU-000rqa-FU; Fri, 02 Oct 2020 11:01:02 -0500
-Subject: Re: [PATCH -next v2] ASoC: ti: omap-mcbsp: use
- devm_platform_ioremap_resource_byname
-To:     Qilong Zhang <zhangqilong3@huawei.com>, broonie@kernel.org,
-        peter.ujfalusi@ti.com, jarkko.nikula@bitmer.com,
-        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com
-Cc:     linux-omap@vger.kernel.org
-References: <20200922015123.117489-1-zhangqilong3@huawei.com>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Autocrypt: addr=gustavo@embeddedor.com; keydata=
- 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
- AP7RWS474w==
-Message-ID: <3992a6f9-fda9-dbe2-bb6f-88c29f703e18@embeddedor.com>
-Date:   Fri, 2 Oct 2020 11:06:48 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S2387688AbgJBRs7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 2 Oct 2020 13:48:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57456 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726017AbgJBRs7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Oct 2020 13:48:59 -0400
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16BF8C0613D0
+        for <linux-omap@vger.kernel.org>; Fri,  2 Oct 2020 10:48:59 -0700 (PDT)
+Received: by mail-yb1-xb43.google.com with SMTP id v60so1732790ybi.10
+        for <linux-omap@vger.kernel.org>; Fri, 02 Oct 2020 10:48:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QS77N6+CVhOOVc5MzAkxD23OY8NSVhkBewUyPpHdYlc=;
+        b=K7c10yve+m/Ym4Ka9KOtXjRc9l7h/9hkwYlCtP8U1y4i6VsUSwagmYsszDYzzPWyAP
+         doQk7cUQ9E4iFl5joVcME6pkx0+Pj0NsYO3HE/qyf6VtbK2Diua2nRDGfeOBwoWALiim
+         +Ebyf6fiS6NK0ZzNY7ZIsUiq/eTsSs7/ZOWOi3yFac6jJuSuHA4dSGIgkHWCbpBogq9q
+         eYFwMnw1+qz+fp/jKT6fALkj+dHmdwbAH14KNPVxicedjtSDsBGonfJnlK3l+dBoLnRC
+         PE82kdBmi+UIMhTe/CkBfifxDFqTUbuUX0IJm9YVYH55/UwM/DFQdEknfpHW3ogGenQe
+         rVPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QS77N6+CVhOOVc5MzAkxD23OY8NSVhkBewUyPpHdYlc=;
+        b=KgUm6SZsmlYC3AhABvH1erO16/zt99U9IdSdJKG6IFdBvEGnIVk0kFiHhEdVbq4Mv9
+         cHHVb669p5rPzGBNm+pkY0SVlPzkF1ZtU0CMMmLFnN1pQPzXbUSTKduNE7wgLi+dehGS
+         ZJBzi66YQUZfmfRt0SdX0hgaI+ar07tvd9z1Sa987oGLfvdJ2Hjdy4xJssngUFqqn44g
+         LvRbA6XXK1C3U6nAoWPQJj5hM4cvI0Acy+9GR2D4OxfuuFLAJY0pQdcx5IZMd+Odp/VF
+         NnZMgfY2C54n8WTcUQ+VgjfhoEqRS1SrO/tXUsvoOCCn9Egil/sjfth5kqWtDa+q+41V
+         uU/A==
+X-Gm-Message-State: AOAM533k3iJaZTu2HeIUzoC+E2g0CsRKrVF4gdzxyuBsy1FbjbrX+ndK
+        2DEToOEGqrFG4EF/4FMHDlxncMsrYgx5q+6XBkMOyQ==
+X-Google-Smtp-Source: ABdhPJyK6MpLcp9s4wybIfKzU+/XBpBlE4yS0Lf4BV1uGhjLp79GVzaBk0S/XxweTFTrs7362+sisG6zJp8OI284NSw=
+X-Received: by 2002:a05:6902:725:: with SMTP id l5mr4087154ybt.346.1601660938079;
+ Fri, 02 Oct 2020 10:48:58 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200922015123.117489-1-zhangqilong3@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1kONUU-000rqa-FU
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.4]) [187.162.31.110]:45718
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 8
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+References: <CAGETcx8owDP_Bu4oNCyHEsME8XpKygxghm8+yNc2RyMA4wyjCA@mail.gmail.com>
+ <20201001225952.3676755-1-saravanak@google.com> <20201001231922.GG3722@pendragon.ideasonboard.com>
+ <17bdc3f0-d816-151a-fef2-88cd38fc8621@ti.com> <e0ef8816-11ea-3a1a-cac6-14b9f6c92bcf@ti.com>
+In-Reply-To: <e0ef8816-11ea-3a1a-cac6-14b9f6c92bcf@ti.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 2 Oct 2020 10:48:22 -0700
+Message-ID: <CAGETcx-wkZZQyfnkc59e2ECg_kho-O_c2ms4OOtM4=-Hd125+Q@mail.gmail.com>
+Subject: Re: [PATCH v1] of: platform: Batch fwnode parsing in the
+ init_machine() path
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Fri, Oct 2, 2020 at 8:03 AM 'Grygorii Strashko' via kernel-team
+<kernel-team@android.com> wrote:
+>
+>
+>
+> On 02/10/2020 14:40, Grygorii Strashko wrote:
+> >
+> >
+> > On 02/10/2020 02:19, Laurent Pinchart wrote:
+> >> Hi Saravana,
+> >>
+> >> Thank you for the patch.
+> >>
+> >> On Thu, Oct 01, 2020 at 03:59:51PM -0700, Saravana Kannan wrote:
+> >>> When commit 93d2e4322aa7 ("of: platform: Batch fwnode parsing when
+> >>> adding all top level devices") optimized the fwnode parsing when all top
+> >>> level devices are added, it missed out optimizing this for platform
+> >>> where the top level devices are added through the init_machine() path.
+> >>>
+> >>> This commit does the optimization for all paths by simply moving the
+> >>> fw_devlink_pause/resume() inside of_platform_default_populate().
+> >>
+> >> Based on v5.9-rc5, before the patch:
+> >>
+> >> [    0.652887] cpuidle: using governor menu
+> >> [   12.349476] No ATAGs?
+> >>
+> >> After the patch:
+> >>
+> >> [    0.650460] cpuidle: using governor menu
+> >> [   12.262101] No ATAGs?
+> >>
+> >> :-(
+> >
+> > This is kinda expected :( because omap2 arch doesn't call of_platform_default_populate()
+> >
+> > Call path:
+> > board-generic.c
+> >   DT_MACHINE_START()
+> >     .init_machine    = omap_generic_init,
+> >
+> >   omap_generic_init()
+> >     pdata_quirks_init(omap_dt_match_table);
+> >          of_platform_populate(NULL, omap_dt_match_table,
+> >                   omap_auxdata_lookup, NULL);
+> >
+> > Other affected platforms
+> > arm: mach-ux500
+> > some mips
+> > some powerpc
+> >
+> > there are also case when a lot of devices placed under bus node, in such case
+> >   of_platform_populate() calls from bus drivers will also suffer from this issue.
+> >
+> > I think one option could be to add some parameter to _populate() or introduce new api.
+> >
+> > By the way, is there option to disable this feature at all?
+> > Is there Kconfig option?
+> > Is there any reasons why such complex and time consuming code added to the kernel and not implemented on DTC level?
+> >
+> >
+> > Also, I've came with another diff, pls check.
+> >
+> > [    0.000000] Booting Linux on physical CPU 0x0
+> > [    0.000000] Linux version 5.9.0-rc6-01791-g9acba6b38757-dirty (grygorii@grygorii-XPS-13-9370) (arm-linux-gnueabihf-gcc (GNU Toolcha0
+> > [    0.000000] CPU: ARMv7 Processor [412fc0f2] revision 2 (ARMv7), cr=10c5387d
+> > [    0.000000] CPU: div instructions available: patching division code
+> > [    0.000000] CPU: PIPT / VIPT nonaliasing data cache, PIPT instruction cache
+> > [    0.000000] OF: fdt: Machine model: TI AM5718 IDK
+> > ...
+> > [    0.053443] cpuidle: using governor ladder
+> > [    0.053470] cpuidle: using governor menu
+> > [    0.089304] No ATAGs?
+> > ...
+> > [    3.092291] devtmpfs: mounted
+> > [    3.095804] Freeing unused kernel memory: 1024K
+> > [    3.100483] Run /sbin/init as init process
+> >
+> >
+> >
+> > ------ >< ---
+> > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> > index 071f04da32c8..4521b26e7745 100644
+> > --- a/drivers/of/platform.c
+> > +++ b/drivers/of/platform.c
+> > @@ -514,6 +514,12 @@ static const struct of_device_id reserved_mem_matches[] = {
+> >          {}
+> >   };
+> >
+> > +static int __init of_platform_fw_devlink_pause(void)
+> > +{
+> > +       fw_devlink_pause();
+> > +}
+> > +core_initcall(of_platform_fw_devlink_pause);
+> > +
+> >   static int __init of_platform_default_populate_init(void)
+> >   {
+> >          struct device_node *node;
+> > @@ -538,9 +544,7 @@ static int __init of_platform_default_populate_init(void)
+> >          }
+> >
+> >          /* Populate everything else. */
+> > -       fw_devlink_pause();
+> >          of_platform_default_populate(NULL, NULL, NULL);
+> > -       fw_devlink_resume();
+> >
+> >          return 0;
+> >   }
+> > @@ -548,6 +552,7 @@ arch_initcall_sync(of_platform_default_populate_init);
+> >
+> >   static int __init of_platform_sync_state_init(void)
+> >   {
+> > +       fw_devlink_resume();
+>
+> ^ it seems has to be done earlier, like
+> +static int __init of_platform_fw_devlink_resume(void)
+> +{
+> +       fw_devlink_resume();
+> +       return 0;
+> +}
+> +device_initcall_sync(of_platform_fw_devlink_resume);
 
+This will mean no device will probe until device_initcall_sync().
+Unfortunately, I don't think we can make such a sweeping assumption.
 
-On 9/21/20 20:51, Qilong Zhang wrote:
-> From: Zhang Qilong <zhangqilong3@huawei.com>
-> 
-> Use the devm_platform_ioremap_resource_byname() helper instead of
-> calling platform_get_resource_byname() and devm_ioremap_resource()
-> separately.
-> 
-> Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
-> ---
->  sound/soc/ti/omap-mcbsp.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-> index 6025b30bbe77..186cea91076f 100644
-> --- a/sound/soc/ti/omap-mcbsp.c
-> +++ b/sound/soc/ti/omap-mcbsp.c
-> @@ -620,11 +620,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
->  	spin_lock_init(&mcbsp->lock);
->  	mcbsp->free = true;
->  
-> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mpu");
-> -	if (!res)
-> -		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -
-> -	mcbsp->io_base = devm_ioremap_resource(&pdev->dev, res);
-> +	mcbsp->io_base = devm_platform_ioremap_resource_byname(pdev, "mpu");
->  	if (IS_ERR(mcbsp->io_base))
->  		return PTR_ERR(mcbsp->io_base);
->  
-> 
-
-And then what happens with the code below?
-
-        mcbsp->phys_base = res->start;
-        mcbsp->reg_cache_size = resource_size(res);
-
-
-Now, you end up with an uninitialized pointer read.
-
-This is wrong.
-
---
-Gustavo
+-Saravana
