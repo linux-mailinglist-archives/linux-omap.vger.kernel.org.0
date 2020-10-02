@@ -2,119 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE667280B48
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 01:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23F02280FA0
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 11:13:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733085AbgJAXUD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Oct 2020 19:20:03 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:54832 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728090AbgJAXUC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Oct 2020 19:20:02 -0400
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 44E3A60;
-        Fri,  2 Oct 2020 01:20:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1601594400;
-        bh=rfIIQwVRd/AeRqJEFC4VlBko7IIup6fEBhePqztkIR8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=D39RLFAyWjqKwgTPH1a8EHsX07hOSfHzj62ZmTqxirfGmrvGP/bNc+NtszXhl6VkN
-         s/2MWQTd2wrRkETjQru4rieOG9kAhy0ON8UMTzUYGrqnlM0cL7JGAsCd5S7c/Yz0tb
-         zIcNp663oGEWjRaTK/g4LECn89v68Mj7AMAsS75s=
-Date:   Fri, 2 Oct 2020 02:19:22 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>, geert+renesas@glider.be,
-        gregkh@linuxfoundation.org, grygorii.strashko@ti.com,
-        linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
-        peter.ujfalusi@ti.com, rjw@rjwysocki.net, tomi.valkeinen@ti.com,
-        tony@atomide.com, ulf.hansson@linaro.org, kernel-team@android.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] of: platform: Batch fwnode parsing in the
- init_machine() path
-Message-ID: <20201001231922.GG3722@pendragon.ideasonboard.com>
-References: <CAGETcx8owDP_Bu4oNCyHEsME8XpKygxghm8+yNc2RyMA4wyjCA@mail.gmail.com>
- <20201001225952.3676755-1-saravanak@google.com>
+        id S1726240AbgJBJNF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 2 Oct 2020 05:13:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41206 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725993AbgJBJNE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 2 Oct 2020 05:13:04 -0400
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BF4222074B;
+        Fri,  2 Oct 2020 09:13:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601629984;
+        bh=8a9a2j+Q9TdoEDPH23Ae2HnjNbpRmIF9vtNV8rnH2vQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=e2Ws41X+UNrnNFSTOb3hHvWb3YfjncnZQ59oCGnE7JOU6e7heO6JfoSLH5pHei0eg
+         BC2b71jVluyqxGHJ0QR5kWnUooypgWbQFCErWr5684bzCO+XF6iFpwxtP7Y+nxZdxZ
+         RpIRhmFkBimbov+669+iCgi5oldne2Y5z8G4dV28=
+Received: by mail-ed1-f51.google.com with SMTP id t16so913601edw.7;
+        Fri, 02 Oct 2020 02:13:03 -0700 (PDT)
+X-Gm-Message-State: AOAM533bhUyNTzqj6FIBc7ggNOs45TVm+lKNinn8GSshSYsJEZYmiri4
+        4up+B3qc6q12m/n58FmoW9WbaC+axTBMtJFW8XA=
+X-Google-Smtp-Source: ABdhPJxBtB7fdjB7sO1ypylhPr0oi8dpib+2DW5jCMpkty90gseodUSNpkeVzNSqRvn/UxzjtCaV66+yk1Gc6ZLF7DA=
+X-Received: by 2002:a05:6402:22b7:: with SMTP id cx23mr1353773edb.246.1601629982305;
+ Fri, 02 Oct 2020 02:13:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201001225952.3676755-1-saravanak@google.com>
+References: <20200930234637.7573-1-post@lespocky.de> <20200930234637.7573-6-post@lespocky.de>
+In-Reply-To: <20200930234637.7573-6-post@lespocky.de>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Fri, 2 Oct 2020 11:12:50 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPfBKnESpRkSDZp5CB3T-t95DXg2dNKQnNNXv6Q_ywck2w@mail.gmail.com>
+Message-ID: <CAJKOXPfBKnESpRkSDZp5CB3T-t95DXg2dNKQnNNXv6Q_ywck2w@mail.gmail.com>
+Subject: Re: [PATCH v6 5/7] ARM: dts: Fix schema warnings for pwm-leds
+To:     Alexander Dahl <post@lespocky.de>
+Cc:     linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>, linux-omap@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Alexander Dahl <ada@thorsis.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Saravana,
-
-Thank you for the patch.
-
-On Thu, Oct 01, 2020 at 03:59:51PM -0700, Saravana Kannan wrote:
-> When commit 93d2e4322aa7 ("of: platform: Batch fwnode parsing when
-> adding all top level devices") optimized the fwnode parsing when all top
-> level devices are added, it missed out optimizing this for platform
-> where the top level devices are added through the init_machine() path.
-> 
-> This commit does the optimization for all paths by simply moving the
-> fw_devlink_pause/resume() inside of_platform_default_populate().
-
-Based on v5.9-rc5, before the patch:
-
-[    0.652887] cpuidle: using governor menu
-[   12.349476] No ATAGs?
-
-After the patch:
-
-[    0.650460] cpuidle: using governor menu
-[   12.262101] No ATAGs?
-
-:-(
-
-> Reported-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
+On Thu, 1 Oct 2020 at 01:53, Alexander Dahl <post@lespocky.de> wrote:
+>
+> The node names for devices using the pwm-leds driver follow a certain
+> naming scheme (now).
+>
+> Signed-off-by: Alexander Dahl <post@lespocky.de>
 > ---
->  drivers/of/platform.c | 19 +++++++++++++++----
->  1 file changed, 15 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index 071f04da32c8..79972e49b539 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -501,8 +501,21 @@ int of_platform_default_populate(struct device_node *root,
->  				 const struct of_dev_auxdata *lookup,
->  				 struct device *parent)
->  {
-> -	return of_platform_populate(root, of_default_bus_match_table, lookup,
-> -				    parent);
-> +	int ret;
-> +
-> +	/*
-> +	 * fw_devlink_pause/resume() are only safe to be called around top
-> +	 * level device addition due to locking constraints.
-> +	 */
-> +	if (!root)
-> +		fw_devlink_pause();
-> +
-> +	ret = of_platform_populate(root, of_default_bus_match_table, lookup,
-> +				   parent);
-> +
-> +	if (!root)
-> +		fw_devlink_resume();
-> +	return ret;
->  }
->  EXPORT_SYMBOL_GPL(of_platform_default_populate);
->  
-> @@ -538,9 +551,7 @@ static int __init of_platform_default_populate_init(void)
->  	}
->  
->  	/* Populate everything else. */
-> -	fw_devlink_pause();
->  	of_platform_default_populate(NULL, NULL, NULL);
-> -	fw_devlink_resume();
->  
->  	return 0;
->  }
+>
+> Notes:
+>     v6:
+>       * added this patch to series
+>
+>  arch/arm/boot/dts/at91-kizbox.dts             | 10 +++----
+>  arch/arm/boot/dts/at91-kizbox2-common.dtsi    |  8 +++---
+>  arch/arm/boot/dts/at91-kizbox3-hs.dts         | 16 ++++++------
+>  arch/arm/boot/dts/at91-kizbox3_common.dtsi    | 10 +++----
+>  arch/arm/boot/dts/at91-kizboxmini-common.dtsi |  8 +++---
+>  arch/arm/boot/dts/at91sam9m10g45ek.dts        | 10 +++----
+>  arch/arm/boot/dts/at91sam9rlek.dts            | 10 +++----
+>  .../boot/dts/berlin2cd-google-chromecast.dts  |  6 ++---
+>  arch/arm/boot/dts/exynos5422-odroidhc1.dts    |  4 +--
+>  arch/arm/boot/dts/exynos5422-odroidxu4.dts    |  4 +--
 
--- 
-Regards,
+Somehow you did not CC the maintainers... please use
+scripts/get_maintainers.pl to obtain list of addresses.
 
-Laurent Pinchart
+All these should be separate patches per sub-architecture.
+
+Best regards,
+Krzysztof
