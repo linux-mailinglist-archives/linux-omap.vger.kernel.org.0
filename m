@@ -2,97 +2,183 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F411D2810C8
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 12:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9A28281157
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 13:40:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726386AbgJBKxJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 2 Oct 2020 06:53:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38644 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725920AbgJBKxH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 2 Oct 2020 06:53:07 -0400
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ED1C520874;
-        Fri,  2 Oct 2020 10:53:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601635986;
-        bh=WUSRRX+XBvVTYHzBDRPQz4PtaU7zhX11OBofs03lu7w=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=yvX1A3cLWsjS1cWSyIRSg+WJmwZtSfrDcvyV/NeaKNl7GPsIy0voCxFZ/rOk4Gpmn
-         2KaO/nUo6AwHYxAo8duM5tiz9TubUPDXXY5lD8rnJHuHCrD3KuX85XjN3soizDcz8B
-         jOf84bE2XRGR0Trvh3UMgzg0dT6cjmceAFfHiP3o=
-Received: by mail-ej1-f53.google.com with SMTP id qp15so1340345ejb.3;
-        Fri, 02 Oct 2020 03:53:05 -0700 (PDT)
-X-Gm-Message-State: AOAM531uTpfRhMMc+fyakJH6fjIgtpx0vsvhK0xfgJKCC4B/ZYBuPTAC
-        MlIgMtYN4QKyeHjuqKKzXmT9MLkU/ep84CiL9zA=
-X-Google-Smtp-Source: ABdhPJz2njtnLuaxs13sg4hhwWj46P8QK/G+8vH63FlRpE0n16xuRCvITpEi9m8uB+qnlenWJGhPhUHCNrXOYo6xhlo=
-X-Received: by 2002:a17:906:1984:: with SMTP id g4mr1573436ejd.119.1601635984516;
- Fri, 02 Oct 2020 03:53:04 -0700 (PDT)
+        id S2387412AbgJBLkg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 2 Oct 2020 07:40:36 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:48522 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725964AbgJBLkg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Oct 2020 07:40:36 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 092BeLjs113512;
+        Fri, 2 Oct 2020 06:40:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1601638821;
+        bh=V/zyiQmILGFog3Ufk5QRTr8xqX1k4K9HSSdOm6QJWRQ=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=RzlO48V+Ja0l7Vp+twsqZJm985HIpMMJolOLivp+Kbm3lLhA/1QSXOWXGfL6BLJ9K
+         DvDHLk7mNH3E3opwd6n2xy3H+fnJVjItCJPDde1uYSL62pnEA0AHY06jn23fzj7+sH
+         64xOkvWY53IJ2SVSTfL4mU/HZy8MnKpHiAEXDHb8=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 092BeLta128973
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 2 Oct 2020 06:40:21 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 2 Oct
+ 2020 06:40:20 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 2 Oct 2020 06:40:20 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 092BeFU1049422;
+        Fri, 2 Oct 2020 06:40:16 -0500
+Subject: Re: [PATCH v1] of: platform: Batch fwnode parsing in the
+ init_machine() path
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Saravana Kannan <saravanak@google.com>
+CC:     Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        <geert+renesas@glider.be>, <gregkh@linuxfoundation.org>,
+        <linux-omap@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <peter.ujfalusi@ti.com>, <rjw@rjwysocki.net>,
+        <tomi.valkeinen@ti.com>, <tony@atomide.com>,
+        <ulf.hansson@linaro.org>, <kernel-team@android.com>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <CAGETcx8owDP_Bu4oNCyHEsME8XpKygxghm8+yNc2RyMA4wyjCA@mail.gmail.com>
+ <20201001225952.3676755-1-saravanak@google.com>
+ <20201001231922.GG3722@pendragon.ideasonboard.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <17bdc3f0-d816-151a-fef2-88cd38fc8621@ti.com>
+Date:   Fri, 2 Oct 2020 14:40:14 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200930234637.7573-1-post@lespocky.de> <20200930234637.7573-3-post@lespocky.de>
- <CAJKOXPe7Tg+5ESsdPGks_Aqj+zQH4-asC839FseWp0OCJbT4Mw@mail.gmail.com> <9895379.VNsV0mSTfq@ada>
-In-Reply-To: <9895379.VNsV0mSTfq@ada>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Fri, 2 Oct 2020 12:52:52 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPcTstvUuy-CnJbOGxiONLx2V2hfpnR0H4gS=4v+C1udtQ@mail.gmail.com>
-Message-ID: <CAJKOXPcTstvUuy-CnJbOGxiONLx2V2hfpnR0H4gS=4v+C1udtQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/7] dt-bindings: leds: Convert pwm to yaml
-To:     Alexander Dahl <ada@thorsis.com>
-Cc:     linux-leds@vger.kernel.org, Alexander Dahl <post@lespocky.de>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        "linux-samsung-soc@vger.kernel.org" 
-        <linux-samsung-soc@vger.kernel.org>, linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20201001231922.GG3722@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 2 Oct 2020 at 12:46, Alexander Dahl <ada@thorsis.com> wrote:
->
-> Hei hei,
->
-> Am Freitag, 2. Oktober 2020, 11:31:09 CEST schrieb Krzysztof Kozlowski:
-> > On Thu, 1 Oct 2020 at 01:52, Alexander Dahl <post@lespocky.de> wrote:
-> > > The example was adapted in the following ways:
-> > >
-> > > - make use of the now supported 'function' and 'color' properties
-> > > - remove pwm nodes, those are documented elsewhere
-> > > - tweake node names to be matched by new dtschema rules
-> >
-> > tweak? or align?
->
-> Depends on if schema actually checks it (child nodes) or if it's just DT
-> policy (parent node).  I'll reword in v7.
->
-> > > License was discussed with the original author.
-> >
-> > Since you relicense their work, you need an ack or signed off from
-> > every author. You cannot just say "I discussed" and post it. That way
-> > I could pretend (lie) I talked to Linus and try to relicense Linux to
-> > BSD...
->
-> I know.  Peter promised to give his Ack publicly on the list back when I
-> worked on v2 or v3, so he is in Cc since then, but apparently he did not yet
-> post it. ;-)
->
-> > You need acks/SoB from Peter and Russel.
->
-> Well, I should add Russel in v7, too, then.
 
-Yes, please.
 
-For the patch itself:
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+On 02/10/2020 02:19, Laurent Pinchart wrote:
+> Hi Saravana,
+> 
+> Thank you for the patch.
+> 
+> On Thu, Oct 01, 2020 at 03:59:51PM -0700, Saravana Kannan wrote:
+>> When commit 93d2e4322aa7 ("of: platform: Batch fwnode parsing when
+>> adding all top level devices") optimized the fwnode parsing when all top
+>> level devices are added, it missed out optimizing this for platform
+>> where the top level devices are added through the init_machine() path.
+>>
+>> This commit does the optimization for all paths by simply moving the
+>> fw_devlink_pause/resume() inside of_platform_default_populate().
+> 
+> Based on v5.9-rc5, before the patch:
+> 
+> [    0.652887] cpuidle: using governor menu
+> [   12.349476] No ATAGs?
+> 
+> After the patch:
+> 
+> [    0.650460] cpuidle: using governor menu
+> [   12.262101] No ATAGs?
+> 
+> :-(
 
+This is kinda expected :( because omap2 arch doesn't call of_platform_default_populate()
+
+Call path:
+board-generic.c
+  DT_MACHINE_START()
+    .init_machine	= omap_generic_init,
+
+  omap_generic_init()
+    pdata_quirks_init(omap_dt_match_table);
+		of_platform_populate(NULL, omap_dt_match_table,
+			     omap_auxdata_lookup, NULL);
+
+Other affected platforms
+arm: mach-ux500
+some mips
+some powerpc
+
+there are also case when a lot of devices placed under bus node, in such case
+  of_platform_populate() calls from bus drivers will also suffer from this issue.
+
+I think one option could be to add some parameter to _populate() or introduce new api.
+
+By the way, is there option to disable this feature at all?
+Is there Kconfig option?
+Is there any reasons why such complex and time consuming code added to the kernel and not implemented on DTC level?
+
+
+Also, I've came with another diff, pls check.
+
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 5.9.0-rc6-01791-g9acba6b38757-dirty (grygorii@grygorii-XPS-13-9370) (arm-linux-gnueabihf-gcc (GNU Toolcha0
+[    0.000000] CPU: ARMv7 Processor [412fc0f2] revision 2 (ARMv7), cr=10c5387d
+[    0.000000] CPU: div instructions available: patching division code
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, PIPT instruction cache
+[    0.000000] OF: fdt: Machine model: TI AM5718 IDK
+...
+[    0.053443] cpuidle: using governor ladder
+[    0.053470] cpuidle: using governor menu
+[    0.089304] No ATAGs?
+...
+[    3.092291] devtmpfs: mounted
+[    3.095804] Freeing unused kernel memory: 1024K
+[    3.100483] Run /sbin/init as init process
+
+
+
+------ >< ---
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 071f04da32c8..4521b26e7745 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -514,6 +514,12 @@ static const struct of_device_id reserved_mem_matches[] = {
+         {}
+  };
+  
++static int __init of_platform_fw_devlink_pause(void)
++{
++       fw_devlink_pause();
++}
++core_initcall(of_platform_fw_devlink_pause);
++
+  static int __init of_platform_default_populate_init(void)
+  {
+         struct device_node *node;
+@@ -538,9 +544,7 @@ static int __init of_platform_default_populate_init(void)
+         }
+  
+         /* Populate everything else. */
+-       fw_devlink_pause();
+         of_platform_default_populate(NULL, NULL, NULL);
+-       fw_devlink_resume();
+  
+         return 0;
+  }
+@@ -548,6 +552,7 @@ arch_initcall_sync(of_platform_default_populate_init);
+  
+  static int __init of_platform_sync_state_init(void)
+  {
++       fw_devlink_resume();
+         device_links_supplier_sync_state_resume();
+         return 0;
+  }
+
+
+
+-- 
 Best regards,
-Krzysztof
+grygorii
