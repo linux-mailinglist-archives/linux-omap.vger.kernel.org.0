@@ -2,65 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF228281A14
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 19:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14DC8281A26
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 19:52:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387688AbgJBRs7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 2 Oct 2020 13:48:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57456 "EHLO
+        id S2388345AbgJBRwb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 2 Oct 2020 13:52:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726017AbgJBRs7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Oct 2020 13:48:59 -0400
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16BF8C0613D0
-        for <linux-omap@vger.kernel.org>; Fri,  2 Oct 2020 10:48:59 -0700 (PDT)
-Received: by mail-yb1-xb43.google.com with SMTP id v60so1732790ybi.10
-        for <linux-omap@vger.kernel.org>; Fri, 02 Oct 2020 10:48:59 -0700 (PDT)
+        with ESMTP id S1726017AbgJBRw2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Oct 2020 13:52:28 -0400
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17489C0613E2
+        for <linux-omap@vger.kernel.org>; Fri,  2 Oct 2020 10:52:28 -0700 (PDT)
+Received: by mail-yb1-xb42.google.com with SMTP id b142so1748069ybg.9
+        for <linux-omap@vger.kernel.org>; Fri, 02 Oct 2020 10:52:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=QS77N6+CVhOOVc5MzAkxD23OY8NSVhkBewUyPpHdYlc=;
-        b=K7c10yve+m/Ym4Ka9KOtXjRc9l7h/9hkwYlCtP8U1y4i6VsUSwagmYsszDYzzPWyAP
-         doQk7cUQ9E4iFl5joVcME6pkx0+Pj0NsYO3HE/qyf6VtbK2Diua2nRDGfeOBwoWALiim
-         +Ebyf6fiS6NK0ZzNY7ZIsUiq/eTsSs7/ZOWOi3yFac6jJuSuHA4dSGIgkHWCbpBogq9q
-         eYFwMnw1+qz+fp/jKT6fALkj+dHmdwbAH14KNPVxicedjtSDsBGonfJnlK3l+dBoLnRC
-         PE82kdBmi+UIMhTe/CkBfifxDFqTUbuUX0IJm9YVYH55/UwM/DFQdEknfpHW3ogGenQe
-         rVPg==
+        bh=lW22Qzd9PGiP/2qzJ0inuLN63Dw7cetpUVChJaty2gE=;
+        b=Hrn+Czu+Upto30ahHpqz77XC0AVbryq8MDWS/Cg35v6e3+jm93XxMW799+oo0wmJCX
+         mMXHudebFmP8Ys+9w/RQcPL2f7Mnerj3jbyFp39ZwzbpbQE1w9F3wldwtqRqjU7NFCl5
+         DXY7Fpi9XYkfpBnirOpPnGDsydsDjA/wUrp9tqJoR4VEgWXIW8BnE1IFn0tUNE0dYY3u
+         KBLk/lWz4ZJ9bIQPBTjtRV0ygVvrkbXa9VWbhIV0G+8a0IkdILlriUf7qDpDEIHsrO5g
+         7lOOgb1hg4imG+RF8Ji9cqGBdhkknr3GVqfkmxdR+nREoCNPAFqg5UdDt8J+8Svgc4V2
+         kRJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=QS77N6+CVhOOVc5MzAkxD23OY8NSVhkBewUyPpHdYlc=;
-        b=KgUm6SZsmlYC3AhABvH1erO16/zt99U9IdSdJKG6IFdBvEGnIVk0kFiHhEdVbq4Mv9
-         cHHVb669p5rPzGBNm+pkY0SVlPzkF1ZtU0CMMmLFnN1pQPzXbUSTKduNE7wgLi+dehGS
-         ZJBzi66YQUZfmfRt0SdX0hgaI+ar07tvd9z1Sa987oGLfvdJ2Hjdy4xJssngUFqqn44g
-         LvRbA6XXK1C3U6nAoWPQJj5hM4cvI0Acy+9GR2D4OxfuuFLAJY0pQdcx5IZMd+Odp/VF
-         NnZMgfY2C54n8WTcUQ+VgjfhoEqRS1SrO/tXUsvoOCCn9Egil/sjfth5kqWtDa+q+41V
-         uU/A==
-X-Gm-Message-State: AOAM533k3iJaZTu2HeIUzoC+E2g0CsRKrVF4gdzxyuBsy1FbjbrX+ndK
-        2DEToOEGqrFG4EF/4FMHDlxncMsrYgx5q+6XBkMOyQ==
-X-Google-Smtp-Source: ABdhPJyK6MpLcp9s4wybIfKzU+/XBpBlE4yS0Lf4BV1uGhjLp79GVzaBk0S/XxweTFTrs7362+sisG6zJp8OI284NSw=
-X-Received: by 2002:a05:6902:725:: with SMTP id l5mr4087154ybt.346.1601660938079;
- Fri, 02 Oct 2020 10:48:58 -0700 (PDT)
+        bh=lW22Qzd9PGiP/2qzJ0inuLN63Dw7cetpUVChJaty2gE=;
+        b=q/Jv/zny8wH62z59NigAorYh5KkvtRhEjSv/acWyBKncDZeEESqijunD4+CgxyzLJm
+         Dc74gIVAVfdwpXULS3y+dQiQ+v5wY2oYEIuMDX53nRe65zQ5tun7PiNBxGBv3UK6KYnx
+         RdkEe6rP0d7aKR77ZIdhF/cFwb7fFVS0PxUqGeNIFEriKxImiH1SHNZIULXcAwowwR1D
+         XamkPD2deIKxIwy/+jz11haYdqLv8CJ/rn9LyK6b/j07iVbvtkmysNOCpLcsUNls3tZJ
+         Qq76+2ZvGByGXPD+8NwyygiO/bVsjVzmGuN9ugdbzUw/1qAhCKl1baJydmzgfhpaeara
+         87OA==
+X-Gm-Message-State: AOAM531Jrkl/RMGe7BRRY7cjXrQyXaXbYD0Sh/oFtpiZk6aoVAwx0trM
+        OFZ0QMGlSvYqzv3930F4mnt1anUaOPk7B6gMWmTnLQ==
+X-Google-Smtp-Source: ABdhPJy4XhKvg/fcRsKDUtj8ituzDGpU4LofV1mA+byx9rafxRXok/qNPb40BvV5nKhx2JlN6+fH0sxc/b6LCow6y+k=
+X-Received: by 2002:a25:8041:: with SMTP id a1mr4363493ybn.412.1601661147077;
+ Fri, 02 Oct 2020 10:52:27 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAGETcx8owDP_Bu4oNCyHEsME8XpKygxghm8+yNc2RyMA4wyjCA@mail.gmail.com>
- <20201001225952.3676755-1-saravanak@google.com> <20201001231922.GG3722@pendragon.ideasonboard.com>
- <17bdc3f0-d816-151a-fef2-88cd38fc8621@ti.com> <e0ef8816-11ea-3a1a-cac6-14b9f6c92bcf@ti.com>
-In-Reply-To: <e0ef8816-11ea-3a1a-cac6-14b9f6c92bcf@ti.com>
+ <20201001225952.3676755-1-saravanak@google.com> <CAL_JsqKOUkKBKyxPtZ+BFXPiOfm2uPXhgJPxKP=WS-qX6kSB0w@mail.gmail.com>
+In-Reply-To: <CAL_JsqKOUkKBKyxPtZ+BFXPiOfm2uPXhgJPxKP=WS-qX6kSB0w@mail.gmail.com>
 From:   Saravana Kannan <saravanak@google.com>
-Date:   Fri, 2 Oct 2020 10:48:22 -0700
-Message-ID: <CAGETcx-wkZZQyfnkc59e2ECg_kho-O_c2ms4OOtM4=-Hd125+Q@mail.gmail.com>
+Date:   Fri, 2 Oct 2020 10:51:51 -0700
+Message-ID: <CAGETcx-tq446JQN0RpKhtyCXB+Y_PUePN_tBZsUmtpO7othm4g@mail.gmail.com>
 Subject: Re: [PATCH v1] of: platform: Batch fwnode parsing in the
  init_machine() path
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Frank Rowand <frowand.list@gmail.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "open list:THERMAL" <linux-pm@vger.kernel.org>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
         "Rafael J. Wysocki" <rjw@rjwysocki.net>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>,
@@ -68,135 +67,69 @@ Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Android Kernel Team <kernel-team@android.com>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Oct 2, 2020 at 8:03 AM 'Grygorii Strashko' via kernel-team
-<kernel-team@android.com> wrote:
+On Fri, Oct 2, 2020 at 7:08 AM Rob Herring <robh+dt@kernel.org> wrote:
 >
->
->
-> On 02/10/2020 14:40, Grygorii Strashko wrote:
+> On Thu, Oct 1, 2020 at 5:59 PM Saravana Kannan <saravanak@google.com> wrote:
 > >
+> > When commit 93d2e4322aa7 ("of: platform: Batch fwnode parsing when
+> > adding all top level devices") optimized the fwnode parsing when all top
+> > level devices are added, it missed out optimizing this for platform
+> > where the top level devices are added through the init_machine() path.
 > >
-> > On 02/10/2020 02:19, Laurent Pinchart wrote:
-> >> Hi Saravana,
-> >>
-> >> Thank you for the patch.
-> >>
-> >> On Thu, Oct 01, 2020 at 03:59:51PM -0700, Saravana Kannan wrote:
-> >>> When commit 93d2e4322aa7 ("of: platform: Batch fwnode parsing when
-> >>> adding all top level devices") optimized the fwnode parsing when all top
-> >>> level devices are added, it missed out optimizing this for platform
-> >>> where the top level devices are added through the init_machine() path.
-> >>>
-> >>> This commit does the optimization for all paths by simply moving the
-> >>> fw_devlink_pause/resume() inside of_platform_default_populate().
-> >>
-> >> Based on v5.9-rc5, before the patch:
-> >>
-> >> [    0.652887] cpuidle: using governor menu
-> >> [   12.349476] No ATAGs?
-> >>
-> >> After the patch:
-> >>
-> >> [    0.650460] cpuidle: using governor menu
-> >> [   12.262101] No ATAGs?
-> >>
-> >> :-(
+> > This commit does the optimization for all paths by simply moving the
+> > fw_devlink_pause/resume() inside of_platform_default_populate().
 > >
-> > This is kinda expected :( because omap2 arch doesn't call of_platform_default_populate()
+> > Reported-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > ---
+> >  drivers/of/platform.c | 19 +++++++++++++++----
+> >  1 file changed, 15 insertions(+), 4 deletions(-)
 > >
-> > Call path:
-> > board-generic.c
-> >   DT_MACHINE_START()
-> >     .init_machine    = omap_generic_init,
-> >
-> >   omap_generic_init()
-> >     pdata_quirks_init(omap_dt_match_table);
-> >          of_platform_populate(NULL, omap_dt_match_table,
-> >                   omap_auxdata_lookup, NULL);
-> >
-> > Other affected platforms
-> > arm: mach-ux500
-> > some mips
-> > some powerpc
-> >
-> > there are also case when a lot of devices placed under bus node, in such case
-> >   of_platform_populate() calls from bus drivers will also suffer from this issue.
-> >
-> > I think one option could be to add some parameter to _populate() or introduce new api.
-> >
-> > By the way, is there option to disable this feature at all?
-> > Is there Kconfig option?
-> > Is there any reasons why such complex and time consuming code added to the kernel and not implemented on DTC level?
-> >
-> >
-> > Also, I've came with another diff, pls check.
-> >
-> > [    0.000000] Booting Linux on physical CPU 0x0
-> > [    0.000000] Linux version 5.9.0-rc6-01791-g9acba6b38757-dirty (grygorii@grygorii-XPS-13-9370) (arm-linux-gnueabihf-gcc (GNU Toolcha0
-> > [    0.000000] CPU: ARMv7 Processor [412fc0f2] revision 2 (ARMv7), cr=10c5387d
-> > [    0.000000] CPU: div instructions available: patching division code
-> > [    0.000000] CPU: PIPT / VIPT nonaliasing data cache, PIPT instruction cache
-> > [    0.000000] OF: fdt: Machine model: TI AM5718 IDK
-> > ...
-> > [    0.053443] cpuidle: using governor ladder
-> > [    0.053470] cpuidle: using governor menu
-> > [    0.089304] No ATAGs?
-> > ...
-> > [    3.092291] devtmpfs: mounted
-> > [    3.095804] Freeing unused kernel memory: 1024K
-> > [    3.100483] Run /sbin/init as init process
-> >
-> >
-> >
-> > ------ >< ---
 > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> > index 071f04da32c8..4521b26e7745 100644
+> > index 071f04da32c8..79972e49b539 100644
 > > --- a/drivers/of/platform.c
 > > +++ b/drivers/of/platform.c
-> > @@ -514,6 +514,12 @@ static const struct of_device_id reserved_mem_matches[] = {
-> >          {}
-> >   };
-> >
-> > +static int __init of_platform_fw_devlink_pause(void)
-> > +{
-> > +       fw_devlink_pause();
-> > +}
-> > +core_initcall(of_platform_fw_devlink_pause);
+> > @@ -501,8 +501,21 @@ int of_platform_default_populate(struct device_node *root,
+> >                                  const struct of_dev_auxdata *lookup,
+> >                                  struct device *parent)
+> >  {
+> > -       return of_platform_populate(root, of_default_bus_match_table, lookup,
+> > -                                   parent);
+> > +       int ret;
 > > +
-> >   static int __init of_platform_default_populate_init(void)
-> >   {
-> >          struct device_node *node;
-> > @@ -538,9 +544,7 @@ static int __init of_platform_default_populate_init(void)
-> >          }
-> >
-> >          /* Populate everything else. */
-> > -       fw_devlink_pause();
-> >          of_platform_default_populate(NULL, NULL, NULL);
-> > -       fw_devlink_resume();
-> >
-> >          return 0;
-> >   }
-> > @@ -548,6 +552,7 @@ arch_initcall_sync(of_platform_default_populate_init);
-> >
-> >   static int __init of_platform_sync_state_init(void)
-> >   {
-> > +       fw_devlink_resume();
+> > +       /*
+> > +        * fw_devlink_pause/resume() are only safe to be called around top
+> > +        * level device addition due to locking constraints.
+> > +        */
+> > +       if (!root)
+> > +               fw_devlink_pause();
+> > +
+> > +       ret = of_platform_populate(root, of_default_bus_match_table, lookup,
+> > +                                  parent);
 >
-> ^ it seems has to be done earlier, like
-> +static int __init of_platform_fw_devlink_resume(void)
-> +{
-> +       fw_devlink_resume();
-> +       return 0;
-> +}
-> +device_initcall_sync(of_platform_fw_devlink_resume);
+> of_platform_default_populate() vs. of_platform_populate() is just a
+> different match table. I don't think the behavior should otherwise be
+> different.
+>
+> There's also of_platform_probe() which has slightly different matching
+> behavior. It should not behave differently either with respect to
+> devlinks.
 
-This will mean no device will probe until device_initcall_sync().
-Unfortunately, I don't think we can make such a sweeping assumption.
+So I'm trying to do this only when the top level devices are added for
+the first time. of_platform_default_populate() seems to be the most
+common path. For other cases, I think we just need to call
+fw_devlink_pause/resume() wherever the top level devices are added for
+the first time. As I said in the other email, we can't add
+fw_devlink_pause/resume() by default to of_platform_populate().
+
+Do you have other ideas for achieving "call fw_devlink_pause/resume()
+only when top level devices are added for the first time"?
 
 -Saravana
