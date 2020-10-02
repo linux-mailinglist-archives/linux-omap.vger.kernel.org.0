@@ -2,82 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F8BF281324
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 14:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07A572814A8
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Oct 2020 16:08:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726386AbgJBMuP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 2 Oct 2020 08:50:15 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:34948 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726029AbgJBMuP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Oct 2020 08:50:15 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 092Co1Ka007386;
-        Fri, 2 Oct 2020 07:50:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1601643001;
-        bh=CC4gXG7aOGKfKxxsAnloTCn02Xxbpxqr/NTxKczU0gY=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=s+WbHlRIu9FrV6twoahUa8T/1Gme1GZ709ooQUCOqMu16Ok3a04UOO05Y7iqo6WiZ
-         KS/aZYAMVZHeLae1kb7Uap9S1LWr9c421hwnQFf8RKw+xwgrBqTZOlmQTzMTURnY1h
-         qCVkBRaVaHWjmjrCGys4ZlmjaiGfrv9u59Ks+UXQ=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 092Co1cM097252
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 2 Oct 2020 07:50:01 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 2 Oct
- 2020 07:50:00 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 2 Oct 2020 07:50:00 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 092Co0oD120957;
-        Fri, 2 Oct 2020 07:50:00 -0500
-Date:   Fri, 2 Oct 2020 07:50:00 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-CC:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>, <linux-kernel@vger.kernel.org>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Russell King <linux@armlinux.org.uk>
-Subject: Re: [PATCH] ARM: multi_v7_defconfig: ti: Enable networking options
- for nfs boot
-Message-ID: <20201002125000.5b5kho4e5de7jjrj@akan>
-References: <20201001202725.16034-1-grygorii.strashko@ti.com>
+        id S1726569AbgJBOIJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 2 Oct 2020 10:08:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50158 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726017AbgJBOIJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 2 Oct 2020 10:08:09 -0400
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3F14F207DE;
+        Fri,  2 Oct 2020 14:08:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601647688;
+        bh=+3VAWIyE736i8QJoJWyBkDl46THgUH5Y4ZYxc7rww6M=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=YS1CG4Oq4huZaIu8Ij+hCQ8yMeyS36kpM3ri/SpDmf7c/4ohOYavdzjqQINHrtMh8
+         S5TM/P/23W3g2UnzrPxSe2Cntf/zAVfCMhcH9eXkTdMJNNfMdIo/WYFPRCIjCth4PB
+         eR0N9LtyPPEpeKWJA/sR5JRvkpq+rlfyzILcDgr4=
+Received: by mail-ot1-f51.google.com with SMTP id m13so1437744otl.9;
+        Fri, 02 Oct 2020 07:08:08 -0700 (PDT)
+X-Gm-Message-State: AOAM531bQPWfd7wgP9QFVIN1VvpxAL30hBz5JwGPdvepdcwGWXdfPvu0
+        4Mu3d4ctwv3QVkGCP+HNiTLUxBF0u44Jwbp5lg==
+X-Google-Smtp-Source: ABdhPJyhESEM7l1n2tIx5F0cvgikaOZ2/i+MUqha3K8do3Q2vmEsuhRy0a+dFZdN8iCN+3dCIkrbCldSgjZJebzgVBg=
+X-Received: by 2002:a9d:7998:: with SMTP id h24mr1914471otm.192.1601647687409;
+ Fri, 02 Oct 2020 07:08:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20201001202725.16034-1-grygorii.strashko@ti.com>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <CAGETcx8owDP_Bu4oNCyHEsME8XpKygxghm8+yNc2RyMA4wyjCA@mail.gmail.com>
+ <20201001225952.3676755-1-saravanak@google.com>
+In-Reply-To: <20201001225952.3676755-1-saravanak@google.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Fri, 2 Oct 2020 09:07:55 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKOUkKBKyxPtZ+BFXPiOfm2uPXhgJPxKP=WS-qX6kSB0w@mail.gmail.com>
+Message-ID: <CAL_JsqKOUkKBKyxPtZ+BFXPiOfm2uPXhgJPxKP=WS-qX6kSB0w@mail.gmail.com>
+Subject: Re: [PATCH v1] of: platform: Batch fwnode parsing in the
+ init_machine() path
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "open list:THERMAL" <linux-pm@vger.kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23:27-20201001, Grygorii Strashko wrote:
-> Enable networking options required for NFS boot on TI platforms, which is
-> widely for automated test systems.
-> - enable new TI CPSW switch driver and related NET_SWITCHDEV config
-> - enable TI DP83867 phy
-> - explicitly enable PTP clock support to ensure dependent networking
-> drivers will stay built-in
-> 
-> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+On Thu, Oct 1, 2020 at 5:59 PM Saravana Kannan <saravanak@google.com> wrote:
+>
+> When commit 93d2e4322aa7 ("of: platform: Batch fwnode parsing when
+> adding all top level devices") optimized the fwnode parsing when all top
+> level devices are added, it missed out optimizing this for platform
+> where the top level devices are added through the init_machine() path.
+>
+> This commit does the optimization for all paths by simply moving the
+> fw_devlink_pause/resume() inside of_platform_default_populate().
+>
+> Reported-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
 > ---
->  arch/arm/configs/multi_v7_defconfig | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+>  drivers/of/platform.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index 071f04da32c8..79972e49b539 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -501,8 +501,21 @@ int of_platform_default_populate(struct device_node *root,
+>                                  const struct of_dev_auxdata *lookup,
+>                                  struct device *parent)
+>  {
+> -       return of_platform_populate(root, of_default_bus_match_table, lookup,
+> -                                   parent);
+> +       int ret;
+> +
+> +       /*
+> +        * fw_devlink_pause/resume() are only safe to be called around top
+> +        * level device addition due to locking constraints.
+> +        */
+> +       if (!root)
+> +               fw_devlink_pause();
+> +
+> +       ret = of_platform_populate(root, of_default_bus_match_table, lookup,
+> +                                  parent);
 
-[...]
+of_platform_default_populate() vs. of_platform_populate() is just a
+different match table. I don't think the behavior should otherwise be
+different.
 
-Reviewed-by: Nishanth Menon <nm@ti.com>
+There's also of_platform_probe() which has slightly different matching
+behavior. It should not behave differently either with respect to
+devlinks.
 
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+Rob
