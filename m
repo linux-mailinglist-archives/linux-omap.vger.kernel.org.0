@@ -2,90 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A7B32284FAE
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Oct 2020 18:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A10E2850F1
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Oct 2020 19:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726164AbgJFQQw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Oct 2020 12:16:52 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:53480 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726459AbgJFQQw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Oct 2020 12:16:52 -0400
+        id S1726583AbgJFRih (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Oct 2020 13:38:37 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:42456 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726137AbgJFRig (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Oct 2020 13:38:36 -0400
 Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 096GGgaC011030;
-        Tue, 6 Oct 2020 11:16:42 -0500
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 096Hc3K3129266;
+        Tue, 6 Oct 2020 12:38:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1602001002;
-        bh=UFFmMIjsLbkm6u1Nw+fPjP2rCdOt20uSXmfcBGEy3GM=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=fFzvViNR9eLL1iv24zzCKEwq2HC/S6PAbDrnuPvDQ+6rq6jy51aiI7vTJHBiWUQ6p
-         TIKsK7Dq66FtNRtq+207B1jAINJBtGoQ0ZzYQUN4W9OS7K9HVMUB+wlFvsP9DOCqN0
-         mmGeVB2ivnDhO4rtkdcL6JojPd4nBrU3M1CzbjsI=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 096GGgVj109613
+        s=ti-com-17Q1; t=1602005884;
+        bh=b/pK5enSoaoRb18q/LZC+anAWY2faAreH43Iz2Ll7X0=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=aC/uIK9YSipHG9MxlrA+YCgzx4QwuYrFazCkrc0bBNSIw5ZWbJnYTOuHDzFUdVVSe
+         3FMWDsahRRsbHs/kobaSdCGLKTrDSdlOYk2z11h1kuScnEsHiCSZ7cNwMtEut3NK9S
+         WdOfh6o8wNCvsRG+mSrry0qOdhvNAC0r8WJPDFGU=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 096Hc2A3098643
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 6 Oct 2020 11:16:42 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 6 Oct 2020 12:38:03 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 6 Oct
- 2020 11:16:41 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 12:38:03 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 6 Oct 2020 11:16:41 -0500
-Received: from [10.250.37.92] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 096GGfA0117729;
-        Tue, 6 Oct 2020 11:16:41 -0500
-Subject: Re: [PATCH -next] dt-bindings: hwlock: omap: Fix warnings with
- k3.yaml
-To:     Rob Herring <robh@kernel.org>
-CC:     Nishanth Menon <nm@ti.com>, <devicetree@vger.kernel.org>,
-        <linux-remoteproc@vger.kernel.org>,
+ Frontend Transport; Tue, 6 Oct 2020 12:38:03 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 096Hc3qk096330;
+        Tue, 6 Oct 2020 12:38:03 -0500
+Date:   Tue, 6 Oct 2020 12:38:03 -0500
+From:   Nishanth Menon <nm@ti.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+CC:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        <linux-pm@vger.kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Tony Lindgren <tony@atomide.com>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20200928225155.12432-1-s-anna@ti.com>
- <20200930145537.GA2851296@bogus> <20201006155207.GA2297951@bogus>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <8250838c-21fd-1e1a-2a8f-fec0cd363e7f@ti.com>
-Date:   Tue, 6 Oct 2020 11:16:41 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Niklas Cassel <nks@flawful.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Kevin Hilman <khilman@kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, <ssantosh@kernel.org>
+Subject: Re: [PATCH 3/4] power: avs: smartreflex Move driver to soc specific
+ drivers
+Message-ID: <20201006173803.3xug5pq6zsp23mi6@powwow>
+References: <20201006160516.319830-1-ulf.hansson@linaro.org>
+ <20201006160516.319830-4-ulf.hansson@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <20201006155207.GA2297951@bogus>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20201006160516.319830-4-ulf.hansson@linaro.org>
+User-Agent: NeoMutt/20171215
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/6/20 10:52 AM, Rob Herring wrote:
-> On Wed, Sep 30, 2020 at 09:55:37AM -0500, Rob Herring wrote:
->> On Mon, Sep 28, 2020 at 05:51:55PM -0500, Suman Anna wrote:
->>> Update the AM65x HwSpinlock example to fix couple of warnings
->>> that started showing up after the conversion of K3 bindings to
->>> YAML format in commit 66e06509aa37 ("dt-bindings: arm: ti:
->>> Convert K3 board/soc bindings to DT schema").
->>>
->>>  compatible: ['ti,am654'] is not valid under any of the given schemas (Possible causes of the failure):
->>>  compatible: ['ti,am654'] is too short
->>>  compatible:0: 'ti,am654' is not one of ['ti,am654-evm']
->>>
->>> Also, fix one of the node names while at this.
->>>
->>> Signed-off-by: Suman Anna <s-anna@ti.com>
->>> ---
->>>  .../devicetree/bindings/hwlock/ti,omap-hwspinlock.yaml        | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> Reviewed-by: Rob Herring <robh@kernel.org>
+On 18:05-20201006, Ulf Hansson wrote:
+> The avs drivers are all SoC specific drivers that doesn't share any code.
+> Instead they are located in a directory, mostly to keep similar
+> functionality together. From a maintenance point of view, it makes better
+> sense to collect SoC specific drivers like these, into the SoC specific
+> directories.
 > 
-> I guess this isn't dependent on k3.yaml, so I've applied it.
+> Therefore, let's move the smartreflex driver for OMAP to the ti directory.
+> 
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: linux-omap@vger.kernel.org
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[...]
 
-Yes, it is independent. Thanks Rob.
+Reviewed-by: Nishanth Menon <nm@ti.com>
 
-regards
-Suman
-
+CCying Santosh to let him know as well.
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
