@@ -2,78 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1635B284ECD
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Oct 2020 17:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25EB2284F42
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Oct 2020 17:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725946AbgJFPWH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Oct 2020 11:22:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52194 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725906AbgJFPWH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 6 Oct 2020 11:22:07 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0C293206F7;
-        Tue,  6 Oct 2020 15:22:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601997726;
-        bh=4GwMgvhMYP09QQTaVchdH/g0FL+01bYYP1Scb0uwz8U=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=qWE/qvUHB0NBFS4fuG2iUtDr3AKkcW1w/jKEYh0/k4Ve5yJkIDM3dXsRkOFAmWw/k
-         FKy4+HJm7Q/mVJYw+Rsb+1XaxV9wQqstMWlrlGSwNdsI9g0H1VY/df+oz+hw2dEpqU
-         gxIF/rlPSM2Drs558a+VNmoX7oswwZkLrXBq67P4=
-Date:   Tue, 06 Oct 2020 16:21:03 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Alex Dewar <alex.dewar90@gmail.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20201004102535.325547-1-alex.dewar90@gmail.com>
-References: <20201004102535.325547-1-alex.dewar90@gmail.com>
-Subject: Re: [PATCH] ASoC: omap-mcbsp: Fix use of uninitialised pointer
-Message-Id: <160199764658.51353.3516318370024872903.b4-ty@kernel.org>
+        id S1725925AbgJFPwK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Oct 2020 11:52:10 -0400
+Received: from mail-oo1-f65.google.com ([209.85.161.65]:35206 "EHLO
+        mail-oo1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725769AbgJFPwK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Oct 2020 11:52:10 -0400
+Received: by mail-oo1-f65.google.com with SMTP id k13so3312004oor.2;
+        Tue, 06 Oct 2020 08:52:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=qd2VWenNdkoUjW4mVARFepP+CTuJeNLfpPg/bf3IFww=;
+        b=Lm27kBN3GyYPmYxaJgj5RcKgQNIcIRUnrXwAJEBSn3qjm64TUAcq2pvCMjTyD5rNYC
+         yKwWvmXxmw6Ey/KMvtt3WYTKDi3xeRSq4Mapelx2X842wG4X/IUX/3EjIRYND1nw5cdC
+         ekjqXbRN0leTxnWJxwh9zPTbWgRQA71lhGWp+MgDFmOk8T5ZQmcEZnbyjIQV+iIe4RjY
+         DoP0BS70arbguHApYKCoqEunwZNsPv7ifIdBKnRaHPfvg0naRrVmeHrzXtavXrhbz7c8
+         46zqdFmCgvAvhIYIhXlLS2UQ2V5l/g3fP3eqz3/hLhLauBDm5OcYslI52BCJmDqiY9AA
+         omtg==
+X-Gm-Message-State: AOAM531LqQFRrdSI6Q2TVHMOk0dgr3yV0NkMxfnL9o/LwI0SpzTgX9ui
+        rGPAcM84yXMpOChB7gROiQ==
+X-Google-Smtp-Source: ABdhPJz8EXSC07kVYkTQT+Sh7oV75DTlrmp8dNTXcgtbweAOCz5IdvNkMV5EXhVsUv5/T3qA8KtREg==
+X-Received: by 2002:a4a:b443:: with SMTP id h3mr3538017ooo.45.1601999528859;
+        Tue, 06 Oct 2020 08:52:08 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id s1sm1062547otp.14.2020.10.06.08.52.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2020 08:52:08 -0700 (PDT)
+Received: (nullmailer pid 2298950 invoked by uid 1000);
+        Tue, 06 Oct 2020 15:52:07 -0000
+Date:   Tue, 6 Oct 2020 10:52:07 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Nishanth Menon <nm@ti.com>, devicetree@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH -next] dt-bindings: hwlock: omap: Fix warnings with
+ k3.yaml
+Message-ID: <20201006155207.GA2297951@bogus>
+References: <20200928225155.12432-1-s-anna@ti.com>
+ <20200930145537.GA2851296@bogus>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200930145537.GA2851296@bogus>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, 4 Oct 2020 11:25:36 +0100, Alex Dewar wrote:
-> Commit 9c34d023dc35 ("ASoC: omap-mcbsp: Re-arrange files for core McBSP
-> and Sidetone function split"), in rearranging various files, also replaced
-> calls to platform_get_resource_by_name() + devm_ioremap_resource() with a
-> single call to devm_platform_ioremap_resource_byname(). However, the
-> struct resource is needed as we access its members so at present a null
-> pointer is dereferenced. Fix by doing things the old way.
+On Wed, Sep 30, 2020 at 09:55:37AM -0500, Rob Herring wrote:
+> On Mon, Sep 28, 2020 at 05:51:55PM -0500, Suman Anna wrote:
+> > Update the AM65x HwSpinlock example to fix couple of warnings
+> > that started showing up after the conversion of K3 bindings to
+> > YAML format in commit 66e06509aa37 ("dt-bindings: arm: ti:
+> > Convert K3 board/soc bindings to DT schema").
+> > 
+> >  compatible: ['ti,am654'] is not valid under any of the given schemas (Possible causes of the failure):
+> >  compatible: ['ti,am654'] is too short
+> >  compatible:0: 'ti,am654' is not one of ['ti,am654-evm']
+> > 
+> > Also, fix one of the node names while at this.
+> > 
+> > Signed-off-by: Suman Anna <s-anna@ti.com>
+> > ---
+> >  .../devicetree/bindings/hwlock/ti,omap-hwspinlock.yaml        | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-Applied to
+I guess this isn't dependent on k3.yaml, so I've applied it.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: omap-mcbsp: Fix use of uninitialised pointer
-      commit: cd7dea5e17a561e621e78e5863f5634cb6f9f097
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Rob
