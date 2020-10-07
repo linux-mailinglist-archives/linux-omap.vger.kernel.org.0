@@ -2,108 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 426A2285EB8
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Oct 2020 14:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D11652863C3
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Oct 2020 18:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728037AbgJGMF7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Oct 2020 08:05:59 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:59510 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726219AbgJGMF7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Oct 2020 08:05:59 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 097C5dha011272;
-        Wed, 7 Oct 2020 07:05:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1602072339;
-        bh=98VxpOsUYCaLHzSjHudtgwbcFZvvbzH4YA/ReQeuaIQ=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=POOZLMCaAdDmhwazJDpq02bJQtFxVorGw2HSgdGM5IGFe99ZfwcQcAL7LJdXNmDbK
-         XVxa4QGqVSUq7KhmKaloNaQP0KJe0NniLDBQMYKC35WEVoe//atO8Fey91q+6SmBa+
-         d1pLrKIRLnl3FJMbTfha9SLLwcmogP6IQzJYeVzw=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 097C5dIe080798
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 7 Oct 2020 07:05:39 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 7 Oct
- 2020 07:05:39 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 7 Oct 2020 07:05:39 -0500
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 097C5LsU092391;
-        Wed, 7 Oct 2020 07:05:22 -0500
-Subject: Re: [PATCH] ASoC: omap-mcbsp: Fix use of uninitialised pointer
-To:     Alex Dewar <alex.dewar90@gmail.com>
-CC:     Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, <alsa-devel@alsa-project.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20201004102535.325547-1-alex.dewar90@gmail.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <c2441186-c278-d84d-55c4-294ef01823a6@ti.com>
-Date:   Wed, 7 Oct 2020 15:05:42 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        id S1726388AbgJGQXu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Oct 2020 12:23:50 -0400
+Received: from sonic316-11.consmr.mail.bf2.yahoo.com ([74.6.130.121]:34223
+        "EHLO sonic316-11.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727307AbgJGQXt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Oct 2020 12:23:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602087828; bh=PxMwWzXvs+dqOoH0/FHvFmQpYH2JguaCUHYAVLLmaiw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=ogGkPlIqWpR4vIGAT6mBfL6ErvWfWWth0zK5ITwHcZMAQepd+Qvoc5pWfscb/xHRkmzUZO3DhMtR1B9Y4YaaBrm8ypr5VvEj6lbZL5rhjH+S4P3Da8+u57ZOXVhik1hIeazZ6d+MrFogIwILY5hy35ZRG7dnQz2fMrKsqztUBS54gRBIoR5EP2OhKWW9ToThOK0GJWMdPEVQa07BJn8mXAU43GddCNsZ8QyiaPyGJILbYCvszxbiwbmtOBuZsPGBNqT059U1f39PXposIxwaOU4jmYSkOiw6CKDrmhpGuzA3pLtYAf5sB4OJ+F+6W/WCsfOCvqWwyZ8tZdsL4s0FMA==
+X-YMail-OSG: NCcZEQcVM1kLxx78eRJE5VIDqyMXjfWLPpJWK60jjeqaqW96cqTiTeNPFz9NDJJ
+ BkmJaZrPdNItKxL63maiez3ZjwSKdCRZZIJozIbgJOGmdO21GeICXG42vU7Z1I7ee5UsZTM053fP
+ goTum1FnnN0fBqd24wJChM3gH6lX_v4_.hBSx8Y9_H_Pom7EVzJ9aNs2oDwC_DpCFBKwjR73gXXt
+ Yjnli8fx1FfELfaJjcBugwBrHAX.S3tHShIPpAKWGDr2DVsvnmo5BU.KDFwoXiJv6F2KBXekmk12
+ Uh0wnL3AYyQMRMDqIxqEbzt44DXC9PZQ1wmogTfbB7iP7hUyNlZLdw3MNXHuvbzxLSXsC_GI2_Jf
+ 47qdR7gIJ22AzRYHrAFdVMyf49_3CsDrF0_0eETXee66CD0ppf6sTGCLe0p53BGrLYArhr812Jvh
+ 2HRShYEAzQUEbJ1wAgbWMLu8vh62C91au098O4x2XKmlDK9cii7Tm9VwtVb2S4EInmWaeBopt9Fk
+ Lb74Gmms8uF9tzpBcybz2WX1NYePH2EIfGhs7x2iCp.ZL6j_U2.BzIH88UFUWKtw..NSRS7W8Jbo
+ fVnZk_iHGPlD6NGcYzZTCcjC20Ia80N6Wmz6003aUK4010wVLcmmZQIK9I.s2bdNRv67HwVsm50b
+ GNvsXjsQzh8icokiEe4ckL7GCkaUzvmqZXd9yOaTnVUA_PLvi64_G_kk4r8pbkxinkNsHDncCJeG
+ DFBp3UkciamH2IOdk0i5g1ZErngQLoFp0PGkFOdDqP4RkE07rnM3P4TvPc048Pux7JZNN9nZrGSW
+ p6LksW4tDjCyE2dEv9l8E2o0uTTqMt31D_Vmvmtpjtpza783wipi_MEPjfizgJOxcd_JDzERuKzt
+ fhRoAchyNRAGj8izOMZEAHVJxqFX2NAQ6bHMsrzr3CqkRXQD6I1baVs1tuiC4VaOGvR728cBbr4t
+ SRWK43sWAs6jS4QYMtJEtIQRcPxTnSR7Han7s3AUfiFtfSYgKmIGgLEtepIRiuBy5EYvLeBKz.ki
+ _7KyOa.tnKtZ1jKUbLiJuetzHZXVseYORCkGqbAoYTjFWgJnyLMjHjW.aOdgQGHVWnFHZWBGItxZ
+ L6sKDzy8tXR.RlNAZCn_cc4KxWYokYbP_jbua41aJHfNuGcAYc4A0B1zeQDDzeo8QiSTzg.iEnJ.
+ 3c6ZrEDUFzwyc8qSyg1ovjjawUTEOLe6JCt9aCQE8RtT_vcVa12IVNGZoAhR8PUGoahj55Vr492A
+ KzzJEeUsM6uTv.z1PXcRO7wX58wsyW43EKfJs7864as.RXcEIS6NIn.H.rqhq98r16Pn8D.QC0qD
+ FxMszTgHwmmNMce.Hg.Fu6u0vBgTKM.heKz5po0kUZyoD6x86WPBpuQ3MebNDbYlJm8oqMFB9FR7
+ Hl58Y63iUMsmMxY3QcSnxNZGUxCSonT_myEpsLzOUxd5v9g--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.bf2.yahoo.com with HTTP; Wed, 7 Oct 2020 16:23:48 +0000
+Date:   Wed, 7 Oct 2020 16:23:46 +0000 (UTC)
+From:   Marilyn Robert <fredodinga22@gmail.com>
+Reply-To: marilyobert@gmail.com
+Message-ID: <469965643.145646.1602087826898@mail.yahoo.com>
+Subject: =?UTF-8?B?0J3QsNGY0LzQuNC70LAg0LrQsNGYINCz0L7RgdC/0L7QtNCw0YDQvtGC?=
 MIME-Version: 1.0
-In-Reply-To: <20201004102535.325547-1-alex.dewar90@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+References: <469965643.145646.1602087826898.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 04/10/2020 13.25, Alex Dewar wrote:
-> Commit 9c34d023dc35 ("ASoC: omap-mcbsp: Re-arrange files for core McBSP
-> and Sidetone function split"), in rearranging various files, also replaced
-> calls to platform_get_resource_by_name() + devm_ioremap_resource() with a
-> single call to devm_platform_ioremap_resource_byname(). However, the
-> struct resource is needed as we access its members so at present a null
-> pointer is dereferenced. Fix by doing things the old way.
-> 
-> Addresses-Coverity-ID: 1497530 ("Memory - illegal accesses")
-> Fixes: 9c34d023dc35 ("ASoC: omap-mcbsp: Re-arrange files for core McBSP and Sidetone function split")
-
-it is fixing:
-31e1fc4f11e2e ("ASoC: ti: omap-mcbsp: use
-devm_platform_ioremap_resource_byname")
-
-and we should just revert that commit.
-
-> Signed-off-by: Alex Dewar <alex.dewar90@gmail.com>
-> ---
->  sound/soc/ti/omap-mcbsp.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-> index 186cea91076f..6025b30bbe77 100644
-> --- a/sound/soc/ti/omap-mcbsp.c
-> +++ b/sound/soc/ti/omap-mcbsp.c
-> @@ -620,7 +620,11 @@ static int omap_mcbsp_init(struct platform_device *pdev)
->  	spin_lock_init(&mcbsp->lock);
->  	mcbsp->free = true;
->  
-> -	mcbsp->io_base = devm_platform_ioremap_resource_byname(pdev, "mpu");
-> +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mpu");
-> +	if (!res)
-> +		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +
-> +	mcbsp->io_base = devm_ioremap_resource(&pdev->dev, res);
->  	if (IS_ERR(mcbsp->io_base))
->  		return PTR_ERR(mcbsp->io_base);
->  
-> 
-
-- Péter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+DQoNCtCd0LDRmNC80LjQu9CwINC60LDRmCDQs9C+0YHQv9C+0LTQsNGA0L7Rgg0KDQrQiNCw0YEg
+0YHRg9C8IDY4LdCz0L7QtNC40YjQvdCwINC20LXQvdCwLCDQutC+0ZjQsCDRgdGC0YDQsNC00LAg
+0L7QtCDQv9GA0L7QtNC+0LvQttC10L0g0LrQsNGA0YbQuNC90L7QvCDQvdCwINC00L7RmNC60LAs
+INC+0LQg0YHQuNGC0LUg0LzQtdC00LjRhtC40L3RgdC60Lgg0LjQvdC00LjQutCw0YbQuNC4LCDQ
+vNC+0ZjQsNGC0LAg0YHQvtGB0YLQvtGY0LHQsCDQvdCw0LLQuNGB0YLQuNC90LAg0YHQtSDQstC7
+0L7RiNC4INC4INC+0YfQuNCz0LvQtdC00L3QviDQtSDQtNC10LrQsCDQvNC+0LbQtdCx0Lgg0L3Q
+tdC80LAg0LTQsCDQttC40LLQtdCw0Lwg0L/QvtCy0LXRnNC1INC+0LQg0YjQtdGB0YIg0LzQtdGB
+0LXRhtC4INC60LDQutC+INGA0LXQt9GD0LvRgtCw0YIg0L3QsCDQsdGA0LfQuNC+0YIg0YDQsNGB
+0YIg0Lgg0LHQvtC70LrQsNGC0LAg0YjRgtC+INGB0LUg0ZjQsNCy0YPQstCwINC60LDRmCDQvdC1
+0LAuINCc0L7RmNC+0YIg0YHQvtC/0YDRg9CzINC/0L7Rh9C40L3QsCDQvdC10LrQvtC70LrRgyDQ
+s9C+0LTQuNC90Lgg0L3QsNC90LDQt9Cw0LQg0Lgg0L3QsNGI0LjRgtC1INC00L7Qu9Cz0Lgg0LPQ
+vtC00LjQvdC4INCx0YDQsNC6INC90LUg0LHQtdCwINCx0LvQsNCz0L7RgdC70L7QstC10L3QuCDR
+gdC+INC90LjRgtGDINC10LTQvdC+INC00LXRgtC1LCDQv9C+INC90LXQs9C+0LLQsNGC0LAg0YHQ
+vNGA0YIg0LPQviDQvdCw0YHQu9C10LTQuNCyINGG0LXQu9C+0YLQviDQvdC10LPQvtCy0L4g0LHQ
+vtCz0LDRgtGB0YLQstC+Lg0KDQrQlNC+0LDRk9Cw0Lwg0LrQsNGYINCy0LDRgSDQvtGC0LrQsNC6
+0L4g0YHQtSDQv9C+0LzQvtC70LjQsiDQt9CwINGC0L7QsCwg0L/QvtC00LPQvtGC0LLQtdC9INGB
+0YPQvCDQtNCwINC00L7QvdC40YDQsNC8INGB0YPQvNCwINC+0LQgMiwgMzAwLCAwMDAg0LXQstGA
+0LAg0LfQsCDQv9C+0LzQvtGIINC90LAg0YHQuNGA0L7QvNCw0YjQvdC40YLQtSwg0YHQuNGA0L7Q
+vNCw0YjQvdC40YLQtSDQuCDQv9C+0LzQsNC70LrRgyDQv9GA0LjQstC40LvQtdCz0LjRgNCw0L3Q
+uNGC0LUg0LzQtdGT0YMg0LLQsNGI0LjRgtC1INGB0L7QsdGA0LDQvdC40ZjQsCAvINC+0L/RiNGC
+0LXRgdGC0LLQvi4g0JfQsNCx0LXQu9C10LbQtdGC0LUg0LTQtdC60LAg0L7QstC+0Zgg0YTQvtC9
+0LQg0LUg0LTQtdC/0L7QvdC40YDQsNC9INCy0L4g0LHQsNC90LrQsCDQutCw0LTQtSDRiNGC0L4g
+0YDQsNCx0L7RgtC10YjQtSDQvNC+0ZjQvtGCINGB0L7Qv9GA0YPQsy4gQXBwcmVjaWF0ZdC1INGG
+0LXQvdCw0Lwg0LDQutC+INC+0LHRgNC90LXRgtC1INCy0L3QuNC80LDQvdC40LUg0L3QsCDQvNC+
+0LXRgtC+INCx0LDRgNCw0ZrQtSDQt9CwINC/0YDQvtC/0LDQs9C40YDQsNGa0LUg0L3QsCDQvNCw
+0YHQsNC20LDRgtCwINC90LAg0LrRgNCw0LvRgdGC0LLQvtGC0L4sINGc0LUg0LLQuCDQtNCw0LTQ
+sNC8INC/0L7QstC10ZzQtSDQtNC10YLQsNC70Lgg0LfQsCDRgtC+0LAg0LrQsNC60L4g0LTQsCDQ
+v9C+0YHRgtCw0L/QuNGC0LUuDQoNCtCR0LvQsNCz0L7QtNCw0YDQsNC8DQrQky3Rk9CwINCc0LXR
+gNC40LvQuNC9INCg0L7QsdC10YDRgg==
