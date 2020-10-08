@@ -2,282 +2,223 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A95A287796
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Oct 2020 17:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AF6B287D8F
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Oct 2020 22:59:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730844AbgJHPiM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Oct 2020 11:38:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33656 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729833AbgJHPiM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 8 Oct 2020 11:38:12 -0400
-Received: from localhost (170.sub-72-107-125.myvzw.com [72.107.125.170])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1715D205F4;
-        Thu,  8 Oct 2020 15:38:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602171491;
-        bh=Lo+Ap4zRCjenNW7Fb5dJ2YnscRwGuIdIjuVspUv4odY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=ln+V59TQjiEUFr6uaCcv6mcl8Wd9lY7bUNP4rAIXw2ccveiATvRJ2Jf9zJg/1Ku8U
-         JXq9qH3gtO2ceWwhvnTdEkOCrql6+miUNJx9F5s542X+bSaiS5KDVPR/qDAL96vcAO
-         J2I71LK/rxOMytYSjpHin/DZgDzSot8LCFbo+r0M=
-Date:   Thu, 8 Oct 2020 10:38:09 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Billy Araujo <billyaraujo@gmail.com>
-Cc:     linux-pci@vger.kernel.org, Kishon Vijay Abraham I <kishon@ti.com>,
-        linux-omap@vger.kernel.org
-Subject: Re: PCI IRQ assignment broken from 4.9 onwards (swizzle?)
-Message-ID: <20201008153809.GA3327800@bjorn-Precision-5520>
+        id S1730855AbgJHU7O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 8 Oct 2020 16:59:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60732 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbgJHU7O (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Oct 2020 16:59:14 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F6EC0613D2;
+        Thu,  8 Oct 2020 13:59:13 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id t18so7156678ilo.12;
+        Thu, 08 Oct 2020 13:59:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8Q/EQhcs1vcXl6exyIHWBGzBWdidXnM11CQoUo331TY=;
+        b=KAZn8tcJYLP4ydNypVbG3Ck4t+RM6ez2oUOjMq+su6SeXb0XTSriximubAzYXzInw5
+         Og3jih//hLjpNmULRctgGP6DboBokziw76yj4uuI095a1pBLWOl7Px8DdNY8kmnaao0+
+         f/IeKu8AEbyF6kk8DITlH7ehMIjgZFlRTTX9eZT81tCaCnvv1ckJvJjN1/dB5KBPDqSC
+         58X8WdFdo+M1knd2VYnpkJvVHwU2yXUYccrTIgziHZMqPLFzwn3OtgDkJsPn6E7Vj4xA
+         +aMCK+m/rKui3CdhiFBEnj7mHOtY4h+AWX2tcwihUcOCEHgdSCn1PZfaSQgvebW5AtUy
+         yukg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8Q/EQhcs1vcXl6exyIHWBGzBWdidXnM11CQoUo331TY=;
+        b=stITGCmOv61yhU/gLYjWf9OzSY5lOEWi54iIXrVb6uJazR6ueeIH7vymSgBaMkT6Mq
+         RFlU90E2TrcWdjtOM734yXAmUhzCVI+RLeJIuZ5+EZMXw6sN4qodB7uUEXlatPN3v/Qx
+         jJWhMppWoLyDtTu6WUsuQa9QDDCEStFi+Kyl1uEiW6o+4kdS83bL1p8p8zFyQGLo/L/J
+         RMkxKT+zBWJxuEe+62XbETYWS0RZLbprOAlkEtAonUbkrLIK2YMavJCzKisGtm7ScUsQ
+         OXK+TfR91+Zm18U22ywMx9JeWXWcnaT3rIu4l5BZYYQdIWUV6kYos16I7fclwxYUzMQN
+         29ng==
+X-Gm-Message-State: AOAM532Gw2AeLa7T2DMkx4R2mrTPUZUumvJiGw4BOy7KL0z0URX0mUM1
+        HCWhdcSialZyfS8JtmcVsf9+J09dutsB9PewgJM9pVg1poI=
+X-Google-Smtp-Source: ABdhPJzPN71Uweb2NW0+SHEvtXJUe+jkBXhHFgRUldBdFWWCKN+x53Q6fjP3BNAJzXUq3qESPxCM4O7wQlRZ4c0bDOc=
+X-Received: by 2002:a92:d906:: with SMTP id s6mr7883981iln.89.1602190752682;
+ Thu, 08 Oct 2020 13:59:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEt4U6Xqo8GU6VtBi86iK2-Q3usyHazoASdj1qb_BK-_Gso2kA@mail.gmail.com>
+References: <20200911123157.759379-1-aford173@gmail.com>
+In-Reply-To: <20200911123157.759379-1-aford173@gmail.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Thu, 8 Oct 2020 15:59:01 -0500
+Message-ID: <CAHCN7xK2TQsjFUCty2TFgx9HsPMvuuSF6ae5iKCouWFsv7Npzw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] thermal: ti-soc-thermal: Enable addition power management
+To:     linux-pm@vger.kernel.org, Linux-OMAP <linux-omap@vger.kernel.org>
+Cc:     Adam Ford-BE <aford@beaconembedded.com>,
+        kernel test robot <lkp@intel.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Oct 08, 2020 at 09:39:23AM +0100, Billy Araujo wrote:
-> Hi Bjorn,
-> 
-> Thanks for your answer. Yes, that would be my next step.
-> I am also hoping the latest kernel doesn't have this issue because
-> that would mean I would be stuck with version 4.9.
-> Also I could discover from which patch this stopped working but that
-> would be very time consuming. If I was to add some debug prints where
-> should I start? Would this be done in setup-irq.c?
-> In other words, is "pci_assign_irq" function responsible for all irq
-> assignments?
+On Fri, Sep 11, 2020 at 7:32 AM Adam Ford <aford173@gmail.com> wrote:
+>
+> The bandgap sensor can be idled when the processor is too, but it
+> isn't currently being done, so the power consumption of OMAP3
+> boards can elevated if the bangap sensor is enabled.
+>
+> This patch attempts to use some additional power management
+> to idle the clock to the bandgap when not needed.
+>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Tested-by: Andreas Kemnade <andreas@kemnade.info> # GTA04
+> ---
+> V3:  bandgap_omap_cpu_notifier is only defined when CONFIG_PM_SLEEP
+>      is enabled, so make all references to it also depend on
+>      CONFIG_PM_SLEEP as well
+>
 
-Start by testing the latest kernel.  Don't bother trying to debug it
-from first principles until you know whether somebody has already
-fixed it.
+Gentle nudge on this one.  It was in the queue for a while, and got
+lost, then resurrected again.
 
-> On Wed, Oct 7, 2020 at 5:41 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> >
-> > [+cc Kishon, linux-omap (maybe this is dra7xx-related?)]
-> >
-> > On Wed, Oct 07, 2020 at 10:56:33AM +0100, Billy Araujo wrote:
-> > > Hi,
-> > >
-> > > I have been testing a TI AM57xx board and a NXP iMX8 board with a GPIB
-> > > PCIe card.
-> > >
-> > > TI board (Phytec): https://www.phytec.com/product/phycore-am57x/
-> > > NXP board (Variscite):
-> > > https://www.variscite.com/product/system-on-module-som/cortex-a53-krait/var-som-mx8m-mini-nxp-i-mx8m-mini/
-> > >
-> > > The GPIB PCIe card has a Texas Instruments XIO2000(A)/XIO2200A PCI
-> > > Express-to-PCI Bridge.
-> > >
-> > > Issue:
-> > > I have noticed is that on Linux kernel 4.9, the Linux PCI driver
-> > > assigns correctly an IRQ number:
-> > >
-> > > Linux am5728-phycore-rdk 4.9.41-ga962b18-BSP-Yocto-TISDK-AM57xx-PD18.1.0
-> > > 02:00.0 Communication controller: National Instruments PCIe-GPIB (rev 02)
-> > >         Subsystem: National Instruments PCIe-GPIB
-> > >         Control: I/O- Mem- BusMaster- SpecCycle- MemWINV- VGASnoop-
-> > > ParErr+ Stepping- SERR+ FastB2B- DisINTx-
-> > >         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium
-> > > >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-> > >         Interrupt: pin A routed to IRQ 470
-> > >
-> > > On a newer kernel (this case 4.19), PCI driver doesn't assign an IRQ number.
-> > >
-> > > Linux am57xx-phycore-kit 4.19.79-g35d36cd54d #1 SMP PREEMPT Wed Sep 30
-> > > 14:04:18 UTC 2020 armv7l GNU/Linux
-> > > 02:00.0 Communication controller: National Instruments PCIe-GPIB (rev 02)
-> > >         Subsystem: National Instruments PCIe-GPIB
-> > >         Control: I/O- Mem- BusMaster- SpecCycle- MemWINV- VGASnoop-
-> > > ParErr+ Stepping- SERR+ FastB2B- DisINTx-
-> > >         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium
-> > > >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-> > >         Interrupt: pin A routed to IRQ 0
-> > >
-> > > Same issue happened on the NXP board, so it seems Linux related. I
-> > > have tested kernels 4.14, 4.19 and 5.4.3.
-> > >
-> > > The IRQ is important to get the legacy interrupts working.
-> > >
-> > > Looking at the code there has been some refactoring of how PCI assigns
-> > > IRQ number when there is a chain of bridges. I am not too familiar
-> > > with how the code works but I wonder if this has affected how the PCI
-> > > assignment works.
-> > >
-> > > Looking in setup-irq.c:
-> > >
-> > > /* If this device is not on the primary bus, we need to figure out
-> > >    which interrupt pin it will come in on.   We know which slot it
-> > >    will come in on 'cos that slot is where the bridge is.   Each
-> > >    time the interrupt line passes through a PCI-PCI bridge we must
-> > >    apply the swizzle function.  */
-> > >
-> > > Line 44: if (hbrg->swizzle_irq)
-> > >
-> > > From my understanding, this "if" didn't exist in Linux kernel 4.9. If
-> > > swizzle function isn't assigned in the newer kernels it just stays as
-> > > 0.
-> > >
-> > > This might be completely unrelated as I said I have no understanding
-> > > how this code is supposed to work.
-> > >
-> > > What I ask is if anyone has experienced any issues similar to this in
-> > > these more recent kernel versions.
-> >
-> > Sorry for the issue, and thanks very much for the report.  Is it
-> > possible to test a current kernel, e.g., v5.8 or v5.9-rc8?
-> >
-> > My guess is this is related to the PCI controller driver; would that
-> > be pci-dra7xx.c?
-> >
-> > > Debug output with the issue:
-> > >
-> > > root@am57xx-phycore-kit:~# uname -a
-> > > Linux am57xx-phycore-kit 4.19.79-g35d36cd54d #1 SMP PREEMPT Wed Sep 30
-> > > 14:04:18 UTC 2020 armv7l GNU/Linux
-> > >
-> > > root@am57xx-phycore-kit:~# lspci -vv
-> > > 00:00.0 PCI bridge: Texas Instruments Multicore DSP+ARM KeyStone II
-> > > SOC (rev 01) (prog-if 00 [Normal decode])
-> > >         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop-
-> > > ParErr+ Stepping- SERR+ FastB2B- DisINTx+
-> > >         Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
-> > > <TAbort- <MAbort- >SERR- <PERR- INTx-
-> > >         Latency: 0, Cache Line Size: 64 bytes
-> > >         Interrupt: pin A routed to IRQ 180
-> > >         Region 0: Memory at 20100000 (64-bit, non-prefetchable) [size=1M]
-> > >         Bus: primary=00, secondary=01, subordinate=ff, sec-latency=0
-> > >         I/O behind bridge: None
-> > >         Memory behind bridge: 20200000-202fffff [size=1M]
-> > >         Prefetchable memory behind bridge: None
-> > >         Secondary status: 66MHz- FastB2B- ParErr- DEVSEL=fast >TAbort-
-> > > <TAbort- <MAbort+ <SERR- <PERR-
-> > >         BridgeCtl: Parity+ SERR- NoISA- VGA- VGA16- MAbort- >Reset- FastB2B-
-> > >                 PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
-> > >         Capabilities: [40] Power Management version 3
-> > >                 Flags: PMEClk- DSI- D1+ D2- AuxCurrent=0mA
-> > > PME(D0+,D1+,D2-,D3hot+,D3cold-)
-> > >                 Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
-> > >         Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit+
-> > >                 Address: 00000000ae15b000  Data: 0000
-> > >         Capabilities: [70] Express (v2) Root Port (Slot-), MSI 00
-> > >                 DevCap: MaxPayload 256 bytes, PhantFunc 0
-> > >                         ExtTag- RBE+
-> > >                 DevCtl: CorrErr+ NonFatalErr+ FatalErr+ UnsupReq+
-> > >                         RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+
-> > >                         MaxPayload 128 bytes, MaxReadReq 512 bytes
-> > >                 DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-> > > AuxPwr- TransPend-
-> > >                 LnkCap: Port #0, Speed 5GT/s, Width x2, ASPM L0s L1,
-> > > Exit Latency L0s <512ns, L1 <64us
-> > >                         ClockPM- Surprise- LLActRep+ BwNot+ ASPMOptComp+
-> > >                 LnkCtl: ASPM Disabled; RCB 128 bytes Disabled- CommClk-
-> > >                         ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-> > >                 LnkSta: Speed 2.5GT/s (downgraded), Width x1 (downgraded)
-> > >                         TrErr- Train- SlotClk+ DLActive+ BWMgmt- ABWMgmt-
-> > >                 RootCtl: ErrCorrectable- ErrNon-Fatal- ErrFatal-
-> > > PMEIntEna+ CRSVisible-
-> > >                 RootCap: CRSVisible-
-> > >                 RootSta: PME ReqID 0000, PMEStatus- PMEPending-
-> > >                 DevCap2: Completion Timeout: Range ABCD, TimeoutDis+,
-> > > LTR-, OBFF Not Supported ARIFwd-
-> > >                          AtomicOpsCap: Routing- 32bit- 64bit- 128bitCAS-
-> > >                 DevCtl2: Completion Timeout: 50us to 50ms,
-> > > TimeoutDis-, LTR-, OBFF Disabled ARIFwd-
-> > >                          AtomicOpsCtl: ReqEn- EgressBlck-
-> > >                 LnkCtl2: Target Link Speed: 5GT/s, EnterCompliance- SpeedDis-
-> > >                          Transmit Margin: Normal Operating Range,
-> > > EnterModifiedCompliance- ComplianceSOS-
-> > >                          Compliance De-emphasis: -6dB
-> > >                 LnkSta2: Current De-emphasis Level: -3.5dB,
-> > > EqualizationComplete-, EqualizationPhase1-
-> > >                          EqualizationPhase2-, EqualizationPhase3-,
-> > > LinkEqualizationRequest-
-> > >         Capabilities: [100 v2] Advanced Error Reporting
-> > >                 UESta:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
-> > > UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-> > >                 UEMsk:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
-> > > UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-> > >                 UESvrt: DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt-
-> > > UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
-> > >                 CESta:  RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-> > > AdvNonFatalErr-
-> > >                 CEMsk:  RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-> > > AdvNonFatalErr+
-> > >                 AERCap: First Error Pointer: 00, ECRCGenCap+
-> > > ECRCGenEn- ECRCChkCap+ ECRCChkEn-
-> > >                         MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
-> > >                 HeaderLog: 00000000 00000000 00000000 00000000
-> > >                 RootCmd: CERptEn+ NFERptEn+ FERptEn+
-> > >                 RootSta: CERcvd- MultCERcvd- UERcvd- MultUERcvd-
-> > >                          FirstFatal- NonFatalMsg- FatalMsg- IntMsg 0
-> > >                 ErrorSrc: ERR_COR: 0000 ERR_FATAL/NONFATAL: 0000
-> > >         Kernel driver in use: pcieport
-> > >
-> > > 01:00.0 PCI bridge: Texas Instruments XIO2000(A)/XIO2200A PCI
-> > > Express-to-PCI Bridge (rev 03) (prog-if 00 [Normal decode])
-> > >         Control: I/O- Mem- BusMaster- SpecCycle- MemWINV- VGASnoop-
-> > > ParErr+ Stepping- SERR+ FastB2B- DisINTx-
-> > >         Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
-> > > <TAbort- <MAbort- >SERR- <PERR- INTx-
-> > >         Bus: primary=01, secondary=02, subordinate=02, sec-latency=0
-> > >         I/O behind bridge: None
-> > >         Memory behind bridge: 20200000-202fffff [size=1M]
-> > >         Prefetchable memory behind bridge: None
-> > >         Secondary status: 66MHz- FastB2B+ ParErr- DEVSEL=medium
-> > > >TAbort- <TAbort- <MAbort+ <SERR- <PERR-
-> > >         BridgeCtl: Parity+ SERR- NoISA- VGA- VGA16- MAbort+ >Reset- FastB2B+
-> > >                 PriDiscTmr- SecDiscTmr- DiscTmrStat- DiscTmrSERREn-
-> > >         Capabilities: [50] Power Management version 2
-> > >                 Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=0mA
-> > > PME(D0-,D1-,D2-,D3hot-,D3cold-)
-> > >                 Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
-> > >                 Bridge: PM- B3+
-> > >         Capabilities: [60] MSI: Enable- Count=1/16 Maskable- 64bit+
-> > >                 Address: 0000000000000000  Data: 0000
-> > >         Capabilities: [80] Subsystem: Device 0000:0000
-> > >         Capabilities: [90] Express (v1) PCI-Express to PCI/PCI-X Bridge, MSI 00
-> > >                 DevCap: MaxPayload 512 bytes, PhantFunc 0
-> > >                         ExtTag- AttnBtn- AttnInd- PwrInd- RBE-
-> > > SlotPowerLimit 0.000W
-> > >                 DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-> > >                         RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+ BrConfRtry-
-> > >                         MaxPayload 128 bytes, MaxReadReq 512 bytes
-> > >                 DevSta: CorrErr- NonFatalErr+ FatalErr- UnsupReq-
-> > > AuxPwr- TransPend-
-> > >                 LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s L1,
-> > > Exit Latency L0s <1us, L1 <16us
-> > >                         ClockPM- Surprise- LLActRep- BwNot- ASPMOptComp-
-> > >                 LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- CommClk-
-> > >                         ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-> > >                 LnkSta: Speed 2.5GT/s (ok), Width x1 (ok)
-> > >                         TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
-> > >         Capabilities: [100 v1] Advanced Error Reporting
-> > >                 UESta:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
-> > > UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-> > >                 UEMsk:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
-> > > UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-> > >                 UESvrt: DLP+ SDES- TLP- FCP+ CmpltTO- CmpltAbrt-
-> > > UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
-> > >                 CESta:  RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-> > > AdvNonFatalErr-
-> > >                 CEMsk:  RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-> > > AdvNonFatalErr-
-> > >                 AERCap: First Error Pointer: 00, ECRCGenCap+
-> > > ECRCGenEn- ECRCChkCap+ ECRCChkEn-
-> > >                         MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
-> > >                 HeaderLog: 00000000 00000000 00000000 00000000
-> > >
-> > > 02:00.0 Communication controller: National Instruments PCIe-GPIB (rev 02)
-> > >         Subsystem: National Instruments PCIe-GPIB
-> > >         Control: I/O- Mem- BusMaster- SpecCycle- MemWINV- VGASnoop-
-> > > ParErr+ Stepping- SERR+ FastB2B- DisINTx-
-> > >         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium
-> > > >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-> > >         Interrupt: pin A routed to IRQ 0
-> > >         Region 0: Memory at 20204000 (32-bit, non-prefetchable)
-> > > [disabled] [size=2K]
-> > >         Region 1: Memory at 20200000 (32-bit, non-prefetchable)
-> > > [disabled] [size=16K]
+thanks
+
+adam
+
+> V2: Fix issue where variable stating the suspend mode isn't being
+>     properly set and cleared.
+>
+> diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
+> index ab19ceff6e2a..5e596168ba73 100644
+> --- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
+> +++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
+> @@ -25,10 +25,20 @@
+>  #include <linux/of_platform.h>
+>  #include <linux/of_irq.h>
+>  #include <linux/io.h>
+> +#include <linux/cpu_pm.h>
+> +#include <linux/device.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/pm.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+>
+>  #include "ti-bandgap.h"
+>
+>  static int ti_bandgap_force_single_read(struct ti_bandgap *bgp, int id);
+> +#ifdef CONFIG_PM_SLEEP
+> +static int bandgap_omap_cpu_notifier(struct notifier_block *nb,
+> +                                 unsigned long cmd, void *v);
+> +#endif
+>
+>  /***   Helper functions to access registers and their bitfields   ***/
+>
+> @@ -1008,6 +1018,11 @@ int ti_bandgap_probe(struct platform_device *pdev)
+>                 }
+>         }
+>
+> +#ifdef CONFIG_PM_SLEEP
+> +       bgp->nb.notifier_call = bandgap_omap_cpu_notifier;
+> +       cpu_pm_register_notifier(&bgp->nb);
+> +#endif
+> +
+>         return 0;
+>
+>  remove_last_cooling:
+> @@ -1041,7 +1056,9 @@ int ti_bandgap_remove(struct platform_device *pdev)
+>         struct ti_bandgap *bgp = platform_get_drvdata(pdev);
+>         int i;
+>
+> -       /* First thing is to remove sensor interfaces */
+> +       cpu_pm_unregister_notifier(&bgp->nb);
+> +
+> +       /* Remove sensor interfaces */
+>         for (i = 0; i < bgp->conf->sensor_count; i++) {
+>                 if (bgp->conf->sensors[i].unregister_cooling)
+>                         bgp->conf->sensors[i].unregister_cooling(bgp, i);
+> @@ -1150,9 +1167,43 @@ static int ti_bandgap_suspend(struct device *dev)
+>         if (TI_BANDGAP_HAS(bgp, CLK_CTRL))
+>                 clk_disable_unprepare(bgp->fclock);
+>
+> +       bgp->is_suspended = true;
+> +
+>         return err;
+>  }
+>
+> +static int bandgap_omap_cpu_notifier(struct notifier_block *nb,
+> +                                 unsigned long cmd, void *v)
+> +{
+> +       struct ti_bandgap *bgp;
+> +
+> +       bgp = container_of(nb, struct ti_bandgap, nb);
+> +
+> +       spin_lock(&bgp->lock);
+> +       switch (cmd) {
+> +       case CPU_CLUSTER_PM_ENTER:
+> +               if (bgp->is_suspended)
+> +                       break;
+> +               ti_bandgap_save_ctxt(bgp);
+> +               ti_bandgap_power(bgp, false);
+> +               if (TI_BANDGAP_HAS(bgp, CLK_CTRL))
+> +                       clk_disable(bgp->fclock);
+> +               break;
+> +       case CPU_CLUSTER_PM_ENTER_FAILED:
+> +       case CPU_CLUSTER_PM_EXIT:
+> +               if (bgp->is_suspended)
+> +                       break;
+> +               if (TI_BANDGAP_HAS(bgp, CLK_CTRL))
+> +                       clk_enable(bgp->fclock);
+> +               ti_bandgap_power(bgp, true);
+> +               ti_bandgap_restore_ctxt(bgp);
+> +               break;
+> +       }
+> +       spin_unlock(&bgp->lock);
+> +
+> +       return NOTIFY_OK;
+> +}
+> +
+>  static int ti_bandgap_resume(struct device *dev)
+>  {
+>         struct ti_bandgap *bgp = dev_get_drvdata(dev);
+> @@ -1161,6 +1212,7 @@ static int ti_bandgap_resume(struct device *dev)
+>                 clk_prepare_enable(bgp->fclock);
+>
+>         ti_bandgap_power(bgp, true);
+> +       bgp->is_suspended = false;
+>
+>         return ti_bandgap_restore_ctxt(bgp);
+>  }
+> diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.h b/drivers/thermal/ti-soc-thermal/ti-bandgap.h
+> index fce4657e9486..ed0ea4b17b25 100644
+> --- a/drivers/thermal/ti-soc-thermal/ti-bandgap.h
+> +++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.h
+> @@ -12,6 +12,10 @@
+>  #include <linux/spinlock.h>
+>  #include <linux/types.h>
+>  #include <linux/err.h>
+> +#include <linux/cpu_pm.h>
+> +#include <linux/device.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/pm.h>
+>
+>  struct gpio_desc;
+>
+> @@ -203,6 +207,8 @@ struct ti_bandgap {
+>         int                             irq;
+>         struct gpio_desc                *tshut_gpiod;
+>         u32                             clk_rate;
+> +       struct notifier_block           nb;
+> +       unsigned int is_suspended:1;
+>  };
+>
+>  /**
+> --
+> 2.25.1
+>
