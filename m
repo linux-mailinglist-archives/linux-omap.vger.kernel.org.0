@@ -2,140 +2,204 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01FE928AC2D
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Oct 2020 04:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84E1F28B3E5
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Oct 2020 13:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726182AbgJLCdM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 11 Oct 2020 22:33:12 -0400
-Received: from mail.loongson.cn ([114.242.206.163]:51520 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725882AbgJLCdM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 11 Oct 2020 22:33:12 -0400
-Received: from [10.130.0.80] (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxr97yv4NfkbEcAA--.4007S3;
-        Mon, 12 Oct 2020 10:31:16 +0800 (CST)
-Subject: Re: [PATCH v5 00/14] irqchip: Fix potential resource leaks
-To:     Marc Zyngier <maz@kernel.org>
-References: <1593998365-25910-1-git-send-email-yangtiezhu@loongson.cn>
- <ab1cd9280c7892a0230945ef5ff0880c@kernel.org>
- <02e077df-7c4e-24a7-1640-5f17894bd252@loongson.cn>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        linux-kernel@vger.kernel.org, Alban Bedel <albeu@free.fr>,
-        Guo Ren <guoren@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        David Lechner <david@lechnology.com>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Jisheng Zhang <jszhang@marvell.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        u.kleine-koenig@pengutronix.de,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Tony Lindgren <tony@atomide.com>, Felipe Balbi <balbi@ti.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Anup Patel <anup.patel@wdc.com>, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Rob Herring <rob.herring@calxeda.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        linux-csky@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
-From:   Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <4b18d030-76c7-1b83-3b0d-deb8ecd925dc@loongson.cn>
-Date:   Mon, 12 Oct 2020 10:31:14 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+        id S2388135AbgJLLht (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Oct 2020 07:37:49 -0400
+Received: from foss.arm.com ([217.140.110.172]:39736 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387617AbgJLLhs (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 12 Oct 2020 07:37:48 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C1F0D6E;
+        Mon, 12 Oct 2020 04:37:47 -0700 (PDT)
+Received: from [10.57.48.76] (unknown [10.57.48.76])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B4ACA3F719;
+        Mon, 12 Oct 2020 04:37:41 -0700 (PDT)
+Subject: Re: [PATCH v7 2/2] PCI: dwc: Fix MSI page leakage in suspend/resume
+To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+Cc:     linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20201009155311.22d3caa5@xhacker.debian>
+ <20201009155505.5a580ef5@xhacker.debian>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <38a00dde-598f-b6de-ecf3-5d012bd7594a@arm.com>
+Date:   Mon, 12 Oct 2020 12:37:34 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <02e077df-7c4e-24a7-1640-5f17894bd252@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20201009155505.5a580ef5@xhacker.debian>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAf9Dxr97yv4NfkbEcAA--.4007S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxJrW5Xw43tFyrCr4Duw47XFb_yoW8XF4DpF
-        13t3WYkr4kX34qyFnFkw47Xa4Iy3yDK3yUWryYgrs3Aw1q9F1DWrWrtFyFkw4DWw1rGF42
-        kws5t3s7Aw1jyaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUU9Eb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4
-        vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-        FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr
-        0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY
-        04v7Mxk0xIA0c2IEe2xFo4CEbIxvr21lc2xSY4AK67AK6r4UMxAIw28IcxkI7VAKI48JMx
-        C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
-        wI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-        IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
-        x2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
-        AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8aYLPUUUUU==
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 09/02/2020 11:59 AM, Tiezhu Yang wrote:
-> On 07/06/2020 03:30 PM, Marc Zyngier wrote:
->> On 2020-07-06 02:19, Tiezhu Yang wrote:
->>> When I test the irqchip code of Loongson, I read the related code of 
->>> other
->>> chips in drivers/irqchip and I find some potential resource leaks in 
->>> the
->>> error path, I think it is better to fix them.
->>>
->>> v2:
->>>   - Split the first patch into a new patch series which
->>>     includes small patches and add "Fixes" tag
->>>   - Use "goto" label to handle error path in some patches
->>>
->>> v3:
->>>   - Add missed variable "ret" in the patch #5 and #13
->>>
->>> v4:
->>>   - Modify the commit message of each patch suggested by Markus Elfring
->>>   - Make "irq_domain_remove(root_domain)" under CONFIG_SMP in patch #3
->>>   - Add a return statement before goto label in patch #4
->>>
->>> v5:
->>>   - Modify the commit messages and do some code cleanups
->>
->> Please stop replying to Markus Elfring, and give people who actually
->> care a chance to review this code. Elfring will keep asking you to make
->> absolutely pointless changes until you are blue in the face
->
-> Hi Marc,
->
-> Any comments?
-> Could you please apply this patch series?
+On 2020-10-09 08:55, Jisheng Zhang wrote:
+> Currently, dw_pcie_msi_init() allocates and maps page for msi, then
+> program the PCIE_MSI_ADDR_LO and PCIE_MSI_ADDR_HI. The Root Complex
+> may lose power during suspend-to-RAM, so when we resume, we want to
+> redo the latter but not the former. If designware based driver (for
+> example, pcie-tegra194.c) calls dw_pcie_msi_init() in resume path, the
+> msi page will be leaked.
+> 
+> As pointed out by Rob and Ard, there's no need to allocate a page for
+> the MSI address, we could use an address in the driver data.
+> 
+> To avoid map the MSI msg again during resume, we move the map MSI msg
+> from dw_pcie_msi_init() to dw_pcie_host_init().
 
-Hi all,
+You should move the unmap there as well. As soon as you know what the 
+relevant address would be if you *were* to do DMA to this location, then 
+the exercise is complete. Leaving it mapped for the lifetime of the 
+device in order to do not-DMA to it seems questionable (and represents 
+technically incorrect API usage without at least a sync_for_cpu call 
+before any other access to the data).
 
-Maybe I should cc the related persons through ./scripts/get_maintainer.pl
-to get Acked-by or Reviewed-by.
+Another point of note is that using streaming DMA mappings at all is a 
+bit fragile (regardless of this change). If the host controller itself 
+has a limited DMA mask relative to physical memory (which integrators 
+still seem to keep doing...) then you could end up punching your MSI 
+hole right in the middle of the SWIOTLB bounce buffer, where it's then 
+almost *guaranteed* to interfere with real DMA :(
 
-The cover letter link of this patch series is:
-[v5,00/14] irqchip: Fix potential resource leaks
-https://lore.kernel.org/patchwork/cover/1268043/
+If no DWC users have that problem and the current code is working well 
+enough, then I see little reason not to make this partucular change to 
+tidy up the implementation, just bear in mind that there's always the 
+possibility of having to come back and change it yet again in future to 
+make it more robust. I had it in mind that this trick was done with a 
+coherent DMA allocation, which would be safe from addressing problems 
+but would need to be kept around for the lifetime of the device, but 
+maybe that was a different driver :/
 
-Any comments will be much appreciated.
+Robin.
 
-Thanks,
-Tiezhu
-
->
-> Thanks,
-> Tiezhu
->
->>
->>
->> Thanks,
->>
->>         M.
->
-
+> Suggested-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+>   drivers/pci/controller/dwc/pci-dra7xx.c       | 18 +++++++++-
+>   .../pci/controller/dwc/pcie-designware-host.c | 33 ++++++++++---------
+>   drivers/pci/controller/dwc/pcie-designware.h  |  2 +-
+>   3 files changed, 36 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 8f0b6d644e4b..6d012d2b1e90 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -466,7 +466,9 @@ static struct irq_chip dra7xx_pci_msi_bottom_irq_chip = {
+>   static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
+>   {
+>   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct device *dev = pci->dev;
+>   	u32 ctrl, num_ctrls;
+> +	int ret;
+>   
+>   	pp->msi_irq_chip = &dra7xx_pci_msi_bottom_irq_chip;
+>   
+> @@ -482,7 +484,21 @@ static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
+>   				    ~0);
+>   	}
+>   
+> -	return dw_pcie_allocate_domains(pp);
+> +	ret = dw_pcie_allocate_domains(pp);
+> +	if (ret)
+> +		return ret;
+> +
+> +	pp->msi_data = dma_map_single_attrs(dev, &pp->msi_msg,
+> +					   sizeof(pp->msi_msg),
+> +					   DMA_FROM_DEVICE,
+> +					   DMA_ATTR_SKIP_CPU_SYNC);
+> +	ret = dma_mapping_error(dev, pp->msi_data);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to map MSI data\n");
+> +		pp->msi_data = 0;
+> +		dw_pcie_free_msi(pp);
+> +	}
+> +	return ret;
+>   }
+>   
+>   static const struct dw_pcie_host_ops dra7xx_pcie_host_ops = {
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index d3e9ea11ce9e..d02c7e74738d 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -266,30 +266,23 @@ void dw_pcie_free_msi(struct pcie_port *pp)
+>   	irq_domain_remove(pp->msi_domain);
+>   	irq_domain_remove(pp->irq_domain);
+>   
+> -	if (pp->msi_page)
+> -		__free_page(pp->msi_page);
+> +	if (pp->msi_data) {
+> +		struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +		struct device *dev = pci->dev;
+> +
+> +		dma_unmap_single_attrs(dev, pp->msi_data, sizeof(pp->msi_msg),
+> +				       DMA_FROM_DEVICE, DMA_ATTR_SKIP_CPU_SYNC);
+> +	}
+>   }
+>   
+>   void dw_pcie_msi_init(struct pcie_port *pp)
+>   {
+>   	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> -	struct device *dev = pci->dev;
+> -	u64 msi_target;
+> +	u64 msi_target = (u64)pp->msi_data;
+>   
+>   	if (!IS_ENABLED(CONFIG_PCI_MSI))
+>   		return;
+>   
+> -	pp->msi_page = alloc_page(GFP_KERNEL);
+> -	pp->msi_data = dma_map_page(dev, pp->msi_page, 0, PAGE_SIZE,
+> -				    DMA_FROM_DEVICE);
+> -	if (dma_mapping_error(dev, pp->msi_data)) {
+> -		dev_err(dev, "Failed to map MSI data\n");
+> -		__free_page(pp->msi_page);
+> -		pp->msi_page = NULL;
+> -		return;
+> -	}
+> -	msi_target = (u64)pp->msi_data;
+> -
+>   	/* Program the msi_data */
+>   	dw_pcie_writel_dbi(pci, PCIE_MSI_ADDR_LO, lower_32_bits(msi_target));
+>   	dw_pcie_writel_dbi(pci, PCIE_MSI_ADDR_HI, upper_32_bits(msi_target));
+> @@ -394,6 +387,16 @@ int dw_pcie_host_init(struct pcie_port *pp)
+>   				irq_set_chained_handler_and_data(pp->msi_irq,
+>   							    dw_chained_msi_isr,
+>   							    pp);
+> +
+> +			pp->msi_data = dma_map_single_attrs(pci->dev, &pp->msi_msg,
+> +						      sizeof(pp->msi_msg),
+> +						      DMA_FROM_DEVICE,
+> +						      DMA_ATTR_SKIP_CPU_SYNC);
+> +			if (dma_mapping_error(pci->dev, pp->msi_data)) {
+> +				dev_err(pci->dev, "Failed to map MSI data\n");
+> +				pp->msi_data = 0;
+> +				goto err_free_msi;
+> +			}
+>   		} else {
+>   			ret = pp->ops->msi_host_init(pp);
+>   			if (ret < 0)
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 97c7063b9e89..9d2f511f13fa 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -190,8 +190,8 @@ struct pcie_port {
+>   	int			msi_irq;
+>   	struct irq_domain	*irq_domain;
+>   	struct irq_domain	*msi_domain;
+> +	u16			msi_msg;
+>   	dma_addr_t		msi_data;
+> -	struct page		*msi_page;
+>   	struct irq_chip		*msi_irq_chip;
+>   	u32			num_vectors;
+>   	u32			irq_mask[MAX_MSI_CTRLS];
+> 
