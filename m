@@ -2,231 +2,191 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0343928E511
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Oct 2020 19:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B0B928E52F
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Oct 2020 19:16:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731981AbgJNRIQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Oct 2020 13:08:16 -0400
-Received: from foss.arm.com ([217.140.110.172]:54000 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728955AbgJNRIQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Oct 2020 13:08:16 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B1AAD6E;
-        Wed, 14 Oct 2020 10:08:15 -0700 (PDT)
-Received: from [10.57.48.76] (unknown [10.57.48.76])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 114C33F71F;
-        Wed, 14 Oct 2020 10:08:12 -0700 (PDT)
-Subject: Re: [PATCH v7 2/2] PCI: dwc: Fix MSI page leakage in suspend/resume
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        PCI <linux-pci@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-References: <20201009155311.22d3caa5@xhacker.debian>
- <20201009155505.5a580ef5@xhacker.debian>
- <38a00dde-598f-b6de-ecf3-5d012bd7594a@arm.com>
- <CAMj1kXGZnFLaGAFuyMPC8c8TPKf25d1matV9UT2AD2LqO1Rbpw@mail.gmail.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <05324fc9-26bf-26bc-bda2-c6ec01ef7e7f@arm.com>
-Date:   Wed, 14 Oct 2020 18:08:11 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
+        id S1727899AbgJNRQx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Oct 2020 13:16:53 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:49434 "EHLO
+        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726942AbgJNRQx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Oct 2020 13:16:53 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id BDEBF803073C;
+        Wed, 14 Oct 2020 17:16:46 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at baikalelectronics.ru
+Received: from mail.baikalelectronics.ru ([127.0.0.1])
+        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Ys7tOGr55fWZ; Wed, 14 Oct 2020 20:16:46 +0300 (MSK)
+Date:   Wed, 14 Oct 2020 20:16:40 +0300
+From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+CC:     Serge Semin <fancer.lancer@gmail.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>, Wei Xu <xuwei5@hisilicon.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+        Manu Gautam <mgautam@codeaurora.org>,
+        Roger Quadros <rogerq@ti.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-snps-arc@lists.infradead.org>, <linux-mips@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-usb@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH 20/20] arch: dts: Fix DWC USB3 DT nodes name
+Message-ID: <20201014171640.bup52mgaz4jvhtsy@mobilestation>
+References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-21-Sergey.Semin@baikalelectronics.ru>
+ <CAJKOXPeErocR5-3xCDqBR3-k3w_2EQ_768d71n229cbzeo4TtQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXGZnFLaGAFuyMPC8c8TPKf25d1matV9UT2AD2LqO1Rbpw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAJKOXPeErocR5-3xCDqBR3-k3w_2EQ_768d71n229cbzeo4TtQ@mail.gmail.com>
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2020-10-14 17:52, Ard Biesheuvel wrote:
-> On Mon, 12 Oct 2020 at 13:38, Robin Murphy <robin.murphy@arm.com> wrote:
->>
->> On 2020-10-09 08:55, Jisheng Zhang wrote:
->>> Currently, dw_pcie_msi_init() allocates and maps page for msi, then
->>> program the PCIE_MSI_ADDR_LO and PCIE_MSI_ADDR_HI. The Root Complex
->>> may lose power during suspend-to-RAM, so when we resume, we want to
->>> redo the latter but not the former. If designware based driver (for
->>> example, pcie-tegra194.c) calls dw_pcie_msi_init() in resume path, the
->>> msi page will be leaked.
->>>
->>> As pointed out by Rob and Ard, there's no need to allocate a page for
->>> the MSI address, we could use an address in the driver data.
->>>
->>> To avoid map the MSI msg again during resume, we move the map MSI msg
->>> from dw_pcie_msi_init() to dw_pcie_host_init().
->>
->> You should move the unmap there as well. As soon as you know what the
->> relevant address would be if you *were* to do DMA to this location, then
->> the exercise is complete. Leaving it mapped for the lifetime of the
->> device in order to do not-DMA to it seems questionable (and represents
->> technically incorrect API usage without at least a sync_for_cpu call
->> before any other access to the data).
->>
->> Another point of note is that using streaming DMA mappings at all is a
->> bit fragile (regardless of this change). If the host controller itself
->> has a limited DMA mask relative to physical memory (which integrators
->> still seem to keep doing...) then you could end up punching your MSI
->> hole right in the middle of the SWIOTLB bounce buffer, where it's then
->> almost *guaranteed* to interfere with real DMA :(
->>
+On Wed, Oct 14, 2020 at 12:33:25PM +0200, Krzysztof Kozlowski wrote:
+> On Wed, 14 Oct 2020 at 12:23, Serge Semin
+> <Sergey.Semin@baikalelectronics.ru> wrote:
+> >
+> > In accordance with the DWC USB3 bindings the corresponding node name is
+> > suppose to comply with Generic USB HCD DT schema, which requires the USB
+> > nodes to have the name acceptable by the regexp: "^usb(@.*)?" . But a lot
+> > of the DWC USB3-compatible nodes defined in the ARM/ARM64 DTS files have
+> > name as "^dwc3@.*" or "^usb[1-3]@.*" or even "^dwusb@.*", which will cause
+> > the dtbs_check procedure failure. Let's fix the nodes naming to be
+> > compatible with the DWC USB3 DT schema to make dtbs_check happy.
+> >
+> > Note we don't change the DWC USB3-compatible nodes names of
+> > arch/arm64/boot/dts/apm/{apm-storm.dtsi,apm-shadowcat.dtsi} since the
+> > in-source comment says that the nodes name need to be preserved as
+> > "^dwusb@.*" for some backward compatibility.
+> >
+> > Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+> >
+> > ---
+> >
+> > Please, test the patch out to make sure it doesn't brake the dependent DTS
+> > files. I did only a manual grepping of the possible nodes dependencies.
 > 
-> Wouldn't it be the unmap you are suggesting that would create this
-> problem? If the bounce buffer is never released, the fake MSI doorbell
-> address can never conflict with any other DMA mappings.
 
-True, it's just that hogging a SWIOTLB slot for effectively the entire 
-lifetime of the system is such an anathema that it didn't even cross my 
-mind...
+> 1. It is you who should compare the decompiled DTS, not us. For example:
+> $ for i in dts-old/*/*dtb dts-old/*/*/*dtb; do echo $i; crosc64
+> scripts/dtc/dtx_diff ${i} dts-new/${i#dts-old/} ; done
+> 
+> $ for i in dts-old/*/*dtb dts-old/*/*/*dtb; do echo $i; crosc64
+> fdtdump ${i} > ${i}.fdt ; crosc64 fdtdump dts-new/${i#dts-old/} >
+> dts-new/${i#dts-old/}.fdt ; diff -ubB ${i}.fdt
+> dts-new/${i#dts-old/}.fdt ; done
 
-Ugh, so I guess the patch as it stands does actually work out more 
-robust than I gave it credit for, even if the reason is horrid... oh well :)
+So basically you suggest first to compile the old and new dts files, then to
+de-compile them, then diff old and new fdt's, and visually compare the results.
+Personally it isn't that much better than what I did, since each old and new
+dtbs will for sure differ due to the node names change suggested in this patch.
+So it will lead to the visual debugging too, which isn't that effective. But
+your approach is still more demonstrative to make sure that I didn't loose any
+nodes redefinition, since in the occasion the old and new de-compiled nodes will
+differ not only by the node names but with an additional old named node.
 
-Robin.
+So to speak thanks for suggesting it. I'll try it to validate the proposed
+changes.
 
->> If no DWC users have that problem and the current code is working well
->> enough, then I see little reason not to make this partucular change to
->> tidy up the implementation, just bear in mind that there's always the
->> possibility of having to come back and change it yet again in future to
->> make it more robust. I had it in mind that this trick was done with a
->> coherent DMA allocation, which would be safe from addressing problems
->> but would need to be kept around for the lifetime of the device, but
->> maybe that was a different driver :/
->>
->> Robin.
->>
->>> Suggested-by: Rob Herring <robh@kernel.org>
->>> Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
->>> Reviewed-by: Rob Herring <robh@kernel.org>
->>> ---
->>>    drivers/pci/controller/dwc/pci-dra7xx.c       | 18 +++++++++-
->>>    .../pci/controller/dwc/pcie-designware-host.c | 33 ++++++++++---------
->>>    drivers/pci/controller/dwc/pcie-designware.h  |  2 +-
->>>    3 files changed, 36 insertions(+), 17 deletions(-)
->>>
->>> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
->>> index 8f0b6d644e4b..6d012d2b1e90 100644
->>> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
->>> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
->>> @@ -466,7 +466,9 @@ static struct irq_chip dra7xx_pci_msi_bottom_irq_chip = {
->>>    static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
->>>    {
->>>        struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
->>> +     struct device *dev = pci->dev;
->>>        u32 ctrl, num_ctrls;
->>> +     int ret;
->>>
->>>        pp->msi_irq_chip = &dra7xx_pci_msi_bottom_irq_chip;
->>>
->>> @@ -482,7 +484,21 @@ static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
->>>                                    ~0);
->>>        }
->>>
->>> -     return dw_pcie_allocate_domains(pp);
->>> +     ret = dw_pcie_allocate_domains(pp);
->>> +     if (ret)
->>> +             return ret;
->>> +
->>> +     pp->msi_data = dma_map_single_attrs(dev, &pp->msi_msg,
->>> +                                        sizeof(pp->msi_msg),
->>> +                                        DMA_FROM_DEVICE,
->>> +                                        DMA_ATTR_SKIP_CPU_SYNC);
->>> +     ret = dma_mapping_error(dev, pp->msi_data);
->>> +     if (ret) {
->>> +             dev_err(dev, "Failed to map MSI data\n");
->>> +             pp->msi_data = 0;
->>> +             dw_pcie_free_msi(pp);
->>> +     }
->>> +     return ret;
->>>    }
->>>
->>>    static const struct dw_pcie_host_ops dra7xx_pcie_host_ops = {
->>> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
->>> index d3e9ea11ce9e..d02c7e74738d 100644
->>> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
->>> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
->>> @@ -266,30 +266,23 @@ void dw_pcie_free_msi(struct pcie_port *pp)
->>>        irq_domain_remove(pp->msi_domain);
->>>        irq_domain_remove(pp->irq_domain);
->>>
->>> -     if (pp->msi_page)
->>> -             __free_page(pp->msi_page);
->>> +     if (pp->msi_data) {
->>> +             struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
->>> +             struct device *dev = pci->dev;
->>> +
->>> +             dma_unmap_single_attrs(dev, pp->msi_data, sizeof(pp->msi_msg),
->>> +                                    DMA_FROM_DEVICE, DMA_ATTR_SKIP_CPU_SYNC);
->>> +     }
->>>    }
->>>
->>>    void dw_pcie_msi_init(struct pcie_port *pp)
->>>    {
->>>        struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
->>> -     struct device *dev = pci->dev;
->>> -     u64 msi_target;
->>> +     u64 msi_target = (u64)pp->msi_data;
->>>
->>>        if (!IS_ENABLED(CONFIG_PCI_MSI))
->>>                return;
->>>
->>> -     pp->msi_page = alloc_page(GFP_KERNEL);
->>> -     pp->msi_data = dma_map_page(dev, pp->msi_page, 0, PAGE_SIZE,
->>> -                                 DMA_FROM_DEVICE);
->>> -     if (dma_mapping_error(dev, pp->msi_data)) {
->>> -             dev_err(dev, "Failed to map MSI data\n");
->>> -             __free_page(pp->msi_page);
->>> -             pp->msi_page = NULL;
->>> -             return;
->>> -     }
->>> -     msi_target = (u64)pp->msi_data;
->>> -
->>>        /* Program the msi_data */
->>>        dw_pcie_writel_dbi(pci, PCIE_MSI_ADDR_LO, lower_32_bits(msi_target));
->>>        dw_pcie_writel_dbi(pci, PCIE_MSI_ADDR_HI, upper_32_bits(msi_target));
->>> @@ -394,6 +387,16 @@ int dw_pcie_host_init(struct pcie_port *pp)
->>>                                irq_set_chained_handler_and_data(pp->msi_irq,
->>>                                                            dw_chained_msi_isr,
->>>                                                            pp);
->>> +
->>> +                     pp->msi_data = dma_map_single_attrs(pci->dev, &pp->msi_msg,
->>> +                                                   sizeof(pp->msi_msg),
->>> +                                                   DMA_FROM_DEVICE,
->>> +                                                   DMA_ATTR_SKIP_CPU_SYNC);
->>> +                     if (dma_mapping_error(pci->dev, pp->msi_data)) {
->>> +                             dev_err(pci->dev, "Failed to map MSI data\n");
->>> +                             pp->msi_data = 0;
->>> +                             goto err_free_msi;
->>> +                     }
->>>                } else {
->>>                        ret = pp->ops->msi_host_init(pp);
->>>                        if (ret < 0)
->>> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
->>> index 97c7063b9e89..9d2f511f13fa 100644
->>> --- a/drivers/pci/controller/dwc/pcie-designware.h
->>> +++ b/drivers/pci/controller/dwc/pcie-designware.h
->>> @@ -190,8 +190,8 @@ struct pcie_port {
->>>        int                     msi_irq;
->>>        struct irq_domain       *irq_domain;
->>>        struct irq_domain       *msi_domain;
->>> +     u16                     msi_msg;
->>>        dma_addr_t              msi_data;
->>> -     struct page             *msi_page;
->>>        struct irq_chip         *msi_irq_chip;
->>>        u32                     num_vectors;
->>>        u32                     irq_mask[MAX_MSI_CTRLS];
->>>
->>
->> _______________________________________________
->> linux-arm-kernel mailing list
->> linux-arm-kernel@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Two questions:
+1) Any advise of a good inliner/command to compile all dtbs at once? Of course I
+can get all the updated dtsi'es, then find out all the dts'es which include
+them, then directly use dtc to compile the found dts'es... On the other hand I
+can just compile all dts'es, then compare old and new ones. The diff of the
+non-modified dtb'es will be just empty...
+2) What crosc64 is?
+
+> 
+> 2. Split it per arm architectures (and proper subject prefix - not
+> "arch") and subarchitectures so maintainers can pick it up.
+
+Why? The changes are simple and can be formatted as a single patch. I've seen
+tons of patches submitted like that, accepted and then merged. What you suggest
+is just much more work, which I don't see quite required.
+
+> 
+> 3. The subject title could be more accurate - there is no fix here
+> because there was no errors in the first place. Requirement of DWC
+> node names comes recently, so it is more alignment with dtschema.
+> Otherwise automatic-pickup-stable-bot might want to pick up... and it
+> should not go to stable.
+
+Actually it is a fix, because the USB DT nodes should have been named with "usb"
+prefix in the first place. Legacy DWC USB3 bindings didn't define the nodes
+naming, but implied to be "usb"-prefixed by the USB HCD schema. The Qualcomm
+DWC3 schema should have defined the sub-nodes as "dwc3@"-prefixed, which was
+wrong in the first place.
+
+Regarding automatic-pickup-stable-bot if it exists I don't think it scans all the
+emails, but most likely the stable@vger.kernel.org list only or the emails
+having the "Fixes:" tag. If I am wrong please give me a link to the bot sources
+or refer to a doc where I can read about the way it works, to take it into
+account in future commits. Just to note I submitted patches which did some fixes,
+had the word "fix" in the subject but weren't selected to be backported to the
+stable kernel.
+
+Anyway I don't really care that much about the subject text using the word "fix"
+or some else. So if you suggest some better alternative, I'd be glad to consider
+it.
+
+-Sergey
+
+> 
+> Best regards,
+> Krzysztof
+> 
+> >  arch/arm/boot/dts/armada-375.dtsi              | 2 +-
+> >  arch/arm/boot/dts/exynos5250.dtsi              | 2 +-
+> >  arch/arm/boot/dts/exynos54xx.dtsi              | 4 ++--
+> >  arch/arm/boot/dts/keystone-k2e.dtsi            | 4 ++--
+> >  arch/arm/boot/dts/keystone.dtsi                | 2 +-
+> >  arch/arm/boot/dts/ls1021a.dtsi                 | 2 +-
+> >  arch/arm/boot/dts/omap5-l4.dtsi                | 2 +-
+> >  arch/arm/boot/dts/stih407-family.dtsi          | 2 +-
+> >  arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi   | 2 +-
+> >  arch/arm64/boot/dts/exynos/exynos5433.dtsi     | 4 ++--
+> >  arch/arm64/boot/dts/exynos/exynos7.dtsi        | 2 +-
+> >  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi | 4 ++--
+> >  arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi | 6 +++---
+> >  arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi | 4 ++--
+> >  arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi | 4 ++--
+> >  arch/arm64/boot/dts/hisilicon/hi3660.dtsi      | 2 +-
+> >  arch/arm64/boot/dts/qcom/apq8096-db820c.dtsi   | 4 ++--
+> >  arch/arm64/boot/dts/qcom/ipq8074.dtsi          | 4 ++--
+> >  arch/arm64/boot/dts/qcom/msm8996.dtsi          | 4 ++--
+> >  arch/arm64/boot/dts/qcom/msm8998.dtsi          | 2 +-
+> >  arch/arm64/boot/dts/qcom/qcs404-evb.dtsi       | 2 +-
+> >  arch/arm64/boot/dts/qcom/qcs404.dtsi           | 4 ++--
+> >  arch/arm64/boot/dts/qcom/sc7180.dtsi           | 2 +-
+> >  arch/arm64/boot/dts/qcom/sdm845.dtsi           | 4 ++--
+> >  arch/arm64/boot/dts/qcom/sm8150.dtsi           | 2 +-
+> >  25 files changed, 38 insertions(+), 38 deletions(-)
+> >
