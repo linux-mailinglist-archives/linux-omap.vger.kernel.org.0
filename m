@@ -2,126 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A1B28E1ED
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Oct 2020 16:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A909528E206
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Oct 2020 16:16:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731479AbgJNOJ7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Oct 2020 10:09:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36338 "EHLO mail.kernel.org"
+        id S1731505AbgJNOQJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Oct 2020 10:16:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39764 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727674AbgJNOJ7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Oct 2020 10:09:59 -0400
-Received: from saruman (88-113-213-94.elisa-laajakaista.fi [88.113.213.94])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727023AbgJNOQI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Oct 2020 10:16:08 -0400
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2B74722201;
-        Wed, 14 Oct 2020 14:09:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CF3182222F;
+        Wed, 14 Oct 2020 14:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602684598;
-        bh=nXHNrmeiegcAFrQHpZXClaxYDTMwa1rlJ2izCsCrXN8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=YKV/QHc62ApKcYfobKVgr7H4uuaIl0Ym5KPsO03PueFYTPIdAa9yS3LR0EwZ8HOwE
-         TcL6jF+RwT4ABH1kDb5oHOxvnawJXJUclIoLNBHrYdepJyQT5rQ5R11/OPvOyIAMKq
-         7ODxxrUbh0gZi9Rm21ebmCKNc4FTGHkE4lsI7GBs=
-From:   Felipe Balbi <balbi@kernel.org>
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>, Wei Xu <xuwei5@hisilicon.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
-        Manu Gautam <mgautam@codeaurora.org>,
-        Roger Quadros <rogerq@ti.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 20/20] arch: dts: Fix DWC USB3 DT nodes name
-In-Reply-To: <20201014101402.18271-21-Sergey.Semin@baikalelectronics.ru>
-References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
- <20201014101402.18271-21-Sergey.Semin@baikalelectronics.ru>
-Date:   Wed, 14 Oct 2020 17:09:37 +0300
-Message-ID: <878sc8lx0e.fsf@kernel.org>
+        s=default; t=1602684968;
+        bh=lEFm+z5lP4vfNiFXYcQOrHTG8mC4vZkn0A7cetMCOGQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=sWTZQOHoQ0XQl5JDc3ylIaavsji5I1PCiIK9OTrXfHKnTUPU20xYVPuWKXO6SSL2m
+         FY2LRl4ZHEPcsrxXddtTp9LI2MMA3bSBG3C0MGkaUnzD8nM7rrcM+o4FK9HFf1mGZN
+         2D5GbozDUmg1GJPXlS0eSo8Z5gffV2xNZVgT0M2k=
+Received: by mail-oo1-f43.google.com with SMTP id r7so823585ool.0;
+        Wed, 14 Oct 2020 07:16:07 -0700 (PDT)
+X-Gm-Message-State: AOAM5322ASbeMl5sF5/chtq5/D+wGHXyaWyKZHhqTK3pyQnY9UZQ5xxy
+        soEXvsBv3LSKwMYY2XBLWF/YaAoOhv0EY1C1eg==
+X-Google-Smtp-Source: ABdhPJydzle9WG7IZNaonu88f0kCpd5HkO6JxtLNVBDz9LBs3ccGK3Wafzu0TmNBEbdCCx9b9WqUj+T9kSxKQFfF07w=
+X-Received: by 2002:a4a:dcc8:: with SMTP id h8mr3661817oou.81.1602684966895;
+ Wed, 14 Oct 2020 07:16:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+References: <20201009155311.22d3caa5@xhacker.debian> <20201009155505.5a580ef5@xhacker.debian>
+ <38a00dde-598f-b6de-ecf3-5d012bd7594a@arm.com>
+In-Reply-To: <38a00dde-598f-b6de-ecf3-5d012bd7594a@arm.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 14 Oct 2020 09:15:55 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLi09RTyiVLcyp1K4MNBggTvs3wqVqihpV2QhuePa3u9w@mail.gmail.com>
+Message-ID: <CAL_JsqLi09RTyiVLcyp1K4MNBggTvs3wqVqihpV2QhuePa3u9w@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] PCI: dwc: Fix MSI page leakage in suspend/resume
+To:     Robin Murphy <robin.murphy@arm.com>
+Cc:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        PCI <linux-pci@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-
-
-Hi Serge,
-
-Serge Semin <Sergey.Semin@baikalelectronics.ru> writes:
-> In accordance with the DWC USB3 bindings the corresponding node name is
-> suppose to comply with Generic USB HCD DT schema, which requires the USB
-
-DWC3 is not a simple HDC, though.
-
-> nodes to have the name acceptable by the regexp: "^usb(@.*)?" . But a lot
-> of the DWC USB3-compatible nodes defined in the ARM/ARM64 DTS files have
-> name as "^dwc3@.*" or "^usb[1-3]@.*" or even "^dwusb@.*", which will cause
-> the dtbs_check procedure failure. Let's fix the nodes naming to be
-> compatible with the DWC USB3 DT schema to make dtbs_check happy.
+On Mon, Oct 12, 2020 at 6:37 AM Robin Murphy <robin.murphy@arm.com> wrote:
 >
-> Note we don't change the DWC USB3-compatible nodes names of
-> arch/arm64/boot/dts/apm/{apm-storm.dtsi,apm-shadowcat.dtsi} since the
-> in-source comment says that the nodes name need to be preserved as
-> "^dwusb@.*" for some backward compatibility.
+> On 2020-10-09 08:55, Jisheng Zhang wrote:
+> > Currently, dw_pcie_msi_init() allocates and maps page for msi, then
+> > program the PCIE_MSI_ADDR_LO and PCIE_MSI_ADDR_HI. The Root Complex
+> > may lose power during suspend-to-RAM, so when we resume, we want to
+> > redo the latter but not the former. If designware based driver (for
+> > example, pcie-tegra194.c) calls dw_pcie_msi_init() in resume path, the
+> > msi page will be leaked.
+> >
+> > As pointed out by Rob and Ard, there's no need to allocate a page for
+> > the MSI address, we could use an address in the driver data.
+> >
+> > To avoid map the MSI msg again during resume, we move the map MSI msg
+> > from dw_pcie_msi_init() to dw_pcie_host_init().
+>
+> You should move the unmap there as well. As soon as you know what the
+> relevant address would be if you *were* to do DMA to this location, then
+> the exercise is complete. Leaving it mapped for the lifetime of the
+> device in order to do not-DMA to it seems questionable (and represents
+> technically incorrect API usage without at least a sync_for_cpu call
+> before any other access to the data).
+>
+> Another point of note is that using streaming DMA mappings at all is a
+> bit fragile (regardless of this change). If the host controller itself
+> has a limited DMA mask relative to physical memory (which integrators
+> still seem to keep doing...) then you could end up punching your MSI
+> hole right in the middle of the SWIOTLB bounce buffer, where it's then
+> almost *guaranteed* to interfere with real DMA :(
 
-interesting, compatibility with what? Some debugfs files, perhaps? :-)
+Couldn't that happen with the current code too? alloc_page() isn't
+guaranteed to be DMA'able, right?
 
-In any case, I don't have any problems with this, so I'll let other
-folks comment.
+> If no DWC users have that problem and the current code is working well
+> enough, then I see little reason not to make this partucular change to
+> tidy up the implementation, just bear in mind that there's always the
+> possibility of having to come back and change it yet again in future to
+> make it more robust. I had it in mind that this trick was done with a
+> coherent DMA allocation, which would be safe from addressing problems
+> but would need to be kept around for the lifetime of the device, but
+> maybe that was a different driver :/
 
-=2D-=20
-balbi
+Well, we're wasting 4K or 64K of memory and then leaking it is the
+main reason to change it.
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+We just need any address that's not memory which PCI could access. We
+could possibly just take the end of (outbound) PCI memory space. Note
+that the DWC driver never sets up inbound translations, so it's all
+1:1 mapping (though upstream could have some translation).
 
------BEGIN PGP SIGNATURE-----
-
-iQJFBAEBCAAvFiEElLzh7wn96CXwjh2IzL64meEamQYFAl+HBqERHGJhbGJpQGtl
-cm5lbC5vcmcACgkQzL64meEamQZk7w//f7M1cvtdCrKz6Ex3lntgWpy1b1/3CtTd
-mvDjI3ih9c0Lb8I32xXaiI6KCbZ4eNrTj44yQGYTqyCX3MTK3XhtDsifpFsScl3V
-HNZ5Aeru3C07GbrJgOm7anOpkrtOe8D5prOys0uLczDpjlK2nhg58Sy41jGaoqjH
-X4AW8yiKWmvPhuqqX/vzqhYettYoS2B6bNL21uXqyfcmXubL2+WOBKoXeYrZUfd+
-1xuyAt/jucQh8nhY5050kmbWKt7l5R3eUxe8be064Vi3n6CgDELde8+i+t3ULBkn
-GzjZjv9cTjZXcd3qpLXLamKnCGSmM5ckc5O5sRKQHaBmtHuCW7SbH4/6iTJBv+n/
-0WlVCedKu6N5OM3Q/+kfu33BDFfG2Dl6uK6vrt97G3jbx/IeddwccIGU9DmFfI8J
-5Yv7hMCi9vPLxVNPCi/26FxsL7PmziOjofwUfuvP5ot8EKs90frsJCsE//ADssca
-n+st1b+uqmK8qEtUigv9cC6h0DlrpzGTMyOwx4QBo4BN6YEICxzXq9wI/UOoZopx
-tOoqi5JpD/2MpJ2qQhNLlsJ6voBSI4pMSGAV18RpSchZ5WhvL+IvFUU1gFsq7fek
-MtrO6wBURV7ypfo9V7dWpM2trYsJQIWZs7x5nR8vnejZ/YspsdOcipU3QlKW+Eez
-Pu/hVbbAotY=
-=wmBj
------END PGP SIGNATURE-----
---=-=-=--
+Rob
