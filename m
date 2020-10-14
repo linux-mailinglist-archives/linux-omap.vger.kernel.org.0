@@ -2,131 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A49D28E616
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Oct 2020 20:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB6B928E67E
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Oct 2020 20:35:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728760AbgJNSNW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Oct 2020 14:13:22 -0400
-Received: from netrider.rowland.org ([192.131.102.5]:34563 "HELO
-        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with SMTP id S1728656AbgJNSNV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Oct 2020 14:13:21 -0400
-Received: (qmail 724401 invoked by uid 1000); 14 Oct 2020 14:13:20 -0400
-Date:   Wed, 14 Oct 2020 14:13:20 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Ahmed S. Darwish" <a.darwish@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org,
-        Thomas Winischhofer <thomas@winischhofer.net>,
-        Johan Hovold <johan@kernel.org>,
+        id S2388948AbgJNSfe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Oct 2020 14:35:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56664 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388112AbgJNSfa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Oct 2020 14:35:30 -0400
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 322C122267;
+        Wed, 14 Oct 2020 18:35:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602700529;
+        bh=Pda5e4mTtOE+ZlY6hUmRRRDO7I+9vJoYWhBous9Gcls=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Pofh7UmO7iRQ6dIxMcM+BkYBtJ7jUuuDxYvnx45uCg3oTKCzplu1qgt32rENNlGE+
+         6CbsGFGyyKtjPzOfwqXjDpOqeJ9TKaHnrisubMIcT108UpGEmLQHnQg3MzptTLo85b
+         09GIwDh7G3BzSCkAOxH94vxwT2RuWvy6ESdGDHkk=
+Received: by mail-ua1-f41.google.com with SMTP id x11so67387uav.1;
+        Wed, 14 Oct 2020 11:35:29 -0700 (PDT)
+X-Gm-Message-State: AOAM5339it8HidodmOJsfvSdSSyUjlEzrGhA1RS5MKiJtH7XFyV/0TVE
+        CJOoiiX0vI++kId91FjpAg/bjYOjwwz6wCxHiA==
+X-Google-Smtp-Source: ABdhPJxmywHYTJ4dMOU2YaRv5iUSZXhICQXEppzBvIlKDcu6yZMwhcqON/hhJlbOheAOzFbJbkRhHRpm3BOL3wbOkQ8=
+X-Received: by 2002:a9d:5e14:: with SMTP id d20mr18868oti.107.1602700527584;
+ Wed, 14 Oct 2020 11:35:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru>
+ <20201014101402.18271-21-Sergey.Semin@baikalelectronics.ru>
+ <878sc8lx0e.fsf@kernel.org> <20201014143720.yny3jco5pkb7dr4b@mobilestation>
+In-Reply-To: <20201014143720.yny3jco5pkb7dr4b@mobilestation>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Wed, 14 Oct 2020 13:35:16 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKNuYS1ojJMCx1whLgynz+cTZ-Hvxn5pEFJc_PUgA1hsg@mail.gmail.com>
+Message-ID: <CAL_JsqKNuYS1ojJMCx1whLgynz+cTZ-Hvxn5pEFJc_PUgA1hsg@mail.gmail.com>
+Subject: Re: [PATCH 20/20] arch: dts: Fix DWC USB3 DT nodes name
+To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc:     Felipe Balbi <balbi@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
         Mathias Nyman <mathias.nyman@intel.com>,
-        Valentina Manea <valentina.manea.m@gmail.com>,
-        Shuah Khan <shuah@kernel.org>, linux-omap@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
         Kukjin Kim <kgene@kernel.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
-        Duncan Sands <duncan.sands@free.fr>
-Subject: Re: [patch 11/12] usb: core: Replace in_interrupt() in comments
-Message-ID: <20201014181320.GA723420@rowland.harvard.edu>
-References: <20201014145215.518912759@linutronix.de>
- <20201014145728.318078828@linutronix.de>
- <20201014162721.GE712494@rowland.harvard.edu>
- <20201014164123.hnqqkyrjrjytcxgz@linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201014164123.hnqqkyrjrjytcxgz@linutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>, Wei Xu <xuwei5@hisilicon.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+        Manu Gautam <mgautam@codeaurora.org>,
+        Roger Quadros <rogerq@ti.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Oct 14, 2020 at 06:41:23PM +0200, Sebastian Andrzej Siewior wrote:
-> On 2020-10-14 12:27:21 [-0400], Alan Stern wrote:
-> > > --- a/drivers/usb/core/hcd.c
-> > > +++ b/drivers/usb/core/hcd.c
-> > > @@ -746,9 +746,6 @@ static int rh_call_control (struct usb_h
-> > >   * Root Hub interrupt transfers are polled using a timer if the
-> > >   * driver requests it; otherwise the driver is responsible for
-> > >   * calling usb_hcd_poll_rh_status() when an event occurs.
-> > > - *
-> > > - * Completions are called in_interrupt(), but they may or may not
-> > > - * be in_irq().
-> > 
-> > This comment should not be removed; instead it should be changed to say 
-> > that completion handlers are called with interrupts disabled.
-> 
-> The timer callback:
->   rh_timer_func() -> usb_hcd_poll_rh_status()  
-> 
-> invokes the function with enabled interrupts.
+On Wed, Oct 14, 2020 at 9:37 AM Serge Semin
+<Sergey.Semin@baikalelectronics.ru> wrote:
+>
+> On Wed, Oct 14, 2020 at 05:09:37PM +0300, Felipe Balbi wrote:
+> >
+> > Hi Serge,
+> >
+> > Serge Semin <Sergey.Semin@baikalelectronics.ru> writes:
+> > > In accordance with the DWC USB3 bindings the corresponding node name is
+> > > suppose to comply with Generic USB HCD DT schema, which requires the USB
+> >
+>
+> > DWC3 is not a simple HDC, though.
+>
+> Yeah, strictly speaking it is equipped with a lot of vendor-specific stuff,
+> which are tuned by the DWC USB3 driver in the kernel. But after that the
+> controller is registered as xhci-hcd device so it's serviced by the xHCI driver,
+> which then registers the HCD device so the corresponding DT node is supposed
+> to be compatible with the next bindings: usb/usb-hcd.yaml, usb/usb-xhci.yaml
+> and usb/snps,dwc3,yaml. I've created the later one so to validate the denoted
+> compatibility.
+>
+> >
+> > > nodes to have the name acceptable by the regexp: "^usb(@.*)?" . But a lot
+> > > of the DWC USB3-compatible nodes defined in the ARM/ARM64 DTS files have
+> > > name as "^dwc3@.*" or "^usb[1-3]@.*" or even "^dwusb@.*", which will cause
+> > > the dtbs_check procedure failure. Let's fix the nodes naming to be
+> > > compatible with the DWC USB3 DT schema to make dtbs_check happy.
+> > >
+> > > Note we don't change the DWC USB3-compatible nodes names of
+> > > arch/arm64/boot/dts/apm/{apm-storm.dtsi,apm-shadowcat.dtsi} since the
+> > > in-source comment says that the nodes name need to be preserved as
+> > > "^dwusb@.*" for some backward compatibility.
+> >
+>
+> > interesting, compatibility with what? Some debugfs files, perhaps? :-)
+>
+> Don't really know.) In my experience the worst type of such compatibility is
+> connected with some bootloader magic, which may add/remove/modify properties
+> to nodes with pre-defined names.
 
-Well, it doesn't change the interrupt settings.  It might call 
-usb_hcd_poll_rh_status() with interrupts enabled or disabled, depending 
-on how it was called originally.
+I seriously doubt anyone is using the APM machines with DT (even ACPI
+is somewhat doubtful). I say change them. Or remove the dts files and
+see what happens. Either way it can always be reverted.
 
-But that wasn't what I meant.  usb_hcd_poll_rh_status() calls 
-usb_hcd_giveback_urb() with interrupts disabled always, and that routine 
-may call __usb_hcd_giveback_urb(), which calls
-
-	urb->complete(urb);
-
-In this case the completion handler would be invoked with interrupts 
-disabled.  Alternatively, __usb_hcd_giveback_urb() may be invoked from a 
-BH handler, in which case the completion handler will run in softirq 
-context with interrupts enabled.
-
-So I guess it would be best to say that completion handlers may be 
-called with interrupts enabled or disabled.  Or you might want to put 
-such a comment in __usb_hcd_giveback_urb().
-
-> > > @@ -1691,7 +1690,6 @@ static void usb_giveback_urb_bh(unsigned
-> > >   * @hcd: host controller returning the URB
-> > >   * @urb: urb being returned to the USB device driver.
-> > >   * @status: completion status code for the URB.
-> > > - * Context: in_interrupt()
-> > 
-> > The comment should be changed to say that the routine runs in a BH 
-> > handler (or however you want to express it).
-> 
-> Do you mean usb_hcd_giveback_urb() runs in BH context or that the
-> completion callback of the URB runs in BH context?
-
-Actually I meant that usb_hcd_giveback_urb_bh() runs in BH context.  
-Sorry, I got confused about the location of this hunk.
-
-To be explicit: The comment for usb_hcd_giveback_urb() should say that 
-the function expects to be called with interrupts disabled (whether the 
-context is task, atomic, BH, interrupt, etc. doesn't matter).
-
-> The completion callback of the URB may run in BH or IRQ context
-> depending on HCD.
-> 
-> > > --- a/drivers/usb/core/message.c
-> > > +++ b/drivers/usb/core/message.c
-> > 
-> > > @@ -934,7 +939,7 @@ int usb_get_device_descriptor(struct usb
-> > >  /*
-> > >   * usb_set_isoch_delay - informs the device of the packet transmit delay
-> > >   * @dev: the device whose delay is to be informed
-> > > - * Context: !in_interrupt()
-> > > + * Context: can sleep
-> > 
-> > Why is this comment different from all the others?
-> 
-> It says !in_interrupt() which is also true for preempt-disabled regions.
-> But the caller must not have preemption disabled. "can sleep" is more
-> obvious as what it needs.
-
-But all the other comments in this patch say:
-
- * Context: task context, might sleep.
-
-Why doesn't this comment say the same thing?
-
-Alan Stern
+Rob
