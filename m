@@ -2,92 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 699CC28E30C
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Oct 2020 17:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4684128E337
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Oct 2020 17:24:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389010AbgJNPTa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Oct 2020 11:19:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39144 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731820AbgJNPTD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Oct 2020 11:19:03 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBCBCC0613D4;
-        Wed, 14 Oct 2020 08:19:02 -0700 (PDT)
-Message-Id: <20201014145728.409787526@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602688741;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=CglHTuol1LH6Rq9Arw6I3q0kZXSSc/D44FpLqZfI5WA=;
-        b=bjMveFM/F/C/lk/mECJJ0S00n9OD6hXu0Q1tMIe9PE3A/VtjlB6lQCcGyccj6VzHIn38Vm
-        6RT8dOoVyShjVszTAyh2ApxHpx3pnF25R9YQTszfKSgS2s8t3FbLOYkcW9TdzdBGhTtDk2
-        2wmP6yFbDqtOXr9sATWU64YuWCj8DdG6VLprgt1Yz+o41DqsWqyq1/XLl/qQqGQN+Xq5FI
-        Nzl7QXRrvL/JODW0hdxCwFXOonaAP3jdjQACCtUGgzsVMwMZWSonr+7bK5d7fNPqO4D0MU
-        2Q9ekR+oeL27Nu6Caaq26FFfIdyNi0wqGL/s1fRMkDmYMQeeKrB7VONJqQM/zw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602688741;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=CglHTuol1LH6Rq9Arw6I3q0kZXSSc/D44FpLqZfI5WA=;
-        b=63oGqbLWxH0YKZmR1hR2khr5gJeYtd48W6BFdMaOQnxOOCDSW6iqewPaR90jPDCvghaqaX
-        zPEqCpaIroWOWQDg==
-Date:   Wed, 14 Oct 2020 16:52:27 +0200
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
+        id S1730911AbgJNPYk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Oct 2020 11:24:40 -0400
+Received: from mail-ej1-f51.google.com ([209.85.218.51]:35303 "EHLO
+        mail-ej1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728187AbgJNPYk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Oct 2020 11:24:40 -0400
+Received: by mail-ej1-f51.google.com with SMTP id p5so2598258ejj.2;
+        Wed, 14 Oct 2020 08:24:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=WKtkQewTW29sGezeiY3401LBi0f0aDL6Ojfyn2s8nSY=;
+        b=buMdzOs9oSHhTzhi6CgdQociN3teAYAUMJZw8ZbgCsQllLvNP4k16tx/HGjqhv9IZf
+         gTSbSL54+RyV3kmkO7wSb6mkc4qcC4HMyaNbtvYOp3Vh7JaIPwKUX9P0j+v/uTedaIja
+         n7tSU11Hx6YJOuczhPvpmFImS0lNXl/u8aTdxHAoPxSLo6APg3KQ4ttdfGQo8S0Fgu1f
+         phb1c/bnVQOe0MsBBvM3kevZ9Ax7uHlnBylILcvbgAgN0Vn3AOnWXGsyvMRiss5BtQ5R
+         6ad44EmwSqDmiLgTYoirkNFibSXu1pxFjKT9cFlVV+Fl7VzqPMaj4XZemh983KG27I/q
+         nyWg==
+X-Gm-Message-State: AOAM5314bOOoue1XCvbJwloHhnyXV4xP4QglOquGhvOnoidlsbRBL4nB
+        uW/i5vpsL0jljwPg6iNRhcd/x/C+D5s=
+X-Google-Smtp-Source: ABdhPJzE5XYEVbn6Q5Kzayrkv21WIGmOEMdk2tjCPkMhcq3EL/6zgaBQKbVAHbJ4ODUXmlA5ShI7Qw==
+X-Received: by 2002:a17:906:8349:: with SMTP id b9mr6110278ejy.88.1602689078419;
+        Wed, 14 Oct 2020 08:24:38 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.171])
+        by smtp.googlemail.com with ESMTPSA id t4sm1954606ejj.6.2020.10.14.08.24.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2020 08:24:37 -0700 (PDT)
+Date:   Wed, 14 Oct 2020 17:24:33 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Duncan Sands <duncan.sands@free.fr>,
+        Alan Stern <stern@rowland.harvard.edu>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        Kukjin Kim <kgene@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
         Thomas Winischhofer <thomas@winischhofer.net>,
         Johan Hovold <johan@kernel.org>,
         Mathias Nyman <mathias.nyman@intel.com>,
         Valentina Manea <valentina.manea.m@gmail.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        linux-omap@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, Felipe Balbi <balbi@kernel.org>
-Subject: [patch 12/12] usb: atm: Replace in_interrupt() usage in comment
+        Shuah Khan <shuah@kernel.org>, Felipe Balbi <balbi@kernel.org>,
+        Duncan Sands <duncan.sands@free.fr>
+Subject: Re: [patch 08/12] usb: hosts: Remove in_interrupt() from comments
+Message-ID: <20201014152433.GA3959@kozik-lap>
 References: <20201014145215.518912759@linutronix.de>
+ <20201014145727.957664398@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-transfer-encoding: 8-bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201014145727.957664398@linutronix.de>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-in_interrupt() is a pretty vague context description as it means: hard
-interrupt, soft interrupt or bottom half disabled regions.
+On Wed, Oct 14, 2020 at 04:52:23PM +0200, Thomas Gleixner wrote:
+> From: Ahmed S. Darwish <a.darwish@linutronix.de>
+> 
+> The usage of in_interrupt() in drivers is phased out for various reasons.
+> 
+> Various comments use !in_interrupt() to describe calling context for probe()
+> and remove() functions. That's wrong because the calling context has to be
+> preemptible task context, which is not what !in_interrupt() describes.
+> 
+> Cleanup the comments. While at it add the missing kernel doc argument
+> descriptors and make usb_hcd_msp_remove() static.
+> 
+> Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-usb@vger.kernel.org
+> Cc: linux-omap@vger.kernel.org
+> Cc: Kukjin Kim <kgene@kernel.org>
+> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-samsung-soc@vger.kernel.org
+> 
+> ---
+>  drivers/usb/host/ehci-fsl.c     |    9 ++++-----
+>  drivers/usb/host/ehci-pmcmsp.c  |   15 +++++++++------
+>  drivers/usb/host/ohci-at91.c    |   11 ++++++++---
+>  drivers/usb/host/ohci-omap.c    |    7 ++++---
+>  drivers/usb/host/ohci-pxa27x.c  |   11 ++++++-----
+>  drivers/usb/host/ohci-s3c2410.c |   12 ++++++------
 
-Replace the vague comment with a proper reasoning why spin_lock_irqsave()
-needs to be used.
+For the s3c2410:
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Duncan Sands <duncan.sands@free.fr>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org
-
----
- drivers/usb/atm/usbatm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/drivers/usb/atm/usbatm.c
-+++ b/drivers/usb/atm/usbatm.c
-@@ -249,7 +249,7 @@ static void usbatm_complete(struct urb *
- 	/* vdbg("%s: urb 0x%p, status %d, actual_length %d",
- 	     __func__, urb, status, urb->actual_length); */
- 
--	/* usually in_interrupt(), but not always */
-+	/* Can be invoked from task context, protect against interrupts */
- 	spin_lock_irqsave(&channel->lock, flags);
- 
- 	/* must add to the back when receiving; doesn't matter when sending */
-
+Best regards,
+Krzysztof
