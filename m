@@ -2,94 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E6BFC290245
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Oct 2020 11:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EEFE290835
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Oct 2020 17:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406427AbgJPJx7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Fri, 16 Oct 2020 05:53:59 -0400
-Received: from mx2.suse.de ([195.135.220.15]:42374 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406424AbgJPJx6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 16 Oct 2020 05:53:58 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 5F341AD0D;
-        Fri, 16 Oct 2020 09:53:57 +0000 (UTC)
-Date:   Fri, 16 Oct 2020 11:53:56 +0200
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     Xu Wang <vulab@iscas.ac.cn>
-Cc:     b.zolnierkie@samsung.com, pakki001@umn.edu, yuehaibing@huawei.com,
-        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] omapfb/dss: Remove redundant null check before
- clk_prepare_enable/clk_disable_unprepare
-Message-ID: <20201016115356.34c1620b@linux-uq9g>
-In-Reply-To: <20201015100827.1115fa9b@linux-uq9g>
-References: <20201014084920.25813-1-vulab@iscas.ac.cn>
-        <20201015100827.1115fa9b@linux-uq9g>
-Organization: SUSE Software Solutions Germany GmbH
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+        id S2409983AbgJPPTO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Oct 2020 11:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33836 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2409907AbgJPPTO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Oct 2020 11:19:14 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564DAC061755;
+        Fri, 16 Oct 2020 08:19:14 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id m17so4326885ioo.1;
+        Fri, 16 Oct 2020 08:19:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5uzY4OOb3UvbavqXm5V4tdWOcTYtU4wpNa2y2+cRQ1Q=;
+        b=feSB78azhkmYkuXprBajgH9IAfvW6of4LLbtyKbIEBXPjZhZD97FbFws1y9lA1+6R7
+         vvtkA7v9JBj/Q/E2JhQQY2POhqipHjBbwum1WJJ/2o/3QqfOZs2J1lCLvDWjcEvgLmjJ
+         x/2qblr9lnxq9BPBSNR1x8mXMUx9zyWAQHONy5iSLLdB60jhhW5DjeyknzJ0nCROwTVp
+         NrX00j6EhJFx3IY+T1Q7L0eEZkXxHBI1zekV20blcZODsYwG02jSKdWZaGSY/z6JREsh
+         TXe9205Yruhs/zO5HEO9VUkkCuuU2+fnheAwIAhoHq7+z3cvnXEWdUsGQ1MKJoNQdo6w
+         URMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5uzY4OOb3UvbavqXm5V4tdWOcTYtU4wpNa2y2+cRQ1Q=;
+        b=A6lonLf5iRhn7b1PPZF+Ia9T8fOO1VkPKSDH5Pk93m2noM3WVS9vjWWX72EVgEkKry
+         Z7zaGldeco4XjxU7VhxKJm/OI1xs064jv4JFuFlqq5G0DiPBO1tgCrBO22W3s3NRhd6W
+         qI/6BQHFRI70O7EvbsNXQ8UMjF+ilHY4q7sgTqhEj2RdZjCMwBQRmazwQdDpGi1vGWIg
+         ReTPnXbtXPSXjBUudz/5slC39xdZoQYdka3cDvs6Rgl8HVV3EN4SgWCcf6ZzTyt0HqOL
+         3QCiHcS017oETMVxI8rpp+YUELjUioyLpqzt6hQMAdCGWMVExPjFz3ZhnEhms58iTZW0
+         wdUA==
+X-Gm-Message-State: AOAM532b5AuoT4OGlqDYi7MKg2Co/YoLqXpUp5mGTWNIlHYe2bE3D1za
+        lKlyJCgV6xLN5sUBfIS0CcYiZdrvw3cY3IgP8bsbuckntc8=
+X-Google-Smtp-Source: ABdhPJwndVADzlpqImXEkf9NK79ppmutLLDJKDRairMA5GyxcR3JUoTxqMuzSuphacFTIveLPHgTZoMwDqiddLxTeO8=
+X-Received: by 2002:a6b:6a18:: with SMTP id x24mr2703475iog.92.1602861552956;
+ Fri, 16 Oct 2020 08:19:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+References: <20200911123157.759379-1-aford173@gmail.com> <20200911123157.759379-2-aford173@gmail.com>
+In-Reply-To: <20200911123157.759379-2-aford173@gmail.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 16 Oct 2020 10:19:01 -0500
+Message-ID: <CAHCN7x+NxWbpaZ7j3=CTeVcvtLm5iMVymgTV=LWokZAx=wJA1w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ARM: omap2plus_defconfig: Enable OMAP3_THERMAL
+To:     linux-pm@vger.kernel.org, Linux-OMAP <linux-omap@vger.kernel.org>
+Cc:     Adam Ford-BE <aford@beaconembedded.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 15 Oct 2020 10:08:27 +0200 Thomas Zimmermann <tzimmermann@suse.de>
-wrote:
+On Fri, Sep 11, 2020 at 7:32 AM Adam Ford <aford173@gmail.com> wrote:
+>
+> With the additional power management options enabled,
+> this patch enables OMAP3_THERMAL by default.
+>
+> Signed-off-by: Adam Ford <aford173@gmail.com>
+> ---
+> V3:  No change
+> V2:  No change
 
-> On Wed, 14 Oct 2020 08:49:20 +0000 Xu Wang <vulab@iscas.ac.cn> wrote:
-> 
-> > Because clk_prepare_enable() and clk_disable_unprepare() already checked
-> > NULL clock parameter, so the additional checks are unnecessary, just
-> > remove them.
-> > 
-> > Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
-> 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> 
+Tony,
 
-Merged into drm-misc-next. Thanks!
+Can you apply [2/2] to the OMAP branch?
 
-> > ---
-> >  drivers/video/fbdev/omap2/omapfb/dss/venc.c | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/video/fbdev/omap2/omapfb/dss/venc.c
-> > b/drivers/video/fbdev/omap2/omapfb/dss/venc.c index
-> > 0b0ad20afd63..8895fb8493d8 100644 ---
-> > a/drivers/video/fbdev/omap2/omapfb/dss/venc.c +++
-> > b/drivers/video/fbdev/omap2/omapfb/dss/venc.c @@ -890,8 +890,7 @@ static
-> > int venc_remove(struct platform_device *pdev) 
-> >  static int venc_runtime_suspend(struct device *dev)
-> >  {
-> > -	if (venc.tv_dac_clk)
-> > -		clk_disable_unprepare(venc.tv_dac_clk);
-> > +	clk_disable_unprepare(venc.tv_dac_clk);
-> >  
-> >  	dispc_runtime_put();
-> >  
-> > @@ -906,8 +905,7 @@ static int venc_runtime_resume(struct device *dev)
-> >  	if (r < 0)
-> >  		return r;
-> >  
-> > -	if (venc.tv_dac_clk)
-> > -		clk_prepare_enable(venc.tv_dac_clk);
-> > +	clk_prepare_enable(venc.tv_dac_clk);
-> >  
-> >  	return 0;
-> >  }
-> 
-> 
-> 
+It looks like 1/2 was applied to the linux-pm [1]
+
+thanks,
+
+adam
+[1] - https://git.kernel.org/pub/scm/linux/kernel/git/thermal/linux.git/commit/?h=thermal/linux-next&id=5093402e5b449b64f7bbaa09057ce40a8f3c1484
 
 
 
--- 
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 Nürnberg, Germany
-(HRB 36809, AG Nürnberg)
-Geschäftsführer: Felix Imendörffer
+>
+> diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+> index fe383f5a92fb..efcc46305a47 100644
+> --- a/arch/arm/configs/omap2plus_defconfig
+> +++ b/arch/arm/configs/omap2plus_defconfig
+> @@ -303,6 +303,7 @@ CONFIG_THERMAL_GOV_FAIR_SHARE=y
+>  CONFIG_THERMAL_GOV_USER_SPACE=y
+>  CONFIG_CPU_THERMAL=y
+>  CONFIG_TI_THERMAL=y
+> +CONFIG_OMAP3_THERMAL=y
+>  CONFIG_OMAP4_THERMAL=y
+>  CONFIG_OMAP5_THERMAL=y
+>  CONFIG_DRA752_THERMAL=y
+> --
+> 2.25.1
+>
