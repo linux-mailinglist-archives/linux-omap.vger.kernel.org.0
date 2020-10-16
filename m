@@ -2,119 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CDC428FBCD
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Oct 2020 01:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25FC528FD87
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Oct 2020 07:02:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732998AbgJOX7R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Oct 2020 19:59:17 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:51538 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732997AbgJOX7R (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Oct 2020 19:59:17 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 09FNxC9e092032;
-        Thu, 15 Oct 2020 18:59:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1602806352;
-        bh=Id8Jrt/UkZ0O6zrv4E9lbv+cNcpUGnm5eWOCH5ZsdDo=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=eqlEuNQhZ3UE3SiYMXEV9oo1AcVmH75XhM9Sts/ahmCOn864KGvWier4DO6O/n2oR
-         CQmXZTAHrwt2OfR1kIpkpXq5c1C7lQV3K+w8mkRIgX91CEx7DaegqsYnhgPi8EIGox
-         L17Dgw1J3xySBn+dRjA/aqzq1Z2pUnFiqCjDn0Ns=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 09FNxCV4039214
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 15 Oct 2020 18:59:12 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 15
- Oct 2020 18:59:12 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 15 Oct 2020 18:59:12 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 09FNx9cT028389;
-        Thu, 15 Oct 2020 18:59:09 -0500
-Subject: Re: [PATCH net-next v2 0/9] net: ethernet: ti: am65-cpsw: add multi
- port support in mac-only mode
-To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        Murali Karicheri <m-karicheri2@ti.com>
-References: <20201015231913.30280-1-grygorii.strashko@ti.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <eeb0db9f-9599-1619-cd7c-910e2f095e2a@ti.com>
-Date:   Fri, 16 Oct 2020 02:59:09 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726462AbgJPFCE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Oct 2020 01:02:04 -0400
+Received: from gw166.mxout.inova.com.br ([177.154.132.166]:35255 "EHLO
+        mxcorp1.u.inova.com.br" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728376AbgJPFCE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Oct 2020 01:02:04 -0400
+Received: from mxcorp1.u.inova.com.br (localhost [127.0.0.1])
+        by mxcorp1.u.inova.com.br (Postfix) with ESMTP id 81A20301880
+        for <linux-omap@vger.kernel.org>; Fri, 16 Oct 2020 04:52:05 +0000 (UTC)
+Received: from dedimout02.a.inova.com.br (ec2-52-55-226-220.compute-1.amazonaws.com [52.55.226.220])
+        by mxcorp1.u.inova.com.br (Postfix) with ESMTP;
+        Fri, 16 Oct 2020 04:52:04 +0000 (UTC)
+Received: from dedimout02.a.inova.com.br (localhost [127.0.0.1])
+        by dedimout02.a.inova.com.br (Postfix) with ESMTP id 48C9648D87;
+        Fri, 16 Oct 2020 01:51:13 -0300 (BRT)
+Received: from incambox01.a.inova.com.br (dedimout02.a.INOVA.COM.BR [10.0.1.165])
+        by dedimout02.a.inova.com.br (Postfix) with ESMTP id 777D748DBB;
+        Fri, 16 Oct 2020 01:51:00 -0300 (BRT)
+Received: from User (unknown [103.79.171.2])
+        by incambox01.a.inova.com.br (Postfix) with ESMTPA;
+        Fri, 16 Oct 2020 01:51:00 -0300 (BRT)
+Reply-To: <billgatefound009@hotmail.com>
+From:   "Bill Gates" <jflores@hespanol.com.ar>
+Subject: Re: Notification
+Date:   Fri, 16 Oct 2020 10:20:56 +0530
 MIME-Version: 1.0
-In-Reply-To: <20201015231913.30280-1-grygorii.strashko@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+Content-Type: text/plain;
+        charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201016045100.777D748DBB@dedimout02.a.inova.com.br>
+x-mxHero-Origin-Ip: /127.0.0.1:53604
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hope this information meet you well as I know you will be curious to know why/how I selected you to receive a sum of $5,000,000,00 USD, our information below is 100% legitimate, please see the link below: https://en.wikipedia.org/wiki/Bill_%26_Melinda_Gates_Foundation
 
+The Bill & Melinda Gates Foundation (BMGF), previously the Sonu H. Gates Foundation, is an American private foundation founded by Bill and Melinda Gates. Based in Seattle, Washington, it was launched in 2000 and is reported to be the largest private foundation in the world, holding $50.7 billion in assets. The primary goals of the foundation are, globally, to enhance healthcare and reduce ...
 
-On 16/10/2020 02:19, Grygorii Strashko wrote:
-> Hi
-> 
-> This series adds multi-port support in mac-only mode (multi MAC mode) to TI
-> AM65x CPSW driver in preparation for enabling support for multi-port devices,
-> like Main CPSW0 on K3 J721E SoC or future CPSW3g on K3 AM64x SoC.
-> 
-> The multi MAC mode is implemented by configuring every enabled port in "mac-only"
-> mode (all ingress packets are sent only to the Host port and egress packets
-> directed to target Ext. Port) and creating separate net_device for
-> every enabled Ext. port.
-> 
-> This series does not affect on existing CPSW2g one Ext. Port devices and xmit
-> path changes are done only for multi-port devices by splitting xmit path for
-> one-port and multi-port devices.
-> 
-> Patches 1-3: Preparation patches to improve K3 CPSW configuration depending on DT
-> Patches 4-5: Fix VLAN offload for multi MAC mode
-> Patch 6: Fixes CPTS context lose issue during PM runtime transition
-> Patch 7: Fixes TX csum offload for multi MAC mode
-> Patches 8-9: add multi-port support to TI AM65x CPSW
-> 
-> changes in v2:
-> - patch 8: xmit path split for one-port and multi-port devices to avoid
->    performance losses
-> - patch 9: fixed the case when Port 1 is disabled
-> - Patch 7: added fix for TX csum offload
-> 
-> v1: https://lore.kernel.org/patchwork/cover/1315766/
-> 
-> Grygorii Strashko (9):
->    net: ethernet: ti: am65-cpsw: move ale selection in pdata
->    net: ethernet: ti: am65-cpsw: move free desc queue mode selection in
->      pdata
->    net: ethernet: ti: am65-cpsw: use cppi5_desc_is_tdcm()
->    net: ethernet: ti: cpsw_ale: add cpsw_ale_vlan_del_modify()
->    net: ethernet: ti: am65-cpsw: fix vlan offload for multi mac mode
->    net: ethernet: ti: am65-cpsw: keep active if cpts enabled
->    net: ethernet: ti: am65-cpsw: fix tx csum offload for multi mac mode
->    net: ethernet: ti: am65-cpsw: prepare xmit/rx path for multi-port
->      devices in mac-only mode
->    net: ethernet: ti: am65-cpsw: add multi port support in mac-only mode
-> 
->   drivers/net/ethernet/ti/am65-cpsw-nuss.c | 327 +++++++++++++++--------
->   drivers/net/ethernet/ti/am65-cpsw-nuss.h |   5 +
->   drivers/net/ethernet/ti/cpsw_ale.c       |  41 ++-
->   drivers/net/ethernet/ti/cpsw_ale.h       |   1 +
->   drivers/net/ethernet/ti/cpsw_switchdev.c |   2 +-
->   5 files changed, 251 insertions(+), 125 deletions(-)
-> 
+I BILL GATES and my wife decided to donate the sum of $5,000,000,000 USD to you as part of our charity project to improve the 10 lucky individuals all over the world from our $65 Billion Usd I and My Wife Mapped out to help people. We prayed and searched over the internet for assistance and I saw your profile on Microsoft email owners list and picked you. Melinda, my wife and I have decided to make sure this is put on the internet for the world to see. As you could see from the webpage above, I am not getting any younger and you can imagine having no much time to live. although I am a Billionaire investor and we have helped some charity organizations from our Fund. You see after taken care of the needs of our immediate family members, before we die, we decided to donate the remaining of our Billions to other individuals around the world in need, the local fire department, the red cross, Haiti, hospitals in truro where Melinda underwent her cancer treatment, and some other organizatio
+ ns in Asia and Europe tha
 
-Sorry, missed "net-next is CLOSED" announcement
+Your full names.................
+Your contact address................
+Your personal telephone number...............
 
--- 
-Best regards,
-grygorii
+So that i can forward your payment information to you immediately. I am hoping that you will be able to use the money wisely and judiciously over there in your City. please you have to do your part to also alleviate the level of poverty in your region, help as many you can help once you have this money in your personal account because that is the only objective of donating this money to you in the first place.
+Thank you for accepting our offer, we are indeed grateful You Can Google my name for more information: Mr Bill Gates or Bill & Melinda Gates Foundation.
+ 
+Regards
+Mr Bill Gates
