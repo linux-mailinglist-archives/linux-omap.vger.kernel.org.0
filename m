@@ -2,216 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D836E290D7E
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Oct 2020 23:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B402291013
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Oct 2020 08:20:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731511AbgJPVzN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Oct 2020 17:55:13 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:42778 "EHLO
+        id S2437027AbgJQGUt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 17 Oct 2020 02:20:49 -0400
+Received: from asavdk4.altibox.net ([109.247.116.15]:59430 "EHLO
         asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731309AbgJPVzN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Oct 2020 17:55:13 -0400
+        with ESMTP id S2436912AbgJQGUt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Oct 2020 02:20:49 -0400
 Received: from ravnborg.org (unknown [188.228.123.71])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id DEF4180626;
-        Fri, 16 Oct 2020 23:55:09 +0200 (CEST)
-Date:   Fri, 16 Oct 2020 23:55:08 +0200
+        by asavdk4.altibox.net (Postfix) with ESMTPS id DD78680573;
+        Sat, 17 Oct 2020 08:20:46 +0200 (CEST)
+Date:   Sat, 17 Oct 2020 08:20:45 +0200
 From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Qilong Zhang <zhangqilong3@huawei.com>
-Cc:     b.zolnierkie@samsung.com, linux-fbdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH -next] dss:use devm_platform_ioremap_resource_byname
-Message-ID: <20201016215508.GD1962741@ravnborg.org>
-References: <20200916111353.105914-1-zhangqilong3@huawei.com>
+To:     Liu Shixin <liushixin2@huawei.com>
+Cc:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH -next] omapfb: connector-dvi: simplify the return
+ expression of dvic_connect()
+Message-ID: <20201017062045.GF2242298@ravnborg.org>
+References: <20200915032627.1772517-1-liushixin2@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200916111353.105914-1-zhangqilong3@huawei.com>
+In-Reply-To: <20200915032627.1772517-1-liushixin2@huawei.com>
 X-CMAE-Score: 0
 X-CMAE-Analysis: v=2.3 cv=fu7ymmwf c=1 sm=1 tr=0
         a=S6zTFyMACwkrwXSdXUNehg==:117 a=S6zTFyMACwkrwXSdXUNehg==:17
         a=kj9zAlcOel0A:10 a=i0EeH86SAAAA:8 a=e5mUnYsNAAAA:8
-        a=j5AbMmh5N-F5ncrrDQQA:9 a=CjuIK1q_8ugA:10 a=Vxmtnl_E_bksehYqCbjh:22
+        a=qyqJRru8iCNiQjncfiQA:9 a=CjuIK1q_8ugA:10 a=Vxmtnl_E_bksehYqCbjh:22
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Zhang Qilong 
+Hi Liu.
 
-On Wed, Sep 16, 2020 at 07:13:53PM +0800, Qilong Zhang wrote:
-> Use the devm_platform_ioremap_resource_byname() helper instead of
-> calling platform_get_resource_byname() and devm_ioremap_resource()
-> separately.
+On Tue, Sep 15, 2020 at 11:26:27AM +0800, Liu Shixin wrote:
+> Simplify the return expression.
 > 
-> Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
 
-Thanks, applied to drm-misc-next. The patch will appear in -next in a
-few weeks.
-
-While applying I had to update a few things:
-- checkpatch warning due to indent
-- warning for unused variable
-- subject, should start with "omapfb:" like other patches touching the
-  same driver.
-
-I also got a warning because you name differs in your mail and your
-s-o-b. "Zhang Qilong" is not the same as "Qilong Zhang".
-It would be nice if you for next submission have the same name in both
-places.
-
-The patch itself was fine - nice simplifications.
+Thanks, also applied.
+If you have other drm/fbdev patches pending then I have missed them.
+So please resend if this is the case.
 
 	Sam
 
-
 > ---
->  .../video/fbdev/omap2/omapfb/dss/hdmi4_core.c | 10 +--------
->  .../video/fbdev/omap2/omapfb/dss/hdmi5_core.c | 10 +--------
->  .../video/fbdev/omap2/omapfb/dss/hdmi_phy.c   | 10 +--------
->  .../video/fbdev/omap2/omapfb/dss/hdmi_pll.c   |  9 +-------
->  .../video/fbdev/omap2/omapfb/dss/video-pll.c  | 21 +++----------------
->  5 files changed, 7 insertions(+), 53 deletions(-)
+>  drivers/video/fbdev/omap2/omapfb/displays/connector-dvi.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
 > 
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
-> index 7ca1803bf161..726c190862d4 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi4_core.c
-> @@ -875,15 +875,7 @@ void hdmi4_audio_stop(struct hdmi_core_data *core, struct hdmi_wp_data *wp)
->  
->  int hdmi4_core_init(struct platform_device *pdev, struct hdmi_core_data *core)
+> diff --git a/drivers/video/fbdev/omap2/omapfb/displays/connector-dvi.c b/drivers/video/fbdev/omap2/omapfb/displays/connector-dvi.c
+> index b4a1aefff766..2fa436475b40 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/displays/connector-dvi.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/displays/connector-dvi.c
+> @@ -51,16 +51,11 @@ static int dvic_connect(struct omap_dss_device *dssdev)
 >  {
-> -	struct resource *res;
+>  	struct panel_drv_data *ddata = to_panel_data(dssdev);
+>  	struct omap_dss_device *in = ddata->in;
+> -	int r;
+>  
+>  	if (omapdss_device_is_connected(dssdev))
+>  		return 0;
+>  
+> -	r = in->ops.dvi->connect(in, dssdev);
+> -	if (r)
+> -		return r;
 > -
-> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "core");
-> -	if (!res) {
-> -		DSSERR("can't get CORE mem resource\n");
-> -		return -EINVAL;
-> -	}
-> -
-> -	core->base = devm_ioremap_resource(&pdev->dev, res);
-> +	core->base = devm_platform_ioremap_resource_byname(pdev, "core");
->  	if (IS_ERR(core->base)) {
->  		DSSERR("can't ioremap CORE\n");
->  		return PTR_ERR(core->base);
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
-> index 2f6ff14a48d9..eda29d3032e1 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi5_core.c
-> @@ -887,15 +887,7 @@ int hdmi5_audio_config(struct hdmi_core_data *core, struct hdmi_wp_data *wp,
+> -	return 0;
+> +	return in->ops.dvi->connect(in, dssdev);
+>  }
 >  
->  int hdmi5_core_init(struct platform_device *pdev, struct hdmi_core_data *core)
->  {
-> -	struct resource *res;
-> -
-> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "core");
-> -	if (!res) {
-> -		DSSERR("can't get CORE IORESOURCE_MEM HDMI\n");
-> -		return -EINVAL;
-> -	}
-> -
-> -	core->base = devm_ioremap_resource(&pdev->dev, res);
-> +	core->base = devm_platform_ioremap_resource_byname(pdev, "core");
->  	if (IS_ERR(core->base)) {
->  		DSSERR("can't ioremap HDMI core\n");
->  		return PTR_ERR(core->base);
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c
-> index 9c645adba9e2..6fbfeb01b315 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c
-> @@ -207,19 +207,11 @@ static const struct hdmi_phy_features *hdmi_phy_get_features(void)
->  
->  int hdmi_phy_init(struct platform_device *pdev, struct hdmi_phy_data *phy)
->  {
-> -	struct resource *res;
-> -
->  	phy_feat = hdmi_phy_get_features();
->  	if (!phy_feat)
->  		return -ENODEV;
->  
-> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "phy");
-> -	if (!res) {
-> -		DSSERR("can't get PHY mem resource\n");
-> -		return -EINVAL;
-> -	}
-> -
-> -	phy->base = devm_ioremap_resource(&pdev->dev, res);
-> +	phy->base = devm_platform_ioremap_resource_byname(pdev, "phy");
->  	if (IS_ERR(phy->base)) {
->  		DSSERR("can't ioremap TX PHY\n");
->  		return PTR_ERR(phy->base);
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_pll.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_pll.c
-> index 4991be031b0b..eb984d9999fe 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_pll.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_pll.c
-> @@ -220,17 +220,10 @@ int hdmi_pll_init(struct platform_device *pdev, struct hdmi_pll_data *pll,
->  	struct hdmi_wp_data *wp)
->  {
->  	int r;
-> -	struct resource *res;
->  
->  	pll->wp = wp;
->  
-> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "pll");
-> -	if (!res) {
-> -		DSSERR("can't get PLL mem resource\n");
-> -		return -EINVAL;
-> -	}
-> -
-> -	pll->base = devm_ioremap_resource(&pdev->dev, res);
-> +	pll->base = devm_platform_ioremap_resource_byname(pdev, "pll");
->  	if (IS_ERR(pll->base)) {
->  		DSSERR("can't ioremap PLLCTRL\n");
->  		return PTR_ERR(pll->base);
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/video-pll.c b/drivers/video/fbdev/omap2/omapfb/dss/video-pll.c
-> index f45fe60b9e7d..bff03d920722 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/video-pll.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/video-pll.c
-> @@ -129,7 +129,6 @@ struct dss_pll *dss_video_pll_init(struct platform_device *pdev, int id,
->  	const char * const clkctrl_name[] = { "pll1_clkctrl", "pll2_clkctrl" };
->  	const char * const clkin_name[] = { "video1_clk", "video2_clk" };
->  
-> -	struct resource *res;
->  	struct dss_video_pll *vpll;
->  	void __iomem *pll_base, *clkctrl_base;
->  	struct clk *clk;
-> @@ -138,14 +137,7 @@ struct dss_pll *dss_video_pll_init(struct platform_device *pdev, int id,
->  
->  	/* PLL CONTROL */
->  
-> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, reg_name[id]);
-> -	if (!res) {
-> -		dev_err(&pdev->dev,
-> -			"missing platform resource data for pll%d\n", id);
-> -		return ERR_PTR(-ENODEV);
-> -	}
-> -
-> -	pll_base = devm_ioremap_resource(&pdev->dev, res);
-> +	pll_base = devm_platform_ioremap_resource_byname(pdev, reg_name[id]);
->  	if (IS_ERR(pll_base)) {
->  		dev_err(&pdev->dev, "failed to ioremap pll%d reg_name\n", id);
->  		return ERR_CAST(pll_base);
-> @@ -153,15 +145,8 @@ struct dss_pll *dss_video_pll_init(struct platform_device *pdev, int id,
->  
->  	/* CLOCK CONTROL */
->  
-> -	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-> -		clkctrl_name[id]);
-> -	if (!res) {
-> -		dev_err(&pdev->dev,
-> -			"missing platform resource data for pll%d\n", id);
-> -		return ERR_PTR(-ENODEV);
-> -	}
-> -
-> -	clkctrl_base = devm_ioremap_resource(&pdev->dev, res);
-> +	clkctrl_base = devm_platform_ioremap_resource_byname(pdev,
-> +					clkctrl_name[id]);
->  	if (IS_ERR(clkctrl_base)) {
->  		dev_err(&pdev->dev, "failed to ioremap pll%d clkctrl\n", id);
->  		return ERR_CAST(clkctrl_base);
+>  static void dvic_disconnect(struct omap_dss_device *dssdev)
 > -- 
-> 2.17.1
+> 2.25.1
 > 
 > _______________________________________________
 > dri-devel mailing list
