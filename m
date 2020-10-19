@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F458292583
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Oct 2020 12:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E88D29255E
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Oct 2020 12:18:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726199AbgJSKTG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Oct 2020 06:19:06 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58718 "EHLO
+        id S1729340AbgJSKSU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Oct 2020 06:18:20 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58742 "EHLO
         galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729147AbgJSKSK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Oct 2020 06:18:10 -0400
-Message-Id: <20201019101110.148631116@linutronix.de>
+        with ESMTP id S1729182AbgJSKSL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Oct 2020 06:18:11 -0400
+Message-Id: <20201019101110.240285929@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603102688;
+        s=2020; t=1603102689;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=Pe8CFmf0/CnRVhPeaGPKSnnUTmz8AJUU7taQJPbdbP8=;
-        b=Er+PWHFh2XhU2mRAPNNosWvUF3EK+wzX+2LAJgVyV0ju89RHA84spDu+zn4M3crzNSUFEU
-        NKSH3TS7s03F9XbXnoYUD/jzDdTB2RZaLV8d9AehueGw6+Z+xaP6gDSn2Dm9jVSH92erSQ
-        Um2zLnLMv0mN1w1rVYxoaQgst7iuKIsnfvaFiw5RNpYee14xKDwzVnro/0jviGYKBrN1+a
-        CJzMt9mpfmLpOb87dsgdAZdcGzyxa7dgC/4erhH81shqCKhFF0R/FLqLZYvFxNsHW+oCm0
-        550nGFrM83486LxByGE5+rIpmVA2E6jCZ9IOHFbTmVY0glelxuzDtjHleI3CoA==
+        bh=WngfxKCbiTKE9erlSaLbB4MmoQbLDSkUgvyXSrV+/VI=;
+        b=Ay5afY3nWqWdPkkzJsp41vh5O+dD2nd/0fG7RPbP5DUH92jHLqP6Kx+3E+AHYac364F9Mo
+        A2bpcoj3jwogNqL3dtlf2Szc3PgPAu6ewzrYCOYGLMss1il8aDMVLdwRhDvVduzPmijOUx
+        bYyr58hIlLaMiCjqfoG7PA5U4avgF10+lL9DkkA4pBxuqxXEV++cJrBhuREFpO56yA46XI
+        qaOv8WbByE5HGmV28mYtJpVk4afPWMXE2eXAgiOo7srHiNb4bX+BPVXnlTTKFTEJUEynxY
+        NEMYP+tMNTl6fRPX9Y3Stq50xgCoi3m8zzsXrAgZ8gDIX2ivJINECVsfzcWlQg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603102688;
+        s=2020e; t=1603102689;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:  references:references;
-        bh=Pe8CFmf0/CnRVhPeaGPKSnnUTmz8AJUU7taQJPbdbP8=;
-        b=FJr22QDOzYwi+B9T9ZCc7LH0Grzvr7ZKTdDRMuC3HFO/93A24i5o/PmAPDhV1HSrHurI0s
-        lMM4DJ8Q9Df5n6CQ==
-Date:   Mon, 19 Oct 2020 12:06:34 +0200
+        bh=WngfxKCbiTKE9erlSaLbB4MmoQbLDSkUgvyXSrV+/VI=;
+        b=Bwy/LQ9S8g8N8l1iMRJCmuGn0XWiNGgBFATYWG6atDTGprcVSeTwnDFRmVJvB4kb9scCZ5
+        j72sHwPUxaQxxvAw==
+Date:   Mon, 19 Oct 2020 12:06:35 +0200
 From:   Thomas Gleixner <tglx@linutronix.de>
 To:     LKML <linux-kernel@vger.kernel.org>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
         "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Mathias Nyman <mathias.nyman@intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-usb@vger.kernel.org,
         Thomas Winischhofer <thomas@winischhofer.net>,
         Johan Hovold <johan@kernel.org>,
+        Mathias Nyman <mathias.nyman@intel.com>,
         Valentina Manea <valentina.manea.m@gmail.com>,
         Shuah Khan <shuah@kernel.org>,
         Alan Stern <stern@rowland.harvard.edu>,
@@ -50,7 +50,7 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
         Duncan Sands <duncan.sands@free.fr>
-Subject: [patch V2 05/13] usb: xhci: Remove in_interrupt() checks
+Subject: [patch V2 06/13] usb: host: isp1362: Replace in_interrupt() usage
 References: <20201019100629.419020859@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,55 +59,47 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Ahmed S. Darwish <a.darwish@linutronix.de>
+isp1362_show_regs() is a debugging-only function, with no call sites. It
+prints the cached value of the HCuPINTENB register if in_interupt() is
+true, otherwise it reads the actual register content.
 
-The usage of in_interrupt() in drivers is phased out for various reasons.
+The usage of in_interrupt() in drivers is phased out and Linus clearly
+requested that code which changes behaviour depending on context should
+either be separated or the context be conveyed in an argument passed by the
+caller, which usually knows the context.
 
-xhci_set_hc_event_deq() has an !in_interrupt() check which is pointless
-because the function is only invoked from xhci_mem_init() which is clearly
-task context as it does GFP_KERNEL allocations. Remove it.
-
-xhci_urb_enqueue() prints a debug message if an URB is submitted after the
-underlying hardware was suspended. But that warning is only issued when
-in_interrupt() is true, which makes no sense. Simply return -ESHUTDOWN and
-be done with it.
+Make the conditional based on a function argument.
 
 Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Mathias Nyman <mathias.nyman@intel.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: linux-usb@vger.kernel.org
 ---
- drivers/usb/host/xhci-mem.c |    2 +-
- drivers/usb/host/xhci.c     |    6 ++----
- 2 files changed, 3 insertions(+), 5 deletions(-)
+V2: Fix silly typo
+---
+ drivers/usb/host/isp1362.h |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2110,7 +2110,7 @@ static void xhci_set_hc_event_deq(struct
+--- a/drivers/usb/host/isp1362.h
++++ b/drivers/usb/host/isp1362.h
+@@ -793,7 +793,8 @@ static void isp1362_write_fifo(struct is
+ 			ISP1362_REG_NO(ISP1362_REG_##r), isp1362_read_reg16(d, r));	\
+ }
  
- 	deq = xhci_trb_virt_to_dma(xhci->event_ring->deq_seg,
- 			xhci->event_ring->dequeue);
--	if (deq == 0 && !in_interrupt())
-+	if (!deq)
- 		xhci_warn(xhci, "WARN something wrong with SW event ring "
- 				"dequeue ptr.\n");
- 	/* Update HC event ring dequeue pointer */
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -1473,11 +1473,9 @@ static int xhci_urb_enqueue(struct usb_h
- 	ep_index = xhci_get_endpoint_index(&urb->ep->desc);
- 	ep_state = &xhci->devs[slot_id]->eps[ep_index].ep_state;
+-static void __attribute__((__unused__)) isp1362_show_regs(struct isp1362_hcd *isp1362_hcd)
++static void __attribute__((__unused__))
++isp1362_show_regs(struct isp1362_hcd *isp1362_hcd, bool cached_inten)
+ {
+ 	isp1362_show_reg(isp1362_hcd, HCREVISION);
+ 	isp1362_show_reg(isp1362_hcd, HCCONTROL);
+@@ -815,7 +816,7 @@ static void __attribute__((__unused__))
+ 	isp1362_show_reg(isp1362_hcd, HCXFERCTR);
+ 	isp1362_show_reg(isp1362_hcd, HCuPINT);
  
--	if (!HCD_HW_ACCESSIBLE(hcd)) {
--		if (!in_interrupt())
--			xhci_dbg(xhci, "urb submitted during PCI suspend\n");
-+	if (!HCD_HW_ACCESSIBLE(hcd))
- 		return -ESHUTDOWN;
--	}
-+
- 	if (xhci->devs[slot_id]->flags & VDEV_PORT_ERROR) {
- 		xhci_dbg(xhci, "Can't queue urb, port error, link inactive\n");
- 		return -ENODEV;
+-	if (in_interrupt())
++	if (cached_inten)
+ 		DBG(0, "%-12s[%02x]:     %04x\n", "HCuPINTENB",
+ 			 ISP1362_REG_NO(ISP1362_REG_HCuPINTENB), isp1362_hcd->irqenb);
+ 	else
 
