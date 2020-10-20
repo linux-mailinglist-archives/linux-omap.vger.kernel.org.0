@@ -2,75 +2,153 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 616FE293BF2
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Oct 2020 14:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA6B29443B
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Oct 2020 23:08:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394292AbgJTMlL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 20 Oct 2020 08:41:11 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:42060 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394293AbgJTMlL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Oct 2020 08:41:11 -0400
-Received: by mail-wr1-f67.google.com with SMTP id j7so1934507wrt.9;
-        Tue, 20 Oct 2020 05:41:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2k3QT8e6JHXiUSQ8tEDbpY0YHX0INQsZVl1oV9/OScg=;
-        b=Bzg5lckxX/nmPfFkZ4ArNk8ag4F+FQmu5SzOZKDCcIFX5jZsq+AhRpeewlHAMzpwVl
-         QIAuzPvjMR4uz6XvJzZmFV3/ttvUaTNdvqkNzGCmcRVgg8vVH0FV0e9chPwQlmADRBmL
-         6nildOQxCKFuhsKWwQ/vWA29SLxGEm8hYnN8G8BLUNxVB/VvzTGKvFQiWvpkooPve4YZ
-         G501w4P5nC1DPRPMq10p41a0g+7Azi/p1H5GlkZNz/LaI+rIg0dYnmorYOFqEdh1EiU/
-         WxzOUAidRQb23RE0VLvvzc4RzCuuIWm8AbHUayHP5VxQGHocCvTsjlca8ysomelPwErM
-         ddxw==
-X-Gm-Message-State: AOAM530myZafS2KLpVZvV/3TrnoZujVvzkbTOj4DPnOcMRNSqqdGTO5t
-        r5kPFALOA6s+hVvwRnZOb4Pr9Z0heBJjJQ==
-X-Google-Smtp-Source: ABdhPJzSr9748C+VnEDyaRhfYvV3u+C8cd7Ni+pPwwMYFXG230BOGqR+I7cJwC1A7mV06gRTEkC+vw==
-X-Received: by 2002:adf:a354:: with SMTP id d20mr3577144wrb.29.1603197667381;
-        Tue, 20 Oct 2020 05:41:07 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.171])
-        by smtp.googlemail.com with ESMTPSA id 130sm2705339wmd.18.2020.10.20.05.41.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2020 05:41:05 -0700 (PDT)
-Date:   Tue, 20 Oct 2020 14:41:03 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc:     Felipe Balbi <balbi@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 22/29] arm: dts: omap5: Harmonize DWC USB3 DT nodes name
-Message-ID: <20201020124103.GP127386@kozik-lap>
-References: <20201020115959.2658-1-Sergey.Semin@baikalelectronics.ru>
- <20201020115959.2658-23-Sergey.Semin@baikalelectronics.ru>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201020115959.2658-23-Sergey.Semin@baikalelectronics.ru>
+        id S2438633AbgJTVI0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Oct 2020 17:08:26 -0400
+Received: from sender11-of-o52.zoho.eu ([31.186.226.238]:21604 "EHLO
+        sender11-of-o52.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438622AbgJTVIZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Oct 2020 17:08:25 -0400
+X-Greylist: delayed 903 seconds by postgrey-1.27 at vger.kernel.org; Tue, 20 Oct 2020 17:08:23 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1603227194; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=J/M3eDQUJr1/yVqRDzsC2tfas+VuVUiYObXXGxXP2ydkU2Z901C8f+1RrJVC/elmDmSEjhbysLrMDrULF2gKI7SnCAMGrDeBjwuHQDUcF1FfM+ApLRVq21vxF+NWp+7bhoGDcCbEHy9A/anyqHqiWvmr1IwSlSn1S153p2y0ukM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1603227194; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=7uyVjFxfK3uc3NGBGcthVscK5i2bZ9YGItRXAu8MjL8=; 
+        b=Nf1fcqokNDfovu0ZuZu5kjltTJKSqNN4WBIgRTV88WbtUJlFMfYNtKDoMFFDrbrrtU7frLV3fHvkq8RVAleeJDtPEFI28XVFydCWTiyiZt2+dXZfbQWa1TREqQ4knKcALtw9ydJ65n6sjeDVPRTrPnA9H8jeOvYwwmZ65x8rI9Q=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        spf=pass  smtp.mailfrom=devnull@uvos.xyz;
+        dmarc=pass header.from=<devnull@uvos.xyz> header.from=<devnull@uvos.xyz>
+Received: from localhost.localdomain (ip-95-222-213-19.hsi15.unitymediagroup.de [95.222.213.19]) by mx.zoho.eu
+        with SMTPS id 1603227193183311.1218298065007; Tue, 20 Oct 2020 22:53:13 +0200 (CEST)
+Date:   Tue, 20 Oct 2020 22:53:12 +0200
+From:   Dev Null <devnull@uvos.xyz>
+To:     sre@kernel.org
+Cc:     linux-omap@vger.kernel.org
+Subject: [PATCH 1/1] power: supply: cpcap-battery: improve handling of 3rd
+ party and XT875 batteries.
+Message-Id: <20201020225312.b4ea29c9dc3ae00f23e39280@uvos.xyz>
+Organization: UVOS Organization
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Oct 20, 2020 at 02:59:52PM +0300, Serge Semin wrote:
-> In accordance with the DWC USB3 bindings the corresponding node
-> name is suppose to comply with the Generic USB HCD DT schema, which
-> requires the USB nodes to have the name acceptable by the regexp:
-> "^usb(@.*)?" . Make sure the "snps,dwc3"-compatible nodes are correctly
-> named.
-> 
-> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> ---
->  arch/arm/boot/dts/omap5-l4.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Adds a module option to ignore a missing temerature sensor.
+Invalidates empty->counter_uah and charge_full when charge_now indicates that they are grossly wrong
+Makes charge_full_design writeable, so that different/custom batteries can be used.
+This is especially usfull on XTT875 where both HW4X and BW8X exsist.
 
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/cpcap-battery.c
+index 3be76cd7584a..ffa70c31c1cb 100644
+--- a/drivers/power/supply/cpcap-battery.c
++++ b/drivers/power/supply/cpcap-battery.c
+@@ -28,6 +28,7 @@
+ #include <linux/power_supply.h>
+ #include <linux/reboot.h>
+ #include <linux/regmap.h>
++#include <linux/moduleparam.h>
+ 
+ #include <linux/iio/consumer.h>
+ #include <linux/iio/types.h>
+@@ -162,6 +163,9 @@ static const struct cpcap_battery_capacity cpcap_battery_cap[] = {
+ 
+ #define CPCAP_NO_BATTERY	-400
+ 
++static bool ignore_temperature_probe;
++module_param(ignore_temperature_probe, bool, 0660);
++
+ static struct cpcap_battery_state_data *
+ cpcap_battery_get_state(struct cpcap_battery_ddata *ddata,
+ 			enum cpcap_battery_state state)
+@@ -205,7 +209,8 @@ static int cpcap_charger_battery_temperature(struct cpcap_battery_ddata *ddata,
+ 	channel = ddata->channels[CPCAP_BATTERY_IIO_BATTDET];
+ 	error = iio_read_channel_processed(channel, value);
+ 	if (error < 0) {
+-		dev_warn(ddata->dev, "%s failed: %i\n", __func__, error);
++		if (!ignore_temperature_probe)
++			dev_warn(ddata->dev, "%s failed: %i\n", __func__, error);
+ 		*value = CPCAP_NO_BATTERY;
+ 
+ 		return error;
+@@ -558,7 +563,7 @@ static int cpcap_battery_get_property(struct power_supply *psy,
+ 
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_PRESENT:
+-		if (latest->temperature > CPCAP_NO_BATTERY)
++		if (latest->temperature > CPCAP_NO_BATTERY || ignore_temperature_probe)
+ 			val->intval = 1;
+ 		else
+ 			val->intval = 0;
+@@ -641,10 +646,22 @@ static int cpcap_battery_get_property(struct power_supply *psy,
+ 		if (!empty->voltage)
+ 			return -ENODATA;
+ 		val->intval = empty->counter_uah - latest->counter_uah;
+-		if (val->intval < 0)
++		if (val->intval < 0) {
++			if (ddata->charge_full && abs(val->intval) > ddata->charge_full/5) {
++				empty->voltage = 0;
++				ddata->charge_full = 0;
++				return -ENODATA;
++			}
+ 			val->intval = 0;
+-		else if (ddata->charge_full && ddata->charge_full < val->intval)
++		}
++		else if (ddata->charge_full && ddata->charge_full < val->intval) {
++			if (val->intval > (6*ddata->charge_full)/5) {
++				empty->voltage = 0;
++				ddata->charge_full = 0;
++				return -ENODATA;
++			}
+ 			val->intval = ddata->charge_full;
++		}
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL:
+ 		if (!ddata->charge_full)
+@@ -658,6 +675,8 @@ static int cpcap_battery_get_property(struct power_supply *psy,
+ 		val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
+ 		break;
+ 	case POWER_SUPPLY_PROP_TEMP:
++		if (ignore_temperature_probe)
++			return -ENODATA;
+ 		val->intval = latest->temperature;
+ 		break;
+ 	default:
+@@ -715,11 +734,18 @@ static int cpcap_battery_set_property(struct power_supply *psy,
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL:
+ 		if (val->intval < 0)
+ 			return -EINVAL;
+-		if (val->intval > ddata->config.info.charge_full_design)
++		if (val->intval > (6*ddata->config.info.charge_full_design)/5)
+ 			return -EINVAL;
+ 
+ 		ddata->charge_full = val->intval;
+ 
++		return 0;
++	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
++		if (val->intval < 0)
++			return -EINVAL;
++
++		ddata->config.info.charge_full_design = val->intval;
++
+ 		return 0;
+ 	default:
+ 		return -EINVAL;
+@@ -734,6 +760,7 @@ static int cpcap_battery_property_is_writeable(struct power_supply *psy,
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL:
++	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+ 		return 1;
+ 	default:
+ 		return 0;
 
-Best regards,
-Krzysztof
+-- 
+Dev Null <devnull@uvos.xyz>
