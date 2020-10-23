@@ -2,132 +2,424 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 405372970BC
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Oct 2020 15:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7C07297374
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Oct 2020 18:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S375270AbgJWNhi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 23 Oct 2020 09:37:38 -0400
-Received: from mga01.intel.com ([192.55.52.88]:39937 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S371967AbgJWNhh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 23 Oct 2020 09:37:37 -0400
-IronPort-SDR: cEPw7lSAdDgO0ESr099CstorpFDE5TBH5OzenwZ//zdI/YepF+kudumEwLtAV8aAeOofS8u7mK
- 6Kv5fWHufbNQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9782"; a="185375265"
-X-IronPort-AV: E=Sophos;i="5.77,408,1596524400"; 
-   d="scan'208";a="185375265"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2020 06:37:33 -0700
-IronPort-SDR: XVFt1D6aj9rEcPEkp0bYJf6esqVIN4ROHFyJfGRDStJJvCkZBl0IH9Klh0v6Ples2rAMgiUG5W
- X1+b3QpuR0Uw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,408,1596524400"; 
-   d="scan'208";a="302765196"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.170]) ([10.237.72.170])
-  by fmsmga007.fm.intel.com with ESMTP; 23 Oct 2020 06:37:29 -0700
-Subject: Re: [patch 05/12] usb: xhci: Remove in_interrupt() checks
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        "Ahmed S. Darwish" <a.darwish@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org,
-        Thomas Winischhofer <thomas@winischhofer.net>,
-        Johan Hovold <johan@kernel.org>,
-        Valentina Manea <valentina.manea.m@gmail.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        linux-omap@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
-        Duncan Sands <duncan.sands@free.fr>
-References: <20201014145215.518912759@linutronix.de>
- <20201014145727.607191004@linutronix.de>
-From:   Mathias Nyman <mathias.nyman@linux.intel.com>
-Autocrypt: addr=mathias.nyman@linux.intel.com; prefer-encrypt=mutual; keydata=
- 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 fiD/
-Message-ID: <916bebd9-6d83-3fa9-5e8b-5ecaa65d799e@linux.intel.com>
-Date:   Fri, 23 Oct 2020 16:38:57 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20201014145727.607191004@linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+        id S1750393AbgJWQV3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 23 Oct 2020 12:21:29 -0400
+Received: from sender11-of-o52.zoho.eu ([31.186.226.238]:21382 "EHLO
+        sender11-of-o52.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1750319AbgJWQV3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Oct 2020 12:21:29 -0400
+X-Greylist: delayed 906 seconds by postgrey-1.27 at vger.kernel.org; Fri, 23 Oct 2020 12:21:26 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1603469176; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=QTPOOt4pGv4xeyN8mKvdYdVQNaWTbRxb552tTPOdKdu+dFGOEzTC9r0mLB6/W+2qb+l4QzCM1Poa0LXgPU+3pD6+ecdroZTU5VMXbIv46AM2HTRpFOIjmVevaz6cuqa3lZjgZnDhsk3rMjU244imt98Hjcm/ita8OeAjwjIDmNU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1603469176; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=laCuJFaSxS6Q11WvrV6TV1P9L5wd650K033rduujdhw=; 
+        b=gKWa1Kjrrdk2n0soZVcJWYz9trusE8aGPYR11qyjazSLxXcjHgqYQgXzlENPJ8+ijZr0zFL4FbN/5znSLM7JvISNcDa5IUUSunakk2IEQKnS7OsHhwTeCC4YRiQZwGUxC+ng1bUXGf2r9AwgsPQZsBQaA3f9Z58L0wG+eyEKHZU=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
+        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
+Received: from localhost.localdomain (ip-95-222-212-41.hsi15.unitymediagroup.de [95.222.212.41]) by mx.zoho.eu
+        with SMTPS id 1603469174722272.10302868140013; Fri, 23 Oct 2020 18:06:14 +0200 (CEST)
+Date:   Fri, 23 Oct 2020 18:06:13 +0200
+From:   Carl Philipp Klemm <philipp@uvos.xyz>
+To:     robh+dt@kernel.org
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 1/2]  ARM: dts: xt875: Improve dts support for Motorola
+ XT875
+Message-Id: <20201023180613.830f83ea384ac26f3a22eaf8@uvos.xyz>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 14.10.2020 17.52, Thomas Gleixner wrote:
-> From: Ahmed S. Darwish <a.darwish@linutronix.de>
-> 
-> The usage of in_interrupt() in drivers is phased out for various reasons.
-> 
-> xhci_set_hc_event_deq() has an !in_interrupt() check which is pointless
-> because the function is only invoked from xhci_mem_init() which is clearly
-> task context as it does GFP_KERNEL allocations. Remove it.
-> 
-> xhci_urb_enqueue() prints a debug message if an URB is submitted after the
-> underlying hardware was suspended. But that warning is only issued when
-> in_interrupt() is true, which makes no sense. Simply return -ESHUTDOWN and
-> be done with it.
-> 
-> Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Mathias Nyman <mathias.nyman@intel.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: linux-usb@vger.kernel.org
-> ---
->  drivers/usb/host/xhci-mem.c |    2 +-
->  drivers/usb/host/xhci.c     |    6 ++----
->  2 files changed, 3 insertions(+), 5 deletions(-)
+Remove xt894 specific things from motorola-mapphone-common.dtsi and add them to omap4-droid4-xt894.dts and omap4-droid-bionic-xt875.dts as applicable.
 
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Signed-off-by: Carl Philipp Klemm <carl@uvos.xyz>
 
+---
+ .../boot/dts/motorola-mapphone-common.dtsi    | 141 +----------------
+ .../arm/boot/dts/omap4-droid-bionic-xt875.dts |  30 ++++
+ arch/arm/boot/dts/omap4-droid4-xt894.dts      | 143 ++++++++++++++++++
+ 3 files changed, 174 insertions(+), 140 deletions(-)
+
+diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+index 64ba1ae69c39..f63a898ab5be 100644
+--- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+@@ -113,32 +113,9 @@ wl12xx_vmmc: regulator-wl12xx {
+ 		enable-active-high;
+ 	};
+ 
+-	gpio_keys {
+-		compatible = "gpio-keys";
+-
+-		volume_down {
+-			label = "Volume Down";
+-			gpios = <&gpio5 26 GPIO_ACTIVE_LOW>; /* gpio154 */
+-			linux,code = <KEY_VOLUMEDOWN>;
+-			linux,can-disable;
+-			/* Value above 7.95ms for no GPIO hardware debounce */
+-			debounce-interval = <10>;
+-		};
+-
+-		slider {
+-			label = "Keypad Slide";
+-			gpios = <&gpio4 26 GPIO_ACTIVE_HIGH>; /* gpio122 */
+-			linux,input-type = <EV_SW>;
+-			linux,code = <SW_KEYPAD_SLIDE>;
+-			linux,can-disable;
+-			/* Value above 7.95ms for no GPIO hardware debounce */
+-			debounce-interval = <10>;
+-		};
+-	};
+-
+ 	soundcard {
+ 		compatible = "audio-graph-card";
+-		label = "Droid 4 Audio";
++		label = "Mapphone Audio";
+ 
+ 		widgets =
+ 			"Speaker", "Earpiece",
+@@ -314,80 +291,6 @@ tmp105@48 {
+ 	};
+ };
+ 
+-&keypad {
+-	keypad,num-rows = <8>;
+-	keypad,num-columns = <8>;
+-	linux,keymap = <
+-
+-	/* Row 1 */
+-	MATRIX_KEY(0, 2, KEY_1)
+-	MATRIX_KEY(0, 6, KEY_2)
+-	MATRIX_KEY(2, 3, KEY_3)
+-	MATRIX_KEY(0, 7, KEY_4)
+-	MATRIX_KEY(0, 4, KEY_5)
+-	MATRIX_KEY(5, 5, KEY_6)
+-	MATRIX_KEY(0, 1, KEY_7)
+-	MATRIX_KEY(0, 5, KEY_8)
+-	MATRIX_KEY(0, 0, KEY_9)
+-	MATRIX_KEY(1, 6, KEY_0)
+-
+-	/* Row 2 */
+-	MATRIX_KEY(3, 4, KEY_APOSTROPHE)
+-	MATRIX_KEY(7, 6, KEY_Q)
+-	MATRIX_KEY(7, 7, KEY_W)
+-	MATRIX_KEY(7, 2, KEY_E)
+-	MATRIX_KEY(1, 0, KEY_R)
+-	MATRIX_KEY(4, 4, KEY_T)
+-	MATRIX_KEY(1, 2, KEY_Y)
+-	MATRIX_KEY(6, 7, KEY_U)
+-	MATRIX_KEY(2, 2, KEY_I)
+-	MATRIX_KEY(5, 6, KEY_O)
+-	MATRIX_KEY(3, 7, KEY_P)
+-	MATRIX_KEY(6, 5, KEY_BACKSPACE)
+-
+-	/* Row 3 */
+-	MATRIX_KEY(5, 4, KEY_TAB)
+-	MATRIX_KEY(5, 7, KEY_A)
+-	MATRIX_KEY(2, 7, KEY_S)
+-	MATRIX_KEY(7, 0, KEY_D)
+-	MATRIX_KEY(2, 6, KEY_F)
+-	MATRIX_KEY(6, 2, KEY_G)
+-	MATRIX_KEY(6, 6, KEY_H)
+-	MATRIX_KEY(1, 4, KEY_J)
+-	MATRIX_KEY(3, 1, KEY_K)
+-	MATRIX_KEY(2, 1, KEY_L)
+-	MATRIX_KEY(4, 6, KEY_ENTER)
+-
+-	/* Row 4 */
+-	MATRIX_KEY(3, 6, KEY_LEFTSHIFT)		/* KEY_CAPSLOCK */
+-	MATRIX_KEY(6, 1, KEY_Z)
+-	MATRIX_KEY(7, 4, KEY_X)
+-	MATRIX_KEY(5, 1, KEY_C)
+-	MATRIX_KEY(1, 7, KEY_V)
+-	MATRIX_KEY(2, 4, KEY_B)
+-	MATRIX_KEY(4, 1, KEY_N)
+-	MATRIX_KEY(1, 1, KEY_M)
+-	MATRIX_KEY(3, 5, KEY_COMMA)
+-	MATRIX_KEY(5, 2, KEY_DOT)
+-	MATRIX_KEY(6, 3, KEY_UP)
+-	MATRIX_KEY(7, 3, KEY_OK)
+-
+-	/* Row 5 */
+-	MATRIX_KEY(2, 5, KEY_LEFTCTRL)		/* KEY_LEFTSHIFT */
+-	MATRIX_KEY(4, 5, KEY_LEFTALT)		/* SYM */
+-	MATRIX_KEY(6, 0, KEY_MINUS)
+-	MATRIX_KEY(4, 7, KEY_EQUAL)
+-	MATRIX_KEY(1, 5, KEY_SPACE)
+-	MATRIX_KEY(3, 2, KEY_SLASH)
+-	MATRIX_KEY(4, 3, KEY_LEFT)
+-	MATRIX_KEY(5, 3, KEY_DOWN)
+-	MATRIX_KEY(3, 3, KEY_RIGHT)
+-
+-	/* Side buttons, KEY_VOLUMEDOWN and KEY_PWER are on CPCAP? */
+-	MATRIX_KEY(5, 0, KEY_VOLUMEUP)
+-	>;
+-};
+-
+ &mmc1 {
+ 	vmmc-supply = <&vwlan2>;
+ 	bus-width = <4>;
+@@ -427,34 +330,6 @@ wlcore: wlcore@2 {
+ 	};
+ };
+ 
+-&i2c1 {
+-	led-controller@38 {
+-		compatible = "ti,lm3532";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		reg = <0x38>;
+-
+-		enable-gpios = <&gpio6 12 GPIO_ACTIVE_HIGH>;
+-
+-		ramp-up-us = <1024>;
+-		ramp-down-us = <8193>;
+-
+-		backlight_led: led@0 {
+-			reg = <0>;
+-			led-sources = <2>;
+-			ti,led-mode = <0>;
+-			label = ":backlight";
+-		};
+-
+-		led@1 {
+-			reg = <1>;
+-			led-sources = <1>;
+-			ti,led-mode = <0>;
+-			label = ":kbd_backlight";
+-		};
+-	};
+-};
+-
+ &i2c2 {
+ 	touchscreen@4a {
+ 		compatible = "atmel,maxtouch";
+@@ -856,20 +731,6 @@ ak8975: magnetometer@c {
+ 				  "0", "0", "-1";
+ 
+ 	};
+-
+-	lis3dh: accelerometer@18 {
+-		compatible = "st,lis3dh-accel";
+-		reg = <0x18>;
+-
+-		vdd-supply = <&vhvio>;
+-
+-		interrupt-parent = <&gpio2>;
+-		interrupts = <2 IRQ_TYPE_EDGE_BOTH>; /* gpio34 */
+-
+-		rotation-matrix = "0", "-1", "0",
+-				  "1", "0", "0",
+-				  "0", "0", "1";
+-	};
+ };
+ 
+ &mcbsp2 {
+diff --git a/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts b/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
+index ba5c35b7027d..49b2a8d55356 100644
+--- a/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
++++ b/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
+@@ -7,3 +7,33 @@ / {
+ 	model = "Motorola Droid Bionic XT875";
+ 	compatible = "motorola,droid-bionic", "ti,omap4430", "ti,omap4";
+ };
++
++&keypad {
++	keypad,num-rows = <8>;
++	keypad,num-columns = <8>;
++	linux,keymap = <
++	MATRIX_KEY(5, 0, KEY_VOLUMEUP)
++	MATRIX_KEY(3, 0, KEY_VOLUMEDOWN)
++	>;
++};
++
++&i2c1 {
++	led-controller@38 {
++		compatible = "ti,lm3532";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0x38>;
++
++		enable-gpios = <&gpio6 12 GPIO_ACTIVE_HIGH>;
++
++		ramp-up-us = <1024>;
++		ramp-down-us = <8193>;
++
++		backlight_led: led@0 {
++			reg = <0>;
++			led-sources = <2>;
++			ti,led-mode = <0>;
++			label = ":backlight";
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/omap4-droid4-xt894.dts b/arch/arm/boot/dts/omap4-droid4-xt894.dts
+index c0d2fd92aea3..3ea4c5b9fd31 100644
+--- a/arch/arm/boot/dts/omap4-droid4-xt894.dts
++++ b/arch/arm/boot/dts/omap4-droid4-xt894.dts
+@@ -3,7 +3,150 @@
+ 
+ #include "motorola-mapphone-common.dtsi"
+ 
++/ {
++	gpio_keys {
++		compatible = "gpio-keys";
++
++		volume_down {
++			label = "Volume Down";
++			gpios = <&gpio5 26 GPIO_ACTIVE_LOW>; /* gpio154 */
++			linux,code = <KEY_VOLUMEDOWN>;
++			linux,can-disable;
++			/* Value above 7.95ms for no GPIO hardware debounce */
++			debounce-interval = <10>;
++		};
++
++		slider {
++			label = "Keypad Slide";
++			gpios = <&gpio4 26 GPIO_ACTIVE_HIGH>; /* gpio122 */
++			linux,input-type = <EV_SW>;
++			linux,code = <SW_KEYPAD_SLIDE>;
++			linux,can-disable;
++			/* Value above 7.95ms for no GPIO hardware debounce */
++			debounce-interval = <10>;
++		};
++	};
++};
++
+ / {
+ 	model = "Motorola Droid 4 XT894";
+ 	compatible = "motorola,droid4", "ti,omap4430", "ti,omap4";
+ };
++
++&keypad {
++	keypad,num-rows = <8>;
++	keypad,num-columns = <8>;
++	linux,keymap = <
++
++	/* Row 1 */
++	MATRIX_KEY(0, 2, KEY_1)
++	MATRIX_KEY(0, 6, KEY_2)
++	MATRIX_KEY(2, 3, KEY_3)
++	MATRIX_KEY(0, 7, KEY_4)
++	MATRIX_KEY(0, 4, KEY_5)
++	MATRIX_KEY(5, 5, KEY_6)
++	MATRIX_KEY(0, 1, KEY_7)
++	MATRIX_KEY(0, 5, KEY_8)
++	MATRIX_KEY(0, 0, KEY_9)
++	MATRIX_KEY(1, 6, KEY_0)
++
++	/* Row 2 */
++	MATRIX_KEY(3, 4, KEY_APOSTROPHE)
++	MATRIX_KEY(7, 6, KEY_Q)
++	MATRIX_KEY(7, 7, KEY_W)
++	MATRIX_KEY(7, 2, KEY_E)
++	MATRIX_KEY(1, 0, KEY_R)
++	MATRIX_KEY(4, 4, KEY_T)
++	MATRIX_KEY(1, 2, KEY_Y)
++	MATRIX_KEY(6, 7, KEY_U)
++	MATRIX_KEY(2, 2, KEY_I)
++	MATRIX_KEY(5, 6, KEY_O)
++	MATRIX_KEY(3, 7, KEY_P)
++	MATRIX_KEY(6, 5, KEY_BACKSPACE)
++
++	/* Row 3 */
++	MATRIX_KEY(5, 4, KEY_TAB)
++	MATRIX_KEY(5, 7, KEY_A)
++	MATRIX_KEY(2, 7, KEY_S)
++	MATRIX_KEY(7, 0, KEY_D)
++	MATRIX_KEY(2, 6, KEY_F)
++	MATRIX_KEY(6, 2, KEY_G)
++	MATRIX_KEY(6, 6, KEY_H)
++	MATRIX_KEY(1, 4, KEY_J)
++	MATRIX_KEY(3, 1, KEY_K)
++	MATRIX_KEY(2, 1, KEY_L)
++	MATRIX_KEY(4, 6, KEY_ENTER)
++
++	/* Row 4 */
++	MATRIX_KEY(3, 6, KEY_LEFTSHIFT)		/* KEY_CAPSLOCK */
++	MATRIX_KEY(6, 1, KEY_Z)
++	MATRIX_KEY(7, 4, KEY_X)
++	MATRIX_KEY(5, 1, KEY_C)
++	MATRIX_KEY(1, 7, KEY_V)
++	MATRIX_KEY(2, 4, KEY_B)
++	MATRIX_KEY(4, 1, KEY_N)
++	MATRIX_KEY(1, 1, KEY_M)
++	MATRIX_KEY(3, 5, KEY_COMMA)
++	MATRIX_KEY(5, 2, KEY_DOT)
++	MATRIX_KEY(6, 3, KEY_UP)
++	MATRIX_KEY(7, 3, KEY_OK)
++
++	/* Row 5 */
++	MATRIX_KEY(2, 5, KEY_LEFTCTRL)		/* KEY_LEFTSHIFT */
++	MATRIX_KEY(4, 5, KEY_LEFTALT)		/* SYM */
++	MATRIX_KEY(6, 0, KEY_MINUS)
++	MATRIX_KEY(4, 7, KEY_EQUAL)
++	MATRIX_KEY(1, 5, KEY_SPACE)
++	MATRIX_KEY(3, 2, KEY_SLASH)
++	MATRIX_KEY(4, 3, KEY_LEFT)
++	MATRIX_KEY(5, 3, KEY_DOWN)
++	MATRIX_KEY(3, 3, KEY_RIGHT)
++
++	/* Side buttons, KEY_VOLUMEDOWN and KEY_PWER are on CPCAP? */
++	MATRIX_KEY(5, 0, KEY_VOLUMEUP)
++	>;
++};
++
++&i2c1 {
++	led-controller@38 {
++		compatible = "ti,lm3532";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0x38>;
++
++		enable-gpios = <&gpio6 12 GPIO_ACTIVE_HIGH>;
++
++		ramp-up-us = <1024>;
++		ramp-down-us = <8193>;
++
++		backlight_led: led@0 {
++			reg = <0>;
++			led-sources = <2>;
++			ti,led-mode = <0>;
++			label = ":backlight";
++		};
++
++		led@1 {
++			reg = <1>;
++			led-sources = <1>;
++			ti,led-mode = <0>;
++			label = ":kbd_backlight";
++		};
++	};
++};
++
++&i2c4 {
++	lis3dh: accelerometer@18 {
++		compatible = "st,lis3dh-accel";
++		reg = <0x18>;
++
++		vdd-supply = <&vhvio>;
++
++		interrupt-parent = <&gpio2>;
++		interrupts = <2 IRQ_TYPE_EDGE_BOTH>; /* gpio34 */
++
++		rotation-matrix = "0", "-1", "0",
++				  "1", "0", "0",
++				  "0", "0", "1";
++	};
++};
+-- 
+2.28.0
+
+-- 
+Carl Philipp Klemm <philipp@uvos.xyz> <carl@uvos.xyz>
