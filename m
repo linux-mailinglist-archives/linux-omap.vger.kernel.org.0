@@ -2,77 +2,137 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A73D6297389
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Oct 2020 18:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 960D42982A2
+	for <lists+linux-omap@lfdr.de>; Sun, 25 Oct 2020 17:56:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1750429AbgJWQYU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 23 Oct 2020 12:24:20 -0400
-Received: from sender11-of-o52.zoho.eu ([31.186.226.238]:21390 "EHLO
-        sender11-of-o52.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1750423AbgJWQYT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Oct 2020 12:24:19 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1603469348; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=XW3oMG56rQi8zaf4xHGKBwXQWFJfs6ZsqgSNwHiLGedSaGsNpMvJVBag2LCWOTDtaYpAvdW6f5fxG6cVbEvPz6QzOgtWiuEDtiSlUcg0ob7xyf2hlqCmF4syv1B9aMimoG7mGR2noJGi/M0QsECAs3YFS5t6Xje+Xgw0T4k0hZY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1603469348; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=NDowHwUvFqB0GPlCwCGRwhegZU8IPUBPHwsJXkE+Wzo=; 
-        b=V1op7Vi+FXWzoV+Z7QgOjlwrz31Bt77qO6S66TrXs6X69oAio/LkbDF9MiAGBOBAHUYorJxfBcxz7WlN9Evqnk5KXpFR2/qiEpIib1FQnTi6UEd6NnWCpf6fyYLYjo3W9xSqgRBiBzVcSJfB/plr1ngIR14GLWyS/0IzL715OC4=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
-        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
-Received: from localhost.localdomain (ip-95-222-212-41.hsi15.unitymediagroup.de [95.222.212.41]) by mx.zoho.eu
-        with SMTPS id 1603469345892865.4597929017848; Fri, 23 Oct 2020 18:09:05 +0200 (CEST)
-Date:   Fri, 23 Oct 2020 18:09:02 +0200
-From:   Carl Philipp Klemm <philipp@uvos.xyz>
-To:     robh+dt@kernel.org
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH 2/2]  ARM: dts: xt875: Improve dts support for Motorola
- XT875
-Message-Id: <20201023180902.45afa3cad97a11e563ff8110@uvos.xyz>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+        id S1417403AbgJYQ4v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 25 Oct 2020 12:56:51 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:43620 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1417402AbgJYQ4u (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 25 Oct 2020 12:56:50 -0400
+Received: by mail-lf1-f68.google.com with SMTP id l28so8807614lfp.10;
+        Sun, 25 Oct 2020 09:56:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ePQFbJ/3Ad8/iX5Bs449C4InLn8t8GvqBrcAtxnaBrw=;
+        b=BN7peJ0WhFsbpRxrqDoNZMuuIT8pVQ6tHBWiC2EwoJVFBKTOcKbMJVs4GvKrzSax0l
+         u8ZXnFM5ZE6rzH1Gs0sLJhfw7qs/kYm0RS7Kx4xblEAsOOSCBVpNXIevkyohZTPgFmrz
+         A4DhR9T3u5C6264AflnPeRghIyKmVO21KEIJkwBOC/yF2Dkn+PWQ/4OQIItXvcRPr8R1
+         oeynbBebwD2KtwffAKlqrhmwljydPGYrLkiP4HW3a29uAGDlgzp3UaQCoLuJ31b7j918
+         a2bWOI4PQLfG5BLoRwYCoy2cR3zKYkPXHfC/78PyP5mwi261wqu9z7/qU+S0GIEB8EAs
+         winw==
+X-Gm-Message-State: AOAM530FzgQCdyyWLz92DK5eOYG6MxNbiF9Ew96NmpdiKv6rUBmG5AMQ
+        uxQkf78u2Fdaj/ifYPH8e3o=
+X-Google-Smtp-Source: ABdhPJw0J0QYFNhrbQ5xJk2wEIsCh8he6dIVwqhUM/8GfMALjY8iyY5XhCPb37I1yXtuPPPcMA5RlQ==
+X-Received: by 2002:a05:6512:331a:: with SMTP id k26mr3457916lfe.349.1603645006196;
+        Sun, 25 Oct 2020 09:56:46 -0700 (PDT)
+Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.174.190])
+        by smtp.gmail.com with ESMTPSA id c202sm778432lfg.133.2020.10.25.09.56.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Oct 2020 09:56:44 -0700 (PDT)
+Received: from johan by xi.terra with local (Exim 4.93.0.4)
+        (envelope-from <johan@kernel.org>)
+        id 1kWjK3-0004fv-U4; Sun, 25 Oct 2020 17:56:48 +0100
+Date:   Sun, 25 Oct 2020 17:56:47 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Ahmed S. Darwish" <a.darwish@linutronix.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Johan Hovold <johan@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org,
+        Thomas Winischhofer <thomas@winischhofer.net>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Valentina Manea <valentina.manea.m@gmail.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        linux-omap@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
+        Duncan Sands <duncan.sands@free.fr>
+Subject: Re: [patch V2 02/13] USB: serial: keyspan_pda: Replace
+ in_interrupt() usage
+Message-ID: <20201025165647.GR26280@localhost>
+References: <20201019100629.419020859@linutronix.de>
+ <20201019101109.753597069@linutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201019101109.753597069@linutronix.de>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add section and support for kionix kxtf9 on XT875
+On Mon, Oct 19, 2020 at 12:06:31PM +0200, Thomas Gleixner wrote:
+> keyspan_pda_write() uses in_interrupt() to check whether it is safe to
+> invoke functions which might sleep.
+> 
+> The usage of in_interrupt() in drivers is phased out and Linus clearly
+> requested that code which changes behaviour depending on context should
+> either be seperated or the context be conveyed in an argument passed by the
+> caller, which usually knows the context.
+> 
+> Aside of that it does not cover all contexts which cannot sleep,
+> e.g. preempt disabled regions which cannot be reliably detected on all
+> kernel configurations.
+> 
+> With the current printk() implementation console->write() can be invoked
+> from almost any context. The upcoming rework of the console core will
+> provide thread context for console drivers which require to sleep.
+> 
+> For now, restrict the room query which can sleep to tty writes which happen
+> from preemptible task context.
+> 
+> The usability for dmesg output is limited anyway because it's almost
+> guaranteed to drop the 'LF' which is submitted after the dmesg line because
+> the device supports only one transfer on flight. Same for any printk()
+> which is coming in before the previous transfer has been done.
+> 
+> This new restriction does not make it worse than before, but it makes the
+> condition correct under all circumstances.
+> 
+> Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Johan Hovold <johan@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-usb@vger.kernel.org
+> 
+> ---
+>  drivers/usb/serial/keyspan_pda.c |   10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> --- a/drivers/usb/serial/keyspan_pda.c
+> +++ b/drivers/usb/serial/keyspan_pda.c
+> @@ -477,10 +477,12 @@ static int keyspan_pda_write(struct tty_
+>  
+>  	count = (count > port->bulk_out_size) ? port->bulk_out_size : count;
+>  
+> -	/* Check if we might overrun the Tx buffer.   If so, ask the
+> -	   device how much room it really has.  This is done only on
+> -	   scheduler time, since usb_control_msg() sleeps. */
+> -	if (count > priv->tx_room && !in_interrupt()) {
+> +	/*
+> +	 * Check if we might overrun the Tx buffer. If so, ask the device
+> +	 * how much room it really has. This can only be invoked for tty
+> +	 * usage because the console write can't sleep.
+> +	 */
+> +	if (count > priv->tx_room && tty) {
+>  		u8 *room;
+>  
+>  		room = kmalloc(1, GFP_KERNEL);
 
-Signed-off-by: Carl Philipp Klemm <carl@uvos.xyz>
+There's a ton of issues with this driver, but this is arguably making
+things worse. A line discipline may call write() from just about any
+context so we cannot rely on tty being non-NULL here (e.g. PPP).
 
----
- arch/arm/boot/dts/omap4-droid-bionic-xt875.dts | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+I've prepared a series fixing up the driver's write implementation
+that does away with this room check in the write path instead.
 
-diff --git a/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts b/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
-index 49b2a8d55356..271a43827cbf 100644
---- a/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
-+++ b/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
-@@ -37,3 +37,19 @@ backlight_led: led@0 {
- 		};
- 	};
- };
-+
-+&i2c4 {
-+	lis3dh: accelerometer@18 {
-+		compatible = "kionix,kxtf9";
-+		reg = <0x0f>;
-+
-+		vdd-supply = <&vhvio>;
-+
-+		interrupt-parent = <&gpio2>;
-+		interrupts = <2 IRQ_TYPE_EDGE_RISING>;
-+
-+		rotation-matrix = "0", "-1", "0",
-+				  "1", "0", "0",
-+				  "0", "0", "1";
-+	};
-+};
--- 
-2.28.0
-
--- 
-Carl Philipp Klemm <philipp@uvos.xyz> <carl@uvos.xyz>
+Johan
