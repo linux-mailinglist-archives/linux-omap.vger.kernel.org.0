@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 960D42982A2
-	for <lists+linux-omap@lfdr.de>; Sun, 25 Oct 2020 17:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F5942982AA
+	for <lists+linux-omap@lfdr.de>; Sun, 25 Oct 2020 18:05:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1417403AbgJYQ4v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 25 Oct 2020 12:56:51 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:43620 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1417402AbgJYQ4u (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 25 Oct 2020 12:56:50 -0400
-Received: by mail-lf1-f68.google.com with SMTP id l28so8807614lfp.10;
-        Sun, 25 Oct 2020 09:56:47 -0700 (PDT)
+        id S1417502AbgJYRFp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 25 Oct 2020 13:05:45 -0400
+Received: from mail-lj1-f170.google.com ([209.85.208.170]:39276 "EHLO
+        mail-lj1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1417500AbgJYRFp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 25 Oct 2020 13:05:45 -0400
+Received: by mail-lj1-f170.google.com with SMTP id m16so7236663ljo.6;
+        Sun, 25 Oct 2020 10:05:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=ePQFbJ/3Ad8/iX5Bs449C4InLn8t8GvqBrcAtxnaBrw=;
-        b=BN7peJ0WhFsbpRxrqDoNZMuuIT8pVQ6tHBWiC2EwoJVFBKTOcKbMJVs4GvKrzSax0l
-         u8ZXnFM5ZE6rzH1Gs0sLJhfw7qs/kYm0RS7Kx4xblEAsOOSCBVpNXIevkyohZTPgFmrz
-         A4DhR9T3u5C6264AflnPeRghIyKmVO21KEIJkwBOC/yF2Dkn+PWQ/4OQIItXvcRPr8R1
-         oeynbBebwD2KtwffAKlqrhmwljydPGYrLkiP4HW3a29uAGDlgzp3UaQCoLuJ31b7j918
-         a2bWOI4PQLfG5BLoRwYCoy2cR3zKYkPXHfC/78PyP5mwi261wqu9z7/qU+S0GIEB8EAs
-         winw==
-X-Gm-Message-State: AOAM530FzgQCdyyWLz92DK5eOYG6MxNbiF9Ew96NmpdiKv6rUBmG5AMQ
-        uxQkf78u2Fdaj/ifYPH8e3o=
-X-Google-Smtp-Source: ABdhPJw0J0QYFNhrbQ5xJk2wEIsCh8he6dIVwqhUM/8GfMALjY8iyY5XhCPb37I1yXtuPPPcMA5RlQ==
-X-Received: by 2002:a05:6512:331a:: with SMTP id k26mr3457916lfe.349.1603645006196;
-        Sun, 25 Oct 2020 09:56:46 -0700 (PDT)
+        bh=ROy9c6DCwb7BqeE8H1DusDotQcpBT+t8lOOmjmIQsso=;
+        b=MXLjSYKSekIkVeAJml7Rd18JfTX8ZFhjShcmkNDV54CtY/yX7Nw+rYCdeVu24qIPhj
+         6QpF+FzFKmfrfT3IG2r8sqtB+OPXywNYvu8DrLXfbPDTuv1VChs9kP5zxkpJh7K6SbIe
+         D7eGnebR2FQtv66z2iPBgVpD6IYYFisOw8irII1KRy6JuJBN3cprBNfWk8c3Ao5lo/Gs
+         rFuUf3UO2w/Z8py6HW+HnA2t1C2MS7rlho/zAC7f26qq/Pb20MXZc1LNvS0n4vNDOCyk
+         zoIKroCNKplDbJoNX3OyPvIoi71vzSuQ2xh3VrYcN06ts7Mg+RwbC8U2Ca3OQrEq5i0U
+         L7uA==
+X-Gm-Message-State: AOAM532nzg3VC1WRqL85xM7b0h1XgHX/8GjbYNZDOyWGNWIVomFz4mR6
+        hr/GchPXBxq7L97svmSsQqs=
+X-Google-Smtp-Source: ABdhPJyZsJ0KXIWx0VvyNrbAGN6S455M6+tpEVqIrL3N1jHU8GjpqzjpufuSs7aPj2BRg4Q9kTITDQ==
+X-Received: by 2002:a2e:9c85:: with SMTP id x5mr4326967lji.92.1603645542357;
+        Sun, 25 Oct 2020 10:05:42 -0700 (PDT)
 Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.174.190])
-        by smtp.gmail.com with ESMTPSA id c202sm778432lfg.133.2020.10.25.09.56.44
+        by smtp.gmail.com with ESMTPSA id g22sm783000lfh.31.2020.10.25.10.05.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Oct 2020 09:56:44 -0700 (PDT)
+        Sun, 25 Oct 2020 10:05:41 -0700 (PDT)
 Received: from johan by xi.terra with local (Exim 4.93.0.4)
         (envelope-from <johan@kernel.org>)
-        id 1kWjK3-0004fv-U4; Sun, 25 Oct 2020 17:56:48 +0100
-Date:   Sun, 25 Oct 2020 17:56:47 +0100
+        id 1kWjSj-0004jF-9z; Sun, 25 Oct 2020 18:05:45 +0100
+Date:   Sun, 25 Oct 2020 18:05:45 +0100
 From:   Johan Hovold <johan@kernel.org>
 To:     Thomas Gleixner <tglx@linutronix.de>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Johan Hovold <johan@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-usb@vger.kernel.org,
         Thomas Winischhofer <thomas@winischhofer.net>,
+        "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         Mathias Nyman <mathias.nyman@intel.com>,
         Valentina Manea <valentina.manea.m@gmail.com>,
         Shuah Khan <shuah@kernel.org>,
@@ -56,83 +56,40 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
         Duncan Sands <duncan.sands@free.fr>
-Subject: Re: [patch V2 02/13] USB: serial: keyspan_pda: Replace
- in_interrupt() usage
-Message-ID: <20201025165647.GR26280@localhost>
+Subject: Re: [patch V2 03/13] USB: serial: keyspan_pda: Consolidate room query
+Message-ID: <20201025170545.GS26280@localhost>
 References: <20201019100629.419020859@linutronix.de>
- <20201019101109.753597069@linutronix.de>
+ <20201019101109.903651690@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201019101109.753597069@linutronix.de>
+In-Reply-To: <20201019101109.903651690@linutronix.de>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 19, 2020 at 12:06:31PM +0200, Thomas Gleixner wrote:
-> keyspan_pda_write() uses in_interrupt() to check whether it is safe to
-> invoke functions which might sleep.
+On Mon, Oct 19, 2020 at 12:06:32PM +0200, Thomas Gleixner wrote:
+> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > 
-> The usage of in_interrupt() in drivers is phased out and Linus clearly
-> requested that code which changes behaviour depending on context should
-> either be seperated or the context be conveyed in an argument passed by the
-> caller, which usually knows the context.
-> 
-> Aside of that it does not cover all contexts which cannot sleep,
-> e.g. preempt disabled regions which cannot be reliably detected on all
-> kernel configurations.
-> 
-> With the current printk() implementation console->write() can be invoked
-> from almost any context. The upcoming rework of the console core will
-> provide thread context for console drivers which require to sleep.
-> 
-> For now, restrict the room query which can sleep to tty writes which happen
-> from preemptible task context.
-> 
-> The usability for dmesg output is limited anyway because it's almost
-> guaranteed to drop the 'LF' which is submitted after the dmesg line because
-> the device supports only one transfer on flight. Same for any printk()
-> which is coming in before the previous transfer has been done.
-> 
-> This new restriction does not make it worse than before, but it makes the
-> condition correct under all circumstances.
-> 
-> Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Johan Hovold <johan@kernel.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: linux-usb@vger.kernel.org
-> 
-> ---
->  drivers/usb/serial/keyspan_pda.c |   10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> --- a/drivers/usb/serial/keyspan_pda.c
-> +++ b/drivers/usb/serial/keyspan_pda.c
-> @@ -477,10 +477,12 @@ static int keyspan_pda_write(struct tty_
->  
->  	count = (count > port->bulk_out_size) ? port->bulk_out_size : count;
->  
-> -	/* Check if we might overrun the Tx buffer.   If so, ask the
-> -	   device how much room it really has.  This is done only on
-> -	   scheduler time, since usb_control_msg() sleeps. */
-> -	if (count > priv->tx_room && !in_interrupt()) {
-> +	/*
-> +	 * Check if we might overrun the Tx buffer. If so, ask the device
-> +	 * how much room it really has. This can only be invoked for tty
-> +	 * usage because the console write can't sleep.
-> +	 */
-> +	if (count > priv->tx_room && tty) {
->  		u8 *room;
->  
->  		room = kmalloc(1, GFP_KERNEL);
+> Having two copies of the same code doesn't make the code more readable and
+> allocating a buffer of 1 byte for a synchronous operation is a pointless
+> exercise.
 
-There's a ton of issues with this driver, but this is arguably making
-things worse. A line discipline may call write() from just about any
-context so we cannot rely on tty being non-NULL here (e.g. PPP).
+As Alan pointed out, this buffer is in fact required and not pointless
+at all even if reallocating it may be suboptimal.
 
-I've prepared a series fixing up the driver's write implementation
-that does away with this room check in the write path instead.
+Note however that there are several further allocations done by
+usb_control_msg() for each control request.
+
+> Allocate a byte buffer at init which can be used instead. The buffer is
+> only used in open() and tty->write(). Console writes are not calling into
+> the query. open() obviously happens before write() and the writes are
+> serialized by bit 0 of port->write_urbs_free which protects also the
+> transaction itself.
+
+As I mentioned in my comments to the previous patch, I've rewritten the
+driver so that is no longer does this query in the write path. I kept
+the buffer allocation for now though in case you want to rework this one
+top.
 
 Johan
