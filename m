@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36897298B7F
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 12:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DFC2298B70
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 12:11:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1773155AbgJZLLU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Oct 2020 07:11:20 -0400
-Received: from muru.com ([72.249.23.125]:46568 "EHLO muru.com"
+        id S1773164AbgJZLLW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 26 Oct 2020 07:11:22 -0400
+Received: from muru.com ([72.249.23.125]:46584 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1773149AbgJZLLQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 26 Oct 2020 07:11:16 -0400
+        id S1773157AbgJZLLU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 26 Oct 2020 07:11:20 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 3C51D8196;
-        Mon, 26 Oct 2020 11:11:18 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 3B65A80AA;
+        Mon, 26 Oct 2020 11:11:22 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
@@ -25,15 +25,15 @@ Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
         Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
         Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
+        Santosh Shilimkar <ssantosh@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Philipp Zabel <p.zabel@pengutronix.de>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
         Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
         linux-remoteproc@vger.kernel.org
-Subject: [PATCH 5/9] bus: ti-sysc: Implement GPMC debug quirk to drop platform data
-Date:   Mon, 26 Oct 2020 13:10:45 +0200
-Message-Id: <20201026111049.54835-6-tony@atomide.com>
+Subject: [PATCH 6/9] soc: ti: omap-prm: Add pm_clk for genpd
+Date:   Mon, 26 Oct 2020 13:10:46 +0200
+Message-Id: <20201026111049.54835-7-tony@atomide.com>
 X-Mailer: git-send-email 2.29.1
 In-Reply-To: <20201026111049.54835-1-tony@atomide.com>
 References: <20201026111049.54835-1-tony@atomide.com>
@@ -43,53 +43,98 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We need to enable no-reset-on-init quirk for GPMC if the config
-option for CONFIG_OMAP_GPMC_DEBUG is set. Otherwise the GPMC
-driver code is unable to show the bootloader configured timings.
+In order to probe l3 and l4 interconnects with simple-pm-bus, we want
+genpd to manage the clocks for the interconnects. For interconnect target
+modules, we already have ti-sysc manage the clocks so let's skipe managing
+clocks for ti-sysc modules.
 
+Cc: Santosh Shilimkar <ssantosh@kernel.org>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/bus/ti-sysc.c                 | 10 ++++++++++
- include/linux/platform_data/ti-sysc.h |  1 +
- 2 files changed, 11 insertions(+)
+ drivers/soc/ti/omap_prm.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1382,6 +1382,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 		   SYSC_QUIRK_CLKDM_NOAUTO),
- 	SYSC_QUIRK("dwc3", 0x488c0000, 0, 0x10, -ENODEV, 0x500a0200, 0xffffffff,
- 		   SYSC_QUIRK_CLKDM_NOAUTO),
-+	SYSC_QUIRK("gpmc", 0, 0, 0x10, 0x14, 0x00000060, 0xffffffff,
-+		   SYSC_QUIRK_GPMC_DEBUG),
- 	SYSC_QUIRK("hdmi", 0, 0, 0x10, -ENODEV, 0x50030200, 0xffffffff,
- 		   SYSC_QUIRK_OPT_CLKS_NEEDED),
- 	SYSC_QUIRK("hdq1w", 0, 0, 0x14, 0x18, 0x00000006, 0xffffffff,
-@@ -1815,6 +1817,14 @@ static void sysc_init_module_quirks(struct sysc *ddata)
- 		return;
- 	}
+diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
+--- a/drivers/soc/ti/omap_prm.c
++++ b/drivers/soc/ti/omap_prm.c
+@@ -7,6 +7,7 @@
+  */
  
-+#ifdef CONFIG_OMAP_GPMC_DEBUG
-+	if (ddata->cfg.quirks & SYSC_QUIRK_GPMC_DEBUG) {
-+		ddata->cfg.quirks |= SYSC_QUIRK_NO_RESET_ON_INIT;
+ #include <linux/kernel.h>
++#include <linux/clk.h>
+ #include <linux/device.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+@@ -14,6 +15,7 @@
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_clock.h>
+ #include <linux/pm_domain.h>
+ #include <linux/reset-controller.h>
+ #include <linux/delay.h>
+@@ -325,6 +327,35 @@ static int omap_prm_domain_power_off(struct generic_pm_domain *domain)
+ 	return 0;
+ }
+ 
++/*
++ * Note that ti-sysc already manages the module clocks separately so
++ * no need to manage those. Interconnect instances need clocks managed
++ * for simple-pm-bus.
++ */
++static int omap_prm_domain_attach_clock(struct device *dev)
++{
++	struct device_node *np = dev->of_node;
++	int error;
 +
-+		return;
++	if (of_device_is_compatible(np, "ti-sysc"))
++		return 0;
++
++	if (!of_property_read_bool(np, "clocks"))
++		return 0;
++
++	error = pm_clk_create(dev);
++	if (error)
++		return error;
++
++	error = of_pm_clk_add_clks(dev);
++	if (error < 0) {
++		pm_clk_destroy(dev);
++		return error;
 +	}
-+#endif
 +
- 	if (ddata->cfg.quirks & SYSC_MODULE_QUIRK_I2C) {
- 		ddata->pre_reset_quirk = sysc_pre_reset_quirk_i2c;
- 		ddata->post_reset_quirk = sysc_post_reset_quirk_i2c;
-diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
---- a/include/linux/platform_data/ti-sysc.h
-+++ b/include/linux/platform_data/ti-sysc.h
-@@ -50,6 +50,7 @@ struct sysc_regbits {
- 	s8 emufree_shift;
- };
++	return 0;
++}
++
+ static int omap_prm_domain_attach_dev(struct generic_pm_domain *domain,
+ 				      struct device *dev)
+ {
+@@ -349,6 +380,10 @@ static int omap_prm_domain_attach_dev(struct generic_pm_domain *domain,
+ 	genpd_data = dev_gpd_data(dev);
+ 	genpd_data->data = NULL;
  
-+#define SYSC_QUIRK_GPMC_DEBUG		BIT(26)
- #define SYSC_MODULE_QUIRK_ENA_RESETDONE	BIT(25)
- #define SYSC_MODULE_QUIRK_PRUSS		BIT(24)
- #define SYSC_MODULE_QUIRK_DSS_RESET	BIT(23)
++	ret = omap_prm_domain_attach_clock(dev);
++	if (ret)
++		return ret;
++
+ 	return 0;
+ }
+ 
+@@ -357,6 +392,7 @@ static void omap_prm_domain_detach_dev(struct generic_pm_domain *domain,
+ {
+ 	struct generic_pm_domain_data *genpd_data;
+ 
++	pm_clk_destroy(dev);
+ 	genpd_data = dev_gpd_data(dev);
+ 	genpd_data->data = NULL;
+ }
+@@ -393,6 +429,7 @@ static int omap_prm_domain_init(struct device *dev, struct omap_prm *prm)
+ 	prmd->pd.power_off = omap_prm_domain_power_off;
+ 	prmd->pd.attach_dev = omap_prm_domain_attach_dev;
+ 	prmd->pd.detach_dev = omap_prm_domain_detach_dev;
++	prmd->pd.flags = GENPD_FLAG_PM_CLK;
+ 
+ 	pm_genpd_init(&prmd->pd, NULL, true);
+ 	error = of_genpd_add_provider_simple(np, &prmd->pd);
 -- 
 2.29.1
