@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AC1B298B2D
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 12:01:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FAB2298B5F
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 12:10:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1772509AbgJZLAA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Oct 2020 07:00:00 -0400
-Received: from muru.com ([72.249.23.125]:46462 "EHLO muru.com"
+        id S1772840AbgJZLK5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 26 Oct 2020 07:10:57 -0400
+Received: from muru.com ([72.249.23.125]:46486 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1772785AbgJZK6i (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 26 Oct 2020 06:58:38 -0400
+        id S1772586AbgJZLK4 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 26 Oct 2020 07:10:56 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id E00FB8196;
-        Mon, 26 Oct 2020 10:58:40 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id D0C3480AA;
+        Mon, 26 Oct 2020 11:10:57 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
@@ -24,49 +24,56 @@ Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
         Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 4/4] bus: ti-sysc: Fix bogus resetdone warning for cpsw
-Date:   Mon, 26 Oct 2020 12:58:12 +0200
-Message-Id: <20201026105812.38418-5-tony@atomide.com>
+        linux-arm-kernel@lists.infradead.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org
+Subject: [PATCH 0/9] Genpd related code changes to drop am335x pdata
+Date:   Mon, 26 Oct 2020 13:10:40 +0200
+Message-Id: <20201026111049.54835-1-tony@atomide.com>
 X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201026105812.38418-1-tony@atomide.com>
-References: <20201026105812.38418-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The cpsw SOFT_RESET register is cleard when out of reset so let's
-add SYSS_QUIRK_RESETDONE_INVERTED flag for cpsw. Otherwise we will
-get bogus "OCP softreset timed out" warnings on boot.
+Hi all,
 
-Fixes: d46f9fbec719 ("bus: ti-sysc: Use optional clocks on for enable and wait for softreset bit")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/bus/ti-sysc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Here are the code related changes for v5.11 merge window to drop the
+remaining am335x platform data. I'll be posting the related device tree
+changes separately.
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1364,6 +1364,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 	/* Quirks that need to be set based on detected module */
- 	SYSC_QUIRK("aess", 0, 0, 0x10, -ENODEV, 0x40000000, 0xffffffff,
- 		   SYSC_MODULE_QUIRK_AESS),
-+	SYSC_QUIRK("cpgmac", 0, 0x1200, 0x1208, 0x1204, 0x4edb1902,
-+		   0xffff00f0, SYSS_QUIRK_RESETDONE_INVERTED),
- 	SYSC_QUIRK("dcan", 0x48480000, 0x20, -ENODEV, -ENODEV, 0xa3170504, 0xffffffff,
- 		   SYSC_QUIRK_CLKDM_NOAUTO),
- 	SYSC_QUIRK("dss", 0x4832a000, 0, 0x10, 0x14, 0x00000020, 0xffffffff,
-@@ -1423,8 +1425,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 	SYSC_QUIRK("atl", 0, 0, -ENODEV, -ENODEV, 0x0a070100, 0xffffffff, 0),
- 	SYSC_QUIRK("cm", 0, 0, -ENODEV, -ENODEV, 0x40000301, 0xffffffff, 0),
- 	SYSC_QUIRK("control", 0, 0, 0x10, -ENODEV, 0x40000900, 0xffffffff, 0),
--	SYSC_QUIRK("cpgmac", 0, 0x1200, 0x1208, 0x1204, 0x4edb1902,
--		   0xffff00f0, 0),
- 	SYSC_QUIRK("dcan", 0, 0x20, -ENODEV, -ENODEV, 0xa3170504, 0xffffffff, 0),
- 	SYSC_QUIRK("dcan", 0, 0x20, -ENODEV, -ENODEV, 0x4edb1902, 0xffffffff, 0),
- 	SYSC_QUIRK("dispc", 0x4832a400, 0, 0x10, 0x14, 0x00000030, 0xffffffff, 0),
+Regards,
+
+Tony
+
+
+Tero Kristo (1):
+  soc: ti: omap-prm: am3: add genpd support for remaining PRM instances
+
+Tony Lindgren (8):
+  ARM: OMAP2+: Check for inited flag
+  ARM: OMAP2+: Probe PRCM first to probe l4_wkup with simple-pm-bus
+  clk: ti: am33xx: Keep am3 l3 main clock always on for genpd
+  bus: ti-sysc: Support modules without control registers
+  bus: ti-sysc: Implement GPMC debug quirk to drop platform data
+  soc: ti: omap-prm: Add pm_clk for genpd
+  soc: ti: pm33xx: Enable basic PM runtime support for genpd
+  remoteproc/wkup_m3: Use reset control driver if available
+
+ arch/arm/mach-omap2/omap_hwmod.c      |  6 +++
+ arch/arm/mach-omap2/pdata-quirks.c    | 11 ++++
+ drivers/bus/ti-sysc.c                 | 17 +++++++
+ drivers/clk/ti/clk-33xx.c             |  2 +
+ drivers/remoteproc/wkup_m3_rproc.c    | 28 +++++++---
+ drivers/soc/ti/omap_prm.c             | 73 +++++++++++++++++++++++++--
+ drivers/soc/ti/pm33xx.c               | 17 ++++++-
+ include/linux/platform_data/ti-sysc.h |  1 +
+ 8 files changed, 143 insertions(+), 12 deletions(-)
+
 -- 
 2.29.1
