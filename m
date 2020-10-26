@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DFC2298B70
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 12:11:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52CCB298B88
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 12:12:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1773164AbgJZLLW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Oct 2020 07:11:22 -0400
-Received: from muru.com ([72.249.23.125]:46584 "EHLO muru.com"
+        id S1773231AbgJZLMM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 26 Oct 2020 07:12:12 -0400
+Received: from muru.com ([72.249.23.125]:46594 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1773157AbgJZLLU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 26 Oct 2020 07:11:20 -0400
+        id S1773168AbgJZLLY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 26 Oct 2020 07:11:24 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 3B65A80AA;
-        Mon, 26 Oct 2020 11:11:22 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 5851E81A0;
+        Mon, 26 Oct 2020 11:11:26 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
@@ -31,9 +31,9 @@ Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
         Philipp Zabel <p.zabel@pengutronix.de>,
         Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
         linux-remoteproc@vger.kernel.org
-Subject: [PATCH 6/9] soc: ti: omap-prm: Add pm_clk for genpd
-Date:   Mon, 26 Oct 2020 13:10:46 +0200
-Message-Id: <20201026111049.54835-7-tony@atomide.com>
+Subject: [PATCH 7/9] soc: ti: omap-prm: am3: add genpd support for remaining PRM instances
+Date:   Mon, 26 Oct 2020 13:10:47 +0200
+Message-Id: <20201026111049.54835-8-tony@atomide.com>
 X-Mailer: git-send-email 2.29.1
 In-Reply-To: <20201026111049.54835-1-tony@atomide.com>
 References: <20201026111049.54835-1-tony@atomide.com>
@@ -43,98 +43,74 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In order to probe l3 and l4 interconnects with simple-pm-bus, we want
-genpd to manage the clocks for the interconnects. For interconnect target
-modules, we already have ti-sysc manage the clocks so let's skipe managing
-clocks for ti-sysc modules.
+From: Tero Kristo <t-kristo@ti.com>
+
+Add genpd support for per, wkup, mpu, rtc and cefuse instances.
 
 Cc: Santosh Shilimkar <ssantosh@kernel.org>
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/soc/ti/omap_prm.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ drivers/soc/ti/omap_prm.c | 36 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
 --- a/drivers/soc/ti/omap_prm.c
 +++ b/drivers/soc/ti/omap_prm.c
-@@ -7,6 +7,7 @@
-  */
+@@ -123,6 +123,10 @@ static const struct omap_prm_domain_map omap_prm_onoff_noauto = {
+ 	.statechange = 1,
+ };
  
- #include <linux/kernel.h>
-+#include <linux/clk.h>
- #include <linux/device.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-@@ -14,6 +15,7 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_clock.h>
- #include <linux/pm_domain.h>
- #include <linux/reset-controller.h>
- #include <linux/delay.h>
-@@ -325,6 +327,35 @@ static int omap_prm_domain_power_off(struct generic_pm_domain *domain)
- 	return 0;
- }
++static const struct omap_prm_domain_map omap_prm_alwon = {
++	.usable_modes = BIT(OMAP_PRMD_ON_ACTIVE),
++};
++
+ static const struct omap_rst_map rst_map_0[] = {
+ 	{ .rst = 0, .st = 0 },
+ 	{ .rst = -1 },
+@@ -189,14 +193,40 @@ static const struct omap_rst_map am3_wkup_rst_map[] = {
+ };
  
-+/*
-+ * Note that ti-sysc already manages the module clocks separately so
-+ * no need to manage those. Interconnect instances need clocks managed
-+ * for simple-pm-bus.
-+ */
-+static int omap_prm_domain_attach_clock(struct device *dev)
-+{
-+	struct device_node *np = dev->of_node;
-+	int error;
-+
-+	if (of_device_is_compatible(np, "ti-sysc"))
-+		return 0;
-+
-+	if (!of_property_read_bool(np, "clocks"))
-+		return 0;
-+
-+	error = pm_clk_create(dev);
-+	if (error)
-+		return error;
-+
-+	error = of_pm_clk_add_clks(dev);
-+	if (error < 0) {
-+		pm_clk_destroy(dev);
-+		return error;
-+	}
-+
-+	return 0;
-+}
-+
- static int omap_prm_domain_attach_dev(struct generic_pm_domain *domain,
- 				      struct device *dev)
- {
-@@ -349,6 +380,10 @@ static int omap_prm_domain_attach_dev(struct generic_pm_domain *domain,
- 	genpd_data = dev_gpd_data(dev);
- 	genpd_data->data = NULL;
+ static const struct omap_prm_data am3_prm_data[] = {
+-	{ .name = "per", .base = 0x44e00c00, .rstctrl = 0x0, .rstmap = am3_per_rst_map, .flags = OMAP_PRM_HAS_RSTCTRL, .clkdm_name = "pruss_ocp" },
+-	{ .name = "wkup", .base = 0x44e00d00, .rstctrl = 0x0, .rstst = 0xc, .rstmap = am3_wkup_rst_map, .flags = OMAP_PRM_HAS_RSTCTRL | OMAP_PRM_HAS_NO_CLKDM },
+-	{ .name = "device", .base = 0x44e00f00, .rstctrl = 0x0, .rstst = 0x8, .rstmap = rst_map_01, .flags = OMAP_PRM_HAS_RSTCTRL | OMAP_PRM_HAS_NO_CLKDM },
++	{
++		.name = "per", .base = 0x44e00c00,
++		.pwrstctrl = 0xc, .pwrstst = 0x8, .dmap = &omap_prm_noinact,
++		.rstctrl = 0x0, .rstmap = am3_per_rst_map,
++		.flags = OMAP_PRM_HAS_RSTCTRL, .clkdm_name = "pruss_ocp"
++	},
++	{
++		.name = "wkup", .base = 0x44e00d00,
++		.pwrstctrl = 0x4, .pwrstst = 0x4, .dmap = &omap_prm_alwon,
++		.rstctrl = 0x0, .rstst = 0xc, .rstmap = am3_wkup_rst_map,
++		.flags = OMAP_PRM_HAS_RSTCTRL | OMAP_PRM_HAS_NO_CLKDM
++	},
++	{
++		.name = "mpu", .base = 0x44e00e00,
++		.pwrstctrl = 0x0, .pwrstst = 0x4, .dmap = &omap_prm_noinact,
++	},
++	{
++		.name = "device", .base = 0x44e00f00,
++		.rstctrl = 0x0, .rstst = 0x8, .rstmap = rst_map_01,
++		.flags = OMAP_PRM_HAS_RSTCTRL | OMAP_PRM_HAS_NO_CLKDM
++	},
++	{
++		.name = "rtc", .base = 0x44e01000,
++		.pwrstctrl = 0x0, .pwrstst = 0x4, .dmap = &omap_prm_alwon,
++	},
+ 	{
+ 		.name = "gfx", .base = 0x44e01100,
+ 		.pwrstctrl = 0, .pwrstst = 0x10, .dmap = &omap_prm_noinact,
+ 		.rstctrl = 0x4, .rstst = 0x14, .rstmap = rst_map_0, .clkdm_name = "gfx_l3",
+ 	},
++	{
++		.name = "cefuse", .base = 0x44e01200,
++		.pwrstctrl = 0x0, .pwrstst = 0x4, .dmap = &omap_prm_onoff_noauto,
++	},
+ 	{ },
+ };
  
-+	ret = omap_prm_domain_attach_clock(dev);
-+	if (ret)
-+		return ret;
-+
- 	return 0;
- }
- 
-@@ -357,6 +392,7 @@ static void omap_prm_domain_detach_dev(struct generic_pm_domain *domain,
- {
- 	struct generic_pm_domain_data *genpd_data;
- 
-+	pm_clk_destroy(dev);
- 	genpd_data = dev_gpd_data(dev);
- 	genpd_data->data = NULL;
- }
-@@ -393,6 +429,7 @@ static int omap_prm_domain_init(struct device *dev, struct omap_prm *prm)
- 	prmd->pd.power_off = omap_prm_domain_power_off;
- 	prmd->pd.attach_dev = omap_prm_domain_attach_dev;
- 	prmd->pd.detach_dev = omap_prm_domain_detach_dev;
-+	prmd->pd.flags = GENPD_FLAG_PM_CLK;
- 
- 	pm_genpd_init(&prmd->pd, NULL, true);
- 	error = of_genpd_add_provider_simple(np, &prmd->pd);
 -- 
 2.29.1
