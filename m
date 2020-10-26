@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A619299C46
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 00:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98939299C92
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 01:00:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436566AbgJZX4l (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Oct 2020 19:56:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60596 "EHLO mail.kernel.org"
+        id S2436587AbgJ0AAP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 26 Oct 2020 20:00:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37024 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2410499AbgJZXyh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:54:37 -0400
+        id S2436576AbgJZX4o (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:56:44 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6F9E02151B;
-        Mon, 26 Oct 2020 23:54:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D61AB22242;
+        Mon, 26 Oct 2020 23:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756476;
-        bh=5V+eTn6lLblc3KMfvtQbXtyNE3BrVMaY/HCEvHE+meY=;
+        s=default; t=1603756603;
+        bh=dgdOQo4/FKBPs4Z1dHGcO8315xhWMXUua4dpPXCH2uE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IFiiYyE5ENRs+QV8U4RmAxc4O0NVyyOsQM+Ivxvaesw2YpmjPrWkhGGhea7E4EsIk
-         esZbPNsfS1qkx5nHciibL/0GoT41monwP3yq47xoDUL2Q+Vkkcpak/lP9rQrigS6dl
-         YDHsvJnbejwqUW+kwlZxVjj6miyvsBxK31aqbOiY=
+        b=Mw6XWS/RnrqStG7q5742HuYJaJXoqp6OB2+vlnrh1htdnygAbtmZHDkRaPBGa/qQG
+         WoSVO20gFht7lGSV6w/4gYdiYi6cK3vwaBTsF7NIm8PuW0PZKdT24oEd7EN5kq5Qxa
+         BgHTakt1skiRQpxCsDOZFRAonLiOoQRsQ2Nx3q0s=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>,
@@ -31,12 +31,12 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Sebastian Reichel <sre@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 121/132] ARM: dts: omap4: Fix sgx clock rate for 4430
-Date:   Mon, 26 Oct 2020 19:51:53 -0400
-Message-Id: <20201026235205.1023962-121-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 72/80] ARM: dts: omap4: Fix sgx clock rate for 4430
+Date:   Mon, 26 Oct 2020 19:55:08 -0400
+Message-Id: <20201026235516.1025100-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201026235205.1023962-1-sashal@kernel.org>
-References: <20201026235205.1023962-1-sashal@kernel.org>
+In-Reply-To: <20201026235516.1025100-1-sashal@kernel.org>
+References: <20201026235516.1025100-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -77,10 +77,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/boot/dts/omap4.dtsi b/arch/arm/boot/dts/omap4.dtsi
-index 4400f5f8e0992..a70c50edd764b 100644
+index e5506ab669fc6..904852006b9b1 100644
 --- a/arch/arm/boot/dts/omap4.dtsi
 +++ b/arch/arm/boot/dts/omap4.dtsi
-@@ -389,7 +389,7 @@ abb_iva: regulator-abb-iva {
+@@ -328,7 +328,7 @@ abb_iva: regulator-abb-iva {
  			status = "disabled";
  		};
  
