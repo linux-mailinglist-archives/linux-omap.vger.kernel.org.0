@@ -2,218 +2,190 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9609B298C07
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 12:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72FCD298C4E
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 12:54:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1773545AbgJZLXL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Oct 2020 07:23:11 -0400
-Received: from muru.com ([72.249.23.125]:46748 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1773555AbgJZLXK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 26 Oct 2020 07:23:10 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 8F83F80AA;
-        Mon, 26 Oct 2020 11:23:13 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Dave Gerlach <d-gerlach@ti.com>,
+        id S1771819AbgJZLyI convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Mon, 26 Oct 2020 07:54:08 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:40927 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1771695AbgJZLyI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 26 Oct 2020 07:54:08 -0400
+X-Greylist: delayed 1106 seconds by postgrey-1.27 at vger.kernel.org; Mon, 26 Oct 2020 07:54:07 EDT
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1kX0mY-0002Sw-TZ; Mon, 26 Oct 2020 12:35:22 +0100
+Received: from pza by lupine with local (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1kX0mX-00083t-G9; Mon, 26 Oct 2020 12:35:21 +0100
+Message-ID: <c8ea80c2eb79f80539911f3563398957beedaa41.camel@pengutronix.de>
+Subject: Re: [PATCH 9/9] remoteproc/wkup_m3: Use reset control driver if
+ available
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Cc:     "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>
-Subject: [PATCH 18/18] ARM: OMAP2+: Build hwmod related code as needed
-Date:   Mon, 26 Oct 2020 13:22:22 +0200
-Message-Id: <20201026112222.56894-19-tony@atomide.com>
-X-Mailer: git-send-email 2.29.1
-In-Reply-To: <20201026112222.56894-1-tony@atomide.com>
-References: <20201026112222.56894-1-tony@atomide.com>
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-remoteproc@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
+Date:   Mon, 26 Oct 2020 12:35:21 +0100
+In-Reply-To: <20201026111049.54835-10-tony@atomide.com>
+References: <20201026111049.54835-1-tony@atomide.com>
+         <20201026111049.54835-10-tony@atomide.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If we have only am3 selected, there's no need to build the
-hwmod related code as we are probing devices with device tree
-data.
+Hi Tony,
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/mach-omap2/Kconfig        |  9 +++++++++
- arch/arm/mach-omap2/Makefile       | 13 ++++++-------
- arch/arm/mach-omap2/pdata-quirks.c | 12 +++++++-----
- 3 files changed, 22 insertions(+), 12 deletions(-)
+On Mon, 2020-10-26 at 13:10 +0200, Tony Lindgren wrote:
+> In order to move wkup_m3 to probe without platform data, let's add
+> support for using optional reset control driver if configured in the
+> dts. With this change and the related dts change, we can start
+> dropping the platform data for am335x.
+> 
+> And once wkup_m3 no longer needs platform data, we can simply drop the
+> related legacy reset platform data callbacks from wkup_m3 driver later
+> on after also am437x no longer depends on it.
+> 
+> Cc: linux-remoteproc@vger.kernel.org
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Dave Gerlach <d-gerlach@ti.com>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Suman Anna <s-anna@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+> 
+> Please review and ack if no issues. If you guys instead want to set up an
+> immutable remoteproc branch with just this patch in it against v5.10-rc1
+> that works too :)
+> 
+> ---
+>  drivers/remoteproc/wkup_m3_rproc.c | 28 +++++++++++++++++++++-------
+>  1 file changed, 21 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/wkup_m3_rproc.c b/drivers/remoteproc/wkup_m3_rproc.c
+> --- a/drivers/remoteproc/wkup_m3_rproc.c
+> +++ b/drivers/remoteproc/wkup_m3_rproc.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/remoteproc.h>
+> +#include <linux/reset.h>
+>  
+>  #include <linux/platform_data/wkup_m3.h>
+>  
+> @@ -43,11 +44,13 @@ struct wkup_m3_mem {
+>   * @rproc: rproc handle
+>   * @pdev: pointer to platform device
+>   * @mem: WkupM3 memory information
+> + * @rsts: reset control
+>   */
+>  struct wkup_m3_rproc {
+>  	struct rproc *rproc;
+>  	struct platform_device *pdev;
+>  	struct wkup_m3_mem mem[WKUPM3_MEM_MAX];
+> +	struct reset_control *rsts;
+>  };
+>  
+>  static int wkup_m3_rproc_start(struct rproc *rproc)
+> @@ -57,6 +60,9 @@ static int wkup_m3_rproc_start(struct rproc *rproc)
+>  	struct device *dev = &pdev->dev;
+>  	struct wkup_m3_platform_data *pdata = dev_get_platdata(dev);
+>  
+> +	if (wkupm3->rsts)
 
-diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
---- a/arch/arm/mach-omap2/Kconfig
-+++ b/arch/arm/mach-omap2/Kconfig
-@@ -2,11 +2,15 @@
- menu "TI OMAP/AM/DM/DRA Family"
- 	depends on ARCH_MULTI_V6 || ARCH_MULTI_V7
- 
-+config OMAP_HWMOD
-+	bool
-+
- config ARCH_OMAP2
- 	bool "TI OMAP2"
- 	depends on ARCH_MULTI_V6
- 	select ARCH_OMAP2PLUS
- 	select CPU_V6
-+	select OMAP_HWMOD
- 	select SOC_HAS_OMAP2_SDRC
- 
- config ARCH_OMAP3
-@@ -14,6 +18,7 @@ config ARCH_OMAP3
- 	depends on ARCH_MULTI_V7
- 	select ARCH_OMAP2PLUS
- 	select ARM_CPU_SUSPEND if PM
-+	select OMAP_HWMOD
- 	select OMAP_INTERCONNECT
- 	select PM_OPP if PM
- 	select PM if CPU_IDLE
-@@ -30,6 +35,7 @@ config ARCH_OMAP4
- 	select ARM_GIC
- 	select HAVE_ARM_SCU if SMP
- 	select HAVE_ARM_TWD if SMP
-+	select OMAP_HWMOD
- 	select OMAP_INTERCONNECT
- 	select OMAP_INTERCONNECT_BARRIER
- 	select PL310_ERRATA_588369 if CACHE_L2X0
-@@ -49,6 +55,7 @@ config SOC_OMAP5
- 	select HAVE_ARM_SCU if SMP
- 	select HAVE_ARM_ARCH_TIMER
- 	select ARM_ERRATA_798181 if SMP
-+	select OMAP_HWMOD
- 	select OMAP_INTERCONNECT
- 	select OMAP_INTERCONNECT_BARRIER
- 	select PM_OPP if PM
-@@ -71,6 +78,7 @@ config SOC_AM43XX
- 	select HAVE_ARM_TWD
- 	select ARM_ERRATA_754322
- 	select ARM_ERRATA_775420
-+	select OMAP_HWMOD
- 	select OMAP_INTERCONNECT
- 	select ARM_CPU_SUSPEND if PM
- 
-@@ -84,6 +92,7 @@ config SOC_DRA7XX
- 	select HAVE_ARM_ARCH_TIMER
- 	select IRQ_CROSSBAR
- 	select ARM_ERRATA_798181 if SMP
-+	select OMAP_HWMOD
- 	select OMAP_INTERCONNECT
- 	select OMAP_INTERCONNECT_BARRIER
- 	select PM_OPP if PM
-diff --git a/arch/arm/mach-omap2/Makefile b/arch/arm/mach-omap2/Makefile
---- a/arch/arm/mach-omap2/Makefile
-+++ b/arch/arm/mach-omap2/Makefile
-@@ -8,18 +8,20 @@ ccflags-y := -I$(srctree)/$(src)/include \
- 
- # Common support
- obj-y := id.o io.o control.o devices.o fb.o pm.o \
--	 common.o dma.o wd_timer.o display.o i2c.o hdq1w.o omap_hwmod.o \
--	 omap_device.o omap-headsmp.o sram.o
-+	 common.o dma.o omap-headsmp.o sram.o
- 
- hwmod-common				= omap_hwmod.o omap_hwmod_reset.o \
--					  omap_hwmod_common_data.o
-+					  omap_hwmod_common_data.o \
-+					  omap_hwmod_common_ipblock_data.o \
-+					  omap_device.o display.o hdq1w.o \
-+					  i2c.o wd_timer.o
- clock-common				= clock.o
- secure-common				= omap-smc.o omap-secure.o
- 
- obj-$(CONFIG_ARCH_OMAP2) += $(omap-2-3-common) $(hwmod-common)
- obj-$(CONFIG_ARCH_OMAP3) += $(omap-2-3-common) $(hwmod-common) $(secure-common)
- obj-$(CONFIG_ARCH_OMAP4) += $(hwmod-common) $(secure-common)
--obj-$(CONFIG_SOC_AM33XX) += $(hwmod-common) $(secure-common)
-+obj-$(CONFIG_SOC_AM33XX) += $(secure-common)
- obj-$(CONFIG_SOC_OMAP5)  += $(hwmod-common) $(secure-common)
- obj-$(CONFIG_SOC_AM43XX) += $(hwmod-common) $(secure-common)
- obj-$(CONFIG_SOC_DRA7XX) += $(hwmod-common) $(secure-common)
-@@ -194,7 +196,6 @@ obj-$(CONFIG_SOC_OMAP2420)		+= opp2420_data.o
- obj-$(CONFIG_SOC_OMAP2430)		+= opp2430_data.o
- 
- # hwmod data
--obj-y					+= omap_hwmod_common_ipblock_data.o
- obj-$(CONFIG_SOC_OMAP2420)		+= omap_hwmod_2xxx_ipblock_data.o
- obj-$(CONFIG_SOC_OMAP2420)		+= omap_hwmod_2xxx_3xxx_ipblock_data.o
- obj-$(CONFIG_SOC_OMAP2420)		+= omap_hwmod_2xxx_interconnect_data.o
-@@ -205,8 +206,6 @@ obj-$(CONFIG_SOC_OMAP2430)		+= omap_hwmod_2xxx_interconnect_data.o
- obj-$(CONFIG_SOC_OMAP2430)		+= omap_hwmod_2430_data.o
- obj-$(CONFIG_ARCH_OMAP3)		+= omap_hwmod_2xxx_3xxx_ipblock_data.o
- obj-$(CONFIG_ARCH_OMAP3)		+= omap_hwmod_3xxx_data.o
--obj-$(CONFIG_SOC_AM33XX)		+= omap_hwmod_33xx_43xx_interconnect_data.o
--obj-$(CONFIG_SOC_AM33XX)		+= omap_hwmod_33xx_43xx_ipblock_data.o
- obj-$(CONFIG_SOC_AM43XX)		+= omap_hwmod_43xx_data.o
- obj-$(CONFIG_SOC_AM43XX)		+= omap_hwmod_33xx_43xx_interconnect_data.o
- obj-$(CONFIG_SOC_AM43XX)		+= omap_hwmod_33xx_43xx_ipblock_data.o
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -94,6 +94,7 @@ static void __init hsmmc2_internal_input_clk(void)
- 	omap_ctrl_writel(reg, OMAP343X_CONTROL_DEVCONF1);
- }
- 
-+#ifdef CONFIG_OMAP_HWMOD
- static struct iommu_platform_data omap3_iommu_pdata = {
- 	.reset_name = "mmu",
- 	.assert_reset = omap_device_assert_hardreset,
-@@ -106,6 +107,7 @@ static struct iommu_platform_data omap3_iommu_isp_pdata = {
- 	.device_enable = omap_device_enable,
- 	.device_idle = omap_device_idle,
- };
-+#endif
- 
- static int omap3_sbc_t3730_twl_callback(struct device *dev,
- 					   unsigned gpio,
-@@ -272,7 +274,7 @@ static void __init omap3_pandora_legacy_init(void)
- }
- #endif /* CONFIG_ARCH_OMAP3 */
- 
--#if defined(CONFIG_SOC_AM33XX) || defined(CONFIG_SOC_AM43XX)
-+#if defined(CONFIG_SOC_AM43XX)
- static struct wkup_m3_platform_data wkup_m3_data = {
- 	.reset_name = "wkup_m3",
- 	.assert_reset = omap_device_assert_hardreset,
-@@ -370,6 +372,7 @@ static void ti_sysc_clkdm_allow_idle(struct device *dev,
- 		clkdm_allow_idle(cookie->clkdm);
- }
- 
-+#ifdef CONFIG_OMAP_HWMOD
- static int ti_sysc_enable_module(struct device *dev,
- 				 const struct ti_sysc_cookie *cookie)
- {
-@@ -396,6 +399,7 @@ static int ti_sysc_shutdown_module(struct device *dev,
- 
- 	return omap_hwmod_shutdown(cookie->data);
- }
-+#endif	/* CONFIG_OMAP_HWMOD */
- 
- static bool ti_sysc_soc_type_gp(void)
- {
-@@ -410,10 +414,12 @@ static struct ti_sysc_platform_data ti_sysc_pdata = {
- 	.init_clockdomain = ti_sysc_clkdm_init,
- 	.clkdm_deny_idle = ti_sysc_clkdm_deny_idle,
- 	.clkdm_allow_idle = ti_sysc_clkdm_allow_idle,
-+#ifdef CONFIG_OMAP_HWMOD
- 	.init_module = omap_hwmod_init_module,
- 	.enable_module = ti_sysc_enable_module,
- 	.idle_module = ti_sysc_idle_module,
- 	.shutdown_module = ti_sysc_shutdown_module,
-+#endif
- };
- 
- static struct pcs_pdata pcs_pdata;
-@@ -501,10 +507,6 @@ static struct of_dev_auxdata omap_auxdata_lookup[] = {
- 	OF_DEV_AUXDATA("ti,omap3-mcbsp", 0x49024000, "49024000.mcbsp", &mcbsp_pdata),
- #endif
- #endif
--#ifdef CONFIG_SOC_AM33XX
--	OF_DEV_AUXDATA("ti,am3352-wkup-m3", 0x44d00000, "44d00000.wkup_m3",
--		       &wkup_m3_data),
--#endif
- #ifdef CONFIG_SOC_AM43XX
- 	OF_DEV_AUXDATA("ti,am4372-wkup-m3", 0x44d00000, "44d00000.wkup_m3",
- 		       &wkup_m3_data),
--- 
-2.29.1
+No need for this check, reset_control_deassert() just returns 0 if the
+rstc parameter is NULL.
+
+> +		return reset_control_deassert(wkupm3->rsts);
+> +
+>  	if (pdata->deassert_reset(pdev, pdata->reset_name)) {
+>  		dev_err(dev, "Unable to reset wkup_m3!\n");
+>  		return -ENODEV;
+> @@ -72,6 +78,9 @@ static int wkup_m3_rproc_stop(struct rproc *rproc)
+>  	struct device *dev = &pdev->dev;
+>  	struct wkup_m3_platform_data *pdata = dev_get_platdata(dev);
+>  
+> +	if (wkupm3->rsts)
+
+Same as above.
+
+> +		return reset_control_assert(wkupm3->rsts);
+> +
+>  	if (pdata->assert_reset(pdev, pdata->reset_name)) {
+>  		dev_err(dev, "Unable to assert reset of wkup_m3!\n");
+>  		return -ENODEV;
+> @@ -132,12 +141,6 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
+>  	int ret;
+>  	int i;
+>  
+> -	if (!(pdata && pdata->deassert_reset && pdata->assert_reset &&
+> -	      pdata->reset_name)) {
+> -		dev_err(dev, "Platform data missing!\n");
+> -		return -ENODEV;
+> -	}
+> -
+>  	ret = of_property_read_string(dev->of_node, "ti,pm-firmware",
+>  				      &fw_name);
+>  	if (ret) {
+> @@ -165,6 +168,17 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
+>  	wkupm3->rproc = rproc;
+>  	wkupm3->pdev = pdev;
+>  
+> +	wkupm3->rsts = devm_reset_control_get_optional_shared(dev, "rstctrl");
+> +	if (PTR_ERR_OR_ZERO(wkupm3->rsts)) {
+
+Please properly return errors. rsts will be NULL if the optional rstctrl
+reset is not specified:
+
+	if (IS_ERR(wkump3->rsts))
+		return PTR_ERR(wkump3->rsts);
+
+	if (!wkump3->rsts) {
+> +		if (!(pdata && pdata->deassert_reset && pdata->assert_reset &&
+> +		      pdata->reset_name)) {
+> +			dev_err(dev, "Platform data missing!\n");
+> +			ret = -ENODEV;
+> +			goto err_put_rproc;
+> +		}
+> +		wkupm3->rsts = NULL;
+
+I assume this will later be dropped with the platform data support?
+
+> +	}
+> +
+>  	for (i = 0; i < ARRAY_SIZE(mem_names); i++) {
+>  		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+>  						   mem_names[i]);
+> @@ -173,7 +187,7 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
+>  			dev_err(&pdev->dev, "devm_ioremap_resource failed for resource %d\n",
+>  				i);
+>  			ret = PTR_ERR(wkupm3->mem[i].cpu_addr);
+> -			goto err;
+> +			goto err_put_rproc;
+>  		}
+>  		wkupm3->mem[i].bus_addr = res->start;
+>  		wkupm3->mem[i].size = resource_size(res);
+
+regards
+Philipp
