@@ -2,118 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E818298EC8
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 15:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 168AC298FE5
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Oct 2020 15:50:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1780900AbgJZODS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Oct 2020 10:03:18 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:40242 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1780899AbgJZODS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 26 Oct 2020 10:03:18 -0400
-Date:   Mon, 26 Oct 2020 15:03:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1603720995;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/XYLTnd4F+MtBkIEH9ciCsQ1o4o3fSs6saBPeUcCQRg=;
-        b=aEC/DFGAzRNOiLoJ+IZswCQThDVstB95WznPoAR3plToyC0oKuWMntD/MsM7Q80qKg/2jO
-        adPxZGvGg7lvDVSirCUS9D2Wta9ebe+TvRe5/DRNz1FIfM2t7IK1H5pDHy9BCMcIONVuvf
-        hIXkpKAYZqrxK0McvVoaTZpzdMK5Xh0abpfujx6J8MPwp7QXTpLwMbLPesXEXLxSbrA1YW
-        1sQ3ujDlOgt1oJHCdV5ZGIrBRDEVIx3GCOuMnAivzUpwnptyXAeoUTcDm4qnFcFG15p4Ge
-        GcW+gOXJLp4nIiVi6zivJuwi5MeCguM7AjBDbyU7GMGleDGoKn+dN6uaA4m15w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1603720995;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/XYLTnd4F+MtBkIEH9ciCsQ1o4o3fSs6saBPeUcCQRg=;
-        b=MBgKbLCjynQlRvNZZxzHBvGsL2zC0Jh0u6i5DMLd7ximjnilFbLyHFIc1rye4RBzvKe46v
-        c744gr3dJcGlRwDg==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Ahmed S. Darwish" <a.darwish@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org,
-        Thomas Winischhofer <thomas@winischhofer.net>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Valentina Manea <valentina.manea.m@gmail.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        linux-omap@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
-        Duncan Sands <duncan.sands@free.fr>
-Subject: [PATCH v3 04/13 ] USB: serial: digi_acceleport: Remove
- in_interrupt() usage
-Message-ID: <20201026140313.dpg3hkhkje2os4hw@linutronix.de>
-References: <20201019100629.419020859@linutronix.de>
- <20201019101110.019266389@linutronix.de>
- <20201025171613.GT26280@localhost>
+        id S1782069AbgJZOuq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 26 Oct 2020 10:50:46 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:35802 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1782068AbgJZOup (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 26 Oct 2020 10:50:45 -0400
+Received: by mail-lj1-f196.google.com with SMTP id x16so10496889ljh.2
+        for <linux-omap@vger.kernel.org>; Mon, 26 Oct 2020 07:50:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=PjEF2KqOXKaLbNJ1lhobH8B17OERpDyB9/tbkI8C/08=;
+        b=HPYGaAAYsjgalKpDgIX2K4tGtRw/UCJit+fZ2vH/w/3KbTGTyHCTu9Ut8j1kDVNWr/
+         jWPMbMCI5Q4SDNrCtUsDgNtwi8EzIsfQfseVbF1qwkFN/NKLoHYrv2dEG3yHzz8zjv39
+         Y6FMmuud2jQbBtE0CcLXDD1t1PcPlpBRd0Qy+eebOKZf09QI4JFWu2fc+TbQvEconMqf
+         2nWllRn/bsWfGqeEWY53gueWLNqKjcl8Ml5VzkIO0rX1cQBgpgqvGrFs10lVx4rwelW/
+         PS6a9bDnE2a3KRuX5lYlFYTfBZ8EhGrUjdHgCL1P3b2Lkoc5TQ69bb91DOrBPguTd8Qe
+         dM8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=PjEF2KqOXKaLbNJ1lhobH8B17OERpDyB9/tbkI8C/08=;
+        b=jlnJ8xdLpa30fRA1OKvYrUpei7Sa84Wa8VFcgVzi5lbRc0a0xgbMajut8k9/tlVcNi
+         l43c065u63+Oc/MQ6AbG1qrATo8sAcLSYkbKMGGGpHegVVzQiJkNGPx2kcvncpH7OPUi
+         ry5MGseMTVEzwX6kB9Fj2SpOC5u7N0E04eoyVLXPdhQA0MTptv+uRPj2q/W3GtJzL6yo
+         Kl6iLJ/8SiiyLzq/GN9YDObVZqVPjBqlLEeDFqVatb9KDt0eTGLZvmHgjv2yb0DSQ2ZK
+         N84GfLUpdkkb/vtkm8Ef+gveDjty6VJWBDTnvxQ3MwVlnIpZ9LVmUcFxz+HbZt+Xe+O2
+         n+Bw==
+X-Gm-Message-State: AOAM533ql7HlL/Nr/6s/s6QHx7FrIHtO1cO0PufbjbDRi+50RNRA4eYp
+        2zG8pAFrhLgwoLjYICRfvADHYw==
+X-Google-Smtp-Source: ABdhPJzglLdj3k7YiObTfmoD5Y1+QYVfbtS03yxhQVEzj9ZlCLveJNoso6kvb2hB4j3HxFIpC4Yetg==
+X-Received: by 2002:a2e:9ccd:: with SMTP id g13mr6297132ljj.127.1603723842608;
+        Mon, 26 Oct 2020 07:50:42 -0700 (PDT)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id l129sm1061301lfd.279.2020.10.26.07.50.41
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 26 Oct 2020 07:50:42 -0700 (PDT)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     ssantosh@kernel.org, s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, santosh.shilimkar@oracle.com,
+        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        praneeth@ti.com, tony@atomide.com,
+        Wei Yongjun <weiyongjun1@huawei.com>
+Subject: [PATCH] soc: ti: pruss: Remove wrong check against *get_match_data return value
+Date:   Mon, 26 Oct 2020 15:49:43 +0100
+Message-Id: <20201026144943.30821-1-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20201025171613.GT26280@localhost>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-=46rom: "Ahmed S. Darwish" <a.darwish@linutronix.de>
+Since the of_device_get_match_data() doesn't return error code, remove
+wrong IS_ERR test. Proper check against NULL pointer is already done
+later before usage: if (data && data->...).
 
-The usage of in_interrupt() in drivers is phased out and Linus clearly
-requested that code which changes behaviour depending on context should
-either be separated or the context be conveyed in an argument passed by the
-caller, which usually knows the context.
+Additionally, proceeding with empty device data is valid (e.g. in case
+of "ti,am3356-pruss").
 
-The debug printk() in digi_write() prints in_interrupt() as context
-information. This information is imprecisely as it does not distinguish
-between hard-IRQ or disabled botton half and it does consider disabled
-interrupts or preemption. It is not really helpful.
-
-Remove the in_interrupt() printout.
-
-Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Johan Hovold <johan@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org
+Reported-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
 ---
-v2=E2=80=A6v3:
-  - Don't make dev_dbg() conditional on `tty'
-  - Remove the part "tty happens always in process context" from the
-    commit message. Johan pointed out that for PPP it may happen in
-    bottom half.
+ drivers/soc/ti/pruss.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
- drivers/usb/serial/digi_acceleport.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/serial/digi_acceleport.c b/drivers/usb/serial/digi=
-_acceleport.c
-index 91055a191995f..016e7dec31962 100644
---- a/drivers/usb/serial/digi_acceleport.c
-+++ b/drivers/usb/serial/digi_acceleport.c
-@@ -911,9 +911,8 @@ static int digi_write(struct tty_struct *tty, struct us=
-b_serial_port *port,
- 	unsigned char *data =3D port->write_urb->transfer_buffer;
- 	unsigned long flags =3D 0;
-=20
--	dev_dbg(&port->dev,
--		"digi_write: TOP: port=3D%d, count=3D%d, in_interrupt=3D%ld\n",
--		priv->dp_port_num, count, in_interrupt());
-+	dev_dbg(&port->dev, "digi_write: TOP: port=3D%d, count=3D%d\n",
-+		priv->dp_port_num, count);
-=20
- 	/* copy user data (which can sleep) before getting spin lock */
- 	count =3D min(count, port->bulk_out_size-2);
---=20
-2.28.0
+diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+index cc0b4ad7a3d3..5d6e7132a5c4 100644
+--- a/drivers/soc/ti/pruss.c
++++ b/drivers/soc/ti/pruss.c
+@@ -126,8 +126,6 @@ static int pruss_clk_init(struct pruss *pruss, struct device_node *cfg_node)
+ 	int ret = 0;
+ 
+ 	data = of_device_get_match_data(dev);
+-	if (IS_ERR(data))
+-		return -ENODEV;
+ 
+ 	clks_np = of_get_child_by_name(cfg_node, "clocks");
+ 	if (!clks_np) {
+@@ -175,10 +173,6 @@ static int pruss_probe(struct platform_device *pdev)
+ 	const char *mem_names[PRUSS_MEM_MAX] = { "dram0", "dram1", "shrdram2" };
+ 
+ 	data = of_device_get_match_data(&pdev->dev);
+-	if (IS_ERR(data)) {
+-		dev_err(dev, "missing private data\n");
+-		return -ENODEV;
+-	}
+ 
+ 	ret = dma_set_coherent_mask(dev, DMA_BIT_MASK(32));
+ 	if (ret) {
+-- 
+2.29.0
 
