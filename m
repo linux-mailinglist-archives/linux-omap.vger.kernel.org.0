@@ -2,39 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC3C0299E45
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 01:13:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58A7D29A087
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 01:32:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439471AbgJ0ANf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Oct 2020 20:13:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33668 "EHLO mail.kernel.org"
+        id S2443529AbgJ0AbH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 26 Oct 2020 20:31:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52006 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2411798AbgJ0ALp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 26 Oct 2020 20:11:45 -0400
+        id S2409380AbgJZXvV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:51:21 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0C3B720754;
-        Tue, 27 Oct 2020 00:11:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 66372218AC;
+        Mon, 26 Oct 2020 23:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603757504;
-        bh=j9POj2r1nX6u9tvx+5LnA8GUke9H/R2gsqq2IPVpf7k=;
+        s=default; t=1603756281;
+        bh=TCxBJlrClEOMZEDctJ9wU7tFb4s4MDYFVP4/8BQhuA0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fZA8Tx7URoWced5EoMyr8fMwxqQ3gizlDmaqZ3lDtTL10IXJZumMSOnitQgUv3vJY
-         Vq8nrPcgn+EqtomnqYgc6TMOdM9Uc3tDsmDfk+Kzjb3c0jJIm6JkqR8v+7rDZ1Ay81
-         GJ4DEj7BLZX9iXBfhnFyJPtFDTGqP11HBx39YiIA=
+        b=FmIuP0nLrCdS8XkqAqou8BHvSQYf2UU0lUgGpyMEl0ZfJyHVbbeZENQUc58lJvbuv
+         OeK3mySCtAFKSQogibajOJx1hWH15sZH0ilgJusQGwuLYLQIX3gKTVHYhMWas9lFgv
+         liK7sc+DuE2YyJGK87LacXNa/I/wY3hQrw1A7klU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tero Kristo <t-kristo@ti.com>, Dan Murphy <dmurphy@ti.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 17/25] clk: ti: clockdomain: fix static checker warning
-Date:   Mon, 26 Oct 2020 20:11:15 -0400
-Message-Id: <20201027001123.1027642-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.9 111/147] clk: ti: clockdomain: fix static checker warning
+Date:   Mon, 26 Oct 2020 19:48:29 -0400
+Message-Id: <20201026234905.1022767-111-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201027001123.1027642-1-sashal@kernel.org>
-References: <20201027001123.1027642-1-sashal@kernel.org>
+In-Reply-To: <20201026234905.1022767-1-sashal@kernel.org>
+References: <20201026234905.1022767-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -59,11 +59,11 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/clk/ti/clockdomain.c b/drivers/clk/ti/clockdomain.c
-index b9bc3b8df659d..4fde9767392e3 100644
+index ee56306f79d5f..700b7f44f6716 100644
 --- a/drivers/clk/ti/clockdomain.c
 +++ b/drivers/clk/ti/clockdomain.c
-@@ -124,10 +124,12 @@ static void __init of_ti_clockdomain_setup(struct device_node *node)
- 		if (clk_hw_get_flags(clk_hw) & CLK_IS_BASIC) {
+@@ -148,10 +148,12 @@ static void __init of_ti_clockdomain_setup(struct device_node *node)
+ 		if (!omap2_clk_is_hw_omap(clk_hw)) {
  			pr_warn("can't setup clkdm for basic clk %s\n",
  				__clk_get_name(clk));
 +			clk_put(clk);
