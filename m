@@ -2,135 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F20D629A526
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 08:03:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B15129A5F9
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 08:59:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409081AbgJ0HDp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Oct 2020 03:03:45 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:38573 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2507074AbgJ0HDp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Oct 2020 03:03:45 -0400
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1kXJ1C-00019L-Kr; Tue, 27 Oct 2020 08:03:42 +0100
-Subject: Re: [Linux-stm32] [PATCH v7 10/12] ARM: dts: stm32: Fix schema
- warnings for pwm-leds
-To:     Alexander Dahl <post@lespocky.de>, Pavel Machek <pavel@ucw.cz>,
-        Dan Murphy <dmurphy@ti.com>, Rob Herring <robh+dt@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        Alexander Dahl <ada@thorsis.com>, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-leds@vger.kernel.org
-References: <20201005203451.9985-1-post@lespocky.de>
- <20201005203451.9985-11-post@lespocky.de>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <b387bda8-3643-1d27-4996-2aa4dc94d69f@pengutronix.de>
-Date:   Tue, 27 Oct 2020 08:03:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+        id S2508510AbgJ0H7V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Oct 2020 03:59:21 -0400
+Received: from letterbox.kde.org ([46.43.1.242]:39436 "EHLO letterbox.kde.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2508508AbgJ0H7V (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 27 Oct 2020 03:59:21 -0400
+Received: from archbox.localdomain (unknown [123.201.39.96])
+        (Authenticated sender: bshah)
+        by letterbox.kde.org (Postfix) with ESMTPSA id 70BD3280236;
+        Tue, 27 Oct 2020 07:59:18 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
+        t=1603785559; bh=qqNnN1zHqyrA6g7HYzXjFml1LcG0O/EY7RinlacnDJg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HYTjd6oqpPsliQdScswrIKxHoTqPmqbdDmP9ir1TTI9CTA3pk41hZ0uaddleAa1oh
+         fuQrHvzwqu64gqoxWAlhi/lK546ptYTxJJ+1g3q/zJ27PcbxiAGFrd/2W3apZapnp4
+         d2YDjihpcQDOjNLH534x52kpqlOjv0NmyYaMF5FFAxnbgcOJLcD+wmW8pl2Rt8yqpO
+         k63Bf/quET1kXDP34KKAqy2/muQYsACQLNAHKOcdjIhB8ig95HnsyIYdqfIAhVtiVr
+         MR9udeNoLQ1fHL8dt6e8Sbf+SvNlpnkdt89SZabO/AAqr6SQdrWLVvO1H33odixpMs
+         BXtt0xWOVbrOA==
+Date:   Tue, 27 Oct 2020 13:29:15 +0530
+From:   Bhushan Shah <bshah@kde.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>, clayton@craftyguy.net
+Subject: Re: [PATCH] usb: musb: fix idling for suspend after disconnect
+ interrupt
+Message-ID: <20201027075915.GA1064075@aquila.localdomain>
+References: <20191126034151.38154-1-tony@atomide.com>
+ <20201027045519.GA947883@aquila.localdomain>
+ <20201027061741.GD5639@atomide.com>
 MIME-Version: 1.0
-In-Reply-To: <20201005203451.9985-11-post@lespocky.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="BOKacYhQ+x31HxR3"
+Content-Disposition: inline
+In-Reply-To: <20201027061741.GD5639@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello Alexander,
 
-On 10/5/20 10:34 PM, Alexander Dahl wrote:
-> The node names for devices using the pwm-leds driver follow a certain
-> naming scheme (now).  Parent node name is not enforced, but recommended
-> by DT project.
-> 
->   DTC     arch/arm/boot/dts/stm32mp157c-lxa-mc1.dt.yaml
->   CHECK   arch/arm/boot/dts/stm32mp157c-lxa-mc1.dt.yaml
-> /home/alex/build/linux/arch/arm/boot/dts/stm32mp157c-lxa-mc1.dt.yaml: led-rgb: 'led-blue', 'led-green', 'led-red' do not match any of the regexes: '^led(-[0-9a-f]+)?$', 'pinctrl-[0-9]+'
->         From schema: /home/alex/src/linux/leds/Documentation/devicetree/bindings/leds/leds-pwm.yaml
-> 
-> Signed-off-by: Alexander Dahl <post@lespocky.de>
+--BOKacYhQ+x31HxR3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Hello!
 
-But got two questions below:
+On Tue, Oct 27, 2020 at 08:17:41AM +0200, Tony Lindgren wrote:
+> Hmm maybe we're just missing the check for suspend here. Maybe
+> give the following untested patch a try?
+>=20
+> I'll give it a try here too but it might be few days.
 
-> ---
-> 
-> Notes:
->     v6 -> v7:
->       * split up patch (one per sub arch)
->       * added actual warnings to commit message
-> 
->  arch/arm/boot/dts/stm32mp157c-lxa-mc1.dts | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/stm32mp157c-lxa-mc1.dts b/arch/arm/boot/dts/stm32mp157c-lxa-mc1.dts
-> index 5700e6b700d3..25d548cb975b 100644
-> --- a/arch/arm/boot/dts/stm32mp157c-lxa-mc1.dts
-> +++ b/arch/arm/boot/dts/stm32mp157c-lxa-mc1.dts
-> @@ -36,34 +36,34 @@
->  		stdout-path = &uart4;
->  	};
->  
-> -	led-act {
-> +	led-controller-1 {
->  		compatible = "gpio-leds";
->  
-> -		led-green {
-> +		led-1 {
->  			label = "mc1:green:act";
->  			gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
->  			linux,default-trigger = "heartbeat";
->  		};
->  	};
->  
-> -	led-rgb {
-> +	led-controller-2 {
+Thanks for quick patch! I tested this on my device and I can confirm
+that it fixes issue for me.
 
-Is a single RGB LED really a controller?
+So from my side,
 
->  		compatible = "pwm-leds";
->  
-> -		led-red {
-> +		led-2 {
+Tested-by: Bhushan Shah <bshah@kde.org>
 
-Shouldn't this have been led-1 as well or is the numbering "global" ?
+Thanks!
 
->  			label = "mc1:red:rgb";
->  			pwms = <&leds_pwm 1 1000000 0>;
->  			max-brightness = <255>;
->  			active-low;
->  		};
->  
-> -		led-green {
-> +		led-3 {
->  			label = "mc1:green:rgb";
->  			pwms = <&leds_pwm 2 1000000 0>;
->  			max-brightness = <255>;
->  			active-low;
->  		};
->  
-> -		led-blue {
-> +		led-4 {
->  			label = "mc1:blue:rgb";
->  			pwms = <&leds_pwm 3 1000000 0>;
->  			max-brightness = <255>;
-> 
+> Seems like we might be able to eventually simplify the suspend and
+> quirk check stuff, but let's fix the $subject issue first.
+>=20
+> Regards,
+>=20
+> Tony
+>=20
+> 8< ----------------------
+> diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
+> --- a/drivers/usb/musb/musb_core.c
+> +++ b/drivers/usb/musb/musb_core.c
+> @@ -2005,10 +2005,14 @@ static void musb_pm_runtime_check_session(struct =
+musb *musb)
+>  		MUSB_DEVCTL_HR;
+>  	switch (devctl & ~s) {
+>  	case MUSB_QUIRK_B_DISCONNECT_99:
+> -		musb_dbg(musb, "Poll devctl in case of suspend after disconnect\n");
+> -		schedule_delayed_work(&musb->irq_work,
+> -				      msecs_to_jiffies(1000));
+> -		break;
+> +		if (musb->quirk_retries && !musb->flush_irq_work) {
+> +			musb_dbg(musb, "Poll devctl in case of suspend after disconnect\n");
+> +			schedule_delayed_work(&musb->irq_work,
+> +					      msecs_to_jiffies(1000));
+> +			musb->quirk_retries--;
+> +			break;
+> +		}
+> +		/* fall through */
+>  	case MUSB_QUIRK_B_INVALID_VBUS_91:
+>  		if (musb->quirk_retries && !musb->flush_irq_work) {
+>  			musb_dbg(musb,
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--=20
+Bhushan Shah
+http://blog.bshah.in
+IRC Nick : bshah on Freenode
+GPG key fingerprint : 0AAC 775B B643 7A8D 9AF7 A3AC FE07 8411 7FBC E11D
+
+--BOKacYhQ+x31HxR3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEs8s2ZVJUC+Bu6a2XEZaMRJKMrvwFAl+X01IACgkQEZaMRJKM
+rvyK8wgAtq9zXUC6b/0FUga1BglvrLHcdaBQa6Xjx0NaQUEKpZYwG6Au19n1JxvS
+BkhX/Xzj1zSTBNrN71OCo4cDQmQ8Wqkk2X5YYF0ylDdKgOeEe/k5jOEerZoFQJK9
+V60qk5AYxJ66FocPTfndzBXpkm9r1eYN43ee3ZHZaE3ag/MaPdDu2vA0qjycUaBI
+rs8Gz/0MoUxxQXKLS/1ZYa6SG8S1gsb2/H8ar8hW8wyg/RA/8mKLBvwxZiF3T546
+QCCHmsgGcGbmhA1iQzZaJSrtT5LIJl1WItpEY4G27nSyCGIyyRIXtFYohItuI2I7
+W83YKtH11FO8luoDy7ezVRz6wgPNRQ==
+=EeCo
+-----END PGP SIGNATURE-----
+
+--BOKacYhQ+x31HxR3--
