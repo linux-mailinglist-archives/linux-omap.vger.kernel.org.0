@@ -2,126 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B15129A5F9
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 08:59:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27FF229A65A
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 09:17:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2508510AbgJ0H7V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Oct 2020 03:59:21 -0400
-Received: from letterbox.kde.org ([46.43.1.242]:39436 "EHLO letterbox.kde.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2508508AbgJ0H7V (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 27 Oct 2020 03:59:21 -0400
-Received: from archbox.localdomain (unknown [123.201.39.96])
-        (Authenticated sender: bshah)
-        by letterbox.kde.org (Postfix) with ESMTPSA id 70BD3280236;
-        Tue, 27 Oct 2020 07:59:18 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
-        t=1603785559; bh=qqNnN1zHqyrA6g7HYzXjFml1LcG0O/EY7RinlacnDJg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HYTjd6oqpPsliQdScswrIKxHoTqPmqbdDmP9ir1TTI9CTA3pk41hZ0uaddleAa1oh
-         fuQrHvzwqu64gqoxWAlhi/lK546ptYTxJJ+1g3q/zJ27PcbxiAGFrd/2W3apZapnp4
-         d2YDjihpcQDOjNLH534x52kpqlOjv0NmyYaMF5FFAxnbgcOJLcD+wmW8pl2Rt8yqpO
-         k63Bf/quET1kXDP34KKAqy2/muQYsACQLNAHKOcdjIhB8ig95HnsyIYdqfIAhVtiVr
-         MR9udeNoLQ1fHL8dt6e8Sbf+SvNlpnkdt89SZabO/AAqr6SQdrWLVvO1H33odixpMs
-         BXtt0xWOVbrOA==
-Date:   Tue, 27 Oct 2020 13:29:15 +0530
-From:   Bhushan Shah <bshah@kde.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Bin Liu <b-liu@ti.com>,
+        id S2894526AbgJ0IQy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Oct 2020 04:16:54 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:35001 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2894519AbgJ0IQy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Oct 2020 04:16:54 -0400
+Received: by mail-lj1-f195.google.com with SMTP id x16so749409ljh.2;
+        Tue, 27 Oct 2020 01:16:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=4X/i6x/+78+fLH0lPper9S35q82PCcSbtWfUqlievPc=;
+        b=dFevk5ljJev2bT1xhviKxC52SYR6aPDG0fLcP1QG38OkfTom6xGNIM//0RZ/foJRP4
+         Ao4uapp0tLfheeZ7KT3I3J10TOuUGQMBiXCGnqilB4vtOf8WX4VVMAl0gr+Hxg/15OOz
+         uz+HV2q/VNfHEgMLJ1fHZ0G26MoCZ/z0QXzcv9HXFrja/NZTHsFXVV3Bb+TjRKpyVAcs
+         +G4kYFP0EOGv3frtkya2LMj4U5YTRkJlSbK9TFIWtiEi7TXpcAGZFrWO2/4K66IUWwMx
+         HKKDf996qnl0iXgKrWL/N6GJ3X/YhTCHqL6Z//W3nD/cGpvWl/RahqO3zGiy/FNIdcVl
+         LpLA==
+X-Gm-Message-State: AOAM531Rwf6a5ewZ5O/OLKRL2LUls8o3KiSvUKE9fLrVY32wEJhyp/3n
+        qeEYvcVSTj7W2f3hLeBSzH8=
+X-Google-Smtp-Source: ABdhPJyiRzqsfEO4O7r5IIRQvb3+7LSAdAe3jrDZoAuW1ZpukGOup5MjnYT7Lif1P6AYdNpMCqJQUQ==
+X-Received: by 2002:a2e:8103:: with SMTP id d3mr545991ljg.384.1603786610328;
+        Tue, 27 Oct 2020 01:16:50 -0700 (PDT)
+Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.174.190])
+        by smtp.gmail.com with ESMTPSA id v16sm92687lfq.68.2020.10.27.01.16.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Oct 2020 01:16:49 -0700 (PDT)
+Received: from johan by xi.terra with local (Exim 4.93.0.4)
+        (envelope-from <johan@kernel.org>)
+        id 1kXK9v-0001H7-Vf; Tue, 27 Oct 2020 09:16:48 +0100
+Date:   Tue, 27 Oct 2020 09:16:47 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc:     Johan Hovold <johan@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Ahmed S. Darwish" <a.darwish@linutronix.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>, clayton@craftyguy.net
-Subject: Re: [PATCH] usb: musb: fix idling for suspend after disconnect
- interrupt
-Message-ID: <20201027075915.GA1064075@aquila.localdomain>
-References: <20191126034151.38154-1-tony@atomide.com>
- <20201027045519.GA947883@aquila.localdomain>
- <20201027061741.GD5639@atomide.com>
+        linux-usb@vger.kernel.org,
+        Thomas Winischhofer <thomas@winischhofer.net>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Valentina Manea <valentina.manea.m@gmail.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        linux-omap@vger.kernel.org, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
+        Duncan Sands <duncan.sands@free.fr>
+Subject: Re: [patch V2 02/13] USB: serial: keyspan_pda: Replace
+ in_interrupt() usage
+Message-ID: <20201027081647.GC4085@localhost>
+References: <20201019100629.419020859@linutronix.de>
+ <20201019101109.753597069@linutronix.de>
+ <20201025165647.GR26280@localhost>
+ <20201026124753.btmdh3iwbwnff5dg@linutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="BOKacYhQ+x31HxR3"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201027061741.GD5639@atomide.com>
+In-Reply-To: <20201026124753.btmdh3iwbwnff5dg@linutronix.de>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, Oct 26, 2020 at 01:47:53PM +0100, Sebastian Andrzej Siewior wrote:
+> On 2020-10-25 17:56:47 [+0100], Johan Hovold wrote:
+> > There's a ton of issues with this driver, but this is arguably making
+> > things worse. A line discipline may call write() from just about any
+> > context so we cannot rely on tty being non-NULL here (e.g. PPP).
+> 
+> I wasn't aware of that. I've been looking at the callers each time a
+> `tty' was passed it looked like a preemptible context (due to mutex /
+> GFP_KERNEL) and so on.
 
---BOKacYhQ+x31HxR3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yeah, the default line discipline only calls in preemptible context
+(these days), but others do not (e.g. see ppp_async_push()).
 
-Hello!
-
-On Tue, Oct 27, 2020 at 08:17:41AM +0200, Tony Lindgren wrote:
-> Hmm maybe we're just missing the check for suspend here. Maybe
-> give the following untested patch a try?
->=20
-> I'll give it a try here too but it might be few days.
-
-Thanks for quick patch! I tested this on my device and I can confirm
-that it fixes issue for me.
-
-So from my side,
-
-Tested-by: Bhushan Shah <bshah@kde.org>
-
-Thanks!
-
-> Seems like we might be able to eventually simplify the suspend and
-> quirk check stuff, but let's fix the $subject issue first.
->=20
-> Regards,
->=20
-> Tony
->=20
-> 8< ----------------------
-> diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
-> --- a/drivers/usb/musb/musb_core.c
-> +++ b/drivers/usb/musb/musb_core.c
-> @@ -2005,10 +2005,14 @@ static void musb_pm_runtime_check_session(struct =
-musb *musb)
->  		MUSB_DEVCTL_HR;
->  	switch (devctl & ~s) {
->  	case MUSB_QUIRK_B_DISCONNECT_99:
-> -		musb_dbg(musb, "Poll devctl in case of suspend after disconnect\n");
-> -		schedule_delayed_work(&musb->irq_work,
-> -				      msecs_to_jiffies(1000));
-> -		break;
-> +		if (musb->quirk_retries && !musb->flush_irq_work) {
-> +			musb_dbg(musb, "Poll devctl in case of suspend after disconnect\n");
-> +			schedule_delayed_work(&musb->irq_work,
-> +					      msecs_to_jiffies(1000));
-> +			musb->quirk_retries--;
-> +			break;
-> +		}
-> +		/* fall through */
->  	case MUSB_QUIRK_B_INVALID_VBUS_91:
->  		if (musb->quirk_retries && !musb->flush_irq_work) {
->  			musb_dbg(musb,
-
---=20
-Bhushan Shah
-http://blog.bshah.in
-IRC Nick : bshah on Freenode
-GPG key fingerprint : 0AAC 775B B643 7A8D 9AF7 A3AC FE07 8411 7FBC E11D
-
---BOKacYhQ+x31HxR3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEs8s2ZVJUC+Bu6a2XEZaMRJKMrvwFAl+X01IACgkQEZaMRJKM
-rvyK8wgAtq9zXUC6b/0FUga1BglvrLHcdaBQa6Xjx0NaQUEKpZYwG6Au19n1JxvS
-BkhX/Xzj1zSTBNrN71OCo4cDQmQ8Wqkk2X5YYF0ylDdKgOeEe/k5jOEerZoFQJK9
-V60qk5AYxJ66FocPTfndzBXpkm9r1eYN43ee3ZHZaE3ag/MaPdDu2vA0qjycUaBI
-rs8Gz/0MoUxxQXKLS/1ZYa6SG8S1gsb2/H8ar8hW8wyg/RA/8mKLBvwxZiF3T546
-QCCHmsgGcGbmhA1iQzZaJSrtT5LIJl1WItpEY4G27nSyCGIyyRIXtFYohItuI2I7
-W83YKtH11FO8luoDy7ezVRz6wgPNRQ==
-=EeCo
------END PGP SIGNATURE-----
-
---BOKacYhQ+x31HxR3--
+Johan
