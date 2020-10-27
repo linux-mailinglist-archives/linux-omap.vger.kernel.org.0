@@ -2,41 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27FF229A65A
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 09:17:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7338629A691
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Oct 2020 09:27:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2894526AbgJ0IQy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Oct 2020 04:16:54 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:35001 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2894519AbgJ0IQy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Oct 2020 04:16:54 -0400
-Received: by mail-lj1-f195.google.com with SMTP id x16so749409ljh.2;
-        Tue, 27 Oct 2020 01:16:50 -0700 (PDT)
+        id S2894778AbgJ0I1B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Oct 2020 04:27:01 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:43261 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403961AbgJ0I1B (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Oct 2020 04:27:01 -0400
+Received: by mail-lf1-f65.google.com with SMTP id l28so1164470lfp.10;
+        Tue, 27 Oct 2020 01:26:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4X/i6x/+78+fLH0lPper9S35q82PCcSbtWfUqlievPc=;
-        b=dFevk5ljJev2bT1xhviKxC52SYR6aPDG0fLcP1QG38OkfTom6xGNIM//0RZ/foJRP4
-         Ao4uapp0tLfheeZ7KT3I3J10TOuUGQMBiXCGnqilB4vtOf8WX4VVMAl0gr+Hxg/15OOz
-         uz+HV2q/VNfHEgMLJ1fHZ0G26MoCZ/z0QXzcv9HXFrja/NZTHsFXVV3Bb+TjRKpyVAcs
-         +G4kYFP0EOGv3frtkya2LMj4U5YTRkJlSbK9TFIWtiEi7TXpcAGZFrWO2/4K66IUWwMx
-         HKKDf996qnl0iXgKrWL/N6GJ3X/YhTCHqL6Z//W3nD/cGpvWl/RahqO3zGiy/FNIdcVl
-         LpLA==
-X-Gm-Message-State: AOAM531Rwf6a5ewZ5O/OLKRL2LUls8o3KiSvUKE9fLrVY32wEJhyp/3n
-        qeEYvcVSTj7W2f3hLeBSzH8=
-X-Google-Smtp-Source: ABdhPJyiRzqsfEO4O7r5IIRQvb3+7LSAdAe3jrDZoAuW1ZpukGOup5MjnYT7Lif1P6AYdNpMCqJQUQ==
-X-Received: by 2002:a2e:8103:: with SMTP id d3mr545991ljg.384.1603786610328;
-        Tue, 27 Oct 2020 01:16:50 -0700 (PDT)
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=XIPWi+l0jdtwe7a/vFhBWIkkHZTxV2Bo329Aduuqz0Y=;
+        b=N1RgbNLj1IGPtDBFi2WyRr67FzoIphdsntAJ05OtLwq5ClTtAT1fmLAqYVBNOarETG
+         zxVqZBxr+SbMU1zuj1WZZaseHIK/KHqXsSYVLvMBQD97WW8uemL8cubOJaL8G9dnZXFo
+         0O1FKm97AFbKJbmKv9q35d+kaYN1GFm8Fbkzo7Z2zK1vSsxRMe67m2rM4EEkyTDtzHV1
+         xWTaMERSuFYTdCwOH0S7Lm6rYTe+JTS0rXdBNCl8aCu54qG9kXNGN0JbmxmRCGjtFloz
+         5iUHqLxw2u5L2ntyZv3ZM8sDuqDFQPJk9Xv2SBR11FWJLM64yFzb2iHGBtxgoJDMGOZI
+         UYSA==
+X-Gm-Message-State: AOAM532QXhkwSyXYtREQ3eymXAClzCvCihPNEjkroLPp+t2kUxO2IyX9
+        d4B4vfSzS72+WoC2qJ/SjSg=
+X-Google-Smtp-Source: ABdhPJxZdvyff6NTZCNh5cgP4gqVTZlusJs7rkzYrG60oCea8SrZ4rbaJhyafEM+9WgvZzCHgo7GvQ==
+X-Received: by 2002:a19:c690:: with SMTP id w138mr416756lff.409.1603787218626;
+        Tue, 27 Oct 2020 01:26:58 -0700 (PDT)
 Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.174.190])
-        by smtp.gmail.com with ESMTPSA id v16sm92687lfq.68.2020.10.27.01.16.49
+        by smtp.gmail.com with ESMTPSA id n19sm95060lfe.142.2020.10.27.01.26.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2020 01:16:49 -0700 (PDT)
+        Tue, 27 Oct 2020 01:26:57 -0700 (PDT)
 Received: from johan by xi.terra with local (Exim 4.93.0.4)
         (envelope-from <johan@kernel.org>)
-        id 1kXK9v-0001H7-Vf; Tue, 27 Oct 2020 09:16:48 +0100
-Date:   Tue, 27 Oct 2020 09:16:47 +0100
+        id 1kXKJk-0001LL-9S; Tue, 27 Oct 2020 09:26:57 +0100
+Date:   Tue, 27 Oct 2020 09:26:56 +0100
 From:   Johan Hovold <johan@kernel.org>
 To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Cc:     Johan Hovold <johan@kernel.org>,
@@ -56,32 +57,58 @@ Cc:     Johan Hovold <johan@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
         Duncan Sands <duncan.sands@free.fr>
-Subject: Re: [patch V2 02/13] USB: serial: keyspan_pda: Replace
+Subject: Re: [PATCH v3 04/13 ] USB: serial: digi_acceleport: Remove
  in_interrupt() usage
-Message-ID: <20201027081647.GC4085@localhost>
+Message-ID: <20201027082656.GD4085@localhost>
 References: <20201019100629.419020859@linutronix.de>
- <20201019101109.753597069@linutronix.de>
- <20201025165647.GR26280@localhost>
- <20201026124753.btmdh3iwbwnff5dg@linutronix.de>
+ <20201019101110.019266389@linutronix.de>
+ <20201025171613.GT26280@localhost>
+ <20201026140313.dpg3hkhkje2os4hw@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201026124753.btmdh3iwbwnff5dg@linutronix.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201026140313.dpg3hkhkje2os4hw@linutronix.de>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 26, 2020 at 01:47:53PM +0100, Sebastian Andrzej Siewior wrote:
-> On 2020-10-25 17:56:47 [+0100], Johan Hovold wrote:
-> > There's a ton of issues with this driver, but this is arguably making
-> > things worse. A line discipline may call write() from just about any
-> > context so we cannot rely on tty being non-NULL here (e.g. PPP).
+On Mon, Oct 26, 2020 at 03:03:13PM +0100, Sebastian Andrzej Siewior wrote:
+> From: "Ahmed S. Darwish" <a.darwish@linutronix.de>
 > 
-> I wasn't aware of that. I've been looking at the callers each time a
-> `tty' was passed it looked like a preemptible context (due to mutex /
-> GFP_KERNEL) and so on.
+> The usage of in_interrupt() in drivers is phased out and Linus clearly
+> requested that code which changes behaviour depending on context should
+> either be separated or the context be conveyed in an argument passed by the
+> caller, which usually knows the context.
+> 
+> The debug printk() in digi_write() prints in_interrupt() as context
+> information. This information is imprecisely as it does not distinguish
+> between hard-IRQ or disabled botton half and it does consider disabled
+> interrupts or preemption. It is not really helpful.
 
-Yeah, the default line discipline only calls in preemptible context
-(these days), but others do not (e.g. see ppp_async_push()).
+I fixed up a couple of typos and added the missing negation above so
+that it reads:
+
+  The debug printk() in digi_write() prints in_interrupt() as context
+  information. This information is imprecise as it does not distinguish
+  between hard-IRQ or disabled bottom half and it does not consider
+  disabled interrupts or preemption. It is not really helpful.
+	
+> Remove the in_interrupt() printout.
+> 
+> Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Cc: Johan Hovold <johan@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-usb@vger.kernel.org
+> ---
+> v2…v3:
+>   - Don't make dev_dbg() conditional on `tty'
+>   - Remove the part "tty happens always in process context" from the
+>     commit message. Johan pointed out that for PPP it may happen in
+>     bottom half.
+
+Now applied for -next, thanks.
 
 Johan
