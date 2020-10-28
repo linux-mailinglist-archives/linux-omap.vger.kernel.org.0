@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D143E29D867
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Oct 2020 23:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 581E629D86A
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Oct 2020 23:32:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387993AbgJ1Wb7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Oct 2020 18:31:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45870 "EHLO mail.kernel.org"
+        id S2388001AbgJ1WcG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Oct 2020 18:32:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45940 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388003AbgJ1Wb7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:31:59 -0400
+        id S2387996AbgJ1WcE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:32:04 -0400
 Received: from kozik-lap.proceq-device.com (unknown [194.230.155.184])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C436620728;
-        Wed, 28 Oct 2020 22:31:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EC4CE2072C;
+        Wed, 28 Oct 2020 22:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603924318;
-        bh=KQvsd/GN1hTQrRV7vizN30cYl3mHAa2c/7DfIu6q100=;
+        s=default; t=1603924323;
+        bh=cAhBoKIoMZagz11woOBG7hID+3n5gMfP7bvBT6bjHOU=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=17HRvBp6xBxL5FDK3+Y20PI4Ehh9ENIeLcFQBHDljOzRKaBvhAQP5Rvas20p6MZ5b
-         SW5Zh7Nv4oEejOkZaydUND805yKTLVEJKQCcojvoem7jaq8tEYmvnJaYBaaNuNGTFl
-         bt+RAVkHKl+EJngwvHuelEEQlQfh42WMvGHBUF2g=
+        b=qUtWH3KhwpRqhh0cUxMilD4iHwAJfMKDZXislTOoVIc/HhTB58s2RrGJxNAgxK6H+
+         8AH0HtvMWAIhlaXpyNsR+HQQx5A/WtfYr/bj7E3qtC386TKT+IN1v18Ndy3dYraEN0
+         +cH1UepYTNk3lPE2WDzwI6UliuJ+smXFfo4TOOwA=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -44,9 +44,9 @@ To:     Lee Jones <lee.jones@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-rpi-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [RESEND PATCH 20/42] mfd: max8997: use PLATFORM_DEVID_NONE
-Date:   Wed, 28 Oct 2020 23:29:47 +0100
-Message-Id: <20201028223009.369824-20-krzk@kernel.org>
+Subject: [RESEND PATCH 21/42] mfd: max8998: use PLATFORM_DEVID_NONE
+Date:   Wed, 28 Oct 2020 23:29:48 +0100
+Message-Id: <20201028223009.369824-21-krzk@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201028223009.369824-1-krzk@kernel.org>
 References: <20201028223009.369824-1-krzk@kernel.org>
@@ -62,22 +62,28 @@ Use PLATFORM_DEVID_NONE define instead of "-1" value because:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/mfd/max8997.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/max8998.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/max8997.c b/drivers/mfd/max8997.c
-index 68d8f2b95287..0c5b8baead62 100644
---- a/drivers/mfd/max8997.c
-+++ b/drivers/mfd/max8997.c
-@@ -212,7 +212,7 @@ static int max8997_i2c_probe(struct i2c_client *i2c,
+diff --git a/drivers/mfd/max8998.c b/drivers/mfd/max8998.c
+index 785f8e9841b7..33d92eddfd06 100644
+--- a/drivers/mfd/max8998.c
++++ b/drivers/mfd/max8998.c
+@@ -208,12 +208,12 @@ static int max8998_i2c_probe(struct i2c_client *i2c,
  
- 	max8997_irq_init(max8997);
- 
--	ret = mfd_add_devices(max8997->dev, -1, max8997_devs,
-+	ret = mfd_add_devices(max8997->dev, PLATFORM_DEVID_NONE, max8997_devs,
- 			ARRAY_SIZE(max8997_devs),
- 			NULL, 0, NULL);
- 	if (ret < 0) {
+ 	switch (max8998->type) {
+ 	case TYPE_LP3974:
+-		ret = mfd_add_devices(max8998->dev, -1,
++		ret = mfd_add_devices(max8998->dev, PLATFORM_DEVID_NONE,
+ 				      lp3974_devs, ARRAY_SIZE(lp3974_devs),
+ 				      NULL, 0, NULL);
+ 		break;
+ 	case TYPE_MAX8998:
+-		ret = mfd_add_devices(max8998->dev, -1,
++		ret = mfd_add_devices(max8998->dev, PLATFORM_DEVID_NONE,
+ 				      max8998_devs, ARRAY_SIZE(max8998_devs),
+ 				      NULL, 0, NULL);
+ 		break;
 -- 
 2.25.1
 
