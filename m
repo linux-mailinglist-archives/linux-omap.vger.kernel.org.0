@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E34FE29D8D5
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Oct 2020 23:37:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A8CB29D8D2
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Oct 2020 23:37:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388336AbgJ1Wgs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Oct 2020 18:36:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47522 "EHLO mail.kernel.org"
+        id S2388368AbgJ1WgU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Oct 2020 18:36:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47572 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388430AbgJ1Wdh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:33:37 -0400
+        id S2388431AbgJ1Wdn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:33:43 -0400
 Received: from kozik-lap.proceq-device.com (unknown [194.230.155.184])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1AE182072C;
-        Wed, 28 Oct 2020 22:33:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8DA7B20728;
+        Wed, 28 Oct 2020 22:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603924417;
-        bh=bqv9tuXjLzuFjl/e05MHC5F387twPoXZ645TcerkI5w=;
+        s=default; t=1603924422;
+        bh=5p3nyiDcMBCIxUJoFfO1loAwC4zdnTa9lfo72yb+87s=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=FdMdzizSLjwnL2yS2LCeUvPpYEUyLACvTNqkib2gtOH6hP0kyDMRkZ6TThcgLjrKy
-         S98caqd+AR8sPC//Gvk3Plx4FcJCF4eXaKm4dqoHh88KIgffLHBX+CpTD7ALfC/MTm
-         oxeis1dRK2uC9WwF2UPnEx5VHDGzJ2ZF+1Tj3oKs=
+        b=oOZITDT9J0uxHgDbx/B8Uk1eE+Lns9GGtl4JEvqoH7aSz8I62UlSfv/4+PUfOaQ8+
+         aAaRCU1FitwwSSPB/SjcK9eR15lhp4URWC3+FM6aVu8flE/7wg5CMD2PDvAW0xxvYz
+         r6wNr0zKd9lL/sHJXz4ckqEs20PYWtaJVZIapvqE=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -44,9 +44,9 @@ To:     Lee Jones <lee.jones@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-rpi-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [RESEND PATCH 38/42] mfd: twl6040: use PLATFORM_DEVID_NONE
-Date:   Wed, 28 Oct 2020 23:30:05 +0100
-Message-Id: <20201028223009.369824-38-krzk@kernel.org>
+Subject: [RESEND PATCH 39/42] mfd: vx855: use PLATFORM_DEVID_NONE
+Date:   Wed, 28 Oct 2020 23:30:06 +0100
+Message-Id: <20201028223009.369824-39-krzk@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201028223009.369824-1-krzk@kernel.org>
 References: <20201028223009.369824-1-krzk@kernel.org>
@@ -62,24 +62,24 @@ Use PLATFORM_DEVID_NONE define instead of "-1" value because:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/mfd/twl6040.c | 4 ++--
+ drivers/mfd/vx855.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/twl6040.c b/drivers/mfd/twl6040.c
-index b9c6d94b4002..702f9e216d42 100644
---- a/drivers/mfd/twl6040.c
-+++ b/drivers/mfd/twl6040.c
-@@ -794,8 +794,8 @@ static int twl6040_probe(struct i2c_client *client,
- 	regcache_cache_only(twl6040->regmap, true);
- 	regcache_mark_dirty(twl6040->regmap);
+diff --git a/drivers/mfd/vx855.c b/drivers/mfd/vx855.c
+index 985f81c1739c..a53fb4c1ebdb 100644
+--- a/drivers/mfd/vx855.c
++++ b/drivers/mfd/vx855.c
+@@ -86,8 +86,8 @@ static int vx855_probe(struct pci_dev *pdev,
+ 	vx855_gpio_resources[1].start = gpio_io_offset + VX855_PMIO_R_GPO;
+ 	vx855_gpio_resources[1].end = vx855_gpio_resources[1].start + 3;
  
--	ret = mfd_add_devices(&client->dev, -1, twl6040->cells, children,
--			      NULL, 0, NULL);
-+	ret = mfd_add_devices(&client->dev, PLATFORM_DEVID_NONE, twl6040->cells,
-+			      children, NULL, 0, NULL);
- 	if (ret)
- 		goto readyirq_err;
+-	ret = mfd_add_devices(&pdev->dev, -1, vx855_cells, ARRAY_SIZE(vx855_cells),
+-			NULL, 0, NULL);
++	ret = mfd_add_devices(&pdev->dev, PLATFORM_DEVID_NONE, vx855_cells,
++			      ARRAY_SIZE(vx855_cells), NULL, 0, NULL);
  
+ 	/* we always return -ENODEV here in order to enable other
+ 	 * drivers like old, not-yet-platform_device ported i2c-viapro */
 -- 
 2.25.1
 
