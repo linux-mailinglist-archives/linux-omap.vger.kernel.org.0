@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1256129D894
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Oct 2020 23:34:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0859D29D873
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Oct 2020 23:32:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388057AbgJ1WcP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Oct 2020 18:32:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46218 "EHLO mail.kernel.org"
+        id S2388076AbgJ1WcX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Oct 2020 18:32:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46334 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388053AbgJ1WcO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:32:14 -0400
+        id S1731498AbgJ1WcV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:32:21 -0400
 Received: from kozik-lap.proceq-device.com (unknown [194.230.155.184])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6B6C120725;
-        Wed, 28 Oct 2020 22:32:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AA86520724;
+        Wed, 28 Oct 2020 22:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603924334;
-        bh=hVk9ja+3hAguuqm5mEhVctqclI+AabazSjJrPiDpUHs=;
+        s=default; t=1603924340;
+        bh=e2bE8ay3FKMMRP7flhNzomhc5bqCNWYtJ2nVgour3Ew=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=ITnvIR6aAyUxDwczOwSWg6/bTZ/Vbb90rVmIeqFB4rsGReTyoZdWyq6l9KYZKChPJ
-         YJyY4lKrfIKA4lMvwLoOWPIPGEjCval8zFbv0jk2xq7UpqEI8nd1K35J2MjQUVrx9y
-         M+cAutUVsmMsf7tW9i8VvQ9U6kP2E6HUf//HYFE8=
+        b=nIxVLOTgVNVzBCciNNaS/BzBXcprBd9dY2XW2GYehO+2rZvhA65r2aLIEiOJ8+qTC
+         NbZS1/jZWCGZ+HmXIHa3YFaPZFCVdGxkTQdVpeZ/k7DCtqLUrmp1Fvgie/AkAbroNR
+         usDvXDH7pnjZGMU3wCuogeMc0OYCzoh+ol5GTqjw=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -44,9 +44,9 @@ To:     Lee Jones <lee.jones@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-rpi-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [RESEND PATCH 23/42] mfd: rc5t583: use PLATFORM_DEVID_NONE
-Date:   Wed, 28 Oct 2020 23:29:50 +0100
-Message-Id: <20201028223009.369824-23-krzk@kernel.org>
+Subject: [RESEND PATCH 24/42] mfd: rdc321x: use PLATFORM_DEVID_NONE
+Date:   Wed, 28 Oct 2020 23:29:51 +0100
+Message-Id: <20201028223009.369824-24-krzk@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201028223009.369824-1-krzk@kernel.org>
 References: <20201028223009.369824-1-krzk@kernel.org>
@@ -62,25 +62,22 @@ Use PLATFORM_DEVID_NONE define instead of "-1" value because:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/mfd/rc5t583.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mfd/rdc321x-southbridge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/rc5t583.c b/drivers/mfd/rc5t583.c
-index d0dc48f99096..a4915f411ee8 100644
---- a/drivers/mfd/rc5t583.c
-+++ b/drivers/mfd/rc5t583.c
-@@ -270,8 +270,9 @@ static int rc5t583_i2c_probe(struct i2c_client *i2c,
- 			dev_warn(&i2c->dev, "IRQ init failed: %d\n", ret);
- 	}
+diff --git a/drivers/mfd/rdc321x-southbridge.c b/drivers/mfd/rdc321x-southbridge.c
+index fbb1faf95e27..6fb0d625cec9 100644
+--- a/drivers/mfd/rdc321x-southbridge.c
++++ b/drivers/mfd/rdc321x-southbridge.c
+@@ -71,7 +71,7 @@ static int rdc321x_sb_probe(struct pci_dev *pdev,
+ 	rdc321x_gpio_pdata.sb_pdev = pdev;
+ 	rdc321x_wdt_pdata.sb_pdev = pdev;
  
--	ret = devm_mfd_add_devices(rc5t583->dev, -1, rc5t583_subdevs,
--				   ARRAY_SIZE(rc5t583_subdevs), NULL, 0, NULL);
-+	ret = devm_mfd_add_devices(rc5t583->dev, PLATFORM_DEVID_NONE,
-+				   rc5t583_subdevs, ARRAY_SIZE(rc5t583_subdevs),
-+				   NULL, 0, NULL);
- 	if (ret) {
- 		dev_err(&i2c->dev, "add mfd devices failed: %d\n", ret);
- 		return ret;
+-	return devm_mfd_add_devices(&pdev->dev, -1,
++	return devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_NONE,
+ 				    rdc321x_sb_cells,
+ 				    ARRAY_SIZE(rdc321x_sb_cells),
+ 				    NULL, 0, NULL);
 -- 
 2.25.1
 
