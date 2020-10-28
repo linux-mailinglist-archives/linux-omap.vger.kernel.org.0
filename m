@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 297D529D8B7
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Oct 2020 23:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F45F29DC7F
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Oct 2020 01:30:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388291AbgJ1WgB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Oct 2020 18:36:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47714 "EHLO mail.kernel.org"
+        id S2388179AbgJ2Aap (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Oct 2020 20:30:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47216 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731063AbgJ1Wd7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:33:59 -0400
+        id S2388234AbgJ1WdP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 28 Oct 2020 18:33:15 -0400
 Received: from kozik-lap.proceq-device.com (unknown [194.230.155.184])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C340020714;
-        Wed, 28 Oct 2020 22:33:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6ECD5206CB;
+        Wed, 28 Oct 2020 22:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603924438;
-        bh=B/Vu+6xItSMaZHGt13GUipfykI5xbdYfX/hIHb/tkjs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gH5DZMP8j3zLEJjFKHVUigdfh2IdjmvsKy62IkVyMupbuxo8/Kf+ZtkY5rhl29wDc
-         jY7A8wCmNJKi9wgks7zS6IuUVfk+y6Gu+JrSXN2OVSC5huWEcn34KU6LMvcRtcndSp
-         Gvb11NTwHdH+iTwPODHuSShfCdYyq/rwYMS3mVdY=
+        s=default; t=1603924395;
+        bh=e2fW9UlRkr3YVkKznCBWN2m98FPMSwPhDye4IxYMbZ4=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=SM8SAIgzb2yX6pETFFvUqc8o2TG6G/X4E6YlewWnA9uyqlgbEqqNCd5Yjxfjwv91Q
+         FHNMTx4KQXsHevt8b0wFdr8ODbh/CrNpq786UJwUu/ppayBg4L2+xDr6VR9vTUADqD
+         OnTZcgpbbW84A+FNUk0Ac6IUWTwgSeh3+38/6Mtw=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Lee Jones <lee.jones@linaro.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -44,10 +44,9 @@ To:     Lee Jones <lee.jones@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-rpi-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
-Cc:     Charles Keepax <ckeepax@opensource.cirrus.com>
-Subject: [RESEND PATCH 42/42] mfd: wm8994: use PLATFORM_DEVID_NONE
-Date:   Wed, 28 Oct 2020 23:30:09 +0100
-Message-Id: <20201028223009.369824-42-krzk@kernel.org>
+Subject: [RESEND PATCH 34/42] mfd: tps65217: use PLATFORM_DEVID_NONE
+Date:   Wed, 28 Oct 2020 23:30:01 +0100
+Message-Id: <20201028223009.369824-34-krzk@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201028223009.369824-1-krzk@kernel.org>
 References: <20201028223009.369824-1-krzk@kernel.org>
@@ -62,24 +61,23 @@ Use PLATFORM_DEVID_NONE define instead of "-1" value because:
  - it might point attention why auto device ID was not used.
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 ---
- drivers/mfd/wm8994-core.c | 2 +-
+ drivers/mfd/tps65217.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/wm8994-core.c b/drivers/mfd/wm8994-core.c
-index 3b2b93c5bbcb..5a8d4cc00cc1 100644
---- a/drivers/mfd/wm8994-core.c
-+++ b/drivers/mfd/wm8994-core.c
-@@ -578,7 +578,7 @@ static int wm8994_device_init(struct wm8994 *wm8994, int irq)
+diff --git a/drivers/mfd/tps65217.c b/drivers/mfd/tps65217.c
+index 2d9c282ec917..ef941bd611d2 100644
+--- a/drivers/mfd/tps65217.c
++++ b/drivers/mfd/tps65217.c
+@@ -351,7 +351,7 @@ static int tps65217_probe(struct i2c_client *client)
+ 			tps65217s[i].num_resources = 0;
+ 	}
  
- 	wm8994_irq_init(wm8994);
- 
--	ret = mfd_add_devices(wm8994->dev, -1,
-+	ret = mfd_add_devices(wm8994->dev, PLATFORM_DEVID_NONE,
- 			      wm8994_devs, ARRAY_SIZE(wm8994_devs),
- 			      NULL, 0, NULL);
- 	if (ret != 0) {
+-	ret = devm_mfd_add_devices(tps->dev, -1, tps65217s,
++	ret = devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_NONE, tps65217s,
+ 				   ARRAY_SIZE(tps65217s), NULL, 0,
+ 				   tps->irq_domain);
+ 	if (ret < 0) {
 -- 
 2.25.1
 
