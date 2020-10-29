@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4B529F76A
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Oct 2020 23:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A685F29F780
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Oct 2020 23:12:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725832AbgJ2WJ2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Oct 2020 18:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52424 "EHLO
+        id S1725747AbgJ2WMt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Oct 2020 18:12:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725372AbgJ2WJ1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Oct 2020 18:09:27 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E721C0613D2;
-        Thu, 29 Oct 2020 15:09:27 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id g12so3482578pgm.8;
-        Thu, 29 Oct 2020 15:09:27 -0700 (PDT)
+        with ESMTP id S1725372AbgJ2WMt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Oct 2020 18:12:49 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F8EC0613CF;
+        Thu, 29 Oct 2020 15:12:49 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id o129so3555704pfb.1;
+        Thu, 29 Oct 2020 15:12:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:thread-topic:thread-index:date:message-id
          :references:in-reply-to:accept-language:content-language
          :content-transfer-encoding:mime-version;
-        bh=U8lXi8OOUAKAM9HahPF2MhkRdpGxM+5pjA1LOCJjWUc=;
-        b=CHz77CTXIopVkDxKJbskTpevdxOSErQasxAubh+6XkNKbmt/zLZmVMXibi5/HjH/pS
-         zIbuovqvbQ744DbkJN2jcoQdGJGyQwaAgfc3fjciWEMeOu4Okb0yGJEs6nXkzuKqT2jv
-         95HlWsYsbQYe7Z6O1TyIZfvd0yOeIm5oh4f28/B+3RwEHyqhPQt3QsoK8RoqZySOSGL6
-         iZ5S16MRosVlHePQlw6lxoW05ZwRHCvZ8Zdb3p5J8KoN9KWq899H8ajHZu+9NdJi1LkH
-         Ei4CHD9QIBNsUSZ4b7X4QVRuZv6pl0yk4T1r44uSVYWRc1FlfRksdP88IOS3alDxWRhH
-         YsZw==
+        bh=LexN8YVXygah8E+BhRyOEnkuxN6ep+Yup593pkObYw0=;
+        b=cuMYLOx136WyJxq/7rZTQMZ+CQTkOmHSXN49/NLmy5j3i4yCygiwgKLN3zACvyrEKD
+         omjShSmKopC5d0CVh/shylgeqTg1Tgfq0vnAwMf49dD8ZuW/fICNIAMJqbNUsCONLE10
+         YymsqlyM1dLRcFekczm9wCxc/iT5uAqN5LQR8GF/H9UBP3EnP7uc/VqUHlUwxCqt7t3S
+         g38Gkfwc9Wq1FRuttfxtXJ5jCZCmcurSoYrnN6bGYMrORlQltsMr6VoqHqI1YKITxqkG
+         BsCKl8kcc2UyZbgn81v2whufq4HZ87lF6xrsbnTySURCSJC1blKFveb1R+KOSGrlyCkO
+         Johg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
          :date:message-id:references:in-reply-to:accept-language
          :content-language:content-transfer-encoding:mime-version;
-        bh=U8lXi8OOUAKAM9HahPF2MhkRdpGxM+5pjA1LOCJjWUc=;
-        b=f7sY/obVKpu8pVYW+KM20HsuY4X3PHKCAtmTseOusognpDnmt4g4DibTHuEg6uEjb4
-         T99S9uv1080q+WxpfS2EHwLG7Ay3TbRCrtvebDuSanRT/NSH4sBQD3dFQQs/U9f5pUnQ
-         bh3vxwLhepEI+jwKKZttWTDFz4279e86uAy4Y7m4tcqnx+e1M5DKBkbgt5b5qGz2boLw
-         U68CqQa/5/TEvHZArG7ig1KnwumzhdLRew6StP5H8E1ADCTVg6AXaNv8IVkekjsFBk5a
-         mq6/CQ2xzmGgjUsV3EjBDn2oD5fjvHTOxkm8mfzgd+1m6+KcNBVNtbZCfyebH2u8sglq
-         rmUg==
-X-Gm-Message-State: AOAM531xIcKH+i1jOO0mUYnY4Hp7Fg00ypvuYfEt5rY8t+CtL4gQ/UHy
-        ExXajI728I962JJJqeZsEwQ=
-X-Google-Smtp-Source: ABdhPJySlPJX+5wSZiGXs3aTLYF3FP4syhZTj4GSQN2pZhFq/YPl9Z6nMYMsZfnD64YioPfafQ+hGg==
-X-Received: by 2002:a17:90a:ef81:: with SMTP id m1mr1995068pjy.212.1604009367153;
-        Thu, 29 Oct 2020 15:09:27 -0700 (PDT)
+        bh=LexN8YVXygah8E+BhRyOEnkuxN6ep+Yup593pkObYw0=;
+        b=qUXBkhiJdduy6V4qpwzY4UlKmtAlCvbNe1O4V9CWV4z6GT66OjNEa9wxRgGxT2Zvr5
+         p6/n0csvfC+0eLd4Ehgeotkxze1jhS8TSNQkgDt5hWUN0xLvYBdXI1Z+ptnZxWr6mMzC
+         TSxVKYJOXiqP0PjqEpoert0wEj68lF8Jj1LmghxdJ9rCuKCDMao3JPTaA7gTAjUMmRGD
+         WhoOyFl3CjF0jp5MUbdPAAlHUtKhvu3uBgs8Kdxh9SZjbedNBf6NngMXLlrDahcTdkcG
+         IoOruy6cwBP8DenQnlZHoKm+GYsFPeH61npZgvhDkdU7dSFChHnzJB6Ts1pv9Tz/5aYL
+         fxIg==
+X-Gm-Message-State: AOAM5308c8tU87UPgyofZecLOro3PP1ln1L/l3AfdbDibvE/7rvJ8OOq
+        wGSwBoEocfQd2nl4V/a8bGQ=
+X-Google-Smtp-Source: ABdhPJy0Ttsg8HNWGwX6Kp9sWCdg1yCF7JN7GB9BQAAWDnhcJBBXT+RwpK391AYg+TINn+AdKcRV2w==
+X-Received: by 2002:a63:f446:: with SMTP id p6mr2917548pgk.67.1604009568803;
+        Thu, 29 Oct 2020 15:12:48 -0700 (PDT)
 Received: from SL2P216MB0475.KORP216.PROD.OUTLOOK.COM ([2603:1046:100:19::5])
-        by smtp.gmail.com with ESMTPSA id s38sm3556477pgm.62.2020.10.29.15.09.17
+        by smtp.gmail.com with ESMTPSA id b7sm4100754pfr.171.2020.10.29.15.12.39
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 29 Oct 2020 15:09:26 -0700 (PDT)
+        Thu, 29 Oct 2020 15:12:47 -0700 (PDT)
 From:   Jingoo Han <jingoohan1@gmail.com>
 To:     Rob Herring <robh@kernel.org>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
@@ -97,17 +97,16 @@ CC:     "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
         Xiaowei Song <songxiaowei@hisilicon.com>,
         Yue Wang <yue.wang@Amlogic.com>,
         Han Jingoo <jingoohan1@gmail.com>
-Subject: Re: [PATCH 03/13] PCI: dwc: Move "dbi", "dbi2", and "addr_space"
- resource setup into common code
-Thread-Topic: [PATCH 03/13] PCI: dwc: Move "dbi", "dbi2", and "addr_space"
- resource setup into common code
-Thread-Index: AQHWrWt+/uCmOjVzWE+cqKXErEipD6mvJWds
+Subject: Re: [PATCH 05/13] PCI: dwc: Ensure all outbound ATU windows are reset
+Thread-Topic: [PATCH 05/13] PCI: dwc: Ensure all outbound ATU windows are
+ reset
+Thread-Index: AQHWrWuC4GikzhqGKUGSkw9tkhUTo6mvJla0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Date:   Thu, 29 Oct 2020 22:09:15 +0000
-Message-ID: <SL2P216MB04752DF9839E1CCC8D1B1706AA140@SL2P216MB0475.KORP216.PROD.OUTLOOK.COM>
+Date:   Thu, 29 Oct 2020 22:12:36 +0000
+Message-ID: <SL2P216MB0475A290104BEB83332A89B5AA140@SL2P216MB0475.KORP216.PROD.OUTLOOK.COM>
 References: <20201028204646.356535-1-robh@kernel.org>
- <20201028204646.356535-4-robh@kernel.org>
-In-Reply-To: <20201028204646.356535-4-robh@kernel.org>
+ <20201028204646.356535-6-robh@kernel.org>
+In-Reply-To: <20201028204646.356535-6-robh@kernel.org>
 Accept-Language: ko-KR, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -121,24 +120,18 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/28/20, 4:46 PM, Rob Herring wrote:
+On 10/28/20, 4:47 PM, Rob Herring wrote:
 >=20
-> Most DWC drivers use the common register resource names "dbi", "dbi2", an=
-d
-> "addr_space", so let's move their setup into the DWC common code.
+> The Layerscape driver clears the ATU registers which may have been
+> configured by the bootloader. Any driver could have the same issue
+> and doing it for all drivers doesn't hurt, so let's move it into the
+> common DWC code.
 >
-> This means 'dbi_base' in particular is setup later, but it looks like no
-> drivers touch DBI registers before dw_pcie_host_init or dw_pcie_ep_init.
->
-> Cc: Kishon Vijay Abraham I <kishon@ti.com>
-> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Murali Karicheri <m-karicheri2@ti.com>
 > Cc: Minghuan Lian <minghuan.Lian@nxp.com>
 > Cc: Mingkai Hu <mingkai.hu@nxp.com>
 > Cc: Roy Zang <roy.zang@nxp.com>
-> Cc: Jonathan Chocron <jonnyc@amazon.com>
-> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
+> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
 > Cc: Jingoo Han <jingoohan1@gmail.com>
 
 Acked-by: Jingoo Han <jingoohan1@gmail.com>
@@ -147,38 +140,73 @@ Best regards,
 Jingoo Han
 
 > Cc: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-> Cc: Xiaowei Song <songxiaowei@hisilicon.com>
-> Cc: Binghui Wang <wangbinghui@hisilicon.com>
-> Cc: Andy Gross <agross@kernel.org>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Stanimir Varbanov <svarbanov@mm-sol.com>
-> Cc: Pratyush Anand <pratyush.anand@gmail.com>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> Cc: linux-omap@vger.kernel.org
 > Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-arm-kernel@axis.com
-> Cc: linux-arm-msm@vger.kernel.org
-> Cc: linux-tegra@vger.kernel.org
 > Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
->  drivers/pci/controller/dwc/pci-dra7xx.c       |  8 ----
->  drivers/pci/controller/dwc/pci-keystone.c     | 29 +-----------
->  .../pci/controller/dwc/pci-layerscape-ep.c    | 37 +--------------
->  drivers/pci/controller/dwc/pcie-al.c          |  9 +---
->  drivers/pci/controller/dwc/pcie-artpec6.c     | 43 ++----------------
->  .../pci/controller/dwc/pcie-designware-ep.c   | 29 ++++++++++--
->  .../pci/controller/dwc/pcie-designware-host.c |  7 +++
->  .../pci/controller/dwc/pcie-designware-plat.c | 45 +------------------
->  drivers/pci/controller/dwc/pcie-intel-gw.c    |  4 --
->  drivers/pci/controller/dwc/pcie-kirin.c       |  5 ---
->  drivers/pci/controller/dwc/pcie-qcom.c        |  8 ----
->  drivers/pci/controller/dwc/pcie-spear13xx.c   | 11 +----
->  drivers/pci/controller/dwc/pcie-tegra194.c    | 22 ---------
->  drivers/pci/controller/dwc/pcie-uniphier-ep.c | 38 +---------------
->  drivers/pci/controller/dwc/pcie-uniphier.c    |  6 ---
->  15 files changed, 47 insertions(+), 254 deletions(-)
+>  drivers/pci/controller/dwc/pci-layerscape.c       | 14 --------------
+>  drivers/pci/controller/dwc/pcie-designware-host.c |  5 +++++
+>  2 files changed, 5 insertions(+), 14 deletions(-)
+>
+>  diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/c=
+ontroller/dwc/pci-layerscape.c
+>  index f24f79a70d9a..53e56d54c482 100644
+>  --- a/drivers/pci/controller/dwc/pci-layerscape.c
+>  +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+>  @@ -83,14 +83,6 @@ static void ls_pcie_drop_msg_tlp(struct ls_pcie *pcie=
+)
+>   	iowrite32(val, pci->dbi_base + PCIE_STRFMR1);
+>   }
+> =20
+>  -static void ls_pcie_disable_outbound_atus(struct ls_pcie *pcie)
+>  -{
+>  -	int i;
+>  -
+>  -	for (i =3D 0; i < PCIE_IATU_NUM; i++)
+>  -		dw_pcie_disable_atu(pcie->pci, i, DW_PCIE_REGION_OUTBOUND);
+>  -}
+>  -
+>   static int ls1021_pcie_link_up(struct dw_pcie *pci)
+>   {
+>   	u32 state;
+>  @@ -136,12 +128,6 @@ static int ls_pcie_host_init(struct pcie_port *pp)
+>   	struct dw_pcie *pci =3D to_dw_pcie_from_pp(pp);
+>   	struct ls_pcie *pcie =3D to_ls_pcie(pci);
+> =20
+>  -	/*
+>  -	 * Disable outbound windows configured by the bootloader to avoid
+>  -	 * one transaction hitting multiple outbound windows.
+>  -	 * dw_pcie_setup_rc() will reconfigure the outbound windows.
+>  -	 */
+>  -	ls_pcie_disable_outbound_atus(pcie);
+>   	ls_pcie_fix_error_response(pcie);
+> =20
+>   	dw_pcie_dbi_ro_wr_en(pci);
+>  diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers=
+/pci/controller/dwc/pcie-designware-host.c
+>  index cde45b2076ee..265a48f1a0ae 100644
+>  --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+>  +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+>  @@ -534,6 +534,7 @@ static struct pci_ops dw_pcie_ops =3D {
+> =20
+>   void dw_pcie_setup_rc(struct pcie_port *pp)
+>   {
+>  +	int i;
+>   	u32 val, ctrl, num_ctrls;
+>   	struct dw_pcie *pci =3D to_dw_pcie_from_pp(pp);
+> =20
+>  @@ -583,6 +584,10 @@ void dw_pcie_setup_rc(struct pcie_port *pp)
+>   		PCI_COMMAND_MASTER | PCI_COMMAND_SERR;
+>   	dw_pcie_writel_dbi(pci, PCI_COMMAND, val);
+> =20
+>  +	/* Ensure all outbound windows are disabled so there are multiple matc=
+hes */
+>  +	for (i =3D 0; i < pci->num_viewport; i++)
+>  +		dw_pcie_disable_atu(pci, i, DW_PCIE_REGION_OUTBOUND);
+>  +
+>   	/*
+>   	 * If the platform provides its own child bus config accesses, it mean=
+s
+>   	 * the platform uses its own address translation component rather than
+>  --=20
+>  2.25.1
 
-[...]
