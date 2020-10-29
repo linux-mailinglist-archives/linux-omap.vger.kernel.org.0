@@ -2,82 +2,143 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 891CD29DC5E
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Oct 2020 01:28:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4907C29DC1C
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Oct 2020 01:21:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388388AbgJ1Wdd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Oct 2020 18:33:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47482 "EHLO mail.kernel.org"
+        id S2390797AbgJ2AV3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Oct 2020 20:21:29 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:44765 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388384AbgJ1Wdc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:33:32 -0400
-Received: from kozik-lap.proceq-device.com (unknown [194.230.155.184])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1727315AbgJ2AV1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 28 Oct 2020 20:21:27 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 43DE620731;
-        Wed, 28 Oct 2020 22:33:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603924411;
-        bh=eWfEGkJKN4hzXyneYZiCS7LVfHIUvAWEodm+KnOsw1s=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=eziRXj/TqKh0LCKY1nYiZuc40F5ZBBFCBXPWHn3BalNDmKLPxrFvlOkifQKSVdctN
-         wZ0wSvafWdHebDr7LJWQwtghun+MGwEwObjVDwaUeggWxT2KxmeOcvRTT+8H+R8G3W
-         MT0PyZgNvdttSo7FdaR6XoumWnL3j6p4xhEnWp9w=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Andy Shevchenko <andy@kernel.org>, Milo Kim <milo.kim@ti.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4CM5hY1c5jz9sTf;
+        Thu, 29 Oct 2020 11:21:17 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1603930883;
+        bh=1H+0lWYSxaRNRPccmOFzTYzYgErk8Jx3rJ+1kAphuRA=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=fBZNMVGf2DpDigzvlO5EFKrSfhcHEKaclKWRSpd0rMT3nijHNgh+K7YZaMcJgG+I1
+         Sqp0aSWWEEdsZy58/OpXsqjKdLh1Go0930GvCaNP/rPdkcm6jj8VLu+RtZAYju7Lwv
+         1OyJzCDTJEPo7fb3YVK+7vVSD947EigxRUEp47FaWl3boTdjoiwTlcbdL3lqCGS/Ir
+         HjS3q0q57c4NP98/lAG95E/PIIhVcbnSgznNbTvydd0ukv+wu90vIX/fgrejZmKL/x
+         fFgnf7BJJuzQ19szmCiiqO1GyzQ9nRbhKLLimDSXto/YVs3qcf351XsGaZm3WEkFCR
+         8YPZdn5UhcwWA==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Rob Herring <robh@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Cc:     Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        linux-pci@vger.kernel.org,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-tegra@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-arm-kernel@axis.com,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Minghuan Lian <minghuan.Lian@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
         Krzysztof Kozlowski <krzk@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>,
-        patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [RESEND PATCH 37/42] mfd: tps80031: use PLATFORM_DEVID_NONE
-Date:   Wed, 28 Oct 2020 23:30:04 +0100
-Message-Id: <20201028223009.369824-37-krzk@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201028223009.369824-1-krzk@kernel.org>
-References: <20201028223009.369824-1-krzk@kernel.org>
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Kukjin Kim <kgene@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-arm-msm@vger.kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Yue Wang <yue.wang@Amlogic.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
+        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        linuxppc-dev@lists.ozlabs.org, Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 01/13] PCI: dwc/imx6: Drop setting PCI_MSI_FLAGS_ENABLE
+In-Reply-To: <20201028204646.356535-2-robh@kernel.org>
+References: <20201028204646.356535-1-robh@kernel.org> <20201028204646.356535-2-robh@kernel.org>
+Date:   Thu, 29 Oct 2020 11:21:16 +1100
+Message-ID: <87h7qdx4oz.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use PLATFORM_DEVID_NONE define instead of "-1" value because:
- - it brings some meaning,
- - it might point attention why auto device ID was not used.
+Rob Herring <robh@kernel.org> writes:
+> No other host driver sets the PCI_MSI_FLAGS_ENABLE bit, so it must not
+> be necessary. If it is, a comment is needed.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- drivers/mfd/tps80031.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yeah, but git blame directly points to:
 
-diff --git a/drivers/mfd/tps80031.c b/drivers/mfd/tps80031.c
-index 907452b86e32..c8ea8fbae281 100644
---- a/drivers/mfd/tps80031.c
-+++ b/drivers/mfd/tps80031.c
-@@ -488,7 +488,7 @@ static int tps80031_probe(struct i2c_client *client,
- 
- 	tps80031_init_ext_control(tps80031, pdata);
- 
--	ret = mfd_add_devices(tps80031->dev, -1,
-+	ret = mfd_add_devices(tps80031->dev, PLATFORM_DEVID_NONE,
- 			tps80031_cell, ARRAY_SIZE(tps80031_cell),
- 			NULL, 0,
- 			regmap_irq_get_domain(tps80031->irq_data));
--- 
-2.25.1
+  75cb8d20c112 ("PCI: imx: Enable MSI from downstream components")
 
+Which has a pretty long explanation. The relevant bit probably being:
+
+  ... on i.MX6, the MSI Enable bit controls delivery of MSI interrupts
+  from components below the Root Port.
+
+
+So it seems a little rash to just remove the code.
+
+cheers
+
+
+> Cc: Richard Zhu <hongxing.zhu@nxp.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: NXP Linux Team <linux-imx@nxp.com>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 8 --------
+>  1 file changed, 8 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 5cf1ef12fb9b..7dd137d62dca 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1002,7 +1002,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  	struct resource *dbi_base;
+>  	struct device_node *node = dev->of_node;
+>  	int ret;
+> -	u16 val;
+>  
+>  	imx6_pcie = devm_kzalloc(dev, sizeof(*imx6_pcie), GFP_KERNEL);
+>  	if (!imx6_pcie)
+> @@ -1167,13 +1166,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	if (pci_msi_enabled()) {
+> -		u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_MSI);
+> -		val = dw_pcie_readw_dbi(pci, offset + PCI_MSI_FLAGS);
+> -		val |= PCI_MSI_FLAGS_ENABLE;
+> -		dw_pcie_writew_dbi(pci, offset + PCI_MSI_FLAGS, val);
+> -	}
+> -
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.25.1
