@@ -2,97 +2,183 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F84629F5D7
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Oct 2020 21:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA4B529F76A
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Oct 2020 23:09:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725857AbgJ2UG7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Oct 2020 16:06:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35192 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725780AbgJ2UG6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 29 Oct 2020 16:06:58 -0400
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CE40920838;
-        Thu, 29 Oct 2020 20:06:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604002018;
-        bh=3ee2H3sUwyx/8rE8gP9aaBm6w6H9vu9kgempmOfZWZ0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mrX4ICg77DM2TA/Xnm8M3WWgU+PVNx204bdtsmHd4OenwIQTtmB8wNQM2tRmMS7EY
-         6yoV4TdJVq1mh7A8FN+2r7SbsS2x39JM54ixGOFgeJfP3b/5Qd11QlKoASnv05ieDg
-         xqBv1TBkQ12rfcAj5VeJPmy7eBon9fyF12rbT7yI=
-Received: by mail-qt1-f177.google.com with SMTP id f93so2661499qtb.10;
-        Thu, 29 Oct 2020 13:06:57 -0700 (PDT)
-X-Gm-Message-State: AOAM533D5E4cs4qZQu4IGhlscJCyCvL0ldnAGNR2FqQP941yUdapBG3Z
-        sC2lmsnm10UwbA0sDJ8KhZ73UQgw/n2u1C3n+FA=
-X-Google-Smtp-Source: ABdhPJw55/tBQsFzDOvsZs3tdvpQx8BqJxYgXHmI2UwMHNOIXAEMY7afMdDadhUT8pGtDLsO2FcFGmOLFE/FYb8Zcvw=
-X-Received: by 2002:ac8:7955:: with SMTP id r21mr5238436qtt.204.1604002016842;
- Thu, 29 Oct 2020 13:06:56 -0700 (PDT)
+        id S1725832AbgJ2WJ2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Oct 2020 18:09:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52424 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725372AbgJ2WJ1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Oct 2020 18:09:27 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E721C0613D2;
+        Thu, 29 Oct 2020 15:09:27 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id g12so3482578pgm.8;
+        Thu, 29 Oct 2020 15:09:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:thread-topic:thread-index:date:message-id
+         :references:in-reply-to:accept-language:content-language
+         :content-transfer-encoding:mime-version;
+        bh=U8lXi8OOUAKAM9HahPF2MhkRdpGxM+5pjA1LOCJjWUc=;
+        b=CHz77CTXIopVkDxKJbskTpevdxOSErQasxAubh+6XkNKbmt/zLZmVMXibi5/HjH/pS
+         zIbuovqvbQ744DbkJN2jcoQdGJGyQwaAgfc3fjciWEMeOu4Okb0yGJEs6nXkzuKqT2jv
+         95HlWsYsbQYe7Z6O1TyIZfvd0yOeIm5oh4f28/B+3RwEHyqhPQt3QsoK8RoqZySOSGL6
+         iZ5S16MRosVlHePQlw6lxoW05ZwRHCvZ8Zdb3p5J8KoN9KWq899H8ajHZu+9NdJi1LkH
+         Ei4CHD9QIBNsUSZ4b7X4QVRuZv6pl0yk4T1r44uSVYWRc1FlfRksdP88IOS3alDxWRhH
+         YsZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:thread-topic:thread-index
+         :date:message-id:references:in-reply-to:accept-language
+         :content-language:content-transfer-encoding:mime-version;
+        bh=U8lXi8OOUAKAM9HahPF2MhkRdpGxM+5pjA1LOCJjWUc=;
+        b=f7sY/obVKpu8pVYW+KM20HsuY4X3PHKCAtmTseOusognpDnmt4g4DibTHuEg6uEjb4
+         T99S9uv1080q+WxpfS2EHwLG7Ay3TbRCrtvebDuSanRT/NSH4sBQD3dFQQs/U9f5pUnQ
+         bh3vxwLhepEI+jwKKZttWTDFz4279e86uAy4Y7m4tcqnx+e1M5DKBkbgt5b5qGz2boLw
+         U68CqQa/5/TEvHZArG7ig1KnwumzhdLRew6StP5H8E1ADCTVg6AXaNv8IVkekjsFBk5a
+         mq6/CQ2xzmGgjUsV3EjBDn2oD5fjvHTOxkm8mfzgd+1m6+KcNBVNtbZCfyebH2u8sglq
+         rmUg==
+X-Gm-Message-State: AOAM531xIcKH+i1jOO0mUYnY4Hp7Fg00ypvuYfEt5rY8t+CtL4gQ/UHy
+        ExXajI728I962JJJqeZsEwQ=
+X-Google-Smtp-Source: ABdhPJySlPJX+5wSZiGXs3aTLYF3FP4syhZTj4GSQN2pZhFq/YPl9Z6nMYMsZfnD64YioPfafQ+hGg==
+X-Received: by 2002:a17:90a:ef81:: with SMTP id m1mr1995068pjy.212.1604009367153;
+        Thu, 29 Oct 2020 15:09:27 -0700 (PDT)
+Received: from SL2P216MB0475.KORP216.PROD.OUTLOOK.COM ([2603:1046:100:19::5])
+        by smtp.gmail.com with ESMTPSA id s38sm3556477pgm.62.2020.10.29.15.09.17
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 29 Oct 2020 15:09:26 -0700 (PDT)
+From:   Jingoo Han <jingoohan1@gmail.com>
+To:     Rob Herring <robh@kernel.org>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+CC:     "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        "linux-amlogic@lists.infradead.org" 
+        <linux-amlogic@lists.infradead.org>,
+        "linux-arm-kernel@axis.com" <linux-arm-kernel@axis.com>,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Minghuan Lian <minghuan.Lian@nxp.com>,
+        Mingkai Hu <mingkai.hu@nxp.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Roy Zang <roy.zang@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        Yue Wang <yue.wang@Amlogic.com>,
+        Han Jingoo <jingoohan1@gmail.com>
+Subject: Re: [PATCH 03/13] PCI: dwc: Move "dbi", "dbi2", and "addr_space"
+ resource setup into common code
+Thread-Topic: [PATCH 03/13] PCI: dwc: Move "dbi", "dbi2", and "addr_space"
+ resource setup into common code
+Thread-Index: AQHWrWt+/uCmOjVzWE+cqKXErEipD6mvJWds
+X-MS-Exchange-MessageSentRepresentingType: 1
+Date:   Thu, 29 Oct 2020 22:09:15 +0000
+Message-ID: <SL2P216MB04752DF9839E1CCC8D1B1706AA140@SL2P216MB0475.KORP216.PROD.OUTLOOK.COM>
+References: <20201028204646.356535-1-robh@kernel.org>
+ <20201028204646.356535-4-robh@kernel.org>
+In-Reply-To: <20201028204646.356535-4-robh@kernel.org>
+Accept-Language: ko-KR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-Exchange-Organization-SCL: -1
+X-MS-TNEF-Correlator: 
+X-MS-Exchange-Organization-RecordReviewCfmType: 0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20201001202725.16034-1-grygorii.strashko@ti.com>
- <20201002125000.5b5kho4e5de7jjrj@akan> <bb6e0bd9-a8fe-f63b-14fd-92a1f8cea0bb@ti.com>
-In-Reply-To: <bb6e0bd9-a8fe-f63b-14fd-92a1f8cea0bb@ti.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Thu, 29 Oct 2020 21:06:39 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1-CCcKmEkdw+NNr4Yo7z+BEzX0g7uU_SnXOB+VEZm8HA@mail.gmail.com>
-Message-ID: <CAK8P3a1-CCcKmEkdw+NNr4Yo7z+BEzX0g7uU_SnXOB+VEZm8HA@mail.gmail.com>
-Subject: Re: [PATCH] ARM: multi_v7_defconfig: ti: Enable networking options
- for nfs boot
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Nishanth Menon <nm@ti.com>, Tony Lindgren <tony@atomide.com>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Russell King <linux@armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Oct 29, 2020 at 8:15 PM Grygorii Strashko
-<grygorii.strashko@ti.com> wrote:
-> On 02/10/2020 15:50, Nishanth Menon wrote:
-> > On 23:27-20201001, Grygorii Strashko wrote:
-> >> Enable networking options required for NFS boot on TI platforms, which is
-> >> widely for automated test systems.
-> >> - enable new TI CPSW switch driver and related NET_SWITCHDEV config
-> >> - enable TI DP83867 phy
-> >> - explicitly enable PTP clock support to ensure dependent networking
-> >> drivers will stay built-in
-> >>
-> >> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> >> ---
-> >>   arch/arm/configs/multi_v7_defconfig | 5 +++++
-> >>   1 file changed, 5 insertions(+)
-> >>
-> >
-> > [...]
-> >
-> > Reviewed-by: Nishanth Menon <nm@ti.com>
-> >
+On 10/28/20, 4:46 PM, Rob Herring wrote:
+>=20
+> Most DWC drivers use the common register resource names "dbi", "dbi2", an=
+d
+> "addr_space", so let's move their setup into the DWC common code.
 >
-> Are there any actions need to be done to have this patch merged?
+> This means 'dbi_base' in particular is setup later, but it looks like no
+> drivers touch DBI registers before dw_pcie_host_init or dw_pcie_ep_init.
+>
+> Cc: Kishon Vijay Abraham I <kishon@ti.com>
+> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Murali Karicheri <m-karicheri2@ti.com>
+> Cc: Minghuan Lian <minghuan.Lian@nxp.com>
+> Cc: Mingkai Hu <mingkai.hu@nxp.com>
+> Cc: Roy Zang <roy.zang@nxp.com>
+> Cc: Jonathan Chocron <jonnyc@amazon.com>
+> Cc: Jesper Nilsson <jesper.nilsson@axis.com>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
 
-I would prefer if a platform maintainer (I assume Tony in this case)
-picks it up and forwards it to soc@kernel.org together with other
-related changes. Olof and I tend to ignore patches sent directly
-to us, so we don't get in the way of platform maintainers that
-may have already merged similar patches or have comments.
+Acked-by: Jingoo Han <jingoohan1@gmail.com>
 
-I suspect Tony didn't pick it up either because from the patch
-subject and the description, it is not clear that he is the one
-to act on it. It helps to be more specific and ask the maintainer
-by addressing them in person below the '---' line, as well as
-only putting one person in 'To:' and the rest in 'Cc:'.
+Best regards,
+Jingoo Han
 
-One comment on the contents of the patch: IIRC this is a fairly
-large driver. To ensure we don't burden other users too much,
-can you include the size of the vmlinux file before and after
-this patch?
+> Cc: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+> Cc: Xiaowei Song <songxiaowei@hisilicon.com>
+> Cc: Binghui Wang <wangbinghui@hisilicon.com>
+> Cc: Andy Gross <agross@kernel.org>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Stanimir Varbanov <svarbanov@mm-sol.com>
+> Cc: Pratyush Anand <pratyush.anand@gmail.com>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Jonathan Hunter <jonathanh@nvidia.com>
+> Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: linux-omap@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-arm-kernel@axis.com
+> Cc: linux-arm-msm@vger.kernel.org
+> Cc: linux-tegra@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  drivers/pci/controller/dwc/pci-dra7xx.c       |  8 ----
+>  drivers/pci/controller/dwc/pci-keystone.c     | 29 +-----------
+>  .../pci/controller/dwc/pci-layerscape-ep.c    | 37 +--------------
+>  drivers/pci/controller/dwc/pcie-al.c          |  9 +---
+>  drivers/pci/controller/dwc/pcie-artpec6.c     | 43 ++----------------
+>  .../pci/controller/dwc/pcie-designware-ep.c   | 29 ++++++++++--
+>  .../pci/controller/dwc/pcie-designware-host.c |  7 +++
+>  .../pci/controller/dwc/pcie-designware-plat.c | 45 +------------------
+>  drivers/pci/controller/dwc/pcie-intel-gw.c    |  4 --
+>  drivers/pci/controller/dwc/pcie-kirin.c       |  5 ---
+>  drivers/pci/controller/dwc/pcie-qcom.c        |  8 ----
+>  drivers/pci/controller/dwc/pcie-spear13xx.c   | 11 +----
+>  drivers/pci/controller/dwc/pcie-tegra194.c    | 22 ---------
+>  drivers/pci/controller/dwc/pcie-uniphier-ep.c | 38 +---------------
+>  drivers/pci/controller/dwc/pcie-uniphier.c    |  6 ---
+>  15 files changed, 47 insertions(+), 254 deletions(-)
 
-      Arnd
+[...]
