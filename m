@@ -2,111 +2,117 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 219B32A0D32
-	for <lists+linux-omap@lfdr.de>; Fri, 30 Oct 2020 19:15:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AABBA2A0F1F
+	for <lists+linux-omap@lfdr.de>; Fri, 30 Oct 2020 21:07:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726095AbgJ3SPw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 30 Oct 2020 14:15:52 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:39568 "EHLO
+        id S1727317AbgJ3UHI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 30 Oct 2020 16:07:08 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:33138 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725844AbgJ3SPw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 30 Oct 2020 14:15:52 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 09UIFkEl069707;
-        Fri, 30 Oct 2020 13:15:46 -0500
+        with ESMTP id S1725975AbgJ3UHI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 30 Oct 2020 16:07:08 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 09UK71rY108040;
+        Fri, 30 Oct 2020 15:07:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604081746;
-        bh=9dgcKo3td0TMDTyJTQO2t4p6XonAw2x1KObaMxUhugI=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=M8PYW0TLGUb7ESlGjL2CdFH3YaD98GhUYL8wYWbb8aXKPmvXax9952OBeBhlA48pe
-         CWkyr1PTjryjNazbRkN/4oRcFe8TeMTK8zaMIxDB3KULfdivEMbuYOQeKV5rWigoft
-         aXUbYdtDwwd+jBkv3ZgSBbVLd8XM71iiepnrTnPs=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 09UIFka7020280
+        s=ti-com-17Q1; t=1604088421;
+        bh=rIc2Rlbdsgh8YepaFO9M3sefdA21E5gYn0Lu0N3mkqA=;
+        h=From:To:CC:Subject:Date;
+        b=J9zns5qNqPKUIoZlBpxlD65oINfytI+Li2MVOS6oHa4Wiof5gmcd1mPONzWH/rm86
+         NA3+zqZKIuuVpEriPIx70dKOmzdrcfNjY0B6hIh2B1sujyKNaqo7hh4hCc37dlCSXr
+         QV2KZJkls/GTzncDBfZmBBTFtyWL4/tOROTmBpOo=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 09UK71Md035328
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 30 Oct 2020 13:15:46 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 30 Oct 2020 15:07:01 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 30
- Oct 2020 13:15:46 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2020 15:07:01 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 30 Oct 2020 13:15:46 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 09UIFgcK032563;
-        Fri, 30 Oct 2020 13:15:43 -0500
-Subject: Re: [PATCH 4/4] bus: ti-sysc: Fix bogus resetdone warning for cpsw
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
-CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20201026105812.38418-1-tony@atomide.com>
- <20201026105812.38418-5-tony@atomide.com>
+ Frontend Transport; Fri, 30 Oct 2020 15:07:01 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 09UK70sH100346;
+        Fri, 30 Oct 2020 15:07:01 -0500
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <b8a3cfc1-f9f5-1b18-b980-e88eb8b20e43@ti.com>
-Date:   Fri, 30 Oct 2020 20:15:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        "Reviewed-by : Jesse Brandeburg" <jesse.brandeburg@intel.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH net-next v3 00/10] net: ethernet: ti: am65-cpsw: add multi port support in mac-only mode
+Date:   Fri, 30 Oct 2020 22:06:57 +0200
+Message-ID: <20201030200707.24294-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20201026105812.38418-5-tony@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+Hi
 
-On 26/10/2020 12:58, Tony Lindgren wrote:
-> The cpsw SOFT_RESET register is cleard when out of reset so let's
-> add SYSS_QUIRK_RESETDONE_INVERTED flag for cpsw. Otherwise we will
-> get bogus "OCP softreset timed out" warnings on boot.
+This series adds multi-port support in mac-only mode (multi MAC mode) to TI
+AM65x CPSW driver in preparation for enabling support for multi-port devices,
+like Main CPSW0 on K3 J721E SoC or future CPSW3g on K3 AM64x SoC.
 
-Not sure if this quirk based approach is right way to move forward here.
+The multi MAC mode is implemented by configuring every enabled port in "mac-only"
+mode (all ingress packets are sent only to the Host port and egress packets
+directed to target Ext. Port) and creating separate net_device for
+every enabled Ext. port.
 
-The cpsw/cpgmac is "ti,sysc-omap4-simple" which means sysc_omap4_simple, which,
-in turn, has .srst_shift = -ENODEV.
+This series does not affect on existing CPSW2g one Ext. Port devices and xmit
+path changes are done only for multi-port devices by splitting xmit path for
+one-port and multi-port devices. 
 
-And above should be enough to avoid both sysc_reset() and sysc_wait_softreset() for such modules.
+Patches 1-3: Preparation patches to improve K3 CPSW configuration depending on DT
+Patches 4-5: Fix VLAN offload for multi MAC mode
+Patch 6: Fixes CPTS context lose issue during PM runtime transition
+Patch 7: Fixes TX csum offload for multi MAC mode
+Patches 8-9: add multi-port support to TI AM65x CPSW
+Patch 10: handle deferred probe with new dev_err_probe() API
 
+changes in v3:
+ - rebased
+ - added Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+ - added Patch 10 which is minor optimization
 
-> 
-> Fixes: d46f9fbec719 ("bus: ti-sysc: Use optional clocks on for enable and wait for softreset bit")
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->   drivers/bus/ti-sysc.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-> --- a/drivers/bus/ti-sysc.c
-> +++ b/drivers/bus/ti-sysc.c
-> @@ -1364,6 +1364,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
->   	/* Quirks that need to be set based on detected module */
->   	SYSC_QUIRK("aess", 0, 0, 0x10, -ENODEV, 0x40000000, 0xffffffff,
->   		   SYSC_MODULE_QUIRK_AESS),
-> +	SYSC_QUIRK("cpgmac", 0, 0x1200, 0x1208, 0x1204, 0x4edb1902,
-> +		   0xffff00f0, SYSS_QUIRK_RESETDONE_INVERTED),
->   	SYSC_QUIRK("dcan", 0x48480000, 0x20, -ENODEV, -ENODEV, 0xa3170504, 0xffffffff,
->   		   SYSC_QUIRK_CLKDM_NOAUTO),
->   	SYSC_QUIRK("dss", 0x4832a000, 0, 0x10, 0x14, 0x00000020, 0xffffffff,
-> @@ -1423,8 +1425,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
->   	SYSC_QUIRK("atl", 0, 0, -ENODEV, -ENODEV, 0x0a070100, 0xffffffff, 0),
->   	SYSC_QUIRK("cm", 0, 0, -ENODEV, -ENODEV, 0x40000301, 0xffffffff, 0),
->   	SYSC_QUIRK("control", 0, 0, 0x10, -ENODEV, 0x40000900, 0xffffffff, 0),
-> -	SYSC_QUIRK("cpgmac", 0, 0x1200, 0x1208, 0x1204, 0x4edb1902,
-> -		   0xffff00f0, 0),
->   	SYSC_QUIRK("dcan", 0, 0x20, -ENODEV, -ENODEV, 0xa3170504, 0xffffffff, 0),
->   	SYSC_QUIRK("dcan", 0, 0x20, -ENODEV, -ENODEV, 0x4edb1902, 0xffffffff, 0),
->   	SYSC_QUIRK("dispc", 0x4832a400, 0, 0x10, 0x14, 0x00000030, 0xffffffff, 0),
-> 
+changes in v2:
+- patch 8: xmit path split for one-port and multi-port devices to avoid
+  performance losses 
+- patch 9: fixed the case when Port 1 is disabled
+- Patch 7: added fix for TX csum offload 
+
+v2: https://lore.kernel.org/patchwork/cover/1321608/
+v1: https://lore.kernel.org/patchwork/cover/1315766/
+
+Grygorii Strashko (10):
+  net: ethernet: ti: am65-cpsw: move ale selection in pdata
+  net: ethernet: ti: am65-cpsw: move free desc queue mode selection in
+    pdata
+  net: ethernet: ti: am65-cpsw: use cppi5_desc_is_tdcm()
+  net: ethernet: ti: cpsw_ale: add cpsw_ale_vlan_del_modify()
+  net: ethernet: ti: am65-cpsw: fix vlan offload for multi mac mode
+  net: ethernet: ti: am65-cpsw: keep active if cpts enabled
+  net: ethernet: ti: am65-cpsw: fix tx csum offload for multi mac mode
+  net: ethernet: ti: am65-cpsw: prepare xmit/rx path for multi-port
+    devices in mac-only mode
+  net: ethernet: ti: am65-cpsw: add multi port support in mac-only mode
+  net: ethernet: ti: am65-cpsw: handle deferred probe with
+    dev_err_probe()
+
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 355 ++++++++++++++---------
+ drivers/net/ethernet/ti/am65-cpsw-nuss.h |   5 +
+ drivers/net/ethernet/ti/cpsw_ale.c       |  41 ++-
+ drivers/net/ethernet/ti/cpsw_ale.h       |   1 +
+ drivers/net/ethernet/ti/cpsw_switchdev.c |   2 +-
+ 5 files changed, 261 insertions(+), 143 deletions(-)
 
 -- 
-Best regards,
-grygorii
+2.17.1
+
