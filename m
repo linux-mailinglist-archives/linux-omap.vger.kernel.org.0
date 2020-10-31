@@ -2,100 +2,193 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F02E52A1728
-	for <lists+linux-omap@lfdr.de>; Sat, 31 Oct 2020 12:57:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 314E62A19B1
+	for <lists+linux-omap@lfdr.de>; Sat, 31 Oct 2020 19:40:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727060AbgJaL5C (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 31 Oct 2020 07:57:02 -0400
-Received: from sender11-of-o52.zoho.eu ([31.186.226.238]:21398 "EHLO
-        sender11-of-o52.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726935AbgJaL5A (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 31 Oct 2020 07:57:00 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1604145414; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=MZ8pIxrRpLEhCIvwpU17BAGHD3nxKeKfA5vaAQt0/UDiHozfJsSAdk838ZssFKEA18ihK9IoV1jxwaSMnfj3Uk7L/gxEnprfG4ZAzhyZV4UuoPGYXdggHrp2hOtpa3GRYYjohs2wh5ECs1z0Zp5bz8TqZ1Y+5kJK/OA4Mjddzss=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1604145414; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=XDN/oIiMVCuSULfLXzUFSh/8Ne8Qjl+dOZybkI8nzcc=; 
-        b=VhF+WtTuankMGEuvW5HE4wxArbjTc0pcomY2heLdyji/qVD4/aJHLu1xdcMCIbrYgbIFnzk7Gw6nNCXKP0PDXVxDQdziwj4LnacI6ClXm25uZAbKbvENf476tEFNkWO2DNtDUP1DP473Jl4Tu62RGSv1ga6D8VCMJdvSZfE4loo=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
-        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
-Received: from localhost.localdomain (ip-95-222-213-99.hsi15.unitymediagroup.de [95.222.213.99]) by mx.zoho.eu
-        with SMTPS id 1604145411695916.6492190219158; Sat, 31 Oct 2020 12:56:51 +0100 (CET)
-Date:   Sat, 31 Oct 2020 12:56:50 +0100
-From:   Carl Philipp Klemm <philipp@uvos.xyz>
-To:     sre@kernel.org
-Cc:     linux-omap@vger.kernel.org
-Subject: [PATCH 1/1] power: supply: cpcap-battery: improve handling of 3rd
- party batteries.
-Message-Id: <20201031125650.768df90568d54b1dcf3bb10c@uvos.xyz>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
+        id S1728305AbgJaSkm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 31 Oct 2020 14:40:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58100 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727967AbgJaSkl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 31 Oct 2020 14:40:41 -0400
+Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (c-67-180-217-166.hsd1.ca.comcast.net [67.180.217.166])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E28BC206F9;
+        Sat, 31 Oct 2020 18:40:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604169641;
+        bh=AmHcrajXFTD5b2kQwoE6SZSnH0oCkrtF/rz8UCp0+G4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dfUgqPBrPA01vhYzCU2DeaQjozz7ees2NDmNV9KCPrl6+C3zWwJt68yhSRzH2m8TC
+         HA9PlIJmxg091XVBhbygZ7aTcY480RBvlXB9MZrRAJwfbgeYMdjcnKO31/DZFkJpNa
+         9M/31wupZpCmy1acJEGr2NG0Bd0SdhS8x3bpa1F4=
+Date:   Sat, 31 Oct 2020 11:40:40 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        Shuah Khan <shuah@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kselftest@vger.kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>
+Subject: Re: [PATCH net-next] selftests/net: timestamping: add ptp v2
+ support
+Message-ID: <20201031114040.1facec0b@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+In-Reply-To: <20201029190931.30883-1-grygorii.strashko@ti.com>
+References: <20201029190931.30883-1-grygorii.strashko@ti.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Adds a module option to ignore a missing temerature sensor. Usefull for
-3rd party batteries.
+On Thu, 29 Oct 2020 21:09:31 +0200 Grygorii Strashko wrote:
+> The timestamping tool is supporting now only PTPv1 (IEEE-1588 2002) while
+> modern HW often supports also/only PTPv2.
+> 
+> Hence timestamping tool is still useful for sanity testing of PTP drivers
+> HW timestamping capabilities it's reasonable to upstate it to support
+> PTPv2. This patch adds corresponding support which can be enabled by using
+> new parameter "PTPV2".
+> 
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-Signed-off-by: Carl Philipp Klemm <carl@uvos.xyz>
+CC: Richard
 
----
+> diff --git a/tools/testing/selftests/net/timestamping.c b/tools/testing/selftests/net/timestamping.c
+> index f4bb4fef0f39..21091be70688 100644
+> --- a/tools/testing/selftests/net/timestamping.c
+> +++ b/tools/testing/selftests/net/timestamping.c
+> @@ -59,7 +59,8 @@ static void usage(const char *error)
+>  	       "  SOF_TIMESTAMPING_SOFTWARE - request reporting of software time stamps\n"
+>  	       "  SOF_TIMESTAMPING_RAW_HARDWARE - request reporting of raw HW time stamps\n"
+>  	       "  SIOCGSTAMP - check last socket time stamp\n"
+> -	       "  SIOCGSTAMPNS - more accurate socket time stamp\n");
+> +	       "  SIOCGSTAMPNS - more accurate socket time stamp\n"
+> +	       "  PTPV2 - use PTPv2 messages\n");
+>  	exit(1);
+>  }
+>  
+> @@ -115,13 +116,28 @@ static const unsigned char sync[] = {
+>  	0x00, 0x00, 0x00, 0x00
+>  };
+>  
+> -static void sendpacket(int sock, struct sockaddr *addr, socklen_t addr_len)
+> +static const unsigned char sync_v2[] = {
+> +	0x00, 0x02, 0x00, 0x2C,
+> +	0x00, 0x00, 0x02, 0x00,
+> +	0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0xFF,
+> +	0xFE, 0x00, 0x00, 0x00,
+> +	0x00, 0x01, 0x00, 0x01,
+> +	0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00,
+> +};
+> +
+> +static void sendpacket(int sock, struct sockaddr *addr, socklen_t addr_len, int ptpv2)
+>  {
+> +	size_t sync_len = ptpv2 ? sizeof(sync_v2) : sizeof(sync);
+> +	const void *sync_p = ptpv2 ? sync_v2 : sync;
+>  	struct timeval now;
+>  	int res;
+>  
+> -	res = sendto(sock, sync, sizeof(sync), 0,
+> -		addr, addr_len);
+> +	res = sendto(sock, sync_p, sync_len, 0, addr, addr_len);
+>  	gettimeofday(&now, 0);
+>  	if (res < 0)
+>  		printf("%s: %s\n", "send", strerror(errno));
+> @@ -134,9 +150,11 @@ static void sendpacket(int sock, struct sockaddr *addr, socklen_t addr_len)
+>  static void printpacket(struct msghdr *msg, int res,
+>  			char *data,
+>  			int sock, int recvmsg_flags,
+> -			int siocgstamp, int siocgstampns)
+> +			int siocgstamp, int siocgstampns, int ptpv2)
+>  {
+>  	struct sockaddr_in *from_addr = (struct sockaddr_in *)msg->msg_name;
+> +	size_t sync_len = ptpv2 ? sizeof(sync_v2) : sizeof(sync);
+> +	const void *sync_p = ptpv2 ? sync_v2 : sync;
+>  	struct cmsghdr *cmsg;
+>  	struct timeval tv;
+>  	struct timespec ts;
+> @@ -210,10 +228,9 @@ static void printpacket(struct msghdr *msg, int res,
+>  					"probably SO_EE_ORIGIN_TIMESTAMPING"
+>  #endif
+>  					);
+> -				if (res < sizeof(sync))
+> +				if (res < sync_len)
+>  					printf(" => truncated data?!");
+> -				else if (!memcmp(sync, data + res - sizeof(sync),
+> -							sizeof(sync)))
+> +				else if (!memcmp(sync_p, data + res - sync_len, sync_len))
+>  					printf(" => GOT OUR DATA BACK (HURRAY!)");
+>  				break;
+>  			}
+> @@ -257,7 +274,7 @@ static void printpacket(struct msghdr *msg, int res,
+>  }
+>  
+>  static void recvpacket(int sock, int recvmsg_flags,
+> -		       int siocgstamp, int siocgstampns)
+> +		       int siocgstamp, int siocgstampns, int ptpv2)
+>  {
+>  	char data[256];
+>  	struct msghdr msg;
+> @@ -288,7 +305,7 @@ static void recvpacket(int sock, int recvmsg_flags,
+>  	} else {
+>  		printpacket(&msg, res, data,
+>  			    sock, recvmsg_flags,
+> -			    siocgstamp, siocgstampns);
+> +			    siocgstamp, siocgstampns, ptpv2);
+>  	}
+>  }
+>  
+> @@ -300,6 +317,7 @@ int main(int argc, char **argv)
+>  	int siocgstamp = 0;
+>  	int siocgstampns = 0;
+>  	int ip_multicast_loop = 0;
+> +	int ptpv2 = 0;
+>  	char *interface;
+>  	int i;
+>  	int enabled = 1;
+> @@ -335,6 +353,8 @@ int main(int argc, char **argv)
+>  			siocgstampns = 1;
+>  		else if (!strcasecmp(argv[i], "IP_MULTICAST_LOOP"))
+>  			ip_multicast_loop = 1;
+> +		else if (!strcasecmp(argv[i], "PTPV2"))
+> +			ptpv2 = 1;
+>  		else if (!strcasecmp(argv[i], "SOF_TIMESTAMPING_TX_HARDWARE"))
+>  			so_timestamping_flags |= SOF_TIMESTAMPING_TX_HARDWARE;
+>  		else if (!strcasecmp(argv[i], "SOF_TIMESTAMPING_TX_SOFTWARE"))
+> @@ -369,6 +389,7 @@ int main(int argc, char **argv)
+>  		HWTSTAMP_TX_ON : HWTSTAMP_TX_OFF;
+>  	hwconfig.rx_filter =
+>  		(so_timestamping_flags & SOF_TIMESTAMPING_RX_HARDWARE) ?
+> +		ptpv2 ? HWTSTAMP_FILTER_PTP_V2_L4_SYNC :
+>  		HWTSTAMP_FILTER_PTP_V1_L4_SYNC : HWTSTAMP_FILTER_NONE;
+>  	hwconfig_requested = hwconfig;
+>  	if (ioctl(sock, SIOCSHWTSTAMP, &hwtstamp) < 0) {
+> @@ -496,16 +517,16 @@ int main(int argc, char **argv)
+>  					printf("has error\n");
+>  				recvpacket(sock, 0,
+>  					   siocgstamp,
+> -					   siocgstampns);
+> +					   siocgstampns, ptpv2);
+>  				recvpacket(sock, MSG_ERRQUEUE,
+>  					   siocgstamp,
+> -					   siocgstampns);
+> +					   siocgstampns, ptpv2);
+>  			}
+>  		} else {
+>  			/* write one packet */
+>  			sendpacket(sock,
+>  				   (struct sockaddr *)&addr,
+> -				   sizeof(addr));
+> +				   sizeof(addr), ptpv2);
+>  			next.tv_sec += 5;
+>  			continue;
+>  		}
 
-diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/cpcap-battery.c
-index 3be76cd7584a..8b7978b065df 100644
---- a/drivers/power/supply/cpcap-battery.c
-+++ b/drivers/power/supply/cpcap-battery.c
-@@ -28,6 +28,7 @@
- #include <linux/power_supply.h>
- #include <linux/reboot.h>
- #include <linux/regmap.h>
-+#include <linux/moduleparam.h>
- 
- #include <linux/iio/consumer.h>
- #include <linux/iio/types.h>
-@@ -162,6 +163,9 @@ static const struct cpcap_battery_capacity cpcap_battery_cap[] = {
- 
- #define CPCAP_NO_BATTERY	-400
- 
-+static bool ignore_temperature_probe;
-+module_param(ignore_temperature_probe, bool, 0660);
-+
- static struct cpcap_battery_state_data *
- cpcap_battery_get_state(struct cpcap_battery_ddata *ddata,
- 			enum cpcap_battery_state state)
-@@ -205,7 +209,8 @@ static int cpcap_charger_battery_temperature(struct cpcap_battery_ddata *ddata,
- 	channel = ddata->channels[CPCAP_BATTERY_IIO_BATTDET];
- 	error = iio_read_channel_processed(channel, value);
- 	if (error < 0) {
--		dev_warn(ddata->dev, "%s failed: %i\n", __func__, error);
-+		if (!ignore_temperature_probe)
-+			dev_warn(ddata->dev, "%s failed: %i\n", __func__, error);
- 		*value = CPCAP_NO_BATTERY;
- 
- 		return error;
-@@ -558,7 +562,7 @@ static int cpcap_battery_get_property(struct power_supply *psy,
- 
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_PRESENT:
--		if (latest->temperature > CPCAP_NO_BATTERY)
-+		if (latest->temperature > CPCAP_NO_BATTERY || ignore_temperature_probe)
- 			val->intval = 1;
- 		else
- 			val->intval = 0;
-@@ -658,6 +662,8 @@ static int cpcap_battery_get_property(struct power_supply *psy,
- 		val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
- 		break;
- 	case POWER_SUPPLY_PROP_TEMP:
-+		if (ignore_temperature_probe)
-+			return -ENODATA;
- 		val->intval = latest->temperature;
- 		break;
- 	default:
-
--- 
-Carl Philipp Klemm <philipp@uvos.xyz> <carl@uvos.xyz>
