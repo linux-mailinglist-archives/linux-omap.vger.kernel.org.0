@@ -2,67 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8692A29B9
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Nov 2020 12:46:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F05B72A3661
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Nov 2020 23:20:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728690AbgKBLqB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 Nov 2020 06:46:01 -0500
-Received: from sender11-of-o52.zoho.eu ([31.186.226.238]:21371 "EHLO
-        sender11-of-o52.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728632AbgKBLpp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Nov 2020 06:45:45 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1604317533; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=exhD318J3G0GIN0gZPsGvNwQejQo+3urCYDqeove6raMxtHYtEePrTUBmFuEOZawdFbHXn77AYIq2V3sq5EVX5Vw9RVhugGBU+Af07GRVnKMiEkz6MwPxfETsRgXpKSPm1Qg17W71bUXgN3IuEzXIwGOpRyb/01SNQUbPRKc8T8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1604317533; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=DDFUcxztyR7l3DRaIN5JA5fhpSA9UgUN5HXVmqSt3Vg=; 
-        b=CqFLAVQHI/i4iH7d7suL/E5HAbpLhaX2qEHLWg2/LDyLxzMH0s6kRt9bpibR3jiGykTzeve1aMZVaR+kDAGdW4n8dtvI+8MPal62hKL1SAzDV81jXInw6AT0bXWV8TFwrTWhS2qcjsr+R9Nzc2gqNqOmoA2RP4l7IeievAPgVXw=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
-        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
-Received: from localhost.localdomain (ip-95-222-213-220.hsi15.unitymediagroup.de [95.222.213.220]) by mx.zoho.eu
-        with SMTPS id 1604317529089394.12772114993777; Mon, 2 Nov 2020 12:45:29 +0100 (CET)
-Date:   Mon, 2 Nov 2020 12:45:28 +0100
-From:   Carl Philipp Klemm <philipp@uvos.xyz>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org
-Subject: [PATCH] ARM: omap2plus_defconfig: add CONFIG_AK8975=m and
- CONFIG_KXCJK1013=m to support motorola xt894's magnetometer and motorola
- xt875's accelerometer respectivly
-Message-Id: <20201102124528.646c270fac2aa83c8fcde73d@uvos.xyz>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
+        id S1725785AbgKBWUm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Nov 2020 17:20:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52564 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725829AbgKBWUm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 2 Nov 2020 17:20:42 -0500
+Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (unknown [163.114.132.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2100120786;
+        Mon,  2 Nov 2020 22:20:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604355641;
+        bh=RPnrsyxMAkztMhvusutWD4TqjQCquKiSwYb/vlIe3Gg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=peaRwy53vhIUeGizgjAikIlKSTfvxLSDemKEiiaCBJ8WYSP/eBkAKd8aYXFus2msc
+         eLMVwTfEdhalqAt1tT6fINLZMD/foRO88k2iv+GDmIqvalVm8vkNX9h/pOyjR4nYdz
+         AorXyOZH6SmpJD5ZDVWGEglJJLaEDCmjrOOq8W98=
+Date:   Mon, 2 Nov 2020 14:20:40 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Richard Cochran <richardcochran@gmail.com>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Sekhar Nori <nsekhar@ti.com>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH] net: ethernet: ti: cpsw: disable PTPv1 hw timestamping
+ advertisement
+Message-ID: <20201102142040.4c9decbe@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+In-Reply-To: <20201101020227.GB2683@hoboy.vegasvil.org>
+References: <20201029190910.30789-1-grygorii.strashko@ti.com>
+        <20201031114042.7ccdf507@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+        <20201101020227.GB2683@hoboy.vegasvil.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Adds CONFIG_AK8975=m and CONFIG_KXCJK1013=m to omap2plus_defconfig to
-support motorola xt894's magnetometer and motorola xt875's
-accelerometer respectivly
+On Sat, 31 Oct 2020 19:02:27 -0700 Richard Cochran wrote:
+> On Sat, Oct 31, 2020 at 11:40:42AM -0700, Jakub Kicinski wrote:
+> > On Thu, 29 Oct 2020 21:09:10 +0200 Grygorii Strashko wrote:  
+> > > The TI CPTS does not natively support PTPv1, only PTPv2. But, as it
+> > > happens, the CPTS can provide HW timestamp for PTPv1 Sync messages, because
+> > > CPTS HW parser looks for PTP messageType id in PTP message octet 0 which
+> > > value is 0 for PTPv1. As result, CPTS HW can detect Sync messages for PTPv1
+> > > and PTPv2 (Sync messageType = 0 for both), but it fails for any other PTPv1
+> > > messages (Delay_req/resp) and will return PTP messageType id 0 for them.
+> > > 
+> > > The commit e9523a5a32a1 ("net: ethernet: ti: cpsw: enable
+> > > HWTSTAMP_FILTER_PTP_V1_L4_EVENT filter") added PTPv1 hw timestamping
+> > > advertisement by mistake, only to make Linux Kernel "timestamping" utility
+> > > work, and this causes issues with only PTPv1 compatible HW/SW - Sync HW
+> > > timestamped, but Delay_req/resp are not.
+> > > 
+> > > Hence, fix it disabling PTPv1 hw timestamping advertisement, so only PTPv1
+> > > compatible HW/SW can properly roll back to SW timestamping.
+> > > 
+> > > Fixes: e9523a5a32a1 ("net: ethernet: ti: cpsw: enable HWTSTAMP_FILTER_PTP_V1_L4_EVENT filter")
+> > > Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>  
+> > 
+> > CC: Richard  
+> 
+> Acked-by: Richard Cochran <richardcochran@gmail.com>
 
-Signed-off-by: Carl Philipp Klemm <carl@uvos.xyz>
-
----
-
-diff --git a/arch/arm/configs/omap2plus_defconfig
-b/arch/arm/configs/omap2plus_defconfig index 1d3106dc0e23..8158aeb53c89
-100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -525,6 +525,8 @@ CONFIG_INA2XX_ADC=m
- CONFIG_TI_AM335X_ADC=m
- CONFIG_SENSORS_ISL29028=m
- CONFIG_BMP280=m
-+CONFIG_KXCJK1013=m
-+CONFIG_AK8975=m
- CONFIG_PWM=y
- CONFIG_PWM_OMAP_DMTIMER=m
- CONFIG_PWM_TIECAP=m
-
-
--- 
-Carl Philipp Klemm <philipp@uvos.xyz> <carl@uvos.xyz>
+Applied, thanks!
